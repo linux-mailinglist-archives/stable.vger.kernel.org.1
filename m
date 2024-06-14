@@ -1,116 +1,292 @@
-Return-Path: <stable+bounces-52148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7F5908420
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 09:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94594908499
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 09:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E42F71C20DBC
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 07:01:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93D561C2227A
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 07:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3236136E09;
-	Fri, 14 Jun 2024 07:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F55F14884E;
+	Fri, 14 Jun 2024 07:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="l6qk5MK/";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OsgcPN0G";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lfLDkCeX";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="w8ER1qIE"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5579717C72
-	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 07:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA07B1487C3;
+	Fri, 14 Jun 2024 07:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718348494; cv=none; b=IskHnHmTB+FmFJa9pw0NC+TqNr1Piu+c0d6FYZtxn4RS9kCwQEkE8IbiURH1yqWSWH/FGJucOwBG+AN9HGLRJ4UUCIzLQjIbyMlbGjnf30PYZgn9GSi7gL/Mjqmz495Pkn/WvpDkw/xcHhWk/Ci9XiAcVF2I24M6TBY5q96vZC4=
+	t=1718349849; cv=none; b=GU0jL6nWR/+5N2+/YiiZLsIZjp3wUvB9TNGA8/1moiw+JKxLxie/48WTFh9axUNdSScMyXquWtRDlPNEyv+swl9d5uYIIo7P8bDvm0EAUOaSCjl0thjNJIL2GYtJ9U9GJ4+A112KqfO1jaQeP0Bjp1TDRaV/NEqZYoKvaxhv+3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718348494; c=relaxed/simple;
-	bh=f+47wVGcuysOXwCj/07vA1XG0M+Mix+78gdu2z03d+8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LjNHU4y3hkl0YhJJoIGNzyECJEgCG1WNcDeojt9W0Zn+ZcoJk9L7ucXVUHgIaNIUEmOp5yegnUNCIQ3seRKf4iOL5zGQ3lBBBqmGRWwHdoUncl6irsOjPDANinG61YBb09PauS1BGwLgfQPS4borOQ8xOxFTpAtVzfV5at4LDXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sI0w9-0004Jv-JE; Fri, 14 Jun 2024 09:01:25 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sI0w7-002Cwf-Q0; Fri, 14 Jun 2024 09:01:23 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sI0w7-00ALq4-2I;
-	Fri, 14 Jun 2024 09:01:23 +0200
-Date: Fri, 14 Jun 2024 09:01:23 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	stable@vger.kernel.org, kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net v1 2/2] net: phy: dp83tg720: get initial master/slave
- configuration
-Message-ID: <Zmvqw-GtKsSNFQsr@pengutronix.de>
-References: <20240613183034.2407798-1-o.rempel@pengutronix.de>
- <20240613183034.2407798-2-o.rempel@pengutronix.de>
- <f88abfe3-a66c-4e65-b627-7adf7f04580f@lunn.ch>
- <ZmvTS9YI8LACJOND@pengutronix.de>
+	s=arc-20240116; t=1718349849; c=relaxed/simple;
+	bh=g+9kGhRKZClOIfInNoKZHAFjPZZSJyHarCLa1hSe3vY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=r9m6C+OrGu73mVsV/ss6YpeSbTgcuqpQ22YjiL5EG25ZIS93+ihxevScemzOTMkAbHaDEpC1qUIPZBYJem316Qcc89z/fdtffk05ok1BU6GzYcUDwwoiLWy5xgkF90InxvYOJ5ISPyF4wntCLfpqcB1ZSOjnhb4S243VtHrqdGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=l6qk5MK/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OsgcPN0G; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lfLDkCeX; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=w8ER1qIE; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DE059221E5;
+	Fri, 14 Jun 2024 07:23:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718349840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2b0mkGYWVL8dqww12f5KC+N567kXNMjRf3DIoJnRcV0=;
+	b=l6qk5MK/tY3vBuO9i2B32BU+qzv63hTXHkOPedjflp5JpbsJWqSZC+9rlYCtUVHMTxJRVS
+	NaaPQ7yCNiN0Lx4qWK+nQ3ndPQDyF5Tn0f77ohbYAeAgE5inLjjeJYzwMiM95ZkttprsFF
+	n0iOgjFQ7pM43gYgmchuE4WN120cWP8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718349840;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2b0mkGYWVL8dqww12f5KC+N567kXNMjRf3DIoJnRcV0=;
+	b=OsgcPN0GZgtRAMXY8vWgiV42wE5qflifRw9mzR4/cs5A00Tw8tQEWDTsqIMt3JrFOJxhNV
+	FCcEZuoAsxfPPaDQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lfLDkCeX;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=w8ER1qIE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718349839; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2b0mkGYWVL8dqww12f5KC+N567kXNMjRf3DIoJnRcV0=;
+	b=lfLDkCeXCqwn+8LqKmQUWOlhDh0QfAMP9P2krzdBdkeY4TUmXGSJ2d+5uC22hhwdTX1a+S
+	NJ+dmvzSiO7omKN+5+lPzqmrr2VZr1rBIJo5uInKHQGJ8vUsIzk2dQosOZBG1qYS2cZpS6
+	crUX2dD95pOnpUUUqCN9HmcsyL1KEbU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718349839;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=2b0mkGYWVL8dqww12f5KC+N567kXNMjRf3DIoJnRcV0=;
+	b=w8ER1qIEdN+bEVgMOrSssGX4edeHxjUACQmu1GuLGHpj/ojQOD1+6kRB7rFr0/CajJuwyK
+	K9KzfE/5xS30JmCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9E1C613AAF;
+	Fri, 14 Jun 2024 07:23:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 2JD6JA/wa2b8UAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 14 Jun 2024 07:23:59 +0000
+Message-ID: <9f2e4bc5-fa0a-4910-85d0-c76559a5ae37@suse.de>
+Date: Fri, 14 Jun 2024 09:23:59 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZmvTS9YI8LACJOND@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fbdev: vesafb: Detect VGA compatibility from screen
+ info's VESA attributes
+To: Helge Deller <deller@gmx.de>,
+ Javier Martinez Canillas <javierm@redhat.com>, sam@ravnborg.org,
+ hpa@zytor.com
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ stable@vger.kernel.org
+References: <20240613090240.7107-1-tzimmermann@suse.de>
+ <5d8d2efe-45dd-4033-aaae-e7f923ef9e76@gmx.de>
+ <87tthwqzq2.fsf@minerva.mail-host-address-is-not-set>
+ <64bbb753-ec26-41ca-a585-fb74ae9e854c@gmx.de>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <64bbb753-ec26-41ca-a585-fb74ae9e854c@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: DE059221E5
+X-Spam-Score: -6.50
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-6.50 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_TO(0.00)[gmx.de,redhat.com,ravnborg.org,zytor.com];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_ENVRCPT(0.00)[gmx.de];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_COUNT_TWO(0.00)[2];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:email,suse.de:dkim,gmx.de:email]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
 
-On Fri, Jun 14, 2024 at 07:21:15AM +0200, Oleksij Rempel wrote:
-> On Thu, Jun 13, 2024 at 09:33:01PM +0200, Andrew Lunn wrote:
-> > On Thu, Jun 13, 2024 at 08:30:34PM +0200, Oleksij Rempel wrote:
-> > > Get initial master/slave configuration, otherwise ethtool
-> > > wont be able to provide this information until link is
-> > > established. This makes troubleshooting harder, since wrong
-> > > role configuration would prevent the link start.
-> > 
-> > I looked at how genphy_c45_read_status() works. If we have
-> > phydev->autoneg == AUTONEG_ENABLE then genphy_c45_baset1_read_status()
-> > is called which sets phydev->master_slave_get. If not AUTONEG_ENABLE
-> > it calls genphy_c45_read_pma() which ends up calling
-> > genphy_c45_pma_baset1_read_master_slave().
-> > 
-> > So it seems like the .read_status op should be setting master/slave
-> > each time it is called, and not one time during .config_init.
-> > 
-> > What do you think?
-> 
-> Yes, you are right. I verified it:
-> In case of this driver, .config_init will be executed every time no link
-> is detected over phy_init_hw() call. If link is detected
-> genphy_c45_pma_baset1_read_master_slave() is called directly.
-> It is not directly visible but read_master_slave() will be executed on
-> every  .read_status.
+Hi
 
-Hm.. on other hand. Since the configuration state is readed only on
-init and reset, we will see on user space side only default state not updated
-after config_aneg().
+Am 14.06.24 um 00:24 schrieb Helge Deller:
+> On 6/13/24 23:50, Javier Martinez Canillas wrote:
+>> Helge Deller <deller@gmx.de> writes:
+>>
+>>> On 6/13/24 11:02, Thomas Zimmermann wrote:
+>>>> Test the vesa_attributes field in struct screen_info for compatibility
+>>>> with VGA hardware. Vesafb currently tests bit 1 in screen_info's
+>>>> capabilities field, It sets the framebuffer address size and is
+>>>> unrelated to VGA.
+>>>>
+>>>> Section 4.4 of the Vesa VBE 2.0 specifications defines that bit 5 in
+>>>> the mode's attributes field signals VGA compatibility. The mode is
+>>>> compatible with VGA hardware if the bit is clear. In that case, the
+>>>> driver can access VGA state of the VBE's underlying hardware. The
+>>>> vesafb driver uses this feature to program the color LUT in palette
+>>>> modes. Without, colors might be incorrect.
+>>>>
+>>>> The problem got introduced in commit 89ec4c238e7a ("[PATCH] vesafb: 
+>>>> Fix
+>>>> incorrect logo colors in x86_64"). It incorrectly stores the mode
+>>>> attributes in the screen_info's capabilities field and updates vesafb
+>>>> accordingly. Later, commit 5e8ddcbe8692 ("Video mode probing 
+>>>> support for
+>>>> the new x86 setup code") fixed the screen_info, but did not update 
+>>>> vesafb.
+>>>> Color output still tends to work, because bit 1 in capabilities is
+>>>> usually 0.
+>>>>
+>>>> Besides fixing the bug in vesafb, this commit introduces a helper that
+>>>> reads the correct bit from screen_info.
+>>>
+>>> Nice catch, Thomas!
+>>>
+>>> But do we really need this additional helper?
+
+Yes, please. Decoding screen_info is a science on it's own. I've added 
+several of these helpers to access because such code was open-coded and 
+duplicated all over the graphics code. And several places got something 
+wrong. The patch here is just one of many such cases.
+
+>>>
+>>>
+>>>>
+>>>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>>>> Fixes: 5e8ddcbe8692 ("Video mode probing support for the new x86 
+>>>> setup code")
+>>>> Cc: <stable@vger.kernel.org> # v2.6.23+
+>>>
+>>>> ---
+>>>>    drivers/video/fbdev/vesafb.c | 2 +-
+>>>>    include/linux/screen_info.h  | 5 +++++
+>>>>    2 files changed, 6 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/video/fbdev/vesafb.c 
+>>>> b/drivers/video/fbdev/vesafb.c
+>>>> index 8ab64ae4cad3e..5a161750a3aee 100644
+>>>> --- a/drivers/video/fbdev/vesafb.c
+>>>> +++ b/drivers/video/fbdev/vesafb.c
+>>>> @@ -271,7 +271,7 @@ static int vesafb_probe(struct platform_device 
+>>>> *dev)
+>>>>        if (si->orig_video_isVGA != VIDEO_TYPE_VLFB)
+>>>>            return -ENODEV;
+>>>>
+>>>> -    vga_compat = (si->capabilities & 2) ? 0 : 1;
+>>>> +    vga_compat = !__screen_info_vbe_mode_nonvga(si);
+>>>
+>>> Instead maybe just this: ?
+>>>    +    /* mode is VGA-compatible if BIT 5 is _NOT_ set */
+>>>    +    vga_compat = (si->vesa_attributes & BIT(5)) == 0;
+>>>
+>>> I suggest to make patch small, esp. if you ask for backport to 
+>>> v2.6.23+.
+>>>
+>>
+>> I prefer the helper. It's a static inline anyways and having it as a
+>> function makes it much easier to read / understand.
+>
+> Really?
+
+Yep.
+
+>
+> +static inline bool __screen_info_vbe_mode_nonvga(const struct 
+> screen_info *si)
+> +{
+> +    return si->vesa_attributes & BIT(5); // VGA if _not_ set
+> +}
+>
+> At least the double negation "!nonvga()" breaks my head and the "//" 
+> comment
+> should be converted to /*..*/ IMHO.
+
+The non-VGA bit is specified by VESA. So the helper does the correct 
+thing. We can make a better comment though.
+
+If we want to simplify usage of this helper, I'd say we should kick 
+vga_compat from vesafb and rework that code.
+
+Best regards
+Thomas
+
+>
+> Helge
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
 
