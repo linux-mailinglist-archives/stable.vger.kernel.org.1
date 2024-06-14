@@ -1,143 +1,89 @@
-Return-Path: <stable+bounces-52186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6F6908ACA
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 13:28:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8345D908AD7
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 13:32:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 099682815E1
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 11:28:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953E71C221D9
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 11:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB6F194A48;
-	Fri, 14 Jun 2024 11:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3DF14B96A;
+	Fri, 14 Jun 2024 11:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="PilTGbc7"
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="aw3js9TR"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E95193064
-	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 11:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D71195968
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 11:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718364484; cv=none; b=cM/cYZrvR79Pg5eG5Eoe6Y/rzq9RPwY3QJge7zGOusxAFCTsCp0iJJJN27Vby+HkBz4KNtk/A6ufQqY4XjP34mS8IhxW7VmZeg7faH2p7Cqm4mijS/Tg5Mh72yAxda7mLyssvehghGMEugQFzr1S6mdlB4pozS7yTVY9ENYaTwE=
+	t=1718364728; cv=none; b=VqtawiGx1o+jzxBgQxd+8ba9D6uw8JZ2RflVPG+gv4YTLbhcNQbHFXtWtbRrar9I97thDu8C002j17ilTcDiXn9I8gt212e5NuGtvclV9gGNmYF4Pgfmm8JyV8yX1CbSbEFKX5hZ3H2ThPbr3nqW+sS81RMFitoudXqIH7kK6dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718364484; c=relaxed/simple;
-	bh=kzt+P29xnZNp+taR4beO6gV/WyPkAP4aSvhUsm8J1vw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DDv1xOz7aDvjCsKV+cZvBCrv4g1ggKq2CkwdlqaeIQvb2x86uc87SyCYKuaZQaSfcy4c+TQOaWNTA5tfFtNWdFDePyEZO9gR1DcE/IFzHhc8Dr1ldWWwuRfdZam//1zLtTHBrDj5WpM/HMRprwwEUkcyD9FZ/xZxunDroV8sOek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=PilTGbc7; arc=none smtp.client-ip=150.107.74.76
+	s=arc-20240116; t=1718364728; c=relaxed/simple;
+	bh=wj8PgOYgWOt9MgdbKK0EyEFmrSjRnNX3x/vNOHK5yyU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=KcDsZ6u8fxb3ZcuGrbnMtpX00AE2m8Q9GdcA/I+AY1PBHJLBb7C6Qr7Ts1zYgNzuAdwmL3FouBVxpTpvReRz9JGNtEhqgT0FOi1lTeQ38hQT1szwEKzexH8SmmkXMiL6WdHIuyjDf6+QKDeyzqqND7FkA34ZxHgIHN0O/ohqRos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=aw3js9TR; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1718364480;
-	bh=7QvapBUZMia0j8j9NgqwjdVQPcasgkaRydVGXAQi2zQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=PilTGbc7A9QGyO6tlyCrOXj4aXtQP3U3SRmXW5ZFpnV9O1Ru/Ouiu9g8AIAGv5jrN
-	 PW9hQUGz4hcepQZLFyy1XtLk0vyaNDClu1zU/gw93BD5us/RtbaziJLYJQyLFmf1F2
-	 Q2iTdNy1CLWPD0H6/FS7ntOgkk4iqjmMd/+fowVdw9vX9cJcqObbiNdwunicK4jmHu
-	 gLdQaWIbX8Fkxe5ElLv2LIqWuIcPvsmUezPOg7R812PGqa6+RBdKUG50X2As+wvNEo
-	 /8xTUZm6zv0n1++nFBzKuvpvT6z9MHHuz9RxMbap2UpDX5cw1k5KkYCSR4GRQVt4f+
-	 IKmE8cqXl6A3Q==
+	s=201909; t=1718364725;
+	bh=5tNu3JO7F59DfFGw1n42UeUGBbjV9MvLJ3EG+sLnfn4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=aw3js9TR6y8CLPcEq5EDqVUG+1n5/wlTcwRiLocJdnAvs4PMrUogNcuF1Az61vEsk
+	 Hu2p7q5U+zbqkDZcBlpN5JaCpkzwOnU8LS+EtsKZjo7fo1kUHwa89uU1MJPCIr3IOX
+	 08VlyMzLeU28nZtJGCtCStkB1lIblUkFB8FkWNMzJhA2oYp+DZ6l6ODqgC4fWAUhIJ
+	 LhznFFLrop5JRH57EJVMOfF8dyxf5oh0Pkw8w4wLMiOv1gsafxZkSS5iBUzr3wdwLp
+	 gKPCfRz2OVQKO0murUWm4qXUkWZXGkp9CWqch5NmastDbP8CMkv4hct/tz7SIZvNGB
+	 3AiiCOc5DXSGA==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W0xpm2KN7z4wcC;
-	Fri, 14 Jun 2024 21:28:00 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W0xvS6TNvz4wcC;
+	Fri, 14 Jun 2024 21:32:04 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: <stable@vger.kernel.org>
-Cc: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v6.1] powerpc/uaccess: Fix build errors seen with GCC 13/14
-Date: Fri, 14 Jun 2024 21:27:49 +1000
-Message-ID: <20240614112749.3482975-1-mpe@ellerman.id.au>
-X-Mailer: git-send-email 2.45.1
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: Please backport 2d43cc701b96 to v6.9 and v6.6
+In-Reply-To: <2024061411-hypertext-saline-afb4@gregkh>
+References: <87wmmsnelx.fsf@mail.lhotse>
+ <2024061411-hypertext-saline-afb4@gregkh>
+Date: Fri, 14 Jun 2024 21:32:04 +1000
+Message-ID: <87tthvoj4b.fsf@mail.lhotse>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-commit 2d43cc701b96f910f50915ac4c2a0cae5deb734c upstream.
+Greg KH <gregkh@linuxfoundation.org> writes:
+> On Fri, Jun 14, 2024 at 05:54:50PM +1000, Michael Ellerman wrote:
+>> Hi stable team,
+>> 
+>> Can you please backport:
+>>   2d43cc701b96 ("powerpc/uaccess: Fix build errors seen with GCC 13/14")
+>> 
+>> To v6.9 and v6.6.
+>> 
+>> It was marked for backporting, but hasn't been picked up AFAICS. I'm not
+>> sure if it clashed with the asm_goto_output changes or something. But it
+>> backports cleanly to the current stable branches.
+>
+> It's still in my "to get to queue" along with about 150+ other patches
+> that were tagged for stable inclusion.  It's in good company, I'll get
+> to it after this current round of -rc releases is out.
 
-Building ppc64le_defconfig with GCC 14 fails with assembler errors:
+Thanks.
 
-    CC      fs/readdir.o
-  /tmp/ccdQn0mD.s: Assembler messages:
-  /tmp/ccdQn0mD.s:212: Error: operand out of domain (18 is not a multiple of 4)
-  /tmp/ccdQn0mD.s:226: Error: operand out of domain (18 is not a multiple of 4)
-  ... [6 lines]
-  /tmp/ccdQn0mD.s:1699: Error: operand out of domain (18 is not a multiple of 4)
+I also just sent three backports for that commit for v5.10, v5.15 and v6.1.
 
-A snippet of the asm shows:
-
-  # ../fs/readdir.c:210:         unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
-         ld 9,0(29)       # MEM[(u64 *)name_38(D) + _88 * 1], MEM[(u64 *)name_38(D) + _88 * 1]
-  # 210 "../fs/readdir.c" 1
-         1:      std 9,18(8)     # put_user       # *__pus_addr_52, MEM[(u64 *)name_38(D) + _88 * 1]
-
-The 'std' instruction requires a 4-byte aligned displacement because
-it is a DS-form instruction, and as the assembler says, 18 is not a
-multiple of 4.
-
-A similar error is seen with GCC 13 and CONFIG_UBSAN_SIGNED_WRAP=y.
-
-The fix is to change the constraint on the memory operand to put_user(),
-from "m" which is a general memory reference to "YZ".
-
-The "Z" constraint is documented in the GCC manual PowerPC machine
-constraints, and specifies a "memory operand accessed with indexed or
-indirect addressing". "Y" is not documented in the manual but specifies
-a "memory operand for a DS-form instruction". Using both allows the
-compiler to generate a DS-form "std" or X-form "stdx" as appropriate.
-
-Unfortunately clang doesn't support the "Y" constraint so that has to be
-behind an ifdef.
-
-Although the build error is only seen with GCC 13/14, that appears
-to just be luck. The constraint has been incorrect since it was first
-added.
-
-Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
-Suggested-by: Kewen Lin <linkw@gcc.gnu.org>
-[mpe: Drop CONFIG_PPC_KERNEL_PREFIXED ifdef for backport]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240529123029.146953-1-mpe@ellerman.id.au
----
- arch/powerpc/include/asm/uaccess.h | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 45d4c9cf3f3a..661046150e49 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -80,9 +80,20 @@ __pu_failed:							\
- 		:						\
- 		: label)
- 
-+#ifdef CONFIG_CC_IS_CLANG
-+#define DS_FORM_CONSTRAINT "Z<>"
-+#else
-+#define DS_FORM_CONSTRAINT "YZ<>"
-+#endif
-+
- #ifdef __powerpc64__
--#define __put_user_asm2_goto(x, ptr, label)			\
--	__put_user_asm_goto(x, ptr, label, "std")
-+#define __put_user_asm2_goto(x, addr, label)			\
-+	asm goto ("1: std%U1%X1 %0,%1	# put_user\n"		\
-+		EX_TABLE(1b, %l2)				\
-+		:						\
-+		: "r" (x), DS_FORM_CONSTRAINT (*addr)		\
-+		:						\
-+		: label)
- #else /* __powerpc64__ */
- #define __put_user_asm2_goto(x, addr, label)			\
- 	asm goto(					\
--- 
-2.45.1
-
+cheers
 
