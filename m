@@ -1,118 +1,124 @@
-Return-Path: <stable+bounces-52208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A98F908D98
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 16:37:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DB3908DA4
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 16:40:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7917B23414
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 14:37:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A003B1F24456
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 14:40:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A83EAFA;
-	Fri, 14 Jun 2024 14:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE4015E90;
+	Fri, 14 Jun 2024 14:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bQBCxnLh"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R9slFBLa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20A9EAE5;
-	Fri, 14 Jun 2024 14:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A4FFC08
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 14:39:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718375829; cv=none; b=lPwos7qJNc98tgqAEFUhXcHKBDqQVn5EPUao98zjKhTac0X7sHBkC1XY8wH9IW2BVlAKbiaX9sOtB/K0iHf7NI0btXuTQYYr8U4KIAwo8A9wHvttjfejvGiIIYJaFW7U5RkMECfwVQAlB+cB42eimNV5OTdmOwAFEi0bd3+yiGs=
+	t=1718375994; cv=none; b=FwZobGn9eKXpALqj6cKm2xgMzFA0uMcqdGYeWa8HJwYjJ/7HGCqD50tgTSewROjjVsl3UIXgK2xJHim/ltL7IYc56iEWVYinNpVBBLx+mIBiJHrGEUB3NXRp1ZGoL9M1d7qKy04FEmIrL+hKoIvU7iB7gLBa2wEr0LqCiIY9GSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718375829; c=relaxed/simple;
-	bh=CqxEKJfvF0T3GUJBD8Jm6FdqD1+1lf3t3cWycwQdufc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ABs+jwV0fAywKi1F2vf/fUWAbtYwaTBNAA8WjkqYB1yqY6QTamFimzkMNsgs/swi301Y6YMcZ6fLs3wK+N7hg+nf12SDo8pjWO8QWfJ9lwq9EJzIj5uJWntZWf3CT4Y0wdNH/44bkQv+UXow6ei+ToTXY4D3nApt8VD0FimOcso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bQBCxnLh; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1f6fd08e0f2so17084845ad.3;
-        Fri, 14 Jun 2024 07:37:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718375828; x=1718980628; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jGaRzs2YeDfss0WnIYDXvC9VI2jtEtGa0WdK+noWbmA=;
-        b=bQBCxnLhHDJP0aXIh42Q1qi9QeLdvMlV0Q6TYNIwrZbGTDP8lPhtSToSeBVDoRMhqF
-         /Fz8CSF+FJkTFwlGvHc2ZGyq2PuZIbhIJ44wrY2/yiwZ6S+zpSy6x7yuGoAMpQwu2nTi
-         8Zjf5TUDzzCHGfeLRbC8h0clN5QjRVvCjNzMK/bRw+PYd+nD1QyTMw8Z7uJWYfFJrowK
-         4AYt6U4PzX7s6POqvq3X7xPlvh3nW/vY32XZqX1T4G8gjXRSnwJ8N0+VUNiONvSxzFsN
-         kOnjo/T5Jm0DeSLY+bi+aq/pqbNp268tKZjkLlYtb9v5flDUVuKzVAVNZdi7NeRcXnUH
-         Ahqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718375828; x=1718980628;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jGaRzs2YeDfss0WnIYDXvC9VI2jtEtGa0WdK+noWbmA=;
-        b=i0QERzmLNgEis+wELgOqNcgvoHRmgKSGovmQkeevWJHmW4SU+rp3nzLh0TilhCyBbS
-         13v7cc2LIQzns3wGWCoQwQ1v8aPs6dfX8KbnNrisEjd7GlCzg2zy/Jmb1Kzd1VyyFBJY
-         lQskW3B1CaB6idJS/Ps66bA0+o4NozO4aQds0qCDwj4w7WCCeeqe33G7t1atSn9RBjvG
-         FSHmu2zs9FmsrSVnIiwZpktf467s2fPL5VPxlJRXDNcRHVK9i+8p6beEKkVmfG2t1UPP
-         g2spcXH2SB09ndUxU0rZK0a2y4pinGFdMIKXWwkSwEmYH63BJl3sdQN7DMvsb8fzdDTZ
-         K4qg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCoR7WhrYIPUTRKwosXiSIFBHAr5Glz6Hpkpts6QbXS6U2VMcKXNPX7/6tgDQULbQl0cgrsVuWXnD9MOIj4y0xtMmNgt0sBUSZQ6acTuBDOdwkVDm/J8evJuUCLd6EiIGup86qAryJEWHB55DQ+0p1WnvB0u/IHdhoZaKGgkL4
-X-Gm-Message-State: AOJu0Yxho19iMXV9ztWUbsLGi6Go9K2/22UzRL130gUOWNx7ktO36KIz
-	1vlBGJ5XVVcCxPWo8Pk+Dsz7n/Vcl9oF6WLwHfmIhZ1MDBDOAoQx
-X-Google-Smtp-Source: AGHT+IFM/0oolWKKXUd4bovtkt9q6nvnm/QqHT/gKWlpnIFHnNWCfFTeLxW6RDMtiL2wY20/yExaOQ==
-X-Received: by 2002:a17:902:dac1:b0:1f7:3217:3539 with SMTP id d9443c01a7336-1f8627cc42dmr33252315ad.38.1718375827758;
-        Fri, 14 Jun 2024 07:37:07 -0700 (PDT)
-Received: from joaog-nb.. (201-13-139-53.dial-up.telesp.net.br. [201.13.139.53])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855e6e42csm32720855ad.73.2024.06.14.07.37.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jun 2024 07:37:07 -0700 (PDT)
-From: =?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: =?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
+	s=arc-20240116; t=1718375994; c=relaxed/simple;
+	bh=J7uz1x5jYI7lPoTiLt2qtkWfX7SjMOs7CGOUsUyfTM4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HynoxkunYfF4nWFguo9Qcf6sDQepgpMH2pJXG2bJc8ADRH4w+BH7XXLl7XB09SldnFEsr+N+r6ZftovZRQmDNZHRee08ZcnUV8qoP9SuyK4cWXdBD0r7LD17J9+KHLJjyTd5yTEosorMi84+7uJ2xTjVHcxD+laVNARmpHvLFcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R9slFBLa; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718375992; x=1749911992;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=J7uz1x5jYI7lPoTiLt2qtkWfX7SjMOs7CGOUsUyfTM4=;
+  b=R9slFBLa21PMaUr5g8LfP3x+1HAQ69UIYsHJ6ZR/S9p1QIYw+1/IjYT5
+   Z94O1KHDCHTiDEn2wsKjHkeLlJfEz4IVk413wXbCZZCFlfC4XbTsoSWzN
+   mBDZzDuPtFda8dOUiHoRM1tE3PRhKRYIWoHZWZ9jWjQ+QIBWRmBPjxnAp
+   z42oroc8v/bas9nwJB+/1XNf0XoMwySr7L3djmU2+lcPwDq4/A8sCNx9I
+   59o9wcO4vLUnAtDB9SId8Ko+nEXzO+7cOeu8kvXxruldh5OV0KfaZ2m6D
+   MowGKVgo/zBJ1nSH6dq2H6fo6muHwgbUSHXUcR8Lc9RdfDTbXd9t4gZIv
+   Q==;
+X-CSE-ConnectionGUID: NKIsrXSrRy2I2QDnOtawgw==
+X-CSE-MsgGUID: RXKW6m7LR+uCFloYueWdbA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11103"; a="32742027"
+X-IronPort-AV: E=Sophos;i="6.08,238,1712646000"; 
+   d="scan'208";a="32742027"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 07:39:42 -0700
+X-CSE-ConnectionGUID: s+JFUkSNTyi0qJpVlco4Ow==
+X-CSE-MsgGUID: vPjUpIANQTebIVEa0HgCZA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,238,1712646000"; 
+   d="scan'208";a="40479774"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by fmviesa008.fm.intel.com with SMTP; 14 Jun 2024 07:39:40 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Fri, 14 Jun 2024 17:39:39 +0300
+Date: Fri, 14 Jun 2024 17:39:39 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
 	stable@vger.kernel.org
-Subject: [PATCH] iio: trigger: Fix condition for own trigger
-Date: Fri, 14 Jun 2024 11:36:58 -0300
-Message-Id: <20240614143658.3531097-1-jpaulo.silvagoncalves@gmail.com>
-X-Mailer: git-send-email 2.34.1
+Subject: Re: [PATCH] drm/i915/mso: using joiner is not possible with eDP MSO
+Message-ID: <ZmxWKyz8RcqjQ0Mg@intel.com>
+References: <20240614142311.589089-1-jani.nikula@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240614142311.589089-1-jani.nikula@intel.com>
+X-Patchwork-Hint: comment
 
-From: Jo√£o Paulo Gon√ßalves <joao.goncalves@toradex.com>
+On Fri, Jun 14, 2024 at 05:23:11PM +0300, Jani Nikula wrote:
+> It's not possible to use the joiner at the same time with eDP MSO. When
+> a panel needs MSO, it's not optional, so MSO trumps joiner.
+> 
+> v3: Only change intel_dp_has_joiner(), leave debugfs alone (Ville)
+> 
+> Cc: stable@vger.kernel.org
+> Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1668
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
-The condition for checking if triggers belong to the same IIO device to
-set attached_own_device is currently inverted, causing
-iio_trigger_using_own() to return an incorrect value. Fix it by testing
-for the correct return value of iio_validate_own_trigger().
+Reviewed-by: Ville Syrj‰l‰ <ville.syrjala@linux.intel.com>
 
-Cc: stable@vger.kernel.org
-Fixes: 517985ebc531 ("iio: trigger: Add simple trigger_validation helper")
-Signed-off-by: Jo√£o Paulo Gon√ßalves <joao.goncalves@toradex.com>
----
- drivers/iio/industrialio-trigger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> ---
+> 
+> Just the minimal fix for starters to move things along.
+> ---
+>  drivers/gpu/drm/i915/display/intel_dp.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+> index 9a9bb0f5b7fe..ab33c9de393a 100644
+> --- a/drivers/gpu/drm/i915/display/intel_dp.c
+> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+> @@ -465,6 +465,10 @@ bool intel_dp_has_joiner(struct intel_dp *intel_dp)
+>  	struct intel_encoder *encoder = &intel_dig_port->base;
+>  	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+>  
+> +	/* eDP MSO is not compatible with joiner */
+> +	if (intel_dp->mso_link_count)
+> +		return false;
+> +
+>  	return DISPLAY_VER(dev_priv) >= 12 ||
+>  		(DISPLAY_VER(dev_priv) == 11 &&
+>  		 encoder->port != PORT_A);
+> -- 
+> 2.39.2
 
-diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-index 16de57846bd9..2e84776f4fbd 100644
---- a/drivers/iio/industrialio-trigger.c
-+++ b/drivers/iio/industrialio-trigger.c
-@@ -315,7 +315,7 @@ int iio_trigger_attach_poll_func(struct iio_trigger *trig,
- 	 * this is the case if the IIO device and the trigger device share the
- 	 * same parent device.
- 	 */
--	if (iio_validate_own_trigger(pf->indio_dev, trig))
-+	if (!iio_validate_own_trigger(pf->indio_dev, trig))
- 		trig->attached_own_device = true;
-
- 	return ret;
---
-2.34.1
+-- 
+Ville Syrj‰l‰
+Intel
 
