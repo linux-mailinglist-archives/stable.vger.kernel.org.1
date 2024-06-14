@@ -1,179 +1,107 @@
-Return-Path: <stable+bounces-52221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B775908F26
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 17:43:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B2AF90903D
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 18:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B555A1F29B25
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 15:43:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A163F1C23838
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 16:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFA01A01D7;
-	Fri, 14 Jun 2024 15:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60BA171E71;
+	Fri, 14 Jun 2024 16:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="0pwF5kFt";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R6WGp9l2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="V4Cv8gkK"
 X-Original-To: stable@vger.kernel.org
-Received: from wfout4-smtp.messagingengine.com (wfout4-smtp.messagingengine.com [64.147.123.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6251A01C2;
-	Fri, 14 Jun 2024 15:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6EE637
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 16:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718379655; cv=none; b=P0onZQb9ROBI8K7tmEw7k600hOlxK7XjyVCJz5IpZ2AcZFcy5cHcUnUdu+UZTDbVgipBRa0vhlys1ljGEgHg4tYIJHUUL57YpGSCiE55bJtHmsZChJirRCu3CkF8S5n19szju2fbMgxFALiq0FjPZVLNIyazJI14lshII5RZ1jo=
+	t=1718382513; cv=none; b=LuCuhkCmEeFYCuFj97VMZqUJroyZfAmpmg/BGrpHJ/DMZkvC3Byd5z4c1XNafAMUOgADNy3rfnoF7fq7FSXv/BwcWdKZ+X26KW08zsS3M1mm7gZqcfEXcquxDmHlRDyvCmuAtXqP6FpT0qmgZcv89GGDzeuLuwiQ2kOzt1U5rJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718379655; c=relaxed/simple;
-	bh=hUa02KIiNk89eWrUuZ0Hh+Lrvto8WgmmJoSQ1bJNX3s=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Rf5hlyvrINcRUUwj4wkvZhD/dBag7DeySON8HX6mgknrTmGHy7wjjuCTtXmQvhi/ITj/31rwYm2StPUGyXCcB4l4TLajH8vqPd5R1Y3BuyOxweEMir9d42aTKAl48YdJra/7YisxlMCf6qQAWV7heTjxGirquFjfXO8IX92bGto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=0pwF5kFt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R6WGp9l2; arc=none smtp.client-ip=64.147.123.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailfout.west.internal (Postfix) with ESMTP id EF6101C0012E;
-	Fri, 14 Jun 2024 11:40:51 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Fri, 14 Jun 2024 11:40:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1718379651;
-	 x=1718466051; bh=2/sTMv8UZFkz8aSewy9niIM+ZkU3d6RLLFbL22B1e4k=; b=
-	0pwF5kFt2yXbFMkW2nPnpP8pWE4gHNsk0QqDCCCRkbFfyOMOSY5VpH605YZ071B9
-	oMtcg2oMeuOkccnu+yCE17yaB+SamgbozPnA08MWJbInN7d4F5tDlVhcZqj/KBEp
-	mGT70OeiN1cep8rxDgLhWe4RUSUcA2+cStyLwv2s/ZMeHUBoXUxJSWQ/SBxKEd8f
-	dwsiJyuRnjoIvVX2mfFgdh+RlX4hjxzrRYuhCavXOhtoCzgZZKioFOV1Tsd4VTOg
-	CRLMoJNi97aaYsb0pmVQVDO2KnZsRGtsHzlRDBM2irAuo8cWdYA0GAI7O95VaaNy
-	wJp6FqemuGTTvHiFuttTuw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1718379651; x=
-	1718466051; bh=2/sTMv8UZFkz8aSewy9niIM+ZkU3d6RLLFbL22B1e4k=; b=R
-	6WGp9l2+ZV9xUOEluTLVVkZmFlZNYxaS/L3oyEhMiT9o7o3frjTHM2gxTx7jyqL+
-	4g94xrukQV1u0XHxRcmNIjrkMBKHMS2AqOYaQATpj0GhBSsSFSjQdnvJEPEDAf6n
-	eV8RrsQ7rHQ5bkRt3+XmcS401PKIfzYCMJsEtUInpNTTzWfhuOn3EK43scHBCDac
-	zORUoBPHn53+67bTl/s+OwZm+OCmJU6ZSyxtJaWtazL6OQ1gwLzWzUEF7RluEXHp
-	OLVIOaUS9XCzVHaQvPdJgMSt9OurGHcG0/8bnLGQuy09xCq6eB9W6WUxk0tVjCEz
-	BmthRA2zuT9GVP7JaTVIw==
-X-ME-Sender: <xms:g2RsZmkOPd9zOEBlVvQ94Rz4mFZDopNeX5_0IqEApANREC3Glezt5w>
-    <xme:g2RsZt2Us4YHIrEO53Kg4h29ePv60dfvfROqODYlHOETWp5gaW_BF8HpeVktBdfpT
-    5HGk1YryXf5DpW9vYs>
-X-ME-Received: <xmr:g2RsZkpIUYvV_oh2w_VcNIE_Qi6SLInbnWtKIxgPVqHZk7mNa8AzClA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeduledgledtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeflihgr
-    gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
-    cuggftrfgrthhtvghrnhepvdekiefhfeevkeeuveetfeelffekgedugefhtdduudeghfeu
-    veegffegudekjeelnecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpehmrghilh
-    hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:g2RsZqmvqW1QNxxdxwz9qeypZpdKKmpJ9SNgYlFmvlGQjPfM641a_A>
-    <xmx:g2RsZk1lId8-7pNU9BIJUHnJ0ckQBx1urvzzzsH3CXYfZgfKr1pmGw>
-    <xmx:g2RsZhvsHayzxab2YOq_lJKrg9hYP9pjITBTVMvGGoIWgaDM_9U5bg>
-    <xmx:g2RsZgVbX7DlT61GbZZV-K_D-KT-ub-2MkmwqhbOK4RTzWvH2BGemw>
-    <xmx:g2RsZqMm3EufcFOO2wi6kccSHuPG6Rld4R07YyGvwJAomORdDXzEKV4Q>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 14 Jun 2024 11:40:49 -0400 (EDT)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Fri, 14 Jun 2024 16:40:18 +0100
-Subject: [PATCH 10/10] MIPS: Loongson64: env: Hook up Loongsson-2K
+	s=arc-20240116; t=1718382513; c=relaxed/simple;
+	bh=8esRhZr5t++HylGupLX6lyRpqHu8zZM1p1WN0/F8Ko0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fTUJG2v7NOZ3wk4GaewZ4QpvUDHOcICfl4h9E3EBCMFQcWx/QHcJWwzkWtQd3FQoSLxiTf2ZU4+2jake7FSxCwK3GR7IscREACYdawyJ43GsiG3eOTCvygk/ndJe/onaGwTW4tt4POz4s9vjfiCA6w0yIKeuT+L6GTUm9aVx7PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=V4Cv8gkK; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a6efae34c83so315870366b.0
+        for <stable@vger.kernel.org>; Fri, 14 Jun 2024 09:28:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1718382509; x=1718987309; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=bjciShuEmN4FOttkz3Fru1iIAynJFsivm4utVaX4RDQ=;
+        b=V4Cv8gkK56l5oxvYJmamzusDkfTD9NKIE2ExJ8mmzsfLMSKroCdM81ez60zXOX6Z/l
+         W9RUQvJgzWgpspSnrBbvuLelHj4iZDi/boFiV4q4y+UFpNx/TjoWqjWt00xN1CPzmFBU
+         lEuOT2v2ZDDBb10QVDf5o1BupcO0ZVKsLZeLo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718382509; x=1718987309;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bjciShuEmN4FOttkz3Fru1iIAynJFsivm4utVaX4RDQ=;
+        b=jVGRVJ2+hWbmOYuifVVH4cjXjoqcLaXuTgYT4B+5hxPWPhPdJsu1wst46OHYeytdKn
+         w5RBaDfcBSK+3xOQQ+HD7OxH8r4gNF5aD+9PekJlgMbuaxut9IocudCCauJX+bPirfAn
+         f88PMY9HFkFQYgQMllWGXiwmJzX5nZ9/H/3lbeEGoR7LeoeMxPr6RgfqoGTyA+i25tn/
+         e1/hXh35QeqtqtPRnpfy2tLYRVhUOs1Hj6uDkvdxDe98XMxgPamXibuH3PoMWEFMHnfW
+         3iWrcG3/nQuqxUKsVh1pv4ZMQ+2wyjWnJBqxc5XLoOobK40JSz3lLch4uiEskD+YvSCN
+         3HWw==
+X-Forwarded-Encrypted: i=1; AJvYcCX25kc4Lt1geTpVOHaLS3qxDsteyre90fDiVvo7+Fd1q+AYivWckF94kNGkklItziUxerkBBP9sLzA9uDiafiM5AhHa2LTy
+X-Gm-Message-State: AOJu0Ywu+u02iETZw4G1U5wuCRCL+tJOx2nSoNptBIsJ8BkAjoqqrIG/
+	YV81r8CZXAGvZbikmDJAvAPF6eegIxVMa0brnNHYqsbJohYmzyqFqNzYhbp4lGhuxkZVcN563kK
+	a3ZxNpw==
+X-Google-Smtp-Source: AGHT+IHK+yo87swT9DkJj3foTZVP1KhGixfH1Y/sjhcMSSzKiInH0BHIEMx+5jBKkmkbXR9VZbd4LQ==
+X-Received: by 2002:a17:906:1919:b0:a6f:1f40:600a with SMTP id a640c23a62f3a-a6f60d2caa3mr213814366b.30.1718382509503;
+        Fri, 14 Jun 2024 09:28:29 -0700 (PDT)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56da32c3sm203789966b.13.2024.06.14.09.28.28
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Jun 2024 09:28:28 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-57c68682d1aso2549074a12.3
+        for <stable@vger.kernel.org>; Fri, 14 Jun 2024 09:28:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXF4T8Gac736KBF8pdCaxss30wwBHTuiDraQkVVlCHxoRR2tq1fz6LO27uyWHwQI+CykDJHgKIwNIC5oNxZtlz3gGhRz0sZ
+X-Received: by 2002:a50:c357:0:b0:57c:7594:4436 with SMTP id
+ 4fb4d7f45d1cf-57cbd6642ebmr2048528a12.12.1718382507928; Fri, 14 Jun 2024
+ 09:28:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240614-ls3k-mips-v1-10-7614340ace7d@flygoat.com>
-References: <20240614-ls3k-mips-v1-0-7614340ace7d@flygoat.com>
-In-Reply-To: <20240614-ls3k-mips-v1-0-7614340ace7d@flygoat.com>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
- Qing Zhang <zhangqing@loongson.cn>, Binbin Zhou <zhoubinbin@loongson.cn>, 
- Huacai Chen <chenhuacai@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-mips@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2074;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=hUa02KIiNk89eWrUuZ0Hh+Lrvto8WgmmJoSQ1bJNX3s=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhrSclLiJoqx3OQ/Mqnp9xOhAT/PGtBcfpa4XnDB89/fSo
- cyKDPnIjlIWBjEuBlkxRZYQAaW+DY0XF1x/kPUHZg4rE8gQBi5OAZjIMz1Gho7DoebHv74u6giZ
- zLs7o5773t6OJwHLdjRodJQt3Ob4y4WRYbeVHJ/d3zUP1ua8XHPiL2Pi5G/uEze4n3c4e6xzOlf
- ZB3YA
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
+References: <Zmr9oBecxdufMTeP@kernel.org> <CAHk-=wickw1bAqWiMASA2zRiEA_nC3etrndnUqn_6C1tbUjAcQ@mail.gmail.com>
+ <CAHk-=wgOMcScTviziAbL9Z2RDduaEFdZbHsESxqUS2eFfUmUVg@mail.gmail.com> <Zmv8sMMGS8uosLQD@kernel.org>
+In-Reply-To: <Zmv8sMMGS8uosLQD@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Fri, 14 Jun 2024 09:28:11 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wiOwJD6sp6mdFg+6Ab8shcB0+qD8=m6MFBA-ExxBnYG5A@mail.gmail.com>
+Message-ID: <CAHk-=wiOwJD6sp6mdFg+6Ab8shcB0+qD8=m6MFBA-ExxBnYG5A@mail.gmail.com>
+Subject: Re: [GIT PULL] memblock:fix validation of NUMA coverage
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Borislav Petkov <bp@alien8.de>, Jan Beulich <jbeulich@suse.com>, Narasimhan V <Narasimhan.V@amd.com>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Somehow those enablement bits were left over when we were
-adding initial Loongson-2K support.
+On Fri, 14 Jun 2024 at 01:20, Mike Rapoport <rppt@kernel.org> wrote:
+>
+> A single constant is likely to backfire because I remember seeing checks
+> like 'if (nid < 0)' so redefining NUMA_NO_NODE will require auditing all
+> those.
 
-Set up basic information and select proper builtin DTB for
-Loongson-2K.
+Yeah, fair enough.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
- arch/mips/include/asm/mach-loongson64/boot_param.h | 2 ++
- arch/mips/loongson64/env.c                         | 8 ++++++++
- 2 files changed, 10 insertions(+)
+> But a helper function works great.
 
-diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mips/include/asm/mach-loongson64/boot_param.h
-index e007edd6b60a..9218b3ae3383 100644
---- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-+++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-@@ -42,12 +42,14 @@ enum loongson_cpu_type {
- 	Legacy_1B = 0x5,
- 	Legacy_2G = 0x6,
- 	Legacy_2H = 0x7,
-+	Legacy_2K = 0x8,
- 	Loongson_1A = 0x100,
- 	Loongson_1B = 0x101,
- 	Loongson_2E = 0x200,
- 	Loongson_2F = 0x201,
- 	Loongson_2G = 0x202,
- 	Loongson_2H = 0x203,
-+	Loongson_2K = 0x204,
- 	Loongson_3A = 0x300,
- 	Loongson_3B = 0x301
- };
-diff --git a/arch/mips/loongson64/env.c b/arch/mips/loongson64/env.c
-index ef3750a6ffac..09ff05269861 100644
---- a/arch/mips/loongson64/env.c
-+++ b/arch/mips/loongson64/env.c
-@@ -88,6 +88,12 @@ void __init prom_lefi_init_env(void)
- 	cpu_clock_freq = ecpu->cpu_clock_freq;
- 	loongson_sysconf.cputype = ecpu->cputype;
- 	switch (ecpu->cputype) {
-+	case Legacy_2K:
-+	case Loongson_2K:
-+		smp_group[0] = 0x900000001fe11000;
-+		loongson_sysconf.cores_per_node = 2;
-+		loongson_sysconf.cores_per_package = 2;
-+		break;
- 	case Legacy_3A:
- 	case Loongson_3A:
- 		loongson_sysconf.cores_per_node = 4;
-@@ -221,6 +227,8 @@ void __init prom_lefi_init_env(void)
- 		default:
- 			break;
- 		}
-+	} else if ((read_c0_prid() & PRID_IMP_MASK) == PRID_IMP_LOONGSON_64R) {
-+		loongson_fdt_blob = __dtb_loongson64_2core_2k1000_begin;
- 	} else if ((read_c0_prid() & PRID_IMP_MASK) == PRID_IMP_LOONGSON_64G) {
- 		if (loongson_sysconf.bridgetype == LS7A)
- 			loongson_fdt_blob = __dtb_loongson64g_4core_ls7a_begin;
+Thanks, that patch looks like a nice improvement to me.
 
--- 
-2.43.0
-
+                Linus
 
