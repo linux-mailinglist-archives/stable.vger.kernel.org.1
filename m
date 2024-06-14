@@ -1,255 +1,152 @@
-Return-Path: <stable+bounces-52139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87422908390
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 08:14:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A7C90839D
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 08:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 404F4B21EED
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 06:14:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49C861F225FF
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 06:29:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409E11482FD;
-	Fri, 14 Jun 2024 06:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Gi1hOcjQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982EF1474C4;
+	Fri, 14 Jun 2024 06:29:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363761474D0
-	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 06:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E41E145A05
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 06:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718345672; cv=none; b=bG6x0KWl1Eh/uJM0Ae0BOHL4aNb/JbWShlCXLH578QRdpiwBJlHVJEMapqSablUV4C8VYvbj1hX3czL4ZCny4XnPbdTecaXULCO74oDVYbaLpYdtrMpXfv4pQvD22RiEbjWePYnGLyzr+JQTqbgtGuACKKWIwUHIWs9lh5ryx4M=
+	t=1718346577; cv=none; b=cs4rvWBRpvgYGK6+eHYGP2b1cjmdlmFUa6nTBTzpLJP+oSKwe+72uP9IXpkxk+ZrZsxBOOlwiMWU1F17cd/CSdjfHnswDUo1EgGY+ooLkguUwTIRHnAufY5JF1+sJTudMVZ0VkAST7qypJKc4vSWa28velApXyzdV5cjSz47NjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718345672; c=relaxed/simple;
-	bh=MytOr15lMP9zYsxVhkxbv0AtZvnkkeakkDkldFUcRxU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NGUJnXfkYlLWsCpnewhivevTaBOcAMB40plPEsmAAL63skFuUdPnVB5M8mMuhTsAFRp+V+v70VsRtPoPSgE/TIKAchm/E42kIotFwCXL2tx9N0eTlrKbdMHhPtCz7Nd1alco6bCBssvTrWDGG9EpMyFnSB9Mz1fsVyjz0z7C3Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Gi1hOcjQ; arc=none smtp.client-ip=209.85.217.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-48d72c72079so577063137.3
-        for <stable@vger.kernel.org>; Thu, 13 Jun 2024 23:14:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718345668; x=1718950468; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BoQCHg8nTsh29WFdq4yg901so4FoHg732Ietl0cilNY=;
-        b=Gi1hOcjQcQZqEvNE79kA13iXLzzPyDrPsPoYeKlymEOQuXOGsY5m13Cztxh3h8j4xI
-         0CAQA7oSWuynGDo9mZuff/j+Ymw2n+IR8NK9QeraAFQ2Tpjd4uBrh8gEoS3V+/jXK060
-         CcvvgMuMV6oyt2yRO56UpUnMiD9e9tyeVabf8dpXdQn1O9bOTLUfePE8VDZchTXCGH3H
-         68voNGNYD0o6ShraEjYYXROZZSvRGXSJ0c2yt5K3piVpqcCRWakpdkvexXhNax8eL6q3
-         YpqdMd7HkxznWyaRjWyCrhVUuiRbD6no2OK149mTNAbWrzuc16+xVWbnielNwiIOlcv3
-         eTpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718345668; x=1718950468;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BoQCHg8nTsh29WFdq4yg901so4FoHg732Ietl0cilNY=;
-        b=FNypbpO9TtRS7zmDKnXswyRpICWVF1uuu4mGDR53P7qATZIpwtz0o9DIh+PtntjP16
-         xAn2iwFmqQkEvM06WrB6UZFKvKbFYgd7tgq4ebm7Kjt1MAsWJuZF275NKBrubKc6PBWq
-         UQoYuVqIBy4M16ipCtutsYTefQDQLVWaXazvu0E2r53ItTSyfNq7wLuYKaeOm5wFLWpI
-         umgWDUNQmMlYE/nV7SC/BVq76VAu4D8g5dw1yTfvlj18jP60TAa4SM+IVPJrlRw03H+z
-         a0FmNa+WpDW5KFKRh0CuXma0LE7XvfhQqaEusixYmANwaI3vitLqXPU3jbDnzVtHqmDb
-         F12g==
-X-Gm-Message-State: AOJu0YyF5HFZMgiPfXJXJDdoEMcLhXmt1PxvddLXb5hx9TZ+TYzVdFEC
-	H8XuhC2kvscjT6e/Hq3WjXvcnd0/wbWpNehgo5FBt5tZKNLyQPd1BZ9D+zot6v243PXnzE6MFCr
-	40JqDvFOKLhCK0iQvWlM3pWdUpC+tI6Nqd9r9LWf/z8OJQaN8z+w=
-X-Google-Smtp-Source: AGHT+IEVZCYAAQG7nnH9roHg5Tyj8jl++9tnhsT+t3AfgbA2BKnr0VLls1SY6LHX7bDPAF2WAjTvShgUu929VcT/WkU=
-X-Received: by 2002:a05:6102:124f:b0:48c:368c:3673 with SMTP id
- ada2fe7eead31-48dae404fe1mr1824714137.28.1718345667916; Thu, 13 Jun 2024
- 23:14:27 -0700 (PDT)
+	s=arc-20240116; t=1718346577; c=relaxed/simple;
+	bh=7Fb4HhblMAWK93im0UHXFmK9tnAVMb5s/5k1r01r2Pw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MHcyLPTyfZBwbiR/R1kpEGaFiGMUYnsJQaXAWSqb3ekgGsz3UOKSQDYsKAQzSnS359cGL8beFcGObNnCDsiFfhPHQ4TR52rbjfNGe5CLl/9xC9y7INRyoludfKSCnvfZnCRcJtU8QIwMy/tJsv9aTaSH22u+kRwRXp15Nhx/DqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4W0q5v4Sxjz1X3dv;
+	Fri, 14 Jun 2024 14:25:39 +0800 (CST)
+Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2AD2A1A0188;
+	Fri, 14 Jun 2024 14:29:29 +0800 (CST)
+Received: from huawei.com (10.173.127.72) by canpemm500002.china.huawei.com
+ (7.192.104.244) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 14 Jun
+ 2024 14:29:28 +0800
+From: Miaohe Lin <linmiaohe@huawei.com>
+To: <stable@vger.kernel.org>
+CC: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>,
+	Yang Shi <shy828301@gmail.com>, Oscar Salvador <osalvador@suse.de>, Anshuman
+ Khandual <anshuman.khandual@arm.com>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Xu Yu <xuyu@linux.alibaba.com>, Andrew Morton
+	<akpm@linux-foundation.org>
+Subject: [PATCH 6.1.y] mm/huge_memory: don't unpoison huge_zero_page
+Date: Fri, 14 Jun 2024 14:25:33 +0800
+Message-ID: <20240614062533.2446395-1-linmiaohe@huawei.com>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <2024061359-shimmy-enable-1fbd@gregkh>
+References: <2024061359-shimmy-enable-1fbd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240613113227.389465891@linuxfoundation.org>
-In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 14 Jun 2024 11:44:16 +0530
-Message-ID: <CA+G9fYsPRCZY+n3iJfLj-KhWzNHaG7q8198F+okV7zKPR9NVjA@mail.gmail.com>
-Subject: Re: [PATCH 6.9 000/157] 6.9.5-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ canpemm500002.china.huawei.com (7.192.104.244)
 
-On Thu, 13 Jun 2024 at 17:18, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.9.5 release.
-> There are 157 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 15 Jun 2024 11:31:50 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.9.5-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.9.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+When I did memory failure tests recently, below panic occurs:
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+ kernel BUG at include/linux/mm.h:1135!
+ invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+ CPU: 9 PID: 137 Comm: kswapd1 Not tainted 6.9.0-rc4-00491-gd5ce28f156fe-dirty #14
+ RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
+ RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
+ RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
+ RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
+ RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
+ R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
+ R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
+ FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
+ Call Trace:
+  <TASK>
+  do_shrink_slab+0x14f/0x6a0
+  shrink_slab+0xca/0x8c0
+  shrink_node+0x2d0/0x7d0
+  balance_pgdat+0x33a/0x720
+  kswapd+0x1f3/0x410
+  kthread+0xd5/0x100
+  ret_from_fork+0x2f/0x50
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ Modules linked in: mce_inject hwpoison_inject
+ ---[ end trace 0000000000000000 ]---
+ RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
+ RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
+ RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
+ RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
+ RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
+ R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
+ R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
+ FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+The root cause is that HWPoison flag will be set for huge_zero_page
+without increasing the page refcnt.  But then unpoison_memory() will
+decrease the page refcnt unexpectedly as it appears like a successfully
+hwpoisoned page leading to VM_BUG_ON_PAGE(page_ref_count(page) == 0) when
+releasing huge_zero_page.
 
-## Build
-* kernel: 6.9.5-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.9.y
-* git commit: 3fc8ec8cbfb63bed37f4702410201c973a690450
-* git describe: v6.9.2-957-g3fc8ec8cbfb6
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.9.y/build/v6.9.2=
--957-g3fc8ec8cbfb6
+Skip unpoisoning huge_zero_page in unpoison_memory() to fix this issue.
+We're not prepared to unpoison huge_zero_page yet.
 
-## Test Regressions (compared to v6.9.2-797-g4aee3af1daf2)
+Link: https://lkml.kernel.org/r/20240516122608.22610-1-linmiaohe@huawei.com
+Fixes: 478d134e9506 ("mm/huge_memory: do not overkill when splitting huge_zero_page")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Yang Shi <shy828301@gmail.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Xu Yu <xuyu@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit fe6f86f4b40855a130a19aa589f9ba7f650423f4)
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+---
+ mm/memory-failure.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-## Metric Regressions (compared to v6.9.2-797-g4aee3af1daf2)
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index be58ce999259..d0e1106f223a 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2346,6 +2346,13 @@ int unpoison_memory(unsigned long pfn)
+ 		goto unlock_mutex;
+ 	}
+ 
++	if (is_huge_zero_page(page)) {
++		unpoison_pr_info("Unpoison: huge zero page is not supported %#lx\n",
++				 pfn, &unpoison_rs);
++		ret = -EOPNOTSUPP;
++		goto unlock_mutex;
++	}
++
+ 	if (!PageHWPoison(p)) {
+ 		unpoison_pr_info("Unpoison: Page was already unpoisoned %#lx\n",
+ 				 pfn, &unpoison_rs);
+-- 
+2.33.0
 
-## Test Fixes (compared to v6.9.2-797-g4aee3af1daf2)
-
-## Metric Fixes (compared to v6.9.2-797-g4aee3af1daf2)
-
-## Test result summary
-total: 163101, pass: 141914, fail: 2059, skip: 19128, xfail: 0
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 129 total, 129 passed, 0 failed
-* arm64: 38 total, 38 passed, 0 failed
-* i386: 29 total, 29 passed, 0 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 34 total, 34 passed, 0 failed
-* riscv: 17 total, 17 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 33 total, 33 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
