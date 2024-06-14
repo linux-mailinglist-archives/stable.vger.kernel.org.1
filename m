@@ -1,114 +1,121 @@
-Return-Path: <stable+bounces-52205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84BBF908D53
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 16:24:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A820C908D71
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 16:33:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3725B28AAE
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 14:24:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23E87287F35
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 14:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7E5C152;
-	Fri, 14 Jun 2024 14:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02000F4EE;
+	Fri, 14 Jun 2024 14:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UkaHwEx0"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Vog70K8s"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2788C2C6
-	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 14:23:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8B6D51C
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 14:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718374999; cv=none; b=nM5NublcqcXP88WXn1S2o4jVPR5v0ryRJZMic7ZBVenUKi4xylA4PnQoWHSBGHLpUK+gYVSk8znUpOSNACqlz/+M/dGB7qiVtEaJSrU8tAo4S7sAUqumvL307MXIjoXAZJ73+a9eRjLjIeXbHXVX6YBIeR3vk5qNYyDOUFQ0gdo=
+	t=1718375572; cv=none; b=qwU8mciKgxriDGFRmoEWFZVl5AkLIqaPzFC94sRWAvI2Wuxd0eT26H55b4uatEB8AZb02/xYNtsAsFFe+1eEakxzmcpP56CuG52vKYS3QW9jjXBpXOkPA0NWHnMalWOGhGjP3xSwLjIcSccnl2KSfbKgRurJUUdFwhSh+lE9Efk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718374999; c=relaxed/simple;
-	bh=WKTZfkq4hlNpel0YHX7G79geSr2AykTXKrvuJ0NvrrI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PfKbpsZJ4A2YASSTbu6REFNC3kUbOyRYbfAXXHfcDt+O/dxk8PsrlrYZBCyZkJKTotlMcCghP/yzpksCRXQfC4huxsr71OvrMHB2FNfAB0IQidxNMRNv8VHTBKlAc4FGy4TJGANrt5uy3bf487lDTZIay0hIpLfMVEC93dfzbyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UkaHwEx0; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718374998; x=1749910998;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=WKTZfkq4hlNpel0YHX7G79geSr2AykTXKrvuJ0NvrrI=;
-  b=UkaHwEx0+bKNTsC9o0tdG73yX+XbEIYI0fRifluvy8o71Bu1B0SFTWm5
-   dZZ2zdYpghyQHkxbfPy5ngncPAFSSgWbeQ5uCiN9LIowH4BP2kvWBZj7q
-   uZk8mN7BB2G1ItCWMW5hOJp31M32EpxFGwV/1OmHoScJcxwZWLDd9VUHP
-   uFBeFK6o9GQMnMnGjCDrk+D3R1Wjc+huGOlSZBLQKvF5315iFhg0DdU3e
-   6HdcAdecK8yh23kd7B0fPLnJb7yS2S/1F1wweZ3/w9dkz57Y9Y30cqN2l
-   k1hT/mgF8DoexBhdw7DzL9OWyIPZg9iyqLMkXDdvnljb+Jx+DTGpDhPxs
-   A==;
-X-CSE-ConnectionGUID: EAhuvh02Q+m0enFjnD5scA==
-X-CSE-MsgGUID: RRKbfUJmSCi5yEaTMfSEyg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11103"; a="15387295"
-X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; 
-   d="scan'208";a="15387295"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 07:23:17 -0700
-X-CSE-ConnectionGUID: FLvJheGrRyG+AzbwYKmxqA==
-X-CSE-MsgGUID: +FRZ0bViQAei76umXpESXg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; 
-   d="scan'208";a="41020131"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.221])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 07:23:15 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: jani.nikula@intel.com,
-	ville.syrjala@linux.intel.com,
+	s=arc-20240116; t=1718375572; c=relaxed/simple;
+	bh=JGJBAZFgEDVwsfbp8Nm4QSiGVzE0S38UYkGCzfduj4o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Dpht6jg4t/WC8R9CM0F2XlpD4KncIx0gx9h7mijSobLj6x/NfdHIYSXtdMvMNgkZzBHeNjeq5gZBcw+R4mcMO4q6XLtdqBh733A0xq964L2YKHc8PSUAXY3iQL0XYTBRRiqdpQHxAxnpfZuwg38Za88n1FITuBQa1am9L74lv+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Vog70K8s; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: akpm@linux-foundation.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1718375567;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oKGgulHI+TDI8kNJgxolYwa/zBW01wITWhncfioM0zI=;
+	b=Vog70K8se6pQCOes6SgIF2PL/qN2bK1cf5TB6JsDLVUeDtIz0ZYJD7dEo85/J7yLYLznaJ
+	HTGZZGW3DEcq7zn/muU05dwd7FZkMQtMJ3uq92PJUaAEKp5UVCENwCYuhM0KVF838BPeId
+	7uO4pMlYht90PiYbs2F2VlyRkJ5YusE=
+X-Envelope-To: andreyknvl@gmail.com
+X-Envelope-To: elver@google.com
+X-Envelope-To: glider@google.com
+X-Envelope-To: dvyukov@google.com
+X-Envelope-To: ryabinin.a.a@gmail.com
+X-Envelope-To: kasan-dev@googlegroups.com
+X-Envelope-To: linux-mm@kvack.org
+X-Envelope-To: spender@grsecurity.net
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Envelope-To: stable@vger.kernel.org
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: andrey.konovalov@linux.dev
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>,
+	Marco Elver <elver@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org,
+	Brad Spengler <spender@grsecurity.net>,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] drm/i915/mso: using joiner is not possible with eDP MSO
-Date: Fri, 14 Jun 2024 17:23:11 +0300
-Message-Id: <20240614142311.589089-1-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.39.2
+Subject: [PATCH v2] kasan: fix bad call to unpoison_slab_object
+Date: Fri, 14 Jun 2024 16:32:38 +0200
+Message-Id: <20240614143238.60323-1-andrey.konovalov@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-It's not possible to use the joiner at the same time with eDP MSO. When
-a panel needs MSO, it's not optional, so MSO trumps joiner.
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-v3: Only change intel_dp_has_joiner(), leave debugfs alone (Ville)
+Commit 29d7355a9d05 ("kasan: save alloc stack traces for mempool") messed
+up one of the calls to unpoison_slab_object: the last two arguments are
+supposed to be GFP flags and whether to init the object memory.
 
+Fix the call.
+
+Without this fix, __kasan_mempool_unpoison_object provides the object's
+size as GFP flags to unpoison_slab_object, which can cause LOCKDEP
+reports (and probably other issues).
+
+Fixes: 29d7355a9d05 ("kasan: save alloc stack traces for mempool")
+Reported-by: Brad Spengler <spender@grsecurity.net>
 Cc: stable@vger.kernel.org
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1668
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Acked-by: Marco Elver <elver@google.com>
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
 
 ---
 
-Just the minimal fix for starters to move things along.
+Changes v1->v2:
+- Fix typo in commit message.
+- CC stable.
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ mm/kasan/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 9a9bb0f5b7fe..ab33c9de393a 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -465,6 +465,10 @@ bool intel_dp_has_joiner(struct intel_dp *intel_dp)
- 	struct intel_encoder *encoder = &intel_dig_port->base;
- 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+index e7c9a4dc89f8..85e7c6b4575c 100644
+--- a/mm/kasan/common.c
++++ b/mm/kasan/common.c
+@@ -532,7 +532,7 @@ void __kasan_mempool_unpoison_object(void *ptr, size_t size, unsigned long ip)
+ 		return;
  
-+	/* eDP MSO is not compatible with joiner */
-+	if (intel_dp->mso_link_count)
-+		return false;
-+
- 	return DISPLAY_VER(dev_priv) >= 12 ||
- 		(DISPLAY_VER(dev_priv) == 11 &&
- 		 encoder->port != PORT_A);
+ 	/* Unpoison the object and save alloc info for non-kmalloc() allocations. */
+-	unpoison_slab_object(slab->slab_cache, ptr, size, flags);
++	unpoison_slab_object(slab->slab_cache, ptr, flags, false);
+ 
+ 	/* Poison the redzone and save alloc info for kmalloc() allocations. */
+ 	if (is_kmalloc_cache(slab->slab_cache))
 -- 
-2.39.2
+2.25.1
 
 
