@@ -1,135 +1,255 @@
-Return-Path: <stable+bounces-52179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F67A90897B
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 12:16:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B7F908988
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 12:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37D331F29F9C
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 10:16:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2D68289423
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 10:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CC219306F;
-	Fri, 14 Jun 2024 10:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950211946A6;
+	Fri, 14 Jun 2024 10:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ch9mrigQ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="EWBbGW1w"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03FF7E574
-	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 10:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E061946B7
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 10:17:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718360177; cv=none; b=QDEbSEwAn/UQzNvE/lIx51a8Xj0/RUyMlnsKQOV/kWQaf7FxELC7WsFWRNGfJNqUJPQj8S6ELVcxi3VlRYUMWHDRq4GTJDcGN08sufqsAo1RYDiAIJe0mjSKNj/4X+a2Xldc5WtfaUNhpq4FebOrqZMMjA4g8ZTO3deGoqoQxec=
+	t=1718360270; cv=none; b=TrNWwQP08m5Xba7B9MWPO0UrgeuOQ3iTsdgJjnKj9/kKHSX09cauXhPvFi+RRpZgQaZsiWv1gL0xHJlsRkoLPyjM8m7HtuYJfoiaYNaB2aOMMuavc4ntmzsbpa1OJ5YNB9+GedWvx0kWbGtjU4TAl20R/GCgCMY/tnWfHTmxtuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718360177; c=relaxed/simple;
-	bh=/7RCYWGNPYz/U2WZNuk6anoe7bqzGeS+GHcv0XxCLlo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Tm+txfbpJEPBuC6pi3A0gaL8iHISb3u5Ig2Ut4DwUVB8c62EZvs34FT7M7A72epRHNbRT7ePZv3d0BwVs5OxpFglCwFciPL/n3NvPZwbzxZzSQ8EkTIE+MOiG+/zgUB8I8mW6awqqjXBAVgbt0stH5a3Lq/HLmEv1Fvatg67Pkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ch9mrigQ; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718360176; x=1749896176;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=/7RCYWGNPYz/U2WZNuk6anoe7bqzGeS+GHcv0XxCLlo=;
-  b=Ch9mrigQ/LNpILUh5cDuhZOVCtYjmGwL2zX8L9TEHYApZ3XS+AZm7o1y
-   //Q+qdhtPQLqEBFS56d2vuESQY28mLgEzCnRdQfII7RmnPJoDT6ty5g0F
-   BTYhpNgg9oGaxklLs4rea6aDeB6J7tUtxaYrUy5k9trOF6R1pLdzALWSg
-   uRzPtSeinhf4tD5OQGmYZa1WBUo2akl9CzLMC7Bdbm0d5vluRIVKaIdI7
-   IHuLb2F003L6idrAclvcqEOXwT9vB66uUr3DiWJ7ncAKBC2M0WRIwLTgc
-   kW7lpY2QXUCObPSLx05FN5aOCE+x9FgC4khyUm5OYDS6b/bo2BlIMUByb
-   g==;
-X-CSE-ConnectionGUID: o9EbB1cJStOytHZ0zJGntA==
-X-CSE-MsgGUID: jpojpf93R5aF6dRCSjqp3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11102"; a="25814263"
-X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; 
-   d="scan'208";a="25814263"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 03:16:15 -0700
-X-CSE-ConnectionGUID: D1fv2w0qRI2fOR/bsGO2pA==
-X-CSE-MsgGUID: PLu5+aGXT8eioJAnVk6o5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; 
-   d="scan'208";a="63658294"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.221])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 03:16:12 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org
-Cc: jani.nikula@intel.com,
-	ville.syrjala@linux.intel.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/2] drm/i915/mso: using joiner is not possible with eDP MSO
-Date: Fri, 14 Jun 2024 13:16:03 +0300
-Message-Id: <137a010815ab8ba8f266fea7a85fe14d7bfb74cd.1718360103.git.jani.nikula@intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <cover.1718360103.git.jani.nikula@intel.com>
-References: <cover.1718360103.git.jani.nikula@intel.com>
+	s=arc-20240116; t=1718360270; c=relaxed/simple;
+	bh=Eco+uTFOd7T/xAKCatko4+DsGFdalTigAJ8KBz1OuWs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BC6byJxAoBl6cFB1DZ4ik9yOI++NiDeYairzBA6Ca5HnyrQgubxxK7+WEVwSFnXjjWumkbl9oKuvkq296N/04sbwbZobe57LLw6N/DI/hB/uQcOhp9OBIhMMfRAHMldfypCUSVN1FP1oayUihwq3WdyTRejR7hEYG4X3nHNefhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=EWBbGW1w; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-4e8a6159479so689913e0c.3
+        for <stable@vger.kernel.org>; Fri, 14 Jun 2024 03:17:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718360268; x=1718965068; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kcR5jrPv9if9D/VgKJ9lEznZAKrGO1SQqzzBwmeikFc=;
+        b=EWBbGW1wjsRS5NgoRCfCYAgpKRMDU10c+lanVqgarCYniAG7KHrmJ/3Xph2CVzHlQ7
+         YqERuygpyV720qDqyV11GIeyVvdbw3+aw6ap/3Vp5d8UvbxEQNtiMZh3K/4o9NG21ev/
+         a2syljWZ/ynrl7m+vlCtdMRIFWw8fVuGjkugpiCp558kC+s4Zbs7tqv8DJZCYJWqusf1
+         IZ/AVA8lMFpix7Y2vqfqgf/6p9RJhK2BoU0u+hSKZ1L+4P4y+aN5J5l6JBJT50vuuzY0
+         oQWPemlgWqpG3MvV0zT3lD3D1rnjA6VL764Evgjq7Aj6qM/a0FtXrwpZCE2OTuOrRa6D
+         UMtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718360268; x=1718965068;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kcR5jrPv9if9D/VgKJ9lEznZAKrGO1SQqzzBwmeikFc=;
+        b=tAvPBY8Z4xvMq0D5OMVl7o/Dxt+KPTAb8NIhz/DtD8MV0GNantAJnfs/9mKRb55QK8
+         aZrqSffgte+WMZOIydx56mlNasv+UN8XBttmhJHsV8A3gsS1t5L4VLp87s6LuRxocGhJ
+         kFlS7X+R7/UpLkzOgPMZ5n/4idjcB2ct5zdH0bvWdTVfter+SddNI97srltj5tqldhON
+         AWKnHsCj3kJnaPmA1LfxeY2O7UzaXVBMYyWxrocADCkcygbaLdaURv1ZJJTSa6bhUEZc
+         POcDrAtn7ZzwXIoxymUq3zKLOh8yeJL5APz4dwPONdCZYJE9+8AQVy1nc0Q++Igbq3gT
+         BKtw==
+X-Gm-Message-State: AOJu0YxpcJf79D9tBraULH9XERnP27/mFCmpEZ8V4IjY2zCQudcb0j+/
+	6fzv0pA1lV4w3yx2EFuHhbUAXOy6q6W3tj9I/Qd8qIbqGm7nJNmnMfOiAAT2Fa3dC5Smhh2txSA
+	3Zl9WzS5FIMO+MzbOaAIj5+UDa6cIPrpjPMBmHw==
+X-Google-Smtp-Source: AGHT+IGfhbk9BfzTUsPQeOVCsYK0iSSQsgLO0cPRcXSDGtgPfz427B2/nASsXIWVdwFXCzmxufZkQEEDdmFmrGc4ArI=
+X-Received: by 2002:a05:6122:2a02:b0:4ec:fc54:9f86 with SMTP id
+ 71dfb90a1353d-4ee3ed7154bmr2990174e0c.5.1718360267647; Fri, 14 Jun 2024
+ 03:17:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Transfer-Encoding: 8bit
+References: <20240613113214.134806994@linuxfoundation.org>
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 14 Jun 2024 15:47:35 +0530
+Message-ID: <CA+G9fYsheVmFnvf=c7dXWeXAbqgDL4E2JcLszx3XB-t9v4Z5MQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/85] 6.1.94-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-It's not possible to use the joiner at the same time with eDP MSO. When
-a panel needs MSO, it's not optional, so MSO trumps joiner.
+On Thu, 13 Jun 2024 at 18:18, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.94 release.
+> There are 85 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 15 Jun 2024 11:31:50 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.94-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-While just reporting false for intel_dp_has_joiner() should be
-sufficient, also skip creation of the joiner force enable debugfs to
-better handle this in testing.
 
-Cc: stable@vger.kernel.org
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1668
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- drivers/gpu/drm/i915/display/intel_display_debugfs.c | 8 ++++++--
- drivers/gpu/drm/i915/display/intel_dp.c              | 4 ++++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_debugfs.c b/drivers/gpu/drm/i915/display/intel_display_debugfs.c
-index 91757fed9c6d..5eb31404436c 100644
---- a/drivers/gpu/drm/i915/display/intel_display_debugfs.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_debugfs.c
-@@ -1546,8 +1546,12 @@ void intel_connector_debugfs_add(struct intel_connector *connector)
- 	if (DISPLAY_VER(i915) >= 11 &&
- 	    (connector_type == DRM_MODE_CONNECTOR_DisplayPort ||
- 	     connector_type == DRM_MODE_CONNECTOR_eDP)) {
--		debugfs_create_bool("i915_bigjoiner_force_enable", 0644, root,
--				    &connector->force_bigjoiner_enable);
-+		struct intel_dp *intel_dp = intel_attached_dp(connector);
-+
-+		/* eDP MSO is not compatible with joiner */
-+		if (!intel_dp->mso_link_count)
-+			debugfs_create_bool("i915_bigjoiner_force_enable", 0644, root,
-+					    &connector->force_bigjoiner_enable);
- 	}
- 
- 	if (connector_type == DRM_MODE_CONNECTOR_DSI ||
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 9a9bb0f5b7fe..ab33c9de393a 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -465,6 +465,10 @@ bool intel_dp_has_joiner(struct intel_dp *intel_dp)
- 	struct intel_encoder *encoder = &intel_dig_port->base;
- 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
- 
-+	/* eDP MSO is not compatible with joiner */
-+	if (intel_dp->mso_link_count)
-+		return false;
-+
- 	return DISPLAY_VER(dev_priv) >= 12 ||
- 		(DISPLAY_VER(dev_priv) == 11 &&
- 		 encoder->port != PORT_A);
--- 
-2.39.2
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+## Build
+* kernel: 6.1.94-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: 0669369075405ff8a9c8fdbcfdad1c10babf44ad
+* git describe: v6.1.92-558-g066936907540
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.9=
+2-558-g066936907540
+
+## Test Regressions (compared to v6.1.92-472-gae9f2a70d69e)
+
+## Metric Regressions (compared to v6.1.92-472-gae9f2a70d69e)
+
+## Test Fixes (compared to v6.1.92-472-gae9f2a70d69e)
+
+## Metric Fixes (compared to v6.1.92-472-gae9f2a70d69e)
+
+## Test result summary
+total: 133520, pass: 114013, fail: 2055, skip: 17275, xfail: 177
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 139 total, 139 passed, 0 failed
+* arm64: 41 total, 41 passed, 0 failed
+* i386: 31 total, 31 passed, 0 failed
+* mips: 26 total, 26 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 36 passed, 0 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 16 total, 16 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 37 total, 37 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
