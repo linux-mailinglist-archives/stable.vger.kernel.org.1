@@ -1,108 +1,93 @@
-Return-Path: <stable+bounces-52164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8E169086BD
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 10:51:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E158B9086CE
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 10:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC07D1C21AD5
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 08:51:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81EF428731D
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 08:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249CA190470;
-	Fri, 14 Jun 2024 08:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3111922C0;
+	Fri, 14 Jun 2024 08:52:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66AB187546
-	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 08:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69AD188CC1
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 08:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718355069; cv=none; b=rEvOpt7JKWlbKcuN+8OvP8ZQnAzBSIwwl/Y+tp00xyEB+iPUj4myAQzs1aEqY9SJOc6Tqc+NzpNjWyMviheo/ANy9ukfZmyxDy/n04wjBzze/NFa1Xq7hu7BYd0myuuxRJc8NXT+NxJUxyM/D00HCDsQ2rUSxVk5YJr0agGptNo=
+	t=1718355148; cv=none; b=XF/ZQw/sEsb/Nnh8SMSH1ozCJWHdl0XiiXGqGnVvRP3Wurbv3uujtZJBbvnhqDDo+qiyWdbD8Vyn7Rzjt207xahbQWI81iKz/9kS83imN4zaH/XObFwHrCjIuvkHwkRjmUq4jiiMcEHHKlLjwSBnDENN1KJnxS1Uneasn2+OUaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718355069; c=relaxed/simple;
-	bh=pYD9i/lxDw5B8ce15enfoVfcDt2/Cm5hQueyX/ZzqqM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gJc0lixzdp+GwiXR3wfrd1SEvvQKbLFpXhnPec6zwOKLY7LEBP2rEgJW0DNk0bXEV8pY78XcRQS0Ws7zbkblSlO3peBYQ2EjG+R6zjZ2I0ZW4e85aUQFCydkrU0AH4bRTmISepCJWoYe5dzhLWBI4QXo/N5EFPlclgnh/yZl53E=
+	s=arc-20240116; t=1718355148; c=relaxed/simple;
+	bh=ZKMpzDXUK4fhe7o6fH8FbyHCJ5II9HYO0ilqaiwCHLg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=m4liPMfj/Lp40lDRqw4y4F12vyVCIhRpieVZlmpkZQyjOCSZGops/mPE/LlY3BSUj5B2ja7qeNsQMF8Y8nmiUVNmNNJD3L669VLN3Blv1/oB4CkK2KLScNJlxnwYqCp/vS2a8BK/Us2hSZlzcDpwyiHta/yOZQXzz6SsCXuLeuo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
 From: Sam James <sam@gentoo.org>
-To: stable@vger.kernel.org
-Cc: Greg KH <gregkh@linuxfoundation.org>,
-	leah.rumancik@gmail.com,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Sam James <sam@gentoo.org>
-Subject: [PATCH 6.6] Revert "fork: defer linking file vma until vma is fully initialized"
-Date: Fri, 14 Jun 2024 09:50:59 +0100
-Message-ID: <20240614085102.3198934-1-sam@gentoo.org>
-X-Mailer: git-send-email 2.45.2
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: leah.rumancik@gmail.com,  stable@vger.kernel.org,  Miaohe Lin
+ <linmiaohe@huawei.com>
+Subject: Re: [PATCH 6.6] backport: fix 6.6 backport of changes to fork
+In-Reply-To: <2024061400-squash-yodel-4f49@gregkh> (Greg KH's message of "Fri,
+	14 Jun 2024 08:41:23 +0200")
+Organization: Gentoo
+References: <CACzhbgRjDNkpaQOYsUN+v+jn3E2DVxX0Q4WuQWNjfwEx4Fps6g@mail.gmail.com>
+	<87zfro3yy5.fsf@gentoo.org> <2024061400-squash-yodel-4f49@gregkh>
+Date: Fri, 14 Jun 2024 09:52:21 +0100
+Message-ID: <87tthv52ka.fsf@gentoo.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-This reverts commit cec11fa2eb512ebe3a459c185f4aca1d44059bbf.
+--=-=-=
+Content-Type: text/plain
 
-The backport is incomplete and causes xfstests failures. The consequences
-of the incomplete backport seem worse than the original issue, so pick
-the lesser evil and revert until a full backport is ready.
+Greg KH <gregkh@linuxfoundation.org> writes:
 
-Link: https://lore.kernel.org/stable/20240604004751.3883227-1-leah.rumancik@gmail.com/
-Reported-by: Leah Rumancik <leah.rumancik@gmail.com>
-Signed-off-by: Sam James <sam@gentoo.org>
----
- kernel/fork.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+> On Fri, Jun 14, 2024 at 05:55:46AM +0100, Sam James wrote:
+>> Is it worth reverting the original bad backport for now, given it causes
+>> xfstests failures?
+>
+> Sounds like a good idea to me, anyone want to submit the revert so we
+> can queue it up?
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 2eab916b504bf..177ce7438db6b 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -727,15 +727,6 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
- 		} else if (anon_vma_fork(tmp, mpnt))
- 			goto fail_nomem_anon_vma_fork;
- 		vm_flags_clear(tmp, VM_LOCKED_MASK);
--		/*
--		 * Copy/update hugetlb private vma information.
--		 */
--		if (is_vm_hugetlb_page(tmp))
--			hugetlb_dup_vma_private(tmp);
--
--		if (tmp->vm_ops && tmp->vm_ops->open)
--			tmp->vm_ops->open(tmp);
--
- 		file = tmp->vm_file;
- 		if (file) {
- 			struct address_space *mapping = file->f_mapping;
-@@ -752,6 +743,12 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
- 			i_mmap_unlock_write(mapping);
- 		}
- 
-+		/*
-+		 * Copy/update hugetlb private vma information.
-+		 */
-+		if (is_vm_hugetlb_page(tmp))
-+			hugetlb_dup_vma_private(tmp);
-+
- 		/* Link the vma into the MT */
- 		if (vma_iter_bulk_store(&vmi, tmp))
- 			goto fail_nomem_vmi_store;
-@@ -760,6 +757,9 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
- 		if (!(tmp->vm_flags & VM_WIPEONFORK))
- 			retval = copy_page_range(tmp, mpnt);
- 
-+		if (tmp->vm_ops && tmp->vm_ops->open)
-+			tmp->vm_ops->open(tmp);
-+
- 		if (retval)
- 			goto loop_out;
- 	}
--- 
-2.45.2
+Thanks for the nudge, I wasn't planning on but why not?
 
+6.1: https://lore.kernel.org/stable/20240614084038.3133260-1-sam@gentoo.org/T/#u
+6.6: https://lore.kernel.org/stable/20240614085102.3198934-1-sam@gentoo.org/T/#u
+
+Hope I've done it right. Cheers.
+
+>
+> thanks,
+>
+> greg k-h
+
+thanks,
+sam
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iOUEARYKAI0WIQQlpruI3Zt2TGtVQcJzhAn1IN+RkAUCZmwExl8UgAAAAAAuAChp
+c3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0MjVB
+NkJCODhERDlCNzY0QzZCNTU0MUMyNzM4NDA5RjUyMERGOTE5MA8cc2FtQGdlbnRv
+by5vcmcACgkQc4QJ9SDfkZBrEwEA4tejq0hMk62JIaLWqoO0H9PLf5No23qhYlka
+xc0fEGABAJwEXMXtfYGuugjpcSwgYoLtZWOpnJLc5c/pritLN9oM
+=aoG9
+-----END PGP SIGNATURE-----
+--=-=-=--
 
