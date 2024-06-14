@@ -1,155 +1,134 @@
-Return-Path: <stable+bounces-52177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965689087E1
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 11:46:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F67A90897B
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 12:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 417F01F2837C
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 09:46:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37D331F29F9C
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 10:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1996718413A;
-	Fri, 14 Jun 2024 09:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CC219306F;
+	Fri, 14 Jun 2024 10:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ch9mrigQ"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DCE19149D
-	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 09:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03FF7E574
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 10:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718358332; cv=none; b=fYDdbdDIiPWZQyYCpP71OSFBmMDh+D/E/rrRl+V3tzTmHRqKKNxcStfXrkFwbnTPgFkvvLeBelB99G4b8lvPNk70ibOJtJtKyTDFgdw+y4IIhZvDM6JlWBz1hKx2I3x2BO2UXTFqb4IazvuzWsqrjaKQjR/183Px+nnKTOdFZR0=
+	t=1718360177; cv=none; b=QDEbSEwAn/UQzNvE/lIx51a8Xj0/RUyMlnsKQOV/kWQaf7FxELC7WsFWRNGfJNqUJPQj8S6ELVcxi3VlRYUMWHDRq4GTJDcGN08sufqsAo1RYDiAIJe0mjSKNj/4X+a2Xldc5WtfaUNhpq4FebOrqZMMjA4g8ZTO3deGoqoQxec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718358332; c=relaxed/simple;
-	bh=UGXeGLWZTsXFSCEt0SvKoZJVAG3H9kZuD88qPQGsr9E=;
+	s=arc-20240116; t=1718360177; c=relaxed/simple;
+	bh=/7RCYWGNPYz/U2WZNuk6anoe7bqzGeS+GHcv0XxCLlo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=h16+jytx6+GMIvHdBfsrPq+5jkloPgV0fHNMAZBTDnUwMA9pr40lgIjbWksrq0QOBawDmkuPntvETkU3TaNdng/ycfY4WkmP//d3+EokCwPONwEn6yXsGYTM6ysXb6BKuGbyRIb2yTECEeShqNP9o7qcRxeHLaIMwcMXkLghwz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sI3Ul-0000Su-E4; Fri, 14 Jun 2024 11:45:19 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sI3Uj-002Elw-Ox; Fri, 14 Jun 2024 11:45:17 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sI3Uj-006DOn-2E;
-	Fri, 14 Jun 2024 11:45:17 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	stable@vger.kernel.org,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH net v2 2/2] net: phy: dp83tg720: get master/slave configuration in link down state
-Date: Fri, 14 Jun 2024 11:45:16 +0200
-Message-Id: <20240614094516.1481231-2-o.rempel@pengutronix.de>
+	 MIME-Version; b=Tm+txfbpJEPBuC6pi3A0gaL8iHISb3u5Ig2Ut4DwUVB8c62EZvs34FT7M7A72epRHNbRT7ePZv3d0BwVs5OxpFglCwFciPL/n3NvPZwbzxZzSQ8EkTIE+MOiG+/zgUB8I8mW6awqqjXBAVgbt0stH5a3Lq/HLmEv1Fvatg67Pkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ch9mrigQ; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718360176; x=1749896176;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=/7RCYWGNPYz/U2WZNuk6anoe7bqzGeS+GHcv0XxCLlo=;
+  b=Ch9mrigQ/LNpILUh5cDuhZOVCtYjmGwL2zX8L9TEHYApZ3XS+AZm7o1y
+   //Q+qdhtPQLqEBFS56d2vuESQY28mLgEzCnRdQfII7RmnPJoDT6ty5g0F
+   BTYhpNgg9oGaxklLs4rea6aDeB6J7tUtxaYrUy5k9trOF6R1pLdzALWSg
+   uRzPtSeinhf4tD5OQGmYZa1WBUo2akl9CzLMC7Bdbm0d5vluRIVKaIdI7
+   IHuLb2F003L6idrAclvcqEOXwT9vB66uUr3DiWJ7ncAKBC2M0WRIwLTgc
+   kW7lpY2QXUCObPSLx05FN5aOCE+x9FgC4khyUm5OYDS6b/bo2BlIMUByb
+   g==;
+X-CSE-ConnectionGUID: o9EbB1cJStOytHZ0zJGntA==
+X-CSE-MsgGUID: jpojpf93R5aF6dRCSjqp3g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11102"; a="25814263"
+X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; 
+   d="scan'208";a="25814263"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 03:16:15 -0700
+X-CSE-ConnectionGUID: D1fv2w0qRI2fOR/bsGO2pA==
+X-CSE-MsgGUID: PLu5+aGXT8eioJAnVk6o5A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; 
+   d="scan'208";a="63658294"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.221])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 03:16:12 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org
+Cc: jani.nikula@intel.com,
+	ville.syrjala@linux.intel.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] drm/i915/mso: using joiner is not possible with eDP MSO
+Date: Fri, 14 Jun 2024 13:16:03 +0300
+Message-Id: <137a010815ab8ba8f266fea7a85fe14d7bfb74cd.1718360103.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240614094516.1481231-1-o.rempel@pengutronix.de>
-References: <20240614094516.1481231-1-o.rempel@pengutronix.de>
+In-Reply-To: <cover.1718360103.git.jani.nikula@intel.com>
+References: <cover.1718360103.git.jani.nikula@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Get master/slave configuration for initial system start with the link in
-down state. This ensures ethtool shows current configuration.  Also
-fixes link reconfiguration with ethtool while in down state, preventing
-ethtool from displaying outdated configuration.
+It's not possible to use the joiner at the same time with eDP MSO. When
+a panel needs MSO, it's not optional, so MSO trumps joiner.
 
-Even though dp83tg720_config_init() is executed periodically as long as
-the link is in admin up state but no carrier is detected, this is not
-sufficient for the link in admin down state where
-dp83tg720_read_status() is not periodically executed. To cover this
-case, we need an extra read role configuration in
-dp83tg720_config_aneg().
+While just reporting false for intel_dp_has_joiner() should be
+sufficient, also skip creation of the joiner force enable debugfs to
+better handle this in testing.
 
-Fixes: cb80ee2f9bee1 ("net: phy: Add support for the DP83TG720S Ethernet PHY")
 Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1668
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 ---
-changes v2:
-- add genphy_c45_pma_baset1_read_master_slave() to .config_aneg
-- add comments
----
- drivers/net/phy/dp83tg720.c | 24 +++++++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display_debugfs.c | 8 ++++++--
+ drivers/gpu/drm/i915/display/intel_dp.c              | 4 ++++
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/dp83tg720.c b/drivers/net/phy/dp83tg720.c
-index 1186dfc70fb3c..c706429b225a2 100644
---- a/drivers/net/phy/dp83tg720.c
-+++ b/drivers/net/phy/dp83tg720.c
-@@ -36,11 +36,20 @@
- 
- static int dp83tg720_config_aneg(struct phy_device *phydev)
- {
-+	int ret;
+diff --git a/drivers/gpu/drm/i915/display/intel_display_debugfs.c b/drivers/gpu/drm/i915/display/intel_display_debugfs.c
+index 91757fed9c6d..5eb31404436c 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_debugfs.c
++++ b/drivers/gpu/drm/i915/display/intel_display_debugfs.c
+@@ -1546,8 +1546,12 @@ void intel_connector_debugfs_add(struct intel_connector *connector)
+ 	if (DISPLAY_VER(i915) >= 11 &&
+ 	    (connector_type == DRM_MODE_CONNECTOR_DisplayPort ||
+ 	     connector_type == DRM_MODE_CONNECTOR_eDP)) {
+-		debugfs_create_bool("i915_bigjoiner_force_enable", 0644, root,
+-				    &connector->force_bigjoiner_enable);
++		struct intel_dp *intel_dp = intel_attached_dp(connector);
 +
- 	/* Autoneg is not supported and this PHY supports only one speed.
- 	 * We need to care only about master/slave configuration if it was
- 	 * changed by user.
- 	 */
--	return genphy_c45_pma_baset1_setup_master_slave(phydev);
-+	ret = genphy_c45_pma_baset1_setup_master_slave(phydev);
-+	if (ret)
-+		return ret;
++		/* eDP MSO is not compatible with joiner */
++		if (!intel_dp->mso_link_count)
++			debugfs_create_bool("i915_bigjoiner_force_enable", 0644, root,
++					    &connector->force_bigjoiner_enable);
+ 	}
+ 
+ 	if (connector_type == DRM_MODE_CONNECTOR_DSI ||
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 9a9bb0f5b7fe..ab33c9de393a 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -465,6 +465,10 @@ bool intel_dp_has_joiner(struct intel_dp *intel_dp)
+ 	struct intel_encoder *encoder = &intel_dig_port->base;
+ 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+ 
++	/* eDP MSO is not compatible with joiner */
++	if (intel_dp->mso_link_count)
++		return false;
 +
-+	/* Re-read role configuration to make changes visible even if
-+	 * the link is in administrative down state.
-+	 */
-+	return genphy_c45_pma_baset1_read_master_slave(phydev);
- }
- 
- static int dp83tg720_read_status(struct phy_device *phydev)
-@@ -69,6 +78,8 @@ static int dp83tg720_read_status(struct phy_device *phydev)
- 			return ret;
- 
- 		/* After HW reset we need to restore master/slave configuration.
-+		 * genphy_c45_pma_baset1_read_master_slave() call will be done
-+		 * by the dp83tg720_config_aneg() function.
- 		 */
- 		ret = dp83tg720_config_aneg(phydev);
- 		if (ret)
-@@ -168,8 +179,15 @@ static int dp83tg720_config_init(struct phy_device *phydev)
- 	/* In case the PHY is bootstrapped in managed mode, we need to
- 	 * wake it.
- 	 */
--	return phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TG720S_LPS_CFG3,
--			     DP83TG720S_LPS_CFG3_PWR_MODE_0);
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TG720S_LPS_CFG3,
-+			    DP83TG720S_LPS_CFG3_PWR_MODE_0);
-+	if (ret)
-+		return ret;
-+
-+	/* Make role configuration visible for ethtool on init and after
-+	 * rest.
-+	 */
-+	return genphy_c45_pma_baset1_read_master_slave(phydev);
- }
- 
- static struct phy_driver dp83tg720_driver[] = {
+ 	return DISPLAY_VER(dev_priv) >= 12 ||
+ 		(DISPLAY_VER(dev_priv) == 11 &&
+ 		 encoder->port != PORT_A);
 -- 
 2.39.2
 
