@@ -1,222 +1,130 @@
-Return-Path: <stable+bounces-52234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8A69091FF
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 19:49:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8C2909226
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 20:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4352C1F240FB
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 17:49:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51050283FAB
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 18:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC91C19EED1;
-	Fri, 14 Jun 2024 17:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E8BF19B3D2;
+	Fri, 14 Jun 2024 18:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AVfKxho2"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="b/DMhRYl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813FD26ACC
-	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 17:48:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862A817FAAE
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 18:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718387325; cv=none; b=Xju++R5yGJbXIgi94LVchbD/PQO70oIW9otJ5CqTxboeiEJcPLruc97SZtNqGTR0wtGlqCGyOY1cWdj3CnjJPLFGQ3oiEc/vEkcEsaYbC0IbT2DXKhJe1oVlf4nZhJStt6gBqTfJbMYC1iFv654lVMjbZCr2QRrsSyA18CwI2QY=
+	t=1718388850; cv=none; b=Gq2tX0vBC3jTAW364HJeJmP6MQGdsjD+2uQ69r2doerUkgBZvC1XzZtQ/1E5ncJ55MV/VuRB+mt7RT2ODBhcyI8ALhYRQbiIgZBS7+mguqJRdVb0At9m4fBkBtdETHXh5E3UuEHarNL+Ev2jOfm1PclCAAgVcM/9gXcl2baJNpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718387325; c=relaxed/simple;
-	bh=92J8SyqxIdf2oE6L5pTOUXazVSTyJnFiR/byTfNtl/o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZPXHGWr1+L1XabWsUJiI9eWs4PaOrllM2ogCrz2Ez2r+588mI9WcksI1VcmHECsSNlziBP2eD/P2tw7miGkBJWTsDySh03CK+tknQJlt9KmDs+Xb4R08MBDXRaPDZwTNdIVBMuKqaJyj9/2o6rxoAhiKhrVjViViVdrSr3BWBNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AVfKxho2; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-dfdff9771f8so2616104276.1
-        for <stable@vger.kernel.org>; Fri, 14 Jun 2024 10:48:42 -0700 (PDT)
+	s=arc-20240116; t=1718388850; c=relaxed/simple;
+	bh=OHUAskxWWAO8KfPXgkfrFWF5QNd7CTOtsUH17d3AEQE=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=RdXhJ4xAC6r3+GbORl2GJjPcI33VQJC0c7l5KRSbFvqIh72l6pYlnUi5TYMX5qshhlVD8ef/JQuNqAZXqXDemuwD798raORA/9ZxM8Xrt6wwTLhiE6kYuA4Vx68lEowElBqZhp7y0Un7bPYpLFBOQKZDzQHS2nIU1ySQKnTaOV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=b/DMhRYl; arc=none smtp.client-ip=209.85.166.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-7eb85f63f4aso111289239f.0
+        for <stable@vger.kernel.org>; Fri, 14 Jun 2024 11:14:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718387321; x=1718992121; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P/1LOPv92dlO9DKKyPTS9cPz+tBToHnqWBwgmZh3nDw=;
-        b=AVfKxho2HOkrGPN0M2Zq1/bMxgOLQz3fhN/A+DC8VLDeHkJ4h8xH8y5VYOEJSaXA0x
-         6CTgNtmppB0wrfbKpiKzclvhGgrAZ6ZnXYoM4Gt+fjHT6u0OVSYj1Yyqlae9QBafSq+U
-         cZXTQegp5zEF1XrMocEEg2J6sZzjW03LsyE8wycbf//X5vfOV9aT3eer4N2caGvdgYkg
-         M7Fc9nzEpVJQbpxWxvLPsq49PYoBEu8WI6VYEgr0FGPgDsUVIVo/TR/o9EDkBTB9iieu
-         6jbUfUX7eLKCiIwe+2hFVmAAKJGfXExDpYg2ICmVrmP9siuqKI0qfkawhgEBe99mOhrG
-         0pUw==
+        d=ciq.com; s=s1; t=1718388848; x=1718993648; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Bo8wbvvAWLfzzmtdfITuscjEv3H940Uri/asrCsjenc=;
+        b=b/DMhRYlwxYXyh4qe6S4Ri+YSP0aLpvP1j6vHbgXHXk/pJEK0JPm61dM1hyCQNOFAv
+         15Rjimr+B9DjTv//z44xf2dsape4fJMJFtkC3UdD+C90Uk7CLW38mxyxePtQdZh6zZmu
+         LN9L8XWiZ1WSN4V3nUAK6fBpDc+EGIc9zvtjDhU7pcH7/i4n8gIoLI8f1NlyjWoLGwVh
+         0Tyjl8/8Ho5num/JijswHt9EouKv58IeW5NB/pF87k8amkELWcVoHnYgU+hKkVfmZR0W
+         EkEeNpA7bNqlvGjy1SYsthnc/1A7MtZFl6zlbdZSyyd1/tjTUDUj7G1HlWM20WAubs2T
+         3BFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718387321; x=1718992121;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P/1LOPv92dlO9DKKyPTS9cPz+tBToHnqWBwgmZh3nDw=;
-        b=vjIh77UHj6g0kRQlQsu6/zfU99iLkrzyP5aW/CdSDx3ayk66+sSCchNFFI2FXqSXFR
-         MP5YnMEc/ZqQIxCXLCF4+AUP5xMKGUHLZFe4nJUG2z4QlYDh/TIHMLDg0F2zXURRaC/3
-         QA4SBIpaZP9YNVU+U/MLxeksWXeBiBuRFurA7Dyf/5VmQ9d076Q5iHHTi4BgG0g7tjIl
-         axn7IBiafHLvkU/BzjBQqZou2Mf779bXO8ANdW7xt35jDLSIauYv/WmPJefc9s/wJX4t
-         KKbbde2ohE7nlzksg9zQiJhKebstGmvlQfB8ogvCcbStRrG0zYiOSh5XFpUedd3xMPz6
-         Dmsg==
-X-Forwarded-Encrypted: i=1; AJvYcCUL/klB++UJcyJzslkkWpQ/OORNX0CqwuDs0c826jbBy6/ehcLN4ut32akAxJX25r6pmFT6bU8f8tKC3dV9qLfZ+S8fekBr
-X-Gm-Message-State: AOJu0Yx4jMc6f4x2JDRsQA4qfT/TMwLMH/IGT4zf0H/NGPZQEHxQhLti
-	uFBkzwwzG4QA7/Abk2kjzv7THKQ2ns04LgJO779fTI4odZ04xXLOe81/shswX4tDVi0KzojhMSA
-	7RCnhNWRAO5bksSMIYR0y5I4meexWsR/UvVhIBg==
-X-Google-Smtp-Source: AGHT+IGUxEdaon415iN8h281a2LuqoE9nZyftt9g8HQiehPuXE3/tb0mRmefYubCxnRYFAQS7EzlNNoC73f3DBYcL/8=
-X-Received: by 2002:a25:c785:0:b0:de6:1057:c85f with SMTP id
- 3f1490d57ef6-dff1537c45dmr3081777276.22.1718387321539; Fri, 14 Jun 2024
- 10:48:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718388848; x=1718993648;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Bo8wbvvAWLfzzmtdfITuscjEv3H940Uri/asrCsjenc=;
+        b=UCsl31ilqImJDiyfPG3LDR/ZJtq8JkWU1mq1zauqB0UCtI2YqYyGwbdTl3RgWIRi69
+         FAVNR0GHlQNJAcETdygGLSyICdnJ7pvNgegm8NY4TTmhV38kV/j3frR0FYxGbY88w8jC
+         TFm+xRcUGo1wWjZYPxD+hMf3goZRwvb5SVdoCLfDbbrfEAsA6IRtrXTRmo9vmqk2AqAG
+         +9mO6Edrkb65ixL7SBX8bOQEWGtYak5Ur9Ahs5lrpq/HVRgIu1bbG7H7bDESjUJ37ChB
+         qf8ouK84jJSoZl+BxZJ/hKTn4V6GaDdOqE4pV768zkvmNHUoroYDsRFWkD1oYUfP/e3o
+         FwVw==
+X-Gm-Message-State: AOJu0YzysIJ90vBDfXnplQlSL2Ay8Ou7PtTgKjqRa1SX63JepR3Q6SPo
+	eSwTzM8+tYTIgcs+naA962O095wKHNqw5TPcD6WhEfqaj7RQk3P7ZYNm2xNOsiYOMbqifMEecAN
+	ql9jWRzA5QhtYQVzW2oulM+Gm1goegfKrF6PXn//HAYSxt2rq8YM=
+X-Google-Smtp-Source: AGHT+IFtVWPAnmOFszoMZLT4ziSUkmYpCrlNmU0pVdl1se7nK4vDL56Yg5kp3RJNOKD+1a2asbCgO4mfWudcN0DER04=
+X-Received: by 2002:a05:6e02:18c7:b0:375:a3d8:97c0 with SMTP id
+ e9e14a558f8ab-375e02b7cefmr24958565ab.10.1718388848309; Fri, 14 Jun 2024
+ 11:14:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAMSo37U3Pree8XbHNBOzNXhFAiPss+8FQms1bLy06xeMeWfTcg@mail.gmail.com>
- <20240613095901.508753-1-jtornosm@redhat.com> <CAMSo37UzU9WrQOQVo=Bb-LfOwS=GJrsSLMgGAwLY7JoGQ9ap7g@mail.gmail.com>
-In-Reply-To: <CAMSo37UzU9WrQOQVo=Bb-LfOwS=GJrsSLMgGAwLY7JoGQ9ap7g@mail.gmail.com>
-From: Yongqin Liu <yongqin.liu@linaro.org>
-Date: Sat, 15 Jun 2024 01:48:30 +0800
-Message-ID: <CAMSo37XjHhBz1hc_se0Fj8=gnju-iOT52Nf60jwLJ1hPN_kUaQ@mail.gmail.com>
-Subject: Re: [PATCH] net: usb: ax88179_178a: fix link status when link is set
- to down/up
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: amit.pundir@linaro.org, davem@davemloft.net, edumazet@google.com, 
-	inventor500@vivaldi.net, jstultz@google.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, stable@vger.kernel.org, 
-	sumit.semwal@linaro.org
+From: Ronnie Sahlberg <rsahlberg@ciq.com>
+Date: Fri, 14 Jun 2024 14:13:57 -0400
+Message-ID: <CAK4epfwEe5vuSYLvn2M2hdpy8WxRcnZ063LKCeqp1FqOU=30kQ@mail.gmail.com>
+Subject: Candidates for stable v6.9..v6.10-rc3 Kernel Panic
+To: stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hello, Jose
+The following is a pruned list of commits from upstream v6.9..v6.10-rc3
+that looks like genuine kernel panics.
 
-On Thu, 13 Jun 2024 at 19:46, Yongqin Liu <yongqin.liu@linaro.org> wrote:
->
-> Hi, Jose
->
-> On Thu, 13 Jun 2024 at 17:59, Jose Ignacio Tornos Martinez
-> <jtornosm@redhat.com> wrote:
-> >
-> > Hello again,
-> >
-> > There was a problem copying the patch, sorry, here the good one:
->
-> Thanks very much for the work!
->
-> I will test it tomorrow, and let you know the result then.
->
+As far as I can tell these are not yet in linux-rolling-stable
 
-I tested with the ACK android15-6.6 and the android-mainline branches,
-which have the issue reported,
-after applying this patch, the network works again now.
+If there are issues with the list or things I cna improve when pruning the list
+please let me know
 
-Here is the console output from the mainline branch, in case you want to ch=
-eck:
-https://gist.github.com/liuyq/bd3fdada41411bc89a0cd4acf9ec11cf
-
-Thanks again for all the help!
-
-Best regards,
-Yongqin Liu
-
-
-
-> >
-> > $ git diff drivers/net/usb/ax88179_178a.c
-> > diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_1=
-78a.c
-> > index 51c295e1e823..60357796be99 100644
-> > --- a/drivers/net/usb/ax88179_178a.c
-> > +++ b/drivers/net/usb/ax88179_178a.c
-> > @@ -174,7 +174,6 @@ struct ax88179_data {
-> >         u32 wol_supported;
-> >         u32 wolopts;
-> >         u8 disconnecting;
-> > -       u8 initialized;
-> >  };
-> >
-> >  struct ax88179_int_data {
-> > @@ -327,7 +326,8 @@ static void ax88179_status(struct usbnet *dev, stru=
-ct urb *urb)
-> >
-> >         if (netif_carrier_ok(dev->net) !=3D link) {
-> >                 usbnet_link_change(dev, link, 1);
-> > -               netdev_info(dev->net, "ax88179 - Link status is: %d\n",=
- link);
-> > +               if (!link)
-> > +                       netdev_info(dev->net, "ax88179 - Link status is=
-: %d\n", link);
-> >         }
-> >  }
-> >
-> > @@ -1543,6 +1543,7 @@ static int ax88179_link_reset(struct usbnet *dev)
-> >                          GMII_PHY_PHYSR, 2, &tmp16);
-> >
-> >         if (!(tmp16 & GMII_PHY_PHYSR_LINK)) {
-> > +               netdev_info(dev->net, "ax88179 - Link status is: 0\n");
-> >                 return 0;
-> >         } else if (GMII_PHY_PHYSR_GIGA =3D=3D (tmp16 & GMII_PHY_PHYSR_S=
-MASK)) {
-> >                 mode |=3D AX_MEDIUM_GIGAMODE | AX_MEDIUM_EN_125MHZ;
-> > @@ -1580,6 +1581,8 @@ static int ax88179_link_reset(struct usbnet *dev)
-> >
-> >         netif_carrier_on(dev->net);
-> >
-> > +       netdev_info(dev->net, "ax88179 - Link status is: 1\n");
-> > +
-> >         return 0;
-> >  }
-> >
-> > @@ -1678,12 +1681,21 @@ static int ax88179_reset(struct usbnet *dev)
-> >
-> >  static int ax88179_net_reset(struct usbnet *dev)
-> >  {
-> > -       struct ax88179_data *ax179_data =3D dev->driver_priv;
-> > +       u16 tmp16;
-> >
-> > -       if (ax179_data->initialized)
-> > +       ax88179_read_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID, GMII_PHY_P=
-HYSR,
-> > +                        2, &tmp16);
-> > +       if (tmp16) {
-> > +               ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_M=
-ODE,
-> > +                                2, 2, &tmp16);
-> > +               if (!(tmp16 & AX_MEDIUM_RECEIVE_EN)) {
-> > +                       tmp16 |=3D AX_MEDIUM_RECEIVE_EN;
-> > +                       ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM=
-_STATUS_MODE,
-> > +                                         2, 2, &tmp16);
-> > +               }
-> > +       } else {
-> >                 ax88179_reset(dev);
-> > -       else
-> > -               ax179_data->initialized =3D 1;
-> > +       }
-> >
-> >         return 0;
-> >  }
-> >
-> > Best regards
-> > Jos=C3=A9 Ignacio
-> >
->
->
-> --
-> Best Regards,
-> Yongqin Liu
-> ---------------------------------------------------------------
-> #mailing list
-> linaro-android@lists.linaro.org
-> http://lists.linaro.org/mailman/listinfo/linaro-android
+a6736a0addd60fccc3a3
+79f18a41dd056115d685
+8eef5c3cea65f248c99c
+12cda920212a49fa22d9
+b01e1c030770ff3b4fe3
+744d197162c2070a6045
+3f0c44c8c21cfa3bb6b7
+0105eaabb27f31d9b8d3
+6434e69814b159608a23
+d38e48563c1f70460503
+c8b3f38d2dae03979448
+33afbfcc105a57215975
+491aee894a08bc9b8bb5
+d0d1df8ba18abc57f28f
+ffbe335b8d471f79b259
+93c1800b3799f1737598
+3c34fb0bd4a4237592c5
+ffb9072bce200a4d0040
+9dedabe95b49ec9b0d16
+788e4c75f831d06fcfbb
+642f89daa34567d02f31
+f55cd31287e5f77f226c
+6ca445d8af0ed5950ebf
+ed281c6ab6eb8a914f06
+e8dc41afca161b988e6d
+c6a6c9694aadc4c3ab8d
+eebadafc3b14d9426fa9
+29b4c7bb8565118e2c7e
+da0e01cc7079124cb1e8
+b66c079aabdff3954e93
+514ca22a25265e9bef10
+05090ae82f44570fefdd
+3b89ec41747a6b6b8c7b
+57787fa42f9fc12fe189
+1af2dface5d286dd1f2f
+81bf14519a8ca17af4f0
+991b5e2aad870828669c
+17b0dfa1f35bf58c17ae
 
 
 
---
-Best Regards,
-Yongqin Liu
----------------------------------------------------------------
-#mailing list
-linaro-android@lists.linaro.org
-http://lists.linaro.org/mailman/listinfo/linaro-android
+-- 
+Ronnie Sahlberg [Principal Software Engineer, Linux]
+
+P 775 384 8203 | E [email] | W ciq.com
 
