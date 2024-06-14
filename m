@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-52185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D11908AC7
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 13:27:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6F6908ACA
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 13:28:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312E31F2839A
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 11:27:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 099682815E1
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 11:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F5B195B04;
-	Fri, 14 Jun 2024 11:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB6F194A48;
+	Fri, 14 Jun 2024 11:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="HDRqOyt2"
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="PilTGbc7"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D660913B2AD
-	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 11:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E95193064
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 11:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718364467; cv=none; b=FZGlCecO3KjDA8VkW75FlaliVtXH2pYbxUzzw14yV5W3ckoeg0VFaX/q9X4KKU177ejOTHCNHX9sqL+AzYjiFBobCgn7Ai/LqycB5p5odUc2RdcAW6lHFb0Vudfbgg4f1PPL0i4UzA0bs6QV6WWo4g4MjJuw92y/ZPNmGp2S11k=
+	t=1718364484; cv=none; b=cM/cYZrvR79Pg5eG5Eoe6Y/rzq9RPwY3QJge7zGOusxAFCTsCp0iJJJN27Vby+HkBz4KNtk/A6ufQqY4XjP34mS8IhxW7VmZeg7faH2p7Cqm4mijS/Tg5Mh72yAxda7mLyssvehghGMEugQFzr1S6mdlB4pozS7yTVY9ENYaTwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718364467; c=relaxed/simple;
-	bh=EpAe31OZ+mBC8VNhcvz9Y3ncZAwk9HfZ0CYwffftzSE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J4XtVevoXzpmUSfrbqVu7thppY2+IhgudVto2L5PaHlw9yeE2gvrj56bFIa8fIy+HxIQCFBzn462I9UbH7PS4n14orb24+rJiNtJcxcVPVPWNFaE3hsXWTx6oDFLYkROvOKKP+rKA1o3sahoKYF7SEd7wVD1HmWy6M6YPepJyLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=HDRqOyt2; arc=none smtp.client-ip=150.107.74.76
+	s=arc-20240116; t=1718364484; c=relaxed/simple;
+	bh=kzt+P29xnZNp+taR4beO6gV/WyPkAP4aSvhUsm8J1vw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DDv1xOz7aDvjCsKV+cZvBCrv4g1ggKq2CkwdlqaeIQvb2x86uc87SyCYKuaZQaSfcy4c+TQOaWNTA5tfFtNWdFDePyEZO9gR1DcE/IFzHhc8Dr1ldWWwuRfdZam//1zLtTHBrDj5WpM/HMRprwwEUkcyD9FZ/xZxunDroV8sOek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=PilTGbc7; arc=none smtp.client-ip=150.107.74.76
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1718364463;
-	bh=7gppcvHTZmlspy/+NJ1PKqP/0pbXM0SdZyYHmhfIhbs=;
+	s=201909; t=1718364480;
+	bh=7QvapBUZMia0j8j9NgqwjdVQPcasgkaRydVGXAQi2zQ=;
 	h=From:To:Cc:Subject:Date:From;
-	b=HDRqOyt2f0/NjZKYa+A6N6ydYNbQyF4m2Jz+vx4ubWyiYPHmIzXuPxENs41+8OPaK
-	 aqP3BBZeu4XkutieWyyfF3JUPML4HoxjEcFxiADaFA9ot/bZLOSBrCkFXliiELIgKh
-	 bgzmHaP2JQcTS4OL2l1uKTuw3JOhj/aVfv8/TjdQiUiXYo9CvqRp3xG8DvOYxl9KnS
-	 BYBbT/H1Yvtk55Ypl7DoTJwgGcheDWm/BIMN+v2AhzYxu0Ki+oREOklFaTmLxDrZBy
-	 VvdRd2Ubw+26Zbluow66DwZc2ZIXC0h56JWB34LbixJGRNc4OmwVWIN8Za/j/FcaUT
-	 Ul8VOd76XECUQ==
+	b=PilTGbc7A9QGyO6tlyCrOXj4aXtQP3U3SRmXW5ZFpnV9O1Ru/Ouiu9g8AIAGv5jrN
+	 PW9hQUGz4hcepQZLFyy1XtLk0vyaNDClu1zU/gw93BD5us/RtbaziJLYJQyLFmf1F2
+	 Q2iTdNy1CLWPD0H6/FS7ntOgkk4iqjmMd/+fowVdw9vX9cJcqObbiNdwunicK4jmHu
+	 gLdQaWIbX8Fkxe5ElLv2LIqWuIcPvsmUezPOg7R812PGqa6+RBdKUG50X2As+wvNEo
+	 /8xTUZm6zv0n1++nFBzKuvpvT6z9MHHuz9RxMbap2UpDX5cw1k5KkYCSR4GRQVt4f+
+	 IKmE8cqXl6A3Q==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W0xpR1Lx0z4wyw;
-	Fri, 14 Jun 2024 21:27:43 +1000 (AEST)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W0xpm2KN7z4wcC;
+	Fri, 14 Jun 2024 21:28:00 +1000 (AEST)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <stable@vger.kernel.org>
 Cc: <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH v5.15] powerpc/uaccess: Fix build errors seen with GCC 13/14
-Date: Fri, 14 Jun 2024 21:27:34 +1000
-Message-ID: <20240614112734.3482854-1-mpe@ellerman.id.au>
+Subject: [PATCH v6.1] powerpc/uaccess: Fix build errors seen with GCC 13/14
+Date: Fri, 14 Jun 2024 21:27:49 +1000
+Message-ID: <20240614112749.3482975-1-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -111,10 +111,10 @@ Link: https://msgid.link/20240529123029.146953-1-mpe@ellerman.id.au
  1 file changed, 13 insertions(+), 2 deletions(-)
 
 diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index b2680070d65d..6013a7fc74ba 100644
+index 45d4c9cf3f3a..661046150e49 100644
 --- a/arch/powerpc/include/asm/uaccess.h
 +++ b/arch/powerpc/include/asm/uaccess.h
-@@ -90,9 +90,20 @@ __pu_failed:							\
+@@ -80,9 +80,20 @@ __pu_failed:							\
  		:						\
  		: label)
  
@@ -136,7 +136,7 @@ index b2680070d65d..6013a7fc74ba 100644
 +		: label)
  #else /* __powerpc64__ */
  #define __put_user_asm2_goto(x, addr, label)			\
- 	asm_volatile_goto(					\
+ 	asm goto(					\
 -- 
 2.45.1
 
