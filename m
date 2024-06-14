@@ -1,140 +1,127 @@
-Return-Path: <stable+bounces-52232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38C590919F
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 19:34:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 048BA9091EF
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 19:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F96128DFFC
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 17:34:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 906C9282780
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 17:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6277019FA84;
-	Fri, 14 Jun 2024 17:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C486482DB;
+	Fri, 14 Jun 2024 17:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cuMXidjZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aqad9p7x"
 X-Original-To: stable@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F1F19E7F3;
-	Fri, 14 Jun 2024 17:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A84F19D89C
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 17:45:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718386377; cv=none; b=i8RVqzBUtQTYUjkPMyU1RIrsLAooFbR5SJo52a5m7MvNsf1TrZ7xNz3eGkDMp25Z8m+pXgOe9pbPAmX7gwuY9vdr6vZfYZ+UibNtMbnDI8iF2oX1674YoJxhuyRy/beBoc+uCfv1YxyR80BXzKmdQq8mdyN6UvACDpHdIDLjEA4=
+	t=1718387137; cv=none; b=nzMBV9N4jAWfJe+7I7lN+lGmDMCbLyP/YggQ2y8opU7NoG84KWSEyeeMfKhsud3fLa3ZI7iLucv6iaUtNSCjD7NSIXTY6N55JDIy7sNP4D/74qwoVE3hsA4RxtL/u3G/V6hIA7vIhZz3d+escdMoSVFloaUGEpGJU9cTt4nyupk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718386377; c=relaxed/simple;
-	bh=cWBa5SUpvNFZXavd+X5cwWOfW9TPK1UkWUZWuQPYQOg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fCST6DsJSSO7idZB8HEIpy6DEsTv6H9Xb42Y3djRv0DTMterMaKfEdb/BDD8zK3pPHPJJOI43QKY3zbgkNFkvKV65uh+LteBs6W73WKOAyEc4ir2UR0MDqJC5dbXjN0ysYsE77NKOeiuLCkCuxucdd9IJ+/ZE/U5vfi5Ew91TWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cuMXidjZ; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPA id 886E6FF806;
-	Fri, 14 Jun 2024 17:32:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1718386368;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rTbRL0qnBuvXH1zQoBWsJHhVuNTZbzn7iLMor6spAIk=;
-	b=cuMXidjZFlDUPwkClU+4BnO1XQw1HNsIqDezaiP9DFkLkv6PlxkkbHLjWwJAJ+dPibHWm+
-	PSZVswV4By/kBZMMIblWiD8sQUS0tlUqVlnMfvxiH31Zb75juVJ3al0TzDQwF3U5TSm4TP
-	4WNPgJENI1GZ2TxpYKKZn6gEe+28VN2V59I9SSgd8YrUKwVTELQ270vkecSZh0wYgaJKRz
-	6jpX/Or5Gn2pqDMQDWl52LmSPO5y7om2QF4H2yLCiyZiDGjm4xRGRndDeQdNJsQoyT3FeS
-	uCU1DXZ7+0qp2MXJuuC2krGaKb1ieBQT9/Q0WdaOl5KY8pLd1PYIXOvlYKyMJQ==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Marc Zyngier <maz@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 03/23] irqdomain: Fixed unbalanced fwnode get and put
-Date: Fri, 14 Jun 2024 19:32:04 +0200
-Message-ID: <20240614173232.1184015-4-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240614173232.1184015-1-herve.codina@bootlin.com>
-References: <20240614173232.1184015-1-herve.codina@bootlin.com>
+	s=arc-20240116; t=1718387137; c=relaxed/simple;
+	bh=DGIl0O3Tvpb8O2/F3T0MuCBwEikleKsZWYWGtAXNEIA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=on5t2HMWcAqk6P96TqIio897mLFKNEiGaxMtp5RSy1NhMGsKYxvN8KKDQ2eShCMz10/+FSia1kbUPA0V6xwiQjjHwkSyEzmE/WFiQmQgyFwoEzjxtSCAOzdsBtyrkWkcSqgnr/ZhXL2VZ3cP6q0olSGUyg6BfpAk4GFVU5g1ySs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aqad9p7x; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-dfe43dca3bfso2925591276.0
+        for <stable@vger.kernel.org>; Fri, 14 Jun 2024 10:45:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718387134; x=1718991934; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DGIl0O3Tvpb8O2/F3T0MuCBwEikleKsZWYWGtAXNEIA=;
+        b=Aqad9p7xE7MOAIFiePqPzywRqNNiavMq5Gynh3tAzYbEGsxjzxjY1isgBWB7T/vTmp
+         52eIJTF3vFlMWiz044B5dandbN+j3r/wTX7y5LhyoSqvaD/LZRxx3+4m3dB+gNIdcNhc
+         THP5q65SdOuPqUGLyAaojnZhfaxRHuBf9F8Kt+K/6PWIO8a31FnVIwtXZzgENRQUKGIZ
+         7C+6jGFQhSW6az+jFMsHmv4RinhgXqbc9XWLXsHZyFXISZSTn455Sxivgf8b0aCGjAoi
+         SGVQ2Y6JdB01s3BIlrblDJSXWMdLEt2/g/qfNDVyAy94XAGdVoRazHZoKHLjNrdgXhg0
+         OApA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718387134; x=1718991934;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DGIl0O3Tvpb8O2/F3T0MuCBwEikleKsZWYWGtAXNEIA=;
+        b=jKhchTEL/HgdIo9a0hk8bmRtTHIrhEAX2Ryr8I7CikFNpTAmEnyWjeLXhlVcmAc7Nx
+         pzEa5k17YSs8r+No9W4rrmIoYK6TlX6cyrgV/tbkTuvTOsawMDjkCKOohGeaaMojM3Th
+         594hUgkuIIRJcXKlUS981SgITIS7lFarqH+b6vAG+xtuRmP33zRSTRljMVsjHRFCl1jl
+         B7s0Gw38n+9ksZEuoXYANzy+zslL2zuF5Avf2i2nEPVBH2tiV3f6hdbePEve4YE+KrAI
+         QOgZ7UXJR1+beJmCYZCyCwF7pIn+LDWLocmFyNmx6JEgmr6CQyGP31Xgv7Xm4WYw3rRP
+         Akdw==
+X-Forwarded-Encrypted: i=1; AJvYcCUY4+Wfr5syujAVAVzPR88PQ9xRfhtRCHnLcWqJv/vgvV2C7Fwfl1CZmNeMzIftJCWN2TTzCfYzGDZp8TbaUYMeYIxUdhCa
+X-Gm-Message-State: AOJu0Yz/PN0iyRgEwuZNlj0B4Ajl0lSXag0drG0/z9IAdv8uBGrfJ2yc
+	V8cNoadUyJdtWIFUfL0YIgSDErKsT7SizRjlLEViYIRAXkqkB0M9SN6Bk8/4AQz9fr8/bbsrXMe
+	xnlM2O/ARQK6q9+AHLBUZwRzY/BQ=
+X-Google-Smtp-Source: AGHT+IF3eAYDsL0RP/CUOqmdHO5As+bjEt8y169LlWphxmzycyE1r42304sTuprAQhDehWn9rtMUhfYHEr5egZaVUVg=
+X-Received: by 2002:a25:86d0:0:b0:dfe:f4e3:72cb with SMTP id
+ 3f1490d57ef6-dff153d56d0mr3133644276.27.1718387134354; Fri, 14 Jun 2024
+ 10:45:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+References: <CACzhbgRjDNkpaQOYsUN+v+jn3E2DVxX0Q4WuQWNjfwEx4Fps6g@mail.gmail.com>
+ <87zfro3yy5.fsf@gentoo.org> <2024061400-squash-yodel-4f49@gregkh>
+ <87tthv52ka.fsf@gentoo.org> <2024061411-jalapeno-avatar-5326@gregkh>
+In-Reply-To: <2024061411-jalapeno-avatar-5326@gregkh>
+From: Leah Rumancik <leah.rumancik@gmail.com>
+Date: Fri, 14 Jun 2024 10:45:23 -0700
+Message-ID: <CACzhbgR36=uVNO+k0kxBfeF3YmvoF+UxA06We6r18tCUV9hdtA@mail.gmail.com>
+Subject: Re: [PATCH 6.6] backport: fix 6.6 backport of changes to fork
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Sam James <sam@gentoo.org>, stable@vger.kernel.org, 
+	Miaohe Lin <linmiaohe@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-fwnode_handle_get(fwnode) is called when a domain is created with fwnode
-passed as a function parameter. fwnode_handle_put(domain->fwnode) is
-called when the domain is destroyed but during the creation a path
-exists that does not set domain->fwnode.
+Hello!
 
-If this path is taken, the fwnode get will never be put.
+After some more investigating, it seems while the original patch fixes
+a race with hugetlbfs, it creates an issue for vfio which results in a
+WARN which will fail xfstests when they _check_dmesg. I have been able
+to resolve this on our kernel. Today I'll check which upstream kernels
+it is applicable to and send out fixes where needed.
 
-To avoid the unbalanced get and put, set domain->fwnode unconditionally.
+- Leah
 
-Fixes: d59f6617eef0 ("genirq: Allow fwnode to carry name information only")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- kernel/irq/irqdomain.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 012ada09b419..31277488ed42 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -156,7 +156,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 		switch (fwid->type) {
- 		case IRQCHIP_FWNODE_NAMED:
- 		case IRQCHIP_FWNODE_NAMED_ID:
--			domain->fwnode = fwnode;
- 			domain->name = kstrdup(fwid->name, GFP_KERNEL);
- 			if (!domain->name) {
- 				kfree(domain);
-@@ -165,7 +164,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 			domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 			break;
- 		default:
--			domain->fwnode = fwnode;
- 			domain->name = fwid->name;
- 			break;
- 		}
-@@ -185,7 +183,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 		}
- 
- 		domain->name = strreplace(name, '/', ':');
--		domain->fwnode = fwnode;
- 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 	}
- 
-@@ -201,8 +198,8 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 	}
- 
--	fwnode_handle_get(fwnode);
--	fwnode_dev_initialized(fwnode, true);
-+	domain->fwnode = fwnode_handle_get(fwnode);
-+	fwnode_dev_initialized(domain->fwnode, true);
- 
- 	/* Fill structure */
- 	INIT_RADIX_TREE(&domain->revmap_tree, GFP_KERNEL);
--- 
-2.45.0
-
+On Fri, Jun 14, 2024 at 2:08=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Fri, Jun 14, 2024 at 09:52:21AM +0100, Sam James wrote:
+> > Greg KH <gregkh@linuxfoundation.org> writes:
+> >
+> > > On Fri, Jun 14, 2024 at 05:55:46AM +0100, Sam James wrote:
+> > >> Is it worth reverting the original bad backport for now, given it ca=
+uses
+> > >> xfstests failures?
+> > >
+> > > Sounds like a good idea to me, anyone want to submit the revert so we
+> > > can queue it up?
+> >
+> > Thanks for the nudge, I wasn't planning on but why not?
+> >
+> > 6.1: https://lore.kernel.org/stable/20240614084038.3133260-1-sam@gentoo=
+.org/T/#u
+> > 6.6: https://lore.kernel.org/stable/20240614085102.3198934-1-sam@gentoo=
+.org/T/#u
+> >
+> > Hope I've done it right. Cheers.
+>
+> Looks good, I'll queue them up for the next round of releases after this
+> one is out, unless someone fixes this up before then.
+>
+> thanks,
+>
+> greg k-h
 
