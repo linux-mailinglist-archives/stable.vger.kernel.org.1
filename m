@@ -1,243 +1,229 @@
-Return-Path: <stable+bounces-52238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A859092B1
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 21:03:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 211D2909314
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 21:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AE531C216BA
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 19:03:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF270285A4A
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 19:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E53F1A01C5;
-	Fri, 14 Jun 2024 19:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003D119DF64;
+	Fri, 14 Jun 2024 19:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="PRJh5lPJ";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="yg5SPtYD"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="ssAoF0p/"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AA1148825;
-	Fri, 14 Jun 2024 19:03:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718391810; cv=fail; b=OXWqyQYhzGUYFdecidrv7tpawbyv9yXn21CiLnZNE6D94lfvGZaZsUhCdI3wy9ewuYlB+TawQGjvimUCccL9Iza+P5KH7vk19jXcI2zdlRjuv0G8zyF0k+lPAGXZAhqNerFKW3AKXG6UEsxl/BdPqMqh1KX+pBr58mUJWEO4U8o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718391810; c=relaxed/simple;
-	bh=3qwwdScZJpTE3XHkd7s/5jEku8KYgSHB2E7JAS1Qrtw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=CzFn2BZQRMHHLdj0XxssQfs48S4Wo2oVeBzX1aMk5OX0jKPA8OO/6j8V0dhXQxpcoX1QHb61eoyo79Fv3O9dStelp2+fhTwonENFWqyodrItF0mW7efesANFMwCehNb7LTTi79CImof+gf4EXhqiV7YRSFwNGppA1nnmsYaOqMI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=PRJh5lPJ; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=yg5SPtYD; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45EDHAI7022685;
-	Fri, 14 Jun 2024 19:03:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	message-id:date:subject:to:cc:references:from:in-reply-to
-	:content-type:content-transfer-encoding:mime-version; s=
-	corp-2023-11-20; bh=vykq2Ip4KPtbylqZgsrdEzGwyCt1k1eTS/Unm44YdbA=; b=
-	PRJh5lPJONfscagSL+WVXPahmr+7AAt0CUmsOrEGLW1sroYCpdVbzgUCkaRxFSv0
-	jcIV5g4COdyeuMomduFPfmtrbqxkzNkveFfbkqa5K4TUe7A88wRs6kPl5TF13DJW
-	VGQY2mLvfYuZ8lQtDsWVJBjNRcE+4u5aho75JBC1eSAFKiP05R0uYU4aC9NMDyPi
-	rqFlwE3lrmQqFtX0doz7cWUocmoRx35ZLNh3cj61on5aclnHLFNASxE6faj9M1Qf
-	I6ZiHZgVTapCUKJzqXMkb8hHJQkINZnUpwvsKC1ttkr42W++dpFKz175o56BMY1J
-	DQLT5dWoo2rlpQS9loGdWw==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ymh7fv6d4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Jun 2024 19:02:59 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 45EI5x1h027051;
-	Fri, 14 Jun 2024 19:02:58 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2049.outbound.protection.outlook.com [104.47.66.49])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3yncdy2rg4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Jun 2024 19:02:58 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=VjyxTbALOFvUmEb6BlAyllrjC1temLDZ8GrO/CPLeZxOFBDiJDF6ggf/wP1W9hVfDRm9zocU0f5ghmpLdSVL2XbPsxLsckvZ7OX0YewfsYt8uxX28BfTzU5wfEQnBW5CmdVZq3S/WRSIIyLSk6Vd5YrGr1AN4iOdbid7+c22aGd3t+UaOkuuhsRzRnVBMHSincpiv63zpxs+gQ0qxemtc8yu2kztug1AydKt402QPUKGRMQz4iADYdXTULHZS/MrB5yFr+NnnsORfHWIOUfVA8wTsDBC27iovJpMUbn/OuRRFdBJWm90yunxcEurRtJsrnTcPKmPQwavGr+HyFdtEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vykq2Ip4KPtbylqZgsrdEzGwyCt1k1eTS/Unm44YdbA=;
- b=H2F3suHucI58/PPDuoiHk125u1CtPZKRMPCgclBY0BPvxcOjImv4YixQqpdJ0Qm0oKsYcHZ5M+0Gl3mLDB+VV86LT3lV/N5pxF4UYLTJ82dYPLAXlBJ00zwEp0s5T0EF1V6fnlEiJPE2HLJKwVj6hnXGpHstufT3cmPgB6IHRZhoNGIlogMtvvambDwH2N1mqvtA73QK//85Qi5rWvSWA2GOnUUaNvfIgrhFvK1DXkK+Nft4Of97NGcmV3pIz7nVcV/Ube2IC59REAI3KcSy/SD4n1MfSnDW2mgOuePCtZ2OgqHqQkDz+IuYcOfNT0GYytik0+w42kQYTCGfpg3DXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vykq2Ip4KPtbylqZgsrdEzGwyCt1k1eTS/Unm44YdbA=;
- b=yg5SPtYDK+BvASK5MuyjX1bePEgcCx5wOWEUIllIKGU7fgjx2kfU3hJncU0z9y1TzN2O2GKt9WY+HZc0A/t2ogq0qGUzbjEiZ/bU+EsXCHNJ8UsN95Gtok48e9j4xiQYqvYxMnKoqdXr7yatGUEuxl4Io+fzvbvclArnwSq52HQ=
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
- by BN0PR10MB5174.namprd10.prod.outlook.com (2603:10b6:408:126::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.26; Fri, 14 Jun
- 2024 19:02:55 +0000
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::309b:26bb:11d5:cc76]) by PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::309b:26bb:11d5:cc76%6]) with mapi id 15.20.7677.024; Fri, 14 Jun 2024
- 19:02:54 +0000
-Message-ID: <86aec636-fec1-44b0-8517-9e26240d90e6@oracle.com>
-Date: Sat, 15 Jun 2024 00:32:41 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4.19 000/213] 4.19.316-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
-        broonie@kernel.org, Vegard Nossum <vegard.nossum@oracle.com>,
-        Darren Kenny <darren.kenny@oracle.com>
-References: <20240613113227.969123070@linuxfoundation.org>
-Content-Language: en-US
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20240613113227.969123070@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MAXPR01CA0104.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:5d::22) To PH8PR10MB6290.namprd10.prod.outlook.com
- (2603:10b6:510:1c1::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BBC136E09;
+	Fri, 14 Jun 2024 19:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718394745; cv=none; b=CqHeSMBnCGNG7HKrz0lhB5J71y+pVtISG6+7DTqKAxZrPGmyr7POLycSrp+jTpYimls2QeuQ1wreoaoktDG2hCO/vXrCHVTXBzvBZyinh6ZwEzhhy0aFdCTtvPrRF6pKr723pCWNJsMpSHoZ2p809tDFW4rxTKxP7z9W0LL7qEQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718394745; c=relaxed/simple;
+	bh=3ay8Bu7Y0avzOGuBDO9yeqyZBsGvD7EF0UukT/5+kLE=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=UZvucvOMJiZYDvzIt3m++rhB6ZPDsYDCNGF6rfZyn4zhxLfOcZNyc9NOHblC+IrNzrTyQYaIkmFazcX8k50wrZatQ+evDNkH8SR8xZdhYyxRnWg0Q6OZWfQE1l8XA9TiAcqiZJAMokmH5YgzYlYEN/q0/GHp6SE8Nyzjuo4C6mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=ssAoF0p/; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1718394739; x=1718999539; i=rwarsow@gmx.de;
+	bh=hIFR4FX61ee6/oi4Gw7rxSf32kMPsrT9yVDVbkAu9RA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:Subject:To:
+	 Cc:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=ssAoF0p/O8DGZmeQzKn8ULY69mtA6F8FwcWdEa9jvxeFQCXD7ndSq93UryZKAJNy
+	 wsDaRQpFmdIMMMc2l+NaUFAIZ7OgS3FdxutUiY9vIqAVgyLIDhyZ10gIbIlOOKOq2
+	 nIdEDCQFmP8sEy1RLIGQfd2F2B88+tuRTANlZmPODOErjpI9gxTb2IbWyWKJEPXfE
+	 9ZlTAeRiJMWruW+V8FsOzPXe8qLVkEPkGwqAtrl8GleAZS3gjgU2bseI9IrY277w9
+	 dJmavBRyddXd2/yEzbD9PuZq1FHXtJyKQ+7cA7/afu9zArrhBOhSxEPktg9tlXoMh
+	 EpoaPCwrNJ3ExE/4RQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.34.197]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MxDkm-1sbue31HyK-00w2wa; Fri, 14
+ Jun 2024 21:52:19 +0200
+Message-ID: <65626dc2-26e8-4eba-8513-e439098d9252@gmx.de>
+Date: Fri, 14 Jun 2024 21:52:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|BN0PR10MB5174:EE_
-X-MS-Office365-Filtering-Correlation-Id: 11080025-1fea-4ba1-b3ce-08dc8ca49865
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230037|7416011|1800799021|376011|366013;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?M2dSQXNGRklNRnI4Q0tBNG1PNktJRjY3clV1Tll1NjYrOXpabHBsbmVHNndV?=
- =?utf-8?B?aTJRdTRIc012d1k0eEtiZ2dxZ0xESXdCZ3ZVTmxrOWQxTDhhMkhPK2J2MnVT?=
- =?utf-8?B?TkM0NTFkTXdmRWZDMjBNOG51dFlsbkVwNlRreFRabmJNMU90bVpRQ1hUQTJu?=
- =?utf-8?B?clovaGVLV2tWaXFCNUo3UDBTakNXK1RSOW9kZnh3MldKL1N0Y2FPSE8yVml5?=
- =?utf-8?B?NGJpOVM1V1I3QmR2OVN4WmZVYzEreEJRMkM0eVQvdUlYU1ZEZmE3UzZPd1Zx?=
- =?utf-8?B?dElPZGRXdm5pTVFJekVHeFo1aklBQnhkMVNHdjhSZ3JoVEN2Y3hVb3BRYm5w?=
- =?utf-8?B?UTZWd0lYTHRzR0ZXTTg2MmtzaFpPTGJqclBHQTVTckpwZndCeHlXUWsvU1VE?=
- =?utf-8?B?M3pvYnU3Z3l0SnNNcE9qOUVZOVUxNUtDS2RrZitLalBaRzBubXVXRHQrRno3?=
- =?utf-8?B?aE5CdzBQeVd4WUpuZEtkK3g3VGRJT2VTV1BCaUgzSEJCQkFMMHorK1pMdGRZ?=
- =?utf-8?B?K29ZRnZlMWEycm5kTW1aMWVjSlN6OE5MNlRUcXFSR0o1OEtVM1BtdHRsd2M1?=
- =?utf-8?B?ZnkxYWxQcnNxamJkRzRZQkc3U3ZJRXFDOG02ZVZtUnQwWFlKejd1OFFxTk5I?=
- =?utf-8?B?dWN4SjFGeTJBcGt3SVpRN09jSzQ1WVY3T3prdllkc2RXRG5VTTJaYUpCakFs?=
- =?utf-8?B?cFFMenFnd2ZHb2NNd20yNjR1QmJ3VXcrTXJIZkZmRGx1M3hzY2ZxanlEZUVQ?=
- =?utf-8?B?YXZYTERzaVpLaVRkZG0xYzY1UGdZOS9GcElrcHlmR2ZzZkFNYnpsb1pkZ0lI?=
- =?utf-8?B?aWFxNEFrMTFLQTlEUXJXaEgzT0FXM3dnNlRWNFJFNENIMGJVV2ZwMGU4K25x?=
- =?utf-8?B?ekRqZDRvZjB4Z1A5dEErZVM3TEpFNU15RFkwbnovRHRSU2w4VXBzZG5HM0RC?=
- =?utf-8?B?NnVvWXkwQ0NzTExCSk9wenFXR09sMlB3ZjVEWGxzVXhiR3Z1N1ZJK3l4bzJK?=
- =?utf-8?B?N3NoQml2K0V1aVVGZzNJZHhOR3kvenRCa0NFL3FvWUhIc3VaVFFDUTc1VENx?=
- =?utf-8?B?aWMrakhiQ0dXTmhubW5wNjFFaUM1K0x0OGQweW1nQzJpYXVOc01kWFJCNXVR?=
- =?utf-8?B?b0RPTXlac3RxcGpKdlhWM2pjTUUzb3hveVJtSE5DclByQnJIZmhvc2UzUFZk?=
- =?utf-8?B?QStsMWdzeHlwVC9EUnc4RGI0VEJZRnRHS0xJYkZ6OWRFLzhuUXBmbjdnLzMr?=
- =?utf-8?B?T043cTJWZ1J2Mk9FMU5zcEdOUXFZT2YxZmZrQ1hOSWRMLzAwZjJzZGVoSkZR?=
- =?utf-8?B?SmxCMVh2Mis3YkJEVjF1UU9xUFY2YlFENGFZbGxWcnVULzBkUE5QUkUzS0da?=
- =?utf-8?B?Q2l2Snk5RWtiQktvK3JmbDg2T0lRNmVwUXdpVW13MGh6cmpPV0JETjdhODd1?=
- =?utf-8?B?a2sveDZDeFRLSHVENHBFb2hVS1F2M1JYeFJKSHdueDlJZm1uS0JTL3QyZlZw?=
- =?utf-8?B?RFhVMWYwTm00Q0tjVzlYWnM5UEdzTHZQV2M3a0JoZ2RTSHlPSWsvYlppT29O?=
- =?utf-8?B?WjZJWnBZaFVVdUlSazhIUTh4MGdscHJsKzAvS0ozNXFHRWpTdVI3YmdoTytU?=
- =?utf-8?B?K0FtRkFXakZXWHRqQTNoSlpSRlRpRDV3WENhMmZhVzBqUDREV09ZTWx0M0ZH?=
- =?utf-8?Q?2GKyVUffu9SEn46vnxc4?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(7416011)(1800799021)(376011)(366013);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?TVZnbkN5WTB5WUZCdFFYM1RyTU1EZVhNd1dOeTFLQ0FralZISWxyTjJBVWR4?=
- =?utf-8?B?K242SFNtMU4vWVl5bGg3ZHdZYWtZZklnMVkwRHQwaEh6bWwra3U1ZmJRNzFS?=
- =?utf-8?B?VjMzNHJ5c25IbHBoUlh1YzJmSFdtS1Ayek5nK2ZxSGwwNFFjT2EzTDI4ZWxN?=
- =?utf-8?B?Qkl5Ri9ZOEc2eVpWZzVqeHBvQ3pBWVErWjBFLzhtQmVYSXY5NWxBYUhvWFd0?=
- =?utf-8?B?L3JIVGM4dDNWb1FUNllXRjNrZkZQbFpXcHhzRFAzWVBPR2w3dHJhdW5ROVZu?=
- =?utf-8?B?ZW1vUUVxMU1sZFpWRHFjeklBS3BTNDMySXdvNmhBMzRmK2xMTzJWM3hmUFNs?=
- =?utf-8?B?dFZHUXl6MUZUc0t2czJTa1JCVU9XaEc4MUFFaVF1WW9jei9waGtBNXExb3gz?=
- =?utf-8?B?cU1sbXMxYUI2SHlyWGRvS1pGUEhYMEJlMjZmT1FidWJxRXpZU0VBb2Q0blNI?=
- =?utf-8?B?YjVuN2ZyWXNhYUtWQ1FzSnpHWEk2S1RwV0c3VFp5T3JXa1BEdzhxNGk1Z0dI?=
- =?utf-8?B?SFovWU9FNHhqQ0NldFgxMGlwRCtXelNNMzE3SVlPaERCWC9kMlhieVdNZEtq?=
- =?utf-8?B?aC9scW5nRzZSakNLT0JxMTRNeUpyNDFTOENUZERTb216SElKdnR5aG43UU9I?=
- =?utf-8?B?SnlqZEJlckJ3QWpIMy96T3cwVTVIRDNPalJxS09VUTFlSWp6dkpzS1d3SWNB?=
- =?utf-8?B?VE9wUTluMGhSTUhwNldrMTBDUUh0RlU3OU43ZGxacVNKRnRyUmNiZkJZMWUv?=
- =?utf-8?B?Um5IOS9FUTRYbHQzYTA2TEI1ald1a25Yb0ZuejZvSkxWTnZTS3MyVHpxc0RP?=
- =?utf-8?B?bEhaOC9pRW5mTGJHSlptd1ZsLzc3Njl1RG1vT1JQOCsrUGtlR0lRZUIwTFhp?=
- =?utf-8?B?QWlXd3kzSGZtSnBIS2N1WVg3Mi85Yi9mL0JTQllIeFlZdFJsdCtWSlhlVzd6?=
- =?utf-8?B?cVI4eS96MExHbWpvci9aNnJEV0prNUhQRTJ5aytaTjRIWDJNb3hTV2V6TytF?=
- =?utf-8?B?SVJKak1nK0w3K2UrUE94T2ZWNXlDdTVFR3h2VFducFhCY0drUnZVWjJJdUl3?=
- =?utf-8?B?VDZORFJRR05aV3R5ZjJjRlRoSGFzd0E0UWQrc1dFNHd1Z1VVNG1rSWwySmho?=
- =?utf-8?B?VnNEcUk0MTJDVjhqRC9OTVpBQjlZaXJwK041c2ZnR1U2MjdCZFJCRkEzQ2Ji?=
- =?utf-8?B?bWdFSmhuTHZIZ3Z1bXN1SmgrNy9pVjZiRFlTNDhxcnpVRUlYR1RxN3pONklM?=
- =?utf-8?B?QkgvbHJydGtzRS9GMnFZRWhsRTFnV045Tm1rOFNMbGFXT0NoSkdRaUhlaU1n?=
- =?utf-8?B?MDdmKzdXV1NMaGFYMVR2NUNDRDlIMzFwN1Y3bGtFUVRWYjZjbngvMklRcHhx?=
- =?utf-8?B?R0hRamlYYUF6dHl1dXVDUzd3SU9PTkNpeHg0ZUtobXphRkdWUzR2YlR5TEFR?=
- =?utf-8?B?N0FtbE5SemdiemEvSHR1SHhKTkJlaE9RbXYzQzZoVnFKT3lacEUxUUNBbUxm?=
- =?utf-8?B?M2hHalpxa09Rd3ErOGI2UEEzdVIzVUlPTmJqaENja0psRmVLWmpWcXMrVWdO?=
- =?utf-8?B?SENNSnVaN2liSXJsMFlvbjZKUFN3aTlibStGZUJ4M3R0V1M5Q1lDVm5jcGRB?=
- =?utf-8?B?QUtYZ1RDQzd5YjYwOFNYYlp2UnBYVlRCZGJFNFFOazJDYkREUDFIQXVoVkMx?=
- =?utf-8?B?Ukk0aUhleFZpMzhDQUIrV0xRU1QwTGVTRHVFVVQ4VU9xNmQveWYxeTJack1C?=
- =?utf-8?B?Yzg3MWZmZ204NmtnZnVPbXk3UkFRWjF6QVM2bnFhajkzbUZtaE54cGpCTmlB?=
- =?utf-8?B?QzM4VU1VL1AxSHRmUHpURDRTVm9rc1lTcXY0NnovQVp6QXZraU42RHNZQVRx?=
- =?utf-8?B?b3JkQUgwSXNRbEVjKzhMRFgwdzJLVXgvaEd0dWtWUVBtdlN3TTFsYUxjTkU3?=
- =?utf-8?B?enA3OVB0aUVNcVlHV1lMRTcvN1kxOFR3OHZIWmxVUk1MQTZkZDlHeTIyVUlW?=
- =?utf-8?B?MUhXNk1ad1EyZVJVclVoZmlSemprVDRDS2ZRbnBRM1hlYnhVR2dpQzBXQllK?=
- =?utf-8?B?ZWdra2xwdXNsY0E3V29HY0kzZmt2djkwaHl1dmplYk5WV0gvMUpvazNvMnpi?=
- =?utf-8?B?THlMZk1Mb1p5bnVwbWx5OEtrM1NLWVBhZ1AzdlhWMDZMSnhEOWUrenZIamRj?=
- =?utf-8?Q?OPV8CBrI7f35+oKylhQQXTM=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	X4Oj6xH+IJOePJS7ztYoh43xHBI9uhKIGHifureIz4BWFd1+NJgxm+nODlXDxA6CtOo6kEQf9WcZyk0xquz0pJli0ZMZPjzn7ZGRZEUyejRxYD8/7Ef4WK7wpWx75NQ39pSaKbVTnXVAvIqwteu9juiW9QQD8GaTcdM75LErxs35IoZGtFLMk82m3Abu3z2pHvcbC8q73m5Eu4k1p1YY7ZoUSZs2w+dyNAGHWIf9dfCsQeuWztP4KcfUxCao3hpAGVN3Uk5wkc4iIJ+ZNnokZ9UwTtgL22BAX8pQAwfOFit1aABEhdlgtAkzGKz3UEy287JhhMkAxHvubjDp91HDmsqK57cBLKwlGh1rmBVxst3qtHgxCSDoImDy+DaQQPpTREkGuK9DoZLudzA5vp59zAnmtd3azq4yVdh3yd7N+MWSfuZEioBCHrfH3LEDhGIg8zrT8tTOPgkmoYHJoG0sZ5bEH5OmUbU95nhOEM9ct4qHI+lmkW8o6iKsEBqBe8aHOTtbRl2kbyDb0e5n62rZSMGl85JKgTdfiuHCawVkDC2xcCrCGSv0hGdNcO8z4qGNA3IMzl5w17ermppTRRGB3e50Zqxtx5eK3F93Ov2DNi8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 11080025-1fea-4ba1-b3ce-08dc8ca49865
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jun 2024 19:02:54.2384
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3JUJwTu0tO+Sa3avZVMI4oz/qPJjgSgbZDOq8nw2DeY0YpjIij/l6Fag1l6i221dNuYNYlclZZfpvvOcYmmJh6EpCF8MbZIXhDdWeeE5IghzuNoPLnbJeqM0y8kks5AA
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB5174
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-14_15,2024-06-14_03,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
- mlxlogscore=999 bulkscore=0 suspectscore=0 spamscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2406140131
-X-Proofpoint-GUID: d_lSTVjPIEhY5dmQsDijH0oiseJnA_-9
-X-Proofpoint-ORIG-GUID: d_lSTVjPIEhY5dmQsDijH0oiseJnA_-9
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+Subject: Re: [PATCH 6.9 000/157] 6.9.5-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:bme0tHAHBnF9zmJ8sMRtQRB9tQwtVy86jI2l4hkwQOpiRdU3OXz
+ 1Zvm5b6fSCwmdaUlqN3RKu1DAZG1wL6l9QkYtJiTkrG+RN4Wsps9f+T6o1T+dhErIvhBHfB
+ /HHjcNKl2IJsA7cBRL4XJtbNjIpfBaDPBflsbGgO8FoJYN4WNwEb/rNnM0mYN6FOd8TvB/R
+ W6urI351BwJkKZnA1uLLA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:MWILO5Hvsqs=;xl3JTa68SvUh1zPYGRZBbbeEdI3
+ LEpeObmDwceGe8/fwwhhJrqG7DkjL/eMrotAFaLuunGzUHBqXNmTfYnQKp8pQGd0bYlcri/dZ
+ ToPNUVNzzyDxna+i2mf0RWfiv4uyZU4EejwGVcuHhai6pHNY2MzijWaQIk1yG/dlYeMhhD8Bq
+ JID1tH412D14QGD8WW9csgXJgzUPakFvgldjMRifGzPT6JO87V6f6v8bP6ep3AQaMYDMPSAxg
+ UU2zrDZkd1jpcyUd9DelIyaJcqWFfDefpm/K3MTbX1ItW+plxM8wwQj4yctFBVMP1kCyibL7N
+ hfJoHSVQLQ/KZl/ofjHr51DUY69Yb9TIQOrt/zKzUHHh9h34A1YZiogQLXy83PhYvwLgloL5+
+ ZRoIc6C13g4XDw/BSCYnFtOtbZr22jpFwsAPpGWZnCb0vVLglb1SJ4uutgwg4Rziwxudy2jHZ
+ Sw7CB1EU8TsxCCTCROeKBdQXVAyS0QzBaNDgdHupjjMaYavNO+lzhors8ypj76Urd/gL8DFbS
+ HMJkcQMmwpBpOixRkCi2JQerqq/o8biD2ESL457W0UrD0K3CNY8Riw82OfOJ4OpYdWzYVvEla
+ 0jPMSi6sMNY7yy6pV57VFmWcow/VT41NGuzi6lI+kY+AgqtLs1HSH5UPfj7Xv55KkOoq+B+Z2
+ BcThmAgKIL37s5xFusezK0wcLfpX49nan/tX+KyWWKsM34jxzDDPXn/tXiLNttudOP+L0VFBT
+ X+bNLDORkKL5/4l+7hHxtNd7C1NK9uTt21JLLEmF3Erju7RGJYW+4PzTAldev5OqenrOSDmSs
+ oQ9w4gFZOt696XduCJ2C0DlEzD0XuNgM65uWAVjgxBgsI=
 
-On 13/06/24 17:00, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 4.19.316 release.
-> There are 213 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
+Hi Greg
 
-Hi Greg,
++++ Update +++
+
+the below crash seems to only to happen with mesa-24.1.x
+mesa-24.0.9 is fine
+
+filled a bug report:
+
+https://bugzilla.redhat.com/show_bug.cgi?id=3D2292434
 
 
-No problems seen on x86_64 and aarch64 with our testing.
+=3D=3D=3D=3D
 
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Jun 13 18:49:22 obelix.fritz.box kernel: RIP:
+0010:drm_suballoc_free+0x13/0x110 [drm_suballoc_helper]
+Jun 13 18:49:22 obelix.fritz.box kernel: Code: eb ce 0f 1f 44 00 00 90
+90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 48 85 ff 0f 84 e1 00 00 00
+41 54 55 48 89 fd 53 48 89 f3 <4c> 8b 67 20 4c 89 e7 e8 61 53 bd e2 48
+85 db 0f 84 9f 00 00 00 48
+Jun 13 18:49:22 obelix.fritz.box kernel: RSP: 0018:ffff9caa851f7630
+EFLAGS: 00010286
+Jun 13 18:49:22 obelix.fritz.box kernel: RAX: fffffffffffffe00 RBX:
+0000000000000000 RCX: 000000000000890b
+Jun 13 18:49:22 obelix.fritz.box kernel: RDX: 00000000000088fb RSI:
+0000000000000000 RDI: fffffffffffffe00
+Jun 13 18:49:22 obelix.fritz.box kernel: RBP: fffffffffffffe00 R08:
+0000000000000000 R09: 0000000000000001
+Jun 13 18:49:22 obelix.fritz.box kernel: R10: 0000000000000000 R11:
+0000000000000180 R12: ffff8ebf913c1158
+Jun 13 18:49:22 obelix.fritz.box kernel: R13: fffffffffffffe00 R14:
+ffff9caa851f78a8 R15: ffff8ebf913c0000
+Jun 13 18:49:22 obelix.fritz.box kernel: FS:  00007fd4f4640b00(0000)
+GS:ffff8ec2cf980000(0000) knlGS:0000000000000000
+Jun 13 18:49:22 obelix.fritz.box kernel: CS:  0010 DS: 0000 ES: 0000
+CR0: 0000000080050033
+Jun 13 18:49:22 obelix.fritz.box kernel: CR2: fffffffffffffe20 CR3:
+0000000110bc4001 CR4: 0000000000770ef0
+Jun 13 18:49:22 obelix.fritz.box kernel: PKRU: 55555554
+Jun 13 18:49:22 obelix.fritz.box kernel: Call Trace:
+Jun 13 18:49:22 obelix.fritz.box kernel:  <TASK>
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? __die_body.cold+0x19/0x2c
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? page_fault_oops+0x155/0x280
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? search_module_extables+0x10/0x=
+50
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? search_bpf_extables+0x56/0x80
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? exc_page_fault+0x7a/0x80
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? asm_exc_page_fault+0x22/0x30
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? drm_suballoc_free+0x13/0x110
+[drm_suballoc_helper]
+Jun 13 18:49:22 obelix.fritz.box kernel:
+xe_migrate_update_pgtables+0x692/0x9b0 [xe]
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? kmalloc_trace+0x11f/0x2d0
+Jun 13 18:49:22 obelix.fritz.box kernel:  __xe_pt_bind_vma+0x492/0xbe0 [xe=
+]
+Jun 13 18:49:22 obelix.fritz.box kernel:  xe_vm_bind_vma+0xa6/0x2e0 [xe]
+Jun 13 18:49:22 obelix.fritz.box kernel:  xe_vm_bind+0xf3/0x200 [xe]
+Jun 13 18:49:22 obelix.fritz.box kernel: __xe_vma_op_execute+0x278/0x490
+[xe]
+Jun 13 18:49:22 obelix.fritz.box kernel:  xe_vm_bind_ioctl+0x1ce0/0x1f20
+[xe]
+Jun 13 18:49:22 obelix.fritz.box kernel:  ?
+__pfx_xe_vm_bind_ioctl+0x10/0x10 [xe]
+Jun 13 18:49:22 obelix.fritz.box kernel:  drm_ioctl_kernel+0xa7/0x100 [drm=
+]
+Jun 13 18:49:22 obelix.fritz.box kernel:  drm_ioctl+0x312/0x5c0 [drm]
+Jun 13 18:49:22 obelix.fritz.box kernel:  ?
+__pfx_xe_vm_bind_ioctl+0x10/0x10 [xe]
+Jun 13 18:49:22 obelix.fritz.box kernel:  __x64_sys_ioctl+0x40d/0xb70
+Jun 13 18:49:22 obelix.fritz.box kernel:  do_syscall_64+0x7a/0x160
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? __x64_sys_ioctl+0x13e/0xb70
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? __count_memcg_events+0x43/0xb0
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? handle_mm_fault+0x1f9/0x300
+Jun 13 18:49:22 obelix.fritz.box kernel:  ?
+syscall_exit_to_user_mode+0x68/0x1e0
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? do_syscall_64+0x86/0x160
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? clear_bhb_loop+0x45/0xa0
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? clear_bhb_loop+0x45/0xa0
+Jun 13 18:49:22 obelix.fritz.box kernel:  ? clear_bhb_loop+0x45/0xa0
+Jun 13 18:49:22 obelix.fritz.box kernel:
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+Jun 13 18:49:22 obelix.fritz.box kernel: RIP: 0033:0x7fd4f4d23d2d
+Jun 13 18:49:22 obelix.fritz.box kernel: Code: 04 25 28 00 00 00 48 89
+45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00 00 00 48 89 45 b8 48 8d 45 d0 48
+89 45 c0 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1a 48 8b 45 c8
+64 48 2b 04 25 28 00 00 00
+Jun 13 18:49:22 obelix.fritz.box kernel: RSP: 002b:00007fff94738650
+EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+Jun 13 18:49:22 obelix.fritz.box kernel: RAX: ffffffffffffffda RBX:
+00007fff94738710 RCX: 00007fd4f4d23d2d
+Jun 13 18:49:22 obelix.fritz.box kernel: RDX: 00007fff94738710 RSI:
+0000000040886445 RDI: 0000000000000010
+Jun 13 18:49:22 obelix.fritz.box kernel: RBP: 00007fff947386a0 R08:
+0000000000001000 R09: 0000000000000000
+Jun 13 18:49:22 obelix.fritz.box kernel: R10: 0000555a7a0fded0 R11:
+0000000000000246 R12: 0000000000000010
+Jun 13 18:49:22 obelix.fritz.box kernel: R13: 0000000000000000 R14:
+0000555a78671160 R15: 0000555a7a234fa0
+Jun 13 18:49:22 obelix.fritz.box kernel:  </TASK>
+Jun 13 18:49:22 obelix.fritz.box kernel: Modules linked in:
+vboxnetadp(OE) vboxnetflt(OE) vboxdrv(OE) rfcomm nft_fib_inet
+nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4
+nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack
+nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables bnep iwlmvm mac80211
+libarc4 snd_hda_codec_hdmi intel_rapl_common kvm_intel iwlwifi
+snd_hda_codec_realtek kvm btusb snd_hda_codec_generic btintel
+snd_hda_scodec_component bluetooth snd_hda_intel cfg80211
+snd_intel_dspcfg snd_hda_codec snd_hda_core mei_hdcp mei_pxp rfkill
+nfnetlink xe drm_ttm_helper ttm agpgart i2c_algo_bit gpu_sched drm_buddy
+drm_suballoc_helper drm_gpuvm drm_exec drm_display_helper drm_kms_helper d=
+rm
+Jun 13 18:49:22 obelix.fritz.box kernel: CR2: fffffffffffffe20
+Jun 13 18:49:22 obelix.fritz.box kernel: ---[ end trace 0000000000000000
+]---
+Jun 13 18:49:22 obelix.fritz.box kernel: RIP:
+0010:drm_suballoc_free+0x13/0x110 [drm_suballoc_helper]
+Jun 13 18:49:22 obelix.fritz.box kernel: Code: eb ce 0f 1f 44 00 00 90
+90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 48 85 ff 0f 84 e1 00 00 00
+41 54 55 48 89 fd 53 48 89 f3 <4c> 8b 67 20 4c 89 e7 e8 61 53 bd e2 48
+85 db 0f 84 9f 00 00 00 48
+Jun 13 18:49:22 obelix.fritz.box kernel: RSP: 0018:ffff9caa851f7630
+EFLAGS: 00010286
+Jun 13 18:49:22 obelix.fritz.box kernel: RAX: fffffffffffffe00 RBX:
+0000000000000000 RCX: 000000000000890b
+Jun 13 18:49:22 obelix.fritz.box kernel: RDX: 00000000000088fb RSI:
+0000000000000000 RDI: fffffffffffffe00
+Jun 13 18:49:22 obelix.fritz.box kernel: RBP: fffffffffffffe00 R08:
+0000000000000000 R09: 0000000000000001
+Jun 13 18:49:22 obelix.fritz.box kernel: R10: 0000000000000000 R11:
+0000000000000180 R12: ffff8ebf913c1158
+Jun 13 18:49:22 obelix.fritz.box kernel: R13: fffffffffffffe00 R14:
+ffff9caa851f78a8 R15: ffff8ebf913c0000
+Jun 13 18:49:22 obelix.fritz.box kernel: FS:  00007fd4f4640b00(0000)
+GS:ffff8ec2cf980000(0000) knlGS:0000000000000000
+Jun 13 18:49:22 obelix.fritz.box kernel: CS:  0010 DS: 0000 ES: 0000
+CR0: 0000000080050033
+Jun 13 18:49:22 obelix.fritz.box kernel: CR2: fffffffffffffe20 CR3:
+0000000110bc4001 CR4: 0000000000770ef0
+Jun 13 18:49:22 obelix.fritz.box kernel: PKRU: 55555554
+Jun 13 18:49:22 obelix.fritz.box kernel: note: Xorg[3657] exited with
+irqs disabled
 
-Thanks,
-Harshit
 
 
-> Responses should be made by Sat, 15 Jun 2024 11:31:50 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.316-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
 
