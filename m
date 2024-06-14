@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-52145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E24908416
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 08:59:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83616908417
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 08:59:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F64328278F
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 06:59:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18DF62827D3
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 06:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F5C1487C3;
-	Fri, 14 Jun 2024 06:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059AA1487D6;
+	Fri, 14 Jun 2024 06:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="Vx1ZygzM"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="hhdv5+Zf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35541148313
-	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 06:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01F3148313
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 06:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718348337; cv=none; b=E82UxQHX17r1zA9wzRYAA+ayaY/aYT2FQ0ILrkvL1fUhw+79kVoH/1aDysMkobWSzPcx3xfyiKLxFOc8eGcJ+P+wDC4uq1hKt2px7YmLKXkiPjjM4i9RssJ8t0j03HW4YlED7yze9BTu75tWILblCOBLHXRlX84MRHUt7AMuqF8=
+	t=1718348340; cv=none; b=CuZ6uyGJtjT36ZXGxvLPvd8HuWnA/va6pQzcA3AWGBiFhDTxpYDy9RCfAGa4HiWOd338r9koQ0v4qNaLaQXlYXf3UosIi5T0kJkd0bkZOc742pvTA/xSOcEDCQikcCshjkQUqAalLYTpQwUZor0kwde3QIqxmkOAlq7NQcVYyI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718348337; c=relaxed/simple;
-	bh=qszL1L9c9EbOMOylJ0VdwBE243cH1tkr3ICnjarkhyk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dBfr8xXgpxYD50pmYILzDhIOI13gD0df+OlB3z4tN86lxA93lX980TWU949XDjli3MOb6VaHx8cSBgjEK2aE4feS3N2vpNAOzotd+SwymyouajJjmoYgXJJJedmvy6J+exEqA9IiM4z2mNg2vA3DGMANDfcjmYBwdvLo/rWDAho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=Vx1ZygzM; arc=none smtp.client-ip=185.125.188.121
+	s=arc-20240116; t=1718348340; c=relaxed/simple;
+	bh=495W13VAzGSnmElysto0hx912kD0/UmYGQLl1cLiK9Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nTmIUCUQNSSbwchKZg80yF6I3jKThpNJ1ipnITkWhODkiItKDNXWoEUUH9WANIkxcQTI2dG0Vx9jBu9zIgsd+5x6r02zXtKMJ76LpaEL6Gea28Ehe3ke9PAX2lIeZTzDNc6sMOq3HZNrOz3HmNWamBorQ6lyS0GYkC8tHvwgRDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=hhdv5+Zf; arc=none smtp.client-ip=185.125.188.121
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Received: from Phocidae.conference (1.general.phlin.uk.vpn [10.172.194.38])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 474063F951;
-	Fri, 14 Jun 2024 06:58:41 +0000 (UTC)
+	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 539643FE0A;
+	Fri, 14 Jun 2024 06:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1718348326;
-	bh=S0teeVlKmglVvcuyioyx9alD3K35oMO/MjwpirH5oXM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-	b=Vx1ZygzMuDFq8bDip2vEz0eO967rdFEAlX65BsMSVGXcTeSjohm/z/2ADaLixMYTk
-	 MVkx1OFlc2EyZeokz5gMLxSQf+7pQQMhv2MUWX8oT+MoXHXrgB/sKxJ3W351aDBBTS
-	 FBCHFIHKHQdk+xtoMWiTOuXGVM3/8hz7nl2kqRrldWc6uY5UIfjgRfu/ab3Kwb+N7v
-	 xkUbrmy3ws63MCmtSAejblaftg0cq0LV2hFvUmOaUCtQ9Bigj5uw4ewuwcDDysz4oo
-	 dF+mDRvK5wy5a61LYYCUjB2Lkcd4Cg4G+O24a9s98sgtKhkTAF7Tty2HbaQpaB5q4R
-	 kj2qUqxRC/quQ==
+	s=20210705; t=1718348330;
+	bh=Yy89x8yKC0BlIUHDwmSZMmszcpGI/5eFaC7CAM9iTsg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version;
+	b=hhdv5+ZfyJI8WltuZeYvEtsmMBiDOsOWLxtzRI71gdMiQpECKGfutkqEtPOGPMuj/
+	 l58r0s9jMmygjixA/wcjzp3Wrg1ouXr/v7u2vAWDOrSWAkdp+Pdd0gKTDilIuX8Axf
+	 q2JJldxjK8t7BNXZlFPpK6S4CkfHuuHoWd6vcYnlKEWeWSY3EjdvgynLWmE9rao1eP
+	 TYmRYA+aG7XBe+FoUuBKIOAcHE1n2k/81S348u4LNQn+L25EMx+vAXkvAKrKV/8uBt
+	 0yCHHH4lGkFWm+nXcg6pp9dyLLgG0ZpOABOR/1nIXlLpbzIfEKtTpaeqoJrmQtj2Wz
+	 4mGby+yj3cSjQ==
 From: Po-Hsu Lin <po-hsu.lin@canonical.com>
 To: stable@vger.kernel.org
 Cc: po-hsu.lin@canonical.com,
@@ -54,10 +56,12 @@ Cc: po-hsu.lin@canonical.com,
 	liuhangbin@gmail.com,
 	pabeni@redhat.com,
 	kuba@kernel.org
-Subject: [PATCH 6.6.y 0/2] Fix missing lib.sh for net/unicast_extensions.sh and net/pmtu.sh tests
-Date: Fri, 14 Jun 2024 14:58:18 +0800
-Message-Id: <20240614065820.865974-1-po-hsu.lin@canonical.com>
+Subject: [PATCH 6.6.y 1/2] selftests/net: add lib.sh
+Date: Fri, 14 Jun 2024 14:58:19 +0800
+Message-Id: <20240614065820.865974-2-po-hsu.lin@canonical.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240614065820.865974-1-po-hsu.lin@canonical.com>
+References: <20240614065820.865974-1-po-hsu.lin@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,35 +70,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since upstream commit:
-  * 0f4765d0 "selftests/net: convert unicast_extensions.sh to run it in
-    unique namespace"
-  * 378f082e "selftests/net: convert pmtu.sh to run it in unique namespace"
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-The lib.sh from commit 25ae948b "selftests/net: add lib.sh" will be needed.
-Otherwise these test will complain about missing files and fail:
-$ sudo ./unicast_extensions.sh
-./unicast_extensions.sh: line 31: lib.sh: No such file or directory
-...
+commit 25ae948b447881bf689d459cd5bd4629d9c04b20 upstream.
 
-$ sudo ./pmtu.sh
-./pmtu.sh: line 201: lib.sh: No such file or directory
-./pmtu.sh: line 941: cleanup_all_ns: command not found
-...
+Add a lib.sh for net selftests. This file can be used to define commonly
+used variables and functions. Some commonly used functions can be moved
+from forwarding/lib.sh to this lib file. e.g. busywait().
 
-Another commit b6925b4e "selftests/net: add variable NS_LIST for lib.sh" is
-needed to add support for the cleanup_all_ns above.
+Add function setup_ns() for user to create unique namespaces with given
+prefix name.
 
-Hangbin Liu (2):
-  selftests/net: add lib.sh
-  selftests/net: add variable NS_LIST for lib.sh
-
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+---
  tools/testing/selftests/net/Makefile          |  2 +-
- tools/testing/selftests/net/forwarding/lib.sh | 27 +-------
- tools/testing/selftests/net/lib.sh            | 93 +++++++++++++++++++++++++++
- 3 files changed, 95 insertions(+), 27 deletions(-)
+ tools/testing/selftests/net/forwarding/lib.sh | 27 +--------
+ tools/testing/selftests/net/lib.sh            | 85 +++++++++++++++++++++++++++
+ 3 files changed, 87 insertions(+), 27 deletions(-)
  create mode 100644 tools/testing/selftests/net/lib.sh
 
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index de4506e..7dbdc5e 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -54,7 +54,7 @@ TEST_PROGS += ip_local_port_range.sh
+ TEST_PROGS += rps_default_mask.sh
+ TEST_PROGS += big_tcp.sh
+ TEST_PROGS_EXTENDED := in_netns.sh setup_loopback.sh setup_veth.sh
+-TEST_PROGS_EXTENDED += toeplitz_client.sh toeplitz.sh
++TEST_PROGS_EXTENDED += toeplitz_client.sh toeplitz.sh lib.sh
+ TEST_GEN_FILES =  socket nettest
+ TEST_GEN_FILES += psock_fanout psock_tpacket msg_zerocopy reuseport_addr_any
+ TEST_GEN_FILES += tcp_mmap tcp_inq psock_snd txring_overwrite
+diff --git a/tools/testing/selftests/net/forwarding/lib.sh b/tools/testing/selftests/net/forwarding/lib.sh
+index e37a15e..8f6ca45 100755
+--- a/tools/testing/selftests/net/forwarding/lib.sh
++++ b/tools/testing/selftests/net/forwarding/lib.sh
+@@ -4,9 +4,6 @@
+ ##############################################################################
+ # Defines
+ 
+-# Kselftest framework requirement - SKIP code is 4.
+-ksft_skip=4
+-
+ # Can be overridden by the configuration file.
+ PING=${PING:=ping}
+ PING6=${PING6:=ping6}
+@@ -41,6 +38,7 @@ if [[ -f $relative_path/forwarding.config ]]; then
+ 	source "$relative_path/forwarding.config"
+ fi
+ 
++source ../lib.sh
+ ##############################################################################
+ # Sanity checks
+ 
+@@ -395,29 +393,6 @@ log_info()
+ 	echo "INFO: $msg"
+ }
+ 
+-busywait()
+-{
+-	local timeout=$1; shift
+-
+-	local start_time="$(date -u +%s%3N)"
+-	while true
+-	do
+-		local out
+-		out=$("$@")
+-		local ret=$?
+-		if ((!ret)); then
+-			echo -n "$out"
+-			return 0
+-		fi
+-
+-		local current_time="$(date -u +%s%3N)"
+-		if ((current_time - start_time > timeout)); then
+-			echo -n "$out"
+-			return 1
+-		fi
+-	done
+-}
+-
+ not()
+ {
+ 	"$@"
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+new file mode 100644
+index 00000000..518eca5
+--- /dev/null
++++ b/tools/testing/selftests/net/lib.sh
+@@ -0,0 +1,85 @@
++#!/bin/bash
++# SPDX-License-Identifier: GPL-2.0
++
++##############################################################################
++# Defines
++
++# Kselftest framework requirement - SKIP code is 4.
++ksft_skip=4
++
++##############################################################################
++# Helpers
++busywait()
++{
++	local timeout=$1; shift
++
++	local start_time="$(date -u +%s%3N)"
++	while true
++	do
++		local out
++		out=$("$@")
++		local ret=$?
++		if ((!ret)); then
++			echo -n "$out"
++			return 0
++		fi
++
++		local current_time="$(date -u +%s%3N)"
++		if ((current_time - start_time > timeout)); then
++			echo -n "$out"
++			return 1
++		fi
++	done
++}
++
++cleanup_ns()
++{
++	local ns=""
++	local errexit=0
++	local ret=0
++
++	# disable errexit temporary
++	if [[ $- =~ "e" ]]; then
++		errexit=1
++		set +e
++	fi
++
++	for ns in "$@"; do
++		ip netns delete "${ns}" &> /dev/null
++		if ! busywait 2 ip netns list \| grep -vq "^$ns$" &> /dev/null; then
++			echo "Warn: Failed to remove namespace $ns"
++			ret=1
++		fi
++	done
++
++	[ $errexit -eq 1 ] && set -e
++	return $ret
++}
++
++# setup netns with given names as prefix. e.g
++# setup_ns local remote
++setup_ns()
++{
++	local ns=""
++	local ns_name=""
++	local ns_list=""
++	for ns_name in "$@"; do
++		# Some test may setup/remove same netns multi times
++		if unset ${ns_name} 2> /dev/null; then
++			ns="${ns_name,,}-$(mktemp -u XXXXXX)"
++			eval readonly ${ns_name}="$ns"
++		else
++			eval ns='$'${ns_name}
++			cleanup_ns "$ns"
++
++		fi
++
++		if ! ip netns add "$ns"; then
++			echo "Failed to create namespace $ns_name"
++			cleanup_ns "$ns_list"
++			return $ksft_skip
++		fi
++		ip -n "$ns" link set lo up
++		ns_list="$ns_list $ns"
++	done
++}
 -- 
 2.7.4
 
