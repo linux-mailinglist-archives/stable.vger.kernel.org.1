@@ -1,112 +1,101 @@
-Return-Path: <stable+bounces-52144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53E45908411
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 08:58:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E24908416
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 08:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08C5E1F21E84
-	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 06:58:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F64328278F
+	for <lists+stable@lfdr.de>; Fri, 14 Jun 2024 06:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EAA1487DC;
-	Fri, 14 Jun 2024 06:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F5C1487C3;
+	Fri, 14 Jun 2024 06:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="J/Ejub4t"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="Vx1ZygzM"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C403142E80;
-	Fri, 14 Jun 2024 06:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35541148313
+	for <stable@vger.kernel.org>; Fri, 14 Jun 2024 06:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718348308; cv=none; b=fZzfmF/7v6tO7gmLfZGHZRhUt/iBSasrveIkG+O9VlMNM/AurWmmW7J/U176CqyFhcXgk+oWs5jYxPgT1iENvd/n+yD9Cv5RQ+D5VWgGxILc6fSZH7h32gv79BFZoeiiSXezmgR6XSXaryA3/7gpubakXPDGOrL51XgEns4jaXA=
+	t=1718348337; cv=none; b=E82UxQHX17r1zA9wzRYAA+ayaY/aYT2FQ0ILrkvL1fUhw+79kVoH/1aDysMkobWSzPcx3xfyiKLxFOc8eGcJ+P+wDC4uq1hKt2px7YmLKXkiPjjM4i9RssJ8t0j03HW4YlED7yze9BTu75tWILblCOBLHXRlX84MRHUt7AMuqF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718348308; c=relaxed/simple;
-	bh=f9L8+HOT1POEI+Paq5nOZlp5/3RRH8cDd8FQ8Ps8UvE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ool5F38yDEWUhEPULa1jFAgnZRD249/IYHA2VqhCC0WDguvtfb3VRdXCD5wG8OvXMKsJeoX3b8tbpyyvScNKL0xxI5sbbAwZeTw+0xDWtUfUB2zyXFFOLU0rVWjFfQzljdzMrXLUOVPs+vrzAszowiz0ZrRPDDDh7srsDSSOveE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=J/Ejub4t; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=f8MUtOuGI0H7AJa9ICP7hY51hweem6+bRBdc+smOw7E=;
-	t=1718348306; x=1718780306; b=J/Ejub4tOpQ6JNA4Gzim5xjhcD+Jh56J8NfE69WesEYnTu5
-	htg32CnFFwAXl32grlomFc9ISSM+GPiR16FzUM/Z7ftsECwY0a30JqmPjQspBIkw+JCUUb+V43+BR
-	AOhF+V2ntgeUVFG2/n0nR8KTKZUfXEINDMUeRzZDX9vcSAdc8/PRzTVWmBxpwTPZpn8fnPI9Rq8ve
-	YrDRWwsRJoMmIc77lzZOP/PSdhF2+k770/HrvzBxnsPKw26FrvvnwBMZxj7r1VJ86dqQmt5DhD1qc
-	ag7kWp6ucQUyHjwMMBKLwqf/7k0yLkTZr6jMRR1WcIovWrNSrdwU8X/QtRWY+JPA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sI0tC-00064y-E5; Fri, 14 Jun 2024 08:58:22 +0200
-Message-ID: <6dcfa590-8d09-4d3a-9c35-0294099489ed@leemhuis.info>
-Date: Fri, 14 Jun 2024 08:58:11 +0200
+	s=arc-20240116; t=1718348337; c=relaxed/simple;
+	bh=qszL1L9c9EbOMOylJ0VdwBE243cH1tkr3ICnjarkhyk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dBfr8xXgpxYD50pmYILzDhIOI13gD0df+OlB3z4tN86lxA93lX980TWU949XDjli3MOb6VaHx8cSBgjEK2aE4feS3N2vpNAOzotd+SwymyouajJjmoYgXJJJedmvy6J+exEqA9IiM4z2mNg2vA3DGMANDfcjmYBwdvLo/rWDAho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=Vx1ZygzM; arc=none smtp.client-ip=185.125.188.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from Phocidae.conference (1.general.phlin.uk.vpn [10.172.194.38])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 474063F951;
+	Fri, 14 Jun 2024 06:58:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1718348326;
+	bh=S0teeVlKmglVvcuyioyx9alD3K35oMO/MjwpirH5oXM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+	b=Vx1ZygzMuDFq8bDip2vEz0eO967rdFEAlX65BsMSVGXcTeSjohm/z/2ADaLixMYTk
+	 MVkx1OFlc2EyZeokz5gMLxSQf+7pQQMhv2MUWX8oT+MoXHXrgB/sKxJ3W351aDBBTS
+	 FBCHFIHKHQdk+xtoMWiTOuXGVM3/8hz7nl2kqRrldWc6uY5UIfjgRfu/ab3Kwb+N7v
+	 xkUbrmy3ws63MCmtSAejblaftg0cq0LV2hFvUmOaUCtQ9Bigj5uw4ewuwcDDysz4oo
+	 dF+mDRvK5wy5a61LYYCUjB2Lkcd4Cg4G+O24a9s98sgtKhkTAF7Tty2HbaQpaB5q4R
+	 kj2qUqxRC/quQ==
+From: Po-Hsu Lin <po-hsu.lin@canonical.com>
+To: stable@vger.kernel.org
+Cc: po-hsu.lin@canonical.com,
+	gregkh@linuxfoundation.org,
+	petrm@nvidia.com,
+	liuhangbin@gmail.com,
+	pabeni@redhat.com,
+	kuba@kernel.org
+Subject: [PATCH 6.6.y 0/2] Fix missing lib.sh for net/unicast_extensions.sh and net/pmtu.sh tests
+Date: Fri, 14 Jun 2024 14:58:18 +0800
+Message-Id: <20240614065820.865974-1-po-hsu.lin@canonical.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: Intel e1000e driver bug on stable (6.9.x)
-To: Greg KH <gregkh@linuxfoundation.org>, Ismael Luceno <ismael@iodev.co.uk>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- Hui Wang <hui.wang@canonical.com>, Hui Wang <hui.wang@canonical.com>,
- Vitaly Lifshits <vitaly.lifshits@intel.com>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <ZmfcJsyCB6M3wr84@pirotess>
- <2024061323-unhappily-mauve-b7ea@gregkh>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-In-Reply-To: <2024061323-unhappily-mauve-b7ea@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1718348306;93239a48;
-X-HE-SMSGID: 1sI0tC-00064y-E5
+Content-Transfer-Encoding: 8bit
 
-On 13.06.24 10:35, Greg KH wrote:
-> On Wed, Jun 12, 2024 at 10:33:19PM +0200, Ismael Luceno wrote:
->>
->> I noticed that the NIC started to fail on a couple of notebooks [0]
->> [1] after upgrading to 6.9.1.
->>
->> I tracked down the problem to commit 861e8086029e ("e1000e: move force
->> SMBUS from enable ulp function to avoid PHY loss issue", 2024-03-03),
->> included in all 6.9.x releases.
->>
->> The fix is in commit bfd546a552e1 ("e1000e: move force SMBUS near
->> the end of enable_ulp function", 2024-05-28) from mainline.
->>
->> The NIC fails right after boot on both systems I tried; I mention
->> because the description is a bit unclear about that on the fix, maybe
->> other systems are affected differently.
-> 
-> Now queued up, thanks.
+Since upstream commit:
+  * 0f4765d0 "selftests/net: convert unicast_extensions.sh to run it in
+    unique namespace"
+  * 378f082e "selftests/net: convert pmtu.sh to run it in unique namespace"
 
-I see that they are in the latest 6.6.y and 6.9.y stable-rcs. Thing is:
+The lib.sh from commit 25ae948b "selftests/net: add lib.sh" will be needed.
+Otherwise these test will complain about missing files and fail:
+$ sudo ./unicast_extensions.sh
+./unicast_extensions.sh: line 31: lib.sh: No such file or directory
+...
 
-bfd546a552e1 causes other regressions, which is why Hui Wang submitted a
-revert for that one:
+$ sudo ./pmtu.sh
+./pmtu.sh: line 201: lib.sh: No such file or directory
+./pmtu.sh: line 941: cleanup_all_ns: command not found
+...
 
-https://lore.kernel.org/all/20240611062416.16440-1-hui.wang@canonical.com/
+Another commit b6925b4e "selftests/net: add variable NS_LIST for lib.sh" is
+needed to add support for the cleanup_all_ns above.
 
-Vitaly Lifshits meanwhile submitted a change that afaics is meant to fix
-that regression:
+Hangbin Liu (2):
+  selftests/net: add lib.sh
+  selftests/net: add variable NS_LIST for lib.sh
 
-https://lore.kernel.org/all/20240613120134.224585-1-vitaly.lifshits@intel.com/
+ tools/testing/selftests/net/Makefile          |  2 +-
+ tools/testing/selftests/net/forwarding/lib.sh | 27 +-------
+ tools/testing/selftests/net/lib.sh            | 93 +++++++++++++++++++++++++++
+ 3 files changed, 95 insertions(+), 27 deletions(-)
+ create mode 100644 tools/testing/selftests/net/lib.sh
 
-CCed both so they can comment.
+-- 
+2.7.4
 
-Not sure what's the best way forward here, maybe it is "not picking up
-bfd546a552e1 for now and waiting a few more days till the dust settles".
-
-Ciao, Thorsten
 
