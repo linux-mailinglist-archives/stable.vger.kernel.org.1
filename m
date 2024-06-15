@@ -1,116 +1,100 @@
-Return-Path: <stable+bounces-52273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABA99097B9
-	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 12:50:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB96A9097BC
+	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 12:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26041284556
-	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 10:50:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FCE9B214E8
+	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 10:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408F838DD6;
-	Sat, 15 Jun 2024 10:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426F7381BA;
+	Sat, 15 Jun 2024 10:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VGxivWwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcozfuDI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4AE2E636;
-	Sat, 15 Jun 2024 10:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A2117BC9;
+	Sat, 15 Jun 2024 10:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718448625; cv=none; b=UCEvSGTjjteHa8trAeg3X3ib0s/Ej1xRdRwIyT2busFMrR4gALhq9gWfhIx4Nr8r+x0SNAhNR2mIrpViPsWpWcz2pJG0RnQGmtxJlru+ayOKvR768UEA718YkG0si+k+Vw1qO8bEYzJRhYW1qEX9UrdDf/bVpVh346JxZ+JOJxI=
+	t=1718448792; cv=none; b=YdePMkqxpD4UoYOwV1ngUyrY41pxkb+UoN80v+4BQ1V5mM2n4oLVcN3oqJ4pjjhohX5E3mz40R1r+6nNrZ6Uka87/A6x62E+/GeWS/VFhES11q4dyXSJVHrGsrNAj/Jh/CSMpeayDmMCw75kgcNHtalPVUYLyDaCWaaxEbYVkwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718448625; c=relaxed/simple;
-	bh=+3wzKJYFrmmEQ3zH1YhduyYUW+NkzSU9v/arsIC76BA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hcWzuUA3pscF3MkupnW0TlWquxF8ZveJMhL74KdOk/PaJ1w84QaRV+W2SnhJFKLBCnw6OpCZv3GbRxwjl5ZuPSeHNdXKovzBEiA6ZZG+2L62x576UTL9NcNtw/DZZam3Ks46zKVi/FrmVJdvKAl3pW6qH4NQ+Lr2vO22k4x8MXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VGxivWwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C72C116B1;
-	Sat, 15 Jun 2024 10:50:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718448624;
-	bh=+3wzKJYFrmmEQ3zH1YhduyYUW+NkzSU9v/arsIC76BA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VGxivWwe0bQfL6J1rl1Jziop7/nqJQ+cdzXwhjOYcutq5GSZH8GvMG4DTo4q+/xZP
-	 rjbKrju+3wCbdni6Zo9ZfGS0P06ZUD+9H/PouQKgCc2idnebg19NO0TdwQs6jgv/Tf
-	 Irrtupy8Nyq2oVTaP2ABFXSB+M3HHEK31vnUyuJ2O1ahhlIbWIH+dfXWijR3oDHw0v
-	 SOAnpYhKi16IaPGcIBjRaTPHJZ3lXhPKir+VCWxuJMWv+R/mPTRQX3sKdxeRLzmQTG
-	 /W+5VROMjefkpvMBCmhbYg8hTjD3o9ydtBOmEvFQoyuGwJt5OIkikKTPDE4fqEuDzC
-	 3VquB+1izvFQw==
-Date: Sat, 15 Jun 2024 11:50:18 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
- <jpaulo.silvagoncalves@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, =?UTF-8?B?Sm/Do28=?= Paulo
- =?UTF-8?B?R29uw6dhbHZlcw==?= <joao.goncalves@toradex.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Matti Vaittinen
- <mazziesaccount@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: trigger: Fix condition for own trigger
-Message-ID: <20240615115018.2b73d6b3@jic23-huawei>
-In-Reply-To: <20240614143658.3531097-1-jpaulo.silvagoncalves@gmail.com>
-References: <20240614143658.3531097-1-jpaulo.silvagoncalves@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1718448792; c=relaxed/simple;
+	bh=budOsSDXDvbJZlVC8brpouBlwPcaS4rdQ5g4/xgFAh0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WSUGD+mfl/2aE37m0uTtYIUlwXSdnltXlZ3zZtfSeDMEZpoQPk/jOzXSm2c7+EDSNxj2nltiXAu/pl7D1ZpIjTQbuNH6xbzMp944q+TqOIMbOVCYVBe9vGis3TCrlQIVcVLaK7ttKUUIQF8kXB7EQgiBdlOIGtTLMB0wH/p2huc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcozfuDI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA544C116B1;
+	Sat, 15 Jun 2024 10:53:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718448791;
+	bh=budOsSDXDvbJZlVC8brpouBlwPcaS4rdQ5g4/xgFAh0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qcozfuDIUWpP3gBgnBiMDTxFPvTtUsaJ4anteX8HR9hPuxUoDnzt9JX8s+lFwpQg3
+	 odHQdwCtdYzZH9LpUhLuBtSA/F7/sAoZJMED8hDJ/b0TNNqX19uy9Cjz8xDxPJZ6s8
+	 K4R5TuXC1w1fpAYLnR/4MFTCb1xeWf0NNdK9hW+M=
+Date: Sat, 15 Jun 2024 12:53:08 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 4.19 026/213] HSI: omap_ssi_core: Convert to platform
+ remove callback returning void
+Message-ID: <2024061558-rocklike-ancient-df44@gregkh>
+References: <20240613113227.969123070@linuxfoundation.org>
+ <20240613113229.004890558@linuxfoundation.org>
+ <4yzk2jhrqq2ga5pirjlip56ezhnrdfyn6tpq2i3lhvlp3lahi7@zk4ohcap2lg6>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4yzk2jhrqq2ga5pirjlip56ezhnrdfyn6tpq2i3lhvlp3lahi7@zk4ohcap2lg6>
 
-On Fri, 14 Jun 2024 11:36:58 -0300
-Jo=C3=A3o Paulo Gon=C3=A7alves <jpaulo.silvagoncalves@gmail.com> wrote:
+On Thu, Jun 13, 2024 at 10:14:59PM +0200, Uwe Kleine-König wrote:
+> On Thu, Jun 13, 2024 at 01:31:14PM +0200, Greg Kroah-Hartman wrote:
+> > 4.19-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> > 
+> > [ Upstream commit 94eabddc24b3ec2d9e0ff77e17722a2afb092155 ]
+> > 
+> > The .remove() callback for a platform driver returns an int which makes
+> > many driver authors wrongly assume it's possible to do error handling by
+> > returning an error code. However the value returned is ignored (apart
+> > from emitting a warning) and this typically results in resource leaks.
+> > 
+> > To improve here there is a quest to make the remove callback return
+> > void. In the first step of this quest all drivers are converted to
+> > .remove_new(), which already returns void. Eventually after all drivers
+> > are converted, .remove_new() will be renamed to .remove().
+> > 
+> > Trivially convert this driver from always returning zero in the remove
+> > callback to the void returning variant.
+> > 
+> > Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> > Link: https://lore.kernel.org/r/bc6b1caafa977346b33c1040d0f8e616bc0457bf.1712756364.git.u.kleine-koenig@pengutronix.de
+> > Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> It's unclear to me why this patch is included. It doesn't seem to be a
+> dependency for a later patch?! Also .remove_new() only exists since v6.3-rc1~106^2~108
+> and I'm not aware this was backported, too. So this probably results in
+> a build failure. Ditto for patch 27.
 
-> From: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
->=20
-> The condition for checking if triggers belong to the same IIO device to
-> set attached_own_device is currently inverted, causing
-> iio_trigger_using_own() to return an incorrect value. Fix it by testing
-> for the correct return value of iio_validate_own_trigger().
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 517985ebc531 ("iio: trigger: Add simple trigger_validation helper")
-> Signed-off-by: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
+Odd, both now dropped.
 
-Ouch.  Can you give an example of resulting user visible result? That
-will help people decide whether to pick this up for their distro kernels
-etc.  In some cases, looks like we'll get garbage timestamps and in others
-may get stale data (or garbage).
-
-Odd no one has noticed this in the past whilst testing those dependent
-features in particular drivers and I worry a little that we may have bugs
-in the users as a result of iio_trigger_using_own() reporting the inverse
-of the intended. I've take a quick look at the users and 'think' they are
-ok, but would definitely like a few others to confirm.
-
-Also on a practical basis I just sent a fixes pull request so this one
-probably won't go anywhere for a week or so anyway so we have time.
-
-> ---
->  drivers/iio/industrialio-trigger.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industriali=
-o-trigger.c
-> index 16de57846bd9..2e84776f4fbd 100644
-> --- a/drivers/iio/industrialio-trigger.c
-> +++ b/drivers/iio/industrialio-trigger.c
-> @@ -315,7 +315,7 @@ int iio_trigger_attach_poll_func(struct iio_trigger *=
-trig,
->  	 * this is the case if the IIO device and the trigger device share the
->  	 * same parent device.
->  	 */
-> -	if (iio_validate_own_trigger(pf->indio_dev, trig))
-> +	if (!iio_validate_own_trigger(pf->indio_dev, trig))
->  		trig->attached_own_device =3D true;
->=20
->  	return ret;
-> --
-> 2.34.1
-
+greg k-h
 
