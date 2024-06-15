@@ -1,113 +1,118 @@
-Return-Path: <stable+bounces-52248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D23590956A
-	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 03:57:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59535909579
+	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 03:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAC3B1F238DF
-	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 01:57:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62C411C2121F
+	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 01:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E8C1FB4;
-	Sat, 15 Jun 2024 01:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6258440C;
+	Sat, 15 Jun 2024 01:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="JgmvwduU"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="C/0J+Hlf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC58173
-	for <stable@vger.kernel.org>; Sat, 15 Jun 2024 01:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12124D26D;
+	Sat, 15 Jun 2024 01:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718416661; cv=none; b=SC0J/wFdHUwOWi6YV0PdR8TTK4IQlw2KYzsxhTM56/2EZkUrb5bwYT1JEzcwOIDZggubQ6QeanbIjwtQpj2O0VtNPSIGhe+P7Qyigh0Lr4EWaXgaSFLsufxAy/rzPeReSn4kxI6ApE8pHy6jr4blmnCW1qEr5alxsV5XeCQoGec=
+	t=1718416749; cv=none; b=hwp+e7dDXsco6HSH2Y8Awfa30Avlm4OAmUDm/bD/Gw4HQVG0t9ni/TmcJgkWnObnmUVpDIFBF+Vz0V3cJ81vMyNkXLRQo3vsgi1h7X1X/kWLZvap6572Y/YhRv7K0uOtz8kWAJ+Q82LnVNQm9nW26wsMr5YkTY74uA5BOZz/kEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718416661; c=relaxed/simple;
-	bh=00qodF6QKX6kY5aVpmFn0IV6lZaTfbB/wM6JlDqCD6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mlCi3QxJhKRrOl4nXeB+Z+kRMf81bDaQ0HX90cxkW0Ww9GmLvZ6+CyzAQPmfgY0kTa+JGdViUJ8ymvEyXu2oepcwskWEgO7D5/kQYmNCUQRHoQy1pJwwfFc37O6ZKVpD14kNRM6iHeKRZKjdc8v8vdarUwZtSrxFamu2ALB+gME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=JgmvwduU; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-35f223e7691so1745417f8f.1
-        for <stable@vger.kernel.org>; Fri, 14 Jun 2024 18:57:39 -0700 (PDT)
+	s=arc-20240116; t=1718416749; c=relaxed/simple;
+	bh=ww37zaOiEY4YoIR9AYfLzK6DHmdS62JS+qyuTD4w/uY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LPiiz8H/iEp6kzK4C3iYPSFrcCJBOYV7a/0Hlp7KeW7YvrQpxQcq2tX2FPJBuGRw4ko/s7aDwc8cP8ecmuUYTxlnJtibWaqHHwbpADt+sx13tBozn79vWKxCKPibQDhm4aVSJarHYPbrGLKBURutCp5OXswjRwoE6uKfIp9De0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=C/0J+Hlf; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-57c778b5742so3217302a12.2;
+        Fri, 14 Jun 2024 18:59:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1718416658; x=1719021458; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ABtmO3SynGCheUJoZZwiI9goLwucbtXdkggcFPq6bBg=;
-        b=JgmvwduUaBJu8FuWyAm0SGwJVhw3fGy4fv5p6eqJn2Yeeu+F6J69jgowf7WtIICuNS
-         oRFXy0lb/TYXHPEHToTRqG0g4W+9dLIi3sWtjINrotTcmut/a4fo88agCfp/IlXlqTuK
-         eIgKp7Afe5byJUEZmNQ86hMP+IJEdP8+wkdxOst90RRKpe8bx2g7B1fQq4S8QdCimc7k
-         ZhagDPSDPNtjzygQYNuUmi11Yaw+Q232WHl3HG8uuvl5T3WJwUpb/23PcPF4z+z14E8m
-         6ehDnpcjgzD3y9moSLj2foxgyo8ko1+IIpw3ZdsJ2ovj2yhAt3D1QFiNp9kI0VtrbsXK
-         M7dQ==
+        d=googlemail.com; s=20230601; t=1718416746; x=1719021546; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SnBuema51sIsa2QQpd+nX2kLoAJ6QBxAxGuxApnIuVQ=;
+        b=C/0J+Hlf9vLVjkZYqKa0bY4Onw8L1/hJJxz58LH1U2MFnIZX7PKvd17VCgK6sQlGYq
+         0KYY42iO3sGdL7ZU5N3+2RyysrJigUThB+jJIsKR9q1xB+vk9piCOe/aX8AbKaSnioaz
+         5T5/PeoNWLzADEfBQGLW/r1bASsRS2KzOEIS/gtx8HKDDn3pIh8B6b5/Xx3BBNvfID/d
+         ycuHmAijKyVIVxgNS8zjGI1FWLBruyrODoF03E/Rru08uuILWimqa+e9ghyCbRjQUq6V
+         v99cLfSGgKr/uVbPxIr0g6Osj31IrAXg9ruRAwA6EiJXNaAYpZiRg1rlP5U9E0Sm6qSM
+         ScLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718416658; x=1719021458;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ABtmO3SynGCheUJoZZwiI9goLwucbtXdkggcFPq6bBg=;
-        b=D+J1zKckVcigTcsHTJ0Hme2fOTnnVm9yQ8yEY/n+jfBEyX92wplqPzSAeXbezPn2WZ
-         96M1PPhGRl4QK1knNWN30zu5hbMsNDxqV7Zybw3BKG7VB9gS5GH3dI5uXPxuJrGTXxNd
-         E5C/Z61n7a7hBG5mZglSRtoelSwF0amWlSCzSsOxhgnL6ABUvfYXU1efPFULygyX0AHo
-         Nxed4cMLAz9ciPbU5I9Ll5o081RikOENwme7YCHqH6NEzn1rxSQpb9vjutc0JgW1nSqq
-         xInXmGYVw7UpyjQp7leb+6EiLCo0qMya3Z8qXF3i1rKIWjAjUAn3tbgaBxOKoe2H+Dn3
-         zY2g==
-X-Forwarded-Encrypted: i=1; AJvYcCXuiBvwkKA76ieYAbJehIitBEqxAig/qCaPr7rJjRB7ZLHOoRaLvHvyOT7mPJ/zpWJXl6MIfNDENFlFfURj6V6AKQsdufwa
-X-Gm-Message-State: AOJu0YwwJYMlcZpJoL3/AA5IhKECNV2K4c4RNIH4tcQZLfqX1UzZshjq
-	krOriWXaGzkKIuHK/J64X73F3SCr2wHGntZKrnvdAXeLUDJ8T4idPVV2WfKAB0k=
-X-Google-Smtp-Source: AGHT+IGR4zVFkXOonICx/mvA5JDvyRAE9eCUTxvhR4wF1jq/1vyMqD+Yqv9ypAbz/FBNfZXmV1CISw==
-X-Received: by 2002:a5d:6306:0:b0:35f:b45:97b4 with SMTP id ffacd0b85a97d-360718de6a1mr6772651f8f.20.1718416658187;
-        Fri, 14 Jun 2024 18:57:38 -0700 (PDT)
-Received: from u94a (2001-b011-fa04-32f9-b2dc-efff-fee8-7e7a.dynamic-ip6.hinet.net. [2001:b011:fa04:32f9:b2dc:efff:fee8:7e7a])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705cc967334sm3717206b3a.57.2024.06.14.18.57.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jun 2024 18:57:37 -0700 (PDT)
-Date: Sat, 15 Jun 2024 09:57:29 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: Paul Barker <paul.barker.ct@bp.renesas.com>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, stable@vger.kernel.org, workflows@vger.kernel.org
-Subject: Re: [PATCH 2/2] docs: stable-kernel-rules: remind reader about DCO
-Message-ID: <x7nuehxxk3cn3ra46abw3y5jks2h4ikwzc6iv7cmxw7sexla37@efgriowgekfa>
-References: <20240606064311.18678-1-shung-hsi.yu@suse.com>
- <20240606064311.18678-2-shung-hsi.yu@suse.com>
- <0f7d5012-99a3-485a-b500-1d79d69a64f9@bp.renesas.com>
+        d=1e100.net; s=20230601; t=1718416746; x=1719021546;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SnBuema51sIsa2QQpd+nX2kLoAJ6QBxAxGuxApnIuVQ=;
+        b=DRdVcZa7+A0cW5FJSKxxPwwvCzd8fiA3QCwTJrcK+7csWzNHijJ83syZ9aBizag+GO
+         AQNvTEAZY6U12GH92mTP/GE72/j9BJahKTGZDF/Vmg787d52Ap8xUegYgvfhVH8Psy2W
+         M2Wj6vN+35rbMpld9i2wCIpbSRTcMNWXBmXp1ESQK5t0q3yKEseLQ2VUQXBue/jHaNoM
+         Yrf9njfbZA9n27uOO10t+z300RbyDcZCzLZM2CcP25/e+XNDZW2TRip/oahvFNYcKHHp
+         zWU873+7YgYjR6eM46sxbMv8rXDvaYcRpEP3oqVxVp9Edk/hBCYSvGnSIj53kCArJztj
+         Zkew==
+X-Forwarded-Encrypted: i=1; AJvYcCWVZ/dOJ1uU6kYZYLeH3WtKswWvFDCdOx1YUgHvfmXCBlTJ/ddZfUHOScpIB/DOvqC0Jm7wHpMaLD78kCB/QbfkDRABQqevWvjrrrh4kHaRcb7IMBxcJXU4xN6yiK1lE8UUvSqe
+X-Gm-Message-State: AOJu0YwbdVkRGbJdiSfWWKSdty8hFQWa/m/tRl5nZtcRsfl3gEAEOQz2
+	C6WbBHeHuL3vVlWmOSoTCPz10tkX097zQMdLK6dQsAKHBn4Cmuo61YMA1C0=
+X-Google-Smtp-Source: AGHT+IGqfx4zl8pmHjaMX8jFrVGJShYsFAvAovN1qGxCuTlQKDG9mo2UcglhTiQR7gmxLmyHs31J0w==
+X-Received: by 2002:a50:bb64:0:b0:57a:2ea0:406d with SMTP id 4fb4d7f45d1cf-57cbd652479mr2588820a12.8.1718416746031;
+        Fri, 14 Jun 2024 18:59:06 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4225.dip0.t-ipconnect.de. [91.43.66.37])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb741e70dsm2924217a12.62.2024.06.14.18.59.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Jun 2024 18:59:05 -0700 (PDT)
+Message-ID: <d8e7a445-5918-4049-ac39-ad222536ca6b@googlemail.com>
+Date: Sat, 15 Jun 2024 03:59:04 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0f7d5012-99a3-485a-b500-1d79d69a64f9@bp.renesas.com>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.9 000/157] 6.9.5-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240613113227.389465891@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20240613113227.389465891@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 06, 2024 at 09:21:39AM GMT, Paul Barker wrote:
-> On 06/06/2024 07:43, Shung-Hsi Yu wrote:
-> > When sending patch authored by someone else to stable, it is quite easy for
-> > the sender to forget adding the Developer's Certification of Origin (DCO,
-> > i.e. Signed-off-by). Mention DCO explicilty so senders are less likely to
-> 
-> s/explicilty/explicitly/
-> 
-> > forget to do so and cause another round-trip.
-> > 
-> > Add a label in submitting-patches.rst so we can directly link to the DCO
-> > section.
-> > 
-> > Link: https://lore.kernel.org/stable/2024051500-underage-unfixed-5d28@gregkh/
-> 
-> Is "Link:" right here? I'd prefer to see something like "For example see
-> ..." added to the first paragraph so it's explicit that this is a link
-> to an example of this issue.
+Am 13.06.2024 um 13:32 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.9.5 release.
+> There are 157 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Thanks for the feedback. Yes that is better. Will clarify that, fix
-typo, and slighly edit patch 1 as suggested.
+Builds, boots and works fine w/o regressions on 2-socket Ivy Bridge Xeon E5-2697 v2. 
+Everything looking good. Except from simply firing up 12 VMs, I have not done any serious 
+load testing this time though.
 
-Shung-Hsi
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
