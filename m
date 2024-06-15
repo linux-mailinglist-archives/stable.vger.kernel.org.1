@@ -1,211 +1,422 @@
-Return-Path: <stable+bounces-52287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DFA909875
-	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 15:13:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2277490987C
+	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 15:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F10B1F21DE9
-	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 13:13:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31E451C20D0B
+	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 13:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E84C487B3;
-	Sat, 15 Jun 2024 13:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC94481B1;
+	Sat, 15 Jun 2024 13:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="a6Ry6rT2"
+	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="OsquMRsg"
 X-Original-To: stable@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E622B482DD;
-	Sat, 15 Jun 2024 13:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229F819D8A2
+	for <stable@vger.kernel.org>; Sat, 15 Jun 2024 13:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718457177; cv=none; b=MC/mE3TlMAfB4G0CoePKl8ttK7BpvYdcHa44rARXH7T1T8Nlt/XEmI233fu3RpkLL7MDQRAG3l7aiav8SxuSykZzXh67h3x7AB3VmuBTOkh+UVeKAWB3eYl6F7YAnrfliw1Pg4JcJbThWDlhI3YskAyDmop6WjQJeNhPyE2jTns=
+	t=1718457575; cv=none; b=WEFnu1gXLHbTVv9vw1WHl1OyryYn1ibTDHB9vJfXVZoSaFJYS3reYXn6QYAxCENQMaOO5zJy+9w4b66Nf896j/PcjENpiUlHBge627LIvrlhlS0z6v9TFUSufUoDgxP9lMi9LvIdQKRpK7B6OED8zomNjBxUPZpISGsx9mVaKEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718457177; c=relaxed/simple;
-	bh=B+byxdDHxjrZUhpBVbkIuJhaf9FOb7tIpn08cQRB8iM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NmuVaFlBqGFUPgcBmBJc63JIp0PxQvMk+E8qsN+LwKKqz90G48xwxRS/beKkraaCRXMlXSrGFrhN2SvnwWJzTXROY1YyFDqygxxmZDvsGmUtmCiju2OqwN7DmuwccSw+JOxNaTIci1CpSpm8VtbTRMLWK6cIJckgjBi43uYbm4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=a6Ry6rT2; arc=none smtp.client-ip=89.208.246.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
-	s=default; t=1718457173;
-	bh=B+byxdDHxjrZUhpBVbkIuJhaf9FOb7tIpn08cQRB8iM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=a6Ry6rT2Apvt4esGBXHHCYGl+lmnmJFUzPirbfSunfg+oXAcQs8xwTW9f5eLcBgms
-	 iYUxGB2K/y9ItZAU8fK7CrrAqYXa99c1090+H8h/Ne56B4zOPCxlQ3oEgYBTKmXpo4
-	 UcvDb5qu7Rl1A9v9ohnGe9O3lzo+fvyM6ylpIcm4=
-Received: from [IPv6:240e:457:1130:3532:fcd1:d9f4:2ad1:565c] (unknown [IPv6:240e:457:1130:3532:fcd1:d9f4:2ad1:565c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-384) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id 4550066EDB;
-	Sat, 15 Jun 2024 09:12:41 -0400 (EDT)
-Message-ID: <a70e8b062fc422e351fe2369b9979a623fa05dfa.camel@xry111.site>
-Subject: Re: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
-From: Xi Ruoyao <xry111@xry111.site>
-To: Arnd Bergmann <arnd@arndb.de>, Huacai Chen <chenhuacai@kernel.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev,
- Linux-Arch <linux-arch@vger.kernel.org>, Xuefeng Li
- <lixuefeng@loongson.cn>, guoren <guoren@kernel.org>, WANG Xuerui
- <kernel@xen0n.name>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- linux-kernel@vger.kernel.org,  loongson-kernel@lists.loongnix.cn,
- stable@vger.kernel.org
-Date: Sat, 15 Jun 2024 21:12:26 +0800
-In-Reply-To: <08ff168afc09fd108ec489a3c9360d4e704fa7dc.camel@xry111.site>
-References: <20240511100157.2334539-1-chenhuacai@loongson.cn>
-	 <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com>
-	 <CAAhV-H5kn2xPLqgop0iOyg-tc5kAYcuNo3cd+f3yCdkN=cJDug@mail.gmail.com>
-	 <fcdeb993-37d6-42e0-8737-3be41413f03d@app.fastmail.com>
-	 <CAAhV-H4s_utEOtFDwjPTqxnMWTVjWhmS7bEVRX+t8HK5QDA8Vg@mail.gmail.com>
-	 <a21a0878-021e-4990-a59d-b10f204a018b@app.fastmail.com>
-	 <CAAhV-H7OR5tkbjj-BPLStneXFr=1DUaFvvh8+a5Bk_jhCAP25Q@mail.gmail.com>
-	 <cdef45d36d0e71da5f0534b3783b81c82405bda3.camel@xry111.site>
-	 <CAAhV-H4R_HJAB0baqUgA8ucbwWNVN4sc9EV91zAk9Ch302_7zg@mail.gmail.com>
-	 <56ace686-d4b4-4b4c-a8a6-af06ec0d48f2@app.fastmail.com>
-	 <08ff168afc09fd108ec489a3c9360d4e704fa7dc.camel@xry111.site>
-Content-Type: multipart/mixed; boundary="=-YxhasIhtdyR/P3cgOt/8"
-User-Agent: Evolution 3.52.2 
+	s=arc-20240116; t=1718457575; c=relaxed/simple;
+	bh=GNy+ogj7RswXyM7tInlMBCMymmApHC3g1pXAWLfUs1g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lmNYKgdKDeUQ9jVgLLtar+kImgyB53pG8U2qh382CjWlHNy+kHI0eoflepURuipTlzHYYkZlH798GUBX6hSr/0d6bwDqQNKel7e71x0tiDQzOL9r0I+Qb5CCvfQ0tSNCHRO7U3D4xTtaJlX7OlVMA5nO1T8WcgNQSWR9Peh16hk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=OsquMRsg; arc=none smtp.client-ip=193.222.135.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 30838 invoked from network); 15 Jun 2024 15:19:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1718457563; bh=IMdUjdX+AEOslkyKAAahjrStX15n+hN+3dhxuasNPdE=;
+          h=Subject:To:Cc:From;
+          b=OsquMRsgWZLStE0hhoSYQ6kWz8wUPe0UFRbX+5tDkAa4Fr3wj6rPvhgCX1+o4xHBH
+           5vxhyvEnO8NhPV2sAvxYkpIdv0PPWisc7smpJbC5cjpkbX5g32Z6EgDHfyf9aSxm8a
+           VFu5XWAGBdLoHLI8wxGtmaaRu9u40IQiUTKS19mM=
+Received: from aaen80.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.117.80])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <gregkh@linuxfoundation.org>; 15 Jun 2024 15:19:23 +0200
+Message-ID: <b4f871ef-0f4b-4a7b-beed-05420f96b234@o2.pl>
+Date: Sat, 15 Jun 2024 15:19:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 00/85] 6.1.94-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240613113214.134806994@linuxfoundation.org>
+Content-Language: en-GB
+From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
+ 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
+ TANkZ3QqXNX2
+In-Reply-To: <20240613113214.134806994@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: 6f2b6be8b0528aa4d5b9b2640e08873a
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [4dNE]                               
 
---=-YxhasIhtdyR/P3cgOt/8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+W dniu 13.06.2024 o 13:34, Greg Kroah-Hartman pisze:
+> This is the start of the stable review cycle for the 6.1.94 release.
+> There are 85 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 15 Jun 2024 11:31:50 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.94-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
+Hello,
 
-On Sat, 2024-06-15 at 20:12 +0800, Xi Ruoyao wrote:
-> On Sat, 2024-06-15 at 13:47 +0200, Arnd Bergmann wrote:
->=20
-> /* snip */
->=20
-> > > > > We can only wait for the seccomp side to be fixed now? Or we can =
-get
-> > > > > this patch upstream for LoongArch64 at the moment, and wait for
-> > > > > seccomp to fix RISCV32 (and LoongArch32) in future?
-> > > >=20
-> > > > I'm wondering why not just introduce a new syscall or extend statx =
-with
-> > > > a new flag, as we've discussed many times.=C2=A0 They have their ow=
-n
-> > > > disadvantages but better than this, IMO.
-> > > We should move things forward, in any way. :)
-> >=20
-> > Wouldn't it be sufficient to move the AT_EMPTY_PATH hack
-> > from vfs_fstatat() to vfs_statx() so we can make them
-> > behave the same way?
-> >=20
-> > As far as I can tell, the only difference between the two is
-> > that fstatat64() and similar already has added the check for
-> > zero-length strings in order to make using vfs_fstatat()
-> > fast and safe when called from glibc stat().
->=20
-> Do you mean https://git.kernel.org/torvalds/c/9013c51c630a?=C2=A0 It (onl=
-y
-> partially) fix the performance issue but it won't help seccomp.=C2=A0 The
-> problem is you cannot check if the string is zero-length with seccomp.
-> Thus seccomp cannot audit fstatat properly as well.
->=20
-> In [Firefox] *all* fstatat (and statx) calls are trapped and *the signal
-> handler* audit this fstatat call.=C2=A0 If flags & AT_EMPTY_PATH and path=
- is
-> zero-length, it calls fstat to do the job.=C2=A0 But on LoongArch there i=
-s no
-> way to "do the job" as the only stat-family call is statx.
->=20
-> [Firefox]:https://searchfox.org/mozilla-central/source/security/sandbox/l=
-inux/SandboxFilter.cpp#364
+Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
 
-Just spent some brain cycles to make a quick hack adding a new statx
-flag.  Patch attached.
+Issues found:
+- the WiFi signal sometimes is displayed as ~100%, even though the AP is far
+  away and the signal is weak. According to my notes, something like this I
+  have seen on some older stable kernels (6.1.68-rc1) and on Linus' kernels
+  since 6.7-rc3. I have never gotten around to reporting this seriously, just noticed
+  this again now that I use a more distant AP.
 
---=20
-Xi Ruoyao <xry111@xry111.site>
-School of Aerospace Science and Technology, Xidian University
+    For example:
 
---=-YxhasIhtdyR/P3cgOt/8
-Content-Disposition: attachment; filename="0001-RFC-vfs-Add-AT_FORCE_EMPTY_PATH.patch"
-Content-Transfer-Encoding: base64
-Content-Type: text/x-patch; name="0001-RFC-vfs-Add-AT_FORCE_EMPTY_PATH.patch";
-	charset="UTF-8"
+    $ iw wlp2s0 station dump
+    Station 50:c7:bf:2c:a9:31 (on wlp2s0)
+        [...]
+        beacon loss:    0
+        beacon rx:    4418
+        rx drop misc:    7
+        signal:      0 [0, 0] dBm
+        signal avg:    -2 [-3, -2] dBm
+        beacon signal avg:    -68 dBm
+        [...]
 
-RnJvbSAxNmQwMmExYzQ0ZTVlZWQyZWYyYTJjYzMyMjBkMGE3NGIzNWRmODIyIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiBYaSBSdW95YW8gPHhyeTExMUB4cnkxMTEuc2l0ZT4KRGF0ZTog
-U2F0LCAxNSBKdW4gMjAyNCAyMDo0NDowNCArMDgwMApTdWJqZWN0OiBbUEFUQ0hdIFJGQzogdmZz
-OiBBZGQgQVRfRk9SQ0VfRU1QVFlfUEFUSAoKSXQgYmVoYXZlcyBhcyBpZiBBVF9FTVBUWV9QQVRI
-IHdpdGggYW4gZW1wdHkgcGF0aCAodGhlIGlucHV0IHBhdGggd2lsbApiZSBpZ25vcmVkKS4KCkl0
-J3MgYmV0dGVyIHRoYW4gQVRfRU1QVFlfUEFUSCBmb3IgaW1wbGVtZW50aW5nIGZzdGF0IHdpdGgg
-c3RhdHggKGl0J3MKbmVlZGVkIGFmdGVyIDIwMzcgZm9yIDMyLWJpdCBzeXN0ZW1zKSBiZWNhdXNl
-IHRoZXJlJ3Mgbm8gbmVlZCB0byBjb3B5CmZyb20gdXNlciwgYW5kIGl0J3MgYXVkaXRhYmxlIGJ5
-IHNlY2NvbXAgKHRob3VnaCBwZXJzb25hbGx5IEknbSByZWFsbHkKbm90IGEgZmFuIGlmIHNlY2Nv
-bXApLgoKU2lnbmVkLW9mZi1ieTogWGkgUnVveWFvIDx4cnkxMTFAeHJ5MTExLnNpdGU+Ci0tLQog
-ZnMvbmFtZWkuYyAgICAgICAgICAgICAgICAgfCA4ICsrKysrKystCiBmcy9zdGF0LmMgICAgICAg
-ICAgICAgICAgICB8IDQgKysrLQogaW5jbHVkZS9saW51eC9uYW1laS5oICAgICAgfCA0ICsrKysK
-IGluY2x1ZGUvdHJhY2UvbWlzYy9mcy5oICAgIHwgMSArCiBpbmNsdWRlL3VhcGkvbGludXgvZmNu
-dGwuaCB8IDMgKysrCiA1IGZpbGVzIGNoYW5nZWQsIDE4IGluc2VydGlvbnMoKyksIDIgZGVsZXRp
-b25zKC0pCgpkaWZmIC0tZ2l0IGEvZnMvbmFtZWkuYyBiL2ZzL25hbWVpLmMKaW5kZXggMzdmYjBh
-OGFhMDlhLi4yZjAxMmVjOGYwNzIgMTAwNjQ0Ci0tLSBhL2ZzL25hbWVpLmMKKysrIGIvZnMvbmFt
-ZWkuYwpAQCAtMTQ3LDcgKzE0NywxMyBAQCBnZXRuYW1lX2ZsYWdzKGNvbnN0IGNoYXIgX191c2Vy
-ICpmaWxlbmFtZSwgaW50IGZsYWdzLCBpbnQgKmVtcHR5KQogCWtuYW1lID0gKGNoYXIgKilyZXN1
-bHQtPmluYW1lOwogCXJlc3VsdC0+bmFtZSA9IGtuYW1lOwogCi0JbGVuID0gc3RybmNweV9mcm9t
-X3VzZXIoa25hbWUsIGZpbGVuYW1lLCBFTUJFRERFRF9OQU1FX01BWCk7CisJaWYgKCEoZmxhZ3Mg
-JiBMT09LVVBfRk9SQ0VfRU1QVFkpKQorCQlsZW4gPSBzdHJuY3B5X2Zyb21fdXNlcihrbmFtZSwg
-ZmlsZW5hbWUsIEVNQkVEREVEX05BTUVfTUFYKTsKKwllbHNlIHsKKwkJbGVuID0gMDsKKwkJa25h
-bWVbMF0gPSAnXDAnOworCX0KKwogCWlmICh1bmxpa2VseShsZW4gPCAwKSkgewogCQlfX3B1dG5h
-bWUocmVzdWx0KTsKIAkJcmV0dXJuIEVSUl9QVFIobGVuKTsKZGlmZiAtLWdpdCBhL2ZzL3N0YXQu
-YyBiL2ZzL3N0YXQuYwppbmRleCA3MGJkM2U4ODhjZmEuLmJlODFmYzEyYmQzYSAxMDA2NDQKLS0t
-IGEvZnMvc3RhdC5jCisrKyBiL2ZzL3N0YXQuYwpAQCAtMjEwLDYgKzIxMCw4IEBAIGludCBnZXRu
-YW1lX3N0YXR4X2xvb2t1cF9mbGFncyhpbnQgZmxhZ3MpCiAJCWxvb2t1cF9mbGFncyB8PSBMT09L
-VVBfQVVUT01PVU5UOwogCWlmIChmbGFncyAmIEFUX0VNUFRZX1BBVEgpCiAJCWxvb2t1cF9mbGFn
-cyB8PSBMT09LVVBfRU1QVFk7CisJaWYgKGZsYWdzICYgQVRfRk9SQ0VfRU1QVFlfUEFUSCkKKwkJ
-bG9va3VwX2ZsYWdzIHw9IExPT0tVUF9FTVBUWSB8IExPT0tVUF9GT1JDRV9FTVBUWTsKIAogCXJl
-dHVybiBsb29rdXBfZmxhZ3M7CiB9CkBAIC0yMzcsNyArMjM5LDcgQEAgc3RhdGljIGludCB2ZnNf
-c3RhdHgoaW50IGRmZCwgc3RydWN0IGZpbGVuYW1lICpmaWxlbmFtZSwgaW50IGZsYWdzLAogCWlu
-dCBlcnJvcjsKIAogCWlmIChmbGFncyAmIH4oQVRfU1lNTElOS19OT0ZPTExPVyB8IEFUX05PX0FV
-VE9NT1VOVCB8IEFUX0VNUFRZX1BBVEggfAotCQkgICAgICBBVF9TVEFUWF9TWU5DX1RZUEUpKQor
-CQkgICAgICBBVF9TVEFUWF9TWU5DX1RZUEUgfCBBVF9GT1JDRV9FTVBUWV9QQVRIKSkKIAkJcmV0
-dXJuIC1FSU5WQUw7CiAKIHJldHJ5OgpkaWZmIC0tZ2l0IGEvaW5jbHVkZS9saW51eC9uYW1laS5o
-IGIvaW5jbHVkZS9saW51eC9uYW1laS5oCmluZGV4IDk2N2FhOWVhOWY5Ni4uZDE5ZTUxNjYxMDFi
-IDEwMDY0NAotLS0gYS9pbmNsdWRlL2xpbnV4L25hbWVpLmgKKysrIGIvaW5jbHVkZS9saW51eC9u
-YW1laS5oCkBAIC00NSw5ICs0NSwxMyBAQCBlbnVtIHtMQVNUX05PUk0sIExBU1RfUk9PVCwgTEFT
-VF9ET1QsIExBU1RfRE9URE9UfTsKICNkZWZpbmUgTE9PS1VQX0lOX1JPT1QJCTB4MTAwMDAwIC8q
-IFRyZWF0IGRpcmZkIGFzIGZzIHJvb3QuICovCiAjZGVmaW5lIExPT0tVUF9DQUNIRUQJCTB4MjAw
-MDAwIC8qIE9ubHkgZG8gY2FjaGVkIGxvb2t1cCAqLwogI2RlZmluZSBMT09LVVBfTElOS0FUX0VN
-UFRZCTB4NDAwMDAwIC8qIExpbmthdCByZXF1ZXN0IHdpdGggZW1wdHkgcGF0aC4gKi8KKwogLyog
-TE9PS1VQXyogZmxhZ3Mgd2hpY2ggZG8gc2NvcGUtcmVsYXRlZCBjaGVja3MgYmFzZWQgb24gdGhl
-IGRpcmZkLiAqLwogI2RlZmluZSBMT09LVVBfSVNfU0NPUEVEIChMT09LVVBfQkVORUFUSCB8IExP
-T0tVUF9JTl9ST09UKQogCisvKiBJZiB0aGlzIGlzIHNldCwgTE9PS1VQX0VNUFRZIG11c3QgYmUg
-c2V0IGFzIHdlbGwuICovCisjZGVmaW5lIExPT0tVUF9GT1JDRV9FTVBUWQkweDgwMDAwMCAvKiBD
-b25zaWRlciBwYXRoIGVtcHR5LiAqLworCiBleHRlcm4gaW50IHBhdGhfcHRzKHN0cnVjdCBwYXRo
-ICpwYXRoKTsKIAogZXh0ZXJuIGludCB1c2VyX3BhdGhfYXRfZW1wdHkoaW50LCBjb25zdCBjaGFy
-IF9fdXNlciAqLCB1bnNpZ25lZCwgc3RydWN0IHBhdGggKiwgaW50ICplbXB0eSk7CmRpZmYgLS1n
-aXQgYS9pbmNsdWRlL3RyYWNlL21pc2MvZnMuaCBiL2luY2x1ZGUvdHJhY2UvbWlzYy9mcy5oCmlu
-ZGV4IDczOGI5N2YyMmYzNi4uNDY0ODk0MjZmMThhIDEwMDY0NAotLS0gYS9pbmNsdWRlL3RyYWNl
-L21pc2MvZnMuaAorKysgYi9pbmNsdWRlL3RyYWNlL21pc2MvZnMuaApAQCAtMTE5LDQgKzExOSw1
-IEBACiAJCXsgTE9PS1VQX05PX1hERVYsCSJOT19YREVWIiB9LCBcCiAJCXsgTE9PS1VQX0JFTkVB
-VEgsCSJCRU5FQVRIIiB9LCBcCiAJCXsgTE9PS1VQX0lOX1JPT1QsCSJJTl9ST09UIiB9LCBcCisJ
-CXsgTE9PS1VQX0ZPUkNFX0VNUFRZLAkiRk9SQ0VfRU1QVFkiIH0sIFwKIAkJeyBMT09LVVBfQ0FD
-SEVELAkiQ0FDSEVEIiB9KQpkaWZmIC0tZ2l0IGEvaW5jbHVkZS91YXBpL2xpbnV4L2ZjbnRsLmgg
-Yi9pbmNsdWRlL3VhcGkvbGludXgvZmNudGwuaAppbmRleCBjMGJjYzE4NWZhNDguLjcxZDNkYzky
-Yzg2ZSAxMDA2NDQKLS0tIGEvaW5jbHVkZS91YXBpL2xpbnV4L2ZjbnRsLmgKKysrIGIvaW5jbHVk
-ZS91YXBpL2xpbnV4L2ZjbnRsLmgKQEAgLTExMyw2ICsxMTMsOSBAQAogI2RlZmluZSBBVF9TVEFU
-WF9ET05UX1NZTkMJMHg0MDAwCS8qIC0gRG9uJ3Qgc3luYyBhdHRyaWJ1dGVzIHdpdGggdGhlIHNl
-cnZlciAqLwogCiAjZGVmaW5lIEFUX1JFQ1VSU0lWRQkJMHg4MDAwCS8qIEFwcGx5IHRvIHRoZSBl
-bnRpcmUgc3VidHJlZSAqLworI2RlZmluZSBBVF9GT1JDRV9FTVBUWV9QQVRICTB4MTAwMDAJLyog
-SWdub3JlIHBhdGggYW5kIGJlaGF2ZSBhcyBpZgorICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIEFUX0VNUFRZX1BBVEggaXMgc2V0IGFuZCBwYXRoCisgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaXMgZW1wdHkgKi8KIAogLyogRmxhZ3Mg
-Zm9yIG5hbWVfdG9faGFuZGxlX2F0KDIpLiBXZSByZXVzZSBBVF8gZmxhZyBzcGFjZSB0byBzYXZl
-IGJpdHMuLi4gKi8KICNkZWZpbmUgQVRfSEFORExFX0ZJRAkJQVRfUkVNT1ZFRElSCS8qIGZpbGUg
-aGFuZGxlIGlzIG5lZWRlZCB0bwotLSAKMi40NS4yCgo=
+    On my laptop I use a Realtek RTL8822BE, but it happened also on
+    a desktop computer with a PCI-Express Intel WiFi card:
+        Intel Corporation Wireless 7265 [8086:095a] (rev 61)
+
+    Logs from this one-liner:
+
+        while true; do date; iw wlp2s0 station dump; sleep 5; done
+
+    can be found at the bottom of this mail.
+
+Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU and Ubuntu 20.04.
+
+Stack:
+- amd64,
+- ext4 on top of LVM on top of LUKS on top of mdraid on top of
+  NVMe and SATA drives (the SATA drive in a write-mostly mode).
+
+Tested (lightly):
+- suspend to RAM,
+- suspend to disk,
+- virtual machines in QEMU (both i386 and amd64 guests),
+
+- GPU (Intel HD Graphics 620, tested with an Unigine benchmark)
+- WiFi (Realtek RTL8822BE),
+- PCI soundcard (Intel HD Audio),
+- webcam.
+
+Greetings,
+
+Mateusz
 
 
---=-YxhasIhtdyR/P3cgOt/8--
+sob, 15 cze 2024, 14:56:46 CEST
+Station 50:c7:bf:2c:a9:31 (on wlp2s0)
+    inactive time:    593 ms
+    rx bytes:    1691981
+    rx packets:    10069
+    tx bytes:    131929
+    tx packets:    2000
+    tx retries:    0
+    tx failed:    0
+    beacon loss:    0
+    beacon rx:    4338
+    rx drop misc:    7
+    signal:      -68 [-73, -68] dBm
+    signal avg:    -67 [-73, -67] dBm
+    beacon signal avg:    -68 dBm
+    tx bitrate:    175.5 MBit/s VHT-MCS 4 80MHz VHT-NSS 1
+    tx duration:    0 us
+    rx bitrate:    263.3 MBit/s VHT-MCS 6 80MHz VHT-NSS 1
+    rx duration:    0 us
+    authorized:    yes
+    authenticated:    yes
+    associated:    yes
+    preamble:    long
+    WMM/WME:    yes
+    MFP:        no
+    TDLS peer:    no
+    DTIM period:    2
+    beacon interval:100
+    short slot time:yes
+    connected time:    769 seconds
+    associated at [boottime]:    3327.468s
+    associated at:    1718455437511 ms
+    current time:    1718456206519 ms
+sob, 15 cze 2024, 14:56:51 CEST
+Station 50:c7:bf:2c:a9:31 (on wlp2s0)
+    inactive time:    5601 ms
+    rx bytes:    1699466
+    rx packets:    10126
+    tx bytes:    131929
+    tx packets:    2000
+    tx retries:    0
+    tx failed:    0
+    beacon loss:    0
+    beacon rx:    4364
+    rx drop misc:    7
+    signal:      -69 [-74, -69] dBm
+    signal avg:    -68 [-73, -68] dBm
+    beacon signal avg:    -68 dBm
+    tx bitrate:    175.5 MBit/s VHT-MCS 4 80MHz VHT-NSS 1
+    tx duration:    0 us
+    rx bitrate:    263.3 MBit/s VHT-MCS 6 80MHz VHT-NSS 1
+    rx duration:    0 us
+    authorized:    yes
+    authenticated:    yes
+    associated:    yes
+    preamble:    long
+    WMM/WME:    yes
+    MFP:        no
+    TDLS peer:    no
+    DTIM period:    2
+    beacon interval:100
+    short slot time:yes
+    connected time:    774 seconds
+    associated at [boottime]:    3327.468s
+    associated at:    1718455437511 ms
+    current time:    1718456211526 ms
+sob, 15 cze 2024, 14:56:56 CEST
+Station 50:c7:bf:2c:a9:31 (on wlp2s0)
+    inactive time:    1392 ms
+    rx bytes:    1707004
+    rx packets:    10184
+    tx bytes:    132047
+    tx packets:    2001
+    tx retries:    0
+    tx failed:    0
+    beacon loss:    0
+    beacon rx:    4391
+    rx drop misc:    7
+    signal:      -69 [-73, -69] dBm
+    signal avg:    -68 [-73, -68] dBm
+    beacon signal avg:    -68 dBm
+    tx bitrate:    175.5 MBit/s VHT-MCS 4 80MHz VHT-NSS 1
+    tx duration:    0 us
+    rx bitrate:    263.3 MBit/s VHT-MCS 6 80MHz VHT-NSS 1
+    rx duration:    0 us
+    authorized:    yes
+    authenticated:    yes
+    associated:    yes
+    preamble:    long
+    WMM/WME:    yes
+    MFP:        no
+    TDLS peer:    no
+    DTIM period:    2
+    beacon interval:100
+    short slot time:yes
+    connected time:    779 seconds
+    associated at [boottime]:    3327.468s
+    associated at:    1718455437511 ms
+    current time:    1718456216538 ms
+sob, 15 cze 2024, 14:57:01 CEST
+Station 50:c7:bf:2c:a9:31 (on wlp2s0)
+    inactive time:    48 ms
+    rx bytes:    1827402
+    rx packets:    10287
+    tx bytes:    137924
+    tx packets:    2047
+    tx retries:    0
+    tx failed:    0
+    beacon loss:    0
+    beacon rx:    4418
+    rx drop misc:    7
+    signal:      0 [0, 0] dBm
+    signal avg:    -2 [-3, -2] dBm
+    beacon signal avg:    -68 dBm
+    tx bitrate:    175.5 MBit/s VHT-MCS 4 80MHz VHT-NSS 1
+    tx duration:    0 us
+    rx bitrate:    52.0 MBit/s VHT-MCS 5 VHT-NSS 1
+    rx duration:    0 us
+    authorized:    yes
+    authenticated:    yes
+    associated:    yes
+    preamble:    long
+    WMM/WME:    yes
+    MFP:        no
+    TDLS peer:    no
+    DTIM period:    2
+    beacon interval:100
+    short slot time:yes
+    connected time:    784 seconds
+    associated at [boottime]:    3327.468s
+    associated at:    1718455437511 ms
+    current time:    1718456221547 ms
+sob, 15 cze 2024, 14:57:06 CEST
+Station 50:c7:bf:2c:a9:31 (on wlp2s0)
+    inactive time:    4857 ms
+    rx bytes:    1848410
+    rx packets:    10343
+    tx bytes:    138300
+    tx packets:    2051
+    tx retries:    0
+    tx failed:    0
+    beacon loss:    0
+    beacon rx:    4443
+    rx drop misc:    7
+    signal:      -69 [-72, -69] dBm
+    signal avg:    -66 [-70, -66] dBm
+    beacon signal avg:    -68 dBm
+    tx bitrate:    175.5 MBit/s VHT-MCS 4 80MHz VHT-NSS 1
+    tx duration:    0 us
+    rx bitrate:    52.0 MBit/s VHT-MCS 5 VHT-NSS 1
+    rx duration:    0 us
+    authorized:    yes
+    authenticated:    yes
+    associated:    yes
+    preamble:    long
+    WMM/WME:    yes
+    MFP:        no
+    TDLS peer:    no
+    DTIM period:    2
+    beacon interval:100
+    short slot time:yes
+    connected time:    789 seconds
+    associated at [boottime]:    3327.468s
+    associated at:    1718455437511 ms
+    current time:    1718456226559 ms
+sob, 15 cze 2024, 14:57:11 CEST
+Station 50:c7:bf:2c:a9:31 (on wlp2s0)
+    inactive time:    1467 ms
+    rx bytes:    1869290
+    rx packets:    10413
+    tx bytes:    140713
+    tx packets:    2061
+    tx retries:    0
+    tx failed:    0
+    beacon loss:    0
+    beacon rx:    4470
+    rx drop misc:    7
+    signal:      -69 [-74, -69] dBm
+    signal avg:    -63 [-68, -63] dBm
+    beacon signal avg:    -69 dBm
+    tx bitrate:    175.5 MBit/s VHT-MCS 4 80MHz VHT-NSS 1
+    tx duration:    0 us
+    rx bitrate:    52.0 MBit/s VHT-MCS 5 VHT-NSS 1
+    rx duration:    0 us
+    authorized:    yes
+    authenticated:    yes
+    associated:    yes
+    preamble:    long
+    WMM/WME:    yes
+    MFP:        no
+    TDLS peer:    no
+    DTIM period:    2
+    beacon interval:100
+    short slot time:yes
+    connected time:    794 seconds
+    associated at [boottime]:    3327.468s
+    associated at:    1718455437511 ms
+    current time:    1718456231570 ms
+sob, 15 cze 2024, 14:57:16 CEST
+Station 50:c7:bf:2c:a9:31 (on wlp2s0)
+    inactive time:    6481 ms
+    rx bytes:    1876386
+    rx packets:    10468
+    tx bytes:    140713
+    tx packets:    2061
+    tx retries:    0
+    tx failed:    0
+    beacon loss:    0
+    beacon rx:    4495
+    rx drop misc:    7
+    signal:      -68 [-74, -68] dBm
+    signal avg:    -69 [-73, -69] dBm
+    beacon signal avg:    -68 dBm
+    tx bitrate:    175.5 MBit/s VHT-MCS 4 80MHz VHT-NSS 1
+    tx duration:    0 us
+    rx bitrate:    52.0 MBit/s VHT-MCS 5 VHT-NSS 1
+    rx duration:    0 us
+    authorized:    yes
+    authenticated:    yes
+    associated:    yes
+    preamble:    long
+    WMM/WME:    yes
+    MFP:        no
+    TDLS peer:    no
+    DTIM period:    2
+    beacon interval:100
+    short slot time:yes
+    connected time:    799 seconds
+    associated at [boottime]:    3327.468s
+    associated at:    1718455437511 ms
+    current time:    1718456236584 ms
+
 
