@@ -1,116 +1,101 @@
-Return-Path: <stable+bounces-52267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296AC909723
-	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 10:55:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD9F990973C
+	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 11:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BAF31C2213F
-	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 08:55:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 344352849F8
+	for <lists+stable@lfdr.de>; Sat, 15 Jun 2024 09:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42291C68E;
-	Sat, 15 Jun 2024 08:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="C7IePpto"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B950722F19;
+	Sat, 15 Jun 2024 09:28:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554C0179A8;
-	Sat, 15 Jun 2024 08:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8241BC40
+	for <stable@vger.kernel.org>; Sat, 15 Jun 2024 09:28:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718441714; cv=none; b=heSlwYpdcqtkt+ypn3AedU1lad2n+MRvIBVdxUrOa9+3UYopEEiWKfVETzDvAEZFe6XC9RqFGbEi4TyH1jX5Isl2aN28H5StA9Dv09O+STPQEr1lf+WSg2TJLuw6cnzy7T0lmqVaauYfRX1JXLNmH10SNCQKgHN+0+8Wx9JF3cA=
+	t=1718443703; cv=none; b=DwZJSTHCkCQh4XxB1N7r0mTNQ83WtPaME9/T6EfvXGw8kHTo3mE9ZFvDD5rAnMwVXYTVS4baOP1OkBxt7RT72nm5WOVEZyQbFyZXFxqTkrJhIKOKA3UL9Nko1awDTSu24mKcKMaUMdgDEHvrEV21NbhNznjTGxJlezhPKCaPRFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718441714; c=relaxed/simple;
-	bh=gjwUXfnpJrMIPFPi48+TIaXScjHDYpomx5mQ/+7wIGg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rjn6mwfFkddB2pFXv5wGSCIC8jKsHcn2kLY6ixEXp5QOCzV4GWmfjxL2wsZu57AavLJS09FD5bmlWqPurpmKkxs4dww6kkeuISRCDjTRqBXjY90fU0x7iPxducyi+LQXWVcu6qTHHcJzE1+BDawt8XWxpryi2mO4AszefDcWxGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=C7IePpto; arc=none smtp.client-ip=89.208.246.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
-	s=default; t=1718441712;
-	bh=gjwUXfnpJrMIPFPi48+TIaXScjHDYpomx5mQ/+7wIGg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=C7IePpto9XQdhZ0+o4x8Pi2AqxX1rurIZRgQWuTDAizCNamJN8Jjkxk59QxJzN41l
-	 XnhAjNNgw0nCFF9pz7EuECbOJ2RWIzdzIiiwQeiJKj7JHPXfULBTGGQyVuq4qD27aw
-	 9uf1HnHz/BpFdYMJjKaRRGme9ygi8tucgdhUKe5U=
-Received: from [192.168.124.13] (unknown [113.200.174.91])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-384) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id 0115667456;
-	Sat, 15 Jun 2024 04:55:09 -0400 (EDT)
-Message-ID: <cdef45d36d0e71da5f0534b3783b81c82405bda3.camel@xry111.site>
-Subject: Re: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
-From: Xi Ruoyao <xry111@xry111.site>
-To: Huacai Chen <chenhuacai@kernel.org>, Arnd Bergmann <arnd@arndb.de>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev,
- Linux-Arch <linux-arch@vger.kernel.org>, Xuefeng Li
- <lixuefeng@loongson.cn>, guoren <guoren@kernel.org>, WANG Xuerui
- <kernel@xen0n.name>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- linux-kernel@vger.kernel.org,  loongson-kernel@lists.loongnix.cn,
- stable@vger.kernel.org
-Date: Sat, 15 Jun 2024 16:55:08 +0800
-In-Reply-To: <CAAhV-H7OR5tkbjj-BPLStneXFr=1DUaFvvh8+a5Bk_jhCAP25Q@mail.gmail.com>
-References: <20240511100157.2334539-1-chenhuacai@loongson.cn>
-	 <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com>
-	 <CAAhV-H5kn2xPLqgop0iOyg-tc5kAYcuNo3cd+f3yCdkN=cJDug@mail.gmail.com>
-	 <fcdeb993-37d6-42e0-8737-3be41413f03d@app.fastmail.com>
-	 <CAAhV-H4s_utEOtFDwjPTqxnMWTVjWhmS7bEVRX+t8HK5QDA8Vg@mail.gmail.com>
-	 <a21a0878-021e-4990-a59d-b10f204a018b@app.fastmail.com>
-	 <CAAhV-H7OR5tkbjj-BPLStneXFr=1DUaFvvh8+a5Bk_jhCAP25Q@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 
+	s=arc-20240116; t=1718443703; c=relaxed/simple;
+	bh=grOGKGkw+/uNK+7uWdF4SP1sNs8MdHIo22dvOhfEqXg=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=TkWe/NjSGaMxJ7Y7QW0fw/RpKK0DCSTPqKvtFtxdR0dRmogGrrCUZMeGtrllgQ/iq2RF8kiLQrtRcpvGNgk9xUM3ekdIyOhpP5FBrXwWx/yrwUTbGZ5tHD+McraBI9L0dBVmRagkoH4l+45QeVu4Hl4rZK3OJco1/BXKP2n4lgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from hverkuil by linuxtv.org with local (Exim 4.96)
+	(envelope-from <hverkuil@linuxtv.org>)
+	id 1sIPYV-0005jy-18;
+	Sat, 15 Jun 2024 09:18:39 +0000
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date: Sat, 15 Jun 2024 09:16:39 +0000
+Subject: [git:media_stage/master] media: i2c: alvium: Move V4L2_CID_GAIN to V4L2_CID_ANALOG_GAIN
+To: linuxtv-commits@linuxtv.org
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org, Tommaso Merciai <tomm.merciai@gmail.com>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1sIPYV-0005jy-18@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
 
-On Sat, 2024-06-15 at 16:52 +0800, Huacai Chen wrote:
-> Hi, Arnd,
->=20
-> On Sun, May 12, 2024 at 3:53=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wro=
-te:
-> >=20
-> > On Sun, May 12, 2024, at 05:11, Huacai Chen wrote:
-> > > On Sat, May 11, 2024 at 11:39=E2=80=AFPM Arnd Bergmann <arnd@arndb.de=
-> wrote:
-> > > > On Sat, May 11, 2024, at 16:28, Huacai Chen wrote:
-> > > > > On Sat, May 11, 2024 at 8:17=E2=80=AFPM Arnd Bergmann <arnd@arndb=
-.de> wrote:
-> > > > CONFIG_COMPAT_32BIT_TIME is equally affected here. On riscv32
-> > > > this is the only allowed configuration, while on others (arm32
-> > > > or x86-32 userland) you can turn off COMPAT_32BIT_TIME on
-> > > > both 32-bit kernel and on 64-bit kernels with compat mode.
-> > > I don't know too much detail, but I think riscv32 can do something
-> > > similar to arm32 and x86-32, or we can wait for Xuerui to improve
-> > > seccomp. But there is no much time for loongarch because the Debian
-> > > loong64 port is coming soon.
-> >=20
-> > What I meant is that the other architectures only work by
-> > accident if COMPAT_32BIT_TIME is enabled and statx() gets
-> > blocked, but then they truncate the timestamps to the tim32
-> > range, which is not acceptable behavior. Actually mips64 is
-> > in the same situation because it also only supports 32-bit
-> > timestamps in newstatat(), despite being a 64-bit
-> > architecture with a 64-bit time_t in all other syscalls.
-> We can only wait for the seccomp side to be fixed now? Or we can get
-> this patch upstream for LoongArch64 at the moment, and wait for
-> seccomp to fix RISCV32 (and LoongArch32) in future?
+This is an automatic generated email to let you know that the following patch were queued:
 
-I'm wondering why not just introduce a new syscall or extend statx with
-a new flag, as we've discussed many times.  They have their own
-disadvantages but better than this, IMO.
+Subject: media: i2c: alvium: Move V4L2_CID_GAIN to V4L2_CID_ANALOG_GAIN
+Author:  Tommaso Merciai <tomm.merciai@gmail.com>
+Date:    Mon Jun 10 10:10:34 2024 +0200
 
---=20
-Xi Ruoyao <xry111@xry111.site>
-School of Aerospace Science and Technology, Xidian University
+Into alvium cameras REG_BCRM_GAIN_RW control the analog gain.
+Let's use the right V4L2_CID_ANALOGUE_GAIN ctrl.
+
+Fixes: 0a7af872915e ("media: i2c: Add support for alvium camera")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tommaso Merciai <tomm.merciai@gmail.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+
+ drivers/media/i2c/alvium-csi2.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+---
+
+diff --git a/drivers/media/i2c/alvium-csi2.c b/drivers/media/i2c/alvium-csi2.c
+index c27c6fcaede4..5ddfd3dcb188 100644
+--- a/drivers/media/i2c/alvium-csi2.c
++++ b/drivers/media/i2c/alvium-csi2.c
+@@ -1998,7 +1998,7 @@ static int alvium_g_volatile_ctrl(struct v4l2_ctrl *ctrl)
+ 	int val;
+ 
+ 	switch (ctrl->id) {
+-	case V4L2_CID_GAIN:
++	case V4L2_CID_ANALOGUE_GAIN:
+ 		val = alvium_get_gain(alvium);
+ 		if (val < 0)
+ 			return val;
+@@ -2030,7 +2030,7 @@ static int alvium_s_ctrl(struct v4l2_ctrl *ctrl)
+ 		return 0;
+ 
+ 	switch (ctrl->id) {
+-	case V4L2_CID_GAIN:
++	case V4L2_CID_ANALOGUE_GAIN:
+ 		ret = alvium_set_ctrl_gain(alvium, ctrl->val);
+ 		break;
+ 	case V4L2_CID_AUTOGAIN:
+@@ -2159,7 +2159,7 @@ static int alvium_ctrl_init(struct alvium_dev *alvium)
+ 
+ 	if (alvium->avail_ft.gain) {
+ 		ctrls->gain = v4l2_ctrl_new_std(hdl, ops,
+-						V4L2_CID_GAIN,
++						V4L2_CID_ANALOGUE_GAIN,
+ 						alvium->min_gain,
+ 						alvium->max_gain,
+ 						alvium->inc_gain,
 
