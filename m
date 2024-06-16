@@ -1,124 +1,112 @@
-Return-Path: <stable+bounces-52304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C874909CCB
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 11:39:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59063909CFC
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 12:39:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6A49B20F26
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 09:39:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EEA31F212E4
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 10:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE3517F397;
-	Sun, 16 Jun 2024 09:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA96186E59;
+	Sun, 16 Jun 2024 10:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="QGxeGZf7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CcHIcquk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB585025E;
-	Sun, 16 Jun 2024 09:39:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A3E225CB;
+	Sun, 16 Jun 2024 10:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718530748; cv=none; b=dnGbhLUQPGZ799Y+3M/wAoSo/FltSvDvFpSo46ZoO0oowLxPf3pZTY6jRT63aVNQRksxz8BCYgSjO0005eFIWNRbO0iuivHYxxgCWQ8u7/cvSY5sMu1kKTKjzDO484rse/wDxpkAIVHTokKDHypyPIWxQTmgaDJYRJNqtfaQn7c=
+	t=1718534335; cv=none; b=DmWtiKr1nj1/OVkCAt/x8NqoEcoyLeyX0I15vGe4DGSYH0MvEZ8qyP+uhSle1mhASJe94QMFA9cYrddWhIIVyIKd8QYX6N+yYbWDU6CRmPpLpCKPWVAJ/9XqK3TbgQoG+ZbvsIosZPDNiSlH268RXd8Aziimax1nu0544V7k39o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718530748; c=relaxed/simple;
-	bh=6dA7/dibViLlVg0vuBTN+RMz0VQaAmKhfC47NLA+bFM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WhJo2iIYo8rfaxOb3KRIwyNpLhZ4WaZPj4cyhBt1dL1TZL6YgByLSSsMo+YBUTwHXAUBT1V78Fohx5tllcueJjt0aLCEKlU0hStL0jDDsBd3IAPfpBUcDgT9b+ikMGh0jAOg6ZgUqeoMQh85mldpJPYToyqP+oe89dQUTBSP0eM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=QGxeGZf7; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 1CFB61FA58;
-	Sun, 16 Jun 2024 11:38:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1718530735;
-	bh=kAZnTqax55Wjz2CBuGAYc20MbuOcHgLalijRLo3HDcQ=;
-	h=Received:Received:From:To:Subject;
-	b=QGxeGZf7VFUIyjs7eMpMcP44kq7toXzmdvMApNC6/P9eAphWRKEAyDjfEPKZPSMoS
-	 GwjeVknER1jzSlW786B5EKaZTUlvrjfwSTgT3CzT+ry5AhqAJFs1viKp61YpgxpCgV
-	 q5vHwIRq+aPbrA01yiIlTyvKnWRpDMRSISGjgeO2JTHh3yA8HXrpzGGekrONWYWeeA
-	 s2sHMoRROf/638icUfjIAhIfVNmMcoyr7yNZ/A+mU8VuW0bf6RSZknfKLGTmCslQk3
-	 cxntzqOYIBRanjOUOEOOsNPxIeMFnkrPlmA2ORuJlkIO8843irHR0CgoNAQWnD9CJK
-	 29jpi+ZXF2OWQ==
-Received: from livingston (unknown [192.168.42.11])
-	by gaggiata.pivistrello.it (Postfix) with ESMTP id 89CC57F9AA;
-	Sun, 16 Jun 2024 11:38:54 +0200 (CEST)
-Received: from pivi by livingston with local (Exim 4.96)
-	(envelope-from <francesco@dolcini.it>)
-	id 1sImLe-0000xO-1H;
-	Sun, 16 Jun 2024 11:38:54 +0200
-Date: Sun, 16 Jun 2024 11:38:54 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: =?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Matti Vaittinen <mazziesaccount@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: trigger: Fix condition for own trigger
-Message-ID: <Zm6yrnDwSye85Hl1@livingston.pivistrello.it>
-References: <20240614143658.3531097-1-jpaulo.silvagoncalves@gmail.com>
- <20240615115018.2b73d6b3@jic23-huawei>
+	s=arc-20240116; t=1718534335; c=relaxed/simple;
+	bh=n0LaERsn5Ds36h6PVoMho1cDafuJqvfMGBy+bvKEBmE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nZYS37h2w+jbVXTGPsL2g8zfpOTjR2a6gZJ3MRAxgbfNrgPFCU/CgiYSYv+t+gIZsbhPtylVLlVx3K9t2JEqNUHSbp6FBoWBrvmCGVREu/c2BnozCyCdOvnhU0+Byd6k5f7xYPjkvCCG0aeQWUxG0PU79tBTHFyyuzpjb07zdTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CcHIcquk; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2c2ccff8f0aso2902278a91.0;
+        Sun, 16 Jun 2024 03:38:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718534334; x=1719139134; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YgdSxt5+meSRURqqigWrDUkjDZ8g9qstYcPDzSx3UJU=;
+        b=CcHIcqukFVcGhJqbp0ZzsrO8C66f9//TcMGXODR6x/KWVYOErtzN7I8PEARblxNc3D
+         PPUV1Dx0IAWgI3wxUWaWr8lB8Y0lkjFA0EgkM/LWvtpQVCYH7uN8lfFgy6t9zGrjYnqP
+         LCLCBxyPUvcOUXGQl+BpH4o/D8FHCI1iA3OvzeqepoOdI8uQ1lyI/ymJXIQmpq34R1bE
+         MPysptqD64leEnGUuzWVMxOPRyHCKEX+T47q2AgI3bqPTqT7g8kSYawhT12lzJT8+/oS
+         MQcBGIIr5cQ1iv6MhCNMMlMUdreiQatgbl9+iK80Ji8hNZ3YBfk8s8ClD647CFd0i8wa
+         XLmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718534334; x=1719139134;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YgdSxt5+meSRURqqigWrDUkjDZ8g9qstYcPDzSx3UJU=;
+        b=ovj8OW+5W9F/2AC7IiM0s47cEpQgY0vKJGRVATziIzMFW4MKQ+dvf0sPjXHidqHz31
+         PO+Uy+D89cmWSYcf/EQ78fw09LiPsD7bGpou7esZNKVYcofgkHfqgVvFCZVBsZjxv9bY
+         Y9ILu49gian7NZqriLHXqZWhxvMjt4cA3KJ4I7Mipft3PKo0g2b39xJH+l23Z14VYmzG
+         xOSNzxev0+c96hKTT6w5ba5+h0Jw6o+1fZT209FdB7grOXJFDtCg/TwScl209PissJZr
+         7wk2e48JFpz9Vp4tafpWetxT/udZVoJn3Ih9jHAm/cEBb/2RGYIkTouAAEeoPTVoh3HW
+         D+9w==
+X-Gm-Message-State: AOJu0YygrEZglBRERjzI5zupiM+zgUVtiOGWpicOR23762JoxJcB+px0
+	S7G4JaDPf7CRRJkfo/iIkNiatfV9u7q13TTo18jF3KWuax0vM+42JYyziMf1tEU2PX2SaV/8GCV
+	48tkLWJl4ej/JIb45pwpm4H0hmGHwa/z44Gs=
+X-Google-Smtp-Source: AGHT+IFttbigH29muyl5Jbl/tX7srjz1gdrLi8KC8UjbLUEo0771BK8taFAdailCvL8wsy2Y2Oh/Xcn/0iqyh1BWM3U=
+X-Received: by 2002:a17:90b:80d:b0:2bf:ac8a:c795 with SMTP id
+ 98e67ed59e1d1-2c4dbd356afmr7614814a91.34.1718534333704; Sun, 16 Jun 2024
+ 03:38:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240615115018.2b73d6b3@jic23-huawei>
+References: <20240616021129.1681226-1-sashal@kernel.org>
+In-Reply-To: <20240616021129.1681226-1-sashal@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 16 Jun 2024 12:38:41 +0200
+Message-ID: <CANiq72ma2Q1tvNboDyKOP+zOuefCW8Ooq_9cUx46MkFOG-8YRA@mail.gmail.com>
+Subject: Re: Patch "kbuild: rust: force `alloc` extern to allow "empty" Rust
+ files" has been added to the 6.1-stable tree
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, ojeda@kernel.org, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 15, 2024 at 11:50:18AM +0100, Jonathan Cameron wrote:
-> On Fri, 14 Jun 2024 11:36:58 -0300
-> João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com> wrote:
-> 
-> > From: João Paulo Gonçalves <joao.goncalves@toradex.com>
-> > 
-> > The condition for checking if triggers belong to the same IIO device to
-> > set attached_own_device is currently inverted, causing
-> > iio_trigger_using_own() to return an incorrect value. Fix it by testing
-> > for the correct return value of iio_validate_own_trigger().
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 517985ebc531 ("iio: trigger: Add simple trigger_validation helper")
-> > Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+On Sun, Jun 16, 2024 at 4:11=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+>     Cc: stable@vger.kernel.org # v6.6+
 
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+This cannot be backported to 6.1 unless we upgrade the compiler, since
+the feature is not available in old versions.
 
-> 
-> Ouch.  Can you give an example of resulting user visible result? That
-> will help people decide whether to pick this up for their distro kernels
-> etc.  In some cases, looks like we'll get garbage timestamps and in others
-> may get stale data (or garbage).
+For future reference, this patch got picked for 6.1 a couple more times:
 
-This was noticed while me and Joao were working on the ads1119 driver you
-have been recently reviewing. We wanted to use iio_trigger_using_own()
-and it was not behaving the right way. We looked into it and found the bug.
+    https://lore.kernel.org/stable/CANiq72=3DV1=3DD-X5ncqN1pyfE4L1bz5zFRdBo=
+t6HpkCYie-EQnPA@mail.gmail.com/
+    https://lore.kernel.org/stable/CANiq72ndLzts-KzUv_22vHF0tYkPvROv=3DoG+K=
+P2KhbCvHkn60g@mail.gmail.com/
 
-Given that I do not know the exact impact on the drivers that are using this
-function.
+If I had known it would cause your scripts to pick it up repeatedly,
+then I would have probably avoided `Fixes`/`Cc` -- it is a very minor
+issue.
 
-> Odd no one has noticed this in the past whilst testing those dependent
-> features in particular drivers and I worry a little that we may have bugs
-> in the users as a result of iio_trigger_using_own() reporting the inverse
-> of the intended. I've take a quick look at the users and 'think' they are
-> ok, but would definitely like a few others to confirm.
-
-All the users of iio_trigger_using_own() are older than the commit that
-introduced the bug, it is safe to assume that they need the fix and
-are expecting the function to behave the same way is documented and it was
-before the bug was introduced.
-
-The broken commit is not that old and less than 10 IIO drivers are using this
-function. Given that I think that is not that odd that it took 1 year to find
-the bug.
-
-Francesco
-
+Cheers,
+Miguel
 
