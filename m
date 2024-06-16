@@ -1,170 +1,701 @@
-Return-Path: <stable+bounces-52307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFA7C909D27
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 13:40:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C418C909D40
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 14:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7F81F212C6
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 11:40:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 041E9B219C0
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 12:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE29186E3F;
-	Sun, 16 Jun 2024 11:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C712C1862B8;
+	Sun, 16 Jun 2024 12:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="FYaCFovl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnzQKJ9B"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DFD6A008;
-	Sun, 16 Jun 2024 11:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9AA6A008;
+	Sun, 16 Jun 2024 12:03:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718538009; cv=none; b=cWA4S9Pzf+L4e7YGsiuI8C9ov0XG/Kn6dtK5oGzrDK70j8XT6ApcT/o+vkb2hfIuSk+3F/WpkbH97hFYBPlP51+7v/t7U0YZCKYD/phPSY7pdoMHXzDpEjDCF7JMZ70/H6OecUGXiBT+gUMFnaSfe6yieZ5GaRk/fTpkS1kwP0g=
+	t=1718539432; cv=none; b=TurMrXr83nwLxp8hbptY8NuJcdVVh5akL61s1zMuIddjvSzcAnoMkFRhpY1Vr7dKW89YGS57Q3tzAsHJaRTNU4XtzyyJtcguBY+5qc7d4JW+yUBwptvLKguP3LAV4L60Rb3faDFG+VaeMD6xwxTZelDCWj4jqjF/IQvUzzRO+B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718538009; c=relaxed/simple;
-	bh=+5eIDvy+PDwnqeOYVylOAaTLLrsv5Q/pp+zj2Pwx934=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=SKrLKz6/+fm580h7t0MMxrzGG/C+3UNBiz5ptjTgyaU99MV/BUvJYH6+BiU86i7D3YSzb4AMz6B64nAkMd/UpXFpn24VBF80wVHdnDUkzgUoQ37GWAYrUDaSH42PCDkTUaWoyZFlWEqSwa7ORaTxdPPG1WrY+oJ2/6xxlJ1Zap4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=FYaCFovl; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=Tv02ePHCK570oFv+99PrlvHMKfm0UUy8eAo3neEsjog=; t=1718538006;
-	x=1718970006; b=FYaCFovlO35k7/sO6KocEbjm8gtobv+6Lj3Blaopd6R9Pd1/Hx0wFVq6FyRVE
-	OWzMOJnDkeLMDIX5h+2a7Q+FE0jymuV4lfi/lPt0OeA2lUusBXG6anyJ+KDf4WO1bf4OvSPEaj84P
-	5FAhA0f35JYSwJAu2oU3amS+u7g8dH1MvTR2aF/VFxo7c88rXXl0UJm4Wf75e+g4Wx2PIKEG81XkC
-	AqXHg0ix5I5lRilM8ivWPL2eykyHiZSJe+G+S40WfDurpAJtpqdO3A7t3DMywKGQnMVU+gKTIOHdI
-	9Ise+4XuqipeNvnOqClI+HuCRDAvSFtxW9eJqf9Yd4SVNHdsKg==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sIoEt-0007ug-DJ; Sun, 16 Jun 2024 13:40:03 +0200
-Message-ID: <1a69c1d0-0065-4f3b-923a-4e35a8a9d212@leemhuis.info>
-Date: Sun, 16 Jun 2024 13:40:02 +0200
+	s=arc-20240116; t=1718539432; c=relaxed/simple;
+	bh=mK4cyiRpTN5vlRcz/Ikottc4XrkaYI/jDKLYe7e+od8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ea6qjMukMgREFQ72+TX8RODVv8CkrOqJm99jqKkGOPM+x3OIs69XuD56oHA+2ljwrsWAAzgoiHhLvvGBroprPik98SxpGIUChpoLSCn/lNj9sEnse6H8QLZq/cGPa94ZEAKZnrTnik2OlFEczZr3DdaCXQMP1QzuXPJMZgM9WGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnzQKJ9B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9DAC2BBFC;
+	Sun, 16 Jun 2024 12:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718539432;
+	bh=mK4cyiRpTN5vlRcz/Ikottc4XrkaYI/jDKLYe7e+od8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KnzQKJ9BLCOiFpa5QuPEoiDRtXBvibsfhSL8sgCC5q0Qpf4XBGFERru7rGjqyo1uy
+	 0BnKqMxnHRSdB+ypP2YwzpTT9wKlEPHvgVQwOFAoHKkdtZ4QmbmzTG9O7PDGNTnuXa
+	 iFPixdbrfXWn/dCsuglWLQEWC/Daq7ijAIijU6Ao=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 4.19.316
+Date: Sun, 16 Jun 2024 14:03:47 +0200
+Message-ID: <2024061647-ranch-overpay-4d56@gregkh>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] leds: class: Revert: "If no default trigger is given,
- make hw_control trigger the default trigger"
-From: Thorsten Leemhuis <linux@leemhuis.info>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
- Pavel Machek <pavel@ucw.cz>, Jakub Kicinski <kuba@kernel.org>,
- Heiner Kallweit <hkallweit1@gmail.com>, linux-leds@vger.kernel.org,
- Genes Lists <lists@sapience.com>, =?UTF-8?Q?Johannes_W=C3=BCller?=
- <johanneswueller@gmail.com>, stable@vger.kernel.org,
- Andrew Lunn <andrew@lunn.ch>, Hans de Goede <hdegoede@redhat.com>,
- Lee Jones <lee@kernel.org>
-References: <20240607101847.23037-1-hdegoede@redhat.com>
- <6ebdcaca-c95a-48bc-b1ca-51cc1d7a86a5@lunn.ch>
- <7a73693e-87b4-4161-a058-4e36f50e1376@redhat.com>
- <5e93d4ea-0247-4803-9c0e-215d009fb9d3@leemhuis.info>
- <0cdc9042-2cad-48d4-8eb6-0732cf9e7dfa@redhat.com>
- <20240612152635.GF1504919@google.com>
- <1ae0cbc0-c87f-409b-abe2-13c76414f5ba@leemhuis.info>
-Content-Language: en-US, de-DE
-Autocrypt: addr=linux@leemhuis.info; keydata=
- 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 n7RI
-In-Reply-To: <1ae0cbc0-c87f-409b-abe2-13c76414f5ba@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718538006;cd2c3720;
-X-HE-SMSGID: 1sIoEt-0007ug-DJ
+Content-Transfer-Encoding: 8bit
 
-[resending this request, I fear my earlier mail triggered a spam filter]
+I'm announcing the release of the 4.19.316 kernel.
 
-Linus, could you please merge the revert at this thread's start, e.g.:
-https://lore.kernel.org/all/20240607101847.23037-1-hdegoede@redhat.com/
+All users of the 4.19 kernel series must upgrade.
 
-It fixes a regression that causes some trouble.
+The updated 4.19.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-4.19.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-You can see the Ack from Lee (who merged and mainlined the patch that is
-reverted) below; there is a Reviewed-by: from Andrew in the first reply
-as well. Heiner, who authored the culprit, did not reply afaics.
+thanks,
 
-Ciao, Thorsten
+greg k-h
 
-On 13.06.24 08:01, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 12.06.24 17:26, Lee Jones wrote:
->> On Wed, 12 Jun 2024, Hans de Goede wrote:
->>> On 6/12/24 4:58 PM, Linux regression tracking (Thorsten Leemhuis) wrote:
->>>>
->>>> Hans, from your point of view, how fast should we try to mainline this
->>>> revert? I got the impression that you want it merged there rather sooner
->>>> than later -- and that sounds appropriate to me.
->>>
->>> There are at least 2 separate bug reports from 6.9 users who are gettinhg
->>> stuck tasks which should be fixed by this, so yes this should go upstream
->>> soon.
->>>
->>>> So should we maybe ask
->>>> Linus on Friday to pick this up from here? Ideally of course with an ACK
->>>> from Pavel or Lee.
->>>
->>> Indeed having an ack from Lee or Pavel here would be great!
->>
->> Acked-by: Lee Jones <lee@kernel.org>
-> 
-> Thx everyone. In that case: why wait till Friday. :-D
-> 
-> Linus, could you please pick the revert up this thread is about? You can
-> find it here at the start of this thread, which is:
-> 
-> https://lore.kernel.org/all/20240607101847.23037-1-hdegoede@redhat.com/
-> 
-> You can see the Ack from Lee above and there is a Reviewed-by: from
-> Andrew in the first reply as well.
-> 
-> Tia! Ciao, Thorsten
+------------
+
+ Documentation/devicetree/bindings/sound/rt5645.txt     |    6 
+ Makefile                                               |    2 
+ arch/arm64/boot/dts/hisilicon/hi3798cv200.dtsi         |    2 
+ arch/arm64/boot/dts/nvidia/tegra132-norrin.dts         |    4 
+ arch/arm64/boot/dts/nvidia/tegra132.dtsi               |    2 
+ arch/arm64/include/asm/asm-bug.h                       |    1 
+ arch/arm64/kvm/guest.c                                 |    1 
+ arch/m68k/kernel/entry.S                               |    4 
+ arch/m68k/mac/misc.c                                   |   46 -
+ arch/microblaze/kernel/Makefile                        |    1 
+ arch/microblaze/kernel/cpu/cpuinfo-static.c            |    2 
+ arch/parisc/kernel/parisc_ksyms.c                      |    1 
+ arch/powerpc/include/asm/hvcall.h                      |    2 
+ arch/powerpc/platforms/pseries/lpar.c                  |    6 
+ arch/powerpc/platforms/pseries/lparcfg.c               |    6 
+ arch/powerpc/sysdev/fsl_msi.c                          |    2 
+ arch/sh/kernel/kprobes.c                               |    7 
+ arch/sh/lib/checksum.S                                 |   67 --
+ arch/sparc/include/asm/smp_64.h                        |    2 
+ arch/sparc/include/uapi/asm/termbits.h                 |   10 
+ arch/sparc/include/uapi/asm/termios.h                  |    9 
+ arch/sparc/kernel/prom_64.c                            |    4 
+ arch/sparc/kernel/setup_64.c                           |    1 
+ arch/sparc/kernel/smp_64.c                             |   14 
+ arch/um/drivers/line.c                                 |   14 
+ arch/um/drivers/ubd_kern.c                             |    4 
+ arch/um/include/asm/mmu.h                              |    2 
+ arch/um/include/shared/skas/mm_id.h                    |    2 
+ arch/x86/Kconfig.debug                                 |    5 
+ arch/x86/kernel/apic/vector.c                          |    9 
+ arch/x86/kernel/tsc_sync.c                             |    6 
+ arch/x86/lib/x86-opcode-map.txt                        |    2 
+ arch/x86/purgatory/Makefile                            |    3 
+ arch/x86/tools/relocs.c                                |    9 
+ drivers/acpi/acpica/Makefile                           |    1 
+ drivers/android/binder.c                               |    4 
+ drivers/ata/pata_legacy.c                              |    8 
+ drivers/block/null_blk_main.c                          |    3 
+ drivers/char/ppdev.c                                   |   21 
+ drivers/crypto/bcm/spu2.c                              |    2 
+ drivers/crypto/ccp/sp-platform.c                       |   59 -
+ drivers/crypto/qat/qat_common/adf_aer.c                |   19 
+ drivers/dma-buf/sync_debug.c                           |    4 
+ drivers/dma/idma64.c                                   |    4 
+ drivers/extcon/Kconfig                                 |    3 
+ drivers/firmware/dmi-id.c                              |    7 
+ drivers/firmware/raspberrypi.c                         |    7 
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c      |    1 
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_cm_common.c |    5 
+ drivers/gpu/drm/arm/malidp_mw.c                        |    5 
+ drivers/gpu/drm/mediatek/mtk_drm_gem.c                 |    3 
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_cmd.c   |   12 
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c   |    9 
+ drivers/hwtracing/intel_th/pci.c                       |    5 
+ drivers/hwtracing/stm/core.c                           |   11 
+ drivers/infiniband/hw/hns/hns_roce_hem.h               |   12 
+ drivers/infiniband/ulp/ipoib/ipoib_vlan.c              |    8 
+ drivers/input/misc/ims-pcu.c                           |    4 
+ drivers/input/misc/pm8xxx-vibrator.c                   |    7 
+ drivers/irqchip/irq-alpine-msi.c                       |    2 
+ drivers/macintosh/adb-iop.c                            |   48 -
+ drivers/macintosh/via-macii.c                          |  328 ++++------
+ drivers/md/md-bitmap.c                                 |    6 
+ drivers/md/raid5.c                                     |   15 
+ drivers/media/cec/cec-adap.c                           |    3 
+ drivers/media/cec/cec-api.c                            |    3 
+ drivers/media/dvb-frontends/mxl5xx.c                   |   22 
+ drivers/media/pci/ngene/ngene-core.c                   |    4 
+ drivers/media/radio/radio-shark2.c                     |    2 
+ drivers/media/usb/stk1160/stk1160-video.c              |   20 
+ drivers/media/v4l2-core/v4l2-dev.c                     |    3 
+ drivers/mmc/core/host.c                                |    3 
+ drivers/mtd/nand/raw/nand_hynix.c                      |    2 
+ drivers/net/ethernet/cisco/enic/enic_main.c            |   12 
+ drivers/net/ethernet/cortina/gemini.c                  |   12 
+ drivers/net/ethernet/freescale/fec_main.c              |   10 
+ drivers/net/ethernet/freescale/fec_ptp.c               |   14 
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c      |    2 
+ drivers/net/ethernet/qlogic/qed/qed_main.c             |    9 
+ drivers/net/ethernet/smsc/smc91x.h                     |    4 
+ drivers/net/ipvlan/ipvlan_core.c                       |    4 
+ drivers/net/usb/qmi_wwan.c                             |    3 
+ drivers/net/usb/smsc95xx.c                             |  122 +--
+ drivers/net/usb/sr9700.c                               |   10 
+ drivers/net/vxlan.c                                    |    4 
+ drivers/net/wireless/ath/ar5523/ar5523.c               |   14 
+ drivers/net/wireless/ath/ath10k/core.c                 |    3 
+ drivers/net/wireless/ath/ath10k/debugfs_sta.c          |    2 
+ drivers/net/wireless/ath/ath10k/hw.h                   |    1 
+ drivers/net/wireless/ath/ath10k/targaddrs.h            |    3 
+ drivers/net/wireless/ath/ath10k/wmi.c                  |   26 
+ drivers/net/wireless/ath/carl9170/usb.c                |   32 +
+ drivers/net/wireless/marvell/mwl8k.c                   |    2 
+ drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c  |   26 
+ drivers/nvme/target/configfs.c                         |    8 
+ drivers/power/supply/cros_usbpd-charger.c              |   11 
+ drivers/s390/cio/trace.h                               |    2 
+ drivers/s390/crypto/ap_bus.c                           |    2 
+ drivers/scsi/bfa/bfad_debugfs.c                        |    4 
+ drivers/scsi/hpsa.c                                    |    2 
+ drivers/scsi/libsas/sas_expander.c                     |    3 
+ drivers/scsi/qedf/qedf_debugfs.c                       |    2 
+ drivers/scsi/ufs/ufs-qcom.h                            |   12 
+ drivers/scsi/ufs/ufs.h                                 |   30 
+ drivers/scsi/ufs/ufshcd.c                              |  185 ++---
+ drivers/scsi/ufs/ufshci.h                              |   25 
+ drivers/spi/spi.c                                      |    4 
+ drivers/staging/greybus/arche-apb-ctrl.c               |    1 
+ drivers/staging/greybus/arche-platform.c               |    9 
+ drivers/staging/greybus/light.c                        |    8 
+ drivers/staging/speakup/main.c                         |    2 
+ drivers/tty/n_gsm.c                                    |    8 
+ drivers/tty/serial/max3100.c                           |   22 
+ drivers/tty/serial/sh-sci.c                            |   24 
+ drivers/usb/gadget/function/u_audio.c                  |    2 
+ drivers/video/fbdev/Kconfig                            |    4 
+ drivers/video/fbdev/savage/savagefb_driver.c           |    5 
+ drivers/video/fbdev/sh_mobile_lcdcfb.c                 |    2 
+ drivers/video/fbdev/sis/init301.c                      |    3 
+ drivers/virtio/virtio_pci_common.c                     |    4 
+ fs/ecryptfs/keystore.c                                 |    4 
+ fs/ext4/namei.c                                        |    2 
+ fs/ext4/xattr.c                                        |    4 
+ fs/f2fs/node.c                                         |    2 
+ fs/f2fs/segment.c                                      |    6 
+ fs/f2fs/super.c                                        |    4 
+ fs/jffs2/xattr.c                                       |    3 
+ fs/nfs/internal.h                                      |    4 
+ fs/nfsd/nfs4state.c                                    |   11 
+ fs/nilfs2/ioctl.c                                      |    2 
+ fs/nilfs2/segment.c                                    |   63 +-
+ include/linux/moduleparam.h                            |    2 
+ include/net/dst_ops.h                                  |    2 
+ include/net/neighbour.h                                |    2 
+ include/net/netfilter/nf_tables.h                      |  132 +---
+ include/net/sock.h                                     |   13 
+ include/trace/events/asoc.h                            |    2 
+ include/uapi/linux/netfilter/nf_tables.h               |    1 
+ kernel/cgroup/cpuset.c                                 |    2 
+ kernel/debug/kdb/kdb_io.c                              |   99 +--
+ kernel/irq/cpuhotplug.c                                |   16 
+ kernel/params.c                                        |   18 
+ kernel/sched/topology.c                                |    9 
+ kernel/trace/ring_buffer.c                             |    9 
+ net/9p/client.c                                        |    2 
+ net/ipv4/route.c                                       |   22 
+ net/ipv4/tcp_dctcp.c                                   |   13 
+ net/ipv6/route.c                                       |   29 
+ net/ipv6/seg6.c                                        |    5 
+ net/ipv6/seg6_hmac.c                                   |   42 -
+ net/netfilter/nf_tables_api.c                          |  529 ++++++++++++++---
+ net/netfilter/nfnetlink_queue.c                        |    2 
+ net/netfilter/nft_chain_filter.c                       |    3 
+ net/netfilter/nft_compat.c                             |   32 +
+ net/netfilter/nft_dynset.c                             |   24 
+ net/netfilter/nft_exthdr.c                             |   14 
+ net/netfilter/nft_flow_offload.c                       |    5 
+ net/netfilter/nft_nat.c                                |    5 
+ net/netfilter/nft_rt.c                                 |    5 
+ net/netfilter/nft_set_bitmap.c                         |    5 
+ net/netfilter/nft_set_hash.c                           |  111 ++-
+ net/netfilter/nft_set_rbtree.c                         |  387 ++++++++++--
+ net/netfilter/nft_socket.c                             |    5 
+ net/netfilter/nft_tproxy.c                             |    5 
+ net/netrom/nr_route.c                                  |   19 
+ net/nfc/nci/core.c                                     |   17 
+ net/openvswitch/actions.c                              |    6 
+ net/openvswitch/flow.c                                 |    3 
+ net/packet/af_packet.c                                 |    3 
+ net/sunrpc/auth_gss/svcauth_gss.c                      |   12 
+ net/sunrpc/xprtsock.c                                  |   18 
+ net/unix/af_unix.c                                     |    2 
+ net/wireless/trace.h                                   |    4 
+ net/xfrm/xfrm_policy.c                                 |   11 
+ scripts/kconfig/symbol.c                               |    6 
+ sound/core/timer.c                                     |   10 
+ sound/soc/codecs/da7219-aad.c                          |    6 
+ sound/soc/codecs/rt5645.c                              |   25 
+ tools/lib/subcmd/parse-options.c                       |    8 
+ tools/objtool/arch/x86/lib/x86-opcode-map.txt          |    2 
+ tools/testing/selftests/kcmp/kcmp_test.c               |    8 
+ 181 files changed, 2155 insertions(+), 1304 deletions(-)
+
+Aaron Conole (1):
+      openvswitch: Set the skbuff pkt_type for proper pmtud support.
+
+Adrian Hunter (1):
+      x86/insn: Fix PUSH instruction in x86 instruction decoder opcode map
+
+Al Viro (1):
+      parisc: add missing export of __cmpxchg_u8()
+
+Aleksandr Burakov (1):
+      media: ngene: Add dvb_ca_en50221_init return value check
+
+Aleksandr Mishin (1):
+      crypto: bcm - Fix pointer arithmetic
+
+Alexander Shishkin (1):
+      intel_th: pci: Add Meteor Lake-S CPU support
+
+Andre Edich (2):
+      smsc95xx: remove redundant function arguments
+      smsc95xx: use usbnet->driver_priv
+
+Andrew Halaney (3):
+      scsi: ufs: qcom: Perform read back after writing reset bit
+      scsi: ufs: core: Perform read back after disabling interrupts
+      scsi: ufs: core: Perform read back after disabling UIC_COMMAND_COMPL
+
+Andy Shevchenko (4):
+      serial: max3100: Lock port->lock when calling uart_handle_cts_change()
+      serial: max3100: Update uart_driver_registered on driver removal
+      serial: max3100: Fix bitwise types
+      spi: Don't mark message DMA mapped when no transfer in it is
+
+Ard Biesheuvel (1):
+      x86/purgatory: Switch to the position-independent small code model
+
+Arnd Bergmann (10):
+      nilfs2: fix out-of-range warning
+      crypto: ccp - drop platform ifdef checks
+      qed: avoid truncating work queue length
+      ACPI: disable -Wstringop-truncation
+      fbdev: shmobile: fix snprintf truncation
+      powerpc/fsl-soc: hide unused const variable
+      fbdev: sisfb: hide unused variables
+      firmware: dmi-id: add a release callback function
+      greybus: arche-ctrl: move device table to its right location
+      Input: ims-pcu - fix printf string overflow
+
+Baochen Qiang (1):
+      wifi: ath10k: poll service ready message before failing
+
+Baokun Li (1):
+      ext4: fix mb_cache_entry's e_refcnt leak in ext4_xattr_block_cache_find()
+
+Bitterblue Smith (1):
+      wifi: rtl8xxxu: Fix the TX power of RTL8192CU, RTL8723AU
+
+Breno Leitao (1):
+      af_unix: Fix data races in unix_release_sock/unix_stream_sendmsg
+
+Brian Kubisiak (1):
+      ecryptfs: Fix buffer size for tag 66 packet
+
+Bui Quang Minh (2):
+      scsi: bfa: Ensure the copied buf is NUL terminated
+      scsi: qedf: Ensure the copied buf is NUL terminated
+
+Cai Xinchen (1):
+      fbdev: savage: Handle err return when savagefb_check_var failed
+
+Carlos Llamas (1):
+      binder: fix max_thread type inconsistency
+
+Carolina Jubran (1):
+      net/mlx5e: Use rx_missed_errors instead of rx_dropped for reporting buffer exhaustion
+
+Chao Yu (1):
+      f2fs: fix to release node block count in error path of f2fs_new_node_page()
+
+Chen Ni (1):
+      dmaengine: idma64: Add check for dma_set_max_seg_size
+
+Chengchang Tang (1):
+      RDMA/hns: Use complete parentheses in macros
+
+Chris Wulff (1):
+      usb: gadget: u_audio: Clear uac pointer when freed.
+
+Christoph Hellwig (2):
+      scsi: ufs: cleanup struct utp_task_req_desc
+      scsi: ufs: add a low-level __ufshcd_issue_tm_cmd helper
+
+Christophe JAILLET (1):
+      ppdev: Remove usage of the deprecated ida_simple_xx() API
+
+Chuck Lever (2):
+      SUNRPC: Fix gss_free_in_token_pages()
+      SUNRPC: Fix loop termination condition in gss_free_in_token_pages()
+
+Dan Carpenter (4):
+      speakup: Fix sizeof() vs ARRAY_SIZE() bug
+      wifi: mwl8k: initialize cmd->addr[] properly
+      stm class: Fix a double free in stm_register_device()
+      media: stk1160: fix bounds checking in stk1160_copy_video()
+
+Daniel Borkmann (1):
+      vxlan: Fix regression when dropping packets due to invalid src addresses
+
+Daniel J Blueman (1):
+      x86/tsc: Trust initial offset in architectural TSC-adjust MSRs
+
+Daniel Starke (1):
+      tty: n_gsm: fix possible out-of-bounds in gsm0_receive()
+
+Daniel Thompson (5):
+      kdb: Fix buffer overflow during tab-complete
+      kdb: Use format-strings rather than '\0' injection in kdb_read()
+      kdb: Fix console handling when editing and tab-completing commands
+      kdb: Merge identical case statements in kdb_read()
+      kdb: Use format-specifiers rather than memset() for padding in kdb_read()
+
+Daniele Palmas (1):
+      net: usb: qmi_wwan: add Telit FN920C04 compositions
+
+Derek Fang (2):
+      ASoC: rt5645: Fix the electric noise due to the CBJ contacts floating
+      ASoC: dt-bindings: rt5645: add cbj sleeve gpio property
+
+Dmitry Baryshkov (1):
+      wifi: ath10k: populate board data for WCN3990
+
+Dongli Zhang (1):
+      genirq/cpuhotplug, x86/vector: Prevent vector leak during CPU offline
+
+Duoming Zhou (1):
+      um: Fix return value in ubd_init()
+
+Edward Liaw (1):
+      selftests/kcmp: remove unused open mode
+
+Eric Dumazet (6):
+      net: usb: sr9700: stop lying about skb->truesize
+      net: usb: smsc95xx: stop lying about skb->truesize
+      netrom: fix possible dead-lock in nr_rt_ioctl()
+      af_packet: do not call packet_read_pending() from tpacket_destruct_skb()
+      netfilter: nfnetlink_queue: acquire rcu_read_lock() in instance_destroy_rcu()
+      net: fix __dst_negative_advice() race
+
+Fenglin Wu (1):
+      Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation
+
+Finn Thain (5):
+      macintosh/via-macii: Remove BUG_ON assertions
+      macintosh/via-macii, macintosh/adb-iop: Clean up whitespace
+      macintosh/via-macii: Fix "BUG: sleeping function called from invalid context"
+      m68k/mac: Use '030 reset method on SE/30
+      m68k: mac: Fix reboot hang on Mac IIci
+
+Florian Westphal (4):
+      netfilter: nf_tables: defer gc run if previous batch is still pending
+      netfilter: nftables: exthdr: fix 4-byte stack OOB write
+      netfilter: nf_tables: mark newset as dead on transaction abort
+      netfilter: nf_tables: set dormant flag on hook register failure
+
+Gautam Menghani (1):
+      selftests/kcmp: Make the test output consistent and clear
+
+Geert Uytterhoeven (2):
+      sh: kprobes: Merge arch_copy_kprobe() into arch_prepare_kprobe()
+      serial: sh-sci: Extract sci_dma_rx_chan_invalidate()
+
+Greg Kroah-Hartman (1):
+      Linux 4.19.316
+
+Guenter Roeck (1):
+      Revert "sh: Handle calling csum_partial with misaligned data"
+
+Guixiong Wei (1):
+      x86/boot: Ignore relocations in .notes sections in walk_relocs() too
+
+Hangbin Liu (4):
+      ipv6: sr: add missing seg6_local_exit
+      ipv6: sr: fix incorrect unregister order
+      ipv6: sr: fix invalid unregister error path
+      ipv6: sr: fix memleak in seg6_hmac_init_algo
+
+Hans Verkuil (3):
+      media: cec: cec-adap: always cancel work in cec_transmit_msg_fh
+      media: cec: cec-api: add locking in cec_release()
+      media: v4l2-core: hold videodev_lock until dev reg, finishes
+
+Harald Freudenberger (1):
+      s390/ap: Fix crash in AP internal function modify_bitmap()
+
+Herbert Xu (1):
+      crypto: qat - Fix ADF_DEV_RESET_SYNC memory leak
+
+Huai-Yuan Liu (2):
+      drm/arm/malidp: fix a possible null pointer dereference
+      ppdev: Add an error check in register_device
+
+Ian Rogers (1):
+      libsubcmd: Fix parse-options memory leak
+
+Ignat Korchagin (1):
+      netfilter: nf_tables: allow NFPROTO_INET in nft_(match/target)_validate()
+
+Igor Artemiev (1):
+      wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class
+
+Ilya Denisyev (1):
+      jffs2: prevent xattr node from overflowing the eraseblock
+
+Ilya Maximets (1):
+      net: openvswitch: fix overwriting ct original tuple for ICMPv6
+
+Jan Kara (1):
+      ext4: avoid excessive credit estimate in ext4_tmpfile()
+
+Jeykumar Sankaran (1):
+      drm/msm/dpu: use kms stored hw mdp block
+
+Jiangfeng Xiao (1):
+      arm64: asm-bug: Add .align 2 to the end of __BUG_ENTRY
+
+Jiri Pirko (1):
+      virtio: delete vq in vp_find_vqs_msix() when request_irq() fails
+
+Jorge Ramirez-Ortiz (1):
+      mmc: core: Do not force a retune before RPMB switch
+
+Joshua Ashton (1):
+      drm/amd/display: Set color_mgmt_changed to true on unsuspend
+
+Justin Green (1):
+      drm/mediatek: Add 0 size check to mtk_drm_gem_obj
+
+Krzysztof Kozlowski (1):
+      arm64: tegra: Correct Tegra132 I2C alias
+
+Kuniyuki Iwashima (1):
+      tcp: Fix shift-out-of-bounds in dctcp_update_alpha().
+
+Laurent Pinchart (1):
+      firmware: raspberrypi: Use correct device for DMA mappings
+
+Leon Romanovsky (1):
+      RDMA/IPoIB: Fix format truncation compilation errors
+
+Linus Walleij (1):
+      net: ethernet: cortina: Locking fixes
+
+Marc Zyngier (1):
+      KVM: arm64: Allow AArch32 PSTATE.M to be restored as System mode
+
+Masahiro Yamada (2):
+      x86/kconfig: Select ARCH_WANT_FRAME_POINTERS again when UNWINDER_FRAME_POINTER=y
+      kconfig: fix comparison to constant symbols, 'm', 'n'
+
+Maxim Korotkov (1):
+      mtd: rawnand: hynix: fixed typo
+
+Michael Schmitz (1):
+      m68k: Fix spinlock race in kernel thread creation
+
+Michal Simek (2):
+      microblaze: Remove gcc flag for non existing early_printk.c file
+      microblaze: Remove early printk call from cpuinfo-static.c
+
+Mike Gilbert (1):
+      sparc: move struct termio to asm/termios.h
+
+Nathan Chancellor (2):
+      crypto: ccp - Remove forward declaration
+      media: mxl5xx: Move xpt structures off stack
+
+NeilBrown (1):
+      nfsd: drop st_mutex before calling move_to_close_lru()
+
+Nikita Zhandarovich (3):
+      wifi: carl9170: add a proper sanity check for endpoints
+      wifi: ar5523: enable proper endpoint verification
+      net/9p: fix uninit-value in p9_client_rpc()
+
+Pablo Neira Ayuso (34):
+      netfilter: nf_tables: pass context to nft_set_destroy()
+      netfilter: nftables: rename set element data activation/deactivation functions
+      netfilter: nf_tables: drop map element references from preparation phase
+      netfilter: nft_set_rbtree: allow loose matching of closing element in interval
+      netfilter: nft_set_rbtree: Switch to node list walk for overlap detection
+      netfilter: nft_set_rbtree: fix null deref on element insertion
+      netfilter: nft_set_rbtree: fix overlap expiration walk
+      netfilter: nf_tables: don't skip expired elements during walk
+      netfilter: nf_tables: GC transaction API to avoid race with control plane
+      netfilter: nf_tables: adapt set backend to use GC transaction API
+      netfilter: nf_tables: remove busy mark and gc batch API
+      netfilter: nf_tables: fix GC transaction races with netns and netlink event exit path
+      netfilter: nf_tables: GC transaction race with netns dismantle
+      netfilter: nf_tables: GC transaction race with abort path
+      netfilter: nft_set_rbtree: skip sync GC for new elements in this transaction
+      netfilter: nft_set_rbtree: use read spinlock to avoid datapath contention
+      netfilter: nft_set_hash: try later when GC hits EAGAIN on iteration
+      netfilter: nf_tables: fix memleak when more than 255 elements expired
+      netfilter: nf_tables: unregister flowtable hooks on netns exit
+      netfilter: nf_tables: double hook unregistration in netns path
+      netfilter: nftables: update table flags from the commit phase
+      netfilter: nf_tables: fix table flag updates
+      netfilter: nf_tables: disable toggling dormant table state more than once
+      netfilter: nf_tables: bogus EBUSY when deleting flowtable after flush (for 4.19)
+      netfilter: nft_dynset: fix timeouts later than 23 days
+      netfilter: nft_dynset: report EOPNOTSUPP on missing set feature
+      netfilter: nft_dynset: relax superfluous check on set updates
+      netfilter: nf_tables: skip dead set elements in netlink dump
+      netfilter: nf_tables: validate NFPROTO_* family
+      netfilter: nft_set_rbtree: skip end interval element from gc
+      netfilter: nf_tables: do not compare internal table flags on updates
+      netfilter: nf_tables: mark set as dead when unbinding anonymous set with timeout
+      netfilter: nf_tables: reject new basechain after table flag update
+      netfilter: nf_tables: discard table flag update with pending basechain deletion
+
+Parthiban Veerasooran (1):
+      net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM
+
+Peter Oberparleiter (1):
+      s390/cio: fix tracepoint subchannel type field
+
+Petr Pavlu (1):
+      ring-buffer: Fix a race between readers and resize checks
+
+Phil Sutter (1):
+      netfilter: nft_set_rbtree: Add missing expired checks
+
+Pierre-Louis Bossart (1):
+      ASoC: da7219-aad: fix usage of device_get_named_child_node()
+
+Qingfang DENG (1):
+      neighbour: fix unaligned access to pneigh_entry
+
+Randy Dunlap (2):
+      fbdev: sh7760fb: allow modular build
+      extcon: max8997: select IRQ_DOMAIN instead of depending on it
+
+Ricardo Ribalda (1):
+      media: radio-shark2: Avoid led_names truncations
+
+Roberto Sassu (1):
+      um: Add winch to winch_handlers before registering winch IRQ
+
+Roded Zats (1):
+      enic: Validate length of nl attributes in enic_set_vf_port
+
+Rui Miguel Silva (1):
+      greybus: lights: check return of get_channel_from_mode
+
+Ryosuke Yasuoka (2):
+      nfc: nci: Fix uninit-value in nci_rx_work
+      nfc: nci: Fix handling of zero-length payload packets in nci_rx_work()
+
+Ryusuke Konishi (3):
+      nilfs2: fix unexpected freezing of nilfs_segctor_sync()
+      nilfs2: fix potential hang in nilfs_detach_log_writer()
+      nilfs2: fix use-after-free of timer for log writer thread
+
+Sagi Grimberg (2):
+      params: lift param_set_uint_minmax to common code
+      nvmet: fix ns enable/disable possible hang
+
+Sahitya Tummala (1):
+      f2fs: add error prints for debugging mount failure
+
+Sam Ravnborg (1):
+      sparc64: Fix number of online CPUs
+
+Sergey Shtylyov (2):
+      ata: pata_legacy: make legacy_exit() work again
+      nfs: fix undefined behavior in nfs_block_bits()
+
+Shrikanth Hegde (1):
+      powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp
+
+Srinivasan Shanmugam (1):
+      drm/amd/display: Fix potential index out of bounds in color transformation function
+
+Steven Rostedt (1):
+      ASoC: tracing: Export SND_SOC_DAPM_DIR_OUT to its value
+
+Su Hui (1):
+      wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()
+
+Takashi Iwai (1):
+      ALSA: timer: Set lower bound of start tick time
+
+Tetsuo Handa (2):
+      nfc: nci: Fix kcov check in nci_rx_work()
+      dma-buf/sw-sync: don't enable IRQ from sync_print_obj()
+
+Thorsten Blum (1):
+      net: smc91x: Fix m68k kernel compilation for ColdFire CPU
+
+Tiwei Bie (1):
+      um: Fix the -Wmissing-prototypes warning for __switch_mm
+
+Tzung-Bi Shih (1):
+      power: supply: cros_usbpd: provide ID table for avoiding fallback match
+
+Valentin Schneider (1):
+      sched/topology: Don't set SD_BALANCE_WAKE on cpuset domain relax
+
+Vitalii Bursov (1):
+      sched/fair: Allow disabling sched_balance_newidle with sched_relax_domain_level
+
+Wei Fang (1):
+      net: fec: avoid lock evasion when reading pps_enable
+
+Wolfram Sang (1):
+      serial: sh-sci: protect invalidating RXDMA on shutdown
+
+Xiaolei Wang (1):
+      net:fec: Add fec_enet_deinit()
+
+Xingui Yang (1):
+      scsi: libsas: Fix the failure of adding phy with zero-address to port
+
+Yang Xiwen (1):
+      arm64: dts: hi3798cv200: fix the size of GICR
+
+Yu Kuai (2):
+      md: fix resync softlockup when bitmap size is less than array size
+      md/raid5: fix deadlock that raid5d() wait for itself to clear MD_SB_CHANGE_PENDING
+
+Yue Haibing (1):
+      ipvlan: Dont Use skb->sk in ipvlan_process_v{4,6}_outbound
+
+Yuri Karpov (1):
+      scsi: hpsa: Fix allocation size for Scsi_Host private data
+
+Zenghui Yu (1):
+      irqchip/alpine-msi: Fix off-by-one in allocation error path
+
+Zhu Yanjun (2):
+      null_blk: Fix missing mutex_destroy() at module removal
+      null_blk: Fix the WARNING: modpost: missing MODULE_DESCRIPTION()
+
 
