@@ -1,144 +1,167 @@
-Return-Path: <stable+bounces-52336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A84909EE5
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 19:54:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FC4909F0E
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 20:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E6A81C220F7
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 17:54:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7650E1F219A1
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 18:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2C839FD6;
-	Sun, 16 Jun 2024 17:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635D933998;
+	Sun, 16 Jun 2024 18:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="xzeNotwa";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jmP069pS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aif/E2cV"
 X-Original-To: stable@vger.kernel.org
-Received: from wfout3-smtp.messagingengine.com (wfout3-smtp.messagingengine.com [64.147.123.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BBF17C98;
-	Sun, 16 Jun 2024 17:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CAB12B93
+	for <stable@vger.kernel.org>; Sun, 16 Jun 2024 18:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718560475; cv=none; b=C3DXqE4ojy9+h4LXdyNpQSp+ZzsyGL5t2JDNsHTmRq0LWYIZTHCKfhyED01PrLlyth3ZWv+rg8JMFV/TX9flumogfyfK2AqZLx/aQalWDKq/4CGzsCMYduiF0C7qR25znai/wPoXer/Z+xgb3Cw+vCiJzGyjx9gbr7zFMh+K16Q=
+	t=1718561880; cv=none; b=GMt1lwiKXGmlRUtr1NV00YLeFVkVy0bQxLKXOT+ZXtsycnemF5wzrNeLNa6Vq+blnF/I9l156nkQcL/P8z3vtR6QqEsJ/E9Nmi1+PB/RWsY9RnVmkae1qr8bFC455NkEr9HRrrr8rtSyowoXcfntEANj4oXaKj70IwgLJEgViPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718560475; c=relaxed/simple;
-	bh=E/Cx5Rf8a6UHn1OwmSeZLEn9AOP4WmqErj2Q0myvfb8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=LnTix58m6OCdKDTPSw0vUQTB8ytlzJqF8dKhfRO+BI9JZlHiJOquXHS2vmnYJ9Y6ioBoMZEvTz3/s64nazTNgtuwXCfL7/huXtgDQGoWF+cI92aPSjSqTMG/a26o2MBda4HNTCvRzchtM82+I6nQWnNkM8AgOlfEKvlB5/oywEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=xzeNotwa; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jmP069pS; arc=none smtp.client-ip=64.147.123.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfout.west.internal (Postfix) with ESMTP id 40D341C0008C;
-	Sun, 16 Jun 2024 13:54:32 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Sun, 16 Jun 2024 13:54:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:message-id:mime-version:reply-to
-	:subject:subject:to:to; s=fm2; t=1718560471; x=1718646871; bh=z/
-	31P7zfEbv+0pHgdaZZDTGL+oEAX1p7zwNAKWVmPJM=; b=xzeNotwajivtWE9DHm
-	uh8JTDUJLOzr07mFxBdMTqg6iFqW4XPiB0dgqtyhejlWXeAVNB9i410a+wOcm3xD
-	9gBQFahDrUxrEOkhQG8i896WtMjEWggneAZCG6amxf+vLPUp9078jQeOfVnPGign
-	mYboEkz6qM9Oa6yvLK8hnTM2qjIxLUc2PEgytzdP2c1r7aHnrnM74/eAX3BPi8qC
-	S3fR4u6vY6iSzx+afvT/4X6HqNOTCn+oimJ80w80VlVVSLcxn9pKUfQpWIkaLGJM
-	J0RadYqUOIARfBMG0LHwd7rbNFt4FVLOp34Ed4G9AbUVPm5H8ZTepLJye5krLGUM
-	DnqQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1718560471; x=1718646871; bh=z/31P7zfEbv+0
-	pHgdaZZDTGL+oEAX1p7zwNAKWVmPJM=; b=jmP069pSES3RArlYyStGvkM2wZGPx
-	8DlKamUgR14gvvPMR98L89pA2+B75HU6OgFNdX/ht142PtWK22i1e96OroPE1WxF
-	HysbkwQOiiWnFNDlaauolx2qoybAMMZ115TUL4tSonMkoQUOnOhsJWkd0w30Kt8f
-	GH46it8mWyOzwosceEcYdw5r0oalNH0DzvHtLxlqIyVnrSZOHlstpAO967GyJcet
-	2J5X/ZV6vurg0OXbpFiz72+W4Z9t5Ktb6zFEhsPO8jNk9z19bvF0SNxrnSmF16fv
-	igG8NMs41gaWA72cAI7X0v+JcQTx79V5CWVXrj45moJzO8WDkR9BhnKRw==
-X-ME-Sender: <xms:1yZvZhlt7hJUkqUHIjt4tbDLUMEfmNRWh5Q_lSYgPSC5PtTuFIMK9w>
-    <xme:1yZvZs0Fi86UMTgJ0hM9LTRlImi7b9-YD1OrqskpqyplEZ981fguMNjp5IoJeXDHu
-    KfNxwcfW6zeokONnMU>
-X-ME-Received: <xmr:1yZvZnr-w-591EQEBFR5735mJnAhTnrUEP1eY4vRDXS0GaWb016sYrs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedvfedguddukecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefhfffugggtgffkvfevofesthekredtredtjeenucfhrhhomheplfhirgig
-    uhhnucgjrghnghcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmqeenuc
-    ggtffrrghtthgvrhhnpeekhedtteekfeduieehtdejueeiueehgedugeefudekgfeutdev
-    udektdehhfegueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
-    hrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:1yZvZhlicGmiGVTp6jX-sCM4VBEbN829dH7S3U1Zr1xzUIDOcjwrNw>
-    <xmx:1yZvZv3-SzaCQj5VRef-3BQxhxB4ji-TaFbPeV7wRWwCC9cB_hFUIQ>
-    <xmx:1yZvZgt8lV3-kJ08mgg8swnKHN9UHVgACJzqO75KAeO_XD6rEhUOVA>
-    <xmx:1yZvZjVE2XydQJPhKxk2U7FjDP5QUFeDJfNWyTvNH-UHq4zyYrctkg>
-    <xmx:1yZvZv-HRmXtyv86TC8FnxkypKlmbWopktqIQQ4e8tUnyF3hRQzBvN45>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 16 Jun 2024 13:54:30 -0400 (EDT)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Sun, 16 Jun 2024 18:54:24 +0100
-Subject: [PATCH fixes] MIPS: ip30: ip30-console: Add missing include
+	s=arc-20240116; t=1718561880; c=relaxed/simple;
+	bh=MmQEDTeh+/NCTNTp9hcHOXrtZhpUwWtLrTnySrpHDFY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MPLkSSfbiiTeAa9uMHG55O55QsZr+Zzkfguj3rSCatbqxO1ohtAx4WPSZGBkXTOILF4jMHUmWgtcEKR6ZKhjuzK2CGTgnjqJCBEMOaLs+N5+ABBg7GDgAg3DLSP/Y3GeZaP0yTcokzEodijqbaMYHgxcYCYWERoUWrL7+53DxzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aif/E2cV; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-6fd8506a0b2so3091595a12.3
+        for <stable@vger.kernel.org>; Sun, 16 Jun 2024 11:17:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718561877; x=1719166677; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IqzSt+ezkETCLEbkiWwlesMZrcytDmfv2p3WWVnHFKA=;
+        b=Aif/E2cV6q+UdVMHq6CeWcHcDb/UE91RZrNO9dT3kPZIVhTKoWLIjtZabZtIfoUuAN
+         tfIN/dPVaAOwb5yLthORasMBNsEl1lGsElyqU+yE38T35Pwq/qIlaFg1E21ozt3a5ZjM
+         m5Wxn7dib/t6Kkyi2iWSI5jAyMY4Ovl/qHUdKohsTR2zag/ZUb8MX0O2cbhC3F9HKSqb
+         KNsFwRnD35KG0+rcjcC+GO5wI0nvuUw1YWlqGuaaDt7ZLjdnOb5yrYZcmdt85B3loSUV
+         fRO6ztF2VCnpvgsjgx7QYkqXX0MvfLyCVoJxlit1fxZH04uy9JQVhiOVWvVrSZj3na+l
+         G5RA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718561877; x=1719166677;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IqzSt+ezkETCLEbkiWwlesMZrcytDmfv2p3WWVnHFKA=;
+        b=RuCkKDlG8yVg6UU/h7BQL7gCOPB4SFUELAvzQatZgn5PsdXmzXfIffQsdVS0gIHasN
+         oatYfMQBk6XUlIZHWLTBur31DScdNWoq3VgzEQhMw7Xo4+7OrlVtJbhjmx7Kmp4XufhP
+         gFp7nfjkuQ1/ajJ7tgrFLYZGn0VUKhUGGLmFiiyExXxjUkf+V6KnY5cI5ytikjPBHFoi
+         VELxM4gDJakgMLTKfGpm5qWLvj6QR/2AA0Wz/8n9D5ObrVo3UpE4tLgkwn2Cjhi6+j96
+         mm6OKBfGZntaDXkUpmZXfKmUxtxDpB8hVNJp6LPLKGPH1rcNTyTg2GgY8lY8oOdzWD4A
+         sKYg==
+X-Gm-Message-State: AOJu0Yypb75yoABBOudDUOUrs1fs3onEQg+JJrqpqgMQNmVCWmnYFT3H
+	sKVciu0YZEbZUv3JeEy8g/KVBbiAhfMbBpOQSHmeRv12UQzh+pXRhzVCMw==
+X-Google-Smtp-Source: AGHT+IGdwKyerRDQwcWQYOjE/M27nDZKepk/fnO2ojxlge4a0ctQ9OCOtCrmHwtCeojioLz6XnonOA==
+X-Received: by 2002:a17:902:d2d2:b0:1f4:a6cb:db3d with SMTP id d9443c01a7336-1f862804b23mr93124715ad.44.1718561876951;
+        Sun, 16 Jun 2024 11:17:56 -0700 (PDT)
+Received: from carrot.. (i114-180-52-104.s42.a014.ap.plala.or.jp. [114.180.52.104])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855e6fba6sm66830965ad.82.2024.06.16.11.17.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Jun 2024 11:17:56 -0700 (PDT)
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 5.4 5.10 5.15 6.1 6.6] nilfs2: fix potential kernel bug due to lack of writeback flag waiting
+Date: Mon, 17 Jun 2024 03:17:29 +0900
+Message-Id: <20240616181729.6672-1-konishi.ryusuke@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240616-ip30-buildfix-v1-1-0ab2b9aec9f5@flygoat.com>
-X-B4-Tracking: v=1; b=H4sIAM8mb2YC/yWMUQqAIBAFryL7naBbLNFVoo/KrRbCRCmC8O5J/
- c0MvPdA4iicoFMPRL4kyeGL2ErBvI1+ZS2uOKDBxpAlLaE2ejpld4vcGo0jXNCRbQnKJkQu+fv
- r4ach5xehH8KHZgAAAA==
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1005;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=E/Cx5Rf8a6UHn1OwmSeZLEn9AOP4WmqErj2Q0myvfb8=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhrR8tWs65n8f9ST1bFS3f2KUYsrGfe1LpbD7/mN3nZX3f
- PZyZP3XUcrCIMbFICumyBIioNS3ofHigusPsv7AzGFlAhnCwMUpABPZx8rIcOVN6jpL1iiFzmDh
- a0eYbuftZo/aMjv5WoR8nJcfg5v8GkaG9Upp/XpHtq1cFRbYeVV6ysfdG65/94jbsu/K0rRJGrI
- z+AA=
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 
-Include linux/processor.h to fix build error:
+commit a4ca369ca221bb7e06c725792ac107f0e48e82e7 upstream.
 
-arch/mips/sgi-ip30/ip30-console.c: In function ‘prom_putchar’:
-arch/mips/sgi-ip30/ip30-console.c:21:17: error: implicit declaration of function ‘cpu_relax’ [-Werror=implicit-function-declaration]
-   21 |                 cpu_relax();
+Destructive writes to a block device on which nilfs2 is mounted can cause
+a kernel bug in the folio/page writeback start routine or writeback end
+routine (__folio_start_writeback in the log below):
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+ kernel BUG at mm/page-writeback.c:3070!
+ Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+ ...
+ RIP: 0010:__folio_start_writeback+0xbaa/0x10e0
+ Code: 25 ff 0f 00 00 0f 84 18 01 00 00 e8 40 ca c6 ff e9 17 f6 ff ff
+  e8 36 ca c6 ff 4c 89 f7 48 c7 c6 80 c0 12 84 e8 e7 b3 0f 00 90 <0f>
+  0b e8 1f ca c6 ff 4c 89 f7 48 c7 c6 a0 c6 12 84 e8 d0 b3 0f 00
+ ...
+ Call Trace:
+  <TASK>
+  nilfs_segctor_do_construct+0x4654/0x69d0 [nilfs2]
+  nilfs_segctor_construct+0x181/0x6b0 [nilfs2]
+  nilfs_segctor_thread+0x548/0x11c0 [nilfs2]
+  kthread+0x2f0/0x390
+  ret_from_fork+0x4b/0x80
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+
+This is because when the log writer starts a writeback for segment summary
+blocks or a super root block that use the backing device's page cache, it
+does not wait for the ongoing folio/page writeback, resulting in an
+inconsistent writeback state.
+
+Fix this issue by waiting for ongoing writebacks when putting
+folios/pages on the backing device into writeback state.
+
+Link: https://lkml.kernel.org/r/20240530141556.4411-1-konishi.ryusuke@gmail.com
+Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/mips/sgi-ip30/ip30-console.c | 1 +
- 1 file changed, 1 insertion(+)
+Please apply this patch to the stable trees indicated by the subject
+prefix instead of the patch that failed.
 
-diff --git a/arch/mips/sgi-ip30/ip30-console.c b/arch/mips/sgi-ip30/ip30-console.c
-index 7c6dcf6e73f7..a5f10097b985 100644
---- a/arch/mips/sgi-ip30/ip30-console.c
-+++ b/arch/mips/sgi-ip30/ip30-console.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- 
- #include <linux/io.h>
-+#include <linux/processor.h>
- 
- #include <asm/sn/ioc3.h>
- #include <asm/setup.h>
+This patch is tailored to account for page/folio conversion and can
+be applied to v6.7 and earlier.
 
----
-base-commit: 6906a84c482f098d31486df8dc98cead21cce2d0
-change-id: 20240616-ip30-buildfix-20d62f2d6186
+Also, all the builds and tests I did on each stable tree passed.
 
-Best regards,
+Thanks,
+Ryusuke Konishi
+
+ fs/nilfs2/segment.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
+index 2d74fb229799..5783efafbabd 100644
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -1694,6 +1694,7 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
+ 			if (bh->b_page != bd_page) {
+ 				if (bd_page) {
+ 					lock_page(bd_page);
++					wait_on_page_writeback(bd_page);
+ 					clear_page_dirty_for_io(bd_page);
+ 					set_page_writeback(bd_page);
+ 					unlock_page(bd_page);
+@@ -1707,6 +1708,7 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
+ 			if (bh == segbuf->sb_super_root) {
+ 				if (bh->b_page != bd_page) {
+ 					lock_page(bd_page);
++					wait_on_page_writeback(bd_page);
+ 					clear_page_dirty_for_io(bd_page);
+ 					set_page_writeback(bd_page);
+ 					unlock_page(bd_page);
+@@ -1723,6 +1725,7 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
+ 	}
+ 	if (bd_page) {
+ 		lock_page(bd_page);
++		wait_on_page_writeback(bd_page);
+ 		clear_page_dirty_for_io(bd_page);
+ 		set_page_writeback(bd_page);
+ 		unlock_page(bd_page);
 -- 
-Jiaxun Yang <jiaxun.yang@flygoat.com>
+2.43.0
 
 
