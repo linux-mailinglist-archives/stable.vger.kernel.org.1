@@ -1,167 +1,189 @@
-Return-Path: <stable+bounces-52337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FC4909F0E
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 20:18:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4F35909F94
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 21:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7650E1F219A1
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 18:18:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6BADB215B4
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 19:57:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635D933998;
-	Sun, 16 Jun 2024 18:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9875945024;
+	Sun, 16 Jun 2024 19:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aif/E2cV"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="A501xJVA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CAB12B93
-	for <stable@vger.kernel.org>; Sun, 16 Jun 2024 18:17:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C733AC01
+	for <stable@vger.kernel.org>; Sun, 16 Jun 2024 19:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718561880; cv=none; b=GMt1lwiKXGmlRUtr1NV00YLeFVkVy0bQxLKXOT+ZXtsycnemF5wzrNeLNa6Vq+blnF/I9l156nkQcL/P8z3vtR6QqEsJ/E9Nmi1+PB/RWsY9RnVmkae1qr8bFC455NkEr9HRrrr8rtSyowoXcfntEANj4oXaKj70IwgLJEgViPE=
+	t=1718567857; cv=none; b=Yc+LomkKCeyQ3USI1OjUV2lxwIwRiZ2m337gin89VTnzmuQ6UKRIIZFl8VeCoe1MPTpSJTx6FDLM+KxoJSCuaJ7uSgBayaIQX4YLgdCHfVZCUMyK4K4pKA34Px8+OCxDkYSdIHhE4ZwD6crPtwbmGPNsUXgvjMg7MLrv2cElii4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718561880; c=relaxed/simple;
-	bh=MmQEDTeh+/NCTNTp9hcHOXrtZhpUwWtLrTnySrpHDFY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MPLkSSfbiiTeAa9uMHG55O55QsZr+Zzkfguj3rSCatbqxO1ohtAx4WPSZGBkXTOILF4jMHUmWgtcEKR6ZKhjuzK2CGTgnjqJCBEMOaLs+N5+ABBg7GDgAg3DLSP/Y3GeZaP0yTcokzEodijqbaMYHgxcYCYWERoUWrL7+53DxzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aif/E2cV; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-6fd8506a0b2so3091595a12.3
-        for <stable@vger.kernel.org>; Sun, 16 Jun 2024 11:17:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718561877; x=1719166677; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IqzSt+ezkETCLEbkiWwlesMZrcytDmfv2p3WWVnHFKA=;
-        b=Aif/E2cV6q+UdVMHq6CeWcHcDb/UE91RZrNO9dT3kPZIVhTKoWLIjtZabZtIfoUuAN
-         tfIN/dPVaAOwb5yLthORasMBNsEl1lGsElyqU+yE38T35Pwq/qIlaFg1E21ozt3a5ZjM
-         m5Wxn7dib/t6Kkyi2iWSI5jAyMY4Ovl/qHUdKohsTR2zag/ZUb8MX0O2cbhC3F9HKSqb
-         KNsFwRnD35KG0+rcjcC+GO5wI0nvuUw1YWlqGuaaDt7ZLjdnOb5yrYZcmdt85B3loSUV
-         fRO6ztF2VCnpvgsjgx7QYkqXX0MvfLyCVoJxlit1fxZH04uy9JQVhiOVWvVrSZj3na+l
-         G5RA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718561877; x=1719166677;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IqzSt+ezkETCLEbkiWwlesMZrcytDmfv2p3WWVnHFKA=;
-        b=RuCkKDlG8yVg6UU/h7BQL7gCOPB4SFUELAvzQatZgn5PsdXmzXfIffQsdVS0gIHasN
-         oatYfMQBk6XUlIZHWLTBur31DScdNWoq3VgzEQhMw7Xo4+7OrlVtJbhjmx7Kmp4XufhP
-         gFp7nfjkuQ1/ajJ7tgrFLYZGn0VUKhUGGLmFiiyExXxjUkf+V6KnY5cI5ytikjPBHFoi
-         VELxM4gDJakgMLTKfGpm5qWLvj6QR/2AA0Wz/8n9D5ObrVo3UpE4tLgkwn2Cjhi6+j96
-         mm6OKBfGZntaDXkUpmZXfKmUxtxDpB8hVNJp6LPLKGPH1rcNTyTg2GgY8lY8oOdzWD4A
-         sKYg==
-X-Gm-Message-State: AOJu0Yypb75yoABBOudDUOUrs1fs3onEQg+JJrqpqgMQNmVCWmnYFT3H
-	sKVciu0YZEbZUv3JeEy8g/KVBbiAhfMbBpOQSHmeRv12UQzh+pXRhzVCMw==
-X-Google-Smtp-Source: AGHT+IGdwKyerRDQwcWQYOjE/M27nDZKepk/fnO2ojxlge4a0ctQ9OCOtCrmHwtCeojioLz6XnonOA==
-X-Received: by 2002:a17:902:d2d2:b0:1f4:a6cb:db3d with SMTP id d9443c01a7336-1f862804b23mr93124715ad.44.1718561876951;
-        Sun, 16 Jun 2024 11:17:56 -0700 (PDT)
-Received: from carrot.. (i114-180-52-104.s42.a014.ap.plala.or.jp. [114.180.52.104])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855e6fba6sm66830965ad.82.2024.06.16.11.17.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Jun 2024 11:17:56 -0700 (PDT)
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 5.4 5.10 5.15 6.1 6.6] nilfs2: fix potential kernel bug due to lack of writeback flag waiting
-Date: Mon, 17 Jun 2024 03:17:29 +0900
-Message-Id: <20240616181729.6672-1-konishi.ryusuke@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1718567857; c=relaxed/simple;
+	bh=OKQt/ifLfyGs/9cYmxhPAUmjebQwGSq8X1EPNQ5sacE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hiBKBeJ1++7CSlNMHQF6YC/RM0Gbud4byvtDjTCFvoMttwUfAOkdF2QbwaQ9Q15EGfEMAWpFmwl5SHjbY9yChcrydJ/UIp0OHsMRZ7A7rTm953DknpnqOsKZHJ7DrjzCSShW9M15ZAybbcQyeUM/3H8r/ET80fuHCT5ih9wwsNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=A501xJVA; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1718567842; x=1719172642; i=w_armin@gmx.de;
+	bh=mSBqJPwoMHwMcHUq155VApWC4yQ2tgj8HbOx+YW3mEk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=A501xJVAMFKaMqD3vTlspAbtHk8RfIQ3jesFCm5JvZ2jXQngOkzSCowcD4/+IDPI
+	 JQdqBul+PQ9AjsT40HEeBMKxsVpEklQOdOy5b/topoQP5nPL+eR0cSg1nuXYfqWEb
+	 sjdlTcj5hzPDoqg/w/t2z6fvsDlZLlJJzrJdiF8y4cNWHhKmv7P3remthSWJ5aqow
+	 QFyiFMQeXaZw/MkbTAOZA3Mf524pWnx8T4C7veztcvEUdH9/791nT8dvzQTF6Oe/u
+	 Qn/dOIw9xHOn1Froha7IX08Ul+Ymq6PRRAj/bH4S2O7WSXauwaNC/L2bzGLu/YoOS
+	 R1LrR+174zJz+fsdDw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [141.30.226.129] ([141.30.226.129]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MrQJ5-1slzt72TYN-00pp0I; Sun, 16
+ Jun 2024 21:57:22 +0200
+Message-ID: <361fcdd0-8e53-462d-99ef-61a5907822dc@gmx.de>
+Date: Sun, 16 Jun 2024 21:57:21 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: Kernel 5.15.150 black screen with AMD Raven/Picasso GPU
+To: Greg KH <greg@kroah.com>
+Cc: Barry Kauler <bkauler@gmail.com>, Alex Deucher <alexdeucher@gmail.com>,
+ Yifan Zhang <yifan1.zhang@amd.com>, Prike Liang <Prike.Liang@amd.com>,
+ "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+ amd-gfx@lists.freedesktop.org, stable@vger.kernel.org
+References: <CABWT5yiejGABNXicsS7u-daKnBBjK6YTDVgaQOqwGYn8P20D8Q@mail.gmail.com>
+ <6580c2d4-b084-470f-80a0-aa09f1ab880d@gmx.de>
+ <CABWT5yiD110qmJcRsoGVMevULAVmYpyiW4w9MtmNjp7E0rDQ8A@mail.gmail.com>
+ <CABWT5yg5jG7eMiDp7QN2yhFj6983qF9zN7eHOprH4eEjwQJLBQ@mail.gmail.com>
+ <c3205455-7ad2-487e-8954-52102754e154@gmx.de>
+ <CADnq5_PM_FuBE4913Z4bxiMTDYtRS+VJgLW6gfDU1qnQQ=FDzA@mail.gmail.com>
+ <d04105ea-0f8a-4f0b-b4f2-bc8407d37c73@gmx.de>
+ <CABWT5yibc52CTUWeCWxYQb4ooi4dsbvBWxJAJCDrG+8405RPTg@mail.gmail.com>
+ <7ec6faf8-d9c1-436b-98c8-473e7ff395b3@gmx.de>
+ <2024052321-revolver-timid-3056@gregkh>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <2024052321-revolver-timid-3056@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:nSbEZyvZnd9+Rcq8AV3G9zX1XRcQHBWNVHINMs+VXQgii/R8V5o
+ 4s/fiZ5pz3e51Gi41RpWN8ILLwjJW/8BD3oT6MpsjwW2Nh9j6tZVOc9nyoWg4cKgFadfzI0
+ Nb1DS0j07ZRJxKlFyJZGSv4SvMGG+C+W9emWeENofQfkIae/B4ORrjOnpoOw3a5CSamsuAM
+ xDwTQqm9HH18nAzHi2eaA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:xkCTYHCuC00=;PTzdxUPWVWiW6+g7isHSpQd6jW6
+ gLW/R5/DIjRHfaQf7O4Y3QTDlYidYF6bevvYFoC4MqHzZJFFBxLECGucZtcp6QYT321HlOtqZ
+ waMN1qnVbuvE7jzMVhCEqA/oohAoVx7hSsf2o2LcHV2weHN8Zw5biouLD0T6qssHGj2dcAiG+
+ J3X45ssSVakTCVV2AtAAVoki3FGhtsAHM8ZZrWl071a7uJ3zWXi1CnAVy+EEqKeKUKwLjcCJ8
+ 06bJ0oLAh9yN0OeK0MOOpEOiI/yE8diZJpsR4WVYuk647YmqfZFC4l0TzNWDPJ1KUKF4BEhF6
+ bUrtH2fTt/zF9bTePL1oaiR/rMkwFcX3D422jK5QvQpAXDkQCImkeGUrhn2+1qU06md1A+3qr
+ Jf4gXnI/vMUf+E3Sw7oOg8G+n3t3qogmYWJUX/SZeHYVq/PSrKzSLa0pqn2m5ABnUVpZ+Zd05
+ Vv1qeY1CA2noxP3ehh17byZfTYU9jI1PzU4++bkLZi+/SWpdVnQPM3FqgX5yRla+Tv8Lp6/2K
+ 3+akx13JIzqU+jzH/uCq2Zm0xWwUQfmyz1j8LkVS8Yb/oywVoUR4o/SxvTqmbKeEGAVMfqTjN
+ Xe2lECZI3D1VZlJh/OMYb+TdPk+7Xa2xv3hHn/mMXrMeuvvwXEj8SMJDACK76HmXc2AFyKyL2
+ apUcAqQBs63WJFTzDXGvFrt8/rKH8StFHodyE/eKSL94inQDQhNLLOEg3N2TWGRy4ux5HbRCP
+ wbQsUU/AQJ7ovdOthCy681KQHfBAnOIHcELG0WGH/6RE7joSPIusVFl5joP0klKRAVMdthcz+
+ DG5AMlqwj+m3000/D7o6Bn6uGVes0QgsAVnJBPxPRqys4=
 
-commit a4ca369ca221bb7e06c725792ac107f0e48e82e7 upstream.
+Am 23.05.24 um 18:29 schrieb Greg KH:
 
-Destructive writes to a block device on which nilfs2 is mounted can cause
-a kernel bug in the folio/page writeback start routine or writeback end
-routine (__folio_start_writeback in the log below):
+> On Thu, May 23, 2024 at 05:59:39PM +0200, Armin Wolf wrote:
+>> Am 23.05.24 um 15:13 schrieb Barry Kauler:
+>>
+>>> On Wed, May 22, 2024 at 12:58=E2=80=AFAM Armin Wolf <W_Armin@gmx.de> w=
+rote:
+>>>> Am 20.05.24 um 18:22 schrieb Alex Deucher:
+>>>>
+>>>>> On Sat, May 18, 2024 at 8:17=E2=80=AFPM Armin Wolf <W_Armin@gmx.de> =
+wrote:
+>>>>>> Am 17.05.24 um 03:30 schrieb Barry Kauler:
+>>>>>>
+>>>>>>> Armin, Yifan, Prike,
+>>>>>>> I will top-post, so you don't have to scroll down.
+>>>>>>> After identifying the commit that causes black screen with my gpu,=
+ I
+>>>>>>> posted the result to you guys, on May 9.
+>>>>>>> It is now May 17 and no reply.
+>>>>>>> OK, I have now created a patch that reverts Yifan's commit, compil=
+ed
+>>>>>>> 5.15.158, and my gpu now works.
+>>>>>>> Note, the radeon module is not loaded, so it is not a factor.
+>>>>>>> I'm not a kernel developer. I have identified the culprit and it i=
+s up
+>>>>>>> to you guys to fix it, Yifan especially, as you are the person who=
+ has
+>>>>>>> created the regression.
+>>>>>>> I will attach my patch.
+>>>>>>> Regards,
+>>>>>>> Barry Kauler
+>>>>>> Hi,
+>>>>>>
+>>>>>> sorry for not responding to your findings. I normally do not work w=
+ith GPU drivers,
+>>>>>> so i hoped one of the amdgpu developers would handle this.
+>>>>>>
+>>>>>> I CCeddri-devel@lists.freedesktop.org  and amd-gfx@lists.freedeskto=
+p.org so that other
+>>>>>> amdgpu developers hear from this issue.
+>>>>>>
+>>>>>> Thanks you for you persistence in finding the offending commit.
+>>>>> Likely this patch should not have been ported to 5.15 in the first
+>>>>> place.  The IOMMU requirements have been dropped from the driver for
+>>>>> the last few kernel versions so it is no longer relevant on newer
+>>>>> kernels.
+>>>>>
+>>>>> Alex
+>>>> Barry, can you verify that the latest upstream kernel works on you de=
+vice?
+>>>> If yes, then the commit itself is ok and just the backporting itself =
+was wrong.
+>>>>
+>>>> Thanks,
+>>>> Armin Wolf
+>>> Armin,
+>>> The unmodified 6.8.1 kernel works ok.
+>>> I presume that patch was applied long before 6.8.1 got released and
+>>> only got backported to 5.15.x recently.
+>>>
+>>> Regards,
+>>> Barry
+>>>
+>> Great to hear, that means we only have to revert commit 56b522f46681 ("=
+drm/amdgpu: init iommu after amdkfd device init")
+>> from the 5.15.y series.
+>>
+>> I CCed the stable mailing list so that they can revert the offending co=
+mmit.
+> Please submit the patch/revert that you wish to have applied to the tree
+> so we can have the correct information in it.  I have no idea what to do
+> here with this deep response thread as-is, sorry.
+>
+> thanks,
+>
+> greg k-h
 
- kernel BUG at mm/page-writeback.c:3070!
- Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
- ...
- RIP: 0010:__folio_start_writeback+0xbaa/0x10e0
- Code: 25 ff 0f 00 00 0f 84 18 01 00 00 e8 40 ca c6 ff e9 17 f6 ff ff
-  e8 36 ca c6 ff 4c 89 f7 48 c7 c6 80 c0 12 84 e8 e7 b3 0f 00 90 <0f>
-  0b e8 1f ca c6 ff 4c 89 f7 48 c7 c6 a0 c6 12 84 e8 d0 b3 0f 00
- ...
- Call Trace:
-  <TASK>
-  nilfs_segctor_do_construct+0x4654/0x69d0 [nilfs2]
-  nilfs_segctor_construct+0x181/0x6b0 [nilfs2]
-  nilfs_segctor_thread+0x548/0x11c0 [nilfs2]
-  kthread+0x2f0/0x390
-  ret_from_fork+0x4b/0x80
-  ret_from_fork_asm+0x1a/0x30
-  </TASK>
+Hi,
 
-This is because when the log writer starts a writeback for segment summary
-blocks or a super root block that use the backing device's page cache, it
-does not wait for the ongoing folio/page writeback, resulting in an
-inconsistent writeback state.
+the new 5.15.161 kernel finally contains the necessary patch (many thanks =
+to the stable team :)).
 
-Fix this issue by waiting for ongoing writebacks when putting
-folios/pages on the backing device into writeback state.
-
-Link: https://lkml.kernel.org/r/20240530141556.4411-1-konishi.ryusuke@gmail.com
-Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-Please apply this patch to the stable trees indicated by the subject
-prefix instead of the patch that failed.
-
-This patch is tailored to account for page/folio conversion and can
-be applied to v6.7 and earlier.
-
-Also, all the builds and tests I did on each stable tree passed.
+Barry, can you test this kernel version and report if the issue is now gon=
+e?
 
 Thanks,
-Ryusuke Konishi
-
- fs/nilfs2/segment.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index 2d74fb229799..5783efafbabd 100644
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -1694,6 +1694,7 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
- 			if (bh->b_page != bd_page) {
- 				if (bd_page) {
- 					lock_page(bd_page);
-+					wait_on_page_writeback(bd_page);
- 					clear_page_dirty_for_io(bd_page);
- 					set_page_writeback(bd_page);
- 					unlock_page(bd_page);
-@@ -1707,6 +1708,7 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
- 			if (bh == segbuf->sb_super_root) {
- 				if (bh->b_page != bd_page) {
- 					lock_page(bd_page);
-+					wait_on_page_writeback(bd_page);
- 					clear_page_dirty_for_io(bd_page);
- 					set_page_writeback(bd_page);
- 					unlock_page(bd_page);
-@@ -1723,6 +1725,7 @@ static void nilfs_segctor_prepare_write(struct nilfs_sc_info *sci)
- 	}
- 	if (bd_page) {
- 		lock_page(bd_page);
-+		wait_on_page_writeback(bd_page);
- 		clear_page_dirty_for_io(bd_page);
- 		set_page_writeback(bd_page);
- 		unlock_page(bd_page);
--- 
-2.43.0
+Armin Wolf
 
 
