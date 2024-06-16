@@ -1,155 +1,170 @@
-Return-Path: <stable+bounces-52302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D74F909C4D
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 09:42:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B998F909CAA
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 10:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDACC1F21351
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 07:42:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75662281A8C
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 08:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCE9181330;
-	Sun, 16 Jun 2024 07:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A93179641;
+	Sun, 16 Jun 2024 08:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kleine-koenig.org header.i=@kleine-koenig.org header.b="FJa4uS+g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rKiBg/U0"
 X-Original-To: stable@vger.kernel.org
-Received: from algol.kleine-koenig.org (algol.kleine-koenig.org [162.55.41.232])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2739181310;
-	Sun, 16 Jun 2024 07:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.55.41.232
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD5E178CCB;
+	Sun, 16 Jun 2024 08:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718523750; cv=none; b=j6GQgjrcIaLItmMYc8P/PEMW6+XJUdv0kG2Tr1c38SyFxL7z+RfTd7miYykkNwIsmMcW6YGJY/CHb1WWUJAo9QkwvBWfNvSNx+wzOcZh99SNCZE8mZ6EBZ/NsgUve0xoeNxFQKXfv6g+ZZi35xNqPz86a/Gt4Hya2B5qMstqcJg=
+	t=1718528090; cv=none; b=Lcz++MU78/d3DTdHcMLAkjcBWcLepr0fbueC9+fuwqabJhYGgK2xpZrINGLyPZ9QUfrK5LlQ4xdEkIflKWFSId3BYovNm1gKoAuvPPaMDkheyk6lnQBE2DfJ24ZtoG8zxjdw3nQf82uNuu1hRxaOHNmBWkRsFdbDB8Q1fdUzR+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718523750; c=relaxed/simple;
-	bh=wRqCuN9nCVqp6rgbDtEqWYaj+AzZ7J93vIC6dlOIcmc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P7PFUQ/au30tv9ALIwLuZ2lyTMLoKrYvuEIM64+GlorP85emdqx08yoYnXkigVF3CzXS7pARcff/BsNLjpITpQ1p4rezDUX5Y9PhwXRIh4XUxhxFUKvEV7zu+5nYlTSEwzKYUXZIhV+Nw/+QJVB+xV9Q4E2CXshBYsZkv1REgRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kleine-koenig.org; spf=pass smtp.mailfrom=kleine-koenig.org; dkim=pass (2048-bit key) header.d=kleine-koenig.org header.i=@kleine-koenig.org header.b=FJa4uS+g; arc=none smtp.client-ip=162.55.41.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kleine-koenig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kleine-koenig.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kleine-koenig.org;
-	s=2022; t=1718523169;
-	bh=wRqCuN9nCVqp6rgbDtEqWYaj+AzZ7J93vIC6dlOIcmc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FJa4uS+gR9lkkRchFFLqPH3hq4oTB5firbvC3X+M6o+5ZgmFxHvCJ+WuKTTySZ7s0
-	 TKGERvQTpA5QsIK3XhinVLNEcc4690WsxM3bgs3lNkPnh3OC2TDqQVcM6lSXTUVpWe
-	 AHK1puNtBz1f91tOKypW4hlAEi6mz4WREzAkjDSqCC6/xxqoHqOhi8PWwbmmM7uH37
-	 Fl5oaukwLJUPpEqtvPmkE0T0KWNQ4NSlq1v/RoAgwqvqBBVXUDgQJ1TfUagwWTV0Gt
-	 9YXfYIzcDGQOVTE0L2sPSGinvfYV2umo/2zrAMVygJWH0Aav4vGIaaDARCxMOdb8eD
-	 Mr3yNHeU4csMA==
-Received: from localhost (localhost [127.0.0.1])
-	by algol.kleine-koenig.org (Postfix) with ESMTP id A1D92E66A50;
-	Sun, 16 Jun 2024 09:32:49 +0200 (CEST)
-Received: from algol.kleine-koenig.org ([IPv6:::1])
- by localhost (algol.kleine-koenig.org [IPv6:::1]) (amavis, port 10024)
- with ESMTP id QcX_4OihaZ4i; Sun, 16 Jun 2024 09:32:49 +0200 (CEST)
-Received: from [IPV6:2a02:8071:b783:6940:3886:c8fd:3fff:b697] (unknown [IPv6:2a02:8071:b783:6940:3886:c8fd:3fff:b697])
-	by algol.kleine-koenig.org (Postfix) with ESMTPSA;
-	Sun, 16 Jun 2024 09:32:48 +0200 (CEST)
-Message-ID: <5aaa6ea3-b8f8-4e72-91a1-01de8bbcdc3d@kleine-koenig.org>
-Date: Sun, 16 Jun 2024 09:32:45 +0200
+	s=arc-20240116; t=1718528090; c=relaxed/simple;
+	bh=9u4X1h8+dSS2gV6fwWQ884huIkcSEjbT36eujB2qUg0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XebR/iVpcGInQlCwzGFDy+MoplvzyiuZSl7P45yXEFs4OMXq8eElcfvGKZ8FYpQ/BlUFild3ElDiUvr6zs+qjQz92sOrgnyZxn+q7HvCxe/LeXkJqrqw5E1/BoB8v3Q3l+NABgSB4GXJoGPEJr34w+SKf852MfHPUBuChtKCoeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rKiBg/U0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACEBC2BBFC;
+	Sun, 16 Jun 2024 08:54:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718528089;
+	bh=9u4X1h8+dSS2gV6fwWQ884huIkcSEjbT36eujB2qUg0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rKiBg/U0oYM/+rbqSE4t7XhD+nWBQtsfKJ80bua+B8tH77U2po6miIqmPMcBWFPAx
+	 I3UtCsVF7SBJZ+Mr5MRBjmp08QhraAqM8FtiB56HhfbWI4kYSKUdkLBXjENvh/KLCo
+	 cEHQEgQCOS2rt2X4L9Klqxfu4lyhUpsnR4CtcTxMCPYYyIXygM5SJVQJ9zWaSifv5h
+	 2aWSnUqeWvoNBP8SDn59SLsN1YrK3YKlND59Y9WSE+uNrBGrTx3WWwuETQcudz7tzx
+	 fCGiTXmtUofQFC+FjISoHRlwsaK2sHFly1k0M3SEgubn0QDJ4AyxJvcZy24ryfp1lT
+	 aFigZ2lFOSWoQ==
+Date: Sun, 16 Jun 2024 10:54:45 +0200
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Cc: Manuel Lauss <manuel.lauss@gmail.com>, stable@vger.kernel.org,
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	linux-ide@vger.kernel.org
+Subject: Re: [PATCH v2] ata: libata-scsi: Set the RMB bit only for removable
+ media devices
+Message-ID: <Zm6oVbQqY3Uckl4P@ryzen.lan>
+References: <20240614122344.1577261-2-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "driver core: platform: Emit a warning if a remove callback
- returned non-zero" has been added to the 5.10-stable tree
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-References: <20240616021857.1688223-1-sashal@kernel.org>
-Content-Language: en-US, de-DE
-From: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-In-Reply-To: <20240616021857.1688223-1-sashal@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------pbB2LYZd0ys5gebmSDAORUD8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240614122344.1577261-2-cassel@kernel.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------pbB2LYZd0ys5gebmSDAORUD8
-Content-Type: multipart/mixed; boundary="------------ASiS1Bz7ymRomK7IGZo5HHhN";
- protected-headers="v1"
-From: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "Rafael J. Wysocki" <rafael@kernel.org>
-Message-ID: <5aaa6ea3-b8f8-4e72-91a1-01de8bbcdc3d@kleine-koenig.org>
-Subject: Re: Patch "driver core: platform: Emit a warning if a remove callback
- returned non-zero" has been added to the 5.10-stable tree
-References: <20240616021857.1688223-1-sashal@kernel.org>
-In-Reply-To: <20240616021857.1688223-1-sashal@kernel.org>
+On Fri, Jun 14, 2024 at 02:23:45PM +0200, Niklas Cassel wrote:
+> From: Damien Le Moal <dlemoal@kernel.org>
+> 
+> The SCSI Removable Media Bit (RMB) should only be set for removable media,
+> where the device stays and the media changes, e.g. CD-ROM or floppy.
+> 
+> The ATA removable media device bit is obsoleted since ATA-8 ACS (2006),
+> but before that it was used to indicate that the device can have its media
+> removed (while the device stays).
+> 
+> Commit 8a3e33cf92c7 ("ata: ahci: find eSATA ports and flag them as
+> removable") introduced a change to set the RMB bit if the port has either
+> the eSATA bit or the hot-plug capable bit set. The reasoning was that the
+> author wanted his eSATA ports to get treated like a USB stick.
+> 
+> This is however wrong. See "20-082r23SPC-6: Removable Medium Bit
+> Expectations" which has since been integrated to SPC, which states that:
+> 
+> """
+> Reports have been received that some USB Memory Stick device servers set
+> the removable medium (RMB) bit to one. The rub comes when the medium is
+> actually removed, because... The device server is removed concurrently
+> with the medium removal. If there is no device server, then there is no
+> device server that is waiting to have removable medium inserted.
+> 
+> Sufficient numbers of SCSI analysts see such a device:
+> - not as a device that supports removable medium;
+> but
+> - as a removable, hot pluggable device.
+> """
+> 
+> The definition of the RMB bit in the SPC specification has since been
+> clarified to match this.
+> 
+> Thus, a USB stick should not have the RMB bit set (and neither shall an
+> eSATA nor a hot-plug capable port).
+> 
+> Commit dc8b4afc4a04 ("ata: ahci: don't mark HotPlugCapable Ports as
+> external/removable") then changed so that the RMB bit is only set for the
+> eSATA bit (and not for the hot-plug capable bit), because of a lot of bug
+> reports of SATA devices were being automounted by udisks. However,
+> treating eSATA and hot-plug capable ports differently is not correct.
+> 
+> From the AHCI 1.3.1 spec:
+> Hot Plug Capable Port (HPCP): When set to '1', indicates that this port's
+> signal and power connectors are externally accessible via a joint signal
+> and power connector for blindmate device hot plug.
+> 
+> So a hot-plug capable port is an external port, just like commit
+> 45b96d65ec68 ("ata: ahci: a hotplug capable port is an external port")
+> claims.
+> 
+> In order to not violate the SPC specification, modify the SCSI INQUIRY
+> data to only set the RMB bit if the ATA device can have its media removed.
+> 
+> This fixes a reported problem where GNOME/udisks was automounting devices
+> connected to hot-plug capable ports.
+> 
+> Fixes: 45b96d65ec68 ("ata: ahci: a hotplug capable port is an external port")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+> Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+> Tested-by: Thomas Weißschuh <linux@weissschuh.net>
+> Reported-by: Thomas Weißschuh <linux@weissschuh.net>
+> Closes: https://lore.kernel.org/linux-ide/c0de8262-dc4b-4c22-9fac-33432e5bddd3@t-8ch.de/
+> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+> [cassel: wrote commit message]
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> ---
+> Changes since v1:
+> -Added Cc: stable.
+> -Updated comment and commit message to correctly state that the
+>  ATA removable media device bit is obsoleted since ATA-8 ACS.
+> 
+>  drivers/ata/libata-scsi.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+> index cdf29b178ddc..bb4d30d377ae 100644
+> --- a/drivers/ata/libata-scsi.c
+> +++ b/drivers/ata/libata-scsi.c
+> @@ -1831,11 +1831,11 @@ static unsigned int ata_scsiop_inq_std(struct ata_scsi_args *args, u8 *rbuf)
+>  		2
+>  	};
+>  
+> -	/* set scsi removable (RMB) bit per ata bit, or if the
+> -	 * AHCI port says it's external (Hotplug-capable, eSATA).
+> +	/*
+> +	 * Set the SCSI Removable Media Bit (RMB) if the ATA removable media
+> +	 * device bit (obsolete since ATA-8 ACS) is set.
+>  	 */
+> -	if (ata_id_removable(args->id) ||
+> -	    (args->dev->link->ap->pflags & ATA_PFLAG_EXTERNAL))
+> +	if (ata_id_removable(args->id))
+>  		hdr[1] |= (1 << 7);
+>  
+>  	if (args->dev->class == ATA_DEV_ZAC) {
+> -- 
+> 2.45.2
+> 
 
---------------ASiS1Bz7ymRomK7IGZo5HHhN
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-
-SGVsbG8gU2FzaGEsDQoNCk9uIDYvMTYvMjQgMDQ6MTgsIFNhc2hhIExldmluIHdyb3RlOg0K
-PiBUaGlzIGlzIGEgbm90ZSB0byBsZXQgeW91IGtub3cgdGhhdCBJJ3ZlIGp1c3QgYWRkZWQg
-dGhlIHBhdGNoIHRpdGxlZA0KPiANCj4gICAgICBkcml2ZXIgY29yZTogcGxhdGZvcm06IEVt
-aXQgYSB3YXJuaW5nIGlmIGEgcmVtb3ZlIGNhbGxiYWNrIHJldHVybmVkIG5vbi16ZXJvDQo+
-IA0KPiB0byB0aGUgNS4xMC1zdGFibGUgdHJlZSB3aGljaCBjYW4gYmUgZm91bmQgYXQ6DQo+
-ICAgICAgaHR0cDovL3d3dy5rZXJuZWwub3JnL2dpdC8/cD1saW51eC9rZXJuZWwvZ2l0L3N0
-YWJsZS9zdGFibGUtcXVldWUuZ2l0O2E9c3VtbWFyeQ0KPiANCj4gVGhlIGZpbGVuYW1lIG9m
-IHRoZSBwYXRjaCBpczoNCj4gICAgICAgZHJpdmVyLWNvcmUtcGxhdGZvcm0tZW1pdC1hLXdh
-cm5pbmctaWYtYS1yZW1vdmUtY2FsbC5wYXRjaA0KPiBhbmQgaXQgY2FuIGJlIGZvdW5kIGlu
-IHRoZSBxdWV1ZS01LjEwIHN1YmRpcmVjdG9yeS4NCj4gDQo+IElmIHlvdSwgb3IgYW55b25l
-IGVsc2UsIGZlZWxzIGl0IHNob3VsZCBub3QgYmUgYWRkZWQgdG8gdGhlIHN0YWJsZSB0cmVl
-LA0KPiBwbGVhc2UgbGV0IDxzdGFibGVAdmdlci5rZXJuZWwub3JnPiBrbm93IGFib3V0IGl0
-Lg0KPiANCj4gDQo+IA0KPiBjb21taXQgMmYxYWM2MGJjOTY2ODU2N2YwMjFjMzE0MzEyNTYz
-OTUxMDM5Zjc3Yg0KPiBBdXRob3I6IFV3ZSBLbGVpbmUtS8O2bmlnIDx1d2VAa2xlaW5lLWtv
-ZW5pZy5vcmc+DQo+IERhdGU6ICAgU3VuIEZlYiA3IDIyOjE1OjM3IDIwMjEgKzAxMDANCj4g
-DQo+ICAgICAgZHJpdmVyIGNvcmU6IHBsYXRmb3JtOiBFbWl0IGEgd2FybmluZyBpZiBhIHJl
-bW92ZSBjYWxsYmFjayByZXR1cm5lZCBub24temVybw0KPiAgICAgIA0KPiAgICAgIFsgVXBz
-dHJlYW0gY29tbWl0IGU1ZTFjMjA5Nzg4MTM4ZjMzY2E2NTU4YmY5ZjU3MmY2OTA0ZjQ4NmQg
-XQ0KPiAgICAgIA0KPiAgICAgIFRoZSBkcml2ZXIgY29yZSBpZ25vcmVzIHRoZSByZXR1cm4g
-dmFsdWUgb2YgYSBidXMnIHJlbW92ZSBjYWxsYmFjay4gSG93ZXZlcg0KPiAgICAgIGEgZHJp
-dmVyIHJldHVybmluZyBhbiBlcnJvciBjb2RlIGlzIGEgaGludCB0aGF0IHRoZXJlIGlzIGEg
-cHJvYmxlbSwNCj4gICAgICBwcm9iYWJseSBhIGRyaXZlciBhdXRob3Igd2hvIGV4cGVjdHMg
-dGhhdCByZXR1cm5pbmcgZS5nLiAtRUJVU1kgaGFzIGFueQ0KPiAgICAgIGVmZmVjdC4NCj4g
-ICAgICANCj4gICAgICBUaGUgcmlnaHQgdGhpbmcgdG8gZG8gd291bGQgYmUgdG8gbWFrZSBz
-dHJ1Y3QgcGxhdGZvcm1fZHJpdmVyOjpyZW1vdmUoKQ0KPiAgICAgIHJldHVybiB2b2lkLiBX
-aXRoIHRoZSBpbW1lbnNlIG51bWJlciBvZiBwbGF0Zm9ybSBkcml2ZXJzIHRoaXMgaXMgaG93
-ZXZlciBhDQo+ICAgICAgYmlnIHF1ZXN0IGFuZCBJIGhvcGUgdG8gcHJldmVudCBhdCBsZWFz
-dCBhIGZldyBuZXcgZHJpdmVycyB0aGF0IHJldHVybiBhbg0KPiAgICAgIGVycm9yIGNvZGUg
-aGVyZS4NCj4gICAgICANCj4gICAgICBTaWduZWQtb2ZmLWJ5OiBVd2UgS2xlaW5lLUvDtm5p
-ZyA8dXdlQGtsZWluZS1rb2VuaWcub3JnPg0KPiAgICAgIExpbms6IGh0dHBzOi8vbG9yZS5r
-ZXJuZWwub3JnL3IvMjAyMTAyMDcyMTE1MzcuMTk5OTItMS11d2VAa2xlaW5lLWtvZW5pZy5v
-cmcNCj4gICAgICBTaWduZWQtb2ZmLWJ5OiBHcmVnIEtyb2FoLUhhcnRtYW4gPGdyZWdraEBs
-aW51eGZvdW5kYXRpb24ub3JnPg0KPiAgICAgIFN0YWJsZS1kZXAtb2Y6IDU1YzQyMWIzNjQ0
-OCAoIm1tYzogZGF2aW5jaTogRG9uJ3Qgc3RyaXAgcmVtb3ZlIGZ1bmN0aW9uIHdoZW4gZHJp
-dmVyIGlzIGJ1aWx0aW4iKQ0KPiAgICAgIFNpZ25lZC1vZmYtYnk6IFNhc2hhIExldmluIDxz
-YXNoYWxAa2VybmVsLm9yZz4NCg0KVGhhdCBsb29rcyB3cm9uZy4gSWYgdGhpcyBwYXRjaCBz
-aG91bGQgYmUgaW5jbHVkZWQgaW4gc3RhYmxlLCBpdCANCnNob3VsZG4ndCBiZSBiZWNhdXNl
-IGl0J3MgYSBkZXBlbmRlbmN5LiA1NWM0MjFiMzY0NDggd29ya3Mgd2l0aG91dCB0aGlzIA0K
-cGF0Y2ggZm9yIHN1cmUuDQoNCkVpdGhlciBiYWNrcG9ydCBlNWUxYzIwOTc4ODEgYmVjYXVz
-ZSB5b3UgdGhpbmsgdGhhdCB3YXJuaW5nIHNob3VsZCBiZSBpbiANCjUuMTAueCwgb3IgZG9u
-J3QgYmFja3BvcnQgaXQuDQoNCkJlc3QgcmVnYXJkcw0KVXdlDQo=
-
---------------ASiS1Bz7ymRomK7IGZo5HHhN--
-
---------------pbB2LYZd0ys5gebmSDAORUD8
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmZulR0ACgkQj4D7WH0S
-/k6bJggAk9aZIZk54SRh1oy6gAMH6JcoenLNGGr10Ck0Try8FLMEMx9TiqcdqOe/
-HZOjwurbYKR4pxuEpepuzU5WaCehgumCvrwZ4quzL7e1RkSF3sfeiKrPtoZKc6Em
-z1ebzRiCSpLXfsEeqKoSfLOY/13e7GxNfv/gwRIWkyKKDJgianNp8zc/OyPg+mul
-Dco3AZmqg2X6GiGPm332jkAO1HuwwrJxtet+9Lb1cecy/nIcMDpIQZ6YLvVyw9Xm
-9hqKf9NBuXj2iGYxtdolrRlqea6xM0VeGeQ8jtNCIj8o4JwudWP43S8EKjfhYtr7
-f3wj/PySQn7uP1A67vkudNXy0fOTfQ==
-=1b8P
------END PGP SIGNATURE-----
-
---------------pbB2LYZd0ys5gebmSDAORUD8--
+Applied:
+https://git.kernel.org/pub/scm/linux/kernel/git/libata/linux.git/log/?h=for-6.10-fixes
 
