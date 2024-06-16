@@ -1,126 +1,170 @@
-Return-Path: <stable+bounces-52306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435BC909D23
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 13:31:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA7C909D27
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 13:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99EF1B20CFF
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 11:31:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A7F81F212C6
+	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 11:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5446A008;
-	Sun, 16 Jun 2024 11:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE29186E3F;
+	Sun, 16 Jun 2024 11:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CwvfXfgi"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="FYaCFovl"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF72F20309;
-	Sun, 16 Jun 2024 11:31:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DFD6A008;
+	Sun, 16 Jun 2024 11:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718537481; cv=none; b=KUAzZGyKe3FKU/+1HipBFkfGE/Gy1OVZVp66d3dpxsaMG334X+DtMWTcJDRc46Jti0TcgKt5gvjYMsJuIIdfCnE4yoE30IMUi8PrNbJ1W0Q5F56u2kFbufw1pfn5ThrCirwkAAidPK35gP+IScTER3Pu7jN/wMrmPnzVCIi6MaE=
+	t=1718538009; cv=none; b=cWA4S9Pzf+L4e7YGsiuI8C9ov0XG/Kn6dtK5oGzrDK70j8XT6ApcT/o+vkb2hfIuSk+3F/WpkbH97hFYBPlP51+7v/t7U0YZCKYD/phPSY7pdoMHXzDpEjDCF7JMZ70/H6OecUGXiBT+gUMFnaSfe6yieZ5GaRk/fTpkS1kwP0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718537481; c=relaxed/simple;
-	bh=JYVDLUuTRisE6xXsI9cLm0lSmf2HQqVruI59IzfON7Q=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TdTBgJcPlLkPmmO+GS1O303eMZi5uxxzRH9/sC9WzS7mse7v7ZzF2ReQEhSxz36Qr2uu8MoZH0YTh9SAyMo8TgLUFczzqEcKxc9tFJkwezHFG37SZpOnfCjP6XiqM512MPj9nBo4AjYLi4fIqAwvputsZyATx5QMnEBdjepRHlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=CwvfXfgi; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45G8vJPm017119;
-	Sun, 16 Jun 2024 11:31:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:message-id:mime-version:subject:to; s=
-	qcppdkim1; bh=LxztBRBbmjpRI281WcE7w7nkUX5fPIocW/xm/+0rMWw=; b=Cw
-	vfXfgipEAbMcFj/u42jX0DcONG/1sdavtI3irk0fg8N246fy8IrruREGrB8Ygr0t
-	CqgyJwao6NYiwXbj8ejHmFqJSaoX/rqChE0efRKW6aw01zGQT8mdt+Miljsj40sd
-	3YfNPOFuhyZBhyfLJAKT/8Gb5WJwMKLMYL/fMLyKrXjsgIK3RWZM8S5V1E9iMgHw
-	A80xgpe77DjLXeK3ob/mRPXOsPA74s1GfP4P/SLZuDmy/IqL75m/IzY8Gzf49kWB
-	A/tEM6zMJSylxLjcHw8TjsA5TXMjs3RzVsXKSsp2dwG5lNEAgZfWXTWTxdqXbG0g
-	SbqCaEbPnlVz+YpYbwDA==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ys44jsnf9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 16 Jun 2024 11:31:13 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45GBVCEU014434
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 16 Jun 2024 11:31:12 GMT
-Received: from zijuhu-gv.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sun, 16 Jun 2024 04:31:09 -0700
-From: Zijun Hu <quic_zijuhu@quicinc.com>
-To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>
-CC: <andriy.shevchenko@linux.intel.com>, <brgl@bgdev.pl>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        Zijun Hu
-	<quic_zijuhu@quicinc.com>
-Subject: [PATCH v2] devres: Fix devm_krealloc() allocating memory with wrong size
-Date: Sun, 16 Jun 2024 19:30:55 +0800
-Message-ID: <1718537455-20208-1-git-send-email-quic_zijuhu@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+	s=arc-20240116; t=1718538009; c=relaxed/simple;
+	bh=+5eIDvy+PDwnqeOYVylOAaTLLrsv5Q/pp+zj2Pwx934=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=SKrLKz6/+fm580h7t0MMxrzGG/C+3UNBiz5ptjTgyaU99MV/BUvJYH6+BiU86i7D3YSzb4AMz6B64nAkMd/UpXFpn24VBF80wVHdnDUkzgUoQ37GWAYrUDaSH42PCDkTUaWoyZFlWEqSwa7ORaTxdPPG1WrY+oJ2/6xxlJ1Zap4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=FYaCFovl; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
+	References; bh=Tv02ePHCK570oFv+99PrlvHMKfm0UUy8eAo3neEsjog=; t=1718538006;
+	x=1718970006; b=FYaCFovlO35k7/sO6KocEbjm8gtobv+6Lj3Blaopd6R9Pd1/Hx0wFVq6FyRVE
+	OWzMOJnDkeLMDIX5h+2a7Q+FE0jymuV4lfi/lPt0OeA2lUusBXG6anyJ+KDf4WO1bf4OvSPEaj84P
+	5FAhA0f35JYSwJAu2oU3amS+u7g8dH1MvTR2aF/VFxo7c88rXXl0UJm4Wf75e+g4Wx2PIKEG81XkC
+	AqXHg0ix5I5lRilM8ivWPL2eykyHiZSJe+G+S40WfDurpAJtpqdO3A7t3DMywKGQnMVU+gKTIOHdI
+	9Ise+4XuqipeNvnOqClI+HuCRDAvSFtxW9eJqf9Yd4SVNHdsKg==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1sIoEt-0007ug-DJ; Sun, 16 Jun 2024 13:40:03 +0200
+Message-ID: <1a69c1d0-0065-4f3b-923a-4e35a8a9d212@leemhuis.info>
+Date: Sun, 16 Jun 2024 13:40:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 5FaZFxJMzHBPkUl2OX9-bdTIpsBkXJ9O
-X-Proofpoint-ORIG-GUID: 5FaZFxJMzHBPkUl2OX9-bdTIpsBkXJ9O
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-16_10,2024-06-14_03,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 mlxlogscore=737 spamscore=0 lowpriorityscore=0
- adultscore=0 phishscore=0 mlxscore=0 clxscore=1011 bulkscore=0
- malwarescore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2405170001 definitions=main-2406160090
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] leds: class: Revert: "If no default trigger is given,
+ make hw_control trigger the default trigger"
+From: Thorsten Leemhuis <linux@leemhuis.info>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
+ Pavel Machek <pavel@ucw.cz>, Jakub Kicinski <kuba@kernel.org>,
+ Heiner Kallweit <hkallweit1@gmail.com>, linux-leds@vger.kernel.org,
+ Genes Lists <lists@sapience.com>, =?UTF-8?Q?Johannes_W=C3=BCller?=
+ <johanneswueller@gmail.com>, stable@vger.kernel.org,
+ Andrew Lunn <andrew@lunn.ch>, Hans de Goede <hdegoede@redhat.com>,
+ Lee Jones <lee@kernel.org>
+References: <20240607101847.23037-1-hdegoede@redhat.com>
+ <6ebdcaca-c95a-48bc-b1ca-51cc1d7a86a5@lunn.ch>
+ <7a73693e-87b4-4161-a058-4e36f50e1376@redhat.com>
+ <5e93d4ea-0247-4803-9c0e-215d009fb9d3@leemhuis.info>
+ <0cdc9042-2cad-48d4-8eb6-0732cf9e7dfa@redhat.com>
+ <20240612152635.GF1504919@google.com>
+ <1ae0cbc0-c87f-409b-abe2-13c76414f5ba@leemhuis.info>
+Content-Language: en-US, de-DE
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 n7RI
+In-Reply-To: <1ae0cbc0-c87f-409b-abe2-13c76414f5ba@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;linux@leemhuis.info;1718538006;cd2c3720;
+X-HE-SMSGID: 1sIoEt-0007ug-DJ
 
-Kernel API devm_krealloc() calls alloc_dr() with wrong argument
-@total_new_size, and it will cause more memory to be allocated
-than required, fixed by using @new_size as alloc_dr()'s argument.
+[resending this request, I fear my earlier mail triggered a spam filter]
 
-Fixes: f82485722e5d ("devres: provide devm_krealloc()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
-V2: Add inline comments and stable tag
+Linus, could you please merge the revert at this thread's start, e.g.:
+https://lore.kernel.org/all/20240607101847.23037-1-hdegoede@redhat.com/
 
-Previous discussion link:
-https://lore.kernel.org/all/1718531655-29761-1-git-send-email-quic_zijuhu@quicinc.com/
+It fixes a regression that causes some trouble.
 
- drivers/base/devres.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+You can see the Ack from Lee (who merged and mainlined the patch that is
+reverted) below; there is a Reviewed-by: from Andrew in the first reply
+as well. Heiner, who authored the culprit, did not reply afaics.
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index 3df0025d12aa..0d4e5d1b9967 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -896,9 +896,12 @@ void *devm_krealloc(struct device *dev, void *ptr, size_t new_size, gfp_t gfp)
- 	/*
- 	 * Otherwise: allocate new, larger chunk. We need to allocate before
- 	 * taking the lock as most probably the caller uses GFP_KERNEL.
-+	 * alloc_dr() will call check_dr_size() to reserve extra memory such
-+	 * as struct devres_node automatically, so size @new_size user request
-+	 * is delivered to it directly as devm_kmalloc() does.
- 	 */
- 	new_dr = alloc_dr(devm_kmalloc_release,
--			  total_new_size, gfp, dev_to_node(dev));
-+			  new_size, gfp, dev_to_node(dev));
- 	if (!new_dr)
- 		return NULL;
- 
--- 
-2.7.4
+Ciao, Thorsten
 
+On 13.06.24 08:01, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 12.06.24 17:26, Lee Jones wrote:
+>> On Wed, 12 Jun 2024, Hans de Goede wrote:
+>>> On 6/12/24 4:58 PM, Linux regression tracking (Thorsten Leemhuis) wrote:
+>>>>
+>>>> Hans, from your point of view, how fast should we try to mainline this
+>>>> revert? I got the impression that you want it merged there rather sooner
+>>>> than later -- and that sounds appropriate to me.
+>>>
+>>> There are at least 2 separate bug reports from 6.9 users who are gettinhg
+>>> stuck tasks which should be fixed by this, so yes this should go upstream
+>>> soon.
+>>>
+>>>> So should we maybe ask
+>>>> Linus on Friday to pick this up from here? Ideally of course with an ACK
+>>>> from Pavel or Lee.
+>>>
+>>> Indeed having an ack from Lee or Pavel here would be great!
+>>
+>> Acked-by: Lee Jones <lee@kernel.org>
+> 
+> Thx everyone. In that case: why wait till Friday. :-D
+> 
+> Linus, could you please pick the revert up this thread is about? You can
+> find it here at the start of this thread, which is:
+> 
+> https://lore.kernel.org/all/20240607101847.23037-1-hdegoede@redhat.com/
+> 
+> You can see the Ack from Lee above and there is a Reviewed-by: from
+> Andrew in the first reply as well.
+> 
+> Tia! Ciao, Thorsten
 
