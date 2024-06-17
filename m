@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-52418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C20B90AF7A
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:35:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04C5D90AF7E
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52FC81C23688
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:35:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A28961F21141
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28E01AED2E;
-	Mon, 17 Jun 2024 13:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5ABD1AED49;
+	Mon, 17 Jun 2024 13:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s+M8cqw9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cbxkO72c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6670F1AD9FE;
-	Mon, 17 Jun 2024 13:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEA01AED41;
+	Mon, 17 Jun 2024 13:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630525; cv=none; b=N5QqyPtXt0Q3yYV3xE2bKx4xVHd+pRPvNzKWkSPn7Xohlru4vxKZMOlvnE959aSGTL1hJxjZMoIJzP7bzYm5DuYodfMHe6viM67ZoUhStgwL3V7iOo6GhSt5XI5L+WnT8tBkTCZOYbFRJ7RlFONRJFfX7laXJ6tkNEL5XqsTuwE=
+	t=1718630526; cv=none; b=Q6z+iA/1+wx+22dRpLQJpX6wO23fWseXHbg2uwPDZc7i3GSERFIwFv/XV65Td08oDxwacHZtPkmYvQAl0x+BNEbuEehGDrdL7+KaaRKLTqbt2puG+imTL82mSx/lwVRTmfp1IwtvdpwGP3845MuWilh2lz+LphVlJdCzNbc2ttk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630525; c=relaxed/simple;
-	bh=YmjootAgKlT4AUdnARxUqy73v9hCZ0Uej/RVPrjCcqM=;
+	s=arc-20240116; t=1718630526; c=relaxed/simple;
+	bh=hrFQYKSoSedno6t/TMSRyd6Lxlx09BkJvdjqaOsR+cQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxsMvXpP8y4K2neoTK6cK6+zgeOQ1tIitcC2THzsWTV6q3zZi1sCg57OlvcHatXX33EkLow6SyxSE0dh2DOxNwcDxk60Bw5L6WANEGuUhpN0sv374wl2GzPoTiJlRG7EpM/nH0dB405uOuti9ZVkV8TjCnihZgrpUErt7m06I/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s+M8cqw9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84BDC4AF1C;
-	Mon, 17 Jun 2024 13:22:03 +0000 (UTC)
+	 MIME-Version; b=pW2yfLmxugoXcipB1eeYzcpLxooA7t2uasB7ls5b4yAVE31MouX3pz53A68EQasC11Mf8uBO+IOuENZOdRv9yv8V6Zl48wxfRt5cNpt62DEXzgGflRQMghiO/9senPQbfeneOiyngRxDxfXvv0Cq3mTOv5NxZWDVHhuZ8xR11lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cbxkO72c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758CCC4AF49;
+	Mon, 17 Jun 2024 13:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630525;
-	bh=YmjootAgKlT4AUdnARxUqy73v9hCZ0Uej/RVPrjCcqM=;
+	s=k20201202; t=1718630526;
+	bh=hrFQYKSoSedno6t/TMSRyd6Lxlx09BkJvdjqaOsR+cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s+M8cqw9LG2oZoXGCu+Q4ZbIOdGhCbSlh00LHUKzzt5vfzt2M7tMozAMxgMCnwUyc
-	 Y12frsWyASEc7Z0yOc87bgFpyOITpOJy5wVmkG5RdYJ3o/BUFqOeVlwB3zpSzNxzKa
-	 EpS4WLRm7Hh4DmUID6K9dRFQGzGxAhJJZcvVXyhI/l1fgHnAtJPythkcV4Zy6PKGkM
-	 3+3pckq+Ij7O5EpEWRBhjLMWcbbuYPzUEU7/XcWPIgY+yzzWYOQSGfn8wPuxAglI6i
-	 Rmkp6y2+cwo2OQ7QWHtZ1MceVnzA6cePZuc9SGIDOGEqjCmtS6k8ahnOzWxHI+r9XI
-	 ZUQrtU8iHoQmQ==
+	b=cbxkO72cYbLevNrSHoe7JacwYEJSDsRQKo2nHQVFxtd7WmtDqdnEmy4DWHTjNU12/
+	 NtXv2/1eiPcCNej1pQNB7BE3FwX2tB5OBydK9UlOHyvVnfeXhpcvQSjkrD6s/hq3E1
+	 +2AA7Sw+aFUzRlrzUgTLjx7XikGJe9EGDZK2N4sC+aZcoGLTXcfMW2gqJOLYFnzsPd
+	 UboCAtUVhZx8LvGQqGy6/senO/4CEMFwLH2KcGWuSJSCWGTnLgDbciOuzQwthU5+e+
+	 bVzZzRg5g4D8GD7y6QHzeaJp8Nvwf5PaWmQQ6C7Dsok1vVur+nCNSiC8s37C4CB8Sz
+	 nYcbz6D/hUg7A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Huacai Chen <chenhuacai@loongson.cn>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	chenhuacai@kernel.org,
-	devicetree@vger.kernel.org,
-	loongarch@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.9 31/44] LoongArch: Fix GMAC's phy-mode definitions in dts
-Date: Mon, 17 Jun 2024 09:19:44 -0400
-Message-ID: <20240617132046.2587008-31-sashal@kernel.org>
+	linux-input@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 32/44] Input: silead - Always support 10 fingers
+Date: Mon, 17 Jun 2024 09:19:45 -0400
+Message-ID: <20240617132046.2587008-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132046.2587008-1-sashal@kernel.org>
 References: <20240617132046.2587008-1-sashal@kernel.org>
@@ -69,79 +66,98 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit eb36e520f4f1b690fd776f15cbac452f82ff7bfa ]
+[ Upstream commit 38a38f5a36da9820680d413972cb733349400532 ]
 
-The GMAC of Loongson chips cannot insert the correct 1.5-2ns delay. So
-we need the PHY to insert internal delays for both transmit and receive
-data lines from/to the PHY device. Fix this by changing the "phy-mode"
-from "rgmii" to "rgmii-id" in dts.
+When support for Silead touchscreens was orginal added some touchscreens
+with older firmware versions only supported 5 fingers and this was made
+the default requiring the setting of a "silead,max-fingers=10" uint32
+device-property for all touchscreen models which do support 10 fingers.
 
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+There are very few models with the old 5 finger fw, so in practice the
+setting of the "silead,max-fingers=10" is boilerplate which needs to
+be copy and pasted to every touchscreen config.
+
+Reporting that 10 fingers are supported on devices which only support
+5 fingers doesn't cause any problems for userspace in practice, since
+at max 4 finger gestures are supported anyways. Drop the max_fingers
+configuration and simply always assume 10 fingers.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/20240525193854.39130-2-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/boot/dts/loongson-2k0500-ref.dts | 4 ++--
- arch/loongarch/boot/dts/loongson-2k1000-ref.dts | 4 ++--
- arch/loongarch/boot/dts/loongson-2k2000-ref.dts | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/input/touchscreen/silead.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/arch/loongarch/boot/dts/loongson-2k0500-ref.dts b/arch/loongarch/boot/dts/loongson-2k0500-ref.dts
-index 8aefb0c126722..a34734a6c3ce8 100644
---- a/arch/loongarch/boot/dts/loongson-2k0500-ref.dts
-+++ b/arch/loongarch/boot/dts/loongson-2k0500-ref.dts
-@@ -44,14 +44,14 @@ linux,cma {
- &gmac0 {
- 	status = "okay";
+diff --git a/drivers/input/touchscreen/silead.c b/drivers/input/touchscreen/silead.c
+index 62f562ad50263..050fa9ca4ec94 100644
+--- a/drivers/input/touchscreen/silead.c
++++ b/drivers/input/touchscreen/silead.c
+@@ -71,7 +71,6 @@ struct silead_ts_data {
+ 	struct regulator_bulk_data regulators[2];
+ 	char fw_name[64];
+ 	struct touchscreen_properties prop;
+-	u32 max_fingers;
+ 	u32 chip_id;
+ 	struct input_mt_pos pos[SILEAD_MAX_FINGERS];
+ 	int slots[SILEAD_MAX_FINGERS];
+@@ -136,7 +135,7 @@ static int silead_ts_request_input_dev(struct silead_ts_data *data)
+ 	touchscreen_parse_properties(data->input, true, &data->prop);
+ 	silead_apply_efi_fw_min_max(data);
  
--	phy-mode = "rgmii";
-+	phy-mode = "rgmii-id";
- 	bus_id = <0x0>;
- };
+-	input_mt_init_slots(data->input, data->max_fingers,
++	input_mt_init_slots(data->input, SILEAD_MAX_FINGERS,
+ 			    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED |
+ 			    INPUT_MT_TRACK);
  
- &gmac1 {
- 	status = "okay";
+@@ -256,10 +255,10 @@ static void silead_ts_read_data(struct i2c_client *client)
+ 		return;
+ 	}
  
--	phy-mode = "rgmii";
-+	phy-mode = "rgmii-id";
- 	bus_id = <0x1>;
- };
+-	if (buf[0] > data->max_fingers) {
++	if (buf[0] > SILEAD_MAX_FINGERS) {
+ 		dev_warn(dev, "More touches reported then supported %d > %d\n",
+-			 buf[0], data->max_fingers);
+-		buf[0] = data->max_fingers;
++			 buf[0], SILEAD_MAX_FINGERS);
++		buf[0] = SILEAD_MAX_FINGERS;
+ 	}
  
-diff --git a/arch/loongarch/boot/dts/loongson-2k1000-ref.dts b/arch/loongarch/boot/dts/loongson-2k1000-ref.dts
-index ed4d324340411..aaf41b565805a 100644
---- a/arch/loongarch/boot/dts/loongson-2k1000-ref.dts
-+++ b/arch/loongarch/boot/dts/loongson-2k1000-ref.dts
-@@ -43,7 +43,7 @@ linux,cma {
- &gmac0 {
- 	status = "okay";
+ 	if (silead_ts_handle_pen_data(data, buf))
+@@ -315,7 +314,6 @@ static void silead_ts_read_data(struct i2c_client *client)
  
--	phy-mode = "rgmii";
-+	phy-mode = "rgmii-id";
- 	phy-handle = <&phy0>;
- 	mdio {
- 		compatible = "snps,dwmac-mdio";
-@@ -58,7 +58,7 @@ phy0: ethernet-phy@0 {
- &gmac1 {
- 	status = "okay";
+ static int silead_ts_init(struct i2c_client *client)
+ {
+-	struct silead_ts_data *data = i2c_get_clientdata(client);
+ 	int error;
  
--	phy-mode = "rgmii";
-+	phy-mode = "rgmii-id";
- 	phy-handle = <&phy1>;
- 	mdio {
- 		compatible = "snps,dwmac-mdio";
-diff --git a/arch/loongarch/boot/dts/loongson-2k2000-ref.dts b/arch/loongarch/boot/dts/loongson-2k2000-ref.dts
-index 74b99bd234cc3..ea9e6985d0e9f 100644
---- a/arch/loongarch/boot/dts/loongson-2k2000-ref.dts
-+++ b/arch/loongarch/boot/dts/loongson-2k2000-ref.dts
-@@ -92,7 +92,7 @@ phy1: ethernet-phy@1 {
- &gmac2 {
- 	status = "okay";
+ 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_RESET,
+@@ -325,7 +323,7 @@ static int silead_ts_init(struct i2c_client *client)
+ 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
  
--	phy-mode = "rgmii";
-+	phy-mode = "rgmii-id";
- 	phy-handle = <&phy2>;
- 	mdio {
- 		compatible = "snps,dwmac-mdio";
+ 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_TOUCH_NR,
+-					data->max_fingers);
++					  SILEAD_MAX_FINGERS);
+ 	if (error)
+ 		goto i2c_write_err;
+ 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
+@@ -591,13 +589,6 @@ static void silead_ts_read_props(struct i2c_client *client)
+ 	const char *str;
+ 	int error;
+ 
+-	error = device_property_read_u32(dev, "silead,max-fingers",
+-					 &data->max_fingers);
+-	if (error) {
+-		dev_dbg(dev, "Max fingers read error %d\n", error);
+-		data->max_fingers = 5; /* Most devices handle up-to 5 fingers */
+-	}
+-
+ 	error = device_property_read_string(dev, "firmware-name", &str);
+ 	if (!error)
+ 		snprintf(data->fw_name, sizeof(data->fw_name),
 -- 
 2.43.0
 
