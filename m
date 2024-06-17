@@ -1,162 +1,263 @@
-Return-Path: <stable+bounces-52606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5972F90BC3E
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 22:35:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D0B90BC4B
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 22:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B6641C22AF8
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 20:35:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AF351F23035
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 20:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E10197A62;
-	Mon, 17 Jun 2024 20:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9310190058;
+	Mon, 17 Jun 2024 20:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hfoHj61h";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="409rWPFX"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="b/vF2ipD"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0123EC8E1
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 20:35:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B3018F2DE
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 20:45:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718656514; cv=none; b=VdR2oF9+7NnKyA4n/WAOR2A+GhM/R8Emi911Cej6KCQQ8LiXH3C6vYMkpX4XtKI2WOxLQ38n+lhyT+4GduHoxnlKgYHu7hdRCYKcOHYXLqM3/ZpAzZ4hZrFOJ3nT9/43+kqbYOac03vu5nAXmrQ5gSh2g+wEJVW3f9c8pvVRm6c=
+	t=1718657112; cv=none; b=k+tIy2biT+jtZDOAIpaktsryogRCC1pmuL5KVAiNFWPhjcTvVTBCk7u2X1pKliY+9BKlkzITBHb9RmVPTJc2zWUy6dH7yKjEbKfedN/nxxGt+TZMTYx6JzPgb6FukJhMMqcMARygm1pvpbGFJOmX8nlsnIvsfFqKaH780UL4qbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718656514; c=relaxed/simple;
-	bh=OBytqoJYtnKAKc+6RdBm2QtxKrzKXI43MP1S2MlfGOg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=CbU8RwY2yvscKxLxTKMTsDIbT8sRnxdgBE8PqIQeicr97kEMRQkJ3NdEy0975r/qJQxXUSi4lPi40JmhwKXOlh+lgwhc2rwJTru2wlQdb7et4lYrMWtLEhcjMnNSMGZ9s31XP3uv6ZOoqLg87D40cfCYzyrV4pAerjHzS183Bpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hfoHj61h; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=409rWPFX; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1718656511;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FDeagGCN7NpJ2oUlMcOvt0L9n25wpjBn2Aor03CJ9uQ=;
-	b=hfoHj61he12acouG2ub78E3bL5u1aYa6S1lAbR5AGa8NhXCdlNlCyePUY/OQeLxr/RB3s7
-	+g5EGWe/zsxMzCBqAnr9zBFU+xlS6imgaXHjTcOiSAf21pw+9IUY/UafboFivB1RhatAgA
-	MULtaNcC5DV5gsc/2EZ57W+/dLnbhiZe4RjhZVOe4er8GDd87Z0gIo+JtT4Pf8xW+mNCeL
-	MONURQfc5jtnowLk3qaok6UczAJPQQBDwklj5bPjAJbKGUNSdMm6svNnJR1SQsZiWEm6v3
-	u/TIdT+TLIwEds/HWCJrSWGCWJDlW34DUz3BbglVhal4azlYSL083R30S8FPsw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1718656511;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FDeagGCN7NpJ2oUlMcOvt0L9n25wpjBn2Aor03CJ9uQ=;
-	b=409rWPFXwPh4KaiJxNKwRd2pnr4XKl/W/N6dNeAEyg56tLPsfhJMFQEM/jbl9jvgmKfKvW
-	HcrM0m+xoe/TVcDA==
-To: gregkh@linuxfoundation.org, oleg@redhat.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH 6.6.y and earlier] tick/nohz_full: Don't abuse
- smp_call_function_single() in tick_setup_device()
-In-Reply-To: <2024061706-smudgy-gumball-93c0@gregkh>
-References: <2024061706-smudgy-gumball-93c0@gregkh>
-Date: Mon, 17 Jun 2024 22:35:10 +0200
-Message-ID: <87ed8vs3y9.ffs@tglx>
+	s=arc-20240116; t=1718657112; c=relaxed/simple;
+	bh=GyDzLTvWAqTRbFKCzhN30bM2swENnnPVTe0xfyikLgc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=b6bgap6oUj8TgnH2ZZ05h61idySEDMtSVJq0X9LBDxNrOLLF7KWQlBi5yjSBGK0ubKQ8tzFO6oWbck9qdBEInOzrgRGTK0NmI5Fkak3HWGV6L3j6e0ezXyMmO0d2yalo9VhzZ997jirlOZSWkJVHfG56p6riMyOlAQpvZT9PTZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=b/vF2ipD; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-6e7b121be30so3332996a12.1
+        for <stable@vger.kernel.org>; Mon, 17 Jun 2024 13:45:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1718657110; x=1719261910; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n3KHaRUBREATRd0KgdlX5Yi+GwXyEN0yrcoY6Uu7a+Y=;
+        b=b/vF2ipDhViikc643XOrkCQNQ6j3DGSwEFYQvswX+HSeSx/B/4eiWfvN7tV44lHQfv
+         8y0kZANqZvIren7hllHC59hjX9u2lmbjqskJuVLRFqkbCbYQFI7fBT9hN6oANLV95HsG
+         3ZD7il/2HTYq/3DFx46/Z/3H2ynWdh1QYzppjNAgu8VLe5L+enIrdycK5clDSWKj9CTA
+         0dhnZ+ndST1ivn9clud5dd4/OoDAT/vygeffEZIrR85TjRiCEyAGuqlG+uIe/X6f9hCM
+         gkyHHBdJDrD6t9psYot83xAE3DrCvlngoBcE0FxcJDvTGOBG4yBnGuDpWHvmKJAiKH+E
+         UhnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718657110; x=1719261910;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n3KHaRUBREATRd0KgdlX5Yi+GwXyEN0yrcoY6Uu7a+Y=;
+        b=oDsBFzIJyZtdio7nc+EuV+cUeweJ2JLqqQZecHGk9jCPPNJRZQfFUqEl0lOnXRNkw+
+         gVb3fI2KylYLu7t2en/QmPMplfl0H93orPt8IU3LckA7awi/WEW0XQakRjBy7I+V64cS
+         f+l2viGsLJ9Uj4RiMpjB3mUJy4oTtsB5qRmNc5UxGVKmrIpYAiT8esf0lDxrVzao2SCe
+         2uokro/91g5gRv20YgnCIugWzLW5HbSwCOegu/nO9McF6OcJQnjeZTxlleriStUQ9U19
+         +m4+EQjTwRHCEpw5C0iwvad+JaNVIyEvatWSBvidK7FTWg5cShatmztWKytKMwjQ/P9D
+         DoXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXggoulcM04fcBlYcWPvZRGKWDusu1TScvQjpVckpqMUmEGlZI9/LMHpdvuHuyQByniTzxrp8VzIBwY3qPkhIvdzbXsFrbX
+X-Gm-Message-State: AOJu0YxINEU7LUZBuzzRpzYritXxrQ44z7K/sB8y4gaWAqjG3mo7Zt8M
+	pEffLWny6qjQrbl0uLE/wcn/ewkubOHpfd+lHzSiilIlffUCzYKExeLvmaPmPkSi9dj9zOHTGBf
+	OjrDJwDBQ/Ad1QkQ8Kg9rxE1SCuuquUvYh1gXNQ==
+X-Google-Smtp-Source: AGHT+IGYqVNqctL8z3SKGbhC0hwvPpol2qe7QRaef2P9Fi/bZIBYNMNfiAF/I1SnLMyX+tEiQm2w23qGcGohbFqYhaA=
+X-Received: by 2002:a17:90a:5794:b0:2c4:e333:35f3 with SMTP id
+ 98e67ed59e1d1-2c4e333379dmr8571273a91.6.1718657110099; Mon, 17 Jun 2024
+ 13:45:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240617195934.64810-1-ignat@cloudflare.com> <20240617203050.84843-1-kuniyu@amazon.com>
+In-Reply-To: <20240617203050.84843-1-kuniyu@amazon.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
+Date: Mon, 17 Jun 2024 21:44:58 +0100
+Message-ID: <CALrw=nHKU+6SJBDevC6cOnFAaW4JwENvWDGPmRNr8wT0OtqDNA@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: do not leave a dangling sk pointer, when
+ socket creation fails
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
+	kernel-team@cloudflare.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, revest@chromium.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, Jun 17, 2024 at 9:31=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.co=
+m> wrote:
+>
+> From: Ignat Korchagin <ignat@cloudflare.com>
+> Date: Mon, 17 Jun 2024 20:59:34 +0100
+> > A KASAN enabled kernel will log something like below (decoded and strip=
+ped):
+> > [   78.328507][  T299] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > [ 78.329018][ T299] BUG: KASAN: slab-use-after-free in __sock_gen_cooki=
+e (./arch/x86/include/asm/atomic64_64.h:15 ./include/linux/atomic/atomic-ar=
+ch-fallback.h:2583 ./include/linux/atomic/atomic-instrumented.h:1611 net/co=
+re/sock_diag.c:29)
+> > [   78.329366][  T299] Read of size 8 at addr ffff888007110dd8 by task =
+traceroute/299
+> > [   78.329366][  T299]
+> > [   78.329366][  T299] CPU: 2 PID: 299 Comm: traceroute Tainted: G     =
+       E      6.10.0-rc2+ #2
+> > [   78.329366][  T299] Hardware name: QEMU Standard PC (i440FX + PIIX, =
+1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+> > [   78.329366][  T299] Call Trace:
+> > [   78.329366][  T299]  <TASK>
+> > [ 78.329366][ T299] dump_stack_lvl (lib/dump_stack.c:117 (discriminator=
+ 1))
+> > [ 78.329366][ T299] print_report (mm/kasan/report.c:378 mm/kasan/report=
+.c:488)
+> > [ 78.329366][ T299] ? __sock_gen_cookie (./arch/x86/include/asm/atomic6=
+4_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 ./include/linu=
+x/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
+> > [ 78.329366][ T299] kasan_report (mm/kasan/report.c:603)
+> > [ 78.329366][ T299] ? __sock_gen_cookie (./arch/x86/include/asm/atomic6=
+4_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 ./include/linu=
+x/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
+> > [ 78.329366][ T299] kasan_check_range (mm/kasan/generic.c:183 mm/kasan/=
+generic.c:189)
+> > [ 78.329366][ T299] __sock_gen_cookie (./arch/x86/include/asm/atomic64_=
+64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/=
+atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
+> > [ 78.329366][ T299] bpf_get_socket_ptr_cookie (./arch/x86/include/asm/p=
+reempt.h:94 ./include/linux/sock_diag.h:42 net/core/filter.c:5094 net/core/=
+filter.c:5092)
+> > [ 78.329366][ T299] bpf_prog_875642cf11f1d139___sock_release+0x6e/0x8e
+> > [ 78.329366][ T299] bpf_trampoline_6442506592+0x47/0xaf
+> > [ 78.329366][ T299] __sock_release (net/socket.c:652)
+> > [ 78.329366][ T299] __sock_create (net/socket.c:1601)
+> > ...
+> > [   78.329366][  T299] Allocated by task 299 on cpu 2 at 78.328492s:
+> > [ 78.329366][ T299] kasan_save_stack (mm/kasan/common.c:48)
+> > [ 78.329366][ T299] kasan_save_track (mm/kasan/common.c:68)
+> > [ 78.329366][ T299] __kasan_slab_alloc (mm/kasan/common.c:312 mm/kasan/=
+common.c:338)
+> > [ 78.329366][ T299] kmem_cache_alloc_noprof (mm/slub.c:3941 mm/slub.c:4=
+000 mm/slub.c:4007)
+> > [ 78.329366][ T299] sk_prot_alloc (net/core/sock.c:2075)
+> > [ 78.329366][ T299] sk_alloc (net/core/sock.c:2134)
+> > [ 78.329366][ T299] inet_create (net/ipv4/af_inet.c:327 net/ipv4/af_ine=
+t.c:252)
+> > [ 78.329366][ T299] __sock_create (net/socket.c:1572)
+> > [ 78.329366][ T299] __sys_socket (net/socket.c:1660 net/socket.c:1644 n=
+et/socket.c:1706)
+> > [ 78.329366][ T299] __x64_sys_socket (net/socket.c:1718)
+> > [ 78.329366][ T299] do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/=
+entry/common.c:83)
+> > [ 78.329366][ T299] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entr=
+y_64.S:130)
+> > [   78.329366][  T299]
+> > [   78.329366][  T299] Freed by task 299 on cpu 2 at 78.328502s:
+> > [ 78.329366][ T299] kasan_save_stack (mm/kasan/common.c:48)
+> > [ 78.329366][ T299] kasan_save_track (mm/kasan/common.c:68)
+> > [ 78.329366][ T299] kasan_save_free_info (mm/kasan/generic.c:582)
+> > [ 78.329366][ T299] poison_slab_object (mm/kasan/common.c:242)
+> > [ 78.329366][ T299] __kasan_slab_free (mm/kasan/common.c:256)
+> > [ 78.329366][ T299] kmem_cache_free (mm/slub.c:4437 mm/slub.c:4511)
+> > [ 78.329366][ T299] __sk_destruct (net/core/sock.c:2117 net/core/sock.c=
+:2208)
+> > [ 78.329366][ T299] inet_create (net/ipv4/af_inet.c:397 net/ipv4/af_ine=
+t.c:252)
+> > [ 78.329366][ T299] __sock_create (net/socket.c:1572)
+> > [ 78.329366][ T299] __sys_socket (net/socket.c:1660 net/socket.c:1644 n=
+et/socket.c:1706)
+> > [ 78.329366][ T299] __x64_sys_socket (net/socket.c:1718)
+> > [ 78.329366][ T299] do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/=
+entry/common.c:83)
+> > [ 78.329366][ T299] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entr=
+y_64.S:130)
+> >
+> > Fix this by clearing the struct socket reference in sk_common_release()=
+ to cover
+> > all protocol families create functions.
+> >
+> > Fixes: c5dbb89fc2ac ("bpf: Expose bpf_get_socket_cookie to tracing prog=
+rams")
+> > Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+> > Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+> > Cc: stable@vger.kernel.org
+> > Link: https://lore.kernel.org/netdev/20240613194047.36478-1-kuniyu@amaz=
+on.com/T/
+> > ---
+> > Changes in v2:
+> >   * moved the NULL-ing of the socket reference to sk_common_release() (=
+as
+> >     suggested by Kuniyuki Iwashima)
+> >   * trimmed down the KASAN report in the commit message to show only re=
+levant
+> >     info
+>
+> It seems the most important repro was lost.  I'd like to keep that
+> in the commit message so that we can easily understand the Fixes:
+> tag and how the issue happens.
 
-From: Oleg Nesterov <oleg@redhat.com>
+Hm... Indeed... Not my intention. Somehow I stripped the repro steps
+and not only the KASAN message
 
-commit 07c54cc5988f19c9642fd463c2dbdac7fc52f777 upstream.
+> While at it, could you remove the timestamp and thread id in KASAN
+> splat ?
 
-After the recent commit 5097cbcb38e6 ("sched/isolation: Prevent boot crash
-when the boot CPU is nohz_full") the kernel no longer crashes, but there is
-another problem.
+OK
 
-In this case tick_setup_device() calls tick_take_do_timer_from_boot() to
-update tick_do_timer_cpu and this triggers the WARN_ON_ONCE(irqs_disabled)
-in smp_call_function_single().
-
-Kill tick_take_do_timer_from_boot() and just use WRITE_ONCE(), the new
-comment explains why this is safe (thanks Thomas!).
-
-Fixes: 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240528122019.GA28794@redhat.com
-Link: https://lore.kernel.org/all/20240522151742.GA10400@redhat.com
----
-Backport to v6.6.y and earlier
----
- kernel/time/tick-common.c |   42 ++++++++++++++----------------------------
- 1 file changed, 14 insertions(+), 28 deletions(-)
-
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -177,26 +177,6 @@ void tick_setup_periodic(struct clock_ev
- 	}
- }
- 
--#ifdef CONFIG_NO_HZ_FULL
--static void giveup_do_timer(void *info)
--{
--	int cpu = *(unsigned int *)info;
--
--	WARN_ON(tick_do_timer_cpu != smp_processor_id());
--
--	tick_do_timer_cpu = cpu;
--}
--
--static void tick_take_do_timer_from_boot(void)
--{
--	int cpu = smp_processor_id();
--	int from = tick_do_timer_boot_cpu;
--
--	if (from >= 0 && from != cpu)
--		smp_call_function_single(from, giveup_do_timer, &cpu, 1);
--}
--#endif
--
- /*
-  * Setup the tick device
-  */
-@@ -220,19 +200,25 @@ static void tick_setup_device(struct tic
- 			tick_next_period = ktime_get();
- #ifdef CONFIG_NO_HZ_FULL
- 			/*
--			 * The boot CPU may be nohz_full, in which case set
--			 * tick_do_timer_boot_cpu so the first housekeeping
--			 * secondary that comes up will take do_timer from
--			 * us.
-+			 * The boot CPU may be nohz_full, in which case the
-+			 * first housekeeping secondary will take do_timer()
-+			 * from it.
- 			 */
- 			if (tick_nohz_full_cpu(cpu))
- 				tick_do_timer_boot_cpu = cpu;
- 
--		} else if (tick_do_timer_boot_cpu != -1 &&
--						!tick_nohz_full_cpu(cpu)) {
--			tick_take_do_timer_from_boot();
-+		} else if (tick_do_timer_boot_cpu != -1 && !tick_nohz_full_cpu(cpu)) {
- 			tick_do_timer_boot_cpu = -1;
--			WARN_ON(tick_do_timer_cpu != cpu);
-+			/*
-+			 * The boot CPU will stay in periodic (NOHZ disabled)
-+			 * mode until clocksource_done_booting() called after
-+			 * smp_init() selects a high resolution clocksource and
-+			 * timekeeping_notify() kicks the NOHZ stuff alive.
-+			 *
-+			 * So this WRITE_ONCE can only race with the READ_ONCE
-+			 * check in tick_periodic() but this race is harmless.
-+			 */
-+			WRITE_ONCE(tick_do_timer_cpu, cpu);
- #endif
- 		}
- 
+>
+> >
+> >  net/core/sock.c | 11 +++++++++++
+> >  1 file changed, 11 insertions(+)
+> >
+> > diff --git a/net/core/sock.c b/net/core/sock.c
+> > index 8629f9aecf91..575af557c46b 100644
+> > --- a/net/core/sock.c
+> > +++ b/net/core/sock.c
+> > @@ -3742,6 +3742,17 @@ void sk_common_release(struct sock *sk)
+> >
+> >       sk->sk_prot->unhash(sk);
+> >
+> > +     /*
+> > +      * struct net_proto_family create functions like inet_create() or
+>
+> nit: This should be netdev style:
+>
+>         /* struct net_proto_family ...
+>          * ...
+>          */
+>
+>   See: Documentation/process/maintainer-netdev.rst
+>
+> But I think the comment is not needed here if the commit message has
+>
+>   * KASAN splat
+>   * How the problem happens
+>     * run bpf_get_socket_cookie() in __sock_release()
+>   * What the problem is
+>     * UAF happens if pf->create() fails after calling sock_init_data()
+>
+> , we can just git-blame the change below.
+>
+> Thanks!
+>
+>
+> > +      * inet6_create() have an error path, which call this function. T=
+his sk
+> > +      * may have already been associated with a struct socket, so ensu=
+re to
+> > +      * clear this reference not to leave a dangling pointer in the
+> > +      * struct socket instance.
+> > +      */
+> > +
+> > +     if (sk->sk_socket)
+> > +             sk->sk_socket->sk =3D NULL;
+> > +
+> >       /*
+> >        * In this point socket cannot receive new packets, but it is pos=
+sible
+> >        * that some packets are in flight because some CPU runs receiver=
+ and
+> > --
+> > 2.39.2
 
