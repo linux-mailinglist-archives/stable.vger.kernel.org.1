@@ -1,94 +1,94 @@
-Return-Path: <stable+bounces-52568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584E290B888
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 19:53:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CC890B88A
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 19:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8ED6285495
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 17:53:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 370E91C23601
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 17:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF0418A93C;
-	Mon, 17 Jun 2024 17:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733F918EFFC;
+	Mon, 17 Jun 2024 17:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Br0TpWh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixa7xbWb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D90416CD3D
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 17:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B2218A93C
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 17:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718646815; cv=none; b=tQW92UUsZHoVrHCZf31v8fQUuCFp5hr6vebavetwtjRHcQaNfR8yLpW3gw2ekWH2alm+ZKF0zyhl1CSkc+aaFzGfDr8c5fPkaqh7B1rKbWuBecqlrcYwLVuW2OCR20mTTQaIfzzgkVo2lZ9swX+lr/gAwXW7K3QyOS1rykuHEhY=
+	t=1718646832; cv=none; b=VAPC4Y9/sOqkgkzDRVPEVSCUur9eita3B8AZaPnfWj9b1FTuMJ7fuuPR+EZjzmN8seyM4nObxW5J33LwGF3gc1YyOa1IeGh3o8Ys9AsMnCrasY2CpynNAPlHVrur6KrZRFd3C9c7auT4eEPQimzjppVBRobaXnlvPb8dFIsljvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718646815; c=relaxed/simple;
-	bh=AZioiQlEvSvKvQIe3TDQr+GzqZFn79TQVHsWWVffUwk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sm93g93z/UgJIwTDEAVbuo9ntE2GhI4kml6su9hZxqEDkjYVleJRXhLaJs5tw2DqdctvGXhx7F1tBi6Gteb/6dcwMlIN1reVp+PfVzsVE3FwJP99xDwmYlmXvqTNW0LdM6rl0gdJP+misela5SOT7jwOm2B5iyhiFaZcCE6V9Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Br0TpWh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4948C2BD10;
-	Mon, 17 Jun 2024 17:53:34 +0000 (UTC)
+	s=arc-20240116; t=1718646832; c=relaxed/simple;
+	bh=1D8168PZ0Tjo5kXicNezcX12Xevd4p++rtyoxXevT9I=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=K8hqGT6dg5Vft+XuI1XUQuQzJT8KkqnZItvLvuM5Nan7MymEsnFKNQ7vI+ZvNuwjaG3sXOLaTiut+Iw5+IM+mUyQnVMWgxRIFORfs+wpxz0bCugg2IZ9d1GaHRkeYQflYEWHoFN2RyGT4cWT6nbrXj1UUhotF0t0r2QvBSgp14w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixa7xbWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61EC9C2BD10;
+	Mon, 17 Jun 2024 17:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718646815;
-	bh=AZioiQlEvSvKvQIe3TDQr+GzqZFn79TQVHsWWVffUwk=;
+	s=korg; t=1718646831;
+	bh=1D8168PZ0Tjo5kXicNezcX12Xevd4p++rtyoxXevT9I=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1Br0TpWhg/2nnWxQbQcEg+g5UqqYeSc6VzWnxRCjexK13WKzxxbqWz6dE6D9BXVB5
-	 MLCrVc0i1AL2qP2/sCZUkedp5jlUsBrILeU9Nydz6lmB/QOt2n4gNCGKC/DyjX796m
-	 ea0/Oj4uRAPBFq5Vg8M9DMzco+HPUIFIrXo8uE48=
-Subject: FAILED: patch "[PATCH] ksmbd: move leading slash check to smb2_get_name()" failed to apply to 6.1-stable tree
-To: linkinjeon@kernel.org,stfrench@microsoft.com
+	b=ixa7xbWbwhuWqZkEknKc0gwsB+GTbYZil4HgsdjsQAWbJtJfb00/6UCXOH25aYIAs
+	 kjW003NjncaPI9nLSST7P+ma7JNJmB/KFJ9sdeAe490T2N7DSdjF596Ybv3TCwgn7a
+	 gMcmcJO3XcbGM9v7X21rgSJedTpFk+f4YbsEraLQ=
+Subject: FAILED: patch "[PATCH] ksmbd: fix missing use of get_write in in smb2_set_ea()" failed to apply to 5.15-stable tree
+To: linkinjeon@kernel.org,stfrench@microsoft.com,wangzhaolong1@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 17 Jun 2024 19:53:32 +0200
-Message-ID: <2024061731-gap-obscurity-6d58@gregkh>
+Date: Mon, 17 Jun 2024 19:53:48 +0200
+Message-ID: <2024061748-silica-lively-43ca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1cdeca6a7264021e20157de0baf7880ff0ced822
+git cherry-pick -x 2bfc4214c69c62da13a9da8e3c3db5539da2ccd3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061731-gap-obscurity-6d58@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061748-silica-lively-43ca@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-1cdeca6a7264 ("ksmbd: move leading slash check to smb2_get_name()")
-c6cd2e8d2d9a ("ksmbd: fix potencial out-of-bounds when buffer offset is invalid")
-a80a486d72e2 ("ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()")
-6fc0a265e1b9 ("ksmbd: fix potential circular locking issue in smb2_set_ea()")
-d10c77873ba1 ("ksmbd: fix slab-out-of-bounds in smb_strndup_from_utf16()")
-2e450920d58b ("ksmbd: move oplock handling after unlock parent dir")
+2bfc4214c69c ("ksmbd: fix missing use of get_write in in smb2_set_ea()")
 864fb5d37163 ("ksmbd: fix possible deadlock in smb2_open")
-5a7ee91d1154 ("ksmbd: fix race condition with fp")
-e2b76ab8b5c9 ("ksmbd: add support for read compound")
-e202a1e8634b ("ksmbd: no response from compound read")
 2b57a4322b1b ("ksmbd: check if a mount point is crossed during path lookup")
-7b7d709ef7cf ("ksmbd: add missing compound request handing in some commands")
-81a94b27847f ("ksmbd: use kvzalloc instead of kvmalloc")
 40b268d384a2 ("ksmbd: add mnt_want_write to ksmbd vfs functions")
 6fe55c2799bc ("ksmbd: call putname after using the last component")
 df14afeed2e6 ("ksmbd: fix uninitialized pointer read in smb2_create_link()")
 38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
-02f76c401d17 ("ksmbd: fix global-out-of-bounds in smb2_find_context_vals")
-30210947a343 ("ksmbd: fix racy issue under cocurrent smb2 tree disconnect")
-abcc506a9a71 ("ksmbd: fix racy issue from smb2 close and logoff with multichannel")
+74d7970febf7 ("ksmbd: fix racy issue from using ->d_parent and ->d_name")
+211db0ac9e3d ("ksmbd: remove internal.h include")
+4d7ca4090184 ("fs: port vfs{g,u}id helpers to mnt_idmap")
+c14329d39f2d ("fs: port fs{g,u}id helpers to mnt_idmap")
+e67fe63341b8 ("fs: port i_{g,u}id_into_vfs{g,u}id() to mnt_idmap")
+0dbe12f2e49c ("fs: port i_{g,u}id_{needs_}update() to mnt_idmap")
+9452e93e6dae ("fs: port privilege checking helpers to mnt_idmap")
+f2d40141d5d9 ("fs: port inode_init_owner() to mnt_idmap")
+4609e1f18e19 ("fs: port ->permission() to pass mnt_idmap")
+13e83a4923be ("fs: port ->set_acl() to pass mnt_idmap")
+77435322777d ("fs: port ->get_acl() to pass mnt_idmap")
+011e2b717b1b ("fs: port ->tmpfile() to pass mnt_idmap")
+5ebb29bee8d5 ("fs: port ->mknod() to pass mnt_idmap")
 
 thanks,
 
@@ -96,60 +96,118 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1cdeca6a7264021e20157de0baf7880ff0ced822 Mon Sep 17 00:00:00 2001
+From 2bfc4214c69c62da13a9da8e3c3db5539da2ccd3 Mon Sep 17 00:00:00 2001
 From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Mon, 10 Jun 2024 23:06:19 +0900
-Subject: [PATCH] ksmbd: move leading slash check to smb2_get_name()
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 11 Jun 2024 23:27:27 +0900
+Subject: [PATCH] ksmbd: fix missing use of get_write in in smb2_set_ea()
 
-If the directory name in the root of the share starts with
-character like 镜(0x955c) or Ṝ(0x1e5c), it (and anything inside)
-cannot be accessed. The leading slash check must be checked after
-converting unicode to nls string.
+Fix an issue where get_write is not used in smb2_set_ea().
 
+Fixes: 6fc0a265e1b9 ("ksmbd: fix potential circular locking issue in smb2_set_ea()")
 Cc: stable@vger.kernel.org
+Reported-by: Wang Zhaolong <wangzhaolong1@huawei.com>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
 diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index b6c5a8ea3887..f79d06d2d655 100644
+index f79d06d2d655..e7e07891781b 100644
 --- a/fs/smb/server/smb2pdu.c
 +++ b/fs/smb/server/smb2pdu.c
-@@ -630,6 +630,12 @@ smb2_get_name(const char *src, const int maxlen, struct nls_table *local_nls)
- 		return name;
- 	}
+@@ -2367,7 +2367,8 @@ static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
+ 			if (rc > 0) {
+ 				rc = ksmbd_vfs_remove_xattr(idmap,
+ 							    path,
+-							    attr_name);
++							    attr_name,
++							    get_write);
  
-+	if (*name == '\\') {
-+		pr_err("not allow directory name included leading slash\n");
-+		kfree(name);
-+		return ERR_PTR(-EINVAL);
+ 				if (rc < 0) {
+ 					ksmbd_debug(SMB,
+@@ -2382,7 +2383,7 @@ static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
+ 		} else {
+ 			rc = ksmbd_vfs_setxattr(idmap, path, attr_name, value,
+ 						le16_to_cpu(eabuf->EaValueLength),
+-						0, true);
++						0, get_write);
+ 			if (rc < 0) {
+ 				ksmbd_debug(SMB,
+ 					    "ksmbd_vfs_setxattr is failed(%d)\n",
+@@ -2474,7 +2475,7 @@ static int smb2_remove_smb_xattrs(const struct path *path)
+ 		    !strncmp(&name[XATTR_USER_PREFIX_LEN], STREAM_PREFIX,
+ 			     STREAM_PREFIX_LEN)) {
+ 			err = ksmbd_vfs_remove_xattr(idmap, path,
+-						     name);
++						     name, true);
+ 			if (err)
+ 				ksmbd_debug(SMB, "remove xattr failed : %s\n",
+ 					    name);
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 51b1b0bed616..9e859ba010cf 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1058,16 +1058,21 @@ int ksmbd_vfs_fqar_lseek(struct ksmbd_file *fp, loff_t start, loff_t length,
+ }
+ 
+ int ksmbd_vfs_remove_xattr(struct mnt_idmap *idmap,
+-			   const struct path *path, char *attr_name)
++			   const struct path *path, char *attr_name,
++			   bool get_write)
+ {
+ 	int err;
+ 
+-	err = mnt_want_write(path->mnt);
+-	if (err)
+-		return err;
++	if (get_write == true) {
++		err = mnt_want_write(path->mnt);
++		if (err)
++			return err;
 +	}
-+
- 	ksmbd_conv_path_to_unix(name);
- 	ksmbd_strip_last_slash(name);
- 	return name;
-@@ -2842,20 +2848,11 @@ int smb2_open(struct ksmbd_work *work)
- 	}
  
- 	if (req->NameLength) {
--		if ((req->CreateOptions & FILE_DIRECTORY_FILE_LE) &&
--		    *(char *)req->Buffer == '\\') {
--			pr_err("not allow directory name included leading slash\n");
--			rc = -EINVAL;
--			goto err_out2;
--		}
--
- 		name = smb2_get_name((char *)req + le16_to_cpu(req->NameOffset),
- 				     le16_to_cpu(req->NameLength),
- 				     work->conn->local_nls);
- 		if (IS_ERR(name)) {
- 			rc = PTR_ERR(name);
--			if (rc != -ENOMEM)
--				rc = -ENOENT;
- 			name = NULL;
- 			goto err_out2;
+ 	err = vfs_removexattr(idmap, path->dentry, attr_name);
+-	mnt_drop_write(path->mnt);
++
++	if (get_write == true)
++		mnt_drop_write(path->mnt);
+ 
+ 	return err;
+ }
+@@ -1380,7 +1385,7 @@ int ksmbd_vfs_remove_sd_xattrs(struct mnt_idmap *idmap, const struct path *path)
+ 		ksmbd_debug(SMB, "%s, len %zd\n", name, strlen(name));
+ 
+ 		if (!strncmp(name, XATTR_NAME_SD, XATTR_NAME_SD_LEN)) {
+-			err = ksmbd_vfs_remove_xattr(idmap, path, name);
++			err = ksmbd_vfs_remove_xattr(idmap, path, name, true);
+ 			if (err)
+ 				ksmbd_debug(SMB, "remove xattr failed : %s\n", name);
  		}
+diff --git a/fs/smb/server/vfs.h b/fs/smb/server/vfs.h
+index cfe1c8092f23..cb76f4b5bafe 100644
+--- a/fs/smb/server/vfs.h
++++ b/fs/smb/server/vfs.h
+@@ -114,7 +114,8 @@ int ksmbd_vfs_setxattr(struct mnt_idmap *idmap,
+ int ksmbd_vfs_xattr_stream_name(char *stream_name, char **xattr_stream_name,
+ 				size_t *xattr_stream_name_size, int s_type);
+ int ksmbd_vfs_remove_xattr(struct mnt_idmap *idmap,
+-			   const struct path *path, char *attr_name);
++			   const struct path *path, char *attr_name,
++			   bool get_write);
+ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
+ 			       unsigned int flags, struct path *parent_path,
+ 			       struct path *path, bool caseless);
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 6cb599cd287e..8b2e37c8716e 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -254,7 +254,8 @@ static void __ksmbd_inode_close(struct ksmbd_file *fp)
+ 		ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
+ 		err = ksmbd_vfs_remove_xattr(file_mnt_idmap(filp),
+ 					     &filp->f_path,
+-					     fp->stream.name);
++					     fp->stream.name,
++					     true);
+ 		if (err)
+ 			pr_err("remove xattr failed : %s\n",
+ 			       fp->stream.name);
 
 
