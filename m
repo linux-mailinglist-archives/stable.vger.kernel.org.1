@@ -1,136 +1,129 @@
-Return-Path: <stable+bounces-52347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05D690A530
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 08:18:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42CE90A600
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 08:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49B1DB25BDE
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 06:17:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C3881F239E4
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 06:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2584190045;
-	Mon, 17 Jun 2024 06:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79D51850B4;
+	Mon, 17 Jun 2024 06:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ncza7NtE"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Z0GKrHEL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="mE9L4mGc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wfhigh4-smtp.messagingengine.com (wfhigh4-smtp.messagingengine.com [64.147.123.155])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBC3187358;
-	Mon, 17 Jun 2024 06:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E462179D3;
+	Mon, 17 Jun 2024 06:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718604838; cv=none; b=tuVx1YRsJP6kxs3dS7piVQlrlbglg5FT188URK0AG+yM+PeD/d+kl0saON10J5Lri9a9ZJ/jkSJPPKOJhnL8q/fFjP/lwwwuYUSaHXpEB21AndWCY7BBUodtL+7kLuVhecXtoQ81f3ZtRFV91+EYnEKcw7dYgHUAIGkSUqSaRpM=
+	t=1718606185; cv=none; b=Qja91+46j8NDekBbf9AmWUnrc60ddWf8ovzaSqkV+QzO0SAUBw00dMu3q8qUuyJdhTBeIxKCv4U3q3R/3XRgIzxs7UT09AkY8KGz1V6XESUyMYjfqE+GAUDa+gK3V/FtCcnyPPPPU+nFySHZJIdxtk4wfUa9EmWY9XyDG9wsTYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718604838; c=relaxed/simple;
-	bh=pWljAqkTfkrt+3zYt1Ce5GoIspvAKUkLfQj2oQVNffA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VFSW4kdYvtFjKDaVFhE0hkjX0QLZXUDp+XZqqpYrIMUgQw93oV/hTT+Ie3sTnNNOHO8NaFc9OUBJ21HUi1mWRGMxABJ7SFVoZq1mJqmklEc1PMC/vHMKXrYSFG8Y+aUdw0/srtsJ+odDt9s+yR0RnzXXeJ9amn4tE3OrY6ownuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ncza7NtE; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ebe0a81dc8so44299921fa.2;
-        Sun, 16 Jun 2024 23:13:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718604835; x=1719209635; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TZntQxnrQUChH66lPydEN459mEVnoXqBtAC5FdClnOM=;
-        b=ncza7NtE9VClZPNXzksPBmWHYmsQZYswjzq+Jye9VAkEytQFQxL6lzO4qRQezINHrK
-         9NYvrKBMIOXISNjrGdGSzkxlgXQYDUWkSRVYuqKLasAafHK64H5YGmgICtiyOpM5EQYY
-         ZzMxRjKRa1ztulIw+QVy6Dy9S9i4S1JFqpZLzU/AoC5zTnMgQ3TPTicXNa/S4NGatgPC
-         gW/4qTNvvckNk7Bzzml5vzMeMxzqu14KHmAwHzIpr6QJIYNHQF+OyEa+z/q2GH25L5vM
-         FL4QCQ9Cur21Pwx3iAZuL9RyOrPvARrAAtAiqEcHVK0WmbeJE6RMr4xXAtis2LSqmShx
-         C/CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718604835; x=1719209635;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TZntQxnrQUChH66lPydEN459mEVnoXqBtAC5FdClnOM=;
-        b=i3ZGJUiJr2C7wGbhRB/bBMpeEMJ8fjX7fY+CPCfFwTgiUTKlXARJFbdiaq+W+1JsDS
-         uGW1QaNmMa4roeUB92T9yk3rasxXsX2hBIBE9/mhCTGGrgzfVkkBJBj5Jf7bE+C8tNTx
-         drrrWXsyw9kMv+WiJ9D5iftKOZWBeeTuOriuhAgYpY2mjjZ4RtHwlsrHhFTwOlv6pmOP
-         6ii9MoTlgGl3Ex6f8xRHJat5ubx+SzMAqLR0WS+C0ITZ9e1nGoxIDU1JWtzFR4GYTUVj
-         KnUYLzCmCa6NEStlg/rT4LkhsheXtRwxSMMQ+aNO0soCVs5EGSmUycLJMvl5fQ8uaMOG
-         XKvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUjghY8tFy23dOX9inhiCS27S8pNbyYdzDmaw51Jjbw6I3smf0IOt4g+z1zoQ4uNmyQse9wUc6+l8U0WpTuySJC6eJO9zHdCxzwS4YIt9WWW6Wv6nb8PjPohDOriTvZ68OFuOxMY27wJZwAZhsk086YLW3bg7rPpVKCDXxSvcGG
-X-Gm-Message-State: AOJu0YxWJ+mG2wymDaIbbocj5jRjSE32HF0BeW7Z2KkbHPVY3pabXm/0
-	hWYy4Zwb0UQ4OGfsJLymbuXtOlmYZjpSYpEKtjhrLQ1njx5qmUlX
-X-Google-Smtp-Source: AGHT+IHk5DcOwhCSZUVJBsZjTN1uHmzBc7hffy1mCYO/f7qQ+ieH3Tq4m1d1riCwGa/LPv5a9YSrdw==
-X-Received: by 2002:a05:651c:1425:b0:2ec:17e6:f9e0 with SMTP id 38308e7fff4ca-2ec17e6fa7dmr61467741fa.8.1718604834996;
-        Sun, 16 Jun 2024 23:13:54 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd? ([2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec07b7cb80sm12250991fa.1.2024.06.16.23.13.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Jun 2024 23:13:54 -0700 (PDT)
-Message-ID: <4cb8af25-078c-45be-a544-653e2e2c6947@gmail.com>
-Date: Mon, 17 Jun 2024 09:13:53 +0300
+	s=arc-20240116; t=1718606185; c=relaxed/simple;
+	bh=LesqrcRAV/4/c3Sfk1y7gMK+fZWVSQ8qF9tdeEoHRLs=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=RB8GTFawpa2gwfP8EapdrGBM+a9ixsECTq7nX9P8LlRqze5FySRunQnA0z7OIynGHXUYxHdVWVk+4Lky4QcTM//Bt1RC6Uhwr4CNsmJ294jV5f/+tJ0WfIRDws9a8RvfB07iPKLndD/2YFkyB+onPMZzrl5KqUdwsV0Jm0a6phE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Z0GKrHEL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=mE9L4mGc; arc=none smtp.client-ip=64.147.123.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.west.internal (Postfix) with ESMTP id 590DA18000B3;
+	Mon, 17 Jun 2024 02:36:22 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Mon, 17 Jun 2024 02:36:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1718606181; x=1718692581; bh=8+FywWapc3
+	z4ZbGE7d/673rjs096swl6YfrxaP7mzMc=; b=Z0GKrHELQJBzl93uTlwRbxQur9
+	tNZlaKmhS0oBHMNg5jNdGgkV2cZLgu1Dgut6ziKvcuOmdkfNn9VImM9ml55MneDV
+	eEBCZT8sOR49O8yg9GLhbnAwi0qoupl+u2dVHqE+D75wxoDlr+YHf6iEK4WgO/1q
+	spnT98TYmukMlJ2wxD1oBqOHDp+SNIkpPWwhXSWqrryEPXQ4Lw7oU9R3sCqcpChC
+	o9pGjMtExv5+rSbF6/HuKIlf5xinaESFjgKcnO8p2cWqLdOskPCErNFDDeA1wcJq
+	OXYoDV7K9jcike1nFyDUvcrWM6sLEJ7T5pEYaBxNFt8uVid7fH9gMDT0/Yrg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1718606181; x=1718692581; bh=8+FywWapc3z4ZbGE7d/673rjs096
+	swl6YfrxaP7mzMc=; b=mE9L4mGcDVEUg3ZRcSiw+7y7pLyme0TuzkiISoulnI65
+	/JDTzc2O9//N84f1ttuPM83wJH/FyHu2fLeopMc/ginbY+BjvqqjOtFeR4u5Km9c
+	v7S2gO3Rno64hJl/XAQUEw+Gq2REdGrEDWdB9yALo983On4v4wZ5Pkbfz2MujksZ
+	ScxKuZONcsGrRuS8AbOVHvpHSPhFU66/lOPSDBpjY1paZmA0ULc3gQX0xMPk369O
+	HybcO2G9hPaw6WkRw5waunLYbQtNCTSsya0SmECdMaXS6uHguQmDdq1DVthU5Cmi
+	0xv8zZUAYovgckvG76HMH3WEB7WQg6YqiwHMrdc5EA==
+X-ME-Sender: <xms:ZNlvZtl71_jzBOLRI3DtvJ6ehUCA7cc43psm14Dw7qjid20ICBSGxA>
+    <xme:ZNlvZo3NBi_RlSNEfSCfStikyH6DgaSYuM4EIScPynUXqSGk3kQQgVn6B-DD2Dy1W
+    pQQyijutlYkCYIf_p8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedvgedgkeekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepleffueeiiedufeffteetleeuueefveefgfffteegvdekfeetkedtudffhefh
+    hfeunecuffhomhgrihhnpehsvggrrhgthhhfohigrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:ZNlvZjqL7t1Lp4CVZ2Ud_3K_smNSEQVh6qlv-luThoaGRqVJzAnEWQ>
+    <xmx:ZNlvZtnPArqX_0Q10eJYe3WxAccV4vB02diFiB1C2ZwUrPUEaJQnjA>
+    <xmx:ZNlvZr05P8D5-AUhcnSeUmGUrQ0IMvmqiyHwsSHqmpk7GonaHbvSAA>
+    <xmx:ZNlvZsv_7UmebJapBehxilcaPS2i-wwGRR-pWuhxjBWl4Dtqogfdiw>
+    <xmx:ZdlvZkub_-d2jnVgKc3l9Jqir5uFZNjez8sYaZVepsC9qV_6PKQdUiU2>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 207AAB6008D; Mon, 17 Jun 2024 02:36:20 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-515-g87b2bad5a-fm-20240604.001-g87b2bad5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: trigger: Fix condition for own trigger
-To: =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
- <jpaulo.silvagoncalves@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+Message-Id: <4fd0531d-e8f8-4a4c-9136-50fcc31ba5f2@app.fastmail.com>
+In-Reply-To: <a70e8b062fc422e351fe2369b9979a623fa05dfa.camel@xry111.site>
+References: <20240511100157.2334539-1-chenhuacai@loongson.cn>
+ <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com>
+ <CAAhV-H5kn2xPLqgop0iOyg-tc5kAYcuNo3cd+f3yCdkN=cJDug@mail.gmail.com>
+ <fcdeb993-37d6-42e0-8737-3be41413f03d@app.fastmail.com>
+ <CAAhV-H4s_utEOtFDwjPTqxnMWTVjWhmS7bEVRX+t8HK5QDA8Vg@mail.gmail.com>
+ <a21a0878-021e-4990-a59d-b10f204a018b@app.fastmail.com>
+ <CAAhV-H7OR5tkbjj-BPLStneXFr=1DUaFvvh8+a5Bk_jhCAP25Q@mail.gmail.com>
+ <cdef45d36d0e71da5f0534b3783b81c82405bda3.camel@xry111.site>
+ <CAAhV-H4R_HJAB0baqUgA8ucbwWNVN4sc9EV91zAk9Ch302_7zg@mail.gmail.com>
+ <56ace686-d4b4-4b4c-a8a6-af06ec0d48f2@app.fastmail.com>
+ <08ff168afc09fd108ec489a3c9360d4e704fa7dc.camel@xry111.site>
+ <a70e8b062fc422e351fe2369b9979a623fa05dfa.camel@xry111.site>
+Date: Mon, 17 Jun 2024 08:35:58 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Xi Ruoyao" <xry111@xry111.site>, "Huacai Chen" <chenhuacai@kernel.org>
+Cc: "Huacai Chen" <chenhuacai@loongson.cn>, loongarch@lists.linux.dev,
+ Linux-Arch <linux-arch@vger.kernel.org>,
+ "Xuefeng Li" <lixuefeng@loongson.cn>, guoren <guoren@kernel.org>,
+ "WANG Xuerui" <kernel@xen0n.name>, "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
+ linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
  stable@vger.kernel.org
-References: <20240614143658.3531097-1-jpaulo.silvagoncalves@gmail.com>
-Content-Language: en-US, en-GB
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20240614143658.3531097-1-jpaulo.silvagoncalves@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
+Content-Type: text/plain
 
-On 6/14/24 17:36, João Paulo Gonçalves wrote:
-> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
-> 
-> The condition for checking if triggers belong to the same IIO device to
-> set attached_own_device is currently inverted, causing
-> iio_trigger_using_own() to return an incorrect value. Fix it by testing
-> for the correct return value of iio_validate_own_trigger().
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 517985ebc531 ("iio: trigger: Add simple trigger_validation helper")
-> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+On Sat, Jun 15, 2024, at 15:12, Xi Ruoyao wrote:
+> On Sat, 2024-06-15 at 20:12 +0800, Xi Ruoyao wrote:
+>> 
+>> [Firefox]:https://searchfox.org/mozilla-central/source/security/sandbox/linux/SandboxFilter.cpp#364
+>
+> Just spent some brain cycles to make a quick hack adding a new statx
+> flag.  Patch attached.
+>
 
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Thanks for the prototype. I agree that this is not a good API
+but that it would address the issue and I am fine with merging
+something like this if you can convince the VFS maintainers.
 
-Thanks for fixing this!
-
-> ---
->   drivers/iio/industrialio-trigger.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-> index 16de57846bd9..2e84776f4fbd 100644
-> --- a/drivers/iio/industrialio-trigger.c
-> +++ b/drivers/iio/industrialio-trigger.c
-> @@ -315,7 +315,7 @@ int iio_trigger_attach_poll_func(struct iio_trigger *trig,
->   	 * this is the case if the IIO device and the trigger device share the
->   	 * same parent device.
->   	 */
-> -	if (iio_validate_own_trigger(pf->indio_dev, trig))
-> +	if (!iio_validate_own_trigger(pf->indio_dev, trig))
->   		trig->attached_own_device = true;
-> 
->   	return ret;
-> --
-> 2.34.1
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+      Arnd
 
