@@ -1,159 +1,166 @@
-Return-Path: <stable+bounces-52609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA9990BCB5
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 23:15:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D9290BCF5
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 23:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A900D285667
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 21:15:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CDB8B20DB6
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 21:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5887B1741D7;
-	Mon, 17 Jun 2024 21:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23DE719046B;
+	Mon, 17 Jun 2024 21:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Q2BHM1va"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rB5vukKU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728191991DD;
-	Mon, 17 Jun 2024 21:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.184.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D0C163A97;
+	Mon, 17 Jun 2024 21:32:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718658931; cv=none; b=iToLhQIrAAhwA6iq3L4U1I5tbEdlS0sAS8SmAeXrkl227IHvdtDqqZm3sGRxa6ObrwUHcOJ+D6cIFa+J/iYfScWPyR+tQRYbF8VM6Trl4t6G7mOSHtQoHl1DLmpkAdtOYJOMKsjfnRZJ1gvAsS8xh3hEayJF/g8sEl7Nf2nhVPY=
+	t=1718659935; cv=none; b=TflQ2xUvVJE8lgSApU+sSL38IqVrmjsjtUp4YFF5061NX9392T30qZ23q6jZ79jhNYV/FepHylOCP1UcWNBW1yqAs1kyvagagnxNaMxEXZk+8d/Q8BG1KWiYNfTeKClsSWHufanNMmiaE0ShiDOTnsaUGtR5jNFKf/jDBrG6+dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718658931; c=relaxed/simple;
-	bh=TPgwPxxcuXihDS6Fd5kqNYs3tbUpZkERktoUP7ijzLk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lm1p17j8LRta3ve6D/2XEyRlcEGaFTukg55AqVHGxdzY21Fqut0R+1g4bmlTW0z7mQkkxk1eXVK0g6rJA+D7DjiyugZfA9n5IzKSGZtSsz4DiQnogMXSTM47dU7UGY9azwnrriDHFOe0T1XMjG3NGlMpiF895yFklGPeOwTJA/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Q2BHM1va; arc=none smtp.client-ip=207.171.184.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1718658930; x=1750194930;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ywO+hwyTv+j8f6emuBiZ+9A/DunuRT51chwUSajyKgU=;
-  b=Q2BHM1vaDcksDdv0+OrF7KggixW+J/nlpqsoRcgz8HIKqzpdF/2EMHcS
-   oSadV20fwlr1VOwlK769uD9mwBLa/wmqYG/sZo7KdNXuysv8uxEIcW0/D
-   n64j8q3wcCq6lxSzi1gh5ediQdARc1br7pGuk6Jawo7EgsSIAIkg8sF0l
-   M=;
-X-IronPort-AV: E=Sophos;i="6.08,245,1712620800"; 
-   d="scan'208";a="426890372"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2024 21:15:24 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.38.20:33573]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.19.97:2525] with esmtp (Farcaster)
- id 4bb6c7f5-0243-4830-be5b-a3a2332fbbc5; Mon, 17 Jun 2024 21:15:23 +0000 (UTC)
-X-Farcaster-Flow-ID: 4bb6c7f5-0243-4830-be5b-a3a2332fbbc5
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Mon, 17 Jun 2024 21:15:23 +0000
-Received: from 88665a182662.ant.amazon.com (10.187.171.38) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Mon, 17 Jun 2024 21:15:20 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <ignat@cloudflare.com>
-CC: <davem@davemloft.net>, <dsahern@kernel.org>, <edumazet@google.com>,
-	<kernel-team@cloudflare.com>, <kuba@kernel.org>, <kuniyu@amazon.com>,
-	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<pabeni@redhat.com>, <revest@chromium.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH net v3] net: do not leave a dangling sk pointer, when socket creation fails
-Date: Mon, 17 Jun 2024 14:15:04 -0700
-Message-ID: <20240617211504.91973-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240617210205.67311-1-ignat@cloudflare.com>
-References: <20240617210205.67311-1-ignat@cloudflare.com>
+	s=arc-20240116; t=1718659935; c=relaxed/simple;
+	bh=dLf7C3JFGXHWi01i/JiQQpLdrsEVFXdUhQbtKVlOkoE=;
+	h=Date:To:From:Subject:Message-Id; b=ggB6f/16RRoMmyQ+Mg0EliXumlIzZwGJmluZiX0PFQQr3SsPGAg1DDRvnIjCQDdO1zc8vWvLcrIm0PmJ5lfObxd9fQTtBrJ62lLb6xrg/tTtnlYGe33OCmSzuManQ6qh8MVZ2Ul+RvfJENfxUZst/duazZYldiCd6YijVqS/+Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=rB5vukKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E84C2BD10;
+	Mon, 17 Jun 2024 21:32:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1718659935;
+	bh=dLf7C3JFGXHWi01i/JiQQpLdrsEVFXdUhQbtKVlOkoE=;
+	h=Date:To:From:Subject:From;
+	b=rB5vukKU8OmTWt8RwGv1zxy/cni8WNLRx2hyplmj1gLvvoHK8pN0evppKgbU01lIq
+	 Mr/MQLRpPyOyENtGL000v25jsXbjw2xNkycNmj10VMCHNsEjQLLoIQzxayATQAsXKv
+	 Tc2VbxhwlEF/TRceY8McXLLyfbawOoxkLWDaC1Nk=
+Date: Mon, 17 Jun 2024 14:32:14 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,david@redhat.com,shechenglong001@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + selftests-mm-fix-test_prctl_fork_exec-return-failure.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240617213215.20E84C2BD10@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D045UWA004.ant.amazon.com (10.13.139.91) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
-
-From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Mon, 17 Jun 2024 22:02:05 +0100
-> It is possible to trigger a use-after-free by:
->   * attaching an fentry probe to __sock_release() and the probe calling the
->     bpf_get_socket_cookie() helper
->   * running traceroute -I 1.1.1.1 on a freshly booted VM
-> 
-> A KASAN enabled kernel will log something like below (decoded and stripped):
-> ==================================================================
-> BUG: KASAN: slab-use-after-free in __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
-> Read of size 8 at addr ffff888007110dd8 by task traceroute/299
-> 
-> CPU: 2 PID: 299 Comm: traceroute Tainted: G            E      6.10.0-rc2+ #2
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-> Call Trace:
->  <TASK>
-> dump_stack_lvl (lib/dump_stack.c:117 (discriminator 1))
-> print_report (mm/kasan/report.c:378 mm/kasan/report.c:488)
-> ? __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
-> kasan_report (mm/kasan/report.c:603)
-> ? __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
-> kasan_check_range (mm/kasan/generic.c:183 mm/kasan/generic.c:189)
-> __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
-> bpf_get_socket_ptr_cookie (./arch/x86/include/asm/preempt.h:94 ./include/linux/sock_diag.h:42 net/core/filter.c:5094 net/core/filter.c:5092)
-> bpf_prog_875642cf11f1d139___sock_release+0x6e/0x8e
-> bpf_trampoline_6442506592+0x47/0xaf
-> __sock_release (net/socket.c:652)
-> __sock_create (net/socket.c:1601)
-> ...
-> Allocated by task 299 on cpu 2 at 78.328492s:
-> kasan_save_stack (mm/kasan/common.c:48)
-> kasan_save_track (mm/kasan/common.c:68)
-> __kasan_slab_alloc (mm/kasan/common.c:312 mm/kasan/common.c:338)
-> kmem_cache_alloc_noprof (mm/slub.c:3941 mm/slub.c:4000 mm/slub.c:4007)
-> sk_prot_alloc (net/core/sock.c:2075)
-> sk_alloc (net/core/sock.c:2134)
-> inet_create (net/ipv4/af_inet.c:327 net/ipv4/af_inet.c:252)
-> __sock_create (net/socket.c:1572)
-> __sys_socket (net/socket.c:1660 net/socket.c:1644 net/socket.c:1706)
-> __x64_sys_socket (net/socket.c:1718)
-> do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-> entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-> 
-> Freed by task 299 on cpu 2 at 78.328502s:
-> kasan_save_stack (mm/kasan/common.c:48)
-> kasan_save_track (mm/kasan/common.c:68)
-> kasan_save_free_info (mm/kasan/generic.c:582)
-> poison_slab_object (mm/kasan/common.c:242)
-> __kasan_slab_free (mm/kasan/common.c:256)
-> kmem_cache_free (mm/slub.c:4437 mm/slub.c:4511)
-> __sk_destruct (net/core/sock.c:2117 net/core/sock.c:2208)
-> inet_create (net/ipv4/af_inet.c:397 net/ipv4/af_inet.c:252)
-> __sock_create (net/socket.c:1572)
-> __sys_socket (net/socket.c:1660 net/socket.c:1644 net/socket.c:1706)
-> __x64_sys_socket (net/socket.c:1718)
-> do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-> entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-> 
-> Fix this by clearing the struct socket reference in sk_common_release() to cover
-> all protocol families create functions, which may already attached the
-> reference to the sk object with sock_init_data().
-> 
-> Fixes: c5dbb89fc2ac ("bpf: Expose bpf_get_socket_cookie to tracing programs")
-> Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-> Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-> Cc: stable@vger.kernel.org
-> Link: https://lore.kernel.org/netdev/20240613194047.36478-1-kuniyu@amazon.com/T/
-
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-
-Thanks!
 
 
-P.S. next time, please make sure 24h pass before reposting for netdev.
+The patch titled
+     Subject: selftests/mm:fix test_prctl_fork_exec return failure
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     selftests-mm-fix-test_prctl_fork_exec-return-failure.patch
 
-  See: Documentation/process/maintainer-netdev.rst
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-fix-test_prctl_fork_exec-return-failure.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: aigourensheng <shechenglong001@gmail.com>
+Subject: selftests/mm:fix test_prctl_fork_exec return failure
+Date: Mon, 17 Jun 2024 01:29:34 -0400
+
+After calling fork() in test_prctl_fork_exec(), the global variable
+ksm_full_scans_fd is initialized to 0 in the child process upon entering
+the main function of ./ksm_functional_tests.
+
+In the function call chain test_child_ksm() -> __mmap_and_merge_range ->
+ksm_merge-> ksm_get_full_scans, start_scans = ksm_get_full_scans() will
+return an error.  Therefore, the value of ksm_full_scans_fd needs to be
+initialized before calling test_child_ksm in the child process.
+
+Link: https://lkml.kernel.org/r/20240617052934.5834-1-shechenglong001@gmail.com
+Signed-off-by: aigourensheng <shechenglong001@gmail.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/testing/selftests/mm/ksm_functional_tests.c |   38 ++++++------
+ 1 file changed, 22 insertions(+), 16 deletions(-)
+
+--- a/tools/testing/selftests/mm/ksm_functional_tests.c~selftests-mm-fix-test_prctl_fork_exec-return-failure
++++ a/tools/testing/selftests/mm/ksm_functional_tests.c
+@@ -656,12 +656,33 @@ unmap:
+ 	munmap(map, size);
+ }
+ 
++static void init_global_file_handles(void)
++{
++	mem_fd = open("/proc/self/mem", O_RDWR);
++	if (mem_fd < 0)
++		ksft_exit_fail_msg("opening /proc/self/mem failed\n");
++	ksm_fd = open("/sys/kernel/mm/ksm/run", O_RDWR);
++	if (ksm_fd < 0)
++		ksft_exit_skip("open(\"/sys/kernel/mm/ksm/run\") failed\n");
++	ksm_full_scans_fd = open("/sys/kernel/mm/ksm/full_scans", O_RDONLY);
++	if (ksm_full_scans_fd < 0)
++		ksft_exit_skip("open(\"/sys/kernel/mm/ksm/full_scans\") failed\n");
++	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
++	if (pagemap_fd < 0)
++		ksft_exit_skip("open(\"/proc/self/pagemap\") failed\n");
++	proc_self_ksm_stat_fd = open("/proc/self/ksm_stat", O_RDONLY);
++	proc_self_ksm_merging_pages_fd = open("/proc/self/ksm_merging_pages",
++						O_RDONLY);
++	ksm_use_zero_pages_fd = open("/sys/kernel/mm/ksm/use_zero_pages", O_RDWR);
++}
++
+ int main(int argc, char **argv)
+ {
+ 	unsigned int tests = 8;
+ 	int err;
+ 
+ 	if (argc > 1 && !strcmp(argv[1], FORK_EXEC_CHILD_PRG_NAME)) {
++		init_global_file_handles();
+ 		exit(test_child_ksm());
+ 	}
+ 
+@@ -674,22 +695,7 @@ int main(int argc, char **argv)
+ 
+ 	pagesize = getpagesize();
+ 
+-	mem_fd = open("/proc/self/mem", O_RDWR);
+-	if (mem_fd < 0)
+-		ksft_exit_fail_msg("opening /proc/self/mem failed\n");
+-	ksm_fd = open("/sys/kernel/mm/ksm/run", O_RDWR);
+-	if (ksm_fd < 0)
+-		ksft_exit_skip("open(\"/sys/kernel/mm/ksm/run\") failed\n");
+-	ksm_full_scans_fd = open("/sys/kernel/mm/ksm/full_scans", O_RDONLY);
+-	if (ksm_full_scans_fd < 0)
+-		ksft_exit_skip("open(\"/sys/kernel/mm/ksm/full_scans\") failed\n");
+-	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+-	if (pagemap_fd < 0)
+-		ksft_exit_skip("open(\"/proc/self/pagemap\") failed\n");
+-	proc_self_ksm_stat_fd = open("/proc/self/ksm_stat", O_RDONLY);
+-	proc_self_ksm_merging_pages_fd = open("/proc/self/ksm_merging_pages",
+-					      O_RDONLY);
+-	ksm_use_zero_pages_fd = open("/sys/kernel/mm/ksm/use_zero_pages", O_RDWR);
++	init_global_file_handles();
+ 
+ 	test_unmerge();
+ 	test_unmerge_zero_pages();
+_
+
+Patches currently in -mm which might be from shechenglong001@gmail.com are
+
+selftests-mm-fix-test_prctl_fork_exec-return-failure.patch
+
 
