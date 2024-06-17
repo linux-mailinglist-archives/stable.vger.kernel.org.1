@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-52531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8852190B14D
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:16:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74F9B90B14F
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:16:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24B8728A361
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:16:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EB3D1F241F8
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F3919FBCC;
-	Mon, 17 Jun 2024 13:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF85F1B47B2;
+	Mon, 17 Jun 2024 13:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxiWX9A/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKVrsoHI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE78F19FBC2;
-	Mon, 17 Jun 2024 13:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA2D1B47A6;
+	Mon, 17 Jun 2024 13:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630856; cv=none; b=rc4MDx31YCa/m5W9us56NLLL3v5adwqFjEqUxzX/0Blxfk0cOcIKOf+JLIfwAUHmXyS113Bsl1GDojsFzrNoUlx+OaRkctXhdcvKVM4LOYKt2QxJ2CbqlQMBnWFsPCL/MSfCcmgD+ooOaMEi/ihPCOcCD9kChFj91ahsMuiRMEo=
+	t=1718630861; cv=none; b=gqH5pN+H/QiZgdFy2WW6gXLkzxuZpx3D2sLR4SyjTGq5Mjp2CQlFWyR2l/baqLGmwQmCmu8lGWir5WosRVEVCApnh2Px6EBNPs+yeO6xcUKkEIzO4KZOG4eZmZDdywlVv3csg5pBr2eQcivSx3AV5SyVxDqXj/gX6084IVkDbiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630856; c=relaxed/simple;
-	bh=fSSCSXLeOzmRV7GPuyzZNQRkSoTvXuyzp8El8fot1eA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kTvACXEZjudRBhCL1UZNQozzm+Or/7EKc3P+sMhcz1CC5EGXrfDwOhI7cG75Y3JbjLOKOoGpWaAnOBS92NwWNMOz4fNLCh5/UuI+k7AL4Hz737Hz5A81O/YpXT8A3nWPBNclNzM4vLGaPaz5INLpkZFHBOM1rcGw5yg5E5xuVMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uxiWX9A/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FB5C4AF1D;
-	Mon, 17 Jun 2024 13:27:34 +0000 (UTC)
+	s=arc-20240116; t=1718630861; c=relaxed/simple;
+	bh=KPgDhhvy/qWYoIhkC4CmnQ47Y6o7/P+1R/JjJF63TEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H0MIBIH0OoHXnUB14inPMu1r16DZQFdPdHTFW58B+9l5iKNj9GGS0eadirzcWZdy/Rhw4UluVrBSCwYzOcPYQYBhcYdrswpwuJ3s0Qdvp97qB6NzhiY5wmCHRfENfSLlHuSpWiV4AMQ9HCD8SDTdqzHanOMpKVzYu0p0vBgtyY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKVrsoHI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B0AC2BD10;
+	Mon, 17 Jun 2024 13:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630855;
-	bh=fSSCSXLeOzmRV7GPuyzZNQRkSoTvXuyzp8El8fot1eA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxiWX9A/DhSXqsyzGvz9QhDZm8+dc1/CZNW+ZDYJ1eeswBYIZMzd8lnrFLf+ePdJx
-	 hjvNphA6FsmP1pqKEhblnuUOR3wU4KWdvqw3ogsVnWLUzQac0iHj5G2puy21RWg7gI
-	 k+px2PBR58Eu+Lge5fUQ0gp5hgCsiQ4zsW5mdGH/YRUew4eQK5AFYITKL1+b5T6AS+
-	 fx7KLTKgVvpSQb9VifutxNQPUsZAbX9k61LsKeKjf9fuXdjQOB+e9k9M6mM+rU1M8Y
-	 l2dveweHQh51BD5HJaqNf3rQqfZQYuq9O1QQE3fmNLrGLLCxh+80A0TCf6XfVOXiJM
-	 bz4z8EioDhHxw==
+	s=k20201202; t=1718630861;
+	bh=KPgDhhvy/qWYoIhkC4CmnQ47Y6o7/P+1R/JjJF63TEg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mKVrsoHI8WSE9y1DqBSj0os0jd9YcWCN0V+UIVq3oPaVCf0B7si3loBwfg3KQPvey
+	 +AFZ9sA7oc7cl1SXFLXI5j+K06sfEXAgwBDhToB/jvSEQvgri4yZvgZnLGczUmqP4T
+	 mclZ03e+SrXlK+Qq8eEcLpceKfIdE6tKw3LE6JOCrh2eXb498CB49miO2wHbidmUQg
+	 WfbCpNNZ469tTs/4pW8+BjT9J0wa17bfAhLVt083H4YD8fWLa9VJNYSUvXWUa2tylZ
+	 h4ttz38QZiZVxDQD2ZOpNoKbrZ/OqtYrGCByJoHnsrHlR71YEl/8niUejrsPTLrVE2
+	 Y+aFz4Cz8RTtg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
+Cc: Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 13/13] kconfig: remove wrong expr_trans_bool()
-Date: Mon, 17 Jun 2024 09:27:02 -0400
-Message-ID: <20240617132710.2590101-13-sashal@kernel.org>
+	jhasan@marvell.com,
+	GR-QLogic-Storage-Upstream@marvell.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/9] scsi: qedf: Set qed_slowpath_params to zero before use
+Date: Mon, 17 Jun 2024 09:27:28 -0400
+Message-ID: <20240617132739.2590390-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240617132710.2590101-1-sashal@kernel.org>
-References: <20240617132710.2590101-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,159 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.219
+X-stable-base: Linux 5.4.278
 Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
+[ Upstream commit 6c3bb589debd763dc4b94803ddf3c13b4fcca776 ]
 
-expr_trans_bool() performs an incorrect transformation.
+Zero qed_slowpath_params before use.
 
-[Test Code]
-
-    config MODULES
-            def_bool y
-            modules
-
-    config A
-            def_bool y
-            select C if B != n
-
-    config B
-            def_tristate m
-
-    config C
-            tristate
-
-[Result]
-
-    CONFIG_MODULES=y
-    CONFIG_A=y
-    CONFIG_B=m
-    CONFIG_C=m
-
-This output is incorrect because CONFIG_C=y is expected.
-
-Documentation/kbuild/kconfig-language.rst clearly explains the function
-of the '!=' operator:
-
-    If the values of both symbols are equal, it returns 'n',
-    otherwise 'y'.
-
-Therefore, the statement:
-
-    select C if B != n
-
-should be equivalent to:
-
-    select C if y
-
-Or, more simply:
-
-    select C
-
-Hence, the symbol C should be selected by the value of A, which is 'y'.
-
-However, expr_trans_bool() wrongly transforms it to:
-
-    select C if B
-
-Therefore, the symbol C is selected by (A && B), which is 'm'.
-
-The comment block of expr_trans_bool() correctly explains its intention:
-
-  * bool FOO!=n => FOO
-    ^^^^
-
-If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
-
-However, the actual code performs this transformation when FOO is
-tristate:
-
-    if (e->left.sym->type == S_TRISTATE) {
-                             ^^^^^^^^^^
-
-While it can be fixed to S_BOOLEAN, there is no point in doing so
-because expr_tranform() already transforms FOO!=n to FOO when FOO is
-bool. (see the "case E_UNEQUAL" part)
-
-expr_trans_bool() is wrong and unnecessary.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240515091101.18754-4-skashyap@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/expr.c | 29 -----------------------------
- scripts/kconfig/expr.h |  1 -
- scripts/kconfig/menu.c |  2 --
- 3 files changed, 32 deletions(-)
+ drivers/scsi/qedf/qedf_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
-index 81ebf8108ca74..81dfdf4470f75 100644
---- a/scripts/kconfig/expr.c
-+++ b/scripts/kconfig/expr.c
-@@ -396,35 +396,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
- 	return e;
- }
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index 858058f228191..e0601b5520b78 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -3299,6 +3299,7 @@ static int __qedf_probe(struct pci_dev *pdev, int mode)
+ 	}
  
--/*
-- * bool FOO!=n => FOO
-- */
--struct expr *expr_trans_bool(struct expr *e)
--{
--	if (!e)
--		return NULL;
--	switch (e->type) {
--	case E_AND:
--	case E_OR:
--	case E_NOT:
--		e->left.expr = expr_trans_bool(e->left.expr);
--		e->right.expr = expr_trans_bool(e->right.expr);
--		break;
--	case E_UNEQUAL:
--		// FOO!=n -> FOO
--		if (e->left.sym->type == S_TRISTATE) {
--			if (e->right.sym == &symbol_no) {
--				e->type = E_SYMBOL;
--				e->right.sym = NULL;
--			}
--		}
--		break;
--	default:
--		;
--	}
--	return e;
--}
--
- /*
-  * e1 || e2 -> ?
-  */
-diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
-index 5c3443692f346..385a47daa3643 100644
---- a/scripts/kconfig/expr.h
-+++ b/scripts/kconfig/expr.h
-@@ -302,7 +302,6 @@ void expr_free(struct expr *e);
- void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
- int expr_eq(struct expr *e1, struct expr *e2);
- tristate expr_calc_value(struct expr *e);
--struct expr *expr_trans_bool(struct expr *e);
- struct expr *expr_eliminate_dups(struct expr *e);
- struct expr *expr_transform(struct expr *e);
- int expr_contains_symbol(struct expr *dep, struct symbol *sym);
-diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
-index a5fbd6ccc006e..e5ad6313cfa1d 100644
---- a/scripts/kconfig/menu.c
-+++ b/scripts/kconfig/menu.c
-@@ -401,8 +401,6 @@ void menu_finalize(struct menu *parent)
- 				dep = expr_transform(dep);
- 				dep = expr_alloc_and(expr_copy(basedep), dep);
- 				dep = expr_eliminate_dups(dep);
--				if (menu->sym && menu->sym->type != S_TRISTATE)
--					dep = expr_trans_bool(dep);
- 				prop->visible.expr = dep;
- 
- 				/*
+ 	/* Start the Slowpath-process */
++	memset(&slowpath_params, 0, sizeof(struct qed_slowpath_params));
+ 	slowpath_params.int_mode = QED_INT_MODE_MSIX;
+ 	slowpath_params.drv_major = QEDF_DRIVER_MAJOR_VER;
+ 	slowpath_params.drv_minor = QEDF_DRIVER_MINOR_VER;
 -- 
 2.43.0
 
