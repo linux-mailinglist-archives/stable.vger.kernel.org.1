@@ -1,262 +1,332 @@
-Return-Path: <stable+bounces-52384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABC790AE27
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:44:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A19790AE82
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B26581C212E9
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 12:44:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC7C0B26D31
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC515196D86;
-	Mon, 17 Jun 2024 12:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9430F198A01;
+	Mon, 17 Jun 2024 13:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="smn1gT9/";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Bb2rhUzN";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="smn1gT9/";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Bb2rhUzN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OJTolu6/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED7B196C72;
-	Mon, 17 Jun 2024 12:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718628271; cv=none; b=uHIS3aA+V10GODBo08SnLeIp5wXBIPdLhwuq9WV7LjYuYv3OrvHYLCETeAjufx8oUT5vsrZmaAY2UPJ9ARY7LT7fiP+GQx2y7s/AQ6bqXb2/pz2fcxxCQXABMLtupU9bJiYtxpuIALyKFZfO3OH0NrSF9QVHFJ+uwSbioxEpUwM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718628271; c=relaxed/simple;
-	bh=T4DAmguanv9XiMd1CIsnPSzMrGlnBjrF3Z/k4PMoD5c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aDAomBlWF6nY94hCFLkUcglr8zDzY0GaaIHNhkxk5KWCuyQyO/VhCPv5WxhnIL3n7CyaT7xEVDxSvI+zB6e9uCpMgNfeQ0xiisoOVmnGpMJV9N45WtYtrZrdEEE/VXxmQeLd1Unpgei+OeX98+qdfQyrTaMOX3GLsA7ub21aaNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=smn1gT9/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Bb2rhUzN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=smn1gT9/; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Bb2rhUzN; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D1F323813E;
-	Mon, 17 Jun 2024 12:44:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1718628267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ImdEcJUb5Nqn25tJgvvXVmfkjFrUnSJQk7a3PKucDRY=;
-	b=smn1gT9/vjRvOciaXDOAQouVaQ5o+zY8h9g2hUrd7ZgnWgTs8jX9vh2VC3jLpEQ2aSHcSW
-	6zaBWEwFSU9cAvOJ7ZRLhB1acV+ga1Jy4p1RjbwI7FQrEVT5kuj93QuFBZcX6JQvxmRbcE
-	4cofjs9viQWZMStAaZVZt2QA8DQRWmE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1718628267;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ImdEcJUb5Nqn25tJgvvXVmfkjFrUnSJQk7a3PKucDRY=;
-	b=Bb2rhUzN6LxPvPzAphYv2lU0JRjfy8cHN6wlYGBWqrum72JDP0eOKBzJ238UUr9ckP8Qm+
-	fDFp3L71bGLMsqAw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1718628267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ImdEcJUb5Nqn25tJgvvXVmfkjFrUnSJQk7a3PKucDRY=;
-	b=smn1gT9/vjRvOciaXDOAQouVaQ5o+zY8h9g2hUrd7ZgnWgTs8jX9vh2VC3jLpEQ2aSHcSW
-	6zaBWEwFSU9cAvOJ7ZRLhB1acV+ga1Jy4p1RjbwI7FQrEVT5kuj93QuFBZcX6JQvxmRbcE
-	4cofjs9viQWZMStAaZVZt2QA8DQRWmE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1718628267;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ImdEcJUb5Nqn25tJgvvXVmfkjFrUnSJQk7a3PKucDRY=;
-	b=Bb2rhUzN6LxPvPzAphYv2lU0JRjfy8cHN6wlYGBWqrum72JDP0eOKBzJ238UUr9ckP8Qm+
-	fDFp3L71bGLMsqAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8364113AAA;
-	Mon, 17 Jun 2024 12:44:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Wzh2HqsvcGZsNQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 17 Jun 2024 12:44:27 +0000
-Message-ID: <33180198-634c-4122-b28b-b74d09676b64@suse.de>
-Date: Mon, 17 Jun 2024 14:44:27 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C7119047D
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 13:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718629202; cv=fail; b=a/rbm5FVhtvNPjOhvMicBeokkA1EJxOTTMAjNMTzXcs0Xpm0XBjAXS+F5j18LE9g7BfMMYfigdOmffmrc6FsgcqepW0i0X/rg81FT7E3I9x4COhliuhL5OyIDZSyiRnuuSAofYD3jvysFIy30b0TcRiM9+MjoL0/u29+RlT/xUo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718629202; c=relaxed/simple;
+	bh=ePp5q0X+PdSM8Vx6+5uQKfMmLtQHKffi2Qe5bbcbq4g=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=L3nGZqAL97Wk9O6uXC7ygpxTWUTs20Dt4XrO5QMD9ANZbVoNwZlHaaN3Ulw7YG/NJ2eWJL9EN/cddOUS1BWmeYOsErxsARRGGNzo2qQ/CcEZdZXROibIP+jizcM6QAxAw934Bii5psPkU7jPMYq5KlJcsF1C7lhqlIgcEW26ltM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OJTolu6/; arc=fail smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718629201; x=1750165201;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=ePp5q0X+PdSM8Vx6+5uQKfMmLtQHKffi2Qe5bbcbq4g=;
+  b=OJTolu6/gHDzxh27pCJE5PIjjpdVOyANZjks5S/FI0TnbPrZ8o4KERCY
+   ATv5F7MA37O82oiidb5WyLcsVrt93wlDDxmEh0/JuZge2ugQgrCJseECI
+   FeeqeMsh42wN1EqcNqNndYD1q1U48jtA/o582PeWYABoKutGfzGO+LQvc
+   +AGOlj+vBwsQUeBSD2eBSF64Wsj9t/8NEzJG+7hfPQaadnUaIjTmtsGMK
+   fEsiv5QImrcdgoTInBKXmTlRBXrbLV1CrH5aId1ErWZQcpNt3Y0qeNstj
+   e31jiYyjdh3PgdoTnxZYBodxjt0oDlNgywELJHnXQi0uBQ2+AKk1+vFi9
+   g==;
+X-CSE-ConnectionGUID: xi2MgF0ITW6mU2kHfQ3cXA==
+X-CSE-MsgGUID: o4zDO3asTu+SBX5ByiEgSQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11105"; a="26867464"
+X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; 
+   d="scan'208";a="26867464"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2024 06:00:00 -0700
+X-CSE-ConnectionGUID: SqBX7vHwRcyA6z7BG1FRxA==
+X-CSE-MsgGUID: tU+o7hR3SnuQpMwI1PEtmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; 
+   d="scan'208";a="41066768"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 17 Jun 2024 06:00:00 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 17 Jun 2024 05:59:59 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 17 Jun 2024 05:59:59 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Mon, 17 Jun 2024 05:59:59 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.43) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 17 Jun 2024 05:59:58 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=NIqALPeTRx7tEc+dq5fJfh02qhoPidWS0Uw9PMsRek608WCEmJpcpP8Jk4USbBw7br3sjLqcnZeAQWqnGJdG2veUI20IHapBiW3uSGMaAfYEtEkXR+rzzPVQQbRk3eb6A1oVeJ3XkrwP1cp7bfszz7eL47LbUawx7LtFYH9tRnf7nkRzbtgBq9Jg/Hieve+o1harn8zkbJsUw341NYmX/M8B1DXHG1dg6ycWHDwVfoUYywGgFFUKhwcArZXC1fr3mh6StPFWVRlRzbmcmZ+Jv9nO54SX+KD0AIPxqj0TelriPXEwxgNu1glbUKROl8nTU4skK7QCkIDZOrMEtWdhnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=z9URK+qgZJ5LnMG68nmdykEiaPKmG3Ux7qF03JDZt90=;
+ b=jFV/SaNMZE7csfbvRJF4GLwnI5LbmzjuA55MIZwnwOHHAbdoJe+hSvS7SOMFz4+cXYAas+oZ4pbKJyWFAOv2eCn8ZbeFo55yt8uq9t8MjEml0w7a4QxewYPxT5ZJ9YxZfvCKNBF4d7q8So03oWQgczBzKeTJsJGMWiwWd41hHZ6+spf1manvfaIm0s6CfmnBYQTX/E+5UCAX6rkigvTA8s+c/QCQ77F4f7zYrUCtV6RCfOKCae8msrl654KjzJIh783+NMhFC69Syu8VZPRM2w+UmqtrztEZq0s4q46M55nx9vihQEyUQFEjrYgd6b8ihJjOz3QNpAiBYtuPNKdUIw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MW4PR11MB5776.namprd11.prod.outlook.com (2603:10b6:303:183::9)
+ by PH7PR11MB7606.namprd11.prod.outlook.com (2603:10b6:510:271::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.30; Mon, 17 Jun
+ 2024 12:59:54 +0000
+Received: from MW4PR11MB5776.namprd11.prod.outlook.com
+ ([fe80::4bea:b8f6:b86f:6942]) by MW4PR11MB5776.namprd11.prod.outlook.com
+ ([fe80::4bea:b8f6:b86f:6942%5]) with mapi id 15.20.7677.030; Mon, 17 Jun 2024
+ 12:59:53 +0000
+Message-ID: <d8d430e4-a722-427b-994f-3e6c09466aa1@intel.com>
+Date: Mon, 17 Jun 2024 14:59:47 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next] ice: Add a per-VF limit on
+ number of FDIR filters
+To: Ahmed Zaki <ahmed.zaki@intel.com>, <intel-wired-lan@lists.osuosl.org>
+CC: Przemek Kitszel <przemyslaw.kitszel@intel.com>, <stable@vger.kernel.org>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>
+References: <20240614131842.277398-1-ahmed.zaki@intel.com>
+Content-Language: en-US
+From: Wojciech Drewek <wojciech.drewek@intel.com>
+In-Reply-To: <20240614131842.277398-1-ahmed.zaki@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MI1P293CA0011.ITAP293.PROD.OUTLOOK.COM
+ (2603:10a6:290:2::20) To MW4PR11MB5776.namprd11.prod.outlook.com
+ (2603:10b6:303:183::9)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] fbdev: vesafb: Detect VGA compatibility from screen
- info's VESA attributes
-To: Helge Deller <deller@gmx.de>, sam@ravnborg.org, javierm@redhat.com,
- hpa@zytor.com
-Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- stable@vger.kernel.org
-References: <20240617110725.23330-1-tzimmermann@suse.de>
- <f42169dc-ebcd-4df9-8119-3dbac28746de@suse.de>
- <60216bc6-cde3-4927-81a1-ec808f5ba4d3@gmx.de>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <60216bc6-cde3-4927-81a1-ec808f5ba4d3@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-4.29 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	FREEMAIL_TO(0.00)[gmx.de,ravnborg.org,redhat.com,zytor.com];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmx.de];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:email]
-X-Spam-Flag: NO
-X-Spam-Score: -4.29
-X-Spam-Level: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR11MB5776:EE_|PH7PR11MB7606:EE_
+X-MS-Office365-Filtering-Correlation-Id: ea3fc63b-a99f-4480-b35f-08dc8ecd6143
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230037|366013|376011|1800799021;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?K3A2aExsd0hieFo5YmFjZWtxeURKMTFLMDQ3SzlOeW50SnJWR0JlbjB2Mmxk?=
+ =?utf-8?B?TkZDOFMrU2tGQkRjVFpoa0VpNnRXaEJqT0NFRHBpUU56OXlhNkxadXlYUnla?=
+ =?utf-8?B?UHJYWGxBNEQra2l1bHlhd2dFK25XdWp0a2x1REpFVXJUYUU4eTFlMitlQ3hi?=
+ =?utf-8?B?NTJPWE5neUJWOVJWU3NtQzVscFNiZWdXZUxNNHZDVWQ2MTdEclM2MGpZLzJC?=
+ =?utf-8?B?WFRmaFFrY3M5WUJzNXpCRU1oZXN3QW9UNDNyUCtBSWV6d2hWRzhmeFRka0V5?=
+ =?utf-8?B?RVNGaDFzVGhId1F2YWdhMWhjOGJkZGhnQW1UUzVYbWcxVHlrenUzSzhhL1BF?=
+ =?utf-8?B?OEE3dkxCL3RxbHVlTVlSZjBFREhsa2Zzc3psOWh1aUF0WExUQ2ZtcklCRDdv?=
+ =?utf-8?B?NERQWEF3cWlhYkQ0Wk9NZGJPcy9Cb1kxNkV6UStKOUg4aUN6clJtSnpRbTNQ?=
+ =?utf-8?B?SUNaWWVxazBVK1lUSFpvaTFJUG0vZExrKzZVbHJiNlVsQ3BZMHljdEp4YnMv?=
+ =?utf-8?B?bStQQmhDT0Jhc2RVMUpMUklPemd1L2J1R2VqazJ3QTY2ai90ZDJjNEMwM3l2?=
+ =?utf-8?B?MVprblZpdjFoWERRRDAzTno3T1RmRVdzZmpXSVNPb3lZcGhCUGhhY3BkL2FF?=
+ =?utf-8?B?REg5VGh5UlpiQ3VtVnJKMWlmNDdwcHhFZ2htVFNLckc2M1hoc1FsU0xXR2ZD?=
+ =?utf-8?B?MG9qbi9CUGNFcVhvUDI3YVJpSjNscm83MTBWQlRVVG04M21raWZ6eGloMjRy?=
+ =?utf-8?B?ZWt1UTM0azN2ZGRiOXdManRpY25Za1ZDOFNZR0lHZlB6VVpZOVA4cUYxVE92?=
+ =?utf-8?B?MG5hbDFlR3BFalgrRTdxcEZJWkE3a2QrZHhLSkpDaDM2YVI0a3ZuQnlSeEMr?=
+ =?utf-8?B?T2VMd1dvTkVhakxabzVsREhTK2xDVG9mTlFOWmZnZ1pidzduRmU5TTEwdFJP?=
+ =?utf-8?B?SjBQRkxIOEx4SGFnZmtuMWZITXhDZ3p4TDBJK29HT1FjdmgwWVNEMW80T0FE?=
+ =?utf-8?B?QlVNRmxrb1V0dGtiU1I3OFFyY3FHRnMyMHQwR0xFMkp0VWZickJrQjZQY2tX?=
+ =?utf-8?B?Sm5rc2xMUFpmMU5SRE5oaXkxeEovNThIa0kzQngvY0RWTFU0OW5hT3FIQ0Vq?=
+ =?utf-8?B?bE8rM1dTejQvY2krYjBVb2xJei9DT1JUMGsvL3dwTjY0Wjh5MTVRZ2RXcGY2?=
+ =?utf-8?B?Smtia0xhcDVHQzBnQlRlZ2RHUmsvVTY5RjBnZXozY016SzhkU3RiTU53V0RW?=
+ =?utf-8?B?Q0d2RGtQUGdIWU5SYmNtVHJXZzZ5NURiY212QmtQbjQ5WjdZWlQxeCtqanVH?=
+ =?utf-8?B?U2dkMDg2N3Nsdm5HOWxjVUJSL3Q3RWQ2dEpMdFd3bkVXQ1h6NjRaOXdueWpQ?=
+ =?utf-8?B?Rmk4Z0RXVEJIeU5xcktvK2dZTnIyckNaNjFzellXUmdjNnp2cXFLbnlwbUZO?=
+ =?utf-8?B?dG5VZ25zcWlGKy9yeE5FTHdQZk5zYnZMcGs3VkNDNlJPYUJZWlp5ajUrV2Uz?=
+ =?utf-8?B?U25pSGZabEpiaEdUVExMbU1uNFFQZWcvZ3ZTZXBPWE9CQ2N2aG14eGdGamVw?=
+ =?utf-8?B?MUcvRXE5Nnp3WUpqUzU5MFpWK1lJREc0N0JZTytDQm1WeTJIWmFOZU1mT3lj?=
+ =?utf-8?B?Tnl6TGorcXF4eTVuZHBJM2R6aCsvMGRFN0tVOVlNNlJJbFJaUXF4N1NxZzNt?=
+ =?utf-8?B?TWRMVElCVUorVm81UGM2NE9UM0FzNk1WNUs5M3c4KzdIbDViMGg0Q3FYNnVl?=
+ =?utf-8?Q?FAMSVntPhuLbuT3Nn4=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5776.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(376011)(1800799021);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cEZkd05VeDYxekkrQlh2SzN2UUx0cU9IMXcwbk9RUXlwQ1R3V0tvQUtkR1Vr?=
+ =?utf-8?B?MWlwS1ZQNmNaYU9NazllckRmM2tIV2RoYy9TU0c1VXE4QmY5WGRkNDFKQVM0?=
+ =?utf-8?B?K1FLeU91alV2STRDRlA0VDV2Mm9MUEcydnVoTEc2enoxbTBhMXdNR2tUb2Zv?=
+ =?utf-8?B?ejBYczc5UXQxR0VkM3k2dGcrNlhueWxLM0RMODNUSnNKVkFGdEx4WjhCdG5z?=
+ =?utf-8?B?aEU1VHpHNVM3d1QvZStVTlhMUnNWVnBMUGRhU212M3VQYUw5TklwYUFQb0xC?=
+ =?utf-8?B?aEpFUXFYOGhJTm1VSzBhZjR6K1M5TlRMaUg1R2VaYzVYRG1UcVNGVXVOdXJU?=
+ =?utf-8?B?MXFJNDQ4MWZZeXdPekpFcFRuZmZLa2x6TFBLMnZDK3ZGTkhrNmFocXVCV081?=
+ =?utf-8?B?dWM2dGcwUVB0WG1GSkdQL1NjZ3lsbndpeTAramkwQ01TbjljaHNpT2Qyd3FY?=
+ =?utf-8?B?bFBwTzRFOVNvRTc2NDJYMGs2akZVemRMWkg1WDY1VStPb3FDdDN4aVVWR3oy?=
+ =?utf-8?B?eW9LNVVTUGtqY3BoeXpyMU52Y0Q3clhhdVhNVXdkaWlKSkd6VWJGUWljYWJB?=
+ =?utf-8?B?aXAxU3J5L2VZZ1NETzlEdDJJQS90Vk1FcXJMV2d1b1FTaGJ3Z0FaV1ZZb3o2?=
+ =?utf-8?B?dkV0cGVwdlB5T01BWEk3YlRZS0hGRktGQ0NwckNWdHZFNEEwazQvRHVKanRX?=
+ =?utf-8?B?Q0prK3hxMU42cE1yU3hiblhiK0owOVl5dVVRa3FIS0FKY0VjUkR4R2hJQlIx?=
+ =?utf-8?B?MUZwS0tUbDFBKzZMN1oxa2UrNThlWjlHdjJYWGt1WWU0UWpxbHpsRWtHUTlH?=
+ =?utf-8?B?dFJhY1J0dURYMVd0ZE9Kd1A4bzdDQjlDUDQrZVZnTmkwTFRBZTVLeE5GaWJR?=
+ =?utf-8?B?OXZHZlYyZXJPQ0ZnZ2x6T3pUbjJmMEdONTM4dW4xaGxWdUl2L04yNkpjUkwr?=
+ =?utf-8?B?VVNUNDhIa1kvelVtdHNTTmVtVHV0LzlMMXpScFZUcDhkUnBKTDdENUF0dXB0?=
+ =?utf-8?B?dC9IcEZOQ2pKVDdvV01OYUhmSVJBZzNYcUkzV1dLbFg1L25IeDFycFdiRURv?=
+ =?utf-8?B?U3ErQnFXM2pBcENOdHNQZlhJSStxZEVBVTVZZUQ2bXd1U0NRT2NVdVlXeVlS?=
+ =?utf-8?B?a0dmMVVzck9Wc1RDcFFXU0dVUjY5MzBYYi82N28ybzZvRTdHcGtNcEp0ZGV1?=
+ =?utf-8?B?ZWRXdUlBUGVHV1JHVjFSQ1M4NWNDMURZK3RZZUZRQVg0dWFqTkJEd0k4Tm1L?=
+ =?utf-8?B?WG9ZY09QZHRHbnY3bmlMNjJmVmI0NXlIbmJSR2hlOEkwa082a3QxclUrdVV5?=
+ =?utf-8?B?MW1DdzdqUzE5MUViRmlkM05XVnREazhFbUVRb2ZaM1VvNmRLVlJzcGVjME1D?=
+ =?utf-8?B?Tm9XN2pEa2t4UFlnSFdGTmc0Y1JsVlZPb2JJdjBoZmRnWHdab3pKckhCZmhJ?=
+ =?utf-8?B?czhHaXYzaTdNOGNGTEJWcjd0RU1LSmswQUJONUsyYWFFcWRCS3Y5bkJrSHZz?=
+ =?utf-8?B?TEdOeEJuQmVMQkI2bk5WQlcxaHZvRi91Tmp0RDcvdHVyTlZjMTZDMDFNbWxL?=
+ =?utf-8?B?Vkd4Q2YzaHc2bHBWUHFQVlM0eDQ5MUR3NkJSa1MrZDRUbmNiVjh2QktLQ2R1?=
+ =?utf-8?B?QVB2aEdGTzdmektvVGR4OXVhS0lLbmE4OTE1cjFISUJLbGxNaGpYM2U4R24w?=
+ =?utf-8?B?OW5EQWpEQlRJRmVnaXNVQzJqOEFnWjB4TXhnN2YvcFkrZ0wwR1VZV0NQNm5v?=
+ =?utf-8?B?YlZCWnNNYmJWNnJvdi9TQnZYaHg0OFdlbHRpV01qRWd1SGJWcXhkdzlpejFF?=
+ =?utf-8?B?dUordit1QnhEaXZQSXJiU25LWWhPWDJicWpiNk1FUEtrbDVteXNncTJkWWVP?=
+ =?utf-8?B?RDZ4K1J1b2FabnJiajAycUJQWVdUd3cwbVlxWUpmOTl0eXl3VEYvb1VuTUNq?=
+ =?utf-8?B?TS8rS1NmWlBacE1kQzRYamlXWDNSRDBYT1IrcG9kMWp4ZmJKa2ZwWlcreStP?=
+ =?utf-8?B?VUhjUGVkbmhsSE5tZzV4bWx3dmNaWWQwRDlYNFVOL2JIbXdhM3hTemRNTkdm?=
+ =?utf-8?B?LzU0MTc2eW00S2VoVDFPVGdFd25SVXM5RU1iVEE5bHNqRUgzWXMyeXNwd0hs?=
+ =?utf-8?B?dGdVMzdtNjI4Tkl5WGpKWHZDdUx1SHVjbXI1K3lVc3d1QUwyUEMzSS81SXA4?=
+ =?utf-8?B?enc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ea3fc63b-a99f-4480-b35f-08dc8ecd6143
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5776.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jun 2024 12:59:53.3521
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iPhFb4M7/KKjGaZww63lOhyN7u+7W5jLnQ752ACU7OcVveetFW1UssynQRvlOuRievvmcsqiBHPhTXb3uOyUiJq/Rn7aj23SP0tDYCCzUQc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7606
+X-OriginatorOrg: intel.com
 
-Hi
 
-Am 17.06.24 um 14:42 schrieb Helge Deller:
-> On 6/17/24 13:30, Thomas Zimmermann wrote:
->>
->>
->> Am 17.06.24 um 13:06 schrieb Thomas Zimmermann:
->>> Test the vesa_attributes field in struct screen_info for compatibility
->>> with VGA hardware. Vesafb currently tests bit 1 in screen_info's
->>> capabilities field, It sets the framebuffer address size and is
->>> unrelated to VGA.
->>>
->>> Section 4.4 of the Vesa VBE 2.0 specifications defines that bit 5 in
->>> the mode's attributes field signals VGA compatibility. The mode is
->>> compatible with VGA hardware if the bit is clear. In that case, the
->>> driver can access VGA state of the VBE's underlying hardware. The
->>> vesafb driver uses this feature to program the color LUT in palette
->>> modes. Without, colors might be incorrect.
->>>
->>> The problem got introduced in commit 89ec4c238e7a ("[PATCH] vesafb: Fix
->>> incorrect logo colors in x86_64"). It incorrectly stores the mode
->>> attributes in the screen_info's capabilities field and updates vesafb
->>> accordingly. Later, commit 5e8ddcbe8692 ("Video mode probing support 
->>> for
->>> the new x86 setup code") fixed the screen_info, but did not update 
->>> vesafb.
->>> Color output still tends to work, because bit 1 in capabilities is
->>> usually 0.
->>>
->>> Besides fixing the bug in vesafb, this commit introduces a helper that
->>> reads the correct bit from screen_info.
->>>
->>> v2:
->>> - clarify comment on non-VGA modes (Helge)
->>>
->>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->>> Fixes: 5e8ddcbe8692 ("Video mode probing support for the new x86 
->>> setup code")
->>> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
->>> Cc: <stable@vger.kernel.org> # v2.6.23+
->>> ---
->>>   drivers/video/fbdev/vesafb.c |  2 +-
->>>   include/linux/screen_info.h  | 10 ++++++++++
->>>   2 files changed, 11 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/video/fbdev/vesafb.c 
->>> b/drivers/video/fbdev/vesafb.c
->>> index 8ab64ae4cad3e..5a161750a3aee 100644
->>> --- a/drivers/video/fbdev/vesafb.c
->>> +++ b/drivers/video/fbdev/vesafb.c
->>> @@ -271,7 +271,7 @@ static int vesafb_probe(struct platform_device 
->>> *dev)
->>>       if (si->orig_video_isVGA != VIDEO_TYPE_VLFB)
->>>           return -ENODEV;
->>> -    vga_compat = (si->capabilities & 2) ? 0 : 1;
->>> +    vga_compat = !__screen_info_vbe_mode_nonvga(si);
->>>       vesafb_fix.smem_start = si->lfb_base;
->>>       vesafb_defined.bits_per_pixel = si->lfb_depth;
->>>       if (15 == vesafb_defined.bits_per_pixel)
->>> diff --git a/include/linux/screen_info.h b/include/linux/screen_info.h
->>> index 75303c126285a..d21f8e4e9f4a4 100644
->>> --- a/include/linux/screen_info.h
->>> +++ b/include/linux/screen_info.h
->>> @@ -49,6 +49,16 @@ static inline u64 __screen_info_lfb_size(const 
->>> struct screen_info *si, unsigned
->>>       return lfb_size;
->>>   }
->>> +static inline bool __screen_info_vbe_mode_nonvga(const struct 
->>> screen_info *si)
->>> +{
->>> +    /*
->>> +     * VESA modes typically run on VGA hardware. Set bit 5 signal 
->>> that this
->>
->> 'signals'
->
-> I've fixed this up in your patch and applied it to the fbdev git tree.
-> No need to send new patch...
 
-Great, thank you so much.
+On 14.06.2024 15:18, Ahmed Zaki wrote:
+> While the iavf driver adds a s/w limit (128) on the number of FDIR
+> filters that the VF can request, a malicious VF driver can request more
+> than that and exhaust the resources for other VFs.
+> 
+> Add a similar limit in ice.
+> 
+> CC: stable@vger.kernel.org
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> Suggested-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+> Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+> ---
 
-Best regards
-Thomas
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
 
->
-> Thanks!
-> Helge
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+>  .../net/ethernet/intel/ice/ice_ethtool_fdir.c    |  2 +-
+>  drivers/net/ethernet/intel/ice/ice_fdir.h        |  3 +++
+>  .../net/ethernet/intel/ice/ice_virtchnl_fdir.c   | 16 ++++++++++++++++
+>  .../net/ethernet/intel/ice/ice_virtchnl_fdir.h   |  1 +
+>  4 files changed, 21 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+> index e3cab8e98f52..5412eff8ef23 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
+> @@ -534,7 +534,7 @@ ice_parse_rx_flow_user_data(struct ethtool_rx_flow_spec *fsp,
+>   *
+>   * Returns the number of available flow director filters to this VSI
+>   */
+> -static int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
+> +int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi)
+>  {
+>  	u16 vsi_num = ice_get_hw_vsi_num(hw, vsi->idx);
+>  	u16 num_guar;
+> diff --git a/drivers/net/ethernet/intel/ice/ice_fdir.h b/drivers/net/ethernet/intel/ice/ice_fdir.h
+> index 021ecbac7848..ab5b118daa2d 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_fdir.h
+> +++ b/drivers/net/ethernet/intel/ice/ice_fdir.h
+> @@ -207,6 +207,8 @@ struct ice_fdir_base_pkt {
+>  	const u8 *tun_pkt;
+>  };
+>  
+> +struct ice_vsi;
+> +
+>  int ice_alloc_fd_res_cntr(struct ice_hw *hw, u16 *cntr_id);
+>  int ice_free_fd_res_cntr(struct ice_hw *hw, u16 cntr_id);
+>  int ice_alloc_fd_guar_item(struct ice_hw *hw, u16 *cntr_id, u16 num_fltr);
+> @@ -218,6 +220,7 @@ int
+>  ice_fdir_get_gen_prgm_pkt(struct ice_hw *hw, struct ice_fdir_fltr *input,
+>  			  u8 *pkt, bool frag, bool tun);
+>  int ice_get_fdir_cnt_all(struct ice_hw *hw);
+> +int ice_fdir_num_avail_fltr(struct ice_hw *hw, struct ice_vsi *vsi);
+>  bool ice_fdir_is_dup_fltr(struct ice_hw *hw, struct ice_fdir_fltr *input);
+>  bool ice_fdir_has_frag(enum ice_fltr_ptype flow);
+>  struct ice_fdir_fltr *
+> diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+> index b8df8d0b2d85..60bf71da53bd 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+> @@ -550,6 +550,8 @@ static void ice_vc_fdir_reset_cnt_all(struct ice_vf_fdir *fdir)
+>  		fdir->fdir_fltr_cnt[flow][0] = 0;
+>  		fdir->fdir_fltr_cnt[flow][1] = 0;
+>  	}
+> +
+> +	fdir->fdir_fltr_cnt_total = 0;
+>  }
+>  
+>  /**
+> @@ -1694,6 +1696,7 @@ ice_vc_add_fdir_fltr_post(struct ice_vf *vf, struct ice_vf_fdir_ctx *ctx,
+>  	resp->status = status;
+>  	resp->flow_id = conf->flow_id;
+>  	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]++;
+> +	vf->fdir.fdir_fltr_cnt_total++;
+>  
+>  	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
+>  				    (u8 *)resp, len);
+> @@ -1758,6 +1761,7 @@ ice_vc_del_fdir_fltr_post(struct ice_vf *vf, struct ice_vf_fdir_ctx *ctx,
+>  	resp->status = status;
+>  	ice_vc_fdir_remove_entry(vf, conf, conf->flow_id);
+>  	vf->fdir.fdir_fltr_cnt[conf->input.flow_type][is_tun]--;
+> +	vf->fdir.fdir_fltr_cnt_total--;
+>  
+>  	ret = ice_vc_send_msg_to_vf(vf, ctx->v_opcode, v_ret,
+>  				    (u8 *)resp, len);
+> @@ -2074,6 +2078,7 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
+>  	struct virtchnl_fdir_add *stat = NULL;
+>  	struct virtchnl_fdir_fltr_conf *conf;
+>  	enum virtchnl_status_code v_ret;
+> +	struct ice_vsi *vf_vsi;
+>  	struct device *dev;
+>  	struct ice_pf *pf;
+>  	int is_tun = 0;
+> @@ -2082,6 +2087,17 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
+>  
+>  	pf = vf->pf;
+>  	dev = ice_pf_to_dev(pf);
+> +	vf_vsi = ice_get_vf_vsi(vf);
+> +
+> +#define ICE_VF_MAX_FDIR_FILTERS	128
+> +	if (!ice_fdir_num_avail_fltr(&pf->hw, vf_vsi) ||
+> +	    vf->fdir.fdir_fltr_cnt_total >= ICE_VF_MAX_FDIR_FILTERS) {
+> +		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+> +		dev_err(dev, "Max number of FDIR filters for VF %d is reached\n",
+> +			vf->vf_id);
+> +		goto err_exit;
+> +	}
+> +
+>  	ret = ice_vc_fdir_param_check(vf, fltr->vsi_id);
+>  	if (ret) {
+>  		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+> diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
+> index c5bcc8d7481c..ac6dcab454b4 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
+> +++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.h
+> @@ -29,6 +29,7 @@ struct ice_vf_fdir_ctx {
+>  struct ice_vf_fdir {
+>  	u16 fdir_fltr_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
+>  	int prof_entry_cnt[ICE_FLTR_PTYPE_MAX][ICE_FD_HW_SEG_MAX];
+> +	u16 fdir_fltr_cnt_total;
+>  	struct ice_fd_hw_prof **fdir_prof;
+>  
+>  	struct idr fdir_rule_idr;
 
