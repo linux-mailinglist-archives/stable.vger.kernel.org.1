@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-52427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA41690B140
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:15:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8670390B0FE
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00B39B25A35
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:38:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B153B33B95
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1C71B3733;
-	Mon, 17 Jun 2024 13:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD201B3F02;
+	Mon, 17 Jun 2024 13:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B9RmuRkX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BJoJOjCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4986D1B29BA;
-	Mon, 17 Jun 2024 13:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89EE1B3759;
+	Mon, 17 Jun 2024 13:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630543; cv=none; b=pj7pRJ676xBcj0/FxYf4H+Puno+YxNlC9SRgn6C/Mcnea6PkuoDkQIzueomEGkZlTrPY3/UK52v4sApymI95YvjhvFhH2u5LA5KRKUJI4WpOhP/PHMAZOp4jD7TzAhsleTMTbu0XLAH8u/5P9LfyndNHbbaERoWlqEbbYS+pWpM=
+	t=1718630545; cv=none; b=tqmEWhxJIf52gTHtP9yAIc6DRR1ri/0BXGFD83ms6HMsiwqjutW2UlWs6Ryb+lQ/JVRgCaz3F39cXUC6FNRR6Yc4CBhykt6ickFtHt3JkSmHD7T1JyRpemKxp7fYTEO9HRu9GNc6cAYW3C/mpxlCglBdbBHgjZGobx2DqsM5qTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630543; c=relaxed/simple;
-	bh=d5mtkQ4TSwEAW5aa2LmAOY5L8+c2WljHzZG5/10rc2o=;
+	s=arc-20240116; t=1718630545; c=relaxed/simple;
+	bh=bX0MtxWC2K9hESeMVfhhVFpNsng9rY8CdwMrW0ZKeKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Veagu8DbEASSxBQoDV+tXvtCBPRGh6tX1HcHENnFNq4SCyBFB0OJ4YUG+76xWCiVK4XkutUKuW2RlawT3ZW/8FFntBoG+76FTPMV84H/Y2TZ250eGoqKcvyg9f3uBq4VRwDO1H3zlkMhvOO/PGoM3XVCVl/AO6mp+d45ShMXlBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B9RmuRkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A067EC4AF48;
-	Mon, 17 Jun 2024 13:22:21 +0000 (UTC)
+	 MIME-Version; b=se15pTnoOi73WbBOTZNXaUXA3yI3sa3i6rSLHVvymO7Cd1uznjr2vtSvJXPjJIBSI6eVK53tXNCB9v8hQNKL5q4+xAyeLVhFDypzjw5A4P/1spO/fNOeTvUnpf7j2XeNuzSHMmrHzj+mx+MLfEDBmtXJirQDnGqfeBc2xcOa3Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BJoJOjCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3472C4AF4D;
+	Mon, 17 Jun 2024 13:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630543;
-	bh=d5mtkQ4TSwEAW5aa2LmAOY5L8+c2WljHzZG5/10rc2o=;
+	s=k20201202; t=1718630545;
+	bh=bX0MtxWC2K9hESeMVfhhVFpNsng9rY8CdwMrW0ZKeKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B9RmuRkXMjc0cLtGqIXDR1ga1zjpbl8lFr0YhVuYGxRnMp2XXfcvzPsSZGKhfnh1Y
-	 2gQug2Y0U1Cy59jJcZjMgJqt0B34wzDzoycgfQeW4EVD6pBI+Ex24MYwmNcPy0joO7
-	 7+SmhTOvUuGsjsPKlLNOOu9tFTf9SDadQWJZSdEob20HC/TGLrMcVuTNLQgJgPtjQ7
-	 6WHyk+7zC89dvYUXhS15AdPJRPrw82Stv14EGfIubscTd1mcjTsiYSsVBpzy7VgEcH
-	 JAU3yJbfmkPlkceTH+cUFRcNadX8xou3KLIImIv7wO1k2Bo1cgk3Q/k19P8fxvATOZ
-	 rxnqfVtFMCVyw==
+	b=BJoJOjCkwAei3W1aIJR5RnSFtWkA/MyXvOCsPHov/FSJE16PGpizOEjfQRY6uv6w6
+	 wVOhulZZoj0zd1QXheL9SOZiIQglwsFecQ56BANpdk1Z9gi1A00fYQ3vLnHm5e8vgC
+	 jOeS5L3H808S+ztgXzWfwrlmm6b0n5JsHM6uLcDjgrn/rH2PCEqba2C9XZbnZkb/Hh
+	 kHLbveyjO9QgiHBOUu29mSLrpARH/UIxHl5/8V3LEZRY5Ja0n3S5+9+dPk3cH/oUbg
+	 HnFEXL+kdHiC5h5V1bXNqJehDrKMenOxMuuNm/1mDet5sAXIzqWsDZufwKpjjEl51W
+	 unalfWlemtFHQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andreas Hindborg <a.hindborg@samsung.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Sasha Levin <sashal@kernel.org>,
-	dlemoal@kernel.org,
-	hare@suse.de,
-	johannes.thumshirn@wdc.com,
-	kch@nvidia.com,
-	zhouchengming@bytedance.com,
-	yanjun.zhu@linux.dev,
-	yukuai3@huawei.com,
-	shinichiro.kawasaki@wdc.com,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 39/44] null_blk: fix validation of block size
-Date: Mon, 17 Jun 2024 09:19:52 -0400
-Message-ID: <20240617132046.2587008-39-sashal@kernel.org>
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 41/44] kconfig: remove wrong expr_trans_bool()
+Date: Mon, 17 Jun 2024 09:19:54 -0400
+Message-ID: <20240617132046.2587008-41-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132046.2587008-1-sashal@kernel.org>
 References: <20240617132046.2587008-1-sashal@kernel.org>
@@ -74,43 +65,156 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit c462ecd659b5fce731f1d592285832fd6ad54053 ]
+[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
 
-Block size should be between 512 and PAGE_SIZE and be a power of 2. The current
-check does not validate this, so update the check.
+expr_trans_bool() performs an incorrect transformation.
 
-Without this patch, null_blk would Oops due to a null pointer deref when
-loaded with bs=1536 [1].
+[Test Code]
 
-Link: https://lore.kernel.org/all/87wmn8mocd.fsf@metaspace.dk/
+    config MODULES
+            def_bool y
+            modules
 
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240603192645.977968-1-nmi@metaspace.dk
-[axboe: remove unnecessary braces and != 0 check]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+    config A
+            def_bool y
+            select C if B != n
+
+    config B
+            def_tristate m
+
+    config C
+            tristate
+
+[Result]
+
+    CONFIG_MODULES=y
+    CONFIG_A=y
+    CONFIG_B=m
+    CONFIG_C=m
+
+This output is incorrect because CONFIG_C=y is expected.
+
+Documentation/kbuild/kconfig-language.rst clearly explains the function
+of the '!=' operator:
+
+    If the values of both symbols are equal, it returns 'n',
+    otherwise 'y'.
+
+Therefore, the statement:
+
+    select C if B != n
+
+should be equivalent to:
+
+    select C if y
+
+Or, more simply:
+
+    select C
+
+Hence, the symbol C should be selected by the value of A, which is 'y'.
+
+However, expr_trans_bool() wrongly transforms it to:
+
+    select C if B
+
+Therefore, the symbol C is selected by (A && B), which is 'm'.
+
+The comment block of expr_trans_bool() correctly explains its intention:
+
+  * bool FOO!=n => FOO
+    ^^^^
+
+If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
+
+However, the actual code performs this transformation when FOO is
+tristate:
+
+    if (e->left.sym->type == S_TRISTATE) {
+                             ^^^^^^^^^^
+
+While it can be fixed to S_BOOLEAN, there is no point in doing so
+because expr_tranform() already transforms FOO!=n to FOO when FOO is
+bool. (see the "case E_UNEQUAL" part)
+
+expr_trans_bool() is wrong and unnecessary.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/kconfig/expr.c | 29 -----------------------------
+ scripts/kconfig/expr.h |  1 -
+ scripts/kconfig/menu.c |  2 --
+ 3 files changed, 32 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 620679a0ac381..26e2c22a87e1c 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -1810,8 +1810,8 @@ static int null_validate_conf(struct nullb_device *dev)
- 		dev->queue_mode = NULL_Q_MQ;
- 	}
+diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
+index a290de36307ba..7866167552177 100644
+--- a/scripts/kconfig/expr.c
++++ b/scripts/kconfig/expr.c
+@@ -396,35 +396,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
+ 	return e;
+ }
  
--	dev->blocksize = round_down(dev->blocksize, 512);
--	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
-+	if (blk_validate_block_size(dev->blocksize))
-+		return -EINVAL;
+-/*
+- * bool FOO!=n => FOO
+- */
+-struct expr *expr_trans_bool(struct expr *e)
+-{
+-	if (!e)
+-		return NULL;
+-	switch (e->type) {
+-	case E_AND:
+-	case E_OR:
+-	case E_NOT:
+-		e->left.expr = expr_trans_bool(e->left.expr);
+-		e->right.expr = expr_trans_bool(e->right.expr);
+-		break;
+-	case E_UNEQUAL:
+-		// FOO!=n -> FOO
+-		if (e->left.sym->type == S_TRISTATE) {
+-			if (e->right.sym == &symbol_no) {
+-				e->type = E_SYMBOL;
+-				e->right.sym = NULL;
+-			}
+-		}
+-		break;
+-	default:
+-		;
+-	}
+-	return e;
+-}
+-
+ /*
+  * e1 || e2 -> ?
+  */
+diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
+index 0158f5eac4542..f015883519b39 100644
+--- a/scripts/kconfig/expr.h
++++ b/scripts/kconfig/expr.h
+@@ -288,7 +288,6 @@ void expr_free(struct expr *e);
+ void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
+ int expr_eq(struct expr *e1, struct expr *e2);
+ tristate expr_calc_value(struct expr *e);
+-struct expr *expr_trans_bool(struct expr *e);
+ struct expr *expr_eliminate_dups(struct expr *e);
+ struct expr *expr_transform(struct expr *e);
+ int expr_contains_symbol(struct expr *dep, struct symbol *sym);
+diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
+index 3b822cd110f47..8b48a80e7e168 100644
+--- a/scripts/kconfig/menu.c
++++ b/scripts/kconfig/menu.c
+@@ -379,8 +379,6 @@ static void _menu_finalize(struct menu *parent, bool inside_choice)
+ 				dep = expr_transform(dep);
+ 				dep = expr_alloc_and(expr_copy(basedep), dep);
+ 				dep = expr_eliminate_dups(dep);
+-				if (menu->sym && menu->sym->type != S_TRISTATE)
+-					dep = expr_trans_bool(dep);
+ 				prop->visible.expr = dep;
  
- 	if (dev->use_per_node_hctx) {
- 		if (dev->submit_queues != nr_online_nodes)
+ 				/*
 -- 
 2.43.0
 
