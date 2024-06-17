@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-52422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3687790B10C
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:09:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA41690B140
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:15:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB7BFB33026
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:36:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00B39B25A35
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EA501B1426;
-	Mon, 17 Jun 2024 13:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1C71B3733;
+	Mon, 17 Jun 2024 13:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBNdTDPP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B9RmuRkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489C91B141B;
-	Mon, 17 Jun 2024 13:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4986D1B29BA;
+	Mon, 17 Jun 2024 13:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630532; cv=none; b=bHKv+scxA8CEfCMWVemaCdT2On94BIlmgagpzCcBTp8oqamUUJjQsRFg7opg7xBOuk9dSkZmu9Os8ZUvHeF0AifJwB6CFg5WYSdOPy7EmW90JypEGoz68+9+fHLnDY2qzbpPiHcvY5h7Y7TofuUls7QHpMlp2mzFae5ztTGYJFA=
+	t=1718630543; cv=none; b=pj7pRJ676xBcj0/FxYf4H+Puno+YxNlC9SRgn6C/Mcnea6PkuoDkQIzueomEGkZlTrPY3/UK52v4sApymI95YvjhvFhH2u5LA5KRKUJI4WpOhP/PHMAZOp4jD7TzAhsleTMTbu0XLAH8u/5P9LfyndNHbbaERoWlqEbbYS+pWpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630532; c=relaxed/simple;
-	bh=yHfu11Q0TNfcdwLLbOwG08ojnZJ5W0mmaAwpwYhmZxY=;
+	s=arc-20240116; t=1718630543; c=relaxed/simple;
+	bh=d5mtkQ4TSwEAW5aa2LmAOY5L8+c2WljHzZG5/10rc2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IYtDe1eWRh9F+Di4zAbdh+oiT47GJn/NbMgp+jOH6Pion/bxeySQk2mtq1KvPej2jCDxAMoMQrD2VSetKoDC+4w+T7znRC6o/fKaQ1cG6lr8Y6zh+BDNgDQchw4Do8O8HsBFPEVvCTK3ytv0+5ndKKhU04qDl47n392cv/870GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBNdTDPP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1984C4AF1C;
-	Mon, 17 Jun 2024 13:22:10 +0000 (UTC)
+	 MIME-Version; b=Veagu8DbEASSxBQoDV+tXvtCBPRGh6tX1HcHENnFNq4SCyBFB0OJ4YUG+76xWCiVK4XkutUKuW2RlawT3ZW/8FFntBoG+76FTPMV84H/Y2TZ250eGoqKcvyg9f3uBq4VRwDO1H3zlkMhvOO/PGoM3XVCVl/AO6mp+d45ShMXlBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B9RmuRkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A067EC4AF48;
+	Mon, 17 Jun 2024 13:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630531;
-	bh=yHfu11Q0TNfcdwLLbOwG08ojnZJ5W0mmaAwpwYhmZxY=;
+	s=k20201202; t=1718630543;
+	bh=d5mtkQ4TSwEAW5aa2LmAOY5L8+c2WljHzZG5/10rc2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PBNdTDPPwCFvI9qVDq2hlr8qhMJ7oHeGRSnKxh0p9Uwf2S9XDTY39yCERnI+1uPYd
-	 L84JRQMMG0AQSFcTD/ttLCka4MqnDd6cK4BhT0opYRVqKSz+FcX3BnscVPYQ5w++KI
-	 WrBBEBgBMBlXuKZgcU4rZX2egcVCn0HxxhjcsPlzJuxYAhuh60HWHBVWLpWgajdtHf
-	 X7/mT1qmltBvQKTsnXA5exnU2LLB6lzwxQS5p3cH0k/1BdyhaLXY9DcslVpaXYgsRq
-	 ZBrntvebDxLnReQ3hCIEGZ0PHL4ucfaBAlrZO982ASW7+T7iQsmmxotFd+hC/lNgxz
-	 i/3DXjw6ZjacA==
+	b=B9RmuRkXMjc0cLtGqIXDR1ga1zjpbl8lFr0YhVuYGxRnMp2XXfcvzPsSZGKhfnh1Y
+	 2gQug2Y0U1Cy59jJcZjMgJqt0B34wzDzoycgfQeW4EVD6pBI+Ex24MYwmNcPy0joO7
+	 7+SmhTOvUuGsjsPKlLNOOu9tFTf9SDadQWJZSdEob20HC/TGLrMcVuTNLQgJgPtjQ7
+	 6WHyk+7zC89dvYUXhS15AdPJRPrw82Stv14EGfIubscTd1mcjTsiYSsVBpzy7VgEcH
+	 JAU3yJbfmkPlkceTH+cUFRcNadX8xou3KLIImIv7wO1k2Bo1cgk3Q/k19P8fxvATOZ
+	 rxnqfVtFMCVyw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Andreas Hindborg <a.hindborg@samsung.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 35/44] ila: block BH in ila_output()
-Date: Mon, 17 Jun 2024 09:19:48 -0400
-Message-ID: <20240617132046.2587008-35-sashal@kernel.org>
+	dlemoal@kernel.org,
+	hare@suse.de,
+	johannes.thumshirn@wdc.com,
+	kch@nvidia.com,
+	zhouchengming@bytedance.com,
+	yanjun.zhu@linux.dev,
+	yukuai3@huawei.com,
+	shinichiro.kawasaki@wdc.com,
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 39/44] null_blk: fix validation of block size
+Date: Mon, 17 Jun 2024 09:19:52 -0400
+Message-ID: <20240617132046.2587008-39-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132046.2587008-1-sashal@kernel.org>
 References: <20240617132046.2587008-1-sashal@kernel.org>
@@ -68,58 +74,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-[ Upstream commit cf28ff8e4c02e1ffa850755288ac954b6ff0db8c ]
+[ Upstream commit c462ecd659b5fce731f1d592285832fd6ad54053 ]
 
-As explained in commit 1378817486d6 ("tipc: block BH
-before using dst_cache"), net/core/dst_cache.c
-helpers need to be called with BH disabled.
+Block size should be between 512 and PAGE_SIZE and be a power of 2. The current
+check does not validate this, so update the check.
 
-ila_output() is called from lwtunnel_output()
-possibly from process context, and under rcu_read_lock().
+Without this patch, null_blk would Oops due to a null pointer deref when
+loaded with bs=1536 [1].
 
-We might be interrupted by a softirq, re-enter ila_output()
-and corrupt dst_cache data structures.
+Link: https://lore.kernel.org/all/87wmn8mocd.fsf@metaspace.dk/
 
-Fix the race by using local_bh_disable().
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240531132636.2637995-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240603192645.977968-1-nmi@metaspace.dk
+[axboe: remove unnecessary braces and != 0 check]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ila/ila_lwt.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/block/null_blk/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index 0601bad798221..ff7e734e335b0 100644
---- a/net/ipv6/ila/ila_lwt.c
-+++ b/net/ipv6/ila/ila_lwt.c
-@@ -58,7 +58,9 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		return orig_dst->lwtstate->orig_output(net, sk, skb);
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 620679a0ac381..26e2c22a87e1c 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -1810,8 +1810,8 @@ static int null_validate_conf(struct nullb_device *dev)
+ 		dev->queue_mode = NULL_Q_MQ;
  	}
  
-+	local_bh_disable();
- 	dst = dst_cache_get(&ilwt->dst_cache);
-+	local_bh_enable();
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *ip6h = ipv6_hdr(skb);
- 		struct flowi6 fl6;
-@@ -86,8 +88,11 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
+-	dev->blocksize = round_down(dev->blocksize, 512);
+-	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
++	if (blk_validate_block_size(dev->blocksize))
++		return -EINVAL;
  
--		if (ilwt->connected)
-+		if (ilwt->connected) {
-+			local_bh_disable();
- 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
-+			local_bh_enable();
-+		}
- 	}
- 
- 	skb_dst_set(skb, dst);
+ 	if (dev->use_per_node_hctx) {
+ 		if (dev->submit_queues != nr_online_nodes)
 -- 
 2.43.0
 
