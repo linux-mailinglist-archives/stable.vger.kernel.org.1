@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-52474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466C890B221
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 309EF90B202
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 618C4B285A0
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:55:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A177B39D97
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B4D168484;
-	Mon, 17 Jun 2024 13:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF4618BEE1;
+	Mon, 17 Jun 2024 13:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fVTDPFBa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4LZB0L3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCCD198827;
-	Mon, 17 Jun 2024 13:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948AF18BEDB;
+	Mon, 17 Jun 2024 13:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630708; cv=none; b=prSEW3DnTAo0aIjLILMJcQBmDzcA7sx3Kfgi5P6QmjglFNbUmGde0yc6h/6a7nbT51hivv3Qk54MRLATcZYF4/8U0rbVngZ4zuJ8uHYb2zANWLRL9B1dVtO7/3cXnGa80j5zHDKqIFCuCJ2DVXxjgChQc3GnqfobIgPBGbwez+w=
+	t=1718630754; cv=none; b=X4KbGzve87n9TkVIJ251EO2lBY17zPFsZSxabZ1F0e5K6RoXBA28IHUHFfreQbTl+O5gg3M6UQ3anesYAHLolN3N2/oABwH9BdyZ4QwPnV8dY8mEbcnLg1IrvhqWjkC2stpXL/dRiuQphadLFBrPqX4fjOmEYBzdJIg9g9coMDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630708; c=relaxed/simple;
-	bh=byH65kRaOvolxPCmYoBw5pOGPfUusJTXCS2NhP+CBds=;
+	s=arc-20240116; t=1718630754; c=relaxed/simple;
+	bh=VVx+gyg9uCTH+BCYB+UzWwtuqgpv9unuu8PXzlSYd94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y097BxZ3Uv+9u5BxQ8tjeYNBTTLTKCtUu48w0ZYgfT+LupTrekuEX84snS2GPaxhD4q4Ff2uozi1us98Z2mHjv3nxRG39/R790VbIJQYVNbaTJHHMgWR/yCWqMz78ExD3H8Ltx94E0Q/1USmkCp51qNY8WdO6DnTXXEHKXxU7GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fVTDPFBa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75285C4AF1C;
-	Mon, 17 Jun 2024 13:25:07 +0000 (UTC)
+	 MIME-Version; b=ZkOvu0w8Yx0zs6F6Glm6sWd+zE//jQyCZ9OYdlX8/xp3ioUoX8cleGX6tFr0bCBXPs7pMx6KstUKVInhVFSYIeksq+AhF1HLhfTXOYmBDOTU1nLzaDRhitv2XXjB1Md99lRsOW3ckHf+xXsZYJ7k5akekoMDn8z++YBLebqEqtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4LZB0L3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D17C2BD10;
+	Mon, 17 Jun 2024 13:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630708;
-	bh=byH65kRaOvolxPCmYoBw5pOGPfUusJTXCS2NhP+CBds=;
+	s=k20201202; t=1718630754;
+	bh=VVx+gyg9uCTH+BCYB+UzWwtuqgpv9unuu8PXzlSYd94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fVTDPFBaR2Hxqol4mHwVq1ajPEEgxchR6Ybn41joR8MYBG1JlbYSlH3PNGsPTr6Rj
-	 Oq0WH4bri7PeXhCclfu1imACBoBlcOU24k7e83+kBv8fP8l4TbeuJaj5rL7CtcIxwS
-	 pYME8NSk5P8KFkht/grkMzFai7MO9xNercxkxLSMF7DQjvtZgF4+M/FJp88BFrjZ6j
-	 2ZoTlbziRuF/GhXRJ2ZlBvH3jhRwgJLaT7im4lA/M3216cDQs5GAZQrN2DBjqvyXIr
-	 ZsNBV/Ap3gRGevh2P+IXLMbpdvs71OQcKwTdj3cPi4XCLXmg5VBiUpyC7hji6taJ4Z
-	 i1D3ktqvoMmmQ==
+	b=k4LZB0L3uXsj4TkBY4Tnlswv1Ag1SbXljoiWeB7ypp3D1oXxwx0BDMNGRomSNZR4c
+	 pVq3T8J3GTEWKJ9Xrg1IKuY59j7fBs1N0RDQxNsnt49Ex7tccxsTjQd6S0Kz3+vfvy
+	 iHvhwHoiznvthvJ3zplFtBjtVD5P3039PpAajoCPRLIy1FGRLfDolHTSPCbLDA7rzU
+	 C/A9dIGJbUTsshY4sg3ZaUTkFRUdt2UBFZkhzPcO2TQSw1li5X4KciQVjrLpRe8svw
+	 zgbDSuNtH/p/k3iSb6FXs8LM+VPW0PXz324ryYWxD6hc7yXAsTkjPq4wd80bXIP/Rf
+	 O1fxISPgaSV/g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Ard Biesheuvel <ardb@kernel.org>,
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	chenhuacai@kernel.org,
-	linux-efi@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 06/29] efi/libstub: zboot.lds: Discard .discard sections
-Date: Mon, 17 Jun 2024 09:24:10 -0400
-Message-ID: <20240617132456.2588952-6-sashal@kernel.org>
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 27/29] kconfig: gconf: give a proper initial state to the Save button
+Date: Mon, 17 Jun 2024 09:24:31 -0400
+Message-ID: <20240617132456.2588952-27-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132456.2588952-1-sashal@kernel.org>
 References: <20240617132456.2588952-1-sashal@kernel.org>
@@ -68,52 +64,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 5134acb15d9ef27aa2b90aad46d4e89fcef79fdc ]
+[ Upstream commit 46edf4372e336ef3a61c3126e49518099d2e2e6d ]
 
-When building ARCH=loongarch defconfig + CONFIG_UNWINDER_ORC=y using
-LLVM, there is a warning from ld.lld when linking the EFI zboot image
-due to the use of unreachable() in number() in vsprintf.c:
+Currently, the initial state of the "Save" button is always active.
 
-  ld.lld: warning: drivers/firmware/efi/libstub/lib.a(vsprintf.stub.o):(.discard.unreachable+0x0): has non-ABS relocation R_LARCH_32_PCREL against symbol ''
+If none of the CONFIG options are changed while loading the .config
+file, the "Save" button should be greyed out.
 
-If the compiler cannot eliminate the default case for any reason, the
-.discard.unreachable section will remain in the final binary but the
-entire point of any section prefixed with .discard is that it is only
-used at compile time, so it can be discarded via /DISCARD/ in a linker
-script. The asm-generic vmlinux.lds.h includes .discard and .discard.*
-in the COMMON_DISCARDS macro but that is not used for zboot.lds, as it
-is not a kernel image linker script.
+This can be fixed by calling conf_read() after widget initialization.
 
-Add .discard and .discard.* to /DISCARD/ in zboot.lds, so that any
-sections meant to be discarded at link time are not included in the
-final zboot image. This issue is not specific to LoongArch, it is just
-the first architecture to select CONFIG_OBJTOOL, which defines
-annotate_unreachable() as an asm statement to add the
-.discard.unreachable section, and use the EFI stub.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2023
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/zboot.lds | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/kconfig/gconf.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
-index 93d33f68333b2..a7fffbad6d46a 100644
---- a/drivers/firmware/efi/libstub/zboot.lds
-+++ b/drivers/firmware/efi/libstub/zboot.lds
-@@ -34,6 +34,7 @@ SECTIONS
- 	}
+diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
+index 17adabfd6e6bf..5d1404178e482 100644
+--- a/scripts/kconfig/gconf.c
++++ b/scripts/kconfig/gconf.c
+@@ -1481,7 +1481,6 @@ int main(int ac, char *av[])
  
- 	/DISCARD/ : {
-+		*(.discard .discard.*)
- 		*(.modinfo .init.modinfo)
- 	}
- }
+ 	conf_parse(name);
+ 	fixup_rootmenu(&rootmenu);
+-	conf_read(NULL);
+ 
+ 	/* Load the interface and connect signals */
+ 	init_main_window(glade_file);
+@@ -1489,6 +1488,8 @@ int main(int ac, char *av[])
+ 	init_left_tree();
+ 	init_right_tree();
+ 
++	conf_read(NULL);
++
+ 	switch (view_mode) {
+ 	case SINGLE_VIEW:
+ 		display_tree_part();
 -- 
 2.43.0
 
