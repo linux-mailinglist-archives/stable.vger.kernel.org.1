@@ -1,194 +1,260 @@
-Return-Path: <stable+bounces-52595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A0A90B98F
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 20:23:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1CC90BA8F
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 21:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4829028B450
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 18:23:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C548B1C2302A
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 19:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC55194A42;
-	Mon, 17 Jun 2024 18:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2B0198E83;
+	Mon, 17 Jun 2024 19:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpT+ndgm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YozlLf7m"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8D1197A85
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 18:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921CC364BE;
+	Mon, 17 Jun 2024 19:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718648347; cv=none; b=VkHKMUDnQVzlfoQQswPAN+u+pdvj7hRN9OGhb12o197ip7khUC1BLhsMYEs2pARZevy1USg+5PESi09uUFc9FwXzgy08u3hdSHZUpnarLUYZ/yZPe+pVaPc0RIkg2hJ7grLjeEfOQAIG6U2XK7U5u+5r3PJpNUnujyyvQYnCZ1w=
+	t=1718651284; cv=none; b=ut2VgdpMTLolt/4w3nPE0vusVFyLtn5mrP4zlE+3/Dt5a9BQaVY7HYYOzdioJYkLq6EviGselXdurB8CfQ/3yzwhNtDTnChQpmeabf7iZveU4VhRDkE7FcWKT+qyGAfx67YZteCrsQu6pdMHaIqtszvCnxKhBVxyrJFCg2dFWf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718648347; c=relaxed/simple;
-	bh=LN164vlw2Y9PND2/nKQd6CD/1ZjLgDBYlIfiN/ONCV0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kio92GEFDenqUYS3cP5p2oGC9ZcgPWpuJEx/tM7lKllgKPsfkrXIiLoQtrvZPt6mhHdlD3mZam49kj/0hVJhNhDp0m78JQYJ28tS6IMVaGc5QbFdn/m4VdqsnGzCUX+IgKhiGxX5c+ZoQHA+BQk66EvgPzrkut8vTVjAcIOOO9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpT+ndgm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DAEC2BD10;
-	Mon, 17 Jun 2024 18:19:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718648346;
-	bh=LN164vlw2Y9PND2/nKQd6CD/1ZjLgDBYlIfiN/ONCV0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=OpT+ndgmv03yseriQDiwH7ruTeGnt9GuXTwM3bI+BhGcDd0FINLZb8fKOiq/JbRsY
-	 RvyJHSgaKLNyun3PpGcD1nK2OYhHmpkIz3iC/rY3giZiEyJ3vKIz6nm42FmfeovP+z
-	 +qSpqfAHtE5xDYSvQOiB6NQ0E0IDUJJGITu+jGWg=
-Subject: FAILED: patch "[PATCH] mptcp: pm: update add_addr counters after connect" failed to apply to 5.10-stable tree
-To: liyonglong@chinatelecom.cn,kuba@kernel.org,martineau@kernel.org,matttbe@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 17 Jun 2024 20:18:54 +0200
-Message-ID: <2024061753-platinum-rented-6220@gregkh>
+	s=arc-20240116; t=1718651284; c=relaxed/simple;
+	bh=F7rPyK5AG73Q5gxMe9v27RKSWK+iTffH6tEkcyjLvuQ=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=HPSn3BP8dUzLxsJ0n5XZjkOdm8tFZieEruxw2ChpX/kGYq/8os+9Obgw9bZrfqmK1hbWXjSpOjcXOUKGsprBNDZPtTmiRDsGoZZIok/NE6BVlGzG8RzHlWKaU/nDKfygnZvxFVH3dFMAYr37IRPEhsF2sb/ed3Dd9LGZawDELhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YozlLf7m; arc=none smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-441187684e3so30399481cf.3;
+        Mon, 17 Jun 2024 12:08:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718651281; x=1719256081; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OVmWjhI4LxI1RGpnFHROdhgzv6RHapEzTRQ8EdXC5mc=;
+        b=YozlLf7m261jmYAShzed+5rwGUm9KNIfYLEpn6F3yqHrK8S5LBK9vkIJN26tTxAixa
+         faPN+AiwFPVQKwbY9Dn/xjp8PE1gGKctTWS6xoAP0OmwEp5CvdgmoM+zxUea7+gQ/N9s
+         hrgBHMocekmgdHr//eEi7nrWpJ6gpSyvcQVMIsDv3VR+SWodfb6ute8AzLBCQqG0/kUE
+         M5h3f2PsKVVT4ezMAJcT35KsHuPvzRstZ9o5/cPxBMSGcDcD6qX4XYOPs/fDWszgYDA4
+         vdHyFpKpPzFacgV0j4HmQsu+R9K04bF8CSozfGC6YKxB1oxLF1XKBJ7IkvEimFuiP//I
+         a2kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718651281; x=1719256081;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=OVmWjhI4LxI1RGpnFHROdhgzv6RHapEzTRQ8EdXC5mc=;
+        b=CFM6+gi7IXcCpzTW+XpbZw8kqeVRkZ1z/Q0XOJS3OBEqNIZuX0HqD+gniTk1H5pAl6
+         wyWj7ZYYWcA/gK2j9eYwzzhe0tHvJFw5e03XkxzAYQDAtWkDNK6zPBWHJbgS4jMivt9a
+         467Eer6hrp3qL9qI41zYqyLHjinjlHmYCvni0RXgMsIEYXCMvdlVv5vDK75w1ibrVmiQ
+         Oc0hEN81e+16pzf2LS/XMPgVNhL8L5K3qNVBYcQh0Jv8zC1biMQ0MO7PDvb8URsxUX1W
+         Xlj5ExghzdX6Pv3qb1Vk7hTbWjLbqKrXVdElC5PteaV6hClzQu2PyeBDDbdKDdjwAcDS
+         r8Tg==
+X-Forwarded-Encrypted: i=1; AJvYcCWskjqU/z9P5y5Dhs/HDxbuMzcecKBTB6S7mxYZLfW/waFRX312v9DJDg8YTkuGqoFBPlWexl9EYy5C/1ZDwp1uiOBrP0BpfBZz2O7YJjd+xc47I7C2+35rE9C4Ryy7KO7LDZTb0HkOr9qJoHtyhzEujDjeaUZGLupd1OH8
+X-Gm-Message-State: AOJu0YwgDPJerHWza0VQRGyG5wcrM23iSnhU71DF84nPBzcMnT4ACC+/
+	6vpJJMMOAvjz392tlGvVEXte34ahqNTsMsYyXUFNggnNF6xqUXho
+X-Google-Smtp-Source: AGHT+IGWJEYYbga0s24RJNsB+VnxGMhLe6eCDv2y7owLqb0oa/tteYV+YrLRdO3cDYzbtq06F8zBog==
+X-Received: by 2002:a05:6214:4b85:b0:6b0:76f1:8639 with SMTP id 6a1803df08f44-6b2afd5a04amr108308886d6.42.1718651280272;
+        Mon, 17 Jun 2024 12:08:00 -0700 (PDT)
+Received: from localhost (56.148.86.34.bc.googleusercontent.com. [34.86.148.56])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b2a5ed9075sm57794056d6.102.2024.06.17.12.07.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Jun 2024 12:07:58 -0700 (PDT)
+Date: Mon, 17 Jun 2024 15:07:58 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jiri Pirko <jiri@resnulli.us>, 
+ Chengen Du <chengen.du@canonical.com>
+Cc: willemdebruijn.kernel@gmail.com, 
+ davem@davemloft.net, 
+ edumazet@google.com, 
+ kuba@kernel.org, 
+ pabeni@redhat.com, 
+ kaber@trash.net, 
+ netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org
+Message-ID: <6670898e1ca78_21d16f2946f@willemb.c.googlers.com.notmuch>
+In-Reply-To: <ZnAdiDjI_unrELB8@nanopsycho.orion>
+References: <20240617054514.127961-1-chengen.du@canonical.com>
+ <ZnAdiDjI_unrELB8@nanopsycho.orion>
+Subject: Re: [PATCH v8] af_packet: Handle outgoing VLAN packets without
+ hardware offloading
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
+Jiri Pirko wrote:
+> Mon, Jun 17, 2024 at 07:45:14AM CEST, chengen.du@canonical.com wrote:
+> >The issue initially stems from libpcap. The ethertype will be overwritten
+> >as the VLAN TPID if the network interface lacks hardware VLAN offloading.
+> >In the outbound packet path, if hardware VLAN offloading is unavailable,
+> >the VLAN tag is inserted into the payload but then cleared from the sk_buff
+> >struct. Consequently, this can lead to a false negative when checking for
+> >the presence of a VLAN tag, causing the packet sniffing outcome to lack
+> >VLAN tag information (i.e., TCI-TPID). As a result, the packet capturing
+> >tool may be unable to parse packets as expected.
+> >
+> >The TCI-TPID is missing because the prb_fill_vlan_info() function does not
+> >modify the tp_vlan_tci/tp_vlan_tpid values, as the information is in the
+> >payload and not in the sk_buff struct. The skb_vlan_tag_present() function
+> >only checks vlan_all in the sk_buff struct. In cooked mode, the L2 header
+> >is stripped, preventing the packet capturing tool from determining the
+> >correct TCI-TPID value. Additionally, the protocol in SLL is incorrect,
+> >which means the packet capturing tool cannot parse the L3 header correctly.
+> >
+> >Link: https://github.com/the-tcpdump-group/libpcap/issues/1105
+> >Link: https://lore.kernel.org/netdev/20240520070348.26725-1-chengen.du@canonical.com/T/#u
+> >Fixes: 393e52e33c6c ("packet: deliver VLAN TCI to userspace")
+> >Cc: stable@vger.kernel.org
+> >Signed-off-by: Chengen Du <chengen.du@canonical.com>
+> >---
+> > net/packet/af_packet.c | 86 +++++++++++++++++++++++++++++++++++++++++-
+> > 1 file changed, 84 insertions(+), 2 deletions(-)
+> >
+> >diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> >index ea3ebc160e25..84e8884a77e3 100644
+> >--- a/net/packet/af_packet.c
+> >+++ b/net/packet/af_packet.c
+> >@@ -538,6 +538,61 @@ static void *packet_current_frame(struct packet_sock *po,
+> > 	return packet_lookup_frame(po, rb, rb->head, status);
+> > }
+> > 
+> >+static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
+> >+{
+> >+	struct vlan_hdr vhdr, *vh;
+> >+	u8 *skb_orig_data = skb->data;
+> >+	int skb_orig_len = skb->len;
+> >+	unsigned int header_len;
+> >+
+> >+	if (!dev)
+> >+		return 0;
+> >+
+> >+	/* In the SOCK_DGRAM scenario, skb data starts at the network
+> >+	 * protocol, which is after the VLAN headers. The outer VLAN
+> >+	 * header is at the hard_header_len offset in non-variable
+> >+	 * length link layer headers. If it's a VLAN device, the
+> >+	 * min_header_len should be used to exclude the VLAN header
+> >+	 * size.
+> >+	 */
+> >+	if (dev->min_header_len == dev->hard_header_len)
+> >+		header_len = dev->hard_header_len;
+> >+	else if (is_vlan_dev(dev))
+> >+		header_len = dev->min_header_len;
+> >+	else
+> >+		return 0;
+> >+
+> >+	skb_push(skb, skb->data - skb_mac_header(skb));
+> >+	vh = skb_header_pointer(skb, header_len, sizeof(vhdr), &vhdr);
+> >+	if (skb_orig_data != skb->data) {
+> >+		skb->data = skb_orig_data;
+> >+		skb->len = skb_orig_len;
+> >+	}
+> >+	if (unlikely(!vh))
+> >+		return 0;
+> >+
+> >+	return ntohs(vh->h_vlan_TCI);
+> >+}
+> >+
+> >+static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
+> >+{
+> >+	__be16 proto = skb->protocol;
+> >+
+> >+	if (unlikely(eth_type_vlan(proto))) {
+> >+		u8 *skb_orig_data = skb->data;
+> >+		int skb_orig_len = skb->len;
+> >+
+> >+		skb_push(skb, skb->data - skb_mac_header(skb));
+> >+		proto = __vlan_get_protocol(skb, proto, NULL);
+> >+		if (skb_orig_data != skb->data) {
+> >+			skb->data = skb_orig_data;
+> >+			skb->len = skb_orig_len;
+> >+		}
+> >+	}
+> >+
+> >+	return proto;
+> >+}
+> >+
+> > static void prb_del_retire_blk_timer(struct tpacket_kbdq_core *pkc)
+> > {
+> > 	del_timer_sync(&pkc->retire_blk_timer);
+> >@@ -1007,10 +1062,16 @@ static void prb_clear_rxhash(struct tpacket_kbdq_core *pkc,
+> > static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
+> > 			struct tpacket3_hdr *ppd)
+> > {
+> >+	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
+> >+
+> > 	if (skb_vlan_tag_present(pkc->skb)) {
+> > 		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
+> > 		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
+> > 		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> >+	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
+> >+		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
+> >+		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
+> >+		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> > 	} else {
+> > 		ppd->hv1.tp_vlan_tci = 0;
+> > 		ppd->hv1.tp_vlan_tpid = 0;
+> >@@ -2428,6 +2489,10 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+> > 			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
+> > 			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
+> > 			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> >+		} else if (unlikely(sk->sk_type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
+> >+			h.h2->tp_vlan_tci = vlan_get_tci(skb, skb->dev);
+> >+			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
+> >+			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> > 		} else {
+> > 			h.h2->tp_vlan_tci = 0;
+> > 			h.h2->tp_vlan_tpid = 0;
+> >@@ -2457,7 +2522,8 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+> > 	sll->sll_halen = dev_parse_header(skb, sll->sll_addr);
+> > 	sll->sll_family = AF_PACKET;
+> > 	sll->sll_hatype = dev->type;
+> >-	sll->sll_protocol = skb->protocol;
+> >+	sll->sll_protocol = (sk->sk_type == SOCK_DGRAM) ?
+> >+		vlan_get_protocol_dgram(skb) : skb->protocol;
+> > 	sll->sll_pkttype = skb->pkt_type;
+> > 	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
+> > 		sll->sll_ifindex = orig_dev->ifindex;
+> >@@ -3482,7 +3548,8 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+> > 		/* Original length was stored in sockaddr_ll fields */
+> > 		origlen = PACKET_SKB_CB(skb)->sa.origlen;
+> > 		sll->sll_family = AF_PACKET;
+> >-		sll->sll_protocol = skb->protocol;
+> >+		sll->sll_protocol = (sock->type == SOCK_DGRAM) ?
+> >+			vlan_get_protocol_dgram(skb) : skb->protocol;
+> > 	}
+> > 
+> > 	sock_recv_cmsgs(msg, sk, skb);
+> >@@ -3539,6 +3606,21 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+> > 			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
+> > 			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
+> > 			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+> >+		} else if (unlikely(sock->type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
+> 
+> I don't understand why this would be needed here. We spent quite a bit
+> of efford in the past to make sure vlan header is always stripped.
+> Could you fix that in tx path to fulfill the expectation?
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Doesn't that require NETIF_F_HW_VLAN_CTAG_TX?
 
-To reproduce the conflict and resubmit, you may use the following commands:
+I also wondered whether we should just convert the skb for this case
+with skb_vlan_untag, to avoid needing new PF_PACKET logic to handle
+unstripped tags in the packet socket code. But it seems equally
+complex.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 40eec1795cc27b076d49236649a29507c7ed8c2d
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061753-platinum-rented-6220@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-40eec1795cc2 ("mptcp: pm: update add_addr counters after connect")
-6a09788c1a66 ("mptcp: pm: inc RmAddr MIB counter once per RM_ADDR ID")
-e571fb09c893 ("selftests: mptcp: add speed env var")
-4aadde088a58 ("selftests: mptcp: add fullmesh env var")
-080b7f5733fd ("selftests: mptcp: add fastclose env var")
-662aa22d7dcd ("selftests: mptcp: set all env vars as local ones")
-9e9d176df8e9 ("selftests: mptcp: add pm_nl_set_endpoint helper")
-1534f87ee0dc ("selftests: mptcp: drop sflags parameter")
-595ef566a2ef ("selftests: mptcp: drop addr_nr_ns1/2 parameters")
-0c93af1f8907 ("selftests: mptcp: drop test_linkfail parameter")
-be7e9786c915 ("selftests: mptcp: set FAILING_LINKS in run_tests")
-4369c198e599 ("selftests: mptcp: test userspace pm out of transfer")
-ae947bb2c253 ("selftests: mptcp: join: skip Fastclose tests if not supported")
-d4c81bbb8600 ("selftests: mptcp: join: support local endpoint being tracked or not")
-4a0b866a3f7d ("selftests: mptcp: join: skip test if iptables/tc cmds fail")
-0c4cd3f86a40 ("selftests: mptcp: join: use 'iptables-legacy' if available")
-6c160b636c91 ("selftests: mptcp: update userspace pm subflow tests")
-48d73f609dcc ("selftests: mptcp: update userspace pm addr tests")
-8697a258ae24 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 40eec1795cc27b076d49236649a29507c7ed8c2d Mon Sep 17 00:00:00 2001
-From: YonglongLi <liyonglong@chinatelecom.cn>
-Date: Fri, 7 Jun 2024 17:01:50 +0200
-Subject: [PATCH] mptcp: pm: update add_addr counters after connect
-
-The creation of new subflows can fail for different reasons. If no
-subflow have been created using the received ADD_ADDR, the related
-counters should not be updated, otherwise they will never be decremented
-for events related to this ID later on.
-
-For the moment, the number of accepted ADD_ADDR is only decremented upon
-the reception of a related RM_ADDR, and only if the remote address ID is
-currently being used by at least one subflow. In other words, if no
-subflow can be created with the received address, the counter will not
-be decremented. In this case, it is then important not to increment
-pm.add_addr_accepted counter, and not to modify pm.accept_addr bit.
-
-Note that this patch does not modify the behaviour in case of failures
-later on, e.g. if the MP Join is dropped or rejected.
-
-The "remove invalid addresses" MP Join subtest has been modified to
-validate this case. The broadcast IP address is added before the "valid"
-address that will be used to successfully create a subflow, and the
-limit is decreased by one: without this patch, it was not possible to
-create the last subflow, because:
-
-- the broadcast address would have been accepted even if it was not
-  usable: the creation of a subflow to this address results in an error,
-
-- the limit of 2 accepted ADD_ADDR would have then been reached.
-
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-3-1ab9ddfa3d00@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 766a8409fa67..ea9e5817b9e9 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -677,6 +677,7 @@ static void mptcp_pm_nl_add_addr_received(struct mptcp_sock *msk)
- 	unsigned int add_addr_accept_max;
- 	struct mptcp_addr_info remote;
- 	unsigned int subflows_max;
-+	bool sf_created = false;
- 	int i, nr;
- 
- 	add_addr_accept_max = mptcp_pm_get_add_addr_accept_max(msk);
-@@ -704,15 +705,18 @@ static void mptcp_pm_nl_add_addr_received(struct mptcp_sock *msk)
- 	if (nr == 0)
- 		return;
- 
--	msk->pm.add_addr_accepted++;
--	if (msk->pm.add_addr_accepted >= add_addr_accept_max ||
--	    msk->pm.subflows >= subflows_max)
--		WRITE_ONCE(msk->pm.accept_addr, false);
--
- 	spin_unlock_bh(&msk->pm.lock);
- 	for (i = 0; i < nr; i++)
--		__mptcp_subflow_connect(sk, &addrs[i], &remote);
-+		if (__mptcp_subflow_connect(sk, &addrs[i], &remote) == 0)
-+			sf_created = true;
- 	spin_lock_bh(&msk->pm.lock);
-+
-+	if (sf_created) {
-+		msk->pm.add_addr_accepted++;
-+		if (msk->pm.add_addr_accepted >= add_addr_accept_max ||
-+		    msk->pm.subflows >= subflows_max)
-+			WRITE_ONCE(msk->pm.accept_addr, false);
-+	}
- }
- 
- void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index aea314d140c9..108aeeb84ef1 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2249,10 +2249,10 @@ remove_tests()
- 	if reset "remove invalid addresses"; then
- 		pm_nl_set_limits $ns1 3 3
- 		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
- 		# broadcast IP: no packet for this address will be received on ns1
- 		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal
--		pm_nl_set_limits $ns2 3 3
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
-+		pm_nl_set_limits $ns2 2 2
- 		addr_nr_ns1=-3 speed=10 \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 1 1 1
-
+Aside from this conversation whether we need to support this
+unstripped case at all, code LGTM.
 
