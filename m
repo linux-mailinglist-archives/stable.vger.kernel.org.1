@@ -1,245 +1,158 @@
-Return-Path: <stable+bounces-52369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45AB890AA6F
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 11:58:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7FA90AB11
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 12:29:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44C9F1C23D69
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 09:58:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEFB4281EA5
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 10:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E83190686;
-	Mon, 17 Jun 2024 09:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF9C194AC9;
+	Mon, 17 Jun 2024 10:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="YzMf7lmV";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="O2RMb57/";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="hwCst1gz";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="aMqxHT0X"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JNrjMyKs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2531922C7
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 09:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B73E194A42
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 10:29:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718618153; cv=none; b=MF+jWcSRHArCDgs6tua9KGDLBaqufzRNDb3zlWXmzUHoytQDIb/w7J5ZAviTcWe0ByuhwqN67bE8CtpjG1fkaCTeEDAMghD6qHc+ScXli+hmUAbS2EgXcM4n5itkqONvFxxZbfzvMpOs/ujs9Q6jKAd6EWyhpt06VkI6O4LuKV8=
+	t=1718620165; cv=none; b=onWxK8Icb+tp93g5qjFGIhh6GFuvvnsTSDl+DbLgHGaJNch7vVvytx5hbUxseOHRtokDt66CqGIRbXt3I7DymutJH5rriMnb0m7l24mK9YCgpKIXAgdsnTlIgONozsWjCB2cXsscETGwY3U1Zb24Ml/HJcORwo1v6bQBOszNQzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718618153; c=relaxed/simple;
-	bh=PYy5OtlAhgNWDPwAzNUP4FYuIXSyme5rRcw7FpEKuUs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=N64qvlMppteH9zEQ2h/AsVesicg6m7N5WlX0y2GUEo7t7DNLp6N8viXqmdeIcoofEaIBFTzx+nV7n6NlyIf7T2G9MdphPf64RWQd7FA/ppxGvKSYAHdxKiLprgVaQeBBHmbNhhp7GSDBCs5memenfjrW2Irx5C5adNUADkdmJDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=YzMf7lmV; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=O2RMb57/; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=hwCst1gz; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=aMqxHT0X; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	s=arc-20240116; t=1718620165; c=relaxed/simple;
+	bh=f7swwUMUk17vjjx+uev+yMPnjzGgCHtMLFMwUcUfkr0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Or8BF5dC4EziYP4OhiJnlVACBHvqRcjt1dOuRam9WcoEWKLRhfgtivUA8vf9IGdRNPufms2WOMigpjebH6ET5YuLBLU7efna4ETe4EWWm+IQ1j9asqCYtBYsX2p7jzRQEWAhcHzdJ9zS2Wjcpa/TNy/ueDtSjId/iv+QPI1EJPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JNrjMyKs; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718620162;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=1FUyctF7pqaFU0497LUN/9JXL84PlJqzX/VUt5AsG98=;
+	b=JNrjMyKsqNIQIxqltMKf2IbnKHk9vWB4zEERU6jx0qGd+4IMH1zimsRghbHa3IgU1HRMYp
+	0tIjkmySpj/+Y/lLOa8TKi2/jWPNopZ4fZsJiDQ9Jo92xC8ut3eZrdLuUEffyqe1L1WRva
+	RotHqSoGb2jEEkWXoa+IDyjyPLQ4H3o=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-318--OKZ7eSUPl6bQ8KmEPZVQg-1; Mon,
+ 17 Jun 2024 06:29:17 -0400
+X-MC-Unique: -OKZ7eSUPl6bQ8KmEPZVQg-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id CAB8F5FE4A;
-	Mon, 17 Jun 2024 09:55:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1718618150; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yKI1zAE/e4vAUF7ub7lB3ryPe5jg5fPUnvMFQRTHxf4=;
-	b=YzMf7lmV+bTFjwsainlchjxCMZfr+gryD3GGnnM15HDigIS6gC7OTIjenwHLhIrrwTnL2p
-	Haf7zt6ar2yfE8kVxfr8AgNsc8JU2dx7M9n+6nlaVp6K3x+pL+Zek1dUwhm1u9yFki25wl
-	mK15AvhSxBkWDGNZP1u6bPDVw/KM0yU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1718618150;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yKI1zAE/e4vAUF7ub7lB3ryPe5jg5fPUnvMFQRTHxf4=;
-	b=O2RMb57/s2TSt5lLd6isl7+G15owUnKpWsn5tHTF5G2QH5ztjA7P6zt9ORVeNd3p/jvE4H
-	APSVuCpPK6I2FuDA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=hwCst1gz;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=aMqxHT0X
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1718618149; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yKI1zAE/e4vAUF7ub7lB3ryPe5jg5fPUnvMFQRTHxf4=;
-	b=hwCst1gzM03BhdGQCCNxPbU5uU0kYbMbeAc5s5dG479I+WNZpCin0qtqrzb0j8pEkMugqo
-	vT1furwPDfC/r19CozzJSVlBe3vGuYlS19VmkkWJUGad61anv3wIafYt1T+N9S2aZl7VYO
-	hBfz4WAjBq9EW7mZyR5FiHSOqacFtAU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1718618149;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=yKI1zAE/e4vAUF7ub7lB3ryPe5jg5fPUnvMFQRTHxf4=;
-	b=aMqxHT0Xh0cZ/ImiP/tDgA0tH6z3nZsUXtV5IrrQ2tWUOy2m2q3ptsDIkNH6Y+ibwIRLr4
-	/r7Uz3YKz7ZtimCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B73F4139AB;
-	Mon, 17 Jun 2024 09:55:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hBR0LCUIcGabfQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 17 Jun 2024 09:55:49 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 5822CA0887; Mon, 17 Jun 2024 11:55:45 +0200 (CEST)
-From: Jan Kara <jack@suse.cz>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	ocfs2-devel@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] ocfs2: Fix DIO failure due to insufficient transaction credits
-Date: Mon, 17 Jun 2024 11:55:43 +0200
-Message-Id: <20240617095543.6971-1-jack@suse.cz>
-X-Mailer: git-send-email 2.35.3
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 284731955DDF;
+	Mon, 17 Jun 2024 10:29:15 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.192.164])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id ED1DC19560AE;
+	Mon, 17 Jun 2024 10:29:08 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: jtornosm@redhat.com,
+	stable@vger.kernel.org,
+	Yongqin Liu <yongqin.liu@linaro.org>,
+	=?UTF-8?q?Antje=20Miederh=C3=B6fer?= <a.miederhoefer@gmx.de>,
+	Arne Fitzenreiter <arne_f@ipfire.org>
+Subject: [PATCH] net: usb: ax88179_178a: improve reset check
+Date: Mon, 17 Jun 2024 12:28:21 +0200
+Message-ID: <20240617102839.654316-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4211; i=jack@suse.cz; h=from:subject; bh=PYy5OtlAhgNWDPwAzNUP4FYuIXSyme5rRcw7FpEKuUs=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBmcAgQ1BV6gZQcjvr+SzTJ/bnDYtjRduYdVqGY5lPV 9CDrDHqJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCZnAIEAAKCRCcnaoHP2RA2fttCA CKw78V2ew+Kyu8xOD2y5y1Aui2js3Fd5D+lOIpjOJW1qy4cH9HnYxu7Ynhfd5uWJNVQBi8/srGGPKR Vyg3EqgkmQdLz1ZAPwbs0LekcH+wjwVBMNlB9MHEBMl1VXZmBqyPNLBdK7qQgg86x1L8KkFDi5SCGi vtxTw44vAQTjdAa2zlKjVipptIFfcCL8KD+qddhKawCEjCpqo/7ABYgsfBj6EGi6v3LqacmKXTj9gN 107TfXI1JrUf6OdwvJLeNsX6Pdl0udr+MpDdvoWNm0ASg/oxaH1fhqsSb1GFrd0XM6AQ++2B/mvbR/ +ZKdEfrEWHliCP1yQpSE1EZx8An9Mw
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: CAB8F5FE4A
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-The code in ocfs2_dio_end_io_write() estimates number of necessary
-transaction credits using ocfs2_calc_extend_credits(). This however does
-not take into account that the IO could be arbitrarily large and can
-contain arbitrary number of extents. Extent tree manipulations do often
-extend the current transaction but not in all of the cases. For example
-if we have only single block extents in the tree,
-ocfs2_mark_extent_written() will end up calling
-ocfs2_replace_extent_rec() all the time and we will never extend the
-current transaction and eventually exhaust all the transaction credits
-if the IO contains many single block extents. Once that happens
-a WARN_ON(jbd2_handle_buffer_credits(handle) <= 0) is triggered in
-jbd2_journal_dirty_metadata() and subsequently OCFS2 aborts in response
-to this error. This was actually triggered by one of our customers on
-a heavily fragmented OCFS2 filesystem.
+After ecf848eb934b ("net: usb: ax88179_178a: fix link status when link is
+set to down/up") to not reset from usbnet_open after the reset from
+usbnet_probe at initialization stage to speed up this, some issues have
+been reported.
 
-To fix the issue make sure the transaction always has enough credits for
-one extent insert before each call of ocfs2_mark_extent_written().
+It seems to happen that if the initialization is slower, and some time
+passes between the probe operation and the open operation, the second reset
+from open is necessary too to have the device working. The reason is that
+if there is no activity with the phy, this is "disconnected".
 
-CC: stable@vger.kernel.org
-Fixes: c15471f79506 ("ocfs2: fix sparse file & data ordering issue in direct io")
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+In order to improve this, the solution is to detect when the phy is
+"disconnected", and we can use the phy status register for this. So we will
+only reset the device from reset operation in this situation, that is, only
+if necessary.
+
+The same bahavior is happening when the device is stopped (link set to
+down) and later is restarted (link set to up), so if the phy keeps working
+we only need to enable the mac again, but if enough time passes between the
+device stop and restart, reset is necessary, and we can detect the
+situation checking the phy status register too.
+
+cc: stable@vger.kernel.org # 6.6+
+Fixes: ecf848eb934b ("net: usb: ax88179_178a: fix link status when link is set to down/up")
+Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
+Reported-by: Antje Miederhöfer <a.miederhoefer@gmx.de>
+Reported-by: Arne Fitzenreiter <arne_f@ipfire.org>
+Tested-by: Yongqin Liu <yongqin.liu@linaro.org>
+Tested-by: Antje Miederhöfer <a.miederhoefer@gmx.de>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 ---
- fs/ocfs2/aops.c        |  5 +++++
- fs/ocfs2/journal.c     | 17 +++++++++++++++++
- fs/ocfs2/journal.h     |  2 ++
- fs/ocfs2/ocfs2_trace.h |  2 ++
- 4 files changed, 26 insertions(+)
+ drivers/net/usb/ax88179_178a.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-Changes since v1:
-* Added Reviewed-by tags, Fixes tag, CC stable
-* Updated changelog to describe better the observed issues
-
-diff --git a/fs/ocfs2/aops.c b/fs/ocfs2/aops.c
-index b82185075de7..469143110f31 100644
---- a/fs/ocfs2/aops.c
-+++ b/fs/ocfs2/aops.c
-@@ -2368,6 +2368,11 @@ static int ocfs2_dio_end_io_write(struct inode *inode,
- 	}
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 51c295e1e823..c2fb736f78b2 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -174,7 +174,6 @@ struct ax88179_data {
+ 	u32 wol_supported;
+ 	u32 wolopts;
+ 	u8 disconnecting;
+-	u8 initialized;
+ };
  
- 	list_for_each_entry(ue, &dwc->dw_zero_list, ue_node) {
-+		ret = ocfs2_assure_trans_credits(handle, credits);
-+		if (ret < 0) {
-+			mlog_errno(ret);
-+			break;
+ struct ax88179_int_data {
+@@ -1678,12 +1677,21 @@ static int ax88179_reset(struct usbnet *dev)
+ 
+ static int ax88179_net_reset(struct usbnet *dev)
+ {
+-	struct ax88179_data *ax179_data = dev->driver_priv;
++	u16 tmp16;
+ 
+-	if (ax179_data->initialized)
++	ax88179_read_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID, GMII_PHY_PHYSR,
++			 2, &tmp16);
++	if (tmp16) {
++		ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
++				 2, 2, &tmp16);
++		if (!(tmp16 & AX_MEDIUM_RECEIVE_EN)) {
++			tmp16 |= AX_MEDIUM_RECEIVE_EN;
++			ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
++					  2, 2, &tmp16);
 +		}
- 		ret = ocfs2_mark_extent_written(inode, &et, handle,
- 						ue->ue_cpos, 1,
- 						ue->ue_phys,
-diff --git a/fs/ocfs2/journal.c b/fs/ocfs2/journal.c
-index 604fea3a26ff..4866d7d3ac57 100644
---- a/fs/ocfs2/journal.c
-+++ b/fs/ocfs2/journal.c
-@@ -445,6 +445,23 @@ int ocfs2_extend_trans(handle_t *handle, int nblocks)
- 	return status;
++	} else {
+ 		ax88179_reset(dev);
+-	else
+-		ax179_data->initialized = 1;
++	}
+ 
+ 	return 0;
  }
- 
-+/*
-+ * Make sure handle has at least 'nblocks' credits available. If it does not
-+ * have that many credits available, we will try to extend the handle to have
-+ * enough credits. If that fails, we will restart transaction to have enough
-+ * credits. Similar notes regarding data consistency and locking implications
-+ * as for ocfs2_extend_trans() apply here.
-+ */
-+int ocfs2_assure_trans_credits(handle_t *handle, int nblocks)
-+{
-+	int old_nblks = jbd2_handle_buffer_credits(handle);
-+
-+	trace_ocfs2_assure_trans_credits(old_nblks);
-+	if (old_nblks >= nblocks)
-+		return 0;
-+	return ocfs2_extend_trans(handle, nblocks - old_nblks);
-+}
-+
- /*
-  * If we have fewer than thresh credits, extend by OCFS2_MAX_TRANS_DATA.
-  * If that fails, restart the transaction & regain write access for the
-diff --git a/fs/ocfs2/journal.h b/fs/ocfs2/journal.h
-index 41c9fe7e62f9..e3c3a35dc5e0 100644
---- a/fs/ocfs2/journal.h
-+++ b/fs/ocfs2/journal.h
-@@ -243,6 +243,8 @@ handle_t		    *ocfs2_start_trans(struct ocfs2_super *osb,
- int			     ocfs2_commit_trans(struct ocfs2_super *osb,
- 						handle_t *handle);
- int			     ocfs2_extend_trans(handle_t *handle, int nblocks);
-+int			     ocfs2_assure_trans_credits(handle_t *handle,
-+						int nblocks);
- int			     ocfs2_allocate_extend_trans(handle_t *handle,
- 						int thresh);
- 
-diff --git a/fs/ocfs2/ocfs2_trace.h b/fs/ocfs2/ocfs2_trace.h
-index 9898c11bdfa1..d194d202413d 100644
---- a/fs/ocfs2/ocfs2_trace.h
-+++ b/fs/ocfs2/ocfs2_trace.h
-@@ -2577,6 +2577,8 @@ DEFINE_OCFS2_ULL_UINT_EVENT(ocfs2_commit_cache_end);
- 
- DEFINE_OCFS2_INT_INT_EVENT(ocfs2_extend_trans);
- 
-+DEFINE_OCFS2_INT_EVENT(ocfs2_assure_trans_credits);
-+
- DEFINE_OCFS2_INT_EVENT(ocfs2_extend_trans_restart);
- 
- DEFINE_OCFS2_INT_INT_EVENT(ocfs2_allocate_extend_trans);
 -- 
-2.35.3
+2.45.1
 
 
