@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-52420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03D7F90AF81
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:36:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF9DF90AF82
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACDD21F20FBE
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:36:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEAAD1C22FCE
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8E61B0114;
-	Mon, 17 Jun 2024 13:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95591B0133;
+	Mon, 17 Jun 2024 13:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XaQVQmXG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2yfcADe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166D01B0109;
-	Mon, 17 Jun 2024 13:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942231B0129;
+	Mon, 17 Jun 2024 13:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630528; cv=none; b=umKXSRubnmNPZ2yscjT6eVqG+MNneEUxhVBde5Th696zj8oedNdJtBgAIiKwdA13mJgGL+cMWdiDm4ISSKormDwxY+kLJJF6vjnrey5VBv9EhIu1jmj7Uvm+pHYdYv/7uQpYXUqAJYPNXvpWKTfUOP17PNKLuOo9zQ5kdfGAvVk=
+	t=1718630529; cv=none; b=FGKAH7uhZEP9Bebt+E4cBft2t6LF8nZgfCQAx7AMCfDzGSZTHI0+ilxT5Gulb55ioLpabBwtZBnZCIQ/1Dz1i3ZXgwZ7yYOn3+CLYCWrr/LcRLLwmp2aHIgqKLrF7ca0j4gBzyykMVoslptbz2ETltkfwbStvnp4AyCYhsq/sgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630528; c=relaxed/simple;
-	bh=OP710bnuoVQuM+4OPjHQIkyv8tHjclqZH/v71uWFaN4=;
+	s=arc-20240116; t=1718630529; c=relaxed/simple;
+	bh=gBBmWF8YTIjh0DlT+b6kdKqtSsPfi3eXXh024j8qgOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pp3+JOSoTgiJbk/JSi6XcZ3Yw9DybWpbyMuIaqzvfT51ISJ2e5ELb4n9QApcu1+t6tRJhUeX4VMKyo1m5uKBo3y2ozdQK902T9yyEtItc1MnRB2mNL2iBDlQFmK5AHt8tO0089Jp34tyN3QW28Rb4sqlzyfae+HlP6a7Vx7Mct4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XaQVQmXG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92A4C4AF48;
-	Mon, 17 Jun 2024 13:22:06 +0000 (UTC)
+	 MIME-Version; b=O3Dcm/dI2yXaYHWf6QKJIo8kM2FJm8tQY76wKzSEMBmOtyCLwd6plO3ZRtk3x3qc0FXNMNVEnSn/62ntqVb+zMqaSMOwtXT5RJPGi5sHN8t6kybh8T4yAgRhRStd93mtuzhIVMEwr2fBelzTV6sz0gFIZg2WhV5mW18q8f3IM6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2yfcADe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2536EC4AF1D;
+	Mon, 17 Jun 2024 13:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630527;
-	bh=OP710bnuoVQuM+4OPjHQIkyv8tHjclqZH/v71uWFaN4=;
+	s=k20201202; t=1718630529;
+	bh=gBBmWF8YTIjh0DlT+b6kdKqtSsPfi3eXXh024j8qgOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XaQVQmXG90hPKSMYJ81llgeeis64vxy4Hd2oO5vetwrYEZz1UeFRHUfTWJfUWJ7mu
-	 f1kQcsrUaF5IEHH/mwHlcIVpItP0d0CdKuLVuWCITPkb4L+1oetGCtJiW0qfq2pPFh
-	 3ZRfzdPe6YC3MLvBJrNLqBoFCXoU7bXJkDd9iOfAzqBNevTm59gaqm4fhewQC0VQQj
-	 sVmxRmKGD363WwgcXj3JCuyiek+/KaXDx4UYjB1Bn1hkCjXjNN/Nl+1oH9fs3wt5nV
-	 CSiPhVbw4vz54XCTCG//9u6sfIh3NA0KFNI5nwS+FSyibgdNjVjdFOaCOocYovlYr0
-	 mv+habNnu6ADQ==
+	b=c2yfcADerqKpHXm0GRwG/W8jTlWDk1hgtFKhLoXmWiOgYydTKJcXixzpbUxhl6I4L
+	 9DbsOG2IK3tGD2M6O3ssB9/Vvltoy+T2V1m+4ejsyJh1+6R3G2dbwI91FtbAau5gwn
+	 134z3o1uZxp4PghqISwnxulx9/c6uvArDjKSzpts87hA5LQTencNtrwpkzl1srIGx/
+	 6GFlW9h+/dvF9Off1/vhzI9t2GypjckeyjpJlEmOMTYyxM5sJ32A2Dn7BQGINdQSW/
+	 TEnR6EhwWxWo4jWMyheSCWzbfxbJEiPIFzYUxVrZI68JAShoJ5XXmk5BiLPoTVGqYo
+	 YSJ55WCGkZpng==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Suma Hegde <suma.hegde@amd.com>,
-	Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+Cc: Eric Dumazet <edumazet@google.com>,
+	Alexander Aring <aahringo@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ilpo.jarvinen@linux.intel.com,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 33/44] platform/x86/amd/hsmp: Check HSMP support on AMD family of processors
-Date: Mon, 17 Jun 2024 09:19:46 -0400
-Message-ID: <20240617132046.2587008-33-sashal@kernel.org>
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 34/44] net: ipv6: rpl_iptunnel: block BH in rpl_output() and rpl_input()
+Date: Mon, 17 Jun 2024 09:19:47 -0400
+Message-ID: <20240617132046.2587008-34-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132046.2587008-1-sashal@kernel.org>
 References: <20240617132046.2587008-1-sashal@kernel.org>
@@ -67,100 +69,90 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Suma Hegde <suma.hegde@amd.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 77f1972bdcf7513293e8bbe376b9fe837310ee9c ]
+[ Upstream commit db0090c6eb12c31246438b7fe2a8f1b833e7a653 ]
 
-HSMP interface is supported only on few x86 processors from AMD.
-Accessing HSMP registers on rest of the platforms might cause
-unexpected behaviour. So add a check.
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-Also unavailability of this interface on rest of the processors
-is not an error. Hence, use pr_info() instead of the pr_err() to
-log the message.
+Disabling preemption in rpl_output() is not good enough,
+because rpl_output() is called from process context,
+lwtunnel_output() only uses rcu_read_lock().
 
-Signed-off-by: Suma Hegde <suma.hegde@amd.com>
-Reviewed-by: Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>
-Link: https://lore.kernel.org/r/20240603081512.142909-1-suma.hegde@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+We might be interrupted by a softirq, re-enter rpl_output()
+and corrupt dst_cache data structures.
+
+Fix the race by using local_bh_disable() instead of
+preempt_disable().
+
+Apply a similar change in rpl_input().
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Alexander Aring <aahringo@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/hsmp.c | 50 ++++++++++++++++++++++++++++-----
- 1 file changed, 43 insertions(+), 7 deletions(-)
+ net/ipv6/rpl_iptunnel.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/hsmp.c b/drivers/platform/x86/amd/hsmp.c
-index 1927be901108e..272d32a95e216 100644
---- a/drivers/platform/x86/amd/hsmp.c
-+++ b/drivers/platform/x86/amd/hsmp.c
-@@ -907,16 +907,44 @@ static int hsmp_plat_dev_register(void)
- 	return ret;
- }
+diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+index a013b92cbb860..2c83b7586422d 100644
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -212,9 +212,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	if (unlikely(err))
+ 		goto drop;
  
-+/*
-+ * This check is only needed for backward compatibility of previous platforms.
-+ * All new platforms are expected to support ACPI based probing.
-+ */
-+static bool legacy_hsmp_support(void)
-+{
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
-+		return false;
-+
-+	switch (boot_cpu_data.x86) {
-+	case 0x19:
-+		switch (boot_cpu_data.x86_model) {
-+		case 0x00 ... 0x1F:
-+		case 0x30 ... 0x3F:
-+		case 0x90 ... 0x9F:
-+		case 0xA0 ... 0xAF:
-+			return true;
-+		default:
-+			return false;
-+		}
-+	case 0x1A:
-+		switch (boot_cpu_data.x86_model) {
-+		case 0x00 ... 0x1F:
-+			return true;
-+		default:
-+			return false;
-+		}
-+	default:
-+		return false;
-+	}
-+
-+	return false;
-+}
-+
- static int __init hsmp_plt_init(void)
- {
- 	int ret = -ENODEV;
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+-	preempt_enable();
++	local_bh_enable();
  
--	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD || boot_cpu_data.x86 < 0x19) {
--		pr_err("HSMP is not supported on Family:%x model:%x\n",
--		       boot_cpu_data.x86, boot_cpu_data.x86_model);
--		return ret;
--	}
--
- 	/*
- 	 * amd_nb_num() returns number of SMN/DF interfaces present in the system
- 	 * if we have N SMN/DF interfaces that ideally means N sockets
-@@ -930,7 +958,15 @@ static int __init hsmp_plt_init(void)
- 		return ret;
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+@@ -234,9 +234,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
  
- 	if (!plat_dev.is_acpi_device) {
--		ret = hsmp_plat_dev_register();
-+		if (legacy_hsmp_support()) {
-+			/* Not ACPI device, but supports HSMP, register a plat_dev */
-+			ret = hsmp_plat_dev_register();
-+		} else {
-+			/* Not ACPI, Does not support HSMP */
-+			pr_info("HSMP is not supported on Family:%x model:%x\n",
-+				boot_cpu_data.x86, boot_cpu_data.x86_model);
-+			ret = -ENODEV;
-+		}
- 		if (ret)
- 			platform_driver_unregister(&amd_hsmp_driver);
+-		preempt_disable();
++		local_bh_disable();
+ 		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
+-		preempt_enable();
++		local_bh_enable();
  	}
+ 
+ 	skb_dst_drop(skb);
+@@ -268,23 +268,21 @@ static int rpl_input(struct sk_buff *skb)
+ 		return err;
+ 	}
+ 
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+-	preempt_enable();
+ 
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+ 		if (!dst->error) {
+-			preempt_disable();
+ 			dst_cache_set_ip6(&rlwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
+-			preempt_enable();
+ 		}
+ 	} else {
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 	}
++	local_bh_enable();
+ 
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
 -- 
 2.43.0
 
