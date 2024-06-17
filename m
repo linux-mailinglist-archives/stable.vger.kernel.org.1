@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-52538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A6190B16B
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:18:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 219C490B193
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4EBF1F23E6B
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:18:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 616FDB3CC20
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F891BA092;
-	Mon, 17 Jun 2024 13:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116D21A0382;
+	Mon, 17 Jun 2024 13:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ts7W/raA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZ478Y5n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD64D1BA089;
-	Mon, 17 Jun 2024 13:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE26619E7D1;
+	Mon, 17 Jun 2024 13:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630871; cv=none; b=qrEFkP/J34lGXHg+DKwsQYFrw0gvOCH+ljTOv1hd8mrGVKJO8PLghw7t2Y8doI42sU+t+CDJZfs6UhUJZUplLKmokWlVJ6l5oQrFnxJUW4NRYDyr0TtG70QkoO/k4qQ/UyL+XjXpxprZOjSCdmRcTZD7jdloG3d/EOrT5QIzuBA=
+	t=1718630872; cv=none; b=Thzl6NFdz8tIOQgBDdCYU08T/jbiv4rnyNFGSpqqJgBlJuBr7006H5ie5T9Yl5CW3PNrj3drjFsCMJrVgM1QKe46iX/Di5f5MkoLvQ8xwoQlQ/u40Uee3XrEpLWla4ycPIlqCOtUakYK2YynDlp0flbZCQ0CZTrpz+g0Zijm3ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630871; c=relaxed/simple;
-	bh=zo7vGdQmD/9WW6TxmkLYuuXaSiAwi6gfF0+dfbpj6Xo=;
+	s=arc-20240116; t=1718630872; c=relaxed/simple;
+	bh=k4N2oZPvjdyGFcX8/AqR7IHO5QaMyWZIg+o9KaW6AIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EcLlXmpkRgHq8a7Ii2lBKL+PSzAreaEeHLQNYXqjnMfpBleCxAlBZMyKorvh/dUXibrFqzhYKVJbcQGPEw7+OctWmfEbuLwO0FI92RqyPfWFnXkV4ktmuZ5sZRfqXB7WacPsKGOZLliOJJRRQbiRMuSLIfR/2VNkGjcDPIJkrew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ts7W/raA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926D0C4AF1C;
-	Mon, 17 Jun 2024 13:27:50 +0000 (UTC)
+	 MIME-Version; b=n2PDhNQpOt6Ijv5Qs1QN5nnPFo2HTJ3X2Rw10NnifBJxpWOnq/WmM5lH7wiyETKDz3pyKjySjXMBaBAzzyalek15T8PdgDtfD/TGjOL9ziIw1rS5oCqBGAbqnWBUnY8fV1xfTjXUYA4PJ+WMrxs1qPWkJA2Lk2Wr8PQ+6hqSyR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZ478Y5n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BEFC4AF1D;
+	Mon, 17 Jun 2024 13:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630871;
-	bh=zo7vGdQmD/9WW6TxmkLYuuXaSiAwi6gfF0+dfbpj6Xo=;
+	s=k20201202; t=1718630872;
+	bh=k4N2oZPvjdyGFcX8/AqR7IHO5QaMyWZIg+o9KaW6AIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ts7W/raALrA6pYoxS0Fl52M6QGrrEgNhizmAghxyFv03d+ab5cksf3+8mI2ESbxi/
-	 RiU25e7heNWRQtshkIUZxC6z2NKYgWc8xQzUI5kc1SSwFkEEa0AZtOvfgPwwOGkFyV
-	 S74uY63E8vmp3dNjofQLjFOJRqQqalA4wFK002QizFKjmvhW38SDNbJxWb5fGLcZlD
-	 ex78/a7FqSxKzfcEMagB5CIQDTzPwBLOegJz2/QmxqOzQMlx9kMaOWjnL26u3u82+5
-	 XU1r7E04Fb+o6jqTX7BlNKEBA86NCEl2YtQZsrRfRQPyowDvCWdULAN3UyrqHN/FEP
-	 EDaHWY+ldPpKw==
+	b=NZ478Y5nuOvwyX3AoW2rVUIebPM2SpWAB4hhXgGTRVC3+VYEdTbZ7ncgm9qnxTZ0U
+	 zZfAnBboxVeXoOxGFFYLLTa/s+rmHyewGnEFLZaUH5MKweF6A8ScaouS3WuHga00xW
+	 us+mA0Vs/ZgUVKtyXf7ELwC+jaNMWcarRO9eN4T4eevIwwgQvcH1tCjouHXLVzytUM
+	 WgbcGfGXt5WvAWBuIVjmu2eAhpBDbYe5OmCJR+s+uM9bpS3h2CMVyUSIPgUvKUJ3lI
+	 Alm9bDpam7IjnLG3uWrP5HZTDTvinKI6FtnzIGzWXh6kp4gA9GYvRmtHZW5GI1isnt
+	 wIxtLeXSI+vSw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 7/9] ila: block BH in ila_output()
-Date: Mon, 17 Jun 2024 09:27:34 -0400
-Message-ID: <20240617132739.2590390-7-sashal@kernel.org>
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 8/9] kconfig: gconf: give a proper initial state to the Save button
+Date: Mon, 17 Jun 2024 09:27:35 -0400
+Message-ID: <20240617132739.2590390-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132739.2590390-1-sashal@kernel.org>
 References: <20240617132739.2590390-1-sashal@kernel.org>
@@ -68,58 +64,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.278
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit cf28ff8e4c02e1ffa850755288ac954b6ff0db8c ]
+[ Upstream commit 46edf4372e336ef3a61c3126e49518099d2e2e6d ]
 
-As explained in commit 1378817486d6 ("tipc: block BH
-before using dst_cache"), net/core/dst_cache.c
-helpers need to be called with BH disabled.
+Currently, the initial state of the "Save" button is always active.
 
-ila_output() is called from lwtunnel_output()
-possibly from process context, and under rcu_read_lock().
+If none of the CONFIG options are changed while loading the .config
+file, the "Save" button should be greyed out.
 
-We might be interrupted by a softirq, re-enter ila_output()
-and corrupt dst_cache data structures.
+This can be fixed by calling conf_read() after widget initialization.
 
-Fix the race by using local_bh_disable().
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240531132636.2637995-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ila/ila_lwt.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ scripts/kconfig/gconf.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index 422dcc691f71c..6a6a30e82810d 100644
---- a/net/ipv6/ila/ila_lwt.c
-+++ b/net/ipv6/ila/ila_lwt.c
-@@ -58,7 +58,9 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		return orig_dst->lwtstate->orig_output(net, sk, skb);
- 	}
+diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
+index e36b342f1065b..9b10f1248da11 100644
+--- a/scripts/kconfig/gconf.c
++++ b/scripts/kconfig/gconf.c
+@@ -1483,7 +1483,6 @@ int main(int ac, char *av[])
  
-+	local_bh_disable();
- 	dst = dst_cache_get(&ilwt->dst_cache);
-+	local_bh_enable();
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *ip6h = ipv6_hdr(skb);
- 		struct flowi6 fl6;
-@@ -86,8 +88,11 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
+ 	conf_parse(name);
+ 	fixup_rootmenu(&rootmenu);
+-	conf_read(NULL);
  
--		if (ilwt->connected)
-+		if (ilwt->connected) {
-+			local_bh_disable();
- 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
-+			local_bh_enable();
-+		}
- 	}
+ 	/* Load the interface and connect signals */
+ 	init_main_window(glade_file);
+@@ -1491,6 +1490,8 @@ int main(int ac, char *av[])
+ 	init_left_tree();
+ 	init_right_tree();
  
- 	skb_dst_set(skb, dst);
++	conf_read(NULL);
++
+ 	switch (view_mode) {
+ 	case SINGLE_VIEW:
+ 		display_tree_part();
 -- 
 2.43.0
 
