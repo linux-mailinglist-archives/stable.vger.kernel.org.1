@@ -1,145 +1,135 @@
-Return-Path: <stable+bounces-52350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE1E90A625
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 08:53:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F007390A8C5
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 10:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94BB31F23EE3
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 06:53:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A14C21F23CE3
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 08:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3D4186E25;
-	Mon, 17 Jun 2024 06:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BCD54918;
+	Mon, 17 Jun 2024 08:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="RAK1/bkL";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="fIiiLBFG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VN/aPI21"
 X-Original-To: stable@vger.kernel.org
-Received: from wfout4-smtp.messagingengine.com (wfout4-smtp.messagingengine.com [64.147.123.147])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C56C17C7B3;
-	Mon, 17 Jun 2024 06:53:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928E0EEC3
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 08:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718607222; cv=none; b=Uf93jI0CDLX507gwPBxkeV+NqjOm0w1t/fBkXOLsSYTYamaYC550xo1l/Bm8OFjvl23cNiksgFb0tiF1JtlTySEyYIEeJJPEIMczIDd+LwjCEmkQAIxHzh7fQXvQLvn++LAqBwC36/qcB5e3AeDCBch55FPRHl1ZXruSnf4tZ4w=
+	t=1718614225; cv=none; b=iYXC9fpBFs13RCEqcYyoTUB98YSARXbAo+AV3E4KDBBjeOzgIqJHfG1nSYQL6Kav4aFK9jYOkQVFJ8RFQCRu91LSSD2jyRPBbab3Z9IXieEldnhVxlAegKAh/NjTuH+sQidOFYHUXuSCqVrYBwKc1yFPmoqrLT+3k4Jl9RsjLRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718607222; c=relaxed/simple;
-	bh=HMhxQrMvqhxThBZMHTW2DHWQNufej71aVz9xF7xevoY=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=fIQoSuXelITMLN8vshF2AGBIieJM9/rmeUeqiIghb0hRC+BlYNjg0yTmA5+YU4wfagK/89I55kkm1vT8ZqdphnMLmXndb3FetOkdZWU9GkQify4mgefP19Yk5bYTOCLnzQlIUj8S0IbMAo1ulNclfM8Lw08RjGYhk8MnkLB2yI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=RAK1/bkL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=fIiiLBFG; arc=none smtp.client-ip=64.147.123.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.west.internal (Postfix) with ESMTP id C6C841C00063;
-	Mon, 17 Jun 2024 02:53:39 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Mon, 17 Jun 2024 02:53:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1718607219;
-	 x=1718693619; bh=GSghH2pGRZY52mc9Nnpt/iaApIrYJkTOUDPXGN87ZU0=; b=
-	RAK1/bkLXXdzhoxtzur2KOZgv1xIcdw7UM0NkLGD4DoqnrAny11zDCzbj9LgtfZ/
-	N9W53tLZd/1oaG+/x1nEjcgIp11PBemwv0eUEIkHQsgVRTRCSqH0FElTiVVwsDQo
-	TOKxG42ulgjspEGeGBD0W3WWbp3Ev4lJsp47db5GOnF/DWkLJ9HfPT3A2QjmCJXH
-	b7MQc30Q5n6BJwy7+lTkfocnH1frV9NAUJiVv3ruutsN5xI9oqUYoIy2HVxUDz4r
-	gwEF4VwealGgBNROSQhLGKhQdOStMGQRp9iZveaxSBRFhscLdqoKLQL+XlIw68Rx
-	vm0CcalxFRA6Uv6OBYRBcQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1718607219; x=
-	1718693619; bh=GSghH2pGRZY52mc9Nnpt/iaApIrYJkTOUDPXGN87ZU0=; b=f
-	IiiLBFGhZS483HDigcAvBs7UqE3myYVnxVe0RE4jk/YwKsWCgaTqGN2U6zqwOi5O
-	CqYhGtijE3LUmAYIAAQodOhRyLbpFJnAMp42aiWXOEi7CcCttpL8TB7pv1qy3QRP
-	EhPP/IC/ciRpeJczGWeQK45+JlMvZsEf+a4Pif2Aq9Nl9gJeqjjrHreeO8+Sr1Bk
-	DxcZ8pVWbIYMNpZqOrXz4O0cWWKak10mw5b/jYGKv1d/CWY52rSvI5zTW18etzJW
-	sVOkt8NAoSDZagqFDBji/pD+5Bh6Pa3uo+EXi7tcZ/HqpENNpxgBEcCGJPFEgcpw
-	tKdUzA8Cv/wVG4KrRxCEg==
-X-ME-Sender: <xms:cd1vZv8HRk5x7oZzuWR4fCr_rzNvsR5meCOAV2f78VS_fV5mEXEK8w>
-    <xme:cd1vZrudCgjJJYD4-KjGjm9B9L1BcUu4VkqBHwwyXvfvUGGDE9ayaI8E3AUPsZ12f
-    HhaGeIfkDlwCgIOhmg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedvgedgledtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeeuuedujeehgedvvddvjefgkeekudegffeuiedukefgieeivdefjeehvefh
-    heduteenucffohhmrghinhepshgvrghrtghhfhhogidrohhrghenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:cd1vZtCC_3_-mUKmHnnZmEIGsVyA-4D88iPYGxl9AfV60NKuX4ffLw>
-    <xmx:cd1vZrf-9EvkBAtAqBXfFrm3GWaz6W2Js3Ft9RYoO-5UCfHBd0HwUg>
-    <xmx:cd1vZkOiIDN4FUkZYySZcq6Z8kyyQgXEn94oE0hpK39yiBfx9eEmUA>
-    <xmx:cd1vZtnkV0eqVfpX0CWZFEj0mATNwXpcZcPAQ-vaAkkS0zLqzApRDA>
-    <xmx:c91vZtnfBB5Bfsia32vJMRD6-SdXefEoHHJ5TqWN-l6WLzfmo6flsq3a>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 97BECB6008D; Mon, 17 Jun 2024 02:53:37 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-515-g87b2bad5a-fm-20240604.001-g87b2bad5
+	s=arc-20240116; t=1718614225; c=relaxed/simple;
+	bh=LmtJFs5U0H0MHRB7Sc+aeWxh+Em43v/yWk9NqtJAg+k=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=qbn+FScxc+jSErA+Dj52jsdclbiWLGoUIgfFaoLyTDet5iJvcxliv2N1XszyfwWno79kfJZYTrWfgGCuvGgFxrjjvwUyNkS9qxH+pu3822sXTV+9x6unRWiW69NUrF/oVJUKqc5HSRVQA+meu5KS3eyQD3ytiyWlR7cLG6Ed+ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VN/aPI21; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718614223; x=1750150223;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=LmtJFs5U0H0MHRB7Sc+aeWxh+Em43v/yWk9NqtJAg+k=;
+  b=VN/aPI21CoHN5NAjEgueotE3rOvLm/pHujuIC4jQuCHNpiaEdIz8m/q9
+   buNVirduCzEjKwjuzb/QvA61S8TUaKolUdfFN644EUPTeRvTh9RCxc6sf
+   jEVc3XbSgobcu2Aw/agNwx20fx39A+LC8I4Ame111sLrkcdheeM/y9OOd
+   +A7UsYIFzFVV2r4B7aQme/PBxyGlgKnc54wf5iRJVNSFvM9wIRYfH21mt
+   LQuA+TE0KQpTm9nruXH0vl4/McK9D3Zu+nES9q4v8tsMGWUnppsQbquFL
+   3kMejqcQolVLLIqmk9eI82ttcZzRJxKw0LOadaqADO4S1eATKX7f5GwW0
+   g==;
+X-CSE-ConnectionGUID: Xh7ehDdjSs6Np1Ulz15epA==
+X-CSE-MsgGUID: 7Dyt4aLWRVmieHTJ88XOAw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11105"; a="32972300"
+X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; 
+   d="scan'208";a="32972300"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2024 01:50:23 -0700
+X-CSE-ConnectionGUID: jdK0h3yUR5+gTl6YaRjp2A==
+X-CSE-MsgGUID: AmOFWqcEQKGx2DN0GD2KPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; 
+   d="scan'208";a="41828741"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.85])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2024 01:50:21 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/mso: using joiner is not possible with eDP MSO
+In-Reply-To: <ZmxWKyz8RcqjQ0Mg@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240614142311.589089-1-jani.nikula@intel.com>
+ <ZmxWKyz8RcqjQ0Mg@intel.com>
+Date: Mon, 17 Jun 2024 11:50:17 +0300
+Message-ID: <87sexcgdh2.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <b783ee7b-1d27-4793-91cc-ff9d3f4f2103@app.fastmail.com>
-In-Reply-To: <c2b1ca127504e519c04a36179ba6c486f2ec0a08.camel@xry111.site>
-References: <20240511100157.2334539-1-chenhuacai@loongson.cn>
- <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com>
- <CAAhV-H5kn2xPLqgop0iOyg-tc5kAYcuNo3cd+f3yCdkN=cJDug@mail.gmail.com>
- <fcdeb993-37d6-42e0-8737-3be41413f03d@app.fastmail.com>
- <CAAhV-H4s_utEOtFDwjPTqxnMWTVjWhmS7bEVRX+t8HK5QDA8Vg@mail.gmail.com>
- <a21a0878-021e-4990-a59d-b10f204a018b@app.fastmail.com>
- <CAAhV-H7OR5tkbjj-BPLStneXFr=1DUaFvvh8+a5Bk_jhCAP25Q@mail.gmail.com>
- <cdef45d36d0e71da5f0534b3783b81c82405bda3.camel@xry111.site>
- <CAAhV-H4R_HJAB0baqUgA8ucbwWNVN4sc9EV91zAk9Ch302_7zg@mail.gmail.com>
- <56ace686-d4b4-4b4c-a8a6-af06ec0d48f2@app.fastmail.com>
- <08ff168afc09fd108ec489a3c9360d4e704fa7dc.camel@xry111.site>
- <a70e8b062fc422e351fe2369b9979a623fa05dfa.camel@xry111.site>
- <4fd0531d-e8f8-4a4c-9136-50fcc31ba5f2@app.fastmail.com>
- <c2b1ca127504e519c04a36179ba6c486f2ec0a08.camel@xry111.site>
-Date: Mon, 17 Jun 2024 08:53:15 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Xi Ruoyao" <xry111@xry111.site>, "Huacai Chen" <chenhuacai@kernel.org>
-Cc: "Huacai Chen" <chenhuacai@loongson.cn>, loongarch@lists.linux.dev,
- Linux-Arch <linux-arch@vger.kernel.org>,
- "Xuefeng Li" <lixuefeng@loongson.cn>, guoren <guoren@kernel.org>,
- "WANG Xuerui" <kernel@xen0n.name>, "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
- linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
- stable@vger.kernel.org
-Subject: Re: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
-Content-Type: text/plain;charset=utf-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 17, 2024, at 08:45, Xi Ruoyao wrote:
-> On Mon, 2024-06-17 at 08:35 +0200, Arnd Bergmann wrote:
->> On Sat, Jun 15, 2024, at 15:12, Xi Ruoyao wrote:
->> > On Sat, 2024-06-15 at 20:12 +0800, Xi Ruoyao wrote:
->> > >=20
->> > > [Firefox]:
->> > > https://searchfox.org/mozilla-central/source/security/sandbox/linu
->> > > x/SandboxFilter.cpp#364
->> >=20
->> > Just spent some brain cycles to make a quick hack adding a new statx
->> > flag.=C2=A0 Patch attached.
->> >=20
+On Fri, 14 Jun 2024, Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com=
+> wrote:
+> On Fri, Jun 14, 2024 at 05:23:11PM +0300, Jani Nikula wrote:
+>> It's not possible to use the joiner at the same time with eDP MSO. When
+>> a panel needs MSO, it's not optional, so MSO trumps joiner.
 >>=20
->> Thanks for the prototype. I agree that this is not a good API
+>> v3: Only change intel_dp_has_joiner(), leave debugfs alone (Ville)
+>>=20
+>> Cc: stable@vger.kernel.org
+>> Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+>> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1668
+>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 >
-> What is particular bad with it?  Maybe we can improve before annoying
-> VFS guys :).
+> Reviewed-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 
-I can't come up with anything better either, the problem I
-see is mainly that the man page has to explain both AT_EMPTY_PATH
-and AT_FORCE_EMPTY_PATH, which are very similar for compatibility
-reasons only. We would clearly not design a new interface to have
-both, but we can't change existing behavior either.
+Thanks, pushed to din with
 
-       Arnd
+    Fixes: bc71194e8897 ("drm/i915/edp: enable eDP MSO during link training=
+")
+    Cc: <stable@vger.kernel.org> # v5.13+
+
+BR,
+Jani.
+
+>
+>>=20
+>> ---
+>>=20
+>> Just the minimal fix for starters to move things along.
+>> ---
+>>  drivers/gpu/drm/i915/display/intel_dp.c | 4 ++++
+>>  1 file changed, 4 insertions(+)
+>>=20
+>> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i=
+915/display/intel_dp.c
+>> index 9a9bb0f5b7fe..ab33c9de393a 100644
+>> --- a/drivers/gpu/drm/i915/display/intel_dp.c
+>> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+>> @@ -465,6 +465,10 @@ bool intel_dp_has_joiner(struct intel_dp *intel_dp)
+>>  	struct intel_encoder *encoder =3D &intel_dig_port->base;
+>>  	struct drm_i915_private *dev_priv =3D to_i915(encoder->base.dev);
+>>=20=20
+>> +	/* eDP MSO is not compatible with joiner */
+>> +	if (intel_dp->mso_link_count)
+>> +		return false;
+>> +
+>>  	return DISPLAY_VER(dev_priv) >=3D 12 ||
+>>  		(DISPLAY_VER(dev_priv) =3D=3D 11 &&
+>>  		 encoder->port !=3D PORT_A);
+>> --=20
+>> 2.39.2
+
+--=20
+Jani Nikula, Intel
 
