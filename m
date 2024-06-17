@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-52589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F3C90B905
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 20:07:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9957990B989
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 20:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 607AB28936D
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 18:07:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4215A1F21A1D
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 18:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C5419AD71;
-	Mon, 17 Jun 2024 18:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCC919A295;
+	Mon, 17 Jun 2024 18:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibltqWQg"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8pg2yAb"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742E2195967
-	for <Stable@vger.kernel.org>; Mon, 17 Jun 2024 18:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115AF19755F
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 18:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718647389; cv=none; b=VTKysCAABfEEJar3CSgnVGdaiy/frSIjzQ98B8pd/Yw0OtNGNxra9Yy785S+5ZAonVOeerON/WEnzTf3YxIEEvaw8cabySw4JaC7NbG2Q084eSz216rP16aocvYrnEMq0iIbqKyZ7h9+irJUGgMoIt3xAtDbOHZFKVcN4lIkLJI=
+	t=1718648303; cv=none; b=DN4FLmTv5Kny8kWIYb02a4DKBVLfYrNdmt3B47BVTM10sdcfR+mXavdAA9m5/f+z4S9Xafujt2699LOUDvQc1ZsGuJSEF5aCnhXaqB/x8RvZAgjYdPn23SFLrRHAo0KWc01RPyOuz42XT343qFYHV5/yKS0pKrastSyL2Ckrgdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718647389; c=relaxed/simple;
-	bh=5cs7CkAiw9i/S05z9inglh9xJGoyDo3fuk5O+IN0ay4=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=fBX9AaW5AoTUEDPF8xvahMdvLB9mlY0wIWxgQQ45ClTeh+CYcBEUnfstbatZ3YWBHYxN3CEC6VE9sz7X0WxZaolhiWau4cflKCHa5WXvv6g2I4BI0rAmWeKqwojHrXFog92pChaDvJ98qrIHg47yv2U2a1atrpS33uR/WmjCDII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibltqWQg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3889C2BD10;
-	Mon, 17 Jun 2024 18:03:08 +0000 (UTC)
+	s=arc-20240116; t=1718648303; c=relaxed/simple;
+	bh=lElnvUof1pTCHGrzQg3zQVS7RHtm9tTdIDqnUljcv2s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=H6hOeQvlohDDgWQMdtdEifo+RuR3dr1qxOPBs8dQ55Ijhqt9JAVZdHBgkuFMoWA8OFgMSs/5iopxC1O2SXvda7+3Ns0oixeHVdQnB/Sz9P0xWeZE5Si5asCvmCd8V1YC2qTlLH86MHC2Ul1g2OxXCTwie09DGxhwryaOwFi1BQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q8pg2yAb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC45C2BD10;
+	Mon, 17 Jun 2024 18:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718647389;
-	bh=5cs7CkAiw9i/S05z9inglh9xJGoyDo3fuk5O+IN0ay4=;
-	h=Subject:To:From:Date:From;
-	b=ibltqWQgWw/4XPPLNDQIaHkB9xJUiwwcogX4D0tpCYymrObwF+95xHTvB1y5sZohO
-	 6yTuwoKslPq9Rq9BmizVlF2q94N0U2yFuoa6t/ljkMT7Nw9tpM1n8BwvVlFtHiRtv0
-	 qbWavYQKSJvWVNiyfgraZbtiCcyIPy1O6whak63Q=
-Subject: patch "iio: chemical: bme680: Fix sensor data read operation" added to char-misc-linus
-To: vassilisamir@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+	s=korg; t=1718648302;
+	bh=lElnvUof1pTCHGrzQg3zQVS7RHtm9tTdIDqnUljcv2s=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Q8pg2yAbxifEpEUYevPKkBkt5+sKo4ZkuiiGEgDsFYey78xEayBUQqiEzJ27x/CtA
+	 M15Hs7ZDuXiih34si6xa3hTslIvwGWXGPSiiH97lfMhVH353UzWZ5+TYaHCwlDfWkm
+	 SVow9M0ntKkps1QR7jY9MPAzzHNEmbXkuWxSbrbw=
+Subject: FAILED: patch "[PATCH] mptcp: ensure snd_una is properly initialized on connect" failed to apply to 5.10-stable tree
+To: pabeni@redhat.com,cpaasch@apple.com,kuba@kernel.org,martineau@kernel.org,matttbe@kernel.org
+Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 17 Jun 2024 20:02:44 +0200
-Message-ID: <2024061743-vision-thigh-d459@gregkh>
+Date: Mon, 17 Jun 2024 20:18:19 +0200
+Message-ID: <2024061719-prewashed-wimp-a695@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,162 +53,74 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-This is a note to let you know that I've just added the patch titled
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-    iio: chemical: bme680: Fix sensor data read operation
+To reproduce the conflict and resubmit, you may use the following commands:
 
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-linus branch.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8031b58c3a9b1db3ef68b3bd749fbee2e1e1aaa3
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061719-prewashed-wimp-a695@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
+Possible dependencies:
 
-The patch will hopefully also be merged in Linus's tree for the
-next -rc kernel release.
+8031b58c3a9b ("mptcp: ensure snd_una is properly initialized on connect")
+fb7a0d334894 ("mptcp: ensure snd_nxt is properly initialized on connect")
+54f1944ed6d2 ("mptcp: factor out mptcp_connect()")
+a42cf9d18278 ("mptcp: poll allow write call before actual connect")
+d98a82a6afc7 ("mptcp: handle defer connect in mptcp_sendmsg")
+3e5014909b56 ("mptcp: cleanup MPJ subflow list handling")
+3d1d6d66e156 ("mptcp: implement support for user-space disconnect")
+b29fcfb54cd7 ("mptcp: full disconnect implementation")
+3ce0852c86b9 ("mptcp: enforce HoL-blocking estimation")
+7cd2802d7496 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
-If you have any questions about this process, please let me know.
+thanks,
 
+greg k-h
 
-From 4241665e6ea063a9c1d734de790121a71db763fc Mon Sep 17 00:00:00 2001
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-Date: Thu, 6 Jun 2024 23:22:56 +0200
-Subject: iio: chemical: bme680: Fix sensor data read operation
+------------------ original commit in Linus's tree ------------------
 
-A read operation is happening as follows:
+From 8031b58c3a9b1db3ef68b3bd749fbee2e1e1aaa3 Mon Sep 17 00:00:00 2001
+From: Paolo Abeni <pabeni@redhat.com>
+Date: Fri, 7 Jun 2024 17:01:48 +0200
+Subject: [PATCH] mptcp: ensure snd_una is properly initialized on connect
 
-a) Set sensor to forced mode
-b) Sensor measures values and update data registers and sleeps again
-c) Read data registers
+This is strictly related to commit fb7a0d334894 ("mptcp: ensure snd_nxt
+is properly initialized on connect"). It turns out that syzkaller can
+trigger the retransmit after fallback and before processing any other
+incoming packet - so that snd_una is still left uninitialized.
 
-In the current implementation the read operation happens immediately
-after the sensor is set to forced mode so the sensor does not have
-the time to update properly the registers. This leads to the following
-2 problems:
+Address the issue explicitly initializing snd_una together with snd_nxt
+and write_seq.
 
-1) The first ever value which is read by the register is always wrong
-2) Every read operation, puts the register into forced mode and reads
-the data that were calculated in the previous conversion.
+Suggested-by: Mat Martineau <martineau@kernel.org>
+Fixes: 8fd738049ac3 ("mptcp: fallback in case of simultaneous connect")
+Cc: stable@vger.kernel.org
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/485
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-1-1ab9ddfa3d00@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-This behaviour was tested in 2 ways:
-
-1) The internal meas_status_0 register was read before and after every
-read operation in order to verify that the data were ready even before
-the register was set to forced mode and also to check that after the
-forced mode was set the new data were not yet ready.
-
-2) Physically changing the temperature and measuring the temperature
-
-This commit adds the waiting time in between the set of the forced mode
-and the read of the data. The function is taken from the Bosch BME68x
-Sensor API [1].
-
-[1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
-
-Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240606212313.207550-5-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/chemical/bme680.h      |  2 ++
- drivers/iio/chemical/bme680_core.c | 46 ++++++++++++++++++++++++++++++
- 2 files changed, 48 insertions(+)
-
-diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
-index 4edc5d21cb9f..f959252a4fe6 100644
---- a/drivers/iio/chemical/bme680.h
-+++ b/drivers/iio/chemical/bme680.h
-@@ -54,7 +54,9 @@
- #define   BME680_NB_CONV_MASK			GENMASK(3, 0)
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 96b113854bd3..bb7dca8aa2d9 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3740,6 +3740,7 @@ static int mptcp_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
  
- #define BME680_REG_MEAS_STAT_0			0x1D
-+#define   BME680_NEW_DATA_BIT			BIT(7)
- #define   BME680_GAS_MEAS_BIT			BIT(6)
-+#define   BME680_MEAS_BIT			BIT(5)
+ 	WRITE_ONCE(msk->write_seq, subflow->idsn);
+ 	WRITE_ONCE(msk->snd_nxt, subflow->idsn);
++	WRITE_ONCE(msk->snd_una, subflow->idsn);
+ 	if (likely(!__mptcp_check_fallback(msk)))
+ 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPCAPABLEACTIVE);
  
- /* Calibration Parameters */
- #define BME680_T2_LSB_REG	0x8A
-diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index 5db48f6d646c..500f56834b01 100644
---- a/drivers/iio/chemical/bme680_core.c
-+++ b/drivers/iio/chemical/bme680_core.c
-@@ -10,6 +10,7 @@
-  */
- #include <linux/acpi.h>
- #include <linux/bitfield.h>
-+#include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/module.h>
- #include <linux/log2.h>
-@@ -532,6 +533,43 @@ static u8 bme680_oversampling_to_reg(u8 val)
- 	return ilog2(val) + 1;
- }
- 
-+/*
-+ * Taken from Bosch BME680 API:
-+ * https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
-+ */
-+static int bme680_wait_for_eoc(struct bme680_data *data)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	unsigned int check;
-+	int ret;
-+	/*
-+	 * (Sum of oversampling ratios * time per oversampling) +
-+	 * TPH measurement + gas measurement + wait transition from forced mode
-+	 * + heater duration
-+	 */
-+	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
-+			   data->oversampling_humid) * 1936) + (477 * 4) +
-+			   (477 * 5) + 1000 + (data->heater_dur * 1000);
-+
-+	usleep_range(wait_eoc_us, wait_eoc_us + 100);
-+
-+	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
-+	if (ret) {
-+		dev_err(dev, "failed to read measurement status register.\n");
-+		return ret;
-+	}
-+	if (check & BME680_MEAS_BIT) {
-+		dev_err(dev, "Device measurement cycle incomplete.\n");
-+		return -EBUSY;
-+	}
-+	if (!(check & BME680_NEW_DATA_BIT)) {
-+		dev_err(dev, "No new data available from the device.\n");
-+		return -ENODATA;
-+	}
-+
-+	return 0;
-+}
-+
- static int bme680_chip_config(struct bme680_data *data)
- {
- 	struct device *dev = regmap_get_device(data->regmap);
-@@ -622,6 +660,10 @@ static int bme680_read_temp(struct bme680_data *data, int *val)
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = bme680_wait_for_eoc(data);
-+	if (ret)
-+		return ret;
-+
- 	ret = regmap_bulk_read(data->regmap, BME680_REG_TEMP_MSB,
- 			       &tmp, 3);
- 	if (ret < 0) {
-@@ -738,6 +780,10 @@ static int bme680_read_gas(struct bme680_data *data,
- 	if (ret < 0)
- 		return ret;
- 
-+	ret = bme680_wait_for_eoc(data);
-+	if (ret)
-+		return ret;
-+
- 	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
- 	if (check & BME680_GAS_MEAS_BIT) {
- 		dev_err(dev, "gas measurement incomplete\n");
--- 
-2.45.2
-
 
 
