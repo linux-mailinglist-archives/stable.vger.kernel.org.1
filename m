@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-52487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C92D90B0A8
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:00:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20EA190B0AB
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 335361F27601
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:00:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318271C22E0E
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6941849D9;
-	Mon, 17 Jun 2024 13:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86128185E4E;
+	Mon, 17 Jun 2024 13:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BhSkeLgt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OGyNTZ+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453B61849CD;
-	Mon, 17 Jun 2024 13:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411A8185E44;
+	Mon, 17 Jun 2024 13:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630737; cv=none; b=R6/Mp8IHXVa9D+fvuF8C2zpmjIgHpXuLevb1MFj9hOqbgJvNTk91Nmcr4VyhxU9cG1a75ThbJyYq07cYY0ykF9CXV5QCKIvS8G5GCHGj27lAVnHglNTqGu5dwLM0pCZSkF+ukx5Dd7dWAk0/e8RcfOiKptedWRJZUygQ7gN3cyM=
+	t=1718630740; cv=none; b=OBajm1bstiwfkObzpGKU/CiO4cPqiWor4Nk1RGD58PKE0bQkT4pm1uY9gSKV2cfr895Tx8YP/k26XNE27FEbJ3NwhJpyaNF9xp4qyZ0R03bdqZsX/s33VzxudaYjSJn27fIknBwjDOsMa1rLM+LpR/lOlL7TkvcATawDNv3YaW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630737; c=relaxed/simple;
-	bh=Eo3V4jSPlpaQPRt1kZP3S1ORy65YI2GBpz+FaCrKQGY=;
+	s=arc-20240116; t=1718630740; c=relaxed/simple;
+	bh=RS9U/3BUr1Q86veiwVYktTTSLMNsseftXRF1uo2D5Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgeENcHUo1hkxqlOPuFLOSeSl82u0A5J68TthsmgCiSYku6FltHECWZQkp2xDiYbo9G+khLSKBZPhctn66/mdb3HXPVgG2zWMfC38/6Gyx32aptQseaHryVig8i0z8oOYj91v6mWejMFdSTIEa+E7bnfFFp6ntwbBmMvhLRNsg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BhSkeLgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FBDC4AF1D;
-	Mon, 17 Jun 2024 13:25:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oAF9Ib2AeEbpeSqVBasoc4WBakSM74Ao9+/pLR8aIIf8RyFf26d0KVBGkX9IlaXCnq+8MmIKSoCKRji81f7P06iGcANJO7cOBQwWKjOpxMOJd4RQDkzpj3aOuKImnKTOfMDG9ifi+V20Lm8zN4ejTpb9r1W9Lhoe1ExsQ54SLME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OGyNTZ+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E8DC2BD10;
+	Mon, 17 Jun 2024 13:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630737;
-	bh=Eo3V4jSPlpaQPRt1kZP3S1ORy65YI2GBpz+FaCrKQGY=;
+	s=k20201202; t=1718630739;
+	bh=RS9U/3BUr1Q86veiwVYktTTSLMNsseftXRF1uo2D5Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BhSkeLgt/550Yj5s+94DGRY7BRSHWUYg6AFPR029lslYLs0uGUijGL7buKX380wFJ
-	 SsUzIjGCI7GUjFAYvItA8zEs5yscgvMZsPtv+HjyUJbtJ0Rh6lTj8T7dccdjqcAZ9h
-	 yiWEM0lYJMWjqZao1LbaLv666SYXSI9XDxRdH2mMjBjnI8agVgmcRRGCzpwkzldHx/
-	 UzW2thJttjk6nLUpYllLBJKFjXALuNhr3kfSWujBfL2QTV7BAaRXY3gWLhSRkVSJd/
-	 DTcltWHTYRzwb9Bw62gQeQCTfyJqfDzwhSN1zCu0v3ocJS6RZJjA19W/Z7z0BUYaKI
-	 Vsr+UvL7lunvQ==
+	b=OGyNTZ+q8iMBYQli7mMNDuEvcJ/Ss9XNDTB3TBU7n+bD3IjFXqM51lAL+OVdBA6h+
+	 /R8V+3cVhCHR7Xt+wZ3kIWPqroidqN9DrUFrbNqzuCfKUn1/yyTOcXJv6vCSbyeA7o
+	 tUSQblEqHEwzID1Yn4MfcYdefPhT/82ZNd+CBZf3w3Z5C+1iif7u6nUuYKg9UXMmMj
+	 YgO7CnyMxZsl3Vq3T99b8LxuNHKUBI7aWk3c/k6SI4ukxiGnKdxResmBrKS7IYnCnM
+	 JKxrrCXUFXJYeUI3VS1LMaM6Gxc5vPGtzDryz62Tlzyh0Q6e4Zok8e1xXvPz5/MGng
+	 JaCdimoTH8XGg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 19/29] wifi: mac80211: fix UBSAN noise in ieee80211_prep_hw_scan()
-Date: Mon, 17 Jun 2024 09:24:23 -0400
-Message-ID: <20240617132456.2588952-19-sashal@kernel.org>
+	shuah@kernel.org,
+	maciej.wieczor-retman@intel.com,
+	ilpo.jarvinen@linux.intel.com,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 20/29] selftests/openat2: Fix build warnings on ppc64
+Date: Mon, 17 Jun 2024 09:24:24 -0400
+Message-ID: <20240617132456.2588952-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132456.2588952-1-sashal@kernel.org>
 References: <20240617132456.2588952-1-sashal@kernel.org>
@@ -66,83 +64,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 92ecbb3ac6f3fe8ae9edf3226c76aa17b6800699 ]
+[ Upstream commit 84b6df4c49a1cc2854a16937acd5fd3e6315d083 ]
 
-When testing the previous patch with CONFIG_UBSAN_BOUNDS, I've
-noticed the following:
+Fix warnings like:
 
-UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:372:4
-index 0 is out of range for type 'struct ieee80211_channel *[]'
-CPU: 0 PID: 1435 Comm: wpa_supplicant Not tainted 6.9.0+ #1
-Hardware name: LENOVO 20UN005QRT/20UN005QRT <...BIOS details...>
-Call Trace:
- <TASK>
- dump_stack_lvl+0x2d/0x90
- __ubsan_handle_out_of_bounds+0xe7/0x140
- ? timerqueue_add+0x98/0xb0
- ieee80211_prep_hw_scan+0x2db/0x480 [mac80211]
- ? __kmalloc+0xe1/0x470
- __ieee80211_start_scan+0x541/0x760 [mac80211]
- rdev_scan+0x1f/0xe0 [cfg80211]
- nl80211_trigger_scan+0x9b6/0xae0 [cfg80211]
- ...<the rest is not too useful...>
+  openat2_test.c: In function ‘test_openat2_flags’:
+  openat2_test.c:303:73: warning: format ‘%llX’ expects argument of type
+  ‘long long unsigned int’, but argument 5 has type ‘__u64’ {aka ‘long
+  unsigned int’} [-Wformat=]
 
-Since '__ieee80211_start_scan()' leaves 'hw_scan_req->req.n_channels'
-uninitialized, actual boundaries of 'hw_scan_req->req.channels' can't
-be checked in 'ieee80211_prep_hw_scan()'. Although an initialization
-of 'hw_scan_req->req.n_channels' introduces some confusion around
-allocated vs. used VLA members, this shouldn't be a problem since
-everything is correctly adjusted soon in 'ieee80211_prep_hw_scan()'.
+By switching to unsigned long long for u64 for ppc64 builds.
 
-Cleanup 'kmalloc()' math in '__ieee80211_start_scan()' by using the
-convenient 'struct_size()' as well.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://msgid.link/20240517153332.18271-2-dmantipov@yandex.ru
-[improve (imho) indentation a bit]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/scan.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ tools/testing/selftests/openat2/openat2_test.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index 933d02d7c1284..62c22ff329ad4 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -733,15 +733,21 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
- 			local->hw_scan_ies_bufsize *= n_bands;
- 		}
+diff --git a/tools/testing/selftests/openat2/openat2_test.c b/tools/testing/selftests/openat2/openat2_test.c
+index 7fb902099de45..f9d2b0ec77564 100644
+--- a/tools/testing/selftests/openat2/openat2_test.c
++++ b/tools/testing/selftests/openat2/openat2_test.c
+@@ -5,6 +5,7 @@
+  */
  
--		local->hw_scan_req = kmalloc(
--				sizeof(*local->hw_scan_req) +
--				req->n_channels * sizeof(req->channels[0]) +
--				local->hw_scan_ies_bufsize, GFP_KERNEL);
-+		local->hw_scan_req = kmalloc(struct_size(local->hw_scan_req,
-+							 req.channels,
-+							 req->n_channels) +
-+					     local->hw_scan_ies_bufsize,
-+					     GFP_KERNEL);
- 		if (!local->hw_scan_req)
- 			return -ENOMEM;
- 
- 		local->hw_scan_req->req.ssids = req->ssids;
- 		local->hw_scan_req->req.n_ssids = req->n_ssids;
-+		/* None of the channels are actually set
-+		 * up but let UBSAN know the boundaries.
-+		 */
-+		local->hw_scan_req->req.n_channels = req->n_channels;
-+
- 		ies = (u8 *)local->hw_scan_req +
- 			sizeof(*local->hw_scan_req) +
- 			req->n_channels * sizeof(req->channels[0]);
+ #define _GNU_SOURCE
++#define __SANE_USERSPACE_TYPES__ // Use ll64
+ #include <fcntl.h>
+ #include <sched.h>
+ #include <sys/stat.h>
 -- 
 2.43.0
 
