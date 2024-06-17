@@ -1,264 +1,191 @@
-Return-Path: <stable+bounces-52344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6341390A36B
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 07:45:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0873490A370
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 07:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0729C2829E3
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 05:45:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D97D282081
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 05:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B3D17C9F6;
-	Mon, 17 Jun 2024 05:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBF71F61C;
+	Mon, 17 Jun 2024 05:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="BA9ak4RU"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="MEV/ZCry";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="g9Fs5S/U"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from fout5-smtp.messagingengine.com (fout5-smtp.messagingengine.com [103.168.172.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07102F5B
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 05:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75CF17344E
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 05:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718603148; cv=none; b=E7IGszZd1V/0P6P9MfdrkTGhufamgl9BySXCTZhI7kdWtuz2un77c+ugnMhXzUmgiTjMftHQSgT4HFgfYGh6AXlScFXAcSWSox8lsNJGkonMupNISyw3CZ1x2aQjwoIz76vci7z+Zx033yPBMUt6sxttMpKRNoyMXiP9sRi0bWM=
+	t=1718603422; cv=none; b=Hj+7yJDzfzvD6LrdnkQJHW8S5+wgXZjXrkoqmPrC79gadbFV69vbYKPs9m3OyhjOOoRBMSYRH7KdqfcB77dSXL7zAON6NWHZN7fwrAynvZSZcC86cBEL0VCVGFFi81wc98z3eeUWlSzKeNCUbztERexf62f/FEVOSTZLZI15Pt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718603148; c=relaxed/simple;
-	bh=NlCD2N/GTA25z+Lv3QJ4ioPnzGqSDCz42FqtGeEExpw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CFKwRHJfOtoIc1E7gSqcBSoD/A/AXOWvwoIiB0/b0ICxPVOs0AqtTLbe5sMHjVXUbN/qgrupLAG2JUp+S5SBdfZmOs+TXwoWB8HSifl55Pl2PD0ap67qtNh2+7DD1X4cj1Mp6fL2Vjcs49janQa0oBT2Y/Y5kVNinEtpMZ4f1ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=BA9ak4RU; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 5427B3F1AF
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 05:45:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1718603143;
-	bh=KlZHJQ1gZb5CHVxW02hQaRdYCM2wgPQ+hnanLrc4+9g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
-	b=BA9ak4RU6PILYFt8HuhfWCOyzGyuAtgMsxUSVYSDHR77I0xHWL7VMBBufAQbrtGSu
-	 vUX+onSAde5EM8dCGceDsVdyv8yq7hI5j1mqu2Z7kQUvCTCEG4cTgOx55GkduhuxUO
-	 ohfHW6ahvL00YPCyL7XHtx0jhsfUY9BtGdTcREGaNmbBXjA/1bjU/6FNGQrG3ZGhIX
-	 sPT/gu8Z7umPoQdQ1TE31b9Q4m3xIOzeX7mEl41xR1ZO1M9KbPCiNncswzkltcHxs7
-	 lZf1UTerYhFuB6XtYKgF2h7yOPX4Sl5iwVDcLj5l1gq5m4yVpUurdOPQNkjPXYY8cU
-	 tdQPf6MWfDCog==
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-1f6828e8823so50970455ad.2
-        for <stable@vger.kernel.org>; Sun, 16 Jun 2024 22:45:43 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718603141; x=1719207941;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KlZHJQ1gZb5CHVxW02hQaRdYCM2wgPQ+hnanLrc4+9g=;
-        b=Q5pYyWqwnjrkrTZ7ElR9bjhvh6sa9WUhU9eDZL97fGYHW1ELePY6RpEypodvy6Nonn
-         Q86NxU/W7jIr8VjxqTrJ9B3YcVIHicXdVAgNYvDltqf85J/nllkUcpZixbR/Ua855fCX
-         t3Qb8x+TQk5jm4t15qT869SyZp7X2+mUHOqfUVsz3R8czGcOCnkqavufrbKCUwlSmMfZ
-         O+ToL7Jd0er5IkmEgItzF8i865w6Nb+Dl4Gnf+GHlsrcA3JeTtwqqCdu8hdPqEiACEpt
-         7VEOsyr00sFY4jqODvGyj5SzUfme7Gm8olqio097n35vRJfQm4YVaZqcTyRazd904LTB
-         Y1fw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4ASc2m7MrcUpBKY98NL1mo2rppuFF92BHH8PNx00n1/smNulbXJ/rvNL1Wx4lVCBwonrLavI6ISwO2eX/yNg7CfPR+K3s
-X-Gm-Message-State: AOJu0Yw2v6an+T5QT24AdMV7Oio4vYraDJvM8Z4IYsCjJOORaT3GaedF
-	WpFdFFjrX2BKZxkfKlnkzJT/JVwjYg93EotrYq+tnvFGSbYpNzrAiqniiqk/4vtT152RDvIkHha
-	AqxIrcUXwldqgi6U5DzvGM6DDqvfno4iMutLkDimjvtKMsv/12zXIDfBI8nrPzkPtGH/PPQ==
-X-Received: by 2002:a17:902:6506:b0:1f6:5795:fb7 with SMTP id d9443c01a7336-1f8629006c9mr84026505ad.53.1718603141318;
-        Sun, 16 Jun 2024 22:45:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IED2PoD+HvdyfQzEAqExpwcQoz1Qxbys6hm/1ofFX18g05jF+SSrxjpMLjXPjJLF/Zrx40ixw==
-X-Received: by 2002:a17:902:6506:b0:1f6:5795:fb7 with SMTP id d9443c01a7336-1f8629006c9mr84026275ad.53.1718603140594;
-        Sun, 16 Jun 2024 22:45:40 -0700 (PDT)
-Received: from chengendu.. (2001-b011-381c-17ee-74a3-6d78-7091-fcb7.dynamic-ip6.hinet.net. [2001:b011:381c:17ee:74a3:6d78:7091:fcb7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855f13562sm72605765ad.212.2024.06.16.22.45.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Jun 2024 22:45:40 -0700 (PDT)
-From: Chengen Du <chengen.du@canonical.com>
-To: willemdebruijn.kernel@gmail.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kaber@trash.net,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chengen Du <chengen.du@canonical.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v8] af_packet: Handle outgoing VLAN packets without hardware offloading
-Date: Mon, 17 Jun 2024 13:45:14 +0800
-Message-ID: <20240617054514.127961-1-chengen.du@canonical.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1718603422; c=relaxed/simple;
+	bh=yYz0v+Afx8pMqzyLDRfia7erL0/kYivN0kFlUrnHQpE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YWr34M+Yq6JaJG+6t2BXHD0wcREZP+HzpXHti/byrZsz8yvGE6G1fFQx3jU0YrLo7DWs22O1dqvq+BgXMUxI5BPiqHo0ExCgNBMjkszrkvgVF/fqneUkvRO0Hu4XWIfhr+s0Jyg1YBJzk2g661nRcXMFGNgJfcSGyjGoH0AkaFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=MEV/ZCry; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=g9Fs5S/U; arc=none smtp.client-ip=103.168.172.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 888B71380232;
+	Mon, 17 Jun 2024 01:50:19 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Mon, 17 Jun 2024 01:50:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1718603419; x=1718689819; bh=SLOLSFLkNC
+	RjJ/B3+gV6rDaMWXGsAMOG+B8IykBT5SM=; b=MEV/ZCrySOoV/DZ32+S1xBgY2y
+	4iLy1RkoQK9B2Prf6rkhcOQwEdgMLEYbh2qpDrt4YoQxwqf0G3AM9XSDliY/spV/
+	IFQ5L4FsETlnNGpRVvPnuJ11YyruPHKwnWuaEu1I8BShKwOfcfl6MrupInm4CLwT
+	j5WvGk3Azf/7c8hpZwcO8VC/o+SyyaiIUAO+Sxxw7ubKwZDXng41bUOEqczdPiU0
+	nE26FPRnLIH5ohJDxSVE6GNwJoS6rC6HQtXufuUOXwRTqvYmnqZ3g4xxr3QeW1ul
+	CZJw0HFlGuKM/PlXL51VqHXGQWILKtX+EM6WUnXGehwYNiYRBTEU/iKbLg9A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1718603419; x=1718689819; bh=SLOLSFLkNCRjJ/B3+gV6rDaMWXGs
+	AMOG+B8IykBT5SM=; b=g9Fs5S/Up0JFVAer7xVl0iywnM4jf0GUkGCWByfBpq9C
+	IsiUJcrC0JuVjR5R7RoCOlWpaCZwbCjkZDuOt66o5KjI3VOs7mGw/hsSs/FyxVgZ
+	G2/VrYsXxLrDPm0NXuCJI43vtiuY0Nh/6k7oeIoaymdCC+ONTKv0DeewWxmfH/kn
+	MdrL+0NfiThSdRfItLHlKBOm6NrAJmrhYQzwq7YsSXmWfP24bLoBw/uHanw1NVPB
+	tehSCHFPDnRnYsl8MN6uryTsGk83G1HJ5Cq7cOBIwaWN1QQbJThG3TG9stDsXY/N
+	kU31rt5yrJsp//O4sGt+IURcZSusAtKV5Cc3r09Erw==
+X-ME-Sender: <xms:m85vZvE1BAj4t__w_JZtLmbXXMCgZ7Lkb2PDBnOOk65lVdAejcK0hA>
+    <xme:m85vZsWZYzJuVT5lK5UKSNWHyWQZiXHohZtvBQ2xy9-Glb1llKQEOnGUMNo7mHoOs
+    4F80KaJkQWpNw>
+X-ME-Received: <xmr:m85vZhLPi38C1BoM83MIdtAWqrlWZiX23ax3wsuf3xROfsWsBAeUKkQiovLpody7bB1nifQYmKPokBeyGpFJGwyxwMvd-Kb7E_wEmA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedvgedgkeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttd
+    ertddttddvnecuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhm
+    qeenucggtffrrghtthgvrhhnpeegheeuhefgtdeluddtleekfeegjeetgeeikeehfeduie
+    ffvddufeefleevtddtvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:m85vZtHCDLDQ_ExWUWt9TzRB2jhT9xrhrYSV6R9Ge7CCkptTMibRYQ>
+    <xmx:m85vZlV9Zn_vq0JyFiNHWb2gKaORIZUcd6r7Fb53FhG6aqU941xpYQ>
+    <xmx:m85vZoNXgBRi2LVHlyZialFJgIZghhbAcfRauv1EJRC4lp-22FRjkw>
+    <xmx:m85vZk2GpsJZYi_sQaH7WkAfpRBOxjbdY99JvSxcJtOLnRWaR5MVQA>
+    <xmx:m85vZnL5Ho7JSTlKH5-6s8m8WbYvhG2SbWy-wqeX6vw1TcgVzbY8SJxn>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 17 Jun 2024 01:50:18 -0400 (EDT)
+Date: Mon, 17 Jun 2024 07:50:16 +0200
+From: Greg KH <greg@kroah.com>
+To: "guojinhui.liam" <guojinhui.liam@bytedance.com>
+Cc: guojinhui.liam@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH v7] driver core: platform: set numa_node before
+ platform_device_add()
+Message-ID: <2024061740-negation-curvature-ef30@gregkh>
+References: <20240617030123.4632-1-guojinhui.liam@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240617030123.4632-1-guojinhui.liam@bytedance.com>
 
-The issue initially stems from libpcap. The ethertype will be overwritten
-as the VLAN TPID if the network interface lacks hardware VLAN offloading.
-In the outbound packet path, if hardware VLAN offloading is unavailable,
-the VLAN tag is inserted into the payload but then cleared from the sk_buff
-struct. Consequently, this can lead to a false negative when checking for
-the presence of a VLAN tag, causing the packet sniffing outcome to lack
-VLAN tag information (i.e., TCI-TPID). As a result, the packet capturing
-tool may be unable to parse packets as expected.
+On Mon, Jun 17, 2024 at 11:01:23AM +0800, guojinhui.liam wrote:
+> From: Jinhui Guo <guojinhui.liam@bytedance.com>
+> 
+> Setting the devices' numa_node needs to be done in
+> platform_device_register_full(), because that's where the
+> platform device object is allocated.
 
-The TCI-TPID is missing because the prb_fill_vlan_info() function does not
-modify the tp_vlan_tci/tp_vlan_tpid values, as the information is in the
-payload and not in the sk_buff struct. The skb_vlan_tag_present() function
-only checks vlan_all in the sk_buff struct. In cooked mode, the L2 header
-is stripped, preventing the packet capturing tool from determining the
-correct TCI-TPID value. Additionally, the protocol in SLL is incorrect,
-which means the packet capturing tool cannot parse the L3 header correctly.
+Why in the world is a platform device on a numa node?  Are you sure you
+are using platform devices properly if this is an issue?
 
-Link: https://github.com/the-tcpdump-group/libpcap/issues/1105
-Link: https://lore.kernel.org/netdev/20240520070348.26725-1-chengen.du@canonical.com/T/#u
-Fixes: 393e52e33c6c ("packet: deliver VLAN TCI to userspace")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengen Du <chengen.du@canonical.com>
----
- net/packet/af_packet.c | 86 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 84 insertions(+), 2 deletions(-)
+And what platform devices / drivers care about this?
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index ea3ebc160e25..84e8884a77e3 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -538,6 +538,61 @@ static void *packet_current_frame(struct packet_sock *po,
- 	return packet_lookup_frame(po, rb, rb->head, status);
- }
- 
-+static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
-+{
-+	struct vlan_hdr vhdr, *vh;
-+	u8 *skb_orig_data = skb->data;
-+	int skb_orig_len = skb->len;
-+	unsigned int header_len;
-+
-+	if (!dev)
-+		return 0;
-+
-+	/* In the SOCK_DGRAM scenario, skb data starts at the network
-+	 * protocol, which is after the VLAN headers. The outer VLAN
-+	 * header is at the hard_header_len offset in non-variable
-+	 * length link layer headers. If it's a VLAN device, the
-+	 * min_header_len should be used to exclude the VLAN header
-+	 * size.
-+	 */
-+	if (dev->min_header_len == dev->hard_header_len)
-+		header_len = dev->hard_header_len;
-+	else if (is_vlan_dev(dev))
-+		header_len = dev->min_header_len;
-+	else
-+		return 0;
-+
-+	skb_push(skb, skb->data - skb_mac_header(skb));
-+	vh = skb_header_pointer(skb, header_len, sizeof(vhdr), &vhdr);
-+	if (skb_orig_data != skb->data) {
-+		skb->data = skb_orig_data;
-+		skb->len = skb_orig_len;
-+	}
-+	if (unlikely(!vh))
-+		return 0;
-+
-+	return ntohs(vh->h_vlan_TCI);
-+}
-+
-+static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
-+{
-+	__be16 proto = skb->protocol;
-+
-+	if (unlikely(eth_type_vlan(proto))) {
-+		u8 *skb_orig_data = skb->data;
-+		int skb_orig_len = skb->len;
-+
-+		skb_push(skb, skb->data - skb_mac_header(skb));
-+		proto = __vlan_get_protocol(skb, proto, NULL);
-+		if (skb_orig_data != skb->data) {
-+			skb->data = skb_orig_data;
-+			skb->len = skb_orig_len;
-+		}
-+	}
-+
-+	return proto;
-+}
-+
- static void prb_del_retire_blk_timer(struct tpacket_kbdq_core *pkc)
- {
- 	del_timer_sync(&pkc->retire_blk_timer);
-@@ -1007,10 +1062,16 @@ static void prb_clear_rxhash(struct tpacket_kbdq_core *pkc,
- static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
- 			struct tpacket3_hdr *ppd)
- {
-+	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
-+
- 	if (skb_vlan_tag_present(pkc->skb)) {
- 		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
- 		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
- 		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
-+		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
-+		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
-+		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
- 	} else {
- 		ppd->hv1.tp_vlan_tci = 0;
- 		ppd->hv1.tp_vlan_tpid = 0;
-@@ -2428,6 +2489,10 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
- 			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
- 			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
- 			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+		} else if (unlikely(sk->sk_type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
-+			h.h2->tp_vlan_tci = vlan_get_tci(skb, skb->dev);
-+			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
-+			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
- 		} else {
- 			h.h2->tp_vlan_tci = 0;
- 			h.h2->tp_vlan_tpid = 0;
-@@ -2457,7 +2522,8 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
- 	sll->sll_halen = dev_parse_header(skb, sll->sll_addr);
- 	sll->sll_family = AF_PACKET;
- 	sll->sll_hatype = dev->type;
--	sll->sll_protocol = skb->protocol;
-+	sll->sll_protocol = (sk->sk_type == SOCK_DGRAM) ?
-+		vlan_get_protocol_dgram(skb) : skb->protocol;
- 	sll->sll_pkttype = skb->pkt_type;
- 	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
- 		sll->sll_ifindex = orig_dev->ifindex;
-@@ -3482,7 +3548,8 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 		/* Original length was stored in sockaddr_ll fields */
- 		origlen = PACKET_SKB_CB(skb)->sa.origlen;
- 		sll->sll_family = AF_PACKET;
--		sll->sll_protocol = skb->protocol;
-+		sll->sll_protocol = (sock->type == SOCK_DGRAM) ?
-+			vlan_get_protocol_dgram(skb) : skb->protocol;
- 	}
- 
- 	sock_recv_cmsgs(msg, sk, skb);
-@@ -3539,6 +3606,21 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
- 			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
- 			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+		} else if (unlikely(sock->type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
-+			struct sockaddr_ll *sll = &PACKET_SKB_CB(skb)->sa.ll;
-+			struct net_device *dev;
-+
-+			rcu_read_lock();
-+			dev = dev_get_by_index_rcu(sock_net(sk), sll->sll_ifindex);
-+			if (dev) {
-+				aux.tp_vlan_tci = vlan_get_tci(skb, dev);
-+				aux.tp_vlan_tpid = ntohs(skb->protocol);
-+				aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
-+			} else {
-+				aux.tp_vlan_tci = 0;
-+				aux.tp_vlan_tpid = 0;
-+			}
-+			rcu_read_unlock();
- 		} else {
- 			aux.tp_vlan_tci = 0;
- 			aux.tp_vlan_tpid = 0;
--- 
-2.43.0
+> Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
+> Cc: stable@vger.kernel.org
+> Reported-by: kernel test robot <lkp@intel.com>
 
+The robot reported this problem?
+
+> Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+
+That's a problem with an older version of this patch, not this one.
+
+> Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+> ---
+> V6 -> V7
+>   1. Fix bug directly by adding numa_node to struct
+>      platform_device_info (suggested by Rafael J. Wysocki).
+>   2. Remove reviewer name.
+> 
+> V5 -> V6:
+>   1. Update subject to correct function name platform_device_add().
+>   2. Provide a more clear and accurate description of the changes
+>      made in commit (suggested by Rafael J. Wysocki).
+>   3. Add reviewer name.
+> 
+> V4 -> V5:
+>   Add Cc: stable line and changes from the previous submited patches.
+> 
+> V3 -> V4:
+>   Refactor code to be an ACPI function call (suggested by Greg Kroah-Hartman).
+> 
+> V2 -> V3:
+>   Fix Signed-off name.
+> 
+> V1 -> V2:
+>   Fix compile error without enabling CONFIG_ACPI.
+> ---
+> 
+>  drivers/acpi/acpi_platform.c    |  5 ++---
+>  drivers/base/platform.c         |  4 ++++
+>  include/linux/platform_device.h | 26 ++++++++++++++++++++++++++
+>  3 files changed, 32 insertions(+), 3 deletions(-)
+
+Any reason why you didn't cc the relevent maintainers here?
+
+> diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+> index 7a41c72c1959..78e11b79f1af 100644
+> --- a/include/linux/platform_device.h
+> +++ b/include/linux/platform_device.h
+> @@ -132,10 +132,36 @@ struct platform_device_info {
+>  		u64 dma_mask;
+>  
+>  		const struct property_entry *properties;
+> +
+> +#ifdef CONFIG_NUMA
+> +		int numa_node;	/* NUMA node this platform device is close to plus 1 */
+> +#endif
+
+Ick, no, why?  Again, platform devices should NOT care about this.  If
+they do, they should not be a platform device.
+
+>  };
+>  extern struct platform_device *platform_device_register_full(
+>  		const struct platform_device_info *pdevinfo);
+>  
+> +#ifdef CONFIG_NUMA
+> +static inline int platform_devinfo_get_node(const struct platform_device_info *pdevinfo)
+> +{
+> +	return pdevinfo ? pdevinfo->numa_node - 1 : NUMA_NO_NODE;
+> +}
+> +
+> +static inline void platform_devinfo_set_node(struct platform_device_info *pdevinfo,
+> +					     int node)
+> +{
+> +	pdevinfo->numa_node = node + 1;
+
+Why +1?
+
+thanks,
+
+greg k-h
 
