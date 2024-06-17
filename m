@@ -1,121 +1,142 @@
-Return-Path: <stable+bounces-52497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D73E790B0C9
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:03:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A52E90B052
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEFBF1C21722
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:03:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D590728958F
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EFF18D0B9;
-	Mon, 17 Jun 2024 13:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7831F198E81;
+	Mon, 17 Jun 2024 13:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AUKLxZqY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHPBz4FC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B34D18D0B0;
-	Mon, 17 Jun 2024 13:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1E6198E6D;
+	Mon, 17 Jun 2024 13:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630757; cv=none; b=kbowroamVKJw6N0+Jey5nBow/qLqh+0jdXCy9wFHlColUB4wI8e7aqd+90kHqqi7BTIHsda7HoeUWv3d7LxtwZHYaoftBY6yF10bQQUK+tYlZIlXm02YrrkqykhFO3m8FrIUurGVZKoDwgtOP9tTRVx7dvz3PkiOR0OyFOWlFHk=
+	t=1718630695; cv=none; b=JNJgtI6yZDCVjYpw0PuQL9p1ujY4uwkZQ7t4wPv7LbY41lvHeDFV5teF0hXE3zg8jP1jxDsHYSdU+H2YC6QwJm/QaedeOBZzvyM7rCKQ1Twenxio9vKk+nc8/lFnryeUJVvtkk/F4RmJGC0YOx+dWZtxDmxL6DbNZJPmezraTJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630757; c=relaxed/simple;
-	bh=vYfswvJzrtsRWRx3NsAYResCsxzDI1JtjJfaKrt5xvc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nm5qWJYKSAPhHVi+wDQgCr7esORd+Hl94Zz3uvDQ+OdmnVFuMMcEaZO56y3NrogI9koRnEDI+tCeBxak9d4l2sF5m1Ngg/w8+XZMRe9/XrWFbxvFcMc1NjiLAAEcL3SZpyM8eGLl928LuCoPtcnujN45/2HRu9ONXqxvhgD+HGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AUKLxZqY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565DBC4AF49;
-	Mon, 17 Jun 2024 13:25:56 +0000 (UTC)
+	s=arc-20240116; t=1718630695; c=relaxed/simple;
+	bh=p6IjLVb6CaHWuEGcpqzec/0TKNN2PB5mvz90D2rRwGw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KpOvLJ+9X7bUJHxvY+AKxRY8vlMYMxLr20/B644jbIU0GmRccQ+ddvONQkIHvu4ja8EWHFGThVm32S7FAubp+qpf5k/RytanIgQt/jwlynCXtG5gCADfxsRvWFiFmA+F6/EKQkgHqKVq58bb9qeKOULE8n+fnZ7wBRLG8fkQqn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHPBz4FC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C619BC4AF50;
+	Mon, 17 Jun 2024 13:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630757;
-	bh=vYfswvJzrtsRWRx3NsAYResCsxzDI1JtjJfaKrt5xvc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUKLxZqYcEYI437FNDy6de+KR/Ph3iDh/34dxNyLCDMLAVcTv10Y8JfTFAZk+c+Se
-	 no4J+g+Kd2uF2IIe87ANmvuNrFIFqajHF4SkCoRbFTw7pX4LKzPKwGN0o/LF7uZWmB
-	 TDSkjmcjdS5VQdIrV8ktUT9knRdKeKKvCa46RVXhpxaPGShZRDBOY396yxYTgK9ZDj
-	 1JIP6kesIhvvV9WqKGrDB6m+lL/6YMZSUsS7vTX3Lan885PfFNADvY10Y2pjXYwoa8
-	 P1r2KWuFTXjQ8cu2RC+wxKWUjoFv6rqFojBFldPLWYOkvJxd45RN4oHst0J2BFzORt
-	 NzreT0xpuB3aQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Louis Dalibard <ontake@ontake.dev>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 29/29] HID: Ignore battery for ELAN touchscreens 2F2C and 4116
-Date: Mon, 17 Jun 2024 09:24:33 -0400
-Message-ID: <20240617132456.2588952-29-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240617132456.2588952-1-sashal@kernel.org>
-References: <20240617132456.2588952-1-sashal@kernel.org>
+	s=k20201202; t=1718630694;
+	bh=p6IjLVb6CaHWuEGcpqzec/0TKNN2PB5mvz90D2rRwGw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=EHPBz4FCseWxe/AwZIxpXdXz13S1IPXQAMTnMi5MJc+aIdv8JMRMcYd7Yco9m91gC
+	 2gWLc+kxRcaOu/eahWfwMnh8ZmXXxcdQHsvp7Ey5KWfSe0chuya+uW4cGwuNgBfbtk
+	 u7XicNhJToWjoKni6Ggo8ExNZIuTzu5f0XETzvJ91nRydN/foBkId3WysR9wZQF7oi
+	 ipIJt/9lS8x54RQAWlw++oV5e2YMJG1pOg3RW3/8AaCIDv4pxx4ZGtIERtB/4nZOam
+	 uoo4f4EONjMfikZ/10WGyTlU6mkdzWJu/Q3v9Z9XBBNJBHYX+Ads8MNzCZwclgdHBt
+	 iISi28DZPu5yA==
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2e724bc466fso52163481fa.3;
+        Mon, 17 Jun 2024 06:24:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXobh00tW33HYlSCRSLjNyJKH60CmYSCz/+lX2vsBhElcnUZ4RumD8TXKAlxUfh6PDpkZ+vmCA6cY50bxL6CaQjlivKV9YvDKNshn8703sqC3Id3wX8fiROKxaGG09YpyprMRWX+FFcf2lGLPQ9ikYW0j2L9RP6eWSIYcsnwZkE0F6f
+X-Gm-Message-State: AOJu0YyD5laB7Zg8OgL0SHDE1lGrtIrhMMBT6OjtKh6IIRs+AyB0skb9
+	bJGmUPZPKejy6s8awkmnAsqxaX2kVe+OgLZVCaVK2E1ubm1ZjqsBTfjx+RIkXN4lKdAettgF8mz
+	HQnRytsJnkwLmVrfd0TzmA/KdQI4=
+X-Google-Smtp-Source: AGHT+IGd7Il8L/x2VYYvwI+TdyWZk0q6mXYe8OBC5mf9mEsKmgun6wdGhwkf6pmC2QN5hkUrCDpYZTyYfbmDqwUmMIs=
+X-Received: by 2002:a2e:3814:0:b0:2ec:2283:38f6 with SMTP id
+ 38308e7fff4ca-2ec228339ddmr45302391fa.40.1718630693141; Mon, 17 Jun 2024
+ 06:24:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
-Content-Transfer-Encoding: 8bit
+References: <20240617132309.2588101-1-sashal@kernel.org> <20240617132309.2588101-7-sashal@kernel.org>
+In-Reply-To: <20240617132309.2588101-7-sashal@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 17 Jun 2024 15:24:41 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFDCUfExvB8aD7HduT4-XQ64juFR1k6Q7MTis4MbtcPfA@mail.gmail.com>
+Message-ID: <CAMj1kXFDCUfExvB8aD7HduT4-XQ64juFR1k6Q7MTis4MbtcPfA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.6 07/35] efi: pstore: Return proper errors on
+ UEFI failures
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, Kees Cook <keescook@chromium.org>, 
+	linux-hardening@vger.kernel.org, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Louis Dalibard <ontake@ontake.dev>
+NAK
 
-[ Upstream commit a3a5a37efba11b7cf1a86abe7bccfbcdb521764e ]
+This is not a bugfix so it does not belong in stable.
 
-At least ASUS Zenbook 14 (2023) and ASUS Zenbook 14 Pro (2023) are affected.
 
-The touchscreen reports a battery status of 0% and jumps to 1% when a
-stylus is used.
-
-The device ID was added and the battery ignore quirk was enabled for it.
-
-[jkosina@suse.com: reformatted changelog a bit]
-Signed-off-by: Louis Dalibard <ontake@ontake.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/hid/hid-ids.h   | 2 ++
- drivers/hid/hid-input.c | 4 ++++
- 2 files changed, 6 insertions(+)
-
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 405d88b08908d..4b8c1d18c21e0 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -417,6 +417,8 @@
- #define I2C_DEVICE_ID_HP_SPECTRE_X360_13_AW0020NG  0x29DF
- #define I2C_DEVICE_ID_ASUS_TP420IA_TOUCHSCREEN 0x2BC8
- #define I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN 0x2C82
-+#define I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN 0x2F2C
-+#define I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN 0x4116
- #define USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN	0x2544
- #define USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN	0x2706
- #define I2C_DEVICE_ID_SURFACE_GO_TOUCHSCREEN	0x261A
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index 4ba5df3c1e039..b0091819fd58a 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -374,6 +374,10 @@ static const struct hid_device_id hid_battery_quirks[] = {
- 	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN),
- 	  HID_BATTERY_QUIRK_IGNORE },
-+	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN),
-+	  HID_BATTERY_QUIRK_IGNORE },
-+	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN),
-+	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN),
- 	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN),
--- 
-2.43.0
-
+On Mon, 17 Jun 2024 at 15:23, Sasha Levin <sashal@kernel.org> wrote:
+>
+> From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+>
+> [ Upstream commit 7c23b186ab892088f76a3ad9dbff1685ffe2e832 ]
+>
+> Right now efi-pstore either returns 0 (success) or -EIO; but we
+> do have a function to convert UEFI errors in different standard
+> error codes, helping to narrow down potential issues more accurately.
+>
+> So, let's use this helper here.
+>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/firmware/efi/efi-pstore.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
+> index e7b9ec6f8a86a..5669023bdd1de 100644
+> --- a/drivers/firmware/efi/efi-pstore.c
+> +++ b/drivers/firmware/efi/efi-pstore.c
+> @@ -109,7 +109,7 @@ static int efi_pstore_read_func(struct pstore_record *record,
+>                                      &size, record->buf);
+>         if (status != EFI_SUCCESS) {
+>                 kfree(record->buf);
+> -               return -EIO;
+> +               return efi_status_to_err(status);
+>         }
+>
+>         /*
+> @@ -154,7 +154,7 @@ static ssize_t efi_pstore_read(struct pstore_record *record)
+>                         return 0;
+>
+>                 if (status != EFI_SUCCESS)
+> -                       return -EIO;
+> +                       return efi_status_to_err(status);
+>
+>                 /* skip variables that don't concern us */
+>                 if (efi_guidcmp(guid, LINUX_EFI_CRASH_GUID))
+> @@ -192,7 +192,7 @@ static int efi_pstore_write(struct pstore_record *record)
+>                                             record->size, record->psi->buf,
+>                                             true);
+>         efivar_unlock();
+> -       return status == EFI_SUCCESS ? 0 : -EIO;
+> +       return efi_status_to_err(status);
+>  };
+>
+>  static int efi_pstore_erase(struct pstore_record *record)
+> @@ -203,7 +203,7 @@ static int efi_pstore_erase(struct pstore_record *record)
+>                                      PSTORE_EFI_ATTRIBUTES, 0, NULL);
+>
+>         if (status != EFI_SUCCESS && status != EFI_NOT_FOUND)
+> -               return -EIO;
+> +               return efi_status_to_err(status);
+>         return 0;
+>  }
+>
+> --
+> 2.43.0
+>
 
