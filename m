@@ -1,234 +1,217 @@
-Return-Path: <stable+bounces-52382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A38A90ADFA
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:32:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2749C90AE20
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06FF81C21789
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 12:32:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3E7E2846CE
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 12:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2B0190052;
-	Mon, 17 Jun 2024 12:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17495196C69;
+	Mon, 17 Jun 2024 12:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M743BAHb"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="typiv+Th"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E62C6E61F
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 12:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1BB195FD2;
+	Mon, 17 Jun 2024 12:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718627520; cv=none; b=CnobrBjRAIgp1511v40TeAV+O3R/BfacV7HNLYAEDEdDd/KN31S7TFxTCh+FSULHdYCXu4dk+7XQmIHDZ4cW6KClRndfwE69RUKuezNxWi8poZNaUxG1qZqd5XMlQhmtAE38rO9EJHJ5p30CV1mxwHeluYIWzRaKz/NMsUdE3K8=
+	t=1718628188; cv=none; b=f2Bu+BAKCwFUCxVcIZTkt7QPv/aFweMn18Q0DF7fb5RbdB2dLXVaLV/suVQ6w3E/ku9QASXDM+Qz5wS0ET1FXl5UqkdhyEDgsrXNvSSgkHI0VKUrAXF1P2Yt1vzlK9RXYZB/uk4atN+mVg1W/39E4JUBxkGXClOFjVGOyNKExNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718627520; c=relaxed/simple;
-	bh=mAZSzjB62HizRTxNn0TcNYoSGA0ZPjKpYpwJtll0ZzM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ppL1/Mkscvij5xGD+RAsTM7QlQRNOersKMEQviWDaBYn6aNLel7aZn/+ks0h2mH5dhjl35uJqq/jdfHDwwfrHW9MxkQ7o6OdSI0rcqmQIKaowaC1Yb85VYo3t/ZkxzPA8AtfcZlIGeYLP2HToH2TFfYZ97pt5LL3eOnM1GGKuZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M743BAHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FA8C2BD10;
-	Mon, 17 Jun 2024 12:31:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718627519;
-	bh=mAZSzjB62HizRTxNn0TcNYoSGA0ZPjKpYpwJtll0ZzM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M743BAHbe50smIZUnU5aTwG52utFYgPAF7ZV9k7ITrZcuNmL/ZOa5UlMebp1VW7Sh
-	 SzuVakH+pWT5PTbmAErM+VzokbzClrmze6K1gv4zQ8S9FQMOxLWlPDI7wby6G8682q
-	 2hNb1+BkK1yGX3FaSwEWPgZnsx65QVlmqg/s3Ziw=
-Date: Mon, 17 Jun 2024 14:31:57 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Cc: stable@vger.kernel.org, syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jonathan Lemon <jonathan.lemon@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH stable 4.19] xsk: validate user input for
- XDP_{UMEM|COMPLETION}_FILL_RING
-Message-ID: <2024061748-constable-kitten-e887@gregkh>
-References: <20240613122430.15677-1-shung-hsi.yu@suse.com>
+	s=arc-20240116; t=1718628188; c=relaxed/simple;
+	bh=yvd9o/Qkt3lo4YXw/psYYeivIy21uPHvOst4VD1kGNE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SGCiioVLCcGf7f4BcMgn5384OFlSo5CBc0hG1mNFEhRfZuQpxOCSDMOu/NZ60MmpAYVaoYElkVgo927UnqoPOuYuvRxxNIITmVPzyAtaBIqj/6jiPVHNxeF1eCr/tBl7k8dqpOjmJe8dGQckrmwpiS/7dvaAeGieOllkHzftTdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=typiv+Th; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1718628169; x=1719232969; i=deller@gmx.de;
+	bh=yvd9o/Qkt3lo4YXw/psYYeivIy21uPHvOst4VD1kGNE=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=typiv+ThXbjT/2Dz7upgnb6Hn74s5h62xlPKAmEegpA33Ih8g+meTJhVn6k+PA2P
+	 GMe2nOyucnuLVCkM6bA/pFoiQ1IO3A6ToYSrXkJ9r11RzKFQTN4Faucrwr9jFISb9
+	 V92JZcQ9zrxVGoumqxb61n7K4O4cEdzaEUP9iHEQpQjK1f6Xvg3L/PVJ3srHnSqEg
+	 YF+y1oC+k6FGaTQrqwXdtQzWQrEH81t4P6RIytz0gdPmENUJRMKERBQuuK1tqfI7S
+	 sjGOzUhkHb50eP97/SPdn+/mhYNo9bFw/CHtTqPMcSBqh5Xq3sMT1T3D1n5C+pAMI
+	 9C7CEcKu7pN3eXjL+A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.55] ([83.135.217.92]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mzyyk-1sYFoN0Fde-011su5; Mon, 17
+ Jun 2024 14:42:49 +0200
+Message-ID: <60216bc6-cde3-4927-81a1-ec808f5ba4d3@gmx.de>
+Date: Mon, 17 Jun 2024 14:42:48 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240613122430.15677-1-shung-hsi.yu@suse.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] fbdev: vesafb: Detect VGA compatibility from screen
+ info's VESA attributes
+To: Thomas Zimmermann <tzimmermann@suse.de>, sam@ravnborg.org,
+ javierm@redhat.com, hpa@zytor.com
+Cc: linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ stable@vger.kernel.org
+References: <20240617110725.23330-1-tzimmermann@suse.de>
+ <f42169dc-ebcd-4df9-8119-3dbac28746de@suse.de>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <f42169dc-ebcd-4df9-8119-3dbac28746de@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:X4VJogwKxbmJ3Lib0sd/Qlz26/uPGKH25L9BYglWneHSPrkX8of
+ 0L2JPE3HybLh9OQj77RWNwAR2mNRmOXD17LOKXHf0w2XkrWgJnpj23K+3u9jlVoW+RRYu34
+ kUl1+zEFv2ZpFuTbnA2ATEl2Sg4PGwOut2UarErYMv4iWKGEMPtzX5uTEehPKCyl2obxOko
+ GmoReheyCdj2MHvUGJDSQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ae57VLU5580=;C5zWINxEcmkdkeePxv16mjMFp6i
+ vbBvBw8TQxmbbEqOhOrK0gp05SByMLAwO2ORijZr2nQ0J2UmIx+WhlTMVaXetF2EfSFp/btTC
+ bsl43pmaEov9e+R17E/1U9D5EsjA5A/Xcxd4RyX6yfvYTrHwhDvcqIJFRvajYPyxlJSzBNX4e
+ AQF9UMxQk2If6iLygAHjZq8r8X1G2A/eoTcnA+yFYQ2uRo0UIj01XYL8liqW7dqAIzTvCSNEC
+ bbFkXg6J/pK5oInEGkLWL3Jqp1vXNXtTFhY4yPK2FE0CLi5+pGDyMMD6sxc22geu/3Qz2lH4X
+ hLG25741qdBv0q2hzweepx7iQ7aWYaLgXMwHVCguwagdzoumjaQuS4Bk4VnaRnqkZ1lCNYt91
+ Tg7pb8P4TLDKa44vHjoaI1BV9Jb0KLz2viPYJybPRPIdX3h59XjAmup9HLYP7pEj/IZ+MZozj
+ pvZ0wTzI+cyHMKK+Ah6ngX9aOd4r08Xu/5bnjx5m7/7/NTfo32lbSvjZcUz2tWkSDnC1JyzS/
+ XTzC7MrLkCue6YDt+VsPJtjQOoc3nf0IWJlJ5OOFtwOBqqR0nP8I+LYl4jsFe9Ued3E45sonY
+ hzLCGPwfF7jN59Vktv+MtQIl+19yWSGDnzy8Tb7mFU6nXi1TEjND3fKfIXVjZs+cbWYc2Hxdr
+ Twdr3rwGmHGkIiLl+d/Zx77abwfnQH+QJQOaJpBQLjwhBmZ7sOpZcAJOPbdBe6M5SY14YCtte
+ UFLWeHhANpvGCOFTpQK686PInbJUJnH93385QOLNBCrzb9X7uZLjvxuAev9ncC2Xu9o4BSAVt
+ BGIrzwvqOqwLXkX/QjCCD+9lItLhT7sV/Ue0ChuJTx7do=
 
-On Thu, Jun 13, 2024 at 08:24:29PM +0800, Shung-Hsi Yu wrote:
-> [ Upstream commit 237f3cf13b20db183d3706d997eedc3c49eacd44 ]
-> 
-> From: Eric Dumazet <edumazet@google.com>
-> 
-> syzbot reported an illegal copy in xsk_setsockopt() [1]
-> 
-> Make sure to validate setsockopt() @optlen parameter.
-> 
-> [1]
-> 
->  BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
->  BUG: KASAN: slab-out-of-bounds in copy_from_sockptr include/linux/sockptr.h:55 [inline]
->  BUG: KASAN: slab-out-of-bounds in xsk_setsockopt+0x909/0xa40 net/xdp/xsk.c:1420
-> Read of size 4 at addr ffff888028c6cde3 by task syz-executor.0/7549
-> 
-> CPU: 0 PID: 7549 Comm: syz-executor.0 Not tainted 6.8.0-syzkaller-08951-gfe46a7dd189e #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
-> Call Trace:
->  <TASK>
->   __dump_stack lib/dump_stack.c:88 [inline]
->   dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
->   print_address_description mm/kasan/report.c:377 [inline]
->   print_report+0x169/0x550 mm/kasan/report.c:488
->   kasan_report+0x143/0x180 mm/kasan/report.c:601
->   copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
->   copy_from_sockptr include/linux/sockptr.h:55 [inline]
->   xsk_setsockopt+0x909/0xa40 net/xdp/xsk.c:1420
->   do_sock_setsockopt+0x3af/0x720 net/socket.c:2311
->   __sys_setsockopt+0x1ae/0x250 net/socket.c:2334
->   __do_sys_setsockopt net/socket.c:2343 [inline]
->   __se_sys_setsockopt net/socket.c:2340 [inline]
->   __x64_sys_setsockopt+0xb5/0xd0 net/socket.c:2340
->  do_syscall_64+0xfb/0x240
->  entry_SYSCALL_64_after_hwframe+0x6d/0x75
-> RIP: 0033:0x7fb40587de69
-> Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007fb40665a0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000036
-> RAX: ffffffffffffffda RBX: 00007fb4059abf80 RCX: 00007fb40587de69
-> RDX: 0000000000000005 RSI: 000000000000011b RDI: 0000000000000006
-> RBP: 00007fb4058ca47a R08: 0000000000000002 R09: 0000000000000000
-> R10: 0000000020001980 R11: 0000000000000246 R12: 0000000000000000
-> R13: 000000000000000b R14: 00007fb4059abf80 R15: 00007fff57ee4d08
->  </TASK>
-> 
-> Allocated by task 7549:
->   kasan_save_stack mm/kasan/common.c:47 [inline]
->   kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
->   poison_kmalloc_redzone mm/kasan/common.c:370 [inline]
->   __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:387
->   kasan_kmalloc include/linux/kasan.h:211 [inline]
->   __do_kmalloc_node mm/slub.c:3966 [inline]
->   __kmalloc+0x233/0x4a0 mm/slub.c:3979
->   kmalloc include/linux/slab.h:632 [inline]
->   __cgroup_bpf_run_filter_setsockopt+0xd2f/0x1040 kernel/bpf/cgroup.c:1869
->   do_sock_setsockopt+0x6b4/0x720 net/socket.c:2293
->   __sys_setsockopt+0x1ae/0x250 net/socket.c:2334
->   __do_sys_setsockopt net/socket.c:2343 [inline]
->   __se_sys_setsockopt net/socket.c:2340 [inline]
->   __x64_sys_setsockopt+0xb5/0xd0 net/socket.c:2340
->  do_syscall_64+0xfb/0x240
->  entry_SYSCALL_64_after_hwframe+0x6d/0x75
-> 
-> The buggy address belongs to the object at ffff888028c6cde0
->  which belongs to the cache kmalloc-8 of size 8
-> The buggy address is located 1 bytes to the right of
->  allocated 2-byte region [ffff888028c6cde0, ffff888028c6cde2)
-> 
-> The buggy address belongs to the physical page:
-> page:ffffea0000a31b00 refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888028c6c9c0 pfn:0x28c6c
-> anon flags: 0xfff00000000800(slab|node=0|zone=1|lastcpupid=0x7ff)
-> page_type: 0xffffffff()
-> raw: 00fff00000000800 ffff888014c41280 0000000000000000 dead000000000001
-> raw: ffff888028c6c9c0 0000000080800057 00000001ffffffff 0000000000000000
-> page dumped because: kasan: bad access detected
-> page_owner tracks the page as allocated
-> page last allocated via order 0, migratetype Unmovable, gfp_mask 0x112cc0(GFP_USER|__GFP_NOWARN|__GFP_NORETRY), pid 6648, tgid 6644 (syz-executor.0), ts 133906047828, free_ts 133859922223
->   set_page_owner include/linux/page_owner.h:31 [inline]
->   post_alloc_hook+0x1ea/0x210 mm/page_alloc.c:1533
->   prep_new_page mm/page_alloc.c:1540 [inline]
->   get_page_from_freelist+0x33ea/0x3580 mm/page_alloc.c:3311
->   __alloc_pages+0x256/0x680 mm/page_alloc.c:4569
->   __alloc_pages_node include/linux/gfp.h:238 [inline]
->   alloc_pages_node include/linux/gfp.h:261 [inline]
->   alloc_slab_page+0x5f/0x160 mm/slub.c:2175
->   allocate_slab mm/slub.c:2338 [inline]
->   new_slab+0x84/0x2f0 mm/slub.c:2391
->   ___slab_alloc+0xc73/0x1260 mm/slub.c:3525
->   __slab_alloc mm/slub.c:3610 [inline]
->   __slab_alloc_node mm/slub.c:3663 [inline]
->   slab_alloc_node mm/slub.c:3835 [inline]
->   __do_kmalloc_node mm/slub.c:3965 [inline]
->   __kmalloc_node+0x2db/0x4e0 mm/slub.c:3973
->   kmalloc_node include/linux/slab.h:648 [inline]
->   __vmalloc_area_node mm/vmalloc.c:3197 [inline]
->   __vmalloc_node_range+0x5f9/0x14a0 mm/vmalloc.c:3392
->   __vmalloc_node mm/vmalloc.c:3457 [inline]
->   vzalloc+0x79/0x90 mm/vmalloc.c:3530
->   bpf_check+0x260/0x19010 kernel/bpf/verifier.c:21162
->   bpf_prog_load+0x1667/0x20f0 kernel/bpf/syscall.c:2895
->   __sys_bpf+0x4ee/0x810 kernel/bpf/syscall.c:5631
->   __do_sys_bpf kernel/bpf/syscall.c:5738 [inline]
->   __se_sys_bpf kernel/bpf/syscall.c:5736 [inline]
->   __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:5736
->  do_syscall_64+0xfb/0x240
->  entry_SYSCALL_64_after_hwframe+0x6d/0x75
-> page last free pid 6650 tgid 6647 stack trace:
->   reset_page_owner include/linux/page_owner.h:24 [inline]
->   free_pages_prepare mm/page_alloc.c:1140 [inline]
->   free_unref_page_prepare+0x95d/0xa80 mm/page_alloc.c:2346
->   free_unref_page_list+0x5a3/0x850 mm/page_alloc.c:2532
->   release_pages+0x2117/0x2400 mm/swap.c:1042
->   tlb_batch_pages_flush mm/mmu_gather.c:98 [inline]
->   tlb_flush_mmu_free mm/mmu_gather.c:293 [inline]
->   tlb_flush_mmu+0x34d/0x4e0 mm/mmu_gather.c:300
->   tlb_finish_mmu+0xd4/0x200 mm/mmu_gather.c:392
->   exit_mmap+0x4b6/0xd40 mm/mmap.c:3300
->   __mmput+0x115/0x3c0 kernel/fork.c:1345
->   exit_mm+0x220/0x310 kernel/exit.c:569
->   do_exit+0x99e/0x27e0 kernel/exit.c:865
->   do_group_exit+0x207/0x2c0 kernel/exit.c:1027
->   get_signal+0x176e/0x1850 kernel/signal.c:2907
->   arch_do_signal_or_restart+0x96/0x860 arch/x86/kernel/signal.c:310
->   exit_to_user_mode_loop kernel/entry/common.c:105 [inline]
->   exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
->   __syscall_exit_to_user_mode_work kernel/entry/common.c:201 [inline]
->   syscall_exit_to_user_mode+0xc9/0x360 kernel/entry/common.c:212
->   do_syscall_64+0x10a/0x240 arch/x86/entry/common.c:89
->  entry_SYSCALL_64_after_hwframe+0x6d/0x75
-> 
-> Memory state around the buggy address:
->  ffff888028c6cc80: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
->  ffff888028c6cd00: fa fc fc fc fa fc fc fc 00 fc fc fc 06 fc fc fc
-> >ffff888028c6cd80: fa fc fc fc fa fc fc fc fa fc fc fc 02 fc fc fc
->                                                        ^
->  ffff888028c6ce00: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
->  ffff888028c6ce80: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
-> 
-> Fixes: 423f38329d26 ("xsk: add umem fill queue support and mmap")
-> Reported-by: syzbot <syzkaller@googlegroups.com>
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Cc: "Björn Töpel" <bjorn@kernel.org>
-> Cc: Magnus Karlsson <magnus.karlsson@intel.com>
-> Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> Cc: Jonathan Lemon <jonathan.lemon@gmail.com>
-> Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-> Link: https://lore.kernel.org/r/20240404202738.3634547-1-edumazet@google.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> [shung-hsi.yu: two additional changes not present in the original
-> 1. Check optlen in the XDP_UMEM_REG case as well. It was added in commit
->    c05cd36458147 ("xsk: add support to allow unaligned chunk placement") but
->    seems like too big of a change for stable
-> 2. copy_from_sockptr() in the context was replace copy_from_usr()
->    because commit a7b75c5a8c414 ("net: pass a sockptr_t into
->    ->setsockopt") was not present]
-> Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-> ---
-> Resend because the last submission was done prior to 5.4 receiving the fix,
-> hence was dropped from Greg's tree[1].
-> 1: https://lore.kernel.org/stable/2024061329-pregnancy-rumbling-74b2@gregkh/
-> ---
->  net/xdp/xsk.c | 4 ++++
->  1 file changed, 4 insertions(+)
+On 6/17/24 13:30, Thomas Zimmermann wrote:
+>
+>
+> Am 17.06.24 um 13:06 schrieb Thomas Zimmermann:
+>> Test the vesa_attributes field in struct screen_info for compatibility
+>> with VGA hardware. Vesafb currently tests bit 1 in screen_info's
+>> capabilities field, It sets the framebuffer address size and is
+>> unrelated to VGA.
+>>
+>> Section 4.4 of the Vesa VBE 2.0 specifications defines that bit 5 in
+>> the mode's attributes field signals VGA compatibility. The mode is
+>> compatible with VGA hardware if the bit is clear. In that case, the
+>> driver can access VGA state of the VBE's underlying hardware. The
+>> vesafb driver uses this feature to program the color LUT in palette
+>> modes. Without, colors might be incorrect.
+>>
+>> The problem got introduced in commit 89ec4c238e7a ("[PATCH] vesafb: Fix
+>> incorrect logo colors in x86_64"). It incorrectly stores the mode
+>> attributes in the screen_info's capabilities field and updates vesafb
+>> accordingly. Later, commit 5e8ddcbe8692 ("Video mode probing support fo=
+r
+>> the new x86 setup code") fixed the screen_info, but did not update vesa=
+fb.
+>> Color output still tends to work, because bit 1 in capabilities is
+>> usually 0.
+>>
+>> Besides fixing the bug in vesafb, this commit introduces a helper that
+>> reads the correct bit from screen_info.
+>>
+>> v2:
+>> - clarify comment on non-VGA modes (Helge)
+>>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> Fixes: 5e8ddcbe8692 ("Video mode probing support for the new x86 setup =
+code")
+>> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+>> Cc: <stable@vger.kernel.org> # v2.6.23+
+>> ---
+>> =C2=A0 drivers/video/fbdev/vesafb.c |=C2=A0 2 +-
+>> =C2=A0 include/linux/screen_info.h=C2=A0 | 10 ++++++++++
+>> =C2=A0 2 files changed, 11 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/video/fbdev/vesafb.c b/drivers/video/fbdev/vesafb.=
+c
+>> index 8ab64ae4cad3e..5a161750a3aee 100644
+>> --- a/drivers/video/fbdev/vesafb.c
+>> +++ b/drivers/video/fbdev/vesafb.c
+>> @@ -271,7 +271,7 @@ static int vesafb_probe(struct platform_device *dev=
+)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (si->orig_video_isVGA !=3D VIDEO_TYPE=
+_VLFB)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -ENODEV;
+>> -=C2=A0=C2=A0=C2=A0 vga_compat =3D (si->capabilities & 2) ? 0 : 1;
+>> +=C2=A0=C2=A0=C2=A0 vga_compat =3D !__screen_info_vbe_mode_nonvga(si);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vesafb_fix.smem_start =3D si->lfb_base;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vesafb_defined.bits_per_pixel =3D si->lf=
+b_depth;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (15 =3D=3D vesafb_defined.bits_per_pi=
+xel)
+>> diff --git a/include/linux/screen_info.h b/include/linux/screen_info.h
+>> index 75303c126285a..d21f8e4e9f4a4 100644
+>> --- a/include/linux/screen_info.h
+>> +++ b/include/linux/screen_info.h
+>> @@ -49,6 +49,16 @@ static inline u64 __screen_info_lfb_size(const struc=
+t screen_info *si, unsigned
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return lfb_size;
+>> =C2=A0 }
+>> +static inline bool __screen_info_vbe_mode_nonvga(const struct screen_i=
+nfo *si)
+>> +{
+>> +=C2=A0=C2=A0=C2=A0 /*
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 * VESA modes typically run on VGA hardware. S=
+et bit 5 signal that this
+>
+> 'signals'
 
-Now queued up, thanks.
+I've fixed this up in your patch and applied it to the fbdev git tree.
+No need to send new patch...
 
-greg k-h
+Thanks!
+Helge
 
