@@ -1,140 +1,108 @@
-Return-Path: <stable+bounces-52379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D777590ADCA
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:17:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A7990ADEB
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 091331C2321B
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 12:17:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD85F1F2277A
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 12:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7C416C6AF;
-	Mon, 17 Jun 2024 12:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41142195806;
+	Mon, 17 Jun 2024 12:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fAz+GrB5"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="fXAxbDmH";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JDZyf9zI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout1-smtp.messagingengine.com (fout1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCCD2F32
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 12:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD43190052
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 12:28:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718626622; cv=none; b=XH/HtwKxItapK6Hjz3eUEIr9u2/OneqscuDnI/zmxBrBdY3RenLkuiTQw6LWGaXR7UWtCIHYDe/urJYpgS43xjfEr+ckeoyvH97FH9ipooqXC/Puslob31kZG+Q+1k/3cB/a3+mahgQD/8zbnQ2rbQJCwLxLAq/cSIT+Igr6+X0=
+	t=1718627300; cv=none; b=TthLFU5kEh9fkKk1SB5X7QokuOm2Irs20FQkbS2rb/AUXeGNAY7O1lJwUqfwVKEv0NXvZMTr56LP7UyFn2dSdVez/dqdi462Z3SmfnXGYUxXlQbUEU59X17tAGqyiugAUkllK7rhylWVfe1rLaEKKMExLFhW5VIsNYJwJbhbRzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718626622; c=relaxed/simple;
-	bh=ividLKsklRzV3hwXaWu4BxFuMTfHRDtQL1zB84sfJug=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ONJV3gd46mfBfn+Pb8C8QdNGU/2Fcp2Cfj7f+Oj634BrSPlqP6OIwcHiOlrwhJfO/wjG7vz3IBSYh28IOwt/q0auceKFQnZaBTZMhxjRQ/hUdK1exk0fPPwzRVnbwWhXbmYbZczPW3d28C+Zq3xSmU8j5t48n4b0RloBRIljAZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fAz+GrB5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF62C2BD10;
-	Mon, 17 Jun 2024 12:17:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718626622;
-	bh=ividLKsklRzV3hwXaWu4BxFuMTfHRDtQL1zB84sfJug=;
-	h=Subject:To:Cc:From:Date:From;
-	b=fAz+GrB5/7k1n9tjlXKcfHjxE3tmxndUEhpmHnHBC47DsTMDNulNi4QRtxS0Y2h4y
-	 LiiCTi/kUYiXfMOVSxl9qSN0HIBi3n+kOIPorw+DkMA7PxaTdeIheZdPaJgcY4c0lg
-	 86+O0bQZ1NEEdruP2/6QYDR/JCxiJ6zK12WZk0EQ=
-Subject: FAILED: patch "[PATCH] gve: Clear napi->skb before dev_kfree_skb_any()" failed to apply to 5.15-stable tree
-To: ziweixiao@google.com,hramamurthy@google.com,kuba@kernel.org,pkaligineedi@google.com,shailend@google.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 17 Jun 2024 14:16:59 +0200
-Message-ID: <2024061759-decoy-condiment-7d57@gregkh>
+	s=arc-20240116; t=1718627300; c=relaxed/simple;
+	bh=0ShDpU+dWVmLkVhJEvq3QSRLNWtie9HFsvSRkpafCwQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n2L5GvJT1Rw1cZpiuRKivHBMQvuyvZhvW228NX5JR4W7LVC1TsRWz4TN8CLu4qOIXkpKmVFP8Cf9iBiS5k8IeBz8V0S74kWK7HG0+MbBS6mtEG+dwm1u96a/w7OjG+D7dzojjzUhcywCfvWLaMPYUXiwNf+b7AC5mPyc2aEFpLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=fXAxbDmH; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JDZyf9zI; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfout.nyi.internal (Postfix) with ESMTP id CBB991380293;
+	Mon, 17 Jun 2024 08:28:17 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Mon, 17 Jun 2024 08:28:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1718627297; x=1718713697; bh=UZ5o3jqx9C
+	riZhvR5DdY+AJpqF7Ix3G5yRFHi2wSlnI=; b=fXAxbDmH+8Ptt6hj5HTbwoxXTG
+	47zANe9drycRjwo5QfBSBebhxahzfmBZInXBAJ73FBvLr/yzrdxZdWeuZOLVSiu+
+	FplqWFRBZq+OwA4ml/T3oloOkq6Rwn2DzRAUBol6kG86l1tlm0nRz+1WEG5g51pj
+	OYJwHHm5E2mEeO19K3E9qkngmAOi5hkszmJIJ3VhVq+75AW2NInlRC/IUB9J0Br6
+	l4EDRHr9DnW/BHXDwEo0zrI3fgEU0IGJf/3ZgEcX/qCJGR3sxGifpobQpngUoQXa
+	wqNleOj/hvqJ2Ht2yO3w7Ufr4al82pWorFGD5I7hvFm8zyLtnRJQ0GgVqtjw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1718627297; x=1718713697; bh=UZ5o3jqx9CriZhvR5DdY+AJpqF7I
+	x3G5yRFHi2wSlnI=; b=JDZyf9zI6PsCMDsJN4mfa4A8WH9qH1fJ0dtt7UWe9FAm
+	/utRTXJQoGD+5ox+4oL4noFSaFU5BcFDXTHFeWfr2k2g5hHduDYRSvWN2MGA+X4i
+	WRwJG9QDO3yNK0A82538O6xETZLPvDaIB/R+oR6dxFjAAwE7b2DfmYfycxUj2Hfx
+	PLDA4zprmjYOAuUryuH0eYuoBY8thVVUbGuwnYsRRGJHg/pQoqi4Q+120fPyoPzz
+	/ycqzkNRinu1/xFkD90rKlzuSc+wdi8Z+/rw4uBPEIdL3FTGdSsDTHHIk+zd7QDJ
+	lpmQQwniwpLuq46AYwH04o0aa8kS/DVR5w3qxJRIWg==
+X-ME-Sender: <xms:4StwZrpRueeAjuIIMisbDkDqcc5g7X1hEFv6fdi5YNSTHG02J4eDjw>
+    <xme:4StwZloEwxTR_kfZlFPMKGDOra5wK9dsJRHKtJcBdiFS-UuVFuBB3YI2LKQP6cQ0c
+    c8vvOvXyyHXLg>
+X-ME-Received: <xmr:4StwZoMOShPllUDYHfGW13Vo8hvAKXr2BKqApX9Hb92efkr4_u3ai7dfRfsdRjB4x4BbOs_SKXiTQ7OLQiVruMvrThQsdHR4N-BjPw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedvhedgheefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttd
+    ertddttddvnecuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhm
+    qeenucggtffrrghtthgvrhhnpeehgedvvedvleejuefgtdduudfhkeeltdeihfevjeekje
+    euhfdtueefhffgheekteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
+    ihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:4StwZu5LOf8qaAEyFQJJ6uT8EwPU9byioEcibyDepwJWYqhRVwNNWg>
+    <xmx:4StwZq7sSMVq7gD-hwxSaI9iU-bGDg0fQQqEnTvnx1Y07etB_A-PwQ>
+    <xmx:4StwZmi2_xlvxCtltmUqgoxiisgNjdzJFb34AnUPnxYwe3eCvdB26g>
+    <xmx:4StwZs6rP5p3iz_KpWJ3CPb1JUgOqxGCaC1bHe5e3oV8UUKdWxtJTw>
+    <xmx:4StwZnuZZrz5BSF9aRYYNR-4JjYaK-F1kpYw5XZnwq24lPEkcMqQhejC>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 17 Jun 2024 08:28:17 -0400 (EDT)
+Date: Mon, 17 Jun 2024 14:28:14 +0200
+From: Greg KH <greg@kroah.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5.10] powerpc/uaccess: Fix build errors seen with GCC
+ 13/14
+Message-ID: <2024061706-dingy-constant-fd27@gregkh>
+References: <20240614112714.3482739-1-mpe@ellerman.id.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240614112714.3482739-1-mpe@ellerman.id.au>
 
+On Fri, Jun 14, 2024 at 09:27:14PM +1000, Michael Ellerman wrote:
+> commit 2d43cc701b96f910f50915ac4c2a0cae5deb734c upstream.
+> 
+> Building ppc64le_defconfig with GCC 14 fails with assembler errors:
+> 
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6f4d93b78ade0a4c2cafd587f7b429ce95abb02e
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061759-decoy-condiment-7d57@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-6f4d93b78ade ("gve: Clear napi->skb before dev_kfree_skb_any()")
-1344e751e910 ("gve: Add RX context.")
-
-thanks,
+All backports now queued up,t hanks!
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 6f4d93b78ade0a4c2cafd587f7b429ce95abb02e Mon Sep 17 00:00:00 2001
-From: Ziwei Xiao <ziweixiao@google.com>
-Date: Wed, 12 Jun 2024 00:16:54 +0000
-Subject: [PATCH] gve: Clear napi->skb before dev_kfree_skb_any()
-
-gve_rx_free_skb incorrectly leaves napi->skb referencing an skb after it
-is freed with dev_kfree_skb_any(). This can result in a subsequent call
-to napi_get_frags returning a dangling pointer.
-
-Fix this by clearing napi->skb before the skb is freed.
-
-Fixes: 9b8dd5e5ea48 ("gve: DQO: Add RX path")
-Cc: stable@vger.kernel.org
-Reported-by: Shailend Chand <shailend@google.com>
-Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Shailend Chand <shailend@google.com>
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Link: https://lore.kernel.org/r/20240612001654.923887-1-ziweixiao@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-index c1c912de59c7..1154c1d8f66f 100644
---- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-@@ -647,11 +647,13 @@ static void gve_rx_skb_hash(struct sk_buff *skb,
- 	skb_set_hash(skb, le32_to_cpu(compl_desc->hash), hash_type);
- }
- 
--static void gve_rx_free_skb(struct gve_rx_ring *rx)
-+static void gve_rx_free_skb(struct napi_struct *napi, struct gve_rx_ring *rx)
- {
- 	if (!rx->ctx.skb_head)
- 		return;
- 
-+	if (rx->ctx.skb_head == napi->skb)
-+		napi->skb = NULL;
- 	dev_kfree_skb_any(rx->ctx.skb_head);
- 	rx->ctx.skb_head = NULL;
- 	rx->ctx.skb_tail = NULL;
-@@ -950,7 +952,7 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
- 
- 		err = gve_rx_dqo(napi, rx, compl_desc, complq->head, rx->q_num);
- 		if (err < 0) {
--			gve_rx_free_skb(rx);
-+			gve_rx_free_skb(napi, rx);
- 			u64_stats_update_begin(&rx->statss);
- 			if (err == -ENOMEM)
- 				rx->rx_skb_alloc_fail++;
-@@ -993,7 +995,7 @@ int gve_rx_poll_dqo(struct gve_notify_block *block, int budget)
- 
- 		/* gve_rx_complete_skb() will consume skb if successful */
- 		if (gve_rx_complete_skb(rx, napi, compl_desc, feat) != 0) {
--			gve_rx_free_skb(rx);
-+			gve_rx_free_skb(napi, rx);
- 			u64_stats_update_begin(&rx->statss);
- 			rx->rx_desc_err_dropped_pkt++;
- 			u64_stats_update_end(&rx->statss);
-
 
