@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-52498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1912190B0CD
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:03:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C66C90B0E9
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DAA51C209C6
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:03:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C09BBB2EC22
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416D419923D;
-	Mon, 17 Jun 2024 13:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9A319CD14;
+	Mon, 17 Jun 2024 13:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dIVEuZGO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pLbrJBfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE46618D0B0;
-	Mon, 17 Jun 2024 13:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4088D19CD08;
+	Mon, 17 Jun 2024 13:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630780; cv=none; b=J9RabjmRzUeYAxN486tVf89RMwrLoDDIoYon0PxyxQW9h066PCGe95wX3Y1ofHAW0e1atR9//Cuqvxrl11c6gp+hXzd8WDQYyOzRtRc6hBc+vVFogZsO7wUZ2Y60KtoPFOmg7apyOaJkMgbHmFqhHAq85ccMWJigP5N22MuRsWo=
+	t=1718630459; cv=none; b=ek6qmOGlRV0imk4NOQliZ/ifmHVqyIlVUeluUDNZVXhUN3SugOsU1TQQ05zlbBWXmjVBffu/OHavNx1L7vqKOKDjFFcXLSOCbwquYEX+AhsgajtB3JyOYdd5anfwHoKLXFlqKVDbOZ8i0IlnmO1zvuR9lMq2kSWJPv4r6w3U0D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630780; c=relaxed/simple;
-	bh=o1kRwwDvVU1rG3e8P5Z+WVP3KIo7hNw64Oqe8utbRqY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c0zLRxRsmtpY9zbK2A+O+ckx6HyLpeljk7PDGzzp3ZKsSoi1EeyVcs6z/fhKzcMYvBBFzMGiO9kDMZRoLvN38zn1Iq1iGoKsN5xB1aYbbaswt+W9dcOUwRuy7+2LV4FQgZ7ynOTUVd4HOP7rDsv2jCG6HpNRvc8S+UTH7bo+ZFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dIVEuZGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C044C2BD10;
-	Mon, 17 Jun 2024 13:26:18 +0000 (UTC)
+	s=arc-20240116; t=1718630459; c=relaxed/simple;
+	bh=kaqaszhQnjB6MNLzi7ZVRYXuc9INOeh8YqNngcloKc4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=p+fFuwd9u8UjcnQnBrG7ZkWUqEadad/4syRxAqznWJtTP1B3suQLrtXbpKZbRLHZtNa20M+AjwmHJYxuqxev0+wn1BO9f58xeedRJgJGN4W9MePZMlbFfmJsc08syk7kMPnIza/FRQPd0bF25yio7Lj27RZxfUaHzausl4pBMjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pLbrJBfC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F87C2BD10;
+	Mon, 17 Jun 2024 13:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630779;
-	bh=o1kRwwDvVU1rG3e8P5Z+WVP3KIo7hNw64Oqe8utbRqY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=dIVEuZGOO2N4vNi4l7SthBdNSZr4K4uQKbd1mPkZGMMv2eABLhhACZB+UhfqKOtRg
-	 DKkN9MRy8KkUkyWYMBDUpVn0qAohTlqdY2dWmy6OrWfmzz+mc4zkPylrrZ8IPhvQRk
-	 imo/0PErJI4eSmVziOlGq/9PpyUluVv3uQxeywiebpnDJA2zkgNfEjP8RkY8lYEFkN
-	 3Y2FRD7S0XrTjqwnMl32pSugVCe/GZookhlXbX9JALyz4E4izrSLICUi1hK82EOwNz
-	 hC4o043gFemkSvWSPXu8dnk7+gsQD9EQ0AFh2kZxssb/csYdXmC1naQUKXxJeACJAF
-	 7WglltTMTXsOw==
+	s=k20201202; t=1718630459;
+	bh=kaqaszhQnjB6MNLzi7ZVRYXuc9INOeh8YqNngcloKc4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pLbrJBfCixCHPUSvgD2TXt64lc7sMc2x0RE6iUDtR/IsOUUeU7pCbJ1efPK7snQNp
+	 g+fZBd+ueUk77CgXHRydKp7HD3TK2F9aoClrNmVa4msiX8QD/0jGwreH0ekRlrMwr4
+	 S7SS7dvqRLnjFstEHhMx68skaT+e1cd+89Ntkrb16hBHiGE2UPlvdaNvQr7TmyzWmL
+	 AxygjDXl4l6sN2Zbfn9D3djQUOHtFarrHbRG48exH4W9kZP1Dbzi00rfwWbCzRGpas
+	 WxPOK/Lcs234oDHrV1owveV1x40fLU7I6ODpgaG9o7aBO/TzDYFQHkftN/9NTOVo23
+	 XwJl6YFb+YOkg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Martin Wilck <martin.wilck@suse.com>,
-	Rajashekhar M A <rajs@netapp.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 01/21] scsi: core: alua: I/O errors for ALUA state transitions
-Date: Mon, 17 Jun 2024 09:25:38 -0400
-Message-ID: <20240617132617.2589631-1-sashal@kernel.org>
+	chenhuacai@kernel.org,
+	linux-efi@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.9 06/44] efi/libstub: zboot.lds: Discard .discard sections
+Date: Mon, 17 Jun 2024 09:19:19 -0400
+Message-ID: <20240617132046.2587008-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240617132046.2587008-1-sashal@kernel.org>
+References: <20240617132046.2587008-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,111 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.161
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Martin Wilck <martin.wilck@suse.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 10157b1fc1a762293381e9145041253420dfc6ad ]
+[ Upstream commit 5134acb15d9ef27aa2b90aad46d4e89fcef79fdc ]
 
-When a host is configured with a few LUNs and I/O is running, injecting FC
-faults repeatedly leads to path recovery problems.  The LUNs have 4 paths
-each and 3 of them come back active after say an FC fault which makes 2 of
-the paths go down, instead of all 4. This happens after several iterations
-of continuous FC faults.
+When building ARCH=loongarch defconfig + CONFIG_UNWINDER_ORC=y using
+LLVM, there is a warning from ld.lld when linking the EFI zboot image
+due to the use of unreachable() in number() in vsprintf.c:
 
-Reason here is that we're returning an I/O error whenever we're
-encountering sense code 06/04/0a (LOGICAL UNIT NOT ACCESSIBLE, ASYMMETRIC
-ACCESS STATE TRANSITION) instead of retrying.
+  ld.lld: warning: drivers/firmware/efi/libstub/lib.a(vsprintf.stub.o):(.discard.unreachable+0x0): has non-ABS relocation R_LARCH_32_PCREL against symbol ''
 
-[mwilck: The original patch was developed by Rajashekhar M A and Hannes
-Reinecke. I moved the code to alua_check_sense() as suggested by Mike
-Christie [1]. Evan Milne had raised the question whether pg->state should
-be set to transitioning in the UA case [2]. I believe that doing this is
-correct. SCSI_ACCESS_STATE_TRANSITIONING by itself doesn't cause I/O
-errors. Our handler schedules an RTPG, which will only result in an I/O
-error condition if the transitioning timeout expires.]
+If the compiler cannot eliminate the default case for any reason, the
+.discard.unreachable section will remain in the final binary but the
+entire point of any section prefixed with .discard is that it is only
+used at compile time, so it can be discarded via /DISCARD/ in a linker
+script. The asm-generic vmlinux.lds.h includes .discard and .discard.*
+in the COMMON_DISCARDS macro but that is not used for zboot.lds, as it
+is not a kernel image linker script.
 
-[1] https://lore.kernel.org/all/0bc96e82-fdda-4187-148d-5b34f81d4942@oracle.com/
-[2] https://lore.kernel.org/all/CAGtn9r=kicnTDE2o7Gt5Y=yoidHYD7tG8XdMHEBJTBraVEoOCw@mail.gmail.com/
+Add .discard and .discard.* to /DISCARD/ in zboot.lds, so that any
+sections meant to be discarded at link time are not included in the
+final zboot image. This issue is not specific to LoongArch, it is just
+the first architecture to select CONFIG_OBJTOOL, which defines
+annotate_unreachable() as an asm statement to add the
+.discard.unreachable section, and use the EFI stub.
 
-Co-developed-by: Rajashekhar M A <rajs@netapp.com>
-Co-developed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Martin Wilck <martin.wilck@suse.com>
-Link: https://lore.kernel.org/r/20240514140344.19538-1-mwilck@suse.com
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2023
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/device_handler/scsi_dh_alua.c | 31 +++++++++++++++-------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+ drivers/firmware/efi/libstub/zboot.lds | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/device_handler/scsi_dh_alua.c b/drivers/scsi/device_handler/scsi_dh_alua.c
-index a9c4a5e2ccb90..60792f257c235 100644
---- a/drivers/scsi/device_handler/scsi_dh_alua.c
-+++ b/drivers/scsi/device_handler/scsi_dh_alua.c
-@@ -406,28 +406,40 @@ static char print_alua_state(unsigned char state)
+diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
+index ac8c0ef851581..af2c82f7bd902 100644
+--- a/drivers/firmware/efi/libstub/zboot.lds
++++ b/drivers/firmware/efi/libstub/zboot.lds
+@@ -41,6 +41,7 @@ SECTIONS
+ 	}
+ 
+ 	/DISCARD/ : {
++		*(.discard .discard.*)
+ 		*(.modinfo .init.modinfo)
  	}
  }
- 
--static enum scsi_disposition alua_check_sense(struct scsi_device *sdev,
--					      struct scsi_sense_hdr *sense_hdr)
-+static void alua_handle_state_transition(struct scsi_device *sdev)
- {
- 	struct alua_dh_data *h = sdev->handler_data;
- 	struct alua_port_group *pg;
- 
-+	rcu_read_lock();
-+	pg = rcu_dereference(h->pg);
-+	if (pg)
-+		pg->state = SCSI_ACCESS_STATE_TRANSITIONING;
-+	rcu_read_unlock();
-+	alua_check(sdev, false);
-+}
-+
-+static enum scsi_disposition alua_check_sense(struct scsi_device *sdev,
-+					      struct scsi_sense_hdr *sense_hdr)
-+{
- 	switch (sense_hdr->sense_key) {
- 	case NOT_READY:
- 		if (sense_hdr->asc == 0x04 && sense_hdr->ascq == 0x0a) {
- 			/*
- 			 * LUN Not Accessible - ALUA state transition
- 			 */
--			rcu_read_lock();
--			pg = rcu_dereference(h->pg);
--			if (pg)
--				pg->state = SCSI_ACCESS_STATE_TRANSITIONING;
--			rcu_read_unlock();
--			alua_check(sdev, false);
-+			alua_handle_state_transition(sdev);
- 			return NEEDS_RETRY;
- 		}
- 		break;
- 	case UNIT_ATTENTION:
-+		if (sense_hdr->asc == 0x04 && sense_hdr->ascq == 0x0a) {
-+			/*
-+			 * LUN Not Accessible - ALUA state transition
-+			 */
-+			alua_handle_state_transition(sdev);
-+			return NEEDS_RETRY;
-+		}
- 		if (sense_hdr->asc == 0x29 && sense_hdr->ascq == 0x00) {
- 			/*
- 			 * Power On, Reset, or Bus Device Reset.
-@@ -494,7 +506,8 @@ static int alua_tur(struct scsi_device *sdev)
- 
- 	retval = scsi_test_unit_ready(sdev, ALUA_FAILOVER_TIMEOUT * HZ,
- 				      ALUA_FAILOVER_RETRIES, &sense_hdr);
--	if (sense_hdr.sense_key == NOT_READY &&
-+	if ((sense_hdr.sense_key == NOT_READY ||
-+	     sense_hdr.sense_key == UNIT_ATTENTION) &&
- 	    sense_hdr.asc == 0x04 && sense_hdr.ascq == 0x0a)
- 		return SCSI_DH_RETRY;
- 	else if (retval)
 -- 
 2.43.0
 
