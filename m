@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-52495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309EF90B202
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:30:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C20A990B12C
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:12:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A177B39D97
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:02:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABA46B2FD53
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF4618BEE1;
-	Mon, 17 Jun 2024 13:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175A1199385;
+	Mon, 17 Jun 2024 13:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4LZB0L3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ni57Wwup"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948AF18BEDB;
-	Mon, 17 Jun 2024 13:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C369219925B;
+	Mon, 17 Jun 2024 13:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630754; cv=none; b=X4KbGzve87n9TkVIJ251EO2lBY17zPFsZSxabZ1F0e5K6RoXBA28IHUHFfreQbTl+O5gg3M6UQ3anesYAHLolN3N2/oABwH9BdyZ4QwPnV8dY8mEbcnLg1IrvhqWjkC2stpXL/dRiuQphadLFBrPqX4fjOmEYBzdJIg9g9coMDA=
+	t=1718630781; cv=none; b=IPswAh1spHYV5E9Myf9CPpXsPV6SfLde6adFm9CbtdfQKyGGFwuZNNCesUU8fj7y+6BfgRSOVpKs7cGSMBl23z79qMssh+6rw8R8QipJCMNR2g5axqM9RZSywGVG+DT9mUZqtJqXjPYpNPqa94Z0rh63D58K8YJymoFvcHTPtgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630754; c=relaxed/simple;
-	bh=VVx+gyg9uCTH+BCYB+UzWwtuqgpv9unuu8PXzlSYd94=;
+	s=arc-20240116; t=1718630781; c=relaxed/simple;
+	bh=+2uQ5tHZtMTt2bmW/5BElXi1TPUpOsm5QPSwJ4r75p4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZkOvu0w8Yx0zs6F6Glm6sWd+zE//jQyCZ9OYdlX8/xp3ioUoX8cleGX6tFr0bCBXPs7pMx6KstUKVInhVFSYIeksq+AhF1HLhfTXOYmBDOTU1nLzaDRhitv2XXjB1Md99lRsOW3ckHf+xXsZYJ7k5akekoMDn8z++YBLebqEqtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4LZB0L3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D17C2BD10;
-	Mon, 17 Jun 2024 13:25:53 +0000 (UTC)
+	 MIME-Version; b=Nz4YDHee16Fh8DRahbRGBd8ch/M0fhWdFLS2H7W6+zinvMulZzlYbaTatVqgjExU8SiYIFGagT+zu37kOWT0SflT75mzxCg5qTtJSsAM2GEB3kLFpevJ3tyw692IgE8MhrZA4hsy12Voqv3WwFMmQuP3odBafZGAU6g660nJzeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ni57Wwup; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451FFC2BD10;
+	Mon, 17 Jun 2024 13:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630754;
-	bh=VVx+gyg9uCTH+BCYB+UzWwtuqgpv9unuu8PXzlSYd94=;
+	s=k20201202; t=1718630781;
+	bh=+2uQ5tHZtMTt2bmW/5BElXi1TPUpOsm5QPSwJ4r75p4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k4LZB0L3uXsj4TkBY4Tnlswv1Ag1SbXljoiWeB7ypp3D1oXxwx0BDMNGRomSNZR4c
-	 pVq3T8J3GTEWKJ9Xrg1IKuY59j7fBs1N0RDQxNsnt49Ex7tccxsTjQd6S0Kz3+vfvy
-	 iHvhwHoiznvthvJ3zplFtBjtVD5P3039PpAajoCPRLIy1FGRLfDolHTSPCbLDA7rzU
-	 C/A9dIGJbUTsshY4sg3ZaUTkFRUdt2UBFZkhzPcO2TQSw1li5X4KciQVjrLpRe8svw
-	 zgbDSuNtH/p/k3iSb6FXs8LM+VPW0PXz324ryYWxD6hc7yXAsTkjPq4wd80bXIP/Rf
-	 O1fxISPgaSV/g==
+	b=ni57Wwup3GShzpm+/U0lEJagVkIXhs404z1y570eVG/C7hbZsmySqjJXwCKoR0sg5
+	 1/krCPQGEW1CySDuCRb5ewGDuRpbdOewHKmOtwY4BsinPimcFxdVOwTGSfXiXqfizq
+	 fBlnTe//LkSKWi9Ny0xLlk4kd7qomVLIUmZVR1JOs/NN0DtZ2SkpSQnpcxJznMOw4Q
+	 YB6wk3S6FuPslpB6ZybesRqLjCnyCUK9MbDHgkiVp2Prl2HW7av0Ss0Gw3u3OBlma4
+	 w3iZuDasBwKjW1HBZwQZurq4F2mkqi7hcuIeEjF37AZ7JhvqkaPxuONGAlYR65Vyvb
+	 IPBJItaGf/mkQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
+Cc: Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 27/29] kconfig: gconf: give a proper initial state to the Save button
-Date: Mon, 17 Jun 2024 09:24:31 -0400
-Message-ID: <20240617132456.2588952-27-sashal@kernel.org>
+	jhasan@marvell.com,
+	GR-QLogic-Storage-Upstream@marvell.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 02/21] scsi: qedf: Don't process stag work during unload and recovery
+Date: Mon, 17 Jun 2024 09:25:39 -0400
+Message-ID: <20240617132617.2589631-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240617132456.2588952-1-sashal@kernel.org>
-References: <20240617132456.2588952-1-sashal@kernel.org>
+In-Reply-To: <20240617132617.2589631-1-sashal@kernel.org>
+References: <20240617132617.2589631-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,47 +66,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
+X-stable-base: Linux 5.15.161
 Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-[ Upstream commit 46edf4372e336ef3a61c3126e49518099d2e2e6d ]
+[ Upstream commit 51071f0831ea975fc045526dd7e17efe669dc6e1 ]
 
-Currently, the initial state of the "Save" button is always active.
+Stag work can cause issues during unload and recovery, hence don't process
+it.
 
-If none of the CONFIG options are changed while loading the .config
-file, the "Save" button should be greyed out.
-
-This can be fixed by calling conf_read() after widget initialization.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240515091101.18754-2-skashyap@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/gconf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/qedf/qedf_main.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index 17adabfd6e6bf..5d1404178e482 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -1481,7 +1481,6 @@ int main(int ac, char *av[])
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index 18380a932ab61..ab43e15fa8f36 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -4001,6 +4001,22 @@ void qedf_stag_change_work(struct work_struct *work)
+ 	struct qedf_ctx *qedf =
+ 	    container_of(work, struct qedf_ctx, stag_work.work);
  
- 	conf_parse(name);
- 	fixup_rootmenu(&rootmenu);
--	conf_read(NULL);
- 
- 	/* Load the interface and connect signals */
- 	init_main_window(glade_file);
-@@ -1489,6 +1488,8 @@ int main(int ac, char *av[])
- 	init_left_tree();
- 	init_right_tree();
- 
-+	conf_read(NULL);
++	if (!qedf) {
++		QEDF_ERR(&qedf->dbg_ctx, "qedf is NULL");
++		return;
++	}
 +
- 	switch (view_mode) {
- 	case SINGLE_VIEW:
- 		display_tree_part();
++	if (test_bit(QEDF_IN_RECOVERY, &qedf->flags)) {
++		QEDF_ERR(&qedf->dbg_ctx,
++			 "Already is in recovery, hence not calling software context reset.\n");
++		return;
++	}
++
++	if (test_bit(QEDF_UNLOADING, &qedf->flags)) {
++		QEDF_ERR(&qedf->dbg_ctx, "Driver unloading\n");
++		return;
++	}
++
+ 	printk_ratelimited("[%s]:[%s:%d]:%d: Performing software context reset.",
+ 			dev_name(&qedf->pdev->dev), __func__, __LINE__,
+ 			qedf->dbg_ctx.host_no);
 -- 
 2.43.0
 
