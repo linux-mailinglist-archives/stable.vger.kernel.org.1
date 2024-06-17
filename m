@@ -1,238 +1,214 @@
-Return-Path: <stable+bounces-52340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D451890A1D0
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 03:37:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B5790A2EA
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 05:40:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9CC01C20DB6
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 01:37:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89B571F221A3
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 03:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC03441F;
-	Mon, 17 Jun 2024 01:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FC161FE8;
+	Mon, 17 Jun 2024 03:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="bAG5Jp1e"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A9D1391;
-	Mon, 17 Jun 2024 01:37:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609A629D19
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 03:40:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718588233; cv=none; b=NiASe6phjXfGihOyDzH/VbZPlTguUiZ/OTFsCbX/mC9ssfyltbzR1HGh4DQ6+RS6LR3DeXs1tAc6lTbKuGR0s7erbQNRUH1xWkSZlWikMHTUcXV++/1uziWUzOBWgGsEc1poJeQDLsP5S/tWIhIZcDDb0Pa/r7xicKXCZh/uUP8=
+	t=1718595611; cv=none; b=ORx4EypdpD9nV5MSmWRA3QGa0m7bE/pQvin+2ZP/w4e1gMSB6P7zkOu0kGPNLsp87i2jMM0SzMtOqCYqY4GbgRrPKgZ5xHYVYTv1CuyImCLG9nkvkV4+FccIcBBiXoF9cFPXp9vvrYunrrKyhY8OnfDn2Z0SgkbgR8r8yKf2yU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718588233; c=relaxed/simple;
-	bh=Lqc4eAz/zHYtqUkt6f3234B28TO5pvrw6sPWf3zZLBc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=OTdYHK5QZiKzurRVFMjXXyd9R8BhTgvSo3yL1KwZmZxDEkEnvzdbeYyK4y1T81AnXue9BS+toyE7pKoDK8cqn92gddIYB10ebsF2cd89D4+qvU1N59GY31JpK8Wn+R306bcNB8DxebxQL8cx8x3oGMBM1Divv1Hb5tsZq3+Eu3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4W2XSf0Kn8z1SC8v;
-	Mon, 17 Jun 2024 09:32:50 +0800 (CST)
-Received: from dggpeml100021.china.huawei.com (unknown [7.185.36.148])
-	by mail.maildlp.com (Postfix) with ESMTPS id C719B14037E;
-	Mon, 17 Jun 2024 09:37:01 +0800 (CST)
-Received: from [10.174.177.174] (10.174.177.174) by
- dggpeml100021.china.huawei.com (7.185.36.148) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 17 Jun 2024 09:37:01 +0800
-Message-ID: <0d620010-c6b4-4f80-a835-451813f957e3@huawei.com>
-Date: Mon, 17 Jun 2024 09:37:01 +0800
+	s=arc-20240116; t=1718595611; c=relaxed/simple;
+	bh=GoRObZwvjcIlow5bvP3vlgsTncJc7V4OoV3jbrPTUgg=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=Wn8BabTZWIv6/3frcUtune2L5AQoBqT63SYb4jJOpyOv40F5/Yln2gNrn2rGEY/Ssb+tZb3vNv8zlqfZ1+9od8pNC3qrJuf7vIyOGbdTmWdDXqQEk9v7LZZchE724pFXT8Er0mgDu/E1VJ4LEa/BcRdO5rDxP9SxXnL8E2uE4CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=bAG5Jp1e; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2c2e72128b4so2756835a91.0
+        for <stable@vger.kernel.org>; Sun, 16 Jun 2024 20:40:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1718595607; x=1719200407; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3EwglCx8Qz1vDs6Ch4kVIzvrzdSC0LXoFN2DojGuQw0=;
+        b=bAG5Jp1e96o7PSQc49ifRcZDyOcWjn8bOH2xxkcUQ0C6KcWYS2TKlOz/3hX/P9pfU+
+         D6mfmNF9+1kSeRbfDodLwJijjRoumc2hkBymCVBgD0/dnqrMgdfRq5XV0kgkz9XOkbi6
+         sWT4alSXaxu/CC1gJ7J+2sP35ZUTXsBL/ReUAb4JmdaWO/BIbzl63c1+YmtSmRj52VVv
+         W0aYZQ+dh85DxHcD5uewwJKs7Moa2VkS7vMrKmAj69F+JYioPh825coEpDUBpoBkIgoc
+         NbU9bWqd14onIrGu5py9ruqiFx2qlXeR58eYW/quSJJpdPsQ0NvdVGjUkdQzHvp+DQq2
+         Dhzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718595607; x=1719200407;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3EwglCx8Qz1vDs6Ch4kVIzvrzdSC0LXoFN2DojGuQw0=;
+        b=xIyZ7KMXVyKhZJUjb4Z5N+Rk0lpJ2xSTbZTM13WsXBO4cn9rLmHWrNKEnUUwI/P7n5
+         eJ4gsbMfQyPqjYsY5qR9706YhUtYGIg7lWesfe0wvZgt2qZ0RhodI+BsYE+TiVwFVnXX
+         jgmoAbPQWqiyQznwkDUTEDFcKDMlbtN5vzRcSq6j/p/p+RMYwTA2D4U5/+RU+yQkko25
+         Ne8BedPpu16eKxz3cvaVK0m8MOrIi7AR7x5/KzDEyTuYuRauIuvjhKdGcphPF9jw1HMQ
+         r3ktuIoYEePFwTTkGTcBrnxshlM/XPm9sYEYQuYPJKvW70lP0VnTcLD1LzdTVAmkxKo/
+         BfeA==
+X-Forwarded-Encrypted: i=1; AJvYcCUXHZGLDcsYFKc/dAI176kB049E6SPOcsLSgGlF1Pur2JHFAbK2qoi9cuICh7ekSnVxeuN9wC5cyXnC5XVlb2F9RYo7U5A1
+X-Gm-Message-State: AOJu0YzB8rSsXqvOY/2b2h9haBBkpi/Jq3oF25LvBahzaP3KpoNM2rVn
+	m99Ghx4KdXVRIKuObh4t3+jhWeehq7tlz8hEGuBu1a/ALwhB/egnCJK82on/Rf7oHd4LW/q7iBR
+	e
+X-Google-Smtp-Source: AGHT+IFF7KX40HLPX7MtiX6Qu3YxXZE5l0KzeUmd77Sd+JiMclW7MxHbHRCkmJ65S9N2xozyRo4jug==
+X-Received: by 2002:a17:90b:364a:b0:2c4:fb76:9cf9 with SMTP id 98e67ed59e1d1-2c4fb769dbcmr8196837a91.5.1718595607514;
+        Sun, 16 Jun 2024 20:40:07 -0700 (PDT)
+Received: from 5CG3510V44-KVS.localdomain ([203.208.189.9])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c4a769beb8sm10269497a91.41.2024.06.16.20.40.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Jun 2024 20:40:07 -0700 (PDT)
+From: "guojinhui.liam" <guojinhui.liam@bytedance.com>
+To: guojinhui.liam@gmail.com
+Cc: Jinhui Guo <guojinhui.liam@bytedance.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v7] driver core: platform: set numa_node before platform_device_add()
+Date: Mon, 17 Jun 2024 11:01:23 +0800
+Message-Id: <20240617030123.4632-1-guojinhui.liam@bytedance.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "ext4: fix slab-out-of-bounds in
- ext4_mb_find_good_group_avg_frag_lists()" has been added to the 6.9-stable
- tree
-To: <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>
-CC: Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
-	<yangerkun@huawei.com>
-References: <20240616020519.1675680-1-sashal@kernel.org>
-Content-Language: en-US
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <20240616020519.1675680-1-sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpeml100021.china.huawei.com (7.185.36.148)
 
-Hi Sasha,
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-Thanks for adapting this patch to the stable branch. Just one nit.
+Setting the devices' numa_node needs to be done in
+platform_device_register_full(), because that's where the
+platform device object is allocated.
 
-On 2024/6/16 10:05, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
->
->      ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
->
-> to the 6.9-stable tree which can be found at:
->      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->
-> The filename of the patch is:
->       ext4-fix-slab-out-of-bounds-in-ext4_mb_find_good_gro.patch
-> and it can be found in the queue-6.9 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
->
->
->
-> commit 84cee2d2394a43766dd2990edac8a4a05817ef7b
-> Author: Baokun Li <libaokun1@huawei.com>
-> Date:   Tue Mar 19 19:33:20 2024 +0800
->
->      ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
->      
->      [ Upstream commit 13df4d44a3aaabe61cd01d277b6ee23ead2a5206 ]
->      
->      We can trigger a slab-out-of-bounds with the following commands:
->      
->          mkfs.ext4 -F /dev/$disk 10G
->          mount /dev/$disk /tmp/test
->          echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
->          echo test > /tmp/test/file && sync
->      
->      ==================================================================
->      BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
->      Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
->      CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
->      Call Trace:
->       dump_stack_lvl+0x2c/0x50
->       kasan_report+0xb6/0xf0
->       ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
->       ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
->       ext4_mb_new_blocks+0x88a/0x1370 [ext4]
->       ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
->       ext4_map_blocks+0x569/0xea0 [ext4]
->       ext4_do_writepages+0x10f6/0x1bc0 [ext4]
->      [...]
->      ==================================================================
->      
->      The flow of issue triggering is as follows:
->      
->      // Set s_mb_group_prealloc to 2147483647 via sysfs
->      ext4_mb_new_blocks
->        ext4_mb_normalize_request
->          ext4_mb_normalize_group_request
->            ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
->        ext4_mb_regular_allocator
->          ext4_mb_choose_next_group
->            ext4_mb_choose_next_group_best_avail
->              mb_avg_fragment_size_order
->                order = fls(len) - 2 = 29
->              ext4_mb_find_good_group_avg_frag_lists
->                frag_list = &sbi->s_mb_avg_fragment_size[order]
->                if (list_empty(frag_list)) // Trigger SOOB!
->      
->      At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
->      but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
->      to be triggered by an attempt to access an element at index 29.
->      
->      Add a new attr_id attr_clusters_in_group with values in the range
->      [0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
->      that type to fix the issue. In addition avoid returning an order
->      from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
->      and reduce some useless loops.
->      
->      Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
->      CC: stable@vger.kernel.org
->      Signed-off-by: Baokun Li <libaokun1@huawei.com>
->      Reviewed-by: Jan Kara <jack@suse.cz>
->      Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
->      Link: https://lore.kernel.org/r/20240319113325.3110393-5-libaokun1@huawei.com
->      Signed-off-by: Theodore Ts'o <tytso@mit.edu>
->      Signed-off-by: Sasha Levin <sashal@kernel.org>
->
-> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-> index 714f83632e3f9..66b5a68b0254e 100644
-> --- a/fs/ext4/mballoc.c
-> +++ b/fs/ext4/mballoc.c
-> @@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
->   		return 0;
->   	if (order == MB_NUM_ORDERS(sb))
->   		order--;
-> +	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
-> +		order = MB_NUM_ORDERS(sb) - 1;
->   	return order;
->   }
->   
-> @@ -1008,6 +1010,8 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
->   	 * goal length.
->   	 */
->   	order = fls(ac->ac_g_ex.fe_len) - 1;
-> +	if (WARN_ON_ONCE(order - 1 > MB_NUM_ORDERS(ac->ac_sb)))
-> +		order = MB_NUM_ORDERS(ac->ac_sb);
->   	min_order = order - sbi->s_mb_best_avail_max_trim_order;
->   	if (min_order < 0)
->   		min_order = 0;
-> diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
-> index 295ea9a32de91..ca66e33f61815 100644
-> --- a/fs/ext4/sysfs.c
-> +++ b/fs/ext4/sysfs.c
-> @@ -29,6 +29,7 @@ typedef enum {
->   	attr_trigger_test_error,
->   	attr_first_error_time,
->   	attr_last_error_time,
-> +	attr_clusters_in_group,
->   	attr_feature,
->   	attr_pointer_ui,
->   	attr_pointer_ul,
-> @@ -207,13 +208,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit, 0444);
->   
->   EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
->   		 ext4_sb_info, s_inode_readahead_blks);
-> +EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, clusters_in_group,
-> +		 ext4_sb_info, s_mb_group_prealloc);
->   EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
->   EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
->   EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
->   EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
->   EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
->   EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
-> -EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
->   EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
->   EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
->   EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
-> @@ -376,6 +378,7 @@ static ssize_t ext4_generic_attr_show(struct ext4_attr *a,
->   
->   	switch (a->attr_id) {
->   	case attr_inode_readahead:
-> +	case attr_clusters_in_group:
->   	case attr_pointer_ui:
->   		if (a->attr_ptr == ptr_ext4_super_block_offset)
->   			return sysfs_emit(buf, "%u\n", le32_to_cpup(ptr));
-> @@ -459,6 +462,14 @@ static ssize_t ext4_attr_store(struct kobject *kobj,
->   		else
->   			*((unsigned int *) ptr) = t;
->   		return len;
-> +	case attr_clusters_in_group:
-Since commit f536808adcc3 "ext4: refactor out ext4_generic_attr_store()"
-is not backported to stable, the following judgement needs to be added
-here:
+Fixes: 4a60406d3592 ("driver core: platform: expose numa_node to users in sysfs")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309122309.mbxAnAIe-lkp@intel.com/
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+---
+V6 -> V7
+  1. Fix bug directly by adding numa_node to struct
+     platform_device_info (suggested by Rafael J. Wysocki).
+  2. Remove reviewer name.
 
-  		if (!ptr)
-  			return 0;
+V5 -> V6:
+  1. Update subject to correct function name platform_device_add().
+  2. Provide a more clear and accurate description of the changes
+     made in commit (suggested by Rafael J. Wysocki).
+  3. Add reviewer name.
 
-The patch for the 6.6-stable tree has the same problem.
+V4 -> V5:
+  Add Cc: stable line and changes from the previous submited patches.
 
-Regards,
-Baokun
+V3 -> V4:
+  Refactor code to be an ACPI function call (suggested by Greg Kroah-Hartman).
 
-> +		ret = kstrtouint(skip_spaces(buf), 0, &t);
-> +		if (ret)
-> +			return ret;
-> +		if (t > sbi->s_clusters_per_group)
-> +			return -EINVAL;
-> +		*((unsigned int *) ptr) = t;
-> +		return len;
->   	case attr_pointer_ul:
->   		if (!ptr)
->   			return 0;
+V2 -> V3:
+  Fix Signed-off name.
+
+V1 -> V2:
+  Fix compile error without enabling CONFIG_ACPI.
+---
+
+ drivers/acpi/acpi_platform.c    |  5 ++---
+ drivers/base/platform.c         |  4 ++++
+ include/linux/platform_device.h | 26 ++++++++++++++++++++++++++
+ 3 files changed, 32 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/acpi/acpi_platform.c b/drivers/acpi/acpi_platform.c
+index 48d15dd785f6..1ae7449f70dc 100644
+--- a/drivers/acpi/acpi_platform.c
++++ b/drivers/acpi/acpi_platform.c
+@@ -168,6 +168,7 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+ 	pdevinfo.num_res = count;
+ 	pdevinfo.fwnode = acpi_fwnode_handle(adev);
+ 	pdevinfo.properties = properties;
++	platform_devinfo_set_node(&pdevinfo, acpi_get_node(adev->handle));
+ 
+ 	if (acpi_dma_supported(adev))
+ 		pdevinfo.dma_mask = DMA_BIT_MASK(32);
+@@ -178,11 +179,9 @@ struct platform_device *acpi_create_platform_device(struct acpi_device *adev,
+ 	if (IS_ERR(pdev))
+ 		dev_err(&adev->dev, "platform device creation failed: %ld\n",
+ 			PTR_ERR(pdev));
+-	else {
+-		set_dev_node(&pdev->dev, acpi_get_node(adev->handle));
++	else
+ 		dev_dbg(&adev->dev, "created platform device %s\n",
+ 			dev_name(&pdev->dev));
+-	}
+ 
+ 	kfree(resources);
+ 
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 76bfcba25003..c733bfb26149 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -808,6 +808,7 @@ struct platform_device *platform_device_register_full(
+ {
+ 	int ret;
+ 	struct platform_device *pdev;
++	int numa_node = platform_devinfo_get_node(pdevinfo);
+ 
+ 	pdev = platform_device_alloc(pdevinfo->name, pdevinfo->id);
+ 	if (!pdev)
+@@ -841,6 +842,9 @@ struct platform_device *platform_device_register_full(
+ 			goto err;
+ 	}
+ 
++	if (numa_node >= 0)
++		set_dev_node(&pdev->dev, numa_node);
++
+ 	ret = platform_device_add(pdev);
+ 	if (ret) {
+ err:
+diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+index 7a41c72c1959..78e11b79f1af 100644
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -132,10 +132,36 @@ struct platform_device_info {
+ 		u64 dma_mask;
+ 
+ 		const struct property_entry *properties;
++
++#ifdef CONFIG_NUMA
++		int numa_node;	/* NUMA node this platform device is close to plus 1 */
++#endif
+ };
+ extern struct platform_device *platform_device_register_full(
+ 		const struct platform_device_info *pdevinfo);
+ 
++#ifdef CONFIG_NUMA
++static inline int platform_devinfo_get_node(const struct platform_device_info *pdevinfo)
++{
++	return pdevinfo ? pdevinfo->numa_node - 1 : NUMA_NO_NODE;
++}
++
++static inline void platform_devinfo_set_node(struct platform_device_info *pdevinfo,
++					     int node)
++{
++	pdevinfo->numa_node = node + 1;
++}
++#else
++static inline int platform_devinfo_get_node(const struct platform_device_info *pdevinfo)
++{
++	return NUMA_NO_NODE;
++}
++
++static inline void platform_devinfo_set_node(struct platform_device_info *pdevinfo,
++					     int node)
++{}
++#endif
++
+ /**
+  * platform_device_register_resndata - add a platform-level device with
+  * resources and platform-specific data
+-- 
+2.20.1
+
 
