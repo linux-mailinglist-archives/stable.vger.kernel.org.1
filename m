@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-52353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF11D90A904
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 11:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3887E90A906
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 11:06:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E34FB26806
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 09:06:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5656B269A1
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 09:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AFE190672;
-	Mon, 17 Jun 2024 09:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349081836FC;
+	Mon, 17 Jun 2024 09:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cE/nA66E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Npnx2Ug3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F82374D9
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 09:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E11374D9
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 09:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718615160; cv=none; b=HvQKNH2bit71hm+eD4mjHj7TCGQS4wHb7lcZhhy/8zcX9usPjiXt+Z0CvjHBs15iT8ZUIJzPh0Ybpip7kXkafpIYWjcw/kLjNk47czFmwVQJxdQCA6KhDq8oCG5iQ7bY5EG4u8oYa3XjS4fpPIfheJHC60BF3KIc7jZI+rRAO70=
+	t=1718615169; cv=none; b=dsy4HcSLJP0DO9ZyQtIoAGOPbu3Dz003Ear0VO/uvhTx3bOMgT2rjvRqCJYMcXlo2CMEX2b6a6s37Hrejc0PgISOgVMYUpHCBxgE0pWRz3fJUSd860lhSs5dJKLjOYx9LuegCRW+Jzv8AU0Y4wUM7grPd4G2whNAGjuEDQyanuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718615160; c=relaxed/simple;
-	bh=NholYF2Uk1mI0svAXTnu2OqK0nLyKEHMrMd/fGfAx6A=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BsqBiDGpjPK3P2d0H9z9e3y7Ki4vmtgeGb+Y5ViEsB0PRfYP6m/A1FEVmyKteSMvb6NM0ATD/bDqnIielkS+ul9ic9UC2Myk3YPHBiswrG0dMXh3WcBI33CX3hby6/mgx6cb3+va5BncfNPTfvB8KMKt1ZcdbxS13S84X55HgG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cE/nA66E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36785C2BD10;
-	Mon, 17 Jun 2024 09:05:59 +0000 (UTC)
+	s=arc-20240116; t=1718615169; c=relaxed/simple;
+	bh=Hl540iJJeIYmyp2T1uv/5MWSuQcmVfb97B2LewIT12w=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Z58PdKogoKGPg0KqOqEgd7aLy+GhNOzw+1KEW3P1IirMaDY+3hKrlRHeOAJoylc9q+KhGm5cLHMG1wtbZNnDMB/bo7Sak2ucgCNGbZF7eHqVNFY+XORx+XQGNByoepuora9j6ZML5Agh6w5jqzLBLPUi8HZhJza082wZhGz1Cjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Npnx2Ug3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEFAC2BD10;
+	Mon, 17 Jun 2024 09:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718615159;
-	bh=NholYF2Uk1mI0svAXTnu2OqK0nLyKEHMrMd/fGfAx6A=;
+	s=korg; t=1718615168;
+	bh=Hl540iJJeIYmyp2T1uv/5MWSuQcmVfb97B2LewIT12w=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cE/nA66EbUjkDzPn9Mjj9FPifTXRGQduRnh2nHxeF49pXZBHVsed7QUutXkfyTivL
-	 D5ihhmXCcZ+pEayGc71x9av+LQRTeXnGhAuljJeYGnvia33KQSeCFZyngS7OAujknr
-	 JT1BzkYYy+aRLF63ierr811pToGqNW83LD9XgYAc=
-Subject: FAILED: patch "[PATCH] usb: typec: tcpm: Ignore received Hard Reset in TOGGLING" failed to apply to 5.10-stable tree
+	b=Npnx2Ug3t+81g7TqAVdBHGBj5bItg8NSmtwho4fhnx/qm3hG2uorUG4SmtP7rNwz4
+	 tB1NLJywLXm65b5gNXwopt3FC1VOkDVikf9EhjSMxAkj9RXtBoRuyMXXB1UEY1jdLD
+	 eY5LwAYjYo+0cKoxrAegSoL3dkfHxSXTycV5C6sY=
+Subject: FAILED: patch "[PATCH] usb: typec: tcpm: Ignore received Hard Reset in TOGGLING" failed to apply to 5.4-stable tree
 To: kyletso@google.com,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 17 Jun 2024 11:05:56 +0200
-Message-ID: <2024061756-glance-estate-894f@gregkh>
+Date: Mon, 17 Jun 2024 11:05:57 +0200
+Message-ID: <2024061757-fading-defender-6d0a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x fc8fb9eea94d8f476e15f3a4a7addeb16b3b99d6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061756-glance-estate-894f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061757-fading-defender-6d0a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,21 @@ a6fe37f428c1 ("usb: typec: tcpm: Skip hard reset when in error recovery")
 0908c5aca31e ("usb: typec: tcpm: AMS and Collision Avoidance")
 f321a02caebd ("usb: typec: tcpm: Implement enabling Auto Discharge disconnect support")
 a30a00e37ceb ("usb: typec: tcpm: frs sourcing vbus callback")
+8dc4bd073663 ("usb: typec: tcpm: Add support for Sink Fast Role SWAP(FRS)")
+3ed8e1c2ac99 ("usb: typec: tcpm: Migrate workqueue to RT priority for processing events")
+aefc66afe42b ("usb: typec: pd: Fix formatting in pd.h header")
+6bbe2a90a0bb ("usb: typec: tcpm: During PR_SWAP, source caps should be sent only after tSwapSourceStart")
+95b4d51c96a8 ("usb: typec: tcpm: Refactor tcpm_handle_vdm_request")
+8afe9a3548f9 ("usb: typec: tcpm: Refactor tcpm_handle_vdm_request payload handling")
+03eafcfb60c0 ("usb: typec: tcpm: Add tcpm_queue_vdm_unlocked() helper")
+5f2b8d87bca5 ("usb: typec: tcpm: Move mod_delayed_work(&port->vdm_state_machine) call into tcpm_queue_vdm()")
+6e1c2241f4ce ("usb: typec: tcpm: Stay in BIST mode till hardreset or unattached")
+b2dcfefc43f7 ("usb: typec: tcpm: Support bist test data mode for compliance")
+901789745a05 ("usb: typec: tcpm: Ignore CC and vbus changes in PORT_RESET change")
+6ecc632d4b35 ("usb: typec: tcpm: set correct data role for non-DRD")
+8face9aa57c8 ("usb: typec: Add parameter for the VDO to typec_altmode_enter()")
+a079973f462a ("usb: typec: tcpm: Remove tcpc_config configuration mechanism")
+00ec21e58dc6 ("usb: typec: tcpm: Start using struct typec_operations")
 
 thanks,
 
