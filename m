@@ -1,204 +1,238 @@
-Return-Path: <stable+bounces-52339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 422AF90A0D1
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 01:30:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D451890A1D0
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 03:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCF5D1F21AE6
-	for <lists+stable@lfdr.de>; Sun, 16 Jun 2024 23:30:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9CC01C20DB6
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 01:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4EFC71B4C;
-	Sun, 16 Jun 2024 23:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="AKkou4iL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC03441F;
+	Mon, 17 Jun 2024 01:37:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC1A11CB8;
-	Sun, 16 Jun 2024 23:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A9D1391;
+	Mon, 17 Jun 2024 01:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718580648; cv=none; b=LHrxXxVprWFq0RLhDDnh6PVhLt5MKJYxnCKNzGp8f+8kpIWBbCxBsKBNygIIUrXOUdf963HnEXyLQNM3lKE7zCq6ozZUtk5CEGxTzD/mA2BX/DYkXlSoNjkWYj/TCZsVPs1m8v3qQ/M3neWILiHJ3xp00u6ZjUCTPd4SLCi370Q=
+	t=1718588233; cv=none; b=NiASe6phjXfGihOyDzH/VbZPlTguUiZ/OTFsCbX/mC9ssfyltbzR1HGh4DQ6+RS6LR3DeXs1tAc6lTbKuGR0s7erbQNRUH1xWkSZlWikMHTUcXV++/1uziWUzOBWgGsEc1poJeQDLsP5S/tWIhIZcDDb0Pa/r7xicKXCZh/uUP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718580648; c=relaxed/simple;
-	bh=4soU0nO/RdVPxpnNDUIwqlhLaKENAoUrimGjSvk6EFM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sNb2d+SdJM1YBGe0ri7ZWDIHFSrHKdwfsd2b8Q86nsxZRypvUD7NPTQ6QvwaXAPRT67OQKPNdAhBnu6NoEKrVl4A/5+1iCGYEQwk6RrLfKc+O3zxObw6cP42cBOfp6CLObqypCXTjm0XtEeVDZwQrBB9j5L2bWpJhUEjN77RGTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=AKkou4iL; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 00FC92D5;
-	Mon, 17 Jun 2024 01:30:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1718580629;
-	bh=4soU0nO/RdVPxpnNDUIwqlhLaKENAoUrimGjSvk6EFM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AKkou4iL/qZ5anxip5DMYJZDyT2xG5rJ0EMmUVztGyiBZm8zqQipX9D6XRiYP3ndU
-	 hBT+BF6LEGgzSk7RczckyfEODRtDfJEIalzt8/gkRK2+kdRxhJua7AmATOAkWRWG1N
-	 pWKQq0/3yNvEy9z0X18b7l6qFHPbjWas7s48cJXY=
-Date: Mon, 17 Jun 2024 02:30:24 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] media: uvcvideo: Fix integer overflow calculating
- timestamp
-Message-ID: <20240616233024.GJ4782@pendragon.ideasonboard.com>
-References: <20240610-hwtimestamp-followup-v1-0-f9eaed7be7f0@chromium.org>
- <20240610-hwtimestamp-followup-v1-2-f9eaed7be7f0@chromium.org>
+	s=arc-20240116; t=1718588233; c=relaxed/simple;
+	bh=Lqc4eAz/zHYtqUkt6f3234B28TO5pvrw6sPWf3zZLBc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=OTdYHK5QZiKzurRVFMjXXyd9R8BhTgvSo3yL1KwZmZxDEkEnvzdbeYyK4y1T81AnXue9BS+toyE7pKoDK8cqn92gddIYB10ebsF2cd89D4+qvU1N59GY31JpK8Wn+R306bcNB8DxebxQL8cx8x3oGMBM1Divv1Hb5tsZq3+Eu3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4W2XSf0Kn8z1SC8v;
+	Mon, 17 Jun 2024 09:32:50 +0800 (CST)
+Received: from dggpeml100021.china.huawei.com (unknown [7.185.36.148])
+	by mail.maildlp.com (Postfix) with ESMTPS id C719B14037E;
+	Mon, 17 Jun 2024 09:37:01 +0800 (CST)
+Received: from [10.174.177.174] (10.174.177.174) by
+ dggpeml100021.china.huawei.com (7.185.36.148) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 17 Jun 2024 09:37:01 +0800
+Message-ID: <0d620010-c6b4-4f80-a835-451813f957e3@huawei.com>
+Date: Mon, 17 Jun 2024 09:37:01 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240610-hwtimestamp-followup-v1-2-f9eaed7be7f0@chromium.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "ext4: fix slab-out-of-bounds in
+ ext4_mb_find_good_group_avg_frag_lists()" has been added to the 6.9-stable
+ tree
+To: <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>
+CC: Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
+	<yangerkun@huawei.com>
+References: <20240616020519.1675680-1-sashal@kernel.org>
+Content-Language: en-US
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <20240616020519.1675680-1-sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml100021.china.huawei.com (7.185.36.148)
 
-Hi Ricardo,
+Hi Sasha,
 
-Thank you for the patch.
+Thanks for adapting this patch to the stable branch. Just one nit.
 
-On Mon, Jun 10, 2024 at 07:17:49PM +0000, Ricardo Ribalda wrote:
-> The function uvc_video_clock_update() supports a single SOF overflow. Or
-> in other words, the maximum difference between the first ant the last
-> timestamp can be 4096 ticks or 4.096 seconds.
-> 
-> This results in a maximum value for y2 of: 0x12FBECA00, that overflows
-> 32bits.
-> y2 = (u32)ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
-> 
-> Extend the size of y2 to u64 to support all its values.
-> 
-> Without this patch:
->  # yavta -s 1920x1080 -f YUYV -t 1/5 -c /dev/video0
-> Device /dev/v4l/by-id/usb-Shine-Optics_Integrated_Camera_0001-video-index0 opened.
-> Device `Integrated Camera: Integrated C' on `usb-0000:00:14.0-6' (driver 'uvcvideo') supports video, capture, without mplanes.
-> Video format set: YUYV (56595559) 1920x1080 (stride 3840) field none buffer size 4147200
-> Video format: YUYV (56595559) 1920x1080 (stride 3840) field none buffer size 4147200
-> Current frame rate: 1/5
-> Setting frame rate to: 1/5
-> Frame rate set: 1/5
-> 8 buffers requested.
-> length: 4147200 offset: 0 timestamp type/source: mono/SoE
-> Buffer 0/0 mapped at address 0x7947ea94c000.
-> length: 4147200 offset: 4149248 timestamp type/source: mono/SoE
-> Buffer 1/0 mapped at address 0x7947ea557000.
-> length: 4147200 offset: 8298496 timestamp type/source: mono/SoE
-> Buffer 2/0 mapped at address 0x7947ea162000.
-> length: 4147200 offset: 12447744 timestamp type/source: mono/SoE
-> Buffer 3/0 mapped at address 0x7947e9d6d000.
-> length: 4147200 offset: 16596992 timestamp type/source: mono/SoE
-> Buffer 4/0 mapped at address 0x7947e9978000.
-> length: 4147200 offset: 20746240 timestamp type/source: mono/SoE
-> Buffer 5/0 mapped at address 0x7947e9583000.
-> length: 4147200 offset: 24895488 timestamp type/source: mono/SoE
-> Buffer 6/0 mapped at address 0x7947e918e000.
-> length: 4147200 offset: 29044736 timestamp type/source: mono/SoE
-> Buffer 7/0 mapped at address 0x7947e8d99000.
-> 0 (0) [-] none 0 4147200 B 507.554210 508.874282 242.836 fps ts mono/SoE
-> 1 (1) [-] none 2 4147200 B 508.886298 509.074289 0.751 fps ts mono/SoE
-> 2 (2) [-] none 3 4147200 B 509.076362 509.274307 5.261 fps ts mono/SoE
-> 3 (3) [-] none 4 4147200 B 509.276371 509.474336 5.000 fps ts mono/SoE
-> 4 (4) [-] none 5 4147200 B 509.476394 509.674394 4.999 fps ts mono/SoE
-> 5 (5) [-] none 6 4147200 B 509.676506 509.874345 4.997 fps ts mono/SoE
-> 6 (6) [-] none 7 4147200 B 509.876430 510.074370 5.002 fps ts mono/SoE
-> 7 (7) [-] none 8 4147200 B 510.076434 510.274365 5.000 fps ts mono/SoE
-> 8 (0) [-] none 9 4147200 B 510.276421 510.474333 5.000 fps ts mono/SoE
-> 9 (1) [-] none 10 4147200 B 510.476391 510.674429 5.001 fps ts mono/SoE
-> 10 (2) [-] none 11 4147200 B 510.676434 510.874283 4.999 fps ts mono/SoE
-> 11 (3) [-] none 12 4147200 B 510.886264 511.074349 4.766 fps ts mono/SoE
-> 12 (4) [-] none 13 4147200 B 511.070577 511.274304 5.426 fps ts mono/SoE
-> 13 (5) [-] none 14 4147200 B 511.286249 511.474301 4.637 fps ts mono/SoE
-> 14 (6) [-] none 15 4147200 B 511.470542 511.674251 5.426 fps ts mono/SoE
-> 15 (7) [-] none 16 4147200 B 511.672651 511.874337 4.948 fps ts mono/SoE
-> 16 (0) [-] none 17 4147200 B 511.873988 512.074462 4.967 fps ts mono/SoE
-> 17 (1) [-] none 18 4147200 B 512.075982 512.278296 4.951 fps ts mono/SoE
-> 18 (2) [-] none 19 4147200 B 512.282631 512.482423 4.839 fps ts mono/SoE
-> 19 (3) [-] none 20 4147200 B 518.986637 512.686333 0.149 fps ts mono/SoE
-> 20 (4) [-] none 21 4147200 B 518.342709 512.886386 -1.553 fps ts mono/SoE
-> 21 (5) [-] none 22 4147200 B 517.909812 513.090360 -2.310 fps ts mono/SoE
-> 22 (6) [-] none 23 4147200 B 517.590775 513.294454 -3.134 fps ts mono/SoE
-> 23 (7) [-] none 24 4147200 B 513.298465 513.494335 -0.233 fps ts mono/SoE
-> 24 (0) [-] none 25 4147200 B 513.510273 513.698375 4.721 fps ts mono/SoE
-> 25 (1) [-] none 26 4147200 B 513.698904 513.902327 5.301 fps ts mono/SoE
-> 26 (2) [-] none 27 4147200 B 513.895971 514.102348 5.074 fps ts mono/SoE
-> 27 (3) [-] none 28 4147200 B 514.099091 514.306337 4.923 fps ts mono/SoE
-> 28 (4) [-] none 29 4147200 B 514.310348 514.510567 4.734 fps ts mono/SoE
-> 29 (5) [-] none 30 4147200 B 514.509295 514.710367 5.026 fps ts mono/SoE
-> 30 (6) [-] none 31 4147200 B 521.532513 514.914398 0.142 fps ts mono/SoE
-> 31 (7) [-] none 32 4147200 B 520.885277 515.118385 -1.545 fps ts mono/SoE
-> 32 (0) [-] none 33 4147200 B 520.411140 515.318336 -2.109 fps ts mono/SoE
-> 33 (1) [-] none 34 4147200 B 515.325425 515.522278 -0.197 fps ts mono/SoE
-> 34 (2) [-] none 35 4147200 B 515.538276 515.726423 4.698 fps ts mono/SoE
-> 35 (3) [-] none 36 4147200 B 515.720767 515.930373 5.480 fps ts mono/SoE
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 66847ef013cc ("[media] uvcvideo: Add UVC timestamps support")
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+On 2024/6/16 10:05, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+>
+>      ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
+>
+> to the 6.9-stable tree which can be found at:
+>      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>
+> The filename of the patch is:
+>       ext4-fix-slab-out-of-bounds-in-ext4_mb_find_good_gro.patch
+> and it can be found in the queue-6.9 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+>
+>
+>
+> commit 84cee2d2394a43766dd2990edac8a4a05817ef7b
+> Author: Baokun Li <libaokun1@huawei.com>
+> Date:   Tue Mar 19 19:33:20 2024 +0800
+>
+>      ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
+>      
+>      [ Upstream commit 13df4d44a3aaabe61cd01d277b6ee23ead2a5206 ]
+>      
+>      We can trigger a slab-out-of-bounds with the following commands:
+>      
+>          mkfs.ext4 -F /dev/$disk 10G
+>          mount /dev/$disk /tmp/test
+>          echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
+>          echo test > /tmp/test/file && sync
+>      
+>      ==================================================================
+>      BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
+>      Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
+>      CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
+>      Call Trace:
+>       dump_stack_lvl+0x2c/0x50
+>       kasan_report+0xb6/0xf0
+>       ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
+>       ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
+>       ext4_mb_new_blocks+0x88a/0x1370 [ext4]
+>       ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
+>       ext4_map_blocks+0x569/0xea0 [ext4]
+>       ext4_do_writepages+0x10f6/0x1bc0 [ext4]
+>      [...]
+>      ==================================================================
+>      
+>      The flow of issue triggering is as follows:
+>      
+>      // Set s_mb_group_prealloc to 2147483647 via sysfs
+>      ext4_mb_new_blocks
+>        ext4_mb_normalize_request
+>          ext4_mb_normalize_group_request
+>            ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
+>        ext4_mb_regular_allocator
+>          ext4_mb_choose_next_group
+>            ext4_mb_choose_next_group_best_avail
+>              mb_avg_fragment_size_order
+>                order = fls(len) - 2 = 29
+>              ext4_mb_find_good_group_avg_frag_lists
+>                frag_list = &sbi->s_mb_avg_fragment_size[order]
+>                if (list_empty(frag_list)) // Trigger SOOB!
+>      
+>      At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
+>      but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
+>      to be triggered by an attempt to access an element at index 29.
+>      
+>      Add a new attr_id attr_clusters_in_group with values in the range
+>      [0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
+>      that type to fix the issue. In addition avoid returning an order
+>      from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
+>      and reduce some useless loops.
+>      
+>      Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
+>      CC: stable@vger.kernel.org
+>      Signed-off-by: Baokun Li <libaokun1@huawei.com>
+>      Reviewed-by: Jan Kara <jack@suse.cz>
+>      Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+>      Link: https://lore.kernel.org/r/20240319113325.3110393-5-libaokun1@huawei.com
+>      Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+>      Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+> index 714f83632e3f9..66b5a68b0254e 100644
+> --- a/fs/ext4/mballoc.c
+> +++ b/fs/ext4/mballoc.c
+> @@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
+>   		return 0;
+>   	if (order == MB_NUM_ORDERS(sb))
+>   		order--;
+> +	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
+> +		order = MB_NUM_ORDERS(sb) - 1;
+>   	return order;
+>   }
+>   
+> @@ -1008,6 +1010,8 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
+>   	 * goal length.
+>   	 */
+>   	order = fls(ac->ac_g_ex.fe_len) - 1;
+> +	if (WARN_ON_ONCE(order - 1 > MB_NUM_ORDERS(ac->ac_sb)))
+> +		order = MB_NUM_ORDERS(ac->ac_sb);
+>   	min_order = order - sbi->s_mb_best_avail_max_trim_order;
+>   	if (min_order < 0)
+>   		min_order = 0;
+> diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
+> index 295ea9a32de91..ca66e33f61815 100644
+> --- a/fs/ext4/sysfs.c
+> +++ b/fs/ext4/sysfs.c
+> @@ -29,6 +29,7 @@ typedef enum {
+>   	attr_trigger_test_error,
+>   	attr_first_error_time,
+>   	attr_last_error_time,
+> +	attr_clusters_in_group,
+>   	attr_feature,
+>   	attr_pointer_ui,
+>   	attr_pointer_ul,
+> @@ -207,13 +208,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit, 0444);
+>   
+>   EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
+>   		 ext4_sb_info, s_inode_readahead_blks);
+> +EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, clusters_in_group,
+> +		 ext4_sb_info, s_mb_group_prealloc);
+>   EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
+>   EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
+>   EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
+>   EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
+>   EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
+>   EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
+> -EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
+>   EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
+>   EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
+>   EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
+> @@ -376,6 +378,7 @@ static ssize_t ext4_generic_attr_show(struct ext4_attr *a,
+>   
+>   	switch (a->attr_id) {
+>   	case attr_inode_readahead:
+> +	case attr_clusters_in_group:
+>   	case attr_pointer_ui:
+>   		if (a->attr_ptr == ptr_ext4_super_block_offset)
+>   			return sysfs_emit(buf, "%u\n", le32_to_cpup(ptr));
+> @@ -459,6 +462,14 @@ static ssize_t ext4_attr_store(struct kobject *kobj,
+>   		else
+>   			*((unsigned int *) ptr) = t;
+>   		return len;
+> +	case attr_clusters_in_group:
+Since commit f536808adcc3 "ext4: refactor out ext4_generic_attr_store()"
+is not backported to stable, the following judgement needs to be added
+here:
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+  		if (!ptr)
+  			return 0;
 
-> ---
->  drivers/media/usb/uvc/uvc_video.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-> index 869876afdcce..82a69f46718d 100644
-> --- a/drivers/media/usb/uvc/uvc_video.c
-> +++ b/drivers/media/usb/uvc/uvc_video.c
-> @@ -750,11 +750,11 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
->  	unsigned long flags;
->  	u64 timestamp;
->  	u32 delta_stc;
-> -	u32 y1, y2;
-> +	u32 y1;
->  	u32 x1, x2;
->  	u32 mean;
->  	u32 sof;
-> -	u64 y;
-> +	u64 y, y2;
->  
->  	if (!uvc_hw_timestamps_param)
->  		return;
-> @@ -805,7 +805,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
->  	sof = y;
->  
->  	uvc_dbg(stream->dev, CLOCK,
-> -		"%s: PTS %u y %llu.%06llu SOF %u.%06llu (x1 %u x2 %u y1 %u y2 %u SOF offset %u)\n",
-> +		"%s: PTS %u y %llu.%06llu SOF %u.%06llu (x1 %u x2 %u y1 %u y2 %llu SOF offset %u)\n",
->  		stream->dev->name, buf->pts,
->  		y >> 16, div_u64((y & 0xffff) * 1000000, 65536),
->  		sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
-> @@ -820,7 +820,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
->  		goto done;
->  
->  	y1 = NSEC_PER_SEC;
-> -	y2 = (u32)ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
-> +	y2 = ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
->  
->  	/*
->  	 * Interpolated and host SOF timestamps can wrap around at slightly
-> @@ -841,7 +841,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
->  	timestamp = ktime_to_ns(first->host_time) + y - y1;
->  
->  	uvc_dbg(stream->dev, CLOCK,
-> -		"%s: SOF %u.%06llu y %llu ts %llu buf ts %llu (x1 %u/%u/%u x2 %u/%u/%u y1 %u y2 %u)\n",
-> +		"%s: SOF %u.%06llu y %llu ts %llu buf ts %llu (x1 %u/%u/%u x2 %u/%u/%u y1 %u y2 %llu)\n",
->  		stream->dev->name,
->  		sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
->  		y, timestamp, vbuf->vb2_buf.timestamp,
+The patch for the 6.6-stable tree has the same problem.
 
--- 
 Regards,
+Baokun
 
-Laurent Pinchart
+> +		ret = kstrtouint(skip_spaces(buf), 0, &t);
+> +		if (ret)
+> +			return ret;
+> +		if (t > sbi->s_clusters_per_group)
+> +			return -EINVAL;
+> +		*((unsigned int *) ptr) = t;
+> +		return len;
+>   	case attr_pointer_ul:
+>   		if (!ptr)
+>   			return 0;
 
