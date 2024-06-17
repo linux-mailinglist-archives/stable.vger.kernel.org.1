@@ -1,177 +1,188 @@
-Return-Path: <stable+bounces-52598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4163C90BB4F
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 21:42:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7546990BB9C
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 21:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCFB8284E32
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 19:42:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA140B231C3
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 19:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A70187567;
-	Mon, 17 Jun 2024 19:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4792918F2CA;
+	Mon, 17 Jun 2024 19:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DCgwTQ0C"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="MPUPtlA7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B2011CAB;
-	Mon, 17 Jun 2024 19:42:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D99188CAE
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 19:59:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718653330; cv=none; b=CqEHw8YOEKau0ZaSMQ+ggr6zV6K6ZXEH7qxgcI75qCPlXMdYNOYMLa4tdPe3AmW5g+XSi37UzvMWpqXMxEGXMItcKIRXojPzLTVvehYOeqX7FkkiJw9b9D6ZVP3UMtqlU4JFanbtyozUbt4TO7damGLsl05gVTKLhkbhnr/MwBA=
+	t=1718654385; cv=none; b=mXqygyBl9en3TDris7qSUd0F+aKcdypoL07aClqJ+dvh4PY47RxCjX65vsmzfxZ1ClMbmXbkR1/VwZ9/a5ShEY1Z6JZjHSkgTgYRuXIy9qNTswAAQSDlqtmWGY61MWGGyifxQBBtNv6jhzUOJK4GLOk5ssHb7bs9aQGYiBVOnc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718653330; c=relaxed/simple;
-	bh=vBDskFgZmOdls58QIaWwG3DV5vl0qEwWkCN2RVnQTyk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BRXKGuvLlb8p2cCtyHVocFhR6MLcpZBC2/TbPc8FHRzFSy6b+DQI32Uo0rkTFB1W9lkiOZyMt4QwMSWnazDdIHEj6im08mTAXiJ+BoT6RUz/CUur1Jz9vCFbUhdzvvyGbkGd3E341JBXb6PPqUxnDg/F56Hb0lVQCee+pOb1GnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DCgwTQ0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99220C4AF48;
-	Mon, 17 Jun 2024 19:42:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718653330;
-	bh=vBDskFgZmOdls58QIaWwG3DV5vl0qEwWkCN2RVnQTyk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=DCgwTQ0C5PWT7go4sugstvNcHRawPQvRPU/LEw/gAR2YEv+fGjb0LzLNva9Yqlzmg
-	 tbV8W7swp8ATb1UdVRnWsIC9TxOCSdkxcCl2OdUN2ZFN/3d3kFrwSpT5UG/SvmA7xA
-	 6c+EPc2xlZFIyQdFolMb42kPUdFNi1ZHkngDyJRYl3fxM/qcqsB5hrhvphjE99eIsi
-	 wsWoLVl8s9vbhKRJ/3pTMmmZTs7vX8DmhJ/rVhaMQZOjZ/X8PO6Zul6OwIcXW5G3Pg
-	 B/4k1TRzdikrWezFwBrBcf4R6C3tcfmkIaVPGrt7jaiONGXW0YYuOngPxqzI2bseki
-	 DuqGqBeBjgXag==
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-250aa23752dso513348fac.3;
-        Mon, 17 Jun 2024 12:42:10 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVZly6vNUueqTHSvudvREykfZ9eJnfHAI/sX8nIMzImqiQ0JDR6q8JoAcMxdeXLzgZaJCKO3TE+VWKSuAFkpy6YWmfHj2pjXfcRVJiaY2rNhGeP6QuoXU8OOGlbl0YKGBLJOA==
-X-Gm-Message-State: AOJu0YyE6k6140oXtAxMCynxap2avy0j4Onkrw0DTxQy9lgnJx27sm6N
-	U4L2L2ebtvjJo67FQ9M8ztG2wVnKvdLpkrZVkWhETwuAeHYCliHRNV8DqZRpQs5cPrLm//x00l8
-	MwH2CmjnHn1nYK2HBPg9SG6NI5pw=
-X-Google-Smtp-Source: AGHT+IGH4ir5exZtJaaX9vKUn92mx4ZHIRJBwLEJ4r+Z0U7OwCg3DyH27ODHTwh7wcB0fEE+Jp5zdqzepxY/0slgaoQ=
-X-Received: by 2002:a05:6870:469f:b0:254:d417:351f with SMTP id
- 586e51a60fabf-258429511admr11464083fac.1.1718653329860; Mon, 17 Jun 2024
- 12:42:09 -0700 (PDT)
+	s=arc-20240116; t=1718654385; c=relaxed/simple;
+	bh=08Im5tTtgDtaXbg/OAZrWCIVoI5T9qmWGX+gu7QrY6c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XGh4IKnEuPMVP6HZRpxYxZgse+1KVUJgymEImIk/UstKYOyBQKBhlbNIys6kwlYpWVbL8GqYCPfELg0vtR7Zqj91q/fInQUcdTqZQZ9LGLHU/AKLBkpp+JV/EKPHjvGtgXbvH2MB8MKGS1k0cIGwwOvGX8R42ZT6OZWNkkblIWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=MPUPtlA7; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2ebeefb9a7fso63765831fa.0
+        for <stable@vger.kernel.org>; Mon, 17 Jun 2024 12:59:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1718654381; x=1719259181; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EyLxAVnNatw43iRM4OrcutPI3eZaU5xCt0a5Bh/nUZ8=;
+        b=MPUPtlA744BKBCUnEGeOw+Sok3XcRGyhgqo5gezsnIWarE8eYcNTWJPr5L7YvN8NXl
+         G4tqe0tuVAXBR2wW86XL0lm8bttsNc9WcxYoBXsAsvxS4uLcxy1edL7E3bawgrFFhrSn
+         43jSHpqnfOJApdcydmahI1Hm/Y6YY4jh72rb3CQsb5PkTQnBU9p49E03+IvtGlIT7Qcn
+         RPkaMQ4+df15eio/0CBKtnpw0JiB7VrMRGJkAtM5wYKXjyJsXQWf//A0FcubNT6iIVQP
+         gCJp7vzbze0Ro0iR6xaqC0Eka9S9/YuSCDLqwX/xOvQXszygwR+O/vYi+DUBZ1Hd6k9m
+         bQ3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718654381; x=1719259181;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EyLxAVnNatw43iRM4OrcutPI3eZaU5xCt0a5Bh/nUZ8=;
+        b=daSszMs3hywr54bL9qowNuMZn2HlR+zO4x7KflGSHEryjb2yx+BA4FY1zHh54XrhTN
+         GaEjJx4uTHe6/nfB06i8W3OX6goMbk2LSRO+D8EqQy4C5Jv6mf2XCu/6RUJgiZC33ivF
+         ZAu/AjU0AKKo2Clqf1eMEbplY8fc9N/9+xW4wadjIvtgugpzc4Iy4bC6aXaMpcgjj/H4
+         cVyg2lzvFg8EnHtzvML/SDJP5gzwrOxIsCImO4385+C+3DFthGYDOCPVFcbmBWfKjnJ8
+         pKxryYnSenVjqIi0YCp6c3sVovnrDW4nu95ANWawWQCLM7lt4q/dfTB4yHuapJO1SxpM
+         zhSw==
+X-Forwarded-Encrypted: i=1; AJvYcCVP7hX/VGRNjnM8fIvl092dTPKoMcl8FM00f6eno3j/m6pUEjVqIjGWJ0mocf2TJqBxaZzeDKURDSdQ94yReUybvmXTDp6j
+X-Gm-Message-State: AOJu0Yx957IwMg1aCRW62pm9uD2uogThTFLLc0J8X4m4/dlZ6BF+V9Pp
+	3C5aKmWDFYprOqxgW9ec9jUisw1a1qWbFSSmny1iQhZFBoPhE1ZP0FIkKsrC01V3CgOUXbj/iaD
+	rs3I=
+X-Google-Smtp-Source: AGHT+IH4U5vzLeiz8hkqcYJKHqjJ00u0IYrLAWlmG3iRs3wJv+s+wvbGOotZo0aQPKNGhmClr2ICTA==
+X-Received: by 2002:a2e:300f:0:b0:2eb:d87f:7d71 with SMTP id 38308e7fff4ca-2ec0e5b5f69mr73029701fa.8.1718654381332;
+        Mon, 17 Jun 2024 12:59:41 -0700 (PDT)
+Received: from localhost.localdomain ([104.28.231.254])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422874e73e8sm205545885e9.43.2024.06.17.12.59.39
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 17 Jun 2024 12:59:40 -0700 (PDT)
+From: Ignat Korchagin <ignat@cloudflare.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Florent Revest <revest@chromium.org>,
+	kernel-team@cloudflare.com,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] net: do not leave a dangling sk pointer, when socket creation fails
+Date: Mon, 17 Jun 2024 20:59:34 +0100
+Message-Id: <20240617195934.64810-1-ignat@cloudflare.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240612104220.22219-1-hdegoede@redhat.com>
-In-Reply-To: <20240612104220.22219-1-hdegoede@redhat.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 17 Jun 2024 21:41:57 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0iZPs9gdaeCG+c-FAuEeoHDTbyR2TsmFLC837fy+TQrvQ@mail.gmail.com>
-Message-ID: <CAJZ5v0iZPs9gdaeCG+c-FAuEeoHDTbyR2TsmFLC837fy+TQrvQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ACPI: scan: Ignore camera graph port nodes on all
- Dell Tiger, Alder and Raptor Lake models
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	linux-acpi@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 12, 2024 at 12:42=E2=80=AFPM Hans de Goede <hdegoede@redhat.com=
-> wrote:
->
-> It seems that all Dell laptops with IPU6 camera or the Tiger Lake,
-> Alder Lake and Raptor Lake generations have broken ACPI MIPI DISCO
-> information.
->
-> Instead of adding a lot of DMI quirks for this, check for these CPU
-> generations and disable ACPI MIPI DISCO support on all Dell laptops
-> with these CPU generations.
->
-> Fixes: bd721b934323 ("ACPI: scan: Extract CSI-2 connection graph from _CR=
-S")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/acpi/internal.h       |  4 ++++
->  drivers/acpi/mipi-disco-img.c | 28 +++++++++++++++++++---------
->  2 files changed, 23 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
-> index 2a0e9fc7b74c..601b670356e5 100644
-> --- a/drivers/acpi/internal.h
-> +++ b/drivers/acpi/internal.h
-> @@ -302,6 +302,10 @@ void acpi_mipi_check_crs_csi2(acpi_handle handle);
->  void acpi_mipi_scan_crs_csi2(void);
->  void acpi_mipi_init_crs_csi2_swnodes(void);
->  void acpi_mipi_crs_csi2_cleanup(void);
-> +#ifdef CONFIG_X86
->  bool acpi_graph_ignore_port(acpi_handle handle);
-> +#else
-> +static inline bool acpi_graph_ignore_port(acpi_handle handle) { return f=
-alse; }
-> +#endif
->
->  #endif /* _ACPI_INTERNAL_H_ */
-> diff --git a/drivers/acpi/mipi-disco-img.c b/drivers/acpi/mipi-disco-img.=
-c
-> index d05413a0672a..0ab13751f0db 100644
-> --- a/drivers/acpi/mipi-disco-img.c
-> +++ b/drivers/acpi/mipi-disco-img.c
-> @@ -725,14 +725,20 @@ void acpi_mipi_crs_csi2_cleanup(void)
->                 acpi_mipi_del_crs_csi2(csi2);
->  }
->
-> -static const struct dmi_system_id dmi_ignore_port_nodes[] =3D {
-> -       {
-> -               .matches =3D {
-> -                       DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-> -                       DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 9315"),
-> -               },
-> -       },
-> -       { }
-> +#ifdef CONFIG_X86
-> +#include <asm/cpu_device_id.h>
-> +#include <asm/intel-family.h>
-> +
-> +/* CPU matches for Dell generations with broken ACPI MIPI DISCO info */
-> +static const struct x86_cpu_id dell_broken_mipi_disco_cpu_gens[] =3D {
-> +       X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE, NULL),
-> +       X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE_L, NULL),
-> +       X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE, NULL),
-> +       X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L, NULL),
-> +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE, NULL),
-> +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P, NULL),
-> +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S, NULL),
-> +       {}
->  };
->
->  static const char *strnext(const char *s1, const char *s2)
-> @@ -761,7 +767,10 @@ bool acpi_graph_ignore_port(acpi_handle handle)
->         static bool dmi_tested, ignore_port;
->
->         if (!dmi_tested) {
-> -               ignore_port =3D dmi_first_match(dmi_ignore_port_nodes);
-> +               if (dmi_name_in_vendors("Dell Inc.") &&
-> +                   x86_match_cpu(dell_broken_mipi_disco_cpu_gens))
-> +                       ignore_port =3D true;
-> +
->                 dmi_tested =3D true;
->         }
->
-> @@ -794,3 +803,4 @@ bool acpi_graph_ignore_port(acpi_handle handle)
->         kfree(orig_path);
->         return false;
->  }
-> +#endif
-> --
+A KASAN enabled kernel will log something like below (decoded and stripped):
+[   78.328507][  T299] ==================================================================
+[ 78.329018][ T299] BUG: KASAN: slab-use-after-free in __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
+[   78.329366][  T299] Read of size 8 at addr ffff888007110dd8 by task traceroute/299
+[   78.329366][  T299]
+[   78.329366][  T299] CPU: 2 PID: 299 Comm: traceroute Tainted: G            E      6.10.0-rc2+ #2
+[   78.329366][  T299] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+[   78.329366][  T299] Call Trace:
+[   78.329366][  T299]  <TASK>
+[ 78.329366][ T299] dump_stack_lvl (lib/dump_stack.c:117 (discriminator 1))
+[ 78.329366][ T299] print_report (mm/kasan/report.c:378 mm/kasan/report.c:488)
+[ 78.329366][ T299] ? __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
+[ 78.329366][ T299] kasan_report (mm/kasan/report.c:603)
+[ 78.329366][ T299] ? __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
+[ 78.329366][ T299] kasan_check_range (mm/kasan/generic.c:183 mm/kasan/generic.c:189)
+[ 78.329366][ T299] __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
+[ 78.329366][ T299] bpf_get_socket_ptr_cookie (./arch/x86/include/asm/preempt.h:94 ./include/linux/sock_diag.h:42 net/core/filter.c:5094 net/core/filter.c:5092)
+[ 78.329366][ T299] bpf_prog_875642cf11f1d139___sock_release+0x6e/0x8e
+[ 78.329366][ T299] bpf_trampoline_6442506592+0x47/0xaf
+[ 78.329366][ T299] __sock_release (net/socket.c:652)
+[ 78.329366][ T299] __sock_create (net/socket.c:1601)
+...
+[   78.329366][  T299] Allocated by task 299 on cpu 2 at 78.328492s:
+[ 78.329366][ T299] kasan_save_stack (mm/kasan/common.c:48)
+[ 78.329366][ T299] kasan_save_track (mm/kasan/common.c:68)
+[ 78.329366][ T299] __kasan_slab_alloc (mm/kasan/common.c:312 mm/kasan/common.c:338)
+[ 78.329366][ T299] kmem_cache_alloc_noprof (mm/slub.c:3941 mm/slub.c:4000 mm/slub.c:4007)
+[ 78.329366][ T299] sk_prot_alloc (net/core/sock.c:2075)
+[ 78.329366][ T299] sk_alloc (net/core/sock.c:2134)
+[ 78.329366][ T299] inet_create (net/ipv4/af_inet.c:327 net/ipv4/af_inet.c:252)
+[ 78.329366][ T299] __sock_create (net/socket.c:1572)
+[ 78.329366][ T299] __sys_socket (net/socket.c:1660 net/socket.c:1644 net/socket.c:1706)
+[ 78.329366][ T299] __x64_sys_socket (net/socket.c:1718)
+[ 78.329366][ T299] do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+[ 78.329366][ T299] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+[   78.329366][  T299]
+[   78.329366][  T299] Freed by task 299 on cpu 2 at 78.328502s:
+[ 78.329366][ T299] kasan_save_stack (mm/kasan/common.c:48)
+[ 78.329366][ T299] kasan_save_track (mm/kasan/common.c:68)
+[ 78.329366][ T299] kasan_save_free_info (mm/kasan/generic.c:582)
+[ 78.329366][ T299] poison_slab_object (mm/kasan/common.c:242)
+[ 78.329366][ T299] __kasan_slab_free (mm/kasan/common.c:256)
+[ 78.329366][ T299] kmem_cache_free (mm/slub.c:4437 mm/slub.c:4511)
+[ 78.329366][ T299] __sk_destruct (net/core/sock.c:2117 net/core/sock.c:2208)
+[ 78.329366][ T299] inet_create (net/ipv4/af_inet.c:397 net/ipv4/af_inet.c:252)
+[ 78.329366][ T299] __sock_create (net/socket.c:1572)
+[ 78.329366][ T299] __sys_socket (net/socket.c:1660 net/socket.c:1644 net/socket.c:1706)
+[ 78.329366][ T299] __x64_sys_socket (net/socket.c:1718)
+[ 78.329366][ T299] do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+[ 78.329366][ T299] entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
 
-Applied as 6.10-rc material, along with the [2/2], with the following chang=
-elog:
+Fix this by clearing the struct socket reference in sk_common_release() to cover
+all protocol families create functions.
 
-"Dell laptops with IPU6 camera (the Tiger Lake, Alder Lake and Raptor
-Lake generations) have broken ACPI MIPI DISCO information (this results
-from an OEM attempt to make Linux work by supplying it with custom data
-in the ACPI tables which has never been supported in the mainline).
+Fixes: c5dbb89fc2ac ("bpf: Expose bpf_get_socket_cookie to tracing programs")
+Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/netdev/20240613194047.36478-1-kuniyu@amazon.com/T/
+---
+Changes in v2:
+  * moved the NULL-ing of the socket reference to sk_common_release() (as
+    suggested by Kuniyuki Iwashima)
+  * trimmed down the KASAN report in the commit message to show only relevant
+    info
 
-Instead of adding a lot of DMI quirks for this, check for Dell platforms
-based on the processor generations in question and drop the ACPI graph
-port nodes, likely to be created with the help of invalid data, on all
-of them."
+ net/core/sock.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Thanks!
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 8629f9aecf91..575af557c46b 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3742,6 +3742,17 @@ void sk_common_release(struct sock *sk)
+ 
+ 	sk->sk_prot->unhash(sk);
+ 
++	/*
++	 * struct net_proto_family create functions like inet_create() or
++	 * inet6_create() have an error path, which call this function. This sk
++	 * may have already been associated with a struct socket, so ensure to
++	 * clear this reference not to leave a dangling pointer in the
++	 * struct socket instance.
++	 */
++
++	if (sk->sk_socket)
++		sk->sk_socket->sk = NULL;
++
+ 	/*
+ 	 * In this point socket cannot receive new packets, but it is possible
+ 	 * that some packets are in flight because some CPU runs receiver and
+-- 
+2.39.2
+
 
