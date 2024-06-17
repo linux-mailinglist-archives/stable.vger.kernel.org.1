@@ -1,87 +1,137 @@
-Return-Path: <stable+bounces-52565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3620090B641
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 18:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0ADB90B7D6
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 19:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF520281AD9
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:24:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF9AA286852
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 17:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9B014D29D;
-	Mon, 17 Jun 2024 16:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150FB16D4E4;
+	Mon, 17 Jun 2024 17:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ikqqk0Ap"
 X-Original-To: stable@vger.kernel.org
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BA3847A
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 16:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=63.228.1.57
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0EA16CD29;
+	Mon, 17 Jun 2024 17:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718641439; cv=none; b=CwXGXCfZmmDh7qa/3wbA037uiFTXVn2d4V/ErM2y5Qv2J3KMD5UxU83dYXPNhMwsP7yxBmsfh2tCOty/GYDDnHRMAbfPCttEQzQzuIDxdsrmYt6Qpc5Iy7HS65LcTqUhfmUccOB8VeviC7cUMnQphj3xD80ZFnDiLT6Or43lHbg=
+	t=1718644963; cv=none; b=U5Z/NtIBMnl9BNs/tQgbnVM3Nhm3K75f/TJ6aviODPFwsSpB2mI0zMgQqKKgF1iobqbwsk9Slx+QDjmo64tYapg731ic/y776yRDC7LceO13CrvNCjx5kjOdcjNCjQTb6W2Xi/cbrmVz9iUrh98JH9fduAZckrDauDYN1L9WZ/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718641439; c=relaxed/simple;
-	bh=VO2VyECDZVyasJy4pD0ZuR/qIoCMZJ514+0+7m1Ps6g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n4rgh3KyMAd0sGi0PJL3i9n+BTJHTRksY9ntkncvUw9WD+8yOTK6byh2YLHEnXKwN4qUfd1xcFEhgZgIbizkaXcC+je5bo+wkaynHPEEUbQ1IWnWrTGfvArtTaJ7vMTHk9RYcqvBycwH/C1yrMxaJYDAu2hGxh6QFjeOajgVjSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org; spf=pass smtp.mailfrom=kernel.crashing.org; arc=none smtp.client-ip=63.228.1.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.crashing.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.crashing.org
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 45HGLpBU028823;
-	Mon, 17 Jun 2024 11:21:51 -0500
-Received: (from segher@localhost)
-	by gate.crashing.org (8.14.1/8.14.1/Submit) id 45HGLpUo028822;
-	Mon, 17 Jun 2024 11:21:51 -0500
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date: Mon, 17 Jun 2024 11:21:51 -0500
-From: Segher Boessenkool <segher@kernel.crashing.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: stable@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5.10] powerpc/uaccess: Fix build errors seen with GCC 13/14
-Message-ID: <20240617162151.GN19790@gate.crashing.org>
-References: <20240614112714.3482739-1-mpe@ellerman.id.au>
+	s=arc-20240116; t=1718644963; c=relaxed/simple;
+	bh=RhcWC8Rp8qIRElpRJW6lfTPluwKHaTBVKBkoTRLSNBE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OEfN7dN9bst4o9yoepAY+0icrOSh8tQOnSkV9u8VAbeEyXw9G4XWu37kLEPjz9d3K2X5Ty7yT0sJzBlKFInFZGknCqKlkwCW/dlT0xzKj2jyux9YDV2ioqXhmT1WXkSYEl2KjLBe83o8sGqZKpl4rRLxMxFtKUfG1Z6CZRydMxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ikqqk0Ap; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a6f21ff4e6dso629382666b.3;
+        Mon, 17 Jun 2024 10:22:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718644960; x=1719249760; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Hb+O+cmwbTR68wWYVOzyym9228SgymLFKXuelmNx6q0=;
+        b=ikqqk0ApnccGCgcR8mcQ7u3ZUzNhy/nqO8Xi0BIGu7FJZKuCZanySAVjoRXwv0kSIf
+         eqKt13KqB2iOWorCx5yvMK+s1hVuzfl1tUln0o1VNvTj5D9blc+ioh55v+11L1dkNaNz
+         0UezB0615k+Firjg1vAKrK4ImVSJUoXDRkv4kHgikYLU6vg0wcBAjWYYiOyOZWUpm2ao
+         o6VTRxnpzeVIUFyNfkVad6zFOlbeObkMHEVeL5J8vVCVD8GqiDrgBQA2RjAp0iApA/L3
+         +PEyDZ+u+xZcd27OYLnV38hE5Md0rwO5ZlnRkZmZaaxHytjiZIXuwaFKtL/Qu1e9vyco
+         LSEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718644960; x=1719249760;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Hb+O+cmwbTR68wWYVOzyym9228SgymLFKXuelmNx6q0=;
+        b=uroBsMPenKo+T6VHSxtp4l+fgBEv9YLxYOfXjuXZ39b8uhAFDHacnVviZpKKVYCGhy
+         sGTlYHuLVaY3D0s8YOzf2O366GwCQKeMEGUI6FmP54b7KMGIE2XS6bf3VwbdO/xPFGZ6
+         rK/pShaSDKBLdq9qsqttqLAkvjjn4WBztQVRiob9X7AzWLgnFXfcmiu2XeH9tMlSpRlN
+         JRwUZMbpQU6NHvdGgCbvGLgthX7yXDUFL/a+aYI+459wDgO2xP+i38lfsrSF/nFaho7i
+         rRwCtOYbo/A5bin4Yechr0TpXX5hNzdVfIz6zGFWH4befu6bdf69cxSTbYL7J8aLPkem
+         osqg==
+X-Forwarded-Encrypted: i=1; AJvYcCXXVmUXfWK/0gnTS6JIwQOhXUCAq/cRXAZEi1ujpPRbO8ZMTT80tfTsJizDyQbYYpR9GLCIQvon4bADEuDECAQBXfSgtrinD9TLL3epYBaqswL3+zOCazUSitZG1l3jRkOm2bSDtMG6vudU+6ui7nuE6ujFX6Yq2pA7kqN0jcue
+X-Gm-Message-State: AOJu0YyfLic3+VuPjootXzoOSmta94RDZ3GQYL60E0W1g0URi+i3Ijw/
+	RpZiFwi9HzvdtTPIQJvPrzwH9QiDB85EzspMhl6xLWC1WPkA9uMWP2Kokh8HN5sm+e/201TI0+l
+	I5yqwqK7z1k+sgmdP/1majC3Arn/LONyn
+X-Google-Smtp-Source: AGHT+IGnUeHwYXqk7NzEsZfA4FseFP2/mMs3rIBad0z44NEgcX1zYFY156NjbYIoC/3fW1+aZn7fmyhRi0w47SRuCDc=
+X-Received: by 2002:a17:907:969e:b0:a6f:5723:fb12 with SMTP id
+ a640c23a62f3a-a6f60cefc7amr714824566b.1.1718644960188; Mon, 17 Jun 2024
+ 10:22:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240614112714.3482739-1-mpe@ellerman.id.au>
-User-Agent: Mutt/1.4.2.3i
+MIME-Version: 1.0
+References: <20240520153932.116731-1-grygorii.tertychnyi@leica-geosystems.com>
+In-Reply-To: <20240520153932.116731-1-grygorii.tertychnyi@leica-geosystems.com>
+From: grygorii tertychnyi <grembeter@gmail.com>
+Date: Mon, 17 Jun 2024 19:22:44 +0200
+Message-ID: <CAGFuAux+x17M4XK6jCHknYecvq97GxKTHz6ZLh8iTmL6Wmz-Jw@mail.gmail.com>
+Subject: Re: [PATCH v2] i2c: ocores: set IACK bit after core is enabled
+To: Peter Korsgaard <peter@korsgaard.com>, Andrew Lunn <andrew@lunn.ch>, linux-i2c@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Andi Shyti <andi.shyti@kernel.org>
+Cc: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>, 
+	bsp-development.geo@leica-geosystems.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 14, 2024 at 09:27:14PM +1000, Michael Ellerman wrote:
-> commit 2d43cc701b96f910f50915ac4c2a0cae5deb734c upstream.
-> The 'std' instruction requires a 4-byte aligned displacement because
-> it is a DS-form instruction, and as the assembler says, 18 is not a
-> multiple of 4.
+Hi,
 
-You learn something new every day :-)
+just another gentle ping...  Not sure if I need to rebase it on the
+latest master?
 
-> A similar error is seen with GCC 13 and CONFIG_UBSAN_SIGNED_WRAP=y.
-> 
-> The fix is to change the constraint on the memory operand to put_user(),
-> from "m" which is a general memory reference to "YZ".
-> 
-> The "Z" constraint is documented in the GCC manual PowerPC machine
-> constraints, and specifies a "memory operand accessed with indexed or
-> indirect addressing". "Y" is not documented in the manual but specifies
-> a "memory operand for a DS-form instruction". Using both allows the
-> compiler to generate a DS-form "std" or X-form "stdx" as appropriate.
+regards
 
-https://gcc.gnu.org/PR115289
-It will be documented soon, thanks for the report!
-
-> Although the build error is only seen with GCC 13/14, that appears
-> to just be luck. The constraint has been incorrect since it was first
-> added.
-
-Yes, "m" allows any memory operand, an unaligned one is just fine.
-
-Acked-by: Segher Boessenkool <segher@kernel.crashing.org>
-
-
-Segher
+On Mon, May 20, 2024 at 5:40=E2=80=AFPM Grygorii Tertychnyi <grembeter@gmai=
+l.com> wrote:
+>
+> Setting IACK bit when core is disabled does not clear the "Interrupt Flag=
+"
+> bit in the status register, and the interrupt remains pending.
+>
+> Sometimes it causes failure for the very first message transfer, that is
+> usually a device probe.
+>
+> Hence, set IACK bit after core is enabled to clear pending interrupt.
+>
+> Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C c=
+ontroller")
+> Signed-off-by: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.=
+com>
+> Acked-by: Peter Korsgaard <peter@korsgaard.com>
+> Cc: stable@vger.kernel.org
+> ---
+> V1 -> V2: Added "Acked-by:", "Fixes:" and "Cc:" tags
+>
+>  drivers/i2c/busses/i2c-ocores.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/i2c/busses/i2c-ocores.c b/drivers/i2c/busses/i2c-oco=
+res.c
+> index e106af83cef4..350ccfbe8634 100644
+> --- a/drivers/i2c/busses/i2c-ocores.c
+> +++ b/drivers/i2c/busses/i2c-ocores.c
+> @@ -442,8 +442,8 @@ static int ocores_init(struct device *dev, struct oco=
+res_i2c *i2c)
+>         oc_setreg(i2c, OCI2C_PREHIGH, prescale >> 8);
+>
+>         /* Init the device */
+> -       oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
+>         oc_setreg(i2c, OCI2C_CONTROL, ctrl | OCI2C_CTRL_EN);
+> +       oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
+>
+>         return 0;
+>  }
+> --
+> 2.43.0
+>
 
