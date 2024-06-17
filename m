@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-52361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF2C90A90F
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 11:07:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F16F90A91E
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 11:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A529AB23555
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 09:07:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FEAE1F24BF1
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 09:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29749190678;
-	Mon, 17 Jun 2024 09:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8AE190685;
+	Mon, 17 Jun 2024 09:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygnZWaQM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2EKku7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C1019066E
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 09:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7CB1836FC
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 09:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718615234; cv=none; b=XioRiDYoIwxYjPT1tcdUoH/NYZvCUbAxQ6/woySVWMwElywQRCqIN6ZgJ+7SvCsyvP87tjrK94AMWnccwNJ7+mQQY6eWQJCF9FoWFmzIP3g2jcN2oJYxmRUybzHAGthojot1Bo6Ky2F9SmBe74N4VpPrvtR/U1VKIV6ez764Ggw=
+	t=1718615363; cv=none; b=O6ixJShe2/hKWCXR+TKdZpG6Fe5ncPLaJpfN8Lrdtw5kM8B3M1NMjtvFkD5PIGjBlo+JwUtvAGdBCT+atMLOYCLItOKbW4WKxEW2QxECXvIOwIOuV8ZrnEEPlOqAgXHsttWk1+1fP2dBTcbJ0KmUmBAjbPaw+k11iUddnmaEmk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718615234; c=relaxed/simple;
-	bh=tX9US6uqo+ew8fP53FBbyoFESDM/6FwjCyFUGa06IFA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MAWFjwJHs0JHCpQrZ+IRMFrbNhkzE1qGg6B4OgCaUCsDSGFAFcGHHvOBHpXD3p6haayyr/WvgdI1TPEZWAr7AEaNSGUMtYWx+37eFh8l2RA2j9XhoTnmPe8ZIyN4bQoXeH4G/ycCol2WNcPMkD94ye3FBZND1NLPN0gEi7f1nGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygnZWaQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04AD5C2BD10;
-	Mon, 17 Jun 2024 09:07:13 +0000 (UTC)
+	s=arc-20240116; t=1718615363; c=relaxed/simple;
+	bh=Mo5OK3pyYBj4TGm2fYLmqLxnQVs2+KEBysx5/yYRbLo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PBlj1jhhH7ioIY7dfU493jGNKFuTIlzGQuRogDjHw9bg/jqn6mTdOsF76QbQiCYPWK0lC8ZM0KRqsdoN1txWERDNW3IPBsnh7ydCtxu7C/k70UeZBWdW6CcapaKLIPohORUtyLORqIlbAWNpKWeSdfd2Zg1cRZK1nwPIhvqLMRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2EKku7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECAFC2BD10;
+	Mon, 17 Jun 2024 09:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718615234;
-	bh=tX9US6uqo+ew8fP53FBbyoFESDM/6FwjCyFUGa06IFA=;
+	s=korg; t=1718615363;
+	bh=Mo5OK3pyYBj4TGm2fYLmqLxnQVs2+KEBysx5/yYRbLo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ygnZWaQMLolleBmcToH1N/wcgRSwxmF32aNUcSqAmgHpBSWZZVlGdHbCNDeROtCnC
-	 mLToqxLVCSF/0ceg0NpbIvuU7F0kjKxkINwhzcW3vwGH2CiVsU80dChpnuJccP0XaK
-	 vARiSgl92WsqLVyXsFE//EgD33cMBAYkl3j2ZOlg=
-Subject: FAILED: patch "[PATCH] serial: 8250_pxa: Configure tx_loadsz to match FIFO IRQ level" failed to apply to 4.19-stable tree
-To: doug@schmorgal.com,gregkh@linuxfoundation.org,stable@kernel.org
+	b=Z2EKku7AmSS9szzaDcHjAl2wEXpt/yusyOoQelqtdstoNp2WB1TAcCVyH03G56xbA
+	 PjW+8j0smcf07rD/iUcUu2BPXDVVQuy6O9hv0tPFXwkPYGlOcdbqns976B4B/QsBUS
+	 L3XdfQf+R0tzNapLb6JmfhX0gK5VD0XOn+EGZlng=
+Subject: FAILED: patch "[PATCH] usb: typec: ucsi: Ack also failed Get Error commands" failed to apply to 6.9-stable tree
+To: heikki.krogerus@linux.intel.com,ammy.yi@intel.com,dmitry.baryshkov@linaro.org,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 17 Jun 2024 11:06:58 +0200
-Message-ID: <2024061758-junkyard-thimble-efb0@gregkh>
+Date: Mon, 17 Jun 2024 11:09:20 +0200
+Message-ID: <2024061720-mahogany-unscathed-d9b3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,26 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.9-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5208e7ced520a813b4f4774451fbac4e517e78b2
+git cherry-pick -x 8bdf8a42bca4f47646fd105a387ab6926948c7f1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061758-junkyard-thimble-efb0@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061720-mahogany-unscathed-d9b3@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
 
 Possible dependencies:
 
-5208e7ced520 ("serial: 8250_pxa: Configure tx_loadsz to match FIFO IRQ level")
-cc6628f07e0d ("serial: 8250_pxa: Switch to use uart_read_port_properties()")
-e914072cacb6 ("serial: 8250_pxa: Switch to use platform_get_irq()")
-8c6b6ffac367 ("serial: 8250_pxa: avoid autodetecting the port type")
+8bdf8a42bca4 ("usb: typec: ucsi: Ack also failed Get Error commands")
 
 thanks,
 
@@ -80,35 +77,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5208e7ced520a813b4f4774451fbac4e517e78b2 Mon Sep 17 00:00:00 2001
-From: Doug Brown <doug@schmorgal.com>
-Date: Sun, 19 May 2024 12:19:30 -0700
-Subject: [PATCH] serial: 8250_pxa: Configure tx_loadsz to match FIFO IRQ level
+From 8bdf8a42bca4f47646fd105a387ab6926948c7f1 Mon Sep 17 00:00:00 2001
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Date: Fri, 31 May 2024 13:46:52 +0300
+Subject: [PATCH] usb: typec: ucsi: Ack also failed Get Error commands
 
-The FIFO is 64 bytes, but the FCR is configured to fire the TX interrupt
-when the FIFO is half empty (bit 3 = 0). Thus, we should only write 32
-bytes when a TX interrupt occurs.
+It is possible that also the GET_ERROR command fails. If
+that happens, the command completion still needs to be
+acknowledged. Otherwise the interface will be stuck until
+it's reset.
 
-This fixes a problem observed on the PXA168 that dropped a bunch of TX
-bytes during large transmissions.
-
-Fixes: ab28f51c77cd ("serial: rewrite pxa2xx-uart to use 8250_core")
-Signed-off-by: Doug Brown <doug@schmorgal.com>
-Link: https://lore.kernel.org/r/20240519191929.122202-1-doug@schmorgal.com
-Cc: stable <stable@kernel.org>
+Reported-by: Ammy Yi <ammy.yi@intel.com>
+Fixes: bdc62f2bae8f ("usb: typec: ucsi: Simplified registration and I/O API")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240531104653.1303519-1-heikki.krogerus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/tty/serial/8250/8250_pxa.c b/drivers/tty/serial/8250/8250_pxa.c
-index f1a51b00b1b9..ba96fa913e7f 100644
---- a/drivers/tty/serial/8250/8250_pxa.c
-+++ b/drivers/tty/serial/8250/8250_pxa.c
-@@ -125,6 +125,7 @@ static int serial_pxa_probe(struct platform_device *pdev)
- 	uart.port.iotype = UPIO_MEM32;
- 	uart.port.regshift = 2;
- 	uart.port.fifosize = 64;
-+	uart.tx_loadsz = 32;
- 	uart.dl_write = serial_pxa_dl_write;
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index cb52e7b0a2c5..2cc7aedd490f 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -153,8 +153,13 @@ static int ucsi_exec_command(struct ucsi *ucsi, u64 cmd)
+ 	}
  
- 	ret = serial8250_register_8250_port(&uart);
+ 	if (cci & UCSI_CCI_ERROR) {
+-		if (cmd == UCSI_GET_ERROR_STATUS)
++		if (cmd == UCSI_GET_ERROR_STATUS) {
++			ret = ucsi_acknowledge(ucsi, false);
++			if (ret)
++				return ret;
++
+ 			return -EIO;
++		}
+ 		return ucsi_read_error(ucsi);
+ 	}
+ 
 
 
