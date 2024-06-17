@@ -1,152 +1,90 @@
-Return-Path: <stable+bounces-52552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5447790B2D3
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:49:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B092590B327
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 17:00:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 028B3285667
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:49:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55C281F2608E
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404521D6E27;
-	Mon, 17 Jun 2024 13:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EE413A898;
+	Mon, 17 Jun 2024 14:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FxP+Sh+I";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="6HKMIZz3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fzTkO4Co"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D7B1D5433;
-	Mon, 17 Jun 2024 13:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E34C13A87E;
+	Mon, 17 Jun 2024 14:08:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632281; cv=none; b=lMmM7k4PTaM2wgiu7HLgp5Zs1abBcvLhpvnm9RKfe8qNuXUErxtA1EJOj9Nbi56x4k/Fhx6Y3voKKFgaubtZsnmBdIO65VBXkoMIJPsoBdu/WRVKP2k/k2MdSBv9H8+DE7KNUf4f/Pd9wEG3Krz7IieAPiCGYSWRgZhHqYan/do=
+	t=1718633299; cv=none; b=aMJ9+BCqBQem+/RhinfxqOTWea9BbU8RtOKtBjQsnR/r0eV5aDI9K/L6nl9J5i5Et/JCXHzFTud43+4Rwhoba+PMhKHlijza4v7sO3HAteOyE117yZEHGVeHimgM82Btv/F8gGzxqPViM1vW49bq/y0E+HifaJPQNg0z2yaKHBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632281; c=relaxed/simple;
-	bh=fQq7PHR8M445wVBb/0ZvAoxrWZZ9HinlKyuqw5Vd3Ow=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ZyGWY7LkYeN2ufBACSHx763GYV2Pv6vS5PDpl+hZE1ElelqFukjq9D6zKMj0D1214bG2Aa2P57F8aEfQHnOL5vH9/JzKEmNzayoIbONybrjg1dNwrdEwUGskZM38ywnI0925G+ZtIZOdVXM6SSYRA+xCyuLzvAvSlDVetmvJrnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FxP+Sh+I; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=6HKMIZz3; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 17 Jun 2024 13:51:15 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1718632275;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=878SgARI29axMiPLPOHUwfeMGmniB6Eg913PCg6AJk8=;
-	b=FxP+Sh+Ic5t6KzRWYmbLiIPf7CaXFpx05iNRnXT1hLlRgta5vNH8NP+I8y0dQsmW+b86JF
-	RctNKNe1JJr1XPs8Aq24bY+1NfjQo63yWevRGmEIydJlDVqnDBrzzTSQIIoM6XjglKLght
-	TbROC25+hklFiL51OqnMM1SgUe5yQ282X5TOgD3XPaywo9qxLnm5OioNcgxfbUKcGtO/lo
-	MKfzzTy/zhfz5obtwCehHsVYGO+QKx0YWHvQnTcHmMDycex2d6w8QXfgVsptlUMsw5684N
-	1x29wHWSQafqKpqKGBaRudOHNwcIihYgm86wN4//139dyBNr2O8m6SFVQxbacw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1718632275;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=878SgARI29axMiPLPOHUwfeMGmniB6Eg913PCg6AJk8=;
-	b=6HKMIZz3IophxisZu3Xrm9r6mS1GwzX1KrUCmoVqJcuLPA0VCjXFy/xx9RTbdd/nVf5VDO
-	J0nOorSwBot+oGCA==
-From: "tip-bot2 for Herve Codina" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/core] irqdomain: Fixed unbalanced fwnode get and put
-Cc: Herve Codina <herve.codina@bootlin.com>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240614173232.1184015-4-herve.codina@bootlin.com>
-References: <20240614173232.1184015-4-herve.codina@bootlin.com>
+	s=arc-20240116; t=1718633299; c=relaxed/simple;
+	bh=VDZUhwNjkG3pJs10hYRM/sN2hB2r+IdiNzMss5536HU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jl/JJMHHcwdQkcPLlB9LOr9fquUIlpAwzpLnZd7/Ix868fJqgo5P+iD7qYKgYRgBuEK+BFRNhdogn8tPZ0rnetQiVEzTrXNFv891oB2Sa7v/mcsX3PCmYnlJw5z10o7vf1AxJzVk4Wz8sWXbeURF8+RfEqdn5FR+jamS2YvzX5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fzTkO4Co; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF42C2BD10;
+	Mon, 17 Jun 2024 14:08:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718633298;
+	bh=VDZUhwNjkG3pJs10hYRM/sN2hB2r+IdiNzMss5536HU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fzTkO4CokjBGBd1coSbf4mpqCBFV57CfVwyivUM2tcke7Qicrn+M2H0ullnFTtFxp
+	 THx2m2FSW82Gi4xUI9G5HTv/kZbKWjfIVBRycWnwTFf1Lgmmdg6oZU751e/w7Y3mwF
+	 1Y58U6hdrIcMJfZAGSeXeaRKGRaIkez+5qrSB91wwl+7rhXJxmUeC4l4qhetxVsecc
+	 7FtYYRfJHG70A9divfFlzj7UNlQWMJMRLcJPFk/+w/Q7gbXAXRwl/BBZBpJ15EwVWu
+	 Db9VXh/03antn2lqStQF/q64vfHOtxchVSG6cczsR/hDIqZzs70cGzl/Egf5tT+JWo
+	 uxdTrGwmaMFOA==
+Date: Mon, 17 Jun 2024 15:08:13 +0100
+From: Simon Horman <horms@kernel.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] selftests: mptcp: userspace_pm: fixed subtest names
+Message-ID: <20240617140813.GU8447@kernel.org>
+References: <20240614-upstream-net-20240614-selftests-mptcp-uspace-pm-fixed-test-names-v1-1-460ad3edb429@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171863227547.10875.1961373221430883301.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240614-upstream-net-20240614-selftests-mptcp-uspace-pm-fixed-test-names-v1-1-460ad3edb429@kernel.org>
 
-The following commit has been merged into the irq/core branch of tip:
+On Fri, Jun 14, 2024 at 07:15:29PM +0200, Matthieu Baerts (NGI0) wrote:
+> It is important to have fixed (sub)test names in TAP, because these
+> names are used to identify them. If they are not fixed, tracking cannot
+> be done.
+> 
+> Some subtests from the userspace_pm selftest were using random numbers
+> in their names: the client and server address IDs from $RANDOM, and the
+> client port number randomly picked by the kernel when creating the
+> connection. These values have been replaced by 'client' and 'server'
+> words: that's even more helpful than showing random numbers. Note that
+> the addresses IDs are incremented and decremented in the test: +1 or -1
+> are then displayed in these cases.
+> 
+> Not to loose info that can be useful for debugging in case of issues,
+> these random numbers are now displayed at the beginning of the test.
+> 
+> Fixes: f589234e1af0 ("selftests: mptcp: userspace_pm: format subtests results in TAP")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-Commit-ID:     6ce3e98184b625d2870991880bf9586ded7ea7f9
-Gitweb:        https://git.kernel.org/tip/6ce3e98184b625d2870991880bf9586ded7ea7f9
-Author:        Herve Codina <herve.codina@bootlin.com>
-AuthorDate:    Fri, 14 Jun 2024 19:32:04 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 17 Jun 2024 15:48:12 +02:00
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-irqdomain: Fixed unbalanced fwnode get and put
-
-fwnode_handle_get(fwnode) is called when a domain is created with fwnode
-passed as a function parameter. fwnode_handle_put(domain->fwnode) is called
-when the domain is destroyed but during the creation a path exists that
-does not set domain->fwnode.
-
-If this path is taken, the fwnode get will never be put.
-
-To avoid the unbalanced get and put, set domain->fwnode unconditionally.
-
-Fixes: d59f6617eef0 ("genirq: Allow fwnode to carry name information only")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240614173232.1184015-4-herve.codina@bootlin.com
-
----
- kernel/irq/irqdomain.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/kernel/irq/irqdomain.c b/kernel/irq/irqdomain.c
-index 28709c1..7b4d580 100644
---- a/kernel/irq/irqdomain.c
-+++ b/kernel/irq/irqdomain.c
-@@ -156,7 +156,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 		switch (fwid->type) {
- 		case IRQCHIP_FWNODE_NAMED:
- 		case IRQCHIP_FWNODE_NAMED_ID:
--			domain->fwnode = fwnode;
- 			domain->name = kstrdup(fwid->name, GFP_KERNEL);
- 			if (!domain->name) {
- 				kfree(domain);
-@@ -165,7 +164,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 			domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 			break;
- 		default:
--			domain->fwnode = fwnode;
- 			domain->name = fwid->name;
- 			break;
- 		}
-@@ -185,7 +183,6 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 		}
- 
- 		domain->name = strreplace(name, '/', ':');
--		domain->fwnode = fwnode;
- 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 	}
- 
-@@ -201,8 +198,8 @@ static struct irq_domain *__irq_domain_create(struct fwnode_handle *fwnode,
- 		domain->flags |= IRQ_DOMAIN_NAME_ALLOCATED;
- 	}
- 
--	fwnode_handle_get(fwnode);
--	fwnode_dev_initialized(fwnode, true);
-+	domain->fwnode = fwnode_handle_get(fwnode);
-+	fwnode_dev_initialized(domain->fwnode, true);
- 
- 	/* Fill structure */
- 	INIT_RADIX_TREE(&domain->revmap_tree, GFP_KERNEL);
 
