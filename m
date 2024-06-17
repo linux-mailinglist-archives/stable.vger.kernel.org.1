@@ -1,259 +1,264 @@
-Return-Path: <stable+bounces-52342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D7490A2DB
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 05:27:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6341390A36B
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 07:45:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2088B21691
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 03:27:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0729C2829E3
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 05:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E2217FAA2;
-	Mon, 17 Jun 2024 03:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B3D17C9F6;
+	Mon, 17 Jun 2024 05:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vUdQ/JkX"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="BA9ak4RU"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta0.migadu.com (out-187.mta0.migadu.com [91.218.175.187])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4219F176AB2
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 03:27:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07102F5B
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 05:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718594823; cv=none; b=mzdQ5wwVl36hSApeC8HwqGVRUiCAy9tr/U4aVRoKYvN/HrgrAA1m4m0H+R6u31TfHTYBVEymVHGg2VgV5ibIHwiJ4dfgI5OEANzcBa/Ju+/bbmI6Wr9p2Jo022Sl2oHmucQmUNIO9tLzHu3BS6tdWW8BM6oLYltNk84U9EHdWdo=
+	t=1718603148; cv=none; b=E7IGszZd1V/0P6P9MfdrkTGhufamgl9BySXCTZhI7kdWtuz2un77c+ugnMhXzUmgiTjMftHQSgT4HFgfYGh6AXlScFXAcSWSox8lsNJGkonMupNISyw3CZ1x2aQjwoIz76vci7z+Zx033yPBMUt6sxttMpKRNoyMXiP9sRi0bWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718594823; c=relaxed/simple;
-	bh=YmHJkKWembT3bLTbwG2YwLekPF2T/lECDnHeuQLMpwA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rto77KQjkRYajvtAD5oWM7RUMmk/J7iK56KdRfjtf0lEmIGsvwxDgkry29HAM5nwd2tpq4/aOHo1ijqs+mk5jVy8hN/IsISyY8asvPo+Eh9no+7VJQ4mP/IZEOguct5ppRPhTATeCEEMIyOZbf92KQy4+oBTgO57mZ3g38J/P60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vUdQ/JkX; arc=none smtp.client-ip=91.218.175.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: tony.ambardar@gmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1718594818;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S365qjClzc8Yx2rvK+K4pebha1Pp1qO3jeXU489RCo0=;
-	b=vUdQ/JkXEMybkHGpdd77n8Mgd0FiJoOekKKIBqE6RR1KE/4U6SkKszZUMQx9et7AQY49i5
-	8HutXJcyonpfvi18fS7mtIf/rhXxVrOwhFMghKu9wHsTakWMxmLN6mz7610c2Co3QcXL8E
-	fU81Mdf0UrL2ZxMK93jTWdH97fojHqM=
-X-Envelope-To: bpf@vger.kernel.org
-X-Envelope-To: ast@kernel.org
-X-Envelope-To: daniel@iogearbox.net
-X-Envelope-To: andrii@kernel.org
-X-Envelope-To: martin.lau@linux.dev
-X-Envelope-To: eddyz87@gmail.com
-X-Envelope-To: song@kernel.org
-X-Envelope-To: john.fastabend@gmail.com
-X-Envelope-To: kpsingh@kernel.org
-X-Envelope-To: sdf@google.com
-X-Envelope-To: haoluo@google.com
-X-Envelope-To: jolsa@kernel.org
-X-Envelope-To: ojeda@kernel.org
-X-Envelope-To: stable@vger.kernel.org
-Message-ID: <3633e3e0-e879-4f64-b8fb-64ed160d879f@linux.dev>
-Date: Sun, 16 Jun 2024 20:26:48 -0700
+	s=arc-20240116; t=1718603148; c=relaxed/simple;
+	bh=NlCD2N/GTA25z+Lv3QJ4ioPnzGqSDCz42FqtGeEExpw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CFKwRHJfOtoIc1E7gSqcBSoD/A/AXOWvwoIiB0/b0ICxPVOs0AqtTLbe5sMHjVXUbN/qgrupLAG2JUp+S5SBdfZmOs+TXwoWB8HSifl55Pl2PD0ap67qtNh2+7DD1X4cj1Mp6fL2Vjcs49janQa0oBT2Y/Y5kVNinEtpMZ4f1ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=BA9ak4RU; arc=none smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 5427B3F1AF
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 05:45:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1718603143;
+	bh=KlZHJQ1gZb5CHVxW02hQaRdYCM2wgPQ+hnanLrc4+9g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=BA9ak4RU6PILYFt8HuhfWCOyzGyuAtgMsxUSVYSDHR77I0xHWL7VMBBufAQbrtGSu
+	 vUX+onSAde5EM8dCGceDsVdyv8yq7hI5j1mqu2Z7kQUvCTCEG4cTgOx55GkduhuxUO
+	 ohfHW6ahvL00YPCyL7XHtx0jhsfUY9BtGdTcREGaNmbBXjA/1bjU/6FNGQrG3ZGhIX
+	 sPT/gu8Z7umPoQdQ1TE31b9Q4m3xIOzeX7mEl41xR1ZO1M9KbPCiNncswzkltcHxs7
+	 lZf1UTerYhFuB6XtYKgF2h7yOPX4Sl5iwVDcLj5l1gq5m4yVpUurdOPQNkjPXYY8cU
+	 tdQPf6MWfDCog==
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-1f6828e8823so50970455ad.2
+        for <stable@vger.kernel.org>; Sun, 16 Jun 2024 22:45:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718603141; x=1719207941;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KlZHJQ1gZb5CHVxW02hQaRdYCM2wgPQ+hnanLrc4+9g=;
+        b=Q5pYyWqwnjrkrTZ7ElR9bjhvh6sa9WUhU9eDZL97fGYHW1ELePY6RpEypodvy6Nonn
+         Q86NxU/W7jIr8VjxqTrJ9B3YcVIHicXdVAgNYvDltqf85J/nllkUcpZixbR/Ua855fCX
+         t3Qb8x+TQk5jm4t15qT869SyZp7X2+mUHOqfUVsz3R8czGcOCnkqavufrbKCUwlSmMfZ
+         O+ToL7Jd0er5IkmEgItzF8i865w6Nb+Dl4Gnf+GHlsrcA3JeTtwqqCdu8hdPqEiACEpt
+         7VEOsyr00sFY4jqODvGyj5SzUfme7Gm8olqio097n35vRJfQm4YVaZqcTyRazd904LTB
+         Y1fw==
+X-Forwarded-Encrypted: i=1; AJvYcCU4ASc2m7MrcUpBKY98NL1mo2rppuFF92BHH8PNx00n1/smNulbXJ/rvNL1Wx4lVCBwonrLavI6ISwO2eX/yNg7CfPR+K3s
+X-Gm-Message-State: AOJu0Yw2v6an+T5QT24AdMV7Oio4vYraDJvM8Z4IYsCjJOORaT3GaedF
+	WpFdFFjrX2BKZxkfKlnkzJT/JVwjYg93EotrYq+tnvFGSbYpNzrAiqniiqk/4vtT152RDvIkHha
+	AqxIrcUXwldqgi6U5DzvGM6DDqvfno4iMutLkDimjvtKMsv/12zXIDfBI8nrPzkPtGH/PPQ==
+X-Received: by 2002:a17:902:6506:b0:1f6:5795:fb7 with SMTP id d9443c01a7336-1f8629006c9mr84026505ad.53.1718603141318;
+        Sun, 16 Jun 2024 22:45:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IED2PoD+HvdyfQzEAqExpwcQoz1Qxbys6hm/1ofFX18g05jF+SSrxjpMLjXPjJLF/Zrx40ixw==
+X-Received: by 2002:a17:902:6506:b0:1f6:5795:fb7 with SMTP id d9443c01a7336-1f8629006c9mr84026275ad.53.1718603140594;
+        Sun, 16 Jun 2024 22:45:40 -0700 (PDT)
+Received: from chengendu.. (2001-b011-381c-17ee-74a3-6d78-7091-fcb7.dynamic-ip6.hinet.net. [2001:b011:381c:17ee:74a3:6d78:7091:fcb7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855f13562sm72605765ad.212.2024.06.16.22.45.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Jun 2024 22:45:40 -0700 (PDT)
+From: Chengen Du <chengen.du@canonical.com>
+To: willemdebruijn.kernel@gmail.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kaber@trash.net,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengen Du <chengen.du@canonical.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v8] af_packet: Handle outgoing VLAN packets without hardware offloading
+Date: Mon, 17 Jun 2024 13:45:14 +0800
+Message-ID: <20240617054514.127961-1-chengen.du@canonical.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf v2 1/2] compiler_types.h: Define __retain for
- __attribute__((__retain__))
-Content-Language: en-GB
-To: Tony Ambardar <tony.ambardar@gmail.com>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- stable@vger.kernel.org
-References: <cover.1717413886.git.Tony.Ambardar@gmail.com>
- <cover.1717477560.git.Tony.Ambardar@gmail.com>
- <b31bca5a5e6765a0f32cc8c19b1d9cdbfaa822b5.1717477560.git.Tony.Ambardar@gmail.com>
- <7540222d-92e0-47f7-a880-7c4440671740@linux.dev>
- <ZmeEs2eaRe0E1Hk8@kodidev-ubuntu>
- <f1459b36-fd78-4ac3-8c37-e34222c546bf@linux.dev>
- <Zm07RtJLjIZqq763@kodidev-ubuntu>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yonghong Song <yonghong.song@linux.dev>
-In-Reply-To: <Zm07RtJLjIZqq763@kodidev-ubuntu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
+The issue initially stems from libpcap. The ethertype will be overwritten
+as the VLAN TPID if the network interface lacks hardware VLAN offloading.
+In the outbound packet path, if hardware VLAN offloading is unavailable,
+the VLAN tag is inserted into the payload but then cleared from the sk_buff
+struct. Consequently, this can lead to a false negative when checking for
+the presence of a VLAN tag, causing the packet sniffing outcome to lack
+VLAN tag information (i.e., TCI-TPID). As a result, the packet capturing
+tool may be unable to parse packets as expected.
 
-On 6/14/24 11:57 PM, Tony Ambardar wrote:
-> On Fri, Jun 14, 2024 at 11:47:19AM -0700, Yonghong Song wrote:
->> On 6/10/24 3:56 PM, Tony Ambardar wrote:
->>> On Tue, Jun 04, 2024 at 10:55:39PM -0700, Yonghong Song wrote:
->>>> On 6/3/24 10:23 PM, Tony Ambardar wrote:
->>>>> Some code includes the __used macro to prevent functions and data from
->>>>> being optimized out. This macro implements __attribute__((__used__)), which
->>>>> operates at the compiler and IR-level, and so still allows a linker to
->>>>> remove objects intended to be kept.
->>>>>
->>>>> Compilers supporting __attribute__((__retain__)) can address this gap by
->>>>> setting the flag SHF_GNU_RETAIN on the section of a function/variable,
->>>>> indicating to the linker the object should be retained. This attribute is
->>>>> available since gcc 11, clang 13, and binutils 2.36.
->>>>>
->>>>> Provide a __retain macro implementing __attribute__((__retain__)), whose
->>>>> first user will be the '__bpf_kfunc' tag.
->>>>>
->>>>> Link: https://lore.kernel.org/bpf/ZlmGoT9KiYLZd91S@krava/T/
->>>>> Cc: stable@vger.kernel.org # v6.6+
->>>>> Signed-off-by: Tony Ambardar <Tony.Ambardar@gmail.com>
->>>>> ---
->>>>>     include/linux/compiler_types.h | 23 +++++++++++++++++++++++
->>>>>     1 file changed, 23 insertions(+)
->>>>>
->>>>> diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
->>>>> index 93600de3800b..f14c275950b5 100644
->>>>> --- a/include/linux/compiler_types.h
->>>>> +++ b/include/linux/compiler_types.h
->>>>> @@ -143,6 +143,29 @@ static inline void __chk_io_ptr(const volatile void __iomem *ptr) { }
->>>>>     # define __preserve_most
->>>>>     #endif
->>>>> +/*
->>>>> + * Annotating a function/variable with __retain tells the compiler to place
->>>>> + * the object in its own section and set the flag SHF_GNU_RETAIN. This flag
->>>>> + * instructs the linker to retain the object during garbage-cleanup or LTO
->>>>> + * phases.
->>>>> + *
->>>>> + * Note that the __used macro is also used to prevent functions or data
->>>>> + * being optimized out, but operates at the compiler/IR-level and may still
->>>>> + * allow unintended removal of objects during linking.
->>>>> + *
->>>>> + * Optional: only supported since gcc >= 11, clang >= 13
->>>>> + *
->>>>> + *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-retain-function-attribute
->>>>> + * clang: https://clang.llvm.org/docs/AttributeReference.html#retain
->>>>> + */
->>>>> +#if __has_attribute(__retain__) && \
->>>>> +	(defined(CONFIG_LD_DEAD_CODE_DATA_ELIMINATION) || \
->>>>> +	 defined(CONFIG_LTO_CLANG))
->>>> Could you explain why CONFIG_LTO_CLANG is added here?
->>>> IIUC, the __used macro permits garbage collection at section
->>>> level, so CLANG_LTO_CLANG without
->>>> CONFIG_LD_DEAD_CODE_DATA_ELIMINATION
->>>> shuold not change final section dynamics, right?
->>> Hi Yonghong,
->>>
->>> I included the conditional guard to ensure consistent behaviour between
->>> __retain and other features forcing split sections. In particular, the same
->>> guard is used in vmlinux.lds.h to merge split sections where needed. For
->>> example, using __retain in llvm builds without CONFIG_LTO was failing CI
->>> tests on kernel-patches/bpf because the kernel didn't boot properly. And in
->>> further testing, the kernel had no issues loading BPF kfunc modules with
->>> such split sections, so I left the module (partial) linking scripts alone.
->> I tried with both bpf and bpf-next tree and I cannot make CONFIG_HAVE_LD_DEAD_CODE_DATA_ELIMINATION=y
->> in .config file. The following are all occurances in Kconfig:
-> My understanding is one doesn't directly set HAVE_LD_DEAD_CODE_...; it's a
-> per-arch capability flag which guards setting LD_DEAD_CODE_DATA_ELIMINATION
-> but only targets "small systems" (i.e. embedded), so no surprise x86 isn't
-> in the arch list below.
+The TCI-TPID is missing because the prb_fill_vlan_info() function does not
+modify the tp_vlan_tci/tp_vlan_tpid values, as the information is in the
+payload and not in the sk_buff struct. The skb_vlan_tag_present() function
+only checks vlan_all in the sk_buff struct. In cooked mode, the L2 header
+is stripped, preventing the packet capturing tool from determining the
+correct TCI-TPID value. Additionally, the protocol in SLL is incorrect,
+which means the packet capturing tool cannot parse the L3 header correctly.
 
-I see. Yes, mips should support it but not x86. No wonder why I cannot reproduce.
+Link: https://github.com/the-tcpdump-group/libpcap/issues/1105
+Link: https://lore.kernel.org/netdev/20240520070348.26725-1-chengen.du@canonical.com/T/#u
+Fixes: 393e52e33c6c ("packet: deliver VLAN TCI to userspace")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengen Du <chengen.du@canonical.com>
+---
+ net/packet/af_packet.c | 86 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 84 insertions(+), 2 deletions(-)
 
->
->> $ egrep -r HAVE_LD_DEAD_CODE_DATA_ELIMINATION
->> arch/mips/Kconfig:      select HAVE_LD_DEAD_CODE_DATA_ELIMINATION
->> arch/powerpc/Kconfig:   select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if HAVE_OBJTOOL_MCOUNT && (!ARCH_USING_PATCHABLE_FUNCTION_ENTRY || (!CC_IS_GCC || GCC_VERSION >= 110100))
->> arch/riscv/Kconfig:     select HAVE_LD_DEAD_CODE_DATA_ELIMINATION if !LD_IS_LLD
->> init/Kconfig:config HAVE_LD_DEAD_CODE_DATA_ELIMINATION
->> init/Kconfig:   depends on HAVE_LD_DEAD_CODE_DATA_ELIMINATION
->>
->> Are there some pending patches to enable HAVE_LD_DEAD_CODE_DATA_ELIMINATION
->> for x86?
-> I doubt it given the target arches above, but curious what's the need for
-> x86 support? Only x86_32? My patches were motivated seeing resolve_btfids
-> and pahole errors for a couple years on MIPS routers. I don't recall seeing
-> the same for x86 builds, so my testing focussed more on preserving x86
-> builds rather than adding/testing the arch flag for x86.
->> I could foce CONFIG_HAVE_LD_DEAD_CODE_DATA_ELIMINATION=y with the following hack:
->> diff --git a/init/Kconfig b/init/Kconfig
->> index 72404c1f2157..adf8718e2f5b 100644
->> --- a/init/Kconfig
->> +++ b/init/Kconfig
->> @@ -1402,7 +1402,7 @@ config CC_OPTIMIZE_FOR_SIZE
->>   endchoice
->>   config HAVE_LD_DEAD_CODE_DATA_ELIMINATION
->> -       bool
->> +       def_bool y
->>          help
->>            This requires that the arch annotates or otherwise protects
->>            its external entry points from being discarded. Linker scripts
->>
->> But with the above, I cannot boot the kernel.
-> OK, interesting exercise. Setting HAVE_LD_DEAD_CODE_DATA_ELIMINATION
-> shouldn't change anything itself so I suppose you are also setting
-> LD_DEAD_CODE_DATA_ELIMINATION? From previous testing on kernel-patches/CI,
-> first guess would be vmlinux linker script doing section merges unaware of
-> some x86 quirk. Or x86-specific linker script unhappy with split sections.
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index ea3ebc160e25..84e8884a77e3 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -538,6 +538,61 @@ static void *packet_current_frame(struct packet_sock *po,
+ 	return packet_lookup_frame(po, rb, rb->head, status);
+ }
+ 
++static u16 vlan_get_tci(struct sk_buff *skb, struct net_device *dev)
++{
++	struct vlan_hdr vhdr, *vh;
++	u8 *skb_orig_data = skb->data;
++	int skb_orig_len = skb->len;
++	unsigned int header_len;
++
++	if (!dev)
++		return 0;
++
++	/* In the SOCK_DGRAM scenario, skb data starts at the network
++	 * protocol, which is after the VLAN headers. The outer VLAN
++	 * header is at the hard_header_len offset in non-variable
++	 * length link layer headers. If it's a VLAN device, the
++	 * min_header_len should be used to exclude the VLAN header
++	 * size.
++	 */
++	if (dev->min_header_len == dev->hard_header_len)
++		header_len = dev->hard_header_len;
++	else if (is_vlan_dev(dev))
++		header_len = dev->min_header_len;
++	else
++		return 0;
++
++	skb_push(skb, skb->data - skb_mac_header(skb));
++	vh = skb_header_pointer(skb, header_len, sizeof(vhdr), &vhdr);
++	if (skb_orig_data != skb->data) {
++		skb->data = skb_orig_data;
++		skb->len = skb_orig_len;
++	}
++	if (unlikely(!vh))
++		return 0;
++
++	return ntohs(vh->h_vlan_TCI);
++}
++
++static __be16 vlan_get_protocol_dgram(struct sk_buff *skb)
++{
++	__be16 proto = skb->protocol;
++
++	if (unlikely(eth_type_vlan(proto))) {
++		u8 *skb_orig_data = skb->data;
++		int skb_orig_len = skb->len;
++
++		skb_push(skb, skb->data - skb_mac_header(skb));
++		proto = __vlan_get_protocol(skb, proto, NULL);
++		if (skb_orig_data != skb->data) {
++			skb->data = skb_orig_data;
++			skb->len = skb_orig_len;
++		}
++	}
++
++	return proto;
++}
++
+ static void prb_del_retire_blk_timer(struct tpacket_kbdq_core *pkc)
+ {
+ 	del_timer_sync(&pkc->retire_blk_timer);
+@@ -1007,10 +1062,16 @@ static void prb_clear_rxhash(struct tpacket_kbdq_core *pkc,
+ static void prb_fill_vlan_info(struct tpacket_kbdq_core *pkc,
+ 			struct tpacket3_hdr *ppd)
+ {
++	struct packet_sock *po = container_of(pkc, struct packet_sock, rx_ring.prb_bdqc);
++
+ 	if (skb_vlan_tag_present(pkc->skb)) {
+ 		ppd->hv1.tp_vlan_tci = skb_vlan_tag_get(pkc->skb);
+ 		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->vlan_proto);
+ 		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++	} else if (unlikely(po->sk.sk_type == SOCK_DGRAM && eth_type_vlan(pkc->skb->protocol))) {
++		ppd->hv1.tp_vlan_tci = vlan_get_tci(pkc->skb, pkc->skb->dev);
++		ppd->hv1.tp_vlan_tpid = ntohs(pkc->skb->protocol);
++		ppd->tp_status = TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+ 	} else {
+ 		ppd->hv1.tp_vlan_tci = 0;
+ 		ppd->hv1.tp_vlan_tpid = 0;
+@@ -2428,6 +2489,10 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+ 			h.h2->tp_vlan_tci = skb_vlan_tag_get(skb);
+ 			h.h2->tp_vlan_tpid = ntohs(skb->vlan_proto);
+ 			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++		} else if (unlikely(sk->sk_type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
++			h.h2->tp_vlan_tci = vlan_get_tci(skb, skb->dev);
++			h.h2->tp_vlan_tpid = ntohs(skb->protocol);
++			status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
+ 		} else {
+ 			h.h2->tp_vlan_tci = 0;
+ 			h.h2->tp_vlan_tpid = 0;
+@@ -2457,7 +2522,8 @@ static int tpacket_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	sll->sll_halen = dev_parse_header(skb, sll->sll_addr);
+ 	sll->sll_family = AF_PACKET;
+ 	sll->sll_hatype = dev->type;
+-	sll->sll_protocol = skb->protocol;
++	sll->sll_protocol = (sk->sk_type == SOCK_DGRAM) ?
++		vlan_get_protocol_dgram(skb) : skb->protocol;
+ 	sll->sll_pkttype = skb->pkt_type;
+ 	if (unlikely(packet_sock_flag(po, PACKET_SOCK_ORIGDEV)))
+ 		sll->sll_ifindex = orig_dev->ifindex;
+@@ -3482,7 +3548,8 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 		/* Original length was stored in sockaddr_ll fields */
+ 		origlen = PACKET_SKB_CB(skb)->sa.origlen;
+ 		sll->sll_family = AF_PACKET;
+-		sll->sll_protocol = skb->protocol;
++		sll->sll_protocol = (sock->type == SOCK_DGRAM) ?
++			vlan_get_protocol_dgram(skb) : skb->protocol;
+ 	}
+ 
+ 	sock_recv_cmsgs(msg, sk, skb);
+@@ -3539,6 +3606,21 @@ static int packet_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 			aux.tp_vlan_tci = skb_vlan_tag_get(skb);
+ 			aux.tp_vlan_tpid = ntohs(skb->vlan_proto);
+ 			aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++		} else if (unlikely(sock->type == SOCK_DGRAM && eth_type_vlan(skb->protocol))) {
++			struct sockaddr_ll *sll = &PACKET_SKB_CB(skb)->sa.ll;
++			struct net_device *dev;
++
++			rcu_read_lock();
++			dev = dev_get_by_index_rcu(sock_net(sk), sll->sll_ifindex);
++			if (dev) {
++				aux.tp_vlan_tci = vlan_get_tci(skb, dev);
++				aux.tp_vlan_tpid = ntohs(skb->protocol);
++				aux.tp_status |= TP_STATUS_VLAN_VALID | TP_STATUS_VLAN_TPID_VALID;
++			} else {
++				aux.tp_vlan_tci = 0;
++				aux.tp_vlan_tpid = 0;
++			}
++			rcu_read_unlock();
+ 		} else {
+ 			aux.tp_vlan_tci = 0;
+ 			aux.tp_vlan_tpid = 0;
+-- 
+2.43.0
 
-I guess x86 needs additional change to make HAVE_LD_DEAD_CODE_DATA_ELIMINATION
-work. I still curious about why CONFIG_LTO_CLANG is necessary.
-
-In asm-generic/vmlinux.lds.h,
-
-/*
-  * LD_DEAD_CODE_DATA_ELIMINATION option enables -fdata-sections, which
-  * generates .data.identifier sections, which need to be pulled in with
-  * .data. We don't want to pull in .data..other sections, which Linux
-  * has defined. Same for text and bss.
-  *
-  * With LTO_CLANG, the linker also splits sections by default, so we need
-  * these macros to combine the sections during the final link.
-  *
-  * RODATA_MAIN is not used because existing code already defines .rodata.x
-  * sections to be brought in with rodata.
-  */
-#if defined(CONFIG_LD_DEAD_CODE_DATA_ELIMINATION) || defined(CONFIG_LTO_CLANG)
-#define TEXT_MAIN .text .text.[0-9a-zA-Z_]*
-#define DATA_MAIN .data .data.[0-9a-zA-Z_]* .data..L* .data..compoundliteral* .data.$__unnamed_* .data.$L*
-#define SDATA_MAIN .sdata .sdata.[0-9a-zA-Z_]*
-#define RODATA_MAIN .rodata .rodata.[0-9a-zA-Z_]* .rodata..L*
-#define BSS_MAIN .bss .bss.[0-9a-zA-Z_]* .bss..compoundliteral*
-#define SBSS_MAIN .sbss .sbss.[0-9a-zA-Z_]*
-#else
-#define TEXT_MAIN .text
-#define DATA_MAIN .data
-#define SDATA_MAIN .sdata
-#define RODATA_MAIN .rodata
-#define BSS_MAIN .bss
-#define SBSS_MAIN .sbss
-#endif
-
-If CONFIG_LTO_CLANG is defined and CONFIG_LD_DEAD_CODE_DATA_ELIMINATION is
-not defined, it is not clear whether __used functions will get eliminated
-or not. I tried with thinlto with a simple example on x86 with some unused
-function marked with __used, and that function survived in the final binary.
-
-But your patch won't hurt, so I am okay with it.
-
->
->>
->> Did I miss anything?
->>
->>> Maybe I misunderstand you question re: __used?
->>>
->>> Thanks,
->>> Tony
->>>>> +# define __retain			__attribute__((__retain__))
->>>>> +#else
->>>>> +# define __retain
->>>>> +#endif
->>>>> +
->>>>>     /* Compiler specific macros. */
->>>>>     #ifdef __clang__
->>>>>     #include <linux/compiler-clang.h>
 
