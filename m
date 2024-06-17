@@ -1,121 +1,234 @@
-Return-Path: <stable+bounces-52381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 689A990ADF7
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:31:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A38A90ADFA
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA61628512F
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 12:31:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06FF81C21789
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 12:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5423918FC6F;
-	Mon, 17 Jun 2024 12:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2B0190052;
+	Mon, 17 Jun 2024 12:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/Msi+Y5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M743BAHb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139256E61F
-	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 12:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E62C6E61F
+	for <stable@vger.kernel.org>; Mon, 17 Jun 2024 12:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718627474; cv=none; b=aPl+JUeE/vGR8wLZQlwUfuqjkr9b/2OI6iA43Iozj1Wj9NR7otSfUP1sivXgP5JhXF9HWMHAc0M/ivW8wUP6uEZVSKoRxcqRMjGl/A3XLBD/8dUbsiqHa0KdnNW7/thtuIArYBPTPI6bOYzXusAfIQqBn4eVnW1O7wZTOe2hVnA=
+	t=1718627520; cv=none; b=CnobrBjRAIgp1511v40TeAV+O3R/BfacV7HNLYAEDEdDd/KN31S7TFxTCh+FSULHdYCXu4dk+7XQmIHDZ4cW6KClRndfwE69RUKuezNxWi8poZNaUxG1qZqd5XMlQhmtAE38rO9EJHJ5p30CV1mxwHeluYIWzRaKz/NMsUdE3K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718627474; c=relaxed/simple;
-	bh=7qCcpemMgLa2Uj+m4grOdXaMoeYPRSQLUIApVaCL88w=;
+	s=arc-20240116; t=1718627520; c=relaxed/simple;
+	bh=mAZSzjB62HizRTxNn0TcNYoSGA0ZPjKpYpwJtll0ZzM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aLiXraB7f5S+FZFpmfRBAYxvoFJG6TYi0zkzchnd1vCI6awYgHMyBrcrhTP3VY+i+t6OL3TfPfv40yZmSEQH9Zi5AR5W6sQGKUglpPnmeakxBNV3C1doW9ok6p6xpYCci9DKz3JFWD+KxIl/7+5eBAXDcAeKk3fY8IYKbjPpTxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/Msi+Y5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3ABC2BD10;
-	Mon, 17 Jun 2024 12:31:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ppL1/Mkscvij5xGD+RAsTM7QlQRNOersKMEQviWDaBYn6aNLel7aZn/+ks0h2mH5dhjl35uJqq/jdfHDwwfrHW9MxkQ7o6OdSI0rcqmQIKaowaC1Yb85VYo3t/ZkxzPA8AtfcZlIGeYLP2HToH2TFfYZ97pt5LL3eOnM1GGKuZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M743BAHb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FA8C2BD10;
+	Mon, 17 Jun 2024 12:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718627473;
-	bh=7qCcpemMgLa2Uj+m4grOdXaMoeYPRSQLUIApVaCL88w=;
+	s=korg; t=1718627519;
+	bh=mAZSzjB62HizRTxNn0TcNYoSGA0ZPjKpYpwJtll0ZzM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=x/Msi+Y5ETY/BsaULU/DkLNRFxchi7wqsTo7bhLBDuDqLxEawX/JHGnvC0xyioVKZ
-	 ROAw4C/qW9SOkC3//78OKXMeZM1K37Dnvhvq9JNSJskc17hDxmm1LC0ezqYtELu2gS
-	 d3w4r4VzX0eggVUW3kZk5cnDQsYMJ5QzGpxdXPSI=
-Date: Mon, 17 Jun 2024 14:31:10 +0200
+	b=M743BAHbe50smIZUnU5aTwG52utFYgPAF7ZV9k7ITrZcuNmL/ZOa5UlMebp1VW7Sh
+	 SzuVakH+pWT5PTbmAErM+VzokbzClrmze6K1gv4zQ8S9FQMOxLWlPDI7wby6G8682q
+	 2hNb1+BkK1yGX3FaSwEWPgZnsx65QVlmqg/s3Ziw=
+Date: Mon, 17 Jun 2024 14:31:57 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Jason Andryuk <jandryuk@gmail.com>
-Cc: stable@vger.kernel.org, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Peter Hutterer <peter.hutterer@who-t.net>,
-	Jason Andryuk <jason.andryuk@amd.com>
-Subject: Re: [PATCH v2] Input: try trimming too long modalias strings
-Message-ID: <2024061700-barber-prong-643f@gregkh>
-References: <20240613015251.88897-1-jandryuk@gmail.com>
+To: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: stable@vger.kernel.org, syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Jonathan Lemon <jonathan.lemon@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH stable 4.19] xsk: validate user input for
+ XDP_{UMEM|COMPLETION}_FILL_RING
+Message-ID: <2024061748-constable-kitten-e887@gregkh>
+References: <20240613122430.15677-1-shung-hsi.yu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240613015251.88897-1-jandryuk@gmail.com>
+In-Reply-To: <20240613122430.15677-1-shung-hsi.yu@suse.com>
 
-On Wed, Jun 12, 2024 at 09:52:51PM -0400, Jason Andryuk wrote:
-> From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+On Thu, Jun 13, 2024 at 08:24:29PM +0800, Shung-Hsi Yu wrote:
+> [ Upstream commit 237f3cf13b20db183d3706d997eedc3c49eacd44 ]
 > 
-> commit 0774d19038c496f0c3602fb505c43e1b2d8eed85 upstream.
+> From: Eric Dumazet <edumazet@google.com>
 > 
-> If an input device declares too many capability bits then modalias
-> string for such device may become too long and not fit into uevent
-> buffer, resulting in failure of sending said uevent. This, in turn,
-> may prevent userspace from recognizing existence of such devices.
+> syzbot reported an illegal copy in xsk_setsockopt() [1]
 > 
-> This is typically not a concern for real hardware devices as they have
-> limited number of keys, but happen with synthetic devices such as
-> ones created by xen-kbdfront driver, which creates devices as being
-> capable of delivering all possible keys, since it doesn't know what
-> keys the backend may produce.
+> Make sure to validate setsockopt() @optlen parameter.
 > 
-> To deal with such devices input core will attempt to trim key data,
-> in the hope that the rest of modalias string will fit in the given
-> buffer. When trimming key data it will indicate that it is not
-> complete by placing "+," sign, resulting in conversions like this:
+> [1]
 > 
-> old: k71,72,73,74,78,7A,7B,7C,7D,8E,9E,A4,AD,E0,E1,E4,F8,174,
-> new: k71,72,73,74,78,7A,7B,7C,+,
+>  BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
+>  BUG: KASAN: slab-out-of-bounds in copy_from_sockptr include/linux/sockptr.h:55 [inline]
+>  BUG: KASAN: slab-out-of-bounds in xsk_setsockopt+0x909/0xa40 net/xdp/xsk.c:1420
+> Read of size 4 at addr ffff888028c6cde3 by task syz-executor.0/7549
 > 
-> This should allow existing udev rules continue to work with existing
-> devices, and will also allow writing more complex rules that would
-> recognize trimmed modalias and check input device characteristics by
-> other means (for example by parsing KEY= data in uevent or parsing
-> input device sysfs attributes).
+> CPU: 0 PID: 7549 Comm: syz-executor.0 Not tainted 6.8.0-syzkaller-08951-gfe46a7dd189e #0
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+> Call Trace:
+>  <TASK>
+>   __dump_stack lib/dump_stack.c:88 [inline]
+>   dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+>   print_address_description mm/kasan/report.c:377 [inline]
+>   print_report+0x169/0x550 mm/kasan/report.c:488
+>   kasan_report+0x143/0x180 mm/kasan/report.c:601
+>   copy_from_sockptr_offset include/linux/sockptr.h:49 [inline]
+>   copy_from_sockptr include/linux/sockptr.h:55 [inline]
+>   xsk_setsockopt+0x909/0xa40 net/xdp/xsk.c:1420
+>   do_sock_setsockopt+0x3af/0x720 net/socket.c:2311
+>   __sys_setsockopt+0x1ae/0x250 net/socket.c:2334
+>   __do_sys_setsockopt net/socket.c:2343 [inline]
+>   __se_sys_setsockopt net/socket.c:2340 [inline]
+>   __x64_sys_setsockopt+0xb5/0xd0 net/socket.c:2340
+>  do_syscall_64+0xfb/0x240
+>  entry_SYSCALL_64_after_hwframe+0x6d/0x75
+> RIP: 0033:0x7fb40587de69
+> Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007fb40665a0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000036
+> RAX: ffffffffffffffda RBX: 00007fb4059abf80 RCX: 00007fb40587de69
+> RDX: 0000000000000005 RSI: 000000000000011b RDI: 0000000000000006
+> RBP: 00007fb4058ca47a R08: 0000000000000002 R09: 0000000000000000
+> R10: 0000000020001980 R11: 0000000000000246 R12: 0000000000000000
+> R13: 000000000000000b R14: 00007fb4059abf80 R15: 00007fff57ee4d08
+>  </TASK>
 > 
-> Note that the driver core may try adding more uevent environment
-> variables once input core is done adding its own, so when forming
-> modalias we can not use the entire available buffer, so we reduce
-> it by somewhat an arbitrary amount (96 bytes).
+> Allocated by task 7549:
+>   kasan_save_stack mm/kasan/common.c:47 [inline]
+>   kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+>   poison_kmalloc_redzone mm/kasan/common.c:370 [inline]
+>   __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:387
+>   kasan_kmalloc include/linux/kasan.h:211 [inline]
+>   __do_kmalloc_node mm/slub.c:3966 [inline]
+>   __kmalloc+0x233/0x4a0 mm/slub.c:3979
+>   kmalloc include/linux/slab.h:632 [inline]
+>   __cgroup_bpf_run_filter_setsockopt+0xd2f/0x1040 kernel/bpf/cgroup.c:1869
+>   do_sock_setsockopt+0x6b4/0x720 net/socket.c:2293
+>   __sys_setsockopt+0x1ae/0x250 net/socket.c:2334
+>   __do_sys_setsockopt net/socket.c:2343 [inline]
+>   __se_sys_setsockopt net/socket.c:2340 [inline]
+>   __x64_sys_setsockopt+0xb5/0xd0 net/socket.c:2340
+>  do_syscall_64+0xfb/0x240
+>  entry_SYSCALL_64_after_hwframe+0x6d/0x75
 > 
-> Reported-by: Jason Andryuk <jandryuk@gmail.com>
-> Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
-> Tested-by: Jason Andryuk <jandryuk@gmail.com>
-> Link: https://lore.kernel.org/r/ZjAWMQCJdrxZkvkB@google.com
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> [ Apply to linux-5.15.y ]
-> Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+> The buggy address belongs to the object at ffff888028c6cde0
+>  which belongs to the cache kmalloc-8 of size 8
+> The buggy address is located 1 bytes to the right of
+>  allocated 2-byte region [ffff888028c6cde0, ffff888028c6cde2)
+> 
+> The buggy address belongs to the physical page:
+> page:ffffea0000a31b00 refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888028c6c9c0 pfn:0x28c6c
+> anon flags: 0xfff00000000800(slab|node=0|zone=1|lastcpupid=0x7ff)
+> page_type: 0xffffffff()
+> raw: 00fff00000000800 ffff888014c41280 0000000000000000 dead000000000001
+> raw: ffff888028c6c9c0 0000000080800057 00000001ffffffff 0000000000000000
+> page dumped because: kasan: bad access detected
+> page_owner tracks the page as allocated
+> page last allocated via order 0, migratetype Unmovable, gfp_mask 0x112cc0(GFP_USER|__GFP_NOWARN|__GFP_NORETRY), pid 6648, tgid 6644 (syz-executor.0), ts 133906047828, free_ts 133859922223
+>   set_page_owner include/linux/page_owner.h:31 [inline]
+>   post_alloc_hook+0x1ea/0x210 mm/page_alloc.c:1533
+>   prep_new_page mm/page_alloc.c:1540 [inline]
+>   get_page_from_freelist+0x33ea/0x3580 mm/page_alloc.c:3311
+>   __alloc_pages+0x256/0x680 mm/page_alloc.c:4569
+>   __alloc_pages_node include/linux/gfp.h:238 [inline]
+>   alloc_pages_node include/linux/gfp.h:261 [inline]
+>   alloc_slab_page+0x5f/0x160 mm/slub.c:2175
+>   allocate_slab mm/slub.c:2338 [inline]
+>   new_slab+0x84/0x2f0 mm/slub.c:2391
+>   ___slab_alloc+0xc73/0x1260 mm/slub.c:3525
+>   __slab_alloc mm/slub.c:3610 [inline]
+>   __slab_alloc_node mm/slub.c:3663 [inline]
+>   slab_alloc_node mm/slub.c:3835 [inline]
+>   __do_kmalloc_node mm/slub.c:3965 [inline]
+>   __kmalloc_node+0x2db/0x4e0 mm/slub.c:3973
+>   kmalloc_node include/linux/slab.h:648 [inline]
+>   __vmalloc_area_node mm/vmalloc.c:3197 [inline]
+>   __vmalloc_node_range+0x5f9/0x14a0 mm/vmalloc.c:3392
+>   __vmalloc_node mm/vmalloc.c:3457 [inline]
+>   vzalloc+0x79/0x90 mm/vmalloc.c:3530
+>   bpf_check+0x260/0x19010 kernel/bpf/verifier.c:21162
+>   bpf_prog_load+0x1667/0x20f0 kernel/bpf/syscall.c:2895
+>   __sys_bpf+0x4ee/0x810 kernel/bpf/syscall.c:5631
+>   __do_sys_bpf kernel/bpf/syscall.c:5738 [inline]
+>   __se_sys_bpf kernel/bpf/syscall.c:5736 [inline]
+>   __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:5736
+>  do_syscall_64+0xfb/0x240
+>  entry_SYSCALL_64_after_hwframe+0x6d/0x75
+> page last free pid 6650 tgid 6647 stack trace:
+>   reset_page_owner include/linux/page_owner.h:24 [inline]
+>   free_pages_prepare mm/page_alloc.c:1140 [inline]
+>   free_unref_page_prepare+0x95d/0xa80 mm/page_alloc.c:2346
+>   free_unref_page_list+0x5a3/0x850 mm/page_alloc.c:2532
+>   release_pages+0x2117/0x2400 mm/swap.c:1042
+>   tlb_batch_pages_flush mm/mmu_gather.c:98 [inline]
+>   tlb_flush_mmu_free mm/mmu_gather.c:293 [inline]
+>   tlb_flush_mmu+0x34d/0x4e0 mm/mmu_gather.c:300
+>   tlb_finish_mmu+0xd4/0x200 mm/mmu_gather.c:392
+>   exit_mmap+0x4b6/0xd40 mm/mmap.c:3300
+>   __mmput+0x115/0x3c0 kernel/fork.c:1345
+>   exit_mm+0x220/0x310 kernel/exit.c:569
+>   do_exit+0x99e/0x27e0 kernel/exit.c:865
+>   do_group_exit+0x207/0x2c0 kernel/exit.c:1027
+>   get_signal+0x176e/0x1850 kernel/signal.c:2907
+>   arch_do_signal_or_restart+0x96/0x860 arch/x86/kernel/signal.c:310
+>   exit_to_user_mode_loop kernel/entry/common.c:105 [inline]
+>   exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
+>   __syscall_exit_to_user_mode_work kernel/entry/common.c:201 [inline]
+>   syscall_exit_to_user_mode+0xc9/0x360 kernel/entry/common.c:212
+>   do_syscall_64+0x10a/0x240 arch/x86/entry/common.c:89
+>  entry_SYSCALL_64_after_hwframe+0x6d/0x75
+> 
+> Memory state around the buggy address:
+>  ffff888028c6cc80: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
+>  ffff888028c6cd00: fa fc fc fc fa fc fc fc 00 fc fc fc 06 fc fc fc
+> >ffff888028c6cd80: fa fc fc fc fa fc fc fc fa fc fc fc 02 fc fc fc
+>                                                        ^
+>  ffff888028c6ce00: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
+>  ffff888028c6ce80: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
+> 
+> Fixes: 423f38329d26 ("xsk: add umem fill queue support and mmap")
+> Reported-by: syzbot <syzkaller@googlegroups.com>
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Cc: "Bj�rn T�pel" <bjorn@kernel.org>
+> Cc: Magnus Karlsson <magnus.karlsson@intel.com>
+> Cc: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+> Cc: Jonathan Lemon <jonathan.lemon@gmail.com>
+> Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+> Link: https://lore.kernel.org/r/20240404202738.3634547-1-edumazet@google.com
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> [shung-hsi.yu: two additional changes not present in the original
+> 1. Check optlen in the XDP_UMEM_REG case as well. It was added in commit
+>    c05cd36458147 ("xsk: add support to allow unaligned chunk placement") but
+>    seems like too big of a change for stable
+> 2. copy_from_sockptr() in the context was replace copy_from_usr()
+>    because commit a7b75c5a8c414 ("net: pass a sockptr_t into
+>    ->setsockopt") was not present]
+> Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 > ---
-> Built with 5.15 and 4.19.  Tested on 5.15.
-> 
-> Drop const from struct input_dev *id
-> Declare i outside loop:
-> 
-> drivers/input/input.c: In function ‘input_print_modalias_parts’:
-> drivers/input/input.c:1393:25: error: ‘for’ loop initial declarations are only allowed in C99 or C11 mode
->  1393 |                         for (int i = size - 1 - remainder - 3; i >= 0; i--) {
->       |                         ^~~
+> Resend because the last submission was done prior to 5.4 receiving the fix,
+> hence was dropped from Greg's tree[1].
+> 1: https://lore.kernel.org/stable/2024061329-pregnancy-rumbling-74b2@gregkh/
 > ---
->  drivers/input/input.c | 105 ++++++++++++++++++++++++++++++++++++------
->  1 file changed, 90 insertions(+), 15 deletions(-)
+>  net/xdp/xsk.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
-Both now queued up, thanks.
+Now queued up, thanks.
 
 greg k-h
 
