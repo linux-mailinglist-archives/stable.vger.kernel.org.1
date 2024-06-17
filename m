@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-52419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C5D90AF7E
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:35:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D7F90AF81
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A28961F21141
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:35:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACDD21F20FBE
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5ABD1AED49;
-	Mon, 17 Jun 2024 13:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8E61B0114;
+	Mon, 17 Jun 2024 13:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cbxkO72c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XaQVQmXG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEA01AED41;
-	Mon, 17 Jun 2024 13:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166D01B0109;
+	Mon, 17 Jun 2024 13:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630526; cv=none; b=Q6z+iA/1+wx+22dRpLQJpX6wO23fWseXHbg2uwPDZc7i3GSERFIwFv/XV65Td08oDxwacHZtPkmYvQAl0x+BNEbuEehGDrdL7+KaaRKLTqbt2puG+imTL82mSx/lwVRTmfp1IwtvdpwGP3845MuWilh2lz+LphVlJdCzNbc2ttk=
+	t=1718630528; cv=none; b=umKXSRubnmNPZ2yscjT6eVqG+MNneEUxhVBde5Th696zj8oedNdJtBgAIiKwdA13mJgGL+cMWdiDm4ISSKormDwxY+kLJJF6vjnrey5VBv9EhIu1jmj7Uvm+pHYdYv/7uQpYXUqAJYPNXvpWKTfUOP17PNKLuOo9zQ5kdfGAvVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630526; c=relaxed/simple;
-	bh=hrFQYKSoSedno6t/TMSRyd6Lxlx09BkJvdjqaOsR+cQ=;
+	s=arc-20240116; t=1718630528; c=relaxed/simple;
+	bh=OP710bnuoVQuM+4OPjHQIkyv8tHjclqZH/v71uWFaN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pW2yfLmxugoXcipB1eeYzcpLxooA7t2uasB7ls5b4yAVE31MouX3pz53A68EQasC11Mf8uBO+IOuENZOdRv9yv8V6Zl48wxfRt5cNpt62DEXzgGflRQMghiO/9senPQbfeneOiyngRxDxfXvv0Cq3mTOv5NxZWDVHhuZ8xR11lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cbxkO72c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758CCC4AF49;
-	Mon, 17 Jun 2024 13:22:05 +0000 (UTC)
+	 MIME-Version; b=pp3+JOSoTgiJbk/JSi6XcZ3Yw9DybWpbyMuIaqzvfT51ISJ2e5ELb4n9QApcu1+t6tRJhUeX4VMKyo1m5uKBo3y2ozdQK902T9yyEtItc1MnRB2mNL2iBDlQFmK5AHt8tO0089Jp34tyN3QW28Rb4sqlzyfae+HlP6a7Vx7Mct4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XaQVQmXG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92A4C4AF48;
+	Mon, 17 Jun 2024 13:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630526;
-	bh=hrFQYKSoSedno6t/TMSRyd6Lxlx09BkJvdjqaOsR+cQ=;
+	s=k20201202; t=1718630527;
+	bh=OP710bnuoVQuM+4OPjHQIkyv8tHjclqZH/v71uWFaN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cbxkO72cYbLevNrSHoe7JacwYEJSDsRQKo2nHQVFxtd7WmtDqdnEmy4DWHTjNU12/
-	 NtXv2/1eiPcCNej1pQNB7BE3FwX2tB5OBydK9UlOHyvVnfeXhpcvQSjkrD6s/hq3E1
-	 +2AA7Sw+aFUzRlrzUgTLjx7XikGJe9EGDZK2N4sC+aZcoGLTXcfMW2gqJOLYFnzsPd
-	 UboCAtUVhZx8LvGQqGy6/senO/4CEMFwLH2KcGWuSJSCWGTnLgDbciOuzQwthU5+e+
-	 bVzZzRg5g4D8GD7y6QHzeaJp8Nvwf5PaWmQQ6C7Dsok1vVur+nCNSiC8s37C4CB8Sz
-	 nYcbz6D/hUg7A==
+	b=XaQVQmXG90hPKSMYJ81llgeeis64vxy4Hd2oO5vetwrYEZz1UeFRHUfTWJfUWJ7mu
+	 f1kQcsrUaF5IEHH/mwHlcIVpItP0d0CdKuLVuWCITPkb4L+1oetGCtJiW0qfq2pPFh
+	 3ZRfzdPe6YC3MLvBJrNLqBoFCXoU7bXJkDd9iOfAzqBNevTm59gaqm4fhewQC0VQQj
+	 sVmxRmKGD363WwgcXj3JCuyiek+/KaXDx4UYjB1Bn1hkCjXjNN/Nl+1oH9fs3wt5nV
+	 CSiPhVbw4vz54XCTCG//9u6sfIh3NA0KFNI5nwS+FSyibgdNjVjdFOaCOocYovlYr0
+	 mv+habNnu6ADQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: Suma Hegde <suma.hegde@amd.com>,
+	Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-input@vger.kernel.org,
+	ilpo.jarvinen@linux.intel.com,
 	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 32/44] Input: silead - Always support 10 fingers
-Date: Mon, 17 Jun 2024 09:19:45 -0400
-Message-ID: <20240617132046.2587008-32-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.9 33/44] platform/x86/amd/hsmp: Check HSMP support on AMD family of processors
+Date: Mon, 17 Jun 2024 09:19:46 -0400
+Message-ID: <20240617132046.2587008-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132046.2587008-1-sashal@kernel.org>
 References: <20240617132046.2587008-1-sashal@kernel.org>
@@ -66,98 +67,100 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Suma Hegde <suma.hegde@amd.com>
 
-[ Upstream commit 38a38f5a36da9820680d413972cb733349400532 ]
+[ Upstream commit 77f1972bdcf7513293e8bbe376b9fe837310ee9c ]
 
-When support for Silead touchscreens was orginal added some touchscreens
-with older firmware versions only supported 5 fingers and this was made
-the default requiring the setting of a "silead,max-fingers=10" uint32
-device-property for all touchscreen models which do support 10 fingers.
+HSMP interface is supported only on few x86 processors from AMD.
+Accessing HSMP registers on rest of the platforms might cause
+unexpected behaviour. So add a check.
 
-There are very few models with the old 5 finger fw, so in practice the
-setting of the "silead,max-fingers=10" is boilerplate which needs to
-be copy and pasted to every touchscreen config.
+Also unavailability of this interface on rest of the processors
+is not an error. Hence, use pr_info() instead of the pr_err() to
+log the message.
 
-Reporting that 10 fingers are supported on devices which only support
-5 fingers doesn't cause any problems for userspace in practice, since
-at max 4 finger gestures are supported anyways. Drop the max_fingers
-configuration and simply always assume 10 fingers.
-
+Signed-off-by: Suma Hegde <suma.hegde@amd.com>
+Reviewed-by: Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>
+Link: https://lore.kernel.org/r/20240603081512.142909-1-suma.hegde@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/20240525193854.39130-2-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/silead.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ drivers/platform/x86/amd/hsmp.c | 50 ++++++++++++++++++++++++++++-----
+ 1 file changed, 43 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/input/touchscreen/silead.c b/drivers/input/touchscreen/silead.c
-index 62f562ad50263..050fa9ca4ec94 100644
---- a/drivers/input/touchscreen/silead.c
-+++ b/drivers/input/touchscreen/silead.c
-@@ -71,7 +71,6 @@ struct silead_ts_data {
- 	struct regulator_bulk_data regulators[2];
- 	char fw_name[64];
- 	struct touchscreen_properties prop;
--	u32 max_fingers;
- 	u32 chip_id;
- 	struct input_mt_pos pos[SILEAD_MAX_FINGERS];
- 	int slots[SILEAD_MAX_FINGERS];
-@@ -136,7 +135,7 @@ static int silead_ts_request_input_dev(struct silead_ts_data *data)
- 	touchscreen_parse_properties(data->input, true, &data->prop);
- 	silead_apply_efi_fw_min_max(data);
+diff --git a/drivers/platform/x86/amd/hsmp.c b/drivers/platform/x86/amd/hsmp.c
+index 1927be901108e..272d32a95e216 100644
+--- a/drivers/platform/x86/amd/hsmp.c
++++ b/drivers/platform/x86/amd/hsmp.c
+@@ -907,16 +907,44 @@ static int hsmp_plat_dev_register(void)
+ 	return ret;
+ }
  
--	input_mt_init_slots(data->input, data->max_fingers,
-+	input_mt_init_slots(data->input, SILEAD_MAX_FINGERS,
- 			    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED |
- 			    INPUT_MT_TRACK);
- 
-@@ -256,10 +255,10 @@ static void silead_ts_read_data(struct i2c_client *client)
- 		return;
- 	}
- 
--	if (buf[0] > data->max_fingers) {
-+	if (buf[0] > SILEAD_MAX_FINGERS) {
- 		dev_warn(dev, "More touches reported then supported %d > %d\n",
--			 buf[0], data->max_fingers);
--		buf[0] = data->max_fingers;
-+			 buf[0], SILEAD_MAX_FINGERS);
-+		buf[0] = SILEAD_MAX_FINGERS;
- 	}
- 
- 	if (silead_ts_handle_pen_data(data, buf))
-@@ -315,7 +314,6 @@ static void silead_ts_read_data(struct i2c_client *client)
- 
- static int silead_ts_init(struct i2c_client *client)
++/*
++ * This check is only needed for backward compatibility of previous platforms.
++ * All new platforms are expected to support ACPI based probing.
++ */
++static bool legacy_hsmp_support(void)
++{
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
++		return false;
++
++	switch (boot_cpu_data.x86) {
++	case 0x19:
++		switch (boot_cpu_data.x86_model) {
++		case 0x00 ... 0x1F:
++		case 0x30 ... 0x3F:
++		case 0x90 ... 0x9F:
++		case 0xA0 ... 0xAF:
++			return true;
++		default:
++			return false;
++		}
++	case 0x1A:
++		switch (boot_cpu_data.x86_model) {
++		case 0x00 ... 0x1F:
++			return true;
++		default:
++			return false;
++		}
++	default:
++		return false;
++	}
++
++	return false;
++}
++
+ static int __init hsmp_plt_init(void)
  {
--	struct silead_ts_data *data = i2c_get_clientdata(client);
- 	int error;
+ 	int ret = -ENODEV;
  
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_RESET,
-@@ -325,7 +323,7 @@ static int silead_ts_init(struct i2c_client *client)
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
- 
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_TOUCH_NR,
--					data->max_fingers);
-+					  SILEAD_MAX_FINGERS);
- 	if (error)
- 		goto i2c_write_err;
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
-@@ -591,13 +589,6 @@ static void silead_ts_read_props(struct i2c_client *client)
- 	const char *str;
- 	int error;
- 
--	error = device_property_read_u32(dev, "silead,max-fingers",
--					 &data->max_fingers);
--	if (error) {
--		dev_dbg(dev, "Max fingers read error %d\n", error);
--		data->max_fingers = 5; /* Most devices handle up-to 5 fingers */
+-	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD || boot_cpu_data.x86 < 0x19) {
+-		pr_err("HSMP is not supported on Family:%x model:%x\n",
+-		       boot_cpu_data.x86, boot_cpu_data.x86_model);
+-		return ret;
 -	}
 -
- 	error = device_property_read_string(dev, "firmware-name", &str);
- 	if (!error)
- 		snprintf(data->fw_name, sizeof(data->fw_name),
+ 	/*
+ 	 * amd_nb_num() returns number of SMN/DF interfaces present in the system
+ 	 * if we have N SMN/DF interfaces that ideally means N sockets
+@@ -930,7 +958,15 @@ static int __init hsmp_plt_init(void)
+ 		return ret;
+ 
+ 	if (!plat_dev.is_acpi_device) {
+-		ret = hsmp_plat_dev_register();
++		if (legacy_hsmp_support()) {
++			/* Not ACPI device, but supports HSMP, register a plat_dev */
++			ret = hsmp_plat_dev_register();
++		} else {
++			/* Not ACPI, Does not support HSMP */
++			pr_info("HSMP is not supported on Family:%x model:%x\n",
++				boot_cpu_data.x86, boot_cpu_data.x86_model);
++			ret = -ENODEV;
++		}
+ 		if (ret)
+ 			platform_driver_unregister(&amd_hsmp_driver);
+ 	}
 -- 
 2.43.0
 
