@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-52392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 522EE90AF2F
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:26:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B9A90AF33
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00AF0287510
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:26:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABDA728CA8D
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DEA51993AD;
-	Mon, 17 Jun 2024 13:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3531B19D07C;
+	Mon, 17 Jun 2024 13:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0tAvhIS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hSHwkmXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1871993A2;
-	Mon, 17 Jun 2024 13:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF81119D06B;
+	Mon, 17 Jun 2024 13:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630456; cv=none; b=oLg+UvNoc76MUv5haM0G6KuUuzoaRfEQc4ptOHXHHvtmtTnun25kz4UDXrxyRa7MSYxFDJJkHROp5ywFV6Jwjskgg+oltq1sAmowbxesGf0u9SibYo1YSIyvXvcUqJK7Crstuep8fS3wJTjmWgv/SbBV8rKLL4jO46XjizplW3M=
+	t=1718630461; cv=none; b=j5YnWdnQpRV0G2Z9/guBx+SyJSxicxvp8yLkhG/5/ePLlXSPBOOOvVqCYxd3dJ0q8w2kaTa9VXhNESpSD+cet9CP8PY4rnlP1GgdJrX0kc+xLFWW7zytPBT0bhyKNaeU5eqIqFK6n6FkDTQB4Qpx66fBeCjVx0tRd1kn/hcMq0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630456; c=relaxed/simple;
-	bh=CeoHqsszhoN5QJ0ujEAwdVcjyLmO5mHjlcGtzmAlaZg=;
+	s=arc-20240116; t=1718630461; c=relaxed/simple;
+	bh=3qO/bu8qgfFKtr3pb9LarfRM3RiaqcXJaOV4kYQdtXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1+MJB1yn7PDzkuCxN4LGOyAml58aAnN6wwPcy1Bc50nRM6F3PrrUOoumEnQk+bDxeMRbZFcisXlgBvEeyAAVWMBf1w27P26tHzJcW6NraON2LbasLJzb7/mzaS+C9cPlWTrZGHieLCrb7HpteivvJdH4Ku4lufPmYH9uOpLav4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0tAvhIS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5CBC4AF1D;
-	Mon, 17 Jun 2024 13:20:55 +0000 (UTC)
+	 MIME-Version; b=ADHNuVW1F5o/fj+DGyx+i2I4tI6LvzM/hn/J3io8zOwvH6EoQOpJhyANH8yiRitI2kHScg4SZ4Jsw49aMsXDQklmaHygnQUwaGwPdybG7HJTpiNE0xY5llXSlrr4DDqCX7pGGX7w1CZuis6LGjZ7GhB+Myk/A7LtDZdJN4O5Tkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hSHwkmXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AA8C4AF1C;
+	Mon, 17 Jun 2024 13:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630456;
-	bh=CeoHqsszhoN5QJ0ujEAwdVcjyLmO5mHjlcGtzmAlaZg=;
+	s=k20201202; t=1718630460;
+	bh=3qO/bu8qgfFKtr3pb9LarfRM3RiaqcXJaOV4kYQdtXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0tAvhISrPC1Wdb3um2BE/SRILOR4ZPD9cVdvNzUtmv2fyKS4WwEBW+c55al/cA9J
-	 cLYVULqnTAX0HELYStEB3f9yLPjviUKYJAKV/gpNuUU6qPbU2XJKvCeZHNnrnSVwDd
-	 4IhHEhUz1pT9ugXcRV/qg3JSWJEiPyMX2q/Ka1Gl4PGJclekmk8Dq6662FFVuCFjKC
-	 4dKL83fGmIu9sPo2gSabSQBqYXzgws59ejuQVFHxL0+Gdey/nloA1GAX+tBQhYe2y4
-	 OqbKq7UUgDd1BK81TK7TDW5QF/b1zPnWOna9gsN8QsSXXm7S/vEoGFgEwj/mYzaK+z
-	 Tn2nZVzCZjEDw==
+	b=hSHwkmXVvEoA83ZS3eSg3Iq6h5uFKt7K2mIV6gX4Cj+5wFcKDH+vuJ8QoxBcx/MIB
+	 xYTTBdg15YY6q80/s2lH6DAtbdB/b+HWXTzasTWq53SN4UH1seGNjzHIR9h0l98Os5
+	 oh1CXi0zX9A/yRN7Z8wYxjU78kNcEl9vTzpHAuXpY69IvNcAlDyl+6txGY5ZpYJ/it
+	 erjyuxDahduDuHGcP5tiZh4r0CmANoYA0FhAznJ0Gr8Zw7mMvWqUp3GiM88uy8pUom
+	 mIekHaU8vI3rEaMyau3SwTawZHtTmyYFrHTxRiAUqatRdkM01K7oCOK/D6NDj+iAs0
+	 vy017xnJA/2Pw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Kees Cook <keescook@chromium.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jhasan@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 05/44] scsi: qedf: Set qed_slowpath_params to zero before use
-Date: Mon, 17 Jun 2024 09:19:18 -0400
-Message-ID: <20240617132046.2587008-5-sashal@kernel.org>
+	linux-hardening@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 07/44] efi: pstore: Return proper errors on UEFI failures
+Date: Mon, 17 Jun 2024 09:19:20 -0400
+Message-ID: <20240617132046.2587008-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240617132046.2587008-1-sashal@kernel.org>
 References: <20240617132046.2587008-1-sashal@kernel.org>
@@ -69,33 +67,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 
-[ Upstream commit 6c3bb589debd763dc4b94803ddf3c13b4fcca776 ]
+[ Upstream commit 7c23b186ab892088f76a3ad9dbff1685ffe2e832 ]
 
-Zero qed_slowpath_params before use.
+Right now efi-pstore either returns 0 (success) or -EIO; but we
+do have a function to convert UEFI errors in different standard
+error codes, helping to narrow down potential issues more accurately.
 
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240515091101.18754-4-skashyap@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+So, let's use this helper here.
+
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/efi/efi-pstore.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index c98cc666e3e9c..b97a8712d3f66 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -3473,6 +3473,7 @@ static int __qedf_probe(struct pci_dev *pdev, int mode)
+diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
+index 833cbb995dd3f..194fdbd600ad1 100644
+--- a/drivers/firmware/efi/efi-pstore.c
++++ b/drivers/firmware/efi/efi-pstore.c
+@@ -136,7 +136,7 @@ static int efi_pstore_read_func(struct pstore_record *record,
+ 				     &size, record->buf);
+ 	if (status != EFI_SUCCESS) {
+ 		kfree(record->buf);
+-		return -EIO;
++		return efi_status_to_err(status);
  	}
  
- 	/* Start the Slowpath-process */
-+	memset(&slowpath_params, 0, sizeof(struct qed_slowpath_params));
- 	slowpath_params.int_mode = QED_INT_MODE_MSIX;
- 	slowpath_params.drv_major = QEDF_DRIVER_MAJOR_VER;
- 	slowpath_params.drv_minor = QEDF_DRIVER_MINOR_VER;
+ 	/*
+@@ -181,7 +181,7 @@ static ssize_t efi_pstore_read(struct pstore_record *record)
+ 			return 0;
+ 
+ 		if (status != EFI_SUCCESS)
+-			return -EIO;
++			return efi_status_to_err(status);
+ 
+ 		/* skip variables that don't concern us */
+ 		if (efi_guidcmp(guid, LINUX_EFI_CRASH_GUID))
+@@ -219,7 +219,7 @@ static int efi_pstore_write(struct pstore_record *record)
+ 					    record->size, record->psi->buf,
+ 					    true);
+ 	efivar_unlock();
+-	return status == EFI_SUCCESS ? 0 : -EIO;
++	return efi_status_to_err(status);
+ };
+ 
+ static int efi_pstore_erase(struct pstore_record *record)
+@@ -230,7 +230,7 @@ static int efi_pstore_erase(struct pstore_record *record)
+ 				     PSTORE_EFI_ATTRIBUTES, 0, NULL);
+ 
+ 	if (status != EFI_SUCCESS && status != EFI_NOT_FOUND)
+-		return -EIO;
++		return efi_status_to_err(status);
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
