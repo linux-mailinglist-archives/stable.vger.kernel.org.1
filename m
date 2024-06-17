@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-52532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F9B90B14F
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:16:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0816E90B154
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 16:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EB3D1F241F8
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:16:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87A29284A8D
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 14:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF85F1B47B2;
-	Mon, 17 Jun 2024 13:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C5B1B47CC;
+	Mon, 17 Jun 2024 13:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKVrsoHI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kOnxBGEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA2D1B47A6;
-	Mon, 17 Jun 2024 13:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FD81B47C3;
+	Mon, 17 Jun 2024 13:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630861; cv=none; b=gqH5pN+H/QiZgdFy2WW6gXLkzxuZpx3D2sLR4SyjTGq5Mjp2CQlFWyR2l/baqLGmwQmCmu8lGWir5WosRVEVCApnh2Px6EBNPs+yeO6xcUKkEIzO4KZOG4eZmZDdywlVv3csg5pBr2eQcivSx3AV5SyVxDqXj/gX6084IVkDbiA=
+	t=1718630863; cv=none; b=WYdRirPTof5N89llre1Kfmbh6AuaoqloI0hyXSgWhQ/uZJNjBd5DON6HDHJpTZSjvLg6kaM4pod5Rq3LOVP+0rAaCrA8zgUhPlgCqPFsOCJTtpftQIRnc+UJbGz5EVJnElxgVTgr8RbLzDdbXFR7+ICIhGkzOPKAnPE/QDaZgyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630861; c=relaxed/simple;
-	bh=KPgDhhvy/qWYoIhkC4CmnQ47Y6o7/P+1R/JjJF63TEg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H0MIBIH0OoHXnUB14inPMu1r16DZQFdPdHTFW58B+9l5iKNj9GGS0eadirzcWZdy/Rhw4UluVrBSCwYzOcPYQYBhcYdrswpwuJ3s0Qdvp97qB6NzhiY5wmCHRfENfSLlHuSpWiV4AMQ9HCD8SDTdqzHanOMpKVzYu0p0vBgtyY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKVrsoHI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B0AC2BD10;
-	Mon, 17 Jun 2024 13:27:40 +0000 (UTC)
+	s=arc-20240116; t=1718630863; c=relaxed/simple;
+	bh=AH6BarYo+R0ZVI8y1E1ZnzrrDCD/Azq/NaY4lEndFgs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FK8fw0MPDTjaYIsjMeOMYYJMg70KDhiFrB66IKI9U41FdvQ088MNfwHPh71vH7bfBBXpYBcXmS5OH31Bga/+3G5ABzSK374tT0myKQZcUs07bL9XI022dtLLOZ2qZT7AobSImlLbwvKH8Q9sjQWFeFwfTfFDHpgrvs06QO6BnZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kOnxBGEh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D7FC2BD10;
+	Mon, 17 Jun 2024 13:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630861;
-	bh=KPgDhhvy/qWYoIhkC4CmnQ47Y6o7/P+1R/JjJF63TEg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=mKVrsoHI8WSE9y1DqBSj0os0jd9YcWCN0V+UIVq3oPaVCf0B7si3loBwfg3KQPvey
-	 +AFZ9sA7oc7cl1SXFLXI5j+K06sfEXAgwBDhToB/jvSEQvgri4yZvgZnLGczUmqP4T
-	 mclZ03e+SrXlK+Qq8eEcLpceKfIdE6tKw3LE6JOCrh2eXb498CB49miO2wHbidmUQg
-	 WfbCpNNZ469tTs/4pW8+BjT9J0wa17bfAhLVt083H4YD8fWLa9VJNYSUvXWUa2tylZ
-	 h4ttz38QZiZVxDQD2ZOpNoKbrZ/OqtYrGCByJoHnsrHlR71YEl/8niUejrsPTLrVE2
-	 Y+aFz4Cz8RTtg==
+	s=k20201202; t=1718630862;
+	bh=AH6BarYo+R0ZVI8y1E1ZnzrrDCD/Azq/NaY4lEndFgs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kOnxBGEhMwAqwJKAikmHutIlOX0IzwY4fG0Wt8dpBlk+4MSqw4ATUJOIGsmBOYFPL
+	 FMWPxd5+L4cTycEvWKdnja98HmCZ3rgne0mRzPZP0fHh/FKJClUAGMcO9PrZVVhlu7
+	 nl18zNNt1t8YJg+2j8StnKPR8nEkOj50qaAQTT25rtK4zPZyeA/ChUOoTA27cE5Xu0
+	 k7Y8GdKNxt7j2rZeXvMZOeJx2IZEi5rr0FXf6BQ/ocsNPA52J1rSCqVvf3bYR7gMxk
+	 iUCkc8Ze/ATJiGxWuf6B0SuwuLECrFrOSMKOugZXP15f+HEYB4OjSVBPbrHg7M2OPf
+	 V2dRYjLUGsXxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jhasan@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 1/9] scsi: qedf: Set qed_slowpath_params to zero before use
-Date: Mon, 17 Jun 2024 09:27:28 -0400
-Message-ID: <20240617132739.2590390-1-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 2/9] ACPI: EC: Abort address space access upon error
+Date: Mon, 17 Jun 2024 09:27:29 -0400
+Message-ID: <20240617132739.2590390-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240617132739.2590390-1-sashal@kernel.org>
+References: <20240617132739.2590390-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,33 +66,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.278
 Content-Transfer-Encoding: 8bit
 
-From: Saurav Kashyap <skashyap@marvell.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 6c3bb589debd763dc4b94803ddf3c13b4fcca776 ]
+[ Upstream commit f6f172dc6a6d7775b2df6adfd1350700e9a847ec ]
 
-Zero qed_slowpath_params before use.
+When a multi-byte address space access is requested, acpi_ec_read()/
+acpi_ec_write() is being called multiple times.
 
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240515091101.18754-4-skashyap@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Abort such operations if a single call to acpi_ec_read() /
+acpi_ec_write() fails, as the data read from / written to the EC
+might be incomplete.
+
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/ec.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index 858058f228191..e0601b5520b78 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -3299,6 +3299,7 @@ static int __qedf_probe(struct pci_dev *pdev, int mode)
- 	}
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index c7baccd47b89f..43a8941b6743d 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1310,10 +1310,13 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_enable(ec);
  
- 	/* Start the Slowpath-process */
-+	memset(&slowpath_params, 0, sizeof(struct qed_slowpath_params));
- 	slowpath_params.int_mode = QED_INT_MODE_MSIX;
- 	slowpath_params.drv_major = QEDF_DRIVER_MAJOR_VER;
- 	slowpath_params.drv_minor = QEDF_DRIVER_MINOR_VER;
+-	for (i = 0; i < bytes; ++i, ++address, ++value)
++	for (i = 0; i < bytes; ++i, ++address, ++value) {
+ 		result = (function == ACPI_READ) ?
+ 			acpi_ec_read(ec, address, value) :
+ 			acpi_ec_write(ec, address, *value);
++		if (result < 0)
++			break;
++	}
+ 
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_disable(ec);
 -- 
 2.43.0
 
