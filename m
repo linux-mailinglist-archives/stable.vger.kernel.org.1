@@ -1,109 +1,142 @@
-Return-Path: <stable+bounces-52440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF3F90AFC4
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:43:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D739790AF8F
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 15:37:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18AB62857F9
-	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:43:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 800241F21020
+	for <lists+stable@lfdr.de>; Mon, 17 Jun 2024 13:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123111BC095;
-	Mon, 17 Jun 2024 13:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132061B29BB;
+	Mon, 17 Jun 2024 13:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d7ZrfM2B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWSkafqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E941BC08B;
-	Mon, 17 Jun 2024 13:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD021B29AB;
+	Mon, 17 Jun 2024 13:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718630604; cv=none; b=j7y/FdiJZt+S25VYTwO7ImPsQTQWPCdXMmtjH3RMT6FJmVhOOYVPj3N/7uhnm53FIfORqVaP8EDktwNfdKC7LHKLsEVKj5E1MUlmsLcj7yD7MSiGlczSJz3PDwsoQz5noNg0oHKzc0wSty8X5N646UtsNwH27Hmcty2EEQV+uns=
+	t=1718630539; cv=none; b=OjF9YEh0DHJLDcbup0bej3ufYm3YdehqI3czCVnjRfGKRXZsxpRE/vxmh9HIiEsh9zQXrw4i/PxAh66xy5JEhuAWE6wUsrFkkijVtkIw8VeW5lTFEmKr+81zm1AXC7Oxjfx4DJGpkZlBu52xVEhSib0hZhuFCsUxCcFknP4zNUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718630604; c=relaxed/simple;
-	bh=jYzeQib9XVD+7muscBuexXT/ekwe1EQRbnwTYZ3UFF8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGFBhvuaAz5br4hA1dG+lYNXn95JKp+NSn0jz5x/S5KA7vTXoWH+AZyK+j5YvNDtNPl26N/D9dsqTvJUfK8YaKYfgN34YwbIuhMUYOEJnSNtZLSOnj0WXMWkmB71KxA8ZmEyqBmGP8um7t34LxcbgIdb1h/m4eg+TCNI6uzD2Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d7ZrfM2B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95394C4AF1C;
-	Mon, 17 Jun 2024 13:23:23 +0000 (UTC)
+	s=arc-20240116; t=1718630539; c=relaxed/simple;
+	bh=/CdsLM4OZtV2MzVFE1JTzdMKf9cHeecCDqvGLRrbY3M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UZjjzwJ9LkHxuLanhNT83zVIfWFIho7Ftyys+K8wtp5iECy0oz5JM8hw8fTZCSVay7nKgwxjIOGNL3O1DzTuYR7fyGMjjPP123fWvWLfC5wlDhIWpHj3ocHvY9GhSDS5ny6D4FrSb06z/WTjcUy37zdxNgv2TlgYIf9mT2VC27s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWSkafqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71746C2BD10;
+	Mon, 17 Jun 2024 13:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718630604;
-	bh=jYzeQib9XVD+7muscBuexXT/ekwe1EQRbnwTYZ3UFF8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7ZrfM2B7CGhzh08Aw/qK2Ekr4IhHr0yBjU+joTuLWjLkuOdlAbSpbfCfSyz/zGfj
-	 bfFAWhVSuLR1b/hbZ231LvZnu1AwgGUBdPuYO5DupJ5lenYgwcKdBFHOFrHv9QBCAa
-	 ura8WbmCTM4RyK4UgUk4eiVRJtQ1A/azYPQIl1tqzH+0gUg8s3YBYFGsvTTXJD/LK9
-	 xx++V7j55q+isxpBykxHibw4BlZL09dLfRCP/Hs69KOCMs7Aj109j+jKl8EJf05MBf
-	 FbM+QxIIxEx2CgOSl2d07Lz/IrH4RH/fNGl/ekxmj7nz4FLkGlcdhRdhINeXJ/9btv
-	 IkfxsXjR28fPw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 08/35] ACPI: EC: Abort address space access upon error
-Date: Mon, 17 Jun 2024 09:22:06 -0400
-Message-ID: <20240617132309.2588101-8-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240617132309.2588101-1-sashal@kernel.org>
-References: <20240617132309.2588101-1-sashal@kernel.org>
+	s=k20201202; t=1718630539;
+	bh=/CdsLM4OZtV2MzVFE1JTzdMKf9cHeecCDqvGLRrbY3M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ZWSkafqW/uBJloDfE2iS3jnJTe3NAfbfV/BnxvW1ZExc9IDIJAzQT3cafoR5e1PsH
+	 dy4yG6MK2GfnHeZHsfuDdI0YrNgCUIfGNecBu5Z0HnW9CMAilVU3oKaRUVGsy5pYUA
+	 OXUhbjyp7OAOnN34SaTcMo2u5Hs1a3LlkS97epTvNIsUOuNMpqAm9IdxzPyUvZy5B4
+	 sTNNg0uaf+50rsuDLPu1c66+prlAuiD9egbPBBm4xuKskW2O9rVSx+qax9TbEFKvq2
+	 f5RUk/HrmTTSzmale9I+jxoiPJPe1wveN7tdvV6/en2GdkhecSw5FtCLQKOOucXeRa
+	 Rh+DpXeFoAsqQ==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2eaafda3b5cso54519821fa.3;
+        Mon, 17 Jun 2024 06:22:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX5aXL1BaVGPnkdtdLCTAS9YUhNUDBCQXmAbYwyBNPrSRyUO7D0R84/Gx6ssCS/PpIYwgr5JTBPWvcV+jZfpfh1bUDQHJ3oOqydMbM9zbqjWRc+O+maYuOXMbEwxpJgaDaOLlOBANm4IGp0xXX8JrY6rswLp3on/owJgnko+bB4gzpo
+X-Gm-Message-State: AOJu0Yzlh2C3D6ZhW1AH/08zdCUfHbLqEOZAwtkjCxJt/G0Yhh9ofoIl
+	jBx7QljKrzO6ATxGMA7xXEt5MDgD6apeinvA8TEP1hYducWnjSZ6xx05fRUFdf/umXKoKtAccwe
+	NKO8WThX4jnwhYs11j1QSmnzjo1c=
+X-Google-Smtp-Source: AGHT+IG9NJNmS6gWZLIc3t43DtdKd9O2Vql7o/j15MFKlZz9mwmPaYPtvxG+2OgKUYj4QWowKaOuyAw/OMsvOVStr1o=
+X-Received: by 2002:a05:651c:20c:b0:2ec:1708:4db2 with SMTP id
+ 38308e7fff4ca-2ec170850a0mr48431831fa.47.1718630537833; Mon, 17 Jun 2024
+ 06:22:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.34
-Content-Transfer-Encoding: 8bit
+References: <20240617132046.2587008-1-sashal@kernel.org> <20240617132046.2587008-7-sashal@kernel.org>
+In-Reply-To: <20240617132046.2587008-7-sashal@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Mon, 17 Jun 2024 15:22:06 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGrPY-J=v6b1yXRMEGku7m9LVPE9MUFpg7LYXwtTiu3ZA@mail.gmail.com>
+Message-ID: <CAMj1kXGrPY-J=v6b1yXRMEGku7m9LVPE9MUFpg7LYXwtTiu3ZA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.9 07/44] efi: pstore: Return proper errors on
+ UEFI failures
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, Kees Cook <keescook@chromium.org>, 
+	linux-hardening@vger.kernel.org, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Armin Wolf <W_Armin@gmx.de>
+NAK
 
-[ Upstream commit f6f172dc6a6d7775b2df6adfd1350700e9a847ec ]
+Please don't backport this.
 
-When a multi-byte address space access is requested, acpi_ec_read()/
-acpi_ec_write() is being called multiple times.
 
-Abort such operations if a single call to acpi_ec_read() /
-acpi_ec_write() fails, as the data read from / written to the EC
-might be incomplete.
-
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/acpi/ec.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index a59c11df73754..2e907800417db 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1333,10 +1333,13 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 	if (ec->busy_polling || bits > 8)
- 		acpi_ec_burst_enable(ec);
- 
--	for (i = 0; i < bytes; ++i, ++address, ++value)
-+	for (i = 0; i < bytes; ++i, ++address, ++value) {
- 		result = (function == ACPI_READ) ?
- 			acpi_ec_read(ec, address, value) :
- 			acpi_ec_write(ec, address, *value);
-+		if (result < 0)
-+			break;
-+	}
- 
- 	if (ec->busy_polling || bits > 8)
- 		acpi_ec_burst_disable(ec);
--- 
-2.43.0
-
+On Mon, 17 Jun 2024 at 15:21, Sasha Levin <sashal@kernel.org> wrote:
+>
+> From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+>
+> [ Upstream commit 7c23b186ab892088f76a3ad9dbff1685ffe2e832 ]
+>
+> Right now efi-pstore either returns 0 (success) or -EIO; but we
+> do have a function to convert UEFI errors in different standard
+> error codes, helping to narrow down potential issues more accurately.
+>
+> So, let's use this helper here.
+>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/firmware/efi/efi-pstore.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
+> index 833cbb995dd3f..194fdbd600ad1 100644
+> --- a/drivers/firmware/efi/efi-pstore.c
+> +++ b/drivers/firmware/efi/efi-pstore.c
+> @@ -136,7 +136,7 @@ static int efi_pstore_read_func(struct pstore_record *record,
+>                                      &size, record->buf);
+>         if (status != EFI_SUCCESS) {
+>                 kfree(record->buf);
+> -               return -EIO;
+> +               return efi_status_to_err(status);
+>         }
+>
+>         /*
+> @@ -181,7 +181,7 @@ static ssize_t efi_pstore_read(struct pstore_record *record)
+>                         return 0;
+>
+>                 if (status != EFI_SUCCESS)
+> -                       return -EIO;
+> +                       return efi_status_to_err(status);
+>
+>                 /* skip variables that don't concern us */
+>                 if (efi_guidcmp(guid, LINUX_EFI_CRASH_GUID))
+> @@ -219,7 +219,7 @@ static int efi_pstore_write(struct pstore_record *record)
+>                                             record->size, record->psi->buf,
+>                                             true);
+>         efivar_unlock();
+> -       return status == EFI_SUCCESS ? 0 : -EIO;
+> +       return efi_status_to_err(status);
+>  };
+>
+>  static int efi_pstore_erase(struct pstore_record *record)
+> @@ -230,7 +230,7 @@ static int efi_pstore_erase(struct pstore_record *record)
+>                                      PSTORE_EFI_ATTRIBUTES, 0, NULL);
+>
+>         if (status != EFI_SUCCESS && status != EFI_NOT_FOUND)
+> -               return -EIO;
+> +               return efi_status_to_err(status);
+>         return 0;
+>  }
+>
+> --
+> 2.43.0
+>
 
