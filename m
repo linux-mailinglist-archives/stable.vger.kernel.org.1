@@ -1,102 +1,193 @@
-Return-Path: <stable+bounces-52676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3D090CBD4
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:37:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F3D90D0E0
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19AC4280BEE
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:37:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A90991C23FA7
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3231713E050;
-	Tue, 18 Jun 2024 12:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD88718E741;
+	Tue, 18 Jun 2024 13:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gc5u9wUk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBkGVWVE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E035613DDDF;
-	Tue, 18 Jun 2024 12:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF5613C3CF;
+	Tue, 18 Jun 2024 13:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714182; cv=none; b=mBfH2UKSdzUTJX6c4D/HMWqwseQTywCRwlLLIZfgFYBlGlRENUAfgnsWnuBl46k4XyPhx9d/t3IYQoys78IK9V3SXDi05Z65BFjn8QAbdD9F8JFVxl2tt1MAZRirv8RSb1zaJnOwFstqB8tpow78UCIydjBqrtkoHlzB7G7jpgc=
+	t=1718715808; cv=none; b=ZbpNBhxKbFZPSShFsXy5unpSt0cPo/B2pwdtAB4kxVcKlN8EhS0p4n05kvD/EIAu8is6VwxtOre0YR268MFwdqbgw/Yy2Y+tV/Hh2fkPbU5DNflLQrMxCz8YOSUI1A6lrTm7zM5C/UyxLoNe96l/DHflQG8ho8GlxmYwrj0fJxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714182; c=relaxed/simple;
-	bh=CeoHqsszhoN5QJ0ujEAwdVcjyLmO5mHjlcGtzmAlaZg=;
+	s=arc-20240116; t=1718715808; c=relaxed/simple;
+	bh=Deznd9npYLt9Mx0oU+piw3/in06mfvofUV7/O8NiqYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giZO8P4oFU/7dZNi6fZscrpxp/4woGtkBWLJ6QRZZvO8D84TT0q18TWZ9fxOUal5AAzuxpgWPZB+kEqKgSHvvOQpdTswwMlpH9eZ3XkcBUPdK+u5bA0FxXq2+fvBbpTS/KEuKM7dyKSaqyVcIKVR+X0XNf1vcePtP178FoESlck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gc5u9wUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD20C4AF48;
-	Tue, 18 Jun 2024 12:36:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714181;
-	bh=CeoHqsszhoN5QJ0ujEAwdVcjyLmO5mHjlcGtzmAlaZg=;
+	 MIME-Version; b=d0RBVuYJJ06F0Q56gKPI6FiIlyTikgt1Q2caLWKT0sMW8v2VlrVuhBtWRRNyc66kjW2FkGb2x0s04bn6bkX3RQi8ilz0kOn0RSEn5YwwnUeVYLBijs7cfG2TQ6a6AgFQY+IeDNJ9fOxZPCRiFTAdiHDaFdlevgnG3EoKBVH51GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBkGVWVE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B0DC3277B;
+	Tue, 18 Jun 2024 13:03:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715808;
+	bh=Deznd9npYLt9Mx0oU+piw3/in06mfvofUV7/O8NiqYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gc5u9wUkCvBgpG83ppu0YBxDwrvIq0qJ8TCDACoeBjaIdsSwViYUxHYSkpeQUuDwg
-	 6BcWZeJv029+WSkSOF+tlrjZYL0vpbLUjlwSQUwpsF1eSfae62vj0f61lWDila3bZu
-	 DqNUG/sKa1jLhDJDtFqHKigzsKnoQtKgiKp+ziuWeNsQKwwh2VPDjvywsllieX6iD3
-	 ZN91CfNt4Y5WfrKz5Ymos2oh45bNS55UwbT7pF54SUYvgppnjnBRX4IUj5yalMdsLR
-	 DDPjjYt/X9AaBfSxQGS091fIDeUHHnOpzf5pGmYOmsjjZ9/W6lhIccx7Lo3xTNcV7E
-	 8KSn8/NCJFABA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	jhasan@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 05/44] scsi: qedf: Set qed_slowpath_params to zero before use
-Date: Tue, 18 Jun 2024 08:34:46 -0400
-Message-ID: <20240618123611.3301370-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=tBkGVWVEsUtKov13EiJLo/810+1maN/Jx2+qd1ydG7xuaZBSmG5ZE3Zr5DgWV647u
+	 +cJQF/NKClPHyAohAiwJrPjK/yGh9Awu42s+XYH01zBH8gT+QEU/k5LXMdbxXzauOm
+	 1UjQrWVYRNfwxHyyAGMEQHTeotOFIrcFVGxOSY58=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 433/770] lockd: introduce lockd_put()
+Date: Tue, 18 Jun 2024 14:34:46 +0200
+Message-ID: <20240618123423.998963433@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Saurav Kashyap <skashyap@marvell.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 6c3bb589debd763dc4b94803ddf3c13b4fcca776 ]
+------------------
 
-Zero qed_slowpath_params before use.
+From: NeilBrown <neilb@suse.de>
 
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240515091101.18754-4-skashyap@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ Upstream commit 865b674069e05e5779fcf8cf7a166d2acb7e930b ]
+
+There is some cleanup that is duplicated in lockd_down() and the failure
+path of lockd_up().
+Factor these out into a new lockd_put() and call it from both places.
+
+lockd_put() does *not* take the mutex - that must be held by the caller.
+It decrements nlmsvc_users and if that reaches zero, it cleans up.
+
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/lockd/svc.c | 64 +++++++++++++++++++++-----------------------------
+ 1 file changed, 27 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index c98cc666e3e9c..b97a8712d3f66 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -3473,6 +3473,7 @@ static int __qedf_probe(struct pci_dev *pdev, int mode)
+diff --git a/fs/lockd/svc.c b/fs/lockd/svc.c
+index 9aa499a761591..7f12c280fd30d 100644
+--- a/fs/lockd/svc.c
++++ b/fs/lockd/svc.c
+@@ -351,14 +351,6 @@ static struct notifier_block lockd_inet6addr_notifier = {
+ };
+ #endif
+ 
+-static void lockd_unregister_notifiers(void)
+-{
+-	unregister_inetaddr_notifier(&lockd_inetaddr_notifier);
+-#if IS_ENABLED(CONFIG_IPV6)
+-	unregister_inet6addr_notifier(&lockd_inet6addr_notifier);
+-#endif
+-}
+-
+ static int lockd_start_svc(struct svc_serv *serv)
+ {
+ 	int error;
+@@ -450,6 +442,27 @@ static int lockd_create_svc(void)
+ 	return 0;
+ }
+ 
++static void lockd_put(void)
++{
++	if (WARN(nlmsvc_users <= 0, "lockd_down: no users!\n"))
++		return;
++	if (--nlmsvc_users)
++		return;
++
++	unregister_inetaddr_notifier(&lockd_inetaddr_notifier);
++#if IS_ENABLED(CONFIG_IPV6)
++	unregister_inet6addr_notifier(&lockd_inet6addr_notifier);
++#endif
++
++	if (nlmsvc_task) {
++		kthread_stop(nlmsvc_task);
++		dprintk("lockd_down: service stopped\n");
++		nlmsvc_task = NULL;
++	}
++	nlmsvc_serv = NULL;
++	dprintk("lockd_down: service destroyed\n");
++}
++
+ /*
+  * Bring up the lockd process if it's not already up.
+  */
+@@ -461,21 +474,16 @@ int lockd_up(struct net *net, const struct cred *cred)
+ 
+ 	error = lockd_create_svc();
+ 	if (error)
+-		goto err_create;
++		goto err;
++	nlmsvc_users++;
+ 
+ 	error = lockd_up_net(nlmsvc_serv, net, cred);
+ 	if (error < 0) {
+-		goto err_put;
++		lockd_put();
++		goto err;
  	}
  
- 	/* Start the Slowpath-process */
-+	memset(&slowpath_params, 0, sizeof(struct qed_slowpath_params));
- 	slowpath_params.int_mode = QED_INT_MODE_MSIX;
- 	slowpath_params.drv_major = QEDF_DRIVER_MAJOR_VER;
- 	slowpath_params.drv_minor = QEDF_DRIVER_MINOR_VER;
+-	nlmsvc_users++;
+-err_put:
+-	if (nlmsvc_users == 0) {
+-		lockd_unregister_notifiers();
+-		kthread_stop(nlmsvc_task);
+-		nlmsvc_serv = NULL;
+-	}
+-err_create:
++err:
+ 	mutex_unlock(&nlmsvc_mutex);
+ 	return error;
+ }
+@@ -489,25 +497,7 @@ lockd_down(struct net *net)
+ {
+ 	mutex_lock(&nlmsvc_mutex);
+ 	lockd_down_net(nlmsvc_serv, net);
+-	if (nlmsvc_users) {
+-		if (--nlmsvc_users)
+-			goto out;
+-	} else {
+-		printk(KERN_ERR "lockd_down: no users! task=%p\n",
+-			nlmsvc_task);
+-		BUG();
+-	}
+-
+-	if (!nlmsvc_task) {
+-		printk(KERN_ERR "lockd_down: no lockd running.\n");
+-		BUG();
+-	}
+-	lockd_unregister_notifiers();
+-	kthread_stop(nlmsvc_task);
+-	dprintk("lockd_down: service destroyed\n");
+-	nlmsvc_serv = NULL;
+-	nlmsvc_task = NULL;
+-out:
++	lockd_put();
+ 	mutex_unlock(&nlmsvc_mutex);
+ }
+ EXPORT_SYMBOL_GPL(lockd_down);
 -- 
 2.43.0
+
+
 
 
