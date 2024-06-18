@@ -1,168 +1,152 @@
-Return-Path: <stable+bounces-53430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 343B390D196
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:44:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5734390CC7D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 466C41C2107A
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:44:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CAD11C23531
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D916D18A920;
-	Tue, 18 Jun 2024 13:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C641741E5;
+	Tue, 18 Jun 2024 12:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWrCL65p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V2Pi2wbU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9477F185E4B;
-	Tue, 18 Jun 2024 13:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E541741D9;
+	Tue, 18 Jun 2024 12:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716302; cv=none; b=APJelYmcZVpC7aLUeZ1GWiLiIdbYrFIRq4AUrMRg3YSqpCtzxn2u/aYZeKH095qHUc/nyseTeFZ0pZHBIohFmxsfYqaYWFAH1Nu/LYvunhuPl7W2/UXmUXSTFiKi12n8tEnvtbtHmU2XxCK+mY2unXrio3+EsafFfgGKEMFulPg=
+	t=1718714336; cv=none; b=UV2e/oV1TxFLRvOirCZcd7cd+x52KWqgLFRhswGaP43lCBFjLgCg03gzDcKqZIPhFfPZQWi2cZqmbZH6ylcfkTXCTcWr25KrE2ctejQa0fYoxpy39WbbYlWa/Xu4oBTT0SOeyPK0Vs1TT7zAYlfkYeHIybL6zPynpuHYTPFdC9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716302; c=relaxed/simple;
-	bh=gkpLuG1LryVEKysYhnxs3Z2r93/W7HwsXiJrwk8qMqI=;
+	s=arc-20240116; t=1718714336; c=relaxed/simple;
+	bh=Zj9d84qwyrY4m2ytLMJ7KkWT6CrOEfG4t29RPvVaUJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PWB0apr1U6fp8pDFRoSvAfEWDinvDKKJ1WsiLGwFxNndR4XjxEn9WImu3QxaDhxZC0xYDquW388zhPRzPs2CeVzCtLsRUiovGx5mqbmSW/skS8HFX86QO7lQ87g0KB7H73bTqbP3jJ2GaoNKNDDnAS7tgqIeZTSKibHCRwL506w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWrCL65p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1301AC3277B;
-	Tue, 18 Jun 2024 13:11:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716302;
-	bh=gkpLuG1LryVEKysYhnxs3Z2r93/W7HwsXiJrwk8qMqI=;
+	 MIME-Version; b=X8SUQjN3W+0PaULTheedjVzjc8qnB/za9Lew9bpp6/UEJ2twCB6KjrhzYUK4jgcLm+w+4I2iofj7sxI03ZXm5E3+FgJ9jZtKq5+2Lq+X1U81m45mveeINU3hvNCId5jz9HjmvG46UVXNeLYJDEo3O22nawAYSsyUw8JGxXfH+mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V2Pi2wbU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9EC1C4AF1D;
+	Tue, 18 Jun 2024 12:38:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714336;
+	bh=Zj9d84qwyrY4m2ytLMJ7KkWT6CrOEfG4t29RPvVaUJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rWrCL65pO60i1jQukKvh2OyiGzvIZZ/Ruwkqu+jagsXlaYwDR4yCd0X7r1lYK2PT9
-	 DXX+1rIWERdFZ00fijMXTbkROAhyRA5t2JIQKomFcjMRrwRO5czjdC4e5kaE7WXRWj
-	 aFvFrFWl7lU9AmTJ/9wcTb2qdITmwpFQk+hdq5Zw=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 600/770] NFSD: Shrink size of struct nfsd4_copy
-Date: Tue, 18 Jun 2024 14:37:33 +0200
-Message-ID: <20240618123430.451307295@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=V2Pi2wbUzlqlFaUj5JHCtdIVxh7+KoOuFiLnxtcuGzdmoRr8c5wdhLj6LQZliyn7v
+	 yfK/naxrv+PflqcKApiiaFOgEQ0pLpO1v3zi9obL1uYOoxn/kccwkhkuLhKMle1N4P
+	 4lvieU+mZv2Kq+geTXwXEyTq78DECj5vRipzvpAY17bfyL8tG9zf9P+LCgXrbiaaQ1
+	 s2Rk7jFXRTTqrUZvBGkwFeCx6nnhBxnuZLJDByaBSKkJ/6bv6WnimdTsWFkLMkrjif
+	 rC67RsoIeL09Gl8vMHkIBbtOmsu9sEN/OjQD8hfMcHWJDx7OljAINoGkknpbSs0Nxn
+	 Wa0hn2PwV57Ng==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com,
+	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 13/35] wifi: mac80211: handle tasklet frames before stopping
+Date: Tue, 18 Jun 2024 08:37:33 -0400
+Message-ID: <20240618123831.3302346-13-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
+References: <20240618123831.3302346-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Johannes Berg <johannes.berg@intel.com>
 
-------------------
+[ Upstream commit 177c6ae9725d783f9e96f02593ce8fb2639be22f ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+The code itself doesn't want to handle frames from the driver
+if it's already stopped, but if the tasklet was queued before
+and runs after the stop, then all bets are off. Flush queues
+before actually stopping, RX should be off at this point since
+all the interfaces are removed already, etc.
 
-[ Upstream commit 87689df694916c40e8e6c179ab1c8710f65cb6c6 ]
-
-struct nfsd4_copy is part of struct nfsd4_op, which resides in an
-8-element array.
-
-sizeof(struct nfsd4_op):
-Before: /* size: 1696, cachelines: 27, members: 5 */
-After:  /* size: 672, cachelines: 11, members: 5 */
-
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com
+Link: https://msgid.link/20240515135318.b05f11385c9a.I41c1b33a2e1814c3a7ef352cd7f2951b91785617@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c | 8 ++++++--
- fs/nfsd/nfs4xdr.c  | 5 ++++-
- fs/nfsd/xdr4.h     | 2 +-
- 3 files changed, 11 insertions(+), 4 deletions(-)
+ net/mac80211/ieee80211_i.h |  2 ++
+ net/mac80211/main.c        | 10 ++++++++--
+ net/mac80211/util.c        |  2 ++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 3ed9c36bc4078..7fb1ef7c4383e 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1291,6 +1291,7 @@ void nfs4_put_copy(struct nfsd4_copy *copy)
- {
- 	if (!refcount_dec_and_test(&copy->refcount))
- 		return;
-+	kfree(copy->cp_src);
- 	kfree(copy);
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index fefaa9e902a2f..fb55014c0e898 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1846,6 +1846,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ void ieee80211_configure_filter(struct ieee80211_local *local);
+ u64 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata);
+ 
++void ieee80211_handle_queued_frames(struct ieee80211_local *local);
++
+ u64 ieee80211_mgmt_tx_cookie(struct ieee80211_local *local);
+ int ieee80211_attach_ack_skb(struct ieee80211_local *local, struct sk_buff *skb,
+ 			     u64 *cookie, gfp_t gfp);
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 4548f84451095..d7f67d81d5af9 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -301,9 +301,8 @@ u64 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata)
+ 	       BSS_CHANGED_ERP_SLOT;
  }
  
-@@ -1544,7 +1545,7 @@ nfsd4_setup_inter_ssc(struct svc_rqst *rqstp,
- 	if (status)
- 		goto out;
+-static void ieee80211_tasklet_handler(struct tasklet_struct *t)
++void ieee80211_handle_queued_frames(struct ieee80211_local *local)
+ {
+-	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
+ 	struct sk_buff *skb;
  
--	status = nfsd4_interssc_connect(&copy->cp_src, rqstp, mount);
-+	status = nfsd4_interssc_connect(copy->cp_src, rqstp, mount);
- 	if (status)
- 		goto out;
- 
-@@ -1751,7 +1752,7 @@ static void dup_copy_fields(struct nfsd4_copy *src, struct nfsd4_copy *dst)
- 		dst->nf_src = nfsd_file_get(src->nf_src);
- 
- 	memcpy(&dst->cp_stateid, &src->cp_stateid, sizeof(src->cp_stateid));
--	memcpy(&dst->cp_src, &src->cp_src, sizeof(struct nl4_server));
-+	memcpy(dst->cp_src, src->cp_src, sizeof(struct nl4_server));
- 	memcpy(&dst->stateid, &src->stateid, sizeof(src->stateid));
- 	memcpy(&dst->c_fh, &src->c_fh, sizeof(src->c_fh));
- 	dst->ss_mnt = src->ss_mnt;
-@@ -1845,6 +1846,9 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
- 		if (!async_copy)
- 			goto out_err;
-+		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
-+		if (!async_copy->cp_src)
-+			goto out_err;
- 		if (!nfs4_init_copy_state(nn, copy))
- 			goto out_err;
- 		refcount_set(&async_copy->refcount, 1);
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 537c358fec98c..890f1009bd4ca 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -1920,6 +1920,9 @@ nfsd4_decode_copy(struct nfsd4_compoundargs *argp, struct nfsd4_copy *copy)
- 
- 	if (xdr_stream_decode_u32(argp->xdr, &count) < 0)
- 		return nfserr_bad_xdr;
-+	copy->cp_src = svcxdr_tmpalloc(argp, sizeof(*copy->cp_src));
-+	if (copy->cp_src == NULL)
-+		return nfserr_jukebox;
- 	copy->cp_intra = false;
- 	if (count == 0) { /* intra-server copy */
- 		copy->cp_intra = true;
-@@ -1927,7 +1930,7 @@ nfsd4_decode_copy(struct nfsd4_compoundargs *argp, struct nfsd4_copy *copy)
+ 	while ((skb = skb_dequeue(&local->skb_queue)) ||
+@@ -328,6 +327,13 @@ static void ieee80211_tasklet_handler(struct tasklet_struct *t)
  	}
+ }
  
- 	/* decode all the supplied server addresses but use only the first */
--	status = nfsd4_decode_nl4_server(argp, &copy->cp_src);
-+	status = nfsd4_decode_nl4_server(argp, copy->cp_src);
- 	if (status)
- 		return status;
++static void ieee80211_tasklet_handler(struct tasklet_struct *t)
++{
++	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
++
++	ieee80211_handle_queued_frames(local);
++}
++
+ static void ieee80211_restart_work(struct work_struct *work)
+ {
+ 	struct ieee80211_local *local =
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 172173b2a9eb8..62c8b4342136e 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2313,6 +2313,8 @@ u32 ieee80211_sta_get_rates(struct ieee80211_sub_if_data *sdata,
  
-diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index 27f9300fadbe0..c44c76cef40cd 100644
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -540,7 +540,7 @@ struct nfsd4_copy {
- 	u64			cp_src_pos;
- 	u64			cp_dst_pos;
- 	u64			cp_count;
--	struct nl4_server	cp_src;
-+	struct nl4_server	*cp_src;
- 	bool			cp_intra;
+ void ieee80211_stop_device(struct ieee80211_local *local)
+ {
++	ieee80211_handle_queued_frames(local);
++
+ 	ieee80211_led_radio(local, false);
+ 	ieee80211_mod_tpt_led_trig(local, 0, IEEE80211_TPT_LEDTRIG_FL_RADIO);
  
- 	/* both */
 -- 
 2.43.0
-
-
 
 
