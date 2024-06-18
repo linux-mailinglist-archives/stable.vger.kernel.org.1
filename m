@@ -1,135 +1,148 @@
-Return-Path: <stable+bounces-52715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA71B90CC51
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:47:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F7990D104
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:38:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CC9C1F23134
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:47:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39E3E1C21C83
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2F41607AD;
-	Tue, 18 Jun 2024 12:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859DA19D079;
+	Tue, 18 Jun 2024 13:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X94qIB2m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdD+IEpu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093741607A0;
-	Tue, 18 Jun 2024 12:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F71157A49;
+	Tue, 18 Jun 2024 13:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714272; cv=none; b=YlzFg63UqHuM6gf2vl0LwUiIUxbVV1lvWvoWQXLehae4urz4i8EDc7GmCjvA40mz38+6jEguXjzoAtcML5KR2UhB33K1eXJ89IxO/jfInM3+fKa4RRYgRNdFqFpeRVuC7OVvKlubTncvDnCZcfVfEOHfplly46haBL2dBctcRWc=
+	t=1718715921; cv=none; b=ee+gzuZXO8gMItd00eMx45RFjdo9eNTDbN3oMT2ewxejQFe/WkzfH6D35fQTOymYzM9nSUUUqo340yQIQhBs4NMQuQi3lsi3+KafUe82rbW3rNElQ55vs/Bn6DYxQZLy2tdMfMG0Sv6f0gnrovKQvbhxMohl1OHoSt/OPYJC7bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714272; c=relaxed/simple;
-	bh=fTypj0pLySXTgmrYxzbve/VcRyKTFDL9FMJi/IuO0xE=;
+	s=arc-20240116; t=1718715921; c=relaxed/simple;
+	bh=2fiLgtRXOAmZk80ypKMXopHn63yBWXtN4dOLkYT6jdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PwtnzDuIC0/m3iQzAR+oUE1PCf+Kj4cfoq5l1uczkjQX2pCBKmDT03Ltmet52EVB2BqXBahmLoAwzwnvhS5tMKje/Q2ioTxxVJsb42Ir8ychaGB4Xq7fzp0iwvHdf1X2Q5ARWnTloHGB0uMWFW11HWkS+Y1LugGHC7gVzdPtry0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X94qIB2m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04FAC32786;
-	Tue, 18 Jun 2024 12:37:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714271;
-	bh=fTypj0pLySXTgmrYxzbve/VcRyKTFDL9FMJi/IuO0xE=;
+	 MIME-Version; b=N50TxLieRO5AUJWzwKXikjI3fA8xXCZhYdTIA1NMcsbPTC8cOm1XPoNxkmNQfM1tb70IZa1vHHoH3ZhP0h5G8+DNSgwV4tvBkk46ru+Bl7zrynH0ERZ67Tr5mAEwFs/1GsiCfX/FoMiLMg/bQhUdcU8ImYfdO7PlQfO6reMwgm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdD+IEpu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA73C3277B;
+	Tue, 18 Jun 2024 13:05:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715920;
+	bh=2fiLgtRXOAmZk80ypKMXopHn63yBWXtN4dOLkYT6jdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X94qIB2m5lpk8anJ2nLw2KN4Yi09+O0GQKjHcNhhtp0L8PdkL2skjm0Dktxp7Khjr
-	 yVCloLpwoSaiWvO4RI7PZTHQOw4vmU3osQJ2gG9LTBrqpH4FJvdZtwdcMUsMvkJPGm
-	 OxyKy5DAanI9TZO9+ljAp1M7zA1aRu1mgVXPPgGnV5t2H8FTWyEEbFPMHiCiJoNFGw
-	 eNzZgYNReRuj0XxtTCoyNkGzOHx7gfUfjC3cv5NDvO/b8FPekfwct+aCGjs0wM7WC/
-	 p48M1wT4JSgTCQOE24zF35MQ6+5YxzqLkCXv9Bg7/uht1tcNt81GyfN4xTHJZbGDMn
-	 7GVmnnNL39uMQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Aseda Aboagye <aaboagye@chromium.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 43/44] input: Add support for "Do Not Disturb"
-Date: Tue, 18 Jun 2024 08:35:24 -0400
-Message-ID: <20240618123611.3301370-43-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=SdD+IEpuZPYw2vAo71oR4+uOgE/Eb6KRJJjMXvO20yag5vtsG13XShYl7NqPYiVLv
+	 omotbq3yw2uIgJOgGj2CDR5FU5y8rYTvh9iNaTgi5jvAFHftRAH+gFyjMolQqIqZfA
+	 qefI6RkoCR/cfslYkiKclISSzHo+K4XnZ3HW9iWw=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 471/770] NFSD: De-duplicate hash bucket indexing
+Date: Tue, 18 Jun 2024 14:35:24 +0200
+Message-ID: <20240618123425.495352856@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Aseda Aboagye <aaboagye@chromium.org>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 22d6d060ac77955291deb43efc2f3f4f9632c6cb ]
+------------------
 
-HUTRR94 added support for a new usage titled "System Do Not Disturb"
-which toggles a system-wide Do Not Disturb setting. This commit simply
-adds a new event code for the usage.
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Signed-off-by: Aseda Aboagye <aaboagye@chromium.org>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/Zl-gUHE70s7wCAoB@google.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+[ Upstream commit 378a6109dd142a678f629b740f558365150f60f9 ]
+
+Clean up: The details of finding the right hash bucket are exactly
+the same in both nfsd_cache_lookup() and nfsd_cache_update().
+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-debug.c                | 1 +
- drivers/hid/hid-input.c                | 8 ++++++++
- include/uapi/linux/input-event-codes.h | 1 +
- 3 files changed, 10 insertions(+)
+ fs/nfsd/nfscache.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/hid/hid-debug.c b/drivers/hid/hid-debug.c
-index c629ab161d5b2..5302bfd527d86 100644
---- a/drivers/hid/hid-debug.c
-+++ b/drivers/hid/hid-debug.c
-@@ -975,6 +975,7 @@ static const char *keys[KEY_MAX + 1] = {
- 	[KEY_CAMERA_ACCESS_DISABLE] = "CameraAccessDisable",
- 	[KEY_CAMERA_ACCESS_TOGGLE] = "CameraAccessToggle",
- 	[KEY_ACCESSIBILITY] = "Accessibility",
-+	[KEY_DO_NOT_DISTURB] = "DoNotDisturb",
- 	[KEY_DICTATE] = "Dictate",
- 	[KEY_MICMUTE] = "MicrophoneMute",
- 	[KEY_BRIGHTNESS_MIN] = "BrightnessMin",
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index d5a6e89c3086e..8bb16e9b94aa5 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -833,6 +833,14 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
- 			break;
- 		}
+diff --git a/fs/nfsd/nfscache.c b/fs/nfsd/nfscache.c
+index a4a69ab6ab280..f79790d367288 100644
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -84,12 +84,6 @@ nfsd_hashsize(unsigned int limit)
+ 	return roundup_pow_of_two(limit / TARGET_BUCKET_SIZE);
+ }
  
-+		if ((usage->hid & 0xf0) == 0x90) { /* SystemControl*/
-+			switch (usage->hid & 0xf) {
-+			case 0xb: map_key_clear(KEY_DO_NOT_DISTURB); break;
-+			default: goto ignore;
-+			}
-+			break;
-+		}
+-static u32
+-nfsd_cache_hash(__be32 xid, struct nfsd_net *nn)
+-{
+-	return hash_32((__force u32)xid, nn->maskbits);
+-}
+-
+ static struct svc_cacherep *
+ nfsd_reply_cache_alloc(struct svc_rqst *rqstp, __wsum csum,
+ 			struct nfsd_net *nn)
+@@ -241,6 +235,14 @@ lru_put_end(struct nfsd_drc_bucket *b, struct svc_cacherep *rp)
+ 	list_move_tail(&rp->c_lru, &b->lru_head);
+ }
+ 
++static noinline struct nfsd_drc_bucket *
++nfsd_cache_bucket_find(__be32 xid, struct nfsd_net *nn)
++{
++	unsigned int hash = hash_32((__force u32)xid, nn->maskbits);
 +
- 		if ((usage->hid & 0xf0) == 0xa0) {	/* SystemControl */
- 			switch (usage->hid & 0xf) {
- 			case 0x9: map_key_clear(KEY_MICMUTE); break;
-diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
-index 39f11ec676fae..a4206723f5033 100644
---- a/include/uapi/linux/input-event-codes.h
-+++ b/include/uapi/linux/input-event-codes.h
-@@ -619,6 +619,7 @@
- #define KEY_CAMERA_ACCESS_DISABLE	0x24c	/* Disables programmatic access to camera devices. (HUTRR72) */
- #define KEY_CAMERA_ACCESS_TOGGLE	0x24d	/* Toggles the current state of the camera access control. (HUTRR72) */
- #define KEY_ACCESSIBILITY		0x24e	/* Toggles the system bound accessibility UI/command (HUTRR116) */
-+#define KEY_DO_NOT_DISTURB		0x24f	/* Toggles the system-wide "Do Not Disturb" control (HUTRR94)*/
++	return &nn->drc_hashtbl[hash];
++}
++
+ static long prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn,
+ 			 unsigned int max)
+ {
+@@ -421,10 +423,8 @@ int nfsd_cache_lookup(struct svc_rqst *rqstp)
+ {
+ 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+ 	struct svc_cacherep	*rp, *found;
+-	__be32			xid = rqstp->rq_xid;
+ 	__wsum			csum;
+-	u32 hash = nfsd_cache_hash(xid, nn);
+-	struct nfsd_drc_bucket *b = &nn->drc_hashtbl[hash];
++	struct nfsd_drc_bucket	*b = nfsd_cache_bucket_find(rqstp->rq_xid, nn);
+ 	int type = rqstp->rq_cachetype;
+ 	int rtn = RC_DOIT;
  
- #define KEY_BRIGHTNESS_MIN		0x250	/* Set Brightness to Minimum */
- #define KEY_BRIGHTNESS_MAX		0x251	/* Set Brightness to Maximum */
+@@ -528,7 +528,6 @@ void nfsd_cache_update(struct svc_rqst *rqstp, int cachetype, __be32 *statp)
+ 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+ 	struct svc_cacherep *rp = rqstp->rq_cacherep;
+ 	struct kvec	*resv = &rqstp->rq_res.head[0], *cachv;
+-	u32		hash;
+ 	struct nfsd_drc_bucket *b;
+ 	int		len;
+ 	size_t		bufsize = 0;
+@@ -536,8 +535,7 @@ void nfsd_cache_update(struct svc_rqst *rqstp, int cachetype, __be32 *statp)
+ 	if (!rp)
+ 		return;
+ 
+-	hash = nfsd_cache_hash(rp->c_key.k_xid, nn);
+-	b = &nn->drc_hashtbl[hash];
++	b = nfsd_cache_bucket_find(rp->c_key.k_xid, nn);
+ 
+ 	len = resv->iov_len - ((char*)statp - (char*)resv->iov_base);
+ 	len >>= 2;
 -- 
 2.43.0
+
+
 
 
