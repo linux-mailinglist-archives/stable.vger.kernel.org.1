@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DD090D316
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:58:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AECA90D319
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:58:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E64E61C245B3
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:58:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF7792819EB
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4518C15D5CD;
-	Tue, 18 Jun 2024 13:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490CD1553A0;
+	Tue, 18 Jun 2024 13:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7Jhw13f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFeRRrzK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04D61155725
-	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 13:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BEE15535F
+	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 13:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718717621; cv=none; b=rZqey3UzXrAIgpTa1rioOrtn7AQ1sOnfUmD55O9cK2ti70kCBOg50RBUKPZOcoUIWLjXBKT570geprGtobw4sc6NUaxQjjl0Jhv9//kk1OLV5BBlpQQMs3bJzjF4A2qBAeAxXOTcrLS4YIHWekOH8lEH+EIzFcpKUJCAHelkLNU=
+	t=1718717624; cv=none; b=GZgQB6lg/u+Z7peXAywvfXMkhh6R/WCci/nk/UF4eBwKKJOTeLXeXTais41A0VZHq4wtYTt4g/gDidKAUjQ4gmpDthAAVaE9feo6lnXweGYl7sROyVXmGPu+kMs+7OKLkC3BM57NUaL4ZaUGoyP6irhr/TNKlGErh4wdceQ4zTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718717621; c=relaxed/simple;
-	bh=ovcbows6yahMhlsYKKZQMBYwsrxxHANto197LaDFgOg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SsjLq3MUodYAyGPA+aZW8sFBTKvrStFuTXmRZ5NeH1GzXgnxTBjTlfpLR/g/OcLpOYdaVTuZVf+ZhI20kRU/M+MF7Ie+ipKVjph0FLCHygui3ZLm327O3S5wRkhIw+aC2IYPy/p9CvTygh46L5sLXqeIJR/cbcFKhCbPuE3Z8kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7Jhw13f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26633C3277B;
-	Tue, 18 Jun 2024 13:33:39 +0000 (UTC)
+	s=arc-20240116; t=1718717624; c=relaxed/simple;
+	bh=alttA8161hCqEHFr6rIWO2XXgoD2lzVPMUiXwnUsX7A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=drAaltQpA8F5uVqrR+cAOC9oszy81HLLXAfdQl9xDseztm8nfBzUcSDj4kFiS94LDFJgiIA0iHlzGiGxX9cC4Jv+48yZfnXlIeD8UQeKKdfW4ij63l84i8tChytafAiDAQYETCt0kf/ENZWIiHk+ePoLsHVTWJzi80ObJQfdPZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFeRRrzK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B57C3277B;
+	Tue, 18 Jun 2024 13:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718717620;
-	bh=ovcbows6yahMhlsYKKZQMBYwsrxxHANto197LaDFgOg=;
+	s=korg; t=1718717623;
+	bh=alttA8161hCqEHFr6rIWO2XXgoD2lzVPMUiXwnUsX7A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=t7Jhw13fPTUGkNE3JA3V4hpU4ZfhfGWE3Z3WyL/e4mEv+f6ZPkcoBHPs71w7wMd3T
-	 PTRIQPR5E11V7GRycEE9UPC/BHh+tw9qEjPiZXF7Q2qBODoikikL+1B4u7HlqbCRau
-	 7ubQJbBz5Eb93QMccXpJf3B/CrZXlrUzp9Ekmi54=
-Subject: FAILED: patch "[PATCH] irqchip/gic-v3-its: Fix potential race condition in" failed to apply to 5.4-stable tree
+	b=HFeRRrzKZT4kz0HnP0u5rujhbX4sZ73nlj+rmYuixCfcGtt8eZRfouMfKEH7twqzC
+	 dFXl/Iwywg2L/ETC8vI6oGrC39cBlYma22vw+NAkHaJP+LOT68b/gNXk6P6hCZmYKt
+	 nCDNmBtD3LncW4aAwvtFBM85cykor8VRTQoYiBpg=
+Subject: FAILED: patch "[PATCH] irqchip/gic-v3-its: Fix potential race condition in" failed to apply to 4.19-stable tree
 To: hagarhem@amazon.com,maz@kernel.org,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 18 Jun 2024 15:23:14 +0200
-Message-ID: <2024061814-opacity-connected-5c75@gregkh>
+Date: Tue, 18 Jun 2024 15:23:15 +0200
+Message-ID: <2024061815-spooky-sly-029b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x b97e8a2f7130a4b30d1502003095833d16c028b3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061814-opacity-connected-5c75@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061815-spooky-sly-029b@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,8 @@ b97e8a2f7130 ("irqchip/gic-v3-its: Fix potential race condition in its_vlpi_prop
 c1d4d5cd203c ("irqchip/gic-v3-its: Add its_vlpi_map helpers")
 425c09be0f09 ("irqchip/gic-v3-its: Allow LPI invalidation via the DirectLPI interface")
 2f4f064b3131 ("irqchip/gic-v3-its: Factor out wait_for_syncr primitive")
+8424312516e5 ("irqchip/gic-v3-its: Use the exact ITSList for VMOVP")
+e1a2e2010ba9 ("irqchip/gic-v3-its: Keep track of property table's PA and VA")
 
 thanks,
 
