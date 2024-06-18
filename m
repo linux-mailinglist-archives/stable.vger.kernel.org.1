@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92C3590D291
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E1890D288
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71AB428597B
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA68D284E1C
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D53E1ACE7F;
-	Tue, 18 Jun 2024 13:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C5215A861;
+	Tue, 18 Jun 2024 13:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQ9IxnHa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="incw9lc+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3E515A853;
-	Tue, 18 Jun 2024 13:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5B715A85F;
+	Tue, 18 Jun 2024 13:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716739; cv=none; b=iWk1Vp9QEWl0PY8B1ny9Fl4eaFX6Q5eLOp7991u6I6rkktnb6/I2Ut8KHWnAtlh2NV3SC5S5VggEeC3DY+9bPrtu4aEbt1RKo9XTIqHmoA8Fd5Zei4ONUxaIdN9WHbvPt+8ys43c7hla2qwNCbzLA9Iz4WyrbJFvKHdmOInzsUg=
+	t=1718716745; cv=none; b=E7C1WTAzUMXUubzdeXN7AqIhOP7Dygv+ivSNBPF0b4wU19vZBx/ixTeHGS3XQbZMmEAZNuwT205p4t4ozidyXTwQ3jZNxO2KGTEUt3fIh8Wd4l5ZyTZ4V/xWESJd6BPq4tMilBbZZSlbPywJc7x1W8In2lkRamCo/UdyDamud7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716739; c=relaxed/simple;
-	bh=Az+rgOnDpBp0nt4pE5X8NIUwTvnLrSH2EaT6wx51Las=;
+	s=arc-20240116; t=1718716745; c=relaxed/simple;
+	bh=iBZP6hqjCSo/htFZUGeupgEtrnyrsRbfqr3i0n05TpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SEW9BZlT0PR00alg3YhnVI0ZIOcYHe0wEURh+HwnPlXCkZXi9kCOzZqdSaO8eTk1KaTBkXBtj7Z53ZxLDyIBblb1L7XgPNhd7ktyQslrLJp3/YWlW9Cu9+SsJOyhT/nrOnOPYfe+Y+tXTYQg2Ra6gzo3h4ktPiHMLOLonvIaD4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQ9IxnHa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA02C3277B;
-	Tue, 18 Jun 2024 13:18:58 +0000 (UTC)
+	 MIME-Version; b=j7zB9JMZ80U7aEVXKT56j2SEanAXJZxCsIioPC7m5XkAAtk0Qx1xec8gwBI7ppkhJJAPHkrzoYI5yfpg56vJ216RwaxBzErpe/dVxLxbPmycZ2M1lHxQ8rFSIj2YZoPeo9hNXFCRVHyqkwirMGHUHC9skhc9W0uWBrDMZHvYr0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=incw9lc+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9ADC3277B;
+	Tue, 18 Jun 2024 13:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716738;
-	bh=Az+rgOnDpBp0nt4pE5X8NIUwTvnLrSH2EaT6wx51Las=;
+	s=korg; t=1718716745;
+	bh=iBZP6hqjCSo/htFZUGeupgEtrnyrsRbfqr3i0n05TpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQ9IxnHazAgF7etuk+NUYO0Cui+l3AYefsL4zdFyg7YACTNghiuyFZwZHgBT1Mj6n
-	 ByWTDJppduk/jFPK4sr8kW69jZkt6zBZzzzIE/umZF/gpPZq5iCPgO9Oo7pBFme0LD
-	 Rp5ekMRGM0AcLMJh38J5+H+4eOVJZZrCuYf1CDps=
+	b=incw9lc+cUfaE8q9XC9XfgWUofYYCC53qr8TZHjA7i6WXeGFY0cv7s6b48LiLqpoa
+	 uyYxMpP1DVFrJsIGJ5X9e0GqDW0lXCT8v0grXCWVjBNdNQtOmoVNDq/AaMI2zX90sp
+	 ZOKUDaQ4wBd2qjqkb6AAuVxueuzYx4wJr2XrnaUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 746/770] nfsd: simplify test_bit return in NFSD_FILE_KEY_FULL comparator
-Date: Tue, 18 Jun 2024 14:39:59 +0200
-Message-ID: <20240618123436.064006118@linuxfoundation.org>
+Subject: [PATCH 5.10 747/770] nfsd: dont kill nfsd_files because of lease break error
+Date: Tue, 18 Jun 2024 14:40:00 +0200
+Message-ID: <20240618123436.103510205@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,31 +68,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit d69b8dbfd0866abc5ec84652cc1c10fc3d4d91ef ]
+[ Upstream commit c6593366c0bf222be9c7561354dfb921c611745e ]
 
-test_bit returns bool, so we can just compare the result of that to the
-key->gc value without the "!!".
+An error from break_lease is non-fatal, so we needn't destroy the
+nfsd_file in that case. Just put the reference like we normally would
+and return the error.
 
 Signed-off-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/filecache.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
 diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 4ddc82b84f7c4..d61c8223082a4 100644
+index d61c8223082a4..43bb2fd47cf58 100644
 --- a/fs/nfsd/filecache.c
 +++ b/fs/nfsd/filecache.c
-@@ -188,7 +188,7 @@ static int nfsd_file_obj_cmpfn(struct rhashtable_compare_arg *arg,
- 			return 1;
- 		if (!nfsd_match_cred(nf->nf_cred, key->cred))
- 			return 1;
--		if (!!test_bit(NFSD_FILE_GC, &nf->nf_flags) != key->gc)
-+		if (test_bit(NFSD_FILE_GC, &nf->nf_flags) != key->gc)
- 			return 1;
- 		if (test_bit(NFSD_FILE_HASHED, &nf->nf_flags) == 0)
- 			return 1;
+@@ -1101,7 +1101,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	nf = nfsd_file_alloc(&key, may_flags);
+ 	if (!nf) {
+ 		status = nfserr_jukebox;
+-		goto out_status;
++		goto out;
+ 	}
+ 
+ 	ret = rhashtable_lookup_insert_key(&nfsd_file_rhash_tbl,
+@@ -1110,13 +1110,11 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (likely(ret == 0))
+ 		goto open_file;
+ 
+-	nfsd_file_slab_free(&nf->nf_rcu);
+-	nf = NULL;
+ 	if (ret == -EEXIST)
+ 		goto retry;
+ 	trace_nfsd_file_insert_err(rqstp, key.inode, may_flags, ret);
+ 	status = nfserr_jukebox;
+-	goto out_status;
++	goto construction_err;
+ 
+ wait_for_construction:
+ 	wait_on_bit(&nf->nf_flags, NFSD_FILE_PENDING, TASK_UNINTERRUPTIBLE);
+@@ -1126,29 +1124,25 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		trace_nfsd_file_cons_err(rqstp, key.inode, may_flags, nf);
+ 		if (!open_retry) {
+ 			status = nfserr_jukebox;
+-			goto out;
++			goto construction_err;
+ 		}
+ 		open_retry = false;
+-		if (refcount_dec_and_test(&nf->nf_ref))
+-			nfsd_file_free(nf);
+ 		goto retry;
+ 	}
+-
+ 	this_cpu_inc(nfsd_file_cache_hits);
+ 
+ 	status = nfserrno(nfsd_open_break_lease(file_inode(nf->nf_file), may_flags));
++	if (status != nfs_ok) {
++		nfsd_file_put(nf);
++		nf = NULL;
++	}
++
+ out:
+ 	if (status == nfs_ok) {
+ 		this_cpu_inc(nfsd_file_acquisitions);
+ 		nfsd_file_check_write_error(nf);
+ 		*pnf = nf;
+-	} else {
+-		if (refcount_dec_and_test(&nf->nf_ref))
+-			nfsd_file_free(nf);
+-		nf = NULL;
+ 	}
+-
+-out_status:
+ 	put_cred(key.cred);
+ 	trace_nfsd_file_acquire(rqstp, key.inode, may_flags, nf, status);
+ 	return status;
+@@ -1178,6 +1172,13 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (status != nfs_ok)
+ 		nfsd_file_unhash(nf);
+ 	clear_and_wake_up_bit(NFSD_FILE_PENDING, &nf->nf_flags);
++	if (status == nfs_ok)
++		goto out;
++
++construction_err:
++	if (refcount_dec_and_test(&nf->nf_ref))
++		nfsd_file_free(nf);
++	nf = NULL;
+ 	goto out;
+ }
+ 
 -- 
 2.43.0
 
