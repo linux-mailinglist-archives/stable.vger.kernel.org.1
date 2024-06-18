@@ -1,109 +1,207 @@
-Return-Path: <stable+bounces-53545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA3390D30E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:58:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E3490CCD1
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34157B26FBC
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:48:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDC7B1F24622
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDE41AC220;
-	Tue, 18 Jun 2024 13:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE61155C94;
+	Tue, 18 Jun 2024 12:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bB0MRNZA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mm9Z1EpI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBC21A2C28;
-	Tue, 18 Jun 2024 13:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3391155C92;
+	Tue, 18 Jun 2024 12:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716646; cv=none; b=IL+8p/GGK38xmQKkK66erYXEA7UN4yJ74NrzZpaTYOF9Z3Oro51w21wGHZt4YY0wiQV3tnBkkFVFlzla11oj+cezC4/OPkLCOgAfLupQ711lKookmRFdYkYJmsIaFqLCJfLjvPQAaKosLmERespYm/02pOPs5Ww+OImoJhH3JSg=
+	t=1718714423; cv=none; b=pH/wDxmnGjxEsyXK7iXWFqwzVs6EpyfpKKn0evOd0X78/0GjaV2CefTMoxA1acZ4wSu4jArSuXO7jny8VZ+vmZKPk3g9N5BE3b170FdO0V6GsLHHBUekkCl++lRv4LsMHJBCETDiNgWtsV5EWWW20cWVsZijTiB7KdlJcs7oMRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716646; c=relaxed/simple;
-	bh=1xLEt+9UEUCimElrH6By65p18u6F7XQCAxORLTMjsag=;
+	s=arc-20240116; t=1718714423; c=relaxed/simple;
+	bh=mZS4iEgWmq4UTYPGUb12ZROIU354esBXCi9U25ad9Kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=riJ5mqZwLn92OupOBfkCuPyeOsLDentbPVBNdKMwDtuB5xIXtGZW5gf9zeNUa0BMH1rU6X/ciEC0MjvLpeWXTHHxILZ+cKq3K9nxgqbNAOUnEDpOsKoDrSPglBJtTqMs/6fPZ8Ps/o4g64dxpyOCEELE1SkT1wGWsmyVbeYHRuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bB0MRNZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAA0C3277B;
-	Tue, 18 Jun 2024 13:17:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716646;
-	bh=1xLEt+9UEUCimElrH6By65p18u6F7XQCAxORLTMjsag=;
+	 MIME-Version; b=P0pYQXREhaUNrYLQnZAENh/r/KMuQPpCL8EmLgahy1iegcyxL7+e8mNLhdNg1zbdqStE3XM4kDwxsjJ9VzsaKHzF7tADLPV1j2qnEJn6wtYaFVgGqM7Do9aIMqQllu6V0BalZNikrj2V/6cl/razvpsxNbGvQSgz3gidBhEgikA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mm9Z1EpI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67062C32786;
+	Tue, 18 Jun 2024 12:40:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714422;
+	bh=mZS4iEgWmq4UTYPGUb12ZROIU354esBXCi9U25ad9Kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bB0MRNZAKnEg2NCQ8vS5dWK2O7cJwm2YB6/3yqri842c5lXS6Ms66KLeZGjsIgz7t
-	 RafNC86cG0itGqotgOJ8waSXPAuKVX4sMdi/fPoE+DCRasYDaZ037KJF3/WkbTIejm
-	 Cdi2GjqS+ZC5l7zPHtPMaTKtOY4pNGlLXcT1apNA=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 714/770] lockd: fix file selection in nlmsvc_cancel_blocked
-Date: Tue, 18 Jun 2024 14:39:27 +0200
-Message-ID: <20240618123434.832874339@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=Mm9Z1EpI4NsGKpuELLabO7UahbqC30TCT4Q1euAcBlqTdQl5K5JLC7oe6qe7SZSml
+	 3PgCJYfcF6P4bUxP1NjqECtnDVljpj12162hCzx2xWvZWtDc+RW1srQV+3fsXdsuT5
+	 fB2viMDvi42Jk1KyVCGj5zUb2bzvenxSMDZ2pxMMM2zzI6MenmetoRJ8tRc+uMPi+1
+	 SqLSKVn9A+WxgUjJwacirDda8FBlJKT023BLoVb7trghdUwu0wZknNMSgvPmO9dNK6
+	 pOLwU1uRmofGWq82KMGmmRp+aBCxdpX7neTJj4VGMQbiI8siIL6mSQDc4/aCwTRPPG
+	 oUz0PlO+zTvNQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Justin Stitt <justinstitt@google.com>,
+	linux-hardening@vger.kernel.org,
+	Kees Cook <keescook@chromium.org>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	phil@philpotter.co.uk,
+	corbet@lwn.net,
+	James.Bottomley@HansenPartnership.com,
+	nathan@kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.1 02/29] scsi: sr: Fix unintentional arithmetic wraparound
+Date: Tue, 18 Jun 2024 08:39:28 -0400
+Message-ID: <20240618124018.3303162-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
+References: <20240618124018.3303162-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Justin Stitt <justinstitt@google.com>
 
-------------------
+[ Upstream commit 9fad9d560af5c654bb38e0b07ee54a4e9acdc5cd ]
 
-From: Jeff Layton <jlayton@kernel.org>
+Running syzkaller with the newly reintroduced signed integer overflow
+sanitizer produces this report:
 
-[ Upstream commit 9f27783b4dd235ef3c8dbf69fc6322777450323c ]
+[   65.194362] ------------[ cut here ]------------
+[   65.197752] UBSAN: signed-integer-overflow in ../drivers/scsi/sr_ioctl.c:436:9
+[   65.203607] -2147483648 * 177 cannot be represented in type 'int'
+[   65.207911] CPU: 2 PID: 10416 Comm: syz-executor.1 Not tainted 6.8.0-rc2-00035-gb3ef86b5a957 #1
+[   65.213585] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   65.219923] Call Trace:
+[   65.221556]  <TASK>
+[   65.223029]  dump_stack_lvl+0x93/0xd0
+[   65.225573]  handle_overflow+0x171/0x1b0
+[   65.228219]  sr_select_speed+0xeb/0xf0
+[   65.230786]  ? __pm_runtime_resume+0xe6/0x130
+[   65.233606]  sr_block_ioctl+0x15d/0x1d0
+...
 
-We currently do a lock_to_openmode call based on the arguments from the
-NLM_UNLOCK call, but that will always set the fl_type of the lock to
-F_UNLCK, and the O_RDONLY descriptor is always chosen.
+Historically, the signed integer overflow sanitizer did not work in the
+kernel due to its interaction with `-fwrapv` but this has since been
+changed [1] in the newest version of Clang. It was re-enabled in the kernel
+with Commit 557f8c582a9b ("ubsan: Reintroduce signed overflow sanitizer").
 
-Fix it to use the file_lock from the block instead.
+Firstly, let's change the type of "speed" to unsigned long as
+sr_select_speed()'s only caller passes in an unsigned long anyways.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+$ git grep '\.select_speed'
+|	drivers/scsi/sr.c:      .select_speed           = sr_select_speed,
+...
+|	static int cdrom_ioctl_select_speed(struct cdrom_device_info *cdi,
+|	                unsigned long arg)
+|	{
+|	        ...
+|	        return cdi->ops->select_speed(cdi, arg);
+|	}
+
+Next, let's add an extra check to make sure we don't exceed 0xffff/177
+(350) since 0xffff is the max speed. This has two benefits: 1) we deal
+with integer overflow before it happens and 2) we properly respect the
+max speed of 0xffff. There are some "magic" numbers here but I did not
+want to change more than what was necessary.
+
+Link: https://github.com/llvm/llvm-project/pull/82432 [1]
+Closes: https://github.com/KSPP/linux/issues/357
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Link: https://lore.kernel.org/r/20240508-b4-b4-sio-sr_select_speed-v2-1-00b68f724290@google.com
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svclock.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ Documentation/cdrom/cdrom-standard.rst | 4 ++--
+ drivers/scsi/sr.h                      | 2 +-
+ drivers/scsi/sr_ioctl.c                | 5 ++++-
+ include/linux/cdrom.h                  | 2 +-
+ 4 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
-index 9eae99e08e699..4e30f3c509701 100644
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -699,9 +699,10 @@ nlmsvc_cancel_blocked(struct net *net, struct nlm_file *file, struct nlm_lock *l
- 	block = nlmsvc_lookup_block(file, lock);
- 	mutex_unlock(&file->f_mutex);
- 	if (block != NULL) {
--		mode = lock_to_openmode(&lock->fl);
--		vfs_cancel_lock(block->b_file->f_file[mode],
--				&block->b_call->a_args.lock.fl);
-+		struct file_lock *fl = &block->b_call->a_args.lock.fl;
+diff --git a/Documentation/cdrom/cdrom-standard.rst b/Documentation/cdrom/cdrom-standard.rst
+index 7964fe134277b..6c1303cff159e 100644
+--- a/Documentation/cdrom/cdrom-standard.rst
++++ b/Documentation/cdrom/cdrom-standard.rst
+@@ -217,7 +217,7 @@ current *struct* is::
+ 		int (*media_changed)(struct cdrom_device_info *, int);
+ 		int (*tray_move)(struct cdrom_device_info *, int);
+ 		int (*lock_door)(struct cdrom_device_info *, int);
+-		int (*select_speed)(struct cdrom_device_info *, int);
++		int (*select_speed)(struct cdrom_device_info *, unsigned long);
+ 		int (*get_last_session) (struct cdrom_device_info *,
+ 					 struct cdrom_multisession *);
+ 		int (*get_mcn)(struct cdrom_device_info *, struct cdrom_mcn *);
+@@ -396,7 +396,7 @@ action need be taken, and the return value should be 0.
+ 
+ ::
+ 
+-	int select_speed(struct cdrom_device_info *cdi, int speed)
++	int select_speed(struct cdrom_device_info *cdi, unsigned long speed)
+ 
+ Some CD-ROM drives are capable of changing their head-speed. There
+ are several reasons for changing the speed of a CD-ROM drive. Badly
+diff --git a/drivers/scsi/sr.h b/drivers/scsi/sr.h
+index 1175f2e213b56..dc899277b3a44 100644
+--- a/drivers/scsi/sr.h
++++ b/drivers/scsi/sr.h
+@@ -65,7 +65,7 @@ int sr_disk_status(struct cdrom_device_info *);
+ int sr_get_last_session(struct cdrom_device_info *, struct cdrom_multisession *);
+ int sr_get_mcn(struct cdrom_device_info *, struct cdrom_mcn *);
+ int sr_reset(struct cdrom_device_info *);
+-int sr_select_speed(struct cdrom_device_info *cdi, int speed);
++int sr_select_speed(struct cdrom_device_info *cdi, unsigned long speed);
+ int sr_audio_ioctl(struct cdrom_device_info *, unsigned int, void *);
+ 
+ int sr_is_xa(Scsi_CD *);
+diff --git a/drivers/scsi/sr_ioctl.c b/drivers/scsi/sr_ioctl.c
+index fbdb5124d7f7d..7034b4126d421 100644
+--- a/drivers/scsi/sr_ioctl.c
++++ b/drivers/scsi/sr_ioctl.c
+@@ -422,11 +422,14 @@ int sr_reset(struct cdrom_device_info *cdi)
+ 	return 0;
+ }
+ 
+-int sr_select_speed(struct cdrom_device_info *cdi, int speed)
++int sr_select_speed(struct cdrom_device_info *cdi, unsigned long speed)
+ {
+ 	Scsi_CD *cd = cdi->handle;
+ 	struct packet_command cgc;
+ 
++	/* avoid exceeding the max speed or overflowing integer bounds */
++	speed = clamp(0, speed, 0xffff / 177);
 +
-+		mode = lock_to_openmode(fl);
-+		vfs_cancel_lock(block->b_file->f_file[mode], fl);
- 		status = nlmsvc_unlink_block(block);
- 		nlmsvc_release_block(block);
- 	}
+ 	if (speed == 0)
+ 		speed = 0xffff;	/* set to max */
+ 	else
+diff --git a/include/linux/cdrom.h b/include/linux/cdrom.h
+index 67caa909e3e61..24fe410492006 100644
+--- a/include/linux/cdrom.h
++++ b/include/linux/cdrom.h
+@@ -76,7 +76,7 @@ struct cdrom_device_ops {
+ 				      unsigned int clearing, int slot);
+ 	int (*tray_move) (struct cdrom_device_info *, int);
+ 	int (*lock_door) (struct cdrom_device_info *, int);
+-	int (*select_speed) (struct cdrom_device_info *, int);
++	int (*select_speed) (struct cdrom_device_info *, unsigned long);
+ 	int (*get_last_session) (struct cdrom_device_info *,
+ 				 struct cdrom_multisession *);
+ 	int (*get_mcn) (struct cdrom_device_info *,
 -- 
 2.43.0
-
-
 
 
