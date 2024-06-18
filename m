@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-53065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCC690D129
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:40:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FCDD90D00D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 891ADB223B5
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:30:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5528A1C23C3E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9723916A950;
-	Tue, 18 Jun 2024 12:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D07B16ABC6;
+	Tue, 18 Jun 2024 12:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLIw7Luh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2G/QrK/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531F616A946;
-	Tue, 18 Jun 2024 12:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B4116A945;
+	Tue, 18 Jun 2024 12:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715224; cv=none; b=NiSm17mJWywx8AryQzTD77eO/wlPyCyHxWIKIx2yN48LtH14oxnXzG688M5GSZIG6iVi7d/6DFrvqYv/huONzzrFsUyFC0XbTphc5WZ6EkhLsO5TIVZ3Ae08elT3o20D2Tj6fOnbImdG3mURilbbZHzFGVarZ71LmfHQ1IqzKuM=
+	t=1718715239; cv=none; b=uEthe/ctg8mLqNUvVJFm3E3pfRODfrjuLLF39HGPUsvE/3NKfULVDkr9SAAc6KZGBa48u18G9TVlNF90ivgv10ujPT6H5q5phzT8aBsD+fi9wVKtr/MXSzLaRyFwcBLyY7PGbp+ZXxKv/b6bdSEiMPO2ZBlx+vZttKtibjaPKAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715224; c=relaxed/simple;
-	bh=AgK36lRhMW4AXZ8x6qkYUDRtWtSN+cYuY+Tb2KW2N4I=;
+	s=arc-20240116; t=1718715239; c=relaxed/simple;
+	bh=Jc0rGx6QIr8b5K08rBYASYTVpotBj1oVjINzAvI1fuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f2cLu78DwKFH5kUJRjUrEJSodAZw2QbJc7D7HMaVG61Bx8JyHq5i1tzDp3/H0fvKPiZ75ZF+7G0wQ2YCrbBSa6y18h00I5c1O8ZH8ie57benxbCHxpQEnYUG+ayNeKpFmWc8iIWrEOoOIYOQH51mXIPuyZ1gxc5AzujOW4vrSDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLIw7Luh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C39C3277B;
-	Tue, 18 Jun 2024 12:53:43 +0000 (UTC)
+	 MIME-Version; b=iLj8AUymEDKd+kLG7rHvagITn14oeF0aXAdXJfMBGk3ahtPqsJLl8DepYtJeYXwN7Bsc6qHfCqrpoPYyQvrhIhvzUEpBIEP0V7NSa58eExXJmXik70hhHpiJblUiEebrQf9T62f4zl4KypJMJNf3QMGmhlDXi1JEFJLT+zgY21A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2G/QrK/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FCBC3277B;
+	Tue, 18 Jun 2024 12:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715224;
-	bh=AgK36lRhMW4AXZ8x6qkYUDRtWtSN+cYuY+Tb2KW2N4I=;
+	s=korg; t=1718715238;
+	bh=Jc0rGx6QIr8b5K08rBYASYTVpotBj1oVjINzAvI1fuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bLIw7LuhqezpX/8bnlTPc9qv/7BfX+hVbPJKrYOrorh3k6XVFKUyBxFqkiwoNnAuN
-	 OqOJ5Mx4aTPVWrj3FeZf+Q4jZdCbbBDDbI84ns2Y43aGyQAVJ9pjJ5WTwQJijvy6IE
-	 lmfrdh7O3FZdmxFEDFZYPZVcaMgGCxoadK0ZoC/s=
+	b=2G/QrK/Od0jNHo0oj41hltDNKGOni+2Z8B8/uv9gFeSpWI7inzF9BbEYHig7W8BmU
+	 aYXYOslDZolodgYFOF05+uvdnn2gOtJaw+lOk8powJHN78TwEANplu1zprn1E/CZdj
+	 tTDsXjnGII7WHx9kKGWBxRKqsbndbttgeOfpVW8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 209/770] NFSD: Update the NFSv3 FSINFO3res encoder to use struct xdr_stream
-Date: Tue, 18 Jun 2024 14:31:02 +0200
-Message-ID: <20240618123415.343514512@linuxfoundation.org>
+Subject: [PATCH 5.10 210/770] NFSD: Update the NFSv3 PATHCONF3res encoder to use struct xdr_stream
+Date: Tue, 18 Jun 2024 14:31:03 +0200
+Message-ID: <20240618123415.381394508@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,90 +67,66 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 0a139d1b7f327010acc36e8162936d3108c7addb ]
+[ Upstream commit ded04a587f6ceaaba3caefad4021f2212b46c9ff ]
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3xdr.c | 62 +++++++++++++++++++++++++++++++++++------------
- 1 file changed, 46 insertions(+), 16 deletions(-)
+ fs/nfsd/nfs3xdr.c          | 44 ++++++++++++++++++++++++++++----------
+ include/linux/sunrpc/xdr.h | 18 ++++++++++++++--
+ 2 files changed, 49 insertions(+), 13 deletions(-)
 
 diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
-index e4a569e7216d5..514f53ad73020 100644
+index 514f53ad73020..1467bba02e180 100644
 --- a/fs/nfsd/nfs3xdr.c
 +++ b/fs/nfsd/nfs3xdr.c
-@@ -24,6 +24,15 @@ static const struct svc_fh nfs3svc_null_fh = {
- 	.fh_no_wcc	= true,
- };
- 
-+/*
-+ * time_delta. {1, 0} means the server is accurate only
-+ * to the nearest second.
-+ */
-+static const struct timespec64 nfs3svc_time_delta = {
-+	.tv_sec		= 1,
-+	.tv_nsec	= 0,
-+};
-+
- /*
-  * Mapping of S_IF* types to NFS file types
-  */
-@@ -1445,30 +1454,51 @@ nfs3svc_encode_fsstatres(struct svc_rqst *rqstp, __be32 *p)
+@@ -1501,25 +1501,47 @@ nfs3svc_encode_fsinfores(struct svc_rqst *rqstp, __be32 *p)
  	return 1;
  }
  
 +static bool
-+svcxdr_encode_fsinfo3resok(struct xdr_stream *xdr,
-+			   const struct nfsd3_fsinfores *resp)
++svcxdr_encode_pathconf3resok(struct xdr_stream *xdr,
++			     const struct nfsd3_pathconfres *resp)
 +{
 +	__be32 *p;
 +
-+	p = xdr_reserve_space(xdr, XDR_UNIT * 12);
++	p = xdr_reserve_space(xdr, XDR_UNIT * 6);
 +	if (!p)
 +		return false;
-+	*p++ = cpu_to_be32(resp->f_rtmax);
-+	*p++ = cpu_to_be32(resp->f_rtpref);
-+	*p++ = cpu_to_be32(resp->f_rtmult);
-+	*p++ = cpu_to_be32(resp->f_wtmax);
-+	*p++ = cpu_to_be32(resp->f_wtpref);
-+	*p++ = cpu_to_be32(resp->f_wtmult);
-+	*p++ = cpu_to_be32(resp->f_dtpref);
-+	p = xdr_encode_hyper(p, resp->f_maxfilesize);
-+	p = encode_nfstime3(p, &nfs3svc_time_delta);
-+	*p = cpu_to_be32(resp->f_properties);
++	*p++ = cpu_to_be32(resp->p_link_max);
++	*p++ = cpu_to_be32(resp->p_name_max);
++	p = xdr_encode_bool(p, resp->p_no_trunc);
++	p = xdr_encode_bool(p, resp->p_chown_restricted);
++	p = xdr_encode_bool(p, resp->p_case_insensitive);
++	xdr_encode_bool(p, resp->p_case_preserving);
 +
 +	return true;
 +}
 +
- /* FSINFO */
+ /* PATHCONF */
  int
- nfs3svc_encode_fsinfores(struct svc_rqst *rqstp, __be32 *p)
+ nfs3svc_encode_pathconfres(struct svc_rqst *rqstp, __be32 *p)
  {
 +	struct xdr_stream *xdr = &rqstp->rq_res_stream;
- 	struct nfsd3_fsinfores *resp = rqstp->rq_resp;
+ 	struct nfsd3_pathconfres *resp = rqstp->rq_resp;
  
 -	*p++ = resp->status;
 -	*p++ = xdr_zero;	/* no post_op_attr */
 -
 -	if (resp->status == 0) {
--		*p++ = htonl(resp->f_rtmax);
--		*p++ = htonl(resp->f_rtpref);
--		*p++ = htonl(resp->f_rtmult);
--		*p++ = htonl(resp->f_wtmax);
--		*p++ = htonl(resp->f_wtpref);
--		*p++ = htonl(resp->f_wtmult);
--		*p++ = htonl(resp->f_dtpref);
--		p = xdr_encode_hyper(p, resp->f_maxfilesize);
--		*p++ = xdr_one;
--		*p++ = xdr_zero;
--		*p++ = htonl(resp->f_properties);
+-		*p++ = htonl(resp->p_link_max);
+-		*p++ = htonl(resp->p_name_max);
+-		*p++ = htonl(resp->p_no_trunc);
+-		*p++ = htonl(resp->p_chown_restricted);
+-		*p++ = htonl(resp->p_case_insensitive);
+-		*p++ = htonl(resp->p_case_preserving);
 +	if (!svcxdr_encode_nfsstat3(xdr, resp->status))
 +		return 0;
 +	switch (resp->status) {
 +	case nfs_ok:
 +		if (!svcxdr_encode_post_op_attr(rqstp, xdr, &nfs3svc_null_fh))
 +			return 0;
-+		if (!svcxdr_encode_fsinfo3resok(xdr, resp))
++		if (!svcxdr_encode_pathconf3resok(xdr, resp))
 +			return 0;
 +		break;
 +	default:
@@ -162,7 +138,43 @@ index e4a569e7216d5..514f53ad73020 100644
 +	return 1;
  }
  
- /* PATHCONF */
+ /* COMMIT */
+diff --git a/include/linux/sunrpc/xdr.h b/include/linux/sunrpc/xdr.h
+index 237b78146c7d6..927f1458bcab9 100644
+--- a/include/linux/sunrpc/xdr.h
++++ b/include/linux/sunrpc/xdr.h
+@@ -395,7 +395,21 @@ static inline int xdr_stream_encode_item_absent(struct xdr_stream *xdr)
+ }
+ 
+ /**
+- * xdr_stream_encode_bool - Encode a "not present" list item
++ * xdr_encode_bool - Encode a boolean item
++ * @p: address in a buffer into which to encode
++ * @n: boolean value to encode
++ *
++ * Return value:
++ *   Address of item following the encoded boolean
++ */
++static inline __be32 *xdr_encode_bool(__be32 *p, u32 n)
++{
++	*p = n ? xdr_one : xdr_zero;
++	return p++;
++}
++
++/**
++ * xdr_stream_encode_bool - Encode a boolean item
+  * @xdr: pointer to xdr_stream
+  * @n: boolean value to encode
+  *
+@@ -410,7 +424,7 @@ static inline int xdr_stream_encode_bool(struct xdr_stream *xdr, __u32 n)
+ 
+ 	if (unlikely(!p))
+ 		return -EMSGSIZE;
+-	*p = n ? xdr_one : xdr_zero;
++	xdr_encode_bool(p, n);
+ 	return len;
+ }
+ 
 -- 
 2.43.0
 
