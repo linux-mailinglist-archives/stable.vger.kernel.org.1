@@ -1,151 +1,137 @@
-Return-Path: <stable+bounces-53661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B3E90DC51
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 21:23:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD12790DCF1
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 21:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C3651C2287A
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 19:23:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59F6128589E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 19:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0DB1662F4;
-	Tue, 18 Jun 2024 19:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93CE16DC16;
+	Tue, 18 Jun 2024 19:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="qTj7h2ep"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Uo8UmBz6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8FC161337;
-	Tue, 18 Jun 2024 19:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2A615E5BB;
+	Tue, 18 Jun 2024 19:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718738574; cv=none; b=LvbuWVVjhzMD13IRLZOOMwMXDkMXC1vSosmQ/Y+EFnfmM8N2hY4K765FpA9ytVLLkMwzLGXwYwJ4q0kbccbpzsH9CKSVzCGtR+sxSsqmphkYh1rpsUZGfj+FHTD/ehS6g6Wv6Vw5NK7f79zo2JP1b9e7G0kmFL1VFSo6CWMv/EU=
+	t=1718740784; cv=none; b=FO6a6GZZn8ZsWpGCUaFC0hsorN0dgeXjxI9/LXKcchv5MU28bCw6O1w9agKweuUKyeVQ1+vtzeWCeut2ZwMG/jUmepDZfe123Y5EjKZn67JNwbD5BhIhlG6Xs7HPGlWJN75Xgr+Fsg2uqHmedoEj8ATUbJca4OI7nx+AO57pRrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718738574; c=relaxed/simple;
-	bh=0GTVP0n4L+W/rAV9EWsaAj3clwPwkcDwsyMzV91BxBg=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Tbqy5GEjH1wajN2qSvJxLS55OgjIp9Sml2So9FdyhIvfM/ydyZFI4oGgPiNJNfmjsOQGdCkP5L/uA5+f9AYKls65W22dpCbjmMVmKHpXz0OCaYOl+mJFJ6xtVb8X81jlFIFwYnBEzFwCJlGwlRWNn++Jf0npmwZb5WIqK5vs1jA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=qTj7h2ep; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1718740784; c=relaxed/simple;
+	bh=/bu1e0pO7TCPSv7bzfXFuzJbW4kFFAUPlXhVvX7lTSE=;
+	h=Date:To:From:Subject:Message-Id; b=Al4xroFlpdVu5kG+ltj30SJ8P+GqD5ZC/6BBz+X8opAim0+FimHeHJXVGegoIwlHK64xVF70qgWSmai9eDMGhB3DCIZcGX4vceErqqj0vhYvH+058GGqwez7a8Gb2c4mtlI/HqEJ7dvjFUcgVYy/vmF77EIrI+JoJ/W6dpvgb54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Uo8UmBz6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC07BC3277B;
+	Tue, 18 Jun 2024 19:59:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1718740784;
+	bh=/bu1e0pO7TCPSv7bzfXFuzJbW4kFFAUPlXhVvX7lTSE=;
+	h=Date:To:From:Subject:From;
+	b=Uo8UmBz6vMZ+SsVJhbQFagcz41LQmCAh/vRgmuSlI5uCaWW2LZL9l4pCSVVVTRwFm
+	 oo5NYpD4rTI7jPn9eKeYIIiozrhtUIRWD1wgnbfqtOkdL5g8B0Xctpgk6GTIrVfcGL
+	 tLOwDn8J2cKhAO9bbfxIIs2mGkgo+lZK1bOi+5pI=
+Date: Tue, 18 Jun 2024 12:59:43 -0700
+To: mm-commits@vger.kernel.org,ying.huang@intel.com,trondmy@kernel.org,tom@talpey.com,stable@vger.kernel.org,sprasad@microsoft.com,sfrench@samba.org,ryan.roberts@arm.com,ronniesahlberg@gmail.com,pc@manguebit.com,neilb@suse.de,jlayton@kernel.org,hch@lst.de,hanchuanhua@oppo.com,chrisl@kernel.org,bharathsm@microsoft.com,anna@kernel.org,v-songbaohua@oppo.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + cifs-drop-the-incorrect-assertion-in-cifs_swap_rw.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240618195943.EC07BC3277B@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1718738563;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s4YEiz4CBg8DZRVTp+VuaQ0rG9uMs+Fd4su7Kzv7iYE=;
-	b=qTj7h2epsVQlF8Iz993/KkiSXK6uhcwkUPlSoemxGPa8B1XTfFPPXhG2zqet0ce3Q/6eXR
-	3U33xZTdOWbxJZgd9CiM2NnYf+Cgm21ygIzSRfBEUh88MP9eSPL1M3yhOlY+lIeMgDw1Ej
-	swiFfh5RO32RXzZx0aC6UzSoonjT0TK1vkm1/6W/sWIa+SLim+rJ5seWU8gK4g/BFaGtF7
-	60IkrozZsSPzCgVPXenT6B6lT/9d3dQP1qSOceHBIGxydXyMgABnrNmqncRytFj+nLbNWZ
-	sgOdon7tBhl5UWjuDMZxg7vZgzLcWKTkV//n4HhVzqWNpWPtzlKse1nYyTnkdw==
-Date: Tue, 18 Jun 2024 21:22:42 +0200
-From: Dragan Simic <dsimic@manjaro.org>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Qiang Yu <yuq825@gmail.com>, dri-devel@lists.freedesktop.org,
- lima@lists.freedesktop.org, maarten.lankhorst@linux.intel.com,
- tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
- linux-kernel@vger.kernel.org, Philip Muller <philm@manjaro.org>, Oliver
- Smith <ollieparanoid@postmarketos.org>, Daniel Smith <danct12@disroot.org>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] drm/lima: Mark simple_ondemand governor as softdep
-In-Reply-To: <4813a6885648e5368028cd822e8b2381@manjaro.org>
-References: <fdaf2e41bb6a0c5118ff9cc21f4f62583208d885.1718655070.git.dsimic@manjaro.org>
- <CAKGbVbs8VmCXVOHbhkCYEHNJiKWwy10p0SV9J09h2h7xjs7hUg@mail.gmail.com>
- <CAKGbVbsM4rCprWdp+aGXE-pvCkb6N7weUyG2z4nXqFpv+y=LrA@mail.gmail.com>
- <20240618-great-hissing-skink-b7950e@houat>
- <4813a6885648e5368028cd822e8b2381@manjaro.org>
-Message-ID: <457ae7654dba38fcd8b50e38a1275461@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-On 2024-06-18 12:33, Dragan Simic wrote:
-> Hello Qiang and Maxime,
-> 
-> On 2024-06-18 10:13, Maxime Ripard wrote:
->> On Tue, Jun 18, 2024 at 04:01:26PM GMT, Qiang Yu wrote:
->>> On Tue, Jun 18, 2024 at 12:33 PM Qiang Yu <yuq825@gmail.com> wrote:
->>> >
->>> > I see the problem that initramfs need to build a module dependency chain,
->>> > but lima does not call any symbol from simpleondemand governor module.
->>> > softdep module seems to be optional while our dependency is hard one,
->>> > can we just add MODULE_INFO(depends, _depends), or create a new
->>> > macro called MODULE_DEPENDS()?
-> 
-> I had the same thoughts, because softdeps are for optional module
-> dependencies, while in this case it's a hard dependency.  Though,
-> I went with adding a softdep, simply because I saw no better option
-> available.
-> 
->>> This doesn't work on my side because depmod generates modules.dep
->>> by symbol lookup instead of modinfo section. So softdep may be our 
->>> only
->>> choice to add module dependency manually. I can accept the softdep
->>> first, then make PM optional later.
-> 
-> I also thought about making devfreq optional in the Lima driver,
-> which would make this additional softdep much more appropriate.
-> Though, I'm not really sure that's a good approach, because not
-> having working devfreq for Lima might actually cause issues on
-> some devices, such as increased power consumption.
-> 
-> In other words, it might be better to have Lima probing fail if
-> devfreq can't be initialized, rather than having probing succeed
-> with no working devfreq.  Basically, failed probing is obvious,
-> while a warning in the kernel log about no devfreq might easily
-> be overlooked, causing regressions on some devices.
-> 
->> It's still super fragile, and depends on the user not changing the
->> policy. It should be solved in some other, more robust way.
-> 
-> I see, but I'm not really sure how to make it more robust?  In
-> the end, some user can blacklist the simple_ondemand governor
-> module, and we can't do much about it.
-> 
-> Introducing harddeps alongside softdeps would make sense from
-> the design standpoint, but the amount of required changes wouldn't
-> be trivial at all, on various levels.
 
-After further investigation, it seems that the softdeps have
-already seen a fair amount of abuse for what they actually aren't
-intended, i.e. resolving hard dependencies.  For example, have
-a look at the commit d5178578bcd4 (btrfs: directly call into
-crypto framework for checksumming) [1] and the lines containing
-MODULE_SOFTDEP() at the very end of fs/btrfs/super.c. [2]
+The patch titled
+     Subject: cifs: drop the incorrect assertion in cifs_swap_rw()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     cifs-drop-the-incorrect-assertion-in-cifs_swap_rw.patch
 
-If a filesystem driver can rely on the abuse of softdeps, which
-admittedly are a bit fragile, I think we can follow the same
-approach, at least for now.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/cifs-drop-the-incorrect-assertion-in-cifs_swap_rw.patch
 
-With all that in mind, I think that accepting this patch, as well
-as the related Panfrost patch, [3] should be warranted.  I'd keep
-investigating the possibility of introducing harddeps in form
-of MODULE_HARDDEP() and the related support in kmod project,
-similar to the already existing softdep support, [4] but that
-will inevitably take a lot of time, both for implementing it
-and for reaching various Linux distributions, which is another
-reason why accepting these patches seems reasonable.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5178578bcd4
-[2] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/super.c#n2593
-[3] 
-https://lore.kernel.org/dri-devel/4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org/
-[4] 
-https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Barry Song <v-songbaohua@oppo.com>
+Subject: cifs: drop the incorrect assertion in cifs_swap_rw()
+Date: Tue, 18 Jun 2024 19:22:58 +1200
+
+Since commit 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS
+swap-space"), we can plug multiple pages then unplug them all together. 
+That means iov_iter_count(iter) could be way bigger than PAGE_SIZE, it
+actually equals the size of iov_iter_npages(iter, INT_MAX).
+
+Note this issue has nothing to do with large folios as we don't support
+THP_SWPOUT to non-block devices.
+
+Link: https://lkml.kernel.org/r/20240618072258.33128-1-21cnbao@gmail.com
+Fixes: 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS swap-space")
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Reported-by: Christoph Hellwig <hch@lst.de>
+Closes: https://lore.kernel.org/linux-mm/20240614100329.1203579-1-hch@lst.de/
+Cc: NeilBrown <neilb@suse.de>
+Cc: Anna Schumaker <anna@kernel.org>
+Cc: Steve French <sfrench@samba.org>
+Cc: Trond Myklebust <trondmy@kernel.org>
+Cc: Chuanhua Han <hanchuanhua@oppo.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Jeff Layton <jlayton@kernel.org>
+Cc: Paulo Alcantara <pc@manguebit.com>
+Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
+Cc: Shyam Prasad N <sprasad@microsoft.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Bharath SM <bharathsm@microsoft.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/smb/client/file.c |    2 --
+ 1 file changed, 2 deletions(-)
+
+--- a/fs/smb/client/file.c~cifs-drop-the-incorrect-assertion-in-cifs_swap_rw
++++ a/fs/smb/client/file.c
+@@ -3200,8 +3200,6 @@ static int cifs_swap_rw(struct kiocb *io
+ {
+ 	ssize_t ret;
+ 
+-	WARN_ON_ONCE(iov_iter_count(iter) != PAGE_SIZE);
+-
+ 	if (iov_iter_rw(iter) == READ)
+ 		ret = netfs_unbuffered_read_iter_locked(iocb, iter);
+ 	else
+_
+
+Patches currently in -mm which might be from v-songbaohua@oppo.com are
+
+cifs-drop-the-incorrect-assertion-in-cifs_swap_rw.patch
+mm-remove-the-implementation-of-swap_free-and-always-use-swap_free_nr.patch
+mm-introduce-pte_move_swp_offset-helper-which-can-move-offset-bidirectionally.patch
+mm-introduce-arch_do_swap_page_nr-which-allows-restore-metadata-for-nr-pages.patch
+mm-swap-reuse-exclusive-folio-directly-instead-of-wp-page-faults.patch
+mm-introduce-pmdpte_needs_soft_dirty_wp-helpers-for-softdirty-write-protect.patch
+mm-set-pte-writable-while-pte_soft_dirty-is-true-in-do_swap_page.patch
+
 
