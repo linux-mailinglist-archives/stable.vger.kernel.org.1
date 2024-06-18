@@ -1,121 +1,116 @@
-Return-Path: <stable+bounces-52716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01CFA90CC55
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:48:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2F890D2EC
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:56:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02E392858C1
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:47:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83003B274F0
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C5C16132B;
-	Tue, 18 Jun 2024 12:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17A416C6B8;
+	Tue, 18 Jun 2024 13:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gcCgCrLo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g79mmhMm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC1B161307;
-	Tue, 18 Jun 2024 12:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91414157A49;
+	Tue, 18 Jun 2024 13:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714273; cv=none; b=DnO1NH5U5THcCNolqAH+3c2pJ81VXTiOMb6dE9GF3AkkMlVK7OAeRHu6n2taCueUFaT2ARu2bbaiTiCOC2Whf5Eq2uKc7zcDt87qPpv/rBPHjwJ93aDxsu0wfdNrePq+yXJIf/yjwImbwtRGjZfkUFLwVtzhRnr6ZOf7mfMa3r4=
+	t=1718715926; cv=none; b=lL0SOBpVlU4Ln5wRjwfluiu0bj+thPvP8+4oNClhYYBMpyORdlcqN1RM8Wi1AqpYCzav9MVpBJ6ER89qNkOcbpVJYoK7DTnWWo3GH03f+exEjWUlKapyMv7iJCxrE8z6BCHKzbQ5BZFs82AD06KdbtVhkm7C+o95hmNYwOvhuwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714273; c=relaxed/simple;
-	bh=WU/ecu/cqXf8TbX521ocAfNCVNpp0ahcPYQQV8HphKA=;
+	s=arc-20240116; t=1718715926; c=relaxed/simple;
+	bh=8EnfzSJ9t4sst4a22kjkVfdeXIf9EkudHn02+Mgoelg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VinMDM4mh9eg427SaTa+/qPsBtz+PqqLyQ0gWapVzeFE5403NnB5kkzQ62kM4/NlabPHeVcu9P493oE5iv2j7fdu1n8OUlIiArvLtbCF6XfKlwIyOjrq5+9P8rWtaJD62EmKMZ2dqL4l6ALoaHo+qxIL4y9U5w92ME4N+7Wr1AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gcCgCrLo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369B4C4AF1D;
-	Tue, 18 Jun 2024 12:37:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714273;
-	bh=WU/ecu/cqXf8TbX521ocAfNCVNpp0ahcPYQQV8HphKA=;
+	 MIME-Version; b=lm+hIaeBxuIGifmvrDX3I1RCHQ6dCbyTc6vqfYsXa3sETiw5t2gQ8nIritd+A/VeDAMHlunQnRnzb0LJpckiHLLqXItPijVpYZs7a1EUP7T3Q7Utbxd9yVOm3gqoLwBVc3KsWcPRV1951tQUDXnSQRaDt/PlPbSzVNgDOQVNA9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g79mmhMm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC67C3277B;
+	Tue, 18 Jun 2024 13:05:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715926;
+	bh=8EnfzSJ9t4sst4a22kjkVfdeXIf9EkudHn02+Mgoelg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcCgCrLoohWJ59/caCRFTNsF4NVnY4uOsxCUxG+uj0Ha9ODUhhnQlk6b7nHDfDoxW
-	 hDuuoDIKA5qFk+WOWi9MosXHlAdRWiWJuBJsg5LCgN7j44vIyQkSmNM/pzjDthsGHl
-	 zg6t4/g33J2JClCXAsn3ArQiqLKB6C3swLYXKfVpIFBam1xV63xecQYAZWRpfH5Cfa
-	 hPSi/7wXArfu/QZEbxWrj3shcXzDv79ONl969OaI5ffw5I/otjKjz6gAHOu4zGqcHP
-	 Tu7KKoEqfT80nIDbbSWY8wgGilM7+yoMjlSk8VyOPfHPss9xSD+bt61+/FmhMVmFyD
-	 vquQ/VUP1xGNw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Louis Dalibard <ontake@ontake.dev>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 44/44] HID: Ignore battery for ELAN touchscreens 2F2C and 4116
-Date: Tue, 18 Jun 2024 08:35:25 -0400
-Message-ID: <20240618123611.3301370-44-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=g79mmhMmfBwyskFGoisrS2CKqA2juA8Rrqv/bs4Plu+bzMfvRY1gKPRExkZfI95AF
+	 X8TNdmqQ7Kmcih4aR1UHFSp1j+kFO5KPM1efzn3lzyoKpqjcZkGsojyyUVLA2lUrkM
+	 Qz1S+Td+cZTprMGFmicRLiaSm1PfveEhkqcgHUl4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 473/770] NFSD: Streamline the rare "found" case
+Date: Tue, 18 Jun 2024 14:35:26 +0200
+Message-ID: <20240618123425.570815991@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Louis Dalibard <ontake@ontake.dev>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit a3a5a37efba11b7cf1a86abe7bccfbcdb521764e ]
+------------------
 
-At least ASUS Zenbook 14 (2023) and ASUS Zenbook 14 Pro (2023) are affected.
+From: Chuck Lever <chuck.lever@oracle.com>
 
-The touchscreen reports a battery status of 0% and jumps to 1% when a
-stylus is used.
+[ Upstream commit add1511c38166cf1036765f8c4aa939f0275a799 ]
 
-The device ID was added and the battery ignore quirk was enabled for it.
+Move a rarely called function call site out of the hot path.
 
-[jkosina@suse.com: reformatted changelog a bit]
-Signed-off-by: Louis Dalibard <ontake@ontake.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+This is an exceptionally small improvement because the compiler
+inlines most of the functions that nfsd_cache_lookup() calls.
+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h   | 2 ++
- drivers/hid/hid-input.c | 4 ++++
- 2 files changed, 6 insertions(+)
+ fs/nfsd/nfscache.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 8376fb5e2d0b4..005239dbd7f18 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -421,6 +421,8 @@
- #define I2C_DEVICE_ID_HP_SPECTRE_X360_13_AW0020NG  0x29DF
- #define I2C_DEVICE_ID_ASUS_TP420IA_TOUCHSCREEN 0x2BC8
- #define I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN 0x2C82
-+#define I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN 0x2F2C
-+#define I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN 0x4116
- #define USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN	0x2544
- #define USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN	0x2706
- #define I2C_DEVICE_ID_SURFACE_GO_TOUCHSCREEN	0x261A
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index 8bb16e9b94aa5..c9094a4f281e9 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -377,6 +377,10 @@ static const struct hid_device_id hid_battery_quirks[] = {
- 	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN),
- 	  HID_BATTERY_QUIRK_IGNORE },
-+	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN),
-+	  HID_BATTERY_QUIRK_IGNORE },
-+	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN),
-+	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN),
- 	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN),
+diff --git a/fs/nfsd/nfscache.c b/fs/nfsd/nfscache.c
+index 34087a7e4f93c..0b3f12aa37ff5 100644
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -448,11 +448,8 @@ int nfsd_cache_lookup(struct svc_rqst *rqstp)
+ 	b = nfsd_cache_bucket_find(rqstp->rq_xid, nn);
+ 	spin_lock(&b->cache_lock);
+ 	found = nfsd_cache_insert(b, rp, nn);
+-	if (found != rp) {
+-		nfsd_reply_cache_free_locked(NULL, rp, nn);
+-		rp = found;
++	if (found != rp)
+ 		goto found_entry;
+-	}
+ 
+ 	nfsd_stats_rc_misses_inc();
+ 	rqstp->rq_cacherep = rp;
+@@ -470,8 +467,10 @@ int nfsd_cache_lookup(struct svc_rqst *rqstp)
+ 
+ found_entry:
+ 	/* We found a matching entry which is either in progress or done. */
++	nfsd_reply_cache_free_locked(NULL, rp, nn);
+ 	nfsd_stats_rc_hits_inc();
+ 	rtn = RC_DROPIT;
++	rp = found;
+ 
+ 	/* Request being processed */
+ 	if (rp->c_state == RC_INPROG)
 -- 
 2.43.0
+
+
 
 
