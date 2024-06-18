@@ -1,117 +1,152 @@
-Return-Path: <stable+bounces-53314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B412890D116
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:39:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE6C90CC0D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:42:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B48761C243F0
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:39:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DFBAB27906
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B0519DF97;
-	Tue, 18 Jun 2024 13:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3203156C5F;
+	Tue, 18 Jun 2024 12:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhPe/ls3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TDKXlM/0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DC719DF81;
-	Tue, 18 Jun 2024 13:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58ADE15689B;
+	Tue, 18 Jun 2024 12:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715962; cv=none; b=mPmF+DK6Lg1EpbuXvMGKfupQp/0P4gEqvewknSHfKyx7YUUdw6dvc/k3TABOIRavbrv+/ZIWn2GeriMkeNGmuxy21L5XK7beCjzc39s8q+brV3Zue3SCj1zRsDacOKJm6IDRkM7DF4wqX8+oSfFiR+NSPNVFHQlO8eI0WLjI17M=
+	t=1718714201; cv=none; b=grzWv1Za4ZOAIFsrAUCivINxeSNB22VPURU17h7yIPkCh8dhQhek4I4uGZVSxmRqByMEYsj9H4weAXol0fAABztSpzMonln/tGUJHC4GSc6JgEXq0mHylRFcuvifONHAvuS9I73EG24fnfWIvcrVgf51T4ZTlomqDK/nz/f+DWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715962; c=relaxed/simple;
-	bh=6zs5PXgxxDtnnn+HjWdK97VKICohyXrHPBrhAEeWCm4=;
+	s=arc-20240116; t=1718714201; c=relaxed/simple;
+	bh=52hQUnLuJuiNCML3vgwh/OQ21gZ95YeT79kztc6LkvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ijTBD+MD8FY7bRnMBTA2CEnnm2Rdv35/o9aXf2JyZbfioJHu3KaYdG7SvASci+YP8HNA4YyeUbrtyI5Z8tulZuBuLrBgIWsCb0Z575hTWep5a7UNbFVToA+mteNwyOx1yBGpFjGw/lbOY9XrefrX0/S7SKCIjUDruYeQU/d5IRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhPe/ls3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B42C4AF4D;
-	Tue, 18 Jun 2024 13:06:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715962;
-	bh=6zs5PXgxxDtnnn+HjWdK97VKICohyXrHPBrhAEeWCm4=;
+	 MIME-Version; b=KGkNn1L5jMDTHGf6ZMxKXSpoY7iT3GOnjXxyxLLRjpsp/JOQqi7crj+x885nagaXzfInjeBolIsD7Vus74iBm3mxC7wzwgoiqYik8UoaUauLIsBxX8ctL2N+bYZvIDcSdxClKMy5sSCwpFBz3vtYXQvZkQ1eTry+zbB5aqRS4h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TDKXlM/0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881B2C3277B;
+	Tue, 18 Jun 2024 12:36:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714200;
+	bh=52hQUnLuJuiNCML3vgwh/OQ21gZ95YeT79kztc6LkvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VhPe/ls37zkxS8BfuyNL95VxPgqStjMk9PhvZ1+zkdAvV1gT/ZrUQdMDgpjX/O1hY
-	 UzNu4wgXKpZHBmp5woarfCOCRmVIt1oGXnWKQmoNSUeRbtKX2KHCRz8U4eYXTcitAM
-	 qDrXP9/hztRHIZDIg6v+oIhryK/sHkow5NBNnuKA=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Trond Myklebust <trondmy@hammerspace.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 444/770] NFSD: De-duplicate nfsd4_decode_bitmap4()
-Date: Tue, 18 Jun 2024 14:34:57 +0200
-Message-ID: <20240618123424.428763428@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=TDKXlM/0+tm+g1An1uzXiduXzG/pJcLeaI9Xg9fb6vijN6bkg2Gu8pcA6VaqEP20a
+	 xApdMU/d9joSflkJYWJ7cxKaZ8HcSJoEypJMeL/DOmXTAgB6jAavQ/UvNo+nnVJb6u
+	 QIyseTBjTRf+PscnU5KD9BESCk1Lg6xbQ97TOfzGmv778OQnbyNtsiAGTxBKEdHTk1
+	 y4dwDLZxoSIBH16W4RJI4tu9s/z72qkbCcY/vmCOpsM0aoYkTPyjoP8trnYq0B0+if
+	 vMeDHv92WCl7x4f8udH1s7HQ2jhW1Hnma2zXfpEyL3RqN9Sahcl9uiNYU56C+R5Qif
+	 7d1cqAbnysuQw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com,
+	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 16/44] wifi: mac80211: handle tasklet frames before stopping
+Date: Tue, 18 Jun 2024 08:34:57 -0400
+Message-ID: <20240618123611.3301370-16-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Johannes Berg <johannes.berg@intel.com>
 
-------------------
+[ Upstream commit 177c6ae9725d783f9e96f02593ce8fb2639be22f ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+The code itself doesn't want to handle frames from the driver
+if it's already stopped, but if the tasklet was queued before
+and runs after the stop, then all bets are off. Flush queues
+before actually stopping, RX should be off at this point since
+all the interfaces are removed already, etc.
 
-[ Upstream commit cd2e999c7c394ae916d8be741418b3c6c1dddea8 ]
-
-Clean up. Trond points out that xdr_stream_decode_uint32_array()
-does the same thing as nfsd4_decode_bitmap4().
-
-Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: syzbot+8830db5d3593b5546d2e@syzkaller.appspotmail.com
+Link: https://msgid.link/20240515135318.b05f11385c9a.I41c1b33a2e1814c3a7ef352cd7f2951b91785617@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ net/mac80211/ieee80211_i.h |  2 ++
+ net/mac80211/main.c        | 10 ++++++++--
+ net/mac80211/util.c        |  2 ++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 638a626af18dc..adf97d72bda80 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -277,21 +277,10 @@ nfsd4_decode_verifier4(struct nfsd4_compoundargs *argp, nfs4_verifier *verf)
- static __be32
- nfsd4_decode_bitmap4(struct nfsd4_compoundargs *argp, u32 *bmval, u32 bmlen)
- {
--	u32 i, count;
--	__be32 *p;
--
--	if (xdr_stream_decode_u32(argp->xdr, &count) < 0)
--		return nfserr_bad_xdr;
--	/* request sanity */
--	if (count > 1000)
--		return nfserr_bad_xdr;
--	p = xdr_inline_decode(argp->xdr, count << 2);
--	if (!p)
--		return nfserr_bad_xdr;
--	for (i = 0; i < bmlen; i++)
--		bmval[i] = (i < count) ? be32_to_cpup(p++) : 0;
-+	ssize_t status;
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 70c67c860e995..48bf62e92e02e 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1841,6 +1841,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ void ieee80211_configure_filter(struct ieee80211_local *local);
+ u64 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata);
  
--	return nfs_ok;
-+	status = xdr_stream_decode_uint32_array(argp->xdr, bmval, bmlen);
-+	return status == -EBADMSG ? nfserr_bad_xdr : nfs_ok;
++void ieee80211_handle_queued_frames(struct ieee80211_local *local);
++
+ u64 ieee80211_mgmt_tx_cookie(struct ieee80211_local *local);
+ int ieee80211_attach_ack_skb(struct ieee80211_local *local, struct sk_buff *skb,
+ 			     u64 *cookie, gfp_t gfp);
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 4eaea0a9975b4..1132dea0e290e 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -423,9 +423,8 @@ u64 ieee80211_reset_erp_info(struct ieee80211_sub_if_data *sdata)
+ 	       BSS_CHANGED_ERP_SLOT;
  }
  
- static __be32
+-static void ieee80211_tasklet_handler(struct tasklet_struct *t)
++void ieee80211_handle_queued_frames(struct ieee80211_local *local)
+ {
+-	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
+ 	struct sk_buff *skb;
+ 
+ 	while ((skb = skb_dequeue(&local->skb_queue)) ||
+@@ -450,6 +449,13 @@ static void ieee80211_tasklet_handler(struct tasklet_struct *t)
+ 	}
+ }
+ 
++static void ieee80211_tasklet_handler(struct tasklet_struct *t)
++{
++	struct ieee80211_local *local = from_tasklet(local, t, tasklet);
++
++	ieee80211_handle_queued_frames(local);
++}
++
+ static void ieee80211_restart_work(struct work_struct *work)
+ {
+ 	struct ieee80211_local *local =
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index a237cbcf7b491..a202be949bfb1 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -1567,6 +1567,8 @@ u32 ieee80211_sta_get_rates(struct ieee80211_sub_if_data *sdata,
+ 
+ void ieee80211_stop_device(struct ieee80211_local *local)
+ {
++	ieee80211_handle_queued_frames(local);
++
+ 	ieee80211_led_radio(local, false);
+ 	ieee80211_mod_tpt_led_trig(local, 0, IEEE80211_TPT_LEDTRIG_FL_RADIO);
+ 
 -- 
 2.43.0
-
-
 
 
