@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-53043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A6290CFE6
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:29:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3854290CFF9
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64351C23BEB
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:29:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B94D283920
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 780D21527B1;
-	Tue, 18 Jun 2024 12:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D4A13AD2F;
+	Tue, 18 Jun 2024 12:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ciQIuNo0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcIGo0cB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3714A14F9E2;
-	Tue, 18 Jun 2024 12:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F6714F108;
+	Tue, 18 Jun 2024 12:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715159; cv=none; b=IfwDWZRbIHTKXCR2ZrId7iqWpN2CcO7+zGWpzUFQHgzN3+9W4ChJ98LKnAuowJhpzbZpSVXzdXCnIdCy4fcplFbNwJL3CFEi1Tfc8ir7oHKqWPBzLQ78PO+81um5p7n0AOi/EyI6DcFfogV9EY3plosrj7fpMtQsRyEXH+zZOGs=
+	t=1718715191; cv=none; b=YrVw3kOrZ5Zg9gKLtTSXuBNVODF2jVfHwZmzH0XcKp/b8CwgHBFVMcx1aFZ5W6p1Z+O8Qd+o3jH3xIzJ6HONj2Yn6had08/4QLSpICOVmBMrFvdtr0ueTSLqqlv4Y23fDQ5BqW7sKbQ8MOu2nmrUgi3NXa9UF2sCrfYq9pJceTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715159; c=relaxed/simple;
-	bh=atJD2C7hlwVIiJSs2U8gZU/h+c0rLfU/jaKFH38sNf0=;
+	s=arc-20240116; t=1718715191; c=relaxed/simple;
+	bh=+rbcOuhNv6LwI5+u9JZmh6al2gEJN58NChxNRs6rh+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6RRXEZ9Q/UZxs9VC3k9/2EAO2y4K5YtjKk6KpzwnhpxOWx1YZd3SdKg89jFIvoJtYcqlw3KsPjcCzUBBR7JeTC4IrX2Pxuhe4IRJBn/CQPyJ+bcYRWMTWQOX5ReOsRQzGRcQKX/WrP9Sfa0e3vVzTI5CP0PrKZs2U1MDWjkc84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ciQIuNo0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0FDC3277B;
-	Tue, 18 Jun 2024 12:52:38 +0000 (UTC)
+	 MIME-Version; b=cXX3M8nI8E/08ahpPijZ0v8HTvQ1htFfFlzmd+PPluro2/R0Rce2/aiQvEudu3O5jUQEfMZiDx3KYrP86y54QVJT6KkGFyVBclA9xJ1OIe8y5FTItQSGZKtRD9YhjPU5LtXkYV+ma8GY8vHqEuFWoQCF6oMT2FWUiW/vpn8jBB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcIGo0cB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49728C3277B;
+	Tue, 18 Jun 2024 12:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715159;
-	bh=atJD2C7hlwVIiJSs2U8gZU/h+c0rLfU/jaKFH38sNf0=;
+	s=korg; t=1718715191;
+	bh=+rbcOuhNv6LwI5+u9JZmh6al2gEJN58NChxNRs6rh+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ciQIuNo025uiDE4V+aD7uFsk6jX6cXj/2d4LyIYewLi2n+yyjsZVx1kdwiOzjyU7c
-	 0ZUh7jNdGrNZLC/UY/8EJiyQd9nIIAZaC95uUf1UmRnGmq5Cdz+/NJxdDLWvE8VgfJ
-	 h7cIfz2flWX5XUV8C7nCqPP5ZWpsx7/rnSLZfpoM=
+	b=dcIGo0cBC5hE56aY/++PYpYZmYZzvWbD7YNAZGIn7mIvHJG6adXmrzOXUK+cU/+Kl
+	 FetQDmE59EipbuU8j0b+IT/xzSVa2QVVkZf+x3XCvfT98pu14+Gt7e7oq/cZCrXuQX
+	 CzNmKomQ3LeJJuZKGBwk961dXFVS3B+rE67Lo+MY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 207/770] NFSD: Update the NFSv3 LINK3res encoder to use struct xdr_stream
-Date: Tue, 18 Jun 2024 14:31:00 +0200
-Message-ID: <20240618123415.267107902@linuxfoundation.org>
+Subject: [PATCH 5.10 208/770] NFSD: Update the NFSv3 FSSTAT3res encoder to use struct xdr_stream
+Date: Tue, 18 Jun 2024 14:31:01 +0200
+Message-ID: <20240618123415.304859740@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,35 +67,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 4d74380a446f75eebb2171687d9b8baf0025bdf1 ]
+[ Upstream commit 8b7044984fd6eeadf72285e3617116bd15e9e676 ]
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3xdr.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/nfsd/nfs3xdr.c | 58 +++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 44 insertions(+), 14 deletions(-)
 
 diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
-index 1d52a69562b82..e159e45574288 100644
+index e159e45574288..e4a569e7216d5 100644
 --- a/fs/nfsd/nfs3xdr.c
 +++ b/fs/nfsd/nfs3xdr.c
-@@ -1128,12 +1128,12 @@ nfs3svc_encode_renameres(struct svc_rqst *rqstp, __be32 *p)
- int
- nfs3svc_encode_linkres(struct svc_rqst *rqstp, __be32 *p)
- {
-+	struct xdr_stream *xdr = &rqstp->rq_res_stream;
- 	struct nfsd3_linkres *resp = rqstp->rq_resp;
+@@ -17,6 +17,13 @@
+ #define NFSDDBG_FACILITY		NFSDDBG_XDR
  
--	*p++ = resp->status;
--	p = encode_post_op_attr(rqstp, p, &resp->fh);
--	p = encode_wcc_data(rqstp, p, &resp->tfh);
--	return xdr_ressize_check(rqstp, p);
-+	return svcxdr_encode_nfsstat3(xdr, resp->status) &&
-+		svcxdr_encode_post_op_attr(rqstp, xdr, &resp->fh) &&
-+		svcxdr_encode_wcc_data(rqstp, xdr, &resp->tfh);
+ 
++/*
++ * Force construction of an empty post-op attr
++ */
++static const struct svc_fh nfs3svc_null_fh = {
++	.fh_no_wcc	= true,
++};
++
+ /*
+  * Mapping of S_IF* types to NFS file types
+  */
+@@ -1392,27 +1399,50 @@ nfs3svc_encode_entry_plus(void *cd, const char *name,
+ 	return encode_entry(cd, name, namlen, offset, ino, d_type, 1);
  }
  
- /* READDIR */
++static bool
++svcxdr_encode_fsstat3resok(struct xdr_stream *xdr,
++			   const struct nfsd3_fsstatres *resp)
++{
++	const struct kstatfs *s = &resp->stats;
++	u64 bs = s->f_bsize;
++	__be32 *p;
++
++	p = xdr_reserve_space(xdr, XDR_UNIT * 13);
++	if (!p)
++		return false;
++	p = xdr_encode_hyper(p, bs * s->f_blocks);	/* total bytes */
++	p = xdr_encode_hyper(p, bs * s->f_bfree);	/* free bytes */
++	p = xdr_encode_hyper(p, bs * s->f_bavail);	/* user available bytes */
++	p = xdr_encode_hyper(p, s->f_files);		/* total inodes */
++	p = xdr_encode_hyper(p, s->f_ffree);		/* free inodes */
++	p = xdr_encode_hyper(p, s->f_ffree);		/* user available inodes */
++	*p = cpu_to_be32(resp->invarsec);		/* mean unchanged time */
++
++	return true;
++}
++
+ /* FSSTAT */
+ int
+ nfs3svc_encode_fsstatres(struct svc_rqst *rqstp, __be32 *p)
+ {
++	struct xdr_stream *xdr = &rqstp->rq_res_stream;
+ 	struct nfsd3_fsstatres *resp = rqstp->rq_resp;
+-	struct kstatfs	*s = &resp->stats;
+-	u64		bs = s->f_bsize;
+ 
+-	*p++ = resp->status;
+-	*p++ = xdr_zero;	/* no post_op_attr */
+-
+-	if (resp->status == 0) {
+-		p = xdr_encode_hyper(p, bs * s->f_blocks);	/* total bytes */
+-		p = xdr_encode_hyper(p, bs * s->f_bfree);	/* free bytes */
+-		p = xdr_encode_hyper(p, bs * s->f_bavail);	/* user available bytes */
+-		p = xdr_encode_hyper(p, s->f_files);	/* total inodes */
+-		p = xdr_encode_hyper(p, s->f_ffree);	/* free inodes */
+-		p = xdr_encode_hyper(p, s->f_ffree);	/* user available inodes */
+-		*p++ = htonl(resp->invarsec);	/* mean unchanged time */
++	if (!svcxdr_encode_nfsstat3(xdr, resp->status))
++		return 0;
++	switch (resp->status) {
++	case nfs_ok:
++		if (!svcxdr_encode_post_op_attr(rqstp, xdr, &nfs3svc_null_fh))
++			return 0;
++		if (!svcxdr_encode_fsstat3resok(xdr, resp))
++			return 0;
++		break;
++	default:
++		if (!svcxdr_encode_post_op_attr(rqstp, xdr, &nfs3svc_null_fh))
++			return 0;
+ 	}
+-	return xdr_ressize_check(rqstp, p);
++
++	return 1;
+ }
+ 
+ /* FSINFO */
 -- 
 2.43.0
 
