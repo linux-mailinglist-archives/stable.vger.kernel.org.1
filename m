@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-53292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B0FF90D100
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:38:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D2B90D106
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:38:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 263061F2120B
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8D601C23EDC
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF6019CD16;
-	Tue, 18 Jun 2024 13:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2478C19D086;
+	Tue, 18 Jun 2024 13:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTxCr9Z6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEaFsjNq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB04157493;
-	Tue, 18 Jun 2024 13:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B3F19D087;
+	Tue, 18 Jun 2024 13:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715897; cv=none; b=ldmfjilxCcjlG2XVddLAEoBu0R7+kt5018YBYRAz4mBDoS0D7R15xF7Lzd21fUwrHXw8l0TywgeDqGE04kQrX22MoafD8vWqDYwu/+JArS5fzHP0bln7jTwQimDGxmHNZaCztYXhqCIPXDP24HxD9nUQXMIdUiv/rrnGeMuWsUM=
+	t=1718715929; cv=none; b=EeexK45BTo2tNFGo+PwhgM0hFZdZ4GdoDHSIQX8jKaWj9unjsz6tVD5GrUG/aQ4unM5LqzoRobXsM7bXM1lQJcJRhM164eakKyxdPEznLwESL2PNvmeqR6z+cNCc2wJuuQgKrt8kzoB+c2Y3P3dPNcH5AyaavE8ZGm1EElKljq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715897; c=relaxed/simple;
-	bh=TQQJgZhJlVSKYKa2syN5oTF6ReGou4KWZPyeI8Fug1g=;
+	s=arc-20240116; t=1718715929; c=relaxed/simple;
+	bh=KgpU5j+8vIgFbMi9+77IT35qea8gnlk3zSqr3K+lfYg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFsxBrQncZF7nOxsw96fMUFNm3jr1ZAykULY3IJCYYRG9xJom68d8DRBUVrRiCHTPa2pxkqEe/znJtZ4Uk9SWz4XDSZuvhONGqjpGhTyArJmrdKiBysafE4xGHTvCDj4MxC9TW21t74uxP+tTpbfbYv7q6omYYmsp0AlYZ0IO4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTxCr9Z6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E728AC3277B;
-	Tue, 18 Jun 2024 13:04:56 +0000 (UTC)
+	 MIME-Version; b=dwNQyY5hvLjOApeZhzzbjWUR9qXxN9KjE5+DKCTmCaYdEZGVTbO/GWMtzmp1SPofZdTFgCHfmBh1OKOTqyux46GJ0oPS+pcfcJDtcqhbrawVNxyYvzPQxJSgi9ZB6K6kwi8Q9X7ij+aNIeHeMByVqWFuT3EheMrWEYWPiBtTT5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEaFsjNq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D306C3277B;
+	Tue, 18 Jun 2024 13:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715897;
-	bh=TQQJgZhJlVSKYKa2syN5oTF6ReGou4KWZPyeI8Fug1g=;
+	s=korg; t=1718715929;
+	bh=KgpU5j+8vIgFbMi9+77IT35qea8gnlk3zSqr3K+lfYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTxCr9Z6Opkq+Re1FZWkGyRZFa3HtLdhFeJ9YcjQLXANmqoIdILK5Ef6G7jKhQx00
-	 KgtL5Q0fbsQjc5lFpjyZnmD9Docg7mqKb+5z4lgc1PvSsHXzUG69Lidoo97O2e0fAz
-	 FRQndymcCPz/dW+QlQEzFYmcrGcGF4B+1LA8PJ0g=
+	b=oEaFsjNqBB9K3BDTWp6CHO/Fgppxn8yrlPYcdRc0iRWs1cNxMwTM++7/50/om6Pdt
+	 paTTyOuZ67Kvx1Q3CVHMfpp2inta9vCbr/+/c/A3hT5YN+m9keSE5wqEz1NCgktiZZ
+	 tFfYccIQp4C7POBW8gZnSWmr/84pdmfIX9zFoUB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Averin <vvs@virtuozzo.com>,
-	Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 446/770] nfsd4: add refcount for nfsd4_blocked_lock
-Date: Tue, 18 Jun 2024 14:34:59 +0200
-Message-ID: <20240618123424.509360510@linuxfoundation.org>
+Subject: [PATCH 5.10 447/770] NFSD: Fix zero-length NFSv3 WRITEs
+Date: Tue, 18 Jun 2024 14:35:00 +0200
+Message-ID: <20240618123424.547216607@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,136 +66,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vasily Averin <vvs@virtuozzo.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 47446d74f1707049067fee038507cdffda805631 ]
+[ Upstream commit 6a2f774424bfdcc2df3e17de0cefe74a4269cad5 ]
 
-nbl allocated in nfsd4_lock can be released by a several ways:
-directly in nfsd4_lock(), via nfs4_laundromat(), via another nfs
-command RELEASE_LOCKOWNER or via nfsd4_callback.
-This structure should be refcounted to be used and released correctly
-in all these cases.
+The Linux NFS server currently responds to a zero-length NFSv3 WRITE
+request with NFS3ERR_IO. It responds to a zero-length NFSv4 WRITE
+with NFS4_OK and count of zero.
 
-Refcount is initialized to 1 during allocation and is incremented
-when nbl is added into nbl_list/nbl_lru lists.
+RFC 1813 says of the WRITE procedure's @count argument:
 
-Usually nbl is linked into both lists together, so only one refcount
-is used for both lists.
+count
+         The number of bytes of data to be written. If count is
+         0, the WRITE will succeed and return a count of 0,
+         barring errors due to permissions checking.
 
-However nfsd4_lock() should keep in mind that nbl can be present
-in one of lists only. This can happen if nbl was handled already
-by nfs4_laundromat/nfsd4_callback/etc.
+RFC 8881 has similar language for NFSv4, though NFSv4 removed the
+explicit @count argument because that value is already contained in
+the opaque payload array.
 
-Refcount is decremented if vfs_lock_file() returns FILE_LOCK_DEFERRED,
-because nbl can be handled already by nfs4_laundromat/nfsd4_callback/etc.
+The synthetic client pynfs's WRT4 and WRT15 tests do emit zero-
+length WRITEs to exercise this spec requirement. Commit fdec6114ee1f
+("nfsd4: zero-length WRITE should succeed") addressed the same
+problem there with the same fix.
 
-Refcount is not changed in find_blocked_lock() because of it reuses counter
-released after removing nbl from lists.
+But interestingly the Linux NFS client does not appear to emit zero-
+length WRITEs, instead squelching them. I'm not aware of a test that
+can generate such WRITEs for NFSv3, so I wrote a naive C program to
+generate a zero-length WRITE and test this fix.
 
-Signed-off-by: Vasily Averin <vvs@virtuozzo.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: 8154ef2776aa ("NFSD: Clean up legacy NFS WRITE argument XDR decoders")
+Reported-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 25 ++++++++++++++++++++++---
- fs/nfsd/state.h     |  1 +
- 2 files changed, 23 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs3proc.c | 6 +-----
+ fs/nfsd/nfsproc.c  | 5 -----
+ 2 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 36ae55fbfbc67..4161a4854c430 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -246,6 +246,7 @@ find_blocked_lock(struct nfs4_lockowner *lo, struct knfsd_fh *fh,
- 	list_for_each_entry(cur, &lo->lo_blocked, nbl_list) {
- 		if (fh_match(fh, &cur->nbl_fh)) {
- 			list_del_init(&cur->nbl_list);
-+			WARN_ON(list_empty(&cur->nbl_lru));
- 			list_del_init(&cur->nbl_lru);
- 			found = cur;
- 			break;
-@@ -271,6 +272,7 @@ find_or_allocate_block(struct nfs4_lockowner *lo, struct knfsd_fh *fh,
- 			INIT_LIST_HEAD(&nbl->nbl_lru);
- 			fh_copy_shallow(&nbl->nbl_fh, fh);
- 			locks_init_lock(&nbl->nbl_lock);
-+			kref_init(&nbl->nbl_kref);
- 			nfsd4_init_cb(&nbl->nbl_cb, lo->lo_owner.so_client,
- 					&nfsd4_cb_notify_lock_ops,
- 					NFSPROC4_CLNT_CB_NOTIFY_LOCK);
-@@ -279,12 +281,21 @@ find_or_allocate_block(struct nfs4_lockowner *lo, struct knfsd_fh *fh,
- 	return nbl;
+diff --git a/fs/nfsd/nfs3proc.c b/fs/nfsd/nfs3proc.c
+index d26271c60ab44..1515c32e08db2 100644
+--- a/fs/nfsd/nfs3proc.c
++++ b/fs/nfsd/nfs3proc.c
+@@ -207,15 +207,11 @@ nfsd3_proc_write(struct svc_rqst *rqstp)
+ 	fh_copy(&resp->fh, &argp->fh);
+ 	resp->committed = argp->stable;
+ 	nvecs = svc_fill_write_vector(rqstp, &argp->payload);
+-	if (!nvecs) {
+-		resp->status = nfserr_io;
+-		goto out;
+-	}
++
+ 	resp->status = nfsd_write(rqstp, &resp->fh, argp->offset,
+ 				  rqstp->rq_vec, nvecs, &cnt,
+ 				  resp->committed, resp->verf);
+ 	resp->count = cnt;
+-out:
+ 	return rpc_success;
  }
  
-+static void
-+free_nbl(struct kref *kref)
-+{
-+	struct nfsd4_blocked_lock *nbl;
-+
-+	nbl = container_of(kref, struct nfsd4_blocked_lock, nbl_kref);
-+	kfree(nbl);
-+}
-+
- static void
- free_blocked_lock(struct nfsd4_blocked_lock *nbl)
- {
- 	locks_delete_block(&nbl->nbl_lock);
- 	locks_release_private(&nbl->nbl_lock);
--	kfree(nbl);
-+	kref_put(&nbl->nbl_kref, free_nbl);
+diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
+index 8ee329bc3815d..0a2bab7ef33c9 100644
+--- a/fs/nfsd/nfsproc.c
++++ b/fs/nfsd/nfsproc.c
+@@ -235,10 +235,6 @@ nfsd_proc_write(struct svc_rqst *rqstp)
+ 		argp->len, argp->offset);
+ 
+ 	nvecs = svc_fill_write_vector(rqstp, &argp->payload);
+-	if (!nvecs) {
+-		resp->status = nfserr_io;
+-		goto out;
+-	}
+ 
+ 	resp->status = nfsd_write(rqstp, fh_copy(&resp->fh, &argp->fh),
+ 				  argp->offset, rqstp->rq_vec, nvecs,
+@@ -247,7 +243,6 @@ nfsd_proc_write(struct svc_rqst *rqstp)
+ 		resp->status = fh_getattr(&resp->fh, &resp->stat);
+ 	else if (resp->status == nfserr_jukebox)
+ 		return rpc_drop_reply;
+-out:
+ 	return rpc_success;
  }
  
- static void
-@@ -302,6 +313,7 @@ remove_blocked_locks(struct nfs4_lockowner *lo)
- 					struct nfsd4_blocked_lock,
- 					nbl_list);
- 		list_del_init(&nbl->nbl_list);
-+		WARN_ON(list_empty(&nbl->nbl_lru));
- 		list_move(&nbl->nbl_lru, &reaplist);
- 	}
- 	spin_unlock(&nn->blocked_locks_lock);
-@@ -7029,6 +7041,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		spin_lock(&nn->blocked_locks_lock);
- 		list_add_tail(&nbl->nbl_list, &lock_sop->lo_blocked);
- 		list_add_tail(&nbl->nbl_lru, &nn->blocked_locks_lru);
-+		kref_get(&nbl->nbl_kref);
- 		spin_unlock(&nn->blocked_locks_lock);
- 	}
- 
-@@ -7041,6 +7054,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 			nn->somebody_reclaimed = true;
- 		break;
- 	case FILE_LOCK_DEFERRED:
-+		kref_put(&nbl->nbl_kref, free_nbl);
- 		nbl = NULL;
- 		fallthrough;
- 	case -EAGAIN:		/* conflock holds conflicting lock */
-@@ -7061,8 +7075,13 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		/* dequeue it if we queued it before */
- 		if (fl_flags & FL_SLEEP) {
- 			spin_lock(&nn->blocked_locks_lock);
--			list_del_init(&nbl->nbl_list);
--			list_del_init(&nbl->nbl_lru);
-+			if (!list_empty(&nbl->nbl_list) &&
-+			    !list_empty(&nbl->nbl_lru)) {
-+				list_del_init(&nbl->nbl_list);
-+				list_del_init(&nbl->nbl_lru);
-+				kref_put(&nbl->nbl_kref, free_nbl);
-+			}
-+			/* nbl can use one of lists to be linked to reaplist */
- 			spin_unlock(&nn->blocked_locks_lock);
- 		}
- 		free_blocked_lock(nbl);
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index 6eb3c7157214b..95457cfd37fc0 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -633,6 +633,7 @@ struct nfsd4_blocked_lock {
- 	struct file_lock	nbl_lock;
- 	struct knfsd_fh		nbl_fh;
- 	struct nfsd4_callback	nbl_cb;
-+	struct kref		nbl_kref;
- };
- 
- struct nfsd4_compound_state;
 -- 
 2.43.0
 
