@@ -1,243 +1,197 @@
-Return-Path: <stable+bounces-53588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A4290D28D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:50:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C6490CCD9
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D96DF286344
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BCB11C21D05
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25691AD3E1;
-	Tue, 18 Jun 2024 13:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7523719EEDC;
+	Tue, 18 Jun 2024 12:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ewwXdTe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RB4Tyu7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BA413D528;
-	Tue, 18 Jun 2024 13:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3029019EEC8;
+	Tue, 18 Jun 2024 12:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716774; cv=none; b=UFUeo9DIccOCJNf0gI0N8Tiiarky1HVSnl6dfd2xsfoZySnUiW5ljSpHlXFe90GyNdMH1NltTYk0M56k5TT0fVm/hMui4w7QWpKThBFrKIYfYdgPIc+1S9ZU7nyXNHf2Ph1VlMSg4MJMFas6QuSrSinhuEWk2uCiuZ7ysRdjAFo=
+	t=1718714426; cv=none; b=FrR7rMRwKpSjz5E8xgvim0Sr8iBJkYk+PXLGNij5261aBmwQ89Y9yXjelJTpNH3vdOPsmyYKAxeEHNyuOl0+tYFyGOR8qJ7/iCVnuFD9NdLdkJV0OFEixm9MQ9iuJw7twnYNhdVBG05HjBmrUxg+00jNpSrGao0G9PMrz/UxbQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716774; c=relaxed/simple;
-	bh=ngdEodPDGZzNtO7hSQitlR5dxFXancfrV5HUI07mel4=;
+	s=arc-20240116; t=1718714426; c=relaxed/simple;
+	bh=euyVOrsIbNVe9ztIPQRpZo/xRYD1RMWD9/XqSLwatWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rt121mJJl8OgSJtEmENfDjywVCnFkVNaYwMObvaDmebHIcNKup3MK5NyjNf2LPCRig+YFb28iB24lTatVz+u7dwie2hW8tTJ678vKX3lYtvptvqPDeqqTA7CZZuaUUP6RbcKF5oXAJ2PU1AmdNFIMedK5C1h8Zi24QhpBIdmQy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ewwXdTe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5385C3277B;
-	Tue, 18 Jun 2024 13:19:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716774;
-	bh=ngdEodPDGZzNtO7hSQitlR5dxFXancfrV5HUI07mel4=;
+	 MIME-Version; b=qYzaaCw4UKt9HpVrXAEimmQocSKwRKCmxtwMOnKB6Rljim6/EItKGe7R/PhV1FifHBaWxpfAtjSdWpLmj/AdgQwTyHE1Xsne5oFwoCmRkhPtLXu7gahu8GkL+LVJ/tUGG9WunLvdZcFiDXXjJEeu5TusuRdSO2GJHJa3exasdH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RB4Tyu7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF40FC4AF1D;
+	Tue, 18 Jun 2024 12:40:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714426;
+	bh=euyVOrsIbNVe9ztIPQRpZo/xRYD1RMWD9/XqSLwatWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ewwXdTe0bVj7h7xk+Bl+dfwQnk1mCDmZQBoVLJvGrz1bIhr0iNKq4HERsiDYGnEm
-	 5v3zMiHsWIIa0t61kAoa2Nvbl/sELdXOJQnAVj4lEI9c1g6BS/HX/d0CoJpkH4h9Nu
-	 xVrw9hDnqj6fvsoYnX30jfWvhr6i/mSftn3oxTLM=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 717/770] NFSD: add support for sending CB_RECALL_ANY
-Date: Tue, 18 Jun 2024 14:39:30 +0200
-Message-ID: <20240618123434.947602792@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=RB4Tyu7O5S+4O94k63MNm1VatNRzSm8mAAaFDE+DlqOTZjvyIS4csDEYUcMxIiwff
+	 iR5zdM5N2JG/ft+XgLJzvRxWz/JG49u9XzyJM9ZS/yfnV4QhsFAQESrooVlIlTYSA9
+	 cvGk3OXvfGNwBKxgK4pXoU7n5tIRNsznHFYCDEnjja0ydBT/b/kXXRXHY33ujrIAiG
+	 rbt4MjSw2p+TMsVVD1rBrqIu6NXFi0gGcsxerpGMKBrtyJmLJ339IEkBcqNoYj7k71
+	 pOXiqPv5K+JqzNPe6rP8aExYhB2kAy7baB/aoNQxkqwd7RW6ztZql/d4K9icNeiutO
+	 JD1dvgcXqXwBw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	jhasan@marvell.com,
+	GR-QLogic-Storage-Upstream@marvell.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 04/29] scsi: qedf: Wait for stag work during unload
+Date: Tue, 18 Jun 2024 08:39:30 -0400
+Message-ID: <20240618124018.3303162-4-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
+References: <20240618124018.3303162-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Saurav Kashyap <skashyap@marvell.com>
 
-------------------
+[ Upstream commit 78e88472b60936025b83eba57cffa59d3501dc07 ]
 
-From: Dai Ngo <dai.ngo@oracle.com>
+If stag work is already scheduled and unload is called, it can lead to
+issues as unload cleans up the work element. Wait for stag work to get
+completed before cleanup during unload.
 
-[ Upstream commit 3959066b697b5dfbb7141124ae9665337d4bc638 ]
-
-Add XDR encode and decode function for CB_RECALL_ANY.
-
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240515091101.18754-3-skashyap@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4callback.c | 72 ++++++++++++++++++++++++++++++++++++++++++
- fs/nfsd/state.h        |  1 +
- fs/nfsd/xdr4.h         |  5 +++
- fs/nfsd/xdr4cb.h       |  6 ++++
- 4 files changed, 84 insertions(+)
+ drivers/scsi/qedf/qedf.h      |  1 +
+ drivers/scsi/qedf/qedf_main.c | 30 +++++++++++++++++++++++++++---
+ 2 files changed, 28 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfsd/nfs4callback.c b/fs/nfsd/nfs4callback.c
-index 39989c14c8a1e..4eae2c5af2edf 100644
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -76,6 +76,17 @@ static __be32 *xdr_encode_empty_array(__be32 *p)
-  * 1 Protocol"
-  */
+diff --git a/drivers/scsi/qedf/qedf.h b/drivers/scsi/qedf/qedf.h
+index c5c0bbdafc4ea..81b84757faae0 100644
+--- a/drivers/scsi/qedf/qedf.h
++++ b/drivers/scsi/qedf/qedf.h
+@@ -362,6 +362,7 @@ struct qedf_ctx {
+ #define QEDF_IN_RECOVERY		5
+ #define QEDF_DBG_STOP_IO		6
+ #define QEDF_PROBING			8
++#define QEDF_STAG_IN_PROGRESS		9
+ 	unsigned long flags; /* Miscellaneous state flags */
+ 	int fipvlan_retries;
+ 	u8 num_queues;
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index 27f4028bff3bf..524807f9f4eb1 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -318,11 +318,18 @@ static struct fc_seq *qedf_elsct_send(struct fc_lport *lport, u32 did,
+ 	 */
+ 	if (resp == fc_lport_flogi_resp) {
+ 		qedf->flogi_cnt++;
++		qedf->flogi_pending++;
++
++		if (test_bit(QEDF_UNLOADING, &qedf->flags)) {
++			QEDF_ERR(&qedf->dbg_ctx, "Driver unloading\n");
++			qedf->flogi_pending = 0;
++		}
++
+ 		if (qedf->flogi_pending >= QEDF_FLOGI_RETRY_CNT) {
+ 			schedule_delayed_work(&qedf->stag_work, 2);
+ 			return NULL;
+ 		}
+-		qedf->flogi_pending++;
++
+ 		return fc_elsct_send(lport, did, fp, op, qedf_flogi_resp,
+ 		    arg, timeout);
+ 	}
+@@ -911,13 +918,14 @@ void qedf_ctx_soft_reset(struct fc_lport *lport)
+ 	struct qedf_ctx *qedf;
+ 	struct qed_link_output if_link;
  
-+static void encode_uint32(struct xdr_stream *xdr, u32 n)
-+{
-+	WARN_ON_ONCE(xdr_stream_encode_u32(xdr, n) < 0);
-+}
++	qedf = lport_priv(lport);
 +
-+static void encode_bitmap4(struct xdr_stream *xdr, const __u32 *bitmap,
-+			   size_t len)
-+{
-+	WARN_ON_ONCE(xdr_stream_encode_uint32_array(xdr, bitmap, len) < 0);
-+}
-+
- /*
-  *	nfs_cb_opnum4
-  *
-@@ -328,6 +339,24 @@ static void encode_cb_recall4args(struct xdr_stream *xdr,
- 	hdr->nops++;
+ 	if (lport->vport) {
++		clear_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
+ 		printk_ratelimited("Cannot issue host reset on NPIV port.\n");
+ 		return;
+ 	}
+ 
+-	qedf = lport_priv(lport);
+-
+ 	qedf->flogi_pending = 0;
+ 	/* For host reset, essentially do a soft link up/down */
+ 	atomic_set(&qedf->link_state, QEDF_LINK_DOWN);
+@@ -937,6 +945,7 @@ void qedf_ctx_soft_reset(struct fc_lport *lport)
+ 	if (!if_link.link_up) {
+ 		QEDF_INFO(&qedf->dbg_ctx, QEDF_LOG_DISC,
+ 			  "Physical link is not up.\n");
++		clear_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
+ 		return;
+ 	}
+ 	/* Flush and wait to make sure link down is processed */
+@@ -949,6 +958,7 @@ void qedf_ctx_soft_reset(struct fc_lport *lport)
+ 		  "Queue link up work.\n");
+ 	queue_delayed_work(qedf->link_update_wq, &qedf->link_update,
+ 	    0);
++	clear_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
  }
  
-+/*
-+ * CB_RECALLANY4args
-+ *
-+ *	struct CB_RECALLANY4args {
-+ *		uint32_t	craa_objects_to_keep;
-+ *		bitmap4		craa_type_mask;
-+ *	};
-+ */
-+static void
-+encode_cb_recallany4args(struct xdr_stream *xdr,
-+	struct nfs4_cb_compound_hdr *hdr, struct nfsd4_cb_recall_any *ra)
-+{
-+	encode_nfs_cb_opnum4(xdr, OP_CB_RECALL_ANY);
-+	encode_uint32(xdr, ra->ra_keep);
-+	encode_bitmap4(xdr, ra->ra_bmval, ARRAY_SIZE(ra->ra_bmval));
-+	hdr->nops++;
-+}
+ /* Reset the host by gracefully logging out and then logging back in */
+@@ -3725,6 +3735,7 @@ static void __qedf_remove(struct pci_dev *pdev, int mode)
+ {
+ 	struct qedf_ctx *qedf;
+ 	int rc;
++	int cnt = 0;
+ 
+ 	if (!pdev) {
+ 		QEDF_ERR(NULL, "pdev is NULL.\n");
+@@ -3742,6 +3753,17 @@ static void __qedf_remove(struct pci_dev *pdev, int mode)
+ 		return;
+ 	}
+ 
++stag_in_prog:
++	if (test_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags)) {
++		QEDF_ERR(&qedf->dbg_ctx, "Stag in progress, cnt=%d.\n", cnt);
++		cnt++;
 +
- /*
-  * CB_SEQUENCE4args
-  *
-@@ -482,6 +511,26 @@ static void nfs4_xdr_enc_cb_recall(struct rpc_rqst *req, struct xdr_stream *xdr,
- 	encode_cb_nops(&hdr);
- }
- 
-+/*
-+ * 20.6. Operation 8: CB_RECALL_ANY - Keep Any N Recallable Objects
-+ */
-+static void
-+nfs4_xdr_enc_cb_recall_any(struct rpc_rqst *req,
-+		struct xdr_stream *xdr, const void *data)
-+{
-+	const struct nfsd4_callback *cb = data;
-+	struct nfsd4_cb_recall_any *ra;
-+	struct nfs4_cb_compound_hdr hdr = {
-+		.ident = cb->cb_clp->cl_cb_ident,
-+		.minorversion = cb->cb_clp->cl_minorversion,
-+	};
++		if (cnt < 5) {
++			msleep(500);
++			goto stag_in_prog;
++		}
++	}
 +
-+	ra = container_of(cb, struct nfsd4_cb_recall_any, ra_cb);
-+	encode_cb_compound4args(xdr, &hdr);
-+	encode_cb_sequence4args(xdr, cb, &hdr);
-+	encode_cb_recallany4args(xdr, &hdr, ra);
-+	encode_cb_nops(&hdr);
-+}
+ 	if (mode != QEDF_MODE_RECOVERY)
+ 		set_bit(QEDF_UNLOADING, &qedf->flags);
  
- /*
-  * NFSv4.0 and NFSv4.1 XDR decode functions
-@@ -520,6 +569,28 @@ static int nfs4_xdr_dec_cb_recall(struct rpc_rqst *rqstp,
- 	return decode_cb_op_status(xdr, OP_CB_RECALL, &cb->cb_status);
- }
+@@ -4017,6 +4039,8 @@ void qedf_stag_change_work(struct work_struct *work)
+ 		return;
+ 	}
  
-+/*
-+ * 20.6. Operation 8: CB_RECALL_ANY - Keep Any N Recallable Objects
-+ */
-+static int
-+nfs4_xdr_dec_cb_recall_any(struct rpc_rqst *rqstp,
-+				  struct xdr_stream *xdr,
-+				  void *data)
-+{
-+	struct nfsd4_callback *cb = data;
-+	struct nfs4_cb_compound_hdr hdr;
-+	int status;
++	set_bit(QEDF_STAG_IN_PROGRESS, &qedf->flags);
 +
-+	status = decode_cb_compound4res(xdr, &hdr);
-+	if (unlikely(status))
-+		return status;
-+	status = decode_cb_sequence4res(xdr, cb);
-+	if (unlikely(status || cb->cb_seq_status))
-+		return status;
-+	status =  decode_cb_op_status(xdr, OP_CB_RECALL_ANY, &cb->cb_status);
-+	return status;
-+}
-+
- #ifdef CONFIG_NFSD_PNFS
- /*
-  * CB_LAYOUTRECALL4args
-@@ -783,6 +854,7 @@ static const struct rpc_procinfo nfs4_cb_procedures[] = {
- #endif
- 	PROC(CB_NOTIFY_LOCK,	COMPOUND,	cb_notify_lock,	cb_notify_lock),
- 	PROC(CB_OFFLOAD,	COMPOUND,	cb_offload,	cb_offload),
-+	PROC(CB_RECALL_ANY,	COMPOUND,	cb_recall_any,	cb_recall_any),
- };
- 
- static unsigned int nfs4_cb_counts[ARRAY_SIZE(nfs4_cb_procedures)];
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index eadd7f465bf52..e30882f8b8516 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -636,6 +636,7 @@ enum nfsd4_cb_op {
- 	NFSPROC4_CLNT_CB_OFFLOAD,
- 	NFSPROC4_CLNT_CB_SEQUENCE,
- 	NFSPROC4_CLNT_CB_NOTIFY_LOCK,
-+	NFSPROC4_CLNT_CB_RECALL_ANY,
- };
- 
- /* Returns true iff a is later than b: */
-diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index 8f323d9071f06..24934cf90a84f 100644
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -896,6 +896,11 @@ struct nfsd4_operation {
- 			union nfsd4_op_u *);
- };
- 
-+struct nfsd4_cb_recall_any {
-+	struct nfsd4_callback	ra_cb;
-+	u32			ra_keep;
-+	u32			ra_bmval[1];
-+};
- 
- #endif
- 
-diff --git a/fs/nfsd/xdr4cb.h b/fs/nfsd/xdr4cb.h
-index 547cf07cf4e08..0d39af1b00a0f 100644
---- a/fs/nfsd/xdr4cb.h
-+++ b/fs/nfsd/xdr4cb.h
-@@ -48,3 +48,9 @@
- #define NFS4_dec_cb_offload_sz		(cb_compound_dec_hdr_sz  +      \
- 					cb_sequence_dec_sz +            \
- 					op_dec_sz)
-+#define NFS4_enc_cb_recall_any_sz	(cb_compound_enc_hdr_sz +       \
-+					cb_sequence_enc_sz +            \
-+					1 + 1 + 1)
-+#define NFS4_dec_cb_recall_any_sz	(cb_compound_dec_hdr_sz  +      \
-+					cb_sequence_dec_sz +            \
-+					op_dec_sz)
+ 	printk_ratelimited("[%s]:[%s:%d]:%d: Performing software context reset.",
+ 			dev_name(&qedf->pdev->dev), __func__, __LINE__,
+ 			qedf->dbg_ctx.host_no);
 -- 
 2.43.0
-
-
 
 
