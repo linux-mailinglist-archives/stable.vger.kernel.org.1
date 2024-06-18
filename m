@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-52831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017DA90CEB2
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:18:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B24F90CEB7
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:19:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16A051C225B6
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:18:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 550971F21AD4
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8325A1B9ABF;
-	Tue, 18 Jun 2024 12:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6AA1BA06E;
+	Tue, 18 Jun 2024 12:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jUMSkd+B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MH+0Fg+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401D71B9AB6;
-	Tue, 18 Jun 2024 12:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C1C1BA060;
+	Tue, 18 Jun 2024 12:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714585; cv=none; b=MM804pCaWT88OwwcC6kjU/skFkQor+a/dtlLMFEKR5j2EX0RQj4+p1PHkK/dfj4OqtRBC5uk8nePDCYOBhwl6EhKRcnyJjdD1MDC/V5VZwKdj54kojLLnqs7mwZTaouO3qHbYSohMU5KKsHJAJn1EOFGAWZzckRnYi4YwGfweWE=
+	t=1718714587; cv=none; b=M8fxfTwKojFAJAHtTo+F9HAvUR2f3I7vmuXkZzOdPB6FLQvmzyfDwrxOFxqADrNeKyQ9IvQ57VCGP6CShXoXKsWNGDKvjJWtgH8nYEZ62MuKFM2/F0qZSwOwtdKj0V6sKefN7e87+Nrfk8xAcAt2gds3vk6RUxgarkuLczTSK3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714585; c=relaxed/simple;
-	bh=W3cbnYQ/eEHVdfJULh66GP6lhxsfzrBzxB40bktSZbU=;
+	s=arc-20240116; t=1718714587; c=relaxed/simple;
+	bh=udfluiMSrKjfX3TcpaFiU7kSgo+DhoGkY4CHIyY9NPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sj0HWvQQoFhmbqmNlkkO6UNTEjEHWQG9lNr3tC2PdIKOs7X0w7aDQTUSfUHHAcMpTp7E/TrV1OyWK5bWNBC7dmhRJIcCckUK4K8O5KOKul3L5+xLLAA+C+a9xaU/gNltxBjZIDj+UFJFlSVNMPynnGmkWniFMBy/y1DBUdYxqE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jUMSkd+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485C6C3277B;
-	Tue, 18 Jun 2024 12:43:04 +0000 (UTC)
+	 MIME-Version; b=pXBp8XiHnEP+kAn3QrYQ9VV3xyIGeQncegMVHdlW/hIzzzqPCfL6UtXSswrXjUR95Y7saPUI0cyJNA+QofMjWbw31NZCpJU0nU1SaL1xs7wMgP8I49jztWgmlujS/feVUsaSwSZpuJZit8xFLvbkUHAP9JchA+z/1wUeg9BdVYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MH+0Fg+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DF2C3277B;
+	Tue, 18 Jun 2024 12:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714585;
-	bh=W3cbnYQ/eEHVdfJULh66GP6lhxsfzrBzxB40bktSZbU=;
+	s=k20201202; t=1718714586;
+	bh=udfluiMSrKjfX3TcpaFiU7kSgo+DhoGkY4CHIyY9NPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jUMSkd+BuP6NbwRzqTLppheepsf1r/mZid1iGasRTJj88cmzN3RQEoHWfX1/zmY5F
-	 vcAKpqGohlfe6/z+aujBCWAXfOKS+ZSonNihJ3LMaJj25/JzJItfH63tgbGQpCXmLR
-	 7RfZ47rZmsYg/M4cJEyIs+ZvjRdoRgmzDiSNPvP7huuCcX5SG2p94BPdxDNI8V6dvm
-	 gispOAfI+X0oGR+f1hgkrOkAJpUIoW+UkPUBdpTw8VtDJ21VEy1pMq9mfr1uRL5KcL
-	 /lNt2aJSyicKusI1IQY4ipCf6nslGZXYkcQOVndTjyT+Vi5j94MD9SxppIUoFDFRix
-	 ASvm7LikCGbdw==
+	b=MH+0Fg+GvtY9VZUvsfCllUIA0NZUz6RZiqz/7CY1uUPy2fO4nKZIEcDBigYXaCnaq
+	 q5FDJfoPsM0jTyYQSky4VVnYRIZcqj49PX50Snod2y+SHLGO/qls1vd3p6T4+BzFPJ
+	 CEiCD1ixz+vcOnCgDAommflK/5pwUU/sSgLhNxW3lCC4LzfRnnuWLfjFfwfQMkNuMw
+	 hoqT/SYPW4JWJh5twGQtdjpfVmwqoRv16ZELNkzSgMPSqXunGXDu+QdI1naJTk7W0y
+	 1AHtYCHuE9PgS1AVdNfUfEyi+2VJJCPR3INmF0glDPXBkmAcaqUUU/94dDyrF3Omij
+	 iYXq+LXpYQHdw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Nicolas Escande <nico.escande@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 3/9] ACPI: EC: Avoid returning AE_OK on errors in address space handler
-Date: Tue, 18 Jun 2024 08:42:51 -0400
-Message-ID: <20240618124300.3304600-3-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 4/9] wifi: mac80211: mesh: init nonpeer_pm to active by default in mesh sdata
+Date: Tue, 18 Jun 2024 08:42:52 -0400
+Message-ID: <20240618124300.3304600-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240618124300.3304600-1-sashal@kernel.org>
 References: <20240618124300.3304600-1-sashal@kernel.org>
@@ -66,41 +71,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.278
 Content-Transfer-Encoding: 8bit
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
+[ Upstream commit 6f6291f09a322c1c1578badac8072d049363f4e6 ]
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
-returned by acpi_ec_space_handler().
+With a ath9k device I can see that:
+	iw phy phy0 interface add mesh0 type mp
+	ip link set mesh0 up
+	iw dev mesh0 scan
 
-Fix this by only returning AE_OK on success, and return AE_ERROR
-otherwise.
+Will start a scan with the Power Management bit set in the Frame Control Field.
+This is because we set this bit depending on the nonpeer_pm variable of the mesh
+iface sdata and when there are no active links on the interface it remains to
+NL80211_MESH_POWER_UNKNOWN.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+As soon as links starts to be established, it wil switch to
+NL80211_MESH_POWER_ACTIVE as it is the value set by befault on the per sta
+nonpeer_pm field.
+As we want no power save by default, (as expressed with the per sta ini values),
+lets init it to the expected default value of NL80211_MESH_POWER_ACTIVE.
+
+Also please note that we cannot change the default value from userspace prior to
+establishing a link as using NL80211_CMD_SET_MESH_CONFIG will not work before
+NL80211_CMD_JOIN_MESH has been issued. So too late for our initial scan.
+
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Link: https://msgid.link/20240527141759.299411-1-nico.escande@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/mesh.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 43a8941b6743d..142578451e381 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1328,8 +1328,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
- }
- 
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index 36978a0e50001..c2d1addaa7ccc 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -1525,6 +1525,7 @@ void ieee80211_mesh_init_sdata(struct ieee80211_sub_if_data *sdata)
+ 	ifmsh->last_preq = jiffies;
+ 	ifmsh->next_perr = jiffies;
+ 	ifmsh->csa_role = IEEE80211_MESH_CSA_ROLE_NONE;
++	ifmsh->nonpeer_pm = NL80211_MESH_POWER_ACTIVE;
+ 	/* Allocate all mesh structures when creating the first mesh interface. */
+ 	if (!mesh_allocated)
+ 		ieee80211s_init();
 -- 
 2.43.0
 
