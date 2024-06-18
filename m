@@ -1,117 +1,248 @@
-Return-Path: <stable+bounces-52712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C3C090CC46
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:47:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC3690D10B
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:38:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 198221F227C4
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:47:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3453D287D48
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E768E15F412;
-	Tue, 18 Jun 2024 12:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A7819D074;
+	Tue, 18 Jun 2024 13:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOI6K04n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBCvLUP4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A143115F303;
-	Tue, 18 Jun 2024 12:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41489157A4D;
+	Tue, 18 Jun 2024 13:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714267; cv=none; b=hmX5AOAfo62WRCaTXbyn5Dk9BaqnTtiy45R58vrgTLneZ60dIbTUmaXHKD7MbLF19EfnJ0Hpq+eoUXOgXgNBP+uovcNEUxetoFwQjCvro8ffJRzCoKFbxEKr2SESVwE6TPVpjgNB7P97lvVGiXwl/BSY7x2/shuIlhUQGEXlRJU=
+	t=1718715912; cv=none; b=k5nlj1HTF6FvWAhq9IPaTtQzd01x54gmJgn2dew4R37TMSxcq/efe/wwLBnEEXN1I4x/IM98KWO5ACgo4pO9kighPgBE+Ofa+GB79hCtnJ7NsHa5NPoOygyPvEy0M//6cH6HSacgVjvBOBOUP2sOO9vWhyx61hAt8IDxGjLHCSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714267; c=relaxed/simple;
-	bh=d5mtkQ4TSwEAW5aa2LmAOY5L8+c2WljHzZG5/10rc2o=;
+	s=arc-20240116; t=1718715912; c=relaxed/simple;
+	bh=8TymIPl6h31Ypoqd8tEUIcUC1OX1pwf0QM/5BCdEXWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPotJ+77+RbE1s5+NLSOqzDRD+BYrQVZRcv0fBUwiTwV1SJBfHPlNBXnVm9SwDUYc3d9pWdyIna4Vo043Rh14sAlXtuhYus6mHbCtPuLLElPWAZ0JrhM3DxLS01WxgLkqgAXJIg395P1tefEMSR2eNNtZs8JxiXhH2y0lFrwQ7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOI6K04n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0770C3277B;
-	Tue, 18 Jun 2024 12:37:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714266;
-	bh=d5mtkQ4TSwEAW5aa2LmAOY5L8+c2WljHzZG5/10rc2o=;
+	 MIME-Version; b=Ud+zWbpgGrZgPDWEzPQbdZEVziRxdEx/z5lVV0dHPgcGX8y89eG/tm0/AEwMNQESYKmqO4CfsuBb8Prxld1Cf8KuVauFPo4ukJnYEb6ibtZ5zHw97Uh1KOOBgMyps6quWGyiIOCTgeDDOHQHOLYR7bp1VZI7IHweofWkL17kOPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBCvLUP4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4CFC32786;
+	Tue, 18 Jun 2024 13:05:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715911;
+	bh=8TymIPl6h31Ypoqd8tEUIcUC1OX1pwf0QM/5BCdEXWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EOI6K04n66M4sXI8qkxzDsgZX/GQwRV+i9ZePMxba0eSjng5J76HazvufxxnsZ7B7
-	 GyG5fkfrjZmQs5mL07hoEzLxoMcXjvX2ok6grY8rE41ggJLmQt2gFDqf25A7dq0nPw
-	 W1AyHhtOKQZirYQGAgw8fj934g8jl8duqX5xXkHit6saJw2jaTLIO8oIXsoKeOyzU8
-	 GUm/L2b8QFqQOEYaFILg6Ss/AuvhvkzbCq6P1YrRzby3UZvG32/vF/nl/5lSIE0wgf
-	 5yI067e2e+nquSO7TMkgNpl9M/fbpzNUN0MhqyIHQb5Xbf4UL/LcPSJ9NIkmi7hnna
-	 h5bCr4cWvooEQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Andreas Hindborg <a.hindborg@samsung.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>,
-	dlemoal@kernel.org,
-	hare@suse.de,
-	johannes.thumshirn@wdc.com,
-	kch@nvidia.com,
-	zhouchengming@bytedance.com,
-	yanjun.zhu@linux.dev,
-	yukuai3@huawei.com,
-	shinichiro.kawasaki@wdc.com,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 39/44] null_blk: fix validation of block size
-Date: Tue, 18 Jun 2024 08:35:20 -0400
-Message-ID: <20240618123611.3301370-39-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=wBCvLUP42ik1Knqr3wBzL7XRoCaEUN1bAlHa7A4Z67kussetSp27JlZmAzP+1iSQz
+	 lXmnR5gQjqbBGMg0qO9FH52Rq4RVaUksDWsRsX/BrZMNMhZjyDAHKxtGbUwk/uDqFx
+	 CSP4OpLE/LL9XIA1uyXFuttnAZ2aSpGkpuDT5TLc=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Dan Aloni <dan.aloni@vastdata.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Bruce Fields <bfields@fieldses.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 468/770] NFSD: COMMIT operations must not return NFS?ERR_INVAL
+Date: Tue, 18 Jun 2024 14:35:21 +0200
+Message-ID: <20240618123425.380800541@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit c462ecd659b5fce731f1d592285832fd6ad54053 ]
+------------------
 
-Block size should be between 512 and PAGE_SIZE and be a power of 2. The current
-check does not validate this, so update the check.
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Without this patch, null_blk would Oops due to a null pointer deref when
-loaded with bs=1536 [1].
+[ Upstream commit 3f965021c8bc38965ecb1924f570c4842b33d408 ]
 
-Link: https://lore.kernel.org/all/87wmn8mocd.fsf@metaspace.dk/
+Since, well, forever, the Linux NFS server's nfsd_commit() function
+has returned nfserr_inval when the passed-in byte range arguments
+were non-sensical.
 
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240603192645.977968-1-nmi@metaspace.dk
-[axboe: remove unnecessary braces and != 0 check]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+However, according to RFC 1813 section 3.3.21, NFSv3 COMMIT requests
+are permitted to return only the following non-zero status codes:
+
+      NFS3ERR_IO
+      NFS3ERR_STALE
+      NFS3ERR_BADHANDLE
+      NFS3ERR_SERVERFAULT
+
+NFS3ERR_INVAL is not included in that list. Likewise, NFS4ERR_INVAL
+is not listed in the COMMIT row of Table 6 in RFC 8881.
+
+RFC 7530 does permit COMMIT to return NFS4ERR_INVAL, but does not
+specify when it can or should be used.
+
+Instead of dropping or failing a COMMIT request in a byte range that
+is not supported, turn it into a valid request by treating one or
+both arguments as zero. Offset zero means start-of-file, count zero
+means until-end-of-file, so we only ever extend the commit range.
+NFS servers are always allowed to commit more and sooner than
+requested.
+
+The range check is no longer bounded by NFS_OFFSET_MAX, but rather
+by the value that is returned in the maxfilesize field of the NFSv3
+FSINFO procedure or the NFSv4 maxfilesize file attribute.
+
+Note that this change results in a new pynfs failure:
+
+CMT4     st_commit.testCommitOverflow                             : RUNNING
+CMT4     st_commit.testCommitOverflow                             : FAILURE
+           COMMIT with offset + count overflow should return
+           NFS4ERR_INVAL, instead got NFS4_OK
+
+IMO the test is not correct as written: RFC 8881 does not allow the
+COMMIT operation to return NFS4ERR_INVAL.
+
+Reported-by: Dan Aloni <dan.aloni@vastdata.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Bruce Fields <bfields@fieldses.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs3proc.c |  6 ------
+ fs/nfsd/vfs.c      | 53 +++++++++++++++++++++++++++++++---------------
+ fs/nfsd/vfs.h      |  4 ++--
+ 3 files changed, 38 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 620679a0ac381..26e2c22a87e1c 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -1810,8 +1810,8 @@ static int null_validate_conf(struct nullb_device *dev)
- 		dev->queue_mode = NULL_Q_MQ;
- 	}
+diff --git a/fs/nfsd/nfs3proc.c b/fs/nfsd/nfs3proc.c
+index b540489ea240d..936eebd4c56dc 100644
+--- a/fs/nfsd/nfs3proc.c
++++ b/fs/nfsd/nfs3proc.c
+@@ -660,15 +660,9 @@ nfsd3_proc_commit(struct svc_rqst *rqstp)
+ 				argp->count,
+ 				(unsigned long long) argp->offset);
  
--	dev->blocksize = round_down(dev->blocksize, 512);
--	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
-+	if (blk_validate_block_size(dev->blocksize))
-+		return -EINVAL;
+-	if (argp->offset > NFS_OFFSET_MAX) {
+-		resp->status = nfserr_inval;
+-		goto out;
+-	}
+-
+ 	fh_copy(&resp->fh, &argp->fh);
+ 	resp->status = nfsd_commit(rqstp, &resp->fh, argp->offset,
+ 				   argp->count, resp->verf);
+-out:
+ 	return rpc_success;
+ }
  
- 	if (dev->use_per_node_hctx) {
- 		if (dev->submit_queues != nr_online_nodes)
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 09e4a0af6fb43..89c50ccedf4d3 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1140,42 +1140,61 @@ nfsd_write(struct svc_rqst *rqstp, struct svc_fh *fhp, loff_t offset,
+ }
+ 
+ #ifdef CONFIG_NFSD_V3
+-/*
+- * Commit all pending writes to stable storage.
++/**
++ * nfsd_commit - Commit pending writes to stable storage
++ * @rqstp: RPC request being processed
++ * @fhp: NFS filehandle
++ * @offset: raw offset from beginning of file
++ * @count: raw count of bytes to sync
++ * @verf: filled in with the server's current write verifier
+  *
+- * Note: we only guarantee that data that lies within the range specified
+- * by the 'offset' and 'count' parameters will be synced.
++ * Note: we guarantee that data that lies within the range specified
++ * by the 'offset' and 'count' parameters will be synced. The server
++ * is permitted to sync data that lies outside this range at the
++ * same time.
+  *
+  * Unfortunately we cannot lock the file to make sure we return full WCC
+  * data to the client, as locking happens lower down in the filesystem.
++ *
++ * Return values:
++ *   An nfsstat value in network byte order.
+  */
+ __be32
+-nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp,
+-               loff_t offset, unsigned long count, __be32 *verf)
++nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp, u64 offset,
++	    u32 count, __be32 *verf)
+ {
++	u64			maxbytes;
++	loff_t			start, end;
+ 	struct nfsd_net		*nn;
+ 	struct nfsd_file	*nf;
+-	loff_t			end = LLONG_MAX;
+-	__be32			err = nfserr_inval;
+-
+-	if (offset < 0)
+-		goto out;
+-	if (count != 0) {
+-		end = offset + (loff_t)count - 1;
+-		if (end < offset)
+-			goto out;
+-	}
++	__be32			err;
+ 
+ 	err = nfsd_file_acquire(rqstp, fhp,
+ 			NFSD_MAY_WRITE|NFSD_MAY_NOT_BREAK_LEASE, &nf);
+ 	if (err)
+ 		goto out;
++
++	/*
++	 * Convert the client-provided (offset, count) range to a
++	 * (start, end) range. If the client-provided range falls
++	 * outside the maximum file size of the underlying FS,
++	 * clamp the sync range appropriately.
++	 */
++	start = 0;
++	end = LLONG_MAX;
++	maxbytes = (u64)fhp->fh_dentry->d_sb->s_maxbytes;
++	if (offset < maxbytes) {
++		start = offset;
++		if (count && (offset + count - 1 < maxbytes))
++			end = offset + count - 1;
++	}
++
+ 	nn = net_generic(nf->nf_net, nfsd_net_id);
+ 	if (EX_ISSYNC(fhp->fh_export)) {
+ 		errseq_t since = READ_ONCE(nf->nf_file->f_wb_err);
+ 		int err2;
+ 
+-		err2 = vfs_fsync_range(nf->nf_file, offset, end, 0);
++		err2 = vfs_fsync_range(nf->nf_file, start, end, 0);
+ 		switch (err2) {
+ 		case 0:
+ 			nfsd_copy_write_verifier(verf, nn);
+diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
+index 9f56dcb22ff72..2c43d10e3cab4 100644
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -74,8 +74,8 @@ __be32		do_nfsd_create(struct svc_rqst *, struct svc_fh *,
+ 				char *name, int len, struct iattr *attrs,
+ 				struct svc_fh *res, int createmode,
+ 				u32 *verifier, bool *truncp, bool *created);
+-__be32		nfsd_commit(struct svc_rqst *, struct svc_fh *,
+-				loff_t, unsigned long, __be32 *verf);
++__be32		nfsd_commit(struct svc_rqst *rqst, struct svc_fh *fhp,
++				u64 offset, u32 count, __be32 *verf);
+ #endif /* CONFIG_NFSD_V3 */
+ #ifdef CONFIG_NFSD_V4
+ __be32		nfsd_getxattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
 -- 
 2.43.0
+
+
 
 
