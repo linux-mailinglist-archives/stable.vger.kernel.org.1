@@ -1,171 +1,118 @@
-Return-Path: <stable+bounces-53260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5193C90D0DE
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DBA90CBDD
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E24FD287B12
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81819B220CA
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB02156F3F;
-	Tue, 18 Jun 2024 13:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061BD13C687;
+	Tue, 18 Jun 2024 12:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTxsp1/g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixo4WEKj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA2C13C3CF;
-	Tue, 18 Jun 2024 13:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B600C13C675;
+	Tue, 18 Jun 2024 12:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715802; cv=none; b=XPn6kUt6FWI6TpJbRs6dlooidJl9QChxNXYapl8DtQ1kZR9nqDffnJDooTSwkZ8L8Dpd3mB+eqqHI2KQKUv0jflxbyNW/50cDInv6Y4Cv1kUFSXMSolyDWOnUUNZqgr/0d+a4/m2dpSMEKBmESxRXgMjt15jEbZX+mr8W/NSVO4=
+	t=1718714178; cv=none; b=XC4fZmpHB8IaS7UokyrVGusyb8MPbu5O55R/Bcw1kPc72bvokqztpO1jnIOFMXdZjMtyv/csONowhatHpKgqpuHUpZdWG4i4Zhl8UfHfeHrWpqsRmhU5tTFv1o6O7guIvZMO4oYnZlQxDXHgBYpb+ABbdcx2kPnf5cmjq5nVmn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715802; c=relaxed/simple;
-	bh=W6ltX8bSdMC8CIosgDuEjQc7zOHDSgyVq24vKMMCa6k=;
+	s=arc-20240116; t=1718714178; c=relaxed/simple;
+	bh=JS3Tk0dGhxxBkvLZHmEFeCnlSbasAMo3S+9Su7Ecuhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JWWpsfcPs/URF1iHA8yTbeRTLiWA0xZpsZXBROoXxAvxkJQu34t5mjN/qKejze96qhaRBKL5dE+fmS4eFQm7BY7SEBKMkkDMSRUJLI9mfmAvMH3ZgJbC5vzmSTFv8sSOhbJyYaxQ7gKlwb8Lx4kNWYGpopBdeDp1PtT6iK+hgik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sTxsp1/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DD3C3277B;
-	Tue, 18 Jun 2024 13:03:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715802;
-	bh=W6ltX8bSdMC8CIosgDuEjQc7zOHDSgyVq24vKMMCa6k=;
+	 MIME-Version; b=fyRztuj80gW0XneROjCNrAT0dP8b84JOAXHxs/SUigd89mGzxG/iMrACe86HUjwDmMtLaZjCMFiizFBAmhWX3ZISZ2NwxL3EmKsDrVMUGESSp5bi5dErVrtmLhWH3Uij/pLB5XT7vDC/QhYMO95UcdhGw+5a4ya23Fy8RKH0ymQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixo4WEKj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1B4C3277B;
+	Tue, 18 Jun 2024 12:36:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714178;
+	bh=JS3Tk0dGhxxBkvLZHmEFeCnlSbasAMo3S+9Su7Ecuhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sTxsp1/g+EhX4LjmNh0UrupNJBhIZt82zPN2iMaL09jQPjwTBVv6G5EnTjRMx+d/r
-	 orMC/KQvJo1ueqJa3XkAaiPzQSF6obRHxgFQzXw7uWBXvehSg7YFli1bFGABI5wKrH
-	 LG357hQG2/mH4WVedBco6kdaRBVXT1yRDdK0x1hY=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 431/770] lockd: move lockd_start_svc() call into lockd_create_svc()
-Date: Tue, 18 Jun 2024 14:34:44 +0200
-Message-ID: <20240618123423.921388532@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=ixo4WEKjYDt6ZccAh5BhefPe+EJ7nVYwi44F0kUUDOyIUA0iLex5lsd5jGcz25MnT
+	 j6RKaVGgLFOhbXiywNwsgfjCM+dVFdbWjM43ro0Il2PYa4tPD2q7g5AzuuXWpmTCpK
+	 IujpinzXwi9kcD9M7FL2gsqRyL0T0NjUMMAukpNq7n8VrcicUo44dOMZs96gZPCPiF
+	 Wzg88hiqFfV5g5QZ4rF7E7fMtBV/4s81NLUZLJo8+MzbxJzYVDbx0H0JZKCZzWosIT
+	 9i7A5Ixd/PiGP4wxoDr3evRhVgG6VETwGR4Eul1nsFyWic6Gic3WTorMe7p+zub3D+
+	 Ue3diH+am8EjQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	jhasan@marvell.com,
+	GR-QLogic-Storage-Upstream@marvell.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 03/44] scsi: qedf: Don't process stag work during unload and recovery
+Date: Tue, 18 Jun 2024 08:34:44 -0400
+Message-ID: <20240618123611.3301370-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Saurav Kashyap <skashyap@marvell.com>
 
-------------------
+[ Upstream commit 51071f0831ea975fc045526dd7e17efe669dc6e1 ]
 
-From: NeilBrown <neilb@suse.de>
+Stag work can cause issues during unload and recovery, hence don't process
+it.
 
-[ Upstream commit b73a2972041bee70eb0cbbb25fa77828c63c916b ]
-
-lockd_start_svc() only needs to be called once, just after the svc is
-created.  If the start fails, the svc is discarded too.
-
-It thus makes sense to call lockd_start_svc() from lockd_create_svc().
-This allows us to remove the test against nlmsvc_rqst at the start of
-lockd_start_svc() - it must always be NULL.
-
-lockd_up() only held an extra reference on the svc until a thread was
-created - then it dropped it.  The thread - and thus the extra reference
-- will remain until kthread_stop() is called.
-Now that the thread is created in lockd_create_svc(), the extra
-reference can be dropped there.  So the 'serv' variable is no longer
-needed in lockd_up().
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240515091101.18754-2-skashyap@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svc.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ drivers/scsi/qedf/qedf_main.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/fs/lockd/svc.c b/fs/lockd/svc.c
-index 20cebb191350f..91e7c839841ec 100644
---- a/fs/lockd/svc.c
-+++ b/fs/lockd/svc.c
-@@ -359,9 +359,6 @@ static int lockd_start_svc(struct svc_serv *serv)
- {
- 	int error;
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index a58353b7b4e8b..e882aec867653 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -3997,6 +3997,22 @@ void qedf_stag_change_work(struct work_struct *work)
+ 	struct qedf_ctx *qedf =
+ 	    container_of(work, struct qedf_ctx, stag_work.work);
  
--	if (nlmsvc_rqst)
--		return 0;
--
- 	/*
- 	 * Create the kernel thread and wait for it to start.
- 	 */
-@@ -406,6 +403,7 @@ static const struct svc_serv_ops lockd_sv_ops = {
- static int lockd_create_svc(void)
- {
- 	struct svc_serv *serv;
-+	int error;
- 
- 	/*
- 	 * Check whether we're already up and running.
-@@ -432,6 +430,13 @@ static int lockd_create_svc(void)
- 		printk(KERN_WARNING "lockd_up: create service failed\n");
- 		return -ENOMEM;
- 	}
++	if (!qedf) {
++		QEDF_ERR(&qedf->dbg_ctx, "qedf is NULL");
++		return;
++	}
 +
-+	error = lockd_start_svc(serv);
-+	/* The thread now holds the only reference */
-+	svc_put(serv);
-+	if (error < 0)
-+		return error;
++	if (test_bit(QEDF_IN_RECOVERY, &qedf->flags)) {
++		QEDF_ERR(&qedf->dbg_ctx,
++			 "Already is in recovery, hence not calling software context reset.\n");
++		return;
++	}
 +
- 	nlmsvc_serv = serv;
- 	register_inetaddr_notifier(&lockd_inetaddr_notifier);
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -446,7 +451,6 @@ static int lockd_create_svc(void)
-  */
- int lockd_up(struct net *net, const struct cred *cred)
- {
--	struct svc_serv *serv;
- 	int error;
- 
- 	mutex_lock(&nlmsvc_mutex);
-@@ -454,25 +458,19 @@ int lockd_up(struct net *net, const struct cred *cred)
- 	error = lockd_create_svc();
- 	if (error)
- 		goto err_create;
--	serv = nlmsvc_serv;
- 
--	error = lockd_up_net(serv, net, cred);
-+	error = lockd_up_net(nlmsvc_serv, net, cred);
- 	if (error < 0) {
- 		goto err_put;
- 	}
- 
--	error = lockd_start_svc(serv);
--	if (error < 0) {
--		lockd_down_net(serv, net);
--		goto err_put;
--	}
- 	nlmsvc_users++;
- err_put:
- 	if (nlmsvc_users == 0) {
- 		lockd_unregister_notifiers();
-+		kthread_stop(nlmsvc_task);
- 		nlmsvc_serv = NULL;
- 	}
--	svc_put(serv);
- err_create:
- 	mutex_unlock(&nlmsvc_mutex);
- 	return error;
++	if (test_bit(QEDF_UNLOADING, &qedf->flags)) {
++		QEDF_ERR(&qedf->dbg_ctx, "Driver unloading\n");
++		return;
++	}
++
+ 	printk_ratelimited("[%s]:[%s:%d]:%d: Performing software context reset.",
+ 			dev_name(&qedf->pdev->dev), __func__, __LINE__,
+ 			qedf->dbg_ctx.host_no);
 -- 
 2.43.0
-
-
 
 
