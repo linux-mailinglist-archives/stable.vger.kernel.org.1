@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-52835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4E090CF3D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:25:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0531D90CF12
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:24:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C739B26AB3
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:19:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DFD0281E6A
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A901BA886;
-	Tue, 18 Jun 2024 12:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D6815B107;
+	Tue, 18 Jun 2024 12:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7477XZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kp5bYHk7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954491BA877;
-	Tue, 18 Jun 2024 12:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DFC315B0F6;
+	Tue, 18 Jun 2024 12:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714589; cv=none; b=LCt/kJj8WoNSOX6Vg3He2UInlTAXAWQgjnW5zGiqiU8c6XDw2r9PV37h9O6HUNWQjm5AuLnZ9hSk+1qft1whCBeOTZwlqkSDBSkCNBXnQ98EYz6u0zG3PrBqyHto1VVpovqVIXu7JFQYS3Cx2gYhXpiTDep/EGbQzD2chUWyKyc=
+	t=1718714622; cv=none; b=dBFMVboX0yT+oj8vVHFHWl+UC8PJ+u2eoxDLtoHSPT4HjVgiCal2j20197/8s7mMzWpnnwqWTJK6SMItcgULOxHNIl+tt9KHTVYy+b5mCa5O4Qd0Fh0B/d4PakRm3Qw56gzN/UT/8YCyUpWMJnsxM+FtLrYLFyRcAlIieX0zafs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714589; c=relaxed/simple;
-	bh=QEw1lVVZFFXX5VT3x5lAacBYDpevRca1ieNXuJOWCEY=;
+	s=arc-20240116; t=1718714622; c=relaxed/simple;
+	bh=ZMNlEN5k+R3jJPtmeZI0xa6qIRmsNtLLdOn9vrTTiwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxEwm4Gv/EdWw4nBVGXdevvvMM6gFYI83HAwx/Nn61BqybAIdu4MxGlG+e8Ymt4MvRY+fYqRZ5Ql7L6qW4aXdLrkDvNSC5k45BdohCDcTETdJPOaKld3nNKFWDh36h3vkAwZkoo0e03sdW1dvEios8a7xABuOyVkDuEswL/ZF+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7477XZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B850C4AF1D;
-	Tue, 18 Jun 2024 12:43:08 +0000 (UTC)
+	 MIME-Version; b=fPDr/NcMRmeYUE5vsAG94RpIbM4bYEtldhzAMKipwA6iNLAmDpxWpm6ioWgaeY7XYX1CpvWkZyK2N2387jRO+WU5SWN8eXs+Lgsuv2/SRLKjJ4jm4BdvSrGN+jT6aSVc0v0zri6FO2EqNv9hF/nFkFvEdSXMTWTHxYHdn0LDBIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kp5bYHk7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999C3C3277B;
+	Tue, 18 Jun 2024 12:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718714589;
-	bh=QEw1lVVZFFXX5VT3x5lAacBYDpevRca1ieNXuJOWCEY=;
+	s=korg; t=1718714622;
+	bh=ZMNlEN5k+R3jJPtmeZI0xa6qIRmsNtLLdOn9vrTTiwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7477XZ6UHGQQSVGcJBeXWVjVQOmTy3bggb4cwY1Z5CzGfFyeuJJiTI59qAsEP9zY
-	 gMpMNibaz2GdBM11XcLD7e1FjA/iS/ab8e5CN+7jLDoPI9R0bMcZukzx7Y3qSkWeAv
-	 EueHMfEX6/OuBq7hDCOO+IOxg9tiESr30Vvxwo2I=
+	b=kp5bYHk7Zbn48ccxt5Vdahuk4NlbmD/Iz3cE973wE8FogAdtzIytgJzHDEEIGMLOh
+	 XsO5WjTJVQxHNpnr++5g3Vz/ifo8pjYQqNx8uROE77VBc/bV5gfCIOqOTT8TP+l5MM
+	 cDQjFZE2XHWu0b/jOq4JtT0mIaIw416nPZKgxo5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Shi <alex.shi@linux.alibaba.com>,
-	"J. Bruce Fields" <bfields@fieldses.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
-	linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 004/770] nfsd/nfs3: remove unused macro nfsd3_fhandleres
-Date: Tue, 18 Jun 2024 14:27:37 +0200
-Message-ID: <20240618123407.459902824@linuxfoundation.org>
+Subject: [PATCH 5.10 005/770] NFSD: Clean up the show_nf_may macro
+Date: Tue, 18 Jun 2024 14:27:38 +0200
+Message-ID: <20240618123407.498269377@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -69,37 +65,110 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Shi <alex.shi@linux.alibaba.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 71fd721839a74d945c242299f6be29a246fc2131 ]
+[ Upstream commit b76278ae68848cea13b325d247aa5cf31c87edac ]
 
-The macro is unused, remove it to tame gcc warning:
-fs/nfsd/nfs3proc.c:702:0: warning: macro "nfsd3_fhandleres" is not used
-[-Wunused-macros]
+Display all currently possible NFSD_MAY permission flags.
 
-Signed-off-by: Alex Shi <alex.shi@linux.alibaba.com>
-Cc: "J. Bruce Fields" <bfields@fieldses.org>
-Cc: Chuck Lever <chuck.lever@oracle.com>
-Cc: linux-nfs@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
+Move and rename show_nf_may with a more generic name because the
+NFSD_MAY permission flags are used in other places besides the file
+cache.
+
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3proc.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/nfsd/trace.h | 40 ++++++++++++++++++++++++++--------------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
-diff --git a/fs/nfsd/nfs3proc.c b/fs/nfsd/nfs3proc.c
-index 981a4e4c9a3cf..eba84417406ca 100644
---- a/fs/nfsd/nfs3proc.c
-+++ b/fs/nfsd/nfs3proc.c
-@@ -694,7 +694,6 @@ nfsd3_proc_commit(struct svc_rqst *rqstp)
- #define nfsd3_mkdirargs			nfsd3_createargs
- #define nfsd3_readdirplusargs		nfsd3_readdirargs
- #define nfsd3_fhandleargs		nfsd_fhandle
--#define nfsd3_fhandleres		nfsd3_attrstat
- #define nfsd3_attrstatres		nfsd3_attrstat
- #define nfsd3_wccstatres		nfsd3_attrstat
- #define nfsd3_createres			nfsd3_diropres
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index a952f4a9b2a68..7bb1c398daa51 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -12,6 +12,22 @@
+ #include "export.h"
+ #include "nfsfh.h"
+ 
++#define show_nfsd_may_flags(x)						\
++	__print_flags(x, "|",						\
++		{ NFSD_MAY_EXEC,		"EXEC" },		\
++		{ NFSD_MAY_WRITE,		"WRITE" },		\
++		{ NFSD_MAY_READ,		"READ" },		\
++		{ NFSD_MAY_SATTR,		"SATTR" },		\
++		{ NFSD_MAY_TRUNC,		"TRUNC" },		\
++		{ NFSD_MAY_LOCK,		"LOCK" },		\
++		{ NFSD_MAY_OWNER_OVERRIDE,	"OWNER_OVERRIDE" },	\
++		{ NFSD_MAY_LOCAL_ACCESS,	"LOCAL_ACCESS" },	\
++		{ NFSD_MAY_BYPASS_GSS_ON_ROOT,	"BYPASS_GSS_ON_ROOT" },	\
++		{ NFSD_MAY_NOT_BREAK_LEASE,	"NOT_BREAK_LEASE" },	\
++		{ NFSD_MAY_BYPASS_GSS,		"BYPASS_GSS" },		\
++		{ NFSD_MAY_READ_IF_EXEC,	"READ_IF_EXEC" },	\
++		{ NFSD_MAY_64BIT_COOKIE,	"64BIT_COOKIE" })
++
+ TRACE_EVENT(nfsd_compound,
+ 	TP_PROTO(const struct svc_rqst *rqst,
+ 		 u32 args_opcnt),
+@@ -392,6 +408,9 @@ TRACE_EVENT(nfsd_clid_inuse_err,
+ 		__entry->cl_boot, __entry->cl_id)
+ )
+ 
++/*
++ * from fs/nfsd/filecache.h
++ */
+ TRACE_DEFINE_ENUM(NFSD_FILE_HASHED);
+ TRACE_DEFINE_ENUM(NFSD_FILE_PENDING);
+ TRACE_DEFINE_ENUM(NFSD_FILE_BREAK_READ);
+@@ -406,13 +425,6 @@ TRACE_DEFINE_ENUM(NFSD_FILE_REFERENCED);
+ 		{ 1 << NFSD_FILE_BREAK_WRITE,	"BREAK_WRITE" },	\
+ 		{ 1 << NFSD_FILE_REFERENCED,	"REFERENCED"})
+ 
+-/* FIXME: This should probably be fleshed out in the future. */
+-#define show_nf_may(val)						\
+-	__print_flags(val, "|",						\
+-		{ NFSD_MAY_READ,		"READ" },		\
+-		{ NFSD_MAY_WRITE,		"WRITE" },		\
+-		{ NFSD_MAY_NOT_BREAK_LEASE,	"NOT_BREAK_LEASE" })
+-
+ DECLARE_EVENT_CLASS(nfsd_file_class,
+ 	TP_PROTO(struct nfsd_file *nf),
+ 	TP_ARGS(nf),
+@@ -437,7 +449,7 @@ DECLARE_EVENT_CLASS(nfsd_file_class,
+ 		__entry->nf_inode,
+ 		__entry->nf_ref,
+ 		show_nf_flags(__entry->nf_flags),
+-		show_nf_may(__entry->nf_may),
++		show_nfsd_may_flags(__entry->nf_may),
+ 		__entry->nf_file)
+ )
+ 
+@@ -463,10 +475,10 @@ TRACE_EVENT(nfsd_file_acquire,
+ 		__field(u32, xid)
+ 		__field(unsigned int, hash)
+ 		__field(void *, inode)
+-		__field(unsigned int, may_flags)
++		__field(unsigned long, may_flags)
+ 		__field(int, nf_ref)
+ 		__field(unsigned long, nf_flags)
+-		__field(unsigned char, nf_may)
++		__field(unsigned long, nf_may)
+ 		__field(struct file *, nf_file)
+ 		__field(u32, status)
+ 	),
+@@ -485,10 +497,10 @@ TRACE_EVENT(nfsd_file_acquire,
+ 
+ 	TP_printk("xid=0x%x hash=0x%x inode=0x%p may_flags=%s ref=%d nf_flags=%s nf_may=%s nf_file=0x%p status=%u",
+ 			__entry->xid, __entry->hash, __entry->inode,
+-			show_nf_may(__entry->may_flags), __entry->nf_ref,
+-			show_nf_flags(__entry->nf_flags),
+-			show_nf_may(__entry->nf_may), __entry->nf_file,
+-			__entry->status)
++			show_nfsd_may_flags(__entry->may_flags),
++			__entry->nf_ref, show_nf_flags(__entry->nf_flags),
++			show_nfsd_may_flags(__entry->nf_may),
++			__entry->nf_file, __entry->status)
+ );
+ 
+ DECLARE_EVENT_CLASS(nfsd_file_search_class,
 -- 
 2.43.0
 
