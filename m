@@ -1,119 +1,119 @@
-Return-Path: <stable+bounces-53311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA2490D110
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:39:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB4990CC14
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57D9B1F23D69
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:39:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F16BC1C22C82
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3F319DF84;
-	Tue, 18 Jun 2024 13:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2231F15A86B;
+	Tue, 18 Jun 2024 12:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJIFTDa3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bf5AbcW2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11C219DF7F;
-	Tue, 18 Jun 2024 13:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D155D13D8AE;
+	Tue, 18 Jun 2024 12:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715953; cv=none; b=FfnP3VqZr39zWFIaX4rTZgfuIhDTrj4aLgx52LqBMYXWgneP9hnCWieenQX6fz8R9hzq99EnvCreWQi6vwZGIJ5qulvZ45HpWzOTNddTV97r3v5f1uHayRrX5CQ1bt5mpjbQTFX28DStSDeLU6Uv22kzfejiwRQdivRfsTgC67A=
+	t=1718714229; cv=none; b=GEPl1grhrsyZl6EKo91FrEaJacNOJ7VGLnMwTLVWKB6maQWYNW1LyY8Ngy12tpgSQ+s4tu4i3TADMu6CTAPVhcATHtpoLT44URGETmjY26/ZkNa8krD5Yi44bI61IZsNuulkWxg1sJq/3Y4hJWYtAhU+iSfrGAg5gECNBmQ4d4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715953; c=relaxed/simple;
-	bh=b2e0tNdukoVZmOT7DqelNCEs6JKIJ2xUS/qCkaLuuyg=;
+	s=arc-20240116; t=1718714229; c=relaxed/simple;
+	bh=hwZ3R3SPegwPwUTe/ADMl7SrIfy2lOfsuYBzv72WSvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUYl8J9GJ3ApbmHzzolWuZ7350wxrAr+RlHtac095kkb353GKwZogSYIOX5sEKE0f9HeD0YIe3rVTCFmHwZjHJX+AtfpPI2XkFSTfGKRZDyNmxj89qdhO5Gd7zpZzMTfjgyyLdLiD+3bO6t9vwQyXQumuocALOc2EaV7JB9LZV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJIFTDa3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4079C3277B;
-	Tue, 18 Jun 2024 13:05:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715953;
-	bh=b2e0tNdukoVZmOT7DqelNCEs6JKIJ2xUS/qCkaLuuyg=;
+	 MIME-Version; b=ZGv+/jmp1s/QR8pE5edgoUTs7wyRM7O2KASKknqTJcP9Q0hHOPmADIePGqDb38iZ2rTeZL6IDETzeVwEK6whqL00Ar/Lp+1t+lfH8T8yZ0vGYcUzyD/iIuvX6crxD2TrZdnp/uIE57sktZeuRXJNjPgyh6UOxFM+/IzFrk9u7tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bf5AbcW2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB9FC32786;
+	Tue, 18 Jun 2024 12:37:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714229;
+	bh=hwZ3R3SPegwPwUTe/ADMl7SrIfy2lOfsuYBzv72WSvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJIFTDa3N7FnespoUJKUWW1rXocKa2+aETOV4QprbVHO3rqJY9Ccrjlaq92PhNMEU
-	 rxSbf+pnu3ZoOf9d3i/hKaQ6/XZmpMjlk8fM1teWZwQzkqOcNjafBR4RMLz2TEyisq
-	 qOohAjX1shzHoOUMcN4RhNpXktFT4ZBSkPWUBiHs=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 451/770] NFSD: Clean up nfsd_vfs_write()
-Date: Tue, 18 Jun 2024 14:35:04 +0200
-Message-ID: <20240618123424.704100337@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=Bf5AbcW2wIIWAUxqHN08Borh8SnL+4xQhGG9Q4g6INt6ykaCOjb3ikidKdjiJI0FF
+	 ChWyyGeMBk5Z/P2ZbFUHoFTTJhG7OBmhj3G7g71DEIbNK085wuxUzBErBWfillKee2
+	 gaEJlkUDPAxo1COHiFeI8RcnAhe6AtQg6WuAUZbFU6VbpMbBvSqUYC5scEGwnhH5n3
+	 SgPgjqFXEoaPhZbbGFzw8+tEPKMPPXjRylZcWIfmmHat01F7QN4PMpuJQFMJKj1EBV
+	 pDt1/fLDXhU1IoUh/ZMoDmIqjMSnkjQMHI+i4y2ede5khAoYl4XL5PaAIwUXa4rI0f
+	 DFlF2OIqR02Jg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
+	ayala.beker@intel.com,
+	gregory.greenman@intel.com,
+	benjamin.berg@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 23/44] wifi: iwlwifi: mvm: Fix scan abort handling with HW rfkill
+Date: Tue, 18 Jun 2024 08:35:04 -0400
+Message-ID: <20240618123611.3301370-23-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Ilan Peer <ilan.peer@intel.com>
 
-------------------
+[ Upstream commit e6dd2936ce7ce94a1915b799f8af8193ec628e87 ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+When HW rfkill is toggled to disable the RF, the flow to stop scan is
+called. When trying to send the command to abort the scan, since
+HW rfkill is toggled, the command is not sent due to rfkill being
+asserted, and -ERFKILL is returned from iwl_trans_send_cmd(), but this
+is silently ignored in iwl_mvm_send_cmd() and thus the scan abort flow
+continues to wait for scan complete notification and fails. Since it
+fails, the UID to type mapping is not cleared, and thus a warning is
+later fired when trying to stop the interface.
 
-[ Upstream commit 33388b3aefefd4d83764dab8038cb54068161a44 ]
+To fix this, modify the UMAC scan abort flow to force sending the
+scan abort command even when in rfkill, so stop the FW from accessing
+the radio etc.
 
-The RWF_SYNC and !RWF_SYNC arms are now exactly alike except that
-the RWF_SYNC arm resets the boot verifier twice in a row. Fix that
-redundancy and de-duplicate the code.
-
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.8cbe2f8c1a97.Iffe235c12a919dafec88eef399eb1f7bae2c5bdb@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index b343677b01efa..cef8435d76a69 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1023,22 +1023,11 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 81d4a96a1c2c3..4a1bd626a150b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -3254,10 +3254,11 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
  
- 	iov_iter_kvec(&iter, WRITE, vec, vlen, *cnt);
- 	since = READ_ONCE(file->f_wb_err);
--	if (flags & RWF_SYNC) {
--		if (verf)
--			nfsd_copy_boot_verifier(verf,
--					net_generic(SVC_NET(rqstp),
--					nfsd_net_id));
--		host_err = vfs_iter_write(file, &iter, &pos, flags);
--		if (host_err < 0)
--			nfsd_reset_boot_verifier(net_generic(SVC_NET(rqstp),
--						 nfsd_net_id));
--	} else {
--		if (verf)
--			nfsd_copy_boot_verifier(verf,
--					net_generic(SVC_NET(rqstp),
--					nfsd_net_id));
--		host_err = vfs_iter_write(file, &iter, &pos, flags);
--	}
-+	if (verf)
-+		nfsd_copy_boot_verifier(verf,
-+				net_generic(SVC_NET(rqstp),
-+				nfsd_net_id));
-+	host_err = vfs_iter_write(file, &iter, &pos, flags);
- 	if (host_err < 0) {
- 		nfsd_reset_boot_verifier(net_generic(SVC_NET(rqstp),
- 					 nfsd_net_id));
+ 	ret = iwl_mvm_send_cmd_pdu(mvm,
+ 				   WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
+-				   0, sizeof(cmd), &cmd);
++				   CMD_SEND_IN_RFKILL, sizeof(cmd), &cmd);
+ 	if (!ret)
+ 		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
+ 
++	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d\n", ret);
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
-
-
 
 
