@@ -1,125 +1,114 @@
-Return-Path: <stable+bounces-52769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 425DB90CD04
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1263190D259
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F77728152D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:03:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B87CE283FAB
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478171A38F9;
-	Tue, 18 Jun 2024 12:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83621AC76F;
+	Tue, 18 Jun 2024 13:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="agU7AQtn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0DCuQGLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01A31A38F1;
-	Tue, 18 Jun 2024 12:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683D115747F;
+	Tue, 18 Jun 2024 13:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714451; cv=none; b=Wrxa7xYMLndhhczsw5h6dqPt8rWMrzWB3w/rPd+UoovW1ITmOoyAeDsNsrdR3o4gzQNSLRarDZdxMJv+b4D5uGz2iC/une6dFkN9f9g3unGqf3PkRsomqUwzMfgVGPsIU/Tua+7/bKcqkBsMsXInX2B4S5FzJ+ZxeRMdqrfaB4Q=
+	t=1718716685; cv=none; b=PUtlqttZTwqI86oxuJrQXc+Ax1on5V7ZEkdBEgOiJ1WtpFnCYWilIB+AuxlJoiAGziV3AcuOUTFwL/2vv/YrgtORmUW8wi2bHJk6N/izugV43pXGaCgL5/cruBqhNpWyWmINsifiss3UYwlZTrLoKAKbnGf3HA8e1Xi9qLYcmNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714451; c=relaxed/simple;
-	bh=hq8Wn4mgFcQ5ZsgQz/dTNMmh6yB2UphrglQ7l2h1J0s=;
+	s=arc-20240116; t=1718716685; c=relaxed/simple;
+	bh=7IXEP/OiCu0Q7Le6NJjj9L/7Dda8ynBJH4AIR8xvyE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s51WLp6V5uLBJDPi/rGpLHrSYiRIyfYEKTQLhA9A30rI4xmJ1DB6dMQt2PwZk/C8wLjHrM7S3yt0KyFfABFrXsjUjuqbw7adbkfZh4btV5PdxnMj5/1wry74mYRK//HrAmTzScCG6C6AF0qbdGBc04bUNoczpYIoCqIDDHU2bsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=agU7AQtn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2530C4AF1D;
-	Tue, 18 Jun 2024 12:40:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714450;
-	bh=hq8Wn4mgFcQ5ZsgQz/dTNMmh6yB2UphrglQ7l2h1J0s=;
+	 MIME-Version; b=ETeVt8ASEtKTvGuWQoEJd0q+AnegTvu84xzY7dy8t507JTALCUUIU1IaKEyC9gFdcU2p+UdDJ0n3tSFCOnyG+Vbjdk97dkreJhPaqZAOIykVoLqBipI3Nqhs6lN9AhpVi+T3671wuVs6Bm9O6APoH+/rfTPI5TP2xdrSzS+kSao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0DCuQGLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B44C3277B;
+	Tue, 18 Jun 2024 13:18:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716685;
+	bh=7IXEP/OiCu0Q7Le6NJjj9L/7Dda8ynBJH4AIR8xvyE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agU7AQtnvsZdYfTBPeHwGViKCbPg6kNKd+W5BoDddS1D58/xNiS7Wq01nz/3MUtFP
-	 D1z+pQJctmpWc7M8SUjOK5W0k/mXZC95AnhIsFBGHkBhieJzwuSIqbffm1xM1Qnb8W
-	 alie7ZfJ2d0uJsUk76hsfT516xitLBp4mN35kVVg3uq9q08WNnhFGT1dJc9VWE2DFE
-	 HNeJhyQimgK+UiL+HBxj3PpNnoz1iDR6YfvLM2ItYQYb/064eN3BWMCJZtsWTfCpzh
-	 ON1QIKB8jBixtBQ5Cxm+fYHfpB3dYbkJe0TZ1Axyhr8ok/okgM08OjejYChVzdifmI
-	 OEVF3N1cflV1Q==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	shaul.triebitz@intel.com,
-	benjamin.berg@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 16/29] wifi: iwlwifi: mvm: Handle BIGTK cipher in kek_kck cmd
-Date: Tue, 18 Jun 2024 08:39:42 -0400
-Message-ID: <20240618124018.3303162-16-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
-References: <20240618124018.3303162-1-sashal@kernel.org>
+	b=0DCuQGLIHYwmKTT3StUrq5/U0gb716h5q1MVkT5tNJmIvUek9lKRT4/gq1VcNXrB9
+	 qWHvdQcY2R/kwTn4kca3OcDevYMmZIx7Uom6NrZ/tXHAv8SJqi1+vD4qbY487OEBhp
+	 FrAfMWhAJo5iK+RtYbPLmYieE2uY0wt2JkebDyuc=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	JianHong Yin <jiyin@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 729/770] nfsd: dont destroy global nfs4_file table in per-net shutdown
+Date: Tue, 18 Jun 2024 14:39:42 +0200
+Message-ID: <20240618123435.407462058@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 08b16d1b5997dc378533318e2a9cd73c7a898284 ]
+------------------
 
-The BIGTK cipher field was added to the kek_kck_material_cmd
-but wasn't assigned. Fix that by differentiating between the
-IGTK/BIGTK keys and assign the ciphers fields accordingly.
+From: Jeff Layton <jlayton@kernel.org>
 
-Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.7fd0b22b7267.Ie9b581652b74bd7806980364d59e1b2e78e682c0@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Upstream commit 4102db175b5d884d133270fdbd0e59111ce688fc ]
+
+The nfs4_file table is global, so shutting it down when a containerized
+nfsd is shut down is wrong and can lead to double-frees. Tear down the
+nfs4_file_rhltable in nfs4_state_shutdown instead of
+nfs4_state_shutdown_net.
+
+Fixes: d47b295e8d76 ("NFSD: Use rhashtable for managing nfs4_file objects")
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2169017
+Reported-by: JianHong Yin <jiyin@redhat.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 9a36ce98b5bfc..425588605a262 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -594,16 +594,25 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
- 					 void *_data)
- {
- 	struct wowlan_key_gtk_type_iter *data = _data;
-+	__le32 *cipher = NULL;
-+
-+	if (key->keyidx == 4 || key->keyidx == 5)
-+		cipher = &data->kek_kck_cmd->igtk_cipher;
-+	if (key->keyidx == 6 || key->keyidx == 7)
-+		cipher = &data->kek_kck_cmd->bigtk_cipher;
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 3dd64caf06158..6c11f2701af88 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -8192,7 +8192,6 @@ nfs4_state_shutdown_net(struct net *net)
  
- 	switch (key->cipher) {
- 	default:
- 		return;
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
--		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
-+		if (cipher)
-+			*cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
- 		return;
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_CCM);
-+	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
-+		if (cipher)
-+			*cipher = cpu_to_le32(STA_KEY_FLG_CCM);
- 		return;
- 	case WLAN_CIPHER_SUITE_CCMP:
- 		if (!sta)
+ 	nfsd4_client_tracking_exit(net);
+ 	nfs4_state_destroy_net(net);
+-	rhltable_destroy(&nfs4_file_rhltable);
+ #ifdef CONFIG_NFSD_V4_2_INTER_SSC
+ 	nfsd4_ssc_shutdown_umount(nn);
+ #endif
+@@ -8202,6 +8201,7 @@ void
+ nfs4_state_shutdown(void)
+ {
+ 	nfsd4_destroy_callback_queue();
++	rhltable_destroy(&nfs4_file_rhltable);
+ }
+ 
+ static void
 -- 
 2.43.0
+
+
 
 
