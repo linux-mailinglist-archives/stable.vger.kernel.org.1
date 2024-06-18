@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-53212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F2590D134
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3D790D2A5
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5D8DB2A68B
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:36:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A538FB23FC3
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859A7156C6D;
-	Tue, 18 Jun 2024 13:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51D01802DF;
+	Tue, 18 Jun 2024 12:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1b6tFRf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ne4L+Qd+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4348E1891C9;
-	Tue, 18 Jun 2024 13:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739BC13BC35;
+	Tue, 18 Jun 2024 12:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715659; cv=none; b=HmUHCtnxq7DJ7WFyVpJiQtVvV01g054gw/REqJxw6/M+mwopYMzbIeYsBH+wB/gRu+u5gl2ECR45sUkUbKFAAJIxXcDjDFqDB9mJOoIjVaIMzyCAzMgFUeCw+J3jBdGN6BmT6qgOdi3dsKXP0Z6j43/oWKWi8ase/V00TtmJTvY=
+	t=1718715562; cv=none; b=g6hFbqrhXIvDH4R39yxRLLDcenVFCTCBhwhJWeztSkbKVC8tnS+/Xjt4nhp4N5ffD+EtKlpCfk6CVTUpaKu12vIdliuaJ7IqD9UWuIXLw2xy5i4atq7M2w6DrVHGhsl/HXGRv75a7mfEaWD5bsTDoeHHNXTglE4AYpy9fzYmmq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715659; c=relaxed/simple;
-	bh=mq+vbKRrKg9O9NfYpQFvuGPqTH6mYxk0g9ikLAzhP2Y=;
+	s=arc-20240116; t=1718715562; c=relaxed/simple;
+	bh=/JrLa1tbT/yDwdEWVAjKh3beCfaE/AT9TOT/TPJMrlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QTeFldH+eA3DzNul2AMly9V/scwTiYFeNDFRzOhCteWPLOt9E+gll2gg8o6U1H4CETqvWLszb5idtgLVNDcNsI7dKsErJbUzqiGRpz2qlhHEP9nK3/lfxAfzE3HoMB46tpJL9Og8LgJ5X0p2P7RrggNOcvnkRfLye0zoAHayxFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1b6tFRf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2E5C3277B;
-	Tue, 18 Jun 2024 13:00:58 +0000 (UTC)
+	 MIME-Version; b=msAgS0MaBeQA+UdrKnhWLGxkmYO9eI8kpeSdz8Ev9PwXSF7+R+V9iZgjv7g4xHTwjUw4DUQtzVJMrCbypV9jiW+1ZRIGOsOJ8gnbsqvKJHeRQvAr/QP1jBZCurP8Vd3jXWb5ttyqibmbxMb0tEfJcJLWpThttDivGo5IYcCbB5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ne4L+Qd+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC482C3277B;
+	Tue, 18 Jun 2024 12:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715659;
-	bh=mq+vbKRrKg9O9NfYpQFvuGPqTH6mYxk0g9ikLAzhP2Y=;
+	s=korg; t=1718715562;
+	bh=/JrLa1tbT/yDwdEWVAjKh3beCfaE/AT9TOT/TPJMrlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1b6tFRfaUz5Fq6CB/hlrQVxYcNeNUxDjHlx3M/rVjWoHxsC+R5qw5AEdicI8cpmf
-	 6seBlNBr9xDM3xsZJHbo8CYZ3qoTDcCeW5IR9dV1dJ/cmaKuYehtQHtO2BoNkBWrKx
-	 g5V69nQQ8hIQDzu0Q1t+nQxaQUxaaxh5HKynBzAM=
+	b=ne4L+Qd+a/o67k6YhvqBO/G+iCukWRgFhgffQXz8X5jpvCnPHCi9OmGRB2l8VsXwe
+	 GILTy4RE+6qihBmpmdbM1u6FlbH96VhCOJ4ZfAofoN78m60Uo+qsTU96Jq1hkzK7G+
+	 RoG5lh8cYyjV+6oieE5WBfv3wfA2zJED2UZw1b1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
 	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 342/770] NFSD: Batch release pages during splice read
-Date: Tue, 18 Jun 2024 14:33:15 +0200
-Message-ID: <20240618123420.466515510@linuxfoundation.org>
+Subject: [PATCH 5.10 343/770] NFSD: remove vanity comments
+Date: Tue, 18 Jun 2024 14:33:16 +0200
+Message-ID: <20240618123420.504203099@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -66,44 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 496d83cf0f2fa70cfe256c2499e2d3523d3868f3 ]
+[ Upstream commit ea49dc79002c416a9003f3204bc14f846a0dbcae ]
 
-Large splice reads call put_page() repeatedly. put_page() is
-relatively expensive to call, so replace it with the new
-svc_rqst_replace_page() helper to help amortize that cost.
+Including one's name in copyright claims is appropriate.  Including it
+in random comments is just vanity.  After 2 decades, it is time for
+these to be gone.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: NeilBrown <neilb@suse.de>
+Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ fs/nfsd/vfs.c                   | 1 -
+ include/uapi/linux/nfsd/nfsfh.h | 1 -
+ 2 files changed, 2 deletions(-)
 
 diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 8520a2fc92dee..05b5f7e241e70 100644
+index 05b5f7e241e70..2c493937dd5ec 100644
 --- a/fs/nfsd/vfs.c
 +++ b/fs/nfsd/vfs.c
-@@ -856,15 +856,10 @@ nfsd_splice_actor(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
- 	struct page *page = buf->page;
+@@ -244,7 +244,6 @@ nfsd_lookup_dentry(struct svc_rqst *rqstp, struct svc_fh *fhp,
+  * returned. Otherwise the covered directory is returned.
+  * NOTE: this mountpoint crossing is not supported properly by all
+  *   clients and is explicitly disallowed for NFSv3
+- *      NeilBrown <neilb@cse.unsw.edu.au>
+  */
+ __be32
+ nfsd_lookup(struct svc_rqst *rqstp, struct svc_fh *fhp, const char *name,
+diff --git a/include/uapi/linux/nfsd/nfsfh.h b/include/uapi/linux/nfsd/nfsfh.h
+index 427294dd56a1b..e29e8accc4f4d 100644
+--- a/include/uapi/linux/nfsd/nfsfh.h
++++ b/include/uapi/linux/nfsd/nfsfh.h
+@@ -33,7 +33,6 @@ struct nfs_fhbase_old {
  
- 	if (rqstp->rq_res.page_len == 0) {
--		get_page(page);
--		put_page(*rqstp->rq_next_page);
--		*(rqstp->rq_next_page++) = page;
-+		svc_rqst_replace_page(rqstp, page);
- 		rqstp->rq_res.page_base = buf->offset;
- 	} else if (page != pp[-1]) {
--		get_page(page);
--		if (*rqstp->rq_next_page)
--			put_page(*rqstp->rq_next_page);
--		*(rqstp->rq_next_page++) = page;
-+		svc_rqst_replace_page(rqstp, page);
- 	}
- 	rqstp->rq_res.page_len += sd->len;
- 
+ /*
+  * This is the new flexible, extensible style NFSv2/v3/v4 file handle.
+- * by Neil Brown <neilb@cse.unsw.edu.au> - March 2000
+  *
+  * The file handle starts with a sequence of four-byte words.
+  * The first word contains a version number (1) and three descriptor bytes
 -- 
 2.43.0
 
