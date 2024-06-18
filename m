@@ -1,176 +1,109 @@
-Return-Path: <stable+bounces-52752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00EEF90CCD0
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:57:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA3390D30E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:58:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DD271F22ED4
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:57:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34157B26FBC
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F26C15573B;
-	Tue, 18 Jun 2024 12:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDE41AC220;
+	Tue, 18 Jun 2024 13:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f6nwjaSa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bB0MRNZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF91C2139A4;
-	Tue, 18 Jun 2024 12:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BBC21A2C28;
+	Tue, 18 Jun 2024 13:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714421; cv=none; b=Ya+sDAKuzFwSPEf3jF9hYO+oxgU0EzspA5gtXYgFxClV7YUPoZJ3o4J1VcP1yLx4BsQUwy92FjjmysrYYpedGp8NonuAPGhj4JpRHSG30g4Ug8qP99MsoAtD7CQrsFARojWcCmSNDIYwZNZFL1D8cQnlmKK7FEfmR/iK9cjzU1w=
+	t=1718716646; cv=none; b=IL+8p/GGK38xmQKkK66erYXEA7UN4yJ74NrzZpaTYOF9Z3Oro51w21wGHZt4YY0wiQV3tnBkkFVFlzla11oj+cezC4/OPkLCOgAfLupQ711lKookmRFdYkYJmsIaFqLCJfLjvPQAaKosLmERespYm/02pOPs5Ww+OImoJhH3JSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714421; c=relaxed/simple;
-	bh=MUpmA9MZ4i76S7YO4RwWYwYhCpJTtuZDBDgbMrW0AAk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tr1J7od/Z6dcquej8RovxYcVnJ+a4ka0cWxFgfEXn5XYkdipJKsyoVDYCS6Y1Xbxcskgq2lDolvZ4APWsJ/drju68+W7FJ/OP7pOFZF9pUjcG7Fym9H0FAZMWXAdNKoxdi6omfl5lc/GKDmeYWe6r73YF1VsQKBaBXW99zJi8EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f6nwjaSa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BDEBC3277B;
-	Tue, 18 Jun 2024 12:40:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714420;
-	bh=MUpmA9MZ4i76S7YO4RwWYwYhCpJTtuZDBDgbMrW0AAk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=f6nwjaSa+7IYC+iDRxbJkfme21lTe/BE++FRgwgcJKEWBLy3tVv+L9AA1OeyjlEMM
-	 xn0W8dSJ+zHtevzCSwqkv/51sE3027GBVGaKYJKBgze6dI+JKrw2xXvcHo71XOvrta
-	 ek/X4jXjl4C0TNBf4T9x9JKe6yb6Eg9kDYEhcOORIUBW8jXNO+pQDl9Z3JVamEQmzP
-	 4CZshPJOx4/Iu721cngJGx6Nd5cL8ddgvZ4VXgmKg4bt7xAQrawPWzUoBnIsbnQERC
-	 UuhBI2WTdroag9ZZluhTRZerxZl/slgSmMkrQoD83vMQyuBMXooFimZ0m3V116yRjv
-	 Ea9KHZEBIAdCA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Martin Wilck <martin.wilck@suse.com>,
-	Rajashekhar M A <rajs@netapp.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 01/29] scsi: core: alua: I/O errors for ALUA state transitions
-Date: Tue, 18 Jun 2024 08:39:27 -0400
-Message-ID: <20240618124018.3303162-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1718716646; c=relaxed/simple;
+	bh=1xLEt+9UEUCimElrH6By65p18u6F7XQCAxORLTMjsag=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=riJ5mqZwLn92OupOBfkCuPyeOsLDentbPVBNdKMwDtuB5xIXtGZW5gf9zeNUa0BMH1rU6X/ciEC0MjvLpeWXTHHxILZ+cKq3K9nxgqbNAOUnEDpOsKoDrSPglBJtTqMs/6fPZ8Ps/o4g64dxpyOCEELE1SkT1wGWsmyVbeYHRuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bB0MRNZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAA0C3277B;
+	Tue, 18 Jun 2024 13:17:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716646;
+	bh=1xLEt+9UEUCimElrH6By65p18u6F7XQCAxORLTMjsag=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bB0MRNZAKnEg2NCQ8vS5dWK2O7cJwm2YB6/3yqri842c5lXS6Ms66KLeZGjsIgz7t
+	 RafNC86cG0itGqotgOJ8waSXPAuKVX4sMdi/fPoE+DCRasYDaZ037KJF3/WkbTIejm
+	 Cdi2GjqS+ZC5l7zPHtPMaTKtOY4pNGlLXcT1apNA=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 714/770] lockd: fix file selection in nlmsvc_cancel_blocked
+Date: Tue, 18 Jun 2024 14:39:27 +0200
+Message-ID: <20240618123434.832874339@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Martin Wilck <martin.wilck@suse.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 10157b1fc1a762293381e9145041253420dfc6ad ]
+------------------
 
-When a host is configured with a few LUNs and I/O is running, injecting FC
-faults repeatedly leads to path recovery problems.  The LUNs have 4 paths
-each and 3 of them come back active after say an FC fault which makes 2 of
-the paths go down, instead of all 4. This happens after several iterations
-of continuous FC faults.
+From: Jeff Layton <jlayton@kernel.org>
 
-Reason here is that we're returning an I/O error whenever we're
-encountering sense code 06/04/0a (LOGICAL UNIT NOT ACCESSIBLE, ASYMMETRIC
-ACCESS STATE TRANSITION) instead of retrying.
+[ Upstream commit 9f27783b4dd235ef3c8dbf69fc6322777450323c ]
 
-[mwilck: The original patch was developed by Rajashekhar M A and Hannes
-Reinecke. I moved the code to alua_check_sense() as suggested by Mike
-Christie [1]. Evan Milne had raised the question whether pg->state should
-be set to transitioning in the UA case [2]. I believe that doing this is
-correct. SCSI_ACCESS_STATE_TRANSITIONING by itself doesn't cause I/O
-errors. Our handler schedules an RTPG, which will only result in an I/O
-error condition if the transitioning timeout expires.]
+We currently do a lock_to_openmode call based on the arguments from the
+NLM_UNLOCK call, but that will always set the fl_type of the lock to
+F_UNLCK, and the O_RDONLY descriptor is always chosen.
 
-[1] https://lore.kernel.org/all/0bc96e82-fdda-4187-148d-5b34f81d4942@oracle.com/
-[2] https://lore.kernel.org/all/CAGtn9r=kicnTDE2o7Gt5Y=yoidHYD7tG8XdMHEBJTBraVEoOCw@mail.gmail.com/
+Fix it to use the file_lock from the block instead.
 
-Co-developed-by: Rajashekhar M A <rajs@netapp.com>
-Co-developed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Martin Wilck <martin.wilck@suse.com>
-Link: https://lore.kernel.org/r/20240514140344.19538-1-mwilck@suse.com
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/device_handler/scsi_dh_alua.c | 31 +++++++++++++++-------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+ fs/lockd/svclock.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/device_handler/scsi_dh_alua.c b/drivers/scsi/device_handler/scsi_dh_alua.c
-index 0781f991e7845..f5fc8631883d5 100644
---- a/drivers/scsi/device_handler/scsi_dh_alua.c
-+++ b/drivers/scsi/device_handler/scsi_dh_alua.c
-@@ -406,28 +406,40 @@ static char print_alua_state(unsigned char state)
- 	}
- }
- 
--static enum scsi_disposition alua_check_sense(struct scsi_device *sdev,
--					      struct scsi_sense_hdr *sense_hdr)
-+static void alua_handle_state_transition(struct scsi_device *sdev)
- {
- 	struct alua_dh_data *h = sdev->handler_data;
- 	struct alua_port_group *pg;
- 
-+	rcu_read_lock();
-+	pg = rcu_dereference(h->pg);
-+	if (pg)
-+		pg->state = SCSI_ACCESS_STATE_TRANSITIONING;
-+	rcu_read_unlock();
-+	alua_check(sdev, false);
-+}
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index 9eae99e08e699..4e30f3c509701 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -699,9 +699,10 @@ nlmsvc_cancel_blocked(struct net *net, struct nlm_file *file, struct nlm_lock *l
+ 	block = nlmsvc_lookup_block(file, lock);
+ 	mutex_unlock(&file->f_mutex);
+ 	if (block != NULL) {
+-		mode = lock_to_openmode(&lock->fl);
+-		vfs_cancel_lock(block->b_file->f_file[mode],
+-				&block->b_call->a_args.lock.fl);
++		struct file_lock *fl = &block->b_call->a_args.lock.fl;
 +
-+static enum scsi_disposition alua_check_sense(struct scsi_device *sdev,
-+					      struct scsi_sense_hdr *sense_hdr)
-+{
- 	switch (sense_hdr->sense_key) {
- 	case NOT_READY:
- 		if (sense_hdr->asc == 0x04 && sense_hdr->ascq == 0x0a) {
- 			/*
- 			 * LUN Not Accessible - ALUA state transition
- 			 */
--			rcu_read_lock();
--			pg = rcu_dereference(h->pg);
--			if (pg)
--				pg->state = SCSI_ACCESS_STATE_TRANSITIONING;
--			rcu_read_unlock();
--			alua_check(sdev, false);
-+			alua_handle_state_transition(sdev);
- 			return NEEDS_RETRY;
- 		}
- 		break;
- 	case UNIT_ATTENTION:
-+		if (sense_hdr->asc == 0x04 && sense_hdr->ascq == 0x0a) {
-+			/*
-+			 * LUN Not Accessible - ALUA state transition
-+			 */
-+			alua_handle_state_transition(sdev);
-+			return NEEDS_RETRY;
-+		}
- 		if (sense_hdr->asc == 0x29 && sense_hdr->ascq == 0x00) {
- 			/*
- 			 * Power On, Reset, or Bus Device Reset.
-@@ -494,7 +506,8 @@ static int alua_tur(struct scsi_device *sdev)
- 
- 	retval = scsi_test_unit_ready(sdev, ALUA_FAILOVER_TIMEOUT * HZ,
- 				      ALUA_FAILOVER_RETRIES, &sense_hdr);
--	if (sense_hdr.sense_key == NOT_READY &&
-+	if ((sense_hdr.sense_key == NOT_READY ||
-+	     sense_hdr.sense_key == UNIT_ATTENTION) &&
- 	    sense_hdr.asc == 0x04 && sense_hdr.ascq == 0x0a)
- 		return SCSI_DH_RETRY;
- 	else if (retval)
++		mode = lock_to_openmode(fl);
++		vfs_cancel_lock(block->b_file->f_file[mode], fl);
+ 		status = nlmsvc_unlink_block(block);
+ 		nlmsvc_release_block(block);
+ 	}
 -- 
 2.43.0
+
+
 
 
