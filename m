@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-53347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CDDF90D13A
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:40:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1545790D11A
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6ACC01C240A2
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:40:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 274051C245F6
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FBA19F472;
-	Tue, 18 Jun 2024 13:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2B719DFB1;
+	Tue, 18 Jun 2024 13:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euy0trXi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lR63nOhL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5DF1581F6;
-	Tue, 18 Jun 2024 13:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2761581E9;
+	Tue, 18 Jun 2024 13:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716060; cv=none; b=s+HMUqi6xAEe3RS/BYyr341T3FZEfZw2gks9oKmCqWoUNiRHKmRyoM1hl2z4mx07YjPCGd1w8yKn1migJKzCc7zxxHKJzUKFaf28/OvNbNqyYVo4hfItSe3GoVaJR0S2O0pk5SlPq/5wbofJINUXhwdm8Q4ycp8xz5do78yOrFA=
+	t=1718715968; cv=none; b=VLSBWyPUp9rV6SPjjy+bqSn+w6TebrbDyS1xAMAzevYZlvZ9Zj6R6HHfRrfVmR7RuNicDPZfmwbiIxPx5rBUWtJaSm80vx1dLYZthlo0v77hBZleXnaFNCyDEg/ActcEg9DfZ9+Io80vSuQ62/ZsX/ktKvxY+P2ky5M+VZdOxN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716060; c=relaxed/simple;
-	bh=PE6Y46RYDgEnTPxaobhcp6+XOGe1Kn2zrmWlRUK0aUs=;
+	s=arc-20240116; t=1718715968; c=relaxed/simple;
+	bh=Cna+XtontIopK0HERRUwCKHIJdixjAQNaDIq0mANfpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KvDbbxZNC857U6AKAzoFR5HzJoaW/dU3M8L02vYU9lyoU2KbkG5JiyrX49Y8fmTNLiMM3yn9ydqFwK+40IvvfNc2lmSzF8Ixh++SR9Bj1IcuQkkIzrxhkDgVHj3dI8GsjiHuWtZJSskuv6mycixu+p8PGQJ5FAroMyD+dBZDeek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euy0trXi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AFFC3277B;
-	Tue, 18 Jun 2024 13:07:38 +0000 (UTC)
+	 MIME-Version; b=gOIpA6kqn7I6ZCcxKDbAwXTjUYzd9b1ap1jfGXjyFmIQFVF3+VYepCFI04LIXjUorVVI2qpcTS/OW/KE9Ca6adK7QhQiPVGIG0/6tACHdFdIh3NPDxgGBrwbdhZBdbF+YH1ZZo7OQClqHJUvrWjy67k0VsGzpzwLC1hCOjC5JuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lR63nOhL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90182C3277B;
+	Tue, 18 Jun 2024 13:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716058;
-	bh=PE6Y46RYDgEnTPxaobhcp6+XOGe1Kn2zrmWlRUK0aUs=;
+	s=korg; t=1718715968;
+	bh=Cna+XtontIopK0HERRUwCKHIJdixjAQNaDIq0mANfpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=euy0trXiLU5KrjrSPKemhHYyH7wT5Ei7xvj5lk/Y9LbFiXjxIQo5P3w2ktXgWErSY
-	 YSCF/DOf7xEX4GGMFisjM1Pb6y/dz1fb896m6speMTAjPhqFHO1XDMw/M1S9jBxZ99
-	 648vf+ChaCkGmza+oxpEWHb6VRfmLMWlfvFBpSJQ=
+	b=lR63nOhLvEw7ghGeZCvLYjr/Dd6u7jNomvk+KbxTXpeBQ4UKKomMpXI8jJjB9uiAw
+	 WDQkQ4xLkOC8p69LNo56x202ELrnWrWgMdLVg3ad1xQOXRWMp0eTK01kCsh8ga6dkw
+	 A01c0ygpsSwHnKzStq09LbD9pkJ/oOxfVVFhC9yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bang Li <libang.linuxer@gmail.com>,
-	Jan Kara <jack@suse.cz>,
+	Haowen Bai <baihaowen@meizu.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 487/770] fsnotify: remove redundant parameter judgment
-Date: Tue, 18 Jun 2024 14:35:40 +0200
-Message-ID: <20240618123426.115342619@linuxfoundation.org>
+Subject: [PATCH 5.10 488/770] SUNRPC: Return true/false (not 1/0) from bool functions
+Date: Tue, 18 Jun 2024 14:35:41 +0200
+Message-ID: <20240618123426.153668743@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,46 +66,94 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bang Li <libang.linuxer@gmail.com>
+From: Haowen Bai <baihaowen@meizu.com>
 
-[ Upstream commit f92ca72b0263d601807bbd23ed25cbe6f4da89f4 ]
+[ Upstream commit 5f7b839d47dbc74cf4a07beeab5191f93678673e ]
 
-iput() has already judged the incoming parameter, so there is no need to
-repeat the judgment here.
+Return boolean values ("true" or "false") instead of 1 or 0 from bool
+functions.  This fixes the following warnings from coccicheck:
 
-Link: https://lore.kernel.org/r/20220311151240.62045-1-libang.linuxer@gmail.com
-Signed-off-by: Bang Li <libang.linuxer@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+./fs/nfsd/nfs2acl.c:289:9-10: WARNING: return of 0/1 in function
+'nfsaclsvc_encode_accessres' with return type bool
+./fs/nfsd/nfs2acl.c:252:9-10: WARNING: return of 0/1 in function
+'nfsaclsvc_encode_getaclres' with return type bool
+
+Signed-off-by: Haowen Bai <baihaowen@meizu.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fsnotify.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/nfsd/nfs2acl.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
-index 494f653efbc6e..70a8516b78bc5 100644
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -70,8 +70,7 @@ static void fsnotify_unmount_inodes(struct super_block *sb)
- 		spin_unlock(&inode->i_lock);
- 		spin_unlock(&sb->s_inode_list_lock);
+diff --git a/fs/nfsd/nfs2acl.c b/fs/nfsd/nfs2acl.c
+index 96733dff354d3..03703b22c81ef 100644
+--- a/fs/nfsd/nfs2acl.c
++++ b/fs/nfsd/nfs2acl.c
+@@ -247,34 +247,34 @@ nfsaclsvc_encode_getaclres(struct svc_rqst *rqstp, struct xdr_stream *xdr)
+ 	int w;
  
--		if (iput_inode)
--			iput(iput_inode);
-+		iput(iput_inode);
+ 	if (!svcxdr_encode_stat(xdr, resp->status))
+-		return 0;
++		return false;
  
- 		/* for each watch, send FS_UNMOUNT and then remove it */
- 		fsnotify_inode(inode, FS_UNMOUNT);
-@@ -85,8 +84,7 @@ static void fsnotify_unmount_inodes(struct super_block *sb)
+ 	if (dentry == NULL || d_really_is_negative(dentry))
+-		return 1;
++		return true;
+ 	inode = d_inode(dentry);
+ 
+ 	if (!svcxdr_encode_fattr(rqstp, xdr, &resp->fh, &resp->stat))
+-		return 0;
++		return false;
+ 	if (xdr_stream_encode_u32(xdr, resp->mask) < 0)
+-		return 0;
++		return false;
+ 
+ 	rqstp->rq_res.page_len = w = nfsacl_size(
+ 		(resp->mask & NFS_ACL)   ? resp->acl_access  : NULL,
+ 		(resp->mask & NFS_DFACL) ? resp->acl_default : NULL);
+ 	while (w > 0) {
+ 		if (!*(rqstp->rq_next_page++))
+-			return 1;
++			return true;
+ 		w -= PAGE_SIZE;
  	}
- 	spin_unlock(&sb->s_inode_list_lock);
  
--	if (iput_inode)
--		iput(iput_inode);
-+	iput(iput_inode);
+ 	if (!nfs_stream_encode_acl(xdr, inode, resp->acl_access,
+ 				   resp->mask & NFS_ACL, 0))
+-		return 0;
++		return false;
+ 	if (!nfs_stream_encode_acl(xdr, inode, resp->acl_default,
+ 				   resp->mask & NFS_DFACL, NFS_ACL_DEFAULT))
+-		return 0;
++		return false;
+ 
+-	return 1;
++	return true;
  }
  
- void fsnotify_sb_delete(struct super_block *sb)
+ /* ACCESS */
+@@ -284,17 +284,17 @@ nfsaclsvc_encode_accessres(struct svc_rqst *rqstp, struct xdr_stream *xdr)
+ 	struct nfsd3_accessres *resp = rqstp->rq_resp;
+ 
+ 	if (!svcxdr_encode_stat(xdr, resp->status))
+-		return 0;
++		return false;
+ 	switch (resp->status) {
+ 	case nfs_ok:
+ 		if (!svcxdr_encode_fattr(rqstp, xdr, &resp->fh, &resp->stat))
+-			return 0;
++			return false;
+ 		if (xdr_stream_encode_u32(xdr, resp->access) < 0)
+-			return 0;
++			return false;
+ 		break;
+ 	}
+ 
+-	return 1;
++	return true;
+ }
+ 
+ /*
 -- 
 2.43.0
 
