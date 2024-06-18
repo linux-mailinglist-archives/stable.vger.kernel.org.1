@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278A490D1CF
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:45:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C0B90D220
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A91F62854C5
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:45:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA19B1F2312A
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284641A38FD;
-	Tue, 18 Jun 2024 13:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18BD51AB52D;
+	Tue, 18 Jun 2024 13:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqniKobi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12APHwEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81A11A38E4;
-	Tue, 18 Jun 2024 13:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9551428EC;
+	Tue, 18 Jun 2024 13:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716443; cv=none; b=VETCpiXOj063whm6g7I9KzGSrng7JgEr3G52tpyb5RbbXIG31/utEPWBrK2XSrcW1zNOnRh+8H+oYX4dX2CKM8XoIfFrvyrssDsYKEYqut1L4fNkq4qga1q86jXXJMRxYt27bKCWjxqd9HBUfFoM3bVMc3SXzaEo3mioCOU1hnA=
+	t=1718716572; cv=none; b=FZqT1L6oGphEGhJk+GDFdGRZsdV+Ivex5mx7jBrvA08ii7jbKn8QADUvGwTg0pRB7ISr8in+ILTebBCv9uZ3vemP+JYZr/fxdfNxgflnED+dtqVZ7R5g4klvwOZOBCDwK9+WqGp9QhcHxrAj5/21LXSmnsL3OniZZbc2XU/fzEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716443; c=relaxed/simple;
-	bh=el9+lZBSZn4etfJx8wTMbz90q97gj5adf4CbHp8bMDw=;
+	s=arc-20240116; t=1718716572; c=relaxed/simple;
+	bh=e4BM3qAHOgwVzct84Y7dkQQSg9wNHaPRgKwMgY8r9Pw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h6OXkeBEDkAx6HJA9lPA08gfC41XZtvjv7++xFXcRuVwOxQquGZ8Bk4cvHVheESQ9JIxECNJ5vkYONdSREBM8TYwKgRDISPtzCY1ZdB1xZnVgDQKJH4GoKYZj9CQmTqdRF2xmzBXWmSu4FjXjCTNjFSFfHugMkzPnKwD+vA44OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqniKobi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A5EC3277B;
-	Tue, 18 Jun 2024 13:14:03 +0000 (UTC)
+	 MIME-Version; b=HJ32rxkyRvSBE7jbQhdAwzON0KkgIitmZdKan53lNsXoa2sMJY9mPE5GuvylYYf/p630s5fjnawx1w+ak3/MhHZs7tsEu/0snJpwcPAfeFDxf2eyh5flsFc3TAW4lMPGqE5otc7A0lOqAmXQ0ly5OL1AhNuYtYKoLQ8x0xUg2qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12APHwEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519F3C3277B;
+	Tue, 18 Jun 2024 13:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716443;
-	bh=el9+lZBSZn4etfJx8wTMbz90q97gj5adf4CbHp8bMDw=;
+	s=korg; t=1718716572;
+	bh=e4BM3qAHOgwVzct84Y7dkQQSg9wNHaPRgKwMgY8r9Pw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YqniKobin7qeCMg0GVghHROqFLyNiJFL6C9pw/iqOJqHGH6U3LqiOxjXC1iM/B/mt
-	 TKvoKTXGtQC8q6nd4rwnYdl/En34+0WcOQVZW43m7dZLTNlXd6/mSoVoxCogXkHK4h
-	 zL0RW6AXJ0gQOJUaravufdP4lRfOHgQMf4MSz/UA=
+	b=12APHwEcmAzCm6xOLrcRV3BoHt6vInE7Rv94UwwxTtf1Sy3fNW27eNmBLG0InSMs2
+	 4VVFE7JIprkASqd4vRNdApp0Qq0Q+81P8s+bHhQ46h8J/DPKMSR1uEnhaUb6YDfaAB
+	 /La5lJm8tSSnXpWSxPMe6AFRj+EQg87NM9Oo+Lb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dai Ngo <dai.ngo@oracle.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 647/770] NFSD: keep track of the number of courtesy clients in the system
-Date: Tue, 18 Jun 2024 14:38:20 +0200
-Message-ID: <20240618123432.263622876@linuxfoundation.org>
+Subject: [PATCH 5.10 648/770] NFSD: add shrinker to reap courtesy clients on low memory condition
+Date: Tue, 18 Jun 2024 14:38:21 +0200
+Message-ID: <20240618123432.301481693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,96 +68,235 @@ Content-Transfer-Encoding: 8bit
 
 From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit 3a4ea23d86a317c4b68b9a69d51f7e84e1e04357 ]
+[ Upstream commit 7746b32f467b3813fb61faaab3258de35806a7ac ]
 
-Add counter nfs4_courtesy_client_count to nfsd_net to keep track
-of the number of courtesy clients in the system.
+Add courtesy_client_reaper to react to low memory condition triggered
+by the system memory shrinker.
+
+The delayed_work for the courtesy_client_reaper is scheduled on
+the shrinker's count callback using the laundry_wq.
+
+The shrinker's scan callback is not used for expiring the courtesy
+clients due to potential deadlocks.
 
 Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+[ cel: adjusted to apply without e33c267ab70d ]
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/netns.h     |  2 ++
- fs/nfsd/nfs4state.c | 17 ++++++++++++++++-
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ fs/nfsd/netns.h     |  2 +
+ fs/nfsd/nfs4state.c | 94 +++++++++++++++++++++++++++++++++++++++++----
+ fs/nfsd/nfsctl.c    |  6 ++-
+ fs/nfsd/nfsd.h      |  6 ++-
+ 4 files changed, 96 insertions(+), 12 deletions(-)
 
 diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
-index ffe17743cc74b..55c7006d6109a 100644
+index 55c7006d6109a..8c854ba3285bb 100644
 --- a/fs/nfsd/netns.h
 +++ b/fs/nfsd/netns.h
-@@ -192,6 +192,8 @@ struct nfsd_net {
- 
- 	atomic_t		nfs4_client_count;
+@@ -194,6 +194,8 @@ struct nfsd_net {
  	int			nfs4_max_clients;
-+
-+	atomic_t		nfsd_courtesy_clients;
+ 
+ 	atomic_t		nfsd_courtesy_clients;
++	struct shrinker		nfsd_client_shrinker;
++	struct delayed_work	nfsd_shrinker_work;
  };
  
  /* Simple check to find out if a given net was properly initialized */
 diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 2bb78ab4f6c31..9930c5f9440c7 100644
+index 9930c5f9440c7..d2468a408328d 100644
 --- a/fs/nfsd/nfs4state.c
 +++ b/fs/nfsd/nfs4state.c
-@@ -160,6 +160,13 @@ static bool is_client_expired(struct nfs4_client *clp)
- 	return clp->cl_time == 0;
+@@ -4366,7 +4366,27 @@ nfsd4_init_slabs(void)
+ 	return -ENOMEM;
  }
  
-+static void nfsd4_dec_courtesy_client_count(struct nfsd_net *nn,
-+					struct nfs4_client *clp)
+-void nfsd4_init_leases_net(struct nfsd_net *nn)
++static unsigned long
++nfsd_courtesy_client_count(struct shrinker *shrink, struct shrink_control *sc)
 +{
-+	if (clp->cl_state != NFSD4_ACTIVE)
-+		atomic_add_unless(&nn->nfsd_courtesy_clients, -1, 0);
++	int cnt;
++	struct nfsd_net *nn = container_of(shrink,
++			struct nfsd_net, nfsd_client_shrinker);
++
++	cnt = atomic_read(&nn->nfsd_courtesy_clients);
++	if (cnt > 0)
++		mod_delayed_work(laundry_wq, &nn->nfsd_shrinker_work, 0);
++	return (unsigned long)cnt;
 +}
 +
- static __be32 get_client_locked(struct nfs4_client *clp)
- {
- 	struct nfsd_net *nn = net_generic(clp->net, nfsd_net_id);
-@@ -169,6 +176,7 @@ static __be32 get_client_locked(struct nfs4_client *clp)
- 	if (is_client_expired(clp))
- 		return nfserr_expired;
- 	atomic_inc(&clp->cl_rpc_users);
-+	nfsd4_dec_courtesy_client_count(nn, clp);
- 	clp->cl_state = NFSD4_ACTIVE;
- 	return nfs_ok;
- }
-@@ -190,6 +198,7 @@ renew_client_locked(struct nfs4_client *clp)
- 
- 	list_move_tail(&clp->cl_lru, &nn->client_lru);
- 	clp->cl_time = ktime_get_boottime_seconds();
-+	nfsd4_dec_courtesy_client_count(nn, clp);
- 	clp->cl_state = NFSD4_ACTIVE;
- }
- 
-@@ -2248,6 +2257,7 @@ __destroy_client(struct nfs4_client *clp)
- 	if (clp->cl_cb_conn.cb_xprt)
- 		svc_xprt_put(clp->cl_cb_conn.cb_xprt);
- 	atomic_add_unless(&nn->nfs4_client_count, -1, 0);
-+	nfsd4_dec_courtesy_client_count(nn, clp);
- 	free_client(clp);
- 	wake_up_all(&expiry_wq);
- }
-@@ -4375,6 +4385,8 @@ void nfsd4_init_leases_net(struct nfsd_net *nn)
- 	max_clients = (u64)si.totalram * si.mem_unit / (1024 * 1024 * 1024);
- 	max_clients *= NFS4_CLIENTS_PER_GB;
- 	nn->nfs4_max_clients = max_t(int, max_clients, NFS4_CLIENTS_PER_GB);
++static unsigned long
++nfsd_courtesy_client_scan(struct shrinker *shrink, struct shrink_control *sc)
++{
++	return SHRINK_STOP;
++}
 +
-+	atomic_set(&nn->nfsd_courtesy_clients, 0);
++int
++nfsd4_init_leases_net(struct nfsd_net *nn)
+ {
+ 	struct sysinfo si;
+ 	u64 max_clients;
+@@ -4387,6 +4407,16 @@ void nfsd4_init_leases_net(struct nfsd_net *nn)
+ 	nn->nfs4_max_clients = max_t(int, max_clients, NFS4_CLIENTS_PER_GB);
+ 
+ 	atomic_set(&nn->nfsd_courtesy_clients, 0);
++	nn->nfsd_client_shrinker.scan_objects = nfsd_courtesy_client_scan;
++	nn->nfsd_client_shrinker.count_objects = nfsd_courtesy_client_count;
++	nn->nfsd_client_shrinker.seeks = DEFAULT_SEEKS;
++	return register_shrinker(&nn->nfsd_client_shrinker);
++}
++
++void
++nfsd4_leases_net_shutdown(struct nfsd_net *nn)
++{
++	unregister_shrinker(&nn->nfsd_client_shrinker);
  }
  
  static void init_nfs4_replay(struct nfs4_replay *rp)
-@@ -5928,8 +5940,11 @@ nfs4_get_client_reaplist(struct nfsd_net *nn, struct list_head *reaplist,
- 			goto exp_client;
- 		if (!state_expired(lt, clp->cl_time))
- 			break;
--		if (!atomic_read(&clp->cl_rpc_users))
-+		if (!atomic_read(&clp->cl_rpc_users)) {
-+			if (clp->cl_state == NFSD4_ACTIVE)
-+				atomic_inc(&nn->nfsd_courtesy_clients);
- 			clp->cl_state = NFSD4_COURTESY;
+@@ -5959,10 +5989,49 @@ nfs4_get_client_reaplist(struct nfsd_net *nn, struct list_head *reaplist,
+ 	spin_unlock(&nn->client_lock);
+ }
+ 
++static void
++nfs4_get_courtesy_client_reaplist(struct nfsd_net *nn,
++				struct list_head *reaplist)
++{
++	unsigned int maxreap = 0, reapcnt = 0;
++	struct list_head *pos, *next;
++	struct nfs4_client *clp;
++
++	maxreap = NFSD_CLIENT_MAX_TRIM_PER_RUN;
++	INIT_LIST_HEAD(reaplist);
++
++	spin_lock(&nn->client_lock);
++	list_for_each_safe(pos, next, &nn->client_lru) {
++		clp = list_entry(pos, struct nfs4_client, cl_lru);
++		if (clp->cl_state == NFSD4_ACTIVE)
++			break;
++		if (reapcnt >= maxreap)
++			break;
++		if (!mark_client_expired_locked(clp)) {
++			list_add(&clp->cl_lru, reaplist);
++			reapcnt++;
 +		}
- 		if (!client_has_state(clp))
- 			goto exp_client;
- 		if (!nfs4_anylock_blockers(clp))
++	}
++	spin_unlock(&nn->client_lock);
++}
++
++static void
++nfs4_process_client_reaplist(struct list_head *reaplist)
++{
++	struct list_head *pos, *next;
++	struct nfs4_client *clp;
++
++	list_for_each_safe(pos, next, reaplist) {
++		clp = list_entry(pos, struct nfs4_client, cl_lru);
++		trace_nfsd_clid_purged(&clp->cl_clientid);
++		list_del_init(&clp->cl_lru);
++		expire_client(clp);
++	}
++}
++
+ static time64_t
+ nfs4_laundromat(struct nfsd_net *nn)
+ {
+-	struct nfs4_client *clp;
+ 	struct nfs4_openowner *oo;
+ 	struct nfs4_delegation *dp;
+ 	struct nfs4_ol_stateid *stp;
+@@ -5991,12 +6060,8 @@ nfs4_laundromat(struct nfsd_net *nn)
+ 	}
+ 	spin_unlock(&nn->s2s_cp_lock);
+ 	nfs4_get_client_reaplist(nn, &reaplist, &lt);
+-	list_for_each_safe(pos, next, &reaplist) {
+-		clp = list_entry(pos, struct nfs4_client, cl_lru);
+-		trace_nfsd_clid_purged(&clp->cl_clientid);
+-		list_del_init(&clp->cl_lru);
+-		expire_client(clp);
+-	}
++	nfs4_process_client_reaplist(&reaplist);
++
+ 	spin_lock(&state_lock);
+ 	list_for_each_safe(pos, next, &nn->del_recall_lru) {
+ 		dp = list_entry (pos, struct nfs4_delegation, dl_recall_lru);
+@@ -6079,6 +6144,18 @@ laundromat_main(struct work_struct *laundry)
+ 	queue_delayed_work(laundry_wq, &nn->laundromat_work, t*HZ);
+ }
+ 
++static void
++courtesy_client_reaper(struct work_struct *reaper)
++{
++	struct list_head reaplist;
++	struct delayed_work *dwork = to_delayed_work(reaper);
++	struct nfsd_net *nn = container_of(dwork, struct nfsd_net,
++					nfsd_shrinker_work);
++
++	nfs4_get_courtesy_client_reaplist(nn, &reaplist);
++	nfs4_process_client_reaplist(&reaplist);
++}
++
+ static inline __be32 nfs4_check_fh(struct svc_fh *fhp, struct nfs4_stid *stp)
+ {
+ 	if (!fh_match(&fhp->fh_handle, &stp->sc_file->fi_fhandle))
+@@ -7911,6 +7988,7 @@ static int nfs4_state_create_net(struct net *net)
+ 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
+ 
+ 	INIT_DELAYED_WORK(&nn->laundromat_work, laundromat_main);
++	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, courtesy_client_reaper);
+ 	get_net(net);
+ 
+ 	return 0;
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 917fa1892fd2d..597a26ad4183f 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1481,11 +1481,12 @@ static __net_init int nfsd_init_net(struct net *net)
+ 		goto out_idmap_error;
+ 	nn->nfsd_versions = NULL;
+ 	nn->nfsd4_minorversions = NULL;
++	retval = nfsd4_init_leases_net(nn);
++	if (retval)
++		goto out_drc_error;
+ 	retval = nfsd_reply_cache_init(nn);
+ 	if (retval)
+ 		goto out_drc_error;
+-	nfsd4_init_leases_net(nn);
+-
+ 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
+ 	seqlock_init(&nn->writeverf_lock);
+ 
+@@ -1507,6 +1508,7 @@ static __net_exit void nfsd_exit_net(struct net *net)
+ 	nfsd_idmap_shutdown(net);
+ 	nfsd_export_shutdown(net);
+ 	nfsd_netns_free_versions(net_generic(net, nfsd_net_id));
++	nfsd4_leases_net_shutdown(nn);
+ }
+ 
+ static struct pernet_operations nfsd_net_ops = {
+diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
+index 6ab4ad41ae84e..09726c5b9a317 100644
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -505,7 +505,8 @@ extern void unregister_cld_notifier(void);
+ extern void nfsd4_ssc_init_umount_work(struct nfsd_net *nn);
+ #endif
+ 
+-extern void nfsd4_init_leases_net(struct nfsd_net *nn);
++extern int nfsd4_init_leases_net(struct nfsd_net *nn);
++extern void nfsd4_leases_net_shutdown(struct nfsd_net *nn);
+ 
+ #else /* CONFIG_NFSD_V4 */
+ static inline int nfsd4_is_junction(struct dentry *dentry)
+@@ -513,7 +514,8 @@ static inline int nfsd4_is_junction(struct dentry *dentry)
+ 	return 0;
+ }
+ 
+-static inline void nfsd4_init_leases_net(struct nfsd_net *nn) {};
++static inline int nfsd4_init_leases_net(struct nfsd_net *nn) { return 0; };
++static inline void nfsd4_leases_net_shutdown(struct nfsd_net *nn) {};
+ 
+ #define register_cld_notifier() 0
+ #define unregister_cld_notifier() do { } while(0)
 -- 
 2.43.0
 
