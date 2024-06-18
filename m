@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF04890D506
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:32:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C5D90D507
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5191D290933
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:32:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8DFE1C24F0E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524FF13D8BC;
-	Tue, 18 Jun 2024 14:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F0913C694;
+	Tue, 18 Jun 2024 14:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBI5eMYD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1tZA7VF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A1513C8E5
-	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 14:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF31E13A87A
+	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 14:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718719613; cv=none; b=ETTnuz6Wn2y6QQLSfYY5r958G1ml8Pcu4lW5LP1F+rBe31IXwuO4zehUOtWw19+tpt960iS/LMfjjIwJUJlX8jmqRxNXKRDOwHoOI/RCr7XscGJbkIP/+n7vK9ds3HUC14eMXrQSNKrgKbyZw4ctkNqXdIY4qSCvlrz+TYv82ag=
+	t=1718719616; cv=none; b=dbjeDEmLOpeZxaBqz43zCFNSsyaYAwcs4cLOsAAyntGOp96DKJKuK+tosFr6oFkKKZ1BUtPY1zsauVSNIS9d00i46xzK6wYwNJ2boHBsFikNQJys/2aCqtxKzTj1zhsLtwVRqmv7zmJXG4JmG6uYh9yaexA/DxsmwDSM7L6OWv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718719613; c=relaxed/simple;
-	bh=61lhsgudtRsYFrr9/pp85Tzto59v4r6+mFcLGw8bYIE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=maAs4yU/omn1hc3Y2MZ5f4x+TkZA8xya5Xl24jNSEi6xRaxRrgIL84HtXRxPHJg+P70uVHzUG0OWYNMlNMAhR4oX2wi2ciGqKEtJsJJyhQGACDzoSaU9xx6DNyLGJn/XlP5fcnVOIjUFtERtNBAUq0dHg+9s6i3a9+BjjEeWf1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBI5eMYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B92BC3277B;
-	Tue, 18 Jun 2024 14:06:52 +0000 (UTC)
+	s=arc-20240116; t=1718719616; c=relaxed/simple;
+	bh=WXc5jZOgK8hJvR/MuInu4NVbptD6VxJSWlVzRjXWnM0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=foz6iKx5AGVBoz/VvqrpdXevJIB1yJGbYaxN2IaiSxvKxV7ztBdFRk80J4s4JCoJ48QHRZ6kGawIuP28UCIp2V5MEsWtbRZgecsY47bbXrE7iY7IfweRg6UhXTytwz6XxOrsd6s8//YgbFtNuQ4CBYjN7GmfitIawG4ortnZ/ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1tZA7VF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC62C3277B;
+	Tue, 18 Jun 2024 14:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718719612;
-	bh=61lhsgudtRsYFrr9/pp85Tzto59v4r6+mFcLGw8bYIE=;
+	s=korg; t=1718719615;
+	bh=WXc5jZOgK8hJvR/MuInu4NVbptD6VxJSWlVzRjXWnM0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=vBI5eMYDD05NyJESunie2ucrqnOxnuY4AsizdvydP9QWauqlfHmN8aKHResEGUpU8
-	 z4nof0z/k7XJWs41i6dAuMA3aQgs9wXKoldIm9WcGQWt9I1sufMbDJqgTH2iaTfiLK
-	 CLGkF17e5zauNTpO7oRDa4rpSAMyKGJN2qxrNhOU=
-Subject: FAILED: patch "[PATCH] nbd: Fix signal handling" failed to apply to 6.6-stable tree
+	b=Q1tZA7VFu1hgcAFvV1XGYA+WbuUdSIlFbjUffSPXLbI09sIPJXc8kV6SFpJ4qhkF/
+	 culA9wBq2scxubnk5sBv9Qj++dUJEMJ7wnPW/wzX1kfMYmBEUXqN4FN1X4T0h1aV12
+	 LWtTPyhXtN4/fPtK9Jq3Yul8yDB0+ZzDtggF+OSk=
+Subject: FAILED: patch "[PATCH] nbd: Fix signal handling" failed to apply to 6.1-stable tree
 To: bvanassche@acm.org,axboe@kernel.dk,hch@lst.de,jbacik@fb.com,mpa@pengutronix.de,yukuai3@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 18 Jun 2024 16:06:47 +0200
-Message-ID: <2024061847-dwindle-clamshell-1a09@gregkh>
+Date: Tue, 18 Jun 2024 16:06:48 +0200
+Message-ID: <2024061848-gamma-observer-ff1a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x e56d4b633fffea9510db468085bed0799cba4ecd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061847-dwindle-clamshell-1a09@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061848-gamma-observer-ff1a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,6 +73,13 @@ e56d4b633fff ("nbd: Fix signal handling")
 2a6751e052ab ("nbd: Improve the documentation of the locking assumptions")
 3123ac779233 ("nbd: factor out a helper to get nbd_config without holding 'config_lock'")
 1b59860540a4 ("nbd: fold nbd config initialization into nbd_alloc_config()")
+d32e2bf83791 ("block: pass a gendisk to ->open")
+444aa2c58cb3 ("block: pass a gendisk on bdev_check_media_change")
+48a905198024 ("ublk_drv: only allow owner to open unprivileged disk")
+4093cb5a0634 ("ublk_drv: add mechanism for supporting unprivileged ublk device")
+bfbcef036396 ("ublk_drv: move ublk_get_device_from_id into ublk_ctrl_uring_cmd")
+4b83e99ee709 ("Revert "pktcdvd: remove driver."")
+ce8a79d5601a ("Merge tag 'for-6.2/block-2022-12-08' of git://git.kernel.dk/linux")
 
 thanks,
 
