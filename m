@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-52972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1491490CF84
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:27:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C1D90D1B5
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:44:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24C2C1C235DB
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:27:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 771DCB2F321
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A4A14E2CF;
-	Tue, 18 Jun 2024 12:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871CC15E5A8;
+	Tue, 18 Jun 2024 12:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWbziI9Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trFQmoLl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA46514D435;
-	Tue, 18 Jun 2024 12:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440D715E5A5;
+	Tue, 18 Jun 2024 12:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714952; cv=none; b=Ty0IiiEIV+vUdvGUOWYqOjh65gaTWaLuixkxkAYaqg7/GuKtas2Li33Fi0rodJyxD2tNshAigvtZ8Hg6PHo7dWJ4R8rk04N8A5xmXO60Uy+QqRfm3YR9t6ObuvFnVqDzQo4yrMRK/kmpXsjDla0p6sXsu/Aj8EhqLclL45pDAKY=
+	t=1718714855; cv=none; b=sdfdPZXK8GOn9HiIgiYHevNvw4JrhtuMOi5ChvuqF39/ca4cpjgTOmCPBUiERG2s4EpJ2Kqh7usz6eJuBtV7bNgz4dMhoV+hPbooM8EmX5GH8W0LitT2FWdZtS18XW6Jw/OhGBDyD/RCrTighXdx3Xq8krubF4ppbvjbPrLxtg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714952; c=relaxed/simple;
-	bh=KKVMFeEDyTBoP6JzYjsCJV+EQKGLuz+xU7SFSZwfyH4=;
+	s=arc-20240116; t=1718714855; c=relaxed/simple;
+	bh=3MrnSUfnChRNsVyPGBslRA+fpNjvpO39Akwy5TvXl+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dcZwsOMmywzoYOWPYSaO4Ys3QFjhZT3QcLZuok0J0K56poFCkUoMOnpDpJfsC1lsTw+4rgIZqMJ8enahlf6fTOkk9oRnmjsulYcd4l/6+5MBiRGQOah00iHbfuqUqSqaNbJUGurIVQT04A5y+VKL12SnLDnggrIqGGpHdfv5dEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWbziI9Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52351C3277B;
-	Tue, 18 Jun 2024 12:49:12 +0000 (UTC)
+	 MIME-Version; b=pmedEIWnLTjmEJcID3ew6+O4J760KEuc+5ZmdFqaxxcdcoIBosdwPvGVrVTWOlwt4+HRZKBZlWw82XGdpS7pdvlxP7qrNn1W9FY1pj9TfGgsX1TCcAUn55R2L09+lUDLdgC4orjcl6Ou0KZ+aO+JzxNpWLW/6oP+kq6JMvIHsY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trFQmoLl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF629C3277B;
+	Tue, 18 Jun 2024 12:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718714952;
-	bh=KKVMFeEDyTBoP6JzYjsCJV+EQKGLuz+xU7SFSZwfyH4=;
+	s=korg; t=1718714855;
+	bh=3MrnSUfnChRNsVyPGBslRA+fpNjvpO39Akwy5TvXl+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rWbziI9Yn88sryqjj3vYVT8aI5uVUxHi1Gfrv26b6y2pOW+HsFx7pRT9kf0WS/IYQ
-	 abUngmPUp2C0TmFLZyWSxZm9dxSFkQ3GUQIwR6mC0w7ONxX4dvmcUZ6HKDIPpCdYFW
-	 AZjEsej+tSK/d6S7Y6eHc+OxVv9yZmB+04P5X7JE=
+	b=trFQmoLlyIj+aeOfiY6SUxfS/Xd6mqWg9iGk3UYrpA2F1aMl1jN9AbbG1THCFG40S
+	 d9S12zrTpS4qdToFNMiFJsiDfoxu83VBdarsaqH/l3tVfDkRqge1iahZaXawl1unVY
+	 t73xnYK5UF1Y+Ujo0Tiucneysmx8pdb+txOuZMDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 103/770] nfsd: Fix up nfsd to ensure that timeout errors dont result in ESTALE
-Date: Tue, 18 Jun 2024 14:29:16 +0200
-Message-ID: <20240618123411.251029073@linuxfoundation.org>
+Subject: [PATCH 5.10 104/770] nfsd: Set PF_LOCAL_THROTTLE on local filesystems only
+Date: Tue, 18 Jun 2024 14:29:17 +0200
+Message-ID: <20240618123411.289851573@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,47 +68,94 @@ Content-Transfer-Encoding: 8bit
 
 From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 2e19d10c1438241de32467637a2a411971547991 ]
+[ Upstream commit 01cbf3853959feec40ec9b9a399e12a021cd4d81 ]
 
-If the underlying filesystem times out, then we want knfsd to return
-NFSERR_JUKEBOX/DELAY rather than NFSERR_STALE.
+Don't set PF_LOCAL_THROTTLE on remote filesystems like NFS, since they
+aren't expected to ever be subject to double buffering.
 
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsfh.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ fs/nfs/export.c          |  3 ++-
+ fs/nfsd/vfs.c            | 13 +++++++++++--
+ include/linux/exportfs.h |  1 +
+ 3 files changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-index 9c29a523f4848..e80a7525561d0 100644
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -268,12 +268,20 @@ static __be32 nfsd_set_fh_dentry(struct svc_rqst *rqstp, struct svc_fh *fhp)
- 	if (fileid_type == FILEID_ROOT)
- 		dentry = dget(exp->ex_path.dentry);
- 	else {
--		dentry = exportfs_decode_fh(exp->ex_path.mnt, fid,
--				data_left, fileid_type,
--				nfsd_acceptable, exp);
--		if (IS_ERR_OR_NULL(dentry))
-+		dentry = exportfs_decode_fh_raw(exp->ex_path.mnt, fid,
-+						data_left, fileid_type,
-+						nfsd_acceptable, exp);
-+		if (IS_ERR_OR_NULL(dentry)) {
- 			trace_nfsd_set_fh_dentry_badhandle(rqstp, fhp,
- 					dentry ?  PTR_ERR(dentry) : -ESTALE);
-+			switch (PTR_ERR(dentry)) {
-+			case -ENOMEM:
-+			case -ETIMEDOUT:
-+				break;
-+			default:
-+				dentry = ERR_PTR(-ESTALE);
-+			}
-+		}
+diff --git a/fs/nfs/export.c b/fs/nfs/export.c
+index 5428713af5fee..48b879cfe6e3b 100644
+--- a/fs/nfs/export.c
++++ b/fs/nfs/export.c
+@@ -171,5 +171,6 @@ const struct export_operations nfs_export_ops = {
+ 	.encode_fh = nfs_encode_fh,
+ 	.fh_to_dentry = nfs_fh_to_dentry,
+ 	.get_parent = nfs_get_parent,
+-	.flags = EXPORT_OP_NOWCC|EXPORT_OP_NOSUBTREECHK|EXPORT_OP_CLOSE_BEFORE_UNLINK,
++	.flags = EXPORT_OP_NOWCC|EXPORT_OP_NOSUBTREECHK|
++		EXPORT_OP_CLOSE_BEFORE_UNLINK|EXPORT_OP_REMOTE_FS,
+ };
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index fb4e6c57ce0bb..a515cbd0a7d8f 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -986,6 +986,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
+ 				__be32 *verf)
+ {
+ 	struct file		*file = nf->nf_file;
++	struct super_block	*sb = file_inode(file)->i_sb;
+ 	struct svc_export	*exp;
+ 	struct iov_iter		iter;
+ 	errseq_t		since;
+@@ -993,12 +994,18 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
+ 	int			host_err;
+ 	int			use_wgather;
+ 	loff_t			pos = offset;
++	unsigned long		exp_op_flags = 0;
+ 	unsigned int		pflags = current->flags;
+ 	rwf_t			flags = 0;
++	bool			restore_flags = false;
+ 
+ 	trace_nfsd_write_opened(rqstp, fhp, offset, *cnt);
+ 
+-	if (test_bit(RQ_LOCAL, &rqstp->rq_flags))
++	if (sb->s_export_op)
++		exp_op_flags = sb->s_export_op->flags;
++
++	if (test_bit(RQ_LOCAL, &rqstp->rq_flags) &&
++	    !(exp_op_flags & EXPORT_OP_REMOTE_FS)) {
+ 		/*
+ 		 * We want throttling in balance_dirty_pages()
+ 		 * and shrink_inactive_list() to only consider
+@@ -1007,6 +1014,8 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
+ 		 * the client's dirty pages or its congested queue.
+ 		 */
+ 		current->flags |= PF_LOCAL_THROTTLE;
++		restore_flags = true;
++	}
+ 
+ 	exp = fhp->fh_export;
+ 	use_wgather = (rqstp->rq_vers == 2) && EX_WGATHER(exp);
+@@ -1062,7 +1071,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
+ 		trace_nfsd_write_err(rqstp, fhp, offset, host_err);
+ 		nfserr = nfserrno(host_err);
  	}
- 	if (dentry == NULL)
- 		goto out;
+-	if (test_bit(RQ_LOCAL, &rqstp->rq_flags))
++	if (restore_flags)
+ 		current_restore_flags(pflags, PF_LOCAL_THROTTLE);
+ 	return nfserr;
+ }
+diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
+index 846df3c96730f..d93e8a6737bb0 100644
+--- a/include/linux/exportfs.h
++++ b/include/linux/exportfs.h
+@@ -216,6 +216,7 @@ struct export_operations {
+ #define	EXPORT_OP_NOWCC			(0x1) /* don't collect v3 wcc data */
+ #define	EXPORT_OP_NOSUBTREECHK		(0x2) /* no subtree checking */
+ #define	EXPORT_OP_CLOSE_BEFORE_UNLINK	(0x4) /* close files before unlink */
++#define EXPORT_OP_REMOTE_FS		(0x8) /* Filesystem is remote */
+ 	unsigned long	flags;
+ };
+ 
 -- 
 2.43.0
 
