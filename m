@@ -1,221 +1,164 @@
-Return-Path: <stable+bounces-52856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1270090CF09
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7093090CF61
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DA551F21BEC
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:23:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2E491F22CCD
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA061BE861;
-	Tue, 18 Jun 2024 12:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C4F15E5B7;
+	Tue, 18 Jun 2024 12:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NeNzcT5w"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SmKVcg85"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7E71BE868;
-	Tue, 18 Jun 2024 12:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46B3145B37;
+	Tue, 18 Jun 2024 12:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714613; cv=none; b=PsOu6aHsMYMFvGC2cqgK+LRLS1SdXVJEut1XdAL3Gsbv+R74UQuJ+gpPNBKVksXEr1SuwA/a90kdzpATNlFVPqZ5jODlfFrtGorbUDpYWF7N4Ad/ko3Q0kDpVkHl26R/bLZH7X4UNC0f3qIx4wIXCWvhN4GP5O8oK9Ex1dd1yww=
+	t=1718714868; cv=none; b=KdjW7gIecAsetVsXpnfq3WzRTMzM1Kcwf0f8v1GHBuemuNoae2iALh65NrXdEfiKt1wrz6rvePZ0I5YqKrOveWWA0a8Gd+3BmfBKvz+wQfEgSyitjBalOGfdUrHRXiNzN0uo/UybabAtMegYOcSH3VFXQY/AvP/O7gc5ufwxCYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714613; c=relaxed/simple;
-	bh=stN5Ld1JXEx7p6jKEsYnl/+iDFWxr690DHHoqxLYQJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4c6mD9ityCZFTblqpQbzaMk92AtoDAG1m95rTGXMgIJGDqr+LMoGEgVXUq3QbLYabMSrTciPi/nM9m+wyn+h8nBNN4apfHKP2GESoClvRMLaLmcX9poNDryboXwIh1qS/uIW7/keBvWhkqxBQWCApxuYlnWBH0i9ZB9DF1W5YU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NeNzcT5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E56E4C4AF48;
-	Tue, 18 Jun 2024 12:43:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714613;
-	bh=stN5Ld1JXEx7p6jKEsYnl/+iDFWxr690DHHoqxLYQJ0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NeNzcT5wyH9HmfukN1krPS3PPtMIZmaxnV15pBxJJjC9f/x18446JPtTqzNO8Cdn6
-	 5/9KGso7z/y4VMn6jdcAv03fWZ/7XYdh09ldt1Tpi6/jVNkIvMWxGmvwDHphaP1H0y
-	 Ajy2/BneLu6EhAIhW7SSqi2s5vUH7bl1aNbQauqf5e1mv15aKNLEsVeiM7IfiDjLhj
-	 NFLLD4kZsJhSWnfmjbyWHnGjE7FaxG4z29PKbjQJVndg9XkEi+tLRUcUpwEJ2EJoGb
-	 H1UY7qf4X8j0MFHcZc70YrYP7msdsfDZyG0U634uP5ADtFPE6hZyLD3ykMXYWmAcAe
-	 6bTMJkVD7bRiw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 9/9] kconfig: remove wrong expr_trans_bool()
-Date: Tue, 18 Jun 2024 08:43:15 -0400
-Message-ID: <20240618124318.3304798-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124318.3304798-1-sashal@kernel.org>
-References: <20240618124318.3304798-1-sashal@kernel.org>
+	s=arc-20240116; t=1718714868; c=relaxed/simple;
+	bh=llKsSokbWVreY2pYxSxMXJ4DmkKrX3OzdhY8owx9+Fs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XWUia1ztKil+4Jl1bfG+UdIKBiuBATJtnOOt9vAFpN03ZQq49OFJK2cVGLFolwPlb8xP6ZOlz/cHw64At4euL5KK0lbbjowpc9BAfZjesJ5MaO0Xu8CTNFzTRsG9SyTqaupFIF9oQEDJ2vBxTvr9hobcAVUzVLHLu58/rRlDj9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SmKVcg85; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a6efacd25ecso332281166b.1;
+        Tue, 18 Jun 2024 05:47:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718714865; x=1719319665; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W3VpHd0JHmZD4WjBkUsTzzEDz6Rx27ZsVrJclfCl2X8=;
+        b=SmKVcg85SO5esFP0WCiyk8IhDWHk375GvrGPbtqK5QP6qk3XB8a0n7OwPdD1PwAS5F
+         joTOtbMD9H/mhj0cRks62+MMGuCjal+sgZIUv5kR75DcGh0L7+HwXus0e3DO/UHNEou6
+         3beW0BJmk6AjlU4kngzW0Dcvca1CsA4PkV9RkSsfvtpF+Yji4IOx4V84zc7cZtZTZR9X
+         A8USdhES4fQctAn7EVKB3qwh4m7JTuOdn1hwZ84/hWG+47srwxqrPxqnxqR7rcQwmaZC
+         Y7avAMqZjuO1liN+Y9Z2fWcfN5CI8zOkaLguxe00UtBdwThObeyu2Opvk/+cmElXfPrO
+         M3dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718714865; x=1719319665;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W3VpHd0JHmZD4WjBkUsTzzEDz6Rx27ZsVrJclfCl2X8=;
+        b=rhxoslDaXq6qOXzafaV0FwobNyQHHE3lmQD5pPD2tC7RtisoXh3aK/vRDblN8NkOQD
+         6yDpmKfDM2nQyycFWitXlse9g5AdSfy2rVpuoOP430j5oKYgPwA6qVSDT4XOxa8n/GjN
+         ARuG9uOtrlwJvPjtKuXw5WcYcZmNM3lOryu9WPWSAJ6VYrGlPZiW2lxfHlW/sI2D5uNu
+         AqLmuRF4yoLMJn2VF+a5gF5OM3qvmzI+CL8Lte3Svdj4RSJZQnhyH9/jSs00LZ4DToYp
+         aCaBdPAamK9RFNrzB18J9UPGSSxvwA3eGYjcCWLcHZgHvBOz5gZMpuInxe0D1nvVKnWA
+         IKvg==
+X-Forwarded-Encrypted: i=1; AJvYcCVMqRTz8wzoHFKhYb3fM0LYD5Hm+BJTjIWfxK6e83+UsLn70mfLxpPhcH37uhJNqqeot3hLXymn5P80Au+0JuHUpTNmJLGTYYPi1RKPudw4xij1CY7HWPO3DpE+qnDPIXvotzJy9EBE0zdUitM+5AsYpYyILUElrg1t7Wk1Ei9K
+X-Gm-Message-State: AOJu0YwFuj2x0AmsPdTgtDnqxc2c1w0Yns1uM+Gu5w2YXrfkRZVmgbCp
+	97hnb210nfO+NM/hTNYKEtPo/ChdImG0mK9/vEyOstFRPYXnHFB30zgSELQErptk6iPTcf71gz6
+	muuRX7QDdD6tGNNJuTelo/QEe3eI=
+X-Google-Smtp-Source: AGHT+IHIr5iz35UBLYc9HYQ/hr9/2KdLV2xXGggyddelPLlm2c+GVYrDo85rEXR385uQ6YppFvU0egjvulIHsqGkR2s=
+X-Received: by 2002:a50:ab4d:0:b0:579:73b7:b4cc with SMTP id
+ 4fb4d7f45d1cf-57cbd6778eamr9821853a12.2.1718714864647; Tue, 18 Jun 2024
+ 05:47:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.316
-Content-Transfer-Encoding: 8bit
+References: <20240601092646.52139-1-joswang1221@gmail.com> <20240612153922.2531-1-joswang1221@gmail.com>
+ <2024061203-good-sneeze-f118@gregkh> <CAMtoTm0NWV_1sGNzpULAEH6qAzQgKT_xWz7oPaLrKeu49r2RzA@mail.gmail.com>
+ <20240618000502.n3elxua2is3u7bq2@synopsys.com>
+In-Reply-To: <20240618000502.n3elxua2is3u7bq2@synopsys.com>
+From: joswang <joswang1221@gmail.com>
+Date: Tue, 18 Jun 2024 20:47:38 +0800
+Message-ID: <CAMtoTm1ZkT6NoBj9N-wKkzxASQ2AboYNdd-L7DHUEt8m8hootg@mail.gmail.com>
+Subject: Re: [PATCH v4, 3/3] usb: dwc3: core: Workaround for CSR read timeout
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, 
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Jos Wang <joswang@lenovo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+On Tue, Jun 18, 2024 at 8:05=E2=80=AFAM Thinh Nguyen <Thinh.Nguyen@synopsys=
+.com> wrote:
+>
+> On Thu, Jun 13, 2024, joswang wrote:
+> > On Thu, Jun 13, 2024 at 1:04=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
+.org> wrote:
+> > >
+> > > On Wed, Jun 12, 2024 at 11:39:22PM +0800, joswang wrote:
+> > > > From: Jos Wang <joswang@lenovo.com>
+> > > >
+> > > > This is a workaround for STAR 4846132, which only affects
+> > > > DWC_usb31 version2.00a operating in host mode.
+> > > >
+> > > > There is a problem in DWC_usb31 version 2.00a operating
+> > > > in host mode that would cause a CSR read timeout When CSR
+> > > > read coincides with RAM Clock Gating Entry. By disable
+> > > > Clock Gating, sacrificing power consumption for normal
+> > > > operation.
+> > > >
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Jos Wang <joswang@lenovo.com>
+> > > > ---
+> > > > v1 -> v2:
+> > > > - add "dt-bindings: usb: dwc3: Add snps,p2p3tranok quirk" patch,
+> > > >   this patch does not make any changes
+> > > > v2 -> v3:
+> > > > - code refactor
+> > > > - modify comment, add STAR number, workaround applied in host mode
+> > > > - modify commit message, add STAR number, workaround applied in hos=
+t mode
+> > > > - modify Author Jos Wang
+> > > > v3 -> v4:
+> > > > - modify commit message, add Cc: stable@vger.kernel.org
+> > >
+> > > This thread is crazy, look at:
+> > >         https://urldefense.com/v3/__https://lore.kernel.org/all/20240=
+612153922.2531-1-joswang1221@gmail.com/__;!!A4F2R9G_pg!a29V9NsG_rMKPnub-JtI=
+e5I_lAoJmzK8dgo3UK-qD_xpT_TOgyPb6LkEMkIsijsDKIgdxB_QVLW_MwtdQLnyvOujOA$
+> > > for how it looks.  How do I pick out the proper patches to review/app=
+ly
+> > > there at all?  What would you do if you were in my position except ju=
+st
+> > > delete the whole thing?
+> > >
+> > > Just properly submit new versions of patches (hint, without the ','),=
+ as
+> > > the documentation file says to, as new threads each time, with all
+> > > commits, and all should be fine.
+> > >
+> > > We even have tools that can do this for you semi-automatically, why n=
+ot
+> > > use them?
+> > >
+> > > thanks,
+> > >
+> > > greg k-h
+> >
+> > We apologize for any inconvenience this may cause.
+> > The following incorrect operation caused the problem you mentioned:
+> > git send-email --in-reply-to command sends the new version patch
+> > git format-patch --subject-prefix=3D'PATCH v3
+> >
+> > Should I resend the v5 patch now?
+>
+> Please send this as a stand-alone patch outside of the series as v5. (ie.
+> remove the "3/3"). I still need to review the other issue of the series.
+>
+> Thanks,
+> Thinh
 
-[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
+This patch has been sent separately, please help review it.
 
-expr_trans_bool() performs an incorrect transformation.
-
-[Test Code]
-
-    config MODULES
-            def_bool y
-            modules
-
-    config A
-            def_bool y
-            select C if B != n
-
-    config B
-            def_tristate m
-
-    config C
-            tristate
-
-[Result]
-
-    CONFIG_MODULES=y
-    CONFIG_A=y
-    CONFIG_B=m
-    CONFIG_C=m
-
-This output is incorrect because CONFIG_C=y is expected.
-
-Documentation/kbuild/kconfig-language.rst clearly explains the function
-of the '!=' operator:
-
-    If the values of both symbols are equal, it returns 'n',
-    otherwise 'y'.
-
-Therefore, the statement:
-
-    select C if B != n
-
-should be equivalent to:
-
-    select C if y
-
-Or, more simply:
-
-    select C
-
-Hence, the symbol C should be selected by the value of A, which is 'y'.
-
-However, expr_trans_bool() wrongly transforms it to:
-
-    select C if B
-
-Therefore, the symbol C is selected by (A && B), which is 'm'.
-
-The comment block of expr_trans_bool() correctly explains its intention:
-
-  * bool FOO!=n => FOO
-    ^^^^
-
-If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
-
-However, the actual code performs this transformation when FOO is
-tristate:
-
-    if (e->left.sym->type == S_TRISTATE) {
-                             ^^^^^^^^^^
-
-While it can be fixed to S_BOOLEAN, there is no point in doing so
-because expr_tranform() already transforms FOO!=n to FOO when FOO is
-bool. (see the "case E_UNEQUAL" part)
-
-expr_trans_bool() is wrong and unnecessary.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- scripts/kconfig/expr.c | 29 -----------------------------
- scripts/kconfig/expr.h |  1 -
- scripts/kconfig/menu.c |  2 --
- 3 files changed, 32 deletions(-)
-
-diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
-index 7e38070ee523b..1c69de8cacf6d 100644
---- a/scripts/kconfig/expr.c
-+++ b/scripts/kconfig/expr.c
-@@ -395,35 +395,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
- 	return e;
- }
- 
--/*
-- * bool FOO!=n => FOO
-- */
--struct expr *expr_trans_bool(struct expr *e)
--{
--	if (!e)
--		return NULL;
--	switch (e->type) {
--	case E_AND:
--	case E_OR:
--	case E_NOT:
--		e->left.expr = expr_trans_bool(e->left.expr);
--		e->right.expr = expr_trans_bool(e->right.expr);
--		break;
--	case E_UNEQUAL:
--		// FOO!=n -> FOO
--		if (e->left.sym->type == S_TRISTATE) {
--			if (e->right.sym == &symbol_no) {
--				e->type = E_SYMBOL;
--				e->right.sym = NULL;
--			}
--		}
--		break;
--	default:
--		;
--	}
--	return e;
--}
--
- /*
-  * e1 || e2 -> ?
-  */
-diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
-index 43a87f8ea738c..968219750244a 100644
---- a/scripts/kconfig/expr.h
-+++ b/scripts/kconfig/expr.h
-@@ -302,7 +302,6 @@ struct expr *expr_copy(const struct expr *org);
- void expr_free(struct expr *e);
- void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
- tristate expr_calc_value(struct expr *e);
--struct expr *expr_trans_bool(struct expr *e);
- struct expr *expr_eliminate_dups(struct expr *e);
- struct expr *expr_transform(struct expr *e);
- int expr_contains_symbol(struct expr *dep, struct symbol *sym);
-diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
-index 4cf15d449c05d..4d48ff3083bd8 100644
---- a/scripts/kconfig/menu.c
-+++ b/scripts/kconfig/menu.c
-@@ -390,8 +390,6 @@ void menu_finalize(struct menu *parent)
- 				dep = expr_transform(dep);
- 				dep = expr_alloc_and(expr_copy(basedep), dep);
- 				dep = expr_eliminate_dups(dep);
--				if (menu->sym && menu->sym->type != S_TRISTATE)
--					dep = expr_trans_bool(dep);
- 				prop->visible.expr = dep;
- 
- 				/*
--- 
-2.43.0
-
+Thanks
+Jos Wang
 
