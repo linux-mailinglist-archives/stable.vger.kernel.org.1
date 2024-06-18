@@ -1,110 +1,117 @@
-Return-Path: <stable+bounces-53569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB4F90D2DF
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:55:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F45490CEDD
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77CC9285652
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BC4FB24425
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D412C15A85C;
-	Tue, 18 Jun 2024 13:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF951AB534;
+	Tue, 18 Jun 2024 12:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhtPUpdt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AVfmAiDp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7AE13AA44;
-	Tue, 18 Jun 2024 13:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABC415820C;
+	Tue, 18 Jun 2024 12:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716718; cv=none; b=R04k+UtdE6JASq/pdZU6HMvvCBvmheEWjbQzA/9F8VR/4cPt1doNuQQhBb3eqtjr3LsW2doarEG1TMYvqmZYUORqp1KxIehOX4VsjDYVGgwuTGTdlZmkVBQHn8zrxbib5Z3sO7sTCWHC6Mr9yhVaj5UwMl0ZL60LCLDWyobAKC4=
+	t=1718714476; cv=none; b=cA08tMpdN8nTnN9P0WhV3yFIcrA0YfO1GU9WAWbc9B2y8YaLhNgicGrznDoogjmQEvG9zIaFQKez0snhJJdCa61ymwU395gmlnU5fkmlP9tbmUQLr7YViBSFFUXXP0GDpxGvIMNWVu46wyGIpGeFhP5j6J5EDtdIE1gHjZQ5qfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716718; c=relaxed/simple;
-	bh=qqSWethrZkj4rCcUHjqLdtkXZ6mVWMCyxlQfljAvaoY=;
+	s=arc-20240116; t=1718714476; c=relaxed/simple;
+	bh=O6HQjA5C8MJ8iubKtctGkp5VYKVligBjZlLdnuQD9AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mKeJ7UhP7X78jRqCSQ5narpRWAOZDeHrv04zjQcGMDIcTaBioQfG0mhEctDsbwq98VwkkDyS7dxBE8jIkqP4cwjyp/KUg50MKFAfupYqP5IdA7YN9+plvfKEku2JjW7LCdJGUkJy4+kMSLKJ2HSU5qIEzj624AiVFX69bHefXwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhtPUpdt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A082FC3277B;
-	Tue, 18 Jun 2024 13:18:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716718;
-	bh=qqSWethrZkj4rCcUHjqLdtkXZ6mVWMCyxlQfljAvaoY=;
+	 MIME-Version; b=pUaGsmlCHjmKrgD1h8WKehSz+U+TsOy2elmk8uym7S3sIxZo/sKTt70+4MdPR4aiRfpLFT5Ih1h71quokPgyYLNefefBrWvZv0sKe5KLI+AamMTjMwIypqbu2n29Tbefb9ZsszNkqUZHEyhZeKrUWDerPypp7PQEihS57Hf2hSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AVfmAiDp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00194C32786;
+	Tue, 18 Jun 2024 12:41:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714475;
+	bh=O6HQjA5C8MJ8iubKtctGkp5VYKVligBjZlLdnuQD9AM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhtPUpdtjq5H1ZTOcMLg1QryI+rXV635rMmGcMzTh9bx09tkcWu9gAnqkh9Rgc0sA
-	 kJ+vB6q7+pfsZAicKnWOgWL1Rx+1jhUVsOMNlv97d6SE+Py3WSgWoJ4sdQsWrUjEdl
-	 6yqcyn5zdMbKkc97QPLz9ApwYZpkE+EXq5m+lx/k=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	flole@flole.de,
-	Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 739/770] NFSD: Protect against filesystem freezing
-Date: Tue, 18 Jun 2024 14:39:52 +0200
-Message-ID: <20240618123435.794106514@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=AVfmAiDpkEJ9DREKyd9UCxuEx4Nqw/Sh0/r4xsrxv+DBXmwBvs+mTxrl9yC/53wbT
+	 +UrJPhDb9WhUFsp+e9GVR668p3/XUlBL6nX7mV8TEfrda8qascn6OV2YwrjsF2GBce
+	 fc5M0+DwGIiXdquevU4t5bE9ar5Gk6QzdTOh2XYTjY5zMO65kqfr6YJ63NCjR6ljkd
+	 66wZilgVc3jOrjVA91pzA3DoBBPjeC29p5m0BVrUbXd7ukyfFYCVIuAu5iDw71uyGf
+	 mABHp89iOflY4Rx0eGvDMRxJlj5aBADEvp1k73rXd5jBHeU8VshYc64kgZAZdDsk5e
+	 Od07opQLG6ZGQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Andreas Hindborg <a.hindborg@samsung.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	dlemoal@kernel.org,
+	hare@suse.de,
+	johannes.thumshirn@wdc.com,
+	kch@nvidia.com,
+	zhouchengming@bytedance.com,
+	yanjun.zhu@linux.dev,
+	yukuai3@huawei.com,
+	shinichiro.kawasaki@wdc.com,
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 26/29] null_blk: fix validation of block size
+Date: Tue, 18 Jun 2024 08:39:52 -0400
+Message-ID: <20240618124018.3303162-26-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
+References: <20240618124018.3303162-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-------------------
+[ Upstream commit c462ecd659b5fce731f1d592285832fd6ad54053 ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+Block size should be between 512 and PAGE_SIZE and be a power of 2. The current
+check does not validate this, so update the check.
 
-[ Upstream commit fd9a2e1d513823e840960cb3bc26d8b7749d4ac2 ]
+Without this patch, null_blk would Oops due to a null pointer deref when
+loaded with bs=1536 [1].
 
-Flole observes this WARNING on occasion:
+Link: https://lore.kernel.org/all/87wmn8mocd.fsf@metaspace.dk/
 
-[1210423.486503] WARNING: CPU: 8 PID: 1524732 at fs/ext4/ext4_jbd2.c:75 ext4_journal_check_start+0x68/0xb0
-
-Reported-by: <flole@flole.de>
-Suggested-by: Jan Kara <jack@suse.cz>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217123
-Fixes: 73da852e3831 ("nfsd: use vfs_iter_read/write")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240603192645.977968-1-nmi@metaspace.dk
+[axboe: remove unnecessary braces and != 0 check]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/null_blk/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 3d67dd7eab4b5..ddf424d76d410 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1117,7 +1117,9 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 	since = READ_ONCE(file->f_wb_err);
- 	if (verf)
- 		nfsd_copy_write_verifier(verf, nn);
-+	file_start_write(file);
- 	host_err = vfs_iter_write(file, &iter, &pos, flags);
-+	file_end_write(file);
- 	if (host_err < 0) {
- 		nfsd_reset_write_verifier(nn);
- 		trace_nfsd_writeverf_reset(nn, rqstp, host_err);
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 220cedda2ca7d..4d78b5583dc6a 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -1958,8 +1958,8 @@ static int null_validate_conf(struct nullb_device *dev)
+ 		return -EINVAL;
+ 	}
+ 
+-	dev->blocksize = round_down(dev->blocksize, 512);
+-	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
++	if (blk_validate_block_size(dev->blocksize))
++		return -EINVAL;
+ 
+ 	if (dev->queue_mode == NULL_Q_MQ && dev->use_per_node_hctx) {
+ 		if (dev->submit_queues != nr_online_nodes)
 -- 
 2.43.0
-
-
 
 
