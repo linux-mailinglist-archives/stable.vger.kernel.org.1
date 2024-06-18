@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8CC90D54F
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:35:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D6A90D556
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 668E0289175
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:35:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 921022864F8
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5CB152DEB;
-	Tue, 18 Jun 2024 14:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E1C1514EE;
+	Tue, 18 Jun 2024 14:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdTYRkpD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbMtz607"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F10814F122
-	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 14:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B9313C83D
+	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 14:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718720180; cv=none; b=MtY6IGo3poKSgdIV56VOhdESyQB6OosNigBVtArdX+W/ME9N2KpMjK1jD95Zfw+JMhQxNNw4RWdgDKVLcW83n5i/RZNTg84HMgHKlvgC7IEsVylt61AjeY7uza9IikapH4I6Nbyz/tH6/0JYyArHqnLza6ODwN3lia5cha3tOUY=
+	t=1718720241; cv=none; b=AnnWHYt5lNu4lmcYSHSIngTgeeW0yJsS9kagMgbxCtRaw321u0v26myMvh+etE/yl5beIq+oat5mCk6W1/jmVSNlxigrjArt8guKQqnv36s4d7D54faoUaj0jGxkbmBYrFWohG5mmJvCHn05l+LeQHdUvKwpYN/wTsqAg1Cl2gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718720180; c=relaxed/simple;
-	bh=yQA1mJZqu5tcnOVTjV574OfRCfqAHRJxCOUtdALmy/E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HpDGACfkCTJl56iNzV6vOSojgsyxZzaA6Br8Ezpin3PSzr4ejQjW4XdkV2Q3UtOl2ZtKmhOMUznhh1y0yMpOpufAC3p7QRXZF7f8q4JRZYFKIlfeBlMoZiaxxYXxSu0r0asYbteZieBDLK+tyTBpWYgdDj8zgL+7eKmwMSuhGOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdTYRkpD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B97C3277B;
-	Tue, 18 Jun 2024 14:16:19 +0000 (UTC)
+	s=arc-20240116; t=1718720241; c=relaxed/simple;
+	bh=TGnCS0Wzw0lUsZ/yxrXINgcxxPMars6JvnJ+jpAU8Uc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HkI2AKpEftIaXZ4Pif5H2hGJMDMvaLiZaYPmqW7VLgZBdCpi+LVHpC7EWPUmgD2jxsqt101sJuuJW3Ie1s4uYfJhbbkSjVVmYo7qZy+kc0VF8oGy20s64yuqdjIZGNERZkwd5qClnCzDu72gdtsw37Hd+aXANl8NfwbN+XyaTm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbMtz607; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A54C3277B;
+	Tue, 18 Jun 2024 14:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718720179;
-	bh=yQA1mJZqu5tcnOVTjV574OfRCfqAHRJxCOUtdALmy/E=;
+	s=korg; t=1718720240;
+	bh=TGnCS0Wzw0lUsZ/yxrXINgcxxPMars6JvnJ+jpAU8Uc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OdTYRkpDbe/dwtdZbvH6/yn959fPna9cb0EznTup+DXjFCWTsdpAblXT5A8cwUU3C
-	 BU1d+4o8cmeH0+q0B1EQQvnfbVaioxRnbdO+522j6UCqc6tODJSkBxYmGRXvReJ0oE
-	 McbUWY+H5gPtVSLc9EgCGXAz4isbOiwZrZFkbH3Q=
-Subject: FAILED: patch "[PATCH] ocfs2: update inode fsync transaction id in ocfs2_unlink and" failed to apply to 4.19-stable tree
-To: glass.su@suse.com,akpm@linux-foundation.org,gechangwei@live.cn,ghe@suse.com,jlbec@evilplan.org,joseph.qi@linux.alibaba.com,junxiao.bi@oracle.com,mark@fasheh.com,piaojun@huawei.com,stable@vger.kernel.org
+	b=FbMtz607jSiJIHZhpLgkSwDUuZWGAVTjKUs3z3e1FtlTOAxqqxMIrBI7CCJD72RL/
+	 dPxxRNmhhO/XWi0FTo2Jg7NJd7OY0+mrWbb3nxJhxS4VqbSvCjrKX6wKXuvtG1lHMJ
+	 f8rGXs4biGt1H5BOXcRUnyIxfIfNHg7cWE93k9so=
+Subject: FAILED: patch "[PATCH] remoteproc: k3-r5: Wait for core0 power-up before powering up" failed to apply to 5.10-stable tree
+To: a-nandan@ti.com,b-padhi@ti.com,mathieu.poirier@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 18 Jun 2024 16:16:04 +0200
-Message-ID: <2024061803-ashen-anytime-8f00@gregkh>
+Date: Tue, 18 Jun 2024 16:17:17 +0200
+Message-ID: <2024061816-plug-grub-253a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,33 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8c40984eeb8804cffcd28640f427f4fe829243fc
+git cherry-pick -x 61f6f68447aba08aeaa97593af3a7d85a114891f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061803-ashen-anytime-8f00@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061816-plug-grub-253a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-8c40984eeb88 ("ocfs2: update inode fsync transaction id in ocfs2_unlink and ocfs2_link")
-fd6acbbc4d1e ("ocfs2: convert to new timestamp accessors")
-6861de979fa0 ("ocfs2: convert to ctime accessor functions")
-f2d40141d5d9 ("fs: port inode_init_owner() to mnt_idmap")
-011e2b717b1b ("fs: port ->tmpfile() to pass mnt_idmap")
-5ebb29bee8d5 ("fs: port ->mknod() to pass mnt_idmap")
-c54bd91e9eab ("fs: port ->mkdir() to pass mnt_idmap")
-7a77db95511c ("fs: port ->symlink() to pass mnt_idmap")
-6c960e68aaed ("fs: port ->create() to pass mnt_idmap")
-abf08576afe3 ("fs: port vfs_*() helpers to struct mnt_idmap")
-041fae9c105a ("Merge tag 'f2fs-for-6.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs")
+61f6f68447ab ("remoteproc: k3-r5: Wait for core0 power-up before powering up core1")
+1168af40b1ad ("remoteproc: k3-r5: Add support for IPC-only mode for all R5Fs")
+ee99ee7c929c ("remoteproc: k3-r5: Extend support to R5F clusters on AM64x SoCs")
+c3c21b356505 ("remoteproc: k3-r5: Adjust TCM sizes in Split-mode on J7200 SoCs")
+7508ea19b20d ("remoteproc: k3-r5: Extend support to R5F clusters on J7200 SoCs")
 
 thanks,
 
@@ -87,57 +81,121 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8c40984eeb8804cffcd28640f427f4fe829243fc Mon Sep 17 00:00:00 2001
-From: Su Yue <glass.su@suse.com>
-Date: Mon, 8 Apr 2024 16:20:40 +0800
-Subject: [PATCH] ocfs2: update inode fsync transaction id in ocfs2_unlink and
- ocfs2_link
+From 61f6f68447aba08aeaa97593af3a7d85a114891f Mon Sep 17 00:00:00 2001
+From: Apurva Nandan <a-nandan@ti.com>
+Date: Tue, 30 Apr 2024 16:23:06 +0530
+Subject: [PATCH] remoteproc: k3-r5: Wait for core0 power-up before powering up
+ core1
 
-transaction id should be updated in ocfs2_unlink and ocfs2_link.
-Otherwise, inode link will be wrong after journal replay even fsync was
-called before power failure:
-=======================================================================
-$ touch testdir/bar
-$ ln testdir/bar testdir/bar_link
-$ fsync testdir/bar
-$ stat -c %h $SCRATCH_MNT/testdir/bar
-1
-$ stat -c %h $SCRATCH_MNT/testdir/bar
-1
-=======================================================================
+PSC controller has a limitation that it can only power-up the second core
+when the first core is in ON state. Power-state for core0 should be equal
+to or higher than core1, else the kernel is seen hanging during rproc
+loading.
 
-Link: https://lkml.kernel.org/r/20240408082041.20925-4-glass.su@suse.com
-Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
-Signed-off-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Make the powering up of cores sequential, by waiting for the current core
+to power-up before proceeding to the next core, with a timeout of 2sec.
+Add a wait queue event in k3_r5_cluster_rproc_init call, that will wait
+for the current core to be released from reset before proceeding with the
+next core.
 
-diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
-index 9221a33f917b..55c9d90caaaf 100644
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -797,6 +797,7 @@ static int ocfs2_link(struct dentry *old_dentry,
- 	ocfs2_set_links_count(fe, inode->i_nlink);
- 	fe->i_ctime = cpu_to_le64(inode_get_ctime_sec(inode));
- 	fe->i_ctime_nsec = cpu_to_le32(inode_get_ctime_nsec(inode));
-+	ocfs2_update_inode_fsync_trans(handle, inode, 0);
- 	ocfs2_journal_dirty(handle, fe_bh);
+Fixes: 6dedbd1d5443 ("remoteproc: k3-r5: Add a remoteproc driver for R5F subsystem")
+Signed-off-by: Apurva Nandan <a-nandan@ti.com>
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240430105307.1190615-2-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+
+diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+index ad3415a3851b..6d6afd6beb3a 100644
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -103,12 +103,14 @@ struct k3_r5_soc_data {
+  * @dev: cached device pointer
+  * @mode: Mode to configure the Cluster - Split or LockStep
+  * @cores: list of R5 cores within the cluster
++ * @core_transition: wait queue to sync core state changes
+  * @soc_data: SoC-specific feature data for a R5FSS
+  */
+ struct k3_r5_cluster {
+ 	struct device *dev;
+ 	enum cluster_mode mode;
+ 	struct list_head cores;
++	wait_queue_head_t core_transition;
+ 	const struct k3_r5_soc_data *soc_data;
+ };
  
- 	err = ocfs2_add_entry(handle, dentry, inode,
-@@ -993,6 +994,7 @@ static int ocfs2_unlink(struct inode *dir,
- 		drop_nlink(inode);
- 	drop_nlink(inode);
- 	ocfs2_set_links_count(fe, inode->i_nlink);
-+	ocfs2_update_inode_fsync_trans(handle, inode, 0);
- 	ocfs2_journal_dirty(handle, fe_bh);
+@@ -128,6 +130,7 @@ struct k3_r5_cluster {
+  * @atcm_enable: flag to control ATCM enablement
+  * @btcm_enable: flag to control BTCM enablement
+  * @loczrama: flag to dictate which TCM is at device address 0x0
++ * @released_from_reset: flag to signal when core is out of reset
+  */
+ struct k3_r5_core {
+ 	struct list_head elem;
+@@ -144,6 +147,7 @@ struct k3_r5_core {
+ 	u32 atcm_enable;
+ 	u32 btcm_enable;
+ 	u32 loczrama;
++	bool released_from_reset;
+ };
  
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+ /**
+@@ -460,6 +464,8 @@ static int k3_r5_rproc_prepare(struct rproc *rproc)
+ 			ret);
+ 		return ret;
+ 	}
++	core->released_from_reset = true;
++	wake_up_interruptible(&cluster->core_transition);
+ 
+ 	/*
+ 	 * Newer IP revisions like on J7200 SoCs support h/w auto-initialization
+@@ -1140,6 +1146,12 @@ static int k3_r5_rproc_configure_mode(struct k3_r5_rproc *kproc)
+ 		return ret;
+ 	}
+ 
++	/*
++	 * Skip the waiting mechanism for sequential power-on of cores if the
++	 * core has already been booted by another entity.
++	 */
++	core->released_from_reset = c_state;
++
+ 	ret = ti_sci_proc_get_status(core->tsp, &boot_vec, &cfg, &ctrl,
+ 				     &stat);
+ 	if (ret < 0) {
+@@ -1280,6 +1292,26 @@ static int k3_r5_cluster_rproc_init(struct platform_device *pdev)
+ 		    cluster->mode == CLUSTER_MODE_SINGLECPU ||
+ 		    cluster->mode == CLUSTER_MODE_SINGLECORE)
+ 			break;
++
++		/*
++		 * R5 cores require to be powered on sequentially, core0
++		 * should be in higher power state than core1 in a cluster
++		 * So, wait for current core to power up before proceeding
++		 * to next core and put timeout of 2sec for each core.
++		 *
++		 * This waiting mechanism is necessary because
++		 * rproc_auto_boot_callback() for core1 can be called before
++		 * core0 due to thread execution order.
++		 */
++		ret = wait_event_interruptible_timeout(cluster->core_transition,
++						       core->released_from_reset,
++						       msecs_to_jiffies(2000));
++		if (ret <= 0) {
++			dev_err(dev,
++				"Timed out waiting for %s core to power up!\n",
++				rproc->name);
++			return ret;
++		}
+ 	}
+ 
+ 	return 0;
+@@ -1709,6 +1741,7 @@ static int k3_r5_probe(struct platform_device *pdev)
+ 	cluster->dev = dev;
+ 	cluster->soc_data = data;
+ 	INIT_LIST_HEAD(&cluster->cores);
++	init_waitqueue_head(&cluster->core_transition);
+ 
+ 	ret = of_property_read_u32(np, "ti,cluster-mode", &cluster->mode);
+ 	if (ret < 0 && ret != -EINVAL) {
 
 
