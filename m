@@ -1,164 +1,243 @@
-Return-Path: <stable+bounces-52777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E058A90CD30
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:08:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A3990D271
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC8B3B2D164
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:05:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321C728534B
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594AD1AAE38;
-	Tue, 18 Jun 2024 12:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE4B15A85A;
+	Tue, 18 Jun 2024 13:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hxjx+QGC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQmRuPPZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076341AAE29;
-	Tue, 18 Jun 2024 12:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A53915A848;
+	Tue, 18 Jun 2024 13:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714468; cv=none; b=kMM5yNz2QIcX8ZKCrCqUDU9kbcZqmXdSvTEorLNqAJP9VkJoQrzgcigALczOaCCkUIY0W3QJWtMAbKkjPgBNoejKtPsyVmB5ejjIutE94uAY88SD6p395ROmR0Ne+bLqnPm4MwgVR4C6M9GaFRteu99a8COH/+PbXl7f+BLGq0A=
+	t=1718716712; cv=none; b=OF7l8PcIzpINZJfI9vcz18OfGBSD50tESC3jEfPx0XVLPKJ3TfsD9GgQTLmOYY2mmIUsj2O0E8MFI08xMXt0TLmwQxRiUXF5rMTAXZdriYEiWcHm3K/DM0HSVs8Tw5z5KkCF5Vwwezx3TovGUIGGMqN3aexXDX8n95pg2BXyiN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714468; c=relaxed/simple;
-	bh=7mpqN72nmQYbqkoHQDnypAYa/RZDGpRaZ0+DRZfej10=;
+	s=arc-20240116; t=1718716712; c=relaxed/simple;
+	bh=Oh5Vc0B6Sw+VkZQiZtBBYWEh+MLchgzObp8X/jIo7j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMLQNv5AOBopexBKqbYjkXfToRRKP2sOE7L/k+fMaN93CMbgh2VIny8NJ+KmYM9oklMQcBAT/vsZLKxHNhKazanFbRSNuurzROmLo/QeG1c1I+6ewXNrh2gJma+urqlNGjV7SvRZZdVlpyfgpzkvsIIijLFpfUYTRPUKsP3VVAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hxjx+QGC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144DCC4AF1D;
-	Tue, 18 Jun 2024 12:41:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714467;
-	bh=7mpqN72nmQYbqkoHQDnypAYa/RZDGpRaZ0+DRZfej10=;
+	 MIME-Version; b=XXv290CifVCO5yCwa2ehGLUstu1HI+DAbwA9bLcLzB7fduRygl/Q0bLbIGZFdWyPC0KQL0/2uPzgqQ1vKHW7SL8+geg7F75RjbghWohNZ5qR/qWRpBrKZ6pBK0ladjB7ZwoBfpJcuZCVMuXpkH56oBbt+iNDYcxG8+O1oy9e2h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQmRuPPZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98558C3277B;
+	Tue, 18 Jun 2024 13:18:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716712;
+	bh=Oh5Vc0B6Sw+VkZQiZtBBYWEh+MLchgzObp8X/jIo7j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hxjx+QGCB+TYDqtYT0U+SqitnvyUPiGxJEF7Mjo76EeUHB664/gGFjN1/XQou7WfY
-	 2nKCXFos6gq2RBoOO4WQ3KGvQwQjksxPCEEmdgxkl2CvUXCKIAtOoi5Ek99F5rIHfq
-	 Hf+OZnW4+vGK5tjxE42ORSsp1ZwYe/mVx7FzsOgnwU/QygnU4KGKvj3lgpWSp17naf
-	 t9qDnlMc1eVtOJYXJUwIeFrfi9HsxYANDrDph7B8vHdBNFFG/l9hnjPFwcB+sRgD+w
-	 9wvHae0v+Tb8X9x+3nWtg1AdGIL8yljAnhtbQEZP6rJhUf6pSxITxV45XUkn1cuaGF
-	 gaZLGaJn9r5dw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	b=ZQmRuPPZ4Z9Yfb09WoeF60iKN38E5S48U2mXDqLLQ7zOf25uEmzDb+PshAzJienXl
+	 x0wZzWqIJ9R3W6rHta9BLthPmVBEZgF7P8NbefZm30ICGfP41M7Ii/Khnbpdvvlz0L
+	 F8IEICB3ie/ZwpXoPl7uZM9z43N5/V2fumPxio5c=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-input@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 23/29] Input: silead - Always support 10 fingers
-Date: Tue, 18 Jun 2024 08:39:49 -0400
-Message-ID: <20240618124018.3303162-23-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
-References: <20240618124018.3303162-1-sashal@kernel.org>
+	Pierguido Lambri <plambri@redhat.com>
+Subject: [PATCH 5.10 737/770] nfsd: dont fsync nfsd_files on last close
+Date: Tue, 18 Jun 2024 14:39:50 +0200
+Message-ID: <20240618123435.715093261@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 38a38f5a36da9820680d413972cb733349400532 ]
+------------------
 
-When support for Silead touchscreens was orginal added some touchscreens
-with older firmware versions only supported 5 fingers and this was made
-the default requiring the setting of a "silead,max-fingers=10" uint32
-device-property for all touchscreen models which do support 10 fingers.
+From: Jeff Layton <jlayton@kernel.org>
 
-There are very few models with the old 5 finger fw, so in practice the
-setting of the "silead,max-fingers=10" is boilerplate which needs to
-be copy and pasted to every touchscreen config.
+[ Upstream commit 4c475eee02375ade6e864f1db16976ba0d96a0a2 ]
 
-Reporting that 10 fingers are supported on devices which only support
-5 fingers doesn't cause any problems for userspace in practice, since
-at max 4 finger gestures are supported anyways. Drop the max_fingers
-configuration and simply always assume 10 fingers.
+Most of the time, NFSv4 clients issue a COMMIT before the final CLOSE of
+an open stateid, so with NFSv4, the fsync in the nfsd_file_free path is
+usually a no-op and doesn't block.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/20240525193854.39130-2-hdegoede@redhat.com
+We have a customer running knfsd over very slow storage (XFS over Ceph
+RBD). They were using the "async" export option because performance was
+more important than data integrity for this application. That export
+option turns NFSv4 COMMIT calls into no-ops. Due to the fsync in this
+codepath however, their final CLOSE calls would still stall (since a
+CLOSE effectively became a COMMIT).
+
+I think this fsync is not strictly necessary. We only use that result to
+reset the write verifier. Instead of fsync'ing all of the data when we
+free an nfsd_file, we can just check for writeback errors when one is
+acquired and when it is freed.
+
+If the client never comes back, then it'll never see the error anyway
+and there is no point in resetting it. If an error occurs after the
+nfsd_file is removed from the cache but before the inode is evicted,
+then it will reset the write verifier on the next nfsd_file_acquire,
+(since there will be an unseen error).
+
+The only exception here is if something else opens and fsyncs the file
+during that window. Given that local applications work with this
+limitation today, I don't see that as an issue.
+
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2166658
+Fixes: ac3a2585f018 ("nfsd: rework refcounting in filecache")
+Reported-and-tested-by: Pierguido Lambri <plambri@redhat.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/silead.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ fs/nfsd/filecache.c | 44 ++++++++++++--------------------------------
+ fs/nfsd/trace.h     | 31 -------------------------------
+ 2 files changed, 12 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/input/touchscreen/silead.c b/drivers/input/touchscreen/silead.c
-index 3eef8c01090fd..30e15b6a93574 100644
---- a/drivers/input/touchscreen/silead.c
-+++ b/drivers/input/touchscreen/silead.c
-@@ -71,7 +71,6 @@ struct silead_ts_data {
- 	struct regulator_bulk_data regulators[2];
- 	char fw_name[64];
- 	struct touchscreen_properties prop;
--	u32 max_fingers;
- 	u32 chip_id;
- 	struct input_mt_pos pos[SILEAD_MAX_FINGERS];
- 	int slots[SILEAD_MAX_FINGERS];
-@@ -136,7 +135,7 @@ static int silead_ts_request_input_dev(struct silead_ts_data *data)
- 	touchscreen_parse_properties(data->input, true, &data->prop);
- 	silead_apply_efi_fw_min_max(data);
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 206742bbbd682..4a3796c6bd957 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -330,37 +330,27 @@ nfsd_file_alloc(struct nfsd_file_lookup_key *key, unsigned int may)
+ 	return nf;
+ }
  
--	input_mt_init_slots(data->input, data->max_fingers,
-+	input_mt_init_slots(data->input, SILEAD_MAX_FINGERS,
- 			    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED |
- 			    INPUT_MT_TRACK);
- 
-@@ -256,10 +255,10 @@ static void silead_ts_read_data(struct i2c_client *client)
- 		return;
- 	}
- 
--	if (buf[0] > data->max_fingers) {
-+	if (buf[0] > SILEAD_MAX_FINGERS) {
- 		dev_warn(dev, "More touches reported then supported %d > %d\n",
--			 buf[0], data->max_fingers);
--		buf[0] = data->max_fingers;
-+			 buf[0], SILEAD_MAX_FINGERS);
-+		buf[0] = SILEAD_MAX_FINGERS;
- 	}
- 
- 	if (silead_ts_handle_pen_data(data, buf))
-@@ -315,7 +314,6 @@ static void silead_ts_read_data(struct i2c_client *client)
- 
- static int silead_ts_init(struct i2c_client *client)
- {
--	struct silead_ts_data *data = i2c_get_clientdata(client);
- 	int error;
- 
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_RESET,
-@@ -325,7 +323,7 @@ static int silead_ts_init(struct i2c_client *client)
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
- 
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_TOUCH_NR,
--					data->max_fingers);
-+					  SILEAD_MAX_FINGERS);
- 	if (error)
- 		goto i2c_write_err;
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
-@@ -591,13 +589,6 @@ static void silead_ts_read_props(struct i2c_client *client)
- 	const char *str;
- 	int error;
- 
--	error = device_property_read_u32(dev, "silead,max-fingers",
--					 &data->max_fingers);
--	if (error) {
--		dev_dbg(dev, "Max fingers read error %d\n", error);
--		data->max_fingers = 5; /* Most devices handle up-to 5 fingers */
--	}
++/**
++ * nfsd_file_check_write_error - check for writeback errors on a file
++ * @nf: nfsd_file to check for writeback errors
++ *
++ * Check whether a nfsd_file has an unseen error. Reset the write
++ * verifier if so.
++ */
+ static void
+-nfsd_file_fsync(struct nfsd_file *nf)
+-{
+-	struct file *file = nf->nf_file;
+-	int ret;
 -
- 	error = device_property_read_string(dev, "firmware-name", &str);
- 	if (!error)
- 		snprintf(data->fw_name, sizeof(data->fw_name),
+-	if (!file || !(file->f_mode & FMODE_WRITE))
+-		return;
+-	ret = vfs_fsync(file, 1);
+-	trace_nfsd_file_fsync(nf, ret);
+-	if (ret)
+-		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
+-}
+-
+-static int
+ nfsd_file_check_write_error(struct nfsd_file *nf)
+ {
+ 	struct file *file = nf->nf_file;
+ 
+-	if (!file || !(file->f_mode & FMODE_WRITE))
+-		return 0;
+-	return filemap_check_wb_err(file->f_mapping, READ_ONCE(file->f_wb_err));
++	if ((file->f_mode & FMODE_WRITE) &&
++	    filemap_check_wb_err(file->f_mapping, READ_ONCE(file->f_wb_err)))
++		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
+ }
+ 
+ static void
+ nfsd_file_hash_remove(struct nfsd_file *nf)
+ {
+ 	trace_nfsd_file_unhash(nf);
+-
+-	if (nfsd_file_check_write_error(nf))
+-		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
+ 	rhashtable_remove_fast(&nfsd_file_rhash_tbl, &nf->nf_rhash,
+ 			       nfsd_file_rhash_params);
+ }
+@@ -386,23 +376,12 @@ nfsd_file_free(struct nfsd_file *nf)
+ 	this_cpu_add(nfsd_file_total_age, age);
+ 
+ 	nfsd_file_unhash(nf);
+-
+-	/*
+-	 * We call fsync here in order to catch writeback errors. It's not
+-	 * strictly required by the protocol, but an nfsd_file could get
+-	 * evicted from the cache before a COMMIT comes in. If another
+-	 * task were to open that file in the interim and scrape the error,
+-	 * then the client may never see it. By calling fsync here, we ensure
+-	 * that writeback happens before the entry is freed, and that any
+-	 * errors reported result in the write verifier changing.
+-	 */
+-	nfsd_file_fsync(nf);
+-
+ 	if (nf->nf_mark)
+ 		nfsd_file_mark_put(nf->nf_mark);
+ 	if (nf->nf_file) {
+ 		get_file(nf->nf_file);
+ 		filp_close(nf->nf_file, NULL);
++		nfsd_file_check_write_error(nf);
+ 		fput(nf->nf_file);
+ 	}
+ 
+@@ -1157,6 +1136,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ out:
+ 	if (status == nfs_ok) {
+ 		this_cpu_inc(nfsd_file_acquisitions);
++		nfsd_file_check_write_error(nf);
+ 		*pnf = nf;
+ 	} else {
+ 		if (refcount_dec_and_test(&nf->nf_ref))
+diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
+index 0f674982785ce..445d00f00eab7 100644
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -1112,37 +1112,6 @@ TRACE_EVENT(nfsd_file_close,
+ 	)
+ );
+ 
+-TRACE_EVENT(nfsd_file_fsync,
+-	TP_PROTO(
+-		const struct nfsd_file *nf,
+-		int ret
+-	),
+-	TP_ARGS(nf, ret),
+-	TP_STRUCT__entry(
+-		__field(void *, nf_inode)
+-		__field(int, nf_ref)
+-		__field(int, ret)
+-		__field(unsigned long, nf_flags)
+-		__field(unsigned char, nf_may)
+-		__field(struct file *, nf_file)
+-	),
+-	TP_fast_assign(
+-		__entry->nf_inode = nf->nf_inode;
+-		__entry->nf_ref = refcount_read(&nf->nf_ref);
+-		__entry->ret = ret;
+-		__entry->nf_flags = nf->nf_flags;
+-		__entry->nf_may = nf->nf_may;
+-		__entry->nf_file = nf->nf_file;
+-	),
+-	TP_printk("inode=%p ref=%d flags=%s may=%s nf_file=%p ret=%d",
+-		__entry->nf_inode,
+-		__entry->nf_ref,
+-		show_nf_flags(__entry->nf_flags),
+-		show_nfsd_may_flags(__entry->nf_may),
+-		__entry->nf_file, __entry->ret
+-	)
+-);
+-
+ #include "cache.h"
+ 
+ TRACE_DEFINE_ENUM(RC_DROPIT);
 -- 
 2.43.0
+
+
 
 
