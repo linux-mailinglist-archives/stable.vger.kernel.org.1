@@ -1,104 +1,167 @@
-Return-Path: <stable+bounces-53309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4355A90D2A4
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E591C90CC3F
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 627B9B2E3CE
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F656B242CC
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4E819D09E;
-	Tue, 18 Jun 2024 13:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF26213CF9C;
+	Tue, 18 Jun 2024 12:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkhpvrJo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqp+3PSk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B445157490;
-	Tue, 18 Jun 2024 13:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695F713CFBD;
+	Tue, 18 Jun 2024 12:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715947; cv=none; b=Gj1rLFkInQ0pGgRAGKnHrcH3r/1xZ4W+1Z/EhdGBHcatX0u/8uPAPQjIpkgsyH9yxP9ShDUp711p+0HKbkT5jE2Nyv64H8Z/0Vq7p+GlCiXjXLKHxQNsJ+/IRQktSTl83j9r7S3YkfiKPiTg0IHgqmQ1gkt4xJ7rY6VigODHQXQ=
+	t=1718714223; cv=none; b=Hyr1zc0m3EMwt71/WSX1jrBlI1w9EC5BRJxmLH2Mc0hHt6L1LC9XBsikemyB+Nwwi36QOMbx6m2dUFku92mlrlwIrF6EBQ+DOcFzvaPNnM809P7VE3jY/tf5/M73cdnsz3JjIvK0ZC19E1QEr673Lqkst4u64w1zOv9vU4J/4E0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715947; c=relaxed/simple;
-	bh=KMiozRCvbfo/U16tll1Zoinh17g+3x7ZJwtcxGKJ/ME=;
+	s=arc-20240116; t=1718714223; c=relaxed/simple;
+	bh=NkI3c3iYst98/SZuV5LeFHrWGYrCSmQ6eVKN/G+NLys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eXTBT81VeCozrfqNMg3l9dz/g+GXA+MsBmX4z87af148yUt0FcZlSbFoM01roBzIM6nWUQ+kg6F/ef6tooGSAQ9wQrg4D2C500OZ9rQ66KjuAkqK/cLBgaPhFM5uNq4cOkhx5a7uzMOhxZlWkRGc0FglzhRRsULzbMHVrzw++E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkhpvrJo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C25C4AF50;
-	Tue, 18 Jun 2024 13:05:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715947;
-	bh=KMiozRCvbfo/U16tll1Zoinh17g+3x7ZJwtcxGKJ/ME=;
+	 MIME-Version; b=DUsNc2ZqhE3SJyc9MdsMn0VQ4KMkkrrCvxGjCsS8G0ukFPqXg1DyyAQXxGOjQXx2LYsCvosbi/cVy3w3l4sA8+uRMRFgdf9Xkb3aFlGFDUn5Hol5zvGKZqm3lmzBkGJD/eGAhvRboOD0FGUFeJl5jAnQMRHUVgHhfhurOKMTKiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqp+3PSk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B740FC32786;
+	Tue, 18 Jun 2024 12:37:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714223;
+	bh=NkI3c3iYst98/SZuV5LeFHrWGYrCSmQ6eVKN/G+NLys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkhpvrJoMfstFGHGnsRMhO3RzF72MuFcnhTL39g6G4K0IdhrqDuOFNRu6UxiY1GAE
-	 4VCqRtcqrlcitsrnPf8VL64wI2BkEof2npbJEHnFaVdZa5Pad0vcDug1diOLfaAPqH
-	 zHdOpnx3wKAh3StZrMzxlDKjksxOOSprqdClIgGI=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jeff Layton <jeff.layton@primarydata.com>,
-	Lance Shelton <lance.shelton@hammerspace.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 449/770] nfsd: Add errno mapping for EREMOTEIO
-Date: Tue, 18 Jun 2024 14:35:02 +0200
-Message-ID: <20240618123424.623640465@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=nqp+3PSkIOk3oo5BvdV5XJPOx+fEg4359R5/6bO+uNVTJZLcDdiHbDi5hbMD9/6OY
+	 p3zIlCn2//8sNtVBd2ZBHNHpL3cjwnYUy8beNZm2MziCC6H/47jAIS8tQJAd8eQos6
+	 nmUnaqF7A5cT9ee5E4NAbWWNNfYY79J2aAVeHmncOUvU3ZwWNIKN4VZBUyfHfp342Z
+	 hlRAxSvKvohZjVBAzvhfGRz5p6uema+M4MtHvDP+mYsp3Oo4GQYvWjhMWJMGKitd3Z
+	 LlC38BY4aLxCB/oeNFDqnpYxcyU3hogCWiHIeFuHFZUgHEsSz/N8wE6P1VXHdZHP92
+	 I9QlD5KYE+G8A==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
+	gregory.greenman@intel.com,
+	emmanuel.grumbach@intel.com,
+	ilan.peer@intel.com,
+	benjamin.berg@intel.com,
+	shaul.triebitz@intel.com,
+	daniel.gabay@intel.com,
+	dan.carpenter@linaro.org,
+	andrei.otcheretianski@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 21/44] wifi: iwlwifi: mvm: handle BA session teardown in RF-kill
+Date: Tue, 18 Jun 2024 08:35:02 -0400
+Message-ID: <20240618123611.3301370-21-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Johannes Berg <johannes.berg@intel.com>
 
-------------------
+[ Upstream commit 4d08c0b3357cba0aeffaf3abc62cae0c154f2816 ]
 
-From: Jeff Layton <jeff.layton@primarydata.com>
+When entering RF-kill, mac80211 tears down BA sessions, but
+due to RF-kill the commands aren't sent to the device. As a
+result, there can be frames pending on the reorder buffer or
+perhaps even received while doing so, leading to warnings.
 
-[ Upstream commit a2694e51f60c5a18c7e43d1a9feaa46d7f153e65 ]
+Avoid the warnings by doing the BA session teardown normally
+even in RF-kill, which also requires queue sync.
 
-The NFS client can occasionally return EREMOTEIO when signalling issues
-with the server.  ...map to NFSERR_IO.
-
-Signed-off-by: Jeff Layton <jeff.layton@primarydata.com>
-Signed-off-by: Lance Shelton <lance.shelton@hammerspace.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.0762cd80fb3d.I43c5877f3b546159b2db4f36d6d956b333c41cf0@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsproc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c  |  3 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c      | 12 ++++++++----
+ 3 files changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
-index de4b97cdbd2bc..6ed13754290a2 100644
---- a/fs/nfsd/nfsproc.c
-+++ b/fs/nfsd/nfsproc.c
-@@ -874,6 +874,7 @@ nfserrno (int errno)
- 		{ nfserr_toosmall, -ETOOSMALL },
- 		{ nfserr_serverfault, -ESERVERFAULT },
- 		{ nfserr_serverfault, -ENFILE },
-+		{ nfserr_io, -EREMOTEIO },
- 		{ nfserr_io, -EUCLEAN },
- 		{ nfserr_perm, -ENOKEY },
- 		{ nfserr_no_grace, -ENOGRACE},
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index d2557d9f63e59..02f181a2b983f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -6162,7 +6162,7 @@ void iwl_mvm_sync_rx_queues_internal(struct iwl_mvm *mvm,
+ 		.len[0] = sizeof(cmd),
+ 		.data[1] = data,
+ 		.len[1] = size,
+-		.flags = sync ? 0 : CMD_ASYNC,
++		.flags = CMD_SEND_IN_RFKILL | (sync ? 0 : CMD_ASYNC),
+ 	};
+ 	int ret;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+index a21e29947475f..dbe668db7ce37 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+@@ -1012,7 +1012,8 @@ static int iwl_mvm_mld_update_sta_baids(struct iwl_mvm *mvm,
+ 
+ 		cmd.modify.tid = cpu_to_le32(data->tid);
+ 
+-		ret = iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0, sizeof(cmd), &cmd);
++		ret = iwl_mvm_send_cmd_pdu(mvm, cmd_id, CMD_SEND_IN_RFKILL,
++					   sizeof(cmd), &cmd);
+ 		data->sta_mask = new_sta_mask;
+ 		if (ret)
+ 			return ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+index 491c449fd4316..908d0bc474da6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
+@@ -2836,7 +2836,12 @@ static int iwl_mvm_fw_baid_op_cmd(struct iwl_mvm *mvm,
+ 		.action = start ? cpu_to_le32(IWL_RX_BAID_ACTION_ADD) :
+ 				  cpu_to_le32(IWL_RX_BAID_ACTION_REMOVE),
+ 	};
+-	u32 cmd_id = WIDE_ID(DATA_PATH_GROUP, RX_BAID_ALLOCATION_CONFIG_CMD);
++	struct iwl_host_cmd hcmd = {
++		.id = WIDE_ID(DATA_PATH_GROUP, RX_BAID_ALLOCATION_CONFIG_CMD),
++		.flags = CMD_SEND_IN_RFKILL,
++		.len[0] = sizeof(cmd),
++		.data[0] = &cmd,
++	};
+ 	int ret;
+ 
+ 	BUILD_BUG_ON(sizeof(struct iwl_rx_baid_cfg_resp) != sizeof(baid));
+@@ -2848,7 +2853,7 @@ static int iwl_mvm_fw_baid_op_cmd(struct iwl_mvm *mvm,
+ 		cmd.alloc.ssn = cpu_to_le16(ssn);
+ 		cmd.alloc.win_size = cpu_to_le16(buf_size);
+ 		baid = -EIO;
+-	} else if (iwl_fw_lookup_cmd_ver(mvm->fw, cmd_id, 1) == 1) {
++	} else if (iwl_fw_lookup_cmd_ver(mvm->fw, hcmd.id, 1) == 1) {
+ 		cmd.remove_v1.baid = cpu_to_le32(baid);
+ 		BUILD_BUG_ON(sizeof(cmd.remove_v1) > sizeof(cmd.remove));
+ 	} else {
+@@ -2857,8 +2862,7 @@ static int iwl_mvm_fw_baid_op_cmd(struct iwl_mvm *mvm,
+ 		cmd.remove.tid = cpu_to_le32(tid);
+ 	}
+ 
+-	ret = iwl_mvm_send_cmd_pdu_status(mvm, cmd_id, sizeof(cmd),
+-					  &cmd, &baid);
++	ret = iwl_mvm_send_cmd_status(mvm, &hcmd, &baid);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.43.0
-
-
 
 
