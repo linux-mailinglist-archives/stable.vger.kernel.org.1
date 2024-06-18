@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-52849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E7C590CEE7
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:22:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F9E90CEF5
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8557D1C230FD
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:22:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E18411C22FE6
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1AC15ADAF;
-	Tue, 18 Jun 2024 12:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED151BD91C;
+	Tue, 18 Jun 2024 12:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IGUPKmN7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ugpXHj+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856291BD8E1;
-	Tue, 18 Jun 2024 12:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2CC1BD90E;
+	Tue, 18 Jun 2024 12:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714607; cv=none; b=DxTgaXxyimZYZvPSAIL/CzHofAOV3+dfYfReAh989z0e6/1/KjKvVkD7UCrym2i05aiLHVSMIHI5Ik69LlJfNvmk7IiHJpIgZbHEkTvMvclrFCLb4AHeTEy21sAwKkSuUdYpq+UfE3oYvXX0gAbV7taEnMBWZoeuXEMetyvTOgY=
+	t=1718714608; cv=none; b=MJGviV1Hx2upl/Vp+R08LQQUvP7EF3OnNqWJB9Nzf4hv2HB8HIimhM/7jXgKtLBq32aMby5IAw/qGLw06iz8RYQdLKegqkeJYFwRUhDLKvy0cACZl+KpgcGHOA2+1Us5sOkMBdrujCqyXjenv1hA/9b717yFoPcOsaZhbwHLc0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714607; c=relaxed/simple;
-	bh=DAXdSrNib3nAqs34GBlQ8mEf5onKDLdz52x00VpFSjA=;
+	s=arc-20240116; t=1718714608; c=relaxed/simple;
+	bh=LT0e38FDAzuCEIXjVCqLuyoMGXGIH5huwYm8ySJ7Avw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjKwp7W790yntn/+FFzisihrCGtNGYT6+gXFWGn/kQbC8WcKAPB6GS9LL8zA1X0x9DEV14Nz5f5L7nxIT0uAwl8fUo/a3ZOB7Vsqr71kGqEwFfG+5n5SuvmfRvPiJiyxcGkDJvqnv8bO1XkIwu7wAVFHQccXDamiMz8jc5Se9Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IGUPKmN7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E25C4AF49;
-	Tue, 18 Jun 2024 12:43:25 +0000 (UTC)
+	 MIME-Version; b=Rh2IY9X3A4sMfgriPxZzptAvLTyrF+aeikeOgfRnQiO+mX17s+OXXVwcmpGtxVXTU4LeMdG333X3xkX4j7opSTOppeh16mIKHHHWCpelOrLK4NubbUtIsN6TJEX6/YHvXTyd9/0/nJPsk+rNhGFJP/Pyyc+RqUqCzmP5sXGuCnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ugpXHj+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5222C3277B;
+	Tue, 18 Jun 2024 12:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714607;
-	bh=DAXdSrNib3nAqs34GBlQ8mEf5onKDLdz52x00VpFSjA=;
+	s=k20201202; t=1718714608;
+	bh=LT0e38FDAzuCEIXjVCqLuyoMGXGIH5huwYm8ySJ7Avw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGUPKmN7Qb1NXAPOUgsP1yt+4XBbADs/Ww3Nyckldwq/yzJ5fVtaHYdIcVcIx5qkR
-	 1luUWwX7zfMQOb1+LqH5rM/0KUWZ8R/ghmV25d1b6Y5/Qtn+Gl1HnEbsPlclSWFpG5
-	 baJ3KrUeHWu2xtCwmChFJQSjWQMZ/W0WvGJ4ZHa9FjvIGD3S20AJ9W9LeVlmovSfRk
-	 fOz1XnDIn8MYZKWxWBIO3IiRxqpgceMcSQzYQtpEbEK1hdqbU9kUuLxOymsoQeVqZK
-	 AUC/4m2GVToAWkqEMmNE8J/j9mSG3+oxpcwmhGKaUT04XzPCPkXL121N0ARDJgdDh4
-	 84U8cRjnF+3Xw==
+	b=ugpXHj+rfCjLnN3BKsxID8UON1ZOiSlgQ7hwcTHcPbEFfk1xJQbtoYkcY9M14WVFU
+	 KYWcIxnkk9mHFidwKuEFVBz5j8DZiEqWPoFfY0+TUJMtugMwMkeAXgcIlWAgsfaprJ
+	 sRzgWN8mPshGGU7iP21Aw2rumnG7cUCWjFdrVT2yP3az0kYhgy2GzW2G6oYoweSAOn
+	 UwCt8kGIbVCwSwYnC8jXnF7xEmJO/tf+IrLd/VPTZfPnTPUIbtVR8HogeGuqccy7eP
+	 g7kum/9KftRQL+eEg4PuH+m5Bt11KvD04nR22BIyM+zq07R05kEGBnTlv26XtLFpnL
+	 h9oyJMGetHKSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 5/9] wifi: mac80211: fix UBSAN noise in ieee80211_prep_hw_scan()
-Date: Tue, 18 Jun 2024 08:43:11 -0400
-Message-ID: <20240618124318.3304798-5-sashal@kernel.org>
+	linux-input@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 6/9] Input: silead - Always support 10 fingers
+Date: Tue, 18 Jun 2024 08:43:12 -0400
+Message-ID: <20240618124318.3304798-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240618124318.3304798-1-sashal@kernel.org>
 References: <20240618124318.3304798-1-sashal@kernel.org>
@@ -71,78 +66,98 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.316
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 92ecbb3ac6f3fe8ae9edf3226c76aa17b6800699 ]
+[ Upstream commit 38a38f5a36da9820680d413972cb733349400532 ]
 
-When testing the previous patch with CONFIG_UBSAN_BOUNDS, I've
-noticed the following:
+When support for Silead touchscreens was orginal added some touchscreens
+with older firmware versions only supported 5 fingers and this was made
+the default requiring the setting of a "silead,max-fingers=10" uint32
+device-property for all touchscreen models which do support 10 fingers.
 
-UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:372:4
-index 0 is out of range for type 'struct ieee80211_channel *[]'
-CPU: 0 PID: 1435 Comm: wpa_supplicant Not tainted 6.9.0+ #1
-Hardware name: LENOVO 20UN005QRT/20UN005QRT <...BIOS details...>
-Call Trace:
- <TASK>
- dump_stack_lvl+0x2d/0x90
- __ubsan_handle_out_of_bounds+0xe7/0x140
- ? timerqueue_add+0x98/0xb0
- ieee80211_prep_hw_scan+0x2db/0x480 [mac80211]
- ? __kmalloc+0xe1/0x470
- __ieee80211_start_scan+0x541/0x760 [mac80211]
- rdev_scan+0x1f/0xe0 [cfg80211]
- nl80211_trigger_scan+0x9b6/0xae0 [cfg80211]
- ...<the rest is not too useful...>
+There are very few models with the old 5 finger fw, so in practice the
+setting of the "silead,max-fingers=10" is boilerplate which needs to
+be copy and pasted to every touchscreen config.
 
-Since '__ieee80211_start_scan()' leaves 'hw_scan_req->req.n_channels'
-uninitialized, actual boundaries of 'hw_scan_req->req.channels' can't
-be checked in 'ieee80211_prep_hw_scan()'. Although an initialization
-of 'hw_scan_req->req.n_channels' introduces some confusion around
-allocated vs. used VLA members, this shouldn't be a problem since
-everything is correctly adjusted soon in 'ieee80211_prep_hw_scan()'.
+Reporting that 10 fingers are supported on devices which only support
+5 fingers doesn't cause any problems for userspace in practice, since
+at max 4 finger gestures are supported anyways. Drop the max_fingers
+configuration and simply always assume 10 fingers.
 
-Cleanup 'kmalloc()' math in '__ieee80211_start_scan()' by using the
-convenient 'struct_size()' as well.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://msgid.link/20240517153332.18271-2-dmantipov@yandex.ru
-[improve (imho) indentation a bit]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/20240525193854.39130-2-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/scan.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/input/touchscreen/silead.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index e3d8be4feea50..76fb858dc890d 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -652,15 +652,21 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
- 			local->hw_scan_ies_bufsize *= n_bands;
- 		}
+diff --git a/drivers/input/touchscreen/silead.c b/drivers/input/touchscreen/silead.c
+index a787a6aefc69f..78f08ca3f8442 100644
+--- a/drivers/input/touchscreen/silead.c
++++ b/drivers/input/touchscreen/silead.c
+@@ -78,7 +78,6 @@ struct silead_ts_data {
+ 	struct regulator_bulk_data regulators[2];
+ 	char fw_name[64];
+ 	struct touchscreen_properties prop;
+-	u32 max_fingers;
+ 	u32 chip_id;
+ 	struct input_mt_pos pos[SILEAD_MAX_FINGERS];
+ 	int slots[SILEAD_MAX_FINGERS];
+@@ -106,7 +105,7 @@ static int silead_ts_request_input_dev(struct silead_ts_data *data)
+ 	input_set_abs_params(data->input, ABS_MT_POSITION_Y, 0, 4095, 0, 0);
+ 	touchscreen_parse_properties(data->input, true, &data->prop);
  
--		local->hw_scan_req = kmalloc(
--				sizeof(*local->hw_scan_req) +
--				req->n_channels * sizeof(req->channels[0]) +
--				local->hw_scan_ies_bufsize, GFP_KERNEL);
-+		local->hw_scan_req = kmalloc(struct_size(local->hw_scan_req,
-+							 req.channels,
-+							 req->n_channels) +
-+					     local->hw_scan_ies_bufsize,
-+					     GFP_KERNEL);
- 		if (!local->hw_scan_req)
- 			return -ENOMEM;
+-	input_mt_init_slots(data->input, data->max_fingers,
++	input_mt_init_slots(data->input, SILEAD_MAX_FINGERS,
+ 			    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED |
+ 			    INPUT_MT_TRACK);
  
- 		local->hw_scan_req->req.ssids = req->ssids;
- 		local->hw_scan_req->req.n_ssids = req->n_ssids;
-+		/* None of the channels are actually set
-+		 * up but let UBSAN know the boundaries.
-+		 */
-+		local->hw_scan_req->req.n_channels = req->n_channels;
-+
- 		ies = (u8 *)local->hw_scan_req +
- 			sizeof(*local->hw_scan_req) +
- 			req->n_channels * sizeof(req->channels[0]);
+@@ -153,10 +152,10 @@ static void silead_ts_read_data(struct i2c_client *client)
+ 		return;
+ 	}
+ 
+-	if (buf[0] > data->max_fingers) {
++	if (buf[0] > SILEAD_MAX_FINGERS) {
+ 		dev_warn(dev, "More touches reported then supported %d > %d\n",
+-			 buf[0], data->max_fingers);
+-		buf[0] = data->max_fingers;
++			 buf[0], SILEAD_MAX_FINGERS);
++		buf[0] = SILEAD_MAX_FINGERS;
+ 	}
+ 
+ 	touch_nr = 0;
+@@ -208,7 +207,6 @@ static void silead_ts_read_data(struct i2c_client *client)
+ 
+ static int silead_ts_init(struct i2c_client *client)
+ {
+-	struct silead_ts_data *data = i2c_get_clientdata(client);
+ 	int error;
+ 
+ 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_RESET,
+@@ -218,7 +216,7 @@ static int silead_ts_init(struct i2c_client *client)
+ 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
+ 
+ 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_TOUCH_NR,
+-					data->max_fingers);
++					  SILEAD_MAX_FINGERS);
+ 	if (error)
+ 		goto i2c_write_err;
+ 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
+@@ -445,13 +443,6 @@ static void silead_ts_read_props(struct i2c_client *client)
+ 	const char *str;
+ 	int error;
+ 
+-	error = device_property_read_u32(dev, "silead,max-fingers",
+-					 &data->max_fingers);
+-	if (error) {
+-		dev_dbg(dev, "Max fingers read error %d\n", error);
+-		data->max_fingers = 5; /* Most devices handle up-to 5 fingers */
+-	}
+-
+ 	error = device_property_read_string(dev, "firmware-name", &str);
+ 	if (!error)
+ 		snprintf(data->fw_name, sizeof(data->fw_name),
 -- 
 2.43.0
 
