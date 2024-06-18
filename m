@@ -1,221 +1,133 @@
-Return-Path: <stable+bounces-52782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A584090CD27
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:07:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8219B90D269
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:50:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44D892829CE
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:07:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A93CA1C24373
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8821AB90B;
-	Tue, 18 Jun 2024 12:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C901ACE73;
+	Tue, 18 Jun 2024 13:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vOvOhrna"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGHfAH0O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6702C1AB900;
-	Tue, 18 Jun 2024 12:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36D215A4AE;
+	Tue, 18 Jun 2024 13:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714478; cv=none; b=Yp3MndV62NFwHq3Yn+b9FB7IKc06pud7Efxo/DaxIsRJkscb5no8qQC9DXo5Xvx8FERSmg1gZsLOpgGNTN47iN2h881+mkqFzZWQi0/HzhYjS4R83Jrb5Pb0bbG2GfmYEbdHRCQdB3xauNADcNYuIpRfTtNEL85cSigTAk80FD0=
+	t=1718716724; cv=none; b=ZWsFay552T30VgGpcmSdWQd44y0znbN959/mhg13QKENIqiuKJb0aMTA8Hc9TkMBfcOQOYnfPBDzvCUssppiQDM3SGi7z9R8Piptxf2pplMzYdsVrOf9hBVjwIWqCGcP2nKwc7uRQielULnHwZmxzp3IrS4dN56iIDds3pvZ3k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714478; c=relaxed/simple;
-	bh=il9y5YQNmW8K1OYqvsYN0/rpeVFuJ/TFQHFa5ot5gCA=;
+	s=arc-20240116; t=1718716724; c=relaxed/simple;
+	bh=bXBsndx5KCutK3XSVh9/IV2owaN/fh473tB0dExR4YA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfXNTQFxsQVjKIdBvzNORv3IUz9/uVx8pmaWJpUf/qvqX1D2NmMwY0//q0wE14DygD9tAlyEDobR990kHOrvsbjTZe3C2IPPMcMgv2wMepgdm4atZOZIDxa/Givtzaer6xJVmozMWlTCh8lDUPHCit5tnOeWvBkzQyJZyCluUPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vOvOhrna; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEDAC3277B;
-	Tue, 18 Jun 2024 12:41:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714477;
-	bh=il9y5YQNmW8K1OYqvsYN0/rpeVFuJ/TFQHFa5ot5gCA=;
+	 MIME-Version; b=cHYiuJN/lFTiDfvnSoQg035bcgJgvAUeTuhWs3DfcqTVyqCfNMzcYxxeg5p84oAI0r01dAvqyiR2agDexXisGAOlQkts4nKCfpdXd0pZSpjlfcP/z+/TjZrciQIRxDDOgDkoGsdiN8LGve75uj0N0EoVmnA5kAwblmxiD7sv68M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGHfAH0O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2E1C32786;
+	Tue, 18 Jun 2024 13:18:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716724;
+	bh=bXBsndx5KCutK3XSVh9/IV2owaN/fh473tB0dExR4YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vOvOhrnawToNgG8BGnl2j/s7zrQWjD372w8ey1oN+wqjGZjcRDTpKlZ7acBNgdZz4
-	 vjyq5GNaSynDcbAVwAVDsKE+f1HGoSj82QJ6/vOWJpL4DTtvIgAwPTIxTlptBhsqGi
-	 STHK9ex+p1ipJFkxzZdxFVQZOZws1fJ85vnb/leuGo6UprV+4vyce9MlGywQWROJZP
-	 MG5mlHqBxztsvfIFDqMd7N3zspn/YqXoQGJmcoeDu5jWFh6FjJLyE5jTxYNtroUCIU
-	 ElFc4e0amjIta/HyhltPTxOQUgcMtMbkanPt1NJ9rB4F3WKiP+m+TpTkzmUPn9SD9P
-	 Bg4PseWiJbN1Q==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 28/29] kconfig: remove wrong expr_trans_bool()
-Date: Tue, 18 Jun 2024 08:39:54 -0400
-Message-ID: <20240618124018.3303162-28-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
-References: <20240618124018.3303162-1-sashal@kernel.org>
+	b=yGHfAH0OMiGa5dSB8vNR3x6BQCM+fnV/+IWvFmVHcf78SCHNDIAXqAGzp2bsd5A/9
+	 nxZhzycCINjdlAmZvGnsO25cETz4wu7NClcGYtEozXiCcsw5s5n4WzUW63P9C7Gzu+
+	 Vq+OKzU6nfqkebZWfgQpVleBW9WVZd1TTfp2rAio=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Dario Lesca <d.lesca@solinos.it>,
+	David Critch <dcritch@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 741/770] nfsd: dont replace page in rq_pages if its a continuation of last page
+Date: Tue, 18 Jun 2024 14:39:54 +0200
+Message-ID: <20240618123435.871059758@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
+------------------
 
-expr_trans_bool() performs an incorrect transformation.
+From: Jeff Layton <jlayton@kernel.org>
 
-[Test Code]
+[ Upstream commit 27c934dd8832dd40fd34776f916dc201e18b319b ]
 
-    config MODULES
-            def_bool y
-            modules
+The splice read calls nfsd_splice_actor to put the pages containing file
+data into the svc_rqst->rq_pages array. It's possible however to get a
+splice result that only has a partial page at the end, if (e.g.) the
+filesystem hands back a short read that doesn't cover the whole page.
 
-    config A
-            def_bool y
-            select C if B != n
+nfsd_splice_actor will plop the partial page into its rq_pages array and
+return. Then later, when nfsd_splice_actor is called again, the
+remainder of the page may end up being filled out. At this point,
+nfsd_splice_actor will put the page into the array _again_ corrupting
+the reply. If this is done enough times, rq_next_page will overrun the
+array and corrupt the trailing fields -- the rq_respages and
+rq_next_page pointers themselves.
 
-    config B
-            def_tristate m
+If we've already added the page to the array in the last pass, don't add
+it to the array a second time when dealing with a splice continuation.
+This was originally handled properly in nfsd_splice_actor, but commit
+91e23b1c3982 ("NFSD: Clean up nfsd_splice_actor()") removed the check
+for it.
 
-    config C
-            tristate
-
-[Result]
-
-    CONFIG_MODULES=y
-    CONFIG_A=y
-    CONFIG_B=m
-    CONFIG_C=m
-
-This output is incorrect because CONFIG_C=y is expected.
-
-Documentation/kbuild/kconfig-language.rst clearly explains the function
-of the '!=' operator:
-
-    If the values of both symbols are equal, it returns 'n',
-    otherwise 'y'.
-
-Therefore, the statement:
-
-    select C if B != n
-
-should be equivalent to:
-
-    select C if y
-
-Or, more simply:
-
-    select C
-
-Hence, the symbol C should be selected by the value of A, which is 'y'.
-
-However, expr_trans_bool() wrongly transforms it to:
-
-    select C if B
-
-Therefore, the symbol C is selected by (A && B), which is 'm'.
-
-The comment block of expr_trans_bool() correctly explains its intention:
-
-  * bool FOO!=n => FOO
-    ^^^^
-
-If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
-
-However, the actual code performs this transformation when FOO is
-tristate:
-
-    if (e->left.sym->type == S_TRISTATE) {
-                             ^^^^^^^^^^
-
-While it can be fixed to S_BOOLEAN, there is no point in doing so
-because expr_tranform() already transforms FOO!=n to FOO when FOO is
-bool. (see the "case E_UNEQUAL" part)
-
-expr_trans_bool() is wrong and unnecessary.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Fixes: 91e23b1c3982 ("NFSD: Clean up nfsd_splice_actor()")
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Reported-by: Dario Lesca <d.lesca@solinos.it>
+Tested-by: David Critch <dcritch@redhat.com>
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2150630
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/expr.c | 29 -----------------------------
- scripts/kconfig/expr.h |  1 -
- scripts/kconfig/menu.c |  2 --
- 3 files changed, 32 deletions(-)
+ fs/nfsd/vfs.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
-index 81ebf8108ca74..81dfdf4470f75 100644
---- a/scripts/kconfig/expr.c
-+++ b/scripts/kconfig/expr.c
-@@ -396,35 +396,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
- 	return e;
- }
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index ddf424d76d410..abc682854507b 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -954,8 +954,15 @@ nfsd_splice_actor(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
+ 	struct page *last_page;
  
--/*
-- * bool FOO!=n => FOO
-- */
--struct expr *expr_trans_bool(struct expr *e)
--{
--	if (!e)
--		return NULL;
--	switch (e->type) {
--	case E_AND:
--	case E_OR:
--	case E_NOT:
--		e->left.expr = expr_trans_bool(e->left.expr);
--		e->right.expr = expr_trans_bool(e->right.expr);
--		break;
--	case E_UNEQUAL:
--		// FOO!=n -> FOO
--		if (e->left.sym->type == S_TRISTATE) {
--			if (e->right.sym == &symbol_no) {
--				e->type = E_SYMBOL;
--				e->right.sym = NULL;
--			}
--		}
--		break;
--	default:
--		;
--	}
--	return e;
--}
--
- /*
-  * e1 || e2 -> ?
-  */
-diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
-index 9c9caca5bd5f2..c91060e19e477 100644
---- a/scripts/kconfig/expr.h
-+++ b/scripts/kconfig/expr.h
-@@ -296,7 +296,6 @@ void expr_free(struct expr *e);
- void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
- int expr_eq(struct expr *e1, struct expr *e2);
- tristate expr_calc_value(struct expr *e);
--struct expr *expr_trans_bool(struct expr *e);
- struct expr *expr_eliminate_dups(struct expr *e);
- struct expr *expr_transform(struct expr *e);
- int expr_contains_symbol(struct expr *dep, struct symbol *sym);
-diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
-index 109325f31bef3..9d4c3f366a061 100644
---- a/scripts/kconfig/menu.c
-+++ b/scripts/kconfig/menu.c
-@@ -380,8 +380,6 @@ void menu_finalize(struct menu *parent)
- 				dep = expr_transform(dep);
- 				dep = expr_alloc_and(expr_copy(basedep), dep);
- 				dep = expr_eliminate_dups(dep);
--				if (menu->sym && menu->sym->type != S_TRISTATE)
--					dep = expr_trans_bool(dep);
- 				prop->visible.expr = dep;
- 
- 				/*
+ 	last_page = page + (offset + sd->len - 1) / PAGE_SIZE;
+-	for (page += offset / PAGE_SIZE; page <= last_page; page++)
++	for (page += offset / PAGE_SIZE; page <= last_page; page++) {
++		/*
++		 * Skip page replacement when extending the contents
++		 * of the current page.
++		 */
++		if (page == *(rqstp->rq_next_page - 1))
++			continue;
+ 		svc_rqst_replace_page(rqstp, page);
++	}
+ 	if (rqstp->rq_res.page_len == 0)	// first call
+ 		rqstp->rq_res.page_base = offset % PAGE_SIZE;
+ 	rqstp->rq_res.page_len += sd->len;
 -- 
 2.43.0
+
+
 
 
