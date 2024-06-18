@@ -1,123 +1,106 @@
-Return-Path: <stable+bounces-53312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808E390D112
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DA3A90CC1D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 935FB1C240A5
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:39:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 631D01C20AAE
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9232419DF87;
-	Tue, 18 Jun 2024 13:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E9115B10F;
+	Tue, 18 Jun 2024 12:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHOA0lYD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rl6S6ljP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50999157E99;
-	Tue, 18 Jun 2024 13:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7038015AADE;
+	Tue, 18 Jun 2024 12:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715956; cv=none; b=il8ElSNt4h/sB0msh0O7KxL9YgdzIZchgMikNRb5yp7vhkMgPHQLYeKg1iqGYVYPSNgEwOiC8QrqLK8rGPipB8640DVFYXQ+l3U77YYm4rlc7yj7TLU89nqJZktKeMPoQYelz/FAsGZc+YtSV+e6iKfnMHzQnMPFAejfmHlKkGM=
+	t=1718714233; cv=none; b=pZ240sBEW3Xf+LFFeEvIlHGo+6Mj00g2ZcD/BMuAvxB2tqDP1BhRXzCZM8YuuJLyNTVyELkmXiNv/0akaHRTQHIPHo0oPvzko6xPZPY3zQ1yS7QUyFLhw8sBCn1U+HExgGzRTP11h4vn8UwDbb8GuxKNNQCCoFregziKVN8wLrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715956; c=relaxed/simple;
-	bh=etKtWMN1zkzdLwE1OywHcCvnE7TUHl+YuLXg2mUwbYs=;
+	s=arc-20240116; t=1718714233; c=relaxed/simple;
+	bh=+zv0kuWfAVEeu8/6gmrKhn5F4FAKZ4nfFgp5KKdCQfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VB8cBErycQxcXY0Du2Zlf4/wsy0g1xObjWW5VcgtnALx9dZPGlRXyJ1a0bheHqnup/xtkofX6THyS0EHktLjtleYooz+58fYsL6ifcDGntbTLvXZ+3jkzQHBhNmq2Ci7wxF0igxYZ3gj8Ckxq9m5FBpXJiAVGm+QU8f2RwemE0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHOA0lYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2512C32786;
-	Tue, 18 Jun 2024 13:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715956;
-	bh=etKtWMN1zkzdLwE1OywHcCvnE7TUHl+YuLXg2mUwbYs=;
+	 MIME-Version:Content-Type; b=HWLeAYDXfAjmL+Om5lJ13DXXcfJj5L5qPDtTn/0wbHv6ecGk7LsbOqvEmp1D0zNPi9sIr3nPv3gMVKA8bYSBP7HumnZlZ0gfMUxULGvdGB+h/AXavBcGJ2wPEC0QUcAHai+bidG6yhUkXX+8dni2rSM7Q9L56quv5FefO94Qzmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rl6S6ljP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC063C3277B;
+	Tue, 18 Jun 2024 12:37:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714233;
+	bh=+zv0kuWfAVEeu8/6gmrKhn5F4FAKZ4nfFgp5KKdCQfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gHOA0lYDozcq5nAOGZnpjfLopD9PYhVRaP0+wMkNh4pvceDuV41l0EYk8M9Gca9ch
-	 WXML1UL7FzRfo+kOwXOyj/nTzX9Wom99YtGbfiMWZ+ObyAMCttz64EPGvPNgUZYXUd
-	 pp7KQDMpCFbkbAwn31gV7LSM/5p5N+hHZQZDCwX0=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 452/770] NFSD: De-duplicate net_generic(SVC_NET(rqstp), nfsd_net_id)
-Date: Tue, 18 Jun 2024 14:35:05 +0200
-Message-ID: <20240618123424.743675972@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=Rl6S6ljP1Oq42zNySXtb/4YP/ORfyYjvCdksVyWbL8mleRoE7/bkOULQUa3Ja4vnv
+	 Sre6Oiku7rJBefYrAWuqCMJKU/pw3wf6AdksplsShhN0Ge22pLUl3Tkxn4/Y2zNyZ/
+	 +riy6bZuAzL62G0sZ+bQ+Bs9RIJIlT2A+QYEtKOV6HF+qZ8KfrZyF4qDDpa8RkAhS0
+	 vDEgiWX20F2QKGewl1ucHiTTY/U24JLGRptEOuz6ZaxT8OfAepER6LIV60uwMMr9S0
+	 HN8TvzOppPUEJWIYEVqMfeBg1R0Qt7601LKxDx/e1et/TnLYeZ7ne+Jpsw7+p8r5WJ
+	 umZYPBklCy5xQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	nphamcs@gmail.com,
+	hannes@cmpxchg.org,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 25/44] selftests: cachestat: Fix build warnings on ppc64
+Date: Tue, 18 Jun 2024 08:35:06 -0400
+Message-ID: <20240618123611.3301370-25-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-------------------
+[ Upstream commit bc4d5f5d2debf8bb65fba188313481549ead8576 ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+Fix warnings like:
+  test_cachestat.c: In function ‘print_cachestat’:
+  test_cachestat.c:30:38: warning: format ‘%llu’ expects argument of
+  type ‘long long unsigned int’, but argument 2 has type ‘__u64’ {aka
+  ‘long unsigned int’} [-Wformat=]
 
-[ Upstream commit fb7622c2dbd1aa41133a8c73e1137b833c074519 ]
+By switching to unsigned long long for u64 for ppc64 builds.
 
-Since this pointer is used repeatedly, move it to a stack variable.
-
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ tools/testing/selftests/cachestat/test_cachestat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index cef8435d76a69..aba9d479d0840 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -980,6 +980,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 				unsigned long *cnt, int stable,
- 				__be32 *verf)
- {
-+	struct nfsd_net		*nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
- 	struct file		*file = nf->nf_file;
- 	struct super_block	*sb = file_inode(file)->i_sb;
- 	struct svc_export	*exp;
-@@ -1024,13 +1025,10 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 	iov_iter_kvec(&iter, WRITE, vec, vlen, *cnt);
- 	since = READ_ONCE(file->f_wb_err);
- 	if (verf)
--		nfsd_copy_boot_verifier(verf,
--				net_generic(SVC_NET(rqstp),
--				nfsd_net_id));
-+		nfsd_copy_boot_verifier(verf, nn);
- 	host_err = vfs_iter_write(file, &iter, &pos, flags);
- 	if (host_err < 0) {
--		nfsd_reset_boot_verifier(net_generic(SVC_NET(rqstp),
--					 nfsd_net_id));
-+		nfsd_reset_boot_verifier(nn);
- 		goto out_nfserr;
- 	}
- 	*cnt = host_err;
-@@ -1043,8 +1041,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 	if (stable && use_wgather) {
- 		host_err = wait_for_concurrent_writes(file);
- 		if (host_err < 0)
--			nfsd_reset_boot_verifier(net_generic(SVC_NET(rqstp),
--						 nfsd_net_id));
-+			nfsd_reset_boot_verifier(nn);
- 	}
+diff --git a/tools/testing/selftests/cachestat/test_cachestat.c b/tools/testing/selftests/cachestat/test_cachestat.c
+index b171fd53b004e..632ab44737ec3 100644
+--- a/tools/testing/selftests/cachestat/test_cachestat.c
++++ b/tools/testing/selftests/cachestat/test_cachestat.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #define _GNU_SOURCE
++#define __SANE_USERSPACE_TYPES__ // Use ll64
  
- out_nfserr:
+ #include <stdio.h>
+ #include <stdbool.h>
 -- 
 2.43.0
-
-
 
 
