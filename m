@@ -1,126 +1,104 @@
-Return-Path: <stable+bounces-52692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFF890CC3E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:46:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4355A90D2A4
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:51:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D799B21B53
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:42:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 627B9B2E3CE
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9DDD158DB9;
-	Tue, 18 Jun 2024 12:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4E819D09E;
+	Tue, 18 Jun 2024 13:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="omLAcdsh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkhpvrJo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E471158DB2;
-	Tue, 18 Jun 2024 12:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B445157490;
+	Tue, 18 Jun 2024 13:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714216; cv=none; b=UBo1BosChwqDlCUg8TP6YFw5UsoWmUYg7sYAP+XYhvCdGW5LbD4fxgNwJbzYeaQ5Z+10IgAtL9mw7uxYl9yoap7SCz1xD2cspex7O2tFFA9s5C4QPywepmfIbf9C+KFfEtksksUcSQpHe3yKOKF+SeFtXCheimC1zzFqUoRHyIM=
+	t=1718715947; cv=none; b=Gj1rLFkInQ0pGgRAGKnHrcH3r/1xZ4W+1Z/EhdGBHcatX0u/8uPAPQjIpkgsyH9yxP9ShDUp711p+0HKbkT5jE2Nyv64H8Z/0Vq7p+GlCiXjXLKHxQNsJ+/IRQktSTl83j9r7S3YkfiKPiTg0IHgqmQ1gkt4xJ7rY6VigODHQXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714216; c=relaxed/simple;
-	bh=JLOJ558q63l03Y1Ze34RgJjlYOi5QqzBLt+5yBQZ0cU=;
+	s=arc-20240116; t=1718715947; c=relaxed/simple;
+	bh=KMiozRCvbfo/U16tll1Zoinh17g+3x7ZJwtcxGKJ/ME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1a6YYLc8ZFWrf1FN2OQAHUsQ8qHWGGTMvOF4cgOs0nes+DQXzis698kxPkI07dFAG9qTVkglvPT8aZ3KkXftCct+cQTC4UrsVPUYxhJ659w7n7R2XK5BRZg3OIL3hQr7NC3YNNlSvWtYfwCHldRl1m6YDZxKUlwwpKxuZENtYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=omLAcdsh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1BEDC3277B;
-	Tue, 18 Jun 2024 12:36:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714216;
-	bh=JLOJ558q63l03Y1Ze34RgJjlYOi5QqzBLt+5yBQZ0cU=;
+	 MIME-Version; b=eXTBT81VeCozrfqNMg3l9dz/g+GXA+MsBmX4z87af148yUt0FcZlSbFoM01roBzIM6nWUQ+kg6F/ef6tooGSAQ9wQrg4D2C500OZ9rQ66KjuAkqK/cLBgaPhFM5uNq4cOkhx5a7uzMOhxZlWkRGc0FglzhRRsULzbMHVrzw++E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkhpvrJo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C25C4AF50;
+	Tue, 18 Jun 2024 13:05:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715947;
+	bh=KMiozRCvbfo/U16tll1Zoinh17g+3x7ZJwtcxGKJ/ME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omLAcdshYiNYAg/OXayMLI0azdCcjYI+gKf5V4pcHMwDMf+t8R0XIyImP1O159Nql
-	 8ZizLSYxY8xFGKlNKLuQ7VtNzMfaCd1ihPBI9Mkkz/x32bVYm8Dq3BCIAD+8Cte0qP
-	 3yglC3fBtbXhxrZmqweME0r0xOmYYzFPtoxr+io2fxhektttJk5v+EVcUxPIZ7f6Yk
-	 2CZT54fqTsZgK3h45DheTQnlJ336cWPefSsrU9TNUnWzCyUPhaYsHUWNYvc7YADhv8
-	 dBn7C2KWQn7lbW1z9LAL58VENlE5wqjDrPzQZ1TLxKxLGp+BWHXj2GQ53VGp/Z6bx6
-	 FxAwzJ0nGRlhQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	shaul.triebitz@intel.com,
-	benjamin.berg@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 20/44] wifi: iwlwifi: mvm: Handle BIGTK cipher in kek_kck cmd
-Date: Tue, 18 Jun 2024 08:35:01 -0400
-Message-ID: <20240618123611.3301370-20-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=lkhpvrJoMfstFGHGnsRMhO3RzF72MuFcnhTL39g6G4K0IdhrqDuOFNRu6UxiY1GAE
+	 4VCqRtcqrlcitsrnPf8VL64wI2BkEof2npbJEHnFaVdZa5Pad0vcDug1diOLfaAPqH
+	 zHdOpnx3wKAh3StZrMzxlDKjksxOOSprqdClIgGI=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jeff Layton <jeff.layton@primarydata.com>,
+	Lance Shelton <lance.shelton@hammerspace.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 449/770] nfsd: Add errno mapping for EREMOTEIO
+Date: Tue, 18 Jun 2024 14:35:02 +0200
+Message-ID: <20240618123424.623640465@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 08b16d1b5997dc378533318e2a9cd73c7a898284 ]
+------------------
 
-The BIGTK cipher field was added to the kek_kck_material_cmd
-but wasn't assigned. Fix that by differentiating between the
-IGTK/BIGTK keys and assign the ciphers fields accordingly.
+From: Jeff Layton <jeff.layton@primarydata.com>
 
-Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.7fd0b22b7267.Ie9b581652b74bd7806980364d59e1b2e78e682c0@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Upstream commit a2694e51f60c5a18c7e43d1a9feaa46d7f153e65 ]
+
+The NFS client can occasionally return EREMOTEIO when signalling issues
+with the server.  ...map to NFSERR_IO.
+
+Signed-off-by: Jeff Layton <jeff.layton@primarydata.com>
+Signed-off-by: Lance Shelton <lance.shelton@hammerspace.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/nfsd/nfsproc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 74743c3ceeefb..6f16b5b33f0c0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -595,6 +595,12 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
- 					 void *_data)
- {
- 	struct wowlan_key_gtk_type_iter *data = _data;
-+	__le32 *cipher = NULL;
-+
-+	if (key->keyidx == 4 || key->keyidx == 5)
-+		cipher = &data->kek_kck_cmd->igtk_cipher;
-+	if (key->keyidx == 6 || key->keyidx == 7)
-+		cipher = &data->kek_kck_cmd->bigtk_cipher;
- 
- 	switch (key->cipher) {
- 	default:
-@@ -606,10 +612,13 @@ static void iwl_mvm_wowlan_gtk_type_iter(struct ieee80211_hw *hw,
- 		return;
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
--		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
-+		if (cipher)
-+			*cipher = cpu_to_le32(STA_KEY_FLG_GCMP);
- 		return;
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		data->kek_kck_cmd->igtk_cipher = cpu_to_le32(STA_KEY_FLG_CCM);
-+	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
-+		if (cipher)
-+			*cipher = cpu_to_le32(STA_KEY_FLG_CCM);
- 		return;
- 	case WLAN_CIPHER_SUITE_CCMP:
- 		if (!sta)
+diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
+index de4b97cdbd2bc..6ed13754290a2 100644
+--- a/fs/nfsd/nfsproc.c
++++ b/fs/nfsd/nfsproc.c
+@@ -874,6 +874,7 @@ nfserrno (int errno)
+ 		{ nfserr_toosmall, -ETOOSMALL },
+ 		{ nfserr_serverfault, -ESERVERFAULT },
+ 		{ nfserr_serverfault, -ENFILE },
++		{ nfserr_io, -EREMOTEIO },
+ 		{ nfserr_io, -EUCLEAN },
+ 		{ nfserr_perm, -ENOKEY },
+ 		{ nfserr_no_grace, -ENOGRACE},
 -- 
 2.43.0
+
+
 
 
