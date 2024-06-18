@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-53088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8685890D263
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:49:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E8390D030
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:31:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76B57B2F8B3
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:31:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0872F1C23C6D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC1516B3A9;
-	Tue, 18 Jun 2024 12:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7D616C69B;
+	Tue, 18 Jun 2024 12:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiV8Fscj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4P0Lrfc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96CF16B3A6;
-	Tue, 18 Jun 2024 12:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C6A13B79B;
+	Tue, 18 Jun 2024 12:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715292; cv=none; b=H0k1d6ymuhwYvYyXM/ZUa2q1WOjbca1T1sPiurr7ReF317KsL4GObVDkMDSWpEWXqArBxqyPNgBM/l86/JVQyFDmUd77ogHWJOpsiApX8ThelwT2tzI30jSw4PWQqv2WZEv8cAmV/EcKNOtxNF9So1jGCklKCCkEftrmrwSQP+k=
+	t=1718715325; cv=none; b=dSlP1brJBpwK1tB6kpycJ76FuFtLjxIL/RYOaOMxMGP+Jjw9bKvy5gUgYe9NQ0KvMXpAaMwEFk0wQh9FoN6j2gVSfGr/HZ16nqTDmbaWelprW6MwmSa2axYZXnjpdAypXOLppJGXI410mnAHH0TQfsx0XaXnImRZFGWT9sIvABs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715292; c=relaxed/simple;
-	bh=PxL14fNgeZTGRMIzkefR3YqL1hqd0YjoPTJxsMGYROE=;
+	s=arc-20240116; t=1718715325; c=relaxed/simple;
+	bh=Iz/hrYXaGeX1NqwKRpK1MCX/6Xhy+r2nfdK0R8pgbvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s+Dy/+cL9HhekZbXMZV2etwwJgrh7RVa2uMq40RU5h9k0K5PJv3e1UMeybWR73rAixTFWjkROgTE5e98Ri8a5xwYMaoxIdmvBSTP1g0OItQk2ab1oQKYEEOrnMM5DO1jdwGf3ZhQcRtoVQLGyUkXaKKRq+RQIplUCPWe1IbF5TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiV8Fscj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBFFC3277B;
-	Tue, 18 Jun 2024 12:54:52 +0000 (UTC)
+	 MIME-Version; b=TmJ6LnGeTxlbkLMdgS2qZz0oeGU2FkFqU+k5jTUEzYMKv1dAf3Q2t953KAXySJJi0yHeBaMFIq5cRmaT+eX4lWd3Ga7epalAmeXOUr+Xm4kSfm6kHd86Y2TOD+yzKPuWooZPpqoA2fHfOyInfUtoTw/H2OKNEpm92872z+rdbDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4P0Lrfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEDFC3277B;
+	Tue, 18 Jun 2024 12:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715292;
-	bh=PxL14fNgeZTGRMIzkefR3YqL1hqd0YjoPTJxsMGYROE=;
+	s=korg; t=1718715325;
+	bh=Iz/hrYXaGeX1NqwKRpK1MCX/6Xhy+r2nfdK0R8pgbvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OiV8FscjUA92SNPnrMIVXia3VZAkOckWrjU2hgvYPgxXg/mWnyylDgki/7d9tUsfY
-	 obD776BE++3a00Dqkl6Cu2I8YlsRQc5ipY3+YUrH3VfsxbCdg/ggWFaaaBnuhtngDX
-	 kvxTaJ3qolFu7ysgvzhOOFtNt9mXMppe5fIFVOC0=
+	b=L4P0Lrfcgsja79S4rUyY6N+V3C8+VSAZhilVpfbS9A2J7/DCQMMFH0HJ4E16uKL+V
+	 mc8OSxwxIPvaSA87hYSN5TxC4jWF/FrDX6gb7tfYXDh/0r/Hwzw/Ul8dcCIYfgi/uX
+	 EbArf3FzQuMFMJPDQ8ugpjpaWfwEjmmZwhtiiNuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-nfs@vger.kernel.org,
-	Ricardo Ribalda <ribalda@chromium.org>,
+	radchenkoy@gmail.com,
+	"J. Bruce Fields" <bfields@redhat.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 242/770] nfsd: Fix typo "accesible"
-Date: Tue, 18 Jun 2024 14:31:35 +0200
-Message-ID: <20240618123416.618719530@linuxfoundation.org>
+Subject: [PATCH 5.10 243/770] nfsd: COPY with length 0 should copy to end of file
+Date: Tue, 18 Jun 2024 14:31:36 +0200
+Message-ID: <20240618123416.656648526@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,51 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: J. Bruce Fields <bfields@redhat.com>
 
-[ Upstream commit 34a624931b8c12b435b5009edc5897e4630107bc ]
+[ Upstream commit 792a5112aa90e59c048b601c6382fe3498d75db7 ]
 
-Trivial fix.
+>From https://tools.ietf.org/html/rfc7862#page-65
 
-Cc: linux-nfs@vger.kernel.org
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+	A count of 0 (zero) requests that all bytes from ca_src_offset
+	through EOF be copied to the destination.
+
+Reported-by: <radchenkoy@gmail.com>
+Signed-off-by: J. Bruce Fields <bfields@redhat.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/Kconfig | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs4proc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfsd/Kconfig b/fs/nfsd/Kconfig
-index d6cff5fbe705b..5fa38ad9e7e3f 100644
---- a/fs/nfsd/Kconfig
-+++ b/fs/nfsd/Kconfig
-@@ -99,7 +99,7 @@ config NFSD_BLOCKLAYOUT
- 	help
- 	  This option enables support for the exporting pNFS block layouts
- 	  in the kernel's NFS server. The pNFS block layout enables NFS
--	  clients to directly perform I/O to block devices accesible to both
-+	  clients to directly perform I/O to block devices accessible to both
- 	  the server and the clients.  See RFC 5663 for more details.
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 2fba0808d975c..949d9cedef5d1 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1380,6 +1380,9 @@ static ssize_t _nfsd_copy_file_range(struct nfsd4_copy *copy)
+ 	u64 src_pos = copy->cp_src_pos;
+ 	u64 dst_pos = copy->cp_dst_pos;
  
- 	  If unsure, say N.
-@@ -113,7 +113,7 @@ config NFSD_SCSILAYOUT
- 	help
- 	  This option enables support for the exporting pNFS SCSI layouts
- 	  in the kernel's NFS server. The pNFS SCSI layout enables NFS
--	  clients to directly perform I/O to SCSI devices accesible to both
-+	  clients to directly perform I/O to SCSI devices accessible to both
- 	  the server and the clients.  See draft-ietf-nfsv4-scsi-layout for
- 	  more details.
- 
-@@ -127,7 +127,7 @@ config NFSD_FLEXFILELAYOUT
- 	  This option enables support for the exporting pNFS Flex File
- 	  layouts in the kernel's NFS server. The pNFS Flex File  layout
- 	  enables NFS clients to directly perform I/O to NFSv3 devices
--	  accesible to both the server and the clients.  See
-+	  accessible to both the server and the clients.  See
- 	  draft-ietf-nfsv4-flex-files for more details.
- 
- 	  Warning, this server implements the bare minimum functionality
++	/* See RFC 7862 p.67: */
++	if (bytes_total == 0)
++		bytes_total = ULLONG_MAX;
+ 	do {
+ 		if (kthread_should_stop())
+ 			break;
 -- 
 2.43.0
 
