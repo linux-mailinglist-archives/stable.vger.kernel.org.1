@@ -1,276 +1,221 @@
-Return-Path: <stable+bounces-53480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06A9F90D1D0
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:45:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B17E890CCC2
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:56:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0812A1C240CB
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:45:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3033228439E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B611A3BA4;
-	Tue, 18 Jun 2024 13:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA61219DF8D;
+	Tue, 18 Jun 2024 12:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IpG8RKLJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0a+6NT6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0181A38E7;
-	Tue, 18 Jun 2024 13:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8642A19D062;
+	Tue, 18 Jun 2024 12:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716449; cv=none; b=fqQBX2Q8cCNRBwMFwnrg5FFgqs7rklk7xVSf1QjPmdJuo2fpH4scQIkRXx1dpcX0IZaYlsEU6VZPFQZS+VrOSx/GXWW+A78M0KjVgGVMAbcTmOpltVh0o5qgyVmUjLLptKdOR56mHuu2Uqlmnm959LskWumTMPS2nN1zjJ9IErs=
+	t=1718714389; cv=none; b=jtNaLHDbKGJQMYhgGClh7oNtfqgKypwT0oXvhG5Ub4lthhNv5EX53OmF3bGx59cWyRvbyPAJn3PQAl6Sssx/WHxEA+NlpfvuPGYWsVwjF5snTFhD7AxO9dnxcFgeihFG+5IVzua5NCwM9mUYRDYqM7xgbuhlvjfvwRSiX+3IGUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716449; c=relaxed/simple;
-	bh=cexiw87bpeg8HDJcxVJ62iUSO0LiXHefaZuyeXUHy/Q=;
+	s=arc-20240116; t=1718714389; c=relaxed/simple;
+	bh=o8dDAS7xYpYRWkj98g8+2z2aAJMviobaRTNS+Fya9oA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RKtFwiqnBMU6+OT9ZpBOlPm/ms6ogHIJBJ0K6rSXPmoHxpHjPs+PPOMR3gZ2Uyl2ntbq8ET1Jf6Qs8q34vxaJ0PIM3EjaD6Sir1Xn9ti0Xg1Glqvdeb25hzAoF4XJ0nqHE6RztsVjdccfmBqHBb0/xc8/tQ2s74XooWadSsQmkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IpG8RKLJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E06AC3277B;
-	Tue, 18 Jun 2024 13:14:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716449;
-	bh=cexiw87bpeg8HDJcxVJ62iUSO0LiXHefaZuyeXUHy/Q=;
+	 MIME-Version; b=PC95vejvpx8TBNfOiDTnb5YsY4UqA080V9R/wLoDL1LDqInsfVTRgxkN0PUad7w4bKqFOULs/yyeKhjpxzYWEqL14QxKZrJDKq0fHOMkQAx87KTDt4gWt44oQ4nFQb4aeTAYqE/7WHudHLPgsUfxwq35Y0pahg2c/ARXEth8/nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0a+6NT6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03B0C3277B;
+	Tue, 18 Jun 2024 12:39:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714389;
+	bh=o8dDAS7xYpYRWkj98g8+2z2aAJMviobaRTNS+Fya9oA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IpG8RKLJU5HOD0jC5HncLVjNqOZfOddCmHnKKZJtBgCj2HsCphthAV4XJ+1ziAHtu
-	 TzL85DbyCVhdBdeovf1fXg+bPh1ulU+xBvBpBke462vzuG/ZaDWTrUGwF83gf1TsG6
-	 Z09urIRnUlUyuWuziFCMRy9n2nksxYkI+92K8pIY=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 619/770] NFSD: reduce locking in nfsd_lookup()
-Date: Tue, 18 Jun 2024 14:37:52 +0200
-Message-ID: <20240618123431.181441743@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=H0a+6NT6Anj/FpDwh3UvVw9sI1qTb4nf2P+Scav0k7+UKh/tE6h0nZ7KSGn+05dbw
+	 SFf7uMu1Zqbid/oQw7uy6KJreFB6A97qurzcgkSvK9l0ETrXjlsL5dPfdfeJsR9w+e
+	 +4DTrlQv1F+CquWNw1RMuxqy+LRJStmmFJMSP+QKfyTE3gNDAvNaHQbfMrC8YVEfbW
+	 bLqzXa5WxSDYBtNO0BraOvWEsP0Dw6PENq0kZk1CeqNogkU3eQggylzdyWenKxGdW0
+	 zpZsCLibSg63PlGsxhGr/GUd+ZccBSeNYqgn/QnUm9tJZjesrnQ5mDp3RBwVqWcLeV
+	 QS429g3GN9bAw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 32/35] kconfig: remove wrong expr_trans_bool()
+Date: Tue, 18 Jun 2024 08:37:52 -0400
+Message-ID: <20240618123831.3302346-32-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
+References: <20240618123831.3302346-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-------------------
+[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
 
-From: NeilBrown <neilb@suse.de>
+expr_trans_bool() performs an incorrect transformation.
 
-[ Upstream commit 19d008b46941b8c668402170522e0f7a9258409c ]
+[Test Code]
 
-nfsd_lookup() takes an exclusive lock on the parent inode, but no
-callers want the lock and it may not be needed at all if the
-result is in the dcache.
+    config MODULES
+            def_bool y
+            modules
 
-Change nfsd_lookup_dentry() to not take the lock, and call
-lookup_one_len_locked() which takes lock only if needed.
+    config A
+            def_bool y
+            select C if B != n
 
-nfsd4_open() currently expects the lock to still be held, but that isn't
-necessary as nfsd_validate_delegated_dentry() provides required
-guarantees without the lock.
+    config B
+            def_tristate m
 
-NOTE: NFSv4 requires directory changeinfo for OPEN even when a create
-  wasn't requested and no change happened.  Now that nfsd_lookup()
-  doesn't use fh_lock(), we need to explicitly fill the attributes
-  when no create happens.  A new fh_fill_both_attrs() is provided
-  for that task.
+    config C
+            tristate
 
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[Result]
+
+    CONFIG_MODULES=y
+    CONFIG_A=y
+    CONFIG_B=m
+    CONFIG_C=m
+
+This output is incorrect because CONFIG_C=y is expected.
+
+Documentation/kbuild/kconfig-language.rst clearly explains the function
+of the '!=' operator:
+
+    If the values of both symbols are equal, it returns 'n',
+    otherwise 'y'.
+
+Therefore, the statement:
+
+    select C if B != n
+
+should be equivalent to:
+
+    select C if y
+
+Or, more simply:
+
+    select C
+
+Hence, the symbol C should be selected by the value of A, which is 'y'.
+
+However, expr_trans_bool() wrongly transforms it to:
+
+    select C if B
+
+Therefore, the symbol C is selected by (A && B), which is 'm'.
+
+The comment block of expr_trans_bool() correctly explains its intention:
+
+  * bool FOO!=n => FOO
+    ^^^^
+
+If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
+
+However, the actual code performs this transformation when FOO is
+tristate:
+
+    if (e->left.sym->type == S_TRISTATE) {
+                             ^^^^^^^^^^
+
+While it can be fixed to S_BOOLEAN, there is no point in doing so
+because expr_tranform() already transforms FOO!=n to FOO when FOO is
+bool. (see the "case E_UNEQUAL" part)
+
+expr_trans_bool() is wrong and unnecessary.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c  | 20 ++++++++++++--------
- fs/nfsd/nfs4state.c |  3 ---
- fs/nfsd/nfsfh.c     | 19 +++++++++++++++++++
- fs/nfsd/nfsfh.h     |  2 +-
- fs/nfsd/vfs.c       | 34 ++++++++++++++--------------------
- 5 files changed, 46 insertions(+), 32 deletions(-)
+ scripts/kconfig/expr.c | 29 -----------------------------
+ scripts/kconfig/expr.h |  1 -
+ scripts/kconfig/menu.c |  2 --
+ 3 files changed, 32 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index f588e592a0703..9cf4298817c4b 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -302,6 +302,11 @@ nfsd4_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (d_really_is_positive(child)) {
- 		status = nfs_ok;
- 
-+		/* NFSv4 protocol requires change attributes even though
-+		 * no change happened.
-+		 */
-+		fh_fill_both_attrs(fhp);
-+
- 		switch (open->op_createmode) {
- 		case NFS4_CREATE_UNCHECKED:
- 			if (!d_is_reg(child))
-@@ -417,15 +422,15 @@ do_open_lookup(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate, stru
- 		if (nfsd4_create_is_exclusive(open->op_createmode) && status == 0)
- 			open->op_bmval[1] |= (FATTR4_WORD1_TIME_ACCESS |
- 						FATTR4_WORD1_TIME_MODIFY);
--	} else
--		/*
--		 * Note this may exit with the parent still locked.
--		 * We will hold the lock until nfsd4_open's final
--		 * lookup, to prevent renames or unlinks until we've had
--		 * a chance to an acquire a delegation if appropriate.
--		 */
-+	} else {
- 		status = nfsd_lookup(rqstp, current_fh,
- 				     open->op_fname, open->op_fnamelen, *resfh);
-+		if (!status)
-+			/* NFSv4 protocol requires change attributes even though
-+			 * no change happened.
-+			 */
-+			fh_fill_both_attrs(current_fh);
-+	}
- 	if (status)
- 		goto out;
- 	status = nfsd_check_obj_isreg(*resfh);
-@@ -1043,7 +1048,6 @@ nfsd4_secinfo(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 				    &exp, &dentry);
- 	if (err)
- 		return err;
--	fh_unlock(&cstate->current_fh);
- 	if (d_really_is_negative(dentry)) {
- 		exp_put(exp);
- 		err = nfserr_noent;
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 2b6c9f1b9de88..e44d9c8d5065a 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5321,9 +5321,6 @@ nfsd4_verify_deleg_dentry(struct nfsd4_open *open, struct nfs4_file *fp,
- 	struct dentry *child;
- 	__be32 err;
- 
--	/* parent may already be locked, and it may get unlocked by
--	 * this call, but that is safe.
--	 */
- 	err = nfsd_lookup_dentry(open->op_rqstp, parent,
- 				 open->op_fname, open->op_fnamelen,
- 				 &exp, &child);
-diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-index d4ae838948ba5..cc680deecafa7 100644
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -670,6 +670,25 @@ void fh_fill_post_attrs(struct svc_fh *fhp)
- 			nfsd4_change_attribute(&fhp->fh_post_attr, inode);
- }
- 
-+/**
-+ * fh_fill_both_attrs - Fill pre-op and post-op attributes
-+ * @fhp: file handle to be updated
-+ *
-+ * This is used when the directory wasn't changed, but wcc attributes
-+ * are needed anyway.
-+ */
-+void fh_fill_both_attrs(struct svc_fh *fhp)
-+{
-+	fh_fill_post_attrs(fhp);
-+	if (!fhp->fh_post_saved)
-+		return;
-+	fhp->fh_pre_change = fhp->fh_post_change;
-+	fhp->fh_pre_mtime = fhp->fh_post_attr.mtime;
-+	fhp->fh_pre_ctime = fhp->fh_post_attr.ctime;
-+	fhp->fh_pre_size = fhp->fh_post_attr.size;
-+	fhp->fh_pre_saved = true;
-+}
-+
- /*
-  * Release a file handle.
-  */
-diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
-index fb9d358a267e5..28a4f9a94e2c8 100644
---- a/fs/nfsd/nfsfh.h
-+++ b/fs/nfsd/nfsfh.h
-@@ -322,7 +322,7 @@ static inline u64 nfsd4_change_attribute(struct kstat *stat,
- 
- extern void fh_fill_pre_attrs(struct svc_fh *fhp);
- extern void fh_fill_post_attrs(struct svc_fh *fhp);
--
-+extern void fh_fill_both_attrs(struct svc_fh *fhp);
- 
- /*
-  * Lock a file handle/inode
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index dd945099ae6b5..03f6dd2ec653b 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -198,27 +198,13 @@ nfsd_lookup_dentry(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 				goto out_nfserr;
- 		}
- 	} else {
--		/*
--		 * In the nfsd4_open() case, this may be held across
--		 * subsequent open and delegation acquisition which may
--		 * need to take the child's i_mutex:
--		 */
--		fh_lock_nested(fhp, I_MUTEX_PARENT);
--		dentry = lookup_one_len(name, dparent, len);
-+		dentry = lookup_one_len_unlocked(name, dparent, len);
- 		host_err = PTR_ERR(dentry);
- 		if (IS_ERR(dentry))
- 			goto out_nfserr;
- 		if (nfsd_mountpoint(dentry, exp)) {
--			/*
--			 * We don't need the i_mutex after all.  It's
--			 * still possible we could open this (regular
--			 * files can be mountpoints too), but the
--			 * i_mutex is just there to prevent renames of
--			 * something that we might be about to delegate,
--			 * and a mountpoint won't be renamed:
--			 */
--			fh_unlock(fhp);
--			if ((host_err = nfsd_cross_mnt(rqstp, &dentry, &exp))) {
-+			host_err = nfsd_cross_mnt(rqstp, &dentry, &exp);
-+			if (host_err) {
- 				dput(dentry);
- 				goto out_nfserr;
- 			}
-@@ -233,7 +219,15 @@ nfsd_lookup_dentry(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	return nfserrno(host_err);
+diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
+index 81ebf8108ca74..81dfdf4470f75 100644
+--- a/scripts/kconfig/expr.c
++++ b/scripts/kconfig/expr.c
+@@ -396,35 +396,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
+ 	return e;
  }
  
 -/*
-+/**
-+ * nfsd_lookup - look up a single path component for nfsd
-+ *
-+ * @rqstp:   the request context
-+ * @fhp:     the file handle of the directory
-+ * @name:    the component name, or %NULL to look up parent
-+ * @len:     length of name to examine
-+ * @resfh:   pointer to pre-initialised filehandle to hold result.
-+ *
-  * Look up one component of a pathname.
-  * N.B. After this call _both_ fhp and resfh need an fh_put
-  *
-@@ -243,11 +237,11 @@ nfsd_lookup_dentry(struct svc_rqst *rqstp, struct svc_fh *fhp,
-  * returned. Otherwise the covered directory is returned.
-  * NOTE: this mountpoint crossing is not supported properly by all
-  *   clients and is explicitly disallowed for NFSv3
-- *      NeilBrown <neilb@cse.unsw.edu.au>
-+ *
+- * bool FOO!=n => FOO
+- */
+-struct expr *expr_trans_bool(struct expr *e)
+-{
+-	if (!e)
+-		return NULL;
+-	switch (e->type) {
+-	case E_AND:
+-	case E_OR:
+-	case E_NOT:
+-		e->left.expr = expr_trans_bool(e->left.expr);
+-		e->right.expr = expr_trans_bool(e->right.expr);
+-		break;
+-	case E_UNEQUAL:
+-		// FOO!=n -> FOO
+-		if (e->left.sym->type == S_TRISTATE) {
+-			if (e->right.sym == &symbol_no) {
+-				e->type = E_SYMBOL;
+-				e->right.sym = NULL;
+-			}
+-		}
+-		break;
+-	default:
+-		;
+-	}
+-	return e;
+-}
+-
+ /*
+  * e1 || e2 -> ?
   */
- __be32
- nfsd_lookup(struct svc_rqst *rqstp, struct svc_fh *fhp, const char *name,
--				unsigned int len, struct svc_fh *resfh)
-+	    unsigned int len, struct svc_fh *resfh)
- {
- 	struct svc_export	*exp;
- 	struct dentry		*dentry;
+diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
+index 4a9a23b1b7e1f..fa38f9f263f7e 100644
+--- a/scripts/kconfig/expr.h
++++ b/scripts/kconfig/expr.h
+@@ -295,7 +295,6 @@ void expr_free(struct expr *e);
+ void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
+ int expr_eq(struct expr *e1, struct expr *e2);
+ tristate expr_calc_value(struct expr *e);
+-struct expr *expr_trans_bool(struct expr *e);
+ struct expr *expr_eliminate_dups(struct expr *e);
+ struct expr *expr_transform(struct expr *e);
+ int expr_contains_symbol(struct expr *dep, struct symbol *sym);
+diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
+index 61c442d84aef4..69a77f308fdc1 100644
+--- a/scripts/kconfig/menu.c
++++ b/scripts/kconfig/menu.c
+@@ -380,8 +380,6 @@ void menu_finalize(struct menu *parent)
+ 				dep = expr_transform(dep);
+ 				dep = expr_alloc_and(expr_copy(basedep), dep);
+ 				dep = expr_eliminate_dups(dep);
+-				if (menu->sym && menu->sym->type != S_TRISTATE)
+-					dep = expr_trans_bool(dep);
+ 				prop->visible.expr = dep;
+ 
+ 				/*
 -- 
 2.43.0
-
-
 
 
