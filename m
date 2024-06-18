@@ -1,332 +1,128 @@
-Return-Path: <stable+bounces-53481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FAA90D1D1
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:45:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9377590CCC7
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7EF72855F9
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:45:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4965D1F223B3
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDD11A38E7;
-	Tue, 18 Jun 2024 13:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C7419DFB7;
+	Tue, 18 Jun 2024 12:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBbAoABp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QrmqJuKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0AD158DC4;
-	Tue, 18 Jun 2024 13:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4D719DFAF;
+	Tue, 18 Jun 2024 12:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716452; cv=none; b=TBG/XkepPzMNSJ8qCPzZjyu55CV0ccdb/KnCaxNOKdhEnjJyk/JaDiu2/1fYuMe1eDyvxstaN+HHb0UZMyabXsW/4dn4IFX4Sxv+JcnmaMpMM1Iq9ul9HHd/hWpPT0xzzIqarILiW/c12a6fEtNKzrbCLimJIYzZQme1To9Mi5w=
+	t=1718714391; cv=none; b=O/kA+lNJSeqIFnIM1tEiTyVwSKnEpvKXkUKx+7DDtO1Yn0jbe0ww6h4w83WnlsFwX3+oYlc4l47p13hSChplb3Lw2zE/nWpD/P2d7dzShdJFc/8bz5d0hYVkty7e2EPYGVbzLO7LCO1NKoauAfRCJFDP4fsf6lIQ7Aqzn1nwnEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716452; c=relaxed/simple;
-	bh=D0lzhbmD3kAdlO1BunfvuTaft4yuZd0wNF3VUf5CNhI=;
+	s=arc-20240116; t=1718714391; c=relaxed/simple;
+	bh=xKbLMgiN5IAoLyVRzguxR4ESonXkAZtyPLydiw8fPjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HU97eZZwZziX8w8G2ajL8DqYSS8ow+4G6izie0CYnsqI8woEqcP5iTfjJ6+LhxXpG1OM3wkdgzOY0sgWO0R/R1LsUQfhGSmM809ERNVeHZNxYHwBg3/humtRR55vrBWmCKyEsEXodRZKxizDg+SuywTu27reYQ+C+ki2J1OXTHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBbAoABp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B73C4AF4D;
-	Tue, 18 Jun 2024 13:14:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716452;
-	bh=D0lzhbmD3kAdlO1BunfvuTaft4yuZd0wNF3VUf5CNhI=;
+	 MIME-Version; b=Ys0Rmv0VV/RzPgrH+L7lpNaQHOxNAvRZppTgS4c4g3U95G+x1n9ZPUJ/afyxt8IwWFGaIOSjpWfx2g2YhHimePdeC0P9NUEkO383hEBlrUJ4zY6BsKmYj7XaUhJvB4xk+pWaMebYAuzQL/WAZ2MDmV3Pqr4y02hD6h4ERTvhm5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QrmqJuKc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32DEC4AF48;
+	Tue, 18 Jun 2024 12:39:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714390;
+	bh=xKbLMgiN5IAoLyVRzguxR4ESonXkAZtyPLydiw8fPjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rBbAoABpuaazW8B93LmTW1vuBqHL8neSO077iVOst2JwEKoY4kC89TCQtJdn/CnrJ
-	 MAk8LRj03BRevHHTSYF/qOtxsCXa4BNHyB2DxRec9oDaV6G1z39X2mmybZuBe77Izs
-	 WbCTVYf7ixuX/oAETwZtMXkmLIwdWATx3DfCQzrA=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 620/770] NFSD: use explicit lock/unlock for directory ops
-Date: Tue, 18 Jun 2024 14:37:53 +0200
-Message-ID: <20240618123431.219690616@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=QrmqJuKcZ2yDD8+qyYRwBwSTx9nJv6kLeYVvCkbEvnfwpFQ1QIt4ZgXzOR5RAbA8V
+	 et/S3XBmOK0tI1qEw6uOEh39F3ypWU3sGpfVS/y449SHrx5BVQZLGF42vZVx/TU2LD
+	 TqVSNEdvCizQQOlYy3W+sCxMc+XK92U0dIEcfm37Pv2pAQTRit0jy78MqeX2HNeYSy
+	 6tOcxu0L6jKoHNrVXFIrr3W4YkCUBYadD3yk3rpF817c9NOVtcKRD5WqfV0anccx9K
+	 4NJX5eGzQmwD+xU9LRd8ZGqB+MsETc4JHclDfixGEeZktIsakFVt+ycWO0IFMIYCcW
+	 wC5ZUfZ9ztHZA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Aseda Aboagye <aaboagye@chromium.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	jikos@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 33/35] input: Add event code for accessibility key
+Date: Tue, 18 Jun 2024 08:37:53 -0400
+Message-ID: <20240618123831.3302346-33-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
+References: <20240618123831.3302346-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Aseda Aboagye <aaboagye@chromium.org>
 
-------------------
+[ Upstream commit 0c7dd00de018ff70b3452c424901816e26366a8a ]
 
-From: NeilBrown <neilb@suse.de>
+HUTRR116 added support for a new usage titled "System Accessibility
+Binding" which toggles a system-wide bound accessibility UI or command.
+This commit simply adds a new event code for the usage.
 
-[ Upstream commit debf16f0c671cb8db154a9ebcd6014cfff683b80 ]
-
-When creating or unlinking a name in a directory use explicit
-inode_lock_nested() instead of fh_lock(), and explicit calls to
-fh_fill_pre_attrs() and fh_fill_post_attrs().  This is already done
-for renames, with lock_rename() as the explicit locking.
-
-Also move the 'fill' calls closer to the operation that might change the
-attributes.  This way they are avoided on some error paths.
-
-For the v2-only code in nfsproc.c, the fill calls are not replaced as
-they aren't needed.
-
-Making the locking explicit will simplify proposed future changes to
-locking for directories.  It also makes it easily visible exactly where
-pre/post attributes are used - not all callers of fh_lock() actually
-need the pre/post attributes.
-
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: NeilBrown <neilb@suse.de>
-[ cel: backported to 5.10.y, prior to idmapped mounts ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Aseda Aboagye <aaboagye@chromium.org>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/Zl-e97O9nvudco5z@google.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3proc.c |  6 ++++--
- fs/nfsd/nfs4proc.c |  6 ++++--
- fs/nfsd/nfsproc.c  |  5 ++---
- fs/nfsd/vfs.c      | 36 ++++++++++++++++++++++++++----------
- 4 files changed, 36 insertions(+), 17 deletions(-)
+ drivers/hid/hid-debug.c                | 1 +
+ drivers/hid/hid-input.c                | 1 +
+ include/uapi/linux/input-event-codes.h | 1 +
+ 3 files changed, 3 insertions(+)
 
-diff --git a/fs/nfsd/nfs3proc.c b/fs/nfsd/nfs3proc.c
-index d78dbb214c5c3..1a52f0b06ec32 100644
---- a/fs/nfsd/nfs3proc.c
-+++ b/fs/nfsd/nfs3proc.c
-@@ -260,7 +260,7 @@ nfsd3_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (host_err)
- 		return nfserrno(host_err);
+diff --git a/drivers/hid/hid-debug.c b/drivers/hid/hid-debug.c
+index 7dd83ec74f8a9..c629ab161d5b2 100644
+--- a/drivers/hid/hid-debug.c
++++ b/drivers/hid/hid-debug.c
+@@ -974,6 +974,7 @@ static const char *keys[KEY_MAX + 1] = {
+ 	[KEY_CAMERA_ACCESS_ENABLE] = "CameraAccessEnable",
+ 	[KEY_CAMERA_ACCESS_DISABLE] = "CameraAccessDisable",
+ 	[KEY_CAMERA_ACCESS_TOGGLE] = "CameraAccessToggle",
++	[KEY_ACCESSIBILITY] = "Accessibility",
+ 	[KEY_DICTATE] = "Dictate",
+ 	[KEY_MICMUTE] = "MicrophoneMute",
+ 	[KEY_BRIGHTNESS_MIN] = "BrightnessMin",
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index e03d300d2bac4..d5a6e89c3086e 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -836,6 +836,7 @@ static void hidinput_configure_usage(struct hid_input *hidinput, struct hid_fiel
+ 		if ((usage->hid & 0xf0) == 0xa0) {	/* SystemControl */
+ 			switch (usage->hid & 0xf) {
+ 			case 0x9: map_key_clear(KEY_MICMUTE); break;
++			case 0xa: map_key_clear(KEY_ACCESSIBILITY); break;
+ 			default: goto ignore;
+ 			}
+ 			break;
+diff --git a/include/uapi/linux/input-event-codes.h b/include/uapi/linux/input-event-codes.h
+index 03edf2ccdf6c8..39f11ec676fae 100644
+--- a/include/uapi/linux/input-event-codes.h
++++ b/include/uapi/linux/input-event-codes.h
+@@ -618,6 +618,7 @@
+ #define KEY_CAMERA_ACCESS_ENABLE	0x24b	/* Enables programmatic access to camera devices. (HUTRR72) */
+ #define KEY_CAMERA_ACCESS_DISABLE	0x24c	/* Disables programmatic access to camera devices. (HUTRR72) */
+ #define KEY_CAMERA_ACCESS_TOGGLE	0x24d	/* Toggles the current state of the camera access control. (HUTRR72) */
++#define KEY_ACCESSIBILITY		0x24e	/* Toggles the system bound accessibility UI/command (HUTRR116) */
  
--	fh_lock_nested(fhp, I_MUTEX_PARENT);
-+	inode_lock_nested(inode, I_MUTEX_PARENT);
- 
- 	child = lookup_one_len(argp->name, parent, argp->len);
- 	if (IS_ERR(child)) {
-@@ -318,11 +318,13 @@ nfsd3_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (!IS_POSIXACL(inode))
- 		iap->ia_mode &= ~current_umask();
- 
-+	fh_fill_pre_attrs(fhp);
- 	host_err = vfs_create(inode, child, iap->ia_mode, true);
- 	if (host_err < 0) {
- 		status = nfserrno(host_err);
- 		goto out;
- 	}
-+	fh_fill_post_attrs(fhp);
- 
- 	/* A newly created file already has a file size of zero. */
- 	if ((iap->ia_valid & ATTR_SIZE) && (iap->ia_size == 0))
-@@ -340,7 +342,7 @@ nfsd3_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	status = nfsd_create_setattr(rqstp, fhp, resfhp, &attrs);
- 
- out:
--	fh_unlock(fhp);
-+	inode_unlock(inode);
- 	if (child && !IS_ERR(child))
- 		dput(child);
- 	fh_drop_write(fhp);
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 9cf4298817c4b..193b84a0f3a59 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -264,7 +264,7 @@ nfsd4_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (is_create_with_attrs(open))
- 		nfsd4_acl_to_attr(NF4REG, open->op_acl, &attrs);
- 
--	fh_lock_nested(fhp, I_MUTEX_PARENT);
-+	inode_lock_nested(inode, I_MUTEX_PARENT);
- 
- 	child = lookup_one_len(open->op_fname, parent, open->op_fnamelen);
- 	if (IS_ERR(child)) {
-@@ -348,10 +348,12 @@ nfsd4_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (!IS_POSIXACL(inode))
- 		iap->ia_mode &= ~current_umask();
- 
-+	fh_fill_pre_attrs(fhp);
- 	status = nfsd4_vfs_create(fhp, child, open);
- 	if (status != nfs_ok)
- 		goto out;
- 	open->op_created = true;
-+	fh_fill_post_attrs(fhp);
- 
- 	/* A newly created file already has a file size of zero. */
- 	if ((iap->ia_valid & ATTR_SIZE) && (iap->ia_size == 0))
-@@ -373,7 +375,7 @@ nfsd4_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (attrs.na_aclerr)
- 		open->op_bmval[0] &= ~FATTR4_WORD0_ACL;
- out:
--	fh_unlock(fhp);
-+	inode_unlock(inode);
- 	nfsd_attrs_free(&attrs);
- 	if (child && !IS_ERR(child))
- 		dput(child);
-diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
-index 180b84b6597b0..e533550a26db5 100644
---- a/fs/nfsd/nfsproc.c
-+++ b/fs/nfsd/nfsproc.c
-@@ -291,7 +291,7 @@ nfsd_proc_create(struct svc_rqst *rqstp)
- 		goto done;
- 	}
- 
--	fh_lock_nested(dirfhp, I_MUTEX_PARENT);
-+	inode_lock_nested(dirfhp->fh_dentry->d_inode, I_MUTEX_PARENT);
- 	dchild = lookup_one_len(argp->name, dirfhp->fh_dentry, argp->len);
- 	if (IS_ERR(dchild)) {
- 		resp->status = nfserrno(PTR_ERR(dchild));
-@@ -407,8 +407,7 @@ nfsd_proc_create(struct svc_rqst *rqstp)
- 	}
- 
- out_unlock:
--	/* We don't really need to unlock, as fh_put does it. */
--	fh_unlock(dirfhp);
-+	inode_unlock(dirfhp->fh_dentry->d_inode);
- 	fh_drop_write(dirfhp);
- done:
- 	fh_put(dirfhp);
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 03f6dd2ec653b..3364e562b00e5 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1386,7 +1386,7 @@ nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (host_err)
- 		return nfserrno(host_err);
- 
--	fh_lock_nested(fhp, I_MUTEX_PARENT);
-+	inode_lock_nested(dentry->d_inode, I_MUTEX_PARENT);
- 	dchild = lookup_one_len(fname, dentry, flen);
- 	host_err = PTR_ERR(dchild);
- 	if (IS_ERR(dchild)) {
-@@ -1401,10 +1401,12 @@ nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	dput(dchild);
- 	if (err)
- 		goto out_unlock;
-+	fh_fill_pre_attrs(fhp);
- 	err = nfsd_create_locked(rqstp, fhp, fname, flen, attrs, type,
- 				 rdev, resfhp);
-+	fh_fill_post_attrs(fhp);
- out_unlock:
--	fh_unlock(fhp);
-+	inode_unlock(dentry->d_inode);
- 	return err;
- }
- 
-@@ -1487,20 +1489,22 @@ nfsd_symlink(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 		goto out;
- 	}
- 
--	fh_lock(fhp);
- 	dentry = fhp->fh_dentry;
-+	inode_lock_nested(dentry->d_inode, I_MUTEX_PARENT);
- 	dnew = lookup_one_len(fname, dentry, flen);
- 	if (IS_ERR(dnew)) {
- 		err = nfserrno(PTR_ERR(dnew));
--		fh_unlock(fhp);
-+		inode_unlock(dentry->d_inode);
- 		goto out_drop_write;
- 	}
-+	fh_fill_pre_attrs(fhp);
- 	host_err = vfs_symlink(d_inode(dentry), dnew, path);
- 	err = nfserrno(host_err);
- 	cerr = fh_compose(resfhp, fhp->fh_export, dnew, fhp);
- 	if (!err)
- 		nfsd_create_setattr(rqstp, fhp, resfhp, attrs);
--	fh_unlock(fhp);
-+	fh_fill_post_attrs(fhp);
-+	inode_unlock(dentry->d_inode);
- 	if (!err)
- 		err = nfserrno(commit_metadata(fhp));
- 	dput(dnew);
-@@ -1546,9 +1550,9 @@ nfsd_link(struct svc_rqst *rqstp, struct svc_fh *ffhp,
- 		goto out;
- 	}
- 
--	fh_lock_nested(ffhp, I_MUTEX_PARENT);
- 	ddir = ffhp->fh_dentry;
- 	dirp = d_inode(ddir);
-+	inode_lock_nested(dirp, I_MUTEX_PARENT);
- 
- 	dnew = lookup_one_len(name, ddir, len);
- 	if (IS_ERR(dnew)) {
-@@ -1561,8 +1565,18 @@ nfsd_link(struct svc_rqst *rqstp, struct svc_fh *ffhp,
- 	err = nfserr_noent;
- 	if (d_really_is_negative(dold))
- 		goto out_dput;
-+<<<<<<< current
- 	host_err = vfs_link(dold, dirp, dnew, NULL);
- 	fh_unlock(ffhp);
-+||||||| constructed merge base
-+	host_err = vfs_link(dold, &init_user_ns, dirp, dnew, NULL);
-+	fh_unlock(ffhp);
-+=======
-+	fh_fill_pre_attrs(ffhp);
-+	host_err = vfs_link(dold, &init_user_ns, dirp, dnew, NULL);
-+	fh_fill_post_attrs(ffhp);
-+	inode_unlock(dirp);
-+>>>>>>> patched
- 	if (!host_err) {
- 		err = nfserrno(commit_metadata(ffhp));
- 		if (!err)
-@@ -1582,7 +1596,7 @@ nfsd_link(struct svc_rqst *rqstp, struct svc_fh *ffhp,
- out_dput:
- 	dput(dnew);
- out_unlock:
--	fh_unlock(ffhp);
-+	inode_unlock(dirp);
- 	goto out_drop_write;
- }
- 
-@@ -1755,9 +1769,9 @@ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
- 	if (host_err)
- 		goto out_nfserr;
- 
--	fh_lock_nested(fhp, I_MUTEX_PARENT);
- 	dentry = fhp->fh_dentry;
- 	dirp = d_inode(dentry);
-+	inode_lock_nested(dirp, I_MUTEX_PARENT);
- 
- 	rdentry = lookup_one_len(fname, dentry, flen);
- 	host_err = PTR_ERR(rdentry);
-@@ -1775,6 +1789,7 @@ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
- 	if (!type)
- 		type = d_inode(rdentry)->i_mode & S_IFMT;
- 
-+	fh_fill_pre_attrs(fhp);
- 	if (type != S_IFDIR) {
- 		if (rdentry->d_sb->s_export_op->flags & EXPORT_OP_CLOSE_BEFORE_UNLINK)
- 			nfsd_close_cached_files(rdentry);
-@@ -1782,8 +1797,9 @@ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
- 	} else {
- 		host_err = vfs_rmdir(dirp, rdentry);
- 	}
-+	fh_fill_post_attrs(fhp);
- 
--	fh_unlock(fhp);
-+	inode_unlock(dirp);
- 	if (!host_err)
- 		host_err = commit_metadata(fhp);
- 	dput(rdentry);
-@@ -1806,7 +1822,7 @@ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
- out:
- 	return err;
- out_unlock:
--	fh_unlock(fhp);
-+	inode_unlock(dirp);
- 	goto out_drop_write;
- }
- 
+ #define KEY_BRIGHTNESS_MIN		0x250	/* Set Brightness to Minimum */
+ #define KEY_BRIGHTNESS_MAX		0x251	/* Set Brightness to Maximum */
 -- 
 2.43.0
-
-
 
 
