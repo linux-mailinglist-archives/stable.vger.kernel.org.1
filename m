@@ -1,159 +1,276 @@
-Return-Path: <stable+bounces-52743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C74090CCAF
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:55:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD77090D1E9
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF984283EFF
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:55:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57F0A281EDB
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203FA18EFE7;
-	Tue, 18 Jun 2024 12:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB121A4F32;
+	Tue, 18 Jun 2024 13:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i4HitReN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDJ89S0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C577718EFDE;
-	Tue, 18 Jun 2024 12:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603511A4F1A;
+	Tue, 18 Jun 2024 13:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714378; cv=none; b=WjtV7dbJOkAcVtQRwSvb3Jc5Ous/nUMZ4nGYrxy6cb8HzsaAIvjeq3Hzgu542HLigzaSiB12wbjuJEimAYCZwo4t8qZPcun9C0SYPe2gjTiArLa1x28FMrIPOR4EhMpnXx03PNNjgvDOm0DC4Azukgc5cs5F7HQ5fjLmwm5AmcQ=
+	t=1718716464; cv=none; b=Bi8N3YBJu+pb2WN8IzpQcygqiLsZK48kqFCtigNgZHC1nhOjfGw0JEKB6WPnttA4Ez9IrJHFJ+JQa6MW5CqI8VjX4wf4iaCJw+8f3/bJ9ddS/X8zUjIW9rbwBRyQ7FZwUH/JXJ8cS356mWgia39u5bTXiIYNw0EIDZlmDwRStAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714378; c=relaxed/simple;
-	bh=gBBmWF8YTIjh0DlT+b6kdKqtSsPfi3eXXh024j8qgOM=;
+	s=arc-20240116; t=1718716464; c=relaxed/simple;
+	bh=n2mALRKNHxI2FeWvNP82YQqk5wQShaFKp2PYB5xL170=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E8OeM+mBqXCMHOWDJznqe2Oe2X/7MxW7T1VSjUmVo0b8mb3qHuje81LWAbJf3VWrqN7/DSWUJ7kp3l6Ygbtzrz+VIhhtDpJ0DR6kfuC/ZRos5memAYgDI2TX/6gYlMeHD5lViGTISKInAXm6tmD4ud3MHOuwwcZ2z4W+o2gM+6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i4HitReN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F14C3277B;
-	Tue, 18 Jun 2024 12:39:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714378;
-	bh=gBBmWF8YTIjh0DlT+b6kdKqtSsPfi3eXXh024j8qgOM=;
+	 MIME-Version; b=HNTnPLFFk+pDtPFf+MPrQuW5uMsx+lLKgBmRW8G5L0M0ukBDccYKEq/RXIAJ6k99X0IJJ7rX6PepzX0Jr7nGC90WVxy/2A2DI/RMA1LjTHwzXf6kaprHAf65EbrXwBQMZrgZDwMO1mpAXsxtEVakXzwTYMF6VBiHij0Tgjr++qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDJ89S0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5EB6C4AF1D;
+	Tue, 18 Jun 2024 13:14:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716464;
+	bh=n2mALRKNHxI2FeWvNP82YQqk5wQShaFKp2PYB5xL170=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4HitReNYJkWQJ6iKqRbkzKC8L6zK8dRT+64SIXT59/OQ3AR7c7b45+q+IdeY6u1V
-	 po8lAr7opuICeEO7AttfC/idlZ8tDDj9Rxpk6W7hr56qCBoJGBFeUhwZY8iMHPXjkn
-	 pHW/k2fHGKrmztzyQiBoYUiXAxyp7gsVqqIOxL2748+73ncfeBbiM3C3W6rc77W1rL
-	 Z/2k9XBBrB1QWpE/K7N3aHyUcnYwrOunCh5qlDQxJuaEasiDP5mVj46rGwjtrd/Xlc
-	 1N5M4yF//Rcxwpy2vn9FwewzsGpBdqzKqOmvIHnUtjyTHrlzeJW3JTx1X09bZ0W4sm
-	 /zjZyGQq+3n6Q==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Alexander Aring <aahringo@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 27/35] net: ipv6: rpl_iptunnel: block BH in rpl_output() and rpl_input()
-Date: Tue, 18 Jun 2024 08:37:47 -0400
-Message-ID: <20240618123831.3302346-27-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
-References: <20240618123831.3302346-1-sashal@kernel.org>
+	b=uDJ89S0oFhMP+skl6L8bZxK2w5avKoiCVffGwjLkXaGEP1e+CX2HC5qgkPtjU7tNZ
+	 WOk0hoSyTHIw2eLedF7lDEqjWJpLvmH9K284Sfdb5Lz3BsOVyVGBcUWOPgoHBON2QN
+	 AAq7DLTSNuzz8VU3qTDH80dQN5jJF1z7m7U/mBO4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 614/770] NFSD: add security label to struct nfsd_attrs
+Date: Tue, 18 Jun 2024 14:37:47 +0200
+Message-ID: <20240618123430.991282254@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit db0090c6eb12c31246438b7fe2a8f1b833e7a653 ]
+------------------
 
-As explained in commit 1378817486d6 ("tipc: block BH
-before using dst_cache"), net/core/dst_cache.c
-helpers need to be called with BH disabled.
+From: NeilBrown <neilb@suse.de>
 
-Disabling preemption in rpl_output() is not good enough,
-because rpl_output() is called from process context,
-lwtunnel_output() only uses rcu_read_lock().
+[ Upstream commit d6a97d3f589a3a46a16183e03f3774daee251317 ]
 
-We might be interrupted by a softirq, re-enter rpl_output()
-and corrupt dst_cache data structures.
+nfsd_setattr() now sets a security label if provided, and nfsv4 provides
+it in the 'open' and 'create' paths and the 'setattr' path.
+If setting the label failed (including because the kernel doesn't
+support labels), an error field in 'struct nfsd_attrs' is set, and the
+caller can respond.  The open/create callers clear
+FATTR4_WORD2_SECURITY_LABEL in the returned attr set in this case.
+The setattr caller returns the error.
 
-Fix the race by using local_bh_disable() instead of
-preempt_disable().
-
-Apply a similar change in rpl_input().
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Alexander Aring <aahringo@redhat.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240531132636.2637995-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/rpl_iptunnel.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ fs/nfsd/nfs4proc.c | 49 +++++++++-------------------------------------
+ fs/nfsd/vfs.c      | 29 +++------------------------
+ fs/nfsd/vfs.h      |  5 +++--
+ 3 files changed, 15 insertions(+), 68 deletions(-)
 
-diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
-index a013b92cbb860..2c83b7586422d 100644
---- a/net/ipv6/rpl_iptunnel.c
-+++ b/net/ipv6/rpl_iptunnel.c
-@@ -212,9 +212,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 	if (unlikely(err))
- 		goto drop;
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 43387a8f10d06..cfcc463968b70 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -64,36 +64,6 @@ MODULE_PARM_DESC(nfsd4_ssc_umount_timeout,
+ 		"idle msecs before unmount export from source server");
+ #endif
  
--	preempt_disable();
-+	local_bh_disable();
- 	dst = dst_cache_get(&rlwt->cache);
--	preempt_enable();
-+	local_bh_enable();
+-#ifdef CONFIG_NFSD_V4_SECURITY_LABEL
+-#include <linux/security.h>
+-
+-static inline void
+-nfsd4_security_inode_setsecctx(struct svc_fh *resfh, struct xdr_netobj *label, u32 *bmval)
+-{
+-	struct inode *inode = d_inode(resfh->fh_dentry);
+-	int status;
+-
+-	inode_lock(inode);
+-	status = security_inode_setsecctx(resfh->fh_dentry,
+-		label->data, label->len);
+-	inode_unlock(inode);
+-
+-	if (status)
+-		/*
+-		 * XXX: We should really fail the whole open, but we may
+-		 * already have created a new file, so it may be too
+-		 * late.  For now this seems the least of evils:
+-		 */
+-		bmval[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
+-
+-	return;
+-}
+-#else
+-static inline void
+-nfsd4_security_inode_setsecctx(struct svc_fh *resfh, struct xdr_netobj *label, u32 *bmval)
+-{ }
+-#endif
+-
+ #define NFSDDBG_FACILITY		NFSDDBG_PROC
  
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *hdr = ipv6_hdr(skb);
-@@ -234,9 +234,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
+ static u32 nfsd_attrmask[] = {
+@@ -288,6 +258,7 @@ nfsd4_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	struct iattr *iap = &open->op_iattr;
+ 	struct nfsd_attrs attrs = {
+ 		.na_iattr	= iap,
++		.na_seclabel	= &open->op_label,
+ 	};
+ 	struct dentry *parent, *child;
+ 	__u32 v_mtime, v_atime;
+@@ -409,6 +380,8 @@ nfsd4_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ set_attr:
+ 	status = nfsd_create_setattr(rqstp, fhp, resfhp, &attrs);
  
--		preempt_disable();
-+		local_bh_disable();
- 		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
--		preempt_enable();
-+		local_bh_enable();
- 	}
++	if (attrs.na_labelerr)
++		open->op_bmval[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
+ out:
+ 	fh_unlock(fhp);
+ 	if (child && !IS_ERR(child))
+@@ -450,9 +423,6 @@ do_open_lookup(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate, stru
+ 		status = nfsd4_create_file(rqstp, current_fh, *resfh, open);
+ 		current->fs->umask = 0;
  
- 	skb_dst_drop(skb);
-@@ -268,23 +268,21 @@ static int rpl_input(struct sk_buff *skb)
- 		return err;
- 	}
+-		if (!status && open->op_label.len)
+-			nfsd4_security_inode_setsecctx(*resfh, &open->op_label, open->op_bmval);
+-
+ 		/*
+ 		 * Following rfc 3530 14.2.16, and rfc 5661 18.16.4
+ 		 * use the returned bitmask to indicate which attributes
+@@ -792,6 +762,7 @@ nfsd4_create(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	struct nfsd4_create *create = &u->create;
+ 	struct nfsd_attrs attrs = {
+ 		.na_iattr	= &create->cr_iattr,
++		.na_seclabel	= &create->cr_label,
+ 	};
+ 	struct svc_fh resfh;
+ 	__be32 status;
+@@ -864,8 +835,8 @@ nfsd4_create(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	if (status)
+ 		goto out;
  
--	preempt_disable();
-+	local_bh_disable();
- 	dst = dst_cache_get(&rlwt->cache);
--	preempt_enable();
+-	if (create->cr_label.len)
+-		nfsd4_security_inode_setsecctx(&resfh, &create->cr_label, create->cr_bmval);
++	if (attrs.na_labelerr)
++		create->cr_bmval[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
  
- 	if (!dst) {
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
- 		if (!dst->error) {
--			preempt_disable();
- 			dst_cache_set_ip6(&rlwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
--			preempt_enable();
- 		}
- 	} else {
- 		skb_dst_drop(skb);
- 		skb_dst_set(skb, dst);
- 	}
-+	local_bh_enable();
+ 	if (create->cr_acl != NULL)
+ 		do_set_nfs4_acl(rqstp, &resfh, create->cr_acl,
+@@ -1150,6 +1121,7 @@ nfsd4_setattr(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	struct nfsd4_setattr *setattr = &u->setattr;
+ 	struct nfsd_attrs attrs = {
+ 		.na_iattr	= &setattr->sa_iattr,
++		.na_seclabel	= &setattr->sa_label,
+ 	};
+ 	__be32 status = nfs_ok;
+ 	int err;
+@@ -1178,13 +1150,10 @@ nfsd4_setattr(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 					    setattr->sa_acl);
+ 	if (status)
+ 		goto out;
+-	if (setattr->sa_label.len)
+-		status = nfsd4_set_nfs4_label(rqstp, &cstate->current_fh,
+-				&setattr->sa_label);
+-	if (status)
+-		goto out;
+ 	status = nfsd_setattr(rqstp, &cstate->current_fh, &attrs,
+ 				0, (time64_t)0);
++	if (!status)
++		status = nfserrno(attrs.na_labelerr);
+ out:
+ 	fh_drop_write(&cstate->current_fh);
+ 	return status;
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index f5a1f41cddfff..01c431ed90ecf 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -471,6 +471,9 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	host_err = notify_change(dentry, iap, NULL);
  
- 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
- 	if (unlikely(err))
+ out_unlock:
++	if (attr->na_seclabel && attr->na_seclabel->len)
++		attr->na_labelerr = security_inode_setsecctx(dentry,
++			attr->na_seclabel->data, attr->na_seclabel->len);
+ 	fh_unlock(fhp);
+ 	if (size_change)
+ 		put_write_access(inode);
+@@ -508,32 +511,6 @@ int nfsd4_is_junction(struct dentry *dentry)
+ 		return 0;
+ 	return 1;
+ }
+-#ifdef CONFIG_NFSD_V4_SECURITY_LABEL
+-__be32 nfsd4_set_nfs4_label(struct svc_rqst *rqstp, struct svc_fh *fhp,
+-		struct xdr_netobj *label)
+-{
+-	__be32 error;
+-	int host_error;
+-	struct dentry *dentry;
+-
+-	error = fh_verify(rqstp, fhp, 0 /* S_IFREG */, NFSD_MAY_SATTR);
+-	if (error)
+-		return error;
+-
+-	dentry = fhp->fh_dentry;
+-
+-	inode_lock(d_inode(dentry));
+-	host_error = security_inode_setsecctx(dentry, label->data, label->len);
+-	inode_unlock(d_inode(dentry));
+-	return nfserrno(host_error);
+-}
+-#else
+-__be32 nfsd4_set_nfs4_label(struct svc_rqst *rqstp, struct svc_fh *fhp,
+-		struct xdr_netobj *label)
+-{
+-	return nfserr_notsupp;
+-}
+-#endif
+ 
+ static struct nfsd4_compound_state *nfsd4_get_cstate(struct svc_rqst *rqstp)
+ {
+diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
+index 5047cec4c423c..d5d4cfe37c933 100644
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -44,6 +44,9 @@ typedef int (*nfsd_filldir_t)(void *, const char *, int, loff_t, u64, unsigned);
+ /* nfsd/vfs.c */
+ struct nfsd_attrs {
+ 	struct iattr		*na_iattr;	/* input */
++	struct xdr_netobj	*na_seclabel;	/* input */
++
++	int			na_labelerr;	/* output */
+ };
+ 
+ int		nfsd_cross_mnt(struct svc_rqst *rqstp, struct dentry **dpp,
+@@ -57,8 +60,6 @@ __be32		nfsd_setattr(struct svc_rqst *, struct svc_fh *,
+ 				struct nfsd_attrs *, int, time64_t);
+ int nfsd_mountpoint(struct dentry *, struct svc_export *);
+ #ifdef CONFIG_NFSD_V4
+-__be32          nfsd4_set_nfs4_label(struct svc_rqst *, struct svc_fh *,
+-		    struct xdr_netobj *);
+ __be32		nfsd4_vfs_fallocate(struct svc_rqst *, struct svc_fh *,
+ 				    struct file *, loff_t, loff_t, int);
+ __be32		nfsd4_clone_file_range(struct svc_rqst *rqstp,
 -- 
 2.43.0
+
+
 
 
