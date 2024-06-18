@@ -1,221 +1,332 @@
-Return-Path: <stable+bounces-52748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B17E890CCC2
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:56:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13FAA90D1D1
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:45:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3033228439E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:56:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7EF72855F9
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA61219DF8D;
-	Tue, 18 Jun 2024 12:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDD11A38E7;
+	Tue, 18 Jun 2024 13:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0a+6NT6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBbAoABp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8642A19D062;
-	Tue, 18 Jun 2024 12:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0AD158DC4;
+	Tue, 18 Jun 2024 13:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714389; cv=none; b=jtNaLHDbKGJQMYhgGClh7oNtfqgKypwT0oXvhG5Ub4lthhNv5EX53OmF3bGx59cWyRvbyPAJn3PQAl6Sssx/WHxEA+NlpfvuPGYWsVwjF5snTFhD7AxO9dnxcFgeihFG+5IVzua5NCwM9mUYRDYqM7xgbuhlvjfvwRSiX+3IGUM=
+	t=1718716452; cv=none; b=TBG/XkepPzMNSJ8qCPzZjyu55CV0ccdb/KnCaxNOKdhEnjJyk/JaDiu2/1fYuMe1eDyvxstaN+HHb0UZMyabXsW/4dn4IFX4Sxv+JcnmaMpMM1Iq9ul9HHd/hWpPT0xzzIqarILiW/c12a6fEtNKzrbCLimJIYzZQme1To9Mi5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714389; c=relaxed/simple;
-	bh=o8dDAS7xYpYRWkj98g8+2z2aAJMviobaRTNS+Fya9oA=;
+	s=arc-20240116; t=1718716452; c=relaxed/simple;
+	bh=D0lzhbmD3kAdlO1BunfvuTaft4yuZd0wNF3VUf5CNhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PC95vejvpx8TBNfOiDTnb5YsY4UqA080V9R/wLoDL1LDqInsfVTRgxkN0PUad7w4bKqFOULs/yyeKhjpxzYWEqL14QxKZrJDKq0fHOMkQAx87KTDt4gWt44oQ4nFQb4aeTAYqE/7WHudHLPgsUfxwq35Y0pahg2c/ARXEth8/nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0a+6NT6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03B0C3277B;
-	Tue, 18 Jun 2024 12:39:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714389;
-	bh=o8dDAS7xYpYRWkj98g8+2z2aAJMviobaRTNS+Fya9oA=;
+	 MIME-Version; b=HU97eZZwZziX8w8G2ajL8DqYSS8ow+4G6izie0CYnsqI8woEqcP5iTfjJ6+LhxXpG1OM3wkdgzOY0sgWO0R/R1LsUQfhGSmM809ERNVeHZNxYHwBg3/humtRR55vrBWmCKyEsEXodRZKxizDg+SuywTu27reYQ+C+ki2J1OXTHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBbAoABp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B73C4AF4D;
+	Tue, 18 Jun 2024 13:14:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716452;
+	bh=D0lzhbmD3kAdlO1BunfvuTaft4yuZd0wNF3VUf5CNhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0a+6NT6Anj/FpDwh3UvVw9sI1qTb4nf2P+Scav0k7+UKh/tE6h0nZ7KSGn+05dbw
-	 SFf7uMu1Zqbid/oQw7uy6KJreFB6A97qurzcgkSvK9l0ETrXjlsL5dPfdfeJsR9w+e
-	 +4DTrlQv1F+CquWNw1RMuxqy+LRJStmmFJMSP+QKfyTE3gNDAvNaHQbfMrC8YVEfbW
-	 bLqzXa5WxSDYBtNO0BraOvWEsP0Dw6PENq0kZk1CeqNogkU3eQggylzdyWenKxGdW0
-	 zpZsCLibSg63PlGsxhGr/GUd+ZccBSeNYqgn/QnUm9tJZjesrnQ5mDp3RBwVqWcLeV
-	 QS429g3GN9bAw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 32/35] kconfig: remove wrong expr_trans_bool()
-Date: Tue, 18 Jun 2024 08:37:52 -0400
-Message-ID: <20240618123831.3302346-32-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
-References: <20240618123831.3302346-1-sashal@kernel.org>
+	b=rBbAoABpuaazW8B93LmTW1vuBqHL8neSO077iVOst2JwEKoY4kC89TCQtJdn/CnrJ
+	 MAk8LRj03BRevHHTSYF/qOtxsCXa4BNHyB2DxRec9oDaV6G1z39X2mmybZuBe77Izs
+	 WbCTVYf7ixuX/oAETwZtMXkmLIwdWATx3DfCQzrA=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 620/770] NFSD: use explicit lock/unlock for directory ops
+Date: Tue, 18 Jun 2024 14:37:53 +0200
+Message-ID: <20240618123431.219690616@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
+------------------
 
-expr_trans_bool() performs an incorrect transformation.
+From: NeilBrown <neilb@suse.de>
 
-[Test Code]
+[ Upstream commit debf16f0c671cb8db154a9ebcd6014cfff683b80 ]
 
-    config MODULES
-            def_bool y
-            modules
+When creating or unlinking a name in a directory use explicit
+inode_lock_nested() instead of fh_lock(), and explicit calls to
+fh_fill_pre_attrs() and fh_fill_post_attrs().  This is already done
+for renames, with lock_rename() as the explicit locking.
 
-    config A
-            def_bool y
-            select C if B != n
+Also move the 'fill' calls closer to the operation that might change the
+attributes.  This way they are avoided on some error paths.
 
-    config B
-            def_tristate m
+For the v2-only code in nfsproc.c, the fill calls are not replaced as
+they aren't needed.
 
-    config C
-            tristate
+Making the locking explicit will simplify proposed future changes to
+locking for directories.  It also makes it easily visible exactly where
+pre/post attributes are used - not all callers of fh_lock() actually
+need the pre/post attributes.
 
-[Result]
-
-    CONFIG_MODULES=y
-    CONFIG_A=y
-    CONFIG_B=m
-    CONFIG_C=m
-
-This output is incorrect because CONFIG_C=y is expected.
-
-Documentation/kbuild/kconfig-language.rst clearly explains the function
-of the '!=' operator:
-
-    If the values of both symbols are equal, it returns 'n',
-    otherwise 'y'.
-
-Therefore, the statement:
-
-    select C if B != n
-
-should be equivalent to:
-
-    select C if y
-
-Or, more simply:
-
-    select C
-
-Hence, the symbol C should be selected by the value of A, which is 'y'.
-
-However, expr_trans_bool() wrongly transforms it to:
-
-    select C if B
-
-Therefore, the symbol C is selected by (A && B), which is 'm'.
-
-The comment block of expr_trans_bool() correctly explains its intention:
-
-  * bool FOO!=n => FOO
-    ^^^^
-
-If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
-
-However, the actual code performs this transformation when FOO is
-tristate:
-
-    if (e->left.sym->type == S_TRISTATE) {
-                             ^^^^^^^^^^
-
-While it can be fixed to S_BOOLEAN, there is no point in doing so
-because expr_tranform() already transforms FOO!=n to FOO when FOO is
-bool. (see the "case E_UNEQUAL" part)
-
-expr_trans_bool() is wrong and unnecessary.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: NeilBrown <neilb@suse.de>
+[ cel: backported to 5.10.y, prior to idmapped mounts ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/expr.c | 29 -----------------------------
- scripts/kconfig/expr.h |  1 -
- scripts/kconfig/menu.c |  2 --
- 3 files changed, 32 deletions(-)
+ fs/nfsd/nfs3proc.c |  6 ++++--
+ fs/nfsd/nfs4proc.c |  6 ++++--
+ fs/nfsd/nfsproc.c  |  5 ++---
+ fs/nfsd/vfs.c      | 36 ++++++++++++++++++++++++++----------
+ 4 files changed, 36 insertions(+), 17 deletions(-)
 
-diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
-index 81ebf8108ca74..81dfdf4470f75 100644
---- a/scripts/kconfig/expr.c
-+++ b/scripts/kconfig/expr.c
-@@ -396,35 +396,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
- 	return e;
+diff --git a/fs/nfsd/nfs3proc.c b/fs/nfsd/nfs3proc.c
+index d78dbb214c5c3..1a52f0b06ec32 100644
+--- a/fs/nfsd/nfs3proc.c
++++ b/fs/nfsd/nfs3proc.c
+@@ -260,7 +260,7 @@ nfsd3_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (host_err)
+ 		return nfserrno(host_err);
+ 
+-	fh_lock_nested(fhp, I_MUTEX_PARENT);
++	inode_lock_nested(inode, I_MUTEX_PARENT);
+ 
+ 	child = lookup_one_len(argp->name, parent, argp->len);
+ 	if (IS_ERR(child)) {
+@@ -318,11 +318,13 @@ nfsd3_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (!IS_POSIXACL(inode))
+ 		iap->ia_mode &= ~current_umask();
+ 
++	fh_fill_pre_attrs(fhp);
+ 	host_err = vfs_create(inode, child, iap->ia_mode, true);
+ 	if (host_err < 0) {
+ 		status = nfserrno(host_err);
+ 		goto out;
+ 	}
++	fh_fill_post_attrs(fhp);
+ 
+ 	/* A newly created file already has a file size of zero. */
+ 	if ((iap->ia_valid & ATTR_SIZE) && (iap->ia_size == 0))
+@@ -340,7 +342,7 @@ nfsd3_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	status = nfsd_create_setattr(rqstp, fhp, resfhp, &attrs);
+ 
+ out:
+-	fh_unlock(fhp);
++	inode_unlock(inode);
+ 	if (child && !IS_ERR(child))
+ 		dput(child);
+ 	fh_drop_write(fhp);
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 9cf4298817c4b..193b84a0f3a59 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -264,7 +264,7 @@ nfsd4_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (is_create_with_attrs(open))
+ 		nfsd4_acl_to_attr(NF4REG, open->op_acl, &attrs);
+ 
+-	fh_lock_nested(fhp, I_MUTEX_PARENT);
++	inode_lock_nested(inode, I_MUTEX_PARENT);
+ 
+ 	child = lookup_one_len(open->op_fname, parent, open->op_fnamelen);
+ 	if (IS_ERR(child)) {
+@@ -348,10 +348,12 @@ nfsd4_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (!IS_POSIXACL(inode))
+ 		iap->ia_mode &= ~current_umask();
+ 
++	fh_fill_pre_attrs(fhp);
+ 	status = nfsd4_vfs_create(fhp, child, open);
+ 	if (status != nfs_ok)
+ 		goto out;
+ 	open->op_created = true;
++	fh_fill_post_attrs(fhp);
+ 
+ 	/* A newly created file already has a file size of zero. */
+ 	if ((iap->ia_valid & ATTR_SIZE) && (iap->ia_size == 0))
+@@ -373,7 +375,7 @@ nfsd4_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (attrs.na_aclerr)
+ 		open->op_bmval[0] &= ~FATTR4_WORD0_ACL;
+ out:
+-	fh_unlock(fhp);
++	inode_unlock(inode);
+ 	nfsd_attrs_free(&attrs);
+ 	if (child && !IS_ERR(child))
+ 		dput(child);
+diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
+index 180b84b6597b0..e533550a26db5 100644
+--- a/fs/nfsd/nfsproc.c
++++ b/fs/nfsd/nfsproc.c
+@@ -291,7 +291,7 @@ nfsd_proc_create(struct svc_rqst *rqstp)
+ 		goto done;
+ 	}
+ 
+-	fh_lock_nested(dirfhp, I_MUTEX_PARENT);
++	inode_lock_nested(dirfhp->fh_dentry->d_inode, I_MUTEX_PARENT);
+ 	dchild = lookup_one_len(argp->name, dirfhp->fh_dentry, argp->len);
+ 	if (IS_ERR(dchild)) {
+ 		resp->status = nfserrno(PTR_ERR(dchild));
+@@ -407,8 +407,7 @@ nfsd_proc_create(struct svc_rqst *rqstp)
+ 	}
+ 
+ out_unlock:
+-	/* We don't really need to unlock, as fh_put does it. */
+-	fh_unlock(dirfhp);
++	inode_unlock(dirfhp->fh_dentry->d_inode);
+ 	fh_drop_write(dirfhp);
+ done:
+ 	fh_put(dirfhp);
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 03f6dd2ec653b..3364e562b00e5 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1386,7 +1386,7 @@ nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (host_err)
+ 		return nfserrno(host_err);
+ 
+-	fh_lock_nested(fhp, I_MUTEX_PARENT);
++	inode_lock_nested(dentry->d_inode, I_MUTEX_PARENT);
+ 	dchild = lookup_one_len(fname, dentry, flen);
+ 	host_err = PTR_ERR(dchild);
+ 	if (IS_ERR(dchild)) {
+@@ -1401,10 +1401,12 @@ nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	dput(dchild);
+ 	if (err)
+ 		goto out_unlock;
++	fh_fill_pre_attrs(fhp);
+ 	err = nfsd_create_locked(rqstp, fhp, fname, flen, attrs, type,
+ 				 rdev, resfhp);
++	fh_fill_post_attrs(fhp);
+ out_unlock:
+-	fh_unlock(fhp);
++	inode_unlock(dentry->d_inode);
+ 	return err;
  }
  
--/*
-- * bool FOO!=n => FOO
-- */
--struct expr *expr_trans_bool(struct expr *e)
--{
--	if (!e)
--		return NULL;
--	switch (e->type) {
--	case E_AND:
--	case E_OR:
--	case E_NOT:
--		e->left.expr = expr_trans_bool(e->left.expr);
--		e->right.expr = expr_trans_bool(e->right.expr);
--		break;
--	case E_UNEQUAL:
--		// FOO!=n -> FOO
--		if (e->left.sym->type == S_TRISTATE) {
--			if (e->right.sym == &symbol_no) {
--				e->type = E_SYMBOL;
--				e->right.sym = NULL;
--			}
--		}
--		break;
--	default:
--		;
--	}
--	return e;
--}
--
- /*
-  * e1 || e2 -> ?
-  */
-diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
-index 4a9a23b1b7e1f..fa38f9f263f7e 100644
---- a/scripts/kconfig/expr.h
-+++ b/scripts/kconfig/expr.h
-@@ -295,7 +295,6 @@ void expr_free(struct expr *e);
- void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
- int expr_eq(struct expr *e1, struct expr *e2);
- tristate expr_calc_value(struct expr *e);
--struct expr *expr_trans_bool(struct expr *e);
- struct expr *expr_eliminate_dups(struct expr *e);
- struct expr *expr_transform(struct expr *e);
- int expr_contains_symbol(struct expr *dep, struct symbol *sym);
-diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
-index 61c442d84aef4..69a77f308fdc1 100644
---- a/scripts/kconfig/menu.c
-+++ b/scripts/kconfig/menu.c
-@@ -380,8 +380,6 @@ void menu_finalize(struct menu *parent)
- 				dep = expr_transform(dep);
- 				dep = expr_alloc_and(expr_copy(basedep), dep);
- 				dep = expr_eliminate_dups(dep);
--				if (menu->sym && menu->sym->type != S_TRISTATE)
--					dep = expr_trans_bool(dep);
- 				prop->visible.expr = dep;
+@@ -1487,20 +1489,22 @@ nfsd_symlink(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		goto out;
+ 	}
  
- 				/*
+-	fh_lock(fhp);
+ 	dentry = fhp->fh_dentry;
++	inode_lock_nested(dentry->d_inode, I_MUTEX_PARENT);
+ 	dnew = lookup_one_len(fname, dentry, flen);
+ 	if (IS_ERR(dnew)) {
+ 		err = nfserrno(PTR_ERR(dnew));
+-		fh_unlock(fhp);
++		inode_unlock(dentry->d_inode);
+ 		goto out_drop_write;
+ 	}
++	fh_fill_pre_attrs(fhp);
+ 	host_err = vfs_symlink(d_inode(dentry), dnew, path);
+ 	err = nfserrno(host_err);
+ 	cerr = fh_compose(resfhp, fhp->fh_export, dnew, fhp);
+ 	if (!err)
+ 		nfsd_create_setattr(rqstp, fhp, resfhp, attrs);
+-	fh_unlock(fhp);
++	fh_fill_post_attrs(fhp);
++	inode_unlock(dentry->d_inode);
+ 	if (!err)
+ 		err = nfserrno(commit_metadata(fhp));
+ 	dput(dnew);
+@@ -1546,9 +1550,9 @@ nfsd_link(struct svc_rqst *rqstp, struct svc_fh *ffhp,
+ 		goto out;
+ 	}
+ 
+-	fh_lock_nested(ffhp, I_MUTEX_PARENT);
+ 	ddir = ffhp->fh_dentry;
+ 	dirp = d_inode(ddir);
++	inode_lock_nested(dirp, I_MUTEX_PARENT);
+ 
+ 	dnew = lookup_one_len(name, ddir, len);
+ 	if (IS_ERR(dnew)) {
+@@ -1561,8 +1565,18 @@ nfsd_link(struct svc_rqst *rqstp, struct svc_fh *ffhp,
+ 	err = nfserr_noent;
+ 	if (d_really_is_negative(dold))
+ 		goto out_dput;
++<<<<<<< current
+ 	host_err = vfs_link(dold, dirp, dnew, NULL);
+ 	fh_unlock(ffhp);
++||||||| constructed merge base
++	host_err = vfs_link(dold, &init_user_ns, dirp, dnew, NULL);
++	fh_unlock(ffhp);
++=======
++	fh_fill_pre_attrs(ffhp);
++	host_err = vfs_link(dold, &init_user_ns, dirp, dnew, NULL);
++	fh_fill_post_attrs(ffhp);
++	inode_unlock(dirp);
++>>>>>>> patched
+ 	if (!host_err) {
+ 		err = nfserrno(commit_metadata(ffhp));
+ 		if (!err)
+@@ -1582,7 +1596,7 @@ nfsd_link(struct svc_rqst *rqstp, struct svc_fh *ffhp,
+ out_dput:
+ 	dput(dnew);
+ out_unlock:
+-	fh_unlock(ffhp);
++	inode_unlock(dirp);
+ 	goto out_drop_write;
+ }
+ 
+@@ -1755,9 +1769,9 @@ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
+ 	if (host_err)
+ 		goto out_nfserr;
+ 
+-	fh_lock_nested(fhp, I_MUTEX_PARENT);
+ 	dentry = fhp->fh_dentry;
+ 	dirp = d_inode(dentry);
++	inode_lock_nested(dirp, I_MUTEX_PARENT);
+ 
+ 	rdentry = lookup_one_len(fname, dentry, flen);
+ 	host_err = PTR_ERR(rdentry);
+@@ -1775,6 +1789,7 @@ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
+ 	if (!type)
+ 		type = d_inode(rdentry)->i_mode & S_IFMT;
+ 
++	fh_fill_pre_attrs(fhp);
+ 	if (type != S_IFDIR) {
+ 		if (rdentry->d_sb->s_export_op->flags & EXPORT_OP_CLOSE_BEFORE_UNLINK)
+ 			nfsd_close_cached_files(rdentry);
+@@ -1782,8 +1797,9 @@ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
+ 	} else {
+ 		host_err = vfs_rmdir(dirp, rdentry);
+ 	}
++	fh_fill_post_attrs(fhp);
+ 
+-	fh_unlock(fhp);
++	inode_unlock(dirp);
+ 	if (!host_err)
+ 		host_err = commit_metadata(fhp);
+ 	dput(rdentry);
+@@ -1806,7 +1822,7 @@ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
+ out:
+ 	return err;
+ out_unlock:
+-	fh_unlock(fhp);
++	inode_unlock(dirp);
+ 	goto out_drop_write;
+ }
+ 
 -- 
 2.43.0
+
+
 
 
