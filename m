@@ -1,164 +1,96 @@
-Return-Path: <stable+bounces-52815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A4090CD8E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:16:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70A790D2A0
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6EAC1C21202
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:16:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 530CC1F22CB9
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AA21B3734;
-	Tue, 18 Jun 2024 12:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C23A1AD4B9;
+	Tue, 18 Jun 2024 13:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="diQR/c1p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UsDmM2os"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3551B3725;
-	Tue, 18 Jun 2024 12:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB68A15A865;
+	Tue, 18 Jun 2024 13:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714564; cv=none; b=qHD8kbZTY81kXaQm6eds3wVHlXFl5vLZZA9Kr5JeES7mKwU9JYBqCrNqoaqVfZtnycve75Rw1HS1vqxUuMqIyahlYPeNQPh5lJWC09vqm+MV9dgopWsabDLS4thwHgQB5zwxn+mhL0O6KacudOUF/aJODiChUbLayIAedP16V9I=
+	t=1718716837; cv=none; b=gOtjy1cHuI2HSPSW/Ds6owiadrtH3A0xZN/H5puS+bHo6As/nKpFz91RI4wvHljZkusXDxuCFjAqp1Ds1kCUdXoaIAR6AlDG8d1/7PQ++TgZY5eQDtdrP0Cb+eqFQ918/f/RKWB+OYArd+HjH91rZuuVp51f3eaDro1TqKG3Ep8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714564; c=relaxed/simple;
-	bh=nrrRDgnq8qD0vJo6Y9EG2YqOkdbCrb2vcK/5Osfd3gk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/vvf4nXyIRMtR6F4hRQl4nzpAaSKLzt9yl6gUyKzCiLfq6+Km+hmhX/uc48dMb35CfFix1cLQV2A9Of9iopJS1JGLBxPS9OfcSiCBBBRLnSOh2rlsXT9hkceXQrGhxr2UTtLVr9ytV9PT0q8VP63sFzIe/4tT7tMLDhf1zL4aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=diQR/c1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041C9C4AF48;
-	Tue, 18 Jun 2024 12:42:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714563;
-	bh=nrrRDgnq8qD0vJo6Y9EG2YqOkdbCrb2vcK/5Osfd3gk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=diQR/c1paDxk4jvClU4SP5owMO6EDTemHBEsWeRrknaU9TteDa/od8JkiGrtLQ8mc
-	 x6G8DftwEo45Gij67Xsdag2nmtBoAOSerozVMX2/WLRvfpDGuGP0JScAZCwarWpZYH
-	 efmokiS1J9wvAsvkaF+rPrynXMWMc8HmbDW1GfU0Od9oWovzNu4fU8VHk2CHKyNEC1
-	 aJ0lv5CkkkH6bT5lPQsLJa20QBhUSNJYEKt+ksdKJYepX2pNPjvyfkfWRWekMvM7JX
-	 4/AZC0wiyD5gzLkucltOBmlXoUXUGp3Q6KoIuRdWIj27srN2bwjImh9uZNIkPGCZyw
-	 f1B9wfQYewyYg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-input@vger.kernel.org,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 07/13] Input: silead - Always support 10 fingers
-Date: Tue, 18 Jun 2024 08:42:18 -0400
-Message-ID: <20240618124231.3304308-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124231.3304308-1-sashal@kernel.org>
-References: <20240618124231.3304308-1-sashal@kernel.org>
+	s=arc-20240116; t=1718716837; c=relaxed/simple;
+	bh=61BwRk89uR5plh9l2a5RQwsm9MayEiqWRgxh2NOv49Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ozWWukpHMHombUDMIBDBqU1p9oftd9Zb5foUyzvPDS5mLalE+ZqUoBI9lzp8Vc0Nz8tWWWM3kgriM0DSqJJMdiL81ScA5bv1L4zUF6/4KalsFbrirFF3W/YWvm+lB87QQAexzx4kK2N+1pQBu0SCENKbFm4Xc0NWfr2WBgEG3xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UsDmM2os; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 665C6C32786;
+	Tue, 18 Jun 2024 13:20:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716836;
+	bh=61BwRk89uR5plh9l2a5RQwsm9MayEiqWRgxh2NOv49Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UsDmM2osT+d7VuifZ/TT7eLnnLIHo6BqBKBglIJd8JArkqrnzak7bX2gBbXNDU3Ex
+	 XLfCKJi85er4C3rZkIkr0LJxNCyNWh3fSvTf2xWBfdqjlz0PK5iSxeg1SJLICdrbsD
+	 mZowFazR+lKf4S7/B3RM/bS7XE4gB2E0ozYRe2mo=
+Date: Tue, 18 Jun 2024 14:42:19 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Chuck Lever III <chuck.lever@oracle.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+	linux-stable <stable@vger.kernel.org>
+Subject: Re: Fwd: [GIT PULL 5.10.y] NFSD filecache fixes
+Message-ID: <2024061849-impure-identical-ea0e@gregkh>
+References: <ZnCO88W37FXg5CV6@tissot.1015granger.net>
+ <C268A974-80EA-4F44-A78D-460D881A00C5@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.219
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <C268A974-80EA-4F44-A78D-460D881A00C5@oracle.com>
 
-From: Hans de Goede <hdegoede@redhat.com>
+On Mon, Jun 17, 2024 at 07:38:30PM +0000, Chuck Lever III wrote:
+> Resend: Corrected email address for stable
+> 
+> 
+> > Begin forwarded message:
+> > 
+> > From: Chuck Lever <chuck.lever@oracle.com>
+> > Subject: [GIT PULL 5.10.y] NFSD filecache fixes
+> > Date: June 17, 2024 at 3:30:59 PM EDT
+> > To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+> > Cc: linux-nfs@vger.kernel.org, stable@tissot.1015granger.net
+> > 
+> > Hi Greg, Sasha-
+> > 
+> > Here is a backport of nearly every NFSD patch from v5.11 until
+> > v6.3, plus subsequent fixes, onto LTS v5.10.219. This addresses
+> > the many NFSD filecache-related scalability problems in v5.10's
+> > NFSD. This also contains fixes for issues found in the v5.15
+> > NFSD backport over the past several months.
+> > 
+> > I've run this kernel through the usual upstream CI testing for
+> > NFSD, and it seems solid.
+> > 
+> > In lieu of sending an mbox containing all of these patches, here's
+> > a pull request that gives you the co-ordinates for the full series
+> > enabling you to handle the merge however you prefer.
 
-[ Upstream commit 38a38f5a36da9820680d413972cb733349400532 ]
+Sasha queued these all up, and I've pushed out a -rc release with _just_
+these commits in it, so that it is easier to test and track regressions
+for :)
 
-When support for Silead touchscreens was orginal added some touchscreens
-with older firmware versions only supported 5 fingers and this was made
-the default requiring the setting of a "silead,max-fingers=10" uint32
-device-property for all touchscreen models which do support 10 fingers.
+thanks,
 
-There are very few models with the old 5 finger fw, so in practice the
-setting of the "silead,max-fingers=10" is boilerplate which needs to
-be copy and pasted to every touchscreen config.
-
-Reporting that 10 fingers are supported on devices which only support
-5 fingers doesn't cause any problems for userspace in practice, since
-at max 4 finger gestures are supported anyways. Drop the max_fingers
-configuration and simply always assume 10 fingers.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Link: https://lore.kernel.org/r/20240525193854.39130-2-hdegoede@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/input/touchscreen/silead.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/input/touchscreen/silead.c b/drivers/input/touchscreen/silead.c
-index e8b6c3137420b..901e28bc01645 100644
---- a/drivers/input/touchscreen/silead.c
-+++ b/drivers/input/touchscreen/silead.c
-@@ -70,7 +70,6 @@ struct silead_ts_data {
- 	struct regulator_bulk_data regulators[2];
- 	char fw_name[64];
- 	struct touchscreen_properties prop;
--	u32 max_fingers;
- 	u32 chip_id;
- 	struct input_mt_pos pos[SILEAD_MAX_FINGERS];
- 	int slots[SILEAD_MAX_FINGERS];
-@@ -98,7 +97,7 @@ static int silead_ts_request_input_dev(struct silead_ts_data *data)
- 	input_set_abs_params(data->input, ABS_MT_POSITION_Y, 0, 4095, 0, 0);
- 	touchscreen_parse_properties(data->input, true, &data->prop);
- 
--	input_mt_init_slots(data->input, data->max_fingers,
-+	input_mt_init_slots(data->input, SILEAD_MAX_FINGERS,
- 			    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED |
- 			    INPUT_MT_TRACK);
- 
-@@ -145,10 +144,10 @@ static void silead_ts_read_data(struct i2c_client *client)
- 		return;
- 	}
- 
--	if (buf[0] > data->max_fingers) {
-+	if (buf[0] > SILEAD_MAX_FINGERS) {
- 		dev_warn(dev, "More touches reported then supported %d > %d\n",
--			 buf[0], data->max_fingers);
--		buf[0] = data->max_fingers;
-+			 buf[0], SILEAD_MAX_FINGERS);
-+		buf[0] = SILEAD_MAX_FINGERS;
- 	}
- 
- 	touch_nr = 0;
-@@ -200,7 +199,6 @@ static void silead_ts_read_data(struct i2c_client *client)
- 
- static int silead_ts_init(struct i2c_client *client)
- {
--	struct silead_ts_data *data = i2c_get_clientdata(client);
- 	int error;
- 
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_RESET,
-@@ -210,7 +208,7 @@ static int silead_ts_init(struct i2c_client *client)
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
- 
- 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_TOUCH_NR,
--					data->max_fingers);
-+					  SILEAD_MAX_FINGERS);
- 	if (error)
- 		goto i2c_write_err;
- 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
-@@ -437,13 +435,6 @@ static void silead_ts_read_props(struct i2c_client *client)
- 	const char *str;
- 	int error;
- 
--	error = device_property_read_u32(dev, "silead,max-fingers",
--					 &data->max_fingers);
--	if (error) {
--		dev_dbg(dev, "Max fingers read error %d\n", error);
--		data->max_fingers = 5; /* Most devices handle up-to 5 fingers */
--	}
--
- 	error = device_property_read_string(dev, "firmware-name", &str);
- 	if (!error)
- 		snprintf(data->fw_name, sizeof(data->fw_name),
--- 
-2.43.0
-
+greg k-h
 
