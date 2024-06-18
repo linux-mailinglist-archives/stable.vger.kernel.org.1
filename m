@@ -1,139 +1,108 @@
-Return-Path: <stable+bounces-53273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E72990D0EB
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2D190CBF2
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:39:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2414E1F245EC
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EABD1F212CF
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B38F18EFE0;
-	Tue, 18 Jun 2024 13:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23DD1553BD;
+	Tue, 18 Jun 2024 12:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGEezbem"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tK5dw6Cq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BA5157480;
-	Tue, 18 Jun 2024 13:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC6813BAD9;
+	Tue, 18 Jun 2024 12:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715841; cv=none; b=JtnYNFbjKBPYwkTdm5DWZY5yxIPfqPV5WSz7xKcgfwQoUXoKNAXdXg9YNya/OxMgHuGSYL6sC62rKXsdj3+XyoNCvc8x2dSRx143Fj3oZP0Z2mv7RSrs4siQ+n9uqHJSrFwXkoOOqpMvOduM6ypJhmES1IERx+BpaqP7rXpaFgs=
+	t=1718714199; cv=none; b=LwOaAx0zc80/1oTG0TJQshnXqwyhanB58/GFkkMZ5+JbO2RfGcgCIked1bEvZzSBaND/gQccr4sESROS9TGxs9oBrpqd8TcU/1ST9QwMQY2LVcvIUx11nJdyDJ2UTJYO7PYphYBlw5tFlTpesdrF5EcvJP5i/QTE9X15Zg9x8RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715841; c=relaxed/simple;
-	bh=55OM0YnrW986ceSwnNTkFr+DsDzouwPUrOPjDkczt9w=;
+	s=arc-20240116; t=1718714199; c=relaxed/simple;
+	bh=8kabB6EPxtK6Zz3PjFOMHndCUHRvwX1PEvmDCfVfmw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYYnuoVHhB8PIx4mVZ3gR1s0eMlKgtf6wXVx9bU2F5jZPmCsoccFSutUCMI6veAmX7jfEGm1/Ihi6BB7TfQJwC6aK7vtorrakkCYhiAnWHUZ6l0bE9v0gQ5GPUj9atzcpgrYvQGZSt0DsTPcJ3rQTTlOla+qi2QfLMRoFGiBx+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGEezbem; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8191CC3277B;
-	Tue, 18 Jun 2024 13:04:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715840;
-	bh=55OM0YnrW986ceSwnNTkFr+DsDzouwPUrOPjDkczt9w=;
+	 MIME-Version; b=s2lfrY+BD0zAI2jb2edgjMgeV7qDk2TtwkiActe/6wzafOJl4i2n1u5ZhdqI1uNU6+1AqSy5+XjMz/MPaLLrdoUUjjlwhH+oswT64rJANbZQZoLJt9OVUY5Wf+I5zs+6AKvhR8YnvpjnNMXvyrHZhoiKkvW0L48vHSCPhIpHyVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tK5dw6Cq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85509C4AF49;
+	Tue, 18 Jun 2024 12:36:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714198;
+	bh=8kabB6EPxtK6Zz3PjFOMHndCUHRvwX1PEvmDCfVfmw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bGEezbem2Z/WEEwdd3WowddN5Q1KGaScMMIEWTiRZVwcQSJUifzBcuHWxeQtqCAsz
-	 PJ08ojcZI71xIWsHDgoM5XYh5n0vYESAQIqtctrqNH+i8Dd+Wnlc+90dEyDYP4/ZL1
-	 ZHkLkgifA1uyUqK56msdXlz06gBUegD8pAy679ew=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	"J. Bruce Fields" <bfields@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 443/770] nfsd: improve stateid access bitmask documentation
-Date: Tue, 18 Jun 2024 14:34:56 +0200
-Message-ID: <20240618123424.388376379@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=tK5dw6Cq1nndVcCHDSymNWfMrpP7H7pug4PmhTwq/79cVzSov0FJ+L9IM9f1yhKDo
+	 xRXSbBvNC/kz9NmwHTEaq0vFtrXhh1jp6hwIpSgMWgpUtQsE0/oShVH/ClZS+d+8gd
+	 cqSKy3Zdykk4NPzdovzlxEUNhObiG0c6WD0OLcQnjIuXqM/qahEzRDjS1WzpfVxOew
+	 n6FRmAa60xPMC/gD3I5JK5EiOsDGMZVo5llKzZbB9qcAmSgD7XYotP7CvhxbE+GZbO
+	 iAnR6x3AfzI0iWWSvlLkSmmXwrnaD3BBbNSgiae7CLlmFAw5zrwoHw6GS5Q5WydC1u
+	 RII7I/TV4kvxg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com,
+	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 15/44] wifi: mac80211: apply mcast rate only if interface is up
+Date: Tue, 18 Jun 2024 08:34:56 -0400
+Message-ID: <20240618123611.3301370-15-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Johannes Berg <johannes.berg@intel.com>
 
-------------------
+[ Upstream commit 02c665f048a439c0d58cc45334c94634bd7c18e6 ]
 
-From: J. Bruce Fields <bfields@redhat.com>
+If the interface isn't enabled, don't apply multicast
+rate changes immediately.
 
-[ Upstream commit 3dcd1d8aab00c5d3a0a3725253c86440b1a0f5a7 ]
-
-The use of the bitmaps is confusing.  Add a cross-reference to make it
-easier to find the existing comment.  Add an updated reference with URL
-to make it quicker to look up.  And a bit more editorializing about the
-value of this.
-
-Signed-off-by: J. Bruce Fields <bfields@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com
+Link: https://msgid.link/20240515133410.d6cffe5756cc.I47b624a317e62bdb4609ff7fa79403c0c444d32d@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 14 ++++++++++----
- fs/nfsd/state.h     |  4 ++++
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ net/mac80211/cfg.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 0b39ed1568d40..3b8c5f2283975 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -360,11 +360,13 @@ static const struct nfsd4_callback_ops nfsd4_cb_notify_lock_ops = {
-  * st_{access,deny}_bmap field of the stateid, in order to track not
-  * only what share bits are currently in force, but also what
-  * combinations of share bits previous opens have used.  This allows us
-- * to enforce the recommendation of rfc 3530 14.2.19 that the server
-- * return an error if the client attempt to downgrade to a combination
-- * of share bits not explicable by closing some of its previous opens.
-+ * to enforce the recommendation in
-+ * https://datatracker.ietf.org/doc/html/rfc7530#section-16.19.4 that
-+ * the server return an error if the client attempt to downgrade to a
-+ * combination of share bits not explicable by closing some of its
-+ * previous opens.
-  *
-- * XXX: This enforcement is actually incomplete, since we don't keep
-+ * This enforcement is arguably incomplete, since we don't keep
-  * track of access/deny bit combinations; so, e.g., we allow:
-  *
-  *	OPEN allow read, deny write
-@@ -372,6 +374,10 @@ static const struct nfsd4_callback_ops nfsd4_cb_notify_lock_ops = {
-  *	DOWNGRADE allow read, deny none
-  *
-  * which we should reject.
-+ *
-+ * But you could also argue that our current code is already overkill,
-+ * since it only exists to return NFS4ERR_INVAL on incorrect client
-+ * behavior.
-  */
- static unsigned int
- bmap_to_share_mode(unsigned long bmap)
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index e73bdbb1634ab..6eb3c7157214b 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -568,6 +568,10 @@ struct nfs4_ol_stateid {
- 	struct list_head		st_locks;
- 	struct nfs4_stateowner		*st_stateowner;
- 	struct nfs4_clnt_odstate	*st_clnt_odstate;
-+/*
-+ * These bitmasks use 3 separate bits for READ, ALLOW, and BOTH; see the
-+ * comment above bmap_to_share_mode() for explanation:
-+ */
- 	unsigned char			st_access_bmap;
- 	unsigned char			st_deny_bmap;
- 	struct nfs4_ol_stateid		*st_openstp;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 07abaf7820c56..b70edd8e40ae9 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2954,8 +2954,9 @@ static int ieee80211_set_mcast_rate(struct wiphy *wiphy, struct net_device *dev,
+ 	memcpy(sdata->vif.bss_conf.mcast_rate, rate,
+ 	       sizeof(int) * NUM_NL80211_BANDS);
+ 
+-	ieee80211_link_info_change_notify(sdata, &sdata->deflink,
+-					  BSS_CHANGED_MCAST_RATE);
++	if (ieee80211_sdata_running(sdata))
++		ieee80211_link_info_change_notify(sdata, &sdata->deflink,
++						  BSS_CHANGED_MCAST_RATE);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
-
-
 
 
