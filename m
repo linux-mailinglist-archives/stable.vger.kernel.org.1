@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-52902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A18D90D0CE
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:36:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E69EF90CF1B
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D8D9B2F129
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:25:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1958E1C21CE1
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F20C13FD8D;
-	Tue, 18 Jun 2024 12:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F72913E03D;
+	Tue, 18 Jun 2024 12:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Boj2GX+z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a11JiD9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D032513FD8C;
-	Tue, 18 Jun 2024 12:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B0313DDD2;
+	Tue, 18 Jun 2024 12:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714749; cv=none; b=EXv5Jsx9fV3B7x5JR41JKcQhj4LBBvpJaOWmUykk4f7zK3pxUo9pJPHnXlGz6MqdFHOHvKBUnvCv2oF9xwJStfH1JoKdXUAsAGylU+c5eXSt8N3KqfsjVqSKnHJGx8FYkASe1Awqo7gxaJ8J5nXsx4IB7ajJYwvFO2lenh6GaJo=
+	t=1718714651; cv=none; b=rNPV3fpjfzE9l1h+fpUcUSKguqqRHQ0b2VgBZ0l5qLHUNbIjjRYzLQpAZ6d0QoD41c3W9rpLJ41/uSyOombarZAOFU4ecdrdzelspsNDVC/dvImSmo5GloIW+CGeBi/C7J7TwPcbX4G3ftwnyDpKzeS6SYzky8BCJmKHMW9ya5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714749; c=relaxed/simple;
-	bh=ybOL7qQWcPGjwqjznbEemUzoTpruuNNV4XMD1xF22mk=;
+	s=arc-20240116; t=1718714651; c=relaxed/simple;
+	bh=6XB4tmUFmwFhMK/TipGsWszWZcEwWWXewM05QAC/Fgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Otpjd2xJyCnt6u+3cHZWFn75thbclED1koJ26cYhRvmT4H1/bPzeJVNOAXukicEWsSbDI0SpN0FDvsnobBQ1qLrpfNpq9tMVuKWexHCx7qbDaTJUE65c9VlFJZWZg1jS0xYIsJwd4E7He8cNhBjDKZBpGSksHqDkjL/BFQI1kiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Boj2GX+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FB0C3277B;
-	Tue, 18 Jun 2024 12:45:48 +0000 (UTC)
+	 MIME-Version; b=mMPw20CQb68ylBMPtRP22PtVq4PDPXpM66R9GXNHi1LgvKun/YyQUV3atjcAixC6wVOOF6z3m1X90uKOD5mrqX7W9nSovcspFRchJJ7G94UsvvM7mtCfcbfbCaU3OS7Hjm0fA9i58gCf+iiyjHCuvW18/fpHKqWEeRNMbCzc+eM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a11JiD9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7B1C3277B;
+	Tue, 18 Jun 2024 12:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718714749;
-	bh=ybOL7qQWcPGjwqjznbEemUzoTpruuNNV4XMD1xF22mk=;
+	s=korg; t=1718714651;
+	bh=6XB4tmUFmwFhMK/TipGsWszWZcEwWWXewM05QAC/Fgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Boj2GX+zFyhsEbbw+ibwUS+idwJveux+Q0yh0eUMtECnfr4py8yq0+lJ3Zuk370+d
-	 wtf9FMDyKLKDpWq66waffxm48DLiRPNM0nurdCHC12KRqIPBvj571KHPiPyd1nlQMZ
-	 dX/4OZdrmkZlreb7MR8+CU+Gqg/GaVkUtscfIZZk=
+	b=a11JiD9bbGWbwUiqlJBzkCpX9FUL7cqjFf6FmjaYG3oLRORp5Hyei9gPczAVpL6h6
+	 Y6MccEc3EokGJpIS3nOo9Qn1U+O9PWaOnFqPfL4U8HsIUuDlzS7nsZF0bNRrFf50RF
+	 UPuPJ0pVNVAAookC0xvnYJHVJLJQgcy65HLZd+/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 034/770] NFSD: Add helper for decoding locker4
-Date: Tue, 18 Jun 2024 14:28:07 +0200
-Message-ID: <20240618123408.612149453@linuxfoundation.org>
+Subject: [PATCH 5.10 035/770] NFSD: Replace READ* macros in nfsd4_decode_lock()
+Date: Tue, 18 Jun 2024 14:28:08 +0200
+Message-ID: <20240618123408.649486303@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,131 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 8918cc0d2b72db9997390626010b182c4500d749 ]
-
-Refactor for clarity.
+[ Upstream commit 7c59deed5cd2e1cfc6cbecf06f4584ac53755f53 ]
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c          | 64 +++++++++++++++++++++++++-------------
- include/linux/sunrpc/xdr.h | 21 +++++++++++++
- 2 files changed, 64 insertions(+), 21 deletions(-)
+ fs/nfsd/nfs4xdr.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
 diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 63140cd4c50e4..15ed5249e2c74 100644
+index 15ed5249e2c74..b50d2987bb6e8 100644
 --- a/fs/nfsd/nfs4xdr.c
 +++ b/fs/nfsd/nfs4xdr.c
-@@ -833,6 +833,48 @@ nfsd4_decode_link(struct nfsd4_compoundargs *argp, struct nfsd4_link *link)
- 	return nfsd4_decode_component4(argp, &link->li_name, &link->li_namelen);
- }
- 
-+static __be32
-+nfsd4_decode_open_to_lock_owner4(struct nfsd4_compoundargs *argp,
-+				 struct nfsd4_lock *lock)
-+{
-+	__be32 status;
-+
-+	if (xdr_stream_decode_u32(argp->xdr, &lock->lk_new_open_seqid) < 0)
-+		return nfserr_bad_xdr;
-+	status = nfsd4_decode_stateid4(argp, &lock->lk_new_open_stateid);
-+	if (status)
-+		return status;
-+	if (xdr_stream_decode_u32(argp->xdr, &lock->lk_new_lock_seqid) < 0)
-+		return nfserr_bad_xdr;
-+	return nfsd4_decode_state_owner4(argp, &lock->lk_new_clientid,
-+					 &lock->lk_new_owner);
-+}
-+
-+static __be32
-+nfsd4_decode_exist_lock_owner4(struct nfsd4_compoundargs *argp,
-+			       struct nfsd4_lock *lock)
-+{
-+	__be32 status;
-+
-+	status = nfsd4_decode_stateid4(argp, &lock->lk_old_lock_stateid);
-+	if (status)
-+		return status;
-+	if (xdr_stream_decode_u32(argp->xdr, &lock->lk_old_lock_seqid) < 0)
-+		return nfserr_bad_xdr;
-+
-+	return nfs_ok;
-+}
-+
-+static __be32
-+nfsd4_decode_locker4(struct nfsd4_compoundargs *argp, struct nfsd4_lock *lock)
-+{
-+	if (xdr_stream_decode_bool(argp->xdr, &lock->lk_is_new) < 0)
-+		return nfserr_bad_xdr;
-+	if (lock->lk_is_new)
-+		return nfsd4_decode_open_to_lock_owner4(argp, lock);
-+	return nfsd4_decode_exist_lock_owner4(argp, lock);
-+}
-+
+@@ -878,21 +878,17 @@ nfsd4_decode_locker4(struct nfsd4_compoundargs *argp, struct nfsd4_lock *lock)
  static __be32
  nfsd4_decode_lock(struct nfsd4_compoundargs *argp, struct nfsd4_lock *lock)
  {
-@@ -848,27 +890,7 @@ nfsd4_decode_lock(struct nfsd4_compoundargs *argp, struct nfsd4_lock *lock)
- 	lock->lk_reclaim = be32_to_cpup(p++);
- 	p = xdr_decode_hyper(p, &lock->lk_offset);
- 	p = xdr_decode_hyper(p, &lock->lk_length);
--	lock->lk_is_new = be32_to_cpup(p++);
+-	DECODE_HEAD;
 -
--	if (lock->lk_is_new) {
--		READ_BUF(4);
--		lock->lk_new_open_seqid = be32_to_cpup(p++);
--		status = nfsd4_decode_stateid(argp, &lock->lk_new_open_stateid);
--		if (status)
--			return status;
--		READ_BUF(4);
--		lock->lk_new_lock_seqid = be32_to_cpup(p++);
--		status = nfsd4_decode_state_owner4(argp, &lock->lk_new_clientid,
--						   &lock->lk_new_owner);
--		if (status)
--			return status;
--	} else {
--		status = nfsd4_decode_stateid(argp, &lock->lk_old_lock_stateid);
--		if (status)
--			return status;
--		READ_BUF(4);
--		lock->lk_old_lock_seqid = be32_to_cpup(p++);
--	}
-+	status = nfsd4_decode_locker4(argp, lock);
- 
- 	DECODE_TAIL;
- }
-diff --git a/include/linux/sunrpc/xdr.h b/include/linux/sunrpc/xdr.h
-index 6b17575437474..f6569b620beab 100644
---- a/include/linux/sunrpc/xdr.h
-+++ b/include/linux/sunrpc/xdr.h
-@@ -548,6 +548,27 @@ static inline bool xdr_item_is_present(const __be32 *p)
- 	return *p != xdr_zero;
+-	/*
+-	* type, reclaim(boolean), offset, length, new_lock_owner(boolean)
+-	*/
+-	READ_BUF(28);
+-	lock->lk_type = be32_to_cpup(p++);
++	if (xdr_stream_decode_u32(argp->xdr, &lock->lk_type) < 0)
++		return nfserr_bad_xdr;
+ 	if ((lock->lk_type < NFS4_READ_LT) || (lock->lk_type > NFS4_WRITEW_LT))
+-		goto xdr_error;
+-	lock->lk_reclaim = be32_to_cpup(p++);
+-	p = xdr_decode_hyper(p, &lock->lk_offset);
+-	p = xdr_decode_hyper(p, &lock->lk_length);
+-	status = nfsd4_decode_locker4(argp, lock);
+-
+-	DECODE_TAIL;
++		return nfserr_bad_xdr;
++	if (xdr_stream_decode_bool(argp->xdr, &lock->lk_reclaim) < 0)
++		return nfserr_bad_xdr;
++	if (xdr_stream_decode_u64(argp->xdr, &lock->lk_offset) < 0)
++		return nfserr_bad_xdr;
++	if (xdr_stream_decode_u64(argp->xdr, &lock->lk_length) < 0)
++		return nfserr_bad_xdr;
++	return nfsd4_decode_locker4(argp, lock);
  }
  
-+/**
-+ * xdr_stream_decode_bool - Decode a boolean
-+ * @xdr: pointer to xdr_stream
-+ * @ptr: pointer to a u32 in which to store the result
-+ *
-+ * Return values:
-+ *   %0 on success
-+ *   %-EBADMSG on XDR buffer overflow
-+ */
-+static inline ssize_t
-+xdr_stream_decode_bool(struct xdr_stream *xdr, __u32 *ptr)
-+{
-+	const size_t count = sizeof(*ptr);
-+	__be32 *p = xdr_inline_decode(xdr, count);
-+
-+	if (unlikely(!p))
-+		return -EBADMSG;
-+	*ptr = (*p != xdr_zero);
-+	return 0;
-+}
-+
- /**
-  * xdr_stream_decode_u32 - Decode a 32-bit integer
-  * @xdr: pointer to xdr_stream
+ static __be32
 -- 
 2.43.0
 
