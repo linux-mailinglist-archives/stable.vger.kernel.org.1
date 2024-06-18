@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-52924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3456690CF4C
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:26:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB9090CF4D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CDBE1C21072
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:26:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D3B81C20CBF
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4ED13A3E8;
-	Tue, 18 Jun 2024 12:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4141115D5C8;
+	Tue, 18 Jun 2024 12:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndhGhy7p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6o4laum"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B51A13A259;
-	Tue, 18 Jun 2024 12:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BA5143865;
+	Tue, 18 Jun 2024 12:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714814; cv=none; b=o86YxakOl0WEWehW3ci3FZt2kfzmOfhJ4FMr2IBt8piH1UgPcBoT8IGBg3KVlKLrprtGq9geXPE9D4oBnK+CoV17GpHaparYOMvftZwwcgQRA8d5D7R/m7qMcOjyEXAOuMq1NSSJE4XYy9TR95GRv3oibXwPOZzG/qkdIBl943Q=
+	t=1718714820; cv=none; b=BBQAHitYelN4eWIapB534KlhfSZP4RraSra8Ddm1wLnGjEpEqoY0KwZu96gJlyhvcBY6yQobWtb9zVx9bxhH2iurEobos6WMtyZqshGy7aWwvybO/ts199xcRuw9DYjXnhVlGq+SvFeecjLj3aj2CK8qtuq9A4/JKntKQtLBi20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714814; c=relaxed/simple;
-	bh=pRDbck6xG9bNI5TUCX0QnOBpDXxs/LNWUv9t2UNLPMk=;
+	s=arc-20240116; t=1718714820; c=relaxed/simple;
+	bh=0qL89CwKx7t3FCtIkeXwIl2DpUQdP9ptAxmTtUSlZ+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e//9LhLOukqDB544LsZ2Yq+xgaYWV7ggzOtSCIYqlF3m80FTVnxamhIaFfPT9h5WIn5NP/J1gT9k1YwJz3merWplgwGTBp9Wz/WtrsDNsQEDprYuCmj8gh7QsdRvjOtXZJe+yKaPOczRHMp6xrpGVn3XEHk2PhsoF4TPkWU/W10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndhGhy7p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C659DC3277B;
-	Tue, 18 Jun 2024 12:46:53 +0000 (UTC)
+	 MIME-Version; b=hdvy69PNYxdtvDvPjM8d6OjyZ8pLh7kldC0fhxcG5WZ0ftoTn3UOiPwKGhE//qKWS1WpEsorLc+klOzwtUrhKQEegE4VNcb880OTQatd85aUUSVOvSTbiFZrb0jUywDRKSgMRXDxpAjxqHhzt/5z71oNn9SfA32+TvJ4HW7BPRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6o4laum; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEEAC3277B;
+	Tue, 18 Jun 2024 12:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718714814;
-	bh=pRDbck6xG9bNI5TUCX0QnOBpDXxs/LNWUv9t2UNLPMk=;
+	s=korg; t=1718714819;
+	bh=0qL89CwKx7t3FCtIkeXwIl2DpUQdP9ptAxmTtUSlZ+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndhGhy7pmEP75eXuOGydf/vlXLt9YUpTL5Gr0eGKpnbrl+KgVjbkXojZPMognsJHd
-	 3Sko/NrtKGgKQeUhW0LUV0/pri6jyjlKRQb2Svt1ES2D25ORhXxgjQvByCSkcyB+OB
-	 T8tnJJjnvIxzqRSV6Swk+2yveayJv/dJCEzWSXrY=
+	b=X6o4laumADkyMmQHKmMJ+WIaFe1rTxsLny0WzkuBKxKwexCgpvGifB6gaTt/RIdP1
+	 hVZPITTimZ+ANI128bWNeBXMH6WrSjqrgPA3Wg4+eMjVnzR/q7lgs42Ijx1noGTYey
+	 ZEKDnpMNaEMlwizBSjz6Og6DiSQP359IaAsNSX2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"J. Bruce Fields" <bfields@redhat.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/770] nfsd4: dont query change attribute in v2/v3 case
-Date: Tue, 18 Jun 2024 14:29:10 +0200
-Message-ID: <20240618123411.015543489@linuxfoundation.org>
+Subject: [PATCH 5.10 098/770] Revert "nfsd4: support change_attr_type attribute"
+Date: Tue, 18 Jun 2024 14:29:11 +0200
+Message-ID: <20240618123411.054213011@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,78 +68,87 @@ Content-Transfer-Encoding: 8bit
 
 From: J. Bruce Fields <bfields@redhat.com>
 
-[ Upstream commit 942b20dc245590327ee0187c15c78174cd96dd52 ]
+This reverts commit a85857633b04d57f4524cca0a2bfaf87b2543f9f.
 
-inode_query_iversion() has side effects, and there's no point calling it
-when we're not even going to use it.
+We're still factoring ctime into our change attribute even in the
+IS_I_VERSION case.  If someone sets the system time backwards, a client
+could see the change attribute go backwards.  Maybe we can just say
+"well, don't do that", but there's some question whether that's good
+enough, or whether we need a better guarantee.
 
-We check whether we're currently processing a v4 request by checking
-fh_maxsize, which is arguably a little hacky; we could add a flag to
-svc_fh instead.
+Also, the client still isn't actually using the attribute.
+
+While we're still figuring this out, let's just stop returning this
+attribute.
 
 Signed-off-by: J. Bruce Fields <bfields@redhat.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3xdr.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ fs/nfsd/nfs4xdr.c    | 10 ----------
+ fs/nfsd/nfsd.h       |  1 -
+ include/linux/nfs4.h |  8 --------
+ 3 files changed, 19 deletions(-)
 
-diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
-index 5956b0317c55e..7d44e10a5f5dd 100644
---- a/fs/nfsd/nfs3xdr.c
-+++ b/fs/nfsd/nfs3xdr.c
-@@ -259,11 +259,11 @@ void fill_pre_wcc(struct svc_fh *fhp)
- {
- 	struct inode    *inode;
- 	struct kstat	stat;
-+	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
- 	__be32 err;
- 
- 	if (fhp->fh_pre_saved)
- 		return;
--
- 	inode = d_inode(fhp->fh_dentry);
- 	err = fh_getattr(fhp, &stat);
- 	if (err) {
-@@ -272,11 +272,12 @@ void fill_pre_wcc(struct svc_fh *fhp)
- 		stat.ctime = inode->i_ctime;
- 		stat.size  = inode->i_size;
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 4df6c75d0eb7f..bb037e8eb8304 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3311,16 +3311,6 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
+ 			goto out;
  	}
-+	if (v4)
-+		fhp->fh_pre_change = nfsd4_change_attribute(&stat, inode);
  
- 	fhp->fh_pre_mtime = stat.mtime;
- 	fhp->fh_pre_ctime = stat.ctime;
- 	fhp->fh_pre_size  = stat.size;
--	fhp->fh_pre_change = nfsd4_change_attribute(&stat, inode);
- 	fhp->fh_pre_saved = true;
- }
+-	if (bmval2 & FATTR4_WORD2_CHANGE_ATTR_TYPE) {
+-		p = xdr_reserve_space(xdr, 4);
+-		if (!p)
+-			goto out_resource;
+-		if (IS_I_VERSION(d_inode(dentry)))
+-			*p++ = cpu_to_be32(NFS4_CHANGE_TYPE_IS_MONOTONIC_INCR);
+-		else
+-			*p++ = cpu_to_be32(NFS4_CHANGE_TYPE_IS_TIME_METADATA);
+-	}
+-
+ #ifdef CONFIG_NFSD_V4_SECURITY_LABEL
+ 	if (bmval2 & FATTR4_WORD2_SECURITY_LABEL) {
+ 		status = nfsd4_encode_security_label(xdr, rqstp, context,
+diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
+index 3eaa81e001f9c..2326428e2c5bf 100644
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -394,7 +394,6 @@ void		nfsd_lockd_shutdown(void);
  
-@@ -285,6 +286,8 @@ void fill_pre_wcc(struct svc_fh *fhp)
-  */
- void fill_post_wcc(struct svc_fh *fhp)
- {
-+	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
-+	struct inode *inode = d_inode(fhp->fh_dentry);
- 	__be32 err;
+ #define NFSD4_2_SUPPORTED_ATTRS_WORD2 \
+ 	(NFSD4_1_SUPPORTED_ATTRS_WORD2 | \
+-	FATTR4_WORD2_CHANGE_ATTR_TYPE | \
+ 	FATTR4_WORD2_MODE_UMASK | \
+ 	NFSD4_2_SECURITY_ATTRS | \
+ 	FATTR4_WORD2_XATTR_SUPPORT)
+diff --git a/include/linux/nfs4.h b/include/linux/nfs4.h
+index 9dc7eeac924f0..5b4c67c91f56a 100644
+--- a/include/linux/nfs4.h
++++ b/include/linux/nfs4.h
+@@ -385,13 +385,6 @@ enum lock_type4 {
+ 	NFS4_WRITEW_LT = 4
+ };
  
- 	if (fhp->fh_post_saved)
-@@ -293,11 +296,12 @@ void fill_post_wcc(struct svc_fh *fhp)
- 	err = fh_getattr(fhp, &fhp->fh_post_attr);
- 	if (err) {
- 		fhp->fh_post_saved = false;
--		fhp->fh_post_attr.ctime = d_inode(fhp->fh_dentry)->i_ctime;
-+		fhp->fh_post_attr.ctime = inode->i_ctime;
- 	} else
- 		fhp->fh_post_saved = true;
--	fhp->fh_post_change = nfsd4_change_attribute(&fhp->fh_post_attr,
--						     d_inode(fhp->fh_dentry));
-+	if (v4)
-+		fhp->fh_post_change =
-+			nfsd4_change_attribute(&fhp->fh_post_attr, inode);
- }
+-enum change_attr_type4 {
+-	NFS4_CHANGE_TYPE_IS_MONOTONIC_INCR = 0,
+-	NFS4_CHANGE_TYPE_IS_VERSION_COUNTER = 1,
+-	NFS4_CHANGE_TYPE_IS_VERSION_COUNTER_NOPNFS = 2,
+-	NFS4_CHANGE_TYPE_IS_TIME_METADATA = 3,
+-	NFS4_CHANGE_TYPE_IS_UNDEFINED = 4
+-};
  
- /*
+ /* Mandatory Attributes */
+ #define FATTR4_WORD0_SUPPORTED_ATTRS    (1UL << 0)
+@@ -459,7 +452,6 @@ enum change_attr_type4 {
+ #define FATTR4_WORD2_LAYOUT_BLKSIZE     (1UL << 1)
+ #define FATTR4_WORD2_MDSTHRESHOLD       (1UL << 4)
+ #define FATTR4_WORD2_CLONE_BLKSIZE	(1UL << 13)
+-#define FATTR4_WORD2_CHANGE_ATTR_TYPE	(1UL << 15)
+ #define FATTR4_WORD2_SECURITY_LABEL     (1UL << 16)
+ #define FATTR4_WORD2_MODE_UMASK		(1UL << 17)
+ #define FATTR4_WORD2_XATTR_SUPPORT	(1UL << 18)
 -- 
 2.43.0
 
