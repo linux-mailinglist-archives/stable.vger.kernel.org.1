@@ -1,144 +1,114 @@
-Return-Path: <stable+bounces-52687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B4090CBF5
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:40:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5311590D154
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:41:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DC241F22516
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:40:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06B431F2565D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D00F156220;
-	Tue, 18 Jun 2024 12:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9820A19FA9C;
+	Tue, 18 Jun 2024 13:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dECsmbWT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3kr+0ws"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FAE15530C;
-	Tue, 18 Jun 2024 12:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537961586CB;
+	Tue, 18 Jun 2024 13:08:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714200; cv=none; b=Ir8KZom2w2uo3yDltUoPb0IuIQr7x9DWut/ms8OCOOpIY84IlXC2VLv5Oe2nZAaTLLPBjBIBwAkA8AOABI6G8njDGnDXhZh6ngglCZAJUaKxaGVCY/6A7VL27HguA51iZQWM1+7/u/t6V2+JdJ4UKup+u2M719DagaB6W4sf7K8=
+	t=1718716103; cv=none; b=VqIFGJ6xRg2u1Gmzz2gLw3oeXWMzFQ2/5HzubsYbPobyy2lCiBLJzd7GHfsZTioBezr/78voyOJMIbEObu8yAkPcJXhHvzGInGSzkXmrRPBygkskPE6KIwxacxZsB1gZpn0Nau6WNzohUEcBxqLFBA8B9pkO4uOKAqq3cnPU9og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714200; c=relaxed/simple;
-	bh=OBcdjLrWWFK3QokNiE+RzQm1SYM29rnb0cpZDwr2rGU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Y4o702rkcLhUalpYYKzsKBdLMG4YPgOiCG35gEXFwlypTSrU6+LZLvNf4mWl3sDfV71dDDHR+dPRkfi2ap6l0r3QCpbPxl2WEprRcdBW9gizxYw+xTCuuqYddEnMK3mExUEHh3RI4TB7+/PBxOlXxeVNtUX7zVoONilrRpk/X34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dECsmbWT; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45IC8tGl019570;
-	Tue, 18 Jun 2024 12:36:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	T5gyq14bj4+J/6gdfSxcbHQ8pwsxw9GLir8vbhb2hgc=; b=dECsmbWTg13Wcwal
-	U2Iep6Ijmdv3JkObB9SOXZUBZ2HmS4rHO4sfDukHlCqFbbHzO6q8eiCWFiWDBJlg
-	Ool9JmAUAB0Pjf1djFgNcc7HId5XpwKoZ5r+LadQGD+By8DL6ZoQ9B0fo/7Vgp+6
-	ADYRbVxHeye52q1HRWfhMPURlqiL/Wyz8VKd9AyV+ECTPfKGKlf/eoBvl8Uulk2C
-	CqFriOjKabjHBDqX1ljncc32+7/Wp5BkLDAFs8jlTTtNqKuNDoZMFadkqL7G4Npb
-	z77siYlGdF6TPUoPmJk9Z7WYjkRZbf6OeQcXTCHIFqYLAtCR5OPMAxSzWugkomgX
-	mieXYw==
-Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yu22gs8ba-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jun 2024 12:36:34 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45ICaX7B020572
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jun 2024 12:36:33 GMT
-Received: from [10.216.29.175] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 18 Jun
- 2024 05:36:29 -0700
-Message-ID: <4e3d8f03-11d0-7728-1068-1c965ef79a1a@quicinc.com>
-Date: Tue, 18 Jun 2024 18:06:26 +0530
+	s=arc-20240116; t=1718716103; c=relaxed/simple;
+	bh=lcOJ4lEJ3U9SuYsG3JUk6EOd4Rlniue+qcPJKjaxpx0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IaBd84rTBlO7LOyEInY853cNvPrQPLBDITmlu8Q0S3tUrxPgUVHxbTFnomgERHm8zgSBalKB2NqbW+cza875tL7xFJCPS6jU7cWdl0Eayqax69qaiJcIq3qwjJpHdUryths2LSlFeOzUKBakrzgdsWoL1y7eO62VmMcBFOMfea4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o3kr+0ws; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD98C3277B;
+	Tue, 18 Jun 2024 13:08:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716103;
+	bh=lcOJ4lEJ3U9SuYsG3JUk6EOd4Rlniue+qcPJKjaxpx0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=o3kr+0ws/u+wMSITGO2XW1OqiPOVnW6B+lGpO+srwdIC9qpeMFoBhVL8dc/uzOQfc
+	 Rji05h6uZa7slvyuU//i0g99Libmsa0zmGG34zWXr8v6T448hyMFm/Akal7L6HEPq+
+	 yS4GTd8Skpok/gaKDqWQAsunKhgxGzYf03CNNU6w=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Julian Schroeder <jumaco@amazon.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 533/770] nfsd: destroy percpu stats counters after reply cache shutdown
+Date: Tue, 18 Jun 2024 14:36:26 +0200
+Message-ID: <20240618123427.884708147@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4] media: venus: fix use after free in vdec_close
-Content-Language: en-US
-To: Dikshita Agarwal <quic_dikshita@quicinc.com>,
-        Stanimir Varbanov
-	<stanimir.k.varbanov@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Mauro Carvalho Chehab
-	<mchehab@kernel.org>,
-        Hans Verkuil <hans.verkuil@cisco.com>
-CC: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Stanimir Varbanov
-	<stanimir.varbanov@linaro.org>,
-        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <1715231669-16795-1-git-send-email-quic_dikshita@quicinc.com>
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
-In-Reply-To: <1715231669-16795-1-git-send-email-quic_dikshita@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: nKOpWW-_hJ1r8GSBrkvzwJhLjtc01U7K
-X-Proofpoint-GUID: nKOpWW-_hJ1r8GSBrkvzwJhLjtc01U7K
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-18_02,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- clxscore=1011 malwarescore=0 priorityscore=1501 spamscore=0 suspectscore=0
- adultscore=0 impostorscore=0 phishscore=0 mlxlogscore=999 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
- definitions=main-2406180093
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+5.10-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Julian Schroeder <jumaco@amazon.com>
+
+[ Upstream commit fd5e363eac77ef81542db77ddad0559fa0f9204e ]
+
+Upon nfsd shutdown any pending DRC cache is freed. DRC cache use is
+tracked via a percpu counter. In the current code the percpu counter
+is destroyed before. If any pending cache is still present,
+percpu_counter_add is called with a percpu counter==NULL. This causes
+a kernel crash.
+The solution is to destroy the percpu counter after the cache is freed.
+
+Fixes: e567b98ce9a4b (“nfsd: protect concurrent access to nfsd stats counters”)
+Signed-off-by: Julian Schroeder <jumaco@amazon.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/nfsd/nfscache.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/nfsd/nfscache.c b/fs/nfsd/nfscache.c
+index 0b3f12aa37ff5..7da88bdc0d6c3 100644
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -206,7 +206,6 @@ void nfsd_reply_cache_shutdown(struct nfsd_net *nn)
+ 	struct svc_cacherep	*rp;
+ 	unsigned int i;
+ 
+-	nfsd_reply_cache_stats_destroy(nn);
+ 	unregister_shrinker(&nn->nfsd_reply_cache_shrinker);
+ 
+ 	for (i = 0; i < nn->drc_hashsize; i++) {
+@@ -217,6 +216,7 @@ void nfsd_reply_cache_shutdown(struct nfsd_net *nn)
+ 									rp, nn);
+ 		}
+ 	}
++	nfsd_reply_cache_stats_destroy(nn);
+ 
+ 	kvfree(nn->drc_hashtbl);
+ 	nn->drc_hashtbl = NULL;
+-- 
+2.43.0
 
 
-On 5/9/2024 10:44 AM, Dikshita Agarwal wrote:
-> There appears to be a possible use after free with vdec_close().
-> The firmware will add buffer release work to the work queue through
-> HFI callbacks as a normal part of decoding. Randomly closing the
-> decoder device from userspace during normal decoding can incur
-> a read after free for inst.
-> 
-> Fix it by cancelling the work in vdec_close.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
-> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-> ---
-> Changes since v3:
-> - Fixed style issue with fixes tag 
-> 
-> Changes since v2:
-> - Fixed email id
-> 
-> Changes since v1:
-> - Added fixes and stable tags
-> 
->  drivers/media/platform/qcom/venus/vdec.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-> index 29130a9..56f8a25 100644
-> --- a/drivers/media/platform/qcom/venus/vdec.c
-> +++ b/drivers/media/platform/qcom/venus/vdec.c
-> @@ -1747,6 +1747,7 @@ static int vdec_close(struct file *file)
->  
->  	vdec_pm_get(inst);
->  
-> +	cancel_work_sync(&inst->delayed_process_work);
->  	v4l2_m2m_ctx_release(inst->m2m_ctx);
->  	v4l2_m2m_release(inst->m2m_dev);
->  	vdec_ctrl_deinit(inst);
 
-Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
 
