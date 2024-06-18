@@ -1,185 +1,133 @@
-Return-Path: <stable+bounces-53286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39F390D0F7
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75FC490CC2B
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F11A71C23F99
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D26D8284DA9
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FED190694;
-	Tue, 18 Jun 2024 13:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D8B15B98C;
+	Tue, 18 Jun 2024 12:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDMSGpat"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J8wzSns3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B101E157493;
-	Tue, 18 Jun 2024 13:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C5213E41F;
+	Tue, 18 Jun 2024 12:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715879; cv=none; b=UFa7oZPwcKAzvbOBQH5ZLUxnnuI+L+eMu7zlkuQ+QxDi7SUlxlp0woJtwC3Bx48eGARPGmGFWGLE/+YSvgRYpUZgNIDQUyyCajgEwhH7MZAqpgtrMOgDYe9xAJnFWfdaargwfybWFP4kvsf37vNK/qseL/TwPoevzKpmfHQBAoo=
+	t=1718714247; cv=none; b=RUhJmLcdCqpgEhEnJSmfEbQRAkGmrf2o1EoBeM+VO54G14X4uSDb6gEWSwt6fJtF8K1Mz1XLHw2Lc9lVTqEP7oKYNm3FukUWCzZPzi5WGivBz+Vg2SMMI3W34vnsXVn71NqIziT3+jVzAZOd1i7QR/tSYirDIr8kd55ZJTeX9T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715879; c=relaxed/simple;
-	bh=mRi4shDh53AQAu5eGNclEdVavA/m0aWl4GZOOJE5SFI=;
+	s=arc-20240116; t=1718714247; c=relaxed/simple;
+	bh=YNwSeyUWooZMAG25GZh73ttHKehOSMr/3V06jP+H6BM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pg4NowZE5tTAaTRtZS9OJcSrQCkIDAlfbqpDXvA+iwgN98NWcr0CKcA13eqfvsKOJCyXLr6bdQ0VrwrfrI41wJZLLx6pXDnrQr+99WZPmN4XzY3d21Iz9jiA9lf5JM/dRI2/fLvjtDh/9vVUewLM+Uk3GV4IwmYdIdbxQLw6hXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDMSGpat; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0642FC3277B;
-	Tue, 18 Jun 2024 13:04:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715879;
-	bh=mRi4shDh53AQAu5eGNclEdVavA/m0aWl4GZOOJE5SFI=;
+	 MIME-Version; b=p4lmskpxG4k76lUKCessouunSUoZM6PPLmfzwqsgM3Krk9qI1ZfEdYpgLtLX5uKndlualGEhhXLvu296ZrVM80pZx890XdmfYVUFNhlkR0Eb+B2Hk21Cy4fcFQthbzcFBUFmBr7+07rYTiettB99kUq7Ip7jp36bVuemCs4zsbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J8wzSns3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E794AC32786;
+	Tue, 18 Jun 2024 12:37:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714247;
+	bh=YNwSeyUWooZMAG25GZh73ttHKehOSMr/3V06jP+H6BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDMSGpatmhWRFBwTSIGt1OjjqeRnFSKDVlx6KAJh+XUHtWGbHfa6o/+/OF3ZpcT6c
-	 4aJLV/fZIJxMPZudey/JpTyZlMqni3AD4dEVoe//jdgcGO8VcsN+eRA/zrd6s1om+I
-	 5roSsZr8Z7X+4xnx1Gdkqs8S2BK/FkQJqvIaMD5w=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 458/770] NFSD: Trace boot verifier resets
-Date: Tue, 18 Jun 2024 14:35:11 +0200
-Message-ID: <20240618123424.990752430@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=J8wzSns31YlXmj41FMd5QHwEajY48U5u5RMNqXkSRyDN/y/cmY6/HA19wLkHRmaBL
+	 Ilhx1UycLO4ejfxHVX/WudX8bX/PLzjrTzZdY6taCIl1iYwZrl4FW64iaXxuGNsk5F
+	 mjYwM+HvDcWGIp3l1ETZT0pS+bTK/yQF2BYGr5YQ2xaQ2OQ3NYcrPaDUypBx+Ix0Zq
+	 X8WGcyCSw9HUs0QGJhR5/VmSeDHTBg+ZmBCv17W1OhB4K6fwpkAdaY3SPllkjeLA4P
+	 hUEdxSCUv9UQ7DtLnPoerqjqpCN4Gvhxycmgl1ESlTe4Gq0kaEPlXSAPv50NePuIV6
+	 HnW9ASwDQ772w==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Chunguang Xu <chunguang.xu@shopee.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.9 30/44] nvme-fabrics: use reserved tag for reg read/write command
+Date: Tue, 18 Jun 2024 08:35:11 -0400
+Message-ID: <20240618123611.3301370-30-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Chunguang Xu <chunguang.xu@shopee.com>
 
-------------------
+[ Upstream commit 7dc3bfcb4c9cc58970fff6aaa48172cb224d85aa ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+In some scenarios, if too many commands are issued by nvme command in
+the same time by user tasks, this may exhaust all tags of admin_q. If
+a reset (nvme reset or IO timeout) occurs before these commands finish,
+reconnect routine may fail to update nvme regs due to insufficient tags,
+which will cause kernel hang forever. In order to workaround this issue,
+maybe we can let reg_read32()/reg_read64()/reg_write32() use reserved
+tags. This maybe safe for nvmf:
 
-[ Upstream commit 75acacb6583df0b9328dc701d8eeea05af49b8b5 ]
+1. For the disable ctrl path,  we will not issue connect command
+2. For the enable ctrl / fw activate path, since connect and reg_xx()
+   are called serially.
 
-According to commit bbf2f098838a ("nfsd: Reset the boot verifier on
-all write I/O errors"), the Linux NFS server forces all clients to
-resend pending unstable writes if any server-side write or commit
-operation encounters an error (say, ENOSPC). This is a rare and
-quite exceptional event that could require administrative recovery
-action, so it should be made trace-able. Example trace event:
+So the reserved tags may still be enough while reg_xx() use reserved tags.
 
-nfsd-938   [002]  7174.945558: nfsd_writeverf_reset: boot_time=        61cc920d xid=0xdcd62036 error=-28 new verifier=0x08aecc6142515904
-
-[ cel: adjusted to apply to v5.10.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Chunguang Xu <chunguang.xu@shopee.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/trace.h | 28 ++++++++++++++++++++++++++++
- fs/nfsd/vfs.c   | 13 ++++++++++---
- 2 files changed, 38 insertions(+), 3 deletions(-)
+ drivers/nvme/host/fabrics.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 199b485c77179..8327d1601d710 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -575,6 +575,34 @@ DEFINE_EVENT(nfsd_net_class, nfsd_##name, \
- DEFINE_NET_EVENT(grace_start);
- DEFINE_NET_EVENT(grace_complete);
+diff --git a/drivers/nvme/host/fabrics.c b/drivers/nvme/host/fabrics.c
+index 1f0ea1f32d22f..f6416f8553f03 100644
+--- a/drivers/nvme/host/fabrics.c
++++ b/drivers/nvme/host/fabrics.c
+@@ -180,7 +180,7 @@ int nvmf_reg_read32(struct nvme_ctrl *ctrl, u32 off, u32 *val)
+ 	cmd.prop_get.offset = cpu_to_le32(off);
  
-+TRACE_EVENT(nfsd_writeverf_reset,
-+	TP_PROTO(
-+		const struct nfsd_net *nn,
-+		const struct svc_rqst *rqstp,
-+		int error
-+	),
-+	TP_ARGS(nn, rqstp, error),
-+	TP_STRUCT__entry(
-+		__field(unsigned long long, boot_time)
-+		__field(u32, xid)
-+		__field(int, error)
-+		__array(unsigned char, verifier, NFS4_VERIFIER_SIZE)
-+	),
-+	TP_fast_assign(
-+		__entry->boot_time = nn->boot_time;
-+		__entry->xid = be32_to_cpu(rqstp->rq_xid);
-+		__entry->error = error;
-+
-+		/* avoid seqlock inside TP_fast_assign */
-+		memcpy(__entry->verifier, nn->writeverf,
-+		       NFS4_VERIFIER_SIZE);
-+	),
-+	TP_printk("boot_time=%16llx xid=0x%08x error=%d new verifier=0x%s",
-+		__entry->boot_time, __entry->xid, __entry->error,
-+		__print_hex_str(__entry->verifier, NFS4_VERIFIER_SIZE)
-+	)
-+);
-+
- TRACE_EVENT(nfsd_clid_cred_mismatch,
- 	TP_PROTO(
- 		const struct nfs4_client *clp,
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 8cf053b698314..77f48779210d0 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -566,14 +566,17 @@ __be32 nfsd4_clone_file_range(struct svc_rqst *rqstp,
- 		if (!status)
- 			status = commit_inode_metadata(file_inode(src));
- 		if (status < 0) {
-+			struct nfsd_net *nn = net_generic(nf_dst->nf_net,
-+							  nfsd_net_id);
-+
- 			trace_nfsd_clone_file_range_err(rqstp,
- 					&nfsd4_get_cstate(rqstp)->save_fh,
- 					src_pos,
- 					&nfsd4_get_cstate(rqstp)->current_fh,
- 					dst_pos,
- 					count, status);
--			nfsd_reset_write_verifier(net_generic(nf_dst->nf_net,
--						  nfsd_net_id));
-+			nfsd_reset_write_verifier(nn);
-+			trace_nfsd_writeverf_reset(nn, rqstp, status);
- 			ret = nfserrno(status);
- 		}
- 	}
-@@ -1043,6 +1046,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 	host_err = vfs_iter_write(file, &iter, &pos, flags);
- 	if (host_err < 0) {
- 		nfsd_reset_write_verifier(nn);
-+		trace_nfsd_writeverf_reset(nn, rqstp, host_err);
- 		goto out_nfserr;
- 	}
- 	*cnt = host_err;
-@@ -1054,8 +1058,10 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
+ 	ret = __nvme_submit_sync_cmd(ctrl->fabrics_q, &cmd, &res, NULL, 0,
+-			NVME_QID_ANY, 0);
++			NVME_QID_ANY, NVME_SUBMIT_RESERVED);
  
- 	if (stable && use_wgather) {
- 		host_err = wait_for_concurrent_writes(file);
--		if (host_err < 0)
-+		if (host_err < 0) {
- 			nfsd_reset_write_verifier(nn);
-+			trace_nfsd_writeverf_reset(nn, rqstp, host_err);
-+		}
- 	}
+ 	if (ret >= 0)
+ 		*val = le64_to_cpu(res.u64);
+@@ -226,7 +226,7 @@ int nvmf_reg_read64(struct nvme_ctrl *ctrl, u32 off, u64 *val)
+ 	cmd.prop_get.offset = cpu_to_le32(off);
  
- out_nfserr:
-@@ -1178,6 +1184,7 @@ nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 			break;
- 		default:
- 			nfsd_reset_write_verifier(nn);
-+			trace_nfsd_writeverf_reset(nn, rqstp, err2);
- 			err = nfserrno(err2);
- 		}
- 	} else
+ 	ret = __nvme_submit_sync_cmd(ctrl->fabrics_q, &cmd, &res, NULL, 0,
+-			NVME_QID_ANY, 0);
++			NVME_QID_ANY, NVME_SUBMIT_RESERVED);
+ 
+ 	if (ret >= 0)
+ 		*val = le64_to_cpu(res.u64);
+@@ -271,7 +271,7 @@ int nvmf_reg_write32(struct nvme_ctrl *ctrl, u32 off, u32 val)
+ 	cmd.prop_set.value = cpu_to_le64(val);
+ 
+ 	ret = __nvme_submit_sync_cmd(ctrl->fabrics_q, &cmd, NULL, NULL, 0,
+-			NVME_QID_ANY, 0);
++			NVME_QID_ANY, NVME_SUBMIT_RESERVED);
+ 	if (unlikely(ret))
+ 		dev_err(ctrl->device,
+ 			"Property Set error: %d, offset %#x\n",
 -- 
 2.43.0
-
-
 
 
