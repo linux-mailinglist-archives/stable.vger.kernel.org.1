@@ -1,120 +1,127 @@
-Return-Path: <stable+bounces-52758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6590390CCE3
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:59:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7092590D293
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CDC81F256C3
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:59:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DE0B28514F
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375ED1A00D2;
-	Tue, 18 Jun 2024 12:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7590F1ACE66;
+	Tue, 18 Jun 2024 13:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPlR+dQN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bne+EG0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B0E1A00C9;
-	Tue, 18 Jun 2024 12:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335B71ACE60;
+	Tue, 18 Jun 2024 13:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714431; cv=none; b=Qkd7kDS9LznR3SZX0ntMK+VhvPhR6+EEMdXhIYCvqwfSNzCEQPew9CSnd7pgLp3yHLp5SZTuzFzffB9OuGvf1pEX3bjhRxvT657PbW8vpRJPzx3tlzYCiYlIOQKv6xxM5sjpDdLkEp/GeIV5bKl2G+VrK4GCQdIouCRX8oNVNko=
+	t=1718716709; cv=none; b=neNkG/JniqiNZ4+DeXVfVyFqT7CS0wsrTQAjcNcgCqcGpJ4dnsgPigPxZvIr5765a+hsDhxdcMvzAm0bogORYiMJ8idMXy8n5ZIbJ8b0wFPyNV+yccGEjQteozeQXQCrgCGWOv6sYbF6sPNkjTGD0epfFHdxbRFAeEZ6iDCKCF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714431; c=relaxed/simple;
-	bh=byH65kRaOvolxPCmYoBw5pOGPfUusJTXCS2NhP+CBds=;
+	s=arc-20240116; t=1718716709; c=relaxed/simple;
+	bh=Q5+aI9x5BbSDqOGV/y4A1bDbfknabmRZ+UZtsmxzPsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECsJtLoSS0J3zX/u8+R/uxc5hGLD9AebwGEBDrGhS8sjkPGoQe0zmZa9PvChOlvgKREiyAlknLCoADzAOw2IAOZKMOOafyHpC04NoaA+wfPalb7QZV4bUobzAjMv/AMlUlc6ljZMBKYw/w2+FQlUUUFUVNW4KLd1ceBhbqEVhXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPlR+dQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D3EC32786;
-	Tue, 18 Jun 2024 12:40:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714430;
-	bh=byH65kRaOvolxPCmYoBw5pOGPfUusJTXCS2NhP+CBds=;
+	 MIME-Version; b=IzcZieZUOnan7/F75Ye2MUjGhfKph7xB3eIl6soG++blXBfG1CSxyXxaKUjGa3YeHF+JrCDax+/f0hSWdY+7n6ja6j9QzerTQTSZMVr/ZiWNpJuFV3+fttb50ey4kfzWXKNtF71T5CGEBGATsIFt+TiYfn0TRwwImF8U7c26100=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bne+EG0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5CDFC3277B;
+	Tue, 18 Jun 2024 13:18:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716709;
+	bh=Q5+aI9x5BbSDqOGV/y4A1bDbfknabmRZ+UZtsmxzPsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IPlR+dQNM9zKfIEOra0KXGbbQc3hawYUhNZPbMV2dt+lWiWgfzOqjvBpCSYlK/C5C
-	 4TeM0YH8p6hiCVDJrqBdPk/YGenPnSWj/s3+B/tNZ2K2u6cmxV7uXEcxcaIZQ4myP9
-	 fn3aSHxbQwRnydSj3vLoQ7hGIMGaJ3U6vRR4QP9ezL2LK+CV2i5EkqXrDbJ0RfZaMe
-	 eVkYTGvN80v190a7ISrw5l7W9ov67DV1PMXcEiVYjb/x5xoZ4X9K6x+GCLKQUo9KFB
-	 eCeINfe1Wy2u6rbi2n6vJYo+r0XS/08/QOJ4qY8bAgFJAoa+/MH2b3TWd48/PfPzSV
-	 l4tROXuBb+bZw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	chenhuacai@kernel.org,
-	linux-efi@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 06/29] efi/libstub: zboot.lds: Discard .discard sections
-Date: Tue, 18 Jun 2024 08:39:32 -0400
-Message-ID: <20240618124018.3303162-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
-References: <20240618124018.3303162-1-sashal@kernel.org>
+	b=bne+EG0rLyDkcK2hNz8tmh1Y0i4L2QaCW/TwXmqguZG7MJ9A/E6nXJvV8RakoDpIB
+	 B+XMJzqrm/Z5pj0U2/oTRpdm8QW9qZsys3Mneopb0IlrphCgmeMpeCrha6WPRWZrRy
+	 DZ80FXAvP0ntCsazS3SmvvVdQljHoHKqrOtkkWGw=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 719/770] NFSD: Use only RQ_DROPME to signal the need to drop a reply
+Date: Tue, 18 Jun 2024 14:39:32 +0200
+Message-ID: <20240618123435.023005908@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Nathan Chancellor <nathan@kernel.org>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 5134acb15d9ef27aa2b90aad46d4e89fcef79fdc ]
+------------------
 
-When building ARCH=loongarch defconfig + CONFIG_UNWINDER_ORC=y using
-LLVM, there is a warning from ld.lld when linking the EFI zboot image
-due to the use of unreachable() in number() in vsprintf.c:
+From: Chuck Lever <chuck.lever@oracle.com>
 
-  ld.lld: warning: drivers/firmware/efi/libstub/lib.a(vsprintf.stub.o):(.discard.unreachable+0x0): has non-ABS relocation R_LARCH_32_PCREL against symbol ''
+[ Upstream commit 9315564747cb6a570e99196b3a4880fb817635fd ]
 
-If the compiler cannot eliminate the default case for any reason, the
-.discard.unreachable section will remain in the final binary but the
-entire point of any section prefixed with .discard is that it is only
-used at compile time, so it can be discarded via /DISCARD/ in a linker
-script. The asm-generic vmlinux.lds.h includes .discard and .discard.*
-in the COMMON_DISCARDS macro but that is not used for zboot.lds, as it
-is not a kernel image linker script.
+Clean up: NFSv2 has the only two usages of rpc_drop_reply in the
+NFSD code base. Since NFSv2 is going away at some point, replace
+these in order to simplify the "drop this reply?" check in
+nfsd_dispatch().
 
-Add .discard and .discard.* to /DISCARD/ in zboot.lds, so that any
-sections meant to be discarded at link time are not included in the
-final zboot image. This issue is not specific to LoongArch, it is just
-the first architecture to select CONFIG_OBJTOOL, which defines
-annotate_unreachable() as an asm statement to add the
-.discard.unreachable section, and use the EFI stub.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2023
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/zboot.lds | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfsproc.c | 4 ++--
+ fs/nfsd/nfssvc.c  | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
-index 93d33f68333b2..a7fffbad6d46a 100644
---- a/drivers/firmware/efi/libstub/zboot.lds
-+++ b/drivers/firmware/efi/libstub/zboot.lds
-@@ -34,6 +34,7 @@ SECTIONS
- 	}
- 
- 	/DISCARD/ : {
-+		*(.discard .discard.*)
- 		*(.modinfo .init.modinfo)
- 	}
+diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
+index 3777b5be4253a..c32a871f0e275 100644
+--- a/fs/nfsd/nfsproc.c
++++ b/fs/nfsd/nfsproc.c
+@@ -211,7 +211,7 @@ nfsd_proc_read(struct svc_rqst *rqstp)
+ 	if (resp->status == nfs_ok)
+ 		resp->status = fh_getattr(&resp->fh, &resp->stat);
+ 	else if (resp->status == nfserr_jukebox)
+-		return rpc_drop_reply;
++		__set_bit(RQ_DROPME, &rqstp->rq_flags);
+ 	return rpc_success;
  }
+ 
+@@ -246,7 +246,7 @@ nfsd_proc_write(struct svc_rqst *rqstp)
+ 	if (resp->status == nfs_ok)
+ 		resp->status = fh_getattr(&resp->fh, &resp->stat);
+ 	else if (resp->status == nfserr_jukebox)
+-		return rpc_drop_reply;
++		__set_bit(RQ_DROPME, &rqstp->rq_flags);
+ 	return rpc_success;
+ }
+ 
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index 429f38c986280..325d3d3f12110 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -1060,7 +1060,7 @@ int nfsd_dispatch(struct svc_rqst *rqstp, __be32 *statp)
+ 	svcxdr_init_encode(rqstp);
+ 
+ 	*statp = proc->pc_func(rqstp);
+-	if (*statp == rpc_drop_reply || test_bit(RQ_DROPME, &rqstp->rq_flags))
++	if (test_bit(RQ_DROPME, &rqstp->rq_flags))
+ 		goto out_update_drop;
+ 
+ 	if (!proc->pc_encode(rqstp, &rqstp->rq_res_stream))
 -- 
 2.43.0
+
+
 
 
