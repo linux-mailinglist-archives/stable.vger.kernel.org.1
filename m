@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB28D90D50E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:32:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF04890D506
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33AF129080D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:32:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5191D290933
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A2413C821;
-	Tue, 18 Jun 2024 14:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524FF13D8BC;
+	Tue, 18 Jun 2024 14:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNztizs4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBI5eMYD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1364A13C694
-	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 14:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A1513C8E5
+	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 14:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718719610; cv=none; b=inq2DgNnTBB8H7UCVNciJCAwSzewBcpuxIbNNfGfJrvxgHfHFR9KOGB/xDbUK7icgb/WEYRfzx4tBXkLkoUBzgWc5QCBtutjLq1EPJ2tZgB8Ip13omXTMKZJ1DC8uaZrvEp3OgylutbuHYkUBFj8C0crqsFJ/Jgz5+joI5VWwy8=
+	t=1718719613; cv=none; b=ETTnuz6Wn2y6QQLSfYY5r958G1ml8Pcu4lW5LP1F+rBe31IXwuO4zehUOtWw19+tpt960iS/LMfjjIwJUJlX8jmqRxNXKRDOwHoOI/RCr7XscGJbkIP/+n7vK9ds3HUC14eMXrQSNKrgKbyZw4ctkNqXdIY4qSCvlrz+TYv82ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718719610; c=relaxed/simple;
-	bh=KiuDLGj8lpVlDkEk4Z8Kjvb9Mo2Q0rJt9OwfUhRmcs8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TPn/AamJoKjl2MeeQm8HTwcaZPolxa0blKyE6BJg4rREzxQeAqzjRO2XNSp3jUTi0vOWc0gaWHcfvXxjOSyNdfSKksUku4HliyhLtk9JJsKFWADe/JSXT2noduFth2g5MOuGPVtI0YeRDlAOZRCh8o78Lx2/GbPLWp4FE+pvDo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNztizs4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C085C3277B;
-	Tue, 18 Jun 2024 14:06:49 +0000 (UTC)
+	s=arc-20240116; t=1718719613; c=relaxed/simple;
+	bh=61lhsgudtRsYFrr9/pp85Tzto59v4r6+mFcLGw8bYIE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=maAs4yU/omn1hc3Y2MZ5f4x+TkZA8xya5Xl24jNSEi6xRaxRrgIL84HtXRxPHJg+P70uVHzUG0OWYNMlNMAhR4oX2wi2ciGqKEtJsJJyhQGACDzoSaU9xx6DNyLGJn/XlP5fcnVOIjUFtERtNBAUq0dHg+9s6i3a9+BjjEeWf1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBI5eMYD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B92BC3277B;
+	Tue, 18 Jun 2024 14:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718719609;
-	bh=KiuDLGj8lpVlDkEk4Z8Kjvb9Mo2Q0rJt9OwfUhRmcs8=;
+	s=korg; t=1718719612;
+	bh=61lhsgudtRsYFrr9/pp85Tzto59v4r6+mFcLGw8bYIE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qNztizs4s8BHUt1ZdXnMG6eg8Q36RDk7s16wtK2Jsf2KQdkgjT0OJOimV+/c5X3Ku
-	 FQlkpzMMPLrcHCNmqLa/3iLhqXZ5yPiOcFhYxAmWRrf98bD7fvmbzff1UxktKK0a76
-	 lqVoz86SnqJagahplVD6U8j1xDLexDAiOqnWoqQE=
-Subject: FAILED: patch "[PATCH] nbd: Fix signal handling" failed to apply to 6.9-stable tree
+	b=vBI5eMYDD05NyJESunie2ucrqnOxnuY4AsizdvydP9QWauqlfHmN8aKHResEGUpU8
+	 z4nof0z/k7XJWs41i6dAuMA3aQgs9wXKoldIm9WcGQWt9I1sufMbDJqgTH2iaTfiLK
+	 CLGkF17e5zauNTpO7oRDa4rpSAMyKGJN2qxrNhOU=
+Subject: FAILED: patch "[PATCH] nbd: Fix signal handling" failed to apply to 6.6-stable tree
 To: bvanassche@acm.org,axboe@kernel.dk,hch@lst.de,jbacik@fb.com,mpa@pengutronix.de,yukuai3@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 18 Jun 2024 16:06:46 +0200
-Message-ID: <2024061846-catatonic-ovary-cf4f@gregkh>
+Date: Tue, 18 Jun 2024 16:06:47 +0200
+Message-ID: <2024061847-dwindle-clamshell-1a09@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.9-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x e56d4b633fffea9510db468085bed0799cba4ecd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061846-catatonic-ovary-cf4f@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061847-dwindle-clamshell-1a09@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 e56d4b633fff ("nbd: Fix signal handling")
 2a6751e052ab ("nbd: Improve the documentation of the locking assumptions")
+3123ac779233 ("nbd: factor out a helper to get nbd_config without holding 'config_lock'")
+1b59860540a4 ("nbd: fold nbd config initialization into nbd_alloc_config()")
 
 thanks,
 
