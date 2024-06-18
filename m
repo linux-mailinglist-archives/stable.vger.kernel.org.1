@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC8C90D02F
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:31:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693BA90D031
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3836283935
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:31:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 212F71F23C9B
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924AE16C6B9;
-	Tue, 18 Jun 2024 12:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B923C16C855;
+	Tue, 18 Jun 2024 12:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKOfNSwP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Px14B9I/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510E815B99B;
-	Tue, 18 Jun 2024 12:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76A4E153810;
+	Tue, 18 Jun 2024 12:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715322; cv=none; b=WI7gKV5/qxDMWxOXHg5so7S3uzmr3M/463Au9WMgbSIxhs/ezaRox1CDbjfNkZl9E2KQ1i/KyPlHUBpN60sbbvmEtZrxk/sqLmwK1alKwcPEpRoIxnAUXlAFdsYC2Lqp1H96TMcrTYtjeIX4EYvRCYwKivADhsEw4XiSu9wl3hU=
+	t=1718715328; cv=none; b=Djv5y7DbncjWw6ucDcgvrLwb5nLeU2lLptC4ztz9/UstqlKSop3Q+GOAGGJfqxCgh/krjLHXhCHg+4iszMH0j/8US26CakX0PGhUYp+D/A/+i9A8ggrYtntHnrL8uBYDs62QfOhTg4+OmYvX4Pjf3N8FxXXWVEWIIq4EfBNKT04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715322; c=relaxed/simple;
-	bh=ldSXVDkmjj49vfhcClZmrGIXfT+LUGFUWIG7nEUK+NQ=;
+	s=arc-20240116; t=1718715328; c=relaxed/simple;
+	bh=9yLYTuHIdtZcBsPv2tTsS0id8bKXyKY2RlewUiDA7iI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=upETE8Q5hP5e0UxM3PDWu80PmBndsFQgYUCD0WmuCtO84L1OgPLxrV68/bITt14cMqNjvkndEyNSZ0JzFwA1oH7wXszCl8qng3w6kNK/vf85/VYGsKrGkqHpRdbMu+jELKmFjLCnt/i8SjGLiV8UhGv+IcHh4yAb1qftd/jvyzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKOfNSwP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C255EC3277B;
-	Tue, 18 Jun 2024 12:55:21 +0000 (UTC)
+	 MIME-Version; b=Q+gmuIwE2UNQ5nP1UPfXdJXL9fcRYN9I2er9T7vKD+P4ZBM2f2XsizNbcOdg7r9yoAyUVAJJ+BxeywWfTeFF6/ZDqHrP1AXvSwwDjnRWCwynhNVCPm4Y+p+YIjtRgRt9tY0HcPmSEgzrlA6qgsVm7v2gn56wn1yxAVgExt3aG8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Px14B9I/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE634C32786;
+	Tue, 18 Jun 2024 12:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715322;
-	bh=ldSXVDkmjj49vfhcClZmrGIXfT+LUGFUWIG7nEUK+NQ=;
+	s=korg; t=1718715328;
+	bh=9yLYTuHIdtZcBsPv2tTsS0id8bKXyKY2RlewUiDA7iI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKOfNSwP3PJF/aVgYu7M7+ncvJpIP8aXrrXYR0Rq9QIoJcpeOV7WCxtfuLLec+Xdm
-	 VEyQq4edpqC3CBL5gf8gSdVR52LBdfEYRWf0bG6Dpv2MFiLgLKN4Xo7r4RAM5ejMFU
-	 s5nQDcZw8xkus7zTb0M/DH/oK97Rl/nwbpBOKWgg=
+	b=Px14B9I/iYELIR6tU/LYZHtY6UXRvx2BawXQRkmdcuB1ONLl8vXFrWTtOKhaftEmQ
+	 QGE5cAT8gM7IhxDgEKm1mQjp764vB29/X1ZdLwl9J7cy7kKfjGQvgfCD6flXuD05Y5
+	 Gs/TiDw8sShjGS1ZZYBX+ey5dRVMry0p7e5GrWqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	"J. Bruce Fields" <bfields@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 269/770] NFSD: Add nfsd_clid_cred_mismatch tracepoint
-Date: Tue, 18 Jun 2024 14:32:02 +0200
-Message-ID: <20240618123417.655742832@linuxfoundation.org>
+Subject: [PATCH 5.10 270/770] NFSD: Add nfsd_clid_verf_mismatch tracepoint
+Date: Tue, 18 Jun 2024 14:32:03 +0200
+Message-ID: <20240618123417.693889207@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,106 +68,90 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 27787733ef44332fce749aa853f2749d141982b0 ]
+[ Upstream commit 744ea54c869cebe41fbad5f53f8a8ca5d93a5c97 ]
 
-Record when a client tries to establish a lease record but uses an
-unexpected credential. This is often a sign of a configuration
-problem.
+Record when a client presents a different boot verifier than the
+one we know about. Typically this is a sign the client has
+rebooted, but sometimes it signals a conflicting client ID, which
+the client's administrator will need to address.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: J. Bruce Fields <bfields@redhat.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 14 ++++++++++----
- fs/nfsd/trace.h     | 28 ++++++++++++++++++++++++++++
- 2 files changed, 38 insertions(+), 4 deletions(-)
+ fs/nfsd/nfs4state.c | 11 ++++++++---
+ fs/nfsd/trace.h     | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 40 insertions(+), 3 deletions(-)
 
 diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index ea68dc157ada1..2e18b1ad889d7 100644
+index 2e18b1ad889d7..8169625fdd233 100644
 --- a/fs/nfsd/nfs4state.c
 +++ b/fs/nfsd/nfs4state.c
-@@ -3203,6 +3203,7 @@ nfsd4_exchange_id(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		if (!creds_match) { /* case 3 */
- 			if (client_has_state(conf)) {
- 				status = nfserr_clid_inuse;
-+				trace_nfsd_clid_cred_mismatch(conf, rqstp);
- 				goto out;
- 			}
- 			goto out_new;
-@@ -3447,9 +3448,10 @@ nfsd4_create_session(struct svc_rqst *rqstp,
- 			goto out_free_conn;
+@@ -3213,6 +3213,7 @@ nfsd4_exchange_id(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 			goto out_copy;
  		}
- 	} else if (unconf) {
-+		status = nfserr_clid_inuse;
- 		if (!same_creds(&unconf->cl_cred, &rqstp->rq_cred) ||
- 		    !rpc_cmp_addr(sa, (struct sockaddr *) &unconf->cl_addr)) {
--			status = nfserr_clid_inuse;
-+			trace_nfsd_clid_cred_mismatch(unconf, rqstp);
- 			goto out_free_conn;
- 		}
- 		status = nfserr_wrong_cred;
-@@ -4008,7 +4010,7 @@ nfsd4_setclientid(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		if (clp_used_exchangeid(conf))
- 			goto out;
- 		if (!same_creds(&conf->cl_cred, &rqstp->rq_cred)) {
--			trace_nfsd_clid_inuse_err(conf);
-+			trace_nfsd_clid_cred_mismatch(conf, rqstp);
- 			goto out;
- 		}
+ 		/* case 5, client reboot */
++		trace_nfsd_clid_verf_mismatch(conf, rqstp, &verf);
+ 		conf = NULL;
+ 		goto out_new;
  	}
-@@ -4066,10 +4068,14 @@ nfsd4_setclientid_confirm(struct svc_rqst *rqstp,
- 	 * Nevertheless, RFC 7530 recommends INUSE for this case:
- 	 */
- 	status = nfserr_clid_inuse;
--	if (unconf && !same_creds(&unconf->cl_cred, &rqstp->rq_cred))
-+	if (unconf && !same_creds(&unconf->cl_cred, &rqstp->rq_cred)) {
-+		trace_nfsd_clid_cred_mismatch(unconf, rqstp);
- 		goto out;
--	if (conf && !same_creds(&conf->cl_cred, &rqstp->rq_cred))
-+	}
-+	if (conf && !same_creds(&conf->cl_cred, &rqstp->rq_cred)) {
-+		trace_nfsd_clid_cred_mismatch(conf, rqstp);
- 		goto out;
-+	}
- 	/* cases below refer to rfc 3530 section 14.2.34: */
- 	if (!unconf || !same_verf(&confirm, &unconf->cl_confirm)) {
- 		if (conf && same_verf(&confirm, &conf->cl_confirm)) {
+@@ -4018,9 +4019,13 @@ nfsd4_setclientid(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	if (unconf)
+ 		unhash_client_locked(unconf);
+ 	/* We need to handle only case 1: probable callback update */
+-	if (conf && same_verf(&conf->cl_verifier, &clverifier)) {
+-		copy_clid(new, conf);
+-		gen_confirm(new, nn);
++	if (conf) {
++		if (same_verf(&conf->cl_verifier, &clverifier)) {
++			copy_clid(new, conf);
++			gen_confirm(new, nn);
++		} else
++			trace_nfsd_clid_verf_mismatch(conf, rqstp,
++						      &clverifier);
+ 	}
+ 	new->cl_minorversion = 0;
+ 	gen_callback(new, setclid, rqstp);
 diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 3ec6d38fa5318..bec85fc8be01a 100644
+index bec85fc8be01a..0ab46a0c911d2 100644
 --- a/fs/nfsd/trace.h
 +++ b/fs/nfsd/trace.h
-@@ -536,6 +536,34 @@ DEFINE_EVENT(nfsd_net_class, nfsd_##name, \
- DEFINE_NET_EVENT(grace_start);
- DEFINE_NET_EVENT(grace_complete);
+@@ -564,6 +564,38 @@ TRACE_EVENT(nfsd_clid_cred_mismatch,
+ 	)
+ )
  
-+TRACE_EVENT(nfsd_clid_cred_mismatch,
++TRACE_EVENT(nfsd_clid_verf_mismatch,
 +	TP_PROTO(
 +		const struct nfs4_client *clp,
-+		const struct svc_rqst *rqstp
++		const struct svc_rqst *rqstp,
++		const nfs4_verifier *verf
 +	),
-+	TP_ARGS(clp, rqstp),
++	TP_ARGS(clp, rqstp, verf),
 +	TP_STRUCT__entry(
 +		__field(u32, cl_boot)
 +		__field(u32, cl_id)
-+		__field(unsigned long, cl_flavor)
-+		__field(unsigned long, new_flavor)
++		__array(unsigned char, cl_verifier, NFS4_VERIFIER_SIZE)
++		__array(unsigned char, new_verifier, NFS4_VERIFIER_SIZE)
 +		__array(unsigned char, addr, sizeof(struct sockaddr_in6))
 +	),
 +	TP_fast_assign(
 +		__entry->cl_boot = clp->cl_clientid.cl_boot;
 +		__entry->cl_id = clp->cl_clientid.cl_id;
-+		__entry->cl_flavor = clp->cl_cred.cr_flavor;
-+		__entry->new_flavor = rqstp->rq_cred.cr_flavor;
++		memcpy(__entry->cl_verifier, (void *)&clp->cl_verifier,
++		       NFS4_VERIFIER_SIZE);
++		memcpy(__entry->new_verifier, (void *)verf,
++		       NFS4_VERIFIER_SIZE);
 +		memcpy(__entry->addr, &rqstp->rq_xprt->xpt_remote,
 +			sizeof(struct sockaddr_in6));
 +	),
-+	TP_printk("client %08x:%08x flavor=%s, conflict=%s from addr=%pISpc",
++	TP_printk("client %08x:%08x verf=0x%s, updated=0x%s from addr=%pISpc",
 +		__entry->cl_boot, __entry->cl_id,
-+		show_nfsd_authflavor(__entry->cl_flavor),
-+		show_nfsd_authflavor(__entry->new_flavor), __entry->addr
++		__print_hex_str(__entry->cl_verifier, NFS4_VERIFIER_SIZE),
++		__print_hex_str(__entry->new_verifier, NFS4_VERIFIER_SIZE),
++		__entry->addr
 +	)
-+)
++);
 +
  TRACE_EVENT(nfsd_clid_inuse_err,
  	TP_PROTO(const struct nfs4_client *clp),
