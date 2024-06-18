@@ -1,242 +1,159 @@
-Return-Path: <stable+bounces-53444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF39F90D1A6
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:44:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C74090CCAF
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E6861F27192
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:44:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF984283EFF
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC0F1A2C08;
-	Tue, 18 Jun 2024 13:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203FA18EFE7;
+	Tue, 18 Jun 2024 12:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AU55ZdQF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i4HitReN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5781A2C04;
-	Tue, 18 Jun 2024 13:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C577718EFDE;
+	Tue, 18 Jun 2024 12:39:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716343; cv=none; b=Vp6HiTJARImFt8U47uU+SgSNdp1TncU/ksBf6/s6Sfp3tH+SOUPeJjZHdKLOBpd61q+kgop74cHB3g8vW3oFGybrxt8LH64WISRoDo+vpo8M9pkR1zy3itmLKSL6dOD8a/yMhDnvK5yPFd9wBJwia+mPIQtEUQqX+wnO1zhn2R4=
+	t=1718714378; cv=none; b=WjtV7dbJOkAcVtQRwSvb3Jc5Ous/nUMZ4nGYrxy6cb8HzsaAIvjeq3Hzgu542HLigzaSiB12wbjuJEimAYCZwo4t8qZPcun9C0SYPe2gjTiArLa1x28FMrIPOR4EhMpnXx03PNNjgvDOm0DC4Azukgc5cs5F7HQ5fjLmwm5AmcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716343; c=relaxed/simple;
-	bh=rKQPoK+PrgUIz6PBG4I1e7wAZ/oDzV1a30oROTjEwro=;
+	s=arc-20240116; t=1718714378; c=relaxed/simple;
+	bh=gBBmWF8YTIjh0DlT+b6kdKqtSsPfi3eXXh024j8qgOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHUfgq0q5LazpxFcISHIW+/6uAuDiHARcQ8OFGshFNAv813rvdiCP1/3ai43XnRDNLYyhSXxPwqEz1d61ce2QdKSChoYG68bkBjB50B/yBj1pKNQDCzTdMTHIwtBgoWuh6lxBxEHWq6DZc375ybRlc51veu/dGzt8xVo/+SlDEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AU55ZdQF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4882FC3277B;
-	Tue, 18 Jun 2024 13:12:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716343;
-	bh=rKQPoK+PrgUIz6PBG4I1e7wAZ/oDzV1a30oROTjEwro=;
+	 MIME-Version; b=E8OeM+mBqXCMHOWDJznqe2Oe2X/7MxW7T1VSjUmVo0b8mb3qHuje81LWAbJf3VWrqN7/DSWUJ7kp3l6Ygbtzrz+VIhhtDpJ0DR6kfuC/ZRos5memAYgDI2TX/6gYlMeHD5lViGTISKInAXm6tmD4ud3MHOuwwcZ2z4W+o2gM+6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i4HitReN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F14C3277B;
+	Tue, 18 Jun 2024 12:39:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714378;
+	bh=gBBmWF8YTIjh0DlT+b6kdKqtSsPfi3eXXh024j8qgOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AU55ZdQFATKRR868nEGeR5CJXiPU8SkTSYqEBQB3mOwv5PuOxSuYpQcLYShommmc8
-	 yvBQCR6LWIAq7iUtzW6V83VMM7ppqkJYiwkMiXg4hk1QyeghY6COdlAxn0DUFdO4jn
-	 4BBf3s++ceNpTnwo8UEllEh0GbX9OE4SWbyjcij4=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 613/770] NFSD: set attributes when creating symlinks
-Date: Tue, 18 Jun 2024 14:37:46 +0200
-Message-ID: <20240618123430.952986050@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=i4HitReNYJkWQJ6iKqRbkzKC8L6zK8dRT+64SIXT59/OQ3AR7c7b45+q+IdeY6u1V
+	 po8lAr7opuICeEO7AttfC/idlZ8tDDj9Rxpk6W7hr56qCBoJGBFeUhwZY8iMHPXjkn
+	 pHW/k2fHGKrmztzyQiBoYUiXAxyp7gsVqqIOxL2748+73ncfeBbiM3C3W6rc77W1rL
+	 Z/2k9XBBrB1QWpE/K7N3aHyUcnYwrOunCh5qlDQxJuaEasiDP5mVj46rGwjtrd/Xlc
+	 1N5M4yF//Rcxwpy2vn9FwewzsGpBdqzKqOmvIHnUtjyTHrlzeJW3JTx1X09bZ0W4sm
+	 /zjZyGQq+3n6Q==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Eric Dumazet <edumazet@google.com>,
+	Alexander Aring <aahringo@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 27/35] net: ipv6: rpl_iptunnel: block BH in rpl_output() and rpl_input()
+Date: Tue, 18 Jun 2024 08:37:47 -0400
+Message-ID: <20240618123831.3302346-27-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
+References: <20240618123831.3302346-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Eric Dumazet <edumazet@google.com>
 
-------------------
+[ Upstream commit db0090c6eb12c31246438b7fe2a8f1b833e7a653 ]
 
-From: NeilBrown <neilb@suse.de>
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-[ Upstream commit 93adc1e391a761441d783828b93979b38093d011 ]
+Disabling preemption in rpl_output() is not good enough,
+because rpl_output() is called from process context,
+lwtunnel_output() only uses rcu_read_lock().
 
-The NFS protocol includes attributes when creating symlinks.
-Linux does store attributes for symlinks and allows them to be set,
-though they are not used for permission checking.
+We might be interrupted by a softirq, re-enter rpl_output()
+and corrupt dst_cache data structures.
 
-NFSD currently doesn't set standard (struct iattr) attributes when
-creating symlinks, but for NFSv4 it does set ACLs and security labels.
-This is inconsistent.
+Fix the race by using local_bh_disable() instead of
+preempt_disable().
 
-To improve consistency, pass the provided attributes into nfsd_symlink()
-and call nfsd_create_setattr() to set them.
+Apply a similar change in rpl_input().
 
-NOTE: this results in a behaviour change for all NFS versions when the
-client sends non-default attributes with a SYMLINK request. With the
-Linux client, the only attributes are:
-	attr.ia_mode = S_IFLNK | S_IRWXUGO;
-	attr.ia_valid = ATTR_MODE;
-so the final outcome will be unchanged. Other clients might sent
-different attributes, and if they did they probably expect them to be
-honoured.
-
-We ignore any error from nfsd_create_setattr().  It isn't really clear
-what should be done if a file is successfully created, but the
-attributes cannot be set.  NFS doesn't allow partial success to be
-reported.  Reporting failure is probably more misleading than reporting
-success, so the status is ignored.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Alexander Aring <aahringo@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3proc.c |  5 ++++-
- fs/nfsd/nfs4proc.c |  2 +-
- fs/nfsd/nfsproc.c  |  5 ++++-
- fs/nfsd/vfs.c      | 25 ++++++++++++++++++-------
- fs/nfsd/vfs.h      |  5 +++--
- 5 files changed, 30 insertions(+), 12 deletions(-)
+ net/ipv6/rpl_iptunnel.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/fs/nfsd/nfs3proc.c b/fs/nfsd/nfs3proc.c
-index 7b81d871f0d3c..394f6fb201974 100644
---- a/fs/nfsd/nfs3proc.c
-+++ b/fs/nfsd/nfs3proc.c
-@@ -397,6 +397,9 @@ nfsd3_proc_symlink(struct svc_rqst *rqstp)
- {
- 	struct nfsd3_symlinkargs *argp = rqstp->rq_argp;
- 	struct nfsd3_diropres *resp = rqstp->rq_resp;
-+	struct nfsd_attrs attrs = {
-+		.na_iattr	= &argp->attrs,
-+	};
+diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+index a013b92cbb860..2c83b7586422d 100644
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -212,9 +212,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	if (unlikely(err))
+ 		goto drop;
  
- 	if (argp->tlen == 0) {
- 		resp->status = nfserr_inval;
-@@ -423,7 +426,7 @@ nfsd3_proc_symlink(struct svc_rqst *rqstp)
- 	fh_copy(&resp->dirfh, &argp->ffh);
- 	fh_init(&resp->fh, NFS3_FHSIZE);
- 	resp->status = nfsd_symlink(rqstp, &resp->dirfh, argp->fname,
--				    argp->flen, argp->tname, &resp->fh);
-+				    argp->flen, argp->tname, &attrs, &resp->fh);
- 	kfree(argp->tname);
- out:
- 	return rpc_success;
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index f8a157e4bc708..43387a8f10d06 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -813,7 +813,7 @@ nfsd4_create(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	case NF4LNK:
- 		status = nfsd_symlink(rqstp, &cstate->current_fh,
- 				      create->cr_name, create->cr_namelen,
--				      create->cr_data, &resfh);
-+				      create->cr_data, &attrs, &resfh);
- 		break;
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+-	preempt_enable();
++	local_bh_enable();
  
- 	case NF4BLK:
-diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
-index f061f229d5ff0..180b84b6597b0 100644
---- a/fs/nfsd/nfsproc.c
-+++ b/fs/nfsd/nfsproc.c
-@@ -478,6 +478,9 @@ nfsd_proc_symlink(struct svc_rqst *rqstp)
- {
- 	struct nfsd_symlinkargs *argp = rqstp->rq_argp;
- 	struct nfsd_stat *resp = rqstp->rq_resp;
-+	struct nfsd_attrs attrs = {
-+		.na_iattr	= &argp->attrs,
-+	};
- 	struct svc_fh	newfh;
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+@@ -234,9 +234,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
  
- 	if (argp->tlen > NFS_MAXPATHLEN) {
-@@ -499,7 +502,7 @@ nfsd_proc_symlink(struct svc_rqst *rqstp)
+-		preempt_disable();
++		local_bh_disable();
+ 		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
+-		preempt_enable();
++		local_bh_enable();
+ 	}
  
- 	fh_init(&newfh, NFS_FHSIZE);
- 	resp->status = nfsd_symlink(rqstp, &argp->ffh, argp->fname, argp->flen,
--				    argp->tname, &newfh);
-+				    argp->tname, &attrs, &newfh);
+ 	skb_dst_drop(skb);
+@@ -268,23 +268,21 @@ static int rpl_input(struct sk_buff *skb)
+ 		return err;
+ 	}
  
- 	kfree(argp->tname);
- 	fh_put(&argp->ffh);
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index c86c3a8e42329..f5a1f41cddfff 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1463,15 +1463,25 @@ nfsd_readlink(struct svc_rqst *rqstp, struct svc_fh *fhp, char *buf, int *lenp)
- 	return 0;
- }
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+-	preempt_enable();
  
--/*
-- * Create a symlink and look up its inode
-+/**
-+ * nfsd_symlink - Create a symlink and look up its inode
-+ * @rqstp: RPC transaction being executed
-+ * @fhp: NFS filehandle of parent directory
-+ * @fname: filename of the new symlink
-+ * @flen: length of @fname
-+ * @path: content of the new symlink (NUL-terminated)
-+ * @attrs: requested attributes of new object
-+ * @resfhp: NFS filehandle of new object
-+ *
-  * N.B. After this call _both_ fhp and resfhp need an fh_put
-+ *
-+ * Returns nfs_ok on success, or an nfsstat in network byte order.
-  */
- __be32
- nfsd_symlink(struct svc_rqst *rqstp, struct svc_fh *fhp,
--				char *fname, int flen,
--				char *path,
--				struct svc_fh *resfhp)
-+	     char *fname, int flen,
-+	     char *path, struct nfsd_attrs *attrs,
-+	     struct svc_fh *resfhp)
- {
- 	struct dentry	*dentry, *dnew;
- 	__be32		err, cerr;
-@@ -1501,13 +1511,14 @@ nfsd_symlink(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+ 		if (!dst->error) {
+-			preempt_disable();
+ 			dst_cache_set_ip6(&rlwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
+-			preempt_enable();
+ 		}
+ 	} else {
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 	}
++	local_bh_enable();
  
- 	host_err = vfs_symlink(d_inode(dentry), dnew, path);
- 	err = nfserrno(host_err);
-+	cerr = fh_compose(resfhp, fhp->fh_export, dnew, fhp);
-+	if (!err)
-+		nfsd_create_setattr(rqstp, fhp, resfhp, attrs);
- 	fh_unlock(fhp);
- 	if (!err)
- 		err = nfserrno(commit_metadata(fhp));
--
- 	fh_drop_write(fhp);
- 
--	cerr = fh_compose(resfhp, fhp->fh_export, dnew, fhp);
- 	dput(dnew);
- 	if (err==0) err = cerr;
- out:
-diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
-index d8b1a36fca956..5047cec4c423c 100644
---- a/fs/nfsd/vfs.h
-+++ b/fs/nfsd/vfs.h
-@@ -114,8 +114,9 @@ __be32		nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp,
- __be32		nfsd_readlink(struct svc_rqst *, struct svc_fh *,
- 				char *, int *);
- __be32		nfsd_symlink(struct svc_rqst *, struct svc_fh *,
--				char *name, int len, char *path,
--				struct svc_fh *res);
-+			     char *name, int len, char *path,
-+			     struct nfsd_attrs *attrs,
-+			     struct svc_fh *res);
- __be32		nfsd_link(struct svc_rqst *, struct svc_fh *,
- 				char *, int, struct svc_fh *);
- ssize_t		nfsd_copy_file_range(struct file *, u64,
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
 -- 
 2.43.0
-
-
 
 
