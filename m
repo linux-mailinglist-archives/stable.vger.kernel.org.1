@@ -1,111 +1,108 @@
-Return-Path: <stable+bounces-53585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E6490D27E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:50:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D32190CCF4
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:01:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 097231C22D4A
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 483321F26810
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEB81ACE9F;
-	Tue, 18 Jun 2024 13:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B6C1A0B0C;
+	Tue, 18 Jun 2024 12:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLsf17HH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ppA4Je1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B1415A860;
-	Tue, 18 Jun 2024 13:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA80156C7F;
+	Tue, 18 Jun 2024 12:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716765; cv=none; b=p6knc+iewHjYbM0unGShDfGVy1HfPxRTDbV5JUkAbJfm6CcZtGZUgMVfN+27MAiuZShCtI1/WA1MWnq1xwyvSfgEKqOewAOHe9fe3F9kETzo5sqJKL36J/x6OIfJb+ztiKjEUC0x1pw2trGpelEkibHbO4bN/59/MliJtZ3zavQ=
+	t=1718714440; cv=none; b=Ztbt3xmCz92CudM3nQp4i4jN3K40XP5bjt2nxfvEtTlBpgbbE0v1aLxJFWlEwfSmN1z0bszvhWfGGRdROD3Tior0IwovN/ITM0a5xa6WyK/utKawRfR2rpbolDoJrZ4zRZs79zbrAZnaguA1ay+m8wF8s33inQxIXz/qTYDaxfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716765; c=relaxed/simple;
-	bh=xls96WPoj4Mqz1rzUrvM2Q5ZPZmmc+8k57Zz6HfoX9k=;
+	s=arc-20240116; t=1718714440; c=relaxed/simple;
+	bh=VNR/aRNyviV1hVqoK3ZPFxvV0nyMXjxLv7AXsbINkwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EkjKNJ2EDBKL0qqT1q0a+6clLj9lUK0gyo2nXLt8+lgDHYybxl3vdYEN2zwWlHk+CMqjZ9DzqMS/cXnp11E6BKTeU1Ut7hPP4fm5q3dNDY8u2GiCWTYiNiXm0ArnbEuOxzgma3kw/IXfgiE1fmzz1zu2OXIEo2JX+iIpGs4rP08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLsf17HH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F83BC3277B;
-	Tue, 18 Jun 2024 13:19:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716765;
-	bh=xls96WPoj4Mqz1rzUrvM2Q5ZPZmmc+8k57Zz6HfoX9k=;
+	 MIME-Version; b=VIXpgjwAoMXUNxQ1KKNjtiMwiVOtWCrDRZ36eYD0hnzPNe7hNUG6CvB5GqlR06zRLkQh6omoF86gJYkrak/OwJR9fDHQzvIglVzKFG45QmHqAgMNf7HqPaQwvaHT/gU/TsISLEHNrSLHzdDij+osMfvuM8bvuBF9iTknP43BhrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ppA4Je1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491B5C4AF50;
+	Tue, 18 Jun 2024 12:40:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714440;
+	bh=VNR/aRNyviV1hVqoK3ZPFxvV0nyMXjxLv7AXsbINkwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SLsf17HHH3ujzyhaLMYa41Pv4OYZOKCb/fxZdIvdUP/UuGl3Q81VY853X6iw//gv4
-	 e2xTihGfNC2KxXTwTX9ewwmtrRhGaPL7m7TvLaA2dCcWlAx4ZsVTTl+wHCKypqB/XY
-	 3BxaFNwUQEi+spBHJdiNPWihcQfXDXEhx9tIn6sc=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 724/770] NFSD: Use set_bit(RQ_DROPME)
-Date: Tue, 18 Jun 2024 14:39:37 +0200
-Message-ID: <20240618123435.217106571@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=ppA4Je1FGNaRlaJa+DOAm5TnSYigNEGtTQY3ZpM4zuBSSKKLpk0jjDf1vEL2zrB6v
+	 n0QgJ/S+CjdfwT7uMnE/+CCM4Dn4GpQhPhzuJ43wwOQTr2LDi8wJpE1x2Bm649JYZL
+	 2QshOn5JFAlSfptzpF/42qO9ju4woXwcpkxvzjG7FYZu3YLAcD8mECtz9dEFeZuNm5
+	 ReDXic7PJ3uZFG0+V3SXitWUP4UpsUs7e7pSXGxPTa3fZXMKk27WsBRJea7azg3e88
+	 MZJExvORacyes+gc6MoASZEDG4RtAXYZXbIUO3iF+xs0p6c3XtZIFXg3KxAe6Zsvpv
+	 q4UwMd6vTyjFA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com,
+	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 12/29] wifi: mac80211: apply mcast rate only if interface is up
+Date: Tue, 18 Jun 2024 08:39:38 -0400
+Message-ID: <20240618124018.3303162-12-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
+References: <20240618124018.3303162-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Johannes Berg <johannes.berg@intel.com>
 
-------------------
+[ Upstream commit 02c665f048a439c0d58cc45334c94634bd7c18e6 ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+If the interface isn't enabled, don't apply multicast
+rate changes immediately.
 
-[ Upstream commit 5304930dbae82d259bcf7e5611db7c81e7a42eff ]
-
-The premise that "Once an svc thread is scheduled and executing an
-RPC, no other processes will touch svc_rqst::rq_flags" is false.
-svc_xprt_enqueue() examines the RQ_BUSY flag in scheduled nfsd
-threads when determining which thread to wake up next.
-
-Fixes: 9315564747cb ("NFSD: Use only RQ_DROPME to signal the need to drop a reply")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: syzbot+de87c09cc7b964ea2e23@syzkaller.appspotmail.com
+Link: https://msgid.link/20240515133410.d6cffe5756cc.I47b624a317e62bdb4609ff7fa79403c0c444d32d@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsproc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/cfg.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
-index c32a871f0e275..96426dea7d412 100644
---- a/fs/nfsd/nfsproc.c
-+++ b/fs/nfsd/nfsproc.c
-@@ -211,7 +211,7 @@ nfsd_proc_read(struct svc_rqst *rqstp)
- 	if (resp->status == nfs_ok)
- 		resp->status = fh_getattr(&resp->fh, &resp->stat);
- 	else if (resp->status == nfserr_jukebox)
--		__set_bit(RQ_DROPME, &rqstp->rq_flags);
-+		set_bit(RQ_DROPME, &rqstp->rq_flags);
- 	return rpc_success;
- }
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 1e57027da2913..2c60fc165801c 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2838,8 +2838,9 @@ static int ieee80211_set_mcast_rate(struct wiphy *wiphy, struct net_device *dev,
+ 	memcpy(sdata->vif.bss_conf.mcast_rate, rate,
+ 	       sizeof(int) * NUM_NL80211_BANDS);
  
-@@ -246,7 +246,7 @@ nfsd_proc_write(struct svc_rqst *rqstp)
- 	if (resp->status == nfs_ok)
- 		resp->status = fh_getattr(&resp->fh, &resp->stat);
- 	else if (resp->status == nfserr_jukebox)
--		__set_bit(RQ_DROPME, &rqstp->rq_flags);
-+		set_bit(RQ_DROPME, &rqstp->rq_flags);
- 	return rpc_success;
- }
+-	ieee80211_link_info_change_notify(sdata, &sdata->deflink,
+-					  BSS_CHANGED_MCAST_RATE);
++	if (ieee80211_sdata_running(sdata))
++		ieee80211_link_info_change_notify(sdata, &sdata->deflink,
++						  BSS_CHANGED_MCAST_RATE);
  
+ 	return 0;
+ }
 -- 
 2.43.0
-
-
 
 
