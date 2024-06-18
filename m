@@ -1,109 +1,117 @@
-Return-Path: <stable+bounces-53296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB7290D175
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:43:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C3C090CC46
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CA15B25514
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 198221F227C4
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A41019D063;
-	Tue, 18 Jun 2024 13:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E768E15F412;
+	Tue, 18 Jun 2024 12:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Odf7FuHn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOI6K04n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DE819CD1B;
-	Tue, 18 Jun 2024 13:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A143115F303;
+	Tue, 18 Jun 2024 12:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715909; cv=none; b=INAcRi4gEMPqpMBBtbvAI/+k4vkrq/NJ3f0UOySkF1fyQm/aKUn7mZew3uBfhzWnyObNNKXzV6aoZxSxe+JQuZves5JoLYm81jP7NQwheQqX+sVM9D21Gxg32TTwdOYc8QeRnalISP/rAIA4CTsM40suEWq0Xg9kMqo280UKy94=
+	t=1718714267; cv=none; b=hmX5AOAfo62WRCaTXbyn5Dk9BaqnTtiy45R58vrgTLneZ60dIbTUmaXHKD7MbLF19EfnJ0Hpq+eoUXOgXgNBP+uovcNEUxetoFwQjCvro8ffJRzCoKFbxEKr2SESVwE6TPVpjgNB7P97lvVGiXwl/BSY7x2/shuIlhUQGEXlRJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715909; c=relaxed/simple;
-	bh=ws7R/eY0i79lNm8UTQKkJqe5z/+OrDoj85ZPq+GWVME=;
+	s=arc-20240116; t=1718714267; c=relaxed/simple;
+	bh=d5mtkQ4TSwEAW5aa2LmAOY5L8+c2WljHzZG5/10rc2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Scwona0Tt0JhFF3END/7OUFu2iS19VOMUL5QoeoJKMTgHT7ojWwnO1cnU/U8dkAb0Qgo1skD0O+Tv3kzVdNjkNp62GA2iBCWC8jooLzDQ99xTBoFNDmh7Gm5I32NI2bCuLcdjYYFuR+D05sp+NEwEyodAulrHss9Zs9kTYV2S2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Odf7FuHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916E1C3277B;
-	Tue, 18 Jun 2024 13:05:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715909;
-	bh=ws7R/eY0i79lNm8UTQKkJqe5z/+OrDoj85ZPq+GWVME=;
+	 MIME-Version; b=DPotJ+77+RbE1s5+NLSOqzDRD+BYrQVZRcv0fBUwiTwV1SJBfHPlNBXnVm9SwDUYc3d9pWdyIna4Vo043Rh14sAlXtuhYus6mHbCtPuLLElPWAZ0JrhM3DxLS01WxgLkqgAXJIg395P1tefEMSR2eNNtZs8JxiXhH2y0lFrwQ7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOI6K04n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0770C3277B;
+	Tue, 18 Jun 2024 12:37:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714266;
+	bh=d5mtkQ4TSwEAW5aa2LmAOY5L8+c2WljHzZG5/10rc2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Odf7FuHnodCFg57wEp+igocE5awib23ZrcNv4qf6WyPqBaM8ygf61dxmJoq52f2/m
-	 /y8wTZ3yitrEQrcg0P9pufBr6ReZjmEMi8fqb0Z1GD/lqhuRgboQQTREr0OEv9ki0q
-	 V1w4UjN7aoUc3k8iPGVf+o8VunCIQtfpCyv5pjjg=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 467/770] NFSD: Fix NFSv3 SETATTR/CREATEs handling of large file sizes
-Date: Tue, 18 Jun 2024 14:35:20 +0200
-Message-ID: <20240618123425.341437065@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=EOI6K04n66M4sXI8qkxzDsgZX/GQwRV+i9ZePMxba0eSjng5J76HazvufxxnsZ7B7
+	 GyG5fkfrjZmQs5mL07hoEzLxoMcXjvX2ok6grY8rE41ggJLmQt2gFDqf25A7dq0nPw
+	 W1AyHhtOKQZirYQGAgw8fj934g8jl8duqX5xXkHit6saJw2jaTLIO8oIXsoKeOyzU8
+	 GUm/L2b8QFqQOEYaFILg6Ss/AuvhvkzbCq6P1YrRzby3UZvG32/vF/nl/5lSIE0wgf
+	 5yI067e2e+nquSO7TMkgNpl9M/fbpzNUN0MhqyIHQb5Xbf4UL/LcPSJ9NIkmi7hnna
+	 h5bCr4cWvooEQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Andreas Hindborg <a.hindborg@samsung.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	dlemoal@kernel.org,
+	hare@suse.de,
+	johannes.thumshirn@wdc.com,
+	kch@nvidia.com,
+	zhouchengming@bytedance.com,
+	yanjun.zhu@linux.dev,
+	yukuai3@huawei.com,
+	shinichiro.kawasaki@wdc.com,
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 39/44] null_blk: fix validation of block size
+Date: Tue, 18 Jun 2024 08:35:20 -0400
+Message-ID: <20240618123611.3301370-39-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-------------------
+[ Upstream commit c462ecd659b5fce731f1d592285832fd6ad54053 ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+Block size should be between 512 and PAGE_SIZE and be a power of 2. The current
+check does not validate this, so update the check.
 
-[ Upstream commit a648fdeb7c0e17177a2280344d015dba3fbe3314 ]
+Without this patch, null_blk would Oops due to a null pointer deref when
+loaded with bs=1536 [1].
 
-iattr::ia_size is a loff_t, so these NFSv3 procedures must be
-careful to deal with incoming client size values that are larger
-than s64_max without corrupting the value.
+Link: https://lore.kernel.org/all/87wmn8mocd.fsf@metaspace.dk/
 
-Silently capping the value results in storing a different value
-than the client passed in which is unexpected behavior, so remove
-the min_t() check in decode_sattr3().
-
-Note that RFC 1813 permits only the WRITE procedure to return
-NFS3ERR_FBIG. We believe that NFSv3 reference implementations
-also return NFS3ERR_FBIG when ia_size is too large.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240603192645.977968-1-nmi@metaspace.dk
+[axboe: remove unnecessary braces and != 0 check]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3xdr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/null_blk/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
-index 7c45ba4db61be..2e47a07029f1d 100644
---- a/fs/nfsd/nfs3xdr.c
-+++ b/fs/nfsd/nfs3xdr.c
-@@ -254,7 +254,7 @@ svcxdr_decode_sattr3(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 		if (xdr_stream_decode_u64(xdr, &newsize) < 0)
- 			return false;
- 		iap->ia_valid |= ATTR_SIZE;
--		iap->ia_size = min_t(u64, newsize, NFS_OFFSET_MAX);
-+		iap->ia_size = newsize;
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 620679a0ac381..26e2c22a87e1c 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -1810,8 +1810,8 @@ static int null_validate_conf(struct nullb_device *dev)
+ 		dev->queue_mode = NULL_Q_MQ;
  	}
- 	if (xdr_stream_decode_u32(xdr, &set_it) < 0)
- 		return false;
+ 
+-	dev->blocksize = round_down(dev->blocksize, 512);
+-	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
++	if (blk_validate_block_size(dev->blocksize))
++		return -EINVAL;
+ 
+ 	if (dev->use_per_node_hctx) {
+ 		if (dev->submit_queues != nr_online_nodes)
 -- 
 2.43.0
-
-
 
 
