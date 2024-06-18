@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-53200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A7990D0AB
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:35:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37DB090D1C7
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:45:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5C8B286FF7
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:35:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DF91B2BF43
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D9C1891A8;
-	Tue, 18 Jun 2024 13:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258C1185E5B;
+	Tue, 18 Jun 2024 13:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zatHub+L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vsLDhQHH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70831185E6B;
-	Tue, 18 Jun 2024 13:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8617139D0C;
+	Tue, 18 Jun 2024 13:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715624; cv=none; b=X0/kyh3K3jiNJ78iFY2lJseZOj0/ALaemgEHA+nKCQ1gYMEPghh/bYuxH5Vko9C3m2XcEbRwIgyBq6A9AmgqyLUMTJL2eGpCO+49wUNi98bux2/c+Bs3G4y3BsppyqHOUDqZNIvoNvAK8Wva+u7fjnUzCZ+eJ2Cynim3KLnnERw=
+	t=1718715629; cv=none; b=HnnPVulhzLy285RHMvoOcxvTb/AH+NlPaThN4ahiTfeWfrAF8sIXzaSBLsWxm0N5qZy+le6qSui2/WqLhMiIBH+bcL8WCDos0YqY1wHTYZJ+qyXsgUVj08e8gLD+5tp9BjIIWfAd6wx7uZH5X8E9Wv3AnTz3Er5By/yJB4dT+pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715624; c=relaxed/simple;
-	bh=hKsJ/qjJeNrRaY6Cbisuj3xf4YGoeJXutb/b5jstHyg=;
+	s=arc-20240116; t=1718715629; c=relaxed/simple;
+	bh=Dq10ZN2xVFt9d5ywxpytc0ze7CEN3COzIn2TnIfq2xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEoLkjVQUJBjmpoEQZK40Eyx/I+6qVtqF7a1y1g74FjTtLTtOwwXytxlOwx8p6DZbG16D9zaxlRbCsoywsfD0Ff73JmywoVB5ieOVn+8/HOw8sq49FG5CuPIVCH2+VLn8fXfVNU34kNW002h0MdUG4gKBETv436adxgkW7pDCAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zatHub+L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FB5C3277B;
-	Tue, 18 Jun 2024 13:00:23 +0000 (UTC)
+	 MIME-Version; b=WCtYThdR2tz+5j4JT/PSGgqsS/krtkxwOX4o6KUP+NABey3dnOp3PMs5Q8EMdjTIxd2SQ2U1NaAjhK6Ocsfhe764bGhpSyZ0xX2JKRFP+bp/h60AlTjtL6Hrf2acfxf18CQ3CMWdiiWHO6CjPLFTFyMQ6Epn4YkYe9uPfqMza4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vsLDhQHH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632BDC3277B;
+	Tue, 18 Jun 2024 13:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715624;
-	bh=hKsJ/qjJeNrRaY6Cbisuj3xf4YGoeJXutb/b5jstHyg=;
+	s=korg; t=1718715629;
+	bh=Dq10ZN2xVFt9d5ywxpytc0ze7CEN3COzIn2TnIfq2xo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zatHub+LNPLUSToLjlsA6mUIXPU4IhlhllxqRafB0TMkQvVAYlO/6Zue9LAEhNG9a
-	 8D1RFwelI+n2jmEm19+CwU5GMCItVL7qZWLtb8zf+begGbrp9/A6cW+WkocMrQLg/0
-	 Z2nxJGD7Ze0J2hk+IKbk8lLC8r76+998vD/7rBWg=
+	b=vsLDhQHHq797Nkckc+Z/JoCN1+3WeV35X4AgEaHEOdiaNqs2bECLjDKUiJsTawBmB
+	 +SBGDPWYBJcrstMq76zd1kJDofP1e5uYnF4e2BlTPyD3btb2SGKtEPkuJWeRK1u2CP
+	 o6R9RvF4SQkCeE6g+oAyrVYu89WRViTdj+d8FCeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jan Kara <jack@suse.cz>,
 	Amir Goldstein <amir73il@gmail.com>,
 	Gabriel Krisman Bertazi <krisman@collabora.com>,
-	Jan Kara <jack@suse.cz>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 371/770] fsnotify: Protect fsnotify_handle_inode_event from no-inode events
-Date: Tue, 18 Jun 2024 14:33:44 +0200
-Message-ID: <20240618123421.590483201@linuxfoundation.org>
+Subject: [PATCH 5.10 372/770] fsnotify: Pass group argument to free_event
+Date: Tue, 18 Jun 2024 14:33:45 +0200
+Message-ID: <20240618123421.629618350@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -70,68 +70,94 @@ Content-Transfer-Encoding: 8bit
 
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 
-[ Upstream commit 24dca90590509a7a6cbe0650100c90c5b8a3468a ]
+[ Upstream commit 330ae77d2a5b0af32c0f29e139bf28ec8591de59 ]
 
-FAN_FS_ERROR allows events without inodes - i.e. for file system-wide
-errors.  Even though fsnotify_handle_inode_event is not currently used
-by fanotify, this patch protects other backends from cases where neither
-inode or dir are provided.  Also document the constraints of the
-interface (inode and dir cannot be both NULL).
+For group-wide mempool backed events, like FS_ERROR, the free_event
+callback will need to reference the group's mempool to free the memory.
+Wire that argument into the current callers.
 
-Link: https://lore.kernel.org/r/20211025192746.66445-12-krisman@collabora.com
-Suggested-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/r/20211025192746.66445-13-krisman@collabora.com
 Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c              | 3 +++
- fs/notify/fsnotify.c             | 3 +++
- include/linux/fsnotify_backend.h | 1 +
- 3 files changed, 7 insertions(+)
+ fs/notify/fanotify/fanotify.c        | 3 ++-
+ fs/notify/group.c                    | 2 +-
+ fs/notify/inotify/inotify_fsnotify.c | 3 ++-
+ fs/notify/notification.c             | 2 +-
+ include/linux/fsnotify_backend.h     | 2 +-
+ 5 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 87d984e0cdc0c..8cd7d5d6955a0 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -601,6 +601,9 @@ nfsd_file_fsnotify_handle_event(struct fsnotify_mark *mark, u32 mask,
- 				struct inode *inode, struct inode *dir,
- 				const struct qstr *name, u32 cookie)
+diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
+index f82e20228999c..c620b4f6fe123 100644
+--- a/fs/notify/fanotify/fanotify.c
++++ b/fs/notify/fanotify/fanotify.c
+@@ -835,7 +835,8 @@ static void fanotify_free_name_event(struct fanotify_event *event)
+ 	kfree(FANOTIFY_NE(event));
+ }
+ 
+-static void fanotify_free_event(struct fsnotify_event *fsn_event)
++static void fanotify_free_event(struct fsnotify_group *group,
++				struct fsnotify_event *fsn_event)
  {
-+	if (WARN_ON_ONCE(!inode))
-+		return 0;
-+
- 	trace_nfsd_file_fsnotify_handle_event(inode, mask);
+ 	struct fanotify_event *event;
  
- 	/* Should be no marks on non-regular files */
-diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
-index fde3a1115a170..4034ca566f95c 100644
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -252,6 +252,9 @@ static int fsnotify_handle_inode_event(struct fsnotify_group *group,
- 	if (WARN_ON_ONCE(!ops->handle_inode_event))
- 		return 0;
+diff --git a/fs/notify/group.c b/fs/notify/group.c
+index fb89c351295d6..6a297efc47887 100644
+--- a/fs/notify/group.c
++++ b/fs/notify/group.c
+@@ -88,7 +88,7 @@ void fsnotify_destroy_group(struct fsnotify_group *group)
+ 	 * that deliberately ignores overflow events.
+ 	 */
+ 	if (group->overflow_event)
+-		group->ops->free_event(group->overflow_event);
++		group->ops->free_event(group, group->overflow_event);
  
-+	if (WARN_ON_ONCE(!inode && !dir))
-+		return 0;
-+
- 	if ((inode_mark->mask & FS_EXCL_UNLINK) &&
- 	    path && d_unlinked(path->dentry))
- 		return 0;
+ 	fsnotify_put_group(group);
+ }
+diff --git a/fs/notify/inotify/inotify_fsnotify.c b/fs/notify/inotify/inotify_fsnotify.c
+index be3eb1cebdcce..8279827836399 100644
+--- a/fs/notify/inotify/inotify_fsnotify.c
++++ b/fs/notify/inotify/inotify_fsnotify.c
+@@ -184,7 +184,8 @@ static void inotify_free_group_priv(struct fsnotify_group *group)
+ 		dec_inotify_instances(group->inotify_data.ucounts);
+ }
+ 
+-static void inotify_free_event(struct fsnotify_event *fsn_event)
++static void inotify_free_event(struct fsnotify_group *group,
++			       struct fsnotify_event *fsn_event)
+ {
+ 	kfree(INOTIFY_E(fsn_event));
+ }
+diff --git a/fs/notify/notification.c b/fs/notify/notification.c
+index 44bb10f507153..9022ae650cf86 100644
+--- a/fs/notify/notification.c
++++ b/fs/notify/notification.c
+@@ -64,7 +64,7 @@ void fsnotify_destroy_event(struct fsnotify_group *group,
+ 		WARN_ON(!list_empty(&event->list));
+ 		spin_unlock(&group->notification_lock);
+ 	}
+-	group->ops->free_event(event);
++	group->ops->free_event(group, event);
+ }
+ 
+ /*
 diff --git a/include/linux/fsnotify_backend.h b/include/linux/fsnotify_backend.h
-index 035438fe4a435..b71dc788018e4 100644
+index b71dc788018e4..3a7c314361824 100644
 --- a/include/linux/fsnotify_backend.h
 +++ b/include/linux/fsnotify_backend.h
-@@ -136,6 +136,7 @@ struct mem_cgroup;
-  * @dir:	optional directory associated with event -
-  *		if @file_name is not NULL, this is the directory that
-  *		@file_name is relative to.
-+ *		Either @inode or @dir must be non-NULL.
-  * @file_name:	optional file name associated with event
-  * @cookie:	inotify rename cookie
-  *
+@@ -156,7 +156,7 @@ struct fsnotify_ops {
+ 			    const struct qstr *file_name, u32 cookie);
+ 	void (*free_group_priv)(struct fsnotify_group *group);
+ 	void (*freeing_mark)(struct fsnotify_mark *mark, struct fsnotify_group *group);
+-	void (*free_event)(struct fsnotify_event *event);
++	void (*free_event)(struct fsnotify_group *group, struct fsnotify_event *event);
+ 	/* called on final put+free to free memory */
+ 	void (*free_mark)(struct fsnotify_mark *mark);
+ };
 -- 
 2.43.0
 
