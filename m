@@ -1,243 +1,160 @@
-Return-Path: <stable+bounces-53567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A3990D271
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:50:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADB090CD17
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:06:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321C728534B
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A6EE1C21978
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE4B15A85A;
-	Tue, 18 Jun 2024 13:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EE01AB353;
+	Tue, 18 Jun 2024 12:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQmRuPPZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ml02p/n7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A53915A848;
-	Tue, 18 Jun 2024 13:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959081A2FB1;
+	Tue, 18 Jun 2024 12:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716712; cv=none; b=OF7l8PcIzpINZJfI9vcz18OfGBSD50tESC3jEfPx0XVLPKJ3TfsD9GgQTLmOYY2mmIUsj2O0E8MFI08xMXt0TLmwQxRiUXF5rMTAXZdriYEiWcHm3K/DM0HSVs8Tw5z5KkCF5Vwwezx3TovGUIGGMqN3aexXDX8n95pg2BXyiN4=
+	t=1718714469; cv=none; b=MoCZ1gbyawkzXiD/7YdYL7+nCivcFGX7TPt/P45quNuQpgd40IbQJDfIzAqr3tH4JC2vSiq1jX5MlxDdtRpckQG41wq2RjXSFkiIid3I3KHFqoZP8GbhOxSTegi2YvnEHrXDOWcFILjFTLVHLkbodp6PFotzpsw4mwuLx2gaG4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716712; c=relaxed/simple;
-	bh=Oh5Vc0B6Sw+VkZQiZtBBYWEh+MLchgzObp8X/jIo7j4=;
+	s=arc-20240116; t=1718714469; c=relaxed/simple;
+	bh=/nnsUQdE5YTf+S/puaXWvhWSGWHuL07yhsepzBghLlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XXv290CifVCO5yCwa2ehGLUstu1HI+DAbwA9bLcLzB7fduRygl/Q0bLbIGZFdWyPC0KQL0/2uPzgqQ1vKHW7SL8+geg7F75RjbghWohNZ5qR/qWRpBrKZ6pBK0ladjB7ZwoBfpJcuZCVMuXpkH56oBbt+iNDYcxG8+O1oy9e2h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQmRuPPZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98558C3277B;
-	Tue, 18 Jun 2024 13:18:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716712;
-	bh=Oh5Vc0B6Sw+VkZQiZtBBYWEh+MLchgzObp8X/jIo7j4=;
+	 MIME-Version; b=aM5qtHjjRB8AkTvbq5LKiQVQumI5WK8l9pM6qpBkXicGcnllhQbsrJLPdaf6rRAp4yV5/QrJD8lUt0krhkMfxdQ/I9RLaqolhcjcjfN2jMkw0b0roF3VuSNIxPjtSuNjNyE03mjn566uGO6sLZtAJko+UMGZxowd8PSZ6gRrSxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ml02p/n7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63752C3277B;
+	Tue, 18 Jun 2024 12:41:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714469;
+	bh=/nnsUQdE5YTf+S/puaXWvhWSGWHuL07yhsepzBghLlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQmRuPPZ4Z9Yfb09WoeF60iKN38E5S48U2mXDqLLQ7zOf25uEmzDb+PshAzJienXl
-	 x0wZzWqIJ9R3W6rHta9BLthPmVBEZgF7P8NbefZm30ICGfP41M7Ii/Khnbpdvvlz0L
-	 F8IEICB3ie/ZwpXoPl7uZM9z43N5/V2fumPxio5c=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	b=ml02p/n7Rgh8nqo4KdoUE16Ix8Uk2R5sp/cZLCHg1/3IdpiyFz8lje3vmwnO9IfIh
+	 /TVKdvSdjJjvzxZxy9R6+uWeglH8EWbJmGGHkl0m01x50qmEhgTD5rQWwUof5BfMUq
+	 /BVEJnAVXYcez+wh+sLx0OzC3fhhWBJNLRxXeRtFp9Ba2JVA7Nmm8G7DwNP4UVF2tR
+	 SreRSzL3O3HinXJyOMqL6zpLizPU93IJbATSu7ZWIIzQVC6kFrceKeR6TbJa0vblXX
+	 OoQ28dGtIVX34FwyOCOvFZG7UbqHrbEzbP3LCIJ8XR+moU4aWeMYvIO7HyU9GNIhj0
+	 IA78gC06p03KA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Eric Dumazet <edumazet@google.com>,
+	Alexander Aring <aahringo@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	Pierguido Lambri <plambri@redhat.com>
-Subject: [PATCH 5.10 737/770] nfsd: dont fsync nfsd_files on last close
-Date: Tue, 18 Jun 2024 14:39:50 +0200
-Message-ID: <20240618123435.715093261@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 24/29] net: ipv6: rpl_iptunnel: block BH in rpl_output() and rpl_input()
+Date: Tue, 18 Jun 2024 08:39:50 -0400
+Message-ID: <20240618124018.3303162-24-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
+References: <20240618124018.3303162-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Eric Dumazet <edumazet@google.com>
 
-------------------
+[ Upstream commit db0090c6eb12c31246438b7fe2a8f1b833e7a653 ]
 
-From: Jeff Layton <jlayton@kernel.org>
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-[ Upstream commit 4c475eee02375ade6e864f1db16976ba0d96a0a2 ]
+Disabling preemption in rpl_output() is not good enough,
+because rpl_output() is called from process context,
+lwtunnel_output() only uses rcu_read_lock().
 
-Most of the time, NFSv4 clients issue a COMMIT before the final CLOSE of
-an open stateid, so with NFSv4, the fsync in the nfsd_file_free path is
-usually a no-op and doesn't block.
+We might be interrupted by a softirq, re-enter rpl_output()
+and corrupt dst_cache data structures.
 
-We have a customer running knfsd over very slow storage (XFS over Ceph
-RBD). They were using the "async" export option because performance was
-more important than data integrity for this application. That export
-option turns NFSv4 COMMIT calls into no-ops. Due to the fsync in this
-codepath however, their final CLOSE calls would still stall (since a
-CLOSE effectively became a COMMIT).
+Fix the race by using local_bh_disable() instead of
+preempt_disable().
 
-I think this fsync is not strictly necessary. We only use that result to
-reset the write verifier. Instead of fsync'ing all of the data when we
-free an nfsd_file, we can just check for writeback errors when one is
-acquired and when it is freed.
+Apply a similar change in rpl_input().
 
-If the client never comes back, then it'll never see the error anyway
-and there is no point in resetting it. If an error occurs after the
-nfsd_file is removed from the cache but before the inode is evicted,
-then it will reset the write verifier on the next nfsd_file_acquire,
-(since there will be an unseen error).
-
-The only exception here is if something else opens and fsyncs the file
-during that window. Given that local applications work with this
-limitation today, I don't see that as an issue.
-
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2166658
-Fixes: ac3a2585f018 ("nfsd: rework refcounting in filecache")
-Reported-and-tested-by: Pierguido Lambri <plambri@redhat.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Alexander Aring <aahringo@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c | 44 ++++++++++++--------------------------------
- fs/nfsd/trace.h     | 31 -------------------------------
- 2 files changed, 12 insertions(+), 63 deletions(-)
+ net/ipv6/rpl_iptunnel.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 206742bbbd682..4a3796c6bd957 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -330,37 +330,27 @@ nfsd_file_alloc(struct nfsd_file_lookup_key *key, unsigned int may)
- 	return nf;
- }
+diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+index ff691d9f4a04f..26adbe7f8a2f0 100644
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -212,9 +212,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	if (unlikely(err))
+ 		goto drop;
  
-+/**
-+ * nfsd_file_check_write_error - check for writeback errors on a file
-+ * @nf: nfsd_file to check for writeback errors
-+ *
-+ * Check whether a nfsd_file has an unseen error. Reset the write
-+ * verifier if so.
-+ */
- static void
--nfsd_file_fsync(struct nfsd_file *nf)
--{
--	struct file *file = nf->nf_file;
--	int ret;
--
--	if (!file || !(file->f_mode & FMODE_WRITE))
--		return;
--	ret = vfs_fsync(file, 1);
--	trace_nfsd_file_fsync(nf, ret);
--	if (ret)
--		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
--}
--
--static int
- nfsd_file_check_write_error(struct nfsd_file *nf)
- {
- 	struct file *file = nf->nf_file;
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+-	preempt_enable();
++	local_bh_enable();
  
--	if (!file || !(file->f_mode & FMODE_WRITE))
--		return 0;
--	return filemap_check_wb_err(file->f_mapping, READ_ONCE(file->f_wb_err));
-+	if ((file->f_mode & FMODE_WRITE) &&
-+	    filemap_check_wb_err(file->f_mapping, READ_ONCE(file->f_wb_err)))
-+		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
- }
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+@@ -234,9 +234,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
  
- static void
- nfsd_file_hash_remove(struct nfsd_file *nf)
- {
- 	trace_nfsd_file_unhash(nf);
--
--	if (nfsd_file_check_write_error(nf))
--		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
- 	rhashtable_remove_fast(&nfsd_file_rhash_tbl, &nf->nf_rhash,
- 			       nfsd_file_rhash_params);
- }
-@@ -386,23 +376,12 @@ nfsd_file_free(struct nfsd_file *nf)
- 	this_cpu_add(nfsd_file_total_age, age);
- 
- 	nfsd_file_unhash(nf);
--
--	/*
--	 * We call fsync here in order to catch writeback errors. It's not
--	 * strictly required by the protocol, but an nfsd_file could get
--	 * evicted from the cache before a COMMIT comes in. If another
--	 * task were to open that file in the interim and scrape the error,
--	 * then the client may never see it. By calling fsync here, we ensure
--	 * that writeback happens before the entry is freed, and that any
--	 * errors reported result in the write verifier changing.
--	 */
--	nfsd_file_fsync(nf);
--
- 	if (nf->nf_mark)
- 		nfsd_file_mark_put(nf->nf_mark);
- 	if (nf->nf_file) {
- 		get_file(nf->nf_file);
- 		filp_close(nf->nf_file, NULL);
-+		nfsd_file_check_write_error(nf);
- 		fput(nf->nf_file);
+-		preempt_disable();
++		local_bh_disable();
+ 		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
+-		preempt_enable();
++		local_bh_enable();
  	}
  
-@@ -1157,6 +1136,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- out:
- 	if (status == nfs_ok) {
- 		this_cpu_inc(nfsd_file_acquisitions);
-+		nfsd_file_check_write_error(nf);
- 		*pnf = nf;
+ 	skb_dst_drop(skb);
+@@ -268,9 +268,8 @@ static int rpl_input(struct sk_buff *skb)
+ 		return err;
+ 	}
+ 
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+-	preempt_enable();
+ 
+ 	skb_dst_drop(skb);
+ 
+@@ -278,14 +277,13 @@ static int rpl_input(struct sk_buff *skb)
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+ 		if (!dst->error) {
+-			preempt_disable();
+ 			dst_cache_set_ip6(&rlwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
+-			preempt_enable();
+ 		}
  	} else {
- 		if (refcount_dec_and_test(&nf->nf_ref))
-diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 0f674982785ce..445d00f00eab7 100644
---- a/fs/nfsd/trace.h
-+++ b/fs/nfsd/trace.h
-@@ -1112,37 +1112,6 @@ TRACE_EVENT(nfsd_file_close,
- 	)
- );
+ 		skb_dst_set(skb, dst);
+ 	}
++	local_bh_enable();
  
--TRACE_EVENT(nfsd_file_fsync,
--	TP_PROTO(
--		const struct nfsd_file *nf,
--		int ret
--	),
--	TP_ARGS(nf, ret),
--	TP_STRUCT__entry(
--		__field(void *, nf_inode)
--		__field(int, nf_ref)
--		__field(int, ret)
--		__field(unsigned long, nf_flags)
--		__field(unsigned char, nf_may)
--		__field(struct file *, nf_file)
--	),
--	TP_fast_assign(
--		__entry->nf_inode = nf->nf_inode;
--		__entry->nf_ref = refcount_read(&nf->nf_ref);
--		__entry->ret = ret;
--		__entry->nf_flags = nf->nf_flags;
--		__entry->nf_may = nf->nf_may;
--		__entry->nf_file = nf->nf_file;
--	),
--	TP_printk("inode=%p ref=%d flags=%s may=%s nf_file=%p ret=%d",
--		__entry->nf_inode,
--		__entry->nf_ref,
--		show_nf_flags(__entry->nf_flags),
--		show_nfsd_may_flags(__entry->nf_may),
--		__entry->nf_file, __entry->ret
--	)
--);
--
- #include "cache.h"
- 
- TRACE_DEFINE_ENUM(RC_DROPIT);
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
 -- 
 2.43.0
-
-
 
 
