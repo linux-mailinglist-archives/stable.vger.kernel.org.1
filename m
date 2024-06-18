@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-53440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFCA90D1A1
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:44:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1E7B90D1A7
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:44:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CA9D1F26F2E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:44:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1A011C2118A
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F65A1A2569;
-	Tue, 18 Jun 2024 13:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0252F1A2C06;
+	Tue, 18 Jun 2024 13:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2oIswrDl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5xcwox9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA691A2562;
-	Tue, 18 Jun 2024 13:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F9A1A256C;
+	Tue, 18 Jun 2024 13:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716332; cv=none; b=E1Axp1QuYUjFs3Jxo41B0453r9DmFNPmUaQ/lq3xw8U01cx3b23OjIQqvQjWkLGx6MkUZxp0kHTQL7/WcNWk9zbXqWoku9hkw7io7Dv1zyk1NhSqcglxLGT0YCu1BoG7Cs/ipJqZmq0XnHxfGNjrHCaP3zoDBmLXYLK6E41SKIs=
+	t=1718716346; cv=none; b=br6JGzn0CboPM7rcbqx66FSaXxmJWtP1rMnJ16WtC6oGSYWXnTrVQfj165xEDf9bVvsP92HQ2PHhUNg4Im0/reNVK4wAknFO2McnF17grPsTASqo5UlsrSsw79/frog0e40fLeCkwSUq/cSDp2LWT03HBDq4hLcmMGTefTxMJvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716332; c=relaxed/simple;
-	bh=xPDMHWJ/EjV45g/NeoUbX8in671YiM4xL40u66FpwHA=;
+	s=arc-20240116; t=1718716346; c=relaxed/simple;
+	bh=ogUFldZs8Cyw8KuI6fRe/f8B7XZsGjaaETWcHNQs5pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHbLBX0izjdMnjLpUOlBEPkloxSmo875KemcGL6zwgRF8DrlbvIgCN5vVHTJ3HU5jaP8vW+2983gMHsW2w1e9wdo57rQ42P82TUgWRSXL5BfUYsQxhqIytf+nu6wU9wmwPnlouTF6MYxlEAyi8P/rkjzPE7tnu78VEVB2V2aznQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2oIswrDl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D45C3277B;
-	Tue, 18 Jun 2024 13:12:11 +0000 (UTC)
+	 MIME-Version; b=QHKZVrHFd7T7ENfuyHe5z1Ptt3wYcIk2QwI5vXWW6n91TwHyede9hJ1czSRWuMaz+3+Q5l0OsYWKhwuCBoVtSMwAp5dtdmiOUPAIgerqLNEjmeVISj1slEdQcFSQkK6GYvG2K+YBqY502Ieyxxxe//TLGlzibNS0W+FSxcWov+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5xcwox9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A735C3277B;
+	Tue, 18 Jun 2024 13:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716331;
-	bh=xPDMHWJ/EjV45g/NeoUbX8in671YiM4xL40u66FpwHA=;
+	s=korg; t=1718716346;
+	bh=ogUFldZs8Cyw8KuI6fRe/f8B7XZsGjaaETWcHNQs5pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2oIswrDl/5f2HMEC+/xmrCJ6gYhYFpAbJtHlKQLRQIDf6bA8dIiRpzLKls+4cfaly
-	 WU+hMBROPyegtQlPR13dw6gm8nXwYN25cMHqAHNJEmtZtnfdKSZ1lMHCVH1HDxR7HF
-	 DJg8g/76jTYr/NjM81sw1//bl/8pZmYnY3ZIq434=
+	b=r5xcwox9Wb5CGvXkE6HIb5h8YRsOCBLX0bfW2pHmCz+x+bYzUr/C4iWKJhM7Un6aB
+	 yQTk/ay5PglNatfK+9c+9EHySgpJdKqYu0SXFk7RN+wAzv4CpT9VkSNL4SQunkLH/U
+	 4AOiur3uvPegnA+5fQ5YArDOITl7BRGNq71COfJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Yugui <wangyugui@e16-tech.com>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 583/770] NFSD: NFSv4 CLOSE should release an nfsd_file immediately
-Date: Tue, 18 Jun 2024 14:37:16 +0200
-Message-ID: <20240618123429.797314047@linuxfoundation.org>
+Subject: [PATCH 5.10 584/770] NFSD: Ensure nf_inode is never dereferenced
+Date: Tue, 18 Jun 2024 14:37:17 +0200
+Message-ID: <20240618123429.836169597@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -69,81 +68,82 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 5e138c4a750dc140d881dab4a8804b094bbc08d2 ]
+[ Upstream commit 427f5f83a3191cbf024c5aea6e5b601cdf88d895 ]
 
-The last close of a file should enable other accessors to open and
-use that file immediately. Leaving the file open in the filecache
-prevents other users from accessing that file until the filecache
-garbage-collects the file -- sometimes that takes several seconds.
+The documenting comment for struct nf_file states:
 
-Reported-by: Wang Yugui <wangyugui@e16-tech.com>
-Link: https://bugzilla.linux-nfs.org/show_bug.cgi?387
+/*
+ * A representation of a file that has been opened by knfsd. These are hashed
+ * in the hashtable by inode pointer value. Note that this object doesn't
+ * hold a reference to the inode by itself, so the nf_inode pointer should
+ * never be dereferenced, only used for comparison.
+ */
+
+Replace the two existing dereferences to make the comment always
+true.
+
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c | 18 ++++++++++++++++++
- fs/nfsd/filecache.h |  1 +
- fs/nfsd/nfs4state.c |  4 ++--
- 3 files changed, 21 insertions(+), 2 deletions(-)
+ fs/nfsd/filecache.c | 5 ++---
+ fs/nfsd/filecache.h | 2 +-
+ fs/nfsd/nfs4state.c | 2 +-
+ 3 files changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 26cfae138b906..7ad27655db699 100644
+index 7ad27655db699..55478d411e5a0 100644
 --- a/fs/nfsd/filecache.c
 +++ b/fs/nfsd/filecache.c
-@@ -451,6 +451,24 @@ nfsd_file_put(struct nfsd_file *nf)
- 		nfsd_file_put_noref(nf);
+@@ -227,12 +227,11 @@ nfsd_file_mark_put(struct nfsd_file_mark *nfm)
  }
  
-+/**
-+ * nfsd_file_close - Close an nfsd_file
-+ * @nf: nfsd_file to close
-+ *
-+ * If this is the final reference for @nf, free it immediately.
-+ * This reflects an on-the-wire CLOSE or DELEGRETURN into the
-+ * VFS and exported filesystem.
-+ */
-+void nfsd_file_close(struct nfsd_file *nf)
-+{
-+	nfsd_file_put(nf);
-+	if (refcount_dec_if_one(&nf->nf_ref)) {
-+		nfsd_file_unhash(nf);
-+		nfsd_file_lru_remove(nf);
-+		nfsd_file_free(nf);
-+	}
-+}
-+
- struct nfsd_file *
- nfsd_file_get(struct nfsd_file *nf)
+ static struct nfsd_file_mark *
+-nfsd_file_mark_find_or_create(struct nfsd_file *nf)
++nfsd_file_mark_find_or_create(struct nfsd_file *nf, struct inode *inode)
  {
+ 	int			err;
+ 	struct fsnotify_mark	*mark;
+ 	struct nfsd_file_mark	*nfm = NULL, *new;
+-	struct inode *inode = nf->nf_inode;
+ 
+ 	do {
+ 		fsnotify_group_lock(nfsd_file_fsnotify_group);
+@@ -1143,7 +1142,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 
+ open_file:
+ 	trace_nfsd_file_alloc(nf);
+-	nf->nf_mark = nfsd_file_mark_find_or_create(nf);
++	nf->nf_mark = nfsd_file_mark_find_or_create(nf, key.inode);
+ 	if (nf->nf_mark) {
+ 		if (open) {
+ 			status = nfsd_open_verified(rqstp, fhp, may_flags,
 diff --git a/fs/nfsd/filecache.h b/fs/nfsd/filecache.h
-index ee9ed99d8b8fa..28145f1628923 100644
+index 28145f1628923..8e8c0c47d67df 100644
 --- a/fs/nfsd/filecache.h
 +++ b/fs/nfsd/filecache.h
-@@ -52,6 +52,7 @@ void nfsd_file_cache_shutdown(void);
- int nfsd_file_cache_start_net(struct net *net);
- void nfsd_file_cache_shutdown_net(struct net *net);
- void nfsd_file_put(struct nfsd_file *nf);
-+void nfsd_file_close(struct nfsd_file *nf);
- struct nfsd_file *nfsd_file_get(struct nfsd_file *nf);
- void nfsd_file_close_inode_sync(struct inode *inode);
- bool nfsd_file_is_cached(struct inode *inode);
+@@ -39,7 +39,7 @@ struct nfsd_file {
+ #define NFSD_FILE_PENDING	(1)
+ #define NFSD_FILE_REFERENCED	(2)
+ 	unsigned long		nf_flags;
+-	struct inode		*nf_inode;
++	struct inode		*nf_inode;	/* don't deref */
+ 	refcount_t		nf_ref;
+ 	unsigned char		nf_may;
+ 	struct nfsd_file_mark	*nf_mark;
 diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 587e792346579..c4c1e35d3eb7a 100644
+index c4c1e35d3eb7a..16e5bd54d92c2 100644
 --- a/fs/nfsd/nfs4state.c
 +++ b/fs/nfsd/nfs4state.c
-@@ -831,9 +831,9 @@ static void __nfs4_file_put_access(struct nfs4_file *fp, int oflag)
- 			swap(f2, fp->fi_fds[O_RDWR]);
- 		spin_unlock(&fp->fi_lock);
- 		if (f1)
--			nfsd_file_put(f1);
-+			nfsd_file_close(f1);
- 		if (f2)
--			nfsd_file_put(f2);
-+			nfsd_file_close(f2);
- 	}
- }
+@@ -2577,7 +2577,7 @@ static void nfs4_show_fname(struct seq_file *s, struct nfsd_file *f)
  
+ static void nfs4_show_superblock(struct seq_file *s, struct nfsd_file *f)
+ {
+-	struct inode *inode = f->nf_inode;
++	struct inode *inode = file_inode(f->nf_file);
+ 
+ 	seq_printf(s, "superblock: \"%02x:%02x:%ld\"",
+ 					MAJOR(inode->i_sb->s_dev),
 -- 
 2.43.0
 
