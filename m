@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-53532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154BA90D24D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:49:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4F890D23F
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B242B279AF
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:48:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 323441C246A8
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D7F1AB91C;
-	Tue, 18 Jun 2024 13:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2431ABCDE;
+	Tue, 18 Jun 2024 13:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcU2+2y+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYz7Km3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CB11AB917;
-	Tue, 18 Jun 2024 13:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBC21ABCB9;
+	Tue, 18 Jun 2024 13:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716608; cv=none; b=CAp6RQRMEtolgAYvxlan0eD1cBC0K1eMxZQOrMKlSuWYy+cfb95cVlw9gUIbaBj7VluE9uZe2pNxLn+ZNDmcYy1YwhB+uoWqfMAUN5k6Gx50QV0wChtQ3vD4zR9ZgFiMyKOMsO/lADnlhigaVEpEuZsOtz6ioWoCbymm0/lSBA8=
+	t=1718716640; cv=none; b=n6klhJL4ZDEUM8s3vCx1Q/9UgEvbgH1AF0HDTuKWNOX9S3PoHggi0s4dEIS4k3QJE7zZ5oYwPMKKh5Xj3QalEXT9gqs9/G63x9tQzb/3qv7INWWOzdj3VrhbjRE3K14Z9uR3Y020MzWhLeeyMaJXh5bXxtSoooyvjuvovwZJvFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716608; c=relaxed/simple;
-	bh=xrErU2XmYxjJaLQu1qoXiPbXvQXzaHkxmQXElIVU4kk=;
+	s=arc-20240116; t=1718716640; c=relaxed/simple;
+	bh=HkogThUcW6QCXjjrypmN5jH+QjucuIwnZH5/XATwbSQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEisVbJRrnmhtlYi/rc4k2wZ36cCV8smzpU3ugAjbRdKga0yvkR1qaXEMwq8dE4oAvXfQIWxl7gqZYEU5JE3pV+8ZucTOIe3qHvbx3tXB1XWfqQAOqXhIyngQsRVcOQebRez3O+/hHaB+6350l8zejX/IzVx6653pFTWiKnCCF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcU2+2y+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888D3C32786;
-	Tue, 18 Jun 2024 13:16:47 +0000 (UTC)
+	 MIME-Version; b=K4m+oaw9Lx15NNSe+yvgrNWuFblgTzYphu8bqSk4jCjyC3wP4R7wNn/1PMkBbI7NGXOKl7CqgKCgDbtV0nKay391MINivUzV8UrKqR9rzlWH5DE5Qk0OBxXhSvM1OkS8sc0gN9ctGMMPSY5dgrrQQv28bnNWSGA/MmaEtPqzDyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYz7Km3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105BCC3277B;
+	Tue, 18 Jun 2024 13:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716607;
-	bh=xrErU2XmYxjJaLQu1qoXiPbXvQXzaHkxmQXElIVU4kk=;
+	s=korg; t=1718716640;
+	bh=HkogThUcW6QCXjjrypmN5jH+QjucuIwnZH5/XATwbSQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcU2+2y+5/fp4ToSMLIiXW/qPELPOWNeLCQnee6UUgYbmJGU7VCopNWzZ7UIGghxn
-	 USRrBbx2ezWgCG51QrvefkrBHf1Jt6A1TglYhRoMSp61s2fDa3Qvl4DCtf8WFh9FSi
-	 gAR9KkIhg3VwAJXp2kiKanhaAP+7Wy8TcDIe6//w=
+	b=oYz7Km3uR6mUJh/gqJfQMVe2sSqJDG5taWzFLf0zTVWNvBiLqu6z8fcUI+cyPRJib
+	 6pFpPqzEQvKbOUJSGjq4DkF6ZdDcvTOid0S3ji6BoiUo0/oM8Mm1jag7x2xh4MNSh+
+	 eELpxFLO42V4fcKJaKsgCOPx31yyzlUsGo/czju8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jeff Layton <jlayton@kernel.org>,
+	Tom Talpey <tom@talpey.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 685/770] NFSD: Finish converting the NFSv3 GETACL result encoder
-Date: Tue, 18 Jun 2024 14:38:58 +0200
-Message-ID: <20240618123433.720686645@linuxfoundation.org>
+Subject: [PATCH 5.10 686/770] nfsd: ignore requests to disable unsupported versions
+Date: Tue, 18 Jun 2024 14:38:59 +0200
+Message-ID: <20240618123433.758402123@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -66,71 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 841fd0a3cb490eae5dfd262eccb8c8b11d57f8b8 ]
+[ Upstream commit 8e823bafff2308753d430566256c83d8085952da ]
 
-For some reason, the NFSv2 GETACL result encoder was fully converted
-to use the new nfs_stream_encode_acl(), but the NFSv3 equivalent was
-not similarly converted.
+The kernel currently errors out if you attempt to enable or disable a
+version that it doesn't recognize. Change it to ignore attempts to
+disable an unrecognized version. If we don't support it, then there is
+no harm in doing so.
 
-Fixes: 20798dfe249a ("NFSD: Update the NFSv3 GETACL result encoder to use struct xdr_stream")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Tom Talpey <tom@talpey.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3acl.c | 30 ++++++------------------------
- 1 file changed, 6 insertions(+), 24 deletions(-)
+ fs/nfsd/nfsctl.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs3acl.c b/fs/nfsd/nfs3acl.c
-index 2c451fcd5a3cc..161f831b3a1b7 100644
---- a/fs/nfsd/nfs3acl.c
-+++ b/fs/nfsd/nfs3acl.c
-@@ -169,11 +169,7 @@ nfs3svc_encode_getaclres(struct svc_rqst *rqstp, struct xdr_stream *xdr)
- {
- 	struct nfsd3_getaclres *resp = rqstp->rq_resp;
- 	struct dentry *dentry = resp->fh.fh_dentry;
--	struct kvec *head = rqstp->rq_res.head;
- 	struct inode *inode;
--	unsigned int base;
--	int n;
--	int w;
- 
- 	if (!svcxdr_encode_nfsstat3(xdr, resp->status))
- 		return false;
-@@ -185,26 +181,12 @@ nfs3svc_encode_getaclres(struct svc_rqst *rqstp, struct xdr_stream *xdr)
- 		if (xdr_stream_encode_u32(xdr, resp->mask) < 0)
- 			return false;
- 
--		base = (char *)xdr->p - (char *)head->iov_base;
--
--		rqstp->rq_res.page_len = w = nfsacl_size(
--			(resp->mask & NFS_ACL)   ? resp->acl_access  : NULL,
--			(resp->mask & NFS_DFACL) ? resp->acl_default : NULL);
--		while (w > 0) {
--			if (!*(rqstp->rq_next_page++))
--				return false;
--			w -= PAGE_SIZE;
--		}
--
--		n = nfsacl_encode(&rqstp->rq_res, base, inode,
--				  resp->acl_access,
--				  resp->mask & NFS_ACL, 0);
--		if (n > 0)
--			n = nfsacl_encode(&rqstp->rq_res, base + n, inode,
--					  resp->acl_default,
--					  resp->mask & NFS_DFACL,
--					  NFS_ACL_DEFAULT);
--		if (n <= 0)
-+		if (!nfs_stream_encode_acl(xdr, inode, resp->acl_access,
-+					   resp->mask & NFS_ACL, 0))
-+			return false;
-+		if (!nfs_stream_encode_acl(xdr, inode, resp->acl_default,
-+					   resp->mask & NFS_DFACL,
-+					   NFS_ACL_DEFAULT))
- 			return false;
- 		break;
- 	default:
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index dc74a947a440c..68ed42fd29fc8 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -601,7 +601,9 @@ static ssize_t __write_versions(struct file *file, char *buf, size_t size)
+ 				}
+ 				break;
+ 			default:
+-				return -EINVAL;
++				/* Ignore requests to disable non-existent versions */
++				if (cmd == NFSD_SET)
++					return -EINVAL;
+ 			}
+ 			vers += len + 1;
+ 		} while ((len = qword_get(&mesg, vers, size)) > 0);
 -- 
 2.43.0
 
