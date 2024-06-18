@@ -1,137 +1,112 @@
-Return-Path: <stable+bounces-52640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A4790C67D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:22:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2648090C685
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:23:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D2051F229B1
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 10:22:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A4891C21A92
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 10:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B7918E742;
-	Tue, 18 Jun 2024 07:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E10F13E022;
+	Tue, 18 Jun 2024 07:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WRzao46R"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="REC75KeA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A7D18A94A;
-	Tue, 18 Jun 2024 07:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887B413D501
+	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 07:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718697146; cv=none; b=GqSJle6CK8f5Tbdh7iKrqgHqLJ2AQ/+TLFtWeqzYxaniTO2XbZwEwn/SdLkClXO/EahtiKxhL6D1L2gp3V8sY3FRs4tt2BiqoKEx6rNbOGLFj/rtYmP1P/LJaXPrfkYFUgmDFbk1PPaL/lUep/RS8YA0u/Mk5SlVz42ukFhHZlA=
+	t=1718697222; cv=none; b=mr6Gu4hev0TyD9TlpbDSwAgVvvDrBiG7qbkofxqJmKJtQZ8gZxdXUfsQrAKthahTfCrjD62SAJgjS2UUGV8A9f2jo2JYyFFajGXrw/XV/hpCkJWY7rSYhJsUolnkJUcfhqllbo82jrzyQPLrqYtvNcB3JjiWo6zjO6tvciQM82M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718697146; c=relaxed/simple;
-	bh=2VJI7TxrcO8SEx0hBSqqAZdmmQwcD4oEYQK80PeVewE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T1IfWKtz5I6LGkyvPI6Df44ZgDRfAkxLZNeygJGIIRWaDVRqabcSORmpH0k27CkwWMeMEVM8L/GA1a1P71pqhvpWFf/6msw/gQuA13P5MSU1ZKpw561q3i4oSLzCdsMNQ462A1940I0SyzxpuIU5c394G9dUg0cbGNkuZ/iM4ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WRzao46R; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-57cc1c00ba6so4395438a12.1;
-        Tue, 18 Jun 2024 00:52:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718697143; x=1719301943; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i47tTS0Smc0matXz2a2CmZqxpNwYuNp/v14r4hNAm5s=;
-        b=WRzao46RZTccKKBLy02j5vQJzB2v3r4xfkxQIbIh9xJP41xVrhyLM9LHzB+Qxn1cvo
-         Mfrk7gCaKEfd0GakjT0Eo109uq2tIRFlN9Ia0nyJvIlOBqeVyzfzR0LEE/aESHZBc3jt
-         rdZf/TQMufTWQ4YSKu8SbShplSpgUWZiCdmWyLHKQ35AkU5Q04a5LqWPAt08cZbvjE03
-         mS2jw54xRjiseifC7iVKXOhGsmi5mQ3TmoTaIlNkON41iblH+jKiAU72eg8VlmBqjxJn
-         t6Eutpt6RTJMw1VwBuhaHzkUP1M5OmgiKjiNYC7HgV8ZfLPlegem8LtFZJ4WXZyqgdFd
-         wc+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718697143; x=1719301943;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i47tTS0Smc0matXz2a2CmZqxpNwYuNp/v14r4hNAm5s=;
-        b=uVwXdFoZRTnZDR3cfq+Q8MHcRM3FFiI0rUMSjuj02l82ZhSTPxyn/HPdrcLiTVw7bI
-         lsV43FpuyOo6Co0v25uq3Ax+SIsmr06ds9WqA+M7mFhfwnpX0OvIXMVCSHtWJ2GzaZ4Q
-         wZYP3Ut/vLPlc8zFX2l5lh4W6G89zWzb52dhH2ZSRT6JbpLYE1d0/KRQH6Shl9YehTs8
-         cRcsg7i1lytD9YM0iZcGJMK3DJYeAQnq/xFsBXBQr9IdIU6q6qd5xIjgVxNhxNfT62AN
-         QOiG6aEzkVShp5AoOVTrBVfZ3YZD/TESiyr4XLWkAWMe+49f6/MG4wOMm4esuVMsBFKV
-         jixQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVfoxpO9b+VG5FrSaGZ+6pAA2ks5GEMIdaUpdgBbLh1Lwt5dgiNAWH0+vo0+JT5QgMNZnHYe07q1275UOMxo6BWGaxTBeHj+9Kd7kuHD6w8W8A2FW+9+RKma9yG3FehDBlUC6vjbGS9eTz/leI/QklZeioIVEGWE+PmOP0bPQ==
-X-Gm-Message-State: AOJu0YyVR7Oq8noryPhMk+iw98PEWqxDuMdWhJqbOD6mGYGme/wmQ+Mx
-	RJrcCVrPVrEGRd6u3EUWBpGLa05/IVWi/vjNG4qQmc1KdNQbvkGsl6Ja51+4pFzSk9KnDecE1Rl
-	Welxc2qD1ZSwX01zlsUxkZL3eFnU=
-X-Google-Smtp-Source: AGHT+IEnQKM8yOKGghS2xqtPgQZXhwenYTCKKgD7oiMwYOJCjP6SOJqzyDq0LjJKLrFUeeMh93cjmacWSclnRt6Kqx4=
-X-Received: by 2002:a50:d4d8:0:b0:57c:a478:2ff4 with SMTP id
- 4fb4d7f45d1cf-57cbd681ae0mr9805343a12.11.1718697142667; Tue, 18 Jun 2024
- 00:52:22 -0700 (PDT)
+	s=arc-20240116; t=1718697222; c=relaxed/simple;
+	bh=2LwSOIGC1ffHQStQEQs/uedPkNN/oOjnkhNsDbZzJhk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=A8p4hNgQ+9NZDfsBe8GvQxKsuW0jKSZqodtN/x4Lp7ita2NRuMBP+DFAXczTcr9QZfti+scXqcxB1p+FALAEJNVYU9yA+z7A+syHkI/JduBp6iPKujjSsP1FQwW5sLzPpUpsSUmhaWhndNkmViCxPdAiiocyktVTYtDYzJaGvv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=REC75KeA; arc=none smtp.client-ip=185.125.188.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from Phocidae.conference (1.general.phlin.uk.vpn [10.172.194.38])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id BB3283F070;
+	Tue, 18 Jun 2024 07:53:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1718697211;
+	bh=wmEE7Ea2T/aVyONqgvGOmVO7bc+oLOOOUkWNC2xGYVw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
+	b=REC75KeAZTLqsv/jj2Xc1exaYOy8BojWUdmeKf+cVCkTGaoBBI4uMZoJMjYgo5x1+
+	 4X8OOsTLsuZh8FVYeW7OwUcw/7oQxIjGP9i3D/rADlO5m8e0w4x6uhRs+Ln/eXj3jd
+	 QNiRfMTzEs41p/U5JeQuQJ1LoKkKTKdrTpDfn+yUw30xQKzFuKv+sp6OqJWZaH25ru
+	 LrP5pqZ2nTXcrEFRgoCMKZdgAf+rzL/ByBPR9gz5rzL+8wEaWY7FGXZQ07jleVc6Ed
+	 W6o8vIf+zRWIn+TDyZWU2tshbo3PbBpxuuq2533qZwS998Pw1fe3E6WPdpQjt6S0PT
+	 dd6RMdj2B168A==
+From: Po-Hsu Lin <po-hsu.lin@canonical.com>
+To: stable@vger.kernel.org
+Cc: po-hsu.lin@canonical.com,
+	gregkh@linuxfoundation.org,
+	petrm@nvidia.com,
+	liuhangbin@gmail.com,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	bpoirier@nvidia.com,
+	idosch@nvidia.com
+Subject: [PATCHv2 6.6.y 0/3] Fix missing lib.sh for net/unicast_extensions.sh and net/pmtu.sh tests
+Date: Tue, 18 Jun 2024 15:53:03 +0800
+Message-Id: <20240618075306.1073405-1-po-hsu.lin@canonical.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240618065647.21791-1-21cnbao@gmail.com>
-In-Reply-To: <20240618065647.21791-1-21cnbao@gmail.com>
-From: Martin Wege <martin.l.wege@gmail.com>
-Date: Tue, 18 Jun 2024 09:52:11 +0200
-Message-ID: <CANH4o6PSdvWMLwbzN7xmzSO=52qS7kYdP2rRu7xois6OL+=Mjg@mail.gmail.com>
-Subject: Re: [PATCH v2] nfs: drop the incorrect assertion in nfs_swap_rw()
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, linux-nfs@vger.kernel.org, 
-	anna@kernel.org, chrisl@kernel.org, hanchuanhua@oppo.com, hch@lst.de, 
-	jlayton@kernel.org, linux-cifs@vger.kernel.org, neilb@suse.de, 
-	ryan.roberts@arm.com, sfrench@samba.org, stable@vger.kernel.org, 
-	trondmy@kernel.org, v-songbaohua@oppo.com, ying.huang@intel.com, 
-	Matthew Wilcox <willy@infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 18, 2024 at 8:57=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
-e:
->
-> From: Christoph Hellwig <hch@lst.de>
->
-> Since commit 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS
-> swap-space"), we can plug multiple pages then unplug them all together.
-> That means iov_iter_count(iter) could be way bigger than PAGE_SIZE, it
-> actually equals the size of iov_iter_npages(iter, INT_MAX).
->
-> Note this issue has nothing to do with large folios as we don't support
-> THP_SWPOUT to non-block devices.
->
-> Fixes: 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS swap-spac=
-e")
-> Reported-by: Christoph Hellwig <hch@lst.de>
-> Closes: https://lore.kernel.org/linux-mm/20240617053201.GA16852@lst.de/
-> Cc: NeilBrown <neilb@suse.de>
-> Cc: Anna Schumaker <anna@kernel.org>
-> Cc: Steve French <sfrench@samba.org>
-> Cc: Trond Myklebust <trondmy@kernel.org>
-> Cc: Chuanhua Han <hanchuanhua@oppo.com>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Chris Li <chrisl@kernel.org>
-> Cc: "Huang, Ying" <ying.huang@intel.com>
-> Cc: Jeff Layton <jlayton@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Martin Wege <martin.l.wege@gmail.com>
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> [Barry: figure out the cause and correct the commit message]
-> Signed-off-by: Barry Song <v-songbaohua@oppo.com>
-> ---
->  fs/nfs/direct.c | 2 --
->  1 file changed, 2 deletions(-)
->
-> diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-> index bb2f583eb28b..90079ca134dd 100644
-> --- a/fs/nfs/direct.c
-> +++ b/fs/nfs/direct.c
+Since upstream commit:
+  * 0f4765d0 "selftests/net: convert unicast_extensions.sh to run it in
+    unique namespace"
+  * 378f082e "selftests/net: convert pmtu.sh to run it in unique namespace"
 
-Please add a
+The lib.sh from commit 25ae948b "selftests/net: add lib.sh" will be needed.
+Otherwise these test will complain about missing files and fail:
+$ sudo ./unicast_extensions.sh
+./unicast_extensions.sh: line 31: lib.sh: No such file or directory
+...
 
-Reviewed-by: Martin Wege <martin.l.wege@gmail.com>
+$ sudo ./pmtu.sh
+./pmtu.sh: line 201: lib.sh: No such file or directory
+./pmtu.sh: line 941: cleanup_all_ns: command not found
+...
 
-Thanks,
-Martin
+Another commit b6925b4e "selftests/net: add variable NS_LIST for lib.sh" is
+needed to add support for the cleanup_all_ns above.
+
+And 2114e833 "selftests: forwarding: Avoid failures to source net/lib.sh" is
+a follow-up fix for tests inside the net/forwarding directory.
+
+V2: Add 2114e833 "selftests: forwarding: Avoid failures to source net/lib.sh"
+    as suggested by Hangbin Liu.
+
+Benjamin Poirier (1):
+  selftests: forwarding: Avoid failures to source net/lib.sh
+
+Hangbin Liu (2):
+  selftests/net: add lib.sh
+  selftests/net: add variable NS_LIST for lib.sh
+
+ tools/testing/selftests/net/Makefile          |  2 +-
+ tools/testing/selftests/net/forwarding/lib.sh | 52 +++++++--------
+ tools/testing/selftests/net/lib.sh            | 93 +++++++++++++++++++++++++++
+ 3 files changed, 120 insertions(+), 27 deletions(-)
+ create mode 100644 tools/testing/selftests/net/lib.sh
+
+-- 
+2.7.4
+
 
