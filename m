@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDE990D1E4
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:46:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 217A790D0D3
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07F25B287BC
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:35:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 376B11C23FBD
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD5B139D0C;
-	Tue, 18 Jun 2024 13:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5090018E762;
+	Tue, 18 Jun 2024 13:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mt2uA4kg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcqfFJyK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A81188CBE;
-	Tue, 18 Jun 2024 13:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3CC18E759;
+	Tue, 18 Jun 2024 13:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715638; cv=none; b=GrvkmEKoJtu6JvzioKqbn4n8TTGjjE/UXWQ+t1EjYP0kzfGGk2JMSg7XRd2O45KVfESREdGSmIsWuF158Y5qL13kGSKq2WBRBXR6h6sKwQD+WVcB6a8koZO7GlomAYSv4SSROjpy+ORV0Z2aQWNNd1ZEMrBt+pocrFCPBqaL7vk=
+	t=1718715761; cv=none; b=mQM1xWmx4gvcbsVYNGR+BKo2s1lBvfBWOPhwkPSSWnT4vug8ksEzs1fAZOV578sQOl19iqAmAJU7JDvmuPDmxuul49x6m/GxHnqJbHddk9ym9CSG59Sp8Ybl7hX7qY6TCQbObcFwdNYCvYMXNu1zCVU6aaZUKrV3Ld3sfxi2jHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715638; c=relaxed/simple;
-	bh=baJy0tiposHfDK0FmN2jEQ6yd0si21saTfZI6qzsv8c=;
+	s=arc-20240116; t=1718715761; c=relaxed/simple;
+	bh=mpHmjAjuD8pH0O8l7iWkiFPBhFA3aYay1BFAv7RBV3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IrymmuAS6y4iDpaWxN3m7jSAHAWuM4ermjQebjDXyfhcCXSjXGaXvJrTyMGm9hVXidB21XE185AIhv5B8ooQriTRpbbOyXmYTKXDjJKbSJBUwPgsMKymeSaPVF/xxvtwYPsyGjB5YPr1+zBj+B+xg7T8yMX5r/Tm7esE9wCiSeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mt2uA4kg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2864AC3277B;
-	Tue, 18 Jun 2024 13:00:37 +0000 (UTC)
+	 MIME-Version; b=hLN7OA3L5zxbJFV5moUZWzoWfaZ5eTs8PXgbkvpFMSJGwQqURjejY/ZZ8FVRkMfs1KEhTxulZJF36aXpx+Sv5DnM+fOndXwcIWNVjFHhoF0P7Z3HSCn/nL2Q4jlSFV2S7mbB4i5G9O0/t+TEWOzoz0xJ5HYJhTfG66saCIDTd98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcqfFJyK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FFC5C3277B;
+	Tue, 18 Jun 2024 13:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715638;
-	bh=baJy0tiposHfDK0FmN2jEQ6yd0si21saTfZI6qzsv8c=;
+	s=korg; t=1718715760;
+	bh=mpHmjAjuD8pH0O8l7iWkiFPBhFA3aYay1BFAv7RBV3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mt2uA4kgbTp57XFJtWPjlxbKTejjVzIZr7Y70sS2yuAf9IvOioy4iaJkAteXh9asJ
-	 VDha9uL+eZlmygP+75ysfZPrjKNfa/SkT8BrbnAI3rkgW2dz5bvQ3dvD6r8ElYH3JU
-	 TW34sS0ca/2GtRDf9PH1VEyFvuVnZTXkkvd/SNm4=
+	b=PcqfFJyKXYew8njV1V5nkBnNtsKp6qmmDtcd/gUaKNNws6SenPLUhPcUXeCo51eX5
+	 ICc8DByxXaoa3MqKh8sllKvggPZMkDKZiSGL5ZbxL+KBonU/tDJVEsnRNIt9gZxYnl
+	 Isy4XULDPUATOd3hNr8ckyc6LwICirQ17a1Fvv7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Gabriel Krisman Bertazi <krisman@collabora.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 375/770] fanotify: Encode empty file handle when no inode is provided
-Date: Tue, 18 Jun 2024 14:33:48 +0200
-Message-ID: <20240618123421.743830546@linuxfoundation.org>
+Subject: [PATCH 5.10 376/770] fanotify: Require fid_mode for any non-fd event
+Date: Tue, 18 Jun 2024 14:33:49 +0200
+Message-ID: <20240618123421.783225553@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -70,51 +70,65 @@ Content-Transfer-Encoding: 8bit
 
 From: Gabriel Krisman Bertazi <krisman@collabora.com>
 
-[ Upstream commit 272531ac619b374ab474e989eb387162fded553f ]
+[ Upstream commit 4fe595cf1c80e7a5af4d00c4da29def64aff57a2 ]
 
-Instead of failing, encode an invalid file handle in fanotify_encode_fh
-if no inode is provided.  This bogus file handle will be reported by
-FAN_FS_ERROR for non-inode errors.
+Like inode events, FAN_FS_ERROR will require fid mode.  Therefore,
+convert the verification during fanotify_mark(2) to require fid for any
+non-fd event.  This means fid_mode will not only be required for inode
+events, but for any event that doesn't provide a descriptor.
 
-Link: https://lore.kernel.org/r/20211025192746.66445-16-krisman@collabora.com
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/r/20211025192746.66445-17-krisman@collabora.com
+Suggested-by: Amir Goldstein <amir73il@gmail.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fanotify/fanotify.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/notify/fanotify/fanotify_user.c | 12 ++++++------
+ include/linux/fanotify.h           |  3 +++
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
-index ec84fee7ad01c..c64d61b673caf 100644
---- a/fs/notify/fanotify/fanotify.c
-+++ b/fs/notify/fanotify/fanotify.c
-@@ -370,8 +370,14 @@ static int fanotify_encode_fh(struct fanotify_fh *fh, struct inode *inode,
- 	fh->type = FILEID_ROOT;
- 	fh->len = 0;
- 	fh->flags = 0;
+diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
+index 6dd6a2e05f55d..34bf71108f7a3 100644
+--- a/fs/notify/fanotify/fanotify_user.c
++++ b/fs/notify/fanotify/fanotify_user.c
+@@ -1471,14 +1471,14 @@ static int do_fanotify_mark(int fanotify_fd, unsigned int flags, __u64 mask,
+ 		goto fput_and_out;
+ 
+ 	/*
+-	 * Events with data type inode do not carry enough information to report
+-	 * event->fd, so we do not allow setting a mask for inode events unless
+-	 * group supports reporting fid.
+-	 * inode events are not supported on a mount mark, because they do not
+-	 * carry enough information (i.e. path) to be filtered by mount point.
++	 * Events that do not carry enough information to report
++	 * event->fd require a group that supports reporting fid.  Those
++	 * events are not supported on a mount mark, because they do not
++	 * carry enough information (i.e. path) to be filtered by mount
++	 * point.
+ 	 */
+ 	fid_mode = FAN_GROUP_FLAG(group, FANOTIFY_FID_BITS);
+-	if (mask & FANOTIFY_INODE_EVENTS &&
++	if (mask & ~(FANOTIFY_FD_EVENTS|FANOTIFY_EVENT_FLAGS) &&
+ 	    (!fid_mode || mark_type == FAN_MARK_MOUNT))
+ 		goto fput_and_out;
+ 
+diff --git a/include/linux/fanotify.h b/include/linux/fanotify.h
+index eec3b7c408115..52d464802d99f 100644
+--- a/include/linux/fanotify.h
++++ b/include/linux/fanotify.h
+@@ -84,6 +84,9 @@ extern struct ctl_table fanotify_table[]; /* for sysctl */
+  */
+ #define FANOTIFY_DIRENT_EVENTS	(FAN_MOVE | FAN_CREATE | FAN_DELETE)
+ 
++/* Events that can be reported with event->fd */
++#define FANOTIFY_FD_EVENTS (FANOTIFY_PATH_EVENTS | FANOTIFY_PERM_EVENTS)
 +
-+	/*
-+	 * Invalid FHs are used by FAN_FS_ERROR for errors not
-+	 * linked to any inode. The f_handle won't be reported
-+	 * back to userspace.
-+	 */
- 	if (!inode)
--		return 0;
-+		goto out;
- 
- 	/*
- 	 * !gpf means preallocated variable size fh, but fh_len could
-@@ -403,6 +409,7 @@ static int fanotify_encode_fh(struct fanotify_fh *fh, struct inode *inode,
- 	fh->type = type;
- 	fh->len = fh_len;
- 
-+out:
- 	/*
- 	 * Mix fh into event merge key.  Hash might be NULL in case of
- 	 * unhashed FID events (i.e. FAN_FS_ERROR).
+ /* Events that can only be reported with data type FSNOTIFY_EVENT_INODE */
+ #define FANOTIFY_INODE_EVENTS	(FANOTIFY_DIRENT_EVENTS | \
+ 				 FAN_ATTRIB | FAN_MOVE_SELF | FAN_DELETE_SELF)
 -- 
 2.43.0
 
