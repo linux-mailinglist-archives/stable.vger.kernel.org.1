@@ -1,96 +1,67 @@
-Return-Path: <stable+bounces-52638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981F290C50F
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 10:56:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1730D90C603
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68BBB2834F0
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 08:56:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B10351F22C35
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 10:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33951552E8;
-	Tue, 18 Jun 2024 07:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hqNg+6e9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D9E7347C;
+	Tue, 18 Jun 2024 07:38:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48940154C00;
-	Tue, 18 Jun 2024 07:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A1C10A2A
+	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 07:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718695400; cv=none; b=DkNPrfzF4JUELBjei7/T7semTayN9JXlaZdZJKUPLXB4rUcFZOVsvlKwSphGQFusM0egLmcvmULHyWTKCxhACV1LxZLiWlY6FRmIO91pWMD2Y81utINw34SmUIZNxpZAZVY2HTTJxaCNCAkQyThZ2wI8R6/7SNDNlvuWFjiWGrA=
+	t=1718696333; cv=none; b=g8eVy2WIZEJSmGkUecm6KrMqgEUfrJvpYTVanYaVrXXJbg/As01BlM+0DPsalT8GbWHwtpOhEanBACBxRrevy5mvFkjIIXh/+/ki1qoShmitXQS+8Y/RLf3o+X5uXizs/lC5dI76kLrIdYKkix/p/ae7vqG0soVzB2teA1mUpQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718695400; c=relaxed/simple;
-	bh=SCsuJ+kfzDOMEQ57UrziTxcGFOjstcZqXtS5oCJ1WXg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MNOVgb8KqRxIj+Wk+wi2j2lSK1wXW73SDo5BPhv0zA6GZySb0RLhpAXRzR4OlTVVewgTbcBsBvKFhY8wqH/PwkuQI8Rflj9p1qzjpxnX6T4M1UI7FUs1fS+MvlQ2hFGMuVsRAyPuqyK7UqZhNpwoA3bz559f85Pyx2phP2w/ZmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hqNg+6e9; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-705e9e193caso2088015b3a.2;
-        Tue, 18 Jun 2024 00:23:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718695398; x=1719300198; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=n7p6iRUSW5XVR70B17ZTO0vLEn0KFEfKaxRI0vxTAiM=;
-        b=hqNg+6e9XoplbgmtkinhKOtcOw91xvatwus2dS9sHoLk/AqUQRKWRVdzcA93e5+FHo
-         l9pruqhluNglUQ/4WTs5qGmqlm1morVlpabsSWReVP6ddvQAZzy/rNoqryxlv8RNH5bF
-         qbH1H+vUaEbTPTegdjFVmGS4OQVdbP3dHLZ2YrP3amXwD/bMrE5ZCUTip1rHSAAoNTA3
-         ZfzPfyACOr5FFUXElzlA5eWgilzEzFVAXvHSzGxuYBhr7T+mq47bFdNjkNaSZoUhbjz1
-         3eyr9cD1iAACkq6FJ8HS0KVdaXn1fHjvEqKycKYgN0hDbIokI1Gw2khLKyCvz3wwGOMC
-         GKUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718695398; x=1719300198;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=n7p6iRUSW5XVR70B17ZTO0vLEn0KFEfKaxRI0vxTAiM=;
-        b=Ya8oJHIiTdWzqEBZfAgcNXwkTTGa8EoIkqbu3shfDeCWtXbVuJipepabJT4g8d8FND
-         4j1UmBzoEKCvD/Hd3quntsK9eBGSEXyo/P6e0UCJ6RxBIh5eSyy82QNr0mm/l7Zvv9xi
-         qvMchotTc+jXxwkqq3OaP1oWzTQfsdEunlMrGwFRI9Dt6ieB7n2Wd72gwKqdWl3kp4xh
-         PDZ+5LiC7+bYinz2N0aByi/PBgnlIfCEuxU1kMoLmnNuIn6biSfABKK24thM7Gj2cQEv
-         rNP2Q0mVmtPKh4NiuF3CkT63tGbFcLNpHZxy+cnoVfkAPG2RP4JuFZqBDLngfys5l2Y5
-         flDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWXrtYS6AmRTLxwLOu6V/FNN9ji1ET4lzxurK+BbIjLbqO7FPfyvhFC7P56kKQWaua4cIQzkORsijvn120hTE9AjVdCyh9JFzkauuFGUZzvxk/AXieedwHc/0WNQ7XLeHo8b5AFhr1obz5X37ex28aRdzG/ne03VeyQYmvMNg==
-X-Gm-Message-State: AOJu0YyaMSxPTOii4griQFHQ7uljs4dAFZqHmL7sJtb9TeGz3JXPrSJx
-	IMYDxtG3V6VM0Zpza3/UTaAVaZnxu+grzgOmj28u5bf757OWcQ1A
-X-Google-Smtp-Source: AGHT+IGLgq7HqLryiT2SHaAY/eKo2T49wUObwJ5Wedf9z2+YS6ZtJtX6QZyW4RjJ+hSMRnucE8IAoA==
-X-Received: by 2002:aa7:88cd:0:b0:705:befb:fcd2 with SMTP id d2e1a72fcca58-705d71b105fmr13944511b3a.33.1718695398519;
-        Tue, 18 Jun 2024 00:23:18 -0700 (PDT)
-Received: from localhost.localdomain ([2407:7000:8942:5500:aaa1:59ff:fe57:eb97])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705ccb4aa4fsm8396536b3a.131.2024.06.18.00.23.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 00:23:18 -0700 (PDT)
-From: Barry Song <21cnbao@gmail.com>
-To: akpm@linux-foundation.org,
-	linux-cifs@vger.kernel.org,
-	linux-mm@kvack.org,
-	sfrench@samba.org
-Cc: anna@kernel.org,
-	chrisl@kernel.org,
-	hanchuanhua@oppo.com,
-	hch@lst.de,
-	jlayton@kernel.org,
-	linux-nfs@vger.kernel.org,
-	neilb@suse.de,
-	ryan.roberts@arm.com,
+	s=arc-20240116; t=1718696333; c=relaxed/simple;
+	bh=Gd03mbowtSYklKdd1Gyrdg7KQJcOs1f74nXTgmCrzOU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iKppjVYGJmAT9HiAIVRuD7A6MGcNr8jf7dQIMKDJ7AyiybzqWx5/s2xdHXYgFOU494A265xKzyWpsYI+vnuwMCIsrNBiY39cJpVPp+v3IPUxEmS2b4WVgJyvvvXcwtMlUbkFgwjsQaZqgxwU/W7vzH+G29LCLTFHrPGSdpvbaEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1sJTQC-00043W-BO; Tue, 18 Jun 2024 09:38:28 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1sJTQ7-003AeO-4v; Tue, 18 Jun 2024 09:38:23 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1sJTQ7-002bEI-0G;
+	Tue, 18 Jun 2024 09:38:23 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	stable@vger.kernel.org,
-	trondmy@kernel.org,
-	v-songbaohua@oppo.com,
-	ying.huang@intel.com,
-	Paulo Alcantara <pc@manguebit.com>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>
-Subject: [PATCH v2] cifs: drop the incorrect assertion in cifs_swap_rw()
-Date: Tue, 18 Jun 2024 19:22:58 +1200
-Message-Id: <20240618072258.33128-1-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Richard Cochran <richardcochran@gmail.com>,
+	Tan Tee Min <tee.min.tan@intel.com>,
+	Wong Vee Khee <vee.khee.wong@linux.intel.com>
+Subject: [PATCH net v1 1/1] net: stmmac: Assign configured channel value to EXTTS event
+Date: Tue, 18 Jun 2024 09:38:21 +0200
+Message-Id: <20240618073821.619751-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,58 +69,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-From: Barry Song <v-songbaohua@oppo.com>
+Assign the configured channel value to the EXTTS event in the timestamp
+interrupt handler. Without assigning the correct channel, applications
+like ts2phc will refuse to accept the event, resulting in errors such
+as:
+...
+ts2phc[656.834]: config item end1.ts2phc.pin_index is 0
+ts2phc[656.834]: config item end1.ts2phc.channel is 3
+ts2phc[656.834]: config item end1.ts2phc.extts_polarity is 2
+ts2phc[656.834]: config item end1.ts2phc.extts_correction is 0
+...
+ts2phc[656.862]: extts on unexpected channel
+ts2phc[658.141]: extts on unexpected channel
+ts2phc[659.140]: extts on unexpected channel
 
-Since commit 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS
-swap-space"), we can plug multiple pages then unplug them all together.
-That means iov_iter_count(iter) could be way bigger than PAGE_SIZE, it
-actually equals the size of iov_iter_npages(iter, INT_MAX).
-
-Note this issue has nothing to do with large folios as we don't support
-THP_SWPOUT to non-block devices.
-
-Fixes: 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS swap-space")
-Reported-by: Christoph Hellwig <hch@lst.de>
-Closes: https://lore.kernel.org/linux-mm/20240614100329.1203579-1-hch@lst.de/
-Cc: NeilBrown <neilb@suse.de>
-Cc: Anna Schumaker <anna@kernel.org>
-Cc: Steve French <sfrench@samba.org>
-Cc: Trond Myklebust <trondmy@kernel.org>
-Cc: Chuanhua Han <hanchuanhua@oppo.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Jeff Layton <jlayton@kernel.org>
-Cc: Paulo Alcantara <pc@manguebit.com>
-Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Cc: Shyam Prasad N <sprasad@microsoft.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Bharath SM <bharathsm@microsoft.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Fixes: f4da56529da60 ("net: stmmac: Add support for external trigger timestamping")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- -v2:
- * drop the assertion instead of fixing the assertion.
-   per the comments of Willy, Christoph in nfs thread.
+ drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
- fs/smb/client/file.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 9d5c2440abfc..1e269e0bc75b 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -3200,8 +3200,6 @@ static int cifs_swap_rw(struct kiocb *iocb, struct iov_iter *iter)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+index f05bd757dfe52..5ef52ef2698fb 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+@@ -218,6 +218,7 @@ static void timestamp_interrupt(struct stmmac_priv *priv)
  {
- 	ssize_t ret;
+ 	u32 num_snapshot, ts_status, tsync_int;
+ 	struct ptp_clock_event event;
++	u32 acr_value, channel;
+ 	unsigned long flags;
+ 	u64 ptp_time;
+ 	int i;
+@@ -243,12 +244,15 @@ static void timestamp_interrupt(struct stmmac_priv *priv)
+ 	num_snapshot = (ts_status & GMAC_TIMESTAMP_ATSNS_MASK) >>
+ 		       GMAC_TIMESTAMP_ATSNS_SHIFT;
  
--	WARN_ON_ONCE(iov_iter_count(iter) != PAGE_SIZE);
--
- 	if (iov_iter_rw(iter) == READ)
- 		ret = netfs_unbuffered_read_iter_locked(iocb, iter);
- 	else
++	acr_value = readl(priv->ptpaddr + PTP_ACR);
++	channel = ilog2(FIELD_GET(PTP_ACR_MASK, acr_value));
++
+ 	for (i = 0; i < num_snapshot; i++) {
+ 		read_lock_irqsave(&priv->ptp_lock, flags);
+ 		get_ptptime(priv->ptpaddr, &ptp_time);
+ 		read_unlock_irqrestore(&priv->ptp_lock, flags);
+ 		event.type = PTP_CLOCK_EXTTS;
+-		event.index = 0;
++		event.index = channel;
+ 		event.timestamp = ptp_time;
+ 		ptp_clock_event(priv->ptp_clock, &event);
+ 	}
 -- 
-2.34.1
+2.39.2
 
 
