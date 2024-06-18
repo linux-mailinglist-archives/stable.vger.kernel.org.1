@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-53171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570C890D086
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:34:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F2590D134
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:40:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61CFF1C23F2D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:34:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5D8DB2A68B
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31263156898;
-	Tue, 18 Jun 2024 12:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859A7156C6D;
+	Tue, 18 Jun 2024 13:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKiyEUYU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1b6tFRf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16FD179659;
-	Tue, 18 Jun 2024 12:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4348E1891C9;
+	Tue, 18 Jun 2024 13:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715539; cv=none; b=skb25y2xZXN1DBxxG1gLTKm/GsEjml6ODXQYsLI66Cyey/WYzn1a7QyG3iXLZa8DuwMjw7X65usxx4v3GJyQ8h6E4zQAXFep3e/TTbS9TBKIoBnVzsVGEvXn38tzyoUa/zgdqf9MZ2diA9h/1bsyRs/1nRnjqLcHFDZLdmQnu0w=
+	t=1718715659; cv=none; b=HmUHCtnxq7DJ7WFyVpJiQtVvV01g054gw/REqJxw6/M+mwopYMzbIeYsBH+wB/gRu+u5gl2ECR45sUkUbKFAAJIxXcDjDFqDB9mJOoIjVaIMzyCAzMgFUeCw+J3jBdGN6BmT6qgOdi3dsKXP0Z6j43/oWKWi8ase/V00TtmJTvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715539; c=relaxed/simple;
-	bh=AQgVpMot2pt9pM68JLWMy5CkoB4gXrUFTzL7hDi7poY=;
+	s=arc-20240116; t=1718715659; c=relaxed/simple;
+	bh=mq+vbKRrKg9O9NfYpQFvuGPqTH6mYxk0g9ikLAzhP2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fXStlrY7JHHXZXFI1vPD9Q2oGaaIKx6npq0d1dkAZYSkpi8ry5YHU+3q0fIBW+GvEXo3bQ36CYIOqVFUTCqcbb4fqLhqLVMyH3GLlVDjbX/wwNZKpHpvb/JQjtXprMdd/nVDlSVfPo2DblwYYW1cSPDkhyAqU0Y68jmuQVVlkK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKiyEUYU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D81BC3277B;
-	Tue, 18 Jun 2024 12:58:57 +0000 (UTC)
+	 MIME-Version; b=QTeFldH+eA3DzNul2AMly9V/scwTiYFeNDFRzOhCteWPLOt9E+gll2gg8o6U1H4CETqvWLszb5idtgLVNDcNsI7dKsErJbUzqiGRpz2qlhHEP9nK3/lfxAfzE3HoMB46tpJL9Og8LgJ5X0p2P7RrggNOcvnkRfLye0zoAHayxFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1b6tFRf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2E5C3277B;
+	Tue, 18 Jun 2024 13:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715538;
-	bh=AQgVpMot2pt9pM68JLWMy5CkoB4gXrUFTzL7hDi7poY=;
+	s=korg; t=1718715659;
+	bh=mq+vbKRrKg9O9NfYpQFvuGPqTH6mYxk0g9ikLAzhP2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKiyEUYUe19jnYLnli0imBCtCjno+Xeza5VabsIId8GwGw2lcFDbWdRYRBJahjMKQ
-	 NgNm4EY87rXilTxHGPCOmHo9Rd7vHZM0Edj10g4qUVA3j0cwFhbrA6v0wWBSCZITdr
-	 5dkYbficCFIt0KeySSvVXu0sracPhdNaGXIP3aHM=
+	b=z1b6tFRfaUz5Fq6CB/hlrQVxYcNeNUxDjHlx3M/rVjWoHxsC+R5qw5AEdicI8cpmf
+	 6seBlNBr9xDM3xsZJHbo8CYZ3qoTDcCeW5IR9dV1dJ/cmaKuYehtQHtO2BoNkBWrKx
+	 g5V69nQQ8hIQDzu0Q1t+nQxaQUxaaxh5HKynBzAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
+	NeilBrown <neilb@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 341/770] SUNRPC: Add svc_rqst_replace_page() API
-Date: Tue, 18 Jun 2024 14:33:14 +0200
-Message-ID: <20240618123420.429094161@linuxfoundation.org>
+Subject: [PATCH 5.10 342/770] NFSD: Batch release pages during splice read
+Date: Tue, 18 Jun 2024 14:33:15 +0200
+Message-ID: <20240618123420.466515510@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,108 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 2f0f88f42f2eab0421ed37d7494de9124fdf0d34 ]
+[ Upstream commit 496d83cf0f2fa70cfe256c2499e2d3523d3868f3 ]
 
-Replacing a page in rq_pages[] requires a get_page(), which is a
-bus-locked operation, and a put_page(), which can be even more
-costly.
+Large splice reads call put_page() repeatedly. put_page() is
+relatively expensive to call, so replace it with the new
+svc_rqst_replace_page() helper to help amortize that cost.
 
-To reduce the cost of replacing a page in rq_pages[], batch the
-put_page() operations by collecting "freed" pages in a pagevec,
-and then release those pages when the pagevec is full. This
-pagevec is also emptied when each RPC completes.
-
-[ cel: adjusted to apply without f6e70aab9dfe ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/svc.h |  4 ++++
- net/sunrpc/svc.c           | 21 +++++++++++++++++++++
- net/sunrpc/svc_xprt.c      |  3 +++
- 3 files changed, 28 insertions(+)
+ fs/nfsd/vfs.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
-index e91d51ea028bb..ab9afbf0a0d8b 100644
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -19,6 +19,7 @@
- #include <linux/sunrpc/svcauth.h>
- #include <linux/wait.h>
- #include <linux/mm.h>
-+#include <linux/pagevec.h>
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 8520a2fc92dee..05b5f7e241e70 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -856,15 +856,10 @@ nfsd_splice_actor(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
+ 	struct page *page = buf->page;
  
- /* statistics for svc_pool structures */
- struct svc_pool_stats {
-@@ -256,6 +257,7 @@ struct svc_rqst {
- 	struct page *		*rq_next_page; /* next reply page to use */
- 	struct page *		*rq_page_end;  /* one past the last page */
+ 	if (rqstp->rq_res.page_len == 0) {
+-		get_page(page);
+-		put_page(*rqstp->rq_next_page);
+-		*(rqstp->rq_next_page++) = page;
++		svc_rqst_replace_page(rqstp, page);
+ 		rqstp->rq_res.page_base = buf->offset;
+ 	} else if (page != pp[-1]) {
+-		get_page(page);
+-		if (*rqstp->rq_next_page)
+-			put_page(*rqstp->rq_next_page);
+-		*(rqstp->rq_next_page++) = page;
++		svc_rqst_replace_page(rqstp, page);
+ 	}
+ 	rqstp->rq_res.page_len += sd->len;
  
-+	struct pagevec		rq_pvec;
- 	struct kvec		rq_vec[RPCSVC_MAXPAGES]; /* generally useful.. */
- 	struct bio_vec		rq_bvec[RPCSVC_MAXPAGES];
- 
-@@ -502,6 +504,8 @@ struct svc_rqst *svc_rqst_alloc(struct svc_serv *serv,
- 					struct svc_pool *pool, int node);
- struct svc_rqst *svc_prepare_thread(struct svc_serv *serv,
- 					struct svc_pool *pool, int node);
-+void		   svc_rqst_replace_page(struct svc_rqst *rqstp,
-+					 struct page *page);
- void		   svc_rqst_free(struct svc_rqst *);
- void		   svc_exit_thread(struct svc_rqst *);
- unsigned int	   svc_pool_map_get(void);
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index 73e02ba4ed53a..27f98756d1751 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -842,6 +842,27 @@ svc_set_num_threads_sync(struct svc_serv *serv, struct svc_pool *pool, int nrser
- }
- EXPORT_SYMBOL_GPL(svc_set_num_threads_sync);
- 
-+/**
-+ * svc_rqst_replace_page - Replace one page in rq_pages[]
-+ * @rqstp: svc_rqst with pages to replace
-+ * @page: replacement page
-+ *
-+ * When replacing a page in rq_pages, batch the release of the
-+ * replaced pages to avoid hammering the page allocator.
-+ */
-+void svc_rqst_replace_page(struct svc_rqst *rqstp, struct page *page)
-+{
-+	if (*rqstp->rq_next_page) {
-+		if (!pagevec_space(&rqstp->rq_pvec))
-+			__pagevec_release(&rqstp->rq_pvec);
-+		pagevec_add(&rqstp->rq_pvec, *rqstp->rq_next_page);
-+	}
-+
-+	get_page(page);
-+	*(rqstp->rq_next_page++) = page;
-+}
-+EXPORT_SYMBOL_GPL(svc_rqst_replace_page);
-+
- /*
-  * Called from a server thread as it's exiting. Caller must hold the "service
-  * mutex" for the service.
-diff --git a/net/sunrpc/svc_xprt.c b/net/sunrpc/svc_xprt.c
-index d150e25b4d45e..570b092165d73 100644
---- a/net/sunrpc/svc_xprt.c
-+++ b/net/sunrpc/svc_xprt.c
-@@ -525,6 +525,7 @@ static void svc_xprt_release(struct svc_rqst *rqstp)
- 	kfree(rqstp->rq_deferred);
- 	rqstp->rq_deferred = NULL;
- 
-+	pagevec_release(&rqstp->rq_pvec);
- 	svc_free_res_pages(rqstp);
- 	rqstp->rq_res.page_len = 0;
- 	rqstp->rq_res.page_base = 0;
-@@ -651,6 +652,8 @@ static int svc_alloc_arg(struct svc_rqst *rqstp)
- 	int pages;
- 	int i;
- 
-+	pagevec_init(&rqstp->rq_pvec);
-+
- 	/* now allocate needed pages.  If we get a failure, sleep briefly */
- 	pages = (serv->sv_max_mesg + 2 * PAGE_SIZE) >> PAGE_SHIFT;
- 	if (pages > RPCSVC_MAXPAGES) {
 -- 
 2.43.0
 
