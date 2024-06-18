@@ -1,121 +1,139 @@
-Return-Path: <stable+bounces-52685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58CE90CBEF
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:39:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E72990D0EB
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF8DC2841C8
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:39:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2414E1F245EC
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39A91552EB;
-	Tue, 18 Jun 2024 12:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B38F18EFE0;
+	Tue, 18 Jun 2024 13:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQW9Sl0R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGEezbem"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56853154445;
-	Tue, 18 Jun 2024 12:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08BA5157480;
+	Tue, 18 Jun 2024 13:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714198; cv=none; b=V06WOL5gUrsJSPZevrLXy/Yd0aY5IhbPr/aGdS7s3pmbQnEtVZyy21HozBlkHmdaduWtEYj0aYVQEBFYYxVq7uLKcT15dBcZX9QrkZAt5xkuFD37DQpdaUA4bUTOucbq00z4Vx4YEgxd88yjbwuHK+52aeDphkDnmS23EcWXN8Y=
+	t=1718715841; cv=none; b=JtnYNFbjKBPYwkTdm5DWZY5yxIPfqPV5WSz7xKcgfwQoUXoKNAXdXg9YNya/OxMgHuGSYL6sC62rKXsdj3+XyoNCvc8x2dSRx143Fj3oZP0Z2mv7RSrs4siQ+n9uqHJSrFwXkoOOqpMvOduM6ypJhmES1IERx+BpaqP7rXpaFgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714198; c=relaxed/simple;
-	bh=7sMmr0W+ZNWG77z3Z80KDAuawwS/RyzpRiRosMOSNDs=;
+	s=arc-20240116; t=1718715841; c=relaxed/simple;
+	bh=55OM0YnrW986ceSwnNTkFr+DsDzouwPUrOPjDkczt9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LchEanFfhRGB7UNCz8DBIBHPJjSBhgNA9P1shdStTRmauXwmGS9vdvaw7TOfHqp585mmnilpGApHY9OSz3XzxGMuQZzRNvumL/wDuwPQ/VqAFBzpuoCle5edlRTk9dd2eVmhd6mTjjGKV2Z/1Y8vgjSL2dhhxECPQgcHnpEOF18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQW9Sl0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F8DC4AF1D;
-	Tue, 18 Jun 2024 12:36:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714197;
-	bh=7sMmr0W+ZNWG77z3Z80KDAuawwS/RyzpRiRosMOSNDs=;
+	 MIME-Version; b=kYYnuoVHhB8PIx4mVZ3gR1s0eMlKgtf6wXVx9bU2F5jZPmCsoccFSutUCMI6veAmX7jfEGm1/Ihi6BB7TfQJwC6aK7vtorrakkCYhiAnWHUZ6l0bE9v0gQ5GPUj9atzcpgrYvQGZSt0DsTPcJ3rQTTlOla+qi2QfLMRoFGiBx+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGEezbem; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8191CC3277B;
+	Tue, 18 Jun 2024 13:04:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715840;
+	bh=55OM0YnrW986ceSwnNTkFr+DsDzouwPUrOPjDkczt9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQW9Sl0RvqRDhBh9QGeywsc+rPzqVpdVZZI59V/iRMFDA0beqiWdp/Yv1VDAA3lTW
-	 xzTUyk5iFOpcfPnb28WifU1LEmoFl/7rbkGyb8JMHWBNHq1XGOc8+qU6vLt08HHkR5
-	 2L8/HMgw0ASmQ39ZMahvECijvoHCW6XRJNcUdnFPnTllqTEzPXGQdOTsFSLI2IOVvr
-	 HZntQhzwX8tOE8/MizkCzQZ+kCiDfhWICR2247Vdz3IqYntu5ez93d1b6uXTfVkCta
-	 YqCTJodVxaG+YYkAtNYFjXH1isvn7uFfS7jasU4KtGdFtjYgrPNT4SUQxD258lUFJf
-	 VmiS/ke4NH3Hw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Nicolas Escande <nico.escande@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 14/44] wifi: mac80211: mesh: init nonpeer_pm to active by default in mesh sdata
-Date: Tue, 18 Jun 2024 08:34:55 -0400
-Message-ID: <20240618123611.3301370-14-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=bGEezbem2Z/WEEwdd3WowddN5Q1KGaScMMIEWTiRZVwcQSJUifzBcuHWxeQtqCAsz
+	 PJ08ojcZI71xIWsHDgoM5XYh5n0vYESAQIqtctrqNH+i8Dd+Wnlc+90dEyDYP4/ZL1
+	 ZHkLkgifA1uyUqK56msdXlz06gBUegD8pAy679ew=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	"J. Bruce Fields" <bfields@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 443/770] nfsd: improve stateid access bitmask documentation
+Date: Tue, 18 Jun 2024 14:34:56 +0200
+Message-ID: <20240618123424.388376379@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Nicolas Escande <nico.escande@gmail.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 6f6291f09a322c1c1578badac8072d049363f4e6 ]
+------------------
 
-With a ath9k device I can see that:
-	iw phy phy0 interface add mesh0 type mp
-	ip link set mesh0 up
-	iw dev mesh0 scan
+From: J. Bruce Fields <bfields@redhat.com>
 
-Will start a scan with the Power Management bit set in the Frame Control Field.
-This is because we set this bit depending on the nonpeer_pm variable of the mesh
-iface sdata and when there are no active links on the interface it remains to
-NL80211_MESH_POWER_UNKNOWN.
+[ Upstream commit 3dcd1d8aab00c5d3a0a3725253c86440b1a0f5a7 ]
 
-As soon as links starts to be established, it wil switch to
-NL80211_MESH_POWER_ACTIVE as it is the value set by befault on the per sta
-nonpeer_pm field.
-As we want no power save by default, (as expressed with the per sta ini values),
-lets init it to the expected default value of NL80211_MESH_POWER_ACTIVE.
+The use of the bitmaps is confusing.  Add a cross-reference to make it
+easier to find the existing comment.  Add an updated reference with URL
+to make it quicker to look up.  And a bit more editorializing about the
+value of this.
 
-Also please note that we cannot change the default value from userspace prior to
-establishing a link as using NL80211_CMD_SET_MESH_CONFIG will not work before
-NL80211_CMD_JOIN_MESH has been issued. So too late for our initial scan.
-
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Link: https://msgid.link/20240527141759.299411-1-nico.escande@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: J. Bruce Fields <bfields@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfs4state.c | 14 ++++++++++----
+ fs/nfsd/state.h     |  4 ++++
+ 2 files changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index cbc9b5e40cb35..6d4510221c98e 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1776,6 +1776,7 @@ void ieee80211_mesh_init_sdata(struct ieee80211_sub_if_data *sdata)
- 	ifmsh->last_preq = jiffies;
- 	ifmsh->next_perr = jiffies;
- 	ifmsh->csa_role = IEEE80211_MESH_CSA_ROLE_NONE;
-+	ifmsh->nonpeer_pm = NL80211_MESH_POWER_ACTIVE;
- 	/* Allocate all mesh structures when creating the first mesh interface. */
- 	if (!mesh_allocated)
- 		ieee80211s_init();
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 0b39ed1568d40..3b8c5f2283975 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -360,11 +360,13 @@ static const struct nfsd4_callback_ops nfsd4_cb_notify_lock_ops = {
+  * st_{access,deny}_bmap field of the stateid, in order to track not
+  * only what share bits are currently in force, but also what
+  * combinations of share bits previous opens have used.  This allows us
+- * to enforce the recommendation of rfc 3530 14.2.19 that the server
+- * return an error if the client attempt to downgrade to a combination
+- * of share bits not explicable by closing some of its previous opens.
++ * to enforce the recommendation in
++ * https://datatracker.ietf.org/doc/html/rfc7530#section-16.19.4 that
++ * the server return an error if the client attempt to downgrade to a
++ * combination of share bits not explicable by closing some of its
++ * previous opens.
+  *
+- * XXX: This enforcement is actually incomplete, since we don't keep
++ * This enforcement is arguably incomplete, since we don't keep
+  * track of access/deny bit combinations; so, e.g., we allow:
+  *
+  *	OPEN allow read, deny write
+@@ -372,6 +374,10 @@ static const struct nfsd4_callback_ops nfsd4_cb_notify_lock_ops = {
+  *	DOWNGRADE allow read, deny none
+  *
+  * which we should reject.
++ *
++ * But you could also argue that our current code is already overkill,
++ * since it only exists to return NFS4ERR_INVAL on incorrect client
++ * behavior.
+  */
+ static unsigned int
+ bmap_to_share_mode(unsigned long bmap)
+diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
+index e73bdbb1634ab..6eb3c7157214b 100644
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -568,6 +568,10 @@ struct nfs4_ol_stateid {
+ 	struct list_head		st_locks;
+ 	struct nfs4_stateowner		*st_stateowner;
+ 	struct nfs4_clnt_odstate	*st_clnt_odstate;
++/*
++ * These bitmasks use 3 separate bits for READ, ALLOW, and BOTH; see the
++ * comment above bmap_to_share_mode() for explanation:
++ */
+ 	unsigned char			st_access_bmap;
+ 	unsigned char			st_deny_bmap;
+ 	struct nfs4_ol_stateid		*st_openstp;
 -- 
 2.43.0
+
+
 
 
