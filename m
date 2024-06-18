@@ -1,148 +1,107 @@
-Return-Path: <stable+bounces-52682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA70F90CBE7
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:38:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C30DE90D0E9
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D33ED2830F8
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:38:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B85D1F21A64
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4040914F9CF;
-	Tue, 18 Jun 2024 12:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C37157478;
+	Tue, 18 Jun 2024 13:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uq/gP46q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="baVF4lH5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE95E14F130;
-	Tue, 18 Jun 2024 12:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374E413BAFB;
+	Tue, 18 Jun 2024 13:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714193; cv=none; b=owqMYrY5Jl2/kAPB8am2sIitFkCMTjE2m4yhN4ubCJsLjhVvTwYfKtnP5nSAsw4wFpMgJioY13+8jsw3+4K2Ph+2AyPShnExwTjzp7SegjDSYedF4v+BxpWj+E8sv980zS0KqK6BXoPMjPAM/y+KbPIa1795EpqMKZ7ZINs66rE=
+	t=1718715832; cv=none; b=KRrzvGnO2ZCp6owctu1sT4Ni0EiBgAyYBMmTExFCfF+sBtKE8xAecJ7tGlKNaCh++zeKXvC27/Sok9y1n0LtyZYNAMBfJ4ti7xOHbPD3OOIMUaU+Qv2vjmmja0fXObdAefF4A/YpBiOi26Y6s5qI/KzTho5xbLdwMlNBq8/H0LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714193; c=relaxed/simple;
-	bh=Thyw0jk39ehSKVrWbpzk6z0cIctwuMcByciNbZ10WDs=;
+	s=arc-20240116; t=1718715832; c=relaxed/simple;
+	bh=UbNmr5P6fIZ4Nn97Ln+p3HCXvz9jwgJpFLKx7pI5i1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UDxvHuUc+RN6cBCN9sPyQYrs/rVdZrXpo7L/1dy6Q+p7+YU80wGuKeWJ2X53wirhYPN+ug1Awphnpt8IgUClF6GiHhHcZYCoMduL00bdhrTYyWvatRPJrqJ1kWsi+KyrKhaBzQBqD7pXXZNnYRUNExdtEsD89O5/t1fXvi20L8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uq/gP46q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F571C32786;
-	Tue, 18 Jun 2024 12:36:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714192;
-	bh=Thyw0jk39ehSKVrWbpzk6z0cIctwuMcByciNbZ10WDs=;
+	 MIME-Version; b=WTDM75IUB1Q/85CYGJb1g6zOnjzOfKV0FqgBxWrfDLXpwDyKwCxnZx5W+jmTlTdzTNh4AAaffSQYBGveO88WYm0GWgQToPlBmMnn8hrdWOWVY0p1OQdzf50yLMGZWYfQdg6PqA6dvazA9n90RDBm89F1n1Ya4INzBIEQn/pKe1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=baVF4lH5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B336BC3277B;
+	Tue, 18 Jun 2024 13:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715832;
+	bh=UbNmr5P6fIZ4Nn97Ln+p3HCXvz9jwgJpFLKx7pI5i1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uq/gP46qAx4Xs1K99GGZQX9JCtLgggsiVB5uhy/ZRl+q2rVYE+0+TSLoRvG1WxqEN
-	 Q3OMb+foQXPhGQTwPa75FWH9hmF5uOApyxgg9PUv1SvttG7clWDpo5OC4lCN6claLu
-	 bbMBV7DDpRtcB8bvRG1dj1tJI7RyiFXU3FxkzDqjqQTa0Fm9pbmFNRcw3k+AzDj7O4
-	 jj3SZFKY537+JFh4mCuaSBVErr1D+LI8VyQuO0YpaghS2MkxtD6vDYnRL/fiPs2aZD
-	 3AqNWE7JJG/ALvwPwjRQsMktYxT8WvkhbftuRXvoN0+oyScsCB4PwH8kD1D++OmtJS
-	 RpGksL4Ulvn1w==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	Ananth Narayan <Ananth.Narayan@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	trenn@suse.com,
-	shuah@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 11/44] tools/power/cpupower: Fix Pstate frequency reporting on AMD Family 1Ah CPUs
-Date: Tue, 18 Jun 2024 08:34:52 -0400
-Message-ID: <20240618123611.3301370-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=baVF4lH5FafBYhZjVmrxf5zHmozSFBVzema+XlCCOVZxm87ANmErnbBSlfGILedXh
+	 8uuMoqFKAokvFY+dPIGTmxO6V5iKFt8yr9MoCmVc+29y2WvANAsFveCUVtvTVFHeoV
+	 4+6O30DrnRjJebJ/phZ63fhGx0TQ6L7nzRW3pQnQ=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 440/770] NFSD: Fix inconsistent indenting
+Date: Tue, 18 Jun 2024 14:34:53 +0200
+Message-ID: <20240618123424.271850268@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 43cad521c6d228ea0c51e248f8e5b3a6295a2849 ]
+------------------
 
-Update cpupower's P-State frequency calculation and reporting with AMD
-Family 1Ah+ processors, when using the acpi-cpufreq driver. This is due
-to a change in the PStateDef MSR layout in AMD Family 1Ah+.
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-Tested on 4th and 5th Gen AMD EPYC system
+[ Upstream commit 1e37d0e5bda45881eea1bec4b812def72c7d4aea ]
 
-Signed-off-by: Ananth Narayan <Ananth.Narayan@amd.com>
-Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Eliminate the follow smatch warning:
+
+fs/nfsd/nfs4xdr.c:4766 nfsd4_encode_read_plus_hole() warn: inconsistent
+indenting.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/utils/helpers/amd.c | 26 +++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs4xdr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/power/cpupower/utils/helpers/amd.c b/tools/power/cpupower/utils/helpers/amd.c
-index c519cc89c97f4..0a56e22240fc8 100644
---- a/tools/power/cpupower/utils/helpers/amd.c
-+++ b/tools/power/cpupower/utils/helpers/amd.c
-@@ -41,6 +41,16 @@ union core_pstate {
- 		unsigned res1:31;
- 		unsigned en:1;
- 	} pstatedef;
-+	/* since fam 1Ah: */
-+	struct {
-+		unsigned fid:12;
-+		unsigned res1:2;
-+		unsigned vid:8;
-+		unsigned iddval:8;
-+		unsigned idddiv:2;
-+		unsigned res2:31;
-+		unsigned en:1;
-+	} pstatedef2;
- 	unsigned long long val;
- };
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index d9758232a398c..638a626af18dc 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -4812,8 +4812,8 @@ nfsd4_encode_read_plus_hole(struct nfsd4_compoundres *resp,
+ 		return nfserr_resource;
  
-@@ -48,6 +58,10 @@ static int get_did(union core_pstate pstate)
- {
- 	int t;
+ 	*p++ = htonl(NFS4_CONTENT_HOLE);
+-	 p   = xdr_encode_hyper(p, read->rd_offset);
+-	 p   = xdr_encode_hyper(p, count);
++	p = xdr_encode_hyper(p, read->rd_offset);
++	p = xdr_encode_hyper(p, count);
  
-+	/* Fam 1Ah onward do not use did */
-+	if (cpupower_cpu_info.family >= 0x1A)
-+		return 0;
-+
- 	if (cpupower_cpu_info.caps & CPUPOWER_CAP_AMD_PSTATEDEF)
- 		t = pstate.pstatedef.did;
- 	else if (cpupower_cpu_info.family == 0x12)
-@@ -61,12 +75,18 @@ static int get_did(union core_pstate pstate)
- static int get_cof(union core_pstate pstate)
- {
- 	int t;
--	int fid, did, cof;
-+	int fid, did, cof = 0;
- 
- 	did = get_did(pstate);
- 	if (cpupower_cpu_info.caps & CPUPOWER_CAP_AMD_PSTATEDEF) {
--		fid = pstate.pstatedef.fid;
--		cof = 200 * fid / did;
-+		if (cpupower_cpu_info.family >= 0x1A) {
-+			fid = pstate.pstatedef2.fid;
-+			if (fid > 0x0f)
-+				cof = (fid * 5);
-+		} else {
-+			fid = pstate.pstatedef.fid;
-+			cof = 200 * fid / did;
-+		}
- 	} else {
- 		t = 0x10;
- 		fid = pstate.pstate.fid;
+ 	*eof = (read->rd_offset + count) >= f_size;
+ 	*maxcount = min_t(unsigned long, count, *maxcount);
 -- 
 2.43.0
+
+
 
 
