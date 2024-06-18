@@ -1,364 +1,118 @@
-Return-Path: <stable+bounces-53452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D47A90D277
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:50:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26B390CCBF
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F953B22D35
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:44:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A37C6285482
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22621A2C1A;
-	Tue, 18 Jun 2024 13:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B7D19D079;
+	Tue, 18 Jun 2024 12:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvnB5Ysk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r/4hyYSb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5041A256C;
-	Tue, 18 Jun 2024 13:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2465519D062;
+	Tue, 18 Jun 2024 12:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716367; cv=none; b=eqlRykrJ90erUorh1crAgCEspFpviGS9n78HKRsBzvvl88VK8latJc0BXu2kdKbcNquQrSHKVZXq1nTCgiE/shFwwyqqzIuo8ptGwD3oUtIDyyGtY9oSKft51C4VmPt2tUMcDpCrL/+xsg3Qe2pfjBXX4ZeQHMbxI+ckkSEDu04=
+	t=1718714384; cv=none; b=ZnRZLgUR2ORRB6oItP3CA/mDeR1wVS6upFWq0f7ytLO6MrM8PQ5RBjqHncBpmPPwl7uf6WYUBuxb6lLIdSQvcxApErry35fTRZZfDQ893CrRM3uepAUXhyKcEpJG0FiDh1Mrg7LFjIfaUMJ9i3+eyJTBKru6Q4/tDI4tpmjpMEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716367; c=relaxed/simple;
-	bh=+GjENXzN9PiFvtZo2+O3Rh2BQKbmkSB5GdZb7Y5F8Bc=;
+	s=arc-20240116; t=1718714384; c=relaxed/simple;
+	bh=gXFY6kVP7Vswt9ZX8PM6HfCz4hCwGp9J3qwlDlyRPdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZAGeysasBTcfwtMtp7h8XDjSWSSpkHLZxqYgz+mNsiXK0XFphFAQrvmHACfSKM/ZpkXCJ/2Ir5pDxsZWKM2tEY2iTM0r4inEsBPRCj/K2DQrAuBP+/Ot5SNf6DKMpsUNJPaHpVmzbtaUq5NbSCfTAkXYK03hz+G4CJcQQGuRHnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvnB5Ysk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14894C32786;
-	Tue, 18 Jun 2024 13:12:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716367;
-	bh=+GjENXzN9PiFvtZo2+O3Rh2BQKbmkSB5GdZb7Y5F8Bc=;
+	 MIME-Version; b=r4b2OaGWyFgwMDnSz+mBdkYkKfiM39vU8SO7VyZGIJzSGK6lql36B4/hcp4G+IRs3Xc89nokCU6ajaFDBiUK9tsJU/vr/t/M0tbqIawsj9NsxMq+8S7pISkl8QpSHM070JPxabhPdL2/dQcnFact9olxaG+HXspIxA4BLjQbyjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r/4hyYSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BEBC4AF1D;
+	Tue, 18 Jun 2024 12:39:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714383;
+	bh=gXFY6kVP7Vswt9ZX8PM6HfCz4hCwGp9J3qwlDlyRPdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvnB5YsknxKX+68BhXpjl3kvbElYHKeTnH7SDV2X5+1lcUID/CLdbRInWAx409vbG
-	 9t4Ejtjae+yxzmohJIerJ9yaH1wRNgbFMmHXiwq4bm5LvFoEb5cjjeakWuqHKAVlEL
-	 OXjuqN6f+gS95CbPX8EhysnmpczOq5ZKFYpGBBJc=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 615/770] NFSD: add posix ACLs to struct nfsd_attrs
-Date: Tue, 18 Jun 2024 14:37:48 +0200
-Message-ID: <20240618123431.028757893@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=r/4hyYSberJIT0QFFwge2zsQaNKmpQTfG8QHHJKVJlnWMckjU1LvPEX/DYMZkmgVn
+	 ARODoR6iKo3m/9HBMnc7HnsoFKMzb6Pm29fFYCaRrQlx+LAceqItP3OPp3Acxxhj1x
+	 pzhIIRuVQY3zDN97TNS8RJAogoX9Ej5a0sCx9+1YcSUyzhm4HfPwuP7mHIRhDgcYgg
+	 o6f3L2gCJZFO+knoqyeY53bW9UD9QN2SJqhgeGfKDgMk0NIoVVaVApk4wW2/v9GGz6
+	 6PAWScOaCzeHVGiN3/powN8ZTfQTsS2FZvjIej1e47zv7zXfRj9/a5EK5GUKghIQos
+	 fkDTnvE6kLasw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Wei Li <liwei391@huawei.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	catalin.marinas@arm.com,
+	j.granados@samsung.com,
+	mcgrof@kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 29/35] arm64: armv8_deprecated: Fix warning in isndep cpuhp starting process
+Date: Tue, 18 Jun 2024 08:37:49 -0400
+Message-ID: <20240618123831.3302346-29-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
+References: <20240618123831.3302346-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Wei Li <liwei391@huawei.com>
 
-------------------
+[ Upstream commit 14951beaec93696b092a906baa0f29322cf34004 ]
 
-From: NeilBrown <neilb@suse.de>
+The function run_all_insn_set_hw_mode() is registered as startup callback
+of 'CPUHP_AP_ARM64_ISNDEP_STARTING', it invokes set_hw_mode() methods of
+all emulated instructions.
 
-[ Upstream commit c0cbe70742f4a70893cd6e5f6b10b6e89b6db95b ]
+As the STARTING callbacks are not expected to fail, if one of the
+set_hw_mode() fails, e.g. due to el0 mixed-endian is not supported for
+'setend', it will report a warning:
 
-pacl and dpacl pointers are added to struct nfsd_attrs, which requires
-that we have an nfsd_attrs_free() function to free them.
-Those nfsv4 functions that can set ACLs now set up these pointers
-based on the passed in NFSv4 ACL.
+```
+CPU[2] cannot support the emulation of setend
+CPU 2 UP state arm64/isndep:starting (136) failed (-22)
+CPU2: Booted secondary processor 0x0000000002 [0x414fd0c1]
+```
 
-nfsd_setattr() sets the acls as appropriate.
+To fix it, add a check for INSN_UNAVAILABLE status and skip the process.
 
-Errors are handled as with security labels.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-[ cel: backported to 5.10.y, prior to idmapped mounts ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Wei Li <liwei391@huawei.com>
+Tested-by: Huisong Li <lihuisong@huawei.com>
+Link: https://lore.kernel.org/r/20240423093501.3460764-1-liwei391@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/acl.h      |  6 ++++--
- fs/nfsd/nfs4acl.c  | 45 +++++++--------------------------------------
- fs/nfsd/nfs4proc.c | 46 ++++++++++++++++------------------------------
- fs/nfsd/vfs.c      |  7 +++++++
- fs/nfsd/vfs.h      | 11 +++++++++++
- 5 files changed, 45 insertions(+), 70 deletions(-)
+ arch/arm64/kernel/armv8_deprecated.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nfsd/acl.h b/fs/nfsd/acl.h
-index ba14d2f4b64f4..4b7324458a94e 100644
---- a/fs/nfsd/acl.h
-+++ b/fs/nfsd/acl.h
-@@ -38,6 +38,8 @@
- struct nfs4_acl;
- struct svc_fh;
- struct svc_rqst;
-+struct nfsd_attrs;
-+enum nfs_ftype4;
- 
- int nfs4_acl_bytes(int entries);
- int nfs4_acl_get_whotype(char *, u32);
-@@ -45,7 +47,7 @@ __be32 nfs4_acl_write_who(struct xdr_stream *xdr, int who);
- 
- int nfsd4_get_nfs4_acl(struct svc_rqst *rqstp, struct dentry *dentry,
- 		struct nfs4_acl **acl);
--__be32 nfsd4_set_nfs4_acl(struct svc_rqst *rqstp, struct svc_fh *fhp,
--		struct nfs4_acl *acl);
-+__be32 nfsd4_acl_to_attr(enum nfs_ftype4 type, struct nfs4_acl *acl,
-+			 struct nfsd_attrs *attr);
- 
- #endif /* LINUX_NFS4_ACL_H */
-diff --git a/fs/nfsd/nfs4acl.c b/fs/nfsd/nfs4acl.c
-index 71292a0d6f092..bb8e2f6d7d03c 100644
---- a/fs/nfsd/nfs4acl.c
-+++ b/fs/nfsd/nfs4acl.c
-@@ -751,57 +751,26 @@ static int nfs4_acl_nfsv4_to_posix(struct nfs4_acl *acl,
- 	return ret;
- }
- 
--__be32
--nfsd4_set_nfs4_acl(struct svc_rqst *rqstp, struct svc_fh *fhp,
--		struct nfs4_acl *acl)
-+__be32 nfsd4_acl_to_attr(enum nfs_ftype4 type, struct nfs4_acl *acl,
-+			 struct nfsd_attrs *attr)
- {
--	__be32 error;
- 	int host_error;
--	struct dentry *dentry;
--	struct inode *inode;
--	struct posix_acl *pacl = NULL, *dpacl = NULL;
- 	unsigned int flags = 0;
- 
--	/* Get inode */
--	error = fh_verify(rqstp, fhp, 0, NFSD_MAY_SATTR);
--	if (error)
--		return error;
--
--	dentry = fhp->fh_dentry;
--	inode = d_inode(dentry);
-+	if (!acl)
-+		return nfs_ok;
- 
--	if (S_ISDIR(inode->i_mode))
-+	if (type == NF4DIR)
- 		flags = NFS4_ACL_DIR;
- 
--	host_error = nfs4_acl_nfsv4_to_posix(acl, &pacl, &dpacl, flags);
-+	host_error = nfs4_acl_nfsv4_to_posix(acl, &attr->na_pacl,
-+					     &attr->na_dpacl, flags);
- 	if (host_error == -EINVAL)
- 		return nfserr_attrnotsupp;
--	if (host_error < 0)
--		goto out_nfserr;
--
--	fh_lock(fhp);
--
--	host_error = set_posix_acl(inode, ACL_TYPE_ACCESS, pacl);
--	if (host_error < 0)
--		goto out_drop_lock;
--
--	if (S_ISDIR(inode->i_mode)) {
--		host_error = set_posix_acl(inode, ACL_TYPE_DEFAULT, dpacl);
--	}
--
--out_drop_lock:
--	fh_unlock(fhp);
--
--	posix_acl_release(pacl);
--	posix_acl_release(dpacl);
--out_nfserr:
--	if (host_error == -EOPNOTSUPP)
--		return nfserr_attrnotsupp;
- 	else
- 		return nfserrno(host_error);
- }
- 
--
- static short
- ace2type(struct nfs4_ace *ace)
- {
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index cfcc463968b70..507a2aa967133 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -128,26 +128,6 @@ is_create_with_attrs(struct nfsd4_open *open)
- 		    || open->op_createmode == NFS4_CREATE_EXCLUSIVE4_1);
- }
- 
--/*
-- * if error occurs when setting the acl, just clear the acl bit
-- * in the returned attr bitmap.
-- */
--static void
--do_set_nfs4_acl(struct svc_rqst *rqstp, struct svc_fh *fhp,
--		struct nfs4_acl *acl, u32 *bmval)
--{
--	__be32 status;
--
--	status = nfsd4_set_nfs4_acl(rqstp, fhp, acl);
--	if (status)
--		/*
--		 * We should probably fail the whole open at this point,
--		 * but we've already created the file, so it's too late;
--		 * So this seems the least of evils:
--		 */
--		bmval[0] &= ~FATTR4_WORD0_ACL;
--}
--
- static inline void
- fh_dup2(struct svc_fh *dst, struct svc_fh *src)
- {
-@@ -281,6 +261,9 @@ nfsd4_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (host_err)
- 		return nfserrno(host_err);
- 
-+	if (is_create_with_attrs(open))
-+		nfsd4_acl_to_attr(NF4REG, open->op_acl, &attrs);
+diff --git a/arch/arm64/kernel/armv8_deprecated.c b/arch/arm64/kernel/armv8_deprecated.c
+index e459cfd337117..d6b711e56df97 100644
+--- a/arch/arm64/kernel/armv8_deprecated.c
++++ b/arch/arm64/kernel/armv8_deprecated.c
+@@ -464,6 +464,9 @@ static int run_all_insn_set_hw_mode(unsigned int cpu)
+ 	for (int i = 0; i < ARRAY_SIZE(insn_emulations); i++) {
+ 		struct insn_emulation *insn = insn_emulations[i];
+ 		bool enable = READ_ONCE(insn->current_mode) == INSN_HW;
++		if (insn->status == INSN_UNAVAILABLE)
++			continue;
 +
- 	fh_lock_nested(fhp, I_MUTEX_PARENT);
- 
- 	child = lookup_one_len(open->op_fname, parent, open->op_fnamelen);
-@@ -382,8 +365,11 @@ nfsd4_create_file(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 
- 	if (attrs.na_labelerr)
- 		open->op_bmval[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
-+	if (attrs.na_aclerr)
-+		open->op_bmval[0] &= ~FATTR4_WORD0_ACL;
- out:
- 	fh_unlock(fhp);
-+	nfsd_attrs_free(&attrs);
- 	if (child && !IS_ERR(child))
- 		dput(child);
- 	fh_drop_write(fhp);
-@@ -446,9 +432,6 @@ do_open_lookup(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate, stru
- 	if (status)
- 		goto out;
- 
--	if (is_create_with_attrs(open) && open->op_acl != NULL)
--		do_set_nfs4_acl(rqstp, *resfh, open->op_acl, open->op_bmval);
--
- 	nfsd4_set_open_owner_reply_cache(cstate, open, *resfh);
- 	accmode = NFSD_MAY_NOP;
- 	if (open->op_created ||
-@@ -779,6 +762,7 @@ nfsd4_create(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	if (status)
- 		return status;
- 
-+	status = nfsd4_acl_to_attr(create->cr_type, create->cr_acl, &attrs);
- 	current->fs->umask = create->cr_umask;
- 	switch (create->cr_type) {
- 	case NF4LNK:
-@@ -837,10 +821,8 @@ nfsd4_create(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 
- 	if (attrs.na_labelerr)
- 		create->cr_bmval[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
--
--	if (create->cr_acl != NULL)
--		do_set_nfs4_acl(rqstp, &resfh, create->cr_acl,
--				create->cr_bmval);
-+	if (attrs.na_aclerr)
-+		create->cr_bmval[0] &= ~FATTR4_WORD0_ACL;
- 
- 	fh_unlock(&cstate->current_fh);
- 	set_change_info(&create->cr_cinfo, &cstate->current_fh);
-@@ -849,6 +831,7 @@ nfsd4_create(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	fh_put(&resfh);
- out_umask:
- 	current->fs->umask = 0;
-+	nfsd_attrs_free(&attrs);
- 	return status;
- }
- 
-@@ -1123,6 +1106,7 @@ nfsd4_setattr(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		.na_iattr	= &setattr->sa_iattr,
- 		.na_seclabel	= &setattr->sa_label,
- 	};
-+	struct inode *inode;
- 	__be32 status = nfs_ok;
- 	int err;
- 
-@@ -1145,9 +1129,10 @@ nfsd4_setattr(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	if (status)
- 		goto out;
- 
--	if (setattr->sa_acl != NULL)
--		status = nfsd4_set_nfs4_acl(rqstp, &cstate->current_fh,
--					    setattr->sa_acl);
-+	inode = cstate->current_fh.fh_dentry->d_inode;
-+	status = nfsd4_acl_to_attr(S_ISDIR(inode->i_mode) ? NF4DIR : NF4REG,
-+				   setattr->sa_acl, &attrs);
-+
- 	if (status)
- 		goto out;
- 	status = nfsd_setattr(rqstp, &cstate->current_fh, &attrs,
-@@ -1155,6 +1140,7 @@ nfsd4_setattr(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	if (!status)
- 		status = nfserrno(attrs.na_labelerr);
- out:
-+	nfsd_attrs_free(&attrs);
- 	fh_drop_write(&cstate->current_fh);
- 	return status;
- }
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 01c431ed90ecf..bed542ba8ad8e 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -474,6 +474,13 @@ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	if (attr->na_seclabel && attr->na_seclabel->len)
- 		attr->na_labelerr = security_inode_setsecctx(dentry,
- 			attr->na_seclabel->data, attr->na_seclabel->len);
-+	if (IS_ENABLED(CONFIG_FS_POSIX_ACL) && attr->na_pacl)
-+		attr->na_aclerr = set_posix_acl(inode, ACL_TYPE_ACCESS,
-+						attr->na_pacl);
-+	if (IS_ENABLED(CONFIG_FS_POSIX_ACL) &&
-+	    !attr->na_aclerr && attr->na_dpacl && S_ISDIR(inode->i_mode))
-+		attr->na_aclerr = set_posix_acl(inode, ACL_TYPE_DEFAULT,
-+						attr->na_dpacl);
- 	fh_unlock(fhp);
- 	if (size_change)
- 		put_write_access(inode);
-diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
-index d5d4cfe37c933..c95cd414b4bb0 100644
---- a/fs/nfsd/vfs.h
-+++ b/fs/nfsd/vfs.h
-@@ -6,6 +6,8 @@
- #ifndef LINUX_NFSD_VFS_H
- #define LINUX_NFSD_VFS_H
- 
-+#include <linux/fs.h>
-+#include <linux/posix_acl.h>
- #include "nfsfh.h"
- #include "nfsd.h"
- 
-@@ -45,10 +47,19 @@ typedef int (*nfsd_filldir_t)(void *, const char *, int, loff_t, u64, unsigned);
- struct nfsd_attrs {
- 	struct iattr		*na_iattr;	/* input */
- 	struct xdr_netobj	*na_seclabel;	/* input */
-+	struct posix_acl	*na_pacl;	/* input */
-+	struct posix_acl	*na_dpacl;	/* input */
- 
- 	int			na_labelerr;	/* output */
-+	int			na_aclerr;	/* output */
- };
- 
-+static inline void nfsd_attrs_free(struct nfsd_attrs *attrs)
-+{
-+	posix_acl_release(attrs->na_pacl);
-+	posix_acl_release(attrs->na_dpacl);
-+}
-+
- int		nfsd_cross_mnt(struct svc_rqst *rqstp, struct dentry **dpp,
- 		                struct svc_export **expp);
- __be32		nfsd_lookup(struct svc_rqst *, struct svc_fh *,
+ 		if (insn->set_hw_mode && insn->set_hw_mode(enable)) {
+ 			pr_warn("CPU[%u] cannot support the emulation of %s",
+ 				cpu, insn->name);
 -- 
 2.43.0
-
-
 
 
