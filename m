@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-52631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABA9A90C269
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 05:21:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDBF890C27E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 05:31:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D1771C21CA6
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 03:21:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0073AB20BF7
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 03:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4838119D074;
-	Tue, 18 Jun 2024 03:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3622A1F608;
+	Tue, 18 Jun 2024 03:31:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A1019B5BC
-	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 03:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2376D33C9
+	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 03:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718680823; cv=none; b=sosYcP30+l7QVkRWhUC5pTzfcBtRkaY4aE+qE4SotmF8SBpe53ZQNUm3/3REVhz1phs4YrjleW7dOaj1afKxA77962f/UnptMI6kWj9YZdc2HDeG7Xb8MQ9hszpOKJY29UijSokcj7WDde6ZkYgIT6DVfARGEihXdpmw3ErmaSQ=
+	t=1718681488; cv=none; b=bppztb5tDEEYppa+K7ym3HFx9bXXiChaPLbSzwNcJJHX9vtjLePgMgyz/4TYBnfxaWc48CRa72Ciz34FltBbeCxY1l5gSI6ZB1tc85lOMtab5a36jwmG3RWpEhSeWV+kOot3RzXM/HBMHfwrwZvAKKPgNNa9sXm8qTgKmVYNqoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718680823; c=relaxed/simple;
-	bh=lp4hNuK2bQ6QkZJoBgwp3RYljscVUJDjF0uZhqD/E0Q=;
+	s=arc-20240116; t=1718681488; c=relaxed/simple;
+	bh=gih5sXZl1Cap5B3oQ03fk0EB+zExAxvcYgkRUGeKjss=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DfqO1WIr/iMN2FmFqsGB6LpL4cTENzwolRxLbNTsWDMV3o8WR/aOqnMSxCJ35jXZD39gIHtJe5pFxMBH/mRqccCv1v60flItfhxtvAy+iFva2oTvGm3Tiiks7cPnaqviZzpRMlEo9vnFmUYktW9JlBuueZjYi2YDDf32koYKbrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+	 MIME-Version:Content-Type; b=hw5PiF48XkAS2TIXHjrX8pkrAznpjKX3YbKWqFRspGAaaAgpa/qN0kO0o5991tjn2jp4HhwbNYc3ByIeKmdLWeRgI4OHPLPkWzWGAe9QYKjVQoXtiGO20PHtCN5E4WTqWr5brXgm76Xetgmylg77T0lYl0GevahiXlKEQDxZ1Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4W3Blq3sRHz1HDWx;
-	Tue, 18 Jun 2024 11:18:15 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4W3By53JPtz1SCXD;
+	Tue, 18 Jun 2024 11:27:09 +0800 (CST)
 Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
-	by mail.maildlp.com (Postfix) with ESMTPS id CF7AC140123;
-	Tue, 18 Jun 2024 11:20:16 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 9F624140159;
+	Tue, 18 Jun 2024 11:31:22 +0800 (CST)
 Received: from huawei.com (10.173.127.72) by canpemm500002.china.huawei.com
  (7.192.104.244) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 18 Jun
- 2024 11:20:16 +0800
+ 2024 11:31:22 +0800
 From: Miaohe Lin <linmiaohe@huawei.com>
 To: <stable@vger.kernel.org>
 CC: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>,
@@ -46,12 +46,12 @@ CC: Miaohe Lin <linmiaohe@huawei.com>, David Hildenbrand <david@redhat.com>,
  Khandual <anshuman.khandual@arm.com>, Naoya Horiguchi
 	<nao.horiguchi@gmail.com>, Xu Yu <xuyu@linux.alibaba.com>, Andrew Morton
 	<akpm@linux-foundation.org>
-Subject: [PATCH 6.9.y] mm/huge_memory: don't unpoison huge_zero_folio
-Date: Tue, 18 Jun 2024 11:16:24 +0800
-Message-ID: <20240618031624.2277227-1-linmiaohe@huawei.com>
+Subject: [PATCH 5.15.y] mm/huge_memory: don't unpoison huge_zero_folio
+Date: Tue, 18 Jun 2024 11:27:27 +0800
+Message-ID: <20240618032727.2389102-1-linmiaohe@huawei.com>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <2024061356-victory-clothes-c151@gregkh>
-References: <2024061356-victory-clothes-c151@gregkh>
+In-Reply-To: <2024061300-ceremony-habitable-06c0@gregkh>
+References: <2024061300-ceremony-habitable-06c0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
  canpemm500002.china.huawei.com (7.192.104.244)
 
 When I did memory failure tests recently, below panic occurs:
@@ -129,14 +129,14 @@ Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
  1 file changed, 7 insertions(+)
 
 diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 18da1c2b08c3..7751bd78fbcb 100644
+index 1f23baa98ee9..8be244f6c320 100644
 --- a/mm/memory-failure.c
 +++ b/mm/memory-failure.c
-@@ -2550,6 +2550,13 @@ int unpoison_memory(unsigned long pfn)
- 		goto unlock_mutex;
- 	}
+@@ -2051,6 +2051,13 @@ int unpoison_memory(unsigned long pfn)
  
-+	if (is_huge_zero_page(&folio->page)) {
+ 	mutex_lock(&mf_mutex);
+ 
++	if (is_huge_zero_page(page)) {
 +		unpoison_pr_info("Unpoison: huge zero page is not supported %#lx\n",
 +				 pfn, &unpoison_rs);
 +		ret = -EOPNOTSUPP;
