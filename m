@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01ACD90D550
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:35:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F69290D552
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 127441C20DD8
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:35:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42DD61F2234D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F3B14036D;
-	Tue, 18 Jun 2024 14:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7BC15531C;
+	Tue, 18 Jun 2024 14:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KR2hEGwg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NaVk0fxn"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384872139A2
-	for <Stable@vger.kernel.org>; Tue, 18 Jun 2024 14:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0452139A2
+	for <Stable@vger.kernel.org>; Tue, 18 Jun 2024 14:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718720267; cv=none; b=Xk45tuctGWpd7H7TfYbmTlyA8F65M6LS7xW0KE+Hiani2zMJyUewSkvCVP1y0qgnpttriYDQdLuYeX7nZFC4NirBDT8y61FrVkQ6UhziCyCwMSIVHaH4HAplyHoW5d/DWc8fbzIyzY9HWWRFrqppVf2TXa3/ouP2fEDYJYRAOZc=
+	t=1718720279; cv=none; b=cZBt3GIXrdjCeQCFeUYvoLmQwXjYjUX3d4mruGOoyKLHx/AZnEOfTNhXIVeL+TPWup9+G3JUgwe1DYpNPzVuv/3wENoqhpLNLf2xnnXsXuWCdg6PXSLlJOQfQLz6VMXSo025gSaVI3CnaZT8JYkdtFMwBL8P6Uby0ti6myTJlwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718720267; c=relaxed/simple;
-	bh=PwN3TE49BjCa/xicRRhGS6FGqy1enXbxbHZxe3vnv6o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=io+mb0Dqf3jqjN9TqRa0SmT/tDkPsU4VT0BMrs98LX2kHGu47e8Vyut0rrPQ7jwDuXXJnCalyr07UEMK0OE3UJ2o7ukR5VhriI3rLKD+iOKQLqN/KQ7OYuAyGq3Xu2iXkdPaAfGc3/i7O6wWm162aNal5y209SsWuyfp8bfKsdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KR2hEGwg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFB1C3277B;
-	Tue, 18 Jun 2024 14:17:46 +0000 (UTC)
+	s=arc-20240116; t=1718720279; c=relaxed/simple;
+	bh=y5SyDCYwa5vTf1CHBmxcKmCBqiloLuQ+fZr0BRWMerA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JNRr2VKieJRDsxejjzb3eO5dASHry6VqtvIReN4wZvfdBIu1eaY/Drom2bxC6totxTHYmAIBMsAjumorN3em7S+JbFgqOkcMeEVfbDUPOFUopnjgZgk5Dn61OG0E6eR2ZxJjGfHqyVgZ1vjy20nKizBCkATRWqS8gmEsaM0GKQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NaVk0fxn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65386C3277B;
+	Tue, 18 Jun 2024 14:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718720267;
-	bh=PwN3TE49BjCa/xicRRhGS6FGqy1enXbxbHZxe3vnv6o=;
+	s=korg; t=1718720278;
+	bh=y5SyDCYwa5vTf1CHBmxcKmCBqiloLuQ+fZr0BRWMerA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KR2hEGwg/CCFh/7T0v2fQqJRNDOao5d4VTYVtYcrALwBpRlD258e3digxZ13AWr1o
-	 BrFnIh2sXhsCJOZqRKbA2bqXbtHa41eYAHvLYKJ1a+9oijl23mW3PD7ZRQAe8wQMyV
-	 JkMIPv6bPtRkO1Z5lRccTotagAtNt6GJntb0FEog=
-Subject: FAILED: patch "[PATCH] iio: adc: axi-adc: make sure AXI clock is enabled" failed to apply to 6.1-stable tree
+	b=NaVk0fxnCDE0WhENYJauXvwJhYhbntDdOvupn20SBmegvLxjA0d062Prn52FkIajB
+	 ky3w4m6OuxhQmrER0NHGC72ETCyFoIpkjYprPcUrSyjcbUoJKheROTqginuGshekTc
+	 3FM8RPGtevdLMG7+G2/Mj4xHnuHvAbz359SqenSY=
+Subject: FAILED: patch "[PATCH] iio: adc: axi-adc: make sure AXI clock is enabled" failed to apply to 5.15-stable tree
 To: nuno.sa@analog.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 18 Jun 2024 16:17:44 +0200
-Message-ID: <2024061844-retiree-walrus-8589@gregkh>
+Date: Tue, 18 Jun 2024 16:17:45 +0200
+Message-ID: <2024061844-frosty-hungry-66ea@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 80721776c5af6f6dce7d84ba8df063957aa425a2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061844-retiree-walrus-8589@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061844-frosty-hungry-66ea@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -83,6 +83,7 @@ d2ab4eea732d ("iio: adc: palmas: replace "wakeup" with "event"")
 79d9622d622d ("iio: adc: palmas: remove adc_wakeupX_data")
 6d52b0e70698 ("iio: adc: palmas: Take probe fully device managed.")
 49f76c499d38 ("iio: adc: palmas_gpadc: fix NULL dereference on rmmod")
+2a3c8f8a4494 ("Merge tag 'iio-for-5.20a' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into char-misc-next")
 
 thanks,
 
