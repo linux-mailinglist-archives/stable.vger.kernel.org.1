@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638C990D2B1
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:52:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9580390D17D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDE50B27E2D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:43:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D48285C5E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A760B1A08BC;
-	Tue, 18 Jun 2024 13:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85EBA1A08C8;
+	Tue, 18 Jun 2024 13:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2UikVGh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOtzcHUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6697913C807;
-	Tue, 18 Jun 2024 13:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440B8158A35;
+	Tue, 18 Jun 2024 13:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716228; cv=none; b=YY2geQtLlnDfa0bG3tAsaGO5WAsC8mx0M5TT+/7f2552WRksj9i34HwPPeODdvk9hgZRECT8quCfrGfBZocMQWtqN+1f87kTKuqzm5NxWTBq4kAfsjo47bskklj/bqbhJ+okCusV4y7J17z6wPz16Dc8+jonjCUmL+bKlLbj0QA=
+	t=1718716234; cv=none; b=EjRGyYme8WeyVNiZTyA0RUo/FRw7EhrHTpXK6n5wjIpovAv3LGo3Lez7Jytrvk+0lgNTiy4EMEoEMX5TSfghLwdo/NaUKQrP63B1E9ZwxwdFATlSPNhNILjd/2QlfV+PHcN/Go8Yf0D/cgFGPxEeO0TTYoAZe9vKi9IyO05+1BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716228; c=relaxed/simple;
-	bh=7QqFkBA1Sw2Usl54IHW6p3mUTudhvENHN4JY+kc55J0=;
+	s=arc-20240116; t=1718716234; c=relaxed/simple;
+	bh=Qdl5qnnzQs0lDJ1/j8zpXhgscIgHoyCxTWfk9xaNCgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfDpj9BTHTnnAGYOiujovGQhr7XeXubk4+E1JqsI1qdLirQTMRe2SjVZcqjlp3/0TzsDxh9WPB6JqiVYGSPuUXIixxbsYFSJTfpqrqtAf5mHRlZxJ5Gq8/PmvmRzvWpk0pnKZta/KfWkvPlmvhVo4fbMqmuhEkFQsz/+CSdUR0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2UikVGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8DFC3277B;
-	Tue, 18 Jun 2024 13:10:27 +0000 (UTC)
+	 MIME-Version; b=Mh8JIg8tf+PwCBU3rGkE9j1T54mpKYsyBk+elNATHy8eAMJI82U4BDxPwRmlanAWFOhiRK5yE5QfTG4NTfytccXegWapNW1iHXQARMoKtTUVbKq90d0CAKdZqrItePYiWEKkfMmezstxz95g2XF9rzbZj+8Dbz9M/aaH/YuzBE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOtzcHUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63293C3277B;
+	Tue, 18 Jun 2024 13:10:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716227;
-	bh=7QqFkBA1Sw2Usl54IHW6p3mUTudhvENHN4JY+kc55J0=;
+	s=korg; t=1718716233;
+	bh=Qdl5qnnzQs0lDJ1/j8zpXhgscIgHoyCxTWfk9xaNCgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2UikVGh0hoy3CjI1FxXNLEafTNnr3kJIY5SWkxfZ8aSo+pxuuOgwuVB+EG9tK7yM
-	 RB+yHu3zf1w+o2I8vRQq6EoLZeFSpWcyOE8hP1lccAlsmFUqP9PbN8hKxoTj9wEEF6
-	 1+3C1UlXl2+lk9p52KjNs1Y59n1ZQpNGKsNFfJfc=
+	b=yOtzcHUtyvRVSKJsQMtYJB8HLqNhutN0Ve0SVOXRi33Lc2JpOS0M+4Tb4odUJ+3In
+	 r4/hQ27vHqfQtdjuZV6rKinkrHakAAviXwdHV0F+TXZGpdL3a9t/hBjQtx9v674cht
+	 h93v9uxUbV4h6WuIhnz9k2nv8HrOTBEMm8LC19eY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 575/770] NFSD: nfsd_file_hash_remove can compute hashval
-Date: Tue, 18 Jun 2024 14:37:08 +0200
-Message-ID: <20240618123429.490089142@linuxfoundation.org>
+Subject: [PATCH 5.10 576/770] NFSD: Remove nfsd_file::nf_hashval
+Date: Tue, 18 Jun 2024 14:37:09 +0200
+Message-ID: <20240618123429.528355626@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,54 +68,62 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit cb7ec76e73ff6640241c8f1f2f35c81d4005a2d6 ]
+[ Upstream commit f0743c2b25c65debd4f599a7c861428cd9de5906 ]
 
-Remove an unnecessary use of nf_hashval.
+The value in this field can always be computed from nf_inode, thus
+it is no longer used.
 
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ fs/nfsd/filecache.c | 6 ++----
+ fs/nfsd/filecache.h | 1 -
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 3925df9124c39..dd59deec8b011 100644
+index dd59deec8b011..29b1f57692a60 100644
 --- a/fs/nfsd/filecache.c
 +++ b/fs/nfsd/filecache.c
-@@ -287,6 +287,18 @@ nfsd_file_do_unhash(struct nfsd_file *nf)
- 	atomic_long_dec(&nfsd_filecache_count);
+@@ -167,8 +167,7 @@ nfsd_file_mark_find_or_create(struct nfsd_file *nf)
  }
  
-+static void
-+nfsd_file_hash_remove(struct nfsd_file *nf)
-+{
-+	struct inode *inode = nf->nf_inode;
-+	unsigned int hashval = (unsigned int)hash_long(inode->i_ino,
-+				NFSD_FILE_HASH_BITS);
-+
-+	spin_lock(&nfsd_file_hashtbl[hashval].nfb_lock);
-+	nfsd_file_do_unhash(nf);
-+	spin_unlock(&nfsd_file_hashtbl[hashval].nfb_lock);
-+}
-+
- static bool
- nfsd_file_unhash(struct nfsd_file *nf)
- {
-@@ -506,11 +518,8 @@ static void nfsd_file_gc_dispose_list(struct list_head *dispose)
+ static struct nfsd_file *
+-nfsd_file_alloc(struct inode *inode, unsigned int may, unsigned int hashval,
+-		struct net *net)
++nfsd_file_alloc(struct inode *inode, unsigned int may, struct net *net)
  {
  	struct nfsd_file *nf;
  
--	list_for_each_entry(nf, dispose, nf_lru) {
--		spin_lock(&nfsd_file_hashtbl[nf->nf_hashval].nfb_lock);
--		nfsd_file_do_unhash(nf);
--		spin_unlock(&nfsd_file_hashtbl[nf->nf_hashval].nfb_lock);
--	}
-+	list_for_each_entry(nf, dispose, nf_lru)
-+		nfsd_file_hash_remove(nf);
- 	nfsd_file_dispose_list_delayed(dispose);
- }
+@@ -182,7 +181,6 @@ nfsd_file_alloc(struct inode *inode, unsigned int may, unsigned int hashval,
+ 		nf->nf_net = net;
+ 		nf->nf_flags = 0;
+ 		nf->nf_inode = inode;
+-		nf->nf_hashval = hashval;
+ 		refcount_set(&nf->nf_ref, 1);
+ 		nf->nf_may = may & NFSD_FILE_MAY_MASK;
+ 		nf->nf_mark = NULL;
+@@ -1005,7 +1003,7 @@ nfsd_do_file_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	if (nf)
+ 		goto wait_for_construction;
  
+-	new = nfsd_file_alloc(inode, may_flags, hashval, net);
++	new = nfsd_file_alloc(inode, may_flags, net);
+ 	if (!new) {
+ 		status = nfserr_jukebox;
+ 		goto out_status;
+diff --git a/fs/nfsd/filecache.h b/fs/nfsd/filecache.h
+index c6ad5fe47f12f..82051e1b8420d 100644
+--- a/fs/nfsd/filecache.h
++++ b/fs/nfsd/filecache.h
+@@ -40,7 +40,6 @@ struct nfsd_file {
+ #define NFSD_FILE_REFERENCED	(2)
+ 	unsigned long		nf_flags;
+ 	struct inode		*nf_inode;
+-	unsigned int		nf_hashval;
+ 	refcount_t		nf_ref;
+ 	unsigned char		nf_may;
+ 	struct nfsd_file_mark	*nf_mark;
 -- 
 2.43.0
 
