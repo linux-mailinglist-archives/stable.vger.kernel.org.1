@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-53497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2FA990D20E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:47:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBAF90D215
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 517C7283FB0
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:47:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 371E81C24518
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB131AB500;
-	Tue, 18 Jun 2024 13:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4922113D50B;
+	Tue, 18 Jun 2024 13:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPLyP6td"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eror7B6c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383262139DB;
-	Tue, 18 Jun 2024 13:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076CA13792B;
+	Tue, 18 Jun 2024 13:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716505; cv=none; b=GKK/bXWVN/yLjn+xWR+vyxV+1q76Ycgwc81CwU7vx6R4aowcKTldErsDRvJuuRf+2xH7oMFCXl0cgykEdELvnRlOHzZ8Vv0WMNfPsQEk3FRqsO1ePYYgzy53ufffBS3VVf+HAasi7WusADwobxXx2U+i2daLqbH5UHXwQs2kIxc=
+	t=1718716538; cv=none; b=Rhql8YgnMCbBh/qr0HkcrwB3IPeyBd6L6pmBgZoIaHa0XBGaCiTzcn5SyMzg8Y41Bz2sZmVQBVrWyXrh/WGKbQGk3aAz97JNp2LUdwdZjT5YA6692deq15VBFSRUKawTGyt5ddvQh2L4yDnzl/VptLcbvTEqCsI7db/cX6An3f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716505; c=relaxed/simple;
-	bh=MDjyzPzTBfsrqo6q6ntZshWKfmleCHLHWK8vDj5D3G4=;
+	s=arc-20240116; t=1718716538; c=relaxed/simple;
+	bh=5P9u2HN5ayZ3wRDzFi+hmSDDOqBgYT9E/STIW2mCUBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OWRGmduxqksWtOZtWW3MB7ASfXY6dPQNTO5WGDqGssgar69BhqiPXFTUIfr6lGQC7yyGJ+s3zKwoVHGlsnA8hksco76pUOuCb2JTNhCnQ39XGFluXmtcoNBBeeIIokLP0mjg8sRYn1qUHfg+yr0YpBd92UfBM8BzPHlaf2h6Y9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPLyP6td; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF93C3277B;
-	Tue, 18 Jun 2024 13:15:04 +0000 (UTC)
+	 MIME-Version; b=bYSFGLGJcNMa/uBSM7hiEOobIjdZoI8DPCcaK39311el6hopGV1sNF2VCLWkzZ+pOYWhb/oA8cEM2BtvnbtkOS92XEiw6of4cm40eboCaSkHjrFZ9xIeQDXonwyXwcxl6ItC/Vcbx+Rswr4GsXx/rT2ezHdapb6Px818LK9TWKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eror7B6c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E9B4C3277B;
+	Tue, 18 Jun 2024 13:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716505;
-	bh=MDjyzPzTBfsrqo6q6ntZshWKfmleCHLHWK8vDj5D3G4=;
+	s=korg; t=1718716537;
+	bh=5P9u2HN5ayZ3wRDzFi+hmSDDOqBgYT9E/STIW2mCUBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPLyP6tda45vnz91pJIefUmclbFQerP4uxfenbTlv64x/UUJl6M1bdXPWCUubtT7Z
-	 tw38BQBMTI6tXKWiJg0kCOPakUe2kycS1hkyiHuxFd4U9ZUyuV65DZLm49qQzxKeaD
-	 yUkfe30/x6NOhy7j1e5k+/zJxfI16st3RyKwVOzc=
+	b=eror7B6cxpuhosHgGsbmxQjb3RVgN3Sp3XxMazFgg1qDlMwuNop6UKlujS+nPcwPG
+	 +NXeC7hreAsk37ngHvzD8QE0fLbgrT+0pGy7mHBpC3FbxOkZHfwM5xojst7aZXEKZK
+	 M2FP9Apl42fwHoHg/j/cbyQStlywj9VNKqeSbeEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 650/770] NFSD: Reduce amount of struct nfsd4_compoundargs that needs clearing
-Date: Tue, 18 Jun 2024 14:38:23 +0200
-Message-ID: <20240618123432.379404702@linuxfoundation.org>
+Subject: [PATCH 5.10 651/770] NFSD: Refactor common code out of dirlist helpers
+Date: Tue, 18 Jun 2024 14:38:24 +0200
+Message-ID: <20240618123432.417657086@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,386 +67,111 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 3fdc546462348b8a497c72bc894e0cde9f10fc40 ]
+[ Upstream commit 98124f5bd6c76699d514fbe491dd95265369cc99 ]
 
-Have SunRPC clear everything except for the iops array. Then have
-each NFSv4 XDR decoder clear it's own argument before decoding.
+The dust has settled a bit and it's become obvious what code is
+totally common between nfsd_init_dirlist_pages() and
+nfsd3_init_dirlist_pages(). Move that common code to SUNRPC.
 
-Now individual operations may have a large argument struct while not
-penalizing the vast majority of operations with a small struct.
-
-And, clearing the argument structure occurs as the argument fields
-are initialized, enabling the CPU to do write combining on that
-memory. In some cases, clearing is not even necessary because all
-of the fields in the argument structure are initialized by the
-decoder.
+The new helper brackets the existing xdr_init_decode_pages() API.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c |  2 +-
- fs/nfsd/nfs4xdr.c  | 61 +++++++++++++++++++++++++++++++++++++---------
- 2 files changed, 51 insertions(+), 12 deletions(-)
+ fs/nfsd/nfs3proc.c         | 10 +---------
+ fs/nfsd/nfsproc.c          | 10 +---------
+ include/linux/sunrpc/xdr.h |  2 ++
+ net/sunrpc/xdr.c           | 22 ++++++++++++++++++++++
+ 4 files changed, 26 insertions(+), 18 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index f6ea7445073fe..79f1990d40c44 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -3588,7 +3588,7 @@ static const struct svc_procedure nfsd_procedures4[2] = {
- 		.pc_decode = nfs4svc_decode_compoundargs,
- 		.pc_encode = nfs4svc_encode_compoundres,
- 		.pc_argsize = sizeof(struct nfsd4_compoundargs),
--		.pc_argzero = sizeof(struct nfsd4_compoundargs),
-+		.pc_argzero = offsetof(struct nfsd4_compoundargs, iops),
- 		.pc_ressize = sizeof(struct nfsd4_compoundres),
- 		.pc_release = nfsd4_release_compoundargs,
- 		.pc_cachetype = RC_NOCACHE,
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index b5ca83045d6e9..04699198eace7 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -793,6 +793,7 @@ nfsd4_decode_commit(struct nfsd4_compoundargs *argp, struct nfsd4_commit *commit
- 		return nfserr_bad_xdr;
- 	if (xdr_stream_decode_u32(argp->xdr, &commit->co_count) < 0)
- 		return nfserr_bad_xdr;
-+	memset(&commit->co_verf, 0, sizeof(commit->co_verf));
- 	return nfs_ok;
+diff --git a/fs/nfsd/nfs3proc.c b/fs/nfsd/nfs3proc.c
+index 5c2e2b5e5945f..a9bf455aee821 100644
+--- a/fs/nfsd/nfs3proc.c
++++ b/fs/nfsd/nfs3proc.c
+@@ -574,15 +574,7 @@ static void nfsd3_init_dirlist_pages(struct svc_rqst *rqstp,
+ 	buf->pages = rqstp->rq_next_page;
+ 	rqstp->rq_next_page += (buf->buflen + PAGE_SIZE - 1) >> PAGE_SHIFT;
+ 
+-	/* This is xdr_init_encode(), but it assumes that
+-	 * the head kvec has already been consumed. */
+-	xdr_set_scratch_buffer(xdr, NULL, 0);
+-	xdr->buf = buf;
+-	xdr->page_ptr = buf->pages;
+-	xdr->iov = NULL;
+-	xdr->p = page_address(*buf->pages);
+-	xdr->end = (void *)xdr->p + min_t(u32, buf->buflen, PAGE_SIZE);
+-	xdr->rqst = NULL;
++	xdr_init_encode_pages(xdr, buf, buf->pages,  NULL);
  }
  
-@@ -801,6 +802,7 @@ nfsd4_decode_create(struct nfsd4_compoundargs *argp, struct nfsd4_create *create
- {
- 	__be32 *p, status;
+ /*
+diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
+index 3509331a66504..78fa5a9edf277 100644
+--- a/fs/nfsd/nfsproc.c
++++ b/fs/nfsd/nfsproc.c
+@@ -575,15 +575,7 @@ static void nfsd_init_dirlist_pages(struct svc_rqst *rqstp,
+ 	buf->pages = rqstp->rq_next_page;
+ 	rqstp->rq_next_page++;
  
-+	memset(create, 0, sizeof(*create));
- 	if (xdr_stream_decode_u32(argp->xdr, &create->cr_type) < 0)
- 		return nfserr_bad_xdr;
- 	switch (create->cr_type) {
-@@ -850,6 +852,7 @@ nfsd4_decode_delegreturn(struct nfsd4_compoundargs *argp, struct nfsd4_delegretu
- static inline __be32
- nfsd4_decode_getattr(struct nfsd4_compoundargs *argp, struct nfsd4_getattr *getattr)
- {
-+	memset(getattr, 0, sizeof(*getattr));
- 	return nfsd4_decode_bitmap4(argp, getattr->ga_bmval,
- 				    ARRAY_SIZE(getattr->ga_bmval));
- }
-@@ -857,6 +860,7 @@ nfsd4_decode_getattr(struct nfsd4_compoundargs *argp, struct nfsd4_getattr *geta
- static __be32
- nfsd4_decode_link(struct nfsd4_compoundargs *argp, struct nfsd4_link *link)
- {
-+	memset(link, 0, sizeof(*link));
- 	return nfsd4_decode_component4(argp, &link->li_name, &link->li_namelen);
+-	/* This is xdr_init_encode(), but it assumes that
+-	 * the head kvec has already been consumed. */
+-	xdr_set_scratch_buffer(xdr, NULL, 0);
+-	xdr->buf = buf;
+-	xdr->page_ptr = buf->pages;
+-	xdr->iov = NULL;
+-	xdr->p = page_address(*buf->pages);
+-	xdr->end = (void *)xdr->p + min_t(u32, buf->buflen, PAGE_SIZE);
+-	xdr->rqst = NULL;
++	xdr_init_encode_pages(xdr, buf, buf->pages,  NULL);
  }
  
-@@ -905,6 +909,7 @@ nfsd4_decode_locker4(struct nfsd4_compoundargs *argp, struct nfsd4_lock *lock)
- static __be32
- nfsd4_decode_lock(struct nfsd4_compoundargs *argp, struct nfsd4_lock *lock)
- {
-+	memset(lock, 0, sizeof(*lock));
- 	if (xdr_stream_decode_u32(argp->xdr, &lock->lk_type) < 0)
- 		return nfserr_bad_xdr;
- 	if ((lock->lk_type < NFS4_READ_LT) || (lock->lk_type > NFS4_WRITEW_LT))
-@@ -921,6 +926,7 @@ nfsd4_decode_lock(struct nfsd4_compoundargs *argp, struct nfsd4_lock *lock)
- static __be32
- nfsd4_decode_lockt(struct nfsd4_compoundargs *argp, struct nfsd4_lockt *lockt)
- {
-+	memset(lockt, 0, sizeof(*lockt));
- 	if (xdr_stream_decode_u32(argp->xdr, &lockt->lt_type) < 0)
- 		return nfserr_bad_xdr;
- 	if ((lockt->lt_type < NFS4_READ_LT) || (lockt->lt_type > NFS4_WRITEW_LT))
-@@ -1142,11 +1148,8 @@ nfsd4_decode_open(struct nfsd4_compoundargs *argp, struct nfsd4_open *open)
- 	__be32 status;
- 	u32 dummy;
+ /*
+diff --git a/include/linux/sunrpc/xdr.h b/include/linux/sunrpc/xdr.h
+index 59d99ff31c1a9..c1c50eaae4726 100644
+--- a/include/linux/sunrpc/xdr.h
++++ b/include/linux/sunrpc/xdr.h
+@@ -239,6 +239,8 @@ typedef int	(*kxdrdproc_t)(struct rpc_rqst *rqstp, struct xdr_stream *xdr,
  
--	memset(open->op_bmval, 0, sizeof(open->op_bmval));
--	open->op_iattr.ia_valid = 0;
--	open->op_openowner = NULL;
-+	memset(open, 0, sizeof(*open));
- 
--	open->op_xdr_error = 0;
- 	if (xdr_stream_decode_u32(argp->xdr, &open->op_seqid) < 0)
- 		return nfserr_bad_xdr;
- 	/* deleg_want is ignored */
-@@ -1181,6 +1184,8 @@ nfsd4_decode_open_confirm(struct nfsd4_compoundargs *argp, struct nfsd4_open_con
- 	if (xdr_stream_decode_u32(argp->xdr, &open_conf->oc_seqid) < 0)
- 		return nfserr_bad_xdr;
- 
-+	memset(&open_conf->oc_resp_stateid, 0,
-+	       sizeof(open_conf->oc_resp_stateid));
- 	return nfs_ok;
+ extern void xdr_init_encode(struct xdr_stream *xdr, struct xdr_buf *buf,
+ 			    __be32 *p, struct rpc_rqst *rqst);
++extern void xdr_init_encode_pages(struct xdr_stream *xdr, struct xdr_buf *buf,
++			   struct page **pages, struct rpc_rqst *rqst);
+ extern __be32 *xdr_reserve_space(struct xdr_stream *xdr, size_t nbytes);
+ extern int xdr_reserve_space_vec(struct xdr_stream *xdr, struct kvec *vec,
+ 		size_t nbytes);
+diff --git a/net/sunrpc/xdr.c b/net/sunrpc/xdr.c
+index f66e2de7cd279..e2bd0cd391142 100644
+--- a/net/sunrpc/xdr.c
++++ b/net/sunrpc/xdr.c
+@@ -690,6 +690,28 @@ void xdr_init_encode(struct xdr_stream *xdr, struct xdr_buf *buf, __be32 *p,
  }
+ EXPORT_SYMBOL_GPL(xdr_init_encode);
  
-@@ -1189,6 +1194,7 @@ nfsd4_decode_open_downgrade(struct nfsd4_compoundargs *argp, struct nfsd4_open_d
- {
- 	__be32 status;
- 
-+	memset(open_down, 0, sizeof(*open_down));
- 	status = nfsd4_decode_stateid4(argp, &open_down->od_stateid);
- 	if (status)
- 		return status;
-@@ -1218,6 +1224,7 @@ nfsd4_decode_putfh(struct nfsd4_compoundargs *argp, struct nfsd4_putfh *putfh)
- 	if (!putfh->pf_fhval)
- 		return nfserr_jukebox;
- 
-+	putfh->no_verify = false;
- 	return nfs_ok;
- }
- 
-@@ -1234,6 +1241,7 @@ nfsd4_decode_read(struct nfsd4_compoundargs *argp, struct nfsd4_read *read)
- {
- 	__be32 status;
- 
-+	memset(read, 0, sizeof(*read));
- 	status = nfsd4_decode_stateid4(argp, &read->rd_stateid);
- 	if (status)
- 		return status;
-@@ -1250,6 +1258,7 @@ nfsd4_decode_readdir(struct nfsd4_compoundargs *argp, struct nfsd4_readdir *read
- {
- 	__be32 status;
- 
-+	memset(readdir, 0, sizeof(*readdir));
- 	if (xdr_stream_decode_u64(argp->xdr, &readdir->rd_cookie) < 0)
- 		return nfserr_bad_xdr;
- 	status = nfsd4_decode_verifier4(argp, &readdir->rd_verf);
-@@ -1269,6 +1278,7 @@ nfsd4_decode_readdir(struct nfsd4_compoundargs *argp, struct nfsd4_readdir *read
- static __be32
- nfsd4_decode_remove(struct nfsd4_compoundargs *argp, struct nfsd4_remove *remove)
- {
-+	memset(&remove->rm_cinfo, 0, sizeof(remove->rm_cinfo));
- 	return nfsd4_decode_component4(argp, &remove->rm_name, &remove->rm_namelen);
- }
- 
-@@ -1277,6 +1287,7 @@ nfsd4_decode_rename(struct nfsd4_compoundargs *argp, struct nfsd4_rename *rename
- {
- 	__be32 status;
- 
-+	memset(rename, 0, sizeof(*rename));
- 	status = nfsd4_decode_component4(argp, &rename->rn_sname, &rename->rn_snamelen);
- 	if (status)
- 		return status;
-@@ -1293,6 +1304,7 @@ static __be32
- nfsd4_decode_secinfo(struct nfsd4_compoundargs *argp,
- 		     struct nfsd4_secinfo *secinfo)
- {
-+	secinfo->si_exp = NULL;
- 	return nfsd4_decode_component4(argp, &secinfo->si_name, &secinfo->si_namelen);
- }
- 
-@@ -1301,6 +1313,7 @@ nfsd4_decode_setattr(struct nfsd4_compoundargs *argp, struct nfsd4_setattr *seta
- {
- 	__be32 status;
- 
-+	memset(setattr, 0, sizeof(*setattr));
- 	status = nfsd4_decode_stateid4(argp, &setattr->sa_stateid);
- 	if (status)
- 		return status;
-@@ -1315,6 +1328,8 @@ nfsd4_decode_setclientid(struct nfsd4_compoundargs *argp, struct nfsd4_setclient
- {
- 	__be32 *p, status;
- 
-+	memset(setclientid, 0, sizeof(*setclientid));
++/**
++ * xdr_init_encode_pages - Initialize an xdr_stream for encoding into pages
++ * @xdr: pointer to xdr_stream struct
++ * @buf: pointer to XDR buffer into which to encode data
++ * @pages: list of pages to decode into
++ * @rqst: pointer to controlling rpc_rqst, for debugging
++ *
++ */
++void xdr_init_encode_pages(struct xdr_stream *xdr, struct xdr_buf *buf,
++			   struct page **pages, struct rpc_rqst *rqst)
++{
++	xdr_reset_scratch_buffer(xdr);
 +
- 	if (argp->minorversion >= 1)
- 		return nfserr_notsupp;
- 
-@@ -1371,6 +1386,8 @@ nfsd4_decode_verify(struct nfsd4_compoundargs *argp, struct nfsd4_verify *verify
- {
- 	__be32 *p, status;
- 
-+	memset(verify, 0, sizeof(*verify));
++	xdr->buf = buf;
++	xdr->page_ptr = pages;
++	xdr->iov = NULL;
++	xdr->p = page_address(*pages);
++	xdr->end = (void *)xdr->p + min_t(u32, buf->buflen, PAGE_SIZE);
++	xdr->rqst = rqst;
++}
++EXPORT_SYMBOL_GPL(xdr_init_encode_pages);
 +
- 	status = nfsd4_decode_bitmap4(argp, verify->ve_bmval,
- 				      ARRAY_SIZE(verify->ve_bmval));
- 	if (status)
-@@ -1410,6 +1427,9 @@ nfsd4_decode_write(struct nfsd4_compoundargs *argp, struct nfsd4_write *write)
- 	if (!xdr_stream_subsegment(argp->xdr, &write->wr_payload, write->wr_buflen))
- 		return nfserr_bad_xdr;
- 
-+	write->wr_bytes_written = 0;
-+	write->wr_how_written = 0;
-+	memset(&write->wr_verifier, 0, sizeof(write->wr_verifier));
- 	return nfs_ok;
- }
- 
-@@ -1434,6 +1454,7 @@ nfsd4_decode_release_lockowner(struct nfsd4_compoundargs *argp, struct nfsd4_rel
- 
- static __be32 nfsd4_decode_backchannel_ctl(struct nfsd4_compoundargs *argp, struct nfsd4_backchannel_ctl *bc)
- {
-+	memset(bc, 0, sizeof(*bc));
- 	if (xdr_stream_decode_u32(argp->xdr, &bc->bc_cb_program) < 0)
- 		return nfserr_bad_xdr;
- 	return nfsd4_decode_cb_sec(argp, &bc->bc_cb_sec);
-@@ -1444,6 +1465,7 @@ static __be32 nfsd4_decode_bind_conn_to_session(struct nfsd4_compoundargs *argp,
- 	u32 use_conn_in_rdma_mode;
- 	__be32 status;
- 
-+	memset(bcts, 0, sizeof(*bcts));
- 	status = nfsd4_decode_sessionid4(argp, &bcts->sessionid);
- 	if (status)
- 		return status;
-@@ -1585,6 +1607,7 @@ nfsd4_decode_exchange_id(struct nfsd4_compoundargs *argp,
- {
- 	__be32 status;
- 
-+	memset(exid, 0, sizeof(*exid));
- 	status = nfsd4_decode_verifier4(argp, &exid->verifier);
- 	if (status)
- 		return status;
-@@ -1637,6 +1660,7 @@ nfsd4_decode_create_session(struct nfsd4_compoundargs *argp,
- {
- 	__be32 status;
- 
-+	memset(sess, 0, sizeof(*sess));
- 	status = nfsd4_decode_clientid4(argp, &sess->clientid);
- 	if (status)
- 		return status;
-@@ -1652,11 +1676,7 @@ nfsd4_decode_create_session(struct nfsd4_compoundargs *argp,
- 		return status;
- 	if (xdr_stream_decode_u32(argp->xdr, &sess->callback_prog) < 0)
- 		return nfserr_bad_xdr;
--	status = nfsd4_decode_cb_sec(argp, &sess->cb_sec);
--	if (status)
--		return status;
--
--	return nfs_ok;
-+	return nfsd4_decode_cb_sec(argp, &sess->cb_sec);
- }
- 
- static __be32
-@@ -1680,6 +1700,7 @@ nfsd4_decode_getdeviceinfo(struct nfsd4_compoundargs *argp,
- {
- 	__be32 status;
- 
-+	memset(gdev, 0, sizeof(*gdev));
- 	status = nfsd4_decode_deviceid4(argp, &gdev->gd_devid);
- 	if (status)
- 		return status;
-@@ -1700,6 +1721,7 @@ nfsd4_decode_layoutcommit(struct nfsd4_compoundargs *argp,
- {
- 	__be32 *p, status;
- 
-+	memset(lcp, 0, sizeof(*lcp));
- 	if (xdr_stream_decode_u64(argp->xdr, &lcp->lc_seg.offset) < 0)
- 		return nfserr_bad_xdr;
- 	if (xdr_stream_decode_u64(argp->xdr, &lcp->lc_seg.length) < 0)
-@@ -1735,6 +1757,7 @@ nfsd4_decode_layoutget(struct nfsd4_compoundargs *argp,
- {
- 	__be32 status;
- 
-+	memset(lgp, 0, sizeof(*lgp));
- 	if (xdr_stream_decode_u32(argp->xdr, &lgp->lg_signal) < 0)
- 		return nfserr_bad_xdr;
- 	if (xdr_stream_decode_u32(argp->xdr, &lgp->lg_layout_type) < 0)
-@@ -1760,6 +1783,7 @@ static __be32
- nfsd4_decode_layoutreturn(struct nfsd4_compoundargs *argp,
- 		struct nfsd4_layoutreturn *lrp)
- {
-+	memset(lrp, 0, sizeof(*lrp));
- 	if (xdr_stream_decode_bool(argp->xdr, &lrp->lr_reclaim) < 0)
- 		return nfserr_bad_xdr;
- 	if (xdr_stream_decode_u32(argp->xdr, &lrp->lr_layout_type) < 0)
-@@ -1775,6 +1799,8 @@ static __be32 nfsd4_decode_secinfo_no_name(struct nfsd4_compoundargs *argp,
- {
- 	if (xdr_stream_decode_u32(argp->xdr, &sin->sin_style) < 0)
- 		return nfserr_bad_xdr;
-+
-+	sin->sin_exp = NULL;
- 	return nfs_ok;
- }
- 
-@@ -1795,6 +1821,7 @@ nfsd4_decode_sequence(struct nfsd4_compoundargs *argp,
- 	seq->maxslots = be32_to_cpup(p++);
- 	seq->cachethis = be32_to_cpup(p);
- 
-+	seq->status_flags = 0;
- 	return nfs_ok;
- }
- 
-@@ -1805,6 +1832,7 @@ nfsd4_decode_test_stateid(struct nfsd4_compoundargs *argp, struct nfsd4_test_sta
- 	__be32 status;
- 	u32 i;
- 
-+	memset(test_stateid, 0, sizeof(*test_stateid));
- 	if (xdr_stream_decode_u32(argp->xdr, &test_stateid->ts_num_ids) < 0)
- 		return nfserr_bad_xdr;
- 
-@@ -1902,6 +1930,7 @@ nfsd4_decode_copy(struct nfsd4_compoundargs *argp, struct nfsd4_copy *copy)
- 	struct nl4_server *ns_dummy;
- 	__be32 status;
- 
-+	memset(copy, 0, sizeof(*copy));
- 	status = nfsd4_decode_stateid4(argp, &copy->cp_src_stateid);
- 	if (status)
- 		return status;
-@@ -1957,6 +1986,7 @@ nfsd4_decode_copy_notify(struct nfsd4_compoundargs *argp,
- {
- 	__be32 status;
- 
-+	memset(cn, 0, sizeof(*cn));
- 	cn->cpn_src = svcxdr_tmpalloc(argp, sizeof(*cn->cpn_src));
- 	if (cn->cpn_src == NULL)
- 		return nfserr_jukebox;
-@@ -1974,6 +2004,8 @@ static __be32
- nfsd4_decode_offload_status(struct nfsd4_compoundargs *argp,
- 			    struct nfsd4_offload_status *os)
- {
-+	os->count = 0;
-+	os->status = 0;
- 	return nfsd4_decode_stateid4(argp, &os->stateid);
- }
- 
-@@ -1990,6 +2022,8 @@ nfsd4_decode_seek(struct nfsd4_compoundargs *argp, struct nfsd4_seek *seek)
- 	if (xdr_stream_decode_u32(argp->xdr, &seek->seek_whence) < 0)
- 		return nfserr_bad_xdr;
- 
-+	seek->seek_eof = 0;
-+	seek->seek_pos = 0;
- 	return nfs_ok;
- }
- 
-@@ -2125,6 +2159,7 @@ nfsd4_decode_getxattr(struct nfsd4_compoundargs *argp,
- 	__be32 status;
- 	u32 maxcount;
- 
-+	memset(getxattr, 0, sizeof(*getxattr));
- 	status = nfsd4_decode_xattr_name(argp, &getxattr->getxa_name);
- 	if (status)
- 		return status;
-@@ -2133,8 +2168,7 @@ nfsd4_decode_getxattr(struct nfsd4_compoundargs *argp,
- 	maxcount = min_t(u32, XATTR_SIZE_MAX, maxcount);
- 
- 	getxattr->getxa_len = maxcount;
--
--	return status;
-+	return nfs_ok;
- }
- 
- static __be32
-@@ -2144,6 +2178,8 @@ nfsd4_decode_setxattr(struct nfsd4_compoundargs *argp,
- 	u32 flags, maxcount, size;
- 	__be32 status;
- 
-+	memset(setxattr, 0, sizeof(*setxattr));
-+
- 	if (xdr_stream_decode_u32(argp->xdr, &flags) < 0)
- 		return nfserr_bad_xdr;
- 
-@@ -2182,6 +2218,8 @@ nfsd4_decode_listxattrs(struct nfsd4_compoundargs *argp,
- {
- 	u32 maxcount;
- 
-+	memset(listxattrs, 0, sizeof(*listxattrs));
-+
- 	if (xdr_stream_decode_u64(argp->xdr, &listxattrs->lsxa_cookie) < 0)
- 		return nfserr_bad_xdr;
- 
-@@ -2209,6 +2247,7 @@ static __be32
- nfsd4_decode_removexattr(struct nfsd4_compoundargs *argp,
- 			 struct nfsd4_removexattr *removexattr)
- {
-+	memset(removexattr, 0, sizeof(*removexattr));
- 	return nfsd4_decode_xattr_name(argp, &removexattr->rmxa_name);
- }
- 
+ /**
+  * __xdr_commit_encode - Ensure all data is written to buffer
+  * @xdr: pointer to xdr_stream
 -- 
 2.43.0
 
