@@ -1,221 +1,134 @@
-Return-Path: <stable+bounces-52713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACB590CC4B
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:47:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F2890D103
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:38:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 762B52843B4
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:47:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 054ED1C2406B
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7BB15FCE1;
-	Tue, 18 Jun 2024 12:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685C8157A63;
+	Tue, 18 Jun 2024 13:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rhscP8dm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YuJgvHaT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6C115FA8E;
-	Tue, 18 Jun 2024 12:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2776C157A59;
+	Tue, 18 Jun 2024 13:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714269; cv=none; b=o+3Iukb2t8+ZP+uCeE2+h2QY8XPTItGPqitbV1LQ9BTME+gOflLQAy/nBOZR5x3zehnv1qM4qimkJw4uZz4adpCZvisndfKqKASKEITH1hjLRwuO0ncPfOd/tOG2hDpRIWVwe0y5ph6U7QQ18u+dZAwNnpMfvbM3zg/bP/X824g=
+	t=1718715918; cv=none; b=gPc9h6s6cOKZmAPjC1+pD6UWamwV+74tmN4AQNW4jaARrhiuxzavo+SqibjeF3eG19A0E9uD/LZ7yriyiGr+bWSM2BA48bU3hX5BE66AQmmUVKxMpqvLCgeBysegoXYLY2KaEb6hr/0zBoxMUSCNtFbApLUpyK4WeN8c1Luznmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714269; c=relaxed/simple;
-	bh=bX0MtxWC2K9hESeMVfhhVFpNsng9rY8CdwMrW0ZKeKg=;
+	s=arc-20240116; t=1718715918; c=relaxed/simple;
+	bh=3VwCJ9RZhS/DHED7668bfBHlEhBEguB41NsW1wEMrZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zolm0HRQRsXOty45Qs4mmTohDyiwgx8dxNvaqQgL8ms9Y+Ls0KLPf4uPkAp8cDmWE3eXGOEPcgsfqSWYCFEotL/MSm4dvaeGJEAgu3OKtDztIK4rIwkM2+JCbgyO9uIvnrbKaLxr++zyjl2z2cU4fqaV1fePwDtZyy0wiiOLKeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rhscP8dm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB902C4AF48;
-	Tue, 18 Jun 2024 12:37:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714268;
-	bh=bX0MtxWC2K9hESeMVfhhVFpNsng9rY8CdwMrW0ZKeKg=;
+	 MIME-Version; b=gSpxX+CUlSlUemCKwT2Fepw8uM6AIc8k0pI44nlSkCeHfYdpHjdz1ovth3R4n6fIFmbor/yh/nkZssJcG2SSpkwq5LSPtTXkkAxqQfvWsYos2GqiGSaNLX5TvsZFfQpEaokAMCzYjSMas9hKkr1E76cMTbfiLKlCXOG1yajGjhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YuJgvHaT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB2CC3277B;
+	Tue, 18 Jun 2024 13:05:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715917;
+	bh=3VwCJ9RZhS/DHED7668bfBHlEhBEguB41NsW1wEMrZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rhscP8dmG1fr/PigI9B2Dko98NN9ovEtpKxB4ZoYTLdPP2LI0OtI21TVBNN4ID/ut
-	 WYWkGTmwoXiVcF9eQRlMaJMYY/2qEqEeAHx8D8S84dP8m0kSUIfIQ/BBacm3wm6Iop
-	 xQO3kCD8QK5g8C+akxMlOpgMcntMFYkRZoSS0bMWDL2hXpp7iPGXEb2VRYGDQgCMvi
-	 19194QdiziKLAzzXjwC3rmgw27wIWtwH6OGopea6oo99yBhLwPYjr0lYOhxN6aLfZK
-	 z1yU9jkoGWZkgZxNRAFW/OFC4wV1xMaxeuY5N9yaREcrZCr6A/faAHTAJX9PHrEIx4
-	 XtpSeq4HxlSZA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 41/44] kconfig: remove wrong expr_trans_bool()
-Date: Tue, 18 Jun 2024 08:35:22 -0400
-Message-ID: <20240618123611.3301370-41-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=YuJgvHaTmqxm3maforfr++QkcxPthCjh1axm2p7q2h6rx+934C+40LmGN4zM1TJs1
+	 zSMKclCYatQ2Z74QKRzqueesaRyIE4NyKCGfP4Z7+Vlo1l7ggjk32hJcC0yDdL3ney
+	 AENgW8hZ7iweCerr21/UingDH08q9no2m0OjYR1E=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Bruce Fields <bfields@fieldses.org>,
+	Ondrej Valousek <ondrej.valousek.xm@renesas.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 470/770] nfsd: Add support for the birth time attribute
+Date: Tue, 18 Jun 2024 14:35:23 +0200
+Message-ID: <20240618123425.457181760@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
+------------------
 
-expr_trans_bool() performs an incorrect transformation.
+From: Ondrej Valousek <ondrej.valousek.xm@renesas.com>
 
-[Test Code]
+[ Upstream commit e377a3e698fb56cb63f6bddbebe7da76dc37e316 ]
 
-    config MODULES
-            def_bool y
-            modules
+For filesystems that supports "btime" timestamp (i.e. most modern
+filesystems do) we share it via kernel nfsd. Btime support for NFS
+client has already been added by Trond recently.
 
-    config A
-            def_bool y
-            select C if B != n
-
-    config B
-            def_tristate m
-
-    config C
-            tristate
-
-[Result]
-
-    CONFIG_MODULES=y
-    CONFIG_A=y
-    CONFIG_B=m
-    CONFIG_C=m
-
-This output is incorrect because CONFIG_C=y is expected.
-
-Documentation/kbuild/kconfig-language.rst clearly explains the function
-of the '!=' operator:
-
-    If the values of both symbols are equal, it returns 'n',
-    otherwise 'y'.
-
-Therefore, the statement:
-
-    select C if B != n
-
-should be equivalent to:
-
-    select C if y
-
-Or, more simply:
-
-    select C
-
-Hence, the symbol C should be selected by the value of A, which is 'y'.
-
-However, expr_trans_bool() wrongly transforms it to:
-
-    select C if B
-
-Therefore, the symbol C is selected by (A && B), which is 'm'.
-
-The comment block of expr_trans_bool() correctly explains its intention:
-
-  * bool FOO!=n => FOO
-    ^^^^
-
-If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
-
-However, the actual code performs this transformation when FOO is
-tristate:
-
-    if (e->left.sym->type == S_TRISTATE) {
-                             ^^^^^^^^^^
-
-While it can be fixed to S_BOOLEAN, there is no point in doing so
-because expr_tranform() already transforms FOO!=n to FOO when FOO is
-bool. (see the "case E_UNEQUAL" part)
-
-expr_trans_bool() is wrong and unnecessary.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Suggested-by: Bruce Fields <bfields@fieldses.org>
+Signed-off-by: Ondrej Valousek <ondrej.valousek.xm@renesas.com>
+[ cel: addressed some whitespace/checkpatch nits ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/expr.c | 29 -----------------------------
- scripts/kconfig/expr.h |  1 -
- scripts/kconfig/menu.c |  2 --
- 3 files changed, 32 deletions(-)
+ fs/nfsd/nfs4xdr.c | 10 ++++++++++
+ fs/nfsd/nfsd.h    |  2 +-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
-index a290de36307ba..7866167552177 100644
---- a/scripts/kconfig/expr.c
-+++ b/scripts/kconfig/expr.c
-@@ -396,35 +396,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
- 	return e;
- }
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index a7b9c3faf7a79..a9f6c7eeb756e 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -2854,6 +2854,9 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
+ 	err = vfs_getattr(&path, &stat, STATX_BASIC_STATS, AT_STATX_SYNC_AS_STAT);
+ 	if (err)
+ 		goto out_nfserr;
++	if (!(stat.result_mask & STATX_BTIME))
++		/* underlying FS does not offer btime so we can't share it */
++		bmval1 &= ~FATTR4_WORD1_TIME_CREATE;
+ 	if ((bmval0 & (FATTR4_WORD0_FILES_AVAIL | FATTR4_WORD0_FILES_FREE |
+ 			FATTR4_WORD0_FILES_TOTAL | FATTR4_WORD0_MAXNAME)) ||
+ 	    (bmval1 & (FATTR4_WORD1_SPACE_AVAIL | FATTR4_WORD1_SPACE_FREE |
+@@ -3254,6 +3257,13 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
+ 		p = xdr_encode_hyper(p, (s64)stat.mtime.tv_sec);
+ 		*p++ = cpu_to_be32(stat.mtime.tv_nsec);
+ 	}
++	if (bmval1 & FATTR4_WORD1_TIME_CREATE) {
++		p = xdr_reserve_space(xdr, 12);
++		if (!p)
++			goto out_resource;
++		p = xdr_encode_hyper(p, (s64)stat.btime.tv_sec);
++		*p++ = cpu_to_be32(stat.btime.tv_nsec);
++	}
+ 	if (bmval1 & FATTR4_WORD1_MOUNTED_ON_FILEID) {
+ 		struct kstat parent_stat;
+ 		u64 ino = stat.ino;
+diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
+index 3e5008b475ff0..4fc1fd639527a 100644
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -364,7 +364,7 @@ void		nfsd_lockd_shutdown(void);
+  | FATTR4_WORD1_OWNER	        | FATTR4_WORD1_OWNER_GROUP  | FATTR4_WORD1_RAWDEV           \
+  | FATTR4_WORD1_SPACE_AVAIL     | FATTR4_WORD1_SPACE_FREE   | FATTR4_WORD1_SPACE_TOTAL      \
+  | FATTR4_WORD1_SPACE_USED      | FATTR4_WORD1_TIME_ACCESS  | FATTR4_WORD1_TIME_ACCESS_SET  \
+- | FATTR4_WORD1_TIME_DELTA   | FATTR4_WORD1_TIME_METADATA    \
++ | FATTR4_WORD1_TIME_DELTA      | FATTR4_WORD1_TIME_METADATA   | FATTR4_WORD1_TIME_CREATE      \
+  | FATTR4_WORD1_TIME_MODIFY     | FATTR4_WORD1_TIME_MODIFY_SET | FATTR4_WORD1_MOUNTED_ON_FILEID)
  
--/*
-- * bool FOO!=n => FOO
-- */
--struct expr *expr_trans_bool(struct expr *e)
--{
--	if (!e)
--		return NULL;
--	switch (e->type) {
--	case E_AND:
--	case E_OR:
--	case E_NOT:
--		e->left.expr = expr_trans_bool(e->left.expr);
--		e->right.expr = expr_trans_bool(e->right.expr);
--		break;
--	case E_UNEQUAL:
--		// FOO!=n -> FOO
--		if (e->left.sym->type == S_TRISTATE) {
--			if (e->right.sym == &symbol_no) {
--				e->type = E_SYMBOL;
--				e->right.sym = NULL;
--			}
--		}
--		break;
--	default:
--		;
--	}
--	return e;
--}
--
- /*
-  * e1 || e2 -> ?
-  */
-diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
-index 0158f5eac4542..f015883519b39 100644
---- a/scripts/kconfig/expr.h
-+++ b/scripts/kconfig/expr.h
-@@ -288,7 +288,6 @@ void expr_free(struct expr *e);
- void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
- int expr_eq(struct expr *e1, struct expr *e2);
- tristate expr_calc_value(struct expr *e);
--struct expr *expr_trans_bool(struct expr *e);
- struct expr *expr_eliminate_dups(struct expr *e);
- struct expr *expr_transform(struct expr *e);
- int expr_contains_symbol(struct expr *dep, struct symbol *sym);
-diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
-index 3b822cd110f47..8b48a80e7e168 100644
---- a/scripts/kconfig/menu.c
-+++ b/scripts/kconfig/menu.c
-@@ -379,8 +379,6 @@ static void _menu_finalize(struct menu *parent, bool inside_choice)
- 				dep = expr_transform(dep);
- 				dep = expr_alloc_and(expr_copy(basedep), dep);
- 				dep = expr_eliminate_dups(dep);
--				if (menu->sym && menu->sym->type != S_TRISTATE)
--					dep = expr_trans_bool(dep);
- 				prop->visible.expr = dep;
- 
- 				/*
+ #define NFSD4_SUPPORTED_ATTRS_WORD2 0
 -- 
 2.43.0
+
+
 
 
