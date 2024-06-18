@@ -1,149 +1,174 @@
-Return-Path: <stable+bounces-52773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA44790CD0C
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:04:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 395BD90D25E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 176F5281F28
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:04:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB4841F2404C
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED7A11A4F2D;
-	Tue, 18 Jun 2024 12:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4621AC77A;
+	Tue, 18 Jun 2024 13:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nwLpf/Sv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQ40eA96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40411A4F23;
-	Tue, 18 Jun 2024 12:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378371AC767;
+	Tue, 18 Jun 2024 13:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714459; cv=none; b=XhxQ7rOpme8PrGljIjsPFWmLRnioNed1kTHtZpzodmMUl0JAJeJATfNYMnyLG/bN9JFaRQ4v19bpZuQRf/7eaLiRu/WjQYy4XYzjz+e3IMrPvJZty3uZk6uVqJ82s5VHzB5bbrFQW/9PvWwxUm1k+e4rU+HcjahHXPLidwghwC8=
+	t=1718716694; cv=none; b=VZ0Hf6i5c0osrg5X06qd29fkoDd8PCJC+v8MUfRSEbFqvAWmcGKviyXHBWacrbIfbxpMtEqisjYy4LtY2e8r1xYrUe8WPMXlF6Y8gE9rECVqzc8wzORUppVRoEqdoJWhHIlyS8fyK8ZsD+NhIEQFpkRYr3wz0wL7qRa67QYgbS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714459; c=relaxed/simple;
-	bh=Eo3V4jSPlpaQPRt1kZP3S1ORy65YI2GBpz+FaCrKQGY=;
+	s=arc-20240116; t=1718716694; c=relaxed/simple;
+	bh=JnGKMC0GDofVjl0hUPTUfp9etn54DBHvy6hN/CXfX+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mh7E4joRZdMJtAUH065E7v96Zh+W7m+iviCM2vkU0VWcnOOLf+00qYqj9gMV+g1MSQ0dLBzp0z4KluFexv1TQmlybveunOf7Wdgf/BqzTovYdk8X/SfvW0csHixqF+GNYvSWGaKKHqxtczZPzJelGd4MjNKClEODE2s0i6ff+BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nwLpf/Sv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B73C4AF49;
-	Tue, 18 Jun 2024 12:40:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714459;
-	bh=Eo3V4jSPlpaQPRt1kZP3S1ORy65YI2GBpz+FaCrKQGY=;
+	 MIME-Version; b=ghfm4zpJ1yfGeVgU6xcyES+rkO7w9uStmaBNHce/VlD7SRk1rtTC9Ec8swEq44OTFiNeR1ewj3h00uy8rP5H9UjRJEIont8/jmgGWE1RHPzEc2XS94WLHHi/7DhSIakDL/19xh52sjEaw155GlVTbzuVI0nx8m3yz/RdAfxChas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQ40eA96; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B382FC3277B;
+	Tue, 18 Jun 2024 13:18:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716694;
+	bh=JnGKMC0GDofVjl0hUPTUfp9etn54DBHvy6hN/CXfX+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nwLpf/SvEcJQ2jfODcuuTAIGnVpSChHJ8mYjkWsTV2aPp68k7zoyDUQa2V2x0jCns
-	 SjynVIrwdPFvf4Pswsf2MGAOWveHOdw3H+5e7zzn0K6eL7eSRVfk8yQ6iXBJpLvVRm
-	 y/r5YRRqA/5aR5S3h3nkByMWEVitWyJcCtjul7t/QOTUYUQFYk6lna5p98iyz88Zjh
-	 u4aKaoU3xrY8TQY0OhF06Si5sKP3eZLX7nzEAdnt3nGQV1bEXtyIRX1AVpintCOLnY
-	 5kVEIo3ZGAfkmGHej21f/OKkTn9xj7HWj9cXpxSGlrwg0IlygEplw0+AXFXDYZfwyW
-	 YywDKMpViyLPg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 19/29] wifi: mac80211: fix UBSAN noise in ieee80211_prep_hw_scan()
-Date: Tue, 18 Jun 2024 08:39:45 -0400
-Message-ID: <20240618124018.3303162-19-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
-References: <20240618124018.3303162-1-sashal@kernel.org>
+	b=dQ40eA96iuKW9OZWXl/DbGjnCI3OqDZ/fP1SVJ07JuKnIMCpj9t6tftx2mRr8tz+4
+	 7cLd8k9Z1XaHUyLA3Mnl9wqnWT0CgmNSxjsDFAMQFF6+PEnMjnb+IW/xnft0S/Yc9o
+	 /+ITgGIqcsDYZbtpn86IYB/f+7h1UIHYIlRi/5uw=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 732/770] nfsd: clean up potential nfsd_file refcount leaks in COPY codepath
+Date: Tue, 18 Jun 2024 14:39:45 +0200
+Message-ID: <20240618123435.521891003@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 92ecbb3ac6f3fe8ae9edf3226c76aa17b6800699 ]
+------------------
 
-When testing the previous patch with CONFIG_UBSAN_BOUNDS, I've
-noticed the following:
+From: Jeff Layton <jlayton@kernel.org>
 
-UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:372:4
-index 0 is out of range for type 'struct ieee80211_channel *[]'
-CPU: 0 PID: 1435 Comm: wpa_supplicant Not tainted 6.9.0+ #1
-Hardware name: LENOVO 20UN005QRT/20UN005QRT <...BIOS details...>
-Call Trace:
- <TASK>
- dump_stack_lvl+0x2d/0x90
- __ubsan_handle_out_of_bounds+0xe7/0x140
- ? timerqueue_add+0x98/0xb0
- ieee80211_prep_hw_scan+0x2db/0x480 [mac80211]
- ? __kmalloc+0xe1/0x470
- __ieee80211_start_scan+0x541/0x760 [mac80211]
- rdev_scan+0x1f/0xe0 [cfg80211]
- nl80211_trigger_scan+0x9b6/0xae0 [cfg80211]
- ...<the rest is not too useful...>
+[ Upstream commit 6ba434cb1a8d403ea9aad1b667c3ea3ad8b3191f ]
 
-Since '__ieee80211_start_scan()' leaves 'hw_scan_req->req.n_channels'
-uninitialized, actual boundaries of 'hw_scan_req->req.channels' can't
-be checked in 'ieee80211_prep_hw_scan()'. Although an initialization
-of 'hw_scan_req->req.n_channels' introduces some confusion around
-allocated vs. used VLA members, this shouldn't be a problem since
-everything is correctly adjusted soon in 'ieee80211_prep_hw_scan()'.
+There are two different flavors of the nfsd4_copy struct. One is
+embedded in the compound and is used directly in synchronous copies. The
+other is dynamically allocated, refcounted and tracked in the client
+struture. For the embedded one, the cleanup just involves releasing any
+nfsd_files held on its behalf. For the async one, the cleanup is a bit
+more involved, and we need to dequeue it from lists, unhash it, etc.
 
-Cleanup 'kmalloc()' math in '__ieee80211_start_scan()' by using the
-convenient 'struct_size()' as well.
+There is at least one potential refcount leak in this code now. If the
+kthread_create call fails, then both the src and dst nfsd_files in the
+original nfsd4_copy object are leaked.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://msgid.link/20240517153332.18271-2-dmantipov@yandex.ru
-[improve (imho) indentation a bit]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The cleanup in this codepath is also sort of weird. In the async copy
+case, we'll have up to four nfsd_file references (src and dst for both
+flavors of copy structure). They are both put at the end of
+nfsd4_do_async_copy, even though the ones held on behalf of the embedded
+one outlive that structure.
+
+Change it so that we always clean up the nfsd_file refs held by the
+embedded copy structure before nfsd4_copy returns. Rework
+cleanup_async_copy to handle both inter and intra copies. Eliminate
+nfsd4_cleanup_intra_ssc since it now becomes a no-op.
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/scan.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ fs/nfsd/nfs4proc.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index 933d02d7c1284..62c22ff329ad4 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -733,15 +733,21 @@ static int __ieee80211_start_scan(struct ieee80211_sub_if_data *sdata,
- 			local->hw_scan_ies_bufsize *= n_bands;
- 		}
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 5e175133b7bc7..0fe00d6d385a1 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1512,7 +1512,6 @@ nfsd4_cleanup_inter_ssc(struct nfsd4_ssc_umount_item *nsui, struct file *filp,
+ 	long timeout = msecs_to_jiffies(nfsd4_ssc_umount_timeout);
  
--		local->hw_scan_req = kmalloc(
--				sizeof(*local->hw_scan_req) +
--				req->n_channels * sizeof(req->channels[0]) +
--				local->hw_scan_ies_bufsize, GFP_KERNEL);
-+		local->hw_scan_req = kmalloc(struct_size(local->hw_scan_req,
-+							 req.channels,
-+							 req->n_channels) +
-+					     local->hw_scan_ies_bufsize,
-+					     GFP_KERNEL);
- 		if (!local->hw_scan_req)
- 			return -ENOMEM;
+ 	nfs42_ssc_close(filp);
+-	nfsd_file_put(dst);
+ 	fput(filp);
  
- 		local->hw_scan_req->req.ssids = req->ssids;
- 		local->hw_scan_req->req.n_ssids = req->n_ssids;
-+		/* None of the channels are actually set
-+		 * up but let UBSAN know the boundaries.
-+		 */
-+		local->hw_scan_req->req.n_channels = req->n_channels;
+ 	spin_lock(&nn->nfsd_ssc_lock);
+@@ -1562,13 +1561,6 @@ nfsd4_setup_intra_ssc(struct svc_rqst *rqstp,
+ 				 &copy->nf_dst);
+ }
+ 
+-static void
+-nfsd4_cleanup_intra_ssc(struct nfsd_file *src, struct nfsd_file *dst)
+-{
+-	nfsd_file_put(src);
+-	nfsd_file_put(dst);
+-}
+-
+ static void nfsd4_cb_offload_release(struct nfsd4_callback *cb)
+ {
+ 	struct nfsd4_cb_offload *cbo =
+@@ -1683,12 +1675,18 @@ static void dup_copy_fields(struct nfsd4_copy *src, struct nfsd4_copy *dst)
+ 	dst->ss_nsui = src->ss_nsui;
+ }
+ 
++static void release_copy_files(struct nfsd4_copy *copy)
++{
++	if (copy->nf_src)
++		nfsd_file_put(copy->nf_src);
++	if (copy->nf_dst)
++		nfsd_file_put(copy->nf_dst);
++}
 +
- 		ies = (u8 *)local->hw_scan_req +
- 			sizeof(*local->hw_scan_req) +
- 			req->n_channels * sizeof(req->channels[0]);
+ static void cleanup_async_copy(struct nfsd4_copy *copy)
+ {
+ 	nfs4_free_copy_state(copy);
+-	nfsd_file_put(copy->nf_dst);
+-	if (!nfsd4_ssc_is_inter(copy))
+-		nfsd_file_put(copy->nf_src);
++	release_copy_files(copy);
+ 	spin_lock(&copy->cp_clp->async_lock);
+ 	list_del(&copy->copies);
+ 	spin_unlock(&copy->cp_clp->async_lock);
+@@ -1748,7 +1746,6 @@ static int nfsd4_do_async_copy(void *data)
+ 	} else {
+ 		nfserr = nfsd4_do_copy(copy, copy->nf_src->nf_file,
+ 				       copy->nf_dst->nf_file, false);
+-		nfsd4_cleanup_intra_ssc(copy->nf_src, copy->nf_dst);
+ 	}
+ 
+ do_callback:
+@@ -1811,9 +1808,9 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	} else {
+ 		status = nfsd4_do_copy(copy, copy->nf_src->nf_file,
+ 				       copy->nf_dst->nf_file, true);
+-		nfsd4_cleanup_intra_ssc(copy->nf_src, copy->nf_dst);
+ 	}
+ out:
++	release_copy_files(copy);
+ 	return status;
+ out_err:
+ 	if (async_copy)
 -- 
 2.43.0
+
+
 
 
