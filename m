@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-52818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B81290CF5B
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C9C90D00F
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:30:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BA09B286A9
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:17:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19F50B277DF
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:17:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C610F1B47A4;
-	Tue, 18 Jun 2024 12:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A51D1B47C7;
+	Tue, 18 Jun 2024 12:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="avhrKCms"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LxZjxZSy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B1B1B3F3C;
-	Tue, 18 Jun 2024 12:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4FE1B47C3;
+	Tue, 18 Jun 2024 12:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714568; cv=none; b=nvc0+lIU41/kljxPnejCRP651bDMRRKYSI4t8tW4d8cgOfTEMc9Lw7DFevQT12V83hWo1BeieEoOvJ6ealRyteOBPLEP5+0qCRk9AMNnsi1G0znd9A8CuXXLTX1PxxDMP4FEGqtg0qTgGdL7TcL1xxvjB9ga+F2dB0RZjT9gEN4=
+	t=1718714571; cv=none; b=I2ihfB7z3Jn+m2AS+CzJ3BkO4J5PtLMWyGh3uqgQ8fiMsrln1y4rt8Kd5sWWibJkDzs5DxCCSPxPB5qLIRVOU4SxnKu33LEKwzysPlUVtEyqTxCP8+UpqV39Xzobxh7v+Y9agFvb5sfIGz3iAUxcnwyNoDyQPydGYAfnZYJGuyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714568; c=relaxed/simple;
-	bh=7mGrHxL0HdzTrs7BZbgAKSPQi9Yjl+WUY+0IgMEes/8=;
+	s=arc-20240116; t=1718714571; c=relaxed/simple;
+	bh=Dd6pY7xPJEu5e/X4E+ynYc0y6ur0lmwjdRCXfrc2LsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OeG1lt+ZmIXtfbXi6RttvzS7aA6Wd6VNDW9Gyw4Ah8Blyq2XA8l7pWSFMZf64+uiNeKolafz95lMHUwIUHjaa/tcXxQ7guEEO1izJXeCHGHAasFONKAJ2RcoPgpYqwVbLQVwJvVCHiVnJshV1iyz3KuVvlZepnNvDU5ph0rXCH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=avhrKCms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F574C3277B;
-	Tue, 18 Jun 2024 12:42:46 +0000 (UTC)
+	 MIME-Version; b=p/dZubfkwS6AsTlnptT8Fhx+ogaltUNUIDhzUXN2u2TwF8+YsvD07frejGmEjNQBYLagHQtIBZ3bRCcJVaer8yUDLzxBoK1PhL2NrP4/Mm1NnQhA8bhQJVWikeRN/ViM+ce49VWhFgbHjsoudmtk6g85AS0tYTpbo2lvTWWxHDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LxZjxZSy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B559C3277B;
+	Tue, 18 Jun 2024 12:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714568;
-	bh=7mGrHxL0HdzTrs7BZbgAKSPQi9Yjl+WUY+0IgMEes/8=;
+	s=k20201202; t=1718714570;
+	bh=Dd6pY7xPJEu5e/X4E+ynYc0y6ur0lmwjdRCXfrc2LsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avhrKCmskK4vY+bOXW1ERD3QWNFdeAoyCp4VYqFDtk79zjT7g8Sqj9B9vsn8Ij7+4
-	 3+xhgY1GfX+VtnLxMjheRK4+YmGINxPss7F27H7xcfFq8JxWKydGg7IcZ9t6+urWIm
-	 PnNN/S5BLVBidgQxhpivir1Z8oe2JIrwwFK/jvhiPRzsMv2p8NI6hLDWWiS3FUxDiL
-	 YTKTOv2hKmi6Olwmoa+xLf9XUp7i2A0Q4iQUK7mT3WbSe/wrpYBT90nnSM8lblK0zk
-	 0b6BVirRm5OwsCP/dGfhvc2sdXoFiOYAxcR5KTdhsaxeWsOO0yGIdnQ4T1Vh6bcSIt
-	 CuvDTWPa0Gmaw==
+	b=LxZjxZSyowyDns7M5DPl5T5quF50sV2lD45WpXNPjRJiGETdaeIszS32TxBO0HncJ
+	 hv92feMKtHLyWVpq2M6q/DuVL2nNzBElCMOYhZ6fJkVfgp0ZdrQCWj1vg+oXZ2vzei
+	 nxQyTkrm22pc+vpfVtoxbKTUbixHMmuRtAVVmcN/J3jpYD07yO6H1lOsGW2dQSg3Ki
+	 L/3AUb+29hILHcV60I2mEgxglse1O/P+r76kpwuO3pAFrK6/WjsSOWaGV7GYZ2idjf
+	 1LlLxeGEqqR5ZJYxDo1F/kC5W5obZWh0y0GqTpaDuKJXloCTl2US75Qt05Rn2RpbQz
+	 G+rGmm8VnN24A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Wei Li <liwei391@huawei.com>,
+	Huisong Li <lihuisong@huawei.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 09/13] ila: block BH in ila_output()
-Date: Tue, 18 Jun 2024 08:42:20 -0400
-Message-ID: <20240618124231.3304308-9-sashal@kernel.org>
+	catalin.marinas@arm.com,
+	j.granados@samsung.com,
+	mcgrof@kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.10 10/13] arm64: armv8_deprecated: Fix warning in isndep cpuhp starting process
+Date: Tue, 18 Jun 2024 08:42:21 -0400
+Message-ID: <20240618124231.3304308-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240618124231.3304308-1-sashal@kernel.org>
 References: <20240618124231.3304308-1-sashal@kernel.org>
@@ -68,58 +69,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.219
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Wei Li <liwei391@huawei.com>
 
-[ Upstream commit cf28ff8e4c02e1ffa850755288ac954b6ff0db8c ]
+[ Upstream commit 14951beaec93696b092a906baa0f29322cf34004 ]
 
-As explained in commit 1378817486d6 ("tipc: block BH
-before using dst_cache"), net/core/dst_cache.c
-helpers need to be called with BH disabled.
+The function run_all_insn_set_hw_mode() is registered as startup callback
+of 'CPUHP_AP_ARM64_ISNDEP_STARTING', it invokes set_hw_mode() methods of
+all emulated instructions.
 
-ila_output() is called from lwtunnel_output()
-possibly from process context, and under rcu_read_lock().
+As the STARTING callbacks are not expected to fail, if one of the
+set_hw_mode() fails, e.g. due to el0 mixed-endian is not supported for
+'setend', it will report a warning:
 
-We might be interrupted by a softirq, re-enter ila_output()
-and corrupt dst_cache data structures.
+```
+CPU[2] cannot support the emulation of setend
+CPU 2 UP state arm64/isndep:starting (136) failed (-22)
+CPU2: Booted secondary processor 0x0000000002 [0x414fd0c1]
+```
 
-Fix the race by using local_bh_disable().
+To fix it, add a check for INSN_UNAVAILABLE status and skip the process.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240531132636.2637995-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Wei Li <liwei391@huawei.com>
+Tested-by: Huisong Li <lihuisong@huawei.com>
+Link: https://lore.kernel.org/r/20240423093501.3460764-1-liwei391@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ila/ila_lwt.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/armv8_deprecated.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index 8c1ce78956bae..9d37f7164e732 100644
---- a/net/ipv6/ila/ila_lwt.c
-+++ b/net/ipv6/ila/ila_lwt.c
-@@ -58,7 +58,9 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		return orig_dst->lwtstate->orig_output(net, sk, skb);
- 	}
- 
-+	local_bh_disable();
- 	dst = dst_cache_get(&ilwt->dst_cache);
-+	local_bh_enable();
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *ip6h = ipv6_hdr(skb);
- 		struct flowi6 fl6;
-@@ -86,8 +88,11 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
- 
--		if (ilwt->connected)
-+		if (ilwt->connected) {
-+			local_bh_disable();
- 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
-+			local_bh_enable();
-+		}
- 	}
- 
- 	skb_dst_set(skb, dst);
+diff --git a/arch/arm64/kernel/armv8_deprecated.c b/arch/arm64/kernel/armv8_deprecated.c
+index f0ba854f0045e..34370be75acd5 100644
+--- a/arch/arm64/kernel/armv8_deprecated.c
++++ b/arch/arm64/kernel/armv8_deprecated.c
+@@ -471,6 +471,9 @@ static int run_all_insn_set_hw_mode(unsigned int cpu)
+ 	for (i = 0; i < ARRAY_SIZE(insn_emulations); i++) {
+ 		struct insn_emulation *insn = insn_emulations[i];
+ 		bool enable = READ_ONCE(insn->current_mode) == INSN_HW;
++		if (insn->status == INSN_UNAVAILABLE)
++			continue;
++
+ 		if (insn->set_hw_mode && insn->set_hw_mode(enable)) {
+ 			pr_warn("CPU[%u] cannot support the emulation of %s",
+ 				cpu, insn->name);
 -- 
 2.43.0
 
