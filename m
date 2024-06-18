@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-52725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADF390CC6F
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:50:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD5B90CC71
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:50:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C49F1C22B24
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:50:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06A531F237A8
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8074C16CD31;
-	Tue, 18 Jun 2024 12:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3994816DC1B;
+	Tue, 18 Jun 2024 12:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0i5WjGX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAFn5gVW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C22216CD27;
-	Tue, 18 Jun 2024 12:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E635C16DC12;
+	Tue, 18 Jun 2024 12:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714328; cv=none; b=b8k9wsVTagXJMziEdKthatkHodDm1q7fa+exMOVvq6KTJ+B9hJY/ACnNxuQx4FD5Cz8hz4LMcKsoXkRdnhHcBdfcONnkAL4EHEi7VJr+da5V+VwmRrnGDABNPYgr5ANiTXtJcTLkelEX/gDPPu4RkfOo9FUqqK9+Mr/GZf/mO3I=
+	t=1718714331; cv=none; b=IYvL7kUrXZxnvKz1WC1MJP0E+9wG1zjHhOJibQg9PB85FVlUYf0gBAbmQdsExG0fMvTXUn4LlMcAU6+W4vu8+0HPRQVbcAL1ADGKiklDjkG6bc549qahv93rytxsNpk0alU/MZQdf4eoNOYtPilDz1RO176YkViI1rw1OkdApek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714328; c=relaxed/simple;
-	bh=y+dPeb95Eq/YFHLynpEWrN856VxIZUimhAwPSc/Rdh0=;
+	s=arc-20240116; t=1718714331; c=relaxed/simple;
+	bh=Thyw0jk39ehSKVrWbpzk6z0cIctwuMcByciNbZ10WDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N41JcjVc3qy6SHkqRRRv2819S0InNHqiYLCNrCLbsYtRiQGhpzmCyJz5uuIKLze06+tl+EzKstt6k6lRof0di+BebEzssVkJpqZ/khmeV0L5xYXmV5Z6tNDAcRZTfw3KaAsT7G8qtpVbskpLrA815jXOP+L1QpfnxVpW1oriZ20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0i5WjGX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48591C4AF1D;
-	Tue, 18 Jun 2024 12:38:47 +0000 (UTC)
+	 MIME-Version; b=d0MRN4Ub/nZIwm/JsjlKTCTz/PoNzJdoEWZyXyMaShDv/RA/U3A7fdc3tM8JA/xHShmu945Yh1MMu1qF764G/ToZou2moj+V2wzHMcBpcF0Asn8MwFGLUOzmdll4dQ8VrzH/qfjAtG85tLbCa6oV89yw3aWLKu5LDojPZUk8xpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAFn5gVW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36D1C32786;
+	Tue, 18 Jun 2024 12:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714328;
-	bh=y+dPeb95Eq/YFHLynpEWrN856VxIZUimhAwPSc/Rdh0=;
+	s=k20201202; t=1718714330;
+	bh=Thyw0jk39ehSKVrWbpzk6z0cIctwuMcByciNbZ10WDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0i5WjGXYTPmn9TdVnf715G9hbdUFvfe03pZTUd0f7fFxsSuOpjw+UZ1rPqNwnwPY
-	 JHXqc1wI36bkZawHr0znZAWUThyyMqamdbuC9h1Lur0Y3kHTe5sDwCLAYv6H7MgmKU
-	 b/uQJoIqGo/Vtb8ZyZtt/iGM8ULVMfe4WIHVIAaDg44JDDpO9Qjx7HIA2luuDsXFgk
-	 4RlReyN78ksBxSxKglMAmSoU8pW8a0lEF6VD0JZ4wcpe0660NQvaJ7d2hc+CZBX7NX
-	 c7Q2y7otaCCYbIfPB0qS39KhEc75P8ahDw+BXmN82yT5VkF/dT+ZvGS6xaUpN97yqd
-	 HwZkFnJPHPPcg==
+	b=NAFn5gVWucLbThWMKXE8/HPQBsNOD2TVwgyb2JEXGeSadZ9TUKTK38I8jRUhn1k9C
+	 yR5SbAhEqtrAAyM2X0UQsfxncUS4+Dmvi4jOSJvu/vw21IP3gNSwaamPJl58ClZmzI
+	 EEnNVHlV4W85NJ0IFe8k/fFERl2knmPDP/me8xIbF33aeDaADilG8DM5xRIXhZE4BW
+	 LCXMh2G+ehNQ8W7NyMSI6cROqios/IGcSOOuT3F2egQXrN+NRs/axrXa8vwAnCufPj
+	 WFA0wPJdhJVlSV/E5Y/hu9d3rUcNAo4/dMjR3PeAJbYoA5kGWf8D48+aOkaPQUnpfm
+	 ZQagvy1MDBpyA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
+	Ananth Narayan <Ananth.Narayan@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 09/35] ACPI: EC: Avoid returning AE_OK on errors in address space handler
-Date: Tue, 18 Jun 2024 08:37:29 -0400
-Message-ID: <20240618123831.3302346-9-sashal@kernel.org>
+	trenn@suse.com,
+	shuah@kernel.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 10/35] tools/power/cpupower: Fix Pstate frequency reporting on AMD Family 1Ah CPUs
+Date: Tue, 18 Jun 2024 08:37:30 -0400
+Message-ID: <20240618123831.3302346-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
 References: <20240618123831.3302346-1-sashal@kernel.org>
@@ -66,41 +69,79 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
 
-[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
+[ Upstream commit 43cad521c6d228ea0c51e248f8e5b3a6295a2849 ]
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
-returned by acpi_ec_space_handler().
+Update cpupower's P-State frequency calculation and reporting with AMD
+Family 1Ah+ processors, when using the acpi-cpufreq driver. This is due
+to a change in the PStateDef MSR layout in AMD Family 1Ah+.
 
-Fix this by only returning AE_OK on success, and return AE_ERROR
-otherwise.
+Tested on 4th and 5th Gen AMD EPYC system
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Ananth Narayan <Ananth.Narayan@amd.com>
+Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/power/cpupower/utils/helpers/amd.c | 26 +++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 2e907800417db..75fa23962d1d3 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1351,8 +1351,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
- }
+diff --git a/tools/power/cpupower/utils/helpers/amd.c b/tools/power/cpupower/utils/helpers/amd.c
+index c519cc89c97f4..0a56e22240fc8 100644
+--- a/tools/power/cpupower/utils/helpers/amd.c
++++ b/tools/power/cpupower/utils/helpers/amd.c
+@@ -41,6 +41,16 @@ union core_pstate {
+ 		unsigned res1:31;
+ 		unsigned en:1;
+ 	} pstatedef;
++	/* since fam 1Ah: */
++	struct {
++		unsigned fid:12;
++		unsigned res1:2;
++		unsigned vid:8;
++		unsigned iddval:8;
++		unsigned idddiv:2;
++		unsigned res2:31;
++		unsigned en:1;
++	} pstatedef2;
+ 	unsigned long long val;
+ };
  
+@@ -48,6 +58,10 @@ static int get_did(union core_pstate pstate)
+ {
+ 	int t;
+ 
++	/* Fam 1Ah onward do not use did */
++	if (cpupower_cpu_info.family >= 0x1A)
++		return 0;
++
+ 	if (cpupower_cpu_info.caps & CPUPOWER_CAP_AMD_PSTATEDEF)
+ 		t = pstate.pstatedef.did;
+ 	else if (cpupower_cpu_info.family == 0x12)
+@@ -61,12 +75,18 @@ static int get_did(union core_pstate pstate)
+ static int get_cof(union core_pstate pstate)
+ {
+ 	int t;
+-	int fid, did, cof;
++	int fid, did, cof = 0;
+ 
+ 	did = get_did(pstate);
+ 	if (cpupower_cpu_info.caps & CPUPOWER_CAP_AMD_PSTATEDEF) {
+-		fid = pstate.pstatedef.fid;
+-		cof = 200 * fid / did;
++		if (cpupower_cpu_info.family >= 0x1A) {
++			fid = pstate.pstatedef2.fid;
++			if (fid > 0x0f)
++				cof = (fid * 5);
++		} else {
++			fid = pstate.pstatedef.fid;
++			cof = 200 * fid / did;
++		}
+ 	} else {
+ 		t = 0x10;
+ 		fid = pstate.pstate.fid;
 -- 
 2.43.0
 
