@@ -1,120 +1,159 @@
-Return-Path: <stable+bounces-53290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB62D90D2B4
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:52:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA8590CC38
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:45:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23348B2A6CE
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 938601F21387
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09C61990A8;
-	Tue, 18 Jun 2024 13:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5238C15E5A8;
+	Tue, 18 Jun 2024 12:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TAJBewv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PfeJjxgT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D994198856;
-	Tue, 18 Jun 2024 13:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F54915DBCC;
+	Tue, 18 Jun 2024 12:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715891; cv=none; b=m6nURa6GyV5QXEERzTUa+dh6kTywrl0bMw4GmV+K3VbdiLyJz+x5fZPGI8l0lTCWOUcr9smzhNgbBy/VpbzWTAfAurgfW4s5BsqzvATo0/010LtsTRsjDbQ7AAlrEsFGkcFQwC2jmPVaZEGqo25X4+9L8gOUj9TtPXuIDqqAaxo=
+	t=1718714253; cv=none; b=pX/QT/EfmUSIM4GHOzXjEjzj20ps0RSm4228cPAPLbWS4YF9RgW5VunzwR0zqg0cIVTZKt6GSqOqigPMmEc6g2epb7fyy8V4GAjl/SVRZMFwhrdnOH4vSuYbDhVssUGyzzzJ/obA74kTMfWSAVHL/4uh/ARI2wPg4Cvcb0Id6SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715891; c=relaxed/simple;
-	bh=upNMw2ZykPSyJrcukkwGuV1Y2btGSUT2/7pqzvNml30=;
+	s=arc-20240116; t=1718714253; c=relaxed/simple;
+	bh=gBBmWF8YTIjh0DlT+b6kdKqtSsPfi3eXXh024j8qgOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kCxHF70uuvGpIcH0/SIlf5/GPhymxdDJv0CtUG9gBHVfwZfPR4NneQZkx+AjneVt4R7PRqOrBKoW1vRyUZa2lf452aKChP+XAe8b8jfEaHw+Zr5jq5/PitTuhInvAMVadKGp1OgNmdMQV3TOgZ41BM/EAAKHFcL84AWOuOr0pe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TAJBewv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0583CC3277B;
-	Tue, 18 Jun 2024 13:04:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715891;
-	bh=upNMw2ZykPSyJrcukkwGuV1Y2btGSUT2/7pqzvNml30=;
+	 MIME-Version; b=BXgofqP7F20IBCzZR2FQ9xlSo2LEzBgBeGZSDysihl5LAMb1bPp8CB4IaTooOhra/LtGtDyDSPWmnD70g7Hp7bxOcFyFdI1u6UmEMGWdJqtg1c6+xp2a7K5yDbdtq6xnYGgqGgDFzIVwl1XVkp+v8JSumyySdgiMlMEhMrmgtPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PfeJjxgT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BFEC4AF1D;
+	Tue, 18 Jun 2024 12:37:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714252;
+	bh=gBBmWF8YTIjh0DlT+b6kdKqtSsPfi3eXXh024j8qgOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0TAJBewvvXv6GfLhednpQmCmTlIFhyDgNa699r2C1uc0adWhUJXGG1a6FdIvqh8Cr
-	 wpDUcu6G8bDo6BrWgPiq2TIMtPU4YD6djo7Q9gHmH4VvBaFlE5+p3i6MEe8bzU/Gbg
-	 504DDOpwjhb/hL9kbl1ffkD3R9LdMjPSbAAC9/Ns=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Abaci Robot <abaci@linux.alibaba.com>,
-	Yang Li <yang.lee@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 462/770] fanotify: remove variable set but not used
-Date: Tue, 18 Jun 2024 14:35:15 +0200
-Message-ID: <20240618123425.145924253@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=PfeJjxgTSvnyEJ994i94sv53PdDBzYQbdbT5igpf0YvODe/i3wT7mkHqVb9SiG05U
+	 xM4EmGadvZuMLCgQSFl3bBABtCRGIl54QYe0/TlvaQq0Dat/7D+2ZPt8wdR6srzuSF
+	 fiJ9EQVFYnZlofqha8eyIQr6Mq+zgDKEp0CM8FHD8YvAnvfXjK+N6eQcyRlsrs8Eoh
+	 ILtHMNU/1s2o8y54l6YaWa6MKD9QtierLUUiccOHuwJ/v3/H4xVEqB1l8fjpIQ/8HI
+	 +W+25ZqYtUsxb5TbGiYwb35g3FjfTG/sm1AcP1fD5BHSwiyBut/4c09eYvz0R0rQaR
+	 WP4kGfdnmJ11g==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Eric Dumazet <edumazet@google.com>,
+	Alexander Aring <aahringo@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 34/44] net: ipv6: rpl_iptunnel: block BH in rpl_output() and rpl_input()
+Date: Tue, 18 Jun 2024 08:35:15 -0400
+Message-ID: <20240618123611.3301370-34-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Eric Dumazet <edumazet@google.com>
 
-------------------
+[ Upstream commit db0090c6eb12c31246438b7fe2a8f1b833e7a653 ]
 
-From: Yang Li <yang.lee@linux.alibaba.com>
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-[ Upstream commit 217663f101a56ef77f82273818253fff082bf503 ]
+Disabling preemption in rpl_output() is not good enough,
+because rpl_output() is called from process context,
+lwtunnel_output() only uses rcu_read_lock().
 
-The code that uses the pointer info has been removed in 7326e382c21e
-("fanotify: report old and/or new parent+name in FAN_RENAME event").
-and fanotify_event_info() doesn't change 'event', so the declaration and
-assignment of info can be removed.
+We might be interrupted by a softirq, re-enter rpl_output()
+and corrupt dst_cache data structures.
 
-Eliminate the following clang warning:
-fs/notify/fanotify/fanotify_user.c:161:24: warning: variable ‘info’ set
-but not used
+Fix the race by using local_bh_disable() instead of
+preempt_disable().
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Apply a similar change in rpl_input().
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Alexander Aring <aahringo@redhat.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fanotify/fanotify_user.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/ipv6/rpl_iptunnel.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 3bac2329dc35f..6679700574113 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -146,7 +146,6 @@ static size_t fanotify_event_len(unsigned int info_mode,
- 				 struct fanotify_event *event)
- {
- 	size_t event_len = FAN_EVENT_METADATA_LEN;
--	struct fanotify_info *info;
- 	int fh_len;
- 	int dot_len = 0;
+diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+index a013b92cbb860..2c83b7586422d 100644
+--- a/net/ipv6/rpl_iptunnel.c
++++ b/net/ipv6/rpl_iptunnel.c
+@@ -212,9 +212,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 	if (unlikely(err))
+ 		goto drop;
  
-@@ -156,8 +155,6 @@ static size_t fanotify_event_len(unsigned int info_mode,
- 	if (fanotify_is_error_event(event->mask))
- 		event_len += FANOTIFY_ERROR_INFO_LEN;
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+-	preempt_enable();
++	local_bh_enable();
  
--	info = fanotify_event_info(event);
--
- 	if (fanotify_event_has_any_dir_fh(event)) {
- 		event_len += fanotify_dir_name_info_len(event);
- 	} else if ((info_mode & FAN_REPORT_NAME) &&
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+@@ -234,9 +234,9 @@ static int rpl_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 			goto drop;
+ 		}
+ 
+-		preempt_disable();
++		local_bh_disable();
+ 		dst_cache_set_ip6(&rlwt->cache, dst, &fl6.saddr);
+-		preempt_enable();
++		local_bh_enable();
+ 	}
+ 
+ 	skb_dst_drop(skb);
+@@ -268,23 +268,21 @@ static int rpl_input(struct sk_buff *skb)
+ 		return err;
+ 	}
+ 
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&rlwt->cache);
+-	preempt_enable();
+ 
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+ 		if (!dst->error) {
+-			preempt_disable();
+ 			dst_cache_set_ip6(&rlwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
+-			preempt_enable();
+ 		}
+ 	} else {
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 	}
++	local_bh_enable();
+ 
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
 -- 
 2.43.0
-
-
 
 
