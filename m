@@ -1,167 +1,120 @@
-Return-Path: <stable+bounces-52705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDACF90CC35
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:45:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB62D90D2B4
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD3F61C20CF1
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:45:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23348B2A6CE
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EB015DBA7;
-	Tue, 18 Jun 2024 12:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09C61990A8;
+	Tue, 18 Jun 2024 13:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oeTeAkIn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TAJBewv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13F615D5D2;
-	Tue, 18 Jun 2024 12:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D994198856;
+	Tue, 18 Jun 2024 13:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714251; cv=none; b=XjLv/6buelfTLSeMFSuVreiPu5JVF1zsmH3gn4f+jbcuANgt8zqxqEStju/RW5dpOutYRTnnnWoSdNFdAipR3HHy8PY7TmgzBlASr4NOGEfGPWxsRUM4b9Dx+30UVxirqWhXw0tCKhfQqWi0Qy2eT+5cM/U/Wntjgg/D41F6bS8=
+	t=1718715891; cv=none; b=m6nURa6GyV5QXEERzTUa+dh6kTywrl0bMw4GmV+K3VbdiLyJz+x5fZPGI8l0lTCWOUcr9smzhNgbBy/VpbzWTAfAurgfW4s5BsqzvATo0/010LtsTRsjDbQ7AAlrEsFGkcFQwC2jmPVaZEGqo25X4+9L8gOUj9TtPXuIDqqAaxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714251; c=relaxed/simple;
-	bh=OP710bnuoVQuM+4OPjHQIkyv8tHjclqZH/v71uWFaN4=;
+	s=arc-20240116; t=1718715891; c=relaxed/simple;
+	bh=upNMw2ZykPSyJrcukkwGuV1Y2btGSUT2/7pqzvNml30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VdNQ6cFeuPJBlnloClTMPEUAjAI2+PFuNtiO9Excczk7IPB37tF26lLxGc78Tb2wx0yDEk5hFdDD1xWzcacvrw4YxeUdOOBzP+dunQaNHE9C17Yu9GQFp3x67lJUIkizjzLBiu3bIION2pxo7LTNI3+xJude23fBIuQb6ujEGok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oeTeAkIn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AC5C3277B;
-	Tue, 18 Jun 2024 12:37:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714251;
-	bh=OP710bnuoVQuM+4OPjHQIkyv8tHjclqZH/v71uWFaN4=;
+	 MIME-Version:Content-Type; b=kCxHF70uuvGpIcH0/SIlf5/GPhymxdDJv0CtUG9gBHVfwZfPR4NneQZkx+AjneVt4R7PRqOrBKoW1vRyUZa2lf452aKChP+XAe8b8jfEaHw+Zr5jq5/PitTuhInvAMVadKGp1OgNmdMQV3TOgZ41BM/EAAKHFcL84AWOuOr0pe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TAJBewv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0583CC3277B;
+	Tue, 18 Jun 2024 13:04:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715891;
+	bh=upNMw2ZykPSyJrcukkwGuV1Y2btGSUT2/7pqzvNml30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeTeAkInCG1Nibh2Gl2PuaBry77aQuSRnm2TPcl2qK9BBa4f2k+x43VB0B2ODUGkN
-	 qhQndcLlT8xleCkAnExoTr4vdcjU2zyx892NNtkJw/QvNCGyYksgRUbfSCIwC2UWf0
-	 5tjz/J0dvUCu7U6oHRtRylDZKdtrguuKWf6YNJ9R/sWsaGrSju9kdMdXGFv0Pg11HM
-	 emBAhjfr8d6NzWfhMRQGAE2HuhVZaKaTmU8c1WO7grtyJm4SQs0PD0SMsZNE2yn2WQ
-	 FkEgiLhPPH3AgoT/LC3UbAohiZ/Lx+3nHOrn1AfMp7Va+6E1cQ5RCtFVibQdQjMw9f
-	 FNXlBxLzI+mLw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Suma Hegde <suma.hegde@amd.com>,
-	Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	ilpo.jarvinen@linux.intel.com,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 33/44] platform/x86/amd/hsmp: Check HSMP support on AMD family of processors
-Date: Tue, 18 Jun 2024 08:35:14 -0400
-Message-ID: <20240618123611.3301370-33-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=0TAJBewvvXv6GfLhednpQmCmTlIFhyDgNa699r2C1uc0adWhUJXGG1a6FdIvqh8Cr
+	 wpDUcu6G8bDo6BrWgPiq2TIMtPU4YD6djo7Q9gHmH4VvBaFlE5+p3i6MEe8bzU/Gbg
+	 504DDOpwjhb/hL9kbl1ffkD3R9LdMjPSbAAC9/Ns=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Yang Li <yang.lee@linux.alibaba.com>,
+	Jan Kara <jack@suse.cz>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 462/770] fanotify: remove variable set but not used
+Date: Tue, 18 Jun 2024 14:35:15 +0200
+Message-ID: <20240618123425.145924253@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Suma Hegde <suma.hegde@amd.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 77f1972bdcf7513293e8bbe376b9fe837310ee9c ]
+------------------
 
-HSMP interface is supported only on few x86 processors from AMD.
-Accessing HSMP registers on rest of the platforms might cause
-unexpected behaviour. So add a check.
+From: Yang Li <yang.lee@linux.alibaba.com>
 
-Also unavailability of this interface on rest of the processors
-is not an error. Hence, use pr_info() instead of the pr_err() to
-log the message.
+[ Upstream commit 217663f101a56ef77f82273818253fff082bf503 ]
 
-Signed-off-by: Suma Hegde <suma.hegde@amd.com>
-Reviewed-by: Naveen Krishna Chatradhi <naveenkrishna.chatradhi@amd.com>
-Link: https://lore.kernel.org/r/20240603081512.142909-1-suma.hegde@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+The code that uses the pointer info has been removed in 7326e382c21e
+("fanotify: report old and/or new parent+name in FAN_RENAME event").
+and fanotify_event_info() doesn't change 'event', so the declaration and
+assignment of info can be removed.
+
+Eliminate the following clang warning:
+fs/notify/fanotify/fanotify_user.c:161:24: warning: variable ‘info’ set
+but not used
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/hsmp.c | 50 ++++++++++++++++++++++++++++-----
- 1 file changed, 43 insertions(+), 7 deletions(-)
+ fs/notify/fanotify/fanotify_user.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/hsmp.c b/drivers/platform/x86/amd/hsmp.c
-index 1927be901108e..272d32a95e216 100644
---- a/drivers/platform/x86/amd/hsmp.c
-+++ b/drivers/platform/x86/amd/hsmp.c
-@@ -907,16 +907,44 @@ static int hsmp_plat_dev_register(void)
- 	return ret;
- }
- 
-+/*
-+ * This check is only needed for backward compatibility of previous platforms.
-+ * All new platforms are expected to support ACPI based probing.
-+ */
-+static bool legacy_hsmp_support(void)
-+{
-+	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
-+		return false;
-+
-+	switch (boot_cpu_data.x86) {
-+	case 0x19:
-+		switch (boot_cpu_data.x86_model) {
-+		case 0x00 ... 0x1F:
-+		case 0x30 ... 0x3F:
-+		case 0x90 ... 0x9F:
-+		case 0xA0 ... 0xAF:
-+			return true;
-+		default:
-+			return false;
-+		}
-+	case 0x1A:
-+		switch (boot_cpu_data.x86_model) {
-+		case 0x00 ... 0x1F:
-+			return true;
-+		default:
-+			return false;
-+		}
-+	default:
-+		return false;
-+	}
-+
-+	return false;
-+}
-+
- static int __init hsmp_plt_init(void)
+diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
+index 3bac2329dc35f..6679700574113 100644
+--- a/fs/notify/fanotify/fanotify_user.c
++++ b/fs/notify/fanotify/fanotify_user.c
+@@ -146,7 +146,6 @@ static size_t fanotify_event_len(unsigned int info_mode,
+ 				 struct fanotify_event *event)
  {
- 	int ret = -ENODEV;
+ 	size_t event_len = FAN_EVENT_METADATA_LEN;
+-	struct fanotify_info *info;
+ 	int fh_len;
+ 	int dot_len = 0;
  
--	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD || boot_cpu_data.x86 < 0x19) {
--		pr_err("HSMP is not supported on Family:%x model:%x\n",
--		       boot_cpu_data.x86, boot_cpu_data.x86_model);
--		return ret;
--	}
+@@ -156,8 +155,6 @@ static size_t fanotify_event_len(unsigned int info_mode,
+ 	if (fanotify_is_error_event(event->mask))
+ 		event_len += FANOTIFY_ERROR_INFO_LEN;
+ 
+-	info = fanotify_event_info(event);
 -
- 	/*
- 	 * amd_nb_num() returns number of SMN/DF interfaces present in the system
- 	 * if we have N SMN/DF interfaces that ideally means N sockets
-@@ -930,7 +958,15 @@ static int __init hsmp_plt_init(void)
- 		return ret;
- 
- 	if (!plat_dev.is_acpi_device) {
--		ret = hsmp_plat_dev_register();
-+		if (legacy_hsmp_support()) {
-+			/* Not ACPI device, but supports HSMP, register a plat_dev */
-+			ret = hsmp_plat_dev_register();
-+		} else {
-+			/* Not ACPI, Does not support HSMP */
-+			pr_info("HSMP is not supported on Family:%x model:%x\n",
-+				boot_cpu_data.x86, boot_cpu_data.x86_model);
-+			ret = -ENODEV;
-+		}
- 		if (ret)
- 			platform_driver_unregister(&amd_hsmp_driver);
- 	}
+ 	if (fanotify_event_has_any_dir_fh(event)) {
+ 		event_len += fanotify_dir_name_info_len(event);
+ 	} else if ((info_mode & FAN_REPORT_NAME) &&
 -- 
 2.43.0
+
+
 
 
