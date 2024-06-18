@@ -1,133 +1,107 @@
-Return-Path: <stable+bounces-53425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B98E390D18F
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:44:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EADF390CC6F
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67E671F26D7D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:44:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C49F1C22B24
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1D31A2557;
-	Tue, 18 Jun 2024 13:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8074C16CD31;
+	Tue, 18 Jun 2024 12:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NcJEMvOb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0i5WjGX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBAB158D60;
-	Tue, 18 Jun 2024 13:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C22216CD27;
+	Tue, 18 Jun 2024 12:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716288; cv=none; b=KBLqLQZ2fvuodyP31X+GJv1p118qpfXcLWTkIiJfmgWF+UNrrljdLoPBbXtzuFpMmzea72T0l0ejdEE8g90f0BaHfNlR/NpjURmKnXYeO31ld67y9a61UGzQHo199EVdgTcAbfWyYrXJBG0xS91rB+D7Irdk7XJN32suc44giG0=
+	t=1718714328; cv=none; b=b8k9wsVTagXJMziEdKthatkHodDm1q7fa+exMOVvq6KTJ+B9hJY/ACnNxuQx4FD5Cz8hz4LMcKsoXkRdnhHcBdfcONnkAL4EHEi7VJr+da5V+VwmRrnGDABNPYgr5ANiTXtJcTLkelEX/gDPPu4RkfOo9FUqqK9+Mr/GZf/mO3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716288; c=relaxed/simple;
-	bh=Yeb7rpRr6dc50jubTKN4anXTriNIHXB5dSvQzWP9es4=;
+	s=arc-20240116; t=1718714328; c=relaxed/simple;
+	bh=y+dPeb95Eq/YFHLynpEWrN856VxIZUimhAwPSc/Rdh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/dt77kk//GobGG/o3sM9hOtK6oKBdByff18WkpDaF1lhSCmtFEf6OabhsUkDW6SAUrBZCEzzk5Q9rEU37s6wZvU6ClEF51ECuOKaff9FwtWJT7eLWgtdJpfEQjkBqXFW+SbB4CnHdIR0yTcy8RkmLuVbt1rXR+AGvCoPcD0vJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NcJEMvOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638A7C3277B;
-	Tue, 18 Jun 2024 13:11:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716287;
-	bh=Yeb7rpRr6dc50jubTKN4anXTriNIHXB5dSvQzWP9es4=;
+	 MIME-Version; b=N41JcjVc3qy6SHkqRRRv2819S0InNHqiYLCNrCLbsYtRiQGhpzmCyJz5uuIKLze06+tl+EzKstt6k6lRof0di+BebEzssVkJpqZ/khmeV0L5xYXmV5Z6tNDAcRZTfw3KaAsT7G8qtpVbskpLrA815jXOP+L1QpfnxVpW1oriZ20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0i5WjGX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48591C4AF1D;
+	Tue, 18 Jun 2024 12:38:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714328;
+	bh=y+dPeb95Eq/YFHLynpEWrN856VxIZUimhAwPSc/Rdh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NcJEMvObmrLd+1SZT+4hvUzuL0r6xSlM6cSw3u3Ae4w9pIvXou1WikcvGeykvR65i
-	 sdyexe7utc1n3Ue3HdABfgt72nRbw0nAxKLUYS/ZBER9r6nZa+/RYl9FBf3z/WdVmG
-	 xOFJXTpEftllC+u6mqfuUIByGH4JJ2UZztw9usg4=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 596/770] NFSD: Clean up nfsd4_encode_readlink()
-Date: Tue, 18 Jun 2024 14:37:29 +0200
-Message-ID: <20240618123430.299470700@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=p0i5WjGXYTPmn9TdVnf715G9hbdUFvfe03pZTUd0f7fFxsSuOpjw+UZ1rPqNwnwPY
+	 JHXqc1wI36bkZawHr0znZAWUThyyMqamdbuC9h1Lur0Y3kHTe5sDwCLAYv6H7MgmKU
+	 b/uQJoIqGo/Vtb8ZyZtt/iGM8ULVMfe4WIHVIAaDg44JDDpO9Qjx7HIA2luuDsXFgk
+	 4RlReyN78ksBxSxKglMAmSoU8pW8a0lEF6VD0JZ4wcpe0660NQvaJ7d2hc+CZBX7NX
+	 c7Q2y7otaCCYbIfPB0qS39KhEc75P8ahDw+BXmN82yT5VkF/dT+ZvGS6xaUpN97yqd
+	 HwZkFnJPHPPcg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 09/35] ACPI: EC: Avoid returning AE_OK on errors in address space handler
+Date: Tue, 18 Jun 2024 08:37:29 -0400
+Message-ID: <20240618123831.3302346-9-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
+References: <20240618123831.3302346-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Armin Wolf <W_Armin@gmx.de>
 
-------------------
+[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+If an error code other than EINVAL, ENODEV or ETIME is returned
+by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
+returned by acpi_ec_space_handler().
 
-[ Upstream commit 99b002a1fa00d90e66357315757e7277447ce973 ]
+Fix this by only returning AE_OK on success, and return AE_ERROR
+otherwise.
 
-Similar changes to nfsd4_encode_readv(), all bundled into a single
-patch.
-
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ drivers/acpi/ec.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 4d74eb1fee8f1..a98513cb35b10 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -4019,16 +4019,13 @@ nfsd4_encode_read(struct nfsd4_compoundres *resp, __be32 nfserr,
- static __be32
- nfsd4_encode_readlink(struct nfsd4_compoundres *resp, __be32 nfserr, struct nfsd4_readlink *readlink)
- {
--	int maxcount;
--	__be32 wire_count;
--	int zero = 0;
-+	__be32 *p, *maxcount_p, zero = xdr_zero;
- 	struct xdr_stream *xdr = resp->xdr;
- 	int length_offset = xdr->buf->len;
--	int status;
--	__be32 *p;
-+	int maxcount, status;
- 
--	p = xdr_reserve_space(xdr, 4);
--	if (!p)
-+	maxcount_p = xdr_reserve_space(xdr, XDR_UNIT);
-+	if (!maxcount_p)
- 		return nfserr_resource;
- 	maxcount = PAGE_SIZE;
- 
-@@ -4053,14 +4050,11 @@ nfsd4_encode_readlink(struct nfsd4_compoundres *resp, __be32 nfserr, struct nfsd
- 		nfserr = nfserrno(status);
- 		goto out_err;
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 2e907800417db..75fa23962d1d3 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1351,8 +1351,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 		return AE_NOT_FOUND;
+ 	case -ETIME:
+ 		return AE_TIME;
+-	default:
++	case 0:
+ 		return AE_OK;
++	default:
++		return AE_ERROR;
  	}
--
--	wire_count = htonl(maxcount);
--	write_bytes_to_xdr_buf(xdr->buf, length_offset, &wire_count, 4);
--	xdr_truncate_encode(xdr, length_offset + 4 + ALIGN(maxcount, 4));
--	if (maxcount & 3)
--		write_bytes_to_xdr_buf(xdr->buf, length_offset + 4 + maxcount,
--						&zero, 4 - (maxcount&3));
--	return 0;
-+	*maxcount_p = cpu_to_be32(maxcount);
-+	xdr_truncate_encode(xdr, length_offset + 4 + xdr_align_size(maxcount));
-+	write_bytes_to_xdr_buf(xdr->buf, length_offset + 4 + maxcount, &zero,
-+			       xdr_pad_size(maxcount));
-+	return nfs_ok;
+ }
  
- out_err:
- 	xdr_truncate_encode(xdr, length_offset);
 -- 
 2.43.0
-
-
 
 
