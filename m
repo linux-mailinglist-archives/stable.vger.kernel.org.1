@@ -1,118 +1,159 @@
-Return-Path: <stable+bounces-52754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C816B90CCD6
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:58:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C26BF90D28F
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:50:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 803821F2497B
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:58:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DC55B23DF1
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F8C19EEA6;
-	Tue, 18 Jun 2024 12:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8551AC227;
+	Tue, 18 Jun 2024 13:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QY33XBeg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YBR0nHn6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB5019E839;
-	Tue, 18 Jun 2024 12:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691A013D52A;
+	Tue, 18 Jun 2024 13:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714425; cv=none; b=exdgop6w0te+vgtJ5t+khXOqnfiyaxzvNI1hA3hVNoEZQru3LCZgKBn4Nn8GXwbCmDggJcCNkAJMZf8zx4Nx+zjlnOzb53sxGCi822VLqNIicl1Qma22ZLUyU/dzMt01Knr1qc7uSCbaXxIMRUhKYEKIpZL20ojj2cmurS3vqik=
+	t=1718716652; cv=none; b=DneX0pxaLWAxMfoPgChACyXudhOzNMUBipu9eY+gXU/DGKV9Qhawbynl1+9Er1P8dzOh0dn0X8CwVWQpPwSOt4bqb9xg879/z7EvwXbAym5/E7RwmVjv+HWDJhaRpVH6ckPhQt98WZ7Ada5qqQCWWXQd3ZtGpm6GEf3WM8OWQFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714425; c=relaxed/simple;
-	bh=fV7RJv41JYFv1mqiIVbqc1Q37tlxIkIelFZiReJ/YD4=;
+	s=arc-20240116; t=1718716652; c=relaxed/simple;
+	bh=BAP5gO1Q9m/zbxYWwENQNboN7cy3Pcr4215av0D9y/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzhAeay84A3jNW1I5dmXCM3C85gAQ4WiEECox4ujdukZR5lLtC0uERPjqvwylAgQCE0FEYbAE1S/fXhO2xOAW8Rwx+mgu/wxBH+55uPEVNUFD7Y+MPW2IumTwPY1rN159YlNoU9HvQALHV0nrOesJlqjr7J8OrW8YawYQ2vy0Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QY33XBeg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5699DC3277B;
-	Tue, 18 Jun 2024 12:40:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714424;
-	bh=fV7RJv41JYFv1mqiIVbqc1Q37tlxIkIelFZiReJ/YD4=;
+	 MIME-Version; b=opOVXirnKYF7rdXVYfj3lSbw+b7C4yzxZXP5sNAmbvNnAiP9boyWu7+2AhzVvCrTQXlN+mJRA/5SNbc2YAxcOOD44EO+NnQZhuvhqIlZ44FWj38Yo2zXAq62EjCEVmLWeB2qS95J0uWoMgt9Fx+L6pxK8j++SywIyC8KHHW5o0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBR0nHn6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6242C3277B;
+	Tue, 18 Jun 2024 13:17:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716652;
+	bh=BAP5gO1Q9m/zbxYWwENQNboN7cy3Pcr4215av0D9y/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QY33XBegonXjP8qpXMAYZRUlcvgKdqbIhxBKOMfeQ3d1bCK/LMypvhfz1jtvlcev2
-	 IL1wbmhFWHDZ5iQnUitAjN8w7FlWQEoR+NQnSvjB0EI4kN9YHBlP0U3VrnODfegu6q
-	 7MNPUeb2ix5MAdhVeLUxVS0cewUELN5RCWW9L2I3qn+mnzdQtnuWLzpdDLAzeJakyw
-	 y7f4n3Lv0GBvzsvZQOeNI2VR4yEx8Hl6TwzEuXSkXsF6OCX+kHk4FG1RQKf+tHmNBV
-	 vi0Mj5nLXOVvBlgKNmeGfOifVTQRful2I1bD41YttfBqP32p4kyXMS8ZfxXr0/Ajdb
-	 tZxgZNj9mPV7Q==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Saurav Kashyap <skashyap@marvell.com>,
-	Nilesh Javali <njavali@marvell.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	jhasan@marvell.com,
-	GR-QLogic-Storage-Upstream@marvell.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 03/29] scsi: qedf: Don't process stag work during unload and recovery
-Date: Tue, 18 Jun 2024 08:39:29 -0400
-Message-ID: <20240618124018.3303162-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
-References: <20240618124018.3303162-1-sashal@kernel.org>
+	b=YBR0nHn6l8LaQ20vWIJigBHlzKielNi4IpXf/WqaURorgIA7IBmW/FZqghvRZDN3I
+	 xdrJwd2lTQx3jk/9VwzDGF/WwM+ONc70X2e1iPPidBZ2sXOAtUyyYGNK69KLqyOkaR
+	 zaApx4NgNyUs0wd3+bkzKhJ+N0Ey9TKKqnNJJBkE=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 716/770] NFSD: refactoring courtesy_client_reaper to a generic low memory shrinker
+Date: Tue, 18 Jun 2024 14:39:29 +0200
+Message-ID: <20240618123434.908814602@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Saurav Kashyap <skashyap@marvell.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 51071f0831ea975fc045526dd7e17efe669dc6e1 ]
+------------------
 
-Stag work can cause issues during unload and recovery, hence don't process
-it.
+From: Dai Ngo <dai.ngo@oracle.com>
 
-Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20240515091101.18754-2-skashyap@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[ Upstream commit a1049eb47f20b9eabf9afb218578fff16b4baca6 ]
+
+Refactoring courtesy_client_reaper to generic low memory
+shrinker so it can be used for other purposes.
+
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_main.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ fs/nfsd/nfs4state.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
-index d969b0dc97326..27f4028bff3bf 100644
---- a/drivers/scsi/qedf/qedf_main.c
-+++ b/drivers/scsi/qedf/qedf_main.c
-@@ -4001,6 +4001,22 @@ void qedf_stag_change_work(struct work_struct *work)
- 	struct qedf_ctx *qedf =
- 	    container_of(work, struct qedf_ctx, stag_work.work);
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 9a8038bfaa0d5..8fdf5ab5b9e47 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4361,7 +4361,7 @@ nfsd4_init_slabs(void)
+ }
  
-+	if (!qedf) {
-+		QEDF_ERR(&qedf->dbg_ctx, "qedf is NULL");
-+		return;
-+	}
+ static unsigned long
+-nfsd_courtesy_client_count(struct shrinker *shrink, struct shrink_control *sc)
++nfsd4_state_shrinker_count(struct shrinker *shrink, struct shrink_control *sc)
+ {
+ 	int cnt;
+ 	struct nfsd_net *nn = container_of(shrink,
+@@ -4374,7 +4374,7 @@ nfsd_courtesy_client_count(struct shrinker *shrink, struct shrink_control *sc)
+ }
+ 
+ static unsigned long
+-nfsd_courtesy_client_scan(struct shrinker *shrink, struct shrink_control *sc)
++nfsd4_state_shrinker_scan(struct shrinker *shrink, struct shrink_control *sc)
+ {
+ 	return SHRINK_STOP;
+ }
+@@ -4401,8 +4401,8 @@ nfsd4_init_leases_net(struct nfsd_net *nn)
+ 	nn->nfs4_max_clients = max_t(int, max_clients, NFS4_CLIENTS_PER_GB);
+ 
+ 	atomic_set(&nn->nfsd_courtesy_clients, 0);
+-	nn->nfsd_client_shrinker.scan_objects = nfsd_courtesy_client_scan;
+-	nn->nfsd_client_shrinker.count_objects = nfsd_courtesy_client_count;
++	nn->nfsd_client_shrinker.scan_objects = nfsd4_state_shrinker_scan;
++	nn->nfsd_client_shrinker.count_objects = nfsd4_state_shrinker_count;
+ 	nn->nfsd_client_shrinker.seeks = DEFAULT_SEEKS;
+ 	return register_shrinker(&nn->nfsd_client_shrinker);
+ }
+@@ -6151,17 +6151,24 @@ laundromat_main(struct work_struct *laundry)
+ }
+ 
+ static void
+-courtesy_client_reaper(struct work_struct *reaper)
++courtesy_client_reaper(struct nfsd_net *nn)
+ {
+ 	struct list_head reaplist;
+-	struct delayed_work *dwork = to_delayed_work(reaper);
+-	struct nfsd_net *nn = container_of(dwork, struct nfsd_net,
+-					nfsd_shrinker_work);
+ 
+ 	nfs4_get_courtesy_client_reaplist(nn, &reaplist);
+ 	nfs4_process_client_reaplist(&reaplist);
+ }
+ 
++static void
++nfsd4_state_shrinker_worker(struct work_struct *work)
++{
++	struct delayed_work *dwork = to_delayed_work(work);
++	struct nfsd_net *nn = container_of(dwork, struct nfsd_net,
++				nfsd_shrinker_work);
 +
-+	if (test_bit(QEDF_IN_RECOVERY, &qedf->flags)) {
-+		QEDF_ERR(&qedf->dbg_ctx,
-+			 "Already is in recovery, hence not calling software context reset.\n");
-+		return;
-+	}
++	courtesy_client_reaper(nn);
++}
 +
-+	if (test_bit(QEDF_UNLOADING, &qedf->flags)) {
-+		QEDF_ERR(&qedf->dbg_ctx, "Driver unloading\n");
-+		return;
-+	}
-+
- 	printk_ratelimited("[%s]:[%s:%d]:%d: Performing software context reset.",
- 			dev_name(&qedf->pdev->dev), __func__, __LINE__,
- 			qedf->dbg_ctx.host_no);
+ static inline __be32 nfs4_check_fh(struct svc_fh *fhp, struct nfs4_stid *stp)
+ {
+ 	if (!fh_match(&fhp->fh_handle, &stp->sc_file->fi_fhandle))
+@@ -7997,7 +8004,7 @@ static int nfs4_state_create_net(struct net *net)
+ 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
+ 
+ 	INIT_DELAYED_WORK(&nn->laundromat_work, laundromat_main);
+-	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, courtesy_client_reaper);
++	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, nfsd4_state_shrinker_worker);
+ 	get_net(net);
+ 
+ 	return 0;
 -- 
 2.43.0
+
+
 
 
