@@ -1,112 +1,123 @@
-Return-Path: <stable+bounces-53293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD10790D101
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:38:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBA090CC3C
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:46:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7674E1F22ACC
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32FA91C23004
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9507019CD1D;
-	Tue, 18 Jun 2024 13:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7859415ECFC;
+	Tue, 18 Jun 2024 12:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0GEjUN2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KbCfz8OV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D0C157A49;
-	Tue, 18 Jun 2024 13:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D7215ECE4;
+	Tue, 18 Jun 2024 12:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715900; cv=none; b=jPZjwlN9o1tsujy0jumolVgH+9aPrD6/PTuCteJpKj6g7oEWuUG7RPrzSpPJqeBAtYv+QnCpjwA++KtmomwC27/3cqqNiFh6Yshed4djpeQXf3J6q4QyX8rVc/QCTf8ROigU2xUiWWpFpAYC8XgQbH6dlSLDn9/T2oNJ/Z74CBI=
+	t=1718714257; cv=none; b=bxr/Ir/FVxY03/qnluAzPxgO62Bq4alqDF9Z9qj2jybMUh8MMNdYXvFnlToFF4AaA+OmZVZ1Hdvas09QIkNOEuJRSpoOGdArulZJWXzy6TNhZEmO4Hnr5HEerlRgE35GaeB7tQ52RIO5ahwiTjNRA8IRPwf7yhSgSjjp4ySXfms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715900; c=relaxed/simple;
-	bh=dE7/mZnsAH7pz0/A31iCopCjdrMiNu6PbUPEr2aCnGQ=;
+	s=arc-20240116; t=1718714257; c=relaxed/simple;
+	bh=EpeNOuTzRYQMGIT8zYf8o2LrLhjf2W6iYUh+DoIYeeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HaLmtFo/m1Wz4R/iOljjRu2bB7uSzrw+BNNKokyBWYOuwbwDXRdK7LAxuEoOeew7n+gWEQfV6GiTW7QJlLInBGDcqMlQNjCJ7A4PWjqLJP+LcTQgjIr2CnQpzKpzGvxgwGPK5fo76kIrG/PKDhxldCZH2BD6QptwDARAplX8mH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0GEjUN2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5B9C3277B;
-	Tue, 18 Jun 2024 13:04:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715900;
-	bh=dE7/mZnsAH7pz0/A31iCopCjdrMiNu6PbUPEr2aCnGQ=;
+	 MIME-Version; b=eS6CYzC7cN5mP08YN87qznF/KqRBhEpjjWaQjR+2GK9/H+OPqMelVDB2qE9QEtFvxGnTZWvwsCfa1uHLPlkhvHDa9wtaAoYHk6rgvoMLBbG2f2r9MHMGJq0CjsuN6g+ug5drSxakQoVEJb30Z7Uh3fO9/KRSaStJc+Ced9qG69E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KbCfz8OV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC711C4AF1D;
+	Tue, 18 Jun 2024 12:37:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714256;
+	bh=EpeNOuTzRYQMGIT8zYf8o2LrLhjf2W6iYUh+DoIYeeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0GEjUN2wkhEu0BOw/jCgnnvrlT0CYcPB89Ti6sGOAkBIBfTj+YvW0f61i5rBZ6CP
-	 W3YNuE3rzus6UTYLPrOHkjgYUFmTWz2mJwxsC6T/eyzX2hEd9vP1f6Tl2niUHGL8vV
-	 csoPWyOJWTlnit6zcarQvQ94qirL7janBIMVjFH0=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	"J. Bruce Fields" <bfields@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 464/770] lockd: fix failure to cleanup client locks
-Date: Tue, 18 Jun 2024 14:35:17 +0200
-Message-ID: <20240618123425.224382897@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=KbCfz8OVOkzm1O1kyxmpwksm2WWoB32B2o5ZOaHSTzRDj60CHvq3lDzWYq0yEFlno
+	 5edvwGP/UZ6/oQJrYBnwVx8eGwIENvznB1paazA7xWqSiswUBfweIzcruAmmVv0Lb9
+	 9pJtKbt2BUHo3VJckzCny1OlGKURlVvrPntPmrRfnckQwNL59mgS1QpkqNUkTt8OdG
+	 xBE9zIcpqGCal9UH6gD/udNgutvLrhyUG/KGj6Esdn1Fb4d4QXyNFo+2DrzD6Fap1o
+	 v+uhaPaFFs0fb4DkOaNGhsIa1FSCKoqCyVc6CZS37aH97AgjwNPXXgKQySUijNdnd9
+	 x8uecYe4vorAA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Hagar Hemdan <hagarhem@amazon.com>,
+	Maximilian Heyne <mheyne@amazon.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	io-uring@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 36/44] io_uring: fix possible deadlock in io_register_iowq_max_workers()
+Date: Tue, 18 Jun 2024 08:35:17 -0400
+Message-ID: <20240618123611.3301370-36-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-------------------
+[ Upstream commit 73254a297c2dd094abec7c9efee32455ae875bdf ]
 
-From: J. Bruce Fields <bfields@redhat.com>
+The io_register_iowq_max_workers() function calls io_put_sq_data(),
+which acquires the sqd->lock without releasing the uring_lock.
+Similar to the commit 009ad9f0c6ee ("io_uring: drop ctx->uring_lock
+before acquiring sqd->lock"), this can lead to a potential deadlock
+situation.
 
-[ Upstream commit d19a7af73b5ecaac8168712d18be72b9db166768 ]
+To resolve this issue, the uring_lock is released before calling
+io_put_sq_data(), and then it is re-acquired after the function call.
 
-In my testing, we're sometimes hitting the request->fl_flags & FL_EXISTS
-case in posix_lock_inode, presumably just by random luck since we're not
-actually initializing fl_flags here.
+This change ensures that the locks are acquired in the correct
+order, preventing the possibility of a deadlock.
 
-This probably didn't matter before commit 7f024fcd5c97 ("Keep read and
-write fds with each nlm_file") since we wouldn't previously unlock
-unless we knew there were locks.
-
-But now it causes lockd to give up on removing more locks.
-
-We could just initialize fl_flags, but really it seems dubious to be
-calling vfs_lock_file with random values in some of the fields.
-
-Fixes: 7f024fcd5c97 ("Keep read and write fds with each nlm_file")
-Signed-off-by: J. Bruce Fields <bfields@redhat.com>
-[ cel: fixed checkpatch.pl nit ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Suggested-by: Maximilian Heyne <mheyne@amazon.de>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/r/20240604130527.3597-1-hagarhem@amazon.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svcsubs.c | 1 +
- 1 file changed, 1 insertion(+)
+ io_uring/register.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
-index 54c2e42130ca2..0a22a2faf5522 100644
---- a/fs/lockd/svcsubs.c
-+++ b/fs/lockd/svcsubs.c
-@@ -180,6 +180,7 @@ static int nlm_unlock_files(struct nlm_file *file)
- {
- 	struct file_lock lock;
+diff --git a/io_uring/register.c b/io_uring/register.c
+index 99c37775f974c..1ae8491e35abb 100644
+--- a/io_uring/register.c
++++ b/io_uring/register.c
+@@ -355,8 +355,10 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
+ 	}
  
-+	locks_init_lock(&lock);
- 	lock.fl_type  = F_UNLCK;
- 	lock.fl_start = 0;
- 	lock.fl_end   = OFFSET_MAX;
+ 	if (sqd) {
++		mutex_unlock(&ctx->uring_lock);
+ 		mutex_unlock(&sqd->lock);
+ 		io_put_sq_data(sqd);
++		mutex_lock(&ctx->uring_lock);
+ 	}
+ 
+ 	if (copy_to_user(arg, new_count, sizeof(new_count)))
+@@ -381,8 +383,10 @@ static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
+ 	return 0;
+ err:
+ 	if (sqd) {
++		mutex_unlock(&ctx->uring_lock);
+ 		mutex_unlock(&sqd->lock);
+ 		io_put_sq_data(sqd);
++		mutex_lock(&ctx->uring_lock);
+ 	}
+ 	return ret;
+ }
 -- 
 2.43.0
-
-
 
 
