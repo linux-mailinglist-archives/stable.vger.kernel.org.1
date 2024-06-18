@@ -1,120 +1,120 @@
-Return-Path: <stable+bounces-52722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD2A90CCA2
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:54:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86CBC90D18E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:44:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F400628602A
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:49:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FC381F269AD
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC3216B3A1;
-	Tue, 18 Jun 2024 12:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4971D13C81E;
+	Tue, 18 Jun 2024 13:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P1/SIaqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6hqBG9G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5592316A958;
-	Tue, 18 Jun 2024 12:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078D5158D65;
+	Tue, 18 Jun 2024 13:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714324; cv=none; b=kdp/85KXRgeWggHcNzJf2GNz5lNjCzALmcljQJp65O4RLd9PYkYku2nOrNSDrxBUPlRuwu/PRpqH4e6NTXbpqy/X8bADmtXjsJ4MRe+ysGhhA6iFbiGr0LA6CCIR/ZoSd6wIziFduZ320/Zxgyxkig8JbzELXyQKrYK9zg+4feY=
+	t=1718716282; cv=none; b=P2i36I+6jWNdArFXjHmerFZSON5JI61uY+wyAL/93s/+JiLeeCZrE8ZmBxizIKO6bOqfKHRRZ/aC7DTA6++7HrdiH+lcRDsalN0urBif4k1Wn9TFZUZwtaMO+hXGdWg3lJooXVjEu84pXSoGyHmhEZNv/2z2/3RsZhNJjJ1CvQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714324; c=relaxed/simple;
-	bh=kaqaszhQnjB6MNLzi7ZVRYXuc9INOeh8YqNngcloKc4=;
+	s=arc-20240116; t=1718716282; c=relaxed/simple;
+	bh=bkwTVm7YIOVzySQPksXL2MfvNWudpbJSLSQChmmFcSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNKpo8CI0x2dX7i1hbS5q3Rw3jTQmwjUtm1R0ZrUT1mfAcwMd60EXtFIuhNcRZy7pYbF6frcwsRU4T/y1sBGWMJB2oaofmxFzwokr5qajkH/TdnHcOwR9rXtt14K9uovKnKc3t61I69XJFzFxXfg2UL6bMAjihN7VWTDwLhRZds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P1/SIaqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37405C3277B;
-	Tue, 18 Jun 2024 12:38:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714324;
-	bh=kaqaszhQnjB6MNLzi7ZVRYXuc9INOeh8YqNngcloKc4=;
+	 MIME-Version; b=vDz3J66l05O75tm8lqXj3+9MvEpyeh6ZAW4hIO2PJQdJrnMeCjuo02jIGuPV6dAf1r0LfaT4MCndIcaoBrR3+GG0Xwq0M6tyTXoDO0H1HR498sYr/CMaD6oxVN+qL2J+TZDEVzfQINv6J20BioTPzpHUh2LumV8Tsc5GrtmOzSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6hqBG9G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79653C32786;
+	Tue, 18 Jun 2024 13:11:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716281;
+	bh=bkwTVm7YIOVzySQPksXL2MfvNWudpbJSLSQChmmFcSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P1/SIaqLtR8OSX0vrYNj2TEsTlJNPUHSfFxIxqI4GNdZoIyA5XgSqjLJoz8YSR4Tb
-	 v5sNOFvhQhcwqkdeYz57bbsa2HcRkmT5csDk85IvupupW3tNtjC6/r9wDv3eRoRPQN
-	 7wk+BOMQrO9oDQw1faKYsa/6IsMT9Lxuqxb1vMRboka4vgjpSgp2V2GJWrFEBH17Pm
-	 3p1Gkz/c5hB7FW8qVtrrxohZ8vYv+VOqBm4vRhin1OeKiXBwvkXkNl/KYFCqipTKAX
-	 o4OwR72QgCggN+VsDRSP8POVFO3aV8/FKxBrZIJyt7FsQZiXsx+5CSMDbs9F9LiNUL
-	 6IkNAMSfn9sDA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	chenhuacai@kernel.org,
-	linux-efi@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 06/35] efi/libstub: zboot.lds: Discard .discard sections
-Date: Tue, 18 Jun 2024 08:37:26 -0400
-Message-ID: <20240618123831.3302346-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
-References: <20240618123831.3302346-1-sashal@kernel.org>
+	b=h6hqBG9GgnQlhpjCNxozchmFBFKG6+lWksfUvqedeMTHJIY6kKwUNO9AQBzoGwZIB
+	 aum7fDrqkbDFhID7SQRKcEYRnWWJhG+9QnMv0wYGHYxxBA+YaEjKqqCBK9+bIF8h3Q
+	 UHbR9u9SR6L4JaJlPsFegTOA/w2oo5NXpyaM+mzs=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 594/770] NFSD: Simplify starting_len
+Date: Tue, 18 Jun 2024 14:37:27 +0200
+Message-ID: <20240618123430.222798512@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-From: Nathan Chancellor <nathan@kernel.org>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 5134acb15d9ef27aa2b90aad46d4e89fcef79fdc ]
+------------------
 
-When building ARCH=loongarch defconfig + CONFIG_UNWINDER_ORC=y using
-LLVM, there is a warning from ld.lld when linking the EFI zboot image
-due to the use of unreachable() in number() in vsprintf.c:
+From: Chuck Lever <chuck.lever@oracle.com>
 
-  ld.lld: warning: drivers/firmware/efi/libstub/lib.a(vsprintf.stub.o):(.discard.unreachable+0x0): has non-ABS relocation R_LARCH_32_PCREL against symbol ''
+[ Upstream commit 071ae99feadfc55979f89287d6ad2c6a315cb46d ]
 
-If the compiler cannot eliminate the default case for any reason, the
-.discard.unreachable section will remain in the final binary but the
-entire point of any section prefixed with .discard is that it is only
-used at compile time, so it can be discarded via /DISCARD/ in a linker
-script. The asm-generic vmlinux.lds.h includes .discard and .discard.*
-in the COMMON_DISCARDS macro but that is not used for zboot.lds, as it
-is not a kernel image linker script.
+Clean-up: Now that nfsd4_encode_readv() does not have to encode the
+EOF or rd_length values, it no longer needs to subtract 8 from
+@starting_len.
 
-Add .discard and .discard.* to /DISCARD/ in zboot.lds, so that any
-sections meant to be discarded at link time are not included in the
-final zboot image. This issue is not specific to LoongArch, it is just
-the first architecture to select CONFIG_OBJTOOL, which defines
-annotate_unreachable() as an asm statement to add the
-.discard.unreachable section, and use the EFI stub.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2023
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/zboot.lds | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfs4xdr.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/zboot.lds b/drivers/firmware/efi/libstub/zboot.lds
-index ac8c0ef851581..af2c82f7bd902 100644
---- a/drivers/firmware/efi/libstub/zboot.lds
-+++ b/drivers/firmware/efi/libstub/zboot.lds
-@@ -41,6 +41,7 @@ SECTIONS
- 	}
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 36f0f06714dec..f67a54f7eb13e 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3950,7 +3950,7 @@ static __be32 nfsd4_encode_readv(struct nfsd4_compoundres *resp,
+ 				 struct file *file, unsigned long maxcount)
+ {
+ 	struct xdr_stream *xdr = resp->xdr;
+-	int starting_len = xdr->buf->len - 8;
++	unsigned int starting_len = xdr->buf->len;
+ 	__be32 nfserr;
+ 	__be32 tmp;
+ 	int pad;
+@@ -3965,14 +3965,13 @@ static __be32 nfsd4_encode_readv(struct nfsd4_compoundres *resp,
+ 	read->rd_length = maxcount;
+ 	if (nfserr)
+ 		return nfserr;
+-	if (svc_encode_result_payload(resp->rqstp, starting_len + 8, maxcount))
++	if (svc_encode_result_payload(resp->rqstp, starting_len, maxcount))
+ 		return nfserr_io;
+-	xdr_truncate_encode(xdr, starting_len + 8 + xdr_align_size(maxcount));
++	xdr_truncate_encode(xdr, starting_len + xdr_align_size(maxcount));
  
- 	/DISCARD/ : {
-+		*(.discard .discard.*)
- 		*(.modinfo .init.modinfo)
- 	}
+ 	tmp = xdr_zero;
+ 	pad = (maxcount&3) ? 4 - (maxcount&3) : 0;
+-	write_bytes_to_xdr_buf(xdr->buf, starting_len + 8 + maxcount,
+-								&tmp, pad);
++	write_bytes_to_xdr_buf(xdr->buf, starting_len + maxcount, &tmp, pad);
+ 	return 0;
+ 
  }
 -- 
 2.43.0
+
+
 
 
