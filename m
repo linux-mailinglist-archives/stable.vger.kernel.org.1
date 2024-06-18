@@ -1,133 +1,146 @@
-Return-Path: <stable+bounces-53606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5D190D2BC
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:52:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D70790CCF7
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:01:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDFFDB27992
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:51:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7C0EB2B2FC
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5D815A871;
-	Tue, 18 Jun 2024 13:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC3C19F47C;
+	Tue, 18 Jun 2024 12:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmSJmYZn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LBYFTB6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B60012D74D;
-	Tue, 18 Jun 2024 13:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162F815533D;
+	Tue, 18 Jun 2024 12:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716828; cv=none; b=BTct29NCb2K7ncp3FmujmNenap5mwW61wBUh4flVvt5o+NbDLHEYF/7nGp39lXJnti3mB9Q4E0H5CWJCwos9I9A7y1swIoDMOKBMqTEUrmFLfH7LRgN32/TwSLYWtcfZhVSfsBzR6tk3GrgP6UKXAauMfXhaWHPu7TVNHOjg/aU=
+	t=1718714427; cv=none; b=Fyr7tLH8bNbAM6LhgUZaGbOqYeM8Aqou4/5dEqmxKa7Ah5Uzq9M3dCrVgOxes3OxC11ns6a+WlirR/jL6bxZvugfTyAvsNoRSjHvXofDToLcmrd75gForCuYUwLaPx4/IXy6Xz9NUpPrrUR7qggZ0BMGU2+lBTRx60Mfr0bJV6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716828; c=relaxed/simple;
-	bh=KRZc3Eeg2g/UKlQAoyA7GguHMOrky6dIouDKP89Q36I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1K4oRhIE2vxAWfGW2SUMiJxBRAFqps/QT+V7/wWmz0Hf+sZaPXWlC+oU8vTkgCQS3/3jWLZONh+ZSZCBje+SXmJEBx1ujv/v2T6ZQEBzY1u12sUWdBbJTh6mvq9q8HFN5Cc8qiQZXXke94v/v3/t+NG5U2mc3jqKoSkehdmbY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmSJmYZn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888C9C3277B;
-	Tue, 18 Jun 2024 13:20:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716827;
-	bh=KRZc3Eeg2g/UKlQAoyA7GguHMOrky6dIouDKP89Q36I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmSJmYZncdDtYNSYsLCVnrjvxJtYq9sGsRz5rneQcOquYD83WVEUDnVVTdsNvjP7j
-	 AwwEm7fdtc1TrB/+niPYjbK8ZTx8cW9wvSYIHZsemZ2sQLBsCUKpMc5NIJECCgIJuc
-	 BsuQGkmp3QN4TD0UrvcLUOSQU/J5A7z7w4GK0bwo=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Tavian Barnes <tavianator@tavianator.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 759/770] nfsd: Fix creation time serialization order
-Date: Tue, 18 Jun 2024 14:40:12 +0200
-Message-ID: <20240618123436.568046419@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1718714427; c=relaxed/simple;
+	bh=PLYFcs7ICDH3FpoaefktwgaRhPxIEU6ZQGa1ScCB6cA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TXroUZMkN6ucSXe3HQes9HLDES/8WNWvnj4LEpJtmyEqmTEJDktWrwdWafQizz6qAZpfOQpbTxrmF1PbOvVd8tfdYgOC6ogrIzaOL57ZMJCvnVCfTPFT0fepGKvxeageA0NK657t/1D3LQlI2ICgDsOg13aAd/5iAy50XxCDsXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LBYFTB6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B5FC4AF49;
+	Tue, 18 Jun 2024 12:40:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714426;
+	bh=PLYFcs7ICDH3FpoaefktwgaRhPxIEU6ZQGa1ScCB6cA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LBYFTB6Nmi/C+IIR/nuTMRIBuWLPz2ldfQEmQ/ZnM6HxS5xPxPdW2kIvfy7KY8ZwD
+	 28ZeQ8oXU12vEuk6qIj9szZ5eqTCATUM2PBUZtj0uiWIQtXXVYgnZQRuYBSVvUYRLU
+	 jBzfBro7TzHKgPD2CxmOzHhyb7Rl+tukcpn9zqk2iwhyPGB7gKmG9AlSS7CohtNrxS
+	 pN0B0W5ixysc4z4kUIdOAZWovfHEkQJJp4vcbQP5pfDl0ImCmGjeFCqcbWh0KXFaQq
+	 qkA6vJV5Rk8OfwUL7+DKkuE6TRWvnqXiqm5BsHRX2KY1EwqPbJnXHMLBpDu3i7BHRa
+	 XOPBm0XB5+vhw==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2ec3c0dada3so2594751fa.0;
+        Tue, 18 Jun 2024 05:40:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXC7nczjlSmVIgK8HFPHfz4jeRlWyG4b2LEQq7mdCLXEG23hxV8bvJRYjy/TAzgXtQQFl49lxMGUpDxqEiCOSw2HJi6y5c2ixyeX97SEBrFXdUbkcZ6D5//O1jcGN3Wvtdum6dAS71EltRnyH8MijbpUsMfdxI2ULz/Jfqfu5R/kqgZ
+X-Gm-Message-State: AOJu0YzyF2S9Sec3Nh//rOkgItDWwAltupWE3t/7fNCg4Zuho79ZPwQG
+	yaWyy7Cs1laD7lwOMJdZgkRj4YUZ37yUlWQHPtN0fQ5Ypz269iW9gETJZt9OcaBDeOoJoR8DDY3
+	MgxIk1vXv0+pz8EVFrwUmUp4HSYM=
+X-Google-Smtp-Source: AGHT+IES1HZ7KpNyPW3dWatBp5F9F7os952srDi0rQG4n/sgJkgHaQma8pvcT9JBsdMuwoondxheXbX6SpdohqLG+Zo=
+X-Received: by 2002:a2e:878f:0:b0:2ec:3565:9a6a with SMTP id
+ 38308e7fff4ca-2ec35659ab0mr16207111fa.33.1718714424915; Tue, 18 Jun 2024
+ 05:40:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240618123611.3301370-1-sashal@kernel.org> <20240618123611.3301370-7-sashal@kernel.org>
+In-Reply-To: <20240618123611.3301370-7-sashal@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 18 Jun 2024 14:40:13 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXGzMCT4KQcrnD80p6ZA=-j+aAPuPbKRuYQiRjof-+dTUg@mail.gmail.com>
+Message-ID: <CAMj1kXGzMCT4KQcrnD80p6ZA=-j+aAPuPbKRuYQiRjof-+dTUg@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.9 07/44] efi: pstore: Return proper errors on
+ UEFI failures
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>, Kees Cook <keescook@chromium.org>, 
+	linux-hardening@vger.kernel.org, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+I already NAKed this yesterday.
 
-------------------
+Please stop proposing the same patches.
 
-From: Tavian Barnes <tavianator@tavianator.com>
-
-[ Upstream commit d7dbed457c2ef83709a2a2723a2d58de43623449 ]
-
-In nfsd4_encode_fattr(), TIME_CREATE was being written out after all
-other times.  However, they should be written out in an order that
-matches the bit flags in bmval1, which in this case are
-
-    #define FATTR4_WORD1_TIME_ACCESS        (1UL << 15)
-    #define FATTR4_WORD1_TIME_CREATE        (1UL << 18)
-    #define FATTR4_WORD1_TIME_DELTA         (1UL << 19)
-    #define FATTR4_WORD1_TIME_METADATA      (1UL << 20)
-    #define FATTR4_WORD1_TIME_MODIFY        (1UL << 21)
-
-so TIME_CREATE should come second.
-
-I noticed this on a FreeBSD NFSv4.2 client, which supports creation
-times.  On this client, file times were weirdly permuted.  With this
-patch applied on the server, times looked normal on the client.
-
-Fixes: e377a3e698fb ("nfsd: Add support for the birth time attribute")
-Link: https://unix.stackexchange.com/q/749605/56202
-Signed-off-by: Tavian Barnes <tavianator@tavianator.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/nfsd/nfs4xdr.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index a81938c1e3efb..5a68c62864925 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -3364,6 +3364,11 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
- 		if (status)
- 			goto out;
- 	}
-+	if (bmval1 & FATTR4_WORD1_TIME_CREATE) {
-+		status = nfsd4_encode_nfstime4(xdr, &stat.btime);
-+		if (status)
-+			goto out;
-+	}
- 	if (bmval1 & FATTR4_WORD1_TIME_DELTA) {
- 		p = xdr_reserve_space(xdr, 12);
- 		if (!p)
-@@ -3380,11 +3385,6 @@ nfsd4_encode_fattr(struct xdr_stream *xdr, struct svc_fh *fhp,
- 		if (status)
- 			goto out;
- 	}
--	if (bmval1 & FATTR4_WORD1_TIME_CREATE) {
--		status = nfsd4_encode_nfstime4(xdr, &stat.btime);
--		if (status)
--			goto out;
--	}
- 	if (bmval1 & FATTR4_WORD1_MOUNTED_ON_FILEID) {
- 		u64 ino = stat.ino;
- 
--- 
-2.43.0
+And in the future, please omit *any* patch from AUTOSEL that has been
+signed off by me, not only authored by me.
 
 
 
+On Tue, 18 Jun 2024 at 14:36, Sasha Levin <sashal@kernel.org> wrote:
+>
+> From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+>
+> [ Upstream commit 7c23b186ab892088f76a3ad9dbff1685ffe2e832 ]
+>
+> Right now efi-pstore either returns 0 (success) or -EIO; but we
+> do have a function to convert UEFI errors in different standard
+> error codes, helping to narrow down potential issues more accurately.
+>
+> So, let's use this helper here.
+>
+> Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/firmware/efi/efi-pstore.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
+> index 833cbb995dd3f..194fdbd600ad1 100644
+> --- a/drivers/firmware/efi/efi-pstore.c
+> +++ b/drivers/firmware/efi/efi-pstore.c
+> @@ -136,7 +136,7 @@ static int efi_pstore_read_func(struct pstore_record *record,
+>                                      &size, record->buf);
+>         if (status != EFI_SUCCESS) {
+>                 kfree(record->buf);
+> -               return -EIO;
+> +               return efi_status_to_err(status);
+>         }
+>
+>         /*
+> @@ -181,7 +181,7 @@ static ssize_t efi_pstore_read(struct pstore_record *record)
+>                         return 0;
+>
+>                 if (status != EFI_SUCCESS)
+> -                       return -EIO;
+> +                       return efi_status_to_err(status);
+>
+>                 /* skip variables that don't concern us */
+>                 if (efi_guidcmp(guid, LINUX_EFI_CRASH_GUID))
+> @@ -219,7 +219,7 @@ static int efi_pstore_write(struct pstore_record *record)
+>                                             record->size, record->psi->buf,
+>                                             true);
+>         efivar_unlock();
+> -       return status == EFI_SUCCESS ? 0 : -EIO;
+> +       return efi_status_to_err(status);
+>  };
+>
+>  static int efi_pstore_erase(struct pstore_record *record)
+> @@ -230,7 +230,7 @@ static int efi_pstore_erase(struct pstore_record *record)
+>                                      PSTORE_EFI_ATTRIBUTES, 0, NULL);
+>
+>         if (status != EFI_SUCCESS && status != EFI_NOT_FOUND)
+> -               return -EIO;
+> +               return efi_status_to_err(status);
+>         return 0;
+>  }
+>
+> --
+> 2.43.0
+>
 
