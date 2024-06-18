@@ -1,148 +1,110 @@
-Return-Path: <stable+bounces-53556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A64C90D258
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:49:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C31F690CD00
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B77F3287160
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:49:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B4901F2374E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0781AC76A;
-	Tue, 18 Jun 2024 13:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084B11A38C7;
+	Tue, 18 Jun 2024 12:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeLIZFeP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lA4yl44N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D22B1AC767;
-	Tue, 18 Jun 2024 13:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CA61A2FDA;
+	Tue, 18 Jun 2024 12:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716679; cv=none; b=IRERmi2AUvgvIXJUwuufPVUeupwiYl/hVn6DFbZL/ZMZAL9ZqZMknW1aDDurHGEL+kZClHkhorbSHCM2JdNNwEcEZHkQiHzPF9lRHimsnXae5RxCHYnMSfM8Fg7nrE37AJX/OGmOfJ3Vxz/6Yx9MYetpvfDYT4zwgcyovhIRIJU=
+	t=1718714447; cv=none; b=Jev7eJFOCshERCJCf4UJLUjKhqHe+xM/KqrWKPqFumkxb3b4G4UPos9vhEUubLd5S3DP0GWHqgn1atHq3KY3ibp+RGCT0g792OYyv7Lp73MtLjONTp0zj0pbgEizoKjqV99yGBqVuHbGt8L0LpO+pwpDNI7GRnUgpVHC4IUKBE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716679; c=relaxed/simple;
-	bh=/Rxckf9dLI0BHZBq7jHoJYufe4giha1vbwacyEXVHUc=;
+	s=arc-20240116; t=1718714447; c=relaxed/simple;
+	bh=6YK1nSfeH51EVhdHDofsARKpTId9VzEdXwFMFFgqiWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uic9iAiJFyaxXA0fPCB7pq4K2qmVEWi9tURqRkm0xrd0swqyw13I5XUpQAIKPS5QsPMv8rbZA51QH1/nDw1hdF7kBPON1P6JUzcmOUfw/VW3TQKjOVJ1cMOgdA3KZ7YDOR1u1TAwyCEkrULyLA9pljV1/dvo2+lF6v+PXY+HrmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeLIZFeP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80A9C3277B;
-	Tue, 18 Jun 2024 13:17:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716679;
-	bh=/Rxckf9dLI0BHZBq7jHoJYufe4giha1vbwacyEXVHUc=;
+	 MIME-Version; b=Q6mSc/z1p8A5DDYESyhhLzOccydB394bqYknAvSI6RrTx+Sac9CYIzDS6vVInnoRM1X4TcBFXp7BiWO38KGuMZ+z3XBuc349aq8fSs3O/9WjnsPy33Ico/wjJREEjB1mK8Dxbp1iWVKjQ5qjpS8kuchXMIrE4BlSalmIvA7KNR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lA4yl44N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D360C3277B;
+	Tue, 18 Jun 2024 12:40:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714447;
+	bh=6YK1nSfeH51EVhdHDofsARKpTId9VzEdXwFMFFgqiWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MeLIZFePWU6SnNbjooFgzeC+D6U0Za2yGlJdkExC9NETIIx/jt//lnkprEf93mfo2
-	 Zy5NVgQB4xanPuCZhSvTQHNHonbxa75AKI6DUe9H9xzjB2wN+k8fdAJTTKas3ty0rq
-	 VOVTA74qlhWvrTbx+2vzQeE0HiSFpVNieTvpr/cU=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 727/770] NFSD: replace delayed_work with work_struct for nfsd_client_shrinker
-Date: Tue, 18 Jun 2024 14:39:40 +0200
-Message-ID: <20240618123435.330539223@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=lA4yl44NgXyJR7WslrDTVKT/fFiDEMzjl3Ubplolu3qq1l8RagfmDJc/lBVeZEe9X
+	 2k7E9VvjhqG9CV90aJznECG3crq37kodDv0maf3puWkk0u0UHZq50RsND+W92tQinG
+	 2rRg50L8b9+Rjf4bj692Z6ui+GnUmJ+YhEYQuyiLHkvoUvqBF16HIqv1lgg5a7wR9z
+	 kuIcD00uT3nrVaWEWyEJX18GccG52Z+MYUo7vh1Sad3XKnV0tFPj3vLwEUtsEMQg15
+	 926peG7E9XQrCMZ3gdets/EUpyRLbjnZjhVhmWn8ch+qLlMqhxjbI77oFSSspgRNJ+
+	 zb5Ho/QA5Yw+w==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
+	shaul.triebitz@intel.com,
+	benjamin.berg@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 15/29] wifi: iwlwifi: mvm: d3: fix WoWLAN command version lookup
+Date: Tue, 18 Jun 2024 08:39:41 -0400
+Message-ID: <20240618124018.3303162-15-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
+References: <20240618124018.3303162-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 
-------------------
+[ Upstream commit b7ffca99313d856f7d1cc89038d9061b128e8e97 ]
 
-From: Dai Ngo <dai.ngo@oracle.com>
+After moving from commands to notificaitons in the d3 resume flow,
+removing the WOWLAN_GET_STATUSES and REPLY_OFFLOADS_QUERY_CMD causes
+the return of the default value when looking up their version.
+Returning zero here results in the driver sending the not supported
+NON_QOS_TX_COUNTER_CMD.
 
-[ Upstream commit 7c24fa225081f31bc6da6a355c1ba801889ab29a ]
-
-Since nfsd4_state_shrinker_count always calls mod_delayed_work with
-0 delay, we can replace delayed_work with work_struct to save some
-space and overhead.
-
-Also add the call to cancel_work after unregister the shrinker
-in nfs4_state_shutdown_net.
-
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240510170500.8cabfd580614.If3a0db9851f56041f8f5360959354abd5379224a@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/netns.h     | 2 +-
- fs/nfsd/nfs4state.c | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
-index 8c854ba3285bb..51a4b7885cae2 100644
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -195,7 +195,7 @@ struct nfsd_net {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index 88f4f429d875c..9a36ce98b5bfc 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -1934,7 +1934,8 @@ static bool iwl_mvm_setup_connection_keep(struct iwl_mvm *mvm,
  
- 	atomic_t		nfsd_courtesy_clients;
- 	struct shrinker		nfsd_client_shrinker;
--	struct delayed_work	nfsd_shrinker_work;
-+	struct work_struct	nfsd_shrinker_work;
- };
- 
- /* Simple check to find out if a given net was properly initialized */
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index f2647cbc108e3..3dd64caf06158 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4410,7 +4410,7 @@ nfsd4_state_shrinker_count(struct shrinker *shrink, struct shrink_control *sc)
- 	if (!count)
- 		count = atomic_long_read(&num_delegations);
- 	if (count)
--		mod_delayed_work(laundry_wq, &nn->nfsd_shrinker_work, 0);
-+		queue_work(laundry_wq, &nn->nfsd_shrinker_work);
- 	return (unsigned long)count;
- }
- 
-@@ -6223,8 +6223,7 @@ deleg_reaper(struct nfsd_net *nn)
- static void
- nfsd4_state_shrinker_worker(struct work_struct *work)
- {
--	struct delayed_work *dwork = to_delayed_work(work);
--	struct nfsd_net *nn = container_of(dwork, struct nfsd_net,
-+	struct nfsd_net *nn = container_of(work, struct nfsd_net,
- 				nfsd_shrinker_work);
- 
- 	courtesy_client_reaper(nn);
-@@ -8066,7 +8065,7 @@ static int nfs4_state_create_net(struct net *net)
- 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
- 
- 	INIT_DELAYED_WORK(&nn->laundromat_work, laundromat_main);
--	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, nfsd4_state_shrinker_worker);
-+	INIT_WORK(&nn->nfsd_shrinker_work, nfsd4_state_shrinker_worker);
- 	get_net(net);
- 
- 	nn->nfsd_client_shrinker.scan_objects = nfsd4_state_shrinker_scan;
-@@ -8173,6 +8172,7 @@ nfs4_state_shutdown_net(struct net *net)
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 
- 	unregister_shrinker(&nn->nfsd_client_shrinker);
-+	cancel_work(&nn->nfsd_shrinker_work);
- 	cancel_delayed_work_sync(&nn->laundromat_work);
- 	locks_end_grace(&nn->nfsd4_manager);
- 
+ out:
+ 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP,
+-				    WOWLAN_GET_STATUSES, 0) < 10) {
++				    WOWLAN_GET_STATUSES,
++				    IWL_FW_CMD_VER_UNKNOWN) < 10) {
+ 		mvmvif->seqno_valid = true;
+ 		/* +0x10 because the set API expects next-to-use, not last-used */
+ 		mvmvif->seqno = status->non_qos_seq_ctr + 0x10;
 -- 
 2.43.0
-
-
 
 
