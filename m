@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3480B90D0F9
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B958A90D0D5
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C8B1281676
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6600C1F21A64
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0FBD18EFF6;
-	Tue, 18 Jun 2024 13:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550D918E761;
+	Tue, 18 Jun 2024 13:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yC2kYL/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYCVXOCp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDEB13C3E0;
-	Tue, 18 Jun 2024 13:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3CA156F2C;
+	Tue, 18 Jun 2024 13:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715858; cv=none; b=Ja1msm9WFoHBz1dp1kWgCgbZ3s0GlcGbCw3DWHP9yQLo5Or+GFWyUcaTJMr/m8wEzB1pj3fODTDHnbOdBfdk6Niz04QZV/D5l/7+tKrxfgMiWlHmsAJsJiSq0n8nS65DNC8Mro+JV7fR3zgyJE4inxDSandTgiPgiBlAytlAr4g=
+	t=1718715767; cv=none; b=F7gxNfrJptZYYKIooEE5HEDciU7iUPJoTAmvFPBK8dY8mH+S6D6c/h2JjBkIcNzk33t6pFJrV3rhP3o1zLDy8jfCb68pTJKxV6Zlt3z8M8IFCWFJ1xb3THQihkD4X3d9u0TsuQ74V/qrtp4nx0fIuysivJDHVxatAEsLt+4gXbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715858; c=relaxed/simple;
-	bh=FaJmlytR4qZceB+zCKYz8ZUgFibxhAYWgXH5FTXwX4Y=;
+	s=arc-20240116; t=1718715767; c=relaxed/simple;
+	bh=Slj4JyzzfTr4kBQuO56jTH93CTCtaVRZHpax9ttUVAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HihciYvrKUFbPdcKRe3b111P0eaezIxV2dh6fEXlM+sbAQP8NfALVZ6pVgwhAUs2m6ndWF0LvsQBjy57t/cyKv1AH9gRNBO49ei82afqNxpI1p4HI369YKVcgYJW+f5NfM63rNUKVy1a1uehdaZogo7le6q8F0R2OHneUHJjlxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yC2kYL/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061BEC3277B;
-	Tue, 18 Jun 2024 13:04:17 +0000 (UTC)
+	 MIME-Version; b=rmSk7OdegpJpXR9ekmIB4Y6uPcIzgDnW44GUJNkhA/BPjD7fuEAZJ73fwMD0EHwZ+zerPgUHGDMXhViST1Hd4Y402czoP+FxiKp4/MBliunUfPXFXCRDISBzt0vZA+ej9zEYiZHUwxWKMR6RUo0wZ07brJZuFXgIOVuUpTDUhWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYCVXOCp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9A3C3277B;
+	Tue, 18 Jun 2024 13:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715858;
-	bh=FaJmlytR4qZceB+zCKYz8ZUgFibxhAYWgXH5FTXwX4Y=;
+	s=korg; t=1718715766;
+	bh=Slj4JyzzfTr4kBQuO56jTH93CTCtaVRZHpax9ttUVAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yC2kYL/BxXpbIxFQNuOksq+GVRXB9sldtHLwFzr+5S7TMCdUi3RRdQsxa64HKoR1q
-	 SS9CFL3nSKr89kGJpW8xTysDBp8iawxKZ7wmjfmAHyZZb+ZE/gFlLCLed9WwPLpCBN
-	 CdF7KgB8EybNNFgGaKp1vXInlm3OvauM/M4WNdyk=
+	b=qYCVXOCpEKQTYwE429MPC0bt2taMZ0q60z/c8hpiMWSHftPluGAJUsT5Ljl8Ifp1V
+	 NcgJKU1zDgM8oPvOyKaSqdFJBN2/LlKrJCHssyRzlxfTCZ/0KwFBeIyRLf5WzsvrAB
+	 lrxRK6wXVbgxJehvZPYEemQOUBjASzaH31kydHJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	NeilBrown <neilb@suse.de>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 419/770] NFSD: handle errors better in write_ports_addfd()
-Date: Tue, 18 Jun 2024 14:34:32 +0200
-Message-ID: <20240618123423.458119680@linuxfoundation.org>
+Subject: [PATCH 5.10 420/770] SUNRPC: change svc_get() to return the svc.
+Date: Tue, 18 Jun 2024 14:34:33 +0200
+Message-ID: <20240618123423.496141756@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,32 +68,81 @@ Content-Transfer-Encoding: 8bit
 
 From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 89b24336f03a8ba560e96b0c47a8434a7fa48e3c ]
+[ Upstream commit df5e49c880ea0776806b8a9f8ab95e035272cf6f ]
 
-If write_ports_add() fails, we shouldn't destroy the serv, unless we had
-only just created it.  So if there are any permanent sockets already
-attached, leave the serv in place.
+It is common for 'get' functions to return the object that was 'got',
+and there are a couple of places where users of svc_get() would be a
+little simpler if svc_get() did that.
+
+Make it so.
 
 Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/lockd/svc.c             | 6 ++----
+ fs/nfs/callback.c          | 6 ++----
+ include/linux/sunrpc/svc.h | 3 ++-
+ 3 files changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index d0761ca8cb542..162866cfe83a2 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -742,7 +742,7 @@ static ssize_t __write_ports_addfd(char *buf, struct net *net, const struct cred
- 		return err;
+diff --git a/fs/lockd/svc.c b/fs/lockd/svc.c
+index b220e1b917268..2f50d5b2a8a42 100644
+--- a/fs/lockd/svc.c
++++ b/fs/lockd/svc.c
+@@ -430,14 +430,12 @@ static struct svc_serv *lockd_create_svc(void)
+ 	/*
+ 	 * Check whether we're already up and running.
+ 	 */
+-	if (nlmsvc_rqst) {
++	if (nlmsvc_rqst)
+ 		/*
+ 		 * Note: increase service usage, because later in case of error
+ 		 * svc_destroy() will be called.
+ 		 */
+-		svc_get(nlmsvc_rqst->rq_server);
+-		return nlmsvc_rqst->rq_server;
+-	}
++		return svc_get(nlmsvc_rqst->rq_server);
  
- 	err = svc_addsock(nn->nfsd_serv, fd, buf, SIMPLE_TRANSACTION_LIMIT, cred);
--	if (err < 0) {
-+	if (err < 0 && list_empty(&nn->nfsd_serv->sv_permsocks)) {
- 		nfsd_destroy(net);
- 		return err;
- 	}
+ 	/*
+ 	 * Sanity check: if there's no pid,
+diff --git a/fs/nfs/callback.c b/fs/nfs/callback.c
+index 3c86a559a321a..674198e0eb5e1 100644
+--- a/fs/nfs/callback.c
++++ b/fs/nfs/callback.c
+@@ -266,14 +266,12 @@ static struct svc_serv *nfs_callback_create_svc(int minorversion)
+ 	/*
+ 	 * Check whether we're already up and running.
+ 	 */
+-	if (cb_info->serv) {
++	if (cb_info->serv)
+ 		/*
+ 		 * Note: increase service usage, because later in case of error
+ 		 * svc_destroy() will be called.
+ 		 */
+-		svc_get(cb_info->serv);
+-		return cb_info->serv;
+-	}
++		return svc_get(cb_info->serv);
+ 
+ 	switch (minorversion) {
+ 	case 0:
+diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
+index 15ecd5b1abacf..e2580f6a05c21 100644
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -120,9 +120,10 @@ struct svc_serv {
+  * change the number of threads.  Horrible, but there it is.
+  * Should be called with the "service mutex" held.
+  */
+-static inline void svc_get(struct svc_serv *serv)
++static inline struct svc_serv *svc_get(struct svc_serv *serv)
+ {
+ 	serv->sv_nrthreads++;
++	return serv;
+ }
+ 
+ /*
 -- 
 2.43.0
 
