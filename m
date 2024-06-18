@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-53035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D8A90CFDD
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:29:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4CF90D015
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:31:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A683281407
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:29:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 124AC2838C7
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAF615218D;
-	Tue, 18 Jun 2024 12:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA0C16B38C;
+	Tue, 18 Jun 2024 12:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uht2gte1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RRG1vdvC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB1F15216F;
-	Tue, 18 Jun 2024 12:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5D913B5B8;
+	Tue, 18 Jun 2024 12:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715135; cv=none; b=uNzowJfTDZ8IfGnywKmGsv8ZKOiSZz/BeSos9ADWNxOut/EzJ3wY3Ev83LR1yNtoMTKnm/UPd3FL0fLN392XpBWczphjFs7qiIC+/YkhdIlMGYfABgZrwlxC8qfxfSwkGCTfvEBi8dtA80RRhs8wqUZhOeN/u0j4uWKLPsa8Qxk=
+	t=1718715257; cv=none; b=bMENGFZJA/0zatRDKT5DCltk59guSZa0M5DHNhmsYkhQSTDESwKcnIlLI8VX4QVlEDwfe8tw0KWxzif00oBOxODpAty4ZnNFBfJgwePjQuZdZvGez6fLvTjTatDU6pJYOlONGP5WQK2OzxMnz0ZvqDXk8cerkCdCRl13f6PfgWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715135; c=relaxed/simple;
-	bh=U0ew01HOOgG5/ijVIUuzUwNw+LVSP+bMpM5e5OcDpf8=;
+	s=arc-20240116; t=1718715257; c=relaxed/simple;
+	bh=iLWx9jatmfORFO0rOqxrk+gtaNlFtqnXP0ob+7q65SU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqe+MDtVfIfam8CFko67Cykw3mRI08RCGz1eWd5ypZluJmFuwuClztNfziDkHy5guufb68DdZN4RHwMCQCsgEwm3KGf3Wf21QVu013b7ov301lI75TTGxj7pMIVF0oyw1Uv+MtN+4REhmLIw+aHE1kBKmPQZPNw8RyiosJrT748=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uht2gte1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE2E1C32786;
-	Tue, 18 Jun 2024 12:52:14 +0000 (UTC)
+	 MIME-Version; b=YyG9TBlkxi8qfNq1joSaM5ZUcWoGyyYDt1arrpgOUBQ15qcaOtt9GakaFI8kFnsgywUWKNEOtyyk6QeySTgO7lZBD+LEEgkx9nDYm/7dBsLU0E4r4JMLVGFW5IjdFnF4qZVrRf+YzUuuvUfeeCJLm4VfVZzRBs89j9OucvB1aQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RRG1vdvC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A765C3277B;
+	Tue, 18 Jun 2024 12:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715135;
-	bh=U0ew01HOOgG5/ijVIUuzUwNw+LVSP+bMpM5e5OcDpf8=;
+	s=korg; t=1718715256;
+	bh=iLWx9jatmfORFO0rOqxrk+gtaNlFtqnXP0ob+7q65SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uht2gte1RRgKkw6A9KYw9M3cQwfy266aR6m6NapE8t5//2Jsqn4fmBHZHkqqjh5BK
-	 tYM3czQFVBu9pdJl1WYNrrH/fPoq78W9mESlsxHlS5633HwxAV+wAJnA/ms487Qcjk
-	 yvtJgbFNQ5D/28wjoilRHWMM7bol14oXfV/btihg=
+	b=RRG1vdvC/fmjTOL7yguIONhoBSukZOgWvQpiF4X+ZDW2/cFoZGPwP/HA/O0LXF24x
+	 qaR0pYhbZe2aBqa5DeyOz8oTBR1pzRyqmPHMDbwCWGjJ62FP15Cld9s3LNTRus+kvS
+	 8FdIFBymyHK3zyPAvqedq5fap9lihMqGSYARZIjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 205/770] NFSD: Update the NFSv3 CREATE family of encoders to use struct xdr_stream
-Date: Tue, 18 Jun 2024 14:30:58 +0200
-Message-ID: <20240618123415.190915942@linuxfoundation.org>
+Subject: [PATCH 5.10 206/770] NFSD: Update the NFSv3 RENAMEv3res encoder to use struct xdr_stream
+Date: Tue, 18 Jun 2024 14:30:59 +0200
+Message-ID: <20240618123415.228781248@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,70 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 78315b36781d259dcbdc102ff22c3f2f25712223 ]
+[ Upstream commit 89d79e9672dfa6d0cc416699c16f2d312da58ff2 ]
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3xdr.c | 35 ++++++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 7 deletions(-)
+ fs/nfsd/nfs3xdr.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
-index 0191cbfc486b8..052376a65f723 100644
+index 052376a65f723..1d52a69562b82 100644
 --- a/fs/nfsd/nfs3xdr.c
 +++ b/fs/nfsd/nfs3xdr.c
-@@ -121,6 +121,17 @@ svcxdr_encode_nfs_fh3(struct xdr_stream *xdr, const struct svc_fh *fhp)
- 	return true;
- }
- 
-+static bool
-+svcxdr_encode_post_op_fh3(struct xdr_stream *xdr, const struct svc_fh *fhp)
-+{
-+	if (xdr_stream_encode_item_present(xdr) < 0)
-+		return false;
-+	if (!svcxdr_encode_nfs_fh3(xdr, fhp))
-+		return false;
-+
-+	return true;
-+}
-+
- static __be32 *
- encode_fh(__be32 *p, struct svc_fh *fhp)
- {
-@@ -1079,16 +1090,26 @@ nfs3svc_encode_writeres(struct svc_rqst *rqstp, __be32 *p)
+@@ -1116,12 +1116,12 @@ nfs3svc_encode_createres(struct svc_rqst *rqstp, __be32 *p)
  int
- nfs3svc_encode_createres(struct svc_rqst *rqstp, __be32 *p)
+ nfs3svc_encode_renameres(struct svc_rqst *rqstp, __be32 *p)
  {
 +	struct xdr_stream *xdr = &rqstp->rq_res_stream;
- 	struct nfsd3_diropres *resp = rqstp->rq_resp;
+ 	struct nfsd3_renameres *resp = rqstp->rq_resp;
  
 -	*p++ = resp->status;
--	if (resp->status == 0) {
--		*p++ = xdr_one;
--		p = encode_fh(p, &resp->fh);
--		p = encode_post_op_attr(rqstp, p, &resp->fh);
-+	if (!svcxdr_encode_nfsstat3(xdr, resp->status))
-+		return 0;
-+	switch (resp->status) {
-+	case nfs_ok:
-+		if (!svcxdr_encode_post_op_fh3(xdr, &resp->fh))
-+			return 0;
-+		if (!svcxdr_encode_post_op_attr(rqstp, xdr, &resp->fh))
-+			return 0;
-+		if (!svcxdr_encode_wcc_data(rqstp, xdr, &resp->dirfh))
-+			return 0;
-+		break;
-+	default:
-+		if (!svcxdr_encode_wcc_data(rqstp, xdr, &resp->dirfh))
-+			return 0;
- 	}
--	p = encode_wcc_data(rqstp, p, &resp->dirfh);
+-	p = encode_wcc_data(rqstp, p, &resp->ffh);
+-	p = encode_wcc_data(rqstp, p, &resp->tfh);
 -	return xdr_ressize_check(rqstp, p);
-+
-+	return 1;
++	return svcxdr_encode_nfsstat3(xdr, resp->status) &&
++		svcxdr_encode_wcc_data(rqstp, xdr, &resp->ffh) &&
++		svcxdr_encode_wcc_data(rqstp, xdr, &resp->tfh);
  }
  
- /* RENAME */
+ /* LINK */
 -- 
 2.43.0
 
