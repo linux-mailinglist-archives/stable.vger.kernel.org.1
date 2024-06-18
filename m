@@ -1,91 +1,184 @@
-Return-Path: <stable+bounces-52661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3D890C9FD
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:43:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0AB90CA4C
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F9A51C208CA
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 11:43:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BE6CB27BBD
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 11:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA23158873;
-	Tue, 18 Jun 2024 11:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA46E19CD1F;
+	Tue, 18 Jun 2024 11:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TJ6ArSLP"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V6qXp5mx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CAF41581F4;
-	Tue, 18 Jun 2024 11:08:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92BA19CD14
+	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 11:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718708886; cv=none; b=V9hkpLoocLepvyeN8TGK4gT+SR3M0sBnCLv8rqSZEKJDN7sZ9HWqfR4A+UDPDliYPlsfgIiqY7yNLXoUzGYUbXXSa7czY3pqhzEEhjpuYEWGLj5y70LKdWrLLk3RUublqQdNNE60u/0vh/SdtS7jrTVBnoKY0qNGb6X0J7oWHd8=
+	t=1718708983; cv=none; b=UwYs7mjWY7mIM0ZLxS6tO18IB/xsenB4oYLVAHpd+8oduEQrfrD/x3UQNDj9s9B5g5PtnhOOF+qwCw7EmirfX1OIRGe7sDX/yLeVxP3EH303cXmP8+sVb95RjHBqnoO6xnBs2fjcx6llxnF8IJD4s0pgO4rVsJu7rRbnJ/dbJb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718708886; c=relaxed/simple;
-	bh=iuju15LgOX/mkNKHdPi9+klPChsI8/gq/J6t0HcI0TU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zht4uWhR8ZGJ0gI2UgaNoDVGLsdnSUFuvEMGk5NOIvcjD9E2ejqk5k7Dveo6j9Whh7Yq7piHm0DvOz/jNaaf9y7AanaDlb6qDpzxRc2FQsvlw67WodX8AjvjQYiSqTZiVrKcj7t5Lmr7taQuQE5IJeZxdljc87/X2ZX4fI2hTyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TJ6ArSLP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F8F4C3277B;
-	Tue, 18 Jun 2024 11:08:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718708885;
-	bh=iuju15LgOX/mkNKHdPi9+klPChsI8/gq/J6t0HcI0TU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TJ6ArSLPlxEufwERlt1gruw+Lg/DVgnUGMgQZFd0A9uDSBhsqTkPXb7t0v5HKFYw3
-	 aZ3SHG9unx+P3A/T++X9Y600nLMUNS59/Gpcvn6TpljJtUn8F7OQzUP0pnbRAoNanN
-	 8IjkiYYDX8LItSR9CtbL1i3gFMhUWac23HTSm3/gfZe3rGrrQPVlE6S0El/+RlR6i6
-	 MhU+XTLOKCyhe80eXqS1530danoakPtPdNwY636evgiB3lRQiZlkOQ5kief7Qn4l/R
-	 Fiu332zT+N/tQMGeC/dlI7MUQ/vcRMV+sdCfEBfsJCc25BdWGb1fe84dB82WTeifS3
-	 oJ1Mt5b8GyCSg==
-Date: Tue, 18 Jun 2024 12:08:00 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: usb: ax88179_178a: improve link status logs
-Message-ID: <20240618110800.GM8447@kernel.org>
-References: <20240617103405.654567-1-jtornosm@redhat.com>
+	s=arc-20240116; t=1718708983; c=relaxed/simple;
+	bh=lF1z6VCJM5UVgkQmuyfVEpEddQRivDshBtGqTE8MQDk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RIVBlc7XktST4nSo7CNhnR4MU8KhjteraHS28RB52DyiF+PanDgpa2MtJ2RgNuxTwdi89Dna7Hc+wzrWtn3FqN64Dps9Cz4PEXpbiQ1/Q9Di68XmXHP/68KYJLMlwIf2lHh2M2Q6OFWR92H0lcUMf9pWxkid+1unhMR6Vg8FBCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V6qXp5mx; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718708982; x=1750244982;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=lF1z6VCJM5UVgkQmuyfVEpEddQRivDshBtGqTE8MQDk=;
+  b=V6qXp5mxma/SZIRX92dcleTwZXxZJoFsWRRIXRTFZcIKJts/nSlZNOli
+   nXWz17fmn212NzABBgQHrEk6usuUWv3wyw5tdYlpPqIIlb/zcIiNg8hrP
+   n08noPVA4JI9eNwSSvgsl+ZO/mSsASlzO1g+28kYsR5TF8l1xVWMM+Yf6
+   QwRZgXkFPh6A3Tle5IKLGsGD1hGUaKj244ZDv8G0cYvz7EnVkuPysQLLi
+   +8NXJYauoi/kVCH+3aTZqICs2s7CpeGg6qaJ739P4d/kCfy1pjeqNL35d
+   EccA2VfWzDbBXIL+eoK7LBsy3GcHd6YV91SPR2jQGcHuplUk0hcxOBYYA
+   g==;
+X-CSE-ConnectionGUID: 1qsE4MYxRJq6lu7YalCVcw==
+X-CSE-MsgGUID: opm5orhgTvSpi+RKLdWiLw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="26992530"
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
+   d="scan'208";a="26992530"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 04:09:39 -0700
+X-CSE-ConnectionGUID: 5YE4Q74LTTWoSK7rNsmyPQ==
+X-CSE-MsgGUID: MoixhJn/SgGpu1YTiBNTVQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
+   d="scan'208";a="72262531"
+Received: from egrumbac-mobl1.ger.corp.intel.com (HELO egrumbac-mobl1.intel.com) ([10.245.249.213])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 04:09:38 -0700
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+To: stable@vger.kernel.org
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.9 1/2] wifi: iwlwifi: mvm: support iwl_dev_tx_power_cmd_v8
+Date: Tue, 18 Jun 2024 14:09:23 +0300
+Message-ID: <20240618110924.24509-1-emmanuel.grumbach@intel.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240617103405.654567-1-jtornosm@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 17, 2024 at 12:33:59PM +0200, Jose Ignacio Tornos Martinez wrote:
-> Avoid spurious link status logs that may ultimately be wrong; for example,
-> if the link is set to down with the cable plugged, then the cable is
-> unplugged and afer this the link is set to up, the last new log that is
+commit 8f892e225f416fcf2b55a0f9161162e08e2b0cc7 upstream.
 
-nit: after
+This just adds a __le32 that we (currently) don't use.
 
-> appearing is incorrectly telling that the link is up.
-> 
-> In order to aovid errors, show link status logs after link_reset
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218963
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240319100755.29ff7a88ddac.I39cf2ff1d1ddf0fa62722538698dc7f21aaaf39e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ .../net/wireless/intel/iwlwifi/fw/api/power.h | 30 +++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  4 ++-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  4 ++-
+ 3 files changed, 36 insertions(+), 2 deletions(-)
 
-nit: avoid
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
+index 0bf38243f88a..ce18ef9d3128 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/power.h
+@@ -385,6 +385,33 @@ struct iwl_dev_tx_power_cmd_v7 {
+ 	__le32 timer_period;
+ 	__le32 flags;
+ } __packed; /* TX_REDUCED_POWER_API_S_VER_7 */
++
++/**
++ * struct iwl_dev_tx_power_cmd_v8 - TX power reduction command version 8
++ * @per_chain: per chain restrictions
++ * @enable_ack_reduction: enable or disable close range ack TX power
++ *	reduction.
++ * @per_chain_restriction_changed: is per_chain_restriction has changed
++ *	from last command. used if set_mode is
++ *	IWL_TX_POWER_MODE_SET_SAR_TIMER.
++ *	note: if not changed, the command is used for keep alive only.
++ * @reserved: reserved (padding)
++ * @timer_period: timer in milliseconds. if expires FW will change to default
++ *	BIOS values. relevant if setMode is IWL_TX_POWER_MODE_SET_SAR_TIMER
++ * @flags: reduce power flags.
++ * @tpc_vlp_backoff_level: user backoff of UNII5,7 VLP channels in USA.
++ *	Not in use.
++ */
++struct iwl_dev_tx_power_cmd_v8 {
++	__le16 per_chain[IWL_NUM_CHAIN_TABLES_V2][IWL_NUM_CHAIN_LIMITS][IWL_NUM_SUB_BANDS_V2];
++	u8 enable_ack_reduction;
++	u8 per_chain_restriction_changed;
++	u8 reserved[2];
++	__le32 timer_period;
++	__le32 flags;
++	__le32 tpc_vlp_backoff_level;
++} __packed; /* TX_REDUCED_POWER_API_S_VER_8 */
++
+ /**
+  * struct iwl_dev_tx_power_cmd - TX power reduction command (multiversion)
+  * @common: common part of the command
+@@ -392,6 +419,8 @@ struct iwl_dev_tx_power_cmd_v7 {
+  * @v4: version 4 part of the command
+  * @v5: version 5 part of the command
+  * @v6: version 6 part of the command
++ * @v7: version 7 part of the command
++ * @v8: version 8 part of the command
+  */
+ struct iwl_dev_tx_power_cmd {
+ 	struct iwl_dev_tx_power_common common;
+@@ -401,6 +430,7 @@ struct iwl_dev_tx_power_cmd {
+ 		struct iwl_dev_tx_power_cmd_v5 v5;
+ 		struct iwl_dev_tx_power_cmd_v6 v6;
+ 		struct iwl_dev_tx_power_cmd_v7 v7;
++		struct iwl_dev_tx_power_cmd_v8 v8;
+ 	};
+ };
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index e1c2b7fc92ab..df3b29b998cf 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -896,11 +896,13 @@ int iwl_mvm_sar_select_profile(struct iwl_mvm *mvm, int prof_a, int prof_b)
+ 	u32 n_subbands;
+ 	u8 cmd_ver = iwl_fw_lookup_cmd_ver(mvm->fw, cmd_id,
+ 					   IWL_FW_CMD_VER_UNKNOWN);
+-	if (cmd_ver == 7) {
++	if (cmd_ver >= 7) {
+ 		len = sizeof(cmd.v7);
+ 		n_subbands = IWL_NUM_SUB_BANDS_V2;
+ 		per_chain = cmd.v7.per_chain[0][0];
+ 		cmd.v7.flags = cpu_to_le32(mvm->fwrt.reduced_power_flags);
++		if (cmd_ver == 8)
++			len = sizeof(cmd.v8);
+ 	} else if (cmd_ver == 6) {
+ 		len = sizeof(cmd.v6);
+ 		n_subbands = IWL_NUM_SUB_BANDS_V2;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 7ed7444c9871..2403ac2fcdc3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1399,7 +1399,9 @@ int iwl_mvm_set_tx_power(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	if (tx_power == IWL_DEFAULT_MAX_TX_POWER)
+ 		cmd.common.pwr_restriction = cpu_to_le16(IWL_DEV_MAX_TX_POWER);
+ 
+-	if (cmd_ver == 7)
++	if (cmd_ver == 8)
++		len = sizeof(cmd.v8);
++	else if (cmd_ver == 7)
+ 		len = sizeof(cmd.v7);
+ 	else if (cmd_ver == 6)
+ 		len = sizeof(cmd.v6);
+-- 
+2.45.2
 
-Nits Flagged by checkpatch.pl --codespell
-
-> processing, and in order to avoid spurious as much as possible, only show
-> the link loss when some link status change is detected.
-> 
-> cc: stable@vger.kernel.org
-> Fixes: e2ca90c276e1 ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-
-The nits above notwithstanding, this looks good to me.
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-...
 
