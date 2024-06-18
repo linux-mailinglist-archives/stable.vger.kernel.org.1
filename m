@@ -1,103 +1,107 @@
-Return-Path: <stable+bounces-53283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D79390D231
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:48:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4515A90CC23
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:44:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0EEEB2DFCC
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C09502858F3
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67A618FC8B;
-	Tue, 18 Jun 2024 13:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EFC015B153;
+	Tue, 18 Jun 2024 12:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnNpwYjb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HbRlzSVv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64264155736;
-	Tue, 18 Jun 2024 13:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2821613E039;
+	Tue, 18 Jun 2024 12:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715870; cv=none; b=VmCMY9n6tUYv6yMHafVFSisB8xnYjLNHWbaUzYMoZNaQdJ0rhQSZSdQzGmivmdzG8B9s/rjRnw1omZMTo25V0gkorPw/V8+X6jGg3UQgsfmz9uQUln3jv1fyi23I1Gipy9R4OlZzrbjO64HS8enaNnli3TDoXRSJGKrgKO4sASg=
+	t=1718714241; cv=none; b=e9Dcd1+6R12P6I+hygqXYj3IIjXEzWVBcp58hRBL/ASsHpjDuyHxaYYOvEvkXX/YO7QbeSUJUNVBEWaS+l++kG2Ar7PWwlYitINiOxLhXk/BW24OZGgl1waaHaRt7C6L10vh87TlvMhKV31TRgBZdtoe1z0rFrxsyFeKmLApXmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715870; c=relaxed/simple;
-	bh=xXEbCIe0GdPRuGeBgkvobtHY2auYR1ojDefAAO/L1lM=;
+	s=arc-20240116; t=1718714241; c=relaxed/simple;
+	bh=xVqRJugbodHNTwrbdds9RCp4ryI4PtFZUFV14jUvP8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blFN4sq4aeblQNmOdxhnjiueKd+K9njSRSmnq4aznDnCbybsYn8/irGKKOGhE8qkOetjhUc77doOhY+moxoYOdiJQ2q+BVfT0OBWINd5uUpYLY4PbN3yWo8ZNDK1Myu8JCkcqa0HVIkEqcAlFJ2xJyQKfSbztQQSGxVpQZxs00k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnNpwYjb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8C3C32786;
-	Tue, 18 Jun 2024 13:04:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715870;
-	bh=xXEbCIe0GdPRuGeBgkvobtHY2auYR1ojDefAAO/L1lM=;
+	 MIME-Version:Content-Type; b=Y/p34g93zsWFpdLDttQBOjRDHA0U0Ii84h2nHt3/RamjU5VelRqACS8ImQim1axcjqYzJ9BeiWxlgiX65dgdoWafuVIXuz0cYaz2N8fuacdB+XOFrTJAQU1YkV2d0YcTXKPl6OZ33QqbAvEzr2/mXpO+A8Uxuue8SSw7hNjfpjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HbRlzSVv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9653C3277B;
+	Tue, 18 Jun 2024 12:37:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714241;
+	bh=xVqRJugbodHNTwrbdds9RCp4ryI4PtFZUFV14jUvP8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnNpwYjbg5ZEWuvwgJva37/guiOWGMfxDET9qs14eIStA8kB50MRs5PSarlpHUKEx
-	 GDLU8FNTwr5jY/4C68D3dyYFIamrAa5fJB53yQQrnu/R5RJoG+6tpg00Guu7Cf0rYe
-	 xUAzJMILmYIsUU2YnVUPEuXD4bqJ6hdWvXbmZdVs=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 455/770] NFSD: Write verifier might go backwards
-Date: Tue, 18 Jun 2024 14:35:08 +0200
-Message-ID: <20240618123424.864888392@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=HbRlzSVvx+rNZQ5vdQ4vLw58iX0qCsDPoqcJrxCw916Osc0qpfqJoco9UyAgUSwWP
+	 H+bXwESrUq9rKWqeYUsV5J3SuBS025A3GNEzd3Iy26HcvRb47GJu+D4qPitYssA9WX
+	 SwQtpq7E47IyrTkpz52RE+ihWemB+0+FDcww8d1Gin4x4LS4UslZCSQWVMV3vEGMvY
+	 cjLNDfxTEvbce8H95g0GbhF/azdRjvGOJsaWn5rX9Q4HAMupK5xL19djfLunR+qbaE
+	 4a3eE6oV/MT5cH1vbzLMwEsh0XSgbGpI0hhUo7QUda+6nQ62o7InKy8lVeYVbs2Wya
+	 l1E/jNEdxU6Ug==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	shuah@kernel.org,
+	brauner@kernel.org,
+	avagin@google.com,
+	hu.yadi@h3c.com,
+	amir73il@gmail.com,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 27/44] selftests/overlayfs: Fix build error on ppc64
+Date: Tue, 18 Jun 2024 08:35:08 -0400
+Message-ID: <20240618123611.3301370-27-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-------------------
+[ Upstream commit e8b8c5264d4ebd248f60a5cef077fe615806e7a0 ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+Fix build error on ppc64:
+  dev_in_maps.c: In function ‘get_file_dev_and_inode’:
+  dev_in_maps.c:60:59: error: format ‘%llu’ expects argument of type
+  ‘long long unsigned int *’, but argument 7 has type ‘__u64 *’ {aka ‘long
+  unsigned int *’} [-Werror=format=]
 
-[ Upstream commit cdc556600c0133575487cc69fb3128440b3c3e92 ]
+By switching to unsigned long long for u64 for ppc64 builds.
 
-When vfs_iter_write() starts to fail because a file system is full,
-a bunch of writes can fail at once with ENOSPC. These writes
-repeatedly invoke nfsd_reset_boot_verifier() in quick succession.
-
-Ensure that the time it grabs doesn't go backwards due to an ntp
-adjustment going on at the same time.
-
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfssvc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index 8554bc7ff4322..4d1d8aa6d7f9d 100644
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -363,7 +363,7 @@ void nfsd_copy_boot_verifier(__be32 verf[2], struct nfsd_net *nn)
+diff --git a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
+index 759f86e7d263e..2862aae58b79a 100644
+--- a/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
++++ b/tools/testing/selftests/filesystems/overlayfs/dev_in_maps.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #define _GNU_SOURCE
++#define __SANE_USERSPACE_TYPES__ // Use ll64
  
- static void nfsd_reset_boot_verifier_locked(struct nfsd_net *nn)
- {
--	ktime_get_real_ts64(&nn->nfssvc_boot);
-+	ktime_get_raw_ts64(&nn->nfssvc_boot);
- }
- 
- void nfsd_reset_boot_verifier(struct nfsd_net *nn)
+ #include <inttypes.h>
+ #include <unistd.h>
 -- 
 2.43.0
-
-
 
 
