@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-52949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADAC890CF68
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1288A90CF69
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:27:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 597721F2205A
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:27:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B27851F2254E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA9B15ECE6;
-	Tue, 18 Jun 2024 12:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFAC15ECEA;
+	Tue, 18 Jun 2024 12:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSyn9LxP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMbYcdvF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD533145B37;
-	Tue, 18 Jun 2024 12:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F4913A868;
+	Tue, 18 Jun 2024 12:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714884; cv=none; b=VhufR5moP72FC3TWMwuPRrzWo9h/1nkfbqlVHVz0zU4UEa06L+DZCKudNboWp5usKuCmcEGY1TsOQGWC/RrC8mi87IgzlxvuaPLKrSyLGucz9TbpjwL71soA6zXDoY7tKOzFOzy5r9PB/k2PkQOczv9tBatpzZDNwzX7+PeS6zI=
+	t=1718714890; cv=none; b=Lfr8DXrIvbazlhaWep8CChcWBDTx2mvaZRFPqCr5J8CR6O6GIzs4vKXcE5xddB1SptU5buczmLZIBcq/LdRYu8oxZ3wZoJosBf5vgfhBcMd1c7ApqIbyP36ZBYquRze4LDSWppf6WrRs+l49ffS5XvyehSzwDUB6DVAsYBAuPEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714884; c=relaxed/simple;
-	bh=Gkbl7KrLo6iuAm6Xmf/CM2FSJEK4ZUBO5Vk5CIiqFSE=;
+	s=arc-20240116; t=1718714890; c=relaxed/simple;
+	bh=+wDltEpUrdvGQ4hP4CSu68HIeIrII1p3ONJUe6aSHN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qNLdyOSKmUWUOfXjOdxUfOMqqCIbW7051gO1s4IsAZQ5uFDL4zcyRSIW98eVYXmA96glgrdH0g4gcx7uSDjfE0qSHDYxLqDLpKkB6bPGvDLeNo1n6gnzEUyR9Ey2/2Cy6yZL2KFU1x8uFh9OaG8D1nj5z9k+LSvTPsZn6aEHNTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSyn9LxP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30811C3277B;
-	Tue, 18 Jun 2024 12:48:04 +0000 (UTC)
+	 MIME-Version; b=YcBz3+mPgkKxo91owetFbFohE6Udxcj0Aee3sgIJSTxU2tUQFZM3pIRWEfINC/AneFJdASb3MPbfEdkUUkguK6bibUHB+Raq7vO5uFodQhxiEU+OYEOo6ozypLL4MoMDYjy3Z5BH3/PAiLvSc/KQXgPqzVYsUSGHSoJWWZ9mq84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMbYcdvF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C934C3277B;
+	Tue, 18 Jun 2024 12:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718714884;
-	bh=Gkbl7KrLo6iuAm6Xmf/CM2FSJEK4ZUBO5Vk5CIiqFSE=;
+	s=korg; t=1718714890;
+	bh=+wDltEpUrdvGQ4hP4CSu68HIeIrII1p3ONJUe6aSHN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSyn9LxPhRiBqWI2uars6LBk6XGtA2Dq8M2V2E3jEskmMjyBrQlbjcDkaaQnWK3Kc
-	 vXfdULUabA1Hhl/pS0woZbUYViclyk/v3S/A0F2B6LhU7xyo1OYD0R/I/GVPDAsqF0
-	 qcYJCJbM+9LQi6mxmYZ9Fvrl1uENyWwUArmNecgQ=
+	b=TMbYcdvFynZPxRa9+hj1EbLp4u3SlW4YPj8BO2yiNlzGTNUijwDm6DPafjKTbpL6d
+	 myrHfYZ/ftCqocVjX/Dj+vm95eXrnbTF6lftxtqRJPPYMi/DqjpBfuQg6ouZTCSttg
+	 urpgIDEE29X/x1M7qJ/ICWx/qtWJIclVCekgh8XA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Oleg Nesterov <oleg@redhat.com>,
-	Andy Lavr <andy.lavr@gmail.com>,
+	Christian Brauner <christian.brauner@ubuntu.com>,
 	"Eric W. Biederman" <ebiederm@xmission.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 122/770] proc/fd: In proc_readfd_common use task_lookup_next_fd_rcu
-Date: Tue, 18 Jun 2024 14:29:35 +0200
-Message-ID: <20240618123411.980534092@linuxfoundation.org>
+Subject: [PATCH 5.10 123/770] proc/fd: In fdinfo seq_show dont use get_files_struct
+Date: Tue, 18 Jun 2024 14:29:36 +0200
+Message-ID: <20240618123412.019175804@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -70,7 +70,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Eric W. Biederman <ebiederm@xmission.com>
 
-[ Upstream commit 5b17b61870e2f4b0a4fdc5c6039fbdb4ffb796df ]
+[ Upstream commit 775e0656b27210ae668e33af00bece858f44576f ]
 
 When discussing[1] exec and posix file locks it was realized that none
 of the callers of get_files_struct fundamentally needed to call
@@ -81,80 +81,59 @@ result in exec unnecessarily unsharing files_struct which breaking
 posix locks, and it can result in fget_light having to fallback to
 fget reducing system performance.
 
-Using task_lookup_next_fd_rcu simplifies proc_readfd_common, by moving
-the checking for the maximum file descritor into the generic code, and
-by remvoing the need for capturing and releasing a reference on
-files_struct.
-
-As task_lookup_fd_rcu may update the fd ctx->pos has been changed
-to be the fd +2 after task_lookup_fd_rcu returns.
+Instead hold task_lock for the duration that task->files needs to be
+stable in seq_show.  The task_lock was already taken in
+get_files_struct, and so skipping get_files_struct performs less work
+overall, and avoids the problems with the files_struct reference
+count.
 
 [1] https://lkml.kernel.org/r/20180915160423.GA31461@redhat.com
 Suggested-by: Oleg Nesterov <oleg@redhat.com>
-Tested-by: Andy Lavr <andy.lavr@gmail.com>
-v1: https://lkml.kernel.org/r/20200817220425.9389-10-ebiederm@xmission.com
-Link: https://lkml.kernel.org/r/20201120231441.29911-15-ebiederm@xmission.com
+Acked-by: Christian Brauner <christian.brauner@ubuntu.com>
+v1: https://lkml.kernel.org/r/20200817220425.9389-12-ebiederm@xmission.com
+Link: https://lkml.kernel.org/r/20201120231441.29911-17-ebiederm@xmission.com
 Signed-off-by: Eric W. Biederman <ebiederm@xmission.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/fd.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ fs/proc/fd.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/fs/proc/fd.c b/fs/proc/fd.c
-index c1a984f3c4df7..72c1525b4b3eb 100644
+index 72c1525b4b3eb..cb51763ed554b 100644
 --- a/fs/proc/fd.c
 +++ b/fs/proc/fd.c
-@@ -217,7 +217,6 @@ static int proc_readfd_common(struct file *file, struct dir_context *ctx,
- 			      instantiate_t instantiate)
- {
- 	struct task_struct *p = get_proc_task(file_inode(file));
--	struct files_struct *files;
- 	unsigned int fd;
+@@ -28,9 +28,8 @@ static int seq_show(struct seq_file *m, void *v)
+ 	if (!task)
+ 		return -ENOENT;
  
- 	if (!p)
-@@ -225,22 +224,18 @@ static int proc_readfd_common(struct file *file, struct dir_context *ctx,
+-	files = get_files_struct(task);
+-	put_task_struct(task);
+-
++	task_lock(task);
++	files = task->files;
+ 	if (files) {
+ 		unsigned int fd = proc_fd(m->private);
  
- 	if (!dir_emit_dots(file, ctx))
- 		goto out;
--	files = get_files_struct(p);
--	if (!files)
--		goto out;
- 
- 	rcu_read_lock();
--	for (fd = ctx->pos - 2;
--	     fd < files_fdtable(files)->max_fds;
--	     fd++, ctx->pos++) {
-+	for (fd = ctx->pos - 2;; fd++) {
- 		struct file *f;
- 		struct fd_data data;
- 		char name[10 + 1];
- 		unsigned int len;
- 
--		f = files_lookup_fd_rcu(files, fd);
-+		f = task_lookup_next_fd_rcu(p, &fd);
-+		ctx->pos = fd + 2LL;
- 		if (!f)
--			continue;
-+			break;
- 		data.mode = f->f_mode;
- 		rcu_read_unlock();
- 		data.fd = fd;
-@@ -249,13 +244,11 @@ static int proc_readfd_common(struct file *file, struct dir_context *ctx,
- 		if (!proc_fill_cache(file, ctx,
- 				     name, len, instantiate, p,
- 				     &data))
--			goto out_fd_loop;
-+			goto out;
- 		cond_resched();
- 		rcu_read_lock();
+@@ -47,8 +46,9 @@ static int seq_show(struct seq_file *m, void *v)
+ 			ret = 0;
+ 		}
+ 		spin_unlock(&files->file_lock);
+-		put_files_struct(files);
  	}
- 	rcu_read_unlock();
--out_fd_loop:
--	put_files_struct(files);
- out:
- 	put_task_struct(p);
- 	return 0;
++	task_unlock(task);
++	put_task_struct(task);
+ 
+ 	if (ret)
+ 		return ret;
+@@ -57,6 +57,7 @@ static int seq_show(struct seq_file *m, void *v)
+ 		   (long long)file->f_pos, f_flags,
+ 		   real_mount(file->f_path.mnt)->mnt_id);
+ 
++	/* show_fd_locks() never deferences files so a stale value is safe */
+ 	show_fd_locks(m, file, files);
+ 	if (seq_has_overflowed(m))
+ 		goto out;
 -- 
 2.43.0
 
