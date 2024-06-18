@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-52930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 483F790CF56
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:26:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1491490CF84
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43FFD1C23329
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:26:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24C2C1C235DB
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC5915DBA0;
-	Tue, 18 Jun 2024 12:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A4A14E2CF;
+	Tue, 18 Jun 2024 12:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7lV63Wd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWbziI9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D502014036D;
-	Tue, 18 Jun 2024 12:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA46514D435;
+	Tue, 18 Jun 2024 12:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714832; cv=none; b=qbBLc8ov5hFi2rY14He7B/u99RIm5MPqH306cho8ZIbEC5jG0iNRryhQOxEs1/JLlu07ZjsyHBZTMZIajC8yC3zsL+qSVPcr2tHEauHCI5XTRr/UTAGAVCZRhoFrgFDwBIC8MEjofUvMlJQ+dIzos8TIMOG62O7fAgfDisSKZk8=
+	t=1718714952; cv=none; b=Ty0IiiEIV+vUdvGUOWYqOjh65gaTWaLuixkxkAYaqg7/GuKtas2Li33Fi0rodJyxD2tNshAigvtZ8Hg6PHo7dWJ4R8rk04N8A5xmXO60Uy+QqRfm3YR9t6ObuvFnVqDzQo4yrMRK/kmpXsjDla0p6sXsu/Aj8EhqLclL45pDAKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714832; c=relaxed/simple;
-	bh=G+EVvizf7nzqq6FvRtSHkjXSGd5/roWVccOmH8Raad8=;
+	s=arc-20240116; t=1718714952; c=relaxed/simple;
+	bh=KKVMFeEDyTBoP6JzYjsCJV+EQKGLuz+xU7SFSZwfyH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=slqUaQwTOgDzQkgIRpUBEhjy/01nFVqFSC4wKdZjuidzVGW/0CkEH6C+J4RsJJ9DRCuEDp+QHXBX2RmL93FK1MAxQ8cXa1kPcEXWFsjKX4fN1XKfk7Aixt7zSm0Vhf9PdOrzRp5F/wa3aao0XcPQqtwvJV8XMCt6HupK0SpVU1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7lV63Wd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3BCC3277B;
-	Tue, 18 Jun 2024 12:47:11 +0000 (UTC)
+	 MIME-Version; b=dcZwsOMmywzoYOWPYSaO4Ys3QFjhZT3QcLZuok0J0K56poFCkUoMOnpDpJfsC1lsTw+4rgIZqMJ8enahlf6fTOkk9oRnmjsulYcd4l/6+5MBiRGQOah00iHbfuqUqSqaNbJUGurIVQT04A5y+VKL12SnLDnggrIqGGpHdfv5dEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWbziI9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52351C3277B;
+	Tue, 18 Jun 2024 12:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718714831;
-	bh=G+EVvizf7nzqq6FvRtSHkjXSGd5/roWVccOmH8Raad8=;
+	s=korg; t=1718714952;
+	bh=KKVMFeEDyTBoP6JzYjsCJV+EQKGLuz+xU7SFSZwfyH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7lV63WdWf85EHlcuFxZoPItTheL+fYjWvKiKbXoa6yd1ChKH2aHE1eL4PnclwDXc
-	 3JTyR5G8rYWnMZaBEyavuqDlIeoY/GeMasxRq4bqzaKVLVwjYUjgdjTge1ouPPzd4G
-	 fVK4CwHAzdszsdDHxPrOnz+owc+mcVaFIF2IO5+c=
+	b=rWbziI9Yn88sryqjj3vYVT8aI5uVUxHi1Gfrv26b6y2pOW+HsFx7pRT9kf0WS/IYQ
+	 abUngmPUp2C0TmFLZyWSxZm9dxSFkQ3GUQIwR6mC0w7ONxX4dvmcUZ6HKDIPpCdYFW
+	 AZjEsej+tSK/d6S7Y6eHc+OxVv9yZmB+04P5X7JE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/770] exportfs: Add a function to return the raw output from fh_to_dentry()
-Date: Tue, 18 Jun 2024 14:29:15 +0200
-Message-ID: <20240618123411.213061517@linuxfoundation.org>
+Subject: [PATCH 5.10 103/770] nfsd: Fix up nfsd to ensure that timeout errors dont result in ESTALE
+Date: Tue, 18 Jun 2024 14:29:16 +0200
+Message-ID: <20240618123411.251029073@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,95 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit d045465fc6cbfa4acfb5a7d817a7c1a57a078109 ]
+[ Upstream commit 2e19d10c1438241de32467637a2a411971547991 ]
 
-In order to allow nfsd to accept return values that are not
-acceptable to overlayfs and others, add a new function.
+If the underlying filesystem times out, then we want knfsd to return
+NFSERR_JUKEBOX/DELAY rather than NFSERR_STALE.
 
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exportfs/expfs.c      | 32 ++++++++++++++++++++++++--------
- include/linux/exportfs.h |  5 +++++
- 2 files changed, 29 insertions(+), 8 deletions(-)
+ fs/nfsd/nfsfh.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/fs/exportfs/expfs.c b/fs/exportfs/expfs.c
-index 2dd55b172d57f..0106eba46d5af 100644
---- a/fs/exportfs/expfs.c
-+++ b/fs/exportfs/expfs.c
-@@ -417,9 +417,11 @@ int exportfs_encode_fh(struct dentry *dentry, struct fid *fid, int *max_len,
- }
- EXPORT_SYMBOL_GPL(exportfs_encode_fh);
- 
--struct dentry *exportfs_decode_fh(struct vfsmount *mnt, struct fid *fid,
--		int fh_len, int fileid_type,
--		int (*acceptable)(void *, struct dentry *), void *context)
-+struct dentry *
-+exportfs_decode_fh_raw(struct vfsmount *mnt, struct fid *fid, int fh_len,
-+		       int fileid_type,
-+		       int (*acceptable)(void *, struct dentry *),
-+		       void *context)
- {
- 	const struct export_operations *nop = mnt->mnt_sb->s_export_op;
- 	struct dentry *result, *alias;
-@@ -432,10 +434,8 @@ struct dentry *exportfs_decode_fh(struct vfsmount *mnt, struct fid *fid,
- 	if (!nop || !nop->fh_to_dentry)
- 		return ERR_PTR(-ESTALE);
- 	result = nop->fh_to_dentry(mnt->mnt_sb, fid, fh_len, fileid_type);
--	if (PTR_ERR(result) == -ENOMEM)
--		return ERR_CAST(result);
- 	if (IS_ERR_OR_NULL(result))
--		return ERR_PTR(-ESTALE);
-+		return result;
- 
- 	/*
- 	 * If no acceptance criteria was specified by caller, a disconnected
-@@ -561,10 +561,26 @@ struct dentry *exportfs_decode_fh(struct vfsmount *mnt, struct fid *fid,
- 
-  err_result:
- 	dput(result);
--	if (err != -ENOMEM)
--		err = -ESTALE;
- 	return ERR_PTR(err);
- }
-+EXPORT_SYMBOL_GPL(exportfs_decode_fh_raw);
-+
-+struct dentry *exportfs_decode_fh(struct vfsmount *mnt, struct fid *fid,
-+				  int fh_len, int fileid_type,
-+				  int (*acceptable)(void *, struct dentry *),
-+				  void *context)
-+{
-+	struct dentry *ret;
-+
-+	ret = exportfs_decode_fh_raw(mnt, fid, fh_len, fileid_type,
-+				     acceptable, context);
-+	if (IS_ERR_OR_NULL(ret)) {
-+		if (ret == ERR_PTR(-ENOMEM))
-+			return ret;
-+		return ERR_PTR(-ESTALE);
-+	}
-+	return ret;
-+}
- EXPORT_SYMBOL_GPL(exportfs_decode_fh);
- 
- MODULE_LICENSE("GPL");
-diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
-index d829403ffd3bb..846df3c96730f 100644
---- a/include/linux/exportfs.h
-+++ b/include/linux/exportfs.h
-@@ -223,6 +223,11 @@ extern int exportfs_encode_inode_fh(struct inode *inode, struct fid *fid,
- 				    int *max_len, struct inode *parent);
- extern int exportfs_encode_fh(struct dentry *dentry, struct fid *fid,
- 	int *max_len, int connectable);
-+extern struct dentry *exportfs_decode_fh_raw(struct vfsmount *mnt,
-+					     struct fid *fid, int fh_len,
-+					     int fileid_type,
-+					     int (*acceptable)(void *, struct dentry *),
-+					     void *context);
- extern struct dentry *exportfs_decode_fh(struct vfsmount *mnt, struct fid *fid,
- 	int fh_len, int fileid_type, int (*acceptable)(void *, struct dentry *),
- 	void *context);
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index 9c29a523f4848..e80a7525561d0 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -268,12 +268,20 @@ static __be32 nfsd_set_fh_dentry(struct svc_rqst *rqstp, struct svc_fh *fhp)
+ 	if (fileid_type == FILEID_ROOT)
+ 		dentry = dget(exp->ex_path.dentry);
+ 	else {
+-		dentry = exportfs_decode_fh(exp->ex_path.mnt, fid,
+-				data_left, fileid_type,
+-				nfsd_acceptable, exp);
+-		if (IS_ERR_OR_NULL(dentry))
++		dentry = exportfs_decode_fh_raw(exp->ex_path.mnt, fid,
++						data_left, fileid_type,
++						nfsd_acceptable, exp);
++		if (IS_ERR_OR_NULL(dentry)) {
+ 			trace_nfsd_set_fh_dentry_badhandle(rqstp, fhp,
+ 					dentry ?  PTR_ERR(dentry) : -ESTALE);
++			switch (PTR_ERR(dentry)) {
++			case -ENOMEM:
++			case -ETIMEDOUT:
++				break;
++			default:
++				dentry = ERR_PTR(-ESTALE);
++			}
++		}
+ 	}
+ 	if (dentry == NULL)
+ 		goto out;
 -- 
 2.43.0
 
