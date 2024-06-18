@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-53110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB3790D03F
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:32:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7460C90D014
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:31:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0DA11C23C6D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:32:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E53C1C23B9F
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E865816DC21;
-	Tue, 18 Jun 2024 12:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0AA16B38E;
+	Tue, 18 Jun 2024 12:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWHHF78F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txxFZT8T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A7F1552E4;
-	Tue, 18 Jun 2024 12:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8C113B5B8;
+	Tue, 18 Jun 2024 12:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715357; cv=none; b=Nn5y6hV16NegveD0zPYUe3wZ6e+8AQDP9K5LO6qjDhlOup5qqjjo3OFmaxgAJwxx57IMIfKblJyDB+wlRy3wz6Ga2LPv4oJJFvXVGMI64fn/NiJke1pHa1G7WauxLqW73aaemJ6tq/C6nXctNibqvHJb57bSxrzRSRnzLZBbo9Y=
+	t=1718715260; cv=none; b=lLJWBCvePBTswkPj2f2g3Du6ymOsFcnvfQA1ET6m2Xh13hE2bAUsNzTqqfCOT7sfWkFrhOODoYBYVkIpH50IrHWUM11mmz9nNE8upNwDpRbXn1s0AYL1T9W9xEAb44QiwYaN1TDiY4ph4VKWtXH2DuQxAVRWSY5Bkn6x7DsAMvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715357; c=relaxed/simple;
-	bh=pF54TLfCJ7q3RStfDf1fWL0mGpteNgxcKg7APvbE1HU=;
+	s=arc-20240116; t=1718715260; c=relaxed/simple;
+	bh=3vmTpf1Vgonbyqj5owY8QYs+Anbz4lDgew7eTmPLeug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1kvbI/3KmjyrzJas4HeQ/l7/tdQVIHk9wOjabKhtHm/uXtIDianeUbEvNVNpDP15ESkeEHZM3BYfRf4JwsK7c5L3qSOnj5pGg7GXTY/AFm1PbFiP3qvQvr8I0k1foUJj6OUloZ3pWH2RYBFtDX49Lsq9UlXXw2oOe2sdAwvPZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWHHF78F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2FDC3277B;
-	Tue, 18 Jun 2024 12:55:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G+PlSoMK3SgoF7VN8ShAbprleQxdb6lyEzeeFJZnE8Prdg27zJxFGelBUDR8ik5FErlkxzVVzhsLa7Tw/LbU7CRw9YjO/XOcGk43bOifUDq/UWK6lTQ+EHGMGsQzhTNuaEdgpoycNRCmJ0AeWvkdlJEGKJcT/RtsTMdf9Qvt8L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txxFZT8T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C7AC3277B;
+	Tue, 18 Jun 2024 12:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715357;
-	bh=pF54TLfCJ7q3RStfDf1fWL0mGpteNgxcKg7APvbE1HU=;
+	s=korg; t=1718715259;
+	bh=3vmTpf1Vgonbyqj5owY8QYs+Anbz4lDgew7eTmPLeug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWHHF78FSSFH0tf5Id6yk+h6LfATZPEAkaXCYDE1UESGFf0nml/+DmaPhoDk7ABHA
-	 r0KJCeJxxbqbEpNZ89BOPRKOLmDB8wd8hdMxd5nH65TC6OWkGArwrAPw2vOMphPJqS
-	 s0Bude9fMji6Tz1g/Y6Osuc5CfDezWakVcyPOT6I=
+	b=txxFZT8TUHjJhXFTP0USWnSbHR/2gZjv4siG+Rh8aJc63kprTeCQ6WhGGD469PgHC
+	 osizjE7cqxP3NmSUk421/XPAZ0n8jnHViJgMy5Lxe+d7WOgroxqg3DXA/Ik98QeR+m
+	 lImKlxfU+PXqzn9TdSq9peGZigGUNOPffsC9idE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"J. Bruce Fields" <bfields@redhat.com>,
+	linux-nfs@vger.kernel.org,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 240/770] nfsd: helper for laundromat expiry calculations
-Date: Tue, 18 Jun 2024 14:31:33 +0200
-Message-ID: <20240618123416.543387294@linuxfoundation.org>
+Subject: [PATCH 5.10 241/770] nfsd: Log client tracking type log message as info instead of warning
+Date: Tue, 18 Jun 2024 14:31:34 +0200
+Message-ID: <20240618123416.581108372@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -60,144 +61,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: J. Bruce Fields <bfields@redhat.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-[ Upstream commit 7f7e7a4006f74b031718055a0751c70c2e3d5e7e ]
+[ Upstream commit f988a7b71d1e66e63f79cd59c763875347943a7a ]
 
-We do this same logic repeatedly, and it's easy to get the sense of the
-comparison wrong.
+`printk()`, by default, uses the log level warning, which leaves the
+user reading
 
-Signed-off-by: J. Bruce Fields <bfields@redhat.com>
+    NFSD: Using UMH upcall client tracking operations.
+
+wondering what to do about it (`dmesg --level=warn`).
+
+Several client tracking methods are tried, and expected to fail. That’s
+why a message is printed only on success. It might be interesting for
+users to know the chosen method, so use info-level instead of
+debug-level.
+
+Cc: linux-nfs@vger.kernel.org
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 49 +++++++++++++++++++++++++--------------------
- 1 file changed, 27 insertions(+), 22 deletions(-)
+ fs/nfsd/nfs4recover.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 914f60cee3226..0afc14b3e4593 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5385,6 +5385,22 @@ static bool clients_still_reclaiming(struct nfsd_net *nn)
- 	return true;
+diff --git a/fs/nfsd/nfs4recover.c b/fs/nfsd/nfs4recover.c
+index 83c4e68839537..d08c1a8c9254b 100644
+--- a/fs/nfsd/nfs4recover.c
++++ b/fs/nfsd/nfs4recover.c
+@@ -626,7 +626,7 @@ nfsd4_legacy_tracking_init(struct net *net)
+ 	status = nfsd4_load_reboot_recovery_data(net);
+ 	if (status)
+ 		goto err;
+-	printk("NFSD: Using legacy client tracking operations.\n");
++	pr_info("NFSD: Using legacy client tracking operations.\n");
+ 	return 0;
+ 
+ err:
+@@ -1030,7 +1030,7 @@ nfsd4_init_cld_pipe(struct net *net)
+ 
+ 	status = __nfsd4_init_cld_pipe(net);
+ 	if (!status)
+-		printk("NFSD: Using old nfsdcld client tracking operations.\n");
++		pr_info("NFSD: Using old nfsdcld client tracking operations.\n");
+ 	return status;
  }
  
-+struct laundry_time {
-+	time64_t cutoff;
-+	time64_t new_timeo;
-+};
-+
-+static bool state_expired(struct laundry_time *lt, time64_t last_refresh)
-+{
-+	time64_t time_remaining;
-+
-+	if (last_refresh < lt->cutoff)
-+		return true;
-+	time_remaining = last_refresh - lt->cutoff;
-+	lt->new_timeo = min(lt->new_timeo, time_remaining);
-+	return false;
-+}
-+
- static time64_t
- nfs4_laundromat(struct nfsd_net *nn)
- {
-@@ -5394,14 +5410,16 @@ nfs4_laundromat(struct nfsd_net *nn)
- 	struct nfs4_ol_stateid *stp;
- 	struct nfsd4_blocked_lock *nbl;
- 	struct list_head *pos, *next, reaplist;
--	time64_t cutoff = ktime_get_boottime_seconds() - nn->nfsd4_lease;
--	time64_t t, new_timeo = nn->nfsd4_lease;
-+	struct laundry_time lt = {
-+		.cutoff = ktime_get_boottime_seconds() - nn->nfsd4_lease,
-+		.new_timeo = nn->nfsd4_lease
-+	};
- 	struct nfs4_cpntf_state *cps;
- 	copy_stateid_t *cps_t;
- 	int i;
+@@ -1607,7 +1607,7 @@ nfsd4_cld_tracking_init(struct net *net)
+ 		nfs4_release_reclaim(nn);
+ 		goto err_remove;
+ 	} else
+-		printk("NFSD: Using nfsdcld client tracking operations.\n");
++		pr_info("NFSD: Using nfsdcld client tracking operations.\n");
+ 	return 0;
  
- 	if (clients_still_reclaiming(nn)) {
--		new_timeo = 0;
-+		lt.new_timeo = 0;
- 		goto out;
- 	}
- 	nfsd4_end_grace(nn);
-@@ -5411,7 +5429,7 @@ nfs4_laundromat(struct nfsd_net *nn)
- 	idr_for_each_entry(&nn->s2s_cp_stateids, cps_t, i) {
- 		cps = container_of(cps_t, struct nfs4_cpntf_state, cp_stateid);
- 		if (cps->cp_stateid.sc_type == NFS4_COPYNOTIFY_STID &&
--				cps->cpntf_time < cutoff)
-+				state_expired(&lt, cps->cpntf_time))
- 			_free_cpntf_state_locked(nn, cps);
- 	}
- 	spin_unlock(&nn->s2s_cp_lock);
-@@ -5419,11 +5437,8 @@ nfs4_laundromat(struct nfsd_net *nn)
- 	spin_lock(&nn->client_lock);
- 	list_for_each_safe(pos, next, &nn->client_lru) {
- 		clp = list_entry(pos, struct nfs4_client, cl_lru);
--		if (clp->cl_time > cutoff) {
--			t = clp->cl_time - cutoff;
--			new_timeo = min(new_timeo, t);
-+		if (!state_expired(&lt, clp->cl_time))
- 			break;
--		}
- 		if (mark_client_expired_locked(clp)) {
- 			trace_nfsd_clid_expired(&clp->cl_clientid);
- 			continue;
-@@ -5440,11 +5455,8 @@ nfs4_laundromat(struct nfsd_net *nn)
- 	spin_lock(&state_lock);
- 	list_for_each_safe(pos, next, &nn->del_recall_lru) {
- 		dp = list_entry (pos, struct nfs4_delegation, dl_recall_lru);
--		if (dp->dl_time > cutoff) {
--			t = dp->dl_time - cutoff;
--			new_timeo = min(new_timeo, t);
-+		if (!state_expired(&lt, dp->dl_time))
- 			break;
--		}
- 		WARN_ON(!unhash_delegation_locked(dp));
- 		list_add(&dp->dl_recall_lru, &reaplist);
- 	}
-@@ -5460,11 +5472,8 @@ nfs4_laundromat(struct nfsd_net *nn)
- 	while (!list_empty(&nn->close_lru)) {
- 		oo = list_first_entry(&nn->close_lru, struct nfs4_openowner,
- 					oo_close_lru);
--		if (oo->oo_time > cutoff) {
--			t = oo->oo_time - cutoff;
--			new_timeo = min(new_timeo, t);
-+		if (!state_expired(&lt, oo->oo_time))
- 			break;
--		}
- 		list_del_init(&oo->oo_close_lru);
- 		stp = oo->oo_last_closed_stid;
- 		oo->oo_last_closed_stid = NULL;
-@@ -5490,11 +5499,8 @@ nfs4_laundromat(struct nfsd_net *nn)
- 	while (!list_empty(&nn->blocked_locks_lru)) {
- 		nbl = list_first_entry(&nn->blocked_locks_lru,
- 					struct nfsd4_blocked_lock, nbl_lru);
--		if (nbl->nbl_time > cutoff) {
--			t = nbl->nbl_time - cutoff;
--			new_timeo = min(new_timeo, t);
-+		if (!state_expired(&lt, nbl->nbl_time))
- 			break;
--		}
- 		list_move(&nbl->nbl_lru, &reaplist);
- 		list_del_init(&nbl->nbl_list);
- 	}
-@@ -5507,8 +5513,7 @@ nfs4_laundromat(struct nfsd_net *nn)
- 		free_blocked_lock(nbl);
- 	}
- out:
--	new_timeo = max_t(time64_t, new_timeo, NFSD_LAUNDROMAT_MINTIMEOUT);
--	return new_timeo;
-+	return max_t(time64_t, lt.new_timeo, NFSD_LAUNDROMAT_MINTIMEOUT);
+ err_remove:
+@@ -1866,7 +1866,7 @@ nfsd4_umh_cltrack_init(struct net *net)
+ 	ret = nfsd4_umh_cltrack_upcall("init", NULL, grace_start, NULL);
+ 	kfree(grace_start);
+ 	if (!ret)
+-		printk("NFSD: Using UMH upcall client tracking operations.\n");
++		pr_info("NFSD: Using UMH upcall client tracking operations.\n");
+ 	return ret;
  }
  
- static struct workqueue_struct *laundry_wq;
 -- 
 2.43.0
 
