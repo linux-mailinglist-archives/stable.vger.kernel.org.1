@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-53371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21FEF90D15D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:42:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A461290D16D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0E181F25AE0
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:42:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF74D282141
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200281A00E5;
-	Tue, 18 Jun 2024 13:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE37515885A;
+	Tue, 18 Jun 2024 13:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0J92dj1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Lp6O+sT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36B91A00DF;
-	Tue, 18 Jun 2024 13:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA91A158A18;
+	Tue, 18 Jun 2024 13:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716126; cv=none; b=RY4CxvBZYw+G9al5uO0A0GsIhyPHgVY3V2FUx9v2uZFsmu1gCBddCnPU2hWSds/IgvNBSGIJ3RO38LqXwpRrXdhY72omboL6/Dzd3xuTXmB2m72Y2Tqcqr3XhVbUPNeWLyprc4zIaxIvv552ABllegiGy48eh8V3AksqY8WNvs4=
+	t=1718716132; cv=none; b=ZyqPSUfLVYbfOArwByacT63wuXaiR34j6Q1iOiE79lpVI5NP1HtbAbH5H3EejUR05Aw1S6FTAjmtNcfEEX0zFJ1ErvmvzBqL82V+2P2X3jQaLuaEE4qkUZglbTdkF+axaAujpx9+IYZYi8+15k+4NktVvoXcpoypC9U0gLfLMlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716126; c=relaxed/simple;
-	bh=1ec8Sq7MhS43LhPOmRNK/EeRjaKKycrDG2+Pt+CJrgc=;
+	s=arc-20240116; t=1718716132; c=relaxed/simple;
+	bh=P4bHEXghaxFysP0uZqrGNzveXaXVmj4KF1xf1WmQ42E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WxLQ0GhnAyRwA5yUOyRpn5nBHf4xwbwv04Lt+SLgzxj2pxRrRzMABB2lxWvTkFlUmUSKrQottUY0iZw9/GxQkzKl7TYp301Pxc6QCI1myUPm0qA8UMzuRgPn0iHhN/cYAvqPFm2H/KcnFHsK80OdJrojcw+4rkvVz19WXgcB+6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0J92dj1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDE2C32786;
-	Tue, 18 Jun 2024 13:08:46 +0000 (UTC)
+	 MIME-Version; b=jChcNekh7Jk9RBo6vmAB0AOM44Egb9pE36di32rBdwFbe2ZellsgHILNr6zhMbpGCwlONOsMkMlZunbK8t+e7QhDHLaacSEZM+REiWJYLBt7stLtjLsl4udJkOsCplVe5j1IHWdl4sKiMjSrTOHf3rn5D4mPhS9yrlrGzjZnsPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Lp6O+sT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318ABC3277B;
+	Tue, 18 Jun 2024 13:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716126;
-	bh=1ec8Sq7MhS43LhPOmRNK/EeRjaKKycrDG2+Pt+CJrgc=;
+	s=korg; t=1718716132;
+	bh=P4bHEXghaxFysP0uZqrGNzveXaXVmj4KF1xf1WmQ42E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0J92dj1uo2rL+Y1omj5vw2m5crHImZ5r8RE4wzTh5xblHT4q3Kk7vZiKYMm5RGfEG
-	 wOcdA2ziaRvMoeu+KnV1vcVrzHz7UW42T9qzQSWeR0u0BHTGr6XRteM9qduEmJwohD
-	 WusQ/7r43h7ZMsGOGmRMhB4d2P85mA8/7StpwkHA=
+	b=0Lp6O+sTtK++gLclu1/WQBBI/uQIMN7jwOZBt6CmYS7DC5uwi7pEWXFkiGozRq4Br
+	 a8JIGMA/j0y8s00OCAYGVZ+A9xzBTNFKgTiMnv0W45PHa2dqLsm9ch5KJnNSc/mu34
+	 euyBCXiDp1c8uAa+NbAkvKnzEzBelUW4krp5mknE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Mammedov <imammedo@redhat.com>,
+	"J. Bruce Fields" <bfields@fieldses.org>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 541/770] NFSD: Decode NFSv4 birth time attribute
-Date: Tue, 18 Jun 2024 14:36:34 +0200
-Message-ID: <20240618123428.192496268@linuxfoundation.org>
+Subject: [PATCH 5.10 542/770] lockd: set fl_owner when unlocking files
+Date: Tue, 18 Jun 2024 14:36:35 +0200
+Message-ID: <20240618123428.231333808@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,81 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 5b2f3e0777da2a5dd62824bbe2fdab1d12caaf8f ]
+[ Upstream commit aec158242b87a43d83322e99bc71ab4428e5ab79 ]
 
-NFSD has advertised support for the NFSv4 time_create attribute
-since commit e377a3e698fb ("nfsd: Add support for the birth time
-attribute").
+Unlocking a POSIX lock on an inode with vfs_lock_file only works if
+the owner matches. Ensure we set it in the request.
 
-Igor Mammedov reports that Mac OS clients attempt to set the NFSv4
-birth time attribute via OPEN(CREATE) and SETATTR if the server
-indicates that it supports it, but since the above commit was
-merged, those attempts now fail.
-
-Table 5 in RFC 8881 lists the time_create attribute as one that can
-be both set and retrieved, but the above commit did not add server
-support for clients to provide a time_create attribute. IMO that's
-a bug in our implementation of the NFSv4 protocol, which this commit
-addresses.
-
-Whether NFSD silently ignores the new birth time or actually sets it
-is another matter. I haven't found another filesystem service in the
-Linux kernel that enables users or clients to modify a file's birth
-time attribute.
-
-This commit reflects my (perhaps incorrect) understanding of whether
-Linux users can set a file's birth time. NFSD will now recognize a
-time_create attribute but it ignores its value. It clears the
-time_create bit in the returned attribute bitmask to indicate that
-the value was not used.
-
-Reported-by: Igor Mammedov <imammedo@redhat.com>
-Fixes: e377a3e698fb ("nfsd: Add support for the birth time attribute")
-Tested-by: Igor Mammedov <imammedo@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: J. Bruce Fields <bfields@fieldses.org>
+Fixes: 7f024fcd5c97 ("Keep read and write fds with each nlm_file")
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 9 +++++++++
- fs/nfsd/nfsd.h    | 3 ++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ fs/lockd/svcsubs.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 804c137fabec5..b98a24c2a753c 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -470,6 +470,15 @@ nfsd4_decode_fattr4(struct nfsd4_compoundargs *argp, u32 *bmval, u32 bmlen,
- 			return nfserr_bad_xdr;
- 		}
+diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
+index 0a22a2faf5522..b2f277727469c 100644
+--- a/fs/lockd/svcsubs.c
++++ b/fs/lockd/svcsubs.c
+@@ -176,7 +176,7 @@ nlm_delete_file(struct nlm_file *file)
  	}
-+	if (bmval[1] & FATTR4_WORD1_TIME_CREATE) {
-+		struct timespec64 ts;
-+
-+		/* No Linux filesystem supports setting this attribute. */
-+		bmval[1] &= ~FATTR4_WORD1_TIME_CREATE;
-+		status = nfsd4_decode_nfstime4(argp, &ts);
-+		if (status)
-+			return status;
-+	}
- 	if (bmval[1] & FATTR4_WORD1_TIME_MODIFY_SET) {
- 		u32 set_it;
+ }
  
-diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
-index 847b482155ae9..9a8b09afc1733 100644
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -465,7 +465,8 @@ static inline bool nfsd_attrs_supported(u32 minorversion, const u32 *bmval)
- 	(FATTR4_WORD0_SIZE | FATTR4_WORD0_ACL)
- #define NFSD_WRITEABLE_ATTRS_WORD1 \
- 	(FATTR4_WORD1_MODE | FATTR4_WORD1_OWNER | FATTR4_WORD1_OWNER_GROUP \
--	| FATTR4_WORD1_TIME_ACCESS_SET | FATTR4_WORD1_TIME_MODIFY_SET)
-+	| FATTR4_WORD1_TIME_ACCESS_SET | FATTR4_WORD1_TIME_CREATE \
-+	| FATTR4_WORD1_TIME_MODIFY_SET)
- #ifdef CONFIG_NFSD_V4_SECURITY_LABEL
- #define MAYBE_FATTR4_WORD2_SECURITY_LABEL \
- 	FATTR4_WORD2_SECURITY_LABEL
+-static int nlm_unlock_files(struct nlm_file *file)
++static int nlm_unlock_files(struct nlm_file *file, fl_owner_t owner)
+ {
+ 	struct file_lock lock;
+ 
+@@ -184,6 +184,7 @@ static int nlm_unlock_files(struct nlm_file *file)
+ 	lock.fl_type  = F_UNLCK;
+ 	lock.fl_start = 0;
+ 	lock.fl_end   = OFFSET_MAX;
++	lock.fl_owner = owner;
+ 	if (file->f_file[O_RDONLY] &&
+ 	    vfs_lock_file(file->f_file[O_RDONLY], F_SETLK, &lock, NULL))
+ 		goto out_err;
+@@ -225,7 +226,7 @@ nlm_traverse_locks(struct nlm_host *host, struct nlm_file *file,
+ 		if (match(lockhost, host)) {
+ 
+ 			spin_unlock(&flctx->flc_lock);
+-			if (nlm_unlock_files(file))
++			if (nlm_unlock_files(file, fl->fl_owner))
+ 				return 1;
+ 			goto again;
+ 		}
 -- 
 2.43.0
 
