@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-52938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C1D90D1B5
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:44:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57EF890CF6B
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 771DCB2F321
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:26:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8219E282137
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871CC15E5A8;
-	Tue, 18 Jun 2024 12:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D843F15ECD9;
+	Tue, 18 Jun 2024 12:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trFQmoLl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hFJKi63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440D715E5A5;
-	Tue, 18 Jun 2024 12:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97241146A88;
+	Tue, 18 Jun 2024 12:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714855; cv=none; b=sdfdPZXK8GOn9HiIgiYHevNvw4JrhtuMOi5ChvuqF39/ca4cpjgTOmCPBUiERG2s4EpJ2Kqh7usz6eJuBtV7bNgz4dMhoV+hPbooM8EmX5GH8W0LitT2FWdZtS18XW6Jw/OhGBDyD/RCrTighXdx3Xq8krubF4ppbvjbPrLxtg8=
+	t=1718714887; cv=none; b=SJJI+UDqrNAJ4oT/Y/5rrlUTEETOw+84GMXkozclsy+Z5GKgy26/HXzqHuLG8OnjfKxsQKCAee22D/XB0cTDq3lxIX4P3i+6/M3t1ZPT0ble+ytLMQDyNTwhTdrjevspFv4svfZQwixaSC8Zcp7poaszU6IS9T/70BviUY+wZ6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714855; c=relaxed/simple;
-	bh=3MrnSUfnChRNsVyPGBslRA+fpNjvpO39Akwy5TvXl+o=;
+	s=arc-20240116; t=1718714887; c=relaxed/simple;
+	bh=As039JXgekAkYJSVeTCt2U5yYOGRhLsX6uDQ9BRL1IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmedEIWnLTjmEJcID3ew6+O4J760KEuc+5ZmdFqaxxcdcoIBosdwPvGVrVTWOlwt4+HRZKBZlWw82XGdpS7pdvlxP7qrNn1W9FY1pj9TfGgsX1TCcAUn55R2L09+lUDLdgC4orjcl6Ou0KZ+aO+JzxNpWLW/6oP+kq6JMvIHsY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trFQmoLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF629C3277B;
-	Tue, 18 Jun 2024 12:47:34 +0000 (UTC)
+	 MIME-Version; b=V41FdaWSd1FKJlf8pwjEuwZGFrs3UiFWBiEWkhDpNka4UA+i0+aGwR/pPdi6Q2P63kAbrdbb313frzPZ+FMVvx6+MXTVR9lWTJnw8sTRGEWinlf4AYRhqWwSZtVQW9bsVJBpNClrvAMsFqOvaT7JalYB7mn2Qd7IjZABnCF36/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hFJKi63; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D574C3277B;
+	Tue, 18 Jun 2024 12:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718714855;
-	bh=3MrnSUfnChRNsVyPGBslRA+fpNjvpO39Akwy5TvXl+o=;
+	s=korg; t=1718714887;
+	bh=As039JXgekAkYJSVeTCt2U5yYOGRhLsX6uDQ9BRL1IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trFQmoLlyIj+aeOfiY6SUxfS/Xd6mqWg9iGk3UYrpA2F1aMl1jN9AbbG1THCFG40S
-	 d9S12zrTpS4qdToFNMiFJsiDfoxu83VBdarsaqH/l3tVfDkRqge1iahZaXawl1unVY
-	 t73xnYK5UF1Y+Ujo0Tiucneysmx8pdb+txOuZMDA=
+	b=1hFJKi63xn5k0HI0zIY/k0+aCdwRtWeChCYq5fXGi95TllkoU4B6opUkI+zpUIWHk
+	 +lnfZ5E2Fl0WFhx7fD7DgH2dGy4YAzjdNeqWuk/xZ6c1ELmhRMMV6IPgC+PT2M7p2N
+	 2g4bpJQ3LcM8rqkfpX9C8bgCqKY/QxGbcM7w7arA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 104/770] nfsd: Set PF_LOCAL_THROTTLE on local filesystems only
-Date: Tue, 18 Jun 2024 14:29:17 +0200
-Message-ID: <20240618123411.289851573@linuxfoundation.org>
+Subject: [PATCH 5.10 105/770] nfsd: Record NFSv4 pre/post-op attributes as non-atomic
+Date: Tue, 18 Jun 2024 14:29:18 +0200
+Message-ID: <20240618123411.328146767@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,91 +68,89 @@ Content-Transfer-Encoding: 8bit
 
 From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 01cbf3853959feec40ec9b9a399e12a021cd4d81 ]
+[ Upstream commit 716a8bc7f706eeef80ab42c99d9f210eda845c81 ]
 
-Don't set PF_LOCAL_THROTTLE on remote filesystems like NFS, since they
-aren't expected to ever be subject to double buffering.
+For the case of NFSv4, specify to the client that the pre/post-op
+attributes were not recorded atomically with the main operation.
 
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/export.c          |  3 ++-
- fs/nfsd/vfs.c            | 13 +++++++++++--
- include/linux/exportfs.h |  1 +
- 3 files changed, 14 insertions(+), 3 deletions(-)
+ fs/nfs/export.c          | 3 ++-
+ fs/nfsd/nfsfh.c          | 4 ++++
+ fs/nfsd/nfsfh.h          | 5 +++++
+ fs/nfsd/xdr4.h           | 2 +-
+ include/linux/exportfs.h | 3 +++
+ 5 files changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/fs/nfs/export.c b/fs/nfs/export.c
-index 5428713af5fee..48b879cfe6e3b 100644
+index 48b879cfe6e3b..7412bb164fa77 100644
 --- a/fs/nfs/export.c
 +++ b/fs/nfs/export.c
-@@ -171,5 +171,6 @@ const struct export_operations nfs_export_ops = {
- 	.encode_fh = nfs_encode_fh,
+@@ -172,5 +172,6 @@ const struct export_operations nfs_export_ops = {
  	.fh_to_dentry = nfs_fh_to_dentry,
  	.get_parent = nfs_get_parent,
--	.flags = EXPORT_OP_NOWCC|EXPORT_OP_NOSUBTREECHK|EXPORT_OP_CLOSE_BEFORE_UNLINK,
-+	.flags = EXPORT_OP_NOWCC|EXPORT_OP_NOSUBTREECHK|
-+		EXPORT_OP_CLOSE_BEFORE_UNLINK|EXPORT_OP_REMOTE_FS,
+ 	.flags = EXPORT_OP_NOWCC|EXPORT_OP_NOSUBTREECHK|
+-		EXPORT_OP_CLOSE_BEFORE_UNLINK|EXPORT_OP_REMOTE_FS,
++		EXPORT_OP_CLOSE_BEFORE_UNLINK|EXPORT_OP_REMOTE_FS|
++		EXPORT_OP_NOATOMIC_ATTR,
  };
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index fb4e6c57ce0bb..a515cbd0a7d8f 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -986,6 +986,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 				__be32 *verf)
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index e80a7525561d0..66f2ef67792a7 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -301,6 +301,10 @@ static __be32 nfsd_set_fh_dentry(struct svc_rqst *rqstp, struct svc_fh *fhp)
+ 	fhp->fh_export = exp;
+ 
+ 	switch (rqstp->rq_vers) {
++	case 4:
++		if (dentry->d_sb->s_export_op->flags & EXPORT_OP_NOATOMIC_ATTR)
++			fhp->fh_no_atomic_attr = true;
++		break;
+ 	case 3:
+ 		if (dentry->d_sb->s_export_op->flags & EXPORT_OP_NOWCC)
+ 			fhp->fh_no_wcc = true;
+diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
+index 347d10aa62655..cb20c2cd34695 100644
+--- a/fs/nfsd/nfsfh.h
++++ b/fs/nfsd/nfsfh.h
+@@ -36,6 +36,11 @@ typedef struct svc_fh {
+ 	bool			fh_locked;	/* inode locked by us */
+ 	bool			fh_want_write;	/* remount protection taken */
+ 	bool			fh_no_wcc;	/* no wcc data needed */
++	bool			fh_no_atomic_attr;
++						/*
++						 * wcc data is not atomic with
++						 * operation
++						 */
+ 	int			fh_flags;	/* FH flags */
+ #ifdef CONFIG_NFSD_V3
+ 	bool			fh_post_saved;	/* post-op attrs saved */
+diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
+index b4556e86e97c3..a60ff5ce1a375 100644
+--- a/fs/nfsd/xdr4.h
++++ b/fs/nfsd/xdr4.h
+@@ -748,7 +748,7 @@ static inline void
+ set_change_info(struct nfsd4_change_info *cinfo, struct svc_fh *fhp)
  {
- 	struct file		*file = nf->nf_file;
-+	struct super_block	*sb = file_inode(file)->i_sb;
- 	struct svc_export	*exp;
- 	struct iov_iter		iter;
- 	errseq_t		since;
-@@ -993,12 +994,18 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 	int			host_err;
- 	int			use_wgather;
- 	loff_t			pos = offset;
-+	unsigned long		exp_op_flags = 0;
- 	unsigned int		pflags = current->flags;
- 	rwf_t			flags = 0;
-+	bool			restore_flags = false;
+ 	BUG_ON(!fhp->fh_pre_saved);
+-	cinfo->atomic = (u32)fhp->fh_post_saved;
++	cinfo->atomic = (u32)(fhp->fh_post_saved && !fhp->fh_no_atomic_attr);
  
- 	trace_nfsd_write_opened(rqstp, fhp, offset, *cnt);
- 
--	if (test_bit(RQ_LOCAL, &rqstp->rq_flags))
-+	if (sb->s_export_op)
-+		exp_op_flags = sb->s_export_op->flags;
-+
-+	if (test_bit(RQ_LOCAL, &rqstp->rq_flags) &&
-+	    !(exp_op_flags & EXPORT_OP_REMOTE_FS)) {
- 		/*
- 		 * We want throttling in balance_dirty_pages()
- 		 * and shrink_inactive_list() to only consider
-@@ -1007,6 +1014,8 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 		 * the client's dirty pages or its congested queue.
- 		 */
- 		current->flags |= PF_LOCAL_THROTTLE;
-+		restore_flags = true;
-+	}
- 
- 	exp = fhp->fh_export;
- 	use_wgather = (rqstp->rq_vers == 2) && EX_WGATHER(exp);
-@@ -1062,7 +1071,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
- 		trace_nfsd_write_err(rqstp, fhp, offset, host_err);
- 		nfserr = nfserrno(host_err);
- 	}
--	if (test_bit(RQ_LOCAL, &rqstp->rq_flags))
-+	if (restore_flags)
- 		current_restore_flags(pflags, PF_LOCAL_THROTTLE);
- 	return nfserr;
- }
+ 	cinfo->before_change = fhp->fh_pre_change;
+ 	cinfo->after_change = fhp->fh_post_change;
 diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
-index 846df3c96730f..d93e8a6737bb0 100644
+index d93e8a6737bb0..9f4d4bcbf251d 100644
 --- a/include/linux/exportfs.h
 +++ b/include/linux/exportfs.h
-@@ -216,6 +216,7 @@ struct export_operations {
- #define	EXPORT_OP_NOWCC			(0x1) /* don't collect v3 wcc data */
+@@ -217,6 +217,9 @@ struct export_operations {
  #define	EXPORT_OP_NOSUBTREECHK		(0x2) /* no subtree checking */
  #define	EXPORT_OP_CLOSE_BEFORE_UNLINK	(0x4) /* close files before unlink */
-+#define EXPORT_OP_REMOTE_FS		(0x8) /* Filesystem is remote */
+ #define EXPORT_OP_REMOTE_FS		(0x8) /* Filesystem is remote */
++#define EXPORT_OP_NOATOMIC_ATTR		(0x10) /* Filesystem cannot supply
++						  atomic attribute updates
++						*/
  	unsigned long	flags;
  };
  
