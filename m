@@ -1,171 +1,144 @@
-Return-Path: <stable+bounces-53361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720E890D14F
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B4090CBF5
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BB381F2531D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:41:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DC241F22516
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC3619FA64;
-	Tue, 18 Jun 2024 13:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D00F156220;
+	Tue, 18 Jun 2024 12:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Stx+p01h"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dECsmbWT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F48158A01;
-	Tue, 18 Jun 2024 13:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FAE15530C;
+	Tue, 18 Jun 2024 12:36:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716100; cv=none; b=Gsugi8WxI5Y4vgrFcBvP/aw0zQkl13KNBXr0PX9E8jWTnfN13hO4wENHLRrpWnUFYayEzLZKE+quJ0bVE/zBD1DqwK91IiJ+ShTQh0AnmY1hyTbXqtcWxhvbAL/8F+AplNr1ELxqjWCoUExxfvhY4y9rayDOF/F1+N/fw4BY7pw=
+	t=1718714200; cv=none; b=Ir8KZom2w2uo3yDltUoPb0IuIQr7x9DWut/ms8OCOOpIY84IlXC2VLv5Oe2nZAaTLLPBjBIBwAkA8AOABI6G8njDGnDXhZh6ngglCZAJUaKxaGVCY/6A7VL27HguA51iZQWM1+7/u/t6V2+JdJ4UKup+u2M719DagaB6W4sf7K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716100; c=relaxed/simple;
-	bh=n19eTw5+FhONwKYABCd1XKxmtnTPLgkwI32rV5HzJSg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FCIjo2ZfevDpdS7W2AM7Hv2XyWrEDDZ7vQZzbv4rfDmnRkY4lcr/eBXnieNQdTphhNkEUY2/NTvwT6TO8+W33qNMLAXIDENKxeSRr8XgvVHHhf02kpxfZSVV5cToz7JkEmW7f7jIBBkXmEwt1J2UauCP9/ogwuei8AuGwli2kQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Stx+p01h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E256AC4AF4D;
-	Tue, 18 Jun 2024 13:08:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716100;
-	bh=n19eTw5+FhONwKYABCd1XKxmtnTPLgkwI32rV5HzJSg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Stx+p01hOQ54tzQGSzToGOs+OC1XbdGLJhHqmM4wnbOz8Nup0XzXqqNy7FprOVfL+
-	 gtppu3vAJt7W5+b+Qaa8zGdfnfrcT7w246J4l0EQAPM2PXqsbYrIiln6ckgJByUedi
-	 6ut4YbWq0+jm2x8JhxWmAXT02urZmrXR6NiIXa3c=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Zhang Xiaoxu <zhangxiaoxu5@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 532/770] nfsd: Fix null-ptr-deref in nfsd_fill_super()
-Date: Tue, 18 Jun 2024 14:36:25 +0200
-Message-ID: <20240618123427.847491265@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1718714200; c=relaxed/simple;
+	bh=OBcdjLrWWFK3QokNiE+RzQm1SYM29rnb0cpZDwr2rGU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Y4o702rkcLhUalpYYKzsKBdLMG4YPgOiCG35gEXFwlypTSrU6+LZLvNf4mWl3sDfV71dDDHR+dPRkfi2ap6l0r3QCpbPxl2WEprRcdBW9gizxYw+xTCuuqYddEnMK3mExUEHh3RI4TB7+/PBxOlXxeVNtUX7zVoONilrRpk/X34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dECsmbWT; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45IC8tGl019570;
+	Tue, 18 Jun 2024 12:36:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	T5gyq14bj4+J/6gdfSxcbHQ8pwsxw9GLir8vbhb2hgc=; b=dECsmbWTg13Wcwal
+	U2Iep6Ijmdv3JkObB9SOXZUBZ2HmS4rHO4sfDukHlCqFbbHzO6q8eiCWFiWDBJlg
+	Ool9JmAUAB0Pjf1djFgNcc7HId5XpwKoZ5r+LadQGD+By8DL6ZoQ9B0fo/7Vgp+6
+	ADYRbVxHeye52q1HRWfhMPURlqiL/Wyz8VKd9AyV+ECTPfKGKlf/eoBvl8Uulk2C
+	CqFriOjKabjHBDqX1ljncc32+7/Wp5BkLDAFs8jlTTtNqKuNDoZMFadkqL7G4Npb
+	z77siYlGdF6TPUoPmJk9Z7WYjkRZbf6OeQcXTCHIFqYLAtCR5OPMAxSzWugkomgX
+	mieXYw==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yu22gs8ba-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Jun 2024 12:36:34 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45ICaX7B020572
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 18 Jun 2024 12:36:33 GMT
+Received: from [10.216.29.175] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 18 Jun
+ 2024 05:36:29 -0700
+Message-ID: <4e3d8f03-11d0-7728-1068-1c965ef79a1a@quicinc.com>
+Date: Tue, 18 Jun 2024 18:06:26 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-5.10-stable review patch.  If anyone has any objections, please let me know.
-
-------------------
-
-From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
-
-[ Upstream commit 6f6f84aa215f7b6665ccbb937db50860f9ec2989 ]
-
-KASAN report null-ptr-deref as follows:
-
-  BUG: KASAN: null-ptr-deref in nfsd_fill_super+0xc6/0xe0 [nfsd]
-  Write of size 8 at addr 000000000000005d by task a.out/852
-
-  CPU: 7 PID: 852 Comm: a.out Not tainted 5.18.0-rc7-dirty #66
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-1.fc33 04/01/2014
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x34/0x44
-   kasan_report+0xab/0x120
-   ? nfsd_mkdir+0x71/0x1c0 [nfsd]
-   ? nfsd_fill_super+0xc6/0xe0 [nfsd]
-   nfsd_fill_super+0xc6/0xe0 [nfsd]
-   ? nfsd_mkdir+0x1c0/0x1c0 [nfsd]
-   get_tree_keyed+0x8e/0x100
-   vfs_get_tree+0x41/0xf0
-   __do_sys_fsconfig+0x590/0x670
-   ? fscontext_read+0x180/0x180
-   ? anon_inode_getfd+0x4f/0x70
-   do_syscall_64+0x35/0x80
-   entry_SYSCALL_64_after_hwframe+0x44/0xae
-
-This can be reproduce by concurrent operations:
-	1. fsopen(nfsd)/fsconfig
-	2. insmod/rmmod nfsd
-
-Since the nfsd file system is registered before than nfsd_net allocated,
-the caller may get the file_system_type and use the nfsd_net before it
-allocated, then null-ptr-deref occurred.
-
-So init_nfsd() should call register_filesystem() last.
-
-Fixes: bd5ae9288d64 ("nfsd: register pernet ops last, unregister first")
-Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/nfsd/nfsctl.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index 55949e60897d5..0621c2faf2424 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1535,25 +1535,25 @@ static int __init init_nfsd(void)
- 	retval = create_proc_exports_entry();
- 	if (retval)
- 		goto out_free_lockd;
--	retval = register_filesystem(&nfsd_fs_type);
--	if (retval)
--		goto out_free_exports;
- 	retval = register_pernet_subsys(&nfsd_net_ops);
- 	if (retval < 0)
--		goto out_free_filesystem;
-+		goto out_free_exports;
- 	retval = register_cld_notifier();
- 	if (retval)
- 		goto out_free_subsys;
- 	retval = nfsd4_create_laundry_wq();
-+	if (retval)
-+		goto out_free_cld;
-+	retval = register_filesystem(&nfsd_fs_type);
- 	if (retval)
- 		goto out_free_all;
- 	return 0;
- out_free_all:
-+	nfsd4_destroy_laundry_wq();
-+out_free_cld:
- 	unregister_cld_notifier();
- out_free_subsys:
- 	unregister_pernet_subsys(&nfsd_net_ops);
--out_free_filesystem:
--	unregister_filesystem(&nfsd_fs_type);
- out_free_exports:
- 	remove_proc_entry("fs/nfs/exports", NULL);
- 	remove_proc_entry("fs/nfs", NULL);
-@@ -1571,6 +1571,7 @@ static int __init init_nfsd(void)
- 
- static void __exit exit_nfsd(void)
- {
-+	unregister_filesystem(&nfsd_fs_type);
- 	nfsd4_destroy_laundry_wq();
- 	unregister_cld_notifier();
- 	unregister_pernet_subsys(&nfsd_net_ops);
-@@ -1581,7 +1582,6 @@ static void __exit exit_nfsd(void)
- 	nfsd_lockd_shutdown();
- 	nfsd4_free_slabs();
- 	nfsd4_exit_pnfs();
--	unregister_filesystem(&nfsd_fs_type);
- }
- 
- MODULE_AUTHOR("Olaf Kirch <okir@monad.swb.de>");
--- 
-2.43.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4] media: venus: fix use after free in vdec_close
+Content-Language: en-US
+To: Dikshita Agarwal <quic_dikshita@quicinc.com>,
+        Stanimir Varbanov
+	<stanimir.k.varbanov@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Mauro Carvalho Chehab
+	<mchehab@kernel.org>,
+        Hans Verkuil <hans.verkuil@cisco.com>
+CC: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Stanimir Varbanov
+	<stanimir.varbanov@linaro.org>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <1715231669-16795-1-git-send-email-quic_dikshita@quicinc.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
+In-Reply-To: <1715231669-16795-1-git-send-email-quic_dikshita@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: nKOpWW-_hJ1r8GSBrkvzwJhLjtc01U7K
+X-Proofpoint-GUID: nKOpWW-_hJ1r8GSBrkvzwJhLjtc01U7K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-18_02,2024-06-17_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ clxscore=1011 malwarescore=0 priorityscore=1501 spamscore=0 suspectscore=0
+ adultscore=0 impostorscore=0 phishscore=0 mlxlogscore=999 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2406180093
 
 
+On 5/9/2024 10:44 AM, Dikshita Agarwal wrote:
+> There appears to be a possible use after free with vdec_close().
+> The firmware will add buffer release work to the work queue through
+> HFI callbacks as a normal part of decoding. Randomly closing the
+> decoder device from userspace during normal decoding can incur
+> a read after free for inst.
+> 
+> Fix it by cancelling the work in vdec_close.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+> ---
+> Changes since v3:
+> - Fixed style issue with fixes tag 
+> 
+> Changes since v2:
+> - Fixed email id
+> 
+> Changes since v1:
+> - Added fixes and stable tags
+> 
+>  drivers/media/platform/qcom/venus/vdec.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
+> index 29130a9..56f8a25 100644
+> --- a/drivers/media/platform/qcom/venus/vdec.c
+> +++ b/drivers/media/platform/qcom/venus/vdec.c
+> @@ -1747,6 +1747,7 @@ static int vdec_close(struct file *file)
+>  
+>  	vdec_pm_get(inst);
+>  
+> +	cancel_work_sync(&inst->delayed_process_work);
+>  	v4l2_m2m_ctx_release(inst->m2m_ctx);
+>  	v4l2_m2m_release(inst->m2m_dev);
+>  	vdec_ctrl_deinit(inst);
 
+Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
 
