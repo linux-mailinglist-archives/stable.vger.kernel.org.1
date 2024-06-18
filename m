@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B488390D2BD
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:52:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4445190D09C
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9FECB250ED
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:35:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 557651C23D71
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0BF1849D9;
-	Tue, 18 Jun 2024 12:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEEB1849DC;
+	Tue, 18 Jun 2024 12:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v25drcLq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZLnJXpt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1A115699E;
-	Tue, 18 Jun 2024 12:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE88B156972;
+	Tue, 18 Jun 2024 12:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715592; cv=none; b=NiPSqXQnRLbnNk9BdOfQ1+jgjtukeqm3vqhHfK20qaFyacuScx8fmvjI1rJsEr37s4yVnEZMSoksRLENG+QPNMnkoo728DUU3lHaoAUsvsq8bWD5aPjj74r189a/12910rAP+TCvFeb/tm+T5Af+FA/8wJXkwqDCvqCyvYwecmM=
+	t=1718715598; cv=none; b=j9HD71yv7Ek6XQxxBmIuS00zj/stqqMfHAQm3VcIQWzkjxWUUlPQSS67R8cBE7ISfHvnR8j/h4v6HaVqHFOR3tZJWspucPRRE+iKfKynF1aSqmJUmqxegNMrY7uNAPJZSSHnhKGCNVhu8molsf76orXDiis+RTzSAP3ovc731fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715592; c=relaxed/simple;
-	bh=v0Rj0qj1eHLonV927caioEgI1Ek3SaYEVzHJVkNZZc8=;
+	s=arc-20240116; t=1718715598; c=relaxed/simple;
+	bh=cWNCCeBsQc1dFbAfJI2yf8CpyOiuy7tOVZFeznRhnFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2DBRMk6Up0WRzIA15fy27OIz1+2gtaUME/bCCH6I1g+dSPLDy3MPV1DSqXlxsQQIdR1bVImfgkncOc8eQCoshjmpc7esm7+v9z3X8XZ49MT8P5ueffJTp/B062gl9VQtAtPqysi/HV7GMZdCapO2ZXyTAFEQNj+RPn1XxdoMh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v25drcLq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C3DC4AF48;
-	Tue, 18 Jun 2024 12:59:51 +0000 (UTC)
+	 MIME-Version; b=kqPNTeGkM8pLagGFCu0zQZqTUNTYmm8ZUXl7klEW1/HWJLi+mw8h5cpr4UGz4Y+a3l6WSCib4uy0oLqN0nJ1FRmH/qWaSzADGHvKGdHhgaKZ3KJfnEX3IIfLrCnXmy6fDdzn1jBlV5UMfug8u+2OL6/ld6kdOji6F+hmmo2uOSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZLnJXpt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C34EC32786;
+	Tue, 18 Jun 2024 12:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715591;
-	bh=v0Rj0qj1eHLonV927caioEgI1Ek3SaYEVzHJVkNZZc8=;
+	s=korg; t=1718715597;
+	bh=cWNCCeBsQc1dFbAfJI2yf8CpyOiuy7tOVZFeznRhnFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v25drcLqqjgJv5tYV/hQCWmPOY0S/qyVk3iXEwN5D/28HJbmvdUhOKY3VKBVVt+w1
-	 TIpW+43v6aTPR1tYRRFfuUh0n8GAF0HqGI6VgmSXlwbWT1eJcE563Qbxh5KHPKgTX2
-	 38pFXVmCIagobQo+qClHoROm3083jaOsuGDFQ8NE=
+	b=jZLnJXptCSpI6BZCfezTvPrOfbA/DxgfeYTQBXhukclS5xOHcDFNWHpBk5SR9nDda
+	 OnYZnjFa/b3Ci129tFN66Zn3vIRCjG1CULZmDpoLrT2Eg2suNRt5HqIRdFvP7B93CT
+	 IwO2knuny6vMwMG+eU/nIu4A4EX6Jp3jdWAQ3sfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Gabriel Krisman Bertazi <krisman@collabora.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 361/770] fsnotify: pass data_type to fsnotify_name()
-Date: Tue, 18 Jun 2024 14:33:34 +0200
-Message-ID: <20240618123421.203279152@linuxfoundation.org>
+Subject: [PATCH 5.10 362/770] fsnotify: pass dentry instead of inode data
+Date: Tue, 18 Jun 2024 14:33:35 +0200
+Message-ID: <20240618123421.241484927@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -70,87 +70,94 @@ Content-Transfer-Encoding: 8bit
 
 From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 9baf93d68bcc3d0a6042283b82603c076e25e4f5 ]
+[ Upstream commit fd5a3ff49a19aa69e2bc1e26e98037c2d778e61a ]
 
-Align the arguments of fsnotify_name() to those of fsnotify().
+Define a new data type to pass for event - FSNOTIFY_EVENT_DENTRY.
+Use it to pass the dentry instead of it's ->d_inode where available.
 
-Link: https://lore.kernel.org/r/20211025192746.66445-2-krisman@collabora.com
+This is needed in preparation to the refactor to retrieve the super
+block from the data field.  In some cases (i.e. mkdir in kernfs), the
+data inode comes from a negative dentry, such that no super block
+information would be available. By receiving the dentry itself, instead
+of the inode, fsnotify can derive the super block even on these cases.
+
+Link: https://lore.kernel.org/r/20211025192746.66445-3-krisman@collabora.com
 Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+[Expand explanation in commit message]
 Signed-off-by: Gabriel Krisman Bertazi <krisman@collabora.com>
 Signed-off-by: Jan Kara <jack@suse.cz>
-[ cel: adjust fsnotify_delete as well, a37d9a17f099 is already applied ]
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/fsnotify.h | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ include/linux/fsnotify.h         |  5 ++---
+ include/linux/fsnotify_backend.h | 16 ++++++++++++++++
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
 diff --git a/include/linux/fsnotify.h b/include/linux/fsnotify.h
-index a9477c14fad5c..211463715e29d 100644
+index 211463715e29d..e969a23f70631 100644
 --- a/include/linux/fsnotify.h
 +++ b/include/linux/fsnotify.h
-@@ -26,20 +26,21 @@
-  * FS_EVENT_ON_CHILD mask on the parent inode and will not be reported if only
-  * the child is interested and not the parent.
-  */
--static inline void fsnotify_name(struct inode *dir, __u32 mask,
--				 struct inode *child,
--				 const struct qstr *name, u32 cookie)
-+static inline int fsnotify_name(__u32 mask, const void *data, int data_type,
-+				struct inode *dir, const struct qstr *name,
-+				u32 cookie)
- {
- 	if (atomic_long_read(&dir->i_sb->s_fsnotify_connectors) == 0)
--		return;
-+		return 0;
- 
--	fsnotify(mask, child, FSNOTIFY_EVENT_INODE, dir, name, NULL, cookie);
-+	return fsnotify(mask, data, data_type, dir, name, NULL, cookie);
- }
- 
+@@ -39,8 +39,7 @@ static inline int fsnotify_name(__u32 mask, const void *data, int data_type,
  static inline void fsnotify_dirent(struct inode *dir, struct dentry *dentry,
  				   __u32 mask)
  {
--	fsnotify_name(dir, mask, d_inode(dentry), &dentry->d_name, 0);
-+	fsnotify_name(mask, d_inode(dentry), FSNOTIFY_EVENT_INODE,
-+		      dir, &dentry->d_name, 0);
+-	fsnotify_name(mask, d_inode(dentry), FSNOTIFY_EVENT_INODE,
+-		      dir, &dentry->d_name, 0);
++	fsnotify_name(mask, dentry, FSNOTIFY_EVENT_DENTRY, dir, &dentry->d_name, 0);
  }
  
  static inline void fsnotify_inode(struct inode *inode, __u32 mask)
-@@ -154,8 +155,10 @@ static inline void fsnotify_move(struct inode *old_dir, struct inode *new_dir,
- 		new_dir_mask |= FS_ISDIR;
+@@ -87,7 +86,7 @@ static inline int fsnotify_parent(struct dentry *dentry, __u32 mask,
+  */
+ static inline void fsnotify_dentry(struct dentry *dentry, __u32 mask)
+ {
+-	fsnotify_parent(dentry, mask, d_inode(dentry), FSNOTIFY_EVENT_INODE);
++	fsnotify_parent(dentry, mask, dentry, FSNOTIFY_EVENT_DENTRY);
+ }
+ 
+ static inline int fsnotify_file(struct file *file, __u32 mask)
+diff --git a/include/linux/fsnotify_backend.h b/include/linux/fsnotify_backend.h
+index 1ce66748a2d29..a2db821e8a8f2 100644
+--- a/include/linux/fsnotify_backend.h
++++ b/include/linux/fsnotify_backend.h
+@@ -248,6 +248,7 @@ enum fsnotify_data_type {
+ 	FSNOTIFY_EVENT_NONE,
+ 	FSNOTIFY_EVENT_PATH,
+ 	FSNOTIFY_EVENT_INODE,
++	FSNOTIFY_EVENT_DENTRY,
+ };
+ 
+ static inline struct inode *fsnotify_data_inode(const void *data, int data_type)
+@@ -255,6 +256,8 @@ static inline struct inode *fsnotify_data_inode(const void *data, int data_type)
+ 	switch (data_type) {
+ 	case FSNOTIFY_EVENT_INODE:
+ 		return (struct inode *)data;
++	case FSNOTIFY_EVENT_DENTRY:
++		return d_inode(data);
+ 	case FSNOTIFY_EVENT_PATH:
+ 		return d_inode(((const struct path *)data)->dentry);
+ 	default:
+@@ -262,6 +265,19 @@ static inline struct inode *fsnotify_data_inode(const void *data, int data_type)
  	}
- 
--	fsnotify_name(old_dir, old_dir_mask, source, old_name, fs_cookie);
--	fsnotify_name(new_dir, new_dir_mask, source, new_name, fs_cookie);
-+	fsnotify_name(old_dir_mask, source, FSNOTIFY_EVENT_INODE,
-+		      old_dir, old_name, fs_cookie);
-+	fsnotify_name(new_dir_mask, source, FSNOTIFY_EVENT_INODE,
-+		      new_dir, new_name, fs_cookie);
- 
- 	if (target)
- 		fsnotify_link_count(target);
-@@ -209,7 +212,8 @@ static inline void fsnotify_link(struct inode *dir, struct inode *inode,
- 	fsnotify_link_count(inode);
- 	audit_inode_child(dir, new_dentry, AUDIT_TYPE_CHILD_CREATE);
- 
--	fsnotify_name(dir, FS_CREATE, inode, &new_dentry->d_name, 0);
-+	fsnotify_name(FS_CREATE, inode, FSNOTIFY_EVENT_INODE,
-+		      dir, &new_dentry->d_name, 0);
  }
  
- /*
-@@ -228,7 +232,8 @@ static inline void fsnotify_delete(struct inode *dir, struct inode *inode,
- 	if (S_ISDIR(inode->i_mode))
- 		mask |= FS_ISDIR;
- 
--	fsnotify_name(dir, mask, inode, &dentry->d_name, 0);
-+	fsnotify_name(mask, inode, FSNOTIFY_EVENT_INODE, dir, &dentry->d_name,
-+		      0);
- }
- 
- /**
++static inline struct dentry *fsnotify_data_dentry(const void *data, int data_type)
++{
++	switch (data_type) {
++	case FSNOTIFY_EVENT_DENTRY:
++		/* Non const is needed for dget() */
++		return (struct dentry *)data;
++	case FSNOTIFY_EVENT_PATH:
++		return ((const struct path *)data)->dentry;
++	default:
++		return NULL;
++	}
++}
++
+ static inline const struct path *fsnotify_data_path(const void *data,
+ 						    int data_type)
+ {
 -- 
 2.43.0
 
