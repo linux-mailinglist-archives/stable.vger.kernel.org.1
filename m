@@ -1,110 +1,190 @@
-Return-Path: <stable+bounces-52768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C31F690CD00
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:02:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95AA490D25A
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B4901F2374E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:02:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D792F282C4C
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084B11A38C7;
-	Tue, 18 Jun 2024 12:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBF418E773;
+	Tue, 18 Jun 2024 13:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lA4yl44N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qr5XId8S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CA61A2FDA;
-	Tue, 18 Jun 2024 12:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0DF19E81B;
+	Tue, 18 Jun 2024 13:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714447; cv=none; b=Jev7eJFOCshERCJCf4UJLUjKhqHe+xM/KqrWKPqFumkxb3b4G4UPos9vhEUubLd5S3DP0GWHqgn1atHq3KY3ibp+RGCT0g792OYyv7Lp73MtLjONTp0zj0pbgEizoKjqV99yGBqVuHbGt8L0LpO+pwpDNI7GRnUgpVHC4IUKBE0=
+	t=1718716682; cv=none; b=fZstWMqvBSS2sdTU5QhS/4AL7PzvbsNNeWHOG1woyC4uEs1b5JrHf/IupBFA/vfcf0RhIyZUQ7BAEdvYXywvImFhIWZ1rl4IpjEfw8swaugE9ysNLSgWhcDNNxT8ElKUKWETOiD72OHFL601gvwaRxOwSzUee62RSIbiWJ/0B2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714447; c=relaxed/simple;
-	bh=6YK1nSfeH51EVhdHDofsARKpTId9VzEdXwFMFFgqiWc=;
+	s=arc-20240116; t=1718716682; c=relaxed/simple;
+	bh=eNRxidlg5Itu6/yfMNltpPRnw8Cd0VFSUIIiqs5shHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6mSc/z1p8A5DDYESyhhLzOccydB394bqYknAvSI6RrTx+Sac9CYIzDS6vVInnoRM1X4TcBFXp7BiWO38KGuMZ+z3XBuc349aq8fSs3O/9WjnsPy33Ico/wjJREEjB1mK8Dxbp1iWVKjQ5qjpS8kuchXMIrE4BlSalmIvA7KNR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lA4yl44N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D360C3277B;
-	Tue, 18 Jun 2024 12:40:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714447;
-	bh=6YK1nSfeH51EVhdHDofsARKpTId9VzEdXwFMFFgqiWc=;
+	 MIME-Version; b=B6pQGL9L2nVTj4EjULCPRnYS31cgUGeifpw2atDccQE1aXG4MvX6rIXZa7GZWRdMfDgukJdMCrDxKPMyCGnv3ckkKemXd2Oauzm5JmrGDfl56mk7fCn6CdP2rd8dXMnQJq+YMx8jW19qjzR49xgQ8laHaF9O8odzd0g+sCpX7aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qr5XId8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B82C3277B;
+	Tue, 18 Jun 2024 13:18:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716682;
+	bh=eNRxidlg5Itu6/yfMNltpPRnw8Cd0VFSUIIiqs5shHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lA4yl44NgXyJR7WslrDTVKT/fFiDEMzjl3Ubplolu3qq1l8RagfmDJc/lBVeZEe9X
-	 2k7E9VvjhqG9CV90aJznECG3crq37kodDv0maf3puWkk0u0UHZq50RsND+W92tQinG
-	 2rRg50L8b9+Rjf4bj692Z6ui+GnUmJ+YhEYQuyiLHkvoUvqBF16HIqv1lgg5a7wR9z
-	 kuIcD00uT3nrVaWEWyEJX18GccG52Z+MYUo7vh1Sad3XKnV0tFPj3vLwEUtsEMQg15
-	 926peG7E9XQrCMZ3gdets/EUpyRLbjnZjhVhmWn8ch+qLlMqhxjbI77oFSSspgRNJ+
-	 zb5Ho/QA5Yw+w==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	shaul.triebitz@intel.com,
-	benjamin.berg@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 15/29] wifi: iwlwifi: mvm: d3: fix WoWLAN command version lookup
-Date: Tue, 18 Jun 2024 08:39:41 -0400
-Message-ID: <20240618124018.3303162-15-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
-References: <20240618124018.3303162-1-sashal@kernel.org>
+	b=qr5XId8S09YzorCpSl7+Tz2eNlRLnSnAoRn2mZAPya0SXlFy+uxJP31VtlIi8VvdL
+	 RWSRq007/2PXdc6leG7z5juL2A+xmUwCymP+5jLMVuC+5D95CQMmCYPvLTC/qO1KR6
+	 pcHxulBeGd+c1C5bMdyoqwNKAHj6v5wXC0ZgWwkM=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Ruben Vestergaard <rubenv@drcmr.dk>,
+	Torkil Svensgaard <torkil@drcmr.dk>,
+	Shachar Kagan <skagan@nvidia.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 728/770] nfsd: dont free files unconditionally in __nfsd_file_cache_purge
+Date: Tue, 18 Jun 2024 14:39:41 +0200
+Message-ID: <20240618123435.369222094@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit b7ffca99313d856f7d1cc89038d9061b128e8e97 ]
+------------------
 
-After moving from commands to notificaitons in the d3 resume flow,
-removing the WOWLAN_GET_STATUSES and REPLY_OFFLOADS_QUERY_CMD causes
-the return of the default value when looking up their version.
-Returning zero here results in the driver sending the not supported
-NON_QOS_TX_COUNTER_CMD.
+From: Jeff Layton <jlayton@kernel.org>
 
-Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.8cabfd580614.If3a0db9851f56041f8f5360959354abd5379224a@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Upstream commit 4bdbba54e9b1c769da8ded9abd209d765715e1d6 ]
+
+nfsd_file_cache_purge is called when the server is shutting down, in
+which case, tearing things down is generally fine, but it also gets
+called when the exports cache is flushed.
+
+Instead of walking the cache and freeing everything unconditionally,
+handle it the same as when we have a notification of conflicting access.
+
+Fixes: ac3a2585f018 ("nfsd: rework refcounting in filecache")
+Reported-by: Ruben Vestergaard <rubenv@drcmr.dk>
+Reported-by: Torkil Svensgaard <torkil@drcmr.dk>
+Reported-by: Shachar Kagan <skagan@nvidia.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Shachar Kagan <skagan@nvidia.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfsd/filecache.c | 61 ++++++++++++++++++++++++++-------------------
+ 1 file changed, 36 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 88f4f429d875c..9a36ce98b5bfc 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -1934,7 +1934,8 @@ static bool iwl_mvm_setup_connection_keep(struct iwl_mvm *mvm,
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 6a62d95d5ce64..68c7c82f8b3bb 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -660,6 +660,39 @@ static struct shrinker	nfsd_file_shrinker = {
+ 	.seeks = 1,
+ };
  
- out:
- 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP,
--				    WOWLAN_GET_STATUSES, 0) < 10) {
-+				    WOWLAN_GET_STATUSES,
-+				    IWL_FW_CMD_VER_UNKNOWN) < 10) {
- 		mvmvif->seqno_valid = true;
- 		/* +0x10 because the set API expects next-to-use, not last-used */
- 		mvmvif->seqno = status->non_qos_seq_ctr + 0x10;
++/**
++ * nfsd_file_cond_queue - conditionally unhash and queue a nfsd_file
++ * @nf: nfsd_file to attempt to queue
++ * @dispose: private list to queue successfully-put objects
++ *
++ * Unhash an nfsd_file, try to get a reference to it, and then put that
++ * reference. If it's the last reference, queue it to the dispose list.
++ */
++static void
++nfsd_file_cond_queue(struct nfsd_file *nf, struct list_head *dispose)
++	__must_hold(RCU)
++{
++	int decrement = 1;
++
++	/* If we raced with someone else unhashing, ignore it */
++	if (!nfsd_file_unhash(nf))
++		return;
++
++	/* If we can't get a reference, ignore it */
++	if (!nfsd_file_get(nf))
++		return;
++
++	/* Extra decrement if we remove from the LRU */
++	if (nfsd_file_lru_remove(nf))
++		++decrement;
++
++	/* If refcount goes to 0, then put on the dispose list */
++	if (refcount_sub_and_test(decrement, &nf->nf_ref)) {
++		list_add(&nf->nf_lru, dispose);
++		trace_nfsd_file_closing(nf);
++	}
++}
++
+ /**
+  * nfsd_file_queue_for_close: try to close out any open nfsd_files for an inode
+  * @inode:   inode on which to close out nfsd_files
+@@ -687,30 +720,11 @@ nfsd_file_queue_for_close(struct inode *inode, struct list_head *dispose)
+ 
+ 	rcu_read_lock();
+ 	do {
+-		int decrement = 1;
+-
+ 		nf = rhashtable_lookup(&nfsd_file_rhash_tbl, &key,
+ 				       nfsd_file_rhash_params);
+ 		if (!nf)
+ 			break;
+-
+-		/* If we raced with someone else unhashing, ignore it */
+-		if (!nfsd_file_unhash(nf))
+-			continue;
+-
+-		/* If we can't get a reference, ignore it */
+-		if (!nfsd_file_get(nf))
+-			continue;
+-
+-		/* Extra decrement if we remove from the LRU */
+-		if (nfsd_file_lru_remove(nf))
+-			++decrement;
+-
+-		/* If refcount goes to 0, then put on the dispose list */
+-		if (refcount_sub_and_test(decrement, &nf->nf_ref)) {
+-			list_add(&nf->nf_lru, dispose);
+-			trace_nfsd_file_closing(nf);
+-		}
++		nfsd_file_cond_queue(nf, dispose);
+ 	} while (1);
+ 	rcu_read_unlock();
+ }
+@@ -927,11 +941,8 @@ __nfsd_file_cache_purge(struct net *net)
+ 
+ 		nf = rhashtable_walk_next(&iter);
+ 		while (!IS_ERR_OR_NULL(nf)) {
+-			if (!net || nf->nf_net == net) {
+-				nfsd_file_unhash(nf);
+-				nfsd_file_lru_remove(nf);
+-				list_add(&nf->nf_lru, &dispose);
+-			}
++			if (!net || nf->nf_net == net)
++				nfsd_file_cond_queue(nf, &dispose);
+ 			nf = rhashtable_walk_next(&iter);
+ 		}
+ 
 -- 
 2.43.0
+
+
 
 
