@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-53337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFA190D12E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:40:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4DC90D136
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFD221C2406C
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:40:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F2F61C217F9
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E2319E837;
-	Tue, 18 Jun 2024 13:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AB3D19EEDC;
+	Tue, 18 Jun 2024 13:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fE0dnNTF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ljv/+VsE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9357B1581F6;
-	Tue, 18 Jun 2024 13:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477FC19EEDD;
+	Tue, 18 Jun 2024 13:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716029; cv=none; b=noB3yZ8ti5TzznU+SulIEgGiCFSgkc9TTJoPulAF+aHwPNpwCvlfESKl9MVh9ZvY8Khl/USeg5RgQ2IcjqcdohgN2CL7UguHIWAJ3USwkAO1Q6kV7+a0kDJ+TH2unoBqH+sYG/WGOOKjDu5mrSrhhjvhOst7/xqkC/9SzovMJjA=
+	t=1718716044; cv=none; b=g4WE6cC7SKX1HihFNVp2t7fP1k2K1lwwlf4U07a9QxWIr9Q/rJ5cRP/8ykjYUvVw5PNoy01wDABTKqe/Cnr32q661AW4LMhWm8AXTO238XIjG9q0htxVblsmyD/M6ZkYpfpgDQjjOFZ1bVwNK8wk4cgz90WaaTOVdJw+sxqEWbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716029; c=relaxed/simple;
-	bh=avNCoer7fGX4UQrnP69luDYTW03KovxVa++LVeR4Z+o=;
+	s=arc-20240116; t=1718716044; c=relaxed/simple;
+	bh=7x0R1cisJEAXbU7BIGpOXT9Igsr5NJjsSnru03t8S/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQ0QTy5zAKAhoVHLBta/mmKx3LgX7ZNZUnK73ayPgW6miq4xMOmCdcr8pf5sW6/oxWT8ak1s9BREUoFvHYgtaIyN+pHmB+EEv1u6G+nBSNNXHroi+iBLGkt2b12jQgQ41xUOhD9hYBLYCFL9N5KK4nV9cEFx9PD2qRyr/DEKTJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fE0dnNTF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 171C9C3277B;
-	Tue, 18 Jun 2024 13:07:08 +0000 (UTC)
+	 MIME-Version; b=fYXhwc4wNLgWpiqSuXvkcavgFBstJyIZ+6hqI07iLjkDEtn1Iz7CVEMa4DEz3tncElgIob7FcJc1TnWajbB2JJs7nqKHLtBwsaKVGy833stbi3BZqiRNxtHa5yrkAUWb1IqoNLejl6zU4tGwAHZFNlZdbLg1An+bS8kkWW9bL9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ljv/+VsE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9952C32786;
+	Tue, 18 Jun 2024 13:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716029;
-	bh=avNCoer7fGX4UQrnP69luDYTW03KovxVa++LVeR4Z+o=;
+	s=korg; t=1718716044;
+	bh=7x0R1cisJEAXbU7BIGpOXT9Igsr5NJjsSnru03t8S/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fE0dnNTFvwdAmqd0KCUQ78g73HRZv6gnFmvHE3YV3aHtuZkHJCTS7qmZPVI/1pRUF
-	 neLVY1jFJrZb8JuQvqMPUrFqzfyofoQX1VaMGWs14rAcG32cW8r+PPPiTi+uCXdmyJ
-	 CSiIMEAmAGria/dggrqUkfPv8e86YrUbN3RRu6Rk=
+	b=Ljv/+VsEUSqyPFDNOl3/V4ZmWR0xAfAdQ1xAPpXzD/T/tTmoqhYQNltZ1EgBpmcUx
+	 LpTEDx7MrWw/s128MxFb6fLdChXbBNClNmlFfggoKiUcuWLlh7FxybXeR9O0JajW+Q
+	 wN0w/4FuB5a6XdZoQISyAOBgP/Dv9sEMfbSsDy8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 481/770] NFSD: Move svc_serv_ops::svo_function into struct svc_serv
-Date: Tue, 18 Jun 2024 14:35:34 +0200
-Message-ID: <20240618123425.882594606@linuxfoundation.org>
+Subject: [PATCH 5.10 482/770] NFSD: Remove CONFIG_NFSD_V3
+Date: Tue, 18 Jun 2024 14:35:35 +0200
+Message-ID: <20240618123425.922129022@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,264 +67,265 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 37902c6313090235c847af89c5515591261ee338 ]
+[ Upstream commit 5f9a62ff7d2808c7b56c0ec90f3b7eae5872afe6 ]
 
-Hoist svo_function back into svc_serv and remove struct
-svc_serv_ops, since the struct is now devoid of fields.
+Eventually support for NFSv2 in the Linux NFS server is to be
+deprecated and then removed.
+
+However, NFSv2 is the "always supported" version that is available
+as soon as CONFIG_NFSD is set.  Before NFSv2 support can be removed,
+we need to choose a different "always supported" version.
+
+This patch removes CONFIG_NFSD_V3 so that NFSv3 is always supported,
+as NFSv2 is today. When NFSv2 support is removed, NFSv3 will become
+the only "always supported" NFS version.
+
+The defconfigs still need to be updated to remove CONFIG_NFSD_V3=y.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svc.c             |  6 +-----
- fs/nfs/callback.c          | 43 ++++++++++----------------------------
- fs/nfsd/nfssvc.c           |  7 +------
- include/linux/sunrpc/svc.h | 14 ++++---------
- net/sunrpc/svc.c           | 37 ++++++++++++++++++++++----------
- 5 files changed, 43 insertions(+), 64 deletions(-)
+ fs/Kconfig       |  2 +-
+ fs/nfsd/Kconfig  | 12 +-----------
+ fs/nfsd/Makefile |  3 +--
+ fs/nfsd/nfsfh.c  |  4 ----
+ fs/nfsd/nfsfh.h  | 20 --------------------
+ fs/nfsd/nfssvc.c |  2 --
+ fs/nfsd/vfs.c    |  9 ---------
+ fs/nfsd/vfs.h    |  2 --
+ 8 files changed, 3 insertions(+), 51 deletions(-)
 
-diff --git a/fs/lockd/svc.c b/fs/lockd/svc.c
-index bfde31124f3af..59ef8a1f843f3 100644
---- a/fs/lockd/svc.c
-+++ b/fs/lockd/svc.c
-@@ -349,10 +349,6 @@ static struct notifier_block lockd_inet6addr_notifier = {
- };
- #endif
+diff --git a/fs/Kconfig b/fs/Kconfig
+index eaff422877c39..11b60d160f88f 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -320,7 +320,7 @@ config LOCKD
  
--static const struct svc_serv_ops lockd_sv_ops = {
--	.svo_function		= lockd,
--};
+ config LOCKD_V4
+ 	bool
+-	depends on NFSD_V3 || NFS_V3
++	depends on NFSD || NFS_V3
+ 	depends on FILE_LOCKING
+ 	default y
+ 
+diff --git a/fs/nfsd/Kconfig b/fs/nfsd/Kconfig
+index f229172652be0..887af7966b032 100644
+--- a/fs/nfsd/Kconfig
++++ b/fs/nfsd/Kconfig
+@@ -35,18 +35,9 @@ config NFSD_V2_ACL
+ 	bool
+ 	depends on NFSD
+ 
+-config NFSD_V3
+-	bool "NFS server support for NFS version 3"
+-	depends on NFSD
+-	help
+-	  This option enables support in your system's NFS server for
+-	  version 3 of the NFS protocol (RFC 1813).
 -
- static int lockd_get(void)
- {
- 	struct svc_serv *serv;
-@@ -376,7 +372,7 @@ static int lockd_get(void)
- 		nlm_timeout = LOCKD_DFLT_TIMEO;
- 	nlmsvc_timeout = nlm_timeout * HZ;
+-	  If unsure, say Y.
+-
+ config NFSD_V3_ACL
+ 	bool "NFS server support for the NFSv3 ACL protocol extension"
+-	depends on NFSD_V3
++	depends on NFSD
+ 	select NFSD_V2_ACL
+ 	help
+ 	  Solaris NFS servers support an auxiliary NFSv3 ACL protocol that
+@@ -70,7 +61,6 @@ config NFSD_V3_ACL
+ config NFSD_V4
+ 	bool "NFS server support for NFS version 4"
+ 	depends on NFSD && PROC_FS
+-	select NFSD_V3
+ 	select FS_POSIX_ACL
+ 	select SUNRPC_GSS
+ 	select CRYPTO
+diff --git a/fs/nfsd/Makefile b/fs/nfsd/Makefile
+index 3f0983e93a998..805c06d5f1b4b 100644
+--- a/fs/nfsd/Makefile
++++ b/fs/nfsd/Makefile
+@@ -12,9 +12,8 @@ nfsd-y			+= trace.o
  
--	serv = svc_create(&nlmsvc_program, LOCKD_BUFSIZE, &lockd_sv_ops);
-+	serv = svc_create(&nlmsvc_program, LOCKD_BUFSIZE, lockd);
- 	if (!serv) {
- 		printk(KERN_WARNING "lockd_up: create service failed\n");
- 		return -ENOMEM;
-diff --git a/fs/nfs/callback.c b/fs/nfs/callback.c
-index a494f9e7bd0a0..456af7d230cf1 100644
---- a/fs/nfs/callback.c
-+++ b/fs/nfs/callback.c
-@@ -231,29 +231,10 @@ static int nfs_callback_up_net(int minorversion, struct svc_serv *serv,
- 	return ret;
+ nfsd-y 			+= nfssvc.o nfsctl.o nfsproc.o nfsfh.o vfs.o \
+ 			   export.o auth.o lockd.o nfscache.o nfsxdr.o \
+-			   stats.o filecache.o
++			   stats.o filecache.o nfs3proc.o nfs3xdr.o
+ nfsd-$(CONFIG_NFSD_V2_ACL) += nfs2acl.o
+-nfsd-$(CONFIG_NFSD_V3)	+= nfs3proc.o nfs3xdr.o
+ nfsd-$(CONFIG_NFSD_V3_ACL) += nfs3acl.o
+ nfsd-$(CONFIG_NFSD_V4)	+= nfs4proc.o nfs4xdr.o nfs4state.o nfs4idmap.o \
+ 			   nfs4acl.o nfs4callback.o nfs4recover.o
+diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
+index 3b9751555f8f2..d4ae838948ba5 100644
+--- a/fs/nfsd/nfsfh.c
++++ b/fs/nfsd/nfsfh.c
+@@ -610,8 +610,6 @@ fh_update(struct svc_fh *fhp)
+ 	return nfserr_serverfault;
  }
  
--static const struct svc_serv_ops nfs40_cb_sv_ops = {
--	.svo_function		= nfs4_callback_svc,
--};
--#if defined(CONFIG_NFS_V4_1)
--static const struct svc_serv_ops nfs41_cb_sv_ops = {
--	.svo_function		= nfs41_callback_svc,
--};
+-#ifdef CONFIG_NFSD_V3
 -
--static const struct svc_serv_ops *nfs4_cb_sv_ops[] = {
--	[0] = &nfs40_cb_sv_ops,
--	[1] = &nfs41_cb_sv_ops,
--};
--#else
--static const struct svc_serv_ops *nfs4_cb_sv_ops[] = {
--	[0] = &nfs40_cb_sv_ops,
--	[1] = NULL,
--};
--#endif
--
- static struct svc_serv *nfs_callback_create_svc(int minorversion)
- {
- 	struct nfs_callback_data *cb_info = &nfs_callback_info[minorversion];
--	const struct svc_serv_ops *sv_ops;
-+	int (*threadfn)(void *data);
- 	struct svc_serv *serv;
- 
- 	/*
-@@ -262,17 +243,6 @@ static struct svc_serv *nfs_callback_create_svc(int minorversion)
- 	if (cb_info->serv)
- 		return svc_get(cb_info->serv);
- 
--	switch (minorversion) {
--	case 0:
--		sv_ops = nfs4_cb_sv_ops[0];
--		break;
--	default:
--		sv_ops = nfs4_cb_sv_ops[1];
--	}
--
--	if (sv_ops == NULL)
--		return ERR_PTR(-ENOTSUPP);
--
- 	/*
- 	 * Sanity check: if there's no task,
- 	 * we should be the first user ...
-@@ -281,7 +251,16 @@ static struct svc_serv *nfs_callback_create_svc(int minorversion)
- 		printk(KERN_WARNING "nfs_callback_create_svc: no kthread, %d users??\n",
- 			cb_info->users);
- 
--	serv = svc_create(&nfs4_callback_program, NFS4_CALLBACK_BUFSIZE, sv_ops);
-+	threadfn = nfs4_callback_svc;
-+#if defined(CONFIG_NFS_V4_1)
-+	if (minorversion)
-+		threadfn = nfs41_callback_svc;
-+#else
-+	if (minorversion)
-+		return ERR_PTR(-ENOTSUPP);
-+#endif
-+	serv = svc_create(&nfs4_callback_program, NFS4_CALLBACK_BUFSIZE,
-+			  threadfn);
- 	if (!serv) {
- 		printk(KERN_ERR "nfs_callback_create_svc: create service failed\n");
- 		return ERR_PTR(-ENOMEM);
-diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index d25d4c12a499a..2f74be98ff2d9 100644
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -612,10 +612,6 @@ static int nfsd_get_default_max_blksize(void)
- 	return ret;
+ /**
+  * fh_fill_pre_attrs - Fill in pre-op attributes
+  * @fhp: file handle to be updated
+@@ -672,8 +670,6 @@ void fh_fill_post_attrs(struct svc_fh *fhp)
+ 			nfsd4_change_attribute(&fhp->fh_post_attr, inode);
  }
  
--static const struct svc_serv_ops nfsd_thread_sv_ops = {
--	.svo_function		= nfsd,
--};
--
- void nfsd_shutdown_threads(struct net *net)
- {
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-@@ -654,8 +650,7 @@ int nfsd_create_serv(struct net *net)
- 	if (nfsd_max_blksize == 0)
- 		nfsd_max_blksize = nfsd_get_default_max_blksize();
- 	nfsd_reset_versions(nn);
--	serv = svc_create_pooled(&nfsd_program, nfsd_max_blksize,
--				 &nfsd_thread_sv_ops);
-+	serv = svc_create_pooled(&nfsd_program, nfsd_max_blksize, nfsd);
- 	if (serv == NULL)
- 		return -ENOMEM;
- 
-diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
-index c64db9b14a643..3c908ffbbf45f 100644
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -52,13 +52,6 @@ struct svc_pool {
- 	unsigned long		sp_flags;
- } ____cacheline_aligned_in_smp;
- 
--struct svc_serv;
--
--struct svc_serv_ops {
--	/* function for service threads to run */
--	int		(*svo_function)(void *);
--};
+-#endif /* CONFIG_NFSD_V3 */
 -
  /*
-  * RPC service.
-  *
-@@ -91,7 +84,8 @@ struct svc_serv {
- 
- 	unsigned int		sv_nrpools;	/* number of thread pools */
- 	struct svc_pool *	sv_pools;	/* array of thread pools */
--	const struct svc_serv_ops *sv_ops;	/* server operations */
-+	int			(*sv_threadfn)(void *data);
-+
- #if defined(CONFIG_SUNRPC_BACKCHANNEL)
- 	struct list_head	sv_cb_list;	/* queue for callback requests
- 						 * that arrive over the same
-@@ -495,7 +489,7 @@ int svc_rpcb_setup(struct svc_serv *serv, struct net *net);
- void svc_rpcb_cleanup(struct svc_serv *serv, struct net *net);
- int svc_bind(struct svc_serv *serv, struct net *net);
- struct svc_serv *svc_create(struct svc_program *, unsigned int,
--			    const struct svc_serv_ops *);
-+			    int (*threadfn)(void *data));
- struct svc_rqst *svc_rqst_alloc(struct svc_serv *serv,
- 					struct svc_pool *pool, int node);
- void		   svc_rqst_replace_page(struct svc_rqst *rqstp,
-@@ -503,7 +497,7 @@ void		   svc_rqst_replace_page(struct svc_rqst *rqstp,
- void		   svc_rqst_free(struct svc_rqst *);
- void		   svc_exit_thread(struct svc_rqst *);
- struct svc_serv *  svc_create_pooled(struct svc_program *, unsigned int,
--			const struct svc_serv_ops *);
-+				     int (*threadfn)(void *data));
- int		   svc_set_num_threads(struct svc_serv *, struct svc_pool *, int);
- int		   svc_pool_stats_open(struct svc_serv *serv, struct file *file);
- int		   svc_process(struct svc_rqst *);
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index bdecc902cf998..7f231947347ea 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -446,7 +446,7 @@ __svc_init_bc(struct svc_serv *serv)
+  * Release a file handle.
   */
- static struct svc_serv *
- __svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
--	     const struct svc_serv_ops *ops)
-+	     int (*threadfn)(void *data))
+diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
+index 434930d8a946e..fb9d358a267e5 100644
+--- a/fs/nfsd/nfsfh.h
++++ b/fs/nfsd/nfsfh.h
+@@ -90,7 +90,6 @@ typedef struct svc_fh {
+ 						 * operation
+ 						 */
+ 	int			fh_flags;	/* FH flags */
+-#ifdef CONFIG_NFSD_V3
+ 	bool			fh_post_saved;	/* post-op attrs saved */
+ 	bool			fh_pre_saved;	/* pre-op attrs saved */
+ 
+@@ -107,7 +106,6 @@ typedef struct svc_fh {
+ 	/* Post-op attributes saved in fh_unlock */
+ 	struct kstat		fh_post_attr;	/* full attrs after operation */
+ 	u64			fh_post_change; /* nfsv4 change; see above */
+-#endif /* CONFIG_NFSD_V3 */
+ } svc_fh;
+ #define NFSD4_FH_FOREIGN (1<<0)
+ #define SET_FH_FLAG(c, f) ((c)->fh_flags |= (f))
+@@ -283,8 +281,6 @@ static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
+ }
+ #endif
+ 
+-#ifdef CONFIG_NFSD_V3
+-
+ /**
+  * fh_clear_pre_post_attrs - Reset pre/post attributes
+  * @fhp: file handle to be updated
+@@ -327,22 +323,6 @@ static inline u64 nfsd4_change_attribute(struct kstat *stat,
+ extern void fh_fill_pre_attrs(struct svc_fh *fhp);
+ extern void fh_fill_post_attrs(struct svc_fh *fhp);
+ 
+-#else /* !CONFIG_NFSD_V3 */
+-
+-static inline void fh_clear_pre_post_attrs(struct svc_fh *fhp)
+-{
+-}
+-
+-static inline void fh_fill_pre_attrs(struct svc_fh *fhp)
+-{
+-}
+-
+-static inline void fh_fill_post_attrs(struct svc_fh *fhp)
+-{
+-}
+-
+-#endif /* !CONFIG_NFSD_V3 */
+-
+ 
+ /*
+  * Lock a file handle/inode
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index 2f74be98ff2d9..011c556caa1e7 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -117,9 +117,7 @@ static struct svc_stat	nfsd_acl_svcstats = {
+ 
+ static const struct svc_version *nfsd_version[] = {
+ 	[2] = &nfsd_version2,
+-#if defined(CONFIG_NFSD_V3)
+ 	[3] = &nfsd_version3,
+-#endif
+ #if defined(CONFIG_NFSD_V4)
+ 	[4] = &nfsd_version4,
+ #endif
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 89c50ccedf4d3..86584e727ce09 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -32,9 +32,7 @@
+ #include <linux/writeback.h>
+ #include <linux/security.h>
+ 
+-#ifdef CONFIG_NFSD_V3
+ #include "xdr3.h"
+-#endif /* CONFIG_NFSD_V3 */
+ 
+ #ifdef CONFIG_NFSD_V4
+ #include "../internal.h"
+@@ -627,7 +625,6 @@ __be32 nfsd4_vfs_fallocate(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ }
+ #endif /* defined(CONFIG_NFSD_V4) */
+ 
+-#ifdef CONFIG_NFSD_V3
+ /*
+  * Check server access rights to a file system object
+  */
+@@ -739,7 +736,6 @@ nfsd_access(struct svc_rqst *rqstp, struct svc_fh *fhp, u32 *access, u32 *suppor
+  out:
+ 	return error;
+ }
+-#endif /* CONFIG_NFSD_V3 */
+ 
+ int nfsd_open_break_lease(struct inode *inode, int access)
  {
- 	struct svc_serv	*serv;
- 	unsigned int vers;
-@@ -463,7 +463,7 @@ __svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
- 		bufsize = RPCSVC_MAXPAYLOAD;
- 	serv->sv_max_payload = bufsize? bufsize : 4096;
- 	serv->sv_max_mesg  = roundup(serv->sv_max_payload + PAGE_SIZE, PAGE_SIZE);
--	serv->sv_ops = ops;
-+	serv->sv_threadfn = threadfn;
- 	xdrsize = 0;
- 	while (prog) {
- 		prog->pg_lovers = prog->pg_nvers-1;
-@@ -509,22 +509,37 @@ __svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
- 	return serv;
+@@ -1139,7 +1135,6 @@ nfsd_write(struct svc_rqst *rqstp, struct svc_fh *fhp, loff_t offset,
+ 	return err;
  }
  
--struct svc_serv *
--svc_create(struct svc_program *prog, unsigned int bufsize,
--	   const struct svc_serv_ops *ops)
-+/**
-+ * svc_create - Create an RPC service
-+ * @prog: the RPC program the new service will handle
-+ * @bufsize: maximum message size for @prog
-+ * @threadfn: a function to service RPC requests for @prog
-+ *
-+ * Returns an instantiated struct svc_serv object or NULL.
-+ */
-+struct svc_serv *svc_create(struct svc_program *prog, unsigned int bufsize,
-+			    int (*threadfn)(void *data))
- {
--	return __svc_create(prog, bufsize, /*npools*/1, ops);
-+	return __svc_create(prog, bufsize, 1, threadfn);
+-#ifdef CONFIG_NFSD_V3
+ /**
+  * nfsd_commit - Commit pending writes to stable storage
+  * @rqstp: RPC request being processed
+@@ -1217,7 +1212,6 @@ nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp, u64 offset,
+ out:
+ 	return err;
  }
- EXPORT_SYMBOL_GPL(svc_create);
+-#endif /* CONFIG_NFSD_V3 */
  
--struct svc_serv *
--svc_create_pooled(struct svc_program *prog, unsigned int bufsize,
--		  const struct svc_serv_ops *ops)
-+/**
-+ * svc_create_pooled - Create an RPC service with pooled threads
-+ * @prog: the RPC program the new service will handle
-+ * @bufsize: maximum message size for @prog
-+ * @threadfn: a function to service RPC requests for @prog
-+ *
-+ * Returns an instantiated struct svc_serv object or NULL.
-+ */
-+struct svc_serv *svc_create_pooled(struct svc_program *prog,
-+				   unsigned int bufsize,
-+				   int (*threadfn)(void *data))
- {
- 	struct svc_serv *serv;
- 	unsigned int npools = svc_pool_map_get();
+ static __be32
+ nfsd_create_setattr(struct svc_rqst *rqstp, struct svc_fh *resfhp,
+@@ -1406,8 +1400,6 @@ nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 					rdev, resfhp);
+ }
  
--	serv = __svc_create(prog, bufsize, npools, ops);
-+	serv = __svc_create(prog, bufsize, npools, threadfn);
- 	if (!serv)
- 		goto out_err;
- 	return serv;
-@@ -734,7 +749,7 @@ svc_start_kthreads(struct svc_serv *serv, struct svc_pool *pool, int nrservs)
- 		if (IS_ERR(rqstp))
- 			return PTR_ERR(rqstp);
+-#ifdef CONFIG_NFSD_V3
+-
+ /*
+  * NFSv3 and NFSv4 version of nfsd_create
+  */
+@@ -1573,7 +1565,6 @@ do_nfsd_create(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	err = nfserrno(host_err);
+ 	goto out;
+ }
+-#endif /* CONFIG_NFSD_V3 */
  
--		task = kthread_create_on_node(serv->sv_ops->svo_function, rqstp,
-+		task = kthread_create_on_node(serv->sv_threadfn, rqstp,
- 					      node, "%s", serv->sv_name);
- 		if (IS_ERR(task)) {
- 			svc_exit_thread(rqstp);
+ /*
+  * Read a symlink. On entry, *lenp must contain the maximum path length that
+diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
+index 2c43d10e3cab4..ccb87b2864f64 100644
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -68,7 +68,6 @@ __be32		nfsd_create_locked(struct svc_rqst *, struct svc_fh *,
+ __be32		nfsd_create(struct svc_rqst *, struct svc_fh *,
+ 				char *name, int len, struct iattr *attrs,
+ 				int type, dev_t rdev, struct svc_fh *res);
+-#ifdef CONFIG_NFSD_V3
+ __be32		nfsd_access(struct svc_rqst *, struct svc_fh *, u32 *, u32 *);
+ __be32		do_nfsd_create(struct svc_rqst *, struct svc_fh *,
+ 				char *name, int len, struct iattr *attrs,
+@@ -76,7 +75,6 @@ __be32		do_nfsd_create(struct svc_rqst *, struct svc_fh *,
+ 				u32 *verifier, bool *truncp, bool *created);
+ __be32		nfsd_commit(struct svc_rqst *rqst, struct svc_fh *fhp,
+ 				u64 offset, u32 count, __be32 *verf);
+-#endif /* CONFIG_NFSD_V3 */
+ #ifdef CONFIG_NFSD_V4
+ __be32		nfsd_getxattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 			    char *name, void **bufp, int *lenp);
 -- 
 2.43.0
 
