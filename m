@@ -1,235 +1,251 @@
-Return-Path: <stable+bounces-52689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE1590CC06
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:41:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F6C990D0F4
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6772AB2404C
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:41:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ECC7287D74
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD66157A61;
-	Tue, 18 Jun 2024 12:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E216A18F2DD;
+	Tue, 18 Jun 2024 13:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bS0NwdpC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEeMI79I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9AD157488;
-	Tue, 18 Jun 2024 12:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFCE15747D;
+	Tue, 18 Jun 2024 13:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714203; cv=none; b=hPWACYR0a6AuABG4iOs0QzA24vzQt+YY8YaSvTcwe2jj29c8muTvO+Eh7fmJ56FIn3GoUWEr+qjmXHyvGglOVa+RPnNps7nfGeQTVh0S1y56ON9fxzq+1kEW3MJ6/T6hM1HXrt7uPTsVP5e1DrDUs57KeXsONqS5HckCwdc/zPY=
+	t=1718715865; cv=none; b=cRl5Yyc9sMe1jce83QLhwuWH9aC7Qb4+P/ESnk/a0PWJ67hzE8kBRuwQ21GomHwRXWZtBP+UpaK2T0UWE5EdYB18PVgEbz9DUm+ajtybNnw+zWX7a3p/KeIlS3iCOu4XLnC6evhJUBtsvCcKUcMmkPu/4srt26Gm22SsOc8rnPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714203; c=relaxed/simple;
-	bh=oyfPLtB9HMRQ+cVwiNdkByR8dPfrTbwqv/7ROVe+dtM=;
+	s=arc-20240116; t=1718715865; c=relaxed/simple;
+	bh=zi7w7ZVu5zlYmZHSaEDjsUIXXdLvdZXKWkoezBYB4EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cdc5cc1jaPd8vdXsWza63/02LHueT6N7PPnguzL5OQ6tv7Sh7uStMZIwAiI/raIP62pj8oZF2KNH+nmv/Hum+29jCoRwF3TJaiupLwOE+abwW/YYyuLsj+kJbCR7+1Sg7XKK742z0JEqzBj4g74mG2m6W9el8rSNlfDF56m8WoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bS0NwdpC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6349FC32786;
-	Tue, 18 Jun 2024 12:36:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714202;
-	bh=oyfPLtB9HMRQ+cVwiNdkByR8dPfrTbwqv/7ROVe+dtM=;
+	 MIME-Version; b=cTCRsyZIGKw8VhDUq4EpvZpE+qmRYxJ4Kzbw5hQngeK7LTsXgaqlbsJ3hjRBb0y+31G6aZZOyoxEfy0Bsvm6b4FwxTeDF/EGvGDyatJE2DrF5dWSVqv4C4Jm/eGB+riETqt8hWlkK8DoHKa31MDX6sso5xpmXs05VByu1J6wrC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEeMI79I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D0AC3277B;
+	Tue, 18 Jun 2024 13:04:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715864;
+	bh=zi7w7ZVu5zlYmZHSaEDjsUIXXdLvdZXKWkoezBYB4EY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bS0NwdpCPwqIbvpdoUDw+6CR2yHA660imAI3vtQXDG1pOYF944vDLozg0uIqoYBSl
-	 S7okgDQexOFIaKkjKOw8x83koSqySsdrE7MBlpZbmdNBDPBa5zgiohm3vU8eNrNH10
-	 OaraJQ9T6lnthANbrsAkUaSb6e20Tou+EHyiEWNienmZ/QXJud1JVtpc9Gv/V8KDLa
-	 hlPyHCyUQUNwuiGS+BLHmkIaBUOVTQbHY//+sof7hjJjjeDs/dA+OhnbyWuBPqAe9T
-	 v+BzIJpLHcv42vPdcjIacoOzvRkDWZudmKg9W/fBy5PjOgnntsqW5g15NU0Y4wl6FD
-	 5DRzylCSr0IxQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 17/44] wifi: cfg80211: fix 6 GHz scan request building
-Date: Tue, 18 Jun 2024 08:34:58 -0400
-Message-ID: <20240618123611.3301370-17-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=WEeMI79I9CGaRq/S4b27ByvVEr/tTL6PbEnv+4jt8q7UK9OKAO3Aov1ENxdL7QpJw
+	 TFiEoD5ll9FYpPQFX7phlGdDvi0/gcT9ukOrq93o3q6RFqg/oOO8EPY70O+THVtexG
+	 iJF1RXtvWpeFu8DNMNlR1XJiT3TADiZlv/kn2hyU=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Vasily Averin <vvs@virtuozzo.com>,
+	"J. Bruce Fields" <bfields@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 445/770] nfs: block notification on fs with its own ->lock
+Date: Tue, 18 Jun 2024 14:34:58 +0200
+Message-ID: <20240618123424.467052942@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit f7a8b10bfd614d7a9a16fbe80d28ead4f063cb00 ]
+------------------
 
-The 6 GHz scan request struct allocated by cfg80211_scan_6ghz() is
-meant to be formed this way:
+From: J. Bruce Fields <bfields@redhat.com>
 
- [base struct][channels][ssids][6ghz_params]
+[ Upstream commit 40595cdc93edf4110c0f0c0b06f8d82008f23929 ]
 
-It is allocated with [channels] as the maximum number of channels
-supported by the driver in the 6 GHz band, since allocation is
-before knowing how many there will be.
+NFSv4.1 supports an optional lock notification feature which notifies
+the client when a lock comes available.  (Normally NFSv4 clients just
+poll for locks if necessary.)  To make that work, we need to request a
+blocking lock from the filesystem.
 
-However, the inner pointers are set incorrectly: initially, the
-6 GHz scan parameters pointer is set:
+We turned that off for NFS in commit f657f8eef3ff ("nfs: don't atempt
+blocking locks on nfs reexports") [sic] because it actually blocks the
+nfsd thread while waiting for the lock.
 
- [base struct][channels]
-                        ^ scan_6ghz_params
+Thanks to Vasily Averin for pointing out that NFS isn't the only
+filesystem with that problem.
 
-and later the SSID pointer is set to the end of the actually
-_used_ channels.
+Any filesystem that leaves ->lock NULL will use posix_lock_file(), which
+does the right thing.  Simplest is just to assume that any filesystem
+that defines its own ->lock is not safe to request a blocking lock from.
 
- [base struct][channels]
-                  ^ ssids
+So, this patch mostly reverts commit f657f8eef3ff ("nfs: don't atempt
+blocking locks on nfs reexports") [sic] and commit b840be2f00c0 ("lockd:
+don't attempt blocking locks on nfs reexports"), and instead uses a
+check of ->lock (Vasily's suggestion) to decide whether to support
+blocking lock notifications on a given filesystem.  Also add a little
+documentation.
 
-If many APs were to be discovered, and many channels used, and
-there were many SSIDs, then the SSIDs could overlap the 6 GHz
-parameters.
+Perhaps someday we could add back an export flag later to allow
+filesystems with "good" ->lock methods to support blocking lock
+notifications.
 
-Additionally, the request->ssids for most of the function points
-to the original request still (given the struct copy) but is used
-normally, which is confusing.
-
-Clear this up, by actually using the allocated space for 6 GHz
-parameters _after_ the SSIDs, and set up the SSIDs initially so
-they are used more clearly. Just like in nl80211.c, set them
-only if there actually are SSIDs though.
-
-Finally, also copy the elements (ie/ie_len) so they're part of
-the same request, not pointing to the old request.
-
-Co-developed-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://msgid.link/20240510113738.4190692ef4ee.I0cb19188be17a8abd029805e3373c0a7777c214c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: Vasily Averin <vvs@virtuozzo.com>
+Signed-off-by: J. Bruce Fields <bfields@redhat.com>
+[ cel: Description rewritten to address checkpatch nits ]
+[ cel: Fixed warning when SUNRPC debugging is disabled ]
+[ cel: Fixed NULL check ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Vasily Averin <vvs@virtuozzo.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/rdev-ops.h |  6 +++++-
- net/wireless/scan.c     | 47 +++++++++++++++++++++++++++--------------
- 2 files changed, 36 insertions(+), 17 deletions(-)
+ fs/lockd/svclock.c          |  6 ++++--
+ fs/nfs/export.c             |  2 +-
+ fs/nfsd/nfs4state.c         | 18 ++++++++++++------
+ include/linux/exportfs.h    |  2 --
+ include/linux/lockd/lockd.h |  9 +++++++--
+ 5 files changed, 24 insertions(+), 13 deletions(-)
 
-diff --git a/net/wireless/rdev-ops.h b/net/wireless/rdev-ops.h
-index 43897a5269b6a..755af47b88b91 100644
---- a/net/wireless/rdev-ops.h
-+++ b/net/wireless/rdev-ops.h
-@@ -2,7 +2,7 @@
- /*
-  * Portions of this file
-  * Copyright(c) 2016-2017 Intel Deutschland GmbH
-- * Copyright (C) 2018, 2021-2023 Intel Corporation
-+ * Copyright (C) 2018, 2021-2024 Intel Corporation
-  */
- #ifndef __CFG80211_RDEV_OPS
- #define __CFG80211_RDEV_OPS
-@@ -458,6 +458,10 @@ static inline int rdev_scan(struct cfg80211_registered_device *rdev,
- 			    struct cfg80211_scan_request *request)
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index e9b85d8fd5fe7..cb3658ab9b7ae 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -470,8 +470,10 @@ nlmsvc_lock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 	    struct nlm_host *host, struct nlm_lock *lock, int wait,
+ 	    struct nlm_cookie *cookie, int reclaim)
  {
- 	int ret;
-+
-+	if (WARN_ON_ONCE(!request->n_ssids && request->ssids))
-+		return -EINVAL;
-+
- 	trace_rdev_scan(&rdev->wiphy, request);
- 	ret = rdev->ops->scan(&rdev->wiphy, request);
- 	trace_rdev_return_int(&rdev->wiphy, ret);
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 9b0dbcd6cf79a..914fad87d3c32 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -812,6 +812,7 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
- 	LIST_HEAD(coloc_ap_list);
- 	bool need_scan_psc = true;
- 	const struct ieee80211_sband_iftype_data *iftd;
-+	size_t size, offs_ssids, offs_6ghz_params, offs_ies;
+-	struct nlm_block	*block = NULL;
++#if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
+ 	struct inode		*inode = nlmsvc_file_inode(file);
++#endif
++	struct nlm_block	*block = NULL;
+ 	int			error;
+ 	int			mode;
+ 	int			async_block = 0;
+@@ -484,7 +486,7 @@ nlmsvc_lock(struct svc_rqst *rqstp, struct nlm_file *file,
+ 				(long long)lock->fl.fl_end,
+ 				wait);
  
- 	rdev_req->scan_6ghz = true;
+-	if (inode->i_sb->s_export_op->flags & EXPORT_OP_SYNC_LOCKS) {
++	if (nlmsvc_file_file(file)->f_op->lock) {
+ 		async_block = wait;
+ 		wait = 0;
+ 	}
+diff --git a/fs/nfs/export.c b/fs/nfs/export.c
+index 40beac65d1355..b347e3ce0cc8e 100644
+--- a/fs/nfs/export.c
++++ b/fs/nfs/export.c
+@@ -184,5 +184,5 @@ const struct export_operations nfs_export_ops = {
+ 	.fetch_iversion = nfs_fetch_iversion,
+ 	.flags = EXPORT_OP_NOWCC|EXPORT_OP_NOSUBTREECHK|
+ 		EXPORT_OP_CLOSE_BEFORE_UNLINK|EXPORT_OP_REMOTE_FS|
+-		EXPORT_OP_NOATOMIC_ATTR|EXPORT_OP_SYNC_LOCKS,
++		EXPORT_OP_NOATOMIC_ATTR,
+ };
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 3b8c5f2283975..36ae55fbfbc67 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -6884,7 +6884,6 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	struct nfsd4_blocked_lock *nbl = NULL;
+ 	struct file_lock *file_lock = NULL;
+ 	struct file_lock *conflock = NULL;
+-	struct super_block *sb;
+ 	__be32 status = 0;
+ 	int lkflg;
+ 	int err;
+@@ -6906,7 +6905,6 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 		dprintk("NFSD: nfsd4_lock: permission denied!\n");
+ 		return status;
+ 	}
+-	sb = cstate->current_fh.fh_dentry->d_sb;
  
-@@ -877,10 +878,15 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
- 		spin_unlock_bh(&rdev->bss_lock);
+ 	if (lock->lk_is_new) {
+ 		if (nfsd4_has_session(cstate))
+@@ -6958,8 +6956,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	fp = lock_stp->st_stid.sc_file;
+ 	switch (lock->lk_type) {
+ 		case NFS4_READW_LT:
+-			if (nfsd4_has_session(cstate) &&
+-			    !(sb->s_export_op->flags & EXPORT_OP_SYNC_LOCKS))
++			if (nfsd4_has_session(cstate))
+ 				fl_flags |= FL_SLEEP;
+ 			fallthrough;
+ 		case NFS4_READ_LT:
+@@ -6971,8 +6968,7 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 			fl_type = F_RDLCK;
+ 			break;
+ 		case NFS4_WRITEW_LT:
+-			if (nfsd4_has_session(cstate) &&
+-			    !(sb->s_export_op->flags & EXPORT_OP_SYNC_LOCKS))
++			if (nfsd4_has_session(cstate))
+ 				fl_flags |= FL_SLEEP;
+ 			fallthrough;
+ 		case NFS4_WRITE_LT:
+@@ -6993,6 +6989,16 @@ nfsd4_lock(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 		goto out;
  	}
  
--	request = kzalloc(struct_size(request, channels, n_channels) +
--			  sizeof(*request->scan_6ghz_params) * count +
--			  sizeof(*request->ssids) * rdev_req->n_ssids,
--			  GFP_KERNEL);
-+	size = struct_size(request, channels, n_channels);
-+	offs_ssids = size;
-+	size += sizeof(*request->ssids) * rdev_req->n_ssids;
-+	offs_6ghz_params = size;
-+	size += sizeof(*request->scan_6ghz_params) * count;
-+	offs_ies = size;
-+	size += rdev_req->ie_len;
++	/*
++	 * Most filesystems with their own ->lock operations will block
++	 * the nfsd thread waiting to acquire the lock.  That leads to
++	 * deadlocks (we don't want every nfsd thread tied up waiting
++	 * for file locks), so don't attempt blocking lock notifications
++	 * on those filesystems:
++	 */
++	if (nf->nf_file->f_op->lock)
++		fl_flags &= ~FL_SLEEP;
 +
-+	request = kzalloc(size, GFP_KERNEL);
- 	if (!request) {
- 		cfg80211_free_coloc_ap_list(&coloc_ap_list);
- 		return -ENOMEM;
-@@ -888,8 +894,26 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
+ 	nbl = find_or_allocate_block(lock_sop, &fp->fi_fhandle, nn);
+ 	if (!nbl) {
+ 		dprintk("NFSD: %s: unable to allocate block!\n", __func__);
+diff --git a/include/linux/exportfs.h b/include/linux/exportfs.h
+index 3260fe7148462..fe848901fcc3a 100644
+--- a/include/linux/exportfs.h
++++ b/include/linux/exportfs.h
+@@ -221,8 +221,6 @@ struct export_operations {
+ #define EXPORT_OP_NOATOMIC_ATTR		(0x10) /* Filesystem cannot supply
+ 						  atomic attribute updates
+ 						*/
+-#define EXPORT_OP_SYNC_LOCKS		(0x20) /* Filesystem can't do
+-						  asychronous blocking locks */
+ 	unsigned long	flags;
+ };
  
- 	*request = *rdev_req;
- 	request->n_channels = 0;
--	request->scan_6ghz_params =
--		(void *)&request->channels[n_channels];
-+	request->n_6ghz_params = 0;
-+	if (rdev_req->n_ssids) {
-+		/*
-+		 * Add the ssids from the parent scan request to the new
-+		 * scan request, so the driver would be able to use them
-+		 * in its probe requests to discover hidden APs on PSC
-+		 * channels.
-+		 */
-+		request->ssids = (void *)request + offs_ssids;
-+		memcpy(request->ssids, rdev_req->ssids,
-+		       sizeof(*request->ssids) * request->n_ssids);
-+	}
-+	request->scan_6ghz_params = (void *)request + offs_6ghz_params;
+diff --git a/include/linux/lockd/lockd.h b/include/linux/lockd/lockd.h
+index c4ae6506b8b36..fcef192e5e45e 100644
+--- a/include/linux/lockd/lockd.h
++++ b/include/linux/lockd/lockd.h
+@@ -303,10 +303,15 @@ void		  nlmsvc_invalidate_all(void);
+ int           nlmsvc_unlock_all_by_sb(struct super_block *sb);
+ int           nlmsvc_unlock_all_by_ip(struct sockaddr *server_addr);
+ 
++static inline struct file *nlmsvc_file_file(struct nlm_file *file)
++{
++	return file->f_file[O_RDONLY] ?
++	       file->f_file[O_RDONLY] : file->f_file[O_WRONLY];
++}
 +
-+	if (rdev_req->ie_len) {
-+		void *ie = (void *)request + offs_ies;
-+
-+		memcpy(ie, rdev_req->ie, rdev_req->ie_len);
-+		request->ie = ie;
-+	}
+ static inline struct inode *nlmsvc_file_inode(struct nlm_file *file)
+ {
+-	return locks_inode(file->f_file[O_RDONLY] ?
+-			   file->f_file[O_RDONLY] : file->f_file[O_WRONLY]);
++	return locks_inode(nlmsvc_file_file(file));
+ }
  
- 	/*
- 	 * PSC channels should not be scanned in case of direct scan with 1 SSID
-@@ -978,17 +1002,8 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
- 
- 	if (request->n_channels) {
- 		struct cfg80211_scan_request *old = rdev->int_scan_req;
--		rdev->int_scan_req = request;
- 
--		/*
--		 * Add the ssids from the parent scan request to the new scan
--		 * request, so the driver would be able to use them in its
--		 * probe requests to discover hidden APs on PSC channels.
--		 */
--		request->ssids = (void *)&request->channels[request->n_channels];
--		request->n_ssids = rdev_req->n_ssids;
--		memcpy(request->ssids, rdev_req->ssids, sizeof(*request->ssids) *
--		       request->n_ssids);
-+		rdev->int_scan_req = request;
- 
- 		/*
- 		 * If this scan follows a previous scan, save the scan start
+ static inline int __nlm_privileged_request4(const struct sockaddr *sap)
 -- 
 2.43.0
+
+
 
 
