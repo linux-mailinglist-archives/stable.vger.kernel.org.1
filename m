@@ -1,120 +1,121 @@
-Return-Path: <stable+bounces-53572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13C490D26A
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:50:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 937CA90CD2A
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:07:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AC4A2858B5
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E34F1F22EF0
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AEA1ACE75;
-	Tue, 18 Jun 2024 13:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6F61ABCA1;
+	Tue, 18 Jun 2024 12:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBEn6HDp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mGL7EvW/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397B215A84B;
-	Tue, 18 Jun 2024 13:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784281AB8ED;
+	Tue, 18 Jun 2024 12:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716727; cv=none; b=qN/tkTjhH3fIdLSgIf2gYxUzWWoNRGHPaJuBApTKMWkDFnXLN68tEhKdr+y+3j9jTSzHmpoCMKQ/U7zPREaPhIIWijjG36ihTRvza7/ZjSmbimphVOeJrt5P85zydy8hauV9qZ/jEXHheD2zIE1Cy7cmIM4WwuJrg2C/9Cxl2vA=
+	t=1718714479; cv=none; b=qPLA4cPW3RawIKNUvWO1GjX1efMAXqbyjabqL5GwFFiR+fm5ff20Ph5Izi/rHfQb7LxQQomaEurXhbLqz51J6lgeImu8qKQULLYE6JGun4U+/k4qFIGXBMeW7ctfeSHiG8i47TH4EmFP7l5n5t21PGFY23VePqNXtBCGA7vhNW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716727; c=relaxed/simple;
-	bh=hiU710JXJBqvt4Ojqyw9HOj6DQ1T1fQIN+WgkyeoXgU=;
+	s=arc-20240116; t=1718714479; c=relaxed/simple;
+	bh=vYfswvJzrtsRWRx3NsAYResCsxzDI1JtjJfaKrt5xvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQkthM/3DjL4HuXwkm5sq8XTOaRAFVnUhRHci2Q3kXeRW/pr2SnbzSlI7xzlxrrOkUKnjEopDLNMfM1PAwXvURWxt5AQZ6+Kwqcw6h9Od++K8tcAEiiCOTE6u0Rz9Zxvvvix8C1Lk9A0fHb588sZedYvgkBfuAJdaG/4+VLPX6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBEn6HDp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F8EC3277B;
-	Tue, 18 Jun 2024 13:18:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716727;
-	bh=hiU710JXJBqvt4Ojqyw9HOj6DQ1T1fQIN+WgkyeoXgU=;
+	 MIME-Version; b=Bk90vop7X3GZK7cBG2tjm5DPUwU6cPpCVYG3A6CDa+QC+klxMVLBLuKYTAg1dC7YC4ZPyuoK5j7V7qaUNXpaUJ1bvQJSr6W1lLxPojxqi6VSqAfyB3DalJmKYK+D8Ho3qt/ofL0Eg5ztJbJjHiV9kUZkarmwAG+B8/XpFFbZq/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGL7EvW/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F724C4AF1D;
+	Tue, 18 Jun 2024 12:41:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714479;
+	bh=vYfswvJzrtsRWRx3NsAYResCsxzDI1JtjJfaKrt5xvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBEn6HDpUT1YcXY8s9It2WiwvNlQixNMlx2yoVTusTYarYEkSsKowAdmyZH4Ald6m
-	 5SLvS6XcWdE/IxtqAx/0I0vjD1FQL2D/nEQWpbxvu2Dqi3pjX15N6IDYaG6xlSIsg7
-	 sTVjAOZfjDaSqSwq2lulU5fI4ErnmPVpo6VxI+HI=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 742/770] NFSD: Avoid calling OPDESC() with ops->opnum == OP_ILLEGAL
-Date: Tue, 18 Jun 2024 14:39:55 +0200
-Message-ID: <20240618123435.909733649@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=mGL7EvW/cXy+gblvvE+TjfTTiGuw/c4aHMbjRNgAp9D78giiy4rs1t6DhWGpjsDo9
+	 eyAaNLSTG8f7vO6uyYebUcJHtTYwGcBW5zkqcKlLeQBaoIzfvHMJBnjFnD0DzFi6fL
+	 jFMRf+lG/Az39uiepP3BxZpSLpto9+yw/Fc0HMzezY3cXyHC4A8IRErEwqItsXRLxA
+	 jmXqmCQg8vOcjZy2bxevxsXHFnKPyhJLnMmmHFzlymO1GIlHiOh9vUg3CvORCl29g1
+	 xZF9fJl+g1dD4Q7Js1zEbpOYNsIdpw3MPzTaC5lxaCHQbyz7ebbP61KpaORHzLCejQ
+	 PcvUzSqYu6uGA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Louis Dalibard <ontake@ontake.dev>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 29/29] HID: Ignore battery for ELAN touchscreens 2F2C and 4116
+Date: Tue, 18 Jun 2024 08:39:55 -0400
+Message-ID: <20240618124018.3303162-29-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
+References: <20240618124018.3303162-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Louis Dalibard <ontake@ontake.dev>
 
-------------------
+[ Upstream commit a3a5a37efba11b7cf1a86abe7bccfbcdb521764e ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+At least ASUS Zenbook 14 (2023) and ASUS Zenbook 14 Pro (2023) are affected.
 
-[ Upstream commit 804d8e0a6e54427268790472781e03bc243f4ee3 ]
+The touchscreen reports a battery status of 0% and jumps to 1% when a
+stylus is used.
 
-OPDESC() simply indexes into nfsd4_ops[] by the op's operation
-number, without range checking that value. It assumes callers are
-careful to avoid calling it with an out-of-bounds opnum value.
+The device ID was added and the battery ignore quirk was enabled for it.
 
-nfsd4_decode_compound() is not so careful, and can invoke OPDESC()
-with opnum set to OP_ILLEGAL, which is 10044 -- well beyond the end
-of nfsd4_ops[].
-
-Reported-by: Jeff Layton <jlayton@kernel.org>
-Fixes: f4f9ef4a1b0a ("nfsd4: opdesc will be useful outside nfs4proc.c")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[jkosina@suse.com: reformatted changelog a bit]
+Signed-off-by: Louis Dalibard <ontake@ontake.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hid/hid-ids.h   | 2 ++
+ drivers/hid/hid-input.c | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index d0b9fbf189ac6..e1f2f26ba93f2 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -2476,10 +2476,12 @@ nfsd4_decode_compound(struct nfsd4_compoundargs *argp)
- 	for (i = 0; i < argp->opcnt; i++) {
- 		op = &argp->ops[i];
- 		op->replay = NULL;
-+		op->opdesc = NULL;
- 
- 		if (xdr_stream_decode_u32(argp->xdr, &op->opnum) < 0)
- 			return false;
- 		if (nfsd4_opnum_in_range(argp, op)) {
-+			op->opdesc = OPDESC(op);
- 			op->status = nfsd4_dec_ops[op->opnum](argp, &op->u);
- 			if (op->status != nfs_ok)
- 				trace_nfsd_compound_decode_err(argp->rqstp,
-@@ -2490,7 +2492,7 @@ nfsd4_decode_compound(struct nfsd4_compoundargs *argp)
- 			op->opnum = OP_ILLEGAL;
- 			op->status = nfserr_op_illegal;
- 		}
--		op->opdesc = OPDESC(op);
-+
- 		/*
- 		 * We'll try to cache the result in the DRC if any one
- 		 * op in the compound wants to be cached:
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 405d88b08908d..4b8c1d18c21e0 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -417,6 +417,8 @@
+ #define I2C_DEVICE_ID_HP_SPECTRE_X360_13_AW0020NG  0x29DF
+ #define I2C_DEVICE_ID_ASUS_TP420IA_TOUCHSCREEN 0x2BC8
+ #define I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN 0x2C82
++#define I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN 0x2F2C
++#define I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN 0x4116
+ #define USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN	0x2544
+ #define USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN	0x2706
+ #define I2C_DEVICE_ID_SURFACE_GO_TOUCHSCREEN	0x261A
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index 4ba5df3c1e039..b0091819fd58a 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -374,6 +374,10 @@ static const struct hid_device_id hid_battery_quirks[] = {
+ 	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN),
+ 	  HID_BATTERY_QUIRK_IGNORE },
++	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN),
++	  HID_BATTERY_QUIRK_IGNORE },
++	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN),
++	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN),
+ 	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN),
 -- 
 2.43.0
-
-
 
 
