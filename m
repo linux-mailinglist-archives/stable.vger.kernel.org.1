@@ -1,121 +1,195 @@
-Return-Path: <stable+bounces-52751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A7990CCCE
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:57:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877A890D1E0
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B0331C230E0
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:57:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CE441F245BF
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F54319E80B;
-	Tue, 18 Jun 2024 12:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E371A4F0B;
+	Tue, 18 Jun 2024 13:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mfywaxyO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upw2qFqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFB019E7C6;
-	Tue, 18 Jun 2024 12:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724EA13C9CF;
+	Tue, 18 Jun 2024 13:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714394; cv=none; b=lfhb75ndpKdyKX9jSiMHx0sn96MjTvXi27TKpVjvOW4IqhKyiLkdSxNEpIhdvqBJ/7jnTTo1YaEVF42AJLBazRtw3J9aKZK69TzvQU1G5sDcCfiTReIlQrnY9RFGHI+1E+SFAJBTlg4b0ShMCtEw0BLXh8qVvtP6MnBKEXbKwoo=
+	t=1718716461; cv=none; b=uJecLQngL9T7bHq6oX0TYamyZVtw2YwFeNl9/jTbNku6hLIz5IhkW2blF1htLnMDrPLjp91J/wiGRGlojC3FZVnp7vCLZqLVtI3EWLWg79VykcD+DBd0o8VaDLPFwz0z1MNenKP55lxbOlTI78PsNibN8WDuEoUYFKlUA+4c5r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714394; c=relaxed/simple;
-	bh=pYh4gCCVzgUCjIgAwrsYEXm3gW9eBwn7MWaFe1upkUs=;
+	s=arc-20240116; t=1718716461; c=relaxed/simple;
+	bh=mHniQHz87xq4EYrFSX7D6Lr+FUs8LMpA0lg0U1GF9aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m26ry9t9oGDYBWZY55iJbloe0WgKMiLQoXT9rYKVli09FlBntyaFBtcwGGf3e0ZPMAP4QTw+kbaSEFZch4kxpw3VU/LhC4Lcu9SI5LCxR5sDN/1K3NUIjY1qs+iqKy/e5Euxu78E2wRJdn+x1+hZZOV+PHsZPKiF1OlwLqMIc5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mfywaxyO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC27FC3277B;
-	Tue, 18 Jun 2024 12:39:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714393;
-	bh=pYh4gCCVzgUCjIgAwrsYEXm3gW9eBwn7MWaFe1upkUs=;
+	 MIME-Version; b=BEfwL7x+pl69q+O4HGGJFGQaDDrZN1QB81G4KpTS+0n+pqQ/j6TmJ9VJomeXvLd2pHfu4Yxn32Q3c8b2pz05kfRrSbPC2/SVCv7Tvz9coL7DPWfVBi5+QitKuCzNjsA8AnFU7OdY0VR0Q1+NCPWjNQiJQh+df3LwuxIjjgjyx+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upw2qFqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF93C3277B;
+	Tue, 18 Jun 2024 13:14:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716461;
+	bh=mHniQHz87xq4EYrFSX7D6Lr+FUs8LMpA0lg0U1GF9aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mfywaxyOuf1and4eGzxFoJtrYHw4lw/D6cQZ3iOpFxHW39E21zwvgP+MbMsCinPAB
-	 FrAitRHLOTHFmB0YM20fsvijlZuseJu71VGajU2yEjgoeQ9YxA2O+HdT2hk9+k2tko
-	 6+hzJN6pz4XCAOhHse86edXLcyTIGYVz6i9q3xcEkVq3bAC6D/ArxXbFa/PQRQDpS7
-	 0Y97Kok9oFCm5kxsFEzfd5FJyJt49MqmFy3V+cyrPdXISBjAO4k4bQ228aCg5M0fVE
-	 Qx5s50ZfBFjLpDNsRzv9FMgLN6dhZakBvwP5biOzg6wBL5TwcltfT+mAwdXtjy9p+q
-	 CCztbjY0jhCrg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Louis Dalibard <ontake@ontake.dev>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 35/35] HID: Ignore battery for ELAN touchscreens 2F2C and 4116
-Date: Tue, 18 Jun 2024 08:37:55 -0400
-Message-ID: <20240618123831.3302346-35-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
-References: <20240618123831.3302346-1-sashal@kernel.org>
+	b=upw2qFqKhuBDB8idkFzXxXFhRqpaB7p0TeaAT0MbcFidO8RW5zaNQlt3VHaYrUcVn
+	 9G6Z0VoKcsrymT4SNV4NdHtb/2/h0wyoYybIqSGG2aUqgMdQc6SfLFST2RV6KI9eDT
+	 p51MqSkk+xlE6V83gKSuhjWFAGsdX3xatK5Gtp1E=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jan Kasiak <j.kasiak@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 623/770] lockd: detect and reject lock arguments that overflow
+Date: Tue, 18 Jun 2024 14:37:56 +0200
+Message-ID: <20240618123431.333340237@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-From: Louis Dalibard <ontake@ontake.dev>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit a3a5a37efba11b7cf1a86abe7bccfbcdb521764e ]
+------------------
 
-At least ASUS Zenbook 14 (2023) and ASUS Zenbook 14 Pro (2023) are affected.
+From: Jeff Layton <jlayton@kernel.org>
 
-The touchscreen reports a battery status of 0% and jumps to 1% when a
-stylus is used.
+[ Upstream commit 6930bcbfb6ceda63e298c6af6d733ecdf6bd4cde ]
 
-The device ID was added and the battery ignore quirk was enabled for it.
+lockd doesn't currently vet the start and length in nlm4 requests like
+it should, and can end up generating lock requests with arguments that
+overflow when passed to the filesystem.
 
-[jkosina@suse.com: reformatted changelog a bit]
-Signed-off-by: Louis Dalibard <ontake@ontake.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+The NLM4 protocol uses unsigned 64-bit arguments for both start and
+length, whereas struct file_lock tracks the start and end as loff_t
+values. By the time we get around to calling nlm4svc_retrieve_args,
+we've lost the information that would allow us to determine if there was
+an overflow.
+
+Start tracking the actual start and len for NLM4 requests in the
+nlm_lock. In nlm4svc_retrieve_args, vet these values to ensure they
+won't cause an overflow, and return NLM4_FBIG if they do.
+
+Link: https://bugzilla.linux-nfs.org/show_bug.cgi?id=392
+Reported-by: Jan Kasiak <j.kasiak@gmail.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: <stable@vger.kernel.org> # 5.14+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h   | 2 ++
- drivers/hid/hid-input.c | 4 ++++
- 2 files changed, 6 insertions(+)
+ fs/lockd/svc4proc.c       |  8 ++++++++
+ fs/lockd/xdr4.c           | 19 ++-----------------
+ include/linux/lockd/xdr.h |  2 ++
+ 3 files changed, 12 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 0a4daff4846ff..cee09538c9aa2 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -418,6 +418,8 @@
- #define I2C_DEVICE_ID_HP_SPECTRE_X360_13_AW0020NG  0x29DF
- #define I2C_DEVICE_ID_ASUS_TP420IA_TOUCHSCREEN 0x2BC8
- #define I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN 0x2C82
-+#define I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN 0x2F2C
-+#define I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN 0x4116
- #define USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN	0x2544
- #define USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN	0x2706
- #define I2C_DEVICE_ID_SURFACE_GO_TOUCHSCREEN	0x261A
-diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
-index 8bb16e9b94aa5..c9094a4f281e9 100644
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -377,6 +377,10 @@ static const struct hid_device_id hid_battery_quirks[] = {
- 	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_GV301RA_TOUCHSCREEN),
- 	  HID_BATTERY_QUIRK_IGNORE },
-+	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX3402_TOUCHSCREEN),
-+	  HID_BATTERY_QUIRK_IGNORE },
-+	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_ASUS_UX6404_TOUCHSCREEN),
-+	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550_TOUCHSCREEN),
- 	  HID_BATTERY_QUIRK_IGNORE },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, USB_DEVICE_ID_ASUS_UX550VE_TOUCHSCREEN),
+diff --git a/fs/lockd/svc4proc.c b/fs/lockd/svc4proc.c
+index 4f247ab8be611..bf274f23969b3 100644
+--- a/fs/lockd/svc4proc.c
++++ b/fs/lockd/svc4proc.c
+@@ -32,6 +32,10 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
+ 	if (!nlmsvc_ops)
+ 		return nlm_lck_denied_nolocks;
+ 
++	if (lock->lock_start > OFFSET_MAX ||
++	    (lock->lock_len && ((lock->lock_len - 1) > (OFFSET_MAX - lock->lock_start))))
++		return nlm4_fbig;
++
+ 	/* Obtain host handle */
+ 	if (!(host = nlmsvc_lookup_host(rqstp, lock->caller, lock->len))
+ 	 || (argp->monitor && nsm_monitor(host) < 0))
+@@ -50,6 +54,10 @@ nlm4svc_retrieve_args(struct svc_rqst *rqstp, struct nlm_args *argp,
+ 		/* Set up the missing parts of the file_lock structure */
+ 		lock->fl.fl_file  = file->f_file[mode];
+ 		lock->fl.fl_pid = current->tgid;
++		lock->fl.fl_start = (loff_t)lock->lock_start;
++		lock->fl.fl_end = lock->lock_len ?
++				   (loff_t)(lock->lock_start + lock->lock_len - 1) :
++				   OFFSET_MAX;
+ 		lock->fl.fl_lmops = &nlmsvc_lock_operations;
+ 		nlmsvc_locks_init_private(&lock->fl, host, (pid_t)lock->svid);
+ 		if (!lock->fl.fl_owner) {
+diff --git a/fs/lockd/xdr4.c b/fs/lockd/xdr4.c
+index 856267c0864bd..712fdfeb8ef06 100644
+--- a/fs/lockd/xdr4.c
++++ b/fs/lockd/xdr4.c
+@@ -20,13 +20,6 @@
+ 
+ #include "svcxdr.h"
+ 
+-static inline loff_t
+-s64_to_loff_t(__s64 offset)
+-{
+-	return (loff_t)offset;
+-}
+-
+-
+ static inline s64
+ loff_t_to_s64(loff_t offset)
+ {
+@@ -70,8 +63,6 @@ static bool
+ svcxdr_decode_lock(struct xdr_stream *xdr, struct nlm_lock *lock)
+ {
+ 	struct file_lock *fl = &lock->fl;
+-	u64 len, start;
+-	s64 end;
+ 
+ 	if (!svcxdr_decode_string(xdr, &lock->caller, &lock->len))
+ 		return false;
+@@ -81,20 +72,14 @@ svcxdr_decode_lock(struct xdr_stream *xdr, struct nlm_lock *lock)
+ 		return false;
+ 	if (xdr_stream_decode_u32(xdr, &lock->svid) < 0)
+ 		return false;
+-	if (xdr_stream_decode_u64(xdr, &start) < 0)
++	if (xdr_stream_decode_u64(xdr, &lock->lock_start) < 0)
+ 		return false;
+-	if (xdr_stream_decode_u64(xdr, &len) < 0)
++	if (xdr_stream_decode_u64(xdr, &lock->lock_len) < 0)
+ 		return false;
+ 
+ 	locks_init_lock(fl);
+ 	fl->fl_flags = FL_POSIX;
+ 	fl->fl_type  = F_RDLCK;
+-	end = start + len - 1;
+-	fl->fl_start = s64_to_loff_t(start);
+-	if (len == 0 || end < 0)
+-		fl->fl_end = OFFSET_MAX;
+-	else
+-		fl->fl_end = s64_to_loff_t(end);
+ 
+ 	return true;
+ }
+diff --git a/include/linux/lockd/xdr.h b/include/linux/lockd/xdr.h
+index 398f70093cd35..67e4a2c5500bd 100644
+--- a/include/linux/lockd/xdr.h
++++ b/include/linux/lockd/xdr.h
+@@ -41,6 +41,8 @@ struct nlm_lock {
+ 	struct nfs_fh		fh;
+ 	struct xdr_netobj	oh;
+ 	u32			svid;
++	u64			lock_start;
++	u64			lock_len;
+ 	struct file_lock	fl;
+ };
+ 
 -- 
 2.43.0
+
+
 
 
