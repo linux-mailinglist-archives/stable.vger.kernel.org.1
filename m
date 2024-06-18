@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0DC90D2AA
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:52:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1774190D054
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 798AEB22156
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:32:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 178E71C23C6D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3283F16F0DD;
-	Tue, 18 Jun 2024 12:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8A816FF26;
+	Tue, 18 Jun 2024 12:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gf9BCsZY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHrvAysX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E30C615532E;
-	Tue, 18 Jun 2024 12:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDC215532E;
+	Tue, 18 Jun 2024 12:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715423; cv=none; b=Z++/3rZYEEQi/QXavKOKtOx0EerFJ7Al/BocG2aObo/IWB4KDQ9DHxEg3kcx4fVFhn1qaOut4HWejy8gsMmb1M2UDgD+Q3kVz9K6d494z2VYfG8iRrVEzTCywRA3J7Eu8Wb15zuHoykt103YOoT6FF8YIZFfcBp/euefRLvaX9w=
+	t=1718715428; cv=none; b=mXUWvMsaaYGznYMiiQ77LeEDvyg5595DX5ZwlWkhnJRzBApeqHbipIvpf6JjU4O4tWd043gyXD1q+Gc+vDBlRSQOLFG0+D1nRx1H8BcuR3GGQdGEqVwEqipwGRDRl97FDnO++OtHWFApFaV0GHVqvjzBo+TOcyY2jpRtRkcTFLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715423; c=relaxed/simple;
-	bh=Qiv1+vD0rgRDzWRDZkKjEbQc4Y5K13H/ljQfsgbIohw=;
+	s=arc-20240116; t=1718715428; c=relaxed/simple;
+	bh=T/D/iM9bpa6c8SUUrHuhgSyG8bBFs8xGmFGd7fRzEA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFky1/UUf9izEE6r7ohoevfHQzaOvpixXl95u49Wn0UvtERzAkKuyytPDLqYjJmC/QqLL1zHMb99of8paFdU5Nb03XBe36mNV7S5/tDlQUeCEjqMp4RyxLDHImz4LMVD5XnQU6igWC9ktsS/0MOsLBMpiYJUGsAZr30GgJ3KAQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gf9BCsZY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EC6C3277B;
-	Tue, 18 Jun 2024 12:57:02 +0000 (UTC)
+	 MIME-Version; b=SQDmGCpkD/YsF+GrRRGo9sUyu1ff4zeCfH9mIKS2h70Ze+Ej+p6vA46q/qlGVrbgRZrGrhH7XUl48LkiQMGz/XqAnFLo0i3HZhReCkO2l+vGXoY6eN3W7R5TnR0H2nUUZvteG3AXegl2UMHXJvHIh0fDMJlE8YdPNNXClQOlfKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHrvAysX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D6DC3277B;
+	Tue, 18 Jun 2024 12:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715422;
-	bh=Qiv1+vD0rgRDzWRDZkKjEbQc4Y5K13H/ljQfsgbIohw=;
+	s=korg; t=1718715428;
+	bh=T/D/iM9bpa6c8SUUrHuhgSyG8bBFs8xGmFGd7fRzEA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gf9BCsZY5/mn7r5tiey505XxnOjOb0Hl2o/YL2NS/JCy0l1acTB5/rkS7kMj9rcl2
-	 s6dMdDJDc7uV1dKjlziQJE/Yr/WcQTHgJNCX/HX14rziKlHSpFIukFBCmvAQIjkRD3
-	 G46oe5dL4PRgkoBBFCNaq9Jgz2UZ3n6tnGMoMqoM=
+	b=wHrvAysXR7eq7vzE6J8QGNOsA4xDZdObuIHSWe4eTo+m5mibcd0iSo+FwJX9vnlil
+	 rjrYDiHvD7IMbwh5dDDQTWzf+bVjKD4A74tnbwpPinOAY/ixCTZgoMeSGTVngPGefE
+	 Gna8qtDpKssBpMG2nhmjkvfFbHkhi7JB1r4/m61g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	"J. Bruce Fields" <bfields@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 303/770] lockd: Update the NLMv1 TEST arguments decoder to use struct xdr_stream
-Date: Tue, 18 Jun 2024 14:32:36 +0200
-Message-ID: <20240618123418.959190773@linuxfoundation.org>
+Subject: [PATCH 5.10 304/770] lockd: Update the NLMv1 LOCK arguments decoder to use struct xdr_stream
+Date: Tue, 18 Jun 2024 14:32:37 +0200
+Message-ID: <20240618123418.997681746@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,96 +68,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 2fd0c67aabcf0f8821450b00ee511faa0b7761bf ]
+[ Upstream commit c1adb8c672ca2b085c400695ef064547d77eda29 ]
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: J. Bruce Fields <bfields@redhat.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/xdr.c | 72 +++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 66 insertions(+), 6 deletions(-)
+ fs/lockd/xdr.c | 41 +++++++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 18 deletions(-)
 
 diff --git a/fs/lockd/xdr.c b/fs/lockd/xdr.c
-index 8be42a23679e9..56982edd47667 100644
+index 56982edd47667..8a9f02e45df2d 100644
 --- a/fs/lockd/xdr.c
 +++ b/fs/lockd/xdr.c
-@@ -98,6 +98,33 @@ nlm_decode_fh(__be32 *p, struct nfs_fh *f)
- 	return p + XDR_QUADLEN(NFS2_FHSIZE);
+@@ -267,35 +267,40 @@ nlmsvc_decode_testargs(struct svc_rqst *rqstp, __be32 *p)
+ 	return 1;
  }
  
-+/*
-+ * NLM file handles are defined by specification to be a variable-length
-+ * XDR opaque no longer than 1024 bytes. However, this implementation
-+ * constrains their length to exactly the length of an NFSv2 file
-+ * handle.
-+ */
-+static bool
-+svcxdr_decode_fhandle(struct xdr_stream *xdr, struct nfs_fh *fh)
-+{
-+	__be32 *p;
-+	u32 len;
-+
-+	if (xdr_stream_decode_u32(xdr, &len) < 0)
-+		return false;
-+	if (len != NFS2_FHSIZE)
-+		return false;
-+
-+	p = xdr_inline_decode(xdr, len);
-+	if (!p)
-+		return false;
-+	fh->size = NFS2_FHSIZE;
-+	memcpy(fh->data, p, len);
-+	memset(fh->data + NFS2_FHSIZE, 0, sizeof(fh->data) - NFS2_FHSIZE);
-+
-+	return true;
-+}
-+
- /*
-  * Encode and decode owner handle
-  */
-@@ -143,6 +170,38 @@ nlm_decode_lock(__be32 *p, struct nlm_lock *lock)
- 	return p;
- }
- 
-+static bool
-+svcxdr_decode_lock(struct xdr_stream *xdr, struct nlm_lock *lock)
-+{
-+	struct file_lock *fl = &lock->fl;
-+	s32 start, len, end;
-+
-+	if (!svcxdr_decode_string(xdr, &lock->caller, &lock->len))
-+		return false;
-+	if (!svcxdr_decode_fhandle(xdr, &lock->fh))
-+		return false;
-+	if (!svcxdr_decode_owner(xdr, &lock->oh))
-+		return false;
-+	if (xdr_stream_decode_u32(xdr, &lock->svid) < 0)
-+		return false;
-+	if (xdr_stream_decode_u32(xdr, &start) < 0)
-+		return false;
-+	if (xdr_stream_decode_u32(xdr, &len) < 0)
-+		return false;
-+
-+	locks_init_lock(fl);
-+	fl->fl_flags = FL_POSIX;
-+	fl->fl_type  = F_RDLCK;
-+	end = start + len - 1;
-+	fl->fl_start = s32_to_loff_t(start);
-+	if (len == 0 || end < 0)
-+		fl->fl_end = OFFSET_MAX;
-+	else
-+		fl->fl_end = s32_to_loff_t(end);
-+
-+	return true;
-+}
-+
- /*
-  * Encode result of a TEST/TEST_MSG call
-  */
-@@ -192,19 +251,20 @@ nlmsvc_decode_void(struct svc_rqst *rqstp, __be32 *p)
+-int
+-nlmsvc_encode_testres(struct svc_rqst *rqstp, __be32 *p)
+-{
+-	struct nlm_res *resp = rqstp->rq_resp;
+-
+-	if (!(p = nlm_encode_testres(p, resp)))
+-		return 0;
+-	return xdr_ressize_check(rqstp, p);
+-}
+-
  int
- nlmsvc_decode_testargs(struct svc_rqst *rqstp, __be32 *p)
+ nlmsvc_decode_lockargs(struct svc_rqst *rqstp, __be32 *p)
  {
 +	struct xdr_stream *xdr = &rqstp->rq_arg_stream;
  	struct nlm_args *argp = rqstp->rq_argp;
@@ -167,18 +107,37 @@ index 8be42a23679e9..56982edd47667 100644
 -	if (!(p = nlm_decode_cookie(p, &argp->cookie)))
 +	if (!svcxdr_decode_cookie(xdr, &argp->cookie))
  		return 0;
--
--	exclusive = ntohl(*p++);
+-	argp->block  = ntohl(*p++);
+-	exclusive    = ntohl(*p++);
 -	if (!(p = nlm_decode_lock(p, &argp->lock)))
++	if (xdr_stream_decode_bool(xdr, &argp->block) < 0)
++		return 0;
 +	if (xdr_stream_decode_bool(xdr, &exclusive) < 0)
 +		return 0;
 +	if (!svcxdr_decode_lock(xdr, &argp->lock))
  		return 0;
  	if (exclusive)
  		argp->lock.fl.fl_type = F_WRLCK;
+-	argp->reclaim = ntohl(*p++);
+-	argp->state   = ntohl(*p++);
++	if (xdr_stream_decode_bool(xdr, &argp->reclaim) < 0)
++		return 0;
++	if (xdr_stream_decode_u32(xdr, &argp->state) < 0)
++		return 0;
+ 	argp->monitor = 1;		/* monitor client by default */
  
 -	return xdr_argsize_check(rqstp, p);
 +	return 1;
++}
++
++int
++nlmsvc_encode_testres(struct svc_rqst *rqstp, __be32 *p)
++{
++	struct nlm_res *resp = rqstp->rq_resp;
++
++	if (!(p = nlm_encode_testres(p, resp)))
++		return 0;
++	return xdr_ressize_check(rqstp, p);
  }
  
  int
