@@ -1,115 +1,120 @@
-Return-Path: <stable+bounces-52657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0684090C971
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:30:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5E890C984
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02EE81C233BC
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 11:30:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5994B1F22630
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 11:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B5B13C3F4;
-	Tue, 18 Jun 2024 10:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F3C14B968;
+	Tue, 18 Jun 2024 10:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="vcKuoDVj"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="Y1IYSpUA"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30BB1B966;
-	Tue, 18 Jun 2024 10:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABE814B958;
+	Tue, 18 Jun 2024 10:33:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718706623; cv=none; b=Rj3BidP1B6L5oKLYzv1PV/uy0qsIRL7P0cgrXr50I3OXo27bbCtpCbqMDmDadg7RL5huEKkdBU18G7RRgQD/z5T/uPIvBzhpplp3ZGW41zMYL+2PpWLfiGX8C8w+Upc+hmokfxdmVytBe1UjI1uNkshLmYn2kKXYBFj/LOoMKJM=
+	t=1718706822; cv=none; b=Gn3RTcXXlF2vBA4Sx6hwTYT0tB5fo+vlDIhr2q8S++7hmlZf4IOVYZhJ28mCJZwN2XtH+V0R7Uc/RlByxSfBSlDahyp/QltfaGE39KRB7PX38lRB1cBmj705KGz1piPE3MSXbEGtGhuqFWYyNlsri0Q3xManForkpsD9ynGuLJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718706623; c=relaxed/simple;
-	bh=SabcJjudxXLkszJUyYOi0DlrMsxTRRvN6zmEYuRvPDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q0cO/nO89Zf3/rlO3kxnwS87b8uOfzumdOMuPOt+bOM7IuSYp1VpgDy4MlPdcY6qBFemgOaPDMV+8SRRXSYUXm96ejY5naCAVjNaIeF8GDPlAIu85M1YY+hlj3ZMFbt4lJZG04IeH1T8Gdcs3NIiMqfLI9ZB56Zs4IfZx2iUO54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=vcKuoDVj; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=WEJw5KzI2DTw//TdeTa5hGT3iNUEWTfTI8neMQtrapU=; t=1718706621;
-	x=1719138621; b=vcKuoDVj7k4IVLjo/2GAC4/h5dtfHWGfpWmnYsCHmzpJrxeRKKQTqci0lrmCZ
-	rpKw1OYS5MGiSQot95HDmjsKSJKQt4Iew7Hh3ZH8BFC9IGICRr7yOq99lXYrmkIWGuqGaR1GtmSVF
-	bHhxsXas0/FXjCEpxWG+Llt9mFD7AME5DgvgsiywzJiREp/HdEzC1Z3/xN1mjUokYm6De0R8CNzTn
-	IHSERW4OBPZ0NwduG1sdQXCjpwjQft8UQMXHObdexoSSsrTjvXRRyGQoNeuO6zQO5Jb9/pz3FlSbL
-	NSzejZLWRE8cfV0oPJnzxb+/VbIyzLCts5eKpTKjD24uNqTAFQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1sJW6U-0000L9-NW; Tue, 18 Jun 2024 12:30:18 +0200
-Message-ID: <d5aa11c9-6326-4096-9c29-d9f0d11f83b4@leemhuis.info>
-Date: Tue, 18 Jun 2024 12:30:18 +0200
+	s=arc-20240116; t=1718706822; c=relaxed/simple;
+	bh=x6nqyV1O+XGW4R94GMczGzhhdy9aXZXBMHFBLfOPs40=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=nLRHEtDxom2ZRQ1UTN29eSyIBVW5CzEl+vvL3Tw8/Q/VZr9WXxaAoaKiendYZvmiiEJLz52bI5Nr/pLNSCxrcExgfVkH0VxDhLidK0EGRNSynDDxfJfjWY+5jfFCEeuAI5X4YEgKQugStTL2IBllxfRHC0zeiYbssQwRu3158Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=Y1IYSpUA; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Bluetooth kernel BUG with Intel AX211 (regression in 6.1.83)
-To: Mike <user.service2016@gmail.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
- linux-bluetooth@vger.kernel.org, Paul Menzel <pmenzel@molgen.mpg.de>,
- Sasha Levin <sashal@kernel.org>, =?UTF-8?Q?Jeremy_Lain=C3=A9?=
- <jeremy.laine@m4x.org>,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- Greg KH <gregkh@linuxfoundation.org>
-References: <30f4b18f-4b96-403c-a0ab-d81809d9888a@gmail.com>
- <c09d4f5b-0c4b-4f57-8955-28a963cc7e16@leemhuis.info>
- <2024061258-boxy-plaster-7219@gregkh>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-In-Reply-To: <2024061258-boxy-plaster-7219@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1718706621;8161b518;
-X-HE-SMSGID: 1sJW6U-0000L9-NW
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1718706816;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ptTO7D1wdxlQ3ntloeWD3U/gouzYuciZ4yKoIe8LFNs=;
+	b=Y1IYSpUA/oo+qzTXgqv3/KSgqHPOZL+GwNcCb7yLUHH5hfsfxEPJDgciAGUW9LXmgbJPre
+	1Z3LKCMNZ+5hGSlCEg9UKyVCCpoDXepZnBCyKeBlnZ7UkCJUTgarQEF75ByE4riLLv5PhY
+	I1VZBSJ9/pLfKtozncYDU7QXR2TbhEPisrOFzOT6z8Fjx0raEdJee0QCyvm1ni9N2xxrPT
+	hFG/Nt6wiL6v8A1nHQumExH5VbOPcV9jkceND+dfV0uXMLSnY3brknya0fJ+PkynfGeb3i
+	knsPrde0yz2ZT3BKbQTckMTo9+1mrRu7fqEqVKVm5vc8fHyzxlsFZ8ngLRTlpQ==
+Date: Tue, 18 Jun 2024 12:33:36 +0200
+From: Dragan Simic <dsimic@manjaro.org>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Qiang Yu <yuq825@gmail.com>, dri-devel@lists.freedesktop.org,
+ lima@lists.freedesktop.org, maarten.lankhorst@linux.intel.com,
+ tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
+ linux-kernel@vger.kernel.org, Philip Muller <philm@manjaro.org>, Oliver
+ Smith <ollieparanoid@postmarketos.org>, Daniel Smith <danct12@disroot.org>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] drm/lima: Mark simple_ondemand governor as softdep
+In-Reply-To: <20240618-great-hissing-skink-b7950e@houat>
+References: <fdaf2e41bb6a0c5118ff9cc21f4f62583208d885.1718655070.git.dsimic@manjaro.org>
+ <CAKGbVbs8VmCXVOHbhkCYEHNJiKWwy10p0SV9J09h2h7xjs7hUg@mail.gmail.com>
+ <CAKGbVbsM4rCprWdp+aGXE-pvCkb6N7weUyG2z4nXqFpv+y=LrA@mail.gmail.com>
+ <20240618-great-hissing-skink-b7950e@houat>
+Message-ID: <4813a6885648e5368028cd822e8b2381@manjaro.org>
+X-Sender: dsimic@manjaro.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
 
-On 12.06.24 14:04, Greg KH wrote:
-> On Thu, Jun 06, 2024 at 12:18:18PM +0200, Thorsten Leemhuis wrote:
->> On 03.06.24 22:03, Mike wrote:
->>> On 29.05.24 11:06, Thorsten Leemhuis wrote:
->>> [...]
->>> I understand that 6.9-rc5[1] worked fine, but I guess it will take some
->>> time to be
->>> included in Debian stable, so having a patch for 6.1.x will be much
->>> appreciated.
->>> I do not have the time to follow the vanilla (latest) release as is
->>> likely the case for
->>> many other Linux users.
->>>
->> Still no reaction from the bluetooth developers. Guess they are busy
->> and/or do not care about 6.1.y. In that case:
->>
->> @Greg: do you might have an idea how the 6.1.y commit a13f316e90fdb1
->> ("Bluetooth: hci_conn: Consolidate code for aborting connections") might
->> cause this or if it's missing some per-requisite? If not I wonder if
->> reverting that patch from 6.1.y might be the best move to resolve this
->> regression. Mike earlier in
->> https://lore.kernel.org/all/c947e600-e126-43ea-9530-0389206bef5e@gmail.com/
->> confirmed that this fixed the problem in tests. Jeremy (who started the
->> thread and afaics has the same problem) did not reply.
-> 
-> How was this reverted?  I get a bunch of conflicts as this commit was
-> added as a dependency of a patch later in the series.
-> 
-> So if this wants to be reverted from 6.1.y, can someone send me the
-> revert that has been tested to work?
+Hello Qiang and Maxime,
 
-Mike, can you help out here, as you apparently managed a revert earlier?
-Without you or someone else submitting a revert I fear this won't be
-resolved...
+On 2024-06-18 10:13, Maxime Ripard wrote:
+> On Tue, Jun 18, 2024 at 04:01:26PM GMT, Qiang Yu wrote:
+>> On Tue, Jun 18, 2024 at 12:33 PM Qiang Yu <yuq825@gmail.com> wrote:
+>> >
+>> > I see the problem that initramfs need to build a module dependency chain,
+>> > but lima does not call any symbol from simpleondemand governor module.
+>> > softdep module seems to be optional while our dependency is hard one,
+>> > can we just add MODULE_INFO(depends, _depends), or create a new
+>> > macro called MODULE_DEPENDS()?
 
-Ciao, Thorsten
+I had the same thoughts, because softdeps are for optional module
+dependencies, while in this case it's a hard dependency.  Though,
+I went with adding a softdep, simply because I saw no better option
+available.
+
+>> This doesn't work on my side because depmod generates modules.dep
+>> by symbol lookup instead of modinfo section. So softdep may be our 
+>> only
+>> choice to add module dependency manually. I can accept the softdep
+>> first, then make PM optional later.
+
+I also thought about making devfreq optional in the Lima driver,
+which would make this additional softdep much more appropriate.
+Though, I'm not really sure that's a good approach, because not
+having working devfreq for Lima might actually cause issues on
+some devices, such as increased power consumption.
+
+In other words, it might be better to have Lima probing fail if
+devfreq can't be initialized, rather than having probing succeed
+with no working devfreq.  Basically, failed probing is obvious,
+while a warning in the kernel log about no devfreq might easily
+be overlooked, causing regressions on some devices.
+
+> It's still super fragile, and depends on the user not changing the
+> policy. It should be solved in some other, more robust way.
+
+I see, but I'm not really sure how to make it more robust?  In
+the end, some user can blacklist the simple_ondemand governor
+module, and we can't do much about it.
+
+Introducing harddeps alongside softdeps would make sense from
+the design standpoint, but the amount of required changes wouldn't
+be trivial at all, on various levels.
 
