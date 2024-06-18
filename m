@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-52995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D31190CFB1
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:28:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A5590CFBB
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDCEF1C2344E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:28:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA145282000
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E12115FA65;
-	Tue, 18 Jun 2024 12:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B43E15FA6A;
+	Tue, 18 Jun 2024 12:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZV3PXsT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyouW+na"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF92314F118;
-	Tue, 18 Jun 2024 12:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF27A13AD12;
+	Tue, 18 Jun 2024 12:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715017; cv=none; b=GHfI0FXhjgi/xSOZ6410JKIHjeRHF/Bh1xri4RYa9fjSspxT1ePzazbTOmXU2dgCi6rlnEVS1JducspU1XFML8eyM7vy3xJT1SixUwf1TT6u2vf5rdojJrrsc1dtdhcygYxOShbeHHff1/F8d/hDqFpiBWf4e7BBFeUf87yBUrI=
+	t=1718715023; cv=none; b=EibxzPk3SelHPYj3JxiAsde5Z4PqR2DSn+1tZniWyWLH2pr9UmLX7EfEre4cbeHe+aurAE8m1/FbP3XQR11Mc80AbjSZJVrgyfhiQKiDBUZRw79SI5EeIi5Tk/Ye/ZwkE7nppwitXH4k31WfN11TA3uhvR7vCLOTYEjwulKw1+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715017; c=relaxed/simple;
-	bh=YBLPUvmzXgMekbcRxNWF8hzn7AkhjtRkyu0HgN1xAqg=;
+	s=arc-20240116; t=1718715023; c=relaxed/simple;
+	bh=z9k78VW6olLWWnRXaYJ0547BN+lM27YnQwnfp274fuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYu4FVDWZzyiWMy+UDGavIUBCLcEo03LkLvPJDXqNH40SdugXbP6ThmWAGmj4eqmzujtW3meFeHfyGsMsVWBcV9wT8Levw5P/G7qiByftol6uBsGY0kZ6/FzLQ4Qas33VCDsOd0HmT2Yrszqnt4cIWHoEcKuFHvXNDIRLehx/VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZV3PXsT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B1AC3277B;
-	Tue, 18 Jun 2024 12:50:17 +0000 (UTC)
+	 MIME-Version; b=diFEDubZHei7yS6ySTCJ0bY6BHnbJqAo3MIwTwTgmrnOb7JoEXJCzz/RxdakjzHQEvkA6QxAdL/ZeK/iIRLDE1HGBaeAIhljjtnQtEts/yTxvPyl8xM06+6o0uOShXACiFvyq0z3Nl8DlzQxWdpBCTveXLGsR+4CCTxJwy8jbc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uyouW+na; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE16C3277B;
+	Tue, 18 Jun 2024 12:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715017;
-	bh=YBLPUvmzXgMekbcRxNWF8hzn7AkhjtRkyu0HgN1xAqg=;
+	s=korg; t=1718715023;
+	bh=z9k78VW6olLWWnRXaYJ0547BN+lM27YnQwnfp274fuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZV3PXsTUAkGcEGNn0APExqnIpiLZBDc5pXz2P2Mynks4B9Z+55ZZXLr00IlG17Ww
-	 Izj5TNo2tbUoXR49wDXWN2uJVy3yTHJaLtolOn2s4XplQdRmgg8bDq+82KFlhxy4Tm
-	 V8XtmcIa7HIklSID5S/SveKTc2MMdpE0C+OypLck=
+	b=uyouW+naliiDib49BHq9Z54JxMnX4LwhxkSItwfbrgxpG+s3pMZT8Uywf+qAtYGu6
+	 tkQvq7cu11IPD3/QQBOgJsmtQgVHIuhwwJUa7VDn1EbyLIv8ZUBbApBvdVhDj0b5jt
+	 nbhf15uBqvFpM+HwO8TP7Rtxs00KSQQIadyUcS7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 166/770] NFSD: Update the NFSv2 GETACL argument decoder to use struct xdr_stream
-Date: Tue, 18 Jun 2024 14:30:19 +0200
-Message-ID: <20240618123413.681881769@linuxfoundation.org>
+Subject: [PATCH 5.10 167/770] NFSD: Add an xdr_stream-based decoder for NFSv2/3 ACLs
+Date: Tue, 18 Jun 2024 14:30:20 +0200
+Message-ID: <20240618123413.719641716@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,90 +67,88 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 635a45d34706400c59c3b18ca9fccba195147bda ]
+[ Upstream commit 6bb844b4eb6e3b109a2fdaffb60e6da722dc4356 ]
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs2acl.c | 10 +++++-----
- fs/nfsd/nfsxdr.c  | 11 ++++++++++-
- fs/nfsd/xdr.h     |  1 +
- fs/nfsd/xdr3.h    |  2 +-
- 4 files changed, 17 insertions(+), 7 deletions(-)
+ fs/nfs_common/nfsacl.c | 52 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/nfsacl.h |  3 +++
+ 2 files changed, 55 insertions(+)
 
-diff --git a/fs/nfsd/nfs2acl.c b/fs/nfsd/nfs2acl.c
-index 899762da23c92..df2e145cfab0d 100644
---- a/fs/nfsd/nfs2acl.c
-+++ b/fs/nfsd/nfs2acl.c
-@@ -188,17 +188,17 @@ static __be32 nfsacld_proc_access(struct svc_rqst *rqstp)
- 
- static int nfsaclsvc_decode_getaclargs(struct svc_rqst *rqstp, __be32 *p)
- {
-+	struct xdr_stream *xdr = &rqstp->rq_arg_stream;
- 	struct nfsd3_getaclargs *argp = rqstp->rq_argp;
- 
--	p = nfs2svc_decode_fh(p, &argp->fh);
--	if (!p)
-+	if (!svcxdr_decode_fhandle(xdr, &argp->fh))
-+		return 0;
-+	if (xdr_stream_decode_u32(xdr, &argp->mask) < 0)
- 		return 0;
--	argp->mask = ntohl(*p); p++;
- 
--	return xdr_argsize_check(rqstp, p);
-+	return 1;
+diff --git a/fs/nfs_common/nfsacl.c b/fs/nfs_common/nfsacl.c
+index d056ad2fdefd6..79c563c1a5e84 100644
+--- a/fs/nfs_common/nfsacl.c
++++ b/fs/nfs_common/nfsacl.c
+@@ -295,3 +295,55 @@ int nfsacl_decode(struct xdr_buf *buf, unsigned int base, unsigned int *aclcnt,
+ 		   nfsacl_desc.desc.array_len;
  }
- 
--
- static int nfsaclsvc_decode_setaclargs(struct svc_rqst *rqstp, __be32 *p)
- {
- 	struct nfsd3_setaclargs *argp = rqstp->rq_argp;
-diff --git a/fs/nfsd/nfsxdr.c b/fs/nfsd/nfsxdr.c
-index f2cb4794aeaf6..5ab9fc14816c2 100644
---- a/fs/nfsd/nfsxdr.c
-+++ b/fs/nfsd/nfsxdr.c
-@@ -38,7 +38,16 @@ decode_fh(__be32 *p, struct svc_fh *fhp)
- 	return p + (NFS_FHSIZE >> 2);
- }
- 
--static bool
+ EXPORT_SYMBOL_GPL(nfsacl_decode);
++
 +/**
-+ * svcxdr_decode_fhandle - Decode an NFSv2 file handle
-+ * @xdr: XDR stream positioned at an encoded NFSv2 FH
-+ * @fhp: OUT: filled-in server file handle
++ * nfs_stream_decode_acl - Decode an NFSv3 ACL
++ *
++ * @xdr: an xdr_stream positioned at an encoded ACL
++ * @aclcnt: OUT: count of ACEs in decoded posix_acl
++ * @pacl: OUT: a dynamically-allocated buffer containing the decoded posix_acl
 + *
 + * Return values:
-+ *  %false: The encoded file handle was not valid
-+ *  %true: @fhp has been initialized
++ *   %false: The encoded ACL is not valid
++ *   %true: @pacl contains a decoded ACL, and @xdr is advanced
++ *
++ * On a successful return, caller must release *pacl using posix_acl_release().
 + */
-+bool
- svcxdr_decode_fhandle(struct xdr_stream *xdr, struct svc_fh *fhp)
- {
- 	__be32 *p;
-diff --git a/fs/nfsd/xdr.h b/fs/nfsd/xdr.h
-index ff68643504c3c..77afad72c2aa1 100644
---- a/fs/nfsd/xdr.h
-+++ b/fs/nfsd/xdr.h
-@@ -165,5 +165,6 @@ void nfssvc_release_readres(struct svc_rqst *rqstp);
- /* Helper functions for NFSv2 ACL code */
- __be32 *nfs2svc_encode_fattr(struct svc_rqst *rqstp, __be32 *p, struct svc_fh *fhp, struct kstat *stat);
- __be32 *nfs2svc_decode_fh(__be32 *p, struct svc_fh *fhp);
-+bool svcxdr_decode_fhandle(struct xdr_stream *xdr, struct svc_fh *fhp);
++bool nfs_stream_decode_acl(struct xdr_stream *xdr, unsigned int *aclcnt,
++			   struct posix_acl **pacl)
++{
++	const size_t elem_size = XDR_UNIT * 3;
++	struct nfsacl_decode_desc nfsacl_desc = {
++		.desc = {
++			.elem_size = elem_size,
++			.xcode = pacl ? xdr_nfsace_decode : NULL,
++		},
++	};
++	unsigned int base;
++	u32 entries;
++
++	if (xdr_stream_decode_u32(xdr, &entries) < 0)
++		return false;
++	if (entries > NFS_ACL_MAX_ENTRIES)
++		return false;
++
++	base = xdr_stream_pos(xdr);
++	if (!xdr_inline_decode(xdr, XDR_UNIT + elem_size * entries))
++		return false;
++	nfsacl_desc.desc.array_maxlen = entries;
++	if (xdr_decode_array2(xdr->buf, base, &nfsacl_desc.desc))
++		return false;
++
++	if (pacl) {
++		if (entries != nfsacl_desc.desc.array_len ||
++		    posix_acl_from_nfsacl(nfsacl_desc.acl) != 0) {
++			posix_acl_release(nfsacl_desc.acl);
++			return false;
++		}
++		*pacl = nfsacl_desc.acl;
++	}
++	if (aclcnt)
++		*aclcnt = entries;
++	return true;
++}
++EXPORT_SYMBOL_GPL(nfs_stream_decode_acl);
+diff --git a/include/linux/nfsacl.h b/include/linux/nfsacl.h
+index 103d446953234..0ba99c5136491 100644
+--- a/include/linux/nfsacl.h
++++ b/include/linux/nfsacl.h
+@@ -38,5 +38,8 @@ nfsacl_encode(struct xdr_buf *buf, unsigned int base, struct inode *inode,
+ extern int
+ nfsacl_decode(struct xdr_buf *buf, unsigned int base, unsigned int *aclcnt,
+ 	      struct posix_acl **pacl);
++extern bool
++nfs_stream_decode_acl(struct xdr_stream *xdr, unsigned int *aclcnt,
++		      struct posix_acl **pacl);
  
- #endif /* LINUX_NFSD_H */
-diff --git a/fs/nfsd/xdr3.h b/fs/nfsd/xdr3.h
-index 64af5b01c5d7b..43db4206cd254 100644
---- a/fs/nfsd/xdr3.h
-+++ b/fs/nfsd/xdr3.h
-@@ -102,7 +102,7 @@ struct nfsd3_commitargs {
- 
- struct nfsd3_getaclargs {
- 	struct svc_fh		fh;
--	int			mask;
-+	__u32			mask;
- };
- 
- struct posix_acl;
+ #endif  /* __LINUX_NFSACL_H */
 -- 
 2.43.0
 
