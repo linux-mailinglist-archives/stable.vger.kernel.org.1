@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-53019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8F8690D0A2
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 017BA90D0B6
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:36:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53FEFB256C7
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:29:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D5CAB2F1DD
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BC71607B3;
-	Tue, 18 Jun 2024 12:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751ED15AD93;
+	Tue, 18 Jun 2024 12:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+W5bAaE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMcR6PXd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FC71514C5;
-	Tue, 18 Jun 2024 12:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331C813E8B9;
+	Tue, 18 Jun 2024 12:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715088; cv=none; b=rkZFjoWQogrEK1U+PtDKRSMIjLU2yzkWcmfBWJ+tQiRfAiJrpwC2XBUhsN5Zfugm6gaoq2I/xY4tMqAQklyqR7UylL14+o0ZnIMdxpDsoY1TKN11QSNIWk+jBs7Y9WhSI7GDyLEwBoZ0U09RpjQ53rPv3J+tZAUmWR4Ws+liaRY=
+	t=1718715094; cv=none; b=cudupXppXq5k/mEWudDHJ9vjHf7I2TDrr0jRI5zCtLcF2+dSDkKFy6GulgH4k8qtjQWugC8rKTu4Z3iaYaIsT0MYLrhW2geEA3oN7+rvOQJHg7cG9knCXFK6sHZmsOj7m7FT0qFEiSRMediARydtpD87s7YxJaPF43Iexbmqmj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715088; c=relaxed/simple;
-	bh=9SOBWy4WcyRkoK85gKFU1K54MzydTx8MmPWrw1JCcSY=;
+	s=arc-20240116; t=1718715094; c=relaxed/simple;
+	bh=2IlLG1UApOj4QKc44+LSSAqes/h/kfdJIqFZ+slRV0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9LoNumdYGO1Va0AIK4qmb00kWIEMP40AtgiTdz+b/SHijmXNuaspurL0gi+kMYqfXkY0Treaqoc/ZJH1a9Fz0Debary5OLOY74j8qP7hlZOt9nvDsQE+fFkARMcNGD3Usp4tRTiD9grDtlIy0fqqv4xuJqW+Rhpt55gQVc0Xo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+W5bAaE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C14C3277B;
-	Tue, 18 Jun 2024 12:51:27 +0000 (UTC)
+	 MIME-Version; b=DSV7Kya9nMFBn++enFJIXKHtl9EYrE1AAqyiC7mAt9rs4I0oYuWW/xwFri/s/qmv7ah4RJzKlwa5O9U/Ex9FsGNr28lDynycpfJuVObt1hEnGni3CmeJG6xf+0OG/Lx6zFaC0KGyTAsUEyV+bpKstgfk48dds7+UtdtclTT1IxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMcR6PXd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA71BC3277B;
+	Tue, 18 Jun 2024 12:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715088;
-	bh=9SOBWy4WcyRkoK85gKFU1K54MzydTx8MmPWrw1JCcSY=;
+	s=korg; t=1718715094;
+	bh=2IlLG1UApOj4QKc44+LSSAqes/h/kfdJIqFZ+slRV0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n+W5bAaEmDNXmGSMs0heL7bJfMRAQaKCbRWPklW0Q6apCO1nUzyrtLMLrSI24BJ52
-	 AoR/H4Liq1Tik7c+p+05YxKV1sLQFIeh8aOIboNCeCYxWXCFpgf83d+u0FZFqNpXcq
-	 b2+K2RFzhfCO0z7LSTV22D++0erJTV3ce31I0lW8=
+	b=NMcR6PXdY//vK+jDFrlyNTXWzDRXkRgBpn3ruPQvUNCwtAEijD4wdhvpDOsFXxzwE
+	 a9sEr9CEFn6uSBY97oB6GuWCdQVxwOvPF+c7WMPNr5/0jYXZYfnwL5mj+7tKRigfG7
+	 Vy7LWV3wyEJqCJNLXDO7KWn7mksFoLvryw7xkKsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Petr Mladek <pmladek@suse.com>,
 	Miroslav Benes <mbenes@suse.cz>,
 	Christoph Hellwig <hch@lst.de>,
 	Jessica Yu <jeyu@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 191/770] module: unexport find_module and module_mutex
-Date: Tue, 18 Jun 2024 14:30:44 +0200
-Message-ID: <20240618123414.649576904@linuxfoundation.org>
+Subject: [PATCH 5.10 192/770] module: use RCU to synchronize find_module
+Date: Tue, 18 Jun 2024 14:30:45 +0200
+Message-ID: <20240618123414.687801959@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -70,40 +71,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 089049f6c9956c5cf1fc89fe10229c76e99f4bef ]
+[ Upstream commit a006050575745ca2be25118b90f1c37f454ac542 ]
 
-find_module is not used by modular code any more, and random driver code
-has no business calling it to start with.
+Allow for a RCU-sched critical section around find_module, following
+the lower level find_module_all helper, and switch the two callers
+outside of module.c to use such a RCU-sched critical section instead
+of module_mutex.
 
-Reviewed-by: Miroslav Benes <mbenes@suse.cz>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Acked-by: Miroslav Benes <mbenes@suse.cz>
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Jessica Yu <jeyu@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/module.c | 2 --
- 1 file changed, 2 deletions(-)
+ include/linux/module.h      | 2 +-
+ kernel/livepatch/core.c     | 5 +++--
+ kernel/module.c             | 1 -
+ kernel/trace/trace_kprobe.c | 4 ++--
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 6264617bab4d4..86fae5d1c0e39 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -582,7 +582,7 @@ static inline bool within_module(unsigned long addr, const struct module *mod)
+ 	return within_module_init(addr, mod) || within_module_core(addr, mod);
+ }
+ 
+-/* Search for module by name: must hold module_mutex. */
++/* Search for module by name: must be in a RCU-sched critical section. */
+ struct module *find_module(const char *name);
+ 
+ struct symsearch {
+diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
+index f5faf935c2d8f..e660ea4f90a28 100644
+--- a/kernel/livepatch/core.c
++++ b/kernel/livepatch/core.c
+@@ -19,6 +19,7 @@
+ #include <linux/moduleloader.h>
+ #include <linux/completion.h>
+ #include <linux/memory.h>
++#include <linux/rcupdate.h>
+ #include <asm/cacheflush.h>
+ #include "core.h"
+ #include "patch.h"
+@@ -57,7 +58,7 @@ static void klp_find_object_module(struct klp_object *obj)
+ 	if (!klp_is_module(obj))
+ 		return;
+ 
+-	mutex_lock(&module_mutex);
++	rcu_read_lock_sched();
+ 	/*
+ 	 * We do not want to block removal of patched modules and therefore
+ 	 * we do not take a reference here. The patches are removed by
+@@ -74,7 +75,7 @@ static void klp_find_object_module(struct klp_object *obj)
+ 	if (mod && mod->klp_alive)
+ 		obj->mod = mod;
+ 
+-	mutex_unlock(&module_mutex);
++	rcu_read_unlock_sched();
+ }
+ 
+ static bool klp_initialized(void)
 diff --git a/kernel/module.c b/kernel/module.c
-index 72a5dcdccf7b1..c0e51ffe26f0a 100644
+index c0e51ffe26f0a..1f9f6133c30ef 100644
 --- a/kernel/module.c
 +++ b/kernel/module.c
-@@ -88,7 +88,6 @@
-  * 3) module_addr_min/module_addr_max.
-  * (delete and add uses RCU list operations). */
- DEFINE_MUTEX(module_mutex);
--EXPORT_SYMBOL_GPL(module_mutex);
- static LIST_HEAD(modules);
+@@ -641,7 +641,6 @@ static struct module *find_module_all(const char *name, size_t len,
  
- /* Work queue for freeing init sections in success case */
-@@ -645,7 +644,6 @@ struct module *find_module(const char *name)
- 	module_assert_mutex();
+ struct module *find_module(const char *name)
+ {
+-	module_assert_mutex();
  	return find_module_all(name, strlen(name), false);
  }
--EXPORT_SYMBOL_GPL(find_module);
  
- #ifdef CONFIG_SMP
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 7183572898998..5453af26ff764 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -124,9 +124,9 @@ static nokprobe_inline bool trace_kprobe_module_exist(struct trace_kprobe *tk)
+ 	if (!p)
+ 		return true;
+ 	*p = '\0';
+-	mutex_lock(&module_mutex);
++	rcu_read_lock_sched();
+ 	ret = !!find_module(tk->symbol);
+-	mutex_unlock(&module_mutex);
++	rcu_read_unlock_sched();
+ 	*p = ':';
  
+ 	return ret;
 -- 
 2.43.0
 
