@@ -1,126 +1,129 @@
-Return-Path: <stable+bounces-52707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84A190CC3B
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 373C990D0FF
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAFAC1C22B66
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:46:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BEBF1C2401C
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC99F15ECD5;
-	Tue, 18 Jun 2024 12:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B431F19CD08;
+	Tue, 18 Jun 2024 13:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eukuJcKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/Mqqqvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFEA139584;
-	Tue, 18 Jun 2024 12:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C7D19CCF9;
+	Tue, 18 Jun 2024 13:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714255; cv=none; b=QrdQ7hYzpCdylNpYjxAygOPUfd2YjGPYh0D/s2yNvL/aM2DBVSxYWRgCxCaBt21P7EshMcTfwNonhwrzD7El3pHQ7c7QnuGdzHD1kPKEIkkQSpiyjUlZELhGgILQMieYwexgvsji/voL0288mZKQHNujJ8OXLRvxQzqQiAqfaD0=
+	t=1718715894; cv=none; b=VqteX/BHVzAM3fcB/Wp6z03mvFmkkcUM334YfLZEQD3WbSn9uFpaAIFvAafK8eWhiolHAfgeVL6K9dnV8jnv02dBQgt9rsf9lOiTQAYfOHLRCak2X1Dk6vT0V8tk99QdLiea6W7+Q3enUXsPMXK+6lWWPgUpIEOXr94Tdz6U/Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714255; c=relaxed/simple;
-	bh=yHfu11Q0TNfcdwLLbOwG08ojnZJ5W0mmaAwpwYhmZxY=;
+	s=arc-20240116; t=1718715894; c=relaxed/simple;
+	bh=zLP1abi6NRaFc8xO33ptE7XzfmijTDXM3Ubl+m88pCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UN7oZFnvbeF5cG4kdV0OTtzzNPp4lsFc2zHfVJLVzJ7zbxg6+HzCAvfkaVxHC5vTGRTLv04AyYnc9XsqtyCBKhk2NY7TCDV+CfUFH8cdObjXvQJOxSFLpUGelF7JkylqapxcFyih7PF/hIvRjKMpYZ60DVvTTaigqtHQZ5kZLsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eukuJcKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F070C3277B;
-	Tue, 18 Jun 2024 12:37:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714255;
-	bh=yHfu11Q0TNfcdwLLbOwG08ojnZJ5W0mmaAwpwYhmZxY=;
+	 MIME-Version; b=iv7xphamq3SlsAe0ouFJsJ+hdpY5l4EZpG1XpxfSsk+vt0Z6vOT8/F4K+ypVkqBF0+4qx7LIGiM/ugeDrvaq2AZ//VPCc/G6KXJLPgqlhL75jqHORgznkcHlRRngVtSgMSQZSsTSlUaG62ivs3xV8JXPXarrib74O21s7ChmNxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/Mqqqvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA27C3277B;
+	Tue, 18 Jun 2024 13:04:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715894;
+	bh=zLP1abi6NRaFc8xO33ptE7XzfmijTDXM3Ubl+m88pCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eukuJcKRqx1CM4R7adnbj4WElmKUMBcy5rAz1OEsVGw6Vj4UMSmYsyU3NUOZtu0ag
-	 GMpVR+vCtSqqp47suQWJaXIWbJB8xyNAQMI6zUGXBOI9JKUShFVibPnGw1CssLJ4Y3
-	 4TcBcNkIbBRRpA/qFFHxDPsvUDc6ueK4x46iXiAvYoKcls/C/1rm8n6UzEEm2khltY
-	 XznZdJ+rzDEM6qWKD6CIvoyMq8Gybe2zybIq6vKyWrIkragnj0kUrmqFFyC8ha4hcY
-	 xSrIgxuk69zDUadrlShv5Jb1ZDgXpaTy7eWrVx6XlVSyI7xJjJS744cA8vlf+W5kKq
-	 JvIrHtZQpwySQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 35/44] ila: block BH in ila_output()
-Date: Tue, 18 Jun 2024 08:35:16 -0400
-Message-ID: <20240618123611.3301370-35-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=n/MqqqvqTxpqi8hYCnxoGVnWak6SztrDPOpg6intM876X3prM5WPOnnU1tLfYQk8v
+	 zoDpPl/AntgcIuvsP/AG3YqD3SrP70VgUtwDoCESir+BgYzwP6/R+/pl/1DVJL545+
+	 NBKgllLUrr3fOnm2P7aRZRTPkSlkLKVJODy24Tio=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jonathan Woithe <jwoithe@just42.net>,
+	"J. Bruce Fields" <bfields@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 463/770] lockd: fix server crash on reboot of client holding lock
+Date: Tue, 18 Jun 2024 14:35:16 +0200
+Message-ID: <20240618123425.186258532@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit cf28ff8e4c02e1ffa850755288ac954b6ff0db8c ]
+------------------
 
-As explained in commit 1378817486d6 ("tipc: block BH
-before using dst_cache"), net/core/dst_cache.c
-helpers need to be called with BH disabled.
+From: J. Bruce Fields <bfields@redhat.com>
 
-ila_output() is called from lwtunnel_output()
-possibly from process context, and under rcu_read_lock().
+[ Upstream commit 6e7f90d163afa8fc2efd6ae318e7c20156a5621f ]
 
-We might be interrupted by a softirq, re-enter ila_output()
-and corrupt dst_cache data structures.
+I thought I was iterating over the array when actually the iteration is
+over the values contained in the array?
 
-Fix the race by using local_bh_disable().
+Ugh, keep it simple.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240531132636.2637995-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Symptoms were a null deference in vfs_lock_file() when an NFSv3 client
+that previously held a lock came back up and sent a notify.
+
+Reported-by: Jonathan Woithe <jwoithe@just42.net>
+Fixes: 7f024fcd5c97 ("Keep read and write fds with each nlm_file")
+Signed-off-by: J. Bruce Fields <bfields@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ila/ila_lwt.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/lockd/svcsubs.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv6/ila/ila_lwt.c b/net/ipv6/ila/ila_lwt.c
-index 0601bad798221..ff7e734e335b0 100644
---- a/net/ipv6/ila/ila_lwt.c
-+++ b/net/ipv6/ila/ila_lwt.c
-@@ -58,7 +58,9 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		return orig_dst->lwtstate->orig_output(net, sk, skb);
- 	}
+diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
+index cb3a7512c33ec..54c2e42130ca2 100644
+--- a/fs/lockd/svcsubs.c
++++ b/fs/lockd/svcsubs.c
+@@ -179,19 +179,20 @@ nlm_delete_file(struct nlm_file *file)
+ static int nlm_unlock_files(struct nlm_file *file)
+ {
+ 	struct file_lock lock;
+-	struct file *f;
  
-+	local_bh_disable();
- 	dst = dst_cache_get(&ilwt->dst_cache);
-+	local_bh_enable();
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *ip6h = ipv6_hdr(skb);
- 		struct flowi6 fl6;
-@@ -86,8 +88,11 @@ static int ila_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 			goto drop;
- 		}
+ 	lock.fl_type  = F_UNLCK;
+ 	lock.fl_start = 0;
+ 	lock.fl_end   = OFFSET_MAX;
+-	for (f = file->f_file[0]; f <= file->f_file[1]; f++) {
+-		if (f && vfs_lock_file(f, F_SETLK, &lock, NULL) < 0) {
+-			pr_warn("lockd: unlock failure in %s:%d\n",
+-				__FILE__, __LINE__);
+-			return 1;
+-		}
+-	}
++	if (file->f_file[O_RDONLY] &&
++	    vfs_lock_file(file->f_file[O_RDONLY], F_SETLK, &lock, NULL))
++		goto out_err;
++	if (file->f_file[O_WRONLY] &&
++	    vfs_lock_file(file->f_file[O_WRONLY], F_SETLK, &lock, NULL))
++		goto out_err;
+ 	return 0;
++out_err:
++	pr_warn("lockd: unlock failure in %s:%d\n", __FILE__, __LINE__);
++	return 1;
+ }
  
--		if (ilwt->connected)
-+		if (ilwt->connected) {
-+			local_bh_disable();
- 			dst_cache_set_ip6(&ilwt->dst_cache, dst, &fl6.saddr);
-+			local_bh_enable();
-+		}
- 	}
- 
- 	skb_dst_set(skb, dst);
+ /*
 -- 
 2.43.0
+
+
 
 
