@@ -1,156 +1,99 @@
-Return-Path: <stable+bounces-52814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BBE190CD87
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:16:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A2690CE1B
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:18:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 355EA1C213F7
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:16:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2AA21F234A7
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9977C1B150B;
-	Tue, 18 Jun 2024 12:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1221B4C52;
+	Tue, 18 Jun 2024 12:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c+dXQw7T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWVPhsk7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0B11B29BF;
-	Tue, 18 Jun 2024 12:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AF615A84E;
+	Tue, 18 Jun 2024 12:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714563; cv=none; b=G9reV7SJqZ3PLj049y9Mza4ji63uCLKRV3LNV9YfqTss6A/OpNX1EmDZq4Bg/AX9VzA8jHNbZMp5mVUEmjftFvBv9iUVw5AbBdxOl7tEnl+Wb2WPKW1c3Zoof2IJLu1tLjisahbvV4f9sNL0lreIL/aayzedA2w2hQPgELs1hcg=
+	t=1718714582; cv=none; b=sJhu5+2c4s93gVfGxdCWrUqpbA4t8BuR/7Caypr0wi0CWQZ+h8FFctvEsTjVLx7tAM3u3JTnqT/7/V5ZTTVkz3Dldp3YO3Rbf/e9ACHNlBk40XD8RkfD8sRdENoXYtM2kVeZaIFRbQxkeAB/XfjhPuv2Do2lHksuPWCnuT6Fe4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714563; c=relaxed/simple;
-	bh=YFY+HjJitzBvcux3x//msWVLSC/kvQWZ9WefuLW/TRU=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=QgSIMFrtgOMEbaZn5j0a2/EPj/+y6MWj3M3tn96Jj9mYEJfDRgZcn71NibtXr3rQwemfOWg6e+23T+tI+0Y9RfuiFewrNQ4QF2kUCZbb8VUCkMxCEaazQhSCS/Px/2/AXI5BeObI3HlGJd4UE79F+1ZtumrWrkhWmpgoiKz1GuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c+dXQw7T; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7061d37dc9bso683736b3a.2;
-        Tue, 18 Jun 2024 05:42:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718714560; x=1719319360; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P5HudLGS8xpGOdXksJh80d3m6RgAVZta5JkAHQdvhSg=;
-        b=c+dXQw7TrwzTH8W1Bz8YC9tAc9J3pMvVuKo+Uka0lTTDH2s0f3stPz7kJRQjjI9WTG
-         bE7eCmrZsWTfqV6VsAF+iReDah6WuLOsRL3jn29kxG6hO9Z4uIhm4PH5uKYss+7Ics3F
-         r4GiTy57usnTMLPaaFawewhd5+EXsG6nGHdXN0tkycnGJv42DK3ccV7+PF9+b/M7kpN5
-         ZDVAFxDtpRS7B63resqt8mHoKyWquzYvq8mrJgzMKJgX5TtDVgGmUyoM+uEE7TMYPy+x
-         FnNgKzM/14VTbsKa94qH8qfqtvUlDUzgjr87/ApRfw/h/+FG+/pzYApUhAPgQp28k8++
-         N/rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718714560; x=1719319360;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P5HudLGS8xpGOdXksJh80d3m6RgAVZta5JkAHQdvhSg=;
-        b=s8/G+YU4GreCeXb8FgjdZEiBRCIOlG2bYkLISCN/uiBAdCmdaWPnfSJdYQPJCVSHpW
-         yzyXoVF843iNwkKZtD4JPRojmbAne2aQkBDZYd3mLNCGmT2lBNjU2zq9DNkYPEh1F7jX
-         0nsvu72nof9cwYgatVNDnmD26CXPjJ2yNSxEhC3IziG1HTehEU3jUSTDvONinnmUWeE+
-         PzsQpaqfPsyZpBCwQtfuJyiFsHrSUHu6xetf7zqEs+6Ou/R6cr8+t4jABzLi24/O/IY+
-         SxRYWGdN0AIBWS343a9+qA5z3sDJRPx5tLkQB6gHkYCpenpf67rRGCG400vQwWlsyZXV
-         X/oA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUV7+Lp4WI21Hf4mGTUMq6+lls4Adw9hVYcQMJkOHTfxiqKgTG6igDIE4z6G3CstnOAheYMF9JPp84TIfu5CSs/wwo4TBlqz2tid9kqE3diLRWtmK/K+/d+DXTkY/1Aal78lYF
-X-Gm-Message-State: AOJu0YyDiDT0HczU3AscN9mlRQkbuKMQcBIKKBfzReBQYlx1lh/69zh1
-	LWpVq+3nWPcO7Ikna4L6+tmXrmDL/2VzD0bLtihrRPUWQhxuCa15
-X-Google-Smtp-Source: AGHT+IFBLml7w5zlkpZKZS1zkZ/T8vrR86PFGYprdyoeL4gyHhlv3UPbh1XtqhPVoYG3Ha8HiHIlPw==
-X-Received: by 2002:a05:6a21:1f24:b0:1b8:3ee2:bef1 with SMTP id adf61e73a8af0-1bae825984cmr12518482637.53.1718714560194;
-        Tue, 18 Jun 2024 05:42:40 -0700 (PDT)
-Received: from localhost ([113.138.207.245])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705ccb3e42fsm8898437b3a.100.2024.06.18.05.42.39
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 18 Jun 2024 05:42:39 -0700 (PDT)
-From: joswang <joswang1221@gmail.com>
-To: Thinh.Nguyen@synopsys.com,
-	gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Jos Wang <joswang@lenovo.com>
-Subject: [PATCH v5] usb: dwc3: core: Workaround for CSR read timeout
-Date: Tue, 18 Jun 2024 20:42:35 +0800
-Message-Id: <20240618124235.5093-1-joswang1221@gmail.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1718714582; c=relaxed/simple;
+	bh=KPgDhhvy/qWYoIhkC4CmnQ47Y6o7/P+1R/JjJF63TEg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t/hqjVILahaEPtpVkC8PjOS1yZWXhsE2qg7U9ZG2mcbLv+yrZeyPoCeYTt0tKgmaAig1hPsIvYUbP3a7o2Pnf6ijkPT+qR77KKxjb77QNNAkoyPet1gn1SJ74LddMps+HgsOI8MSACD7L1SGF+u2+I4v17gJZB+ddiNWbgVN5G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWVPhsk7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D539C4AF52;
+	Tue, 18 Jun 2024 12:43:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714582;
+	bh=KPgDhhvy/qWYoIhkC4CmnQ47Y6o7/P+1R/JjJF63TEg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TWVPhsk7cDeKEwynjbFZwbyHXZDW2wF/fPfdctdWv+QWY/+p5A7M+Aa88QFsr2cro
+	 xuT9KMNP3RgbvrriZVL4hbixLn6FV+L55tdZIg3DyIa060Q1DOeN2xCCJKOShitrTY
+	 IclPKfORvvqWbSIXiH1aktnHWJ7PdvkGZYt69la2N+m2zNaxkUAvutMrpI8oN4Kgdm
+	 KmyvLApVB97cPf+CohrK7n7Lae2r4BvZU1GcqBoGum8OzdtXA15B2ySxVR+vtU/IWu
+	 /8r8C4d4dUFzcXVardrHfJOAvPexjOmYRMINZV7Rh6EQFvNltQ8VyKvmizCZWzU6fA
+	 wRaXaOYKdmZhQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Saurav Kashyap <skashyap@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	jhasan@marvell.com,
+	GR-QLogic-Storage-Upstream@marvell.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/9] scsi: qedf: Set qed_slowpath_params to zero before use
+Date: Tue, 18 Jun 2024 08:42:49 -0400
+Message-ID: <20240618124300.3304600-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.4.278
+Content-Transfer-Encoding: 8bit
 
-From: Jos Wang <joswang@lenovo.com>
+From: Saurav Kashyap <skashyap@marvell.com>
 
-This is a workaround for STAR 4846132, which only affects
-DWC_usb31 version2.00a operating in host mode.
+[ Upstream commit 6c3bb589debd763dc4b94803ddf3c13b4fcca776 ]
 
-There is a problem in DWC_usb31 version 2.00a operating
-in host mode that would cause a CSR read timeout When CSR
-read coincides with RAM Clock Gating Entry. By disable
-Clock Gating, sacrificing power consumption for normal
-operation.
+Zero qed_slowpath_params before use.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jos Wang <joswang@lenovo.com>
+Signed-off-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240515091101.18754-4-skashyap@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-v4 -> v5: no change
-v3 -> v4: modify commit message, add Cc: stable@vger.kernel.org
-v2 -> v3:
-- code refactor
-- modify comment, add STAR number, workaround applied in host mode
-- modify commit message, add STAR number, workaround applied in host mode
-- modify Author Jos Wang
-v1 -> v2: no change
+ drivers/scsi/qedf/qedf_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- drivers/usb/dwc3/core.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 7ee61a89520b..2a3adc80fe0f 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -957,12 +957,16 @@ static bool dwc3_core_is_valid(struct dwc3 *dwc)
- 
- static void dwc3_core_setup_global_control(struct dwc3 *dwc)
- {
-+	unsigned int power_opt;
-+	unsigned int hw_mode;
- 	u32 reg;
- 
- 	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
- 	reg &= ~DWC3_GCTL_SCALEDOWN_MASK;
-+	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
-+	power_opt = DWC3_GHWPARAMS1_EN_PWROPT(dwc->hwparams.hwparams1);
- 
--	switch (DWC3_GHWPARAMS1_EN_PWROPT(dwc->hwparams.hwparams1)) {
-+	switch (power_opt) {
- 	case DWC3_GHWPARAMS1_EN_PWROPT_CLK:
- 		/**
- 		 * WORKAROUND: DWC3 revisions between 2.10a and 2.50a have an
-@@ -995,6 +999,20 @@ static void dwc3_core_setup_global_control(struct dwc3 *dwc)
- 		break;
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index 858058f228191..e0601b5520b78 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -3299,6 +3299,7 @@ static int __qedf_probe(struct pci_dev *pdev, int mode)
  	}
  
-+	/*
-+	 * This is a workaround for STAR#4846132, which only affects
-+	 * DWC_usb31 version2.00a operating in host mode.
-+	 *
-+	 * There is a problem in DWC_usb31 version 2.00a operating
-+	 * in host mode that would cause a CSR read timeout When CSR
-+	 * read coincides with RAM Clock Gating Entry. By disable
-+	 * Clock Gating, sacrificing power consumption for normal
-+	 * operation.
-+	 */
-+	if (power_opt != DWC3_GHWPARAMS1_EN_PWROPT_NO &&
-+	    hw_mode != DWC3_GHWPARAMS0_MODE_GADGET && DWC3_VER_IS(DWC31, 200A))
-+		reg |= DWC3_GCTL_DSBLCLKGTNG;
-+
- 	/* check if current dwc3 is on simulation board */
- 	if (dwc->hwparams.hwparams6 & DWC3_GHWPARAMS6_EN_FPGA) {
- 		dev_info(dwc->dev, "Running with FPGA optimizations\n");
+ 	/* Start the Slowpath-process */
++	memset(&slowpath_params, 0, sizeof(struct qed_slowpath_params));
+ 	slowpath_params.int_mode = QED_INT_MODE_MSIX;
+ 	slowpath_params.drv_major = QEDF_DRIVER_MAJOR_VER;
+ 	slowpath_params.drv_minor = QEDF_DRIVER_MINOR_VER;
 -- 
-2.17.1
+2.43.0
 
 
