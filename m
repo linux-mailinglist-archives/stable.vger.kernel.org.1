@@ -1,120 +1,131 @@
-Return-Path: <stable+bounces-53423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86CBC90D18E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:44:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EBAD90CCAD
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FC381F269AD
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:44:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B2F4B267B9
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4971D13C81E;
-	Tue, 18 Jun 2024 13:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D7E16B3B7;
+	Tue, 18 Jun 2024 12:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6hqBG9G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jal7wAED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078D5158D65;
-	Tue, 18 Jun 2024 13:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F3A16B3AA;
+	Tue, 18 Jun 2024 12:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716282; cv=none; b=P2i36I+6jWNdArFXjHmerFZSON5JI61uY+wyAL/93s/+JiLeeCZrE8ZmBxizIKO6bOqfKHRRZ/aC7DTA6++7HrdiH+lcRDsalN0urBif4k1Wn9TFZUZwtaMO+hXGdWg3lJooXVjEu84pXSoGyHmhEZNv/2z2/3RsZhNJjJ1CvQc=
+	t=1718714325; cv=none; b=lI4O+NFQljoMZ36ihkfwCPPXPUTrunHMZEWQFddyHgSghL2Z+TOwg8v8npGyB3RETqR8/pDO4P8V2rewhcVUAcENAaBJ7TobYWQDlAtA7Ek3Xo78b/I46+SQZ3pOaqOgaFyIRk9kFi7eVETfhWztvW4W4bN4nQL0aDaR1V6TVZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716282; c=relaxed/simple;
-	bh=bkwTVm7YIOVzySQPksXL2MfvNWudpbJSLSQChmmFcSk=;
+	s=arc-20240116; t=1718714325; c=relaxed/simple;
+	bh=DmjFNh2KZfm/OpeZUu86ZdwwMVuskNuuf73zXtlAuNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDz3J66l05O75tm8lqXj3+9MvEpyeh6ZAW4hIO2PJQdJrnMeCjuo02jIGuPV6dAf1r0LfaT4MCndIcaoBrR3+GG0Xwq0M6tyTXoDO0H1HR498sYr/CMaD6oxVN+qL2J+TZDEVzfQINv6J20BioTPzpHUh2LumV8Tsc5GrtmOzSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6hqBG9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79653C32786;
-	Tue, 18 Jun 2024 13:11:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716281;
-	bh=bkwTVm7YIOVzySQPksXL2MfvNWudpbJSLSQChmmFcSk=;
+	 MIME-Version; b=N3mbNA9mFJqQYD9ojsW06gP3u0yqAwa2xMNrM1+wkRg4ZXgvEmVZURHE2Anz3GNMFncZi0f+CtuycOOjPvWYlZmyHqAymR2aBnvv9o8BcYtoXDCZdpp6U9e+Bg6SoaFyenqebVEsHJK0/frRsJUqUhqAayyzztX+pWo3I49sHGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jal7wAED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4348C4AF48;
+	Tue, 18 Jun 2024 12:38:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714325;
+	bh=DmjFNh2KZfm/OpeZUu86ZdwwMVuskNuuf73zXtlAuNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6hqBG9GgnQlhpjCNxozchmFBFKG6+lWksfUvqedeMTHJIY6kKwUNO9AQBzoGwZIB
-	 aum7fDrqkbDFhID7SQRKcEYRnWWJhG+9QnMv0wYGHYxxBA+YaEjKqqCBK9+bIF8h3Q
-	 UHbR9u9SR6L4JaJlPsFegTOA/w2oo5NXpyaM+mzs=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 594/770] NFSD: Simplify starting_len
-Date: Tue, 18 Jun 2024 14:37:27 +0200
-Message-ID: <20240618123430.222798512@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=jal7wAED58bGRupxegbW3xHGyno7MOhCO7TImIeDP97Xmq+sUSkuKwH7k2TS0uj7k
+	 THoG3lZ7GRWmLM83Rp5lGgSfElEBSl+SCzJnDvUvP4qZ8xku08IXLTXqkTVgM5a6v+
+	 0kyXUDtLr9MB2QgRNX151vlZawksJ9OnIOpQT56AqLkq5yWyZ3oVltkpF4N7x8Uh8D
+	 4E52WPmoid+1JjeB8L3EgByTq145Akk8EmCk/UoShL/y4rRx4/Ligws/g47lSB3PSh
+	 FP7jTXvMZyHTwn4SMyB53d9TdYLnCWEluwT0P8301aDsqqRCx/+dTcaRXbhnFu9N5T
+	 wJb4ligrRFIWQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Kees Cook <keescook@chromium.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-hardening@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 07/35] efi: pstore: Return proper errors on UEFI failures
+Date: Tue, 18 Jun 2024 08:37:27 -0400
+Message-ID: <20240618123831.3302346-7-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
+References: <20240618123831.3302346-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 
-------------------
+[ Upstream commit 7c23b186ab892088f76a3ad9dbff1685ffe2e832 ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+Right now efi-pstore either returns 0 (success) or -EIO; but we
+do have a function to convert UEFI errors in different standard
+error codes, helping to narrow down potential issues more accurately.
 
-[ Upstream commit 071ae99feadfc55979f89287d6ad2c6a315cb46d ]
+So, let's use this helper here.
 
-Clean-up: Now that nfsd4_encode_readv() does not have to encode the
-EOF or rd_length values, it no longer needs to subtract 8 from
-@starting_len.
-
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/firmware/efi/efi-pstore.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 36f0f06714dec..f67a54f7eb13e 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -3950,7 +3950,7 @@ static __be32 nfsd4_encode_readv(struct nfsd4_compoundres *resp,
- 				 struct file *file, unsigned long maxcount)
- {
- 	struct xdr_stream *xdr = resp->xdr;
--	int starting_len = xdr->buf->len - 8;
-+	unsigned int starting_len = xdr->buf->len;
- 	__be32 nfserr;
- 	__be32 tmp;
- 	int pad;
-@@ -3965,14 +3965,13 @@ static __be32 nfsd4_encode_readv(struct nfsd4_compoundres *resp,
- 	read->rd_length = maxcount;
- 	if (nfserr)
- 		return nfserr;
--	if (svc_encode_result_payload(resp->rqstp, starting_len + 8, maxcount))
-+	if (svc_encode_result_payload(resp->rqstp, starting_len, maxcount))
- 		return nfserr_io;
--	xdr_truncate_encode(xdr, starting_len + 8 + xdr_align_size(maxcount));
-+	xdr_truncate_encode(xdr, starting_len + xdr_align_size(maxcount));
+diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
+index e7b9ec6f8a86a..5669023bdd1de 100644
+--- a/drivers/firmware/efi/efi-pstore.c
++++ b/drivers/firmware/efi/efi-pstore.c
+@@ -109,7 +109,7 @@ static int efi_pstore_read_func(struct pstore_record *record,
+ 				     &size, record->buf);
+ 	if (status != EFI_SUCCESS) {
+ 		kfree(record->buf);
+-		return -EIO;
++		return efi_status_to_err(status);
+ 	}
  
- 	tmp = xdr_zero;
- 	pad = (maxcount&3) ? 4 - (maxcount&3) : 0;
--	write_bytes_to_xdr_buf(xdr->buf, starting_len + 8 + maxcount,
--								&tmp, pad);
-+	write_bytes_to_xdr_buf(xdr->buf, starting_len + maxcount, &tmp, pad);
+ 	/*
+@@ -154,7 +154,7 @@ static ssize_t efi_pstore_read(struct pstore_record *record)
+ 			return 0;
+ 
+ 		if (status != EFI_SUCCESS)
+-			return -EIO;
++			return efi_status_to_err(status);
+ 
+ 		/* skip variables that don't concern us */
+ 		if (efi_guidcmp(guid, LINUX_EFI_CRASH_GUID))
+@@ -192,7 +192,7 @@ static int efi_pstore_write(struct pstore_record *record)
+ 					    record->size, record->psi->buf,
+ 					    true);
+ 	efivar_unlock();
+-	return status == EFI_SUCCESS ? 0 : -EIO;
++	return efi_status_to_err(status);
+ };
+ 
+ static int efi_pstore_erase(struct pstore_record *record)
+@@ -203,7 +203,7 @@ static int efi_pstore_erase(struct pstore_record *record)
+ 				     PSTORE_EFI_ATTRIBUTES, 0, NULL);
+ 
+ 	if (status != EFI_SUCCESS && status != EFI_NOT_FOUND)
+-		return -EIO;
++		return efi_status_to_err(status);
  	return 0;
- 
  }
+ 
 -- 
 2.43.0
-
-
 
 
