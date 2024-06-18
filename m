@@ -1,128 +1,119 @@
-Return-Path: <stable+bounces-53560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC2390D25B
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:49:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3484790CD08
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2CE228479D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:49:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9FEB2820BC
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BC015A841;
-	Tue, 18 Jun 2024 13:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 383771A3BDA;
+	Tue, 18 Jun 2024 12:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEH8SP8/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bbxbFff1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0C91AC769;
-	Tue, 18 Jun 2024 13:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37E713BC20;
+	Tue, 18 Jun 2024 12:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716691; cv=none; b=hg6Ujy8dLbEMSq/yqDMk+gNOsiVvWxCQICLtLOVHUE9ZrlpshFlR+BUbfwyXJ/ZM8BbL15CkC57kOQ0InCmW0KnlDItPvJ93aB7ZxdUoBojFruLcLyu9+/eHSOWS8odsyOtCwaW0UZHHLTd4WkHy9rGZw5iP2A0wsthFufIcsYg=
+	t=1718714458; cv=none; b=YfNxiDemIGaTYTC7Hu3bUqS/kiTNLBUPOB4xe18YflJ/nTRjP8RhTnFBf8N7+wLQfnmSiwLKoLEucdiW3ePlIbRiZuASdnmQ8OQMJkH42HkoQtz2hOFtEsFnR66n4bHroE5YJwGK0stPRkQzXYQ0qzeVHfqRh5Ngvx6MbDYNwjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716691; c=relaxed/simple;
-	bh=X4wu9B2UuNy/fvWEmuC1I6n45XlpB2jpzWWcc+Xn93s=;
+	s=arc-20240116; t=1718714458; c=relaxed/simple;
+	bh=iWE2UB15Ff60WGB6hHzzKXo7kY7WJ33e1jmtNvHU3Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrBBnzfS8CcQjNUFLSm6z/ROiMUJK++LDBegeJen3e+IvjEWiBDpXCgSaC8GKpI55kbUmBXf3LXI404eUMeqBstsHe5lmKzlv+OEql8ktIE7wZCBtmjpMtIztdLMrHQfkslqlBlQqniNGjApPl2cqUUK/fNAnGu1pZHUdHWXOPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEH8SP8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69CDC3277B;
-	Tue, 18 Jun 2024 13:18:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716691;
-	bh=X4wu9B2UuNy/fvWEmuC1I6n45XlpB2jpzWWcc+Xn93s=;
+	 MIME-Version; b=R5l81hOv0Zi6Ado3TRCjvMPdTMV1+E88kADpfXYSD8IEK+RnXJKAE1ob5Yd5PYwBJdWoRekeUsiAzhjBYdLlSgCqsStbcKCs2dPrm5Woisvz57kZ6m8EPPq4sSnOrSciIPi1bGpjFlrEHIcpk7qYhCcPEsjUK4X9aBnsol+N0o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bbxbFff1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6A0C32786;
+	Tue, 18 Jun 2024 12:40:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714457;
+	bh=iWE2UB15Ff60WGB6hHzzKXo7kY7WJ33e1jmtNvHU3Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lEH8SP8/MpCmP14qFr2BODDg90zzAIpOLvb42ABfrX+XJd/H5PJjae0PK2bAVG9ul
-	 uC3ol7tSuqU/R4DMWwMc9pBSp/95QMNWaYyPzdtI5sqkqKJBw+NcaUBTbdW+qn8yN2
-	 dZswgcqsxlVeHfS3yz7ZtvzgFDm7CATiCOz/LJ5o=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 731/770] nfsd: allow nfsd_file_get to sanely handle a NULL pointer
-Date: Tue, 18 Jun 2024 14:39:44 +0200
-Message-ID: <20240618123435.484573843@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=bbxbFff1Agmthgt0Q5IyiP36EbmnH+tr4EInFDsVRQ9OcO/m5wrTlKWHRTDux0uBa
+	 VNE54IDApEinnjAcdOi6mMwZCMT7et3DolAxpqGtW3BP1Gc1zwpvThXm9qi5Cjsti2
+	 RAlrWzhKrbvcTcfSHUEvETUT6xLAXXaq6z1nhGgtnN3T1JatTatsGwyRrHnUXV7zqW
+	 CPYVJiRxjyTuDBb2f54Vbx23z5fFWL0SD8cFdBliOwZ4lWKZ36z+Kcwo+Tx3Cum2TJ
+	 mVLN+ywSq1zPXyArFJaIxpwz08AB+9Xk+HzsDrjQzu6Td348PFOWIMbQ0YrYhgbkJI
+	 2Z48LzuY241FA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
+	ayala.beker@intel.com,
+	gregory.greenman@intel.com,
+	benjamin.berg@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 18/29] wifi: iwlwifi: mvm: Fix scan abort handling with HW rfkill
+Date: Tue, 18 Jun 2024 08:39:44 -0400
+Message-ID: <20240618124018.3303162-18-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
+References: <20240618124018.3303162-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Ilan Peer <ilan.peer@intel.com>
 
-------------------
+[ Upstream commit e6dd2936ce7ce94a1915b799f8af8193ec628e87 ]
 
-From: Jeff Layton <jlayton@kernel.org>
+When HW rfkill is toggled to disable the RF, the flow to stop scan is
+called. When trying to send the command to abort the scan, since
+HW rfkill is toggled, the command is not sent due to rfkill being
+asserted, and -ERFKILL is returned from iwl_trans_send_cmd(), but this
+is silently ignored in iwl_mvm_send_cmd() and thus the scan abort flow
+continues to wait for scan complete notification and fails. Since it
+fails, the UID to type mapping is not cleared, and thus a warning is
+later fired when trying to stop the interface.
 
-[ Upstream commit 70f62231cdfd52357836733dd31db787e0412ab2 ]
+To fix this, modify the UMAC scan abort flow to force sending the
+scan abort command even when in rfkill, so stop the FW from accessing
+the radio etc.
 
-...and remove some now-useless NULL pointer checks in its callers.
-
-Suggested-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.8cbe2f8c1a97.Iffe235c12a919dafec88eef399eb1f7bae2c5bdb@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/filecache.c | 5 ++---
- fs/nfsd/nfs4state.c | 4 +---
- 2 files changed, 3 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
-index 68c7c82f8b3bb..206742bbbd682 100644
---- a/fs/nfsd/filecache.c
-+++ b/fs/nfsd/filecache.c
-@@ -451,7 +451,7 @@ static bool nfsd_file_lru_remove(struct nfsd_file *nf)
- struct nfsd_file *
- nfsd_file_get(struct nfsd_file *nf)
- {
--	if (likely(refcount_inc_not_zero(&nf->nf_ref)))
-+	if (nf && refcount_inc_not_zero(&nf->nf_ref))
- 		return nf;
- 	return NULL;
- }
-@@ -1106,8 +1106,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
- 	rcu_read_lock();
- 	nf = rhashtable_lookup(&nfsd_file_rhash_tbl, &key,
- 			       nfsd_file_rhash_params);
--	if (nf)
--		nf = nfsd_file_get(nf);
-+	nf = nfsd_file_get(nf);
- 	rcu_read_unlock();
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 686a55515cdec..9bb8533874d8e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -3057,10 +3057,11 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
  
- 	if (nf) {
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 6c11f2701af88..2733eb33d5df2 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -602,9 +602,7 @@ put_nfs4_file(struct nfs4_file *fi)
- static struct nfsd_file *
- __nfs4_get_fd(struct nfs4_file *f, int oflag)
- {
--	if (f->fi_fds[oflag])
--		return nfsd_file_get(f->fi_fds[oflag]);
--	return NULL;
-+	return nfsd_file_get(f->fi_fds[oflag]);
+ 	ret = iwl_mvm_send_cmd_pdu(mvm,
+ 				   WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
+-				   0, sizeof(cmd), &cmd);
++				   CMD_SEND_IN_RFKILL, sizeof(cmd), &cmd);
+ 	if (!ret)
+ 		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
+ 
++	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d\n", ret);
+ 	return ret;
  }
  
- static struct nfsd_file *
 -- 
 2.43.0
-
-
 
 
