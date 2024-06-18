@@ -1,110 +1,111 @@
-Return-Path: <stable+bounces-52731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA28C90CC82
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:52:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868AC90D2ED
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B96861C2360F
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:52:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AE31B28564
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19B9179663;
-	Tue, 18 Jun 2024 12:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC02A18A952;
+	Tue, 18 Jun 2024 13:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MfrGmTqP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YuaBT9AF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E613179647;
-	Tue, 18 Jun 2024 12:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7DD158D79;
+	Tue, 18 Jun 2024 13:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714341; cv=none; b=aEgkpPf6buZg+AtoL5UWNoIoZIgUEZaEMNmRP6A2L5Jn9cu57jDEZcgsq+t2MhVd97017xvv+kvLLs9/adHZhqDM5EN/KdKy8d9wZAebO1GR30ElrZDa/jLbQ1Fw616FuunZmoNstt6hj3Z7clDG6Ej3I55MhoyJKyjs5dqW/hU=
+	t=1718716308; cv=none; b=qB/naMtj0A5sRdCwWAf7dWax7JJC39VUblBzzolhFheEH9Xx9ITlodZHedf/qLZwkZGmy0tlphBbqZC2vJlGPkenDKe4gQwahzebjMI0yssUi+Mz8AIzXAGzIyYF3+AsWmoCwEqmFHl26abQKNK2E2+Me8spRy8fhDzntSjgBkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714341; c=relaxed/simple;
-	bh=XIyGDgJu4dSKHhftQsplVuFzDPLqDZkaH9/qzAjpwcs=;
+	s=arc-20240116; t=1718716308; c=relaxed/simple;
+	bh=doJPyst/ofUPVvaw7EdcKCivBrHsiqPGxxa8ERoKh/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PklYJD+OB70xuNvl2wd/aI4sqvoKq3YlhXd3XOviMhv87/MZoKq9xVAM1PlgStpdDrcOWX309RB0yPHsPkTN1E9YmX5js8KYVQZIkzVmL/EgUKHOjbvRMIXZMt1SX/hTVGE/eEb118ZXDMtK2hcJZh6n0LGtJ+lDUL/lLVtAKXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MfrGmTqP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1951BC4AF50;
-	Tue, 18 Jun 2024 12:39:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714341;
-	bh=XIyGDgJu4dSKHhftQsplVuFzDPLqDZkaH9/qzAjpwcs=;
+	 MIME-Version; b=Ciy3AWji0R6yU0/9GiyHz8wuvhDCyvQ2v1ciiCpSMKf35aqo8RaoiDXJ5Raflr0pLgnpF6waD3diiWIzcYxPg05Lki9B1WPdEZRz4NUGA5CtPcfl2UBvCgEUlnCfelM1ydx6LIo2o2KAKNNu4LaVrZ1Dao4j+elu64zvSadrokU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YuaBT9AF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D2FC3277B;
+	Tue, 18 Jun 2024 13:11:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716308;
+	bh=doJPyst/ofUPVvaw7EdcKCivBrHsiqPGxxa8ERoKh/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfrGmTqP3dxGN4c3ztWFqfg2dk/TkPRFYoKmwKM4+BZ1DJZRH25htWGNEgev9UB9b
-	 CSWT3NW9IfVw63L8miXMNL5GF999r/H3KtIs4wRNG4OcWunwJBCNbkIqhZhTz9kNAd
-	 JBQRcvjBhlAi39C2TVq1nr9+xEXAsAqvx6iuIVuaAciWij0TdlXawjtJqyeUzjtbRe
-	 rWbA6YpACQCpw0xoNAJU9ZmJSFn0Pp+HJT6EqfDhIPwiiQIGiUdGGQjYD1ykefP9XH
-	 Ma6AMeJ0UIEK+Z8jPd1e1Tyrix8aKNsBKWl1DtiX1JdzYNzK10u8g0Q5+VWcXTFpIs
-	 jj1X0AQ1rpdSw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	shaul.triebitz@intel.com,
-	benjamin.berg@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 15/35] wifi: iwlwifi: mvm: d3: fix WoWLAN command version lookup
-Date: Tue, 18 Jun 2024 08:37:35 -0400
-Message-ID: <20240618123831.3302346-15-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
-References: <20240618123831.3302346-1-sashal@kernel.org>
+	b=YuaBT9AFzKLwMEH3C1grhj98rLtDNTi7Z6VLVbZNdGEayjpIJim6gCULVu0A7NluC
+	 SdM1VsBFeRHxaonrARNVQmSfpEQ+Y0weFXxjVDV8zggjT0tGiYNEkQIn9clLYxHm/C
+	 nKY6/Wu8vbuJiL34THJYg7sl+taxqhxQL3GTJ/Zk=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 602/770] NFSD: Make nfs4_put_copy() static
+Date: Tue, 18 Jun 2024 14:37:35 +0200
+Message-ID: <20240618123430.527188437@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit b7ffca99313d856f7d1cc89038d9061b128e8e97 ]
+------------------
 
-After moving from commands to notificaitons in the d3 resume flow,
-removing the WOWLAN_GET_STATUSES and REPLY_OFFLOADS_QUERY_CMD causes
-the return of the default value when looking up their version.
-Returning zero here results in the driver sending the not supported
-NON_QOS_TX_COUNTER_CMD.
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.8cabfd580614.If3a0db9851f56041f8f5360959354abd5379224a@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Upstream commit 8ea6e2c90bb0eb74a595a12e23a1dff9abbc760a ]
+
+Clean up: All call sites are in fs/nfsd/nfs4proc.c.
+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4proc.c | 2 +-
+ fs/nfsd/state.h    | 1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index cfc239b272eb7..66aed6635d92c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -2102,7 +2102,8 @@ static bool iwl_mvm_setup_connection_keep(struct iwl_mvm *mvm,
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 7fb1ef7c4383e..64879350ccbda 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1287,7 +1287,7 @@ nfsd4_clone(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	return status;
+ }
  
- out:
- 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP,
--				    WOWLAN_GET_STATUSES, 0) < 10) {
-+				    WOWLAN_GET_STATUSES,
-+				    IWL_FW_CMD_VER_UNKNOWN) < 10) {
- 		mvmvif->seqno_valid = true;
- 		/* +0x10 because the set API expects next-to-use, not last-used */
- 		mvmvif->seqno = status->non_qos_seq_ctr + 0x10;
+-void nfs4_put_copy(struct nfsd4_copy *copy)
++static void nfs4_put_copy(struct nfsd4_copy *copy)
+ {
+ 	if (!refcount_dec_and_test(&copy->refcount))
+ 		return;
+diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
+index f3d6313914ed0..ae596dbf86675 100644
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -703,7 +703,6 @@ extern struct nfs4_client_reclaim *nfs4_client_to_reclaim(struct xdr_netobj name
+ extern bool nfs4_has_reclaimed_state(struct xdr_netobj name, struct nfsd_net *nn);
+ 
+ void put_nfs4_file(struct nfs4_file *fi);
+-extern void nfs4_put_copy(struct nfsd4_copy *copy);
+ extern struct nfsd4_copy *
+ find_async_copy(struct nfs4_client *clp, stateid_t *staetid);
+ extern void nfs4_put_cpntf_state(struct nfsd_net *nn,
 -- 
 2.43.0
+
+
 
 
