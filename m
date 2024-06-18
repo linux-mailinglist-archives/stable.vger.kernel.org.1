@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E94690CFE4
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:29:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8078B90CFC6
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:29:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22A072834E6
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:29:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2230128102D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8EC15278B;
-	Tue, 18 Jun 2024 12:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCCF15FCE8;
+	Tue, 18 Jun 2024 12:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOiMl/l8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gc3sVVAL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA0F14F9E2;
-	Tue, 18 Jun 2024 12:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3E813F431;
+	Tue, 18 Jun 2024 12:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715153; cv=none; b=YCXtHJAILRHyIJw4sizEoliV2wkRthmhQAJ0Ib6kfL6w4BKFQcL1/4rGKMk4KEuFDBZ6ZP8y2KUiQGIkqYdMYaFxGx6CAFiBsx7GmcJFdFupQISiSTsZqmPENgAKVlv9WgaiGQNb2ZR6G2fkSaDvZYoBBgrFKWSDWb3bhNZ3UJk=
+	t=1718715062; cv=none; b=icraysR+C2Y21GeCnqQj3ubKqJfCa3AAtP5U79LAyXxSC3hSZuijXje6fjnYE/He+lvUMPGe0O8bfG6NowCcsBwkjLpMBETH2Ww2wAHHoAz61NMgHOYbmMRtuVfUfeP8DULGmgSo62B0Q5NnhSkVGk0xtg1NzunLVed7MdsLick=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715153; c=relaxed/simple;
-	bh=02JtmGMiVLFP1ZWIHDpg8kSdysfTUf5yKwMxKmaw8ZE=;
+	s=arc-20240116; t=1718715062; c=relaxed/simple;
+	bh=9xvYc/cr16Nem3+owfNUzut/+2KI2qa0J0kXJ3CIpsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6xUtKfkOMK/03xg0x8dm0jJ6H+MVbKmpixypYtyjqR1xapiAKrtbexlAizHw753WWNUReeOQvjeabUlwLiVaz6EZNvE7i/7Nx04to+J9Jd8RQComUAB3lgHMxrwztFsoEO0pAHggJLyhyJ7T5DdTECA6c5W2oD9hCZbrifw7W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOiMl/l8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F66C3277B;
-	Tue, 18 Jun 2024 12:52:32 +0000 (UTC)
+	 MIME-Version; b=rjuY7YK7RY0yXip3Qulvjl4LfAZNtTLtV9t3Uuo1z62b+WkglpOMEykZ5yfME/gwl8Y/z5WXPwpSTM/Nq1dW7fR7emgjInFAC83eUjURdI4GvsqMUFo776oKUGrMUvn9kZkfG2GnBWazniXJhFjU3UeEjTVawW448tGdUe33vZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gc3sVVAL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E058C3277B;
+	Tue, 18 Jun 2024 12:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715153;
-	bh=02JtmGMiVLFP1ZWIHDpg8kSdysfTUf5yKwMxKmaw8ZE=;
+	s=korg; t=1718715061;
+	bh=9xvYc/cr16Nem3+owfNUzut/+2KI2qa0J0kXJ3CIpsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XOiMl/l8reLQC+p+DvrGgP+LLLq3URwkVHTi6uzjAByxHvaOwDmWCBX6OvWZh0mQz
-	 +0CwLKlepDB/mY9d/Y9pitMeAB0IeQaC89HW4jkb4zXOFM2UOWaS6Sfe841pKKV91A
-	 NngHgKC1vzhW/7g4QcuL9nk/toiderzWsGcG3Utk=
+	b=Gc3sVVALyVf4JB9z6On5JfGyCmThGM5L9cpM4q5xCpkL20BIqKzISEWUUEJLkDxz7
+	 JLxvh3iGVOX0iccqKNe5ZxGtKpaz8mHRWURAKFFKz8Vo6i162s1UXMnpSZPjV+IjqD
+	 v8ZnEvw0H+F/gsCYek7hBZqzAiWK41hxH2sTC4PU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"J. Bruce Fields" <bfields@redhat.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 181/770] nfsd: rename lookup_clientid->set_client
-Date: Tue, 18 Jun 2024 14:30:34 +0200
-Message-ID: <20240618123414.259098586@linuxfoundation.org>
+Subject: [PATCH 5.10 182/770] nfsd: refactor set_client
+Date: Tue, 18 Jun 2024 14:30:35 +0200
+Message-ID: <20240618123414.300635238@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,95 +68,77 @@ Content-Transfer-Encoding: 8bit
 
 From: J. Bruce Fields <bfields@redhat.com>
 
-[ Upstream commit 460d27091ae2c23e7ac959a61cd481c58832db58 ]
+[ Upstream commit 7950b5316e40d99dcb85ab81a2d1dbb913d7c1c8 ]
 
-I think this is a better name, and I'm going to reuse elsewhere the code
-that does the lookup itself.
+This'll be useful elsewhere.
 
 Signed-off-by: J. Bruce Fields <bfields@redhat.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ fs/nfsd/nfs4state.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
 diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 574c88a9da268..60c66becbc876 100644
+index 60c66becbc876..c4e9f807b4a1b 100644
 --- a/fs/nfsd/nfs4state.c
 +++ b/fs/nfsd/nfs4state.c
-@@ -4675,7 +4675,7 @@ static __be32 nfsd4_check_seqid(struct nfsd4_compound_state *cstate, struct nfs4
+@@ -4675,40 +4675,40 @@ static __be32 nfsd4_check_seqid(struct nfsd4_compound_state *cstate, struct nfs4
  	return nfserr_bad_seqid;
  }
  
--static __be32 lookup_clientid(clientid_t *clid,
-+static __be32 set_client(clientid_t *clid,
++static struct nfs4_client *lookup_clientid(clientid_t *clid, bool sessions,
++						struct nfsd_net *nn)
++{
++	struct nfs4_client *found;
++
++	spin_lock(&nn->client_lock);
++	found = find_confirmed_client(clid, sessions, nn);
++	if (found)
++		atomic_inc(&found->cl_rpc_users);
++	spin_unlock(&nn->client_lock);
++	return found;
++}
++
+ static __be32 set_client(clientid_t *clid,
  		struct nfsd4_compound_state *cstate,
  		struct nfsd_net *nn,
  		bool sessions)
-@@ -4730,7 +4730,7 @@ nfsd4_process_open1(struct nfsd4_compound_state *cstate,
- 	if (open->op_file == NULL)
- 		return nfserr_jukebox;
- 
--	status = lookup_clientid(clientid, cstate, nn, false);
-+	status = set_client(clientid, cstate, nn, false);
- 	if (status)
- 		return status;
- 	clp = cstate->clp;
-@@ -5320,7 +5320,7 @@ nfsd4_renew(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
- 
- 	trace_nfsd_clid_renew(clid);
--	status = lookup_clientid(clid, cstate, nn, false);
-+	status = set_client(clid, cstate, nn, false);
- 	if (status)
- 		return status;
- 	clp = cstate->clp;
-@@ -5701,8 +5701,7 @@ nfsd4_lookup_stateid(struct nfsd4_compound_state *cstate,
- 	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid) ||
- 		CLOSE_STATEID(stateid))
- 		return nfserr_bad_stateid;
--	status = lookup_clientid(&stateid->si_opaque.so_clid, cstate, nn,
--				 false);
-+	status = set_client(&stateid->si_opaque.so_clid, cstate, nn, false);
- 	if (status == nfserr_stale_clientid) {
- 		if (cstate->session)
- 			return nfserr_bad_stateid;
-@@ -5841,7 +5840,7 @@ static __be32 find_cpntf_state(struct nfsd_net *nn, stateid_t *st,
- 
- 	cps->cpntf_time = ktime_get_boottime_seconds();
- 	memset(&cstate, 0, sizeof(cstate));
--	status = lookup_clientid(&cps->cp_p_clid, &cstate, nn, true);
-+	status = set_client(&cps->cp_p_clid, &cstate, nn, true);
- 	if (status)
- 		goto out;
- 	status = nfsd4_lookup_stateid(&cstate, &cps->cp_p_stateid,
-@@ -6933,8 +6932,7 @@ nfsd4_lockt(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 		 return nfserr_inval;
- 
- 	if (!nfsd4_has_session(cstate)) {
--		status = lookup_clientid(&lockt->lt_clientid, cstate, nn,
--					 false);
-+		status = set_client(&lockt->lt_clientid, cstate, nn, false);
- 		if (status)
- 			goto out;
+ {
+-	struct nfs4_client *found;
+-
+ 	if (cstate->clp) {
+-		found = cstate->clp;
+-		if (!same_clid(&found->cl_clientid, clid))
++		if (!same_clid(&cstate->clp->cl_clientid, clid))
+ 			return nfserr_stale_clientid;
+ 		return nfs_ok;
  	}
-@@ -7118,7 +7116,7 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
- 	dprintk("nfsd4_release_lockowner clientid: (%08x/%08x):\n",
- 		clid->cl_boot, clid->cl_id);
- 
--	status = lookup_clientid(clid, cstate, nn, false);
-+	status = set_client(clid, cstate, nn, false);
- 	if (status)
- 		return status;
- 
-@@ -7258,7 +7256,7 @@ nfs4_check_open_reclaim(clientid_t *clid,
- 	__be32 status;
- 
- 	/* find clientid in conf_id_hashtbl */
--	status = lookup_clientid(clid, cstate, nn, false);
-+	status = set_client(clid, cstate, nn, false);
- 	if (status)
- 		return nfserr_reclaim_bad;
+-
+ 	if (STALE_CLIENTID(clid, nn))
+ 		return nfserr_stale_clientid;
+-
+ 	/*
+ 	 * For v4.1+ we get the client in the SEQUENCE op. If we don't have one
+ 	 * cached already then we know this is for is for v4.0 and "sessions"
+ 	 * will be false.
+ 	 */
+ 	WARN_ON_ONCE(cstate->session);
+-	spin_lock(&nn->client_lock);
+-	found = find_confirmed_client(clid, sessions, nn);
+-	if (!found) {
+-		spin_unlock(&nn->client_lock);
++	cstate->clp = lookup_clientid(clid, sessions, nn);
++	if (!cstate->clp)
+ 		return nfserr_expired;
+-	}
+-	atomic_inc(&found->cl_rpc_users);
+-	spin_unlock(&nn->client_lock);
+-
+-	/* Cache the nfs4_client in cstate! */
+-	cstate->clp = found;
+ 	return nfs_ok;
+ }
  
 -- 
 2.43.0
