@@ -1,121 +1,111 @@
-Return-Path: <stable+bounces-52763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E01F90CCF1
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:01:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E6490D27E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:50:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C33D281311
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:00:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 097231C22D4A
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445991A08B6;
-	Tue, 18 Jun 2024 12:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEB81ACE9F;
+	Tue, 18 Jun 2024 13:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B0vE+/kw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLsf17HH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC731A08A7;
-	Tue, 18 Jun 2024 12:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B1415A860;
+	Tue, 18 Jun 2024 13:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714439; cv=none; b=XAYqs59eC4ySgx3JEmSgv2+YnV9l86zSyZso/D8jmr6NYbSZ/Od0jC0SFAsbVz3zURr9iQFGWwN4ktN1vQHrI1raHBEPwTqCgjN/iXKS9VqzfWEnH0PCMnYTkm5s7ku/6FthZ3txgzAOcoNRD18Fas5GvCeJxcTOV+9Z3c/6CGM=
+	t=1718716765; cv=none; b=p6knc+iewHjYbM0unGShDfGVy1HfPxRTDbV5JUkAbJfm6CcZtGZUgMVfN+27MAiuZShCtI1/WA1MWnq1xwyvSfgEKqOewAOHe9fe3F9kETzo5sqJKL36J/x6OIfJb+ztiKjEUC0x1pw2trGpelEkibHbO4bN/59/MliJtZ3zavQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714439; c=relaxed/simple;
-	bh=R9gQ5TWisbAU0V37/lrPQFfzIfNu5uluZ0CmaDwYwDI=;
+	s=arc-20240116; t=1718716765; c=relaxed/simple;
+	bh=xls96WPoj4Mqz1rzUrvM2Q5ZPZmmc+8k57Zz6HfoX9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0Oo/zliVygdMrbQEUs62K/4yp4v/g4zqzgMvA8LJGfQ36GagSdb8gOkwySJqMrdRZpMz0XOf+E6QGocYpTcaoXSW/ncHafmvylY4f46MX/eKdJ8EuJrRAIWGr+Q0Nk3grnA7oLywicm+ZDowC5BbJvKSKnBeE3115UQIymF4sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B0vE+/kw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE48C4AF51;
-	Tue, 18 Jun 2024 12:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714438;
-	bh=R9gQ5TWisbAU0V37/lrPQFfzIfNu5uluZ0CmaDwYwDI=;
+	 MIME-Version; b=EkjKNJ2EDBKL0qqT1q0a+6clLj9lUK0gyo2nXLt8+lgDHYybxl3vdYEN2zwWlHk+CMqjZ9DzqMS/cXnp11E6BKTeU1Ut7hPP4fm5q3dNDY8u2GiCWTYiNiXm0ArnbEuOxzgma3kw/IXfgiE1fmzz1zu2OXIEo2JX+iIpGs4rP08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLsf17HH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F83BC3277B;
+	Tue, 18 Jun 2024 13:19:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716765;
+	bh=xls96WPoj4Mqz1rzUrvM2Q5ZPZmmc+8k57Zz6HfoX9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0vE+/kw9Zqn7Rk+07S9qG7koP+Q5SAXqBaSpqQzAorTszN2hUHvBRwOE4HB/w6hz
-	 QFjyvzcNtMWa6zb1EpWWtc3SCbNrte4yUpoEcuDneLG4wqdwHNIhj1MaZ2qjt2+fp+
-	 V6kx+NmASAsUdfs96Xef6oCiOBexYp+0ZA26yLarzzqBeMnMeij8Whd0Fr/Qc1odCf
-	 Gs3wBKkvr6ZXF8SX+D8P3KY2k4KXy73SozCYbg9RbZ4M4agh1fQ256jyUjUhMAWcwl
-	 yIhEGS7wdTFfSYe/lGj6132KaA/rcOzE2jRNQEH/3Ickb5qZPSJ0YyMQnzlzIIChd8
-	 hk6dkgGGF02mw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Nicolas Escande <nico.escande@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 11/29] wifi: mac80211: mesh: init nonpeer_pm to active by default in mesh sdata
-Date: Tue, 18 Jun 2024 08:39:37 -0400
-Message-ID: <20240618124018.3303162-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124018.3303162-1-sashal@kernel.org>
-References: <20240618124018.3303162-1-sashal@kernel.org>
+	b=SLsf17HHH3ujzyhaLMYa41Pv4OYZOKCb/fxZdIvdUP/UuGl3Q81VY853X6iw//gv4
+	 e2xTihGfNC2KxXTwTX9ewwmtrRhGaPL7m7TvLaA2dCcWlAx4ZsVTTl+wHCKypqB/XY
+	 3BxaFNwUQEi+spBHJdiNPWihcQfXDXEhx9tIn6sc=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 724/770] NFSD: Use set_bit(RQ_DROPME)
+Date: Tue, 18 Jun 2024 14:39:37 +0200
+Message-ID: <20240618123435.217106571@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.94
 Content-Transfer-Encoding: 8bit
 
-From: Nicolas Escande <nico.escande@gmail.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 6f6291f09a322c1c1578badac8072d049363f4e6 ]
+------------------
 
-With a ath9k device I can see that:
-	iw phy phy0 interface add mesh0 type mp
-	ip link set mesh0 up
-	iw dev mesh0 scan
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Will start a scan with the Power Management bit set in the Frame Control Field.
-This is because we set this bit depending on the nonpeer_pm variable of the mesh
-iface sdata and when there are no active links on the interface it remains to
-NL80211_MESH_POWER_UNKNOWN.
+[ Upstream commit 5304930dbae82d259bcf7e5611db7c81e7a42eff ]
 
-As soon as links starts to be established, it wil switch to
-NL80211_MESH_POWER_ACTIVE as it is the value set by befault on the per sta
-nonpeer_pm field.
-As we want no power save by default, (as expressed with the per sta ini values),
-lets init it to the expected default value of NL80211_MESH_POWER_ACTIVE.
+The premise that "Once an svc thread is scheduled and executing an
+RPC, no other processes will touch svc_rqst::rq_flags" is false.
+svc_xprt_enqueue() examines the RQ_BUSY flag in scheduled nfsd
+threads when determining which thread to wake up next.
 
-Also please note that we cannot change the default value from userspace prior to
-establishing a link as using NL80211_CMD_SET_MESH_CONFIG will not work before
-NL80211_CMD_JOIN_MESH has been issued. So too late for our initial scan.
-
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Link: https://msgid.link/20240527141759.299411-1-nico.escande@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 9315564747cb ("NFSD: Use only RQ_DROPME to signal the need to drop a reply")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfsproc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 5a99b8f6e465f..9c9b47d153c28 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1625,6 +1625,7 @@ void ieee80211_mesh_init_sdata(struct ieee80211_sub_if_data *sdata)
- 	ifmsh->last_preq = jiffies;
- 	ifmsh->next_perr = jiffies;
- 	ifmsh->csa_role = IEEE80211_MESH_CSA_ROLE_NONE;
-+	ifmsh->nonpeer_pm = NL80211_MESH_POWER_ACTIVE;
- 	/* Allocate all mesh structures when creating the first mesh interface. */
- 	if (!mesh_allocated)
- 		ieee80211s_init();
+diff --git a/fs/nfsd/nfsproc.c b/fs/nfsd/nfsproc.c
+index c32a871f0e275..96426dea7d412 100644
+--- a/fs/nfsd/nfsproc.c
++++ b/fs/nfsd/nfsproc.c
+@@ -211,7 +211,7 @@ nfsd_proc_read(struct svc_rqst *rqstp)
+ 	if (resp->status == nfs_ok)
+ 		resp->status = fh_getattr(&resp->fh, &resp->stat);
+ 	else if (resp->status == nfserr_jukebox)
+-		__set_bit(RQ_DROPME, &rqstp->rq_flags);
++		set_bit(RQ_DROPME, &rqstp->rq_flags);
+ 	return rpc_success;
+ }
+ 
+@@ -246,7 +246,7 @@ nfsd_proc_write(struct svc_rqst *rqstp)
+ 	if (resp->status == nfs_ok)
+ 		resp->status = fh_getattr(&resp->fh, &resp->stat);
+ 	else if (resp->status == nfserr_jukebox)
+-		__set_bit(RQ_DROPME, &rqstp->rq_flags);
++		set_bit(RQ_DROPME, &rqstp->rq_flags);
+ 	return rpc_success;
+ }
+ 
 -- 
 2.43.0
+
+
 
 
