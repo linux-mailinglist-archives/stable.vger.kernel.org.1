@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488A090D3B1
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:11:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB28D90D50E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:32:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 692CFB2CF6F
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:59:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33AF129080D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09D9155C96;
-	Tue, 18 Jun 2024 13:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A2413C821;
+	Tue, 18 Jun 2024 14:06:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgF44lmn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNztizs4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91AB3155A27
-	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 13:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1364A13C694
+	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 14:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718717653; cv=none; b=eg3vCJ/cz+c+zJqtp7n4lr9rpFeoJAGJLQr4SK7b8Nfz8jisZ4Rql3i48AzLqHIGDTckG6ytwAcnKxfiUYQwKVG/cXUDoVWcOCS6rPzoe70YOsaVYOOvVX86XnTLnchQFXV7Ib+Ei172RWw1AX5FmjpP8CC7/kmhvJcDHdpD9K8=
+	t=1718719610; cv=none; b=inq2DgNnTBB8H7UCVNciJCAwSzewBcpuxIbNNfGfJrvxgHfHFR9KOGB/xDbUK7icgb/WEYRfzx4tBXkLkoUBzgWc5QCBtutjLq1EPJ2tZgB8Ip13omXTMKZJ1DC8uaZrvEp3OgylutbuHYkUBFj8C0crqsFJ/Jgz5+joI5VWwy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718717653; c=relaxed/simple;
-	bh=/brU019OzT19bGgQutnbAJp8VQmbKS7gBDjshXvjrjI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FYcVvNKpbrnE8/8shpzIK8g+mo4hbiEGWc9j+Tsm3rZFuqXz8IBZtHJvyup5HIj5MB3U1GQ5z1OE68tjCVLUhqwxWbwtUNb5xIBodnIV5JFJZzD8b8TcSxefWMz5bTPwsRBW0wDRXwbcSxFm0o1r0iHWzzEQNbJdXTOTVM/lydY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgF44lmn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16390C3277B;
-	Tue, 18 Jun 2024 13:34:12 +0000 (UTC)
+	s=arc-20240116; t=1718719610; c=relaxed/simple;
+	bh=KiuDLGj8lpVlDkEk4Z8Kjvb9Mo2Q0rJt9OwfUhRmcs8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TPn/AamJoKjl2MeeQm8HTwcaZPolxa0blKyE6BJg4rREzxQeAqzjRO2XNSp3jUTi0vOWc0gaWHcfvXxjOSyNdfSKksUku4HliyhLtk9JJsKFWADe/JSXT2noduFth2g5MOuGPVtI0YeRDlAOZRCh8o78Lx2/GbPLWp4FE+pvDo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNztizs4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C085C3277B;
+	Tue, 18 Jun 2024 14:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718717653;
-	bh=/brU019OzT19bGgQutnbAJp8VQmbKS7gBDjshXvjrjI=;
+	s=korg; t=1718719609;
+	bh=KiuDLGj8lpVlDkEk4Z8Kjvb9Mo2Q0rJt9OwfUhRmcs8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hgF44lmnblbyWYQhV7zCVM2iuHg7MuEN7iumfxz5Tz5j9RmshjHm9bhCkUhsVK3mm
-	 1OzhWLQmNKqG/SV5jDuD9mrqZf2G1MkRUCXQVq6jxDMhYPzMIrSDQ5YVYhhi7dxoNg
-	 voC1hMhMX9Ud8s0kzZy8TfBghjGO66UDbEGUZyX8=
-Subject: FAILED: patch "[PATCH] x86/amd_nb: Check for invalid SMN reads" failed to apply to 5.15-stable tree
-To: yazen.ghannam@amd.com,bp@alien8.de
+	b=qNztizs4s8BHUt1ZdXnMG6eg8Q36RDk7s16wtK2Jsf2KQdkgjT0OJOimV+/c5X3Ku
+	 FQlkpzMMPLrcHCNmqLa/3iLhqXZ5yPiOcFhYxAmWRrf98bD7fvmbzff1UxktKK0a76
+	 lqVoz86SnqJagahplVD6U8j1xDLexDAiOqnWoqQE=
+Subject: FAILED: patch "[PATCH] nbd: Fix signal handling" failed to apply to 6.9-stable tree
+To: bvanassche@acm.org,axboe@kernel.dk,hch@lst.de,jbacik@fb.com,mpa@pengutronix.de,yukuai3@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 18 Jun 2024 15:28:07 +0200
-Message-ID: <2024061807-blissful-deferred-43c3@gregkh>
+Date: Tue, 18 Jun 2024 16:06:46 +0200
+Message-ID: <2024061846-catatonic-ovary-cf4f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.9-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
 git checkout FETCH_HEAD
-git cherry-pick -x c625dabbf1c4a8e77e4734014f2fde7aa9071a1f
+git cherry-pick -x e56d4b633fffea9510db468085bed0799cba4ecd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061807-blissful-deferred-43c3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061846-catatonic-ovary-cf4f@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
 
 Possible dependencies:
 
-c625dabbf1c4 ("x86/amd_nb: Check for invalid SMN reads")
+e56d4b633fff ("nbd: Fix signal handling")
+2a6751e052ab ("nbd: Improve the documentation of the locking assumptions")
 
 thanks,
 
@@ -77,58 +78,153 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c625dabbf1c4a8e77e4734014f2fde7aa9071a1f Mon Sep 17 00:00:00 2001
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-Date: Mon, 3 Apr 2023 16:42:44 +0000
-Subject: [PATCH] x86/amd_nb: Check for invalid SMN reads
+From e56d4b633fffea9510db468085bed0799cba4ecd Mon Sep 17 00:00:00 2001
+From: Bart Van Assche <bvanassche@acm.org>
+Date: Fri, 10 May 2024 13:23:13 -0700
+Subject: [PATCH] nbd: Fix signal handling
 
-AMD Zen-based systems use a System Management Network (SMN) that
-provides access to implementation-specific registers.
+Both nbd_send_cmd() and nbd_handle_cmd() return either a negative error
+number or a positive blk_status_t value. nbd_queue_rq() converts these
+return values into a blk_status_t value. There is a bug in the conversion
+code: if nbd_send_cmd() returns BLK_STS_RESOURCE, nbd_queue_rq() should
+return BLK_STS_RESOURCE instead of BLK_STS_OK. Fix this, move the
+conversion code into nbd_handle_cmd() and fix the remaining sparse warnings.
 
-SMN accesses are done indirectly through an index/data pair in PCI
-config space. The PCI config access may fail and return an error code.
-This would prevent the "read" value from being updated.
+This patch fixes the following sparse warnings:
 
-However, the PCI config access may succeed, but the return value may be
-invalid. This is in similar fashion to PCI bad reads, i.e. return all
-bits set.
+drivers/block/nbd.c:673:32: warning: incorrect type in return expression (different base types)
+drivers/block/nbd.c:673:32:    expected int
+drivers/block/nbd.c:673:32:    got restricted blk_status_t [usertype]
+drivers/block/nbd.c:714:48: warning: incorrect type in return expression (different base types)
+drivers/block/nbd.c:714:48:    expected int
+drivers/block/nbd.c:714:48:    got restricted blk_status_t [usertype]
+drivers/block/nbd.c:1120:21: warning: incorrect type in assignment (different base types)
+drivers/block/nbd.c:1120:21:    expected int [assigned] ret
+drivers/block/nbd.c:1120:21:    got restricted blk_status_t [usertype]
+drivers/block/nbd.c:1125:16: warning: incorrect type in return expression (different base types)
+drivers/block/nbd.c:1125:16:    expected restricted blk_status_t
+drivers/block/nbd.c:1125:16:    got int [assigned] ret
 
-Most systems will return 0 for SMN addresses that are not accessible.
-This is in line with AMD convention that unavailable registers are
-Read-as-Zero/Writes-Ignored.
-
-However, some systems will return a "PCI Error Response" instead. This
-value, along with an error code of 0 from the PCI config access, will
-confuse callers of the amd_smn_read() function.
-
-Check for this condition, clear the return value, and set a proper error
-code.
-
-Fixes: ddfe43cdc0da ("x86/amd_nb: Add SMN and Indirect Data Fabric access for AMD Fam17h")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Josef Bacik <jbacik@fb.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Cc: Markus Pargmann <mpa@pengutronix.de>
+Fixes: fc17b6534eb8 ("blk-mq: switch ->queue_rq return value to blk_status_t")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230403164244.471141-1-yazen.ghannam@amd.com
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240510202313.25209-6-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/arch/x86/kernel/amd_nb.c b/arch/x86/kernel/amd_nb.c
-index 3cf156f70859..027a8c7a2c9e 100644
---- a/arch/x86/kernel/amd_nb.c
-+++ b/arch/x86/kernel/amd_nb.c
-@@ -215,7 +215,14 @@ static int __amd_smn_rw(u16 node, u32 address, u32 *value, bool write)
- 
- int amd_smn_read(u16 node, u32 address, u32 *value)
- {
--	return __amd_smn_rw(node, address, value, false);
-+	int err = __amd_smn_rw(node, address, value, false);
-+
-+	if (PCI_POSSIBLE_ERROR(*value)) {
-+		err = -ENODEV;
-+		*value = 0;
-+	}
-+
-+	return err;
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 29e43ab1650c..22a79a62cc4e 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -588,6 +588,10 @@ static inline int was_interrupted(int result)
+ 	return result == -ERESTARTSYS || result == -EINTR;
  }
- EXPORT_SYMBOL_GPL(amd_smn_read);
  
++/*
++ * Returns BLK_STS_RESOURCE if the caller should retry after a delay. Returns
++ * -EAGAIN if the caller should requeue @cmd. Returns -EIO if sending failed.
++ */
+ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+ {
+ 	struct request *req = blk_mq_rq_from_pdu(cmd);
+@@ -670,7 +674,7 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+ 				nsock->sent = sent;
+ 			}
+ 			set_bit(NBD_CMD_REQUEUED, &cmd->flags);
+-			return BLK_STS_RESOURCE;
++			return (__force int)BLK_STS_RESOURCE;
+ 		}
+ 		dev_err_ratelimited(disk_to_dev(nbd->disk),
+ 			"Send control failed (result %d)\n", result);
+@@ -711,7 +715,7 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+ 					nsock->pending = req;
+ 					nsock->sent = sent;
+ 					set_bit(NBD_CMD_REQUEUED, &cmd->flags);
+-					return BLK_STS_RESOURCE;
++					return (__force int)BLK_STS_RESOURCE;
+ 				}
+ 				dev_err(disk_to_dev(nbd->disk),
+ 					"Send data failed (result %d)\n",
+@@ -1008,7 +1012,7 @@ static int wait_for_reconnect(struct nbd_device *nbd)
+ 	return !test_bit(NBD_RT_DISCONNECTED, &config->runtime_flags);
+ }
+ 
+-static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
++static blk_status_t nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ {
+ 	struct request *req = blk_mq_rq_from_pdu(cmd);
+ 	struct nbd_device *nbd = cmd->nbd;
+@@ -1022,14 +1026,14 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ 	if (!config) {
+ 		dev_err_ratelimited(disk_to_dev(nbd->disk),
+ 				    "Socks array is empty\n");
+-		return -EINVAL;
++		return BLK_STS_IOERR;
+ 	}
+ 
+ 	if (index >= config->num_connections) {
+ 		dev_err_ratelimited(disk_to_dev(nbd->disk),
+ 				    "Attempted send on invalid socket\n");
+ 		nbd_config_put(nbd);
+-		return -EINVAL;
++		return BLK_STS_IOERR;
+ 	}
+ 	cmd->status = BLK_STS_OK;
+ again:
+@@ -1052,7 +1056,7 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ 			 */
+ 			sock_shutdown(nbd);
+ 			nbd_config_put(nbd);
+-			return -EIO;
++			return BLK_STS_IOERR;
+ 		}
+ 		goto again;
+ 	}
+@@ -1065,7 +1069,7 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ 	blk_mq_start_request(req);
+ 	if (unlikely(nsock->pending && nsock->pending != req)) {
+ 		nbd_requeue_cmd(cmd);
+-		ret = 0;
++		ret = BLK_STS_OK;
+ 		goto out;
+ 	}
+ 	/*
+@@ -1084,19 +1088,19 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ 				    "Request send failed, requeueing\n");
+ 		nbd_mark_nsock_dead(nbd, nsock, 1);
+ 		nbd_requeue_cmd(cmd);
+-		ret = 0;
++		ret = BLK_STS_OK;
+ 	}
+ out:
+ 	mutex_unlock(&nsock->tx_lock);
+ 	nbd_config_put(nbd);
+-	return ret;
++	return ret < 0 ? BLK_STS_IOERR : (__force blk_status_t)ret;
+ }
+ 
+ static blk_status_t nbd_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 			const struct blk_mq_queue_data *bd)
+ {
+ 	struct nbd_cmd *cmd = blk_mq_rq_to_pdu(bd->rq);
+-	int ret;
++	blk_status_t ret;
+ 
+ 	/*
+ 	 * Since we look at the bio's to send the request over the network we
+@@ -1116,10 +1120,6 @@ static blk_status_t nbd_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 	 * appropriate.
+ 	 */
+ 	ret = nbd_handle_cmd(cmd, hctx->queue_num);
+-	if (ret < 0)
+-		ret = BLK_STS_IOERR;
+-	else if (!ret)
+-		ret = BLK_STS_OK;
+ 	mutex_unlock(&cmd->lock);
+ 
+ 	return ret;
 
 
