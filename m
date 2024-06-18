@@ -1,107 +1,106 @@
-Return-Path: <stable+bounces-52680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC91390CBE1
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:38:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F38F190D0E6
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 569351F24254
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:38:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1167B1C23FC5
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB4614A4D8;
-	Tue, 18 Jun 2024 12:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFAB18EFD4;
+	Tue, 18 Jun 2024 13:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1ANigGg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHcg3gaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663B8145A1F;
-	Tue, 18 Jun 2024 12:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF5915746D;
+	Tue, 18 Jun 2024 13:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714188; cv=none; b=Q2XhbuvLYI1bvRxsQZFR1i0IatvXiS6c6QP5mhthRgXRIztJQH+tbNohObnQHWo6fK4/vJI+pGdkS8QXnoIPSv5mHClZF0Mgk4dENbSx5xcQf5/2qDkCmZMHXLX4BnBpJ2mosg6bM2eDddvGFcREpcY6rc4CBZlxVmBjz8+T3sI=
+	t=1718715823; cv=none; b=YR+r4jzeknacMhtmcyrAf2yBdPwIS/fXzi5yhUnQriOpeHqqt++U2rX4S+JpxqEkGNw+TfP+fj53wPp9Q59HlWZqxh9Jp5gp7Ry4GkuS6huZnSEoLmixBjv7mx7g4ImXar6FNacA1BCbtHpUxwvxLQ5LNfTAWRfGgXtluikim0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714188; c=relaxed/simple;
-	bh=EJEDBFxskGGeWGDfpNpIzfroP1j6OK7f85F+xWHuWGM=;
+	s=arc-20240116; t=1718715823; c=relaxed/simple;
+	bh=2uPikhlCD1NorMlB5vUJX1AjdNmhcREDNkdNW+Q4520=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uS2/o4mpi9hKz0L72goxbQ/7pgYWlq5neBHT5SZ0fW1pxsEss+iEGOsrShAcI7gFro8cBFmiEhqXdfO1Fmqs7hncBDd79BBHX6ibqqcGe0m7qlnrEH+NLjRZjf5pw4bTapeM/Vdw+ROY2hPPrgkZW9nzJevakg2XNHc15HNk1jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1ANigGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FD7C32786;
-	Tue, 18 Jun 2024 12:36:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714188;
-	bh=EJEDBFxskGGeWGDfpNpIzfroP1j6OK7f85F+xWHuWGM=;
+	 MIME-Version; b=gtubnQTq3zMSKihTMe8qtneNcW21lCmyCBxprEu5c6WdOWTBJK/0BfIXCGhjfOPlPJ1TWB7scESCbYqiM1tBKkd6E4J/NHWGK31iK/yVJqMFagq/wEpswmmhmRP1NpO2dqK8Kx/KA5WXxcPALOepwz4aHL51NTFmKx0GCzWAbE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHcg3gaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6185C3277B;
+	Tue, 18 Jun 2024 13:03:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715823;
+	bh=2uPikhlCD1NorMlB5vUJX1AjdNmhcREDNkdNW+Q4520=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1ANigGgO8JSs6KQqRr+nsnFWa3Gwn0EBiajpG/MK7gMctLkSzi+1lu6PXey0xjbw
-	 +3d/uTb2CD3u47/ogouIioDpJocCuJ7Czfchtn6Ri4z3qGZzD532BDxRR6WEgWdOfC
-	 8KHACZ9/+cABpxcMJkFlRFGqN+g1l7H0HuUVyBJbmTqtOwUziQokw3CKuOOKv2aCw4
-	 UMqzdKtOikikCw5OIt2+9JJZ334c5w+zgQdur1tjoAqezwDRrE0onJPdL3zJ7nHcV8
-	 sn5hEfokx7/1p1knhQGWp/1ISzZZDbLQgxXSdoZk5EkHKCq2Xse5bM4Ix6V9RcG104
-	 EdRaFB2Qy520g==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 09/44] ACPI: EC: Avoid returning AE_OK on errors in address space handler
-Date: Tue, 18 Jun 2024 08:34:50 -0400
-Message-ID: <20240618123611.3301370-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=sHcg3gaXsE5LaNIinJDOEqboHOP1F3jLtDL8Z+5YRKIohilpmdxZSW+w7AnVXpB9g
+	 Gf8TIB7UlpOmr3HwWAtlFtLaLDQYN2SKetVN0HLUEjcxYZ/8HcDirIqlTyiItsd99r
+	 UGPcBGORjy0rw1wQBsGuxpZlaUk6CFgS+Dv0wOpQ=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 438/770] NFS: switch the callback service back to non-pooled.
+Date: Tue, 18 Jun 2024 14:34:51 +0200
+Message-ID: <20240618123424.194723494@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Armin Wolf <W_Armin@gmx.de>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit c4bd7f1d78340e63de4d073fd3dbe5391e2996e5 ]
+------------------
 
-If an error code other than EINVAL, ENODEV or ETIME is returned
-by acpi_ec_read() / acpi_ec_write(), then AE_OK is incorrectly
-returned by acpi_ec_space_handler().
+From: NeilBrown <neilb@suse.de>
 
-Fix this by only returning AE_OK on success, and return AE_ERROR
-otherwise.
+[ Upstream commit 23a1a573c61ccb5e7829c1f5472d3e025293a031 ]
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Now that thread management is consistent there is no need for
+nfs-callback to use svc_create_pooled() as introduced in Commit
+df807fffaabd ("NFSv4.x/callback: Create the callback service through
+svc_create_pooled").  So switch back to svc_create().
+
+If service pools were configured, but the number of threads were left at
+'1', nfs callback may not work reliably when svc_create_pooled() is used.
+
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfs/callback.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 2896330146e29..06efc15f934a6 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1351,8 +1351,10 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
- 		return AE_NOT_FOUND;
- 	case -ETIME:
- 		return AE_TIME;
--	default:
-+	case 0:
- 		return AE_OK;
-+	default:
-+		return AE_ERROR;
- 	}
- }
+diff --git a/fs/nfs/callback.c b/fs/nfs/callback.c
+index 422055a1092f0..054cc1255fac6 100644
+--- a/fs/nfs/callback.c
++++ b/fs/nfs/callback.c
+@@ -286,7 +286,7 @@ static struct svc_serv *nfs_callback_create_svc(int minorversion)
+ 		printk(KERN_WARNING "nfs_callback_create_svc: no kthread, %d users??\n",
+ 			cb_info->users);
  
+-	serv = svc_create_pooled(&nfs4_callback_program, NFS4_CALLBACK_BUFSIZE, sv_ops);
++	serv = svc_create(&nfs4_callback_program, NFS4_CALLBACK_BUFSIZE, sv_ops);
+ 	if (!serv) {
+ 		printk(KERN_ERR "nfs_callback_create_svc: create service failed\n");
+ 		return ERR_PTR(-ENOMEM);
 -- 
 2.43.0
+
+
 
 
