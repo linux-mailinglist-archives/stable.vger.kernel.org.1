@@ -1,221 +1,156 @@
-Return-Path: <stable+bounces-52825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B774090CDB3
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:18:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BBE190CD87
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:16:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70BC21F211D2
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:18:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 355EA1C213F7
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FAA15A4BD;
-	Tue, 18 Jun 2024 12:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9977C1B150B;
+	Tue, 18 Jun 2024 12:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R+Ppz4Pc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c+dXQw7T"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC441B4C52;
-	Tue, 18 Jun 2024 12:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0B11B29BF;
+	Tue, 18 Jun 2024 12:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714576; cv=none; b=M49kSWSkKKl3XIRjzHb/8Mbh3wjM1HuuFp2ReokdE3Nfpce2gHsTYyZUBNstaF4Fs+aEXJ31gYQflcftdUrqUtOZN78ZWTamAoTF+Fq9JTYSLDUMN3+yYf1ueyloR8gAx/7PsKgQYipRMFVdzRb9J6+mowmqIwFcmIraztl0eEc=
+	t=1718714563; cv=none; b=G9reV7SJqZ3PLj049y9Mza4ji63uCLKRV3LNV9YfqTss6A/OpNX1EmDZq4Bg/AX9VzA8jHNbZMp5mVUEmjftFvBv9iUVw5AbBdxOl7tEnl+Wb2WPKW1c3Zoof2IJLu1tLjisahbvV4f9sNL0lreIL/aayzedA2w2hQPgELs1hcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714576; c=relaxed/simple;
-	bh=fSSCSXLeOzmRV7GPuyzZNQRkSoTvXuyzp8El8fot1eA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNOquiLTKnYRsAQDFFIRji5StLjy1PiF6A6SCA1u7tb1yVwrVrjrL7Rdn69ph4hX4wALIloVK/LI+pJnX1wLsFgn24YxgbuXh7UZTK/6bpCHo8IAraS5xhCQaJ0zkhDiQ55oZbL/rCEOAEARsi8b4ZEpTczNu8liuPU++3Fnn/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R+Ppz4Pc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B516CC4AF49;
-	Tue, 18 Jun 2024 12:42:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714576;
-	bh=fSSCSXLeOzmRV7GPuyzZNQRkSoTvXuyzp8El8fot1eA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R+Ppz4PcWgZ67tc39U7cGOxx3QpEkUlFUhIexo75MxTAO4gSjCWY0vODNOkNbrxjd
-	 wat4VqrIN0EB6G1JJteKDalsfacfNr2mtbLMjjBKpICZsIALXvc6vBP6RZ6NVeP+ro
-	 sMAPbJtght3K93bB/6sw5lFwUDXyH6qLrUXmMbg1fLJE+Tzk1V6AM+FJ0/IcclDex3
-	 NhUkdt4Gjs/6D7KuveAKHhWMQ2jy0b8QXA8b3VC98Su/S29nvLtqEmGt7msLsb/Oq6
-	 KcmJv6CEiKi+0zHNQ9PRI6168BZEdSHroeC3wLKiZJyB13jlzLqnorQOIIA1byY+Vw
-	 7LjV+yt/YcXIg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 13/13] kconfig: remove wrong expr_trans_bool()
-Date: Tue, 18 Jun 2024 08:42:24 -0400
-Message-ID: <20240618124231.3304308-13-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618124231.3304308-1-sashal@kernel.org>
-References: <20240618124231.3304308-1-sashal@kernel.org>
+	s=arc-20240116; t=1718714563; c=relaxed/simple;
+	bh=YFY+HjJitzBvcux3x//msWVLSC/kvQWZ9WefuLW/TRU=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=QgSIMFrtgOMEbaZn5j0a2/EPj/+y6MWj3M3tn96Jj9mYEJfDRgZcn71NibtXr3rQwemfOWg6e+23T+tI+0Y9RfuiFewrNQ4QF2kUCZbb8VUCkMxCEaazQhSCS/Px/2/AXI5BeObI3HlGJd4UE79F+1ZtumrWrkhWmpgoiKz1GuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c+dXQw7T; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7061d37dc9bso683736b3a.2;
+        Tue, 18 Jun 2024 05:42:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718714560; x=1719319360; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P5HudLGS8xpGOdXksJh80d3m6RgAVZta5JkAHQdvhSg=;
+        b=c+dXQw7TrwzTH8W1Bz8YC9tAc9J3pMvVuKo+Uka0lTTDH2s0f3stPz7kJRQjjI9WTG
+         bE7eCmrZsWTfqV6VsAF+iReDah6WuLOsRL3jn29kxG6hO9Z4uIhm4PH5uKYss+7Ics3F
+         r4GiTy57usnTMLPaaFawewhd5+EXsG6nGHdXN0tkycnGJv42DK3ccV7+PF9+b/M7kpN5
+         ZDVAFxDtpRS7B63resqt8mHoKyWquzYvq8mrJgzMKJgX5TtDVgGmUyoM+uEE7TMYPy+x
+         FnNgKzM/14VTbsKa94qH8qfqtvUlDUzgjr87/ApRfw/h/+FG+/pzYApUhAPgQp28k8++
+         N/rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718714560; x=1719319360;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P5HudLGS8xpGOdXksJh80d3m6RgAVZta5JkAHQdvhSg=;
+        b=s8/G+YU4GreCeXb8FgjdZEiBRCIOlG2bYkLISCN/uiBAdCmdaWPnfSJdYQPJCVSHpW
+         yzyXoVF843iNwkKZtD4JPRojmbAne2aQkBDZYd3mLNCGmT2lBNjU2zq9DNkYPEh1F7jX
+         0nsvu72nof9cwYgatVNDnmD26CXPjJ2yNSxEhC3IziG1HTehEU3jUSTDvONinnmUWeE+
+         PzsQpaqfPsyZpBCwQtfuJyiFsHrSUHu6xetf7zqEs+6Ou/R6cr8+t4jABzLi24/O/IY+
+         SxRYWGdN0AIBWS343a9+qA5z3sDJRPx5tLkQB6gHkYCpenpf67rRGCG400vQwWlsyZXV
+         X/oA==
+X-Forwarded-Encrypted: i=1; AJvYcCUUV7+Lp4WI21Hf4mGTUMq6+lls4Adw9hVYcQMJkOHTfxiqKgTG6igDIE4z6G3CstnOAheYMF9JPp84TIfu5CSs/wwo4TBlqz2tid9kqE3diLRWtmK/K+/d+DXTkY/1Aal78lYF
+X-Gm-Message-State: AOJu0YyDiDT0HczU3AscN9mlRQkbuKMQcBIKKBfzReBQYlx1lh/69zh1
+	LWpVq+3nWPcO7Ikna4L6+tmXrmDL/2VzD0bLtihrRPUWQhxuCa15
+X-Google-Smtp-Source: AGHT+IFBLml7w5zlkpZKZS1zkZ/T8vrR86PFGYprdyoeL4gyHhlv3UPbh1XtqhPVoYG3Ha8HiHIlPw==
+X-Received: by 2002:a05:6a21:1f24:b0:1b8:3ee2:bef1 with SMTP id adf61e73a8af0-1bae825984cmr12518482637.53.1718714560194;
+        Tue, 18 Jun 2024 05:42:40 -0700 (PDT)
+Received: from localhost ([113.138.207.245])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705ccb3e42fsm8898437b3a.100.2024.06.18.05.42.39
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 18 Jun 2024 05:42:39 -0700 (PDT)
+From: joswang <joswang1221@gmail.com>
+To: Thinh.Nguyen@synopsys.com,
+	gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Jos Wang <joswang@lenovo.com>
+Subject: [PATCH v5] usb: dwc3: core: Workaround for CSR read timeout
+Date: Tue, 18 Jun 2024 20:42:35 +0800
+Message-Id: <20240618124235.5093-1-joswang1221@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.219
-Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Jos Wang <joswang@lenovo.com>
 
-[ Upstream commit 77a92660d8fe8d29503fae768d9f5eb529c88b36 ]
+This is a workaround for STAR 4846132, which only affects
+DWC_usb31 version2.00a operating in host mode.
 
-expr_trans_bool() performs an incorrect transformation.
+There is a problem in DWC_usb31 version 2.00a operating
+in host mode that would cause a CSR read timeout When CSR
+read coincides with RAM Clock Gating Entry. By disable
+Clock Gating, sacrificing power consumption for normal
+operation.
 
-[Test Code]
-
-    config MODULES
-            def_bool y
-            modules
-
-    config A
-            def_bool y
-            select C if B != n
-
-    config B
-            def_tristate m
-
-    config C
-            tristate
-
-[Result]
-
-    CONFIG_MODULES=y
-    CONFIG_A=y
-    CONFIG_B=m
-    CONFIG_C=m
-
-This output is incorrect because CONFIG_C=y is expected.
-
-Documentation/kbuild/kconfig-language.rst clearly explains the function
-of the '!=' operator:
-
-    If the values of both symbols are equal, it returns 'n',
-    otherwise 'y'.
-
-Therefore, the statement:
-
-    select C if B != n
-
-should be equivalent to:
-
-    select C if y
-
-Or, more simply:
-
-    select C
-
-Hence, the symbol C should be selected by the value of A, which is 'y'.
-
-However, expr_trans_bool() wrongly transforms it to:
-
-    select C if B
-
-Therefore, the symbol C is selected by (A && B), which is 'm'.
-
-The comment block of expr_trans_bool() correctly explains its intention:
-
-  * bool FOO!=n => FOO
-    ^^^^
-
-If FOO is bool, FOO!=n can be simplified into FOO. This is correct.
-
-However, the actual code performs this transformation when FOO is
-tristate:
-
-    if (e->left.sym->type == S_TRISTATE) {
-                             ^^^^^^^^^^
-
-While it can be fixed to S_BOOLEAN, there is no point in doing so
-because expr_tranform() already transforms FOO!=n to FOO when FOO is
-bool. (see the "case E_UNEQUAL" part)
-
-expr_trans_bool() is wrong and unnecessary.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jos Wang <joswang@lenovo.com>
 ---
- scripts/kconfig/expr.c | 29 -----------------------------
- scripts/kconfig/expr.h |  1 -
- scripts/kconfig/menu.c |  2 --
- 3 files changed, 32 deletions(-)
+v4 -> v5: no change
+v3 -> v4: modify commit message, add Cc: stable@vger.kernel.org
+v2 -> v3:
+- code refactor
+- modify comment, add STAR number, workaround applied in host mode
+- modify commit message, add STAR number, workaround applied in host mode
+- modify Author Jos Wang
+v1 -> v2: no change
 
-diff --git a/scripts/kconfig/expr.c b/scripts/kconfig/expr.c
-index 81ebf8108ca74..81dfdf4470f75 100644
---- a/scripts/kconfig/expr.c
-+++ b/scripts/kconfig/expr.c
-@@ -396,35 +396,6 @@ static struct expr *expr_eliminate_yn(struct expr *e)
- 	return e;
- }
+ drivers/usb/dwc3/core.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 7ee61a89520b..2a3adc80fe0f 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -957,12 +957,16 @@ static bool dwc3_core_is_valid(struct dwc3 *dwc)
  
--/*
-- * bool FOO!=n => FOO
-- */
--struct expr *expr_trans_bool(struct expr *e)
--{
--	if (!e)
--		return NULL;
--	switch (e->type) {
--	case E_AND:
--	case E_OR:
--	case E_NOT:
--		e->left.expr = expr_trans_bool(e->left.expr);
--		e->right.expr = expr_trans_bool(e->right.expr);
--		break;
--	case E_UNEQUAL:
--		// FOO!=n -> FOO
--		if (e->left.sym->type == S_TRISTATE) {
--			if (e->right.sym == &symbol_no) {
--				e->type = E_SYMBOL;
--				e->right.sym = NULL;
--			}
--		}
--		break;
--	default:
--		;
--	}
--	return e;
--}
--
- /*
-  * e1 || e2 -> ?
-  */
-diff --git a/scripts/kconfig/expr.h b/scripts/kconfig/expr.h
-index 5c3443692f346..385a47daa3643 100644
---- a/scripts/kconfig/expr.h
-+++ b/scripts/kconfig/expr.h
-@@ -302,7 +302,6 @@ void expr_free(struct expr *e);
- void expr_eliminate_eq(struct expr **ep1, struct expr **ep2);
- int expr_eq(struct expr *e1, struct expr *e2);
- tristate expr_calc_value(struct expr *e);
--struct expr *expr_trans_bool(struct expr *e);
- struct expr *expr_eliminate_dups(struct expr *e);
- struct expr *expr_transform(struct expr *e);
- int expr_contains_symbol(struct expr *dep, struct symbol *sym);
-diff --git a/scripts/kconfig/menu.c b/scripts/kconfig/menu.c
-index a5fbd6ccc006e..e5ad6313cfa1d 100644
---- a/scripts/kconfig/menu.c
-+++ b/scripts/kconfig/menu.c
-@@ -401,8 +401,6 @@ void menu_finalize(struct menu *parent)
- 				dep = expr_transform(dep);
- 				dep = expr_alloc_and(expr_copy(basedep), dep);
- 				dep = expr_eliminate_dups(dep);
--				if (menu->sym && menu->sym->type != S_TRISTATE)
--					dep = expr_trans_bool(dep);
- 				prop->visible.expr = dep;
+ static void dwc3_core_setup_global_control(struct dwc3 *dwc)
+ {
++	unsigned int power_opt;
++	unsigned int hw_mode;
+ 	u32 reg;
  
- 				/*
+ 	reg = dwc3_readl(dwc->regs, DWC3_GCTL);
+ 	reg &= ~DWC3_GCTL_SCALEDOWN_MASK;
++	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
++	power_opt = DWC3_GHWPARAMS1_EN_PWROPT(dwc->hwparams.hwparams1);
+ 
+-	switch (DWC3_GHWPARAMS1_EN_PWROPT(dwc->hwparams.hwparams1)) {
++	switch (power_opt) {
+ 	case DWC3_GHWPARAMS1_EN_PWROPT_CLK:
+ 		/**
+ 		 * WORKAROUND: DWC3 revisions between 2.10a and 2.50a have an
+@@ -995,6 +999,20 @@ static void dwc3_core_setup_global_control(struct dwc3 *dwc)
+ 		break;
+ 	}
+ 
++	/*
++	 * This is a workaround for STAR#4846132, which only affects
++	 * DWC_usb31 version2.00a operating in host mode.
++	 *
++	 * There is a problem in DWC_usb31 version 2.00a operating
++	 * in host mode that would cause a CSR read timeout When CSR
++	 * read coincides with RAM Clock Gating Entry. By disable
++	 * Clock Gating, sacrificing power consumption for normal
++	 * operation.
++	 */
++	if (power_opt != DWC3_GHWPARAMS1_EN_PWROPT_NO &&
++	    hw_mode != DWC3_GHWPARAMS0_MODE_GADGET && DWC3_VER_IS(DWC31, 200A))
++		reg |= DWC3_GCTL_DSBLCLKGTNG;
++
+ 	/* check if current dwc3 is on simulation board */
+ 	if (dwc->hwparams.hwparams6 & DWC3_GHWPARAMS6_EN_FPGA) {
+ 		dev_info(dwc->dev, "Running with FPGA optimizations\n");
 -- 
-2.43.0
+2.17.1
 
 
