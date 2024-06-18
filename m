@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-53109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B141590D03E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:32:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9BB90D01D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:31:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BBFA1C23C39
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:32:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EC49282E48
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F2B16DC1F;
-	Tue, 18 Jun 2024 12:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4517316B397;
+	Tue, 18 Jun 2024 12:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="refzi567"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNFvJpGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A975416DC1E;
-	Tue, 18 Jun 2024 12:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0059B13B5B8;
+	Tue, 18 Jun 2024 12:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715354; cv=none; b=JX0MFbVTQffPHVgLapbKa8FmbwR8mcjk2FxnXovC1GQn6YIkRKjk1889Zp8fiW/x/rt1MtJ7RivaLuYerUs4/WGf0JYm9QyJOXguAtGo3eGcVBLiB7qyuUSENRUteL/F/8AM4HIZb+GH2fqy2BztMEBCONIhuhcUUmqad2ZrENQ=
+	t=1718715263; cv=none; b=S6cpTUmTYTilwU69ucmbP9jp3wIncB+BM+B8XuCdhA24dh+0yRMiG81FTi3p6VU3KNK+rJZIDEBV4eQ7LxacULTeqATGXbH+dlphtYfyF70hTcB3WCNM6Rms9K2txuOuRjETUcKO6aW8sCh6G4L+L9elhpa4v6wDf/MP6q4UakM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715354; c=relaxed/simple;
-	bh=rmc0fL/M9MCQqN6JWtnQq02eEA7/3HGyOiEkYQflhrc=;
+	s=arc-20240116; t=1718715263; c=relaxed/simple;
+	bh=KEJyMblAc+cl6Nsr2lPZ+XLJMFHi3dV5PThLqfg+9cM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zca/BE9ujNO3pbhXGfqeiBI3y9jrfdXpgZxp85G2PHSp/yZZz6wLJOXPGJJiYXryRq6kz0wRNxp4CwxTuJ5HIWlv/VNFPpZUE8qRCN+KSuanFnFVU6r50ZA/ZAekojbEG7I4x4Xw4Et4kaf587NaMSQ2I1SrmENdIrBv6oF0Wyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=refzi567; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3112BC3277B;
-	Tue, 18 Jun 2024 12:55:54 +0000 (UTC)
+	 MIME-Version; b=fijxVOAb0HMXtMSXyukxcCuJ267rS3p5oJb8bGpNImGjklYtCNVn72uyq4NW8iBm/S8uUarysrN4/ar6CkSWhuq8sBw45QmJA2u+rrYJ4JNv7fX7KpM3AKpSw3Okzn5v1FDwnt6Gd2Rx9fqVPLPffYKsZOoGd95lMSjrtSR13z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNFvJpGU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7859AC3277B;
+	Tue, 18 Jun 2024 12:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715354;
-	bh=rmc0fL/M9MCQqN6JWtnQq02eEA7/3HGyOiEkYQflhrc=;
+	s=korg; t=1718715262;
+	bh=KEJyMblAc+cl6Nsr2lPZ+XLJMFHi3dV5PThLqfg+9cM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=refzi567MQewgf/ARHW0o1EnnL5MswMvTfeIN7mdEpGLLMsbBUK/V2ihMKMPFEyKZ
-	 VWJtKtkfk7n5s1Ce89yesA11ZaMdQLzu8d947WWOudfS1u2wfZxRCCanctt2VhSNBl
-	 Vgv9SNJMaIt1Az8vboUXfD1eRhRMLVgXY75xKsDM=
+	b=VNFvJpGUbpImz0rPL0Aw2AlW5kIjLjiERq1X4L2Dwcbk45CLogyjDZ30mRcvHtK5u
+	 TynGJduJp3or4PH/yB1wwcxXqifa7iovebNtlcJtHGqdUT/egyu/n2hgf8eSObct1g
+	 +TR2c3+v4X5akPrKZ2ABHomTfZCcvDK1C5qwBK1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 249/770] fsnotify: allow fsnotify_{peek,remove}_first_event with empty queue
-Date: Tue, 18 Jun 2024 14:31:42 +0200
-Message-ID: <20240618123416.890216974@linuxfoundation.org>
+Subject: [PATCH 5.10 250/770] Revert "fanotify: limit number of event merge attempts"
+Date: Tue, 18 Jun 2024 14:31:43 +0200
+Message-ID: <20240618123416.928520437@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,205 +65,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 6f73171e192366ff7c98af9fb50615ef9615f8a7 ]
+Temporarily revert commit ad3ea16746cc ("fanotify: limit number of
+event merge attempts") to enable subsequent upstream commits to
+apply and build cleanly.
 
-Current code has an assumtion that fsnotify_notify_queue_is_empty() is
-called to verify that queue is not empty before trying to peek or remove
-an event from queue.
-
-Remove this assumption by moving the fsnotify_notify_queue_is_empty()
-into the functions, allow them to return NULL value and check return
-value by all callers.
-
-This is a prep patch for multi event queues.
-
-Link: https://lore.kernel.org/r/20210304104826.3993892-2-amir73il@gmail.com
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
+Stable-dep-of: 8988f11abb82 ("fanotify: reduce event objectid to 29-bit hash")
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fanotify/fanotify_user.c | 26 +++++++++++-------
- fs/notify/inotify/inotify_user.c   |  5 ++--
- fs/notify/notification.c           | 42 ++++++++++++++----------------
- include/linux/fsnotify_backend.h   |  8 +++++-
- 4 files changed, 44 insertions(+), 37 deletions(-)
+ fs/notify/fanotify/fanotify.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/fs/notify/fanotify/fanotify_user.c b/fs/notify/fanotify/fanotify_user.c
-index 829ead2792dfb..30651e8d1a6d5 100644
---- a/fs/notify/fanotify/fanotify_user.c
-+++ b/fs/notify/fanotify/fanotify_user.c
-@@ -100,24 +100,30 @@ static struct fanotify_event *get_one_event(struct fsnotify_group *group,
- {
- 	size_t event_size = FAN_EVENT_METADATA_LEN;
- 	struct fanotify_event *event = NULL;
-+	struct fsnotify_event *fsn_event;
- 	unsigned int fid_mode = FAN_GROUP_FLAG(group, FANOTIFY_FID_BITS);
+diff --git a/fs/notify/fanotify/fanotify.c b/fs/notify/fanotify/fanotify.c
+index c3af99e94f1d1..1192c99536200 100644
+--- a/fs/notify/fanotify/fanotify.c
++++ b/fs/notify/fanotify/fanotify.c
+@@ -129,15 +129,11 @@ static bool fanotify_should_merge(struct fsnotify_event *old_fsn,
+ 	return false;
+ }
  
- 	pr_debug("%s: group=%p count=%zd\n", __func__, group, count);
- 
- 	spin_lock(&group->notification_lock);
--	if (fsnotify_notify_queue_is_empty(group))
-+	fsn_event = fsnotify_peek_first_event(group);
-+	if (!fsn_event)
- 		goto out;
- 
--	if (fid_mode) {
--		event_size += fanotify_event_info_len(fid_mode,
--			FANOTIFY_E(fsnotify_peek_first_event(group)));
--	}
-+	event = FANOTIFY_E(fsn_event);
-+	if (fid_mode)
-+		event_size += fanotify_event_info_len(fid_mode, event);
- 
- 	if (event_size > count) {
- 		event = ERR_PTR(-EINVAL);
- 		goto out;
- 	}
--	event = FANOTIFY_E(fsnotify_remove_first_event(group));
-+
-+	/*
-+	 * Held the notification_lock the whole time, so this is the
-+	 * same event we peeked above.
-+	 */
-+	fsnotify_remove_first_event(group);
- 	if (fanotify_is_perm_event(event->mask))
- 		FANOTIFY_PERM(event)->state = FAN_EVENT_REPORTED;
- out:
-@@ -573,6 +579,7 @@ static ssize_t fanotify_write(struct file *file, const char __user *buf, size_t
- static int fanotify_release(struct inode *ignored, struct file *file)
- {
- 	struct fsnotify_group *group = file->private_data;
-+	struct fsnotify_event *fsn_event;
- 
- 	/*
- 	 * Stop new events from arriving in the notification queue. since
-@@ -601,13 +608,12 @@ static int fanotify_release(struct inode *ignored, struct file *file)
- 	 * dequeue them and set the response. They will be freed once the
- 	 * response is consumed and fanotify_get_response() returns.
- 	 */
--	while (!fsnotify_notify_queue_is_empty(group)) {
--		struct fanotify_event *event;
-+	while ((fsn_event = fsnotify_remove_first_event(group))) {
-+		struct fanotify_event *event = FANOTIFY_E(fsn_event);
- 
--		event = FANOTIFY_E(fsnotify_remove_first_event(group));
- 		if (!(event->mask & FANOTIFY_PERM_EVENTS)) {
- 			spin_unlock(&group->notification_lock);
--			fsnotify_destroy_event(group, &event->fse);
-+			fsnotify_destroy_event(group, fsn_event);
- 		} else {
- 			finish_permission_event(group, FANOTIFY_PERM(event),
- 						FAN_ALLOW);
-diff --git a/fs/notify/inotify/inotify_user.c b/fs/notify/inotify/inotify_user.c
-index 82fc0cf86a7c3..c2018983832e5 100644
---- a/fs/notify/inotify/inotify_user.c
-+++ b/fs/notify/inotify/inotify_user.c
-@@ -146,10 +146,9 @@ static struct fsnotify_event *get_one_event(struct fsnotify_group *group,
- 	size_t event_size = sizeof(struct inotify_event);
- 	struct fsnotify_event *event;
- 
--	if (fsnotify_notify_queue_is_empty(group))
--		return NULL;
+-/* Limit event merges to limit CPU overhead per event */
+-#define FANOTIFY_MAX_MERGE_EVENTS 128
 -
- 	event = fsnotify_peek_first_event(group);
-+	if (!event)
-+		return NULL;
- 
- 	pr_debug("%s: group=%p event=%p\n", __func__, group, event);
- 
-diff --git a/fs/notify/notification.c b/fs/notify/notification.c
-index 75d79d6d3ef09..001cfe7d2e4e7 100644
---- a/fs/notify/notification.c
-+++ b/fs/notify/notification.c
-@@ -47,13 +47,6 @@ u32 fsnotify_get_cookie(void)
- }
- EXPORT_SYMBOL_GPL(fsnotify_get_cookie);
- 
--/* return true if the notify queue is empty, false otherwise */
--bool fsnotify_notify_queue_is_empty(struct fsnotify_group *group)
--{
--	assert_spin_locked(&group->notification_lock);
--	return list_empty(&group->notification_list) ? true : false;
--}
--
- void fsnotify_destroy_event(struct fsnotify_group *group,
- 			    struct fsnotify_event *event)
+ /* and the list better be locked by something too! */
+ static int fanotify_merge(struct list_head *list, struct fsnotify_event *event)
  {
-@@ -141,33 +134,36 @@ void fsnotify_remove_queued_event(struct fsnotify_group *group,
- }
+ 	struct fsnotify_event *test_event;
+ 	struct fanotify_event *new;
+-	int i = 0;
  
- /*
-- * Remove and return the first event from the notification list.  It is the
-- * responsibility of the caller to destroy the obtained event
-+ * Return the first event on the notification list without removing it.
-+ * Returns NULL if the list is empty.
-  */
--struct fsnotify_event *fsnotify_remove_first_event(struct fsnotify_group *group)
-+struct fsnotify_event *fsnotify_peek_first_event(struct fsnotify_group *group)
- {
--	struct fsnotify_event *event;
--
- 	assert_spin_locked(&group->notification_lock);
+ 	pr_debug("%s: list=%p event=%p\n", __func__, list, event);
+ 	new = FANOTIFY_E(event);
+@@ -151,8 +147,6 @@ static int fanotify_merge(struct list_head *list, struct fsnotify_event *event)
+ 		return 0;
  
--	pr_debug("%s: group=%p\n", __func__, group);
-+	if (fsnotify_notify_queue_is_empty(group))
-+		return NULL;
- 
--	event = list_first_entry(&group->notification_list,
--				 struct fsnotify_event, list);
--	fsnotify_remove_queued_event(group, event);
--	return event;
-+	return list_first_entry(&group->notification_list,
-+				struct fsnotify_event, list);
- }
- 
- /*
-- * This will not remove the event, that must be done with
-- * fsnotify_remove_first_event()
-+ * Remove and return the first event from the notification list.  It is the
-+ * responsibility of the caller to destroy the obtained event
-  */
--struct fsnotify_event *fsnotify_peek_first_event(struct fsnotify_group *group)
-+struct fsnotify_event *fsnotify_remove_first_event(struct fsnotify_group *group)
- {
--	assert_spin_locked(&group->notification_lock);
-+	struct fsnotify_event *event = fsnotify_peek_first_event(group);
- 
--	return list_first_entry(&group->notification_list,
--				struct fsnotify_event, list);
-+	if (!event)
-+		return NULL;
-+
-+	pr_debug("%s: group=%p event=%p\n", __func__, group, event);
-+
-+	fsnotify_remove_queued_event(group, event);
-+
-+	return event;
- }
- 
- /*
-diff --git a/include/linux/fsnotify_backend.h b/include/linux/fsnotify_backend.h
-index e5409b83e7313..7eb979bfc1413 100644
---- a/include/linux/fsnotify_backend.h
-+++ b/include/linux/fsnotify_backend.h
-@@ -495,7 +495,13 @@ static inline void fsnotify_queue_overflow(struct fsnotify_group *group)
- 	fsnotify_add_event(group, group->overflow_event, NULL);
- }
- 
--/* true if the group notification queue is empty */
-+static inline bool fsnotify_notify_queue_is_empty(struct fsnotify_group *group)
-+{
-+	assert_spin_locked(&group->notification_lock);
-+
-+	return list_empty(&group->notification_list);
-+}
-+
- extern bool fsnotify_notify_queue_is_empty(struct fsnotify_group *group);
- /* return, but do not dequeue the first event on the notification queue */
- extern struct fsnotify_event *fsnotify_peek_first_event(struct fsnotify_group *group);
+ 	list_for_each_entry_reverse(test_event, list, list) {
+-		if (++i > FANOTIFY_MAX_MERGE_EVENTS)
+-			break;
+ 		if (fanotify_should_merge(test_event, event)) {
+ 			FANOTIFY_E(test_event)->mask |= new->mask;
+ 			return 1;
 -- 
 2.43.0
 
