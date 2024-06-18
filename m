@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CD3390D553
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:35:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1537790D554
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 16:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47C1328950E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:35:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F4081F232CA
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3856B15539D;
-	Tue, 18 Jun 2024 14:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5B0155725;
+	Tue, 18 Jun 2024 14:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UXqh5hj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKlPTu3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEAF2139A2
-	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 14:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D14155359
+	for <stable@vger.kernel.org>; Tue, 18 Jun 2024 14:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718720296; cv=none; b=kP6tOFqkWvOYtyoxl5elOEC0og5KJlm3S8YdHQqHzRKABPDQqpKuJhlCSn+P9Kxc6jsg7FHOMSfM1NmNsf/Aipob9lQINOAJR+S55FO8hI6AD4aFiRcOFT42SPsChcyaWTnetXHQ5SKsuUrcieaE0Li7GEcwhQnTnV9kjsR/Whg=
+	t=1718720304; cv=none; b=Dyce6BWhqTrAWkXqDx0iq38FYfnbuajVnWiIOY0HYlQL2pFIYqDWLgRl/qxwfTQnfA4lU2feeCvGAMNudTbmL3Ba3zPjQfXpXW/C43/IJdXSvKSwfbb2xZwpapQesGkdk0gUTAbpHqZScu9b8zVDgLGbSdAwuJ5tOi5OJwgFTpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718720296; c=relaxed/simple;
-	bh=4xBGO41HoooettFAjXnadIJU+Lti0qEGeY2+Yb2FkEQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=X30B7Heertz0QAVN6zwRgRBONrSGKNjGjnTG/krLnIbV4QN/rFUn8xa9jpyeE0oIKEQ2Nar309KcUMTWI4afgMTuhZqOorafw5UBLLQsM6B7yhBHrcRemLyhMzTR5PcNnswjCY8fXKw5lwp6m+4/9+TZfxiqEglrmsqnNAUnjf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UXqh5hj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377B7C4AF1D;
-	Tue, 18 Jun 2024 14:18:15 +0000 (UTC)
+	s=arc-20240116; t=1718720304; c=relaxed/simple;
+	bh=7BV7OwFdrZj4GxGlGTu5hrGK5ArEduje8bEbszlT5PM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MIYQV/B9unBUzjjpk8iWYQ6n6jd0EMG7cvYH4j1ngnEokANd4wfbIgUhPh+jPUsiNWIZQh2tHDWNtpqAkjeKWlL6554F+a2jJ13aiVeKlZJr43VSKH8Lp8Vfkfz0YLderRoEMEYGBgIk/6LkaU5BDmaIQtqPY58bmxMlOY16dpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKlPTu3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE8AC3277B;
+	Tue, 18 Jun 2024 14:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718720295;
-	bh=4xBGO41HoooettFAjXnadIJU+Lti0qEGeY2+Yb2FkEQ=;
+	s=korg; t=1718720304;
+	bh=7BV7OwFdrZj4GxGlGTu5hrGK5ArEduje8bEbszlT5PM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2UXqh5hjtKEhI9jgunX9Ww3kJTSsJ00w27RVj+ATtuYewPFe7qSJG/9OiUCuK/CVF
-	 75c/pX1siUl5CqcMMP+qpnwtQXt9twm2GYHexbixDeaw2iNQ22BHrv5NuR+CGU2uzU
-	 geZci4b//3oiuzB9fCW7j6S7HMQSgwYjKbu2T7mQ=
-Subject: FAILED: patch "[PATCH] iio: invensense: fix timestamp glitches when switching" failed to apply to 6.9-stable tree
+	b=PKlPTu3GePdJKRC8FybI/2+R7wUglWTzrSb+LMzp0tSylvYZn0OAWe3hBxnZBzmtG
+	 mIX1H4a28EjyslBlP4vY5JXvDK+Chn+S9f44+E9YNq7pMFbYnbcRfepcekbRSMZeO+
+	 1KFkdLXwGtTHcmmAoIKV8oionUKwp/1yK8EIvPco=
+Subject: FAILED: patch "[PATCH] iio: invensense: fix timestamp glitches when switching" failed to apply to 6.6-stable tree
 To: jean-baptiste.maneyrol@tdk.com,Jonathan.Cameron@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 18 Jun 2024 16:18:12 +0200
-Message-ID: <2024061812-bagginess-kimono-e19c@gregkh>
+Date: Tue, 18 Jun 2024 16:18:13 +0200
+Message-ID: <2024061813-bulk-customize-6698@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.9-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x bf8367b00c33c64a9391c262bb2e11d274c9f2a4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061812-bagginess-kimono-e19c@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061813-bulk-customize-6698@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 bf8367b00c33 ("iio: invensense: fix timestamp glitches when switching frequency")
 a1432b5b4f4c ("iio: imu: inv_icm42600: add support of ICM-42686-P")
+b58b13f156c0 ("iio: invensense: remove redundant initialization of variable period")
 
 thanks,
 
