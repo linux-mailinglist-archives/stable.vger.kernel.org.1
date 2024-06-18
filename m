@@ -1,355 +1,164 @@
-Return-Path: <stable+bounces-53288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E1490D0F8
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEB490CC31
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AD63287D78
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B1341C22E18
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A511946BF;
-	Tue, 18 Jun 2024 13:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A318A15D5AE;
+	Tue, 18 Jun 2024 12:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNPB627I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q3zyPofI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEFD155736;
-	Tue, 18 Jun 2024 13:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D19215CD7D;
+	Tue, 18 Jun 2024 12:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715885; cv=none; b=gVoWX0kdBjPvISzYM0V6LcKwqWNIA04qZanxpVUY3XIzjlmG7lVz/ac8tLUEgtm4gnM+pewNbFYnYbE1HMXNwkh/Ypn0bqe1qtXiBLohbziy6SEeeDZMn2vjQE+dmqyBjxyNsXuUgHZn61OK0wkJxr90keK1J3cZdHAiHlXGzjY=
+	t=1718714250; cv=none; b=bYGaRN4zCOYMlZc8dNgeRqeoBxp0WJVwiOh7S2ovB1ZCs5V0hFv5i4rxEzV1f/KdJOh1MNrztg8tJCNfjF7Ad5y5/V8EWYHBWqnhfsLw1UcIjIaMh3+cNqaMzh7naHRCJ1gqF4g/YgQcYwDUUZcvshDDks9saWqhXCsi5QS/1xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715885; c=relaxed/simple;
-	bh=CL5Cdwdh4ZIkKbR5q44yfYhIczhX1Wg0c+HnpLNA57A=;
+	s=arc-20240116; t=1718714250; c=relaxed/simple;
+	bh=hrFQYKSoSedno6t/TMSRyd6Lxlx09BkJvdjqaOsR+cQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqQnlbnKFWIZWeIKW+tRSaXU95otkp0oesb4ITjlJ1rJVRrafgmM/UhN9Vr8pVSIRh79l8V+gumxlMxALAtt8s+p5ms14v+OhpFhWQKJiXSY8OjRDnS+/jkXJUj5G+I7r2JAOh4S9z12h8nl6JwXikRjS+wQO9gRlw/j9qlSKhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNPB627I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DC3C3277B;
-	Tue, 18 Jun 2024 13:04:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715885;
-	bh=CL5Cdwdh4ZIkKbR5q44yfYhIczhX1Wg0c+HnpLNA57A=;
+	 MIME-Version; b=oOFoLMYNu6ZPwaak4C+FKUdRp4nqpPBJtyhB8FhFTZnIaVJCBRy8/YaQKt8TJN67cn9itMZRXiHD+YPxfEyBM4yJ5q01++E/jzT16hZGQ2D6y2Y6AAJfMq045GvMR1CFsLi7/xth8rUO7KLYEmjziWqZfm46hd1QIdaD9fINey8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q3zyPofI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A296C32786;
+	Tue, 18 Jun 2024 12:37:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714250;
+	bh=hrFQYKSoSedno6t/TMSRyd6Lxlx09BkJvdjqaOsR+cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNPB627ITUKKfp8gyEmF5Hjef/EFjQbq4GZCA5xBYqxyhEK242tGLl4/bGgxI+7W3
-	 nHNZS48A0SK83RZ4/5zq0PnQmkvGVJsUUnaFmMbRHtwKwLfiV4B4ecMveiaz7zDJOY
-	 N18TE30F5thsNgmoszmNSMRyiyev7cGxwE0NR/pQ=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 460/770] NFSD: Move fill_pre_wcc() and fill_post_wcc()
-Date: Tue, 18 Jun 2024 14:35:13 +0200
-Message-ID: <20240618123425.069184195@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=q3zyPofIyn6WHgMCx+/SY4sElbjiwx5AVH1YM9Z79MaN1jZgUaXBFizT8oQ6S6/cI
+	 LuTUtsUS9Ikc6CaP9+i2nT+7g6cO1dieORbDvX0BMc9EogIRFBR8P5TgBnCqqnaJQv
+	 qNS7jj1nNTLrtTWHQ0C4/LrIU2etv6yCU3gxQJKrS5r3vdr5VtPGPNrQP5+s8knRK3
+	 etGRvfmrit1V7VgGSA+ljoo5JYs3zRShWSbVR2Y4nR7u4Xz/VMV9erhN/w2CTGYPKd
+	 cqV4RlAKLQsRIZDKbUEA37KINuO9Em7A7d/OVIEQM88Wo9eiVdxotgmuQoONzS/tpL
+	 o2/C4FWPcV6Zg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-input@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 32/44] Input: silead - Always support 10 fingers
+Date: Tue, 18 Jun 2024 08:35:13 -0400
+Message-ID: <20240618123611.3301370-32-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: Hans de Goede <hdegoede@redhat.com>
 
-------------------
+[ Upstream commit 38a38f5a36da9820680d413972cb733349400532 ]
 
-From: Chuck Lever <chuck.lever@oracle.com>
+When support for Silead touchscreens was orginal added some touchscreens
+with older firmware versions only supported 5 fingers and this was made
+the default requiring the setting of a "silead,max-fingers=10" uint32
+device-property for all touchscreen models which do support 10 fingers.
 
-[ Upstream commit fcb5e3fa012351f3b96024c07bc44834c2478213 ]
+There are very few models with the old 5 finger fw, so in practice the
+setting of the "silead,max-fingers=10" is boilerplate which needs to
+be copy and pasted to every touchscreen config.
 
-These functions are related to file handle processing and have
-nothing to do with XDR encoding or decoding. Also they are no longer
-NFSv3-specific. As a clean-up, move their definitions to a more
-appropriate location. WCC is also an NFSv3-specific term, so rename
-them as general-purpose helpers.
+Reporting that 10 fingers are supported on devices which only support
+5 fingers doesn't cause any problems for userspace in practice, since
+at max 4 finger gestures are supported anyways. Drop the max_fingers
+configuration and simply always assume 10 fingers.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/20240525193854.39130-2-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3xdr.c  | 55 --------------------------------------
- fs/nfsd/nfs4proc.c |  2 +-
- fs/nfsd/nfsfh.c    | 66 +++++++++++++++++++++++++++++++++++++++++++++-
- fs/nfsd/nfsfh.h    | 40 ++++++++++++++++++----------
- fs/nfsd/vfs.c      |  8 +++---
- 5 files changed, 96 insertions(+), 75 deletions(-)
+ drivers/input/touchscreen/silead.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
-index 84088581bbe09..7c45ba4db61be 100644
---- a/fs/nfsd/nfs3xdr.c
-+++ b/fs/nfsd/nfs3xdr.c
-@@ -487,61 +487,6 @@ svcxdr_encode_wcc_data(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 	return true;
- }
+diff --git a/drivers/input/touchscreen/silead.c b/drivers/input/touchscreen/silead.c
+index 62f562ad50263..050fa9ca4ec94 100644
+--- a/drivers/input/touchscreen/silead.c
++++ b/drivers/input/touchscreen/silead.c
+@@ -71,7 +71,6 @@ struct silead_ts_data {
+ 	struct regulator_bulk_data regulators[2];
+ 	char fw_name[64];
+ 	struct touchscreen_properties prop;
+-	u32 max_fingers;
+ 	u32 chip_id;
+ 	struct input_mt_pos pos[SILEAD_MAX_FINGERS];
+ 	int slots[SILEAD_MAX_FINGERS];
+@@ -136,7 +135,7 @@ static int silead_ts_request_input_dev(struct silead_ts_data *data)
+ 	touchscreen_parse_properties(data->input, true, &data->prop);
+ 	silead_apply_efi_fw_min_max(data);
  
--/*
-- * Fill in the pre_op attr for the wcc data
-- */
--void fill_pre_wcc(struct svc_fh *fhp)
--{
--	struct inode    *inode;
--	struct kstat	stat;
--	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
--	__be32 err;
--
--	if (fhp->fh_no_wcc || fhp->fh_pre_saved)
--		return;
--	inode = d_inode(fhp->fh_dentry);
--	err = fh_getattr(fhp, &stat);
--	if (err) {
--		/* Grab the times from inode anyway */
--		stat.mtime = inode->i_mtime;
--		stat.ctime = inode->i_ctime;
--		stat.size  = inode->i_size;
+-	input_mt_init_slots(data->input, data->max_fingers,
++	input_mt_init_slots(data->input, SILEAD_MAX_FINGERS,
+ 			    INPUT_MT_DIRECT | INPUT_MT_DROP_UNUSED |
+ 			    INPUT_MT_TRACK);
+ 
+@@ -256,10 +255,10 @@ static void silead_ts_read_data(struct i2c_client *client)
+ 		return;
+ 	}
+ 
+-	if (buf[0] > data->max_fingers) {
++	if (buf[0] > SILEAD_MAX_FINGERS) {
+ 		dev_warn(dev, "More touches reported then supported %d > %d\n",
+-			 buf[0], data->max_fingers);
+-		buf[0] = data->max_fingers;
++			 buf[0], SILEAD_MAX_FINGERS);
++		buf[0] = SILEAD_MAX_FINGERS;
+ 	}
+ 
+ 	if (silead_ts_handle_pen_data(data, buf))
+@@ -315,7 +314,6 @@ static void silead_ts_read_data(struct i2c_client *client)
+ 
+ static int silead_ts_init(struct i2c_client *client)
+ {
+-	struct silead_ts_data *data = i2c_get_clientdata(client);
+ 	int error;
+ 
+ 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_RESET,
+@@ -325,7 +323,7 @@ static int silead_ts_init(struct i2c_client *client)
+ 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
+ 
+ 	error = i2c_smbus_write_byte_data(client, SILEAD_REG_TOUCH_NR,
+-					data->max_fingers);
++					  SILEAD_MAX_FINGERS);
+ 	if (error)
+ 		goto i2c_write_err;
+ 	usleep_range(SILEAD_CMD_SLEEP_MIN, SILEAD_CMD_SLEEP_MAX);
+@@ -591,13 +589,6 @@ static void silead_ts_read_props(struct i2c_client *client)
+ 	const char *str;
+ 	int error;
+ 
+-	error = device_property_read_u32(dev, "silead,max-fingers",
+-					 &data->max_fingers);
+-	if (error) {
+-		dev_dbg(dev, "Max fingers read error %d\n", error);
+-		data->max_fingers = 5; /* Most devices handle up-to 5 fingers */
 -	}
--	if (v4)
--		fhp->fh_pre_change = nfsd4_change_attribute(&stat, inode);
 -
--	fhp->fh_pre_mtime = stat.mtime;
--	fhp->fh_pre_ctime = stat.ctime;
--	fhp->fh_pre_size  = stat.size;
--	fhp->fh_pre_saved = true;
--}
--
--/*
-- * Fill in the post_op attr for the wcc data
-- */
--void fill_post_wcc(struct svc_fh *fhp)
--{
--	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
--	struct inode *inode = d_inode(fhp->fh_dentry);
--	__be32 err;
--
--	if (fhp->fh_no_wcc)
--		return;
--
--	if (fhp->fh_post_saved)
--		printk("nfsd: inode locked twice during operation.\n");
--
--	err = fh_getattr(fhp, &fhp->fh_post_attr);
--	if (err) {
--		fhp->fh_post_saved = false;
--		fhp->fh_post_attr.ctime = inode->i_ctime;
--	} else
--		fhp->fh_post_saved = true;
--	if (v4)
--		fhp->fh_post_change =
--			nfsd4_change_attribute(&fhp->fh_post_attr, inode);
--}
--
- /*
-  * XDR decode functions
-  */
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index e8ffaa7faced9..451190813302e 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -2523,7 +2523,7 @@ nfsd4_proc_compound(struct svc_rqst *rqstp)
- 			goto encode_op;
- 		}
- 
--		fh_clear_wcc(current_fh);
-+		fh_clear_pre_post_attrs(current_fh);
- 
- 		/* If op is non-idempotent */
- 		if (op->opdesc->op_flags & OP_MODIFIES_SOMETHING) {
-diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-index 34e201b6eb623..3b9751555f8f2 100644
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -610,6 +610,70 @@ fh_update(struct svc_fh *fhp)
- 	return nfserr_serverfault;
- }
- 
-+#ifdef CONFIG_NFSD_V3
-+
-+/**
-+ * fh_fill_pre_attrs - Fill in pre-op attributes
-+ * @fhp: file handle to be updated
-+ *
-+ */
-+void fh_fill_pre_attrs(struct svc_fh *fhp)
-+{
-+	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
-+	struct inode *inode;
-+	struct kstat stat;
-+	__be32 err;
-+
-+	if (fhp->fh_no_wcc || fhp->fh_pre_saved)
-+		return;
-+
-+	inode = d_inode(fhp->fh_dentry);
-+	err = fh_getattr(fhp, &stat);
-+	if (err) {
-+		/* Grab the times from inode anyway */
-+		stat.mtime = inode->i_mtime;
-+		stat.ctime = inode->i_ctime;
-+		stat.size  = inode->i_size;
-+	}
-+	if (v4)
-+		fhp->fh_pre_change = nfsd4_change_attribute(&stat, inode);
-+
-+	fhp->fh_pre_mtime = stat.mtime;
-+	fhp->fh_pre_ctime = stat.ctime;
-+	fhp->fh_pre_size  = stat.size;
-+	fhp->fh_pre_saved = true;
-+}
-+
-+/**
-+ * fh_fill_post_attrs - Fill in post-op attributes
-+ * @fhp: file handle to be updated
-+ *
-+ */
-+void fh_fill_post_attrs(struct svc_fh *fhp)
-+{
-+	bool v4 = (fhp->fh_maxsize == NFS4_FHSIZE);
-+	struct inode *inode = d_inode(fhp->fh_dentry);
-+	__be32 err;
-+
-+	if (fhp->fh_no_wcc)
-+		return;
-+
-+	if (fhp->fh_post_saved)
-+		printk("nfsd: inode locked twice during operation.\n");
-+
-+	err = fh_getattr(fhp, &fhp->fh_post_attr);
-+	if (err) {
-+		fhp->fh_post_saved = false;
-+		fhp->fh_post_attr.ctime = inode->i_ctime;
-+	} else
-+		fhp->fh_post_saved = true;
-+	if (v4)
-+		fhp->fh_post_change =
-+			nfsd4_change_attribute(&fhp->fh_post_attr, inode);
-+}
-+
-+#endif /* CONFIG_NFSD_V3 */
-+
- /*
-  * Release a file handle.
-  */
-@@ -622,7 +686,7 @@ fh_put(struct svc_fh *fhp)
- 		fh_unlock(fhp);
- 		fhp->fh_dentry = NULL;
- 		dput(dentry);
--		fh_clear_wcc(fhp);
-+		fh_clear_pre_post_attrs(fhp);
- 	}
- 	fh_drop_write(fhp);
- 	if (exp) {
-diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
-index d11e4b6870d68..434930d8a946e 100644
---- a/fs/nfsd/nfsfh.h
-+++ b/fs/nfsd/nfsfh.h
-@@ -284,12 +284,13 @@ static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
- #endif
- 
- #ifdef CONFIG_NFSD_V3
--/*
-- * The wcc data stored in current_fh should be cleared
-- * between compound ops.
-+
-+/**
-+ * fh_clear_pre_post_attrs - Reset pre/post attributes
-+ * @fhp: file handle to be updated
-+ *
-  */
--static inline void
--fh_clear_wcc(struct svc_fh *fhp)
-+static inline void fh_clear_pre_post_attrs(struct svc_fh *fhp)
- {
- 	fhp->fh_post_saved = false;
- 	fhp->fh_pre_saved = false;
-@@ -323,13 +324,24 @@ static inline u64 nfsd4_change_attribute(struct kstat *stat,
- 		return time_to_chattr(&stat->ctime);
- }
- 
--extern void fill_pre_wcc(struct svc_fh *fhp);
--extern void fill_post_wcc(struct svc_fh *fhp);
--#else
--#define fh_clear_wcc(ignored)
--#define fill_pre_wcc(ignored)
--#define fill_post_wcc(notused)
--#endif /* CONFIG_NFSD_V3 */
-+extern void fh_fill_pre_attrs(struct svc_fh *fhp);
-+extern void fh_fill_post_attrs(struct svc_fh *fhp);
-+
-+#else /* !CONFIG_NFSD_V3 */
-+
-+static inline void fh_clear_pre_post_attrs(struct svc_fh *fhp)
-+{
-+}
-+
-+static inline void fh_fill_pre_attrs(struct svc_fh *fhp)
-+{
-+}
-+
-+static inline void fh_fill_post_attrs(struct svc_fh *fhp)
-+{
-+}
-+
-+#endif /* !CONFIG_NFSD_V3 */
- 
- 
- /*
-@@ -355,7 +367,7 @@ fh_lock_nested(struct svc_fh *fhp, unsigned int subclass)
- 
- 	inode = d_inode(dentry);
- 	inode_lock_nested(inode, subclass);
--	fill_pre_wcc(fhp);
-+	fh_fill_pre_attrs(fhp);
- 	fhp->fh_locked = true;
- }
- 
-@@ -372,7 +384,7 @@ static inline void
- fh_unlock(struct svc_fh *fhp)
- {
- 	if (fhp->fh_locked) {
--		fill_post_wcc(fhp);
-+		fh_fill_post_attrs(fhp);
- 		inode_unlock(d_inode(fhp->fh_dentry));
- 		fhp->fh_locked = false;
- 	}
-diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-index 77f48779210d0..d4b6bc3b4d735 100644
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1787,8 +1787,8 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
- 	 * so do it by hand */
- 	trap = lock_rename(tdentry, fdentry);
- 	ffhp->fh_locked = tfhp->fh_locked = true;
--	fill_pre_wcc(ffhp);
--	fill_pre_wcc(tfhp);
-+	fh_fill_pre_attrs(ffhp);
-+	fh_fill_pre_attrs(tfhp);
- 
- 	odentry = lookup_one_len(fname, fdentry, flen);
- 	host_err = PTR_ERR(odentry);
-@@ -1840,8 +1840,8 @@ nfsd_rename(struct svc_rqst *rqstp, struct svc_fh *ffhp, char *fname, int flen,
- 	 * were the same, so again we do it by hand.
- 	 */
- 	if (!close_cached) {
--		fill_post_wcc(ffhp);
--		fill_post_wcc(tfhp);
-+		fh_fill_post_attrs(ffhp);
-+		fh_fill_post_attrs(tfhp);
- 	}
- 	unlock_rename(tdentry, fdentry);
- 	ffhp->fh_locked = tfhp->fh_locked = false;
+ 	error = device_property_read_string(dev, "firmware-name", &str);
+ 	if (!error)
+ 		snprintf(data->fw_name, sizeof(data->fw_name),
 -- 
 2.43.0
-
-
 
 
