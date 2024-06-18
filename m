@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-53519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E75A90D21E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84C7B90D1EF
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8B221F23100
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:47:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BA181F27898
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D06F15921D;
-	Tue, 18 Jun 2024 13:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76341A8C18;
+	Tue, 18 Jun 2024 13:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiGufWhM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3PQrlq+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C15F1591E3;
-	Tue, 18 Jun 2024 13:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDAA1A8C12;
+	Tue, 18 Jun 2024 13:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716570; cv=none; b=qpYhP+bShFtxRhP+cZs3aVeuDaBdz5jLOAZZoooKjab7lqSjSkmvvJAPiRP3CvmokUe9lV1Kp1mB7CSsgHgd+wATg4yyk3X4dGYSaNjY/mi1xDDby8x1ZYAxgRWcolll77g93pTIEWXuFE1uMMAum8AhEyAO5iZ4UR/8L14JFSk=
+	t=1718716470; cv=none; b=qXVqURk4pZ9G1puzkiNnFOnUNcg4h0jrExDpMsm1BCbha1nfIJFXj6vXk1rWdkiMOja2SxxWkgYRd1XfENErZjMWKHkmqMrDZuohLFHLUZVxvM+ZjXItHO5eYVzc1Pa3pWaM+/QbCEas93BuLBlW4/4TtXJykKE+MLmAx1lY+GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716570; c=relaxed/simple;
-	bh=oPtwlcYmmIeK1rxJvspAZpbGpy1ThnNV4Anh04qG1t0=;
+	s=arc-20240116; t=1718716470; c=relaxed/simple;
+	bh=ODRhUsjpQ1+qGEVoBLqez4q1WDZ6kHyiyjvWOeHvSTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dbib/QATtkgS6TacpWXa6ulkxZ3NssXlTTY78qHKtlIa/xs0LkXQtrIBdP8ZVMbqfJvEQwTkJNYJLH7QDCi/35ihldAF+iYN0yTlNhpPOykeDEVQsEFcSyopmjt9jaUe1b+Kp5EXgg21nBm4dOL3b45qGwHJox+/L/qCuuuVEUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiGufWhM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D5CFC4AF1D;
-	Tue, 18 Jun 2024 13:16:09 +0000 (UTC)
+	 MIME-Version; b=P+yKsTBjQK+dgNnWX/QItHO1/zKofOd842bTcYA20zEhNeS9b4mRRFCo3BmlgtSIYGgB7NPbELVWlmUp7ZKRVPDgUb5cwzaHYFDwDfFy+lfbVjmHYZmApA7WsMdKIVqr0j2anR9E11BEY0kQ3liXadbIJMJCVbE9Uz9S42T+p9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3PQrlq+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE97C4AF1D;
+	Tue, 18 Jun 2024 13:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716569;
-	bh=oPtwlcYmmIeK1rxJvspAZpbGpy1ThnNV4Anh04qG1t0=;
+	s=korg; t=1718716470;
+	bh=ODRhUsjpQ1+qGEVoBLqez4q1WDZ6kHyiyjvWOeHvSTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qiGufWhMDm0BLYBuZXPvy2N+1d3cFKZC4deWr8aw8cFYkSROfVFt5dBLDX+oSLJMo
-	 JhlMVTMyT2uci5SSXfb9IFsaZ3qPMDZ7wBiwjk9mIn3l3nQyEwxldtGYiHFQ7SaK8C
-	 wnvTphmcvjOtFVWfVKZARdMoAO88M50MgJiVQG5g=
+	b=h3PQrlq+p3fdeWU2XeVouvtUzic3P5MvgVKprA8UO6DVFTSFqWLmbEmETuUIR3Z1k
+	 eqi5YcbBGZ1euidF+WxbSsufvdq/W0jTHKkg2EbTmj3Rc1RH6qjVuN0Qb4G7No2zpj
+	 XAVKOafwqA56uJd9OEwJ4Q6x8V/JiC8CVDA9enyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	ChenXiaoSong <chenxiaosong2@huawei.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 657/770] NFSD: Pack struct nfsd4_compoundres
-Date: Tue, 18 Jun 2024 14:38:30 +0200
-Message-ID: <20240618123432.647455360@linuxfoundation.org>
+Subject: [PATCH 5.10 658/770] nfsd: use DEFINE_PROC_SHOW_ATTRIBUTE to define nfsd_proc_ops
+Date: Tue, 18 Jun 2024 14:38:31 +0200
+Message-ID: <20240618123432.685852744@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -65,32 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: ChenXiaoSong <chenxiaosong2@huawei.com>
 
-[ Upstream commit 9f553e61bd36c1048543ac2f6945103dd2f742be ]
+[ Upstream commit 0cfb0c4228a5c8e2ed2b58f8309b660b187cef02 ]
 
-Remove a couple of 4-byte holes on platforms with 64-bit pointers.
+Use DEFINE_PROC_SHOW_ATTRIBUTE helper macro to simplify the code.
 
+Signed-off-by: ChenXiaoSong <chenxiaosong2@huawei.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/xdr4.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/stats.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index 624a19ec3ad11..8f323d9071f06 100644
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -732,8 +732,8 @@ struct nfsd4_compoundres {
- 	struct svc_rqst *		rqstp;
+diff --git a/fs/nfsd/stats.c b/fs/nfsd/stats.c
+index a8c5a02a84f04..777e24e5da33b 100644
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -32,7 +32,7 @@ struct svc_stat		nfsd_svcstats = {
+ 	.program	= &nfsd_program,
+ };
  
- 	__be32				*statusp;
--	u32				taglen;
- 	char *				tag;
-+	u32				taglen;
- 	u32				opcnt;
+-static int nfsd_proc_show(struct seq_file *seq, void *v)
++static int nfsd_show(struct seq_file *seq, void *v)
+ {
+ 	int i;
  
- 	struct nfsd4_compound_state	cstate;
+@@ -72,17 +72,7 @@ static int nfsd_proc_show(struct seq_file *seq, void *v)
+ 	return 0;
+ }
+ 
+-static int nfsd_proc_open(struct inode *inode, struct file *file)
+-{
+-	return single_open(file, nfsd_proc_show, NULL);
+-}
+-
+-static const struct proc_ops nfsd_proc_ops = {
+-	.proc_open	= nfsd_proc_open,
+-	.proc_read	= seq_read,
+-	.proc_lseek	= seq_lseek,
+-	.proc_release	= single_release,
+-};
++DEFINE_PROC_SHOW_ATTRIBUTE(nfsd);
+ 
+ int nfsd_percpu_counters_init(struct percpu_counter counters[], int num)
+ {
 -- 
 2.43.0
 
