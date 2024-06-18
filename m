@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-52891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25B390CF2E
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB9290CF32
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9D7F1C22B6F
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:25:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D95CA1C23152
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938602139DC;
-	Tue, 18 Jun 2024 12:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7164915B969;
+	Tue, 18 Jun 2024 12:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5nhgk0u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6R7RvsV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 513DC15B159;
-	Tue, 18 Jun 2024 12:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5D51DA24;
+	Tue, 18 Jun 2024 12:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714717; cv=none; b=NnIxuRlPeUzTXbsUf35L6VXHqqadDFRrflH9W9wJytiTa9LF/24jIP3dkLQL0i2R88h5R6O4xtRYHrbs1vEeWepgsYiDUIBRUhnaRJp5IvJpstjqfNHAZ9RjYL2DPff3nX0pNHYtMRr16jJ8apNmtoeTGMdGpmxpL7C3CtZYQW8=
+	t=1718714733; cv=none; b=mQuqDGhHXDitFd7vbjG6A3uzYOrC/RpyUUF5SCQZuaTOzItbObh5yy1ELM+jvHrzqXhhr3/6jqfUsRjpGNhxYOK0crq9q2rrfFFm56P6PtUeK+lI6puWihdT8zMlPAfbZ3gvhqFoBo4kStPNjROmp9eCn1GcZsu6cfO28zC4TWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714717; c=relaxed/simple;
-	bh=l2DRmQV4hf01KZaOPfeZcwjf659eh43oJ6Mt99Kxh3o=;
+	s=arc-20240116; t=1718714733; c=relaxed/simple;
+	bh=/VF/gpw+fgvR0QWcraXMumHNcxyEyErajzziBeQ4DVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cTcS9AeAZ+jQcoE8eUDfr/03OR48oFIcMsIqytsbmCHtoEJG3SabwUPQOljL2ZZlWVNYBcDHdZYxP/VznKSor5/u9eGUGacbRGKogmCnRBciPshuZzsQvV5YOgdt6yG+lHpi8n5eu3Op2RmEdE7Ux9fQ3K2qY7u/Dtik31ltyiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5nhgk0u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B888C3277B;
-	Tue, 18 Jun 2024 12:45:16 +0000 (UTC)
+	 MIME-Version; b=ge7i+E+YpOjFufxxYrkE5NsCfxKx5O7fp2uxBE88/7eAsfSpNFPC77uYWQDnXZGvJACD9xjClo/CLF7NelpUth0MLFHo5G5t+mbPu4t/oI69AcGu0SwU7Gse5Dvq0vrK9DQ93DHSP+ReA8nMGElVhQKDYcInSaGWLy0tdFTsgIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6R7RvsV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBA8C3277B;
+	Tue, 18 Jun 2024 12:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718714716;
-	bh=l2DRmQV4hf01KZaOPfeZcwjf659eh43oJ6Mt99Kxh3o=;
+	s=korg; t=1718714731;
+	bh=/VF/gpw+fgvR0QWcraXMumHNcxyEyErajzziBeQ4DVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z5nhgk0uxX5nkFb3sfk6ztZd+CnzYV+jv+zKnOWbDiyYizy4BNNHINRMqG1xWaekc
-	 GXSVFujKXUKpDXEsvE7AS+UFi1KQRr9Dz/YdsLjqX1mjrxnekGU3gyR/GC94PjTgR4
-	 zLfrXFsYpRYQW2XH0AH3kLie2h6zVgBFMGqIOq1U=
+	b=J6R7RvsVZLfqnfohy7LHAVF1L4b55WLzGwy0Jk4lyn/6mRUKWrdcivbqmOv5kSgAt
+	 ROx02NrZdxHfrmAbzNBTIVP8nI/HT28PVq2qv3+e9G6YLHsO2sJ7OecCvp45kLJfpb
+	 /9v8aW2S8hyXS4YlrujEoEeuJkMcU1191SYqiWDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/770] NFSD: Replace READ* macros in nfsd4_decode_locku()
-Date: Tue, 18 Jun 2024 14:28:10 +0200
-Message-ID: <20240618123408.724945398@linuxfoundation.org>
+Subject: [PATCH 5.10 038/770] NFSD: Replace READ* macros in nfsd4_decode_lookup()
+Date: Tue, 18 Jun 2024 14:28:11 +0200
+Message-ID: <20240618123408.763439310@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,52 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit ca9cf9fc27f8f722e9eb2763173ba01f6ac3dad1 ]
+[ Upstream commit 3d5877e8e03f60d7cc804d7b230ff9c00c9c07bd ]
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ fs/nfsd/nfs4xdr.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
 diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 4f2680650a567..3c20a1f8eaa91 100644
+index 3c20a1f8eaa91..431ab9d604be7 100644
 --- a/fs/nfsd/nfs4xdr.c
 +++ b/fs/nfsd/nfs4xdr.c
-@@ -909,21 +909,23 @@ nfsd4_decode_lockt(struct nfsd4_compoundargs *argp, struct nfsd4_lockt *lockt)
+@@ -931,16 +931,7 @@ nfsd4_decode_locku(struct nfsd4_compoundargs *argp, struct nfsd4_locku *locku)
  static __be32
- nfsd4_decode_locku(struct nfsd4_compoundargs *argp, struct nfsd4_locku *locku)
+ nfsd4_decode_lookup(struct nfsd4_compoundargs *argp, struct nfsd4_lookup *lookup)
  {
 -	DECODE_HEAD;
-+	__be32 status;
- 
--	READ_BUF(8);
--	locku->lu_type = be32_to_cpup(p++);
-+	if (xdr_stream_decode_u32(argp->xdr, &locku->lu_type) < 0)
-+		return nfserr_bad_xdr;
- 	if ((locku->lu_type < NFS4_READ_LT) || (locku->lu_type > NFS4_WRITEW_LT))
--		goto xdr_error;
--	locku->lu_seqid = be32_to_cpup(p++);
--	status = nfsd4_decode_stateid(argp, &locku->lu_stateid);
-+		return nfserr_bad_xdr;
-+	if (xdr_stream_decode_u32(argp->xdr, &locku->lu_seqid) < 0)
-+		return nfserr_bad_xdr;
-+	status = nfsd4_decode_stateid4(argp, &locku->lu_stateid);
- 	if (status)
- 		return status;
--	READ_BUF(16);
--	p = xdr_decode_hyper(p, &locku->lu_offset);
--	p = xdr_decode_hyper(p, &locku->lu_length);
-+	if (xdr_stream_decode_u64(argp->xdr, &locku->lu_offset) < 0)
-+		return nfserr_bad_xdr;
-+	if (xdr_stream_decode_u64(argp->xdr, &locku->lu_length) < 0)
-+		return nfserr_bad_xdr;
- 
+-
+-	READ_BUF(4);
+-	lookup->lo_len = be32_to_cpup(p++);
+-	READ_BUF(lookup->lo_len);
+-	SAVEMEM(lookup->lo_name, lookup->lo_len);
+-	if ((status = check_filename(lookup->lo_name, lookup->lo_len)))
+-		return status;
+-
 -	DECODE_TAIL;
-+	return nfs_ok;
++	return nfsd4_decode_component4(argp, &lookup->lo_name, &lookup->lo_len);
  }
  
- static __be32
+ static __be32 nfsd4_decode_share_access(struct nfsd4_compoundargs *argp, u32 *share_access, u32 *deleg_want, u32 *deleg_when)
 -- 
 2.43.0
 
