@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A7990D21A
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:47:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6378490D21B
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:47:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34ACE1F27F0C
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5688D1C245A7
 	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DB81AB51F;
-	Tue, 18 Jun 2024 13:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597771AB523;
+	Tue, 18 Jun 2024 13:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdZ5Z5Ig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmVH2y2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B4E13792B;
-	Tue, 18 Jun 2024 13:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BC713792B;
+	Tue, 18 Jun 2024 13:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718716555; cv=none; b=hm1GiXU0l3N0ZHU1+7LIIqtDV8rhK/txsX9dsVf5y7k4fyIy9PAtE+DyPP4gGPY54n1DznIkAA4egevt73m5nBmpGwkY9+PpXk0OF7Ja6q8mvZ6OGAu0tA5I69i0StWZWMQfEImgdPWusSciji+ihx9yXQEvn+A0tM9BITRjULE=
+	t=1718716558; cv=none; b=t209+zu1ZiyRJwumDoiaq5bxoU3x9S5nlY+6QJJFn9z052yR5zFpi47Lqn6p7Q4RPagNxCUCblratjZh3PO0nN7FW1FOL7qOTY76iKxG9v6ZW94FuzR8ZFlOgdtbO34/lFVOBQN8JrGBDBE1sRFgpS/1DX/DLvpaNEpO4wz6hFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718716555; c=relaxed/simple;
-	bh=URqp7q1xIkkJz9MsLok+N646uC6c62gdvSNBd8va8U0=;
+	s=arc-20240116; t=1718716558; c=relaxed/simple;
+	bh=Fe2+UAUUrD0wFCtYOo4jCe33egDnR3o062j/gXB3GHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GhSZK8VY6e1fGUyhjmBuLOGw1PsbdlmD80sqEgqSXMay7Fkd683Tr2bgJ7Xz3zcM8cEwKfLfz0YYdqrriqJ36USm4f8+jh+8AjvtlG4TBsPRfam/JM9T5URUu6kv4ATjxg/MzZBBJuURiu6qdLGLs6o02fKtsOBEqf7hKKzINkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdZ5Z5Ig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB149C3277B;
-	Tue, 18 Jun 2024 13:15:54 +0000 (UTC)
+	 MIME-Version; b=PYo7qHwEzEjAl6EKmoSMWS42Wwi9XVxhoAsNU3mn3+peldX2Zy3iVy8PZLQqq1SBHIyyhxhkLzsmoxYpkpvIf0odGzff1SSv9OsKLgRLvO5goVPyJYsGzDhiM3yumZZACWFre+/5bw9ZnvEugJBTq8MYrPXWc8RVV4/hVj4X6oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmVH2y2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93529C3277B;
+	Tue, 18 Jun 2024 13:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718716555;
-	bh=URqp7q1xIkkJz9MsLok+N646uC6c62gdvSNBd8va8U0=;
+	s=korg; t=1718716558;
+	bh=Fe2+UAUUrD0wFCtYOo4jCe33egDnR3o062j/gXB3GHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NdZ5Z5Ig1JeZIrP44jhO9iO9tuFJ8dFbMRMs5QMzbTZmNda1NzE6aJe+bu47k2dpb
-	 FDXa0HH2OX5BQ8lpCRMdVoh0LXKiP2e2CL3c1BAgoh4LoaQvfAJHh2Y/ySZzQ3wK80
-	 4pUu2gb15ammnIQ+A8P8pKtNdC0kAzAdKr9ARm2k=
+	b=wmVH2y2KBBPipX0rHFVQ6ovKhPQw3A4wy9KdO4wanRHGQVNWCVanP3AKdrwFi0mna
+	 pp7f6qhP654OnuhU/cZeQjfHpZMqYubtdkf2UtddhH9/NWx2EgxiPCEhSJeBOzuBI1
+	 FjYRfJNfPbaBmsJYGow5MYlJWYAjFmbL9osP1T5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 652/770] NFSD: Use xdr_inline_decode() to decode NFSv3 symlinks
-Date: Tue, 18 Jun 2024 14:38:25 +0200
-Message-ID: <20240618123432.456323637@linuxfoundation.org>
+Subject: [PATCH 5.10 653/770] NFSD: Clean up WRITE arg decoders
+Date: Tue, 18 Jun 2024 14:38:26 +0200
+Message-ID: <20240618123432.493940297@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,50 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit c3d2a04f05c590303c125a176e6e43df4a436fdb ]
+[ Upstream commit d4da5baa533215b14625458e645056baf646bb2e ]
 
-Replace the check for buffer over/underflow with a helper that is
-commonly used for this purpose. The helper also sets xdr->nwords
-correctly after successfully linearizing the symlink argument into
-the stream's scratch buffer.
+xdr_stream_subsegment() already returns a boolean value.
 
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3xdr.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ fs/nfsd/nfs3xdr.c | 4 +---
+ fs/nfsd/nfsxdr.c  | 4 +---
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
 diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
-index 0293b8d65f10f..71e32cf288854 100644
+index 71e32cf288854..3308dd671ef0b 100644
 --- a/fs/nfsd/nfs3xdr.c
 +++ b/fs/nfsd/nfs3xdr.c
-@@ -616,8 +616,6 @@ nfs3svc_decode_symlinkargs(struct svc_rqst *rqstp, struct xdr_stream *xdr)
- {
- 	struct nfsd3_symlinkargs *args = rqstp->rq_argp;
- 	struct kvec *head = rqstp->rq_arg.head;
--	struct kvec *tail = rqstp->rq_arg.tail;
--	size_t remaining;
- 
- 	if (!svcxdr_decode_diropargs3(xdr, &args->ffh, &args->fname, &args->flen))
- 		return false;
-@@ -626,16 +624,10 @@ nfs3svc_decode_symlinkargs(struct svc_rqst *rqstp, struct xdr_stream *xdr)
- 	if (xdr_stream_decode_u32(xdr, &args->tlen) < 0)
- 		return false;
- 
--	/* request sanity */
--	remaining = head->iov_len + rqstp->rq_arg.page_len + tail->iov_len;
--	remaining -= xdr_stream_pos(xdr);
--	if (remaining < xdr_align_size(args->tlen))
+@@ -571,10 +571,8 @@ nfs3svc_decode_writeargs(struct svc_rqst *rqstp, struct xdr_stream *xdr)
+ 		args->count = max_blocksize;
+ 		args->len = max_blocksize;
+ 	}
+-	if (!xdr_stream_subsegment(xdr, &args->payload, args->count))
 -		return false;
--
--	args->first.iov_base = xdr->p;
-+	/* symlink_data */
- 	args->first.iov_len = head->iov_len - xdr_stream_pos(xdr);
--
+ 
 -	return true;
-+	args->first.iov_base = xdr_inline_decode(xdr, args->tlen);
-+	return args->first.iov_base != NULL;
++	return xdr_stream_subsegment(xdr, &args->payload, args->count);
+ }
+ 
+ bool
+diff --git a/fs/nfsd/nfsxdr.c b/fs/nfsd/nfsxdr.c
+index aba8520b4b8b6..caf6355b18fa9 100644
+--- a/fs/nfsd/nfsxdr.c
++++ b/fs/nfsd/nfsxdr.c
+@@ -338,10 +338,8 @@ nfssvc_decode_writeargs(struct svc_rqst *rqstp, struct xdr_stream *xdr)
+ 		return false;
+ 	if (args->len > NFSSVC_MAXBLKSIZE_V2)
+ 		return false;
+-	if (!xdr_stream_subsegment(xdr, &args->payload, args->len))
+-		return false;
+ 
+-	return true;
++	return xdr_stream_subsegment(xdr, &args->payload, args->len);
  }
  
  bool
