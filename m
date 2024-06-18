@@ -1,109 +1,160 @@
-Return-Path: <stable+bounces-52739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D38DF90CCA8
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:54:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E343A90D1A2
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 842D7284FA3
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:54:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73B4A285F4E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BE818A958;
-	Tue, 18 Jun 2024 12:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404151A2568;
+	Tue, 18 Jun 2024 13:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HCm7qEpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTn8E6Ix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9486B18A955;
-	Tue, 18 Jun 2024 12:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A54158D7F;
+	Tue, 18 Jun 2024 13:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714372; cv=none; b=pNhav8eDKbj8o67XtZ1h7YX3gH+b8Md5IIiFHKptHj66duw242MaPzEyH3V49vC8bJNy9Nofr/Mx+e/FdO8GLxJwxXPRvrhN2tNJRLvR+Z9pTMfDPuUNrYTPf/APKX5Qtmq+0VNTbkDTrBNfmoGo1LqXTuIzMFC1Px9ypXCQiNU=
+	t=1718716335; cv=none; b=MvPnpUTtQxRi1JnMjmvT5yf9/nKlK3MI1J3qZkSP2ellvMd34d0nWfLpypPRYgR5kZVODPI7xM+olfqpHoGhv477KdIaEdx74x+SUlpa44C/3c0+NYo+SyusiRQx9RnApqflotDiYMba7sxz6PIGujroG4H1YC9mHxX5XeK789U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714372; c=relaxed/simple;
-	bh=RS9U/3BUr1Q86veiwVYktTTSLMNsseftXRF1uo2D5Yc=;
+	s=arc-20240116; t=1718716335; c=relaxed/simple;
+	bh=iCpE5bn0pfwesb9CX58hPviRsStcKpLQk/+9r39B0SE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e3s7RwwsSwtgl0C3FqhFFyeOqDb6kHSftH9LWq80d03lMxTxEjAta9/QEAxEqiYxuV4ZI6Vt4R/rOXwg/mJCxdZzjNijmBXWj/ebCVRpZeNCnKPtLbWAcW9+6h5KEzidZyTjzaSjvM2ZXsM+S0CJT/TNNzMIovHTNp+f8dTTizc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HCm7qEpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B05C3277B;
-	Tue, 18 Jun 2024 12:39:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714371;
-	bh=RS9U/3BUr1Q86veiwVYktTTSLMNsseftXRF1uo2D5Yc=;
+	 MIME-Version; b=PrOo5P9C4FsxJOuX3pr05l4UdJeSh9jl6JRV3PudO6e87X0ArIvM16P2hbAaF9k9AOdQbjcgpWx/bECPU1e6Oa4CufUSKPpY+qb5qGo4QZKwKloh7cFZ8D2o9eFmiKl3FPfRYkQgQZJoVNoufcKMSlTA+sxeBT32xnukVmpoQ5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTn8E6Ix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729EDC4AF1D;
+	Tue, 18 Jun 2024 13:12:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716334;
+	bh=iCpE5bn0pfwesb9CX58hPviRsStcKpLQk/+9r39B0SE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HCm7qEpO5kf2BPvLaT45jRxULX3yPtgCIOjS35qAODjDw5XOpvmLmzqYH8H2u5ARk
-	 eSKyVUDRJ7GbCAg73OFI2aFDlGYBiwJ2o00yNEk0Gpq1MwiE291repfpn42TXlbm2p
-	 bRzUlYeXJgsjJXmxfoRT2E+i6zc9nWAvYNzZenLRZwE+mI4u/f5hPFEf3/GBTaskA2
-	 jyo4kpD3A7pkzbdSHThy4AInQWfKTubq1kBHWrouUzWka7WV/FGgiwbUt0Zh7C0A7E
-	 zgTaz4UE/aEcyH6rNQyVZJhv6d8fmsqLHpGpXR/Crrm4j5ALW7tok8hRoJ/6PGog16
-	 mmzpg5qxAx5iA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	shuah@kernel.org,
-	ilpo.jarvinen@linux.intel.com,
-	maciej.wieczor-retman@intel.com,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 23/35] selftests/openat2: Fix build warnings on ppc64
-Date: Tue, 18 Jun 2024 08:37:43 -0400
-Message-ID: <20240618123831.3302346-23-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
-References: <20240618123831.3302346-1-sashal@kernel.org>
+	b=iTn8E6IxVQ5puUp0/O+gNxzvkzcHmwQNB2o7lXlYL9zs62XnOuKURc/cTboCXHKEo
+	 6qmB30rf3BClA4m5UzJUwAgvdXRqMxR96aqGm9+fbsKzfv5uk9p3TWRU+K9j8BeUlQ
+	 qFKXIug4q6GflPOS1vZaGMjdpWBt2kMEexcPgFz8=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 610/770] NFSD: drop fh argument from alloc_init_deleg
+Date: Tue, 18 Jun 2024 14:37:43 +0200
+Message-ID: <20240618123430.836154621@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 84b6df4c49a1cc2854a16937acd5fd3e6315d083 ]
+------------------
 
-Fix warnings like:
+From: Jeff Layton <jlayton@kernel.org>
 
-  openat2_test.c: In function ‘test_openat2_flags’:
-  openat2_test.c:303:73: warning: format ‘%llX’ expects argument of type
-  ‘long long unsigned int’, but argument 5 has type ‘__u64’ {aka ‘long
-  unsigned int’} [-Wformat=]
+[ Upstream commit bbf936edd543e7220f60f9cbd6933b916550396d ]
 
-By switching to unsigned long long for u64 for ppc64 builds.
+Currently, we pass the fh of the opened file down through several
+functions so that alloc_init_deleg can pass it to delegation_blocked.
+The filehandle of the open file is available in the nfs4_file however,
+so there's no need to pass it in a separate argument.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Drop the argument from alloc_init_deleg, nfs4_open_delegation and
+nfs4_set_delegation.
+
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/openat2/openat2_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfs4state.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/openat2/openat2_test.c b/tools/testing/selftests/openat2/openat2_test.c
-index 7fb902099de45..f9d2b0ec77564 100644
---- a/tools/testing/selftests/openat2/openat2_test.c
-+++ b/tools/testing/selftests/openat2/openat2_test.c
-@@ -5,6 +5,7 @@
-  */
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 1babc08fcb88f..194d8aeb1fd46 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1143,7 +1143,6 @@ static void block_delegations(struct knfsd_fh *fh)
  
- #define _GNU_SOURCE
-+#define __SANE_USERSPACE_TYPES__ // Use ll64
- #include <fcntl.h>
- #include <sched.h>
- #include <sys/stat.h>
+ static struct nfs4_delegation *
+ alloc_init_deleg(struct nfs4_client *clp, struct nfs4_file *fp,
+-		 struct svc_fh *current_fh,
+ 		 struct nfs4_clnt_odstate *odstate)
+ {
+ 	struct nfs4_delegation *dp;
+@@ -1153,7 +1152,7 @@ alloc_init_deleg(struct nfs4_client *clp, struct nfs4_file *fp,
+ 	n = atomic_long_inc_return(&num_delegations);
+ 	if (n < 0 || n > max_delegations)
+ 		goto out_dec;
+-	if (delegation_blocked(&current_fh->fh_handle))
++	if (delegation_blocked(&fp->fi_fhandle))
+ 		goto out_dec;
+ 	dp = delegstateid(nfs4_alloc_stid(clp, deleg_slab, nfs4_free_deleg));
+ 	if (dp == NULL)
+@@ -5307,7 +5306,7 @@ static int nfsd4_check_conflicting_opens(struct nfs4_client *clp,
+ }
+ 
+ static struct nfs4_delegation *
+-nfs4_set_delegation(struct nfs4_client *clp, struct svc_fh *fh,
++nfs4_set_delegation(struct nfs4_client *clp,
+ 		    struct nfs4_file *fp, struct nfs4_clnt_odstate *odstate)
+ {
+ 	int status = 0;
+@@ -5352,7 +5351,7 @@ nfs4_set_delegation(struct nfs4_client *clp, struct svc_fh *fh,
+ 		return ERR_PTR(status);
+ 
+ 	status = -ENOMEM;
+-	dp = alloc_init_deleg(clp, fp, fh, odstate);
++	dp = alloc_init_deleg(clp, fp, odstate);
+ 	if (!dp)
+ 		goto out_delegees;
+ 
+@@ -5420,8 +5419,7 @@ static void nfsd4_open_deleg_none_ext(struct nfsd4_open *open, int status)
+  * proper support for them.
+  */
+ static void
+-nfs4_open_delegation(struct svc_fh *fh, struct nfsd4_open *open,
+-			struct nfs4_ol_stateid *stp)
++nfs4_open_delegation(struct nfsd4_open *open, struct nfs4_ol_stateid *stp)
+ {
+ 	struct nfs4_delegation *dp;
+ 	struct nfs4_openowner *oo = openowner(stp->st_stateowner);
+@@ -5453,7 +5451,7 @@ nfs4_open_delegation(struct svc_fh *fh, struct nfsd4_open *open,
+ 		default:
+ 			goto out_no_deleg;
+ 	}
+-	dp = nfs4_set_delegation(clp, fh, stp->st_stid.sc_file, stp->st_clnt_odstate);
++	dp = nfs4_set_delegation(clp, stp->st_stid.sc_file, stp->st_clnt_odstate);
+ 	if (IS_ERR(dp))
+ 		goto out_no_deleg;
+ 
+@@ -5585,7 +5583,7 @@ nfsd4_process_open2(struct svc_rqst *rqstp, struct svc_fh *current_fh, struct nf
+ 	* Attempt to hand out a delegation. No error return, because the
+ 	* OPEN succeeds even if we fail.
+ 	*/
+-	nfs4_open_delegation(current_fh, open, stp);
++	nfs4_open_delegation(open, stp);
+ nodeleg:
+ 	status = nfs_ok;
+ 	trace_nfsd_open(&stp->st_stid.sc_stateid);
 -- 
 2.43.0
+
+
 
 
