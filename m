@@ -1,305 +1,253 @@
-Return-Path: <stable+bounces-52701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1FE190CC28
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:44:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24DB090D0F6
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9F761C22DAD
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:44:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96AF81F245ED
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3391B15B964;
-	Tue, 18 Jun 2024 12:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14B7190485;
+	Tue, 18 Jun 2024 13:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7+94rxO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOO4TDSw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29CD15B56F;
-	Tue, 18 Jun 2024 12:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBD2155736;
+	Tue, 18 Jun 2024 13:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714246; cv=none; b=W3JPK8hAcY4702YOAn5enAAqaDQymre+0oXDMfTs5JY+RhyrHN47QkqiHAwaVROgja8mTQ86IdBZEtOvjjIjGRkhNo8NNe8qWvdytqfLRVFMLJtZ7H9DK4/X8i7udrQsYA9zqUuPxgvoUsxvGpC6RuLE9bpfgaZgT72UCPNYs0U=
+	t=1718715876; cv=none; b=U0yIY97afKWocGFkr2tWdUf5NZpNkmpntnQZhliMsS0zda8aGCkCqC6HOqaqErQeaKrFvE1pECgXRg64wmhV/Ty6eJ25h1Emz79YwTLpJ9cG2mGq4SkUpRquPNJk7dKjwn8I5xqQdJY6WYYtzliNtFLMuT/d+up+I2nA1ZHGgBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714246; c=relaxed/simple;
-	bh=O1JFeZRANDq+fvJGVFKZpKAKrQgWgJznIYXMerrndQM=;
+	s=arc-20240116; t=1718715876; c=relaxed/simple;
+	bh=76B+rehCqX0nkZEzneYR3afBuihYvYNVsrLaCaayoAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMRT8ywo4pRkJT9UjiyOHSspK+oRif0FmBu2Jxzm25c4cEt1NgSOYLs+Kd9nnwp/iMsZCP5t1+7uaJJPt36lGHvYRMVuP+If1QirRXrPcycUgwGiK4YiwxF7wyiNsFO/LT4iL/tKtI0/4VX8ovgraV3ecV6AIsAmsCw295dXes4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7+94rxO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC85C4AF50;
-	Tue, 18 Jun 2024 12:37:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714245;
-	bh=O1JFeZRANDq+fvJGVFKZpKAKrQgWgJznIYXMerrndQM=;
+	 MIME-Version; b=KNn97BnJZQnRdZRwOlwyhT/vHZOfrlAobjYiOlrl620zgXCHHLHz9K0agBl+tdU7EsQc7inwafg94yj0b9QAjLqj+ak6EENE1gsX8r73Npo5FnkJMkOHkekoD5OxBSUhtUWZ1C6fuKM1hL6cMuiFsFaepFCkIyx4dyOWaBHsMBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOO4TDSw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9ED8C3277B;
+	Tue, 18 Jun 2024 13:04:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715876;
+	bh=76B+rehCqX0nkZEzneYR3afBuihYvYNVsrLaCaayoAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V7+94rxOg2PQJxeP4GxpOOkctEU1XLP+Q16e+ZfiY/Uf7MTHjO4Emgul00zfVltfH
-	 YLCTs413kfGllPVFsF1M0X3q8ZJD4bufgJ5DiDdb9IAgQrYAiK/bCDSYjGrEWmQ7j8
-	 gOrGu0YNaW7Nbs0QnPVy3K7gkFxZ1uAfABiE0JZ9pqb37B2lQdKleetnX41pkMmWlb
-	 W0HrL0ZD3aGA4hjyamoXRDCdqQtghdOsvIjmF5XOdZBPb3fnu/VhOpDlNM8phCK8t+
-	 IB07K5bXUkoKCT7SpkGlXazm1Df2mdXZcUE40jNJ1ockpodUrOkYHuSzXlbPzE9E3f
-	 A2E/Zo6sU9GPw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: "Rob Herring (Arm)" <robh@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Sasha Levin <sashal@kernel.org>,
-	saravanak@google.com,
-	devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 29/44] of/irq: Factor out parsing of interrupt-map parent phandle+args from of_irq_parse_raw()
-Date: Tue, 18 Jun 2024 08:35:10 -0400
-Message-ID: <20240618123611.3301370-29-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=eOO4TDSw7IAIsoQuyJ0sm92Gc3NhvJdJohaZ3qhrHPeZb+m36fIEWTGvl3JD/wupQ
+	 4EVc+sGbp/Bezi4NdzNvT90UsMXE9EEcNKOWatX6THt4YH14mPX9hU81aaviPJ7mCq
+	 VcQi1dzf2D7Z0wmJZiKgWpubbUO29hd5rtv+LM1g=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 457/770] NFSD: Rename boot verifier functions
+Date: Tue, 18 Jun 2024 14:35:10 +0200
+Message-ID: <20240618123424.952388867@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: "Rob Herring (Arm)" <robh@kernel.org>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 935df1bd40d43c4ee91838c42a20e9af751885cc ]
+------------------
 
-Factor out the parsing of interrupt-map interrupt parent phandle and its
-arg cells to a separate function, of_irq_parse_imap_parent(), so that it
-can be used in other parsing scenarios (e.g. fw_devlink).
+From: Chuck Lever <chuck.lever@oracle.com>
 
-There was a refcount leak on non-matching entries when iterating thru
-"interrupt-map" which is fixed.
+[ Upstream commit 3988a57885eeac05ef89f0ab4d7e47b52fbcf630 ]
 
-Tested-by: Marc Zyngier <maz@kernel.org>
-Tested-by: Anup Patel <apatel@ventanamicro.com>
-Link: https://lore.kernel.org/r/20240529-dt-interrupt-map-fix-v2-1-ef86dc5bcd2a@kernel.org
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Clean up: These functions handle what the specs call a write
+verifier, which in the Linux NFS server implementation is now
+divorced from the server's boot instance
+
+[ cel: adjusted to apply to v5.10.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/irq.c        | 125 ++++++++++++++++++++++++----------------
- drivers/of/of_private.h |   3 +
- 2 files changed, 77 insertions(+), 51 deletions(-)
+ fs/nfsd/filecache.c |  2 +-
+ fs/nfsd/netns.h     |  4 ++--
+ fs/nfsd/nfs4proc.c  |  2 +-
+ fs/nfsd/nfssvc.c    | 16 ++++++++--------
+ fs/nfsd/vfs.c       | 16 ++++++++--------
+ 5 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-index 174900072c18c..462375b293e47 100644
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -25,6 +25,8 @@
- #include <linux/string.h>
- #include <linux/slab.h>
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index b6ef8256c9c64..cc2831cec6695 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -243,7 +243,7 @@ nfsd_file_do_unhash(struct nfsd_file *nf)
+ 	trace_nfsd_file_unhash(nf);
  
-+#include "of_private.h"
-+
- /**
-  * irq_of_parse_and_map - Parse and map an interrupt into linux virq space
-  * @dev: Device node of the device whose interrupt is to be mapped
-@@ -96,6 +98,57 @@ static const char * const of_irq_imap_abusers[] = {
- 	NULL,
- };
+ 	if (nfsd_file_check_write_error(nf))
+-		nfsd_reset_boot_verifier(net_generic(nf->nf_net, nfsd_net_id));
++		nfsd_reset_write_verifier(net_generic(nf->nf_net, nfsd_net_id));
+ 	--nfsd_file_hashtbl[nf->nf_hashval].nfb_count;
+ 	hlist_del_rcu(&nf->nf_node);
+ 	atomic_long_dec(&nfsd_filecache_count);
+diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
+index a6ed300259849..1b1a962a18041 100644
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -198,6 +198,6 @@ extern void nfsd_netns_free_versions(struct nfsd_net *nn);
  
-+const __be32 *of_irq_parse_imap_parent(const __be32 *imap, int len, struct of_phandle_args *out_irq)
-+{
-+	u32 intsize, addrsize;
-+	struct device_node *np;
-+
-+	/* Get the interrupt parent */
-+	if (of_irq_workarounds & OF_IMAP_NO_PHANDLE)
-+		np = of_node_get(of_irq_dflt_pic);
-+	else
-+		np = of_find_node_by_phandle(be32_to_cpup(imap));
-+	imap++;
-+
-+	/* Check if not found */
-+	if (!np) {
-+		pr_debug(" -> imap parent not found !\n");
-+		return NULL;
-+	}
-+
-+	/* Get #interrupt-cells and #address-cells of new parent */
-+	if (of_property_read_u32(np, "#interrupt-cells",
-+					&intsize)) {
-+		pr_debug(" -> parent lacks #interrupt-cells!\n");
-+		of_node_put(np);
-+		return NULL;
-+	}
-+	if (of_property_read_u32(np, "#address-cells",
-+					&addrsize))
-+		addrsize = 0;
-+
-+	pr_debug(" -> intsize=%d, addrsize=%d\n",
-+		intsize, addrsize);
-+
-+	/* Check for malformed properties */
-+	if (WARN_ON(addrsize + intsize > MAX_PHANDLE_ARGS)
-+		|| (len < (addrsize + intsize))) {
-+		of_node_put(np);
-+		return NULL;
-+	}
-+
-+	pr_debug(" -> imaplen=%d\n", len);
-+
-+	imap += addrsize + intsize;
-+
-+	out_irq->np = np;
-+	for (int i = 0; i < intsize; i++)
-+		out_irq->args[i] = be32_to_cpup(imap - intsize + i);
-+	out_irq->args_count = intsize;
-+
-+	return imap;
-+}
-+
- /**
-  * of_irq_parse_raw - Low level interrupt tree parsing
-  * @addr:	address specifier (start of "reg" property of the device) in be32 format
-@@ -112,12 +165,12 @@ static const char * const of_irq_imap_abusers[] = {
-  */
- int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- {
--	struct device_node *ipar, *tnode, *old = NULL, *newpar = NULL;
-+	struct device_node *ipar, *tnode, *old = NULL;
- 	__be32 initial_match_array[MAX_PHANDLE_ARGS];
- 	const __be32 *match_array = initial_match_array;
--	const __be32 *tmp, *imap, *imask, dummy_imask[] = { [0 ... MAX_PHANDLE_ARGS] = cpu_to_be32(~0) };
--	u32 intsize = 1, addrsize, newintsize = 0, newaddrsize = 0;
--	int imaplen, match, i, rc = -EINVAL;
-+	const __be32 *tmp, dummy_imask[] = { [0 ... MAX_PHANDLE_ARGS] = cpu_to_be32(~0) };
-+	u32 intsize = 1, addrsize;
-+	int i, rc = -EINVAL;
+ extern unsigned int nfsd_net_id;
  
- #ifdef DEBUG
- 	of_print_phandle_args("of_irq_parse_raw: ", out_irq);
-@@ -176,6 +229,9 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
+-void nfsd_copy_boot_verifier(__be32 verf[2], struct nfsd_net *nn);
+-void nfsd_reset_boot_verifier(struct nfsd_net *nn);
++void nfsd_copy_write_verifier(__be32 verf[2], struct nfsd_net *nn);
++void nfsd_reset_write_verifier(struct nfsd_net *nn);
+ #endif /* __NFSD_NETNS_H__ */
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 0f2025b7a6415..e8ffaa7faced9 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -598,7 +598,7 @@ static void gen_boot_verifier(nfs4_verifier *verifier, struct net *net)
  
- 	/* Now start the actual "proper" walk of the interrupt tree */
- 	while (ipar != NULL) {
-+		int imaplen, match;
-+		const __be32 *imap, *oldimap, *imask;
-+		struct device_node *newpar;
- 		/*
- 		 * Now check if cursor is an interrupt-controller and
- 		 * if it is then we are done, unless there is an
-@@ -216,7 +272,7 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
+ 	BUILD_BUG_ON(2*sizeof(*verf) != sizeof(verifier->data));
  
- 		/* Parse interrupt-map */
- 		match = 0;
--		while (imaplen > (addrsize + intsize + 1) && !match) {
-+		while (imaplen > (addrsize + intsize + 1)) {
- 			/* Compare specifiers */
- 			match = 1;
- 			for (i = 0; i < (addrsize + intsize); i++, imaplen--)
-@@ -224,48 +280,17 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- 
- 			pr_debug(" -> match=%d (imaplen=%d)\n", match, imaplen);
- 
--			/* Get the interrupt parent */
--			if (of_irq_workarounds & OF_IMAP_NO_PHANDLE)
--				newpar = of_node_get(of_irq_dflt_pic);
--			else
--				newpar = of_find_node_by_phandle(be32_to_cpup(imap));
--			imap++;
--			--imaplen;
--
--			/* Check if not found */
--			if (newpar == NULL) {
--				pr_debug(" -> imap parent not found !\n");
--				goto fail;
--			}
--
--			if (!of_device_is_available(newpar))
--				match = 0;
--
--			/* Get #interrupt-cells and #address-cells of new
--			 * parent
--			 */
--			if (of_property_read_u32(newpar, "#interrupt-cells",
--						 &newintsize)) {
--				pr_debug(" -> parent lacks #interrupt-cells!\n");
--				goto fail;
--			}
--			if (of_property_read_u32(newpar, "#address-cells",
--						 &newaddrsize))
--				newaddrsize = 0;
--
--			pr_debug(" -> newintsize=%d, newaddrsize=%d\n",
--			    newintsize, newaddrsize);
--
--			/* Check for malformed properties */
--			if (WARN_ON(newaddrsize + newintsize > MAX_PHANDLE_ARGS)
--			    || (imaplen < (newaddrsize + newintsize))) {
--				rc = -EFAULT;
-+			oldimap = imap;
-+			imap = of_irq_parse_imap_parent(oldimap, imaplen, out_irq);
-+			if (!imap)
- 				goto fail;
--			}
- 
--			imap += newaddrsize + newintsize;
--			imaplen -= newaddrsize + newintsize;
-+			match &= of_device_is_available(out_irq->np);
-+			if (match)
-+				break;
- 
-+			of_node_put(out_irq->np);
-+			imaplen -= imap - oldimap;
- 			pr_debug(" -> imaplen=%d\n", imaplen);
- 		}
- 		if (!match) {
-@@ -287,11 +312,11 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- 		 * Successfully parsed an interrupt-map translation; copy new
- 		 * interrupt specifier into the out_irq structure
- 		 */
--		match_array = imap - newaddrsize - newintsize;
--		for (i = 0; i < newintsize; i++)
--			out_irq->args[i] = be32_to_cpup(imap - newintsize + i);
--		out_irq->args_count = intsize = newintsize;
--		addrsize = newaddrsize;
-+		match_array = oldimap + 1;
-+
-+		newpar = out_irq->np;
-+		intsize = out_irq->args_count;
-+		addrsize = (imap - match_array) - intsize;
- 
- 		if (ipar == newpar) {
- 			pr_debug("%pOF interrupt-map entry to self\n", ipar);
-@@ -300,7 +325,6 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- 
- 	skiplevel:
- 		/* Iterate again with new parent */
--		out_irq->np = newpar;
- 		pr_debug(" -> new parent: %pOF\n", newpar);
- 		of_node_put(ipar);
- 		ipar = newpar;
-@@ -310,7 +334,6 @@ int of_irq_parse_raw(const __be32 *addr, struct of_phandle_args *out_irq)
- 
-  fail:
- 	of_node_put(ipar);
--	of_node_put(newpar);
- 
- 	return rc;
+-	nfsd_copy_boot_verifier(verf, net_generic(net, nfsd_net_id));
++	nfsd_copy_write_verifier(verf, net_generic(net, nfsd_net_id));
  }
-diff --git a/drivers/of/of_private.h b/drivers/of/of_private.h
-index 485483524b7f1..b0609de49c7c4 100644
---- a/drivers/of/of_private.h
-+++ b/drivers/of/of_private.h
-@@ -158,6 +158,9 @@ extern void __of_sysfs_remove_bin_file(struct device_node *np,
- extern int of_bus_n_addr_cells(struct device_node *np);
- extern int of_bus_n_size_cells(struct device_node *np);
  
-+const __be32 *of_irq_parse_imap_parent(const __be32 *imap, int len,
-+				       struct of_phandle_args *out_irq);
-+
- struct bus_dma_region;
- #if defined(CONFIG_OF_ADDRESS) && defined(CONFIG_HAS_DMA)
- int of_dma_get_range(struct device_node *np,
+ static __be32
+diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
+index 5a60664695352..2efe9d33a2827 100644
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -346,14 +346,14 @@ static bool nfsd_needs_lockd(struct nfsd_net *nn)
+ }
+ 
+ /**
+- * nfsd_copy_boot_verifier - Atomically copy a write verifier
++ * nfsd_copy_write_verifier - Atomically copy a write verifier
+  * @verf: buffer in which to receive the verifier cookie
+  * @nn: NFS net namespace
+  *
+  * This function provides a wait-free mechanism for copying the
+- * namespace's boot verifier without tearing it.
++ * namespace's write verifier without tearing it.
+  */
+-void nfsd_copy_boot_verifier(__be32 verf[2], struct nfsd_net *nn)
++void nfsd_copy_write_verifier(__be32 verf[2], struct nfsd_net *nn)
+ {
+ 	int seq = 0;
+ 
+@@ -364,7 +364,7 @@ void nfsd_copy_boot_verifier(__be32 verf[2], struct nfsd_net *nn)
+ 	done_seqretry(&nn->writeverf_lock, seq);
+ }
+ 
+-static void nfsd_reset_boot_verifier_locked(struct nfsd_net *nn)
++static void nfsd_reset_write_verifier_locked(struct nfsd_net *nn)
+ {
+ 	struct timespec64 now;
+ 	u64 verf;
+@@ -379,7 +379,7 @@ static void nfsd_reset_boot_verifier_locked(struct nfsd_net *nn)
+ }
+ 
+ /**
+- * nfsd_reset_boot_verifier - Generate a new boot verifier
++ * nfsd_reset_write_verifier - Generate a new write verifier
+  * @nn: NFS net namespace
+  *
+  * This function updates the ->writeverf field of @nn. This field
+@@ -391,10 +391,10 @@ static void nfsd_reset_boot_verifier_locked(struct nfsd_net *nn)
+  * server and MUST be unique between instances of the NFSv4.1
+  * server."
+  */
+-void nfsd_reset_boot_verifier(struct nfsd_net *nn)
++void nfsd_reset_write_verifier(struct nfsd_net *nn)
+ {
+ 	write_seqlock(&nn->writeverf_lock);
+-	nfsd_reset_boot_verifier_locked(nn);
++	nfsd_reset_write_verifier_locked(nn);
+ 	write_sequnlock(&nn->writeverf_lock);
+ }
+ 
+@@ -683,7 +683,7 @@ int nfsd_create_serv(struct net *net)
+ 		register_inet6addr_notifier(&nfsd_inet6addr_notifier);
+ #endif
+ 	}
+-	nfsd_reset_boot_verifier(nn);
++	nfsd_reset_write_verifier(nn);
+ 	return 0;
+ }
+ 
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index b1ce38c642cde..8cf053b698314 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -572,8 +572,8 @@ __be32 nfsd4_clone_file_range(struct svc_rqst *rqstp,
+ 					&nfsd4_get_cstate(rqstp)->current_fh,
+ 					dst_pos,
+ 					count, status);
+-			nfsd_reset_boot_verifier(net_generic(nf_dst->nf_net,
+-						 nfsd_net_id));
++			nfsd_reset_write_verifier(net_generic(nf_dst->nf_net,
++						  nfsd_net_id));
+ 			ret = nfserrno(status);
+ 		}
+ 	}
+@@ -1039,10 +1039,10 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
+ 	iov_iter_kvec(&iter, WRITE, vec, vlen, *cnt);
+ 	since = READ_ONCE(file->f_wb_err);
+ 	if (verf)
+-		nfsd_copy_boot_verifier(verf, nn);
++		nfsd_copy_write_verifier(verf, nn);
+ 	host_err = vfs_iter_write(file, &iter, &pos, flags);
+ 	if (host_err < 0) {
+-		nfsd_reset_boot_verifier(nn);
++		nfsd_reset_write_verifier(nn);
+ 		goto out_nfserr;
+ 	}
+ 	*cnt = host_err;
+@@ -1055,7 +1055,7 @@ nfsd_vfs_write(struct svc_rqst *rqstp, struct svc_fh *fhp, struct nfsd_file *nf,
+ 	if (stable && use_wgather) {
+ 		host_err = wait_for_concurrent_writes(file);
+ 		if (host_err < 0)
+-			nfsd_reset_boot_verifier(nn);
++			nfsd_reset_write_verifier(nn);
+ 	}
+ 
+ out_nfserr:
+@@ -1168,7 +1168,7 @@ nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		err2 = vfs_fsync_range(nf->nf_file, offset, end, 0);
+ 		switch (err2) {
+ 		case 0:
+-			nfsd_copy_boot_verifier(verf, nn);
++			nfsd_copy_write_verifier(verf, nn);
+ 			err2 = filemap_check_wb_err(nf->nf_file->f_mapping,
+ 						    since);
+ 			err = nfserrno(err2);
+@@ -1177,11 +1177,11 @@ nfsd_commit(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 			err = nfserr_notsupp;
+ 			break;
+ 		default:
+-			nfsd_reset_boot_verifier(nn);
++			nfsd_reset_write_verifier(nn);
+ 			err = nfserrno(err2);
+ 		}
+ 	} else
+-		nfsd_copy_boot_verifier(verf, nn);
++		nfsd_copy_write_verifier(verf, nn);
+ 
+ 	nfsd_file_put(nf);
+ out:
 -- 
 2.43.0
+
+
 
 
