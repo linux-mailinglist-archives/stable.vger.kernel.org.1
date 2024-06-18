@@ -1,108 +1,134 @@
-Return-Path: <stable+bounces-52711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DC290CC45
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:46:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30DA90D19B
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A0C91F221B8
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:46:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA6D3B297EB
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E758A15F410;
-	Tue, 18 Jun 2024 12:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EDD1849FB;
+	Tue, 18 Jun 2024 13:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y2mnVa0A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qOId2P3l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A147815F401;
-	Tue, 18 Jun 2024 12:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA24157A59;
+	Tue, 18 Jun 2024 13:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714267; cv=none; b=nIHmjkupcn7MgJoGMz1SVZN5WgJTLTHjnRf6a7LwwHbq8SqvBsi7Y7BRqKcdW5chffdPyRV5Ko6WFL6PsgUDTBSgpxw7kEGYf9In7Xi95Hkuh+lTtszykYBoo2RCRjouJHdLGNgTvOeiay056lWCWYms9VOdDE9/fAWNA8gxFro=
+	t=1718715915; cv=none; b=tDfqDZO7OznSeEJEEsA1mEfJWDOmi3/eRR20Ct3uFitMwiXwqNDaVU6ErJeO6h6PxIDp1tV2ouvcvW+Fz+qJIgXlaxnCQ7My60RmPQKzsk8rs1vTi7Iyg5I65sYEbJvnPAs8cz6Z5AlkhYD130bzupBEfJJe7udR8NlXf4sbmfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714267; c=relaxed/simple;
-	bh=s4+1+7M6oBgFUS6xD1rZ9h3camBb+b2cSRjD+s6Karw=;
+	s=arc-20240116; t=1718715915; c=relaxed/simple;
+	bh=HDSql7oIo14R/jxGLsZtudPAVxnGtPjIyoe+KnQCAhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=friC0sFoWCEaqTwopsaSw5WlYB/faCahkDwLoZi6IcqaYaHkv6iSOm6FXeQ0zws8/ubt4Airnq/fCF4Wg80jhF7Zd4OjweroCL3lJpFifheb3xaJSbHq97t0ClXmJZnHVBokcvA1Fy1zBdqFiVocjTtwpKHIxRZn6sTHFzEP8/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y2mnVa0A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C95C4AF48;
-	Tue, 18 Jun 2024 12:37:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714267;
-	bh=s4+1+7M6oBgFUS6xD1rZ9h3camBb+b2cSRjD+s6Karw=;
+	 MIME-Version; b=ZxDHW9HxGYygudbwgt2VUMIXm9c9PeWJydU1p5KAeB/K63G4vJ67ctNKu5oFmQ1AO23rbpzO+5Tyt9i63HVMMbbpGsMF0vP66Nszj1xU4TvGysYo0B42zDPhQzm5NkOsrvBBMr2yJKVsj7o3Jsosyh55Xlod30OVVG2Mz6Y7dHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qOId2P3l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68875C3277B;
+	Tue, 18 Jun 2024 13:05:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718715914;
+	bh=HDSql7oIo14R/jxGLsZtudPAVxnGtPjIyoe+KnQCAhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y2mnVa0AV+UW1a+IC3Mzz8br+K8Jo6z6v868lA6thwtrvo8UdXm3YmHhb9DqbTgXP
-	 uEjuMH151avOHUauf4HU1yXgyLGpS+JcLm7SSJ5U62GKYjN0lwdxrrQc/iGrdlE7Dp
-	 0FRpbWxQ83FDgf8k5bzuwytFDWV496/LiEUD4reOCbActChJRhp4G5CWTN1jE33IU/
-	 DT/aIu94fX16uYht7xH+JcpKwTkPTieqqJUJgQPzPBDMYsxi4UKDWTgKjBhW6U4dWJ
-	 qexoVJ5I/rlufA+1QRMaE91nzUUIX/2yyiqDaRjAgHt4M1Gf8VcxHHwhukPO49D0zH
-	 O7hxxf14t+Dhw==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 40/44] kconfig: gconf: give a proper initial state to the Save button
-Date: Tue, 18 Jun 2024 08:35:21 -0400
-Message-ID: <20240618123611.3301370-40-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
-References: <20240618123611.3301370-1-sashal@kernel.org>
+	b=qOId2P3lRDHlGGXyD3N6pOX5qcWPPwidct0vqN8ANEGgIdcyhDQ2OSvgbaK7al2sS
+	 SAo+iprDGvlJQA4veZUy77AHqVVjr5d7D1ros84ShW52Kz7QUw7bN5JTuszYS9+CnH
+	 Hd0748C8uC5gYN/DeGX71NbeKFcXilGDwFKGynbU=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 469/770] NFSD: Deprecate NFS_OFFSET_MAX
+Date: Tue, 18 Jun 2024 14:35:22 +0200
+Message-ID: <20240618123425.419262284@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit 46edf4372e336ef3a61c3126e49518099d2e2e6d ]
+------------------
 
-Currently, the initial state of the "Save" button is always active.
+From: Chuck Lever <chuck.lever@oracle.com>
 
-If none of the CONFIG options are changed while loading the .config
-file, the "Save" button should be greyed out.
+[ Upstream commit c306d737691ef84305d4ed0d302c63db2932f0bb ]
 
-This can be fixed by calling conf_read() after widget initialization.
+NFS_OFFSET_MAX was introduced way back in Linux v2.3.y before there
+was a kernel-wide OFFSET_MAX value. As a clean up, replace the last
+few uses of it with its generic equivalent, and get rid of it.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/kconfig/gconf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs3xdr.c   | 2 +-
+ fs/nfsd/nfs4xdr.c   | 2 +-
+ include/linux/nfs.h | 8 --------
+ 3 files changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/scripts/kconfig/gconf.c b/scripts/kconfig/gconf.c
-index 9709aca3a30fe..9e52c7360e55b 100644
---- a/scripts/kconfig/gconf.c
-+++ b/scripts/kconfig/gconf.c
-@@ -1478,7 +1478,6 @@ int main(int ac, char *av[])
+diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
+index 2e47a07029f1d..0293b8d65f10f 100644
+--- a/fs/nfsd/nfs3xdr.c
++++ b/fs/nfsd/nfs3xdr.c
+@@ -1060,7 +1060,7 @@ svcxdr_encode_entry3_common(struct nfsd3_readdirres *resp, const char *name,
+ 		return false;
+ 	/* cookie */
+ 	resp->cookie_offset = dirlist->len;
+-	if (xdr_stream_encode_u64(xdr, NFS_OFFSET_MAX) < 0)
++	if (xdr_stream_encode_u64(xdr, OFFSET_MAX) < 0)
+ 		return false;
  
- 	conf_parse(name);
- 	fixup_rootmenu(&rootmenu);
--	conf_read(NULL);
+ 	return true;
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index be0995bb9459a..a7b9c3faf7a79 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3495,7 +3495,7 @@ nfsd4_encode_dirent(void *ccdv, const char *name, int namlen,
+ 	p = xdr_reserve_space(xdr, 3*4 + namlen);
+ 	if (!p)
+ 		goto fail;
+-	p = xdr_encode_hyper(p, NFS_OFFSET_MAX);    /* offset of next entry */
++	p = xdr_encode_hyper(p, OFFSET_MAX);        /* offset of next entry */
+ 	p = xdr_encode_array(p, name, namlen);      /* name length & name */
  
- 	/* Load the interface and connect signals */
- 	init_main_window(glade_file);
-@@ -1486,6 +1485,8 @@ int main(int ac, char *av[])
- 	init_left_tree();
- 	init_right_tree();
+ 	nfserr = nfsd4_encode_dirent_fattr(xdr, cd, name, namlen);
+diff --git a/include/linux/nfs.h b/include/linux/nfs.h
+index 0dc7ad38a0da4..b06375e88e589 100644
+--- a/include/linux/nfs.h
++++ b/include/linux/nfs.h
+@@ -36,14 +36,6 @@ static inline void nfs_copy_fh(struct nfs_fh *target, const struct nfs_fh *sourc
+ 	memcpy(target->data, source->data, source->size);
+ }
  
-+	conf_read(NULL);
-+
- 	switch (view_mode) {
- 	case SINGLE_VIEW:
- 		display_tree_part();
+-
+-/*
+- * This is really a general kernel constant, but since nothing like
+- * this is defined in the kernel headers, I have to do it here.
+- */
+-#define NFS_OFFSET_MAX		((__s64)((~(__u64)0) >> 1))
+-
+-
+ enum nfs3_stable_how {
+ 	NFS_UNSTABLE = 0,
+ 	NFS_DATA_SYNC = 1,
 -- 
 2.43.0
+
+
 
 
