@@ -1,117 +1,161 @@
-Return-Path: <stable+bounces-52746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707D590CCBE
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0583090D1C9
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCA76280F7D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:56:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86BF0285243
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C199719DF42;
-	Tue, 18 Jun 2024 12:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3B71A38EE;
+	Tue, 18 Jun 2024 13:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ngw33NO/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmpDBbA9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCD815531B;
-	Tue, 18 Jun 2024 12:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19031A38E4;
+	Tue, 18 Jun 2024 13:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714387; cv=none; b=Rw8X8WwdUj+SoC4kx5P18kjVyDCi+393P8rnu9zCfyD/P/1VUo/AqKKLIAy3scm+iCzd0AAv3Xgb+O1rj1qrVRWBOwLr1pIPQKmZgtBXb8OB9EBZO+RA8WxnfTDj8gMx6DQpE7eguf2K1VPiOwxp+MEBZQZXaP/6AUNRouSc2O4=
+	t=1718716432; cv=none; b=PGdHFcsfgOFHP2fXQcmgA0mA1QyXBrKwYEsG50aakMr6IlNF2KBfXLkQt6s7W/mnRLOF8fA+h3fKgLvse3UD4HmTmnJd+lvm6aUF7OhbZPutmz0oPKDz9odLED9gCg5yPdL0XX6oepEXtWUrt9DnpQNxzHreUHkLtoLlnyjV0Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714387; c=relaxed/simple;
-	bh=02JGWHfhWfg2HWwtQpkb82yHU0MEbN5MEFu8uNXbW+c=;
+	s=arc-20240116; t=1718716432; c=relaxed/simple;
+	bh=YAeBrU5zwY4UcsT/dJKolZO0YG5Xim+q7ULOMhppO5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8npSUX2Tn3uQy8LlbzbtOKM2F7tTYx4xBsl4wq4T2Pmp+/0nQf88sY4z4Ys5ZrtuYHaBAhXCot/pOCY6bvKXphVtJlIPYtDnkDq+Eb31fXl/X15MwD+R5J3V0iET9yQNZ0EP/IKfxxGBETOOUGfRHZ81Qd2kN7j9Q8jpaQvF8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ngw33NO/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F24C32786;
-	Tue, 18 Jun 2024 12:39:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718714387;
-	bh=02JGWHfhWfg2HWwtQpkb82yHU0MEbN5MEFu8uNXbW+c=;
+	 MIME-Version; b=BX1Y+SAKWzDAEcAL+Kv4ahrB9JGkSksReypa1f5IfRs7a6h27SiITP2WLuJ2c5brIgu1b2TppOSWIOKvk4SwDtnKy+JlpCasO7qX0gHUaP85zNRBaRYpBZuSqePzN9GtcgnyBF/jWUAvQHUWyjEA0LRszB3HmM7ELQKCBAlSEPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmpDBbA9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 764F3C3277B;
+	Tue, 18 Jun 2024 13:13:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718716431;
+	bh=YAeBrU5zwY4UcsT/dJKolZO0YG5Xim+q7ULOMhppO5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ngw33NO/WykZ2halXSj+MHOkEC6zTAvN3Cv6zCXjyuv71MwOIpvYOJn+XruzhzODi
-	 3pVcnthNDWo5N5aT4G4QYpwNrzScmmM4/a7YRzos0MiDw8ve4+XvC6Y7nfnQmESFXM
-	 YI4c7FgIZbOoxFuC3EJLvecCEmvpIhLwqx9a4lLbuciG67mJfgawaQ0ZEmgzdjm+yk
-	 hu7MqI9t6snTrIvrw4MlZVnH7BoExpJScwNKLUf/qN8u039LLfamZmjiAVpH51zNjF
-	 +zUHEgm1cDBgFCsnxsgryBqrQtczv2RPfOjkfzT2bGumtSUmsqiNKB6LUHhrpAaJ1V
-	 WAtQ3mm4ZNMgg==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Andreas Hindborg <a.hindborg@samsung.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>,
-	dlemoal@kernel.org,
-	hare@suse.de,
-	kch@nvidia.com,
-	johannes.thumshirn@wdc.com,
-	zhouchengming@bytedance.com,
-	yanjun.zhu@linux.dev,
-	yukuai3@huawei.com,
-	shinichiro.kawasaki@wdc.com,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 30/35] null_blk: fix validation of block size
-Date: Tue, 18 Jun 2024 08:37:50 -0400
-Message-ID: <20240618123831.3302346-30-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240618123831.3302346-1-sashal@kernel.org>
-References: <20240618123831.3302346-1-sashal@kernel.org>
+	b=gmpDBbA9S0P8ai/i1MRR9WHVkUmmiSS9HqaN7WExQP/zMGTXXJsjmpRoh4vXjyhWN
+	 rK1pN4F2B9qt4SpaaiT2QEvwu3NFU2c9wEgAW+9Ymb4rb2Hp5jeyqvUJA5g2Y0pP2Q
+	 w23wTm+BFpbjHtPwEYMj35tpZDg4ciCgZi0ySe1M=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 617/770] NFSD: always drop directory lock in nfsd_unlink()
+Date: Tue, 18 Jun 2024 14:37:50 +0200
+Message-ID: <20240618123431.104334137@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+References: <20240618123407.280171066@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.34
 Content-Transfer-Encoding: 8bit
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
-[ Upstream commit c462ecd659b5fce731f1d592285832fd6ad54053 ]
+------------------
 
-Block size should be between 512 and PAGE_SIZE and be a power of 2. The current
-check does not validate this, so update the check.
+From: NeilBrown <neilb@suse.de>
 
-Without this patch, null_blk would Oops due to a null pointer deref when
-loaded with bs=1536 [1].
+[ Upstream commit b677c0c63a135a916493c064906582e9f3ed4802 ]
 
-Link: https://lore.kernel.org/all/87wmn8mocd.fsf@metaspace.dk/
+Some error paths in nfsd_unlink() allow it to exit without unlocking the
+directory.  This is not a problem in practice as the directory will be
+locked with an fh_put(), but it is untidy and potentially confusing.
 
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240603192645.977968-1-nmi@metaspace.dk
-[axboe: remove unnecessary braces and != 0 check]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This allows us to remove all the fh_unlock() calls that are immediately
+after nfsd_unlink() calls.
+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs3proc.c | 2 --
+ fs/nfsd/nfs4proc.c | 4 +---
+ fs/nfsd/vfs.c      | 7 +++++--
+ 3 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 561706fc2cd8e..f1b7d7fdffec8 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -2013,8 +2013,8 @@ static int null_validate_conf(struct nullb_device *dev)
- 		return -EINVAL;
+diff --git a/fs/nfsd/nfs3proc.c b/fs/nfsd/nfs3proc.c
+index c71f0c359f7ae..d78dbb214c5c3 100644
+--- a/fs/nfsd/nfs3proc.c
++++ b/fs/nfsd/nfs3proc.c
+@@ -490,7 +490,6 @@ nfsd3_proc_remove(struct svc_rqst *rqstp)
+ 	fh_copy(&resp->fh, &argp->fh);
+ 	resp->status = nfsd_unlink(rqstp, &resp->fh, -S_IFDIR,
+ 				   argp->name, argp->len);
+-	fh_unlock(&resp->fh);
+ 	return rpc_success;
+ }
+ 
+@@ -511,7 +510,6 @@ nfsd3_proc_rmdir(struct svc_rqst *rqstp)
+ 	fh_copy(&resp->fh, &argp->fh);
+ 	resp->status = nfsd_unlink(rqstp, &resp->fh, S_IFDIR,
+ 				   argp->name, argp->len);
+-	fh_unlock(&resp->fh);
+ 	return rpc_success;
+ }
+ 
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 0396fa2c1cfe7..f588e592a0703 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1002,10 +1002,8 @@ nfsd4_remove(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 		return nfserr_grace;
+ 	status = nfsd_unlink(rqstp, &cstate->current_fh, 0,
+ 			     remove->rm_name, remove->rm_namelen);
+-	if (!status) {
+-		fh_unlock(&cstate->current_fh);
++	if (!status)
+ 		set_change_info(&remove->rm_cinfo, &cstate->current_fh);
+-	}
+ 	return status;
+ }
+ 
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index 3d794533bbd4b..6b8e1826956bf 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1767,12 +1767,12 @@ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
+ 	rdentry = lookup_one_len(fname, dentry, flen);
+ 	host_err = PTR_ERR(rdentry);
+ 	if (IS_ERR(rdentry))
+-		goto out_drop_write;
++		goto out_unlock;
+ 
+ 	if (d_really_is_negative(rdentry)) {
+ 		dput(rdentry);
+ 		host_err = -ENOENT;
+-		goto out_drop_write;
++		goto out_unlock;
  	}
+ 	rinode = d_inode(rdentry);
+ 	ihold(rinode);
+@@ -1810,6 +1810,9 @@ nfsd_unlink(struct svc_rqst *rqstp, struct svc_fh *fhp, int type,
+ 	}
+ out:
+ 	return err;
++out_unlock:
++	fh_unlock(fhp);
++	goto out_drop_write;
+ }
  
--	dev->blocksize = round_down(dev->blocksize, 512);
--	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
-+	if (blk_validate_block_size(dev->blocksize))
-+		return -EINVAL;
- 
- 	if (dev->queue_mode == NULL_Q_MQ && dev->use_per_node_hctx) {
- 		if (dev->submit_queues != nr_online_nodes)
+ /*
 -- 
 2.43.0
+
+
 
 
