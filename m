@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-52895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A5B590CFD0
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:29:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 791DD90CF5E
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3FC3B2E1D5
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:25:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 026FB281E7D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC6613F43A;
-	Tue, 18 Jun 2024 12:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F6515DBD5;
+	Tue, 18 Jun 2024 12:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCsz5f3J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YHaL4ak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2BB15B559;
-	Tue, 18 Jun 2024 12:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552D715DBC7;
+	Tue, 18 Jun 2024 12:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714729; cv=none; b=LpSOE816cZytVyQWieUlCc+rdEUcylWRahM11FsflMjPK4tOCcU7/N3LPSqt/5HSb7RVW9DwlN0LUKT2snJ1VY+Dc9vfgOIhI1bCn23Ga3A8UJdKgZkzv+3XUB89dkV59/IhsAuJ4kRGuWtD7x+2kud2XUdVvGCNGfir1eY5wC8=
+	t=1718714852; cv=none; b=CqvnsxYAHeNRVrMIwc4frVlqVnGmzJrTtH3gKucQZjnRQP2W/vzMk4d9zKGEAfrL8UrB+U6eedSDlEgwVvXxLGuBa97uc3S5A4JRg1gwKtfxpoI+42JNLaNBGPCXYAsr9TsCfSH3a/cH7KswqMFPhTjPOjtxXuzhJ6R2X/7lg+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714729; c=relaxed/simple;
-	bh=4T7Uf0sG8B9jnMYAseVicUDFaqI5LI8fSL80lXN/hp4=;
+	s=arc-20240116; t=1718714852; c=relaxed/simple;
+	bh=Cv0ky0u87I/D0yqavfUHKeX82ul/E0QAwfdTK745038=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uy4MherdLM5iO7de1M/5eDJpl1YALpmqMENJpXXpd0p9TYkG1ghhiHgH7sLf4ln4R3T4dt7yWo6YXP764EdcYwR+AAUtaqqvk2JjFjYxYZOrPWadHsCA0TxE8FDHoZug1qzPhzFQp4e5/6zTfmQCHbA5kPjou77ySv6XjkOXq6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCsz5f3J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF11C32786;
-	Tue, 18 Jun 2024 12:45:28 +0000 (UTC)
+	 MIME-Version; b=adFVO6QOWnvSiQG1mte+Livzo5n9Zyo1mHuD29ikSHhO/YhJwrnAljERcLzvQJ5qfFcqlKGVPj+7iVnMk09sO7EIxjqjr6cQjXoPUHGSzjjEyMhhu1lWPxnJN5//EpXIymg5mtshu2VB7YqyiJkEJGiFEwp0sDgRz+00CtD8ULY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YHaL4ak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D14C3277B;
+	Tue, 18 Jun 2024 12:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718714728;
-	bh=4T7Uf0sG8B9jnMYAseVicUDFaqI5LI8fSL80lXN/hp4=;
+	s=korg; t=1718714852;
+	bh=Cv0ky0u87I/D0yqavfUHKeX82ul/E0QAwfdTK745038=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCsz5f3JIudz2jVTH73CR8xX2K6206FzkGLIrdrNYHPSL6B1fJ5kEkiGSAgzvpvN/
-	 QS3gLFHkVWFFBqWVAmYqRFpp9+aeRysGkmguB8hqokFJ5kJMUBk6R7owyN9vLdiZgO
-	 w+hiWhEuYV25hbwNevTq5Gg3fToTbBT7vrWoe9jM=
+	b=0YHaL4aku4swmt+VnBhU9jZs7TPP+bNInJXhVeULvml73WEOcaoJfjTlJU4pl7acx
+	 23iM5Z7qt2Mg+hYJKjbKu9RWSzuZgRfxPhQAtTl1gyIM3cegXie0QDzZXbxglUBC8X
+	 xzWXHFBwQ5hqJn8sFlRgg+1AH7jmln8Jtyf5IyIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 067/770] NFSD: Add a helper to decode nfs_impl_id4
-Date: Tue, 18 Jun 2024 14:28:40 +0200
-Message-ID: <20240618123409.871007669@linuxfoundation.org>
+Subject: [PATCH 5.10 068/770] NFSD: Add a helper to decode channel_attrs4
+Date: Tue, 18 Jun 2024 14:28:41 +0200
+Message-ID: <20240618123409.908824725@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,52 +67,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 10ff84228197f47401833495ba19a50131323b4a ]
+[ Upstream commit 3a3f1fbacb0960b628e5a9f07c78287312f7a99d ]
 
-Refactor for clarity.
+De-duplicate some code.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 63 ++++++++++++++++++++++++++++-------------------
- 1 file changed, 38 insertions(+), 25 deletions(-)
+ fs/nfsd/nfs4xdr.c | 71 +++++++++++++++++++++++++----------------------
+ 1 file changed, 38 insertions(+), 33 deletions(-)
 
 diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 6a4ab81e01ffc..e06e657c3d91c 100644
+index e06e657c3d91c..716a16961ff48 100644
 --- a/fs/nfsd/nfs4xdr.c
 +++ b/fs/nfsd/nfs4xdr.c
-@@ -1558,12 +1558,47 @@ nfsd4_decode_state_protect4_a(struct nfsd4_compoundargs *argp,
- 	return nfs_ok;
+@@ -1614,6 +1614,38 @@ nfsd4_decode_exchange_id(struct nfsd4_compoundargs *argp,
+ 	return nfsd4_decode_nfs_impl_id4(argp, exid);
  }
  
 +static __be32
-+nfsd4_decode_nfs_impl_id4(struct nfsd4_compoundargs *argp,
-+			  struct nfsd4_exchange_id *exid)
++nfsd4_decode_channel_attrs4(struct nfsd4_compoundargs *argp,
++			    struct nfsd4_channel_attrs *ca)
 +{
-+	__be32 status;
-+	u32 count;
++	__be32 *p;
 +
-+	if (xdr_stream_decode_u32(argp->xdr, &count) < 0)
++	p = xdr_inline_decode(argp->xdr, XDR_UNIT * 7);
++	if (!p)
 +		return nfserr_bad_xdr;
-+	switch (count) {
++
++	/* headerpadsz is ignored */
++	p++;
++	ca->maxreq_sz = be32_to_cpup(p++);
++	ca->maxresp_sz = be32_to_cpup(p++);
++	ca->maxresp_cached = be32_to_cpup(p++);
++	ca->maxops = be32_to_cpup(p++);
++	ca->maxreqs = be32_to_cpup(p++);
++	ca->nr_rdma_attrs = be32_to_cpup(p);
++	switch (ca->nr_rdma_attrs) {
 +	case 0:
 +		break;
 +	case 1:
-+		/* Note that RFC 8881 places no length limit on
-+		 * nii_domain, but this implementation permits no
-+		 * more than NFS4_OPAQUE_LIMIT bytes */
-+		status = nfsd4_decode_opaque(argp, &exid->nii_domain);
-+		if (status)
-+			return status;
-+		/* Note that RFC 8881 places no length limit on
-+		 * nii_name, but this implementation permits no
-+		 * more than NFS4_OPAQUE_LIMIT bytes */
-+		status = nfsd4_decode_opaque(argp, &exid->nii_name);
-+		if (status)
-+			return status;
-+		status = nfsd4_decode_nfstime4(argp, &exid->nii_time);
-+		if (status)
-+			return status;
++		if (xdr_stream_decode_u32(argp->xdr, &ca->rdma_attrs) < 0)
++			return nfserr_bad_xdr;
 +		break;
 +	default:
 +		return nfserr_bad_xdr;
@@ -122,46 +118,54 @@ index 6a4ab81e01ffc..e06e657c3d91c 100644
 +}
 +
  static __be32
- nfsd4_decode_exchange_id(struct nfsd4_compoundargs *argp,
- 			 struct nfsd4_exchange_id *exid)
- {
--	DECODE_HEAD;
--	int dummy;
-+	__be32 status;
+ nfsd4_decode_create_session(struct nfsd4_compoundargs *argp,
+ 			    struct nfsd4_create_session *sess)
+@@ -1625,39 +1657,12 @@ nfsd4_decode_create_session(struct nfsd4_compoundargs *argp,
+ 	sess->seqid = be32_to_cpup(p++);
+ 	sess->flags = be32_to_cpup(p++);
  
- 	status = nfsd4_decode_verifier4(argp, &exid->verifier);
- 	if (status)
-@@ -1576,29 +1611,7 @@ nfsd4_decode_exchange_id(struct nfsd4_compoundargs *argp,
- 	status = nfsd4_decode_state_protect4_a(argp, exid);
- 	if (status)
- 		return status;
--
--	READ_BUF(4);    /* nfs_impl_id4 array length */
--	dummy = be32_to_cpup(p++);
--
--	if (dummy > 1)
+-	/* Fore channel attrs */
+-	READ_BUF(28);
+-	p++; /* headerpadsz is always 0 */
+-	sess->fore_channel.maxreq_sz = be32_to_cpup(p++);
+-	sess->fore_channel.maxresp_sz = be32_to_cpup(p++);
+-	sess->fore_channel.maxresp_cached = be32_to_cpup(p++);
+-	sess->fore_channel.maxops = be32_to_cpup(p++);
+-	sess->fore_channel.maxreqs = be32_to_cpup(p++);
+-	sess->fore_channel.nr_rdma_attrs = be32_to_cpup(p++);
+-	if (sess->fore_channel.nr_rdma_attrs == 1) {
+-		READ_BUF(4);
+-		sess->fore_channel.rdma_attrs = be32_to_cpup(p++);
+-	} else if (sess->fore_channel.nr_rdma_attrs > 1) {
+-		dprintk("Too many fore channel attr bitmaps!\n");
 -		goto xdr_error;
--
--	if (dummy == 1) {
--		status = nfsd4_decode_opaque(argp, &exid->nii_domain);
--		if (status)
--			goto xdr_error;
--
--		/* nii_name */
--		status = nfsd4_decode_opaque(argp, &exid->nii_name);
--		if (status)
--			goto xdr_error;
--
--		/* nii_date */
--		status = nfsd4_decode_time(argp, &exid->nii_time);
--		if (status)
--			goto xdr_error;
 -	}
--	DECODE_TAIL;
-+	return nfsd4_decode_nfs_impl_id4(argp, exid);
- }
+-
+-	/* Back channel attrs */
+-	READ_BUF(28);
+-	p++; /* headerpadsz is always 0 */
+-	sess->back_channel.maxreq_sz = be32_to_cpup(p++);
+-	sess->back_channel.maxresp_sz = be32_to_cpup(p++);
+-	sess->back_channel.maxresp_cached = be32_to_cpup(p++);
+-	sess->back_channel.maxops = be32_to_cpup(p++);
+-	sess->back_channel.maxreqs = be32_to_cpup(p++);
+-	sess->back_channel.nr_rdma_attrs = be32_to_cpup(p++);
+-	if (sess->back_channel.nr_rdma_attrs == 1) {
+-		READ_BUF(4);
+-		sess->back_channel.rdma_attrs = be32_to_cpup(p++);
+-	} else if (sess->back_channel.nr_rdma_attrs > 1) {
+-		dprintk("Too many back channel attr bitmaps!\n");
+-		goto xdr_error;
+-	}
++	status = nfsd4_decode_channel_attrs4(argp, &sess->fore_channel);
++	if (status)
++		return status;
++	status = nfsd4_decode_channel_attrs4(argp, &sess->back_channel);
++	if (status)
++		return status;
  
- static __be32
+ 	READ_BUF(4);
+ 	sess->callback_prog = be32_to_cpup(p++);
 -- 
 2.43.0
 
