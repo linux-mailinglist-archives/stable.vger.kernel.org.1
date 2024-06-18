@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F1D90D065
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:33:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D9390D040
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A8661C23EE4
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:33:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25DCC1C23C6D
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8533C176AC8;
-	Tue, 18 Jun 2024 12:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FCD16DC2A;
+	Tue, 18 Jun 2024 12:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auaiI3sn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6JGLzYx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44015176AB0;
-	Tue, 18 Jun 2024 12:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C761B16DC1D;
+	Tue, 18 Jun 2024 12:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715458; cv=none; b=Dby2rXMONNU2ezmhutZHGaSggVp7EIjjHXUMxetIV1t63oL5fRM2U2A5oRWueLuKo1lra04kyjEIRLPrdt1x3Y6q4ocfu0pTVf/dlub0JhsFNXwLQcuG2VQTuFOWQpYUpFSjrptKGczkZ2xATcMBjW8BBjvQPlnu3kwcJ/YrJB8=
+	t=1718715360; cv=none; b=XZNXu2GAMxTYDXO5kqnfeArYb72QMxMi/Ooh0ZJiOIr7qRHGOcjTsIjVzIcdgkfFYB/IRJwW62+t+ddwnu95s0i553NSxacS7ftXzClRqpfRGF+Yg9Pp7AhqP8HrMuK5y+rrylI40cYT2jcJd0mmVJWYn6MirBYnCfFES4/MycM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715458; c=relaxed/simple;
-	bh=gNcYsq5gDEhIIbCWxgY//g7pC+FKSaZzYAdrk8wj0BE=;
+	s=arc-20240116; t=1718715360; c=relaxed/simple;
+	bh=G/sxxMh386s0zVbIlm4dJ2pnHM0mXnVmLXxLQL0AQyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kuf8ArzY8CrC1rqPFC1JVmvhhpsXjj/FEahGlRxiZmOPp+1IOtNnlkXsF+/g+ZY559tMR6TZrxLymlPrjT8S7PN70o+a3YAmF5CHR/j1iTpqg7wd2wntisGhQ+H61qP+IqaB62Q6MXP4J4J5HSqzmpiZAM5kEawsFHLg5ez5YDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auaiI3sn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0468C3277B;
-	Tue, 18 Jun 2024 12:57:37 +0000 (UTC)
+	 MIME-Version; b=SE+WqxKPOppESU0N9DdMP/C84eXNMxTN+Uh1EzBmKkTurX5df7uTd8tu9WjaKQGlF6d8GGwTgv/eudz99L2TXVLB9CVDABfloaWs8R9ziz35JCeWayJp7tdSk9ZA+C2JnQQ70HeHcb5alI7pQQzS8Tm7Nhl8hq7H0n1lpV9REqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6JGLzYx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F36C3277B;
+	Tue, 18 Jun 2024 12:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715458;
-	bh=gNcYsq5gDEhIIbCWxgY//g7pC+FKSaZzYAdrk8wj0BE=;
+	s=korg; t=1718715360;
+	bh=G/sxxMh386s0zVbIlm4dJ2pnHM0mXnVmLXxLQL0AQyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=auaiI3snsyUubtQ6qRME5KkyzGU8KOaFuBqMFrn1YTIxdw7bgbpJ0jYItguaPNcTO
-	 a21Z7TZt+rTohxt7trg6BrgZ8tOnKjg5GswxasGrhx1MmvLkZhaYbo8vUkEN2KRaeP
-	 L5y5v3/yBjmf9zGvW2iV7UTRSbNnvhbby2O6tQoM=
+	b=c6JGLzYxnCv3MxlkVhGGiAsaosvP/oTVt3yLSnL47BoOO0WX7Be3GzTQOq75fWN3k
+	 j2pphbYJUlFHIl1c1r9/rH2chSZm9uwU3DUgM3bCY9YOrJ2QFdwVFSpImD/2rhs0hy
+	 aP7SKJWAaX/55rMpeUMwKFNqZvo3HkH5HVDU0Ecg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	"J. Bruce Fields" <bfields@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 274/770] NFSD: Add nfsd_clid_destroyed tracepoint
-Date: Tue, 18 Jun 2024 14:32:07 +0200
-Message-ID: <20240618123417.845015887@linuxfoundation.org>
+Subject: [PATCH 5.10 275/770] NFSD: Add a couple more nfsd_clid_expired call sites
+Date: Tue, 18 Jun 2024 14:32:08 +0200
+Message-ID: <20240618123417.883122812@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -68,43 +68,83 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit c41a9b7a906fb872f8b2b1a34d2a1d5ef7f94adb ]
+[ Upstream commit 2958d2ee71021b6c44212ec6c2a39cc71d9cd4a9 ]
 
-Record client-requested termination of client IDs.
+Improve observation of NFSv4 lease expiry.
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: J. Bruce Fields <bfields@redhat.com>
+[ cel: adjusted to apply to v5.10.y ]
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 1 +
- fs/nfsd/trace.h     | 1 +
- 2 files changed, 2 insertions(+)
+ fs/nfsd/nfs4state.c | 9 ++++++---
+ fs/nfsd/trace.h     | 3 ++-
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index da5b9b88b0cd4..6f04a84f76c0e 100644
+index 6f04a84f76c0e..7e8752f4affda 100644
 --- a/fs/nfsd/nfs4state.c
 +++ b/fs/nfsd/nfs4state.c
-@@ -3939,6 +3939,7 @@ nfsd4_destroy_clientid(struct svc_rqst *rqstp,
- 		status = nfserr_wrong_cred;
- 		goto out;
+@@ -2687,6 +2687,8 @@ static void force_expire_client(struct nfs4_client *clp)
+ 	struct nfsd_net *nn = net_generic(clp->net, nfsd_net_id);
+ 	bool already_expired;
+ 
++	trace_nfsd_clid_admin_expired(&clp->cl_clientid);
++
+ 	spin_lock(&nn->client_lock);
+ 	clp->cl_time = 0;
+ 	spin_unlock(&nn->client_lock);
+@@ -3233,6 +3235,7 @@ nfsd4_exchange_id(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 		status = mark_client_expired_locked(conf);
+ 		if (status)
+ 			goto out;
++		trace_nfsd_clid_replaced(&conf->cl_clientid);
  	}
-+	trace_nfsd_clid_destroyed(&clp->cl_clientid);
- 	unhash_client_locked(clp);
- out:
+ 	new->cl_minorversion = cstate->minorversion;
+ 	new->cl_spo_must_allow.u.words[0] = exid->spo_must_allow[0];
+@@ -3472,6 +3475,7 @@ nfsd4_create_session(struct svc_rqst *rqstp,
+ 				old = NULL;
+ 				goto out_free_conn;
+ 			}
++			trace_nfsd_clid_replaced(&old->cl_clientid);
+ 		}
+ 		move_to_confirmed(unconf);
+ 		conf = unconf;
+@@ -4112,6 +4116,7 @@ nfsd4_setclientid_confirm(struct svc_rqst *rqstp,
+ 				old = NULL;
+ 				goto out;
+ 			}
++			trace_nfsd_clid_replaced(&old->cl_clientid);
+ 		}
+ 		move_to_confirmed(unconf);
+ 		conf = unconf;
+@@ -5550,10 +5555,8 @@ nfs4_laundromat(struct nfsd_net *nn)
+ 		clp = list_entry(pos, struct nfs4_client, cl_lru);
+ 		if (!state_expired(&lt, clp->cl_time))
+ 			break;
+-		if (mark_client_expired_locked(clp)) {
+-			trace_nfsd_clid_expired(&clp->cl_clientid);
++		if (mark_client_expired_locked(clp))
+ 			continue;
+-		}
+ 		list_add(&clp->cl_lru, &reaplist);
+ 	}
  	spin_unlock(&nn->client_lock);
 diff --git a/fs/nfsd/trace.h b/fs/nfsd/trace.h
-index 6c787f4ef5633..3aca6dcba90a5 100644
+index 3aca6dcba90a5..3271d925abf2e 100644
 --- a/fs/nfsd/trace.h
 +++ b/fs/nfsd/trace.h
-@@ -513,6 +513,7 @@ DEFINE_EVENT(nfsd_clientid_class, nfsd_clid_##name, \
- 
+@@ -514,7 +514,8 @@ DEFINE_EVENT(nfsd_clientid_class, nfsd_clid_##name, \
  DEFINE_CLIENTID_EVENT(reclaim_complete);
  DEFINE_CLIENTID_EVENT(confirmed);
-+DEFINE_CLIENTID_EVENT(destroyed);
- DEFINE_CLIENTID_EVENT(expired);
+ DEFINE_CLIENTID_EVENT(destroyed);
+-DEFINE_CLIENTID_EVENT(expired);
++DEFINE_CLIENTID_EVENT(admin_expired);
++DEFINE_CLIENTID_EVENT(replaced);
  DEFINE_CLIENTID_EVENT(purged);
  DEFINE_CLIENTID_EVENT(renew);
+ DEFINE_CLIENTID_EVENT(stale);
 -- 
 2.43.0
 
