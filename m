@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-53291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373C990D0FF
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:38:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD10790D101
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:38:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BEBF1C2401C
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7674E1F22ACC
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B431F19CD08;
-	Tue, 18 Jun 2024 13:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9507019CD1D;
+	Tue, 18 Jun 2024 13:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/Mqqqvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0GEjUN2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C7D19CCF9;
-	Tue, 18 Jun 2024 13:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D0C157A49;
+	Tue, 18 Jun 2024 13:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715894; cv=none; b=VqteX/BHVzAM3fcB/Wp6z03mvFmkkcUM334YfLZEQD3WbSn9uFpaAIFvAafK8eWhiolHAfgeVL6K9dnV8jnv02dBQgt9rsf9lOiTQAYfOHLRCak2X1Dk6vT0V8tk99QdLiea6W7+Q3enUXsPMXK+6lWWPgUpIEOXr94Tdz6U/Go=
+	t=1718715900; cv=none; b=jPZjwlN9o1tsujy0jumolVgH+9aPrD6/PTuCteJpKj6g7oEWuUG7RPrzSpPJqeBAtYv+QnCpjwA++KtmomwC27/3cqqNiFh6Yshed4djpeQXf3J6q4QyX8rVc/QCTf8ROigU2xUiWWpFpAYC8XgQbH6dlSLDn9/T2oNJ/Z74CBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715894; c=relaxed/simple;
-	bh=zLP1abi6NRaFc8xO33ptE7XzfmijTDXM3Ubl+m88pCU=;
+	s=arc-20240116; t=1718715900; c=relaxed/simple;
+	bh=dE7/mZnsAH7pz0/A31iCopCjdrMiNu6PbUPEr2aCnGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iv7xphamq3SlsAe0ouFJsJ+hdpY5l4EZpG1XpxfSsk+vt0Z6vOT8/F4K+ypVkqBF0+4qx7LIGiM/ugeDrvaq2AZ//VPCc/G6KXJLPgqlhL75jqHORgznkcHlRRngVtSgMSQZSsTSlUaG62ivs3xV8JXPXarrib74O21s7ChmNxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/Mqqqvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA27C3277B;
-	Tue, 18 Jun 2024 13:04:53 +0000 (UTC)
+	 MIME-Version; b=HaLmtFo/m1Wz4R/iOljjRu2bB7uSzrw+BNNKokyBWYOuwbwDXRdK7LAxuEoOeew7n+gWEQfV6GiTW7QJlLInBGDcqMlQNjCJ7A4PWjqLJP+LcTQgjIr2CnQpzKpzGvxgwGPK5fo76kIrG/PKDhxldCZH2BD6QptwDARAplX8mH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0GEjUN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5B9C3277B;
+	Tue, 18 Jun 2024 13:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715894;
-	bh=zLP1abi6NRaFc8xO33ptE7XzfmijTDXM3Ubl+m88pCU=;
+	s=korg; t=1718715900;
+	bh=dE7/mZnsAH7pz0/A31iCopCjdrMiNu6PbUPEr2aCnGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/MqqqvqTxpqi8hYCnxoGVnWak6SztrDPOpg6intM876X3prM5WPOnnU1tLfYQk8v
-	 zoDpPl/AntgcIuvsP/AG3YqD3SrP70VgUtwDoCESir+BgYzwP6/R+/pl/1DVJL545+
-	 NBKgllLUrr3fOnm2P7aRZRTPkSlkLKVJODy24Tio=
+	b=q0GEjUN2wkhEu0BOw/jCgnnvrlT0CYcPB89Ti6sGOAkBIBfTj+YvW0f61i5rBZ6CP
+	 W3YNuE3rzus6UTYLPrOHkjgYUFmTWz2mJwxsC6T/eyzX2hEd9vP1f6Tl2niUHGL8vV
+	 csoPWyOJWTlnit6zcarQvQ94qirL7janBIMVjFH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Woithe <jwoithe@just42.net>,
 	"J. Bruce Fields" <bfields@redhat.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 463/770] lockd: fix server crash on reboot of client holding lock
-Date: Tue, 18 Jun 2024 14:35:16 +0200
-Message-ID: <20240618123425.186258532@linuxfoundation.org>
+Subject: [PATCH 5.10 464/770] lockd: fix failure to cleanup client locks
+Date: Tue, 18 Jun 2024 14:35:17 +0200
+Message-ID: <20240618123425.224382897@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -69,58 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 From: J. Bruce Fields <bfields@redhat.com>
 
-[ Upstream commit 6e7f90d163afa8fc2efd6ae318e7c20156a5621f ]
+[ Upstream commit d19a7af73b5ecaac8168712d18be72b9db166768 ]
 
-I thought I was iterating over the array when actually the iteration is
-over the values contained in the array?
+In my testing, we're sometimes hitting the request->fl_flags & FL_EXISTS
+case in posix_lock_inode, presumably just by random luck since we're not
+actually initializing fl_flags here.
 
-Ugh, keep it simple.
+This probably didn't matter before commit 7f024fcd5c97 ("Keep read and
+write fds with each nlm_file") since we wouldn't previously unlock
+unless we knew there were locks.
 
-Symptoms were a null deference in vfs_lock_file() when an NFSv3 client
-that previously held a lock came back up and sent a notify.
+But now it causes lockd to give up on removing more locks.
 
-Reported-by: Jonathan Woithe <jwoithe@just42.net>
+We could just initialize fl_flags, but really it seems dubious to be
+calling vfs_lock_file with random values in some of the fields.
+
 Fixes: 7f024fcd5c97 ("Keep read and write fds with each nlm_file")
 Signed-off-by: J. Bruce Fields <bfields@redhat.com>
+[ cel: fixed checkpatch.pl nit ]
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svcsubs.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ fs/lockd/svcsubs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/fs/lockd/svcsubs.c b/fs/lockd/svcsubs.c
-index cb3a7512c33ec..54c2e42130ca2 100644
+index 54c2e42130ca2..0a22a2faf5522 100644
 --- a/fs/lockd/svcsubs.c
 +++ b/fs/lockd/svcsubs.c
-@@ -179,19 +179,20 @@ nlm_delete_file(struct nlm_file *file)
- static int nlm_unlock_files(struct nlm_file *file)
+@@ -180,6 +180,7 @@ static int nlm_unlock_files(struct nlm_file *file)
  {
  	struct file_lock lock;
--	struct file *f;
  
++	locks_init_lock(&lock);
  	lock.fl_type  = F_UNLCK;
  	lock.fl_start = 0;
  	lock.fl_end   = OFFSET_MAX;
--	for (f = file->f_file[0]; f <= file->f_file[1]; f++) {
--		if (f && vfs_lock_file(f, F_SETLK, &lock, NULL) < 0) {
--			pr_warn("lockd: unlock failure in %s:%d\n",
--				__FILE__, __LINE__);
--			return 1;
--		}
--	}
-+	if (file->f_file[O_RDONLY] &&
-+	    vfs_lock_file(file->f_file[O_RDONLY], F_SETLK, &lock, NULL))
-+		goto out_err;
-+	if (file->f_file[O_WRONLY] &&
-+	    vfs_lock_file(file->f_file[O_WRONLY], F_SETLK, &lock, NULL))
-+		goto out_err;
- 	return 0;
-+out_err:
-+	pr_warn("lockd: unlock failure in %s:%d\n", __FILE__, __LINE__);
-+	return 1;
- }
- 
- /*
 -- 
 2.43.0
 
