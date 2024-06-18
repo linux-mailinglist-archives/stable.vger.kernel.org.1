@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-53020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 895B390D1F0
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:46:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC46990CFD9
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:29:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70812B230EE
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:29:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 685411F23A58
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767601509BF;
-	Tue, 18 Jun 2024 12:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BCF1662EA;
+	Tue, 18 Jun 2024 12:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9yA/kKM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elftsB2S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F381607AC;
-	Tue, 18 Jun 2024 12:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F36916191B;
+	Tue, 18 Jun 2024 12:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715091; cv=none; b=c7atK3f4e82vWstUEsSXxTYNVPt8qPd3gspgzNGDPUKSbH1SgnicCjNlbYHmWfuw0s+IR+gh1R3/7+tRtIakEt+Aaqn1jeBz9BLlRTZW4vWAfTmd7smBmBeK3is0ROraxo1fG68Ydg5eQ28D08fSIYuFGNNa0OHy8dnmx0BbgrY=
+	t=1718715123; cv=none; b=tOXyuSjlJJIbawvr76hUXAYwYtGbxRKwOFr3+Hv3sN4xejlC0QzF3iGJXW2WYA37xDECgY9/Ha5dBalMKG9FxCNsOCpzKXAwiLGkpc5RKmAETQZlF69zV2kZZ5di+zLAQFTCzdXcADY+hdVcoop99uN8e7rQ6LMJjVpvbToyK3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715091; c=relaxed/simple;
-	bh=Iwgf+4hkQL8MlEm8wgcjlr9bmYqOzKHMq5KK9aUzS2I=;
+	s=arc-20240116; t=1718715123; c=relaxed/simple;
+	bh=GtWYVHZc1YlSwk3L/KAuT4IZLEZiIOkrBh1XEAcTqA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iL2TUot1nrc8WVA9B9YuICNLOR20Pey9V4yNtxlKy3J6N6cwzFBXdUhzmuuDnsHuGR2H8RhRkwdCO1k3xW0v9GUBjEaIU2no8De95DvLM7Ag+LnuZmxMdBq91Dn8pSCry2LXvwgTfmUiOcIunNoXGZ7imQU0kx/cZDLL7epOCaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9yA/kKM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05A2C3277B;
-	Tue, 18 Jun 2024 12:51:30 +0000 (UTC)
+	 MIME-Version; b=P2Rn5UJ9OjJq47uy2T3F4R4onyEoxqtZvaiplCYmxsX6/23kKdEqSWLB/pyfE6HY8i35gCOmVEoBLjxSdRuJlrDrJXD54FSusnvfHlLnQxhnGuHxjfkHQJc7pcX595YXGntDe7EZrE1WMkB7UxguP5bvnsxyyqq/ifupqR8I3Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elftsB2S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04759C3277B;
+	Tue, 18 Jun 2024 12:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715091;
-	bh=Iwgf+4hkQL8MlEm8wgcjlr9bmYqOzKHMq5KK9aUzS2I=;
+	s=korg; t=1718715123;
+	bh=GtWYVHZc1YlSwk3L/KAuT4IZLEZiIOkrBh1XEAcTqA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S9yA/kKMJQmz7pcVzUVYWXqdiBy1aiGj31tcqh8x2uccriVaWMA1IFk0oLvFwOJIG
-	 Q7Hvw7MhsprHxie7vzHC9iUJ/E4mIa2FPVG39P0C9D2lp8zRWWmmwuU88Hp3ygdtZS
-	 XSKyde0sm3C017UbQtDQA2MIUKbvB3Tg4UDCYcuA=
+	b=elftsB2SOIzOpZV+I/GtuIqVXz5H/PTxLmu27DtO9XG/3nBJ/OevVc+xwrxYO20Cm
+	 6/SO6B/MNmB9D4qBR1uUd0SlU5+UnsGOFY6AjAAnAn45KoCGNzqdPTA028VRD30f8V
+	 xdhPtv2eOt/udp0ZbUViU1URi5Aff9jUxHghNyJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Amir Goldstein <amir73il@gmail.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 174/770] NFSD: Clean up after updating NFSv3 ACL decoders
-Date: Tue, 18 Jun 2024 14:30:27 +0200
-Message-ID: <20240618123413.988831924@linuxfoundation.org>
+Subject: [PATCH 5.10 175/770] nfsd: remove unused stats counters
+Date: Tue, 18 Jun 2024 14:30:28 +0200
+Message-ID: <20240618123414.026330583@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -65,61 +66,120 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 9cee763ee654ce8622d673b8e32687d738e24ace ]
+[ Upstream commit 1b76d1df1a3683b6b23cd1c813d13c5e6a9d35e5 ]
 
+Commit 501cb1849f86 ("nfsd: rip out the raparms cache") removed the
+code that updates read-ahead cache stats counters,
+commit 8bbfa9f3889b ("knfsd: remove the nfsd thread busy histogram")
+removed code that updates the thread busy stats counters back in 2009
+and code that updated filehandle cache stats was removed back in 2002.
+
+Remove the unused stats counters from nfsd_stats struct and print
+hardcoded zeros in /proc/net/rpc/nfsd.
+
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3xdr.c | 20 --------------------
- fs/nfsd/xdr3.h    |  2 --
- 2 files changed, 22 deletions(-)
+ fs/nfsd/stats.c | 41 ++++++++++++++++-------------------------
+ fs/nfsd/stats.h | 10 ----------
+ 2 files changed, 16 insertions(+), 35 deletions(-)
 
-diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
-index aa55d0ba2a548..00a96054280a6 100644
---- a/fs/nfsd/nfs3xdr.c
-+++ b/fs/nfsd/nfs3xdr.c
-@@ -82,26 +82,6 @@ svcxdr_decode_nfs_fh3(struct xdr_stream *xdr, struct svc_fh *fhp)
- 	return true;
- }
- 
--static __be32 *
--decode_fh(__be32 *p, struct svc_fh *fhp)
--{
--	unsigned int size;
--	fh_init(fhp, NFS3_FHSIZE);
--	size = ntohl(*p++);
--	if (size > NFS3_FHSIZE)
--		return NULL;
--
--	memcpy(&fhp->fh_handle.fh_base, p, size);
--	fhp->fh_handle.fh_size = size;
--	return p + XDR_QUADLEN(size);
--}
--
--/* Helper function for NFSv3 ACL code */
--__be32 *nfs3svc_decode_fh(__be32 *p, struct svc_fh *fhp)
--{
--	return decode_fh(p, fhp);
--}
--
- static __be32 *
- encode_fh(__be32 *p, struct svc_fh *fhp)
+diff --git a/fs/nfsd/stats.c b/fs/nfsd/stats.c
+index b1bc582b0493e..e928e224205ac 100644
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -7,16 +7,14 @@
+  * Format:
+  *	rc <hits> <misses> <nocache>
+  *			Statistsics for the reply cache
+- *	fh <stale> <total-lookups> <anonlookups> <dir-not-in-dcache> <nondir-not-in-dcache>
++ *	fh <stale> <deprecated filehandle cache stats>
+  *			statistics for filehandle lookup
+  *	io <bytes-read> <bytes-written>
+  *			statistics for IO throughput
+- *	th <threads> <fullcnt> <10%-20%> <20%-30%> ... <90%-100%> <100%> 
+- *			time (seconds) when nfsd thread usage above thresholds
+- *			and number of times that all threads were in use
+- *	ra cache-size  <10%  <20%  <30% ... <100% not-found
+- *			number of times that read-ahead entry was found that deep in
+- *			the cache.
++ *	th <threads> <deprecated thread usage histogram stats>
++ *			number of threads
++ *	ra <deprecated ra-cache stats>
++ *
+  *	plus generic RPC stats (see net/sunrpc/stats.c)
+  *
+  * Copyright (C) 1995, 1996, 1997 Olaf Kirch <okir@monad.swb.de>
+@@ -38,31 +36,24 @@ static int nfsd_proc_show(struct seq_file *seq, void *v)
  {
-diff --git a/fs/nfsd/xdr3.h b/fs/nfsd/xdr3.h
-index 7456aee74f3df..3e1578953f544 100644
---- a/fs/nfsd/xdr3.h
-+++ b/fs/nfsd/xdr3.h
-@@ -307,8 +307,6 @@ int nfs3svc_encode_entry_plus(void *, const char *name,
- /* Helper functions for NFSv3 ACL code */
- __be32 *nfs3svc_encode_post_op_attr(struct svc_rqst *rqstp, __be32 *p,
- 				struct svc_fh *fhp);
--__be32 *nfs3svc_decode_fh(__be32 *p, struct svc_fh *fhp);
- bool svcxdr_decode_nfs_fh3(struct xdr_stream *xdr, struct svc_fh *fhp);
+ 	int i;
  
+-	seq_printf(seq, "rc %u %u %u\nfh %u %u %u %u %u\nio %u %u\n",
++	seq_printf(seq, "rc %u %u %u\nfh %u 0 0 0 0\nio %u %u\n",
+ 		      nfsdstats.rchits,
+ 		      nfsdstats.rcmisses,
+ 		      nfsdstats.rcnocache,
+ 		      nfsdstats.fh_stale,
+-		      nfsdstats.fh_lookup,
+-		      nfsdstats.fh_anon,
+-		      nfsdstats.fh_nocache_dir,
+-		      nfsdstats.fh_nocache_nondir,
+ 		      nfsdstats.io_read,
+ 		      nfsdstats.io_write);
++
+ 	/* thread usage: */
+-	seq_printf(seq, "th %u %u", nfsdstats.th_cnt, nfsdstats.th_fullcnt);
+-	for (i=0; i<10; i++) {
+-		unsigned int jifs = nfsdstats.th_usage[i];
+-		unsigned int sec = jifs / HZ, msec = (jifs % HZ)*1000/HZ;
+-		seq_printf(seq, " %u.%03u", sec, msec);
+-	}
 -
- #endif /* _LINUX_NFSD_XDR3_H */
+-	/* newline and ra-cache */
+-	seq_printf(seq, "\nra %u", nfsdstats.ra_size);
+-	for (i=0; i<11; i++)
+-		seq_printf(seq, " %u", nfsdstats.ra_depth[i]);
+-	seq_putc(seq, '\n');
+-	
++	seq_printf(seq, "th %u 0", nfsdstats.th_cnt);
++
++	/* deprecated thread usage histogram stats */
++	for (i = 0; i < 10; i++)
++		seq_puts(seq, " 0.000");
++
++	/* deprecated ra-cache stats */
++	seq_puts(seq, "\nra 0 0 0 0 0 0 0 0 0 0 0 0\n");
++
+ 	/* show my rpc info */
+ 	svc_seq_show(seq, &nfsd_svcstats);
+ 
+diff --git a/fs/nfsd/stats.h b/fs/nfsd/stats.h
+index b23fdac698201..5e3cdf21556a1 100644
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -15,19 +15,9 @@ struct nfsd_stats {
+ 	unsigned int	rcmisses;	/* repcache hits */
+ 	unsigned int	rcnocache;	/* uncached reqs */
+ 	unsigned int	fh_stale;	/* FH stale error */
+-	unsigned int	fh_lookup;	/* dentry cached */
+-	unsigned int	fh_anon;	/* anon file dentry returned */
+-	unsigned int	fh_nocache_dir;	/* filehandle not found in dcache */
+-	unsigned int	fh_nocache_nondir;	/* filehandle not found in dcache */
+ 	unsigned int	io_read;	/* bytes returned to read requests */
+ 	unsigned int	io_write;	/* bytes passed in write requests */
+ 	unsigned int	th_cnt;		/* number of available threads */
+-	unsigned int	th_usage[10];	/* number of ticks during which n perdeciles
+-					 * of available threads were in use */
+-	unsigned int	th_fullcnt;	/* number of times last free thread was used */
+-	unsigned int	ra_size;	/* size of ra cache */
+-	unsigned int	ra_depth[11];	/* number of times ra entry was found that deep
+-					 * in the cache (10percentiles). [10] = not found */
+ #ifdef CONFIG_NFSD_V4
+ 	unsigned int	nfs4_opcount[LAST_NFS4_OP + 1];	/* count of individual nfsv4 operations */
+ #endif
 -- 
 2.43.0
 
