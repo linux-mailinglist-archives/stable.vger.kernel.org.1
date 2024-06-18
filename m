@@ -1,209 +1,131 @@
-Return-Path: <stable+bounces-53264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4BF90D13D
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:41:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B185190CBDA
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 14:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22C70B284C2
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:37:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F2B5282996
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 12:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC97F18EFCB;
-	Tue, 18 Jun 2024 13:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC5F1459FC;
+	Tue, 18 Jun 2024 12:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRq86dS2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B/TtT1BL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D6213BAFB;
-	Tue, 18 Jun 2024 13:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EB5144300;
+	Tue, 18 Jun 2024 12:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718715814; cv=none; b=NjvStj7V2qFhv5WQ3D6PcsBn6mSKXJoSSg8RtdFkBjZjukMmPvYAvA26thUxObJi3ApOxTY9L9TqhQG7N8jOPNl7fmBYAhkYQ6GVIWV3tu69DBqUS0q/BRSVXtqZd1j+O46xL8yPDKW9IosfavKADaga718rq+y7UWTnaBGGoRA=
+	t=1718714186; cv=none; b=MFPU0FMOBlCM4gBbxTeQ273SvXhyCJt//ARbtXrSiRqPAopjwyn/rQ4uEgfaMNoMJjnIc8iCF5TaL9354LwXkyZQo6WoezTw3S59/JigqxZAjH9y+C7BaYV3JrXUBhA81aL6U/KAev/W42od+ymrfyKiI4sIEmQ/yu7EuA43uhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718715814; c=relaxed/simple;
-	bh=ugfnh8Rib7i0xR3pJj9S9MB5rmOdjVqY7V4sYV8Vut8=;
+	s=arc-20240116; t=1718714186; c=relaxed/simple;
+	bh=3qO/bu8qgfFKtr3pb9LarfRM3RiaqcXJaOV4kYQdtXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKgno23CgO8bhxlQUL8WCuf9Z6rlEPJVlGYJFewgLTwJI3hmXKpYCzDojzc0o4/tjPOqgex27GyhRLvFh0AqtNvGckeSUG7cWkPPIib52RifDP46+FeqRTu3aTLn0xdMTMrWCmwwBqwRKTRGDDwrLy6kY96G9qXlqb7J8Wf+/L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRq86dS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C48C3277B;
-	Tue, 18 Jun 2024 13:03:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718715814;
-	bh=ugfnh8Rib7i0xR3pJj9S9MB5rmOdjVqY7V4sYV8Vut8=;
+	 MIME-Version; b=jP5ZwoiB/wfrN3uKcHAUcTzX7Wfjyta7uTL4vss3A96/lq1/lXxj53tVm5Q4zRResL0g9xL+XUZxmKsXyxXcNPNmcnzQsWJF1dThKxqlFyREL2lI+SCSNVPgJbhQe/x7OvwlE6V6tUGZFXK3y5GMxa5LszQ0rOU4MpO6H46mcRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B/TtT1BL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C93C4AF48;
+	Tue, 18 Jun 2024 12:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718714185;
+	bh=3qO/bu8qgfFKtr3pb9LarfRM3RiaqcXJaOV4kYQdtXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xRq86dS26n34WICi8ycB2c2y5UaMm35obp3FiWF7i8Y4SawJdowcifjpS1nogYbo7
-	 vkZxf0vD3bNv7Nt8PRZn1mbOlLrjgCVyT0GypHsFiivVoHJXmJSjT2ctIaVVV9uJYt
-	 uZP2PF1/a+QYIsyr1W+DiQaPkC5A8+wRSC02amgc=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 435/770] SUNRPC: move the pool_map definitions (back) into svc.c
-Date: Tue, 18 Jun 2024 14:34:48 +0200
-Message-ID: <20240618123424.077927094@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-References: <20240618123407.280171066@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=B/TtT1BLR33d6Cc2I/l1NEOL9tB3ILUtxIkEanMr4KVtsStTCrhpLvTxab1sQu/gh
+	 8nML/QylNYoc6QAlJ1Fxx35Bpw7sp5i9CMchCMcZPOGXnC1eZKlmkjgoQxjgJUZGEP
+	 EMhB7WV+CqT17aiIxefkeo67807A3YV0w1tGIfd6hDUeV9fbsNnaEzhrd0S7eXbjj+
+	 A1njj1PUVSBbRaMv+bncf/9cWCnhzwdURNMGaUbR+krKC2TlTRg2iuJVE5QzhPE0Gw
+	 wbOdbqlsqwC0oDnJUEa0byY5PymrWxaFumLyPpYUm8HxPUX49XLiqkgABqZrc38DdA
+	 Qr3/jS6lSutmQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Kees Cook <keescook@chromium.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-hardening@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 07/44] efi: pstore: Return proper errors on UEFI failures
+Date: Tue, 18 Jun 2024 08:34:48 -0400
+Message-ID: <20240618123611.3301370-7-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240618123611.3301370-1-sashal@kernel.org>
+References: <20240618123611.3301370-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.9.5
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
 
-------------------
+[ Upstream commit 7c23b186ab892088f76a3ad9dbff1685ffe2e832 ]
 
-From: NeilBrown <neilb@suse.de>
+Right now efi-pstore either returns 0 (success) or -EIO; but we
+do have a function to convert UEFI errors in different standard
+error codes, helping to narrow down potential issues more accurately.
 
-[ Upstream commit cf0e124e0a489944d08fcc3c694d2b234d2cc658 ]
+So, let's use this helper here.
 
-These definitions are not used outside of svc.c, and there is no
-evidence that they ever have been.  So move them into svc.c
-and make the declarations 'static'.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/svc.h | 25 -------------------------
- net/sunrpc/svc.c           | 31 +++++++++++++++++++++++++------
- 2 files changed, 25 insertions(+), 31 deletions(-)
+ drivers/firmware/efi/efi-pstore.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/sunrpc/svc.h b/include/linux/sunrpc/svc.h
-index 165719a6229ab..89e9d00af601b 100644
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -497,29 +497,6 @@ struct svc_procedure {
- 	const char *		pc_name;	/* for display */
+diff --git a/drivers/firmware/efi/efi-pstore.c b/drivers/firmware/efi/efi-pstore.c
+index 833cbb995dd3f..194fdbd600ad1 100644
+--- a/drivers/firmware/efi/efi-pstore.c
++++ b/drivers/firmware/efi/efi-pstore.c
+@@ -136,7 +136,7 @@ static int efi_pstore_read_func(struct pstore_record *record,
+ 				     &size, record->buf);
+ 	if (status != EFI_SUCCESS) {
+ 		kfree(record->buf);
+-		return -EIO;
++		return efi_status_to_err(status);
+ 	}
+ 
+ 	/*
+@@ -181,7 +181,7 @@ static ssize_t efi_pstore_read(struct pstore_record *record)
+ 			return 0;
+ 
+ 		if (status != EFI_SUCCESS)
+-			return -EIO;
++			return efi_status_to_err(status);
+ 
+ 		/* skip variables that don't concern us */
+ 		if (efi_guidcmp(guid, LINUX_EFI_CRASH_GUID))
+@@ -219,7 +219,7 @@ static int efi_pstore_write(struct pstore_record *record)
+ 					    record->size, record->psi->buf,
+ 					    true);
+ 	efivar_unlock();
+-	return status == EFI_SUCCESS ? 0 : -EIO;
++	return efi_status_to_err(status);
  };
  
--/*
-- * Mode for mapping cpus to pools.
-- */
--enum {
--	SVC_POOL_AUTO = -1,	/* choose one of the others */
--	SVC_POOL_GLOBAL,	/* no mapping, just a single global pool
--				 * (legacy & UP mode) */
--	SVC_POOL_PERCPU,	/* one pool per cpu */
--	SVC_POOL_PERNODE	/* one pool per numa node */
--};
--
--struct svc_pool_map {
--	int count;			/* How many svc_servs use us */
--	int mode;			/* Note: int not enum to avoid
--					 * warnings about "enumeration value
--					 * not handled in switch" */
--	unsigned int npools;
--	unsigned int *pool_to;		/* maps pool id to cpu or node */
--	unsigned int *to_pool;		/* maps cpu or node to pool id */
--};
--
--extern struct svc_pool_map svc_pool_map;
--
- /*
-  * Function prototypes.
-  */
-@@ -536,8 +513,6 @@ void		   svc_rqst_replace_page(struct svc_rqst *rqstp,
- 					 struct page *page);
- void		   svc_rqst_free(struct svc_rqst *);
- void		   svc_exit_thread(struct svc_rqst *);
--unsigned int	   svc_pool_map_get(void);
--void		   svc_pool_map_put(void);
- struct svc_serv *  svc_create_pooled(struct svc_program *, unsigned int,
- 			const struct svc_serv_ops *);
- int		   svc_set_num_threads(struct svc_serv *, struct svc_pool *, int);
-diff --git a/net/sunrpc/svc.c b/net/sunrpc/svc.c
-index da5f008b8d27c..c681ac1c9d569 100644
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -39,14 +39,35 @@ static void svc_unregister(const struct svc_serv *serv, struct net *net);
+ static int efi_pstore_erase(struct pstore_record *record)
+@@ -230,7 +230,7 @@ static int efi_pstore_erase(struct pstore_record *record)
+ 				     PSTORE_EFI_ATTRIBUTES, 0, NULL);
  
- #define SVC_POOL_DEFAULT	SVC_POOL_GLOBAL
- 
-+/*
-+ * Mode for mapping cpus to pools.
-+ */
-+enum {
-+	SVC_POOL_AUTO = -1,	/* choose one of the others */
-+	SVC_POOL_GLOBAL,	/* no mapping, just a single global pool
-+				 * (legacy & UP mode) */
-+	SVC_POOL_PERCPU,	/* one pool per cpu */
-+	SVC_POOL_PERNODE	/* one pool per numa node */
-+};
-+
- /*
-  * Structure for mapping cpus to pools and vice versa.
-  * Setup once during sunrpc initialisation.
-  */
--struct svc_pool_map svc_pool_map = {
-+
-+struct svc_pool_map {
-+	int count;			/* How many svc_servs use us */
-+	int mode;			/* Note: int not enum to avoid
-+					 * warnings about "enumeration value
-+					 * not handled in switch" */
-+	unsigned int npools;
-+	unsigned int *pool_to;		/* maps pool id to cpu or node */
-+	unsigned int *to_pool;		/* maps cpu or node to pool id */
-+};
-+
-+static struct svc_pool_map svc_pool_map = {
- 	.mode = SVC_POOL_DEFAULT
- };
--EXPORT_SYMBOL_GPL(svc_pool_map);
- 
- static DEFINE_MUTEX(svc_pool_map_mutex);/* protects svc_pool_map.count only */
- 
-@@ -220,7 +241,7 @@ svc_pool_map_init_pernode(struct svc_pool_map *m)
-  * vice versa).  Initialise the map if we're the first user.
-  * Returns the number of pools.
-  */
--unsigned int
-+static unsigned int
- svc_pool_map_get(void)
- {
- 	struct svc_pool_map *m = &svc_pool_map;
-@@ -255,7 +276,6 @@ svc_pool_map_get(void)
- 	mutex_unlock(&svc_pool_map_mutex);
- 	return m->npools;
+ 	if (status != EFI_SUCCESS && status != EFI_NOT_FOUND)
+-		return -EIO;
++		return efi_status_to_err(status);
+ 	return 0;
  }
--EXPORT_SYMBOL_GPL(svc_pool_map_get);
  
- /*
-  * Drop a reference to the global map of cpus to pools.
-@@ -264,7 +284,7 @@ EXPORT_SYMBOL_GPL(svc_pool_map_get);
-  * mode using the pool_mode module option without
-  * rebooting or re-loading sunrpc.ko.
-  */
--void
-+static void
- svc_pool_map_put(void)
- {
- 	struct svc_pool_map *m = &svc_pool_map;
-@@ -281,7 +301,6 @@ svc_pool_map_put(void)
- 
- 	mutex_unlock(&svc_pool_map_mutex);
- }
--EXPORT_SYMBOL_GPL(svc_pool_map_put);
- 
- static int svc_pool_map_get_node(unsigned int pidx)
- {
 -- 
 2.43.0
-
-
 
 
