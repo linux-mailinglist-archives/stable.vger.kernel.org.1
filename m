@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-52832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-52838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9E590CEB4
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:19:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D86F90CECB
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 15:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43D681F211BD
-	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:19:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF2A51F22321
+	for <lists+stable@lfdr.de>; Tue, 18 Jun 2024 13:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21D21B9ADD;
-	Tue, 18 Jun 2024 12:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 620751BBBCE;
+	Tue, 18 Jun 2024 12:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4YLtqvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZiTygZ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EDE01B9AD7;
-	Tue, 18 Jun 2024 12:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEEE1BBBC0;
+	Tue, 18 Jun 2024 12:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718714586; cv=none; b=PC7M6wRkOa1TnC6Z/EHGlexy4CvGQ78JEj7cqCeWhAmfmKt4ztlkkgSr2+rBAHeBhqetYoBOZtLVnL/0p3f3I+jj5P5Vub5eIj7qdtsG1KQiEvwhe0gU4cDSWHXaOwJNEYd/5GKt2kWiNInp8FC6/OpWTjORjT9LLs0LTrUUCrQ=
+	t=1718714593; cv=none; b=juSpVn7CIq3Gx8lChfxeZeBWqwHjmjyAYE8OwCmKHDsuIautg4Bw2GrBwbcDjR7W/u6FAQZqlc4AzwZQerjjDZmWrAi10pz45RPTDgeptSgdgF6p2GOwU1nXBgX+EQfBvM93BIQw+ihu6cBNTO/BmKs1mtjNRl7Pb5LpiBHt1Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718714586; c=relaxed/simple;
-	bh=yZCUcqplMnfdcv1GEMLlCh+mQ2UEQojXd+DPV0pmGg0=;
+	s=arc-20240116; t=1718714593; c=relaxed/simple;
+	bh=uFxYQ/AX6sP8pXyt/SZ3u96peAIgym0RNZVX7WsCtu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CNbXuR17UQsQGQfPv6RXapIU/yQLxrG03FbuzlgrfRMZ+EgaRYip9Uwvjrwfm1dnzaYG05FH4M7Fu7aEz5jrSKk8KNHAc76PlQruigrm0vnnDYO9gird/TiwX1kRGPOdc1b2r3l00Q6R9qgHuQLvi9W68IRYntpxsePPAClavv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4YLtqvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22452C32786;
-	Tue, 18 Jun 2024 12:43:05 +0000 (UTC)
+	 MIME-Version; b=KUgGHqWZaBLOU9aIVSzHzWe6SIgqtS6jHQHByo1Fs02N2l2Ye0wfv0+TTTVjANWLQu/T7MMZVNz2a4YfGPwxjQBJHfu5MjHWD2QwWh/3pYSARhG+txeigbSbswLgkET9rq2qoozrpAOhJqYLwfnQC2gUwrAbwZCHqg5Ikn+nS4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZiTygZ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E7FC4AF1D;
+	Tue, 18 Jun 2024 12:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718714586;
-	bh=yZCUcqplMnfdcv1GEMLlCh+mQ2UEQojXd+DPV0pmGg0=;
+	s=korg; t=1718714592;
+	bh=uFxYQ/AX6sP8pXyt/SZ3u96peAIgym0RNZVX7WsCtu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4YLtqvpYOg/3vMmorlANxYEJj5STXJT7MAM+xSuLUb4hqnoFHvUbUBkmRJ2ebSNX
-	 FFRLFOhkhWnE1tZOCjNayinEm+8Flwwu46NoRtlg1fkNKH41wcOq1Xnyu30H/bbLZf
-	 JjG5qFsfTMxJ4idlF5pvKhesdJYKQqUf6ekMGeoI=
+	b=hZiTygZ+yKkhIUN15kW9h0UyJZJurt7m9IKI0oNywFnS7TtYWea8rLJSWjh3b98rK
+	 YIgcpSsyJK8xwdIYJblodaWPJCkrMbyKj+A6TBV53yi7dwV4Q4QC0fh+vxExI+9QQI
+	 j3WtxCtsmiNLwsn/3ZpRNSPc+dL1hrOhWvKprG1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/770] NFSD: Replace READ* macros that decode the fattr4 mode attribute
-Date: Tue, 18 Jun 2024 14:27:54 +0200
-Message-ID: <20240618123408.115494416@linuxfoundation.org>
+Subject: [PATCH 5.10 022/770] NFSD: Replace READ* macros that decode the fattr4 owner attribute
+Date: Tue, 18 Jun 2024 14:27:55 +0200
+Message-ID: <20240618123408.153263703@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
 References: <20240618123407.280171066@linuxfoundation.org>
@@ -67,31 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 1c8f0ad7dd35fd12307904036c7c839f77b6e3f9 ]
+[ Upstream commit 9853a5ac9be381917e9be0b4133cd4ac5a7ad875 ]
 
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4xdr.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
 diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 0fe57ca0f31ac..9dc73ab95eac9 100644
+index 9dc73ab95eac9..7dc6b79e51fd0 100644
 --- a/fs/nfsd/nfs4xdr.c
 +++ b/fs/nfsd/nfs4xdr.c
-@@ -351,8 +351,11 @@ nfsd4_decode_fattr(struct nfsd4_compoundargs *argp, u32 *bmval,
- 	} else
- 		*acl = NULL;
- 	if (bmval[1] & FATTR4_WORD1_MODE) {
--		READ_BUF(4);
--		iattr->ia_mode = be32_to_cpup(p++);
-+		u32 mode;
-+
-+		if (xdr_stream_decode_u32(argp->xdr, &mode) < 0)
-+			return nfserr_bad_xdr;
-+		iattr->ia_mode = mode;
- 		iattr->ia_mode &= (S_IFMT | S_IALLUGO);
+@@ -360,11 +360,16 @@ nfsd4_decode_fattr(struct nfsd4_compoundargs *argp, u32 *bmval,
  		iattr->ia_valid |= ATTR_MODE;
+ 	}
+ 	if (bmval[1] & FATTR4_WORD1_OWNER) {
+-		READ_BUF(4);
+-		dummy32 = be32_to_cpup(p++);
+-		READ_BUF(dummy32);
+-		READMEM(buf, dummy32);
+-		if ((status = nfsd_map_name_to_uid(argp->rqstp, buf, dummy32, &iattr->ia_uid)))
++		u32 length;
++
++		if (xdr_stream_decode_u32(argp->xdr, &length) < 0)
++			return nfserr_bad_xdr;
++		p = xdr_inline_decode(argp->xdr, length);
++		if (!p)
++			return nfserr_bad_xdr;
++		status = nfsd_map_name_to_uid(argp->rqstp, (char *)p, length,
++					      &iattr->ia_uid);
++		if (status)
+ 			return status;
+ 		iattr->ia_valid |= ATTR_UID;
  	}
 -- 
 2.43.0
