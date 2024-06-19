@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D42CC90EDE3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A265F90ECC1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FE481F236A9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5269728168F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E973814375A;
-	Wed, 19 Jun 2024 13:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024BA143C4E;
+	Wed, 19 Jun 2024 13:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdtZ19pB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4JtjUby"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89274D9EA;
-	Wed, 19 Jun 2024 13:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41901422B8;
+	Wed, 19 Jun 2024 13:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803397; cv=none; b=PIXZo2jrDCLJSM6r81iefKMNnFjwlsPW1rfSguxvnW7pJbjnHTyETE3NhIhsjIbGvpNoeLT69PxDhpyR5FkC3AbuSR8n67b6fiL/2NJMV2hy/cv5DCj4mT5fLP5Idy4G5BVIaFhICKDW7WvWp8g0/vGDzdSWnE530ay+y35JYlc=
+	t=1718802629; cv=none; b=LrbjulmitpjSwSy1T1KQrcgfxVc2lrqnyqp4b74kODuy4fNphb6NBqPWcSSf5A8BCKb6bPwzyYaV7A62Xmor54RqFdAQKN9trQpxn7chV4ybeGpTLv4TMAjGWjI8RM5fAnyRiJp/EgAaJzcs8VeDjCAWZyZtRfn1GvR+PkDbryc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803397; c=relaxed/simple;
-	bh=bqyhkVxcf+J8JxCLepZtJohsDite4ftatIkILGp69i0=;
+	s=arc-20240116; t=1718802629; c=relaxed/simple;
+	bh=wzwR5XgiJ7/j1Sdn3VlYMXpbn0DyjJnYOdmkG/VtD1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tekYAupzTHY6Khh3AQLYmTGTtGgrmM7OnnHC5wYCQzAPG7Vsz3gIOBH5ML6hXGP0mBQ/Ke/d6mDu4zLwegqb3ZTzbmjtm2vhcCV0KyhOk7c9XVaedZhDuBPOmaj6TytwncznACqn61mCYWMelUYpbCm4sFo2t2/3+gF7eYESawg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdtZ19pB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E3FC2BBFC;
-	Wed, 19 Jun 2024 13:23:17 +0000 (UTC)
+	 MIME-Version; b=VY2PXw2qutW9k5dLwfrWbVQRAR5sqGJd14W7b7wLuKxJLuRjRMGwyMj+9bHthe+9F0miVH5ZX13k7BXhiva8JwH4txzugXYGn18gpv+Mrvs4j0cvtKP4VSIC+mZ2pgSYkhZ8CL4ZEYNJq63oilOZXkt2sNP6EcIc86SA8RUfHsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4JtjUby; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310B4C2BBFC;
+	Wed, 19 Jun 2024 13:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803397;
-	bh=bqyhkVxcf+J8JxCLepZtJohsDite4ftatIkILGp69i0=;
+	s=korg; t=1718802629;
+	bh=wzwR5XgiJ7/j1Sdn3VlYMXpbn0DyjJnYOdmkG/VtD1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdtZ19pB6b5YBY+lQ6dj+HUOSTP9rucPg0JFPrZHJa0+oL3pAY/vyzePfezlHh8c8
-	 hCeriU6Y78JFzeaNUpY22Q4vuHG6eNzSiqambJE86l5EqLmn0TGGOK6UrMNluaBgbz
-	 xvUznaTNpqDkjMvuC6WU/oghtaSIobvhdba5+hzs=
+	b=T4JtjUbyrv/PsYmwN8AaXzjeSifhohrhNG356h0dYo5Qoh5ktLkgMVAndhoLnXrvt
+	 8mWZQu6jSYdUZIfG4TbL72xKUH1SWkZFpzK2ex/VsT7yAjXLdu3ZwHVbuth2KPaVpu
+	 gjaocy3at6X3L26a5AjVJJTSdxc2i/93tr/2Rd1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Corbet <corbet@lwn.net>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Daniel Bristot de Oliveira <bristot@kernel.org>
-Subject: [PATCH 6.9 254/281] rtla/timerlat: Simplify "no value" printing on top
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 262/267] serial: 8250_dw: Dont use struct dw8250_data outside of 8250_dw
 Date: Wed, 19 Jun 2024 14:56:53 +0200
-Message-ID: <20240619125619.752100656@linuxfoundation.org>
+Message-ID: <20240619125616.378349109@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 5f0769331a965675cdfec97c09f3f6e875d7c246 upstream.
+[ Upstream commit 87d80bfbd577912462061b1a45c0ed9c7fcb872f ]
 
-Instead of printing three times the same output, print it only once,
-reducing lines and being sure that all no values have the same length.
+The container of the struct dw8250_port_data is private to the actual
+driver. In particular, 8250_lpss and 8250_dw use different data types
+that are assigned to the UART port private_data. Hence, it must not
+be used outside the specific driver.
 
-It also fixes an extra '\n' when running the with kernel threads, like
-here:
+Currently the only cpr_val is required by the common code, make it
+be available via struct dw8250_port_data.
 
-     =============== %< ==============
-                                      Timer Latency
+This fixes the UART breakage on Intel Galileo boards.
 
-   0 00:00:01   |          IRQ Timer Latency (us)        |         Thread Timer Latency (us)
- CPU COUNT      |      cur       min       avg       max |      cur       min       avg       max
-   2 #0         |        -         -         -         - |      161       161       161       161
-   3 #0         |        -         -         -         - |      161       161       161       161
-   8 #1         |       54        54        54        54 |        -         -         -         -'\n'
-
- ---------------|----------------------------------------|---------------------------------------
- ALL #1      e0 |                 54        54        54 |                161       161       161
-     =============== %< ==============
-
-This '\n' should have been removed with the user-space support that
-added another '\n' if not running with kernel threads.
-
-Link: https://lkml.kernel.org/r/0a4d8085e7cd706733a5dc10a81ca38b82bd4992.1713968967.git.bristot@kernel.org
-
-Cc: stable@vger.kernel.org
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Fixes: cdca4f4e5e8e ("rtla/timerlat_top: Add timerlat user-space support")
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Fixes: 593dea000bc1 ("serial: 8250: dw: Allow to use a fallback CPR value if not synthesized")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240514190730.2787071-2-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/tracing/rtla/src/timerlat_top.c |   17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c    | 9 +++++++--
+ drivers/tty/serial/8250/8250_dwlib.c | 3 +--
+ drivers/tty/serial/8250/8250_dwlib.h | 3 ++-
+ 3 files changed, 10 insertions(+), 5 deletions(-)
 
---- a/tools/tracing/rtla/src/timerlat_top.c
-+++ b/tools/tracing/rtla/src/timerlat_top.c
-@@ -212,6 +212,8 @@ static void timerlat_top_header(struct o
- 	trace_seq_printf(s, "\n");
- }
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index a7659e536d3c0..777bea835b114 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -55,6 +55,7 @@
+ #define DW_UART_QUIRK_SKIP_SET_RATE	BIT(2)
+ #define DW_UART_QUIRK_IS_DMA_FC		BIT(3)
+ #define DW_UART_QUIRK_APMC0D08		BIT(4)
++#define DW_UART_QUIRK_CPR_VALUE		BIT(5)
  
-+static const char *no_value = "        -";
+ static inline struct dw8250_data *clk_to_dw8250_data(struct notifier_block *nb)
+ {
+@@ -445,6 +446,10 @@ static void dw8250_prepare_rx_dma(struct uart_8250_port *p)
+ static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
+ {
+ 	unsigned int quirks = data->pdata ? data->pdata->quirks : 0;
++	u32 cpr_value = data->pdata ? data->pdata->cpr_value : 0;
 +
- /*
-  * timerlat_top_print - prints the output of a given CPU
-  */
-@@ -239,10 +241,7 @@ static void timerlat_top_print(struct os
- 	trace_seq_printf(s, "%3d #%-9d |", cpu, cpu_data->irq_count);
++	if (quirks & DW_UART_QUIRK_CPR_VALUE)
++		data->data.cpr_value = cpr_value;
  
- 	if (!cpu_data->irq_count) {
--		trace_seq_printf(s, "        - ");
--		trace_seq_printf(s, "        - ");
--		trace_seq_printf(s, "        - ");
--		trace_seq_printf(s, "        - |");
-+		trace_seq_printf(s, "%s %s %s %s |", no_value, no_value, no_value, no_value);
- 	} else {
- 		trace_seq_printf(s, "%9llu ", cpu_data->cur_irq / params->output_divisor);
- 		trace_seq_printf(s, "%9llu ", cpu_data->min_irq / params->output_divisor);
-@@ -251,10 +250,7 @@ static void timerlat_top_print(struct os
+ #ifdef CONFIG_64BIT
+ 	if (quirks & DW_UART_QUIRK_OCTEON) {
+@@ -749,8 +754,8 @@ static const struct dw8250_platform_data dw8250_armada_38x_data = {
+ 
+ static const struct dw8250_platform_data dw8250_renesas_rzn1_data = {
+ 	.usr_reg = DW_UART_USR,
+-	.cpr_val = 0x00012f32,
+-	.quirks = DW_UART_QUIRK_IS_DMA_FC,
++	.cpr_value = 0x00012f32,
++	.quirks = DW_UART_QUIRK_CPR_VALUE | DW_UART_QUIRK_IS_DMA_FC,
+ };
+ 
+ static const struct dw8250_platform_data dw8250_starfive_jh7100_data = {
+diff --git a/drivers/tty/serial/8250/8250_dwlib.c b/drivers/tty/serial/8250/8250_dwlib.c
+index 84843e204a5e8..8fc8b6753148b 100644
+--- a/drivers/tty/serial/8250/8250_dwlib.c
++++ b/drivers/tty/serial/8250/8250_dwlib.c
+@@ -242,7 +242,6 @@ static const struct serial_rs485 dw8250_rs485_supported = {
+ void dw8250_setup_port(struct uart_port *p)
+ {
+ 	struct dw8250_port_data *pd = p->private_data;
+-	struct dw8250_data *data = to_dw8250_data(pd);
+ 	struct uart_8250_port *up = up_to_u8250p(p);
+ 	u32 reg, old_dlf;
+ 
+@@ -284,7 +283,7 @@ void dw8250_setup_port(struct uart_port *p)
+ 
+ 	reg = dw8250_readl_ext(p, DW_UART_CPR);
+ 	if (!reg) {
+-		reg = data->pdata->cpr_val;
++		reg = pd->cpr_value;
+ 		dev_dbg(p->dev, "CPR is not available, using 0x%08x instead\n", reg);
  	}
+ 	if (!reg)
+diff --git a/drivers/tty/serial/8250/8250_dwlib.h b/drivers/tty/serial/8250/8250_dwlib.h
+index f13e91f2cace9..794a9014cdac1 100644
+--- a/drivers/tty/serial/8250/8250_dwlib.h
++++ b/drivers/tty/serial/8250/8250_dwlib.h
+@@ -19,6 +19,7 @@ struct dw8250_port_data {
+ 	struct uart_8250_dma	dma;
  
- 	if (!cpu_data->thread_count) {
--		trace_seq_printf(s, "        - ");
--		trace_seq_printf(s, "        - ");
--		trace_seq_printf(s, "        - ");
--		trace_seq_printf(s, "        -\n");
-+		trace_seq_printf(s, "%s %s %s %s", no_value, no_value, no_value, no_value);
- 	} else {
- 		trace_seq_printf(s, "%9llu ", cpu_data->cur_thread / divisor);
- 		trace_seq_printf(s, "%9llu ", cpu_data->min_thread / divisor);
-@@ -271,10 +267,7 @@ static void timerlat_top_print(struct os
- 	trace_seq_printf(s, " |");
+ 	/* Hardware configuration */
++	u32			cpr_value;
+ 	u8			dlf_size;
  
- 	if (!cpu_data->user_count) {
--		trace_seq_printf(s, "        - ");
--		trace_seq_printf(s, "        - ");
--		trace_seq_printf(s, "        - ");
--		trace_seq_printf(s, "        -\n");
-+		trace_seq_printf(s, "%s %s %s %s\n", no_value, no_value, no_value, no_value);
- 	} else {
- 		trace_seq_printf(s, "%9llu ", cpu_data->cur_user / divisor);
- 		trace_seq_printf(s, "%9llu ", cpu_data->min_user / divisor);
+ 	/* RS485 variables */
+@@ -27,7 +28,7 @@ struct dw8250_port_data {
+ 
+ struct dw8250_platform_data {
+ 	u8 usr_reg;
+-	u32 cpr_val;
++	u32 cpr_value;
+ 	unsigned int quirks;
+ };
+ 
+-- 
+2.43.0
+
 
 
 
