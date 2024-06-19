@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F193D90EF08
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C3390EDE8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FD94287318
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B88D1C2262F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415E814388B;
-	Wed, 19 Jun 2024 13:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C581D143C65;
+	Wed, 19 Jun 2024 13:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7i/v3f6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4+YZKBN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CAD13DDC0;
-	Wed, 19 Jun 2024 13:34:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D8682495;
+	Wed, 19 Jun 2024 13:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804090; cv=none; b=KQFVT34S1VlGZRhFu3nDZgzZN+jo28ffaA0dzyjWEAkdW2RdiFywgi9+81H5r1P4f5EnN0uQ++DzYxDYfCpf0aYbaAjQITjrBmqNCqeVJgqT2yJUXNAyMKrCOSugSDj28qINBqhjMWsmweUFwQNQNWHZrCc56/ongX+TZbME+kQ=
+	t=1718803412; cv=none; b=OuP7etfCkHC9aPJLdp0EjHXq4mP95lVgxWTjIDGGOvZOgdlPRNcTIVdFtjDzJ6LSZ0HmemFoQsFtWF1n7V6tCBY0b99V/9/OHrQYrIRE42MzzbqLTJ/DnwXsSmvucqNOWQjM26J0g05pJZkjHBUWTqcxNb4c6XJnh+f3PZaS928=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804090; c=relaxed/simple;
-	bh=Rzu3FWW4nvlQIlFmUAe/2O6WHzn86SdoX9jWS9lueDg=;
+	s=arc-20240116; t=1718803412; c=relaxed/simple;
+	bh=l7ILUkXuGXU7rD21qfutW+RyxjindHU9kFgkNl4Yf6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KL83HRYHnzoNmgI6TzgQvZQYArFO9+NIgikVNWW/qDcSbDr5vfkOE9prxjt2BaI1ztkoH+2lyBGSWaLQTJoispOEDKmY7iHl6fiFIV3UxM+aAmDy4cmstdwEZSHxmhJ3jRKBG5+u/jJng7r3lw1M3b3eKLVTTpuUUSUQ16BEm8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7i/v3f6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA88C2BBFC;
-	Wed, 19 Jun 2024 13:34:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A2m+UiRXYWMAIVxHkIx9bToX/5L1457tkdoYzDsS2oXsrOq/Rv5w1c2L+czGn24bXFqQNo9g4roPRuq2VMy1R+NtManh4QMKAsUngg5VwtjY3vbuu5hvLxTeX+7UNpYqm92dfxR97OX5Zpk0c05E00bshYdEX74/gjpAgx/sRFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4+YZKBN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B0EC2BBFC;
+	Wed, 19 Jun 2024 13:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804089;
-	bh=Rzu3FWW4nvlQIlFmUAe/2O6WHzn86SdoX9jWS9lueDg=;
+	s=korg; t=1718803412;
+	bh=l7ILUkXuGXU7rD21qfutW+RyxjindHU9kFgkNl4Yf6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7i/v3f62EWS3wZg35DFYlGJ57PhiUn5xRKv41rXQmBsltp1t+IDr+BShOyhPWAM3
-	 TdLrXY464ID+Hq7GWxzICd7xFC0C6qSyqowCtVsnE5iIE/bkcfez0YuKDPEQfNqTic
-	 90lQH7uZkfMaCwyuwbE6vx5Z0ZOpIcN+owY9Ulhk=
+	b=P4+YZKBNiE4gD//l9HB3nbPyRsm1SfbqAvs4YD58U02EGJgQ+KcslD6TpuXuRldGx
+	 23OROwFEHoI0Nvm/b1q7QpcotAshz+8pUNT62WQW5rpp4UwxfNA6VSjd55LAJYuJsF
+	 PtZSro+wtmBOJrpM32O5Gs4gYOGQDBm4DbLqtj50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 174/217] null_blk: Print correct max open zones limit in null_init_zoned_dev()
-Date: Wed, 19 Jun 2024 14:56:57 +0200
-Message-ID: <20240619125603.402522851@linuxfoundation.org>
+	Shawn Lee <shawn.c.lee@intel.com>,
+	Vidya Srinivas <vidya.srinivas@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.9 259/281] drm/i915/dpt: Make DPT object unshrinkable
+Date: Wed, 19 Jun 2024 14:56:58 +0200
+Message-ID: <20240619125619.947265977@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Vidya Srinivas <vidya.srinivas@intel.com>
 
-commit 233e27b4d21c3e44eb863f03e566d3a22e81a7ae upstream.
+commit 43e2b37e2ab660c3565d4cff27922bc70e79c3f1 upstream.
 
-When changing the maximum number of open zones, print that number
-instead of the total number of zones.
+In some scenarios, the DPT object gets shrunk but
+the actual framebuffer did not and thus its still
+there on the DPT's vm->bound_list. Then it tries to
+rewrite the PTEs via a stale CPU mapping. This causes panic.
 
-Fixes: dc4d137ee3b7 ("null_blk: add support for max open/active zone limit for zoned devices")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://lore.kernel.org/r/20240528062852.437599-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Shawn Lee <shawn.c.lee@intel.com>
+Fixes: 0dc987b699ce ("drm/i915/display: Add smem fallback allocation for dpt")
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+[vsyrjala: Add TODO comment]
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240520165634.1162470-1-vidya.srinivas@intel.com
+(cherry picked from commit 51064d471c53dcc8eddd2333c3f1c1d9131ba36c)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/null_blk/zoned.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gem/i915_gem_object.h |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/block/null_blk/zoned.c
-+++ b/drivers/block/null_blk/zoned.c
-@@ -112,7 +112,7 @@ int null_init_zoned_dev(struct nullb_dev
- 	if (dev->zone_max_active && dev->zone_max_open > dev->zone_max_active) {
- 		dev->zone_max_open = dev->zone_max_active;
- 		pr_info("changed the maximum number of open zones to %u\n",
--			dev->nr_zones);
-+			dev->zone_max_open);
- 	} else if (dev->zone_max_open >= dev->nr_zones - dev->zone_nr_conv) {
- 		dev->zone_max_open = 0;
- 		pr_info("zone_max_open limit disabled, limit >= zone count\n");
+--- a/drivers/gpu/drm/i915/gem/i915_gem_object.h
++++ b/drivers/gpu/drm/i915/gem/i915_gem_object.h
+@@ -284,7 +284,9 @@ bool i915_gem_object_has_iomem(const str
+ static inline bool
+ i915_gem_object_is_shrinkable(const struct drm_i915_gem_object *obj)
+ {
+-	return i915_gem_object_type_has(obj, I915_GEM_OBJECT_IS_SHRINKABLE);
++	/* TODO: make DPT shrinkable when it has no bound vmas */
++	return i915_gem_object_type_has(obj, I915_GEM_OBJECT_IS_SHRINKABLE) &&
++		!obj->is_dpt;
+ }
+ 
+ static inline bool
 
 
 
