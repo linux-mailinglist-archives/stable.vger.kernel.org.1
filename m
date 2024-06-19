@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-54477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A2F90EE66
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6746890EC3F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCC1E1F25340
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFF691F21330
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD3914A615;
-	Wed, 19 Jun 2024 13:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A8B143873;
+	Wed, 19 Jun 2024 13:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jH9OffKz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBojW29b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDE014373E;
-	Wed, 19 Jun 2024 13:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D1212FB31;
+	Wed, 19 Jun 2024 13:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803695; cv=none; b=ZdhZceDgK9ph9UvZBU8WiiBEYW7UM7f5MG7XunT7lpUEDVD7a09rBWVIDDPBsPCwjTZw0gNxwmkH1/UGnerszRHz2/9xoUO5pNgWE8YTXWh5D6EWLxz0pUdKmnQdq4GvEsbxOnvv3mTrDyFWsPta6Zb/XRhbdoXijonFU/83NPY=
+	t=1718802317; cv=none; b=Z7ufaTy6g5ZVnjXmPMT14TsZ9pZhionliiha3Qst3ch/jOliXw16533YKramzzYwd77VTlZo2+seZgAwl401sIcypNbyPCsvqkb93rxy9sDJBz1+53FUmIceN8yPVdpwE26UEIxQMUo5bRur5+q9g4QkLbQQ1jEANa6rGFYO+DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803695; c=relaxed/simple;
-	bh=wn0L8DexAdPUD1jc/vf/vCWcsQkoz5g3d3zzhlOZg2Q=;
+	s=arc-20240116; t=1718802317; c=relaxed/simple;
+	bh=uU94ZrcPRG7DoKCpHVlPaoUiVGPQaGvDbUZ1Z7L9vBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W22zXyBBcBwkFVQ7WFnkTt66h1tXE8zQEgAKPo9qBvbof4M66tiM0xiVvfC3rdBVOKm2pAzBk1dSb5cWTkgOcS2tBdB8jYCVO0vdoqyWhisNXG+UWeRAbwFvl0jOXgXfFGqxtvg0tLKms5x7OS4G1FVCkI3gheYdT1P2+/Grwl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jH9OffKz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21128C2BBFC;
-	Wed, 19 Jun 2024 13:28:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FdiL7myLgOkHQIYcYrEDiIj0bogIjoq+rcpK2ZMSkMTDETf7rjyBLpsjfVlfX2YBG6+jgd6YVPv2fh3+85VQkw4pf2l/qSfq5MzeTWFMctA0flJFMoUnKdsKgsWvfdMdcaFCkBVdU9mphbumbaXbC4vOAqtPNtRR8QsHCRW5EK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBojW29b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE59EC2BBFC;
+	Wed, 19 Jun 2024 13:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803695;
-	bh=wn0L8DexAdPUD1jc/vf/vCWcsQkoz5g3d3zzhlOZg2Q=;
+	s=korg; t=1718802317;
+	bh=uU94ZrcPRG7DoKCpHVlPaoUiVGPQaGvDbUZ1Z7L9vBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jH9OffKz7GNjJzQO7t2sqB+8WlTP1C//NQMgrIPEw9/8RqE9FS15fp9T9Jzx8Ksmc
-	 QRybEBywrZTuKrnAsecVBxKtsyg9W2FE+MXPsRs2ChEGT7xmzypRQpwRup90Tk2V/X
-	 0Ua4Cm7kW2X3TtBelDNfvzeUpBJyHHGhJBOJLmig=
+	b=qBojW29b54owHgG00DSG46/kuY2pJV8QM7sJhf5qPNTLjj0KySpvQS3R3/Wqwkwg7
+	 F+UzjCgQ0Yq5WWd7CFRdqOVgkCTAuikAz0ZaWDLo9XK5ZNaF53LPt91HqM4eNMKDlY
+	 49FvMI4OW/UsPxieoF7dT7jYYXP48zqsIWdXwGJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Michal Wilczynski <michal.wilczynski@intel.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Arpana Arland <arpanax.arland@intel.com>
-Subject: [PATCH 6.1 032/217] ice: remove null checks before devm_kfree() calls
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 124/267] platform/x86: dell-smbios: Fix wrong token data in sysfs
 Date: Wed, 19 Jun 2024 14:54:35 +0200
-Message-ID: <20240619125557.891231313@linuxfoundation.org>
+Message-ID: <20240619125611.107768513@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,253 +61,228 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit ad667d626825383b626ad6ed38d6205618abb115 ]
+[ Upstream commit 1981b296f858010eae409548fd297659b2cc570e ]
 
-We all know they are redundant.
+When reading token data from sysfs on my Inspiron 3505, the token
+locations and values are wrong. This happens because match_attribute()
+blindly assumes that all entries in da_tokens have an associated
+entry in token_attrs.
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Michal Wilczynski <michal.wilczynski@intel.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: adbf5a42341f ("ice: remove af_xdp_zc_qps bitmap")
+This however is not true as soon as da_tokens[] contains zeroed
+token entries. Those entries are being skipped when initialising
+token_attrs, breaking the core assumption of match_attribute().
+
+Fix this by defining an extra struct for each pair of token attributes
+and use container_of() to retrieve token information.
+
+Tested on a Dell Inspiron 3050.
+
+Fixes: 33b9ca1e53b4 ("platform/x86: dell-smbios: Add a sysfs interface for SMBIOS tokens")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240528204903.445546-1-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c   |  6 +--
- drivers/net/ethernet/intel/ice/ice_controlq.c |  3 +-
- drivers/net/ethernet/intel/ice/ice_flow.c     | 23 ++--------
- drivers/net/ethernet/intel/ice/ice_lib.c      | 42 +++++++------------
- drivers/net/ethernet/intel/ice/ice_sched.c    | 11 ++---
- drivers/net/ethernet/intel/ice/ice_switch.c   | 19 +++------
- 6 files changed, 29 insertions(+), 75 deletions(-)
+ drivers/platform/x86/dell/dell-smbios-base.c | 92 ++++++++------------
+ 1 file changed, 36 insertions(+), 56 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index e2e661010176c..419052ebc3ae7 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -789,8 +789,7 @@ static void ice_cleanup_fltr_mgmt_struct(struct ice_hw *hw)
- 				devm_kfree(ice_hw_to_dev(hw), lst_itr);
- 			}
- 		}
--		if (recps[i].root_buf)
--			devm_kfree(ice_hw_to_dev(hw), recps[i].root_buf);
-+		devm_kfree(ice_hw_to_dev(hw), recps[i].root_buf);
- 	}
- 	ice_rm_all_sw_replay_rule_info(hw);
- 	devm_kfree(ice_hw_to_dev(hw), sw->recp_list);
-@@ -986,8 +985,7 @@ static int ice_cfg_fw_log(struct ice_hw *hw, bool enable)
- 	}
+diff --git a/drivers/platform/x86/dell/dell-smbios-base.c b/drivers/platform/x86/dell/dell-smbios-base.c
+index e61bfaf8b5c48..86b95206cb1bd 100644
+--- a/drivers/platform/x86/dell/dell-smbios-base.c
++++ b/drivers/platform/x86/dell/dell-smbios-base.c
+@@ -11,6 +11,7 @@
+  */
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
- out:
--	if (data)
--		devm_kfree(ice_hw_to_dev(hw), data);
-+	devm_kfree(ice_hw_to_dev(hw), data);
++#include <linux/container_of.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/capability.h>
+@@ -25,11 +26,16 @@ static u32 da_supported_commands;
+ static int da_num_tokens;
+ static struct platform_device *platform_device;
+ static struct calling_interface_token *da_tokens;
+-static struct device_attribute *token_location_attrs;
+-static struct device_attribute *token_value_attrs;
++static struct token_sysfs_data *token_entries;
+ static struct attribute **token_attrs;
+ static DEFINE_MUTEX(smbios_mutex);
  
- 	return status;
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_controlq.c b/drivers/net/ethernet/intel/ice/ice_controlq.c
-index 6bcfee2959915..f68df8e05b18e 100644
---- a/drivers/net/ethernet/intel/ice/ice_controlq.c
-+++ b/drivers/net/ethernet/intel/ice/ice_controlq.c
-@@ -339,8 +339,7 @@ do {									\
- 		}							\
- 	}								\
- 	/* free the buffer info list */					\
--	if ((qi)->ring.cmd_buf)						\
--		devm_kfree(ice_hw_to_dev(hw), (qi)->ring.cmd_buf);	\
-+	devm_kfree(ice_hw_to_dev(hw), (qi)->ring.cmd_buf);		\
- 	/* free DMA head */						\
- 	devm_kfree(ice_hw_to_dev(hw), (qi)->ring.dma_head);		\
- } while (0)
-diff --git a/drivers/net/ethernet/intel/ice/ice_flow.c b/drivers/net/ethernet/intel/ice/ice_flow.c
-index ef103e47a8dc2..85cca572c22a5 100644
---- a/drivers/net/ethernet/intel/ice/ice_flow.c
-+++ b/drivers/net/ethernet/intel/ice/ice_flow.c
-@@ -1303,23 +1303,6 @@ ice_flow_find_prof_id(struct ice_hw *hw, enum ice_block blk, u64 prof_id)
- 	return NULL;
++struct token_sysfs_data {
++	struct device_attribute location_attr;
++	struct device_attribute value_attr;
++	struct calling_interface_token *token;
++};
++
+ struct smbios_device {
+ 	struct list_head list;
+ 	struct device *device;
+@@ -416,47 +422,26 @@ static void __init find_tokens(const struct dmi_header *dm, void *dummy)
+ 	}
  }
  
--/**
-- * ice_dealloc_flow_entry - Deallocate flow entry memory
-- * @hw: pointer to the HW struct
-- * @entry: flow entry to be removed
-- */
--static void
--ice_dealloc_flow_entry(struct ice_hw *hw, struct ice_flow_entry *entry)
+-static int match_attribute(struct device *dev,
+-			   struct device_attribute *attr)
 -{
--	if (!entry)
--		return;
+-	int i;
 -
--	if (entry->entry)
--		devm_kfree(ice_hw_to_dev(hw), entry->entry);
--
--	devm_kfree(ice_hw_to_dev(hw), entry);
+-	for (i = 0; i < da_num_tokens * 2; i++) {
+-		if (!token_attrs[i])
+-			continue;
+-		if (strcmp(token_attrs[i]->name, attr->attr.name) == 0)
+-			return i/2;
+-	}
+-	dev_dbg(dev, "couldn't match: %s\n", attr->attr.name);
+-	return -EINVAL;
 -}
 -
- /**
-  * ice_flow_rem_entry_sync - Remove a flow entry
-  * @hw: pointer to the HW struct
-@@ -1335,7 +1318,8 @@ ice_flow_rem_entry_sync(struct ice_hw *hw, enum ice_block __always_unused blk,
- 
- 	list_del(&entry->l_entry);
- 
--	ice_dealloc_flow_entry(hw, entry);
-+	devm_kfree(ice_hw_to_dev(hw), entry->entry);
-+	devm_kfree(ice_hw_to_dev(hw), entry);
- 
- 	return 0;
- }
-@@ -1662,8 +1646,7 @@ ice_flow_add_entry(struct ice_hw *hw, enum ice_block blk, u64 prof_id,
- 
- out:
- 	if (status && e) {
--		if (e->entry)
--			devm_kfree(ice_hw_to_dev(hw), e->entry);
-+		devm_kfree(ice_hw_to_dev(hw), e->entry);
- 		devm_kfree(ice_hw_to_dev(hw), e);
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index cc6c04a69b285..cd161c03c5e39 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -320,31 +320,19 @@ static void ice_vsi_free_arrays(struct ice_vsi *vsi)
- 
- 	dev = ice_pf_to_dev(pf);
- 
--	if (vsi->af_xdp_zc_qps) {
--		bitmap_free(vsi->af_xdp_zc_qps);
--		vsi->af_xdp_zc_qps = NULL;
--	}
-+	bitmap_free(vsi->af_xdp_zc_qps);
-+	vsi->af_xdp_zc_qps = NULL;
- 	/* free the ring and vector containers */
--	if (vsi->q_vectors) {
--		devm_kfree(dev, vsi->q_vectors);
--		vsi->q_vectors = NULL;
--	}
--	if (vsi->tx_rings) {
--		devm_kfree(dev, vsi->tx_rings);
--		vsi->tx_rings = NULL;
--	}
--	if (vsi->rx_rings) {
--		devm_kfree(dev, vsi->rx_rings);
--		vsi->rx_rings = NULL;
--	}
--	if (vsi->txq_map) {
--		devm_kfree(dev, vsi->txq_map);
--		vsi->txq_map = NULL;
--	}
--	if (vsi->rxq_map) {
--		devm_kfree(dev, vsi->rxq_map);
--		vsi->rxq_map = NULL;
--	}
-+	devm_kfree(dev, vsi->q_vectors);
-+	vsi->q_vectors = NULL;
-+	devm_kfree(dev, vsi->tx_rings);
-+	vsi->tx_rings = NULL;
-+	devm_kfree(dev, vsi->rx_rings);
-+	vsi->rx_rings = NULL;
-+	devm_kfree(dev, vsi->txq_map);
-+	vsi->txq_map = NULL;
-+	devm_kfree(dev, vsi->rxq_map);
-+	vsi->rxq_map = NULL;
- }
- 
- /**
-@@ -787,10 +775,8 @@ static void ice_rss_clean(struct ice_vsi *vsi)
- 
- 	dev = ice_pf_to_dev(pf);
- 
--	if (vsi->rss_hkey_user)
--		devm_kfree(dev, vsi->rss_hkey_user);
--	if (vsi->rss_lut_user)
--		devm_kfree(dev, vsi->rss_lut_user);
-+	devm_kfree(dev, vsi->rss_hkey_user);
-+	devm_kfree(dev, vsi->rss_lut_user);
- 
- 	ice_vsi_clean_rss_flow_fld(vsi);
- 	/* remove RSS replay list */
-diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
-index 88e74835d0274..849b6c7f0506b 100644
---- a/drivers/net/ethernet/intel/ice/ice_sched.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sched.c
-@@ -353,10 +353,7 @@ void ice_free_sched_node(struct ice_port_info *pi, struct ice_sched_node *node)
- 				node->sibling;
- 	}
- 
--	/* leaf nodes have no children */
--	if (node->children)
--		devm_kfree(ice_hw_to_dev(hw), node->children);
--
-+	devm_kfree(ice_hw_to_dev(hw), node->children);
- 	kfree(node->name);
- 	xa_erase(&pi->sched_node_ids, node->id);
- 	devm_kfree(ice_hw_to_dev(hw), node);
-@@ -854,10 +851,8 @@ void ice_sched_cleanup_all(struct ice_hw *hw)
- 	if (!hw)
- 		return;
- 
--	if (hw->layer_info) {
--		devm_kfree(ice_hw_to_dev(hw), hw->layer_info);
--		hw->layer_info = NULL;
--	}
-+	devm_kfree(ice_hw_to_dev(hw), hw->layer_info);
-+	hw->layer_info = NULL;
- 
- 	ice_sched_clear_port(hw->port_info);
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 46b36851af460..5ea6365872571 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -1636,21 +1636,16 @@ ice_save_vsi_ctx(struct ice_hw *hw, u16 vsi_handle, struct ice_vsi_ctx *vsi)
-  */
- static void ice_clear_vsi_q_ctx(struct ice_hw *hw, u16 vsi_handle)
+ static ssize_t location_show(struct device *dev,
+ 			     struct device_attribute *attr, char *buf)
  {
--	struct ice_vsi_ctx *vsi;
-+	struct ice_vsi_ctx *vsi = ice_get_vsi_ctx(hw, vsi_handle);
- 	u8 i;
+-	int i;
++	struct token_sysfs_data *data = container_of(attr, struct token_sysfs_data, location_attr);
  
--	vsi = ice_get_vsi_ctx(hw, vsi_handle);
- 	if (!vsi)
- 		return;
- 	ice_for_each_traffic_class(i) {
--		if (vsi->lan_q_ctx[i]) {
--			devm_kfree(ice_hw_to_dev(hw), vsi->lan_q_ctx[i]);
--			vsi->lan_q_ctx[i] = NULL;
--		}
--		if (vsi->rdma_q_ctx[i]) {
--			devm_kfree(ice_hw_to_dev(hw), vsi->rdma_q_ctx[i]);
--			vsi->rdma_q_ctx[i] = NULL;
--		}
-+		devm_kfree(ice_hw_to_dev(hw), vsi->lan_q_ctx[i]);
-+		vsi->lan_q_ctx[i] = NULL;
-+		devm_kfree(ice_hw_to_dev(hw), vsi->rdma_q_ctx[i]);
-+		vsi->rdma_q_ctx[i] = NULL;
- 	}
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
+-	i = match_attribute(dev, attr);
+-	if (i > 0)
+-		return sysfs_emit(buf, "%08x", da_tokens[i].location);
+-	return 0;
++	return sysfs_emit(buf, "%08x", data->token->location);
  }
  
-@@ -5525,9 +5520,7 @@ ice_add_adv_recipe(struct ice_hw *hw, struct ice_adv_lkup_elem *lkups,
- 		devm_kfree(ice_hw_to_dev(hw), fvit);
+ static ssize_t value_show(struct device *dev,
+ 			  struct device_attribute *attr, char *buf)
+ {
+-	int i;
++	struct token_sysfs_data *data = container_of(attr, struct token_sysfs_data, value_attr);
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
+-	i = match_attribute(dev, attr);
+-	if (i > 0)
+-		return sysfs_emit(buf, "%08x", da_tokens[i].value);
+-	return 0;
++	return sysfs_emit(buf, "%08x", data->token->value);
+ }
+ 
+ static struct attribute_group smbios_attribute_group = {
+@@ -473,22 +458,15 @@ static int build_tokens_sysfs(struct platform_device *dev)
+ {
+ 	char *location_name;
+ 	char *value_name;
+-	size_t size;
+ 	int ret;
+ 	int i, j;
+ 
+-	/* (number of tokens  + 1 for null terminated */
+-	size = sizeof(struct device_attribute) * (da_num_tokens + 1);
+-	token_location_attrs = kzalloc(size, GFP_KERNEL);
+-	if (!token_location_attrs)
++	token_entries = kcalloc(da_num_tokens, sizeof(*token_entries), GFP_KERNEL);
++	if (!token_entries)
+ 		return -ENOMEM;
+-	token_value_attrs = kzalloc(size, GFP_KERNEL);
+-	if (!token_value_attrs)
+-		goto out_allocate_value;
+ 
+ 	/* need to store both location and value + terminator*/
+-	size = sizeof(struct attribute *) * ((2 * da_num_tokens) + 1);
+-	token_attrs = kzalloc(size, GFP_KERNEL);
++	token_attrs = kcalloc((2 * da_num_tokens) + 1, sizeof(*token_attrs), GFP_KERNEL);
+ 	if (!token_attrs)
+ 		goto out_allocate_attrs;
+ 
+@@ -496,27 +474,32 @@ static int build_tokens_sysfs(struct platform_device *dev)
+ 		/* skip empty */
+ 		if (da_tokens[i].tokenID == 0)
+ 			continue;
++
++		token_entries[i].token = &da_tokens[i];
++
+ 		/* add location */
+ 		location_name = kasprintf(GFP_KERNEL, "%04x_location",
+ 					  da_tokens[i].tokenID);
+ 		if (location_name == NULL)
+ 			goto out_unwind_strings;
+-		sysfs_attr_init(&token_location_attrs[i].attr);
+-		token_location_attrs[i].attr.name = location_name;
+-		token_location_attrs[i].attr.mode = 0444;
+-		token_location_attrs[i].show = location_show;
+-		token_attrs[j++] = &token_location_attrs[i].attr;
++
++		sysfs_attr_init(&token_entries[i].location_attr.attr);
++		token_entries[i].location_attr.attr.name = location_name;
++		token_entries[i].location_attr.attr.mode = 0444;
++		token_entries[i].location_attr.show = location_show;
++		token_attrs[j++] = &token_entries[i].location_attr.attr;
+ 
+ 		/* add value */
+ 		value_name = kasprintf(GFP_KERNEL, "%04x_value",
+ 				       da_tokens[i].tokenID);
+ 		if (value_name == NULL)
+ 			goto loop_fail_create_value;
+-		sysfs_attr_init(&token_value_attrs[i].attr);
+-		token_value_attrs[i].attr.name = value_name;
+-		token_value_attrs[i].attr.mode = 0444;
+-		token_value_attrs[i].show = value_show;
+-		token_attrs[j++] = &token_value_attrs[i].attr;
++
++		sysfs_attr_init(&token_entries[i].value_attr.attr);
++		token_entries[i].value_attr.attr.name = value_name;
++		token_entries[i].value_attr.attr.mode = 0444;
++		token_entries[i].value_attr.show = value_show;
++		token_attrs[j++] = &token_entries[i].value_attr.attr;
+ 		continue;
+ 
+ loop_fail_create_value:
+@@ -532,14 +515,12 @@ static int build_tokens_sysfs(struct platform_device *dev)
+ 
+ out_unwind_strings:
+ 	while (i--) {
+-		kfree(token_location_attrs[i].attr.name);
+-		kfree(token_value_attrs[i].attr.name);
++		kfree(token_entries[i].location_attr.attr.name);
++		kfree(token_entries[i].value_attr.attr.name);
  	}
+ 	kfree(token_attrs);
+ out_allocate_attrs:
+-	kfree(token_value_attrs);
+-out_allocate_value:
+-	kfree(token_location_attrs);
++	kfree(token_entries);
  
--	if (rm->root_buf)
--		devm_kfree(ice_hw_to_dev(hw), rm->root_buf);
--
-+	devm_kfree(ice_hw_to_dev(hw), rm->root_buf);
- 	kfree(rm);
+ 	return -ENOMEM;
+ }
+@@ -551,12 +532,11 @@ static void free_group(struct platform_device *pdev)
+ 	sysfs_remove_group(&pdev->dev.kobj,
+ 				&smbios_attribute_group);
+ 	for (i = 0; i < da_num_tokens; i++) {
+-		kfree(token_location_attrs[i].attr.name);
+-		kfree(token_value_attrs[i].attr.name);
++		kfree(token_entries[i].location_attr.attr.name);
++		kfree(token_entries[i].value_attr.attr.name);
+ 	}
+ 	kfree(token_attrs);
+-	kfree(token_value_attrs);
+-	kfree(token_location_attrs);
++	kfree(token_entries);
+ }
  
- err_free_lkup_exts:
+ static int __init dell_smbios_init(void)
 -- 
 2.43.0
 
