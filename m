@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-54274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81A290ED74
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E447790EC43
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 526F7B214D0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED08C1C24B38
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B9A143757;
-	Wed, 19 Jun 2024 13:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A2913D525;
+	Wed, 19 Jun 2024 13:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yezy66Cl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dqIVc2n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8113E82495;
-	Wed, 19 Jun 2024 13:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047A812FB31;
+	Wed, 19 Jun 2024 13:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803096; cv=none; b=k+uh3J9g1+dlO6fxY3lZOjsFd14DK/k8NU+QNZsEc567HfqZcfGUBAD+ay6S2N2aGt/kksqdzkGbPq/kmOJ76s2MGddrncS0qNowudL7ZcBMu0ATOHvfLSoir9MXIwuEba5i/8xBp49qXCu/ATJu2Ix3xYtG14QMiC2TmZEAz08=
+	t=1718802329; cv=none; b=gUfJHl90LZMsAwXShCFXTGXXZveTjoruWb+TcRhLdn77JORJ01FYAKTXfjxbrWB6dEP1FKvv4bZkOsaS+jKZAGjqMaZstgLsouUlWriXeMdKQeeM+FjTWhqd1TLmsIOpUwQm5wCHs6mZhxaOz85P1iqu/nVwdcjbHQa4VrAsC5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803096; c=relaxed/simple;
-	bh=qewfXIV7g0wR6/vwU2qbXiRLk7PzWWIfffTSQTJev1w=;
+	s=arc-20240116; t=1718802329; c=relaxed/simple;
+	bh=+krnm+6NiqybvcEfQkVmah7xiOToBo9NcPFOi0lM3cY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fHugSRoPBgfh5RDZ5ocoqVqb2UlezCLeqX3QChElID79eprNkp1aYHhteRwmSBG/ZghYckTAZZdREMefmgX7WL47BRj4KQtsZ6zvbNR3MkGBaNUs18Iqr6JDJhNOQSZNVx2obnJSt36pfxz4xUtIyF+DRssNDocLNWV4f5ttXJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yezy66Cl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C2BC2BBFC;
-	Wed, 19 Jun 2024 13:18:15 +0000 (UTC)
+	 MIME-Version; b=rDUF19y6JjRSMmacjpgxtRQTVs6YM+Wvf4uAvjj2rznq5Ev0KRK/dbtw9oaMFYb6iJs49aFE/48Z60Nm1LwkIogQyhZxw8xLH5BrYyOIQyEfspEFq8oDi+Ej3891Ey4iRX50NAJglK7JQRQb7AoRRUG+/dGBnB5xJWOM3FgdhdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dqIVc2n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F45BC2BBFC;
+	Wed, 19 Jun 2024 13:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803096;
-	bh=qewfXIV7g0wR6/vwU2qbXiRLk7PzWWIfffTSQTJev1w=;
+	s=korg; t=1718802328;
+	bh=+krnm+6NiqybvcEfQkVmah7xiOToBo9NcPFOi0lM3cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yezy66ClUGb1JvwIfiA8v6P7DU8sYnowOUJOqYNq34MJHE+1D4fG0bobPJeksfSBf
-	 A5xysiBwv/J3nc+4fqAD4gc1EFVUEmK4c3hH9d2oivcT2r/WaVm9LEPvMARBjEMTUV
-	 CSzPTZjDB8LFjmtVL5+f4Kvnco1yoHeRcnNGvQD0=
+	b=2dqIVc2nnGJgsRYDVNXTv6o147eOwF9WigEObcp6B6LN14m1sYlep6TmiMlDnRLb6
+	 8Z5bK7FirAnkd8JrrR6dOeK5pkYpbdfbxWjUYItjEnPnuyzHC8j3M3EhOhG0ggh17+
+	 4xSXX8H9i3tpyh8sWy+GTqfIHhtU/w+CO/vjsMXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Watanabe <watanabe.yu@gmail.com>,
-	David Wei <dw@davidwei.uk>,
-	"David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 152/281] netdevsim: fix backwards compatibility in nsim_get_iflink()
+Subject: [PATCH 6.6 160/267] net: pse-pd: Use EOPNOTSUPP error code instead of ENOTSUPP
 Date: Wed, 19 Jun 2024 14:55:11 +0200
-Message-ID: <20240619125615.689274169@linuxfoundation.org>
+Message-ID: <20240619125612.484675759@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wei <dw@davidwei.uk>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-[ Upstream commit 5add2f7288468f35a374620dabf126c13baaea9c ]
+[ Upstream commit 144ba8580bcb82b2686c3d1a043299d844b9a682 ]
 
-The default ndo_get_iflink() implementation returns the current ifindex
-of the netdev. But the overridden nsim_get_iflink() returns 0 if the
-current nsim is not linked, breaking backwards compatibility for
-userspace that depend on this behaviour.
+ENOTSUPP is not a SUSV4 error code, prefer EOPNOTSUPP as reported by
+checkpatch script.
 
-Fix the problem by returning the current ifindex if not linked to a
-peer.
-
-Fixes: 8debcf5832c3 ("netdevsim: add ndo_get_iflink() implementation")
-Reported-by: Yu Watanabe <watanabe.yu@gmail.com>
-Suggested-by: Yu Watanabe <watanabe.yu@gmail.com>
-Signed-off-by: David Wei <dw@davidwei.uk>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 18ff0bcda6d1 ("ethtool: add interface to interact with Ethernet Power Equipment")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://lore.kernel.org/r/20240610083426.740660-1-kory.maincent@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/netdev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/pse-pd/pse.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index 8330bc0bcb7e5..d405809030aab 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -292,7 +292,8 @@ static int nsim_get_iflink(const struct net_device *dev)
+diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
+index fb724c65c77bc..5ce0cd76956e0 100644
+--- a/include/linux/pse-pd/pse.h
++++ b/include/linux/pse-pd/pse.h
+@@ -114,14 +114,14 @@ static inline int pse_ethtool_get_status(struct pse_control *psec,
+ 					 struct netlink_ext_ack *extack,
+ 					 struct pse_control_status *status)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
  
- 	rcu_read_lock();
- 	peer = rcu_dereference(nsim->peer);
--	iflink = peer ? READ_ONCE(peer->netdev->ifindex) : 0;
-+	iflink = peer ? READ_ONCE(peer->netdev->ifindex) :
-+			READ_ONCE(dev->ifindex);
- 	rcu_read_unlock();
+ static inline int pse_ethtool_set_config(struct pse_control *psec,
+ 					 struct netlink_ext_ack *extack,
+ 					 const struct pse_control_config *config)
+ {
+-	return -ENOTSUPP;
++	return -EOPNOTSUPP;
+ }
  
- 	return iflink;
+ #endif
 -- 
 2.43.0
 
