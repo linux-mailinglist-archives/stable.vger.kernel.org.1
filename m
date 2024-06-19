@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-54562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7851390EED5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F4A90EDD8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E371C211CF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD2181C223D7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E8514387E;
-	Wed, 19 Jun 2024 13:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D20149DE8;
+	Wed, 19 Jun 2024 13:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoAC74X4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aUACH3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C0C1E492;
-	Wed, 19 Jun 2024 13:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920FC147C60;
+	Wed, 19 Jun 2024 13:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803947; cv=none; b=mT67CSpIbWTRn1cUY3tAyClQN64WgCOPNLPWkuNbBfRSRTxC2mfz5F6nc4xwQEZQvp6xG8KaTAr/cNG/RQcavgwvWtUtRfdk72wj9K2p5I5O1XpUcZ0WAaFpIFU3QvbhGP6lSTbfWRH8000WcjM4muOg0bAOq0EBdZzpuiPDNjU=
+	t=1718803365; cv=none; b=LjdZypb07bF6JFE/iQPIq7UEp8KHaDkKEXb2cTmaobLdCI4rUjeOIDisjc8lP0lgfUVdZF4uo57XVwtGJX9Q73cJaCoxEcvYYNJl5UixJRbGc3YVyzdkSePUYmZ5kcxh1srVUqp2KhziZCqZkTxtK9P/qAx43sZCn3gRErJAgYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803947; c=relaxed/simple;
-	bh=2Uvk5obUFBtebjKmAo1gU3C/sKGnx3ekkOO+zkKtFzA=;
+	s=arc-20240116; t=1718803365; c=relaxed/simple;
+	bh=FLHk6COLDsDdCs6vommzHhu/TC05VECUTTn6f5vfbS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CIatM8CzkHILNaCGPdhdH5TEd7Zlsknu0hQbZtHJu/TLuJ47cxGmoW3vWEOUhdIt7O8MkJT/KEUe4Me640wDPuy1Waejv93pvXRSK+VJiS1sT+NszAmgYXvSLfnfFodiqgUHEWCDDS+d9xDt6OSQc3NSYcs/GvPtGjvPtX6Jx78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoAC74X4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07375C2BBFC;
-	Wed, 19 Jun 2024 13:32:26 +0000 (UTC)
+	 MIME-Version; b=XFuab/qiiGxIaYXq8YFT5rGzvQL7VlOOGAmdzZ65NvW7mFwQ02+wDuO1aI7QX+BySjEWcS3qjCCniP7ikfgB7oa/iq5YkRWjCLXz2XP/UcnTOa71ElHYqyJKGDSYeEMkJ1kgksmcAYYZBPWF+Soo9RW1ClyfpSxPO9PULE6oEns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aUACH3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3F8C2BBFC;
+	Wed, 19 Jun 2024 13:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803947;
-	bh=2Uvk5obUFBtebjKmAo1gU3C/sKGnx3ekkOO+zkKtFzA=;
+	s=korg; t=1718803365;
+	bh=FLHk6COLDsDdCs6vommzHhu/TC05VECUTTn6f5vfbS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MoAC74X4wdBW2PkLGA5jVjCzTp2WfXh2kImtMYuzzCRSVD7qfM0gANK6tFyEoX9d5
-	 28kElpI1+sBpspxvF1tAHV2EXM8JeDr6hZRJswETqSflL1G1A8uMzHBpsLGbu2u/3l
-	 MQAulj80BxmZ9Zzh/rH4MVm0Un7UVJXRDcurdk1c=
+	b=0aUACH3epDFNELiyfdtVpKkC/t1lQ8ww9SALYtnU3zwW8DXksJTSBW5yeHqJatxVg
+	 flEoCGJP47WMqvwreKEzpzSniK+4IQJWt1JqnXgw5RiO+tG21mVKcRxBXS03xeAVoK
+	 GeqLY4tlZ6qVoJ4AEhB0E/m6OQg844QgTGub8VKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rao Shoaib <Rao.Shoaib@oracle.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 157/217] af_unix: Read with MSG_PEEK loops if the first unread byte is OOB
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Jun Piao <piaojun@huawei.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 241/281] ocfs2: fix races between hole punching and AIO+DIO
 Date: Wed, 19 Jun 2024 14:56:40 +0200
-Message-ID: <20240619125602.750399109@linuxfoundation.org>
+Message-ID: <20240619125619.235606438@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +68,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rao Shoaib <Rao.Shoaib@oracle.com>
+From: Su Yue <glass.su@suse.com>
 
-[ Upstream commit a6736a0addd60fccc3a3508461d72314cc609772 ]
+commit 952b023f06a24b2ad6ba67304c4c84d45bea2f18 upstream.
 
-Read with MSG_PEEK flag loops if the first byte to read is an OOB byte.
-commit 22dd70eb2c3d ("af_unix: Don't peek OOB data without MSG_OOB.")
-addresses the loop issue but does not address the issue that no data
-beyond OOB byte can be read.
+After commit "ocfs2: return real error code in ocfs2_dio_wr_get_block",
+fstests/generic/300 become from always failed to sometimes failed:
 
->>> from socket import *
->>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
->>> c1.send(b'a', MSG_OOB)
-1
->>> c1.send(b'b')
-1
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'b'
+========================================================================
+[  473.293420 ] run fstests generic/300
 
->>> from socket import *
->>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
->>> c2.setsockopt(SOL_SOCKET, SO_OOBINLINE, 1)
->>> c1.send(b'a', MSG_OOB)
-1
->>> c1.send(b'b')
-1
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'a'
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'a'
->>> c2.recv(1, MSG_DONTWAIT)
-b'a'
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'b'
->>>
+[  475.296983 ] JBD2: Ignoring recovery information on journal
+[  475.302473 ] ocfs2: Mounting device (253,1) on (node local, slot 0) with ordered data mode.
+[  494.290998 ] OCFS2: ERROR (device dm-1): ocfs2_change_extent_flag: Owner 5668 has an extent at cpos 78723 which can no longer be found
+[  494.291609 ] On-disk corruption discovered. Please run fsck.ocfs2 once the filesystem is unmounted.
+[  494.292018 ] OCFS2: File system is now read-only.
+[  494.292224 ] (kworker/19:11,2628,19):ocfs2_mark_extent_written:5272 ERROR: status = -30
+[  494.292602 ] (kworker/19:11,2628,19):ocfs2_dio_end_io_write:2374 ERROR: status = -3
+fio: io_u error on file /mnt/scratch/racer: Read-only file system: write offset=460849152, buflen=131072
+=========================================================================
 
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Signed-off-by: Rao Shoaib <Rao.Shoaib@oracle.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240611084639.2248934-1-Rao.Shoaib@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In __blockdev_direct_IO, ocfs2_dio_wr_get_block is called to add unwritten
+extents to a list.  extents are also inserted into extent tree in
+ocfs2_write_begin_nolock.  Then another thread call fallocate to puch a
+hole at one of the unwritten extent.  The extent at cpos was removed by
+ocfs2_remove_extent().  At end io worker thread, ocfs2_search_extent_list
+found there is no such extent at the cpos.
+
+    T1                        T2                T3
+                              inode lock
+                                ...
+                                insert extents
+                                ...
+                              inode unlock
+ocfs2_fallocate
+ __ocfs2_change_file_space
+  inode lock
+  lock ip_alloc_sem
+  ocfs2_remove_inode_range inode
+   ocfs2_remove_btree_range
+    ocfs2_remove_extent
+    ^---remove the extent at cpos 78723
+  ...
+  unlock ip_alloc_sem
+  inode unlock
+                                       ocfs2_dio_end_io
+                                        ocfs2_dio_end_io_write
+                                         lock ip_alloc_sem
+                                         ocfs2_mark_extent_written
+                                          ocfs2_change_extent_flag
+                                           ocfs2_search_extent_list
+                                           ^---failed to find extent
+                                          ...
+                                          unlock ip_alloc_sem
+
+In most filesystems, fallocate is not compatible with racing with AIO+DIO,
+so fix it by adding to wait for all dio before fallocate/punch_hole like
+ext4.
+
+Link: https://lkml.kernel.org/r/20240408082041.20925-3-glass.su@suse.com
+Fixes: b25801038da5 ("ocfs2: Support xfs style space reservation ioctls")
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ fs/ocfs2/file.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index bb94a67229aa3..3905cdcaa5184 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2682,18 +2682,18 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
- 		if (skb == u->oob_skb) {
- 			if (copied) {
- 				skb = NULL;
--			} else if (sock_flag(sk, SOCK_URGINLINE)) {
--				if (!(flags & MSG_PEEK)) {
-+			} else if (!(flags & MSG_PEEK)) {
-+				if (sock_flag(sk, SOCK_URGINLINE)) {
- 					WRITE_ONCE(u->oob_skb, NULL);
- 					consume_skb(skb);
-+				} else {
-+					__skb_unlink(skb, &sk->sk_receive_queue);
-+					WRITE_ONCE(u->oob_skb, NULL);
-+					unlinked_skb = skb;
-+					skb = skb_peek(&sk->sk_receive_queue);
- 				}
--			} else if (flags & MSG_PEEK) {
--				skb = NULL;
--			} else {
--				__skb_unlink(skb, &sk->sk_receive_queue);
--				WRITE_ONCE(u->oob_skb, NULL);
--				unlinked_skb = skb;
--				skb = skb_peek(&sk->sk_receive_queue);
-+			} else if (!sock_flag(sk, SOCK_URGINLINE)) {
-+				skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 			}
- 		}
+--- a/fs/ocfs2/file.c
++++ b/fs/ocfs2/file.c
+@@ -1936,6 +1936,8 @@ static int __ocfs2_change_file_space(str
  
--- 
-2.43.0
-
+ 	inode_lock(inode);
+ 
++	/* Wait all existing dio workers, newcomers will block on i_rwsem */
++	inode_dio_wait(inode);
+ 	/*
+ 	 * This prevents concurrent writes on other nodes
+ 	 */
 
 
 
