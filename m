@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-54030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 530D090EC58
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863FF90ED89
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 097711F21271
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 990991C20EF6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B00145334;
-	Wed, 19 Jun 2024 13:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C910143C65;
+	Wed, 19 Jun 2024 13:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZPEFVoo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4JvSk+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB9412FB31;
-	Wed, 19 Jun 2024 13:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A00182495;
+	Wed, 19 Jun 2024 13:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802385; cv=none; b=N7bA6gh8DesYDVscvkwPsaXzA4nnIW7T33ulFjL2H1jHP+l8fyVfD0xk2Q7Qj0BTaZec/0QFzUUr0KNXJQorYxVtfMkU76vVLqk0HehHmR9OuuEX2E2nR8L9kyirGSjz22mmW12c4K2IDiH+vgKQ7VvuO2VhkOapED2qisSYLVs=
+	t=1718803158; cv=none; b=uOQt1fiZ+a6MZT0glc8xGEPZ9wKCuRghfjHMGr/9a3kIQTTyKhjKcE8x5IF2J66W/1vp69G2jKlIE+VoGrS9i6Yc7KWTLl9fjIv9EAa7oYt6X9cgbbNgaOtQlqn8rX4kOSMAYNN2e6Z68zycfHG2Z8zGd+zK1Yq1zG4BqXnCDy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802385; c=relaxed/simple;
-	bh=7ByCgtwC46Kw6ophOV8Ep1up4Pe9Voq/MHogPHkMNko=;
+	s=arc-20240116; t=1718803158; c=relaxed/simple;
+	bh=VzC7u44FY7cXE4OZfzRVCbYwu9gRGPE0CQs8WBx6GFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OrHW2MsyWckYSJJaDTuPK9nAxTcug3LxieJGoGD7Jq1NUig+HHlWN1O8yNaSBaQNGDst30SXHFOBx4Y0ba7MLv4GpSMViHN/HlJDX8PACJmV0iATjrI7LSXE9HzdXSOYnR3oQi5u/SqISAPvbK04qwOKU5OSY1BZsAIBOCnKz3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZPEFVoo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F62C2BBFC;
-	Wed, 19 Jun 2024 13:06:24 +0000 (UTC)
+	 MIME-Version; b=GuwCYFjgldKK5FhRpViXH4WVNggBk5chaicuUQ8baOdJpq/wbIuhpiu8uJf6Z9MAYuoCNMAbbVPMpwIxWsEjWNoLoud4C0qPQUqlfMJBoD8t6xbMPlFy2q+O/B0vyLTofXjgi9PZHniK41JkFRsH0mA1+zPNG/3S93cIUeq8WCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4JvSk+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EEFC2BBFC;
+	Wed, 19 Jun 2024 13:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802385;
-	bh=7ByCgtwC46Kw6ophOV8Ep1up4Pe9Voq/MHogPHkMNko=;
+	s=korg; t=1718803158;
+	bh=VzC7u44FY7cXE4OZfzRVCbYwu9gRGPE0CQs8WBx6GFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZPEFVoooak6kZcpuQzt3a8GW1kMjZms+Jqhe86lrmc0qQrLBOq1+HU8uoPWsBuL3
-	 XU9xdlomNIekGMw+ewHzpq0QkIByrcCQBdV88kbrJ5Eh0DqYBSiyn+De4JzPOul7LD
-	 crBZgoNH5n1nZMBzbA66RPSEVzp8mUgkeVNysKKs=
+	b=m4JvSk+Qc1EohZyCN5Tftj4FrErnjBiI5Ok8qv9Mnsx3cWUAMrH27TmPSDDXzZwGI
+	 DTfQjrSymlJsn6sWpdwFrK7AlAUeexaPlbHnWit1XR37euypIDZJOYV/I7KvxlQrwE
+	 WiXR5/dIzulHva9NKW2ZtCsEFsAy8rtfr0BAjbe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 178/267] iio: invensense: fix odr switching to same value
-Date: Wed, 19 Jun 2024 14:55:29 +0200
-Message-ID: <20240619125613.175492072@linuxfoundation.org>
+	Joshua Washington <joshwash@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrei Vagin <avagin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 171/281] gve: ignore nonrelevant GSO type bits when processing TSO headers
+Date: Wed, 19 Jun 2024 14:55:30 +0200
+Message-ID: <20240619125616.417782365@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +67,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Joshua Washington <joshwash@google.com>
 
-commit 95444b9eeb8c5c0330563931d70c61ca3b101548 upstream.
+[ Upstream commit 1b9f756344416e02b41439bf2324b26aa25e141c ]
 
-ODR switching happens in 2 steps, update to store the new value and then
-apply when the ODR change flag is received in the data. When switching to
-the same ODR value, the ODR change flag is never happening, and frequency
-switching is blocked waiting for the never coming apply.
+TSO currently fails when the skb's gso_type field has more than one bit
+set.
 
-Fix the issue by preventing update to happen when switching to same ODR
-value.
+TSO packets can be passed from userspace using PF_PACKET, TUNTAP and a
+few others, using virtio_net_hdr (e.g., PACKET_VNET_HDR). This includes
+virtualization, such as QEMU, a real use-case.
 
-Fixes: 0ecc363ccea7 ("iio: make invensense timestamp module generic")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://lore.kernel.org/r/20240524124851.567485-1-inv.git-commit@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The gso_type and gso_size fields as passed from userspace in
+virtio_net_hdr are not trusted blindly by the kernel. It adds gso_type
+|= SKB_GSO_DODGY to force the packet to enter the software GSO stack
+for verification.
+
+This issue might similarly come up when the CWR bit is set in the TCP
+header for congestion control, causing the SKB_GSO_TCP_ECN gso_type bit
+to be set.
+
+Fixes: a57e5de476be ("gve: DQO: Add TX path")
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Andrei Vagin <avagin@gmail.com>
+
+v2 - Remove unnecessary comments, remove line break between fixes tag
+and signoffs.
+
+v3 - Add back unrelated empty line removal.
+
+Link: https://lore.kernel.org/r/20240610225729.2985343-1-joshwash@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/common/inv_sensors/inv_sensors_timestamp.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_tx_dqo.c | 20 +++++---------------
+ 1 file changed, 5 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-index fa205f17bd90..f44458c380d9 100644
---- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-+++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-@@ -60,11 +60,15 @@ EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_init, IIO_INV_SENSORS_TIMESTAMP);
- int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
- 				     uint32_t period, bool fifo)
- {
-+	uint32_t mult;
+diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+index bc34b6cd3a3e5..917a79a47e19c 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+@@ -555,28 +555,18 @@ static int gve_prep_tso(struct sk_buff *skb)
+ 	if (unlikely(skb_shinfo(skb)->gso_size < GVE_TX_MIN_TSO_MSS_DQO))
+ 		return -1;
+ 
++	if (!(skb_shinfo(skb)->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6)))
++		return -EINVAL;
 +
- 	/* when FIFO is on, prevent odr change if one is already pending */
- 	if (fifo && ts->new_mult != 0)
- 		return -EAGAIN;
+ 	/* Needed because we will modify header. */
+ 	err = skb_cow_head(skb, 0);
+ 	if (err < 0)
+ 		return err;
  
--	ts->new_mult = period / ts->chip.clock_period;
-+	mult = period / ts->chip.clock_period;
-+	if (mult != ts->mult)
-+		ts->new_mult = mult;
+ 	tcp = tcp_hdr(skb);
+-
+-	/* Remove payload length from checksum. */
+ 	paylen = skb->len - skb_transport_offset(skb);
+-
+-	switch (skb_shinfo(skb)->gso_type) {
+-	case SKB_GSO_TCPV4:
+-	case SKB_GSO_TCPV6:
+-		csum_replace_by_diff(&tcp->check,
+-				     (__force __wsum)htonl(paylen));
+-
+-		/* Compute length of segmentation header. */
+-		header_len = skb_tcp_all_headers(skb);
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
++	csum_replace_by_diff(&tcp->check, (__force __wsum)htonl(paylen));
++	header_len = skb_tcp_all_headers(skb);
  
- 	return 0;
- }
+ 	if (unlikely(header_len > GVE_TX_MAX_HDR_SIZE_DQO))
+ 		return -EINVAL;
 -- 
-2.45.2
+2.43.0
 
 
 
