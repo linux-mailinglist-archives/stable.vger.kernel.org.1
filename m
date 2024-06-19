@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-54090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B3D90ECA4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4149990EEC9
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B556F2870EE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20D351C21088
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593F81494A6;
-	Wed, 19 Jun 2024 13:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA97F14D705;
+	Wed, 19 Jun 2024 13:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="On4QzqX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjBGV004"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CC312FB31;
-	Wed, 19 Jun 2024 13:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8745D14B96F;
+	Wed, 19 Jun 2024 13:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802559; cv=none; b=NoS+kOVxlM7u6IM/uzBXontNJOMk4sjpucNT1AFa45pajP4PrmPFkEp2k+LH+Z5jpmWh1efsk3fPE90s4N/eLXopljLIHt6xXwxe9NGOJBr9mLhAEbV1Xlncom/kdPcsM61B3z/teOKUNRQwSqNrjwMjzJ+3Cv2r5mcn6kEalT8=
+	t=1718803911; cv=none; b=N4vaIXb/ugGAGzof0xyDtQMviAjiFj41/vCE+HSr5YL0lfQEbGMi2g2ZAfZArqkwlgm22k2b0m8Gexbi9eD9YRjj4cE35uTLJMErFhH/uvuE9VtUbUq0kJ0/dNqNnnCNopRMZZ/MZtGvzDCoawdC5ITsibZqPQyXtTDEsG9OZKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802559; c=relaxed/simple;
-	bh=NutqWhcBYtrzNiyfNxdTN8Do55ak/ok2AhTzyYtBKR0=;
+	s=arc-20240116; t=1718803911; c=relaxed/simple;
+	bh=NMYj9t8wAWPQitbrhmffrNhzHcThHTfPD6upbQmcBrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CRdbiaD+uz59WiwORqlUGaGHygzoy4V9jdm4f/pex+s1acfkOJ/WiiCGGD9tyKWvuaROZexO9/y3fslbOoZ3vUtq+RpFj2bvcQslzvBZVNXYdgJwlQFCJfd+1/ohU+2jNkoo4epT8yQW7IxEONlnqFKyHqJVNvAD2PC7Sh/jPaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=On4QzqX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FADAC2BBFC;
-	Wed, 19 Jun 2024 13:09:18 +0000 (UTC)
+	 MIME-Version; b=s8kaRMz3Cl7O+ICI9mR0ocKHsJo4xTIiYFVZYl5C+uHw4CHCz00Sn4an3bfayCLZivoE3zk2UbFUHWxUsLqKHg9QVCuFZ7udLg+pUWC/bV5YMUEze42/PeSxrjbcbN4fARKjNpV8f/XMxOXXUy7x06lYI8fg3f8epPEWM7fV0s0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjBGV004; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88D2C2BBFC;
+	Wed, 19 Jun 2024 13:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802559;
-	bh=NutqWhcBYtrzNiyfNxdTN8Do55ak/ok2AhTzyYtBKR0=;
+	s=korg; t=1718803911;
+	bh=NMYj9t8wAWPQitbrhmffrNhzHcThHTfPD6upbQmcBrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=On4QzqX5fBWjdUCM8/mbFVbBCPPpfvONsKaEHZfVYK9Qq5qygxuvXy7WTyznzXBuL
-	 5kcW8UoeiD+tp3FCM+QrVT/A5eWkOwd4CQ+zqGfyCu2vKIwv1qLmj+mpRCUxEozqj8
-	 85XqbWyHpn7pL+0N2VC4pD/onzSGuJAyl3dkzzes=
+	b=UjBGV004kwa0GoGX1eAe0r7tRggV+ZMg2n9Le194urQQZ+TjHVHTN4HdRAdPZsoUZ
+	 VZFj4c1Ri2LUL6uVmyVfE9lYPNGeSYBX6tS6Zxw3Y4DP1cvhtHw3TI4694kF+/dFLH
+	 OT2a0LqWw67nA7Zj2yjEVYfPJyZkV9mOzlHshYdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	Andrey Albershteyn <aalbersh@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 237/267] xfs: allow cross-linking special files without project quota
-Date: Wed, 19 Jun 2024 14:56:28 +0200
-Message-ID: <20240619125615.418224801@linuxfoundation.org>
+	Gal Pressman <gal@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 146/217] net/mlx5e: Fix features validation check for tunneled UDP (non-VXLAN) packets
+Date: Wed, 19 Jun 2024 14:56:29 +0200
+Message-ID: <20240619125602.323980234@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Albershteyn <aalbersh@redhat.com>
+From: Gal Pressman <gal@nvidia.com>
 
-commit e23d7e82b707d1d0a627e334fb46370e4f772c11 upstream.
+[ Upstream commit 791b4089e326271424b78f2fae778b20e53d071b ]
 
-There's an issue that if special files is created before quota
-project is enabled, then it's not possible to link this file. This
-works fine for normal files. This happens because xfs_quota skips
-special files (no ioctls to set necessary flags). The check for
-having the same project ID for source and destination then fails as
-source file doesn't have any ID.
+Move the vxlan_features_check() call to after we verified the packet is
+a tunneled VXLAN packet.
 
-mkfs.xfs -f /dev/sda
-mount -o prjquota /dev/sda /mnt/test
+Without this, tunneled UDP non-VXLAN packets (for ex. GENENVE) might
+wrongly not get offloaded.
+In some cases, it worked by chance as GENEVE header is the same size as
+VXLAN, but it is obviously incorrect.
 
-mkdir /mnt/test/foo
-mkfifo /mnt/test/foo/fifo1
-
-xfs_quota -xc "project -sp /mnt/test/foo 9" /mnt/test
-> Setting up project 9 (path /mnt/test/foo)...
-> xfs_quota: skipping special file /mnt/test/foo/fifo1
-> Processed 1 (/etc/projects and cmdline) paths for project 9 with recursion depth infinite (-1).
-
-ln /mnt/test/foo/fifo1 /mnt/test/foo/fifo1_link
-> ln: failed to create hard link '/mnt/test/testdir/fifo1_link' => '/mnt/test/testdir/fifo1': Invalid cross-device link
-
-mkfifo /mnt/test/foo/fifo2
-ln /mnt/test/foo/fifo2 /mnt/test/foo/fifo2_link
-
-Fix this by allowing linking of special files to the project quota
-if special files doesn't have any ID set (ID = 0).
-
-Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e3cfc7e6b7bd ("net/mlx5e: TX, Add geneve tunnel stateless offload support")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_inode.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -1239,8 +1239,19 @@ xfs_link(
- 	 */
- 	if (unlikely((tdp->i_diflags & XFS_DIFLAG_PROJINHERIT) &&
- 		     tdp->i_projid != sip->i_projid)) {
--		error = -EXDEV;
--		goto error_return;
-+		/*
-+		 * Project quota setup skips special files which can
-+		 * leave inodes in a PROJINHERIT directory without a
-+		 * project ID set. We need to allow links to be made
-+		 * to these "project-less" inodes because userspace
-+		 * expects them to succeed after project ID setup,
-+		 * but everything else should be rejected.
-+		 */
-+		if (!special_file(VFS_I(sip)->i_mode) ||
-+		    sip->i_projid != 0) {
-+			error = -EXDEV;
-+			goto error_return;
-+		}
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index e2f134e1d9fcf..4c0eac83546de 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -4587,7 +4587,7 @@ static netdev_features_t mlx5e_tunnel_features_check(struct mlx5e_priv *priv,
  
- 	if (!resblks) {
+ 		/* Verify if UDP port is being offloaded by HW */
+ 		if (mlx5_vxlan_lookup_port(priv->mdev->vxlan, port))
+-			return features;
++			return vxlan_features_check(skb, features);
+ 
+ #if IS_ENABLED(CONFIG_GENEVE)
+ 		/* Support Geneve offload for default UDP port */
+@@ -4613,7 +4613,6 @@ netdev_features_t mlx5e_features_check(struct sk_buff *skb,
+ 	struct mlx5e_priv *priv = netdev_priv(netdev);
+ 
+ 	features = vlan_features_check(skb, features);
+-	features = vxlan_features_check(skb, features);
+ 
+ 	/* Validate if the tunneled packet is being offloaded by HW */
+ 	if (skb->encapsulation &&
+-- 
+2.43.0
+
 
 
 
