@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DF290ED4C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC7990EBFC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5577281082
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7618E1C23918
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C46E144D3E;
-	Wed, 19 Jun 2024 13:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A907149007;
+	Wed, 19 Jun 2024 13:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROTq7yx3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nx70/ipQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE674AD58;
-	Wed, 19 Jun 2024 13:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B2014389C;
+	Wed, 19 Jun 2024 13:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802986; cv=none; b=scEL2vQ0Nnr9FEf4mx+NaQQyto54yGKvR7k8ZD0Yvd5jtrOqeHOOqhbaPC7TFNVzfJvXkcs+axRYiEsuMpw9/OcjwgrgTm9htYNQnRPTBy/8udQq2dja3jr3WyOgoEKNO6/WIZriMjFNi9mghEN0eHqqW/12/9vzn5TVjqxjTNY=
+	t=1718802128; cv=none; b=AGWLUp0nNsLLT092Scc0pf+TJcD9eugxlq4UFeq+YrNZCoJuUhyaGIhs8WDeSSKFbJK8hDFcf20p0928n9nWy2QRya+H40TdvLQVOzQH78DK/hDxYMGo193/puqLti0rmV7VBTtL1gSiYUjQ+hZu7JB+3s2/8R0eyJWKFL+h1B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802986; c=relaxed/simple;
-	bh=j2PEMCtIsb1kLLwrQTT98eamhv/g9VLB/CiWMGO7aSI=;
+	s=arc-20240116; t=1718802128; c=relaxed/simple;
+	bh=KNeA4R4x12CckLbxRrykSixDPpXQMCxHCysG5c1U2C8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iM+MpunaXxtcl0ggf/WqBx3qxh2JC+d99WdgWIoO7cSuzm700DeYwhpSBQkuzVyjVRUMzC5PxdIZpxoQutKhloQPXlE9pmyXcGh5b+3W9EKqFUz2t8txlKOe3/nF9EUWc5BfgOfoavz5SVmtcPj6X7v5VCZPtFv2ukZCpdgOBvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROTq7yx3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45243C2BBFC;
-	Wed, 19 Jun 2024 13:16:26 +0000 (UTC)
+	 MIME-Version; b=MmSYk0zcSYTWWfpHqfLXbTN7G0Mmmsd8rKZucl7YLwxotsrBsd0iH5TyiX04YTrYZXJLHxKWLMYaT1cKpVNQ7J+SqqrcnpRCrkCFKZJwVz7Msa1e9ABvvCEKAqL5TZ7bH0tsP6Gx8FaIdbP0Ekj5gpRnTAbnkQzqlV+s7zB7pHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nx70/ipQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5585C2BBFC;
+	Wed, 19 Jun 2024 13:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802986;
-	bh=j2PEMCtIsb1kLLwrQTT98eamhv/g9VLB/CiWMGO7aSI=;
+	s=korg; t=1718802128;
+	bh=KNeA4R4x12CckLbxRrykSixDPpXQMCxHCysG5c1U2C8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROTq7yx3RF30RWgdU6Hs8pPkrSQPNpZzXbH/sbWb4kppsXPKLBCUYBRWcLY0jnwvB
-	 JUBHq656qgGqGXIOvDjfiU+KyCPEjV227ZPVlQk1tY/hjMOrJ3Rq50kwksGuws78g9
-	 bCwDyRHsO/QPmJyvl7XH6TBIHXCkesZq2PEouKTc=
+	b=Nx70/ipQqiua5tUB3/3WTynM7kiBza7cG+EG5XduJIU1donlRbT9t0sH2ks/BVj0g
+	 y0Af6+OXVhvtle4NM2ds1+oCD/cCwPbyu8Qh9zXAZ5gXmbzLy2pRy9lq6tVqFAYwHx
+	 455s2af51cJaHAeXMGhV5XMGysw0te4YS5w8Z6Mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>
-Subject: [PATCH 6.9 083/281] kcov, usb: disable interrupts in kcov_remote_start_usb_softirq
-Date: Wed, 19 Jun 2024 14:54:02 +0200
-Message-ID: <20240619125613.035421293@linuxfoundation.org>
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 092/267] xhci: Apply broken streams quirk to Etron EJ188 xHCI host
+Date: Wed, 19 Jun 2024 14:54:03 +0200
+Message-ID: <20240619125609.883017689@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Konovalov <andreyknvl@gmail.com>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-commit f85d39dd7ed89ffdd622bc1de247ffba8d961504 upstream.
+commit 91f7a1524a92c70ffe264db8bdfa075f15bbbeb9 upstream.
 
-After commit 8fea0c8fda30 ("usb: core: hcd: Convert from tasklet to BH
-workqueue"), usb_giveback_urb_bh() runs in the BH workqueue with
-interrupts enabled.
+As described in commit 8f873c1ff4ca ("xhci: Blacklist using streams on the
+Etron EJ168 controller"), EJ188 have the same issue as EJ168, where Streams
+do not work reliable on EJ188. So apply XHCI_BROKEN_STREAMS quirk to EJ188
+as well.
 
-Thus, the remote coverage collection section in usb_giveback_urb_bh()->
-__usb_hcd_giveback_urb() might be interrupted, and the interrupt handler
-might invoke __usb_hcd_giveback_urb() again.
-
-This breaks KCOV, as it does not support nested remote coverage collection
-sections within the same context (neither in task nor in softirq).
-
-Update kcov_remote_start/stop_usb_softirq() to disable interrupts for the
-duration of the coverage collection section to avoid nested sections in
-the softirq context (in addition to such in the task context, which are
-already handled).
-
-Reported-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Closes: https://lore.kernel.org/linux-usb/0f4d1964-7397-485b-bc48-11c01e2fcbca@I-love.SAKURA.ne.jp/
-Closes: https://syzkaller.appspot.com/bug?extid=0438378d6f157baae1a2
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: 8fea0c8fda30 ("usb: core: hcd: Convert from tasklet to BH workqueue")
 Cc: stable@vger.kernel.org
-Acked-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://lore.kernel.org/r/20240527173538.4989-1-andrey.konovalov@linux.dev
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-4-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hcd.c |   12 +++++++-----
- include/linux/kcov.h   |   47 ++++++++++++++++++++++++++++++++++++++---------
- 2 files changed, 45 insertions(+), 14 deletions(-)
+ drivers/usb/host/xhci-pci.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/hcd.c
-+++ b/drivers/usb/core/hcd.c
-@@ -1623,6 +1623,7 @@ static void __usb_hcd_giveback_urb(struc
- 	struct usb_hcd *hcd = bus_to_hcd(urb->dev->bus);
- 	struct usb_anchor *anchor = urb->anchor;
- 	int status = urb->unlinked;
-+	unsigned long flags;
- 
- 	urb->hcpriv = NULL;
- 	if (unlikely((urb->transfer_flags & URB_SHORT_NOT_OK) &&
-@@ -1640,13 +1641,14 @@ static void __usb_hcd_giveback_urb(struc
- 	/* pass ownership to the completion handler */
- 	urb->status = status;
- 	/*
--	 * This function can be called in task context inside another remote
--	 * coverage collection section, but kcov doesn't support that kind of
--	 * recursion yet. Only collect coverage in softirq context for now.
-+	 * Only collect coverage in the softirq context and disable interrupts
-+	 * to avoid scenarios with nested remote coverage collection sections
-+	 * that KCOV does not support.
-+	 * See the comment next to kcov_remote_start_usb_softirq() for details.
- 	 */
--	kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
-+	flags = kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
- 	urb->complete(urb);
--	kcov_remote_stop_softirq();
-+	kcov_remote_stop_softirq(flags);
- 
- 	usb_anchor_resume_wakeups(anchor);
- 	atomic_dec(&urb->use_count);
---- a/include/linux/kcov.h
-+++ b/include/linux/kcov.h
-@@ -55,21 +55,47 @@ static inline void kcov_remote_start_usb
- 
- /*
-  * The softirq flavor of kcov_remote_*() functions is introduced as a temporary
-- * work around for kcov's lack of nested remote coverage sections support in
-- * task context. Adding support for nested sections is tracked in:
-- * https://bugzilla.kernel.org/show_bug.cgi?id=210337
-+ * workaround for KCOV's lack of nested remote coverage sections support.
-+ *
-+ * Adding support is tracked in https://bugzilla.kernel.org/show_bug.cgi?id=210337.
-+ *
-+ * kcov_remote_start_usb_softirq():
-+ *
-+ * 1. Only collects coverage when called in the softirq context. This allows
-+ *    avoiding nested remote coverage collection sections in the task context.
-+ *    For example, USB/IP calls usb_hcd_giveback_urb() in the task context
-+ *    within an existing remote coverage collection section. Thus, KCOV should
-+ *    not attempt to start collecting coverage within the coverage collection
-+ *    section in __usb_hcd_giveback_urb() in this case.
-+ *
-+ * 2. Disables interrupts for the duration of the coverage collection section.
-+ *    This allows avoiding nested remote coverage collection sections in the
-+ *    softirq context (a softirq might occur during the execution of a work in
-+ *    the BH workqueue, which runs with in_serving_softirq() > 0).
-+ *    For example, usb_giveback_urb_bh() runs in the BH workqueue with
-+ *    interrupts enabled, so __usb_hcd_giveback_urb() might be interrupted in
-+ *    the middle of its remote coverage collection section, and the interrupt
-+ *    handler might invoke __usb_hcd_giveback_urb() again.
-  */
- 
--static inline void kcov_remote_start_usb_softirq(u64 id)
-+static inline unsigned long kcov_remote_start_usb_softirq(u64 id)
- {
--	if (in_serving_softirq())
-+	unsigned long flags = 0;
-+
-+	if (in_serving_softirq()) {
-+		local_irq_save(flags);
- 		kcov_remote_start_usb(id);
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -463,8 +463,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ188)
++			pdev->device == PCI_DEVICE_ID_EJ188) {
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
++		xhci->quirks |= XHCI_BROKEN_STREAMS;
 +	}
-+
-+	return flags;
- }
  
--static inline void kcov_remote_stop_softirq(void)
-+static inline void kcov_remote_stop_softirq(unsigned long flags)
- {
--	if (in_serving_softirq())
-+	if (in_serving_softirq()) {
- 		kcov_remote_stop();
-+		local_irq_restore(flags);
-+	}
- }
- 
- #ifdef CONFIG_64BIT
-@@ -103,8 +129,11 @@ static inline u64 kcov_common_handle(voi
- }
- static inline void kcov_remote_start_common(u64 id) {}
- static inline void kcov_remote_start_usb(u64 id) {}
--static inline void kcov_remote_start_usb_softirq(u64 id) {}
--static inline void kcov_remote_stop_softirq(void) {}
-+static inline unsigned long kcov_remote_start_usb_softirq(u64 id)
-+{
-+	return 0;
-+}
-+static inline void kcov_remote_stop_softirq(unsigned long flags) {}
- 
- #endif /* CONFIG_KCOV */
- #endif /* _LINUX_KCOV_H */
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
 
 
 
