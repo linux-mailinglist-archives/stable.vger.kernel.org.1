@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E188590EC7E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E85390EE8A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E5A9284ABC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33EAB1F21319
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20EA12FB31;
-	Wed, 19 Jun 2024 13:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB7214A0A0;
+	Wed, 19 Jun 2024 13:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOF4Xab/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uq62rSX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911F613AA40;
-	Wed, 19 Jun 2024 13:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793B114EC58;
+	Wed, 19 Jun 2024 13:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802488; cv=none; b=NloaLXoFIu2kquzZkJiksIwRDREN9ur/CJL9j2sRYVpmQbk7QpOk7VzeNAaeSPdHOOtsOMiZeabSkj7YRh71Q5Sy5IXCzBUKRUoHF+0CCH8JqRYWtVH0X8A/EkQ5AKyjxAd3jXag1k7Kqo212lev4814ghKpbBnDELO7ayB7y3k=
+	t=1718803760; cv=none; b=tAv/YVBAp7jti2NtgdK/Bew3e8YCGweDMk0prk5RloX9IzTfCYyNtlmEIAQ/PBogsDc+R2DswuWx5FstVObdGk3sPeHlhO1kzo2cyQrOKeC/M6Yj1aD82Oc3mU04gDt/dvZ6tDq1zGHX0+oZ4qRhHMOXwo42xamUQ+I0lwMKnzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802488; c=relaxed/simple;
-	bh=mK+oQKAtCF4IXQl8VPVkwLOQEjWjF0X5esJXb3BtJ0w=;
+	s=arc-20240116; t=1718803760; c=relaxed/simple;
+	bh=3TOQEgr3ttpGvx1zs6OMFuEdwU8JwQMjqCndQP3ON9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1ntFZs0ruiD/6gv7UIMOhAhAKuzSjGXOrsfWgsQ1v2uZAt1CWwzskolSlHpvhLQ1PtIGUMI5W1VJZc83+XcMbttXmgr9ujQ2bQCCUZuMv/F14YerjpkVOhhIyvroYKClJAAx1VPYWhG7o64HZDrfY6VukrOaicKOE2XwO49V8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOF4Xab/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5E8C2BBFC;
-	Wed, 19 Jun 2024 13:08:07 +0000 (UTC)
+	 MIME-Version; b=k1c/9/DtkLKg48FqLdigi3baEQ6/T0oGMaF+8Q3u3mNdsUMYZewIUvE+XejGsLjMZt2AQVK10k0Yj2gdMwZsQWh6I4w/80pnPID414TIFR7k13u4iwQvsb9DhvELacBgrcGcEIFqxpPfB75fnCivhzEEDXGYJCmTrMOqGaK9Gy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uq62rSX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F205EC2BBFC;
+	Wed, 19 Jun 2024 13:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802488;
-	bh=mK+oQKAtCF4IXQl8VPVkwLOQEjWjF0X5esJXb3BtJ0w=;
+	s=korg; t=1718803760;
+	bh=3TOQEgr3ttpGvx1zs6OMFuEdwU8JwQMjqCndQP3ON9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eOF4Xab/eY3Wc1Q+aN0vhmxBPLy6UozS7ZN5kpgxpSrD/lBwceNpOFPBpXb3tyUr/
-	 IaprHHWQMOuxdR28qbIqSExhjBVwaHSdu4BiTq7/bYu+Gya+bPDpLKEySS76fGLx3J
-	 xntrQY+MDYCk+RNLwMualhQt+kb1Uy7eVFHzytVk=
+	b=Uq62rSX6bXsuuCB9oVidV4/ZKMwfG+B+06q4MGxx3Rut1suUtC1GGJqF0kSghNOx7
+	 4B9iAVXWVyYWjVM6VPVNFu5whTk7a+Vudz0Xz0U1NT5pQ96LwM+FJwElAn2MBDxtWD
+	 jxB8TVdubEszsmev4xkuWaidwJIOJkQZg8kDmB/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	YonglongLi <liyonglong@chinatelecom.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 186/267] mptcp: pm: inc RmAddr MIB counter once per RM_ADDR ID
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.1 094/217] xhci: Apply reset resume quirk to Etron EJ188 xHCI host
 Date: Wed, 19 Jun 2024 14:55:37 +0200
-Message-ID: <20240619125613.481885901@linuxfoundation.org>
+Message-ID: <20240619125600.317437489@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YonglongLi <liyonglong@chinatelecom.cn>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-commit 6a09788c1a66e3d8b04b3b3e7618cc817bb60ae9 upstream.
+commit 17bd54555c2aaecfdb38e2734149f684a73fa584 upstream.
 
-The RmAddr MIB counter is supposed to be incremented once when a valid
-RM_ADDR has been received. Before this patch, it could have been
-incremented as many times as the number of subflows connected to the
-linked address ID, so it could have been 0, 1 or more than 1.
+As described in commit c877b3b2ad5c ("xhci: Add reset on resume quirk for
+asrock p67 host"), EJ188 have the same issue as EJ168, where completely
+dies on resume. So apply XHCI_RESET_ON_RESUME quirk to EJ188 as well.
 
-The "RmSubflow" is incremented after a local operation. In this case,
-it is normal to tied it with the number of subflows that have been
-actually removed.
-
-The "remove invalid addresses" MP Join subtest has been modified to
-validate this case. A broadcast IP address is now used instead: the
-client will not be able to create a subflow to this address. The
-consequence is that when receiving the RM_ADDR with the ID attached to
-this broadcast IP address, no subflow linked to this ID will be found.
-
-Fixes: 7a7e52e38a40 ("mptcp: add RM_ADDR related mibs")
 Cc: stable@vger.kernel.org
-Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-2-1ab9ddfa3d00@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-3-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c                          |    5 ++++-
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    3 ++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -822,10 +822,13 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 			spin_lock_bh(&msk->pm.lock);
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -36,6 +36,7 @@
  
- 			removed = true;
--			__MPTCP_INC_STATS(sock_net(sk), rm_type);
-+			if (rm_type == MPTCP_MIB_RMSUBFLOW)
-+				__MPTCP_INC_STATS(sock_net(sk), rm_type);
- 		}
- 		if (rm_type == MPTCP_MIB_RMSUBFLOW)
- 			__set_bit(rm_id ? rm_id : msk->mpc_endpoint_id, msk->pm.id_avail_bitmap);
-+		else if (rm_type == MPTCP_MIB_RMADDR)
-+			__MPTCP_INC_STATS(sock_net(sk), rm_type);
- 		if (!removed)
- 			continue;
+ #define PCI_VENDOR_ID_ETRON		0x1b6f
+ #define PCI_DEVICE_ID_EJ168		0x7023
++#define PCI_DEVICE_ID_EJ188		0x7052
  
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2394,7 +2394,8 @@ remove_tests()
- 		pm_nl_set_limits $ns1 3 3
- 		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
- 		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
-+		# broadcast IP: no packet for this address will be received on ns1
-+		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal
- 		pm_nl_set_limits $ns2 3 3
- 		addr_nr_ns1=-3 speed=10 \
- 			run_tests $ns1 $ns2 10.0.1.1
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
+@@ -275,6 +276,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
++	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
++			pdev->device == PCI_DEVICE_ID_EJ188)
++		xhci->quirks |= XHCI_RESET_ON_RESUME;
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
 
 
 
