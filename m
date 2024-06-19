@@ -1,99 +1,117 @@
-Return-Path: <stable+bounces-53860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87CB90EB8A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:58:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD6190EDF7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56A38286A24
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:58:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43286B226C0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E4F14A4E2;
-	Wed, 19 Jun 2024 12:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A43D143C65;
+	Wed, 19 Jun 2024 13:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CW53Lf1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIKepv/Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330A5146590
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 12:58:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBD9143757;
+	Wed, 19 Jun 2024 13:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801887; cv=none; b=vGcqvpNh6+9mvwwoEJ8z+J/Q3og6VcYEieiz5XUFOmqc7YULAfzdiLpZ3IPsC5Z1YgMsV2W141yGU/S7hqNJm8xHedNnATZ14rHgQeH91oCK6kHyzroJFYMZfI7a6WlizFr6Ug507yzGfsbcfHfqoRyTZxM6AAYCiRuG8nbOoUQ=
+	t=1718803454; cv=none; b=r7vVOE2VnR8qSMpCV53YRzh4XFa9EoUC+osQs+925ubHkM0yKsg3CZafup6AGErlcBjpQHID8akA+FIwEbCeaUq8DGRfpk8HvOz+b2Mg0XN4EhQtNSD7SYPs61VkyAen9wzP5VNZelLbg+dvK4A2pZf18BSVS6KM5zGhbV+ZIq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801887; c=relaxed/simple;
-	bh=HW3CNf4DL2oRuR0s7iYbNLA7/rHWu4DQp1ou2n9hvMo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=jMGb+eQoQw03izZiSwLF7EJikHQhsu/NOq+58U3enx1H6/fzU/xsvnbxSL3QXLG0Ss1HPP1cKO+eQtoOr7VKEAF3IChst4oO9Fx4hsm7xwB7fTPrDEh6f+1N3m0ShzGGrdNafxOdp152A/h/87rfzqqHX+ugb1AcwI6BrzdChZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CW53Lf1u; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718801886; x=1750337886;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=HW3CNf4DL2oRuR0s7iYbNLA7/rHWu4DQp1ou2n9hvMo=;
-  b=CW53Lf1uLkQpSQ9SwmZfgdWsR8nM//L/Eafn4Hp6c3DQ7uJgTyhybFSm
-   y7zIBvotDO64SihlfneF2H1v0Lbs/DH3g2+Ln6XvGNUy6akt4JBa4S2vQ
-   c2CxuwQmWbEu8+olJiBX5w8nmq9XgljewBRBrzZW0mozxyXdVYYXlnYKE
-   02J8cH/B2S2foeAOBL9dTmRcffgYGlm4BpnvJ0XjdJFLwDb1KMgLkNBKe
-   sotaKCTOBeXRtBIXbO34CTLS/xN+H6P6WnNIi+4PPpy0b9DDD4hhjOJv+
-   Nhjiev0tGPuSHe/aLFobbHvgs3WA4ihT2JMp3WRAgr1vpUK0GucveFPql
-   A==;
-X-CSE-ConnectionGUID: I/d7A8zuRDWgNIZ0vyj3AQ==
-X-CSE-MsgGUID: k9AbVyfWQFmY8rWm7Nj+bQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="19558996"
-X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; 
-   d="scan'208";a="19558996"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Jun 2024 05:58:05 -0700
-X-CSE-ConnectionGUID: l/iCYzhDTBO76Ywg9Gq2cA==
-X-CSE-MsgGUID: e78MO9iWRmGvKDm7JPcMVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,250,1712646000"; 
-   d="scan'208";a="46856624"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 19 Jun 2024 05:58:03 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sJusz-0006bC-1t;
-	Wed, 19 Jun 2024 12:58:01 +0000
-Date: Wed, 19 Jun 2024 20:57:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: yangge1116@126.com
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] mm/page_alloc: add one PCP list for THP
-Message-ID: <ZnLVphyq95in72jq@6715f18d4702>
+	s=arc-20240116; t=1718803454; c=relaxed/simple;
+	bh=by/qSSysD2VS49vj9Hgk8Mrw+pDpaThGDcn1YMI1vpk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=u6AYIMhg2hMfT282KU08cYIm1OFbYKYrCI2tMgZU+2Psabq/LxToqF+TzFiOjWR+0PkUmKqWcjfcbwZ3Duk7vP6PmiKPi/msYVclfRf0LEdEXXAS8B7LXWrGkgVI+wCgbQbeTd252ZCcE+nieh9FAd49li/EEPRFry29/1PjTRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIKepv/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E64C2BBFC;
+	Wed, 19 Jun 2024 13:24:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718803454;
+	bh=by/qSSysD2VS49vj9Hgk8Mrw+pDpaThGDcn1YMI1vpk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fIKepv/ZlcIuLFSw1JkIFgaoVBLLlUQ4bc1moGZNLuxmMY3szoEFPN0XnXdQlhdNu
+	 pGfLxniHnKVqnXof8XI7iu4i8uC1vmRrmQkvdvWLjSmvFNs2dOpnYqAFYZ4hrP3ceJ
+	 wIrnYgjG6SsDaHGeJ21r8t1E/FeAYjfwL42krFtc=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Sicong Huang <congei42@163.com>,
+	Ronnie Sahlberg <rsahlberg@ciq.com>
+Subject: [PATCH 6.9 272/281] greybus: Fix use-after-free bug in gb_interface_release due to race condition.
+Date: Wed, 19 Jun 2024 14:57:11 +0200
+Message-ID: <20240619125620.449232904@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1718801672-30152-1-git-send-email-yangge1116@126.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
-Thanks for your patch.
+------------------
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+From: Sicong Huang <congei42@163.com>
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+commit 5c9c5d7f26acc2c669c1dcf57d1bb43ee99220ce upstream.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] mm/page_alloc: add one PCP list for THP
-Link: https://lore.kernel.org/stable/1718801672-30152-1-git-send-email-yangge1116%40126.com
+In gb_interface_create, &intf->mode_switch_completion is bound with
+gb_interface_mode_switch_work. Then it will be started by
+gb_interface_request_mode_switch. Here is the relevant code.
+if (!queue_work(system_long_wq, &intf->mode_switch_work)) {
+	...
+}
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+If we call gb_interface_release to make cleanup, there may be an
+unfinished work. This function will call kfree to free the object
+"intf". However, if gb_interface_mode_switch_work is scheduled to
+run after kfree, it may cause use-after-free error as
+gb_interface_mode_switch_work will use the object "intf".
+The possible execution flow that may lead to the issue is as follows:
 
+CPU0                            CPU1
+
+                            |   gb_interface_create
+                            |   gb_interface_request_mode_switch
+gb_interface_release        |
+kfree(intf) (free)          |
+                            |   gb_interface_mode_switch_work
+                            |   mutex_lock(&intf->mutex) (use)
+
+Fix it by canceling the work before kfree.
+
+Signed-off-by: Sicong Huang <congei42@163.com>
+Link: https://lore.kernel.org/r/20240416080313.92306-1-congei42@163.com
+Cc: Ronnie Sahlberg <rsahlberg@ciq.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/greybus/interface.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/drivers/greybus/interface.c
++++ b/drivers/greybus/interface.c
+@@ -693,6 +693,7 @@ static void gb_interface_release(struct
+ 
+ 	trace_gb_interface_release(intf);
+ 
++	cancel_work_sync(&intf->mode_switch_work);
+ 	kfree(intf);
+ }
+ 
 
 
 
