@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0850690EE2F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:26:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3E7890ED36
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B8D51C22DFD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:26:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43009B26AE8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68FA7145FEF;
-	Wed, 19 Jun 2024 13:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9102F13F435;
+	Wed, 19 Jun 2024 13:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIgVBcZp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjeTDHaZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282394D9EA;
-	Wed, 19 Jun 2024 13:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED4A4315F;
+	Wed, 19 Jun 2024 13:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803595; cv=none; b=R0DiE/gEELgZk/UnN6NOH4X+y+FDUSGOEkcIckSmK9+iEjASitzxvF/ZtE68mO5q809XxX/ugI1EOWgKGzMWO7tKUw+aUYv7V9dFcKDsIseh8WfhEIoY3/YWUCG+4oAOcuyeP6dU+/ymGVfHjjk0tkj6MEzxXQwTnL6jDwF7leY=
+	t=1718802922; cv=none; b=fumN38RIZbbAg96wvEKPZBpTTlkQweXRhRpM3qQcMkHzD/UegMhrPJKR2FC+VDjkLnFaahxHOIxz7xdBCtp6WDyVB12uJPxJclG2sVIJSkpJ8kCV0E2KnVR/bFCpnLTdaxppXXHb6VdS3epWD8CPILZZkoL3SqRO2ReNIK0brB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803595; c=relaxed/simple;
-	bh=UFH+z++fwcz7jg7M/pGHlR7eD0o/IbQhQ/eeo023tUo=;
+	s=arc-20240116; t=1718802922; c=relaxed/simple;
+	bh=EbMYAbC9DC3UEqCCGy6eA2cO1S4qOAsllRFLB2LFQc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHoqp6OGA5gS0isVd8ysZiQXkeejYylC+VVVivlEwsbWdrgEG4twWLaP5PnCSOx6LSitLpWQ9/+On+ptMKbVmw5rfDgJ1R0HxWL319NLOa9FQ4B3I4Ugv3XfOGyWhr+hR9te1f+polqPh5WWczypARczSQudyswz/wAyNKR5bVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIgVBcZp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15EBC2BBFC;
-	Wed, 19 Jun 2024 13:26:34 +0000 (UTC)
+	 MIME-Version; b=VhvxvJ6ehlx/TvhQfYtyLVjefDhFoH0LHs9tq0sFYB75y0GRQfm+OM8cEjslJEVLXMxJu+svPiOCWatt0rAN5vHd9AwQi/8a1sTIFkx57MHXnPhax3nXpfy5+TXDiPj1ecYtDkgdWqNDubmPFcL2G5OMZk7AlxGxYwsk81I1yOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjeTDHaZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD35C2BBFC;
+	Wed, 19 Jun 2024 13:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803595;
-	bh=UFH+z++fwcz7jg7M/pGHlR7eD0o/IbQhQ/eeo023tUo=;
+	s=korg; t=1718802922;
+	bh=EbMYAbC9DC3UEqCCGy6eA2cO1S4qOAsllRFLB2LFQc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DIgVBcZpAuOgjvZqimrnxUMU6ikBNdV3BnuQH37rVXZhiPw488O4itISc3TbuLSPd
-	 sFVXEcqYGz+V5m4An+8Ip2F2AFeC3iEIw+PemzVA2zPd6V4phbBBfVMFOXy906QJ3Z
-	 B8Ak4hM5Mz8QBIMDkdSn/8QfpGUqRsOaax6BXUfM=
+	b=pjeTDHaZfTpbW17gR6uWtCHRC/+DD81WPNCbxXmGwIRxJz1QvZ1rvusDjdvsj1+eo
+	 h/GaZqc81htkdLN/iZqLRnayYDFT20EBGMhW7GyzMnXCLKXZcb05/kdkIjsGIQ0EOk
+	 AUxohXvI5DosazO49pGEviIJ/LWiG5AbSp+2BD/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/217] wifi: iwlwifi: mvm: dont read past the mfuart notifcation
+	syzbot+9dfe490c8176301c1d06@syzkaller.appspotmail.com,
+	Dave Kleikamp <shaggy@kernel.org>
+Subject: [PATCH 6.9 093/281] jfs: xattr: fix buffer overflow for invalid xattr
 Date: Wed, 19 Jun 2024 14:54:12 +0200
-Message-ID: <20240619125556.864137693@linuxfoundation.org>
+Message-ID: <20240619125613.428990913@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 4bb95f4535489ed830cf9b34b0a891e384d1aee4 ]
+commit 7c55b78818cfb732680c4a72ab270cc2d2ee3d0f upstream.
 
-In case the firmware sends a notification that claims it has more data
-than it has, we will read past that was allocated for the notification.
-Remove the print of the buffer, we won't see it by default. If needed,
-we can see the content with tracing.
+When an xattr size is not what is expected, it is printed out to the
+kernel log in hex format as a form of debugging.  But when that xattr
+size is bigger than the expected size, printing it out can cause an
+access off the end of the buffer.
 
-This was reported by KFENCE.
+Fix this all up by properly restricting the size of the debug hex dump
+in the kernel log.
 
-Fixes: bdccdb854f2f ("iwlwifi: mvm: support MFUART dump in case of MFUART assert")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.ba82a01a559e.Ia91dd20f5e1ca1ad380b95e68aebf2794f553d9b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+9dfe490c8176301c1d06@syzkaller.appspotmail.com
+Cc: Dave Kleikamp <shaggy@kernel.org>
+Link: https://lore.kernel.org/r/2024051433-slider-cloning-98f9@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ fs/jfs/xattr.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 2e3c98eaa400c..668bb9ce293db 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -91,20 +91,10 @@ void iwl_mvm_mfu_assert_dump_notif(struct iwl_mvm *mvm,
- {
- 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
- 	struct iwl_mfu_assert_dump_notif *mfu_dump_notif = (void *)pkt->data;
--	__le32 *dump_data = mfu_dump_notif->data;
--	int n_words = le32_to_cpu(mfu_dump_notif->data_size) / sizeof(__le32);
--	int i;
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -557,9 +557,11 @@ static int ea_get(struct inode *inode, s
  
- 	if (mfu_dump_notif->index_num == 0)
- 		IWL_INFO(mvm, "MFUART assert id 0x%x occurred\n",
- 			 le32_to_cpu(mfu_dump_notif->assert_id));
--
--	for (i = 0; i < n_words; i++)
--		IWL_DEBUG_INFO(mvm,
--			       "MFUART assert dump, dword %u: 0x%08x\n",
--			       le16_to_cpu(mfu_dump_notif->index_num) *
--			       n_words + i,
--			       le32_to_cpu(dump_data[i]));
- }
- 
- static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
--- 
-2.43.0
-
+       size_check:
+ 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
++		int size = min_t(int, EALIST_SIZE(ea_buf->xattr), ea_size);
++
+ 		printk(KERN_ERR "ea_get: invalid extended attribute\n");
+ 		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
+-				     ea_buf->xattr, ea_size, 1);
++				     ea_buf->xattr, size, 1);
+ 		ea_release(inode, ea_buf);
+ 		rc = -EIO;
+ 		goto clean_up;
 
 
 
