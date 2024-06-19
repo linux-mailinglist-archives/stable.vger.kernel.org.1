@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-54489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C1290EE7B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A161890EE8B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A156D1C241FD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA5571C249C4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5197214F130;
-	Wed, 19 Jun 2024 13:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B869314F11D;
+	Wed, 19 Jun 2024 13:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CV9GVb61"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjetkQek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1091414D711;
-	Wed, 19 Jun 2024 13:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7662014B967;
+	Wed, 19 Jun 2024 13:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803731; cv=none; b=qG69WD25iNC0pTLa7foNueuP6dGhwu55sPuxzYihRrj7F9pm/hd8swwG2DlKj3Utb0BkZV6/l6x7L5jCDxeN9Tvyoel/xodTreQmQ3yTwX0HW1QSnx3zCyxELoSubGpW/YrqIsk+Gw8uBy1nHxK55zy0F25h+0ucbePPkzMqUBI=
+	t=1718803763; cv=none; b=raWJxADV/dvgqT4c/kVGrSuTAPVGcjXzZQ3gIjt+5DrGAbZngZoKXvgm+RJbALrTZArtj0GQEk6W4olfAEiffU0+7eHOX/c9DtF9P9gw//XyjL4PpH8M6xHfD5fFTdokfBhMG+LLYNfP0SINRznLQDy0cOxMb69ifdeV4DU2XG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803731; c=relaxed/simple;
-	bh=ufSNOUwPVi97Yp1McyYEiE8T3xIaMlbtp6FZONGGty0=;
+	s=arc-20240116; t=1718803763; c=relaxed/simple;
+	bh=w/FwBrh5SY3GXQKfFRL3I27lVLECUBKYQ3aCCpgFhXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICXM1+orEXz67LJHNChK51C5Yu2JO0L/+OnTI20lkX08zPf7MxUgUnaZiVaAqsjZIQdIHly+U+99cfos1p7eOZ7tmxD40gqJsA7Golh8ke2eNbyLKKow+jIz2NP898fhvm5Mzcf0DPn4ckMfPsBn7iIfzPm5fq5M4hyCZUcR3lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CV9GVb61; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1CAC4AF1D;
-	Wed, 19 Jun 2024 13:28:50 +0000 (UTC)
+	 MIME-Version; b=C2+HjrG2FPc4ErqmGz+Kf76opHm+40L7kyGRPzIip6fryzq4kbWdlNNAOmXzGWRHVDCITm5k2lKjb+gKjoEydZXiXYe14I2XlHQq8k6df1KFw2YgJHCZ+DqpEf1Wh9/AScoWjk8iNdxnzgIKyq3GMIBaKJPcQFZk48DEImLaR0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjetkQek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8A0C4AF49;
+	Wed, 19 Jun 2024 13:29:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803730;
-	bh=ufSNOUwPVi97Yp1McyYEiE8T3xIaMlbtp6FZONGGty0=;
+	s=korg; t=1718803763;
+	bh=w/FwBrh5SY3GXQKfFRL3I27lVLECUBKYQ3aCCpgFhXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CV9GVb61PjP7Xl6lSYG5ainIa5WnP5rcs7imcfH1n5Z1Lq0Slk0Uvp/W9kG1xROIG
-	 TEN6Dx1fHAcuw/V/Gcmz+sm9T6PDbz0pCFJYImwhUzDF/pJ2LHX9roxt5se1yh1jLC
-	 Kvgf2ivLvMWYeer/wJlYQ79ZUYgprzuU+yEIqD5U=
+	b=fjetkQekMyfYgK/7S16hfwG8kp/k2VnkaA7nRfp0KeC7546gUDYXPctxmSotNuNSs
+	 IbmB72aD8Lfo9EdMP5ypwNEu9VlGpq4RUM18c41buoFuGTz/cNqrojrSZhPfdbTAn8
+	 kAYyrrhFg6xy83tBaq/idXN7cJr7z9Jc9+sfQB0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Cong Yang <yangcong5@huaqin.corp-partner.google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/217] firmware: qcom_scm: disable clocks if qcom_scm_bw_enable() fails
-Date: Wed, 19 Jun 2024 14:55:10 +0200
-Message-ID: <20240619125559.269725634@linuxfoundation.org>
+Subject: [PATCH 6.1 068/217] HID: i2c-hid: elan: Add ili9882t timing
+Date: Wed, 19 Jun 2024 14:55:11 +0200
+Message-ID: <20240619125559.307572092@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
 References: <20240619125556.491243678@linuxfoundation.org>
@@ -67,96 +67,138 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Cong Yang <yangcong5@huaqin.corp-partner.google.com>
 
-[ Upstream commit 0c50b7fcf2773b4853e83fc15aba1a196ba95966 ]
+[ Upstream commit f2f43bf15d7aa3286eced18d5199ee579e2c2614 ]
 
-There are several functions which are calling qcom_scm_bw_enable()
-then returns immediately if the call fails and leaves the clocks
-enabled.
+The ili9882t is a TDDI IC (Touch with Display Driver). The
+datasheet specifies there should be 60ms between touch SDA
+sleep and panel RESX. Doug's series[1] allows panels and
+touchscreens to power on/off together, so we can add the 65 ms
+delay in i2c_hid_core_suspend before panel_unprepare.
 
-Change the code of these functions to disable clocks when the
-qcom_scm_bw_enable() call fails. This also fixes a possible dma
-buffer leak in the qcom_scm_pas_init_image() function.
+Because ili9882t touchscrgeen is a panel follower, and
+needs to use vccio-supply instead of vcc33-supply, so set
+it NULL to ili9882t_chip_data, then not use vcc33 regulator.
 
-Compile tested only due to lack of hardware with interconnect
-support.
+[1]: https://lore.kernel.org/all/20230727171750.633410-1-dianders@chromium.org
 
-Cc: stable@vger.kernel.org
-Fixes: 65b7ebda5028 ("firmware: qcom_scm: Add bw voting support to the SCM interface")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Link: https://lore.kernel.org/r/20240304-qcom-scm-disable-clk-v1-1-b36e51577ca1@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Cong Yang <yangcong5@huaqin.corp-partner.google.com>
+Acked-by: Benjamin Tissoires <bentiss@kernel.org>
+Link: https://lore.kernel.org/r/20230802071947.1683318-3-yangcong5@huaqin.corp-partner.google.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Stable-dep-of: 0eafc58f2194 ("HID: i2c-hid: elan: fix reset suspend current leakage")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom_scm.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/hid/i2c-hid/i2c-hid-of-elan.c | 50 ++++++++++++++++++++-------
+ 1 file changed, 38 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
-index 58f1a86065dc9..619cd6548cf64 100644
---- a/drivers/firmware/qcom_scm.c
-+++ b/drivers/firmware/qcom_scm.c
-@@ -495,13 +495,14 @@ int qcom_scm_pas_init_image(u32 peripheral, const void *metadata, size_t size,
+diff --git a/drivers/hid/i2c-hid/i2c-hid-of-elan.c b/drivers/hid/i2c-hid/i2c-hid-of-elan.c
+index 2d991325e734c..35986e8297095 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-of-elan.c
++++ b/drivers/hid/i2c-hid/i2c-hid-of-elan.c
+@@ -18,9 +18,11 @@
+ #include "i2c-hid.h"
  
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
+ struct elan_i2c_hid_chip_data {
+-	unsigned int post_gpio_reset_delay_ms;
++	unsigned int post_gpio_reset_on_delay_ms;
++	unsigned int post_gpio_reset_off_delay_ms;
+ 	unsigned int post_power_delay_ms;
+ 	u16 hid_descriptor_address;
++	const char *main_supply_name;
+ };
+ 
+ struct i2c_hid_of_elan {
+@@ -38,9 +40,11 @@ static int elan_i2c_hid_power_up(struct i2chid_ops *ops)
+ 		container_of(ops, struct i2c_hid_of_elan, ops);
+ 	int ret;
+ 
+-	ret = regulator_enable(ihid_elan->vcc33);
+-	if (ret)
 -		return ret;
-+		goto disable_clk;
++	if (ihid_elan->vcc33) {
++		ret = regulator_enable(ihid_elan->vcc33);
++		if (ret)
++			return ret;
++	}
  
- 	desc.args[1] = mdata_phys;
+ 	ret = regulator_enable(ihid_elan->vccio);
+ 	if (ret) {
+@@ -52,8 +56,8 @@ static int elan_i2c_hid_power_up(struct i2chid_ops *ops)
+ 		msleep(ihid_elan->chip_data->post_power_delay_ms);
  
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
+ 	gpiod_set_value_cansleep(ihid_elan->reset_gpio, 0);
+-	if (ihid_elan->chip_data->post_gpio_reset_delay_ms)
+-		msleep(ihid_elan->chip_data->post_gpio_reset_delay_ms);
++	if (ihid_elan->chip_data->post_gpio_reset_on_delay_ms)
++		msleep(ihid_elan->chip_data->post_gpio_reset_on_delay_ms);
+ 
+ 	return 0;
+ }
+@@ -64,8 +68,12 @@ static void elan_i2c_hid_power_down(struct i2chid_ops *ops)
+ 		container_of(ops, struct i2c_hid_of_elan, ops);
+ 
+ 	gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
++	if (ihid_elan->chip_data->post_gpio_reset_off_delay_ms)
++		msleep(ihid_elan->chip_data->post_gpio_reset_off_delay_ms);
++
+ 	regulator_disable(ihid_elan->vccio);
+-	regulator_disable(ihid_elan->vcc33);
++	if (ihid_elan->vcc33)
++		regulator_disable(ihid_elan->vcc33);
+ }
+ 
+ static int i2c_hid_of_elan_probe(struct i2c_client *client,
+@@ -90,24 +98,42 @@ static int i2c_hid_of_elan_probe(struct i2c_client *client,
+ 	if (IS_ERR(ihid_elan->vccio))
+ 		return PTR_ERR(ihid_elan->vccio);
+ 
+-	ihid_elan->vcc33 = devm_regulator_get(&client->dev, "vcc33");
+-	if (IS_ERR(ihid_elan->vcc33))
+-		return PTR_ERR(ihid_elan->vcc33);
 -
- 	qcom_scm_bw_disable();
+ 	ihid_elan->chip_data = device_get_match_data(&client->dev);
+ 
++	if (ihid_elan->chip_data->main_supply_name) {
++		ihid_elan->vcc33 = devm_regulator_get(&client->dev,
++						      ihid_elan->chip_data->main_supply_name);
++		if (IS_ERR(ihid_elan->vcc33))
++			return PTR_ERR(ihid_elan->vcc33);
++	}
 +
-+disable_clk:
- 	qcom_scm_clk_disable();
+ 	return i2c_hid_core_probe(client, &ihid_elan->ops,
+ 				  ihid_elan->chip_data->hid_descriptor_address, 0);
+ }
  
- out:
-@@ -563,10 +564,12 @@ int qcom_scm_pas_mem_setup(u32 peripheral, phys_addr_t addr, phys_addr_t size)
- 
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
- 	qcom_scm_bw_disable();
+ static const struct elan_i2c_hid_chip_data elan_ekth6915_chip_data = {
+ 	.post_power_delay_ms = 1,
+-	.post_gpio_reset_delay_ms = 300,
++	.post_gpio_reset_on_delay_ms = 300,
++	.hid_descriptor_address = 0x0001,
++	.main_supply_name = "vcc33",
++};
 +
-+disable_clk:
- 	qcom_scm_clk_disable();
++static const struct elan_i2c_hid_chip_data ilitek_ili9882t_chip_data = {
++	.post_power_delay_ms = 1,
++	.post_gpio_reset_on_delay_ms = 200,
++	.post_gpio_reset_off_delay_ms = 65,
+ 	.hid_descriptor_address = 0x0001,
++	/*
++	 * this touchscreen is tightly integrated with the panel and assumes
++	 * that the relevant power rails (other than the IO rail) have already
++	 * been turned on by the panel driver because we're a panel follower.
++	 */
++	.main_supply_name = NULL,
+ };
  
- 	return ret ? : res.result[0];
-@@ -598,10 +601,12 @@ int qcom_scm_pas_auth_and_reset(u32 peripheral)
- 
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
- 	qcom_scm_bw_disable();
-+
-+disable_clk:
- 	qcom_scm_clk_disable();
- 
- 	return ret ? : res.result[0];
-@@ -632,11 +637,12 @@ int qcom_scm_pas_shutdown(u32 peripheral)
- 
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
--
- 	qcom_scm_bw_disable();
-+
-+disable_clk:
- 	qcom_scm_clk_disable();
- 
- 	return ret ? : res.result[0];
+ static const struct of_device_id elan_i2c_hid_of_match[] = {
+ 	{ .compatible = "elan,ekth6915", .data = &elan_ekth6915_chip_data },
++	{ .compatible = "ilitek,ili9882t", .data = &ilitek_ili9882t_chip_data },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, elan_i2c_hid_of_match);
 -- 
 2.43.0
 
