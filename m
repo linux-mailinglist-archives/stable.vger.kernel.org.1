@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-54346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3824990EDC4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF48B90EEE4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46BC01C20AF7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10B061C23257
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B6C14884F;
-	Wed, 19 Jun 2024 13:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A70147C60;
+	Wed, 19 Jun 2024 13:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZqCCJje"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZVJQO32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2437D1459F2;
-	Wed, 19 Jun 2024 13:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C3E1E492;
+	Wed, 19 Jun 2024 13:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803308; cv=none; b=qYJekahE339CWKmlZxz965hwSpXiQIkoFYVikUkkQlBtLSiKoBfFdLDLFyD6tCa42q/E63tbSVW4NDoCE6vpuwwspcQnx0V5pLA1fYfaF7r3N1nXF0mgsTOKSDc48mJPMnrY6zRFYKIY6MRo9izQdQKL6zmNJG/NmyJbmLjRu1g=
+	t=1718803989; cv=none; b=vFw8mEMGKvfsr6a5QYlDvHZ5wxir5bE0aVGU35bXdbZKIpXsDmzJr5xmxKLV3XNFnHaS4/5EBhUKNl3lcyvT3c7TaHW5eZ0aeNrlRryGf3umfrPfARVmTfW0x6BZXsJWNkvtP/7LEeua67uVIoj2SUICFkVFSHb9VjSgjAcycpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803308; c=relaxed/simple;
-	bh=TcB3JEw8ld6WiI5xC0wzW3QISw5Kp9SuYKqhl/Ag7tU=;
+	s=arc-20240116; t=1718803989; c=relaxed/simple;
+	bh=/rqKBATqmO+K5lFz5Yw0p3HvV8EC3epEMtAisgNteRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d0x/Qzh9VTI5+TQ/cERl3Y7nRO1tLjsZoOx6sMHVlBH7wELDtqdwYdVBLOnDi4g77XgUwFDaOv4n7e9RW9Z4SIWQvbXN4VByZE5hX4HMgO9ZnX/dfGcZIkZ3vl0ma99nTihpqlUw8KXoVA2TugSFzEte11hcbY01rtzWhq9SSf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZqCCJje; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939ADC2BBFC;
-	Wed, 19 Jun 2024 13:21:47 +0000 (UTC)
+	 MIME-Version; b=AHsKbi/8SPQeOuWaorcTDxeqC+IpZVy+pKY/xgglCOaPZ2/j9dIjxqQV4KTbJOxht51rIF62dvAmV7fhfiCB504vnuGqT85/w/0cjULA7992GrnesYuMQ2fbWhZD56oVcUBgIix5Aw8m0fdVZY/vpsbRAkljsMLUCsJAVht8amg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZVJQO32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C23CC2BBFC;
+	Wed, 19 Jun 2024 13:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803308;
-	bh=TcB3JEw8ld6WiI5xC0wzW3QISw5Kp9SuYKqhl/Ag7tU=;
+	s=korg; t=1718803988;
+	bh=/rqKBATqmO+K5lFz5Yw0p3HvV8EC3epEMtAisgNteRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tZqCCJjeZrOIJFJlR7F1GZWaoSaaOp4u9Q+W7LNUGVkqy42H9i0Tnh02niU6KwmUb
-	 fH2kf7O181TpaCu6d8D6jv2iFGEmdUd0BDOTXPpBMt7ajWd4t/hh/VfqICGsrMxVw+
-	 jyWiIjDz14alHK+aX2ZasOkm1gIxeraV3Y6EyacQ=
+	b=MZVJQO32ibw5dBnRVOa46frswKIlnesbm+IFF4Jg2wu1O4Cla5+fqijzxcj5KKCyZ
+	 fz52nvN2TsT4lNzpQBBabffJ8H8WgVqXPLffxwAdyFzyvrIDDb4Wgvxw+NIeTKXW1p
+	 nEdJRbND09coDQrOInhyU1ZggmBFwIYZodlxAcWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Nam Cao <namcao@linutronix.de>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.9 224/281] riscv: fix overlap of allocated page and PTR_ERR
+	Jie Wang <wangjie125@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 140/217] net: hns3: add cond_resched() to hns3 ring buffer init process
 Date: Wed, 19 Jun 2024 14:56:23 +0200
-Message-ID: <20240619125618.578259559@linuxfoundation.org>
+Message-ID: <20240619125602.093930143@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Jie Wang <wangjie125@huawei.com>
 
-commit 994af1825a2aa286f4903ff64a1c7378b52defe6 upstream.
+[ Upstream commit 968fde83841a8c23558dfbd0a0c69d636db52b55 ]
 
-On riscv32, it is possible for the last page in virtual address space
-(0xfffff000) to be allocated. This page overlaps with PTR_ERR, so that
-shouldn't happen.
+Currently hns3 ring buffer init process would hold cpu too long with big
+Tx/Rx ring depth. This could cause soft lockup.
 
-There is already some code to ensure memblock won't allocate the last page.
-However, buddy allocator is left unchecked.
+So this patch adds cond_resched() to the process. Then cpu can break to
+run other tasks instead of busy looping.
 
-Fix this by reserving physical memory that would be mapped at virtual
-addresses greater than 0xfffff000.
-
-Reported-by: Björn Töpel <bjorn@kernel.org>
-Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
-Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Link: https://lore.kernel.org/r/20240425115201.3044202-1-namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a723fb8efe29 ("net: hns3: refine for set ring parameters")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/init.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 4 ++++
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.h | 2 ++
+ 2 files changed, 6 insertions(+)
 
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -235,18 +235,19 @@ static void __init setup_bootmem(void)
- 		kernel_map.va_pa_offset = PAGE_OFFSET - phys_ram_base;
- 
- 	/*
--	 * memblock allocator is not aware of the fact that last 4K bytes of
--	 * the addressable memory can not be mapped because of IS_ERR_VALUE
--	 * macro. Make sure that last 4k bytes are not usable by memblock
--	 * if end of dram is equal to maximum addressable memory.  For 64-bit
--	 * kernel, this problem can't happen here as the end of the virtual
--	 * address space is occupied by the kernel mapping then this check must
--	 * be done as soon as the kernel mapping base address is determined.
-+	 * Reserve physical address space that would be mapped to virtual
-+	 * addresses greater than (void *)(-PAGE_SIZE) because:
-+	 *  - This memory would overlap with ERR_PTR
-+	 *  - This memory belongs to high memory, which is not supported
-+	 *
-+	 * This is not applicable to 64-bit kernel, because virtual addresses
-+	 * after (void *)(-PAGE_SIZE) are not linearly mapped: they are
-+	 * occupied by kernel mapping. Also it is unrealistic for high memory
-+	 * to exist on 64-bit platforms.
- 	 */
- 	if (!IS_ENABLED(CONFIG_64BIT)) {
--		max_mapped_addr = __pa(~(ulong)0);
--		if (max_mapped_addr == (phys_ram_end - 1))
--			memblock_set_current_limit(max_mapped_addr - 4096);
-+		max_mapped_addr = __va_to_pa_nodebug(-PAGE_SIZE);
-+		memblock_reserve(max_mapped_addr, (phys_addr_t)-max_mapped_addr);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 78d6752fe0519..4ce43c3a00a37 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -3538,6 +3538,9 @@ static int hns3_alloc_ring_buffers(struct hns3_enet_ring *ring)
+ 		ret = hns3_alloc_and_attach_buffer(ring, i);
+ 		if (ret)
+ 			goto out_buffer_fail;
++
++		if (!(i % HNS3_RESCHED_BD_NUM))
++			cond_resched();
  	}
  
- 	min_low_pfn = PFN_UP(phys_ram_base);
+ 	return 0;
+@@ -5111,6 +5114,7 @@ int hns3_init_all_ring(struct hns3_nic_priv *priv)
+ 		}
+ 
+ 		u64_stats_init(&priv->ring[i].syncp);
++		cond_resched();
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
+index 294a14b4fdefb..1aac93f9aaa15 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
+@@ -214,6 +214,8 @@ enum hns3_nic_state {
+ #define HNS3_CQ_MODE_EQE			1U
+ #define HNS3_CQ_MODE_CQE			0U
+ 
++#define HNS3_RESCHED_BD_NUM			1024
++
+ enum hns3_pkt_l2t_type {
+ 	HNS3_L2_TYPE_UNICAST,
+ 	HNS3_L2_TYPE_MULTICAST,
+-- 
+2.43.0
+
 
 
 
