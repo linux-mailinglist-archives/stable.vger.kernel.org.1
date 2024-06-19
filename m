@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088EA90E5FA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:39:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 221F790E5FB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7C221F25045
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:39:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8841F24904
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6307F490;
-	Wed, 19 Jun 2024 08:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA1A7FBDA;
+	Wed, 19 Jun 2024 08:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19XRzgpl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9PPk3iK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088877F7C7
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279FC7B3EB
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718786325; cv=none; b=S1BldB/OpweQJSKpbotpGzdybTgoLbLfMKwBnO+xajCti33eMCH7TnqoUqdzyDMETJE5yx8nMkLdJgoQgYcDI/nCTIRbU3GTQaoJDpIsSMwmMcWyDf5n5zNJPf31b5xxaRephDSdk8aZFrf+TiVJdIZAcJXoTvNL84cSCloq0G0=
+	t=1718786328; cv=none; b=UAHhTMWkI2ztBBixQhReEm0JGz/0YxicqjYGYRz38rR6c/qkx8J6Gu0nILg51Ev6aX5+bPSuzimd0L+nq3U1nv5AKFhKFrw6OXjaSfsiUHY3hcDAvJC6ME9PqB7pZivs09QvavB8exmcy6FuY43w5C924RtgL88/mwZW2ER1Wrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718786325; c=relaxed/simple;
-	bh=h13U1GQFwxEpsGeIhZiEIAr7SJMFQMJc2//DyN7NI/4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eCGfz+he7DIz2buRlMPj0X7QDvdYItn9e9plPmYKacHoIqKAOCtTWuF1a3v7hK67rg2yWZ8H0058k0UR/EK+tCXiK95VY5HP6Ishxd5fwqoefwx2x7Bj/8LaemBAKQ16lu0k1PprZs+nK2zA1Y5cCWXgJEz48Y4P03zGc6dLjQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19XRzgpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829ACC2BBFC;
-	Wed, 19 Jun 2024 08:38:44 +0000 (UTC)
+	s=arc-20240116; t=1718786328; c=relaxed/simple;
+	bh=iwyeILm+y9Ef1YHWoXtOx9Wq5SIvdgcXeHB24kwdal4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=L2jGmKHzYBKe7A3osHS2Z5pyoE3F/98zM4lvxoEpFPJXy3KFcmY3iJF3oqw2AY66yMHC2yXwT0kwTHc06VZXCPa5A2n05ASXdzDbD9VobUYnYoDEcgVC8qxETT9B87jTMK0klrjFkdqcLxO4RjQhrWa4pIroQrLl2wFp4i203Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d9PPk3iK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71166C2BBFC;
+	Wed, 19 Jun 2024 08:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718786324;
-	bh=h13U1GQFwxEpsGeIhZiEIAr7SJMFQMJc2//DyN7NI/4=;
+	s=korg; t=1718786327;
+	bh=iwyeILm+y9Ef1YHWoXtOx9Wq5SIvdgcXeHB24kwdal4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=19XRzgplrfkapjw4cBJTHbWgqBEmlUiyJeHOFeLDhqDGbvX9D02482ekEtvlLo9eB
-	 2rYC29YPnkTHaY15itTtNcPBZx4QtmhwX4wTUVFqKqi4xWtk4vN+Hi8DLFZ3hvkvAQ
-	 ABZnqngs5fa+M4JwWbU/l4HsowIq1pS7PebK8OYk=
-Subject: FAILED: patch "[PATCH] drm/amd/display: always reset ODM mode in context when adding" failed to apply to 4.19-stable tree
-To: wenjing.liu@amd.com,alexander.deucher@amd.com,alvin.lee2@amd.com,hamza.mahfooz@amd.com
+	b=d9PPk3iKA0uksvj7LIJ91lnipfRqZEziBWtb/IjRzM7qjgHqHwyOH5l/GH9Pa03dL
+	 IGmKPVQuTwzcsSgc6cDB1D+3dnCuFDKcu/T2+odUwBM8YVM+iXZNtL1/5/+gZVEFJG
+	 6xeA0rSIwFYL9DfHpmdzJVSYOQfhI27GOxPQHUXs=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: Reset dGPU if suspend got aborted" failed to apply to 6.6-stable tree
+To: lijo.lazar@amd.com,Hawking.Zhang@amd.com,alexander.deucher@amd.com,kevinyang.wang@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Jun 2024 10:38:26 +0200
-Message-ID: <2024061926-negligent-pony-fc15@gregkh>
+Date: Wed, 19 Jun 2024 10:38:32 +0200
+Message-ID: <2024061932-pox-humid-9244@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4a5b171299e59d51322f4c6bd376c5acbeca0a4a
+git cherry-pick -x df3c7dc5c58b1f85033d2cd9a121b27844700ca2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061926-negligent-pony-fc15@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061932-pox-humid-9244@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-4a5b171299e5 ("drm/amd/display: always reset ODM mode in context when adding first plane")
-09a4ec5da92c ("drm/amd/display: Refactor dc_state interface")
-abd26a3252cb ("drm/amd/display: Add dml2 copy functions")
-ed6e2782e974 ("drm/amd/display: For cursor P-State allow for SubVP")
-f583db812bc9 ("drm/amd/display: Update FAMS sequence for DCN30 & DCN32")
-ddd5298c63e4 ("drm/amd/display: Update cursor limits based on SW cursor fallback limits")
-7966f319c66d ("drm/amd/display: Introduce DML2")
-6e2c4941ce0c ("drm/amd/display: Move dml code under CONFIG_DRM_AMD_DC_FP guard")
-13c0e836316a ("drm/amd/display: Adjust code style for hw_sequencer.h")
-1288d7020809 ("drm/amd/display: Improve x86 and dmub ips handshake")
-ad3b63a0d298 ("drm/amd/display: add new windowed mpo odm minimal transition sequence")
-177ea58bef72 ("drm/amd/display: reset stream slice count for new ODM policy")
-c0f8b83188c7 ("drm/amd/display: disable IPS")
-93a66cef607c ("drm/amd/display: Add IPS control flag")
-dc01c4b79bfe ("drm/amd/display: Update driver and IPS interop")
-83b5b7bb8673 ("drm/amd/display: minior logging improvements")
-15c6798ae26d ("drm/amd/display: add seamless pipe topology transition check")
-c06ef68a7946 ("drm/amd/display: Add check for vrr_active_fixed")
-c51d87202d1f ("drm/amd/display: do not attempt ODM power optimization if minimal transition doesn't exist")
-a4246c635166 ("drm/amd/display: fix the white screen issue when >= 64GB DRAM")
+df3c7dc5c58b ("drm/amdgpu: Reset dGPU if suspend got aborted")
 
 thanks,
 
@@ -96,46 +77,61 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4a5b171299e59d51322f4c6bd376c5acbeca0a4a Mon Sep 17 00:00:00 2001
-From: Wenjing Liu <wenjing.liu@amd.com>
-Date: Fri, 22 Mar 2024 15:02:45 -0400
-Subject: [PATCH] drm/amd/display: always reset ODM mode in context when adding
- first plane
+From df3c7dc5c58b1f85033d2cd9a121b27844700ca2 Mon Sep 17 00:00:00 2001
+From: Lijo Lazar <lijo.lazar@amd.com>
+Date: Wed, 14 Feb 2024 17:55:54 +0530
+Subject: [PATCH] drm/amdgpu: Reset dGPU if suspend got aborted
 
-[why]
-In current implemenation ODM mode is only reset when the last plane is
-removed from dc state. For any dc validate we will always remove all
-current planes and add new planes. However when switching from no planes
-to 1 plane, ODM mode is not reset because no planes get removed. This
-has caused an issue where we kept ODM combine when it should have been
-remove when a plane is added. The change is to reset ODM mode when
-adding the first plane.
+For SOC21 ASICs, there is an issue in re-enabling PM features if a
+suspend got aborted. In such cases, reset the device during resume
+phase. This is a workaround till a proper solution is finalized.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_state.c b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
-index d1d326e9b9b6..4f9ef07d29ec 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_state.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
-@@ -458,6 +458,15 @@ bool dc_state_add_plane(
- 		goto out;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/soc21.c b/drivers/gpu/drm/amd/amdgpu/soc21.c
+index 8526282f4da1..abe319b0f063 100644
+--- a/drivers/gpu/drm/amd/amdgpu/soc21.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
+@@ -867,10 +867,35 @@ static int soc21_common_suspend(void *handle)
+ 	return soc21_common_hw_fini(adev);
+ }
  
-+	if (stream_status->plane_count == 0 && dc->config.enable_windowed_mpo_odm)
-+		/* ODM combine could prevent us from supporting more planes
-+		 * we will reset ODM slice count back to 1 when all planes have
-+		 * been removed to maximize the amount of planes supported when
-+		 * new planes are added.
-+		 */
-+		resource_update_pipes_for_stream_with_slice_count(
-+				state, dc->current_state, dc->res_pool, stream, 1);
++static bool soc21_need_reset_on_resume(struct amdgpu_device *adev)
++{
++	u32 sol_reg1, sol_reg2;
 +
- 	otg_master_pipe = resource_get_otg_master_for_stream(
- 			&state->res_ctx, stream);
- 	if (otg_master_pipe)
++	/* Will reset for the following suspend abort cases.
++	 * 1) Only reset dGPU side.
++	 * 2) S3 suspend got aborted and TOS is active.
++	 */
++	if (!(adev->flags & AMD_IS_APU) && adev->in_s3 &&
++	    !adev->suspend_complete) {
++		sol_reg1 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
++		msleep(100);
++		sol_reg2 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
++
++		return (sol_reg1 != sol_reg2);
++	}
++
++	return false;
++}
++
+ static int soc21_common_resume(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
++	if (soc21_need_reset_on_resume(adev)) {
++		dev_info(adev->dev, "S3 suspend aborted, resetting...");
++		soc21_asic_reset(adev);
++	}
++
+ 	return soc21_common_hw_init(adev);
+ }
+ 
 
 
