@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-54476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF85990EE64
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4542490EE38
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE9C61C23E88
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8CC228954B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04E914A4E2;
-	Wed, 19 Jun 2024 13:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A042C14B963;
+	Wed, 19 Jun 2024 13:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NyLtbd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hceU72IF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC62714373E;
-	Wed, 19 Jun 2024 13:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDA114A609;
+	Wed, 19 Jun 2024 13:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803692; cv=none; b=VvH1sbxWMpd0+/99dyWnIZUvZnU2yFATYFOvy3nrruCbUu6EF9pmOjwTx/38gf9bbvyM+KUk4cgNZPnovYTll5Hok7mlk5ujzZYaxmQu9dV1p7KXKPkWqWygK1XHaSF3+C2QSBOldfOe2eTYuTqDESDmtwBoMOPjcju6e2BOSoQ=
+	t=1718803604; cv=none; b=bMUdlkPvkZkzhCqZ2oiVtPYM9XlQ2XjDsZ1KmPGHqabRIy5D1qWLzki+pyPaxzTpfeDjbjKvqzZL7YnOTe8BSHh7jjCDDCoDNwu7/z6fbnoK/ZMKQhzUpj5gFFL1zHQFnNNNaEitwrI9eFM97jznaF65P9s1No+8ijrB4lJo7kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803692; c=relaxed/simple;
-	bh=tilytx/vJIwgbdX7lQhePOB7xPCsYjQQpO6nvcCFi1U=;
+	s=arc-20240116; t=1718803604; c=relaxed/simple;
+	bh=ZrTeDAWyPxLs8ccYGTNSygLdBW+4VY0BIsPGanPkp/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=az8hku1/bB6kNLJedlwdGvEhcp9gOXIuNFlVC5njVEr5SX8T5Xq0wMhrGS0TWR3shQRWp7+HEW7f1Q0cgKwdXZktSAYQnQQfxJzco4Lc3iXAVhdZZTobWCHoTNa2ElX8/Q3/41y/V8QfBzlMj9zkEIFqtlYW8cFA+R2GNNYFqkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NyLtbd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301D2C4AF1D;
-	Wed, 19 Jun 2024 13:28:12 +0000 (UTC)
+	 MIME-Version; b=gJX1A7bqPCq06ijul4C3CtsspSzJ2NC0MmL5SXafTU8vI7DcdnPHUckx3cLXc3PDqbpkz8InOfr3wuwjc27/hF5sWb0QYiRLGRfaYV7ndIXds+hyn/nlvFI+nUXojR3+l64WNOvepxc82J4mZaa2AflbFuwIuqexX1xYrfv5CWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hceU72IF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE87BC4AF1A;
+	Wed, 19 Jun 2024 13:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803692;
-	bh=tilytx/vJIwgbdX7lQhePOB7xPCsYjQQpO6nvcCFi1U=;
+	s=korg; t=1718803604;
+	bh=ZrTeDAWyPxLs8ccYGTNSygLdBW+4VY0BIsPGanPkp/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2NyLtbd7x+9mFcPz6FGCTn51qJJSpymQ1xjEaTXcjg4osQ68MKExe8s1y59UqR6Ie
-	 G+WMn7VdDUoWMOgmg6JrKNwpato5HDj5hq5kqFbHUDzlG3+pHHPQMeBMQKqWT/psTl
-	 MJ8n3v8wKCzA7vTyQzKSn82oyq0CuuqWDwCesYPA=
+	b=hceU72IFLvBUn9mBsOHsi4Iu+hvIbtnL+qjKShhRfFPBCNFb5q4WlP0xlePsHHGDK
+	 otm9Jeg+Cu5RE+Pf5tLAfHAIz1IW0VCMhqlNxABk3mfUuPaupxPURA5QILQFbSQhXO
+	 YrP0HKIGUD2WY2wILn1I2GUAQfBStA6hWd9GDRjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/217] af_unix: Annotate data-race of sk->sk_state in unix_stream_read_skb().
-Date: Wed, 19 Jun 2024 14:54:44 +0200
-Message-ID: <20240619125558.242279611@linuxfoundation.org>
+Subject: [PATCH 6.1 042/217] af_unix: Annotate data-races around sk->sk_state in UNIX_DIAG.
+Date: Wed, 19 Jun 2024 14:54:45 +0200
+Message-ID: <20240619125558.280560405@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
 References: <20240619125556.491243678@linuxfoundation.org>
@@ -68,34 +68,67 @@ Content-Transfer-Encoding: 8bit
 
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit af4c733b6b1aded4dc808fafece7dfe6e9d2ebb3 ]
+[ Upstream commit 0aa3be7b3e1f8f997312cc4705f8165e02806f8f ]
 
-unix_stream_read_skb() is called from sk->sk_data_ready() context
-where unix_state_lock() is not held.
+While dumping AF_UNIX sockets via UNIX_DIAG, sk->sk_state is read
+locklessly.
 
 Let's use READ_ONCE() there.
 
-Fixes: 77462de14a43 ("af_unix: Add read_sock for stream socket types")
+Note that the result could be inconsistent if the socket is dumped
+during the state change.  This is common for other SOCK_DIAG and
+similar interfaces.
+
+Fixes: c9da99e6475f ("unix_diag: Fixup RQLEN extension report")
+Fixes: 2aac7a2cb0d9 ("unix_diag: Pending connections IDs NLA")
+Fixes: 45a96b9be6ec ("unix_diag: Dumping all sockets core")
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/unix/diag.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 2e25d9eaa82ea..f6ba015fffd2f 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2716,7 +2716,7 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+diff --git a/net/unix/diag.c b/net/unix/diag.c
+index 3438b7af09af5..9151c72e742fc 100644
+--- a/net/unix/diag.c
++++ b/net/unix/diag.c
+@@ -65,7 +65,7 @@ static int sk_diag_dump_icons(struct sock *sk, struct sk_buff *nlskb)
+ 	u32 *buf;
+ 	int i;
  
- static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+-	if (sk->sk_state == TCP_LISTEN) {
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
+ 		spin_lock(&sk->sk_receive_queue.lock);
+ 
+ 		attr = nla_reserve(nlskb, UNIX_DIAG_ICONS,
+@@ -103,7 +103,7 @@ static int sk_diag_show_rqlen(struct sock *sk, struct sk_buff *nlskb)
  {
--	if (unlikely(sk->sk_state != TCP_ESTABLISHED))
-+	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED))
- 		return -ENOTCONN;
+ 	struct unix_diag_rqlen rql;
  
- 	return unix_read_skb(sk, recv_actor);
+-	if (sk->sk_state == TCP_LISTEN) {
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
+ 		rql.udiag_rqueue = sk->sk_receive_queue.qlen;
+ 		rql.udiag_wqueue = sk->sk_max_ack_backlog;
+ 	} else {
+@@ -136,7 +136,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_r
+ 	rep = nlmsg_data(nlh);
+ 	rep->udiag_family = AF_UNIX;
+ 	rep->udiag_type = sk->sk_type;
+-	rep->udiag_state = sk->sk_state;
++	rep->udiag_state = READ_ONCE(sk->sk_state);
+ 	rep->pad = 0;
+ 	rep->udiag_ino = sk_ino;
+ 	sock_diag_save_cookie(sk, rep->udiag_cookie);
+@@ -215,7 +215,7 @@ static int unix_diag_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 		sk_for_each(sk, &net->unx.table.buckets[slot]) {
+ 			if (num < s_num)
+ 				goto next;
+-			if (!(req->udiag_states & (1 << sk->sk_state)))
++			if (!(req->udiag_states & (1 << READ_ONCE(sk->sk_state))))
+ 				goto next;
+ 			if (sk_diag_dump(sk, skb, req, sk_user_ns(skb->sk),
+ 					 NETLINK_CB(cb->skb).portid,
 -- 
 2.43.0
 
