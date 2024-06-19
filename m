@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-54283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C31D290ED7D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A514B90EE50
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D7022816F9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B3ED1F21C77
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6C4143C4E;
-	Wed, 19 Jun 2024 13:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2AE149C43;
+	Wed, 19 Jun 2024 13:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdD2XXEC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUipwMOD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE23144D3E;
-	Wed, 19 Jun 2024 13:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4AB12FB27;
+	Wed, 19 Jun 2024 13:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803123; cv=none; b=FWbsHZKiPXxhggGoZ6cwDVZKeKxbpH4n5Gs5WjW06s4nGDX/DR1brejA4r+Avu13cuXuYXU8UKGfgrwFlaJJFXrPg6qXJkspoVQt7SOxdl7LwqbeGHpUf/vwgCo7zIi8WI7ibfNFJCd+6JgnhehgtekkETpybMjM6Js2CM18ofo=
+	t=1718803657; cv=none; b=gSIQ2blFcUq65aQ8owu8NrZoGp6DXgVY0AP/ml4lfcW4kJQG08E3HDYWuL1xJSSpB7Tp5ExVFDUWstPzaq+Bls0POEGuEZIy6pDYiWaXrFjYM6cojRS4eiCRaRpeG96HQfIn49SCT48Ghea8O4Qday1aU/9xo9jKkqoob3ipAtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803123; c=relaxed/simple;
-	bh=CRY9K3TNyRQ8TJQ3nBbMfx6HLjePLJUP7HBADSkjrbo=;
+	s=arc-20240116; t=1718803657; c=relaxed/simple;
+	bh=Ku+M02M3dlblhpGNn64EduWhBLc/4zfiLMoqAP7u/f4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pysTqLqZQBaDmLEN/MhVAuDNvnIkWzK+0fW4Azt9vBzwEbwLRH9dbTtus5r2ZYXwEn2mC1dvUSHg9BQ4iAXltzxsH4fGlN6ZzSziUJIsxx50ZSmBKSXc3h27SoiPKeUi5q2hb0p2mesZt/h7tnCLZTrCk0n9YD49Z2CAe68+pKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdD2XXEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70346C32786;
-	Wed, 19 Jun 2024 13:18:42 +0000 (UTC)
+	 MIME-Version; b=sIDlAu328lwhrNjQzG0B2E2VazrMAciUgd01H3rcPI7X4yS0Ai30xR3pwy54Ca6kPZTRu1AWkCWWSjW9jyIkPZVvgjI2pAQkBRvORZFiP18rChZDwN91qkNR69/p3d/b+wt3mmaF1fh7HaGRAxdfqxy3jhaM67/twFHS+8uvOi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUipwMOD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEB3C2BBFC;
+	Wed, 19 Jun 2024 13:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803122;
-	bh=CRY9K3TNyRQ8TJQ3nBbMfx6HLjePLJUP7HBADSkjrbo=;
+	s=korg; t=1718803657;
+	bh=Ku+M02M3dlblhpGNn64EduWhBLc/4zfiLMoqAP7u/f4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sdD2XXECBchryJ8Boy8kNKBaS0BySXo71QRzJjHMvuQ0G/6VXH9nN5FFdvjyIv5ES
-	 XIkUQ1iXeZncUNHYXjYr1uhKCWH9S/SR5VSLR8xI+xCPOXo8JU6IxWhUIls4ZkJ+kt
-	 m1OwW6GiJEGGBvagrGoBB2fP2bFady4KfdLiquxQ=
+	b=gUipwMODrB9ooCiMEf5q8oIUsMpB9MrZH4Kcjhg+3yvqhtZW/JLTTASqfOTsszts6
+	 utaBsjVskRVPCYirEYbUfEgTxT/RVFlLKOu290kQJFev0Jn5iMLJSou13MWLLC3HDv
+	 8CGGvkvyo5WepqMSBxEeBdhbN8NtCbogKERBYo8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 143/281] drm/vmwgfx: Dont memcmp equivalent pointers
+Subject: [PATCH 6.1 059/217] drm/amd/display: Fix incorrect DSC instance for MST
 Date: Wed, 19 Jun 2024 14:55:02 +0200
-Message-ID: <20240619125615.344067005@linuxfoundation.org>
+Message-ID: <20240619125558.958089347@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 5703fc058efdafcdd6b70776ee562478f0753acb ]
+[ Upstream commit 892b41b16f6163e6556545835abba668fcab4eea ]
 
-These pointers are frequently the same and memcmp does not compare the
-pointers before comparing their contents so this was wasting cycles
-comparing 16 KiB of memory which will always be equal.
+[Why] DSC debugfs, such as dp_dsc_clock_en_read,
+use aconnector->dc_link to find pipe_ctx for display.
+Displays connected to MST hub share the same dc_link.
+DSC instance is from pipe_ctx. This causes incorrect
+DSC instance for display connected to MST hub.
 
-Fixes: bb6780aa5a1d ("drm/vmwgfx: Diff cursors when using cmds")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240328190716.27367-1-ian.forbes@broadcom.com
+[How] Add aconnector->sink check to find pipe_ctx.
+
+CC: stable@vger.kernel.org
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../amd/display/amdgpu_dm/amdgpu_dm_debugfs.c | 48 ++++++++++++++-----
+ 1 file changed, 36 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index 42fcf4698aba9..11755d143e657 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -216,7 +216,7 @@ static bool vmw_du_cursor_plane_has_changed(struct vmw_plane_state *old_vps,
- 	new_image = vmw_du_cursor_plane_acquire_image(new_vps);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+index 35ea58fbc1d9d..dd34dfcd5af76 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+@@ -1370,7 +1370,9 @@ static ssize_t dp_dsc_clock_en_read(struct file *f, char __user *buf,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
  
- 	changed = false;
--	if (old_image && new_image)
-+	if (old_image && new_image && old_image != new_image)
- 		changed = memcmp(old_image, new_image, size) != 0;
+@@ -1471,7 +1473,9 @@ static ssize_t dp_dsc_clock_en_write(struct file *f, const char __user *buf,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
  
- 	return changed;
+@@ -1556,7 +1560,9 @@ static ssize_t dp_dsc_slice_width_read(struct file *f, char __user *buf,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
+ 
+@@ -1655,7 +1661,9 @@ static ssize_t dp_dsc_slice_width_write(struct file *f, const char __user *buf,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
+ 
+@@ -1740,7 +1748,9 @@ static ssize_t dp_dsc_slice_height_read(struct file *f, char __user *buf,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
+ 
+@@ -1839,7 +1849,9 @@ static ssize_t dp_dsc_slice_height_write(struct file *f, const char __user *buf,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
+ 
+@@ -1920,7 +1932,9 @@ static ssize_t dp_dsc_bits_per_pixel_read(struct file *f, char __user *buf,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
+ 
+@@ -2016,7 +2030,9 @@ static ssize_t dp_dsc_bits_per_pixel_write(struct file *f, const char __user *bu
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
+ 
+@@ -2095,7 +2111,9 @@ static ssize_t dp_dsc_pic_width_read(struct file *f, char __user *buf,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
+ 
+@@ -2151,7 +2169,9 @@ static ssize_t dp_dsc_pic_height_read(struct file *f, char __user *buf,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
+ 
+@@ -2222,7 +2242,9 @@ static ssize_t dp_dsc_chunk_size_read(struct file *f, char __user *buf,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
+ 
+@@ -2293,7 +2315,9 @@ static ssize_t dp_dsc_slice_bpg_offset_read(struct file *f, char __user *buf,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		pipe_ctx = &aconnector->dc_link->dc->current_state->res_ctx.pipe_ctx[i];
+ 		if (pipe_ctx->stream &&
+-		    pipe_ctx->stream->link == aconnector->dc_link)
++		    pipe_ctx->stream->link == aconnector->dc_link &&
++		    pipe_ctx->stream->sink &&
++		    pipe_ctx->stream->sink == aconnector->dc_sink)
+ 			break;
+ 	}
+ 
 -- 
 2.43.0
 
