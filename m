@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-53886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5AA90EBA6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E5090ECED
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18AC5286B5B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 394A2282A2D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA73143C65;
-	Wed, 19 Jun 2024 12:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B54714A618;
+	Wed, 19 Jun 2024 13:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJWDbam5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBmtioY1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6ED143C4E;
-	Wed, 19 Jun 2024 12:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DC114389C;
+	Wed, 19 Jun 2024 13:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801963; cv=none; b=cO46x6SOXQ49ux4qyQ2AX3thCqp37Gq5yiCoK1mf59GDVLECLdhR7J04pA3o/hfL1lQxtrezZKSf9ehWrJp7ZbHtHpgDtIjEBZawN7UNd+X3tDEU4OTGK3wyLhTy2bhoK5scbAUE1rIjYh1IlCjgpN5H5XQipol/LLVOITyXcZo=
+	t=1718802733; cv=none; b=a5HX/0HFcE95vvCPoWzly8luCPJvSRNFl3KvJlRfdjsq9Vh2tUp67PbpBvDkOnwYsXt++qo5mb/E5vccajm7FRYRbm0eWB6VhzpPIzkLvfMQTsJixONumApMlnZ1A6OHo00/L3IqoeU8w+EU/jN+ABC7U/RuTJbWuPowLPZdpPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801963; c=relaxed/simple;
-	bh=KIKd3cs6666Td+sbHGGezzO3Wsw+BCpQHZ0QVIVDiZQ=;
+	s=arc-20240116; t=1718802733; c=relaxed/simple;
+	bh=IFGAU7tS/8aHm2/QIct5LO+SZhCBxiaPc0uj98/rL0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXwnwNf54CvrPhMN+g3AiX4oxnY+EeVKvQmyYgOOTq0NiZDMKeRn48EeUrsFRxFZe2GyUHq9X7q2Z4yHPz6FBsJSpLulTiuE+Wd9vk7hx4HadgyfM8UjqcnW6yXCe03DjhSejreuu0naeXBbzLf2O1Pc6zzm9OIV6a2X8e9/Vuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJWDbam5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCE5C2BBFC;
-	Wed, 19 Jun 2024 12:59:22 +0000 (UTC)
+	 MIME-Version; b=Olct74Gmh2Koeh2Tx37IGuHt77SPs8sHwLV5P4qdbymMaO8v1wNqwk3Fl5qePLVlYlXUeDVt+uSY4Soz/ZPnxtQ3C0+6N5lqVbLshUpRR3n87lFM6kwF1jBdhc98Vlgul2PPMmdTgvkAJSmRwoAleB/5nWcVP1QE9m8weAoI4yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBmtioY1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D16BC2BBFC;
+	Wed, 19 Jun 2024 13:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718801963;
-	bh=KIKd3cs6666Td+sbHGGezzO3Wsw+BCpQHZ0QVIVDiZQ=;
+	s=korg; t=1718802732;
+	bh=IFGAU7tS/8aHm2/QIct5LO+SZhCBxiaPc0uj98/rL0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WJWDbam5C7h3tJWIukzBYs9GRoxKau6TjDttOu6ToaXtDwotowKA+wDHwxmREfPmx
-	 zxkmsI4DEQusIEpPU+fsKMzfNsU7rCkn7RtpRB0L9pLmtNqeI0iGz16pqi3MzCuBQN
-	 99PxXxXnDVQEuOBiQBUb+22gnwmPxf/Dj52inicc=
+	b=NBmtioY1r+uVGSR7aTwGaWpvMdFEas1wpCVH9T+D0MUoZS0NS6rI/8mVsKtVoav4Z
+	 WzBFibVY0xfX/pyAQPIgSfaSHxQvfTeR2CwPE0+JO8AQqtWuyyULvF9ktJ71VxhLj9
+	 HR29+aGarIXEK1z60OfJ/YU0Beh/DWQHAR+CM6ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangyu Hua <hbh25y@gmail.com>,
+	syzbot+1989ee16d94720836244@syzkaller.appspotmail.com,
 	Cong Wang <cong.wang@bytedance.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/267] net: sched: sch_multiq: fix possible OOB write in multiq_tune()
-Date: Wed, 19 Jun 2024 14:53:06 +0200
-Message-ID: <20240619125607.712284564@linuxfoundation.org>
+Subject: [PATCH 6.9 028/281] bpf: Fix a potential use-after-free in bpf_link_free()
+Date: Wed, 19 Jun 2024 14:53:07 +0200
+Message-ID: <20240619125610.929082173@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangyu Hua <hbh25y@gmail.com>
+From: Cong Wang <cong.wang@bytedance.com>
 
-[ Upstream commit affc18fdc694190ca7575b9a86632a73b9fe043d ]
+[ Upstream commit 2884dc7d08d98a89d8d65121524bb7533183a63a ]
 
-q->bands will be assigned to qopt->bands to execute subsequent code logic
-after kmalloc. So the old q->bands should not be used in kmalloc.
-Otherwise, an out-of-bounds write will occur.
+After commit 1a80dbcb2dba, bpf_link can be freed by
+link->ops->dealloc_deferred, but the code still tests and uses
+link->ops->dealloc afterward, which leads to a use-after-free as
+reported by syzbot. Actually, one of them should be sufficient, so
+just call one of them instead of both. Also add a WARN_ON() in case
+of any problematic implementation.
 
-Fixes: c2999f7fb05b ("net: sched: multiq: don't call qdisc_put() while holding tree lock")
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Acked-by: Cong Wang <cong.wang@bytedance.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1a80dbcb2dba ("bpf: support deferring bpf_link dealloc to after RCU grace period")
+Reported-by: syzbot+1989ee16d94720836244@syzkaller.appspotmail.com
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/bpf/20240602182703.207276-1-xiyou.wangcong@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_multiq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/syscall.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_multiq.c b/net/sched/sch_multiq.c
-index 75c9c860182b4..0d6649d937c9f 100644
---- a/net/sched/sch_multiq.c
-+++ b/net/sched/sch_multiq.c
-@@ -185,7 +185,7 @@ static int multiq_tune(struct Qdisc *sch, struct nlattr *opt,
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index cb61d8880dbe0..52ffe33356418 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -2985,6 +2985,7 @@ static int bpf_obj_get(const union bpf_attr *attr)
+ void bpf_link_init(struct bpf_link *link, enum bpf_link_type type,
+ 		   const struct bpf_link_ops *ops, struct bpf_prog *prog)
+ {
++	WARN_ON(ops->dealloc && ops->dealloc_deferred);
+ 	atomic64_set(&link->refcnt, 1);
+ 	link->type = type;
+ 	link->id = 0;
+@@ -3043,16 +3044,17 @@ static void bpf_link_defer_dealloc_mult_rcu_gp(struct rcu_head *rcu)
+ /* bpf_link_free is guaranteed to be called from process context */
+ static void bpf_link_free(struct bpf_link *link)
+ {
++	const struct bpf_link_ops *ops = link->ops;
+ 	bool sleepable = false;
  
- 	qopt->bands = qdisc_dev(sch)->real_num_tx_queues;
+ 	bpf_link_free_id(link->id);
+ 	if (link->prog) {
+ 		sleepable = link->prog->sleepable;
+ 		/* detach BPF program, clean up used resources */
+-		link->ops->release(link);
++		ops->release(link);
+ 		bpf_prog_put(link->prog);
+ 	}
+-	if (link->ops->dealloc_deferred) {
++	if (ops->dealloc_deferred) {
+ 		/* schedule BPF link deallocation; if underlying BPF program
+ 		 * is sleepable, we need to first wait for RCU tasks trace
+ 		 * sync, then go through "classic" RCU grace period
+@@ -3061,9 +3063,8 @@ static void bpf_link_free(struct bpf_link *link)
+ 			call_rcu_tasks_trace(&link->rcu, bpf_link_defer_dealloc_mult_rcu_gp);
+ 		else
+ 			call_rcu(&link->rcu, bpf_link_defer_dealloc_rcu_gp);
+-	}
+-	if (link->ops->dealloc)
+-		link->ops->dealloc(link);
++	} else if (ops->dealloc)
++		ops->dealloc(link);
+ }
  
--	removed = kmalloc(sizeof(*removed) * (q->max_bands - q->bands),
-+	removed = kmalloc(sizeof(*removed) * (q->max_bands - qopt->bands),
- 			  GFP_KERNEL);
- 	if (!removed)
- 		return -ENOMEM;
+ static void bpf_link_put_deferred(struct work_struct *work)
 -- 
 2.43.0
 
