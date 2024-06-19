@@ -1,93 +1,180 @@
-Return-Path: <stable+bounces-53688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 793FE90E369
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:31:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0974F90E3D5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:57:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 229D51F2358D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 06:31:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 296D91C22728
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 06:57:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C0C26AC8;
-	Wed, 19 Jun 2024 06:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B38C6F305;
+	Wed, 19 Jun 2024 06:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="OOvQF49J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eG2f5Uje"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0670B1848;
-	Wed, 19 Jun 2024 06:31:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09F76F2EF
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 06:57:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718778699; cv=none; b=BIN5oVoPfD+Lfc/XsfP8I69ND7k+OH8aGHS5vu5ILZIadzR7iRft9Knlr1S4zvzz8sKeoaWbjk7nmIH6sG5xCQJMSlGyEP8RqoPGNDYEJJvs4f6lUJ/lP+3bHX+Y7kvqYhd7KK0PZ/ffC4rSYCi2lIUq8IzPf2QCsTC9JAYhGVA=
+	t=1718780250; cv=none; b=stmLq9vMhHrLafAlVIVwMXasJjiHvfLKwxgJuFqNKjXni6dShEcIiNuE8SMP55nwojDrUylaHwymeJLqRpXraOv6h7Dk5opXGX0XiiClDDcuys6E09xIIOER01NtkwxDdCAv37V6ZRdIjg/nmoQ44YoK5tu6MkUBYhuQa3ZD3gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718778699; c=relaxed/simple;
-	bh=ccbPSRK8qMlCUf6lppX/RuMkzSrq0NUDekMEo6/hpow=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=jrQMbb0/H1dWqsdFaaJD+yxPZJgrBbo7AADadqjwkEqCbxYjzTzx8GZvBCvpD96TzgKB2rz3DNat2o1JrSvmOFQx5PdSaz1fcgDOZa8sait+wzmmTkxec/QTmhD+YwOW6QOfw5NcRtpE9mr/ArRNlIwuvSVCH5fmXk4MQmC9Wcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=OOvQF49J; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1718778692;
-	bh=qjyG9jPtAFgV4AUANLc1JylhQQ3I6B14AefyyVdS0kE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=OOvQF49JLkPk/HkdhhfpfwAbhCmFRjv4QDDh1Eoj2bWx7tjFiVmjkdY9hsusecYuE
-	 OZlkBfSwDFfNWU7d20RR9ANb4nFgj3AwB4m2gc7fqgjxxaxuuxPQCxclTSLNK4z226
-	 g7/HrJg6vhclhcBB4Qrd4jf36/IV5SbYnRJV1EFG3P7lM5N4d8Z2kvO0hzkKt7Nvmi
-	 26TNXBbUg2Vn0zn0C7I8l9E1LJTirsb1jh9zS0QCZY5nH0RBoz+xvWLpv4kjj996cv
-	 uEdJ2WwVLcDnDbCH0UvShf0U35nOVgN2j1PvFZ1hjQ9SjZ5BPVR79MkLKy8LYcMl9l
-	 OnwEig59nOQCw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4W3v0N4f6Sz4w2R;
-	Wed, 19 Jun 2024 16:31:32 +1000 (AEST)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Pavel Machek <pavel@denx.de>, Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, hbathini@linux.ibm.com, bhe@redhat.com,
- akpm@linux-foundation.org, bhelgaas@google.com, aneesh.kumar@kernel.org,
- linuxppc-dev@lists.ozlabs.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Naveen N Rao <naveen@kernel.org>
-Subject: Re: [PATCH AUTOSEL 6.9 18/23] powerpc: make fadump resilient with
- memory add/remove events
-In-Reply-To: <ZnFQQEBeFfO8vOnl@duo.ucw.cz>
-References: <20240527155123.3863983-1-sashal@kernel.org>
- <20240527155123.3863983-18-sashal@kernel.org>
- <944f47df-96f0-40e8-a8e2-750fb9fa358e@linux.ibm.com>
- <ZnFQQEBeFfO8vOnl@duo.ucw.cz>
-Date: Wed, 19 Jun 2024 16:31:30 +1000
-Message-ID: <87a5jhe94t.fsf@mail.lhotse>
+	s=arc-20240116; t=1718780250; c=relaxed/simple;
+	bh=OTuXUUaGEOTv2plc+vCozzA6LDduMgtE+OP0YtQxFeI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XT8G5taBgUonWV6ngsIc5CV0i3JrZu2MLSMRwHv0GVHWY+JmU5TtN/cBoC3QuV81IXoawhP1asJ3lKRW9+NTZ5lLMnTOAdcGtwx6C4Ix4gwF24gdXsQdVdnUVAe0pAp4qtEt3MyngvSjTEh4o2mYc7I3ORpr0/w+A2Z8+LjjAG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eG2f5Uje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9ECFC2BBFC;
+	Wed, 19 Jun 2024 06:57:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718780250;
+	bh=OTuXUUaGEOTv2plc+vCozzA6LDduMgtE+OP0YtQxFeI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=eG2f5Uje3vqJpwt1pftaYkQM4SN14jJ9in7edDUYbsHMETEW+WxEeuVUxekrex3En
+	 cRv1ZuuJWSvvEujnYX1lLzOFwP9+4HcV6Ya1B8L9CfiAaCQOE5jYH1YJzN7rOtQmnT
+	 7YGbQkCrGNkhQWKM9mGvcECigezJQ7Tr6SvkhPro=
+Subject: FAILED: patch "[PATCH] riscv: rewrite __kernel_map_pages() to fix sleeping in" failed to apply to 5.10-stable tree
+To: namcao@linutronix.de,alexghiti@rivosinc.com,palmer@rivosinc.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Wed, 19 Jun 2024 08:57:27 +0200
+Message-ID: <2024061927-remindful-dash-9f14@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Pavel Machek <pavel@denx.de> writes:
->> Hello Sasha,
->> 
->> Thank you for considering this patch for the stable tree 6.9, 6.8, 6.6, and
->> 6.1.
->> 
->> This patch does two things:
->> 1. Fixes a potential memory corruption issue mentioned as the third point in
->> the commit message
->> 2. Enables the kernel to avoid unnecessary fadump re-registration on memory
->> add/remove events
->
-> Actually, I'd suggest dropping this one, as it fixes two things and is
-> over 200 lines long, as per stable kernel rules.
 
-Yeah I agree, best to drop this one. It's a bit big and involved, and
-has other dependencies.
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-cheers
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x fb1cf0878328fe75d47f0aed0a65b30126fcefc4
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061927-remindful-dash-9f14@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+
+Possible dependencies:
+
+fb1cf0878328 ("riscv: rewrite __kernel_map_pages() to fix sleeping in invalid context")
+5d6ad668f316 ("arch, mm: restore dependency of __kernel_map_pages() on DEBUG_PAGEALLOC")
+2abf962a8d42 ("PM: hibernate: make direct map manipulations more explicit")
+77bc7fd607de ("mm: introduce debug_pagealloc_{map,unmap}_pages() helpers")
+4f5b0c178996 ("arm, arm64: move free_unused_memmap() to generic mm")
+5e545df3292f ("arm: remove CONFIG_ARCH_HAS_HOLES_MEMORYMODEL")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From fb1cf0878328fe75d47f0aed0a65b30126fcefc4 Mon Sep 17 00:00:00 2001
+From: Nam Cao <namcao@linutronix.de>
+Date: Wed, 15 May 2024 07:50:40 +0200
+Subject: [PATCH] riscv: rewrite __kernel_map_pages() to fix sleeping in
+ invalid context
+
+__kernel_map_pages() is a debug function which clears the valid bit in page
+table entry for deallocated pages to detect illegal memory accesses to
+freed pages.
+
+This function set/clear the valid bit using __set_memory(). __set_memory()
+acquires init_mm's semaphore, and this operation may sleep. This is
+problematic, because  __kernel_map_pages() can be called in atomic context,
+and thus is illegal to sleep. An example warning that this causes:
+
+BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1578
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2, name: kthreadd
+preempt_count: 2, expected: 0
+CPU: 0 PID: 2 Comm: kthreadd Not tainted 6.9.0-g1d4c6d784ef6 #37
+Hardware name: riscv-virtio,qemu (DT)
+Call Trace:
+[<ffffffff800060dc>] dump_backtrace+0x1c/0x24
+[<ffffffff8091ef6e>] show_stack+0x2c/0x38
+[<ffffffff8092baf8>] dump_stack_lvl+0x5a/0x72
+[<ffffffff8092bb24>] dump_stack+0x14/0x1c
+[<ffffffff8003b7ac>] __might_resched+0x104/0x10e
+[<ffffffff8003b7f4>] __might_sleep+0x3e/0x62
+[<ffffffff8093276a>] down_write+0x20/0x72
+[<ffffffff8000cf00>] __set_memory+0x82/0x2fa
+[<ffffffff8000d324>] __kernel_map_pages+0x5a/0xd4
+[<ffffffff80196cca>] __alloc_pages_bulk+0x3b2/0x43a
+[<ffffffff8018ee82>] __vmalloc_node_range+0x196/0x6ba
+[<ffffffff80011904>] copy_process+0x72c/0x17ec
+[<ffffffff80012ab4>] kernel_clone+0x60/0x2fe
+[<ffffffff80012f62>] kernel_thread+0x82/0xa0
+[<ffffffff8003552c>] kthreadd+0x14a/0x1be
+[<ffffffff809357de>] ret_from_fork+0xe/0x1c
+
+Rewrite this function with apply_to_existing_page_range(). It is fine to
+not have any locking, because __kernel_map_pages() works with pages being
+allocated/deallocated and those pages are not changed by anyone else in the
+meantime.
+
+Fixes: 5fde3db5eb02 ("riscv: add ARCH_SUPPORTS_DEBUG_PAGEALLOC support")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/1289ecba9606a19917bc12b6c27da8aa23e1e5ae.1715750938.git.namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+
+diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
+index 410056a50aa9..271d01a5ba4d 100644
+--- a/arch/riscv/mm/pageattr.c
++++ b/arch/riscv/mm/pageattr.c
+@@ -387,17 +387,33 @@ int set_direct_map_default_noflush(struct page *page)
+ }
+ 
+ #ifdef CONFIG_DEBUG_PAGEALLOC
++static int debug_pagealloc_set_page(pte_t *pte, unsigned long addr, void *data)
++{
++	int enable = *(int *)data;
++
++	unsigned long val = pte_val(ptep_get(pte));
++
++	if (enable)
++		val |= _PAGE_PRESENT;
++	else
++		val &= ~_PAGE_PRESENT;
++
++	set_pte(pte, __pte(val));
++
++	return 0;
++}
++
+ void __kernel_map_pages(struct page *page, int numpages, int enable)
+ {
+ 	if (!debug_pagealloc_enabled())
+ 		return;
+ 
+-	if (enable)
+-		__set_memory((unsigned long)page_address(page), numpages,
+-			     __pgprot(_PAGE_PRESENT), __pgprot(0));
+-	else
+-		__set_memory((unsigned long)page_address(page), numpages,
+-			     __pgprot(0), __pgprot(_PAGE_PRESENT));
++	unsigned long start = (unsigned long)page_address(page);
++	unsigned long size = PAGE_SIZE * numpages;
++
++	apply_to_existing_page_range(&init_mm, start, size, debug_pagealloc_set_page, &enable);
++
++	flush_tlb_kernel_range(start, start + size);
+ }
+ #endif
+ 
+
 
