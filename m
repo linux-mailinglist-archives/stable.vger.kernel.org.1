@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-54185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A0D90ED15
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BED690EBE0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:02:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A16211F21FB6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBE08B24B1D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CF7145354;
-	Wed, 19 Jun 2024 13:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C4214F9F2;
+	Wed, 19 Jun 2024 13:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJ+cd/n7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSWglaSC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9645414389C;
-	Wed, 19 Jun 2024 13:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F03614F9DC;
+	Wed, 19 Jun 2024 13:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802833; cv=none; b=VYm7WwX+cqSriPBHfn/WfR6Bz+CdEufdqpj9Y438VoEI2265dFWWgVZQEBywCdfqREh9wKX8eRWenFJkZNv1JJGaTCrDhxA+Ywd89yqptnnA/GiwM0am/TxgxIwn0hxeZTRBEPbBlo2hrsTlbG8MTg6UzeGg8TSsMUluci1p47A=
+	t=1718802066; cv=none; b=fYkjFyPc/huyJ/1KF9vim0GoLB+5NQqOLteQfeh+v3a62ilhEwKaXwr00OJFf4zBaNSPLpyleNn53IBXTacp78+ZHCX+vRjvjXeNQci3rLiCxj+lQ4m4vdzXIKwbX6cS9saLbqFBZmG/SyFOntRRBY++Z6G5o3A/T7xV98m5mww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802833; c=relaxed/simple;
-	bh=LOIrDQfDBG+tyruSnMgDLlmI64W0Edlq9nVVLFy0tmc=;
+	s=arc-20240116; t=1718802066; c=relaxed/simple;
+	bh=HWTcs6gw915ifSwD9O0Wy29tp7Uhpmsi536BRcr6iNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgi8AxzrrG/o4R3K87krvBnnigY2MDovB5IJ72xu3bbFcMtNiXfOx1qpVrXw4VxQzsIckaZ7JxwOMjOe2STLmWdxFnavCRgIHAKxHXtVhaR8ljGFHvDBICmUGBuRCTqzCWviPLEWECrvQTDLPWPy2R67bo220BS8UmAGlyPBYdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJ+cd/n7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A854C2BBFC;
-	Wed, 19 Jun 2024 13:13:52 +0000 (UTC)
+	 MIME-Version; b=IHjAdEkUbpS/r2td0p+9x1/sSTJUpCWAUxQZ/tDrN4vfMbEucvGo/Ou4/1YGZF0Hsss6cm02gm8KwcJ6P1JpOMEgUKPQkqBZuVPeHImfaNFDD7v5ZBhDLtUrPNNdlkNOkz6YWBITjReCF5lZEmXa4NdQvwXzo4q95Hd7hnaT398=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSWglaSC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D63C2BBFC;
+	Wed, 19 Jun 2024 13:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802833;
-	bh=LOIrDQfDBG+tyruSnMgDLlmI64W0Edlq9nVVLFy0tmc=;
+	s=korg; t=1718802066;
+	bh=HWTcs6gw915ifSwD9O0Wy29tp7Uhpmsi536BRcr6iNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KJ+cd/n7fYbiQJebldLkqrhN+xUSG27F3OU+M02yYDn0D9NZ+Sb0dBpBpSYex01i4
-	 Ugf0jrhQJa9N34e92V7Qm153vWeEt4FT51Z+w74RSZEIFGFflmq4u3mGPlFthL/Qoz
-	 4VpjnoCY6WlKp7WtadOApGiHYwhkRYbWr1NyJK3E=
+	b=BSWglaSCCgZytOXO8dr97BAAvn0GUuT1cTkkh49ZMcieXhwDQWb3A//VWm7DJd7JC
+	 UkpJlvRlSqIJqi3mUvBl9R01unIwcC+kAewT753VnyqRduMQFaTpeiLWVqUNQV+v71
+	 3VzOgprZn2/2ZAxeIs07LLQvqG46ebMLHqBr04/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sri Jayaramappa <sjayaram@akamai.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 062/281] af_unix: Annotate data-races around sk->sk_state in sendmsg() and recvmsg().
+Subject: [PATCH 6.6 070/267] selftests/mm: compaction_test: fix bogus test success on Aarch64
 Date: Wed, 19 Jun 2024 14:53:41 +0200
-Message-ID: <20240619125612.234049951@linuxfoundation.org>
+Message-ID: <20240619125609.043856138@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +65,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Dev Jain <dev.jain@arm.com>
 
-[ Upstream commit 8a34d4e8d9742a24f74998f45a6a98edd923319b ]
+[ Upstream commit d4202e66a4b1fe6968f17f9f09bbc30d08f028a1 ]
 
-The following functions read sk->sk_state locklessly and proceed only if
-the state is TCP_ESTABLISHED.
+Patch series "Fixes for compaction_test", v2.
 
-  * unix_stream_sendmsg
-  * unix_stream_read_generic
-  * unix_seqpacket_sendmsg
-  * unix_seqpacket_recvmsg
+The compaction_test memory selftest introduces fragmentation in memory
+and then tries to allocate as many hugepages as possible. This series
+addresses some problems.
 
-Let's use READ_ONCE() there.
+On Aarch64, if nr_hugepages == 0, then the test trivially succeeds since
+compaction_index becomes 0, which is less than 3, due to no division by
+zero exception being raised. We fix that by checking for division by
+zero.
 
-Fixes: a05d2ad1c1f3 ("af_unix: Only allow recv on connected seqpacket sockets.")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Secondly, correctly set the number of hugepages to zero before trying
+to set a large number of them.
+
+Now, consider a situation in which, at the start of the test, a non-zero
+number of hugepages have been already set (while running the entire
+selftests/mm suite, or manually by the admin). The test operates on 80%
+of memory to avoid OOM-killer invocation, and because some memory is
+already blocked by hugepages, it would increase the chance of OOM-killing.
+Also, since mem_free used in check_compaction() is the value before we
+set nr_hugepages to zero, the chance that the compaction_index will
+be small is very high if the preset nr_hugepages was high, leading to a
+bogus test success.
+
+This patch (of 3):
+
+Currently, if at runtime we are not able to allocate a huge page, the test
+will trivially pass on Aarch64 due to no exception being raised on
+division by zero while computing compaction_index.  Fix that by checking
+for nr_hugepages == 0.  Anyways, in general, avoid a division by zero by
+exiting the program beforehand.  While at it, fix a typo, and handle the
+case where the number of hugepages may overflow an integer.
+
+Link: https://lkml.kernel.org/r/20240521074358.675031-1-dev.jain@arm.com
+Link: https://lkml.kernel.org/r/20240521074358.675031-2-dev.jain@arm.com
+Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Sri Jayaramappa <sjayaram@akamai.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/compaction_test.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index f95aba56425fa..d92e664032121 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2273,7 +2273,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
+index 6aa6460b854ea..309b3750e57e1 100644
+--- a/tools/testing/selftests/mm/compaction_test.c
++++ b/tools/testing/selftests/mm/compaction_test.c
+@@ -82,12 +82,13 @@ int prereq(void)
+ 	return -1;
+ }
+ 
+-int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
++int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+ {
++	unsigned long nr_hugepages_ul;
+ 	int fd, ret = -1;
+ 	int compaction_index = 0;
+-	char initial_nr_hugepages[10] = {0};
+-	char nr_hugepages[10] = {0};
++	char initial_nr_hugepages[20] = {0};
++	char nr_hugepages[20] = {0};
+ 
+ 	/* We want to test with 80% of available memory. Else, OOM killer comes
+ 	   in to play */
+@@ -136,7 +137,12 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 
+ 	/* We should have been able to request at least 1/3 rd of the memory in
+ 	   huge pages */
+-	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
++	nr_hugepages_ul = strtoul(nr_hugepages, NULL, 10);
++	if (!nr_hugepages_ul) {
++		ksft_print_msg("ERROR: No memory is available as huge pages\n");
++		goto close_fd;
++	}
++	compaction_index = mem_free/(nr_hugepages_ul * hugepage_size);
+ 
+ 	lseek(fd, 0, SEEK_SET);
+ 
+@@ -147,11 +153,11 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 		goto close_fd;
  	}
  
- 	if (msg->msg_namelen) {
--		err = sk->sk_state == TCP_ESTABLISHED ? -EISCONN : -EOPNOTSUPP;
-+		err = READ_ONCE(sk->sk_state) == TCP_ESTABLISHED ? -EISCONN : -EOPNOTSUPP;
- 		goto out_err;
- 	} else {
- 		err = -ENOTCONN;
-@@ -2387,7 +2387,7 @@ static int unix_seqpacket_sendmsg(struct socket *sock, struct msghdr *msg,
- 	if (err)
- 		return err;
+-	ksft_print_msg("Number of huge pages allocated = %d\n",
+-		       atoi(nr_hugepages));
++	ksft_print_msg("Number of huge pages allocated = %lu\n",
++		       nr_hugepages_ul);
  
--	if (sk->sk_state != TCP_ESTABLISHED)
-+	if (READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)
- 		return -ENOTCONN;
- 
- 	if (msg->msg_namelen)
-@@ -2401,7 +2401,7 @@ static int unix_seqpacket_recvmsg(struct socket *sock, struct msghdr *msg,
- {
- 	struct sock *sk = sock->sk;
- 
--	if (sk->sk_state != TCP_ESTABLISHED)
-+	if (READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)
- 		return -ENOTCONN;
- 
- 	return unix_dgram_recvmsg(sock, msg, size, flags);
-@@ -2730,7 +2730,7 @@ static int unix_stream_read_generic(struct unix_stream_read_state *state,
- 	size_t size = state->size;
- 	unsigned int last_len;
- 
--	if (unlikely(sk->sk_state != TCP_ESTABLISHED)) {
-+	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED)) {
- 		err = -EINVAL;
- 		goto out;
+ 	if (compaction_index > 3) {
+-		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
++		ksft_print_msg("ERROR: Less than 1/%d of memory is available\n"
+ 			       "as huge pages\n", compaction_index);
+ 		goto close_fd;
  	}
 -- 
 2.43.0
