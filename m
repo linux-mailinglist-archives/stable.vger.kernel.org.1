@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 780DF90EE1F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 067FB90ED70
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87ED51C2147F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85E00B2380A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE6E147C60;
-	Wed, 19 Jun 2024 13:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B979B143C65;
+	Wed, 19 Jun 2024 13:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xseuCOq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5nqa33h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8291459F2;
-	Wed, 19 Jun 2024 13:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791AE82495;
+	Wed, 19 Jun 2024 13:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803551; cv=none; b=I7vD+9JliEOU+mdXoGEM+6/j9nJHOgGtMrUAXksfI4145e1q6fAWf224Z8D/LkXvaYVRKtbNtG7fvkAm22Imk8VcmyRgD45nuzfuqxagv8PuhsBWSQco4JUZCcm34WkzjWENEo7cAvCOOSWQFWiTSi0jJCkwUA8eHVxF3MtemIs=
+	t=1718803087; cv=none; b=c4ikPeu0kEQPWGgCbGDZUlUiT8eDEoCrgeij5x5d8UCLXVwJPjbx3MHysQm/xPNIk8gFiu/hkXGRAyviCng03cW4Ep7nM0v03nrGdjN7NgCU2ARK7MCIAH2IwhB/+DFjx4nVrvYhm+qMkJ8i9v1RY0+hxm7MP2hUNDj6Tc/EbNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803551; c=relaxed/simple;
-	bh=Cl85Pvd7TzNn/L5+co9eAJ6TDtnNiVozvL4yAtG4kPU=;
+	s=arc-20240116; t=1718803087; c=relaxed/simple;
+	bh=eB03x//NAGjdUJPaKSXpT9ygldJCVFnxjIFBKID96SY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWx5Ltdb9Jx70lwkxU0CqOU/T05buqfXb1LJaMT3hrEKDf635Zcm2RPcVh45qpMdkdoJIPh2OTQ8qAzqhVgwopb6FVLgMDO0ZrQNTQZJljNRcxbEcOkBHhcxSoRmRtR4q+HpIof0PeXbExnDZu6X/d6hWNXkgUO0QDsjS9Uhftc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xseuCOq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA23C4AF1A;
-	Wed, 19 Jun 2024 13:25:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uislZlFNkQQsw3zWuYxvEMHQyiMCO/ymCVw3Pfv7WKYZBfnARR1GfjbkKTDiWBT66/j2WE9eBZZh1fMxihtTGpJZ78LPtTaG903c7k2gPq1ONrcY1dK9XVl7Jz23vTEkNdc1LKNvgSYh+o9k1BHJairyynhCglqhpSOgj6rx3tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5nqa33h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F11C2BBFC;
+	Wed, 19 Jun 2024 13:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803551;
-	bh=Cl85Pvd7TzNn/L5+co9eAJ6TDtnNiVozvL4yAtG4kPU=;
+	s=korg; t=1718803087;
+	bh=eB03x//NAGjdUJPaKSXpT9ygldJCVFnxjIFBKID96SY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xseuCOq0pV3AwWLLJz85TKi2ekH7qQ9Uw/ZAyh5WeLWqr/zPvVWqxjBkbuCYOwPFT
-	 E4G0zCSR8Yt2ueaFMfc1tPC3nyuZ9txLVIyZ0M6Z8U+hKBYMZ4oZrun+ZIADd40D6H
-	 BlvLGpYK9DwLeYyGabYCEn64Pw6lsDWy6O8yRR7Q=
+	b=v5nqa33hEKjCu/SJKZO0m0uLGqgnGUmD5bWhQYo3UgyepAQROMBFILi2R83YfB4AV
+	 JHYjEQ4kSoH4ztf1uHkL9beS4Q0vpdGAQgQSNtK3Du6jtfc9alcxJXxDl2GoUr4kh+
+	 Ju9CNrU25C6DSXhBNmcegV/W2AJwGXaQt00AnElU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@mellanox.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/217] net/mlx5: Stop waiting for PCI up if teardown was triggered
-Date: Wed, 19 Jun 2024 14:54:26 +0200
-Message-ID: <20240619125557.542685731@linuxfoundation.org>
+Subject: [PATCH 6.9 108/281] cxl/test: Add missing vmalloc.h for tools/testing/cxl/test/mem.c
+Date: Wed, 19 Jun 2024 14:54:27 +0200
+Message-ID: <20240619125614.005010510@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@mellanox.com>
+From: Dave Jiang <dave.jiang@intel.com>
 
-[ Upstream commit 8ff38e730c3f5ee717f25365ef8aa4739562d567 ]
+[ Upstream commit d55510527153d17a3af8cc2df69c04f95ae1350d ]
 
-If driver teardown is called while PCI is turned off, there is a race
-between health recovery and teardown. If health recovery already started
-it will wait 60 sec trying to see if PCI gets back and it can recover,
-but actually there is no need to wait anymore once teardown was called.
+tools/testing/cxl/test/mem.c uses vmalloc() and vfree() but does not
+include linux/vmalloc.h. Kernel v6.10 made changes that causes the
+currently included headers not depend on vmalloc.h and therefore
+mem.c can no longer compile. Add linux/vmalloc.h to fix compile
+issue.
 
-Use the MLX5_BREAK_FW_WAIT flag which is set on driver teardown to break
-waiting for PCI up.
+  CC [M]  tools/testing/cxl/test/mem.o
+tools/testing/cxl/test/mem.c: In function ‘label_area_release’:
+tools/testing/cxl/test/mem.c:1428:9: error: implicit declaration of function ‘vfree’; did you mean ‘kvfree’? [-Werror=implicit-function-declaration]
+ 1428 |         vfree(lsa);
+      |         ^~~~~
+      |         kvfree
+tools/testing/cxl/test/mem.c: In function ‘cxl_mock_mem_probe’:
+tools/testing/cxl/test/mem.c:1466:22: error: implicit declaration of function ‘vmalloc’; did you mean ‘kmalloc’? [-Werror=implicit-function-declaration]
+ 1466 |         mdata->lsa = vmalloc(LSA_SIZE);
+      |                      ^~~~~~~
+      |                      kmalloc
 
-Signed-off-by: Moshe Shemesh <moshe@mellanox.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://lore.kernel.org/r/20230314054234.267365-3-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 33afbfcc105a ("net/mlx5: Stop waiting for PCI if pci channel is offline")
+Fixes: 7d3eb23c4ccf ("tools/testing/cxl: Introduce a mock memory device + driver")
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Link: https://lore.kernel.org/r/20240528225551.1025977-1-dave.jiang@intel.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/health.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/cxl/test/mem.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-index e42e4ac231c64..e9462de771fd3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-@@ -325,6 +325,10 @@ int mlx5_health_wait_pci_up(struct mlx5_core_dev *dev)
- 	while (sensor_pci_not_working(dev)) {
- 		if (time_after(jiffies, end))
- 			return -ETIMEDOUT;
-+		if (test_bit(MLX5_BREAK_FW_WAIT, &dev->intf_state)) {
-+			mlx5_core_warn(dev, "device is being removed, stop waiting for PCI\n");
-+			return -ENODEV;
-+		}
- 		msleep(100);
- 	}
- 	return 0;
+diff --git a/tools/testing/cxl/test/mem.c b/tools/testing/cxl/test/mem.c
+index 35ee41e435ab3..0d0ca63de8629 100644
+--- a/tools/testing/cxl/test/mem.c
++++ b/tools/testing/cxl/test/mem.c
+@@ -3,6 +3,7 @@
+ 
+ #include <linux/platform_device.h>
+ #include <linux/mod_devicetable.h>
++#include <linux/vmalloc.h>
+ #include <linux/module.h>
+ #include <linux/delay.h>
+ #include <linux/sizes.h>
 -- 
 2.43.0
 
