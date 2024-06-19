@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-54136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F8490ECE0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3685E90ECEB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C65F6281624
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3EF42823EC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8A114D719;
-	Wed, 19 Jun 2024 13:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BABC149DFC;
+	Wed, 19 Jun 2024 13:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3wmc2Lt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwDFQlQ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3912114A62A;
-	Wed, 19 Jun 2024 13:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4D51459E3;
+	Wed, 19 Jun 2024 13:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802692; cv=none; b=EynxG3WTwkJRKu/S0fPlNH/ptaWCcMZB8qjV00M8hnBZXIse17mbFDxmSLrfLpI6beIQ9agZPkz9YMo5tj5ikbNIT9wSA9PCQq2cTrJ8MSpaFu+O7QSMOfWU2J5KGxMnWwML2/l54etdL6YOImgmnHwguBm4RMLHsdLLBS8C3+A=
+	t=1718802724; cv=none; b=FD6E7exQ35r3wuup/0hWbhRZhLvs4AOPecb9nQm/pyx8XBUm2norY+D3xJwWztoJ448D2eJ8Bczyv4TxwLuxCsLcOflGFIBlSV+EZKDPqBawcf+E62CmGB0SiB1CJCeoh74vA5d07wnL6Xg1R2hlC+Fopq9+dZWd6jCXeMZqEhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802692; c=relaxed/simple;
-	bh=EEfQIFx+k5LQ88Tq/bP1fRIFxSv+c9ypaa7AMQl9SWs=;
+	s=arc-20240116; t=1718802724; c=relaxed/simple;
+	bh=bIi0N3n8lsWPsBFuzkwK8rV4hAujIIOziw1pBkwv9lM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oSAwO5QFMn1NDBR305yiWg4Z/intjnpeXp8WNYXjjcxNktRagN0d7Fny5tVY/maFOnCPPtm2GS/zEr4HNkQHzDuOBjtlCtHOLR4g4bKDSa6ODZhb2FUPfT5G/1WpsMbe871UlmzU+Rw6lMQyBa9ootaJRfmLvyH3HhAHlSzRAQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3wmc2Lt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A85C4AF1D;
-	Wed, 19 Jun 2024 13:11:31 +0000 (UTC)
+	 MIME-Version; b=gR8BwjrF7edD1okSjQ8wgGM/FoeJYhaVmY4RMjBZGJrd0rOHuvE67t9Y1OEx2jmd6aJHTkbAWcki67sEIsh4sln8yhLzVNGEs0tdzbTfL2gzCujOH47nRF7E7EcY4klilYa3iA14tQLVN9udJA87bmm88hHmZOzqmtoraR0BXLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwDFQlQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2ABBC2BBFC;
+	Wed, 19 Jun 2024 13:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802691;
-	bh=EEfQIFx+k5LQ88Tq/bP1fRIFxSv+c9ypaa7AMQl9SWs=;
+	s=korg; t=1718802724;
+	bh=bIi0N3n8lsWPsBFuzkwK8rV4hAujIIOziw1pBkwv9lM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3wmc2LtgniWC9eb9HP1/11Z7j8miUgTWfNzQuNOihHRWmc1Br+gzcXqixVf1p1ns
-	 +obJQZdtSj+V+Nm978LH7JEl65KIh8sTUfsq7RsqBZZW59TcuL6EU3Yi8pKRQivbCe
-	 +UGX5H72gwXMSRzkdv1CPiUUqVKkVxF1gI6zUxQQ=
+	b=IwDFQlQ89NrSbyYKBGIGBHK5EFAhgE+I/A0wo4u4KUY99IaUKewNyw1F2bRxATiKO
+	 981VewAClaNMSPbkxQnzZnJQjKhfQgcBE9Y4u9KxE8FhunUaw63jOoIZjavmaPLNVC
+	 IW55Ji7Z4RB37IBINcumtiVja8m16T1jirhzwHlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 007/281] wifi: mac80211: Fix deadlock in ieee80211_sta_ps_deliver_wakeup()
-Date: Wed, 19 Jun 2024 14:52:46 +0200
-Message-ID: <20240619125610.127502161@linuxfoundation.org>
+Subject: [PATCH 6.9 008/281] wifi: cfg80211: fully move wiphy work to unbound workqueue
+Date: Wed, 19 Jun 2024 14:52:47 +0200
+Message-ID: <20240619125610.165673497@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
 References: <20240619125609.836313103@linuxfoundation.org>
@@ -66,107 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 44c06bbde6443de206b30f513100b5670b23fc5e ]
+[ Upstream commit e296c95eac655008d5a709b8cf54d0018da1c916 ]
 
-The ieee80211_sta_ps_deliver_wakeup() function takes sta->ps_lock to
-synchronizes with ieee80211_tx_h_unicast_ps_buf() which is called from
-softirq context. However using only spin_lock() to get sta->ps_lock in
-ieee80211_sta_ps_deliver_wakeup() does not prevent softirq to execute
-on this same CPU, to run ieee80211_tx_h_unicast_ps_buf() and try to
-take this same lock ending in deadlock. Below is an example of rcu stall
-that arises in such situation.
+Previously I had moved the wiphy work to the unbound
+system workqueue, but missed that when it restarts and
+during resume it was still using the normal system
+workqueue. Fix that.
 
- rcu: INFO: rcu_sched self-detected stall on CPU
- rcu:    2-....: (42413413 ticks this GP) idle=b154/1/0x4000000000000000 softirq=1763/1765 fqs=21206996
- rcu:    (t=42586894 jiffies g=2057 q=362405 ncpus=4)
- CPU: 2 PID: 719 Comm: wpa_supplicant Tainted: G        W          6.4.0-02158-g1b062f552873 #742
- Hardware name: RPT (r1) (DT)
- pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : queued_spin_lock_slowpath+0x58/0x2d0
- lr : invoke_tx_handlers_early+0x5b4/0x5c0
- sp : ffff00001ef64660
- x29: ffff00001ef64660 x28: ffff000009bc1070 x27: ffff000009bc0ad8
- x26: ffff000009bc0900 x25: ffff00001ef647a8 x24: 0000000000000000
- x23: ffff000009bc0900 x22: ffff000009bc0900 x21: ffff00000ac0e000
- x20: ffff00000a279e00 x19: ffff00001ef646e8 x18: 0000000000000000
- x17: ffff800016468000 x16: ffff00001ef608c0 x15: 0010533c93f64f80
- x14: 0010395c9faa3946 x13: 0000000000000000 x12: 00000000fa83b2da
- x11: 000000012edeceea x10: ffff0000010fbe00 x9 : 0000000000895440
- x8 : 000000000010533c x7 : ffff00000ad8b740 x6 : ffff00000c350880
- x5 : 0000000000000007 x4 : 0000000000000001 x3 : 0000000000000000
- x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffff00000ac0e0e8
- Call trace:
-  queued_spin_lock_slowpath+0x58/0x2d0
-  ieee80211_tx+0x80/0x12c
-  ieee80211_tx_pending+0x110/0x278
-  tasklet_action_common.constprop.0+0x10c/0x144
-  tasklet_action+0x20/0x28
-  _stext+0x11c/0x284
-  ____do_softirq+0xc/0x14
-  call_on_irq_stack+0x24/0x34
-  do_softirq_own_stack+0x18/0x20
-  do_softirq+0x74/0x7c
-  __local_bh_enable_ip+0xa0/0xa4
-  _ieee80211_wake_txqs+0x3b0/0x4b8
-  __ieee80211_wake_queue+0x12c/0x168
-  ieee80211_add_pending_skbs+0xec/0x138
-  ieee80211_sta_ps_deliver_wakeup+0x2a4/0x480
-  ieee80211_mps_sta_status_update.part.0+0xd8/0x11c
-  ieee80211_mps_sta_status_update+0x18/0x24
-  sta_apply_parameters+0x3bc/0x4c0
-  ieee80211_change_station+0x1b8/0x2dc
-  nl80211_set_station+0x444/0x49c
-  genl_family_rcv_msg_doit.isra.0+0xa4/0xfc
-  genl_rcv_msg+0x1b0/0x244
-  netlink_rcv_skb+0x38/0x10c
-  genl_rcv+0x34/0x48
-  netlink_unicast+0x254/0x2bc
-  netlink_sendmsg+0x190/0x3b4
-  ____sys_sendmsg+0x1e8/0x218
-  ___sys_sendmsg+0x68/0x8c
-  __sys_sendmsg+0x44/0x84
-  __arm64_sys_sendmsg+0x20/0x28
-  do_el0_svc+0x6c/0xe8
-  el0_svc+0x14/0x48
-  el0t_64_sync_handler+0xb0/0xb4
-  el0t_64_sync+0x14c/0x150
-
-Using spin_lock_bh()/spin_unlock_bh() instead prevents softirq to raise
-on the same CPU that is holding the lock.
-
-Fixes: 1d147bfa6429 ("mac80211: fix AP powersave TX vs. wakeup race")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://msgid.link/8e36fe07d0fbc146f89196cd47a53c8a0afe84aa.1716910344.git.repk@triplefau.lt
+Fixes: 91d20ab9d9ca ("wifi: cfg80211: use system_unbound_wq for wiphy work")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240522124126.7ca959f2cbd3.I3e2a71ef445d167b84000ccf934ea245aef8d395@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/sta_info.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/core.c  | 2 +-
+ net/wireless/sysfs.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index da5fdd6f5c852..aa22f09e6d145 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1724,7 +1724,7 @@ void ieee80211_sta_ps_deliver_wakeup(struct sta_info *sta)
- 	skb_queue_head_init(&pending);
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 3fb1b637352a9..4b1f45e3070e0 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -431,7 +431,7 @@ static void cfg80211_wiphy_work(struct work_struct *work)
+ 	if (wk) {
+ 		list_del_init(&wk->entry);
+ 		if (!list_empty(&rdev->wiphy_work_list))
+-			schedule_work(work);
++			queue_work(system_unbound_wq, work);
+ 		spin_unlock_irq(&rdev->wiphy_work_lock);
  
- 	/* sync with ieee80211_tx_h_unicast_ps_buf */
--	spin_lock(&sta->ps_lock);
-+	spin_lock_bh(&sta->ps_lock);
- 	/* Send all buffered frames to the station */
- 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
- 		int count = skb_queue_len(&pending), tmp;
-@@ -1753,7 +1753,7 @@ void ieee80211_sta_ps_deliver_wakeup(struct sta_info *sta)
- 	 */
- 	clear_sta_flag(sta, WLAN_STA_PSPOLL);
- 	clear_sta_flag(sta, WLAN_STA_UAPSD);
--	spin_unlock(&sta->ps_lock);
-+	spin_unlock_bh(&sta->ps_lock);
+ 		wk->func(&rdev->wiphy, wk);
+diff --git a/net/wireless/sysfs.c b/net/wireless/sysfs.c
+index 565511a3f461e..62f26618f6747 100644
+--- a/net/wireless/sysfs.c
++++ b/net/wireless/sysfs.c
+@@ -5,7 +5,7 @@
+  *
+  * Copyright 2005-2006	Jiri Benc <jbenc@suse.cz>
+  * Copyright 2006	Johannes Berg <johannes@sipsolutions.net>
+- * Copyright (C) 2020-2021, 2023 Intel Corporation
++ * Copyright (C) 2020-2021, 2023-2024 Intel Corporation
+  */
  
- 	atomic_dec(&ps->num_sta_ps);
+ #include <linux/device.h>
+@@ -137,7 +137,7 @@ static int wiphy_resume(struct device *dev)
+ 	if (rdev->wiphy.registered && rdev->ops->resume)
+ 		ret = rdev_resume(rdev);
+ 	rdev->suspended = false;
+-	schedule_work(&rdev->wiphy_work);
++	queue_work(system_unbound_wq, &rdev->wiphy_work);
+ 	wiphy_unlock(&rdev->wiphy);
  
+ 	if (ret)
 -- 
 2.43.0
 
