@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-54259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3ACC90ED64
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F97890EC34
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 824042810A6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8E1C1C248C1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2150D13F435;
-	Wed, 19 Jun 2024 13:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1958013AA40;
+	Wed, 19 Jun 2024 13:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/NhnAG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/hA/+PU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40174315F;
-	Wed, 19 Jun 2024 13:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC39482871;
+	Wed, 19 Jun 2024 13:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803051; cv=none; b=BitGkmzBsE0MkoY9cwcwlifijFnp61BfUbQO4v6Etnzi8KabAR8skhvAjpzf9J8skTmTRIQ8CX9JwxGHbvlJo0K3cTEprxfMuLY+R/nbWEdxfTVAj+cnznAQx9/eVmehFgxAut2MitZR2Fu/1ZtuEugmTXbTBzy6JR+cVJ3DdxE=
+	t=1718802284; cv=none; b=GaEJf38yqxNlz0emhf5LXhS1LcSluRKAfOA8gkYTx52ScjGXI7eYsPHffK9/qkmsI5BAIALWQZn/HvNsUCS9IGmio5A8OYGrAB88N9R0D+2L+Poz65N4Mkp3ejc10U9rRdcDDJwPqZKGw4364TIdCr+hrK0qjwCqm+/mk84tVBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803051; c=relaxed/simple;
-	bh=F5xiAuW6MjxSgJ4y54rr1haHf5CXP4fIgUSqGlh5n5k=;
+	s=arc-20240116; t=1718802284; c=relaxed/simple;
+	bh=07s9xgPtBCCXOR2DpprlxXESAyeWiBd0EdywXzxK6Go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaHcQdHg7NonkorAnN8PRYz+TYwChfogZj3Gd6q1v4Wbyg2/fV9Ly5rTnQPYW2G9FxQSviIRnwGVP5SqG/YGgrTzm/2eWqkcI/tXSjkQYyFQ4e6/Pt+MqmeZ/11QfCzUryenIcHAc2AxYRfJDCzAhG2mB+g8x4h6U+k7/TlMOQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/NhnAG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54DCCC2BBFC;
-	Wed, 19 Jun 2024 13:17:31 +0000 (UTC)
+	 MIME-Version; b=fSJvkPXBLrRpTXpwx92ENiDda+tAg23yWWryZ9vRo46RntwM57fGbE5W3mNZfBF/RlIwMQ1nHjHhGRFaaIxSzSuDKHtzv6QYrPRQunGoC/eqvH6w239xaYbGBwt6sa8gqow0B8u2A0JR69xzMYDS/5a6ICLba1j9SjS9Bw8FRI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/hA/+PU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52490C2BBFC;
+	Wed, 19 Jun 2024 13:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803051;
-	bh=F5xiAuW6MjxSgJ4y54rr1haHf5CXP4fIgUSqGlh5n5k=;
+	s=korg; t=1718802284;
+	bh=07s9xgPtBCCXOR2DpprlxXESAyeWiBd0EdywXzxK6Go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/NhnAG8YMDK2NLNUMRM7405LWaLimeGJtYSuNk2i/Wv3F2ixjAphgacnqMGfY3Hz
-	 9w5bloIoLb4CwP1lFZQ7IAxZovb7uHmhmev9KoBP/5kkBUxcDtFeRZBUbZ0rkb59zD
-	 BCy50vdK2cl51XWA+0rTSifTYB4W3E4951n3JNwQ=
+	b=d/hA/+PUFqjmT7jvmBgxkIQzDNr+b+yv93Q3CrrHs5uZhZMiX0vPtJQuq6d/MaDS2
+	 3L8KF/fkQBVkW3aQ5CEvsv+fUnjZZBZIZTtEQEAdiCJvMOvUIzlXpE3+KAcJPt5+JF
+	 GBAgA3xBL7P/8qXMEHqsC4l9QHToLY+DwGVeHnL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Jie Wang <wangjie125@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 136/281] iommu: Return right value in iommu_sva_bind_device()
+Subject: [PATCH 6.6 144/267] net: hns3: add cond_resched() to hns3 ring buffer init process
 Date: Wed, 19 Jun 2024 14:54:55 +0200
-Message-ID: <20240619125615.075992180@linuxfoundation.org>
+Message-ID: <20240619125611.875366823@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit 89e8a2366e3bce584b6c01549d5019c5cda1205e ]
+[ Upstream commit 968fde83841a8c23558dfbd0a0c69d636db52b55 ]
 
-iommu_sva_bind_device() should return either a sva bond handle or an
-ERR_PTR value in error cases. Existing drivers (idxd and uacce) only
-check the return value with IS_ERR(). This could potentially lead to
-a kernel NULL pointer dereference issue if the function returns NULL
-instead of an error pointer.
+Currently hns3 ring buffer init process would hold cpu too long with big
+Tx/Rx ring depth. This could cause soft lockup.
 
-In reality, this doesn't cause any problems because iommu_sva_bind_device()
-only returns NULL when the kernel is not configured with CONFIG_IOMMU_SVA.
-In this case, iommu_dev_enable_feature(dev, IOMMU_DEV_FEAT_SVA) will
-return an error, and the device drivers won't call iommu_sva_bind_device()
-at all.
+So this patch adds cond_resched() to the process. Then cpu can break to
+run other tasks instead of busy looping.
 
-Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20240528042528.71396-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: a723fb8efe29 ("net: hns3: refine for set ring parameters")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/iommu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 4 ++++
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.h | 2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index 2e925b5eba534..3b67d59a36bf9 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -1537,7 +1537,7 @@ struct iommu_domain *iommu_sva_domain_alloc(struct device *dev,
- static inline struct iommu_sva *
- iommu_sva_bind_device(struct device *dev, struct mm_struct *mm)
- {
--	return NULL;
-+	return ERR_PTR(-ENODEV);
- }
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 677cfaa5fe08c..db9574e9fb7bc 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -3539,6 +3539,9 @@ static int hns3_alloc_ring_buffers(struct hns3_enet_ring *ring)
+ 		ret = hns3_alloc_and_attach_buffer(ring, i);
+ 		if (ret)
+ 			goto out_buffer_fail;
++
++		if (!(i % HNS3_RESCHED_BD_NUM))
++			cond_resched();
+ 	}
  
- static inline void iommu_sva_unbind_device(struct iommu_sva *handle)
+ 	return 0;
+@@ -5112,6 +5115,7 @@ int hns3_init_all_ring(struct hns3_nic_priv *priv)
+ 		}
+ 
+ 		u64_stats_init(&priv->ring[i].syncp);
++		cond_resched();
+ 	}
+ 
+ 	return 0;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
+index acd756b0c7c9a..d36c4ed16d8dd 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
+@@ -214,6 +214,8 @@ enum hns3_nic_state {
+ #define HNS3_CQ_MODE_EQE			1U
+ #define HNS3_CQ_MODE_CQE			0U
+ 
++#define HNS3_RESCHED_BD_NUM			1024
++
+ enum hns3_pkt_l2t_type {
+ 	HNS3_L2_TYPE_UNICAST,
+ 	HNS3_L2_TYPE_MULTICAST,
 -- 
 2.43.0
 
