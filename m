@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-54277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B25590ED76
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D73190EE94
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C4761C2182F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFAAC28665A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F729143C4E;
-	Wed, 19 Jun 2024 13:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544A314D44D;
+	Wed, 19 Jun 2024 13:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGquKIaT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efEXfnjB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB6582495;
-	Wed, 19 Jun 2024 13:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E6314B96F;
+	Wed, 19 Jun 2024 13:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803105; cv=none; b=kPV0CWgp4a3gn5Vmr/vd1Jyv5YnkvXL0vqKaYspVHrGp4WcAaDhtEkyD4RviNYW5i8Kfyu1kf6V3ifH8JL6lgrUcNijlvPFMhRoFuaNghoStNt9jJ8RKQhSBqegfkgvTocssRpa7D7am605eHIcKXVvyMIsH2YGU6oYPU6tOm2M=
+	t=1718803787; cv=none; b=BuD4/wI+txd1kisdsFZbBVUFQLodL/wVtx+5L7UVueBYvwx8p2NQKDT9LNKtxeXEnuFar0c4nIsbaxNUpRWj89qIILkFLLP7S4n2xw94YCFSWQupnjfyZL/IkNbItvEPgnPCZnKnRPS242mBxgc+E0ixBYcQKhTAlKukDwDypRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803105; c=relaxed/simple;
-	bh=XgRJMXI0SmNIDDFK9Oic2NtcCSl/2gQJVWmcur68210=;
+	s=arc-20240116; t=1718803787; c=relaxed/simple;
+	bh=dH0kR/iFLSON3irqr8qXIMFYOerx3atf6kxomtx0nPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3G0ZWz08pjtG2t92MX+Uh+eXqZ0z+X60tXOFrbUDgGD6O+JCLg3QpUT98uVMg1BkSWOv+bl1lNpTIAXTnxpWPLKpu9V27Ox/il6JKzEUOAZukK8p3bb1sL/LIaJz1EyhZdN/9KRfcoh8tl3XPdkqXExwQSOvvTbIKMtagYAwk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGquKIaT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B8EC2BBFC;
-	Wed, 19 Jun 2024 13:18:24 +0000 (UTC)
+	 MIME-Version; b=jqrDEJ6m16VNK1CMYDYxRIoQzmFWzkuammllratkzZdqliA1AzhKm1LdqpsaCDuGng99avjy18GH7mjksdhv20MVdJtOJNfy5dtDSWDJGvaXTOYbNbVastSUR4l5khGGMx+EOucdK+BN3gDIzwwWLm5Djl4NQ9PHaOaGuH2jT1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efEXfnjB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B700C2BBFC;
+	Wed, 19 Jun 2024 13:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803105;
-	bh=XgRJMXI0SmNIDDFK9Oic2NtcCSl/2gQJVWmcur68210=;
+	s=korg; t=1718803786;
+	bh=dH0kR/iFLSON3irqr8qXIMFYOerx3atf6kxomtx0nPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGquKIaTL1E4yn5IAhiaUDq2dlcHmXSoK9SP/unCp8OcjYIt2Zx2cwEWyULQx1Ic1
-	 GHLHMCcXuCJTKiiO3yry4vTfmCWNdLsokDoVvcJzKXXounUWr6jDLUFkFITRmXkd97
-	 390HXkBbhgZBpVmmn9WrW5ygJ2VTf4DHt2Rtwrj8=
+	b=efEXfnjBBA1B0+VcpHcahQKkje+2/mc6iR7nCWi9poqoX1YRrf06L9uhjaT9yTvL6
+	 dDwVDmjBH3VzgpRdgSt6+/+7/I0QzTy74O5MAzrVPd7w6HgkiueqpJEbk16fZReStj
+	 qgi3s9qRBeXTypTkM9WoZ4TpZLNsci15cf2pA6t4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Michal Hocko <mhocko@suse.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Baoquan He <bhe@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 155/281] tcp: fix race in tcp_v6_syn_recv_sock()
-Date: Wed, 19 Jun 2024 14:55:14 +0200
-Message-ID: <20240619125615.803819571@linuxfoundation.org>
+Subject: [PATCH 6.1 072/217] mm, vmalloc: fix high order __GFP_NOFAIL allocations
+Date: Wed, 19 Jun 2024 14:55:15 +0200
+Message-ID: <20240619125559.462342381@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +68,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Michal Hocko <mhocko@suse.com>
 
-[ Upstream commit d37fe4255abe8e7b419b90c5847e8ec2b8debb08 ]
+[ Upstream commit e9c3cda4d86e56bf7fe403729f38c4f0f65d3860 ]
 
-tcp_v6_syn_recv_sock() calls ip6_dst_store() before
-inet_sk(newsk)->pinet6 has been set up.
+Gao Xiang has reported that the page allocator complains about high order
+__GFP_NOFAIL request coming from the vmalloc core:
 
-This means ip6_dst_store() writes over the parent (listener)
-np->dst_cookie.
+ __alloc_pages+0x1cb/0x5b0 mm/page_alloc.c:5549
+ alloc_pages+0x1aa/0x270 mm/mempolicy.c:2286
+ vm_area_alloc_pages mm/vmalloc.c:2989 [inline]
+ __vmalloc_area_node mm/vmalloc.c:3057 [inline]
+ __vmalloc_node_range+0x978/0x13c0 mm/vmalloc.c:3227
+ kvmalloc_node+0x156/0x1a0 mm/util.c:606
+ kvmalloc include/linux/slab.h:737 [inline]
+ kvmalloc_array include/linux/slab.h:755 [inline]
+ kvcalloc include/linux/slab.h:760 [inline]
 
-This is racy because multiple threads could share the same
-parent and their final np->dst_cookie could be wrong.
+it seems that I have completely missed high order allocation backing
+vmalloc areas case when implementing __GFP_NOFAIL support.  This means
+that [k]vmalloc at al.  can allocate higher order allocations with
+__GFP_NOFAIL which can trigger OOM killer for non-costly orders easily or
+cause a lot of reclaim/compaction activity if those requests cannot be
+satisfied.
 
-Move ip6_dst_store() call after inet_sk(newsk)->pinet6
-has been changed and after the copy of parent ipv6_pinfo.
+Fix the issue by falling back to zero order allocations for __GFP_NOFAIL
+requests if the high order request fails.
 
-Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lkml.kernel.org/r/ZAXynvdNqcI0f6Us@dhcp22.suse.cz
+Fixes: 9376130c390a ("mm/vmalloc: add support for __GFP_NOFAIL")
+Reported-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+  Link: https://lkml.kernel.org/r/20230305053035.1911-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Michal Hocko <mhocko@suse.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 8e0545c83d67 ("mm/vmalloc: fix vmalloc which may return null if called with __GFP_NOFAIL")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/tcp_ipv6.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/vmalloc.c | 28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 5873b3c3562ed..2b2eda5a2894d 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1438,7 +1438,6 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 67a10a04df041..cab30d9497e6b 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2923,6 +2923,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 		unsigned int order, unsigned int nr_pages, struct page **pages)
+ {
+ 	unsigned int nr_allocated = 0;
++	gfp_t alloc_gfp = gfp;
++	bool nofail = false;
+ 	struct page *page;
+ 	int i;
+ 
+@@ -2933,6 +2935,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 	 * more permissive.
  	 */
+ 	if (!order) {
++		/* bulk allocator doesn't support nofail req. officially */
+ 		gfp_t bulk_gfp = gfp & ~__GFP_NOFAIL;
  
- 	newsk->sk_gso_type = SKB_GSO_TCPV6;
--	ip6_dst_store(newsk, dst, NULL, NULL);
- 	inet6_sk_rx_dst_set(newsk, skb);
+ 		while (nr_allocated < nr_pages) {
+@@ -2971,20 +2974,35 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 			if (nr != nr_pages_request)
+ 				break;
+ 		}
++	} else if (gfp & __GFP_NOFAIL) {
++		/*
++		 * Higher order nofail allocations are really expensive and
++		 * potentially dangerous (pre-mature OOM, disruptive reclaim
++		 * and compaction etc.
++		 */
++		alloc_gfp &= ~__GFP_NOFAIL;
++		nofail = true;
+ 	}
  
- 	inet_sk(newsk)->pinet6 = tcp_inet6_sk(newsk);
-@@ -1449,6 +1448,8 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
+ 	/* High-order pages or fallback path if "bulk" fails. */
+-
+ 	while (nr_allocated < nr_pages) {
+ 		if (fatal_signal_pending(current))
+ 			break;
  
- 	memcpy(newnp, np, sizeof(struct ipv6_pinfo));
- 
-+	ip6_dst_store(newsk, dst, NULL, NULL);
+ 		if (nid == NUMA_NO_NODE)
+-			page = alloc_pages(gfp, order);
++			page = alloc_pages(alloc_gfp, order);
+ 		else
+-			page = alloc_pages_node(nid, gfp, order);
+-		if (unlikely(!page))
+-			break;
++			page = alloc_pages_node(nid, alloc_gfp, order);
++		if (unlikely(!page)) {
++			if (!nofail)
++				break;
 +
- 	newsk->sk_v6_daddr = ireq->ir_v6_rmt_addr;
- 	newnp->saddr = ireq->ir_v6_loc_addr;
- 	newsk->sk_v6_rcv_saddr = ireq->ir_v6_loc_addr;
++			/* fall back to the zero order allocations */
++			alloc_gfp |= __GFP_NOFAIL;
++			order = 0;
++			continue;
++		}
++
+ 		/*
+ 		 * Higher order allocations must be able to be treated as
+ 		 * indepdenent small pages by callers (as they can with
 -- 
 2.43.0
 
