@@ -1,105 +1,218 @@
-Return-Path: <stable+bounces-53822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD17B90E8DC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C310390E8E2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE8D51C212D5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:59:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31CCFB20CE4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD8B132132;
-	Wed, 19 Jun 2024 10:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE2A134402;
+	Wed, 19 Jun 2024 11:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dv0q9/h2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZKTdhr9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3987E13211E;
-	Wed, 19 Jun 2024 10:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BF9612EB;
+	Wed, 19 Jun 2024 11:01:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718794779; cv=none; b=QQOi5eLLmY+T0agM+BtZHMBj7sNVlgHdZjYUGeS1mLiJXy6W+S7rmX4eoCvFntiZIYEvjhGGIC+PhYY9pcpJJZIq4V/7msPOWg8/U0JXEuRBOsml0E+Qh6fMBe3HaaxLqe6kQPIs+2n+vep7JI41k7TXJkE/JnBxo+ufCPY6Da8=
+	t=1718794877; cv=none; b=RZiIz56gvyV/uTEOqUbcVU9zXFDDyikodQsRjz7PMI8uq98DtQr+l6zSIeDSX5RTRJgSsSq5ZU3Vun1vEuuVPIjAclBac8wpzhtAf8V6Ql5KJBreZ2Oan7n0wo7dDKZL7dzyXF00StLRckuWejU9gtvCmB+aCKjpJ4mhdaMVl3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718794779; c=relaxed/simple;
-	bh=BExqSwzjA+fciZYpFKo7ougXR8LWzOaXC2TldKO7j2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TVqcs0jlV3AZCVUEl3GeocTuDJy4lkLZrNNqGOJJvDWb7E8yeB6oMvY3mK1vUYRmJh6V2xDxUzH/c26pjhv/Mw6Xl7lEF+NSqEzTe0AEuBLt+PYKEKysSieYGUAMPJofCNp8pCRB90eH6UF2qi8VlK02ZQW4b6qDCC0N9kbgmmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dv0q9/h2; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52cc148159dso2360318e87.0;
-        Wed, 19 Jun 2024 03:59:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718794776; x=1719399576; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NqNPLNV/phq08wqrDpKBw62bWYUWvlN1FEBdphcgyZ8=;
-        b=dv0q9/h24tqKsPri65ftAz3uMoluz6ddy0EA3qNT/o5YJqR3C0ZzALE+6CMSMxzmQV
-         UhK7l4XX62IixoqNGL4T5c6142zQEF6/qhfOyGrwn6wpjtO/tYaGr1ulzsVCR+s5q3bw
-         +2rIBmk+wDj3WLbRg2WGacgkpm4qkC9wPXQOkn5Dm21WRSCI5fkKo5or34FlvU+/2k0z
-         2bC80V3lsO7W+RVsw0qvHwDnhtSIsKUtt48+KZ4hjWHyqWtmoRtZBD3uys+2hgUAltNP
-         NouuE3MHA30hd64KX0bclsFpoV+T4KKqISQ5LGDFQ5yfgxpwlAmSBJyMPoktS3ldA9lB
-         wIpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718794776; x=1719399576;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NqNPLNV/phq08wqrDpKBw62bWYUWvlN1FEBdphcgyZ8=;
-        b=c/QdBs8F18+R2gbu4NeG3biU5SRnDw501vX0DK9Zxlq5sfvnVAaNSzUfmerVKy7Bdi
-         4BoNVThpJz79GDTEBc16THb+LhI+DmD03pcyaoQUSlc45X7kLAuBWyHHS+m7J358Ol2Q
-         An3P3YO0tBx5Nz/UVEwwktcJt5cGY414m3/XF9tdGVOgZ4WqYFgIGrFpBNcJ+sgS1Df1
-         8sncdQPQ7iez6Flw8l8PFKwQFiwwV8KV12PbU1IrjbmXHoxcEL3mG99hrw2UAlzBKLKN
-         g55H6JXIxA26iFLndJphaoICdDxBX/k5mybD2uz7iAwSrJYusNZhkUV3fOiTJZlK89Z6
-         sf8g==
-X-Gm-Message-State: AOJu0YydS42h4uFxh78+5eySLMvq/oCusx9o+ialsuoZFAkzxcaaMhkH
-	mkmm+P5DSaqj3IqPg+0o0wAo1E2Rs5Js6AYKueCf8TDk72u6/GR3crmFSnDPE3w=
-X-Google-Smtp-Source: AGHT+IERLNBeQ1AbPpPP7jOYcwoL68WBRtNt2+f3lA9xTCWJjg2eu2p5zzI0ylJsHcIgAgW4DZNlyw==
-X-Received: by 2002:a05:6512:6c2:b0:52c:8df9:2e6f with SMTP id 2adb3069b0e04-52ccaa881femr2046835e87.42.1718794776032;
-        Wed, 19 Jun 2024 03:59:36 -0700 (PDT)
-Received: from fedora.. (cpdnat87.usal.es. [212.128.135.87])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422f6320bd8sm224010455e9.32.2024.06.19.03.59.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jun 2024 03:59:35 -0700 (PDT)
-From: =?UTF-8?q?Pablo=20Ca=C3=B1o?= <pablocpascual@gmail.com>
-To: linux-sound@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	tiwai@suse.de,
-	=?UTF-8?q?Pablo=20Ca=C3=B1o?= <pablocpascual@gmail.com>
-Subject: [PATCH] ALSA: hda/realtek: Add quirk for Lenovo Yoga Pro 7 14AHP9
-Date: Wed, 19 Jun 2024 12:59:32 +0200
-Message-ID: <20240619105932.29124-1-pablocpascual@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1718794877; c=relaxed/simple;
+	bh=qKAchPXv/8vjHJytt5fQTq+uUdysk4gC8rdcN4WG/+w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DNE9yIp9jzKBNQNTRRUI+bQsmGmse3304v8E5QoAmvs+LNpIjGi5Lqu2myZZyc2fktONMHRq4EnpncHLPBZnt9ZbQV+Uz9i4FUH2rBG8be2DpV+IclPF0glmoLu5F7sVJ7P+7T/Na2ovrU/BZV9ciEUmZnChGpTSWk0N9s9WVnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZKTdhr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88AD1C2BBFC;
+	Wed, 19 Jun 2024 11:01:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718794876;
+	bh=qKAchPXv/8vjHJytt5fQTq+uUdysk4gC8rdcN4WG/+w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pZKTdhr95sjK2nmwZMFrG+2VDv0HUjTjb7WBpxiQIvLVJ9hzVQLXEdeKF69O6JvOj
+	 V0TgM4eW/cOQwnrh4EbnPuZP8XrsOfFqB+l52Qjjosw5mVoa8vFiSMy5iKLinJWi8c
+	 f26FEPRbZy9bfMsJ2K+JdpnAaI1qoM0gZPMKsb0s=
+Date: Wed, 19 Jun 2024 13:01:09 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Baokun Li <libaokun1@huawei.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>, yangerkun@huawei.com
+Subject: Re: Patch "ext4: fix slab-out-of-bounds in
+ ext4_mb_find_good_group_avg_frag_lists()" has been added to the 6.9-stable
+ tree
+Message-ID: <2024061940-riptide-evict-b23b@gregkh>
+References: <20240616020519.1675680-1-sashal@kernel.org>
+ <0d620010-c6b4-4f80-a835-451813f957e3@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <0d620010-c6b4-4f80-a835-451813f957e3@huawei.com>
 
-Lenovo Yoga Pro 7 14AHP9 (PCI SSID 17aa:3891) seems requiring a similar workaround like Yoga 9 model and Yoga 7 Pro 14APH8 for the bass speaker.
+On Mon, Jun 17, 2024 at 09:37:01AM +0800, Baokun Li wrote:
+> Hi Sasha,
+> 
+> Thanks for adapting this patch to the stable branch. Just one nit.
+> 
+> On 2024/6/16 10:05, Sasha Levin wrote:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >      ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
+> > 
+> > to the 6.9-stable tree which can be found at:
+> >      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >       ext4-fix-slab-out-of-bounds-in-ext4_mb_find_good_gro.patch
+> > and it can be found in the queue-6.9 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
+> > 
+> > 
+> > 
+> > commit 84cee2d2394a43766dd2990edac8a4a05817ef7b
+> > Author: Baokun Li <libaokun1@huawei.com>
+> > Date:   Tue Mar 19 19:33:20 2024 +0800
+> > 
+> >      ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
+> >      [ Upstream commit 13df4d44a3aaabe61cd01d277b6ee23ead2a5206 ]
+> >      We can trigger a slab-out-of-bounds with the following commands:
+> >          mkfs.ext4 -F /dev/$disk 10G
+> >          mount /dev/$disk /tmp/test
+> >          echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
+> >          echo test > /tmp/test/file && sync
+> >      ==================================================================
+> >      BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
+> >      Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
+> >      CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
+> >      Call Trace:
+> >       dump_stack_lvl+0x2c/0x50
+> >       kasan_report+0xb6/0xf0
+> >       ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
+> >       ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
+> >       ext4_mb_new_blocks+0x88a/0x1370 [ext4]
+> >       ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
+> >       ext4_map_blocks+0x569/0xea0 [ext4]
+> >       ext4_do_writepages+0x10f6/0x1bc0 [ext4]
+> >      [...]
+> >      ==================================================================
+> >      The flow of issue triggering is as follows:
+> >      // Set s_mb_group_prealloc to 2147483647 via sysfs
+> >      ext4_mb_new_blocks
+> >        ext4_mb_normalize_request
+> >          ext4_mb_normalize_group_request
+> >            ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
+> >        ext4_mb_regular_allocator
+> >          ext4_mb_choose_next_group
+> >            ext4_mb_choose_next_group_best_avail
+> >              mb_avg_fragment_size_order
+> >                order = fls(len) - 2 = 29
+> >              ext4_mb_find_good_group_avg_frag_lists
+> >                frag_list = &sbi->s_mb_avg_fragment_size[order]
+> >                if (list_empty(frag_list)) // Trigger SOOB!
+> >      At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
+> >      but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
+> >      to be triggered by an attempt to access an element at index 29.
+> >      Add a new attr_id attr_clusters_in_group with values in the range
+> >      [0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
+> >      that type to fix the issue. In addition avoid returning an order
+> >      from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
+> >      and reduce some useless loops.
+> >      Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
+> >      CC: stable@vger.kernel.org
+> >      Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> >      Reviewed-by: Jan Kara <jack@suse.cz>
+> >      Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+> >      Link: https://lore.kernel.org/r/20240319113325.3110393-5-libaokun1@huawei.com
+> >      Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> >      Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > 
+> > diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+> > index 714f83632e3f9..66b5a68b0254e 100644
+> > --- a/fs/ext4/mballoc.c
+> > +++ b/fs/ext4/mballoc.c
+> > @@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
+> >   		return 0;
+> >   	if (order == MB_NUM_ORDERS(sb))
+> >   		order--;
+> > +	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
+> > +		order = MB_NUM_ORDERS(sb) - 1;
+> >   	return order;
+> >   }
+> > @@ -1008,6 +1010,8 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
+> >   	 * goal length.
+> >   	 */
+> >   	order = fls(ac->ac_g_ex.fe_len) - 1;
+> > +	if (WARN_ON_ONCE(order - 1 > MB_NUM_ORDERS(ac->ac_sb)))
+> > +		order = MB_NUM_ORDERS(ac->ac_sb);
+> >   	min_order = order - sbi->s_mb_best_avail_max_trim_order;
+> >   	if (min_order < 0)
+> >   		min_order = 0;
+> > diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
+> > index 295ea9a32de91..ca66e33f61815 100644
+> > --- a/fs/ext4/sysfs.c
+> > +++ b/fs/ext4/sysfs.c
+> > @@ -29,6 +29,7 @@ typedef enum {
+> >   	attr_trigger_test_error,
+> >   	attr_first_error_time,
+> >   	attr_last_error_time,
+> > +	attr_clusters_in_group,
+> >   	attr_feature,
+> >   	attr_pointer_ui,
+> >   	attr_pointer_ul,
+> > @@ -207,13 +208,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit, 0444);
+> >   EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
+> >   		 ext4_sb_info, s_inode_readahead_blks);
+> > +EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, clusters_in_group,
+> > +		 ext4_sb_info, s_mb_group_prealloc);
+> >   EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
+> >   EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
+> >   EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
+> >   EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
+> >   EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
+> >   EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
+> > -EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
+> >   EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
+> >   EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
+> >   EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
+> > @@ -376,6 +378,7 @@ static ssize_t ext4_generic_attr_show(struct ext4_attr *a,
+> >   	switch (a->attr_id) {
+> >   	case attr_inode_readahead:
+> > +	case attr_clusters_in_group:
+> >   	case attr_pointer_ui:
+> >   		if (a->attr_ptr == ptr_ext4_super_block_offset)
+> >   			return sysfs_emit(buf, "%u\n", le32_to_cpup(ptr));
+> > @@ -459,6 +462,14 @@ static ssize_t ext4_attr_store(struct kobject *kobj,
+> >   		else
+> >   			*((unsigned int *) ptr) = t;
+> >   		return len;
+> > +	case attr_clusters_in_group:
+> Since commit f536808adcc3 "ext4: refactor out ext4_generic_attr_store()"
+> is not backported to stable, the following judgement needs to be added
+> here:
+> 
+>  		if (!ptr)
+>  			return 0;
+> 
+> The patch for the 6.6-stable tree has the same problem.
 
----
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks, I've dropped this from both queues now, can you resend it with a
+fixed up version?
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index aa76d1c88589..f9223fedf8e9 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10525,6 +10525,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x387e, "Yoga S780-16 pro Quad YC", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3881, "YB9 dual power mode2 YC", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3882, "Lenovo Yoga Pro 7 14APH8", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
-+	SND_PCI_QUIRK(0x17aa, 0x3891, "Lenovo Yoga Pro 7 14AHP9", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x3884, "Y780 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3886, "Y780 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38a7, "Y780P AMD YG dual", ALC287_FIXUP_TAS2781_I2C),
--- 
-2.45.2
+thanks,
 
+greg k-h
 
