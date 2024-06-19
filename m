@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-54355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C604B90EDCE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 716A490ECA9
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5948F1F2288E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 029CE1F21C9C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6D814E2D9;
-	Wed, 19 Jun 2024 13:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4031A1465BD;
+	Wed, 19 Jun 2024 13:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cNk5y+UV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIn6cu2O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5C014532C;
-	Wed, 19 Jun 2024 13:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E3A143C43;
+	Wed, 19 Jun 2024 13:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803336; cv=none; b=dbWt0luI9SXOxCUNG2ZwWJTn8cGcN1hwdnekZ+FmfEp9KtV7IItUuJZgliyhz6tn3NVp88UjkWjE+ZNshNu4E/PASWdbfjZcehNIaXt4v++0UXDtshHnSqAeFJavo8QkMdjWv5rcIlcT0bTt85zXLmqRIFhXww3vhP7uVgFRNiM=
+	t=1718802568; cv=none; b=m9uIvFN8taXgYmridKRst0QO0ELYy5rqyL37/2LdT6Fq6ysEK6pAiE0/46B2SPVmQ1Y+1OlBCRW1TvdfWKxz4admRQkJKZmjPxG3bUznSR2f0Y0/8iybHa2Gn7YtCSuLyZMHBXJwM6EnY4IsSDphnGJvk6s13jTub7xr1kdIPmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803336; c=relaxed/simple;
-	bh=ksrO2Q4rMbBsQcGifV6BI+7ezsmoQRUvTdoiYwWxt90=;
+	s=arc-20240116; t=1718802568; c=relaxed/simple;
+	bh=qGaX9WDcgpsQ+WQkLDTSJSlRPvS/u/f6TRLlnGtCcyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfRLPBQ7axB+IesqYOJoV54V+DxBQ+4OVV8YqiCkb79XozFxpRSWwwmKnCS8pxflSCGe0QKviPO8VkEq+S8fsMc3v6fnB7EvkW5Qj3GZctYcN5uEdQgbqzLLCip6bThAU9BU15PBHJs7ZK5GxP8rLZcKdNyJM1sgRHKmLRWVPR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cNk5y+UV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15160C2BBFC;
-	Wed, 19 Jun 2024 13:22:14 +0000 (UTC)
+	 MIME-Version; b=A2RAPDbTiEV8fO4DtmwyVXtzpDP+OLlfzxJKVb3ZsK8+0RdPcY+CWzTRGfWhed086D37QXcRJps7uBPOiiPqLWQeYCNbkwoTAb4v8GPVldpjyvKCsxu0cIMq401GK0hXdUrRN7v8sILi17x0q2b1zY2m7/qZBxua84jDUYJzds8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIn6cu2O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73763C2BBFC;
+	Wed, 19 Jun 2024 13:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803335;
-	bh=ksrO2Q4rMbBsQcGifV6BI+7ezsmoQRUvTdoiYwWxt90=;
+	s=korg; t=1718802567;
+	bh=qGaX9WDcgpsQ+WQkLDTSJSlRPvS/u/f6TRLlnGtCcyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cNk5y+UVZ12G99s+QmpKqMhGoG2UTj4GA+9v9wnj2jvqHTIp8VyLnXSVQ2zCBPFmp
-	 eMSxJREmxlGynNlFRxRGAszManlvGVFwPGJiHYCLiYD+kEqdGCOp1bvzzunWzgJK9W
-	 mVgMMDwqdFSIVyhIFbtsQUvUbVEsg1HZKgiKJL0o=
+	b=gIn6cu2OPJj1GrfhJEebk5MwFPP1KMGw+x+F7zgMHdYCOnSqpMuOjKS2vrqQ8BNYN
+	 EzEh9q9yFC1K9d3wYe4KXnw6fteivnYuzyVK77PgXlVZNpd3tcS+tkRePiHri8n/IC
+	 mUJjKlfM8Iju80ykfr7xTVSVe+VbhyO9JWVfArR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>
-Subject: [PATCH 6.9 232/281] sock_map: avoid race between sock_map_close and sk_psock_put
+	"will@kernel.org, mhklinux@outlook.com, petr.tesarik1@huawei-partners.com, nicolinc@nvidia.com, hch@lst.de, Fabio Estevam" <festevam@denx.de>,
+	Petr Tesarik <petr.tesarik1@huawei-partners.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Fabio Estevam <festevam@denx.de>
+Subject: [PATCH 6.6 240/267] swiotlb: extend buffer pre-padding to alloc_align_mask if necessary
 Date: Wed, 19 Jun 2024 14:56:31 +0200
-Message-ID: <20240619125618.891057584@linuxfoundation.org>
+Message-ID: <20240619125615.534420629@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,120 +64,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Petr Tesarik <petr.tesarik1@huawei-partners.com>
 
-commit 4b4647add7d3c8530493f7247d11e257ee425bf0 upstream.
+commit af133562d5aff41fcdbe51f1a504ae04788b5fc0 upstream.
 
-sk_psock_get will return NULL if the refcount of psock has gone to 0, which
-will happen when the last call of sk_psock_put is done. However,
-sk_psock_drop may not have finished yet, so the close callback will still
-point to sock_map_close despite psock being NULL.
+Allow a buffer pre-padding of up to alloc_align_mask, even if it requires
+allocating additional IO TLB slots.
 
-This can be reproduced with a thread deleting an element from the sock map,
-while the second one creates a socket, adds it to the map and closes it.
+If the allocation alignment is bigger than IO_TLB_SIZE and min_align_mask
+covers any non-zero bits in the original address between IO_TLB_SIZE and
+alloc_align_mask, these bits are not preserved in the swiotlb buffer
+address.
 
-That will trigger the WARN_ON_ONCE:
+To fix this case, increase the allocation size and use a larger offset
+within the allocated buffer. As a result, extra padding slots may be
+allocated before the mapping start address.
 
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 7220 at net/core/sock_map.c:1701 sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
-Modules linked in:
-CPU: 1 PID: 7220 Comm: syz-executor380 Not tainted 6.9.0-syzkaller-07726-g3c999d1ae3c7 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-RIP: 0010:sock_map_close+0x2a2/0x2d0 net/core/sock_map.c:1701
-Code: df e8 92 29 88 f8 48 8b 1b 48 89 d8 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 79 29 88 f8 4c 8b 23 eb 89 e8 4f 15 23 f8 90 <0f> 0b 90 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d e9 13 26 3d 02
-RSP: 0018:ffffc9000441fda8 EFLAGS: 00010293
-RAX: ffffffff89731ae1 RBX: ffffffff94b87540 RCX: ffff888029470000
-RDX: 0000000000000000 RSI: ffffffff8bcab5c0 RDI: ffffffff8c1faba0
-RBP: 0000000000000000 R08: ffffffff92f9b61f R09: 1ffffffff25f36c3
-R10: dffffc0000000000 R11: fffffbfff25f36c4 R12: ffffffff89731840
-R13: ffff88804b587000 R14: ffff88804b587000 R15: ffffffff89731870
-FS:  000055555e080380(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 00000000207d4000 CR4: 0000000000350ef0
-Call Trace:
- <TASK>
- unix_release+0x87/0xc0 net/unix/af_unix.c:1048
- __sock_release net/socket.c:659 [inline]
- sock_close+0xbe/0x240 net/socket.c:1421
- __fput+0x42b/0x8a0 fs/file_table.c:422
- __do_sys_close fs/open.c:1556 [inline]
- __se_sys_close fs/open.c:1541 [inline]
- __x64_sys_close+0x7f/0x110 fs/open.c:1541
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fb37d618070
-Code: 00 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff eb d4 e8 10 2c 00 00 80 3d 31 f0 07 00 00 74 17 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 48 c3 0f 1f 80 00 00 00 00 48 83 ec 18 89 7c
-RSP: 002b:00007ffcd4a525d8 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
-RAX: ffffffffffffffda RBX: 0000000000000005 RCX: 00007fb37d618070
-RDX: 0000000000000010 RSI: 00000000200001c0 RDI: 0000000000000004
-RBP: 0000000000000000 R08: 0000000100000000 R09: 0000000100000000
-R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
+Leave orig_addr in these padding slots initialized to INVALID_PHYS_ADDR.
+These slots do not correspond to any CPU buffer, so attempts to sync the
+data should be ignored.
 
-Use sk_psock, which will only check that the pointer is not been set to
-NULL yet, which should only happen after the callbacks are restored. If,
-then, a reference can still be gotten, we may call sk_psock_stop and cancel
-psock->work.
+The padding slots should be automatically released when the buffer is
+unmapped. However, swiotlb_tbl_unmap_single() takes only the address of the
+DMA buffer slot, not the first padding slot. Save the number of padding
+slots in struct io_tlb_slot and use it to adjust the slot index in
+swiotlb_release_slots(), so all allocated slots are properly freed.
 
-As suggested by Paolo Abeni, reorder the condition so the control flow is
-less convoluted.
-
-After that change, the reproducer does not trigger the WARN_ON_ONCE
-anymore.
-
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reported-by: syzbot+07a2e4a1a57118ef7355@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=07a2e4a1a57118ef7355
-Fixes: aadb2bb83ff7 ("sock_map: Fix a potential use-after-free in sock_map_close()")
-Fixes: 5b4a79ba65a1 ("bpf, sockmap: Don't let sock_map_{close,destroy,unhash} call itself")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Acked-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/r/20240524144702.1178377-1-cascardo@igalia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org # v6.6+
+Fixes: 2fd4fa5d3fb5 ("swiotlb: Fix alignment checks when both allocation and DMA masks are present")
+Link: https://lore.kernel.org/linux-iommu/20240311210507.217daf8b@meshulam.tesarici.cz/
+Signed-off-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock_map.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ kernel/dma/swiotlb.c |   59 +++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 46 insertions(+), 13 deletions(-)
 
---- a/net/core/sock_map.c
-+++ b/net/core/sock_map.c
-@@ -1639,19 +1639,23 @@ void sock_map_close(struct sock *sk, lon
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -69,11 +69,14 @@
+  * @alloc_size:	Size of the allocated buffer.
+  * @list:	The free list describing the number of free entries available
+  *		from each index.
++ * @pad_slots:	Number of preceding padding slots. Valid only in the first
++ *		allocated non-padding slot.
+  */
+ struct io_tlb_slot {
+ 	phys_addr_t orig_addr;
+ 	size_t alloc_size;
+-	unsigned int list;
++	unsigned short list;
++	unsigned short pad_slots;
+ };
  
- 	lock_sock(sk);
- 	rcu_read_lock();
--	psock = sk_psock_get(sk);
--	if (unlikely(!psock)) {
--		rcu_read_unlock();
--		release_sock(sk);
--		saved_close = READ_ONCE(sk->sk_prot)->close;
--	} else {
-+	psock = sk_psock(sk);
-+	if (likely(psock)) {
- 		saved_close = psock->saved_close;
- 		sock_map_remove_links(sk, psock);
-+		psock = sk_psock_get(sk);
-+		if (unlikely(!psock))
-+			goto no_psock;
- 		rcu_read_unlock();
- 		sk_psock_stop(psock);
- 		release_sock(sk);
- 		cancel_delayed_work_sync(&psock->work);
- 		sk_psock_put(sk, psock);
-+	} else {
-+		saved_close = READ_ONCE(sk->sk_prot)->close;
-+no_psock:
-+		rcu_read_unlock();
-+		release_sock(sk);
+ static bool swiotlb_force_bounce;
+@@ -287,6 +290,7 @@ static void swiotlb_init_io_tlb_pool(str
+ 					 mem->nslabs - i);
+ 		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
+ 		mem->slots[i].alloc_size = 0;
++		mem->slots[i].pad_slots = 0;
  	}
  
- 	/* Make sure we do not recurse. This is a bug.
+ 	memset(vaddr, 0, bytes);
+@@ -821,12 +825,30 @@ void swiotlb_dev_init(struct device *dev
+ #endif
+ }
+ 
+-/*
+- * Return the offset into a iotlb slot required to keep the device happy.
++/**
++ * swiotlb_align_offset() - Get required offset into an IO TLB allocation.
++ * @dev:         Owning device.
++ * @align_mask:  Allocation alignment mask.
++ * @addr:        DMA address.
++ *
++ * Return the minimum offset from the start of an IO TLB allocation which is
++ * required for a given buffer address and allocation alignment to keep the
++ * device happy.
++ *
++ * First, the address bits covered by min_align_mask must be identical in the
++ * original address and the bounce buffer address. High bits are preserved by
++ * choosing a suitable IO TLB slot, but bits below IO_TLB_SHIFT require extra
++ * padding bytes before the bounce buffer.
++ *
++ * Second, @align_mask specifies which bits of the first allocated slot must
++ * be zero. This may require allocating additional padding slots, and then the
++ * offset (in bytes) from the first such padding slot is returned.
+  */
+-static unsigned int swiotlb_align_offset(struct device *dev, u64 addr)
++static unsigned int swiotlb_align_offset(struct device *dev,
++					 unsigned int align_mask, u64 addr)
+ {
+-	return addr & dma_get_min_align_mask(dev) & (IO_TLB_SIZE - 1);
++	return addr & dma_get_min_align_mask(dev) &
++		(align_mask | (IO_TLB_SIZE - 1));
+ }
+ 
+ /*
+@@ -847,7 +869,7 @@ static void swiotlb_bounce(struct device
+ 		return;
+ 
+ 	tlb_offset = tlb_addr & (IO_TLB_SIZE - 1);
+-	orig_addr_offset = swiotlb_align_offset(dev, orig_addr);
++	orig_addr_offset = swiotlb_align_offset(dev, 0, orig_addr);
+ 	if (tlb_offset < orig_addr_offset) {
+ 		dev_WARN_ONCE(dev, 1,
+ 			"Access before mapping start detected. orig offset %u, requested offset %u.\n",
+@@ -983,7 +1005,7 @@ static int swiotlb_area_find_slots(struc
+ 	unsigned long max_slots = get_max_slots(boundary_mask);
+ 	unsigned int iotlb_align_mask = dma_get_min_align_mask(dev);
+ 	unsigned int nslots = nr_slots(alloc_size), stride;
+-	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
++	unsigned int offset = swiotlb_align_offset(dev, 0, orig_addr);
+ 	unsigned int index, slots_checked, count = 0, i;
+ 	unsigned long flags;
+ 	unsigned int slot_base;
+@@ -1282,11 +1304,12 @@ phys_addr_t swiotlb_tbl_map_single(struc
+ 		unsigned long attrs)
+ {
+ 	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
+-	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
++	unsigned int offset;
+ 	struct io_tlb_pool *pool;
+ 	unsigned int i;
+ 	int index;
+ 	phys_addr_t tlb_addr;
++	unsigned short pad_slots;
+ 
+ 	if (!mem || !mem->nslabs) {
+ 		dev_warn_ratelimited(dev,
+@@ -1303,6 +1326,7 @@ phys_addr_t swiotlb_tbl_map_single(struc
+ 		return (phys_addr_t)DMA_MAPPING_ERROR;
+ 	}
+ 
++	offset = swiotlb_align_offset(dev, alloc_align_mask, orig_addr);
+ 	index = swiotlb_find_slots(dev, orig_addr,
+ 				   alloc_size + offset, alloc_align_mask, &pool);
+ 	if (index == -1) {
+@@ -1318,6 +1342,10 @@ phys_addr_t swiotlb_tbl_map_single(struc
+ 	 * This is needed when we sync the memory.  Then we sync the buffer if
+ 	 * needed.
+ 	 */
++	pad_slots = offset >> IO_TLB_SHIFT;
++	offset &= (IO_TLB_SIZE - 1);
++	index += pad_slots;
++	pool->slots[index].pad_slots = pad_slots;
+ 	for (i = 0; i < nr_slots(alloc_size + offset); i++)
+ 		pool->slots[index + i].orig_addr = slot_addr(orig_addr, i);
+ 	tlb_addr = slot_addr(pool->start, index) + offset;
+@@ -1336,13 +1364,17 @@ static void swiotlb_release_slots(struct
+ {
+ 	struct io_tlb_pool *mem = swiotlb_find_pool(dev, tlb_addr);
+ 	unsigned long flags;
+-	unsigned int offset = swiotlb_align_offset(dev, tlb_addr);
+-	int index = (tlb_addr - offset - mem->start) >> IO_TLB_SHIFT;
+-	int nslots = nr_slots(mem->slots[index].alloc_size + offset);
+-	int aindex = index / mem->area_nslabs;
+-	struct io_tlb_area *area = &mem->areas[aindex];
++	unsigned int offset = swiotlb_align_offset(dev, 0, tlb_addr);
++	int index, nslots, aindex;
++	struct io_tlb_area *area;
+ 	int count, i;
+ 
++	index = (tlb_addr - offset - mem->start) >> IO_TLB_SHIFT;
++	index -= mem->slots[index].pad_slots;
++	nslots = nr_slots(mem->slots[index].alloc_size + offset);
++	aindex = index / mem->area_nslabs;
++	area = &mem->areas[aindex];
++
+ 	/*
+ 	 * Return the buffer to the free list by setting the corresponding
+ 	 * entries to indicate the number of contiguous entries available.
+@@ -1365,6 +1397,7 @@ static void swiotlb_release_slots(struct
+ 		mem->slots[i].list = ++count;
+ 		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
+ 		mem->slots[i].alloc_size = 0;
++		mem->slots[i].pad_slots = 0;
+ 	}
+ 
+ 	/*
 
 
 
