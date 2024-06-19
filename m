@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-54101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E940E90ECB1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D9D90EDDA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 952CA1F21C68
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7C081C22644
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B998C145334;
-	Wed, 19 Jun 2024 13:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0C914A4E2;
+	Wed, 19 Jun 2024 13:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyictHwi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJR90RFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7904B14389C;
-	Wed, 19 Jun 2024 13:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBB9144D3E;
+	Wed, 19 Jun 2024 13:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802588; cv=none; b=fhG9IOHFvnsvY8DYOJO+FIC80bfEtLGCaeO5hp8hu/d9+nDwHtiYeyz+07JtoKzMqfaAix83ivd9PJUiJnTSr936wN6CyGyILUU2ttsxGHCJzfpyg8hYxG+UFx49HoYrrJCPCmAe1aH/Fm1h24XPchkauWUMWxsnSPmQ1/yjyVQ=
+	t=1718803371; cv=none; b=VKhuYiVLnmIrqYDIwfrs6e6a1yY2jaHh+Z9s9brE9a4pzZeZLwnijAkPAq9yTbf8OZWSCle1tpU8dSKlpqSt651RkcYUV1cm2MvDUmM562YVV9JaOdZWt2UdKvtpgX1CjXxvZp4JF3/vGN+SMtWZRSZFps0i0u+dHA4ocPCRKwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802588; c=relaxed/simple;
-	bh=9AZwRBxiNBR9fZgm4Sb8YjecrwbZ/WiHm5RKHF8DJxo=;
+	s=arc-20240116; t=1718803371; c=relaxed/simple;
+	bh=USSVEqlWyS3ZvJDjw9CkxHIWzwj/rQNjUmczqRsgKk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XY5geCnKqXiPYEzVafMC+tcvK8HQ6lu2Trfysm6ij5Pm+3TShmga4XaGGP7k1hpAsizbjUhx9aPHONO4uZLn8c1R/bwDET5mwDgMYYJdvBZi5qDps6o0QfyV/dQ29qKzjIdyPDl0eUb0EPCL224fvZdzyrSJ51+h5S7qmqkVjQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyictHwi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CFCC2BBFC;
-	Wed, 19 Jun 2024 13:09:47 +0000 (UTC)
+	 MIME-Version; b=MbBlZYAVOteaqphLPvaViWsfJHZ3cSQiIFh7t7TaIsmsX08BdI9W3t9WRxzyTIsnFTyHn93GSiv42mjoNJqJWuUDh3UR7JhuOtoGBos6uKlpe4+fKsOtye6V2C0xSPCN3N0znn112AWRgi/yEJvsjyLKzeUI4RUQRZX2lX3XSZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJR90RFy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A544BC2BBFC;
+	Wed, 19 Jun 2024 13:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802588;
-	bh=9AZwRBxiNBR9fZgm4Sb8YjecrwbZ/WiHm5RKHF8DJxo=;
+	s=korg; t=1718803371;
+	bh=USSVEqlWyS3ZvJDjw9CkxHIWzwj/rQNjUmczqRsgKk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GyictHwi5C/XiB8TkZE8Wo8w2ZliDy8PTNU6YJrnAoQEc+H8YHZUS0KX/dFQn/jv5
-	 xhQF2jO5l220sVQy4f5OV2VEy5zNqRfbccSy5wDNDTU3tKRzcJli2IegC5cJyZ1fyN
-	 EUnQW4eNdwLCDkE8/oNPmoXaPLfqO6Eo1ESA5nBQ=
+	b=aJR90RFyHD8mc8j+ccmnYTf4oGnTZKyDDHU3b8nfILiFD1NeGiHmvbhbldmLSmDBx
+	 AcZ8hVWE6aj9nVR+S1fADyPVhI2uWFXcPmWfs9DczrVYffVpsVFfX96blmzNnp7r7M
+	 A30u3yH0FqPTlgXwE66QSV+HXGKREELsVpwG9MFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.6 220/267] intel_th: pci: Add Granite Rapids SOC support
-Date: Wed, 19 Jun 2024 14:56:11 +0200
-Message-ID: <20240619125614.770961216@linuxfoundation.org>
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Anup Patel <anup@brainfault.org>
+Subject: [PATCH 6.9 213/281] irqchip/sifive-plic: Chain to parent IRQ after handlers are ready
+Date: Wed, 19 Jun 2024 14:56:12 +0200
+Message-ID: <20240619125618.157085030@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit 854afe461b009801a171b3a49c5f75ea43e4c04c upstream.
+commit e306a894bd511804ba9db7c00ca9cc05b55df1f2 upstream.
 
-Add support for the Trace Hub in Granite Rapids SOC.
+Now that the PLIC uses a platform driver, the driver is probed later in the
+boot process, where interrupts from peripherals might already be pending.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20240429130119.1518073-12-alexander.shishkin@linux.intel.com
+As a result, plic_handle_irq() may be called as early as the call to
+irq_set_chained_handler() completes. But this call happens before the
+per-context handler is completely set up, so there is a window where
+plic_handle_irq() can see incomplete per-context state and crash.
+
+Avoid this by delaying the call to irq_set_chained_handler() until all
+handlers from all PLICs are initialized.
+
+Fixes: 8ec99b033147 ("irqchip/sifive-plic: Convert PLIC driver into a platform driver")
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240529215458.937817-1-samuel.holland@sifive.com
+Closes: https://lore.kernel.org/r/CAMuHMdVYFFR7K5SbHBLY-JHhb7YpgGMS_hnRWm8H0KD-wBo+4A@mail.gmail.com/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/irqchip/irq-sifive-plic.c |   34 +++++++++++++++++-----------------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -310,6 +310,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Granite Rapids SOC */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x3256),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Alder Lake CPU */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+--- a/drivers/irqchip/irq-sifive-plic.c
++++ b/drivers/irqchip/irq-sifive-plic.c
+@@ -85,7 +85,7 @@ struct plic_handler {
+ 	struct plic_priv	*priv;
+ };
+ static int plic_parent_irq __ro_after_init;
+-static bool plic_cpuhp_setup_done __ro_after_init;
++static bool plic_global_setup_done __ro_after_init;
+ static DEFINE_PER_CPU(struct plic_handler, plic_handlers);
+ 
+ static int plic_irq_set_type(struct irq_data *d, unsigned int type);
+@@ -490,10 +490,8 @@ static int plic_probe(struct platform_de
+ 	unsigned long plic_quirks = 0;
+ 	struct plic_handler *handler;
+ 	u32 nr_irqs, parent_hwirq;
+-	struct irq_domain *domain;
+ 	struct plic_priv *priv;
+ 	irq_hw_number_t hwirq;
+-	bool cpuhp_setup;
+ 
+ 	if (is_of_node(dev->fwnode)) {
+ 		const struct of_device_id *id;
+@@ -552,14 +550,6 @@ static int plic_probe(struct platform_de
+ 			continue;
+ 		}
+ 
+-		/* Find parent domain and register chained handler */
+-		domain = irq_find_matching_fwnode(riscv_get_intc_hwnode(), DOMAIN_BUS_ANY);
+-		if (!plic_parent_irq && domain) {
+-			plic_parent_irq = irq_create_mapping(domain, RV_IRQ_EXT);
+-			if (plic_parent_irq)
+-				irq_set_chained_handler(plic_parent_irq, plic_handle_irq);
+-		}
+-
+ 		/*
+ 		 * When running in M-mode we need to ignore the S-mode handler.
+ 		 * Here we assume it always comes later, but that might be a
+@@ -600,25 +590,35 @@ done:
+ 		goto fail_cleanup_contexts;
+ 
+ 	/*
+-	 * We can have multiple PLIC instances so setup cpuhp state
++	 * We can have multiple PLIC instances so setup global state
+ 	 * and register syscore operations only once after context
+ 	 * handlers of all online CPUs are initialized.
+ 	 */
+-	if (!plic_cpuhp_setup_done) {
+-		cpuhp_setup = true;
++	if (!plic_global_setup_done) {
++		struct irq_domain *domain;
++		bool global_setup = true;
++
+ 		for_each_online_cpu(cpu) {
+ 			handler = per_cpu_ptr(&plic_handlers, cpu);
+ 			if (!handler->present) {
+-				cpuhp_setup = false;
++				global_setup = false;
+ 				break;
+ 			}
+ 		}
+-		if (cpuhp_setup) {
++
++		if (global_setup) {
++			/* Find parent domain and register chained handler */
++			domain = irq_find_matching_fwnode(riscv_get_intc_hwnode(), DOMAIN_BUS_ANY);
++			if (domain)
++				plic_parent_irq = irq_create_mapping(domain, RV_IRQ_EXT);
++			if (plic_parent_irq)
++				irq_set_chained_handler(plic_parent_irq, plic_handle_irq);
++
+ 			cpuhp_setup_state(CPUHP_AP_IRQ_SIFIVE_PLIC_STARTING,
+ 					  "irqchip/sifive/plic:starting",
+ 					  plic_starting_cpu, plic_dying_cpu);
+ 			register_syscore_ops(&plic_irq_syscore_ops);
+-			plic_cpuhp_setup_done = true;
++			plic_global_setup_done = true;
+ 		}
+ 	}
+ 
 
 
 
