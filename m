@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2611F90EEA4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1B490EDAC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2C5C1F2132C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55ED91F22093
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592F51422B8;
-	Wed, 19 Jun 2024 13:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845A3143C65;
+	Wed, 19 Jun 2024 13:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/cv/Z8z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dN5Jx9OX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BFF3C0B;
-	Wed, 19 Jun 2024 13:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40953143C4E;
+	Wed, 19 Jun 2024 13:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803837; cv=none; b=mwynn4j4d+VLhzRp0HsXVG1aiQUxtMwzJxzmpW3JWN4aEg/O7/evFZYy4uyKNTKcGYH1EDj2QNTB2EV5bE8X8fq6C4Oan3yuN2ubldVTfgqL+96VL+iG8zE54jfyxdhSnuxknlusxU0vXiIYgE4o5rZXDYx0cBDQUtrBSpC9OLA=
+	t=1718803252; cv=none; b=lllobPy7xrZOC9B6bEyMv08By1ESi/KPb/UfcN1GtGShyjuH2TB4dhux8ceNhk1n9dEhYcBYCkgXPm8P6fSLTEuP2LBzcbgNQsxcLDYLr9skn1ilG7HAMG1v1WfZd2bBsLOb5agND8Y9NiuZEnZBRf0fVmD32KuzNz10LQPpbgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803837; c=relaxed/simple;
-	bh=noXEukVCxN2BJIzq8A3kaF1KAlLMkEVo2JVglrNIcgY=;
+	s=arc-20240116; t=1718803252; c=relaxed/simple;
+	bh=0x/CbxS0vcfDGAIqJcEc3tE/Cx0oOY/W2ll23u2oxBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opmdmQUMpRwiffgiYgjJXzDX8mJXzYhKcxj5KymtaJ9A9WNoDVL8yUKEfIDofwGq3B8bi5O/NHFZjwI3aesmw9SgAuxyQdi15e6tMOsaT8L+a+ZoeYdpQmiozLTapX7Y6su6gW9Kpoq/NlxTLAl90f7DlHkKNpEpee/2snjbQ9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/cv/Z8z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAF5C2BBFC;
-	Wed, 19 Jun 2024 13:30:36 +0000 (UTC)
+	 MIME-Version; b=MhhoVvp5NTan/mmSEcPf6HLYjy87XYfiCz/d0IY99wt1pabiH70b9FTDm9G5qYjqtctkPArB8LEIOf1KAFtPX96U2flIpWpq2RriegpvmV58BkI4OXGA8/goNbs8TxRHeHy8h9l/ipcopnE4jlt/RnFZblQfvyJq700yIspl/EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dN5Jx9OX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD162C2BBFC;
+	Wed, 19 Jun 2024 13:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803837;
-	bh=noXEukVCxN2BJIzq8A3kaF1KAlLMkEVo2JVglrNIcgY=;
+	s=korg; t=1718803252;
+	bh=0x/CbxS0vcfDGAIqJcEc3tE/Cx0oOY/W2ll23u2oxBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/cv/Z8zPppbDy8sa4Kqq7DqIhC5L7W97EQ6xXGno+idIwdJqu1Au/8HXq0maG0Li
-	 O5H62RrGLGcBOQW7jfvxhVSh9zm+SZqHQK1NX/GqJq8+r76+mq5tklDORglTC6CcIH
-	 lzfxo7HZGCKVpHnrImHuTKh2GXCAlInQP0xyhXTU=
+	b=dN5Jx9OX7GKaam3l0mVf0P9tF6d9PmnB3OdwuMJqo5Nx1bv6T1SnkChU0JewQGKOH
+	 d6VSG0M/efGxquIfQBa9od8XUofuiGX6Oy8jZ1CXWgw+tmR6nvzDleWk7DEttudbOM
+	 rVoDZAPGaQPFioIN1vK1PSiR9KlnAcaYpWx5RuoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/217] NFSv4.1 enforce rootpath check in fs_location query
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.9 204/281] ACPI: x86: Force StorageD3Enable on more products
 Date: Wed, 19 Jun 2024 14:56:03 +0200
-Message-ID: <20240619125601.320394777@linuxfoundation.org>
+Message-ID: <20240619125617.800743488@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 28568c906c1bb5f7560e18082ed7d6295860f1c2 ]
+commit e79a10652bbd320649da705ca1ea0c04351af403 upstream.
 
-In commit 4ca9f31a2be66 ("NFSv4.1 test and add 4.1 trunking transport"),
-we introduce the ability to query the NFS server for possible trunking
-locations of the existing filesystem. However, we never checked the
-returned file system path for these alternative locations. According
-to the RFC, the server can say that the filesystem currently known
-under "fs_root" of fs_location also resides under these server
-locations under the following "rootpath" pathname. The client cannot
-handle trunking a filesystem that reside under different location
-under different paths other than what the main path is. This patch
-enforces the check that fs_root path and rootpath path in fs_location
-reply is the same.
+A Rembrandt-based HP thin client is reported to have problems where
+the NVME disk isn't present after resume from s2idle.
 
-Fixes: 4ca9f31a2be6 ("NFSv4.1 test and add 4.1 trunking transport")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is because the NVME disk wasn't put into D3 at suspend, and
+that happened because the StorageD3Enable _DSD was missing in the BIOS.
+
+As AMD's architecture requires that the NVME is in D3 for s2idle, adjust
+the criteria for force_storage_d3 to match *all* Zen SoCs when the FADT
+advertises low power idle support.
+
+This will ensure that any future products with this BIOS deficiency don't
+need to be added to the allow list of overrides.
+
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ drivers/acpi/x86/utils.c |   24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index bda3050817c90..ec641a8f6604b 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -4009,6 +4009,23 @@ static void test_fs_location_for_trunking(struct nfs4_fs_location *location,
- 	}
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -197,16 +197,16 @@ bool acpi_device_override_status(struct
  }
  
-+static bool _is_same_nfs4_pathname(struct nfs4_pathname *path1,
-+				   struct nfs4_pathname *path2)
-+{
-+	int i;
-+
-+	if (path1->ncomponents != path2->ncomponents)
-+		return false;
-+	for (i = 0; i < path1->ncomponents; i++) {
-+		if (path1->components[i].len != path2->components[i].len)
-+			return false;
-+		if (memcmp(path1->components[i].data, path2->components[i].data,
-+				path1->components[i].len))
-+			return false;
-+	}
-+	return true;
-+}
-+
- static int _nfs4_discover_trunking(struct nfs_server *server,
- 				   struct nfs_fh *fhandle)
+ /*
+- * AMD systems from Renoir and Lucienne *require* that the NVME controller
++ * AMD systems from Renoir onwards *require* that the NVME controller
+  * is put into D3 over a Modern Standby / suspend-to-idle cycle.
+  *
+  * This is "typically" accomplished using the `StorageD3Enable`
+  * property in the _DSD that is checked via the `acpi_storage_d3` function
+- * but this property was introduced after many of these systems launched
+- * and most OEM systems don't have it in their BIOS.
++ * but some OEM systems still don't have it in their BIOS.
+  *
+  * The Microsoft documentation for StorageD3Enable mentioned that Windows has
+- * a hardcoded allowlist for D3 support, which was used for these platforms.
++ * a hardcoded allowlist for D3 support as well as a registry key to override
++ * the BIOS, which has been used for these cases.
+  *
+  * This allows quirking on Linux in a similar fashion.
+  *
+@@ -219,19 +219,15 @@ bool acpi_device_override_status(struct
+  *    https://bugzilla.kernel.org/show_bug.cgi?id=216773
+  *    https://bugzilla.kernel.org/show_bug.cgi?id=217003
+  * 2) On at least one HP system StorageD3Enable is missing on the second NVME
+-      disk in the system.
++ *    disk in the system.
++ * 3) On at least one HP Rembrandt system StorageD3Enable is missing on the only
++ *    NVME device.
+  */
+-static const struct x86_cpu_id storage_d3_cpu_ids[] = {
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 24, NULL),  /* Picasso */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
+-	{}
+-};
+-
+ bool force_storage_d3(void)
  {
-@@ -4042,9 +4059,13 @@ static int _nfs4_discover_trunking(struct nfs_server *server,
- 	if (status)
- 		goto out_free_3;
+-	return x86_match_cpu(storage_d3_cpu_ids);
++	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
++		return false;
++	return acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0;
+ }
  
--	for (i = 0; i < locations->nlocations; i++)
-+	for (i = 0; i < locations->nlocations; i++) {
-+		if (!_is_same_nfs4_pathname(&locations->fs_path,
-+					&locations->locations[i].rootpath))
-+			continue;
- 		test_fs_location_for_trunking(&locations->locations[i], clp,
- 					      server);
-+	}
- out_free_3:
- 	kfree(locations->fattr);
- out_free_2:
--- 
-2.43.0
-
+ /*
 
 
 
