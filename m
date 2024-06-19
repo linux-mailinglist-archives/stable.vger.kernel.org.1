@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124B690EEF8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3693590EDFB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19D331C20E96
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE2A51F21B08
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C94114388B;
-	Wed, 19 Jun 2024 13:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D709145FEF;
+	Wed, 19 Jun 2024 13:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DDPRhRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tq2wWlp0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C37B13F428;
-	Wed, 19 Jun 2024 13:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBAD143757;
+	Wed, 19 Jun 2024 13:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804045; cv=none; b=ebkT5MpJqIpSzRM5ygJsceyURktjab2tZ+kxVlM+uvRPvQ+wqxSaT95bQWuGw2HGUJaboZNaCaKO/BsgCpfpa828lG2a3+lmj7qaI5B7FoJKo/8n2dPqdmpf4e8RPaFW+3Hzp/tJ1tG2xdtJNk2dxABDNBdvtPHidC5hjZEvfQs=
+	t=1718803463; cv=none; b=hmYEAUEnhRgKlhx4puVVDxEk85/EHiNEsmQP4xqser+3Q+RbcMXHIEL+8Th31gLSjz0wBOiLK0j6Dkgn4hazKeKXjRKdSlctKpuiEKuVDtQsjPPH81TMbWGALv8XYFpi0HLI6w1vdSKR8jxwxYcuILLpcLSU6mqsgfIPuhZfatA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804045; c=relaxed/simple;
-	bh=P8AIKJU2H/oiwc8f3cCVBJtVTOxlCdv01qc9ia72a+8=;
+	s=arc-20240116; t=1718803463; c=relaxed/simple;
+	bh=ZzlI6vLGWYdeE7YAcLDV0sS1LL1CjHRxw9jyRMFayOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NF5X5yE6mnWDH4iSjsJ64dy5Lg3j4v4WM6RBcKhyY4fCClU8jdukNmEHKnOlcOv2/90G4W+tneICguRULgHmTRtUk+7503C70ArvQs/aoBnD4SjJ81I+t54p3l6sz/cojNKxpkD5eNj5LNn7iTJsOH7zDE5x6+ZJ6O+CS6Xq9XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DDPRhRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB20C32786;
-	Wed, 19 Jun 2024 13:34:04 +0000 (UTC)
+	 MIME-Version; b=l+buBjsQV44KafMp2FygTajC+tbvHq/vteQQ9cSpSW8mafU6v5I/8ZfhKyap/r/FUVftoyEmwaNfk/hR6NJHzSct4Ow4o3EMwWZF7ljrxdtorTbTPH3wZk4sIaCtohpny1WyXBsFzRhFzdwLTpNZrW+OccVj2b0OY8/QTSL3aIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tq2wWlp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6672C32786;
+	Wed, 19 Jun 2024 13:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804045;
-	bh=P8AIKJU2H/oiwc8f3cCVBJtVTOxlCdv01qc9ia72a+8=;
+	s=korg; t=1718803463;
+	bh=ZzlI6vLGWYdeE7YAcLDV0sS1LL1CjHRxw9jyRMFayOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2DDPRhRrXchimU9pNb4lYjs3SCRoMeOyhv7zbgnsJhaZ8b2I+4gqNx7gvqbjWnIj5
-	 CABOEN5zjDAHIXxkCh1i/SpFW9O65sBRYOjLKn6J0H0VeEa/sLyQTRtD7pbhL0kHac
-	 7LWzdTth6V7xwrI1LkvFZ3AZ/KLnTFxDdZYuziWw=
+	b=Tq2wWlp05QeyoguPRtcpL50mZ9wOjmZRrwr9HCGm92d7rLjbe+ZYgRx0r/V/lYxXs
+	 vTXK5Gm+vmL3fTg/Cr0/4Ie/XYAWUMQMmJZPtJapZcGR+mE4dJiDqbT619m+DAXFDl
+	 mQOJ1SDpE34DUx5RreGK8JO6gPLvTJW1YG5v0I7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.1 190/217] intel_th: pci: Add Granite Rapids SOC support
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 274/281] serial: 8250_dw: Dont use struct dw8250_data outside of 8250_dw
 Date: Wed, 19 Jun 2024 14:57:13 +0200
-Message-ID: <20240619125604.016453847@linuxfoundation.org>
+Message-ID: <20240619125620.525525531@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 854afe461b009801a171b3a49c5f75ea43e4c04c upstream.
+[ Upstream commit 87d80bfbd577912462061b1a45c0ed9c7fcb872f ]
 
-Add support for the Trace Hub in Granite Rapids SOC.
+The container of the struct dw8250_port_data is private to the actual
+driver. In particular, 8250_lpss and 8250_dw use different data types
+that are assigned to the UART port private_data. Hence, it must not
+be used outside the specific driver.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20240429130119.1518073-12-alexander.shishkin@linux.intel.com
+Currently the only cpr_val is required by the common code, make it
+be available via struct dw8250_port_data.
+
+This fixes the UART breakage on Intel Galileo boards.
+
+Fixes: 593dea000bc1 ("serial: 8250: dw: Allow to use a fallback CPR value if not synthesized")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240514190730.2787071-2-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/tty/serial/8250/8250_dw.c    | 9 +++++++--
+ drivers/tty/serial/8250/8250_dwlib.c | 3 +--
+ drivers/tty/serial/8250/8250_dwlib.h | 3 ++-
+ 3 files changed, 10 insertions(+), 5 deletions(-)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -310,6 +310,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Granite Rapids SOC */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x3256),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Alder Lake CPU */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index 1300c92b8702a..94d680e4b5353 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -55,6 +55,7 @@
+ #define DW_UART_QUIRK_SKIP_SET_RATE	BIT(2)
+ #define DW_UART_QUIRK_IS_DMA_FC		BIT(3)
+ #define DW_UART_QUIRK_APMC0D08		BIT(4)
++#define DW_UART_QUIRK_CPR_VALUE		BIT(5)
+ 
+ static inline struct dw8250_data *clk_to_dw8250_data(struct notifier_block *nb)
+ {
+@@ -445,6 +446,10 @@ static void dw8250_prepare_rx_dma(struct uart_8250_port *p)
+ static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
+ {
+ 	unsigned int quirks = data->pdata ? data->pdata->quirks : 0;
++	u32 cpr_value = data->pdata ? data->pdata->cpr_value : 0;
++
++	if (quirks & DW_UART_QUIRK_CPR_VALUE)
++		data->data.cpr_value = cpr_value;
+ 
+ #ifdef CONFIG_64BIT
+ 	if (quirks & DW_UART_QUIRK_OCTEON) {
+@@ -727,8 +732,8 @@ static const struct dw8250_platform_data dw8250_armada_38x_data = {
+ 
+ static const struct dw8250_platform_data dw8250_renesas_rzn1_data = {
+ 	.usr_reg = DW_UART_USR,
+-	.cpr_val = 0x00012f32,
+-	.quirks = DW_UART_QUIRK_IS_DMA_FC,
++	.cpr_value = 0x00012f32,
++	.quirks = DW_UART_QUIRK_CPR_VALUE | DW_UART_QUIRK_IS_DMA_FC,
+ };
+ 
+ static const struct dw8250_platform_data dw8250_starfive_jh7100_data = {
+diff --git a/drivers/tty/serial/8250/8250_dwlib.c b/drivers/tty/serial/8250/8250_dwlib.c
+index 3e33ddf7bc800..5a2520943dfd5 100644
+--- a/drivers/tty/serial/8250/8250_dwlib.c
++++ b/drivers/tty/serial/8250/8250_dwlib.c
+@@ -242,7 +242,6 @@ static const struct serial_rs485 dw8250_rs485_supported = {
+ void dw8250_setup_port(struct uart_port *p)
+ {
+ 	struct dw8250_port_data *pd = p->private_data;
+-	struct dw8250_data *data = to_dw8250_data(pd);
+ 	struct uart_8250_port *up = up_to_u8250p(p);
+ 	u32 reg, old_dlf;
+ 
+@@ -278,7 +277,7 @@ void dw8250_setup_port(struct uart_port *p)
+ 
+ 	reg = dw8250_readl_ext(p, DW_UART_CPR);
+ 	if (!reg) {
+-		reg = data->pdata->cpr_val;
++		reg = pd->cpr_value;
+ 		dev_dbg(p->dev, "CPR is not available, using 0x%08x instead\n", reg);
+ 	}
+ 	if (!reg)
+diff --git a/drivers/tty/serial/8250/8250_dwlib.h b/drivers/tty/serial/8250/8250_dwlib.h
+index f13e91f2cace9..794a9014cdac1 100644
+--- a/drivers/tty/serial/8250/8250_dwlib.h
++++ b/drivers/tty/serial/8250/8250_dwlib.h
+@@ -19,6 +19,7 @@ struct dw8250_port_data {
+ 	struct uart_8250_dma	dma;
+ 
+ 	/* Hardware configuration */
++	u32			cpr_value;
+ 	u8			dlf_size;
+ 
+ 	/* RS485 variables */
+@@ -27,7 +28,7 @@ struct dw8250_port_data {
+ 
+ struct dw8250_platform_data {
+ 	u8 usr_reg;
+-	u32 cpr_val;
++	u32 cpr_value;
+ 	unsigned int quirks;
+ };
+ 
+-- 
+2.43.0
+
 
 
 
