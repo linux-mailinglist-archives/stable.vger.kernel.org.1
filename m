@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AEE90E5BF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:36:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E9490E5C0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:36:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFB27282285
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:36:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E78961F22377
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9559A79952;
-	Wed, 19 Jun 2024 08:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877737B3E1;
+	Wed, 19 Jun 2024 08:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7K34IMr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmGTBrt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560936F308
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BC079DDB
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718786186; cv=none; b=DQ6Tpz4IrR2tu71X0Eiuq6XUOrhlxtA75fVy0645Q+PbXV8pIr2PE1P6dKC4aUXUNWLbwd6kP9XTjIyWoYIKWjw+snUjOPFUOagioI3heFgjIYXK3QKQFOWsSXnUWVFs6bvBtMxf+PbUJtzU4AZkMeGkqTSaMYHVdKbbjK4ZGTk=
+	t=1718786189; cv=none; b=liPkqsMnVchfMkBJygwMD5LXkzhl/N2yex0O/GQPN78V0pUEFNHgrSdQGJsgxXa2FxythPhp0hx9hNkWqFDKAcygYpNoLjpiejrT3h4Km0fR9PH5Nb8LyvaIv9vKKPN9NwZi07KeIfawOmzKqFKaAQLaD9o+A1RATNu3sMJjubU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718786186; c=relaxed/simple;
-	bh=S/NX4dBMEz7oGYewArMbEcX8nDECMFBbIObXGyFC42w=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JFKR4fY3NTKpL0ugwUmflfAcqhLY2rVt3KSzvNMf6/HNht7Ip2SADNPo3jKyokeLeCHNPPFQ3t/MpcMnIUUyh3fBrxnVPpLah66SryIUAJjRWs0zF+zcuOcjd61vzGCJWm1hqeWrzYR0QxZ84e/HDoXaouxynrWeH2IbB3HRCEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7K34IMr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749EAC2BBFC;
-	Wed, 19 Jun 2024 08:36:25 +0000 (UTC)
+	s=arc-20240116; t=1718786189; c=relaxed/simple;
+	bh=iEaqOPx+J9kBkN2PMduUgz3HprglUAI9NEGprWtXvt0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=I8zJoaSTWq69axVyx0gB1JtQAomqySsdXe5CodugsUTzyafsPmm9gqXbd9Oi6maWpD4QvcTTvEv9GNXQzqcSRa7dajbBuQbDCGRV71OC+VhkdDU2vYRRpN1ELpNJ0Xmyij1EbqwAiLEMkkche2TP/tCVTJg3a9ApJlwZ+EM+JtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmGTBrt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7050CC2BBFC;
+	Wed, 19 Jun 2024 08:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718786185;
-	bh=S/NX4dBMEz7oGYewArMbEcX8nDECMFBbIObXGyFC42w=;
+	s=korg; t=1718786188;
+	bh=iEaqOPx+J9kBkN2PMduUgz3HprglUAI9NEGprWtXvt0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=f7K34IMr7VWcNdh50wZupF9r3heycWFTZa92PxU7aZsXhw8oLnN5XtuWddME/D2xx
-	 r4bDZlU8RbL39ebhSDicF8BqQmljhcAMBPRFCtzoZl/7XlddlWh77fJU1luHr8N/ci
-	 BO9l349UfeSJUjiUIhQB4wASNDtWJbAC2NW5l3is=
-Subject: FAILED: patch "[PATCH] drm/ast: Set DDC timeout in milliseconds" failed to apply to 6.9-stable tree
+	b=xmGTBrt26eOKNXjsxV9TvlOjMAGHv48vf4NkpkUJzBus5c2MYvFM2Ujc0+z61gcMx
+	 bKmgYVA+fUcxi8cGvYJpXdo7snFNksrs3ygZJ0Wyq1ImDdwJQEtwwkveGTqDKXxj35
+	 JB7Devzy07n/TKWu8QXlibYX3ofNWPs5OH+QI7tg=
+Subject: FAILED: patch "[PATCH] drm/ast: Set DDC timeout in milliseconds" failed to apply to 6.6-stable tree
 To: tzimmermann@suse.de,airlied@redhat.com,jfalempe@redhat.com,maarten.lankhorst@linux.intel.com,mripard@kernel.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Wed, 19 Jun 2024 10:36:23 +0200
-Message-ID: <2024061922-gummy-scarring-b542@gregkh>
+Message-ID: <2024061923-equal-outtakes-2db3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.9-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x c0cd6925856f661e1a37278660ccae551cef7077
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061922-gummy-scarring-b542@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061923-equal-outtakes-2db3@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,7 @@ c0cd6925856f ("drm/ast: Set DDC timeout in milliseconds")
 e14ab3037383 ("drm/ast: Allocate instance of struct ast_i2c_chan with managed helpers")
 c0af492c872b ("drm/ast: Remove struct ast_{vga,sil165}_connector")
 d66cdb638a49 ("drm/ast: Fail probing if DDC channel could not be initialized")
+ed8d84530ab0 ("Merge tag 'i2c-for-6.8-rc1-rebased' of git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux")
 
 thanks,
 
