@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-54350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE72790EDC8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3EC390EEC8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A13001F22959
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5A431C24140
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CBF143757;
-	Wed, 19 Jun 2024 13:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB4814D6EF;
+	Wed, 19 Jun 2024 13:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCy7FTOq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7el5uWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5207146D49;
-	Wed, 19 Jun 2024 13:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C1A14B963;
+	Wed, 19 Jun 2024 13:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803320; cv=none; b=tR5fPjd6n8OAY9MnBUbygKnBCVL2vf4PT773tpnW+F5fruQNvLSgTAQSviQTV/neAalWZfvWiKKLVBkBOm+K5KPttAT2ye2MA5cLlDv9KxNFX7NGJhKEP7vD3gukfbo7S5ZPzxEUQFrXtMOew/sc9/VYmxoemleQJYw1oIcEFpo=
+	t=1718803908; cv=none; b=CLBv/Ya4PJ5oX/xAf3qZjre0lIhlEHx6gZVmbWFMsrkIMueSVCPtYVIb2CltkMBF5p/L+bHLBaAvxlRd87e97Im4DBzYl5y9ykDOljWs9xdTgaUjHz+2/Ocu6SQgbqhhaSOH4BczF1ogjIrwQWQ0m8G4DPodbhr4sQXhfMGtmXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803320; c=relaxed/simple;
-	bh=cosMgF4WAWMiAZAQMUdcEZOyUgPKPIwQYKbDiRkWvp4=;
+	s=arc-20240116; t=1718803908; c=relaxed/simple;
+	bh=lrF1OKvhArM0cvRAycJ42iAm6hHGMHYvys74+welJlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZ5mzEOlKRsxUqAS3XBCMFGxGjkmaPBOkvOy4dBqXFmJAVkGzUraASFtXx/vInDvnSqf6Ifow8DfK9NtVrrS5xn8ryN0zqlt8PmSucj/Ypa4MRaB/1ZYt1nzNnlqnpOi+ngTwUr/f1+gqWSAen3JatZxIpS+Fc325DBMXxrrc1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCy7FTOq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5846FC2BBFC;
-	Wed, 19 Jun 2024 13:22:00 +0000 (UTC)
+	 MIME-Version; b=Bfqq65ik8Cu3NRpWPgzihvJ+yM58k93Q7kiXc7Xp21dcS1s6D7A0AGvjZOOTIVjQ5SCqDHGZ/4MVHiQLlKTO2EBk8Eg69b/JKdkYuAyl2sqsnafxA1PN0DjmL8bp4ac8c0D3EXUXxvXGP2i2DQFFdRGPzPX1foRBzd9fTKASzog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7el5uWs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44DAC2BBFC;
+	Wed, 19 Jun 2024 13:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803320;
-	bh=cosMgF4WAWMiAZAQMUdcEZOyUgPKPIwQYKbDiRkWvp4=;
+	s=korg; t=1718803908;
+	bh=lrF1OKvhArM0cvRAycJ42iAm6hHGMHYvys74+welJlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GCy7FTOqWrszRF1NFYpRt1EMYUy6vj4XM/igL8zostjvNag9WECflX+3+9gv/2LO0
-	 sq51wGqA5ipDNmi7JnY7KRxPvdOVyrBkO0Vrx15hQrcsHHFmOvYJ+9qlDUwO/spZsC
-	 DPRprydvwTOkFLw3Eq+TIJr5NiAASm2H7+VIwVgA=
+	b=P7el5uWsG70xw/JAkPoTZ94mhs9pNf1qebgL6PZjt1SPkASclY6s+QMHjahuS4dMM
+	 tZoGfuzlzqkqUXcUKzx3XwyG1xdinEY2oDUCk5dVQYch6zqmKJGw73nvHyOFpV7smT
+	 wVkTsxcQnsjS5A5E12U+ClZdJn5VYXPIeGZbmiuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Nader <dev@kayoway.com>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.9 228/281] ata: ahci: Do not apply Intel PCS quirk on Intel Alder Lake
-Date: Wed, 19 Jun 2024 14:56:27 +0200
-Message-ID: <20240619125618.731990091@linuxfoundation.org>
+	Gal Pressman <gal@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 145/217] geneve: Fix incorrect inner network header offset when innerprotoinherit is set
+Date: Wed, 19 Jun 2024 14:56:28 +0200
+Message-ID: <20240619125602.285987377@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Nader <dev@kayoway.com>
+From: Gal Pressman <gal@nvidia.com>
 
-commit 9e2f46cd87473c70d01fcaf8a559809e6d18dd50 upstream.
+[ Upstream commit c6ae073f5903f6c6439d0ac855836a4da5c0a701 ]
 
-Commit b8b8b4e0c052 ("ata: ahci: Add Intel Alder Lake-P AHCI controller
-to low power chipsets list") added Intel Alder Lake to the ahci_pci_tbl.
+When innerprotoinherit is set, the tunneled packets do not have an inner
+Ethernet header.
+Change 'maclen' to not always assume the header length is ETH_HLEN, as
+there might not be a MAC header.
 
-Because of the way that the Intel PCS quirk was implemented, having
-an explicit entry in the ahci_pci_tbl caused the Intel PCS quirk to
-be applied. (The quirk was not being applied if there was no explict
-entry.)
+This resolves issues with drivers (e.g. mlx5, in
+mlx5e_tx_tunnel_accel()) who rely on the skb inner network header offset
+to be correct, and use it for TX offloads.
 
-Thus, entries that were added to the ahci_pci_tbl also got the Intel
-PCS quirk applied.
-
-The quirk was cleaned up in commit 7edbb6059274 ("ahci: clean up
-intel_pcs_quirk"), such that it is clear which entries that actually
-applies the Intel PCS quirk.
-
-Newer Intel AHCI controllers do not need the Intel PCS quirk,
-and applying it when not needed actually breaks some platforms.
-
-Do not apply the Intel PCS quirk for Intel Alder Lake.
-This is in line with how things worked before commit b8b8b4e0c052 ("ata:
-ahci: Add Intel Alder Lake-P AHCI controller to low power chipsets list"),
-such that certain platforms using Intel Alder Lake will work once again.
-
-Cc: stable@vger.kernel.org # 6.7
-Fixes: b8b8b4e0c052 ("ata: ahci: Add Intel Alder Lake-P AHCI controller to low power chipsets list")
-Signed-off-by: Jason Nader <dev@kayoway.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d8a6213d70ac ("geneve: fix header validation in geneve[6]_xmit_skb")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/geneve.c     | 10 ++++++----
+ include/net/ip_tunnels.h |  5 +++--
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 6548f10e61d9..07d66d2c5f0d 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -429,7 +429,6 @@ static const struct pci_device_id ahci_pci_tbl[] = {
- 	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci_pcs_quirk }, /* Comet Lake PCH RAID */
- 	/* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not tested yet */
- 	{ PCI_VDEVICE(INTEL, 0x4b63), board_ahci_pcs_quirk }, /* Elkhart Lake AHCI */
--	{ PCI_VDEVICE(INTEL, 0x7ae2), board_ahci_pcs_quirk }, /* Alder Lake-P AHCI */
+diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
+index 488ca1c854962..c4a49a75250e3 100644
+--- a/drivers/net/geneve.c
++++ b/drivers/net/geneve.c
+@@ -919,6 +919,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 			   struct geneve_dev *geneve,
+ 			   const struct ip_tunnel_info *info)
+ {
++	bool inner_proto_inherit = geneve->cfg.inner_proto_inherit;
+ 	bool xnet = !net_eq(geneve->net, dev_net(geneve->dev));
+ 	struct geneve_sock *gs4 = rcu_dereference(geneve->sock4);
+ 	const struct ip_tunnel_key *key = &info->key;
+@@ -930,7 +931,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	__be16 sport;
+ 	int err;
  
- 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
- 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+-	if (!skb_vlan_inet_prepare(skb))
++	if (!skb_vlan_inet_prepare(skb, inner_proto_inherit))
+ 		return -EINVAL;
+ 
+ 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
+@@ -1003,7 +1004,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	}
+ 
+ 	err = geneve_build_skb(&rt->dst, skb, info, xnet, sizeof(struct iphdr),
+-			       geneve->cfg.inner_proto_inherit);
++			       inner_proto_inherit);
+ 	if (unlikely(err))
+ 		return err;
+ 
+@@ -1019,6 +1020,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 			    struct geneve_dev *geneve,
+ 			    const struct ip_tunnel_info *info)
+ {
++	bool inner_proto_inherit = geneve->cfg.inner_proto_inherit;
+ 	bool xnet = !net_eq(geneve->net, dev_net(geneve->dev));
+ 	struct geneve_sock *gs6 = rcu_dereference(geneve->sock6);
+ 	const struct ip_tunnel_key *key = &info->key;
+@@ -1028,7 +1030,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 	__be16 sport;
+ 	int err;
+ 
+-	if (!skb_vlan_inet_prepare(skb))
++	if (!skb_vlan_inet_prepare(skb, inner_proto_inherit))
+ 		return -EINVAL;
+ 
+ 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
+@@ -1083,7 +1085,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
+ 		ttl = ttl ? : ip6_dst_hoplimit(dst);
+ 	}
+ 	err = geneve_build_skb(dst, skb, info, xnet, sizeof(struct ipv6hdr),
+-			       geneve->cfg.inner_proto_inherit);
++			       inner_proto_inherit);
+ 	if (unlikely(err))
+ 		return err;
+ 
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index f9906b73e7ff4..0cc077c3dda30 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -353,9 +353,10 @@ static inline bool pskb_inet_may_pull(struct sk_buff *skb)
+ 
+ /* Variant of pskb_inet_may_pull().
+  */
+-static inline bool skb_vlan_inet_prepare(struct sk_buff *skb)
++static inline bool skb_vlan_inet_prepare(struct sk_buff *skb,
++					 bool inner_proto_inherit)
+ {
+-	int nhlen = 0, maclen = ETH_HLEN;
++	int nhlen = 0, maclen = inner_proto_inherit ? 0 : ETH_HLEN;
+ 	__be16 type = skb->protocol;
+ 
+ 	/* Essentially this is skb_protocol(skb, true)
 -- 
-2.45.2
+2.43.0
 
 
 
