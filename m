@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-54063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C9D90EC7B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 308A190EEA3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54D652849EB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFC5E1F2141D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E700E143C43;
-	Wed, 19 Jun 2024 13:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA3421422D9;
+	Wed, 19 Jun 2024 13:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnGpl7sJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofkVlSjq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E80132129;
-	Wed, 19 Jun 2024 13:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797E23C0B;
+	Wed, 19 Jun 2024 13:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802482; cv=none; b=EP+QuLqFBltuCMPXPuNQZDAOtTupVI1kDEgt2NHgmPBTR/b2okByl2ou0vN4oC32gJyuF3AGJkPjQJCWYW4xHOoyLUJkILyF0vTmqNjK/PMtXpPXOsoAhNpBbd3N6scHaEcBVdWb07UEopKINJAnrf5sPjevFKci9zUjZcoY+2o=
+	t=1718803834; cv=none; b=YytBn0KG/GKXSPNNkyJYf+eYaJN7cd5o7A2A88EJR7UjQhiibjXOFZnOvo2bM09mk7LdaOOn8TGA0kQZbJStcleq32xV2RnqYjbcBihAt29ZatvZOQxxGfYidA0Iol+qPKLiZlw7CzBbrUtp7OufIZwSVw5TMT4wYqvlCHQc+F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802482; c=relaxed/simple;
-	bh=yx5BZ6hYtGAfCNJSZDVfo9/+ikARv/wdKjSdID7/HVo=;
+	s=arc-20240116; t=1718803834; c=relaxed/simple;
+	bh=Djk6zTyPC8juspa5rOQyxxkkYbvdWOB3s2PGYvc1AT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQH2iAe20sMrrCE5AIGYA3+ZDqaFWpt3loVsuGjW0JOLmFU9vQ3hzojAR5jzSHctgCMubEko1pC0VuqPmYV0Om9yjhorj6vsMc87v7EdQ8/nAywpInduZE9uhF95Hbx4b7kbPYjSKw5O83sYPTgOu/Re9JPOW2v3dl9i73A/hBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnGpl7sJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB6EC2BBFC;
-	Wed, 19 Jun 2024 13:08:02 +0000 (UTC)
+	 MIME-Version; b=N/jedGNcwo2SH6LlkmRFWzm2+/OlmSZmKGyM57Q1UrmgFHsMsBer7QTDLoZ6HcGCfL1PJ+LpK7V7jIvs9d8JilgMYPRwG/P/3qdWHlpTj13sruQQD2rXh5zS9SkGBzkj0FpH18rZVQNF8J9k8e22Rb9Hc9/MNA9PtiU08zAB2QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofkVlSjq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10B5C2BBFC;
+	Wed, 19 Jun 2024 13:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802482;
-	bh=yx5BZ6hYtGAfCNJSZDVfo9/+ikARv/wdKjSdID7/HVo=;
+	s=korg; t=1718803834;
+	bh=Djk6zTyPC8juspa5rOQyxxkkYbvdWOB3s2PGYvc1AT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OnGpl7sJWdJ4sdmnLI13s+xWNFCM4Tloi5z8z882iFUy/KRW6Mmk6L3RQj0cg/npw
-	 CTZf7jIDASemcmVWvnQ4l6+lkbSu1ukiq4mkVAuoX4EwbFV5ChqoSI+OE30dZcCdZB
-	 bo91fK01URKqnBk3dyMY9rqRxbx1l8+C7CsUkjQg=
+	b=ofkVlSjqMytpAvo136nlKeMVAeSLxIRL/FJogRoZfLUjvxRsdoF1B3a++vacddAsH
+	 dhLsh7rbzeDAtUefte5clqexn1IC4PYiJKDcT7v3ecg/dQbOY+gjAc3IuD8fEzwQKP
+	 KVUK1PWcr78D9EqiuqeB9Yn30BUOqcDwHkzAvvsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 211/267] iio: invensense: fix interrupt timestamp alignment
+	Guenter Roeck <linux@roeck-us.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 119/217] clk: sifive: Do not register clkdevs for PRCI clocks
 Date: Wed, 19 Jun 2024 14:56:02 +0200
-Message-ID: <20240619125614.425947863@linuxfoundation.org>
+Message-ID: <20240619125601.281924745@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit 0340dc4c82590d8735c58cf904a8aa1173273ab5 upstream.
+[ Upstream commit 2607133196c35f31892ee199ce7ffa717bea4ad1 ]
 
-Restrict interrupt timestamp alignment for not overflowing max/min
-period thresholds.
+These clkdevs were unnecessary, because systems using this driver always
+look up clocks using the devicetree. And as Russell King points out[1],
+since the provided device name was truncated, lookups via clkdev would
+never match.
 
-Fixes: 0ecc363ccea7 ("iio: make invensense timestamp module generic")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://lore.kernel.org/r/20240426135814.141837-1-inv.git-commit@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Recently, commit 8d532528ff6a ("clkdev: report over-sized strings when
+creating clkdev entries") caused clkdev registration to fail due to the
+truncation, and this now prevents the driver from probing. Fix the
+driver by removing the clkdev registration.
+
+Link: https://lore.kernel.org/linux-clk/ZkfYqj+OcAxd9O2t@shell.armlinux.org.uk/ [1]
+Fixes: 30b8e27e3b58 ("clk: sifive: add a driver for the SiFive FU540 PRCI IP block")
+Fixes: 8d532528ff6a ("clkdev: report over-sized strings when creating clkdev entries")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/linux-clk/7eda7621-0dde-4153-89e4-172e4c095d01@roeck-us.net/
+Suggested-by: Russell King <linux@armlinux.org.uk>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/r/20240528001432.1200403-1-samuel.holland@sifive.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/common/inv_sensors/inv_sensors_timestamp.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/clk/sifive/sifive-prci.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
---- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-+++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-@@ -105,6 +105,9 @@ static bool inv_update_chip_period(struc
+diff --git a/drivers/clk/sifive/sifive-prci.c b/drivers/clk/sifive/sifive-prci.c
+index 916d2fc28b9c1..39bfbd120e0bc 100644
+--- a/drivers/clk/sifive/sifive-prci.c
++++ b/drivers/clk/sifive/sifive-prci.c
+@@ -4,7 +4,6 @@
+  * Copyright (C) 2020 Zong Li
+  */
  
- static void inv_align_timestamp_it(struct inv_sensors_timestamp *ts)
- {
-+	const int64_t period_min = ts->min_period * ts->mult;
-+	const int64_t period_max = ts->max_period * ts->mult;
-+	int64_t add_max, sub_max;
- 	int64_t delta, jitter;
- 	int64_t adjust;
+-#include <linux/clkdev.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/of_device.h>
+@@ -536,13 +535,6 @@ static int __prci_register_clocks(struct device *dev, struct __prci_data *pd,
+ 			return r;
+ 		}
  
-@@ -112,11 +115,13 @@ static void inv_align_timestamp_it(struc
- 	delta = ts->it.lo - ts->timestamp;
+-		r = clk_hw_register_clkdev(&pic->hw, pic->name, dev_name(dev));
+-		if (r) {
+-			dev_warn(dev, "Failed to register clkdev for %s: %d\n",
+-				 init.name, r);
+-			return r;
+-		}
+-
+ 		pd->hw_clks.hws[i] = &pic->hw;
+ 	}
  
- 	/* adjust timestamp while respecting jitter */
-+	add_max = period_max - (int64_t)ts->period;
-+	sub_max = period_min - (int64_t)ts->period;
- 	jitter = INV_SENSORS_TIMESTAMP_JITTER((int64_t)ts->period, ts->chip.jitter);
- 	if (delta > jitter)
--		adjust = jitter;
-+		adjust = add_max;
- 	else if (delta < -jitter)
--		adjust = -jitter;
-+		adjust = sub_max;
- 	else
- 		adjust = 0;
- 
+-- 
+2.43.0
+
 
 
 
