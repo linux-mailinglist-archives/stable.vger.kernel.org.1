@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-53998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95DC90EC37
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4355490ED67
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61E66287CC5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8275B22BBE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5B8143873;
-	Wed, 19 Jun 2024 13:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D34143C4E;
+	Wed, 19 Jun 2024 13:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwOeaSRx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJWMADdv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A1782871;
-	Wed, 19 Jun 2024 13:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E574A82495;
+	Wed, 19 Jun 2024 13:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802293; cv=none; b=qHheb6/bCs4zj0YRjSc5v/tpPl9TCfPuzR+XQ5PZAgerW6uVGx6+f0mSfBDP1PYsg0LBTZS3gjjYhUWJyW8xK/lmYhKgoWVtVe2CJznS32eymCVqqBM+J2yn3B4fliKd8lgtB553wO+QErmFy7q3fqZccacZZO/P8TLojVEcTO4=
+	t=1718803061; cv=none; b=Jz7MEPSru1rQ7eSMd7GHXyawJIknknQyy25at4dWDq+VMm/aLAweqfxkm6G1mlRBD1WePwTlgAEM5FJ10iEuT3As9hvJNT93eHr1BXCNJ2CJUbjBN6yz/r7ON0fmtCkTY/2FklpkdEljC9cZ+lU8g9aU4BJY7ks11/21hDPEoRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802293; c=relaxed/simple;
-	bh=PfCzz0J5u8ZOShRFkKu8OmCY/JmmTzqdhA1zHujiS2Y=;
+	s=arc-20240116; t=1718803061; c=relaxed/simple;
+	bh=myb4+fgNDcWs1UY0eyMnlWv5qh/FEQd3XtZYF1+Mqso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZ0IyAs3W9c69koZcInDwAiFBZVC9wgC2jJ+jstAw5PY9GCXRFLYOXp0oE6Bv7Yh4rxpPXplmphdnWqF38SFITiLcsyxuKbou+M3HojjIzJuaDW7uvqbTM+ZwmFR0V8aCobeO+UwYONYBvlBzfwg+/lqzaSw+ZiegF150gskJJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwOeaSRx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFE7C2BBFC;
-	Wed, 19 Jun 2024 13:04:52 +0000 (UTC)
+	 MIME-Version; b=kNfbMlup612zaz5yyRXbgr+NFfj8F5rHUuiSXsiB+vPTnLz9HHbtaBthaXbwGJKoulyrqRXHa7NuD5coODEpi5pN8sC9P6Iub9TLdeaWuL7mKIrOQ3Su6IaC4rarxVggm2o+PPDBMExKJeds4q3yY7o18OM6FlyqSYcC/bpOHlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJWMADdv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675E9C2BBFC;
+	Wed, 19 Jun 2024 13:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802293;
-	bh=PfCzz0J5u8ZOShRFkKu8OmCY/JmmTzqdhA1zHujiS2Y=;
+	s=korg; t=1718803060;
+	bh=myb4+fgNDcWs1UY0eyMnlWv5qh/FEQd3XtZYF1+Mqso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uwOeaSRxHoc6SLsxJfaQCeePQqWWUnXQPmxi7+/wuz18xQt5O1jplMPTUiTnRJEKi
-	 1QX5MjoYHYH0e/8i+B5RXjXSATh+LXkG0QMJzce0YRtGxMbIFgivOtlgWSLEftTVpW
-	 tKpuNlxUk4RB4pGzpTt3TlCAV+nPYNCqrtwHvhUw=
+	b=NJWMADdv2RodT40vG0KpdLnAZvEGC7n9lZMOKQxe83bY/ajjHhux1H5Hc7PKOxnuE
+	 S/OY9fyuCmpjO5N8gcQD+dljvby8M5GHu1LoA+7t8zop3iXEggQeOXcRuv4s4EUyTH
+	 AE9cpQxCTkdRxtNr48rvSuqs8OCLam7KeiYzTIUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagar Cheluvegowda <quic_scheluve@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	Andrew Halaney <ahalaney@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Su Hui <suhui@nfschina.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 146/267] net: stmmac: dwmac-qcom-ethqos: Configure host DMA width
+Subject: [PATCH 6.9 138/281] io_uring/io-wq: avoid garbage value of match in io_wq_enqueue()
 Date: Wed, 19 Jun 2024 14:54:57 +0200
-Message-ID: <20240619125611.951770686@linuxfoundation.org>
+Message-ID: <20240619125615.152743601@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagar Cheluvegowda <quic_scheluve@quicinc.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 0579f27249047006a818e463ee66a6c314d04cea ]
+[ Upstream commit 91215f70ea8541e9011c0b48f8b59b9e0ce6953b ]
 
-Commit 070246e4674b ("net: stmmac: Fix for mismatched host/device DMA
-address width") added support in the stmmac driver for platform drivers
-to indicate the host DMA width, but left it up to authors of the
-specific platforms to indicate if their width differed from the addr64
-register read from the MAC itself.
+Clang static checker (scan-build) warning:
+o_uring/io-wq.c:line 1051, column 3
+The expression is an uninitialized value. The computed value will
+also be garbage.
 
-Qualcomm's EMAC4 integration supports only up to 36 bit width (as
-opposed to the addr64 register indicating 40 bit width). Let's indicate
-that in the platform driver to avoid a scenario where the driver will
-allocate descriptors of size that is supported by the CPU which in our
-case is 36 bit, but as the addr64 register is still capable of 40 bits
-the device will use two descriptors as one address.
+'match.nr_pending' is used in io_acct_cancel_pending_work(), but it is
+not fully initialized. Change the order of assignment for 'match' to fix
+this problem.
 
-Fixes: 8c4d92e82d50 ("net: stmmac: dwmac-qcom-ethqos: add support for emac4 on sa8775p platforms")
-Signed-off-by: Sagar Cheluvegowda <quic_scheluve@quicinc.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 42abc95f05bf ("io-wq: decouple work_list protection from the big wqe->lock")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20240604121242.2661244-1-suhui@nfschina.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ io_uring/io-wq.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index 31631e3f89d0a..51ff53120307a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -93,6 +93,7 @@ struct ethqos_emac_driver_data {
- 	bool has_emac_ge_3;
- 	const char *link_clk_name;
- 	bool has_integrated_pcs;
-+	u32 dma_addr_width;
- 	struct dwmac4_addrs dwmac4_addrs;
- };
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index 4a07742349048..8a99aabcac2c3 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -929,7 +929,11 @@ void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work)
+ {
+ 	struct io_wq_acct *acct = io_work_get_acct(wq, work);
+ 	unsigned long work_flags = work->flags;
+-	struct io_cb_cancel_data match;
++	struct io_cb_cancel_data match = {
++		.fn		= io_wq_work_match_item,
++		.data		= work,
++		.cancel_all	= false,
++	};
+ 	bool do_create;
  
-@@ -272,6 +273,7 @@ static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
- 	.has_emac_ge_3 = true,
- 	.link_clk_name = "phyaux",
- 	.has_integrated_pcs = true,
-+	.dma_addr_width = 36,
- 	.dwmac4_addrs = {
- 		.dma_chan = 0x00008100,
- 		.dma_chan_offset = 0x1000,
-@@ -816,6 +818,8 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
- 		plat_dat->flags |= STMMAC_FLAG_RX_CLK_RUNS_IN_LPI;
- 	if (data->has_integrated_pcs)
- 		plat_dat->flags |= STMMAC_FLAG_HAS_INTEGRATED_PCS;
-+	if (data->dma_addr_width)
-+		plat_dat->host_dma_width = data->dma_addr_width;
+ 	/*
+@@ -967,10 +971,6 @@ void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work)
+ 		raw_spin_unlock(&wq->lock);
  
- 	if (ethqos->serdes_phy) {
- 		plat_dat->serdes_powerup = qcom_ethqos_serdes_powerup;
+ 		/* fatal condition, failed to create the first worker */
+-		match.fn		= io_wq_work_match_item,
+-		match.data		= work,
+-		match.cancel_all	= false,
+-
+ 		io_acct_cancel_pending_work(wq, acct, &match);
+ 	}
+ }
 -- 
 2.43.0
 
