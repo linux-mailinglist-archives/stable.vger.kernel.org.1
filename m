@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-53674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA67590E18C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 04:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B6A90E190
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 04:15:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A11EB1F2372E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 02:15:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9028D1F236EA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 02:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D1D8F6D;
-	Wed, 19 Jun 2024 02:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6844C224DD;
+	Wed, 19 Jun 2024 02:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=schmorgal.com header.i=@schmorgal.com header.b="f3sOC3Dt"
+	dkim=pass (1024-bit key) header.d=schmorgal.com header.i=@schmorgal.com header.b="GoK1NLbm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E20A4C62B
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 02:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BB41EA74
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 02:15:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718763304; cv=none; b=RfUoqoMa3Kgw0M6PcEIVkKD5BtWtnOvdhI6NIt4KrsX1sPVrLy0l9+pCJtaNoDV3nJ9OuqC3ODK1Rd3Kl1CCQXuuXZMT5pjWul8/Cv/MYhFikx+bMUyFsbRdJqdpqBUcAcTRbkz4Q3TMlYLxdYReNneqRDk6M8SeEv+BI4T5p1c=
+	t=1718763354; cv=none; b=tapXArVeRy1p8NwGAbpzSUUv+VDfEILtQDH10hKKdWnK9tpEraEb//ZYNJCMG/+jMZR0I5UQE0uLojmXQUXZp9OcbJYZlL7yDDbtis4/9HQNAaomZX2erKWfn8EVaIO2j+/IqPW791ANgYowXkExHhaPmHjGdE3SaDfG4pq/nRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718763304; c=relaxed/simple;
-	bh=QWaej0gdpMOaRMJoVhi+uVB7PMLhTLcWUBsMJ0P1qGk=;
+	s=arc-20240116; t=1718763354; c=relaxed/simple;
+	bh=ux/EIcMlcqADBQC3pu3T9pHCPgpKyFzwYmx0CWpMx4o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fURIDsmlHUFh8PzVFpxgV0A49RitnzLuc3Yq1t+RA8khXj1lsNTu9MzRFwx1Xl1mo5d3lv0wApWpRqIw85zq83r/LFeR7tdSIJkYEOerrdK5iCxE1NXmu4/7jmM7bdRR1YUUztjW29X5exgFfr+BYJeh8pHlzkCUUBI02X8vZak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=schmorgal.com; spf=pass smtp.mailfrom=schmorgal.com; dkim=pass (1024-bit key) header.d=schmorgal.com header.i=@schmorgal.com header.b=f3sOC3Dt; arc=none smtp.client-ip=209.85.216.51
+	 MIME-Version; b=pEKn5kxhkzt/6J34nFui+qGtGI7Dyyk9OniwAkm2x0UI5xtkfHG9XDsOECO3KtOEdpcIe1TF7npoLrccTVeNGoPVgb5woeehPSt1Gqf5KapBwjU9kxCvJ2a9MrudLqMJD5XGFLGsJ0sff738yK0TADgui7GQazM9cNuNs13p7Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=schmorgal.com; spf=pass smtp.mailfrom=schmorgal.com; dkim=pass (1024-bit key) header.d=schmorgal.com header.i=@schmorgal.com header.b=GoK1NLbm; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=schmorgal.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schmorgal.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2c70c65ca5eso228104a91.3
-        for <stable@vger.kernel.org>; Tue, 18 Jun 2024 19:15:02 -0700 (PDT)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7043684628cso155887b3a.0
+        for <stable@vger.kernel.org>; Tue, 18 Jun 2024 19:15:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=schmorgal.com; s=google; t=1718763302; x=1719368102; darn=vger.kernel.org;
+        d=schmorgal.com; s=google; t=1718763352; x=1719368152; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QfYAebaLIjDvS7oAL9oFRyiaKOcIQjqol366D4urrEo=;
-        b=f3sOC3DtAbSyY+LcwDtNK/Jpjxcenhm3REOl6lRsgfoK0D6Yc+uUkd7vC1K+Bg6xza
-         6R0yfczcsSt18OotEu95ZjSaA6HgHwxbOe7Pxm+vol6iiE7CS7ft7GAA2/FcqMNE3wvl
-         vdFLTbskdcKL9zZF8+YwuDFET4xKRKccyVKIE=
+        bh=1P5pA62qH9Qun2A5j0792ay9dUCbFe4CfBuuZEKJj1o=;
+        b=GoK1NLbmfsWJiMEN/n2h0H0pPVAg7qkui7nWUpMx+Vu8ZjfnMNYs+UwhUl3jxVvz9V
+         0pd3nBPH9AKqFlS/ewGDbywWXLJOf2m4W+Ciw8+audmzRbPcCeky+2MNrB9EIDLoWSvA
+         gbjRYJ5CHe8dWASwd0tiPtIVCCybpW3EgdQGA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718763302; x=1719368102;
+        d=1e100.net; s=20230601; t=1718763352; x=1719368152;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QfYAebaLIjDvS7oAL9oFRyiaKOcIQjqol366D4urrEo=;
-        b=nvSeoImWfjlgBzxc+mDMihb67Bp5pf4HxMBcWxeney3LbUsOTnpn1cIyePHiCeIme8
-         0CSLEwoCf1cDjUEmXFtwwK+z3+V+cWtbqWaz5QZzlsGs/G0pn6Orj99RSHa9GiAiC1dZ
-         Li+Ecs+DTABhUulh78T0jkHwrf6/K2ie11r1wqrQEmvfWvz/8OkF6vlGsM7lbEqBXVg8
-         V7NIMh6jmGelW7HY/5azdtiZb/2awUB684MdQqvVDfUgYUde5XmWzdQpQrYINsz1tCi2
-         MUrzBavBckibVdtFh6sA9fkF5+sH202tjj+xFShm0q+tzyNSQCc4fSAGeEa5eCDAaqRR
-         1ScQ==
-X-Gm-Message-State: AOJu0Ywo6a4+uUhUiRttvYEXKyBan34IHIeLi17DWQC+VIxX5K3Sp/hV
-	gQrA1NF4J6kldNn+thzk/ItteJsf7g+f+6DAqj0JcZBpETVHMZG6R2ulec3/5aQA/P2eWZPuC2c
-	Zr9o=
-X-Google-Smtp-Source: AGHT+IFhR2XAEqyWeOCvm8g9ciOdjE8mjulJmeqpdfUc5nYoSmYSYXLAKaKKPocKKoTCB2HSK5l6CQ==
-X-Received: by 2002:a17:902:ec8c:b0:1f7:414:d673 with SMTP id d9443c01a7336-1f9aa48996bmr14448025ad.4.1718763301724;
-        Tue, 18 Jun 2024 19:15:01 -0700 (PDT)
+        bh=1P5pA62qH9Qun2A5j0792ay9dUCbFe4CfBuuZEKJj1o=;
+        b=F162z0tFLk40jOEVqJ2kRszSy0cPcAzSRNOkoboeRqfliNGkHfaackV+odwBta9axL
+         kf8TEguQ9fsvuAa7nKO6GB/FF+L0ZPgf3tizjYYDtydLnb2VelTMwRpXQv6nizPRZX1o
+         u9lOvPPWTbwk31GBYx1j6RsfRCR39KGj/jQa9y2l9GS0QWfezVzfZFleY0y8lBPbVl4+
+         NCNCYQoESDAz/q8GfmCP9IrWuBeDS+eZoHGKfuvZru9P61otwzAOlkgpVRPx8IvK/wsi
+         xHqNP+L+SMJS7CbxCiGTvl8MTngvkdXCVocaGkx+QLV6UxYhIGW3WSMa6fz77nv26Dd2
+         fW3A==
+X-Gm-Message-State: AOJu0YwXHyyl/U/9Rl96FllrDQuChkYLA/JeKamKJ/GPLFCkkGXyQJSh
+	gVQbx/8G5RL7xZK7+JxkLvxwj4HRRzKhavbYH1k5hnnrEVL10jwWOWrnX5wDHFhN5279dfo3Iyf
+	Kegk=
+X-Google-Smtp-Source: AGHT+IFY7LD8IpxIEC1d+p7nzfMcpsxHjWel1pJHh7ml1gWaZRU2tw9rFky/e9+XxDRgUwp41/JAPA==
+X-Received: by 2002:aa7:8e90:0:b0:705:c0da:bdc1 with SMTP id d2e1a72fcca58-70629cbf8b2mr1377933b3a.2.1718763351722;
+        Tue, 18 Jun 2024 19:15:51 -0700 (PDT)
 Received: from doug-ryzen-5700G.. ([50.120.71.169])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9941d957fsm20879745ad.273.2024.06.18.19.15.01
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705ccb3d268sm9584895b3a.101.2024.06.18.19.15.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 19:15:01 -0700 (PDT)
+        Tue, 18 Jun 2024 19:15:51 -0700 (PDT)
 From: Doug Brown <doug@schmorgal.com>
 To: stable@vger.kernel.org
 Cc: Doug Brown <doug@schmorgal.com>,
 	stable <stable@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 6.6.y] serial: 8250_pxa: Configure tx_loadsz to match FIFO IRQ level
-Date: Tue, 18 Jun 2024 19:09:29 -0700
-Message-Id: <20240619020926.502759-1-doug@schmorgal.com>
+Subject: [PATCH 6.1.y] serial: 8250_pxa: Configure tx_loadsz to match FIFO IRQ level
+Date: Tue, 18 Jun 2024 19:15:34 -0700
+Message-Id: <20240619021533.503024-1-doug@schmorgal.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2024061754-ceremony-sturdily-fedb@gregkh>
-References: <2024061754-ceremony-sturdily-fedb@gregkh>
+In-Reply-To: <2024061755-unissued-basically-add8@gregkh>
+References: <2024061755-unissued-basically-add8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,7 +102,7 @@ Signed-off-by: Doug Brown <doug@schmorgal.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/tty/serial/8250/8250_pxa.c b/drivers/tty/serial/8250/8250_pxa.c
-index a5b3ea27fc90..2cbaf68d2811 100644
+index 795e55142d4c..70a56062f791 100644
 --- a/drivers/tty/serial/8250/8250_pxa.c
 +++ b/drivers/tty/serial/8250/8250_pxa.c
 @@ -124,6 +124,7 @@ static int serial_pxa_probe(struct platform_device *pdev)
