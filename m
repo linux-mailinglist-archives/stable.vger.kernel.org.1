@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB7A90E3E2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:58:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 897A890E3E3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:59:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC138B22E55
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 06:58:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 087211F237FB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 06:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55326F314;
-	Wed, 19 Jun 2024 06:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC3276F307;
+	Wed, 19 Jun 2024 06:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RnKXpUAb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pk4zCel7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6776E6BB58
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 06:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4836BB58
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 06:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718780327; cv=none; b=oBXPYg+3y5FjquEeoxrPXK1rtLzepLy4l2NnC9J0XJK3Sanllmy7rdf/W5iO1ZJikv1YDqSIO9uZPnZpcZ8CQQ6ZVRxUrO2sv1Pcm3uEgcZKhOXLCOoRYKfcz8susT7+Z3JfeTGs6oHovnHdJ+34kjz4qlRgStgMBNOX6PXsjhc=
+	t=1718780336; cv=none; b=Jj1frRHk5NuV4VdjxJ3VTkMBS1yrh7B1XXJcGFGPZQS9JtdMkyBPFOHvw4OTHyxBFxcHZSN9KNCTpNgEAC7IFoOwj+4ArmSGMJogTt+wGlIvg7ywT/iE0Gi/8mgTVWt1RPsN8h3mE3lnQmw/rY3RwK/6etpbKRhSYBcujFpA8j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718780327; c=relaxed/simple;
-	bh=c2+aCmSA6o1+wtRwJb94tS6r/YxV3Xv3NUjdYz08XWE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=tD6DvLgPpWzuEL0HH5s7ox+5msBnL602PXQJuJKBJUYOO9t//V24SWXyAtubV7+vz2CQB4NkDBpNPpwnizqyWDgzuvKN6m4L1ojOPE8UylHDT7XYK7nFMtMWOUWSmctInrAx1VL4EwiszhC1HmqjYqkSYIL4rcAZgq30NgFeEUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RnKXpUAb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87454C2BBFC;
-	Wed, 19 Jun 2024 06:58:46 +0000 (UTC)
+	s=arc-20240116; t=1718780336; c=relaxed/simple;
+	bh=U236WpfyDR2L754Ysfp41WHTmvzXaJXInnGnouWntUk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kGgf9o2mRBJJSKCCBAZMZCxTY9yvQYh++t6R1w/qPNtfpzrxX9RtEqUhkNsdsEd6/n+aNqPqIvR2opwYLU4FvGnGUtvOlKwAWdnJI6S107H0hWnayOBu2FwqCY/WX1hnqgm2rgKgE/XQwfz0OKQG93rIXX4g6y0DYzbGfCKcT44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pk4zCel7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EBAC2BBFC;
+	Wed, 19 Jun 2024 06:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718780326;
-	bh=c2+aCmSA6o1+wtRwJb94tS6r/YxV3Xv3NUjdYz08XWE=;
+	s=korg; t=1718780336;
+	bh=U236WpfyDR2L754Ysfp41WHTmvzXaJXInnGnouWntUk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RnKXpUAbqOA1BOVtEnYP7KxMvCW+AHfUgmXyuLzb4PjYLj77DyhSMevb4zeqsu2ov
-	 U0YcuFcKG3uL61V8s453r2mL/n3Z9FFd8wMilApIQ618F5JsESBVQw62U7rIvmjR1a
-	 sqzqfZJTWP3I6QrO6BH33E2g2kgXtr+XId++gsd4=
-Subject: FAILED: patch "[PATCH] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE," failed to apply to 6.1-stable tree
+	b=pk4zCel7ObRhCqsxbv0WuNaowgo2B8fYCBBX1mpZ8DJzyvlqT1qcvXGRyndHCi95E
+	 C5yrgl0PNATLotm54ilJtt0xxhZlah3PKDE8822Bjwp4V+WLBcodK2FxdLiERgMxCB
+	 A/JY4dKo1vugvw+Yivi0NVNPHVwTykAzdPfAUaDg=
+Subject: FAILED: patch "[PATCH] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE," failed to apply to 5.15-stable tree
 To: karol.wachowski@intel.com,airlied@gmail.com,daniel.vetter@ffwll.ch,daniel@ffwll.ch,eric@anholt.net,jacek.lawrynowicz@linux.intel.com,maarten.lankhorst@linux.intel.com,mripard@kernel.org,noralf@tronnes.org,robh@kernel.org,stable@vger.kernel.org,tzimmermann@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Jun 2024 08:58:44 +0200
-Message-ID: <2024061943-pantry-resemble-3f5e@gregkh>
+Date: Wed, 19 Jun 2024 08:58:45 +0200
+Message-ID: <2024061944-culture-agreeable-2b0e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 39bc27bd688066a63e56f7f64ad34fae03fbe3b8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061943-pantry-resemble-3f5e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061944-culture-agreeable-2b0e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,19 @@ Possible dependencies:
 67fe7487fe89 ("drm/shmem-helper: Don't use vmap_use_count for dma-bufs")
 3f6a1e22fae9 ("drm/shmem-helper: Switch to use drm_* debug helpers")
 aa8c85affe3f ("drm/shmem-helper: Fix locking for drm_gem_shmem_get_pages_sgt()")
+09bf649a7457 ("drm/shmem-helper: Avoid vm_open error paths")
+24013314be6e ("drm/shmem-helper: Remove errant put in error path")
+df4aaf015775 ("drm/shmem-helper: Add missing vunmap on error")
+7938f4218168 ("dma-buf-map: Rename to iosys-map")
+ae710a458f0a ("drm: Replace kernel.h with the necessary inclusions")
+c47160d8edcd ("drm/mipi-dbi: Remove dependency on GEM CMA helper library")
+e580ea25c08d ("drm/cma-helper: Pass GEM CMA object in public interfaces")
+05b1de51df07 ("drm/cma-helper: Export dedicated wrappers for GEM object functions")
+d0c4e34db0b0 ("drm/cma-helper: Move driver and file ops to the end of header")
+6a2d2ddf2c34 ("drm: Move nomodeset kernel parameter to the DRM subsystem")
+d76f25d66ec8 ("drm/vboxvideo: Drop CONFIG_VGA_CONSOLE guard to call vgacon_text_force()")
+35f7775f81bf ("drm: Don't print messages if drivers are disabled due nomodeset")
+a713ca234ea9 ("Merge drm/drm-next into drm-misc-next")
 
 thanks,
 
