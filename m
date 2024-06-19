@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-53905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E27090EBBF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2EE90ECE1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0202B2606E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C6861C20AA5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A2B136E0E;
-	Wed, 19 Jun 2024 13:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA7514E2CD;
+	Wed, 19 Jun 2024 13:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jazZrLH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhhuFVUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441F04C74;
-	Wed, 19 Jun 2024 13:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359C214AD25;
+	Wed, 19 Jun 2024 13:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802019; cv=none; b=bRZI6LYvOchGmMGhcvUOT8t9b2gaResdBD68sz/3wC6lGl63u0ucKSSoYq3ZkNOpiA5aUEl13Za3ZazqUCw/vn385xAQcx9/1mw/SUmjV94HsyefdYtrguONzLoVkMPwJNuck2SPCam8R4uqODbN/UKxJ47CW1lJO+JgouUtncg=
+	t=1718802695; cv=none; b=TXCHqnK9iL6C1umvdn+AsPBDD720pHTQgrzGsmqT8HvfT+EEvkNTm83glD0aO3TdSJM/wJlpVNWUNFDJy44rD6ZJIPzGM2OZgeetUF2FnLffWx33N7PSM/yCMpRRVQWInUIWSuJAMypjqeZluvF2acN91A+eqT1J9gtzfEDjO2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802019; c=relaxed/simple;
-	bh=YxivzJGtomxFVJj8ocwPG10xAqSEVLVnHT/G2n8GpLA=;
+	s=arc-20240116; t=1718802695; c=relaxed/simple;
+	bh=5OSM7eyLRY3Ll4a9SwPrPHLtfIecNNm5pJdWw0WuL+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMBdUy5BZLKMH4uU9tdZegjWN4hmF5s2b3T7wn5ddhL3WqRCKxQnz0d1cKNU5Crf/nbvera3u/ZuOmyIRBX3QKUTXDufFf7r5wZT/vFToZs5IHREojpHeOoM0J+p4aWm1f8HqRVMLz0o/d+8pasbLoYuV93QnnDnEYs3aSDifPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jazZrLH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFA1C2BBFC;
-	Wed, 19 Jun 2024 13:00:18 +0000 (UTC)
+	 MIME-Version; b=aTy5BqUlknGEI76IKn6cF+l0YjMi34bM0147RkYlAcBmDYg1g75EcNrfbmOs24eYuOh/opf3U5qQCq21fKmKrek4nQcrCFMWKJnNR9T7DmTNmXyUI0xdSRhLatvL+fi6EWC3rTo/PwBIxf8hKbERtZT55lv/b/ejO+7ezer6TYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhhuFVUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59258C2BBFC;
+	Wed, 19 Jun 2024 13:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802019;
-	bh=YxivzJGtomxFVJj8ocwPG10xAqSEVLVnHT/G2n8GpLA=;
+	s=korg; t=1718802694;
+	bh=5OSM7eyLRY3Ll4a9SwPrPHLtfIecNNm5pJdWw0WuL+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jazZrLH28wPsu2CA3nD4aotzNuulN3iq77F5Y8ZpZb4/JAiXX3sIXD9SRpwHCI1mg
-	 j+MvtyWAQrTuO+LhR9dXWa3wgk233DILQq5yZBq8I4dWUqarc91SADIyqqzfbBi/GL
-	 td7yNGDnBOan1hS5NtWaO7qYRDzMd44gqphpuCKA=
+	b=QhhuFVUCT/JhDM8LnNmB8femgCPc3jUNpBTiReOUVKDojtXW/qjmfLtm2wEmRtZnj
+	 e2bIvsDoGM1Fpal96hSo2jXbDoPrhWOHbsbIr/A8G7uRxfeaIV1rmkEeeFPK/5Icv5
+	 jUWjrnCZCNqVXwFbmFdj1G4yfLAQh8GPo+KWi0Gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1989ee16d94720836244@syzkaller.appspotmail.com,
-	Cong Wang <cong.wang@bytedance.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jiri Olsa <jolsa@kernel.org>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/267] bpf: Fix a potential use-after-free in bpf_link_free()
-Date: Wed, 19 Jun 2024 14:52:54 +0200
-Message-ID: <20240619125607.248143797@linuxfoundation.org>
+Subject: [PATCH 6.9 016/281] wifi: iwlwifi: mvm: check n_ssids before accessing the ssids
+Date: Wed, 19 Jun 2024 14:52:55 +0200
+Message-ID: <20240619125610.472943634@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 2884dc7d08d98a89d8d65121524bb7533183a63a ]
+[ Upstream commit 60d62757df30b74bf397a2847a6db7385c6ee281 ]
 
-After commit 1a80dbcb2dba, bpf_link can be freed by
-link->ops->dealloc_deferred, but the code still tests and uses
-link->ops->dealloc afterward, which leads to a use-after-free as
-reported by syzbot. Actually, one of them should be sufficient, so
-just call one of them instead of both. Also add a WARN_ON() in case
-of any problematic implementation.
+In some versions of cfg80211, the ssids poinet might be a valid one even
+though n_ssids is 0. Accessing the pointer in this case will cuase an
+out-of-bound access. Fix this by checking n_ssids first.
 
-Fixes: 1a80dbcb2dba ("bpf: support deferring bpf_link dealloc to after RCU grace period")
-Reported-by: syzbot+1989ee16d94720836244@syzkaller.appspotmail.com
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20240602182703.207276-1-xiyou.wangcong@gmail.com
+Fixes: c1a7515393e4 ("iwlwifi: mvm: add adaptive dwell support")
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://msgid.link/20240513132416.6e4d1762bf0d.I5a0e6cc8f02050a766db704d15594c61fe583d45@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index e9a68c6043ce5..65df92f5b1922 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -2830,6 +2830,7 @@ static int bpf_obj_get(const union bpf_attr *attr)
- void bpf_link_init(struct bpf_link *link, enum bpf_link_type type,
- 		   const struct bpf_link_ops *ops, struct bpf_prog *prog)
- {
-+	WARN_ON(ops->dealloc && ops->dealloc_deferred);
- 	atomic64_set(&link->refcnt, 1);
- 	link->type = type;
- 	link->id = 0;
-@@ -2888,16 +2889,17 @@ static void bpf_link_defer_dealloc_mult_rcu_gp(struct rcu_head *rcu)
- /* bpf_link_free is guaranteed to be called from process context */
- static void bpf_link_free(struct bpf_link *link)
- {
-+	const struct bpf_link_ops *ops = link->ops;
- 	bool sleepable = false;
- 
- 	bpf_link_free_id(link->id);
- 	if (link->prog) {
- 		sleepable = link->prog->aux->sleepable;
- 		/* detach BPF program, clean up used resources */
--		link->ops->release(link);
-+		ops->release(link);
- 		bpf_prog_put(link->prog);
- 	}
--	if (link->ops->dealloc_deferred) {
-+	if (ops->dealloc_deferred) {
- 		/* schedule BPF link deallocation; if underlying BPF program
- 		 * is sleepable, we need to first wait for RCU tasks trace
- 		 * sync, then go through "classic" RCU grace period
-@@ -2906,9 +2908,8 @@ static void bpf_link_free(struct bpf_link *link)
- 			call_rcu_tasks_trace(&link->rcu, bpf_link_defer_dealloc_mult_rcu_gp);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 22bc032cffc8b..525d8efcc1475 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -1303,7 +1303,7 @@ static void iwl_mvm_scan_umac_dwell(struct iwl_mvm *mvm,
+ 		if (IWL_MVM_ADWELL_MAX_BUDGET)
+ 			cmd->v7.adwell_max_budget =
+ 				cpu_to_le16(IWL_MVM_ADWELL_MAX_BUDGET);
+-		else if (params->ssids && params->ssids[0].ssid_len)
++		else if (params->n_ssids && params->ssids[0].ssid_len)
+ 			cmd->v7.adwell_max_budget =
+ 				cpu_to_le16(IWL_SCAN_ADWELL_MAX_BUDGET_DIRECTED_SCAN);
  		else
- 			call_rcu(&link->rcu, bpf_link_defer_dealloc_rcu_gp);
--	}
--	if (link->ops->dealloc)
--		link->ops->dealloc(link);
-+	} else if (ops->dealloc)
-+		ops->dealloc(link);
- }
- 
- static void bpf_link_put_deferred(struct work_struct *work)
+@@ -1405,7 +1405,7 @@ iwl_mvm_scan_umac_dwell_v11(struct iwl_mvm *mvm,
+ 	if (IWL_MVM_ADWELL_MAX_BUDGET)
+ 		general_params->adwell_max_budget =
+ 			cpu_to_le16(IWL_MVM_ADWELL_MAX_BUDGET);
+-	else if (params->ssids && params->ssids[0].ssid_len)
++	else if (params->n_ssids && params->ssids[0].ssid_len)
+ 		general_params->adwell_max_budget =
+ 			cpu_to_le16(IWL_SCAN_ADWELL_MAX_BUDGET_DIRECTED_SCAN);
+ 	else
 -- 
 2.43.0
 
