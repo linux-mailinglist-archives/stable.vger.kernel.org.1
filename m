@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B2F90E3D6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:57:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D42090E3D7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBEFEB21882
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 06:57:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08BEC284002
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 06:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ADCB6F305;
-	Wed, 19 Jun 2024 06:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897376F305;
+	Wed, 19 Jun 2024 06:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkNiEnMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peD2WJ98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1376F2EF
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 06:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498EF6F2EF
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 06:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718780273; cv=none; b=sjFc/Dz4aT4k73Cy/XIwcxVs2aChrXinxFmoU1CVj9DyW/CMXkFdQZWpnxrJnxEjT0I9kYRVSx5jHqhjl0J5b30OSZkZcKd60LpMjVhZA2sXwP+f87Xfeqgal/20ZWBstU2fOTWIecEJ09V7UeGQemkxvFRJRnggTKLk21nynX8=
+	t=1718780282; cv=none; b=oi55/HqfeaL4MFk/QhUCBDUgJA++Brg8EX+bO/aRmO6PTc7TaHlGysbNaouuYosyRwiSFfwRYeiRwjmpc97NQVaf95v/TFIoISByAnsRpUCWcYQblKvX1goLcA5bIyihjXZ8XPDwsaotQJW22aZ7/Ug3mPLlpIoF8CM8OarL2SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718780273; c=relaxed/simple;
-	bh=M0FEN57JaY/xoiTtD8zsNTgthMjGbPISff0kmQOEEsg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=R7gHtnaC3a6apVPbB7mwY+syvqLQ7ZqpBEpEg7bwDl6z7CmpBsHZ/YiZkHQzg2/hNX6M+fm35Ei3kMXIRFYCZQGTRKAyQoT44aAY2cirS3EqnQkqzdM1yEbp1T4Y6nGrFPM/mXxDjggX9VpystiwrjnQ3608JZHzEGColmI8+oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkNiEnMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F09C2BBFC;
-	Wed, 19 Jun 2024 06:57:52 +0000 (UTC)
+	s=arc-20240116; t=1718780282; c=relaxed/simple;
+	bh=7hQJVTdC2tjKCmWVcRFS3KWJ5lryzwcsbUJmtzzkeng=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=O7tjNemt1sLdeTBgAkOdYkEY1Gf1Y8rHTVkQqmJqf7fqOMPk2UOCjGB4z399blX1PfmwbOdQIwzQW8T7KMQO205XL1To9esMS0W1Fzz6yjEkAIe5JNCVR3ocTXjpbO/muSirlEQV5HlmitNmyZqjyr4wotQLUZbS61Lec/gG8H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peD2WJ98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2A2C2BBFC;
+	Wed, 19 Jun 2024 06:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718780273;
-	bh=M0FEN57JaY/xoiTtD8zsNTgthMjGbPISff0kmQOEEsg=;
+	s=korg; t=1718780281;
+	bh=7hQJVTdC2tjKCmWVcRFS3KWJ5lryzwcsbUJmtzzkeng=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zkNiEnMeXYMrGR4xdTuDU7XH/3MvgeZ+m5D9TSXR4hvO9mZXGB/rJVqSHYW+3Nz7Y
-	 5AquZTg2/kGC3R/bdbDJCehv2zAH8uWv5Rkc+lVG+esnSIuezH672rntowMclR7pp7
-	 tU5nhE7oPBPRupGSDCIMLZt5gJaCLgq4CMeFOCpM=
-Subject: FAILED: patch "[PATCH] riscv: force PAGE_SIZE linear mapping if debug_pagealloc is" failed to apply to 6.6-stable tree
+	b=peD2WJ98QcOn8VxT02wd/70t1bWVOL1c1K/AWsilc/fvCapDvCIQ2PO6YG3ThMmeF
+	 89La4HdMv4DsVXACSz2D+vHT0tEpSEMHWWLVrM85RpgRFC3JbJ4Ez6nUVVhLyhD+Jf
+	 E4sOC7vtn3Qx799VCop0rLVV3G+pRc98DhFTD6U0=
+Subject: FAILED: patch "[PATCH] riscv: force PAGE_SIZE linear mapping if debug_pagealloc is" failed to apply to 6.1-stable tree
 To: namcao@linutronix.de,alexghiti@rivosinc.com,palmer@rivosinc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Jun 2024 08:57:49 +0200
-Message-ID: <2024061949-decree-impart-c089@gregkh>
+Date: Wed, 19 Jun 2024 08:57:50 +0200
+Message-ID: <2024061950-cahoots-cesarean-de11@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x c67ddf59ac44adc60649730bf8347e37c516b001
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061949-decree-impart-c089@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061950-cahoots-cesarean-de11@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 c67ddf59ac44 ("riscv: force PAGE_SIZE linear mapping if debug_pagealloc is enabled")
 629db01c64ff ("riscv: Don't use PGD entries for the linear mapping")
+49a0a3731596 ("riscv: Check the virtual alignment before choosing a map size")
+25abe0db9243 ("riscv: Fix kfence now that the linear mapping can be backed by PUD/P4D/PGD")
+310c33dc7a12 ("Merge patch series "Introduce 64b relocatable kernel"")
 
 thanks,
 
