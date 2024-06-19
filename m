@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7700190EC39
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5FF90ED69
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C63B1F21555
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99E521C21760
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1715143C43;
-	Wed, 19 Jun 2024 13:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC3E144D3E;
+	Wed, 19 Jun 2024 13:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTwx8S7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bs2tGsaq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9096882871;
-	Wed, 19 Jun 2024 13:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0FC82495;
+	Wed, 19 Jun 2024 13:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802299; cv=none; b=I92B/U9+6OTHiVk724QRYSH6r4MYPXxLbbt6/aF8+przQ4/ari5oKC9jAfRA8ccscbb58lTWtcxpOKrccjCWcTyKKMSvj1kqCTE9S8cp5kqzMvu5eMEZ28D8Iq5r6IC6KSx3+dd0654a70ffon5DoW5HQeWVwK0yRebcaRgYGHs=
+	t=1718803066; cv=none; b=tFHDoOOMkiZqdR/+UKQtx8smJVT1GX3Urlxf1qvhtf87oz8S0fcUvDMQr3CY1l2LKw9eZdg+3k8AKS15iIPGbQC+pbP34mdV8oBtXzNrtqtJ8d6aoRyxQWXhtDfHF4a9XkLgrbRFJLJe/rxGhMltUNVSQf0hdYzJeeC58hoSxVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802299; c=relaxed/simple;
-	bh=/ODmtIK+yOSjeSy2HEcD9jsEruDAF24zJv8xn8sAxX8=;
+	s=arc-20240116; t=1718803066; c=relaxed/simple;
+	bh=Iu0GoAWFqk+I6/qJiV6ciinO3mrvEK029FchQ28J870=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4QgYsoQ7NLfJPxexLLieXhFgiFYyqadFc82ZsiduSOs/LTSyDBDinVGBvA7a0el8L3TFrJ+iVfh/k3lwuhZJBKELBszqaGcU8/5rxSrksM7jyw7AlAElVgy/uKQAgQ4BlPmsglZPcM0aKR1Q0D41opvPh53bfVI3KqH+dBwnms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTwx8S7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6EEC2BBFC;
-	Wed, 19 Jun 2024 13:04:58 +0000 (UTC)
+	 MIME-Version; b=GAMIufbr3mjGbwtpfVuZfTuf2zd8YnL/OkqliNWMCB2KMuNNSF7zBo/wy6SC3UXqG3LWWM8BNGNIIXX9BA5/zByzvw6y1/XzXelvMtZL0aieJWImzJlLQPLr15aupv2gBoemnZNoWQe7TkaHY1X6pX0DrOlFifXgpz0XGfVHlLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bs2tGsaq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44053C2BBFC;
+	Wed, 19 Jun 2024 13:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802299;
-	bh=/ODmtIK+yOSjeSy2HEcD9jsEruDAF24zJv8xn8sAxX8=;
+	s=korg; t=1718803066;
+	bh=Iu0GoAWFqk+I6/qJiV6ciinO3mrvEK029FchQ28J870=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTwx8S7IWiQLVTHnziismP8zHoQkMPDrmmNFHa5woXHtUayNByxOHa02wl6YxDj6U
-	 VW5fRgk0XWDGJU819C7KqoKzXnTaAI/BuuSDB0++QaqmQX0oANiCENkfZv8G+1mz13
-	 AyXb2fByGMoNLF5D8QLUq2W9EVkHYb1Z9A1hZnp0=
+	b=bs2tGsaqM4gKI+wbzglNlYWGLcr3y/SewNhVELChEsr2c/2u2qNUbbIJrirOhDIVF
+	 yv4R9QZnz8LWpIRk/6R03brm1PEA8hM62R3Fiuy6VXoZ8uiYeYVVa2Vn40jrIB7PJs
+	 StChGbRBj2HP6tDF9T9niGJCxekkffdeQ6fEdFJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Miotk <adam.miotk@arm.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 148/267] drm/bridge/panel: Fix runtime warning on panel bridge release
+Subject: [PATCH 6.9 140/281] drm/vmwgfx: Filter modes which exceed graphics memory
 Date: Wed, 19 Jun 2024 14:54:59 +0200
-Message-ID: <20240619125612.028011920@linuxfoundation.org>
+Message-ID: <20240619125615.228426693@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Miotk <adam.miotk@arm.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit ce62600c4dbee8d43b02277669dd91785a9b81d9 ]
+[ Upstream commit 426826933109093503e7ef15d49348fc5ab505fe ]
 
-Device managed panel bridge wrappers are created by calling to
-drm_panel_bridge_add_typed() and registering a release handler for
-clean-up when the device gets unbound.
+SVGA requires individual surfaces to fit within graphics memory
+(max_mob_pages) which means that modes with a final buffer size that would
+exceed graphics memory must be pruned otherwise creation will fail.
 
-Since the memory for this bridge is also managed and linked to the panel
-device, the release function should not try to free that memory.
-Moreover, the call to devm_kfree() inside drm_panel_bridge_remove() will
-fail in this case and emit a warning because the panel bridge resource
-is no longer on the device resources list (it has been removed from
-there before the call to release handlers).
+Additionally llvmpipe requires its buffer height and width to be a multiple
+of its tile size which is 64. As a result we have to anticipate that
+llvmpipe will round up the mode size passed to it by the compositor when
+it creates buffers and filter modes where this rounding exceeds graphics
+memory.
 
-Fixes: 67022227ffb1 ("drm/bridge: Add a devm_ allocator for panel bridge.")
-Signed-off-by: Adam Miotk <adam.miotk@arm.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240610102739.139852-1-adam.miotk@arm.com
+This fixes an issue where VMs with low graphics memory (< 64MiB) configured
+with high resolution mode boot to a black screen because surface creation
+fails.
+
+Fixes: d947d1b71deb ("drm/vmwgfx: Add and connect connector helper function")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240521184720.767-2-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/panel.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c | 45 ++++++++++++++++++++++++++--
+ 1 file changed, 43 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/panel.c
-index 9316384b44745..a1dd2ead8dcc4 100644
---- a/drivers/gpu/drm/bridge/panel.c
-+++ b/drivers/gpu/drm/bridge/panel.c
-@@ -360,9 +360,12 @@ EXPORT_SYMBOL(drm_panel_bridge_set_orientation);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+index 3c8414a13dbad..dbc44ecbd1f4a 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+@@ -41,7 +41,14 @@
+ #define vmw_connector_to_stdu(x) \
+ 	container_of(x, struct vmw_screen_target_display_unit, base.connector)
  
- static void devm_drm_panel_bridge_release(struct device *dev, void *res)
- {
--	struct drm_bridge **bridge = res;
-+	struct drm_bridge *bridge = *(struct drm_bridge **)res;
+-
++/*
++ * Some renderers such as llvmpipe will align the width and height of their
++ * buffers to match their tile size. We need to keep this in mind when exposing
++ * modes to userspace so that this possible over-allocation will not exceed
++ * graphics memory. 64x64 pixels seems to be a reasonable upper bound for the
++ * tile size of current renderers.
++ */
++#define GPU_TILE_SIZE 64
  
--	drm_panel_bridge_remove(*bridge);
-+	if (!bridge)
-+		return;
-+
-+	drm_bridge_remove(bridge);
+ enum stdu_content_type {
+ 	SAME_AS_DISPLAY = 0,
+@@ -830,7 +837,41 @@ static void vmw_stdu_connector_destroy(struct drm_connector *connector)
+ 	vmw_stdu_destroy(vmw_connector_to_stdu(connector));
  }
  
- /**
++static enum drm_mode_status
++vmw_stdu_connector_mode_valid(struct drm_connector *connector,
++			      struct drm_display_mode *mode)
++{
++	enum drm_mode_status ret;
++	struct drm_device *dev = connector->dev;
++	struct vmw_private *dev_priv = vmw_priv(dev);
++	u64 assumed_cpp = dev_priv->assume_16bpp ? 2 : 4;
++	/* Align width and height to account for GPU tile over-alignment */
++	u64 required_mem = ALIGN(mode->hdisplay, GPU_TILE_SIZE) *
++			   ALIGN(mode->vdisplay, GPU_TILE_SIZE) *
++			   assumed_cpp;
++	required_mem = ALIGN(required_mem, PAGE_SIZE);
++
++	ret = drm_mode_validate_size(mode, dev_priv->stdu_max_width,
++				     dev_priv->stdu_max_height);
++	if (ret != MODE_OK)
++		return ret;
+ 
++	ret = drm_mode_validate_size(mode, dev_priv->texture_max_width,
++				     dev_priv->texture_max_height);
++	if (ret != MODE_OK)
++		return ret;
++
++	if (required_mem > dev_priv->max_primary_mem)
++		return MODE_MEM;
++
++	if (required_mem > dev_priv->max_mob_pages * PAGE_SIZE)
++		return MODE_MEM;
++
++	if (required_mem > dev_priv->max_mob_size)
++		return MODE_MEM;
++
++	return MODE_OK;
++}
+ 
+ static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
+ 	.dpms = vmw_du_connector_dpms,
+@@ -846,7 +887,7 @@ static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
+ static const struct
+ drm_connector_helper_funcs vmw_stdu_connector_helper_funcs = {
+ 	.get_modes = vmw_connector_get_modes,
+-	.mode_valid = vmw_connector_mode_valid
++	.mode_valid = vmw_stdu_connector_mode_valid
+ };
+ 
+ 
 -- 
 2.43.0
 
