@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-54492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D02C90EE7E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4432A90ED8A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C92F61F21587
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3F8B1F21FDF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D8A14E2D7;
-	Wed, 19 Jun 2024 13:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D86143C4E;
+	Wed, 19 Jun 2024 13:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GN1nBn2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06f9WhDf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CCE146016;
-	Wed, 19 Jun 2024 13:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4474982495;
+	Wed, 19 Jun 2024 13:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803740; cv=none; b=uADrY6rOBHWItYeGNhqPXUx5M7qgqTW6gFofuBLM4adPz7fg9/swCPH7OnJ/cC+bkFppelpi6kai2+EsoGf4UeS8XSUmRbkzGG7Ittl2JPz7hr2lpEg6x/6cumN2Cxx8gLOnj8r+GdqQNDEsNfMIA7AB1XVwLbFKw1dABB3UYG4=
+	t=1718803161; cv=none; b=tiOz1sbBT9tTk0P9JDuI4RvSA7YsPoSNl8rziHdmYotRs7U+8BMGTBgASm1E5mYwmpE2HEoniParNNr2xaNYSJBdEeBKUl1xNIj9hewmnY8hPa8kdaUhGeiromW5bN7swDesn27+G1UioYpq6kSHGuLthr2O3AIStkY0mWra8fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803740; c=relaxed/simple;
-	bh=4jJi+ff3jyXXsJ/Z6Xdv2jakEUSH0rQBtxMMf2zsa8M=;
+	s=arc-20240116; t=1718803161; c=relaxed/simple;
+	bh=AZe5rkTDhYJ4X1rQNvlnMVsXFJx1rkLPXv+9pvML9xU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fkvuuKvrIB8w+ttYdgMKUxF4Rte9mCqhmGHR3pYHAV8WFCliz3FW//ffTmeWK1zJLEi3XxJ6oDl/AvCb5lcP2gTfHT424ZboqOjFYzDvdWM/C+Y/2E1m70EKqwE0HIVKIVuC7VxYKwXXJ3lo/jpTsrv7kliNeINl6+SC2m3Z9jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GN1nBn2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C110C2BBFC;
-	Wed, 19 Jun 2024 13:28:59 +0000 (UTC)
+	 MIME-Version; b=AiPDpACROwFDJvsG1AEkYF5rlx33c6FVivw5DX1ZS8d/QeU2cXRJew50QUXUaWDVCS6KNu+ZvfjZfGxAhIibQ2TO4sBEd7lXuDIrw191mSky45u1dNZOuYY2H9Aic0pNhSuBWII3BCwtkF1OT6dHo3a9a32yr+f6XUEKR3K4O+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06f9WhDf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF03C2BBFC;
+	Wed, 19 Jun 2024 13:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803739;
-	bh=4jJi+ff3jyXXsJ/Z6Xdv2jakEUSH0rQBtxMMf2zsa8M=;
+	s=korg; t=1718803161;
+	bh=AZe5rkTDhYJ4X1rQNvlnMVsXFJx1rkLPXv+9pvML9xU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GN1nBn2MaBOA6elTQBvO4Xwk4mr4xo0A5XFXnLtjKkChQeEdAVbHvt4jyLAyxTcHU
-	 JlKVzBtKRIWzqDc8wEdeZUN/msgexnVV3pwPRz+p3LaXnbgYZpsuZ//Id9Tr5pN1up
-	 gq2bTswt0JBsVpjE8lnrQ0B3zA7vW94k8SfdwYRA=
+	b=06f9WhDfdY3DncIfNdY7jLptsrb5vxDOhAzbiSPzsDguQtDNRnRVexiH7niigpzqc
+	 gVYBZUk3l3EJMp1vEWlp200moRhU0D5dcFm45fRkQgghrSg+x3YTf4MfBXbNI/nN23
+	 wgQF3lBRqDrI/LIZT3LNohim/Wk1rBq5WylRnKi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Ondrej Jirman <megi@xff.cz>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.1 087/217] usb: typec: tcpm: fix use-after-free case in tcpm_register_source_caps
-Date: Wed, 19 Jun 2024 14:55:30 +0200
-Message-ID: <20240619125600.046390121@linuxfoundation.org>
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 172/281] net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters
+Date: Wed, 19 Jun 2024 14:55:31 +0200
+Message-ID: <20240619125616.455588986@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-commit e7e921918d905544500ca7a95889f898121ba886 upstream.
+[ Upstream commit be27b896529787e23a35ae4befb6337ce73fcca0 ]
 
-There could be a potential use-after-free case in
-tcpm_register_source_caps(). This could happen when:
- * new (say invalid) source caps are advertised
- * the existing source caps are unregistered
- * tcpm_register_source_caps() returns with an error as
-   usb_power_delivery_register_capabilities() fails
+The current cbs parameter depends on speed after uplinking,
+which is not needed and will report a configuration error
+if the port is not initially connected. The UAPI exposed by
+tc-cbs requires userspace to recalculate the send slope anyway,
+because the formula depends on port_transmit_rate (see man tc-cbs),
+which is not an invariant from tc's perspective. Therefore, we
+use offload->sendslope and offload->idleslope to derive the
+original port_transmit_rate from the CBS formula.
 
-This causes port->partner_source_caps to hold on to the now freed source
-caps.
-
-Reset port->partner_source_caps value to NULL after unregistering
-existing source caps.
-
-Fixes: 230ecdf71a64 ("usb: typec: tcpm: unregister existing source caps before re-registration")
-Cc: stable@vger.kernel.org
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Reviewed-by: Ondrej Jirman <megi@xff.cz>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240514220134.2143181-1-amitsd@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1f705bc61aee ("net: stmmac: Add support for CBS QDISC")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://lore.kernel.org/r/20240608143524.2065736-1-xiaolei.wang@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 25 ++++++++-----------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -2430,8 +2430,10 @@ static int tcpm_register_sink_caps(struc
- 	memcpy(caps.pdo, port->sink_caps, sizeof(u32) * port->nr_sink_caps);
- 	caps.role = TYPEC_SINK;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index 620c16e9be3a6..b1896379dbab5 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -343,10 +343,11 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+ 			struct tc_cbs_qopt_offload *qopt)
+ {
+ 	u32 tx_queues_count = priv->plat->tx_queues_to_use;
++	s64 port_transmit_rate_kbps;
+ 	u32 queue = qopt->queue;
+-	u32 ptr, speed_div;
+ 	u32 mode_to_use;
+ 	u64 value;
++	u32 ptr;
+ 	int ret;
  
--	if (cap)
-+	if (cap) {
- 		usb_power_delivery_unregister_capabilities(cap);
-+		port->partner_source_caps = NULL;
-+	}
+ 	/* Queue 0 is not AVB capable */
+@@ -355,30 +356,26 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+ 	if (!priv->dma_cap.av)
+ 		return -EOPNOTSUPP;
  
- 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
- 	if (IS_ERR(cap))
++	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
++
+ 	/* Port Transmit Rate and Speed Divider */
+-	switch (priv->speed) {
++	switch (div_s64(port_transmit_rate_kbps, 1000)) {
+ 	case SPEED_10000:
+-		ptr = 32;
+-		speed_div = 10000000;
+-		break;
+ 	case SPEED_5000:
+ 		ptr = 32;
+-		speed_div = 5000000;
+ 		break;
+ 	case SPEED_2500:
+-		ptr = 8;
+-		speed_div = 2500000;
+-		break;
+ 	case SPEED_1000:
+ 		ptr = 8;
+-		speed_div = 1000000;
+ 		break;
+ 	case SPEED_100:
+ 		ptr = 4;
+-		speed_div = 100000;
+ 		break;
+ 	default:
+-		return -EOPNOTSUPP;
++		netdev_err(priv->dev,
++			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
++			   port_transmit_rate_kbps);
++		return -EINVAL;
+ 	}
+ 
+ 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
+@@ -398,10 +395,10 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+ 	}
+ 
+ 	/* Final adjustments for HW */
+-	value = div_s64(qopt->idleslope * 1024ll * ptr, speed_div);
++	value = div_s64(qopt->idleslope * 1024ll * ptr, port_transmit_rate_kbps);
+ 	priv->plat->tx_queues_cfg[queue].idle_slope = value & GENMASK(31, 0);
+ 
+-	value = div_s64(-qopt->sendslope * 1024ll * ptr, speed_div);
++	value = div_s64(-qopt->sendslope * 1024ll * ptr, port_transmit_rate_kbps);
+ 	priv->plat->tx_queues_cfg[queue].send_slope = value & GENMASK(31, 0);
+ 
+ 	value = qopt->hicredit * 1024ll * 8;
+-- 
+2.43.0
+
 
 
 
