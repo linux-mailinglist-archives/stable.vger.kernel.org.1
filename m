@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-54480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B48E90EE6B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441D290ED7F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 504B6286D67
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E552A1F21D5F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B043F14D29C;
-	Wed, 19 Jun 2024 13:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3A2143757;
+	Wed, 19 Jun 2024 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE7esjnA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iAusYPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCAB14B975;
-	Wed, 19 Jun 2024 13:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4164F12FB27;
+	Wed, 19 Jun 2024 13:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803704; cv=none; b=LvN1hbKDHeDMifpGpQzy1NTpJidiriscsCKvONd2ImLxQJWhuoLZ8xC3Mv0sNat0eQ508ZCEtBi3HtjG9wqF6U7Xo9qOSrtDCQ2ZiDXJoHRAVtdkgURcSjmUmNaMg91Xmb6Ng3nYJtz6QntDXC7WWuDaUWPJSe7ACZncIXmijOg=
+	t=1718803126; cv=none; b=UNGVU5fAKA0jqj0Pe8INXBRcCuN1RGX92/QJl2SlLW6DntXXJNOZqfY1JCzrKsxQlT03CW88LFBvMH05OC4CNG7loFMCYFv+vG1UCy2F8XybQ7kvTS+/IDGU8Lp1EF470DUwGrVNB36L49NpuGdCHXvL4sZoDxT12BLi0cQRGxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803704; c=relaxed/simple;
-	bh=PE7+ZIMJGb5/+YcBypABvO2QT3EAYkZPd6lsavLqnk0=;
+	s=arc-20240116; t=1718803126; c=relaxed/simple;
+	bh=S0rKqFKger+PIyyf2v5CGYDNj6zvL1imQMQHONHBNLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwUN8ciI4Fy70OQYUCYQ158ZgSNdFVmTI9XjrzSCpWIU2kUbJ6gS3NwGWxOGnVuZx7JEKiYEYp6zcNzwF5DDxzvQgWQvzJcibUOEWihrUtKOqytkq6EJLoGRv0FDZ9MmVqwY7vVQ5co57LiJ3XcEcAmDmCPj5LeJVmtgZF9dmN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE7esjnA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD985C32786;
-	Wed, 19 Jun 2024 13:28:23 +0000 (UTC)
+	 MIME-Version; b=AXN0McTF1+++PDGTUsDAqUzty0DhOriOCDC0p7Bxxt0F1dtcYlcOZq0rul7SB3jmCi9sLoe1h8hHeuuRfzbBsICQIX9DjcV06Y041nPkrFSLzxOVtLeOl/wodftYB5dezwaE/NTd3bQO7mYYb+b7BYywSHBMkxkZltZZ8zVJsBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iAusYPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E122C2BBFC;
+	Wed, 19 Jun 2024 13:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803704;
-	bh=PE7+ZIMJGb5/+YcBypABvO2QT3EAYkZPd6lsavLqnk0=;
+	s=korg; t=1718803125;
+	bh=S0rKqFKger+PIyyf2v5CGYDNj6zvL1imQMQHONHBNLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tE7esjnATNpzWB8MAa5cf2Co1pUqCxEj+sV8uMPXp01Z7tVRBBFGYlJx9gDuS6vXl
-	 avxrHLNIhdTSLZh9GKKQXQXfTmyiWg6Rf8DjzmnXeOI2AeVOUreZBcQIc4TPlb+jNk
-	 ZrneWszumfODJ89Ay1ttN46+ffQDjb2IQhD6mdok=
+	b=2iAusYPEAseIgEXlEY2XDSuIRyQB3M/kGUaeCIi9PhsrqMyPDBrc8doiKILuwGEc+
+	 JsoKYbBrhDjljP2URcMKEUp1a5a8DUkNRIuKhX4QOwvCHGMuZJYhz1dRC+zFhIbqTh
+	 CbVtI8igbYpbHx5zBtzxDyE+V3H5fLMQKFWl/Ahg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/217] selftests/mm: log a consistent test name for check_compaction
-Date: Wed, 19 Jun 2024 14:55:19 +0200
-Message-ID: <20240619125559.618494627@linuxfoundation.org>
+Subject: [PATCH 6.9 161/281] Bluetooth: fix connection setup in l2cap_connect
+Date: Wed, 19 Jun 2024 14:55:20 +0200
+Message-ID: <20240619125616.034723969@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,126 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit f3b7568c49420d2dcd251032c9ca1e069ec8a6c9 ]
+[ Upstream commit c695439d198d30e10553a3b98360c5efe77b6903 ]
 
-Every test result report in the compaction test prints a distinct log
-messae, and some of the reports print a name that varies at runtime.  This
-causes problems for automation since a lot of automation software uses the
-printed string as the name of the test, if the name varies from run to run
-and from pass to fail then the automation software can't identify that a
-test changed result or that the same tests are being run.
+The amp_id argument of l2cap_connect() was removed in
+commit 84a4bb6548a2 ("Bluetooth: HCI: Remove HCI_AMP support")
 
-Refactor the logging to use a consistent name when printing the result of
-the test, printing the existing messages as diagnostic information instead
-so they are still available for people trying to interpret the results.
+It was always called with amp_id == 0, i.e. AMP_ID_BREDR == 0x00 (ie.
+non-AMP controller).  In the above commit, the code path for amp_id != 0
+was preserved, although it should have used the amp_id == 0 one.
 
-Link: https://lkml.kernel.org/r/20240209-kselftest-mm-cleanup-v1-2-a3c0386496b5@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: d4202e66a4b1 ("selftests/mm: compaction_test: fix bogus test success on Aarch64")
+Restore the previous behavior of the non-AMP code path, to fix problems
+with L2CAP connections.
+
+Fixes: 84a4bb6548a2 ("Bluetooth: HCI: Remove HCI_AMP support")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vm/compaction_test.c | 35 +++++++++++---------
- 1 file changed, 19 insertions(+), 16 deletions(-)
+ net/bluetooth/l2cap_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
-index f81931c1f8386..6aa6460b854ea 100644
---- a/tools/testing/selftests/vm/compaction_test.c
-+++ b/tools/testing/selftests/vm/compaction_test.c
-@@ -95,14 +95,15 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 
- 	fd = open("/proc/sys/vm/nr_hugepages", O_RDWR | O_NONBLOCK);
- 	if (fd < 0) {
--		ksft_test_result_fail("Failed to open /proc/sys/vm/nr_hugepages: %s\n",
--				      strerror(errno));
--		return -1;
-+		ksft_print_msg("Failed to open /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
-+		ret = -1;
-+		goto out;
- 	}
- 
- 	if (read(fd, initial_nr_hugepages, sizeof(initial_nr_hugepages)) <= 0) {
--		ksft_test_result_fail("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
--				      strerror(errno));
-+		ksft_print_msg("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
- 		goto close_fd;
- 	}
- 
-@@ -110,8 +111,8 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 
- 	/* Start with the initial condition of 0 huge pages*/
- 	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
--		ksft_test_result_fail("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
--				      strerror(errno));
-+		ksft_print_msg("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
- 		goto close_fd;
- 	}
- 
-@@ -120,16 +121,16 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 	/* Request a large number of huge pages. The Kernel will allocate
- 	   as much as it can */
- 	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
--		ksft_test_result_fail("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
--				      strerror(errno));
-+		ksft_print_msg("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
- 		goto close_fd;
- 	}
- 
- 	lseek(fd, 0, SEEK_SET);
- 
- 	if (read(fd, nr_hugepages, sizeof(nr_hugepages)) <= 0) {
--		ksft_test_result_fail("Failed to re-read from /proc/sys/vm/nr_hugepages: %s\n",
--				      strerror(errno));
-+		ksft_print_msg("Failed to re-read from /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
- 		goto close_fd;
- 	}
- 
-@@ -141,24 +142,26 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 
- 	if (write(fd, initial_nr_hugepages, strlen(initial_nr_hugepages))
- 	    != strlen(initial_nr_hugepages)) {
--		ksft_test_result_fail("Failed to write value to /proc/sys/vm/nr_hugepages: %s\n",
--				      strerror(errno));
-+		ksft_print_msg("Failed to write value to /proc/sys/vm/nr_hugepages: %s\n",
-+			       strerror(errno));
- 		goto close_fd;
- 	}
- 
-+	ksft_print_msg("Number of huge pages allocated = %d\n",
-+		       atoi(nr_hugepages));
-+
- 	if (compaction_index > 3) {
- 		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
- 			       "as huge pages\n", compaction_index);
--		ksft_test_result_fail("No of huge pages allocated = %d\n", (atoi(nr_hugepages)));
- 		goto close_fd;
- 	}
- 
--	ksft_test_result_pass("Memory compaction succeeded. No of huge pages allocated = %d\n",
--			      (atoi(nr_hugepages)));
- 	ret = 0;
- 
-  close_fd:
- 	close(fd);
-+ out:
-+	ksft_test_result(ret == 0, "check_compaction\n");
- 	return ret;
- }
- 
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index e3f5d830e42bf..9394a158d1b1a 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4009,8 +4009,8 @@ static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
+ 				status = L2CAP_CS_AUTHOR_PEND;
+ 				chan->ops->defer(chan);
+ 			} else {
+-				l2cap_state_change(chan, BT_CONNECT2);
+-				result = L2CAP_CR_PEND;
++				l2cap_state_change(chan, BT_CONFIG);
++				result = L2CAP_CR_SUCCESS;
+ 				status = L2CAP_CS_NO_INFO;
+ 			}
+ 		} else {
 -- 
 2.43.0
 
