@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B835A90EE51
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9386490EC5A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC1591C2345D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 189FB283A28
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D9414A4FC;
-	Wed, 19 Jun 2024 13:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899A0143C4A;
+	Wed, 19 Jun 2024 13:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4WkgE/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOqUsEpO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E93812FB27;
-	Wed, 19 Jun 2024 13:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464A6132129;
+	Wed, 19 Jun 2024 13:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803663; cv=none; b=he2n96O3pwKJ+VXRbKeENQHEwjzN6WbcWh5shtgQ2YhgEy1Lxi+NWtWSsIFO/YzobxoNq2l1zqZzmSCEPuAsshTvTYXBK+OQlhyRgHtaWAMqnwQ2EO2OD3gx0y2R+DTxwBMShmza8YBNjqeYi36M+PcDdWd8R65DgQWvhPqLfJw=
+	t=1718802391; cv=none; b=Mcf12BMuoGE9QYGAxOlYpn8lYbSD7s96AVzFLw7KLBKRqZz2osVJCi15lhFusZz7Bx1QaktRvb2Q1L410FIvkgkcyOOT3Z/ROMrlM4VpGcJCypsZ6IcOsZ4mDH5qxhg65ATiwA38t4hePOnUik4R/tz+6mtmmwywGihr0iG0wuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803663; c=relaxed/simple;
-	bh=fdqXFwDX4ApLtFgPzWX1Qn7ujtqxQUpkD9/B7XfVJKU=;
+	s=arc-20240116; t=1718802391; c=relaxed/simple;
+	bh=JmEo4Qs4L8sIOotB0vKCpKNFGExS/3l4zTWVZL8aBRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mGER/m+WYAgMWNDOREphYYEuHGdvf+6XsFeU41S3GmeJMg5E6t5pBDBMn3k3E42D63YUxJ3vXW4CUnjXbdZr9qkS3mIbPFzfVj/Ewr2ho1bSPD8NVdDEJJzVobDTjMwoXXgatnZhcw03ZzebQ3cC8xlgGV5uJyBaaZ3kjtX9YGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4WkgE/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0AEAC2BBFC;
-	Wed, 19 Jun 2024 13:27:42 +0000 (UTC)
+	 MIME-Version; b=tFF45BVSVlmKYsn0vhu5T7X6guXrgZYV9S2uut2vAVi+PcG8BbmN5yxZmsuAPBLy3ahi01m+uMgGm0dZSTX2GFj+9dD+ZTuTjomR04uv42qVvsXodneTPgxxNiNuJlgJD96FHgScQ+MnoqMCDQoX5I2j1MrrUizFTbyaK7eNMeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOqUsEpO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEA8C2BBFC;
+	Wed, 19 Jun 2024 13:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803663;
-	bh=fdqXFwDX4ApLtFgPzWX1Qn7ujtqxQUpkD9/B7XfVJKU=;
+	s=korg; t=1718802391;
+	bh=JmEo4Qs4L8sIOotB0vKCpKNFGExS/3l4zTWVZL8aBRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q4WkgE/nPpMRttWM38MkfdjQ8iTiIVxqcg/KpvYcjonB2QNk7ryRDwNQgiXDE0bla
-	 QcBej8CFEyf6TEAtwLG/NfeJzu83cfQ+tdidVqlHj4+dUcebDKjHLIOBY38xLSiL66
-	 oVvVMZ5gprFFMChi6it7txLQ/VZngWinrBHrXejw=
+	b=yOqUsEpONC2WqeLoV/FJlPklzPWugJ73ZKu1sBktenr2u45hv4arwl+vjc3vxgRV9
+	 YaAROpVVQ9RTz5WleOw8e+3fwGelPU0zOmzsxORyaLkPFa+2KucypqkzRexy/6Vy+m
+	 nYd+s0NbxqwYyXua+jkFukDk+EKzBReT77AyIo3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Volodymyr Babchuk <volodymyr_babchuk@epam.com>,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/217] arm64: dts: qcom: sa8155p-adp: fix SDHC2 CD pin configuration
+Subject: [PATCH 6.6 153/267] Bluetooth: L2CAP: Fix rejecting L2CAP_CONN_PARAM_UPDATE_REQ
 Date: Wed, 19 Jun 2024 14:55:04 +0200
-Message-ID: <20240619125559.039981243@linuxfoundation.org>
+Message-ID: <20240619125612.217481349@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Volodymyr Babchuk <Volodymyr_Babchuk@epam.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 819fe8c96a5172dfd960e5945e8f00f8fed32953 ]
+[ Upstream commit 806a5198c05987b748b50f3d0c0cfb3d417381a4 ]
 
-There are two issues with SDHC2 configuration for SA8155P-ADP,
-which prevent use of SDHC2 and causes issues with ethernet:
+This removes the bogus check for max > hcon->le_conn_max_interval since
+the later is just the initial maximum conn interval not the maximum the
+stack could support which is really 3200=4000ms.
 
-- Card Detect pin for SHDC2 on SA8155P-ADP is connected to gpio4 of
-  PMM8155AU_1, not to SoC itself. SoC's gpio4 is used for DWMAC
-  TX. If sdhc driver probes after dwmac driver, it reconfigures
-  gpio4 and this breaks Ethernet MAC.
+In order to pass GAP/CONN/CPUP/BV-05-C one shall probably enter values
+of the following fields in IXIT that would cause hci_check_conn_params
+to fail:
 
-- pinctrl configuration mentions gpio96 as CD pin. It seems it was
-  copied from some SM8150 example, because as mentioned above,
-  correct CD pin is gpio4 on PMM8155AU_1.
+TSPX_conn_update_int_min
+TSPX_conn_update_int_max
+TSPX_conn_update_peripheral_latency
+TSPX_conn_update_supervision_timeout
 
-This patch fixes both mentioned issues by providing correct pin handle
-and pinctrl configuration.
-
-Fixes: 0deb2624e2d0 ("arm64: dts: qcom: sa8155p-adp: Add support for uSD card")
-Cc: stable@vger.kernel.org
-Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
-Reviewed-by: Stephan Gerhold <stephan@gerhold.net>
-Link: https://lore.kernel.org/r/20240412190310.1647893-1-volodymyr_babchuk@epam.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://github.com/bluez/bluez/issues/847
+Fixes: e4b019515f95 ("Bluetooth: Enforce validation on max value of connection interval")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8155p-adp.dts | 30 ++++++++++--------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ include/net/bluetooth/hci_core.h | 36 ++++++++++++++++++++++++++++----
+ net/bluetooth/l2cap_core.c       |  8 +------
+ 2 files changed, 33 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sa8155p-adp.dts b/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
-index 01ac460d910ec..cbec4c9f31025 100644
---- a/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
-+++ b/arch/arm64/boot/dts/qcom/sa8155p-adp.dts
-@@ -372,6 +372,16 @@ rgmii_phy: phy@7 {
- 	};
- };
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index f786d2d62fa5e..f89d6d43ba8f1 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -2071,18 +2071,46 @@ static inline int hci_check_conn_params(u16 min, u16 max, u16 latency,
+ {
+ 	u16 max_latency;
  
-+&pmm8155au_1_gpios {
-+	pmm8155au_1_sdc2_cd: sdc2-cd-default-state {
-+		pins = "gpio4";
-+		function = "normal";
-+		input-enable;
-+		bias-pull-up;
-+		power-source = <0>;
-+	};
-+};
+-	if (min > max || min < 6 || max > 3200)
++	if (min > max) {
++		BT_WARN("min %d > max %d", min, max);
+ 		return -EINVAL;
++	}
 +
- &qupv3_id_1 {
- 	status = "okay";
- };
-@@ -389,10 +399,10 @@ &remoteproc_cdsp {
- &sdhc_2 {
- 	status = "okay";
++	if (min < 6) {
++		BT_WARN("min %d < 6", min);
++		return -EINVAL;
++	}
++
++	if (max > 3200) {
++		BT_WARN("max %d > 3200", max);
++		return -EINVAL;
++	}
++
++	if (to_multiplier < 10) {
++		BT_WARN("to_multiplier %d < 10", to_multiplier);
++		return -EINVAL;
++	}
  
--	cd-gpios = <&tlmm 4 GPIO_ACTIVE_LOW>;
-+	cd-gpios = <&pmm8155au_1_gpios 4 GPIO_ACTIVE_LOW>;
- 	pinctrl-names = "default", "sleep";
--	pinctrl-0 = <&sdc2_on>;
--	pinctrl-1 = <&sdc2_off>;
-+	pinctrl-0 = <&sdc2_on &pmm8155au_1_sdc2_cd>;
-+	pinctrl-1 = <&sdc2_off &pmm8155au_1_sdc2_cd>;
- 	vqmmc-supply = <&vreg_l13c_2p96>; /* IO line power */
- 	vmmc-supply = <&vreg_l17a_2p96>;  /* Card power line */
- 	bus-width = <4>;
-@@ -506,13 +516,6 @@ data-pins {
- 			bias-pull-up;		/* pull up */
- 			drive-strength = <16>;	/* 16 MA */
- 		};
+-	if (to_multiplier < 10 || to_multiplier > 3200)
++	if (to_multiplier > 3200) {
++		BT_WARN("to_multiplier %d > 3200", to_multiplier);
+ 		return -EINVAL;
++	}
+ 
+-	if (max >= to_multiplier * 8)
++	if (max >= to_multiplier * 8) {
++		BT_WARN("max %d >= to_multiplier %d * 8", max, to_multiplier);
+ 		return -EINVAL;
++	}
+ 
+ 	max_latency = (to_multiplier * 4 / max) - 1;
+-	if (latency > 499 || latency > max_latency)
++	if (latency > 499) {
++		BT_WARN("latency %d > 499", latency);
+ 		return -EINVAL;
++	}
++
++	if (latency > max_latency) {
++		BT_WARN("latency %d > max_latency %d", latency, max_latency);
++		return -EINVAL;
++	}
+ 
+ 	return 0;
+ }
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 37210567fbfbe..d5fb78c604cf3 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4645,13 +4645,7 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
+ 
+ 	memset(&rsp, 0, sizeof(rsp));
+ 
+-	if (max > hcon->le_conn_max_interval) {
+-		BT_DBG("requested connection interval exceeds current bounds.");
+-		err = -EINVAL;
+-	} else {
+-		err = hci_check_conn_params(min, max, latency, to_multiplier);
+-	}
 -
--		sd-cd-pins {
--			pins = "gpio96";
--			function = "gpio";
--			bias-pull-up;		/* pull up */
--			drive-strength = <2>;	/* 2 MA */
--		};
- 	};
- 
- 	sdc2_off: sdc2-off-state {
-@@ -533,13 +536,6 @@ data-pins {
- 			bias-pull-up;		/* pull up */
- 			drive-strength = <2>;	/* 2 MA */
- 		};
--
--		sd-cd-pins {
--			pins = "gpio96";
--			function = "gpio";
--			bias-pull-up;		/* pull up */
--			drive-strength = <2>;	/* 2 MA */
--		};
- 	};
- 
- 	usb2phy_ac_en1_default: usb2phy-ac-en1-default-state {
++	err = hci_check_conn_params(min, max, latency, to_multiplier);
+ 	if (err)
+ 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
+ 	else
 -- 
 2.43.0
 
