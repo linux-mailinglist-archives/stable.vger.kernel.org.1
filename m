@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D89DC90ED4D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D594490EC1E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9018E1F2120C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E38E1F228B6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CD613F435;
-	Wed, 19 Jun 2024 13:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAB7147C6E;
+	Wed, 19 Jun 2024 13:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8RflkR5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsF8hUMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26383AD58;
-	Wed, 19 Jun 2024 13:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D68143C43;
+	Wed, 19 Jun 2024 13:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802990; cv=none; b=hjNiDzOu2qy9lyp5y1p37DCS6hnmCb64NAA98glCHyWQGxYa0cUFzl9JR0f9FOXPSYIVixQ3L5HG4E01rq6Atua8ZR0wdRXvPSYtkpmfa6XrhHm0hZJJYcNYJHcqoV7yfMydwRducrpZQO84fsnp/oTKOQf6WNDSngxsNbkGxTQ=
+	t=1718802222; cv=none; b=QMEkQM88d/ylVRshWZLGykQG6B8qu6w+yvbkOGMujL5uyUOp4riCygN2tLRm13ffV2StIYoOveo+CVry0igHRXe4JOm6OWEsxMZUQLK7jZjH5V+Xtp/6B7i7jhzzf9GLyW1UjbAphnzqcJR+ZHYhu/+mkRaaAFw/g68UWm9R6aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802990; c=relaxed/simple;
-	bh=7TC2TwH90Gchz71t9Ahnnoja4+kua/Jneo5payEt0A0=;
+	s=arc-20240116; t=1718802222; c=relaxed/simple;
+	bh=vZPsptq6pb4IPVAJ6TcJm85DZLkNXdFejR5v2dR7xfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRGk/XBBhX+eZgtcbVhKTTcZczwj/Uow1vX6mobnnn9OchmagtRXkk1KQYJWYWDMHKzoZpBpcTTT0fNPiOSxDHFwx0HvoiY+kQBfC9bqp14xxMi0DC33Qf8eMcG34L0sfk5bEK/4St0cLHj259CeYYYLXucqcmpcYl0KDwKk/pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8RflkR5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34EAC2BBFC;
-	Wed, 19 Jun 2024 13:16:29 +0000 (UTC)
+	 MIME-Version; b=dj9vzsLAAuC9DOQ7uDWSEN9n70f5SjY9TVFSHyQH3CV3JV1w4k7GYL9HbFbyZ0T5GzEMkmZBphz8zp8N9auf1LHgOamqCNJGmzduNfZ2RpzkXs5ePyJInFPdhi+dSwOdWnmgyKsOvuI+yV3aCTODEYKh+pTMJrib+rps/wqGHhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsF8hUMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B54AC2BBFC;
+	Wed, 19 Jun 2024 13:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802990;
-	bh=7TC2TwH90Gchz71t9Ahnnoja4+kua/Jneo5payEt0A0=;
+	s=korg; t=1718802222;
+	bh=vZPsptq6pb4IPVAJ6TcJm85DZLkNXdFejR5v2dR7xfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P8RflkR5Ujx4tBkiKLAqDYljtHrzcTPBwMmLrUoZrHAnL4V6H9o0Qniv2VrGUDbO/
-	 kfzAoKsNQKdVCBbbIj6IphnAsfM2J52fOBTB2tVvnnml3yeszsYv0SMIGbDt4sFcho
-	 bI5ojRNLlI0VwpZsCrUBEUIX5t6H9J9gvOim8+OQ=
+	b=SsF8hUMbs7TCE4rGzcyWHRx3bQyi4WjQKTO/OUhP1BBvxAI6PtBumzFY/ocQfcrEy
+	 1xYhAJCvhSUT90s8H6/TVK0ip0GK9LiBfhQIoAhuYkLFkc3UFXYNd/F9pgg1AIhUnv
+	 rY8fvo6OO3l+uuvbD0vOCTCbGO9lAxgvccJOQfJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 074/281] x86/cpu: Get rid of an unnecessary local variable in get_cpu_address_sizes()
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Ondrej Jirman <megi@xff.cz>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.6 082/267] usb: typec: tcpm: fix use-after-free case in tcpm_register_source_caps
 Date: Wed, 19 Jun 2024 14:53:53 +0200
-Message-ID: <20240619125612.689560201@linuxfoundation.org>
+Message-ID: <20240619125609.499503490@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-[ Upstream commit 95bfb35269b2e85cff0dd2c957b2d42ebf95ae5f ]
+commit e7e921918d905544500ca7a95889f898121ba886 upstream.
 
-Drop 'vp_bits_from_cpuid' as it is not really needed.
+There could be a potential use-after-free case in
+tcpm_register_source_caps(). This could happen when:
+ * new (say invalid) source caps are advertised
+ * the existing source caps are unregistered
+ * tcpm_register_source_caps() returns with an error as
+   usb_power_delivery_register_capabilities() fails
 
-No functional changes.
+This causes port->partner_source_caps to hold on to the now freed source
+caps.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20240316120706.4352-1-bp@alien8.de
-Stable-dep-of: 2a38e4ca3022 ("x86/cpu: Provide default cache line size if not enumerated")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reset port->partner_source_caps value to NULL after unregistering
+existing source caps.
+
+Fixes: 230ecdf71a64 ("usb: typec: tcpm: unregister existing source caps before re-registration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Ondrej Jirman <megi@xff.cz>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240514220134.2143181-1-amitsd@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/common.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index ae987a26f26e4..d636991536a5f 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1053,18 +1053,9 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
- void get_cpu_address_sizes(struct cpuinfo_x86 *c)
- {
- 	u32 eax, ebx, ecx, edx;
--	bool vp_bits_from_cpuid = true;
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -2436,8 +2436,10 @@ static int tcpm_register_sink_caps(struc
+ 	memcpy(caps.pdo, port->sink_caps, sizeof(u32) * port->nr_sink_caps);
+ 	caps.role = TYPEC_SINK;
  
- 	if (!cpu_has(c, X86_FEATURE_CPUID) ||
--	    (c->extended_cpuid_level < 0x80000008))
--		vp_bits_from_cpuid = false;
--
--	if (vp_bits_from_cpuid) {
--		cpuid(0x80000008, &eax, &ebx, &ecx, &edx);
--
--		c->x86_virt_bits = (eax >> 8) & 0xff;
--		c->x86_phys_bits = eax & 0xff;
--	} else {
-+	    (c->extended_cpuid_level < 0x80000008)) {
- 		if (IS_ENABLED(CONFIG_X86_64)) {
- 			c->x86_clflush_size = 64;
- 			c->x86_phys_bits = 36;
-@@ -1078,7 +1069,13 @@ void get_cpu_address_sizes(struct cpuinfo_x86 *c)
- 			    cpu_has(c, X86_FEATURE_PSE36))
- 				c->x86_phys_bits = 36;
- 		}
-+	} else {
-+		cpuid(0x80000008, &eax, &ebx, &ecx, &edx);
-+
-+		c->x86_virt_bits = (eax >> 8) & 0xff;
-+		c->x86_phys_bits = eax & 0xff;
- 	}
-+
- 	c->x86_cache_bits = c->x86_phys_bits;
- 	c->x86_cache_alignment = c->x86_clflush_size;
- }
--- 
-2.43.0
-
+-	if (cap)
++	if (cap) {
+ 		usb_power_delivery_unregister_capabilities(cap);
++		port->partner_source_caps = NULL;
++	}
+ 
+ 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
+ 	if (IS_ERR(cap))
 
 
 
