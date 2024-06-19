@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-53947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57DB790EC01
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EF9390EE2B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:26:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 024161F235AD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DAD5289356
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2784514A4C8;
-	Wed, 19 Jun 2024 13:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B511459F2;
+	Wed, 19 Jun 2024 13:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sw39yyI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hiofuf5a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CCB143873;
-	Wed, 19 Jun 2024 13:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FA04D9EA;
+	Wed, 19 Jun 2024 13:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802142; cv=none; b=QETcf6HFLfpkE9xX/kJ9d+uoBikAydNGp9hc8dbGlV3IGVRpgF/jlViPYL7NcGEvzgvoTJYDCfJ2VzohGUqqTj7hVzDO2iCnOOvmfdRkr0vy9IDpy/Wt0PEEoPY1EAp/MVsqJDHOqSDEQWU+8xNc5HvwCTNpzLw85NJj2i9cZQQ=
+	t=1718803583; cv=none; b=fcWGFMaqsJmv1Eg6/SZYhEP0IQAHhpLbE1+ywES/UDOZLNoWJvRaZ0k9UOmUaPGl7JgpIUAKAHlBnNn0FsFPY5I9Ht01899sTYlnPiAs0OT5tHES0fun6HvRX1V6IDvqwqI7ZyzYr4INhB3HJqZLweV++IrcI4lcKIgBHzIc0eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802142; c=relaxed/simple;
-	bh=A7PWdoKrpohA8cHq8USxfnGzF8GhEVWcB9hxEV+Y6ms=;
+	s=arc-20240116; t=1718803583; c=relaxed/simple;
+	bh=QpCcz8TFsFYjDqNkVgxdOLfw2L3ea88FpAyihwrwnQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TonED2WXHEb1byN3q2NsirAUoSLtjTqHlqhYuErxf30i4/TQUUcA/PeiglIUiz38lm7am9WIVhvSH1VA7PVuMbWwxD/cIBXGsi/7XbMV/qrtc4Su2pFq0XpAKlMzrXdhP2n8aA8CtT22fZ9nAw4It0UqFfDedcOeVumfroytAj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sw39yyI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60627C32786;
-	Wed, 19 Jun 2024 13:02:22 +0000 (UTC)
+	 MIME-Version; b=QoNtHvLCiR7RP2hf1uf/63NDo9x2kAe9rIa22UXaep9RyytJ+z7lI+AJDIsYHnsBzkPXe2ZVCzIZ0pfA0XMXPu0vMBG6MCYUhqZFcIuJtexBuHw55ngdlXf085D8e+/c2w2mQAJRmj6Rcv01qSAldH/nczbHKv17cDIIYCBvo10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hiofuf5a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFD4C2BBFC;
+	Wed, 19 Jun 2024 13:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802142;
-	bh=A7PWdoKrpohA8cHq8USxfnGzF8GhEVWcB9hxEV+Y6ms=;
+	s=korg; t=1718803583;
+	bh=QpCcz8TFsFYjDqNkVgxdOLfw2L3ea88FpAyihwrwnQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sw39yyI/E8LmAcHAOMLGJox4LT0IXoED37yyBtMC5Hk8GYQ6bg4lzCQ7Gd0rsmpY3
-	 He3WRK3Y/afACDjKPtGnqxu6wN2Yskgx81UPhAK4bFoEjBjpYPVbOFywdOl1bbmkAO
-	 BOQHGK8CkwB8Mif2nHe6w7frp4DwroSpfcl5B3M8=
+	b=Hiofuf5aggY2NZOrPzaXN/1Um4XJK1+oUXE9jafzW6bN4kssXISRrTR6rAAn6Bduv
+	 E1LRD6psi8uZzziTbmVkZH0S39oguxpoSpI30ZbOkfnhUZ0/NbKfX5IadD2vKRgoQG
+	 wRUT3M6VyvEf0/tMHarksroHgmKfICIBHMifuHSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Tomon <pierretom+12@ik.me>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 097/267] scsi: sd: Use READ(16) when reading block zero on large capacity disks
+	Lin Ma <linma@zju.edu.cn>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 005/217] wifi: cfg80211: pmsr: use correct nla_get_uX functions
 Date: Wed, 19 Jun 2024 14:54:08 +0200
-Message-ID: <20240619125610.074661013@linuxfoundation.org>
+Message-ID: <20240619125556.707058788@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin K. Petersen <martin.petersen@oracle.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit 7926d51f73e0434a6250c2fd1a0555f98d9a62da upstream.
+[ Upstream commit ab904521f4de52fef4f179d2dfc1877645ef5f5c ]
 
-Commit 321da3dc1f3c ("scsi: sd: usb_storage: uas: Access media prior
-to querying device properties") triggered a read to LBA 0 before
-attempting to inquire about device characteristics. This was done
-because some protocol bridge devices will return generic values until
-an attached storage device's media has been accessed.
+The commit 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM
+initiator API") defines four attributes NL80211_PMSR_FTM_REQ_ATTR_
+{NUM_BURSTS_EXP}/{BURST_PERIOD}/{BURST_DURATION}/{FTMS_PER_BURST} in
+following ways.
 
-Pierre Tomon reported that this change caused problems on a large
-capacity external drive connected via a bridge device. The bridge in
-question does not appear to implement the READ(10) command.
+static const struct nla_policy
+nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
+    ...
+    [NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP] =
+        NLA_POLICY_MAX(NLA_U8, 15),
+    [NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD] = { .type = NLA_U16 },
+    [NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION] =
+        NLA_POLICY_MAX(NLA_U8, 15),
+    [NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST] =
+        NLA_POLICY_MAX(NLA_U8, 31),
+    ...
+};
 
-Issue a READ(16) instead of READ(10) when a device has been identified
-as preferring 16-byte commands (use_16_for_rw heuristic).
+That is, those attributes are expected to be NLA_U8 and NLA_U16 types.
+However, the consumers of these attributes in `pmsr_parse_ftm` blindly
+all use `nla_get_u32`, which is incorrect and causes functionality issues
+on little-endian platforms. Hence, fix them with the correct `nla_get_u8`
+and `nla_get_u16` functions.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218890
-Link: https://lore.kernel.org/r/70dd7ae0-b6b1-48e1-bb59-53b7c7f18274@rowland.harvard.edu
-Link: https://lore.kernel.org/r/20240605022521.3960956-1-martin.petersen@oracle.com
-Fixes: 321da3dc1f3c ("scsi: sd: usb_storage: uas: Access media prior to querying device properties")
-Cc: stable@vger.kernel.org
-Reported-by: Pierre Tomon <pierretom+12@ik.me>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Tested-by: Pierre Tomon <pierretom+12@ik.me>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://msgid.link/20240521075059.47999-1-linma@zju.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sd.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ net/wireless/pmsr.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3406,16 +3406,23 @@ static bool sd_validate_opt_xfer_size(st
+diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
+index 2bc647720cda5..d26daa0370e71 100644
+--- a/net/wireless/pmsr.c
++++ b/net/wireless/pmsr.c
+@@ -56,7 +56,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.burst_period = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD])
+ 		out->ftm.burst_period =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
++			nla_get_u16(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
  
- static void sd_read_block_zero(struct scsi_disk *sdkp)
- {
--	unsigned int buf_len = sdkp->device->sector_size;
--	char *buffer, cmd[10] = { };
-+	struct scsi_device *sdev = sdkp->device;
-+	unsigned int buf_len = sdev->sector_size;
-+	u8 *buffer, cmd[16] = { };
+ 	out->ftm.asap = !!tb[NL80211_PMSR_FTM_REQ_ATTR_ASAP];
+ 	if (out->ftm.asap && !capa->ftm.asap) {
+@@ -75,7 +75,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.num_bursts_exp = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP])
+ 		out->ftm.num_bursts_exp =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
  
- 	buffer = kmalloc(buf_len, GFP_KERNEL);
- 	if (!buffer)
- 		return;
+ 	if (capa->ftm.max_bursts_exponent >= 0 &&
+ 	    out->ftm.num_bursts_exp > capa->ftm.max_bursts_exponent) {
+@@ -88,7 +88,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.burst_duration = 15;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION])
+ 		out->ftm.burst_duration =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
  
--	cmd[0] = READ_10;
--	put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
--	put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
-+	if (sdev->use_16_for_rw) {
-+		cmd[0] = READ_16;
-+		put_unaligned_be64(0, &cmd[2]); /* Logical block address 0 */
-+		put_unaligned_be32(1, &cmd[10]);/* Transfer 1 logical block */
-+	} else {
-+		cmd[0] = READ_10;
-+		put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
-+		put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
-+	}
+ 	out->ftm.ftms_per_burst = 0;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST])
+@@ -107,7 +107,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
+ 	out->ftm.ftmr_retries = 3;
+ 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES])
+ 		out->ftm.ftmr_retries =
+-			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
++			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
  
- 	scsi_execute_cmd(sdkp->device, cmd, REQ_OP_DRV_IN, buffer, buf_len,
- 			 SD_TIMEOUT, sdkp->max_retries, NULL);
+ 	out->ftm.request_lci = !!tb[NL80211_PMSR_FTM_REQ_ATTR_REQUEST_LCI];
+ 	if (out->ftm.request_lci && !capa->ftm.request_lci) {
+-- 
+2.43.0
+
 
 
 
