@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-54011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E447790EC43
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 411CC90ED73
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED08C1C24B38
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D5431C2118B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A2913D525;
-	Wed, 19 Jun 2024 13:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF4F143C65;
+	Wed, 19 Jun 2024 13:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dqIVc2n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlY5BmQp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047A812FB31;
-	Wed, 19 Jun 2024 13:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED4D82495;
+	Wed, 19 Jun 2024 13:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802329; cv=none; b=gUfJHl90LZMsAwXShCFXTGXXZveTjoruWb+TcRhLdn77JORJ01FYAKTXfjxbrWB6dEP1FKvv4bZkOsaS+jKZAGjqMaZstgLsouUlWriXeMdKQeeM+FjTWhqd1TLmsIOpUwQm5wCHs6mZhxaOz85P1iqu/nVwdcjbHQa4VrAsC5s=
+	t=1718803099; cv=none; b=pvpg53O8iNUsU4lDlw6FXGABt8TGmdSW8fU2IEPJNErioFbM4e6iOMKXE6xTWQ2kT2ydIIcDYbOnkVu5r1UvgOXYiR1Q2rSOwz3ysJ90d3TgBOnXYhI//Q8J87qI7sLZbuRfZuumZFFCPBKA2yxqxfUhc2RhxGugazLzX9nOyWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802329; c=relaxed/simple;
-	bh=+krnm+6NiqybvcEfQkVmah7xiOToBo9NcPFOi0lM3cY=;
+	s=arc-20240116; t=1718803099; c=relaxed/simple;
+	bh=DknbqQajwAqhN1VZjYDD90PN6HhkgVBB3QjoB4PBpBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDUF19y6JjRSMmacjpgxtRQTVs6YM+Wvf4uAvjj2rznq5Ev0KRK/dbtw9oaMFYb6iJs49aFE/48Z60Nm1LwkIogQyhZxw8xLH5BrYyOIQyEfspEFq8oDi+Ej3891Ey4iRX50NAJglK7JQRQb7AoRRUG+/dGBnB5xJWOM3FgdhdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dqIVc2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F45BC2BBFC;
-	Wed, 19 Jun 2024 13:05:28 +0000 (UTC)
+	 MIME-Version; b=oRvX72G99Lob5H92z57KgRX1srP2eMhoJlDz9jGES5y/IjAS84yuqIoArx4TlsrSQS0+BwgZTveCmtklI1sdT22paQ51YMQndUy7QrvY3+0zwwJeFpmmTktv4eaVhxGcFleoWhiBgViqLKGwFzmrv3mAxYPAQOh1C1NjtjxI7ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlY5BmQp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5572C32786;
+	Wed, 19 Jun 2024 13:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802328;
-	bh=+krnm+6NiqybvcEfQkVmah7xiOToBo9NcPFOi0lM3cY=;
+	s=korg; t=1718803099;
+	bh=DknbqQajwAqhN1VZjYDD90PN6HhkgVBB3QjoB4PBpBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dqIVc2nnGJgsRYDVNXTv6o147eOwF9WigEObcp6B6LN14m1sYlep6TmiMlDnRLb6
-	 8Z5bK7FirAnkd8JrrR6dOeK5pkYpbdfbxWjUYItjEnPnuyzHC8j3M3EhOhG0ggh17+
-	 4xSXX8H9i3tpyh8sWy+GTqfIHhtU/w+CO/vjsMXE=
+	b=MlY5BmQpVsMLDq4OQlhwiv/e8R8a2npJOAgL4P5CDzD/iZm2rB2qL6LCS7FSux70q
+	 UnFYNyHcsZ5g+kBadYvOOOeNysN/qVRAumUh7CH4/jcAdR1L37uJdX+YSSkIEFfyWG
+	 4vVQFj66/gQre9Uts3qOCflFJu2dRb/Vdk40yjpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Amjad Ouled-Ameur <amjad.ouled-ameur@arm.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/267] net: pse-pd: Use EOPNOTSUPP error code instead of ENOTSUPP
-Date: Wed, 19 Jun 2024 14:55:11 +0200
-Message-ID: <20240619125612.484675759@linuxfoundation.org>
+Subject: [PATCH 6.9 153/281] drm/komeda: check for error-valued pointer
+Date: Wed, 19 Jun 2024 14:55:12 +0200
+Message-ID: <20240619125615.727031100@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Amjad Ouled-Ameur <amjad.ouled-ameur@arm.com>
 
-[ Upstream commit 144ba8580bcb82b2686c3d1a043299d844b9a682 ]
+[ Upstream commit b880018edd3a577e50366338194dee9b899947e0 ]
 
-ENOTSUPP is not a SUSV4 error code, prefer EOPNOTSUPP as reported by
-checkpatch script.
+komeda_pipeline_get_state() may return an error-valued pointer, thus
+check the pointer for negative or null value before dereferencing.
 
-Fixes: 18ff0bcda6d1 ("ethtool: add interface to interact with Ethernet Power Equipment")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://lore.kernel.org/r/20240610083426.740660-1-kory.maincent@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 502932a03fce ("drm/komeda: Add the initial scaler support for CORE")
+Signed-off-by: Amjad Ouled-Ameur <amjad.ouled-ameur@arm.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240610102056.40406-1-amjad.ouled-ameur@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pse-pd/pse.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
-index fb724c65c77bc..5ce0cd76956e0 100644
---- a/include/linux/pse-pd/pse.h
-+++ b/include/linux/pse-pd/pse.h
-@@ -114,14 +114,14 @@ static inline int pse_ethtool_get_status(struct pse_control *psec,
- 					 struct netlink_ext_ack *extack,
- 					 struct pse_control_status *status)
- {
--	return -ENOTSUPP;
-+	return -EOPNOTSUPP;
- }
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
+index f3e744172673c..f4e76b46ca327 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
+@@ -259,7 +259,7 @@ komeda_component_get_avail_scaler(struct komeda_component *c,
+ 	u32 avail_scalers;
  
- static inline int pse_ethtool_set_config(struct pse_control *psec,
- 					 struct netlink_ext_ack *extack,
- 					 const struct pse_control_config *config)
- {
--	return -ENOTSUPP;
-+	return -EOPNOTSUPP;
- }
+ 	pipe_st = komeda_pipeline_get_state(c->pipeline, state);
+-	if (!pipe_st)
++	if (IS_ERR_OR_NULL(pipe_st))
+ 		return NULL;
  
- #endif
+ 	avail_scalers = (pipe_st->active_comps & KOMEDA_PIPELINE_SCALERS) ^
 -- 
 2.43.0
 
