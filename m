@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A847790ECFD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:13:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E18090EBBB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4456D283CEC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55BAE1F24E64
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA24F143C65;
-	Wed, 19 Jun 2024 13:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93B1147C71;
+	Wed, 19 Jun 2024 13:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5DWsw9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKySTF9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E1214389C;
-	Wed, 19 Jun 2024 13:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6866E147C60;
+	Wed, 19 Jun 2024 13:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802777; cv=none; b=obODEe8jehLwXHwd/WJ+aCdbc5/HlVh4ys+iuEk0B5RrGMXI7F7OYsHuBFZaWU/lmTsI8LynwvYgurXsc5YnHOMAhZresdoGOzm+FoRsC9/s4oyLi6XQdBvaplhtl7fMrtNvYk4Y7xBQgh2cxAdumopZuUyjO+Qynd6VBtwnX6Q=
+	t=1718802013; cv=none; b=kZji/PXkfLsDrjDvq6GzWi4pXjTOI7ofKloD6N0pZiKB9ukfrXqhFXVdULfWBm4b+e7fG+GfBcAwCK6PiMTQCf8JqnpwCtiPCGkrppHF7/60zoPig4foG5z91i3BHHug8k03TO20c656c4HXVphL6KFRLR8Mn8ZrDH/UqsF2M5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802777; c=relaxed/simple;
-	bh=baJXZVx6TpqK6BYFiDnCuzlR53PmqdK9HFUKORRT2oc=;
+	s=arc-20240116; t=1718802013; c=relaxed/simple;
+	bh=eNOAKkUYvQ7hSg1v4BGMvwQItebbpz0+1vRUyUOadxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QsJsPkTSB2uHbpK6CRSqQsF18PnycOjgV5YrUa1RmB8FxdEWpTQV5iNaI5mVS+hF2x4iOpgI4wdNArlACRZOJOok/aje65fKF6273GHCHn0LDPSYcR6UCKRmVhJB5kt+l+6VlGvuegoRzGpPrk+AXsp7yxkkmXNMGmqIf63ai2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p5DWsw9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277A1C2BBFC;
-	Wed, 19 Jun 2024 13:12:56 +0000 (UTC)
+	 MIME-Version; b=OMpPp8J4a2y+F9RbgZO82ikmoKMHlf4Q1EZsDM3LNRupnKfY1ARjSeRP7BbGGuV9OHrV/GUfVBt/LqVUxARwMWt9HzuSvG1g9wma+Kd/FOCMKOF/ZL+t9EVgrfKVjw7K9Dbj/qGFoFk1b9+gky2MK5ynhiojRffbrmJZlNawSt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKySTF9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6EBC32786;
+	Wed, 19 Jun 2024 13:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802777;
-	bh=baJXZVx6TpqK6BYFiDnCuzlR53PmqdK9HFUKORRT2oc=;
+	s=korg; t=1718802013;
+	bh=eNOAKkUYvQ7hSg1v4BGMvwQItebbpz0+1vRUyUOadxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5DWsw9pW4Q4edzhETMCgBLxES3isnzXTwzX9H/SKH+dawndbkDRJTUC73s4LqHjT
-	 m3qpfDfb0cUglPSJYNSYjs1KTuctWhD942dIWwBHiOlLj+Np1V31IxAs0sX4i/cIY6
-	 NcueR4g1sSkVaewZpfgBO5DKy4y6iWOSySTWrOcg=
+	b=ZKySTF9syDmXs/GJatthYWTEBjWkI89Xj9C1uFxS3T77DN0bMNksPkpwmDi82cGpM
+	 wJuI+XBpgo2F/bkztvefT+Lcn1r/RiQZoeQhSAWZOWrep16kwtSTqUNDtssEnXZhg+
+	 GvoLdpsW3IjevA2jl8x4Y+LBbl37l9B97k3IAPZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 012/281] wifi: iwlwifi: mvm: dont initialize csa_work twice
-Date: Wed, 19 Jun 2024 14:52:51 +0200
-Message-ID: <20240619125610.318899239@linuxfoundation.org>
+Subject: [PATCH 6.6 021/267] bpf: Store ref_ctr_offsets values in bpf_uprobe array
+Date: Wed, 19 Jun 2024 14:52:52 +0200
+Message-ID: <20240619125607.170347989@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 92158790ce4391ce4c35d8dfbce759195e4724cb ]
+[ Upstream commit 4930b7f53a298533bc31d7540b6ea8b79a000331 ]
 
-The initialization of this worker moved to iwl_mvm_mac_init_mvmvif
-but we removed only from the pre-MLD version of the add_interface
-callback. Remove it also from the MLD version.
+We will need to return ref_ctr_offsets values through link_info
+interface in following change, so we need to keep them around.
 
-Fixes: 0bcc2155983e ("wifi: iwlwifi: mvm: init vif works only once")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://msgid.link/20240512152312.4f15b41604f0.Iec912158e5a706175531d3736d77d25adf02fba4@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Storing ref_ctr_offsets values directly into bpf_uprobe array.
+
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/bpf/20231125193130.834322-3-jolsa@kernel.org
+Stable-dep-of: 2884dc7d08d9 ("bpf: Fix a potential use-after-free in bpf_link_free()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 2 --
- 1 file changed, 2 deletions(-)
+ kernel/trace/bpf_trace.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index df183a79db4c8..43f3002ede464 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -75,8 +75,6 @@ static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
- 		goto out_free_bf;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 1e79084a9d9d2..8edbafe0d4cdf 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -3030,6 +3030,7 @@ struct bpf_uprobe_multi_link;
+ struct bpf_uprobe {
+ 	struct bpf_uprobe_multi_link *link;
+ 	loff_t offset;
++	unsigned long ref_ctr_offset;
+ 	u64 cookie;
+ 	struct uprobe_consumer consumer;
+ };
+@@ -3169,7 +3170,6 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ {
+ 	struct bpf_uprobe_multi_link *link = NULL;
+ 	unsigned long __user *uref_ctr_offsets;
+-	unsigned long *ref_ctr_offsets = NULL;
+ 	struct bpf_link_primer link_primer;
+ 	struct bpf_uprobe *uprobes = NULL;
+ 	struct task_struct *task = NULL;
+@@ -3244,18 +3244,12 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	if (!uprobes || !link)
+ 		goto error_free;
  
- 	iwl_mvm_tcm_add_vif(mvm, vif);
--	INIT_DELAYED_WORK(&mvmvif->csa_work,
--			  iwl_mvm_channel_switch_disconnect_wk);
+-	if (uref_ctr_offsets) {
+-		ref_ctr_offsets = kvcalloc(cnt, sizeof(*ref_ctr_offsets), GFP_KERNEL);
+-		if (!ref_ctr_offsets)
+-			goto error_free;
+-	}
+-
+ 	for (i = 0; i < cnt; i++) {
+ 		if (ucookies && __get_user(uprobes[i].cookie, ucookies + i)) {
+ 			err = -EFAULT;
+ 			goto error_free;
+ 		}
+-		if (uref_ctr_offsets && __get_user(ref_ctr_offsets[i], uref_ctr_offsets + i)) {
++		if (uref_ctr_offsets && __get_user(uprobes[i].ref_ctr_offset, uref_ctr_offsets + i)) {
+ 			err = -EFAULT;
+ 			goto error_free;
+ 		}
+@@ -3286,7 +3280,7 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	for (i = 0; i < cnt; i++) {
+ 		err = uprobe_register_refctr(d_real_inode(link->path.dentry),
+ 					     uprobes[i].offset,
+-					     ref_ctr_offsets ? ref_ctr_offsets[i] : 0,
++					     uprobes[i].ref_ctr_offset,
+ 					     &uprobes[i].consumer);
+ 		if (err) {
+ 			bpf_uprobe_unregister(&path, uprobes, i);
+@@ -3298,11 +3292,9 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	if (err)
+ 		goto error_free;
  
- 	if (vif->type == NL80211_IFTYPE_MONITOR) {
- 		mvm->monitor_on = true;
+-	kvfree(ref_ctr_offsets);
+ 	return bpf_link_settle(&link_primer);
+ 
+ error_free:
+-	kvfree(ref_ctr_offsets);
+ 	kvfree(uprobes);
+ 	kfree(link);
+ 	if (task)
 -- 
 2.43.0
 
