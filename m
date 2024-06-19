@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A639B90EC44
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EAE90EC4E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DC4EB24FA6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C851B1F21532
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E64143C43;
-	Wed, 19 Jun 2024 13:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A8C143C58;
+	Wed, 19 Jun 2024 13:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DwZSEcZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBEyO3nA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D4B13AA40;
-	Wed, 19 Jun 2024 13:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0549412FB31;
+	Wed, 19 Jun 2024 13:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802326; cv=none; b=lEse6JWO00VNgbFas2CCAg2mG6Bkv/CNoJ+ZgIel6JhFPxtdnSTkk5C+dFwNgf7FqrZ1roX7Cr/Le7RWWNWhiqD0BKLI8vs5ZGJo85TAF5/tk4Tr2xL7LmfMEXjbpHpSk2qxqrSDu/eGcQzLdawYqK7dxBmx81Zy8An4ewwWrbA=
+	t=1718802359; cv=none; b=Wl/pox5M0B8N5i2JnR3Gi2A2+715OGt39zQt5L3pkfbZKpL9gfq5tU5Wdmd2xiP1xFZHJyYpAtJx8CfCw+/H5lE5t3lh3wttPWzaYBaOHR3XMGpafKUeIbKzl/S4mx3xGG8k5thG9Ffm+QkDe2uFy3ofyo9nM89EYmo+IHQC5wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802326; c=relaxed/simple;
-	bh=XfcBgua++sSfL3bs1kQtnh1caKxJXkXkPSDUDKWQbQw=;
+	s=arc-20240116; t=1718802359; c=relaxed/simple;
+	bh=YRWQPErqdQheVKxlpUjqNAINrzxlPq+Fk3NzlZJIlgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPB10jzFB/T9wZdtRHTK0Nawyy+2S7H7Oi38CzyBJLjuoergRCXNR+pu0NLScB6rPGezL0ZS0VM97NJOHkEBZdGpnl3pKvABQGKHnEtjsI/NmRuD7/rTT/a2hd9KJrbHFwZN2HFN6OTR6vxhAknSv6hgMp6WMgxvDdU06aftlvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DwZSEcZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8656FC2BBFC;
-	Wed, 19 Jun 2024 13:05:25 +0000 (UTC)
+	 MIME-Version; b=G8A3dgQV8hYh5LeFRansUwEzKlLuOxo8GQyCiy300zDd5Y5UcpADg4VBkBdIqZBo8NnwsT2WJm+SfGwl4PtNUZK34/8jgViWwpZq3fKETS9/5sxF5ZB+DdJ8gn9t1KV/jnssyPPv73IVVFj1ocBLh6CwnQtuZ8h3Ez721yQpB9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBEyO3nA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C89C2BBFC;
+	Wed, 19 Jun 2024 13:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802325;
-	bh=XfcBgua++sSfL3bs1kQtnh1caKxJXkXkPSDUDKWQbQw=;
+	s=korg; t=1718802358;
+	bh=YRWQPErqdQheVKxlpUjqNAINrzxlPq+Fk3NzlZJIlgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DwZSEcZD8aAxW2Cp0tqAHbb32J7fuzbcgGIwOtWNESw765xkv9TzS20M/64KWDioR
-	 4mTIXQr6wD+9Dwhv4NHGq8IqbrTBauKZQ6kK6CJ7JQUDSP7pcoU4deIHgaUMzaipgq
-	 qDzPj64mvNTGn+3dELdtm6q2seoGnPveTf1sczKg=
+	b=LBEyO3nACIA78Q+ci4aDidULLlzkgG2pjWIu8IdSPHTLe1NyEaW453f+O6uPkm7Vd
+	 ZKogtMrBEu+OOWNNOZkfDltBiLKjkQY+4tcQFqzBOwF6nhlXl3HpT42hYEk6QcEaGv
+	 ygqu9L/h6hcDr7i2o5DEJJwm6VUwnuOdR8IUKXKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Gal Pressman <gal@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
 	Tariq Toukan <tariqt@nvidia.com>,
 	Wojciech Drewek <wojciech.drewek@intel.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/267] geneve: Fix incorrect inner network header offset when innerprotoinherit is set
-Date: Wed, 19 Jun 2024 14:55:02 +0200
-Message-ID: <20240619125612.141822478@linuxfoundation.org>
+Subject: [PATCH 6.6 152/267] net/mlx5e: Fix features validation check for tunneled UDP (non-VXLAN) packets
+Date: Wed, 19 Jun 2024 14:55:03 +0200
+Message-ID: <20240619125612.179766888@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
 References: <20240619125606.345939659@linuxfoundation.org>
@@ -70,101 +71,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit c6ae073f5903f6c6439d0ac855836a4da5c0a701 ]
+[ Upstream commit 791b4089e326271424b78f2fae778b20e53d071b ]
 
-When innerprotoinherit is set, the tunneled packets do not have an inner
-Ethernet header.
-Change 'maclen' to not always assume the header length is ETH_HLEN, as
-there might not be a MAC header.
+Move the vxlan_features_check() call to after we verified the packet is
+a tunneled VXLAN packet.
 
-This resolves issues with drivers (e.g. mlx5, in
-mlx5e_tx_tunnel_accel()) who rely on the skb inner network header offset
-to be correct, and use it for TX offloads.
+Without this, tunneled UDP non-VXLAN packets (for ex. GENENVE) might
+wrongly not get offloaded.
+In some cases, it worked by chance as GENEVE header is the same size as
+VXLAN, but it is obviously incorrect.
 
-Fixes: d8a6213d70ac ("geneve: fix header validation in geneve[6]_xmit_skb")
+Fixes: e3cfc7e6b7bd ("net/mlx5e: TX, Add geneve tunnel stateless offload support")
 Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/geneve.c     | 10 ++++++----
- include/net/ip_tunnels.h |  5 +++--
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index 0a18b67d0d669..8333a5620deff 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -915,6 +915,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 			   struct geneve_dev *geneve,
- 			   const struct ip_tunnel_info *info)
- {
-+	bool inner_proto_inherit = geneve->cfg.inner_proto_inherit;
- 	bool xnet = !net_eq(geneve->net, dev_net(geneve->dev));
- 	struct geneve_sock *gs4 = rcu_dereference(geneve->sock4);
- 	const struct ip_tunnel_key *key = &info->key;
-@@ -926,7 +927,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be16 sport;
- 	int err;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 455907b1167a0..e87a776ea2bfd 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -4704,7 +4704,7 @@ static netdev_features_t mlx5e_tunnel_features_check(struct mlx5e_priv *priv,
  
--	if (!skb_vlan_inet_prepare(skb))
-+	if (!skb_vlan_inet_prepare(skb, inner_proto_inherit))
- 		return -EINVAL;
+ 		/* Verify if UDP port is being offloaded by HW */
+ 		if (mlx5_vxlan_lookup_port(priv->mdev->vxlan, port))
+-			return features;
++			return vxlan_features_check(skb, features);
  
- 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-@@ -999,7 +1000,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	}
+ #if IS_ENABLED(CONFIG_GENEVE)
+ 		/* Support Geneve offload for default UDP port */
+@@ -4730,7 +4730,6 @@ netdev_features_t mlx5e_features_check(struct sk_buff *skb,
+ 	struct mlx5e_priv *priv = netdev_priv(netdev);
  
- 	err = geneve_build_skb(&rt->dst, skb, info, xnet, sizeof(struct iphdr),
--			       geneve->cfg.inner_proto_inherit);
-+			       inner_proto_inherit);
- 	if (unlikely(err))
- 		return err;
+ 	features = vlan_features_check(skb, features);
+-	features = vxlan_features_check(skb, features);
  
-@@ -1015,6 +1016,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 			    struct geneve_dev *geneve,
- 			    const struct ip_tunnel_info *info)
- {
-+	bool inner_proto_inherit = geneve->cfg.inner_proto_inherit;
- 	bool xnet = !net_eq(geneve->net, dev_net(geneve->dev));
- 	struct geneve_sock *gs6 = rcu_dereference(geneve->sock6);
- 	const struct ip_tunnel_key *key = &info->key;
-@@ -1024,7 +1026,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be16 sport;
- 	int err;
- 
--	if (!skb_vlan_inet_prepare(skb))
-+	if (!skb_vlan_inet_prepare(skb, inner_proto_inherit))
- 		return -EINVAL;
- 
- 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-@@ -1079,7 +1081,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 		ttl = ttl ? : ip6_dst_hoplimit(dst);
- 	}
- 	err = geneve_build_skb(dst, skb, info, xnet, sizeof(struct ipv6hdr),
--			       geneve->cfg.inner_proto_inherit);
-+			       inner_proto_inherit);
- 	if (unlikely(err))
- 		return err;
- 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 822f0fad39623..4e69f52a51177 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -362,9 +362,10 @@ static inline bool pskb_inet_may_pull(struct sk_buff *skb)
- 
- /* Variant of pskb_inet_may_pull().
-  */
--static inline bool skb_vlan_inet_prepare(struct sk_buff *skb)
-+static inline bool skb_vlan_inet_prepare(struct sk_buff *skb,
-+					 bool inner_proto_inherit)
- {
--	int nhlen = 0, maclen = ETH_HLEN;
-+	int nhlen = 0, maclen = inner_proto_inherit ? 0 : ETH_HLEN;
- 	__be16 type = skb->protocol;
- 
- 	/* Essentially this is skb_protocol(skb, true)
+ 	/* Validate if the tunneled packet is being offloaded by HW */
+ 	if (skb->encapsulation &&
 -- 
 2.43.0
 
