@@ -1,72 +1,78 @@
-Return-Path: <stable+bounces-53823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7518D90E8DE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD17B90E8DC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21B8C1F217AC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:59:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE8D51C212D5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3D3135A58;
-	Wed, 19 Jun 2024 10:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD8B132132;
+	Wed, 19 Jun 2024 10:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="s8pUEesR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dv0q9/h2"
 X-Original-To: stable@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F33513211E;
-	Wed, 19 Jun 2024 10:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3987E13211E;
+	Wed, 19 Jun 2024 10:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718794785; cv=none; b=gcNLPbmtsTpnI+w0nCuYj2cCpDpbqRdo5qCZ0BNDnCVMsoOyInGGBxv8gKam6cg2zO5I08n0FJaS4Gi+CvpKkBse3Sx6bDyRF0NSA52Pyt3HD3C6XF5pRgSngq3LN1ZheskxTVpRH4gzlvKWiSpKLAFQ0XwnibWJtG4clsSJnSw=
+	t=1718794779; cv=none; b=QQOi5eLLmY+T0agM+BtZHMBj7sNVlgHdZjYUGeS1mLiJXy6W+S7rmX4eoCvFntiZIYEvjhGGIC+PhYY9pcpJJZIq4V/7msPOWg8/U0JXEuRBOsml0E+Qh6fMBe3HaaxLqe6kQPIs+2n+vep7JI41k7TXJkE/JnBxo+ufCPY6Da8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718794785; c=relaxed/simple;
-	bh=/vfOnndZfejtIjb7e80KeoWWOgBV9A26jTwVuCxtQFs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JnPzNE0X0/PKBZxCii4g+91EbjuDF41RmJlvS9AbTRyG/MXX/EOQuEjvClWLBBTTblJsx94dGQ9iHItAe0B/jOrBt4vudEvyPc+aU3Vb4MF01tLNRsyQtgGoyLP43M0Dclly6o9XmJGJFpQa9TkI3P8ixrvQmYEJda8oSj53ei8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=s8pUEesR; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 45JAxHZD037469;
-	Wed, 19 Jun 2024 05:59:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1718794757;
-	bh=0TIJJzknXePVmSmptrCrvtKE4z/WNxe6G74dTzh8fxM=;
-	h=From:To:CC:Subject:Date;
-	b=s8pUEesRILN4TNWVxQo2In/WhLuS3RTB/P2vHK/jIRPj6U9Ioc2F9R+9ftWkwpd5L
-	 0w3+BqGpivN9TDZP9xCF/qgdurzpMQ9AImLCFTZqqUWlaaY12XYbkblvL/3jY7zWX/
-	 dsl/cQEbRl95sYzVUxGFRjy8a+Nyzx7s6EqnGgYE=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 45JAxHWh106223
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 19 Jun 2024 05:59:17 -0500
-Received: from DLEE107.ent.ti.com (157.170.170.37) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 19
- Jun 2024 05:59:17 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE107.ent.ti.com
- (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 19 Jun 2024 05:59:17 -0500
-Received: from udit-HP-Z2-Tower-G9-Workstation-Desktop-PC.dhcp.ti.com (udit-hp-z2-tower-g9-workstation-desktop-pc.dhcp.ti.com [172.24.227.18])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 45JAxDSJ070686;
-	Wed, 19 Jun 2024 05:59:13 -0500
-From: Udit Kumar <u-kumar1@ti.com>
-To: <vigneshr@ti.com>, <nm@ti.com>, <tony@atomide.com>
-CC: <gregkh@linuxfoundation.org>, <jirislaby@kernel.org>,
-        <ronald.wahl@raritan.com>, <thomas.richard@bootlin.com>,
-        <tglx@linutronix.de>, <linux-kernel@vger.kernel.org>,
-        <linux-serial@vger.kernel.org>, <ilpo.jarvinen@linux.intel.com>,
-        Udit Kumar
-	<u-kumar1@ti.com>, <stable@vger.kernel.org>
-Subject: [PATCH v3] serial: 8250_omap: Implementation of Errata i2310
-Date: Wed, 19 Jun 2024 16:29:03 +0530
-Message-ID: <20240619105903.165434-1-u-kumar1@ti.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1718794779; c=relaxed/simple;
+	bh=BExqSwzjA+fciZYpFKo7ougXR8LWzOaXC2TldKO7j2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TVqcs0jlV3AZCVUEl3GeocTuDJy4lkLZrNNqGOJJvDWb7E8yeB6oMvY3mK1vUYRmJh6V2xDxUzH/c26pjhv/Mw6Xl7lEF+NSqEzTe0AEuBLt+PYKEKysSieYGUAMPJofCNp8pCRB90eH6UF2qi8VlK02ZQW4b6qDCC0N9kbgmmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dv0q9/h2; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52cc148159dso2360318e87.0;
+        Wed, 19 Jun 2024 03:59:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718794776; x=1719399576; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NqNPLNV/phq08wqrDpKBw62bWYUWvlN1FEBdphcgyZ8=;
+        b=dv0q9/h24tqKsPri65ftAz3uMoluz6ddy0EA3qNT/o5YJqR3C0ZzALE+6CMSMxzmQV
+         UhK7l4XX62IixoqNGL4T5c6142zQEF6/qhfOyGrwn6wpjtO/tYaGr1ulzsVCR+s5q3bw
+         +2rIBmk+wDj3WLbRg2WGacgkpm4qkC9wPXQOkn5Dm21WRSCI5fkKo5or34FlvU+/2k0z
+         2bC80V3lsO7W+RVsw0qvHwDnhtSIsKUtt48+KZ4hjWHyqWtmoRtZBD3uys+2hgUAltNP
+         NouuE3MHA30hd64KX0bclsFpoV+T4KKqISQ5LGDFQ5yfgxpwlAmSBJyMPoktS3ldA9lB
+         wIpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718794776; x=1719399576;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NqNPLNV/phq08wqrDpKBw62bWYUWvlN1FEBdphcgyZ8=;
+        b=c/QdBs8F18+R2gbu4NeG3biU5SRnDw501vX0DK9Zxlq5sfvnVAaNSzUfmerVKy7Bdi
+         4BoNVThpJz79GDTEBc16THb+LhI+DmD03pcyaoQUSlc45X7kLAuBWyHHS+m7J358Ol2Q
+         An3P3YO0tBx5Nz/UVEwwktcJt5cGY414m3/XF9tdGVOgZ4WqYFgIGrFpBNcJ+sgS1Df1
+         8sncdQPQ7iez6Flw8l8PFKwQFiwwV8KV12PbU1IrjbmXHoxcEL3mG99hrw2UAlzBKLKN
+         g55H6JXIxA26iFLndJphaoICdDxBX/k5mybD2uz7iAwSrJYusNZhkUV3fOiTJZlK89Z6
+         sf8g==
+X-Gm-Message-State: AOJu0YydS42h4uFxh78+5eySLMvq/oCusx9o+ialsuoZFAkzxcaaMhkH
+	mkmm+P5DSaqj3IqPg+0o0wAo1E2Rs5Js6AYKueCf8TDk72u6/GR3crmFSnDPE3w=
+X-Google-Smtp-Source: AGHT+IERLNBeQ1AbPpPP7jOYcwoL68WBRtNt2+f3lA9xTCWJjg2eu2p5zzI0ylJsHcIgAgW4DZNlyw==
+X-Received: by 2002:a05:6512:6c2:b0:52c:8df9:2e6f with SMTP id 2adb3069b0e04-52ccaa881femr2046835e87.42.1718794776032;
+        Wed, 19 Jun 2024 03:59:36 -0700 (PDT)
+Received: from fedora.. (cpdnat87.usal.es. [212.128.135.87])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422f6320bd8sm224010455e9.32.2024.06.19.03.59.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Jun 2024 03:59:35 -0700 (PDT)
+From: =?UTF-8?q?Pablo=20Ca=C3=B1o?= <pablocpascual@gmail.com>
+To: linux-sound@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	tiwai@suse.de,
+	=?UTF-8?q?Pablo=20Ca=C3=B1o?= <pablocpascual@gmail.com>
+Subject: [PATCH] ALSA: hda/realtek: Add quirk for Lenovo Yoga Pro 7 14AHP9
+Date: Wed, 19 Jun 2024 12:59:32 +0200
+Message-ID: <20240619105932.29124-1-pablocpascual@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,80 +80,26 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-As per Errata i2310[0], Erroneous timeout can be triggered,
-if this Erroneous interrupt is not cleared then it may leads
-to storm of interrupts, therefore apply Errata i2310 solution.
+Lenovo Yoga Pro 7 14AHP9 (PCI SSID 17aa:3891) seems requiring a similar workaround like Yoga 9 model and Yoga 7 Pro 14APH8 for the bass speaker.
 
-[0] https://www.ti.com/lit/pdf/sprz536 page 23
-
-Fixes: b67e830d38fa ("serial: 8250: 8250_omap: Fix possible interrupt storm on K3 SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Udit Kumar <u-kumar1@ti.com>
 ---
-Change logs
-Changes in v3:
-- CC stable in commit message
-Link to v2:
-https://lore.kernel.org/all/20240617052253.2188140-1-u-kumar1@ti.com/
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes in v2:
-- Added Fixes Tag and typo correction in commit message
-- Corrected bit position to UART_OMAP_EFR2_TIMEOUT_BEHAVE
-Link to v1
-https://lore.kernel.org/all/20240614061314.290840-1-u-kumar1@ti.com/
-
- drivers/tty/serial/8250/8250_omap.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 170639d12b2a..ddac0a13cf84 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -115,6 +115,10 @@
- /* RX FIFO occupancy indicator */
- #define UART_OMAP_RX_LVL		0x19
- 
-+/* Timeout low and High */
-+#define UART_OMAP_TO_L                 0x26
-+#define UART_OMAP_TO_H                 0x27
-+
- /*
-  * Copy of the genpd flags for the console.
-  * Only used if console suspend is disabled
-@@ -663,13 +667,24 @@ static irqreturn_t omap8250_irq(int irq, void *dev_id)
- 
- 	/*
- 	 * On K3 SoCs, it is observed that RX TIMEOUT is signalled after
--	 * FIFO has been drained, in which case a dummy read of RX FIFO
--	 * is required to clear RX TIMEOUT condition.
-+	 * FIFO has been drained or erroneously.
-+	 * So apply solution of Errata i2310 as mentioned in
-+	 * https://www.ti.com/lit/pdf/sprz536
- 	 */
- 	if (priv->habit & UART_RX_TIMEOUT_QUIRK &&
--	    (iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT &&
--	    serial_port_in(port, UART_OMAP_RX_LVL) == 0) {
--		serial_port_in(port, UART_RX);
-+		(iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT) {
-+		unsigned char efr2, timeout_h, timeout_l;
-+
-+		efr2 = serial_in(up, UART_OMAP_EFR2);
-+		timeout_h = serial_in(up, UART_OMAP_TO_H);
-+		timeout_l = serial_in(up, UART_OMAP_TO_L);
-+		serial_out(up, UART_OMAP_TO_H, 0xFF);
-+		serial_out(up, UART_OMAP_TO_L, 0xFF);
-+		serial_out(up, UART_OMAP_EFR2, UART_OMAP_EFR2_TIMEOUT_BEHAVE);
-+		serial_in(up, UART_IIR);
-+		serial_out(up, UART_OMAP_EFR2, efr2);
-+		serial_out(up, UART_OMAP_TO_H, timeout_h);
-+		serial_out(up, UART_OMAP_TO_L, timeout_l);
- 	}
- 
- 	/* Stop processing interrupts on input overrun */
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index aa76d1c88589..f9223fedf8e9 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10525,6 +10525,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x387e, "Yoga S780-16 pro Quad YC", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3881, "YB9 dual power mode2 YC", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3882, "Lenovo Yoga Pro 7 14APH8", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
++	SND_PCI_QUIRK(0x17aa, 0x3891, "Lenovo Yoga Pro 7 14AHP9", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3884, "Y780 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3886, "Y780 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38a7, "Y780P AMD YG dual", ALC287_FIXUP_TAS2781_I2C),
 -- 
-2.34.1
+2.45.2
 
 
