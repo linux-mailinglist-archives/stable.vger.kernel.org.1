@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE7A90EC90
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B6190EEDB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F78C1C21787
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 323021F21519
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2ED3143C4A;
-	Wed, 19 Jun 2024 13:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94151422B8;
+	Wed, 19 Jun 2024 13:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noKejSm5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5rLZojN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9192A13D525;
-	Wed, 19 Jun 2024 13:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773261E492;
+	Wed, 19 Jun 2024 13:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802529; cv=none; b=XWWAcIVqIdBhCOH+qLWWfwXbSjmcuEcvuU8Dcx+EDk0w9o2MIutYJKTcVqxr7EWrPXuFM/ttrDYJAw5Hyr72iYlX7nmV0ze/jQM26BaDKkQ/+N2tERf2wQZqeT+rflPxht68T0+ujEMmbs2kffXEXnU6FOPsXBd8hI3ApYTE7js=
+	t=1718803965; cv=none; b=CYH4wN/N/Ns/PqCJ8jtf7CwqKRhK/uhMRUrPhC2WRuFTtlx2KdVBVVTyuHtgt602w+XeW4EwXH6SSwquuvXmhcmdGdxmix5No/4JdwsM0Q59C+6Iut4oMx5EC4R7kVDzzdoGxkk7ohaJic7+00+iCvPiFd89VygJh1Px85YK2W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802529; c=relaxed/simple;
-	bh=ilAig6wuLAkoF8Fo8PFbSMj+Tbf8cy9l5HbDYVBKTRs=;
+	s=arc-20240116; t=1718803965; c=relaxed/simple;
+	bh=VFt/f5AmiT7nkmjTXml/OAOpF5ABDdX5dFq+rntIpLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twbdlBUCh8T0fOp3IjIhg6fy9CUMCUqNnGdu/JTIsIhEvArctVdFTiING/qbyGasC+8dkdU4DP5lLYDF+rAiEXNstrIMyPOlbLg/LU/LdN9duldOyksaKrEUbHomRH3saJwC3VH85i0MPBB6OD57PU2k0PvPLlMJtIc0uRjTtF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noKejSm5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DFEDC2BBFC;
-	Wed, 19 Jun 2024 13:08:48 +0000 (UTC)
+	 MIME-Version; b=jk/vSO458GezmElR482RmDL2Pg3MXRQV8lmHp993vTzTiorI05vbL39jDnDxjR4vaI6Ogw7llFLoTij6Ap6QoxfgSb+KigbvS4o6M8mZFDEvb3uuSiKQ48oQ++xAAMg4ty0yjg4XhzYM3PW6T3y4roEc9fbo91AOLRv1rMILz7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5rLZojN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E606BC2BBFC;
+	Wed, 19 Jun 2024 13:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802529;
-	bh=ilAig6wuLAkoF8Fo8PFbSMj+Tbf8cy9l5HbDYVBKTRs=;
+	s=korg; t=1718803965;
+	bh=VFt/f5AmiT7nkmjTXml/OAOpF5ABDdX5dFq+rntIpLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=noKejSm5nD1+TBBEhgQKgjFXSD/urDiWrKF6m3E1PEwxzTV8isnjMIC8ryV0Hv/X4
-	 IVaAZThv+RmJ/Bbf5YLqH0Nfsomf0f3VrRlHcHYUxmZa83GEoDavP/5THDJiuJeO+k
-	 IPOHpt/WgKULqa0hp1kV+HQt2AW45ZmBNQnpO1eQ=
+	b=H5rLZojNyFSmmcXTdhJj8tqZObzVeER8iuHOYY7OkZUEAYTR8ZmLzJT7igStKMPWy
+	 m8/HH99xvvwPipxfSEC2FMB1Z0jugEqoOvlQs9ZaG72VHrh+KL6dU3irdh+4HBvui3
+	 0BpzRvJf+6uhqJfDp5jotHORjYRxVpHb2aa4mbB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 228/267] btrfs: zoned: factor out DUP bg handling from btrfs_load_block_group_zone_info
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 136/217] drm/vmwgfx: 3D disabled should not effect STDU memory limits
 Date: Wed, 19 Jun 2024 14:56:19 +0200
-Message-ID: <20240619125615.077025660@linuxfoundation.org>
+Message-ID: <20240619125601.937945474@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit 87463f7e0250d471fac41e7c9c45ae21d83b5f85 upstream.
+[ Upstream commit fb5e19d2dd03eb995ccd468d599b2337f7f66555 ]
 
-Split the code handling a type DUP block group from
-btrfs_load_block_group_zone_info to make the code more readable.
+This limit became a hard cap starting with the change referenced below.
+Surface creation on the device will fail if the requested size is larger
+than this limit so altering the value arbitrarily will expose modes that
+are too large for the device's hard limits.
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7ebb47c9f9ab ("drm/vmwgfx: Read new register for GB memory when available")
+
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240521184720.767-3-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c |   79 +++++++++++++++++++++++++++++--------------------------
- 1 file changed, 42 insertions(+), 37 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -1392,6 +1392,47 @@ static int btrfs_load_block_group_single
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+index 0a75084cd32a2..be27f9a3bf67b 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -938,13 +938,6 @@ static int vmw_driver_load(struct vmw_private *dev_priv, u32 pci_id)
+ 				vmw_read(dev_priv,
+ 					 SVGA_REG_SUGGESTED_GBOBJECT_MEM_SIZE_KB);
  
-+static int btrfs_load_block_group_dup(struct btrfs_block_group *bg,
-+				      struct map_lookup *map,
-+				      struct zone_info *zone_info,
-+				      unsigned long *active)
-+{
-+	if (map->type & BTRFS_BLOCK_GROUP_DATA) {
-+		btrfs_err(bg->fs_info,
-+			  "zoned: profile DUP not yet supported on data bg");
-+		return -EINVAL;
-+	}
-+
-+	if (zone_info[0].alloc_offset == WP_MISSING_DEV) {
-+		btrfs_err(bg->fs_info,
-+			  "zoned: cannot recover write pointer for zone %llu",
-+			  zone_info[0].physical);
-+		return -EIO;
-+	}
-+	if (zone_info[1].alloc_offset == WP_MISSING_DEV) {
-+		btrfs_err(bg->fs_info,
-+			  "zoned: cannot recover write pointer for zone %llu",
-+			  zone_info[1].physical);
-+		return -EIO;
-+	}
-+	if (zone_info[0].alloc_offset != zone_info[1].alloc_offset) {
-+		btrfs_err(bg->fs_info,
-+			  "zoned: write pointer offset mismatch of zones in DUP profile");
-+		return -EIO;
-+	}
-+
-+	if (test_bit(0, active) != test_bit(1, active)) {
-+		if (!btrfs_zone_activate(bg))
-+			return -EIO;
-+	} else if (test_bit(0, active)) {
-+		set_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &bg->runtime_flags);
-+	}
-+
-+	bg->alloc_offset = zone_info[0].alloc_offset;
-+	bg->zone_capacity = min(zone_info[0].capacity, zone_info[1].capacity);
-+	return 0;
-+}
-+
- int btrfs_load_block_group_zone_info(struct btrfs_block_group *cache, bool new)
- {
- 	struct btrfs_fs_info *fs_info = cache->fs_info;
-@@ -1481,43 +1522,7 @@ int btrfs_load_block_group_zone_info(str
- 		ret = btrfs_load_block_group_single(cache, &zone_info[0], active);
- 		break;
- 	case BTRFS_BLOCK_GROUP_DUP:
--		if (map->type & BTRFS_BLOCK_GROUP_DATA) {
--			btrfs_err(fs_info, "zoned: profile DUP not yet supported on data bg");
--			ret = -EINVAL;
--			goto out;
--		}
--		if (zone_info[0].alloc_offset == WP_MISSING_DEV) {
--			btrfs_err(fs_info,
--			"zoned: cannot recover write pointer for zone %llu",
--				zone_info[0].physical);
--			ret = -EIO;
--			goto out;
--		}
--		if (zone_info[1].alloc_offset == WP_MISSING_DEV) {
--			btrfs_err(fs_info,
--			"zoned: cannot recover write pointer for zone %llu",
--				zone_info[1].physical);
--			ret = -EIO;
--			goto out;
--		}
--		if (zone_info[0].alloc_offset != zone_info[1].alloc_offset) {
--			btrfs_err(fs_info,
--			"zoned: write pointer offset mismatch of zones in DUP profile");
--			ret = -EIO;
--			goto out;
--		}
--		if (test_bit(0, active) != test_bit(1, active)) {
--			if (!btrfs_zone_activate(cache)) {
--				ret = -EIO;
--				goto out;
--			}
--		} else {
--			if (test_bit(0, active))
--				set_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE,
--					&cache->runtime_flags);
--		}
--		cache->alloc_offset = zone_info[0].alloc_offset;
--		cache->zone_capacity = min(zone_info[0].capacity, zone_info[1].capacity);
-+		ret = btrfs_load_block_group_dup(cache, map, zone_info, active);
- 		break;
- 	case BTRFS_BLOCK_GROUP_RAID1:
- 	case BTRFS_BLOCK_GROUP_RAID0:
+-		/*
+-		 * Workaround for low memory 2D VMs to compensate for the
+-		 * allocation taken by fbdev
+-		 */
+-		if (!(dev_priv->capabilities & SVGA_CAP_3D))
+-			mem_size *= 3;
+-
+ 		dev_priv->max_mob_pages = mem_size * 1024 / PAGE_SIZE;
+ 		dev_priv->max_primary_mem =
+ 			vmw_read(dev_priv, SVGA_REG_MAX_PRIMARY_MEM);
+-- 
+2.43.0
+
 
 
 
