@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-53683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5FD290E290
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 07:10:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ECF790E2AD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 07:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 606F6B2231D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 05:10:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDD881F240BF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 05:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DD6524C4;
-	Wed, 19 Jun 2024 05:10:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wWjIkSo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBB155897;
+	Wed, 19 Jun 2024 05:27:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FAB50280;
-	Wed, 19 Jun 2024 05:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929D128EC;
+	Wed, 19 Jun 2024 05:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718773817; cv=none; b=X69YY2o8XI9RX7GQ8IA0WcGRBI7O0uSdGvtGEjIiMuFPm74tzbvTpvnfO8YFmKqh6DOVxOHVFJ5iwpmMZaGlGcqD/ne40I8weh41twVzpxGEXefowlp4L9R4115YilS9CE3mZAg0DQ2PR946VzSdTpNlEkU27w7Exr4FtLa6xcE=
+	t=1718774869; cv=none; b=NYHtjfPTeXGYV/VKIDM6tZ3DnX7rYg/kU+RCEKQAqxoTQ4ofvOk8ae3v2Yw0r5n6cFlQ4KjzZzi9bBQYzN/Rb0jyMqIRKwaNVLJtwMOMOBScyrCcBVQ05Bdi0Rs1rNEjeGvXNy1nI7eR3yPLzHzlmqoExFVLY0cwzhWA1kMwKkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718773817; c=relaxed/simple;
-	bh=BMRHDddXQbT7sXetp9OyuKJuPZPI4jJlgICusGcSAhE=;
+	s=arc-20240116; t=1718774869; c=relaxed/simple;
+	bh=kkEqZtZR7xNjtuiZSsVd09OlMcoEBydwvSMLSnlou90=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f2tDkrKRsTxYkAEHlcqp5nNweeclc5saC08Y93Mb36om8TkJfwY8S/1ov1we4RoFucvhm9246cLUW1WMbJZLRDC8KQ0Fzq/1n7eqp3nt0nX8cwYGIAvk/HcDGYRYwzH6bU8QelkiDZWZW3X4ofDP9jsR9zfQujgHLY9S7AC+NpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wWjIkSo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA968C2BBFC;
-	Wed, 19 Jun 2024 05:10:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718773817;
-	bh=BMRHDddXQbT7sXetp9OyuKJuPZPI4jJlgICusGcSAhE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1wWjIkSouz9yjWWMclSXwVU7txRXxEYi+YuLoIOHdg5MUwIPSxES8k2FHfq7+dV/7
-	 t7y5tcoD5Q20mDVEKIsuV+8o7q3ZFl/ypBW+5IMl5Wde4EOB8aypOBrUjtzs8agl9F
-	 pMbEgSwlsLfLs3QdYq6N8R7xhR0X+kg0/ODlFWHM=
-Date: Wed, 19 Jun 2024 07:10:15 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: joswang <joswang1221@gmail.com>
-Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Jos Wang <joswang@lenovo.com>
-Subject: Re: [PATCH v6] usb: dwc3: core: Workaround for CSR read timeout
-Message-ID: <2024061947-grandpa-bucktooth-4f55@gregkh>
-References: <20240619050125.4444-1-joswang1221@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ea/e19CoXFfbmoO+Yyma4Ym0nENWgtkvoKlrP5Z84v3VVR2D9DigvYY8PGUnnWBsx6FjgctMfb5iIwnCSY+v92755mmMelQEum3piq+7otNXs0cl/A6WYLcmiSRhmvudRRVrxb1HwS3p0f1LiXq0EpaFhKTaeg+lhkDb19p8Ws8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 2F89068B05; Wed, 19 Jun 2024 07:27:41 +0200 (CEST)
+Date: Wed, 19 Jun 2024 07:27:40 +0200
+From: Christoph Hellwig <hch@lst.de>
+To: Barry Song <21cnbao@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+	linux-nfs@vger.kernel.org, anna@kernel.org, chrisl@kernel.org,
+	hanchuanhua@oppo.com, hch@lst.de, jlayton@kernel.org,
+	linux-cifs@vger.kernel.org, neilb@suse.de, ryan.roberts@arm.com,
+	sfrench@samba.org, stable@vger.kernel.org, trondmy@kernel.org,
+	v-songbaohua@oppo.com, ying.huang@intel.com,
+	Matthew Wilcox <willy@infradead.org>,
+	Martin Wege <martin.l.wege@gmail.com>
+Subject: Re: [PATCH v2] nfs: drop the incorrect assertion in nfs_swap_rw()
+Message-ID: <20240619052740.GA29159@lst.de>
+References: <20240618065647.21791-1-21cnbao@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,28 +53,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240619050125.4444-1-joswang1221@gmail.com>
+In-Reply-To: <20240618065647.21791-1-21cnbao@gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 
-On Wed, Jun 19, 2024 at 01:01:25PM +0800, joswang wrote:
-> From: Jos Wang <joswang@lenovo.com>
-> 
-> This is a workaround for STAR 4846132, which only affects
-> DWC_usb31 version2.00a operating in host mode.
-> 
-> There is a problem in DWC_usb31 version 2.00a operating
-> in host mode that would cause a CSR read timeout When CSR
-> read coincides with RAM Clock Gating Entry. By disable
-> Clock Gating, sacrificing power consumption for normal
-> operation.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jos Wang <joswang@lenovo.com>
-> ---
-> v5 -> v6: no change
-> v4 -> v5: no change
+On Tue, Jun 18, 2024 at 06:56:47PM +1200, Barry Song wrote:
+> Fixes: 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS swap-space")
+> Reported-by: Christoph Hellwig <hch@lst.de>
 
-If there was no change, why was there new versions submitted?  Please
-always document what was done.
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-greg k-h
+A reported-by for the credited patch author doesn't make sense.
+
 
