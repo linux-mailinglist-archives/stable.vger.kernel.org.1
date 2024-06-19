@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-54495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DDB90EE81
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AACE90EDBD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1154128230F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F4CF1C22034
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1582214E2E2;
-	Wed, 19 Jun 2024 13:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF23114E2FC;
+	Wed, 19 Jun 2024 13:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DU+ruQQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a66qr5K9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF451146016;
-	Wed, 19 Jun 2024 13:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C4F14A615;
+	Wed, 19 Jun 2024 13:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803748; cv=none; b=ZhhWWNWIeK/BV0Le7o4U02YjjDqlOyxRSp5nFVBiNcdoqgkj8RMa+tVWgbk5TDui7xV/gGNNoTBaJLTrAsVfpZB7Y7fNcwAb0Me/ZYSspRQLL64kdyiyqc9eDH3aRNdDby+OfHODay/GUtiYfimaB4OywwtPNa081oPidzQ4ge8=
+	t=1718803287; cv=none; b=XTiQkkDvdHwMfkVQ39gVmpXWQhy4I5F1C21kjTwqhHwYoxDLkHT9d8QwZn8UI+DiPZXauFRDVorIC8qlqwDcYaHO2D9M9PHn2ElrA5PeCZr3IsYIS/CONyTLL+TNWsjM7IjUf3IA6avgpvl+kAuZC0Ef5Wt9zac52P0Fe2TReGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803748; c=relaxed/simple;
-	bh=hv2F3rUIGfdVtma68HIzZ4kA1PFKo7S9yid3tmcNfOw=;
+	s=arc-20240116; t=1718803287; c=relaxed/simple;
+	bh=RqHK9fXWnqippMKr6PKp/TfrktAHaWvVM7gY0EKWcOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=msZq3AA69oRltFr/yG/dZidcQRjrW0GbyvUCfBV3Drr2vXsi0YmV+Y6Dc97E7tIVQ8Ltx5/VA+RR5s6U41KIfYdFKeQoE8CS9CilwT0khV8IaBAIy1nrfsplylF0zDzlvmDxS7pf5eBIsqKhZaTOH0BYfPKneLck7tiDMwivfmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DU+ruQQU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448F0C2BBFC;
-	Wed, 19 Jun 2024 13:29:08 +0000 (UTC)
+	 MIME-Version; b=EqHBwVR1Gof5ONOH8z2D4kc7XgCb8+0j0sG/ODI6Tetal0NvX/qblt5HfiM9B1A7R0vWa7j2HiVtPnEcrf8IOVG4V1PBvuK/TrSLH6JI3pksYEL8/Tj0FvM3o+V5kscZyPG5QSYjSl36ni9F95lwBIaHP+BQFLXdOFUvMoAoma0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a66qr5K9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB7AC2BBFC;
+	Wed, 19 Jun 2024 13:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803748;
-	bh=hv2F3rUIGfdVtma68HIzZ4kA1PFKo7S9yid3tmcNfOw=;
+	s=korg; t=1718803287;
+	bh=RqHK9fXWnqippMKr6PKp/TfrktAHaWvVM7gY0EKWcOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DU+ruQQUSFXzbfyarzLsMK4Pvc00SMydaMFukAYyEsi1nYO2zUUEXKoJ1TVITb2x0
-	 Zh9MSnchsAlQpHoON1DDWKEyJh9vLeDbyPGy8QcJ/QBZrJX6UaSicjKqtGfgzFM6th
-	 sEtkZhZ3gUlEZG8yg4D3jnz5kUpxLCeCxl89cHPQ=
+	b=a66qr5K9D3hhH7uy2rhb+H/KFZkn35nvQKA50F5/3ZH8ILImx55gtJnPKhMesOgQy
+	 grjPYqTcElpYOIX2i9j77HXfz6LbY3lsc4INX96Tzj3be/mPzkSDFA7HA2YOMJpXfz
+	 2+6PeBFtISGvbQIrGaRNyq2TY/zNTTypZUqBgunQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadym Krevs <vkrevs@yahoo.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.1 090/217] tty: n_tty: Fix buffer offsets when lookahead is used
-Date: Wed, 19 Jun 2024 14:55:33 +0200
-Message-ID: <20240619125600.161618990@linuxfoundation.org>
+	Daniel Wagner <dwagner@suse.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 175/281] nvmet-passthru: propagate status from id override functions
+Date: Wed, 19 Jun 2024 14:55:34 +0200
+Message-ID: <20240619125616.569796903@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,72 +62,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Daniel Wagner <dwagner@suse.de>
 
-commit b19ab7ee2c4c1ec5f27c18413c3ab63907f7d55c upstream.
+[ Upstream commit d76584e53f4244dbc154bec447c3852600acc914 ]
 
-When lookahead has "consumed" some characters (la_count > 0),
-n_tty_receive_buf_standard() and n_tty_receive_buf_closing() for
-characters beyond the la_count are given wrong cp/fp offsets which
-leads to duplicating and losing some characters.
+The id override functions return a status which is not propagated to the
+caller.
 
-If la_count > 0, correct buffer pointers and make count consistent too
-(the latter is not strictly necessary to fix the issue but seems more
-logical to adjust all variables immediately to keep state consistent).
-
-Reported-by: Vadym Krevs <vkrevs@yahoo.com>
-Fixes: 6bb6fa6908eb ("tty: Implement lookahead to process XON/XOFF timely")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218834
-Tested-by: Vadym Krevs <vkrevs@yahoo.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240514140429.12087-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c1fef73f793b ("nvmet: add passthru code to process commands")
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_tty.c |   22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/nvme/target/passthru.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/n_tty.c
-+++ b/drivers/tty/n_tty.c
-@@ -1602,15 +1602,25 @@ static void __receive_buf(struct tty_str
- 	else if (ldata->raw || (L_EXTPROC(tty) && !preops))
- 		n_tty_receive_buf_raw(tty, cp, fp, count);
- 	else if (tty->closing && !L_EXTPROC(tty)) {
--		if (la_count > 0)
-+		if (la_count > 0) {
- 			n_tty_receive_buf_closing(tty, cp, fp, la_count, true);
--		if (count > la_count)
--			n_tty_receive_buf_closing(tty, cp, fp, count - la_count, false);
-+			cp += la_count;
-+			if (fp)
-+				fp += la_count;
-+			count -= la_count;
-+		}
-+		if (count > 0)
-+			n_tty_receive_buf_closing(tty, cp, fp, count, false);
- 	} else {
--		if (la_count > 0)
-+		if (la_count > 0) {
- 			n_tty_receive_buf_standard(tty, cp, fp, la_count, true);
--		if (count > la_count)
--			n_tty_receive_buf_standard(tty, cp, fp, count - la_count, false);
-+			cp += la_count;
-+			if (fp)
-+				fp += la_count;
-+			count -= la_count;
-+		}
-+		if (count > 0)
-+			n_tty_receive_buf_standard(tty, cp, fp, count, false);
- 
- 		flush_echoes(tty);
- 		if (tty->ops->flush_chars)
+diff --git a/drivers/nvme/target/passthru.c b/drivers/nvme/target/passthru.c
+index bb4a69d538fd1..f003782d4ecff 100644
+--- a/drivers/nvme/target/passthru.c
++++ b/drivers/nvme/target/passthru.c
+@@ -226,13 +226,13 @@ static void nvmet_passthru_execute_cmd_work(struct work_struct *w)
+ 	    req->cmd->common.opcode == nvme_admin_identify) {
+ 		switch (req->cmd->identify.cns) {
+ 		case NVME_ID_CNS_CTRL:
+-			nvmet_passthru_override_id_ctrl(req);
++			status = nvmet_passthru_override_id_ctrl(req);
+ 			break;
+ 		case NVME_ID_CNS_NS:
+-			nvmet_passthru_override_id_ns(req);
++			status = nvmet_passthru_override_id_ns(req);
+ 			break;
+ 		case NVME_ID_CNS_NS_DESC_LIST:
+-			nvmet_passthru_override_id_descs(req);
++			status = nvmet_passthru_override_id_descs(req);
+ 			break;
+ 		}
+ 	} else if (status < 0)
+-- 
+2.43.0
+
 
 
 
