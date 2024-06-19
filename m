@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-53991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB9390EC2F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5E490EE43
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C9351C2486F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87E8C1C23B9A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5F213D525;
-	Wed, 19 Jun 2024 13:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E84514B07B;
+	Wed, 19 Jun 2024 13:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8ifDTVi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHK+n2rS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A23F82871;
-	Wed, 19 Jun 2024 13:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C58C1474AD;
+	Wed, 19 Jun 2024 13:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802273; cv=none; b=FoW/xctk4HFiYWl2248R49RbMoaHQypPHBN2MDpSAZSvcG73fZdGoHFbEjA3FbPJYWqmWqW31+tB/NdskMssEE9cAIn+v/GE6X/iMqjz8+rdeYCSpC0zm1JLzOwVyrmXeecH+hJfMBggriO9zAHfuEagOqCdccm9zsaahptFH6c=
+	t=1718803622; cv=none; b=TFGtFeIMpB/Kb4kASZ5RsJreuiFekmWU5knZfBtf2F7cg2WvXIhLUS0WS1twi6210u06vRzbyZSN06d437TNc4JtFKHs8rLAB0aGGcSWilTA3K6+leStpWUJZ3Q8H/f0186zJMOObklWZVEX4xbFBgSPyJWZxWyv/mba5S8PtO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802273; c=relaxed/simple;
-	bh=jRIgtNfssuzajYyNgLJCWuj5EYFb3q1aSXDtapevWBY=;
+	s=arc-20240116; t=1718803622; c=relaxed/simple;
+	bh=3JAvG72JxXU6ErAb6KVtHH0Fj58x69bny2gmqHjdKwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lb/PWo3Q34xWrOapaYS5a3G14ktCgCERtl1zKp2EbddVG8/5IixFEhocCqWleyGzcA7EO5Yr4q87X4Se+FI1fJ7ii9HAtfXahi7I8heX3IBg/8s4MScaP4mS9tv9LEzYbuo7JPrfCnBch04N1MyVLkSlGwKSEvw73XKF6n4QwGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8ifDTVi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BBBC2BBFC;
-	Wed, 19 Jun 2024 13:04:32 +0000 (UTC)
+	 MIME-Version; b=lpRfkikrG+H35V4QBHKWRGtejhUYOTBe/Tlb4JnNGPKyY0hXbGfbrMr9HPn6XTrCWohXiM8aEz9UDiQXP3N1fYkOxGSxTejxMTHuPHZzzatUMgrS5FxAR+03QuTorx68oawnEtly0K14lW0tY379jxUAeQzbv/L2E4Zsm8lSijA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHK+n2rS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F098C2BBFC;
+	Wed, 19 Jun 2024 13:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802273;
-	bh=jRIgtNfssuzajYyNgLJCWuj5EYFb3q1aSXDtapevWBY=;
+	s=korg; t=1718803621;
+	bh=3JAvG72JxXU6ErAb6KVtHH0Fj58x69bny2gmqHjdKwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8ifDTViU7uJLC2lBOvazbmj5ccJiPRRqTw3dUJs0RwUAwbPGniVQhO9VvhaWOB0f
-	 8YXbCIeGBbvyoOixoiOJraI+zN1HO3zU8Ttq+6Lj/6PJ5sgNVBwfUaL/NKNQxfrvgL
-	 GpYD0QYUXHWSNVWxU9h6ZM53vEU5agEEDJgzqFmE=
+	b=XHK+n2rSim7S5t+kPYvakxtSM7AFW5e9JOImId+o2ONqcs9bZIuq75DmwKLWtz3VB
+	 gezpmwdmb/lazYplPkrbBO94BW0xs4vL19RgrRogNw9VyOYr4XrKCASUAoBRijejU4
+	 Sqf/H+tzaUAvefX/ZGNS1HZP//73Hn4ylWGb5kOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 140/267] af_unix: Annotate data-race of sk->sk_state in unix_accept().
+Subject: [PATCH 6.1 048/217] af_unix: Annotate data-race of sk->sk_shutdown in sk_diag_fill().
 Date: Wed, 19 Jun 2024 14:54:51 +0200
-Message-ID: <20240619125611.721295017@linuxfoundation.org>
+Message-ID: <20240619125558.517127339@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 1b536948e805aab61a48c5aa5db10c9afee880bd ]
+[ Upstream commit efaf24e30ec39ebbea9112227485805a48b0ceb1 ]
 
-Once sk->sk_state is changed to TCP_LISTEN, it never changes.
+While dumping sockets via UNIX_DIAG, we do not hold unix_state_lock().
 
-unix_accept() takes the advantage and reads sk->sk_state without
-holding unix_state_lock().
+Let's use READ_ONCE() to read sk->sk_shutdown.
 
-Let's use READ_ONCE() there.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: e4e541a84863 ("sock-diag: Report shutdown for inet and unix sockets (v2)")
 Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c |    2 +-
+ net/unix/diag.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1710,7 +1710,7 @@ static int unix_accept(struct socket *so
- 		goto out;
+diff --git a/net/unix/diag.c b/net/unix/diag.c
+index fc56244214c30..1de7500b41b61 100644
+--- a/net/unix/diag.c
++++ b/net/unix/diag.c
+@@ -165,7 +165,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_r
+ 	    sock_diag_put_meminfo(sk, skb, UNIX_DIAG_MEMINFO))
+ 		goto out_nlmsg_trim;
  
- 	err = -EINVAL;
--	if (sk->sk_state != TCP_LISTEN)
-+	if (READ_ONCE(sk->sk_state) != TCP_LISTEN)
- 		goto out;
+-	if (nla_put_u8(skb, UNIX_DIAG_SHUTDOWN, sk->sk_shutdown))
++	if (nla_put_u8(skb, UNIX_DIAG_SHUTDOWN, READ_ONCE(sk->sk_shutdown)))
+ 		goto out_nlmsg_trim;
  
- 	/* If socket state is TCP_LISTEN it cannot change (for now...),
+ 	if ((req->udiag_show & UDIAG_SHOW_UID) &&
+-- 
+2.43.0
+
 
 
 
