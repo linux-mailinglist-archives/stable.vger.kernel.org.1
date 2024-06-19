@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-53950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE63F90EC05
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBEB90ED35
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BDE9B267F7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5957280D81
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F188914A609;
-	Wed, 19 Jun 2024 13:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E440513E409;
+	Wed, 19 Jun 2024 13:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzWt3map"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSZguHtO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB0B143C4A;
-	Wed, 19 Jun 2024 13:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997C7AD58;
+	Wed, 19 Jun 2024 13:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802151; cv=none; b=uOgV4gro6uhw0q/xdhG67W8OcAljS359WvEKVON6aLcMRbFZVWSo7ErBCqUG2Aab/6cYvhbGTtl25ghYlwL3MkcZpbzv/qX57ueD8EV0fBje8OdCzEmCbZHjkaVv8lWC5vdLnZiBKogJ9Xs/tJaqaejbf/yiWkhfaKal06wxirs=
+	t=1718802919; cv=none; b=piUnbAiaSEpR7PFRN060uG/XkEbsJXLZCkOkCwwRO6FzaCJDmlWIQN3EzMZDwrbXB4Qw/S+E1ZZD42VIwgusUcFHPFrcrNeH/JLnPyOf9uD7o9Bv58LKyl/JTOS0Bj7ikGgeDaenwf9Lzum4sTcDxBwlSlxE8hWbhSTdmQnPxmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802151; c=relaxed/simple;
-	bh=+p0aFEuBFRJulEkt5EV+/YPaTElybed/oYtvan29vcc=;
+	s=arc-20240116; t=1718802919; c=relaxed/simple;
+	bh=RIJQfuwpJ6OY7N7yJAASBfGlhJ1ti21/Qh1QSoGIiJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSw7gBnrArDPNQLEwQ9RiUTvpCGpdyI+FX+UuAqGP5RUsfKrPmQHu+dNetaT/AmZ8dPeHZ8MASP0zjuIVL8f+5dXLjwpsML2zS1/mD0A0SoK46IETasmQGTiO9TsbSlt73DOUo0v/WeEPAlhB5y67Kx2OoYVD8DBM2epj7tvuxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzWt3map; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D90C2BBFC;
-	Wed, 19 Jun 2024 13:02:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IIXm+f4iL2LObqSoFG/PbNWP547LCfLeHuFzvFVWFep5LjAfpiMP0CSWqABV77pYpLoHq3q1ttsTR8VXNSdrFrTUYctFEra6dc3rGSIUhO4c3NUXeKIDcN0Hv2nTcSjg595GZiDy465zSApqnYKaPGspsEmV7UQxzk7u2FwUPFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSZguHtO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE040C2BBFC;
+	Wed, 19 Jun 2024 13:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802151;
-	bh=+p0aFEuBFRJulEkt5EV+/YPaTElybed/oYtvan29vcc=;
+	s=korg; t=1718802919;
+	bh=RIJQfuwpJ6OY7N7yJAASBfGlhJ1ti21/Qh1QSoGIiJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xzWt3mapw1RtgxT5mgjSEh5O9LwJ0q9BvEtd2DGcIFs0FU+edtg5wJYMdDjeAI9xS
-	 1h3Nwx3TUy+32sY0mOJvLPSstzI+Ip74gMrjXsZq+SYoLuRHjDJebSYpf8kL+Lm7Nu
-	 xQVYtkzC+tZJGM2eOFsgo+ic2HHJlcISNPcb0CV4=
+	b=VSZguHtOKbKyDfyhn0KLUiQgJVE+jTuBgNmV9DR5ALmDCWQEJKSWs9897sHl/yVyf
+	 4nfuhCuRVUM/r4zdmhhMyZyMxjG+hOadDKTGQeyvGtW4KF5LVhb1ElU5y2MVknJwWM
+	 rRjB4u86HRCsN44voq4CgHuM1E56C6mpgCkLQk50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 100/267] HID: nvidia-shield: Add missing check for input_ff_create_memless
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Paul Moore <paul@paul-moore.com>,
+	syzbot+bf4903dc7e12b18ebc87@syzkaller.appspotmail.com,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.9 092/281] landlock: Fix d_parent walk
 Date: Wed, 19 Jun 2024 14:54:11 +0200
-Message-ID: <20240619125610.191730670@linuxfoundation.org>
+Message-ID: <20240619125613.390629199@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 0a3f9f7fc59feb8a91a2793b8b60977895c72365 ]
+commit 88da52ccd66e65f2e63a6c35c9dff55d448ef4dc upstream.
 
-Add check for the return value of input_ff_create_memless() and return
-the error if it fails in order to catch the error.
+The WARN_ON_ONCE() in collect_domain_accesses() can be triggered when
+trying to link a root mount point.  This cannot work in practice because
+this directory is mounted, but the VFS check is done after the call to
+security_path_link().
 
-Fixes: 09308562d4af ("HID: nvidia-shield: Initial driver implementation with Thunderstrike support")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Do not use source directory's d_parent when the source directory is the
+mount point.
+
+Cc: Günther Noack <gnoack@google.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+bf4903dc7e12b18ebc87@syzkaller.appspotmail.com
+Fixes: b91c3e4ea756 ("landlock: Add support for file reparenting with LANDLOCK_ACCESS_FS_REFER")
+Closes: https://lore.kernel.org/r/000000000000553d3f0618198200@google.com
+Link: https://lore.kernel.org/r/20240516181935.1645983-2-mic@digikod.net
+[mic: Fix commit message]
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-nvidia-shield.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ security/landlock/fs.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-nvidia-shield.c b/drivers/hid/hid-nvidia-shield.c
-index edd0b0f1193bd..97dfa3694ff04 100644
---- a/drivers/hid/hid-nvidia-shield.c
-+++ b/drivers/hid/hid-nvidia-shield.c
-@@ -283,7 +283,9 @@ static struct input_dev *shield_haptics_create(
- 		return haptics;
+--- a/security/landlock/fs.c
++++ b/security/landlock/fs.c
+@@ -950,6 +950,7 @@ static int current_check_refer_path(stru
+ 	bool allow_parent1, allow_parent2;
+ 	access_mask_t access_request_parent1, access_request_parent2;
+ 	struct path mnt_dir;
++	struct dentry *old_parent;
+ 	layer_mask_t layer_masks_parent1[LANDLOCK_NUM_ACCESS_FS] = {},
+ 		     layer_masks_parent2[LANDLOCK_NUM_ACCESS_FS] = {};
  
- 	input_set_capability(haptics, EV_FF, FF_RUMBLE);
--	input_ff_create_memless(haptics, NULL, play_effect);
-+	ret = input_ff_create_memless(haptics, NULL, play_effect);
-+	if (ret)
-+		goto err;
+@@ -997,9 +998,17 @@ static int current_check_refer_path(stru
+ 	mnt_dir.mnt = new_dir->mnt;
+ 	mnt_dir.dentry = new_dir->mnt->mnt_root;
  
- 	ret = input_register_device(haptics);
- 	if (ret)
--- 
-2.43.0
-
++	/*
++	 * old_dentry may be the root of the common mount point and
++	 * !IS_ROOT(old_dentry) at the same time (e.g. with open_tree() and
++	 * OPEN_TREE_CLONE).  We do not need to call dget(old_parent) because
++	 * we keep a reference to old_dentry.
++	 */
++	old_parent = (old_dentry == mnt_dir.dentry) ? old_dentry :
++						      old_dentry->d_parent;
++
+ 	/* new_dir->dentry is equal to new_dentry->d_parent */
+-	allow_parent1 = collect_domain_accesses(dom, mnt_dir.dentry,
+-						old_dentry->d_parent,
++	allow_parent1 = collect_domain_accesses(dom, mnt_dir.dentry, old_parent,
+ 						&layer_masks_parent1);
+ 	allow_parent2 = collect_domain_accesses(
+ 		dom, mnt_dir.dentry, new_dir->dentry, &layer_masks_parent2);
 
 
 
