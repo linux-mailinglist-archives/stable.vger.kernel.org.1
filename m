@@ -1,117 +1,98 @@
-Return-Path: <stable+bounces-53830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F6990E924
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B181190E92C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0610A1F22DC3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:19:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C951E1C22728
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CD184FC3;
-	Wed, 19 Jun 2024 11:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C4F139CE9;
+	Wed, 19 Jun 2024 11:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S6DSPamK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xuu3dwIU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5D64D8B2;
-	Wed, 19 Jun 2024 11:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D9480BF2;
+	Wed, 19 Jun 2024 11:20:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718795942; cv=none; b=kGmRvhyHUu+7WREs/EJJfxU57qt/03KzLv/6Mh5gdbjomKMqRcY91YP1kaU6Vt197VoJAu4Gb3NwJmpWL3omqrvMU2W/uhMpA+fKJSOqNUqDOKy2+gFhePZVvp/nxH/9Y/r+EDtTm+hd4y9VA8YBUm6qBiKGCEaB7F+b/P/zHNs=
+	t=1718796043; cv=none; b=k/+nhby8V6nCLJ60n7Vsuo3PypvQLtDb3zvkR0e1EEgIk8aWg6XunNYLbHnGFUfYHvcHh1s0c760zSwN/GLdyEeJpxGGKyCBd1lgsuCtUzRxOtDzfsxG0iI6FPF8c4Zo19pZoSyVoxucJKij6MEWkuLWZ54lS8BG/aimDOCOKMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718795942; c=relaxed/simple;
-	bh=qx/037j5l/h26XirlFV4UFdaLFteBY/swy2KfQlGKZQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FMFfBpZovvbHjgcSLoZ6MS+0ROhkXCrg9WOU++ehlsTPaqe7b5CjoGInU3P11qMVEGrPfvd/wXm5XqdDI3M5RWPs6sVhBPSdfVqIV5yraCZh/5hwEd4loTKKj0v412FKf0zssp70E2aWt+o1Ia4CMnk338LlBfgt3IX+ZOMfldg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S6DSPamK; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a6fb341a7f2so67262166b.1;
-        Wed, 19 Jun 2024 04:19:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718795939; x=1719400739; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pLVIq+eeSfRMQKg1AreCKiYpS4TWzLzpMNboeHds0vI=;
-        b=S6DSPamKmdPt97iIn48RyFjcnlYlNEjo+0/esIimma7Cro/BMLhARI7rxwg+du0YLt
-         lGdHhnIzp+P1TvMezbqYUoppeiw/49fSPgdaXKhcSdNWSoS9Jtdugzl5UWgpmfs24498
-         jB7W2ADUvGBXZl1/XO6/N2cVK4anm/lUMPZ49I8WFrbkG5MDacICFqOb+AoyRg1fWW9T
-         XGu9B+3Pu4Ogxobr2KJl62o853Cp5bbP0e4C6snoRaf1rC0r7O0rXthrgzp8S5mXm7hf
-         H7XwHt+Fp1qoUo4M68sO05Ah/zI2RmwYLUxYxJoDfT7VmS+n+OswFs0bFAltkYGTQD2v
-         MWmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718795939; x=1719400739;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pLVIq+eeSfRMQKg1AreCKiYpS4TWzLzpMNboeHds0vI=;
-        b=wIn3Pw74joJF/vMlfQzA6URNoYpfpTFEjm3PHFUg97wlwmDfzp9lRfELqEctzwrwhK
-         1YlDxZjGXvj4OpjwJ8YtPi1Dg3b8/txQaSxJBxUwbqAZrEK6ZZyKLWcaFnz1KT1y3wMV
-         Sd/pM0IaGRgthFnkQeGI+trzd73j380n8DYVg3TqQ68LSl6YGVzHRNP2ltNbv1X8kAMp
-         VNgdzxo8fWGGrbEf31v9fiNTW3D1jazvKnL5jGV5Oq0mSgDxkSS7PerFBusj8wqGMkHl
-         rb1qaYIn2B3xMk317JcELQJDUp80jThqEannC+h1PznOylS7kzK4MxmBDP7IJzBMJEKw
-         8IlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWkoytWEBWgMbWOleV6r4NfFRPOQVfE154VksPiMdiaqRzwyirrnMZfpapwAZWRJj5mMFs6T9vjHfPy/HmiQ1Mh77h6uJbHPHiBQbb43MZMR7xp62wmdHpWnUMp9S1WNLc5/U67vWNZholoH2d8otmK4qOSfdAzc/jXlnUU9ZNZ
-X-Gm-Message-State: AOJu0YxHhI7GgVddOEUDt5ikSS2rk4YGmQ/susavZingJROrt3fUaWZD
-	Nxs79+v4tVlvb1ij3Gvr/5xWRwuUWx1bxcwbxcT5Tii/YCKU7WZ3aBXx5DiSHCF4BbtyPjNOXMC
-	tip/0QHSLnCiTLLIghrIhsFTqo6g=
-X-Google-Smtp-Source: AGHT+IGICb+ryxdnC8Bm0bzuX9pSGgnIGjfjrPhkvEs3vkcekNWZ9OOSOET2zfCNqCAEIzzbZUhrHh6rWIR1j2CxIys=
-X-Received: by 2002:a17:906:2814:b0:a6f:4e1f:e613 with SMTP id
- a640c23a62f3a-a6fab6488famr127124966b.37.1718795938561; Wed, 19 Jun 2024
- 04:18:58 -0700 (PDT)
+	s=arc-20240116; t=1718796043; c=relaxed/simple;
+	bh=XScUQ9xKv3viE4nGItvwHd/wPr1+lIosTNq6JX2Fov4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rMS1LPBfj2xylk7GMBo60yvpRE9C6cZJsw7ZS15FDCvNIuqNjMxhTF4neuOdlhpN/RsS0VkJ10sN4y3lG4eNSi6Jh5pd3JGvq3XoZQOokw3ka8bI8edTVvkHhmJBg/OHZIjHY9STZqGvCQhsXRgVtX/IvYmU2TU0E6b8ZwngO48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xuu3dwIU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BB0C2BBFC;
+	Wed, 19 Jun 2024 11:20:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718796042;
+	bh=XScUQ9xKv3viE4nGItvwHd/wPr1+lIosTNq6JX2Fov4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Xuu3dwIU1BinnJ0NQFA2MRNMzhgQeHidolw/WeXaf55AsYFKLjzAIBZoBzXKfVpnc
+	 ytL6xowDO6phB2Dqjvv2M4zyp2a7FDq4M9/nVIgI4p8h8a9w0P9ouAtYJhi3OWOch5
+	 6jvwKZwLQZ8dLyEY8yW5P6MCZeUUiagXUuCKOsf6kbKRhu1cES0vTbr/HJ9GmYPBKa
+	 v5cG1Jl6R5j60PYFV4MQM0r3sDsCZHVTMqceJyuPynHLMsnHzDdqjYT77Fq6/7zzmO
+	 c9cWxVEqKGz47edpxEpTIsOd7+C+9u9ikCuP+Aj7B9RUZ1+6m2crg2js2EzTNrqZ+c
+	 knPVb6CpS49Yw==
+From: Conor Dooley <conor@kernel.org>
+To: kernel@esmil.dk,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	william.qiu@starfivetech.com,
+	devicetree@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	Shengyu Qu <wiagn233@outlook.com>
+Cc: conor@kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] riscv: dts: starfive: Set EMMC vqmmc maximum voltage to 3.3V on JH7110 boards
+Date: Wed, 19 Jun 2024 12:20:00 +0100
+Message-ID: <20240619-slicer-embolism-1d74656749ab@spud>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To:  <TY3P286MB261189B5D946BDE69398EE3A98C02@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+References:  <TY3P286MB261189B5D946BDE69398EE3A98C02@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240619050125.4444-1-joswang1221@gmail.com> <2024061947-grandpa-bucktooth-4f55@gregkh>
-In-Reply-To: <2024061947-grandpa-bucktooth-4f55@gregkh>
-From: joswang <joswang1221@gmail.com>
-Date: Wed, 19 Jun 2024 19:18:48 +0800
-Message-ID: <CAMtoTm3+eSCeF_FQtyBZ1Yb43Sb_ABKDQv7zEueAHwXYGnv72Q@mail.gmail.com>
-Subject: Re: [PATCH v6] usb: dwc3: core: Workaround for CSR read timeout
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Jos Wang <joswang@lenovo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=688; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=hyxqrF+zdFDORBV9MQKebE44wmRMdbJxx9CDCqJHNeA=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDGlF+x4Ybd5Uqy4eu9LcKC/4zYp3bdlNki9sdDXO/N5Z3 bDk+iTRjlIWBjEOBlkxRZbE230tUuv/uOxw7nkLM4eVCWQIAxenAExkyn6G/5l6YcZ5l16rds5t +S08Y+eN9RHidrNmn47ddUz1zVWZN/sZGbZ71ASfu/rC19dpBfP1w2L/nm0JujH7fXD7kg/lKU8 /OXICAA==
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 19, 2024 at 1:10=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Wed, Jun 19, 2024 at 01:01:25PM +0800, joswang wrote:
-> > From: Jos Wang <joswang@lenovo.com>
-> >
-> > This is a workaround for STAR 4846132, which only affects
-> > DWC_usb31 version2.00a operating in host mode.
-> >
-> > There is a problem in DWC_usb31 version 2.00a operating
-> > in host mode that would cause a CSR read timeout When CSR
-> > read coincides with RAM Clock Gating Entry. By disable
-> > Clock Gating, sacrificing power consumption for normal
-> > operation.
-> >
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Jos Wang <joswang@lenovo.com>
-> > ---
-> > v5 -> v6: no change
-> > v4 -> v5: no change
->
-> If there was no change, why was there new versions submitted?  Please
-> always document what was done.
->
-> greg k-h
+From: Conor Dooley <conor.dooley@microchip.com>
 
-Ok, I will submit a new version and add the differences.
+On Wed, 12 Jun 2024 18:33:31 +0800, Shengyu Qu wrote:
+> Currently, for JH7110 boards with EMMC slot, vqmmc voltage for EMMC is
+> fixed to 1.8V, while the spec needs it to be 3.3V on low speed mode and
+> should support switching to 1.8V when using higher speed mode. Since
+> there are no other peripherals using the same voltage source of EMMC's
+> vqmmc(ALDO4) on every board currently supported by mainline kernel,
+> regulator-max-microvolt of ALDO4 should be set to 3.3V.
+> 
+> [...]
+
+Applied to riscv-dt-fixes, thanks!
+
+[1/1] riscv: dts: starfive: Set EMMC vqmmc maximum voltage to 3.3V on JH7110 boards
+      https://git.kernel.org/conor/c/3c1f81a1b554
+
+I was kinda holding out for a response for Emil, but I've applied this cos
+I'd like to get a fixes PR sent out later this week.
 
 Thanks,
-Jos Wang
+Conor.
 
