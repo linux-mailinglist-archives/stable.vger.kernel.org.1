@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC7890EEA1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A8090EC7C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE966286B03
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EC91B21787
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9625F147C60;
-	Wed, 19 Jun 2024 13:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069CA143C65;
+	Wed, 19 Jun 2024 13:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPkUgpfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1bzttWM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F8E1E492;
-	Wed, 19 Jun 2024 13:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA09C143C4E;
+	Wed, 19 Jun 2024 13:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803828; cv=none; b=J/loakPgRX1SGuQhmx3KTJ+gnSACQ89tOKJ3bF8E8LVVupxBkpEk9XB4jczHURi8FVRY6GpiJLeiV8U734qdAOvLChRfr/sSZI3mW6Xtvp6JpYTRZqf6NyqiU3OM4rs424wN0bfpyljaYX0bSkI5pxGBBO/Npo7Z2N68bpEnw1I=
+	t=1718802479; cv=none; b=hTP4/VWna/KTuUQJY28xdkFK3GAB/NjwLdYeoz3NcujIroc4YUOVmnuFNaOlEDxc4XPj0Y8wCLP01O+ctDD5Xr+hQ+RMQwhrMP/XcanmU4+9rvELjywpQHudNLkuOEoqN51HlYWtlPX5YEp1kbZn709UNZoW7guwejEQKLscpBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803828; c=relaxed/simple;
-	bh=hyn2GvYQRuWTED0ch7NBrtq9/EroRtR4MRY/5Zq9vrQ=;
+	s=arc-20240116; t=1718802479; c=relaxed/simple;
+	bh=XXx0oJcVK3PmEmjj/mG4ft8ZgNB/c4Rsq0EeuX0PZ9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SNZsfsSOVnFEWRs02plSLal8eb1M4DnbRTOMkiQHlwDrm8PtpfFBkU9H1glftHEqe9paMovSYKIx9C17SCprUyrfgr1CgrBc07dF8idiLnU5JIkic5K/P6T1zfcaGc0X5UeZYOJw9sgVvyL2CUo3kSltdcKSKM9UVKku6SAtXLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPkUgpfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63FCC2BBFC;
-	Wed, 19 Jun 2024 13:30:27 +0000 (UTC)
+	 MIME-Version; b=sNTfM+ITrI4siTXT0N8E1fpwH/RN/vqOenwdFqBdLxGuLdnrcAkUGtA3M+HqV8Qqgk1RLP6u0bNGpRbf9dGKYR12V9k5DFPIsPelXutRoFqTWGJoUDyCPMOWKFW7v77OHHjC4aVBEujXe2zWzBSk5Gcuq7C5laAQ1pMdRuaRfNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1bzttWM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F8AC2BBFC;
+	Wed, 19 Jun 2024 13:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803828;
-	bh=hyn2GvYQRuWTED0ch7NBrtq9/EroRtR4MRY/5Zq9vrQ=;
+	s=korg; t=1718802479;
+	bh=XXx0oJcVK3PmEmjj/mG4ft8ZgNB/c4Rsq0EeuX0PZ9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPkUgpfeYb9lX15oLqyrN89PbqR7q4QvKz9BvNP8zN/BEI7VIdEojNyL/QZf5JhSy
-	 xp5l0o19lQxJziMsOZJnF/ShQe2CAXkkOAB/bUVyeQbLASR2hiYZXtgyWQLYa6VuLP
-	 WzWyeMOI8UksijhMWWUeXqmRqE78+gjd9bYwqmLY=
+	b=o1bzttWMEogMrGMx8MMQ64XHOwWlm5Ox4J5srgstZS5RiUz/UZXMTHUFxsbTHOHEO
+	 UUu34lLx6LB2HZa1nOea+76Oah7OdLRbE6KmpslqC25HXRY8HhmSi8M2B2OzMexSEn
+	 kZg2hrpPDXl3/WviXgo2472fFCZabDiyusFCQS5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/217] selftests/ftrace: Fix to check required event file
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 210/267] iio: adc: axi-adc: make sure AXI clock is enabled
 Date: Wed, 19 Jun 2024 14:56:01 +0200
-Message-ID: <20240619125601.243591281@linuxfoundation.org>
+Message-ID: <20240619125614.388208842@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit f6c3c83db1d939ebdb8c8922748ae647d8126d91 ]
+commit 80721776c5af6f6dce7d84ba8df063957aa425a2 upstream.
 
-The dynevent/test_duplicates.tc test case uses `syscalls/sys_enter_openat`
-event for defining eprobe on it. Since this `syscalls` events depend on
-CONFIG_FTRACE_SYSCALLS=y, if it is not set, the test will fail.
+We can only access the IP core registers if the bus clock is enabled. As
+such we need to get and enable it and not rely on anyone else to do it.
 
-Add the event file to `required` line so that the test will return
-`unsupported` result.
+Note this clock is a very fundamental one that is typically enabled
+pretty early during boot. Independently of that, we should really rely on
+it to be enabled.
 
-Fixes: 297e1dcdca3d ("selftests/ftrace: Add selftest for testing duplicate eprobes and kprobes")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ef04070692a2 ("iio: adc: adi-axi-adc: add support for AXI ADC IP core")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240426-ad9467-new-features-v2-4-6361fc3ba1cc@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../testing/selftests/ftrace/test.d/dynevent/test_duplicates.tc | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/adi-axi-adc.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/test_duplicates.tc b/tools/testing/selftests/ftrace/test.d/dynevent/test_duplicates.tc
-index d3a79da215c8b..5f72abe6fa79b 100644
---- a/tools/testing/selftests/ftrace/test.d/dynevent/test_duplicates.tc
-+++ b/tools/testing/selftests/ftrace/test.d/dynevent/test_duplicates.tc
-@@ -1,7 +1,7 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- # description: Generic dynamic event - check if duplicate events are caught
--# requires: dynamic_events "e[:[<group>/][<event>]] <attached-group>.<attached-event> [<args>]":README
-+# requires: dynamic_events "e[:[<group>/][<event>]] <attached-group>.<attached-event> [<args>]":README events/syscalls/sys_enter_openat
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -175,6 +175,7 @@ static int adi_axi_adc_probe(struct plat
+ 	struct adi_axi_adc_state *st;
+ 	void __iomem *base;
+ 	unsigned int ver;
++	struct clk *clk;
+ 	int ret;
  
- echo 0 > events/enable
+ 	st = devm_kzalloc(&pdev->dev, sizeof(*st), GFP_KERNEL);
+@@ -195,6 +196,10 @@ static int adi_axi_adc_probe(struct plat
+ 	if (!expected_ver)
+ 		return -ENODEV;
  
--- 
-2.43.0
-
++	clk = devm_clk_get_enabled(&pdev->dev, NULL);
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
++
+ 	/*
+ 	 * Force disable the core. Up to the frontend to enable us. And we can
+ 	 * still read/write registers...
 
 
 
