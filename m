@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D3E90EDB7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1652890EC8A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7BC11C20AFA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:21:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D4921C211A7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A6714D422;
-	Wed, 19 Jun 2024 13:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4178A143C65;
+	Wed, 19 Jun 2024 13:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbrvIqEt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsTis+mV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AE214C5B8;
-	Wed, 19 Jun 2024 13:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34F712FB31;
+	Wed, 19 Jun 2024 13:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803278; cv=none; b=uu8ZygwPSnEbsLrBRCpFhPvWsOlxDQv1fJi5u6GCsdd/jChytEh1fUQ/kojN0vHbxW/lQdYzaaKTp9FZBUF0728eFIoXdkLv+oyEvHXwSbWR7sNqGuDWs8HzuHXtXdpl90jHNLlJ1XOGfNzXRkPiKgu3l33dNYRihiy8CoQi6Sc=
+	t=1718802512; cv=none; b=cVxmt7tsQUd+1S2T6pEvNldXdvxWiVQL1zcCNKLUXNDWHEx07MY26orWP5oUd1zA8TBsux/JjQz3/OMzjeLAXLEWnAK7L7+LN1xqzxQ8jAhXBpPV0k16B/K8gYKU3d7v9PPKHrtLOW7uKXZL8VId3yXunneUypS3k7U0p+B5l+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803278; c=relaxed/simple;
-	bh=fmT5AtlN1JO0+48DGXsJXNyyTwTOcSrAS3gF25dwG/A=;
+	s=arc-20240116; t=1718802512; c=relaxed/simple;
+	bh=vhexItMjPauN3p9UbqX2rCa6QjezmjMfs2DmXbZgGOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bkvkcqj/07pu8gIkDjsNYC9zU7+5x5IeGOj6SPJN8/SqGOSBWutsVisLvpBFQAXmkj9VHbvYGkCH7h6vPXdjd62mQelH4iu0Yf5CkzrS7sMtV/iXHC5HCQWFutgYtN9pBdodgxhdSVtdocJCN29wGYRHeaUTukf2+rx+3HlefVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbrvIqEt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1415BC2BBFC;
-	Wed, 19 Jun 2024 13:21:17 +0000 (UTC)
+	 MIME-Version; b=sWfwDhp5Nrx7ys4XkmIBe20aep0bVI2C6sNNZH7x7XK2yLYf6NBBhJLdJVpspQY4WAgpbKMEBywgg86qMQyVYnlVEut0rk64Qslpy9RvI1a3rc/riBHaf6FRussVfXbqRW4W/4g0f17pEpHCpQ7QbG1mAAzu75QcK1fGipnGhSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsTis+mV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC6AC2BBFC;
+	Wed, 19 Jun 2024 13:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803278;
-	bh=fmT5AtlN1JO0+48DGXsJXNyyTwTOcSrAS3gF25dwG/A=;
+	s=korg; t=1718802511;
+	bh=vhexItMjPauN3p9UbqX2rCa6QjezmjMfs2DmXbZgGOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pbrvIqEtCC0zvXy+r5J6u8MaHT0CuscvC3avUky1GdVXynODjf6t+EVy+1P0sdPHm
-	 cww2fzC57y8Cy3gPe6LJ6NhqAK7xWaEiok8udKyrV76TjSRivC9C3ZPeY8ujxol08X
-	 YvEkM9U1nYv64iERtOMIJDMOrQGRSKc2aDw7Nhcw=
+	b=CsTis+mVLcodL7fE8xUBKDCxBrfGWSu9Xv46NlLSCK7HowxL1+2FoSPdf8COF9Hur
+	 vRR2gjATf/2+RgRJwC/TS4W7RQXlNdRjum/SetToVivpiNqGw2mwXolHAmUSgASX4u
+	 JR3U3jH6u9L+0Wwi74MNKB2aaNMf9lYu0941wx8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Riana Tauro <riana.tauro@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 182/281] drm/xe: move disable_c6 call
+	David Kaplan <david.kaplan@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	stable@kernel.org
+Subject: [PATCH 6.6 190/267] x86/kexec: Fix bug with call depth tracking
 Date: Wed, 19 Jun 2024 14:55:41 +0200
-Message-ID: <20240619125616.839718122@linuxfoundation.org>
+Message-ID: <20240619125613.632274682@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Riana Tauro <riana.tauro@intel.com>
+From: David Kaplan <david.kaplan@amd.com>
 
-[ Upstream commit 2470b141bfae2b9695b5b6823e3b978b22d33dde ]
+commit 93c1800b3799f17375989b0daf76497dd3e80922 upstream.
 
-disable c6 called in guc_pc_fini_hw is unreachable.
+The call to cc_platform_has() triggers a fault and system crash if call depth
+tracking is active because the GS segment has been reset by load_segments() and
+GS_BASE is now 0 but call depth tracking uses per-CPU variables to operate.
 
-GuC PC init returns earlier if skip_guc_pc is true and never
-registers the finish call thus making disable_c6 unreachable.
+Call cc_platform_has() earlier in the function when GS is still valid.
 
-move this call to gt idle.
+  [ bp: Massage. ]
 
-v2: rebase
-v3: add fixes tag (Himal)
-
-Fixes: 975e4a3795d4 ("drm/xe: Manually setup C6 when skip_guc_pc is set")
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240606100842.956072-3-riana.tauro@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 6800e63cf97bae62bca56d8e691544540d945f53)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5d8213864ade ("x86/retbleed: Add SKL return thunk")
+Signed-off-by: David Kaplan <david.kaplan@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/20240603083036.637-1-bp@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_gt_idle.c | 7 +++++++
- drivers/gpu/drm/xe/xe_guc_pc.c  | 6 ------
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ arch/x86/kernel/machine_kexec_64.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_idle.c b/drivers/gpu/drm/xe/xe_gt_idle.c
-index 1521b3d9933c7..e7a39ad7adba0 100644
---- a/drivers/gpu/drm/xe/xe_gt_idle.c
-+++ b/drivers/gpu/drm/xe/xe_gt_idle.c
-@@ -126,6 +126,13 @@ static const struct attribute *gt_idle_attrs[] = {
- static void gt_idle_sysfs_fini(struct drm_device *drm, void *arg)
+--- a/arch/x86/kernel/machine_kexec_64.c
++++ b/arch/x86/kernel/machine_kexec_64.c
+@@ -298,8 +298,15 @@ void machine_kexec_cleanup(struct kimage
+ void machine_kexec(struct kimage *image)
  {
- 	struct kobject *kobj = arg;
-+	struct xe_gt *gt = kobj_to_gt(kobj->parent);
+ 	unsigned long page_list[PAGES_NR];
+-	void *control_page;
++	unsigned int host_mem_enc_active;
+ 	int save_ftrace_enabled;
++	void *control_page;
 +
-+	if (gt_to_xe(gt)->info.skip_guc_pc) {
-+		XE_WARN_ON(xe_force_wake_get(gt_to_fw(gt), XE_FW_GT));
-+		xe_gt_idle_disable_c6(gt);
-+		xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
-+	}
++	/*
++	 * This must be done before load_segments() since if call depth tracking
++	 * is used then GS must be valid to make any function calls.
++	 */
++	host_mem_enc_active = cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT);
  
- 	sysfs_remove_files(kobj, gt_idle_attrs);
- 	kobject_put(kobj);
-diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
-index f4b031b8d9deb..dd9d65f923da7 100644
---- a/drivers/gpu/drm/xe/xe_guc_pc.c
-+++ b/drivers/gpu/drm/xe/xe_guc_pc.c
-@@ -920,12 +920,6 @@ int xe_guc_pc_stop(struct xe_guc_pc *pc)
- static void xe_guc_pc_fini(struct drm_device *drm, void *arg)
- {
- 	struct xe_guc_pc *pc = arg;
--	struct xe_device *xe = pc_to_xe(pc);
--
--	if (xe->info.skip_guc_pc) {
--		xe_gt_idle_disable_c6(pc_to_gt(pc));
--		return;
--	}
+ #ifdef CONFIG_KEXEC_JUMP
+ 	if (image->preserve_context)
+@@ -361,7 +368,7 @@ void machine_kexec(struct kimage *image)
+ 				       (unsigned long)page_list,
+ 				       image->start,
+ 				       image->preserve_context,
+-				       cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT));
++				       host_mem_enc_active);
  
- 	xe_force_wake_get(gt_to_fw(pc_to_gt(pc)), XE_FORCEWAKE_ALL);
- 	XE_WARN_ON(xe_guc_pc_gucrc_disable(pc));
--- 
-2.43.0
-
+ #ifdef CONFIG_KEXEC_JUMP
+ 	if (image->preserve_context)
 
 
 
