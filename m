@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-54075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725C990EC8C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB50E90EDBC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 097BB2816EC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C10971C2260D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863B5145324;
-	Wed, 19 Jun 2024 13:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F244414E2F5;
+	Wed, 19 Jun 2024 13:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJudeL7B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okjmOXTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4597D13AA40;
-	Wed, 19 Jun 2024 13:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16E014A0A7;
+	Wed, 19 Jun 2024 13:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802518; cv=none; b=hLvEcbMTdhvIp5eMnEDkjRl4yP2jTMTd+xlIIeUA9EiTwGG/+e6CpgBQ9tuxgVimmGENkgzUDDudmhr0KgHffijrcZUopx2PtELudvi9ILf/vXGz50fUzuMpSlXwOIq9VwNcVl0iNbFPCmn3friM1R2qlU2zL8wf2MQ63ZiWgn8=
+	t=1718803285; cv=none; b=B0bYk3YnkvveUTE3O3YBCSknnx4/KtRezLYeqkfABaJ8Bmc/E0hHoh4CkfkT+QA6EdFg7tAhroGhgq06hUlQVwdT0+KR7sSWJb+BqRz2MFhK5cNuwodS9yByUp0wHIYkbXNmII4m/xbanwODBFtK2sgjxxpghqbARNIizXdIGP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802518; c=relaxed/simple;
-	bh=ShQaeq1dQK++eEm83fJDMTLXC74Dhpqy/lyWpQY8Fus=;
+	s=arc-20240116; t=1718803285; c=relaxed/simple;
+	bh=8GCv7lL6WQtX1KnDs7M1pMeWcj5brAJAF0dmWYAN3Bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TP4fnoXZJxkDwLeg2hLKn8jhvntaQGYwjlyaR5KfVTX6tL+Ruuokc5XbXB+9jTfm0RhfLDV5IAbfW2PlHQqo4rig9yX6f46bqCMppphZpyQuY7VvvPPNPmEn9XEq7mzQSooGFM1FYJz82t8Oj5dN5rsMI3HfrtizmlmqYhXCy0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJudeL7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570E9C2BBFC;
-	Wed, 19 Jun 2024 13:08:37 +0000 (UTC)
+	 MIME-Version; b=IzsF9edMjgR9zvdFIFpbTT5NSFrgrOpC3ZjmszUNY09vrYGvWBGHKrgLF2KmFoxNKEhTA/JuTdtW3Krknt5mGPdirKL4eFQPBVToJww9xRQnqkM6X9XQWcDgrYCwVvMOx+ZjdFwCQAmWymBiczmgy+fy2On9jpOs6T1JQC8Nae8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okjmOXTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7C8C2BBFC;
+	Wed, 19 Jun 2024 13:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802517;
-	bh=ShQaeq1dQK++eEm83fJDMTLXC74Dhpqy/lyWpQY8Fus=;
+	s=korg; t=1718803284;
+	bh=8GCv7lL6WQtX1KnDs7M1pMeWcj5brAJAF0dmWYAN3Bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJudeL7BAN1y6kQSQ6seg8EbfbZyqaqPAIiFB7W3wcTcx9Y8qdbOxHsMIVjfcf6w3
-	 BfCJgoZU83v01xPkhUyeKaqNoM78oPNsBR+ZkJd9yIgUsUITIat0w12qXGlTT4TdPi
-	 31bsMUOw5LGFfO6AKp1TycfmecrcLc2W3UQzy1SM=
+	b=okjmOXTUkZrZyBQCzEEdXmMnn2ZapEp62KN7K91IkgmSAJ6f8cPAq4CsTLAUbf9vI
+	 YZrKCfZxMlipSF6ljiGAHs8zREphbIjGNbU0i/7SmEhI7QfPUONpF6yb5Qydx95KZJ
+	 bk8jk8uW6KZGztNngwF2cW4QyPAwo0ysTm92TrwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haifeng Xu <haifeng.xu@shopee.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 6.6 192/267] perf/core: Fix missing wakeup when waiting for context reference
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 184/281] bnxt_en: Cap the size of HWRM_PORT_PHY_QCFG forwarded response
 Date: Wed, 19 Jun 2024 14:55:43 +0200
-Message-ID: <20240619125613.707401258@linuxfoundation.org>
+Message-ID: <20240619125616.916622623@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +64,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haifeng Xu <haifeng.xu@shopee.com>
+From: Michael Chan <michael.chan@broadcom.com>
 
-commit 74751ef5c1912ebd3e65c3b65f45587e05ce5d36 upstream.
+[ Upstream commit 7d9df38c9c037ab84502ce7eeae9f1e1e7e72603 ]
 
-In our production environment, we found many hung tasks which are
-blocked for more than 18 hours. Their call traces are like this:
+Firmware interface 1.10.2.118 has increased the size of
+HWRM_PORT_PHY_QCFG response beyond the maximum size that can be
+forwarded.  When the VF's link state is not the default auto state,
+the PF will need to forward the response back to the VF to indicate
+the forced state.  This regression may cause the VF to fail to
+initialize.
 
-[346278.191038] __schedule+0x2d8/0x890
-[346278.191046] schedule+0x4e/0xb0
-[346278.191049] perf_event_free_task+0x220/0x270
-[346278.191056] ? init_wait_var_entry+0x50/0x50
-[346278.191060] copy_process+0x663/0x18d0
-[346278.191068] kernel_clone+0x9d/0x3d0
-[346278.191072] __do_sys_clone+0x5d/0x80
-[346278.191076] __x64_sys_clone+0x25/0x30
-[346278.191079] do_syscall_64+0x5c/0xc0
-[346278.191083] ? syscall_exit_to_user_mode+0x27/0x50
-[346278.191086] ? do_syscall_64+0x69/0xc0
-[346278.191088] ? irqentry_exit_to_user_mode+0x9/0x20
-[346278.191092] ? irqentry_exit+0x19/0x30
-[346278.191095] ? exc_page_fault+0x89/0x160
-[346278.191097] ? asm_exc_page_fault+0x8/0x30
-[346278.191102] entry_SYSCALL_64_after_hwframe+0x44/0xae
+Fix it by capping the HWRM_PORT_PHY_QCFG response to the maximum
+96 bytes.  The SPEEDS2_SUPPORTED flag needs to be cleared because the
+new speeds2 fields are beyond the legacy structure.  Also modify
+bnxt_hwrm_fwd_resp() to print a warning if the message size exceeds 96
+bytes to make this failure more obvious.
 
-The task was waiting for the refcount become to 1, but from the vmcore,
-we found the refcount has already been 1. It seems that the task didn't
-get woken up by perf_event_release_kernel() and got stuck forever. The
-below scenario may cause the problem.
-
-Thread A					Thread B
-...						...
-perf_event_free_task				perf_event_release_kernel
-						   ...
-						   acquire event->child_mutex
-						   ...
-						   get_ctx
-   ...						   release event->child_mutex
-   acquire ctx->mutex
-   ...
-   perf_free_event (acquire/release event->child_mutex)
-   ...
-   release ctx->mutex
-   wait_var_event
-						   acquire ctx->mutex
-						   acquire event->child_mutex
-						   # move existing events to free_list
-						   release event->child_mutex
-						   release ctx->mutex
-						   put_ctx
-...						...
-
-In this case, all events of the ctx have been freed, so we couldn't
-find the ctx in free_list and Thread A will miss the wakeup. It's thus
-necessary to add a wakeup after dropping the reference.
-
-Fixes: 1cf8dfe8a661 ("perf/core: Fix race between close() and fork()")
-Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240513103948.33570-1-haifeng.xu@shopee.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 84a911db8305 ("bnxt_en: Update firmware interface to 1.10.2.118")
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/20240612231736.57823-1-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     | 51 +++++++++++++++++++
+ .../net/ethernet/broadcom/bnxt/bnxt_sriov.c   | 12 ++++-
+ 2 files changed, 61 insertions(+), 2 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5353,6 +5353,7 @@ int perf_event_release_kernel(struct per
- again:
- 	mutex_lock(&event->child_mutex);
- 	list_for_each_entry(child, &event->child_list, child_list) {
-+		void *var = NULL;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index dd849e715c9ba..c46abcccfca10 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -1419,6 +1419,57 @@ struct bnxt_l2_filter {
+ 	atomic_t		refcnt;
+ };
  
- 		/*
- 		 * Cannot change, child events are not migrated, see the
-@@ -5393,11 +5394,23 @@ again:
- 			 * this can't be the last reference.
- 			 */
- 			put_event(event);
-+		} else {
-+			var = &ctx->refcount;
- 		}
- 
- 		mutex_unlock(&event->child_mutex);
- 		mutex_unlock(&ctx->mutex);
- 		put_ctx(ctx);
++/* Compat version of hwrm_port_phy_qcfg_output capped at 96 bytes.  The
++ * first 95 bytes are identical to hwrm_port_phy_qcfg_output in bnxt_hsi.h.
++ * The last valid byte in the compat version is different.
++ */
++struct hwrm_port_phy_qcfg_output_compat {
++	__le16	error_code;
++	__le16	req_type;
++	__le16	seq_id;
++	__le16	resp_len;
++	u8	link;
++	u8	active_fec_signal_mode;
++	__le16	link_speed;
++	u8	duplex_cfg;
++	u8	pause;
++	__le16	support_speeds;
++	__le16	force_link_speed;
++	u8	auto_mode;
++	u8	auto_pause;
++	__le16	auto_link_speed;
++	__le16	auto_link_speed_mask;
++	u8	wirespeed;
++	u8	lpbk;
++	u8	force_pause;
++	u8	module_status;
++	__le32	preemphasis;
++	u8	phy_maj;
++	u8	phy_min;
++	u8	phy_bld;
++	u8	phy_type;
++	u8	media_type;
++	u8	xcvr_pkg_type;
++	u8	eee_config_phy_addr;
++	u8	parallel_detect;
++	__le16	link_partner_adv_speeds;
++	u8	link_partner_adv_auto_mode;
++	u8	link_partner_adv_pause;
++	__le16	adv_eee_link_speed_mask;
++	__le16	link_partner_adv_eee_link_speed_mask;
++	__le32	xcvr_identifier_type_tx_lpi_timer;
++	__le16	fec_cfg;
++	u8	duplex_state;
++	u8	option_flags;
++	char	phy_vendor_name[16];
++	char	phy_vendor_partnumber[16];
++	__le16	support_pam4_speeds;
++	__le16	force_pam4_link_speed;
++	__le16	auto_pam4_link_speed_mask;
++	u8	link_partner_pam4_adv_speeds;
++	u8	valid;
++};
 +
-+		if (var) {
-+			/*
-+			 * If perf_event_free_task() has deleted all events from the
-+			 * ctx while the child_mutex got released above, make sure to
-+			 * notify about the preceding put_ctx().
-+			 */
-+			smp_mb(); /* pairs with wait_var_event() */
-+			wake_up_var(var);
-+		}
- 		goto again;
- 	}
- 	mutex_unlock(&event->child_mutex);
+ struct bnxt_link_info {
+ 	u8			phy_type;
+ 	u8			media_type;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
+index 175192ebaa773..22898d3d088b0 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
+@@ -950,8 +950,11 @@ static int bnxt_hwrm_fwd_resp(struct bnxt *bp, struct bnxt_vf_info *vf,
+ 	struct hwrm_fwd_resp_input *req;
+ 	int rc;
+ 
+-	if (BNXT_FWD_RESP_SIZE_ERR(msg_size))
++	if (BNXT_FWD_RESP_SIZE_ERR(msg_size)) {
++		netdev_warn_once(bp->dev, "HWRM fwd response too big (%d bytes)\n",
++				 msg_size);
+ 		return -EINVAL;
++	}
+ 
+ 	rc = hwrm_req_init(bp, req, HWRM_FWD_RESP);
+ 	if (!rc) {
+@@ -1085,7 +1088,7 @@ static int bnxt_vf_set_link(struct bnxt *bp, struct bnxt_vf_info *vf)
+ 		rc = bnxt_hwrm_exec_fwd_resp(
+ 			bp, vf, sizeof(struct hwrm_port_phy_qcfg_input));
+ 	} else {
+-		struct hwrm_port_phy_qcfg_output phy_qcfg_resp = {0};
++		struct hwrm_port_phy_qcfg_output_compat phy_qcfg_resp = {};
+ 		struct hwrm_port_phy_qcfg_input *phy_qcfg_req;
+ 
+ 		phy_qcfg_req =
+@@ -1096,6 +1099,11 @@ static int bnxt_vf_set_link(struct bnxt *bp, struct bnxt_vf_info *vf)
+ 		mutex_unlock(&bp->link_lock);
+ 		phy_qcfg_resp.resp_len = cpu_to_le16(sizeof(phy_qcfg_resp));
+ 		phy_qcfg_resp.seq_id = phy_qcfg_req->seq_id;
++		/* New SPEEDS2 fields are beyond the legacy structure, so
++		 * clear the SPEEDS2_SUPPORTED flag.
++		 */
++		phy_qcfg_resp.option_flags &=
++			~PORT_PHY_QCAPS_RESP_FLAGS2_SPEEDS2_SUPPORTED;
+ 		phy_qcfg_resp.valid = 1;
+ 
+ 		if (vf->flags & BNXT_VF_LINK_UP) {
+-- 
+2.43.0
+
 
 
 
