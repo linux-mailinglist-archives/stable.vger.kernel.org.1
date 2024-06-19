@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-54323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7A6F90EDA8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DBB90EC79
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88FA72817AC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BADAC2832C5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9457D144D3E;
-	Wed, 19 Jun 2024 13:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8D2143C58;
+	Wed, 19 Jun 2024 13:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gEr2uFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5sSkXbY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AC682495;
-	Wed, 19 Jun 2024 13:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE13712FB31;
+	Wed, 19 Jun 2024 13:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803240; cv=none; b=tnCMK10l4V5ZStB9HSFZS18xj3qEVUxOO/AW+Jh18WOIILeGKxv+Jj8p29FJ8Yh+IEbcCfrEqiisgpuM1Iv9EFMLaoikqHgPWHtzhpNFHbg17EMqukV/Y3MhhZ3cm07D57LyAz+KItp7lAq/JxfF5ByTaOsEp39JKU8dRUZ8xe0=
+	t=1718802473; cv=none; b=C3u1x9e++AQoK9agEkLfCc8ZGJGSc1vFL+0qO13RWUFzAgYMzjbp64heLIVzcUdGHaUybEx54TyC52xmU6GbLztckR2DCQIJCAYv5U5QLxoxUR5wF9nlt8FFPfZE44kebOaR9IZ8+SU3VYQZaUuiYGO992QQeuHKUfeBevtcJIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803240; c=relaxed/simple;
-	bh=6MmP+kj/w32nREyDCThgsOnLpNss7LHdFNXcXJl8zC8=;
+	s=arc-20240116; t=1718802473; c=relaxed/simple;
+	bh=3XiINLcZ8Htzgqav9fCunOWubog8Ca/eO82bwSl2Ep0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AnbTRyW5aotq43K1/N6JDcTatnfZyeyoN8e1+/3TzH7qH9gbE5Hhi4bv2QQXBhNNyjbm9xVvajXDymS+Ptn0yu4U0s3mSLxmEW+s7UjsjbZAN+/iz6/r2XEGHt+dN1/GwLX14DhCiJBMh7/6uGC5TFykU33/ukIWC3lBxJ9YKnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gEr2uFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0C1C2BBFC;
-	Wed, 19 Jun 2024 13:20:39 +0000 (UTC)
+	 MIME-Version; b=T2TzIdXXJXaDes9zKFAjnd0uU5ug4AQb4tftJGMif3EBDGqG606vWoGNIWmp9+fzNmcDK74zRXsEjeqcUYZExER6kqjgkwVXgn36O6stHrrjFWtkRIfui3c+A6ND9FDIqmXs1DHSvgAx4KHXCfNGhyEtFIzokIntOWt7+qa2doo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5sSkXbY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547C4C2BBFC;
+	Wed, 19 Jun 2024 13:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803240;
-	bh=6MmP+kj/w32nREyDCThgsOnLpNss7LHdFNXcXJl8zC8=;
+	s=korg; t=1718802473;
+	bh=3XiINLcZ8Htzgqav9fCunOWubog8Ca/eO82bwSl2Ep0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2gEr2uFvBN120edHLU3upNpfmem9y+X3P00maLEj8FtMBvmh6cPFU1wbcjjUYFD5H
-	 jihwwnwHrCUqwHqyjquBMsjaTMZns9jJ1qEGr+nmv+24fhwhn4o1G/uUlNttmMjt+8
-	 gDFM+DDm0bO4VjnLf+9+GcdStAr0fSHIgP8lRKOY=
+	b=n5sSkXbYUO/S7OPVO3JB82wZ7LjKGIB9taYSuQGp46Oo3r2QIrZWhB+272D6C1QYE
+	 k4zXk4VmwzZ1+Oa1DDblbDkUdf0vtsoPiN63HYRczzx9beqaKE4J0hB756eXyUl9g6
+	 3UTQzH5eGE5YM22WlMUE6rjXTlrXuncyoVEhGGh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com,
-	Ashish Sangwan <a.sangwan@samsung.com>,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Subject: [PATCH 6.9 200/281] drivers: core: synchronize really_probe() and dev_uevent()
+	Apurva Nandan <a-nandan@ti.com>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.6 208/267] remoteproc: k3-r5: Wait for core0 power-up before powering up core1
 Date: Wed, 19 Jun 2024 14:55:59 +0200
-Message-ID: <20240619125617.647835488@linuxfoundation.org>
+Message-ID: <20240619125614.312612379@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dirk Behme <dirk.behme@de.bosch.com>
+From: Apurva Nandan <a-nandan@ti.com>
 
-commit c0a40097f0bc81deafc15f9195d1fb54595cd6d0 upstream.
+commit 61f6f68447aba08aeaa97593af3a7d85a114891f upstream.
 
-Synchronize the dev->driver usage in really_probe() and dev_uevent().
-These can run in different threads, what can result in the following
-race condition for dev->driver uninitialization:
+PSC controller has a limitation that it can only power-up the second core
+when the first core is in ON state. Power-state for core0 should be equal
+to or higher than core1, else the kernel is seen hanging during rproc
+loading.
 
-Thread #1:
-==========
+Make the powering up of cores sequential, by waiting for the current core
+to power-up before proceeding to the next core, with a timeout of 2sec.
+Add a wait queue event in k3_r5_cluster_rproc_init call, that will wait
+for the current core to be released from reset before proceeding with the
+next core.
 
-really_probe() {
-...
-probe_failed:
-...
-device_unbind_cleanup(dev) {
-    ...
-    dev->driver = NULL;   // <= Failed probe sets dev->driver to NULL
-    ...
-    }
-...
-}
-
-Thread #2:
-==========
-
-dev_uevent() {
-...
-if (dev->driver)
-      // If dev->driver is NULLed from really_probe() from here on,
-      // after above check, the system crashes
-      add_uevent_var(env, "DRIVER=%s", dev->driver->name);
-...
-}
-
-really_probe() holds the lock, already. So nothing needs to be done
-there. dev_uevent() is called with lock held, often, too. But not
-always. What implies that we can't add any locking in dev_uevent()
-itself. So fix this race by adding the lock to the non-protected
-path. This is the path where above race is observed:
-
- dev_uevent+0x235/0x380
- uevent_show+0x10c/0x1f0  <= Add lock here
- dev_attr_show+0x3a/0xa0
- sysfs_kf_seq_show+0x17c/0x250
- kernfs_seq_show+0x7c/0x90
- seq_read_iter+0x2d7/0x940
- kernfs_fop_read_iter+0xc6/0x310
- vfs_read+0x5bc/0x6b0
- ksys_read+0xeb/0x1b0
- __x64_sys_read+0x42/0x50
- x64_sys_call+0x27ad/0x2d30
- do_syscall_64+0xcd/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Similar cases are reported by syzkaller in
-
-https://syzkaller.appspot.com/bug?extid=ffa8143439596313a85a
-
-But these are regarding the *initialization* of dev->driver
-
-dev->driver = drv;
-
-As this switches dev->driver to non-NULL these reports can be considered
-to be false-positives (which should be "fixed" by this commit, as well,
-though).
-
-The same issue was reported and tried to be fixed back in 2015 in
-
-https://lore.kernel.org/lkml/1421259054-2574-1-git-send-email-a.sangwan@samsung.com/
-
-already.
-
-Fixes: 239378f16aa1 ("Driver core: add uevent vars for devices of a class")
-Cc: stable <stable@kernel.org>
-Cc: syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com
-Cc: Ashish Sangwan <a.sangwan@samsung.com>
-Cc: Namjae Jeon <namjae.jeon@samsung.com>
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
-Link: https://lore.kernel.org/r/20240513050634.3964461-1-dirk.behme@de.bosch.com
+Fixes: 6dedbd1d5443 ("remoteproc: k3-r5: Add a remoteproc driver for R5F subsystem")
+Signed-off-by: Apurva Nandan <a-nandan@ti.com>
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240430105307.1190615-2-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c |   33 +++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2738,8 +2738,11 @@ static ssize_t uevent_show(struct device
- 	if (!env)
- 		return -ENOMEM;
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -103,12 +103,14 @@ struct k3_r5_soc_data {
+  * @dev: cached device pointer
+  * @mode: Mode to configure the Cluster - Split or LockStep
+  * @cores: list of R5 cores within the cluster
++ * @core_transition: wait queue to sync core state changes
+  * @soc_data: SoC-specific feature data for a R5FSS
+  */
+ struct k3_r5_cluster {
+ 	struct device *dev;
+ 	enum cluster_mode mode;
+ 	struct list_head cores;
++	wait_queue_head_t core_transition;
+ 	const struct k3_r5_soc_data *soc_data;
+ };
  
-+	/* Synchronize with really_probe() */
-+	device_lock(dev);
- 	/* let the kset specific function add its keys */
- 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
-+	device_unlock(dev);
- 	if (retval)
- 		goto out;
+@@ -128,6 +130,7 @@ struct k3_r5_cluster {
+  * @atcm_enable: flag to control ATCM enablement
+  * @btcm_enable: flag to control BTCM enablement
+  * @loczrama: flag to dictate which TCM is at device address 0x0
++ * @released_from_reset: flag to signal when core is out of reset
+  */
+ struct k3_r5_core {
+ 	struct list_head elem;
+@@ -144,6 +147,7 @@ struct k3_r5_core {
+ 	u32 atcm_enable;
+ 	u32 btcm_enable;
+ 	u32 loczrama;
++	bool released_from_reset;
+ };
  
+ /**
+@@ -460,6 +464,8 @@ static int k3_r5_rproc_prepare(struct rp
+ 			ret);
+ 		return ret;
+ 	}
++	core->released_from_reset = true;
++	wake_up_interruptible(&cluster->core_transition);
+ 
+ 	/*
+ 	 * Newer IP revisions like on J7200 SoCs support h/w auto-initialization
+@@ -1140,6 +1146,12 @@ static int k3_r5_rproc_configure_mode(st
+ 		return ret;
+ 	}
+ 
++	/*
++	 * Skip the waiting mechanism for sequential power-on of cores if the
++	 * core has already been booted by another entity.
++	 */
++	core->released_from_reset = c_state;
++
+ 	ret = ti_sci_proc_get_status(core->tsp, &boot_vec, &cfg, &ctrl,
+ 				     &stat);
+ 	if (ret < 0) {
+@@ -1280,6 +1292,26 @@ init_rmem:
+ 		    cluster->mode == CLUSTER_MODE_SINGLECPU ||
+ 		    cluster->mode == CLUSTER_MODE_SINGLECORE)
+ 			break;
++
++		/*
++		 * R5 cores require to be powered on sequentially, core0
++		 * should be in higher power state than core1 in a cluster
++		 * So, wait for current core to power up before proceeding
++		 * to next core and put timeout of 2sec for each core.
++		 *
++		 * This waiting mechanism is necessary because
++		 * rproc_auto_boot_callback() for core1 can be called before
++		 * core0 due to thread execution order.
++		 */
++		ret = wait_event_interruptible_timeout(cluster->core_transition,
++						       core->released_from_reset,
++						       msecs_to_jiffies(2000));
++		if (ret <= 0) {
++			dev_err(dev,
++				"Timed out waiting for %s core to power up!\n",
++				rproc->name);
++			return ret;
++		}
+ 	}
+ 
+ 	return 0;
+@@ -1709,6 +1741,7 @@ static int k3_r5_probe(struct platform_d
+ 	cluster->dev = dev;
+ 	cluster->soc_data = data;
+ 	INIT_LIST_HEAD(&cluster->cores);
++	init_waitqueue_head(&cluster->core_transition);
+ 
+ 	ret = of_property_read_u32(np, "ti,cluster-mode", &cluster->mode);
+ 	if (ret < 0 && ret != -EINVAL) {
 
 
 
