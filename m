@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCE490EC4B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ABD990ED7A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8109E1F2142D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3130B239CA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C62143C4E;
-	Wed, 19 Jun 2024 13:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C04144D3E;
+	Wed, 19 Jun 2024 13:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWtudJga"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kg+GU3Hh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4591132129;
-	Wed, 19 Jun 2024 13:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B8182495;
+	Wed, 19 Jun 2024 13:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802349; cv=none; b=LFcGlswiFBJKd0A0jsBoGJsCgH2jQ82UxgxzQR+LHI5i3wz/4YEG6j3L6pnrhmQLmPXH9ixX+RAZIlwKQDRPLo0Q4yiARaKbYyZHlX/XaarGORX0PSLX7eqaGBAk/isx3Glqg2BXeigJtmCYeHO2u1ZkSSktxzY3MQljcnTYLjU=
+	t=1718803117; cv=none; b=pqNHca2g2kWW8D9fkJ7tYkzV2nZr3jwG0P15mnnM+tDwOBbxl2TlwrC22TvfpNlQzuvaMegB3QHmrcXNJqFZj+MeAaAieY66azr3FjqsoGVqB4avDy60hfA0UGr1zHqhYmeJOyZYveI2REthywjBo0EfNwJgNPGub1TQpKc2jS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802349; c=relaxed/simple;
-	bh=60nRsPO0Ao1RZ+d9P2oA2p0hJ0UJdVdgdZA+3sUi2As=;
+	s=arc-20240116; t=1718803117; c=relaxed/simple;
+	bh=/7IvpwcKgRdOFcc6Cu9C4gc/3mXcbHaBXAo/ECjX1vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmTS+ne23xgaBQQLhIt/9iY9RO8C6O0fj6Ns/ZJt58C4aPHw+x8zPhWUhhdZLvkxrdt+3OyDNOplMUTjXLoqUgO/U3kGrkCw+ggv9O7gdotSYkD33WjrMCPx5NS9/oqWwqsKjZIMiqtri9l7KLGVv5cZh+tfh/1H9/b6PjK7ZCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWtudJga; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B154C2BBFC;
-	Wed, 19 Jun 2024 13:05:49 +0000 (UTC)
+	 MIME-Version; b=cyDMvWmNID6XkC2lsTd16yg1nofXCNicEUCoaXI36YP+9Pl0EBMk6VpSZ0rCTBvH4jlF0GCz2CWRMsdRadBScna1f4E0mB6oVMCyDBL3G8MH5aXYtzhUMgeOO3KRR91Lcr9/2ZUKL47PhrW/vCup/l6sqMZoM/ZV6mQLWcFdiaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kg+GU3Hh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86ED7C4AF1D;
+	Wed, 19 Jun 2024 13:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802349;
-	bh=60nRsPO0Ao1RZ+d9P2oA2p0hJ0UJdVdgdZA+3sUi2As=;
+	s=korg; t=1718803116;
+	bh=/7IvpwcKgRdOFcc6Cu9C4gc/3mXcbHaBXAo/ECjX1vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWtudJga7CQ+aG2fWS6oV4syarkXcJsUPswNXoEJSoBZkU2WXyzOIogBMXdPur9I+
-	 wzBdNVDKT5drAVjzJ5HXnSeG4qnIV1a2xu8Mkn2+4zfA3w0M99I0tZxJLNANUr9EMY
-	 TPb2eXlNwFpScY8DTK1+ooQpjIegEk7dzAHErXGw=
+	b=kg+GU3HhuCqSLysPo7hCAEB46LsxHoMnrF+c5fingRiCgzZpGcaF9rSkSfvSkvDe1
+	 7YfiMGnxngYeU2l7Q4wkwYPRT/OokmIwobHKH991ljNaa2pstaferBx1fWtJNlZBN1
+	 VAh4gZmWjsnImxp99OobWPzOwUcqYf3YaVGNeiCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9bbe2de1bc9d470eb5fe@syzkaller.appspotmail.com,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/267] net: bridge: mst: pass vlan group directly to br_mst_vlan_set_state
+Subject: [PATCH 6.9 159/281] Bluetooth: hci_sync: Fix not using correct handle
 Date: Wed, 19 Jun 2024 14:55:18 +0200
-Message-ID: <20240619125612.752741141@linuxfoundation.org>
+Message-ID: <20240619125615.958516452@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 36c92936e868601fa1f43da6758cf55805043509 ]
+[ Upstream commit 86fbd9f63a6b42b8f158361334f5a25762aea358 ]
 
-Pass the already obtained vlan group pointer to br_mst_vlan_set_state()
-instead of dereferencing it again. Each caller has already correctly
-dereferenced it for their context. This change is required for the
-following suspicious RCU dereference fix. No functional changes
-intended.
+When setting up an advertisement the code shall always attempt to use
+the handle set by the instance since it may not be equal to the instance
+ID.
 
-Fixes: 3a7c1661ae13 ("net: bridge: mst: fix vlan use-after-free")
-Reported-by: syzbot+9bbe2de1bc9d470eb5fe@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9bbe2de1bc9d470eb5fe
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20240609103654.914987-2-razor@blackwall.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e77f43d531af ("Bluetooth: hci_core: Fix not handling hdev->le_num_of_adv_sets=1")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_mst.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ net/bluetooth/hci_sync.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
-index 3c66141d34d62..1de72816b0fb2 100644
---- a/net/bridge/br_mst.c
-+++ b/net/bridge/br_mst.c
-@@ -73,11 +73,10 @@ int br_mst_get_state(const struct net_device *dev, u16 msti, u8 *state)
- }
- EXPORT_SYMBOL_GPL(br_mst_get_state);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 64f794d198cdc..7bfa6b59ba87e 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -1194,7 +1194,7 @@ int hci_setup_ext_adv_instance_sync(struct hci_dev *hdev, u8 instance)
  
--static void br_mst_vlan_set_state(struct net_bridge_port *p, struct net_bridge_vlan *v,
-+static void br_mst_vlan_set_state(struct net_bridge_vlan_group *vg,
-+				  struct net_bridge_vlan *v,
- 				  u8 state)
- {
--	struct net_bridge_vlan_group *vg = nbp_vlan_group(p);
--
- 	if (br_vlan_get_state(v) == state)
- 		return;
+ 	cp.own_addr_type = own_addr_type;
+ 	cp.channel_map = hdev->le_adv_channel_map;
+-	cp.handle = instance;
++	cp.handle = adv ? adv->handle : instance;
  
-@@ -121,7 +120,7 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
- 		if (v->brvlan->msti != msti)
- 			continue;
- 
--		br_mst_vlan_set_state(p, v, state);
-+		br_mst_vlan_set_state(vg, v, state);
- 	}
- 
- out:
-@@ -140,13 +139,13 @@ static void br_mst_vlan_sync_state(struct net_bridge_vlan *pv, u16 msti)
- 		 * it.
- 		 */
- 		if (v != pv && v->brvlan->msti == msti) {
--			br_mst_vlan_set_state(pv->port, pv, v->state);
-+			br_mst_vlan_set_state(vg, pv, v->state);
- 			return;
- 		}
- 	}
- 
- 	/* Otherwise, start out in a new MSTI with all ports disabled. */
--	return br_mst_vlan_set_state(pv->port, pv, BR_STATE_DISABLED);
-+	return br_mst_vlan_set_state(vg, pv, BR_STATE_DISABLED);
- }
- 
- int br_mst_vlan_set_msti(struct net_bridge_vlan *mv, u16 msti)
+ 	if (flags & MGMT_ADV_FLAG_SEC_2M) {
+ 		cp.primary_phy = HCI_ADV_PHY_1M;
 -- 
 2.43.0
 
