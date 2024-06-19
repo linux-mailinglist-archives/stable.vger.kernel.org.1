@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-54483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315BD90EE72
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 116B490ED80
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 462491C249CD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B32271F21671
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD8714EC5C;
-	Wed, 19 Jun 2024 13:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4261474AD;
+	Wed, 19 Jun 2024 13:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otyyLVIV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hk9S31n9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9231494BD;
-	Wed, 19 Jun 2024 13:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D52145FEF;
+	Wed, 19 Jun 2024 13:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803713; cv=none; b=rEWJcPbX3PSgqNdpU3DxHStfzXW1OjXMklFDngYXH57ZNLIB2Ts3tUdi7v8fu6LM4yDW8K6ZZ0tes0H0Sp5OcB2CDi/rPyfedP03gnzE3eopfA1lzZQ2oCDxIFtptM7swu/zhzUUiLQnXKUkT9MEfs0fc3MCt0QVnstNPOVlFCs=
+	t=1718803131; cv=none; b=Fl3fhlBsDIGHjNEHjgIT9gbjuw3wBg85eKHESi8kuRc0TWK5gZLssyz26ITnG6VatPKkbFmDZ44JjP9R1UCL8VNPGRa25iSbJKU5+S7zvpuGQr8BTdG4W0QUjirkcU/N01J/ELDbII0OiBkZV9OnkCJnLDW2kL2UPwmSX5vTjU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803713; c=relaxed/simple;
-	bh=xJ2HdYr3h8Z3zUdXlxsCreuiF/omIe1Vyu+rNNId0gE=;
+	s=arc-20240116; t=1718803131; c=relaxed/simple;
+	bh=fn0wxMUeRjkKx2mR7U1eR2Te+pxZ1S6KCwMN7wlUVkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMX0dZ2oGo3uNOHuzfx4NTPJn6W2ijtpGi4p/o9R9tTKNFuNAy1NRWRKAmNSigoD2ISdKCIpvrphZzNsCFRXJVrq4cr2Vd9BIXJYJg2oaVG4ICfCm+3l+Fs3iDJJoyfnd67M5tQkW8KJKlGpWRQDL79VSznJoNq8STgH9xV3gMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otyyLVIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD49AC32786;
-	Wed, 19 Jun 2024 13:28:32 +0000 (UTC)
+	 MIME-Version; b=eV5NZA08WtHlQqWdzcJm2ffY0ri9DDkjG+lgmc/CyOxTcJZ/LkBeeJ2pyFXCR7cCm++8hatdIHvuQM64oJaZEYlEQSQ5ZUlDpo5cUXGFUbqejj2oGxFrJoljckJi9rBOYr04lQrzQCYHKj4jLvKwcIJXfjy/0fzICbmwd/tseL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hk9S31n9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47034C2BBFC;
+	Wed, 19 Jun 2024 13:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803713;
-	bh=xJ2HdYr3h8Z3zUdXlxsCreuiF/omIe1Vyu+rNNId0gE=;
+	s=korg; t=1718803131;
+	bh=fn0wxMUeRjkKx2mR7U1eR2Te+pxZ1S6KCwMN7wlUVkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=otyyLVIVayaWBOwiqU2NO7rIbwkuP3+QoLmipiL+qY1CIXMX7dejY1ZY8okMzFri8
-	 k9Cwsz725fqIpsmnpOy7kkKoFx0kfiRH7D5CdjL8LRt2z/pxxeW7LNJIJ2DpVu/riO
-	 s1jhGmpgoetd6EQdEsqea3GGGZujfkk1i6v3BT+w=
+	b=Hk9S31n9cn6u6iQLPpuwpHTprFogJlS0p2GEJwENaHCjRkxBn/Kg/N21FwJOHlGlj
+	 Wm+3HrnN0YKmOUkuLOvi1kwlqXjLWT3Cmdsg9An5W3RQD4QguVYUrxaWT+taMfDaxc
+	 OgIyhT2anxCA+JlgJ3tLvWEPlxJ+Vk7fvJPdEwDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Menglong Dong <imagedong@tencent.com>,
+	Neal Cardwell <ncardwell@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/217] btrfs: remove unnecessary prototype declarations at disk-io.c
+Subject: [PATCH 6.9 163/281] tcp: use signed arithmetic in tcp_rtx_probe0_timed_out()
 Date: Wed, 19 Jun 2024 14:55:22 +0200
-Message-ID: <20240619125559.735232799@linuxfoundation.org>
+Message-ID: <20240619125616.110543780@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 184533e3618f4d0b382c1ef3de0ce34e849005d7 ]
+[ Upstream commit 36534d3c54537bf098224a32dc31397793d4594d ]
 
-We have a few static functions at disk-io.c for which we have a forward
-declaration of their prototype, but it's not needed because all those
-functions are defined before they are called, so remove them.
+Due to timer wheel implementation, a timer will usually fire
+after its schedule.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: fb33eb2ef0d8 ("btrfs: fix leak of qgroup extent records after transaction abort")
+For instance, for HZ=1000, a timeout between 512ms and 4s
+has a granularity of 64ms.
+For this range of values, the extra delay could be up to 63ms.
+
+For TCP, this means that tp->rcv_tstamp may be after
+inet_csk(sk)->icsk_timeout whenever the timer interrupt
+finally triggers, if one packet came during the extra delay.
+
+We need to make sure tcp_rtx_probe0_timed_out() handles this case.
+
+Fixes: e89688e3e978 ("net: tcp: fix unexcepted socket die when snd_wnd is 0")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Menglong Dong <imagedong@tencent.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Link: https://lore.kernel.org/r/20240607125652.1472540-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ net/ipv4/tcp_timer.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 5756edb37c61e..0111eda33aa9c 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -51,15 +51,6 @@
- 				 BTRFS_SUPER_FLAG_METADUMP |\
- 				 BTRFS_SUPER_FLAG_METADUMP_V2)
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index d1ad20ce1c8c7..f96f68cf7961c 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -483,8 +483,12 @@ static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
+ {
+ 	const struct tcp_sock *tp = tcp_sk(sk);
+ 	const int timeout = TCP_RTO_MAX * 2;
+-	u32 rcv_delta;
++	s32 rcv_delta;
  
--static void btrfs_destroy_ordered_extents(struct btrfs_root *root);
--static int btrfs_destroy_delayed_refs(struct btrfs_transaction *trans,
--				      struct btrfs_fs_info *fs_info);
--static void btrfs_destroy_delalloc_inodes(struct btrfs_root *root);
--static int btrfs_destroy_marked_extents(struct btrfs_fs_info *fs_info,
--					struct extent_io_tree *dirty_pages,
--					int mark);
--static int btrfs_destroy_pinned_extent(struct btrfs_fs_info *fs_info,
--				       struct extent_io_tree *pinned_extents);
- static int btrfs_cleanup_transaction(struct btrfs_fs_info *fs_info);
- static void btrfs_error_commit_super(struct btrfs_fs_info *fs_info);
- 
++	/* Note: timer interrupt might have been delayed by at least one jiffy,
++	 * and tp->rcv_tstamp might very well have been written recently.
++	 * rcv_delta can thus be negative.
++	 */
+ 	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
+ 	if (rcv_delta <= timeout)
+ 		return false;
 -- 
 2.43.0
 
