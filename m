@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-54441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB5690EE2D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:26:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18E0A90ED34
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11E9A1F21B9D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:26:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E338B26A6F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9362614601E;
-	Wed, 19 Jun 2024 13:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A84146D49;
+	Wed, 19 Jun 2024 13:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8GgxRsk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIZ8WSpy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507CB4D9EA;
-	Wed, 19 Jun 2024 13:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623AE13F435;
+	Wed, 19 Jun 2024 13:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803589; cv=none; b=ubeCDQ9UW2nGtWI/Qcg+K1F1aj+VwTEQD1jRk1Z8JsMX2oX/q4wYMyfZUemU8VmmG0U6oCVc4Acw7UfObys9NXiHRFQPRGW9KSsqreLpat7hV5WTwTF5gvTs0B2oHN5K6+xNsgecTZ9Jl+WRBW/QXcTfVln9ZHP50V+Hl+4f8R8=
+	t=1718802916; cv=none; b=OOBMw/OhEvCfaL2T78DZWR/q64GCw99aMeysG0yPdnAstESPU3lDbWRTxO7UKkxbtXrstLlZlPMuA/LN5Kl0thrTQdAYg1zgCe7mMqGr6gb6j2zFOjyyJX0h3A7GQbyaw1n+jyO00Ct4Yz8jVsZN5nIbQPQPE7OUABp9ikJ9j80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803589; c=relaxed/simple;
-	bh=kMhqCOABOcu35zxKJk0WXMP1bykZ0JnN3d506EeS9zA=;
+	s=arc-20240116; t=1718802916; c=relaxed/simple;
+	bh=alXwxlzL1N6Til8nNRq5Dp6M5p8xJz0cDS2ndNkrh1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L7OEoEQjo5m6x0ZMW8GsLaz357DHQR9mN6cMQsjgxmz17el6wPah2n7Ka8zCsW+x7TlY8LtjmwosB27DSJDzVvA5ebImxZebF9a5s9opTYvzWFyueP4mlKG6NwNRkG60MkWu0nGKlwq4aiOQQyS+XQPyRBhRJOK15+fJPL2KDQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8GgxRsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7048C2BBFC;
-	Wed, 19 Jun 2024 13:26:28 +0000 (UTC)
+	 MIME-Version; b=t9StuyzmtoQxql6dRiKPYkaiJLm5RhRPXx4ur/deO39MQbSL0Gb/dmKG1oHpYbAMgJHwA95SHzCvbRjsAvhObYRE6EknhXgtNIK/n6mRfAFQgMmJN6yXKXj6jnzvue5GzNbAmZ8alwkWlVvZwsWpA8oDlI6W5PRX1nGNhz7E4DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIZ8WSpy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC1A8C2BBFC;
+	Wed, 19 Jun 2024 13:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803589;
-	bh=kMhqCOABOcu35zxKJk0WXMP1bykZ0JnN3d506EeS9zA=;
+	s=korg; t=1718802916;
+	bh=alXwxlzL1N6Til8nNRq5Dp6M5p8xJz0cDS2ndNkrh1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8GgxRskwFzyDKTJHtYAjSTOSQ8GM3MUAR2Xh2h/hPsJ4znykWo0lzS64P6PVHg79
-	 O/yZd/YpSd1986BbhSlbUU5nkG1tmDAjtSW9oJexkjjVcqmpDD17PHdOjz8/J/GqEx
-	 1F84UJQ8emLZKKjk+fJq8FGXWNk8JxUdJA2y/rL8=
+	b=IIZ8WSpy39TDFTuXpZdqqa8xDomCmJlwP2Y9/vJTe38aq0eunud+tNZpkffZahuiy
+	 M4zP4pGJ4BRd9XvLSCL+7x+869vmU4P3sOmUCNTndmaxBnKFhQfYyiuZk7ksBne3Qr
+	 rEQVoPubrC/KEfTLwvHzFXqPp7HyWGJ0rUwi6/fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/217] wifi: iwlwifi: dbg_ini: move iwl_dbg_tlv_free outside of debugfs ifdef
+	Tony Lindgren <tony.lindgren@linux.intel.com>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 6.9 091/281] serial: port: Dont block system suspend even if bytes are left to xmit
 Date: Wed, 19 Jun 2024 14:54:10 +0200
-Message-ID: <20240619125556.787588886@linuxfoundation.org>
+Message-ID: <20240619125613.352391252@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 87821b67dea87addbc4ab093ba752753b002176a ]
+commit ca84cd379b45e9b1775b9e026f069a3a886b409d upstream.
 
-The driver should call iwl_dbg_tlv_free even if debugfs is not defined
-since ini mode does not depend on debugfs ifdef.
+Recently, suspend testing on sc7180-trogdor based devices has started
+to sometimes fail with messages like this:
 
-Fixes: 68f6f492c4fa ("iwlwifi: trans: support loading ini TLVs from external file")
-Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.c8e3723f55b0.I5e805732b0be31ee6b83c642ec652a34e974ff10@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  port a88000.serial:0.0: PM: calling pm_runtime_force_suspend+0x0/0xf8 @ 28934, parent: a88000.serial:0
+  port a88000.serial:0.0: PM: dpm_run_callback(): pm_runtime_force_suspend+0x0/0xf8 returns -16
+  port a88000.serial:0.0: PM: pm_runtime_force_suspend+0x0/0xf8 returned -16 after 33 usecs
+  port a88000.serial:0.0: PM: failed to suspend: error -16
+
+I could reproduce these problems by logging in via an agetty on the
+debug serial port (which was _not_ used for kernel console) and
+running:
+  cat /var/log/messages
+...and then (via an SSH session) forcing a few suspend/resume cycles.
+
+Tracing through the code and doing some printf()-based debugging shows
+that the -16 (-EBUSY) comes from the recently added
+serial_port_runtime_suspend().
+
+The idea of the serial_port_runtime_suspend() function is to prevent
+the port from being _runtime_ suspended if it still has bytes left to
+transmit. Having bytes left to transmit isn't a reason to block
+_system_ suspend, though. If a serdev device in the kernel needs to
+block system suspend it should block its own suspend and it can use
+serdev_device_wait_until_sent() to ensure bytes are sent.
+
+The DEFINE_RUNTIME_DEV_PM_OPS() used by the serial_port code means
+that the system suspend function will be pm_runtime_force_suspend().
+In pm_runtime_force_suspend() we can see that before calling the
+runtime suspend function we'll call pm_runtime_disable(). This should
+be a reliable way to detect that we're called from system suspend and
+that we shouldn't look for busyness.
+
+Fixes: 43066e32227e ("serial: port: Don't suspend if the port is still busy")
+Cc: stable@vger.kernel.org
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240531080914.v3.1.I2395e66cf70c6e67d774c56943825c289b9c13e4@changeid
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/serial_port.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-index 5eba1a355f043..024c37062a60b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
-@@ -1750,8 +1750,8 @@ struct iwl_drv *iwl_drv_start(struct iwl_trans *trans)
- err_fw:
- #ifdef CONFIG_IWLWIFI_DEBUGFS
- 	debugfs_remove_recursive(drv->dbgfs_drv);
--	iwl_dbg_tlv_free(drv->trans);
- #endif
-+	iwl_dbg_tlv_free(drv->trans);
- 	kfree(drv);
- err:
- 	return ERR_PTR(ret);
--- 
-2.43.0
-
+--- a/drivers/tty/serial/serial_port.c
++++ b/drivers/tty/serial/serial_port.c
+@@ -63,6 +63,13 @@ static int serial_port_runtime_suspend(s
+ 	if (port->flags & UPF_DEAD)
+ 		return 0;
+ 
++	/*
++	 * Nothing to do on pm_runtime_force_suspend(), see
++	 * DEFINE_RUNTIME_DEV_PM_OPS.
++	 */
++	if (!pm_runtime_enabled(dev))
++		return 0;
++
+ 	uart_port_lock_irqsave(port, &flags);
+ 	if (!port_dev->tx_enabled) {
+ 		uart_port_unlock_irqrestore(port, flags);
 
 
 
