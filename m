@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0FC90ED37
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E86A90ED42
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E09C1C20F8A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A0B12811E2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8013E143C4E;
-	Wed, 19 Jun 2024 13:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F0D82871;
+	Wed, 19 Jun 2024 13:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yv9b/ZuV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7jZ392J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F30912FB27;
-	Wed, 19 Jun 2024 13:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B7DAD58;
+	Wed, 19 Jun 2024 13:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802925; cv=none; b=rX34pkXqH9DjrE8FpWdSKqrXyzDgPksWj3WY3qSeHca3ZhJIfgHzeFXsQKWVCIrTP3tS2v0Co3iVVAwj1I9Hs7KJLQMnUEZENV2l+EhDIPXSsqyRr7Y2h0O7Z6M1kSIaBvntU+qZBdPeWkMxHl2ePIV1/DVD/mpdwJ3vL/5e2CQ=
+	t=1718802957; cv=none; b=bH7k0YUJJCxJ9RrfuK0r/rfy8+/JfJ7P0f8eeWFrIB//vP3JqyTJaoLyao6hZqLZx9TzhpiTsfMI/0LPkvrbpE2CP9mWz9tHJ25xROj2tsLWVqu1I17plmQZ9DlId71PJ6I80vjWe5eM3uAGfJ3fIpB5+tFFmrd0kpeCLPvIUXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802925; c=relaxed/simple;
-	bh=Xj/73lCK0toh16hmKmG9ObXL2J6QN/L1N5nlHbe7BrU=;
+	s=arc-20240116; t=1718802957; c=relaxed/simple;
+	bh=ZzfasRV7K5MBdxZ2IYDttpCN25YFF4BIaCPqV/DX2Dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dv9LlUeHuiNNwYHnSl7hu21nv9afFWnpIEUI0sQYKfakN/30w0IStST1biaiHc8iYJy5XRedJxfABDFmY56dTIy2/iTb4H7Z8S04RZlGNmw0uCT5TYXprcEFIfwXmohH83Qi4q6kQ5Kzi007fZNjleL3mk6N5llJFDLNAIK4GOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yv9b/ZuV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B87C2BBFC;
-	Wed, 19 Jun 2024 13:15:24 +0000 (UTC)
+	 MIME-Version; b=ndykDAoUWPLAlxvIurCD8WmDWJs2ZrD9xh4djg91cHg5jqQ6XJCnPl0lXXwmduvA20qOcu16UJy6Tfklyaz1Qqzk6eUodJByA1H31EWsj8/gAKLAieCBV1KGozgua6qIFsLbYQ524wHMZNX/mBn/h41jGnpu0FSI7+oF6XZRQp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7jZ392J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF82AC2BBFC;
+	Wed, 19 Jun 2024 13:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802925;
-	bh=Xj/73lCK0toh16hmKmG9ObXL2J6QN/L1N5nlHbe7BrU=;
+	s=korg; t=1718802957;
+	bh=ZzfasRV7K5MBdxZ2IYDttpCN25YFF4BIaCPqV/DX2Dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yv9b/ZuVJ/mJiS05SvwFDOGhzKWMHR+33s6+1ldmlaHg3mCzuFPU9UjG5G8AB6IwC
-	 yKDplFIrb6xzFGNtyOIuMtd+PR4go6qgcFcCjydvhT93+4aTcwc8z76ImW6M0Ij8v3
-	 D2cMtHdcbYzgIj/gHlTY2UogUoHc3BjgwaDS0jy8=
+	b=B7jZ392JPNcWouliq24H8a6WeOPYwVwbONjOhKSRSezn8iRJPlBap+uajVPtp/myg
+	 25Osq+xG8KQdHxdH/CW4DHL9HYxXxoEgmEOO9gBn6EU1ODGPVFd3kjHMgznVbYzB9g
+	 vzL2rcOgYECPuw/BkX8xbXp4na4JzHh0QV+prAEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sri Jayaramappa <sjayaram@akamai.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 076/281] selftests/mm: ksft_exit functions do not return
-Date: Wed, 19 Jun 2024 14:53:55 +0200
-Message-ID: <20240619125612.765858086@linuxfoundation.org>
+Subject: [PATCH 6.9 077/281] selftests/mm: compaction_test: fix bogus test success and reduce probability of OOM-killer invocation
+Date: Wed, 19 Jun 2024 14:53:56 +0200
+Message-ID: <20240619125612.803842285@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
 References: <20240619125609.836313103@linuxfoundation.org>
@@ -68,169 +69,180 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Dev Jain <dev.jain@arm.com>
 
-[ Upstream commit 69e545edbe8b17c26aa06ef7e430d0be7f08d876 ]
+[ Upstream commit fb9293b6b0156fbf6ab97a1625d99a29c36d9f0c ]
 
-After commit f7d5bcd35d42 ("selftests: kselftest: Mark functions that
-unconditionally call exit() as __noreturn"), ksft_exit_...() functions
-are marked as __noreturn, which means the return type should not be
-'int' but 'void' because they are not returning anything (and never were
-since exit() has always been called).
+Reset nr_hugepages to zero before the start of the test.
 
-To facilitate updating the return type of these functions, remove
-'return' before the calls to ksft_exit_...(), as __noreturn prevents the
-compiler from warning that a caller of the ksft_exit functions does not
-return a value because the program will terminate upon calling these
-functions.
+If a non-zero number of hugepages is already set before the start of the
+test, the following problems arise:
 
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: fb9293b6b015 ("selftests/mm: compaction_test: fix bogus test success and reduce probability of OOM-killer invocation")
+ - The probability of the test getting OOM-killed increases.  Proof:
+   The test wants to run on 80% of available memory to prevent OOM-killing
+   (see original code comments).  Let the value of mem_free at the start
+   of the test, when nr_hugepages = 0, be x.  In the other case, when
+   nr_hugepages > 0, let the memory consumed by hugepages be y.  In the
+   former case, the test operates on 0.8 * x of memory.  In the latter,
+   the test operates on 0.8 * (x - y) of memory, with y already filled,
+   hence, memory consumed is y + 0.8 * (x - y) = 0.8 * x + 0.2 * y > 0.8 *
+   x.  Q.E.D
+
+ - The probability of a bogus test success increases.  Proof: Let the
+   memory consumed by hugepages be greater than 25% of x, with x and y
+   defined as above.  The definition of compaction_index is c_index = (x -
+   y)/z where z is the memory consumed by hugepages after trying to
+   increase them again.  In check_compaction(), we set the number of
+   hugepages to zero, and then increase them back; the probability that
+   they will be set back to consume at least y amount of memory again is
+   very high (since there is not much delay between the two attempts of
+   changing nr_hugepages).  Hence, z >= y > (x/4) (by the 25% assumption).
+   Therefore, c_index = (x - y)/z <= (x - y)/y = x/y - 1 < 4 - 1 = 3
+   hence, c_index can always be forced to be less than 3, thereby the test
+   succeeding always.  Q.E.D
+
+Link: https://lkml.kernel.org/r/20240521074358.675031-4-dev.jain@arm.com
+Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Cc: <stable@vger.kernel.org>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Sri Jayaramappa <sjayaram@akamai.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/compaction_test.c      | 6 +++---
- tools/testing/selftests/mm/cow.c                  | 2 +-
- tools/testing/selftests/mm/gup_longterm.c         | 2 +-
- tools/testing/selftests/mm/gup_test.c             | 4 ++--
- tools/testing/selftests/mm/ksm_functional_tests.c | 2 +-
- tools/testing/selftests/mm/madv_populate.c        | 2 +-
- tools/testing/selftests/mm/mkdirty.c              | 2 +-
- tools/testing/selftests/mm/pagemap_ioctl.c        | 4 ++--
- tools/testing/selftests/mm/soft-dirty.c           | 2 +-
- 9 files changed, 13 insertions(+), 13 deletions(-)
+ tools/testing/selftests/mm/compaction_test.c | 71 ++++++++++++++------
+ 1 file changed, 49 insertions(+), 22 deletions(-)
 
 diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
-index 326a893647bab..5e9bd1da9370c 100644
+index 5e9bd1da9370c..e140558e6f53f 100644
 --- a/tools/testing/selftests/mm/compaction_test.c
 +++ b/tools/testing/selftests/mm/compaction_test.c
-@@ -185,7 +185,7 @@ int main(int argc, char **argv)
+@@ -82,13 +82,16 @@ int prereq(void)
+ 	return -1;
+ }
+ 
+-int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
++int check_compaction(unsigned long mem_free, unsigned long hugepage_size,
++		     unsigned long initial_nr_hugepages)
+ {
+ 	unsigned long nr_hugepages_ul;
+ 	int fd, ret = -1;
+ 	int compaction_index = 0;
+-	char initial_nr_hugepages[20] = {0};
+ 	char nr_hugepages[20] = {0};
++	char init_nr_hugepages[20] = {0};
++
++	sprintf(init_nr_hugepages, "%lu", initial_nr_hugepages);
+ 
+ 	/* We want to test with 80% of available memory. Else, OOM killer comes
+ 	   in to play */
+@@ -102,23 +105,6 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+ 		goto out;
+ 	}
+ 
+-	if (read(fd, initial_nr_hugepages, sizeof(initial_nr_hugepages)) <= 0) {
+-		ksft_print_msg("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
+-			       strerror(errno));
+-		goto close_fd;
+-	}
+-
+-	lseek(fd, 0, SEEK_SET);
+-
+-	/* Start with the initial condition of 0 huge pages*/
+-	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
+-		ksft_print_msg("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
+-			       strerror(errno));
+-		goto close_fd;
+-	}
+-
+-	lseek(fd, 0, SEEK_SET);
+-
+ 	/* Request a large number of huge pages. The Kernel will allocate
+ 	   as much as it can */
+ 	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
+@@ -146,8 +132,8 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+ 
+ 	lseek(fd, 0, SEEK_SET);
+ 
+-	if (write(fd, initial_nr_hugepages, strlen(initial_nr_hugepages))
+-	    != strlen(initial_nr_hugepages)) {
++	if (write(fd, init_nr_hugepages, strlen(init_nr_hugepages))
++	    != strlen(init_nr_hugepages)) {
+ 		ksft_print_msg("Failed to write value to /proc/sys/vm/nr_hugepages: %s\n",
+ 			       strerror(errno));
+ 		goto close_fd;
+@@ -171,6 +157,41 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+ 	return ret;
+ }
+ 
++int set_zero_hugepages(unsigned long *initial_nr_hugepages)
++{
++	int fd, ret = -1;
++	char nr_hugepages[20] = {0};
++
++	fd = open("/proc/sys/vm/nr_hugepages", O_RDWR | O_NONBLOCK);
++	if (fd < 0) {
++		ksft_print_msg("Failed to open /proc/sys/vm/nr_hugepages: %s\n",
++			       strerror(errno));
++		goto out;
++	}
++	if (read(fd, nr_hugepages, sizeof(nr_hugepages)) <= 0) {
++		ksft_print_msg("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
++			       strerror(errno));
++		goto close_fd;
++	}
++
++	lseek(fd, 0, SEEK_SET);
++
++	/* Start with the initial condition of 0 huge pages */
++	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
++		ksft_print_msg("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
++			       strerror(errno));
++		goto close_fd;
++	}
++
++	*initial_nr_hugepages = strtoul(nr_hugepages, NULL, 10);
++	ret = 0;
++
++ close_fd:
++	close(fd);
++
++ out:
++	return ret;
++}
+ 
+ int main(int argc, char **argv)
+ {
+@@ -181,6 +202,7 @@ int main(int argc, char **argv)
+ 	unsigned long mem_free = 0;
+ 	unsigned long hugepage_size = 0;
+ 	long mem_fragmentable_MB = 0;
++	unsigned long initial_nr_hugepages;
+ 
  	ksft_print_header();
  
- 	if (prereq() || geteuid())
--		return ksft_exit_skip("Prerequisites unsatisfied\n");
-+		ksft_exit_skip("Prerequisites unsatisfied\n");
+@@ -189,6 +211,10 @@ int main(int argc, char **argv)
  
  	ksft_set_plan(1);
  
-@@ -233,7 +233,7 @@ int main(int argc, char **argv)
++	/* Start the test without hugepages reducing mem_free */
++	if (set_zero_hugepages(&initial_nr_hugepages))
++		ksft_exit_fail();
++
+ 	lim.rlim_cur = RLIM_INFINITY;
+ 	lim.rlim_max = RLIM_INFINITY;
+ 	if (setrlimit(RLIMIT_MEMLOCK, &lim))
+@@ -232,7 +258,8 @@ int main(int argc, char **argv)
+ 		entry = entry->next;
  	}
  
- 	if (check_compaction(mem_free, hugepage_size) == 0)
--		return ksft_exit_pass();
-+		ksft_exit_pass();
+-	if (check_compaction(mem_free, hugepage_size) == 0)
++	if (check_compaction(mem_free, hugepage_size,
++			     initial_nr_hugepages) == 0)
+ 		ksft_exit_pass();
  
--	return ksft_exit_fail();
-+	ksft_exit_fail();
- }
-diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
-index 363bf5f801be5..fe078d6e18064 100644
---- a/tools/testing/selftests/mm/cow.c
-+++ b/tools/testing/selftests/mm/cow.c
-@@ -1779,5 +1779,5 @@ int main(int argc, char **argv)
- 	if (err)
- 		ksft_exit_fail_msg("%d out of %d tests failed\n",
- 				   err, ksft_test_num());
--	return ksft_exit_pass();
-+	ksft_exit_pass();
- }
-diff --git a/tools/testing/selftests/mm/gup_longterm.c b/tools/testing/selftests/mm/gup_longterm.c
-index ad168d35b23b7..d7eaca5bbe9b1 100644
---- a/tools/testing/selftests/mm/gup_longterm.c
-+++ b/tools/testing/selftests/mm/gup_longterm.c
-@@ -456,5 +456,5 @@ int main(int argc, char **argv)
- 	if (err)
- 		ksft_exit_fail_msg("%d out of %d tests failed\n",
- 				   err, ksft_test_num());
--	return ksft_exit_pass();
-+	ksft_exit_pass();
- }
-diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
-index 7821cf45c323b..bdeaac67ff9aa 100644
---- a/tools/testing/selftests/mm/gup_test.c
-+++ b/tools/testing/selftests/mm/gup_test.c
-@@ -229,7 +229,7 @@ int main(int argc, char **argv)
- 			break;
- 		}
- 		ksft_test_result_skip("Please run this test as root\n");
--		return ksft_exit_pass();
-+		ksft_exit_pass();
- 	}
- 
- 	p = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, filed, 0);
-@@ -268,5 +268,5 @@ int main(int argc, char **argv)
- 
- 	free(tid);
- 
--	return ksft_exit_pass();
-+	ksft_exit_pass();
- }
-diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
-index d615767e396be..508287560c455 100644
---- a/tools/testing/selftests/mm/ksm_functional_tests.c
-+++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-@@ -646,5 +646,5 @@ int main(int argc, char **argv)
- 	if (err)
- 		ksft_exit_fail_msg("%d out of %d tests failed\n",
- 				   err, ksft_test_num());
--	return ksft_exit_pass();
-+	ksft_exit_pass();
- }
-diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
-index 17bcb07f19f34..ef7d911da13e0 100644
---- a/tools/testing/selftests/mm/madv_populate.c
-+++ b/tools/testing/selftests/mm/madv_populate.c
-@@ -307,5 +307,5 @@ int main(int argc, char **argv)
- 	if (err)
- 		ksft_exit_fail_msg("%d out of %d tests failed\n",
- 				   err, ksft_test_num());
--	return ksft_exit_pass();
-+	ksft_exit_pass();
- }
-diff --git a/tools/testing/selftests/mm/mkdirty.c b/tools/testing/selftests/mm/mkdirty.c
-index 301abb99e027e..b8a7efe9204ea 100644
---- a/tools/testing/selftests/mm/mkdirty.c
-+++ b/tools/testing/selftests/mm/mkdirty.c
-@@ -375,5 +375,5 @@ int main(void)
- 	if (err)
- 		ksft_exit_fail_msg("%d out of %d tests failed\n",
- 				   err, ksft_test_num());
--	return ksft_exit_pass();
-+	ksft_exit_pass();
- }
-diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
-index d59517ed3d48b..2d785aca72a5c 100644
---- a/tools/testing/selftests/mm/pagemap_ioctl.c
-+++ b/tools/testing/selftests/mm/pagemap_ioctl.c
-@@ -1484,7 +1484,7 @@ int main(int argc, char *argv[])
- 	ksft_print_header();
- 
- 	if (init_uffd())
--		return ksft_exit_pass();
-+		ksft_exit_pass();
- 
- 	ksft_set_plan(115);
- 
-@@ -1660,5 +1660,5 @@ int main(int argc, char *argv[])
- 	userfaultfd_tests();
- 
- 	close(pagemap_fd);
--	return ksft_exit_pass();
-+	ksft_exit_pass();
- }
-diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
-index 7dbfa53d93a05..d9dbf879748b2 100644
---- a/tools/testing/selftests/mm/soft-dirty.c
-+++ b/tools/testing/selftests/mm/soft-dirty.c
-@@ -209,5 +209,5 @@ int main(int argc, char **argv)
- 
- 	close(pagemap_fd);
- 
--	return ksft_exit_pass();
-+	ksft_exit_pass();
- }
+ 	ksft_exit_fail();
 -- 
 2.43.0
 
