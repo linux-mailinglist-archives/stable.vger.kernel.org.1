@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2751090EEC3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:31:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE72790EDC8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E7BF1C2455D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:31:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A13001F22959
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CC7147C6E;
-	Wed, 19 Jun 2024 13:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24CBF143757;
+	Wed, 19 Jun 2024 13:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPftiq0H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCy7FTOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B8113E037;
-	Wed, 19 Jun 2024 13:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5207146D49;
+	Wed, 19 Jun 2024 13:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803905; cv=none; b=twtbSdMHGq3TEFPK9fk1h+WSeiCzhP+HacHJiMawCdI0J9NQ5aFd8JMwW5m4zejpHMwsmSTDSWWnYm6ddrPwRilKeI6A70Lc3FaDRdmtm9861rIgz+a/h4tR5RCMcI4nBdVU+aroUmkblmospHD19UMG1AaPBjoMRRTA1kyGnhM=
+	t=1718803320; cv=none; b=tR5fPjd6n8OAY9MnBUbygKnBCVL2vf4PT773tpnW+F5fruQNvLSgTAQSviQTV/neAalWZfvWiKKLVBkBOm+K5KPttAT2ye2MA5cLlDv9KxNFX7NGJhKEP7vD3gukfbo7S5ZPzxEUQFrXtMOew/sc9/VYmxoemleQJYw1oIcEFpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803905; c=relaxed/simple;
-	bh=TCMBcqHCvT8L+HGaxImCuEy47dX4w0wiT5ycJxrhRWU=;
+	s=arc-20240116; t=1718803320; c=relaxed/simple;
+	bh=cosMgF4WAWMiAZAQMUdcEZOyUgPKPIwQYKbDiRkWvp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Md1wcn8UJsyyzdcLLwU4/TZQQxOGP/Ohe89mWxO8DYAgrVhkKUjfqUV+5pHn0u2y3wUzoppvkAKiY3BTEdIFGW8KsXIknHxYrsS/c8Bp0FxQs4aQS7wIO3YwZcCckgN8o8w8wBzJDbzHgvCKT2oZ1dOOt6siqH4M0lusVpYr2Uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPftiq0H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC772C2BBFC;
-	Wed, 19 Jun 2024 13:31:44 +0000 (UTC)
+	 MIME-Version; b=OZ5mzEOlKRsxUqAS3XBCMFGxGjkmaPBOkvOy4dBqXFmJAVkGzUraASFtXx/vInDvnSqf6Ifow8DfK9NtVrrS5xn8ryN0zqlt8PmSucj/Ypa4MRaB/1ZYt1nzNnlqnpOi+ngTwUr/f1+gqWSAen3JatZxIpS+Fc325DBMXxrrc1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCy7FTOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5846FC2BBFC;
+	Wed, 19 Jun 2024 13:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803905;
-	bh=TCMBcqHCvT8L+HGaxImCuEy47dX4w0wiT5ycJxrhRWU=;
+	s=korg; t=1718803320;
+	bh=cosMgF4WAWMiAZAQMUdcEZOyUgPKPIwQYKbDiRkWvp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YPftiq0H1e61rJfmx06bUg0lDm2abNGrLB4BLUvhjy/xqxBE2Np5PwqquivHwSTWo
-	 e6EuBXFkLHaUfC0DlGd2Y7pERUeGQZSNZTMKRDFe/Wwrhw8cXjyWn80ey2mc/C6Y1q
-	 4TPQgGd3rmoo0Pt9h3Za3NXTYGeWZTrqsTzwWBHU=
+	b=GCy7FTOqWrszRF1NFYpRt1EMYUy6vj4XM/igL8zostjvNag9WECflX+3+9gv/2LO0
+	 sq51wGqA5ipDNmi7JnY7KRxPvdOVyrBkO0Vrx15hQrcsHHFmOvYJ+9qlDUwO/spZsC
+	 DPRprydvwTOkFLw3Eq+TIJr5NiAASm2H7+VIwVgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 144/217] tcp: fix race in tcp_v6_syn_recv_sock()
+	Jason Nader <dev@kayoway.com>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.9 228/281] ata: ahci: Do not apply Intel PCS quirk on Intel Alder Lake
 Date: Wed, 19 Jun 2024 14:56:27 +0200
-Message-ID: <20240619125602.248174468@linuxfoundation.org>
+Message-ID: <20240619125618.731990091@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jason Nader <dev@kayoway.com>
 
-[ Upstream commit d37fe4255abe8e7b419b90c5847e8ec2b8debb08 ]
+commit 9e2f46cd87473c70d01fcaf8a559809e6d18dd50 upstream.
 
-tcp_v6_syn_recv_sock() calls ip6_dst_store() before
-inet_sk(newsk)->pinet6 has been set up.
+Commit b8b8b4e0c052 ("ata: ahci: Add Intel Alder Lake-P AHCI controller
+to low power chipsets list") added Intel Alder Lake to the ahci_pci_tbl.
 
-This means ip6_dst_store() writes over the parent (listener)
-np->dst_cookie.
+Because of the way that the Intel PCS quirk was implemented, having
+an explicit entry in the ahci_pci_tbl caused the Intel PCS quirk to
+be applied. (The quirk was not being applied if there was no explict
+entry.)
 
-This is racy because multiple threads could share the same
-parent and their final np->dst_cookie could be wrong.
+Thus, entries that were added to the ahci_pci_tbl also got the Intel
+PCS quirk applied.
 
-Move ip6_dst_store() call after inet_sk(newsk)->pinet6
-has been changed and after the copy of parent ipv6_pinfo.
+The quirk was cleaned up in commit 7edbb6059274 ("ahci: clean up
+intel_pcs_quirk"), such that it is clear which entries that actually
+applies the Intel PCS quirk.
 
-Fixes: e994b2f0fb92 ("tcp: do not lock listener to process SYN packets")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Newer Intel AHCI controllers do not need the Intel PCS quirk,
+and applying it when not needed actually breaks some platforms.
+
+Do not apply the Intel PCS quirk for Intel Alder Lake.
+This is in line with how things worked before commit b8b8b4e0c052 ("ata:
+ahci: Add Intel Alder Lake-P AHCI controller to low power chipsets list"),
+such that certain platforms using Intel Alder Lake will work once again.
+
+Cc: stable@vger.kernel.org # 6.7
+Fixes: b8b8b4e0c052 ("ata: ahci: Add Intel Alder Lake-P AHCI controller to low power chipsets list")
+Signed-off-by: Jason Nader <dev@kayoway.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/tcp_ipv6.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ata/ahci.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index ba9a22db5805c..4b0e05349862d 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1291,7 +1291,6 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- 	 */
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 6548f10e61d9..07d66d2c5f0d 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -429,7 +429,6 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci_pcs_quirk }, /* Comet Lake PCH RAID */
+ 	/* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not tested yet */
+ 	{ PCI_VDEVICE(INTEL, 0x4b63), board_ahci_pcs_quirk }, /* Elkhart Lake AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x7ae2), board_ahci_pcs_quirk }, /* Alder Lake-P AHCI */
  
- 	newsk->sk_gso_type = SKB_GSO_TCPV6;
--	ip6_dst_store(newsk, dst, NULL, NULL);
- 	inet6_sk_rx_dst_set(newsk, skb);
- 
- 	inet_sk(newsk)->pinet6 = tcp_inet6_sk(newsk);
-@@ -1302,6 +1301,8 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- 
- 	memcpy(newnp, np, sizeof(struct ipv6_pinfo));
- 
-+	ip6_dst_store(newsk, dst, NULL, NULL);
-+
- 	newsk->sk_v6_daddr = ireq->ir_v6_rmt_addr;
- 	newnp->saddr = ireq->ir_v6_loc_addr;
- 	newsk->sk_v6_rcv_saddr = ireq->ir_v6_loc_addr;
+ 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
+ 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
 -- 
-2.43.0
+2.45.2
 
 
 
