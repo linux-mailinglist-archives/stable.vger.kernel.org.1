@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-54607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A0690EF04
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 809D890EDE5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 107C61C21004
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 937CD1C2230F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F99714387E;
-	Wed, 19 Jun 2024 13:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055CF14375A;
+	Wed, 19 Jun 2024 13:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDfFnPaN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAojn+E0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD9A13DDC0;
-	Wed, 19 Jun 2024 13:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90174D9EA;
+	Wed, 19 Jun 2024 13:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804081; cv=none; b=Pyp4u4THbF/53H14bn7gWhfIwx19zdlCEUj1vu/jitw2K6qLEQGwy0F6XtP2uAdJpmO2RA//+Bcdgnh0y2uU22NtVMFvErhNLhE68O4yU2eQ/jI1tWSEHyBv8fZjERI+bif0JMdkr3tRMx9vE1tgMZIN1z2YTclNLcumoZ5B9L8=
+	t=1718803403; cv=none; b=umUHacnhfUbF1OI/z+x6prJuw0sC53u36eGopdpgIa9aGQRbmmfQvk09WYOOAC2X1NkPKQxLHODmd1VbG+4XaLk52hYfVtqdPDn6XR+o2GPcOaIPFonP1+U4C8ZFKefLQ8aVy8ZPIFyU/O9nYaP1TrStBVa2PonT813hTFmvZG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804081; c=relaxed/simple;
-	bh=HNx8hpdL78dviv4tIeDXdqyUeWbyzNM1Yufm6Wwt2Hw=;
+	s=arc-20240116; t=1718803403; c=relaxed/simple;
+	bh=i7gzrbF0LnY4OmFYR8JVXeUeyMpgU2IKM28UgO/O8XU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rzqzCnvYtOhH9XTJMawZKKC8lFqmZ55S1nMIu52xglGb9VdqPrrkt+MWd20jBEHTjhiWndfIUul6Znr209dhlcxrplQslMtswAQRt56J9Pw4/NdZpverE+ctdfNL2q7iB4DZNu1jg1h4JRGiRXZCaYnT8J+c7synriiBmVUM83E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDfFnPaN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96099C2BBFC;
-	Wed, 19 Jun 2024 13:34:40 +0000 (UTC)
+	 MIME-Version; b=Hp3jq638q8zPeEy6IFe/Lz9EAKeT66WWM2lVXxsXQ5eskux2+VJfni2fGXAniZcemrcVBAt7zYvkBqUrwdGZlSyIr0Cno4Qqjdz0zCibdlnfFIpMyk4vbafypep/jvAjxTWJYcWsbIrkKG2+PTnFv/xihP2fv2CEZRyer5RX038=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAojn+E0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1345AC2BBFC;
+	Wed, 19 Jun 2024 13:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804081;
-	bh=HNx8hpdL78dviv4tIeDXdqyUeWbyzNM1Yufm6Wwt2Hw=;
+	s=korg; t=1718803403;
+	bh=i7gzrbF0LnY4OmFYR8JVXeUeyMpgU2IKM28UgO/O8XU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDfFnPaNExv3BLNPwIbC5N5eZ6+nzvI0S461EcMhDdCsPWIvH4sb/txNZ2TLunxri
-	 u3UpcmbBoUy9avYuT7zsCYZOcLfwj+1PWYHgoTDTuK+J7PTj7MVg58UWP261/rUin3
-	 hFDS+5BDyabG3DsibPbEVOrH5xjZZI7HVrUu8h30=
+	b=uAojn+E0/XnPi3pCREUsVgq7DKu0Eg8ktzsRvEU7U3nNQz+vaNwo5yorel/puoUOc
+	 ScBFz/Si31F0z4YNcZ8rbmTgh+NIhDXWSzXb/7vbVV43nUAh+0s/sy5EasZFpvjAc4
+	 IYzM1sASsh16dW7kmlXNP8cTBfUDbh1HuatcWlQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haifeng Xu <haifeng.xu@shopee.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 6.1 171/217] perf/core: Fix missing wakeup when waiting for context reference
-Date: Wed, 19 Jun 2024 14:56:54 +0200
-Message-ID: <20240619125603.287088903@linuxfoundation.org>
+	Chris Wilson <chris@chris-wilson.co.uk>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.9 256/281] drm/i915/gt: Disarm breadcrumbs if engines are already idle
+Date: Wed, 19 Jun 2024 14:56:55 +0200
+Message-ID: <20240619125619.828555092@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +65,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haifeng Xu <haifeng.xu@shopee.com>
+From: Chris Wilson <chris@chris-wilson.co.uk>
 
-commit 74751ef5c1912ebd3e65c3b65f45587e05ce5d36 upstream.
+commit 70cb9188ffc75e643debf292fcddff36c9dbd4ae upstream.
 
-In our production environment, we found many hung tasks which are
-blocked for more than 18 hours. Their call traces are like this:
+The breadcrumbs use a GT wakeref for guarding the interrupt, but are
+disarmed during release of the engine wakeref. This leaves a hole where
+we may attach a breadcrumb just as the engine is parking (after it has
+parked its breadcrumbs), execute the irq worker with some signalers still
+attached, but never be woken again.
 
-[346278.191038] __schedule+0x2d8/0x890
-[346278.191046] schedule+0x4e/0xb0
-[346278.191049] perf_event_free_task+0x220/0x270
-[346278.191056] ? init_wait_var_entry+0x50/0x50
-[346278.191060] copy_process+0x663/0x18d0
-[346278.191068] kernel_clone+0x9d/0x3d0
-[346278.191072] __do_sys_clone+0x5d/0x80
-[346278.191076] __x64_sys_clone+0x25/0x30
-[346278.191079] do_syscall_64+0x5c/0xc0
-[346278.191083] ? syscall_exit_to_user_mode+0x27/0x50
-[346278.191086] ? do_syscall_64+0x69/0xc0
-[346278.191088] ? irqentry_exit_to_user_mode+0x9/0x20
-[346278.191092] ? irqentry_exit+0x19/0x30
-[346278.191095] ? exc_page_fault+0x89/0x160
-[346278.191097] ? asm_exc_page_fault+0x8/0x30
-[346278.191102] entry_SYSCALL_64_after_hwframe+0x44/0xae
+That issue manifests itself in CI with IGT runner timeouts while tests
+are waiting indefinitely for release of all GT wakerefs.
 
-The task was waiting for the refcount become to 1, but from the vmcore,
-we found the refcount has already been 1. It seems that the task didn't
-get woken up by perf_event_release_kernel() and got stuck forever. The
-below scenario may cause the problem.
+<6> [209.151778] i915: Running live_engine_pm_selftests/live_engine_busy_stats
+<7> [209.231628] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_5
+<7> [209.231816] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_4
+<7> [209.231944] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_3
+<7> [209.232056] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_2
+<7> [209.232166] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling DC_off
+<7> [209.232270] i915 0000:00:02.0: [drm:skl_enable_dc6 [i915]] Enabling DC6
+<7> [209.232368] i915 0000:00:02.0: [drm:gen9_set_dc_state.part.0 [i915]] Setting DC state from 00 to 02
+<4> [299.356116] [IGT] Inactivity timeout exceeded. Killing the current test with SIGQUIT.
+...
+<6> [299.356526] sysrq: Show State
+...
+<6> [299.373964] task:i915_selftest   state:D stack:11784 pid:5578  tgid:5578  ppid:873    flags:0x00004002
+<6> [299.373967] Call Trace:
+<6> [299.373968]  <TASK>
+<6> [299.373970]  __schedule+0x3bb/0xda0
+<6> [299.373974]  schedule+0x41/0x110
+<6> [299.373976]  intel_wakeref_wait_for_idle+0x82/0x100 [i915]
+<6> [299.374083]  ? __pfx_var_wake_function+0x10/0x10
+<6> [299.374087]  live_engine_busy_stats+0x9b/0x500 [i915]
+<6> [299.374173]  __i915_subtests+0xbe/0x240 [i915]
+<6> [299.374277]  ? __pfx___intel_gt_live_setup+0x10/0x10 [i915]
+<6> [299.374369]  ? __pfx___intel_gt_live_teardown+0x10/0x10 [i915]
+<6> [299.374456]  intel_engine_live_selftests+0x1c/0x30 [i915]
+<6> [299.374547]  __run_selftests+0xbb/0x190 [i915]
+<6> [299.374635]  i915_live_selftests+0x4b/0x90 [i915]
+<6> [299.374717]  i915_pci_probe+0x10d/0x210 [i915]
 
-Thread A					Thread B
-...						...
-perf_event_free_task				perf_event_release_kernel
-						   ...
-						   acquire event->child_mutex
-						   ...
-						   get_ctx
-   ...						   release event->child_mutex
-   acquire ctx->mutex
-   ...
-   perf_free_event (acquire/release event->child_mutex)
-   ...
-   release ctx->mutex
-   wait_var_event
-						   acquire ctx->mutex
-						   acquire event->child_mutex
-						   # move existing events to free_list
-						   release event->child_mutex
-						   release ctx->mutex
-						   put_ctx
-...						...
+At the end of the interrupt worker, if there are no more engines awake,
+disarm the breadcrumb and go to sleep.
 
-In this case, all events of the ctx have been freed, so we couldn't
-find the ctx in free_list and Thread A will miss the wakeup. It's thus
-necessary to add a wakeup after dropping the reference.
-
-Fixes: 1cf8dfe8a661 ("perf/core: Fix race between close() and fork()")
-Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240513103948.33570-1-haifeng.xu@shopee.com
+Fixes: 9d5612ca165a ("drm/i915/gt: Defer enabling the breadcrumb interrupt to after submission")
+Closes: https://gitlab.freedesktop.org/drm/intel/issues/10026
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: <stable@vger.kernel.org> # v5.12+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Acked-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240423165505.465734-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit fbad43eccae5cb14594195c20113369aabaa22b5)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/i915/gt/intel_breadcrumbs.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5182,6 +5182,7 @@ int perf_event_release_kernel(struct per
- again:
- 	mutex_lock(&event->child_mutex);
- 	list_for_each_entry(child, &event->child_list, child_list) {
-+		void *var = NULL;
- 
- 		/*
- 		 * Cannot change, child events are not migrated, see the
-@@ -5222,11 +5223,23 @@ again:
- 			 * this can't be the last reference.
- 			 */
- 			put_event(event);
-+		} else {
-+			var = &ctx->refcount;
- 		}
- 
- 		mutex_unlock(&event->child_mutex);
- 		mutex_unlock(&ctx->mutex);
- 		put_ctx(ctx);
-+
-+		if (var) {
-+			/*
-+			 * If perf_event_free_task() has deleted all events from the
-+			 * ctx while the child_mutex got released above, make sure to
-+			 * notify about the preceding put_ctx().
-+			 */
-+			smp_mb(); /* pairs with wait_var_event() */
-+			wake_up_var(var);
-+		}
- 		goto again;
+--- a/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
++++ b/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
+@@ -263,8 +263,13 @@ static void signal_irq_work(struct irq_w
+ 		i915_request_put(rq);
  	}
- 	mutex_unlock(&event->child_mutex);
+ 
++	/* Lazy irq enabling after HW submission */
+ 	if (!READ_ONCE(b->irq_armed) && !list_empty(&b->signalers))
+ 		intel_breadcrumbs_arm_irq(b);
++
++	/* And confirm that we still want irqs enabled before we yield */
++	if (READ_ONCE(b->irq_armed) && !atomic_read(&b->active))
++		intel_breadcrumbs_disarm_irq(b);
+ }
+ 
+ struct intel_breadcrumbs *
+@@ -315,13 +320,7 @@ void __intel_breadcrumbs_park(struct int
+ 		return;
+ 
+ 	/* Kick the work once more to drain the signalers, and disarm the irq */
+-	irq_work_sync(&b->irq_work);
+-	while (READ_ONCE(b->irq_armed) && !atomic_read(&b->active)) {
+-		local_irq_disable();
+-		signal_irq_work(&b->irq_work);
+-		local_irq_enable();
+-		cond_resched();
+-	}
++	irq_work_queue(&b->irq_work);
+ }
+ 
+ void intel_breadcrumbs_free(struct kref *kref)
+@@ -404,7 +403,7 @@ static void insert_breadcrumb(struct i91
+ 	 * the request as it may have completed and raised the interrupt as
+ 	 * we were attaching it into the lists.
+ 	 */
+-	if (!b->irq_armed || __i915_request_is_complete(rq))
++	if (!READ_ONCE(b->irq_armed) || __i915_request_is_complete(rq))
+ 		irq_work_queue(&b->irq_work);
+ }
+ 
 
 
 
