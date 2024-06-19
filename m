@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-54050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A5D90EC6F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C31590ED9B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 283C3B212DB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BA2C1C21088
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E30145FEF;
-	Wed, 19 Jun 2024 13:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92A7145354;
+	Wed, 19 Jun 2024 13:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfucVs3W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKywKeq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E4E132129;
-	Wed, 19 Jun 2024 13:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A6B82495;
+	Wed, 19 Jun 2024 13:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802444; cv=none; b=LO8UuqwicCbIPsHzWbZkbM8h9YLI1GnSx/4ChqNukvSQP8S4WhDtaHNLi3SEfwTgm/S5e1+UcJDEUNfQv44Z1kCBjIRnKZZwJNz13smCh/hSMi0J0hGYbTqHEdXlWk0cWuzgbW5OSyWMXvv6bNbF61WFQmEEWDVn0CRyZbL4TLY=
+	t=1718803211; cv=none; b=Du+blc2yK+bCKiyWmTkITJLZUD/LMvLpReUHTrHzP22B2cUYDUqWNe8HhRDZ5TjbhIHbrmvxWWUSQrbfyNI8fx0m478mu4SGNgVPCK0uJSZJBTsOgn8hRmjAoT27/gHuufE/4E+3MmyveF9N9GyGWhTaXLQntmDgDUsW4nFQMAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802444; c=relaxed/simple;
-	bh=YD4oFD3ayz8qfMKnX6GjCuAUWbnqIqMku8qsTiUkkOM=;
+	s=arc-20240116; t=1718803211; c=relaxed/simple;
+	bh=j57I3MZfQEUdgVVq4wCwJiiBGjiwIbtak0+kDWewnIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JsBJCz5OJV745IvgRylqaGI2fmoHrndZSUIQKLBVTB2H3R/m0mpKlZL+nqd411mWF12T1W27u15IJiFI0ybG+2cXTKSbmI0Q8AfeKAncOqkR1HCa0kTCaaO6bRS3mKKw79zZYvdzJruu3ZdPw7e6Wj+RsRhiqeGvFCLPknQEAec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfucVs3W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF38FC2BBFC;
-	Wed, 19 Jun 2024 13:07:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sLw4J8u16Wkvbw1r569sgAoMa3lj7Z+QaMNMYTWSz5zZCfIPYMiTZiOh6hZ2wWMNfp4mh+s1+MsPXWYbsdiIg3FgzGZKgyk8yKdv2u+JNqu0eQxSUnwIIhqBle6MDSaJjKVItLCQ7bs2kK9ERSVKQswGxnZkT9t9f+6Tq4ImCnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKywKeq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871F9C2BBFC;
+	Wed, 19 Jun 2024 13:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802444;
-	bh=YD4oFD3ayz8qfMKnX6GjCuAUWbnqIqMku8qsTiUkkOM=;
+	s=korg; t=1718803210;
+	bh=j57I3MZfQEUdgVVq4wCwJiiBGjiwIbtak0+kDWewnIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bfucVs3Wn8ombCZK28pt7GEGdZvvh4NkdTeJwqz0dnchh86fra2HaLucRT5wAAM0Q
-	 EBkbR3UeS/yPsnEyHW6lLZF8nM35OA/ihsfeIIcnkeeWp4ZkYLJF1cv2Pk+YWekqrm
-	 Pggg/1IqlY0Upadn72dmd2OJQ1OHY9m8PDNQp2oI=
+	b=RKywKeq0p+PiXzzYZqY3SQZcHRKIMDJ5Mgd583QwJAgIoBQ/170SKD5DeAFZXHQAW
+	 +e3Sfvy8jf+uSeUOVA29MPaFcrKXMIaNtML6tOn6fwQBUf0+Uzp8T5i0YQz84VgUgR
+	 zOYwgSBfkH9vgUNBcf8ewRv2iLKr9toAvEO2op4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.6 199/267] dma-buf: handle testing kthreads creation failure
+	Genes Lists <lists@sapience.com>,
+	=?UTF-8?q?Johannes=20W=C3=BCller?= <johanneswueller@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Lee Jones <lee@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.9 191/281] leds: class: Revert: "If no default trigger is given, make hw_control trigger the default trigger"
 Date: Wed, 19 Jun 2024 14:55:50 +0200
-Message-ID: <20240619125613.971810185@linuxfoundation.org>
+Message-ID: <20240619125617.298871497@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +66,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 6cb05d89fd62a76a9b74bd16211fb0930e89fea8 upstream.
+commit fcf2a9970ef587d8f358560c381ee6115a9108aa upstream.
 
-kthread creation may possibly fail inside race_signal_callback(). In
-such a case stop the already started threads, put the already taken
-references to them and return with error code.
+Commit 66601a29bb23 ("leds: class: If no default trigger is given, make
+hw_control trigger the default trigger") causes ledtrig-netdev to get
+set as default trigger on various network LEDs.
 
-Found by Linux Verification Center (linuxtesting.org).
+This causes users to hit a pre-existing AB-BA deadlock issue in
+ledtrig-netdev between the LED-trigger locks and the rtnl mutex,
+resulting in hung tasks in kernels >= 6.9.
 
-Fixes: 2989f6451084 ("dma-buf: Add selftests for dma-fence")
+Solving the deadlock is non trivial, so for now revert the change to
+set the hw_control trigger as default trigger, so that ledtrig-netdev
+no longer gets activated automatically for various network LEDs.
+
+The netdev trigger is not needed because the network LEDs are usually under
+hw-control and the netdev trigger tries to leave things that way so setting
+it as the active trigger for the LED class device is a no-op.
+
+Fixes: 66601a29bb23 ("leds: class: If no default trigger is given, make hw_control trigger the default trigger")
+Reported-by: Genes Lists <lists@sapience.com>
+Closes: https://lore.kernel.org/all/9d189ec329cfe68ed68699f314e191a10d4b5eda.camel@sapience.com/
+Reported-by: Johannes Wüller <johanneswueller@gmail.com>
+Closes: https://lore.kernel.org/lkml/e441605c-eaf2-4c2d-872b-d8e541f4cf60@gmail.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: T.J. Mercier <tjmercier@google.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240522181308.841686-1-pchelkin@ispras.ru
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/st-dma-fence.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/leds/led-class.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/drivers/dma-buf/st-dma-fence.c
-+++ b/drivers/dma-buf/st-dma-fence.c
-@@ -540,6 +540,12 @@ static int race_signal_callback(void *ar
- 			t[i].before = pass;
- 			t[i].task = kthread_run(thread_signal_callback, &t[i],
- 						"dma-fence:%d", i);
-+			if (IS_ERR(t[i].task)) {
-+				ret = PTR_ERR(t[i].task);
-+				while (--i >= 0)
-+					kthread_stop_put(t[i].task);
-+				return ret;
-+			}
- 			get_task_struct(t[i].task);
- 		}
+diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
+index 24fcff682b24..ba1be15cfd8e 100644
+--- a/drivers/leds/led-class.c
++++ b/drivers/leds/led-class.c
+@@ -552,12 +552,6 @@ int led_classdev_register_ext(struct device *parent,
+ 	led_init_core(led_cdev);
  
+ #ifdef CONFIG_LEDS_TRIGGERS
+-	/*
+-	 * If no default trigger was given and hw_control_trigger is set,
+-	 * make it the default trigger.
+-	 */
+-	if (!led_cdev->default_trigger && led_cdev->hw_control_trigger)
+-		led_cdev->default_trigger = led_cdev->hw_control_trigger;
+ 	led_trigger_set_default(led_cdev);
+ #endif
+ 
+-- 
+2.45.2
+
 
 
 
