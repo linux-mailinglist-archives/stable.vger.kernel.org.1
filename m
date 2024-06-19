@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-54510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B25990EE96
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDCE490EC4B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40D311C2453E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8109E1F2142D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48768147C7B;
-	Wed, 19 Jun 2024 13:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C62143C4E;
+	Wed, 19 Jun 2024 13:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIzkj1Hz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWtudJga"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DE31419BA;
-	Wed, 19 Jun 2024 13:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4591132129;
+	Wed, 19 Jun 2024 13:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803793; cv=none; b=ijWFqVN/ILsEjx/c1obo7tU3q7HvID9MbtUwlMXOeTFEtGLIvQEO8x7FrKDbAYB2+tnnr6Heq2CkBtFRhrs5f+r7whxUshvELkuRKo0MkAuHWfOFDfDbFI3cOJalOFv1IDgmgpiSYaeXf5k4PwR2uV1UnjSLlKKh6TAQpx7TMrc=
+	t=1718802349; cv=none; b=LFcGlswiFBJKd0A0jsBoGJsCgH2jQ82UxgxzQR+LHI5i3wz/4YEG6j3L6pnrhmQLmPXH9ixX+RAZIlwKQDRPLo0Q4yiARaKbYyZHlX/XaarGORX0PSLX7eqaGBAk/isx3Glqg2BXeigJtmCYeHO2u1ZkSSktxzY3MQljcnTYLjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803793; c=relaxed/simple;
-	bh=EA+55qf4xs9vDrA3ssG27qOtulUhG9gGk0NFSisWtOk=;
+	s=arc-20240116; t=1718802349; c=relaxed/simple;
+	bh=60nRsPO0Ao1RZ+d9P2oA2p0hJ0UJdVdgdZA+3sUi2As=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1BxQ7NTKvugTwVLUGuT462/q2dNOevoqq6bjJXVrAe27MVue0m4PNt64+jc+tTOCo9/B1ZPse11pU05mAXdX/TiY3orxacASKxMHo449r4g0UgqxdaAYxljwqiH9OyMXkl1CtUYw6hpfyNqQyodMiurKAj/3O1zjdQg2cuMy9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIzkj1Hz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BA3C2BBFC;
-	Wed, 19 Jun 2024 13:29:52 +0000 (UTC)
+	 MIME-Version; b=GmTS+ne23xgaBQQLhIt/9iY9RO8C6O0fj6Ns/ZJt58C4aPHw+x8zPhWUhhdZLvkxrdt+3OyDNOplMUTjXLoqUgO/U3kGrkCw+ggv9O7gdotSYkD33WjrMCPx5NS9/oqWwqsKjZIMiqtri9l7KLGVv5cZh+tfh/1H9/b6PjK7ZCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWtudJga; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B154C2BBFC;
+	Wed, 19 Jun 2024 13:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803792;
-	bh=EA+55qf4xs9vDrA3ssG27qOtulUhG9gGk0NFSisWtOk=;
+	s=korg; t=1718802349;
+	bh=60nRsPO0Ao1RZ+d9P2oA2p0hJ0UJdVdgdZA+3sUi2As=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIzkj1HzLyQ36J8qnl6iS+ypH6PL0SjSLWN/peApDmzRoF5l53J/eefS18Ib1VSQZ
-	 Pj0QL3QapELHqpNj2W/kC4XlQiJajOy3G7w+Pq2awc9NILj1E3O0xiOmMc2gWYtV1E
-	 kzZxcBRLZQRpIj/TDvLv/aKh0DUJTlvoJgj9HP5Y=
+	b=BWtudJga7CQ+aG2fWS6oV4syarkXcJsUPswNXoEJSoBZkU2WXyzOIogBMXdPur9I+
+	 wzBdNVDKT5drAVjzJ5HXnSeG4qnIV1a2xu8Mkn2+4zfA3w0M99I0tZxJLNANUr9EMY
+	 TPb2eXlNwFpScY8DTK1+ooQpjIegEk7dzAHErXGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dev Jain <dev.jain@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sri Jayaramappa <sjayaram@akamai.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	syzbot+9bbe2de1bc9d470eb5fe@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/217] selftests/mm: compaction_test: fix incorrect write of zero to nr_hugepages
-Date: Wed, 19 Jun 2024 14:55:17 +0200
-Message-ID: <20240619125559.540404013@linuxfoundation.org>
+Subject: [PATCH 6.6 167/267] net: bridge: mst: pass vlan group directly to br_mst_vlan_set_state
+Date: Wed, 19 Jun 2024 14:55:18 +0200
+Message-ID: <20240619125612.752741141@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 9ad665ef55eaad1ead1406a58a34f615a7c18b5e ]
+[ Upstream commit 36c92936e868601fa1f43da6758cf55805043509 ]
 
-Currently, the test tries to set nr_hugepages to zero, but that is not
-actually done because the file offset is not reset after read().  Fix that
-using lseek().
+Pass the already obtained vlan group pointer to br_mst_vlan_set_state()
+instead of dereferencing it again. Each caller has already correctly
+dereferenced it for their context. This change is required for the
+following suspicious RCU dereference fix. No functional changes
+intended.
 
-Link: https://lkml.kernel.org/r/20240521074358.675031-3-dev.jain@arm.com
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Cc: <stable@vger.kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Sri Jayaramappa <sjayaram@akamai.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 3a7c1661ae13 ("net: bridge: mst: fix vlan use-after-free")
+Reported-by: syzbot+9bbe2de1bc9d470eb5fe@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9bbe2de1bc9d470eb5fe
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240609103654.914987-2-razor@blackwall.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vm/compaction_test.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bridge/br_mst.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
-index 9b420140ba2ba..55dec92e1e58c 100644
---- a/tools/testing/selftests/vm/compaction_test.c
-+++ b/tools/testing/selftests/vm/compaction_test.c
-@@ -103,6 +103,8 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 		goto close_fd;
+diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
+index 3c66141d34d62..1de72816b0fb2 100644
+--- a/net/bridge/br_mst.c
++++ b/net/bridge/br_mst.c
+@@ -73,11 +73,10 @@ int br_mst_get_state(const struct net_device *dev, u16 msti, u8 *state)
+ }
+ EXPORT_SYMBOL_GPL(br_mst_get_state);
+ 
+-static void br_mst_vlan_set_state(struct net_bridge_port *p, struct net_bridge_vlan *v,
++static void br_mst_vlan_set_state(struct net_bridge_vlan_group *vg,
++				  struct net_bridge_vlan *v,
+ 				  u8 state)
+ {
+-	struct net_bridge_vlan_group *vg = nbp_vlan_group(p);
+-
+ 	if (br_vlan_get_state(v) == state)
+ 		return;
+ 
+@@ -121,7 +120,7 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+ 		if (v->brvlan->msti != msti)
+ 			continue;
+ 
+-		br_mst_vlan_set_state(p, v, state);
++		br_mst_vlan_set_state(vg, v, state);
  	}
  
-+	lseek(fd, 0, SEEK_SET);
-+
- 	/* Start with the initial condition of 0 huge pages*/
- 	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
- 		perror("Failed to write 0 to /proc/sys/vm/nr_hugepages\n");
+ out:
+@@ -140,13 +139,13 @@ static void br_mst_vlan_sync_state(struct net_bridge_vlan *pv, u16 msti)
+ 		 * it.
+ 		 */
+ 		if (v != pv && v->brvlan->msti == msti) {
+-			br_mst_vlan_set_state(pv->port, pv, v->state);
++			br_mst_vlan_set_state(vg, pv, v->state);
+ 			return;
+ 		}
+ 	}
+ 
+ 	/* Otherwise, start out in a new MSTI with all ports disabled. */
+-	return br_mst_vlan_set_state(pv->port, pv, BR_STATE_DISABLED);
++	return br_mst_vlan_set_state(vg, pv, BR_STATE_DISABLED);
+ }
+ 
+ int br_mst_vlan_set_msti(struct net_bridge_vlan *mv, u16 msti)
 -- 
 2.43.0
 
