@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475D990EE14
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4960590ED3C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB67F1F21B9B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5606B225F2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233D414659A;
-	Wed, 19 Jun 2024 13:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3086F14375A;
+	Wed, 19 Jun 2024 13:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOTi2W6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUzlKwCp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D633C143757;
-	Wed, 19 Jun 2024 13:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A5CAD58;
+	Wed, 19 Jun 2024 13:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803521; cv=none; b=dbgcArhcd0683fmhdD3097v91aHLxPju1vDv8BYqbUDBxsEmugEJ29mZu1Hx4/JPeFFC8MfRTAUD3gexJVCd4s5fvbXDsp4Lqet359cZzNvOEkNi4gN0DBvHHYonuOKuNOXXR5QDfD1F8yi2cYLajA7Jx0HawZApC8ZYfHM1Wro=
+	t=1718802940; cv=none; b=WaS3/25iawKctsvQgulWIAsA1BB3yiim1Rdwv1PCL5kTybvQWU8MARhKRUWEB/01CE+d3vSQdgmKJI/5ZdewqOu1EgpZEsWVD/omUbeVb8DnC3gBtXah+IiJCIMTz3I7Wy7ecy8lXnwfs4J3o3jWTESP4E5KC3jpGp12ikXLSAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803521; c=relaxed/simple;
-	bh=NPmpntSd1edEhfWbt5mtJZyvhVMuniVHp/UcVYBdbIA=;
+	s=arc-20240116; t=1718802940; c=relaxed/simple;
+	bh=Oi46bwPfWBNuD/5YtgzBtcrjggXujFjcZdtWBDDQHls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JsLqsvbSZOwr/tCRS6lGBOCe1do1fzCqUMjxRsm2zKPy0BnlLQHHAdhkHo9T7i/LRfrE5N7N/kbgj+ioAgn+/oEctLMDaP4GuG5uub1ZRDXd9YS9Pks8Rldid//orQJUIytz04XQqFfvd2RyOdfO8h6nGfxm9mqgvtcSVTNtbhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOTi2W6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED32C2BBFC;
-	Wed, 19 Jun 2024 13:25:21 +0000 (UTC)
+	 MIME-Version; b=LOJsqz1xc7nXPucASwG4AztwGAx4wsgY0MJLOvh/JzrotgWWMifUiVAIMdAB9a1AKJSTgukp9dfWI6PsC6bPdOREu619tn+JcV1984/jSgSxi0duez/2ufByVuwfaTEtYvH+xoGXcuGrNmnv6Cu61Wdz1k7IJy8w3KQWCKfj+Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUzlKwCp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E39C2BBFC;
+	Wed, 19 Jun 2024 13:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803521;
-	bh=NPmpntSd1edEhfWbt5mtJZyvhVMuniVHp/UcVYBdbIA=;
+	s=korg; t=1718802939;
+	bh=Oi46bwPfWBNuD/5YtgzBtcrjggXujFjcZdtWBDDQHls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOTi2W6p+ec0jR26B+dfkEMerUH+mlz5S/w7K/Q/OpT18dpOacyNOvOsV7hxH5Rch
-	 fZKInSAYL9raE4stquowKQwv+eaYY9rAvs6CIjh/HTbutsEe5FjmW5c5vD7pKafGEb
-	 h+7hy/1yQmSXYQHq7eEcbtBKhCjphOFn1SvQRI+k=
+	b=ZUzlKwCpezF5mBOm7gxadUYsYYuCafMW4QvynZHmi580Ed8wenVRvjnZ8pvStsL5b
+	 yxmZ8VrWyC610NfwQZ3rxGbGczxT6Em38FtfrBDQiS/laBHbAYL+MhqxhNe6Pn5n2q
+	 XcuxPcweLYfvXGc5z0ZkDx65SezAx4exumiCl7ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DelphineCCChiu <delphine_cc_chiu@wiwynn.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/217] net/ncsi: Fix the multi thread manner of NCSI driver
+	Aapo Vienamo <aapo.vienamo@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.9 098/281] thunderbolt: debugfs: Fix margin debugfs node creation condition
 Date: Wed, 19 Jun 2024 14:54:17 +0200
-Message-ID: <20240619125557.189366666@linuxfoundation.org>
+Message-ID: <20240619125613.622608993@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,225 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DelphineCCChiu <delphine_cc_chiu@wiwynn.com>
+From: Aapo Vienamo <aapo.vienamo@linux.intel.com>
 
-[ Upstream commit e85e271dec0270982afed84f70dc37703fcc1d52 ]
+commit 985cfe501b74f214905ab4817acee0df24627268 upstream.
 
-Currently NCSI driver will send several NCSI commands back to back without
-waiting the response of previous NCSI command or timeout in some state
-when NIC have multi channel. This operation against the single thread
-manner defined by NCSI SPEC(section 6.3.2.3 in DSP0222_1.1.1)
+The margin debugfs node controls the "Enable Margin Test" field of the
+lane margining operations. This field selects between either low or high
+voltage margin values for voltage margin test or left or right timing
+margin values for timing margin test.
 
-According to NCSI SPEC(section 6.2.13.1 in DSP0222_1.1.1), we should probe
-one channel at a time by sending NCSI commands (Clear initial state, Get
-version ID, Get capabilities...), than repeat this steps until the max
-number of channels which we got from NCSI command (Get capabilities) has
-been probed.
+According to the USB4 specification, whether or not the "Enable Margin
+Test" control applies, depends on the values of the "Independent
+High/Low Voltage Margin" or "Independent Left/Right Timing Margin"
+capability fields for voltage and timing margin tests respectively. The
+pre-existing condition enabled the debugfs node also in the case where
+both low/high or left/right margins are returned, which is incorrect.
+This change only enables the debugfs node in question, if the specific
+required capability values are met.
 
-Fixes: e6f44ed6d04d ("net/ncsi: Package and channel management")
-Signed-off-by: DelphineCCChiu <delphine_cc_chiu@wiwynn.com>
-Link: https://lore.kernel.org/r/20240529065856.825241-1-delphine_cc_chiu@wiwynn.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Aapo Vienamo <aapo.vienamo@linux.intel.com>
+Fixes: d0f1e0c2a699 ("thunderbolt: Add support for receiver lane margining")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/internal.h    |  2 ++
- net/ncsi/ncsi-manage.c | 73 +++++++++++++++++++++---------------------
- net/ncsi/ncsi-rsp.c    |  4 ++-
- 3 files changed, 41 insertions(+), 38 deletions(-)
+ drivers/thunderbolt/debugfs.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
-index 374412ed780b6..ef0f8f73826f5 100644
---- a/net/ncsi/internal.h
-+++ b/net/ncsi/internal.h
-@@ -325,6 +325,7 @@ struct ncsi_dev_priv {
- 	spinlock_t          lock;            /* Protect the NCSI device    */
- 	unsigned int        package_probe_id;/* Current ID during probe    */
- 	unsigned int        package_num;     /* Number of packages         */
-+	unsigned int        channel_probe_id;/* Current cahnnel ID during probe */
- 	struct list_head    packages;        /* List of packages           */
- 	struct ncsi_channel *hot_channel;    /* Channel was ever active    */
- 	struct ncsi_request requests[256];   /* Request table              */
-@@ -343,6 +344,7 @@ struct ncsi_dev_priv {
- 	bool                multi_package;   /* Enable multiple packages   */
- 	bool                mlx_multi_host;  /* Enable multi host Mellanox */
- 	u32                 package_whitelist; /* Packages to configure    */
-+	unsigned char       channel_count;     /* Num of channels to probe   */
- };
- 
- struct ncsi_cmd_arg {
-diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index f567957698935..760b33fa03a8b 100644
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -510,17 +510,19 @@ static void ncsi_suspend_channel(struct ncsi_dev_priv *ndp)
- 
- 		break;
- 	case ncsi_dev_state_suspend_gls:
--		ndp->pending_req_num = np->channel_num;
-+		ndp->pending_req_num = 1;
- 
- 		nca.type = NCSI_PKT_CMD_GLS;
- 		nca.package = np->id;
-+		nca.channel = ndp->channel_probe_id;
-+		ret = ncsi_xmit_cmd(&nca);
-+		if (ret)
-+			goto error;
-+		ndp->channel_probe_id++;
- 
--		nd->state = ncsi_dev_state_suspend_dcnt;
--		NCSI_FOR_EACH_CHANNEL(np, nc) {
--			nca.channel = nc->id;
--			ret = ncsi_xmit_cmd(&nca);
--			if (ret)
--				goto error;
-+		if (ndp->channel_probe_id == ndp->channel_count) {
-+			ndp->channel_probe_id = 0;
-+			nd->state = ncsi_dev_state_suspend_dcnt;
- 		}
- 
- 		break;
-@@ -1340,7 +1342,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
- {
- 	struct ncsi_dev *nd = &ndp->ndev;
- 	struct ncsi_package *np;
--	struct ncsi_channel *nc;
- 	struct ncsi_cmd_arg nca;
- 	unsigned char index;
- 	int ret;
-@@ -1418,23 +1419,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
- 
- 		nd->state = ncsi_dev_state_probe_cis;
- 		break;
--	case ncsi_dev_state_probe_cis:
--		ndp->pending_req_num = NCSI_RESERVED_CHANNEL;
--
--		/* Clear initial state */
--		nca.type = NCSI_PKT_CMD_CIS;
--		nca.package = ndp->active_package->id;
--		for (index = 0; index < NCSI_RESERVED_CHANNEL; index++) {
--			nca.channel = index;
--			ret = ncsi_xmit_cmd(&nca);
--			if (ret)
--				goto error;
--		}
--
--		nd->state = ncsi_dev_state_probe_gvi;
--		if (IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY))
--			nd->state = ncsi_dev_state_probe_keep_phy;
--		break;
- 	case ncsi_dev_state_probe_keep_phy:
- 		ndp->pending_req_num = 1;
- 
-@@ -1447,14 +1431,17 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
- 
- 		nd->state = ncsi_dev_state_probe_gvi;
- 		break;
-+	case ncsi_dev_state_probe_cis:
- 	case ncsi_dev_state_probe_gvi:
- 	case ncsi_dev_state_probe_gc:
- 	case ncsi_dev_state_probe_gls:
- 		np = ndp->active_package;
--		ndp->pending_req_num = np->channel_num;
-+		ndp->pending_req_num = 1;
- 
--		/* Retrieve version, capability or link status */
--		if (nd->state == ncsi_dev_state_probe_gvi)
-+		/* Clear initial state Retrieve version, capability or link status */
-+		if (nd->state == ncsi_dev_state_probe_cis)
-+			nca.type = NCSI_PKT_CMD_CIS;
-+		else if (nd->state == ncsi_dev_state_probe_gvi)
- 			nca.type = NCSI_PKT_CMD_GVI;
- 		else if (nd->state == ncsi_dev_state_probe_gc)
- 			nca.type = NCSI_PKT_CMD_GC;
-@@ -1462,19 +1449,29 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
- 			nca.type = NCSI_PKT_CMD_GLS;
- 
- 		nca.package = np->id;
--		NCSI_FOR_EACH_CHANNEL(np, nc) {
--			nca.channel = nc->id;
--			ret = ncsi_xmit_cmd(&nca);
--			if (ret)
--				goto error;
--		}
-+		nca.channel = ndp->channel_probe_id;
- 
--		if (nd->state == ncsi_dev_state_probe_gvi)
-+		ret = ncsi_xmit_cmd(&nca);
-+		if (ret)
-+			goto error;
-+
-+		if (nd->state == ncsi_dev_state_probe_cis) {
-+			nd->state = ncsi_dev_state_probe_gvi;
-+			if (IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY) && ndp->channel_probe_id == 0)
-+				nd->state = ncsi_dev_state_probe_keep_phy;
-+		} else if (nd->state == ncsi_dev_state_probe_gvi) {
- 			nd->state = ncsi_dev_state_probe_gc;
--		else if (nd->state == ncsi_dev_state_probe_gc)
-+		} else if (nd->state == ncsi_dev_state_probe_gc) {
- 			nd->state = ncsi_dev_state_probe_gls;
--		else
-+		} else {
-+			nd->state = ncsi_dev_state_probe_cis;
-+			ndp->channel_probe_id++;
-+		}
-+
-+		if (ndp->channel_probe_id == ndp->channel_count) {
-+			ndp->channel_probe_id = 0;
- 			nd->state = ncsi_dev_state_probe_dp;
-+		}
- 		break;
- 	case ncsi_dev_state_probe_dp:
- 		ndp->pending_req_num = 1;
-@@ -1775,6 +1772,7 @@ struct ncsi_dev *ncsi_register_dev(struct net_device *dev,
- 		ndp->requests[i].ndp = ndp;
- 		timer_setup(&ndp->requests[i].timer, ncsi_request_timeout, 0);
- 	}
-+	ndp->channel_count = NCSI_RESERVED_CHANNEL;
- 
- 	spin_lock_irqsave(&ncsi_dev_lock, flags);
- 	list_add_tail_rcu(&ndp->node, &ncsi_dev_list);
-@@ -1808,6 +1806,7 @@ int ncsi_start_dev(struct ncsi_dev *nd)
- 
- 	if (!(ndp->flags & NCSI_DEV_PROBED)) {
- 		ndp->package_probe_id = 0;
-+		ndp->channel_probe_id = 0;
- 		nd->state = ncsi_dev_state_probe;
- 		schedule_work(&ndp->work);
- 		return 0;
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index 480e80e3c2836..f22d67cb04d37 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -795,12 +795,13 @@ static int ncsi_rsp_handler_gc(struct ncsi_request *nr)
- 	struct ncsi_rsp_gc_pkt *rsp;
- 	struct ncsi_dev_priv *ndp = nr->ndp;
- 	struct ncsi_channel *nc;
-+	struct ncsi_package *np;
- 	size_t size;
- 
- 	/* Find the channel */
- 	rsp = (struct ncsi_rsp_gc_pkt *)skb_network_header(nr->rsp);
- 	ncsi_find_package_and_channel(ndp, rsp->rsp.common.channel,
--				      NULL, &nc);
-+				      &np, &nc);
- 	if (!nc)
- 		return -ENODEV;
- 
-@@ -835,6 +836,7 @@ static int ncsi_rsp_handler_gc(struct ncsi_request *nr)
- 	 */
- 	nc->vlan_filter.bitmap = U64_MAX;
- 	nc->vlan_filter.n_vids = rsp->vlan_cnt;
-+	np->ndp->channel_count = rsp->channel_cnt;
- 
- 	return 0;
+--- a/drivers/thunderbolt/debugfs.c
++++ b/drivers/thunderbolt/debugfs.c
+@@ -943,8 +943,9 @@ static void margining_port_init(struct t
+ 	debugfs_create_file("run", 0600, dir, port, &margining_run_fops);
+ 	debugfs_create_file("results", 0600, dir, port, &margining_results_fops);
+ 	debugfs_create_file("test", 0600, dir, port, &margining_test_fops);
+-	if (independent_voltage_margins(usb4) ||
+-	    (supports_time(usb4) && independent_time_margins(usb4)))
++	if (independent_voltage_margins(usb4) == USB4_MARGIN_CAP_0_VOLTAGE_HL ||
++	    (supports_time(usb4) &&
++	     independent_time_margins(usb4) == USB4_MARGIN_CAP_1_TIME_LR))
+ 		debugfs_create_file("margin", 0600, dir, port, &margining_margin_fops);
  }
--- 
-2.43.0
-
+ 
 
 
 
