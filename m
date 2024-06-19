@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-54584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D6A90EEED
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DDD290EDF0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 315422825CC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66BEE1C23D55
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D689D14387E;
-	Wed, 19 Jun 2024 13:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759411459F2;
+	Wed, 19 Jun 2024 13:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HU/cTUg0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Q+b6hrr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9453A1E492;
-	Wed, 19 Jun 2024 13:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341DC4D9EA;
+	Wed, 19 Jun 2024 13:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804012; cv=none; b=PQMBBvFUpRjIbuigzGHwkNX0YuncKCG0VNAYIypP24rWJAQmN8jeCmtYtc12FAwVhrR2Rk5hZd62c6Ic7UyLRL6h/8hp+Eu7ipiEmEKO0/VDwqssQIhAvxWX6KFI+Oi2ckOa034yPjsAiJdG5dpAyMGz6OPBvhx41LGl1j/cMow=
+	t=1718803433; cv=none; b=YSHMRfXvm7EWyDVylYFttO1LNH8XlQg0IGof0o6ksozlJSNCugZHX2rxblkwWxE5/rrzAgIqddqDjGOijxn5KEb6kJy40BLpEfYk2XqUvVFzmsz1fsS48xALzkG06AGCbBy15ujweTkJnDeKNVKacFhgec7Uj1p8yzDLnAXTr9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804012; c=relaxed/simple;
-	bh=S1iIY/WsQlyiQVJPP/gg9w9rI599wJ0llv72NUh4xQo=;
+	s=arc-20240116; t=1718803433; c=relaxed/simple;
+	bh=7OO/H04QhQf3O0WOjnBtsrJqTTJuQl1S1A6wDDvY24w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mtwQWz/bQAhLD/P0xWVk8G/TpaA8ZgHgnp4t257sBU38VxMuCn3s7DIcRENoDilPir441tPSqOyvHbnukLzGH+d3MtBi/GPOLIeAdscNReMvxJ4RON8GfMlaHsL/Zab9gm3RxcoqMZrbqjGaD1beB6T/+ofp1h4dJC/Pv9jcBVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HU/cTUg0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F179C2BBFC;
-	Wed, 19 Jun 2024 13:33:31 +0000 (UTC)
+	 MIME-Version; b=LX3kTPo/AMKSSkD/tErqciakze+RlbVUroivFhagqPsYDqtfx5OKU9Ghqh2/f34BdMiMzKOTH5dkIP2QPwcYZqE1wwETxcDmSplXyMrv9WCcDrfi+vRGDPih8GK+1X1B6BC1gEiWo/Ik+KINyXiUh32v7zDUCYDgMIEaInI7Mn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Q+b6hrr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA380C2BBFC;
+	Wed, 19 Jun 2024 13:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804012;
-	bh=S1iIY/WsQlyiQVJPP/gg9w9rI599wJ0llv72NUh4xQo=;
+	s=korg; t=1718803433;
+	bh=7OO/H04QhQf3O0WOjnBtsrJqTTJuQl1S1A6wDDvY24w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HU/cTUg0IR0xmmKIWbSNb+bdNr1gKPDRsxs7ECFgf/CM5iIM2g5T8WuVkIeBMDtVS
-	 mxFYmF6PJESHzA2q/dV1a+DiVYcencrTENdMTe0LgNtgaxKpYuzFlOFGsEsOPm42X4
-	 1juKQD0dMr+XOF1mCGebRec27uJDGWTcNX457yHU=
+	b=0Q+b6hrrCKgMCzVSA4UKqzMWLO4EHCqbdqhp0CBRF/I1aLIm3AV+UP7o1pIdT+O4B
+	 jH+l1G5loY0rW15Z3q+GEq+VfUlNs5zvn33E73MY10GhVhEqRDfadnLYkVhtTpseJ7
+	 mwUD+osgq+h3UT6PdgiYInJxauzCCMhBRuXIY5+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Yue <glass.su@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 180/217] ocfs2: use coarse time for new created files
-Date: Wed, 19 Jun 2024 14:57:03 +0200
-Message-ID: <20240619125603.632214687@linuxfoundation.org>
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.9 265/281] intel_th: pci: Add Lunar Lake support
+Date: Wed, 19 Jun 2024 14:57:04 +0200
+Message-ID: <20240619125620.174411966@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,92 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Yue <glass.su@suse.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-commit b8cb324277ee16f3eca3055b96fce4735a5a41c6 upstream.
+commit f866b65322bfbc8fcca13c25f49e1a5c5a93ae4d upstream.
 
-The default atime related mount option is '-o realtime' which means file
-atime should be updated if atime <= ctime or atime <= mtime.  atime should
-be updated in the following scenario, but it is not:
-==========================================================
-$ rm /mnt/testfile;
-$ echo test > /mnt/testfile
-$ stat -c "%X %Y %Z" /mnt/testfile
-1711881646 1711881646 1711881646
-$ sleep 5
-$ cat /mnt/testfile > /dev/null
-$ stat -c "%X %Y %Z" /mnt/testfile
-1711881646 1711881646 1711881646
-==========================================================
+Add support for the Trace Hub in Lunar Lake.
 
-And the reason the atime in the test is not updated is that ocfs2 calls
-ktime_get_real_ts64() in __ocfs2_mknod_locked during file creation.  Then
-inode_set_ctime_current() is called in inode_set_ctime_current() calls
-ktime_get_coarse_real_ts64() to get current time.
-
-ktime_get_real_ts64() is more accurate than ktime_get_coarse_real_ts64().
-In my test box, I saw ctime set by ktime_get_coarse_real_ts64() is less
-than ktime_get_real_ts64() even ctime is set later.  The ctime of the new
-inode is smaller than atime.
-
-The call trace is like:
-
-ocfs2_create
-  ocfs2_mknod
-    __ocfs2_mknod_locked
-    ....
-
-      ktime_get_real_ts64 <------- set atime,ctime,mtime, more accurate
-      ocfs2_populate_inode
-    ...
-    ocfs2_init_acl
-      ocfs2_acl_set_mode
-        inode_set_ctime_current
-          current_time
-            ktime_get_coarse_real_ts64 <-------less accurate
-
-ocfs2_file_read_iter
-  ocfs2_inode_lock_atime
-    ocfs2_should_update_atime
-      atime <= ctime ? <-------- false, ctime < atime due to accuracy
-
-So here call ktime_get_coarse_real_ts64 to set inode time coarser while
-creating new files.  It may lower the accuracy of file times.  But it's
-not a big deal since we already use coarse time in other places like
-ocfs2_update_inode_atime and inode_set_ctime_current.
-
-Link: https://lkml.kernel.org/r/20240408082041.20925-5-glass.su@suse.com
-Fixes: c62c38f6b91b ("ocfs2: replace CURRENT_TIME macro")
-Signed-off-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-16-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/namei.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -566,7 +566,7 @@ static int __ocfs2_mknod_locked(struct i
- 	fe->i_last_eb_blk = 0;
- 	strcpy(fe->i_signature, OCFS2_INODE_SIGNATURE);
- 	fe->i_flags |= cpu_to_le32(OCFS2_VALID_FL);
--	ktime_get_real_ts64(&ts);
-+	ktime_get_coarse_real_ts64(&ts);
- 	fe->i_atime = fe->i_ctime = fe->i_mtime =
- 		cpu_to_le64(ts.tv_sec);
- 	fe->i_mtime_nsec = fe->i_ctime_nsec = fe->i_atime_nsec =
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -325,6 +325,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Lunar Lake */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0xa824),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Alder Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
