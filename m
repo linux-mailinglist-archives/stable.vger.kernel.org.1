@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-54320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D2290EDA5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB3190EE9D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67B141F21CAB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77B9C2864E6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB6814AD35;
-	Wed, 19 Jun 2024 13:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1FF14A62A;
+	Wed, 19 Jun 2024 13:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tR5ubczT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fd6fdu+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C56482495;
-	Wed, 19 Jun 2024 13:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7771422B8;
+	Wed, 19 Jun 2024 13:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803232; cv=none; b=pLa/DFKGX3SlqiRdAJNN2FIWvCJYICoAy44fd95psOVtQYNT2D5GGDU3Y7g0rvLk6MO+o81iGRpDWd2egmDdA2pt92KGz9eRzs5hakPPqYfg6C6Upnb05VbDdkvYpU6zk5ant+4ENAaCy3Rmm3T5PLNubFlntguvkob7nYQFVr4=
+	t=1718803816; cv=none; b=DPTZUAJPJnIuYuGmdTrWFo7m3EAseXUjlQP/YwGr+wmvnBaEBbkAr0DgSbd2QJVZg9rXnGttrfoIOIWLdvMLccF4Y7IYKHfYa5MSa0Nyxu/+flCzYgHajgfjf0Zt1nNLK3BOpuRfJxDhXbHbJjoWL045f/SNUIoN5a3c45ib/QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803232; c=relaxed/simple;
-	bh=JVHJZ/wy55jIo6YcDxLdjAZOA/NSuWxGv5mwavhig4M=;
+	s=arc-20240116; t=1718803816; c=relaxed/simple;
+	bh=wrf27eKRl1XyH6njOwS2yF5DO9VsSXzBzw5sXeC72is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYswz1n/+pUj/DclQq1NbvHDV9pschrlR+94GhQ2ix/52n+v1UMgfbUB9O+lV9mCZ1pfmo2dJbwPlQcZTqvZzMDPT8+1DqbDR+JI9vNHLdgbk/PV+KI4A4NQeTXEDleyAH4jfW4wC6sfAv7vV0cJAiBvuQiTg8ugAKp2izSO3NU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tR5ubczT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1747C2BBFC;
-	Wed, 19 Jun 2024 13:20:30 +0000 (UTC)
+	 MIME-Version; b=OhYaGSFI/8crkI8Cw1CuYV3nGEY4S/fAxgqKkGC568D7EDT1/e5sQpm0B6eckiXqpfpyxLWLMCb5scGtECpoZPENnY+Xb/S+S68ZzOw9nvhg3vNZpo0/bP8jmgZUR7alhr0GELi18RUNKXegvmwDK+38i4cGZnJWS7so078xFT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fd6fdu+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11061C2BBFC;
+	Wed, 19 Jun 2024 13:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803231;
-	bh=JVHJZ/wy55jIo6YcDxLdjAZOA/NSuWxGv5mwavhig4M=;
+	s=korg; t=1718803816;
+	bh=wrf27eKRl1XyH6njOwS2yF5DO9VsSXzBzw5sXeC72is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tR5ubczT2rVS3/V+n3NNXteYFvyJERpNXh9XZ6Yre7KwnoD0rJsvaNEBl/Cp+3XEg
-	 8t1fQ2oGn8V8C7WFufVbdd91CrBT40VXC/JuNlVN64/666hUbaYlIQP+ymoG4+Qig+
-	 2BI2NJVucfROx1bHT/dX5hdlgnVhfeeruBAOwLLk=
+	b=Fd6fdu+rRys4SBNZ1ccm+SxqkzZFB8n86dryovNmcz4wEWs+/z5lpUoIpLZMAcEV6
+	 faGqUsvmrmz5ZBh86iwh7U89q7/AZc+p/nLl2y2HJkEduSByjF5/eg+0w5ajCieWPb
+	 t3WZFquywkx4sUWEwoUZbbiUnyA++u368ulTJWA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Rizkalla <ajarizzo@gmail.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.9 197/281] iio: pressure: bmp280: Fix BMP580 temperature reading
-Date: Wed, 19 Jun 2024 14:55:56 +0200
-Message-ID: <20240619125617.531797999@linuxfoundation.org>
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 114/217] cachefiles: remove err_put_fd label in cachefiles_ondemand_daemon_read()
+Date: Wed, 19 Jun 2024 14:55:57 +0200
+Message-ID: <20240619125601.087169557@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +66,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Rizkalla <ajarizzo@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 0f0f6306617cb4b6231fc9d4ec68ab9a56dba7c0 upstream.
+[ Upstream commit 3e6d704f02aa4c50c7bc5fe91a4401df249a137b ]
 
-Fix overflow issue when storing BMP580 temperature reading and
-properly preserve sign of 24-bit data.
+The err_put_fd label is only used once, so remove it to make the code
+more readable. In addition, the logic for deleting error request and
+CLOSE request is merged to simplify the code.
 
-Signed-off-by: Adam Rizkalla <ajarizzo@gmail.com>
-Tested-By: Vasileios Amoiridis <vassilisamir@gmail.com>
-Acked-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-Link: https://lore.kernel.org/r/Zin2udkXRD0+GrML@adam-asahi.lan
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240522114308.2402121-6-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 4b4391e77a6b ("cachefiles: defer exposing anon_fd until after copy_to_user() succeeds")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/bmp280-core.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/cachefiles/ondemand.c | 45 ++++++++++++++--------------------------
+ 1 file changed, 16 insertions(+), 29 deletions(-)
 
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1394,12 +1394,12 @@ static int bmp580_read_temp(struct bmp28
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index fd73811c7ce4f..99b4bffad4a4f 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -337,7 +337,6 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ {
+ 	struct cachefiles_req *req;
+ 	struct cachefiles_msg *msg;
+-	unsigned long id = 0;
+ 	size_t n;
+ 	int ret = 0;
+ 	XA_STATE(xas, &cache->reqs, cache->req_id_next);
+@@ -372,49 +371,37 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 	cachefiles_grab_object(req->object, cachefiles_obj_get_read_req);
+ 	xa_unlock(&cache->reqs);
  
- 	/*
- 	 * Temperature is returned in Celsius degrees in fractional
--	 * form down 2^16. We rescale by x1000 to return milli Celsius
--	 * to respect IIO ABI.
-+	 * form down 2^16. We rescale by x1000 to return millidegrees
-+	 * Celsius to respect IIO ABI.
- 	 */
--	*val = raw_temp * 1000;
--	*val2 = 16;
--	return IIO_VAL_FRACTIONAL_LOG2;
-+	raw_temp = sign_extend32(raw_temp, 23);
-+	*val = ((s64)raw_temp * 1000) / (1 << 16);
-+	return IIO_VAL_INT;
+-	id = xas.xa_index;
+-
+ 	if (msg->opcode == CACHEFILES_OP_OPEN) {
+ 		ret = cachefiles_ondemand_get_fd(req);
+ 		if (ret) {
+ 			cachefiles_ondemand_set_object_close(req->object);
+-			goto error;
++			goto out;
+ 		}
+ 	}
+ 
+-	msg->msg_id = id;
++	msg->msg_id = xas.xa_index;
+ 	msg->object_id = req->object->ondemand->ondemand_id;
+ 
+ 	if (copy_to_user(_buffer, msg, n) != 0) {
+ 		ret = -EFAULT;
+-		goto err_put_fd;
+-	}
+-
+-	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
+-	/* CLOSE request has no reply */
+-	if (msg->opcode == CACHEFILES_OP_CLOSE) {
+-		xa_erase(&cache->reqs, id);
+-		complete(&req->done);
++		if (msg->opcode == CACHEFILES_OP_OPEN)
++			close_fd(((struct cachefiles_open *)msg->data)->fd);
+ 	}
+-
+-	cachefiles_req_put(req);
+-	return n;
+-
+-err_put_fd:
+-	if (msg->opcode == CACHEFILES_OP_OPEN)
+-		close_fd(((struct cachefiles_open *)msg->data)->fd);
+-error:
++out:
+ 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
+-	xas_reset(&xas);
+-	xas_lock(&xas);
+-	if (xas_load(&xas) == req) {
+-		req->error = ret;
+-		complete(&req->done);
+-		xas_store(&xas, NULL);
++	/* Remove error request and CLOSE request has no reply */
++	if (ret || msg->opcode == CACHEFILES_OP_CLOSE) {
++		xas_reset(&xas);
++		xas_lock(&xas);
++		if (xas_load(&xas) == req) {
++			req->error = ret;
++			complete(&req->done);
++			xas_store(&xas, NULL);
++		}
++		xas_unlock(&xas);
+ 	}
+-	xas_unlock(&xas);
+ 	cachefiles_req_put(req);
+-	return ret;
++	return ret ? ret : n;
  }
  
- static int bmp580_read_press(struct bmp280_data *data, int *val, int *val2)
+ typedef int (*init_req_fn)(struct cachefiles_req *req, void *private);
+-- 
+2.43.0
+
 
 
 
