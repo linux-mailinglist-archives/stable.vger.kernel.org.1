@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-54590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBA5090EEF3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D78090EEF5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 771E2282F92
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34DA21C20D2E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB44F14387E;
-	Wed, 19 Jun 2024 13:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B62B146016;
+	Wed, 19 Jun 2024 13:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlMyCJZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNypDlpS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2C613DDC0;
-	Wed, 19 Jun 2024 13:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A03613DDC0;
+	Wed, 19 Jun 2024 13:33:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804030; cv=none; b=lbEOnJ/CnM3sKqLOHomPJ3UvYxIKHOxFC/LFYXSmzc770GYy8FZCG8bLvGn2EAuoqmyijw9/TAEE0lMvPsoU8GdtaJKa/+dmfBYYTejwioAqA6lomisNDU5u6YFtWUGDXI8Uy3FNNLsC7DaehMGWVira6VITK0l0lfSipOS0sD0=
+	t=1718804036; cv=none; b=X6dCbWwtmIylJUa17Zx6G6ONLh7Z0HzrrHmQvil4EiG8fF2Hga+2Ene0B5rPj7v+9bdao1B/oWxWCRDEUg6yyVALPxDy8sW3AiHBdX/VC7ySZRi65aomuj6jnT87e6JxT5A0cxta2DiREqap3hNAeduoCqepTg5rQUcrqvbUp0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804030; c=relaxed/simple;
-	bh=pQHi8p+UBQ8bTEvZPKLtqvdYLQzV3L8hhKgZEDOe2oU=;
+	s=arc-20240116; t=1718804036; c=relaxed/simple;
+	bh=oMwugdzWcpQmcBnwq1s4E2F2PQ150EErjivq2lSWE3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxzz09q4wjWf69pBQS+q4OgX1hxyCRO/MGeVqBes2lZs3iucO6RW9N04ASSo5kbH65pNI9Th9Rs5Q7PmmtbHrstFzOJFjX/wOBDjL8liGSVpsNE9w44vdEWOYJf2zjKQb6J24n63NXJAe/jWmxr3lCmRTlCHupnKAilGEmHavHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlMyCJZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADBCC2BBFC;
-	Wed, 19 Jun 2024 13:33:49 +0000 (UTC)
+	 MIME-Version; b=jE+B0x5QO8xggGWxt5eBoE+rpt5aTxXCpG252OkacKsOKs+Pj700K6yxHSUfa0XdpV13sHAkeLI3QeBmIoAxPfFRatmv8rxQ5rlNH+ZUzGP+KmGqhQoWfb3sbsDGM3JMXlUg7fVXZHuXDHaCbMSKCyP6VHGYK3Rvg73e8IAXLAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNypDlpS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6063C2BBFC;
+	Wed, 19 Jun 2024 13:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804030;
-	bh=pQHi8p+UBQ8bTEvZPKLtqvdYLQzV3L8hhKgZEDOe2oU=;
+	s=korg; t=1718804036;
+	bh=oMwugdzWcpQmcBnwq1s4E2F2PQ150EErjivq2lSWE3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wlMyCJZRgL+R75xl44U2jOere4T/agXh6EH0Axtefaw7gD62SFhVZcxgzCxT82iMr
-	 TP52+Jv5U3PxxP/TNmzAiS9Tya+W4Xwf2VxbRhMOdT6/13l5/oWEU1AOX/Fr/a8HAx
-	 Ve7gdbpph/bCNhFiZTE4RsgD3+cnNX3zNxJOtFoI=
+	b=rNypDlpSF6NCFVgMP2Ff210nUEVsLzJ5VmFhGKTTGjvh9lgmdIPoGERlyPFskYR5B
+	 b8NEzIaxELRu7ze52hKY6xdeTc4QYrOJenu/jc5vbYbM4aVRd+o3kaUzjxgUoF4OOx
+	 iSuzhWzzUHVxAszJpd4+WUaCW95y4FQSv9bBZecw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 186/217] riscv: rewrite __kernel_map_pages() to fix sleeping in invalid context
-Date: Wed, 19 Jun 2024 14:57:09 +0200
-Message-ID: <20240619125603.862327669@linuxfoundation.org>
+	Chris Wilson <chris@chris-wilson.co.uk>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.1 187/217] drm/i915/gt: Disarm breadcrumbs if engines are already idle
+Date: Wed, 19 Jun 2024 14:57:10 +0200
+Message-ID: <20240619125603.900913190@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
 References: <20240619125556.491243678@linuxfoundation.org>
@@ -66,99 +69,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Chris Wilson <chris@chris-wilson.co.uk>
 
-commit fb1cf0878328fe75d47f0aed0a65b30126fcefc4 upstream.
+commit 70cb9188ffc75e643debf292fcddff36c9dbd4ae upstream.
 
-__kernel_map_pages() is a debug function which clears the valid bit in page
-table entry for deallocated pages to detect illegal memory accesses to
-freed pages.
+The breadcrumbs use a GT wakeref for guarding the interrupt, but are
+disarmed during release of the engine wakeref. This leaves a hole where
+we may attach a breadcrumb just as the engine is parking (after it has
+parked its breadcrumbs), execute the irq worker with some signalers still
+attached, but never be woken again.
 
-This function set/clear the valid bit using __set_memory(). __set_memory()
-acquires init_mm's semaphore, and this operation may sleep. This is
-problematic, because  __kernel_map_pages() can be called in atomic context,
-and thus is illegal to sleep. An example warning that this causes:
+That issue manifests itself in CI with IGT runner timeouts while tests
+are waiting indefinitely for release of all GT wakerefs.
 
-BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1578
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2, name: kthreadd
-preempt_count: 2, expected: 0
-CPU: 0 PID: 2 Comm: kthreadd Not tainted 6.9.0-g1d4c6d784ef6 #37
-Hardware name: riscv-virtio,qemu (DT)
-Call Trace:
-[<ffffffff800060dc>] dump_backtrace+0x1c/0x24
-[<ffffffff8091ef6e>] show_stack+0x2c/0x38
-[<ffffffff8092baf8>] dump_stack_lvl+0x5a/0x72
-[<ffffffff8092bb24>] dump_stack+0x14/0x1c
-[<ffffffff8003b7ac>] __might_resched+0x104/0x10e
-[<ffffffff8003b7f4>] __might_sleep+0x3e/0x62
-[<ffffffff8093276a>] down_write+0x20/0x72
-[<ffffffff8000cf00>] __set_memory+0x82/0x2fa
-[<ffffffff8000d324>] __kernel_map_pages+0x5a/0xd4
-[<ffffffff80196cca>] __alloc_pages_bulk+0x3b2/0x43a
-[<ffffffff8018ee82>] __vmalloc_node_range+0x196/0x6ba
-[<ffffffff80011904>] copy_process+0x72c/0x17ec
-[<ffffffff80012ab4>] kernel_clone+0x60/0x2fe
-[<ffffffff80012f62>] kernel_thread+0x82/0xa0
-[<ffffffff8003552c>] kthreadd+0x14a/0x1be
-[<ffffffff809357de>] ret_from_fork+0xe/0x1c
+<6> [209.151778] i915: Running live_engine_pm_selftests/live_engine_busy_stats
+<7> [209.231628] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_5
+<7> [209.231816] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_4
+<7> [209.231944] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_3
+<7> [209.232056] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_2
+<7> [209.232166] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling DC_off
+<7> [209.232270] i915 0000:00:02.0: [drm:skl_enable_dc6 [i915]] Enabling DC6
+<7> [209.232368] i915 0000:00:02.0: [drm:gen9_set_dc_state.part.0 [i915]] Setting DC state from 00 to 02
+<4> [299.356116] [IGT] Inactivity timeout exceeded. Killing the current test with SIGQUIT.
+...
+<6> [299.356526] sysrq: Show State
+...
+<6> [299.373964] task:i915_selftest   state:D stack:11784 pid:5578  tgid:5578  ppid:873    flags:0x00004002
+<6> [299.373967] Call Trace:
+<6> [299.373968]  <TASK>
+<6> [299.373970]  __schedule+0x3bb/0xda0
+<6> [299.373974]  schedule+0x41/0x110
+<6> [299.373976]  intel_wakeref_wait_for_idle+0x82/0x100 [i915]
+<6> [299.374083]  ? __pfx_var_wake_function+0x10/0x10
+<6> [299.374087]  live_engine_busy_stats+0x9b/0x500 [i915]
+<6> [299.374173]  __i915_subtests+0xbe/0x240 [i915]
+<6> [299.374277]  ? __pfx___intel_gt_live_setup+0x10/0x10 [i915]
+<6> [299.374369]  ? __pfx___intel_gt_live_teardown+0x10/0x10 [i915]
+<6> [299.374456]  intel_engine_live_selftests+0x1c/0x30 [i915]
+<6> [299.374547]  __run_selftests+0xbb/0x190 [i915]
+<6> [299.374635]  i915_live_selftests+0x4b/0x90 [i915]
+<6> [299.374717]  i915_pci_probe+0x10d/0x210 [i915]
 
-Rewrite this function with apply_to_existing_page_range(). It is fine to
-not have any locking, because __kernel_map_pages() works with pages being
-allocated/deallocated and those pages are not changed by anyone else in the
-meantime.
+At the end of the interrupt worker, if there are no more engines awake,
+disarm the breadcrumb and go to sleep.
 
-Fixes: 5fde3db5eb02 ("riscv: add ARCH_SUPPORTS_DEBUG_PAGEALLOC support")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/1289ecba9606a19917bc12b6c27da8aa23e1e5ae.1715750938.git.namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 9d5612ca165a ("drm/i915/gt: Defer enabling the breadcrumb interrupt to after submission")
+Closes: https://gitlab.freedesktop.org/drm/intel/issues/10026
+Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: <stable@vger.kernel.org> # v5.12+
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Acked-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240423165505.465734-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit fbad43eccae5cb14594195c20113369aabaa22b5)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/pageattr.c |   28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_breadcrumbs.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -386,17 +386,33 @@ int set_direct_map_default_noflush(struc
+--- a/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
++++ b/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
+@@ -258,8 +258,13 @@ static void signal_irq_work(struct irq_w
+ 		i915_request_put(rq);
+ 	}
+ 
++	/* Lazy irq enabling after HW submission */
+ 	if (!READ_ONCE(b->irq_armed) && !list_empty(&b->signalers))
+ 		intel_breadcrumbs_arm_irq(b);
++
++	/* And confirm that we still want irqs enabled before we yield */
++	if (READ_ONCE(b->irq_armed) && !atomic_read(&b->active))
++		intel_breadcrumbs_disarm_irq(b);
  }
  
- #ifdef CONFIG_DEBUG_PAGEALLOC
-+static int debug_pagealloc_set_page(pte_t *pte, unsigned long addr, void *data)
-+{
-+	int enable = *(int *)data;
-+
-+	unsigned long val = pte_val(ptep_get(pte));
-+
-+	if (enable)
-+		val |= _PAGE_PRESENT;
-+	else
-+		val &= ~_PAGE_PRESENT;
-+
-+	set_pte(pte, __pte(val));
-+
-+	return 0;
-+}
-+
- void __kernel_map_pages(struct page *page, int numpages, int enable)
- {
- 	if (!debug_pagealloc_enabled())
+ struct intel_breadcrumbs *
+@@ -310,13 +315,7 @@ void __intel_breadcrumbs_park(struct int
  		return;
  
--	if (enable)
--		__set_memory((unsigned long)page_address(page), numpages,
--			     __pgprot(_PAGE_PRESENT), __pgprot(0));
--	else
--		__set_memory((unsigned long)page_address(page), numpages,
--			     __pgprot(0), __pgprot(_PAGE_PRESENT));
-+	unsigned long start = (unsigned long)page_address(page);
-+	unsigned long size = PAGE_SIZE * numpages;
-+
-+	apply_to_existing_page_range(&init_mm, start, size, debug_pagealloc_set_page, &enable);
-+
-+	flush_tlb_kernel_range(start, start + size);
+ 	/* Kick the work once more to drain the signalers, and disarm the irq */
+-	irq_work_sync(&b->irq_work);
+-	while (READ_ONCE(b->irq_armed) && !atomic_read(&b->active)) {
+-		local_irq_disable();
+-		signal_irq_work(&b->irq_work);
+-		local_irq_enable();
+-		cond_resched();
+-	}
++	irq_work_queue(&b->irq_work);
  }
- #endif
+ 
+ void intel_breadcrumbs_free(struct kref *kref)
+@@ -399,7 +398,7 @@ static void insert_breadcrumb(struct i91
+ 	 * the request as it may have completed and raised the interrupt as
+ 	 * we were attaching it into the lists.
+ 	 */
+-	if (!b->irq_armed || __i915_request_is_complete(rq))
++	if (!READ_ONCE(b->irq_armed) || __i915_request_is_complete(rq))
+ 		irq_work_queue(&b->irq_work);
+ }
  
 
 
