@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-54307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9738290ED95
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C02B90EEA5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 417191F22093
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3EECB259AB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C0A1459F2;
-	Wed, 19 Jun 2024 13:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB27F770F4;
+	Wed, 19 Jun 2024 13:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsrZw1Fn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCxm5LJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808A982495;
-	Wed, 19 Jun 2024 13:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976D73C0B;
+	Wed, 19 Jun 2024 13:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803193; cv=none; b=B8C/ukn+b0PNRxzjZ56FABAXaL6l+TgbxcrjpKywgQK72WHXeDc425x0TadOiTMIkYPeXGPpsx16Od+LBKHB4r/NIdmkJ+vUuTAlBdufoIBXUPXEVmDTefxABJvodcUfbIrrvhnNkkGu2/8z4RM1mOviLSv0bwcjZZ87W42MK80=
+	t=1718803833; cv=none; b=EMStdZeHIf3CBIHNoSF6596F0pKOjD/imZkYrMd+Ssx9OwTkU8WGATA8MNPXRg/THgTttYMhSoV1TzkmOow1yYacC+/tCYkeqmSKZp7kUdc8b+lDGT8wGn7R/Sgrpy0IVCajOtUEb8/jOhYMPU6kBLQ85nm22m/Kgk6jXVd1Pco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803193; c=relaxed/simple;
-	bh=VCEQ4kbtCmSWwAt9pw+/LrJm66E8ZbCWKF/XkyQgM9U=;
+	s=arc-20240116; t=1718803833; c=relaxed/simple;
+	bh=9NPh+mYbsEmt3G0cXVWEP+fiJgZLmpRkNYeeeLHA6Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xu1Cq6B36OT5PosL8jO4aZeub1SOGrJmwaN68nTH93mMa8ktcupYc8gr3cKsTQoGwuaXBslUSs9rW7eatMv/aMBqVk011eo1/DT57gRTTjHl8xpJj2GIcrNQqYKJiut2rh6WRZBpdBWS3sl5Sx8MKzAHpsWR3W84Hmccbf2Q/bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsrZw1Fn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03136C2BBFC;
-	Wed, 19 Jun 2024 13:19:52 +0000 (UTC)
+	 MIME-Version; b=KrBY5XIKvcoYh1rSDKYziNFDal/v0xgBhsuOlxa5Qw7VVVzdPK/Axh2hPrKK7Sr2UKUqHAXvNa488D9EiEGADi2qgAM4/aVJVYDCNm5lcRs2jpUpSAviZmI7YabjcbWp+THGzWMcfqNLtr8xBZCZNtoyAforYNvUCKC9cxkPjYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCxm5LJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42D9C32786;
+	Wed, 19 Jun 2024 13:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803193;
-	bh=VCEQ4kbtCmSWwAt9pw+/LrJm66E8ZbCWKF/XkyQgM9U=;
+	s=korg; t=1718803831;
+	bh=9NPh+mYbsEmt3G0cXVWEP+fiJgZLmpRkNYeeeLHA6Gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jsrZw1FnjoFcVNqwXXpKrQ3dZnvsNVpKMgjM1kGZeirlio4E+ig18zorC5S9PnhX3
-	 WsATS4Xa1OYFDQcJ7MczITNtgyEzt13gRg8AhF7cEJJ+zyZZiQ5zUx3qfH7vd8BcJs
-	 /MVYZLGPInGO9au9GSFiB1MbSbAvqtynIBiKjYoc=
+	b=yCxm5LJElEUKcBkRECl38iuDfXg9eNscv0eU1slntyP9KQYF4EMeq0rkM+UfVfDAc
+	 w8/Tjf8YnJglEoWQhhzZr4HNPDV8HBa6ucwdSh6KZVcoac810X0F8G089sVphkvrlg
+	 t761Tzu/U36JoH32F/+FWjJyMtPwpbDLWmLwJrnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rao Shoaib <Rao.Shoaib@oracle.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 185/281] af_unix: Read with MSG_PEEK loops if the first unread byte is OOB
+	Shailend Chand <shailend@google.com>,
+	Ziwei Xiao <ziweixiao@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 101/217] gve: Clear napi->skb before dev_kfree_skb_any()
 Date: Wed, 19 Jun 2024 14:55:44 +0200
-Message-ID: <20240619125616.954220256@linuxfoundation.org>
+Message-ID: <20240619125600.587546845@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rao Shoaib <Rao.Shoaib@oracle.com>
+From: Ziwei Xiao <ziweixiao@google.com>
 
-[ Upstream commit a6736a0addd60fccc3a3508461d72314cc609772 ]
+commit 6f4d93b78ade0a4c2cafd587f7b429ce95abb02e upstream.
 
-Read with MSG_PEEK flag loops if the first byte to read is an OOB byte.
-commit 22dd70eb2c3d ("af_unix: Don't peek OOB data without MSG_OOB.")
-addresses the loop issue but does not address the issue that no data
-beyond OOB byte can be read.
+gve_rx_free_skb incorrectly leaves napi->skb referencing an skb after it
+is freed with dev_kfree_skb_any(). This can result in a subsequent call
+to napi_get_frags returning a dangling pointer.
 
->>> from socket import *
->>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
->>> c1.send(b'a', MSG_OOB)
-1
->>> c1.send(b'b')
-1
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'b'
+Fix this by clearing napi->skb before the skb is freed.
 
->>> from socket import *
->>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
->>> c2.setsockopt(SOL_SOCKET, SO_OOBINLINE, 1)
->>> c1.send(b'a', MSG_OOB)
-1
->>> c1.send(b'b')
-1
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'a'
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'a'
->>> c2.recv(1, MSG_DONTWAIT)
-b'a'
->>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
-b'b'
->>>
-
-Fixes: 314001f0bf92 ("af_unix: Add OOB support")
-Signed-off-by: Rao Shoaib <Rao.Shoaib@oracle.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240611084639.2248934-1-Rao.Shoaib@oracle.com
+Fixes: 9b8dd5e5ea48 ("gve: DQO: Add RX path")
+Cc: stable@vger.kernel.org
+Reported-by: Shailend Chand <shailend@google.com>
+Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Shailend Chand <shailend@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Link: https://lore.kernel.org/r/20240612001654.923887-1-ziweixiao@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2672,18 +2672,18 @@ static struct sk_buff *manage_oob(struct
- 		if (skb == u->oob_skb) {
- 			if (copied) {
- 				skb = NULL;
--			} else if (sock_flag(sk, SOCK_URGINLINE)) {
--				if (!(flags & MSG_PEEK)) {
-+			} else if (!(flags & MSG_PEEK)) {
-+				if (sock_flag(sk, SOCK_URGINLINE)) {
- 					WRITE_ONCE(u->oob_skb, NULL);
- 					consume_skb(skb);
-+				} else {
-+					__skb_unlink(skb, &sk->sk_receive_queue);
-+					WRITE_ONCE(u->oob_skb, NULL);
-+					unlinked_skb = skb;
-+					skb = skb_peek(&sk->sk_receive_queue);
- 				}
--			} else if (flags & MSG_PEEK) {
--				skb = NULL;
--			} else {
--				__skb_unlink(skb, &sk->sk_receive_queue);
--				WRITE_ONCE(u->oob_skb, NULL);
--				unlinked_skb = skb;
--				skb = skb_peek(&sk->sk_receive_queue);
-+			} else if (!sock_flag(sk, SOCK_URGINLINE)) {
-+				skb = skb_peek_next(skb, &sk->sk_receive_queue);
- 			}
- 		}
+--- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+@@ -465,11 +465,13 @@ static void gve_rx_skb_hash(struct sk_bu
+ 	skb_set_hash(skb, le32_to_cpu(compl_desc->hash), hash_type);
+ }
  
+-static void gve_rx_free_skb(struct gve_rx_ring *rx)
++static void gve_rx_free_skb(struct napi_struct *napi, struct gve_rx_ring *rx)
+ {
+ 	if (!rx->ctx.skb_head)
+ 		return;
+ 
++	if (rx->ctx.skb_head == napi->skb)
++		napi->skb = NULL;
+ 	dev_kfree_skb_any(rx->ctx.skb_head);
+ 	rx->ctx.skb_head = NULL;
+ 	rx->ctx.skb_tail = NULL;
+@@ -693,7 +695,7 @@ int gve_rx_poll_dqo(struct gve_notify_bl
+ 
+ 		err = gve_rx_dqo(napi, rx, compl_desc, rx->q_num);
+ 		if (err < 0) {
+-			gve_rx_free_skb(rx);
++			gve_rx_free_skb(napi, rx);
+ 			u64_stats_update_begin(&rx->statss);
+ 			if (err == -ENOMEM)
+ 				rx->rx_skb_alloc_fail++;
+@@ -736,7 +738,7 @@ int gve_rx_poll_dqo(struct gve_notify_bl
+ 
+ 		/* gve_rx_complete_skb() will consume skb if successful */
+ 		if (gve_rx_complete_skb(rx, napi, compl_desc, feat) != 0) {
+-			gve_rx_free_skb(rx);
++			gve_rx_free_skb(napi, rx);
+ 			u64_stats_update_begin(&rx->statss);
+ 			rx->rx_desc_err_dropped_pkt++;
+ 			u64_stats_update_end(&rx->statss);
 
 
 
