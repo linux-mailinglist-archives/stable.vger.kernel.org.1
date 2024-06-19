@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D2A90EC70
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC3290EDA0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AC9F1C208D4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A05761C21AEE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AAE51459E3;
-	Wed, 19 Jun 2024 13:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09A2143C65;
+	Wed, 19 Jun 2024 13:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0wcEuIN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0/G8NGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2926B143C58;
-	Wed, 19 Jun 2024 13:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F04B82495;
+	Wed, 19 Jun 2024 13:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802453; cv=none; b=bLjc/SRkTXfRIWUMfebGy+T/4GdmDvuc8v028upOpxkJRcQeN6BgB/1TjzWFlbbDoFKqI4DENb765ADz21zqdkt4pfpaAHF4DpcrenuMKkR82w/82LZNUE36bBuUHKyLO71ieUX1j/s01kd6JD28SjmlkPYn7xsUEFvvMEvggO8=
+	t=1718803225; cv=none; b=A4xRj7vY5KH1+8Ei8hCVwY6EciDmU1i8SNVFT1wywp0PiXOcqzqbtUDa289TQcDZUy/94LJNiGy73uUDWh3la6PsELCo8EfoipSzQdupQuz3FkEEZvQz6N4sofpjW2fRJe2X0qYftCRx7Xv+XKOuKazqQy7hcF7RxVTePRIJja0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802453; c=relaxed/simple;
-	bh=AJpVwQGLq3ur/1dPlLeY9PXbh0xR60MfL2AY5jjygAI=;
+	s=arc-20240116; t=1718803225; c=relaxed/simple;
+	bh=bbNcgGhRhWqmC5DOxqEaloZJwSzNk0OTrFKkgkO3Z3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6KdVEJswmtZx63Tjg6SuAfexwubXvSY3pp1UTBf3OLQWg8+FuZ5rB/5qNCHEAWt6n/AMWBnwsk4UlNaX7Jj8SILLdXkuJzZyYdf0KfFcIpMHNeNhqo/N35VBR26I3XiB3HZacOdB8AuLN79teLCZP2s2UglzcldOCXRpFqobUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0wcEuIN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1925C2BBFC;
-	Wed, 19 Jun 2024 13:07:32 +0000 (UTC)
+	 MIME-Version; b=oIc8wLYMNR9ggdBj7oQYqLpNp7F6s3VyJoEJDvB6e2WU6JehX9AvFvFVwduqeIuY0vha0gTxIi3yrkb2pSS3yaMQkWb7vrCRwEMJZ83i98BEyuQajacZh+wnNkjqAFHvjcs4NOH+Sm2WFSwedlMpa96SiOzYmiq3LrlbMFT4+34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0/G8NGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20585C32786;
+	Wed, 19 Jun 2024 13:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802453;
-	bh=AJpVwQGLq3ur/1dPlLeY9PXbh0xR60MfL2AY5jjygAI=;
+	s=korg; t=1718803225;
+	bh=bbNcgGhRhWqmC5DOxqEaloZJwSzNk0OTrFKkgkO3Z3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0wcEuIN56vV4rwIZcbBPJsRZ0nG/r9THPnS17GlZoIysoXxEjdS9XPrP277LWTen
-	 yuZXTEzvKAR5JzA643TiwLGBTUZGVBz/OHEZrTu8Dr3zvo9AvQNkLiOcI1rcEu+zXA
-	 kdFoF2IDK26dl01vbFFGuj8wWYWzZNA8wEBli2SA=
+	b=i0/G8NGfUvciq+fddsWdRwiX9f6/3OthdAQ6usZrCyw58oxW0Pm1tKNCs674SxKaZ
+	 Su0DdKDhj89qCbEh7UpkkRAyrtve18o4tSi4zy0cHlpaRtj+l03fx06gaa9l2aNcad
+	 ssJbpjYD9WTvfymDcHwcNgEBRt54fw7dHpnbPIzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 202/267] knfsd: LOOKUP can return an illegal error value
-Date: Wed, 19 Jun 2024 14:55:53 +0200
-Message-ID: <20240619125614.084585255@linuxfoundation.org>
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.9 195/281] iio: imu: bmi323: Fix trigger notification in case of error
+Date: Wed, 19 Jun 2024 14:55:54 +0200
+Message-ID: <20240619125617.455356863@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-commit e221c45da3770962418fb30c27d941bbc70d595a upstream.
+commit bedb2ccb566de5ca0c336ca3fd3588cea6d50414 upstream.
 
-The 'NFS error' NFSERR_OPNOTSUPP is not described by any of the official
-NFS related RFCs, but appears to have snuck into some older .x files for
-NFSv2.
-Either way, it is not in RFC1094, RFC1813 or any of the NFSv4 RFCs, so
-should not be returned by the knfsd server, and particularly not by the
-"LOOKUP" operation.
+In case of error in the bmi323_trigger_handler() function, the
+function exits without calling the iio_trigger_notify_done()
+which is responsible for informing the attached trigger that
+the process is done and in case there is a .reenable(), to
+call it.
 
-Instead, let's return NFSERR_STALE, which is more appropriate if the
-filesystem encodes the filehandle as FILEID_INVALID.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 8a636db3aa57 ("iio: imu: Add driver for BMI323 IMU")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Link: https://lore.kernel.org/r/20240508155407.139805-1-vassilisamir@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsfh.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/imu/bmi323/bmi323_core.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -572,7 +572,7 @@ fh_compose(struct svc_fh *fhp, struct sv
- 		_fh_update(fhp, exp, dentry);
- 	if (fhp->fh_handle.fh_fileid_type == FILEID_INVALID) {
- 		fh_put(fhp);
--		return nfserr_opnotsupp;
-+		return nfserr_stale;
+--- a/drivers/iio/imu/bmi323/bmi323_core.c
++++ b/drivers/iio/imu/bmi323/bmi323_core.c
+@@ -1391,7 +1391,7 @@ static irqreturn_t bmi323_trigger_handle
+ 				       &data->buffer.channels,
+ 				       ARRAY_SIZE(data->buffer.channels));
+ 		if (ret)
+-			return IRQ_NONE;
++			goto out;
+ 	} else {
+ 		for_each_set_bit(bit, indio_dev->active_scan_mask,
+ 				 BMI323_CHAN_MAX) {
+@@ -1400,13 +1400,14 @@ static irqreturn_t bmi323_trigger_handle
+ 					      &data->buffer.channels[index++],
+ 					      BMI323_BYTES_PER_SAMPLE);
+ 			if (ret)
+-				return IRQ_NONE;
++				goto out;
+ 		}
  	}
  
- 	return 0;
-@@ -598,7 +598,7 @@ fh_update(struct svc_fh *fhp)
+ 	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
+ 					   iio_get_time_ns(indio_dev));
  
- 	_fh_update(fhp, fhp->fh_export, dentry);
- 	if (fhp->fh_handle.fh_fileid_type == FILEID_INVALID)
--		return nfserr_opnotsupp;
-+		return nfserr_stale;
- 	return 0;
- out_bad:
- 	printk(KERN_ERR "fh_update: fh not verified!\n");
++out:
+ 	iio_trigger_notify_done(indio_dev->trig);
+ 
+ 	return IRQ_HANDLED;
 
 
 
