@@ -1,122 +1,85 @@
-Return-Path: <stable+bounces-54652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28FC790F15B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:54:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D5090F1DC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 17:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C92EB1F212E1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:54:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89CB41F2190F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12099210E7;
-	Wed, 19 Jun 2024 14:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF85132112;
+	Wed, 19 Jun 2024 15:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifaID5j0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E32njVNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C421CF9B;
-	Wed, 19 Jun 2024 14:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C3659147;
+	Wed, 19 Jun 2024 15:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718808853; cv=none; b=SbtCF9mbxFlzfiP6u1r6mrny8OSY+JWl8bxEwdmo13g002nhz0HPFScwFQSrGBX9ZThxzzhRhbLczXKl0nWtKvspJkHy7iE+KgzwnTdDw18g3lCPgnP0oojP5aL4CMNT+2pSnlTzXDFiGbiY5/qPIDSVAWCtC6SVDaypj0C2PcU=
+	t=1718810023; cv=none; b=GOh7mzdc2GrEUDL1H6GdiYYu4qABzHWCNkgayWRYQHrInhuoup/hjnC7yA+gIaVSfLQwDXzBNhZOmGjRuO4cYQFz8mb6PuqyJdR2XsQe5S4hovYg2PB0JYLH5sULHOHau+f/tDvDkY1RQ2NIN3Un/I8OBRbSr3trqeh6HwCdwz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718808853; c=relaxed/simple;
-	bh=XbXaUpzEm8QjQUNcIf8lan5DUpHIQJlQli0eGY0V0CQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=btWGtafo/YSRkeYruOBcxmMXC3bssla6cjkGatnikfW8tQ0fGd0Yp+jic5MWh27msAgPCGH9wEmawwaY/c8DrXeZwmYBxwEFrtsW9sSOopcfvj+KybdRpKtwDPvaAMqo/FMsrFdLKdiZvF/XoCIPOfLMO+CAItJ+ReK5i4D+ReM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifaID5j0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58822C2BBFC;
-	Wed, 19 Jun 2024 14:54:13 +0000 (UTC)
+	s=arc-20240116; t=1718810023; c=relaxed/simple;
+	bh=E809a9TcoLD3hkGZftuqg6B3IfAzfIQnt74WTfBivqA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QyxOiEuvc8SUKvLqD+B5N2pMuDbl6d7xAZ/okCnguZalvC1/N9UiBp7lWKIRN9MU6CI2czhNHWWn4etT+daXwz7r8CElmg4OqIApUKm3G1PsFQXiW5/Q4zIYwU0/5RZrJsFTkC//sUR2Glsi8jAVDvNF4df3oZOn4afLVQLPlqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E32njVNi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F35C4AF08;
+	Wed, 19 Jun 2024 15:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718808853;
-	bh=XbXaUpzEm8QjQUNcIf8lan5DUpHIQJlQli0eGY0V0CQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ifaID5j03Lxbk4BssybtHY/cbVCNlzvfVSNGrkHXnIXg1qqLnHQLJg146B9NSvkm9
-	 lYJHquRF/Yoc5rh7VDvIM0j9evxI1ArN2Y9zdk1KmgWbmImB3sonqKRNVsBerEpLRu
-	 sFPX/7zwoHCodXKqj8rVH+dFMa6KX4UM6GQOfLQ4wjoijwNgJCcHu+bt5qo0zdmAiw
-	 xmzwVVM54fHRQYL3Ovy8mYWw/fGAz6mFO2jJMN9gZbDUHtddzPj84dGcoBNHX67Ut7
-	 RMFsDu/JDcx2UKjtZlGR3VuqRLq+rFbkUQOcoS1lPKQiWGe0F2WOacnsV7hFOoCQoQ
-	 YP1yZl+P1dV9A==
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5c1b75d6bebso53765eaf.2;
-        Wed, 19 Jun 2024 07:54:13 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWdjL6+oSdpo2bsNK+u6xI8mYX0zEcPodWGyM8w0bsj3YRObySAPo2UoD6Y+d7xflHGdCxQxHC2bS3tpBvmQDB+A/wb3HEXdhEfLKC3eRePgmubljfMVPDrT//3toB5TOv0vJzt/n86jD+gZjUV2rCQiLJnoISJs1fnow5ZLv4=
-X-Gm-Message-State: AOJu0Yy8eOFdZ+oIzJ1HfyrdIdxhSxMVwkqScpD38biKxoPxQVCa1J6S
-	MDpxjVw7egCyK1xpRvCeH+69tnIEoz8iDGG7lPxpLB08+bFv5PWO1O//zdRKsLgx+qYsSJuM02d
-	sTxeEFI3xoHOo8Yu4h0CGEVdVnOY=
-X-Google-Smtp-Source: AGHT+IHG8OXygjQcxoiDOtJORBPBrNq/rJhVkj9CFI+xoel0iARyBn85fHD6SQOJOnsTsfshf8zH/srcJj1MamwhPR4=
-X-Received: by 2002:a05:6820:162c:b0:5ba:ca86:a025 with SMTP id
- 006d021491bc7-5c1ad88a98fmr3763859eaf.0.1718808852691; Wed, 19 Jun 2024
- 07:54:12 -0700 (PDT)
+	s=k20201202; t=1718810023;
+	bh=E809a9TcoLD3hkGZftuqg6B3IfAzfIQnt74WTfBivqA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=E32njVNizIv30SkJxe0PXgaffhyX0Hc1kySbiiw2ItkqFlXBj04apg9XUbH398RQf
+	 sPJMNYcGQmsz3yuYRgS1lWzo2Qd7LN9Ddr2QMwu/NihguDeEDKBMyqP9p4IX5024nA
+	 MCu+O3PfwFlvEhPcjQ2plnQqcaO0ifgDrnEQXQp6pY9VrWtZOKMmmrjIcke00HmmhA
+	 hCjHarOcSuqPBHbTYXhhHDQcdyJkO1gsx36f7vh398cuQVEnpo2oYRNCieQA0vGFfc
+	 E6XoAZfTsFdkrxtxfoyrCfrknGESeeWiAUFBmNnRHP12EAo3SSzN07eZ5qWZZZoFGa
+	 k+bNc/bp6rrug==
+Date: Wed, 19 Jun 2024 08:13:41 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ignat Korchagin <ignat@cloudflare.com>
+Cc: "D. Wythe" <alibuda@linux.alibaba.com>, "David S. Miller"
+ <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Florent Revest
+ <revest@chromium.org>, kernel-team@cloudflare.com, Kuniyuki Iwashima
+ <kuniyu@amazon.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net v3] net: do not leave a dangling sk pointer, when
+ socket creation fails
+Message-ID: <20240619081341.6b2eff86@kernel.org>
+In-Reply-To: <CALrw=nESVt0g4k4AvSkF3yfqDDMDnGGsHavonxHMoEaBrigQPw@mail.gmail.com>
+References: <20240617210205.67311-1-ignat@cloudflare.com>
+	<c9446790-9bac-4541-919b-0af396349c59@linux.alibaba.com>
+	<CALrw=nGSf49VnRVy--b5qSM7_rSRyDBUFe_t8taFs2tmRP2QTw@mail.gmail.com>
+	<CALrw=nESVt0g4k4AvSkF3yfqDDMDnGGsHavonxHMoEaBrigQPw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240619044424.481239-1-srinivas.pandruvada@linux.intel.com>
-In-Reply-To: <20240619044424.481239-1-srinivas.pandruvada@linux.intel.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 19 Jun 2024 16:54:01 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gncg-jUqeQG3hPgi5c+uQmmQqvwLSwp8H7j2kw08zzZg@mail.gmail.com>
-Message-ID: <CAJZ5v0gncg-jUqeQG3hPgi5c+uQmmQqvwLSwp8H7j2kw08zzZg@mail.gmail.com>
-Subject: Re: [PATCH] thermal: int340x: processor_thermal: Support shared interrupts
-To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: rafael@kernel.org, daniel.lezcano@linaro.org, rui.zhang@intel.com, 
-	lukasz.luba@arm.com, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 19, 2024 at 6:44=E2=80=AFAM Srinivas Pandruvada
-<srinivas.pandruvada@linux.intel.com> wrote:
->
-> On some systems the processor thermal device interrupt is shared with
-> other PCI devices. In this case return IRQ_NONE from the interrupt
-> handler when the interrupt is not for the processor thermal device.
->
-> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Fixes: f0658708e863 ("thermal: int340x: processor_thermal: Use non MSI in=
-terrupts by default")
-> Cc: <stable@vger.kernel.org> # v6.7+
-> ---
-> This was only observed on a non production system. So not urgent.
->
->  .../intel/int340x_thermal/processor_thermal_device_pci.c       | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_devi=
-ce_pci.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_p=
-ci.c
-> index 14e34eabc419..4a1bfebb1b8e 100644
-> --- a/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.=
-c
-> +++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.=
-c
-> @@ -150,7 +150,7 @@ static irqreturn_t proc_thermal_irq_handler(int irq, =
-void *devid)
->  {
->         struct proc_thermal_pci *pci_info =3D devid;
->         struct proc_thermal_device *proc_priv;
-> -       int ret =3D IRQ_HANDLED;
-> +       int ret =3D IRQ_NONE;
->         u32 status;
->
->         proc_priv =3D pci_info->proc_priv;
-> @@ -175,6 +175,7 @@ static irqreturn_t proc_thermal_irq_handler(int irq, =
-void *devid)
->                 /* Disable enable interrupt flag */
->                 proc_thermal_mmio_write(pci_info, PROC_THERMAL_MMIO_INT_E=
-NABLE_0, 0);
->                 pkg_thermal_schedule_work(&pci_info->work);
-> +               ret =3D IRQ_HANDLED;
->         }
->
->         pci_write_config_byte(pci_info->pdev, 0xdc, 0x01);
-> --
+On Wed, 19 Jun 2024 15:34:47 +0100 Ignat Korchagin wrote:
+> > Thanks. I did scripts/get_maintainer.pl <file I'm modifying>. Not sure
+> > if it is different.  
+> 
+> My bad: it is different or I actually forgot to re-run it, because
+> v2/v3 modifies a different file.
 
-Applied as 6.10-rc material, thanks!
+Also you should run it on the patch:
+
+$ git format-patch HEAD~
+$ ./scripts/get_maintainer.pl 0001-${subject}.patch
+
+the file version doesn't include CCs based on the commit message, most
+importantly doesn't CC people who authored / reviewed the commit under
+the Fixes tag.
 
