@@ -1,229 +1,117 @@
-Return-Path: <stable+bounces-53829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405B790E918
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F6990E924
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8991FB237A7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:14:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0610A1F22DC3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127C3136E0E;
-	Wed, 19 Jun 2024 11:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CD184FC3;
+	Wed, 19 Jun 2024 11:19:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S6DSPamK"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC53380BF0;
-	Wed, 19 Jun 2024 11:14:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5D64D8B2;
+	Wed, 19 Jun 2024 11:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718795671; cv=none; b=XgQ63WZYpL3qe9m9AzFLJ9tDTTfpNUjb2RP/5cO4gRaWZLenpFtmv+OiGFan7ZvQ/cOQezY4flXABf/TI4on0R632cQXKYU2uu5GXdgVk359IN85vLIxy15lul34pJM3AhHvLwq9F5jLL5Jej/tQn55+SAlLG00+K34sHqZ7Fm0=
+	t=1718795942; cv=none; b=kGmRvhyHUu+7WREs/EJJfxU57qt/03KzLv/6Mh5gdbjomKMqRcY91YP1kaU6Vt197VoJAu4Gb3NwJmpWL3omqrvMU2W/uhMpA+fKJSOqNUqDOKy2+gFhePZVvp/nxH/9Y/r+EDtTm+hd4y9VA8YBUm6qBiKGCEaB7F+b/P/zHNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718795671; c=relaxed/simple;
-	bh=gkbo6qMGGu64vEalMeLTTx2hCU7mRa3W0w7IcstxhM8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=d9SkItWlZEWPIKO62FuhwTE+L3dxp2RfGZyWFznnfCaTzoQQUSdU2FkXnd0KQ+3QCYwzk0PSkg/gzNYTaLSuXWnkVObexbTzclKF1eIeyuU5hjAIOtxpm53T08umRKs9SwoK1aVxSLSRqw2XWfNVEhTLBUKbJ6mdbIKvu5kqhhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4W4197463LznVbt;
-	Wed, 19 Jun 2024 19:09:31 +0800 (CST)
-Received: from dggpeml100021.china.huawei.com (unknown [7.185.36.148])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0D6D718006F;
-	Wed, 19 Jun 2024 19:14:26 +0800 (CST)
-Received: from [10.174.177.174] (10.174.177.174) by
- dggpeml100021.china.huawei.com (7.185.36.148) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 19 Jun 2024 19:14:25 +0800
-Message-ID: <b73c8c9b-68c7-4ff3-b7cf-62a85e58ce8d@huawei.com>
-Date: Wed, 19 Jun 2024 19:14:25 +0800
+	s=arc-20240116; t=1718795942; c=relaxed/simple;
+	bh=qx/037j5l/h26XirlFV4UFdaLFteBY/swy2KfQlGKZQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FMFfBpZovvbHjgcSLoZ6MS+0ROhkXCrg9WOU++ehlsTPaqe7b5CjoGInU3P11qMVEGrPfvd/wXm5XqdDI3M5RWPs6sVhBPSdfVqIV5yraCZh/5hwEd4loTKKj0v412FKf0zssp70E2aWt+o1Ia4CMnk338LlBfgt3IX+ZOMfldg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S6DSPamK; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a6fb341a7f2so67262166b.1;
+        Wed, 19 Jun 2024 04:19:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718795939; x=1719400739; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pLVIq+eeSfRMQKg1AreCKiYpS4TWzLzpMNboeHds0vI=;
+        b=S6DSPamKmdPt97iIn48RyFjcnlYlNEjo+0/esIimma7Cro/BMLhARI7rxwg+du0YLt
+         lGdHhnIzp+P1TvMezbqYUoppeiw/49fSPgdaXKhcSdNWSoS9Jtdugzl5UWgpmfs24498
+         jB7W2ADUvGBXZl1/XO6/N2cVK4anm/lUMPZ49I8WFrbkG5MDacICFqOb+AoyRg1fWW9T
+         XGu9B+3Pu4Ogxobr2KJl62o853Cp5bbP0e4C6snoRaf1rC0r7O0rXthrgzp8S5mXm7hf
+         H7XwHt+Fp1qoUo4M68sO05Ah/zI2RmwYLUxYxJoDfT7VmS+n+OswFs0bFAltkYGTQD2v
+         MWmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718795939; x=1719400739;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pLVIq+eeSfRMQKg1AreCKiYpS4TWzLzpMNboeHds0vI=;
+        b=wIn3Pw74joJF/vMlfQzA6URNoYpfpTFEjm3PHFUg97wlwmDfzp9lRfELqEctzwrwhK
+         1YlDxZjGXvj4OpjwJ8YtPi1Dg3b8/txQaSxJBxUwbqAZrEK6ZZyKLWcaFnz1KT1y3wMV
+         Sd/pM0IaGRgthFnkQeGI+trzd73j380n8DYVg3TqQ68LSl6YGVzHRNP2ltNbv1X8kAMp
+         VNgdzxo8fWGGrbEf31v9fiNTW3D1jazvKnL5jGV5Oq0mSgDxkSS7PerFBusj8wqGMkHl
+         rb1qaYIn2B3xMk317JcELQJDUp80jThqEannC+h1PznOylS7kzK4MxmBDP7IJzBMJEKw
+         8IlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWkoytWEBWgMbWOleV6r4NfFRPOQVfE154VksPiMdiaqRzwyirrnMZfpapwAZWRJj5mMFs6T9vjHfPy/HmiQ1Mh77h6uJbHPHiBQbb43MZMR7xp62wmdHpWnUMp9S1WNLc5/U67vWNZholoH2d8otmK4qOSfdAzc/jXlnUU9ZNZ
+X-Gm-Message-State: AOJu0YxHhI7GgVddOEUDt5ikSS2rk4YGmQ/susavZingJROrt3fUaWZD
+	Nxs79+v4tVlvb1ij3Gvr/5xWRwuUWx1bxcwbxcT5Tii/YCKU7WZ3aBXx5DiSHCF4BbtyPjNOXMC
+	tip/0QHSLnCiTLLIghrIhsFTqo6g=
+X-Google-Smtp-Source: AGHT+IGICb+ryxdnC8Bm0bzuX9pSGgnIGjfjrPhkvEs3vkcekNWZ9OOSOET2zfCNqCAEIzzbZUhrHh6rWIR1j2CxIys=
+X-Received: by 2002:a17:906:2814:b0:a6f:4e1f:e613 with SMTP id
+ a640c23a62f3a-a6fab6488famr127124966b.37.1718795938561; Wed, 19 Jun 2024
+ 04:18:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "ext4: fix slab-out-of-bounds in
- ext4_mb_find_good_group_avg_frag_lists()" has been added to the 6.9-stable
- tree
+References: <20240619050125.4444-1-joswang1221@gmail.com> <2024061947-grandpa-bucktooth-4f55@gregkh>
+In-Reply-To: <2024061947-grandpa-bucktooth-4f55@gregkh>
+From: joswang <joswang1221@gmail.com>
+Date: Wed, 19 Jun 2024 19:18:48 +0800
+Message-ID: <CAMtoTm3+eSCeF_FQtyBZ1Yb43Sb_ABKDQv7zEueAHwXYGnv72Q@mail.gmail.com>
+Subject: Re: [PATCH v6] usb: dwc3: core: Workaround for CSR read timeout
 To: Greg KH <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, <stable-commits@vger.kernel.org>, Theodore Ts'o
-	<tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>,
-	<yangerkun@huawei.com>, Baokun Li <libaokun1@huawei.com>
-References: <20240616020519.1675680-1-sashal@kernel.org>
- <0d620010-c6b4-4f80-a835-451813f957e3@huawei.com>
- <2024061940-riptide-evict-b23b@gregkh>
-Content-Language: en-US
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <2024061940-riptide-evict-b23b@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml100021.china.huawei.com (7.185.36.148)
+Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Jos Wang <joswang@lenovo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2024/6/19 19:01, Greg KH wrote:
-> On Mon, Jun 17, 2024 at 09:37:01AM +0800, Baokun Li wrote:
->> Hi Sasha,
->>
->> Thanks for adapting this patch to the stable branch. Just one nit.
->>
->> On 2024/6/16 10:05, Sasha Levin wrote:
->>> This is a note to let you know that I've just added the patch titled
->>>
->>>       ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
->>>
->>> to the 6.9-stable tree which can be found at:
->>>       http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>>
->>> The filename of the patch is:
->>>        ext4-fix-slab-out-of-bounds-in-ext4_mb_find_good_gro.patch
->>> and it can be found in the queue-6.9 subdirectory.
->>>
->>> If you, or anyone else, feels it should not be added to the stable tree,
->>> please let <stable@vger.kernel.org> know about it.
->>>
->>>
->>>
->>> commit 84cee2d2394a43766dd2990edac8a4a05817ef7b
->>> Author: Baokun Li <libaokun1@huawei.com>
->>> Date:   Tue Mar 19 19:33:20 2024 +0800
->>>
->>>       ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
->>>       [ Upstream commit 13df4d44a3aaabe61cd01d277b6ee23ead2a5206 ]
->>>       We can trigger a slab-out-of-bounds with the following commands:
->>>           mkfs.ext4 -F /dev/$disk 10G
->>>           mount /dev/$disk /tmp/test
->>>           echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
->>>           echo test > /tmp/test/file && sync
->>>       ==================================================================
->>>       BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
->>>       Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
->>>       CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
->>>       Call Trace:
->>>        dump_stack_lvl+0x2c/0x50
->>>        kasan_report+0xb6/0xf0
->>>        ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
->>>        ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
->>>        ext4_mb_new_blocks+0x88a/0x1370 [ext4]
->>>        ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
->>>        ext4_map_blocks+0x569/0xea0 [ext4]
->>>        ext4_do_writepages+0x10f6/0x1bc0 [ext4]
->>>       [...]
->>>       ==================================================================
->>>       The flow of issue triggering is as follows:
->>>       // Set s_mb_group_prealloc to 2147483647 via sysfs
->>>       ext4_mb_new_blocks
->>>         ext4_mb_normalize_request
->>>           ext4_mb_normalize_group_request
->>>             ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
->>>         ext4_mb_regular_allocator
->>>           ext4_mb_choose_next_group
->>>             ext4_mb_choose_next_group_best_avail
->>>               mb_avg_fragment_size_order
->>>                 order = fls(len) - 2 = 29
->>>               ext4_mb_find_good_group_avg_frag_lists
->>>                 frag_list = &sbi->s_mb_avg_fragment_size[order]
->>>                 if (list_empty(frag_list)) // Trigger SOOB!
->>>       At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
->>>       but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
->>>       to be triggered by an attempt to access an element at index 29.
->>>       Add a new attr_id attr_clusters_in_group with values in the range
->>>       [0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
->>>       that type to fix the issue. In addition avoid returning an order
->>>       from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
->>>       and reduce some useless loops.
->>>       Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
->>>       CC: stable@vger.kernel.org
->>>       Signed-off-by: Baokun Li <libaokun1@huawei.com>
->>>       Reviewed-by: Jan Kara <jack@suse.cz>
->>>       Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
->>>       Link: https://lore.kernel.org/r/20240319113325.3110393-5-libaokun1@huawei.com
->>>       Signed-off-by: Theodore Ts'o <tytso@mit.edu>
->>>       Signed-off-by: Sasha Levin <sashal@kernel.org>
->>>
->>> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
->>> index 714f83632e3f9..66b5a68b0254e 100644
->>> --- a/fs/ext4/mballoc.c
->>> +++ b/fs/ext4/mballoc.c
->>> @@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
->>>    		return 0;
->>>    	if (order == MB_NUM_ORDERS(sb))
->>>    		order--;
->>> +	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
->>> +		order = MB_NUM_ORDERS(sb) - 1;
->>>    	return order;
->>>    }
->>> @@ -1008,6 +1010,8 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
->>>    	 * goal length.
->>>    	 */
->>>    	order = fls(ac->ac_g_ex.fe_len) - 1;
->>> +	if (WARN_ON_ONCE(order - 1 > MB_NUM_ORDERS(ac->ac_sb)))
->>> +		order = MB_NUM_ORDERS(ac->ac_sb);
->>>    	min_order = order - sbi->s_mb_best_avail_max_trim_order;
->>>    	if (min_order < 0)
->>>    		min_order = 0;
->>> diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
->>> index 295ea9a32de91..ca66e33f61815 100644
->>> --- a/fs/ext4/sysfs.c
->>> +++ b/fs/ext4/sysfs.c
->>> @@ -29,6 +29,7 @@ typedef enum {
->>>    	attr_trigger_test_error,
->>>    	attr_first_error_time,
->>>    	attr_last_error_time,
->>> +	attr_clusters_in_group,
->>>    	attr_feature,
->>>    	attr_pointer_ui,
->>>    	attr_pointer_ul,
->>> @@ -207,13 +208,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit, 0444);
->>>    EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
->>>    		 ext4_sb_info, s_inode_readahead_blks);
->>> +EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, clusters_in_group,
->>> +		 ext4_sb_info, s_mb_group_prealloc);
->>>    EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
->>>    EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
->>>    EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
->>>    EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
->>>    EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
->>>    EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
->>> -EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
->>>    EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
->>>    EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
->>>    EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
->>> @@ -376,6 +378,7 @@ static ssize_t ext4_generic_attr_show(struct ext4_attr *a,
->>>    	switch (a->attr_id) {
->>>    	case attr_inode_readahead:
->>> +	case attr_clusters_in_group:
->>>    	case attr_pointer_ui:
->>>    		if (a->attr_ptr == ptr_ext4_super_block_offset)
->>>    			return sysfs_emit(buf, "%u\n", le32_to_cpup(ptr));
->>> @@ -459,6 +462,14 @@ static ssize_t ext4_attr_store(struct kobject *kobj,
->>>    		else
->>>    			*((unsigned int *) ptr) = t;
->>>    		return len;
->>> +	case attr_clusters_in_group:
->> Since commit f536808adcc3 "ext4: refactor out ext4_generic_attr_store()"
->> is not backported to stable, the following judgement needs to be added
->> here:
->>
->>   		if (!ptr)
->>   			return 0;
->>
->> The patch for the 6.6-stable tree has the same problem.
-> Thanks, I've dropped this from both queues now, can you resend it with a
-> fixed up version?
+On Wed, Jun 19, 2024 at 1:10=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
 >
-> thanks,
+> On Wed, Jun 19, 2024 at 01:01:25PM +0800, joswang wrote:
+> > From: Jos Wang <joswang@lenovo.com>
+> >
+> > This is a workaround for STAR 4846132, which only affects
+> > DWC_usb31 version2.00a operating in host mode.
+> >
+> > There is a problem in DWC_usb31 version 2.00a operating
+> > in host mode that would cause a CSR read timeout When CSR
+> > read coincides with RAM Clock Gating Entry. By disable
+> > Clock Gating, sacrificing power consumption for normal
+> > operation.
+> >
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jos Wang <joswang@lenovo.com>
+> > ---
+> > v5 -> v6: no change
+> > v4 -> v5: no change
+>
+> If there was no change, why was there new versions submitted?  Please
+> always document what was done.
 >
 > greg k-h
-Okay. I'll send out the corrected version soon.
 
--- 
-With Best Regards,
-Baokun Li
+Ok, I will submit a new version and add the differences.
 
+Thanks,
+Jos Wang
 
