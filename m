@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-54104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A990990ECB4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7851390EED5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 468B0281624
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E371C211CF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8F5143C43;
-	Wed, 19 Jun 2024 13:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E8514387E;
+	Wed, 19 Jun 2024 13:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLGeL3Ps"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoAC74X4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A27212FB31;
-	Wed, 19 Jun 2024 13:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C0C1E492;
+	Wed, 19 Jun 2024 13:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802597; cv=none; b=j8uZDA9kLnc47esdmWrNNKyguKevldPu0eJC7nfByAI/3XdjVjBUHmgw2PpHyC+lveNjkycfAUw+pznLwcI/nWVDNJKWkwFiYmcg/OVHD5ynehFu4k092/zKLpuEM3fGWBzQMnjNsyf5Jqq7/jXjD3u9qhBqE6jqTOmpzaL0j/4=
+	t=1718803947; cv=none; b=mT67CSpIbWTRn1cUY3tAyClQN64WgCOPNLPWkuNbBfRSRTxC2mfz5F6nc4xwQEZQvp6xG8KaTAr/cNG/RQcavgwvWtUtRfdk72wj9K2p5I5O1XpUcZ0WAaFpIFU3QvbhGP6lSTbfWRH8000WcjM4muOg0bAOq0EBdZzpuiPDNjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802597; c=relaxed/simple;
-	bh=ozDu2eVXejd5SDD0eI3Oj6N0wD0nMnAQnyrPnXODm/g=;
+	s=arc-20240116; t=1718803947; c=relaxed/simple;
+	bh=2Uvk5obUFBtebjKmAo1gU3C/sKGnx3ekkOO+zkKtFzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOd0PgPjCJQXAIpS423siKJQJjVX4bhq9Z4HBmKjQP3BnONEBWigaLzgiTLnmihbTMO4DBxJe6MEq/4OiS3lHOwGCDLwVF76oTtjrpjIViuVZ+ptucXaVbbsMr2ZsyqxkSt5pmMx0lJILEJkyytF+qdERJdrHEDsC4VkAQ/TlSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLGeL3Ps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEAEAC2BBFC;
-	Wed, 19 Jun 2024 13:09:56 +0000 (UTC)
+	 MIME-Version; b=CIatM8CzkHILNaCGPdhdH5TEd7Zlsknu0hQbZtHJu/TLuJ47cxGmoW3vWEOUhdIt7O8MkJT/KEUe4Me640wDPuy1Waejv93pvXRSK+VJiS1sT+NszAmgYXvSLfnfFodiqgUHEWCDDS+d9xDt6OSQc3NSYcs/GvPtGjvPtX6Jx78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoAC74X4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07375C2BBFC;
+	Wed, 19 Jun 2024 13:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802597;
-	bh=ozDu2eVXejd5SDD0eI3Oj6N0wD0nMnAQnyrPnXODm/g=;
+	s=korg; t=1718803947;
+	bh=2Uvk5obUFBtebjKmAo1gU3C/sKGnx3ekkOO+zkKtFzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fLGeL3PsDteA1RydNXvHcRsDeWLdxp995xvN0SCYo8wk8pAgC4jsMHW9DLXM5voCP
-	 F0QOUf3aci49j4+/xgrOhzW5jPxc/fnFZMVONm6ZWfOFZFsZordhlZKyUG/odjLH66
-	 tbv5RnlgVigvGVw5yOBR5DkyJvwP9IZ5R46VY6Xo=
+	b=MoAC74X4wdBW2PkLGA5jVjCzTp2WfXh2kImtMYuzzCRSVD7qfM0gANK6tFyEoX9d5
+	 28kElpI1+sBpspxvF1tAHV2EXM8JeDr6hZRJswETqSflL1G1A8uMzHBpsLGbu2u/3l
+	 MQAulj80BxmZ9Zzh/rH4MVm0Un7UVJXRDcurdk1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Beleswar Padhi <b-padhi@ti.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6.6 249/267] remoteproc: k3-r5: Jump to error handling labels in start/stop errors
+	Rao Shoaib <Rao.Shoaib@oracle.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 157/217] af_unix: Read with MSG_PEEK loops if the first unread byte is OOB
 Date: Wed, 19 Jun 2024 14:56:40 +0200
-Message-ID: <20240619125615.877003646@linuxfoundation.org>
+Message-ID: <20240619125602.750399109@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Beleswar Padhi <b-padhi@ti.com>
+From: Rao Shoaib <Rao.Shoaib@oracle.com>
 
-commit 1dc7242f6ee0c99852cb90676d7fe201cf5de422 upstream.
+[ Upstream commit a6736a0addd60fccc3a3508461d72314cc609772 ]
 
-In case of errors during core start operation from sysfs, the driver
-directly returns with the -EPERM error code. Fix this to ensure that
-mailbox channels are freed on error before returning by jumping to the
-'put_mbox' error handling label. Similarly, jump to the 'out' error
-handling label to return with required -EPERM error code during the
-core stop operation from sysfs.
+Read with MSG_PEEK flag loops if the first byte to read is an OOB byte.
+commit 22dd70eb2c3d ("af_unix: Don't peek OOB data without MSG_OOB.")
+addresses the loop issue but does not address the issue that no data
+beyond OOB byte can be read.
 
-Fixes: 3c8a9066d584 ("remoteproc: k3-r5: Do not allow core1 to power up before core0 via sysfs")
-Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
-Link: https://lore.kernel.org/r/20240506141849.1735679-1-b-padhi@ti.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>>> from socket import *
+>>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+>>> c1.send(b'a', MSG_OOB)
+1
+>>> c1.send(b'b')
+1
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'b'
+
+>>> from socket import *
+>>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+>>> c2.setsockopt(SOL_SOCKET, SO_OOBINLINE, 1)
+>>> c1.send(b'a', MSG_OOB)
+1
+>>> c1.send(b'b')
+1
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'b'
+>>>
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Signed-off-by: Rao Shoaib <Rao.Shoaib@oracle.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240611084639.2248934-1-Rao.Shoaib@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/ti_k3_r5_remoteproc.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/unix/af_unix.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
-+++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
-@@ -580,7 +580,8 @@ static int k3_r5_rproc_start(struct rpro
- 		if (core != core0 && core0->rproc->state == RPROC_OFFLINE) {
- 			dev_err(dev, "%s: can not start core 1 before core 0\n",
- 				__func__);
--			return -EPERM;
-+			ret = -EPERM;
-+			goto put_mbox;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index bb94a67229aa3..3905cdcaa5184 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2682,18 +2682,18 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
+ 		if (skb == u->oob_skb) {
+ 			if (copied) {
+ 				skb = NULL;
+-			} else if (sock_flag(sk, SOCK_URGINLINE)) {
+-				if (!(flags & MSG_PEEK)) {
++			} else if (!(flags & MSG_PEEK)) {
++				if (sock_flag(sk, SOCK_URGINLINE)) {
+ 					WRITE_ONCE(u->oob_skb, NULL);
+ 					consume_skb(skb);
++				} else {
++					__skb_unlink(skb, &sk->sk_receive_queue);
++					WRITE_ONCE(u->oob_skb, NULL);
++					unlinked_skb = skb;
++					skb = skb_peek(&sk->sk_receive_queue);
+ 				}
+-			} else if (flags & MSG_PEEK) {
+-				skb = NULL;
+-			} else {
+-				__skb_unlink(skb, &sk->sk_receive_queue);
+-				WRITE_ONCE(u->oob_skb, NULL);
+-				unlinked_skb = skb;
+-				skb = skb_peek(&sk->sk_receive_queue);
++			} else if (!sock_flag(sk, SOCK_URGINLINE)) {
++				skb = skb_peek_next(skb, &sk->sk_receive_queue);
+ 			}
  		}
  
- 		ret = k3_r5_core_run(core);
-@@ -648,7 +649,8 @@ static int k3_r5_rproc_stop(struct rproc
- 		if (core != core1 && core1->rproc->state != RPROC_OFFLINE) {
- 			dev_err(dev, "%s: can not stop core 0 before core 1\n",
- 				__func__);
--			return -EPERM;
-+			ret = -EPERM;
-+			goto out;
- 		}
- 
- 		ret = k3_r5_core_halt(core);
+-- 
+2.43.0
+
 
 
 
