@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-54550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4149990EEC9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 470F290EDCC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20D351C21088
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF1CB287693
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA97F14D705;
-	Wed, 19 Jun 2024 13:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF4F14D6E9;
+	Wed, 19 Jun 2024 13:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjBGV004"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHcVMATj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8745D14B96F;
-	Wed, 19 Jun 2024 13:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB46E14D435;
+	Wed, 19 Jun 2024 13:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803911; cv=none; b=N4vaIXb/ugGAGzof0xyDtQMviAjiFj41/vCE+HSr5YL0lfQEbGMi2g2ZAfZArqkwlgm22k2b0m8Gexbi9eD9YRjj4cE35uTLJMErFhH/uvuE9VtUbUq0kJ0/dNqNnnCNopRMZZ/MZtGvzDCoawdC5ITsibZqPQyXtTDEsG9OZKU=
+	t=1718803329; cv=none; b=B77Hc4O+2Wodz27bND5d+JPLt3O9p+N+gM/isEqcCFVunbwXoR3wIvS9hczRKi+utSWisikRi+NnVebOfzcutn5nH/ItVGMxH+mQDBl6bLUJOs1m5ZvGGb9pnxdTn8OWJkR9Oi4f9ZYx1a0JUV58w3dZrt3esDz5h2GUU/m0rnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803911; c=relaxed/simple;
-	bh=NMYj9t8wAWPQitbrhmffrNhzHcThHTfPD6upbQmcBrM=;
+	s=arc-20240116; t=1718803329; c=relaxed/simple;
+	bh=WYmC0l8zBGWJ5jkRtQZaTSJYNeiW5wYnHUUMECVZ0UM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8kaRMz3Cl7O+ICI9mR0ocKHsJo4xTIiYFVZYl5C+uHw4CHCz00Sn4an3bfayCLZivoE3zk2UbFUHWxUsLqKHg9QVCuFZ7udLg+pUWC/bV5YMUEze42/PeSxrjbcbN4fARKjNpV8f/XMxOXXUy7x06lYI8fg3f8epPEWM7fV0s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjBGV004; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88D2C2BBFC;
-	Wed, 19 Jun 2024 13:31:50 +0000 (UTC)
+	 MIME-Version; b=ii58WxD7d7L5NiFcfujJrhE25cQTMchkBOeImN1NS9iBU4EIIfNwaxCAkCwIphdLj9M85QDU94TAkrGd6xTQIW6utEGq4jEkXgqXbAcxmVG8ngtAD+VaCWf7MUOwRDpEJAKvDWHP6MFyo3UMStkqzwRNIJ3k7uPOPLMEE/3E/0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHcVMATj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A63EC2BBFC;
+	Wed, 19 Jun 2024 13:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803911;
-	bh=NMYj9t8wAWPQitbrhmffrNhzHcThHTfPD6upbQmcBrM=;
+	s=korg; t=1718803329;
+	bh=WYmC0l8zBGWJ5jkRtQZaTSJYNeiW5wYnHUUMECVZ0UM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UjBGV004kwa0GoGX1eAe0r7tRggV+ZMg2n9Le194urQQZ+TjHVHTN4HdRAdPZsoUZ
-	 VZFj4c1Ri2LUL6uVmyVfE9lYPNGeSYBX6tS6Zxw3Y4DP1cvhtHw3TI4694kF+/dFLH
-	 OT2a0LqWw67nA7Zj2yjEVYfPJyZkV9mOzlHshYdY=
+	b=SHcVMATjxzjCZExFk6zjZuUI4U55yGbP6dkwUaNUTF4+BrjnV1a212TvDO2FnjBoV
+	 r7bHy7o/XO6Gi9GFAEMkr/rXLQX0E0UraETAUWyDtYeggGgovFi3QEQq9N3XVPRc4R
+	 SbCZ5yrD3K/Uxa1JkVyawKmsrIbKfvxxPZ9d+8zE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/217] net/mlx5e: Fix features validation check for tunneled UDP (non-VXLAN) packets
+	Aarrayy <lp610mh@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.9 230/281] ata: libata-core: Add ATA_HORKAGE_NOLPM for Crucial CT240BX500SSD1
 Date: Wed, 19 Jun 2024 14:56:29 +0200
-Message-ID: <20240619125602.323980234@linuxfoundation.org>
+Message-ID: <20240619125618.813019903@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 791b4089e326271424b78f2fae778b20e53d071b ]
+commit 86aaa7e9d641c1ad1035ed2df88b8d0b48c86b30 upstream.
 
-Move the vxlan_features_check() call to after we verified the packet is
-a tunneled VXLAN packet.
+Commit 7627a0edef54 ("ata: ahci: Drop low power policy board type")
+dropped the board_ahci_low_power board type, and instead enables LPM if:
+-The AHCI controller reports that it supports LPM (Partial/Slumber), and
+-CONFIG_SATA_MOBILE_LPM_POLICY != 0, and
+-The port is not defined as external in the per port PxCMD register, and
+-The port is not defined as hotplug capable in the per port PxCMD
+ register.
 
-Without this, tunneled UDP non-VXLAN packets (for ex. GENENVE) might
-wrongly not get offloaded.
-In some cases, it worked by chance as GENEVE header is the same size as
-VXLAN, but it is obviously incorrect.
+Partial and Slumber LPM states can either be initiated by HIPM or DIPM.
 
-Fixes: e3cfc7e6b7bd ("net/mlx5e: TX, Add geneve tunnel stateless offload support")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For HIPM (host initiated power management) to get enabled, both the AHCI
+controller and the drive have to report that they support HIPM.
+
+For DIPM (device initiated power management) to get enabled, only the
+drive has to report that it supports DIPM. However, the HBA will reject
+device requests to enter LPM states which the HBA does not support.
+
+The problem is that Crucial CT240BX500SSD1 drives do not handle low power
+modes correctly. The problem was most likely not seen before because no
+one had used this drive with a AHCI controller with LPM enabled.
+
+Add a quirk so that we do not enable LPM for this drive, since we see
+command timeouts if we do (even though the drive claims to support DIPM).
+
+Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
+Cc: stable@vger.kernel.org
+Reported-by: Aarrayy <lp610mh@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218832
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/ata/libata-core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index e2f134e1d9fcf..4c0eac83546de 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -4587,7 +4587,7 @@ static netdev_features_t mlx5e_tunnel_features_check(struct mlx5e_priv *priv,
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -4180,8 +4180,9 @@ static const struct ata_blacklist_entry
+ 	{ "PIONEER BD-RW   BDR-207M",	NULL,	ATA_HORKAGE_NOLPM },
+ 	{ "PIONEER BD-RW   BDR-205",	NULL,	ATA_HORKAGE_NOLPM },
  
- 		/* Verify if UDP port is being offloaded by HW */
- 		if (mlx5_vxlan_lookup_port(priv->mdev->vxlan, port))
--			return features;
-+			return vxlan_features_check(skb, features);
+-	/* Crucial BX100 SSD 500GB has broken LPM support */
++	/* Crucial devices with broken LPM support */
+ 	{ "CT500BX100SSD1",		NULL,	ATA_HORKAGE_NOLPM },
++	{ "CT240BX500SSD1",		NULL,	ATA_HORKAGE_NOLPM },
  
- #if IS_ENABLED(CONFIG_GENEVE)
- 		/* Support Geneve offload for default UDP port */
-@@ -4613,7 +4613,6 @@ netdev_features_t mlx5e_features_check(struct sk_buff *skb,
- 	struct mlx5e_priv *priv = netdev_priv(netdev);
- 
- 	features = vlan_features_check(skb, features);
--	features = vxlan_features_check(skb, features);
- 
- 	/* Validate if the tunneled packet is being offloaded by HW */
- 	if (skb->encapsulation &&
--- 
-2.43.0
-
+ 	/* 512GB MX100 with MU01 firmware has both queued TRIM and LPM issues */
+ 	{ "Crucial_CT512MX100*",	"MU01",	ATA_HORKAGE_NO_NCQ_TRIM |
 
 
 
