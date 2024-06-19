@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-53931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5983590EBEE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:02:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F312090ED20
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59CE61C244B1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:02:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0DC91F21390
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1428E14BF8D;
-	Wed, 19 Jun 2024 13:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474E51459E3;
+	Wed, 19 Jun 2024 13:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQhJidrm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ci8jBYPn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7142147C7B;
-	Wed, 19 Jun 2024 13:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056B31422B8;
+	Wed, 19 Jun 2024 13:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802095; cv=none; b=VR364RMT4WyBXSor6seqInncAPFlYRjS8oPkPR1TG6S19hDOfHKTj7/rQoeZqs8XIThWkBVKYzSx8ffZMmRLAcwLpsEu/+UmuGynCPW+XDtDbaDNPWMonQmSW3C0CcnPbKK5sdUSgDTkloEnQ9ertgJQBpXG+76KMiVjebir+PY=
+	t=1718802866; cv=none; b=FvJ5RpFFWCPiXxC0/+4QMhz8oTEv/19oD8TQnyS1C/UT5cJi8+KWFB1cDgGfRAPXXZE2sywqD0xWGSONqdAzwW+CRRhDTLO4j7emn8gpZ3MxsKVJcGIepKZAbKpCYyVJB9lI0l2W8QUTbnJGnGj4baYrcKvuszYqZ59LEG8sySs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802095; c=relaxed/simple;
-	bh=0dFkM1gMymSSIfDi3EKvnwupUvxq2V81LYKbRE2Yah0=;
+	s=arc-20240116; t=1718802866; c=relaxed/simple;
+	bh=kE7AFNbmhg9hG47jo/kt4+jgU+o8QzF1Cx0CLM5iVWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNjVQ5Rekit+V2WsHSX1ZixUusB9EaA7+bDZDF69TopPL8BsCOcQAIe/8ILLgpIU6OrsE+PeZ6DCQwbMfpruDDZQsxgPTOClKyceaqzFpw3mu3Z4r4nZZvsvGHZyF8SlFpgCk6YbbmOa++EWgbHGQvrtyg9U55lJlliUx+/+ORY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQhJidrm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC9FC2BBFC;
-	Wed, 19 Jun 2024 13:01:35 +0000 (UTC)
+	 MIME-Version; b=bDT3tUVqGBwULDcFfqm/58mPhJOFmBM5ajiwLWczCHX9duDqSGNB/E1ciPI+T8YupY3SM6JJaegLw8Yk1RXX8OgPoyq6Sz7i6JG3DVC4069fYqwRQ9ysWXHTrQmom4dcGA3QxcnDAoW768G/JXQiIfMGaiCK3OP42o0N7gObmYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ci8jBYPn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D811C2BBFC;
+	Wed, 19 Jun 2024 13:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802095;
-	bh=0dFkM1gMymSSIfDi3EKvnwupUvxq2V81LYKbRE2Yah0=;
+	s=korg; t=1718802865;
+	bh=kE7AFNbmhg9hG47jo/kt4+jgU+o8QzF1Cx0CLM5iVWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQhJidrmBZdwq8F2MNGaDNBW596OZmmWh/QzXOaeHxhSGExuZoSg4Eo8G0Uj+UxV4
-	 7cXJW4kWOyNFZk7J+pxiH5Y2mFB/33y7oqvNnYkIkbPxiVUtOtXXhaomr4MzaccwAq
-	 xmlMy6Q5bMdW85CVzKH7ZgbfPr9OevEdiqQ0dbnI=
+	b=ci8jBYPnx9kueb9GgZLEdHA0qB5mjOhlYs1JY2oBltXMZhsrRN4DLCRjoXW5L18U+
+	 o4+gSp0Gv8UhtFPr+VsdYFor3sTmPsm5KE9p3afTDXa5EaFYCtn8hM7o9F1zS8SP6R
+	 HK3t5kuMVxi1YhfCIhVrLeEPW737tTON/uovAW3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 079/267] io_uring: check for non-NULL file pointer in io_file_can_poll()
-Date: Wed, 19 Jun 2024 14:53:50 +0200
-Message-ID: <20240619125609.385477186@linuxfoundation.org>
+	Su Hui <suhui@nfschina.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 072/281] net: ethtool: fix the error condition in ethtool_get_phy_stats_ethtool()
+Date: Wed, 19 Jun 2024 14:53:51 +0200
+Message-ID: <20240619125612.614151237@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,82 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Su Hui <suhui@nfschina.com>
 
-commit 5fc16fa5f13b3c06fdb959ef262050bd810416a2 upstream.
+[ Upstream commit 0dcc53abf58d572d34c5313de85f607cd33fc691 ]
 
-In earlier kernels, it was possible to trigger a NULL pointer
-dereference off the forced async preparation path, if no file had
-been assigned. The trace leading to that looks as follows:
+Clang static checker (scan-build) warning:
+net/ethtool/ioctl.c:line 2233, column 2
+Called function pointer is null (null dereference).
 
-BUG: kernel NULL pointer dereference, address: 00000000000000b0
-PGD 0 P4D 0
-Oops: 0000 [#1] PREEMPT SMP
-CPU: 67 PID: 1633 Comm: buf-ring-invali Not tainted 6.8.0-rc3+ #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS unknown 2/2/2022
-RIP: 0010:io_buffer_select+0xc3/0x210
-Code: 00 00 48 39 d1 0f 82 ae 00 00 00 48 81 4b 48 00 00 01 00 48 89 73 70 0f b7 50 0c 66 89 53 42 85 ed 0f 85 d2 00 00 00 48 8b 13 <48> 8b 92 b0 00 00 00 48 83 7a 40 00 0f 84 21 01 00 00 4c 8b 20 5b
-RSP: 0018:ffffb7bec38c7d88 EFLAGS: 00010246
-RAX: ffff97af2be61000 RBX: ffff97af234f1700 RCX: 0000000000000040
-RDX: 0000000000000000 RSI: ffff97aecfb04820 RDI: ffff97af234f1700
-RBP: 0000000000000000 R08: 0000000000200030 R09: 0000000000000020
-R10: ffffb7bec38c7dc8 R11: 000000000000c000 R12: ffffb7bec38c7db8
-R13: ffff97aecfb05800 R14: ffff97aecfb05800 R15: ffff97af2be5e000
-FS:  00007f852f74b740(0000) GS:ffff97b1eeec0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000000000b0 CR3: 000000016deab005 CR4: 0000000000370ef0
-Call Trace:
- <TASK>
- ? __die+0x1f/0x60
- ? page_fault_oops+0x14d/0x420
- ? do_user_addr_fault+0x61/0x6a0
- ? exc_page_fault+0x6c/0x150
- ? asm_exc_page_fault+0x22/0x30
- ? io_buffer_select+0xc3/0x210
- __io_import_iovec+0xb5/0x120
- io_readv_prep_async+0x36/0x70
- io_queue_sqe_fallback+0x20/0x260
- io_submit_sqes+0x314/0x630
- __do_sys_io_uring_enter+0x339/0xbc0
- ? __do_sys_io_uring_register+0x11b/0xc50
- ? vm_mmap_pgoff+0xce/0x160
- do_syscall_64+0x5f/0x180
- entry_SYSCALL_64_after_hwframe+0x46/0x4e
-RIP: 0033:0x55e0a110a67e
-Code: ba cc 00 00 00 45 31 c0 44 0f b6 92 d0 00 00 00 31 d2 41 b9 08 00 00 00 41 83 e2 01 41 c1 e2 04 41 09 c2 b8 aa 01 00 00 0f 05 <c3> 90 89 30 eb a9 0f 1f 40 00 48 8b 42 20 8b 00 a8 06 75 af 85 f6
+Return '-EOPNOTSUPP' when 'ops->get_ethtool_phy_stats' is NULL to fix
+this typo error.
 
-because the request is marked forced ASYNC and has a bad file fd, and
-hence takes the forced async prep path.
-
-Current kernels with the request async prep cleaned up can no longer hit
-this issue, but for ease of backporting, let's add this safety check in
-here too as it really doesn't hurt. For both cases, this will inevitably
-end with a CQE posted with -EBADF.
-
-Cc: stable@vger.kernel.org
-Fixes: a76c0b31eef5 ("io_uring: commit non-pollable provided mapped buffers upfront")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 201ed315f967 ("net/ethtool/ioctl: split ethtool_get_phy_stats into multiple helpers")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+Link: https://lore.kernel.org/r/20240605034742.921751-1-suhui@nfschina.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ethtool/ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -168,7 +168,8 @@ static void __user *io_ring_buffer_selec
- 	req->buf_list = bl;
- 	req->buf_index = buf->bid;
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 5a55270aa86e8..e645d751a5e89 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -2220,7 +2220,7 @@ static int ethtool_get_phy_stats_ethtool(struct net_device *dev,
+ 	const struct ethtool_ops *ops = dev->ethtool_ops;
+ 	int n_stats, ret;
  
--	if (issue_flags & IO_URING_F_UNLOCKED || !file_can_poll(req->file)) {
-+	if (issue_flags & IO_URING_F_UNLOCKED ||
-+	    (req->file && !file_can_poll(req->file))) {
- 		/*
- 		 * If we came in unlocked, we have no choice but to consume the
- 		 * buffer here, otherwise nothing ensures that the buffer won't
+-	if (!ops || !ops->get_sset_count || ops->get_ethtool_phy_stats)
++	if (!ops || !ops->get_sset_count || !ops->get_ethtool_phy_stats)
+ 		return -EOPNOTSUPP;
+ 
+ 	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
+-- 
+2.43.0
+
 
 
 
