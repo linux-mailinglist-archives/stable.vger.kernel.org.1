@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-54055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0C290EC75
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D4490EE9B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24AABB21620
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7414CB251DD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8988C146590;
-	Wed, 19 Jun 2024 13:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B153C0B;
+	Wed, 19 Jun 2024 13:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWdIYD5d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXoT2/vL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4844C13AA40;
-	Wed, 19 Jun 2024 13:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FFE1422B8;
+	Wed, 19 Jun 2024 13:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802459; cv=none; b=TpgWe6qs1OSYGaC9ZB/f+MpgBqrgtOprqZNwQyHBIf3aO90OwKjiHBbArt7xrYsFH6Q5h7a16gzGKMUPdX6OTm1pp5+4Pj6SJ328K+Mnv5mSJUr0gng9nmVExMt48xinG0R3Kf8lBeeeh4P4nni58iBsTuPV43FkBe8W95vVdIs=
+	t=1718803807; cv=none; b=fwr937V6UzBguHGNh3mMaNVTt+6AhdibZRZLPk2RFmcxyGXp+lKK6rn9satrrJA7ak8b1SPjt9XgHRxTbhjj/8UUp0iYCKflUBQoVnA6e+N8AlvmNni+UamqjHmNZqLAnqchEfXCuEk//bgNiRa7IqEG3pgZBXZWZ4sV3KRf9pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802459; c=relaxed/simple;
-	bh=fYL5dtM1TilbZDPva09dLvPoZI/ZsyX7TXVWkkVzrog=;
+	s=arc-20240116; t=1718803807; c=relaxed/simple;
+	bh=FbK0MVFKoKrdVlj0gE7mKKfiI1HSJn9mMP9t6LL7Q78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VE6UQb4L3oHRT3MHim/pwvhp5e2ACDzKH80Pw4d9m0DugXO1rlZa8yaxUxz0YijRE5Iz7iO/oJ3CV+DhIAO8YaYKKKqR+npLyaPG6sBxf6S+YFzeADa+vunlZ5kjlW5TnNZoYeT0cI8Q59JO8/am/E2C/wsTZ8czd2ACf4o7DT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWdIYD5d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13DEC2BBFC;
-	Wed, 19 Jun 2024 13:07:38 +0000 (UTC)
+	 MIME-Version; b=dSDEXlhMwy/J3uXjYdfQciaNHnmL9OckVtVQIgi4Tn3RthztKSkR7XS3+LBb6B4rKrGWjo7t3rCK8Lil+eoJFT1LDkQYjDkQxR44sfXIMfiqUrTIXY8TlGdGxNm0b2jL3fqWMg1jCuvosBg987z7kjvStFYb5tsAMq3V6Bg/S90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXoT2/vL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4967AC4AF1A;
+	Wed, 19 Jun 2024 13:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802459;
-	bh=fYL5dtM1TilbZDPva09dLvPoZI/ZsyX7TXVWkkVzrog=;
+	s=korg; t=1718803807;
+	bh=FbK0MVFKoKrdVlj0gE7mKKfiI1HSJn9mMP9t6LL7Q78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWdIYD5dcQZ6Ga4EbVcDXoyzuVBWoNnyG2xRvX8cW6H4h4PncyNoUTOvrjLiJvegb
-	 MKEyqbigREJEMTdlNI4YoqxEmzI6BC49VTyuyJH+VSv3kD6TrilntP5RTvmM8Mm34m
-	 Cyb5AL7/h6r95kG9y6cYwrNhyzJ56/b26PLXmL3w=
+	b=ZXoT2/vL1dsma8vFWoHe9i5S764qdTWZ/jrKqUE3EfBs2hK0q/fe93QSMoQ5fCQT9
+	 LSR4da+Bz5+ekj7P3wfndRII7OG70SYm0czfZDSfMlHJ4zbfWSjzklso2+di4BnwkV
+	 ZIvqPguiEQh6JEzxybH9aqJ/jIlYBYyN4qlIyfVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	Baoquan He <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 203/267] fs/proc: fix softlockup in __read_vmcore
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Xin Yin <yinxin.x@bytedance.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 111/217] cachefiles: add restore command to recover inflight ondemand read requests
 Date: Wed, 19 Jun 2024 14:55:54 +0200
-Message-ID: <20240619125614.122154898@linuxfoundation.org>
+Message-ID: <20240619125600.970894098@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +66,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Jia Zhu <zhujia.zj@bytedance.com>
 
-commit 5cbcb62dddf5346077feb82b7b0c9254222d3445 upstream.
+[ Upstream commit e73fa11a356ca0905c3cc648eaacc6f0f2d2c8b3 ]
 
-While taking a kernel core dump with makedumpfile on a larger system,
-softlockup messages often appear.
+Previously, in ondemand read scenario, if the anonymous fd was closed by
+user daemon, inflight and subsequent read requests would return EIO.
+As long as the device connection is not released, user daemon can hold
+and restore inflight requests by setting the request flag to
+CACHEFILES_REQ_NEW.
 
-While softlockup warnings can be harmless, they can also interfere with
-things like RCU freeing memory, which can be problematic when the kdump
-kexec image is configured with as little memory as possible.
-
-Avoid the softlockup, and give things like work items and RCU a chance to
-do their thing during __read_vmcore by adding a cond_resched.
-
-Link: https://lkml.kernel.org/r/20240507091858.36ff767f@imladris.surriel.com
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Jia Zhu <zhujia.zj@bytedance.com>
+Signed-off-by: Xin Yin <yinxin.x@bytedance.com>
+Link: https://lore.kernel.org/r/20231120041422.75170-6-zhujia.zj@bytedance.com
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 4b4391e77a6b ("cachefiles: defer exposing anon_fd until after copy_to_user() succeeds")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/vmcore.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/cachefiles/daemon.c   |  1 +
+ fs/cachefiles/internal.h |  3 +++
+ fs/cachefiles/ondemand.c | 23 +++++++++++++++++++++++
+ 3 files changed, 27 insertions(+)
 
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -383,6 +383,8 @@ static ssize_t __read_vmcore(struct iov_
- 		/* leave now if filled buffer already */
- 		if (!iov_iter_count(iter))
- 			return acc;
-+
-+		cond_resched();
- 	}
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index 7d1f456e376dd..26b487e112596 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -77,6 +77,7 @@ static const struct cachefiles_daemon_cmd cachefiles_daemon_cmds[] = {
+ 	{ "tag",	cachefiles_daemon_tag		},
+ #ifdef CONFIG_CACHEFILES_ONDEMAND
+ 	{ "copen",	cachefiles_ondemand_copen	},
++	{ "restore",	cachefiles_ondemand_restore	},
+ #endif
+ 	{ "",		NULL				}
+ };
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index 33fe418aca770..361356d0e866a 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -304,6 +304,9 @@ extern ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ extern int cachefiles_ondemand_copen(struct cachefiles_cache *cache,
+ 				     char *args);
  
- 	list_for_each_entry(m, &vmcore_list, list) {
++extern int cachefiles_ondemand_restore(struct cachefiles_cache *cache,
++					char *args);
++
+ extern int cachefiles_ondemand_init_object(struct cachefiles_object *object);
+ extern void cachefiles_ondemand_clean_object(struct cachefiles_object *object);
+ 
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index 8118649d30727..6d8f7f01a73ac 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -214,6 +214,29 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 	return ret;
+ }
+ 
++int cachefiles_ondemand_restore(struct cachefiles_cache *cache, char *args)
++{
++	struct cachefiles_req *req;
++
++	XA_STATE(xas, &cache->reqs, 0);
++
++	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
++		return -EOPNOTSUPP;
++
++	/*
++	 * Reset the requests to CACHEFILES_REQ_NEW state, so that the
++	 * requests have been processed halfway before the crash of the
++	 * user daemon could be reprocessed after the recovery.
++	 */
++	xas_lock(&xas);
++	xas_for_each(&xas, req, ULONG_MAX)
++		xas_set_mark(&xas, CACHEFILES_REQ_NEW);
++	xas_unlock(&xas);
++
++	wake_up_all(&cache->daemon_pollwq);
++	return 0;
++}
++
+ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
+ {
+ 	struct cachefiles_object *object;
+-- 
+2.43.0
+
 
 
 
