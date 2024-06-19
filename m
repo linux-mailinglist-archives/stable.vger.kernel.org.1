@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-54115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A265F90ECC1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC28590EF00
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5269728168F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C61B286E3E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024BA143C4E;
-	Wed, 19 Jun 2024 13:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308A61422CA;
+	Wed, 19 Jun 2024 13:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T4JtjUby"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbqNiJUi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41901422B8;
-	Wed, 19 Jun 2024 13:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E145A13DDC0;
+	Wed, 19 Jun 2024 13:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802629; cv=none; b=LrbjulmitpjSwSy1T1KQrcgfxVc2lrqnyqp4b74kODuy4fNphb6NBqPWcSSf5A8BCKb6bPwzyYaV7A62Xmor54RqFdAQKN9trQpxn7chV4ybeGpTLv4TMAjGWjI8RM5fAnyRiJp/EgAaJzcs8VeDjCAWZyZtRfn1GvR+PkDbryc=
+	t=1718804066; cv=none; b=sXXYGxBDJthmhZU/7v63yS2XbWcKIUD6F+Dm4lfuA0jhiKDz1CsT8sUm3reqmUOuuPSVia3xrV50HZPMU8hjZ9Bc4DgbeiYd/QzQ4IUW17xlnBtPk4FgjlO//A4UQELz/b2wyzG9zsLBc4srmfXi+h/jlSS18Hc1xy3WQctMI3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802629; c=relaxed/simple;
-	bh=wzwR5XgiJ7/j1Sdn3VlYMXpbn0DyjJnYOdmkG/VtD1Y=;
+	s=arc-20240116; t=1718804066; c=relaxed/simple;
+	bh=7QaB9Y/8ls0+qQLkZRttnMnQfO81SI23mG7TyxqoggI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VY2PXw2qutW9k5dLwfrWbVQRAR5sqGJd14W7b7wLuKxJLuRjRMGwyMj+9bHthe+9F0miVH5ZX13k7BXhiva8JwH4txzugXYGn18gpv+Mrvs4j0cvtKP4VSIC+mZ2pgSYkhZ8CL4ZEYNJq63oilOZXkt2sNP6EcIc86SA8RUfHsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T4JtjUby; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310B4C2BBFC;
-	Wed, 19 Jun 2024 13:10:29 +0000 (UTC)
+	 MIME-Version; b=tIZLt9rH4rtJMusYd99/gigul26KbI7RjpGNdJqHr6b0CKwAbhUMkxB8629GccaAoPy1v8lLLdnMcWd0bmlkL70y0nDGzx5gubYn4Vlifh7V7bdwdYMvj+MPagpyOoCq8R7Px/2RE5YPpjZyIaNulfAXwrJ1aTCn7Y9MMO+vvD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbqNiJUi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69C8AC4AF1A;
+	Wed, 19 Jun 2024 13:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802629;
-	bh=wzwR5XgiJ7/j1Sdn3VlYMXpbn0DyjJnYOdmkG/VtD1Y=;
+	s=korg; t=1718804065;
+	bh=7QaB9Y/8ls0+qQLkZRttnMnQfO81SI23mG7TyxqoggI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T4JtjUbyrv/PsYmwN8AaXzjeSifhohrhNG356h0dYo5Qoh5ktLkgMVAndhoLnXrvt
-	 8mWZQu6jSYdUZIfG4TbL72xKUH1SWkZFpzK2ex/VsT7yAjXLdu3ZwHVbuth2KPaVpu
-	 gjaocy3at6X3L26a5AjVJJTSdxc2i/93tr/2Rd1s=
+	b=gbqNiJUiEHMAMKJYjkAzGf5HVtN01h0p9wKBeuN2lnqOuWzUyp9BdrvxndxfFP3/3
+	 asebOTidXeweiI8htcY5+fVephbgOqzQ6bkngqq6Y6hOdnUqLgCXNmSiLqxWcc56L1
+	 QMCzF/in1vv3ZBEED+M/ehfXBwt8WTfFxbYB2pJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 262/267] serial: 8250_dw: Dont use struct dw8250_data outside of 8250_dw
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 170/217] x86/amd_nb: Check for invalid SMN reads
 Date: Wed, 19 Jun 2024 14:56:53 +0200
-Message-ID: <20240619125616.378349109@linuxfoundation.org>
+Message-ID: <20240619125603.248754408@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 87d80bfbd577912462061b1a45c0ed9c7fcb872f ]
+commit c625dabbf1c4a8e77e4734014f2fde7aa9071a1f upstream.
 
-The container of the struct dw8250_port_data is private to the actual
-driver. In particular, 8250_lpss and 8250_dw use different data types
-that are assigned to the UART port private_data. Hence, it must not
-be used outside the specific driver.
+AMD Zen-based systems use a System Management Network (SMN) that
+provides access to implementation-specific registers.
 
-Currently the only cpr_val is required by the common code, make it
-be available via struct dw8250_port_data.
+SMN accesses are done indirectly through an index/data pair in PCI
+config space. The PCI config access may fail and return an error code.
+This would prevent the "read" value from being updated.
 
-This fixes the UART breakage on Intel Galileo boards.
+However, the PCI config access may succeed, but the return value may be
+invalid. This is in similar fashion to PCI bad reads, i.e. return all
+bits set.
 
-Fixes: 593dea000bc1 ("serial: 8250: dw: Allow to use a fallback CPR value if not synthesized")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240514190730.2787071-2-andriy.shevchenko@linux.intel.com
+Most systems will return 0 for SMN addresses that are not accessible.
+This is in line with AMD convention that unavailable registers are
+Read-as-Zero/Writes-Ignored.
+
+However, some systems will return a "PCI Error Response" instead. This
+value, along with an error code of 0 from the PCI config access, will
+confuse callers of the amd_smn_read() function.
+
+Check for this condition, clear the return value, and set a proper error
+code.
+
+Fixes: ddfe43cdc0da ("x86/amd_nb: Add SMN and Indirect Data Fabric access for AMD Fam17h")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230403164244.471141-1-yazen.ghannam@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_dw.c    | 9 +++++++--
- drivers/tty/serial/8250/8250_dwlib.c | 3 +--
- drivers/tty/serial/8250/8250_dwlib.h | 3 ++-
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ arch/x86/kernel/amd_nb.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
-index a7659e536d3c0..777bea835b114 100644
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -55,6 +55,7 @@
- #define DW_UART_QUIRK_SKIP_SET_RATE	BIT(2)
- #define DW_UART_QUIRK_IS_DMA_FC		BIT(3)
- #define DW_UART_QUIRK_APMC0D08		BIT(4)
-+#define DW_UART_QUIRK_CPR_VALUE		BIT(5)
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -195,7 +195,14 @@ out:
  
- static inline struct dw8250_data *clk_to_dw8250_data(struct notifier_block *nb)
+ int amd_smn_read(u16 node, u32 address, u32 *value)
  {
-@@ -445,6 +446,10 @@ static void dw8250_prepare_rx_dma(struct uart_8250_port *p)
- static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
- {
- 	unsigned int quirks = data->pdata ? data->pdata->quirks : 0;
-+	u32 cpr_value = data->pdata ? data->pdata->cpr_value : 0;
+-	return __amd_smn_rw(node, address, value, false);
++	int err = __amd_smn_rw(node, address, value, false);
 +
-+	if (quirks & DW_UART_QUIRK_CPR_VALUE)
-+		data->data.cpr_value = cpr_value;
++	if (PCI_POSSIBLE_ERROR(*value)) {
++		err = -ENODEV;
++		*value = 0;
++	}
++
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(amd_smn_read);
  
- #ifdef CONFIG_64BIT
- 	if (quirks & DW_UART_QUIRK_OCTEON) {
-@@ -749,8 +754,8 @@ static const struct dw8250_platform_data dw8250_armada_38x_data = {
- 
- static const struct dw8250_platform_data dw8250_renesas_rzn1_data = {
- 	.usr_reg = DW_UART_USR,
--	.cpr_val = 0x00012f32,
--	.quirks = DW_UART_QUIRK_IS_DMA_FC,
-+	.cpr_value = 0x00012f32,
-+	.quirks = DW_UART_QUIRK_CPR_VALUE | DW_UART_QUIRK_IS_DMA_FC,
- };
- 
- static const struct dw8250_platform_data dw8250_starfive_jh7100_data = {
-diff --git a/drivers/tty/serial/8250/8250_dwlib.c b/drivers/tty/serial/8250/8250_dwlib.c
-index 84843e204a5e8..8fc8b6753148b 100644
---- a/drivers/tty/serial/8250/8250_dwlib.c
-+++ b/drivers/tty/serial/8250/8250_dwlib.c
-@@ -242,7 +242,6 @@ static const struct serial_rs485 dw8250_rs485_supported = {
- void dw8250_setup_port(struct uart_port *p)
- {
- 	struct dw8250_port_data *pd = p->private_data;
--	struct dw8250_data *data = to_dw8250_data(pd);
- 	struct uart_8250_port *up = up_to_u8250p(p);
- 	u32 reg, old_dlf;
- 
-@@ -284,7 +283,7 @@ void dw8250_setup_port(struct uart_port *p)
- 
- 	reg = dw8250_readl_ext(p, DW_UART_CPR);
- 	if (!reg) {
--		reg = data->pdata->cpr_val;
-+		reg = pd->cpr_value;
- 		dev_dbg(p->dev, "CPR is not available, using 0x%08x instead\n", reg);
- 	}
- 	if (!reg)
-diff --git a/drivers/tty/serial/8250/8250_dwlib.h b/drivers/tty/serial/8250/8250_dwlib.h
-index f13e91f2cace9..794a9014cdac1 100644
---- a/drivers/tty/serial/8250/8250_dwlib.h
-+++ b/drivers/tty/serial/8250/8250_dwlib.h
-@@ -19,6 +19,7 @@ struct dw8250_port_data {
- 	struct uart_8250_dma	dma;
- 
- 	/* Hardware configuration */
-+	u32			cpr_value;
- 	u8			dlf_size;
- 
- 	/* RS485 variables */
-@@ -27,7 +28,7 @@ struct dw8250_port_data {
- 
- struct dw8250_platform_data {
- 	u8 usr_reg;
--	u32 cpr_val;
-+	u32 cpr_value;
- 	unsigned int quirks;
- };
- 
--- 
-2.43.0
-
 
 
 
