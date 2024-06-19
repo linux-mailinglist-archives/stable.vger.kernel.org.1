@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-54162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C5A90ECFB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0100690EBB3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E116FB258EC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACE111F238B3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2288F145354;
-	Wed, 19 Jun 2024 13:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CB2144D3E;
+	Wed, 19 Jun 2024 13:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZuSJdZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="urE4Sjk5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D515E1422B8;
-	Wed, 19 Jun 2024 13:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8659143C4A;
+	Wed, 19 Jun 2024 13:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802768; cv=none; b=JzrL3SXt1vDnp0dmSmcrzeIgtrtuvPh03vNMdSyJE3uOOY14p73MYYGXINlp8ECcNQwZRtjgHzj27Ticnqlk4gs1qtAZFYStIrhF7MvFuHrTpslS6swjQyRbf0B7/g4bXVPOcggYmGAFfG3ojcLw3Do015Fv7r4cG7fwHUZJomE=
+	t=1718802001; cv=none; b=FkquaMXobhC0pTlqlYTJweFO9so0gBmU3zvgCZZNy5ooBfkXNmcivfNPwlvyZhY6/+2Z/XPYiUV1L3rMqH/S8c8vwsi8ON+4D+bzfHQx+P5i/oqFIcvAyruHZQy1Ci62I8cxIDc48osEHAK6PhEQ/BAAvMzPgHMmJ3yuJ9VrAtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802768; c=relaxed/simple;
-	bh=IXQ93fVF61SlT5BRxXtBLFcjeOSLZxgPHcxNlZhamSY=;
+	s=arc-20240116; t=1718802001; c=relaxed/simple;
+	bh=v690Sqozx9Z0+MlyycJyn+dtM3Ous1A+wAUmXYyB0vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYTadWKytDPlk1dfHBeBV7wyOhzdnGf/0204//E2FIzUC7no/D7fPHxaDw7Sk9/yJZpmYu4FRmcd8iOasqSm5zH2gFRx2u668dHWlq2+yRw76OJepABRCjEZeCAGvoy54hq1JMKRCiOZIkw5S5LhGkVe3olNUdvLw5EgeoLJ8Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZuSJdZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587F9C2BBFC;
-	Wed, 19 Jun 2024 13:12:48 +0000 (UTC)
+	 MIME-Version; b=R4ToOSiXX1eB/KaQaFgjuF2xmIwGJIZt+jvdDOdizzurW7bxL8Bn5Qe62PkqDIWwJT9lr/iSd3/vuPqb/QJU4qQhOdfCWjqlWW8cM24xxzta8+8VTCLjR9WmjioHjLfFDNyEYmOcc7S2kXzovqLziXnoBfUWDWIe5OyxeJWoJes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=urE4Sjk5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFEBAC2BBFC;
+	Wed, 19 Jun 2024 13:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802768;
-	bh=IXQ93fVF61SlT5BRxXtBLFcjeOSLZxgPHcxNlZhamSY=;
+	s=korg; t=1718802001;
+	bh=v690Sqozx9Z0+MlyycJyn+dtM3Ous1A+wAUmXYyB0vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yZuSJdZz9+/0Lb6Nmgo7vSKIN1cEK5YN52QjYJxrvRw4TTQ0pG61ZI6clzyYDDtLB
-	 X7x4HTPsJI4OE4h1oez5LKan2aY0TkkYC4rEVhm1VMVsJlMzgDoluSqymB7NIq28cy
-	 En3J71RDZToLS3jo92LNr8sysHPxKVQl7RFClW24=
+	b=urE4Sjk5X8MRXro5hk2JzC1G8qgGbjtoFyDjgMywXVY7GhF9jWZlKIt4j7iQs6uvH
+	 oKiREidBYkZBLy7G5izP/buevjsQcl43FqWPyV/rbVP4sGxiHgAL0s26OPulAwHXmw
+	 sA5K851A+q6x6qX2zo2FOGdFeJmH+MusEwbAp+zM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 039/281] ionic: fix kernel panic in XDP_TX action
+Subject: [PATCH 6.6 047/267] net: wwan: iosm: Fix tainted pointer delete is case of region creation fail
 Date: Wed, 19 Jun 2024 14:53:18 +0200
-Message-ID: <20240619125611.353303338@linuxfoundation.org>
+Message-ID: <20240619125608.171600507@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 491aee894a08bc9b8bb52e7363b9d4bc6403f363 ]
+[ Upstream commit b0c9a26435413b81799047a7be53255640432547 ]
 
-In the XDP_TX path, ionic driver sends a packet to the TX path with rx
-page and corresponding dma address.
-After tx is done, ionic_tx_clean() frees that page.
-But RX ring buffer isn't reset to NULL.
-So, it uses a freed page, which causes kernel panic.
+In case of region creation fail in ipc_devlink_create_region(), previously
+created regions delete process starts from tainted pointer which actually
+holds error code value.
+Fix this bug by decreasing region index before delete.
 
-BUG: unable to handle page fault for address: ffff8881576c110c
-PGD 773801067 P4D 773801067 PUD 87f086067 PMD 87efca067 PTE 800ffffea893e060
-Oops: Oops: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC KASAN NOPTI
-CPU: 1 PID: 25 Comm: ksoftirqd/1 Not tainted 6.9.0+ #11
-Hardware name: ASUS System Product Name/PRIME Z690-P D4, BIOS 0603 11/01/2021
-RIP: 0010:bpf_prog_f0b8caeac1068a55_balancer_ingress+0x3b/0x44f
-Code: 00 53 41 55 41 56 41 57 b8 01 00 00 00 48 8b 5f 08 4c 8b 77 00 4c 89 f7 48 83 c7 0e 48 39 d8
-RSP: 0018:ffff888104e6fa28 EFLAGS: 00010283
-RAX: 0000000000000002 RBX: ffff8881576c1140 RCX: 0000000000000002
-RDX: ffffffffc0051f64 RSI: ffffc90002d33048 RDI: ffff8881576c110e
-RBP: ffff888104e6fa88 R08: 0000000000000000 R09: ffffed1027a04a23
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff8881b03a21a8
-R13: ffff8881589f800f R14: ffff8881576c1100 R15: 00000001576c1100
-FS: 0000000000000000(0000) GS:ffff88881ae00000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff8881576c110c CR3: 0000000767a90000 CR4: 00000000007506f0
-PKRU: 55555554
-Call Trace:
-<TASK>
-? __die+0x20/0x70
-? page_fault_oops+0x254/0x790
-? __pfx_page_fault_oops+0x10/0x10
-? __pfx_is_prefetch.constprop.0+0x10/0x10
-? search_bpf_extables+0x165/0x260
-? fixup_exception+0x4a/0x970
-? exc_page_fault+0xcb/0xe0
-? asm_exc_page_fault+0x22/0x30
-? 0xffffffffc0051f64
-? bpf_prog_f0b8caeac1068a55_balancer_ingress+0x3b/0x44f
-? do_raw_spin_unlock+0x54/0x220
-ionic_rx_service+0x11ab/0x3010 [ionic 9180c3001ab627d82bbc5f3ebe8a0decaf6bb864]
-? ionic_tx_clean+0x29b/0xc60 [ionic 9180c3001ab627d82bbc5f3ebe8a0decaf6bb864]
-? __pfx_ionic_tx_clean+0x10/0x10 [ionic 9180c3001ab627d82bbc5f3ebe8a0decaf6bb864]
-? __pfx_ionic_rx_service+0x10/0x10 [ionic 9180c3001ab627d82bbc5f3ebe8a0decaf6bb864]
-? ionic_tx_cq_service+0x25d/0xa00 [ionic 9180c3001ab627d82bbc5f3ebe8a0decaf6bb864]
-? __pfx_ionic_rx_service+0x10/0x10 [ionic 9180c3001ab627d82bbc5f3ebe8a0decaf6bb864]
-ionic_cq_service+0x69/0x150 [ionic 9180c3001ab627d82bbc5f3ebe8a0decaf6bb864]
-ionic_txrx_napi+0x11a/0x540 [ionic 9180c3001ab627d82bbc5f3ebe8a0decaf6bb864]
-__napi_poll.constprop.0+0xa0/0x440
-net_rx_action+0x7e7/0xc30
-? __pfx_net_rx_action+0x10/0x10
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 8eeed8373e1c ("ionic: Add XDP_TX support")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 4dcd183fbd67 ("net: wwan: iosm: devlink registration")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Acked-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240604082500.20769-1-amishin@t-argos.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wwan/iosm/iosm_ipc_devlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-index 5dba6d2d633cb..2427610f4306d 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-@@ -586,6 +586,7 @@ static bool ionic_run_xdp(struct ionic_rx_stats *stats,
- 			netdev_dbg(netdev, "tx ionic_xdp_post_frame err %d\n", err);
- 			goto out_xdp_abort;
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_devlink.c b/drivers/net/wwan/iosm/iosm_ipc_devlink.c
+index 2fe724d623c06..33c5a46f1b922 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_devlink.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_devlink.c
+@@ -210,7 +210,7 @@ static int ipc_devlink_create_region(struct iosm_devlink *devlink)
+ 			rc = PTR_ERR(devlink->cd_regions[i]);
+ 			dev_err(devlink->dev, "Devlink region fail,err %d", rc);
+ 			/* Delete previously created regions */
+-			for ( ; i >= 0; i--)
++			for (i--; i >= 0; i--)
+ 				devlink_region_destroy(devlink->cd_regions[i]);
+ 			goto region_create_fail;
  		}
-+		buf_info->page = NULL;
- 		stats->xdp_tx++;
- 
- 		/* the Tx completion will free the buffers */
 -- 
 2.43.0
 
