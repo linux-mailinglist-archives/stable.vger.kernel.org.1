@@ -1,102 +1,112 @@
-Return-Path: <stable+bounces-53794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3667D90E67C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:05:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 493BC90E6EA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:25:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6C572835BB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 09:05:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9B57B2237A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 09:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE5E7E11E;
-	Wed, 19 Jun 2024 09:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13F07FBBF;
+	Wed, 19 Jun 2024 09:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="RzS3pVpY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JiBXPYzh"
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9141271743;
-	Wed, 19 Jun 2024 09:05:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2887EEFD
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 09:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718787924; cv=none; b=fkkg1LgR25pqr+oiXFTZckBGL6+0EbMgk6xoVvVm2Q1QfSFe9+Tolab+MX7eMB1CJaQDf6UlaRlE/8uSV8xLubS12lYgYAlZvizEFsu6KDEjByE9O2zA7ghvPDM8FMBhCMg40WOFILn6WTfZRJKFjCvDMlRS16FIcjfRPln7MSE=
+	t=1718789141; cv=none; b=G6VDnMyE2yO5032WzCyR4TAuruiUxx9rJRIBjrqENxbznLhLfS2+oXczf+3UsUff9fWAYjA056CIGorqzxxqC1LL3gga6fXAW4t6JpSpXhJBxhX+ZNWuloS2UmnwZbb4rd1Pb6cW9m8Bg9F7WlHUD4d/CHxs/CyBZK3oXo9MCN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718787924; c=relaxed/simple;
-	bh=7cuqbtTO2T0xC2U3DuHtcBcLZQ67OxZjdSsIQFlgjkQ=;
+	s=arc-20240116; t=1718789141; c=relaxed/simple;
+	bh=+Sbk6niFPtNnof44cUq0AcZjTzv5fkSvFURy098SRtc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gKf5Ot4d2dMGRedZrkdXQK60XO9XP1sBgVK11rTCdfNL5b+9g9Rxf1jvSdahA5vKk5sLeFGEQJPTL30bXW3JQUlzQ51DMdGu1tpgGsBCBHn4HSOgkJUt5qrWLwUB5LUfr5XLPdsf3+1w5BBHrIkdih9iyuF1+RYUkQdJUS2EqGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=RzS3pVpY; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id D708114C1E1;
-	Wed, 19 Jun 2024 11:05:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1718787912;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=le7+/07s5UJcLTEq6XBfMrFrXj/eObiEjeEWlhza6BU=;
-	b=RzS3pVpYJ25rJpX7bJttqkAKIYoA0djgl5FhrbdhJhkKB7vBdmW+J/TYY7YvrLlMq/XM5F
-	TcORMS9cYRgmpfHjevaVi05BWuHrAWVsLnV7RV0mSP+A6TTgytrk3APcdiOnAFzq2m0YCN
-	6u3vZFBhpSJL94TjxcZhftP1SlSdKoKxQfv+D6e1h3Ayi8T8HyB0vwF3ry3fr4Qx+QyAVj
-	xGCD+0rmTo/D1MNSL2LIn0QmEF0cJxOf5OyuNeF6ShwP9fOfyEnguW6s8ngSHQ5mgu8kB/
-	eEd3oFHlaOxMGBDexFd2/VJMsT4s4yef/2jrJlmWKrbphJgIAkRlOrK2vlWK5w==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 8da32b40;
-	Wed, 19 Jun 2024 09:05:01 +0000 (UTC)
-Date: Wed, 19 Jun 2024 18:04:46 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 5.10 000/770] 5.10.220-rc1 review
-Message-ID: <ZnKfLl8cdQR2iVK8@codewreck.org>
-References: <20240618123407.280171066@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Iwiwe7sZDLlQ0cUto7nTtHz0iZRDDMKNMjY3PkMv3gUoe9OilgnFMd5qabRHGRRx2L40NQUwD5e44d+4xXwzIVKlo+V81I4HpOVF1XtHlXsCcKFmqe6cP4xDa+pIcxxSW8rTe3/pBpUtlM3n9YsnUzZXb0M1vvKeB7nMYJuH6rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JiBXPYzh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1FD3C2BBFC;
+	Wed, 19 Jun 2024 09:25:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718789141;
+	bh=+Sbk6niFPtNnof44cUq0AcZjTzv5fkSvFURy098SRtc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JiBXPYzhcfnsmyMAMXVu/85y9DegK1O+V72f3WYmJOFieTCrw8ro4JTsz2mwmaiU2
+	 WzuurgAtfctbmd0fvBEH/6yfBiFRxU2dogYuktNBHdnug3cUAIjx6CpVYNk5ZP+XZH
+	 ALnL2nvTaEt6jkBj2xp56nCbmjVfKFe6OJs02cOo=
+Date: Wed, 19 Jun 2024 11:25:38 +0200
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+	"Berg, Johannes" <johannes.berg@intel.com>
+Subject: Re: [PATCH 6.9 1/2] wifi: iwlwifi: mvm: support
+ iwl_dev_tx_power_cmd_v8
+Message-ID: <2024061955-unstuck-static-9f3c@gregkh>
+References: <20240618110924.24509-1-emmanuel.grumbach@intel.com>
+ <2024061917-kinswoman-nylon-c35f@gregkh>
+ <832c8e0030465c6356097eb04a98f922cd152ab0.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <832c8e0030465c6356097eb04a98f922cd152ab0.camel@intel.com>
 
-Greg Kroah-Hartman wrote on Tue, Jun 18, 2024 at 02:27:33PM +0200:
-> This is the start of the stable review cycle for the 5.10.220 release.
-> There are 770 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Jun 19, 2024 at 09:03:34AM +0000, Grumbach, Emmanuel wrote:
+> On Wed, 2024-06-19 at 10:51 +0200, Greg KH wrote:
+> > On Tue, Jun 18, 2024 at 02:09:23PM +0300, Emmanuel Grumbach wrote:
+> > > commit 8f892e225f416fcf2b55a0f9161162e08e2b0cc7 upstream.
+> > > 
+> > > This just adds a __le32 that we (currently) don't use.
+> > 
+> > Why is this needed for a stable tree if this is nothing that is actually
+> > used and then we need another fix for it after that?
 > 
-> Responses should be made by Thu, 20 Jun 2024 12:32:00 +0000.
-> Anything received after that time might be too late.
+> Right, so I totally understand you're confused... I should probably have re-written the commit
+> message to explain why this is needed for stable...
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.220-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
+> This patch allows to handle a new version of a specific command to the firmware. As explained in the
+> commit message, we don't need the new field, but ... the command got bigger and we must align to the
+> new size of course. If we don't, the firmware will get a command that is shorter than expected and
+> will crash.
+> We originally didn't think we'd need that on the firmware versions supported by kernel 6.9 and this
+> is why we didn't queue this patch for 6.9. Now, it appears that the latest firmware version that 6.9
+> supports does need the new version of the command.
+> Unfortunately, we learnt that the hard way, through bugzilla :-(
+> 
+> Now, this patch introduced a regression that is fixed by another patch...
+> Would you prefer me to squash them?
+> 
+> > 
+> > I can't see how this commit actually does anything on it's own, what am
+> > I missing?
+> > 
+> > What bug is this fixing?  A regression?  Is this a new feature?
+> 
+> So, yes, it fixes a bug as explained above.
+> This is a regression because older kernels won't load the new firmware and won't hit the firmware
+> crash.
+> 
+> > 
+> > confused,
+> 
+> I should have re-written the commit message. Sorry.
+> I hope things are now clearer..
 
-(that's a lot of NFS/FS patches... I normally don't test NFS, but given
-the content of this cycle I tested very basic client/server code by
-exporting something mounting it and reading/writing to a file, so at
-least it's not exploding immediately)
+Keeping the commit message the same is fine, and not squashing is also
+fine, but a huge hint as to _why_ this is relevent for the stable trees
+would have been appreciated.  That's what [0/X] email blurbs are for :)
 
+thanks, I'll go queue these up now.
 
-Tested 7927147b02fc ("Linux 5.10.220-rc1") on:
-- arm i.MX6ULL (Armadillo 640)
-- arm64 i.MX8MP (Armadillo G4)
-
-No obvious regression in dmesg or basic tests:
-Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-
--- 
-Dominique Martinet | Asmadeus
+greg k-h
 
