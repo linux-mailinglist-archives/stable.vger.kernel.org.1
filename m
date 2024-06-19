@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-54490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D363390EE7C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5503690ED86
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD33A1C2457C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DF061F213B2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5162614F9DC;
-	Wed, 19 Jun 2024 13:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26E6143C4E;
+	Wed, 19 Jun 2024 13:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kifq/IBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyTZ0Xgq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E166146016;
-	Wed, 19 Jun 2024 13:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7121082495;
+	Wed, 19 Jun 2024 13:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803734; cv=none; b=K0g1+GcKrDHf6FrQd5Cho3IelBpnhvBfntSSZPKJ0QTTplwqx/xKhoIlgc2kxfOvhH/eSGfB8egST1ylBqXncIw0pR85Y8z6zTz6CHQLqqBtrcPBsR8HmwIv0Y0bTdfv2z5M/FFTHj2BM+W7opjBLz2r0qSgTuTo2tT3o6uoXh8=
+	t=1718803149; cv=none; b=gk+n1aF1zpl7MubZdPImTjZkKFhPcj/xMCy7GlY4efoS/3R6UYfiTInQqlt7aFBCn760qkUyu7tmw6UIha+OT4FRxtad8MkWLP9HG2z1PhGR4QJXaj2hPrxYt7BgEblJPkWUxu34c+44WDsoppLlPCu/3YiB3zCdKukTh/pH0XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803734; c=relaxed/simple;
-	bh=4jvmZkPFl+5hV1rmLiWiMRw65CCAYwbGa5KhFN5KrZw=;
+	s=arc-20240116; t=1718803149; c=relaxed/simple;
+	bh=Ym96lLiz8HoQSRjGGR8V8E65B/zVmtiv25VDbk5cFK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utZKp0N+8EKiCUaIbbwFSFZl+8J3iRR5+FYCaWR+5d2GZyJklyTwaW9UFugBdpfSpMBFvqMehj5hRzDZlyDm+swGKJJ2XMPRtfUGs89//A4/4LSKPlf9GC5VF7nWDkSk9GhL7umjWVDOWqajwFlJ5k2AHOUwjLAjjMkp/Oi2X3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kifq/IBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838C5C2BBFC;
-	Wed, 19 Jun 2024 13:28:53 +0000 (UTC)
+	 MIME-Version; b=VbgBdFbN1h9242y3ICz1etIOjn2ajq/0p8dNd+WyClT3CJN18/M5kjbTwgBcrwmcXOCpjAHDe4DL8TXqCCQ27OshsGbCIzp+K3wHuJIN9zDPusn/yvcuKAfZMAUKA5ZNQ1N4B0mzbSUXNtYsKBUwy6hNZnWRSxIhRXUCVlRH/oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyTZ0Xgq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95C4C2BBFC;
+	Wed, 19 Jun 2024 13:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803733;
-	bh=4jvmZkPFl+5hV1rmLiWiMRw65CCAYwbGa5KhFN5KrZw=;
+	s=korg; t=1718803149;
+	bh=Ym96lLiz8HoQSRjGGR8V8E65B/zVmtiv25VDbk5cFK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kifq/IBVSWfyLh2LJ3W4f1TY9PDxxVOfRIqzG9O4dgtd2Dyec4VYh5Q/vs9rMnE+A
-	 kq2ggCtpxKOyRv9EXE+TEs1QafYKjPPB64MSPXwipdDBBm+SqhjSNHBItNB1iwECmT
-	 ECOpxUpoLUwle8KWrT+uIVtnO+OsfB67FMst4zn0=
+	b=zyTZ0XgqI/BuPxFgD1UVdsA7V1zPf41OyWyWt0gtvhFoZ3ElEb+xhe6hHYpw4Swlk
+	 6tK+GtddMcp1OKk77VbKS2fWDYiGb0mk8agiXi7Pyy7La15MtnaH2FXen0VYr6yR44
+	 WlMT8TtJYqdB19wJAC8sfoAmHtUP6yI068ZBlK4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com,
-	syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 085/217] USB: class: cdc-wdm: Fix CPU lockup caused by excessive log messages
+	Can Guo <quic_cang@quicinc.com>,
+	Ziqi Chen <quic_ziqichen@quicinc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 169/281] scsi: ufs: core: Quiesce request queues before checking pending cmds
 Date: Wed, 19 Jun 2024 14:55:28 +0200
-Message-ID: <20240619125559.968233179@linuxfoundation.org>
+Message-ID: <20240619125616.339927454@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +64,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Ziqi Chen <quic_ziqichen@quicinc.com>
 
-commit 22f00812862564b314784167a89f27b444f82a46 upstream.
+[ Upstream commit 77691af484e28af7a692e511b9ed5ca63012ec6e ]
 
-The syzbot fuzzer found that the interrupt-URB completion callback in
-the cdc-wdm driver was taking too long, and the driver's immediate
-resubmission of interrupt URBs with -EPROTO status combined with the
-dummy-hcd emulation to cause a CPU lockup:
+In ufshcd_clock_scaling_prepare(), after SCSI layer is blocked,
+ufshcd_pending_cmds() is called to check whether there are pending
+transactions or not. And only if there are no pending transactions can we
+proceed to kickstart the clock scaling sequence.
 
-cdc_wdm 1-1:1.0: nonzero urb status received: -71
-cdc_wdm 1-1:1.0: wdm_int_callback - 0 bytes
-watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [syz-executor782:6625]
-CPU#0 Utilization every 4s during lockup:
-	#1:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#2:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#3:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#4:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
-	#5:  98% system,	  1% softirq,	  3% hardirq,	  0% idle
-Modules linked in:
-irq event stamp: 73096
-hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_emit_next_record kernel/printk/printk.c:2935 [inline]
-hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_flush_all+0x650/0xb74 kernel/printk/printk.c:2994
-hardirqs last disabled at (73096): [<ffff80008af10b00>] __el1_irq arch/arm64/kernel/entry-common.c:533 [inline]
-hardirqs last disabled at (73096): [<ffff80008af10b00>] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:551
-softirqs last  enabled at (73048): [<ffff8000801ea530>] softirq_handle_end kernel/softirq.c:400 [inline]
-softirqs last  enabled at (73048): [<ffff8000801ea530>] handle_softirqs+0xa60/0xc34 kernel/softirq.c:582
-softirqs last disabled at (73043): [<ffff800080020de8>] __do_softirq+0x14/0x20 kernel/softirq.c:588
-CPU: 0 PID: 6625 Comm: syz-executor782 Tainted: G        W          6.10.0-rc2-syzkaller-g8867bbd4a056 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+ufshcd_pending_cmds() traverses over all SCSI devices and calls
+sbitmap_weight() on their budget_map. sbitmap_weight() can be broken down
+to three steps:
 
-Testing showed that the problem did not occur if the two error
-messages -- the first two lines above -- were removed; apparently adding
-material to the kernel log takes a surprisingly large amount of time.
+ 1. Calculate the nr outstanding bits set in the 'word' bitmap.
 
-In any case, the best approach for preventing these lockups and to
-avoid spamming the log with thousands of error messages per second is
-to ratelimit the two dev_err() calls.  Therefore we replace them with
-dev_err_ratelimited().
+ 2. Calculate the nr outstanding bits set in the 'cleared' bitmap.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Suggested-by: Greg KH <gregkh@linuxfoundation.org>
-Reported-and-tested-by: syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/00000000000073d54b061a6a1c65@google.com/
-Reported-and-tested-by: syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/000000000000f45085061aa9b37e@google.com/
-Fixes: 9908a32e94de ("USB: remove err() macro from usb class drivers")
-Link: https://lore.kernel.org/linux-usb/40dfa45b-5f21-4eef-a8c1-51a2f320e267@rowland.harvard.edu/
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/29855215-52f5-4385-b058-91f42c2bee18@rowland.harvard.edu
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ 3. Subtract the result from step 1 by the result from step 2.
+
+This can lead to a race condition as outlined below:
+
+Assume there is one pending transaction in the request queue of one SCSI
+device, say sda, and the budget token of this request is 0, the 'word' is
+0x1 and the 'cleared' is 0x0.
+
+ 1. When step 1 executes, it gets the result as 1.
+
+ 2. Before step 2 executes, block layer tries to dispatch a new request to
+    sda. Since the SCSI layer is blocked, the request cannot pass through
+    SCSI but the block layer would do budget_get() and budget_put() to
+    sda's budget map regardless, so the 'word' has become 0x3 and 'cleared'
+    has become 0x2 (assume the new request got budget token 1).
+
+ 3. When step 2 executes, it gets the result as 1.
+
+ 4. When step 3 executes, it gets the result as 0, meaning there is no
+    pending transactions, which is wrong.
+
+    Thread A                        Thread B
+    ufshcd_pending_cmds()           __blk_mq_sched_dispatch_requests()
+    |                               |
+    sbitmap_weight(word)            |
+    |                               scsi_mq_get_budget()
+    |                               |
+    |                               scsi_mq_put_budget()
+    |                               |
+    sbitmap_weight(cleared)
+    ...
+
+When this race condition happens, the clock scaling sequence is started
+with transactions still in flight, leading to subsequent hibernate enter
+failure, broken link, task abort and back to back error recovery.
+
+Fix this race condition by quiescing the request queues before calling
+ufshcd_pending_cmds() so that block layer won't touch the budget map when
+ufshcd_pending_cmds() is working on it. In addition, remove the SCSI layer
+blocking/unblocking to reduce redundancies and latencies.
+
+Fixes: 8d077ede48c1 ("scsi: ufs: Optimize the command queueing code")
+Co-developed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Ziqi Chen <quic_ziqichen@quicinc.com>
+Link: https://lore.kernel.org/r/1717754818-39863-1-git-send-email-quic_ziqichen@quicinc.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-wdm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -266,14 +266,14 @@ static void wdm_int_callback(struct urb
- 			dev_err(&desc->intf->dev, "Stall on int endpoint\n");
- 			goto sw; /* halt is cleared in work */
- 		default:
--			dev_err(&desc->intf->dev,
-+			dev_err_ratelimited(&desc->intf->dev,
- 				"nonzero urb status received: %d\n", status);
- 			break;
- 		}
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 1322a9c318cff..ce1abd5d725ad 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -1392,7 +1392,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
+ 	 * make sure that there are no outstanding requests when
+ 	 * clock scaling is in progress
+ 	 */
+-	ufshcd_scsi_block_requests(hba);
++	blk_mq_quiesce_tagset(&hba->host->tag_set);
+ 	mutex_lock(&hba->wb_mutex);
+ 	down_write(&hba->clk_scaling_lock);
+ 
+@@ -1401,7 +1401,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
+ 		ret = -EBUSY;
+ 		up_write(&hba->clk_scaling_lock);
+ 		mutex_unlock(&hba->wb_mutex);
+-		ufshcd_scsi_unblock_requests(hba);
++		blk_mq_unquiesce_tagset(&hba->host->tag_set);
+ 		goto out;
  	}
  
- 	if (urb->actual_length < sizeof(struct usb_cdc_notification)) {
--		dev_err(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
-+		dev_err_ratelimited(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
- 			urb->actual_length);
- 		goto exit;
- 	}
+@@ -1422,7 +1422,7 @@ static void ufshcd_clock_scaling_unprepare(struct ufs_hba *hba, int err, bool sc
+ 
+ 	mutex_unlock(&hba->wb_mutex);
+ 
+-	ufshcd_scsi_unblock_requests(hba);
++	blk_mq_unquiesce_tagset(&hba->host->tag_set);
+ 	ufshcd_release(hba);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
