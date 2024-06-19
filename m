@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF62490ECC0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F3490EDE2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7460D2814BB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBEDE1C223D7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E96912FB31;
-	Wed, 19 Jun 2024 13:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4605B143C4E;
+	Wed, 19 Jun 2024 13:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pD7V930r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IyrJgHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19DB1422B8;
-	Wed, 19 Jun 2024 13:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0541F4D9EA;
+	Wed, 19 Jun 2024 13:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802626; cv=none; b=b1Yc+nXvfL8omJ6nqIgVEwjXk2SnoHPWO82OSJbUglsQEk7GAJU+mjE6/kIZBwDPBNqjFYmeGBy9/5U30M7R+EbC//6o8xM+99TQCk49UYVkWM20VpcrkpQiSWg6nw1kf/l54ViHZbYQBTsa2U/tpyVmj4kTAdIVi0oM9cCiQJM=
+	t=1718803395; cv=none; b=twREF7J7aKWdubegETO9VhnWIvpZ1Y05cGhdhzpbFhr6Q/+FRibk+p4cCDL4Ie2R5ZmxsIBbYuGnW16tQjNdJdjfnV3/7aHov+SYl5nD8wMdfLnFafvD1hFiyI8QZ7H6Kmex+RToSLX8zn4WU3WOQmVOISae/vC6PTv/WcnZEmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802626; c=relaxed/simple;
-	bh=cJQgjVF10pBRPllN7ZLPtvM0C+97xY6fs16EZ19UNnk=;
+	s=arc-20240116; t=1718803395; c=relaxed/simple;
+	bh=YoanIqUjafiqNHYOSbe7KqP8pSLezbGkoQkkfdp5UWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gxyil1SMbX2DWQNVGcB6CT1E23c7UakbUfP8RJ1JY9Zda0ZWmPD69OvW17T3JSEfD1b9lNQEaSK2t6okXICJBEnjuIBomxmppvEGpwUQP1WykW5pCFqJHxewnibMyoQGGqhkfrVR5u4ocD8XnxNtZSPrMZ+QShTeS9azAvLqjEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pD7V930r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48278C2BBFC;
-	Wed, 19 Jun 2024 13:10:26 +0000 (UTC)
+	 MIME-Version; b=CTXElviMjfCTgsOGuH3R4D89qn28mZ9fPLIdOjK5d0PsbLxIykHa3tdZvOSPiPGyUZZtSM5s7Ygr0nX26gchsbyCaOqqc1WcqJqiNhFbmioN7kye63FcRMNE7z8X2gds/ATw8u5CnEqnPMbS7qrl22B8QZuwFB2fwlaXAduIJhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IyrJgHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3767DC2BBFC;
+	Wed, 19 Jun 2024 13:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802626;
-	bh=cJQgjVF10pBRPllN7ZLPtvM0C+97xY6fs16EZ19UNnk=;
+	s=korg; t=1718803394;
+	bh=YoanIqUjafiqNHYOSbe7KqP8pSLezbGkoQkkfdp5UWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pD7V930rkawhYctsTrfU7ptCYXbq36p8oNYSGk+7IUqCDf0PDsDppY+a6sBNtpVOm
-	 5yD6pUjn36r851b1yr+IR1jPU/C7PdFnHIfXQfV9o1TZ6mKkW8YUj3rnQq6zdREjEH
-	 u10Re9zyKNhy3oOF+VZ+leeEx7b6i0Pl0mMjpyPM=
+	b=1IyrJgHn/UfFrSKlBHgUi1gA7jk+OKmKOobEtu0JVV91Fvk8tiybZXNgD1xXOx3pc
+	 4fvhfNtawCha6F3ZJyGfLfz74O2cXNzhY82naXhk0KbM5KsWtQpng40aNJC4ss2BMZ
+	 /wox68k6/3lqVgu4CFfPXbYtsoZJX/VZw5Hb6Irk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 261/267] serial: 8250_dw: Replace ACPI device check by a quirk
+	Nam Cao <namcao@linutronix.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.9 253/281] riscv: force PAGE_SIZE linear mapping if debug_pagealloc is enabled
 Date: Wed, 19 Jun 2024 14:56:52 +0200
-Message-ID: <20240619125616.332221957@linuxfoundation.org>
+Message-ID: <20240619125619.714166665@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 173b097dcc8d74d6e135aed1bad38dbfa21c4d04 ]
+commit c67ddf59ac44adc60649730bf8347e37c516b001 upstream.
 
-Instead of checking for APMC0D08 ACPI device presence,
-use a quirk based on driver data.
+debug_pagealloc is a debug feature which clears the valid bit in page table
+entry for freed pages to detect illegal accesses to freed memory.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240306143322.3291123-1-andriy.shevchenko@linux.intel.com
+For this feature to work, virtual mapping must have PAGE_SIZE resolution.
+(No, we cannot map with huge pages and split them only when needed; because
+pages can be allocated/freed in atomic context and page splitting cannot be
+done in atomic context)
+
+Force linear mapping to use small pages if debug_pagealloc is enabled.
+
+Note that it is not necessary to force the entire linear mapping, but only
+those that are given to memory allocator. Some parts of memory can keep
+using huge page mapping (for example, kernel's executable code). But these
+parts are minority, so keep it simple. This is just a debug feature, some
+extra overhead should be acceptable.
+
+Fixes: 5fde3db5eb02 ("riscv: add ARCH_SUPPORTS_DEBUG_PAGEALLOC support")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/2e391fa6c6f9b3fcf1b41cefbace02ee4ab4bf59.1715750938.git.namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 87d80bfbd577 ("serial: 8250_dw: Don't use struct dw8250_data outside of 8250_dw")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_dw.c | 51 ++++++++++++++++---------------
- 1 file changed, 26 insertions(+), 25 deletions(-)
+ arch/riscv/mm/init.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
-index 0446ac145cd4a..a7659e536d3c0 100644
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -9,7 +9,6 @@
-  * LCR is written whilst busy.  If it is, then a busy detect interrupt is
-  * raised, the LCR needs to be rewritten and the uart status register read.
-  */
--#include <linux/acpi.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/device.h>
-@@ -55,6 +54,7 @@
- #define DW_UART_QUIRK_ARMADA_38X	BIT(1)
- #define DW_UART_QUIRK_SKIP_SET_RATE	BIT(2)
- #define DW_UART_QUIRK_IS_DMA_FC		BIT(3)
-+#define DW_UART_QUIRK_APMC0D08		BIT(4)
- 
- static inline struct dw8250_data *clk_to_dw8250_data(struct notifier_block *nb)
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -669,6 +669,9 @@ void __init create_pgd_mapping(pgd_t *pg
+ static uintptr_t __init best_map_size(phys_addr_t pa, uintptr_t va,
+ 				      phys_addr_t size)
  {
-@@ -444,33 +444,29 @@ static void dw8250_prepare_rx_dma(struct uart_8250_port *p)
- 
- static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
- {
--	struct device_node *np = p->dev->of_node;
--
--	if (np) {
--		unsigned int quirks = data->pdata->quirks;
-+	unsigned int quirks = data->pdata ? data->pdata->quirks : 0;
- 
- #ifdef CONFIG_64BIT
--		if (quirks & DW_UART_QUIRK_OCTEON) {
--			p->serial_in = dw8250_serial_inq;
--			p->serial_out = dw8250_serial_outq;
--			p->flags = UPF_SKIP_TEST | UPF_SHARE_IRQ | UPF_FIXED_TYPE;
--			p->type = PORT_OCTEON;
--			data->skip_autocfg = true;
--		}
-+	if (quirks & DW_UART_QUIRK_OCTEON) {
-+		p->serial_in = dw8250_serial_inq;
-+		p->serial_out = dw8250_serial_outq;
-+		p->flags = UPF_SKIP_TEST | UPF_SHARE_IRQ | UPF_FIXED_TYPE;
-+		p->type = PORT_OCTEON;
-+		data->skip_autocfg = true;
-+	}
- #endif
- 
--		if (quirks & DW_UART_QUIRK_ARMADA_38X)
--			p->serial_out = dw8250_serial_out38x;
--		if (quirks & DW_UART_QUIRK_SKIP_SET_RATE)
--			p->set_termios = dw8250_do_set_termios;
--		if (quirks & DW_UART_QUIRK_IS_DMA_FC) {
--			data->data.dma.txconf.device_fc = 1;
--			data->data.dma.rxconf.device_fc = 1;
--			data->data.dma.prepare_tx_dma = dw8250_prepare_tx_dma;
--			data->data.dma.prepare_rx_dma = dw8250_prepare_rx_dma;
--		}
--
--	} else if (acpi_dev_present("APMC0D08", NULL, -1)) {
-+	if (quirks & DW_UART_QUIRK_ARMADA_38X)
-+		p->serial_out = dw8250_serial_out38x;
-+	if (quirks & DW_UART_QUIRK_SKIP_SET_RATE)
-+		p->set_termios = dw8250_do_set_termios;
-+	if (quirks & DW_UART_QUIRK_IS_DMA_FC) {
-+		data->data.dma.txconf.device_fc = 1;
-+		data->data.dma.rxconf.device_fc = 1;
-+		data->data.dma.prepare_tx_dma = dw8250_prepare_tx_dma;
-+		data->data.dma.prepare_rx_dma = dw8250_prepare_rx_dma;
-+	}
-+	if (quirks & DW_UART_QUIRK_APMC0D08) {
- 		p->iotype = UPIO_MEM32;
- 		p->regshift = 2;
- 		p->serial_in = dw8250_serial_in32;
-@@ -772,13 +768,18 @@ static const struct of_device_id dw8250_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, dw8250_of_match);
- 
-+static const struct dw8250_platform_data dw8250_apmc0d08 = {
-+	.usr_reg = DW_UART_USR,
-+	.quirks = DW_UART_QUIRK_APMC0D08,
-+};
++	if (debug_pagealloc_enabled())
++		return PAGE_SIZE;
 +
- static const struct acpi_device_id dw8250_acpi_match[] = {
- 	{ "80860F0A", (kernel_ulong_t)&dw8250_dw_apb },
- 	{ "8086228A", (kernel_ulong_t)&dw8250_dw_apb },
- 	{ "AMD0020", (kernel_ulong_t)&dw8250_dw_apb },
- 	{ "AMDI0020", (kernel_ulong_t)&dw8250_dw_apb },
- 	{ "AMDI0022", (kernel_ulong_t)&dw8250_dw_apb },
--	{ "APMC0D08", (kernel_ulong_t)&dw8250_dw_apb},
-+	{ "APMC0D08", (kernel_ulong_t)&dw8250_apmc0d08 },
- 	{ "BRCM2032", (kernel_ulong_t)&dw8250_dw_apb },
- 	{ "HISI0031", (kernel_ulong_t)&dw8250_dw_apb },
- 	{ "INT33C4", (kernel_ulong_t)&dw8250_dw_apb },
--- 
-2.43.0
-
+ 	if (pgtable_l5_enabled &&
+ 	    !(pa & (P4D_SIZE - 1)) && !(va & (P4D_SIZE - 1)) && size >= P4D_SIZE)
+ 		return P4D_SIZE;
 
 
 
