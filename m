@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-54296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4432A90ED8A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E0F90EC5B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3F8B1F21FDF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89A6B1F20FA4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D86143C4E;
-	Wed, 19 Jun 2024 13:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8563112FB31;
+	Wed, 19 Jun 2024 13:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06f9WhDf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWjzEjwS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4474982495;
-	Wed, 19 Jun 2024 13:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4374D132129;
+	Wed, 19 Jun 2024 13:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803161; cv=none; b=tiOz1sbBT9tTk0P9JDuI4RvSA7YsPoSNl8rziHdmYotRs7U+8BMGTBgASm1E5mYwmpE2HEoniParNNr2xaNYSJBdEeBKUl1xNIj9hewmnY8hPa8kdaUhGeiromW5bN7swDesn27+G1UioYpq6kSHGuLthr2O3AIStkY0mWra8fc=
+	t=1718802394; cv=none; b=bAi08pCIcivArguQNeCyHDaDRWneJn0l1p1m5J0hIiOTlHJd2YGGlTYoXk2qY8y/FgbgjFb3vmSnw93PXfeu2XoxmyZ8eCduZnxcqNKYE0XNbOjc/otBV8SUoXgRstFMImO21EFp2UYPP5n9vPpLWIeFmUW9yQU9db2WQdYGzA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803161; c=relaxed/simple;
-	bh=AZe5rkTDhYJ4X1rQNvlnMVsXFJx1rkLPXv+9pvML9xU=;
+	s=arc-20240116; t=1718802394; c=relaxed/simple;
+	bh=ELC9EFfRrjRTGKLlZCTbd5uGzQxVqN3O7bJ1QFGFeCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AiPDpACROwFDJvsG1AEkYF5rlx33c6FVivw5DX1ZS8d/QeU2cXRJew50QUXUaWDVCS6KNu+ZvfjZfGxAhIibQ2TO4sBEd7lXuDIrw191mSky45u1dNZOuYY2H9Aic0pNhSuBWII3BCwtkF1OT6dHo3a9a32yr+f6XUEKR3K4O+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06f9WhDf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF03C2BBFC;
-	Wed, 19 Jun 2024 13:19:20 +0000 (UTC)
+	 MIME-Version; b=o5WU0Qh48g+NRYm+eYKFkg+5pCss87fEl2t4XvE0zGfI3BXXnIJm7+oygqvlpvElpWQxzDPHPDgw3k/T0Q4m5nv1XFEtIHBa2pGVIASOvgQ6BBp6Ciu+K3TmemVQvnzQ3pV+9FH7NKWNIBuvRevdSIzgNQD/7c8pINMWqPxR4iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWjzEjwS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2834C2BBFC;
+	Wed, 19 Jun 2024 13:06:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803161;
-	bh=AZe5rkTDhYJ4X1rQNvlnMVsXFJx1rkLPXv+9pvML9xU=;
+	s=korg; t=1718802394;
+	bh=ELC9EFfRrjRTGKLlZCTbd5uGzQxVqN3O7bJ1QFGFeCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=06f9WhDfdY3DncIfNdY7jLptsrb5vxDOhAzbiSPzsDguQtDNRnRVexiH7niigpzqc
-	 gVYBZUk3l3EJMp1vEWlp200moRhU0D5dcFm45fRkQgghrSg+x3YTf4MfBXbNI/nN23
-	 wgQF3lBRqDrI/LIZT3LNohim/Wk1rBq5WylRnKi8=
+	b=SWjzEjwSFW6lNCfPH3KrLMeorh5LaCU3yO+HQljudToGh3/rZDd8AHdFVFlj4woG6
+	 32OyHehzWSELEJ8CAUMwu5b7DE7Otw7QV3q6tN34OkcjUD7FOKNw/5opYSvSt+rDpM
+	 BuTQbDYhH66nKFqqaAoDEuW4nVg7bENZHJfoc9aM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 172/281] net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters
+	stable <stable@kernel.org>,
+	syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com,
+	Ashish Sangwan <a.sangwan@samsung.com>,
+	Namjae Jeon <namjae.jeon@samsung.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>
+Subject: [PATCH 6.6 180/267] drivers: core: synchronize really_probe() and dev_uevent()
 Date: Wed, 19 Jun 2024 14:55:31 +0200
-Message-ID: <20240619125616.455588986@linuxfoundation.org>
+Message-ID: <20240619125613.251795688@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Dirk Behme <dirk.behme@de.bosch.com>
 
-[ Upstream commit be27b896529787e23a35ae4befb6337ce73fcca0 ]
+commit c0a40097f0bc81deafc15f9195d1fb54595cd6d0 upstream.
 
-The current cbs parameter depends on speed after uplinking,
-which is not needed and will report a configuration error
-if the port is not initially connected. The UAPI exposed by
-tc-cbs requires userspace to recalculate the send slope anyway,
-because the formula depends on port_transmit_rate (see man tc-cbs),
-which is not an invariant from tc's perspective. Therefore, we
-use offload->sendslope and offload->idleslope to derive the
-original port_transmit_rate from the CBS formula.
+Synchronize the dev->driver usage in really_probe() and dev_uevent().
+These can run in different threads, what can result in the following
+race condition for dev->driver uninitialization:
 
-Fixes: 1f705bc61aee ("net: stmmac: Add support for CBS QDISC")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20240608143524.2065736-1-xiaolei.wang@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thread #1:
+==========
+
+really_probe() {
+...
+probe_failed:
+...
+device_unbind_cleanup(dev) {
+    ...
+    dev->driver = NULL;   // <= Failed probe sets dev->driver to NULL
+    ...
+    }
+...
+}
+
+Thread #2:
+==========
+
+dev_uevent() {
+...
+if (dev->driver)
+      // If dev->driver is NULLed from really_probe() from here on,
+      // after above check, the system crashes
+      add_uevent_var(env, "DRIVER=%s", dev->driver->name);
+...
+}
+
+really_probe() holds the lock, already. So nothing needs to be done
+there. dev_uevent() is called with lock held, often, too. But not
+always. What implies that we can't add any locking in dev_uevent()
+itself. So fix this race by adding the lock to the non-protected
+path. This is the path where above race is observed:
+
+ dev_uevent+0x235/0x380
+ uevent_show+0x10c/0x1f0  <= Add lock here
+ dev_attr_show+0x3a/0xa0
+ sysfs_kf_seq_show+0x17c/0x250
+ kernfs_seq_show+0x7c/0x90
+ seq_read_iter+0x2d7/0x940
+ kernfs_fop_read_iter+0xc6/0x310
+ vfs_read+0x5bc/0x6b0
+ ksys_read+0xeb/0x1b0
+ __x64_sys_read+0x42/0x50
+ x64_sys_call+0x27ad/0x2d30
+ do_syscall_64+0xcd/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Similar cases are reported by syzkaller in
+
+https://syzkaller.appspot.com/bug?extid=ffa8143439596313a85a
+
+But these are regarding the *initialization* of dev->driver
+
+dev->driver = drv;
+
+As this switches dev->driver to non-NULL these reports can be considered
+to be false-positives (which should be "fixed" by this commit, as well,
+though).
+
+The same issue was reported and tried to be fixed back in 2015 in
+
+https://lore.kernel.org/lkml/1421259054-2574-1-git-send-email-a.sangwan@samsung.com/
+
+already.
+
+Fixes: 239378f16aa1 ("Driver core: add uevent vars for devices of a class")
+Cc: stable <stable@kernel.org>
+Cc: syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com
+Cc: Ashish Sangwan <a.sangwan@samsung.com>
+Cc: Namjae Jeon <namjae.jeon@samsung.com>
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+Link: https://lore.kernel.org/r/20240513050634.3964461-1-dirk.behme@de.bosch.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 25 ++++++++-----------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ drivers/base/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 620c16e9be3a6..b1896379dbab5 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -343,10 +343,11 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 			struct tc_cbs_qopt_offload *qopt)
- {
- 	u32 tx_queues_count = priv->plat->tx_queues_to_use;
-+	s64 port_transmit_rate_kbps;
- 	u32 queue = qopt->queue;
--	u32 ptr, speed_div;
- 	u32 mode_to_use;
- 	u64 value;
-+	u32 ptr;
- 	int ret;
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2664,8 +2664,11 @@ static ssize_t uevent_show(struct device
+ 	if (!env)
+ 		return -ENOMEM;
  
- 	/* Queue 0 is not AVB capable */
-@@ -355,30 +356,26 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 	if (!priv->dma_cap.av)
- 		return -EOPNOTSUPP;
++	/* Synchronize with really_probe() */
++	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
++	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
  
-+	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
-+
- 	/* Port Transmit Rate and Speed Divider */
--	switch (priv->speed) {
-+	switch (div_s64(port_transmit_rate_kbps, 1000)) {
- 	case SPEED_10000:
--		ptr = 32;
--		speed_div = 10000000;
--		break;
- 	case SPEED_5000:
- 		ptr = 32;
--		speed_div = 5000000;
- 		break;
- 	case SPEED_2500:
--		ptr = 8;
--		speed_div = 2500000;
--		break;
- 	case SPEED_1000:
- 		ptr = 8;
--		speed_div = 1000000;
- 		break;
- 	case SPEED_100:
- 		ptr = 4;
--		speed_div = 100000;
- 		break;
- 	default:
--		return -EOPNOTSUPP;
-+		netdev_err(priv->dev,
-+			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
-+			   port_transmit_rate_kbps);
-+		return -EINVAL;
- 	}
- 
- 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
-@@ -398,10 +395,10 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 	}
- 
- 	/* Final adjustments for HW */
--	value = div_s64(qopt->idleslope * 1024ll * ptr, speed_div);
-+	value = div_s64(qopt->idleslope * 1024ll * ptr, port_transmit_rate_kbps);
- 	priv->plat->tx_queues_cfg[queue].idle_slope = value & GENMASK(31, 0);
- 
--	value = div_s64(-qopt->sendslope * 1024ll * ptr, speed_div);
-+	value = div_s64(-qopt->sendslope * 1024ll * ptr, port_transmit_rate_kbps);
- 	priv->plat->tx_queues_cfg[queue].send_slope = value & GENMASK(31, 0);
- 
- 	value = qopt->hicredit * 1024ll * 8;
--- 
-2.43.0
-
 
 
 
