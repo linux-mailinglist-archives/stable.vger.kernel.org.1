@@ -1,253 +1,109 @@
-Return-Path: <stable+bounces-53827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3025390E907
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:11:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B8690E908
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 354871C21B8E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:11:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7921F22A9B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D04675817;
-	Wed, 19 Jun 2024 11:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B2F1369AC;
+	Wed, 19 Jun 2024 11:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DVS98LIM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K9CkMy+U"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D2482495
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 11:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E1B136657;
+	Wed, 19 Jun 2024 11:11:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718795451; cv=none; b=OFTke8CYLdKAeFLP664yKNH5BccZae9agP1q5kLaxasxnjKbP7GxtYMNCW8EyDweVKfBUYmU7GDmAb6aJ+Fb0ivCYbV8TmQyj1lozvvuc2ip8e4rDVdNIRkyQil5/iG5rVfyXolxm8TKYiFOLFA7JaiB+3rfYWjthS/OO73OHBk=
+	t=1718795472; cv=none; b=lNUE8R0VXdKrflrhcDW2mbA7O3onHUNsRs68aE0eORQKMxjYLEA+U7AmFNX2VnaK6QqM7A1IgiS6AZD9+4DCY5Gh7VLYBcYX0h3dVzOkh9uW+XIt49llyrFFkzMgNWMf/1M5BfsKQpQFirTqSHXCtS+7oJ3lpOyeZsCnBc118kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718795451; c=relaxed/simple;
-	bh=HHv4mKktzf9+XNRopNBA4+5IjO1uSYcu3PMupO19558=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EHwM0nevwEzSypvQZngVHN2/s+glGuD9M4jDrzflanbCWCMcjEt5I3c6QvKTLWibbA0CqnJM6R8scuR8BhSFMlmsy7kXZ3+shs9anZ1C8wg6L0d5E48F+W15aMzKt63bxLDFeg6FhhqR08Hy6ou0y8PrCK27aNGvAIT8BbYEIBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DVS98LIM; arc=none smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-4e7eadf3668so2237505e0c.0
-        for <stable@vger.kernel.org>; Wed, 19 Jun 2024 04:10:48 -0700 (PDT)
+	s=arc-20240116; t=1718795472; c=relaxed/simple;
+	bh=qu/6XJuVrIq1Rby1Rnvig3vrO5OB9OEs0ydj0+XBU1c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QEmvYiHDBbidkPPrjZY+3Z5t+fa8eLqxvPSqZQOGsaEhzPMb4j0hvm3+Bn1B5yHYKH9jfjRV7QMbEmlZz0ZYcYVDwwA0ucRtCdGlgIS2Lw+wzIbZSaxQfASc5hEbFnBx4zIn6u+hN0oIEvAQEl62AsYmj4HABlbuXPIdIMQE/Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K9CkMy+U; arc=none smtp.client-ip=209.85.221.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-35f275c7286so5758627f8f.2;
+        Wed, 19 Jun 2024 04:11:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718795447; x=1719400247; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fQvMGJZrhyrI19KD2mJN9dgC/lGVs+C5Y3KiDHg0cy8=;
-        b=DVS98LIM8+sYspRJRYqA6e8Apk0vHMESRD/9vE/KaA/wdfj4Ne1vx7VT+r4W++he87
-         mGDZtrEFAu8s/8/L6bobIwXl5zksyK/LcGf4TdWjrGh04FAWrsAaRsYuV1qcXpDlYbG8
-         18h7+b3XuDaMlqqcBMQt3QuBqWQ4ciTtoNTWyk6YOF1fCX49KlFL4JOI0Q11GoWpfjU/
-         xvfBjc1PhoHNWaXsxtOn7+ix7wkS9Svzcvog1B2GOx5jXh193Mzg+SSPUV4mCaBDQaSe
-         JRzvyw5b53RYDWiW35C/Iia7mpTAKV0AkjBNc4bEKG9ZoZO8lXF3BVzina8aVHoTleM2
-         29CA==
+        d=gmail.com; s=20230601; t=1718795469; x=1719400269; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rUi8PJoQrIhJDe0DZMXJyq4ZXY0L5Yc5X576T+WDdbw=;
+        b=K9CkMy+ULGx0PuJT4+gVa8upsI+yVRdLC4QTbmV18ietAnlvmAakvWoUdnPpL4/TQv
+         9SE/xM8fmJ7DlvtybyD0LOHno87/0pOZDUM0EDi9m1jHABbYyfpk4QdPi3zZcmWwURec
+         jPqvwBoh/G1fYhiN3yZUx6eudHta5inMKKUSYaloKW6Rbvy1Fo8Dm9DUDt/g4xSgzIeu
+         S99aP6DOWFdVEHihClgYckSjlk0Dat2ym0H4e7/U0+29rvPvW8gn8Ed9OotpvqfBRfvk
+         zb9JV7GJIMRvjphKNFlBMlpzTv1RNEb0bhuBcF/vR43WpQ+ShZ5QI3ueBXfDeR6iOCvP
+         LUCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718795447; x=1719400247;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fQvMGJZrhyrI19KD2mJN9dgC/lGVs+C5Y3KiDHg0cy8=;
-        b=ilMTkFF3hntZjOHgGZt3r1NyVlz7P/QJGzZ7lFqXr97MZF38s9lBw0jAjsfZCSdogQ
-         oRI5wFmzEz1FLv5Caa2Kyo94nc0YumKSGCIPOH5J9S6NxbU3yydrF+kfylkZUFpXssYZ
-         9evbLK2G9DB13wb2cqA+sHEa4NuVZbr2IasytbmLtTVyUcku190s/SmYGHyL/9GUOyhM
-         AFaxJNgydtIpnfJbh7ObTeOYz2K7UEYijtex0zyeVuptCJp65mV8DhxpEDfwQVzErqxi
-         9tDLu+gmlFQ6947D22g4FctuEkTfvRMNQFqsFqguj9MlQrFyrKLVh/mg2bCj1C3KSAOM
-         zUCg==
-X-Gm-Message-State: AOJu0YzYFmxMSOeyu29bjYScy9gF8ZerboolL9RY1BhmB63hndrsvtd2
-	HEpZraFhl/sGvjZtchB6Rbts1+/iVmkSJ3iuMu8uq/upKhPtaUOuzlwxGtMLGN7peDqiaKyxp4F
-	fM3rmzJMkzA/ftEWVaGPrescfBEbh0GbZWkgZgA==
-X-Google-Smtp-Source: AGHT+IEo3vf1oUGzG99mjqU8s1NDWqJZQSEdCX4+1c22HnC5JtjpGdMsT6RsBslaHgQIWWx6rf3M4XHyXsm989HKaF4=
-X-Received: by 2002:a05:6122:3c46:b0:4ed:6eb:567e with SMTP id
- 71dfb90a1353d-4ef277b5a89mr2576452e0c.13.1718795447207; Wed, 19 Jun 2024
- 04:10:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718795469; x=1719400269;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rUi8PJoQrIhJDe0DZMXJyq4ZXY0L5Yc5X576T+WDdbw=;
+        b=NJSUa1qIE8R0+ntUECXKF30prYZRIsoz9St4HWeA6b1oLaOjlGSKbuBoM9aJSlcs2f
+         LjeDHoMkB/ElW2p8hxupDxQuoMHaTWKXwY4+LIx8zxtvIYzglYZAT9jeAS/T+8YglbHz
+         cdMc6TMac7WJNUjYFKFuofk39j88wctGmxcccqMpIZeVY/qR3b+LA4xospkzUkKEPtue
+         iJSZcWXlM8sND2dtiaSAXm2epNeT3ucjet3OhsUe1kmTuxWNCRoHEWdI0CMUOVQ9ldyQ
+         NEqPROOKAK7qTaaEaAQJ2NJw90YiC8hU92nryw48ros8+r7ohKq1JifgQ9LHtU07t60+
+         o1Yg==
+X-Gm-Message-State: AOJu0YxOwO0ysFnURqYByRAobcJwIaEA60o4pshV+uIVBRpcP0/UL2qK
+	8r63uPcaxGy59GN8I2yArj4CvBwCvVyYnwZBXrK8pjsGms8sd4E6/u1NoNyYu3U=
+X-Google-Smtp-Source: AGHT+IGuVipVwnEXUszWur3qCZRffHrEigsB1Ut5ZhbSDF0a7CCuGyPhAOgI3NUc+o7EJt8m6Eh73g==
+X-Received: by 2002:a5d:4563:0:b0:362:590c:84cf with SMTP id ffacd0b85a97d-363177a3caemr1649024f8f.24.1718795468837;
+        Wed, 19 Jun 2024 04:11:08 -0700 (PDT)
+Received: from fedora.. (cpdnat87.usal.es. [212.128.135.87])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3607509c707sm16962838f8f.36.2024.06.19.04.11.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Jun 2024 04:11:08 -0700 (PDT)
+From: =?UTF-8?q?Pablo=20Ca=C3=B1o?= <pablocpascual@gmail.com>
+To: linux-sound@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	tiwai@suse.de,
+	=?UTF-8?q?Pablo=20Ca=C3=B1o?= <pablocpascual@gmail.com>
+Subject: [PATCH] ALSA: hda/realtek: Add quirk for Lenovo Yoga Pro 7 14AHP9
+Date: Wed, 19 Jun 2024 13:11:05 +0200
+Message-ID: <20240619111105.34300-1-pablocpascual@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240618123407.280171066@linuxfoundation.org>
-In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 19 Jun 2024 16:40:35 +0530
-Message-ID: <CA+G9fYtLXLAnEemRSk5dLXbuju--ga++Jt9wF0=FHSPZ7fEhWQ@mail.gmail.com>
-Subject: Re: [PATCH 5.10 000/770] 5.10.220-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 18 Jun 2024 at 18:11, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.10.220 release.
-> There are 770 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 20 Jun 2024 12:32:00 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.10.220-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.10.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Lenovo Yoga Pro 7 14AHP9 (PCI SSID 17aa:3891) seems requiring a similar workaround like Yoga 9 model and Yoga 7 Pro 14APH8 for the bass speaker.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/all/20231207182035.30248-1-tiwai@suse.de/
+Signed-off-by: Pablo Caño <pablocpascual@gmail.com>
+---
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index aa76d1c88589..f9223fedf8e9 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10525,6 +10525,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x387e, "Yoga S780-16 pro Quad YC", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3881, "YB9 dual power mode2 YC", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3882, "Lenovo Yoga Pro 7 14APH8", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
++	SND_PCI_QUIRK(0x17aa, 0x3891, "Lenovo Yoga Pro 7 14AHP9", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3884, "Y780 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3886, "Y780 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x38a7, "Y780P AMD YG dual", ALC287_FIXUP_TAS2781_I2C),
+-- 
+2.45.2
 
-## Build
-* kernel: 5.10.220-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.10.y
-* git commit: 7927147b02fc59fa7d326be121ef2a599edda19d
-* git describe: v5.10.219-771-g7927147b02fc
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
-.219-771-g7927147b02fc
-
-## Test Regressions (compared to v5.10.219)
-
-## Metric Regressions (compared to v5.10.219)
-
-## Test Fixes (compared to v5.10.219)
-
-## Metric Fixes (compared to v5.10.219)
-
-## Test result summary
-total: 128385, pass: 101019, fail: 5547, skip: 21723, xfail: 96
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 104 total, 104 passed, 0 failed
-* arm64: 31 total, 31 passed, 0 failed
-* i386: 25 total, 25 passed, 0 failed
-* mips: 22 total, 22 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 23 total, 23 passed, 0 failed
-* riscv: 9 total, 9 passed, 0 failed
-* s390: 9 total, 9 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 27 total, 27 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
