@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-54081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FAB290EC92
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E8990EEE3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 853631C21B8F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 539941F21E67
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FEE145334;
-	Wed, 19 Jun 2024 13:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B99914A0A0;
+	Wed, 19 Jun 2024 13:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htsfZrft"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iULNqD/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B05D13D525;
-	Wed, 19 Jun 2024 13:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED261147C89;
+	Wed, 19 Jun 2024 13:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802535; cv=none; b=rlsgDQJZ/JcKxF1au0KJiJGlddHQrK0MPHTzOm8hqKe6rOiObNgz8gErDGbrBXqcr74OcXTWX3/il41kMoF+JVltk+7rQ5PgGXEQP2xBLaJBpFkN39lp+Gj4b4ypwUxS1YAr4p8ZRNp/XWE1easBb9OzE2Gw9iqfW82pLvKyjK0=
+	t=1718803986; cv=none; b=cZuLJwFZPghbmuz4cR4MpeN5sKnWhlYWXwLXIKEhrrozkhnJn47X4M1ryix7He1JSINVnaG4hM5v6eLhWUoHdrXPq84M1+gG4Tki10ExukEILcNd3Z3selw64tOCXEQ9bFI90dbW9OOSkn3/5waVvz7ABQUsSwIRpfilGynsbn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802535; c=relaxed/simple;
-	bh=BZltfSmsxvsB/ujTyLslwGrjH5yY3d7w1OkpYEAO2gs=;
+	s=arc-20240116; t=1718803986; c=relaxed/simple;
+	bh=6BiFSeOeHHUzVM+t84VDDkY1248+4X3chZTX8njYZgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tlicjewqn9fbPCwIzTbXEh3ZUPa22I/dhjMgZO2TBe+ZWjw2iJfrQ4YamI7rN9qGYhB5AFri0K23tIC5OZUjH31eCQzTV11llUIyz0xaFI/e/YfVdq6OetbYgTLDnsJG4alq7MmKbHNf4fm/CtfCRDmZGiBWvY0jnt29z6IGN7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htsfZrft; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C9AC2BBFC;
-	Wed, 19 Jun 2024 13:08:54 +0000 (UTC)
+	 MIME-Version; b=kSw7/pQc9ghE6ActFjKtPkhNk5ID8oPmrtph8CJaToi8eJwjFID3O3psLg6HLhlh9T/5lbBvMtXVrQmF4zEBmQSnUTjv5qLh4PZMKi97vwDJInTVe1DQN9Bghnf9ZCUgN+4Mtrf5i/U4OZpzVsvbPPqHw9zk6YyrCxqQyrPjLeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iULNqD/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E31C4AF4D;
+	Wed, 19 Jun 2024 13:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802535;
-	bh=BZltfSmsxvsB/ujTyLslwGrjH5yY3d7w1OkpYEAO2gs=;
+	s=korg; t=1718803985;
+	bh=6BiFSeOeHHUzVM+t84VDDkY1248+4X3chZTX8njYZgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=htsfZrftIayfRapQ+OdIm7aKvOWebK3Ke1Aa7L6t6dbELZ+uS0tz2FStlOoi1Bqp2
-	 kvCBBvFLu+hAoFlW0m5fO/ipzulWyiAJXVyxTJ+UiRJxSmhD36+zQTmi1KUka8x6Pp
-	 FC2Yl3TBxWTTjH9VzFgMb3dbXVJKnYZtvIa33IsU=
+	b=iULNqD/d/HBTvWpvm1aS/wZlAddR/8fNICVXLeaDfDAx9iZFSkDIn3FInx3Lj8T9i
+	 5m8Gme/0/FWB7ifaeGftivqsxz3ZkPcjuCtvuj4g5I/UwdmkvMThB3UPyDJ/f52vZX
+	 28wQby+QNwzrvZYZsGds67eC7UrImVH6EqQfSvWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 230/267] xfs: fix imprecise logic in xchk_btree_check_block_owner
-Date: Wed, 19 Jun 2024 14:56:21 +0200
-Message-ID: <20240619125615.153917840@linuxfoundation.org>
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 139/217] net: hns3: fix kernel crash problem in concurrent scenario
+Date: Wed, 19 Jun 2024 14:56:22 +0200
+Message-ID: <20240619125602.055394310@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-commit c0afba9a8363f17d4efed22a8764df33389aebe8 upstream.
+[ Upstream commit 12cda920212a49fa22d9e8b9492ac4ea013310a4 ]
 
-A reviewer was confused by the init_sa logic in this function.  Upon
-checking the logic, I discovered that the code is imprecise.  What we
-want to do here is check that there is an ownership record in the rmap
-btree for the AG that contains a btree block.
+When link status change, the nic driver need to notify the roce
+driver to handle this event, but at this time, the roce driver
+may uninit, then cause kernel crash.
 
-For an inode-rooted btree (e.g. the bmbt) the per-AG btree cursors have
-not been initialized because inode btrees can span multiple AGs.
-Therefore, we must initialize the per-AG btree cursors in sc->sa before
-proceeding.  That is what init_sa controls, and hence the logic should
-be gated on XFS_BTREE_ROOT_IN_INODE, not XFS_BTREE_LONG_PTRS.
+To fix the problem, when link status change, need to check
+whether the roce registered, and when uninit, need to wait link
+update finish.
 
-In practice, ROOT_IN_INODE and LONG_PTRS are coincident so this hasn't
-mattered.  However, we're about to refactor both of those flags into
-separate btree_ops fields so we want this the logic to make sense
-afterwards.
-
-Fixes: 858333dcf021a ("xfs: check btree block ownership with bnobt/rmapbt when scrubbing btree")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 45e92b7e4e27 ("net: hns3: add calling roce callback function when link status change")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/scrub/btree.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 21 ++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
---- a/fs/xfs/scrub/btree.c
-+++ b/fs/xfs/scrub/btree.c
-@@ -385,7 +385,12 @@ xchk_btree_check_block_owner(
- 	agno = xfs_daddr_to_agno(bs->cur->bc_mp, daddr);
- 	agbno = xfs_daddr_to_agbno(bs->cur->bc_mp, daddr);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index a2655adc764cd..01e24b69e9203 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -3129,9 +3129,7 @@ static void hclge_push_link_status(struct hclge_dev *hdev)
  
--	init_sa = bs->cur->bc_flags & XFS_BTREE_LONG_PTRS;
-+	/*
-+	 * If the btree being examined is not itself a per-AG btree, initialize
-+	 * sc->sa so that we can check for the presence of an ownership record
-+	 * in the rmap btree for the AG containing the block.
-+	 */
-+	init_sa = bs->cur->bc_flags & XFS_BTREE_ROOT_IN_INODE;
- 	if (init_sa) {
- 		error = xchk_ag_init_existing(bs->sc, agno, &bs->sc->sa);
- 		if (!xchk_btree_xref_process_error(bs->sc, bs->cur,
+ static void hclge_update_link_status(struct hclge_dev *hdev)
+ {
+-	struct hnae3_handle *rhandle = &hdev->vport[0].roce;
+ 	struct hnae3_handle *handle = &hdev->vport[0].nic;
+-	struct hnae3_client *rclient = hdev->roce_client;
+ 	struct hnae3_client *client = hdev->nic_client;
+ 	int state;
+ 	int ret;
+@@ -3155,8 +3153,15 @@ static void hclge_update_link_status(struct hclge_dev *hdev)
+ 
+ 		client->ops->link_status_change(handle, state);
+ 		hclge_config_mac_tnl_int(hdev, state);
+-		if (rclient && rclient->ops->link_status_change)
+-			rclient->ops->link_status_change(rhandle, state);
++
++		if (test_bit(HCLGE_STATE_ROCE_REGISTERED, &hdev->state)) {
++			struct hnae3_handle *rhandle = &hdev->vport[0].roce;
++			struct hnae3_client *rclient = hdev->roce_client;
++
++			if (rclient && rclient->ops->link_status_change)
++				rclient->ops->link_status_change(rhandle,
++								 state);
++		}
+ 
+ 		hclge_push_link_status(hdev);
+ 	}
+@@ -11339,6 +11344,12 @@ static int hclge_init_client_instance(struct hnae3_client *client,
+ 	return ret;
+ }
+ 
++static bool hclge_uninit_need_wait(struct hclge_dev *hdev)
++{
++	return test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state) ||
++	       test_bit(HCLGE_STATE_LINK_UPDATING, &hdev->state);
++}
++
+ static void hclge_uninit_client_instance(struct hnae3_client *client,
+ 					 struct hnae3_ae_dev *ae_dev)
+ {
+@@ -11347,7 +11358,7 @@ static void hclge_uninit_client_instance(struct hnae3_client *client,
+ 
+ 	if (hdev->roce_client) {
+ 		clear_bit(HCLGE_STATE_ROCE_REGISTERED, &hdev->state);
+-		while (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
++		while (hclge_uninit_need_wait(hdev))
+ 			msleep(HCLGE_WAIT_RESET_DONE);
+ 
+ 		hdev->roce_client->ops->uninit_instance(&vport->roce, 0);
+-- 
+2.43.0
+
 
 
 
