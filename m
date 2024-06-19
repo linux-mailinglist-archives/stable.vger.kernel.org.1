@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-54287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914BE90ED81
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677C890EE74
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EA0D281724
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77DC31C24A32
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063AE144D3E;
-	Wed, 19 Jun 2024 13:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7826B147C89;
+	Wed, 19 Jun 2024 13:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OH0c3cAm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psePymm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81AB143757;
-	Wed, 19 Jun 2024 13:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369BF13E409;
+	Wed, 19 Jun 2024 13:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803134; cv=none; b=dVhAeDgw0jXTJAJ/cK8K6NDynnP9+Cdev/jzo4iEGNdn6iz6HzSSocViUYT2KgwbXkIipspsvhGUNmJhHi2xkdB8eJIt/T/tiWIYivYW8CfipLWSFTGsUhUDezV9BivedmPmTGkiXgQORbNZWCePL7TtjQrf5pAFMt3CfwknsvY=
+	t=1718803719; cv=none; b=hqhKZDIjyfoCPheaPytXvmEAFbiNZnPdo7K+SD3PLjJ7jDDH0MNNhcOiwrhop2gDSVkp3CSMJSOyF0S3iADkw79wUgpSx03u3Ann05GcLCAAxnCw5m7Y5v3Mm9AJRJztsClV9YdpkrogP0UiEV+NK3gdr0RnNz5eMtRThoQmVFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803134; c=relaxed/simple;
-	bh=PuHC4qhSbWv1xaX0JnQX5S3sDYWQswJ/xYbCtTi5cCo=;
+	s=arc-20240116; t=1718803719; c=relaxed/simple;
+	bh=mQz9zrbHUnBEq7WhH4TzeH//WKmA1mOmoRrsqeFLauk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JiYolEM1D9QyTWs2vtia/in9JGqVu3QOcxvq3Jw2O9z1UP3y8FKZl2DySn2NPqTEMHHvYdLuwekvg12vR92tCQSjkIr+e/0+sU8BhQOnPzYwrQHbjvW9EN3uBSJtgKHU0/czWpaVLTvYkirUGZZK2O+ylOScVnQGpH1nrmuvK5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OH0c3cAm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E284C2BBFC;
-	Wed, 19 Jun 2024 13:18:54 +0000 (UTC)
+	 MIME-Version; b=YuqBFlBsrPMTbDpkMO3xmxb7CBLRZg2lrvhi0MDRpPboNXyd3ZhO74dZG9Wrrj9537zQDZFSMUlgJhXN3HwREDycVHF3zdnsojV94X91ROVYbZoZX/NmJx9+Ce6flIFsTwg+mKq8QdOzIpsAng+iJOo8ZnZ1NDWipCviFUejUbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psePymm4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD72BC2BBFC;
+	Wed, 19 Jun 2024 13:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803134;
-	bh=PuHC4qhSbWv1xaX0JnQX5S3sDYWQswJ/xYbCtTi5cCo=;
+	s=korg; t=1718803719;
+	bh=mQz9zrbHUnBEq7WhH4TzeH//WKmA1mOmoRrsqeFLauk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OH0c3cAmn/GYXKj0Gh3Ydi36V0plr0J82HQPJ+VRZNCN9CVp4q0KQoOrkg3FbSFvL
-	 r87ee8amLyYUi+wUdWczOal8AGuZz1i5tQdFoShnVa8T46y7aZac4ctJTC50zEEaMT
-	 pm9OUAP36MgckROKVTfcO6nCiI5R9mol8g7IpNTk=
+	b=psePymm4XaCB5+ro0UTmK3rLKoC5IZ1mYyXWY3dbiSI6FD2TvPtDF7uTWZxENHknw
+	 xg17vG9zGh4I9sN7oMYIrFMl3Y+RrZaVxzOkZvasg+HbbxIe98MBIONY8P3kxNmgyj
+	 WgUZV3hgu54BbQhzZdE0PoatOb+/K7b2/8b/ylUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	Danilo Krummrich <dakr@redhat.com>,
+	syzbot+0fecc032fa134afd49df@syzkaller.appspotmail.com,
+	Josef Bacik <josef@toxicpanda.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 164/281] drm/nouveau: dont attempt to schedule hpd_work on headless cards
-Date: Wed, 19 Jun 2024 14:55:23 +0200
-Message-ID: <20240619125616.148646049@linuxfoundation.org>
+Subject: [PATCH 6.1 081/217] btrfs: fix leak of qgroup extent records after transaction abort
+Date: Wed, 19 Jun 2024 14:55:24 +0200
+Message-ID: <20240619125559.812001944@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit b96a225377b6602299a03d2ce3c289b68cd41bb7 ]
+[ Upstream commit fb33eb2ef0d88e75564983ef057b44c5b7e4fded ]
 
-If the card doesn't have display hardware, hpd_work and hpd_lock are
-left uninitialized which causes BUG when attempting to schedule hpd_work
-on runtime PM resume.
+Qgroup extent records are created when delayed ref heads are created and
+then released after accounting extents at btrfs_qgroup_account_extents(),
+called during the transaction commit path.
 
-Fix it by adding headless flag to DRM and skip any hpd if it's set.
+If a transaction is aborted we free the qgroup records by calling
+btrfs_qgroup_destroy_extent_records() at btrfs_destroy_delayed_refs(),
+unless we don't have delayed references. We are incorrectly assuming
+that no delayed references means we don't have qgroup extents records.
 
-Fixes: ae1aadb1eb8d ("nouveau: don't fail driver load if no display hw present.")
-Link: https://gitlab.freedesktop.org/drm/nouveau/-/issues/337
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240607221032.25918-1-anarsoul@gmail.com
+We can currently have no delayed references because we ran them all
+during a transaction commit and the transaction was aborted after that
+due to some error in the commit path.
+
+So fix this by ensuring we btrfs_qgroup_destroy_extent_records() at
+btrfs_destroy_delayed_refs() even if we don't have any delayed references.
+
+Reported-by: syzbot+0fecc032fa134afd49df@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/0000000000004e7f980619f91835@google.com/
+Fixes: 81f7eb00ff5b ("btrfs: destroy qgroup extent records on transaction abort")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/dispnv04/disp.c   | 2 +-
- drivers/gpu/drm/nouveau/dispnv50/disp.c   | 2 +-
- drivers/gpu/drm/nouveau/nouveau_display.c | 6 +++++-
- drivers/gpu/drm/nouveau/nouveau_drv.h     | 1 +
- 4 files changed, 8 insertions(+), 3 deletions(-)
+ fs/btrfs/disk-io.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/dispnv04/disp.c b/drivers/gpu/drm/nouveau/dispnv04/disp.c
-index 13705c5f14973..4b7497a8755cd 100644
---- a/drivers/gpu/drm/nouveau/dispnv04/disp.c
-+++ b/drivers/gpu/drm/nouveau/dispnv04/disp.c
-@@ -68,7 +68,7 @@ nv04_display_fini(struct drm_device *dev, bool runtime, bool suspend)
- 	if (nv_two_heads(dev))
- 		NVWriteCRTC(dev, 1, NV_PCRTC_INTR_EN_0, 0);
- 
--	if (!runtime)
-+	if (!runtime && !drm->headless)
- 		cancel_work_sync(&drm->hpd_work);
- 
- 	if (!suspend)
-diff --git a/drivers/gpu/drm/nouveau/dispnv50/disp.c b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-index 0c3d88ad0b0ea..88151209033d5 100644
---- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
-@@ -2680,7 +2680,7 @@ nv50_display_fini(struct drm_device *dev, bool runtime, bool suspend)
- 			nv50_mstm_fini(nouveau_encoder(encoder));
- 	}
- 
--	if (!runtime)
-+	if (!runtime && !drm->headless)
- 		cancel_work_sync(&drm->hpd_work);
- }
- 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_display.c b/drivers/gpu/drm/nouveau/nouveau_display.c
-index f28f9a8574586..60c32244211d0 100644
---- a/drivers/gpu/drm/nouveau/nouveau_display.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_display.c
-@@ -450,6 +450,9 @@ nouveau_display_hpd_resume(struct drm_device *dev)
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 5eac900f5d168..c17232659942d 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4943,18 +4943,10 @@ static void btrfs_destroy_delayed_refs(struct btrfs_transaction *trans,
+ 				       struct btrfs_fs_info *fs_info)
  {
- 	struct nouveau_drm *drm = nouveau_drm(dev);
+ 	struct rb_node *node;
+-	struct btrfs_delayed_ref_root *delayed_refs;
++	struct btrfs_delayed_ref_root *delayed_refs = &trans->delayed_refs;
+ 	struct btrfs_delayed_ref_node *ref;
  
-+	if (drm->headless)
-+		return;
-+
- 	spin_lock_irq(&drm->hpd_lock);
- 	drm->hpd_pending = ~0;
- 	spin_unlock_irq(&drm->hpd_lock);
-@@ -635,7 +638,7 @@ nouveau_display_fini(struct drm_device *dev, bool suspend, bool runtime)
- 	}
- 	drm_connector_list_iter_end(&conn_iter);
- 
--	if (!runtime)
-+	if (!runtime && !drm->headless)
- 		cancel_work_sync(&drm->hpd_work);
- 
- 	drm_kms_helper_poll_disable(dev);
-@@ -729,6 +732,7 @@ nouveau_display_create(struct drm_device *dev)
- 		/* no display hw */
- 		if (ret == -ENODEV) {
- 			ret = 0;
-+			drm->headless = true;
- 			goto disp_create_err;
- 		}
- 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_drv.h b/drivers/gpu/drm/nouveau/nouveau_drv.h
-index e239c6bf4afa4..25fca98a20bcd 100644
---- a/drivers/gpu/drm/nouveau/nouveau_drv.h
-+++ b/drivers/gpu/drm/nouveau/nouveau_drv.h
-@@ -276,6 +276,7 @@ struct nouveau_drm {
- 	/* modesetting */
- 	struct nvbios vbios;
- 	struct nouveau_display *display;
-+	bool headless;
- 	struct work_struct hpd_work;
- 	spinlock_t hpd_lock;
- 	u32 hpd_pending;
+-	delayed_refs = &trans->delayed_refs;
+-
+ 	spin_lock(&delayed_refs->lock);
+-	if (atomic_read(&delayed_refs->num_entries) == 0) {
+-		spin_unlock(&delayed_refs->lock);
+-		btrfs_debug(fs_info, "delayed_refs has NO entry");
+-		return;
+-	}
+-
+ 	while ((node = rb_first_cached(&delayed_refs->href_root)) != NULL) {
+ 		struct btrfs_delayed_ref_head *head;
+ 		struct rb_node *n;
 -- 
 2.43.0
 
