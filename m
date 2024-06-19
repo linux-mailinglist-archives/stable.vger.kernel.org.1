@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-54558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B347490EED1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D3390EDD3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C8E7B25EF1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 151DE1C2238F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127441422D9;
-	Wed, 19 Jun 2024 13:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746B8147C7B;
+	Wed, 19 Jun 2024 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmJuOkMv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyodwWXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45E413F428;
-	Wed, 19 Jun 2024 13:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334DA82495;
+	Wed, 19 Jun 2024 13:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803935; cv=none; b=ndQyVglC1FCJJ/A2inXsSdftk3Qvkk7gEwqQBpTHIOJziGZGBw93SvhE8ASBhtzkiZ++NdTU+UTRyU1RVJSAzV74ig5lSrQVrcEC40qH62PLmbTWJmgg0ZIzp9Eo64gbGJcQUJKNeyK5SJG/EGoqqW7Wxs4GbH8M88n/OUfUVZY=
+	t=1718803350; cv=none; b=Y5505Ou64pMlqlcEka56WO+7z3skwsEz6Ng8YjVKbv0B4JMcRXZmyS7hmnZuNzPhc2GqSt55Y3/3bjAZSptP9DV+A9iZIVEj1NE6Izuekt27VqNtHR4McOsS+U4/qQWvnet4Hqx1QXSOGFCEDNe1D2x9FGt9tOqnK84nsBlbixI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803935; c=relaxed/simple;
-	bh=uo3MoFD06EnBIuw7DHXkZ9wHw7eGv1AEjxi38Pb0JYE=;
+	s=arc-20240116; t=1718803350; c=relaxed/simple;
+	bh=9bjE166TNJ0DKM8bnZA8kBM2F4HephbWK68fBzRnyIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GSWbG6+e0NzxwWlFslspLed4rXnqA4vr7h+ZddoyQoj/SUYRA6PjPHrkhewgarivaEla3SjPHB5dEfAHazetyeVNorkXaoI6tlw+/VAThLFYiWIYLSKAvBSQbXjtPkIeeWpnM7w5olQCyNENvFGMgasW9DaAmX6gu/1YdZfsCM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmJuOkMv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45508C2BBFC;
-	Wed, 19 Jun 2024 13:32:15 +0000 (UTC)
+	 MIME-Version; b=HN7Hb7HVe72anepzgIxvZ1ofDfWVVPDy6m7yT3+jUuthp94u1BcXlf8qFjgMZAVaykzH5J7a4XYRp2Eodq/g3aFLK9qS6n03icmcXU3YiOYwokA1bQDpqjRpmKzcAOS8SX8jlPktENZTMTywi2r2NX8mPy9Wotsa5j68onYx/Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyodwWXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE56C2BBFC;
+	Wed, 19 Jun 2024 13:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803935;
-	bh=uo3MoFD06EnBIuw7DHXkZ9wHw7eGv1AEjxi38Pb0JYE=;
+	s=korg; t=1718803350;
+	bh=9bjE166TNJ0DKM8bnZA8kBM2F4HephbWK68fBzRnyIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DmJuOkMvses5mRogx2h/fAp+iUqQZQ8t7c4gW8bzz8vhUm0gUOTXG6UdHbreFY7Wq
-	 hpA9TTcLliIXwvEfcR9Fuj3hW2mAlelJtfCwMGnWbPPBWfsx0ucH6lLEnt32pmeXXj
-	 1O8g+UWFk/sVn0u5lOg0vSGPGOvDQuAsJb8aOBJM=
+	b=AyodwWXIRNx9JTXSjNnl7rQmQ0XwtEu1i8fKWM/WzAyt9hfRj93dkEP/n1DKuWs2u
+	 q/i4pwbM1ez2RoccK9Om/SMk/3q0z8+7wdrICjxTB6RxSWjs9zJcO6Vd42+yCeOJK/
+	 HmgXhaBfEagrPYNkp8WdOgX7E6JxuSPXoJ8Jjpg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/217] net/ipv6: Fix the RT cache flush via sysctl using a previous delay
+	Rik van Riel <riel@surriel.com>,
+	Baoquan He <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 237/281] fs/proc: fix softlockup in __read_vmcore
 Date: Wed, 19 Jun 2024 14:56:36 +0200
-Message-ID: <20240619125602.593818076@linuxfoundation.org>
+Message-ID: <20240619125619.081032433@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit 14a20e5b4ad998793c5f43b0330d9e1388446cf3 ]
+commit 5cbcb62dddf5346077feb82b7b0c9254222d3445 upstream.
 
-The net.ipv6.route.flush system parameter takes a value which specifies
-a delay used during the flush operation for aging exception routes. The
-written value is however not used in the currently requested flush and
-instead utilized only in the next one.
+While taking a kernel core dump with makedumpfile on a larger system,
+softlockup messages often appear.
 
-A problem is that ipv6_sysctl_rtcache_flush() first reads the old value
-of net->ipv6.sysctl.flush_delay into a local delay variable and then
-calls proc_dointvec() which actually updates the sysctl based on the
-provided input.
+While softlockup warnings can be harmless, they can also interfere with
+things like RCU freeing memory, which can be problematic when the kdump
+kexec image is configured with as little memory as possible.
 
-Fix the problem by switching the order of the two operations.
+Avoid the softlockup, and give things like work items and RCU a chance to
+do their thing during __read_vmcore by adding a cond_resched.
 
-Fixes: 4990509f19e8 ("[NETNS][IPV6]: Make sysctls route per namespace.")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240607112828.30285-1-petr.pavlu@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240507091858.36ff767f@imladris.surriel.com
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/proc/vmcore.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 627431722f9d6..d305051e8ab5f 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -6335,12 +6335,12 @@ static int ipv6_sysctl_rtcache_flush(struct ctl_table *ctl, int write,
- 	if (!write)
- 		return -EINVAL;
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -383,6 +383,8 @@ static ssize_t __read_vmcore(struct iov_
+ 		/* leave now if filled buffer already */
+ 		if (!iov_iter_count(iter))
+ 			return acc;
++
++		cond_resched();
+ 	}
  
--	net = (struct net *)ctl->extra1;
--	delay = net->ipv6.sysctl.flush_delay;
- 	ret = proc_dointvec(ctl, write, buffer, lenp, ppos);
- 	if (ret)
- 		return ret;
- 
-+	net = (struct net *)ctl->extra1;
-+	delay = net->ipv6.sysctl.flush_delay;
- 	fib6_run_gc(delay <= 0 ? 0 : (unsigned long)delay, net, delay > 0);
- 	return 0;
- }
--- 
-2.43.0
-
+ 	list_for_each_entry(m, &vmcore_list, list) {
 
 
 
