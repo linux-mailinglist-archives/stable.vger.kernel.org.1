@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-54248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9628C90ED58
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD51190EE39
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 421171F21F1A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C61EA1C23DC5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8852143C65;
-	Wed, 19 Jun 2024 13:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D63814E2DF;
+	Wed, 19 Jun 2024 13:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dvy8YZOY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhXOLd6C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C134315F;
-	Wed, 19 Jun 2024 13:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A34314E2D7;
+	Wed, 19 Jun 2024 13:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803019; cv=none; b=XhXZjCW534hFfEsGWhRRfCG3Fs8xCSLQrTeRo/5vkD3bHY+uHO94HGdqLK7lB52Nv+WGEaYBBTrbD/dlb+9wujvrvWRznR53oVOtyVlEjAxDYQ0O2UoAFUAMs6wJaK8PXjUKMAhBNXM6pgpUrw0IcxQ7HDcJwn3v6jXOnO2ccIY=
+	t=1718803607; cv=none; b=XJTR2EboBav3FAwwVHkOMrIfQnE9wfBfTR59xnLYyIQW2LNSaf1zc8djJM1jBpyog4x64zYH9NT8k7I7DgwI5usJl6Fe6japsqMpvVl4m2qldxVOf9it6q7L7Alv9615ls6PNBJqZuYnZXCCYP5LBD+l7hwARgxogVX/567/gwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803019; c=relaxed/simple;
-	bh=mF2mOPWDHBMM+TC8BtWIHOTxfz8fsFbjmcgq6li51j0=;
+	s=arc-20240116; t=1718803607; c=relaxed/simple;
+	bh=+e5WZM8p5Rdce8WBvaDo8INRlSk787khhtEhqRYRhek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZhMRfEKC52Bw+4O5wI37VOAc9CY8Jsz+TxWr302vC1ziVl/hPTOjgfdmW7AeJyTjB51fh6hKORj30FH0L1MZPQfE4EubgOseCa78lyd514dR/yLFI6cAD92IOhJJDuaJTHsrDMREpZBdCADLBnorHegmQMNkwT4vUDFaGMaMPEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dvy8YZOY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E707C32786;
-	Wed, 19 Jun 2024 13:16:58 +0000 (UTC)
+	 MIME-Version; b=ed1H4/ldlWmAFm8GD6wS2gvMJETHUet9VfJW7A40n0Sq7+v/fVTR57MV1z5EktODLNMz14p/fMzwOX27EPHbEUg7wnRrhDCVflTB8PYK3TYY/T7lvt/qb80FjqK+n7ShMJe7UoavM9EN0+UC58SYUS9UvKri/gymmTsrggGl3U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhXOLd6C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6146C2BBFC;
+	Wed, 19 Jun 2024 13:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803019;
-	bh=mF2mOPWDHBMM+TC8BtWIHOTxfz8fsFbjmcgq6li51j0=;
+	s=korg; t=1718803607;
+	bh=+e5WZM8p5Rdce8WBvaDo8INRlSk787khhtEhqRYRhek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dvy8YZOYSyW3ZNNztTKGc6Gxj1opu41GbkvLbnifPGrMai9QSJr5thXojJY62TJym
-	 DvHhKcVw6icNHKryL8flQM4QqGBaT02/QDiG6Gydl60FyGLf8HXzsiHQRCkWBaPtkk
-	 2tjXbcjj69Jbqb4CaQjDyl5612MtfJWqYBSGkTA8=
+	b=VhXOLd6CKL3hxOxzJxT1eu6n0kZkd1MTU06rKo+5FyN5n/Z6Ungor3WBmjBQ1ajUf
+	 iRW01/N6xz5G158Bl/bYezzmHSHawWYPbVTl0LdaXwPkEaWsfFikJSTkfTOe9czGOz
+	 qSe5ddhmgxZsIzbNUqVEgBrURZOcEIDHGYJ3GPsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 126/281] selftests/futex: dont pass a const char* to asprintf(3)
-Date: Wed, 19 Jun 2024 14:54:45 +0200
-Message-ID: <20240619125614.693591261@linuxfoundation.org>
+Subject: [PATCH 6.1 043/217] af_unix: Annotate data-race of net->unx.sysctl_max_dgram_qlen.
+Date: Wed, 19 Jun 2024 14:54:46 +0200
+Message-ID: <20240619125558.318852778@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Hubbard <jhubbard@nvidia.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 4bf15b1c657d22d1d70173e43264e4606dfe75ff ]
+[ Upstream commit bd9f2d05731f6a112d0c7391a0d537bfc588dbe6 ]
 
-When building with clang, via:
+net->unx.sysctl_max_dgram_qlen is exposed as a sysctl knob and can be
+changed concurrently.
 
-    make LLVM=1 -C tools/testing/selftests
+Let's use READ_ONCE() in unix_create1().
 
-...clang issues this warning:
-
-futex_requeue_pi.c:403:17: warning: passing 'const char **' to parameter
-of type 'char **' discards qualifiers in nested pointer types
-[-Wincompatible-pointer-types-discards-qualifiers]
-
-This warning fires because test_name is passed into asprintf(3), which
-then changes it.
-
-Fix this by simply removing the const qualifier. This is a local
-automatic variable in a very short function, so there is not much need
-to use the compiler to enforce const-ness at this scope.
-
-[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
-
-Fixes: f17d8a87ecb5 ("selftests: fuxex: Report a unique test name per run of futex_requeue_pi")
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/futex/functional/futex_requeue_pi.c | 2 +-
+ net/unix/af_unix.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/futex/functional/futex_requeue_pi.c b/tools/testing/selftests/futex/functional/futex_requeue_pi.c
-index 7f3ca5c78df12..215c6cb539b4a 100644
---- a/tools/testing/selftests/futex/functional/futex_requeue_pi.c
-+++ b/tools/testing/selftests/futex/functional/futex_requeue_pi.c
-@@ -360,7 +360,7 @@ int unit_test(int broadcast, long lock, int third_party_owner, long timeout_ns)
- 
- int main(int argc, char *argv[])
- {
--	const char *test_name;
-+	char *test_name;
- 	int c, ret;
- 
- 	while ((c = getopt(argc, argv, "bchlot:v:")) != -1) {
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index f6ba015fffd2f..5cffbd0661406 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -966,7 +966,7 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern,
+ 	sk->sk_hash		= unix_unbound_hash(sk);
+ 	sk->sk_allocation	= GFP_KERNEL_ACCOUNT;
+ 	sk->sk_write_space	= unix_write_space;
+-	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
++	sk->sk_max_ack_backlog	= READ_ONCE(net->unx.sysctl_max_dgram_qlen);
+ 	sk->sk_destruct		= unix_sock_destructor;
+ 	u = unix_sk(sk);
+ 	u->inflight = 0;
 -- 
 2.43.0
 
