@@ -1,155 +1,100 @@
-Return-Path: <stable+bounces-54650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757C890F154
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:53:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0B890F158
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0600B28A11F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:53:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3359128A849
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B27A44369;
-	Wed, 19 Jun 2024 14:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96753249F5;
+	Wed, 19 Jun 2024 14:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XeRvdkK1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXQr2W9v"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E244436A;
-	Wed, 19 Jun 2024 14:51:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A050134A5;
+	Wed, 19 Jun 2024 14:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718808719; cv=none; b=ozQiWxhmfDpd4SEjR1xt29Gor6HluAMQF/4IY1LQFWn33Ng8FbjyF8PZcT1eA1LXjdsXKdlMtRLkODsMJEyRVrg3MsnyJD6sfnU/D9mycmPOZ7B19NwSAMARUQZsNnK1LkE0yJ7O3skpWRSNvYFXtMYS/3Mae4NRZjtJVWAaMTQ=
+	t=1718808795; cv=none; b=B/Z5vv/rHTDRb4y0pdgv5fJ8TMc6+pWBmn2APLwbYMKQUiJfg4Q3UzxBWlaGxly2azl5Y95xBAU2sYnd8DpzjQH0EGuS27r8Zy6dWKMNQRvHJhBtThA9Z3c7A/0WvltsbYzYK72J9AUrOWPt4DBvpmWJGvvN4rYdo1rY4evoUtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718808719; c=relaxed/simple;
-	bh=DU8eo20+IwUWBFQfeDefY7A24vcACOr0OtMcjrW59Os=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NYQdshGGk7T/cVkXLbMSvnrxyom7tJEPrLK4KX/npfOclx7a66a303ozjyFeFVweKXUCyFcgi5RO1TxdWTho1jFv0wh1/3sRHoF5ewbyDtV6tlL+ndiZp40Gzq8sF0gDlqpnLRkBzX+tYR8XiGeO2N0+lVX9kdIvhhtuXuDzLe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XeRvdkK1; arc=none smtp.client-ip=209.85.222.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7954f8b818fso432802185a.1;
-        Wed, 19 Jun 2024 07:51:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718808717; x=1719413517; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=/DtnyV2NJkuCopjaWD0fzL2YLwp4aLxy6ENXE95quB8=;
-        b=XeRvdkK1qdNKqj8bXeXFCi1NG8Y3zxvsrSkuQm1x8qZn8rNu+5ElWqzu138DlMP5Sg
-         Tu6Mr1NT0JgvbvQeDB1QXIa6ig/yltfhc1mgIfhluURD0VDkrechL40RElDSPoHmjhH4
-         mKZm9GfeZBD62RnsuzMCRoMDepa8ty9qw0LbWdNA1Nwz3sYPhUok6L+ngx4Xo2dM96J/
-         Bqv/IRN72YpqGQqn+qG0XvHjEKK35Hvu5lUtpi4BEi5cD34VSGpvnLturN8N+GBJfGUJ
-         va5eSiLqg7qtUqQxCQLXg//xwz0lezDjUBGpGcXK+CrtioLeMZmrMt52oae0ME/2OKc1
-         atgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718808717; x=1719413517;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/DtnyV2NJkuCopjaWD0fzL2YLwp4aLxy6ENXE95quB8=;
-        b=i6f4Hz51G8X/HLsiB54/NAmK8eHtrnshC7XpO+cJpE20OTUn/Sjw4CW7kuHCbhm417
-         2hZLuIMA9Nbj7SPzox7iB24ti4s31YEDY61zV/7BYyekStxMV26FPc8EWtr2B5RKpatu
-         2aIIQWXuB2c7PWvIScZAEZhaMHqfV09462VPab0x+rT4bqUaDgiPhmnW4gYGcyISCIF/
-         25ufnCe8NiphJ1h8/TBB8nSRYWcKS1gwdIAbg+lhrq8zVpDnyV3EA1gznQbDZC0ERjz1
-         8rzEnCOAKal8qjMbGsJvrmtt1Z2zwprvFQz1VMiZsxijrqoi9k9aRcj1XwQo8yXBVJbi
-         m4Fw==
-X-Forwarded-Encrypted: i=1; AJvYcCVrsb3uhHz5q+UY1saUkv37mxBphUfzwMvSN3Xfds2x+N24icydi6X2SYWtiVQ1E+7MDmT7dVWKj0aEIp8GTQlzl94CxrOpiK7SvYwak5FSHUOQUSQWCiisPmKmX/fncH0aQ2An
-X-Gm-Message-State: AOJu0Yy4DC1Qun0JPrGN9parfCCG8IieZ9klsQ5PT/ywI/k8gZOk8Hw6
-	DFDxKyIvG2DbtJFUYn/pFRzWM7pIYmNIe1EocRseZz0/xQMHENqw/0C/O+H34LU=
-X-Google-Smtp-Source: AGHT+IFWASVwToK+QVrJ4UvUIaCVwJTnnHV83nrx1ZWXtSSWYQiKRbZpXn+/Df3yw9Ewtz/LsbDl8g==
-X-Received: by 2002:a17:902:e5d0:b0:1f9:9221:6c2d with SMTP id d9443c01a7336-1f9aa461c1dmr32240045ad.53.1718808695863;
-        Wed, 19 Jun 2024 07:51:35 -0700 (PDT)
-Received: from [192.168.75.133] (mobile-166-172-56-136.mycingular.net. [166.172.56.136])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855f3947asm117235605ad.264.2024.06.19.07.51.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jun 2024 07:51:35 -0700 (PDT)
-Message-ID: <35d6ea79-3b6c-4304-b3bc-2d7c9b77b277@gmail.com>
-Date: Wed, 19 Jun 2024 15:51:26 +0100
+	s=arc-20240116; t=1718808795; c=relaxed/simple;
+	bh=mhSLdjbXIugKuXxjNfh4RzA3lC4RlS0/kcc/bks2uww=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KEVxkw8rHR0KEJSV4FRxHc/TNyv5IJzOiEAvuvtRbZRLLNi+bAiXzdivqI15VGmLEZGGQ1GlCqLFkBJ5r5LnDmIXIzvfsYLJ5fsGNZFBZ/Lh8CbHpPmRb4ejFKXz87t0XI33nucqZMsZDhx9dkZhq9aQK+91Q3Fo4akSYziArz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXQr2W9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D77BC2BBFC;
+	Wed, 19 Jun 2024 14:53:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718808794;
+	bh=mhSLdjbXIugKuXxjNfh4RzA3lC4RlS0/kcc/bks2uww=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WXQr2W9vG2692EJIFlLIv/3ad7ieKP1tYJGwQ6Or3r6OzJIqLoF7Lv5J9DCxjLwkx
+	 c5+b59DoQvZoQjjywE7Gj5ZtuJ4Q6hJsI583+tP+DJ7QO234hxFIhDYjeucmGPFseF
+	 8oOkSjqfO/k/tugfuk0UNMX2GMRBjqMZB3waRRJ4=
+Date: Wed, 19 Jun 2024 16:53:05 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Zijun Hu <quic_zijuhu@quicinc.com>
+Cc: rafael@kernel.org, davem@davemloft.net, madalin.bucur@nxp.com,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v1] devres: Fix memory leakage due to driver API
+ devm_free_percpu()
+Message-ID: <2024061949-dullness-snippet-da5a@gregkh>
+References: <1718804281-1796-1-git-send-email-quic_zijuhu@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.9 000/281] 6.9.6-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240619125609.836313103@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- HGuUuzv+GKZ6nsysJw==
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1718804281-1796-1-git-send-email-quic_zijuhu@quicinc.com>
 
-
-
-On 6/19/2024 1:52 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.6 release.
-> There are 281 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Jun 19, 2024 at 09:38:01PM +0800, Zijun Hu wrote:
+> It will cause memory leakage when use driver API devm_free_percpu()
+> to free memory allocated by devm_alloc_percpu(), fixed by using
+> devres_release() instead of devres_destroy() within devm_free_percpu().
 > 
-> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
-> Anything received after that time might be too late.
+> Fixes: ff86aae3b411 ("devres: add devm_alloc_percpu()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> ---
+>  drivers/base/devres.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.6-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-> and the diffstat can be found below.
+> diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+> index 3df0025d12aa..082dbb296b6e 100644
+> --- a/drivers/base/devres.c
+> +++ b/drivers/base/devres.c
+> @@ -1222,7 +1222,11 @@ EXPORT_SYMBOL_GPL(__devm_alloc_percpu);
+>   */
+>  void devm_free_percpu(struct device *dev, void __percpu *pdata)
+>  {
+> -	WARN_ON(devres_destroy(dev, devm_percpu_release, devm_percpu_match,
+> +	/*
+> +	 * Use devres_release() to prevent memory leakage as
+> +	 * devm_free_pages() does.
+> +	 */
+> +	WARN_ON(devres_release(dev, devm_percpu_release, devm_percpu_match,
+>  			       (__force void *)pdata));
+>  }
+>  EXPORT_SYMBOL_GPL(devm_free_percpu);
+> -- 
+> 2.7.4
 > 
-> thanks,
 > 
-> greg k-h
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+These are good fixes, how are you finding them?  Care to write up some
+kunit tests for the devres apis?
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+thanks,
+
+greg k-h
 
