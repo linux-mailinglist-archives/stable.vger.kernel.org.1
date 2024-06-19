@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-53994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202AE90EC33
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21B2890EE48
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AAC7287BE5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B310E284CB6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A17413D525;
-	Wed, 19 Jun 2024 13:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00D31474AD;
+	Wed, 19 Jun 2024 13:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Het/wYo/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCSwJ8+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3A882871;
-	Wed, 19 Jun 2024 13:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8459B14B96E;
+	Wed, 19 Jun 2024 13:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802282; cv=none; b=iFSAaVx/Da1gar+uNM65OndLuBV5GO0Cs0K4oLHhhXhwXDwPF2buhkp8hYx97Qm3VGD4VMsYiICxNzr4zPpCN8qB/p3oIukxh2qzgSbWfvMkInLxGm5VqrxTOotD/9wVJcYJWVAkcyVFbgc+EO80CaPgkONFXuIrUDpe/CeTrA4=
+	t=1718803636; cv=none; b=bVi+TnSUH03sLv+IlrfqdOop9HyNmXsAAg9g4PaOeDQpyGlc759gz9kPiscXzCrYrecgrLwVFFvwi7LXkc73+NI7POHlh3e8mWV0aMqIYNao1gmcdF6ZGDX+4yzWvn4gtgYWgySDkLA9B0dIFH5KH9YeywULLPr9p9SdQsscsZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802282; c=relaxed/simple;
-	bh=iyD6n4bKi1IoAKUqSXM1MsfpO3jNfYAEcZ8hyxCcbDE=;
+	s=arc-20240116; t=1718803636; c=relaxed/simple;
+	bh=NiCnGM3KY6Zsgxlz1VJ4afgcE1yFaGOp7sIX4hrTS6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLax8OegQCJeUx5YjM42s8L1g5qy/F5IGzCRiGaRk6Sf7zhqczMvMOteawJJ8lMnBFHSV1OsQu9tYoBEpPTQGyhnI8L1s/hIP9V6pfF8hZFhmlQhzaiGZQcSPuNW0kopj7v9VHBuvrMnUWdojFqzjuaSJs51ittjsB4iE+pOqMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Het/wYo/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F48C2BBFC;
-	Wed, 19 Jun 2024 13:04:41 +0000 (UTC)
+	 MIME-Version; b=iOkxXl6YpwtJAYPhQXq0Mx10R/+aAe+KsK3q9l7E0JMM5rYJYnAxA1Kz4wLncGOxGet76HxSZ6havwxRZXYE+4o14b0+GLpkos67XWrRfIayWSkYr37OKpHbz4mT36/ZPpgs0AtUUIitM1syaGS9anRuD4l7s+Fr1JGyjkXw/j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCSwJ8+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B586C2BBFC;
+	Wed, 19 Jun 2024 13:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802281;
-	bh=iyD6n4bKi1IoAKUqSXM1MsfpO3jNfYAEcZ8hyxCcbDE=;
+	s=korg; t=1718803636;
+	bh=NiCnGM3KY6Zsgxlz1VJ4afgcE1yFaGOp7sIX4hrTS6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Het/wYo/EKFaQ6YNaycq0KOM0c67hjRZmH3Pk6cQFFcmLp7sSPJzL7wRqe1zzUYeR
-	 DWPheAF8Z0i6Xrz0jpvkzbidbB40lDGTK7FhdguUuC4MSZlzh0HUWqfZVfWGMZ9URl
-	 SAp15b4Zy5CHNazB6iFVP+b8Y2FE4lkYu6bwNPoo=
+	b=VCSwJ8+Y8wd4KMdm7PgMPDoV7BVIsWBLyfp6JKE4+03PsvpOv8xiuHkNOHxSgsOfG
+	 fUZcLEFtHa9gFvMSSlhaFGBRGXg7EMGVsFqZeFFfZcLcTKazT9UnsoSOTeLDUHZt91
+	 wglpQ7QB/SyGuhGmRfGadd+kom9TUPTG+YPs9tjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Linyu Yuan <quic_linyyuan@quicinc.com>,
+	John Keeping <john@metanate.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/267] net: hns3: fix kernel crash problem in concurrent scenario
-Date: Wed, 19 Jun 2024 14:54:54 +0200
-Message-ID: <20240619125611.836935158@linuxfoundation.org>
+Subject: [PATCH 6.1 052/217] usb: gadget: f_fs: use io_data->status consistently
+Date: Wed, 19 Jun 2024 14:54:55 +0200
+Message-ID: <20240619125558.673853428@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: John Keeping <john@metanate.com>
 
-[ Upstream commit 12cda920212a49fa22d9e8b9492ac4ea013310a4 ]
+[ Upstream commit b566d38857fcb6777f25b674b90a831eec0817a2 ]
 
-When link status change, the nic driver need to notify the roce
-driver to handle this event, but at this time, the roce driver
-may uninit, then cause kernel crash.
+Commit fb1f16d74e26 ("usb: gadget: f_fs: change ep->status safe in
+ffs_epfile_io()") added a new ffs_io_data::status field to fix lifetime
+issues in synchronous requests.
 
-To fix the problem, when link status change, need to check
-whether the roce registered, and when uninit, need to wait link
-update finish.
+While there are no similar lifetime issues for asynchronous requests
+(the separate ep member in ffs_io_data avoids them) using the status
+field means the USB request can be freed earlier and that there is more
+consistency between the synchronous and asynchronous I/O paths.
 
-Fixes: 45e92b7e4e27 ("net: hns3: add calling roce callback function when link status change")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: Linyu Yuan <quic_linyyuan@quicinc.com>
+Signed-off-by: John Keeping <john@metanate.com>
+Reviewed-by: Linyu Yuan <quic_linyyuan@quicinc.com>
+Link: https://lore.kernel.org/r/20221124170430.3998755-1-john@metanate.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 24729b307eef ("usb: gadget: f_fs: Fix race between aio_cancel() and AIO request complete")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 21 ++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ drivers/usb/gadget/function/f_fs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 14713454e0d82..c8059d96f64be 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -3031,9 +3031,7 @@ static void hclge_push_link_status(struct hclge_dev *hdev)
- 
- static void hclge_update_link_status(struct hclge_dev *hdev)
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index b2da74bb107af..d32e1ece3e0a1 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -830,8 +830,7 @@ static void ffs_user_copy_worker(struct work_struct *work)
  {
--	struct hnae3_handle *rhandle = &hdev->vport[0].roce;
- 	struct hnae3_handle *handle = &hdev->vport[0].nic;
--	struct hnae3_client *rclient = hdev->roce_client;
- 	struct hnae3_client *client = hdev->nic_client;
- 	int state;
- 	int ret;
-@@ -3057,8 +3055,15 @@ static void hclge_update_link_status(struct hclge_dev *hdev)
+ 	struct ffs_io_data *io_data = container_of(work, struct ffs_io_data,
+ 						   work);
+-	int ret = io_data->req->status ? io_data->req->status :
+-					 io_data->req->actual;
++	int ret = io_data->status;
+ 	bool kiocb_has_eventfd = io_data->kiocb->ki_flags & IOCB_EVENTFD;
  
- 		client->ops->link_status_change(handle, state);
- 		hclge_config_mac_tnl_int(hdev, state);
--		if (rclient && rclient->ops->link_status_change)
--			rclient->ops->link_status_change(rhandle, state);
-+
-+		if (test_bit(HCLGE_STATE_ROCE_REGISTERED, &hdev->state)) {
-+			struct hnae3_handle *rhandle = &hdev->vport[0].roce;
-+			struct hnae3_client *rclient = hdev->roce_client;
-+
-+			if (rclient && rclient->ops->link_status_change)
-+				rclient->ops->link_status_change(rhandle,
-+								 state);
-+		}
+ 	if (io_data->read && ret > 0) {
+@@ -845,8 +844,6 @@ static void ffs_user_copy_worker(struct work_struct *work)
+ 	if (io_data->ffs->ffs_eventfd && !kiocb_has_eventfd)
+ 		eventfd_signal(io_data->ffs->ffs_eventfd, 1);
  
- 		hclge_push_link_status(hdev);
- 	}
-@@ -11233,6 +11238,12 @@ static int hclge_init_client_instance(struct hnae3_client *client,
- 	return ret;
+-	usb_ep_free_request(io_data->ep, io_data->req);
+-
+ 	if (io_data->read)
+ 		kfree(io_data->to_free);
+ 	ffs_free_buffer(io_data);
+@@ -861,6 +858,9 @@ static void ffs_epfile_async_io_complete(struct usb_ep *_ep,
+ 
+ 	ENTER();
+ 
++	io_data->status = req->status ? req->status : req->actual;
++	usb_ep_free_request(_ep, req);
++
+ 	INIT_WORK(&io_data->work, ffs_user_copy_worker);
+ 	queue_work(ffs->io_completion_wq, &io_data->work);
  }
- 
-+static bool hclge_uninit_need_wait(struct hclge_dev *hdev)
-+{
-+	return test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state) ||
-+	       test_bit(HCLGE_STATE_LINK_UPDATING, &hdev->state);
-+}
-+
- static void hclge_uninit_client_instance(struct hnae3_client *client,
- 					 struct hnae3_ae_dev *ae_dev)
- {
-@@ -11241,7 +11252,7 @@ static void hclge_uninit_client_instance(struct hnae3_client *client,
- 
- 	if (hdev->roce_client) {
- 		clear_bit(HCLGE_STATE_ROCE_REGISTERED, &hdev->state);
--		while (test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
-+		while (hclge_uninit_need_wait(hdev))
- 			msleep(HCLGE_WAIT_RESET_DONE);
- 
- 		hdev->roce_client->ops->uninit_instance(&vport->roce, 0);
 -- 
 2.43.0
 
