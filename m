@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FC390EC5F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A7590EE55
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 381BE1C224EC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9BC72857BC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CBE9143873;
-	Wed, 19 Jun 2024 13:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F62614A4E2;
+	Wed, 19 Jun 2024 13:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PFkz2Plh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldFPFOkv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C06912FB31;
-	Wed, 19 Jun 2024 13:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF0212FB27;
+	Wed, 19 Jun 2024 13:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802406; cv=none; b=WBBH1z+B43e5+tdAgfdi+TjOnt6OfrVzvasn3GYYFiUUNWiMxFdFvxNKvkD5MdN6/uXGPfdjLdUHxkPDoFr+6GkTZs1zlSy1b0InobL7q5zh8fwgFKjD5JV2lQrWk3g6CFR1z2bmDknEt2wvTB0JL+lIR/0lTpvJeZnio4/mBOE=
+	t=1718803672; cv=none; b=poTUZpN1jRMO34HSomoGwgnrlgdH9iZxfeCAQeRVbhpajwXI0mSUGa9Pbll832v617xNl8u75wT+s/d6BoNKPIMun7ALlXceg2PzCwH9pRUwGWyacjNt2HBRmC9b6zj1eNDu0y0I26W5+MAuSWEBaNcVMJ2D5MUcLiLnxg/ruKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802406; c=relaxed/simple;
-	bh=QSP9vx+pX0tIef/4C9WLZeSwnd60P6KPU0YqyCr405o=;
+	s=arc-20240116; t=1718803672; c=relaxed/simple;
+	bh=X4M9ev+6ZIS6NYrftiA766MNmWMfiCD0WiJm8ByNJIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVqIevFVBqsA7ICXtr0N4cQUDM3Nin+ZBt573Vmi4YB0/xg609uNSDv2KpCfooNmbZLfM2uaKFvT1r5a67xsofsf7MCzgTihVoBu7Q7kWG23DW/XMYGzIYr2j++54vmZvUCjawI/YkUu8dmx41wb/wi+G/gJ5W12WaD8+fU2w8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PFkz2Plh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FC9C2BBFC;
-	Wed, 19 Jun 2024 13:06:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cdocG/PvBT7Kf7AHD9XxcH4elFDqJv69Sc0mmxiVKRBF98WiqhKrJd9Tnxe0wXmOxgs7OlHZ7K2YRvBtqDEc/2NZP1HKtkVuCCtudxvZGxL6O6XcNnOSMdpr/ezEyuzLZLy7jNb5eSDhdnrBuDebC/qpby6o4t32ZFXLwlJz6w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldFPFOkv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA582C2BBFC;
+	Wed, 19 Jun 2024 13:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802406;
-	bh=QSP9vx+pX0tIef/4C9WLZeSwnd60P6KPU0YqyCr405o=;
+	s=korg; t=1718803672;
+	bh=X4M9ev+6ZIS6NYrftiA766MNmWMfiCD0WiJm8ByNJIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PFkz2Plh4boLYu8W0JThTFpPVtZGBiWy3O1M1X0tLWDZd6lsDPV7TUpgn64VGGCxD
-	 HzsvPM4k3cHDv/W7ca3WEN3oStEbcws0DS2pmfxMTFhNv7ShTw1oZa9upPRZ0Xv+An
-	 DFaeKv1arxB1ZK6evTMZdYdbkoVWZZaWV7kjiMIQ=
+	b=ldFPFOkvmZiu8WWUgPgGEbBZIRk8v7p2kttSIH/qv4C1nhtJLbvMlrN4LqfsHoa4x
+	 hR1Cx46IvlWq8Du+pxGePiRk/hSmSf2+c0EZ+s8GK7dN1x7Lj2ty4URt0YNv/n9sWa
+	 ZMp1HE/qnn+HcjtSEBsjaaZnDj6yXy1g1YYje9QQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Davide Ornaghi <d.ornaghi97@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/267] netfilter: nft_inner: validate mandatory meta and payload
+Subject: [PATCH 6.1 063/217] misc/pvpanic-pci: register attributes via pci_driver
 Date: Wed, 19 Jun 2024 14:55:06 +0200
-Message-ID: <20240619125612.293405968@linuxfoundation.org>
+Message-ID: <20240619125559.117721219@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davide Ornaghi <d.ornaghi97@gmail.com>
+From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit c4ab9da85b9df3692f861512fe6c9812f38b7471 ]
+[ Upstream commit ee59be35d7a8be7fcaa2d61fb89734ab5c25e4ee ]
 
-Check for mandatory netlink attributes in payload and meta expression
-when used embedded from the inner expression, otherwise NULL pointer
-dereference is possible from userspace.
+In __pci_register_driver(), the pci core overwrites the dev_groups field of
+the embedded struct device_driver with the dev_groups from the outer
+struct pci_driver unconditionally.
 
-Fixes: a150d122b6bd ("netfilter: nft_meta: add inner match support")
-Fixes: 3a07327d10a0 ("netfilter: nft_inner: support for inner tunnel header matching")
-Signed-off-by: Davide Ornaghi <d.ornaghi97@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Set dev_groups in the pci_driver to make sure it is used.
+
+This was broken since the introduction of pvpanic-pci.
+
+Fixes: db3a4f0abefd ("misc/pvpanic: add PCI driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+Fixes: ded13b9cfd59 ("PCI: Add support for dev_groups to struct pci_driver")
+Link: https://lore.kernel.org/r/20240411-pvpanic-pci-dev-groups-v1-1-db8cb69f1b09@weissschuh.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_meta.c    | 3 +++
- net/netfilter/nft_payload.c | 4 ++++
- 2 files changed, 7 insertions(+)
+ drivers/misc/pvpanic/pvpanic-pci.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
-index ba0d3683a45d3..9139ce38ea7b9 100644
---- a/net/netfilter/nft_meta.c
-+++ b/net/netfilter/nft_meta.c
-@@ -839,6 +839,9 @@ static int nft_meta_inner_init(const struct nft_ctx *ctx,
- 	struct nft_meta *priv = nft_expr_priv(expr);
- 	unsigned int len;
- 
-+	if (!tb[NFTA_META_KEY] || !tb[NFTA_META_DREG])
-+		return -EINVAL;
-+
- 	priv->key = ntohl(nla_get_be32(tb[NFTA_META_KEY]));
- 	switch (priv->key) {
- 	case NFT_META_PROTOCOL:
-diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
-index 0c43d748e23ae..50429cbd42da4 100644
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -650,6 +650,10 @@ static int nft_payload_inner_init(const struct nft_ctx *ctx,
- 	struct nft_payload *priv = nft_expr_priv(expr);
- 	u32 base;
- 
-+	if (!tb[NFTA_PAYLOAD_BASE] || !tb[NFTA_PAYLOAD_OFFSET] ||
-+	    !tb[NFTA_PAYLOAD_LEN] || !tb[NFTA_PAYLOAD_DREG])
-+		return -EINVAL;
-+
- 	base   = ntohl(nla_get_be32(tb[NFTA_PAYLOAD_BASE]));
- 	switch (base) {
- 	case NFT_PAYLOAD_TUN_HEADER:
+diff --git a/drivers/misc/pvpanic/pvpanic-pci.c b/drivers/misc/pvpanic/pvpanic-pci.c
+index 689af4c28c2a9..2494725dfacfa 100644
+--- a/drivers/misc/pvpanic/pvpanic-pci.c
++++ b/drivers/misc/pvpanic/pvpanic-pci.c
+@@ -48,8 +48,6 @@ static struct pci_driver pvpanic_pci_driver = {
+ 	.name =         "pvpanic-pci",
+ 	.id_table =     pvpanic_pci_id_tbl,
+ 	.probe =        pvpanic_pci_probe,
+-	.driver = {
+-		.dev_groups = pvpanic_dev_groups,
+-	},
++	.dev_groups =   pvpanic_dev_groups,
+ };
+ module_pci_driver(pvpanic_pci_driver);
 -- 
 2.43.0
 
