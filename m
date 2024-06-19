@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-54472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED8B90EE61
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A6A90ED52
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C9192869D6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A73251F21D29
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4235A14BF89;
-	Wed, 19 Jun 2024 13:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A06012FB27;
+	Wed, 19 Jun 2024 13:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olnuwQhR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQX8c4W0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0168114373E;
-	Wed, 19 Jun 2024 13:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD9B4315F;
+	Wed, 19 Jun 2024 13:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803681; cv=none; b=MoSIG6Gce/oM4K78F0rn0jdEpkLWGR2YhpCgNOmCU05ZgTZVi1ZmvVWhX6ERhCPPeOnofTEQFsJA9sl6GMRH0EPdEgBgpmskmD+QWss6Ymgc+8wQ3e9ZMk04hU7WZXGL5WgjzTcUhrycWducDm0M27U4u6oKQjcnuvsRUa5j0rQ=
+	t=1718803004; cv=none; b=cwaj2UAL+HJktwKSWi/Nrh/YmJ5gQXgMh8UEAC3JD+pwllinAo7dxaJviJsEwohfM9oBBhuMjRUlBB1ncMeMX/GFa8cqVV3RNQ6INjt4W+NFhJ2Jwnpy2orwmVqZQEo814GbL/VHl7fQAMiVeHgkTokBdWGMbnRyI1quCe3YKV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803681; c=relaxed/simple;
-	bh=WXtXFOcLARng3twWNeOVBHcerkDW+i32YCfwxGSzLD8=;
+	s=arc-20240116; t=1718803004; c=relaxed/simple;
+	bh=7Z48nCJ9Sw2Ehfr0KWkCF0B+9cTDNFoLwoA4WKAD6p8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZLf8FlulGsCxhBnX7qL0jn2KiuhBJ9sy1eGPGIFmzyWMFkuc0bFfOGjgy8PXDA2LR/0miqOc4TMXh0PtMkniKv2cQIZTeTGsp4QKSfYNXgdgkSa8NETGnqgWakaBpeLu9zRYxkS6WlwF1m8GtSobUVmOZmafL3bfVMcdM1P7Yno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olnuwQhR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79430C2BBFC;
-	Wed, 19 Jun 2024 13:28:00 +0000 (UTC)
+	 MIME-Version; b=plqbIbVJUBBDi/sWN1XHDSO1nirvcyNZNqZqdF2QwlfTbLzOKwtQG0AsUj5x8KJqZ7WjL55xXcimAHJl7pLchWYmSAvLQes0M3XjnzW//vCDN+zSvWbitgqtZQYTTMo92nI2UuMYKueU14d3WE47mQKIa6LlVm9YWoWwKQ68Kwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQX8c4W0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C9BC2BBFC;
+	Wed, 19 Jun 2024 13:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803680;
-	bh=WXtXFOcLARng3twWNeOVBHcerkDW+i32YCfwxGSzLD8=;
+	s=korg; t=1718803004;
+	bh=7Z48nCJ9Sw2Ehfr0KWkCF0B+9cTDNFoLwoA4WKAD6p8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=olnuwQhRWS7PA6m7e3OroD2qWPtWqwcQ/idLGzvyk06LUF/DN+Nkei47nny9jYKd5
-	 NrdjZ2OcTwQ4wOwBDQ+5LYMB/nf2Oxndxz6+rFcUTRqaT2fwtKqR6h7NC6cpLISljS
-	 rSWQGPcuy0OgQ033VYRV9sOgXYSx9weCk/rJZTEM=
+	b=hQX8c4W0t2FV+sh6uApPdHZroMkxNJbi1FCbIh+L+4Z2mQ1/PRVrdqtDL57bL0Gy+
+	 Mje0FQBLwkYFBEJOLhS1ncj5mevbLwoqMLBMsUhUDOqC/GPpkFyWHDb+Fe5tSEdVDS
+	 IFpAobT6e3CFtTJbWiqwlk0wORTmfFzWptDqj1kE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/217] af_unix: Annotate data-race of sk->sk_state in unix_inq_len().
+Subject: [PATCH 6.9 121/281] clk: sifive: Do not register clkdevs for PRCI clocks
 Date: Wed, 19 Jun 2024 14:54:40 +0200
-Message-ID: <20240619125558.086970268@linuxfoundation.org>
+Message-ID: <20240619125614.501756683@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit 3a0f38eb285c8c2eead4b3230c7ac2983707599d ]
+[ Upstream commit 2607133196c35f31892ee199ce7ffa717bea4ad1 ]
 
-ioctl(SIOCINQ) calls unix_inq_len() that checks sk->sk_state first
-and returns -EINVAL if it's TCP_LISTEN.
+These clkdevs were unnecessary, because systems using this driver always
+look up clocks using the devicetree. And as Russell King points out[1],
+since the provided device name was truncated, lookups via clkdev would
+never match.
 
-Then, for SOCK_STREAM sockets, unix_inq_len() returns the number of
-bytes in recvq.
+Recently, commit 8d532528ff6a ("clkdev: report over-sized strings when
+creating clkdev entries") caused clkdev registration to fail due to the
+truncation, and this now prevents the driver from probing. Fix the
+driver by removing the clkdev registration.
 
-However, unix_inq_len() does not hold unix_state_lock(), and the
-concurrent listen() might change the state after checking sk->sk_state.
-
-If the race occurs, 0 is returned for the listener, instead of -EINVAL,
-because the length of skb with embryo is 0.
-
-We could hold unix_state_lock() in unix_inq_len(), but it's overkill
-given the result is true for pre-listen() TCP_CLOSE state.
-
-So, let's use READ_ONCE() for sk->sk_state in unix_inq_len().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/linux-clk/ZkfYqj+OcAxd9O2t@shell.armlinux.org.uk/ [1]
+Fixes: 30b8e27e3b58 ("clk: sifive: add a driver for the SiFive FU540 PRCI IP block")
+Fixes: 8d532528ff6a ("clkdev: report over-sized strings when creating clkdev entries")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/linux-clk/7eda7621-0dde-4153-89e4-172e4c095d01@roeck-us.net/
+Suggested-by: Russell King <linux@armlinux.org.uk>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/r/20240528001432.1200403-1-samuel.holland@sifive.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/sifive/sifive-prci.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 358e80956cb7b..6d7e1cd97c52e 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -3068,7 +3068,7 @@ long unix_inq_len(struct sock *sk)
- 	struct sk_buff *skb;
- 	long amount = 0;
+diff --git a/drivers/clk/sifive/sifive-prci.c b/drivers/clk/sifive/sifive-prci.c
+index 25b8e1a80ddce..b32a59fe55e74 100644
+--- a/drivers/clk/sifive/sifive-prci.c
++++ b/drivers/clk/sifive/sifive-prci.c
+@@ -4,7 +4,6 @@
+  * Copyright (C) 2020 Zong Li
+  */
  
--	if (sk->sk_state == TCP_LISTEN)
-+	if (READ_ONCE(sk->sk_state) == TCP_LISTEN)
- 		return -EINVAL;
+-#include <linux/clkdev.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -537,13 +536,6 @@ static int __prci_register_clocks(struct device *dev, struct __prci_data *pd,
+ 			return r;
+ 		}
  
- 	spin_lock(&sk->sk_receive_queue.lock);
+-		r = clk_hw_register_clkdev(&pic->hw, pic->name, dev_name(dev));
+-		if (r) {
+-			dev_warn(dev, "Failed to register clkdev for %s: %d\n",
+-				 init.name, r);
+-			return r;
+-		}
+-
+ 		pd->hw_clks.hws[i] = &pic->hw;
+ 	}
+ 
 -- 
 2.43.0
 
