@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC4890EEEC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4562690EDEC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B96D282297
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A061C22339
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0F21422B8;
-	Wed, 19 Jun 2024 13:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC118144D3E;
+	Wed, 19 Jun 2024 13:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="no/h7V2G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lR9oHXzj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80821422D9;
-	Wed, 19 Jun 2024 13:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB4882495;
+	Wed, 19 Jun 2024 13:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804006; cv=none; b=tTwzauoGlN/ve4YdYUwUsMsK+Z0iRoYiJKZBpT8UcYDdCe2VN+Fn3Vu2lC5PCGQ2/yvoj9M/ovzMbgnZBGTQmr5Cly6SiuP+Luul5oBzcuzXFYN0kv3RqNi6nH2Sz5v8jTpK8BAjSTPIVscHBw5K++sgbWgA5y0wiZS9l/9rtTA=
+	t=1718803421; cv=none; b=SY5c8jBoAtxPGaIDqBLyYpf8ETL0YhvUga0U8iyLBY2OwrO4nWYeYelkIY9z6ZZXcxSRUrNDeoP8R3C/y8t3F0hXyZMRYSSJCz9+ZGTGqpxnMcQkI7AUop2+rBX9XWWgjm5Nx/poInt789WUQcHzDiv4dC9dUv9qlsCMkuPavgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804006; c=relaxed/simple;
-	bh=fiNppnqoqZcIHfs4bMCzXz4N5z+jANb1P7Aq3zZGGbs=;
+	s=arc-20240116; t=1718803421; c=relaxed/simple;
+	bh=DnGohI0V8CLDIJjlGXPfHIhl2xwAUdRhwFa99mHHSe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2cq731BMjMRy8C67VCw3e6WGONKqUtOzuG+IsIEY06+xSjQ4fEnnA196Un5RDTSjFuWAqohmOKrSWavkksROv7hSdZGPznr7RvPqv/r5Mbx2nAn+8dp1c+vq1cAwoe1uFwu0rr1pGb4EmHTgU4gatv6ZIxjNmWiVApBKTWt7GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=no/h7V2G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C8CFC2BBFC;
-	Wed, 19 Jun 2024 13:33:26 +0000 (UTC)
+	 MIME-Version; b=Q1wFHKtSdR+7LPo7G14J3N68XxKnMgarGXej2qQ/x1MmcBpnH88htpQNx+j+ViLpfIANBCuN/M7E43z9z3OhBIVZfH9xScRMV3RvCcSQUAuWqj9YMvTHX1pTiExNkRzY8FDHPsdEPY2aweT/54nzRgyIdmlii1Cgue9r2cSywG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lR9oHXzj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E73C2BBFC;
+	Wed, 19 Jun 2024 13:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804006;
-	bh=fiNppnqoqZcIHfs4bMCzXz4N5z+jANb1P7Aq3zZGGbs=;
+	s=korg; t=1718803421;
+	bh=DnGohI0V8CLDIJjlGXPfHIhl2xwAUdRhwFa99mHHSe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=no/h7V2GTpkhg/wBzUIDM98sR4ox+P/oqNfQWL9+TDNH9n2IEmQO0lsgVU7Y1/7Eq
-	 vp8a8F+n76UyML4BswZCeQcFmzhihT2IVIJo4aibw9SY+vGuNZURVm5LgVHytjQ2iv
-	 bpMCCUTNxWqPRM8QLHcg9qTvIvLNC5xwgQ2+CGks=
+	b=lR9oHXzjoSvO4qQd0ONOn2LzdHdU1h+LYA4C9hjK3puhV3jkyV/4PzB8vp3p/0IF7
+	 bNrzP79uRXfXgxnhhV4QX1XL3CBAMnMln2us0GBuZTbOaCJOuYg268m4I2mtuvsXyU
+	 xcEJYYIZTpaZorDhD78EIinftmFKbEoLv4MPoXcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 178/217] knfsd: LOOKUP can return an illegal error value
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.9 262/281] intel_th: pci: Add Granite Rapids SOC support
 Date: Wed, 19 Jun 2024 14:57:01 +0200
-Message-ID: <20240619125603.555130713@linuxfoundation.org>
+Message-ID: <20240619125620.060511564@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-commit e221c45da3770962418fb30c27d941bbc70d595a upstream.
+commit 854afe461b009801a171b3a49c5f75ea43e4c04c upstream.
 
-The 'NFS error' NFSERR_OPNOTSUPP is not described by any of the official
-NFS related RFCs, but appears to have snuck into some older .x files for
-NFSv2.
-Either way, it is not in RFC1094, RFC1813 or any of the NFSv4 RFCs, so
-should not be returned by the knfsd server, and particularly not by the
-"LOOKUP" operation.
+Add support for the Trace Hub in Granite Rapids SOC.
 
-Instead, let's return NFSERR_STALE, which is more appropriate if the
-filesystem encodes the filehandle as FILEID_INVALID.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-12-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsfh.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -569,7 +569,7 @@ fh_compose(struct svc_fh *fhp, struct sv
- 		_fh_update(fhp, exp, dentry);
- 	if (fhp->fh_handle.fh_fileid_type == FILEID_INVALID) {
- 		fh_put(fhp);
--		return nfserr_opnotsupp;
-+		return nfserr_stale;
- 	}
- 
- 	return 0;
-@@ -595,7 +595,7 @@ fh_update(struct svc_fh *fhp)
- 
- 	_fh_update(fhp, fhp->fh_export, dentry);
- 	if (fhp->fh_handle.fh_fileid_type == FILEID_INVALID)
--		return nfserr_opnotsupp;
-+		return nfserr_stale;
- 	return 0;
- out_bad:
- 	printk(KERN_ERR "fh_update: fh not verified!\n");
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -310,6 +310,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Granite Rapids SOC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x3256),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Alder Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
