@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-54357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67EF890EDD0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A3190ECAB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A6AB2882FD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 620701F21BBD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B331D14A4FC;
-	Wed, 19 Jun 2024 13:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C61146D54;
+	Wed, 19 Jun 2024 13:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLOx9sjx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptgw9NRV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708E1145FEF;
-	Wed, 19 Jun 2024 13:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8CA14389C;
+	Wed, 19 Jun 2024 13:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803341; cv=none; b=T53SIBnl7IUgQ0zLLTs5Vlhn37NlkOgNjQ6DowZHSd9oGSwjXAbqf4nsItixnJSgZmcNzQxRbAno/txA+gPf98xagGD7zKA5VrMmKVCdA61KMnp5yrlPRli3zxt5Fn+g90Wj+NUdnzsuY5Ppip8CzU4aGvjsxoqmGzoB5Di+Y6Y=
+	t=1718802573; cv=none; b=Owhjt4o2q3WK7aH8xB+8CoVp1s+qugSu9TyzMniJ+xzVRFmtih9kIKg1HnjP8bSfis+MR04LzzlWvHz9Q8TD0uM2/AmguddO1YdATc9k6mAWf6PF/R21pB0Kuyv8d1OSQjPqV2zKCal1WRdDzV1unmTItv0GS5VLvbbCBSFp54Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803341; c=relaxed/simple;
-	bh=ALDcpCO6qEE6oVjEFa2Q3IFMIJna1tz2YZ6tINBweqQ=;
+	s=arc-20240116; t=1718802573; c=relaxed/simple;
+	bh=WUy4inRCfvkQ5KUGTYVY7zcBbrLslhyD2Nuuocp7vyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r4dXVdCv/43UjuqF9y4kbnU3QkzgY4G5Ta7q6dzRr8LUon7T4glRnpNGpqSp07v9PKr+NkzGrL/YkHIT9AMLw7UbeSehM7mslWnH5H9tePI1u/eKvyTVk6frJTw6+VzfjQNAR9JWeP/KDU0RkFCdY7bJYV5t6hSnQZ56Iv5xAO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLOx9sjx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8875C2BBFC;
-	Wed, 19 Jun 2024 13:22:20 +0000 (UTC)
+	 MIME-Version; b=qLDqVUnP1yQme7beIf3xRL8Lm4ETnoQqrXIIr6yLfxAfrNl+tOM6VaMJ0wE/IHYueHFNJWlFXxT6vTIY4EMHkeyJxCNSvnNyXBkn0hyc8J3MXaFu7xZLFkbQEgLMc0EYlm231CrBK6EtYf8R333e4aGMGAQVPrE+N7zJh2a+FbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptgw9NRV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E353C4AF1A;
+	Wed, 19 Jun 2024 13:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803341;
-	bh=ALDcpCO6qEE6oVjEFa2Q3IFMIJna1tz2YZ6tINBweqQ=;
+	s=korg; t=1718802573;
+	bh=WUy4inRCfvkQ5KUGTYVY7zcBbrLslhyD2Nuuocp7vyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TLOx9sjxDhIRB6vSlGwkZ8lgKCbRn+p15xE0NZuRGT2c83snviKOGwfSJd2faagLR
-	 U5RapnC1Pxl9TAuSbGiGHoaPWEAUY3PMe9m9e7+APRr4wjS1TtZ3HbxJgRU8JtD616
-	 rzBwXNNCRtUMrN4hwrQ2yEQimIByGPtF5cd14O44=
+	b=ptgw9NRV9Mc6RJhzjpK246lXQWpmc5h23Yl+E/AdGTaEGG4tyx5ttMnPud4Wx+SwQ
+	 Vkomc2b6sJLjFL8ujsAhIO2OCm+hMDT2oI8KFEFZb7NJ9ksEraMPSyYEp9vdK1t/TF
+	 MusUnnlN8aZZaq17PBwqUrvxFN7R6IHia8NltNNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 6.9 234/281] vmci: prevent speculation leaks by sanitizing event in event_deliver()
+	Oleg Nesterov <oleg@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 242/267] tick/nohz_full: Dont abuse smp_call_function_single() in tick_setup_device()
 Date: Wed, 19 Jun 2024 14:56:33 +0200
-Message-ID: <20240619125618.965819385@linuxfoundation.org>
+Message-ID: <20240619125615.611673215@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +61,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 8003f00d895310d409b2bf9ef907c56b42a4e0f4 upstream.
+commit 07c54cc5988f19c9642fd463c2dbdac7fc52f777 upstream.
 
-Coverity spotted that event_msg is controlled by user-space,
-event_msg->event_data.event is passed to event_deliver() and used
-as an index without sanitization.
+After the recent commit 5097cbcb38e6 ("sched/isolation: Prevent boot crash
+when the boot CPU is nohz_full") the kernel no longer crashes, but there is
+another problem.
 
-This change ensures that the event index is sanitized to mitigate any
-possibility of speculative information leaks.
+In this case tick_setup_device() calls tick_take_do_timer_from_boot() to
+update tick_do_timer_cpu and this triggers the WARN_ON_ONCE(irqs_disabled)
+in smp_call_function_single().
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
+Kill tick_take_do_timer_from_boot() and just use WRITE_ONCE(), the new
+comment explains why this is safe (thanks Thomas!).
 
-Only compile tested, no access to HW.
-
-Fixes: 1d990201f9bb ("VMCI: event handling implementation.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Link: https://lore.kernel.org/stable/20231127193533.46174-1-hagarhem%40amazon.com
-Link: https://lore.kernel.org/r/20240430085916.4753-1-hagarhem@amazon.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full")
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240528122019.GA28794@redhat.com
+Link: https://lore.kernel.org/all/20240522151742.GA10400@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/vmw_vmci/vmci_event.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/time/tick-common.c |   42 ++++++++++++++----------------------------
+ 1 file changed, 14 insertions(+), 28 deletions(-)
 
---- a/drivers/misc/vmw_vmci/vmci_event.c
-+++ b/drivers/misc/vmw_vmci/vmci_event.c
-@@ -9,6 +9,7 @@
- #include <linux/vmw_vmci_api.h>
- #include <linux/list.h>
- #include <linux/module.h>
-+#include <linux/nospec.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/rculist.h>
-@@ -86,9 +87,12 @@ static void event_deliver(struct vmci_ev
- {
- 	struct vmci_subscription *cur;
- 	struct list_head *subscriber_list;
-+	u32 sanitized_event, max_vmci_event;
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -179,26 +179,6 @@ void tick_setup_periodic(struct clock_ev
+ 	}
+ }
  
- 	rcu_read_lock();
--	subscriber_list = &subscriber_array[event_msg->event_data.event];
-+	max_vmci_event = ARRAY_SIZE(subscriber_array);
-+	sanitized_event = array_index_nospec(event_msg->event_data.event, max_vmci_event);
-+	subscriber_list = &subscriber_array[sanitized_event];
- 	list_for_each_entry_rcu(cur, subscriber_list, node) {
- 		cur->callback(cur->id, &event_msg->event_data,
- 			      cur->callback_data);
+-#ifdef CONFIG_NO_HZ_FULL
+-static void giveup_do_timer(void *info)
+-{
+-	int cpu = *(unsigned int *)info;
+-
+-	WARN_ON(tick_do_timer_cpu != smp_processor_id());
+-
+-	tick_do_timer_cpu = cpu;
+-}
+-
+-static void tick_take_do_timer_from_boot(void)
+-{
+-	int cpu = smp_processor_id();
+-	int from = tick_do_timer_boot_cpu;
+-
+-	if (from >= 0 && from != cpu)
+-		smp_call_function_single(from, giveup_do_timer, &cpu, 1);
+-}
+-#endif
+-
+ /*
+  * Setup the tick device
+  */
+@@ -222,19 +202,25 @@ static void tick_setup_device(struct tic
+ 			tick_next_period = ktime_get();
+ #ifdef CONFIG_NO_HZ_FULL
+ 			/*
+-			 * The boot CPU may be nohz_full, in which case set
+-			 * tick_do_timer_boot_cpu so the first housekeeping
+-			 * secondary that comes up will take do_timer from
+-			 * us.
++			 * The boot CPU may be nohz_full, in which case the
++			 * first housekeeping secondary will take do_timer()
++			 * from it.
+ 			 */
+ 			if (tick_nohz_full_cpu(cpu))
+ 				tick_do_timer_boot_cpu = cpu;
+ 
+-		} else if (tick_do_timer_boot_cpu != -1 &&
+-						!tick_nohz_full_cpu(cpu)) {
+-			tick_take_do_timer_from_boot();
++		} else if (tick_do_timer_boot_cpu != -1 && !tick_nohz_full_cpu(cpu)) {
+ 			tick_do_timer_boot_cpu = -1;
+-			WARN_ON(tick_do_timer_cpu != cpu);
++			/*
++			 * The boot CPU will stay in periodic (NOHZ disabled)
++			 * mode until clocksource_done_booting() called after
++			 * smp_init() selects a high resolution clocksource and
++			 * timekeeping_notify() kicks the NOHZ stuff alive.
++			 *
++			 * So this WRITE_ONCE can only race with the READ_ONCE
++			 * check in tick_periodic() but this race is harmless.
++			 */
++			WRITE_ONCE(tick_do_timer_cpu, cpu);
+ #endif
+ 		}
+ 
 
 
 
