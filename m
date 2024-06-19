@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-53906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D1490EBBD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2E090ED01
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DD461C23FBD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4301C1F223CC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AFC143C43;
-	Wed, 19 Jun 2024 13:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B16143C4E;
+	Wed, 19 Jun 2024 13:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+fyFueK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULWNp7+h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3565A13DB90;
-	Wed, 19 Jun 2024 13:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7366514389C;
+	Wed, 19 Jun 2024 13:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802022; cv=none; b=R6el+4oldiKvwrpbKnUmp98h4GCSDgobDYuBAkmw5g/GeljUjVtMelQXpWQQC7H5r60WwIN9Vrxyd34YrcuC3W2hTg7mDdQ96fVQcnvmzPMOItcCjvHb8VSumgXEsr/ByP9Df3JVh0vGAWkvELoy6xRqC+el6uL2FDgqnbmxz1Y=
+	t=1718802789; cv=none; b=rEb3UBZOXVZVK3EehKg3FmmSRtXT+4lHKm4X1GvsnxZC5bLyg6pWQbXd9wBucnRMa5Q6Uq0QrBlXYqdAyKzsrG34Gm8aEhOgv/BNQdUrwQP91ROKkkQi2TPTyCeij+180/DoyI1ICgtkSlTGFo034+W0gczDJeBBewWg6s7nTRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802022; c=relaxed/simple;
-	bh=YBuf8o2pj8Fcobwo9z9qEG/yfhBRLMieUmEPQtJ4RtM=;
+	s=arc-20240116; t=1718802789; c=relaxed/simple;
+	bh=LM7TGkAYxc4HJCgHVFlX2/ZT1DEIyi0faIhACmj9SD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rD7mf6xnuMWO3ja1LK/0CKmNDbog6Sd57jWDLxJHc8Y1l4phngMMnG7NiGGvkZ18FcqxBfJet65QnY1y2Xx5f6vN2GPaXWU8MmPN9dXR/kChliHW+yVt4omCJRLiUDBiw4+UwW9uColADiIAhTAVaj97Xbse67p+Fn9DY2/X5GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+fyFueK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD861C32786;
-	Wed, 19 Jun 2024 13:00:21 +0000 (UTC)
+	 MIME-Version; b=TGvj30dd1OBodovRUxHlk+Tf9z2ise0barCNvHzd3KQhoio5JHS7YtTNBYvPErUNVAMqSsutP8lYuN7sEJmnH5oxwWf29cXxHVJwNUVzeW5odUo3yGjvCBYPFrh1rcanA7IEVBzhBMnYBK7oCPhRpC19c9WteC7GjOa65oR6n2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULWNp7+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED505C2BBFC;
+	Wed, 19 Jun 2024 13:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802022;
-	bh=YBuf8o2pj8Fcobwo9z9qEG/yfhBRLMieUmEPQtJ4RtM=;
+	s=korg; t=1718802789;
+	bh=LM7TGkAYxc4HJCgHVFlX2/ZT1DEIyi0faIhACmj9SD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+fyFueK1nMPIU/+Kg5BeVaKAOqTHIZrFZ/mHZmKzAlbkqYwiegZbbJwvRk3FpThr
-	 lTZrJgHoAi7lLp2EvvLK+zTj5quZSArLHrhFwvZu8QrtIakMbw8c83qMzs0CtOtClD
-	 7bJbC8zkoO/uHP1ZMWcgV2lZbQjPxQWraTrbolho=
+	b=ULWNp7+h2k/1F/3bukl7B20Me2xwqzu/W4srj8YPUw0xiZgtxe2aSBkRGgJoozq/Y
+	 M4jW7YQ8rwuZzGdFnYK7OKC1zhA1YjGiqIw1VveVxRicMa7fLJazoRN8j2gZkwCKP/
+	 n4JGUnu36wwW3rabATNLKjAt3ZFYvwGy0jlqUy/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/267] RISC-V: KVM: No need to use mask when hart-index-bit is 0
+Subject: [PATCH 6.9 006/281] wifi: mac80211: mesh: Fix leak of mesh_preq_queue objects
 Date: Wed, 19 Jun 2024 14:52:45 +0200
-Message-ID: <20240619125606.901893949@linuxfoundation.org>
+Message-ID: <20240619125610.089298705@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit 2d707b4e37f9b0c37b8b2392f91b04c5b63ea538 ]
+[ Upstream commit b7d7f11a291830fdf69d3301075dd0fb347ced84 ]
 
-When the maximum hart number within groups is 1, hart-index-bit is set to
-0. Consequently, there is no need to restore the hart ID from IMSIC
-addresses and hart-index-bit settings. Currently, QEMU and kvmtool do not
-pass correct hart-index-bit values when the maximum hart number is a
-power of 2, thereby avoiding this issue. Corresponding patches for QEMU
-and kvmtool will also be dispatched.
+The hwmp code use objects of type mesh_preq_queue, added to a list in
+ieee80211_if_mesh, to keep track of mpath we need to resolve. If the mpath
+gets deleted, ex mesh interface is removed, the entries in that list will
+never get cleaned. Fix this by flushing all corresponding items of the
+preq_queue in mesh_path_flush_pending().
 
-Fixes: 89d01306e34d ("RISC-V: KVM: Implement device interface for AIA irqchip")
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Link: https://lore.kernel.org/r/20240415064905.25184-1-yongxuan.wang@sifive.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
+This should take care of KASAN reports like this:
+
+unreferenced object 0xffff00000668d800 (size 128):
+  comm "kworker/u8:4", pid 67, jiffies 4295419552 (age 1836.444s)
+  hex dump (first 32 bytes):
+    00 1f 05 09 00 00 ff ff 00 d5 68 06 00 00 ff ff  ..........h.....
+    8e 97 ea eb 3e b8 01 00 00 00 00 00 00 00 00 00  ....>...........
+  backtrace:
+    [<000000007302a0b6>] __kmem_cache_alloc_node+0x1e0/0x35c
+    [<00000000049bd418>] kmalloc_trace+0x34/0x80
+    [<0000000000d792bb>] mesh_queue_preq+0x44/0x2a8
+    [<00000000c99c3696>] mesh_nexthop_resolve+0x198/0x19c
+    [<00000000926bf598>] ieee80211_xmit+0x1d0/0x1f4
+    [<00000000fc8c2284>] __ieee80211_subif_start_xmit+0x30c/0x764
+    [<000000005926ee38>] ieee80211_subif_start_xmit+0x9c/0x7a4
+    [<000000004c86e916>] dev_hard_start_xmit+0x174/0x440
+    [<0000000023495647>] __dev_queue_xmit+0xe24/0x111c
+    [<00000000cfe9ca78>] batadv_send_skb_packet+0x180/0x1e4
+    [<000000007bacc5d5>] batadv_v_elp_periodic_work+0x2f4/0x508
+    [<00000000adc3cd94>] process_one_work+0x4b8/0xa1c
+    [<00000000b36425d1>] worker_thread+0x9c/0x634
+    [<0000000005852dd5>] kthread+0x1bc/0x1c4
+    [<000000005fccd770>] ret_from_fork+0x10/0x20
+unreferenced object 0xffff000009051f00 (size 128):
+  comm "kworker/u8:4", pid 67, jiffies 4295419553 (age 1836.440s)
+  hex dump (first 32 bytes):
+    90 d6 92 0d 00 00 ff ff 00 d8 68 06 00 00 ff ff  ..........h.....
+    36 27 92 e4 02 e0 01 00 00 58 79 06 00 00 ff ff  6'.......Xy.....
+  backtrace:
+    [<000000007302a0b6>] __kmem_cache_alloc_node+0x1e0/0x35c
+    [<00000000049bd418>] kmalloc_trace+0x34/0x80
+    [<0000000000d792bb>] mesh_queue_preq+0x44/0x2a8
+    [<00000000c99c3696>] mesh_nexthop_resolve+0x198/0x19c
+    [<00000000926bf598>] ieee80211_xmit+0x1d0/0x1f4
+    [<00000000fc8c2284>] __ieee80211_subif_start_xmit+0x30c/0x764
+    [<000000005926ee38>] ieee80211_subif_start_xmit+0x9c/0x7a4
+    [<000000004c86e916>] dev_hard_start_xmit+0x174/0x440
+    [<0000000023495647>] __dev_queue_xmit+0xe24/0x111c
+    [<00000000cfe9ca78>] batadv_send_skb_packet+0x180/0x1e4
+    [<000000007bacc5d5>] batadv_v_elp_periodic_work+0x2f4/0x508
+    [<00000000adc3cd94>] process_one_work+0x4b8/0xa1c
+    [<00000000b36425d1>] worker_thread+0x9c/0x634
+    [<0000000005852dd5>] kthread+0x1bc/0x1c4
+    [<000000005fccd770>] ret_from_fork+0x10/0x20
+
+Fixes: 050ac52cbe1f ("mac80211: code for on-demand Hybrid Wireless Mesh Protocol")
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Link: https://msgid.link/20240528142605.1060566-1-nico.escande@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kvm/aia_device.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/mac80211/mesh_pathtbl.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
-index 0eb689351b7d0..5cd407c6a8e4f 100644
---- a/arch/riscv/kvm/aia_device.c
-+++ b/arch/riscv/kvm/aia_device.c
-@@ -237,10 +237,11 @@ static gpa_t aia_imsic_ppn(struct kvm_aia *aia, gpa_t addr)
- 
- static u32 aia_imsic_hart_index(struct kvm_aia *aia, gpa_t addr)
+diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
+index a6b62169f0848..c0a5c75cddcb9 100644
+--- a/net/mac80211/mesh_pathtbl.c
++++ b/net/mac80211/mesh_pathtbl.c
+@@ -1017,10 +1017,23 @@ void mesh_path_discard_frame(struct ieee80211_sub_if_data *sdata,
+  */
+ void mesh_path_flush_pending(struct mesh_path *mpath)
  {
--	u32 hart, group = 0;
-+	u32 hart = 0, group = 0;
++	struct ieee80211_sub_if_data *sdata = mpath->sdata;
++	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
++	struct mesh_preq_queue *preq, *tmp;
+ 	struct sk_buff *skb;
  
--	hart = (addr >> (aia->nr_guest_bits + IMSIC_MMIO_PAGE_SHIFT)) &
--		GENMASK_ULL(aia->nr_hart_bits - 1, 0);
-+	if (aia->nr_hart_bits)
-+		hart = (addr >> (aia->nr_guest_bits + IMSIC_MMIO_PAGE_SHIFT)) &
-+		       GENMASK_ULL(aia->nr_hart_bits - 1, 0);
- 	if (aia->nr_group_bits)
- 		group = (addr >> aia->nr_group_shift) &
- 			GENMASK_ULL(aia->nr_group_bits - 1, 0);
+ 	while ((skb = skb_dequeue(&mpath->frame_queue)) != NULL)
+ 		mesh_path_discard_frame(mpath->sdata, skb);
++
++	spin_lock_bh(&ifmsh->mesh_preq_queue_lock);
++	list_for_each_entry_safe(preq, tmp, &ifmsh->preq_queue.list, list) {
++		if (ether_addr_equal(mpath->dst, preq->dst)) {
++			list_del(&preq->list);
++			kfree(preq);
++			--ifmsh->preq_queue_len;
++		}
++	}
++	spin_unlock_bh(&ifmsh->mesh_preq_queue_lock);
+ }
+ 
+ /**
 -- 
 2.43.0
 
