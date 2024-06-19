@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1402A90EE15
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C3490ED3D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7433288FA3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA4AA1C212C7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CC814532C;
-	Wed, 19 Jun 2024 13:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D9512FB27;
+	Wed, 19 Jun 2024 13:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekGhEn2K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcWpBj1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B922A143757;
-	Wed, 19 Jun 2024 13:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B2EAD58;
+	Wed, 19 Jun 2024 13:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803524; cv=none; b=WcjL3ZmKCd+9IspCKYavOfdDNpLdplL3ze8T5ZuuC0+e2IrBOgZ+M4cxYvcLuC6X36rna/gx83UgiF2qZ3MVCLMuVoUnNMozto9biGqJGDQxk+8mJdj3OUe7Z6a46DkxyZDXU1zMnOiRNwlQZ2KSNMTZRA/o4JRecANu5A3B5uY=
+	t=1718802942; cv=none; b=XYbT/vQWt9lA9aMiLyibrXBnZbaCQ1LRnwqfEJqHVIZzEXw3SnPLZJoygHBWf6XdG3TnEaKGzzKJvDRHcD1jrZAbYztnU40qEgCmfh6gK+jIy+wbOYL4YeBeUiykaAXUWx9Gw04Q5gc9jTJuu8puMVSGaqWcZvLIvTna1qQK9BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803524; c=relaxed/simple;
-	bh=CdGGbyfj7ywybLuyg5WGmZDfZXewO3rYrSo/FbEYyQU=;
+	s=arc-20240116; t=1718802942; c=relaxed/simple;
+	bh=Ukcb7h6ZgrmuUUOQcx1M+6rUjqDRy70R5DJpH22pBeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TiwzNgQ6kCC9tHxs+Rbhqi5vyrK9pm/bpSD4SQATiuDgsSj47JmFDXQKrVIciqAeUcKJTfQ4gsQBfylHO8oC11U8jMWNBz7JvmhZsY/5aI0BJF5UHCgByCmeYFmDH5Pxeo4V7QUFM4n1irUUREVLr0HlzFMG7DfMEAW9RacBYSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekGhEn2K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2ACC2BBFC;
-	Wed, 19 Jun 2024 13:25:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SksIPe3/eyXoFSlGTD+VH6n20BWMPZMJRjgnLKrTB1XBkGdzBkuZUEA+DkoG4+dFJdy5y0Yvq7JTNG2LsAbHVZeDGLOvFoxL0fjUsjr6h7eZq15UmtC23GFASZ4XKzIjy4hbaVepEiHmzy16nOnOxjyRRgPaSOtuRukWMh32Xpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcWpBj1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58648C2BBFC;
+	Wed, 19 Jun 2024 13:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803524;
-	bh=CdGGbyfj7ywybLuyg5WGmZDfZXewO3rYrSo/FbEYyQU=;
+	s=korg; t=1718802942;
+	bh=Ukcb7h6ZgrmuUUOQcx1M+6rUjqDRy70R5DJpH22pBeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekGhEn2KDO66N7oPVpxuoiDn9pRTYyzVQ78sWglZmks2UfxQzYvS/ZyZPnmsB8OUE
-	 yJW9naAqUK0fhgnvtx5bDnmFPXmSBx0RacmUayVP9g4kI6nOj0uRKUCil8bEOVzgPP
-	 6qMOnFHV9bHoslu79qJ9uE07oL7WAIcNxS7d1Ymo=
+	b=hcWpBj1uv5w9jV3J4qYRX4VFoICEJkCQt536Qk0n7zkWSUrlHfhUFhut/ROiJ9qOU
+	 XQY/+7X020lG2MuPozAjvmqewj09ET/pgbhwYKEin0bdT1AWSoRLxNx6jFcupMy1Bu
+	 2FNhS1ZIrtIwcQLykxU7fQikTkng9/+jW3F7arM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 015/217] ipv6: ioam: block BH from ioam6_output()
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.9 099/281] ata: libata-scsi: Set the RMB bit only for removable media devices
 Date: Wed, 19 Jun 2024 14:54:18 +0200
-Message-ID: <20240619125557.228382303@linuxfoundation.org>
+Message-ID: <20240619125613.660267796@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 2fe40483ec257de2a0d819ef88e3e76c7e261319 ]
+commit a6a75edc8669a4f030546c7390808ef0cc034742 upstream.
 
-As explained in commit 1378817486d6 ("tipc: block BH
-before using dst_cache"), net/core/dst_cache.c
-helpers need to be called with BH disabled.
+The SCSI Removable Media Bit (RMB) should only be set for removable media,
+where the device stays and the media changes, e.g. CD-ROM or floppy.
 
-Disabling preemption in ioam6_output() is not good enough,
-because ioam6_output() is called from process context,
-lwtunnel_output() only uses rcu_read_lock().
+The ATA removable media device bit is obsoleted since ATA-8 ACS (2006),
+but before that it was used to indicate that the device can have its media
+removed (while the device stays).
 
-We might be interrupted by a softirq, re-enter ioam6_output()
-and corrupt dst_cache data structures.
+Commit 8a3e33cf92c7 ("ata: ahci: find eSATA ports and flag them as
+removable") introduced a change to set the RMB bit if the port has either
+the eSATA bit or the hot-plug capable bit set. The reasoning was that the
+author wanted his eSATA ports to get treated like a USB stick.
 
-Fix the race by using local_bh_disable() instead of
-preempt_disable().
+This is however wrong. See "20-082r23SPC-6: Removable Medium Bit
+Expectations" which has since been integrated to SPC, which states that:
 
-Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Justin Iurman <justin.iurman@uliege.be>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240531132636.2637995-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+"""
+Reports have been received that some USB Memory Stick device servers set
+the removable medium (RMB) bit to one. The rub comes when the medium is
+actually removed, because... The device server is removed concurrently
+with the medium removal. If there is no device server, then there is no
+device server that is waiting to have removable medium inserted.
+
+Sufficient numbers of SCSI analysts see such a device:
+- not as a device that supports removable medium;
+but
+- as a removable, hot pluggable device.
+"""
+
+The definition of the RMB bit in the SPC specification has since been
+clarified to match this.
+
+Thus, a USB stick should not have the RMB bit set (and neither shall an
+eSATA nor a hot-plug capable port).
+
+Commit dc8b4afc4a04 ("ata: ahci: don't mark HotPlugCapable Ports as
+external/removable") then changed so that the RMB bit is only set for the
+eSATA bit (and not for the hot-plug capable bit), because of a lot of bug
+reports of SATA devices were being automounted by udisks. However,
+treating eSATA and hot-plug capable ports differently is not correct.
+
+>From the AHCI 1.3.1 spec:
+Hot Plug Capable Port (HPCP): When set to '1', indicates that this port's
+signal and power connectors are externally accessible via a joint signal
+and power connector for blindmate device hot plug.
+
+So a hot-plug capable port is an external port, just like commit
+45b96d65ec68 ("ata: ahci: a hotplug capable port is an external port")
+claims.
+
+In order to not violate the SPC specification, modify the SCSI INQUIRY
+data to only set the RMB bit if the ATA device can have its media removed.
+
+This fixes a reported problem where GNOME/udisks was automounting devices
+connected to hot-plug capable ports.
+
+Fixes: 45b96d65ec68 ("ata: ahci: a hotplug capable port is an external port")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Tested-by: Thomas Weißschuh <linux@weissschuh.net>
+Reported-by: Thomas Weißschuh <linux@weissschuh.net>
+Closes: https://lore.kernel.org/linux-ide/c0de8262-dc4b-4c22-9fac-33432e5bddd3@t-8ch.de/
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+[cassel: wrote commit message]
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ioam6_iptunnel.c | 8 ++++----
+ drivers/ata/libata-scsi.c |    8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
-index f6f5b83dd954d..a5cfc5b0b206b 100644
---- a/net/ipv6/ioam6_iptunnel.c
-+++ b/net/ipv6/ioam6_iptunnel.c
-@@ -351,9 +351,9 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		goto drop;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1828,11 +1828,11 @@ static unsigned int ata_scsiop_inq_std(s
+ 		2
+ 	};
  
- 	if (!ipv6_addr_equal(&orig_daddr, &ipv6_hdr(skb)->daddr)) {
--		preempt_disable();
-+		local_bh_disable();
- 		dst = dst_cache_get(&ilwt->cache);
--		preempt_enable();
-+		local_bh_enable();
+-	/* set scsi removable (RMB) bit per ata bit, or if the
+-	 * AHCI port says it's external (Hotplug-capable, eSATA).
++	/*
++	 * Set the SCSI Removable Media Bit (RMB) if the ATA removable media
++	 * device bit (obsolete since ATA-8 ACS) is set.
+ 	 */
+-	if (ata_id_removable(args->id) ||
+-	    (args->dev->link->ap->pflags & ATA_PFLAG_EXTERNAL))
++	if (ata_id_removable(args->id))
+ 		hdr[1] |= (1 << 7);
  
- 		if (unlikely(!dst)) {
- 			struct ipv6hdr *hdr = ipv6_hdr(skb);
-@@ -373,9 +373,9 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 				goto drop;
- 			}
- 
--			preempt_disable();
-+			local_bh_disable();
- 			dst_cache_set_ip6(&ilwt->cache, dst, &fl6.saddr);
--			preempt_enable();
-+			local_bh_enable();
- 		}
- 
- 		skb_dst_drop(skb);
--- 
-2.43.0
-
+ 	if (args->dev->class == ATA_DEV_ZAC) {
 
 
 
