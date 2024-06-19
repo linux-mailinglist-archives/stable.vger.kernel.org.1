@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3806E90EEAD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:31:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CFC90EC8E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B88A287082
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA3691F21670
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148121E492;
-	Wed, 19 Jun 2024 13:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C02143C58;
+	Wed, 19 Jun 2024 13:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSSOjNGL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZY23MWv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C365713D8BF;
-	Wed, 19 Jun 2024 13:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B6012FB31;
+	Wed, 19 Jun 2024 13:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803854; cv=none; b=clTypieU6t3PKlKaJ+3J5I0xM6+iYStIqIKF3NNwl8Pm3cOFRvu89oYhPVeOrffalPX+BjrOzXZiFXZPL7j83cSFnCAKgTLS4+ECWlNAbtiGG/uEmyJv86kynLwp0xQP02dLpkm4BvgjlWGNIUZVkbgQm3dgyx8H7ArkWxU7flY=
+	t=1718802523; cv=none; b=EDAh4a0ThtPUcRHxzbU36CIZJy2SCnOuR3QoBlB+0p/L3cy8GWdy4k7uz/u1aAkJObYcnWBYSoiXpBU3A5YdOCBI1tjlNRqEdyu8GguTFJdMSj4ETCvxYiJX5iWZ42Sp7ONfgQ73f8YAfpfV02liPdU/3jnLDd2dyMqIPtLb/UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803854; c=relaxed/simple;
-	bh=PXpMJV1i65w/6WQaRwApB6LrLFYIYqs9nuPN9DMU03U=;
+	s=arc-20240116; t=1718802523; c=relaxed/simple;
+	bh=NY4vP88neayLIV3RLIpCxSWoaMqmB8d/LLyigu3sBEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mR9UWjvbOBqEW+yWC4ljRtEk3H4exZ1FJFcFd+ZIasDczcJW+5x6rMbmxvDtJ4bFtK8mXQrHzINOlABvRa9T0grIoEAbeYgaunVAc0sCbVB8oRmxii8fBUjg/lr1Zm1MriWuf6usZDCnhErdjynazwrt0UjFPLVvrrE90IPkjME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSSOjNGL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F88C2BBFC;
-	Wed, 19 Jun 2024 13:30:54 +0000 (UTC)
+	 MIME-Version; b=XT/as/YU5bKJKGDAU/Bk48uVFsogqDraTQdxscbfITQLTqitAQd7Ayk/UpMXFb/p1TMSZekN8h7x8xTXpWF2PqrqK4kQkjn/vfbLEYDsMOTMC7iPTgKiqShmPQYqSWu9tEHMwncDGLCSRpHZapOwLC+tnm1vnGwX0s5SE7lQ4y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZY23MWv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A08AC2BBFC;
+	Wed, 19 Jun 2024 13:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803854;
-	bh=PXpMJV1i65w/6WQaRwApB6LrLFYIYqs9nuPN9DMU03U=;
+	s=korg; t=1718802523;
+	bh=NY4vP88neayLIV3RLIpCxSWoaMqmB8d/LLyigu3sBEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nSSOjNGLWK51S65mHfZovNrRkITbV5KhjN4gvbehLGqAbIYHpfEPhWar5XeO5s9kh
-	 qcSiThmpf3v00v4n0raBqr0+NVRkmI2NR9lA9GJO25CrdjsxNlWskFFWWpVWlSRXeB
-	 ANn3Dsti1CkwYnh4Liz9JCyH6tBXhl+7XAsGP+OM=
+	b=JZY23MWvc5adUOn1ivxuBoBXLHxqk3GDKMEpZ3/Q4OhWWbYwag3FWvKBsOOiCa3X3
+	 tvPsjVVzXNG2tnlZZF1jcuebXHrfQe2IIZziuyVo/Vvuvss5XyGa/mOR65bGbfpGL9
+	 RpYvIyq8h+U1mxo/27BLLCqJE5UDN5f5T4N1irG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/217] gpio: tqmx86: introduce shadow register for GPIO output value
+	Imre Deak <imre.deak@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 218/267] drm/i915: Fix audio component initialization
 Date: Wed, 19 Jun 2024 14:56:09 +0200
-Message-ID: <20240619125601.551177671@linuxfoundation.org>
+Message-ID: <20240619125614.693902728@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +61,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 9d6a811b522ba558bcb4ec01d12e72a0af8e9f6e ]
+commit 75800e2e4203ea83bbc9d4f63ad97ea582244a08 upstream.
 
-The TQMx86 GPIO controller uses the same register address for input and
-output data. Reading the register will always return current inputs
-rather than the previously set outputs (regardless of the current
-direction setting). Therefore, using a RMW pattern does not make sense
-when setting output values. Instead, the previously set output register
-value needs to be stored as a shadow register.
+After registering the audio component in i915_audio_component_init()
+the audio driver may call i915_audio_component_get_power() via the
+component ops. This could program AUD_FREQ_CNTRL with an uninitialized
+value if the latter function is called before display.audio.freq_cntrl
+gets initialized. The get_power() function also does a modeset which in
+the above case happens too early before the initialization step and
+triggers the
 
-As there is no reliable way to get the current output values from the
-hardware, also initialize all channels to 0, to ensure that stored and
-actual output values match. This should usually not have any effect in
-practise, as the TQMx86 UEFI sets all outputs to 0 during boot.
+"Reject display access from task"
 
-Also prepare for extension of the driver to more than 8 GPIOs by using
-DECLARE_BITMAP.
+error message added by the Fixes: commit below.
 
-Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/d0555933becd45fa92a85675d26e4d59343ddc01.1717063994.git.matthias.schiffer@ew.tq-group.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the above issue by registering the audio component only after the
+initialization step.
+
+Fixes: 87c1694533c9 ("drm/i915: save AUD_FREQ_CNTRL state at audio domain suspend")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10291
+Cc: stable@vger.kernel.org # v5.5+
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240521143022.3784539-1-imre.deak@intel.com
+(cherry picked from commit fdd0b80172758ce284f19fa8a26d90c61e4371d2)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-tqmx86.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/display/intel_audio.c          |   32 +++++++++++++-------
+ drivers/gpu/drm/i915/display/intel_audio.h          |    1 
+ drivers/gpu/drm/i915/display/intel_display_driver.c |    2 +
+ 3 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpio/gpio-tqmx86.c b/drivers/gpio/gpio-tqmx86.c
-index f0a2cf4b06796..da689b5b3fad2 100644
---- a/drivers/gpio/gpio-tqmx86.c
-+++ b/drivers/gpio/gpio-tqmx86.c
-@@ -6,6 +6,7 @@
-  *   Vadim V.Vlasov <vvlasov@dev.rtsoft.ru>
-  */
- 
-+#include <linux/bitmap.h>
- #include <linux/bitops.h>
- #include <linux/errno.h>
- #include <linux/gpio/driver.h>
-@@ -38,6 +39,7 @@ struct tqmx86_gpio_data {
- 	void __iomem		*io_base;
- 	int			irq;
- 	raw_spinlock_t		spinlock;
-+	DECLARE_BITMAP(output, TQMX86_NGPIO);
- 	u8			irq_type[TQMX86_NGPI];
- };
- 
-@@ -64,15 +66,10 @@ static void tqmx86_gpio_set(struct gpio_chip *chip, unsigned int offset,
+--- a/drivers/gpu/drm/i915/display/intel_audio.c
++++ b/drivers/gpu/drm/i915/display/intel_audio.c
+@@ -1251,17 +1251,6 @@ static const struct component_ops i915_a
+ static void i915_audio_component_init(struct drm_i915_private *i915)
  {
- 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(chip);
- 	unsigned long flags;
--	u8 val;
+ 	u32 aud_freq, aud_freq_init;
+-	int ret;
+-
+-	ret = component_add_typed(i915->drm.dev,
+-				  &i915_audio_component_bind_ops,
+-				  I915_COMPONENT_AUDIO);
+-	if (ret < 0) {
+-		drm_err(&i915->drm,
+-			"failed to add audio component (%d)\n", ret);
+-		/* continue with reduced functionality */
+-		return;
+-	}
  
- 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
--	val = tqmx86_gpio_read(gpio, TQMX86_GPIOD);
--	if (value)
--		val |= BIT(offset);
--	else
--		val &= ~BIT(offset);
--	tqmx86_gpio_write(gpio, val, TQMX86_GPIOD);
-+	__assign_bit(offset, gpio->output, value);
-+	tqmx86_gpio_write(gpio, bitmap_get_value8(gpio->output, 0), TQMX86_GPIOD);
- 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
+ 	if (DISPLAY_VER(i915) >= 9) {
+ 		aud_freq_init = intel_de_read(i915, AUD_FREQ_CNTRL);
+@@ -1284,6 +1273,21 @@ static void i915_audio_component_init(st
+ 
+ 	/* init with current cdclk */
+ 	intel_audio_cdclk_change_post(i915);
++}
++
++static void i915_audio_component_register(struct drm_i915_private *i915)
++{
++	int ret;
++
++	ret = component_add_typed(i915->drm.dev,
++				  &i915_audio_component_bind_ops,
++				  I915_COMPONENT_AUDIO);
++	if (ret < 0) {
++		drm_err(&i915->drm,
++			"failed to add audio component (%d)\n", ret);
++		/* continue with reduced functionality */
++		return;
++	}
+ 
+ 	i915->display.audio.component_registered = true;
+ }
+@@ -1316,6 +1320,12 @@ void intel_audio_init(struct drm_i915_pr
+ 		i915_audio_component_init(i915);
  }
  
-@@ -259,6 +256,13 @@ static int tqmx86_gpio_probe(struct platform_device *pdev)
- 
- 	tqmx86_gpio_write(gpio, (u8)~TQMX86_DIR_INPUT_MASK, TQMX86_GPIODD);
- 
-+	/*
-+	 * Reading the previous output state is not possible with TQMx86 hardware.
-+	 * Initialize all outputs to 0 to have a defined state that matches the
-+	 * shadow register.
-+	 */
-+	tqmx86_gpio_write(gpio, 0, TQMX86_GPIOD);
++void intel_audio_register(struct drm_i915_private *i915)
++{
++	if (!i915->display.audio.lpe.platdev)
++		i915_audio_component_register(i915);
++}
 +
- 	chip = &gpio->chip;
- 	chip->label = "gpio-tqmx86";
- 	chip->owner = THIS_MODULE;
--- 
-2.43.0
-
+ /**
+  * intel_audio_deinit() - deinitialize the audio driver
+  * @i915: the i915 drm device private data
+--- a/drivers/gpu/drm/i915/display/intel_audio.h
++++ b/drivers/gpu/drm/i915/display/intel_audio.h
+@@ -28,6 +28,7 @@ void intel_audio_codec_get_config(struct
+ void intel_audio_cdclk_change_pre(struct drm_i915_private *dev_priv);
+ void intel_audio_cdclk_change_post(struct drm_i915_private *dev_priv);
+ void intel_audio_init(struct drm_i915_private *dev_priv);
++void intel_audio_register(struct drm_i915_private *i915);
+ void intel_audio_deinit(struct drm_i915_private *dev_priv);
+ void intel_audio_sdp_split_update(struct intel_encoder *encoder,
+ 				  const struct intel_crtc_state *crtc_state);
+--- a/drivers/gpu/drm/i915/display/intel_display_driver.c
++++ b/drivers/gpu/drm/i915/display/intel_display_driver.c
+@@ -386,6 +386,8 @@ void intel_display_driver_register(struc
+ 
+ 	intel_audio_init(i915);
+ 
++	intel_audio_register(i915);
++
+ 	intel_display_debugfs_register(i915);
+ 
+ 	/*
 
 
 
