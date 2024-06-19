@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF67B90EE75
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 942F690ED83
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A10C2895E4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5345B24244
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6AA14A4FC;
-	Wed, 19 Jun 2024 13:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95F6144D3E;
+	Wed, 19 Jun 2024 13:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drHByhz2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmkZhehL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7973B13E409;
-	Wed, 19 Jun 2024 13:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6F482495;
+	Wed, 19 Jun 2024 13:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803722; cv=none; b=hm8X99MmzEbT8jw3IIFaMxp+NPGiWISqIpMuT5EEPx39dBxWZS1wyUc2tIXqSefocoUEOpJr7ZSqObl3szatu4hCkRZ/4Bn8ZU56rYV2AeROVlUN7FEtdq1bqXuS+cY5xn+22Q5O2Fh6/AIGTxUL4rUnB3SiS8QuuJyEvpeCYpw=
+	t=1718803140; cv=none; b=j/1WSnpzkG53x+wZGz8Is357YvJ/vztJsfrHUXEClZK/J6sJm/frhF5Y2u9RVveMvavm/RtVSstxf5r/DJnZFF7r6Z2lTxR2SmvL/GiM9ETHFhRVxumO5kE9rqkAH7Wi7zW0AtrUCfrFitCZIGaPvIvsG+6w1a/Vd6rCO9AH5T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803722; c=relaxed/simple;
-	bh=iscAh1QAHxBDp5j8ntvNdlb/nXmWrxm9PeClmDgT27c=;
+	s=arc-20240116; t=1718803140; c=relaxed/simple;
+	bh=1BTSDaMLFj1FxRdMl38a2/+O0gWmyHiCzkRC4u0vC90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Br2KJibPjeLwMdW7N2xfFv0LbIsRLPN2unD71DXpkW7XZnhoPz+BOsgiJjC3t1Gr828CRLqIf0N1S+spi7q0Bi7FopKwEMp3gxe2DLJWQwJBPZTOL/E9ji0CSdRwlME0fvlBk9PQyVwldsdzo/5aS2aLX6Pmi99nrrvwFFyhnN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drHByhz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99CBC2BBFC;
-	Wed, 19 Jun 2024 13:28:41 +0000 (UTC)
+	 MIME-Version; b=p4Hn+BiEg794Q6QYyRvK5HypqqcHzyw/TWF2ryhLWvIW81yt1qE2iXCykEZrtcZjC8PZMKSMibWABxef4lTrB8Sgn0+oWW1OJLtwKENw7WzyjeelYCEmyHGGHdCeJKw8ySPG+gZWYWcA5wnQJvTBpY38ugtJY1Ox7I+9kpPbgaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmkZhehL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20550C2BBFC;
+	Wed, 19 Jun 2024 13:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803722;
-	bh=iscAh1QAHxBDp5j8ntvNdlb/nXmWrxm9PeClmDgT27c=;
+	s=korg; t=1718803140;
+	bh=1BTSDaMLFj1FxRdMl38a2/+O0gWmyHiCzkRC4u0vC90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=drHByhz2P0E1eAk6h1RFHhVxUKgkIZ8H76qTTuZ8DX6NVbiPmjs+L0iCK6I5u72pZ
-	 X3NnYIOIpQUmTz6vYzsb/54W0Z7Fu3MygdQ3+k0v5x9pkK7jBmrouotoKF5Z2Vynx9
-	 j3PU9utR4jlF6p/GF7uwEZR2eKg7QGIOnVczuTGg=
+	b=GmkZhehLAT9qSJ6N2UPbqFN0SJFaTE18M48sjkrbFkCbT0GLAXrPcLjzMSTXb7dZc
+	 4a/dTMw/HqFKaeCpUxowwe2KHaEYvOIQBQ1bjqnSDFS+JyuaXVuUBohjdWtDw3gRw5
+	 V9vcc+4ZY8YmM2E0cqtcb98bpnkx6qfBABJ1KW50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Lion Ackermann <nnamrec@gmail.com>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/217] nilfs2: return the mapped address from nilfs_get_page()
+Subject: [PATCH 6.9 166/281] netfilter: ipset: Fix race between namespace cleanup and gc in the list:set type
 Date: Wed, 19 Jun 2024 14:55:25 +0200
-Message-ID: <20240619125559.852413477@linuxfoundation.org>
+Message-ID: <20240619125616.225392460@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,148 +63,290 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
 
-[ Upstream commit 09a46acb3697e50548bb265afa1d79163659dd85 ]
+[ Upstream commit 4e7aaa6b82d63e8ddcbfb56b4fd3d014ca586f10 ]
 
-In prepartion for switching from kmap() to kmap_local(), return the kmap
-address from nilfs_get_page() instead of having the caller look up
-page_address().
+Lion Ackermann reported that there is a race condition between namespace cleanup
+in ipset and the garbage collection of the list:set type. The namespace
+cleanup can destroy the list:set type of sets while the gc of the set type is
+waiting to run in rcu cleanup. The latter uses data from the destroyed set which
+thus leads use after free. The patch contains the following parts:
 
-[konishi.ryusuke: fixed a missing blank line after declaration]
-Link: https://lkml.kernel.org/r/20231127143036.2425-7-konishi.ryusuke@gmail.com
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 7373a51e7998 ("nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors")
+- When destroying all sets, first remove the garbage collectors, then wait
+  if needed and then destroy the sets.
+- Fix the badly ordered "wait then remove gc" for the destroy a single set
+  case.
+- Fix the missing rcu locking in the list:set type in the userspace test
+  case.
+- Use proper RCU list handlings in the list:set type.
+
+The patch depends on c1193d9bbbd3 (netfilter: ipset: Add list flush to cancel_gc).
+
+Fixes: 97f7cf1cd80e (netfilter: ipset: fix performance regression in swap operation)
+Reported-by: Lion Ackermann <nnamrec@gmail.com>
+Tested-by: Lion Ackermann <nnamrec@gmail.com>
+Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c | 57 +++++++++++++++++++++++--------------------------
- 1 file changed, 27 insertions(+), 30 deletions(-)
+ net/netfilter/ipset/ip_set_core.c     | 81 +++++++++++++++------------
+ net/netfilter/ipset/ip_set_list_set.c | 30 +++++-----
+ 2 files changed, 60 insertions(+), 51 deletions(-)
 
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index 760405da852f6..4911f09eb68b0 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -186,19 +186,24 @@ static bool nilfs_check_page(struct page *page)
- 	return false;
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index 3184cc6be4c9d..c7ae4d9bf3d24 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -1172,23 +1172,50 @@ ip_set_setname_policy[IPSET_ATTR_CMD_MAX + 1] = {
+ 				    .len = IPSET_MAXNAMELEN - 1 },
+ };
+ 
++/* In order to return quickly when destroying a single set, it is split
++ * into two stages:
++ * - Cancel garbage collector
++ * - Destroy the set itself via call_rcu()
++ */
++
+ static void
+-ip_set_destroy_set(struct ip_set *set)
++ip_set_destroy_set_rcu(struct rcu_head *head)
+ {
+-	pr_debug("set: %s\n",  set->name);
++	struct ip_set *set = container_of(head, struct ip_set, rcu);
+ 
+-	/* Must call it without holding any lock */
+ 	set->variant->destroy(set);
+ 	module_put(set->type->me);
+ 	kfree(set);
  }
  
--static struct page *nilfs_get_page(struct inode *dir, unsigned long n)
-+static void *nilfs_get_page(struct inode *dir, unsigned long n,
-+		struct page **pagep)
+ static void
+-ip_set_destroy_set_rcu(struct rcu_head *head)
++_destroy_all_sets(struct ip_set_net *inst)
  {
- 	struct address_space *mapping = dir->i_mapping;
- 	struct page *page = read_mapping_page(mapping, n, NULL);
-+	void *kaddr;
+-	struct ip_set *set = container_of(head, struct ip_set, rcu);
++	struct ip_set *set;
++	ip_set_id_t i;
++	bool need_wait = false;
  
--	if (!IS_ERR(page)) {
--		kmap(page);
--		if (unlikely(!PageChecked(page))) {
--			if (!nilfs_check_page(page))
--				goto fail;
--		}
-+	if (IS_ERR(page))
-+		return page;
-+
-+	kaddr = kmap(page);
-+	if (unlikely(!PageChecked(page))) {
-+		if (!nilfs_check_page(page))
-+			goto fail;
- 	}
--	return page;
-+
-+	*pagep = page;
-+	return kaddr;
+-	ip_set_destroy_set(set);
++	/* First cancel gc's: set:list sets are flushed as well */
++	for (i = 0; i < inst->ip_set_max; i++) {
++		set = ip_set(inst, i);
++		if (set) {
++			set->variant->cancel_gc(set);
++			if (set->type->features & IPSET_TYPE_NAME)
++				need_wait = true;
++		}
++	}
++	/* Must wait for flush to be really finished  */
++	if (need_wait)
++		rcu_barrier();
++	for (i = 0; i < inst->ip_set_max; i++) {
++		set = ip_set(inst, i);
++		if (set) {
++			ip_set(inst, i) = NULL;
++			set->variant->destroy(set);
++			module_put(set->type->me);
++			kfree(set);
++		}
++	}
+ }
  
- fail:
- 	nilfs_put_page(page);
-@@ -275,14 +280,14 @@ static int nilfs_readdir(struct file *file, struct dir_context *ctx)
- 	for ( ; n < npages; n++, offset = 0) {
- 		char *kaddr, *limit;
- 		struct nilfs_dir_entry *de;
--		struct page *page = nilfs_get_page(inode, n);
-+		struct page *page;
+ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+@@ -1202,11 +1229,10 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (unlikely(protocol_min_failed(attr)))
+ 		return -IPSET_ERR_PROTOCOL;
  
--		if (IS_ERR(page)) {
-+		kaddr = nilfs_get_page(inode, n, &page);
-+		if (IS_ERR(kaddr)) {
- 			nilfs_error(sb, "bad page in #%lu", inode->i_ino);
- 			ctx->pos += PAGE_SIZE - offset;
- 			return -EIO;
+-
+ 	/* Commands are serialized and references are
+ 	 * protected by the ip_set_ref_lock.
+ 	 * External systems (i.e. xt_set) must call
+-	 * ip_set_put|get_nfnl_* functions, that way we
++	 * ip_set_nfnl_get_* functions, that way we
+ 	 * can safely check references here.
+ 	 *
+ 	 * list:set timer can only decrement the reference
+@@ -1214,8 +1240,6 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 	 * without holding the lock.
+ 	 */
+ 	if (!attr[IPSET_ATTR_SETNAME]) {
+-		/* Must wait for flush to be really finished in list:set */
+-		rcu_barrier();
+ 		read_lock_bh(&ip_set_ref_lock);
+ 		for (i = 0; i < inst->ip_set_max; i++) {
+ 			s = ip_set(inst, i);
+@@ -1226,15 +1250,7 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
  		}
--		kaddr = page_address(page);
- 		de = (struct nilfs_dir_entry *)(kaddr + offset);
- 		limit = kaddr + nilfs_last_byte(inode, n) -
- 			NILFS_DIR_REC_LEN(1);
-@@ -345,11 +350,9 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
- 		start = 0;
- 	n = start;
- 	do {
--		char *kaddr;
-+		char *kaddr = nilfs_get_page(dir, n, &page);
- 
--		page = nilfs_get_page(dir, n);
--		if (!IS_ERR(page)) {
--			kaddr = page_address(page);
-+		if (!IS_ERR(kaddr)) {
- 			de = (struct nilfs_dir_entry *)kaddr;
- 			kaddr += nilfs_last_byte(dir, n) - reclen;
- 			while ((char *) de <= kaddr) {
-@@ -387,15 +390,11 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
- 
- struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
- {
--	struct page *page = nilfs_get_page(dir, 0);
--	struct nilfs_dir_entry *de = NULL;
-+	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
- 
--	if (!IS_ERR(page)) {
--		de = nilfs_next_entry(
--			(struct nilfs_dir_entry *)page_address(page));
--		*p = page;
--	}
--	return de;
-+	if (IS_ERR(de))
-+		return NULL;
-+	return nilfs_next_entry(de);
+ 		inst->is_destroyed = true;
+ 		read_unlock_bh(&ip_set_ref_lock);
+-		for (i = 0; i < inst->ip_set_max; i++) {
+-			s = ip_set(inst, i);
+-			if (s) {
+-				ip_set(inst, i) = NULL;
+-				/* Must cancel garbage collectors */
+-				s->variant->cancel_gc(s);
+-				ip_set_destroy_set(s);
+-			}
+-		}
++		_destroy_all_sets(inst);
+ 		/* Modified by ip_set_destroy() only, which is serialized */
+ 		inst->is_destroyed = false;
+ 	} else {
+@@ -1255,12 +1271,12 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 		features = s->type->features;
+ 		ip_set(inst, i) = NULL;
+ 		read_unlock_bh(&ip_set_ref_lock);
++		/* Must cancel garbage collectors */
++		s->variant->cancel_gc(s);
+ 		if (features & IPSET_TYPE_NAME) {
+ 			/* Must wait for flush to be really finished  */
+ 			rcu_barrier();
+ 		}
+-		/* Must cancel garbage collectors */
+-		s->variant->cancel_gc(s);
+ 		call_rcu(&s->rcu, ip_set_destroy_set_rcu);
+ 	}
+ 	return 0;
+@@ -2365,30 +2381,25 @@ ip_set_net_init(struct net *net)
  }
  
- ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
-@@ -459,12 +458,11 @@ int nilfs_add_link(struct dentry *dentry, struct inode *inode)
- 	for (n = 0; n <= npages; n++) {
- 		char *dir_end;
+ static void __net_exit
+-ip_set_net_exit(struct net *net)
++ip_set_net_pre_exit(struct net *net)
+ {
+ 	struct ip_set_net *inst = ip_set_pernet(net);
  
--		page = nilfs_get_page(dir, n);
--		err = PTR_ERR(page);
--		if (IS_ERR(page))
-+		kaddr = nilfs_get_page(dir, n, &page);
-+		err = PTR_ERR(kaddr);
-+		if (IS_ERR(kaddr))
- 			goto out;
- 		lock_page(page);
--		kaddr = page_address(page);
- 		dir_end = kaddr + nilfs_last_byte(dir, n);
- 		de = (struct nilfs_dir_entry *)kaddr;
- 		kaddr += PAGE_SIZE - reclen;
-@@ -627,11 +625,10 @@ int nilfs_empty_dir(struct inode *inode)
- 		char *kaddr;
- 		struct nilfs_dir_entry *de;
+-	struct ip_set *set = NULL;
+-	ip_set_id_t i;
+-
+ 	inst->is_deleted = true; /* flag for ip_set_nfnl_put */
++}
  
--		page = nilfs_get_page(inode, i);
--		if (IS_ERR(page))
-+		kaddr = nilfs_get_page(inode, i, &page);
-+		if (IS_ERR(kaddr))
+-	nfnl_lock(NFNL_SUBSYS_IPSET);
+-	for (i = 0; i < inst->ip_set_max; i++) {
+-		set = ip_set(inst, i);
+-		if (set) {
+-			ip_set(inst, i) = NULL;
+-			set->variant->cancel_gc(set);
+-			ip_set_destroy_set(set);
+-		}
+-	}
+-	nfnl_unlock(NFNL_SUBSYS_IPSET);
++static void __net_exit
++ip_set_net_exit(struct net *net)
++{
++	struct ip_set_net *inst = ip_set_pernet(net);
++
++	_destroy_all_sets(inst);
+ 	kvfree(rcu_dereference_protected(inst->ip_set_list, 1));
+ }
+ 
+ static struct pernet_operations ip_set_net_ops = {
+ 	.init	= ip_set_net_init,
++	.pre_exit = ip_set_net_pre_exit,
+ 	.exit   = ip_set_net_exit,
+ 	.id	= &ip_set_net_id,
+ 	.size	= sizeof(struct ip_set_net),
+diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+index 54e2a1dd7f5f5..bfae7066936bb 100644
+--- a/net/netfilter/ipset/ip_set_list_set.c
++++ b/net/netfilter/ipset/ip_set_list_set.c
+@@ -79,7 +79,7 @@ list_set_kadd(struct ip_set *set, const struct sk_buff *skb,
+ 	struct set_elem *e;
+ 	int ret;
+ 
+-	list_for_each_entry(e, &map->members, list) {
++	list_for_each_entry_rcu(e, &map->members, list) {
+ 		if (SET_WITH_TIMEOUT(set) &&
+ 		    ip_set_timeout_expired(ext_timeout(e, set)))
  			continue;
+@@ -99,7 +99,7 @@ list_set_kdel(struct ip_set *set, const struct sk_buff *skb,
+ 	struct set_elem *e;
+ 	int ret;
  
--		kaddr = page_address(page);
- 		de = (struct nilfs_dir_entry *)kaddr;
- 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
+-	list_for_each_entry(e, &map->members, list) {
++	list_for_each_entry_rcu(e, &map->members, list) {
+ 		if (SET_WITH_TIMEOUT(set) &&
+ 		    ip_set_timeout_expired(ext_timeout(e, set)))
+ 			continue;
+@@ -188,9 +188,10 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	struct list_set *map = set->data;
+ 	struct set_adt_elem *d = value;
+ 	struct set_elem *e, *next, *prev = NULL;
+-	int ret;
++	int ret = 0;
  
+-	list_for_each_entry(e, &map->members, list) {
++	rcu_read_lock();
++	list_for_each_entry_rcu(e, &map->members, list) {
+ 		if (SET_WITH_TIMEOUT(set) &&
+ 		    ip_set_timeout_expired(ext_timeout(e, set)))
+ 			continue;
+@@ -201,6 +202,7 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 
+ 		if (d->before == 0) {
+ 			ret = 1;
++			goto out;
+ 		} else if (d->before > 0) {
+ 			next = list_next_entry(e, list);
+ 			ret = !list_is_last(&e->list, &map->members) &&
+@@ -208,9 +210,11 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 		} else {
+ 			ret = prev && prev->id == d->refid;
+ 		}
+-		return ret;
++		goto out;
+ 	}
+-	return 0;
++out:
++	rcu_read_unlock();
++	return ret;
+ }
+ 
+ static void
+@@ -239,7 +243,7 @@ list_set_uadd(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 
+ 	/* Find where to add the new entry */
+ 	n = prev = next = NULL;
+-	list_for_each_entry(e, &map->members, list) {
++	list_for_each_entry_rcu(e, &map->members, list) {
+ 		if (SET_WITH_TIMEOUT(set) &&
+ 		    ip_set_timeout_expired(ext_timeout(e, set)))
+ 			continue;
+@@ -316,9 +320,9 @@ list_set_udel(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ {
+ 	struct list_set *map = set->data;
+ 	struct set_adt_elem *d = value;
+-	struct set_elem *e, *next, *prev = NULL;
++	struct set_elem *e, *n, *next, *prev = NULL;
+ 
+-	list_for_each_entry(e, &map->members, list) {
++	list_for_each_entry_safe(e, n, &map->members, list) {
+ 		if (SET_WITH_TIMEOUT(set) &&
+ 		    ip_set_timeout_expired(ext_timeout(e, set)))
+ 			continue;
+@@ -424,14 +428,8 @@ static void
+ list_set_destroy(struct ip_set *set)
+ {
+ 	struct list_set *map = set->data;
+-	struct set_elem *e, *n;
+ 
+-	list_for_each_entry_safe(e, n, &map->members, list) {
+-		list_del(&e->list);
+-		ip_set_put_byindex(map->net, e->id);
+-		ip_set_ext_destroy(set, e);
+-		kfree(e);
+-	}
++	WARN_ON_ONCE(!list_empty(&map->members));
+ 	kfree(map);
+ 
+ 	set->data = NULL;
 -- 
 2.43.0
 
