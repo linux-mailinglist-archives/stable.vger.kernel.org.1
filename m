@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-54576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF48B90EEE4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 246BD90EDC5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10B061C23257
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B3FE1C2238F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A70147C60;
-	Wed, 19 Jun 2024 13:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C041A1494BD;
+	Wed, 19 Jun 2024 13:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZVJQO32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNap1aY6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C3E1E492;
-	Wed, 19 Jun 2024 13:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDB812FB27;
+	Wed, 19 Jun 2024 13:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803989; cv=none; b=vFw8mEMGKvfsr6a5QYlDvHZ5wxir5bE0aVGU35bXdbZKIpXsDmzJr5xmxKLV3XNFnHaS4/5EBhUKNl3lcyvT3c7TaHW5eZ0aeNrlRryGf3umfrPfARVmTfW0x6BZXsJWNkvtP/7LEeua67uVIoj2SUICFkVFSHb9VjSgjAcycpI=
+	t=1718803311; cv=none; b=ZO6aAKDUrucFAB5r4NsD17U4KTQx+FbT+KxJM2EV18sYwnyRU9PcJwieZ9q4Kk1c7njRWO2S4TZYj62WurT9zgvIjHh0RNnldRjN3eQUp7svv/nQGyYlzmp41C6UzpTn93kAUHajef2f1zOYU00+FAd0xEDHcP+yO5vFHtmP1wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803989; c=relaxed/simple;
-	bh=/rqKBATqmO+K5lFz5Yw0p3HvV8EC3epEMtAisgNteRE=;
+	s=arc-20240116; t=1718803311; c=relaxed/simple;
+	bh=8wRyrSWNQOJMa4qnIjWs/5SB2kMLu5v+yAG3n3N5vSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AHsKbi/8SPQeOuWaorcTDxeqC+IpZVy+pKY/xgglCOaPZ2/j9dIjxqQV4KTbJOxht51rIF62dvAmV7fhfiCB504vnuGqT85/w/0cjULA7992GrnesYuMQ2fbWhZD56oVcUBgIix5Aw8m0fdVZY/vpsbRAkljsMLUCsJAVht8amg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZVJQO32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C23CC2BBFC;
-	Wed, 19 Jun 2024 13:33:08 +0000 (UTC)
+	 MIME-Version; b=TT9tmzkwz5ealt5ODYGi00OXs6YqjrjIm8J96oLcuh374C/6D5BZ0XTsZyADp+Iw0h+daW9pJUQiIS55f48oz45iZeOLX2ZbXnH4rrdZEqEXv60+Adf55rGPjohr6mzew2HJmZx5dHN76+WKnGciyWXWAjck2PomphbjxwAYqZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XNap1aY6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F3DC2BBFC;
+	Wed, 19 Jun 2024 13:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803988;
-	bh=/rqKBATqmO+K5lFz5Yw0p3HvV8EC3epEMtAisgNteRE=;
+	s=korg; t=1718803311;
+	bh=8wRyrSWNQOJMa4qnIjWs/5SB2kMLu5v+yAG3n3N5vSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZVJQO32ibw5dBnRVOa46frswKIlnesbm+IFF4Jg2wu1O4Cla5+fqijzxcj5KKCyZ
-	 fz52nvN2TsT4lNzpQBBabffJ8H8WgVqXPLffxwAdyFzyvrIDDb4Wgvxw+NIeTKXW1p
-	 nEdJRbND09coDQrOInhyU1ZggmBFwIYZodlxAcWQ=
+	b=XNap1aY6qI2CqpqF4IGIkm5nN3mVs6AXBYli6/jqveiz1WPbMxOpYd3QvO/kAxqxb
+	 /OqyZmviDkQC0hvzK5HSut3TotVR6NixnQ5hxGGe3KF6hpOAsYzhGKuQArY18uEaKA
+	 PQCUhG6pHH2f509KeEMG9dtK6VgCr4J9HQP+sQSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Wang <wangjie125@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/217] net: hns3: add cond_resched() to hns3 ring buffer init process
-Date: Wed, 19 Jun 2024 14:56:23 +0200
-Message-ID: <20240619125602.093930143@linuxfoundation.org>
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.9 225/281] tracing/selftests: Fix kprobe event name test for .isra. functions
+Date: Wed, 19 Jun 2024 14:56:24 +0200
+Message-ID: <20240619125618.616004600@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Wang <wangjie125@huawei.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 968fde83841a8c23558dfbd0a0c69d636db52b55 ]
+commit 23a4b108accc29a6125ed14de4a044689ffeda78 upstream.
 
-Currently hns3 ring buffer init process would hold cpu too long with big
-Tx/Rx ring depth. This could cause soft lockup.
+The kprobe_eventname.tc test checks if a function with .isra. can have a
+kprobe attached to it. It loops through the kallsyms file for all the
+functions that have the .isra. name, and checks if it exists in the
+available_filter_functions file, and if it does, it uses it to attach a
+kprobe to it.
 
-So this patch adds cond_resched() to the process. Then cpu can break to
-run other tasks instead of busy looping.
+The issue is that kprobes can not attach to functions that are listed more
+than once in available_filter_functions. With the latest kernel, the
+function that is found is: rapl_event_update.isra.0
 
-Fixes: a723fb8efe29 ("net: hns3: refine for set ring parameters")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  # grep rapl_event_update.isra.0 /sys/kernel/tracing/available_filter_functions
+  rapl_event_update.isra.0
+  rapl_event_update.isra.0
+
+It is listed twice. This causes the attached kprobe to it to fail which in
+turn fails the test. Instead of just picking the function function that is
+found in available_filter_functions, pick the first one that is listed
+only once in available_filter_functions.
+
+Cc: stable@vger.kernel.org
+Fixes: 604e3548236d ("selftests/ftrace: Select an existing function in kprobe_eventname test")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 4 ++++
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.h | 2 ++
- 2 files changed, 6 insertions(+)
+ tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 78d6752fe0519..4ce43c3a00a37 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -3538,6 +3538,9 @@ static int hns3_alloc_ring_buffers(struct hns3_enet_ring *ring)
- 		ret = hns3_alloc_and_attach_buffer(ring, i);
- 		if (ret)
- 			goto out_buffer_fail;
-+
-+		if (!(i % HNS3_RESCHED_BD_NUM))
-+			cond_resched();
- 	}
+--- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
++++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
+@@ -30,7 +30,8 @@ find_dot_func() {
+ 	fi
  
- 	return 0;
-@@ -5111,6 +5114,7 @@ int hns3_init_all_ring(struct hns3_nic_priv *priv)
- 		}
- 
- 		u64_stats_init(&priv->ring[i].syncp);
-+		cond_resched();
- 	}
- 
- 	return 0;
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-index 294a14b4fdefb..1aac93f9aaa15 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-@@ -214,6 +214,8 @@ enum hns3_nic_state {
- #define HNS3_CQ_MODE_EQE			1U
- #define HNS3_CQ_MODE_CQE			0U
- 
-+#define HNS3_RESCHED_BD_NUM			1024
-+
- enum hns3_pkt_l2t_type {
- 	HNS3_L2_TYPE_UNICAST,
- 	HNS3_L2_TYPE_MULTICAST,
--- 
-2.43.0
-
+ 	grep " [tT] .*\.isra\..*" /proc/kallsyms | cut -f 3 -d " " | while read f; do
+-		if grep -s $f available_filter_functions; then
++		cnt=`grep -s $f available_filter_functions | wc -l`;
++		if [ $cnt -eq 1 ]; then
+ 			echo $f
+ 			break
+ 		fi
 
 
 
