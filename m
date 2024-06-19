@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-53983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5829890EC27
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A61AC90ED56
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3CE7287907
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5979428117C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BB8143C4E;
-	Wed, 19 Jun 2024 13:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF6713F435;
+	Wed, 19 Jun 2024 13:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4uCUGTx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4+J015U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FD312FB31;
-	Wed, 19 Jun 2024 13:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A28AD58;
+	Wed, 19 Jun 2024 13:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802249; cv=none; b=HB9cPp3YMWDog7q8JKKtP8Y3TSOB9UiF8s41LGAhSZQfhVQgKJUvqOUXdSbDszu0IHyoSg8XAUOoYVkhvRKgE3xCujACmUQEYDiQTvDt8cCe609kJJf0hjz5W/bnHXxRB+i1M09DYlCJfcoyS/Zw2Ck+jhsSd84USDWLlUhKJOA=
+	t=1718803016; cv=none; b=E0olepV9rDZMcaRnzwXYEvuN0hWlTW0kzWq+plxdm5SR6giWBAyyexP7OslNdvcokDzC/xLEb2a3KjmlFuJjhm+sNWgmyPJkEBrQwi9CuenySyalEQxMimJxmBMfYGaYzp8qEsqKLGblxK1di8l85RPFMjL+6ahc9eJzmByZzZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802249; c=relaxed/simple;
-	bh=FqQgsjM29DSag4lNTiszNfxN8xFv0yx82ihImN6FrN0=;
+	s=arc-20240116; t=1718803016; c=relaxed/simple;
+	bh=UPv8wGyL73Cl3O/wS898dhg48iLDdlrrmHxqu1yVdJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5ROqIse2MleOZ3GCS3qE8mqbJNaZ1ZcAVHbpwEMZMAcO8OiQBF2II9kST5jnJtAGgGXuFC1jcIALj+ezlRCfSYDz5jqdXMb9+HX/mMcpU5U5ErxJ+6zgOsdrb/MgyQznKIuxJwHs4VGv4d/S0BwwNZ74+9wvyh2dS8fJAqnaP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4uCUGTx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08D4C2BBFC;
-	Wed, 19 Jun 2024 13:04:08 +0000 (UTC)
+	 MIME-Version; b=Yaz7l6jf+/sen4jIsKhpXzNXDTeYtnuRF6wMkXuYGROsdkbo+8x94Zk0OEREsoXshnqqZITWq9LcutSinxDsadnY9w/a4aJhXnlKbPmY9BTDIupqHTi9GHJ7qrL3FDpvawH9FF5WMuZTEMQ9N3Mo3lSv3x3QvnXJ3nUzlf2ENUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4+J015U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F48CC2BBFC;
+	Wed, 19 Jun 2024 13:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802249;
-	bh=FqQgsjM29DSag4lNTiszNfxN8xFv0yx82ihImN6FrN0=;
+	s=korg; t=1718803016;
+	bh=UPv8wGyL73Cl3O/wS898dhg48iLDdlrrmHxqu1yVdJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4uCUGTxlUy7ejUW4zZbBHfVzFIOyuvNtpIe7C3j4iQHsaz8mslcJPK4xxEudv6xL
-	 AsMRRXZe+RY5pdeh/bi5cOTwPumZN+op7wtaQnP6PsnAgb6GkSIR1IGRde3+VKeCyR
-	 cXqWkGnsS3Vt7bvppDUh3+SW6+d86rsmJXOHGd64=
+	b=q4+J015Urv7n522yXTY/A5XqrQm1dMcM1BDszKxDy3AMDDR7/1ecxafHeuWyGt4aK
+	 gmagoUx3lV70XHk1QgaMY9fXBQ2Hxd8Ks8nOzebU8j7UXjiW3rl9bdARblmdp+6r4Z
+	 gHfdJGqxJcppRP8F5h/uCHbqn5LCvn0ph8yRa0OQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/267] io_uring/io-wq: avoid garbage value of match in io_wq_enqueue()
+Subject: [PATCH 6.9 125/281] selftests/tracing: Fix event filter test to retry up to 10 times
 Date: Wed, 19 Jun 2024 14:54:44 +0200
-Message-ID: <20240619125611.455873752@linuxfoundation.org>
+Message-ID: <20240619125614.655100036@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 91215f70ea8541e9011c0b48f8b59b9e0ce6953b ]
+[ Upstream commit 0f42bdf59b4e428485aa922bef871bfa6cc505e0 ]
 
-Clang static checker (scan-build) warning:
-o_uring/io-wq.c:line 1051, column 3
-The expression is an uninitialized value. The computed value will
-also be garbage.
+Commit eb50d0f250e9 ("selftests/ftrace: Choose target function for filter
+test from samples") choose the target function from samples, but sometimes
+this test failes randomly because the target function does not hit at the
+next time. So retry getting samples up to 10 times.
 
-'match.nr_pending' is used in io_acct_cancel_pending_work(), but it is
-not fully initialized. Change the order of assignment for 'match' to fix
-this problem.
-
-Fixes: 42abc95f05bf ("io-wq: decouple work_list protection from the big wqe->lock")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20240604121242.2661244-1-suhui@nfschina.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: eb50d0f250e9 ("selftests/ftrace: Choose target function for filter test from samples")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io-wq.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ .../test.d/filter/event-filter-function.tc    | 20 ++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index 4a07742349048..8a99aabcac2c3 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -929,7 +929,11 @@ void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work)
- {
- 	struct io_wq_acct *acct = io_work_get_acct(wq, work);
- 	unsigned long work_flags = work->flags;
--	struct io_cb_cancel_data match;
-+	struct io_cb_cancel_data match = {
-+		.fn		= io_wq_work_match_item,
-+		.data		= work,
-+		.cancel_all	= false,
-+	};
- 	bool do_create;
- 
- 	/*
-@@ -967,10 +971,6 @@ void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work)
- 		raw_spin_unlock(&wq->lock);
- 
- 		/* fatal condition, failed to create the first worker */
--		match.fn		= io_wq_work_match_item,
--		match.data		= work,
--		match.cancel_all	= false,
--
- 		io_acct_cancel_pending_work(wq, acct, &match);
- 	}
+diff --git a/tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc b/tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc
+index 3f74c09c56b62..118247b8dd84d 100644
+--- a/tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc
++++ b/tools/testing/selftests/ftrace/test.d/filter/event-filter-function.tc
+@@ -10,7 +10,6 @@ fail() { #msg
  }
+ 
+ sample_events() {
+-    echo > trace
+     echo 1 > events/kmem/kmem_cache_free/enable
+     echo 1 > tracing_on
+     ls > /dev/null
+@@ -22,6 +21,7 @@ echo 0 > tracing_on
+ echo 0 > events/enable
+ 
+ echo "Get the most frequently calling function"
++echo > trace
+ sample_events
+ 
+ target_func=`cat trace | grep -o 'call_site=\([^+]*\)' | sed 's/call_site=//' | sort | uniq -c | sort | tail -n 1 | sed 's/^[ 0-9]*//'`
+@@ -32,7 +32,16 @@ echo > trace
+ 
+ echo "Test event filter function name"
+ echo "call_site.function == $target_func" > events/kmem/kmem_cache_free/filter
++
++sample_events
++max_retry=10
++while [ `grep kmem_cache_free trace| wc -l` -eq 0 ]; do
+ sample_events
++max_retry=$((max_retry - 1))
++if [ $max_retry -eq 0 ]; then
++	exit_fail
++fi
++done
+ 
+ hitcnt=`grep kmem_cache_free trace| grep $target_func | wc -l`
+ misscnt=`grep kmem_cache_free trace| grep -v $target_func | wc -l`
+@@ -49,7 +58,16 @@ address=`grep " ${target_func}\$" /proc/kallsyms | cut -d' ' -f1`
+ 
+ echo "Test event filter function address"
+ echo "call_site.function == 0x$address" > events/kmem/kmem_cache_free/filter
++echo > trace
++sample_events
++max_retry=10
++while [ `grep kmem_cache_free trace| wc -l` -eq 0 ]; do
+ sample_events
++max_retry=$((max_retry - 1))
++if [ $max_retry -eq 0 ]; then
++	exit_fail
++fi
++done
+ 
+ hitcnt=`grep kmem_cache_free trace| grep $target_func | wc -l`
+ misscnt=`grep kmem_cache_free trace| grep -v $target_func | wc -l`
 -- 
 2.43.0
 
