@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-54045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96AF90EC67
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E443790EEAF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:31:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 729D7B20CC7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ED8A1F2141D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F46143C43;
-	Wed, 19 Jun 2024 13:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E943F13F428;
+	Wed, 19 Jun 2024 13:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6XZ/D2Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iY5kxYk3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E9212FB31;
-	Wed, 19 Jun 2024 13:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77C71E492;
+	Wed, 19 Jun 2024 13:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802429; cv=none; b=QzV9NFv7OK+SBibsMMrDZEKp4/triVlyYLoQZ0IWN2nbczHq+t5HN6mT6GSPPU/r3ATsEsY5WNGOhKynP7WxrT9s6M5jWO+t5Y9s3KkHg7v+ZEUmq33+U6ZN+nWseynbteM0vqTodhDX87ljFOw1qqeFv849DEPUYQhmnpzLI2w=
+	t=1718803863; cv=none; b=YLpgNsIBo7WKSOeE1xUSNAMMjdyQoeBI5ur52pmYrB10yx7qmfgM2fukCM81CdQ7xp6hKHo6M6DjW9+8kIHvjf+6+SZ/6UA6rAo00BbflIA/euVtkps+/oNAe+mkGWK33fcPdyenYhZFZynj7Ovv11Nym0M9OI2ylXFaK2jZN48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802429; c=relaxed/simple;
-	bh=zTv4Ki5DQkH0xeguoAkVF86OgvbxeCsdalVP4nAnRDU=;
+	s=arc-20240116; t=1718803863; c=relaxed/simple;
+	bh=Yx3t+EIbEecQb8w7dRn5fAgZLHxkADkDI8zdeiBo+uU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nv38/DeOTDlgH2qNwL1UZhz4ajdSVv2gNY4dEbgwsDGH9ZCy7/i3qZwKUdORxXqxPy0Fb/XiBiz+sF2jddlhQsEQaEtT66r++dBAuQGi87RnJMmFc4yXxw6b+R7VbP9zl8lej4BXfNL84pHP6z9LGgJsSB18Ey1LuyN/frG9RO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6XZ/D2Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDBDC2BBFC;
-	Wed, 19 Jun 2024 13:07:09 +0000 (UTC)
+	 MIME-Version; b=AT3e6q0YTIVd7SrFhk4hPxObVddolwRDYqn5Hho6akkuRT0MZSo50HaBrS5Ffg5bKGjtNS0yquvZ1Kr/HqrX44YMLccX3h1fee7ozc8SAqQxZ09utN5+IXADZvO/1mWqB7S+34JrSEKZUnjOrlLyuhROLBh3/oXc9WH05W2Cx6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iY5kxYk3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B54EC2BBFC;
+	Wed, 19 Jun 2024 13:31:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802429;
-	bh=zTv4Ki5DQkH0xeguoAkVF86OgvbxeCsdalVP4nAnRDU=;
+	s=korg; t=1718803863;
+	bh=Yx3t+EIbEecQb8w7dRn5fAgZLHxkADkDI8zdeiBo+uU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6XZ/D2ZUZ30gMVUD6x6UDEQlWPrbzYFDb5zKgDBC1Jrdfl/NEFMhIwAlF4Vu7KAs
-	 tpnFWZxSgkgx2T0Z+obDcbP0O0LV1DOPJPHoXymUiPsmhHJ/QZzukxkytreMUJV5A7
-	 Ih8PGdTRivdySTQ4gBbdM0Oiq0anS5z741mEpJ5o=
+	b=iY5kxYk36o2CEsuAlQCsXpU1UPVOgYIB1HcORBEvrXe4jhTqtLDvxTxMQCJzb8W1N
+	 axnUhDdy6gWGgiwNmfEASBwRmZGaX+nwMI1sowffAUduGjTtenSws4RajYLPlVj1DF
+	 UN28jF3TjS9DRDrbLYMMcmdrUXCbeBZBS71u+9DU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Nam Cao <namcao@linutronix.de>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 194/267] riscv: fix overlap of allocated page and PTR_ERR
+	Kewen Lin <linkw@gcc.gnu.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.1 102/217] powerpc/uaccess: Fix build errors seen with GCC 13/14
 Date: Wed, 19 Jun 2024 14:55:45 +0200
-Message-ID: <20240619125613.782870171@linuxfoundation.org>
+Message-ID: <20240619125600.626001537@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +59,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 994af1825a2aa286f4903ff64a1c7378b52defe6 upstream.
+commit 2d43cc701b96f910f50915ac4c2a0cae5deb734c upstream.
 
-On riscv32, it is possible for the last page in virtual address space
-(0xfffff000) to be allocated. This page overlaps with PTR_ERR, so that
-shouldn't happen.
+Building ppc64le_defconfig with GCC 14 fails with assembler errors:
 
-There is already some code to ensure memblock won't allocate the last page.
-However, buddy allocator is left unchecked.
+    CC      fs/readdir.o
+  /tmp/ccdQn0mD.s: Assembler messages:
+  /tmp/ccdQn0mD.s:212: Error: operand out of domain (18 is not a multiple of 4)
+  /tmp/ccdQn0mD.s:226: Error: operand out of domain (18 is not a multiple of 4)
+  ... [6 lines]
+  /tmp/ccdQn0mD.s:1699: Error: operand out of domain (18 is not a multiple of 4)
 
-Fix this by reserving physical memory that would be mapped at virtual
-addresses greater than 0xfffff000.
+A snippet of the asm shows:
 
-Reported-by: Björn Töpel <bjorn@kernel.org>
-Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
-Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Link: https://lore.kernel.org/r/20240425115201.3044202-1-namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+  # ../fs/readdir.c:210:         unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
+         ld 9,0(29)       # MEM[(u64 *)name_38(D) + _88 * 1], MEM[(u64 *)name_38(D) + _88 * 1]
+  # 210 "../fs/readdir.c" 1
+         1:      std 9,18(8)     # put_user       # *__pus_addr_52, MEM[(u64 *)name_38(D) + _88 * 1]
+
+The 'std' instruction requires a 4-byte aligned displacement because
+it is a DS-form instruction, and as the assembler says, 18 is not a
+multiple of 4.
+
+A similar error is seen with GCC 13 and CONFIG_UBSAN_SIGNED_WRAP=y.
+
+The fix is to change the constraint on the memory operand to put_user(),
+from "m" which is a general memory reference to "YZ".
+
+The "Z" constraint is documented in the GCC manual PowerPC machine
+constraints, and specifies a "memory operand accessed with indexed or
+indirect addressing". "Y" is not documented in the manual but specifies
+a "memory operand for a DS-form instruction". Using both allows the
+compiler to generate a DS-form "std" or X-form "stdx" as appropriate.
+
+The change has to be conditional on CONFIG_PPC_KERNEL_PREFIXED because
+the "Y" constraint does not guarantee 4-byte alignment when prefixed
+instructions are enabled.
+
+Unfortunately clang doesn't support the "Y" constraint so that has to be
+behind an ifdef.
+
+Although the build error is only seen with GCC 13/14, that appears
+to just be luck. The constraint has been incorrect since it was first
+added.
+
+Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
+Cc: stable@vger.kernel.org # v5.10+
+Suggested-by: Kewen Lin <linkw@gcc.gnu.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240529123029.146953-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/init.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ arch/powerpc/include/asm/uaccess.h |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -234,18 +234,19 @@ static void __init setup_bootmem(void)
- 		kernel_map.va_pa_offset = PAGE_OFFSET - phys_ram_base;
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -80,9 +80,20 @@ __pu_failed:							\
+ 		:						\
+ 		: label)
  
- 	/*
--	 * memblock allocator is not aware of the fact that last 4K bytes of
--	 * the addressable memory can not be mapped because of IS_ERR_VALUE
--	 * macro. Make sure that last 4k bytes are not usable by memblock
--	 * if end of dram is equal to maximum addressable memory.  For 64-bit
--	 * kernel, this problem can't happen here as the end of the virtual
--	 * address space is occupied by the kernel mapping then this check must
--	 * be done as soon as the kernel mapping base address is determined.
-+	 * Reserve physical address space that would be mapped to virtual
-+	 * addresses greater than (void *)(-PAGE_SIZE) because:
-+	 *  - This memory would overlap with ERR_PTR
-+	 *  - This memory belongs to high memory, which is not supported
-+	 *
-+	 * This is not applicable to 64-bit kernel, because virtual addresses
-+	 * after (void *)(-PAGE_SIZE) are not linearly mapped: they are
-+	 * occupied by kernel mapping. Also it is unrealistic for high memory
-+	 * to exist on 64-bit platforms.
- 	 */
- 	if (!IS_ENABLED(CONFIG_64BIT)) {
--		max_mapped_addr = __pa(~(ulong)0);
--		if (max_mapped_addr == (phys_ram_end - 1))
--			memblock_set_current_limit(max_mapped_addr - 4096);
-+		max_mapped_addr = __va_to_pa_nodebug(-PAGE_SIZE);
-+		memblock_reserve(max_mapped_addr, (phys_addr_t)-max_mapped_addr);
- 	}
- 
- 	min_low_pfn = PFN_UP(phys_ram_base);
++#ifdef CONFIG_CC_IS_CLANG
++#define DS_FORM_CONSTRAINT "Z<>"
++#else
++#define DS_FORM_CONSTRAINT "YZ<>"
++#endif
++
+ #ifdef __powerpc64__
+-#define __put_user_asm2_goto(x, ptr, label)			\
+-	__put_user_asm_goto(x, ptr, label, "std")
++#define __put_user_asm2_goto(x, addr, label)			\
++	asm goto ("1: std%U1%X1 %0,%1	# put_user\n"		\
++		EX_TABLE(1b, %l2)				\
++		:						\
++		: "r" (x), DS_FORM_CONSTRAINT (*addr)		\
++		:						\
++		: label)
+ #else /* __powerpc64__ */
+ #define __put_user_asm2_goto(x, addr, label)			\
+ 	asm goto(					\
 
 
 
