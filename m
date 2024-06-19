@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-54360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D3390EDD3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D55E90ECAF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 151DE1C2238F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29D69281510
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746B8147C7B;
-	Wed, 19 Jun 2024 13:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB072143C58;
+	Wed, 19 Jun 2024 13:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyodwWXI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhxFnkLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334DA82495;
-	Wed, 19 Jun 2024 13:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882BA12FB31;
+	Wed, 19 Jun 2024 13:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803350; cv=none; b=Y5505Ou64pMlqlcEka56WO+7z3skwsEz6Ng8YjVKbv0B4JMcRXZmyS7hmnZuNzPhc2GqSt55Y3/3bjAZSptP9DV+A9iZIVEj1NE6Izuekt27VqNtHR4McOsS+U4/qQWvnet4Hqx1QXSOGFCEDNe1D2x9FGt9tOqnK84nsBlbixI=
+	t=1718802582; cv=none; b=ircI0j6YJZ/bwQIlC6dL7S6dY7bM+pY6/ytlgkBeHWVQCI9A9H7X6sDlehszVReHrfqMduD7Ox1ZkKI3Ds0Eznvr544kG7po7Yq7cwyi0grP9GSEEhYawSZqgfIXkvZ8CdtB7rbXYEd3XS6cqJ856+0QwYfDLHkrxPGskBPwXWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803350; c=relaxed/simple;
-	bh=9bjE166TNJ0DKM8bnZA8kBM2F4HephbWK68fBzRnyIU=;
+	s=arc-20240116; t=1718802582; c=relaxed/simple;
+	bh=1Ce/9IB5mVCVcdXPpmy/4ecjq3T9kmqqCqeSfk8bFXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HN7Hb7HVe72anepzgIxvZ1ofDfWVVPDy6m7yT3+jUuthp94u1BcXlf8qFjgMZAVaykzH5J7a4XYRp2Eodq/g3aFLK9qS6n03icmcXU3YiOYwokA1bQDpqjRpmKzcAOS8SX8jlPktENZTMTywi2r2NX8mPy9Wotsa5j68onYx/Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyodwWXI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE56C2BBFC;
-	Wed, 19 Jun 2024 13:22:29 +0000 (UTC)
+	 MIME-Version; b=nu611yUWDe+sSvml9L/gdeaxaCBUOYDLNqiU0DBeLOqM4SSRdPnZYw+ESgy8emy4rRC8fKfGtd0h+ShilLkNQ7YY7/kw9oAvmdKV2ynC/xku8gLj826ysP23zke8W+pTVmh3HoRU2Dls3ydWbirpXlOIXCSl/lbt/TpQigvbhp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhxFnkLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102EFC2BBFC;
+	Wed, 19 Jun 2024 13:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803350;
-	bh=9bjE166TNJ0DKM8bnZA8kBM2F4HephbWK68fBzRnyIU=;
+	s=korg; t=1718802582;
+	bh=1Ce/9IB5mVCVcdXPpmy/4ecjq3T9kmqqCqeSfk8bFXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AyodwWXIRNx9JTXSjNnl7rQmQ0XwtEu1i8fKWM/WzAyt9hfRj93dkEP/n1DKuWs2u
-	 q/i4pwbM1ez2RoccK9Om/SMk/3q0z8+7wdrICjxTB6RxSWjs9zJcO6Vd42+yCeOJK/
-	 HmgXhaBfEagrPYNkp8WdOgX7E6JxuSPXoJ8Jjpg4=
+	b=KhxFnkLOU9KFA76HvU1Z82YjxAZhohxWQS5aG8+ldLUS4ElGHQPfvpt+ybWTi0W11
+	 hcQ5wguA86YFtomKzHAO7wBkQB1SDphqZMreWz4u9mUa/3Fwg/s66td4Oy7L0CJ0QS
+	 MmTojW5U5z08H6X120Bd/lsKH1KekiP2zK6VtqKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rik van Riel <riel@surriel.com>,
-	Baoquan He <bhe@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 237/281] fs/proc: fix softlockup in __read_vmcore
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Sam James <sam@gentoo.org>
+Subject: [PATCH 6.6 245/267] Revert "fork: defer linking file vma until vma is fully initialized"
 Date: Wed, 19 Jun 2024 14:56:36 +0200
-Message-ID: <20240619125619.081032433@linuxfoundation.org>
+Message-ID: <20240619125615.725077029@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Sam James <sam@gentoo.org>
 
-commit 5cbcb62dddf5346077feb82b7b0c9254222d3445 upstream.
+This reverts commit cec11fa2eb512ebe3a459c185f4aca1d44059bbf which is commit
+35e351780fa9d8240dd6f7e4f245f9ea37e96c19 upstream.
 
-While taking a kernel core dump with makedumpfile on a larger system,
-softlockup messages often appear.
+The backport is incomplete and causes xfstests failures. The consequences
+of the incomplete backport seem worse than the original issue, so pick
+the lesser evil and revert until a full backport is ready.
 
-While softlockup warnings can be harmless, they can also interfere with
-things like RCU freeing memory, which can be problematic when the kdump
-kexec image is configured with as little memory as possible.
-
-Avoid the softlockup, and give things like work items and RCU a chance to
-do their thing during __read_vmcore by adding a cond_resched.
-
-Link: https://lkml.kernel.org/r/20240507091858.36ff767f@imladris.surriel.com
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/stable/20240604004751.3883227-1-leah.rumancik@gmail.com/
+Reported-by: Leah Rumancik <leah.rumancik@gmail.com>
+Signed-off-by: Sam James <sam@gentoo.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/vmcore.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/fork.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -383,6 +383,8 @@ static ssize_t __read_vmcore(struct iov_
- 		/* leave now if filled buffer already */
- 		if (!iov_iter_count(iter))
- 			return acc;
-+
-+		cond_resched();
- 	}
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -727,15 +727,6 @@ static __latent_entropy int dup_mmap(str
+ 		} else if (anon_vma_fork(tmp, mpnt))
+ 			goto fail_nomem_anon_vma_fork;
+ 		vm_flags_clear(tmp, VM_LOCKED_MASK);
+-		/*
+-		 * Copy/update hugetlb private vma information.
+-		 */
+-		if (is_vm_hugetlb_page(tmp))
+-			hugetlb_dup_vma_private(tmp);
+-
+-		if (tmp->vm_ops && tmp->vm_ops->open)
+-			tmp->vm_ops->open(tmp);
+-
+ 		file = tmp->vm_file;
+ 		if (file) {
+ 			struct address_space *mapping = file->f_mapping;
+@@ -752,6 +743,12 @@ static __latent_entropy int dup_mmap(str
+ 			i_mmap_unlock_write(mapping);
+ 		}
  
- 	list_for_each_entry(m, &vmcore_list, list) {
++		/*
++		 * Copy/update hugetlb private vma information.
++		 */
++		if (is_vm_hugetlb_page(tmp))
++			hugetlb_dup_vma_private(tmp);
++
+ 		/* Link the vma into the MT */
+ 		if (vma_iter_bulk_store(&vmi, tmp))
+ 			goto fail_nomem_vmi_store;
+@@ -760,6 +757,9 @@ static __latent_entropy int dup_mmap(str
+ 		if (!(tmp->vm_flags & VM_WIPEONFORK))
+ 			retval = copy_page_range(tmp, mpnt);
+ 
++		if (tmp->vm_ops && tmp->vm_ops->open)
++			tmp->vm_ops->open(tmp);
++
+ 		if (retval)
+ 			goto loop_out;
+ 	}
 
 
 
