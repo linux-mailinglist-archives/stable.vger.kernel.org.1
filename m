@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-54556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561B290EECF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 818DC90ECAE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECA042852F5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C47F1F21A99
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30A7314A4FC;
-	Wed, 19 Jun 2024 13:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CCC147C6E;
+	Wed, 19 Jun 2024 13:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aU7HrK92"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r35cp9HX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA479147C6E;
-	Wed, 19 Jun 2024 13:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F62F12FB31;
+	Wed, 19 Jun 2024 13:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803929; cv=none; b=Dpc/bLnBiS3Lbu0A0LNpvxMmPrp8sM8LDR0S2m5l8432RJDVUgjTuov9wStWzVDBMmksoG0QC9jqN1JN2FirirJMgpezEkcDrthghnTUPEVN4ZX9GoKf9FpCKxymqAbRDreRDCipWnJFAaAcQQ2uWCNSe8K9wGazP58MxxXqzdM=
+	t=1718802579; cv=none; b=B002gtFjrhsTYqI26TGdM5ip+xxCfdlgNR1c1UA0uuuQ29OJpXeyF3S0nwpcF7NpkoN+CFxnJ0QN0Dy+We3A1k95ZQfVdcfKpZokdvvd5aMp39H4ZYvvLGhSxWol5uMc1SQ5buGrZ2XVCJqKtQw/lTS2OvLYQ1WPyHDYD0hhgSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803929; c=relaxed/simple;
-	bh=pQs7wO3IaLPueFa7nC0XoL4bfoJbvppxWuYEQ7a3n4M=;
+	s=arc-20240116; t=1718802579; c=relaxed/simple;
+	bh=JduzhcQN04G+Dwz8yqURhrhb5c7oiZazWJklCw+uNI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jtSl68HLvz61iOrrXqLkdqj77iQGKb1JJ4AeEC9ZKu77c0zuKWNCaFdt6L9Io2BoINAegdNJVp0JvcECHcfFn19s54GMBCWd8rqg8K4UUMJC4k9ikWJ6OWH9zLf4tuTGs5oRZuuMnjCIpt9O10cyXNujs64sA30YMiSvt+LFGg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aU7HrK92; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F10DC2BBFC;
-	Wed, 19 Jun 2024 13:32:09 +0000 (UTC)
+	 MIME-Version; b=BYpFxJ458UC+XdCExtHUlNbRXg/bhBGC5DHX13grjIKHWYQhnztbpd/o6cYFIhrZA+bBXN6CdDsOSWecMNKXzByER1YV77OHesmdgQ438p9mRQBbXimEWReox5DllAcrlsNdnW9MyF6s3OUdi3LD6HFvonLdRhfdNhVRWNUJdY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r35cp9HX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233F1C2BBFC;
+	Wed, 19 Jun 2024 13:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803929;
-	bh=pQs7wO3IaLPueFa7nC0XoL4bfoJbvppxWuYEQ7a3n4M=;
+	s=korg; t=1718802579;
+	bh=JduzhcQN04G+Dwz8yqURhrhb5c7oiZazWJklCw+uNI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aU7HrK92q8jCxgdOAp9mPO4I+ptczu8nGrcJL7TN71npP6fgL1RP0T5PNQxe36jOb
-	 drMfBp7T0/KNX5eSSch2vK8ghmDvBdWWRBX0RMaGYERUIPH+c+BrK+Huneun93BaYI
-	 8+AtXEHr8bNGj+7R70XmB8t/OeC+O5rSDg+Blqus=
+	b=r35cp9HXbksJMcYFwatDUWmgrF6eSjTvI3ic8u0cl3xXphe/2aJnAoouSrQPnG+Wc
+	 t87gWdKALpYdNK5cXoEHEA3WFeCjGEtP6ng7JqghdWeKiOlJisgZu+hnWaqUO8xwA6
+	 B/P3C/cYS/wGoanVYBct5ohVdS5JvgbubNFK03e0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <dwagner@suse.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 152/217] nvmet-passthru: propagate status from id override functions
+	Doug Brown <doug@schmorgal.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 244/267] serial: 8250_pxa: Configure tx_loadsz to match FIFO IRQ level
 Date: Wed, 19 Jun 2024 14:56:35 +0200
-Message-ID: <20240619125602.555437363@linuxfoundation.org>
+Message-ID: <20240619125615.687293537@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Doug Brown <doug@schmorgal.com>
 
-[ Upstream commit d76584e53f4244dbc154bec447c3852600acc914 ]
+commit 5208e7ced520a813b4f4774451fbac4e517e78b2 upstream.
 
-The id override functions return a status which is not propagated to the
-caller.
+The FIFO is 64 bytes, but the FCR is configured to fire the TX interrupt
+when the FIFO is half empty (bit 3 = 0). Thus, we should only write 32
+bytes when a TX interrupt occurs.
 
-Fixes: c1fef73f793b ("nvmet: add passthru code to process commands")
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes a problem observed on the PXA168 that dropped a bunch of TX
+bytes during large transmissions.
+
+Fixes: ab28f51c77cd ("serial: rewrite pxa2xx-uart to use 8250_core")
+Signed-off-by: Doug Brown <doug@schmorgal.com>
+Link: https://lore.kernel.org/r/20240519191929.122202-1-doug@schmorgal.com
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/passthru.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/serial/8250/8250_pxa.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvme/target/passthru.c b/drivers/nvme/target/passthru.c
-index a0a292d49588c..dc756a1c9d0e3 100644
---- a/drivers/nvme/target/passthru.c
-+++ b/drivers/nvme/target/passthru.c
-@@ -226,13 +226,13 @@ static void nvmet_passthru_execute_cmd_work(struct work_struct *w)
- 	    req->cmd->common.opcode == nvme_admin_identify) {
- 		switch (req->cmd->identify.cns) {
- 		case NVME_ID_CNS_CTRL:
--			nvmet_passthru_override_id_ctrl(req);
-+			status = nvmet_passthru_override_id_ctrl(req);
- 			break;
- 		case NVME_ID_CNS_NS:
--			nvmet_passthru_override_id_ns(req);
-+			status = nvmet_passthru_override_id_ns(req);
- 			break;
- 		case NVME_ID_CNS_NS_DESC_LIST:
--			nvmet_passthru_override_id_descs(req);
-+			status = nvmet_passthru_override_id_descs(req);
- 			break;
- 		}
- 	} else if (status < 0)
--- 
-2.43.0
-
+--- a/drivers/tty/serial/8250/8250_pxa.c
++++ b/drivers/tty/serial/8250/8250_pxa.c
+@@ -124,6 +124,7 @@ static int serial_pxa_probe(struct platf
+ 	uart.port.regshift = 2;
+ 	uart.port.irq = irq;
+ 	uart.port.fifosize = 64;
++	uart.tx_loadsz = 32;
+ 	uart.port.flags = UPF_IOREMAP | UPF_SKIP_TEST | UPF_FIXED_TYPE;
+ 	uart.port.dev = &pdev->dev;
+ 	uart.port.uartclk = clk_get_rate(data->clk);
 
 
 
