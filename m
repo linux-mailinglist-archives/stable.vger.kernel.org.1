@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-53892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113A390EBAD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4557190ECF3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EFD5286817
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9C1728303F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C03E145B09;
-	Wed, 19 Jun 2024 12:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFA414B952;
+	Wed, 19 Jun 2024 13:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="baRvWldW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0u03CoF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8EB1304AD;
-	Wed, 19 Jun 2024 12:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2B414B07B;
+	Wed, 19 Jun 2024 13:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801980; cv=none; b=AquMbauWe469f7L9E7ASLWjSI+Aw5UAKGOedZb5/tPVMglPk4oAvZs+qYk7/cJkf8cgeo0W2GsDj4dXI1Q4Ue1heQuoqcP00ariJSeByiC1WAuY+E0u57Nuc02pdO0iABtECGN4RJZeSaQuq/xDOvPNIGZhxQRhcnwlQ4jLJwjs=
+	t=1718802747; cv=none; b=sxrGhTedMntFRmGf12uDOlLcCfUcMSD6F3nMPfpd9X1KCWhJZTXQT0bwFb0Ie2dQxICUIPZXXCFJNYyu3hFo7C+Xs5m2w3eDI6MbnkR7dyPtSS3EnQb5wrQfHLz4D/Yupo8S+l8OZ4q7/xY6MXLWuDflwUoADqGSSna9oGeVpsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801980; c=relaxed/simple;
-	bh=zVkaOG/59zejumPu3DQsVtivXW8zlSir/IJOWWmSPDA=;
+	s=arc-20240116; t=1718802747; c=relaxed/simple;
+	bh=mJUEcxYQY98cw+jUQ9kWXKuAbiIL2EEu4lBZB6E6fKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvwLB/XTVqwD/xdbg4kjkRHQcSpHvIfXX0cUwFgQINhPeM+JpUNdvNOBm7tvhvRV/DRNw17rW/2Cj88iAmK1O3DMe/RyVwfrRxGY+2KKbVDbCPdXSzqGAMds/FSyP1QXijVsMNTfQLr30DEpcskrRGpN+DeESusuAd3/EGZMeJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=baRvWldW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39924C2BBFC;
-	Wed, 19 Jun 2024 12:59:40 +0000 (UTC)
+	 MIME-Version; b=eNx97W7it6Ev6l7tF6mv3xexqw6hose15v+zpbwjsBgEzkvvtTGO4ugiL3ZMncyFSo7w1HKUUPpSIw1bwX2j92JPbHCd3+0Acmvho5oH2eckybsU8hvwL47vJKLpXizW9scgHqlhfLj73lZ8dWE4psyR66JB1bnXEm9C9vL4ZXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0u03CoF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EECBC2BBFC;
+	Wed, 19 Jun 2024 13:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718801980;
-	bh=zVkaOG/59zejumPu3DQsVtivXW8zlSir/IJOWWmSPDA=;
+	s=korg; t=1718802747;
+	bh=mJUEcxYQY98cw+jUQ9kWXKuAbiIL2EEu4lBZB6E6fKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=baRvWldWlSfXC6xLaivsuprKc4rmhBb/eC5ecxUmW7QQ65Re5HsNd+1GZ8+UBk3Pp
-	 +d8ivrdvq8u9K6OHPb5sc8FpdQFCZi+Qj4CqdlfswzZip22UZUbj57+/BFr6MqEJBz
-	 Zx5ctuntabg8HaJSvg+t9Rml4uXsKoGDNf2jpd0M=
+	b=L0u03CoFMiZ+QKpC1aGlGSXyljx2KdTbx4iBjw08s60ZoMGBaRtNHVtgRPzsgQUc/
+	 zsycOw+jMn9InEZ5r4Z6nQb9iDLcD/IiFJ8mSSLG+QoQhT2b7tHIOyl2EZgLsCQ7vY
+	 0W0q+CHUpQbaX7eeUjHulxATCyyyx/jwv1lQ7CFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Lebrun <dlebrun@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/267] net/mlx5: Fix tainted pointer delete is case of flow rules creation fail
+Subject: [PATCH 6.9 033/281] ipv6: sr: block BH in seg6_output_core() and seg6_input_core()
 Date: Wed, 19 Jun 2024 14:53:12 +0200
-Message-ID: <20240619125607.944414451@linuxfoundation.org>
+Message-ID: <20240619125611.124197926@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 229bedbf62b13af5aba6525ad10b62ad38d9ccb5 ]
+[ Upstream commit c0b98ac1cc104f48763cdb27b1e9ac25fd81fc90 ]
 
-In case of flow rule creation fail in mlx5_lag_create_port_sel_table(),
-instead of previously created rules, the tainted pointer is deleted
-deveral times.
-Fix this bug by using correct flow rules pointers.
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Disabling preemption in seg6_output_core() is not good enough,
+because seg6_output_core() is called from process context,
+lwtunnel_output() only uses rcu_read_lock().
 
-Fixes: 352899f384d4 ("net/mlx5: Lag, use buckets in hash mode")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240604100552.25201-1-amishin@t-argos.ru
+We might be interrupted by a softirq, re-enter seg6_output_core()
+and corrupt dst_cache data structures.
+
+Fix the race by using local_bh_disable() instead of
+preempt_disable().
+
+Apply a similar change in seg6_input_core().
+
+Fixes: fa79581ea66c ("ipv6: sr: fix several BUGs when preemption is enabled")
+Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: David Lebrun <dlebrun@google.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-4-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv6/seg6_iptunnel.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
-index 7d9bbb494d95b..005661248c7e9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
-@@ -88,9 +88,13 @@ static int mlx5_lag_create_port_sel_table(struct mlx5_lag *ldev,
- 								      &dest, 1);
- 			if (IS_ERR(lag_definer->rules[idx])) {
- 				err = PTR_ERR(lag_definer->rules[idx]);
--				while (i--)
--					while (j--)
-+				do {
-+					while (j--) {
-+						idx = i * ldev->buckets + j;
- 						mlx5_del_flow_rules(lag_definer->rules[idx]);
-+					}
-+					j = ldev->buckets;
-+				} while (i--);
- 				goto destroy_fg;
- 			}
+diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+index a75df2ec8db0d..098632adc9b5a 100644
+--- a/net/ipv6/seg6_iptunnel.c
++++ b/net/ipv6/seg6_iptunnel.c
+@@ -464,23 +464,21 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+ 
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&slwt->cache);
+-	preempt_enable();
+ 
+ 	if (!dst) {
+ 		ip6_route_input(skb);
+ 		dst = skb_dst(skb);
+ 		if (!dst->error) {
+-			preempt_disable();
+ 			dst_cache_set_ip6(&slwt->cache, dst,
+ 					  &ipv6_hdr(skb)->saddr);
+-			preempt_enable();
  		}
+ 	} else {
+ 		skb_dst_drop(skb);
+ 		skb_dst_set(skb, dst);
+ 	}
++	local_bh_enable();
+ 
+ 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
+ 	if (unlikely(err))
+@@ -536,9 +534,9 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+ 
+ 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+ 
+-	preempt_disable();
++	local_bh_disable();
+ 	dst = dst_cache_get(&slwt->cache);
+-	preempt_enable();
++	local_bh_enable();
+ 
+ 	if (unlikely(!dst)) {
+ 		struct ipv6hdr *hdr = ipv6_hdr(skb);
+@@ -558,9 +556,9 @@ static int seg6_output_core(struct net *net, struct sock *sk,
+ 			goto drop;
+ 		}
+ 
+-		preempt_disable();
++		local_bh_disable();
+ 		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
+-		preempt_enable();
++		local_bh_enable();
+ 	}
+ 
+ 	skb_dst_drop(skb);
 -- 
 2.43.0
 
