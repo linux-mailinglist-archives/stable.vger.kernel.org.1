@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-54353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470F290EDCC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C4490ECA7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF1CB287693
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B00D4287174
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF4F14D6E9;
-	Wed, 19 Jun 2024 13:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5197014884F;
+	Wed, 19 Jun 2024 13:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHcVMATj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoNQX5Qj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB46E14D435;
-	Wed, 19 Jun 2024 13:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC7A12FB31;
+	Wed, 19 Jun 2024 13:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803329; cv=none; b=B77Hc4O+2Wodz27bND5d+JPLt3O9p+N+gM/isEqcCFVunbwXoR3wIvS9hczRKi+utSWisikRi+NnVebOfzcutn5nH/ItVGMxH+mQDBl6bLUJOs1m5ZvGGb9pnxdTn8OWJkR9Oi4f9ZYx1a0JUV58w3dZrt3esDz5h2GUU/m0rnM=
+	t=1718802562; cv=none; b=Y3c1IG2IeAKmYjjaHy1kMmivhaiinnAw1+c6vaWw9lZ8U8jWC03sc9t01xIJb8RZTiPUY1C27O9Ce1bJOUeh9GuykN5vU453FkHygKJZEsvMs5ifvL/mM3kOSHRsBlHWuaX8SnLHkMS6wK0sc50E31nUWzZi3Y0gDi/P3HkdxHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803329; c=relaxed/simple;
-	bh=WYmC0l8zBGWJ5jkRtQZaTSJYNeiW5wYnHUUMECVZ0UM=;
+	s=arc-20240116; t=1718802562; c=relaxed/simple;
+	bh=sn6p4YHvUShK1RGQETdSDG6YYEM8ZZSdsf12s3neq4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ii58WxD7d7L5NiFcfujJrhE25cQTMchkBOeImN1NS9iBU4EIIfNwaxCAkCwIphdLj9M85QDU94TAkrGd6xTQIW6utEGq4jEkXgqXbAcxmVG8ngtAD+VaCWf7MUOwRDpEJAKvDWHP6MFyo3UMStkqzwRNIJ3k7uPOPLMEE/3E/0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHcVMATj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A63EC2BBFC;
-	Wed, 19 Jun 2024 13:22:09 +0000 (UTC)
+	 MIME-Version; b=gZrigZ6rSq4XDerOHHCuHfyEr9b+/DEJwg3wP4SRNUa1jsaqWZCEh2n0Tg2S0vlOcUx2ccASZTpYvDDoksbl4QWQijQJBTtw6Pqv8CZvc7o2dS3OzkePFcDNLfVauepEcWz/2382K+eFyHH0P7ZkUQrD7mCjd1uJIrueLYocjTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoNQX5Qj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87495C2BBFC;
+	Wed, 19 Jun 2024 13:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803329;
-	bh=WYmC0l8zBGWJ5jkRtQZaTSJYNeiW5wYnHUUMECVZ0UM=;
+	s=korg; t=1718802561;
+	bh=sn6p4YHvUShK1RGQETdSDG6YYEM8ZZSdsf12s3neq4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SHcVMATjxzjCZExFk6zjZuUI4U55yGbP6dkwUaNUTF4+BrjnV1a212TvDO2FnjBoV
-	 r7bHy7o/XO6Gi9GFAEMkr/rXLQX0E0UraETAUWyDtYeggGgovFi3QEQq9N3XVPRc4R
-	 SbCZ5yrD3K/Uxa1JkVyawKmsrIbKfvxxPZ9d+8zE=
+	b=AoNQX5Qj6Z4PP8JDc7RG+RspVqk4rjgtZTrmeqrMPmOW7Qnrt5XbvEPuR0K/fmfsE
+	 ZcgqGK/uKZJG1L3OEX/aSYDgclC056ZCJo3oKciebgoHgtCKsOEj9bK0unX3iOhWmf
+	 iBiK9Ulbw+gEmrE15fTkxgoSXIszMPWIFGKgHPBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aarrayy <lp610mh@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.9 230/281] ata: libata-core: Add ATA_HORKAGE_NOLPM for Crucial CT240BX500SSD1
+	"will@kernel.org, mhklinux@outlook.com, petr.tesarik1@huawei-partners.com, nicolinc@nvidia.com, hch@lst.de, Fabio Estevam" <festevam@denx.de>,
+	Will Deacon <will@kernel.org>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Petr Tesarik <petr.tesarik1@huawei-partners.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Fabio Estevam <festevam@denx.de>
+Subject: [PATCH 6.6 238/267] swiotlb: Enforce page alignment in swiotlb_alloc()
 Date: Wed, 19 Jun 2024 14:56:29 +0200
-Message-ID: <20240619125618.813019903@linuxfoundation.org>
+Message-ID: <20240619125615.456031183@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +66,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Will Deacon <will@kernel.org>
 
-commit 86aaa7e9d641c1ad1035ed2df88b8d0b48c86b30 upstream.
+commit 823353b7cf0ea9dfb09f5181d5fb2825d727200b upstream.
 
-Commit 7627a0edef54 ("ata: ahci: Drop low power policy board type")
-dropped the board_ahci_low_power board type, and instead enables LPM if:
--The AHCI controller reports that it supports LPM (Partial/Slumber), and
--CONFIG_SATA_MOBILE_LPM_POLICY != 0, and
--The port is not defined as external in the per port PxCMD register, and
--The port is not defined as hotplug capable in the per port PxCMD
- register.
+When allocating pages from a restricted DMA pool in swiotlb_alloc(),
+the buffer address is blindly converted to a 'struct page *' that is
+returned to the caller. In the unlikely event of an allocation bug,
+page-unaligned addresses are not detected and slots can silently be
+double-allocated.
 
-Partial and Slumber LPM states can either be initiated by HIPM or DIPM.
+Add a simple check of the buffer alignment in swiotlb_alloc() to make
+debugging a little easier if something has gone wonky.
 
-For HIPM (host initiated power management) to get enabled, both the AHCI
-controller and the drive have to report that they support HIPM.
-
-For DIPM (device initiated power management) to get enabled, only the
-drive has to report that it supports DIPM. However, the HBA will reject
-device requests to enter LPM states which the HBA does not support.
-
-The problem is that Crucial CT240BX500SSD1 drives do not handle low power
-modes correctly. The problem was most likely not seen before because no
-one had used this drive with a AHCI controller with LPM enabled.
-
-Add a quirk so that we do not enable LPM for this drive, since we see
-command timeouts if we do (even though the drive claims to support DIPM).
-
-Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
-Cc: stable@vger.kernel.org
-Reported-by: Aarrayy <lp610mh@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218832
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/dma/swiotlb.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4180,8 +4180,9 @@ static const struct ata_blacklist_entry
- 	{ "PIONEER BD-RW   BDR-207M",	NULL,	ATA_HORKAGE_NOLPM },
- 	{ "PIONEER BD-RW   BDR-205",	NULL,	ATA_HORKAGE_NOLPM },
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -1627,6 +1627,12 @@ struct page *swiotlb_alloc(struct device
+ 		return NULL;
  
--	/* Crucial BX100 SSD 500GB has broken LPM support */
-+	/* Crucial devices with broken LPM support */
- 	{ "CT500BX100SSD1",		NULL,	ATA_HORKAGE_NOLPM },
-+	{ "CT240BX500SSD1",		NULL,	ATA_HORKAGE_NOLPM },
+ 	tlb_addr = slot_addr(pool->start, index);
++	if (unlikely(!PAGE_ALIGNED(tlb_addr))) {
++		dev_WARN_ONCE(dev, 1, "Cannot allocate pages from non page-aligned swiotlb addr 0x%pa.\n",
++			      &tlb_addr);
++		swiotlb_release_slots(dev, tlb_addr);
++		return NULL;
++	}
  
- 	/* 512GB MX100 with MU01 firmware has both queued TRIM and LPM issues */
- 	{ "Crucial_CT512MX100*",	"MU01",	ATA_HORKAGE_NO_NCQ_TRIM |
+ 	return pfn_to_page(PFN_DOWN(tlb_addr));
+ }
 
 
 
