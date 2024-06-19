@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-53933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68AF390EBF1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:02:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ED4890ED21
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90A9B1C2479E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:02:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AC032810C3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D185A13D525;
-	Wed, 19 Jun 2024 13:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36719143C4E;
+	Wed, 19 Jun 2024 13:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFpdY5zR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VU7AtiHC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E81714C584;
-	Wed, 19 Jun 2024 13:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81491422B8;
+	Wed, 19 Jun 2024 13:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802101; cv=none; b=Ndzx5DbTGrw2kDyqPXJHlebaLqYOw03HFhCWqgTtypYc2cwlEtAAYHtReExnhIm2z2n92+SsMgj+Pcswu+lpNbb5/+rK1JIMMiH53uGay8QR/toHrP3iNhyuaVaqFSI/EuuJVxXOCA39nGGqBXLckFRS7HCNaO+IjkdDs01pEUk=
+	t=1718802869; cv=none; b=i0htSYYgZeTKmbElipQl/OeO+/yX+3451Uui1535rEi6C2ZQFNfQihdQO7s6WQc+Cm6HJhQ7u9viT/+ahCkmlUeJECXoBKyv47t1WbegnzmVHefpTF3ToR8Ny7jj0OLI/qRaJ2QL95aYv+oZxQDMHiCrLshx5qy9XPDePY9CKlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802101; c=relaxed/simple;
-	bh=Ga9ETDnfSzUEKB4wt+zMPRmqos0ZG5Gf9KnsSQtPVC0=;
+	s=arc-20240116; t=1718802869; c=relaxed/simple;
+	bh=6UqHI/1G7nMtEWCLvaunXwbyKVgTM3pOdRVdUZr4PLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LtXvRPfqLqKOpL6qV7isyJ1lbeIr20SpzeCurPepyJIGkFMoWOBcf5ek1wpXpEWqZHEQOGUY1q/exbvF17JS1TeZlFWzxzXoPM7tOP0ZFmbIJRrhm7eM9bZhNsc6RJPUg3c6yC7PWnOGRr7XqiO5VbQtQXgzj1zTmAYmrnlOJQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFpdY5zR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F2AC2BBFC;
-	Wed, 19 Jun 2024 13:01:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VoKabF7ALxE98XCZk5Z0ftrIgCkAfwvupoW5HQdvccmC/tGXbx3DEG7T1+0qoJOPHfzrwBlj+j5l9RkUqk4rcEi6JOQ76WymURNUGG8g8wQZfWXc1UX32A1AulAh1KVKSzj6Or7Tkk7HoybYXOdFwfsdUOYUqyAseAxUgq6BXvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VU7AtiHC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E17DC2BBFC;
+	Wed, 19 Jun 2024 13:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802101;
-	bh=Ga9ETDnfSzUEKB4wt+zMPRmqos0ZG5Gf9KnsSQtPVC0=;
+	s=korg; t=1718802868;
+	bh=6UqHI/1G7nMtEWCLvaunXwbyKVgTM3pOdRVdUZr4PLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fFpdY5zRrEv7nqaXK+HLMKb35i0T+EWw0IuXC3vx6Y1Gy3veOAMpdca6BERO2cboR
-	 OwdkEzKos6POikorVYO0vmPz+afVZKl+H5sRbL+7m6feiWOWH0ShnZTu/+4YNiCZRb
-	 WmIwGKjz8PWdA84IaN4txf6eg25yWYdtevJ5627E=
+	b=VU7AtiHCC1EWpE4h2fDrvwzEmDUx/I+1ik479rk2Fz3gStSsBvF99iF0CWaYIDkJa
+	 YJjugvCtAYkyaXyCP5O3kLYwxUnsxQxyIwZMNMeBrTzWnP3igC24jzgZAkaDNxj7ga
+	 mhfKNErwig3ljZZKOi/2bzYmyKLyOthKTxCv2AQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ernberg <john.ernberg@actia.se>
-Subject: [PATCH 6.6 081/267] USB: xen-hcd: Traverse host/ when CONFIG_USB_XEN_HCD is selected
+	Matthew Brost <matthew.brost@intel.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 073/281] drm/xe: Use ordered WQ for G2H handler
 Date: Wed, 19 Jun 2024 14:53:52 +0200
-Message-ID: <20240619125609.460822548@linuxfoundation.org>
+Message-ID: <20240619125612.651602452@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,40 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ernberg <john.ernberg@actia.se>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit 8475ffcfb381a77075562207ce08552414a80326 upstream.
+[ Upstream commit 2d9c72f676e6f79a021b74c6c1c88235e7d5b722 ]
 
-If no other USB HCDs are selected when compiling a small pure virutal
-machine, the Xen HCD driver cannot be built.
+System work queues are shared, use a dedicated work queue for G2H
+processing to avoid G2H processing getting block behind system tasks.
 
-Fix it by traversing down host/ if CONFIG_USB_XEN_HCD is selected.
-
-Fixes: 494ed3997d75 ("usb: Introduce Xen pvUSB frontend (xen hcd)")
-Cc: stable@vger.kernel.org # v5.17+
-Signed-off-by: John Ernberg <john.ernberg@actia.se>
-Link: https://lore.kernel.org/r/20240517114345.1190755-1-john.ernberg@actia.se
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240506034758.3697397-1-matthew.brost@intel.com
+(cherry picked from commit 50aec9665e0babd62b9eee4e613d9a1ef8d2b7de)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/xe/xe_guc_ct.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/Makefile
-+++ b/drivers/usb/Makefile
-@@ -35,6 +35,7 @@ obj-$(CONFIG_USB_R8A66597_HCD)	+= host/
- obj-$(CONFIG_USB_FSL_USB2)	+= host/
- obj-$(CONFIG_USB_FOTG210_HCD)	+= host/
- obj-$(CONFIG_USB_MAX3421_HCD)	+= host/
-+obj-$(CONFIG_USB_XEN_HCD)	+= host/
+diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
+index 8bbfa45798e2e..6ac86936faaf9 100644
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -146,6 +146,10 @@ int xe_guc_ct_init(struct xe_guc_ct *ct)
  
- obj-$(CONFIG_USB_C67X00_HCD)	+= c67x00/
+ 	xe_assert(xe, !(guc_ct_size() % PAGE_SIZE));
  
++	ct->g2h_wq = alloc_ordered_workqueue("xe-g2h-wq", 0);
++	if (!ct->g2h_wq)
++		return -ENOMEM;
++
+ 	ct->g2h_wq = alloc_ordered_workqueue("xe-g2h-wq", 0);
+ 	if (!ct->g2h_wq)
+ 		return -ENOMEM;
+-- 
+2.43.0
+
 
 
 
