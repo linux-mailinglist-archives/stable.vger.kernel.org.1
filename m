@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716A490ECA9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC9D90EECB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 029CE1F21C9C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E892028224C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4031A1465BD;
-	Wed, 19 Jun 2024 13:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E17E14388B;
+	Wed, 19 Jun 2024 13:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIn6cu2O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlT4/uWH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E3A143C43;
-	Wed, 19 Jun 2024 13:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7F11422B8;
+	Wed, 19 Jun 2024 13:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802568; cv=none; b=m9uIvFN8taXgYmridKRst0QO0ELYy5rqyL37/2LdT6Fq6ysEK6pAiE0/46B2SPVmQ1Y+1OlBCRW1TvdfWKxz4admRQkJKZmjPxG3bUznSR2f0Y0/8iybHa2Gn7YtCSuLyZMHBXJwM6EnY4IsSDphnGJvk6s13jTub7xr1kdIPmM=
+	t=1718803918; cv=none; b=b1CS9YjYhXSz5gq2YVNs1H9lrq10DK9hdUQDJHOr0hn2k14LoqJXqPZbEfEHID6qRdagQudDNUFDqKw4hxD3SseI7n6rib4gnYh5IJLEeftFe1vvvQun2z8pgz6LzH70VG9LaD8ObILCzwtxe3D2KeSebBAogq/n8byHupuO570=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802568; c=relaxed/simple;
-	bh=qGaX9WDcgpsQ+WQkLDTSJSlRPvS/u/f6TRLlnGtCcyM=;
+	s=arc-20240116; t=1718803918; c=relaxed/simple;
+	bh=exWtZMM4qJwCfSNS0UAfQ4ke1oxTU1V/FM1Wzkxulsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2RAPDbTiEV8fO4DtmwyVXtzpDP+OLlfzxJKVb3ZsK8+0RdPcY+CWzTRGfWhed086D37QXcRJps7uBPOiiPqLWQeYCNbkwoTAb4v8GPVldpjyvKCsxu0cIMq401GK0hXdUrRN7v8sILi17x0q2b1zY2m7/qZBxua84jDUYJzds8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIn6cu2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73763C2BBFC;
-	Wed, 19 Jun 2024 13:09:27 +0000 (UTC)
+	 MIME-Version; b=M3VDa1hYYzfBHGr2bDiFaoGx2JswSwq5NjOL0GIWpgyu8B2k6S2t5l3uifs9kh5oPaac24P5/+749kxGPJ2nnd1+KB+Mq8COVDdbLl14ZYU/xuKd5EjCE9UwwLeqooEZk4l4C0hN1U0Z1XRS0r5w3aZL2+A4iiEVKjyQUCvGpYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlT4/uWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DFD5C4AF1A;
+	Wed, 19 Jun 2024 13:31:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802567;
-	bh=qGaX9WDcgpsQ+WQkLDTSJSlRPvS/u/f6TRLlnGtCcyM=;
+	s=korg; t=1718803917;
+	bh=exWtZMM4qJwCfSNS0UAfQ4ke1oxTU1V/FM1Wzkxulsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gIn6cu2OPJj1GrfhJEebk5MwFPP1KMGw+x+F7zgMHdYCOnSqpMuOjKS2vrqQ8BNYN
-	 EzEh9q9yFC1K9d3wYe4KXnw6fteivnYuzyVK77PgXlVZNpd3tcS+tkRePiHri8n/IC
-	 mUJjKlfM8Iju80ykfr7xTVSVe+VbhyO9JWVfArR0=
+	b=vlT4/uWHDwKmPPlhrju16lSiBfCrj98LlyMcDYEa681zjFduIYmjsre9XPngTt2vI
+	 3BSHYQltuw9oANgLieW2CrRvflEpyMjLItWQHyhtbReG1kM7wj1OesL8ULMHkFii2i
+	 dmQu7cbdZtW8JOMw2OJ127FxLOGKpa8N/mfV75q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"will@kernel.org, mhklinux@outlook.com, petr.tesarik1@huawei-partners.com, nicolinc@nvidia.com, hch@lst.de, Fabio Estevam" <festevam@denx.de>,
-	Petr Tesarik <petr.tesarik1@huawei-partners.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH 6.6 240/267] swiotlb: extend buffer pre-padding to alloc_align_mask if necessary
+	Lion Ackermann <nnamrec@gmail.com>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 148/217] netfilter: ipset: Fix race between namespace cleanup and gc in the list:set type
 Date: Wed, 19 Jun 2024 14:56:31 +0200
-Message-ID: <20240619125615.534420629@linuxfoundation.org>
+Message-ID: <20240619125602.400992548@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,192 +63,293 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
 
-commit af133562d5aff41fcdbe51f1a504ae04788b5fc0 upstream.
+[ Upstream commit 4e7aaa6b82d63e8ddcbfb56b4fd3d014ca586f10 ]
 
-Allow a buffer pre-padding of up to alloc_align_mask, even if it requires
-allocating additional IO TLB slots.
+Lion Ackermann reported that there is a race condition between namespace cleanup
+in ipset and the garbage collection of the list:set type. The namespace
+cleanup can destroy the list:set type of sets while the gc of the set type is
+waiting to run in rcu cleanup. The latter uses data from the destroyed set which
+thus leads use after free. The patch contains the following parts:
 
-If the allocation alignment is bigger than IO_TLB_SIZE and min_align_mask
-covers any non-zero bits in the original address between IO_TLB_SIZE and
-alloc_align_mask, these bits are not preserved in the swiotlb buffer
-address.
+- When destroying all sets, first remove the garbage collectors, then wait
+  if needed and then destroy the sets.
+- Fix the badly ordered "wait then remove gc" for the destroy a single set
+  case.
+- Fix the missing rcu locking in the list:set type in the userspace test
+  case.
+- Use proper RCU list handlings in the list:set type.
 
-To fix this case, increase the allocation size and use a larger offset
-within the allocated buffer. As a result, extra padding slots may be
-allocated before the mapping start address.
+The patch depends on c1193d9bbbd3 (netfilter: ipset: Add list flush to cancel_gc).
 
-Leave orig_addr in these padding slots initialized to INVALID_PHYS_ADDR.
-These slots do not correspond to any CPU buffer, so attempts to sync the
-data should be ignored.
-
-The padding slots should be automatically released when the buffer is
-unmapped. However, swiotlb_tbl_unmap_single() takes only the address of the
-DMA buffer slot, not the first padding slot. Save the number of padding
-slots in struct io_tlb_slot and use it to adjust the slot index in
-swiotlb_release_slots(), so all allocated slots are properly freed.
-
-Cc: stable@vger.kernel.org # v6.6+
-Fixes: 2fd4fa5d3fb5 ("swiotlb: Fix alignment checks when both allocation and DMA masks are present")
-Link: https://lore.kernel.org/linux-iommu/20240311210507.217daf8b@meshulam.tesarici.cz/
-Signed-off-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 97f7cf1cd80e (netfilter: ipset: fix performance regression in swap operation)
+Reported-by: Lion Ackermann <nnamrec@gmail.com>
+Tested-by: Lion Ackermann <nnamrec@gmail.com>
+Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/swiotlb.c |   59 +++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 46 insertions(+), 13 deletions(-)
+ net/netfilter/ipset/ip_set_core.c     | 81 +++++++++++++++------------
+ net/netfilter/ipset/ip_set_list_set.c | 30 +++++-----
+ 2 files changed, 60 insertions(+), 51 deletions(-)
 
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -69,11 +69,14 @@
-  * @alloc_size:	Size of the allocated buffer.
-  * @list:	The free list describing the number of free entries available
-  *		from each index.
-+ * @pad_slots:	Number of preceding padding slots. Valid only in the first
-+ *		allocated non-padding slot.
-  */
- struct io_tlb_slot {
- 	phys_addr_t orig_addr;
- 	size_t alloc_size;
--	unsigned int list;
-+	unsigned short list;
-+	unsigned short pad_slots;
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index f645da82d826e..649b8a5901e33 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -1174,23 +1174,50 @@ ip_set_setname_policy[IPSET_ATTR_CMD_MAX + 1] = {
+ 				    .len = IPSET_MAXNAMELEN - 1 },
  };
  
- static bool swiotlb_force_bounce;
-@@ -287,6 +290,7 @@ static void swiotlb_init_io_tlb_pool(str
- 					 mem->nslabs - i);
- 		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
- 		mem->slots[i].alloc_size = 0;
-+		mem->slots[i].pad_slots = 0;
- 	}
- 
- 	memset(vaddr, 0, bytes);
-@@ -821,12 +825,30 @@ void swiotlb_dev_init(struct device *dev
- #endif
- }
- 
--/*
-- * Return the offset into a iotlb slot required to keep the device happy.
-+/**
-+ * swiotlb_align_offset() - Get required offset into an IO TLB allocation.
-+ * @dev:         Owning device.
-+ * @align_mask:  Allocation alignment mask.
-+ * @addr:        DMA address.
-+ *
-+ * Return the minimum offset from the start of an IO TLB allocation which is
-+ * required for a given buffer address and allocation alignment to keep the
-+ * device happy.
-+ *
-+ * First, the address bits covered by min_align_mask must be identical in the
-+ * original address and the bounce buffer address. High bits are preserved by
-+ * choosing a suitable IO TLB slot, but bits below IO_TLB_SHIFT require extra
-+ * padding bytes before the bounce buffer.
-+ *
-+ * Second, @align_mask specifies which bits of the first allocated slot must
-+ * be zero. This may require allocating additional padding slots, and then the
-+ * offset (in bytes) from the first such padding slot is returned.
-  */
--static unsigned int swiotlb_align_offset(struct device *dev, u64 addr)
-+static unsigned int swiotlb_align_offset(struct device *dev,
-+					 unsigned int align_mask, u64 addr)
- {
--	return addr & dma_get_min_align_mask(dev) & (IO_TLB_SIZE - 1);
-+	return addr & dma_get_min_align_mask(dev) &
-+		(align_mask | (IO_TLB_SIZE - 1));
- }
- 
- /*
-@@ -847,7 +869,7 @@ static void swiotlb_bounce(struct device
- 		return;
- 
- 	tlb_offset = tlb_addr & (IO_TLB_SIZE - 1);
--	orig_addr_offset = swiotlb_align_offset(dev, orig_addr);
-+	orig_addr_offset = swiotlb_align_offset(dev, 0, orig_addr);
- 	if (tlb_offset < orig_addr_offset) {
- 		dev_WARN_ONCE(dev, 1,
- 			"Access before mapping start detected. orig offset %u, requested offset %u.\n",
-@@ -983,7 +1005,7 @@ static int swiotlb_area_find_slots(struc
- 	unsigned long max_slots = get_max_slots(boundary_mask);
- 	unsigned int iotlb_align_mask = dma_get_min_align_mask(dev);
- 	unsigned int nslots = nr_slots(alloc_size), stride;
--	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
-+	unsigned int offset = swiotlb_align_offset(dev, 0, orig_addr);
- 	unsigned int index, slots_checked, count = 0, i;
- 	unsigned long flags;
- 	unsigned int slot_base;
-@@ -1282,11 +1304,12 @@ phys_addr_t swiotlb_tbl_map_single(struc
- 		unsigned long attrs)
- {
- 	struct io_tlb_mem *mem = dev->dma_io_tlb_mem;
--	unsigned int offset = swiotlb_align_offset(dev, orig_addr);
-+	unsigned int offset;
- 	struct io_tlb_pool *pool;
- 	unsigned int i;
- 	int index;
- 	phys_addr_t tlb_addr;
-+	unsigned short pad_slots;
- 
- 	if (!mem || !mem->nslabs) {
- 		dev_warn_ratelimited(dev,
-@@ -1303,6 +1326,7 @@ phys_addr_t swiotlb_tbl_map_single(struc
- 		return (phys_addr_t)DMA_MAPPING_ERROR;
- 	}
- 
-+	offset = swiotlb_align_offset(dev, alloc_align_mask, orig_addr);
- 	index = swiotlb_find_slots(dev, orig_addr,
- 				   alloc_size + offset, alloc_align_mask, &pool);
- 	if (index == -1) {
-@@ -1318,6 +1342,10 @@ phys_addr_t swiotlb_tbl_map_single(struc
- 	 * This is needed when we sync the memory.  Then we sync the buffer if
- 	 * needed.
- 	 */
-+	pad_slots = offset >> IO_TLB_SHIFT;
-+	offset &= (IO_TLB_SIZE - 1);
-+	index += pad_slots;
-+	pool->slots[index].pad_slots = pad_slots;
- 	for (i = 0; i < nr_slots(alloc_size + offset); i++)
- 		pool->slots[index + i].orig_addr = slot_addr(orig_addr, i);
- 	tlb_addr = slot_addr(pool->start, index) + offset;
-@@ -1336,13 +1364,17 @@ static void swiotlb_release_slots(struct
- {
- 	struct io_tlb_pool *mem = swiotlb_find_pool(dev, tlb_addr);
- 	unsigned long flags;
--	unsigned int offset = swiotlb_align_offset(dev, tlb_addr);
--	int index = (tlb_addr - offset - mem->start) >> IO_TLB_SHIFT;
--	int nslots = nr_slots(mem->slots[index].alloc_size + offset);
--	int aindex = index / mem->area_nslabs;
--	struct io_tlb_area *area = &mem->areas[aindex];
-+	unsigned int offset = swiotlb_align_offset(dev, 0, tlb_addr);
-+	int index, nslots, aindex;
-+	struct io_tlb_area *area;
- 	int count, i;
- 
-+	index = (tlb_addr - offset - mem->start) >> IO_TLB_SHIFT;
-+	index -= mem->slots[index].pad_slots;
-+	nslots = nr_slots(mem->slots[index].alloc_size + offset);
-+	aindex = index / mem->area_nslabs;
-+	area = &mem->areas[aindex];
++/* In order to return quickly when destroying a single set, it is split
++ * into two stages:
++ * - Cancel garbage collector
++ * - Destroy the set itself via call_rcu()
++ */
 +
- 	/*
- 	 * Return the buffer to the free list by setting the corresponding
- 	 * entries to indicate the number of contiguous entries available.
-@@ -1365,6 +1397,7 @@ static void swiotlb_release_slots(struct
- 		mem->slots[i].list = ++count;
- 		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
- 		mem->slots[i].alloc_size = 0;
-+		mem->slots[i].pad_slots = 0;
- 	}
+ static void
+-ip_set_destroy_set(struct ip_set *set)
++ip_set_destroy_set_rcu(struct rcu_head *head)
+ {
+-	pr_debug("set: %s\n",  set->name);
++	struct ip_set *set = container_of(head, struct ip_set, rcu);
  
- 	/*
+-	/* Must call it without holding any lock */
+ 	set->variant->destroy(set);
+ 	module_put(set->type->me);
+ 	kfree(set);
+ }
+ 
+ static void
+-ip_set_destroy_set_rcu(struct rcu_head *head)
++_destroy_all_sets(struct ip_set_net *inst)
+ {
+-	struct ip_set *set = container_of(head, struct ip_set, rcu);
++	struct ip_set *set;
++	ip_set_id_t i;
++	bool need_wait = false;
+ 
+-	ip_set_destroy_set(set);
++	/* First cancel gc's: set:list sets are flushed as well */
++	for (i = 0; i < inst->ip_set_max; i++) {
++		set = ip_set(inst, i);
++		if (set) {
++			set->variant->cancel_gc(set);
++			if (set->type->features & IPSET_TYPE_NAME)
++				need_wait = true;
++		}
++	}
++	/* Must wait for flush to be really finished  */
++	if (need_wait)
++		rcu_barrier();
++	for (i = 0; i < inst->ip_set_max; i++) {
++		set = ip_set(inst, i);
++		if (set) {
++			ip_set(inst, i) = NULL;
++			set->variant->destroy(set);
++			module_put(set->type->me);
++			kfree(set);
++		}
++	}
+ }
+ 
+ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+@@ -1204,11 +1231,10 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (unlikely(protocol_min_failed(attr)))
+ 		return -IPSET_ERR_PROTOCOL;
+ 
+-
+ 	/* Commands are serialized and references are
+ 	 * protected by the ip_set_ref_lock.
+ 	 * External systems (i.e. xt_set) must call
+-	 * ip_set_put|get_nfnl_* functions, that way we
++	 * ip_set_nfnl_get_* functions, that way we
+ 	 * can safely check references here.
+ 	 *
+ 	 * list:set timer can only decrement the reference
+@@ -1216,8 +1242,6 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 	 * without holding the lock.
+ 	 */
+ 	if (!attr[IPSET_ATTR_SETNAME]) {
+-		/* Must wait for flush to be really finished in list:set */
+-		rcu_barrier();
+ 		read_lock_bh(&ip_set_ref_lock);
+ 		for (i = 0; i < inst->ip_set_max; i++) {
+ 			s = ip_set(inst, i);
+@@ -1228,15 +1252,7 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 		}
+ 		inst->is_destroyed = true;
+ 		read_unlock_bh(&ip_set_ref_lock);
+-		for (i = 0; i < inst->ip_set_max; i++) {
+-			s = ip_set(inst, i);
+-			if (s) {
+-				ip_set(inst, i) = NULL;
+-				/* Must cancel garbage collectors */
+-				s->variant->cancel_gc(s);
+-				ip_set_destroy_set(s);
+-			}
+-		}
++		_destroy_all_sets(inst);
+ 		/* Modified by ip_set_destroy() only, which is serialized */
+ 		inst->is_destroyed = false;
+ 	} else {
+@@ -1257,12 +1273,12 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+ 		features = s->type->features;
+ 		ip_set(inst, i) = NULL;
+ 		read_unlock_bh(&ip_set_ref_lock);
++		/* Must cancel garbage collectors */
++		s->variant->cancel_gc(s);
+ 		if (features & IPSET_TYPE_NAME) {
+ 			/* Must wait for flush to be really finished  */
+ 			rcu_barrier();
+ 		}
+-		/* Must cancel garbage collectors */
+-		s->variant->cancel_gc(s);
+ 		call_rcu(&s->rcu, ip_set_destroy_set_rcu);
+ 	}
+ 	return 0;
+@@ -2367,30 +2383,25 @@ ip_set_net_init(struct net *net)
+ }
+ 
+ static void __net_exit
+-ip_set_net_exit(struct net *net)
++ip_set_net_pre_exit(struct net *net)
+ {
+ 	struct ip_set_net *inst = ip_set_pernet(net);
+ 
+-	struct ip_set *set = NULL;
+-	ip_set_id_t i;
+-
+ 	inst->is_deleted = true; /* flag for ip_set_nfnl_put */
++}
+ 
+-	nfnl_lock(NFNL_SUBSYS_IPSET);
+-	for (i = 0; i < inst->ip_set_max; i++) {
+-		set = ip_set(inst, i);
+-		if (set) {
+-			ip_set(inst, i) = NULL;
+-			set->variant->cancel_gc(set);
+-			ip_set_destroy_set(set);
+-		}
+-	}
+-	nfnl_unlock(NFNL_SUBSYS_IPSET);
++static void __net_exit
++ip_set_net_exit(struct net *net)
++{
++	struct ip_set_net *inst = ip_set_pernet(net);
++
++	_destroy_all_sets(inst);
+ 	kvfree(rcu_dereference_protected(inst->ip_set_list, 1));
+ }
+ 
+ static struct pernet_operations ip_set_net_ops = {
+ 	.init	= ip_set_net_init,
++	.pre_exit = ip_set_net_pre_exit,
+ 	.exit   = ip_set_net_exit,
+ 	.id	= &ip_set_net_id,
+ 	.size	= sizeof(struct ip_set_net),
+diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+index 6bc7019982b05..e839c356bcb56 100644
+--- a/net/netfilter/ipset/ip_set_list_set.c
++++ b/net/netfilter/ipset/ip_set_list_set.c
+@@ -79,7 +79,7 @@ list_set_kadd(struct ip_set *set, const struct sk_buff *skb,
+ 	struct set_elem *e;
+ 	int ret;
+ 
+-	list_for_each_entry(e, &map->members, list) {
++	list_for_each_entry_rcu(e, &map->members, list) {
+ 		if (SET_WITH_TIMEOUT(set) &&
+ 		    ip_set_timeout_expired(ext_timeout(e, set)))
+ 			continue;
+@@ -99,7 +99,7 @@ list_set_kdel(struct ip_set *set, const struct sk_buff *skb,
+ 	struct set_elem *e;
+ 	int ret;
+ 
+-	list_for_each_entry(e, &map->members, list) {
++	list_for_each_entry_rcu(e, &map->members, list) {
+ 		if (SET_WITH_TIMEOUT(set) &&
+ 		    ip_set_timeout_expired(ext_timeout(e, set)))
+ 			continue;
+@@ -188,9 +188,10 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 	struct list_set *map = set->data;
+ 	struct set_adt_elem *d = value;
+ 	struct set_elem *e, *next, *prev = NULL;
+-	int ret;
++	int ret = 0;
+ 
+-	list_for_each_entry(e, &map->members, list) {
++	rcu_read_lock();
++	list_for_each_entry_rcu(e, &map->members, list) {
+ 		if (SET_WITH_TIMEOUT(set) &&
+ 		    ip_set_timeout_expired(ext_timeout(e, set)))
+ 			continue;
+@@ -201,6 +202,7 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 
+ 		if (d->before == 0) {
+ 			ret = 1;
++			goto out;
+ 		} else if (d->before > 0) {
+ 			next = list_next_entry(e, list);
+ 			ret = !list_is_last(&e->list, &map->members) &&
+@@ -208,9 +210,11 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 		} else {
+ 			ret = prev && prev->id == d->refid;
+ 		}
+-		return ret;
++		goto out;
+ 	}
+-	return 0;
++out:
++	rcu_read_unlock();
++	return ret;
+ }
+ 
+ static void
+@@ -239,7 +243,7 @@ list_set_uadd(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ 
+ 	/* Find where to add the new entry */
+ 	n = prev = next = NULL;
+-	list_for_each_entry(e, &map->members, list) {
++	list_for_each_entry_rcu(e, &map->members, list) {
+ 		if (SET_WITH_TIMEOUT(set) &&
+ 		    ip_set_timeout_expired(ext_timeout(e, set)))
+ 			continue;
+@@ -316,9 +320,9 @@ list_set_udel(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+ {
+ 	struct list_set *map = set->data;
+ 	struct set_adt_elem *d = value;
+-	struct set_elem *e, *next, *prev = NULL;
++	struct set_elem *e, *n, *next, *prev = NULL;
+ 
+-	list_for_each_entry(e, &map->members, list) {
++	list_for_each_entry_safe(e, n, &map->members, list) {
+ 		if (SET_WITH_TIMEOUT(set) &&
+ 		    ip_set_timeout_expired(ext_timeout(e, set)))
+ 			continue;
+@@ -424,14 +428,8 @@ static void
+ list_set_destroy(struct ip_set *set)
+ {
+ 	struct list_set *map = set->data;
+-	struct set_elem *e, *n;
+ 
+-	list_for_each_entry_safe(e, n, &map->members, list) {
+-		list_del(&e->list);
+-		ip_set_put_byindex(map->net, e->id);
+-		ip_set_ext_destroy(set, e);
+-		kfree(e);
+-	}
++	WARN_ON_ONCE(!list_empty(&map->members));
+ 	kfree(map);
+ 
+ 	set->data = NULL;
+-- 
+2.43.0
+
 
 
 
