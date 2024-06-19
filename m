@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2DB990ED1B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E8990EBE9
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:02:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58DDBB260AB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8779E283B0C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C65146A85;
-	Wed, 19 Jun 2024 13:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78F314F9FE;
+	Wed, 19 Jun 2024 13:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhAkMrZJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhVKX7Ml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6640714389C;
-	Wed, 19 Jun 2024 13:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D5A145FEF;
+	Wed, 19 Jun 2024 13:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802848; cv=none; b=Xziy6u78VsOPsQwDncJHgapoTcYacDLLWMUYb1t6TqPPf0iVWfE6rSLuzAGL5CMXXBg2NMVF7k/n5PwHkT2YjIpWePpoQyVRIsFBU8FX5HGWuYKk1BdpNS46Xhhldl2UTv7DPzbmlUtn2M2Kme8cE+u8tLGT4YPCqkQyV9vCHC4=
+	t=1718802081; cv=none; b=JW9D1mNNb4mwi3Fn1WIP5IH6x2HEThjhQS7UUfE3b2mWN6Zy/RBR+P3L12NfrKFKu8BGZxRJHloP3kMddTYtyz3lJuDWLL9gxcLWMm9JpO1Fy56fsYFZwDuC+odebgh8kJz6ATIEThEZwmbZe+1NnwtQlnKQqyTv1RtA15+R9vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802848; c=relaxed/simple;
-	bh=hwlEqu6laJ3wzysqv7d8TYt1rQpXH5s1zJMoA5Xehy4=;
+	s=arc-20240116; t=1718802081; c=relaxed/simple;
+	bh=+mm+su0uX/U5asRcsOrEmT3/4oNMk0Wz6ntPedczTaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSNQHJygkokVRcsj5ttWo2OvhSUhgNOkJ+Lg7RJ3sjckhrDrY0wvph4cAUuDmI/rISR0fIY7M8/3EnPDOHa7meIVrj58VciIiC2hlZxeQjhxzaeNA1ZpyVCkCRGm2/G5aLBUa7Nr0GQOnah19pfkGUIuK2BccpFiBDxcdVvXX4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhAkMrZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D775AC2BBFC;
-	Wed, 19 Jun 2024 13:14:07 +0000 (UTC)
+	 MIME-Version; b=YKrpGJmmpdbMTZNgLNuzuq+hX+CfSbK2JoL0Kt4huCXl81Z10JlHzUJObqGAeyfjV1nPUeAQ74X1HAPcKky6fbwglllwo9DZOYWZDQRoFQ2zw0l5FEoAA9rtwoinkPnSNIwguRoL0XtHgTLK1My9stqQRQXhREwsyfr3rNH+ILE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhVKX7Ml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEE8C2BBFC;
+	Wed, 19 Jun 2024 13:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802848;
-	bh=hwlEqu6laJ3wzysqv7d8TYt1rQpXH5s1zJMoA5Xehy4=;
+	s=korg; t=1718802080;
+	bh=+mm+su0uX/U5asRcsOrEmT3/4oNMk0Wz6ntPedczTaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhAkMrZJeuTu+qXmFt8shxFetk7tDDt0msVwYzEOTcylQMGVsn4OklZmdnbwJWJP3
-	 kCGftfyemUiRZh+ZOEtZt5ny+Upb5qPeRvhywrqXAxSitjfR/o0sl8P3GWSMS2tH+1
-	 bAIAXb/ZQgVsC+ZkXnUmH6ePDOjbCL33GFxk5GQk=
+	b=IhVKX7MlgAKytk9WXQmsFiQA1tDnqpr9tPZHAKlCZMqbopkW0mBZZm79/LT9juN+0
+	 01DkVaK6j0b6DmVoCcot9jZKDkiFYM04QZF14nF46PO8MgmwErfpOX0uXDmU/ZNWB9
+	 4DHPim32qpRPD7YpiKajHkW+NK+eoP4wF4UuydmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 067/281] af_unix: Use unix_recvq_full_lockless() in unix_stream_connect().
+Subject: [PATCH 6.6 075/267] bpf: fix multi-uprobe PID filtering logic
 Date: Wed, 19 Jun 2024 14:53:46 +0200
-Message-ID: <20240619125612.422919556@linuxfoundation.org>
+Message-ID: <20240619125609.233910558@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 45d872f0e65593176d880ec148f41ad7c02e40a7 ]
+[ Upstream commit 46ba0e49b64232adac35a2bc892f1710c5b0fb7f ]
 
-Once sk->sk_state is changed to TCP_LISTEN, it never changes.
+Current implementation of PID filtering logic for multi-uprobes in
+uprobe_prog_run() is filtering down to exact *thread*, while the intent
+for PID filtering it to filter by *process* instead. The check in
+uprobe_prog_run() also differs from the analogous one in
+uprobe_multi_link_filter() for some reason. The latter is correct,
+checking task->mm, not the task itself.
 
-unix_accept() takes advantage of this characteristics; it does not
-hold the listener's unix_state_lock() and only acquires recvq lock
-to pop one skb.
+Fix the check in uprobe_prog_run() to perform the same task->mm check.
 
-It means unix_state_lock() does not prevent the queue length from
-changing in unix_stream_connect().
+While doing this, we also update get_pid_task() use to use PIDTYPE_TGID
+type of lookup, given the intent is to get a representative task of an
+entire process. This doesn't change behavior, but seems more logical. It
+would hold task group leader task now, not any random thread task.
 
-Thus, we need to use unix_recvq_full_lockless() to avoid data-race.
+Last but not least, given multi-uprobe support is half-broken due to
+this PID filtering logic (depending on whether PID filtering is
+important or not), we need to make it easy for user space consumers
+(including libbpf) to easily detect whether PID filtering logic was
+already fixed.
 
-Now we remove unix_recvq_full() as no one uses it.
+We do it here by adding an early check on passed pid parameter. If it's
+negative (and so has no chance of being a valid PID), we return -EINVAL.
+Previous behavior would eventually return -ESRCH ("No process found"),
+given there can't be any process with negative PID. This subtle change
+won't make any practical change in behavior, but will allow applications
+to detect PID filtering fixes easily. Libbpf fixes take advantage of
+this in the next patch.
 
-Note that we can remove READ_ONCE() for sk->sk_max_ack_backlog in
-unix_recvq_full_lockless() because of the following reasons:
-
-  (1) For SOCK_DGRAM, it is a written-once field in unix_create1()
-
-  (2) For SOCK_STREAM and SOCK_SEQPACKET, it is changed under the
-      listener's unix_state_lock() in unix_listen(), and we hold
-      the lock in unix_stream_connect()
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Fixes: b733eeade420 ("bpf: Add pid filter support for uprobe_multi link")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20240521163401.3005045-2-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ kernel/trace/bpf_trace.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 0c217ac17e053..f0760afad71fe 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -221,15 +221,9 @@ static inline int unix_may_send(struct sock *sk, struct sock *osk)
- 	return unix_peer(osk) == NULL || unix_our_peer(sk, osk);
- }
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 8edbafe0d4cdf..cc29bf49f7159 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -3099,7 +3099,7 @@ static int uprobe_prog_run(struct bpf_uprobe *uprobe,
+ 	struct bpf_run_ctx *old_run_ctx;
+ 	int err = 0;
  
--static inline int unix_recvq_full(const struct sock *sk)
--{
--	return skb_queue_len(&sk->sk_receive_queue) > sk->sk_max_ack_backlog;
--}
--
- static inline int unix_recvq_full_lockless(const struct sock *sk)
- {
--	return skb_queue_len_lockless(&sk->sk_receive_queue) >
--		READ_ONCE(sk->sk_max_ack_backlog);
-+	return skb_queue_len_lockless(&sk->sk_receive_queue) > sk->sk_max_ack_backlog;
- }
+-	if (link->task && current != link->task)
++	if (link->task && current->mm != link->task->mm)
+ 		return 0;
  
- struct sock *unix_peer_get(struct sock *s)
-@@ -1545,7 +1539,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	if (other->sk_shutdown & RCV_SHUTDOWN)
- 		goto out_unlock;
+ 	if (sleepable)
+@@ -3200,8 +3200,9 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 	upath = u64_to_user_ptr(attr->link_create.uprobe_multi.path);
+ 	uoffsets = u64_to_user_ptr(attr->link_create.uprobe_multi.offsets);
+ 	cnt = attr->link_create.uprobe_multi.cnt;
++	pid = attr->link_create.uprobe_multi.pid;
  
--	if (unix_recvq_full(other)) {
-+	if (unix_recvq_full_lockless(other)) {
- 		err = -EAGAIN;
- 		if (!timeo)
- 			goto out_unlock;
+-	if (!upath || !uoffsets || !cnt)
++	if (!upath || !uoffsets || !cnt || pid < 0)
+ 		return -EINVAL;
+ 	if (cnt > MAX_UPROBE_MULTI_CNT)
+ 		return -E2BIG;
+@@ -3225,10 +3226,9 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
+ 		goto error_path_put;
+ 	}
+ 
+-	pid = attr->link_create.uprobe_multi.pid;
+ 	if (pid) {
+ 		rcu_read_lock();
+-		task = get_pid_task(find_vpid(pid), PIDTYPE_PID);
++		task = get_pid_task(find_vpid(pid), PIDTYPE_TGID);
+ 		rcu_read_unlock();
+ 		if (!task) {
+ 			err = -ESRCH;
 -- 
 2.43.0
 
