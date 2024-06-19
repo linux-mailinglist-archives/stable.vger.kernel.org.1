@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-53981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03E2390EC24
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F18D90EE63
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4F891F2288E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38AB0286A41
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CE4145334;
-	Wed, 19 Jun 2024 13:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6664B147C60;
+	Wed, 19 Jun 2024 13:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1M1rPGa3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ssjCTYLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7690A13AA40;
-	Wed, 19 Jun 2024 13:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23ED414373E;
+	Wed, 19 Jun 2024 13:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802243; cv=none; b=s7qRbY+5cVOl3YdDTFzkhHoJOkMjs683lIavLJQ4OMxXazfoZ2mmxhlxa3Bdk4Tcb/dg4wYYRQYi+GR+4sMl9J/ZV3KDCqtei/+TFg85PNa/jsCxemMVhitkfFlLkdy8pw2WolVAAmyI7LgI8IfE3CSL9PVPy4+wnGIXf0FZlJU=
+	t=1718803687; cv=none; b=L+JYGxUvSlbJNp8Eaua2rxeBtYDFhLjPccBRKHg7hvspMxI2+o4QDMr4GlpB4RX4OpmEBT9igZd4O9+p/dNeHQj4BniQTgeqjyTcr4yEFbF0e1/+DlrhoG2mr0jB8aoCoeBuDUgbC1DIBslKRswdrgV+nt/BqR2fEiG9VrSG5O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802243; c=relaxed/simple;
-	bh=ZF3Vx7UBM/0DkLPn/Ml+tD9orP250VGBMrKb0xUjAvc=;
+	s=arc-20240116; t=1718803687; c=relaxed/simple;
+	bh=dKFvKeF0NpWh3GVB9SKfYGzDM9ZVOwM9T76QfbOEFu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GK0A3JwEyp/+KhYmtrtkAbxVZpGlX8/8W6rgXCGFRxVBP8C99oAMwD4L00fxW6JqF48gVfKCpUp1wZCpWC+qmTHXKW8G76gHXpTAFkVVMnbGwOdFrwaXcmf1SM/+zv7q5nfpK357ChBeQrcFf+cMkjUU5UWHjUuG6EzvCcZo5N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1M1rPGa3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED33BC2BBFC;
-	Wed, 19 Jun 2024 13:04:02 +0000 (UTC)
+	 MIME-Version; b=KTxx98n+8oXAQhdqnAs7+XvX/uAL8zWBSmCxGL/NvmjiuiE6c4RIf0nB6Alh8IwHSUSTiXNg0f5VF0+HSdwXXMQr9/7lf3Gas+xf4lxm4ehUmr4dbRuRiA+Ne4cICVRZ35u+adUfsLpq2a8uNSLp1Z/u1HhcE6T4ZWG9cVjAC08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ssjCTYLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D80C2BBFC;
+	Wed, 19 Jun 2024 13:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802243;
-	bh=ZF3Vx7UBM/0DkLPn/Ml+tD9orP250VGBMrKb0xUjAvc=;
+	s=korg; t=1718803686;
+	bh=dKFvKeF0NpWh3GVB9SKfYGzDM9ZVOwM9T76QfbOEFu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1M1rPGa34w6EQ/kp0Om9H40tKxwLdcEt0AtBVJFriUnWWuI7jDjMoUm+m9f8q6ABG
-	 2mQ0sYxESvqwwr3TL8HOYPIbhYOJ+fKaJJkhdFP45II1kx6JncFjHEZ+qYWtIfR5/t
-	 9hXKBdCmNJ4aTnIAL+a50h2d9/nLvv3GrElntxaw=
+	b=ssjCTYLZX8QfFPW6Ap4cxL2s/L83ZgLaVNmqYBEvLG7byMPf6wSpAo+TSjvGPaVwr
+	 qAG4uMxFHLEbKrTeybLiad4sK766mvpvF8mI9IBiYVJAVSssbYXUmP94ACmESOb3bB
+	 pmuj5H1OAy9GYNbBJoktCOieyzcjYQjHRc6GnUn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 131/267] iommu: Return right value in iommu_sva_bind_device()
+Subject: [PATCH 6.1 039/217] af_unix: Annotate data-race of sk->sk_state in unix_stream_connect().
 Date: Wed, 19 Jun 2024 14:54:42 +0200
-Message-ID: <20240619125611.379185011@linuxfoundation.org>
+Message-ID: <20240619125558.165676434@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 89e8a2366e3bce584b6c01549d5019c5cda1205e ]
+[ Upstream commit a9bf9c7dc6a5899c01cb8f6e773a66315a5cd4b7 ]
 
-iommu_sva_bind_device() should return either a sva bond handle or an
-ERR_PTR value in error cases. Existing drivers (idxd and uacce) only
-check the return value with IS_ERR(). This could potentially lead to
-a kernel NULL pointer dereference issue if the function returns NULL
-instead of an error pointer.
+As small optimisation, unix_stream_connect() prefetches the client's
+sk->sk_state without unix_state_lock() and checks if it's TCP_CLOSE.
 
-In reality, this doesn't cause any problems because iommu_sva_bind_device()
-only returns NULL when the kernel is not configured with CONFIG_IOMMU_SVA.
-In this case, iommu_dev_enable_feature(dev, IOMMU_DEV_FEAT_SVA) will
-return an error, and the device drivers won't call iommu_sva_bind_device()
-at all.
+Later, sk->sk_state is checked again under unix_state_lock().
 
-Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20240528042528.71396-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Let's use READ_ONCE() for the first check and TCP_CLOSE directly for
+the second check.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/iommu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/unix/af_unix.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-index 0225cf7445de2..b6ef263e85c06 100644
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -1199,7 +1199,7 @@ u32 iommu_sva_get_pasid(struct iommu_sva *handle);
- static inline struct iommu_sva *
- iommu_sva_bind_device(struct device *dev, struct mm_struct *mm)
- {
--	return NULL;
-+	return ERR_PTR(-ENODEV);
- }
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 67a2a0e842e4f..6e03b364bb727 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1469,7 +1469,6 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	struct sk_buff *skb = NULL;
+ 	long timeo;
+ 	int err;
+-	int st;
  
- static inline void iommu_sva_unbind_device(struct iommu_sva *handle)
+ 	err = unix_validate_addr(sunaddr, addr_len);
+ 	if (err)
+@@ -1553,9 +1552,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 
+ 	   Well, and we have to recheck the state after socket locked.
+ 	 */
+-	st = sk->sk_state;
+-
+-	switch (st) {
++	switch (READ_ONCE(sk->sk_state)) {
+ 	case TCP_CLOSE:
+ 		/* This is ok... continue with connect */
+ 		break;
+@@ -1570,7 +1567,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 
+ 	unix_state_lock_nested(sk, U_LOCK_SECOND);
+ 
+-	if (sk->sk_state != st) {
++	if (sk->sk_state != TCP_CLOSE) {
+ 		unix_state_unlock(sk);
+ 		unix_state_unlock(other);
+ 		sock_put(other);
 -- 
 2.43.0
 
