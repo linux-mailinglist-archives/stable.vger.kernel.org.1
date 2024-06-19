@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-54345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B1CD90EDC3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7318490EC94
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC0561F227A2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3F582828F6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38F81494A9;
-	Wed, 19 Jun 2024 13:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C3C1442F1;
+	Wed, 19 Jun 2024 13:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4WSu++X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDAfOiHD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EF21459F2;
-	Wed, 19 Jun 2024 13:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4F4143C43;
+	Wed, 19 Jun 2024 13:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803305; cv=none; b=X5elt3VZRz3JVWcT1xvh1ec2BfS5UyuxZ9Hn8Ddp1q6jTnzjZG1raM+Z8Buc5KWpx34RZtr1gq/sKrgdDdO23wKpfSnfUIwgSTEnWBqgVue2cFEwgejoPLKxnUnhCaOkqRNo0kWXG+YAS03ey9eqL7trbQWgEhFOIzxf0oi9zSk=
+	t=1718802538; cv=none; b=lUtpv8xTZ2LEQ+omSH7JOAujwtDvTcva1hpvufhxipQVUDP90wzLc/E/SoOQAlt4lNrRohILbQ+L0s9zVyj5I3PDNx5Z50/+dupNCFZgILSxshubSRS7VaILROWjOg8QBQm/IdIDwTjxYxVQ9cZ+aJ57VT4jlm9UbwffH5uGYfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803305; c=relaxed/simple;
-	bh=xg0tZFPh6UotqL88FLNXRPHb5h/Xt72IjgekniJdkmE=;
+	s=arc-20240116; t=1718802538; c=relaxed/simple;
+	bh=+i3xmw1fxIXjonzeByqElusHwXKYJ+n/NZG16LpuME8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vGMLqU5VOtNP+IDNxks4ZKN8caGJgg0SvN5sfg2kFiDby8vWzms0bT1/BfeUQp8g9b1o80LR5V+nOplpCutGhJa9BzW7w2it/LQmMIdzoNPq8Uikdk62YdMwFAX0/USBWEp+bfkoMB9gC92GIBywLdbcz1qNt2uXQA5lBEf3/aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4WSu++X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EB0C2BBFC;
-	Wed, 19 Jun 2024 13:21:44 +0000 (UTC)
+	 MIME-Version; b=KJ/G3eE+Yx+vvZ/BEWPi022ooY372n65GwuQEhjcA1MQvYyFTUkRpKl8kigFvnDEDd7UfNTW4jFs+Au3cQ7R7yOl9DWqjNrWyJrZUpZeZzO1JRGZY2H8IlCVNtnChlD1BEny4xx1SQUi8qDaMhwPo67uYYD+4G3m5K7hYfIXTyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDAfOiHD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BE2C4AF1D;
+	Wed, 19 Jun 2024 13:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803305;
-	bh=xg0tZFPh6UotqL88FLNXRPHb5h/Xt72IjgekniJdkmE=;
+	s=korg; t=1718802538;
+	bh=+i3xmw1fxIXjonzeByqElusHwXKYJ+n/NZG16LpuME8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4WSu++XudW4NtX7o9ILkSv/95Fe25v326PSQk5iCO4YGcpyh45SDG3TX/v6ib2W3
-	 z1omeAaB/k9QwzGhg0AQIsGNb0pzytwGPjTwoG9Rv/RQltiwJsdT4pJbiTUSSL9Wlu
-	 0ov0WizPzFFLGZG59xlwad8i03+RuTYBRymRof/g=
+	b=MDAfOiHDOawUh6ncTom0TbOAXEkqOkbBbVkdOxrazeG2tRN4WFGe6yDtkPJVf1mlx
+	 gVTyQXryQzG3jahL3EhmydrfynmMcS2h3bzMoaIcJ8YX/EXO8om+ledKjyO2NVPxTX
+	 UQRFMQIqMCPA5kICyO+FiDxJ4+EA4MZbhW/gVf40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Carlos Llamas <cmllamas@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 6.9 223/281] locking/atomic: scripts: fix ${atomic}_sub_and_test() kerneldoc
+	linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 231/267] xfs: fix scrub stats file permissions
 Date: Wed, 19 Jun 2024 14:56:22 +0200
-Message-ID: <20240619125618.540842573@linuxfoundation.org>
+Message-ID: <20240619125615.191534523@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit f92a59f6d12e31ead999fee9585471b95a8ae8a3 upstream.
+commit e610e856b938a1fc86e7ee83ad2f39716082bca7 upstream.
 
-For ${atomic}_sub_and_test() the @i parameter is the value to subtract,
-not add. Fix the typo in the kerneldoc template and generate the headers
-with this update.
+When the kernel is in lockdown mode, debugfs will only show files that
+are world-readable and cannot be written, mmaped, or used with ioctl.
+That more or less describes the scrub stats file, except that the
+permissions are wrong -- they should be 0444, not 0644.  You can't write
+the stats file, so the 0200 makes no sense.
 
-Fixes: ad8110706f38 ("locking/atomic: scripts: generate kerneldoc comments")
-Suggested-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20240515133844.3502360-1-cmllamas@google.com
+Meanwhile, the clear_stats file is only writable, but it got mode 0400
+instead of 0200, which would make more sense.
+
+Fix both files so that they make sense.
+
+Fixes: d7a74cad8f451 ("xfs: track usage statistics of online fsck")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/atomic/atomic-arch-fallback.h |    6 +++---
- include/linux/atomic/atomic-instrumented.h  |    8 ++++----
- include/linux/atomic/atomic-long.h          |    4 ++--
- scripts/atomic/kerneldoc/sub_and_test       |    2 +-
- 4 files changed, 10 insertions(+), 10 deletions(-)
+ fs/xfs/scrub/stats.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/atomic/atomic-arch-fallback.h
-+++ b/include/linux/atomic/atomic-arch-fallback.h
-@@ -2242,7 +2242,7 @@ raw_atomic_try_cmpxchg_relaxed(atomic_t
+--- a/fs/xfs/scrub/stats.c
++++ b/fs/xfs/scrub/stats.c
+@@ -329,9 +329,9 @@ xchk_stats_register(
+ 	if (!cs->cs_debugfs)
+ 		return;
  
- /**
-  * raw_atomic_sub_and_test() - atomic subtract and test if zero with full ordering
-- * @i: int value to add
-+ * @i: int value to subtract
-  * @v: pointer to atomic_t
-  *
-  * Atomically updates @v to (@v - @i) with full ordering.
-@@ -4368,7 +4368,7 @@ raw_atomic64_try_cmpxchg_relaxed(atomic6
- 
- /**
-  * raw_atomic64_sub_and_test() - atomic subtract and test if zero with full ordering
-- * @i: s64 value to add
-+ * @i: s64 value to subtract
-  * @v: pointer to atomic64_t
-  *
-  * Atomically updates @v to (@v - @i) with full ordering.
-@@ -4690,4 +4690,4 @@ raw_atomic64_dec_if_positive(atomic64_t
+-	debugfs_create_file("stats", 0644, cs->cs_debugfs, cs,
++	debugfs_create_file("stats", 0444, cs->cs_debugfs, cs,
+ 			&scrub_stats_fops);
+-	debugfs_create_file("clear_stats", 0400, cs->cs_debugfs, cs,
++	debugfs_create_file("clear_stats", 0200, cs->cs_debugfs, cs,
+ 			&clear_scrub_stats_fops);
  }
  
- #endif /* _LINUX_ATOMIC_FALLBACK_H */
--// 14850c0b0db20c62fdc78ccd1d42b98b88d76331
-+// b565db590afeeff0d7c9485ccbca5bb6e155749f
---- a/include/linux/atomic/atomic-instrumented.h
-+++ b/include/linux/atomic/atomic-instrumented.h
-@@ -1349,7 +1349,7 @@ atomic_try_cmpxchg_relaxed(atomic_t *v,
- 
- /**
-  * atomic_sub_and_test() - atomic subtract and test if zero with full ordering
-- * @i: int value to add
-+ * @i: int value to subtract
-  * @v: pointer to atomic_t
-  *
-  * Atomically updates @v to (@v - @i) with full ordering.
-@@ -2927,7 +2927,7 @@ atomic64_try_cmpxchg_relaxed(atomic64_t
- 
- /**
-  * atomic64_sub_and_test() - atomic subtract and test if zero with full ordering
-- * @i: s64 value to add
-+ * @i: s64 value to subtract
-  * @v: pointer to atomic64_t
-  *
-  * Atomically updates @v to (@v - @i) with full ordering.
-@@ -4505,7 +4505,7 @@ atomic_long_try_cmpxchg_relaxed(atomic_l
- 
- /**
-  * atomic_long_sub_and_test() - atomic subtract and test if zero with full ordering
-- * @i: long value to add
-+ * @i: long value to subtract
-  * @v: pointer to atomic_long_t
-  *
-  * Atomically updates @v to (@v - @i) with full ordering.
-@@ -5050,4 +5050,4 @@ atomic_long_dec_if_positive(atomic_long_
- 
- 
- #endif /* _LINUX_ATOMIC_INSTRUMENTED_H */
--// ce5b65e0f1f8a276268b667194581d24bed219d4
-+// 8829b337928e9508259079d32581775ececd415b
---- a/include/linux/atomic/atomic-long.h
-+++ b/include/linux/atomic/atomic-long.h
-@@ -1535,7 +1535,7 @@ raw_atomic_long_try_cmpxchg_relaxed(atom
- 
- /**
-  * raw_atomic_long_sub_and_test() - atomic subtract and test if zero with full ordering
-- * @i: long value to add
-+ * @i: long value to subtract
-  * @v: pointer to atomic_long_t
-  *
-  * Atomically updates @v to (@v - @i) with full ordering.
-@@ -1809,4 +1809,4 @@ raw_atomic_long_dec_if_positive(atomic_l
- }
- 
- #endif /* _LINUX_ATOMIC_LONG_H */
--// 1c4a26fc77f345342953770ebe3c4d08e7ce2f9a
-+// eadf183c3600b8b92b91839dd3be6bcc560c752d
---- a/scripts/atomic/kerneldoc/sub_and_test
-+++ b/scripts/atomic/kerneldoc/sub_and_test
-@@ -1,7 +1,7 @@
- cat <<EOF
- /**
-  * ${class}${atomicname}() - atomic subtract and test if zero with ${desc_order} ordering
-- * @i: ${int} value to add
-+ * @i: ${int} value to subtract
-  * @v: pointer to ${atomic}_t
-  *
-  * Atomically updates @v to (@v - @i) with ${desc_order} ordering.
 
 
 
