@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-53894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB8D90EBAF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03D890ECF7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0221C236C3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3953A283709
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E232B1304AD;
-	Wed, 19 Jun 2024 12:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9664E1459E3;
+	Wed, 19 Jun 2024 13:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mvg5IDh6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbVSKtky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFC21459F2;
-	Wed, 19 Jun 2024 12:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563961422B8;
+	Wed, 19 Jun 2024 13:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801986; cv=none; b=SuDbHd8PKsjZ5j+iSy+hUxgKOGuzXcim2yA3ZLJVYIppIYxOL7s+LvAcVgsuXRNkS8yKg9GqNByWHjMAo+Q7yNqvQwU6LJAQAv+T+i8/lxkcuyAqinuFBO0ivRemrJD59tcVnlvZy9+K+Qt6nskPaO3msESqWOVP8KdM+ENstlU=
+	t=1718802760; cv=none; b=nz9ra8b02FEWf9OTjuMoHvqff8vJXC4BNYCh2ogS6RVYDDX/6k7Pc3zeiIPR7IsD4IfGoiZsFR10SzE8yar44nuEd1YqdTly0HSiI1b3kGzH/m5dPQa2ojsrPClsZ8fVXzRRibI+q6Ja2cm5v0rXGeHpx8mPW3j7thv7bzno7+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801986; c=relaxed/simple;
-	bh=tN4Guvku0s8tlEAq3k9N2NrgluQK5CbSwo/bk6lr8Wg=;
+	s=arc-20240116; t=1718802760; c=relaxed/simple;
+	bh=TklqdShCxzI2YWhM1bhNAvCRrSvbsT/WC2qu3JXca60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LsB6bPI9dlLC7on+QluIopdPmK+LhJ4fk4LPkdA/jTdUp00GBj5GaIuambrdP4lYz70IUKNYry9OHkpP11kG3GZHUrl/RkwhOp+zqZEJAjzrG7SdHwa3HUgBhlIGSbXNERUqnEnySS5ZjnbWJthzAONzSihae1uz1p1FTsjvaXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mvg5IDh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F45C2BBFC;
-	Wed, 19 Jun 2024 12:59:45 +0000 (UTC)
+	 MIME-Version; b=XuRu2NUEgVkVvKhVG/nPg2J7uZjVYQ31ZCXrrhf86R/N1/WqVkU3v9fp5uw3l+BR3xFingi6GRBdg+3RvUv2gcwzhstvak54wUsR19nqGf5COZkddR6WgAl0/kJgmiEwgvy9Nvzmdt7UtwKEgPJ+4ANmCm2yqSP8KKPegzB432Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbVSKtky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A584C2BBFC;
+	Wed, 19 Jun 2024 13:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718801986;
-	bh=tN4Guvku0s8tlEAq3k9N2NrgluQK5CbSwo/bk6lr8Wg=;
+	s=korg; t=1718802759;
+	bh=TklqdShCxzI2YWhM1bhNAvCRrSvbsT/WC2qu3JXca60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mvg5IDh6TO3jh9q6w3g04XqXrzgu3vhgStm658DwkR8cvM9P9lFuN1shBULo3ZDPx
-	 z24afXlbUX56QkLzJRSL6C+CoUcd/kv0/O530JwZQjN783FL+ORJDGS6mTyK/DlESE
-	 2k6ESBKmZO1IoGlhQtW17zYI0/Pf3XPyUDgevbkw=
+	b=RbVSKtkyoU0V6qZ2Kxd1dX7XuQtVprRHQP1tL5aGBI38VEIF1XYRJLkwFZFQ2iSAw
+	 8WuI1sH+Uhka2v2lVh3r67iDawffvQlJmFQmIWH27bx5HAP5u4OwQV1jjQxqu1eoDe
+	 ShPnA/Wz7qmWdLb5mxri2lF4JtJ3IdXaf6pLBZY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karol Kolacinski <karol.kolacinski@intel.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/267] ptp: Fix error message on failed pin verification
-Date: Wed, 19 Jun 2024 14:53:14 +0200
-Message-ID: <20240619125608.021131980@linuxfoundation.org>
+Subject: [PATCH 6.9 036/281] octeontx2-af: Always allocate PF entries from low prioriy zone
+Date: Wed, 19 Jun 2024 14:53:15 +0200
+Message-ID: <20240619125611.239393091@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Kolacinski <karol.kolacinski@intel.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit 323a359f9b077f382f4483023d096a4d316fd135 ]
+[ Upstream commit 8b0f7410942cdc420c4557eda02bfcdf60ccec17 ]
 
-On failed verification of PTP clock pin, error message prints channel
-number instead of pin index after "pin", which is incorrect.
+PF mcam entries has to be at low priority always so that VF
+can install longest prefix match rules at higher priority.
+This was taken care currently but when priority allocation
+wrt reference entry is requested then entries are allocated
+from mid-zone instead of low priority zone. Fix this and
+always allocate entries from low priority zone for PFs.
 
-Fix error message by adding channel number to the message and printing
-pin number instead of channel number.
-
-Fixes: 6092315dfdec ("ptp: introduce programmable pins.")
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://lore.kernel.org/r/20240604120555.16643-1-karol.kolacinski@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7df5b4b260dd ("octeontx2-af: Allocate low priority entries for PF")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_chardev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 33 ++++++++++++-------
+ 1 file changed, 22 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index 5a3a4cc0bec82..91cc6ffa0095e 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -84,7 +84,8 @@ int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index e8b73b9d75e31..97722ce8c4cb3 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -2519,7 +2519,17 @@ static int npc_mcam_alloc_entries(struct npc_mcam *mcam, u16 pcifunc,
+ 	 * - when available free entries are less.
+ 	 * Lower priority ones out of avaialble free entries are always
+ 	 * chosen when 'high vs low' question arises.
++	 *
++	 * For a VF base MCAM match rule is set by its PF. And all the
++	 * further MCAM rules installed by VF on its own are
++	 * concatenated with the base rule set by its PF. Hence PF entries
++	 * should be at lower priority compared to VF entries. Otherwise
++	 * base rule is hit always and rules installed by VF will be of
++	 * no use. Hence if the request is from PF then allocate low
++	 * priority entries.
+ 	 */
++	if (!(pcifunc & RVU_PFVF_FUNC_MASK))
++		goto lprio_alloc;
+ 
+ 	/* Get the search range for priority allocation request */
+ 	if (req->priority) {
+@@ -2528,17 +2538,6 @@ static int npc_mcam_alloc_entries(struct npc_mcam *mcam, u16 pcifunc,
+ 		goto alloc;
  	}
  
- 	if (info->verify(info, pin, func, chan)) {
--		pr_err("driver cannot use function %u on pin %u\n", func, chan);
-+		pr_err("driver cannot use function %u and channel %u on pin %u\n",
-+		       func, chan, pin);
- 		return -EOPNOTSUPP;
+-	/* For a VF base MCAM match rule is set by its PF. And all the
+-	 * further MCAM rules installed by VF on its own are
+-	 * concatenated with the base rule set by its PF. Hence PF entries
+-	 * should be at lower priority compared to VF entries. Otherwise
+-	 * base rule is hit always and rules installed by VF will be of
+-	 * no use. Hence if the request is from PF and NOT a priority
+-	 * allocation request then allocate low priority entries.
+-	 */
+-	if (!(pcifunc & RVU_PFVF_FUNC_MASK))
+-		goto lprio_alloc;
+-
+ 	/* Find out the search range for non-priority allocation request
+ 	 *
+ 	 * Get MCAM free entry count in middle zone.
+@@ -2568,6 +2567,18 @@ static int npc_mcam_alloc_entries(struct npc_mcam *mcam, u16 pcifunc,
+ 		reverse = true;
+ 		start = 0;
+ 		end = mcam->bmap_entries;
++		/* Ensure PF requests are always at bottom and if PF requests
++		 * for higher/lower priority entry wrt reference entry then
++		 * honour that criteria and start search for entries from bottom
++		 * and not in mid zone.
++		 */
++		if (!(pcifunc & RVU_PFVF_FUNC_MASK) &&
++		    req->priority == NPC_MCAM_HIGHER_PRIO)
++			end = req->ref_entry;
++
++		if (!(pcifunc & RVU_PFVF_FUNC_MASK) &&
++		    req->priority == NPC_MCAM_LOWER_PRIO)
++			start = req->ref_entry;
  	}
  
+ alloc:
 -- 
 2.43.0
 
