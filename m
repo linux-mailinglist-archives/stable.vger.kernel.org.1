@@ -1,98 +1,155 @@
-Return-Path: <stable+bounces-53831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B181190E92C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5CF90E981
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C951E1C22728
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:20:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 659611C21FB2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C4F139CE9;
-	Wed, 19 Jun 2024 11:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3759713C695;
+	Wed, 19 Jun 2024 11:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xuu3dwIU"
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="hb1uWTXz";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CSb5RTRB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh4-smtp.messagingengine.com (fhigh4-smtp.messagingengine.com [103.168.172.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D9480BF2;
-	Wed, 19 Jun 2024 11:20:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A88713B583;
+	Wed, 19 Jun 2024 11:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718796043; cv=none; b=k/+nhby8V6nCLJ60n7Vsuo3PypvQLtDb3zvkR0e1EEgIk8aWg6XunNYLbHnGFUfYHvcHh1s0c760zSwN/GLdyEeJpxGGKyCBd1lgsuCtUzRxOtDzfsxG0iI6FPF8c4Zo19pZoSyVoxucJKij6MEWkuLWZ54lS8BG/aimDOCOKMU=
+	t=1718796809; cv=none; b=FC8FK6zh4tCieYtCWbV5o7kHydsPZ1DzUvJ/hdRFS5Af2vRmR2XmPXF/8pESLvWAAxY/Nzy0/Bsf5Js5FnEO5sHC5RXYyivOVeoQ3doUDmq/c53tQWheqoy+rwajhPCJIULSoF5vo7PNJxG+ksCfwh71HQ+ROxnJ8b80kURyuRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718796043; c=relaxed/simple;
-	bh=XScUQ9xKv3viE4nGItvwHd/wPr1+lIosTNq6JX2Fov4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rMS1LPBfj2xylk7GMBo60yvpRE9C6cZJsw7ZS15FDCvNIuqNjMxhTF4neuOdlhpN/RsS0VkJ10sN4y3lG4eNSi6Jh5pd3JGvq3XoZQOokw3ka8bI8edTVvkHhmJBg/OHZIjHY9STZqGvCQhsXRgVtX/IvYmU2TU0E6b8ZwngO48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xuu3dwIU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BB0C2BBFC;
-	Wed, 19 Jun 2024 11:20:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718796042;
-	bh=XScUQ9xKv3viE4nGItvwHd/wPr1+lIosTNq6JX2Fov4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xuu3dwIU1BinnJ0NQFA2MRNMzhgQeHidolw/WeXaf55AsYFKLjzAIBZoBzXKfVpnc
-	 ytL6xowDO6phB2Dqjvv2M4zyp2a7FDq4M9/nVIgI4p8h8a9w0P9ouAtYJhi3OWOch5
-	 6jvwKZwLQZ8dLyEY8yW5P6MCZeUUiagXUuCKOsf6kbKRhu1cES0vTbr/HJ9GmYPBKa
-	 v5cG1Jl6R5j60PYFV4MQM0r3sDsCZHVTMqceJyuPynHLMsnHzDdqjYT77Fq6/7zzmO
-	 c9cWxVEqKGz47edpxEpTIsOd7+C+9u9ikCuP+Aj7B9RUZ1+6m2crg2js2EzTNrqZ+c
-	 knPVb6CpS49Yw==
-From: Conor Dooley <conor@kernel.org>
-To: kernel@esmil.dk,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	william.qiu@starfivetech.com,
-	devicetree@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	Shengyu Qu <wiagn233@outlook.com>
-Cc: conor@kernel.org,
-	Conor Dooley <conor.dooley@microchip.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] riscv: dts: starfive: Set EMMC vqmmc maximum voltage to 3.3V on JH7110 boards
-Date: Wed, 19 Jun 2024 12:20:00 +0100
-Message-ID: <20240619-slicer-embolism-1d74656749ab@spud>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To:  <TY3P286MB261189B5D946BDE69398EE3A98C02@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
-References:  <TY3P286MB261189B5D946BDE69398EE3A98C02@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+	s=arc-20240116; t=1718796809; c=relaxed/simple;
+	bh=VWvnmoFIlOj6btiz8Jh00kSCgZVAlN2H0RXQfJabBmo=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=JkpugQmr9IhAqVaE/NUYSdxdsU6Y1ALx7TJ4M18CvXpqiu7hs6DpEe6VSZs9rquRtDxVBWdcestRxoygr3kP60F/bwQ4pendUFws6Zixh8c4HDlJ6NF6/cUmUdPF7NIJjqS2iXG4HL0MVm1KGD9P/p3r23PNyfU3JJysEl3ziWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=hb1uWTXz; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CSb5RTRB; arc=none smtp.client-ip=103.168.172.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 656A8114010E;
+	Wed, 19 Jun 2024 07:33:27 -0400 (EDT)
+Received: from imap44 ([10.202.2.94])
+  by compute3.internal (MEProxy); Wed, 19 Jun 2024 07:33:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1718796807;
+	 x=1718883207; bh=kDIE2Hn4BfwvhYLdbxICkDPcyzDjOxJr9UO616nJz2I=; b=
+	hb1uWTXzGe4fI8RqXGly3ydCZUfjdDuyz3YTqPYyiDZopvsqvv3MuwuyHmf4NfV+
+	HJAreFvaYQwlMBGuCpQMAWxmFuB6B1x//V+UHvw/HNoFu/Au7E06+fS9kd+DquvH
+	3I7JhhrxuBuCT5DHO17Ppobhg/oQoSUObeDV4FqfVW1kUTQRRszOOzmHosG5Utde
+	Ak5u1IrxavqTtdU66llP3N57rLYyF9I3wwB4nsSR36AHgcXibBP1mrtUZQ/v7t2f
+	ClZpsgUZohCSe/jygsdXbHP7Am4foiInfb6T8jprTiBoiqomkXuQyuPu6AdlPZQw
+	ntdHG6N4Q0oVNx2B3M5EOQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1718796807; x=
+	1718883207; bh=kDIE2Hn4BfwvhYLdbxICkDPcyzDjOxJr9UO616nJz2I=; b=C
+	Sb5RTRB+vSDqHmDYf96iPx0UWbFzJRUNyYuVSFX0NxdT5kv7B7S86a0xfg/p6LYj
+	avPW9YMttvLXaEzbl9uCIEAViEvN6c3odmUsqESuwZtiAS0Docp8FGTtiWnaew42
+	TMa+4rwV3kYS4VZrZx4myQKIJu7+xj5QKulqaaHjtZnVtmTscQ3KxGscjC7PAT93
+	0xKcscbYckxgqJhISJuruy2Tt3QVKjGb0qk8MndEl4RP1Yh2Jw25MvrzKHrES1CV
+	x/Ws6SHhKOnNYhyNRdobuO0qoLvxT41wnsoa54p+tG6y9P/fPIK9OucNxquM38oQ
+	JDWNOzVHjZcc37JCFQLeA==
+X-ME-Sender: <xms:B8JyZqVwt7lbl9ejfvBpfBKYLdKWhrvCUPgDMr8r78DiLkGNjo_h1Q>
+    <xme:B8JyZmlQYRh_jTTGM0LV4PCd3PIAvzb3gALhZygMy7loQGhk6HBbsPyp5IKCMb2fy
+    fEI4qYzIcVWFzMqTH4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeeftddggeduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdfl
+    ihgrgihunhcujggrnhhgfdcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtoh
+    hmqeenucggtffrrghtthgvrhhnpedufeegfeetudeghefftdehfefgveffleefgfehhfej
+    ueegveethfduuddvieehgfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
+X-ME-Proxy: <xmx:B8JyZubq2fXNzQxjs4OrhA01ZziFUZShK-rGoSnmw5wPX6tWCNgRuw>
+    <xmx:B8JyZhUUv7s8w5PdIcnkRi5xP7qePglLICpUU86RV0BPvCN8-BIo7A>
+    <xmx:B8JyZkkvBpJ9aNJ871R4sK2SHIRoZ3UBz3RW9NRP9V6ekR-HMXlKeg>
+    <xmx:B8JyZmdUUCFatZSQ00_9-3n93yFf5xLVfWxf8kDupuVZJ6fcovpDHg>
+    <xmx:B8JyZug_UkH9xDFNumR3Te0Gb9YnFVd1_Gvs2vqnXgdy_WbUU-yfgEwX>
+Feedback-ID: ifd894703:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 1B53036A0074; Wed, 19 Jun 2024 07:33:26 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-522-ga39cca1d5-fm-20240610.002-ga39cca1d
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=688; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=hyxqrF+zdFDORBV9MQKebE44wmRMdbJxx9CDCqJHNeA=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDGlF+x4Ybd5Uqy4eu9LcKC/4zYp3bdlNki9sdDXO/N5Z3 bDk+iTRjlIWBjEOBlkxRZbE230tUuv/uOxw7nkLM4eVCWQIAxenAExkyn6G/5l6YcZ5l16rds5t +S08Y+eN9RHidrNmn47ddUz1zVWZN/sZGbZ71ASfu/rC19dpBfP1w2L/nm0JujH7fXD7kg/lKU8 /OXICAA==
-X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
-Content-Transfer-Encoding: 8bit
+Message-Id: <859402a6-4e31-4029-a6ad-87c3be4d3fdd@app.fastmail.com>
+In-Reply-To: <20240616-mips-mt-fixes-v1-1-83913e0e60fc@flygoat.com>
+References: <20240616-mips-mt-fixes-v1-0-83913e0e60fc@flygoat.com>
+ <20240616-mips-mt-fixes-v1-1-83913e0e60fc@flygoat.com>
+Date: Wed, 19 Jun 2024 12:32:50 +0100
+From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
+To: "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>
+Cc: "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ linux-kernel@vger.kernel.org,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH fixes 1/4] MIPS: mipsmtregs: Fix target register for MFTC0
+Content-Type: text/plain;charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Conor Dooley <conor.dooley@microchip.com>
 
-On Wed, 12 Jun 2024 18:33:31 +0800, Shengyu Qu wrote:
-> Currently, for JH7110 boards with EMMC slot, vqmmc voltage for EMMC is
-> fixed to 1.8V, while the spec needs it to be 3.3V on low speed mode and
-> should support switching to 1.8V when using higher speed mode. Since
-> there are no other peripherals using the same voltage source of EMMC's
-> vqmmc(ALDO4) on every board currently supported by mainline kernel,
-> regulator-max-microvolt of ALDO4 should be set to 3.3V.
-> 
-> [...]
 
-Applied to riscv-dt-fixes, thanks!
+=E5=9C=A82024=E5=B9=B46=E6=9C=8816=E6=97=A5=E5=85=AD=E6=9C=88 =E4=B8=8B=E5=
+=8D=882:25=EF=BC=8CJiaxun Yang=E5=86=99=E9=81=93=EF=BC=9A
+> Target register of mftc0 should be __res instead of $1, this is
+> a leftover from old .insn code.
+>
+> Fixes: dd6d29a61489 ("MIPS: Implement microMIPS MT ASE helpers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[1/1] riscv: dts: starfive: Set EMMC vqmmc maximum voltage to 3.3V on JH7110 boards
-      https://git.kernel.org/conor/c/3c1f81a1b554
+Hi Thomas,
 
-I was kinda holding out for a response for Emil, but I've applied this cos
-I'd like to get a fixes PR sent out later this week.
+I saw you sent mips-fixes_6.10_1 pull request but this series is
+not included in that PR while one of my later patch is included.
 
-Thanks,
-Conor.
+If you think the whole series is not fit for fixes tree then please
+at least let this series go through fixes tree. There are many MT
+users for routers etc and I don't want to risk break things for them
+in linus tree for too long.
+
+The patch itself is obvious.
+
+Thanks
+- Jiaxun
+
+> ---
+>  arch/mips/include/asm/mipsmtregs.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/mips/include/asm/mipsmtregs.h=20
+> b/arch/mips/include/asm/mipsmtregs.h
+> index 30e86861c206..b1ee3c48e84b 100644
+> --- a/arch/mips/include/asm/mipsmtregs.h
+> +++ b/arch/mips/include/asm/mipsmtregs.h
+> @@ -322,7 +322,7 @@ static inline void ehb(void)
+>  	"	.set	push				\n"	\
+>  	"	.set	"MIPS_ISA_LEVEL"		\n"	\
+>  	_ASM_SET_MFTC0							\
+> -	"	mftc0	$1, " #rt ", " #sel "		\n"	\
+> +	"	mftc0	%0, " #rt ", " #sel "		\n"	\
+>  	_ASM_UNSET_MFTC0						\
+>  	"	.set	pop				\n"	\
+>  	: "=3Dr" (__res));						\
+>
+> --=20
+> 2.43.0
+
+--=20
+- Jiaxun
 
