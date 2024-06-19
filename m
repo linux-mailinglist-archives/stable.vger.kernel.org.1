@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4196E90ED0B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:13:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25D8E90EBD1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:01:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1115B25BB1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:13:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFC4A2875BD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EF7143C58;
-	Wed, 19 Jun 2024 13:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CD91474AB;
+	Wed, 19 Jun 2024 13:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xI80o10L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+OgigTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89871422B8;
-	Wed, 19 Jun 2024 13:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9315A145352;
+	Wed, 19 Jun 2024 13:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802816; cv=none; b=Jnie0LvDm1yPYNKO+TVHqddSMMHnN4Ij1eCj4QTrR/hCp40X/gYz8MoHXNr5B7x7nKlvl8/ne7Fwo/boSAjbPIQvV4t9CHehL+Whj1oytX/URy0n7GuDOpGy7wjOhWqJDxbvL5xz0EYaMkMExT5OsskGwNxp3Njo9UODQQ/KfDo=
+	t=1718802048; cv=none; b=HV8Fz1C872qmXMok1wQAfTiF1BiTgRhkjo6cmnG8wbDP19iVncMMFMEXgxPJp5FPP1PtHY11NrfBfxR1OdGP+12cNjI4QVhE63Yu/LUGFnFNcZUb7a09WYNuoAeDFWJ0UzoeZ9fshMtbqQl8ETcY0g8OnQedjtTygxhCMg/w9No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802816; c=relaxed/simple;
-	bh=VFqbu6AbrZhvPb7IdxsB7n+TgDFYjrszC7XIqVN+UA0=;
+	s=arc-20240116; t=1718802048; c=relaxed/simple;
+	bh=Pkle6CRaiRUpM18TeoBv5svzvDVpg2DyR3BJN5veKSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLzn3EO8MYIkhXFhGKuAT6f4FrUmnvV9N0bTpNkwLQDdmDlV434X5kOH93U22NkusjSttk5Vhn4Jhxnp0o/SuJ4SOMFtyBMl39ns5wQFakApE2BHIFFup6SmdocTkTOV9e5cQOTg+jUtHlc3CwPTSLZSKA+IRHGlcNHD+nljxlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xI80o10L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666FAC2BBFC;
-	Wed, 19 Jun 2024 13:13:35 +0000 (UTC)
+	 MIME-Version; b=e666m3jVaCxQCEOtuFnBkn4dHFoteHrqfM5QlQjf9tW9C9PkSPBeWz7sF1IhTipt1cKVac8L2Hhvf+tU8e+tN1IGuu6XKNsX4H8KEH/IRV1NUzuL3YBKb4/HqL7ZZeenc6Wj219Nf5Fb64MpqQa6+jl1ehQimekXhO/wkoduLYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+OgigTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A8FC4AF1A;
+	Wed, 19 Jun 2024 13:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802815;
-	bh=VFqbu6AbrZhvPb7IdxsB7n+TgDFYjrszC7XIqVN+UA0=;
+	s=korg; t=1718802048;
+	bh=Pkle6CRaiRUpM18TeoBv5svzvDVpg2DyR3BJN5veKSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xI80o10LemS/UkUZAqTgY1FbrmDh/SiNbBgqH8Nn0V5UvCMomRJxFGo7zhN4IvfDa
-	 rEahglXeo4Dn9a6VjU0/WMdjduO76RooL86Lzi4ok7CZM/dK5rhttexgm/N+d6qsuw
-	 x44xKeYqBj9O1sbhO98kTNqlC77V25q4uCV37x0Y=
+	b=N+OgigTGp66MnzVTJT/z891aq0aWf0WKaulcNbdIXQXMJ/iWod5ZfiDXweDJuFLJE
+	 XvzAHixevpKNu/XjgtAsMPE5DY8KkfyLmlgLEPHpFPoT36tWCZhHWp8eB2dx7mziQl
+	 bjqQvbaLbbXhD7uBTC7jU820VawbYCUtski7+d0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 057/281] af_unix: Set sk->sk_state under unix_state_lock() for truly disconencted peer.
+Subject: [PATCH 6.6 065/267] firmware: qcom_scm: disable clocks if qcom_scm_bw_enable() fails
 Date: Wed, 19 Jun 2024 14:53:36 +0200
-Message-ID: <20240619125612.044439394@linuxfoundation.org>
+Message-ID: <20240619125608.853261904@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 26bfb8b57063f52b867f9b6c8d1742fcb5bd656c ]
+[ Upstream commit 0c50b7fcf2773b4853e83fc15aba1a196ba95966 ]
 
-When a SOCK_DGRAM socket connect()s to another socket, the both sockets'
-sk->sk_state are changed to TCP_ESTABLISHED so that we can register them
-to BPF SOCKMAP.
+There are several functions which are calling qcom_scm_bw_enable()
+then returns immediately if the call fails and leaves the clocks
+enabled.
 
-When the socket disconnects from the peer by connect(AF_UNSPEC), the state
-is set back to TCP_CLOSE.
+Change the code of these functions to disable clocks when the
+qcom_scm_bw_enable() call fails. This also fixes a possible dma
+buffer leak in the qcom_scm_pas_init_image() function.
 
-Then, the peer's state is also set to TCP_CLOSE, but the update is done
-locklessly and unconditionally.
+Compile tested only due to lack of hardware with interconnect
+support.
 
-Let's say socket A connect()ed to B, B connect()ed to C, and A disconnects
-from B.
-
-After the first two connect()s, all three sockets' sk->sk_state are
-TCP_ESTABLISHED:
-
-  $ ss -xa
-  Netid State  Recv-Q Send-Q  Local Address:Port  Peer Address:PortProcess
-  u_dgr ESTAB  0      0       @A 641              * 642
-  u_dgr ESTAB  0      0       @B 642              * 643
-  u_dgr ESTAB  0      0       @C 643              * 0
-
-And after the disconnect, B's state is TCP_CLOSE even though it's still
-connected to C and C's state is TCP_ESTABLISHED.
-
-  $ ss -xa
-  Netid State  Recv-Q Send-Q  Local Address:Port  Peer Address:PortProcess
-  u_dgr UNCONN 0      0       @A 641              * 0
-  u_dgr UNCONN 0      0       @B 642              * 643
-  u_dgr ESTAB  0      0       @C 643              * 0
-
-In this case, we cannot register B to SOCKMAP.
-
-So, when a socket disconnects from the peer, we should not set TCP_CLOSE to
-the peer if the peer is connected to yet another socket, and this must be
-done under unix_state_lock().
-
-Note that we use WRITE_ONCE() for sk->sk_state as there are many lockless
-readers.  These data-races will be fixed in the following patches.
-
-Fixes: 83301b5367a9 ("af_unix: Set TCP_ESTABLISHED for datagram sockets too")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 65b7ebda5028 ("firmware: qcom_scm: Add bw voting support to the SCM interface")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Link: https://lore.kernel.org/r/20240304-qcom-scm-disable-clk-v1-1-b36e51577ca1@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/firmware/qcom_scm.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 439c531744a27..c0cf7137979c7 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -570,7 +570,6 @@ static void unix_dgram_disconnected(struct sock *sk, struct sock *other)
- 			sk_error_report(other);
- 		}
- 	}
--	other->sk_state = TCP_CLOSE;
- }
+diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+index ff7c155239e31..7af59985f1c1f 100644
+--- a/drivers/firmware/qcom_scm.c
++++ b/drivers/firmware/qcom_scm.c
+@@ -498,13 +498,14 @@ int qcom_scm_pas_init_image(u32 peripheral, const void *metadata, size_t size,
  
- static void unix_sock_destructor(struct sock *sk)
-@@ -1424,8 +1423,15 @@ static int unix_dgram_connect(struct socket *sock, struct sockaddr *addr,
+ 	ret = qcom_scm_bw_enable();
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
  
- 		unix_state_double_unlock(sk, other);
+ 	desc.args[1] = mdata_phys;
  
--		if (other != old_peer)
-+		if (other != old_peer) {
- 			unix_dgram_disconnected(sk, old_peer);
+ 	ret = qcom_scm_call(__scm->dev, &desc, &res);
+-
+ 	qcom_scm_bw_disable();
 +
-+			unix_state_lock(old_peer);
-+			if (!unix_peer(old_peer))
-+				WRITE_ONCE(old_peer->sk_state, TCP_CLOSE);
-+			unix_state_unlock(old_peer);
-+		}
++disable_clk:
+ 	qcom_scm_clk_disable();
+ 
+ out:
+@@ -566,10 +567,12 @@ int qcom_scm_pas_mem_setup(u32 peripheral, phys_addr_t addr, phys_addr_t size)
+ 
+ 	ret = qcom_scm_bw_enable();
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = qcom_scm_call(__scm->dev, &desc, &res);
+ 	qcom_scm_bw_disable();
 +
- 		sock_put(old_peer);
- 	} else {
- 		unix_peer(sk) = other;
++disable_clk:
+ 	qcom_scm_clk_disable();
+ 
+ 	return ret ? : res.result[0];
+@@ -601,10 +604,12 @@ int qcom_scm_pas_auth_and_reset(u32 peripheral)
+ 
+ 	ret = qcom_scm_bw_enable();
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = qcom_scm_call(__scm->dev, &desc, &res);
+ 	qcom_scm_bw_disable();
++
++disable_clk:
+ 	qcom_scm_clk_disable();
+ 
+ 	return ret ? : res.result[0];
+@@ -635,11 +640,12 @@ int qcom_scm_pas_shutdown(u32 peripheral)
+ 
+ 	ret = qcom_scm_bw_enable();
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = qcom_scm_call(__scm->dev, &desc, &res);
+-
+ 	qcom_scm_bw_disable();
++
++disable_clk:
+ 	qcom_scm_clk_disable();
+ 
+ 	return ret ? : res.result[0];
 -- 
 2.43.0
 
