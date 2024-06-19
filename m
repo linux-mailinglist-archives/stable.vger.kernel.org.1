@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7714790EED8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1BA90EDE1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AADE1F2147D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B98A1F235E0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B6E14387E;
-	Wed, 19 Jun 2024 13:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D5114375A;
+	Wed, 19 Jun 2024 13:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUrIfqki"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPg8gvFB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6445F13F428;
-	Wed, 19 Jun 2024 13:32:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DBE4D9EA;
+	Wed, 19 Jun 2024 13:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803956; cv=none; b=gYtp/+gCbO4zsfCb1eXc8PfdQgBauEYyZLIynPwclRuKJVzlOSX6dhOJDY9sd8mE1KEj+v69az2cNrlpqCEwKy+/NUOm/rVQtRoD8YjloHdxi4HWkz+wjgRoPB4ATs5N07HnpZEvyHJK1dwFKZ6s0wqXmf9G31fMJfY3C9SRUAU=
+	t=1718803392; cv=none; b=q7qsl3aCa5hC+yvzibJ0IeY+FtnnCSCEdWpQ2Np9h+ivtSESz5SfrQWhrzEzS3ReCTZK+du2nOgT2BeV7z0r7wP+/EGpqkOrlbAJvq1ZR3oB4TexEPZ7NyxedfDa6//qudL4tHy7anBXx6Y7AxiilJ8I5J3n79enr7gIeCTDruM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803956; c=relaxed/simple;
-	bh=DzI7hmbX7Km9ZviNFRDmJsA3/bZrmb4miG2w0wzTBEo=;
+	s=arc-20240116; t=1718803392; c=relaxed/simple;
+	bh=iGXHVH3BIh156MHy1iEDbeuC5zqiZTxebm7z6zG0bcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+CAe2CM5De8ckhGJxv1pPlBhfs9Ztosph/g8+FCPEwbHL0bJgqgrnp3Qf080g1275nqS9IDdiKC14GA6DdnadzgdIj0wmMCqRfdGD4Lpr97d9+Mbt6Rkt9CaAW4g1IioNHOr9AUDDDSgnhs2hJ3C5hpwI7BDo5Q8JHNoqjrVUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUrIfqki; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED3EC2BBFC;
-	Wed, 19 Jun 2024 13:32:35 +0000 (UTC)
+	 MIME-Version; b=SBw0HwBBk0Zuq14c0kW+er+Y0GUhKB1Fmym757J4CMxo9RikWF1IAuijNlEaZ+KlM9wtm7cMzRwyY2eAXM8bdHD87dX21Un+SkHtoPMh0Kupz/7GRKjxug1iViPy6NNk9aQelZO2/UNJkKh8mqBV3YwfKDmoQKAlXxKUz+4VyTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPg8gvFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B882C2BBFC;
+	Wed, 19 Jun 2024 13:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803956;
-	bh=DzI7hmbX7Km9ZviNFRDmJsA3/bZrmb4miG2w0wzTBEo=;
+	s=korg; t=1718803391;
+	bh=iGXHVH3BIh156MHy1iEDbeuC5zqiZTxebm7z6zG0bcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUrIfqki+04bA7IPwlV9YajJhlpHKoJxzMhuW0YL11iqJb7qJZvn0y4Uyls428K6+
-	 H8cVWg+YQxRQUeKUKjmIKhP9cq5i+bwp6QfOMKLyRkjlE9ougEE13ylWmVa4WFGTP4
-	 4aYUQWid9tg/UgLs9hzjgeAAxxcvzOc7MZUeGOu4=
+	b=lPg8gvFBfqnhMvs5S0SO4Jg1tqDCnwLcdp9jCQGbz6fjxiqEJuvkVNTvvXrNrL1jj
+	 eLrS/9G8HnZUEoo7ntdNuvjE1MlBAL3GJZGv/Z0/3j4qb2+zrKXU6ugqqubXbWtuZn
+	 973sDbL4BoBtpxnU97n1nXjuPQBUPr3edDmu1fGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Segall <bsegall@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 160/217] x86/boot: Dont add the EFI stub to targets, again
+	stable@kernel.org,
+	Nuno Sa <nuno.sa@analog.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.9 244/281] dmaengine: axi-dmac: fix possible race in remove()
 Date: Wed, 19 Jun 2024 14:56:43 +0200
-Message-ID: <20240619125602.864935006@linuxfoundation.org>
+Message-ID: <20240619125619.352198404@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Segall <bsegall@google.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit b2747f108b8034271fd5289bd8f3a7003e0775a3 upstream.
+commit 1bc31444209c8efae98cb78818131950d9a6f4d6 upstream.
 
-This is a re-commit of
+We need to first free the IRQ before calling of_dma_controller_free().
+Otherwise we could get an interrupt and schedule a tasklet while
+removing the DMA controller.
 
-  da05b143a308 ("x86/boot: Don't add the EFI stub to targets")
-
-after the tagged patch incorrectly reverted it.
-
-vmlinux-objs-y is added to targets, with an assumption that they are all
-relative to $(obj); adding a $(objtree)/drivers/...  path causes the
-build to incorrectly create a useless
-arch/x86/boot/compressed/drivers/...  directory tree.
-
-Fix this just by using a different make variable for the EFI stub.
-
-Fixes: cb8bda8ad443 ("x86/boot/compressed: Rename efi_thunk_64.S to efi-mixed.S")
-Signed-off-by: Ben Segall <bsegall@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: stable@vger.kernel.org # v6.1+
-Link: https://lore.kernel.org/r/xm267ceukksz.fsf@bsegall.svl.corp.google.com
+Fixes: 0e3b67b348b8 ("dmaengine: Add support for the Analog Devices AXI-DMAC DMA controller")
+Cc: stable@kernel.org
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240328-axi-dmac-devm-probe-v3-1-523c0176df70@analog.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/dma-axi-dmac.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -115,9 +115,9 @@ vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) +
+--- a/drivers/dma/dma-axi-dmac.c
++++ b/drivers/dma/dma-axi-dmac.c
+@@ -1134,8 +1134,8 @@ static void axi_dmac_remove(struct platf
+ {
+ 	struct axi_dmac *dmac = platform_get_drvdata(pdev);
  
- vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
- vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
--vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
-+vmlinux-libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
- 
--$(obj)/vmlinux: $(vmlinux-objs-y) FORCE
-+$(obj)/vmlinux: $(vmlinux-objs-y) $(vmlinux-libs-y) FORCE
- 	$(call if_changed,ld)
- 
- OBJCOPYFLAGS_vmlinux.bin :=  -R .comment -S
+-	of_dma_controller_free(pdev->dev.of_node);
+ 	free_irq(dmac->irq, dmac);
++	of_dma_controller_free(pdev->dev.of_node);
+ 	tasklet_kill(&dmac->chan.vchan.task);
+ 	dma_async_device_unregister(&dmac->dma_dev);
+ 	clk_disable_unprepare(dmac->clk);
 
 
 
