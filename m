@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 628A290EEA2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37EFB90EC7A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C826FB25140
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3FB7B215F3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA566147C7B;
-	Wed, 19 Jun 2024 13:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16324143C4A;
+	Wed, 19 Jun 2024 13:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2f41V+x8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8Ru4Heb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6644C1E492;
-	Wed, 19 Jun 2024 13:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8EE712FB31;
+	Wed, 19 Jun 2024 13:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803825; cv=none; b=dBus7p2YtG+M6axuCoHv2FtapsAkfd2bsBADkWFy4drMwZpegOJDZs4vw09uS8J/jixlW+YfCHqmRsWTswbV29N8row74ptkK8ybR1NaFjh22/fSd5J1jza/KqzEBmjgbE0Jmd9Tg/o5dRq4RZYP7MiyzsoUxfiIysj5zPMeAEI=
+	t=1718802476; cv=none; b=BHq/alTId1DMj+cSshvTNMlps8Utq6zgou7222nwWCIi43/y70g3TWzLk5ZJo03dqAHuZvde9JdSHg/G5FvE7FDNc/qGgm/SKyaki5awEvOtrZQUTERocmHs8Buzd3HuGIei9+QZZQOaVl+wlLbo9EqqC//qOJlqzMbvpT4dDi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803825; c=relaxed/simple;
-	bh=5vwBMDNq7FHg/IUV5L3BNRiXlta4hqXFZd70yb/djCM=;
+	s=arc-20240116; t=1718802476; c=relaxed/simple;
+	bh=pw5KmInRrC3H7NR5PW3SASx50yl8Wsto54GkO2zxUn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rDHXbMalGz8siQNBNYCTr4mSGzZO2ibdygc7hLy2RL1Cue8wnvGQBGypH3ApH9/+FflnLcZDZNsKbHZSGTnc9NiPlmYqfPO1siQR07pGKc1o9h6YLhHPSByfx1mxEhehuG9MqNc8cPcxIaCJPm9+GMmDB8qrUNfS3Cfi1Iswt3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2f41V+x8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D3CC4AF1A;
-	Wed, 19 Jun 2024 13:30:24 +0000 (UTC)
+	 MIME-Version; b=Oyl9M+R02355fSv0cgEC6Ar1V7urKtiFLc4AquvUoaUAt+Za8j/Iq8u3k19a8miIz2ddNBwLsssR4A61S1GUlIaPJsIkQOVjAC5aIAs8Q0grhCiWurG5ClNJHyKGSifLSKFJQt0Tnsqwqk8+9sDwuURKxhTpgdOf3wCPvBR5lBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8Ru4Heb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463E4C2BBFC;
+	Wed, 19 Jun 2024 13:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803825;
-	bh=5vwBMDNq7FHg/IUV5L3BNRiXlta4hqXFZd70yb/djCM=;
+	s=korg; t=1718802476;
+	bh=pw5KmInRrC3H7NR5PW3SASx50yl8Wsto54GkO2zxUn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2f41V+x8+Cw4N2ETsjjeL9vw4B5t0mKCpnHrEtijiodNwneSMfZfzkx/8VglXBk3B
-	 Cl3K1JqcwcPHgiudqAwJsZK+yoz2mBuPKJxkVqWi3/3hXoi1y6CKAAVmWtgk0jrVzj
-	 cBgjP11XOwmQhlNJ341oZiQl8Xmv21L5PCsDDICM=
+	b=g8Ru4HebM5tJh4q7KS7Ut8OvGNHaBLnWJr0AYJbfCq1l1aN6nHsc023Xd1tfJOHrR
+	 o9864AjdCivipVAw0jNE1Bp2bG2wY7abEYGer1Pg1rSxcz+fgmDDmGFuthesrATmLK
+	 pg9fYUS1bnn5Oc/a0nTdQzb4nup/uUvAZyZrVZhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/217] cachefiles: flush all requests after setting CACHEFILES_DEAD
+	Beleswar Padhi <b-padhi@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.6 209/267] remoteproc: k3-r5: Do not allow core1 to power up before core0 via sysfs
 Date: Wed, 19 Jun 2024 14:56:00 +0200
-Message-ID: <20240619125601.203594564@linuxfoundation.org>
+Message-ID: <20240619125614.349966315@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Beleswar Padhi <b-padhi@ti.com>
 
-[ Upstream commit 85e833cd7243bda7285492b0653c3abb1e2e757b ]
+commit 3c8a9066d584f5010b6f4ba03bf6b19d28973d52 upstream.
 
-In ondemand mode, when the daemon is processing an open request, if the
-kernel flags the cache as CACHEFILES_DEAD, the cachefiles_daemon_write()
-will always return -EIO, so the daemon can't pass the copen to the kernel.
-Then the kernel process that is waiting for the copen triggers a hung_task.
+PSC controller has a limitation that it can only power-up the second
+core when the first core is in ON state. Power-state for core0 should be
+equal to or higher than core1.
 
-Since the DEAD state is irreversible, it can only be exited by closing
-/dev/cachefiles. Therefore, after calling cachefiles_io_error() to mark
-the cache as CACHEFILES_DEAD, if in ondemand mode, flush all requests to
-avoid the above hungtask. We may still be able to read some of the cached
-data before closing the fd of /dev/cachefiles.
+Therefore, prevent core1 from powering up before core0 during the start
+process from sysfs. Similarly, prevent core0 from shutting down before
+core1 has been shut down from sysfs.
 
-Note that this relies on the patch that adds reference counting to the req,
-otherwise it may UAF.
-
-Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240522114308.2402121-12-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6dedbd1d5443 ("remoteproc: k3-r5: Add a remoteproc driver for R5F subsystem")
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240430105307.1190615-3-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cachefiles/daemon.c   | 2 +-
- fs/cachefiles/internal.h | 3 +++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c |   23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index 26b487e112596..b9945e4f697be 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -133,7 +133,7 @@ static int cachefiles_daemon_open(struct inode *inode, struct file *file)
- 	return 0;
- }
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -548,7 +548,7 @@ static int k3_r5_rproc_start(struct rpro
+ 	struct k3_r5_rproc *kproc = rproc->priv;
+ 	struct k3_r5_cluster *cluster = kproc->cluster;
+ 	struct device *dev = kproc->dev;
+-	struct k3_r5_core *core;
++	struct k3_r5_core *core0, *core;
+ 	u32 boot_addr;
+ 	int ret;
  
--static void cachefiles_flush_reqs(struct cachefiles_cache *cache)
-+void cachefiles_flush_reqs(struct cachefiles_cache *cache)
+@@ -574,6 +574,15 @@ static int k3_r5_rproc_start(struct rpro
+ 				goto unroll_core_run;
+ 		}
+ 	} else {
++		/* do not allow core 1 to start before core 0 */
++		core0 = list_first_entry(&cluster->cores, struct k3_r5_core,
++					 elem);
++		if (core != core0 && core0->rproc->state == RPROC_OFFLINE) {
++			dev_err(dev, "%s: can not start core 1 before core 0\n",
++				__func__);
++			return -EPERM;
++		}
++
+ 		ret = k3_r5_core_run(core);
+ 		if (ret)
+ 			goto put_mbox;
+@@ -619,7 +628,8 @@ static int k3_r5_rproc_stop(struct rproc
  {
- 	struct xarray *xa = &cache->reqs;
- 	struct cachefiles_req *req;
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 28799c8e2c6f6..3eea52462fc87 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -188,6 +188,7 @@ extern int cachefiles_has_space(struct cachefiles_cache *cache,
-  * daemon.c
-  */
- extern const struct file_operations cachefiles_daemon_fops;
-+extern void cachefiles_flush_reqs(struct cachefiles_cache *cache);
- extern void cachefiles_get_unbind_pincount(struct cachefiles_cache *cache);
- extern void cachefiles_put_unbind_pincount(struct cachefiles_cache *cache);
+ 	struct k3_r5_rproc *kproc = rproc->priv;
+ 	struct k3_r5_cluster *cluster = kproc->cluster;
+-	struct k3_r5_core *core = kproc->core;
++	struct device *dev = kproc->dev;
++	struct k3_r5_core *core1, *core = kproc->core;
+ 	int ret;
  
-@@ -414,6 +415,8 @@ do {							\
- 	pr_err("I/O Error: " FMT"\n", ##__VA_ARGS__);	\
- 	fscache_io_error((___cache)->cache);		\
- 	set_bit(CACHEFILES_DEAD, &(___cache)->flags);	\
-+	if (cachefiles_in_ondemand_mode(___cache))	\
-+		cachefiles_flush_reqs(___cache);	\
- } while (0)
- 
- #define cachefiles_io_error_obj(object, FMT, ...)			\
--- 
-2.43.0
-
+ 	/* halt all applicable cores */
+@@ -632,6 +642,15 @@ static int k3_r5_rproc_stop(struct rproc
+ 			}
+ 		}
+ 	} else {
++		/* do not allow core 0 to stop before core 1 */
++		core1 = list_last_entry(&cluster->cores, struct k3_r5_core,
++					elem);
++		if (core != core1 && core1->rproc->state != RPROC_OFFLINE) {
++			dev_err(dev, "%s: can not stop core 0 before core 1\n",
++				__func__);
++			return -EPERM;
++		}
++
+ 		ret = k3_r5_core_halt(core);
+ 		if (ret)
+ 			goto out;
 
 
 
