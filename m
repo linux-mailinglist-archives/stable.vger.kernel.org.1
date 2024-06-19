@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-53956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D83F90EC09
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E6E90EE13
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4281F1C2460D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A9B51C20CAA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04757147C74;
-	Wed, 19 Jun 2024 13:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D50C145FEF;
+	Wed, 19 Jun 2024 13:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wevWLI7i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lg59T4xX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C45143873;
-	Wed, 19 Jun 2024 13:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC52143757;
+	Wed, 19 Jun 2024 13:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802169; cv=none; b=HP7zALReXH43a2wQjOrud2/h4nibSLsm7zEQuBnAypzuF+DTMZJqyJn+pRRFpyPYJqUs7R07sHuobXutIn8bnf/ccJFJoylNVYusIiFhfUBWtultsecvty23q1wfe3GImXG9SOSGguL1ThNoj6I1V6v5R+12nQfsGGcdMug0PQs=
+	t=1718803519; cv=none; b=UbL8P1FfjOa4hYeiCJAmO53AbUxkIcLJsEePjlDZGgHSw/NhvzzK2klPJUAhMVKORU3CKVVlm+lvL/1xhHCkmhzy1H9YKKDOgbL+wxNnMyIn8OUNOtdlruXCNr4YByELUwWbGAtTfyVZEiDk/PRXUFv46peEwth3TeZNHYId/6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802169; c=relaxed/simple;
-	bh=kcU5wDAzRZWletUpA7HJ1ubvj/faauTwNYPDaI4rsiE=;
+	s=arc-20240116; t=1718803519; c=relaxed/simple;
+	bh=4DatPNcI1fXOgNn1BRefa5ywb8lcdaMlFJYiqSC29Hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mjXZju2cK6JDKFmpbziqkhWIgikSJ+2SOW4tcMCl6SYAxDBk+28/w3R7LjOC85DnHo1wnyAXtoCR6AU3RKALRuNkOi2mfsUNozbx5HNwTTTxV6AC+Vvw+FVxmZSzkApHm5rE3+flMDkGA5UVi7DhiQYBJXRmTY/I15gajn6sl5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wevWLI7i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B70C2BBFC;
-	Wed, 19 Jun 2024 13:02:48 +0000 (UTC)
+	 MIME-Version; b=BeD1p81ptUmLNOAEyBtJDSRoH19asJMbKN0FLefWTIhuO7A6tySBGiNou3jJy5ygDgV9C4jSoXFNGZi1Sde6DekD5Iav11Fi36PQ0BvLKkcW7x3UMAqt4GT/e8G9IDiHPr/lzG9+u1VyEeu280DnV3RAE2OR97NsyrhGE7cqRHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lg59T4xX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B17C2BBFC;
+	Wed, 19 Jun 2024 13:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802169;
-	bh=kcU5wDAzRZWletUpA7HJ1ubvj/faauTwNYPDaI4rsiE=;
+	s=korg; t=1718803518;
+	bh=4DatPNcI1fXOgNn1BRefa5ywb8lcdaMlFJYiqSC29Hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wevWLI7iE8q5yOGEtdudwyYChMl9P+IrXxtDF7/QTprAKxaM/wwgcdaUZxP9KEdmf
-	 YtdbGOf9kyx7ueWNcSaLqAuFsYDRCnnHuATT6Nl5bXO2fuzmdxC2IIdnWgzcKfGs1e
-	 DZ5pXTFzAUdrnVkcFxI/vDVDb9XPf+cAoemC/1v8=
+	b=lg59T4xXW8QbSaETod5zPW88L8Rz0hIz1NggQk9hOdOZ+4Dsb6jtYfGV3zyetLsP9
+	 icpo4LaLjHOJRDLM3yANiTVAgBX7Z1YIv9WodZkwJMwKmGqNJiVM7yK6tU5Xl+umJI
+	 HAesnS2UX9sMIYy8FV1p0v2NA+5r0ONHmMsC7kcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Peter Delevoryas <peter@pjd.dev>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/267] cachefiles: introduce object ondemand state
+Subject: [PATCH 6.1 013/217] net/ncsi: Simplify Kconfig/dts control flow
 Date: Wed, 19 Jun 2024 14:54:16 +0200
-Message-ID: <20240619125610.385153480@linuxfoundation.org>
+Message-ID: <20240619125557.151050423@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,147 +62,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia Zhu <zhujia.zj@bytedance.com>
+From: Peter Delevoryas <peter@pjd.dev>
 
-[ Upstream commit 357a18d033143617e9c7d420c8f0dd4cbab5f34d ]
+[ Upstream commit c797ce168930ce3d62a9b7fc4d7040963ee6a01e ]
 
-Previously, @ondemand_id field was used not only to identify ondemand
-state of the object, but also to represent the index of the xarray.
-This commit introduces @state field to decouple the role of @ondemand_id
-and adds helpers to access it.
+Background:
 
-Signed-off-by: Jia Zhu <zhujia.zj@bytedance.com>
-Link: https://lore.kernel.org/r/20231120041422.75170-2-zhujia.zj@bytedance.com
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 0a790040838c ("cachefiles: add spin_lock for cachefiles_ondemand_info")
+1. CONFIG_NCSI_OEM_CMD_KEEP_PHY
+
+If this is enabled, we send an extra OEM Intel command in the probe
+sequence immediately after discovering a channel (e.g. after "Clear
+Initial State").
+
+2. CONFIG_NCSI_OEM_CMD_GET_MAC
+
+If this is enabled, we send one of 3 OEM "Get MAC Address" commands from
+Broadcom, Mellanox (Nvidida), and Intel in the *configuration* sequence
+for a channel.
+
+3. mellanox,multi-host (or mlx,multi-host)
+
+Introduced by this patch:
+
+https://lore.kernel.org/all/20200108234341.2590674-1-vijaykhemka@fb.com/
+
+Which was actually originally from cosmo.chou@quantatw.com:
+
+https://github.com/facebook/openbmc-linux/commit/9f132a10ec48db84613519258cd8a317fb9c8f1b
+
+Cosmo claimed that the Nvidia ConnectX-4 and ConnectX-6 NIC's don't
+respond to Get Version ID, et. al in the probe sequence unless you send
+the Set MC Affinity command first.
+
+Problem Statement:
+
+We've been using a combination of #ifdef code blocks and IS_ENABLED()
+conditions to conditionally send these OEM commands.
+
+It makes adding any new code around these commands hard to understand.
+
+Solution:
+
+In this patch, I just want to remove the conditionally compiled blocks
+of code, and always use IS_ENABLED(...) to do dynamic control flow.
+
+I don't think the small amount of code this adds to non-users of the OEM
+Kconfigs is a big deal.
+
+Signed-off-by: Peter Delevoryas <peter@pjd.dev>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e85e271dec02 ("net/ncsi: Fix the multi thread manner of NCSI driver")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/internal.h | 21 +++++++++++++++++++++
- fs/cachefiles/ondemand.c | 21 +++++++++------------
- 2 files changed, 30 insertions(+), 12 deletions(-)
+ net/ncsi/ncsi-manage.c | 20 +++-----------------
+ 1 file changed, 3 insertions(+), 17 deletions(-)
 
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 2ad58c4652084..00beedeaec183 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -44,6 +44,11 @@ struct cachefiles_volume {
- 	struct dentry			*fanout[256];	/* Fanout subdirs */
- };
- 
-+enum cachefiles_object_state {
-+	CACHEFILES_ONDEMAND_OBJSTATE_CLOSE, /* Anonymous fd closed by daemon or initial state */
-+	CACHEFILES_ONDEMAND_OBJSTATE_OPEN, /* Anonymous fd associated with object is available */
-+};
-+
- /*
-  * Backing file state.
-  */
-@@ -62,6 +67,7 @@ struct cachefiles_object {
- #define CACHEFILES_OBJECT_USING_TMPFILE	0		/* Have an unlinked tmpfile */
- #ifdef CONFIG_CACHEFILES_ONDEMAND
- 	int				ondemand_id;
-+	enum cachefiles_object_state	state;
- #endif
- };
- 
-@@ -296,6 +302,21 @@ extern void cachefiles_ondemand_clean_object(struct cachefiles_object *object);
- extern int cachefiles_ondemand_read(struct cachefiles_object *object,
- 				    loff_t pos, size_t len);
- 
-+#define CACHEFILES_OBJECT_STATE_FUNCS(_state, _STATE)	\
-+static inline bool								\
-+cachefiles_ondemand_object_is_##_state(const struct cachefiles_object *object) \
-+{												\
-+	return object->state == CACHEFILES_ONDEMAND_OBJSTATE_##_STATE; \
-+}												\
-+												\
-+static inline void								\
-+cachefiles_ondemand_set_object_##_state(struct cachefiles_object *object) \
-+{												\
-+	object->state = CACHEFILES_ONDEMAND_OBJSTATE_##_STATE; \
-+}
-+
-+CACHEFILES_OBJECT_STATE_FUNCS(open, OPEN);
-+CACHEFILES_OBJECT_STATE_FUNCS(close, CLOSE);
- #else
- static inline ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 					char __user *_buffer, size_t buflen)
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 0254ed39f68ce..90456b8a4b3e0 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -15,6 +15,7 @@ static int cachefiles_ondemand_fd_release(struct inode *inode,
- 
- 	xa_lock(&cache->reqs);
- 	object->ondemand_id = CACHEFILES_ONDEMAND_ID_CLOSED;
-+	cachefiles_ondemand_set_object_close(object);
- 
- 	/*
- 	 * Flush all pending READ requests since their completion depends on
-@@ -176,6 +177,8 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 		set_bit(FSCACHE_COOKIE_NO_DATA_TO_READ, &cookie->flags);
- 	trace_cachefiles_ondemand_copen(req->object, id, size);
- 
-+	cachefiles_ondemand_set_object_open(req->object);
-+
- out:
- 	complete(&req->done);
- 	return ret;
-@@ -363,7 +366,8 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
- 		/* coupled with the barrier in cachefiles_flush_reqs() */
- 		smp_mb();
- 
--		if (opcode != CACHEFILES_OP_OPEN && object->ondemand_id <= 0) {
-+		if (opcode != CACHEFILES_OP_OPEN &&
-+			!cachefiles_ondemand_object_is_open(object)) {
- 			WARN_ON_ONCE(object->ondemand_id == 0);
- 			xas_unlock(&xas);
- 			ret = -EIO;
-@@ -430,18 +434,11 @@ static int cachefiles_ondemand_init_close_req(struct cachefiles_req *req,
- 					      void *private)
- {
- 	struct cachefiles_object *object = req->object;
--	int object_id = object->ondemand_id;
- 
--	/*
--	 * It's possible that object id is still 0 if the cookie looking up
--	 * phase failed before OPEN request has ever been sent. Also avoid
--	 * sending CLOSE request for CACHEFILES_ONDEMAND_ID_CLOSED, which means
--	 * anon_fd has already been closed.
--	 */
--	if (object_id <= 0)
-+	if (!cachefiles_ondemand_object_is_open(object))
- 		return -ENOENT;
- 
--	req->msg.object_id = object_id;
-+	req->msg.object_id = object->ondemand_id;
- 	trace_cachefiles_ondemand_close(object, &req->msg);
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 80713febfac6d..f567957698935 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -689,8 +689,6 @@ static int set_one_vid(struct ncsi_dev_priv *ndp, struct ncsi_channel *nc,
  	return 0;
  }
-@@ -460,7 +457,7 @@ static int cachefiles_ondemand_init_read_req(struct cachefiles_req *req,
- 	int object_id = object->ondemand_id;
  
- 	/* Stop enqueuing requests when daemon has closed anon_fd. */
--	if (object_id <= 0) {
-+	if (!cachefiles_ondemand_object_is_open(object)) {
- 		WARN_ON_ONCE(object_id == 0);
- 		pr_info_once("READ: anonymous fd closed prematurely.\n");
- 		return -EIO;
-@@ -485,7 +482,7 @@ int cachefiles_ondemand_init_object(struct cachefiles_object *object)
- 	 * creating a new tmpfile as the cache file. Reuse the previously
- 	 * allocated object ID if any.
- 	 */
--	if (object->ondemand_id > 0)
-+	if (cachefiles_ondemand_object_is_open(object))
- 		return 0;
+-#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY)
+-
+ static int ncsi_oem_keep_phy_intel(struct ncsi_cmd_arg *nca)
+ {
+ 	unsigned char data[NCSI_OEM_INTEL_CMD_KEEP_PHY_LEN];
+@@ -716,10 +714,6 @@ static int ncsi_oem_keep_phy_intel(struct ncsi_cmd_arg *nca)
+ 	return ret;
+ }
  
- 	volume_key_size = volume->key[0] + 1;
+-#endif
+-
+-#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_GET_MAC)
+-
+ /* NCSI OEM Command APIs */
+ static int ncsi_oem_gma_handler_bcm(struct ncsi_cmd_arg *nca)
+ {
+@@ -856,8 +850,6 @@ static int ncsi_gma_handler(struct ncsi_cmd_arg *nca, unsigned int mf_id)
+ 	return nch->handler(nca);
+ }
+ 
+-#endif /* CONFIG_NCSI_OEM_CMD_GET_MAC */
+-
+ /* Determine if a given channel from the channel_queue should be used for Tx */
+ static bool ncsi_channel_is_tx(struct ncsi_dev_priv *ndp,
+ 			       struct ncsi_channel *nc)
+@@ -1039,20 +1031,18 @@ static void ncsi_configure_channel(struct ncsi_dev_priv *ndp)
+ 			goto error;
+ 		}
+ 
+-		nd->state = ncsi_dev_state_config_oem_gma;
++		nd->state = IS_ENABLED(CONFIG_NCSI_OEM_CMD_GET_MAC)
++			  ? ncsi_dev_state_config_oem_gma
++			  : ncsi_dev_state_config_clear_vids;
+ 		break;
+ 	case ncsi_dev_state_config_oem_gma:
+ 		nd->state = ncsi_dev_state_config_clear_vids;
+-		ret = -1;
+ 
+-#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_GET_MAC)
+ 		nca.type = NCSI_PKT_CMD_OEM;
+ 		nca.package = np->id;
+ 		nca.channel = nc->id;
+ 		ndp->pending_req_num = 1;
+ 		ret = ncsi_gma_handler(&nca, nc->version.mf_id);
+-#endif /* CONFIG_NCSI_OEM_CMD_GET_MAC */
+-
+ 		if (ret < 0)
+ 			schedule_work(&ndp->work);
+ 
+@@ -1404,7 +1394,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
+ 
+ 		schedule_work(&ndp->work);
+ 		break;
+-#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_GET_MAC)
+ 	case ncsi_dev_state_probe_mlx_gma:
+ 		ndp->pending_req_num = 1;
+ 
+@@ -1429,7 +1418,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
+ 
+ 		nd->state = ncsi_dev_state_probe_cis;
+ 		break;
+-#endif /* CONFIG_NCSI_OEM_CMD_GET_MAC */
+ 	case ncsi_dev_state_probe_cis:
+ 		ndp->pending_req_num = NCSI_RESERVED_CHANNEL;
+ 
+@@ -1447,7 +1435,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
+ 		if (IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY))
+ 			nd->state = ncsi_dev_state_probe_keep_phy;
+ 		break;
+-#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY)
+ 	case ncsi_dev_state_probe_keep_phy:
+ 		ndp->pending_req_num = 1;
+ 
+@@ -1460,7 +1447,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
+ 
+ 		nd->state = ncsi_dev_state_probe_gvi;
+ 		break;
+-#endif /* CONFIG_NCSI_OEM_CMD_KEEP_PHY */
+ 	case ncsi_dev_state_probe_gvi:
+ 	case ncsi_dev_state_probe_gc:
+ 	case ncsi_dev_state_probe_gls:
 -- 
 2.43.0
 
