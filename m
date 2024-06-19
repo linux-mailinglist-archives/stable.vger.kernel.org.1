@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-54292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5503690ED86
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 157B890EE7D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DF061F213B2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A948828209B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26E6143C4E;
-	Wed, 19 Jun 2024 13:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B3714E2D9;
+	Wed, 19 Jun 2024 13:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyTZ0Xgq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0acIV1cH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7121082495;
-	Wed, 19 Jun 2024 13:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F44149007;
+	Wed, 19 Jun 2024 13:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803149; cv=none; b=gk+n1aF1zpl7MubZdPImTjZkKFhPcj/xMCy7GlY4efoS/3R6UYfiTInQqlt7aFBCn760qkUyu7tmw6UIha+OT4FRxtad8MkWLP9HG2z1PhGR4QJXaj2hPrxYt7BgEblJPkWUxu34c+44WDsoppLlPCu/3YiB3zCdKukTh/pH0XI=
+	t=1718803737; cv=none; b=VT85bQKo5m+zaEAlrA/8eHDiSq+XZsjCkAgQqbc9eWpDNF6InklReJksefD4G+kZXBIY4dXSnbd3u7xg0JnM/iUSwYay64QJ7ZHpf5OIh5pcFELhm2YA6vlTy56PLN27Hl1tYJMDSEY5hQVHBFUCFrPOvgwL7DDCLUI6Fk7zVkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803149; c=relaxed/simple;
-	bh=Ym96lLiz8HoQSRjGGR8V8E65B/zVmtiv25VDbk5cFK4=;
+	s=arc-20240116; t=1718803737; c=relaxed/simple;
+	bh=rXQv6y0JSPye6yqITUhadQCHb/TjGPRuXnBU4LetJQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VbgBdFbN1h9242y3ICz1etIOjn2ajq/0p8dNd+WyClT3CJN18/M5kjbTwgBcrwmcXOCpjAHDe4DL8TXqCCQ27OshsGbCIzp+K3wHuJIN9zDPusn/yvcuKAfZMAUKA5ZNQ1N4B0mzbSUXNtYsKBUwy6hNZnWRSxIhRXUCVlRH/oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyTZ0Xgq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95C4C2BBFC;
-	Wed, 19 Jun 2024 13:19:08 +0000 (UTC)
+	 MIME-Version; b=S5HlYGmSXTAlhp4EPJxFDRuazbmtie7gFQUAUN8oYFgNtv7GUoqrTm/LtfQB7mwU3IbiEOuy6IfeCEgNesHNbeX/TjzPjpzkMW7zszYZb1L6tHqIjkIwo21NlBUrA3lGtLAP41lJpP8GyvBAqgZXr8UTpZGERBYuyds5xNz4VKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0acIV1cH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AACC2BBFC;
+	Wed, 19 Jun 2024 13:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803149;
-	bh=Ym96lLiz8HoQSRjGGR8V8E65B/zVmtiv25VDbk5cFK4=;
+	s=korg; t=1718803736;
+	bh=rXQv6y0JSPye6yqITUhadQCHb/TjGPRuXnBU4LetJQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zyTZ0XgqI/BuPxFgD1UVdsA7V1zPf41OyWyWt0gtvhFoZ3ElEb+xhe6hHYpw4Swlk
-	 6tK+GtddMcp1OKk77VbKS2fWDYiGb0mk8agiXi7Pyy7La15MtnaH2FXen0VYr6yR44
-	 WlMT8TtJYqdB19wJAC8sfoAmHtUP6yI068ZBlK4M=
+	b=0acIV1cH3mxHTo3wjb5eoa1AQh2tvdGso5NhQBG39tYjYTJT8YsHISgYcIhO4hTpK
+	 ZZQbb4jDOLMamo6jrqTCGNQYtyog65FXi4UP7RfkovcwvBXWGMy2aXqUzgfIYPqerO
+	 26HIZs9zty5UTwHQlbyreqJTlesBtIPwYsd94qn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Can Guo <quic_cang@quicinc.com>,
-	Ziqi Chen <quic_ziqichen@quicinc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 169/281] scsi: ufs: core: Quiesce request queues before checking pending cmds
-Date: Wed, 19 Jun 2024 14:55:28 +0200
-Message-ID: <20240619125616.339927454@linuxfoundation.org>
+	John Ernberg <john.ernberg@actia.se>
+Subject: [PATCH 6.1 086/217] USB: xen-hcd: Traverse host/ when CONFIG_USB_XEN_HCD is selected
+Date: Wed, 19 Jun 2024 14:55:29 +0200
+Message-ID: <20240619125600.006714511@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziqi Chen <quic_ziqichen@quicinc.com>
+From: John Ernberg <john.ernberg@actia.se>
 
-[ Upstream commit 77691af484e28af7a692e511b9ed5ca63012ec6e ]
+commit 8475ffcfb381a77075562207ce08552414a80326 upstream.
 
-In ufshcd_clock_scaling_prepare(), after SCSI layer is blocked,
-ufshcd_pending_cmds() is called to check whether there are pending
-transactions or not. And only if there are no pending transactions can we
-proceed to kickstart the clock scaling sequence.
+If no other USB HCDs are selected when compiling a small pure virutal
+machine, the Xen HCD driver cannot be built.
 
-ufshcd_pending_cmds() traverses over all SCSI devices and calls
-sbitmap_weight() on their budget_map. sbitmap_weight() can be broken down
-to three steps:
+Fix it by traversing down host/ if CONFIG_USB_XEN_HCD is selected.
 
- 1. Calculate the nr outstanding bits set in the 'word' bitmap.
-
- 2. Calculate the nr outstanding bits set in the 'cleared' bitmap.
-
- 3. Subtract the result from step 1 by the result from step 2.
-
-This can lead to a race condition as outlined below:
-
-Assume there is one pending transaction in the request queue of one SCSI
-device, say sda, and the budget token of this request is 0, the 'word' is
-0x1 and the 'cleared' is 0x0.
-
- 1. When step 1 executes, it gets the result as 1.
-
- 2. Before step 2 executes, block layer tries to dispatch a new request to
-    sda. Since the SCSI layer is blocked, the request cannot pass through
-    SCSI but the block layer would do budget_get() and budget_put() to
-    sda's budget map regardless, so the 'word' has become 0x3 and 'cleared'
-    has become 0x2 (assume the new request got budget token 1).
-
- 3. When step 2 executes, it gets the result as 1.
-
- 4. When step 3 executes, it gets the result as 0, meaning there is no
-    pending transactions, which is wrong.
-
-    Thread A                        Thread B
-    ufshcd_pending_cmds()           __blk_mq_sched_dispatch_requests()
-    |                               |
-    sbitmap_weight(word)            |
-    |                               scsi_mq_get_budget()
-    |                               |
-    |                               scsi_mq_put_budget()
-    |                               |
-    sbitmap_weight(cleared)
-    ...
-
-When this race condition happens, the clock scaling sequence is started
-with transactions still in flight, leading to subsequent hibernate enter
-failure, broken link, task abort and back to back error recovery.
-
-Fix this race condition by quiescing the request queues before calling
-ufshcd_pending_cmds() so that block layer won't touch the budget map when
-ufshcd_pending_cmds() is working on it. In addition, remove the SCSI layer
-blocking/unblocking to reduce redundancies and latencies.
-
-Fixes: 8d077ede48c1 ("scsi: ufs: Optimize the command queueing code")
-Co-developed-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Ziqi Chen <quic_ziqichen@quicinc.com>
-Link: https://lore.kernel.org/r/1717754818-39863-1-git-send-email-quic_ziqichen@quicinc.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 494ed3997d75 ("usb: Introduce Xen pvUSB frontend (xen hcd)")
+Cc: stable@vger.kernel.org # v5.17+
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+Link: https://lore.kernel.org/r/20240517114345.1190755-1-john.ernberg@actia.se
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 1322a9c318cff..ce1abd5d725ad 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -1392,7 +1392,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
- 	 * make sure that there are no outstanding requests when
- 	 * clock scaling is in progress
- 	 */
--	ufshcd_scsi_block_requests(hba);
-+	blk_mq_quiesce_tagset(&hba->host->tag_set);
- 	mutex_lock(&hba->wb_mutex);
- 	down_write(&hba->clk_scaling_lock);
+--- a/drivers/usb/Makefile
++++ b/drivers/usb/Makefile
+@@ -34,6 +34,7 @@ obj-$(CONFIG_USB_R8A66597_HCD)	+= host/
+ obj-$(CONFIG_USB_FSL_USB2)	+= host/
+ obj-$(CONFIG_USB_FOTG210_HCD)	+= host/
+ obj-$(CONFIG_USB_MAX3421_HCD)	+= host/
++obj-$(CONFIG_USB_XEN_HCD)	+= host/
  
-@@ -1401,7 +1401,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
- 		ret = -EBUSY;
- 		up_write(&hba->clk_scaling_lock);
- 		mutex_unlock(&hba->wb_mutex);
--		ufshcd_scsi_unblock_requests(hba);
-+		blk_mq_unquiesce_tagset(&hba->host->tag_set);
- 		goto out;
- 	}
+ obj-$(CONFIG_USB_C67X00_HCD)	+= c67x00/
  
-@@ -1422,7 +1422,7 @@ static void ufshcd_clock_scaling_unprepare(struct ufs_hba *hba, int err, bool sc
- 
- 	mutex_unlock(&hba->wb_mutex);
- 
--	ufshcd_scsi_unblock_requests(hba);
-+	blk_mq_unquiesce_tagset(&hba->host->tag_set);
- 	ufshcd_release(hba);
- }
- 
--- 
-2.43.0
-
 
 
 
