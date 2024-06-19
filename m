@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-54059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 353FC90EC78
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A6F90EDA8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A9F284457
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88FA72817AC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F0613D525;
-	Wed, 19 Jun 2024 13:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9457D144D3E;
+	Wed, 19 Jun 2024 13:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWuiiQbz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gEr2uFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3706E12FB31;
-	Wed, 19 Jun 2024 13:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AC682495;
+	Wed, 19 Jun 2024 13:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802471; cv=none; b=FS5nGQ8V3vM1tnawDrW4bPOxdhQ0bmu9+WEEDk6BhOjJARNkO3Ll76z59AWoC5mPeAlpKNnsLFlRWRXq7GldatNPmk9K9/Autap2vi7GSLviDFZ1Vh91YgYoZzIH1eGh/lmOoF0AJ8Z6vg1mKh8xevU+3PbOwqaWGquBDV4fs9s=
+	t=1718803240; cv=none; b=tnCMK10l4V5ZStB9HSFZS18xj3qEVUxOO/AW+Jh18WOIILeGKxv+Jj8p29FJ8Yh+IEbcCfrEqiisgpuM1Iv9EFMLaoikqHgPWHtzhpNFHbg17EMqukV/Y3MhhZ3cm07D57LyAz+KItp7lAq/JxfF5ByTaOsEp39JKU8dRUZ8xe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802471; c=relaxed/simple;
-	bh=QPOuNP69UBxOB65WskyeDtl/P6wP14W5Y/vG5kcuyBU=;
+	s=arc-20240116; t=1718803240; c=relaxed/simple;
+	bh=6MmP+kj/w32nREyDCThgsOnLpNss7LHdFNXcXJl8zC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NzEiZbcbsYCjW32Fq+1qnYjU9Zuayt0vm5vJXb6rB+pPEstYazYQTngFtL1rmXnV1mFv9SSkxia+2cwA0KUqNTHUfrhoNEdM6vgCzcJnCBc4nimGXJj3KW0zmpIQD1TGnURj3KWb07/K2QN3LhNNbJ6HpBMoYO39MuJ1h9c5O38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWuiiQbz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703EEC2BBFC;
-	Wed, 19 Jun 2024 13:07:50 +0000 (UTC)
+	 MIME-Version; b=AnbTRyW5aotq43K1/N6JDcTatnfZyeyoN8e1+/3TzH7qH9gbE5Hhi4bv2QQXBhNNyjbm9xVvajXDymS+Ptn0yu4U0s3mSLxmEW+s7UjsjbZAN+/iz6/r2XEGHt+dN1/GwLX14DhCiJBMh7/6uGC5TFykU33/ukIWC3lBxJ9YKnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gEr2uFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0C1C2BBFC;
+	Wed, 19 Jun 2024 13:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802470;
-	bh=QPOuNP69UBxOB65WskyeDtl/P6wP14W5Y/vG5kcuyBU=;
+	s=korg; t=1718803240;
+	bh=6MmP+kj/w32nREyDCThgsOnLpNss7LHdFNXcXJl8zC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWuiiQbzC1uNnbTlo3pMJcMk2rlkwG08UoV5Sg3EZsJYJYdzqWU34gKS3uJwICIQm
-	 9erbEwDS7LoA2WhXWlNtAxyYaDJT7GpgsG7HhsUUy5NC/S0biACVDNdVmZQl2cDqTk
-	 6/gTcoHEmLDreXZHMDQYTIalF/sMk6mQpum4iwVs=
+	b=2gEr2uFvBN120edHLU3upNpfmem9y+X3P00maLEj8FtMBvmh6cPFU1wbcjjUYFD5H
+	 jihwwnwHrCUqwHqyjquBMsjaTMZns9jJ1qEGr+nmv+24fhwhn4o1G/uUlNttmMjt+8
+	 gDFM+DDm0bO4VjnLf+9+GcdStAr0fSHIgP8lRKOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Nuno Sa <nuno.sa@analog.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 207/267] dmaengine: axi-dmac: fix possible race in remove()
-Date: Wed, 19 Jun 2024 14:55:58 +0200
-Message-ID: <20240619125614.274053275@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com,
+	Ashish Sangwan <a.sangwan@samsung.com>,
+	Namjae Jeon <namjae.jeon@samsung.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>
+Subject: [PATCH 6.9 200/281] drivers: core: synchronize really_probe() and dev_uevent()
+Date: Wed, 19 Jun 2024 14:55:59 +0200
+Message-ID: <20240619125617.647835488@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Dirk Behme <dirk.behme@de.bosch.com>
 
-commit 1bc31444209c8efae98cb78818131950d9a6f4d6 upstream.
+commit c0a40097f0bc81deafc15f9195d1fb54595cd6d0 upstream.
 
-We need to first free the IRQ before calling of_dma_controller_free().
-Otherwise we could get an interrupt and schedule a tasklet while
-removing the DMA controller.
+Synchronize the dev->driver usage in really_probe() and dev_uevent().
+These can run in different threads, what can result in the following
+race condition for dev->driver uninitialization:
 
-Fixes: 0e3b67b348b8 ("dmaengine: Add support for the Analog Devices AXI-DMAC DMA controller")
-Cc: stable@kernel.org
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240328-axi-dmac-devm-probe-v3-1-523c0176df70@analog.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Thread #1:
+==========
+
+really_probe() {
+...
+probe_failed:
+...
+device_unbind_cleanup(dev) {
+    ...
+    dev->driver = NULL;   // <= Failed probe sets dev->driver to NULL
+    ...
+    }
+...
+}
+
+Thread #2:
+==========
+
+dev_uevent() {
+...
+if (dev->driver)
+      // If dev->driver is NULLed from really_probe() from here on,
+      // after above check, the system crashes
+      add_uevent_var(env, "DRIVER=%s", dev->driver->name);
+...
+}
+
+really_probe() holds the lock, already. So nothing needs to be done
+there. dev_uevent() is called with lock held, often, too. But not
+always. What implies that we can't add any locking in dev_uevent()
+itself. So fix this race by adding the lock to the non-protected
+path. This is the path where above race is observed:
+
+ dev_uevent+0x235/0x380
+ uevent_show+0x10c/0x1f0  <= Add lock here
+ dev_attr_show+0x3a/0xa0
+ sysfs_kf_seq_show+0x17c/0x250
+ kernfs_seq_show+0x7c/0x90
+ seq_read_iter+0x2d7/0x940
+ kernfs_fop_read_iter+0xc6/0x310
+ vfs_read+0x5bc/0x6b0
+ ksys_read+0xeb/0x1b0
+ __x64_sys_read+0x42/0x50
+ x64_sys_call+0x27ad/0x2d30
+ do_syscall_64+0xcd/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Similar cases are reported by syzkaller in
+
+https://syzkaller.appspot.com/bug?extid=ffa8143439596313a85a
+
+But these are regarding the *initialization* of dev->driver
+
+dev->driver = drv;
+
+As this switches dev->driver to non-NULL these reports can be considered
+to be false-positives (which should be "fixed" by this commit, as well,
+though).
+
+The same issue was reported and tried to be fixed back in 2015 in
+
+https://lore.kernel.org/lkml/1421259054-2574-1-git-send-email-a.sangwan@samsung.com/
+
+already.
+
+Fixes: 239378f16aa1 ("Driver core: add uevent vars for devices of a class")
+Cc: stable <stable@kernel.org>
+Cc: syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com
+Cc: Ashish Sangwan <a.sangwan@samsung.com>
+Cc: Namjae Jeon <namjae.jeon@samsung.com>
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+Link: https://lore.kernel.org/r/20240513050634.3964461-1-dirk.behme@de.bosch.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dma-axi-dmac.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/dma/dma-axi-dmac.c
-+++ b/drivers/dma/dma-axi-dmac.c
-@@ -1033,8 +1033,8 @@ static int axi_dmac_remove(struct platfo
- {
- 	struct axi_dmac *dmac = platform_get_drvdata(pdev);
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2738,8 +2738,11 @@ static ssize_t uevent_show(struct device
+ 	if (!env)
+ 		return -ENOMEM;
  
--	of_dma_controller_free(pdev->dev.of_node);
- 	free_irq(dmac->irq, dmac);
-+	of_dma_controller_free(pdev->dev.of_node);
- 	tasklet_kill(&dmac->chan.vchan.task);
- 	dma_async_device_unregister(&dmac->dma_dev);
- 	clk_disable_unprepare(dmac->clk);
++	/* Synchronize with really_probe() */
++	device_lock(dev);
+ 	/* let the kset specific function add its keys */
+ 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
++	device_unlock(dev);
+ 	if (retval)
+ 		goto out;
+ 
 
 
 
