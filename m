@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B4D90EDC1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67DD290EC91
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2A4A1F22810
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DB971C21447
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7194A14B95F;
-	Wed, 19 Jun 2024 13:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5A0143C58;
+	Wed, 19 Jun 2024 13:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tArV7L7O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nMTgSoJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A1B1459F2;
-	Wed, 19 Jun 2024 13:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABC913D525;
+	Wed, 19 Jun 2024 13:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803299; cv=none; b=fu4kJMJUQ2Oi6r8JnuhFaI96zElOTF9/PAcfJOtYWo393d6PX1KJSO3M4SyuIB1qF974U/1Z+ROUxUGOBGQR8xItwkcpb+ILDuqzBYANs2qPVwyepCOU0WNPYDUQVqi//Akx28O7XbVoII5jHNJ8RP2tMN3z6PJhpElPmGW1t7s=
+	t=1718802532; cv=none; b=IJONQkDZA52ygKWT29kNVW/TEe4YY3J/HkgTBooVK3iD6ZbOo9J7ML0CO9Nh12QFAW8uRgWY4mVrW1Lpg3l5VelwH3xp2+/BfoNsVUvyaW0xHRq7iJdOmqzY30HNetYA3XGV+B8nqtYhKtlKtJ2MYn/Sq8dmJFkfS5fqQo/G/EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803299; c=relaxed/simple;
-	bh=Mb+Ktpq58VVsyxzBErwhNCDUVvKxZmuE+GpuaftHn8c=;
+	s=arc-20240116; t=1718802532; c=relaxed/simple;
+	bh=D0MDu98dp7c5Nv1deaEIBoHW13VwK1al5W60OWllevE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mC6nr21cHSKhPze3S232+Ff7JFkem7rHg9Ja9RlVzj7kvykHRdLQL9vFIcKegSVXmrXLjlo78t1TjNvuQfZaVksaNN0KwoqQtKfDWVUmTSSaO8nep0e9EHMo+fvOPaKIDx8eEJlPVNaWYOC2Gwa69xoGxLP/ectHm+nfo076l1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tArV7L7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8DA8C2BBFC;
-	Wed, 19 Jun 2024 13:21:38 +0000 (UTC)
+	 MIME-Version; b=CPIPG17jGr2ypJH9CQXp7SKR3BJLoY9koWe+7SmCPLDbufQfmIQOjF6zdOk2vpkw+KlXI4B80mKrTTn5kY4vrbQ1Laj0fDbhd4uZN65bx9bIusygEND06jftbgV95gURXH0FXDMevsdITs7JbmWOrB56Piar4zQlxJg/P3TluEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nMTgSoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E354BC2BBFC;
+	Wed, 19 Jun 2024 13:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803299;
-	bh=Mb+Ktpq58VVsyxzBErwhNCDUVvKxZmuE+GpuaftHn8c=;
+	s=korg; t=1718802532;
+	bh=D0MDu98dp7c5Nv1deaEIBoHW13VwK1al5W60OWllevE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tArV7L7OpPkG/YNlopMYo15NGMRSvhxD3LhGZeak+pIGiSdsnQ4g2BCqSmAz/FZyo
-	 ibIh8QD4c1yByAJvUc82ngbiTLG6ZXnXlrHx3pv7MxNnq2b6bV7TKBNxRAoNihhUHw
-	 YAJ0VE9t5cwDghJA9su9vzUNRgVhtUVMFcWXrBcI=
+	b=0nMTgSoJSxk1dvbyrp5M/Ukdrl1jXGhyWWBgCKSHqL/vB1OCO4QsqhtWHPOHbfWLB
+	 GDnWWiqPv1vBBMT+HoxjLI7J/fuPSK0A1/LOfZ6sPaMSwAMyaCOpw3H0C8LiWt6qqJ
+	 MzTXsZG9pVa0bu72TsmeSm67iqvPvpb5MafkFBvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.9 221/281] wifi: rtlwifi: Ignore IEEE80211_CONF_CHANGE_RETRY_LIMITS
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 229/267] btrfs: zoned: fix use-after-free due to race with dev replace
 Date: Wed, 19 Jun 2024 14:56:20 +0200
-Message-ID: <20240619125618.463804102@linuxfoundation.org>
+Message-ID: <20240619125615.114663613@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 819bda58e77bb67974f94dc1aa11b0556b6f6889 upstream.
+commit 0090d6e1b210551e63cf43958dc7a1ec942cdde9 upstream.
 
-Since commit 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx
-drivers") ieee80211_hw_config() is no longer called with changed = ~0.
-rtlwifi relied on ~0 in order to ignore the default retry limits of
-4/7, preferring 48/48 in station mode and 7/7 in AP/IBSS.
+While loading a zone's info during creation of a block group, we can race
+with a device replace operation and then trigger a use-after-free on the
+device that was just replaced (source device of the replace operation).
 
-RTL8192DU has a lot of packet loss with the default limits from
-mac80211. Fix it by ignoring IEEE80211_CONF_CHANGE_RETRY_LIMITS
-completely, because it's the simplest solution.
+This happens because at btrfs_load_zone_info() we extract a device from
+the chunk map into a local variable and then use the device while not
+under the protection of the device replace rwsem. So if there's a device
+replace operation happening when we extract the device and that device
+is the source of the replace operation, we will trigger a use-after-free
+if before we finish using the device the replace operation finishes and
+frees the device.
 
-Link: https://lore.kernel.org/linux-wireless/cedd13d7691f4692b2a2fa5a24d44a22@realtek.com/
-Cc: stable@vger.kernel.org # 6.9.x
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/1fabb8e4-adf3-47ae-8462-8aea963bc2a5@gmail.com
+Fix this by enlarging the critical section under the protection of the
+device replace rwsem so that all uses of the device are done inside the
+critical section.
+
+CC: stable@vger.kernel.org # 6.1.x: 15c12fcc50a1: btrfs: zoned: introduce a zone_info struct in btrfs_load_block_group_zone_info
+CC: stable@vger.kernel.org # 6.1.x: 09a46725cc84: btrfs: zoned: factor out per-zone logic from btrfs_load_block_group_zone_info
+CC: stable@vger.kernel.org # 6.1.x: 9e0e3e74dc69: btrfs: zoned: factor out single bg handling from btrfs_load_block_group_zone_info
+CC: stable@vger.kernel.org # 6.1.x: 87463f7e0250: btrfs: zoned: factor out DUP bg handling from btrfs_load_block_group_zone_info
+CC: stable@vger.kernel.org # 6.1.x
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/core.c | 15 ---------------
- 1 file changed, 15 deletions(-)
+ fs/btrfs/zoned.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/core.c b/drivers/net/wireless/realtek/rtlwifi/core.c
-index 2e60a6991ca1..42b7db12b1bd 100644
---- a/drivers/net/wireless/realtek/rtlwifi/core.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/core.c
-@@ -633,21 +633,6 @@ static int rtl_op_config(struct ieee80211_hw *hw, u32 changed)
- 		}
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1293,7 +1293,7 @@ static int btrfs_load_zone_info(struct b
+ 				struct map_lookup *map)
+ {
+ 	struct btrfs_dev_replace *dev_replace = &fs_info->dev_replace;
+-	struct btrfs_device *device = map->stripes[zone_idx].dev;
++	struct btrfs_device *device;
+ 	int dev_replace_is_ongoing = 0;
+ 	unsigned int nofs_flag;
+ 	struct blk_zone zone;
+@@ -1301,7 +1301,11 @@ static int btrfs_load_zone_info(struct b
+ 
+ 	info->physical = map->stripes[zone_idx].physical;
+ 
++	down_read(&dev_replace->rwsem);
++	device = map->stripes[zone_idx].dev;
++
+ 	if (!device->bdev) {
++		up_read(&dev_replace->rwsem);
+ 		info->alloc_offset = WP_MISSING_DEV;
+ 		return 0;
+ 	}
+@@ -1311,6 +1315,7 @@ static int btrfs_load_zone_info(struct b
+ 		__set_bit(zone_idx, active);
+ 
+ 	if (!btrfs_dev_is_sequential(device, info->physical)) {
++		up_read(&dev_replace->rwsem);
+ 		info->alloc_offset = WP_CONVENTIONAL;
+ 		return 0;
+ 	}
+@@ -1318,11 +1323,9 @@ static int btrfs_load_zone_info(struct b
+ 	/* This zone will be used for allocation, so mark this zone non-empty. */
+ 	btrfs_dev_clear_zone_empty(device, info->physical);
+ 
+-	down_read(&dev_replace->rwsem);
+ 	dev_replace_is_ongoing = btrfs_dev_replace_is_ongoing(dev_replace);
+ 	if (dev_replace_is_ongoing && dev_replace->tgtdev != NULL)
+ 		btrfs_dev_clear_zone_empty(dev_replace->tgtdev, info->physical);
+-	up_read(&dev_replace->rwsem);
+ 
+ 	/*
+ 	 * The group is mapped to a sequential zone. Get the zone write pointer
+@@ -1333,6 +1336,7 @@ static int btrfs_load_zone_info(struct b
+ 	ret = btrfs_get_dev_zone(device, info->physical, &zone);
+ 	memalloc_nofs_restore(nofs_flag);
+ 	if (ret) {
++		up_read(&dev_replace->rwsem);
+ 		if (ret != -EIO && ret != -EOPNOTSUPP)
+ 			return ret;
+ 		info->alloc_offset = WP_MISSING_DEV;
+@@ -1344,6 +1348,7 @@ static int btrfs_load_zone_info(struct b
+ 		"zoned: unexpected conventional zone %llu on device %s (devid %llu)",
+ 			zone.start << SECTOR_SHIFT, rcu_str_deref(device->name),
+ 			device->devid);
++		up_read(&dev_replace->rwsem);
+ 		return -EIO;
  	}
  
--	if (changed & IEEE80211_CONF_CHANGE_RETRY_LIMITS) {
--		rtl_dbg(rtlpriv, COMP_MAC80211, DBG_LOUD,
--			"IEEE80211_CONF_CHANGE_RETRY_LIMITS %x\n",
--			hw->conf.long_frame_max_tx_count);
--		/* brought up everything changes (changed == ~0) indicates first
--		 * open, so use our default value instead of that of wiphy.
--		 */
--		if (changed != ~0) {
--			mac->retry_long = hw->conf.long_frame_max_tx_count;
--			mac->retry_short = hw->conf.long_frame_max_tx_count;
--			rtlpriv->cfg->ops->set_hw_reg(hw, HW_VAR_RETRY_LIMIT,
--				(u8 *)(&hw->conf.long_frame_max_tx_count));
--		}
--	}
--
- 	if (changed & IEEE80211_CONF_CHANGE_CHANNEL &&
- 	    !rtlpriv->proximity.proxim_on) {
- 		struct ieee80211_channel *channel = hw->conf.chandef.chan;
--- 
-2.45.2
-
+@@ -1371,6 +1376,8 @@ static int btrfs_load_zone_info(struct b
+ 		break;
+ 	}
+ 
++	up_read(&dev_replace->rwsem);
++
+ 	return 0;
+ }
+ 
 
 
 
