@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-54155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4557190ECF3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB48A90EBAE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9C1728303F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D5E61C231CA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFA414B952;
-	Wed, 19 Jun 2024 13:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0774E146580;
+	Wed, 19 Jun 2024 12:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0u03CoF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UA0DkhHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2B414B07B;
-	Wed, 19 Jun 2024 13:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA9F13D525;
+	Wed, 19 Jun 2024 12:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802747; cv=none; b=sxrGhTedMntFRmGf12uDOlLcCfUcMSD6F3nMPfpd9X1KCWhJZTXQT0bwFb0Ie2dQxICUIPZXXCFJNYyu3hFo7C+Xs5m2w3eDI6MbnkR7dyPtSS3EnQb5wrQfHLz4D/Yupo8S+l8OZ4q7/xY6MXLWuDflwUoADqGSSna9oGeVpsU=
+	t=1718801983; cv=none; b=uAUYQ9gHOFplcgst/bYqURZcQ23YYmIvDGc5yQ0cQVvZLEHZn0xXvI441oJOusMx4hzt4SfvlZv7dxCtdFT3e5YqjZsIRJWHgIt4C7Fd5YwGcT2ENxkOzsmRoqK7hFKOUrcSg5C1/vsiJoxmWOSIDSHC1EuzqanuhQ9VutTvoP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802747; c=relaxed/simple;
-	bh=mJUEcxYQY98cw+jUQ9kWXKuAbiIL2EEu4lBZB6E6fKk=;
+	s=arc-20240116; t=1718801983; c=relaxed/simple;
+	bh=ZNh7mByHZ7LbLROBNezbZXroWbO5ZgalaNnGCGd6gL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNx97W7it6Ev6l7tF6mv3xexqw6hose15v+zpbwjsBgEzkvvtTGO4ugiL3ZMncyFSo7w1HKUUPpSIw1bwX2j92JPbHCd3+0Acmvho5oH2eckybsU8hvwL47vJKLpXizW9scgHqlhfLj73lZ8dWE4psyR66JB1bnXEm9C9vL4ZXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0u03CoF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EECBC2BBFC;
-	Wed, 19 Jun 2024 13:12:27 +0000 (UTC)
+	 MIME-Version; b=NPC+F9a9O4mdkNu0ZgxlIt7XcQzUtxGEOjyQURmUGLgjf4TIayOWam4rs1NJITZinalZABelWs0e+onaobjd3vj0fu4GHcqpiyEtOqTJiSfuO42UN6VftUtLfcAVElFCqFQQixuXtn0H9rZKGUDOldyMxUzmM16knrBcDCOJK/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UA0DkhHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDEBC2BBFC;
+	Wed, 19 Jun 2024 12:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802747;
-	bh=mJUEcxYQY98cw+jUQ9kWXKuAbiIL2EEu4lBZB6E6fKk=;
+	s=korg; t=1718801983;
+	bh=ZNh7mByHZ7LbLROBNezbZXroWbO5ZgalaNnGCGd6gL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0u03CoFMiZ+QKpC1aGlGSXyljx2KdTbx4iBjw08s60ZoMGBaRtNHVtgRPzsgQUc/
-	 zsycOw+jMn9InEZ5r4Z6nQb9iDLcD/IiFJ8mSSLG+QoQhT2b7tHIOyl2EZgLsCQ7vY
-	 0W0q+CHUpQbaX7eeUjHulxATCyyyx/jwv1lQ7CFo=
+	b=UA0DkhHM/NCfsFnJY/7SvuhZ3pV9ikxYJLaqHDb7NcCISU9tkia6Hok+UO9zxO4Qa
+	 rT0sKzVwj91rquInxwBjAYF0Jz2Ex1HZqC1tcZhnortDUXEtTfFsQ9B0vq0OTSMa32
+	 5fqxL3LmX8/jz5M0oF2w70LGtj910l3uKt81C5tI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Noam Rathaus <noamr@ssd-disclosure.com>,
 	Eric Dumazet <edumazet@google.com>,
-	David Lebrun <dlebrun@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 033/281] ipv6: sr: block BH in seg6_output_core() and seg6_input_core()
-Date: Wed, 19 Jun 2024 14:53:12 +0200
-Message-ID: <20240619125611.124197926@linuxfoundation.org>
+Subject: [PATCH 6.6 042/267] net/sched: taprio: always validate TCA_TAPRIO_ATTR_PRIOMAP
+Date: Wed, 19 Jun 2024 14:53:13 +0200
+Message-ID: <20240619125607.982373439@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c0b98ac1cc104f48763cdb27b1e9ac25fd81fc90 ]
+[ Upstream commit f921a58ae20852d188f70842431ce6519c4fdc36 ]
 
-As explained in commit 1378817486d6 ("tipc: block BH
-before using dst_cache"), net/core/dst_cache.c
-helpers need to be called with BH disabled.
+If one TCA_TAPRIO_ATTR_PRIOMAP attribute has been provided,
+taprio_parse_mqprio_opt() must validate it, or userspace
+can inject arbitrary data to the kernel, the second time
+taprio_change() is called.
 
-Disabling preemption in seg6_output_core() is not good enough,
-because seg6_output_core() is called from process context,
-lwtunnel_output() only uses rcu_read_lock().
+First call (with valid attributes) sets dev->num_tc
+to a non zero value.
 
-We might be interrupted by a softirq, re-enter seg6_output_core()
-and corrupt dst_cache data structures.
+Second call (with arbitrary mqprio attributes)
+returns early from taprio_parse_mqprio_opt()
+and bad things can happen.
 
-Fix the race by using local_bh_disable() instead of
-preempt_disable().
-
-Apply a similar change in seg6_input_core().
-
-Fixes: fa79581ea66c ("ipv6: sr: fix several BUGs when preemption is enabled")
-Fixes: 6c8702c60b88 ("ipv6: sr: add support for SRH encapsulation and injection with lwtunnels")
+Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
+Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: David Lebrun <dlebrun@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240531132636.2637995-4-edumazet@google.com
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20240604181511.769870-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_iptunnel.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ net/sched/sch_taprio.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
-index a75df2ec8db0d..098632adc9b5a 100644
---- a/net/ipv6/seg6_iptunnel.c
-+++ b/net/ipv6/seg6_iptunnel.c
-@@ -464,23 +464,21 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index a315748a5e531..418d4a846d04a 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1186,16 +1186,13 @@ static int taprio_parse_mqprio_opt(struct net_device *dev,
+ {
+ 	bool allow_overlapping_txqs = TXTIME_ASSIST_IS_ENABLED(taprio_flags);
  
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
+-	if (!qopt && !dev->num_tc) {
+-		NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
+-		return -EINVAL;
+-	}
+-
+-	/* If num_tc is already set, it means that the user already
+-	 * configured the mqprio part
+-	 */
+-	if (dev->num_tc)
++	if (!qopt) {
++		if (!dev->num_tc) {
++			NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
++			return -EINVAL;
++		}
+ 		return 0;
++	}
  
--	preempt_disable();
-+	local_bh_disable();
- 	dst = dst_cache_get(&slwt->cache);
--	preempt_enable();
- 
- 	if (!dst) {
- 		ip6_route_input(skb);
- 		dst = skb_dst(skb);
- 		if (!dst->error) {
--			preempt_disable();
- 			dst_cache_set_ip6(&slwt->cache, dst,
- 					  &ipv6_hdr(skb)->saddr);
--			preempt_enable();
- 		}
- 	} else {
- 		skb_dst_drop(skb);
- 		skb_dst_set(skb, dst);
- 	}
-+	local_bh_enable();
- 
- 	err = skb_cow_head(skb, LL_RESERVED_SPACE(dst->dev));
- 	if (unlikely(err))
-@@ -536,9 +534,9 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 
- 	slwt = seg6_lwt_lwtunnel(orig_dst->lwtstate);
- 
--	preempt_disable();
-+	local_bh_disable();
- 	dst = dst_cache_get(&slwt->cache);
--	preempt_enable();
-+	local_bh_enable();
- 
- 	if (unlikely(!dst)) {
- 		struct ipv6hdr *hdr = ipv6_hdr(skb);
-@@ -558,9 +556,9 @@ static int seg6_output_core(struct net *net, struct sock *sk,
- 			goto drop;
- 		}
- 
--		preempt_disable();
-+		local_bh_disable();
- 		dst_cache_set_ip6(&slwt->cache, dst, &fl6.saddr);
--		preempt_enable();
-+		local_bh_enable();
- 	}
- 
- 	skb_dst_drop(skb);
+ 	/* taprio imposes that traffic classes map 1:n to tx queues */
+ 	if (qopt->num_tc > dev->num_tx_queues) {
 -- 
 2.43.0
 
