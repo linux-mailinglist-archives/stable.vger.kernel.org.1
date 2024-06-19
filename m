@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-54244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A351C90ED53
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E2390EC24
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B558E1C21413
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4F891F2288E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1062B14375A;
-	Wed, 19 Jun 2024 13:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CE4145334;
+	Wed, 19 Jun 2024 13:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxt5HctQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1M1rPGa3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B18AD58;
-	Wed, 19 Jun 2024 13:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7690A13AA40;
+	Wed, 19 Jun 2024 13:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803007; cv=none; b=DkiOe1LwA536r2TwWJ/fDQ1MI3faRkRckdHm4I2Emz82G/w78IywSIKJLpzqZN1/qqZjmfLNSI1JVnb3OS/IZ/VCxnYlu/pBr3MZrWhbkfvAri0jwjAz7RJhGicRDqyxv+T9vPu9RiIWAEUctZqG7mOlHtkj6BqJOaCerSAjuTY=
+	t=1718802243; cv=none; b=s7qRbY+5cVOl3YdDTFzkhHoJOkMjs683lIavLJQ4OMxXazfoZ2mmxhlxa3Bdk4Tcb/dg4wYYRQYi+GR+4sMl9J/ZV3KDCqtei/+TFg85PNa/jsCxemMVhitkfFlLkdy8pw2WolVAAmyI7LgI8IfE3CSL9PVPy4+wnGIXf0FZlJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803007; c=relaxed/simple;
-	bh=fJkISL3tLIzTxUrsDqt0RJbzNqov5qGAJNBsxfNujqs=;
+	s=arc-20240116; t=1718802243; c=relaxed/simple;
+	bh=ZF3Vx7UBM/0DkLPn/Ml+tD9orP250VGBMrKb0xUjAvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gyW+F5dNQIhKxzQwnVFqp3uS7ex+U4s15+Wtp8XJSk2yoa9Tx/ywRyjWJBy2kgC0AL3KtZGWKi33rfQVAiZE0ecBlz9BbjX3WcLqL/O+8mjQdmzicL9SwSAb56BMp6uWvanEVNFuEKygwg4XXl4XXX538PHMngFZHbR8W7kteGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxt5HctQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D2EC2BBFC;
-	Wed, 19 Jun 2024 13:16:47 +0000 (UTC)
+	 MIME-Version; b=GK0A3JwEyp/+KhYmtrtkAbxVZpGlX8/8W6rgXCGFRxVBP8C99oAMwD4L00fxW6JqF48gVfKCpUp1wZCpWC+qmTHXKW8G76gHXpTAFkVVMnbGwOdFrwaXcmf1SM/+zv7q5nfpK357ChBeQrcFf+cMkjUU5UWHjUuG6EzvCcZo5N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1M1rPGa3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED33BC2BBFC;
+	Wed, 19 Jun 2024 13:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803007;
-	bh=fJkISL3tLIzTxUrsDqt0RJbzNqov5qGAJNBsxfNujqs=;
+	s=korg; t=1718802243;
+	bh=ZF3Vx7UBM/0DkLPn/Ml+tD9orP250VGBMrKb0xUjAvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxt5HctQJFvTp8/f+/oqVTI+pNcFAmi5D78EkERR5pUEiVrh/zolWhmf/KikaKQZ1
-	 3bsD1kJ99RZ+ayXKomcXFl2zqYhi6k9lArYPfUQlcAYjEU/hx6MHg/kEvAKWK7ZqPF
-	 ZBEdFsxoChE7D8eXghEpEBkmSATac0TJ4LG+hrw4=
+	b=1M1rPGa34w6EQ/kp0Om9H40tKxwLdcEt0AtBVJFriUnWWuI7jDjMoUm+m9f8q6ABG
+	 2mQ0sYxESvqwwr3TL8HOYPIbhYOJ+fKaJJkhdFP45II1kx6JncFjHEZ+qYWtIfR5/t
+	 9hXKBdCmNJ4aTnIAL+a50h2d9/nLvv3GrElntxaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 122/281] NFSv4.1 enforce rootpath check in fs_location query
-Date: Wed, 19 Jun 2024 14:54:41 +0200
-Message-ID: <20240619125614.540298677@linuxfoundation.org>
+Subject: [PATCH 6.6 131/267] iommu: Return right value in iommu_sva_bind_device()
+Date: Wed, 19 Jun 2024 14:54:42 +0200
+Message-ID: <20240619125611.379185011@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 28568c906c1bb5f7560e18082ed7d6295860f1c2 ]
+[ Upstream commit 89e8a2366e3bce584b6c01549d5019c5cda1205e ]
 
-In commit 4ca9f31a2be66 ("NFSv4.1 test and add 4.1 trunking transport"),
-we introduce the ability to query the NFS server for possible trunking
-locations of the existing filesystem. However, we never checked the
-returned file system path for these alternative locations. According
-to the RFC, the server can say that the filesystem currently known
-under "fs_root" of fs_location also resides under these server
-locations under the following "rootpath" pathname. The client cannot
-handle trunking a filesystem that reside under different location
-under different paths other than what the main path is. This patch
-enforces the check that fs_root path and rootpath path in fs_location
-reply is the same.
+iommu_sva_bind_device() should return either a sva bond handle or an
+ERR_PTR value in error cases. Existing drivers (idxd and uacce) only
+check the return value with IS_ERR(). This could potentially lead to
+a kernel NULL pointer dereference issue if the function returns NULL
+instead of an error pointer.
 
-Fixes: 4ca9f31a2be6 ("NFSv4.1 test and add 4.1 trunking transport")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+In reality, this doesn't cause any problems because iommu_sva_bind_device()
+only returns NULL when the kernel is not configured with CONFIG_IOMMU_SVA.
+In this case, iommu_dev_enable_feature(dev, IOMMU_DEV_FEAT_SVA) will
+return an error, and the device drivers won't call iommu_sva_bind_device()
+at all.
+
+Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20240528042528.71396-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ include/linux/iommu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index c93c12063b3af..3a816c4a6d5e2 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -4023,6 +4023,23 @@ static void test_fs_location_for_trunking(struct nfs4_fs_location *location,
- 	}
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index 0225cf7445de2..b6ef263e85c06 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -1199,7 +1199,7 @@ u32 iommu_sva_get_pasid(struct iommu_sva *handle);
+ static inline struct iommu_sva *
+ iommu_sva_bind_device(struct device *dev, struct mm_struct *mm)
+ {
+-	return NULL;
++	return ERR_PTR(-ENODEV);
  }
  
-+static bool _is_same_nfs4_pathname(struct nfs4_pathname *path1,
-+				   struct nfs4_pathname *path2)
-+{
-+	int i;
-+
-+	if (path1->ncomponents != path2->ncomponents)
-+		return false;
-+	for (i = 0; i < path1->ncomponents; i++) {
-+		if (path1->components[i].len != path2->components[i].len)
-+			return false;
-+		if (memcmp(path1->components[i].data, path2->components[i].data,
-+				path1->components[i].len))
-+			return false;
-+	}
-+	return true;
-+}
-+
- static int _nfs4_discover_trunking(struct nfs_server *server,
- 				   struct nfs_fh *fhandle)
- {
-@@ -4056,9 +4073,13 @@ static int _nfs4_discover_trunking(struct nfs_server *server,
- 	if (status)
- 		goto out_free_3;
- 
--	for (i = 0; i < locations->nlocations; i++)
-+	for (i = 0; i < locations->nlocations; i++) {
-+		if (!_is_same_nfs4_pathname(&locations->fs_path,
-+					&locations->locations[i].rootpath))
-+			continue;
- 		test_fs_location_for_trunking(&locations->locations[i], clp,
- 					      server);
-+	}
- out_free_3:
- 	kfree(locations->fattr);
- out_free_2:
+ static inline void iommu_sva_unbind_device(struct iommu_sva *handle)
 -- 
 2.43.0
 
