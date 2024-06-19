@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A56690E621
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:40:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD7290E622
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEA491F25F12
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:40:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9139E1C20F37
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CFF7BAF4;
-	Wed, 19 Jun 2024 08:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F907A705;
+	Wed, 19 Jun 2024 08:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywlmItx/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5nkXxgP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724B079952
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F7177117
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718786428; cv=none; b=jgYaxYKVeBZwBst+GDPndgaE1sD4SD6wgRrMRH5EUI5ifc0BT5ttQll+BYZgXNsi3a5lnPj/P+FroKKnaJ4UBsWMVKYN2nZeTMt/illCQXMFz3I+iPqodxEl3ST/PbaJiO3CPMnrDiCyB/6mNyPfHIt0b62cQN++Sv01nCfC6fM=
+	t=1718786431; cv=none; b=n8niOXFuwYRq7hCLOI43TOov7pxSt6qxP1G6uElvaREdlWplYIgupFwn+WkkAFWr7bTqvql511oubpsWS/bvstYWuwbyVhujm+MJG0ex32c2lSOULwDkpykGGwm1P1K83r6lzVBRzUl3+qy1lukar/MHxqBH+xklolWcf1NGijI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718786428; c=relaxed/simple;
-	bh=vQ8FBzb0NEJjAzUkVAgP9YJWOxm+MDc/IgAvYWUlbxc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OPaD9cdF4+bWAtG82uKFwLkRJyCx8k6DWEZfTcn3OyzhLEQ5U3lIRqVYfioXy2yYap1WgqS1/ntlJjOdBiPDOylsiwsZfsdaXiRxixScq0GPFwJ2QZmh8VoOXfgIRZp4Ji1dN4iu6njfNf3B2A6qzXYB4IT/F1wJkNkZILUAv68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywlmItx/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F190FC2BBFC;
-	Wed, 19 Jun 2024 08:40:27 +0000 (UTC)
+	s=arc-20240116; t=1718786431; c=relaxed/simple;
+	bh=hJGJIKerVSazk3mNS/EAuwhnsovhQINEgOcFh11yviQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UP72RpecZCTalRjgMAVIlFPIMGckQ/G/DMVXltVjxW5yY7ImdgJg5Hvh1J03DTKOOxUJivUntxTuqDRU1sO3vtqTGyyn6nhqr6jp8cGE3Io8IYBYTLk+FVy4Ie+aGtdJFTMbRQdbC+qsDXiS3OFDenxQW/A5WjMBmzpAmiJWVTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5nkXxgP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1291C2BBFC;
+	Wed, 19 Jun 2024 08:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718786428;
-	bh=vQ8FBzb0NEJjAzUkVAgP9YJWOxm+MDc/IgAvYWUlbxc=;
+	s=korg; t=1718786431;
+	bh=hJGJIKerVSazk3mNS/EAuwhnsovhQINEgOcFh11yviQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ywlmItx/U2l7rK7RWwZ37xCdLUpEg07cT0tSM5N5tejweCzwKoW+CG66jvYn1tpBl
-	 +2NLul+MyAE9VwjlW7TWM++3mzkG5oMYOtv5bvejOj9GfZ236xURpxLiQ9Mu6A5n4K
-	 ElZKcn187C1YVWyxr9pZ2aE99M7LMoj5VEQZDlsY=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: validate the parameters of bo mapping operations" failed to apply to 6.1-stable tree
+	b=t5nkXxgPcmKMQzRsjePJbOSy3ML9g8FAPFtWtuSkrM4x0RBDQop8ZUomtkyUH6z+y
+	 ceW32CEehmw37dXkycIpn5HOMtyD0W9wSx1+lHsRi6Qbefnd6H5yhJ2BDVu83689qa
+	 ITuHOtDscNBZHUyXyrBLoqkCyjw8b3WLLdEkXqbk=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: validate the parameters of bo mapping operations" failed to apply to 5.10-stable tree
 To: xinhui.pan@amd.com,alexander.deucher@amd.com,christian.koenig@amd.com,hexed@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Jun 2024 10:39:39 +0200
-Message-ID: <2024061939-curtsy-quickstep-ddc6@gregkh>
+Date: Wed, 19 Jun 2024 10:39:40 +0200
+Message-ID: <2024061940-subprime-yogurt-1fa8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 98856136c485e586ab063f0b3780dfc0c78df780
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061939-curtsy-quickstep-ddc6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061940-subprime-yogurt-1fa8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 98856136c485 ("drm/amdgpu: validate the parameters of bo mapping operations more clearly")
 9f0bcf49e989 ("amdgpu: validate offset_in_bo of drm_amdgpu_gem_va")
+9a89a721b41b ("drm/amdgpu: check alignment on CPU page for bo map")
 
 thanks,
 
