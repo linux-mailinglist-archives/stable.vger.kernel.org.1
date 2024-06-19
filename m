@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3EC390EEC8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 160F890EDCA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5A431C24140
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4CF1287853
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB4814D6EF;
-	Wed, 19 Jun 2024 13:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7104D9EA;
+	Wed, 19 Jun 2024 13:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7el5uWs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ui09mds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C1A14B963;
-	Wed, 19 Jun 2024 13:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EC01494A6;
+	Wed, 19 Jun 2024 13:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803908; cv=none; b=CLBv/Ya4PJ5oX/xAf3qZjre0lIhlEHx6gZVmbWFMsrkIMueSVCPtYVIb2CltkMBF5p/L+bHLBaAvxlRd87e97Im4DBzYl5y9ykDOljWs9xdTgaUjHz+2/Ocu6SQgbqhhaSOH4BczF1ogjIrwQWQ0m8G4DPodbhr4sQXhfMGtmXI=
+	t=1718803327; cv=none; b=onUIp8A2YTLz5CEPrpa6+YCqIWMhW1NcxJDIU0AOO4Rwvt2vri+YKZdy0impJWWjY3AYtbs6Sv+e2FKsBbLctsHYkkGbz+4BYdUt/yCsI2YT/VQ7u6zCRjqqXu/c5Ut6394GQKF+RLhoUG8Kg/FftzJ6yiPFjeLgJRXDksdl1HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803908; c=relaxed/simple;
-	bh=lrF1OKvhArM0cvRAycJ42iAm6hHGMHYvys74+welJlQ=;
+	s=arc-20240116; t=1718803327; c=relaxed/simple;
+	bh=Kt1ztgtZO0jFSN9TXceS3RP1qTDsibzFpEMnKfiWhAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bfqq65ik8Cu3NRpWPgzihvJ+yM58k93Q7kiXc7Xp21dcS1s6D7A0AGvjZOOTIVjQ5SCqDHGZ/4MVHiQLlKTO2EBk8Eg69b/JKdkYuAyl2sqsnafxA1PN0DjmL8bp4ac8c0D3EXUXxvXGP2i2DQFFdRGPzPX1foRBzd9fTKASzog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7el5uWs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44DAC2BBFC;
-	Wed, 19 Jun 2024 13:31:47 +0000 (UTC)
+	 MIME-Version; b=mlRMaIWa5qBlyCF2kEyDbWtDrb1cR8neMzkdxuUsGvVdrdZ5dpOcvBbt0XH9Afeirpvlj/jDaZAFOR1t2byoLBBwU+kA9na/yHVGUNk7Iit8oWi7D7EtJ5gDHdhcvMn3tj/qHbNCVIVtuDwwxywjpSw5HTdWAE5Q/dxRjuBsCs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ui09mds; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427CBC2BBFC;
+	Wed, 19 Jun 2024 13:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803908;
-	bh=lrF1OKvhArM0cvRAycJ42iAm6hHGMHYvys74+welJlQ=;
+	s=korg; t=1718803326;
+	bh=Kt1ztgtZO0jFSN9TXceS3RP1qTDsibzFpEMnKfiWhAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P7el5uWsG70xw/JAkPoTZ94mhs9pNf1qebgL6PZjt1SPkASclY6s+QMHjahuS4dMM
-	 tZoGfuzlzqkqUXcUKzx3XwyG1xdinEY2oDUCk5dVQYch6zqmKJGw73nvHyOFpV7smT
-	 wVkTsxcQnsjS5A5E12U+ClZdJn5VYXPIeGZbmiuo=
+	b=0ui09mdsv8DavrfqO4CNI0I2+7zBjz/Yf0gT9hbJ2Os/BHx8fzHd22aSD07RoqMR5
+	 5t+Whs4XDaNhFCrMpkargmvDOBBp0V3OSaixVUZ4OfU9GnmA7EX3c+DrWAGEeZ6G7z
+	 PVswMkOL0Cu70e0s10IYcsVkpcCUGhLbYQtz5Wp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 145/217] geneve: Fix incorrect inner network header offset when innerprotoinherit is set
+	Tim Teichmann <teichmanntim@outlook.de>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.9 229/281] ata: libata-core: Add ATA_HORKAGE_NOLPM for Apacer AS340
 Date: Wed, 19 Jun 2024 14:56:28 +0200
-Message-ID: <20240619125602.285987377@linuxfoundation.org>
+Message-ID: <20240619125618.772859914@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit c6ae073f5903f6c6439d0ac855836a4da5c0a701 ]
+commit 3cb648c4dd3e8dde800fb3659250ed11f2d9efa5 upstream.
 
-When innerprotoinherit is set, the tunneled packets do not have an inner
-Ethernet header.
-Change 'maclen' to not always assume the header length is ETH_HLEN, as
-there might not be a MAC header.
+Commit 7627a0edef54 ("ata: ahci: Drop low power policy board type")
+dropped the board_ahci_low_power board type, and instead enables LPM if:
+-The AHCI controller reports that it supports LPM (Partial/Slumber), and
+-CONFIG_SATA_MOBILE_LPM_POLICY != 0, and
+-The port is not defined as external in the per port PxCMD register, and
+-The port is not defined as hotplug capable in the per port PxCMD
+ register.
 
-This resolves issues with drivers (e.g. mlx5, in
-mlx5e_tx_tunnel_accel()) who rely on the skb inner network header offset
-to be correct, and use it for TX offloads.
+Partial and Slumber LPM states can either be initiated by HIPM or DIPM.
 
-Fixes: d8a6213d70ac ("geneve: fix header validation in geneve[6]_xmit_skb")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For HIPM (host initiated power management) to get enabled, both the AHCI
+controller and the drive have to report that they support HIPM.
+
+For DIPM (device initiated power management) to get enabled, only the
+drive has to report that it supports DIPM. However, the HBA will reject
+device requests to enter LPM states which the HBA does not support.
+
+The problem is that Apacer AS340 drives do not handle low power modes
+correctly. The problem was most likely not seen before because no one
+had used this drive with a AHCI controller with LPM enabled.
+
+Add a quirk so that we do not enable LPM for this drive, since we see
+command timeouts if we do (even though the drive claims to support DIPM).
+
+Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
+Cc: stable@vger.kernel.org
+Reported-by: Tim Teichmann <teichmanntim@outlook.de>
+Closes: https://lore.kernel.org/linux-ide/87bk4pbve8.ffs@tglx/
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/geneve.c     | 10 ++++++----
- include/net/ip_tunnels.h |  5 +++--
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ drivers/ata/libata-core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/geneve.c b/drivers/net/geneve.c
-index 488ca1c854962..c4a49a75250e3 100644
---- a/drivers/net/geneve.c
-+++ b/drivers/net/geneve.c
-@@ -919,6 +919,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 			   struct geneve_dev *geneve,
- 			   const struct ip_tunnel_info *info)
- {
-+	bool inner_proto_inherit = geneve->cfg.inner_proto_inherit;
- 	bool xnet = !net_eq(geneve->net, dev_net(geneve->dev));
- 	struct geneve_sock *gs4 = rcu_dereference(geneve->sock4);
- 	const struct ip_tunnel_key *key = &info->key;
-@@ -930,7 +931,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be16 sport;
- 	int err;
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -4199,6 +4199,9 @@ static const struct ata_blacklist_entry
+ 						ATA_HORKAGE_ZERO_AFTER_TRIM |
+ 						ATA_HORKAGE_NOLPM },
  
--	if (!skb_vlan_inet_prepare(skb))
-+	if (!skb_vlan_inet_prepare(skb, inner_proto_inherit))
- 		return -EINVAL;
- 
- 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-@@ -1003,7 +1004,7 @@ static int geneve_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	}
- 
- 	err = geneve_build_skb(&rt->dst, skb, info, xnet, sizeof(struct iphdr),
--			       geneve->cfg.inner_proto_inherit);
-+			       inner_proto_inherit);
- 	if (unlikely(err))
- 		return err;
- 
-@@ -1019,6 +1020,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 			    struct geneve_dev *geneve,
- 			    const struct ip_tunnel_info *info)
- {
-+	bool inner_proto_inherit = geneve->cfg.inner_proto_inherit;
- 	bool xnet = !net_eq(geneve->net, dev_net(geneve->dev));
- 	struct geneve_sock *gs6 = rcu_dereference(geneve->sock6);
- 	const struct ip_tunnel_key *key = &info->key;
-@@ -1028,7 +1030,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 	__be16 sport;
- 	int err;
- 
--	if (!skb_vlan_inet_prepare(skb))
-+	if (!skb_vlan_inet_prepare(skb, inner_proto_inherit))
- 		return -EINVAL;
- 
- 	sport = udp_flow_src_port(geneve->net, skb, 1, USHRT_MAX, true);
-@@ -1083,7 +1085,7 @@ static int geneve6_xmit_skb(struct sk_buff *skb, struct net_device *dev,
- 		ttl = ttl ? : ip6_dst_hoplimit(dst);
- 	}
- 	err = geneve_build_skb(dst, skb, info, xnet, sizeof(struct ipv6hdr),
--			       geneve->cfg.inner_proto_inherit);
-+			       inner_proto_inherit);
- 	if (unlikely(err))
- 		return err;
- 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index f9906b73e7ff4..0cc077c3dda30 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -353,9 +353,10 @@ static inline bool pskb_inet_may_pull(struct sk_buff *skb)
- 
- /* Variant of pskb_inet_may_pull().
-  */
--static inline bool skb_vlan_inet_prepare(struct sk_buff *skb)
-+static inline bool skb_vlan_inet_prepare(struct sk_buff *skb,
-+					 bool inner_proto_inherit)
- {
--	int nhlen = 0, maclen = ETH_HLEN;
-+	int nhlen = 0, maclen = inner_proto_inherit ? 0 : ETH_HLEN;
- 	__be16 type = skb->protocol;
- 
- 	/* Essentially this is skb_protocol(skb, true)
--- 
-2.43.0
-
++	/* Apacer models with LPM issues */
++	{ "Apacer AS340*",		NULL,	ATA_HORKAGE_NOLPM },
++
+ 	/* These specific Samsung models/firmware-revs do not handle LPM well */
+ 	{ "SAMSUNG MZMPC128HBFU-000MV", "CXM14M1Q", ATA_HORKAGE_NOLPM },
+ 	{ "SAMSUNG SSD PM830 mSATA *",  "CXM13D1Q", ATA_HORKAGE_NOLPM },
 
 
 
