@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0898590EEE1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FAB290EC92
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 092041C20BC0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 853631C21B8F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5836E1422D9;
-	Wed, 19 Jun 2024 13:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FEE145334;
+	Wed, 19 Jun 2024 13:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8TgxYCm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htsfZrft"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 180501E492;
-	Wed, 19 Jun 2024 13:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B05D13D525;
+	Wed, 19 Jun 2024 13:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803983; cv=none; b=jkIwzusit/d26OiJE5ENKOGpuWiPprYTJzas/jEg2OImtNY++QvvjQJaV4/Hmd514wj5GxpgrZUZi8SmfITWoRYWJhq1I9z+AjGwlHmcCxRa6RmmtMSW/PeEmFZsG3MNweWkJs8HCz3z6eAT7jPVVkVxQXXJPXA6asaM9IGOAdA=
+	t=1718802535; cv=none; b=rlsgDQJZ/JcKxF1au0KJiJGlddHQrK0MPHTzOm8hqKe6rOiObNgz8gErDGbrBXqcr74OcXTWX3/il41kMoF+JVltk+7rQ5PgGXEQP2xBLaJBpFkN39lp+Gj4b4ypwUxS1YAr4p8ZRNp/XWE1easBb9OzE2Gw9iqfW82pLvKyjK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803983; c=relaxed/simple;
-	bh=y+8m7EM/zrG88ooWzF1pxqgI5ITNgbFVFAuU3bygFDM=;
+	s=arc-20240116; t=1718802535; c=relaxed/simple;
+	bh=BZltfSmsxvsB/ujTyLslwGrjH5yY3d7w1OkpYEAO2gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AtfyYDhnQHsROttcahGOB9O2dB2Qo9vpxP8vygoAvKbadH2xn/Bbt7mOfQtxvmixe/Pyr67YQVDc/UEyjMJlA5lsnRJKoimw6sIyIpG8L/SN4VHoZjHBxDEmQiwyKwx7GBbNn9pDQFI6Ujs+ehS3buPWokS0Me6vrXMGtaJOGbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8TgxYCm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCFEC2BBFC;
-	Wed, 19 Jun 2024 13:33:02 +0000 (UTC)
+	 MIME-Version; b=tlicjewqn9fbPCwIzTbXEh3ZUPa22I/dhjMgZO2TBe+ZWjw2iJfrQ4YamI7rN9qGYhB5AFri0K23tIC5OZUjH31eCQzTV11llUIyz0xaFI/e/YfVdq6OetbYgTLDnsJG4alq7MmKbHNf4fm/CtfCRDmZGiBWvY0jnt29z6IGN7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htsfZrft; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C9AC2BBFC;
+	Wed, 19 Jun 2024 13:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803983;
-	bh=y+8m7EM/zrG88ooWzF1pxqgI5ITNgbFVFAuU3bygFDM=;
+	s=korg; t=1718802535;
+	bh=BZltfSmsxvsB/ujTyLslwGrjH5yY3d7w1OkpYEAO2gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8TgxYCmm6CPFYMe6nj0q78khFxfaRXK3ZReuxBGe90Lqvdx7CRQV/LNv2MbWpbH4
-	 zkV1cFhc9H6686rkJyn579WwuqFuh0r8Kz6xnkhCQg7pWs32vvH2gQjYqKoiCGx1NO
-	 WlKgeDqaa89bvRUH31rZEHfrPqRbBSX4hve3Fdg4=
+	b=htsfZrftIayfRapQ+OdIm7aKvOWebK3Ke1Aa7L6t6dbELZ+uS0tz2FStlOoi1Bqp2
+	 kvCBBvFLu+hAoFlW0m5fO/ipzulWyiAJXVyxTJ+UiRJxSmhD36+zQTmi1KUka8x6Pp
+	 FC2Yl3TBxWTTjH9VzFgMb3dbXVJKnYZtvIa33IsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>, Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/217] net: sfp: Always call `sfp_sm_mod_remove()` on remove
+	linux-xfs@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 230/267] xfs: fix imprecise logic in xchk_btree_check_block_owner
 Date: Wed, 19 Jun 2024 14:56:21 +0200
-Message-ID: <20240619125602.015739519@linuxfoundation.org>
+Message-ID: <20240619125615.153917840@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit e96b2933152fd87b6a41765b2f58b158fde855b6 ]
+commit c0afba9a8363f17d4efed22a8764df33389aebe8 upstream.
 
-If the module is in SFP_MOD_ERROR, `sfp_sm_mod_remove()` will
-not be run. As a consequence, `sfp_hwmon_remove()` is not getting
-run either, leaving a stale `hwmon` device behind. `sfp_sm_mod_remove()`
-itself checks `sfp->sm_mod_state` anyways, so this check was not
-really needed in the first place.
+A reviewer was confused by the init_sa logic in this function.  Upon
+checking the logic, I discovered that the code is imprecise.  What we
+want to do here is check that there is an ownership record in the rmap
+btree for the AG that contains a btree block.
 
-Fixes: d2e816c0293f ("net: sfp: handle module remove outside state machine")
-Signed-off-by: "Csókás, Bence" <csokas.bence@prolan.hu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240605084251.63502-1-csokas.bence@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For an inode-rooted btree (e.g. the bmbt) the per-AG btree cursors have
+not been initialized because inode btrees can span multiple AGs.
+Therefore, we must initialize the per-AG btree cursors in sc->sa before
+proceeding.  That is what init_sa controls, and hence the logic should
+be gated on XFS_BTREE_ROOT_IN_INODE, not XFS_BTREE_LONG_PTRS.
+
+In practice, ROOT_IN_INODE and LONG_PTRS are coincident so this hasn't
+mattered.  However, we're about to refactor both of those flags into
+separate btree_ops fields so we want this the logic to make sense
+afterwards.
+
+Fixes: 858333dcf021a ("xfs: check btree block ownership with bnobt/rmapbt when scrubbing btree")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/sfp.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/xfs/scrub/btree.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 9b1403291d921..06dce78d7b0c9 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -2150,8 +2150,7 @@ static void sfp_sm_module(struct sfp *sfp, unsigned int event)
+--- a/fs/xfs/scrub/btree.c
++++ b/fs/xfs/scrub/btree.c
+@@ -385,7 +385,12 @@ xchk_btree_check_block_owner(
+ 	agno = xfs_daddr_to_agno(bs->cur->bc_mp, daddr);
+ 	agbno = xfs_daddr_to_agbno(bs->cur->bc_mp, daddr);
  
- 	/* Handle remove event globally, it resets this state machine */
- 	if (event == SFP_E_REMOVE) {
--		if (sfp->sm_mod_state > SFP_MOD_PROBE)
--			sfp_sm_mod_remove(sfp);
-+		sfp_sm_mod_remove(sfp);
- 		sfp_sm_mod_next(sfp, SFP_MOD_EMPTY, 0);
- 		return;
- 	}
--- 
-2.43.0
-
+-	init_sa = bs->cur->bc_flags & XFS_BTREE_LONG_PTRS;
++	/*
++	 * If the btree being examined is not itself a per-AG btree, initialize
++	 * sc->sa so that we can check for the presence of an ownership record
++	 * in the rmap btree for the AG containing the block.
++	 */
++	init_sa = bs->cur->bc_flags & XFS_BTREE_ROOT_IN_INODE;
+ 	if (init_sa) {
+ 		error = xchk_ag_init_existing(bs->sc, agno, &bs->sc->sa);
+ 		if (!xchk_btree_xref_process_error(bs->sc, bs->cur,
 
 
 
