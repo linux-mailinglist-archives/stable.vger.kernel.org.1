@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BAD90EE47
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA8C90EC20
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAF8F1C231A3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:27:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3307B1C24321
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C5A14BF8D;
-	Wed, 19 Jun 2024 13:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC03143873;
+	Wed, 19 Jun 2024 13:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfj+lWXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hD4Zd6/n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F183B14B96F;
-	Wed, 19 Jun 2024 13:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE74143C43;
+	Wed, 19 Jun 2024 13:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803634; cv=none; b=IeNjfHestjHzgCdgdMaXlpAp7Dw7IrRTYTmHndz+TPx3fOIIauKbMYJQQ4zb56reIGJCjGW08qIowu4FDTfB9vfwWuJdeSV4/xYaPKrQFT6zsVILr+WmsgH74SHXXu3KPJ6rOABm360B9nsPgdT6LldZgXFb/vS4uJz6qVdxBq0=
+	t=1718802228; cv=none; b=Yc4g01y9dGHxLhDFHWtqDQDYRIykoEwuehj17MCHplF1lzP1dvSngX/i3oxa22hYfMWwLNvTTfFHoKKIYXn7H3rDnFVr9TjmdVfjUNHMYs5rz0KMEw/v/gzKxYbRaHPi9Q7mlAXmm4OH/e/+A5aocTn6o4vTduLy67z4pvyElhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803634; c=relaxed/simple;
-	bh=DY6/D12ttJvuRIkoqs1ovXvtq0rs9+64/jn5c2yqy18=;
+	s=arc-20240116; t=1718802228; c=relaxed/simple;
+	bh=NW0JfIrMx9adK61uPD0Om+nLjk2X8ML5EHP5bK53Udk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QBQWD28YjqnoS24DTBwK6dGu0RM8jcta94EWplMf+Em1cq9G9x9/1iiLAptm3AqYKy++r3wFUvytCehXv16wnEqT2lvH6GOgrYOrqaav8G7hwcdfiToBcVxSRd/FESA0vqwawg35d86DWB2/TytUDPRMcL93eMVow4BrBQbJjy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfj+lWXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EA7C2BBFC;
-	Wed, 19 Jun 2024 13:27:12 +0000 (UTC)
+	 MIME-Version; b=GwaB7eXaj6DTexUHGE+UPHrv6eue1Mq5tEBQynFTvOMVttjpuR9r8aJGToxoYBqgKZcQIAHoJYUm5iKQuOCN7s0j+2EXKN2jL3EKxtuL9O1zQCpwowZL0MMJe2kVJXzw3TMpHEW4ltfXxcHyGqjzK4/+y91nKCTR+ArnIDuFNj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hD4Zd6/n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44468C2BBFC;
+	Wed, 19 Jun 2024 13:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803633;
-	bh=DY6/D12ttJvuRIkoqs1ovXvtq0rs9+64/jn5c2yqy18=;
+	s=korg; t=1718802228;
+	bh=NW0JfIrMx9adK61uPD0Om+nLjk2X8ML5EHP5bK53Udk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfj+lWXhqYKrPcvRub8SxWHFqgpnk3M3IKqDit60G7onrvdfoYe++lBzQcumQCRFo
-	 5uz86cRpoYOg+rwvF8wM6ceOqJN05HBxrdBfAtswUqcVOXXsVM/CnJMi7dttr4O5ld
-	 PVfHdiNRmnsKuDE5oEPDYYXeb0Oj6fh9C9gy+ITk=
+	b=hD4Zd6/nAWBV3vKfdBv6AsfrrtP/mAXWEia9LxnDkzVdIC5WUHFWeRUSnDcZTLf6n
+	 9SQgXkitTuwqhWuPmS49mS2Oq85uLHeHfOQujkYNiVjERGbEhIFLpiXf46MD55ORXp
+	 jE6WEaBTsLPVuYKGXrl47Mh6kdCyiOwzam9ixx0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/217] net: wwan: iosm: Fix tainted pointer delete is case of region creation fail
+Subject: [PATCH 6.6 126/267] gpio: tqmx86: introduce shadow register for GPIO output value
 Date: Wed, 19 Jun 2024 14:54:37 +0200
-Message-ID: <20240619125557.969098276@linuxfoundation.org>
+Message-ID: <20240619125611.188469035@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-[ Upstream commit b0c9a26435413b81799047a7be53255640432547 ]
+[ Upstream commit 9d6a811b522ba558bcb4ec01d12e72a0af8e9f6e ]
 
-In case of region creation fail in ipc_devlink_create_region(), previously
-created regions delete process starts from tainted pointer which actually
-holds error code value.
-Fix this bug by decreasing region index before delete.
+The TQMx86 GPIO controller uses the same register address for input and
+output data. Reading the register will always return current inputs
+rather than the previously set outputs (regardless of the current
+direction setting). Therefore, using a RMW pattern does not make sense
+when setting output values. Instead, the previously set output register
+value needs to be stored as a shadow register.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+As there is no reliable way to get the current output values from the
+hardware, also initialize all channels to 0, to ensure that stored and
+actual output values match. This should usually not have any effect in
+practise, as the TQMx86 UEFI sets all outputs to 0 during boot.
 
-Fixes: 4dcd183fbd67 ("net: wwan: iosm: devlink registration")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Acked-by: Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240604082500.20769-1-amishin@t-argos.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Also prepare for extension of the driver to more than 8 GPIOs by using
+DECLARE_BITMAP.
+
+Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/d0555933becd45fa92a85675d26e4d59343ddc01.1717063994.git.matthias.schiffer@ew.tq-group.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-tqmx86.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wwan/iosm/iosm_ipc_devlink.c b/drivers/net/wwan/iosm/iosm_ipc_devlink.c
-index 2fe724d623c06..33c5a46f1b922 100644
---- a/drivers/net/wwan/iosm/iosm_ipc_devlink.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_devlink.c
-@@ -210,7 +210,7 @@ static int ipc_devlink_create_region(struct iosm_devlink *devlink)
- 			rc = PTR_ERR(devlink->cd_regions[i]);
- 			dev_err(devlink->dev, "Devlink region fail,err %d", rc);
- 			/* Delete previously created regions */
--			for ( ; i >= 0; i--)
-+			for (i--; i >= 0; i--)
- 				devlink_region_destroy(devlink->cd_regions[i]);
- 			goto region_create_fail;
- 		}
+diff --git a/drivers/gpio/gpio-tqmx86.c b/drivers/gpio/gpio-tqmx86.c
+index 3a28c1f273c39..b7e2dbbdc4ebe 100644
+--- a/drivers/gpio/gpio-tqmx86.c
++++ b/drivers/gpio/gpio-tqmx86.c
+@@ -6,6 +6,7 @@
+  *   Vadim V.Vlasov <vvlasov@dev.rtsoft.ru>
+  */
+ 
++#include <linux/bitmap.h>
+ #include <linux/bitops.h>
+ #include <linux/errno.h>
+ #include <linux/gpio/driver.h>
+@@ -38,6 +39,7 @@ struct tqmx86_gpio_data {
+ 	void __iomem		*io_base;
+ 	int			irq;
+ 	raw_spinlock_t		spinlock;
++	DECLARE_BITMAP(output, TQMX86_NGPIO);
+ 	u8			irq_type[TQMX86_NGPI];
+ };
+ 
+@@ -64,15 +66,10 @@ static void tqmx86_gpio_set(struct gpio_chip *chip, unsigned int offset,
+ {
+ 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(chip);
+ 	unsigned long flags;
+-	u8 val;
+ 
+ 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
+-	val = tqmx86_gpio_read(gpio, TQMX86_GPIOD);
+-	if (value)
+-		val |= BIT(offset);
+-	else
+-		val &= ~BIT(offset);
+-	tqmx86_gpio_write(gpio, val, TQMX86_GPIOD);
++	__assign_bit(offset, gpio->output, value);
++	tqmx86_gpio_write(gpio, bitmap_get_value8(gpio->output, 0), TQMX86_GPIOD);
+ 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
+ }
+ 
+@@ -277,6 +274,13 @@ static int tqmx86_gpio_probe(struct platform_device *pdev)
+ 
+ 	tqmx86_gpio_write(gpio, (u8)~TQMX86_DIR_INPUT_MASK, TQMX86_GPIODD);
+ 
++	/*
++	 * Reading the previous output state is not possible with TQMx86 hardware.
++	 * Initialize all outputs to 0 to have a defined state that matches the
++	 * shadow register.
++	 */
++	tqmx86_gpio_write(gpio, 0, TQMX86_GPIOD);
++
+ 	chip = &gpio->chip;
+ 	chip->label = "gpio-tqmx86";
+ 	chip->owner = THIS_MODULE;
 -- 
 2.43.0
 
