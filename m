@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-54012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41AEC90EC45
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D299D90EE91
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB3661F21646
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD9AA1C24351
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A553143C43;
-	Wed, 19 Jun 2024 13:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E2114D422;
+	Wed, 19 Jun 2024 13:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCRQKKYI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7hlLi7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20724132129;
-	Wed, 19 Jun 2024 13:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313501419BA;
+	Wed, 19 Jun 2024 13:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802332; cv=none; b=rHeocf2QVdItOY7EDkXC21e3JFwiNv85E5TkyzRYHD5E5xXkhg6tKHSVGeOXUqzo6qxsixAFhKVGmhWWMF2qUdqzr3l6YsJSQ/wWNr1eoCA7zSCit8Cz5tkfToy+l5QmBSzX1PPN7DdlniaNey3SM1Ftm8xZrYOQ2KrWe9BtT48=
+	t=1718803778; cv=none; b=e4N3o8aLMTmp1yh5q2Rupx1YDcHmGAuLrEyt4qozjPDo8743OPuc+iY87/jsgVu2mH2Fuw5Nbo2kTaGlR8+2NsXkt9Up21+4Jxy3L/P+5No0pe5Vxz50Ns9K8ckBoPjSx8hEVzSQoPtPvAb4MCIgCk8gpXMYlivxaDsSPOikQWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802332; c=relaxed/simple;
-	bh=qtiLadvDKis44toYnNsyHvH1AmfvFJecpZJEtTqqVaI=;
+	s=arc-20240116; t=1718803778; c=relaxed/simple;
+	bh=FgNvg4gk7nOpVO+7pDYOGBA27ONUvTS4e7AMYpCexvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0Al/ploD8ujw+u1htZJZKHQVUsfrjoscv6N9Vk0dUmpo/PJPhxEBUBNFcEash0crGr1HEoXS/qFQl9CPzPeCe5cDqm9b+8h4plrQEoP0UMnir1xt6cPbUF93jAo5+B/u5h0Qbh48RPFZ6ZqOy2QTJWsdAVMJS30PAVmX4RXRTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lCRQKKYI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BB49C2BBFC;
-	Wed, 19 Jun 2024 13:05:31 +0000 (UTC)
+	 MIME-Version; b=UZgN3M5PTW3963tv1uIJShkrXu9YfVyiXNbP6+7RuVc7MwWi7wwWUQDYyF0N6kfV0st6QQdTnfBS4X/BOBxeXkuN+TiaNTvyeVpKbAtxv4RRXZXuS8xEHl1N1wYsATb3wheySz/Qh+DUvpsAB7ytZk38A9UVvT0c5txuIRFIqjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7hlLi7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0F5C2BBFC;
+	Wed, 19 Jun 2024 13:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802332;
-	bh=qtiLadvDKis44toYnNsyHvH1AmfvFJecpZJEtTqqVaI=;
+	s=korg; t=1718803778;
+	bh=FgNvg4gk7nOpVO+7pDYOGBA27ONUvTS4e7AMYpCexvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lCRQKKYIGyEKu/J9ltfPBgx5+Aos+KPW4uIFFeT93UN4ijIFuulsEFOEJs11zRIE2
-	 VAY89sr6QNfngNmOYguEvJ3Q0da2VvYvTEGogQhrRRM1XSa7xnEHP+6/93JgggvB+f
-	 3rfs0720tIshAsN9/0Q4eRh0+nQCe5UbHLo2n1UI=
+	b=R7hlLi7nutKPwyYvBUq8ReuqvMQcZNGGU1qHa8fnrqQZiycTFo5efLbUcm1v8wHl+
+	 chppC/VLb8I+Ajg7xYc+7tKJa5uYpNUhjBaMuHB/GK1YIIxVzHZnEyVMnQwcNSosY8
+	 cNo8ynxFXsfR8XPVphy6ElaU0sj347OArwEQYeck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Washington <joshwash@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrei Vagin <avagin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Steev Klimaszewski <steev@kali.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/267] gve: ignore nonrelevant GSO type bits when processing TSO headers
+Subject: [PATCH 6.1 069/217] HID: i2c-hid: elan: fix reset suspend current leakage
 Date: Wed, 19 Jun 2024 14:55:12 +0200
-Message-ID: <20240619125612.523048664@linuxfoundation.org>
+Message-ID: <20240619125559.345068773@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,88 +64,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Washington <joshwash@google.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 1b9f756344416e02b41439bf2324b26aa25e141c ]
+[ Upstream commit 0eafc58f2194dbd01d4be40f99a697681171995b ]
 
-TSO currently fails when the skb's gso_type field has more than one bit
-set.
+The Elan eKTH5015M touch controller found on the Lenovo ThinkPad X13s
+shares the VCC33 supply with other peripherals that may remain powered
+during suspend (e.g. when enabled as wakeup sources).
 
-TSO packets can be passed from userspace using PF_PACKET, TUNTAP and a
-few others, using virtio_net_hdr (e.g., PACKET_VNET_HDR). This includes
-virtualization, such as QEMU, a real use-case.
+The reset line is also wired so that it can be left deasserted when the
+supply is off.
 
-The gso_type and gso_size fields as passed from userspace in
-virtio_net_hdr are not trusted blindly by the kernel. It adds gso_type
-|= SKB_GSO_DODGY to force the packet to enter the software GSO stack
-for verification.
+This is important as it avoids holding the controller in reset for
+extended periods of time when it remains powered, which can lead to
+increased power consumption, and also avoids leaking current through the
+X13s reset circuitry during suspend (and after driver unbind).
 
-This issue might similarly come up when the CWR bit is set in the TCP
-header for congestion control, causing the SKB_GSO_TCP_ECN gso_type bit
-to be set.
+Use the new 'no-reset-on-power-off' devicetree property to determine
+when reset needs to be asserted on power down.
 
-Fixes: a57e5de476be ("gve: DQO: Add TX path")
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Andrei Vagin <avagin@gmail.com>
+Notably this also avoids wasting power on machine variants without a
+touchscreen for which the driver would otherwise exit probe with reset
+asserted.
 
-v2 - Remove unnecessary comments, remove line break between fixes tag
-and signoffs.
-
-v3 - Add back unrelated empty line removal.
-
-Link: https://lore.kernel.org/r/20240610225729.2985343-1-joshwash@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bd3cba00dcc6 ("HID: i2c-hid: elan: Add support for Elan eKTH6915 i2c-hid touchscreens")
+Cc: <stable@vger.kernel.org>	# 6.0
+Cc: Douglas Anderson <dianders@chromium.org>
+Tested-by: Steev Klimaszewski <steev@kali.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240507144821.12275-5-johan+linaro@kernel.org
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_tx_dqo.c | 20 +++++---------------
- 1 file changed, 5 insertions(+), 15 deletions(-)
+ drivers/hid/i2c-hid/i2c-hid-of-elan.c | 59 +++++++++++++++++++++------
+ 1 file changed, 47 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-index 1e19b834a6130..5a44354bbdfdf 100644
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -501,28 +501,18 @@ static int gve_prep_tso(struct sk_buff *skb)
- 	if (unlikely(skb_shinfo(skb)->gso_size < GVE_TX_MIN_TSO_MSS_DQO))
- 		return -1;
+diff --git a/drivers/hid/i2c-hid/i2c-hid-of-elan.c b/drivers/hid/i2c-hid/i2c-hid-of-elan.c
+index 35986e8297095..8d4deb2def97b 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-of-elan.c
++++ b/drivers/hid/i2c-hid/i2c-hid-of-elan.c
+@@ -31,6 +31,7 @@ struct i2c_hid_of_elan {
+ 	struct regulator *vcc33;
+ 	struct regulator *vccio;
+ 	struct gpio_desc *reset_gpio;
++	bool no_reset_on_power_off;
+ 	const struct elan_i2c_hid_chip_data *chip_data;
+ };
  
-+	if (!(skb_shinfo(skb)->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6)))
-+		return -EINVAL;
+@@ -40,17 +41,17 @@ static int elan_i2c_hid_power_up(struct i2chid_ops *ops)
+ 		container_of(ops, struct i2c_hid_of_elan, ops);
+ 	int ret;
+ 
++	gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
 +
- 	/* Needed because we will modify header. */
- 	err = skb_cow_head(skb, 0);
- 	if (err < 0)
- 		return err;
+ 	if (ihid_elan->vcc33) {
+ 		ret = regulator_enable(ihid_elan->vcc33);
+ 		if (ret)
+-			return ret;
++			goto err_deassert_reset;
+ 	}
  
- 	tcp = tcp_hdr(skb);
--
--	/* Remove payload length from checksum. */
- 	paylen = skb->len - skb_transport_offset(skb);
--
--	switch (skb_shinfo(skb)->gso_type) {
--	case SKB_GSO_TCPV4:
--	case SKB_GSO_TCPV6:
--		csum_replace_by_diff(&tcp->check,
--				     (__force __wsum)htonl(paylen));
--
--		/* Compute length of segmentation header. */
--		header_len = skb_tcp_all_headers(skb);
--		break;
--	default:
--		return -EINVAL;
+ 	ret = regulator_enable(ihid_elan->vccio);
+-	if (ret) {
+-		regulator_disable(ihid_elan->vcc33);
+-		return ret;
 -	}
-+	csum_replace_by_diff(&tcp->check, (__force __wsum)htonl(paylen));
-+	header_len = skb_tcp_all_headers(skb);
++	if (ret)
++		goto err_disable_vcc33;
  
- 	if (unlikely(header_len > GVE_TX_MAX_HDR_SIZE_DQO))
- 		return -EINVAL;
+ 	if (ihid_elan->chip_data->post_power_delay_ms)
+ 		msleep(ihid_elan->chip_data->post_power_delay_ms);
+@@ -60,6 +61,15 @@ static int elan_i2c_hid_power_up(struct i2chid_ops *ops)
+ 		msleep(ihid_elan->chip_data->post_gpio_reset_on_delay_ms);
+ 
+ 	return 0;
++
++err_disable_vcc33:
++	if (ihid_elan->vcc33)
++		regulator_disable(ihid_elan->vcc33);
++err_deassert_reset:
++	if (ihid_elan->no_reset_on_power_off)
++		gpiod_set_value_cansleep(ihid_elan->reset_gpio, 0);
++
++	return ret;
+ }
+ 
+ static void elan_i2c_hid_power_down(struct i2chid_ops *ops)
+@@ -67,7 +77,14 @@ static void elan_i2c_hid_power_down(struct i2chid_ops *ops)
+ 	struct i2c_hid_of_elan *ihid_elan =
+ 		container_of(ops, struct i2c_hid_of_elan, ops);
+ 
+-	gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
++	/*
++	 * Do not assert reset when the hardware allows for it to remain
++	 * deasserted regardless of the state of the (shared) power supply to
++	 * avoid wasting power when the supply is left on.
++	 */
++	if (!ihid_elan->no_reset_on_power_off)
++		gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
++
+ 	if (ihid_elan->chip_data->post_gpio_reset_off_delay_ms)
+ 		msleep(ihid_elan->chip_data->post_gpio_reset_off_delay_ms);
+ 
+@@ -80,6 +97,7 @@ static int i2c_hid_of_elan_probe(struct i2c_client *client,
+ 				 const struct i2c_device_id *id)
+ {
+ 	struct i2c_hid_of_elan *ihid_elan;
++	int ret;
+ 
+ 	ihid_elan = devm_kzalloc(&client->dev, sizeof(*ihid_elan), GFP_KERNEL);
+ 	if (!ihid_elan)
+@@ -94,21 +112,38 @@ static int i2c_hid_of_elan_probe(struct i2c_client *client,
+ 	if (IS_ERR(ihid_elan->reset_gpio))
+ 		return PTR_ERR(ihid_elan->reset_gpio);
+ 
++	ihid_elan->no_reset_on_power_off = of_property_read_bool(client->dev.of_node,
++						"no-reset-on-power-off");
++
+ 	ihid_elan->vccio = devm_regulator_get(&client->dev, "vccio");
+-	if (IS_ERR(ihid_elan->vccio))
+-		return PTR_ERR(ihid_elan->vccio);
++	if (IS_ERR(ihid_elan->vccio)) {
++		ret = PTR_ERR(ihid_elan->vccio);
++		goto err_deassert_reset;
++	}
+ 
+ 	ihid_elan->chip_data = device_get_match_data(&client->dev);
+ 
+ 	if (ihid_elan->chip_data->main_supply_name) {
+ 		ihid_elan->vcc33 = devm_regulator_get(&client->dev,
+ 						      ihid_elan->chip_data->main_supply_name);
+-		if (IS_ERR(ihid_elan->vcc33))
+-			return PTR_ERR(ihid_elan->vcc33);
++		if (IS_ERR(ihid_elan->vcc33)) {
++			ret = PTR_ERR(ihid_elan->vcc33);
++			goto err_deassert_reset;
++		}
+ 	}
+ 
+-	return i2c_hid_core_probe(client, &ihid_elan->ops,
+-				  ihid_elan->chip_data->hid_descriptor_address, 0);
++	ret = i2c_hid_core_probe(client, &ihid_elan->ops,
++				 ihid_elan->chip_data->hid_descriptor_address, 0);
++	if (ret)
++		goto err_deassert_reset;
++
++	return 0;
++
++err_deassert_reset:
++	if (ihid_elan->no_reset_on_power_off)
++		gpiod_set_value_cansleep(ihid_elan->reset_gpio, 0);
++
++	return ret;
+ }
+ 
+ static const struct elan_i2c_hid_chip_data elan_ekth6915_chip_data = {
 -- 
 2.43.0
 
