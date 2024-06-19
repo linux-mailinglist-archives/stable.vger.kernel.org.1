@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-54298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55AFE90ED8C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BEDE90EC5D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4B8F2816A4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 997B6B20518
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7A3144D3E;
-	Wed, 19 Jun 2024 13:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11261143C65;
+	Wed, 19 Jun 2024 13:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFiAz8wV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g68k/Vum"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8EB82495;
-	Wed, 19 Jun 2024 13:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A9712FB31;
+	Wed, 19 Jun 2024 13:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803167; cv=none; b=Cwf1AiHMXOw7DZPFg3tBdL5+ja5Sc5wTm5wPEHSMBEhXdA9jjXiFvlO9+9rMA18TTTW3RnWpSy8zI+6+pCgPC68MtuRCApHQvRUJ4lQNKCYgwDlV2LvNdZi7zTta82jmCyALzdnMP3qAHOnefm6UVOeyl2Bd9bx3k0Gz8d29hGw=
+	t=1718802400; cv=none; b=VLLoQT6Oirj82t/ZqY+dYLXXTwWHju5+9RI4pPemvKHgWbXu9XQehtqOTkvzzWfwdY7syqm6kovWyS9EKFuRupPkvThOTFXM5fqINeJpuUAxA4dUO9Vd65oZJiKnGtiE9o1+BfAEgumiVUOpHAUKwN3/podsTTYWS6DHHvOHdrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803167; c=relaxed/simple;
-	bh=Kc0QuJ8QkP1mZd9wins+46U6FW+XBizd+MvzCPfKl+w=;
+	s=arc-20240116; t=1718802400; c=relaxed/simple;
+	bh=MVhMPVidpCIxYZoidtKC28VKKgxYp0+SxK+dkfzI8Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1sljx6XhIsxO4wjf61xZXAsxtqQtCdzV3AR0XKIq2mUWgItQWl4gEcDqV6XpcBiUr1ZmfH2B/k0vLXxmEsjF/kQ3VbfRkXo8WM3RqFtqpVd5slVsYbe15ZENZ4HfrZwmt+c2r62KjFsYVrIkOO64ErzTs6HiVmpshPQYXarb34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFiAz8wV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DB8C2BBFC;
-	Wed, 19 Jun 2024 13:19:26 +0000 (UTC)
+	 MIME-Version; b=OqOJWmVC3lOWJRqOuSGeSd+1t7PxuceyCCylGoaXRKXCpFSpvZlFfxvviq3HR9G/liLg9RbdqcdPb6k0l0CbdV01CDyAsHpVUWNzNXmKz8CM7xsPteV/WT7WDmkp85Skkzp2h1VPxgbbL3xSzL/c4likBMbbaJs3Gt/9N6PhG6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g68k/Vum; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1F2C2BBFC;
+	Wed, 19 Jun 2024 13:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803167;
-	bh=Kc0QuJ8QkP1mZd9wins+46U6FW+XBizd+MvzCPfKl+w=;
+	s=korg; t=1718802400;
+	bh=MVhMPVidpCIxYZoidtKC28VKKgxYp0+SxK+dkfzI8Jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kFiAz8wVODujdCePnAJrSK3yLYjvANR8HRPLPbNLNR8MxCYOblfxI8Lr9qan3Gya0
-	 sK82csPGaRr51xXKY00PIjKKzBl4NGk8FZi8Oyol7Fe020VY8pAJTme9m6IlQAYk+t
-	 PCL4HS+Sh8G6zGkb7E/2JM06X8u7+zRBCbH0gQac=
+	b=g68k/Vum9ki4kKXgKobe1J5QROTSokiNWhtiAkP4xLYkS4xUvP3kjn46kbrw+EHct
+	 5LwoDf4tcDsv6qjjUdLrgdIxbDcH6FVNOizRbHi/1KuZpDGESTx+4U/0X9uFIJuma3
+	 BTMkuy8qCQN93dJmHDVhfS7Dzwqll4MoefHF8ksY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Friedrich Weber <f.weber@proxmox.com>,
-	Christoph Hellwig <hch@lst.de>,
-	ming.lei@redhat.com,
-	bvanassche@acm.org,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 174/281] block: fix request.queuelist usage in flush
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 182/267] ACPI: x86: Force StorageD3Enable on more products
 Date: Wed, 19 Jun 2024 14:55:33 +0200
-Message-ID: <20240619125616.531433317@linuxfoundation.org>
+Message-ID: <20240619125613.329948465@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <chengming.zhou@linux.dev>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit d0321c812d89c5910d8da8e4b10c891c6b96ff70 ]
+commit e79a10652bbd320649da705ca1ea0c04351af403 upstream.
 
-Friedrich Weber reported a kernel crash problem and bisected to commit
-81ada09cc25e ("blk-flush: reuse rq queuelist in flush state machine").
+A Rembrandt-based HP thin client is reported to have problems where
+the NVME disk isn't present after resume from s2idle.
 
-The root cause is that we use "list_move_tail(&rq->queuelist, pending)"
-in the PREFLUSH/POSTFLUSH sequences. But rq->queuelist.next == xxx since
-it's popped out from plug->cached_rq in __blk_mq_alloc_requests_batch().
-We don't initialize its queuelist just for this first request, although
-the queuelist of all later popped requests will be initialized.
+This is because the NVME disk wasn't put into D3 at suspend, and
+that happened because the StorageD3Enable _DSD was missing in the BIOS.
 
-Fix it by changing to use "list_add_tail(&rq->queuelist, pending)" so
-rq->queuelist doesn't need to be initialized. It should be ok since rq
-can't be on any list when PREFLUSH or POSTFLUSH, has no move actually.
+As AMD's architecture requires that the NVME is in D3 for s2idle, adjust
+the criteria for force_storage_d3 to match *all* Zen SoCs when the FADT
+advertises low power idle support.
 
-Please note the commit 81ada09cc25e ("blk-flush: reuse rq queuelist in
-flush state machine") also has another requirement that no drivers would
-touch rq->queuelist after blk_mq_end_request() since we will reuse it to
-add rq to the post-flush pending list in POSTFLUSH. If this is not true,
-we will have to revert that commit IMHO.
+This will ensure that any future products with this BIOS deficiency don't
+need to be added to the allow list of overrides.
 
-This updated version adds "list_del_init(&rq->queuelist)" in flush rq
-callback since the dm layer may submit request of a weird invalid format
-(REQ_FSEQ_PREFLUSH | REQ_FSEQ_POSTFLUSH), which causes double list_add
-if without this "list_del_init(&rq->queuelist)". The weird invalid format
-problem should be fixed in dm layer.
-
-Reported-by: Friedrich Weber <f.weber@proxmox.com>
-Closes: https://lore.kernel.org/lkml/14b89dfb-505c-49f7-aebb-01c54451db40@proxmox.com/
-Closes: https://lore.kernel.org/lkml/c9d03ff7-27c5-4ebd-b3f6-5a90d96f35ba@proxmox.com/
-Fixes: 81ada09cc25e ("blk-flush: reuse rq queuelist in flush state machine")
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: ming.lei@redhat.com
-Cc: bvanassche@acm.org
-Tested-by: Friedrich Weber <f.weber@proxmox.com>
-Signed-off-by: Chengming Zhou <chengming.zhou@linux.dev>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240608143115.972486-1-chengming.zhou@linux.dev
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-flush.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/acpi/x86/utils.c |   24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/block/blk-flush.c b/block/blk-flush.c
-index b0f314f4bc149..9944414bf7eed 100644
---- a/block/blk-flush.c
-+++ b/block/blk-flush.c
-@@ -183,7 +183,7 @@ static void blk_flush_complete_seq(struct request *rq,
- 		/* queue for flush */
- 		if (list_empty(pending))
- 			fq->flush_pending_since = jiffies;
--		list_move_tail(&rq->queuelist, pending);
-+		list_add_tail(&rq->queuelist, pending);
- 		break;
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -198,16 +198,16 @@ bool acpi_device_override_status(struct
+ }
  
- 	case REQ_FSEQ_DATA:
-@@ -261,6 +261,7 @@ static enum rq_end_io_ret flush_end_io(struct request *flush_rq,
- 		unsigned int seq = blk_flush_cur_seq(rq);
+ /*
+- * AMD systems from Renoir and Lucienne *require* that the NVME controller
++ * AMD systems from Renoir onwards *require* that the NVME controller
+  * is put into D3 over a Modern Standby / suspend-to-idle cycle.
+  *
+  * This is "typically" accomplished using the `StorageD3Enable`
+  * property in the _DSD that is checked via the `acpi_storage_d3` function
+- * but this property was introduced after many of these systems launched
+- * and most OEM systems don't have it in their BIOS.
++ * but some OEM systems still don't have it in their BIOS.
+  *
+  * The Microsoft documentation for StorageD3Enable mentioned that Windows has
+- * a hardcoded allowlist for D3 support, which was used for these platforms.
++ * a hardcoded allowlist for D3 support as well as a registry key to override
++ * the BIOS, which has been used for these cases.
+  *
+  * This allows quirking on Linux in a similar fashion.
+  *
+@@ -220,19 +220,15 @@ bool acpi_device_override_status(struct
+  *    https://bugzilla.kernel.org/show_bug.cgi?id=216773
+  *    https://bugzilla.kernel.org/show_bug.cgi?id=217003
+  * 2) On at least one HP system StorageD3Enable is missing on the second NVME
+-      disk in the system.
++ *    disk in the system.
++ * 3) On at least one HP Rembrandt system StorageD3Enable is missing on the only
++ *    NVME device.
+  */
+-static const struct x86_cpu_id storage_d3_cpu_ids[] = {
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 24, NULL),  /* Picasso */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
+-	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
+-	{}
+-};
+-
+ bool force_storage_d3(void)
+ {
+-	return x86_match_cpu(storage_d3_cpu_ids);
++	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
++		return false;
++	return acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0;
+ }
  
- 		BUG_ON(seq != REQ_FSEQ_PREFLUSH && seq != REQ_FSEQ_POSTFLUSH);
-+		list_del_init(&rq->queuelist);
- 		blk_flush_complete_seq(rq, fq, seq, error);
- 	}
- 
--- 
-2.43.0
-
+ /*
 
 
 
