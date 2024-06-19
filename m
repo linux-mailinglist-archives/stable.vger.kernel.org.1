@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-54118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C389F90ECC4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D9F290EDE6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39780281EC8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B873B2251D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE87143C58;
-	Wed, 19 Jun 2024 13:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB391459F2;
+	Wed, 19 Jun 2024 13:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRF17uin"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fuR9pA8T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D8F12FB31;
-	Wed, 19 Jun 2024 13:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8513143757;
+	Wed, 19 Jun 2024 13:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802638; cv=none; b=a9e/a0i97IEW1e5GbD2lSPy1JJGLCWUsA8kQbK4i8H7k3BGPTvZ0W2yvpW8vXO42mcdLtPLZBPtfaFKf8/6noZfTQ4WCLpH6iVOx2F075akd+IK1tPtz3Js5KKYwF8+QjvulVRAGwET8VaPPbB/XJOQhfOvgx5YkVXpS5daM9gk=
+	t=1718803406; cv=none; b=BlBgzhbTfYCtEpSmiwxzq3XTUwd1TXiiH38THDBBGA/PSM4C4ls3yQkoD136qD1aozpEUhG/08xEEItIWUvhQ05ql2szYOSKQBZUmRfvzYLX+wJK+AJTobHvXpwlSkJku7sby1epHIWRCW21Vhah6sl8FYIEoch3NqIY+FNvKog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802638; c=relaxed/simple;
-	bh=YYEWGdnXqKmdQ9hds0hYiXeS8J2wyHoO52Xc9stg4yw=;
+	s=arc-20240116; t=1718803406; c=relaxed/simple;
+	bh=ycFEkXDl6y1C0l2RytQLpK194U5NA3UpzsP2SnMdgTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AInoeLFhwcMms/0bu12RNz7g3h7pRsAvJRpGYVP/x5U59Ng3DPRlo9KKz6+CQndwDBdQI5uiBNTMDJVbKFIhmQWwgqfjAfiY1Uo6QSw5U0Ve1BteF7Ht+yRB9hZ5DZgG+69DT2CRVACGaBILDKI3BMbs3J6TsOmlaC48fJzO90A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRF17uin; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E446C2BBFC;
-	Wed, 19 Jun 2024 13:10:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HmQ4oa4klGrqZjQqm5ocZ1zS50ocu0TM7y3AjR/+EVE2JBO13y2K34VVlBZyKdmIany2OoECBfrFVNZ0lCoJc4Bv4X2yN2N7KdYDLP/VbEXH7VmgzDIjn3YrXd84labQEJO1p2K1z/AtGjXC9sBSU3cAW7mduxPN9tOL/AC7nwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fuR9pA8T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F349CC2BBFC;
+	Wed, 19 Jun 2024 13:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802638;
-	bh=YYEWGdnXqKmdQ9hds0hYiXeS8J2wyHoO52Xc9stg4yw=;
+	s=korg; t=1718803406;
+	bh=ycFEkXDl6y1C0l2RytQLpK194U5NA3UpzsP2SnMdgTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NRF17uin4osloGlnAoyXWyg4GZmMS2N05l0uxW6xnuhGSWlRtogcIpUlsCTTjSurv
-	 eae4glIaJG7PXlX/8KSF+skHvj7i5ojRgMzhnZZvFsODGbASvobysyHkrgbeKn7Xpl
-	 nS3bp3QEdM+0pD9yzwc68T9cXi2YPtttVw/SeqLA=
+	b=fuR9pA8TgkV6QKeH9vkmyg3X+RZR47rIxhm8AxCrnuQat+ONQcP9kDML4MiaSmH8f
+	 98pBn4Kj6UXcSHpicqAEQXBdKOrLTWcjUNHvFBTtJ6OxThH0bHG2ATaLtHGm01qbsW
+	 dsCw/3hQowCLEQqyOZTXPZc5yREAJDDQ47OzZMko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Juergen Fitschen <me@jue.yt>,
-	Ludovic Desroches <ludovic.desroches@microchip.com>,
-	Codrin Ciubotariu <codrin.ciubotariu@microchip.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 265/267] i2c: at91: Fix the functionality flags of the slave-only interface
+	=?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
+	Eric Anholt <eric@anholt.net>, Rob Herring <robh@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	"Wachowski, Karol" <karol.wachowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>, Wachowski@web.codeaurora.org
+Subject: [PATCH 6.9 257/281] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
 Date: Wed, 19 Jun 2024 14:56:56 +0200
-Message-ID: <20240619125616.492060501@linuxfoundation.org>
+Message-ID: <20240619125619.869018718@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,51 +67,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean Delvare <jdelvare@suse.de>
+From: Wachowski, Karol <karol.wachowski@intel.com>
 
-[ Upstream commit d6d5645e5fc1233a7ba950de4a72981c394a2557 ]
+commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
 
-When an I2C adapter acts only as a slave, it should not claim to
-support I2C master capabilities.
+Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
+allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
+causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
+BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
 
-Fixes: 9d3ca54b550c ("i2c: at91: added slave mode support")
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
-Cc: Juergen Fitschen <me@jue.yt>
-Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
-Cc: Codrin Ciubotariu <codrin.ciubotariu@microchip.com>
-Cc: Andi Shyti <andi.shyti@kernel.org>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Return -EINVAL early if COW mapping is detected.
+
+This bug affects all drm drivers using default shmem helpers.
+It can be reproduced by this simple example:
+void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
+ptr[0] = 0;
+
+Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
+Cc: Noralf Trønnes <noralf@tronnes.org>
+Cc: Eric Anholt <eric@anholt.net>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.2+
+Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-at91-slave.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/drm_gem_shmem_helper.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-at91-slave.c b/drivers/i2c/busses/i2c-at91-slave.c
-index d6eeea5166c04..131a67d9d4a68 100644
---- a/drivers/i2c/busses/i2c-at91-slave.c
-+++ b/drivers/i2c/busses/i2c-at91-slave.c
-@@ -106,8 +106,7 @@ static int at91_unreg_slave(struct i2c_client *slave)
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -610,6 +610,9 @@ int drm_gem_shmem_mmap(struct drm_gem_sh
+ 		return ret;
+ 	}
  
- static u32 at91_twi_func(struct i2c_adapter *adapter)
- {
--	return I2C_FUNC_SLAVE | I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL
--		| I2C_FUNC_SMBUS_READ_BLOCK_DATA;
-+	return I2C_FUNC_SLAVE;
- }
- 
- static const struct i2c_algorithm at91_twi_algorithm_slave = {
--- 
-2.43.0
-
++	if (is_cow_mapping(vma->vm_flags))
++		return -EINVAL;
++
+ 	dma_resv_lock(shmem->base.resv, NULL);
+ 	ret = drm_gem_shmem_get_pages(shmem);
+ 	dma_resv_unlock(shmem->base.resv);
 
 
 
