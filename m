@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E18890EEB5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E69E90EDDD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05E201F21366
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:31:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20A361F2300E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2CC13E037;
-	Wed, 19 Jun 2024 13:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39638143C4E;
+	Wed, 19 Jun 2024 13:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n/S8+Df6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+zdbdnG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C98A1E492;
-	Wed, 19 Jun 2024 13:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACAD4D9EA;
+	Wed, 19 Jun 2024 13:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803875; cv=none; b=nO2/FCoTtUNyziiGo4D1eBAmQA+585WUMeYXvoSq+jkFBi75uJxYHlHInruZk5MSal3uHmtrU78ee4u6Kp7dAZ6D196uGPlRymFijZAzc7uEL/QXpmYAcp80Ef3rldQ84sqTVDzybVCSe7DoC2oh2MXuZD3OSUcXoJmUePCh+t0=
+	t=1718803380; cv=none; b=LcyxpGhyhq38ZzOChe1ulcjzAxPKvdJVyprTJwL2Twr8uFTR89ENbFlNbo56QSQSpUmOO9apVdXYj0MswEP1IGp/yc+kJ3/uZi78dLmAObpmQraBdwNklom1fqCu7EFtV2oL8CGVOkFhJkVuQQ/MF7fIcmy+j+122uQn+mncrg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803875; c=relaxed/simple;
-	bh=ypalvhVOYV1/kJev/nK1VTlJgr9NwYbjjMIO0wmDOmg=;
+	s=arc-20240116; t=1718803380; c=relaxed/simple;
+	bh=GHiueKTLITCaBpHg+J3EbDkGbEeJ0YFnRfmxLIVHnhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S8fBO0k/Ct10xuepTjI/CBdR1VR5yKSW06PaQnM/ama59+gBRszVHZiRl962fYrMhlTvu/YqEOmcO71dr4tOkavIvjkLNzEOEhHyNpr0mi27Sdcr1RUwd/1kMWsY8ssjuM9P2V1/uKLSwimFZZMFmuyl0d8jkByfyU6PO3bvf0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n/S8+Df6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7394C32786;
-	Wed, 19 Jun 2024 13:31:14 +0000 (UTC)
+	 MIME-Version; b=BJ+2+iABk4uUKhbwXtEFw0ENZQ9n2mUwRDY2rFaVT6ldgrC6Bavv210TefiTHNpmE49JFqEDjAPedM+pFMDkNw+UF4J2rfsD8uIoQgWFnIZhSaaT5jr6NRGbGO+J3tN715PFhpu99W63BEVLznLvZvOfTrK/ldDx/cMnyvfe7iQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+zdbdnG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74570C2BBFC;
+	Wed, 19 Jun 2024 13:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803875;
-	bh=ypalvhVOYV1/kJev/nK1VTlJgr9NwYbjjMIO0wmDOmg=;
+	s=korg; t=1718803379;
+	bh=GHiueKTLITCaBpHg+J3EbDkGbEeJ0YFnRfmxLIVHnhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/S8+Df6aGHeoXvkUIxN/FsrgKfwvLDLCoo8XSd690wAn/YkzDltgF6unsMIeKrot
-	 sl5L7T9R0NTxGMnmQL3DGDMdf18WJ+5vCE7XwsAHp1/1SS0q8zQ79tuFMwDofyobaS
-	 qqDLitx69MdyzN9IdD1HzMzcnrw4TEUe080/O2Cw=
+	b=P+zdbdnGRMAWpKicczkKY/arrkgzYgv9lh+iBDBRrQRT33P7zpNkSIGC2P/Rconqb
+	 HKd7i1llolwB8KRjZqXm2AIf3v20KuZ/7Z0tfLJp+OMvjSmWFzlyB4kr6YzUDWzdE9
+	 6G2Xp46xyoZ+PokcCPHHMfbQESpIzBJmyccR5sHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 132/217] HID: logitech-dj: Fix memory leak in logi_dj_recv_switch_to_dj_mode()
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.9 216/281] x86/amd_nb: Check for invalid SMN reads
 Date: Wed, 19 Jun 2024 14:56:15 +0200
-Message-ID: <20240619125601.783084084@linuxfoundation.org>
+Message-ID: <20240619125618.273368718@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +59,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Expósito <jose.exposito89@gmail.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit ce3af2ee95170b7d9e15fff6e500d67deab1e7b3 ]
+commit c625dabbf1c4a8e77e4734014f2fde7aa9071a1f upstream.
 
-Fix a memory leak on logi_dj_recv_send_report() error path.
+AMD Zen-based systems use a System Management Network (SMN) that
+provides access to implementation-specific registers.
 
-Fixes: 6f20d3261265 ("HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()")
-Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+SMN accesses are done indirectly through an index/data pair in PCI
+config space. The PCI config access may fail and return an error code.
+This would prevent the "read" value from being updated.
+
+However, the PCI config access may succeed, but the return value may be
+invalid. This is in similar fashion to PCI bad reads, i.e. return all
+bits set.
+
+Most systems will return 0 for SMN addresses that are not accessible.
+This is in line with AMD convention that unavailable registers are
+Read-as-Zero/Writes-Ignored.
+
+However, some systems will return a "PCI Error Response" instead. This
+value, along with an error code of 0 from the PCI config access, will
+confuse callers of the amd_smn_read() function.
+
+Check for this condition, clear the return value, and set a proper error
+code.
+
+Fixes: ddfe43cdc0da ("x86/amd_nb: Add SMN and Indirect Data Fabric access for AMD Fam17h")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230403164244.471141-1-yazen.ghannam@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-logitech-dj.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/amd_nb.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
-index 57697605b2e24..dc7b0fe83478e 100644
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -1284,8 +1284,10 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
- 		 */
- 		msleep(50);
+--- a/arch/x86/kernel/amd_nb.c
++++ b/arch/x86/kernel/amd_nb.c
+@@ -215,7 +215,14 @@ out:
  
--		if (retval)
-+		if (retval) {
-+			kfree(dj_report);
- 			return retval;
-+		}
- 	}
+ int amd_smn_read(u16 node, u32 address, u32 *value)
+ {
+-	return __amd_smn_rw(node, address, value, false);
++	int err = __amd_smn_rw(node, address, value, false);
++
++	if (PCI_POSSIBLE_ERROR(*value)) {
++		err = -ENODEV;
++		*value = 0;
++	}
++
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(amd_smn_read);
  
- 	/*
--- 
-2.43.0
-
 
 
 
