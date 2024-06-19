@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2E090ED01
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:13:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD68C90EB99
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4301C1F223CC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:13:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4C4E1C20C0A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B16143C4E;
-	Wed, 19 Jun 2024 13:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356961494BD;
+	Wed, 19 Jun 2024 12:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULWNp7+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MblyQXjH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7366514389C;
-	Wed, 19 Jun 2024 13:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E63091487F1;
+	Wed, 19 Jun 2024 12:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802789; cv=none; b=rEb3UBZOXVZVK3EehKg3FmmSRtXT+4lHKm4X1GvsnxZC5bLyg6pWQbXd9wBucnRMa5Q6Uq0QrBlXYqdAyKzsrG34Gm8aEhOgv/BNQdUrwQP91ROKkkQi2TPTyCeij+180/DoyI1ICgtkSlTGFo034+W0gczDJeBBewWg6s7nTRk=
+	t=1718801925; cv=none; b=fgjKbwZYeYtvtcF1N2XjEb68/0KQXuWLiz926tS8/hgqhffAIhTsqzn24cIA5gM++1pIdvAmuw/xVtZD+7haXn07Z1nnbdhvf4cCEAg/W0RRliuauUZMgW13+R016kGCgf4fxVLZ8HrNWAiXe/f85ym5FyZ9AdDmd8oeTnxenIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802789; c=relaxed/simple;
-	bh=LM7TGkAYxc4HJCgHVFlX2/ZT1DEIyi0faIhACmj9SD4=;
+	s=arc-20240116; t=1718801925; c=relaxed/simple;
+	bh=g8VqCFAhD8JsxAFG7ozCKOvByo5JLOyIJpRHiuhU6Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TGvj30dd1OBodovRUxHlk+Tf9z2ise0barCNvHzd3KQhoio5JHS7YtTNBYvPErUNVAMqSsutP8lYuN7sEJmnH5oxwWf29cXxHVJwNUVzeW5odUo3yGjvCBYPFrh1rcanA7IEVBzhBMnYBK7oCPhRpC19c9WteC7GjOa65oR6n2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULWNp7+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED505C2BBFC;
-	Wed, 19 Jun 2024 13:13:08 +0000 (UTC)
+	 MIME-Version; b=n3Nb8s8q+3/xv+bZoD+YA+S/37X/ixTRHNzCkpAZpBBMUR6BuANK0eRlMluq7W01dUb7iB2uK4sNR9wRzpnxfZDtUHAunABcucw5lkavKCMMM6+TDH8+DqN47vggQjYTaMxsZOBg+WdXWKSmewqw/zw/KKDja+WxU8tYQ7BAAE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MblyQXjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE78C32786;
+	Wed, 19 Jun 2024 12:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802789;
-	bh=LM7TGkAYxc4HJCgHVFlX2/ZT1DEIyi0faIhACmj9SD4=;
+	s=korg; t=1718801924;
+	bh=g8VqCFAhD8JsxAFG7ozCKOvByo5JLOyIJpRHiuhU6Yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ULWNp7+h2k/1F/3bukl7B20Me2xwqzu/W4srj8YPUw0xiZgtxe2aSBkRGgJoozq/Y
-	 M4jW7YQ8rwuZzGdFnYK7OKC1zhA1YjGiqIw1VveVxRicMa7fLJazoRN8j2gZkwCKP/
-	 n4JGUnu36wwW3rabATNLKjAt3ZFYvwGy0jlqUy/w=
+	b=MblyQXjH+Uiuf2h+4s0fmqqgxQH1+EKoKisZ/3v/oeuIkOFw69zKXFzqQiF7jLMKk
+	 YljLv3LFnpnjdBOPeki2nqK9q0k6L6jzMHSCRIOo8a+G8Donf+JAoWFZ6SS4mcS6Ro
+	 TbOWNv4unMYxtf5rkuzcafgni9onY3x0yTdgNRpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Quan Zhou <zhouquan@iscas.ac.cn>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 006/281] wifi: mac80211: mesh: Fix leak of mesh_preq_queue objects
-Date: Wed, 19 Jun 2024 14:52:45 +0200
-Message-ID: <20240619125610.089298705@linuxfoundation.org>
+Subject: [PATCH 6.6 015/267] RISC-V: KVM: Fix incorrect reg_subtype labels in kvm_riscv_vcpu_set_reg_isa_ext function
+Date: Wed, 19 Jun 2024 14:52:46 +0200
+Message-ID: <20240619125606.941412181@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Escande <nico.escande@gmail.com>
+From: Quan Zhou <zhouquan@iscas.ac.cn>
 
-[ Upstream commit b7d7f11a291830fdf69d3301075dd0fb347ced84 ]
+[ Upstream commit c66f3b40b17d3dfc4b6abb5efde8e71c46971821 ]
 
-The hwmp code use objects of type mesh_preq_queue, added to a list in
-ieee80211_if_mesh, to keep track of mpath we need to resolve. If the mpath
-gets deleted, ex mesh interface is removed, the entries in that list will
-never get cleaned. Fix this by flushing all corresponding items of the
-preq_queue in mesh_path_flush_pending().
+In the function kvm_riscv_vcpu_set_reg_isa_ext, the original code
+used incorrect reg_subtype labels KVM_REG_RISCV_SBI_MULTI_EN/DIS.
+These have been corrected to KVM_REG_RISCV_ISA_MULTI_EN/DIS respectively.
+Although they are numerically equivalent, the actual processing
+will not result in errors, but it may lead to ambiguous code semantics.
 
-This should take care of KASAN reports like this:
-
-unreferenced object 0xffff00000668d800 (size 128):
-  comm "kworker/u8:4", pid 67, jiffies 4295419552 (age 1836.444s)
-  hex dump (first 32 bytes):
-    00 1f 05 09 00 00 ff ff 00 d5 68 06 00 00 ff ff  ..........h.....
-    8e 97 ea eb 3e b8 01 00 00 00 00 00 00 00 00 00  ....>...........
-  backtrace:
-    [<000000007302a0b6>] __kmem_cache_alloc_node+0x1e0/0x35c
-    [<00000000049bd418>] kmalloc_trace+0x34/0x80
-    [<0000000000d792bb>] mesh_queue_preq+0x44/0x2a8
-    [<00000000c99c3696>] mesh_nexthop_resolve+0x198/0x19c
-    [<00000000926bf598>] ieee80211_xmit+0x1d0/0x1f4
-    [<00000000fc8c2284>] __ieee80211_subif_start_xmit+0x30c/0x764
-    [<000000005926ee38>] ieee80211_subif_start_xmit+0x9c/0x7a4
-    [<000000004c86e916>] dev_hard_start_xmit+0x174/0x440
-    [<0000000023495647>] __dev_queue_xmit+0xe24/0x111c
-    [<00000000cfe9ca78>] batadv_send_skb_packet+0x180/0x1e4
-    [<000000007bacc5d5>] batadv_v_elp_periodic_work+0x2f4/0x508
-    [<00000000adc3cd94>] process_one_work+0x4b8/0xa1c
-    [<00000000b36425d1>] worker_thread+0x9c/0x634
-    [<0000000005852dd5>] kthread+0x1bc/0x1c4
-    [<000000005fccd770>] ret_from_fork+0x10/0x20
-unreferenced object 0xffff000009051f00 (size 128):
-  comm "kworker/u8:4", pid 67, jiffies 4295419553 (age 1836.440s)
-  hex dump (first 32 bytes):
-    90 d6 92 0d 00 00 ff ff 00 d8 68 06 00 00 ff ff  ..........h.....
-    36 27 92 e4 02 e0 01 00 00 58 79 06 00 00 ff ff  6'.......Xy.....
-  backtrace:
-    [<000000007302a0b6>] __kmem_cache_alloc_node+0x1e0/0x35c
-    [<00000000049bd418>] kmalloc_trace+0x34/0x80
-    [<0000000000d792bb>] mesh_queue_preq+0x44/0x2a8
-    [<00000000c99c3696>] mesh_nexthop_resolve+0x198/0x19c
-    [<00000000926bf598>] ieee80211_xmit+0x1d0/0x1f4
-    [<00000000fc8c2284>] __ieee80211_subif_start_xmit+0x30c/0x764
-    [<000000005926ee38>] ieee80211_subif_start_xmit+0x9c/0x7a4
-    [<000000004c86e916>] dev_hard_start_xmit+0x174/0x440
-    [<0000000023495647>] __dev_queue_xmit+0xe24/0x111c
-    [<00000000cfe9ca78>] batadv_send_skb_packet+0x180/0x1e4
-    [<000000007bacc5d5>] batadv_v_elp_periodic_work+0x2f4/0x508
-    [<00000000adc3cd94>] process_one_work+0x4b8/0xa1c
-    [<00000000b36425d1>] worker_thread+0x9c/0x634
-    [<0000000005852dd5>] kthread+0x1bc/0x1c4
-    [<000000005fccd770>] ret_from_fork+0x10/0x20
-
-Fixes: 050ac52cbe1f ("mac80211: code for on-demand Hybrid Wireless Mesh Protocol")
-Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
-Link: https://msgid.link/20240528142605.1060566-1-nico.escande@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 613029442a4b ("RISC-V: KVM: Extend ONE_REG to enable/disable multiple ISA extensions")
+Signed-off-by: Quan Zhou <zhouquan@iscas.ac.cn>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/ff1c6771a67d660db94372ac9aaa40f51e5e0090.1716429371.git.zhouquan@iscas.ac.cn
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh_pathtbl.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/riscv/kvm/vcpu_onereg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
-index a6b62169f0848..c0a5c75cddcb9 100644
---- a/net/mac80211/mesh_pathtbl.c
-+++ b/net/mac80211/mesh_pathtbl.c
-@@ -1017,10 +1017,23 @@ void mesh_path_discard_frame(struct ieee80211_sub_if_data *sdata,
-  */
- void mesh_path_flush_pending(struct mesh_path *mpath)
- {
-+	struct ieee80211_sub_if_data *sdata = mpath->sdata;
-+	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
-+	struct mesh_preq_queue *preq, *tmp;
- 	struct sk_buff *skb;
- 
- 	while ((skb = skb_dequeue(&mpath->frame_queue)) != NULL)
- 		mesh_path_discard_frame(mpath->sdata, skb);
-+
-+	spin_lock_bh(&ifmsh->mesh_preq_queue_lock);
-+	list_for_each_entry_safe(preq, tmp, &ifmsh->preq_queue.list, list) {
-+		if (ether_addr_equal(mpath->dst, preq->dst)) {
-+			list_del(&preq->list);
-+			kfree(preq);
-+			--ifmsh->preq_queue_len;
-+		}
-+	}
-+	spin_unlock_bh(&ifmsh->mesh_preq_queue_lock);
- }
- 
- /**
+diff --git a/arch/riscv/kvm/vcpu_onereg.c b/arch/riscv/kvm/vcpu_onereg.c
+index b7e0e03c69b1e..d520b25d85616 100644
+--- a/arch/riscv/kvm/vcpu_onereg.c
++++ b/arch/riscv/kvm/vcpu_onereg.c
+@@ -614,9 +614,9 @@ static int kvm_riscv_vcpu_set_reg_isa_ext(struct kvm_vcpu *vcpu,
+ 	switch (reg_subtype) {
+ 	case KVM_REG_RISCV_ISA_SINGLE:
+ 		return riscv_vcpu_set_isa_ext_single(vcpu, reg_num, reg_val);
+-	case KVM_REG_RISCV_SBI_MULTI_EN:
++	case KVM_REG_RISCV_ISA_MULTI_EN:
+ 		return riscv_vcpu_set_isa_ext_multi(vcpu, reg_num, reg_val, true);
+-	case KVM_REG_RISCV_SBI_MULTI_DIS:
++	case KVM_REG_RISCV_ISA_MULTI_DIS:
+ 		return riscv_vcpu_set_isa_ext_multi(vcpu, reg_num, reg_val, false);
+ 	default:
+ 		return -ENOENT;
 -- 
 2.43.0
 
