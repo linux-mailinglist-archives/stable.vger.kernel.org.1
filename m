@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D21C690EEEF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1248E90EDF1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F0902827AF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 120E11C2411A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1571422D9;
-	Wed, 19 Jun 2024 13:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66152143C65;
+	Wed, 19 Jun 2024 13:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaDMTVee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezbyvQ9i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C74D13DDC0;
-	Wed, 19 Jun 2024 13:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2441E4D9EA;
+	Wed, 19 Jun 2024 13:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804018; cv=none; b=R2sH8FhMd/OMNGhkIwLRv5wW4Re6caqRBhQvlmA94gkoSX10ImwXluVooYi7R0bAIaZTzMoXXbA8CjEv1QwzwHd+Xe1XHvbOeHxitX3PrdKwl7W8c51xIltIrKn91l9nCoaT4nBKfE8oefK8jnxuj231osrxxlNgCcGCgtTmmXw=
+	t=1718803436; cv=none; b=LGpMiX02C72td6QbCodZr8tTXmMp/do2fRTZ/pq5z8ylQ5UaJaw6wMIf0p3LeZ6bL+43X82GNqm4WYfr8TiOicwT0yJhnVkqGKZ1PXwzaXWlMSeHtDymTAc26nOro3RKwmMxbgGFLZLAl3ME7l3D2r8yR1BcoJB6YX7TotTS5bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804018; c=relaxed/simple;
-	bh=bXUrCzM7AqD01jMY/joYD+YhgUvVEwzo+rPQrQnzuA4=;
+	s=arc-20240116; t=1718803436; c=relaxed/simple;
+	bh=fYp3isFc5VrPRKWXadX8KKB/E03EcD1jNDi/68aldxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=plrNDAULQtsT2lPlMvYk2XBN5WLWyhVN8mG0GT5MMlFfJTcIu82rOxytEXMSTBYOefFiwB8xmel19JYz8X1Mn93cCXG76TKSgd63NzcGrDw2/GhYUtmJgc86fSZ+ML/PKN9XAoWuBpxDb0T7HTuJQHWIbAqDWt4hl0Gh1UUZpIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaDMTVee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B83C2BBFC;
-	Wed, 19 Jun 2024 13:33:37 +0000 (UTC)
+	 MIME-Version; b=atMq1mQd/8dY4DMS8wRuo+Mtl+uoVGELKgyzt8ta4hau4W4wSbgzzE3mdLmuquOzwnaT2Q5Tvo26lyi+epiJfg3grd3OOSMjabnPfBOMkH33mwhv7t2JXDBi6/CFdUTfg5MNn8UH/6mE3YSFnz68SMOw10L+M+FEEc4rvOErOqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezbyvQ9i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C222C2BBFC;
+	Wed, 19 Jun 2024 13:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804018;
-	bh=bXUrCzM7AqD01jMY/joYD+YhgUvVEwzo+rPQrQnzuA4=;
+	s=korg; t=1718803436;
+	bh=fYp3isFc5VrPRKWXadX8KKB/E03EcD1jNDi/68aldxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XaDMTVeewXqc7JQ4ObSeIJMPAkvwhqOrs9XMnkKEqb7QUfsRVc6td5EoJwCN54/2h
-	 /Ylicdwu1qZYPhFhVhaCvMQ+6y3YYMwxBCqYpYr7B8N4u5RCwebljyUbHGSbMwQGEv
-	 qIVawKYltGg34fXVN/wxSbOeOuB23sArfJrjd4B0=
+	b=ezbyvQ9ikNHwwMlxVuwUZ4VRATFQZyXidLjYAcDgvubYySBy2dZfyIekBrGcGU25n
+	 mwcjKeGwuH7/vWj/EdXbunJ9j1IHN5P6lCEiw0iroYXZ6KU+bYBDzQn5hbXhKYB0SA
+	 fk/m4xfTNPwQukK1qJFz78rZqXm7Df/oaNuhA1nQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.1 182/217] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.9 266/281] pmdomain: ti-sci: Fix duplicate PD referrals
 Date: Wed, 19 Jun 2024 14:57:05 +0200
-Message-ID: <20240619125603.709251951@linuxfoundation.org>
+Message-ID: <20240619125620.212759373@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 2dba285caba53f309d6060fca911b43d63f41697 upstream.
+commit 670c900f69645db394efb38934b3344d8804171a upstream.
 
-Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
-Vendor ID are u16 variables and are written to a u32 register of the
-controller. The Subsystem Vendor ID was always 0 because the u16 value
-was masked incorrectly with GENMASK(31,16) resulting in all lower 16
-bits being set to 0 prior to the shift.
+When the dts file has multiple referrers to a single PD (e.g.
+simple-framebuffer and dss nodes both point to the DSS power-domain) the
+ti-sci driver will create two power domains, both with the same ID, and
+that will cause problems as one of the power domains will hide the other
+one.
 
-Remove both masks as they are unnecessary and set the register correctly
-i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
-Subsystem Vendor ID.
+Fix this checking if a PD with the ID has already been created, and only
+create a PD for new IDs.
 
-This is documented in the RK3399 TRM section 17.6.7.1.17
-
-[kwilczynski: removed unnecesary newline]
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Link: https://lore.kernel.org/linux-pci/20240403144508.489835-1-rick.wertenbroek@gmail.com
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Fixes: efa5c01cd7ee ("soc: ti: ti_sci_pm_domains: switch to use multiple genpds instead of one")
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240415-ti-sci-pd-v1-1-a0e56b8ad897@ideasonboard.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/pmdomain/ti/ti_sci_pm_domains.c |   20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -98,10 +98,8 @@ static int rockchip_pcie_ep_write_header
+--- a/drivers/pmdomain/ti/ti_sci_pm_domains.c
++++ b/drivers/pmdomain/ti/ti_sci_pm_domains.c
+@@ -114,6 +114,18 @@ static const struct of_device_id ti_sci_
+ };
+ MODULE_DEVICE_TABLE(of, ti_sci_pm_domain_matches);
  
- 	/* All functions share the same vendor ID with function 0 */
- 	if (fn == 0) {
--		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
--			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
--
--		rockchip_pcie_write(rockchip, vid_regs,
-+		rockchip_pcie_write(rockchip,
-+				    hdr->vendorid | hdr->subsys_vendor_id << 16,
- 				    PCIE_CORE_CONFIG_VENDOR);
- 	}
++static bool ti_sci_pm_idx_exists(struct ti_sci_genpd_provider *pd_provider, u32 idx)
++{
++	struct ti_sci_pm_domain *pd;
++
++	list_for_each_entry(pd, &pd_provider->pd_list, node) {
++		if (pd->idx == idx)
++			return true;
++	}
++
++	return false;
++}
++
+ static int ti_sci_pm_domain_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -149,8 +161,14 @@ static int ti_sci_pm_domain_probe(struct
+ 				break;
  
+ 			if (args.args_count >= 1 && args.np == dev->of_node) {
+-				if (args.args[0] > max_id)
++				if (args.args[0] > max_id) {
+ 					max_id = args.args[0];
++				} else {
++					if (ti_sci_pm_idx_exists(pd_provider, args.args[0])) {
++						index++;
++						continue;
++					}
++				}
+ 
+ 				pd = devm_kzalloc(dev, sizeof(*pd), GFP_KERNEL);
+ 				if (!pd) {
 
 
 
