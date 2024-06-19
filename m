@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-54481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1DA90EE6E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A84E90EC4D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B47C51C23F6D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B6A81C22BB2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8710814EC52;
-	Wed, 19 Jun 2024 13:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10006143C4A;
+	Wed, 19 Jun 2024 13:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxaQ/Hjj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HX/+TPgO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A3714EC42;
-	Wed, 19 Jun 2024 13:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C206F13AA40;
+	Wed, 19 Jun 2024 13:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803707; cv=none; b=N7zz6fJ2w+xWtAgiiacLlVzFiQGQFWN1BvUrlUbaY+PTeZ4HzKzyQpCRPbw/FaSOuPmQHUhuER7cfU+6kx/z0CsydPXdA9Du8FPuM1bLhsjx+oT3xQK4k3+w1dzRzq7NC+GpcS3YUNTROftejk1CBD2fD2vCJcWFCztBbn/YrwY=
+	t=1718802355; cv=none; b=Dwy8fRAsnxwy/8SRsBbNtWHjFyE7Jx2wRayrRne9HN7tlNwkpykzX6htEwolfhuCx1rP7+5+sdChEsAf2aqCSU2D3cHMi2tTlm9hZLQuOxWddyBzeiTZh5GxyFUoAuTzB//YeZV/mVwsLFukJlIuZMNnBJagETXAwLo8gsibhAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803707; c=relaxed/simple;
-	bh=MGwhB9Gw28JiOmHNJuJE4pOebU44atVPVpwLtxQ/v0M=;
+	s=arc-20240116; t=1718802355; c=relaxed/simple;
+	bh=flwYmM16sByYPtKPu2BKhteSPGzvILvUR7xj6zAygGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TpBywUCVQh8TbUYJw4sn/cglR7PKH4BF+OrPzRoJA3BKeHPgDvKppsked3iClwkdc5tvWq/ssGZW4u8PCES9/uI17FRjkm/X1sszbYTg5CejfnjV7IdTyGOJCTdZVk+hLBnD4KGgZB9E4cDw21TjwOnzpRlhkrQhsH0RtOB8GSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxaQ/Hjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE78AC32786;
-	Wed, 19 Jun 2024 13:28:26 +0000 (UTC)
+	 MIME-Version; b=pNKrv7EMbuyUdobw1Czq/dho5a9aFQrp6r2Py5md1boX+GJ8Iv5r62BUxsbRpThHJ+XkWe/JCIR3+MUE7oflJZzeTHOhNNVftiR5LT3cuAdTHOUU0cnVXUta+YkfbKvojYWLVOmz6ydXNdxLdkji8J8LVI2FoaknKbDSRIZYzwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HX/+TPgO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B20C2BBFC;
+	Wed, 19 Jun 2024 13:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803707;
-	bh=MGwhB9Gw28JiOmHNJuJE4pOebU44atVPVpwLtxQ/v0M=;
+	s=korg; t=1718802355;
+	bh=flwYmM16sByYPtKPu2BKhteSPGzvILvUR7xj6zAygGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxaQ/HjjoL/8X1Z1o955WDF+nAAxw9O79MOLnLCJDzdQ09vbpxuu2QSJTj0UfMo1c
-	 GE19vg2w9PmjNe1gIjE4oQX3sdQJcdFtdWQFzXL7h0uY6Qi0AcA5UAKrMYJLBNGony
-	 MKuVuTYgTYuUResSAnk2wQQ6ElhJWLXdZFddSgeo=
+	b=HX/+TPgOuB9X45Z8ainNr+vK59bVxv0BjoXlO/rIaz872TidHdv5NxWlu+aUsqu4l
+	 HWScviPt8uirr5mW1iJ2HS/MUw8UpQnQhIOGCvLHshShuh7+hqoNRFGLUjy5MIS+tx
+	 3ef8Kr/coBkki3uRHf7cxVGrO/Teb1s7vy1zxvJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dev Jain <dev.jain@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sri Jayaramappa <sjayaram@akamai.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Taehee Yoo <ap420073@gmail.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/217] selftests/mm: compaction_test: fix bogus test success on Aarch64
+Subject: [PATCH 6.6 169/267] ionic: fix use after netif_napi_del()
 Date: Wed, 19 Jun 2024 14:55:20 +0200
-Message-ID: <20240619125559.658370754@linuxfoundation.org>
+Message-ID: <20240619125612.828845286@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: Taehee Yoo <ap420073@gmail.com>
 
-[ Upstream commit d4202e66a4b1fe6968f17f9f09bbc30d08f028a1 ]
+[ Upstream commit 79f18a41dd056115d685f3b0a419c7cd40055e13 ]
 
-Patch series "Fixes for compaction_test", v2.
+When queues are started, netif_napi_add() and napi_enable() are called.
+If there are 4 queues and only 3 queues are used for the current
+configuration, only 3 queues' napi should be registered and enabled.
+The ionic_qcq_enable() checks whether the .poll pointer is not NULL for
+enabling only the using queue' napi. Unused queues' napi will not be
+registered by netif_napi_add(), so the .poll pointer indicates NULL.
+But it couldn't distinguish whether the napi was unregistered or not
+because netif_napi_del() doesn't reset the .poll pointer to NULL.
+So, ionic_qcq_enable() calls napi_enable() for the queue, which was
+unregistered by netif_napi_del().
 
-The compaction_test memory selftest introduces fragmentation in memory
-and then tries to allocate as many hugepages as possible. This series
-addresses some problems.
+Reproducer:
+   ethtool -L <interface name> rx 1 tx 1 combined 0
+   ethtool -L <interface name> rx 0 tx 0 combined 1
+   ethtool -L <interface name> rx 0 tx 0 combined 4
 
-On Aarch64, if nr_hugepages == 0, then the test trivially succeeds since
-compaction_index becomes 0, which is less than 3, due to no division by
-zero exception being raised. We fix that by checking for division by
-zero.
+Splat looks like:
+kernel BUG at net/core/dev.c:6666!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 3 PID: 1057 Comm: kworker/3:3 Not tainted 6.10.0-rc2+ #16
+Workqueue: events ionic_lif_deferred_work [ionic]
+RIP: 0010:napi_enable+0x3b/0x40
+Code: 48 89 c2 48 83 e2 f6 80 b9 61 09 00 00 00 74 0d 48 83 bf 60 01 00 00 00 74 03 80 ce 01 f0 4f
+RSP: 0018:ffffb6ed83227d48 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff97560cda0828 RCX: 0000000000000029
+RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff97560cda0a28
+RBP: ffffb6ed83227d50 R08: 0000000000000400 R09: 0000000000000001
+R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000000
+R13: ffff97560ce3c1a0 R14: 0000000000000000 R15: ffff975613ba0a20
+FS:  0000000000000000(0000) GS:ffff975d5f780000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f8f734ee200 CR3: 0000000103e50000 CR4: 00000000007506f0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? die+0x33/0x90
+ ? do_trap+0xd9/0x100
+ ? napi_enable+0x3b/0x40
+ ? do_error_trap+0x83/0xb0
+ ? napi_enable+0x3b/0x40
+ ? napi_enable+0x3b/0x40
+ ? exc_invalid_op+0x4e/0x70
+ ? napi_enable+0x3b/0x40
+ ? asm_exc_invalid_op+0x16/0x20
+ ? napi_enable+0x3b/0x40
+ ionic_qcq_enable+0xb7/0x180 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
+ ionic_start_queues+0xc4/0x290 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
+ ionic_link_status_check+0x11c/0x170 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
+ ionic_lif_deferred_work+0x129/0x280 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
+ process_one_work+0x145/0x360
+ worker_thread+0x2bb/0x3d0
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xcc/0x100
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2d/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
 
-Secondly, correctly set the number of hugepages to zero before trying
-to set a large number of them.
-
-Now, consider a situation in which, at the start of the test, a non-zero
-number of hugepages have been already set (while running the entire
-selftests/mm suite, or manually by the admin). The test operates on 80%
-of memory to avoid OOM-killer invocation, and because some memory is
-already blocked by hugepages, it would increase the chance of OOM-killing.
-Also, since mem_free used in check_compaction() is the value before we
-set nr_hugepages to zero, the chance that the compaction_index will
-be small is very high if the preset nr_hugepages was high, leading to a
-bogus test success.
-
-This patch (of 3):
-
-Currently, if at runtime we are not able to allocate a huge page, the test
-will trivially pass on Aarch64 due to no exception being raised on
-division by zero while computing compaction_index.  Fix that by checking
-for nr_hugepages == 0.  Anyways, in general, avoid a division by zero by
-exiting the program beforehand.  While at it, fix a typo, and handle the
-case where the number of hugepages may overflow an integer.
-
-Link: https://lkml.kernel.org/r/20240521074358.675031-1-dev.jain@arm.com
-Link: https://lkml.kernel.org/r/20240521074358.675031-2-dev.jain@arm.com
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Sri Jayaramappa <sjayaram@akamai.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
+Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Link: https://lore.kernel.org/r/20240612060446.1754392-1-ap420073@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vm/compaction_test.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
-index 6aa6460b854ea..309b3750e57e1 100644
---- a/tools/testing/selftests/vm/compaction_test.c
-+++ b/tools/testing/selftests/vm/compaction_test.c
-@@ -82,12 +82,13 @@ int prereq(void)
- 	return -1;
- }
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index 4f05cddc65cb4..7e6e1bed525af 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -296,10 +296,8 @@ static int ionic_qcq_enable(struct ionic_qcq *qcq)
+ 	if (ret)
+ 		return ret;
  
--int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
-+int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
- {
-+	unsigned long nr_hugepages_ul;
- 	int fd, ret = -1;
- 	int compaction_index = 0;
--	char initial_nr_hugepages[10] = {0};
--	char nr_hugepages[10] = {0};
-+	char initial_nr_hugepages[20] = {0};
-+	char nr_hugepages[20] = {0};
- 
- 	/* We want to test with 80% of available memory. Else, OOM killer comes
- 	   in to play */
-@@ -136,7 +137,12 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 
- 	/* We should have been able to request at least 1/3 rd of the memory in
- 	   huge pages */
--	compaction_index = mem_free/(atoi(nr_hugepages) * hugepage_size);
-+	nr_hugepages_ul = strtoul(nr_hugepages, NULL, 10);
-+	if (!nr_hugepages_ul) {
-+		ksft_print_msg("ERROR: No memory is available as huge pages\n");
-+		goto close_fd;
-+	}
-+	compaction_index = mem_free/(nr_hugepages_ul * hugepage_size);
- 
- 	lseek(fd, 0, SEEK_SET);
- 
-@@ -147,11 +153,11 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
- 		goto close_fd;
- 	}
- 
--	ksft_print_msg("Number of huge pages allocated = %d\n",
--		       atoi(nr_hugepages));
-+	ksft_print_msg("Number of huge pages allocated = %lu\n",
-+		       nr_hugepages_ul);
- 
- 	if (compaction_index > 3) {
--		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
-+		ksft_print_msg("ERROR: Less than 1/%d of memory is available\n"
- 			       "as huge pages\n", compaction_index);
- 		goto close_fd;
- 	}
+-	if (qcq->napi.poll)
+-		napi_enable(&qcq->napi);
+-
+ 	if (qcq->flags & IONIC_QCQ_F_INTR) {
++		napi_enable(&qcq->napi);
+ 		irq_set_affinity_hint(qcq->intr.vector,
+ 				      &qcq->intr.affinity_mask);
+ 		ionic_intr_mask(idev->intr_ctrl, qcq->intr.index,
 -- 
 2.43.0
 
