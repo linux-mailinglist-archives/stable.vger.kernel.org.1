@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-54201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 232D490ED26
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F7090EBF6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B089628168F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4290B26782
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFB5143C65;
-	Wed, 19 Jun 2024 13:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD6A146016;
+	Wed, 19 Jun 2024 13:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWyqqJjE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsU/Z/o9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E313B1422B8;
-	Wed, 19 Jun 2024 13:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7872512FB31;
+	Wed, 19 Jun 2024 13:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802882; cv=none; b=BJJlunsehCk6chbiPi4pWeLdyG32zxjIKPd8HgVgjSpHTXWtDOpsi7JutEGxHTJ7yutyAIjATMGTLuWNWTInXGXYeymE/8xN/zjxOSxkRNMZq01buvziGvDcrjD7y4cWctU13jxR54MOETYl6a7BwKnhV+rUafRHiR27e4X6BeE=
+	t=1718802113; cv=none; b=rqJHSiRXfkjyFaN5nIVy0QxZchtwVD1g3aaPYr3UixXNpEdVutJmwF680zhT9A5F+/QLz421v18SOunrRLjXoKSvD4vdTixjfHJhq5jjgvjbQtDGF6+hga0V/jtLOFZ5aAMzFRl4UB8U6nytsyGv82IPyxOXDXDf4uWyMCwYLbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802882; c=relaxed/simple;
-	bh=2pdgWBIgKltdG5lQPg00fvjcEbcKv6t94NZqHrASowY=;
+	s=arc-20240116; t=1718802113; c=relaxed/simple;
+	bh=CZFZutbLbJINf75HyVVXtYhPtgz7q3tsmElpoVCnAFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pJwL4O7p9uOLp2CNR6UTpyCzXqyY8Vsexcrv1vfoSYf4/UxSQLTFbh8X2m3O0fW/17zseakbjzLLQPy/IbeaxCKWehVG9kkxK+4QEVqm14s7ATMvt6i8UEq2nmE0fSUHFD0IVGknxYe7U3Vro6OG7hcg3xMeZLEpyNf4lMwRUTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWyqqJjE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A792C2BBFC;
-	Wed, 19 Jun 2024 13:14:40 +0000 (UTC)
+	 MIME-Version; b=hXFyFzIiq2dzkF4McmVCsPLbDu5IhQbYhmeFtifA2uaxplG5M8kI4Yi0jWCjvEmC8UZUccdn5MguyzO6e28EgWADzMF8KTcouPJaNl2c4jVACf3ApwUzUAl6e8BAYYhhcbGkSktJyezIFxziSX4Ii29lFHVoWoRLh8NeOTku6iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsU/Z/o9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC944C2BBFC;
+	Wed, 19 Jun 2024 13:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802880;
-	bh=2pdgWBIgKltdG5lQPg00fvjcEbcKv6t94NZqHrASowY=;
+	s=korg; t=1718802113;
+	bh=CZFZutbLbJINf75HyVVXtYhPtgz7q3tsmElpoVCnAFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWyqqJjEAIOl4WMz6OZ0T2ssrwdbsyAvRjSGAx9umYJr/clniJ5vM3mfu04K0XAfm
-	 N0KCP8opTxHo0f5kqCod8BZ5Y4p5vb7QIHOXA85yMLWSyWeVORYz2BIH//iN5RJ3Pa
-	 Iw+QsA2JKZQ/yQJiGUE7inC3/ziDDQxiAaSmB+b0=
+	b=GsU/Z/o9lgbgYYGi/Ei4gj2kTl7Wy/bnfvCDCJ5nwX7dybpg5hSnDRLgonAUxJlWq
+	 +8MrgV9yCQtiCSmsvr/xDqH9nyMmCCEmi0r8bYBvw53zyMFfHOtty0ulIO3aqAF+VU
+	 202jtpXT8uz4qiqWrLfxSPLd/SFLipBp5Lkl9aJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 047/281] net/mlx5: Fix tainted pointer delete is case of flow rules creation fail
+Subject: [PATCH 6.6 055/267] af_unix: Annotate data-races around sk->sk_state in UNIX_DIAG.
 Date: Wed, 19 Jun 2024 14:53:26 +0200
-Message-ID: <20240619125611.660182598@linuxfoundation.org>
+Message-ID: <20240619125608.473422552@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 229bedbf62b13af5aba6525ad10b62ad38d9ccb5 ]
+[ Upstream commit 0aa3be7b3e1f8f997312cc4705f8165e02806f8f ]
 
-In case of flow rule creation fail in mlx5_lag_create_port_sel_table(),
-instead of previously created rules, the tainted pointer is deleted
-deveral times.
-Fix this bug by using correct flow rules pointers.
+While dumping AF_UNIX sockets via UNIX_DIAG, sk->sk_state is read
+locklessly.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Let's use READ_ONCE() there.
 
-Fixes: 352899f384d4 ("net/mlx5: Lag, use buckets in hash mode")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240604100552.25201-1-amishin@t-argos.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Note that the result could be inconsistent if the socket is dumped
+during the state change.  This is common for other SOCK_DIAG and
+similar interfaces.
+
+Fixes: c9da99e6475f ("unix_diag: Fixup RQLEN extension report")
+Fixes: 2aac7a2cb0d9 ("unix_diag: Pending connections IDs NLA")
+Fixes: 45a96b9be6ec ("unix_diag: Dumping all sockets core")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/unix/diag.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
-index 101b3bb908638..e12bc4cd80661 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
-@@ -88,9 +88,13 @@ static int mlx5_lag_create_port_sel_table(struct mlx5_lag *ldev,
- 								      &dest, 1);
- 			if (IS_ERR(lag_definer->rules[idx])) {
- 				err = PTR_ERR(lag_definer->rules[idx]);
--				while (i--)
--					while (j--)
-+				do {
-+					while (j--) {
-+						idx = i * ldev->buckets + j;
- 						mlx5_del_flow_rules(lag_definer->rules[idx]);
-+					}
-+					j = ldev->buckets;
-+				} while (i--);
- 				goto destroy_fg;
- 			}
- 		}
+diff --git a/net/unix/diag.c b/net/unix/diag.c
+index 3438b7af09af5..9151c72e742fc 100644
+--- a/net/unix/diag.c
++++ b/net/unix/diag.c
+@@ -65,7 +65,7 @@ static int sk_diag_dump_icons(struct sock *sk, struct sk_buff *nlskb)
+ 	u32 *buf;
+ 	int i;
+ 
+-	if (sk->sk_state == TCP_LISTEN) {
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
+ 		spin_lock(&sk->sk_receive_queue.lock);
+ 
+ 		attr = nla_reserve(nlskb, UNIX_DIAG_ICONS,
+@@ -103,7 +103,7 @@ static int sk_diag_show_rqlen(struct sock *sk, struct sk_buff *nlskb)
+ {
+ 	struct unix_diag_rqlen rql;
+ 
+-	if (sk->sk_state == TCP_LISTEN) {
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
+ 		rql.udiag_rqueue = sk->sk_receive_queue.qlen;
+ 		rql.udiag_wqueue = sk->sk_max_ack_backlog;
+ 	} else {
+@@ -136,7 +136,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_r
+ 	rep = nlmsg_data(nlh);
+ 	rep->udiag_family = AF_UNIX;
+ 	rep->udiag_type = sk->sk_type;
+-	rep->udiag_state = sk->sk_state;
++	rep->udiag_state = READ_ONCE(sk->sk_state);
+ 	rep->pad = 0;
+ 	rep->udiag_ino = sk_ino;
+ 	sock_diag_save_cookie(sk, rep->udiag_cookie);
+@@ -215,7 +215,7 @@ static int unix_diag_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 		sk_for_each(sk, &net->unx.table.buckets[slot]) {
+ 			if (num < s_num)
+ 				goto next;
+-			if (!(req->udiag_states & (1 << sk->sk_state)))
++			if (!(req->udiag_states & (1 << READ_ONCE(sk->sk_state))))
+ 				goto next;
+ 			if (sk_diag_dump(sk, skb, req, sk_user_ns(skb->sk),
+ 					 NETLINK_CB(cb->skb).portid,
 -- 
 2.43.0
 
