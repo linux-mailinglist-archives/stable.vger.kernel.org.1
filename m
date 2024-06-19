@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-54338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB50E90EDBC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9738290ED95
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C10971C2260D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 417191F22093
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F244414E2F5;
-	Wed, 19 Jun 2024 13:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C0A1459F2;
+	Wed, 19 Jun 2024 13:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okjmOXTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsrZw1Fn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16E014A0A7;
-	Wed, 19 Jun 2024 13:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808A982495;
+	Wed, 19 Jun 2024 13:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803285; cv=none; b=B0bYk3YnkvveUTE3O3YBCSknnx4/KtRezLYeqkfABaJ8Bmc/E0hHoh4CkfkT+QA6EdFg7tAhroGhgq06hUlQVwdT0+KR7sSWJb+BqRz2MFhK5cNuwodS9yByUp0wHIYkbXNmII4m/xbanwODBFtK2sgjxxpghqbARNIizXdIGP0=
+	t=1718803193; cv=none; b=B8C/ukn+b0PNRxzjZ56FABAXaL6l+TgbxcrjpKywgQK72WHXeDc425x0TadOiTMIkYPeXGPpsx16Od+LBKHB4r/NIdmkJ+vUuTAlBdufoIBXUPXEVmDTefxABJvodcUfbIrrvhnNkkGu2/8z4RM1mOviLSv0bwcjZZ87W42MK80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803285; c=relaxed/simple;
-	bh=8GCv7lL6WQtX1KnDs7M1pMeWcj5brAJAF0dmWYAN3Bw=;
+	s=arc-20240116; t=1718803193; c=relaxed/simple;
+	bh=VCEQ4kbtCmSWwAt9pw+/LrJm66E8ZbCWKF/XkyQgM9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IzsF9edMjgR9zvdFIFpbTT5NSFrgrOpC3ZjmszUNY09vrYGvWBGHKrgLF2KmFoxNKEhTA/JuTdtW3Krknt5mGPdirKL4eFQPBVToJww9xRQnqkM6X9XQWcDgrYCwVvMOx+ZjdFwCQAmWymBiczmgy+fy2On9jpOs6T1JQC8Nae8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okjmOXTU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7C8C2BBFC;
-	Wed, 19 Jun 2024 13:21:23 +0000 (UTC)
+	 MIME-Version; b=Xu1Cq6B36OT5PosL8jO4aZeub1SOGrJmwaN68nTH93mMa8ktcupYc8gr3cKsTQoGwuaXBslUSs9rW7eatMv/aMBqVk011eo1/DT57gRTTjHl8xpJj2GIcrNQqYKJiut2rh6WRZBpdBWS3sl5Sx8MKzAHpsWR3W84Hmccbf2Q/bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsrZw1Fn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03136C2BBFC;
+	Wed, 19 Jun 2024 13:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803284;
-	bh=8GCv7lL6WQtX1KnDs7M1pMeWcj5brAJAF0dmWYAN3Bw=;
+	s=korg; t=1718803193;
+	bh=VCEQ4kbtCmSWwAt9pw+/LrJm66E8ZbCWKF/XkyQgM9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=okjmOXTUkZrZyBQCzEEdXmMnn2ZapEp62KN7K91IkgmSAJ6f8cPAq4CsTLAUbf9vI
-	 YZrKCfZxMlipSF6ljiGAHs8zREphbIjGNbU0i/7SmEhI7QfPUONpF6yb5Qydx95KZJ
-	 bk8jk8uW6KZGztNngwF2cW4QyPAwo0ysTm92TrwY=
+	b=jsrZw1FnjoFcVNqwXXpKrQ3dZnvsNVpKMgjM1kGZeirlio4E+ig18zorC5S9PnhX3
+	 WsATS4Xa1OYFDQcJ7MczITNtgyEzt13gRg8AhF7cEJJ+zyZZiQ5zUx3qfH7vd8BcJs
+	 /MVYZLGPInGO9au9GSFiB1MbSbAvqtynIBiKjYoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
+	Rao Shoaib <Rao.Shoaib@oracle.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 184/281] bnxt_en: Cap the size of HWRM_PORT_PHY_QCFG forwarded response
-Date: Wed, 19 Jun 2024 14:55:43 +0200
-Message-ID: <20240619125616.916622623@linuxfoundation.org>
+Subject: [PATCH 6.9 185/281] af_unix: Read with MSG_PEEK loops if the first unread byte is OOB
+Date: Wed, 19 Jun 2024 14:55:44 +0200
+Message-ID: <20240619125616.954220256@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
 References: <20240619125609.836313103@linuxfoundation.org>
@@ -68,138 +67,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Rao Shoaib <Rao.Shoaib@oracle.com>
 
-[ Upstream commit 7d9df38c9c037ab84502ce7eeae9f1e1e7e72603 ]
+[ Upstream commit a6736a0addd60fccc3a3508461d72314cc609772 ]
 
-Firmware interface 1.10.2.118 has increased the size of
-HWRM_PORT_PHY_QCFG response beyond the maximum size that can be
-forwarded.  When the VF's link state is not the default auto state,
-the PF will need to forward the response back to the VF to indicate
-the forced state.  This regression may cause the VF to fail to
-initialize.
+Read with MSG_PEEK flag loops if the first byte to read is an OOB byte.
+commit 22dd70eb2c3d ("af_unix: Don't peek OOB data without MSG_OOB.")
+addresses the loop issue but does not address the issue that no data
+beyond OOB byte can be read.
 
-Fix it by capping the HWRM_PORT_PHY_QCFG response to the maximum
-96 bytes.  The SPEEDS2_SUPPORTED flag needs to be cleared because the
-new speeds2 fields are beyond the legacy structure.  Also modify
-bnxt_hwrm_fwd_resp() to print a warning if the message size exceeds 96
-bytes to make this failure more obvious.
+>>> from socket import *
+>>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+>>> c1.send(b'a', MSG_OOB)
+1
+>>> c1.send(b'b')
+1
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'b'
 
-Fixes: 84a911db8305 ("bnxt_en: Update firmware interface to 1.10.2.118")
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20240612231736.57823-1-michael.chan@broadcom.com
+>>> from socket import *
+>>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+>>> c2.setsockopt(SOL_SOCKET, SO_OOBINLINE, 1)
+>>> c1.send(b'a', MSG_OOB)
+1
+>>> c1.send(b'b')
+1
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'b'
+>>>
+
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Signed-off-by: Rao Shoaib <Rao.Shoaib@oracle.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240611084639.2248934-1-Rao.Shoaib@oracle.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     | 51 +++++++++++++++++++
- .../net/ethernet/broadcom/bnxt/bnxt_sriov.c   | 12 ++++-
- 2 files changed, 61 insertions(+), 2 deletions(-)
+ net/unix/af_unix.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index dd849e715c9ba..c46abcccfca10 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -1419,6 +1419,57 @@ struct bnxt_l2_filter {
- 	atomic_t		refcnt;
- };
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2672,18 +2672,18 @@ static struct sk_buff *manage_oob(struct
+ 		if (skb == u->oob_skb) {
+ 			if (copied) {
+ 				skb = NULL;
+-			} else if (sock_flag(sk, SOCK_URGINLINE)) {
+-				if (!(flags & MSG_PEEK)) {
++			} else if (!(flags & MSG_PEEK)) {
++				if (sock_flag(sk, SOCK_URGINLINE)) {
+ 					WRITE_ONCE(u->oob_skb, NULL);
+ 					consume_skb(skb);
++				} else {
++					__skb_unlink(skb, &sk->sk_receive_queue);
++					WRITE_ONCE(u->oob_skb, NULL);
++					unlinked_skb = skb;
++					skb = skb_peek(&sk->sk_receive_queue);
+ 				}
+-			} else if (flags & MSG_PEEK) {
+-				skb = NULL;
+-			} else {
+-				__skb_unlink(skb, &sk->sk_receive_queue);
+-				WRITE_ONCE(u->oob_skb, NULL);
+-				unlinked_skb = skb;
+-				skb = skb_peek(&sk->sk_receive_queue);
++			} else if (!sock_flag(sk, SOCK_URGINLINE)) {
++				skb = skb_peek_next(skb, &sk->sk_receive_queue);
+ 			}
+ 		}
  
-+/* Compat version of hwrm_port_phy_qcfg_output capped at 96 bytes.  The
-+ * first 95 bytes are identical to hwrm_port_phy_qcfg_output in bnxt_hsi.h.
-+ * The last valid byte in the compat version is different.
-+ */
-+struct hwrm_port_phy_qcfg_output_compat {
-+	__le16	error_code;
-+	__le16	req_type;
-+	__le16	seq_id;
-+	__le16	resp_len;
-+	u8	link;
-+	u8	active_fec_signal_mode;
-+	__le16	link_speed;
-+	u8	duplex_cfg;
-+	u8	pause;
-+	__le16	support_speeds;
-+	__le16	force_link_speed;
-+	u8	auto_mode;
-+	u8	auto_pause;
-+	__le16	auto_link_speed;
-+	__le16	auto_link_speed_mask;
-+	u8	wirespeed;
-+	u8	lpbk;
-+	u8	force_pause;
-+	u8	module_status;
-+	__le32	preemphasis;
-+	u8	phy_maj;
-+	u8	phy_min;
-+	u8	phy_bld;
-+	u8	phy_type;
-+	u8	media_type;
-+	u8	xcvr_pkg_type;
-+	u8	eee_config_phy_addr;
-+	u8	parallel_detect;
-+	__le16	link_partner_adv_speeds;
-+	u8	link_partner_adv_auto_mode;
-+	u8	link_partner_adv_pause;
-+	__le16	adv_eee_link_speed_mask;
-+	__le16	link_partner_adv_eee_link_speed_mask;
-+	__le32	xcvr_identifier_type_tx_lpi_timer;
-+	__le16	fec_cfg;
-+	u8	duplex_state;
-+	u8	option_flags;
-+	char	phy_vendor_name[16];
-+	char	phy_vendor_partnumber[16];
-+	__le16	support_pam4_speeds;
-+	__le16	force_pam4_link_speed;
-+	__le16	auto_pam4_link_speed_mask;
-+	u8	link_partner_pam4_adv_speeds;
-+	u8	valid;
-+};
-+
- struct bnxt_link_info {
- 	u8			phy_type;
- 	u8			media_type;
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
-index 175192ebaa773..22898d3d088b0 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_sriov.c
-@@ -950,8 +950,11 @@ static int bnxt_hwrm_fwd_resp(struct bnxt *bp, struct bnxt_vf_info *vf,
- 	struct hwrm_fwd_resp_input *req;
- 	int rc;
- 
--	if (BNXT_FWD_RESP_SIZE_ERR(msg_size))
-+	if (BNXT_FWD_RESP_SIZE_ERR(msg_size)) {
-+		netdev_warn_once(bp->dev, "HWRM fwd response too big (%d bytes)\n",
-+				 msg_size);
- 		return -EINVAL;
-+	}
- 
- 	rc = hwrm_req_init(bp, req, HWRM_FWD_RESP);
- 	if (!rc) {
-@@ -1085,7 +1088,7 @@ static int bnxt_vf_set_link(struct bnxt *bp, struct bnxt_vf_info *vf)
- 		rc = bnxt_hwrm_exec_fwd_resp(
- 			bp, vf, sizeof(struct hwrm_port_phy_qcfg_input));
- 	} else {
--		struct hwrm_port_phy_qcfg_output phy_qcfg_resp = {0};
-+		struct hwrm_port_phy_qcfg_output_compat phy_qcfg_resp = {};
- 		struct hwrm_port_phy_qcfg_input *phy_qcfg_req;
- 
- 		phy_qcfg_req =
-@@ -1096,6 +1099,11 @@ static int bnxt_vf_set_link(struct bnxt *bp, struct bnxt_vf_info *vf)
- 		mutex_unlock(&bp->link_lock);
- 		phy_qcfg_resp.resp_len = cpu_to_le16(sizeof(phy_qcfg_resp));
- 		phy_qcfg_resp.seq_id = phy_qcfg_req->seq_id;
-+		/* New SPEEDS2 fields are beyond the legacy structure, so
-+		 * clear the SPEEDS2_SUPPORTED flag.
-+		 */
-+		phy_qcfg_resp.option_flags &=
-+			~PORT_PHY_QCAPS_RESP_FLAGS2_SPEEDS2_SUPPORTED;
- 		phy_qcfg_resp.valid = 1;
- 
- 		if (vf->flags & BNXT_VF_LINK_UP) {
--- 
-2.43.0
-
 
 
 
