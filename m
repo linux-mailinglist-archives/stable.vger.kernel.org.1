@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-54529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6E190EEAB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DAB90EC82
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0C612897DD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 172761C20AE6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292A5147C6E;
-	Wed, 19 Jun 2024 13:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7A1143C58;
+	Wed, 19 Jun 2024 13:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGqR585X"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfIG7Zen"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA40113E037;
-	Wed, 19 Jun 2024 13:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A85E12FB31;
+	Wed, 19 Jun 2024 13:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803848; cv=none; b=kW3AJYOETnYfmgXMISiQyhat5vdqr9BtyePfMXo33365zPtpi03ffQ4BUoBcHaIkXk3UZzgkVZvIt5R2D5R3pDJqzbW6jlm3jSEWRClpraZVqLfXmjI7wmuEGp2FGoaXkql2zTfqOX69dVz6J4WnMuJ+QRZHfUU7tLOyiGo0WhI=
+	t=1718802500; cv=none; b=ePJAU6GTZb4ZtzvnsND8pspPMRPGFIuRfPpOmc/oMnUg5QrOPHWoBMyw8w+iwhhshURHkUCi/c/HtkVLwrvMpNWX/fuBIn2RDS4qDo61dWN/Kd10mi5xPY74W7UUgu82g4wyfey3kMP64AvWjVabRKQUB3QhE8qb9JBs8gKUEhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803848; c=relaxed/simple;
-	bh=5LP6ugaENPboJpGg/mbNgCn6BOc0bd72cruJSYFhonk=;
+	s=arc-20240116; t=1718802500; c=relaxed/simple;
+	bh=RrxeNDELkhqSka3IaZHvkjYL/q9BXL5K3qpWnghvISA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsWpp1oYghTQ4mUlZm0FjXPToXvbbeZb4HY4EJ7wyTPn2n+cbzZZcBN829F+GgMj+URVlpn7t1RcmczjD7IR8F0Qbt+olFm5N49hmagVCD9HuJzj+uSoeeJm1Aa58VR1eClKvPLMRflmvQ9JaX44YzAa47RNd56jZXFgPEwvUpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGqR585X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602B0C2BBFC;
-	Wed, 19 Jun 2024 13:30:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u0FTHAA3qscniUDce02vHn65WevxmgMaXZUHJ3n7zLl/B91tn8F7tLpmvf1vQNLAIaS74g+5jNLx8SjJJmAp/MjfNM4apMWNtW1TvFbTGPAUkUkll03SPCsk6WwQEYUVx7bqB4XpJaIo6D20omWIQ56I5qqFDvvKXJpYSiq17wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfIG7Zen; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4F4C2BBFC;
+	Wed, 19 Jun 2024 13:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803848;
-	bh=5LP6ugaENPboJpGg/mbNgCn6BOc0bd72cruJSYFhonk=;
+	s=korg; t=1718802500;
+	bh=RrxeNDELkhqSka3IaZHvkjYL/q9BXL5K3qpWnghvISA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGqR585XMoTMVzubzTkGksH5TKVsQLW5CyMIrH/rjivdfev3XqUBEUFtsrGeyxfOs
-	 GUiWCnsfbn9FMY6bgn76ikW4+q6f6fN1iPBKQoK+kDzXy5Rr5QQ9mFe+/UrKFSGc9D
-	 tMPwlDFsxLZKlgmZeCUAta83Bi5P2FBU2no532/U=
+	b=QfIG7ZennfX1HlzujttDRfNmBZxBQ8Hd1z7mlIpJU921pB0/czlrOE2zlPaPx1JPe
+	 lAHKSxvISgozY69RlPY/ZAToW6MFm+MdfvQqmmgHnL5GIBGMkPWYuepbpKcPNIbpDL
+	 ttCYKtEwg+THbxK+uyDJjMHdKLglzDkrmlmJjgaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregor Herburger <gregor.herburger@tq-group.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/217] gpio: tqmx86: fix typo in Kconfig label
+	=?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
+	Eric Anholt <eric@anholt.net>, Rob Herring <robh@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	"Wachowski, Karol" <karol.wachowski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>, Wachowski@web.codeaurora.org
+Subject: [PATCH 6.6 216/267] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
 Date: Wed, 19 Jun 2024 14:56:07 +0200
-Message-ID: <20240619125601.474116857@linuxfoundation.org>
+Message-ID: <20240619125614.617693962@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +67,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregor Herburger <gregor.herburger@tq-group.com>
+From: Wachowski, Karol <karol.wachowski@intel.com>
 
-[ Upstream commit 8c219e52ca4d9a67cd6a7074e91bf29b55edc075 ]
+commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
 
-Fix description for GPIO_TQMX86 from QTMX86 to TQMx86.
+Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
+allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
+causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
+BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
 
-Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
-Signed-off-by: Gregor Herburger <gregor.herburger@tq-group.com>
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/e0e38c9944ad6d281d9a662a45d289b88edc808e.1717063994.git.matthias.schiffer@ew.tq-group.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Return -EINVAL early if COW mapping is detected.
+
+This bug affects all drm drivers using default shmem helpers.
+It can be reproduced by this simple example:
+void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
+ptr[0] = 0;
+
+Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
+Cc: Noralf Trønnes <noralf@tronnes.org>
+Cc: Eric Anholt <eric@anholt.net>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.2+
+Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_gem_shmem_helper.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index 700f71c954956..b23ef29f56020 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -1416,7 +1416,7 @@ config GPIO_TPS68470
- 	  are "output only" GPIOs.
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -610,6 +610,9 @@ int drm_gem_shmem_mmap(struct drm_gem_sh
+ 		return ret;
+ 	}
  
- config GPIO_TQMX86
--	tristate "TQ-Systems QTMX86 GPIO"
-+	tristate "TQ-Systems TQMx86 GPIO"
- 	depends on MFD_TQMX86 || COMPILE_TEST
- 	depends on HAS_IOPORT_MAP
- 	select GPIOLIB_IRQCHIP
--- 
-2.43.0
-
++	if (is_cow_mapping(vma->vm_flags))
++		return -EINVAL;
++
+ 	dma_resv_lock(shmem->base.resv, NULL);
+ 	ret = drm_gem_shmem_get_pages(shmem);
+ 	dma_resv_unlock(shmem->base.resv);
 
 
 
