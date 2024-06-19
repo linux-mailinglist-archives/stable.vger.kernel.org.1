@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-53916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F2B90EBD5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:01:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C570390ED0D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8C551C22EA6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:01:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50A25280E3B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:13:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35BE14D705;
-	Wed, 19 Jun 2024 13:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043141422B8;
+	Wed, 19 Jun 2024 13:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLHRfU7V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeXJKqF3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A0D14D6E4;
-	Wed, 19 Jun 2024 13:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B707314389C;
+	Wed, 19 Jun 2024 13:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802051; cv=none; b=cJTX4KD/+nsvJ/E07bI6SKXTFwEfra/Ky694/rmeRvKVGyCearKrhRgTKouyfs8WrTyFiKgb3rAOXGh4UU3zGez0tRXppwJgofAgOtXqR5vnAwqTD8h/J2FRDGgyNcTmfd2eOXmYh2n1ywtRMijqE/CIfNntRhBmUFNWFJazSrk=
+	t=1718802821; cv=none; b=e4FIRvTtus3aO1NpWehwGsbyPUZlok0ND3G4TFapMATMhnmuoxGON8VRC6cme2yLGKawNN4qas0VLYUJ9BpGN9qVq4MkUmiPO0MvbvnZx6TvpW8l8XqOdRBURsnqigYHwCoLkPzNmF28exPD+sRcp28XEJtnLYfa7SPzBmx6qb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802051; c=relaxed/simple;
-	bh=axUfFpHwJrFyTHvGaxH95dMic7J77YJ2nrB2qqktzZE=;
+	s=arc-20240116; t=1718802821; c=relaxed/simple;
+	bh=Arq88Fhe1gJV3A4j9szl9+8SVDxaTMPD/DJeFhz8k4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uub00wEdslKSNq9y9ekutYrASNvlwaWmeqyBlLslChkHsrpLORKIASljneiHc6SYjfQFY4jalWIlALocf+Oobk7mOud61yelnyDPKQ2pplXHmjQuTTtqBBc1bKh2AZfDowm8P+Vb1zqczEqhTi3VZ1PQTjj4tYR9GnGh2pFAMAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLHRfU7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAB7C32786;
-	Wed, 19 Jun 2024 13:00:50 +0000 (UTC)
+	 MIME-Version; b=QjOvruEbc5MtssCtbLS/f+jRhTbm72CH4X7OWFLt2ei2wDmBL+dYvzYPijge2dkNFzCjZRum9WFgV32Q0x8NGOBB51T9Bk08QJLwldYphalNzHo5uZ9/1aQTE0wzFPLsjFkHIERbkyd0Cda7UVIuAFpYkSRMr1QTPZBsKt4ma5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeXJKqF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B781C2BBFC;
+	Wed, 19 Jun 2024 13:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802051;
-	bh=axUfFpHwJrFyTHvGaxH95dMic7J77YJ2nrB2qqktzZE=;
+	s=korg; t=1718802821;
+	bh=Arq88Fhe1gJV3A4j9szl9+8SVDxaTMPD/DJeFhz8k4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLHRfU7V6j3E4nIVS1rRPk7SMVKenB8gMTNYhJUNNN6HZwqTOk8zPwZR9vTKpA9lZ
-	 //3qsH0Hsjh4xPzrpnzNoEr/U6GOqZ5n0deXJk6MgkwrreO0CPDxKI787P+AyTs9t5
-	 QiDvrw/vI83h4+qF1ply+02zWMuzaGg9v1pXu9XU=
+	b=LeXJKqF3GGFbVfr7Vub/ii8KVi64RzLgrm55+ilpr1euQv9Sj2oMHUPQeQUiFK/5S
+	 tD/pOfuNkg3CAYmOZ4WI7k3ZEIGND+6hxxS3sY5VcSWkOcEcZ4Jfuprrp+WNA/SgCf
+	 XXesCKSZS8TGJ4xX277HfXjym3wHhJCgez6Ho14w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Naoya Horiguchi <naoya.horiguchi@nec.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/267] memory-failure: use a folio in me_huge_page()
-Date: Wed, 19 Jun 2024 14:53:37 +0200
-Message-ID: <20240619125608.890499839@linuxfoundation.org>
+Subject: [PATCH 6.9 059/281] af_unix: Annotate data-race of sk->sk_state in unix_inq_len().
+Date: Wed, 19 Jun 2024 14:53:38 +0200
+Message-ID: <20240619125612.119715128@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit b6fd410c32f1a66a52a42d6aae1ab7b011b74547 ]
+[ Upstream commit 3a0f38eb285c8c2eead4b3230c7ac2983707599d ]
 
-This function was already explicitly calling compound_head();
-unfortunately the compiler can't know that and elide the redundant calls
-to compound_head() buried in page_mapping(), unlock_page(), etc.  Switch
-to using a folio, which does let us elide these calls.
+ioctl(SIOCINQ) calls unix_inq_len() that checks sk->sk_state first
+and returns -EINVAL if it's TCP_LISTEN.
 
-Link: https://lkml.kernel.org/r/20231117161447.2461643-5-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 8cf360b9d6a8 ("mm/memory-failure: fix handling of dissolved but not taken off from buddy pages")
+Then, for SOCK_STREAM sockets, unix_inq_len() returns the number of
+bytes in recvq.
+
+However, unix_inq_len() does not hold unix_state_lock(), and the
+concurrent listen() might change the state after checking sk->sk_state.
+
+If the race occurs, 0 is returned for the listener, instead of -EINVAL,
+because the length of skb with embryo is 0.
+
+We could hold unix_state_lock() in unix_inq_len(), but it's overkill
+given the result is true for pre-listen() TCP_CLOSE state.
+
+So, let's use READ_ONCE() for sk->sk_state in unix_inq_len().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory-failure.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 5378edad9df8f..9c27ec0a27a30 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -1193,25 +1193,25 @@ static int me_swapcache_clean(struct page_state *ps, struct page *p)
-  */
- static int me_huge_page(struct page_state *ps, struct page *p)
- {
-+	struct folio *folio = page_folio(p);
- 	int res;
--	struct page *hpage = compound_head(p);
- 	struct address_space *mapping;
- 	bool extra_pins = false;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 0a9c3975d4303..989c2c76dce66 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3064,7 +3064,7 @@ long unix_inq_len(struct sock *sk)
+ 	struct sk_buff *skb;
+ 	long amount = 0;
  
--	mapping = page_mapping(hpage);
-+	mapping = folio_mapping(folio);
- 	if (mapping) {
--		res = truncate_error_page(hpage, page_to_pfn(p), mapping);
-+		res = truncate_error_page(&folio->page, page_to_pfn(p), mapping);
- 		/* The page is kept in page cache. */
- 		extra_pins = true;
--		unlock_page(hpage);
-+		folio_unlock(folio);
- 	} else {
--		unlock_page(hpage);
-+		folio_unlock(folio);
- 		/*
- 		 * migration entry prevents later access on error hugepage,
- 		 * so we can free and dissolve it into buddy to save healthy
- 		 * subpages.
- 		 */
--		put_page(hpage);
-+		folio_put(folio);
- 		if (__page_handle_poison(p) >= 0) {
- 			page_ref_inc(p);
- 			res = MF_RECOVERED;
+-	if (sk->sk_state == TCP_LISTEN)
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN)
+ 		return -EINVAL;
+ 
+ 	spin_lock(&sk->sk_receive_queue.lock);
 -- 
 2.43.0
 
