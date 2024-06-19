@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4355490ED67
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B49FD90EE4A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8275B22BBE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57B342852C8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D34143C4E;
-	Wed, 19 Jun 2024 13:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACACF147C7B;
+	Wed, 19 Jun 2024 13:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJWMADdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yp87ZZcb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E574A82495;
-	Wed, 19 Jun 2024 13:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6956E14BF89;
+	Wed, 19 Jun 2024 13:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803061; cv=none; b=Jz7MEPSru1rQ7eSMd7GHXyawJIknknQyy25at4dWDq+VMm/aLAweqfxkm6G1mlRBD1WePwTlgAEM5FJ10iEuT3As9hvJNT93eHr1BXCNJ2CJUbjBN6yz/r7ON0fmtCkTY/2FklpkdEljC9cZ+lU8g9aU4BJY7ks11/21hDPEoRA=
+	t=1718803642; cv=none; b=rmqO+/0PopPBcKhVcPuZO3VfQMpuVI6zfYi4yM5tmnGtSWjHx72jI7vOVYPgC+3jlB/bhopGrU4vmVgLOM7sZ0S7jxV+EeWUanL2DFTbbnUHs3vwONfYsMB/HXKPtnaauWiOZhLgV9Yyv7toqMzzE4zr0O5T/MX2YxoZrwZtk10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803061; c=relaxed/simple;
-	bh=myb4+fgNDcWs1UY0eyMnlWv5qh/FEQd3XtZYF1+Mqso=;
+	s=arc-20240116; t=1718803642; c=relaxed/simple;
+	bh=p/lDzNz77wvZEeuCAH73AjSlTvI10h5dmW9fWDF9GB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kNfbMlup612zaz5yyRXbgr+NFfj8F5rHUuiSXsiB+vPTnLz9HHbtaBthaXbwGJKoulyrqRXHa7NuD5coODEpi5pN8sC9P6Iub9TLdeaWuL7mKIrOQ3Su6IaC4rarxVggm2o+PPDBMExKJeds4q3yY7o18OM6FlyqSYcC/bpOHlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJWMADdv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675E9C2BBFC;
-	Wed, 19 Jun 2024 13:17:40 +0000 (UTC)
+	 MIME-Version; b=kkX6T/D6iT8h98snRahjsWpgLqE3SCosEyVQoAKlhn/3r5m+SL1yP17T3c6CnXWJjeCVq6TfRouxnO1QVm4Z4SsVKYSrgSFtxU3+V0u1nLFbDgntOqOiGDpQ4L/6VIKF3aVowgpheaTOGf5wHLMAUj1qYsbMtL5+oM7TlnQTIdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yp87ZZcb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09EAC2BBFC;
+	Wed, 19 Jun 2024 13:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803060;
-	bh=myb4+fgNDcWs1UY0eyMnlWv5qh/FEQd3XtZYF1+Mqso=;
+	s=korg; t=1718803642;
+	bh=p/lDzNz77wvZEeuCAH73AjSlTvI10h5dmW9fWDF9GB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJWMADdv2RodT40vG0KpdLnAZvEGC7n9lZMOKQxe83bY/ajjHhux1H5Hc7PKOxnuE
-	 S/OY9fyuCmpjO5N8gcQD+dljvby8M5GHu1LoA+7t8zop3iXEggQeOXcRuv4s4EUyTH
-	 AE9cpQxCTkdRxtNr48rvSuqs8OCLam7KeiYzTIUw=
+	b=yp87ZZcb2sQQZ69YSWznCBStoadGDWXxIRkEWXhEp9UsVgZjAqJNmuIQDRjeUQhBG
+	 U1w2gAuYwR4jGnXLd3O8JAXeBTwtE/KZc/s50/Ba4Mqy0sTuP4yNuDvdhHcqGmY0Iq
+	 cjVoH9tGwYKMvMcx0Twfzwx0mwTcH3Ua7G4KA7Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 138/281] io_uring/io-wq: avoid garbage value of match in io_wq_enqueue()
+Subject: [PATCH 6.1 054/217] iio: accel: mxc4005: allow module autoloading via OF compatible
 Date: Wed, 19 Jun 2024 14:54:57 +0200
-Message-ID: <20240619125615.152743601@linuxfoundation.org>
+Message-ID: <20240619125558.765493901@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit 91215f70ea8541e9011c0b48f8b59b9e0ce6953b ]
+[ Upstream commit 4d7c16d08d248952c116f2eb9b7b5abc43a19688 ]
 
-Clang static checker (scan-build) warning:
-o_uring/io-wq.c:line 1051, column 3
-The expression is an uninitialized value. The computed value will
-also be garbage.
+Add OF device table with compatible strings to allow automatic module
+loading.
 
-'match.nr_pending' is used in io_acct_cancel_pending_work(), but it is
-not fully initialized. Change the order of assignment for 'match' to fix
-this problem.
-
-Fixes: 42abc95f05bf ("io-wq: decouple work_list protection from the big wqe->lock")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20240604121242.2661244-1-suhui@nfschina.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231004-mxc4005-device-tree-support-v1-2-e7c0faea72e4@bootlin.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 6b8cffdc4a31 ("iio: accel: mxc4005: Reset chip on probe() and resume()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io-wq.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/iio/accel/mxc4005.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index 4a07742349048..8a99aabcac2c3 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -929,7 +929,11 @@ void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work)
- {
- 	struct io_wq_acct *acct = io_work_get_acct(wq, work);
- 	unsigned long work_flags = work->flags;
--	struct io_cb_cancel_data match;
-+	struct io_cb_cancel_data match = {
-+		.fn		= io_wq_work_match_item,
-+		.data		= work,
-+		.cancel_all	= false,
-+	};
- 	bool do_create;
+diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
+index ffae30e5eb5be..b8dfdb571bf1f 100644
+--- a/drivers/iio/accel/mxc4005.c
++++ b/drivers/iio/accel/mxc4005.c
+@@ -487,6 +487,13 @@ static const struct acpi_device_id mxc4005_acpi_match[] = {
+ };
+ MODULE_DEVICE_TABLE(acpi, mxc4005_acpi_match);
  
- 	/*
-@@ -967,10 +971,6 @@ void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work)
- 		raw_spin_unlock(&wq->lock);
- 
- 		/* fatal condition, failed to create the first worker */
--		match.fn		= io_wq_work_match_item,
--		match.data		= work,
--		match.cancel_all	= false,
--
- 		io_acct_cancel_pending_work(wq, acct, &match);
- 	}
- }
++static const struct of_device_id mxc4005_of_match[] = {
++	{ .compatible = "memsic,mxc4005", },
++	{ .compatible = "memsic,mxc6655", },
++	{ },
++};
++MODULE_DEVICE_TABLE(of, mxc4005_of_match);
++
+ static const struct i2c_device_id mxc4005_id[] = {
+ 	{"mxc4005",	0},
+ 	{"mxc6655",	0},
+@@ -498,6 +505,7 @@ static struct i2c_driver mxc4005_driver = {
+ 	.driver = {
+ 		.name = MXC4005_DRV_NAME,
+ 		.acpi_match_table = ACPI_PTR(mxc4005_acpi_match),
++		.of_match_table = mxc4005_of_match,
+ 	},
+ 	.probe		= mxc4005_probe,
+ 	.id_table	= mxc4005_id,
 -- 
 2.43.0
 
