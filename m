@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-54170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A1290ED02
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:13:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A579A90EBDA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:01:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BE35284200
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:13:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA3551C247D2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C52143C65;
-	Wed, 19 Jun 2024 13:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEECF14D43E;
+	Wed, 19 Jun 2024 13:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ah9gE4Uh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t//CeGGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7891422B8;
-	Wed, 19 Jun 2024 13:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE473148308;
+	Wed, 19 Jun 2024 13:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802792; cv=none; b=rZhEYpkxCXOUJ8fK1w6UOkDt4GD33MWD2AAmrUJblRkGtJ9VH+L2ddhG746qXZw+ufr7FlXJ64sC/64WJ9Ek04StaXj/c0K6BHGlmI6e7Z+0W2zz58/gjR8+0OHcRZH+3fbv/izR8SxZka+hHUaxsPmEz3T+yJqE/k9lBoJOKWg=
+	t=1718802057; cv=none; b=fQfsNCEXzO6Z5vbuIcEvEK4ypihtN7OXHf8Cssbkq7l7SA8xrisfi58Bj2Z9/45yYB9tsbZslQobnQUUTadZiLlGK1x93HcjumClo/ubFZTbXRcPcUiYxIV4kOIk7cNWiTbwXuMqbcOZri0RhyqJa1R9VT1gHTaYJBmJlXIYGGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802792; c=relaxed/simple;
-	bh=ix2UFgJ/vzbJUbiB9G2g7L06zmV8U69UgdUpuAiOq1E=;
+	s=arc-20240116; t=1718802057; c=relaxed/simple;
+	bh=MCryO/R7nECpny4bUZNevTE22MJK9tILiFhSneujA5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cshzN5+jNWf4o99saCq8EuM4bng7ZVaVoGHcmAu9/i6GqvPIV9dirEebi84UssfeUqEJzHbOMvASBDbfSt4K8/+CgKIG8X8PQwdIC0eTaOSFH3rzp8IIQwbZtz5LQsWxVF/b4Y9oLKw34f9rqp2I6HDaPMpR4JELJAois1jSmWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ah9gE4Uh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD13C2BBFC;
-	Wed, 19 Jun 2024 13:13:11 +0000 (UTC)
+	 MIME-Version; b=myDI5uj1Y3i/WAPAbK5gqBjNvoHrfMz8m8S0OGNVK5x5xBvvz4dYJB+JS3LuTZtuRZ6GROBvxLHTjokbDmYniYoZC9AKrMT8hWv/zxUfy7xeAxjM4v3TfNHOK+srB7hZUWMY2LvBPFvaZKLoBuENlu0hKX+Z1yM6217dQ9tvrys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t//CeGGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC59FC32786;
+	Wed, 19 Jun 2024 13:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802792;
-	bh=ix2UFgJ/vzbJUbiB9G2g7L06zmV8U69UgdUpuAiOq1E=;
+	s=korg; t=1718802057;
+	bh=MCryO/R7nECpny4bUZNevTE22MJK9tILiFhSneujA5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ah9gE4Uh/64tkjYVqN9iwl8Gc91mpK1den1eM+D+AgLT5jeSmIqIuWFGprTMSyQJC
-	 3B2G8wdRM08pezGSry+yxjpWcZQNbR4suDTS6cKTdX/d8KY9OOs/mZi5ayf8idZ9SO
-	 ydXqrNCIqN/leRDMiiIfGyggae+9Nc4/uUDhWRus=
+	b=t//CeGGQMOg1wa20NTcr70w+NyasQ8AI3Y8fCaQ9MtXM4xL6sLW8zI4JB7s3oXMYO
+	 g1fMAMF2lwfr9BogjE+tjg3rvsWltgWwc4zKDUdMpNsPfFYp9gVRdz8x65BnEalnQ4
+	 pKGyPv9PYiOzCupAwekD35jizfwHLBrgh8t1qzvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 041/281] tcp: count CLOSE-WAIT sockets for TCP_MIB_CURRESTAB
-Date: Wed, 19 Jun 2024 14:53:20 +0200
-Message-ID: <20240619125611.430770651@linuxfoundation.org>
+Subject: [PATCH 6.6 050/267] af_unix: Annotate data-race of sk->sk_state in unix_inq_len().
+Date: Wed, 19 Jun 2024 14:53:21 +0200
+Message-ID: <20240619125608.284626231@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit a46d0ea5c94205f40ecf912d1bb7806a8a64704f ]
+[ Upstream commit 3a0f38eb285c8c2eead4b3230c7ac2983707599d ]
 
-According to RFC 1213, we should also take CLOSE-WAIT sockets into
-consideration:
+ioctl(SIOCINQ) calls unix_inq_len() that checks sk->sk_state first
+and returns -EINVAL if it's TCP_LISTEN.
 
-  "tcpCurrEstab OBJECT-TYPE
-   ...
-   The number of TCP connections for which the current state
-   is either ESTABLISHED or CLOSE- WAIT."
+Then, for SOCK_STREAM sockets, unix_inq_len() returns the number of
+bytes in recvq.
 
-After this, CurrEstab counter will display the total number of
-ESTABLISHED and CLOSE-WAIT sockets.
+However, unix_inq_len() does not hold unix_state_lock(), and the
+concurrent listen() might change the state after checking sk->sk_state.
 
-The logic of counting
-When we increment the counter?
-a) if we change the state to ESTABLISHED.
-b) if we change the state from SYN-RECEIVED to CLOSE-WAIT.
+If the race occurs, 0 is returned for the listener, instead of -EINVAL,
+because the length of skb with embryo is 0.
 
-When we decrement the counter?
-a) if the socket leaves ESTABLISHED and will never go into CLOSE-WAIT,
-say, on the client side, changing from ESTABLISHED to FIN-WAIT-1.
-b) if the socket leaves CLOSE-WAIT, say, on the server side, changing
-from CLOSE-WAIT to LAST-ACK.
+We could hold unix_state_lock() in unix_inq_len(), but it's overkill
+given the result is true for pre-listen() TCP_CLOSE state.
 
-Please note: there are two chances that old state of socket can be changed
-to CLOSE-WAIT in tcp_fin(). One is SYN-RECV, the other is ESTABLISHED.
-So we have to take care of the former case.
+So, let's use READ_ONCE() for sk->sk_state in unix_inq_len().
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 5c79836e4c9e7..77ee1eda3fd86 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2640,6 +2640,10 @@ void tcp_set_state(struct sock *sk, int state)
- 		if (oldstate != TCP_ESTABLISHED)
- 			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
- 		break;
-+	case TCP_CLOSE_WAIT:
-+		if (oldstate == TCP_SYN_RECV)
-+			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
-+		break;
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index bd2af62f58605..8d0918a112a9d 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2983,7 +2983,7 @@ long unix_inq_len(struct sock *sk)
+ 	struct sk_buff *skb;
+ 	long amount = 0;
  
- 	case TCP_CLOSE:
- 		if (oldstate == TCP_CLOSE_WAIT || oldstate == TCP_ESTABLISHED)
-@@ -2651,7 +2655,7 @@ void tcp_set_state(struct sock *sk, int state)
- 			inet_put_port(sk);
- 		fallthrough;
- 	default:
--		if (oldstate == TCP_ESTABLISHED)
-+		if (oldstate == TCP_ESTABLISHED || oldstate == TCP_CLOSE_WAIT)
- 			TCP_DEC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
- 	}
+-	if (sk->sk_state == TCP_LISTEN)
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN)
+ 		return -EINVAL;
  
+ 	spin_lock(&sk->sk_receive_queue.lock);
 -- 
 2.43.0
 
