@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-54046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC3090EC69
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C6D90ED97
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDF3E1F217EB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 177A528175B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA65312FB31;
-	Wed, 19 Jun 2024 13:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AA7145FEF;
+	Wed, 19 Jun 2024 13:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jv/bKfDe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3NuX9IJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F9613D525;
-	Wed, 19 Jun 2024 13:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B0182495;
+	Wed, 19 Jun 2024 13:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802432; cv=none; b=qh+HOaXqa4V/8Fqq3yyTl+kybqlJ4oKjuMWx+6c/bPNvnYUN83YHsElE0nzxAgOlplM5xycetgtTiKzGT+c2TvIpTuK7QT1l4zD1Lsx2GQViOzUUVCJwy7Ac2fTX0MUGNhnfRGV+bx13P3rvdGjG3yUl3wr+rz5lZ9k3u16BSII=
+	t=1718803199; cv=none; b=GYf7iObRk3MUjFdqfkI++Td2RTP81RBGKsfJSA5lpxE+5eebAg0tDEt265JZe/YiAUpYSPDdowx8ZZGP0xEOcKU3/Q3Ive+vEmh/DJc1ID7Cap004vXwSxXu+1SxnnZnQ2V2kdtAKg2EwZywQbgRjNP4bpSnf1MS+xjQdNOiCdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802432; c=relaxed/simple;
-	bh=ZsjqtGCcUWl6iCJxE/UY+MG/EwnDyCbZiDupIwdjOxk=;
+	s=arc-20240116; t=1718803199; c=relaxed/simple;
+	bh=RMUPxs9/sU/WFvHMRJ9utfmlnkqjvkWfRe6ZVqFkCZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yd9ddUxHQomyLEsKypso7Z+Q5O2rFSueZQWKemskljyQKQu1pBEjRP4ziBMFu0VgFIc0cqtt3olLjpoKiEgXz/ZZmN+/ioK3J4nRYeHqY5dMp9R7XJoZnIj8gXmQin1KjAJnMXqNyJbS4ZtKVqS8876CVUqbGKBQkF0DyQpfrJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jv/bKfDe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC65C32786;
-	Wed, 19 Jun 2024 13:07:11 +0000 (UTC)
+	 MIME-Version; b=X2+gq8htrtCkPXT2MvIezpwEYlDPmnQp+I0Pbtjm6vjvf7PtaFH2oiaeEckRT9IZ0b5gMS/5fpAy7+4F4giqEOYaW/iPas/2QiWKu/DZKsm5TbfKyNXeBoN3yuJIl3tyOALPYiJuI7W2Uz1ycnYwlREovXuL8nXPwMBkSA/8tEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3NuX9IJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C288CC2BBFC;
+	Wed, 19 Jun 2024 13:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802432;
-	bh=ZsjqtGCcUWl6iCJxE/UY+MG/EwnDyCbZiDupIwdjOxk=;
+	s=korg; t=1718803199;
+	bh=RMUPxs9/sU/WFvHMRJ9utfmlnkqjvkWfRe6ZVqFkCZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jv/bKfDe0Oetu+58N0fFbGkgkLe4f2IGKOseMM8A05QCrsIi+lXOIbQcTyUT8kRT3
-	 U0NkAuTRgJZC4V6VcgzBzW0tBLWsn916G8PAkonNChqsxaA1D9EAWAB6DYm82LznxB
-	 BXH5AinLhKupcDSgnAbZLDWS7vU7G2Fz1BlU711M=
+	b=Q3NuX9IJ2gvtbQSB7WAFMJOj2ChlohRu7mkdK77MlvjvG7QmEepVOVXnVQ1ev/4Lm
+	 2RIoqnlh19LHjbE//lqvmIp5C22ITgNRXxtMRxQEN0a5mvOgTLVlxI6P46938Tpuph
+	 xzLhpBkk+MuHoninfNEY/ysbu9h8wM4pRa9v0lQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.6 195/267] tracing/selftests: Fix kprobe event name test for .isra. functions
+	Yongzhi Liu <hyperlyzcs@gmail.com>
+Subject: [PATCH 6.9 187/281] misc: microchip: pci1xxxx: fix double free in the error handling of gp_aux_bus_probe()
 Date: Wed, 19 Jun 2024 14:55:46 +0200
-Message-ID: <20240619125613.819755521@linuxfoundation.org>
+Message-ID: <20240619125617.033549853@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Yongzhi Liu <hyperlyzcs@gmail.com>
 
-commit 23a4b108accc29a6125ed14de4a044689ffeda78 upstream.
+commit 086c6cbcc563c81d55257f9b27e14faf1d0963d3 upstream.
 
-The kprobe_eventname.tc test checks if a function with .isra. can have a
-kprobe attached to it. It loops through the kallsyms file for all the
-functions that have the .isra. name, and checks if it exists in the
-available_filter_functions file, and if it does, it uses it to attach a
-kprobe to it.
+When auxiliary_device_add() returns error and then calls
+auxiliary_device_uninit(), callback function
+gp_auxiliary_device_release() calls ida_free() and
+kfree(aux_device_wrapper) to free memory. We should't
+call them again in the error handling path.
 
-The issue is that kprobes can not attach to functions that are listed more
-than once in available_filter_functions. With the latest kernel, the
-function that is found is: rapl_event_update.isra.0
+Fix this by skipping the redundant cleanup functions.
 
-  # grep rapl_event_update.isra.0 /sys/kernel/tracing/available_filter_functions
-  rapl_event_update.isra.0
-  rapl_event_update.isra.0
-
-It is listed twice. This causes the attached kprobe to it to fail which in
-turn fails the test. Instead of just picking the function function that is
-found in available_filter_functions, pick the first one that is listed
-only once in available_filter_functions.
-
-Cc: stable@vger.kernel.org
-Fixes: 604e3548236d ("selftests/ftrace: Select an existing function in kprobe_eventname test")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 393fc2f5948f ("misc: microchip: pci1xxxx: load auxiliary bus driver for the PIO function in the multi-function endpoint of pci1xxxx device.")
+Signed-off-by: Yongzhi Liu <hyperlyzcs@gmail.com>
+Link: https://lore.kernel.org/r/20240523121434.21855-3-hyperlyzcs@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
-@@ -30,7 +30,8 @@ find_dot_func() {
- 	fi
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+@@ -111,6 +111,7 @@ static int gp_aux_bus_probe(struct pci_d
  
- 	grep " [tT] .*\.isra\..*" /proc/kallsyms | cut -f 3 -d " " | while read f; do
--		if grep -s $f available_filter_functions; then
-+		cnt=`grep -s $f available_filter_functions | wc -l`;
-+		if [ $cnt -eq 1 ]; then
- 			echo $f
- 			break
- 		fi
+ err_aux_dev_add_1:
+ 	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[1]->aux_dev);
++	goto err_aux_dev_add_0;
+ 
+ err_aux_dev_init_1:
+ 	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[1]->aux_dev.id);
+@@ -120,6 +121,7 @@ err_ida_alloc_1:
+ 
+ err_aux_dev_add_0:
+ 	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[0]->aux_dev);
++	goto err_ret;
+ 
+ err_aux_dev_init_0:
+ 	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[0]->aux_dev.id);
+@@ -127,6 +129,7 @@ err_aux_dev_init_0:
+ err_ida_alloc_0:
+ 	kfree(aux_bus->aux_device_wrapper[0]);
+ 
++err_ret:
+ 	return retval;
+ }
+ 
 
 
 
