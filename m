@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-54103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E077190ECB3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D31590EED4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36F61B22C97
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AE3C284B85
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12BE143C58;
-	Wed, 19 Jun 2024 13:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FFE1422D9;
+	Wed, 19 Jun 2024 13:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5QGkvcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pyu6ZrVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB9B12FB31;
-	Wed, 19 Jun 2024 13:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E1F13DDC0;
+	Wed, 19 Jun 2024 13:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802594; cv=none; b=hVPBIs4uRqT/k5jRMFvENohSOHNwhDtP45Hkqx/VYhHCF4asHGJgDouuKuHUGx2sAFBvgZwk+NgCMD7H0A2Gom1dFJ5WBR+YvlfnAypbp4KK4QMmZdjWpXOGb7U0lowyTwfmv+eP/w1PeypzsAEbJ1SGALFx6D1EWv40ijHFBZY=
+	t=1718803944; cv=none; b=YSn8j/J1LbAR3jVMdFXYNgN8KDGQQ4c62l/UC/Bvx56SfjUrkeEwLp4h2GEp22fvAbo30+7KsBfgpPFGK8XRHQAPfjfdyVZUzyEElweUkG+OrrqjpfHGVMGgjJhgp9Ac8kfOtnHL7wGLpQuaPQalcinXDXzugfpJTD6ZK9tZoH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802594; c=relaxed/simple;
-	bh=XBjeOhCRQmqJLqO7p6lwr6yXekT/5Y61dCOSbiXE5xk=;
+	s=arc-20240116; t=1718803944; c=relaxed/simple;
+	bh=SDt502LruGuztJr39xEO8bpBLaJ7yHOLlqpNKSLs8Ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JeJwsxA7BbD1Un76Mu6/VUq7EaCA9hNIcfqukvAUKAbp9ALdBXG/eyHdT1+5JKEGGAtOx/5Ni23H41ogaUY9nQcli9FbacYTPIo+YxePAooYTPfcV252clq3lBIv66W77FiJ+8OL+7AlxAIGYgxinBXGACyWb6q9+99W+7d1lPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5QGkvcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CEFC2BBFC;
-	Wed, 19 Jun 2024 13:09:53 +0000 (UTC)
+	 MIME-Version; b=Jsvb14FHENkrUAO/a+xmIfzoAGbZvQWQ50gynp16tQyQ55FSP8AZf3vBsEKGMPQHq9bXuRmlCBA6Rehh+2/0471bsIdecK9sG1qfmGRTIErAlwOz0bXIYHJdbRjGwOHnGcnryJQBxhQ9FCLBUDvsmW70P8qoB0ZsIHvGLeKEvMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pyu6ZrVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1936BC2BBFC;
+	Wed, 19 Jun 2024 13:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802594;
-	bh=XBjeOhCRQmqJLqO7p6lwr6yXekT/5Y61dCOSbiXE5xk=;
+	s=korg; t=1718803944;
+	bh=SDt502LruGuztJr39xEO8bpBLaJ7yHOLlqpNKSLs8Ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5QGkvcsEQsgFLnuX+kl2v8Ms2/qFd6of3tJr6sKDaS20EqM4oeBq5Fas2qnGEA3D
-	 r4+LU0G2aAJJi2D0sflfF/fNZiMILTBy64SJGwR2ufrEIDS8edJh7Tc4ehuYjPaNuB
-	 b1Z5f2vtpbaItpyOVlKYRAWT77ueTZuU24TIWDJ8=
+	b=Pyu6ZrVe1trAxWCS555p+M+fM8mJrEC7C2wKB4BeasY4+6VOPXVOZjKk7D+grvNaX
+	 W9ukpbB5mpxd+9i+QlHbteuoWLdSJyH6WWA+ZbCFITYl6GO5tmiWxum1UOeADRmCow
+	 IEBSw97zJPM28REbixH5NvJ5ZLur3wmEicbzkzVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
+	Taehee Yoo <ap420073@gmail.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Po-Hsu Lin <po-hsu.lin@canonical.com>
-Subject: [PATCH 6.6 248/267] selftests: forwarding: Avoid failures to source net/lib.sh
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 156/217] ionic: fix use after netif_napi_del()
 Date: Wed, 19 Jun 2024 14:56:39 +0200
-Message-ID: <20240619125615.839554332@linuxfoundation.org>
+Message-ID: <20240619125602.709466731@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,128 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Poirier <bpoirier@nvidia.com>
+From: Taehee Yoo <ap420073@gmail.com>
 
-commit 2114e83381d3289a88378850f43069e79f848083 upstream.
+[ Upstream commit 79f18a41dd056115d685f3b0a419c7cd40055e13 ]
 
-The expression "source ../lib.sh" added to net/forwarding/lib.sh in commit
-25ae948b4478 ("selftests/net: add lib.sh") does not work for tests outside
-net/forwarding which source net/forwarding/lib.sh (1). It also does not
-work in some cases where only a subset of tests are exported (2).
+When queues are started, netif_napi_add() and napi_enable() are called.
+If there are 4 queues and only 3 queues are used for the current
+configuration, only 3 queues' napi should be registered and enabled.
+The ionic_qcq_enable() checks whether the .poll pointer is not NULL for
+enabling only the using queue' napi. Unused queues' napi will not be
+registered by netif_napi_add(), so the .poll pointer indicates NULL.
+But it couldn't distinguish whether the napi was unregistered or not
+because netif_napi_del() doesn't reset the .poll pointer to NULL.
+So, ionic_qcq_enable() calls napi_enable() for the queue, which was
+unregistered by netif_napi_del().
 
-Avoid the problems mentioned above by replacing the faulty expression with
-a copy of the content from net/lib.sh which is used by files under
-net/forwarding.
+Reproducer:
+   ethtool -L <interface name> rx 1 tx 1 combined 0
+   ethtool -L <interface name> rx 0 tx 0 combined 1
+   ethtool -L <interface name> rx 0 tx 0 combined 4
 
-A more thorough solution which avoids duplicating content between
-net/lib.sh and net/forwarding/lib.sh has been posted here:
-https://lore.kernel.org/netdev/20231222135836.992841-1-bpoirier@nvidia.com/
+Splat looks like:
+kernel BUG at net/core/dev.c:6666!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 3 PID: 1057 Comm: kworker/3:3 Not tainted 6.10.0-rc2+ #16
+Workqueue: events ionic_lif_deferred_work [ionic]
+RIP: 0010:napi_enable+0x3b/0x40
+Code: 48 89 c2 48 83 e2 f6 80 b9 61 09 00 00 00 74 0d 48 83 bf 60 01 00 00 00 74 03 80 ce 01 f0 4f
+RSP: 0018:ffffb6ed83227d48 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff97560cda0828 RCX: 0000000000000029
+RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff97560cda0a28
+RBP: ffffb6ed83227d50 R08: 0000000000000400 R09: 0000000000000001
+R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000000
+R13: ffff97560ce3c1a0 R14: 0000000000000000 R15: ffff975613ba0a20
+FS:  0000000000000000(0000) GS:ffff975d5f780000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f8f734ee200 CR3: 0000000103e50000 CR4: 00000000007506f0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? die+0x33/0x90
+ ? do_trap+0xd9/0x100
+ ? napi_enable+0x3b/0x40
+ ? do_error_trap+0x83/0xb0
+ ? napi_enable+0x3b/0x40
+ ? napi_enable+0x3b/0x40
+ ? exc_invalid_op+0x4e/0x70
+ ? napi_enable+0x3b/0x40
+ ? asm_exc_invalid_op+0x16/0x20
+ ? napi_enable+0x3b/0x40
+ ionic_qcq_enable+0xb7/0x180 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
+ ionic_start_queues+0xc4/0x290 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
+ ionic_link_status_check+0x11c/0x170 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
+ ionic_lif_deferred_work+0x129/0x280 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
+ process_one_work+0x145/0x360
+ worker_thread+0x2bb/0x3d0
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xcc/0x100
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2d/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
 
-The approach in the current patch is a stopgap solution to avoid submitting
-large changes at the eleventh hour of this development cycle.
-
-Example of problem 1)
-
-tools/testing/selftests/drivers/net/bonding$ ./dev_addr_lists.sh
-./net_forwarding_lib.sh: line 41: ../lib.sh: No such file or directory
-TEST: bonding cleanup mode active-backup                            [ OK ]
-TEST: bonding cleanup mode 802.3ad                                  [ OK ]
-TEST: bonding LACPDU multicast address to slave (from bond down)    [ OK ]
-TEST: bonding LACPDU multicast address to slave (from bond up)      [ OK ]
-
-An error message is printed but since the test does not use functions from
-net/lib.sh, the test results are not affected.
-
-Example of problem 2)
-
-tools/testing/selftests$ make install TARGETS="net/forwarding"
-tools/testing/selftests$ cd kselftest_install/net/forwarding/
-tools/testing/selftests/kselftest_install/net/forwarding$ ./pedit_ip.sh veth{0..3}
-lib.sh: line 41: ../lib.sh: No such file or directory
-TEST: ping                                                          [ OK ]
-TEST: ping6                                                         [ OK ]
-./pedit_ip.sh: line 135: busywait: command not found
-TEST: dev veth1 ingress pedit ip src set 198.51.100.1               [FAIL]
-        Expected to get 10 packets, but got .
-./pedit_ip.sh: line 135: busywait: command not found
-TEST: dev veth2 egress pedit ip src set 198.51.100.1                [FAIL]
-        Expected to get 10 packets, but got .
-./pedit_ip.sh: line 135: busywait: command not found
-TEST: dev veth1 ingress pedit ip dst set 198.51.100.1               [FAIL]
-        Expected to get 10 packets, but got .
-./pedit_ip.sh: line 135: busywait: command not found
-TEST: dev veth2 egress pedit ip dst set 198.51.100.1                [FAIL]
-        Expected to get 10 packets, but got .
-./pedit_ip.sh: line 135: busywait: command not found
-TEST: dev veth1 ingress pedit ip6 src set 2001:db8:2::1             [FAIL]
-        Expected to get 10 packets, but got .
-./pedit_ip.sh: line 135: busywait: command not found
-TEST: dev veth2 egress pedit ip6 src set 2001:db8:2::1              [FAIL]
-        Expected to get 10 packets, but got .
-./pedit_ip.sh: line 135: busywait: command not found
-TEST: dev veth1 ingress pedit ip6 dst set 2001:db8:2::1             [FAIL]
-        Expected to get 10 packets, but got .
-./pedit_ip.sh: line 135: busywait: command not found
-TEST: dev veth2 egress pedit ip6 dst set 2001:db8:2::1              [FAIL]
-        Expected to get 10 packets, but got .
-
-In this case, the test results are affected.
-
-Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Suggested-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20240104141109.100672-1-bpoirier@nvidia.com
+Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
+Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Link: https://lore.kernel.org/r/20240612060446.1754392-1-ap420073@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/lib.sh |   27 +++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/tools/testing/selftests/net/forwarding/lib.sh
-+++ b/tools/testing/selftests/net/forwarding/lib.sh
-@@ -38,7 +38,32 @@ if [[ -f $relative_path/forwarding.confi
- 	source "$relative_path/forwarding.config"
- fi
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index d33cf8ee7c336..d34aea85f8a69 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -292,10 +292,8 @@ static int ionic_qcq_enable(struct ionic_qcq *qcq)
+ 	if (ret)
+ 		return ret;
  
--source ../lib.sh
-+# Kselftest framework requirement - SKIP code is 4.
-+ksft_skip=4
-+
-+busywait()
-+{
-+	local timeout=$1; shift
-+
-+	local start_time="$(date -u +%s%3N)"
-+	while true
-+	do
-+		local out
-+		out=$("$@")
-+		local ret=$?
-+		if ((!ret)); then
-+			echo -n "$out"
-+			return 0
-+		fi
-+
-+		local current_time="$(date -u +%s%3N)"
-+		if ((current_time - start_time > timeout)); then
-+			echo -n "$out"
-+			return 1
-+		fi
-+	done
-+}
-+
- ##############################################################################
- # Sanity checks
- 
+-	if (qcq->napi.poll)
+-		napi_enable(&qcq->napi);
+-
+ 	if (qcq->flags & IONIC_QCQ_F_INTR) {
++		napi_enable(&qcq->napi);
+ 		irq_set_affinity_hint(qcq->intr.vector,
+ 				      &qcq->intr.affinity_mask);
+ 		ionic_intr_mask(idev->intr_ctrl, qcq->intr.index,
+-- 
+2.43.0
+
 
 
 
