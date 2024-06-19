@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-54380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9C6C90EDE7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D6390ECC6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 530F41F239A1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3121B1F21436
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B5E143C4E;
-	Wed, 19 Jun 2024 13:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46C4143C4E;
+	Wed, 19 Jun 2024 13:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvCSrS0/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQN+VY+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9421482495;
-	Wed, 19 Jun 2024 13:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B0E12FB31;
+	Wed, 19 Jun 2024 13:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803409; cv=none; b=ENjvC8Q0Yj/Ckql6Mii6gy3i5Dx04YrBcyC5KYtfGp1LAXfCDcmJ2UjeS8pMbPuVZkAlm/xthm3355VCFsptfjWtEocqvrsUdMHO35CjzrrF+mBbCLSlZQcJj0rb6E+2s4sn2Umu2oSxidqFRlxrG9vg1cixTGB74+GiRS7qy2E=
+	t=1718802641; cv=none; b=oQGHVbOge+RdNBV98YrdapU890LUHH4P4tDHDKHM/QVQbJAgbf4lV5J/rwhhHZ2Ra1hbbZvgOkkj15P4SrSBBgtxls6Gdm7SV5LlcYdg5k//r9BqmAMMtTu6o8gAr8eEM1fMjnr8QdHFfydBCc1Qb9tuO5m5h4XMoDcMOeEq1VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803409; c=relaxed/simple;
-	bh=C2l9Umyl0SZEFem8jFHmXDhIHtMnTOpn9HB3r3xXoos=;
+	s=arc-20240116; t=1718802641; c=relaxed/simple;
+	bh=y+krx3flX1BvOzBvGZWzZHcghmNMhTOWs03hwmtyXhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GPiRRBMvzVlOb0tMwcpckrRLAEusEkwW+L8uSN8ed1PPqiWdIw592Zl/Pd7EsNJSLpwHsxYtX1It/YnQNVnvGXCCPVZzOwEGAOgkAYWX8TAErSwc8XwwhFsb6LnOeKQTGCXcPAxtbVF6W+wsXo5qKDFO4wj+M0Q/B0AWf/YK3yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvCSrS0/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4BDC2BBFC;
-	Wed, 19 Jun 2024 13:23:28 +0000 (UTC)
+	 MIME-Version; b=IXt+v56abDYyp9tfBO4BUhx8gGfhJsil7gtfFNGs4n9+n2oUNdhdi687hbXv1MsQAKr4uPk9BlDLwnUchKXm98KVJ1GagRrleoIvKs0sRvdCfYXzOMgPWVgWdeccVHzZKHJFAwMp8XEriIEHJTfDbjYpQjkHo0rq1TJe3pr1e4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQN+VY+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0721FC2BBFC;
+	Wed, 19 Jun 2024 13:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803409;
-	bh=C2l9Umyl0SZEFem8jFHmXDhIHtMnTOpn9HB3r3xXoos=;
+	s=korg; t=1718802641;
+	bh=y+krx3flX1BvOzBvGZWzZHcghmNMhTOWs03hwmtyXhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WvCSrS0/VOY1bApsSrRwv+BjzmeK6jhLrTnvbxYmEZRLnpXuon3wHLO9CS9tZkR+G
-	 va5H9+Mo9fEtwNaNFVXWFiAysQlQ0lSRDXzS/+N9HQvC5I06zck6C0fEYijjyNUIR4
-	 ZFXv+Pr+JZBV+f/9ggWU03Jg+dbqHUQ6U02JLGTw=
+	b=VQN+VY+q/Xw/CjEKWoaLW2437gMm/TLdXRw23/+H2UkiAthvMmbLuUFUs4ZeukPYm
+	 Zca2fFOIC9fL5T86U9NxZavR1OTGLbKOwNNoRz4T5p9l5oxkTHwcjZ92dwtNKfSyCQ
+	 Tl0WVZO/1J6AU/pz9mHXzEo74gLS0dN4VAxvmsWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.9 258/281] drm/xe: Properly handle alloc_guc_id() failure
+	Jean Delvare <jdelvare@suse.de>,
+	Luis Oliveira <lolivei@synopsys.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Jan Dabros <jsd@semihalf.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 266/267] i2c: designware: Fix the functionality flags of the slave-only interface
 Date: Wed, 19 Jun 2024 14:56:57 +0200
-Message-ID: <20240619125619.908461775@linuxfoundation.org>
+Message-ID: <20240619125616.529784763@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +65,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+From: Jean Delvare <jdelvare@suse.de>
 
-commit 6c5cd0807c79eb4c0cda70b48f6be668a241d584 upstream.
+[ Upstream commit cbf3fb5b29e99e3689d63a88c3cddbffa1b8de99 ]
 
-Release the submission_state lock if alloc_guc_id() fails.
+When an I2C adapter acts only as a slave, it should not claim to
+support I2C master capabilities.
 
-v2: Add Fixes tag and CC stable kernel
-
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240521201711.4934-1-niranjana.vishwanathapura@intel.com
-(cherry picked from commit 40672b792a36894aff3a337b695f6136ee6ac5d4)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5b6d721b266a ("i2c: designware: enable SLAVE in platform module")
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Cc: Luis Oliveira <lolivei@synopsys.com>
+Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc: Jan Dabros <jsd@semihalf.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_submit.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-designware-slave.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -1257,6 +1257,7 @@ static int guc_exec_queue_init(struct xe
- 	return 0;
+diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
+index 2e079cf20bb5b..78e2c47e3d7da 100644
+--- a/drivers/i2c/busses/i2c-designware-slave.c
++++ b/drivers/i2c/busses/i2c-designware-slave.c
+@@ -220,7 +220,7 @@ static const struct i2c_algorithm i2c_dw_algo = {
  
- err_entity:
-+	mutex_unlock(&guc->submission_state.lock);
- 	xe_sched_entity_fini(&ge->entity);
- err_sched:
- 	xe_sched_fini(&ge->sched);
+ void i2c_dw_configure_slave(struct dw_i2c_dev *dev)
+ {
+-	dev->functionality = I2C_FUNC_SLAVE | DW_IC_DEFAULT_FUNCTIONALITY;
++	dev->functionality = I2C_FUNC_SLAVE;
+ 
+ 	dev->slave_cfg = DW_IC_CON_RX_FIFO_FULL_HLD_CTRL |
+ 			 DW_IC_CON_RESTART_EN | DW_IC_CON_STOP_DET_IFADDRESSED;
+-- 
+2.43.0
+
 
 
 
