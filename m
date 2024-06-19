@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-54280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B63A90ED79
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E56DC90EC4A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCADD1F21B32
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D74421C2164A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B239145334;
-	Wed, 19 Jun 2024 13:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B96913D525;
+	Wed, 19 Jun 2024 13:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="or2ENqju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZ/yEmgr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1883982495;
-	Wed, 19 Jun 2024 13:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5B182871;
+	Wed, 19 Jun 2024 13:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803114; cv=none; b=ScXaFMd3gQ1pa60WkYZjfAZbaOTf2IEZFQeXyoz8awAolZTZP8gHSyPHOz45b0CCfDqO23oK46pOOC5BeKiPS01ZAnmVOZquWOI6TY6VpxE0z4XclTrIN9USAQtZ133tKVKIezhhWHIo7yQiQtI+hzJibZQiEL4GJ0v+Kv/7C/A=
+	t=1718802347; cv=none; b=pMHzR1EyiXDA+URQl7mU9poCCnjkwRWJXqIvWkDzVOkkpLSSgOkhjC7Y50ETFbs1U1LYnEZoF2y8BoNMeU4RQohVm4N9NqNhT4/WARz05xOw2RnXQNyIeAUGrLHy7ruNtXuolsAwAEaIvGALDgwFHBS6JqKATxrwjBXWctR9ls8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803114; c=relaxed/simple;
-	bh=aKtKAM1E2QJ6yn0/rOwjMnxUkdTSewx1hoMF+PgAuvE=;
+	s=arc-20240116; t=1718802347; c=relaxed/simple;
+	bh=92CTZqfDb8HnWLpZ2oonnKRt+1ZjnYTY/c/u5t3seHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xo3eopPUqI9zkyYS6NyZ+Ws6ptpzVXcD4/qDmGoG7Xo/kq5j+xRHbbcYhsAxHRMbzKKeuZwgyAcd3dsqXx8HRrMdvbb1ad3ghWyyV7RRboAnTwWN1V3p3sl+QrO8uRtNlPb8ThdX37BIZhRw+Kfo8U0/g8uHnpjmOHiRTdcapRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=or2ENqju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95473C2BBFC;
-	Wed, 19 Jun 2024 13:18:33 +0000 (UTC)
+	 MIME-Version; b=LzTEU3pCTBsgBdy4oP+JGDubn9F465L92I2Ksl+IAwvd9gxCM4eNDp5nuqfbtCfzI+AMdxOzA1AZ69HADDNEKigoYsRNeCJFeC+DT4Nl+hNcxotX6hjxDJPwzZOePPSCCO4fzEZ7IwWSKU9scqeIrNgydpbSTZgNZ5+yo2z/4Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZ/yEmgr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DEDC2BBFC;
+	Wed, 19 Jun 2024 13:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803114;
-	bh=aKtKAM1E2QJ6yn0/rOwjMnxUkdTSewx1hoMF+PgAuvE=;
+	s=korg; t=1718802346;
+	bh=92CTZqfDb8HnWLpZ2oonnKRt+1ZjnYTY/c/u5t3seHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=or2ENqjuza6G/ZJ/lydzyJFvJq1R7yFlJr8wUICb/GQKDXVBKRILsSiUy6kofwVQL
-	 SFN4Hl/dADEKZ5tjKGJc0IrQSGj4ZWkMaSZ7uvooQ2+QSyAkrEr+fJ2dXMwiK2Tdn/
-	 RkUFn5oKHPluZtUO3cgJuxETW2G/DnIrz8z57OZI=
+	b=KZ/yEmgrhXr1Tf0rTC20Bm2c1ZleELIRY5gnjgwXIgwh0N09RM7bEtb35Dy9WSxSY
+	 N37ItMbiPtA0kVzmmuJfoqI7avBDgzGJphI2GqJZHCTSN8r8GlKlCamtKH84qa+eae
+	 Rkd9cUn2NuDVNzqanyiQP1kQYU1WQTSL0PE2UMDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 158/281] net/mlx5e: Fix features validation check for tunneled UDP (non-VXLAN) packets
+Subject: [PATCH 6.6 166/267] net/ipv6: Fix the RT cache flush via sysctl using a previous delay
 Date: Wed, 19 Jun 2024 14:55:17 +0200
-Message-ID: <20240619125615.920165667@linuxfoundation.org>
+Message-ID: <20240619125612.715596793@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 791b4089e326271424b78f2fae778b20e53d071b ]
+[ Upstream commit 14a20e5b4ad998793c5f43b0330d9e1388446cf3 ]
 
-Move the vxlan_features_check() call to after we verified the packet is
-a tunneled VXLAN packet.
+The net.ipv6.route.flush system parameter takes a value which specifies
+a delay used during the flush operation for aging exception routes. The
+written value is however not used in the currently requested flush and
+instead utilized only in the next one.
 
-Without this, tunneled UDP non-VXLAN packets (for ex. GENENVE) might
-wrongly not get offloaded.
-In some cases, it worked by chance as GENEVE header is the same size as
-VXLAN, but it is obviously incorrect.
+A problem is that ipv6_sysctl_rtcache_flush() first reads the old value
+of net->ipv6.sysctl.flush_delay into a local delay variable and then
+calls proc_dointvec() which actually updates the sysctl based on the
+provided input.
 
-Fixes: e3cfc7e6b7bd ("net/mlx5e: TX, Add geneve tunnel stateless offload support")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix the problem by switching the order of the two operations.
+
+Fixes: 4990509f19e8 ("[NETNS][IPV6]: Make sysctls route per namespace.")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240607112828.30285-1-petr.pavlu@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ipv6/route.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index 47be07af214ff..981a3e058840d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -4738,7 +4738,7 @@ static netdev_features_t mlx5e_tunnel_features_check(struct mlx5e_priv *priv,
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 0a37f04177337..29fa2ca07b46a 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -6332,12 +6332,12 @@ static int ipv6_sysctl_rtcache_flush(struct ctl_table *ctl, int write,
+ 	if (!write)
+ 		return -EINVAL;
  
- 		/* Verify if UDP port is being offloaded by HW */
- 		if (mlx5_vxlan_lookup_port(priv->mdev->vxlan, port))
--			return features;
-+			return vxlan_features_check(skb, features);
+-	net = (struct net *)ctl->extra1;
+-	delay = net->ipv6.sysctl.flush_delay;
+ 	ret = proc_dointvec(ctl, write, buffer, lenp, ppos);
+ 	if (ret)
+ 		return ret;
  
- #if IS_ENABLED(CONFIG_GENEVE)
- 		/* Support Geneve offload for default UDP port */
-@@ -4764,7 +4764,6 @@ netdev_features_t mlx5e_features_check(struct sk_buff *skb,
- 	struct mlx5e_priv *priv = netdev_priv(netdev);
- 
- 	features = vlan_features_check(skb, features);
--	features = vxlan_features_check(skb, features);
- 
- 	/* Validate if the tunneled packet is being offloaded by HW */
- 	if (skb->encapsulation &&
++	net = (struct net *)ctl->extra1;
++	delay = net->ipv6.sysctl.flush_delay;
+ 	fib6_run_gc(delay <= 0 ? 0 : (unsigned long)delay, net, delay > 0);
+ 	return 0;
+ }
 -- 
 2.43.0
 
