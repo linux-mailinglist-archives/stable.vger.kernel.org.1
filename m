@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-54102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA7F90ECB2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B88E90EDD6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33CF7281A2A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 725411C221FC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF12143C43;
-	Wed, 19 Jun 2024 13:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E68149007;
+	Wed, 19 Jun 2024 13:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mg/WwsD3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BVkshyQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA9912FB31;
-	Wed, 19 Jun 2024 13:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A5A82495;
+	Wed, 19 Jun 2024 13:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802591; cv=none; b=mfFO7R3Al+90gWR5BCyj+a2GdmZ/j5i6LLX9VemLbv1KPRkw09WHc/5XjGGRYMShFlZFbFPmyggMHeEMKEDi1iT7ei1InKiPpG3MOxk0TeFe7Oip42nlkJptzj6dR5Nxx1etFacIHwDgLtxmGliqIvm8UkJZPC7NHzFcYGLzdqE=
+	t=1718803359; cv=none; b=ELG+f0CtAgWxQNc566PLcnXHz59dbK8mXYbEyKJhz86YeURX2ohV7NgZ3WBxX6UqkEIRRVjSV908i6Tq+6Zc6TSKeH+EP4D7Zg87NtyNV5dsGtYCJ0FAZkgg4YoZMgsVbI3xlXrYO4ywTrCHorIVs5xyW0APWytERokzzkF9sCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802591; c=relaxed/simple;
-	bh=8si5d2mMd8i1CbQsoOqpiygMLDXB/Ioj4/pxq9S0bhs=;
+	s=arc-20240116; t=1718803359; c=relaxed/simple;
+	bh=LkAIskrIlJJ3KJ0gB9B3r/yhiVOl4qdPFANzvUybuQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4mBN+vUn2zbp+Ir2bn5p7n85CKQ8Ruf+OSF4Tgc8hszhNZcc07b1LCTGakINLLUgHNJ3mhzq/glgUVK9Kj9UzwV0cAqh+pqNoBR4bQnm1j8ZZ+hh6oG1dYt7Fa+WFiiXM4ZVJ6NwgRRbweRbMKMejBRmM1e5OLK6oqM+n10jR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mg/WwsD3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63B6C2BBFC;
-	Wed, 19 Jun 2024 13:09:50 +0000 (UTC)
+	 MIME-Version; b=tqufzMFXYSj1V72Q0/Qd5LmGcb47ZjyOq4+rTXnhv5klirTXu6lyPsXCG8/Z7Dvfh9r7VDTeWlsFn1VJvts6ubm5FSWmRwvdzsg1J24M043NrxEtsCVviAcMrO9PROG6YhgxhxP/tQiu+zlfHRM9M0FW069yBPZnc2nrmc3RnuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BVkshyQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91526C2BBFC;
+	Wed, 19 Jun 2024 13:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802591;
-	bh=8si5d2mMd8i1CbQsoOqpiygMLDXB/Ioj4/pxq9S0bhs=;
+	s=korg; t=1718803359;
+	bh=LkAIskrIlJJ3KJ0gB9B3r/yhiVOl4qdPFANzvUybuQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mg/WwsD3cuzCkcK052MU5pRaACAJ+AfzIeaoJ1o49QV3MQnlrN1kn7yOmC4P3Izge
-	 KVU5vNBXjvTr4Z6qip1nh3F+TPXQJAjO9lDQGTUbPvZFtV2dDnQC71d9z+jdBKVP09
-	 Mtv9dt6TfJKDiQWWClzLgLSofancsdYUZFoO1fzg=
+	b=0BVkshyQ5UaYtdjlbp3AQ2rl78gBX54nhp/gZxwDT2rE0lYyN9vU9xqcX43WTOrkx
+	 pxj9hUIQiIRvFzfnHKupurY0/2uA96UpLBZ+iFfZ4188vPo+sTG5Ace90XziBiFP43
+	 Gy9tBR/o1Gjegk1/rQLJwOH0yFNnmPRkAvUkG49M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Po-Hsu Lin <po-hsu.lin@canonical.com>
-Subject: [PATCH 6.6 247/267] selftests/net: add variable NS_LIST for lib.sh
+	Su Yue <glass.su@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Jun Piao <piaojun@huawei.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 239/281] ocfs2: update inode fsync transaction id in ocfs2_unlink and ocfs2_link
 Date: Wed, 19 Jun 2024 14:56:38 +0200
-Message-ID: <20240619125615.801428914@linuxfoundation.org>
+Message-ID: <20240619125619.158464409@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +68,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Su Yue <glass.su@suse.com>
 
-commit b6925b4ed57cccf42ca0fb46c7446f0859e7ad4b upstream.
+commit 8c40984eeb8804cffcd28640f427f4fe829243fc upstream.
 
-Add a global variable NS_LIST to store all the namespaces that setup_ns
-created, so the caller could call cleanup_all_ns() instead of remember
-all the netns names when using cleanup_ns().
+transaction id should be updated in ocfs2_unlink and ocfs2_link.
+Otherwise, inode link will be wrong after journal replay even fsync was
+called before power failure:
+=======================================================================
+$ touch testdir/bar
+$ ln testdir/bar testdir/bar_link
+$ fsync testdir/bar
+$ stat -c %h $SCRATCH_MNT/testdir/bar
+1
+$ stat -c %h $SCRATCH_MNT/testdir/bar
+1
+=======================================================================
 
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20231213060856.4030084-2-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+Link: https://lkml.kernel.org/r/20240408082041.20925-4-glass.su@suse.com
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Su Yue <glass.su@suse.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/lib.sh |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ocfs2/namei.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -6,6 +6,8 @@
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -797,6 +797,7 @@ static int ocfs2_link(struct dentry *old
+ 	ocfs2_set_links_count(fe, inode->i_nlink);
+ 	fe->i_ctime = cpu_to_le64(inode_get_ctime_sec(inode));
+ 	fe->i_ctime_nsec = cpu_to_le32(inode_get_ctime_nsec(inode));
++	ocfs2_update_inode_fsync_trans(handle, inode, 0);
+ 	ocfs2_journal_dirty(handle, fe_bh);
  
- # Kselftest framework requirement - SKIP code is 4.
- ksft_skip=4
-+# namespace list created by setup_ns
-+NS_LIST=""
+ 	err = ocfs2_add_entry(handle, dentry, inode,
+@@ -993,6 +994,7 @@ static int ocfs2_unlink(struct inode *di
+ 		drop_nlink(inode);
+ 	drop_nlink(inode);
+ 	ocfs2_set_links_count(fe, inode->i_nlink);
++	ocfs2_update_inode_fsync_trans(handle, inode, 0);
+ 	ocfs2_journal_dirty(handle, fe_bh);
  
- ##############################################################################
- # Helpers
-@@ -56,6 +58,11 @@ cleanup_ns()
- 	return $ret
- }
- 
-+cleanup_all_ns()
-+{
-+	cleanup_ns $NS_LIST
-+}
-+
- # setup netns with given names as prefix. e.g
- # setup_ns local remote
- setup_ns()
-@@ -82,4 +89,5 @@ setup_ns()
- 		ip -n "$ns" link set lo up
- 		ns_list="$ns_list $ns"
- 	done
-+	NS_LIST="$NS_LIST $ns_list"
- }
+ 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
 
 
 
