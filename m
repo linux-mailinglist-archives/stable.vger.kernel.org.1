@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-54644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA34590F088
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AA490F09D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63643282820
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:30:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28F4028502B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF0910A03;
-	Wed, 19 Jun 2024 14:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDF71B948;
+	Wed, 19 Jun 2024 14:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiyQRlp9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BFrTmS1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4E623775;
-	Wed, 19 Jun 2024 14:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF1D11C92;
+	Wed, 19 Jun 2024 14:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718807428; cv=none; b=vASi1CSUGUI5JJDx3cIRnlnPTWL1rcQsoTV9RKUQWgtC93c7juGIwYND6GkR3MEbh6oAxrWltSX6en1bu+9dGU2wmnSvnqBXM++WXCkqbUm730mAHuLXuE6kYhwKpn0DqD71Msqs5QqtZTtqGP4vw41lcxou+hqawJrWyE/w7J8=
+	t=1718807525; cv=none; b=knMAPWUpHyNjKRdOJHDSNOxuScz7a6DeicHC1tlDLtpdsUY7qI083g8/Wyp+WAQNfDtls1Lil4vyuAhyogmp69G0ojH+q827mNG4RZ1HMv3HX5EjuxPoVOeMjL80ab5k/Tv+WpLriQrnoPw/UmzgliQvs0KsSaJBHxtr7nzMaNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718807428; c=relaxed/simple;
+	s=arc-20240116; t=1718807525; c=relaxed/simple;
 	bh=5P4+U94Sj+hrx7FTYMGgX4hD00hQheT4KmraZdUEYZw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uBChMv0VJTKnFsS5OOoN3bfhCec7RZXX3ThrYu4PfZ1JknlVF6AwbzQ/7hbRIn1QTp4XinkDr2ZV4WcgmxFZo4w31R9Ryag6+AuzAH6cQ+ii3k+jXdo25FB+Puom9EU7x8mzu6qfHdEQGiDPNdFBWGSagc13VpwpjvM3OrSWiIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiyQRlp9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9479EC2BBFC;
-	Wed, 19 Jun 2024 14:30:27 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=CZaey7PxwQVt4zFBDWmxcu327RNV+Y3NHaqIaxlDl9X3Asvlivi3oLLCY5+OHKMCde+tR2INPRFCN4Mr1YoGFCFHj5rnTh1r2o3ADHS0E713SWnGIeBl85TRqNiXgDUE5jppUy3m/yADigxkThkaeROe6SBD1whGX0z6/urjJEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BFrTmS1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE1BC2BBFC;
+	Wed, 19 Jun 2024 14:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718807427;
+	s=k20201202; t=1718807525;
 	bh=5P4+U94Sj+hrx7FTYMGgX4hD00hQheT4KmraZdUEYZw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CiyQRlp9GSAIxk7ym3Xfl08V9zmLHG9z9EicTuHhXcckzp4MxAB/Vjqs5Jyq59MJi
-	 jkk5XZzmEZEWMpQABr6UjiQuHmWAlahX8ch3QJacJi9vpLkZ18NdBv+MUHfGmK0wEQ
-	 h+irmSwp3MA/fiG8VDUMzci2gh0bsGk3RtMAj21zPxOEsBHZ1pu3I6xWyioQkIyuku
-	 hv40ls0BfUgw7oYiRvbJO7aayLt6Kt+a3AT/yRuxDkkLecs1seXObPB8MTn7wtS94+
-	 5hUDuYYbfPODY0eGMuRMlLghxl7c4JCx3fpE+JVZZ6HFpW4QjeIZ86iMMVUOJdjGYd
-	 uehKS7xw1tt5Q==
-Date: Wed, 19 Jun 2024 10:30:25 -0400
+	b=BFrTmS1nAs54AIbQRFZWX6lLQQAx8iDngpm6hPCbqM/x2FF0WG8GEifv6OBwWMy63
+	 QLX8gIuxc4F8/AU2zqq+8lzI+csN2fj+rExfrSaQHK0Thz7r2G9rP5EhglR4a4LIgN
+	 GICcPGSZlt6gXYBe5uUZSaY0XCDFRbE581EkN8dytKB4p8c106gwdijV3OrZq3vFHD
+	 bLfpJyZHsZN8XqgAFkZpyBmQV0TCNPbTTRPCKjXP0J2lgso5AF/PVbWVPfVVKItnnx
+	 WXCH97MarRhZvHnHtNODnhxQBFoYbPN4RqrARkKyvsVdn84Z6qNBPl58dO2gLlSMqC
+	 2vynCwPOKRd1A==
+Date: Wed, 19 Jun 2024 10:32:03 -0400
 From: Sasha Levin <sashal@kernel.org>
 To: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Pavel Machek <pavel@denx.de>, Sourabh Jain <sourabhjain@linux.ibm.com>,
@@ -53,7 +53,7 @@ Cc: Pavel Machek <pavel@denx.de>, Sourabh Jain <sourabhjain@linux.ibm.com>,
 	Naveen N Rao <naveen@kernel.org>
 Subject: Re: [PATCH AUTOSEL 6.9 18/23] powerpc: make fadump resilient with
  memory add/remove events
-Message-ID: <ZnLrgSFIdWAcTQp3@sashalap>
+Message-ID: <ZnLr4_0RX-c7m7Zo@sashalap>
 References: <20240527155123.3863983-1-sashal@kernel.org>
  <20240527155123.3863983-18-sashal@kernel.org>
  <944f47df-96f0-40e8-a8e2-750fb9fa358e@linux.ibm.com>
