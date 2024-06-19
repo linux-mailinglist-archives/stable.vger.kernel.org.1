@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4000290EE98
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 725C990EC8C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EB091C24573
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 097BB2816EC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362F5148308;
-	Wed, 19 Jun 2024 13:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863B5145324;
+	Wed, 19 Jun 2024 13:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abQY0XVI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJudeL7B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E745678C91;
-	Wed, 19 Jun 2024 13:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4597D13AA40;
+	Wed, 19 Jun 2024 13:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803799; cv=none; b=incdZHAnvVIrES1mrBZCh/6T8aD21SdnrJAm+67fmAOxk+mLEblFkAe9z6Xo/jT+sDuAi0H7NVYwx04EJAvoDzRzpUdttGkpducRUBixQtRh+r4jYfIZ25gq91ecLwG+O7Xw5430epSVtTJSihcfnIE1H7vWWqgvopYPdPcxkmE=
+	t=1718802518; cv=none; b=hLvEcbMTdhvIp5eMnEDkjRl4yP2jTMTd+xlIIeUA9EiTwGG/+e6CpgBQ9tuxgVimmGENkgzUDDudmhr0KgHffijrcZUopx2PtELudvi9ILf/vXGz50fUzuMpSlXwOIq9VwNcVl0iNbFPCmn3friM1R2qlU2zL8wf2MQ63ZiWgn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803799; c=relaxed/simple;
-	bh=+j72SpN7qhvVgV2zQ946Us/fE+ardtOmNT2Xdlex2Mc=;
+	s=arc-20240116; t=1718802518; c=relaxed/simple;
+	bh=ShQaeq1dQK++eEm83fJDMTLXC74Dhpqy/lyWpQY8Fus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OaMqCgm/tmFrqral3GjUXez3aP8IsrA52K1b3A5w8S9zMcKBUWdoj98CiID1w0gLl9WA96p8AEMx5tJfwGIkwRaNvCAbsU6wcWJ/hrUQaq94vsIhKsSVjqqmnfj2F24WHHx82L9HQD86vXmw0FVGs6NhXzZGPENx5ItkXnuX+uM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abQY0XVI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9E0C2BBFC;
-	Wed, 19 Jun 2024 13:29:58 +0000 (UTC)
+	 MIME-Version; b=TP4fnoXZJxkDwLeg2hLKn8jhvntaQGYwjlyaR5KfVTX6tL+Ruuokc5XbXB+9jTfm0RhfLDV5IAbfW2PlHQqo4rig9yX6f46bqCMppphZpyQuY7VvvPPNPmEn9XEq7mzQSooGFM1FYJz82t8Oj5dN5rsMI3HfrtizmlmqYhXCy0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJudeL7B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570E9C2BBFC;
+	Wed, 19 Jun 2024 13:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803798;
-	bh=+j72SpN7qhvVgV2zQ946Us/fE+ardtOmNT2Xdlex2Mc=;
+	s=korg; t=1718802517;
+	bh=ShQaeq1dQK++eEm83fJDMTLXC74Dhpqy/lyWpQY8Fus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=abQY0XVIDtgMBEcl5aafdZo5S1MQR3ejGbhv54ajQJaZRHSysXS3SIefsNBZzPI7r
-	 MARYnbc9bUaSRKX8HXMpVyLzwFWKQRsua/FNiapTdVRMOpqAxR38C04bqxUCANSDih
-	 +HiXBBj5/Hd1fGOlP/Xaj1mlWYMoyPNyta8jrFwI=
+	b=fJudeL7BAN1y6kQSQ6seg8EbfbZyqaqPAIiFB7W3wcTcx9Y8qdbOxHsMIVjfcf6w3
+	 BfCJgoZU83v01xPkhUyeKaqNoM78oPNsBR+ZkJd9yIgUsUITIat0w12qXGlTT4TdPi
+	 31bsMUOw5LGFfO6AKp1TycfmecrcLc2W3UQzy1SM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Tomon <pierretom+12@ik.me>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 100/217] scsi: sd: Use READ(16) when reading block zero on large capacity disks
+	Haifeng Xu <haifeng.xu@shopee.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 6.6 192/267] perf/core: Fix missing wakeup when waiting for context reference
 Date: Wed, 19 Jun 2024 14:55:43 +0200
-Message-ID: <20240619125600.549019754@linuxfoundation.org>
+Message-ID: <20240619125613.707401258@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin K. Petersen <martin.petersen@oracle.com>
+From: Haifeng Xu <haifeng.xu@shopee.com>
 
-commit 7926d51f73e0434a6250c2fd1a0555f98d9a62da upstream.
+commit 74751ef5c1912ebd3e65c3b65f45587e05ce5d36 upstream.
 
-Commit 321da3dc1f3c ("scsi: sd: usb_storage: uas: Access media prior
-to querying device properties") triggered a read to LBA 0 before
-attempting to inquire about device characteristics. This was done
-because some protocol bridge devices will return generic values until
-an attached storage device's media has been accessed.
+In our production environment, we found many hung tasks which are
+blocked for more than 18 hours. Their call traces are like this:
 
-Pierre Tomon reported that this change caused problems on a large
-capacity external drive connected via a bridge device. The bridge in
-question does not appear to implement the READ(10) command.
+[346278.191038] __schedule+0x2d8/0x890
+[346278.191046] schedule+0x4e/0xb0
+[346278.191049] perf_event_free_task+0x220/0x270
+[346278.191056] ? init_wait_var_entry+0x50/0x50
+[346278.191060] copy_process+0x663/0x18d0
+[346278.191068] kernel_clone+0x9d/0x3d0
+[346278.191072] __do_sys_clone+0x5d/0x80
+[346278.191076] __x64_sys_clone+0x25/0x30
+[346278.191079] do_syscall_64+0x5c/0xc0
+[346278.191083] ? syscall_exit_to_user_mode+0x27/0x50
+[346278.191086] ? do_syscall_64+0x69/0xc0
+[346278.191088] ? irqentry_exit_to_user_mode+0x9/0x20
+[346278.191092] ? irqentry_exit+0x19/0x30
+[346278.191095] ? exc_page_fault+0x89/0x160
+[346278.191097] ? asm_exc_page_fault+0x8/0x30
+[346278.191102] entry_SYSCALL_64_after_hwframe+0x44/0xae
 
-Issue a READ(16) instead of READ(10) when a device has been identified
-as preferring 16-byte commands (use_16_for_rw heuristic).
+The task was waiting for the refcount become to 1, but from the vmcore,
+we found the refcount has already been 1. It seems that the task didn't
+get woken up by perf_event_release_kernel() and got stuck forever. The
+below scenario may cause the problem.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218890
-Link: https://lore.kernel.org/r/70dd7ae0-b6b1-48e1-bb59-53b7c7f18274@rowland.harvard.edu
-Link: https://lore.kernel.org/r/20240605022521.3960956-1-martin.petersen@oracle.com
-Fixes: 321da3dc1f3c ("scsi: sd: usb_storage: uas: Access media prior to querying device properties")
+Thread A					Thread B
+...						...
+perf_event_free_task				perf_event_release_kernel
+						   ...
+						   acquire event->child_mutex
+						   ...
+						   get_ctx
+   ...						   release event->child_mutex
+   acquire ctx->mutex
+   ...
+   perf_free_event (acquire/release event->child_mutex)
+   ...
+   release ctx->mutex
+   wait_var_event
+						   acquire ctx->mutex
+						   acquire event->child_mutex
+						   # move existing events to free_list
+						   release event->child_mutex
+						   release ctx->mutex
+						   put_ctx
+...						...
+
+In this case, all events of the ctx have been freed, so we couldn't
+find the ctx in free_list and Thread A will miss the wakeup. It's thus
+necessary to add a wakeup after dropping the reference.
+
+Fixes: 1cf8dfe8a661 ("perf/core: Fix race between close() and fork()")
+Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
 Cc: stable@vger.kernel.org
-Reported-by: Pierre Tomon <pierretom+12@ik.me>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Tested-by: Pierre Tomon <pierretom+12@ik.me>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lkml.kernel.org/r/20240513103948.33570-1-haifeng.xu@shopee.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sd.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ kernel/events/core.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3288,16 +3288,23 @@ static bool sd_validate_opt_xfer_size(st
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5353,6 +5353,7 @@ int perf_event_release_kernel(struct per
+ again:
+ 	mutex_lock(&event->child_mutex);
+ 	list_for_each_entry(child, &event->child_list, child_list) {
++		void *var = NULL;
  
- static void sd_read_block_zero(struct scsi_disk *sdkp)
- {
--	unsigned int buf_len = sdkp->device->sector_size;
--	char *buffer, cmd[10] = { };
-+	struct scsi_device *sdev = sdkp->device;
-+	unsigned int buf_len = sdev->sector_size;
-+	u8 *buffer, cmd[16] = { };
+ 		/*
+ 		 * Cannot change, child events are not migrated, see the
+@@ -5393,11 +5394,23 @@ again:
+ 			 * this can't be the last reference.
+ 			 */
+ 			put_event(event);
++		} else {
++			var = &ctx->refcount;
+ 		}
  
- 	buffer = kmalloc(buf_len, GFP_KERNEL);
- 	if (!buffer)
- 		return;
- 
--	cmd[0] = READ_10;
--	put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
--	put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
-+	if (sdev->use_16_for_rw) {
-+		cmd[0] = READ_16;
-+		put_unaligned_be64(0, &cmd[2]); /* Logical block address 0 */
-+		put_unaligned_be32(1, &cmd[10]);/* Transfer 1 logical block */
-+	} else {
-+		cmd[0] = READ_10;
-+		put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
-+		put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
-+	}
- 
- 	scsi_execute_req(sdkp->device, cmd, DMA_FROM_DEVICE, buffer, buf_len,
- 			 NULL, SD_TIMEOUT, sdkp->max_retries, NULL);
+ 		mutex_unlock(&event->child_mutex);
+ 		mutex_unlock(&ctx->mutex);
+ 		put_ctx(ctx);
++
++		if (var) {
++			/*
++			 * If perf_event_free_task() has deleted all events from the
++			 * ctx while the child_mutex got released above, make sure to
++			 * notify about the preceding put_ctx().
++			 */
++			smp_mb(); /* pairs with wait_var_event() */
++			wake_up_var(var);
++		}
+ 		goto again;
+ 	}
+ 	mutex_unlock(&event->child_mutex);
 
 
 
