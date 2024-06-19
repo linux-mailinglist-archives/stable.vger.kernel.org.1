@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2614790EE07
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:24:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE7090EEE8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93361B22D5D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0C392824D9
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B89714659A;
-	Wed, 19 Jun 2024 13:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276321494A6;
+	Wed, 19 Jun 2024 13:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E68U54X3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMGqlwvb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7E0143C65;
-	Wed, 19 Jun 2024 13:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5A4147C60;
+	Wed, 19 Jun 2024 13:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803486; cv=none; b=iE0gTgOBQxZz+UD6gdxxY/SifrZNMwjarBO2LRpfyGNLeQf1WPHWa3rE3OCB9AHZzHWIVZeHEftifDKZLYk7Pb1AZQj8cvid1sJ3VeggtlHJhrojz+joEgZXUdkisLIQHyGTL2c4bYMw7AYSRjuUkjW30QajIYoBeMDt+pIYez8=
+	t=1718804000; cv=none; b=QdHBl2l40Ns+XTsytyMo86DjFsD6bWhO8RhvVVX+bRbVz+A+pZ2l9oBEJ4Yees0lj4FZ6aJKCWDKDCV3aoiB2zkV5OKElDJx/fOD7NBqxToakQd9a0o7c4Xsp8Z5pZH761Pr5CNHkNTD1IGbwLxMJvgR64TAL/BP09p7FG0uYg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803486; c=relaxed/simple;
-	bh=v0Biu0+VQAi9gTD3/EnQNsWwNCgdvob6bulNppOkcHY=;
+	s=arc-20240116; t=1718804000; c=relaxed/simple;
+	bh=MN2WUswfZdDp0egM3G5ReSY804gQjquJWvPGBFJilBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZyJ/p0PJRxz7xXvJ4PzghchKvsOmOYwAu/DipddKGCu/x7W4HkQzhfgMw72a/zmp3e2hxXCXpCxPTFbBAaVRmCFCdSBX6MX+QtA0+DGbhYTRkbrjU70unHuEIP4f305Hle0hDgmVe9PXC3/xXD1aPh2Ly0r9AAz6LYzaPhJWw+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E68U54X3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8AFC2BBFC;
-	Wed, 19 Jun 2024 13:24:46 +0000 (UTC)
+	 MIME-Version; b=p9WvJxa8UoLBVCE49FVAS1dGPT+GncU5DZSmv9voSXAqnyq9PaSrG400IyDW/I/lEXKKfmb7U0VIqOBk35LC23Cwmpc3QJqjagy/UK2ST6j6Kcr5ZAcFD/JDFbroTs5w4u1HhaCdOwc9FpIw8hwvePmIFDlKne1N/omA6H+Uqag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMGqlwvb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B05BC4AF1D;
+	Wed, 19 Jun 2024 13:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803486;
-	bh=v0Biu0+VQAi9gTD3/EnQNsWwNCgdvob6bulNppOkcHY=;
+	s=korg; t=1718804000;
+	bh=MN2WUswfZdDp0egM3G5ReSY804gQjquJWvPGBFJilBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E68U54X3ttPhSUCu7HxNjIB3RGFo/ysRB2DZTjjXWSGmFvkbkby52p/WYNwEiC3Mz
-	 yA/9SzfsWIQzh0gFaPsy6sBNJr0nJUEPRZAYHUqqcxJmATDojmoszfxig1IU5KA6gS
-	 ce/bmQ24p+qKTWCTwMp/jUwV66gVACz8NTEg1jYE=
+	b=EMGqlwvb3WmYEalaBnTW6U5iMCA+I8JhitPbGlyY238sFTR5jABCqXjIygNhR7Osm
+	 ZFYtB+lepld/Am7QtLilgMA+5EvV16fYdrKLU6Gb86XVdvJ8sCwXpAwMqYxkrfNcTU
+	 vfGjLPjeTbA16VZ/XO2RiHsYDmxPCnsfLPlvGG7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.9 252/281] riscv: rewrite __kernel_map_pages() to fix sleeping in invalid context
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	YonglongLi <liyonglong@chinatelecom.cn>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 168/217] mptcp: pm: inc RmAddr MIB counter once per RM_ADDR ID
 Date: Wed, 19 Jun 2024 14:56:51 +0200
-Message-ID: <20240619125619.674818258@linuxfoundation.org>
+Message-ID: <20240619125603.171278938@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: YonglongLi <liyonglong@chinatelecom.cn>
 
-commit fb1cf0878328fe75d47f0aed0a65b30126fcefc4 upstream.
+commit 6a09788c1a66e3d8b04b3b3e7618cc817bb60ae9 upstream.
 
-__kernel_map_pages() is a debug function which clears the valid bit in page
-table entry for deallocated pages to detect illegal memory accesses to
-freed pages.
+The RmAddr MIB counter is supposed to be incremented once when a valid
+RM_ADDR has been received. Before this patch, it could have been
+incremented as many times as the number of subflows connected to the
+linked address ID, so it could have been 0, 1 or more than 1.
 
-This function set/clear the valid bit using __set_memory(). __set_memory()
-acquires init_mm's semaphore, and this operation may sleep. This is
-problematic, because  __kernel_map_pages() can be called in atomic context,
-and thus is illegal to sleep. An example warning that this causes:
+The "RmSubflow" is incremented after a local operation. In this case,
+it is normal to tied it with the number of subflows that have been
+actually removed.
 
-BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1578
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2, name: kthreadd
-preempt_count: 2, expected: 0
-CPU: 0 PID: 2 Comm: kthreadd Not tainted 6.9.0-g1d4c6d784ef6 #37
-Hardware name: riscv-virtio,qemu (DT)
-Call Trace:
-[<ffffffff800060dc>] dump_backtrace+0x1c/0x24
-[<ffffffff8091ef6e>] show_stack+0x2c/0x38
-[<ffffffff8092baf8>] dump_stack_lvl+0x5a/0x72
-[<ffffffff8092bb24>] dump_stack+0x14/0x1c
-[<ffffffff8003b7ac>] __might_resched+0x104/0x10e
-[<ffffffff8003b7f4>] __might_sleep+0x3e/0x62
-[<ffffffff8093276a>] down_write+0x20/0x72
-[<ffffffff8000cf00>] __set_memory+0x82/0x2fa
-[<ffffffff8000d324>] __kernel_map_pages+0x5a/0xd4
-[<ffffffff80196cca>] __alloc_pages_bulk+0x3b2/0x43a
-[<ffffffff8018ee82>] __vmalloc_node_range+0x196/0x6ba
-[<ffffffff80011904>] copy_process+0x72c/0x17ec
-[<ffffffff80012ab4>] kernel_clone+0x60/0x2fe
-[<ffffffff80012f62>] kernel_thread+0x82/0xa0
-[<ffffffff8003552c>] kthreadd+0x14a/0x1be
-[<ffffffff809357de>] ret_from_fork+0xe/0x1c
+The "remove invalid addresses" MP Join subtest has been modified to
+validate this case. A broadcast IP address is now used instead: the
+client will not be able to create a subflow to this address. The
+consequence is that when receiving the RM_ADDR with the ID attached to
+this broadcast IP address, no subflow linked to this ID will be found.
 
-Rewrite this function with apply_to_existing_page_range(). It is fine to
-not have any locking, because __kernel_map_pages() works with pages being
-allocated/deallocated and those pages are not changed by anyone else in the
-meantime.
-
-Fixes: 5fde3db5eb02 ("riscv: add ARCH_SUPPORTS_DEBUG_PAGEALLOC support")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
+Fixes: 7a7e52e38a40 ("mptcp: add RM_ADDR related mibs")
 Cc: stable@vger.kernel.org
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/1289ecba9606a19917bc12b6c27da8aa23e1e5ae.1715750938.git.namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-2-1ab9ddfa3d00@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/pageattr.c |   28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ net/mptcp/pm_netlink.c                          |    5 ++++-
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    3 ++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -387,17 +387,33 @@ int set_direct_map_default_noflush(struc
- }
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -820,10 +820,13 @@ static void mptcp_pm_nl_rm_addr_or_subfl
+ 			spin_lock_bh(&msk->pm.lock);
  
- #ifdef CONFIG_DEBUG_PAGEALLOC
-+static int debug_pagealloc_set_page(pte_t *pte, unsigned long addr, void *data)
-+{
-+	int enable = *(int *)data;
-+
-+	unsigned long val = pte_val(ptep_get(pte));
-+
-+	if (enable)
-+		val |= _PAGE_PRESENT;
-+	else
-+		val &= ~_PAGE_PRESENT;
-+
-+	set_pte(pte, __pte(val));
-+
-+	return 0;
-+}
-+
- void __kernel_map_pages(struct page *page, int numpages, int enable)
- {
- 	if (!debug_pagealloc_enabled())
- 		return;
+ 			removed = true;
+-			__MPTCP_INC_STATS(sock_net(sk), rm_type);
++			if (rm_type == MPTCP_MIB_RMSUBFLOW)
++				__MPTCP_INC_STATS(sock_net(sk), rm_type);
+ 		}
+ 		if (rm_type == MPTCP_MIB_RMSUBFLOW)
+ 			__set_bit(rm_id ? rm_id : msk->mpc_endpoint_id, msk->pm.id_avail_bitmap);
++		else if (rm_type == MPTCP_MIB_RMADDR)
++			__MPTCP_INC_STATS(sock_net(sk), rm_type);
+ 		if (!removed)
+ 			continue;
  
--	if (enable)
--		__set_memory((unsigned long)page_address(page), numpages,
--			     __pgprot(_PAGE_PRESENT), __pgprot(0));
--	else
--		__set_memory((unsigned long)page_address(page), numpages,
--			     __pgprot(0), __pgprot(_PAGE_PRESENT));
-+	unsigned long start = (unsigned long)page_address(page);
-+	unsigned long size = PAGE_SIZE * numpages;
-+
-+	apply_to_existing_page_range(&init_mm, start, size, debug_pagealloc_set_page, &enable);
-+
-+	flush_tlb_kernel_range(start, start + size);
- }
- #endif
- 
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2344,7 +2344,8 @@ remove_tests()
+ 		pm_nl_set_limits $ns1 3 3
+ 		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
+ 		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
+-		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
++		# broadcast IP: no packet for this address will be received on ns1
++		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal
+ 		pm_nl_set_limits $ns2 3 3
+ 		run_tests $ns1 $ns2 10.0.1.1 0 -3 0 speed_10
+ 		chk_join_nr 1 1 1
 
 
 
