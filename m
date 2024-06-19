@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-54378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 809D890EDE5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3FF90EF06
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 937CD1C2230F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E58E1C21852
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055CF14375A;
-	Wed, 19 Jun 2024 13:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A0113DDC0;
+	Wed, 19 Jun 2024 13:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAojn+E0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbr7Who8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90174D9EA;
-	Wed, 19 Jun 2024 13:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1670013F428;
+	Wed, 19 Jun 2024 13:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803403; cv=none; b=umUHacnhfUbF1OI/z+x6prJuw0sC53u36eGopdpgIa9aGQRbmmfQvk09WYOOAC2X1NkPKQxLHODmd1VbG+4XaLk52hYfVtqdPDn6XR+o2GPcOaIPFonP1+U4C8ZFKefLQ8aVy8ZPIFyU/O9nYaP1TrStBVa2PonT813hTFmvZG4=
+	t=1718804084; cv=none; b=sOrbEEClAFzB5YVzh967MSYhWpJ0BzlahjKOKwj0xT1dRnr3nnHrLfBFIj16HJgwxhrINeqhBTjtUH/YkINis/ecu2w0iz1auFxoc7KpBxsZMYuklZI92N/KHVzxZHIlRt5Xw3Mp6YdtPneD1qq1SbfLkW0Vchzabp3mTKjJaC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803403; c=relaxed/simple;
-	bh=i7gzrbF0LnY4OmFYR8JVXeUeyMpgU2IKM28UgO/O8XU=;
+	s=arc-20240116; t=1718804084; c=relaxed/simple;
+	bh=0sS7c4A7pJ3M6XxMuI0UuUqjFmqBUMz+7tCPn3Gc/aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hp3jq638q8zPeEy6IFe/Lz9EAKeT66WWM2lVXxsXQ5eskux2+VJfni2fGXAniZcemrcVBAt7zYvkBqUrwdGZlSyIr0Cno4Qqjdz0zCibdlnfFIpMyk4vbafypep/jvAjxTWJYcWsbIrkKG2+PTnFv/xihP2fv2CEZRyer5RX038=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAojn+E0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1345AC2BBFC;
-	Wed, 19 Jun 2024 13:23:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=meI6TQUGI8KhqEKd8x62GrIhnjeXYA8B2aLasLslqHb6MOO/VhFepwnzeRvzqb1PeWA08GLSPIVl6669etor8U/hy6/aTosm1erGhXiyP0+y7MhU8xJ7/9Ca8UNXORwizSWSb2HK2Y0UKjKKSKjfL5BwscTDANmFy3ZA2qxjGbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbr7Who8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2F3C2BBFC;
+	Wed, 19 Jun 2024 13:34:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803403;
-	bh=i7gzrbF0LnY4OmFYR8JVXeUeyMpgU2IKM28UgO/O8XU=;
+	s=korg; t=1718804083;
+	bh=0sS7c4A7pJ3M6XxMuI0UuUqjFmqBUMz+7tCPn3Gc/aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uAojn+E0/XnPi3pCREUsVgq7DKu0Eg8ktzsRvEU7U3nNQz+vaNwo5yorel/puoUOc
-	 ScBFz/Si31F0z4YNcZ8rbmTgh+NIhDXWSzXb/7vbVV43nUAh+0s/sy5EasZFpvjAc4
-	 IYzM1sASsh16dW7kmlXNP8cTBfUDbh1HuatcWlQ4=
+	b=sbr7Who8vJUK3wV6ol7RroUGU81iN8NrPdCQPVhn4jYE4RWAwgbM4sY6LcifWIdta
+	 ZAQqrEs8biXsP+jXywC7mJkmfNmd0GyuauZsQ4IZXd1ViyTATRTrqGZpr1bP8U0ffl
+	 l0CyeuAkbPGPGV3EBp0VWhA9vakh9WuLS/O/saZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wilson <chris@chris-wilson.co.uk>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.9 256/281] drm/i915/gt: Disarm breadcrumbs if engines are already idle
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Nam Cao <namcao@linutronix.de>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.1 172/217] riscv: fix overlap of allocated page and PTR_ERR
 Date: Wed, 19 Jun 2024 14:56:55 +0200
-Message-ID: <20240619125619.828555092@linuxfoundation.org>
+Message-ID: <20240619125603.325351148@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 70cb9188ffc75e643debf292fcddff36c9dbd4ae upstream.
+commit 994af1825a2aa286f4903ff64a1c7378b52defe6 upstream.
 
-The breadcrumbs use a GT wakeref for guarding the interrupt, but are
-disarmed during release of the engine wakeref. This leaves a hole where
-we may attach a breadcrumb just as the engine is parking (after it has
-parked its breadcrumbs), execute the irq worker with some signalers still
-attached, but never be woken again.
+On riscv32, it is possible for the last page in virtual address space
+(0xfffff000) to be allocated. This page overlaps with PTR_ERR, so that
+shouldn't happen.
 
-That issue manifests itself in CI with IGT runner timeouts while tests
-are waiting indefinitely for release of all GT wakerefs.
+There is already some code to ensure memblock won't allocate the last page.
+However, buddy allocator is left unchecked.
 
-<6> [209.151778] i915: Running live_engine_pm_selftests/live_engine_busy_stats
-<7> [209.231628] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_5
-<7> [209.231816] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_4
-<7> [209.231944] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_3
-<7> [209.232056] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_2
-<7> [209.232166] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling DC_off
-<7> [209.232270] i915 0000:00:02.0: [drm:skl_enable_dc6 [i915]] Enabling DC6
-<7> [209.232368] i915 0000:00:02.0: [drm:gen9_set_dc_state.part.0 [i915]] Setting DC state from 00 to 02
-<4> [299.356116] [IGT] Inactivity timeout exceeded. Killing the current test with SIGQUIT.
-...
-<6> [299.356526] sysrq: Show State
-...
-<6> [299.373964] task:i915_selftest   state:D stack:11784 pid:5578  tgid:5578  ppid:873    flags:0x00004002
-<6> [299.373967] Call Trace:
-<6> [299.373968]  <TASK>
-<6> [299.373970]  __schedule+0x3bb/0xda0
-<6> [299.373974]  schedule+0x41/0x110
-<6> [299.373976]  intel_wakeref_wait_for_idle+0x82/0x100 [i915]
-<6> [299.374083]  ? __pfx_var_wake_function+0x10/0x10
-<6> [299.374087]  live_engine_busy_stats+0x9b/0x500 [i915]
-<6> [299.374173]  __i915_subtests+0xbe/0x240 [i915]
-<6> [299.374277]  ? __pfx___intel_gt_live_setup+0x10/0x10 [i915]
-<6> [299.374369]  ? __pfx___intel_gt_live_teardown+0x10/0x10 [i915]
-<6> [299.374456]  intel_engine_live_selftests+0x1c/0x30 [i915]
-<6> [299.374547]  __run_selftests+0xbb/0x190 [i915]
-<6> [299.374635]  i915_live_selftests+0x4b/0x90 [i915]
-<6> [299.374717]  i915_pci_probe+0x10d/0x210 [i915]
+Fix this by reserving physical memory that would be mapped at virtual
+addresses greater than 0xfffff000.
 
-At the end of the interrupt worker, if there are no more engines awake,
-disarm the breadcrumb and go to sleep.
-
-Fixes: 9d5612ca165a ("drm/i915/gt: Defer enabling the breadcrumb interrupt to after submission")
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/10026
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: <stable@vger.kernel.org> # v5.12+
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Acked-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240423165505.465734-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit fbad43eccae5cb14594195c20113369aabaa22b5)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reported-by: Björn Töpel <bjorn@kernel.org>
+Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
+Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Tested-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Link: https://lore.kernel.org/r/20240425115201.3044202-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_breadcrumbs.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ arch/riscv/mm/init.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
-+++ b/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
-@@ -263,8 +263,13 @@ static void signal_irq_work(struct irq_w
- 		i915_request_put(rq);
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -213,18 +213,19 @@ static void __init setup_bootmem(void)
+ 	if (!IS_ENABLED(CONFIG_XIP_KERNEL))
+ 		phys_ram_base = memblock_start_of_DRAM();
+ 	/*
+-	 * memblock allocator is not aware of the fact that last 4K bytes of
+-	 * the addressable memory can not be mapped because of IS_ERR_VALUE
+-	 * macro. Make sure that last 4k bytes are not usable by memblock
+-	 * if end of dram is equal to maximum addressable memory.  For 64-bit
+-	 * kernel, this problem can't happen here as the end of the virtual
+-	 * address space is occupied by the kernel mapping then this check must
+-	 * be done as soon as the kernel mapping base address is determined.
++	 * Reserve physical address space that would be mapped to virtual
++	 * addresses greater than (void *)(-PAGE_SIZE) because:
++	 *  - This memory would overlap with ERR_PTR
++	 *  - This memory belongs to high memory, which is not supported
++	 *
++	 * This is not applicable to 64-bit kernel, because virtual addresses
++	 * after (void *)(-PAGE_SIZE) are not linearly mapped: they are
++	 * occupied by kernel mapping. Also it is unrealistic for high memory
++	 * to exist on 64-bit platforms.
+ 	 */
+ 	if (!IS_ENABLED(CONFIG_64BIT)) {
+-		max_mapped_addr = __pa(~(ulong)0);
+-		if (max_mapped_addr == (phys_ram_end - 1))
+-			memblock_set_current_limit(max_mapped_addr - 4096);
++		max_mapped_addr = __va_to_pa_nodebug(-PAGE_SIZE);
++		memblock_reserve(max_mapped_addr, (phys_addr_t)-max_mapped_addr);
  	}
  
-+	/* Lazy irq enabling after HW submission */
- 	if (!READ_ONCE(b->irq_armed) && !list_empty(&b->signalers))
- 		intel_breadcrumbs_arm_irq(b);
-+
-+	/* And confirm that we still want irqs enabled before we yield */
-+	if (READ_ONCE(b->irq_armed) && !atomic_read(&b->active))
-+		intel_breadcrumbs_disarm_irq(b);
- }
- 
- struct intel_breadcrumbs *
-@@ -315,13 +320,7 @@ void __intel_breadcrumbs_park(struct int
- 		return;
- 
- 	/* Kick the work once more to drain the signalers, and disarm the irq */
--	irq_work_sync(&b->irq_work);
--	while (READ_ONCE(b->irq_armed) && !atomic_read(&b->active)) {
--		local_irq_disable();
--		signal_irq_work(&b->irq_work);
--		local_irq_enable();
--		cond_resched();
--	}
-+	irq_work_queue(&b->irq_work);
- }
- 
- void intel_breadcrumbs_free(struct kref *kref)
-@@ -404,7 +403,7 @@ static void insert_breadcrumb(struct i91
- 	 * the request as it may have completed and raised the interrupt as
- 	 * we were attaching it into the lists.
- 	 */
--	if (!b->irq_armed || __i915_request_is_complete(rq))
-+	if (!READ_ONCE(b->irq_armed) || __i915_request_is_complete(rq))
- 		irq_work_queue(&b->irq_work);
- }
- 
+ 	min_low_pfn = PFN_UP(phys_ram_base);
 
 
 
