@@ -1,115 +1,153 @@
-Return-Path: <stable+bounces-54653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D9D90F16E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:57:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29EE990F148
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B163281ED7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:57:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8E0A1F2565A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1FE405FB;
-	Wed, 19 Jun 2024 14:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C793CF4F;
+	Wed, 19 Jun 2024 14:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="DeO5eaTa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOjwCfo2"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.208])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C141D54A;
-	Wed, 19 Jun 2024 14:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.208
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4AE225A8;
+	Wed, 19 Jun 2024 14:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718809061; cv=none; b=d5K2SYUQ03HLWb6Y45zDrppCLimVGm2xOa7GjroGRrxrLpQObx0YVQZQLVrN5ve0L5hW9WaHTjHlDKf0rrszFe3259mPzALWeDj98W7mMjrt0EwM1NK2jXxEqFPn1t6/4Uta5rYf8+j+RZdM7gN+1lAb+DRpj61dCdmF5GcxSW8=
+	t=1718808519; cv=none; b=k164X3md6MrYuo5P9QDtRRttRngjpkOzPS0PO5bNqZ/mcMlcWuhlRYHridmAFKC93uuy6eCjClp8qyRUY6J+RCdE4bRBrJvZAav0bzN8vUzHVe8BC7seRfC1YDAV7P8qaeslA/d7QDISqMUZ6lcsevuEc7B2Kt1xbZ9AGLr/1LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718809061; c=relaxed/simple;
-	bh=iZbm6EdAbJzUiVO4UtD9tGvM+sfX52gde6b5TpOe++k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ZsG3j2+QwsNmkSZjEAdKCrV5upaLYZFkD2CBfwIV5Sw39LNDxTDFP2PrAZ1UJa3pt/3FQSkAEiNrnBYPWX4h0TPUwmIXuRdI/0Md20OCPKUGRUvkjIubrDZTUXxfSRuuh2WtHVYRNQnsmA8ZvOn8WoPw9waI5TironcDxitnYQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=DeO5eaTa; arc=none smtp.client-ip=192.19.144.208
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id AB7DFC0000EC;
-	Wed, 19 Jun 2024 07:48:27 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com AB7DFC0000EC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1718808507;
-	bh=iZbm6EdAbJzUiVO4UtD9tGvM+sfX52gde6b5TpOe++k=;
-	h=From:To:Cc:Subject:Date:From;
-	b=DeO5eaTaP/IqjtEVHu6D/Jn3oveijOQfNlLsWIqsuRN7nhkd+h4aDCZsf2sGzM1H2
-	 pVGZLgtd9GzaFxTZAcz7T/41Vmb/74cfkIo/V5WJlS9vq6ammieC/s3dkmJCzvM+xW
-	 sbL5fTI1UjsKRzRFie8rG4TsDSG/TmCzABQjXZ3M=
-Received: from fainelli-desktop.igp.broadcom.net (fainelli-desktop.dhcp.broadcom.net [10.67.48.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPSA id 763BA18041CAC4;
-	Wed, 19 Jun 2024 07:48:25 -0700 (PDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: stable@vger.kernel.org
-Cc: Florian Fainelli <f.fainelli@gmail.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	linux-mips@vger.kernel.org (open list:BROADCOM BMIPS MIPS ARCHITECTURE),
-	devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH stable 6.1] MIPS: dts: bcm63268: Add missing properties to the TWD node
-Date: Wed, 19 Jun 2024 07:48:25 -0700
-Message-Id: <20240619144825.4052589-1-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1718808519; c=relaxed/simple;
+	bh=2YOvS0C9Qi9FYlw1P37gGBlyIrP+q5FHxGp8w3em48o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TXsRai+aH/V7AO6YmJUTEzaTPbEWRgOA25TMxX3k7j2DqvALpV13JK43fonrERpOvLWJc6klHHlqW/Uk173Hh5d3doHmby5f07aeQ02311J55didW72r2A739vCOmmFnprsH3gkha36Ieim263oEVPXPc/lfTvyh05xMgH6QVLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOjwCfo2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446DFC2BBFC;
+	Wed, 19 Jun 2024 14:48:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718808518;
+	bh=2YOvS0C9Qi9FYlw1P37gGBlyIrP+q5FHxGp8w3em48o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IOjwCfo2Btn4yZibsXKcXlpqDVu1PammW3+3MMnWPxWgA+gvRDnDwqC4VnHEog17S
+	 gBmSIJMFqIyXIlu9Uwf0Xu5zbcdyQYNZ6fkbP9fuSKSBzt9pnoe6FSDsoylkmAqXNK
+	 bKfg5nX+5TOKeNyXocyFVR2qvZNNv7oD8mG7xyOc=
+Date: Wed, 19 Jun 2024 16:48:35 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Conor Dooley <conor@kernel.org>
+Cc: Conor Dooley <conor.dooley@microchip.com>, Ron Economos <re@w6rz.net>,
+	Pavel Machek <pavel@denx.de>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: Re: [PATCH 6.6 000/741] 6.6.33-rc2 review
+Message-ID: <2024061905-reclining-discount-996d@gregkh>
+References: <20240609113903.732882729@linuxfoundation.org>
+ <ZmYDquU9rsJ2HG9g@duo.ucw.cz>
+ <ad13afda-6d20-fa88-ae7f-c1a69b1f5a40@w6rz.net>
+ <2024061006-overdress-outburst-36ae@gregkh>
+ <20240610-scabby-bruising-110970760c41@wendy>
+ <2024061140-sandworm-irk-b7c9@gregkh>
+ <20240619-kerchief-grove-20c3996db1aa@spud>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240619-kerchief-grove-20c3996db1aa@spud>
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+On Wed, Jun 19, 2024 at 03:28:18PM +0100, Conor Dooley wrote:
+> On Tue, Jun 11, 2024 at 03:06:01PM +0200, Greg Kroah-Hartman wrote:
+> > On Mon, Jun 10, 2024 at 08:26:10AM +0100, Conor Dooley wrote:
+> > > On Mon, Jun 10, 2024 at 08:28:29AM +0200, Greg Kroah-Hartman wrote:
+> > > > On Sun, Jun 09, 2024 at 11:21:55PM -0700, Ron Economos wrote:
+> > > > > On 6/9/24 12:34 PM, Pavel Machek wrote:
+> > > > > > Hi!
+> > > > > > 
+> > > > > > > This is the start of the stable review cycle for the 6.6.33 release.
+> > > > > > > There are 741 patches in this series, all will be posted as a response
+> > > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > > let me know.
+> > > > > > 6.6 seems to have build problem on risc-v:
+> > > 
+> > > > > > arch/riscv/kernel/suspend.c:14:66: error: 'RISCV_ISA_EXT_XLINUXENVCFG' undeclared (first use in this function); did you mean 'RISCV_ISA_EXT_ZIFENCEI'?
+> > > > > > 694
+> > > > > >     14 |         if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
+> > > > > > 695
+> > > > > >        |                                                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> > > > > > 696
+> > > > > >        |                                                                  RISCV_ISA_EXT_ZIFENCEI
+> > > 
+> > > > > > https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/7053222239
+> > > > > > https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1324369118
+> > > > > > 
+> > > > > > No problems detected on 6.8-stable and 6.1-stable.
+> > > > > > 
+> > > > > > Best regards,
+> > > > > > 								Pavel
+> > > > > 
+> > > > > I'm seeing the same thing here. Somehow some extra patches got slipped in
+> > > > > between rc1 and rc2. The new patches for RISC-V are:
+> > > > > 
+> > > > > Samuel Holland <samuel.holland@sifive.com>
+> > > > > ††† riscv: Save/restore envcfg CSR during CPU suspend
+> > > > > 
+> > > > > commit 88b55a586b87994a33e0285c9e8881485e9b77ea
+> > > > > 
+> > > > > Samuel Holland <samuel.holland@sifive.com>
+> > > > > ††† riscv: Fix enabling cbo.zero when running in M-mode
+> > > > > 
+> > > > > commit 8c6e096cf527d65e693bfbf00aa6791149c58552
+> > > > > 
+> > > > > The first patch "riscv: Save/restore envcfg CSR during CPU suspend" causes
+> > > > > the build failure.
+> > > > > 
+> > > > > 
+> > > > 
+> > > > Yes, these were added because they were marked as fixes for other
+> > > > commits in the series.  I'll unwind them all now as something is going
+> > > > wrong...
+> > > 
+> > > Really we should just backport this envcfg handling to stable, this
+> > > isn't the first (and won't be the last) issue it'll cause. I'll put a
+> > > backport of it on my todo list cos I think last time around it couldn't
+> > > be cherrypicked.
+> > 
+> > Thanks, I've dropped almost all riscv patches from this queue now.  If
+> > they want to be added back, please send working backports :)
+> 
+> I went to take a look at this, but since 6.8 is now EOL, I dunno if I
+> actually need to do anything here? These were needed because you had
+> applied "RISC-V: Enable cbo.zero in usermode", but that's a feature, not
+> a fix, so dropping that makes these changes unneeded. IIRC the previous
+> time that there was an envcfg related build failure it was on the
+> requested backport to 6.7+ in the envcfg addition in "riscv: Add a custom
+> ISA extension for the [ms]envcfg CSR", and an assertion failed because
+> of a definition for the maximum number of ISA extensions was larger in
+> 6.9 than 6.7 and the patch depended on that.
 
-commit 24b333a866a10d4be47b9968b9c05a3e9f326ff5 upstream
+Yes, 6.8.y is end-of-life, nothing needs to be done there anymore.
 
-We currently have a DTC warning with the current DTS due to the lack of
-a suitable #address-cells and #size-cells property:
+> For 6.6, I don't think envcfg is needed, unless there was some other
+> reason that you backported "RISC-V: Enable cbo.zero in usermode".
 
-  DTC     arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb
-arch/mips/boot/dts/brcm/bcm63268.dtsi:115.5-22: Warning (reg_format): /ubus/timer-mfd@10000080/timer@0:reg: property has invalid length (8 bytes) (#address-cells == 2, #size-cells == 1)
-arch/mips/boot/dts/brcm/bcm63268.dtsi:120.5-22: Warning (reg_format): /ubus/timer-mfd@10000080/watchdog@1c:reg: property has invalid length (8 bytes) (#address-cells == 2, #size-cells == 1)
-arch/mips/boot/dts/brcm/bcm63268.dtsi:111.4-35: Warning (ranges_format): /ubus/timer-mfd@10000080:ranges: "ranges" property has invalid length (12 bytes) (parent #address-cells == 1, child #address-cells == 2, #size-cells == 1)
+I hope not :)
 
-Fixes: d3db4b96ab7f ("mips: dts: bcm63268: add TWD block timer")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Reviewed-by: Philippe Mathieu-Daud√© <philmd@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
-The Fixes tag was partially incorrect which is why this change should
-have been applied to the 6.1 stable tree, but it was not.
+thanks for looking.
 
- arch/mips/boot/dts/brcm/bcm63268.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/arch/mips/boot/dts/brcm/bcm63268.dtsi b/arch/mips/boot/dts/brcm/bcm63268.dtsi
-index 8926417a8fbc..87c75faf4a3b 100644
---- a/arch/mips/boot/dts/brcm/bcm63268.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm63268.dtsi
-@@ -109,6 +109,8 @@ timer-mfd@10000080 {
- 			compatible = "brcm,bcm7038-twd", "simple-mfd", "syscon";
- 			reg = <0x10000080 0x30>;
- 			ranges = <0x0 0x10000080 0x30>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
- 
- 			wdt: watchdog@1c {
- 				compatible = "brcm,bcm7038-wdt";
--- 
-2.34.1
-
+greg k-h
 
