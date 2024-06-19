@@ -1,51 +1,56 @@
-Return-Path: <stable+bounces-53800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB04990E71A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:31:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB37490E71E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2C961C20AF2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 09:31:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E03641C20E26
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 09:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C94F7E78E;
-	Wed, 19 Jun 2024 09:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E65F7FBB4;
+	Wed, 19 Jun 2024 09:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0UA7Fa/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Woc1nrje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C75D78C91
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 09:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E177E0E8
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 09:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718789454; cv=none; b=maEW4Kb9Z6qt0C8G5Pa/dbvIdSO8b59yesaqY9EQB9ACo0HyRjdzV2PaDIpOQFlqmN9ka4IEhRrSztPQ+5LRd0KjrnoC7CXCAaykSYuGfcLUHxFtbODS4INVt0uid7vdQrYwT3Ao1ae71DsECvF1Qunxr/EOvu/MsKwOjXe2RM4=
+	t=1718789691; cv=none; b=VEsEQCZWDiAryao3wTMC0vOHBjVPQGzJjxwqczQOFIk9/876+Q3U/zALYdfF8elnoErFb3uDTvs9vyW8Vi4RTY6go+EeW0hS8QOQFaOb8Mahf7H/kmFbSQEmQBv4bpNacR6dEsbHFSWjNzKuF14ZI8QHwbysswJZGkHgq207hLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718789454; c=relaxed/simple;
-	bh=WrYh67gyZpTdbgQmoJs9dGlfImgBLdmRLfPZaKjZDvE=;
+	s=arc-20240116; t=1718789691; c=relaxed/simple;
+	bh=0m9/AQ+vOYG0js4ZkmCDNCOXqKsuLqEWMthKnodDXMg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GJbDE72XMzeyCQQOZcBH+a66rWy1C4ppxZEX1+AxSiDiI2SW9sq4o0TZId3aFZ3z9H3e4wCuiSyS8l59L7pcxK8loHrrbhyCsOQVyC8YC3x/dYDy2OAICgJHHLhQgJlnttOYi51GmTenDhWImQ0GG02yUzUMbHr/PGla1NtCdqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0UA7Fa/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700C3C2BBFC;
-	Wed, 19 Jun 2024 09:30:53 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=P99c89Mbj15EIYRhIJGRlIUHfX2cDdVg1ebqfzJjtUDx+4Y6AUlV+nUHMImNIpfLk3MjjB19BaP1paqhwvHBKUaSP0bHR4oR+OwfR74nl02eb9JR/68iy0JssCLR8OEEst9xwON6Oj+vTwj7aXOGQ5PuqW17p2diFAKFy+vkXSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Woc1nrje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E06C2BBFC;
+	Wed, 19 Jun 2024 09:34:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718789453;
-	bh=WrYh67gyZpTdbgQmoJs9dGlfImgBLdmRLfPZaKjZDvE=;
+	s=korg; t=1718789691;
+	bh=0m9/AQ+vOYG0js4ZkmCDNCOXqKsuLqEWMthKnodDXMg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=B0UA7Fa/nKEKuWBN2fpOSHVPBiA5FCLSAInYE/azsBX3XLO7hJfiMvAG5t95W1EGD
-	 Fkw7dPEDQa4X0rx61g1ePnYd9mVs0Wowwj4Q5bvhN7jnLmlNuq2D1TCZ8blLNbX4er
-	 Z1a5uei7P0wEIcP0CbLboDJzbu9WSqt5PyZmCM3g=
-Date: Wed, 19 Jun 2024 11:30:51 +0200
+	b=Woc1nrjeZwy/MQ8F2uPusIbSODIYPGPpy6G++/7XBbZhi8WBJsHSBiOEzOkQABmJH
+	 HVrIqBvFnIlhMh28M3vEEGA+p+5SLHPwhVNdGbQzTEtHZ4YhKBA0moMY0zwQajoBvB
+	 U90RiEqaox6SRXtRaSMUrJf4KoQV8l6VPxC4cTzY=
+Date: Wed, 19 Jun 2024 11:34:37 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 5.15.y] scsi: mpi3mr: Fix ATA NCQ priority support
-Message-ID: <2024061940-guidable-headband-eaff@gregkh>
-References: <2024061714-judo-railway-20f6@gregkh>
- <20240618030345.485545-1-dlemoal@kernel.org>
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: stable@vger.kernel.org, David Hildenbrand <david@redhat.com>,
+	Yang Shi <shy828301@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Xu Yu <xuyu@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 5.15.y] mm/huge_memory: don't unpoison huge_zero_folio
+Message-ID: <2024061928-basis-abdomen-bab7@gregkh>
+References: <2024061300-ceremony-habitable-06c0@gregkh>
+ <20240618032727.2389102-1-linmiaohe@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,40 +59,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240618030345.485545-1-dlemoal@kernel.org>
+In-Reply-To: <20240618032727.2389102-1-linmiaohe@huawei.com>
 
-On Tue, Jun 18, 2024 at 12:03:45PM +0900, Damien Le Moal wrote:
-> Commit 90e6f08915ec6efe46570420412a65050ec826b2 upstream.
+On Tue, Jun 18, 2024 at 11:27:27AM +0800, Miaohe Lin wrote:
+> When I did memory failure tests recently, below panic occurs:
 > 
-> The function mpi3mr_qcmd() of the mpi3mr driver is able to indicate to
-> the HBA if a read or write command directed at an ATA device should be
-> translated to an NCQ read/write command with the high prioiryt bit set
-> when the request uses the RT priority class and the user has enabled NCQ
-> priority through sysfs.
+>  kernel BUG at include/linux/mm.h:1135!
+>  invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+>  CPU: 9 PID: 137 Comm: kswapd1 Not tainted 6.9.0-rc4-00491-gd5ce28f156fe-dirty #14
+>  RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
+>  RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
+>  RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
+>  RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
+>  RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
+>  R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
+>  R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
+>  FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
+>  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>  CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
+>  Call Trace:
+>   <TASK>
+>   do_shrink_slab+0x14f/0x6a0
+>   shrink_slab+0xca/0x8c0
+>   shrink_node+0x2d0/0x7d0
+>   balance_pgdat+0x33a/0x720
+>   kswapd+0x1f3/0x410
+>   kthread+0xd5/0x100
+>   ret_from_fork+0x2f/0x50
+>   ret_from_fork_asm+0x1a/0x30
+>   </TASK>
+>  Modules linked in: mce_inject hwpoison_inject
+>  ---[ end trace 0000000000000000 ]---
+>  RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
+>  RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
+>  RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
+>  RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
+>  RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
+>  R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
+>  R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
+>  FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
+>  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>  CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
 > 
-> However, unlike the mpt3sas driver, the mpi3mr driver does not define
-> the sas_ncq_prio_supported and sas_ncq_prio_enable sysfs attributes, so
-> the ncq_prio_enable field of struct mpi3mr_sdev_priv_data is never
-> actually set and NCQ Priority cannot ever be used.
+> The root cause is that HWPoison flag will be set for huge_zero_folio
+> without increasing the folio refcnt.  But then unpoison_memory() will
+> decrease the folio refcnt unexpectedly as it appears like a successfully
+> hwpoisoned folio leading to VM_BUG_ON_PAGE(page_ref_count(page) == 0) when
+> releasing huge_zero_folio.
 > 
-> Fix this by defining these missing atributes to allow a user to check if
-> an ATA device supports NCQ priority and to enable/disable the use of NCQ
-> priority. To do this, lift the function scsih_ncq_prio_supp() out of the
-> mpt3sas driver and make it the generic SCSI SAS transport function
-> sas_ata_ncq_prio_supported(). Nothing in that function is hardware
-> specific, so this function can be used in both the mpt3sas driver and
-> the mpi3mr driver.
+> Skip unpoisoning huge_zero_folio in unpoison_memory() to fix this issue.
+> We're not prepared to unpoison huge_zero_folio yet.
 > 
-> Reported-by: Scott McCoy <scott.mccoy@wdc.com>
-> Fixes: 023ab2a9b4ed ("scsi: mpi3mr: Add support for queue command processing")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-> Link: https://lore.kernel.org/r/20240611083435.92961-1-dlemoal@kernel.org
-> Reviewed-by: Niklas Cassel <cassel@kernel.org>
-> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-> (cherry picked from commit 90e6f08915ec6efe46570420412a65050ec826b2)
+> Link: https://lkml.kernel.org/r/20240516122608.22610-1-linmiaohe@huawei.com
+> Fixes: 478d134e9506 ("mm/huge_memory: do not overkill when splitting huge_zero_page")
+> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Reviewed-by: Yang Shi <shy828301@gmail.com>
+> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+> Cc: Xu Yu <xuyu@linux.alibaba.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> (cherry picked from commit fe6f86f4b40855a130a19aa589f9ba7f650423f4)
+> Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+> ---
+>  mm/memory-failure.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
 
-Now queued up, thanks.
+All now queued up, thanks!
 
 greg k-h
 
