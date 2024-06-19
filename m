@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-54386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22E190EDEE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BFF090EEEB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CD4EB214D6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8364F1C2098F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B0F14532C;
-	Wed, 19 Jun 2024 13:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C4B14388B;
+	Wed, 19 Jun 2024 13:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/OQGXP/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHHSg0aZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590AC4D9EA;
-	Wed, 19 Jun 2024 13:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79ED1E492;
+	Wed, 19 Jun 2024 13:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803427; cv=none; b=j+E32wqaNs0xJ2IGLWK7bu/hZUCaDdNu1A4h8f0RjPQUFK0FCrWGoeILGnPwBjWUP0LRnQ8X/oJArWeb2TwJT9JV3Sx+FL0lnq18enJujIsYLUDsEyn0Ifbp1XP05Z/brT7CYft9vWsvdPljQJ7PQrp3fJ9MV9TyraBwHwZGmgk=
+	t=1718804009; cv=none; b=An8D8hCbhBZjk8gZp/FwyBC6z/HuCf3VJ5lmzetmPnymWUKAXnvweIcJMUhj7rZoR4NFKD6DaRYHtSlAaIPxaRhTt4TkRW3JmRTaMtGHEqmXccL+jin5WhWING5eI/6/IL1vUtUrVH7tPE4dPvzYpUfGQP73rO8U9yhyva3VEt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803427; c=relaxed/simple;
-	bh=HUGAJP8c261pdoqRb3wEyfoyWTbV0mxMplJr8POdJ5g=;
+	s=arc-20240116; t=1718804009; c=relaxed/simple;
+	bh=TIszte8/k9NxIgCbigQe3nHIfn8qDqn1Mhh8xagRENU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9FfTVYvXnAJ8WoJDmzgbEr1Ytbmcq4G94jIFu56pjSZLXP1L8DAXWqPwiqOX1e79YYQg5KKdWW0gpxmKZKNMThuQPrcWZvLmJwgdAciYJTQxN67qBrRLM5Kb0GRLquIcyPJ1dzagT3Q+zAQAc2NmZn2GJOoR4wkeDrbYGIUtb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/OQGXP/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD322C2BBFC;
-	Wed, 19 Jun 2024 13:23:46 +0000 (UTC)
+	 MIME-Version; b=AyeCz2UcmEFNGcMa35dU1KXnXtlmaxwAYXoVsT+DPWT4tWZG7EjCge6D/eR+UcKadPBB2WlihqLiNBFp9f4yRVJMsGEykj/vbUbK9g8v33YZhte2NorDOs9ubg5tL4eU/28odMf5EEhqx53ACGgBZnAbxKplQaZARUlvtPxu3ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHHSg0aZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B07DC2BBFC;
+	Wed, 19 Jun 2024 13:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803427;
-	bh=HUGAJP8c261pdoqRb3wEyfoyWTbV0mxMplJr8POdJ5g=;
+	s=korg; t=1718804009;
+	bh=TIszte8/k9NxIgCbigQe3nHIfn8qDqn1Mhh8xagRENU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/OQGXP/o7q/H2gzNVNUI6DNGKbAvBsLkhHxr1X4buT4KfJgrx090FNXUA4XXNR6f
-	 f/XyJydFq//MljcfI9vU/vWrrXfZDnNDgRE9ZrmSbZ21vvP1HmXShSaUOTy+LB8E4c
-	 PkV3M/QDjK//SYZCiNj3Jdpf4eHZ9Uz3zeWS2Grw=
+	b=KHHSg0aZIWquT4sc0HYlfuPAgl6dQITJMNt8XpcT1VY+lD/f08iz7J1Nvg//04joD
+	 SdJHQuiZK8LIZhNFVFCAOuQQckbnEk5JuDE9Ns6CkG+N3wXDt4GwDdTOriXg/Udvcl
+	 SJVXTQozi6PLX00o1hVTmVXVePEmmGs7hApLIZNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.9 263/281] intel_th: pci: Add Sapphire Rapids SOC support
+	Rik van Riel <riel@surriel.com>,
+	Baoquan He <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 179/217] fs/proc: fix softlockup in __read_vmcore
 Date: Wed, 19 Jun 2024 14:57:02 +0200
-Message-ID: <20240619125620.098478335@linuxfoundation.org>
+Message-ID: <20240619125603.593758673@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+From: Rik van Riel <riel@surriel.com>
 
-commit 2e1da7efabe05cb0cf0b358883b2bc89080ed0eb upstream.
+commit 5cbcb62dddf5346077feb82b7b0c9254222d3445 upstream.
 
-Add support for the Trace Hub in Sapphire Rapids SOC.
+While taking a kernel core dump with makedumpfile on a larger system,
+softlockup messages often appear.
 
-Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20240429130119.1518073-13-alexander.shishkin@linux.intel.com
+While softlockup warnings can be harmless, they can also interfere with
+things like RCU freeing memory, which can be problematic when the kdump
+kexec image is configured with as little memory as possible.
+
+Avoid the softlockup, and give things like work items and RCU a chance to
+do their thing during __read_vmcore by adding a cond_resched.
+
+Link: https://lkml.kernel.org/r/20240507091858.36ff767f@imladris.surriel.com
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/intel_th/pci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/proc/vmcore.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hwtracing/intel_th/pci.c
-+++ b/drivers/hwtracing/intel_th/pci.c
-@@ -315,6 +315,11 @@ static const struct pci_device_id intel_
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
- 	},
- 	{
-+		/* Sapphire Rapids SOC */
-+		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x3456),
-+		.driver_data = (kernel_ulong_t)&intel_th_2x,
-+	},
-+	{
- 		/* Alder Lake CPU */
- 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
- 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -383,6 +383,8 @@ static ssize_t __read_vmcore(struct iov_
+ 		/* leave now if filled buffer already */
+ 		if (!iov_iter_count(iter))
+ 			return acc;
++
++		cond_resched();
+ 	}
+ 
+ 	list_for_each_entry(m, &vmcore_list, list) {
 
 
 
