@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-54308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D14390ED96
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E96AF90EC67
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 197191F219C5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 729D7B20CC7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC72145354;
-	Wed, 19 Jun 2024 13:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F46143C43;
+	Wed, 19 Jun 2024 13:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ap90bL3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6XZ/D2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A63A12FB27;
-	Wed, 19 Jun 2024 13:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E9212FB31;
+	Wed, 19 Jun 2024 13:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803196; cv=none; b=ejfcbmUsueF2FmT+ttZX5tlCon8V47JKwJ7wE25TEEvl3DdspwGeo8djXD7wgbLW7xwAueb+hqJmhWYfCR6sy9PO16OQ3FWEH9594MIRcI/CVYZhwRNLJpU2961fWkM71Z0jArZn6UD4Qlpf4Rnv12Tkpu7Ix3PynmF89Ol2Pao=
+	t=1718802429; cv=none; b=QzV9NFv7OK+SBibsMMrDZEKp4/triVlyYLoQZ0IWN2nbczHq+t5HN6mT6GSPPU/r3ATsEsY5WNGOhKynP7WxrT9s6M5jWO+t5Y9s3KkHg7v+ZEUmq33+U6ZN+nWseynbteM0vqTodhDX87ljFOw1qqeFv849DEPUYQhmnpzLI2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803196; c=relaxed/simple;
-	bh=9tYsadIpAZisQqtsdnlRNafilU1vDEwbhCFyzmNZjHI=;
+	s=arc-20240116; t=1718802429; c=relaxed/simple;
+	bh=zTv4Ki5DQkH0xeguoAkVF86OgvbxeCsdalVP4nAnRDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZw6f4hU0iigBVAo9Vgr0T/aUR9r/tX31RZFVP16P54flkgdR2eXkDUa4GnEmKEGjPzx6WYpSz4Ds6ilYLk2yu8GdGNimuOhPWQnnwVRkWZW9S6JFmDwxLk3WnFAie9nCnnXDYFnBdrktVB5mZ++4wu+Jt/3wJ5cIBJljmwLwIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ap90bL3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6130C2BBFC;
-	Wed, 19 Jun 2024 13:19:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nv38/DeOTDlgH2qNwL1UZhz4ajdSVv2gNY4dEbgwsDGH9ZCy7/i3qZwKUdORxXqxPy0Fb/XiBiz+sF2jddlhQsEQaEtT66r++dBAuQGi87RnJMmFc4yXxw6b+R7VbP9zl8lej4BXfNL84pHP6z9LGgJsSB18Ey1LuyN/frG9RO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6XZ/D2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDBDC2BBFC;
+	Wed, 19 Jun 2024 13:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803196;
-	bh=9tYsadIpAZisQqtsdnlRNafilU1vDEwbhCFyzmNZjHI=;
+	s=korg; t=1718802429;
+	bh=zTv4Ki5DQkH0xeguoAkVF86OgvbxeCsdalVP4nAnRDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ap90bL3uflnW4rIfaUrIJi2bbocNLAd85C3xOQN4mOUHfMgGYD2IJ3R2EsNSq6tDS
-	 SThQDBOWmH+tKvFh2UzUe5MLk+U4rY2syVCyKG0Kl9s1T2/FlB207jXyd+B3MuF6jd
-	 bMPg9BTNvQ2VVzh3+LkEIemXryngpIB8dvEz2r/Q=
+	b=o6XZ/D2ZUZ30gMVUD6x6UDEQlWPrbzYFDb5zKgDBC1Jrdfl/NEFMhIwAlF4Vu7KAs
+	 tpnFWZxSgkgx2T0Z+obDcbP0O0LV1DOPJPHoXymUiPsmhHJ/QZzukxkytreMUJV5A7
+	 Ih8PGdTRivdySTQ4gBbdM0Oiq0anS5z741mEpJ5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chan <michael.chan@broadcom.com>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 186/281] bnxt_en: Adjust logging of firmware messages in case of released token in __hwrm_send()
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Nam Cao <namcao@linutronix.de>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 194/267] riscv: fix overlap of allocated page and PTR_ERR
 Date: Wed, 19 Jun 2024 14:55:45 +0200
-Message-ID: <20240619125616.994014238@linuxfoundation.org>
+Message-ID: <20240619125613.782870171@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit a9b9741854a9fe9df948af49ca5514e0ed0429df ]
+commit 994af1825a2aa286f4903ff64a1c7378b52defe6 upstream.
 
-In case of token is released due to token->state == BNXT_HWRM_DEFERRED,
-released token (set to NULL) is used in log messages. This issue is
-expected to be prevented by HWRM_ERR_CODE_PF_UNAVAILABLE error code. But
-this error code is returned by recent firmware. So some firmware may not
-return it. This may lead to NULL pointer dereference.
-Adjust this issue by adding token pointer check.
+On riscv32, it is possible for the last page in virtual address space
+(0xfffff000) to be allocated. This page overlaps with PTR_ERR, so that
+shouldn't happen.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+There is already some code to ensure memblock won't allocate the last page.
+However, buddy allocator is left unchecked.
 
-Fixes: 8fa4219dba8e ("bnxt_en: add dynamic debug support for HWRM messages")
-Suggested-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20240611082547.12178-1-amishin@t-argos.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by reserving physical memory that would be mapped at virtual
+addresses greater than 0xfffff000.
+
+Reported-by: Björn Töpel <bjorn@kernel.org>
+Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
+Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Tested-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Link: https://lore.kernel.org/r/20240425115201.3044202-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/mm/init.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-index 1df3d56cc4b51..d2fd2d04ed474 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
-@@ -680,7 +680,7 @@ static int __hwrm_send(struct bnxt *bp, struct bnxt_hwrm_ctx *ctx)
- 			    req_type);
- 	else if (rc && rc != HWRM_ERR_CODE_PF_UNAVAILABLE)
- 		hwrm_err(bp, ctx, "hwrm req_type 0x%x seq id 0x%x error 0x%x\n",
--			 req_type, token->seq_id, rc);
-+			 req_type, le16_to_cpu(ctx->req->seq_id), rc);
- 	rc = __hwrm_to_stderr(rc);
- exit:
- 	if (token)
--- 
-2.43.0
-
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -234,18 +234,19 @@ static void __init setup_bootmem(void)
+ 		kernel_map.va_pa_offset = PAGE_OFFSET - phys_ram_base;
+ 
+ 	/*
+-	 * memblock allocator is not aware of the fact that last 4K bytes of
+-	 * the addressable memory can not be mapped because of IS_ERR_VALUE
+-	 * macro. Make sure that last 4k bytes are not usable by memblock
+-	 * if end of dram is equal to maximum addressable memory.  For 64-bit
+-	 * kernel, this problem can't happen here as the end of the virtual
+-	 * address space is occupied by the kernel mapping then this check must
+-	 * be done as soon as the kernel mapping base address is determined.
++	 * Reserve physical address space that would be mapped to virtual
++	 * addresses greater than (void *)(-PAGE_SIZE) because:
++	 *  - This memory would overlap with ERR_PTR
++	 *  - This memory belongs to high memory, which is not supported
++	 *
++	 * This is not applicable to 64-bit kernel, because virtual addresses
++	 * after (void *)(-PAGE_SIZE) are not linearly mapped: they are
++	 * occupied by kernel mapping. Also it is unrealistic for high memory
++	 * to exist on 64-bit platforms.
+ 	 */
+ 	if (!IS_ENABLED(CONFIG_64BIT)) {
+-		max_mapped_addr = __pa(~(ulong)0);
+-		if (max_mapped_addr == (phys_ram_end - 1))
+-			memblock_set_current_limit(max_mapped_addr - 4096);
++		max_mapped_addr = __va_to_pa_nodebug(-PAGE_SIZE);
++		memblock_reserve(max_mapped_addr, (phys_addr_t)-max_mapped_addr);
+ 	}
+ 
+ 	min_low_pfn = PFN_UP(phys_ram_base);
 
 
 
