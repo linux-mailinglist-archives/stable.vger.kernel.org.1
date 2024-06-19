@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-54105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EAB790ECB5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BAF790EED6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB9A91F2117B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 846AB1C212C7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9412E145354;
-	Wed, 19 Jun 2024 13:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FA81422D9;
+	Wed, 19 Jun 2024 13:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3vs73U4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7jFnyEA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE1512FB31;
-	Wed, 19 Jun 2024 13:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7768F1E492;
+	Wed, 19 Jun 2024 13:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802600; cv=none; b=jQmVJXzo3WcXZZ6/V0yyhhkFveUsvEhTh0+e9lXVCEPGBmSEK4OHtoM1SsvqbypMSHivOP0p8q3gfiURtY4gJIRisCp2TGsze26f1eI4ZW8KOU5LitTvRIvF+MUlZOSDG4qwl9G/XiCyCN2itLNJ+9ZKEj7gkyqeJMZHZNMDCqw=
+	t=1718803950; cv=none; b=bhF074bQvxu8/f54YeoRL1vV9owzuPkxN1ejGRlA2O6MvaZKEpKqBa2ydsqIe2R3aeujAgqjQzqqhB50l8/nkNfh0oa75745j0uI6+8S7XlCBpvL4xD8rDN5dExexaIXq18WYEvtQzrpInafn+1EATQO0QA+eUuKKWthfrx2NLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802600; c=relaxed/simple;
-	bh=VV919UURObOpWiM6NE+Q9Ku6hmAoZcCF0pgl5kUFSho=;
+	s=arc-20240116; t=1718803950; c=relaxed/simple;
+	bh=4CAiRxuWtJmp7UKy3ne1Tr0x1j6WyrOymxVIAebeX08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=enAHk95CEh11EOy6V2dq0rjEyrodyGNsGK9zq/jVLYLSHbY21fnAQE5/cEJopb+kyPfl4VAndJ51qKeBTA2Qm9dQEpc2wIZxVCAc8BrppOGXD0rWJKoPjDdhPD1nl4/ua/jDKHqFg94AHuDSmjXeIT0yHSdfEnD81wefMDOvkmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3vs73U4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1859C2BBFC;
-	Wed, 19 Jun 2024 13:09:59 +0000 (UTC)
+	 MIME-Version; b=o0dtYPPX1w9RPcDAQdrdgtMDGoE1lkUjCWU9axfVzp8rfcOs07nbomqV2lNCSfG5JmTs8bnZX0W/zWaryhsRY/6zUTrd5coCPztT6HCSL8ZQhH4qvx8RlTgM0+XHVOfpKLMsTopYA16p5LsH4UAUmHZzEMi8f09i9XuCr6qB7BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7jFnyEA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE97CC2BBFC;
+	Wed, 19 Jun 2024 13:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802600;
-	bh=VV919UURObOpWiM6NE+Q9Ku6hmAoZcCF0pgl5kUFSho=;
+	s=korg; t=1718803950;
+	bh=4CAiRxuWtJmp7UKy3ne1Tr0x1j6WyrOymxVIAebeX08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z3vs73U4KyYuNwHV/FZ3rIIfeeOgoB49+RbhaNTfdXlwsp+qJKKDkb2xSUwTrJ+BK
-	 MVC0rh5vd9wg1+gp04NFIISdqcIKpoV6fcECwjN5i2JlsEs4GwQ9hZ9E+fQu+pxTQE
-	 YwVRK1qiKlKf2afftngwgTEKVGqv+lILXSARGoN4=
+	b=g7jFnyEAPQBeAPhC02YWTYW8PSe7hz+azj7oD9MOCiM24yVxwKzW7pYfjsB/RsCPB
+	 xt01fWBVsIOVN3AROpgOr2/30zeK1UuOIPULqHolrT/Hg0LJbW/zN5mf5mnTiHPyZ4
+	 Zy5qjkaFcdwVR7P9XK4UZEN+CqVxXh00WYy7hMbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Dionne <marc.dionne@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	Gao Xiang <xiang@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	Yue Hu <huyue2@coolpad.com>,
-	Jeffle Xu <jefflexu@linux.alibaba.com>,
-	linux-erofs@lists.ozlabs.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH 6.6 250/267] cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode
+	Michael Chan <michael.chan@broadcom.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 158/217] bnxt_en: Adjust logging of firmware messages in case of released token in __hwrm_send()
 Date: Wed, 19 Jun 2024 14:56:41 +0200
-Message-ID: <20240619125615.915210973@linuxfoundation.org>
+Message-ID: <20240619125602.788641855@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,62 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit c3d6569a43322f371e7ba0ad386112723757ac8f upstream.
+[ Upstream commit a9b9741854a9fe9df948af49ca5514e0ed0429df ]
 
-cachefiles_ondemand_init_object() as called from cachefiles_open_file() and
-cachefiles_create_tmpfile() does not check if object->ondemand is set
-before dereferencing it, leading to an oops something like:
+In case of token is released due to token->state == BNXT_HWRM_DEFERRED,
+released token (set to NULL) is used in log messages. This issue is
+expected to be prevented by HWRM_ERR_CODE_PF_UNAVAILABLE error code. But
+this error code is returned by recent firmware. So some firmware may not
+return it. This may lead to NULL pointer dereference.
+Adjust this issue by adding token pointer check.
 
-	RIP: 0010:cachefiles_ondemand_init_object+0x9/0x41
-	...
-	Call Trace:
-	 <TASK>
-	 cachefiles_open_file+0xc9/0x187
-	 cachefiles_lookup_cookie+0x122/0x2be
-	 fscache_cookie_state_machine+0xbe/0x32b
-	 fscache_cookie_worker+0x1f/0x2d
-	 process_one_work+0x136/0x208
-	 process_scheduled_works+0x3a/0x41
-	 worker_thread+0x1a2/0x1f6
-	 kthread+0xca/0xd2
-	 ret_from_fork+0x21/0x33
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fix this by making cachefiles_ondemand_init_object() return immediately if
-cachefiles->ondemand is NULL.
-
-Fixes: 3c5ecfe16e76 ("cachefiles: extract ondemand info field from cachefiles_object")
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Gao Xiang <xiang@kernel.org>
-cc: Chao Yu <chao@kernel.org>
-cc: Yue Hu <huyue2@coolpad.com>
-cc: Jeffle Xu <jefflexu@linux.alibaba.com>
-cc: linux-erofs@lists.ozlabs.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8fa4219dba8e ("bnxt_en: add dynamic debug support for HWRM messages")
+Suggested-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/20240611082547.12178-1-amishin@t-argos.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/ondemand.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -611,6 +611,9 @@ int cachefiles_ondemand_init_object(stru
- 	struct fscache_volume *volume = object->volume->vcookie;
- 	size_t volume_key_size, cookie_key_size, data_len;
- 
-+	if (!object->ondemand)
-+		return 0;
-+
- 	/*
- 	 * CacheFiles will firstly check the cache file under the root cache
- 	 * directory. If the coherency check failed, it will fallback to
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
+index 132442f16fe67..7a4e08b5a8c1b 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
+@@ -678,7 +678,7 @@ static int __hwrm_send(struct bnxt *bp, struct bnxt_hwrm_ctx *ctx)
+ 			    req_type);
+ 	else if (rc && rc != HWRM_ERR_CODE_PF_UNAVAILABLE)
+ 		hwrm_err(bp, ctx, "hwrm req_type 0x%x seq id 0x%x error 0x%x\n",
+-			 req_type, token->seq_id, rc);
++			 req_type, le16_to_cpu(ctx->req->seq_id), rc);
+ 	rc = __hwrm_to_stderr(rc);
+ exit:
+ 	if (token)
+-- 
+2.43.0
+
 
 
 
