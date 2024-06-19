@@ -1,145 +1,176 @@
-Return-Path: <stable+bounces-53678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B633190E20C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 05:46:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 818F990E269
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 06:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50543284F2F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 03:45:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C4BA1C223AE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 04:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9141EB2C;
-	Wed, 19 Jun 2024 03:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB49250280;
+	Wed, 19 Jun 2024 04:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fwqMP2jh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PH2r3wVJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761712139D3;
-	Wed, 19 Jun 2024 03:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2767F33CC2;
+	Wed, 19 Jun 2024 04:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718768754; cv=none; b=R63V2+o4ChNpyRIsVfhmiVswmGzL6XkcdsbGH9xBIVN2lNw2RWXjZ1731bShr42SMk9VPcP0clj3LqiQ5EZlNaFyX2v2yjO688WHO4TxhCNBjFC/KFNK2iwgDDPfJ5imJAO+CWENSr4CZRxHcXaodCrkmsf3z6PsthL137CAQaU=
+	t=1718772269; cv=none; b=uwylI4Pvc2hKqDfT+3K10/vr/nkOZvjJ5MJoDff8feDj2O56vSWV5VWQu6kDSami8K7iBvmXeiMqAM1lV+6fNf2ALa0kO/uQ5oUQFC02Xjw2J2o8RXiDuYv3kXtu4BpLlgPLFEMndifAlY0uP6RekoaDqcfEGE30LS83yFj4ZOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718768754; c=relaxed/simple;
-	bh=QqYGHcyDPY9LWxGs+XmZSvVbr6bVLIuCDo6EWKGDoHg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XwVtG1MNzPxkrmu1MtjfmEqYMOXIR5BLQJB74S8kO4HAZNebsf3l3lQYrPlgJ/BfGn41BA2Cm26OMHkK34Y/YmHlrNIP60D6U7BXBWHKYHeMTn1/V7jWm3RYwlJf5UgLuU/vs7lmwst3IW8sBlyXGJbzdXzuousKgkzaLD2mcVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fwqMP2jh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E40C2BBFC;
-	Wed, 19 Jun 2024 03:45:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718768753;
-	bh=QqYGHcyDPY9LWxGs+XmZSvVbr6bVLIuCDo6EWKGDoHg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fwqMP2jhpXm+LNo5551atW6mBcgCBVrm6TuBoEBzd3mUaDx5lB1pmTYNrTLnHaiCQ
-	 jlxPfifN9eRHAIwgOd4p0hw5EnQf2jupVYJNgQODdiX/q/0VU/xBXkk3/nbklZ6JH5
-	 2NoQ6v0ti1eIfiAwIi117kiPqX0V3qy6EgY9qwW3rYznm4xpFYuIaOhIL5KC8BeSzB
-	 UdERmRn8Xv7F/5rSQPDPO9qtdxCcNp7HvBJ0GdxILGShYkIROJ0zd1XaErxPrsFB5B
-	 lLvAkxauEVYZUrJhr2dSXFcPqX+C42B/IVp5N+WRTT2SLgQTv9qWy+1M2dCo+Fqn2U
-	 xeiCs2Gn4HKGg==
-Message-ID: <4522f403-8419-4c59-b28b-9d460780c389@kernel.org>
-Date: Wed, 19 Jun 2024 12:45:51 +0900
+	s=arc-20240116; t=1718772269; c=relaxed/simple;
+	bh=KxmZuPxHi/39BukvlwpybJY4cd2F1hm7tXLqVHjFKqU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rOGb3CaFETU35r+P7OvG1kSN2YtdQM7/ovvoz0s3FWqsBfHQV8KKIQwgUmNu41L+N8phhd5J3Bzx2nIg0ZoZKqHFVKZZV9K/7sZbGbmh3fFbeWUWjrm3WBOU7C+NZsRgTxvm4yWHeC1LyjOxUQ7PyCdTudhsjZtyap25Oxg8hg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PH2r3wVJ; arc=none smtp.client-ip=209.85.217.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-48c3402e658so2196655137.0;
+        Tue, 18 Jun 2024 21:44:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718772267; x=1719377067; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8kSbyK4rfjsHEY+Lpbm26zgIzNqvsWdMEElHVTqPiyk=;
+        b=PH2r3wVJivcIFc9QSnd7FRjrawpnqWFBv1xf2HcRSfj9+VWpY5i3YaZz8mEWxSAV3M
+         Ry+uvmujcan71H8Wfd2BgZ2kokKtS/7GWiAjnyd+4mF+Zlz/U1CGrzxlq2190YaKKejK
+         yy0MM87xaYNCnH5cPxv72EHZfxAhCeZAmSrMVu6xN4nmpXh02Jbt4aBZNuwz7p5pOSF3
+         qXx+xjPkN3s37QapaAz/NHr5SE/p79qAb8v+F9/Z3pBvVvQxbyYIKaZg8rj/1ruzzn53
+         bBRXwhaYhZtIe2cL9VcgvMpbEVj9nbPYmQsjfQjMOkYH7Bz/htKaFKOspFtq93b/XwDP
+         cnvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718772267; x=1719377067;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8kSbyK4rfjsHEY+Lpbm26zgIzNqvsWdMEElHVTqPiyk=;
+        b=IYDGDXB36s9nbrYjWUAPoYpZi9AuG7iUsj6yDSys6owl2d1s/A74zOqP5WvCODUN8t
+         +UT/0g7BS4ZAlxUyRx7KzWvOuKkkSi0QEfUhApJOBA0w/E5e88f9icbPZv98euwu+FiE
+         YrC9YqrNDmnr7PAQW5LgKdgZl21PhPK48AJDj4bGd2hhFVt4DWO/h8oUbhvcaUq35o1P
+         JpCLxz2kgrRK0aVmEkHJgeHk7x0EaMXci3pOnZsZchSXazOsF3zXRIlyvriNPlrP1RG/
+         lQq7TaOtgw02A/inGq5/kZuX4a9mZI3RUROOc1AisedF/NPrDijBxkVX9QB/zVVOGT50
+         m6AQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU7ovTN9f37NoGOC3g6YuRe62a8K6ILnu4VmWjY71YP+zi9fz1JsSp8Xvze7UtXdWYAk47jPGdc++dmz7KzLl7tOzbnw88Y9eAaAQn3PxAC+904hgmetmGZe02I/k0POa/B0A3L4yPrrekeaTOanYR3KHxv4kx54zKlYSd26A==
+X-Gm-Message-State: AOJu0Yz220NGuOCgl+6dZwCc0Jex6phAXpYer6BQWKHc+JWlSCVK1w1g
+	ptzQd8ii9qNf6OfFyKIl6n4TzBr35R1dEBsxBzHQWCgArtO9vZS2TMiXVuU2NQh2MD2dCXfOuHF
+	7+iK/Dm9BTl4fcH7yKVhSyPoXTZY=
+X-Google-Smtp-Source: AGHT+IHKzo6EwIMqUwbhmwNQAL3um1qjSrNKdFWC9jMclsciycNF3jZF/k86XZVVhAV16DzqmwIyXGJv7yyTrWsC5w8=
+X-Received: by 2002:a67:eb88:0:b0:48d:943b:43bc with SMTP id
+ ada2fe7eead31-48f130e678cmr1593329137.26.1718772266823; Tue, 18 Jun 2024
+ 21:44:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ata: ahci: Do not enable LPM if no LPM states are
- supported by the HBA
-To: Niklas Cassel <cassel@kernel.org>,
- Mario Limonciello <mario.limonciello@amd.com>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Jian-Hong Pan <jhp@endlessos.org>
-Cc: stable@vger.kernel.org, linux-ide@vger.kernel.org
-References: <20240618152828.2686771-2-cassel@kernel.org>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20240618152828.2686771-2-cassel@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240618072258.33128-1-21cnbao@gmail.com> <CAH2r5mtRHf3bQh=aeVddFykMX_MokqujMyLn3W-4wXo1MO5=iw@mail.gmail.com>
+In-Reply-To: <CAH2r5mtRHf3bQh=aeVddFykMX_MokqujMyLn3W-4wXo1MO5=iw@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 19 Jun 2024 16:44:15 +1200
+Message-ID: <CAGsJ_4x9A5jHPOPiPhsznsCBnj_T-XRk8YNs86i11P9rmrPG1w@mail.gmail.com>
+Subject: Re: [PATCH v2] cifs: drop the incorrect assertion in cifs_swap_rw()
+To: Steve French <smfrench@gmail.com>
+Cc: akpm@linux-foundation.org, linux-cifs@vger.kernel.org, linux-mm@kvack.org, 
+	sfrench@samba.org, anna@kernel.org, chrisl@kernel.org, hanchuanhua@oppo.com, 
+	hch@lst.de, jlayton@kernel.org, linux-nfs@vger.kernel.org, neilb@suse.de, 
+	ryan.roberts@arm.com, stable@vger.kernel.org, trondmy@kernel.org, 
+	v-songbaohua@oppo.com, ying.huang@intel.com, 
+	Paulo Alcantara <pc@manguebit.com>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, 
+	Bharath SM <bharathsm@microsoft.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 6/19/24 00:28, Niklas Cassel wrote:
-> LPM consists of HIPM (host initiated power management) and DIPM
-> (device initiated power management).
-> 
-> ata_eh_set_lpm() will only enable HIPM if both the HBA and the device
-> supports it.
-> 
-> However, DIPM will be enabled as long as the device supports it.
-> The HBA will later reject the device's request to enter a power state
-> that it does not support (Slumber/Partial/DevSleep) (DevSleep is never
-> initiated by the device).
-> 
-> For a HBA that doesn't support any LPM states, simply don't set a LPM
-> policy such that all the HIPM/DIPM probing/enabling will be skipped.
-> 
-> Not enabling HIPM or DIPM in the first place is safer than relying on
-> the device following the AHCI specification and respecting the NAK.
-> (There are comments in the code that some devices misbehave when
-> receiving a NAK.)
-> 
-> Performing this check in ahci_update_initial_lpm_policy() also has the
-> advantage that a HBA that doesn't support any LPM states will take the
-> exact same code paths as a port that is external/hot plug capable.
-> 
-> Side note: the port in ata_port_dbg() has not been given a unique id yet,
-> but this is not overly important as the debug print is disabled unless
-> explicitly enabled using dynamic debug. A follow-up series will make sure
-> that the unique id assignment will be done earlier. For now, the important
-> thing is that the function returns before setting the LPM policy.
-> 
-> Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
-> ---
-> Changes since v1: Add debug print as suggested by Mika.
-> 
->  drivers/ata/ahci.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
-> 
-> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-> index 07d66d2c5f0d..5eb38fbbbecd 100644
-> --- a/drivers/ata/ahci.c
-> +++ b/drivers/ata/ahci.c
-> @@ -1735,6 +1735,14 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
->  	if (ap->pflags & ATA_PFLAG_EXTERNAL)
->  		return;
->  
-> +	/* If no LPM states are supported by the HBA, do not bother with LPM */
-> +	if ((ap->host->flags & ATA_HOST_NO_PART) &&
-> +	    (ap->host->flags & ATA_HOST_NO_SSC) &&
-> +	    (ap->host->flags & ATA_HOST_NO_DEVSLP)) {
+On Wed, Jun 19, 2024 at 3:48=E2=80=AFPM Steve French <smfrench@gmail.com> w=
+rote:
+>
+> tentatively merged into cifs-2.6.git for-next pending testing and any add=
+itional review
 
-Nit: Maybe:
+Steve, Thanks! I guess you missed an email from mm-commits.
 
-#define ATA_HOST_NO_LPM		\
-	(ATA_HOST_NO_PART | ATA_HOST_NO_SSC | ATA_HOST_NO_DEVSLP)
+A couple of hours ago, this was pulled into mm-hotfixes-unstable, likely
+for the same purpose. Will this cause any conflicts when both changes hit
+linux-next?
 
-and then the if becomes:
+https://lore.kernel.org/mm-commits/20240618195943.EC07BC3277B@smtp.kernel.o=
+rg/
 
-	if ((ap->host->flags & ATA_HOST_NO_LPM) == ATA_HOST_NO_LPM) {
+Will we just keep one?
 
-But no strong feelings about it. So:
-
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-
-> +		ata_port_dbg(ap, "no LPM states supported, not enabling LPM\n");
-> +		return;
-> +	}
-> +
->  	/* user modified policy via module param */
->  	if (mobile_lpm_policy != -1) {
->  		policy = mobile_lpm_policy;
-
--- 
-Damien Le Moal
-Western Digital Research
-
+>
+> On Tue, Jun 18, 2024 at 3:56=E2=80=AFAM Barry Song <21cnbao@gmail.com> wr=
+ote:
+>>
+>> From: Barry Song <v-songbaohua@oppo.com>
+>>
+>> Since commit 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS
+>> swap-space"), we can plug multiple pages then unplug them all together.
+>> That means iov_iter_count(iter) could be way bigger than PAGE_SIZE, it
+>> actually equals the size of iov_iter_npages(iter, INT_MAX).
+>>
+>> Note this issue has nothing to do with large folios as we don't support
+>> THP_SWPOUT to non-block devices.
+>>
+>> Fixes: 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS swap-spa=
+ce")
+>> Reported-by: Christoph Hellwig <hch@lst.de>
+>> Closes: https://lore.kernel.org/linux-mm/20240614100329.1203579-1-hch@ls=
+t.de/
+>> Cc: NeilBrown <neilb@suse.de>
+>> Cc: Anna Schumaker <anna@kernel.org>
+>> Cc: Steve French <sfrench@samba.org>
+>> Cc: Trond Myklebust <trondmy@kernel.org>
+>> Cc: Chuanhua Han <hanchuanhua@oppo.com>
+>> Cc: Ryan Roberts <ryan.roberts@arm.com>
+>> Cc: Chris Li <chrisl@kernel.org>
+>> Cc: "Huang, Ying" <ying.huang@intel.com>
+>> Cc: Jeff Layton <jlayton@kernel.org>
+>> Cc: Paulo Alcantara <pc@manguebit.com>
+>> Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
+>> Cc: Shyam Prasad N <sprasad@microsoft.com>
+>> Cc: Tom Talpey <tom@talpey.com>
+>> Cc: Bharath SM <bharathsm@microsoft.com>
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+>> ---
+>>  -v2:
+>>  * drop the assertion instead of fixing the assertion.
+>>    per the comments of Willy, Christoph in nfs thread.
+>>
+>>  fs/smb/client/file.c | 2 --
+>>  1 file changed, 2 deletions(-)
+>>
+>> diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+>> index 9d5c2440abfc..1e269e0bc75b 100644
+>> --- a/fs/smb/client/file.c
+>> +++ b/fs/smb/client/file.c
+>> @@ -3200,8 +3200,6 @@ static int cifs_swap_rw(struct kiocb *iocb, struct=
+ iov_iter *iter)
+>>  {
+>>         ssize_t ret;
+>>
+>> -       WARN_ON_ONCE(iov_iter_count(iter) !=3D PAGE_SIZE);
+>> -
+>>         if (iov_iter_rw(iter) =3D=3D READ)
+>>                 ret =3D netfs_unbuffered_read_iter_locked(iocb, iter);
+>>         else
+>> --
+>> 2.34.1
+>>
+>>
+>
+>
+> --
+> Thanks,
+>
+> Steve
 
