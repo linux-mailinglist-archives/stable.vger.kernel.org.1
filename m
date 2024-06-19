@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-53962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6379A90EC11
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC67C90ED43
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E727C1F2590A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55A23B23376
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2677714E2CB;
-	Wed, 19 Jun 2024 13:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6A9145334;
+	Wed, 19 Jun 2024 13:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0d3BFKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KjqQFGIy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA01214D705;
-	Wed, 19 Jun 2024 13:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED78AD58;
+	Wed, 19 Jun 2024 13:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802187; cv=none; b=j8A3VC4+ABKn4JwFAza93qZ0YsiV4MaZL0027JCZzh9lt9eCHZr2GLmFCxZlOcWB0sxzWQ7Ijny6hzGiqvP3JHVNz8eWClfAtUls5u8GW5e/Zdk0P/2VTUGZYTIJsCKR3PjvVM1zrXBMEFRjz4M6uq+Hs7KEOTIkBGcxvn4vb90=
+	t=1718802960; cv=none; b=qPZOWsuKCZ1f7xVRDKYYRBOwZ5Xnc7Cni3bq7X62DrrwXZxcosmNz4QUZyLXH09wllW6WnOPKK2RFW/eHlQCQ6L2XMWgHlKgr4Df2sywKwP5e3uQd0DrMExhMUrP27ysSz42icnv2NN52FMD3QJWcXIoA1sQk7Atme70jZraGv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802187; c=relaxed/simple;
-	bh=KGv0OALaU2lTNwp2EZemZw1F8NLflFe94MBWUPIsYa8=;
+	s=arc-20240116; t=1718802960; c=relaxed/simple;
+	bh=f8VzZlOzFxm0Q1goC6l7zBNlWJIwXl/QsgJ9Q5mpOVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHV7UMXqz2nJHZdHT3NOTuXUup4QiW138Vtpw45Pyud7ts7mPFfYzUp8QWtmGJ6D3LQE9lsrTDX+BI9sdtNtJ5LHeih6xcdG0K466aw/j8aKohmHDDUEU5l1wdaqcA1cxzvvEKUPaMcFukKZYsyrxdi0bpjReDxly2GMqtzdJm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0d3BFKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15BA1C2BBFC;
-	Wed, 19 Jun 2024 13:03:06 +0000 (UTC)
+	 MIME-Version; b=kvCDuesB4q+RT95Mma7bRC/uS/0KVqOoEuoo9aLiVowr4iGsCVx1wuTfT3UPW/p4MQvwgGPbI+SQX80Xmt++w2kI6PrhqiAXgNOenshpfoylEEWJahuUnugAaqMSr0J9EFLu4BTMsw++LWfhl+Le0lCTKo30QSHA405XewqKAzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KjqQFGIy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91E3C2BBFC;
+	Wed, 19 Jun 2024 13:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802187;
-	bh=KGv0OALaU2lTNwp2EZemZw1F8NLflFe94MBWUPIsYa8=;
+	s=korg; t=1718802960;
+	bh=f8VzZlOzFxm0Q1goC6l7zBNlWJIwXl/QsgJ9Q5mpOVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f0d3BFKqRppOj8jjlepdRVbfDvWpBnGmxMTGFE1oPDqymy+E2z4mqAIBcqBfgssey
-	 9lciS2NZ3s6kFk5C/SdRYpiNRKAdQVUrhdWZ67tiAhUn+bzFiWu5H+M7uM11jH9quA
-	 wxYjBTmXKFouAWv3Y4I6+NJG5yKcd3pTz5PwHGo0=
+	b=KjqQFGIySKRFX0asqj53DKI/fs4Sy+vSlYaCmiA58qG4h4b/FYGes9u9ssVMRnUr1
+	 3w6khQuFsaytwkR34wBAFyJ/dXEOCHrLA8dPjvgltLedLPzF1M/LhJ1LULo4WSeG24
+	 a9yVdgwCmC2L/7S5o12XKKxSHCH6S+CjF3yLWIj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/267] cachefiles: fix slab-use-after-free in cachefiles_ondemand_daemon_read()
-Date: Wed, 19 Jun 2024 14:54:22 +0200
-Message-ID: <20240619125610.613663584@linuxfoundation.org>
+	Shailend Chand <shailend@google.com>,
+	Ziwei Xiao <ziweixiao@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.9 104/281] gve: Clear napi->skb before dev_kfree_skb_any()
+Date: Wed, 19 Jun 2024 14:54:23 +0200
+Message-ID: <20240619125613.848963993@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,147 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Ziwei Xiao <ziweixiao@google.com>
 
-[ Upstream commit da4a827416066191aafeeccee50a8836a826ba10 ]
+commit 6f4d93b78ade0a4c2cafd587f7b429ce95abb02e upstream.
 
-We got the following issue in a fuzz test of randomly issuing the restore
-command:
+gve_rx_free_skb incorrectly leaves napi->skb referencing an skb after it
+is freed with dev_kfree_skb_any(). This can result in a subsequent call
+to napi_get_frags returning a dangling pointer.
 
-==================================================================
-BUG: KASAN: slab-use-after-free in cachefiles_ondemand_daemon_read+0xb41/0xb60
-Read of size 8 at addr ffff888122e84088 by task ondemand-04-dae/963
+Fix this by clearing napi->skb before the skb is freed.
 
-CPU: 13 PID: 963 Comm: ondemand-04-dae Not tainted 6.8.0-dirty #564
-Call Trace:
- kasan_report+0x93/0xc0
- cachefiles_ondemand_daemon_read+0xb41/0xb60
- vfs_read+0x169/0xb50
- ksys_read+0xf5/0x1e0
-
-Allocated by task 116:
- kmem_cache_alloc+0x140/0x3a0
- cachefiles_lookup_cookie+0x140/0xcd0
- fscache_cookie_state_machine+0x43c/0x1230
- [...]
-
-Freed by task 792:
- kmem_cache_free+0xfe/0x390
- cachefiles_put_object+0x241/0x480
- fscache_cookie_state_machine+0x5c8/0x1230
- [...]
-==================================================================
-
-Following is the process that triggers the issue:
-
-     mount  |   daemon_thread1    |    daemon_thread2
-------------------------------------------------------------
-cachefiles_withdraw_cookie
- cachefiles_ondemand_clean_object(object)
-  cachefiles_ondemand_send_req
-   REQ_A = kzalloc(sizeof(*req) + data_len)
-   wait_for_completion(&REQ_A->done)
-
-            cachefiles_daemon_read
-             cachefiles_ondemand_daemon_read
-              REQ_A = cachefiles_ondemand_select_req
-              msg->object_id = req->object->ondemand->ondemand_id
-                                  ------ restore ------
-                                  cachefiles_ondemand_restore
-                                  xas_for_each(&xas, req, ULONG_MAX)
-                                   xas_set_mark(&xas, CACHEFILES_REQ_NEW)
-
-                                  cachefiles_daemon_read
-                                   cachefiles_ondemand_daemon_read
-                                    REQ_A = cachefiles_ondemand_select_req
-              copy_to_user(_buffer, msg, n)
-               xa_erase(&cache->reqs, id)
-               complete(&REQ_A->done)
-              ------ close(fd) ------
-              cachefiles_ondemand_fd_release
-               cachefiles_put_object
- cachefiles_put_object
-  kmem_cache_free(cachefiles_object_jar, object)
-                                    REQ_A->object->ondemand->ondemand_id
-                                     // object UAF !!!
-
-When we see the request within xa_lock, req->object must not have been
-freed yet, so grab the reference count of object before xa_unlock to
-avoid the above issue.
-
-Fixes: 0a7e54c1959c ("cachefiles: resend an open request if the read request's object is closed")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240522114308.2402121-5-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 4b4391e77a6b ("cachefiles: defer exposing anon_fd until after copy_to_user() succeeds")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9b8dd5e5ea48 ("gve: DQO: Add RX path")
+Cc: stable@vger.kernel.org
+Reported-by: Shailend Chand <shailend@google.com>
+Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Shailend Chand <shailend@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Link: https://lore.kernel.org/r/20240612001654.923887-1-ziweixiao@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cachefiles/ondemand.c          | 3 +++
- include/trace/events/cachefiles.h | 6 +++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index f8d0a01795702..fd73811c7ce4f 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -369,6 +369,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 	xas_clear_mark(&xas, CACHEFILES_REQ_NEW);
- 	cache->req_id_next = xas.xa_index + 1;
- 	refcount_inc(&req->ref);
-+	cachefiles_grab_object(req->object, cachefiles_obj_get_read_req);
- 	xa_unlock(&cache->reqs);
+--- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+@@ -581,11 +581,13 @@ static void gve_rx_skb_hash(struct sk_bu
+ 	skb_set_hash(skb, le32_to_cpu(compl_desc->hash), hash_type);
+ }
  
- 	id = xas.xa_index;
-@@ -389,6 +390,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 		goto err_put_fd;
- 	}
+-static void gve_rx_free_skb(struct gve_rx_ring *rx)
++static void gve_rx_free_skb(struct napi_struct *napi, struct gve_rx_ring *rx)
+ {
+ 	if (!rx->ctx.skb_head)
+ 		return;
  
-+	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
- 	/* CLOSE request has no reply */
- 	if (msg->opcode == CACHEFILES_OP_CLOSE) {
- 		xa_erase(&cache->reqs, id);
-@@ -402,6 +404,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 	if (msg->opcode == CACHEFILES_OP_OPEN)
- 		close_fd(((struct cachefiles_open *)msg->data)->fd);
- error:
-+	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
- 	xas_reset(&xas);
- 	xas_lock(&xas);
- 	if (xas_load(&xas) == req) {
-diff --git a/include/trace/events/cachefiles.h b/include/trace/events/cachefiles.h
-index e3213af847cdf..7d931db02b934 100644
---- a/include/trace/events/cachefiles.h
-+++ b/include/trace/events/cachefiles.h
-@@ -33,6 +33,8 @@ enum cachefiles_obj_ref_trace {
- 	cachefiles_obj_see_withdrawal,
- 	cachefiles_obj_get_ondemand_fd,
- 	cachefiles_obj_put_ondemand_fd,
-+	cachefiles_obj_get_read_req,
-+	cachefiles_obj_put_read_req,
- };
++	if (rx->ctx.skb_head == napi->skb)
++		napi->skb = NULL;
+ 	dev_kfree_skb_any(rx->ctx.skb_head);
+ 	rx->ctx.skb_head = NULL;
+ 	rx->ctx.skb_tail = NULL;
+@@ -884,7 +886,7 @@ int gve_rx_poll_dqo(struct gve_notify_bl
  
- enum fscache_why_object_killed {
-@@ -129,7 +131,9 @@ enum cachefiles_error_trace {
- 	EM(cachefiles_obj_see_withdraw_cookie,	"SEE withdraw_cookie")	\
- 	EM(cachefiles_obj_see_withdrawal,	"SEE withdrawal")	\
- 	EM(cachefiles_obj_get_ondemand_fd,      "GET ondemand_fd")	\
--	E_(cachefiles_obj_put_ondemand_fd,      "PUT ondemand_fd")
-+	EM(cachefiles_obj_put_ondemand_fd,      "PUT ondemand_fd")	\
-+	EM(cachefiles_obj_get_read_req,		"GET read_req")		\
-+	E_(cachefiles_obj_put_read_req,		"PUT read_req")
+ 		err = gve_rx_dqo(napi, rx, compl_desc, complq->head, rx->q_num);
+ 		if (err < 0) {
+-			gve_rx_free_skb(rx);
++			gve_rx_free_skb(napi, rx);
+ 			u64_stats_update_begin(&rx->statss);
+ 			if (err == -ENOMEM)
+ 				rx->rx_skb_alloc_fail++;
+@@ -927,7 +929,7 @@ int gve_rx_poll_dqo(struct gve_notify_bl
  
- #define cachefiles_coherency_traces					\
- 	EM(cachefiles_coherency_check_aux,	"BAD aux ")		\
--- 
-2.43.0
-
+ 		/* gve_rx_complete_skb() will consume skb if successful */
+ 		if (gve_rx_complete_skb(rx, napi, compl_desc, feat) != 0) {
+-			gve_rx_free_skb(rx);
++			gve_rx_free_skb(napi, rx);
+ 			u64_stats_update_begin(&rx->statss);
+ 			rx->rx_desc_err_dropped_pkt++;
+ 			u64_stats_update_end(&rx->statss);
 
 
 
