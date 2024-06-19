@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-54150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E5090ECED
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EEBB90EBA7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 394A2282A2D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DB27286C23
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B54714A618;
-	Wed, 19 Jun 2024 13:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5132A144307;
+	Wed, 19 Jun 2024 12:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBmtioY1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0lNTMJTr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DC114389C;
-	Wed, 19 Jun 2024 13:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEEEFC1F;
+	Wed, 19 Jun 2024 12:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802733; cv=none; b=a5HX/0HFcE95vvCPoWzly8luCPJvSRNFl3KvJlRfdjsq9Vh2tUp67PbpBvDkOnwYsXt++qo5mb/E5vccajm7FRYRbm0eWB6VhzpPIzkLvfMQTsJixONumApMlnZ1A6OHo00/L3IqoeU8w+EU/jN+ABC7U/RuTJbWuPowLPZdpPA=
+	t=1718801966; cv=none; b=BW3OSId29BlLtw5yK6grwwdYaEqo5UbQWeDY8+T1O+qCiI3kob3u6/IZM9AY7MRpCBZmDd66ocNT7StZyQRNguzuxhdPnPLRU6BJi/o1ATjMeG4qxEZaIJoS4TBEsmt3zG1+GhGsacUkJiiu5A3rbnt1YrZdxOH8hP0orwfTRLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802733; c=relaxed/simple;
-	bh=IFGAU7tS/8aHm2/QIct5LO+SZhCBxiaPc0uj98/rL0U=;
+	s=arc-20240116; t=1718801966; c=relaxed/simple;
+	bh=PVivoasDav8E3KuVypR6AmaDZ29XtDFalGz+hb2WHi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Olct74Gmh2Koeh2Tx37IGuHt77SPs8sHwLV5P4qdbymMaO8v1wNqwk3Fl5qePLVlYlXUeDVt+uSY4Soz/ZPnxtQ3C0+6N5lqVbLshUpRR3n87lFM6kwF1jBdhc98Vlgul2PPMmdTgvkAJSmRwoAleB/5nWcVP1QE9m8weAoI4yI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBmtioY1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D16BC2BBFC;
-	Wed, 19 Jun 2024 13:12:12 +0000 (UTC)
+	 MIME-Version; b=IT6Ad0wirOm/Xk3KZKWI6X5E7fFBVdTnmI0799L2Kar9A91EFmHFibldtIqqeQFpIjIaTLu9PSK7otTJpHeHaQ3X4UekWT9q0tyEmyOro8G6d7ybnS5DMBJ8h2vwwkUvlG1sclV+ldEq6SbxhTFST5/8BcTaDGWnPCgorPrQmPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0lNTMJTr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8912EC2BBFC;
+	Wed, 19 Jun 2024 12:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802732;
-	bh=IFGAU7tS/8aHm2/QIct5LO+SZhCBxiaPc0uj98/rL0U=;
+	s=korg; t=1718801965;
+	bh=PVivoasDav8E3KuVypR6AmaDZ29XtDFalGz+hb2WHi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBmtioY1r+uVGSR7aTwGaWpvMdFEas1wpCVH9T+D0MUoZS0NS6rI/8mVsKtVoav4Z
-	 WzBFibVY0xfX/pyAQPIgSfaSHxQvfTeR2CwPE0+JO8AQqtWuyyULvF9ktJ71VxhLj9
-	 HR29+aGarIXEK1z60OfJ/YU0Beh/DWQHAR+CM6ys=
+	b=0lNTMJTrOKETzENzLhUdI/TkTqMiclIhTpMtqkwEX4JN+4noYOLk1wOWsQ+teDp/Y
+	 1JzHu/6Ac8nMDKT/NgTLX+TrIdAic/RkyLrf3hGPhcSMc1ii6j4ZYYYBsCX6wDgjY5
+	 Ax9T3O51Mmt2bRj2QMG8VuYp4qdVGB4dU/rJMdV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1989ee16d94720836244@syzkaller.appspotmail.com,
-	Cong Wang <cong.wang@bytedance.com>,
 	Daniel Borkmann <daniel@iogearbox.net>,
-	Jiri Olsa <jolsa@kernel.org>,
+	David Bauer <mail@david-bauer.net>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 028/281] bpf: Fix a potential use-after-free in bpf_link_free()
+Subject: [PATCH 6.6 036/267] vxlan: Fix regression when dropping packets due to invalid src addresses
 Date: Wed, 19 Jun 2024 14:53:07 +0200
-Message-ID: <20240619125610.929082173@linuxfoundation.org>
+Message-ID: <20240619125607.751152954@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +66,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <cong.wang@bytedance.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 2884dc7d08d98a89d8d65121524bb7533183a63a ]
+[ Upstream commit 1cd4bc987abb2823836cbb8f887026011ccddc8a ]
 
-After commit 1a80dbcb2dba, bpf_link can be freed by
-link->ops->dealloc_deferred, but the code still tests and uses
-link->ops->dealloc afterward, which leads to a use-after-free as
-reported by syzbot. Actually, one of them should be sufficient, so
-just call one of them instead of both. Also add a WARN_ON() in case
-of any problematic implementation.
+Commit f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
+has recently been added to vxlan mainly in the context of source
+address snooping/learning so that when it is enabled, an entry in the
+FDB is not being created for an invalid address for the corresponding
+tunnel endpoint.
 
-Fixes: 1a80dbcb2dba ("bpf: support deferring bpf_link dealloc to after RCU grace period")
-Reported-by: syzbot+1989ee16d94720836244@syzkaller.appspotmail.com
-Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Before commit f58f45c1e5b9 vxlan was similarly behaving as geneve in
+that it passed through whichever macs were set in the L2 header. It
+turns out that this change in behavior breaks setups, for example,
+Cilium with netkit in L3 mode for Pods as well as tunnel mode has been
+passing before the change in f58f45c1e5b9 for both vxlan and geneve.
+After mentioned change it is only passing for geneve as in case of
+vxlan packets are dropped due to vxlan_set_mac() returning false as
+source and destination macs are zero which for E/W traffic via tunnel
+is totally fine.
+
+Fix it by only opting into the is_valid_ether_addr() check in
+vxlan_set_mac() when in fact source address snooping/learning is
+actually enabled in vxlan. This is done by moving the check into
+vxlan_snoop(). With this change, the Cilium connectivity test suite
+passes again for both tunnel flavors.
+
+Fixes: f58f45c1e5b9 ("vxlan: drop packets from invalid src-address")
 Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/bpf/20240602182703.207276-1-xiyou.wangcong@gmail.com
+Cc: David Bauer <mail@david-bauer.net>
+Cc: Ido Schimmel <idosch@nvidia.com>
+Cc: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: David Bauer <mail@david-bauer.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/vxlan/vxlan_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index cb61d8880dbe0..52ffe33356418 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -2985,6 +2985,7 @@ static int bpf_obj_get(const union bpf_attr *attr)
- void bpf_link_init(struct bpf_link *link, enum bpf_link_type type,
- 		   const struct bpf_link_ops *ops, struct bpf_prog *prog)
- {
-+	WARN_ON(ops->dealloc && ops->dealloc_deferred);
- 	atomic64_set(&link->refcnt, 1);
- 	link->type = type;
- 	link->id = 0;
-@@ -3043,16 +3044,17 @@ static void bpf_link_defer_dealloc_mult_rcu_gp(struct rcu_head *rcu)
- /* bpf_link_free is guaranteed to be called from process context */
- static void bpf_link_free(struct bpf_link *link)
- {
-+	const struct bpf_link_ops *ops = link->ops;
- 	bool sleepable = false;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index c24ff08abe0da..8268fa331826e 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1446,6 +1446,10 @@ static bool vxlan_snoop(struct net_device *dev,
+ 	struct vxlan_fdb *f;
+ 	u32 ifindex = 0;
  
- 	bpf_link_free_id(link->id);
- 	if (link->prog) {
- 		sleepable = link->prog->sleepable;
- 		/* detach BPF program, clean up used resources */
--		link->ops->release(link);
-+		ops->release(link);
- 		bpf_prog_put(link->prog);
- 	}
--	if (link->ops->dealloc_deferred) {
-+	if (ops->dealloc_deferred) {
- 		/* schedule BPF link deallocation; if underlying BPF program
- 		 * is sleepable, we need to first wait for RCU tasks trace
- 		 * sync, then go through "classic" RCU grace period
-@@ -3061,9 +3063,8 @@ static void bpf_link_free(struct bpf_link *link)
- 			call_rcu_tasks_trace(&link->rcu, bpf_link_defer_dealloc_mult_rcu_gp);
- 		else
- 			call_rcu(&link->rcu, bpf_link_defer_dealloc_rcu_gp);
--	}
--	if (link->ops->dealloc)
--		link->ops->dealloc(link);
-+	} else if (ops->dealloc)
-+		ops->dealloc(link);
- }
- 
- static void bpf_link_put_deferred(struct work_struct *work)
++	/* Ignore packets from invalid src-address */
++	if (!is_valid_ether_addr(src_mac))
++		return true;
++
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	if (src_ip->sa.sa_family == AF_INET6 &&
+ 	    (ipv6_addr_type(&src_ip->sin6.sin6_addr) & IPV6_ADDR_LINKLOCAL))
 -- 
 2.43.0
 
