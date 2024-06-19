@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-54033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E0F90EC5B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3991390EE7F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89A6B1F20FA4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C99D0281AC7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8563112FB31;
-	Wed, 19 Jun 2024 13:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3A978C91;
+	Wed, 19 Jun 2024 13:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SWjzEjwS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTANFRuM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4374D132129;
-	Wed, 19 Jun 2024 13:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7F514D719;
+	Wed, 19 Jun 2024 13:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802394; cv=none; b=bAi08pCIcivArguQNeCyHDaDRWneJn0l1p1m5J0hIiOTlHJd2YGGlTYoXk2qY8y/FgbgjFb3vmSnw93PXfeu2XoxmyZ8eCduZnxcqNKYE0XNbOjc/otBV8SUoXgRstFMImO21EFp2UYPP5n9vPpLWIeFmUW9yQU9db2WQdYGzA0=
+	t=1718803743; cv=none; b=La+fwBkt2I2qq1JAbJjHheKNXEcL4RGXVM6e4hi9d7QFSmirlqPX1QTTYpAg+SyNkT0sAV9Z2bSgw2IY8WCGHHVtUG5GqetvYLC+hO2DT+YtGX08KXeOjmmEuaDDDOdjiCYuA1Kv1oaVzzFJlm774SfB9p9MjX8rs4tB3kApLSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802394; c=relaxed/simple;
-	bh=ELC9EFfRrjRTGKLlZCTbd5uGzQxVqN3O7bJ1QFGFeCU=;
+	s=arc-20240116; t=1718803743; c=relaxed/simple;
+	bh=cMWA2zf90jtczZ3+ST91mEvBqW9ulioaLs+GFrJyax8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5WU0Qh48g+NRYm+eYKFkg+5pCss87fEl2t4XvE0zGfI3BXXnIJm7+oygqvlpvElpWQxzDPHPDgw3k/T0Q4m5nv1XFEtIHBa2pGVIASOvgQ6BBp6Ciu+K3TmemVQvnzQ3pV+9FH7NKWNIBuvRevdSIzgNQD/7c8pINMWqPxR4iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SWjzEjwS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2834C2BBFC;
-	Wed, 19 Jun 2024 13:06:33 +0000 (UTC)
+	 MIME-Version; b=APCA+1Ql87uflVmyNxHivhE1Zk9063a+D7DHX/iMJ5vxSAYPjU6S7BhBFOFm7LcFrgznniG0gCFyr2UMvapf0fB6hsQiMk4YjPTFBEzYMTC2v5yC+d8W2zIgvxKRZ3rujxEF9LdExm/j7o8C+Wn1nuvx//WgeB3/C4NetNugLGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTANFRuM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61358C2BBFC;
+	Wed, 19 Jun 2024 13:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802394;
-	bh=ELC9EFfRrjRTGKLlZCTbd5uGzQxVqN3O7bJ1QFGFeCU=;
+	s=korg; t=1718803742;
+	bh=cMWA2zf90jtczZ3+ST91mEvBqW9ulioaLs+GFrJyax8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SWjzEjwSFW6lNCfPH3KrLMeorh5LaCU3yO+HQljudToGh3/rZDd8AHdFVFlj4woG6
-	 32OyHehzWSELEJ8CAUMwu5b7DE7Otw7QV3q6tN34OkcjUD7FOKNw/5opYSvSt+rDpM
-	 BuTQbDYhH66nKFqqaAoDEuW4nVg7bENZHJfoc9aM=
+	b=aTANFRuMcYcsTq1plMqU7rDhzL7s0Yuo69HNLQu6NjVFTzu2W9qfmIjpf9OPz4R+R
+	 bhxhWYuR5nEJM6KvGF5uH3sv6xvkwB/E2a+Tlds4zGRE440jb3WnLdYhBG+CJP5bd0
+	 D2RHTTdenWHn0te64pu0ZobZYpPhEc+KqYbq3Ilk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com,
-	Ashish Sangwan <a.sangwan@samsung.com>,
-	Namjae Jeon <namjae.jeon@samsung.com>,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Subject: [PATCH 6.6 180/267] drivers: core: synchronize really_probe() and dev_uevent()
+	Kyle Tso <kyletso@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 088/217] usb: typec: tcpm: Ignore received Hard Reset in TOGGLING state
 Date: Wed, 19 Jun 2024 14:55:31 +0200
-Message-ID: <20240619125613.251795688@linuxfoundation.org>
+Message-ID: <20240619125600.085095231@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,109 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dirk Behme <dirk.behme@de.bosch.com>
+From: Kyle Tso <kyletso@google.com>
 
-commit c0a40097f0bc81deafc15f9195d1fb54595cd6d0 upstream.
+commit fc8fb9eea94d8f476e15f3a4a7addeb16b3b99d6 upstream.
 
-Synchronize the dev->driver usage in really_probe() and dev_uevent().
-These can run in different threads, what can result in the following
-race condition for dev->driver uninitialization:
+Similar to what fixed in Commit a6fe37f428c1 ("usb: typec: tcpm: Skip
+hard reset when in error recovery"), the handling of the received Hard
+Reset has to be skipped during TOGGLING state.
 
-Thread #1:
-==========
+[ 4086.021288] VBUS off
+[ 4086.021295] pending state change SNK_READY -> SNK_UNATTACHED @ 650 ms [rev2 NONE_AMS]
+[ 4086.022113] VBUS VSAFE0V
+[ 4086.022117] state change SNK_READY -> SNK_UNATTACHED [rev2 NONE_AMS]
+[ 4086.022447] VBUS off
+[ 4086.022450] state change SNK_UNATTACHED -> SNK_UNATTACHED [rev2 NONE_AMS]
+[ 4086.023060] VBUS VSAFE0V
+[ 4086.023064] state change SNK_UNATTACHED -> SNK_UNATTACHED [rev2 NONE_AMS]
+[ 4086.023070] disable BIST MODE TESTDATA
+[ 4086.023766] disable vbus discharge ret:0
+[ 4086.023911] Setting usb_comm capable false
+[ 4086.028874] Setting voltage/current limit 0 mV 0 mA
+[ 4086.028888] polarity 0
+[ 4086.030305] Requesting mux state 0, usb-role 0, orientation 0
+[ 4086.033539] Start toggling
+[ 4086.038496] state change SNK_UNATTACHED -> TOGGLING [rev2 NONE_AMS]
 
-really_probe() {
-...
-probe_failed:
-...
-device_unbind_cleanup(dev) {
-    ...
-    dev->driver = NULL;   // <= Failed probe sets dev->driver to NULL
-    ...
-    }
-...
-}
+// This Hard Reset is unexpected
+[ 4086.038499] Received hard reset
+[ 4086.038501] state change TOGGLING -> HARD_RESET_START [rev2 HARD_RESET]
 
-Thread #2:
-==========
-
-dev_uevent() {
-...
-if (dev->driver)
-      // If dev->driver is NULLed from really_probe() from here on,
-      // after above check, the system crashes
-      add_uevent_var(env, "DRIVER=%s", dev->driver->name);
-...
-}
-
-really_probe() holds the lock, already. So nothing needs to be done
-there. dev_uevent() is called with lock held, often, too. But not
-always. What implies that we can't add any locking in dev_uevent()
-itself. So fix this race by adding the lock to the non-protected
-path. This is the path where above race is observed:
-
- dev_uevent+0x235/0x380
- uevent_show+0x10c/0x1f0  <= Add lock here
- dev_attr_show+0x3a/0xa0
- sysfs_kf_seq_show+0x17c/0x250
- kernfs_seq_show+0x7c/0x90
- seq_read_iter+0x2d7/0x940
- kernfs_fop_read_iter+0xc6/0x310
- vfs_read+0x5bc/0x6b0
- ksys_read+0xeb/0x1b0
- __x64_sys_read+0x42/0x50
- x64_sys_call+0x27ad/0x2d30
- do_syscall_64+0xcd/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Similar cases are reported by syzkaller in
-
-https://syzkaller.appspot.com/bug?extid=ffa8143439596313a85a
-
-But these are regarding the *initialization* of dev->driver
-
-dev->driver = drv;
-
-As this switches dev->driver to non-NULL these reports can be considered
-to be false-positives (which should be "fixed" by this commit, as well,
-though).
-
-The same issue was reported and tried to be fixed back in 2015 in
-
-https://lore.kernel.org/lkml/1421259054-2574-1-git-send-email-a.sangwan@samsung.com/
-
-already.
-
-Fixes: 239378f16aa1 ("Driver core: add uevent vars for devices of a class")
-Cc: stable <stable@kernel.org>
-Cc: syzbot+ffa8143439596313a85a@syzkaller.appspotmail.com
-Cc: Ashish Sangwan <a.sangwan@samsung.com>
-Cc: Namjae Jeon <namjae.jeon@samsung.com>
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
-Link: https://lore.kernel.org/r/20240513050634.3964461-1-dirk.behme@de.bosch.com
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kyle Tso <kyletso@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240520154858.1072347-1-kyletso@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/typec/tcpm/tcpm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2664,8 +2664,11 @@ static ssize_t uevent_show(struct device
- 	if (!env)
- 		return -ENOMEM;
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5448,6 +5448,7 @@ static void _tcpm_pd_hard_reset(struct t
+ 		port->tcpc->set_bist_data(port->tcpc, false);
  
-+	/* Synchronize with really_probe() */
-+	device_lock(dev);
- 	/* let the kset specific function add its keys */
- 	retval = kset->uevent_ops->uevent(&dev->kobj, env);
-+	device_unlock(dev);
- 	if (retval)
- 		goto out;
- 
+ 	switch (port->state) {
++	case TOGGLING:
+ 	case ERROR_RECOVERY:
+ 	case PORT_RESET:
+ 	case PORT_RESET_WAIT_OFF:
 
 
 
