@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-53883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579A990EBA4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5CF90ECEA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 025511F23CD0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA8881C20CB7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D8C1494A6;
-	Wed, 19 Jun 2024 12:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033BE149DE8;
+	Wed, 19 Jun 2024 13:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uiD+hkUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYhEeHIn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6347D1474B9;
-	Wed, 19 Jun 2024 12:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65BC14900C;
+	Wed, 19 Jun 2024 13:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801954; cv=none; b=lcZck82tQ53N26hAaGR6LfadRGEx+EAW0YQ+zKiw164dozEBFUMBW8tPnA8mPNgXwSUW1IBMHEyRc45VqNHrhUgjlVRXKVwFfRKGgjYVidW6GlBx67z/Uv8J+Ikga3z9+w7MzsMHmXQoOc6lsrF09O+42ntMpJXxiCITNx9hft8=
+	t=1718802721; cv=none; b=JzDKeykNeG4FElE/q8p0akbs6CtV/XKcNBvu1s4KB0Kl6+e69nRM395zFdE/sQsG1aae8f4EpMdsRPnfvyRAlINnL1AXxN++mWxYrS58r4IwI09nw6e5pdLJ78hVVsU66GK5+AFkxBsKy5Cqo6MOxRKAPwA2u00YS2jhjupVGa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801954; c=relaxed/simple;
-	bh=ooR44VEeE2KHpNSwxMY/4HPCIqSgNN6+yselEGGkDKY=;
+	s=arc-20240116; t=1718802721; c=relaxed/simple;
+	bh=b9+ABTiVWp6wQB314BiGHdRqV0Aix6XED05GTzI4q5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOBeC+UNjANBqk04WczVP2EK6pSxwLMxLFKAaQFhoe3IGsboA3F5fFM3/C2KrFpIhHXfLXBYZYnlNDUXI/W1f4yehGBQ/be1jEjMJ3887f6TvFjc+ktVW2GEiwIFrc6g6p4s6esYeUatxH7iVsyq705C/BaWjwLoGon7MLR0/c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uiD+hkUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA425C2BBFC;
-	Wed, 19 Jun 2024 12:59:13 +0000 (UTC)
+	 MIME-Version; b=c6a2iwYfYclVMsvlB8ED228gwQEx0BgGKwLKo9bnjksDSNcyrmYp2pVaHL2kRKqPt8+xADevMKivfjAwpxwtDfTT5GTwB1w4NPuEydgN8SHaG/Y8LgrT0Lxa1qPQIvovfosIJGAvDi6Bona3JkVqJWMDjGv7gUgRF6oPXw8AZAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYhEeHIn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4425C2BBFC;
+	Wed, 19 Jun 2024 13:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718801954;
-	bh=ooR44VEeE2KHpNSwxMY/4HPCIqSgNN6+yselEGGkDKY=;
+	s=korg; t=1718802721;
+	bh=b9+ABTiVWp6wQB314BiGHdRqV0Aix6XED05GTzI4q5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uiD+hkUjCXEP0nTrqp1ozICNMuQYzHNYJzvvb7XlsZxIccv0/AkUn/3nRuMx95jxx
-	 x5k5DcJjUr8lRSPsmyvyjS9Qe5h7qyKHCyktME6U0sRPp+/UZqmXhVUWaQD1BGnL8t
-	 cBjqBNycnoWB725CuQa5mBrknP724cUTG2SOlc4k=
+	b=DYhEeHIntL7vm7gJWwS083IV+euyQKHp5glYojOMbWJfpRbRicqiTZmAfh5wppV3a
+	 2MTb55a7IwbMJoFJyhGZPlvU992fQRg21h1jP0BeLa9p7Qceqse6cf2HDgaEPlvGYl
+	 qJndnbNL02QGphcuUxLRFkzarK9lgLSbmnqhvQOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	Gerd Bayer <gbayer@linux.ibm.com>
-Subject: [PATCH 6.6 033/267] net/smc: avoid overwriting when adjusting sock bufsizes
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 025/281] ax25: Replace kfree() in ax25_dev_free() with ax25_dev_put()
 Date: Wed, 19 Jun 2024 14:53:04 +0200
-Message-ID: <20240619125607.635490076@linuxfoundation.org>
+Message-ID: <20240619125610.815244267@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gu <guwen@linux.alibaba.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit fb0aa0781a5f457e3864da68af52c3b1f4f7fd8f ]
+[ Upstream commit 166fcf86cd34e15c7f383eda4642d7a212393008 ]
 
-When copying smc settings to clcsock, avoid setting clcsock's sk_sndbuf
-to sysctl_tcp_wmem[1], since this may overwrite the value set by
-tcp_sndbuf_expand() in TCP connection establishment.
+The object "ax25_dev" is managed by reference counting. Thus it should
+not be directly released by kfree(), replace with ax25_dev_put().
 
-And the other setting sk_{snd|rcv}buf to sysctl value in
-smc_adjust_sock_bufsizes() can also be omitted since the initialization
-of smc sock and clcsock has set sk_{snd|rcv}buf to smc.sysctl_{w|r}mem
-or ipv4_sysctl_tcp_{w|r}mem[1].
-
-Fixes: 30c3c4a4497c ("net/smc: Use correct buffer sizes when switching between TCP and SMC")
-Link: https://lore.kernel.org/r/5eaf3858-e7fd-4db8-83e8-3d7a3e0e9ae2@linux.alibaba.com
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>, too.
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: d01ffb9eee4a ("ax25: add refcount in ax25_dev to avoid UAF bugs")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240530051733.11416-1-duoming@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c | 22 ++--------------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
+ net/ax25/ax25_dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index ef5b5d498ef3e..3158b94fd347a 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -460,29 +460,11 @@ static int smc_bind(struct socket *sock, struct sockaddr *uaddr,
- static void smc_adjust_sock_bufsizes(struct sock *nsk, struct sock *osk,
- 				     unsigned long mask)
- {
--	struct net *nnet = sock_net(nsk);
--
- 	nsk->sk_userlocks = osk->sk_userlocks;
--	if (osk->sk_userlocks & SOCK_SNDBUF_LOCK) {
-+	if (osk->sk_userlocks & SOCK_SNDBUF_LOCK)
- 		nsk->sk_sndbuf = osk->sk_sndbuf;
--	} else {
--		if (mask == SK_FLAGS_SMC_TO_CLC)
--			WRITE_ONCE(nsk->sk_sndbuf,
--				   READ_ONCE(nnet->ipv4.sysctl_tcp_wmem[1]));
--		else
--			WRITE_ONCE(nsk->sk_sndbuf,
--				   2 * READ_ONCE(nnet->smc.sysctl_wmem));
--	}
--	if (osk->sk_userlocks & SOCK_RCVBUF_LOCK) {
-+	if (osk->sk_userlocks & SOCK_RCVBUF_LOCK)
- 		nsk->sk_rcvbuf = osk->sk_rcvbuf;
--	} else {
--		if (mask == SK_FLAGS_SMC_TO_CLC)
--			WRITE_ONCE(nsk->sk_rcvbuf,
--				   READ_ONCE(nnet->ipv4.sysctl_tcp_rmem[1]));
--		else
--			WRITE_ONCE(nsk->sk_rcvbuf,
--				   2 * READ_ONCE(nnet->smc.sysctl_rmem));
--	}
+diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
+index c9d55b99a7a57..67ae6b8c52989 100644
+--- a/net/ax25/ax25_dev.c
++++ b/net/ax25/ax25_dev.c
+@@ -193,7 +193,7 @@ void __exit ax25_dev_free(void)
+ 	list_for_each_entry_safe(s, n, &ax25_dev_list, list) {
+ 		netdev_put(s->dev, &s->dev_tracker);
+ 		list_del(&s->list);
+-		kfree(s);
++		ax25_dev_put(s);
+ 	}
+ 	spin_unlock_bh(&ax25_dev_lock);
  }
- 
- static void smc_copy_sock_settings(struct sock *nsk, struct sock *osk,
 -- 
 2.43.0
 
