@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1966590EDFC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:24:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E47B90EEF9
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEB20288AF4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCEDA1F21ACE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F79E14532C;
-	Wed, 19 Jun 2024 13:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648461422D9;
+	Wed, 19 Jun 2024 13:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQJF/IoG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AuBjfgwT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAF3143757;
-	Wed, 19 Jun 2024 13:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2470513DDC0;
+	Wed, 19 Jun 2024 13:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803466; cv=none; b=PmEuDn958DiPskPgqWxOpMdaK4grAE8b5YeWA7XEQXBzp/NWLNPlEuzYb9/27oRys5hOq7hhTqB4ETOX1R9YjG9EaXxearwbLCWJ9dGvt6knTgxQTVLwCBduzk52mpux+YLlSU5hE9FumWHHDSVhfkvoGRTKGPJBr9XsYMDg/Sk=
+	t=1718804048; cv=none; b=IR1JZurngsdjK+Eo8/Nrc9cATyNjx1QBaq1WT/bV07Hemu1IarBEcciCR1Yeni9bm1fBE24eRtqU2fN+NqnvgFMe8jQsqSFuORSTPaHA3KPXeSQVLN88ZQD4zxuInzsq3BRH6MRQ6m35KTLD5i8JWmSpyAF1NDjSs036UObmywA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803466; c=relaxed/simple;
-	bh=Tiu7YgyUfTPRoFXxUqwZG6rOzIggQOQvJbu8j8S+ifM=;
+	s=arc-20240116; t=1718804048; c=relaxed/simple;
+	bh=TshrxYXDfMxS7vVG7qtob8pLtu7x8YKu722zzGRtumI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpQvUFUX2KTvzasB5k+WYwfjs2z1WRDVM/e7TAwn4+aVqIwLoPG8qJkpsC9kQHzgSiY3OVOpryOMbiR7CsNukNgct+pkfJScZtvz71lXdW04ifAjhd6GkrM3SWz/vX52H+WiJCa8LIOgj2U/ezVSSkzSqSdCAacScwZf6OnDgGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQJF/IoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E3EC2BBFC;
-	Wed, 19 Jun 2024 13:24:25 +0000 (UTC)
+	 MIME-Version; b=bLA6Y4drrWQRxfmf3qw1pxCKKfZoBZFl9QbRCFLCE4NgA6kOQijBXjl2knLNA4S303bkBtis9DEzbApztzW6Lgb/BmQaHVc+CqZmaf5n4poR3Lucb7xizOIzhzVUJ5d1Kp2zwiTd2ExuKtVo0YutJnM5c6Xw7Mq/V64FV8SouJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AuBjfgwT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E5DCC2BBFC;
+	Wed, 19 Jun 2024 13:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803466;
-	bh=Tiu7YgyUfTPRoFXxUqwZG6rOzIggQOQvJbu8j8S+ifM=;
+	s=korg; t=1718804048;
+	bh=TshrxYXDfMxS7vVG7qtob8pLtu7x8YKu722zzGRtumI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQJF/IoGpYYPcBmZIeX12Jkf/Z5aarqz5m9yz5JITNRE8WI4lnKi8tW7zSQx8699j
-	 I0Wr52FpgxYSuHNSqO4VhIl/xAhkuruFXKuHV55eWCE7vQk4NSHXSl1HvgZoyDdMwp
-	 ncxW1ZIIM2FRGy3Uufk9zn3uBYQ+ZuhJjrwmzVhU=
+	b=AuBjfgwTKcKFpxhv0Y4zzAEssXqZ8YXsHZucK/uh/D9tj16/kvMbfx+4WfTn367tx
+	 pDCxFeSS/Mgvdrm9qnl9MQjt5PNTKVovltdPGd5iYZrUpGtma6cxxrZ9dTBQgCEct5
+	 KuoSjbwItS7lDyrYqi3l4Za++IujonTFzQ/6oWZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 275/281] dt-bindings: usb: realtek,rts5411: Add missing "additionalProperties" on child nodes
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.1 191/217] intel_th: pci: Add Sapphire Rapids SOC support
 Date: Wed, 19 Jun 2024 14:57:14 +0200
-Message-ID: <20240619125620.563240615@linuxfoundation.org>
+Message-ID: <20240619125604.054377325@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-[ Upstream commit e4228cfd092351c2d9b1a3048b2070287291ccbb ]
+commit 2e1da7efabe05cb0cf0b358883b2bc89080ed0eb upstream.
 
-All nodes need an explicit additionalProperties or unevaluatedProperties
-unless a $ref has one that's false. As that is not the case with
-usb-device.yaml, "additionalProperties" is needed here.
+Add support for the Trace Hub in Sapphire Rapids SOC.
 
-Fixes: c44d9dab31d6 ("dt-bindings: usb: Add downstream facing ports to realtek binding")
-Signed-off-by: "Rob Herring (Arm)" <robh@kernel.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20240523194500.2958192-1-robh@kernel.org
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-13-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/usb/realtek,rts5411.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/usb/realtek,rts5411.yaml b/Documentation/devicetree/bindings/usb/realtek,rts5411.yaml
-index 0874fc21f66fb..6577a61cc0753 100644
---- a/Documentation/devicetree/bindings/usb/realtek,rts5411.yaml
-+++ b/Documentation/devicetree/bindings/usb/realtek,rts5411.yaml
-@@ -65,6 +65,7 @@ patternProperties:
-     description: The hard wired USB devices
-     type: object
-     $ref: /schemas/usb/usb-device.yaml
-+    additionalProperties: true
- 
- required:
-   - peer-hub
--- 
-2.43.0
-
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -315,6 +315,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Sapphire Rapids SOC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x3456),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Alder Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
