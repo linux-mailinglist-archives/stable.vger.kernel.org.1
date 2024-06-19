@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CAD90E60C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:39:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF91490E60B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:39:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59F06B2112C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:39:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59B5228339B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB51F7E761;
-	Wed, 19 Jun 2024 08:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796207B3E5;
+	Wed, 19 Jun 2024 08:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghyvJorF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXN+3s1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA7F7E576
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A06379DD4
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718786369; cv=none; b=Kn0XwWaw8dJGlP6ABWryYeRZvVRNZSKLOC1K6y02L05IY9IUBmqn3VQhMcHTIFQOEUFjGosDhuStpJj70t1Fb0Cf3QNg04yaEUOOA1Ha24JUm5VS/ebD55F+ulqc3pLow20sv+2URKuRJpHxJH+9r2m6+hs/kGxinsLqoRv8gxg=
+	t=1718786375; cv=none; b=HnLqyM/47vXsyCwGZJmMCYoop/a4w6ylFf/mExVm9UvhIlqPjPOt7VAcMvVaYiETiRboU1SIktNNs7SoQz9sR/uQGzxRC226Ix0bVyyki4VDHY7E19WifPenea21QOoSYsumYmE5/yIqc+5veZGup+6ocght+7FTxhSefEDDJAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718786369; c=relaxed/simple;
-	bh=JkDhKA7tynVywTOiv6GaySmDtgeD3AN4eQLXu/rHhbw=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kvrW/lqew/PmOTtay2+ECgpDrIEiOMCQi6wQPAxYzeC76sklm6nV+CCNU1L1e5dA/B1IzpK0eEuvVCSGDq0yeEM6Bcn6pbjrccxjsUotFzQEiNy4f5FnxA8OsqqxIh4V0T6c4vLer4wQhh06Or+b3DvkzAHL6gEv2LpUwg//LTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghyvJorF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBDBCC2BBFC;
-	Wed, 19 Jun 2024 08:39:28 +0000 (UTC)
+	s=arc-20240116; t=1718786375; c=relaxed/simple;
+	bh=2MFa2aFm+Yspo3Gvi/9AtHLyZFkfY7lBQVBMOlWgZgU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WIo/ljz43QA6ahck4X14pVMh8qf2H+zDibPgVy1j+x9MmvnFYb/bBaMqkqb2NYr0UtEVmQZF3Rg6vEH7uJQLvEjBiHMkE4wZd1v0cEhZM2nUuxs3UQLAlWEwRLAJCoz+ulqLsS5Gju4Xlxm2bAZvC6drQ8y/TONdvJTNVR2Gf0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXN+3s1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF13C2BBFC;
+	Wed, 19 Jun 2024 08:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718786369;
-	bh=JkDhKA7tynVywTOiv6GaySmDtgeD3AN4eQLXu/rHhbw=;
+	s=korg; t=1718786375;
+	bh=2MFa2aFm+Yspo3Gvi/9AtHLyZFkfY7lBQVBMOlWgZgU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ghyvJorFE4jCWCvDfMAvDNzVA7fDo8+kmLLAV01s0pHB0ir9muqwrjTPJMjCgPhE+
-	 xU7zm9kbMr899EqiVEWm8fW4JKCX5OKFgyBmhuDnTSktWBxA6rUEACWpmzUVV1gjqO
-	 Qjbb7M92ySFLqvs7WzA2RdNJr+Di2gFtRQlcIrUU=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Adjust dprefclk by down spread percentage." failed to apply to 6.9-stable tree
+	b=eXN+3s1JIkgTIfACklwSInMXVW26nOT+YfqmwrzeMQIuZDIYgfWj5ArkY3g/skYq0
+	 g1YxhVUZg2dXjK8hNVSmjZ/WdAFFlQcitbVR7Cw2tq0jlZTUmikUgNvPqs84qbV0/K
+	 PSuyUyNM+MBz7OCja7p69W5fstCdxtvF4tduKzhs=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Adjust dprefclk by down spread percentage." failed to apply to 6.6-stable tree
 To: zhongwei.zhang@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Jun 2024 10:38:56 +0200
-Message-ID: <2024061956-dallying-probation-e569@gregkh>
+Date: Wed, 19 Jun 2024 10:38:57 +0200
+Message-ID: <2024061957-thicken-feline-a908@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.9-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 364b1c1de6de36c1b28690265c904c682aecc266
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061956-dallying-probation-e569@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061957-thicken-feline-a908@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 364b1c1de6de ("drm/amd/display: Adjust dprefclk by down spread percentage.")
 1ba65e749dc6 ("drm/amd/display: Send DTBCLK disable message on first commit")
+3a6a32b31a11 ("Revert "drm/amd/display: Send DTBCLK disable message on first commit"")
+f2a905b01c6d ("drm/amd/display: fix invalid reg access on DCN35 FPGA")
+f341055b10bd ("drm/amd/display: Send DTBCLK disable message on first commit")
+038c53234641 ("drm/amd/display: Update P010 scaling cap")
+17e74e11ac2b ("drm/amd/display: To adjust dprefclk by down spread percentage")
+23cf5a5cd33a ("drm/amd/display: insert drv-pmfw log + rollback to new context")
+061a5bf210cd ("drm/amd/display: Allow DTBCLK disable for DCN35")
+220db802cb50 ("drm/amd/display: Do not read DPREFCLK spread info from LUT on DCN35")
+fd7cedccdde3 ("drm/amd/display: Fix OTG disable workaround logic")
+1288d7020809 ("drm/amd/display: Improve x86 and dmub ips handshake")
+c0f8b83188c7 ("drm/amd/display: disable IPS")
+93a66cef607c ("drm/amd/display: Add IPS control flag")
+dc01c4b79bfe ("drm/amd/display: Update driver and IPS interop")
+4f43d753bf9c ("drm/amd/display: Correct z8 watermark mask")
+0fa45b6aeae4 ("drm/amd/display: Add DCN35 Resource")
+ec129fa356be ("drm/amd/display: Add DCN35 init")
+65138eb72e1f ("drm/amd/display: Add DCN35 DMUB")
+8774029f76b9 ("drm/amd/display: Add DCN35 CLK_MGR")
 
 thanks,
 
