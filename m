@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-54564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5336F90EED7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AE3890EE06
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A5591C2123C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7593288CB4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD7B14388B;
-	Wed, 19 Jun 2024 13:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068A4144D3E;
+	Wed, 19 Jun 2024 13:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+EX/90Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Osciyg2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE721E492;
-	Wed, 19 Jun 2024 13:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99B2143757;
+	Wed, 19 Jun 2024 13:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803953; cv=none; b=IOHKv26sWVEaAdft8MTY70WA1G0fEOBwOb4UlV/bs6yzK1m4Gcq1dKT8FjnzG5vMB7+dTMUybwK/edtUYWmwHPm+P/h9f+eJdQ2H/PM4ilYFfZ8ba5rujtu9HdN6OKxdsv0LBaIKFMoNVBFb39qgOcYCHtUo/jsxG+JeycEsW7Y=
+	t=1718803489; cv=none; b=lBXJnaAefxIIPK1XyQxaZgI/3MKLw1Co7rqFb44g0pNwSuZmDQ5pmmSAdpsHaLOR52n9xDJhNOU6Sc7G6QS01/pvye1LFBPKcCxjBWo3l15lNeM6EYmKWpKQJP4Y1IyVgaMOMqSeFHqWmZB3W7Aq/wiyaSJJPoiVU7j/UqGCUyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803953; c=relaxed/simple;
-	bh=flea9uJd4k5yckdiigFWkkwbDjvZUMJ//0B5WcWmdbM=;
+	s=arc-20240116; t=1718803489; c=relaxed/simple;
+	bh=Z7KDLXxmAz2kkcD6N8lfPRwHPzyupQWhWin7WQq2czU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMwX9zyvdc4MOv2y8q/dM/I2B4Ld/Gu31X/19gfjZK/wfFOrbaQwCIfTDqfn8tF6uG4DM5A95HA9x8roRAezivIjo+82WkjYXJssizIrbT+EuSofZzKtdPztC7MzZ7ued5Xx/3ooZoCFmh0TeKkow+E7pBOvK5zuV9GJ1miNUwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+EX/90Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F5AC2BBFC;
-	Wed, 19 Jun 2024 13:32:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e+Cw66gP4WuPmtqUDtyFTLHfad3IYDPfbX1Av4ehY2G9YALbBACAeeW3dWed0Rntv/YCkN/Dn4+/guIDxGuilu4neKCED6ruq0Y1t3WZKo1hFBtE+WMFZn1bh/yxTwvrDJKvFlAbM7ZchP6mBlv0kf1K2fjvbbX44EWigw2IY2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Osciyg2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E61DC2BBFC;
+	Wed, 19 Jun 2024 13:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803953;
-	bh=flea9uJd4k5yckdiigFWkkwbDjvZUMJ//0B5WcWmdbM=;
+	s=korg; t=1718803489;
+	bh=Z7KDLXxmAz2kkcD6N8lfPRwHPzyupQWhWin7WQq2czU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+EX/90QeQ/FfocVqLGtHlJ29e53ghlM33ouspqQwuLrvD+Mq2zWJIlz1lfNqOaPM
-	 kXXm9b8PSbPyRoNdufvTeO7ZmvBHvCAE05bpiKYK41gq++gvcg92y97tg5cvbZ4dHI
-	 xY7L1LulzI/ZVYucNgJq4MhAJp5qBOMpviRdoHhc=
+	b=Osciyg2VZ1rRteRm4FVl8aC3UGBhAQCvvetlqnUnOrRPGEWyKI+J6/DF+II/st+fp
+	 x8CS96mYYWmwB8BgV+IrY6VdIZdJhm1W78Xx5Q82ip51gg4W490Hwqbx2fMzXi5rTv
+	 JNE5fFmD5viuT5Pw1MgtXgMM350GydYER9LaSBpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongzhi Liu <hyperlyzcs@gmail.com>
-Subject: [PATCH 6.1 159/217] misc: microchip: pci1xxxx: fix double free in the error handling of gp_aux_bus_probe()
+	Rick Wertenbroek <rick.wertenbroek@gmail.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.9 243/281] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
 Date: Wed, 19 Jun 2024 14:56:42 +0200
-Message-ID: <20240619125602.826887719@linuxfoundation.org>
+Message-ID: <20240619125619.313334512@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,57 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongzhi Liu <hyperlyzcs@gmail.com>
+From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
 
-commit 086c6cbcc563c81d55257f9b27e14faf1d0963d3 upstream.
+commit 2dba285caba53f309d6060fca911b43d63f41697 upstream.
 
-When auxiliary_device_add() returns error and then calls
-auxiliary_device_uninit(), callback function
-gp_auxiliary_device_release() calls ida_free() and
-kfree(aux_device_wrapper) to free memory. We should't
-call them again in the error handling path.
+Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
+Vendor ID are u16 variables and are written to a u32 register of the
+controller. The Subsystem Vendor ID was always 0 because the u16 value
+was masked incorrectly with GENMASK(31,16) resulting in all lower 16
+bits being set to 0 prior to the shift.
 
-Fix this by skipping the redundant cleanup functions.
+Remove both masks as they are unnecessary and set the register correctly
+i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
+Subsystem Vendor ID.
 
-Fixes: 393fc2f5948f ("misc: microchip: pci1xxxx: load auxiliary bus driver for the PIO function in the multi-function endpoint of pci1xxxx device.")
-Signed-off-by: Yongzhi Liu <hyperlyzcs@gmail.com>
-Link: https://lore.kernel.org/r/20240523121434.21855-3-hyperlyzcs@gmail.com
+This is documented in the RK3399 TRM section 17.6.7.1.17
+
+[kwilczynski: removed unnecesary newline]
+Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
+Link: https://lore.kernel.org/linux-pci/20240403144508.489835-1-rick.wertenbroek@gmail.com
+Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/controller/pcie-rockchip-ep.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
-+++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
-@@ -111,6 +111,7 @@ static int gp_aux_bus_probe(struct pci_d
+--- a/drivers/pci/controller/pcie-rockchip-ep.c
++++ b/drivers/pci/controller/pcie-rockchip-ep.c
+@@ -98,10 +98,8 @@ static int rockchip_pcie_ep_write_header
  
- err_aux_dev_add_1:
- 	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[1]->aux_dev);
-+	goto err_aux_dev_add_0;
- 
- err_aux_dev_init_1:
- 	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[1]->aux_dev.id);
-@@ -120,6 +121,7 @@ err_ida_alloc_1:
- 
- err_aux_dev_add_0:
- 	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[0]->aux_dev);
-+	goto err_ret;
- 
- err_aux_dev_init_0:
- 	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[0]->aux_dev.id);
-@@ -127,6 +129,7 @@ err_aux_dev_init_0:
- err_ida_alloc_0:
- 	kfree(aux_bus->aux_device_wrapper[0]);
- 
-+err_ret:
- 	return retval;
- }
+ 	/* All functions share the same vendor ID with function 0 */
+ 	if (fn == 0) {
+-		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
+-			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
+-
+-		rockchip_pcie_write(rockchip, vid_regs,
++		rockchip_pcie_write(rockchip,
++				    hdr->vendorid | hdr->subsys_vendor_id << 16,
+ 				    PCIE_CORE_CONFIG_VENDOR);
+ 	}
  
 
 
