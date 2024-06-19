@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCBC590ED62
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA0F90EE44
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39B8FB22420
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D4051F21F9F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9724F143C4E;
-	Wed, 19 Jun 2024 13:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5673614A4E2;
+	Wed, 19 Jun 2024 13:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKd0waN6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tui8E4o0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567164315F;
-	Wed, 19 Jun 2024 13:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1548B1474AD;
+	Wed, 19 Jun 2024 13:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803043; cv=none; b=cc5/rTHG7Xzrrksxu0tiOsPNvtkxJrZzgEGchjHf6uLqQX2eHMZI3jkJ2g8CXvCqH85SN+RlVxgOeEt0TyKR27Ypqif1K2dkmhhJOk1A/7JLiE4kGQ1op0Hq+9n+D2SiFUOVKc6A7LTqX8GUGFC8YS0p4/aegKeLM7A5YoYvs/4=
+	t=1718803625; cv=none; b=WZ1Zivpkr3mNwhCuRdQF5Wb/VFGr/pYD93+sCXonzrvLgzjpv8mUIXoewEg6pzTV+CVAzOJmVnlc+lLHhjxFazfDqMXWCMrlbT854OWimJL9S7O3lu3SD6bJO5SF37wcXhJ3KjFxg+JPAYQIuiOCOtZnUR/t/q3ZWjUkD+KrOpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803043; c=relaxed/simple;
-	bh=9CtNPq9oLREXJKkL1gVhGTX3fO3gsDxY5Et6yck/1NE=;
+	s=arc-20240116; t=1718803625; c=relaxed/simple;
+	bh=M6jrI2lJsL/bPWwZ7L9ECVASJKCRsfLTMC6yWoOhzho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rw2nhJxhTR5Zg2/j196GNhGmL/l5HX9V9zIW3PYXULSBoXJi9esNmKrBSSJFC5AA005NiHA/c29f7tfwL1yUP8diy9UixXzg7SnRsgYLsM1+YoRTa5mAnc2iQ8y9J2gtwLSdbelmy0nF9d/ChfKRZG7DT2bl8+0dvxLxqGU/C8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKd0waN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823B3C2BBFC;
-	Wed, 19 Jun 2024 13:17:22 +0000 (UTC)
+	 MIME-Version; b=JaesECRVfeBJrpBOrPioie7Vcjvzp21Z7I2v8dE9qUK1gpaO9yorDX2luOVzaVblqceO/5mwAUjTyZQ3x5cqVTXSkqoh/xBN1kt+0djlTzxgwGIIOyFEwkTxG2wn6cSFQ3ocAnEQYwwBP4M8LOgS5oeqpO11nJwu8P5HXDm1uGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tui8E4o0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA3CC2BBFC;
+	Wed, 19 Jun 2024 13:27:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803042;
-	bh=9CtNPq9oLREXJKkL1gVhGTX3fO3gsDxY5Et6yck/1NE=;
+	s=korg; t=1718803624;
+	bh=M6jrI2lJsL/bPWwZ7L9ECVASJKCRsfLTMC6yWoOhzho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKd0waN6xW30RatEHGq4gGdluYs5cXt8vNGwiSc2qn6QqCk9c9OjyhaPXZmwjsbcN
-	 9aWNBZ4vyO6NLT0gdUtBppL0pxy8ryCx94jpCw+gALtMDPQGrlZftXtAnGJZXyrHLx
-	 gBOSvQ7zBGtOWCJNaTs6MZgzx3myaRzv7sFTgwxY=
+	b=tui8E4o0066LeFugvOTIk9gdZbpOwuUA7CVMk9quHdBOufrTWLS2OdHDQ3ofJPBt6
+	 CvlXCae+Dnvz4UgarDzOlEL5lR5zkGIeiLNZAi28VcsgduGZbQKgkg3xRrWJLplsXf
+	 WbDlB02YPcXqL3Q0cmMHD9WlCc0QEcb06mSfM8+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregor Herburger <gregor.herburger@tq-group.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 133/281] gpio: tqmx86: fix broken IRQ_TYPE_EDGE_BOTH interrupt type
+Subject: [PATCH 6.1 049/217] ipv6: fix possible race in __fib6_drop_pcpu_from()
 Date: Wed, 19 Jun 2024 14:54:52 +0200
-Message-ID: <20240619125614.960979112@linuxfoundation.org>
+Message-ID: <20240619125558.555148845@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 90dd7de4ef7ba584823dfbeba834c2919a4bb55b ]
+[ Upstream commit b01e1c030770ff3b4fe37fc7cc6bca03f594133f ]
 
-The TQMx86 GPIO controller only supports falling and rising edge
-triggers, but not both. Fix this by implementing a software both-edge
-mode that toggles the edge type after every interrupt.
+syzbot found a race in __fib6_drop_pcpu_from() [1]
 
-Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
-Co-developed-by: Gregor Herburger <gregor.herburger@tq-group.com>
-Signed-off-by: Gregor Herburger <gregor.herburger@tq-group.com>
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Link: https://lore.kernel.org/r/515324f0491c4d44f4ef49f170354aca002d81ef.1717063994.git.matthias.schiffer@ew.tq-group.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+If compiler reads more than once (*ppcpu_rt),
+second read could read NULL, if another cpu clears
+the value in rt6_get_pcpu_route().
+
+Add a READ_ONCE() to prevent this race.
+
+Also add rcu_read_lock()/rcu_read_unlock() because
+we rely on RCU protection while dereferencing pcpu_rt.
+
+[1]
+
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000012: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000090-0x0000000000000097]
+CPU: 0 PID: 7543 Comm: kworker/u8:17 Not tainted 6.10.0-rc1-syzkaller-00013-g2bfcfd584ff5 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+Workqueue: netns cleanup_net
+ RIP: 0010:__fib6_drop_pcpu_from.part.0+0x10a/0x370 net/ipv6/ip6_fib.c:984
+Code: f8 48 c1 e8 03 80 3c 28 00 0f 85 16 02 00 00 4d 8b 3f 4d 85 ff 74 31 e8 74 a7 fa f7 49 8d bf 90 00 00 00 48 89 f8 48 c1 e8 03 <80> 3c 28 00 0f 85 1e 02 00 00 49 8b 87 90 00 00 00 48 8b 0c 24 48
+RSP: 0018:ffffc900040df070 EFLAGS: 00010206
+RAX: 0000000000000012 RBX: 0000000000000001 RCX: ffffffff89932e16
+RDX: ffff888049dd1e00 RSI: ffffffff89932d7c RDI: 0000000000000091
+RBP: dffffc0000000000 R08: 0000000000000005 R09: 0000000000000007
+R10: 0000000000000001 R11: 0000000000000006 R12: ffff88807fa080b8
+R13: fffffbfff1a9a07d R14: ffffed100ff41022 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff8880b9200000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b32c26000 CR3: 000000005d56e000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  __fib6_drop_pcpu_from net/ipv6/ip6_fib.c:966 [inline]
+  fib6_drop_pcpu_from net/ipv6/ip6_fib.c:1027 [inline]
+  fib6_purge_rt+0x7f2/0x9f0 net/ipv6/ip6_fib.c:1038
+  fib6_del_route net/ipv6/ip6_fib.c:1998 [inline]
+  fib6_del+0xa70/0x17b0 net/ipv6/ip6_fib.c:2043
+  fib6_clean_node+0x426/0x5b0 net/ipv6/ip6_fib.c:2205
+  fib6_walk_continue+0x44f/0x8d0 net/ipv6/ip6_fib.c:2127
+  fib6_walk+0x182/0x370 net/ipv6/ip6_fib.c:2175
+  fib6_clean_tree+0xd7/0x120 net/ipv6/ip6_fib.c:2255
+  __fib6_clean_all+0x100/0x2d0 net/ipv6/ip6_fib.c:2271
+  rt6_sync_down_dev net/ipv6/route.c:4906 [inline]
+  rt6_disable_ip+0x7ed/0xa00 net/ipv6/route.c:4911
+  addrconf_ifdown.isra.0+0x117/0x1b40 net/ipv6/addrconf.c:3855
+  addrconf_notify+0x223/0x19e0 net/ipv6/addrconf.c:3778
+  notifier_call_chain+0xb9/0x410 kernel/notifier.c:93
+  call_netdevice_notifiers_info+0xbe/0x140 net/core/dev.c:1992
+  call_netdevice_notifiers_extack net/core/dev.c:2030 [inline]
+  call_netdevice_notifiers net/core/dev.c:2044 [inline]
+  dev_close_many+0x333/0x6a0 net/core/dev.c:1585
+  unregister_netdevice_many_notify+0x46d/0x19f0 net/core/dev.c:11193
+  unregister_netdevice_many net/core/dev.c:11276 [inline]
+  default_device_exit_batch+0x85b/0xae0 net/core/dev.c:11759
+  ops_exit_list+0x128/0x180 net/core/net_namespace.c:178
+  cleanup_net+0x5b7/0xbf0 net/core/net_namespace.c:640
+  process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
+  process_scheduled_works kernel/workqueue.c:3312 [inline]
+  worker_thread+0x6c8/0xf70 kernel/workqueue.c:3393
+  kthread+0x2c1/0x3a0 kernel/kthread.c:389
+  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+Fixes: d52d3997f843 ("ipv6: Create percpu rt6_info")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Martin KaFai Lau <kafai@fb.com>
+Link: https://lore.kernel.org/r/20240604193549.981839-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tqmx86.c | 46 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 42 insertions(+), 4 deletions(-)
+ net/ipv6/ip6_fib.c | 6 +++++-
+ net/ipv6/route.c   | 1 +
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-tqmx86.c b/drivers/gpio/gpio-tqmx86.c
-index 7e428c872a257..f2e7e8754d95d 100644
---- a/drivers/gpio/gpio-tqmx86.c
-+++ b/drivers/gpio/gpio-tqmx86.c
-@@ -32,6 +32,10 @@
- #define TQMX86_GPII_NONE	0
- #define TQMX86_GPII_FALLING	BIT(0)
- #define TQMX86_GPII_RISING	BIT(1)
-+/* Stored in irq_type as a trigger type, but not actually valid as a register
-+ * value, so the name doesn't use "GPII"
-+ */
-+#define TQMX86_INT_BOTH		(BIT(0) | BIT(1))
- #define TQMX86_GPII_MASK	(BIT(0) | BIT(1))
- #define TQMX86_GPII_BITS	2
- /* Stored in irq_type with GPII bits */
-@@ -113,9 +117,15 @@ static void tqmx86_gpio_irq_config(struct tqmx86_gpio_data *gpio, int offset)
- {
- 	u8 type = TQMX86_GPII_NONE, gpiic;
+diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
+index 8213626434b91..1123594ad2be7 100644
+--- a/net/ipv6/ip6_fib.c
++++ b/net/ipv6/ip6_fib.c
+@@ -962,6 +962,7 @@ static void __fib6_drop_pcpu_from(struct fib6_nh *fib6_nh,
+ 	if (!fib6_nh->rt6i_pcpu)
+ 		return;
  
--	if (gpio->irq_type[offset] & TQMX86_INT_UNMASKED)
-+	if (gpio->irq_type[offset] & TQMX86_INT_UNMASKED) {
- 		type = gpio->irq_type[offset] & TQMX86_GPII_MASK;
++	rcu_read_lock();
+ 	/* release the reference to this fib entry from
+ 	 * all of its cached pcpu routes
+ 	 */
+@@ -970,7 +971,9 @@ static void __fib6_drop_pcpu_from(struct fib6_nh *fib6_nh,
+ 		struct rt6_info *pcpu_rt;
  
-+		if (type == TQMX86_INT_BOTH)
-+			type = tqmx86_gpio_get(&gpio->chip, offset + TQMX86_NGPO)
-+				? TQMX86_GPII_FALLING
-+				: TQMX86_GPII_RISING;
-+	}
+ 		ppcpu_rt = per_cpu_ptr(fib6_nh->rt6i_pcpu, cpu);
+-		pcpu_rt = *ppcpu_rt;
 +
- 	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
- 	gpiic &= ~(TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS));
- 	gpiic |= type << (offset * TQMX86_GPII_BITS);
-@@ -169,7 +179,7 @@ static int tqmx86_gpio_irq_set_type(struct irq_data *data, unsigned int type)
- 		new_type = TQMX86_GPII_FALLING;
- 		break;
- 	case IRQ_TYPE_EDGE_BOTH:
--		new_type = TQMX86_GPII_FALLING | TQMX86_GPII_RISING;
-+		new_type = TQMX86_INT_BOTH;
- 		break;
- 	default:
- 		return -EINVAL; /* not supported */
-@@ -189,8 +199,8 @@ static void tqmx86_gpio_irq_handler(struct irq_desc *desc)
- 	struct gpio_chip *chip = irq_desc_get_handler_data(desc);
- 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(chip);
- 	struct irq_chip *irq_chip = irq_desc_get_chip(desc);
--	unsigned long irq_bits;
--	int i = 0;
-+	unsigned long irq_bits, flags;
-+	int i;
- 	u8 irq_status;
++		/* Paired with xchg() in rt6_get_pcpu_route() */
++		pcpu_rt = READ_ONCE(*ppcpu_rt);
  
- 	chained_irq_enter(irq_chip, desc);
-@@ -199,6 +209,34 @@ static void tqmx86_gpio_irq_handler(struct irq_desc *desc)
- 	tqmx86_gpio_write(gpio, irq_status, TQMX86_GPIIS);
+ 		/* only dropping the 'from' reference if the cached route
+ 		 * is using 'match'. The cached pcpu_rt->from only changes
+@@ -984,6 +987,7 @@ static void __fib6_drop_pcpu_from(struct fib6_nh *fib6_nh,
+ 			fib6_info_release(from);
+ 		}
+ 	}
++	rcu_read_unlock();
+ }
  
- 	irq_bits = irq_status;
-+
-+	raw_spin_lock_irqsave(&gpio->spinlock, flags);
-+	for_each_set_bit(i, &irq_bits, TQMX86_NGPI) {
-+		/*
-+		 * Edge-both triggers are implemented by flipping the edge
-+		 * trigger after each interrupt, as the controller only supports
-+		 * either rising or falling edge triggers, but not both.
-+		 *
-+		 * Internally, the TQMx86 GPIO controller has separate status
-+		 * registers for rising and falling edge interrupts. GPIIC
-+		 * configures which bits from which register are visible in the
-+		 * interrupt status register GPIIS and defines what triggers the
-+		 * parent IRQ line. Writing to GPIIS always clears both rising
-+		 * and falling interrupt flags internally, regardless of the
-+		 * currently configured trigger.
-+		 *
-+		 * In consequence, we can cleanly implement the edge-both
-+		 * trigger in software by first clearing the interrupt and then
-+		 * setting the new trigger based on the current GPIO input in
-+		 * tqmx86_gpio_irq_config() - even if an edge arrives between
-+		 * reading the input and setting the trigger, we will have a new
-+		 * interrupt pending.
-+		 */
-+		if ((gpio->irq_type[i] & TQMX86_GPII_MASK) == TQMX86_INT_BOTH)
-+			tqmx86_gpio_irq_config(gpio, i);
-+	}
-+	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
-+
- 	for_each_set_bit(i, &irq_bits, TQMX86_NGPI)
- 		generic_handle_domain_irq(gpio->chip.irq.domain,
- 					  i + TQMX86_NGPO);
+ struct fib6_nh_pcpu_arg {
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 258e87055836f..627431722f9d6 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -1401,6 +1401,7 @@ static struct rt6_info *rt6_get_pcpu_route(const struct fib6_result *res)
+ 		struct rt6_info *prev, **p;
+ 
+ 		p = this_cpu_ptr(res->nh->rt6i_pcpu);
++		/* Paired with READ_ONCE() in __fib6_drop_pcpu_from() */
+ 		prev = xchg(p, NULL);
+ 		if (prev) {
+ 			dst_dev_put(&prev->dst);
 -- 
 2.43.0
 
