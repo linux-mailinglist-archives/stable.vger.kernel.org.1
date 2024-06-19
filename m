@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E80190EE1E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0813C90ED45
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8405E1C22D63
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61ED8B2440B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8408114884F;
-	Wed, 19 Jun 2024 13:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C511813F435;
+	Wed, 19 Jun 2024 13:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5k5uxlL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6xuseaG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D34148308;
-	Wed, 19 Jun 2024 13:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84711AD58;
+	Wed, 19 Jun 2024 13:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803548; cv=none; b=jvmXSpaNNgFJXkKMpGjgLGFSnnyxB0w0sYQnGdHRlSdhsKk7gAY6gchVxvgzKF2WvNxt1/2C/Ptc052V9U30OiCk/78H7pGQSIhLL1/bZXQVyqwmfdly1UclxjzLtRpMHA5ktNTPvmjS/yBHdbyPn0wPaDSQs65Z5oukgNIKPr0=
+	t=1718802966; cv=none; b=ctzsC032bX9257KIBxMTtKm3HSkmqhOX0RwgOVbsUOIH1EIVIBSnFU71a53C4O43X5+IFLQrd2/zHydCQ8PZhPa1mxtjb7X8rQHyn0JCPLQJY0XmuVsuZxiGb7T4gKXCbf25LkRa/waPpR//1j0WeTjISs+MC92V9g27KOkB14Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803548; c=relaxed/simple;
-	bh=Lhx6TzdfzBA7lOxpcvAcDqPtghmB2OICavkRBz1vS44=;
+	s=arc-20240116; t=1718802966; c=relaxed/simple;
+	bh=TkIBNK47EmrVN0K5gHa7zkocikDlVjwFeyMicD0YjyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aYAy+XutnxRYnlWZ55ytPMIS7BL0/bTjyIkDFP36uAuPfpUL1Kc5i/jmCeBYQtygiA138wrHASvQeEflfIPfb7ySNPZLxEARqQFRC51R1o7OcvdmZlkh9GG6yNPM57mqonN4btgXQU3vUzZmoZONGRXyEB1qmBWaEWz6hfUCfug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5k5uxlL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B911BC32786;
-	Wed, 19 Jun 2024 13:25:47 +0000 (UTC)
+	 MIME-Version; b=bl7QjJMCulP6wgsic18A68OvkW/g56YCwARn+JwG8M+h8o7tCOHweFAdCqvs96TI4pTSMW/XxIg9hjlQ3LAeiedr1ZlvIjqSlf/EZ9kYcaWUIpxpYxqwxBH+3R7cnIUw/fbdIKKqYe24d5DMAbhksK5TPIAd5i9ZXOVn4vJjqs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6xuseaG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0F5C2BBFC;
+	Wed, 19 Jun 2024 13:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803548;
-	bh=Lhx6TzdfzBA7lOxpcvAcDqPtghmB2OICavkRBz1vS44=;
+	s=korg; t=1718802966;
+	bh=TkIBNK47EmrVN0K5gHa7zkocikDlVjwFeyMicD0YjyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5k5uxlLjCUAh0fodzRmguANyuUKwGgadP6ZUevW484mqoXg8qkKxr14m1umvd9tr
-	 l2rq7gPkdvGY+yrx0tezfPM2nbMg1M/Qy3z20luYpQ+35n1OYTqtExfAAOje3eoykT
-	 OUr2R9k2Yi9/vLxSm52ccBenePCknOcOdNlerex4=
+	b=M6xuseaG9zCsB0kZz6zDGaq9vZiHu5CPMWyJFWzgqJKJv8IbauHt/ygPoA+eZQSv+
+	 RoMQ0xd2xRvFJj0j67ezS0YvbO+RjjllHK8VQ5hYQAXnamaxDeqtJK8ZqYbnGlz3A8
+	 dwOBx2rPd20SuLnsCXi1qHLt8qdT4OGLDL93ac5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/217] tcp: count CLOSE-WAIT sockets for TCP_MIB_CURRESTAB
+	Kewen Lin <linkw@gcc.gnu.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.9 106/281] powerpc/uaccess: Fix build errors seen with GCC 13/14
 Date: Wed, 19 Jun 2024 14:54:25 +0200
-Message-ID: <20240619125557.502869473@linuxfoundation.org>
+Message-ID: <20240619125613.926531946@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit a46d0ea5c94205f40ecf912d1bb7806a8a64704f ]
+commit 2d43cc701b96f910f50915ac4c2a0cae5deb734c upstream.
 
-According to RFC 1213, we should also take CLOSE-WAIT sockets into
-consideration:
+Building ppc64le_defconfig with GCC 14 fails with assembler errors:
 
-  "tcpCurrEstab OBJECT-TYPE
-   ...
-   The number of TCP connections for which the current state
-   is either ESTABLISHED or CLOSE- WAIT."
+    CC      fs/readdir.o
+  /tmp/ccdQn0mD.s: Assembler messages:
+  /tmp/ccdQn0mD.s:212: Error: operand out of domain (18 is not a multiple of 4)
+  /tmp/ccdQn0mD.s:226: Error: operand out of domain (18 is not a multiple of 4)
+  ... [6 lines]
+  /tmp/ccdQn0mD.s:1699: Error: operand out of domain (18 is not a multiple of 4)
 
-After this, CurrEstab counter will display the total number of
-ESTABLISHED and CLOSE-WAIT sockets.
+A snippet of the asm shows:
 
-The logic of counting
-When we increment the counter?
-a) if we change the state to ESTABLISHED.
-b) if we change the state from SYN-RECEIVED to CLOSE-WAIT.
+  # ../fs/readdir.c:210:         unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
+         ld 9,0(29)       # MEM[(u64 *)name_38(D) + _88 * 1], MEM[(u64 *)name_38(D) + _88 * 1]
+  # 210 "../fs/readdir.c" 1
+         1:      std 9,18(8)     # put_user       # *__pus_addr_52, MEM[(u64 *)name_38(D) + _88 * 1]
 
-When we decrement the counter?
-a) if the socket leaves ESTABLISHED and will never go into CLOSE-WAIT,
-say, on the client side, changing from ESTABLISHED to FIN-WAIT-1.
-b) if the socket leaves CLOSE-WAIT, say, on the server side, changing
-from CLOSE-WAIT to LAST-ACK.
+The 'std' instruction requires a 4-byte aligned displacement because
+it is a DS-form instruction, and as the assembler says, 18 is not a
+multiple of 4.
 
-Please note: there are two chances that old state of socket can be changed
-to CLOSE-WAIT in tcp_fin(). One is SYN-RECV, the other is ESTABLISHED.
-So we have to take care of the former case.
+A similar error is seen with GCC 13 and CONFIG_UBSAN_SIGNED_WRAP=y.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The fix is to change the constraint on the memory operand to put_user(),
+from "m" which is a general memory reference to "YZ".
+
+The "Z" constraint is documented in the GCC manual PowerPC machine
+constraints, and specifies a "memory operand accessed with indexed or
+indirect addressing". "Y" is not documented in the manual but specifies
+a "memory operand for a DS-form instruction". Using both allows the
+compiler to generate a DS-form "std" or X-form "stdx" as appropriate.
+
+The change has to be conditional on CONFIG_PPC_KERNEL_PREFIXED because
+the "Y" constraint does not guarantee 4-byte alignment when prefixed
+instructions are enabled.
+
+Unfortunately clang doesn't support the "Y" constraint so that has to be
+behind an ifdef.
+
+Although the build error is only seen with GCC 13/14, that appears
+to just be luck. The constraint has been incorrect since it was first
+added.
+
+Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
+Cc: stable@vger.kernel.org # v5.10+
+Suggested-by: Kewen Lin <linkw@gcc.gnu.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240529123029.146953-1-mpe@ellerman.id.au
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/uaccess.h |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 3447a09ee83a2..2d4f697d338f5 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -2758,6 +2758,10 @@ void tcp_set_state(struct sock *sk, int state)
- 		if (oldstate != TCP_ESTABLISHED)
- 			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
- 		break;
-+	case TCP_CLOSE_WAIT:
-+		if (oldstate == TCP_SYN_RECV)
-+			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
-+		break;
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -92,9 +92,25 @@ __pu_failed:							\
+ 		: label)
+ #endif
  
- 	case TCP_CLOSE:
- 		if (oldstate == TCP_CLOSE_WAIT || oldstate == TCP_ESTABLISHED)
-@@ -2769,7 +2773,7 @@ void tcp_set_state(struct sock *sk, int state)
- 			inet_put_port(sk);
- 		fallthrough;
- 	default:
--		if (oldstate == TCP_ESTABLISHED)
-+		if (oldstate == TCP_ESTABLISHED || oldstate == TCP_CLOSE_WAIT)
- 			TCP_DEC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
- 	}
- 
--- 
-2.43.0
-
++#ifdef CONFIG_CC_IS_CLANG
++#define DS_FORM_CONSTRAINT "Z<>"
++#else
++#define DS_FORM_CONSTRAINT "YZ<>"
++#endif
++
+ #ifdef __powerpc64__
++#ifdef CONFIG_PPC_KERNEL_PREFIXED
+ #define __put_user_asm2_goto(x, ptr, label)			\
+ 	__put_user_asm_goto(x, ptr, label, "std")
++#else
++#define __put_user_asm2_goto(x, addr, label)			\
++	asm goto ("1: std%U1%X1 %0,%1	# put_user\n"		\
++		EX_TABLE(1b, %l2)				\
++		:						\
++		: "r" (x), DS_FORM_CONSTRAINT (*addr)		\
++		:						\
++		: label)
++#endif // CONFIG_PPC_KERNEL_PREFIXED
+ #else /* __powerpc64__ */
+ #define __put_user_asm2_goto(x, addr, label)			\
+ 	asm goto(					\
 
 
 
