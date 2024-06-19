@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-53939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9088190EBF9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A701D90ED27
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D9CE284A19
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CBAB280F9E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912B814E2E2;
-	Wed, 19 Jun 2024 13:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DA2143C4E;
+	Wed, 19 Jun 2024 13:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1be7kBtg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmECkZbN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501BA14D6FF;
-	Wed, 19 Jun 2024 13:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904681422B8;
+	Wed, 19 Jun 2024 13:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802119; cv=none; b=HzL6sM3uVVAKNUVLhlRAEkEZab3nWGXCMMKOE3ZFdCp2NCy0Ty76hAyfnyqrgoJukrZxZU5Xud9SiFLEFXeHWKdSk4rfYjo4HQYE8B9FxKSSB/fZ89G+nYIHsP6YxmxVupmw6aDQiP2i0kEgz5CJKgJoU73C6bVbRCwcJ7VEh6U=
+	t=1718802886; cv=none; b=KbrEBcM51rEB8/5v312VtkuCBRejvOmBFdPBbnxlpVuPCvjsutSv7ZzArxh7lNs2JKiURm/s3dfqH3+bFI6jsZqXoEwvpc9xLAy9BG6QJClQWwKo+4J8xqXSmBThc3k+Vk+3lVh5OzP4wMGzih3yAC95sP8J4hftf+aAOSAB2Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802119; c=relaxed/simple;
-	bh=boYJKt/P5yriSnnkSRqyafLC5v67NijfvKduTrvs0rs=;
+	s=arc-20240116; t=1718802886; c=relaxed/simple;
+	bh=T6DtTw0o8xeOichsBlv7Q/6kkVWIObpSqNnH+t4v9Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OL7U+9qGi253+DcwY3Fbvf9EEmQXJti1BmRLzqLR7PrXYqzdtKcjbqoBidplMpk4kQ64f2JKjGu2Z5oiSyNWyuQdp5fW1tK5U7wk+P3EHAaR1/D0yIawj7l+R6m1tgnGCINEy7P3+iB/s1vHPLO4yIfG5oATDjimLhtmFRwjfLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1be7kBtg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE30CC2BBFC;
-	Wed, 19 Jun 2024 13:01:58 +0000 (UTC)
+	 MIME-Version; b=cDCwF1nITbmbz08vFwxRNLp5RfVKo3G0ukA60eEmCJFh70jHBMdl+LSNie5PaplpDmE40r5DGk1Z9s5b6pobTQspahAqjLXbMGT8unDTKSx9DjilQNfi+gxsPG9nwnev1b/9LfwDGq4vbYxhzIqu2ktNkm3ol7uSzYhRLlpvMY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmECkZbN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17622C2BBFC;
+	Wed, 19 Jun 2024 13:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802119;
-	bh=boYJKt/P5yriSnnkSRqyafLC5v67NijfvKduTrvs0rs=;
+	s=korg; t=1718802886;
+	bh=T6DtTw0o8xeOichsBlv7Q/6kkVWIObpSqNnH+t4v9Gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1be7kBtgEuXZtZwWlm+WHpeIs1gnnhYongrwSl4YkWLqp+2NQi1L9rFo4MgoadQpp
-	 HDkw/xlCp7Wt0Ry+TZ8TaKR+AWP36AL/a1b5KW1NyegKWTWRn4SJLEoI9pAXsZY5p2
-	 TNjz7rEn969KjB+5fxv5ZH3YgbHQXMt37We5wAVA=
+	b=jmECkZbNl32GNeqMvKzazLbz6KPr5nlK2bPiZ4DaXeT9EOz2fmeiQguILb2hb4n9i
+	 xpsJuIiV8gYWonXxuDqVSdO4cBw/yBlBNvl0mjI8zMaLkRrRD0XxQ4WqnWCMOO2LAt
+	 P0vaiguLe4yGvzRg6t/q1EdhxtgBrkGHA8CZ1iBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Karol Kolacinski <karol.kolacinski@intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/267] af_unix: Annotate data-race of net->unx.sysctl_max_dgram_qlen.
+Subject: [PATCH 6.9 049/281] ptp: Fix error message on failed pin verification
 Date: Wed, 19 Jun 2024 14:53:28 +0200
-Message-ID: <20240619125608.549796944@linuxfoundation.org>
+Message-ID: <20240619125611.738004488@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Karol Kolacinski <karol.kolacinski@intel.com>
 
-[ Upstream commit bd9f2d05731f6a112d0c7391a0d537bfc588dbe6 ]
+[ Upstream commit 323a359f9b077f382f4483023d096a4d316fd135 ]
 
-net->unx.sysctl_max_dgram_qlen is exposed as a sysctl knob and can be
-changed concurrently.
+On failed verification of PTP clock pin, error message prints channel
+number instead of pin index after "pin", which is incorrect.
 
-Let's use READ_ONCE() in unix_create1().
+Fix error message by adding channel number to the message and printing
+pin number instead of channel number.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 6092315dfdec ("ptp: introduce programmable pins.")
+Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://lore.kernel.org/r/20240604120555.16643-1-karol.kolacinski@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ptp/ptp_chardev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 4640497c29da4..2b35c517be718 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -990,7 +990,7 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern,
- 	sk->sk_hash		= unix_unbound_hash(sk);
- 	sk->sk_allocation	= GFP_KERNEL_ACCOUNT;
- 	sk->sk_write_space	= unix_write_space;
--	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
-+	sk->sk_max_ack_backlog	= READ_ONCE(net->unx.sysctl_max_dgram_qlen);
- 	sk->sk_destruct		= unix_sock_destructor;
- 	u = unix_sk(sk);
- 	u->inflight = 0;
+diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
+index 7513018c9f9ac..2067b0120d083 100644
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -85,7 +85,8 @@ int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
+ 	}
+ 
+ 	if (info->verify(info, pin, func, chan)) {
+-		pr_err("driver cannot use function %u on pin %u\n", func, chan);
++		pr_err("driver cannot use function %u and channel %u on pin %u\n",
++		       func, chan, pin);
+ 		return -EOPNOTSUPP;
+ 	}
+ 
 -- 
 2.43.0
 
