@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-53878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A4790EB9E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2FE790ECE5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B2D91F22F41
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 957A21C20AE1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E40C145352;
-	Wed, 19 Jun 2024 12:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE521147C6E;
+	Wed, 19 Jun 2024 13:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvtDRdEA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SmULxd+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C157214388C;
-	Wed, 19 Jun 2024 12:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0AC1474C8;
+	Wed, 19 Jun 2024 13:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801939; cv=none; b=f8Zt7le2PmSzECSR2jXLChcNQ7K3wshB3yY3UsKHfvAljlwmqzaawiwnLljfpYmPdb9ONnKPBDHmSt9wUP25QaNAJN4tIyPD86w3YP8Sc+da2gSwjKtuzSWjKC6Z4IAxVx0ErYJIGzc6nr/STbTRWlM1q53LMkim9caO0x73cnw=
+	t=1718802709; cv=none; b=boqcZc1rGVRQEtXSKN4ogInrZ4ohbmO5THdwCNL0+4jViXw01A7NJtUypsHkRtXF4ikCO3tlazkYK/czvIY0o4x9piuubyWopD1kWxtSDtjD4c3fMV68CazOUWD5lkyi5P2v8v1g8uqcLP2q45obYyIz+Ijxzz6SUfqMSbEtWDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801939; c=relaxed/simple;
-	bh=mRZ55QTw4vvJrYH/im8ItzVw11KEN26UwQlt4wUFsBw=;
+	s=arc-20240116; t=1718802709; c=relaxed/simple;
+	bh=PWelcHQVWD2rWxDaGRAYmAMJ2AArhYpoZJOwcpieo6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmujKfXJmhk6ZDXtxFxq8KAiEfGTrfOnxxox6kB+mLg5TQ9QrZXBtgRVvRjkaGJVBAT14+3KVcT/L/tNMsHR8PlHxnwSZ2xduDnWLvby037C2o9XZAq4olITzzv80S5EHtHG7RsbVIlS3g7JEQnDhXTYyns5LcHsdjuq765xX44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvtDRdEA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC3BC2BBFC;
-	Wed, 19 Jun 2024 12:58:59 +0000 (UTC)
+	 MIME-Version; b=QTR7+d1fc8+RvqAWBjDDzbHxsGc41FeBGTui/vq93l3cVBv6EqImVvHq3wVMEoeKGIN5JIuHI6uuTczkwel2TRCBA3ZJRTBfAK2KFGG7h4MkgcigPKuxVuAzD/Q3L1qJRqQe6WKZD6H8ivUN+UH/phX9EzR/9ls9KRX1m5fGB3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmULxd+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D96C2BBFC;
+	Wed, 19 Jun 2024 13:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718801939;
-	bh=mRZ55QTw4vvJrYH/im8ItzVw11KEN26UwQlt4wUFsBw=;
+	s=korg; t=1718802709;
+	bh=PWelcHQVWD2rWxDaGRAYmAMJ2AArhYpoZJOwcpieo6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvtDRdEAMFsIlaYMdzcaZEqO4YNLIWwgpcg17Zel9xTt+3GGhJQV487ogGIYNGffl
-	 tNrB6Gum3vNmuf3UwvF4EYz6hTF4Ag7yiYILjm2b36ApPhEOdD1HhJTilhQ/PP5oWb
-	 6Lclpd6JjwFDSdHZOceZEw+9PXoarxG5SIJB3QxI=
+	b=SmULxd+L6kQU9tIr3BxYFQmmXNHXWGU8/9aeIs54kDITE2iXBhwovgKwjK3UwAHLr
+	 8/r3JIJ0d/E349/KNXws8t+jMtcfg0+/HtkMhouTc/n/VLucbUOJ/k2v8It0cM3r9A
+	 bPglKX43rZq0JYc8aw6IKWNfwvhRxFq7ln6Nm0vs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/267] ipv6: ioam: block BH from ioam6_output()
-Date: Wed, 19 Jun 2024 14:52:59 +0200
-Message-ID: <20240619125607.445063970@linuxfoundation.org>
+Subject: [PATCH 6.9 021/281] RISC-V: KVM: No need to use mask when hart-index-bit is 0
+Date: Wed, 19 Jun 2024 14:53:00 +0200
+Message-ID: <20240619125610.664055925@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-[ Upstream commit 2fe40483ec257de2a0d819ef88e3e76c7e261319 ]
+[ Upstream commit 2d707b4e37f9b0c37b8b2392f91b04c5b63ea538 ]
 
-As explained in commit 1378817486d6 ("tipc: block BH
-before using dst_cache"), net/core/dst_cache.c
-helpers need to be called with BH disabled.
+When the maximum hart number within groups is 1, hart-index-bit is set to
+0. Consequently, there is no need to restore the hart ID from IMSIC
+addresses and hart-index-bit settings. Currently, QEMU and kvmtool do not
+pass correct hart-index-bit values when the maximum hart number is a
+power of 2, thereby avoiding this issue. Corresponding patches for QEMU
+and kvmtool will also be dispatched.
 
-Disabling preemption in ioam6_output() is not good enough,
-because ioam6_output() is called from process context,
-lwtunnel_output() only uses rcu_read_lock().
-
-We might be interrupted by a softirq, re-enter ioam6_output()
-and corrupt dst_cache data structures.
-
-Fix the race by using local_bh_disable() instead of
-preempt_disable().
-
-Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Justin Iurman <justin.iurman@uliege.be>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/20240531132636.2637995-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 89d01306e34d ("RISC-V: KVM: Implement device interface for AIA irqchip")
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20240415064905.25184-1-yongxuan.wang@sifive.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ioam6_iptunnel.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/riscv/kvm/aia_device.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
-index f6f5b83dd954d..a5cfc5b0b206b 100644
---- a/net/ipv6/ioam6_iptunnel.c
-+++ b/net/ipv6/ioam6_iptunnel.c
-@@ -351,9 +351,9 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 		goto drop;
+diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
+index 0eb689351b7d0..5cd407c6a8e4f 100644
+--- a/arch/riscv/kvm/aia_device.c
++++ b/arch/riscv/kvm/aia_device.c
+@@ -237,10 +237,11 @@ static gpa_t aia_imsic_ppn(struct kvm_aia *aia, gpa_t addr)
  
- 	if (!ipv6_addr_equal(&orig_daddr, &ipv6_hdr(skb)->daddr)) {
--		preempt_disable();
-+		local_bh_disable();
- 		dst = dst_cache_get(&ilwt->cache);
--		preempt_enable();
-+		local_bh_enable();
+ static u32 aia_imsic_hart_index(struct kvm_aia *aia, gpa_t addr)
+ {
+-	u32 hart, group = 0;
++	u32 hart = 0, group = 0;
  
- 		if (unlikely(!dst)) {
- 			struct ipv6hdr *hdr = ipv6_hdr(skb);
-@@ -373,9 +373,9 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- 				goto drop;
- 			}
- 
--			preempt_disable();
-+			local_bh_disable();
- 			dst_cache_set_ip6(&ilwt->cache, dst, &fl6.saddr);
--			preempt_enable();
-+			local_bh_enable();
- 		}
- 
- 		skb_dst_drop(skb);
+-	hart = (addr >> (aia->nr_guest_bits + IMSIC_MMIO_PAGE_SHIFT)) &
+-		GENMASK_ULL(aia->nr_hart_bits - 1, 0);
++	if (aia->nr_hart_bits)
++		hart = (addr >> (aia->nr_guest_bits + IMSIC_MMIO_PAGE_SHIFT)) &
++		       GENMASK_ULL(aia->nr_hart_bits - 1, 0);
+ 	if (aia->nr_group_bits)
+ 		group = (addr >> aia->nr_group_shift) &
+ 			GENMASK_ULL(aia->nr_group_bits - 1, 0);
 -- 
 2.43.0
 
