@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F57490EE41
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 232D590EC2D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF2601F22931
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:27:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B31B4287A55
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B99714EC7F;
-	Wed, 19 Jun 2024 13:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D0B13D525;
+	Wed, 19 Jun 2024 13:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smeanmlP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKBF+XNR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079A014F108;
-	Wed, 19 Jun 2024 13:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2243F82871;
+	Wed, 19 Jun 2024 13:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803616; cv=none; b=bnhnAfWH/OuHzJLjpRDCQ+AAEYtmiyR8Z55Jt6Sa70WSDO5zv1e1wdqx2BIF2ea1lpUZyj9S8nFI3mtY1YkGOuVnq2cAUWLpJj3s4BQXL7eF8opXxrqF1qgHR/+AppPhY0gmNRtRatjKNLy78ulFR5VbvrbWNFzEPKeDRPkRDj4=
+	t=1718802267; cv=none; b=dr9c1DqzreCxpI0lAb5TMT9JTFd81DR/16Fciyz6ov1Z12dIwKFiy/AnmKWkIxCWVBfkWvoXBEmcRmoDoe63UN/iiPXeyID1T5QlErT7/gEU6xkdJniIYpE0LPQYF8fFWo23jpHA2Tu6qKBgg4k/ciTh+e2ypzwQlidUTdD3Ea4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803616; c=relaxed/simple;
-	bh=72h1cEcFeBzU7MwoUUC7wu4ZO1RhMYTDLzq9CyJ6bjg=;
+	s=arc-20240116; t=1718802267; c=relaxed/simple;
+	bh=xv/Z/4UUtwvdnhgG/8qGeiA2/bxiCfoqciQzm8gCrCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qz5G3Vlr44St1qML6XvN+F5z2jaMYppwCw7GqCEHib4MRUDdhjyFTSaN4tDophqjxbNRfV2D01CLxjmtowgl9q+5IIg0b0OWYUaaHYgc0haR+WCKRssh8aQyo7uPzQEyyPknZw4yMtEMrxMeNI5ui0IwQGLT4D7s31wgtZD7iu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smeanmlP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AAEC4AF1D;
-	Wed, 19 Jun 2024 13:26:55 +0000 (UTC)
+	 MIME-Version; b=oyda7SoEBS9MPV/BGNymBrdyrxwKftpuUxK2QFJlob+gCbFXQjB+Pb6HjYst7YZPJ0SPX8+tOUnW90HcB4VVzsXbJ0ly1w4uqcRYul9eoJHoVPtYWlUKt7bfimSQCJ9Gkdio+HDz3UvLtuzLJH4QbciRUsSjAbMDWzeWbD1UngY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKBF+XNR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0E5C2BBFC;
+	Wed, 19 Jun 2024 13:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803615;
-	bh=72h1cEcFeBzU7MwoUUC7wu4ZO1RhMYTDLzq9CyJ6bjg=;
+	s=korg; t=1718802267;
+	bh=xv/Z/4UUtwvdnhgG/8qGeiA2/bxiCfoqciQzm8gCrCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smeanmlPxjvdmaFR9CB5V6TpW5ayVea9nPqPZ+kNpA3+vItowU718r6DRPPMKBz97
-	 nnOfsVHCRt7mIPYwTPpsehyCL9H/OrxR27g6Flrqyo9rBXyg27WA3fy3UGw+vPRTy2
-	 92+vGBAktMj8H9Pt+oJXLO4LpJF9aHnz053/dtCI=
+	b=ZKBF+XNRs97t977uoYadzhuaMeb5WsrpvQI+KxleL9k3N4srTX8BuzVi8flXe/jKK
+	 PF6QlDeXk9J9xWBIOxTMd6VNly/0qkFL7sjOZO1x5qc4C+g0OQhm/aVk1/WOZ8fE/o
+	 CzDLbozA8hYF8g5RsNj5kXJPA07WUcSYbHopXjsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/217] af_unix: Use skb_queue_empty_lockless() in unix_release_sock().
+Subject: [PATCH 6.6 138/267] drm/vmwgfx: Remove STDU logic from generic mode_valid function
 Date: Wed, 19 Jun 2024 14:54:49 +0200
-Message-ID: <20240619125558.441558772@linuxfoundation.org>
+Message-ID: <20240619125611.645628087@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 83690b82d228b3570565ebd0b41873933238b97f ]
+[ Upstream commit dde1de06bd7248fd83c4ce5cf0dbe9e4e95bbb91 ]
 
-If the socket type is SOCK_STREAM or SOCK_SEQPACKET, unix_release_sock()
-checks the length of the peer socket's recvq under unix_state_lock().
+STDU has its own mode_valid function now so this logic can be removed from
+the generic version.
 
-However, unix_stream_read_generic() calls skb_unlink() after releasing
-the lock.  Also, for SOCK_SEQPACKET, __skb_try_recv_datagram() unlinks
-skb without unix_state_lock().
+Fixes: 935f795045a6 ("drm/vmwgfx: Refactor drm connector probing for display modes")
 
-Thues, unix_state_lock() does not protect qlen.
-
-Let's use skb_queue_empty_lockless() in unix_release_sock().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240521184720.767-4-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.h |  3 ---
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 26 +++++++++-----------------
+ 2 files changed, 9 insertions(+), 20 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 02d8612385bd9..bb94a67229aa3 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -619,7 +619,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 			unix_state_lock(skpair);
- 			/* No more writes */
- 			WRITE_ONCE(skpair->sk_shutdown, SHUTDOWN_MASK);
--			if (!skb_queue_empty(&sk->sk_receive_queue) || embrion)
-+			if (!skb_queue_empty_lockless(&sk->sk_receive_queue) || embrion)
- 				WRITE_ONCE(skpair->sk_err, ECONNRESET);
- 			unix_state_unlock(skpair);
- 			skpair->sk_state_change(skpair);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+index 6acc7ad0e9eb8..13423c7b0cbdb 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+@@ -1067,9 +1067,6 @@ void vmw_kms_cursor_snoop(struct vmw_surface *srf,
+ int vmw_kms_write_svga(struct vmw_private *vmw_priv,
+ 		       unsigned width, unsigned height, unsigned pitch,
+ 		       unsigned bpp, unsigned depth);
+-bool vmw_kms_validate_mode_vram(struct vmw_private *dev_priv,
+-				uint32_t pitch,
+-				uint32_t height);
+ int vmw_kms_present(struct vmw_private *dev_priv,
+ 		    struct drm_file *file_priv,
+ 		    struct vmw_framebuffer *vfb,
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 59de170a31853..93e2a27daed0c 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -2151,13 +2151,12 @@ int vmw_kms_write_svga(struct vmw_private *vmw_priv,
+ 	return 0;
+ }
+ 
++static
+ bool vmw_kms_validate_mode_vram(struct vmw_private *dev_priv,
+-				uint32_t pitch,
+-				uint32_t height)
++				u64 pitch,
++				u64 height)
+ {
+-	return ((u64) pitch * (u64) height) < (u64)
+-		((dev_priv->active_display_unit == vmw_du_screen_target) ?
+-		 dev_priv->max_primary_mem : dev_priv->vram_size);
++	return (pitch * height) < (u64)dev_priv->vram_size;
+ }
+ 
+ /**
+@@ -2853,25 +2852,18 @@ int vmw_du_helper_plane_update(struct vmw_du_update_plane *update)
+ enum drm_mode_status vmw_connector_mode_valid(struct drm_connector *connector,
+ 					      struct drm_display_mode *mode)
+ {
++	enum drm_mode_status ret;
+ 	struct drm_device *dev = connector->dev;
+ 	struct vmw_private *dev_priv = vmw_priv(dev);
+-	u32 max_width = dev_priv->texture_max_width;
+-	u32 max_height = dev_priv->texture_max_height;
+ 	u32 assumed_cpp = 4;
+ 
+ 	if (dev_priv->assume_16bpp)
+ 		assumed_cpp = 2;
+ 
+-	if (dev_priv->active_display_unit == vmw_du_screen_target) {
+-		max_width  = min(dev_priv->stdu_max_width,  max_width);
+-		max_height = min(dev_priv->stdu_max_height, max_height);
+-	}
+-
+-	if (max_width < mode->hdisplay)
+-		return MODE_BAD_HVALUE;
+-
+-	if (max_height < mode->vdisplay)
+-		return MODE_BAD_VVALUE;
++	ret = drm_mode_validate_size(mode, dev_priv->texture_max_width,
++				     dev_priv->texture_max_height);
++	if (ret != MODE_OK)
++		return ret;
+ 
+ 	if (!vmw_kms_validate_mode_vram(dev_priv,
+ 					mode->hdisplay * assumed_cpp,
 -- 
 2.43.0
 
