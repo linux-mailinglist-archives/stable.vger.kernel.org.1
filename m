@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-54278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BDE090ED77
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA98890EC48
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B314F1C20EF6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E267F1C211F1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DA0143C65;
-	Wed, 19 Jun 2024 13:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAAA13D525;
+	Wed, 19 Jun 2024 13:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYLZfsCa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3/KrJAE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A5682495;
-	Wed, 19 Jun 2024 13:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED85382871;
+	Wed, 19 Jun 2024 13:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803108; cv=none; b=AdV0I8dY7oU5EGwr552LT0b+83QZNcZDCFd50SGWHVW15BD1NA4Rcov1ShfYTNw+e1gaLmg6RwXt0p6Rvb9DRXe6u6lzFEDcxixN9DKhSQiNx8aWzBIC1Kdtm4NBcDhGfLofurezCdKC9rpzy//EpkbdEpGkQ/Q82rSWIPnTRLk=
+	t=1718802341; cv=none; b=lNLUz/ICz4Ls9Z5G4J3NdHExGrfvi+mr2/K0rZ/U/UDSplteOJSelKUY7tEim1zv6uHUyLeOCyJi65wXTrEe9dqS3Z5dTAtA2AaisAWxEKZPUp19x8WznGSrOXqfuQU+Qe7nZfIj5a5D/fmK+lVlJcb1mH571xR8kTCAN87+Sn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803108; c=relaxed/simple;
-	bh=SVvsGqhoOKlpq2El0rN5FSypTv+SapiFWmp2H70Y8/E=;
+	s=arc-20240116; t=1718802341; c=relaxed/simple;
+	bh=IscNATaARKlYWUVFOClqWYc05lonMPTvt2n57sxPMAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVWkY+KGYhCuNBsk6bRnJfbkXNTNIWRM6x88JZUZY6neWpcBezsiIfm+n/jtBsBGJJr+FV5P8IKpyvs5LKYjlz9JXYBPwGL2yGnVadIFDF4nLr82bevWB68chMjkgJ6XG6xSMLsmrDULdQg3Ah2ld6WHaRaeHNkI8bPagyuR+/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYLZfsCa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CD7C32786;
-	Wed, 19 Jun 2024 13:18:27 +0000 (UTC)
+	 MIME-Version; b=pdk2K2oUa6ayb3Tnqss+SXwN8XC4jRvgLY1v4fG8l34pToMZm2k1xLknzqU/O2fH4zgiKZlnrIzhjUsnFQ/bMHnSkUe13ODsgLetS18pmlRLyMyvcAwbjnvRBcSCZN23mF57eYbhLZTbiRLUFojJMw3qi3wVptekHXcgvK/0mbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3/KrJAE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CF6C2BBFC;
+	Wed, 19 Jun 2024 13:05:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803108;
-	bh=SVvsGqhoOKlpq2El0rN5FSypTv+SapiFWmp2H70Y8/E=;
+	s=korg; t=1718802340;
+	bh=IscNATaARKlYWUVFOClqWYc05lonMPTvt2n57sxPMAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oYLZfsCadS6UooHoUY/DPilsc+EeEu3Ajococ1ew0GzhjeuXh2gbbMkhWPBMbZ1/y
-	 i7pGBovjKzIfKLFvJS10A3F/YR+XBiAvgw91dSGAityXZdCSdUPggho9H7R3OA6lLu
-	 T6Wonluri5KGG2grG2aJPAQDHYQ3YdfNimykauHo=
+	b=F3/KrJAEHahiAAX1kjqYhKaOMq1LiHMl2ZLh/e1usdoWdmIrVt8I5JNzchxDeiTBI
+	 3rCcx1m3NfUHC1U6vnm2xm7MzC7Pk+XYpkcnGzm6CIl7QTkV9yzTEHLaO/XmhwVnC3
+	 0fDhDRcM5GDkDE8GhYgw5yyFGZ4PjexiJDF8CRYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Friedrich Weber <f.weber@proxmox.com>,
+	Christoph Hellwig <hch@lst.de>,
+	ming.lei@redhat.com,
+	bvanassche@acm.org,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 156/281] net dsa: qca8k: fix usages of device_get_named_child_node()
+Subject: [PATCH 6.6 164/267] block: fix request.queuelist usage in flush
 Date: Wed, 19 Jun 2024 14:55:15 +0200
-Message-ID: <20240619125615.842487114@linuxfoundation.org>
+Message-ID: <20240619125612.639568217@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Chengming Zhou <chengming.zhou@linux.dev>
 
-[ Upstream commit d029edefed39647c797c2710aedd9d31f84c069e ]
+[ Upstream commit d0321c812d89c5910d8da8e4b10c891c6b96ff70 ]
 
-The documentation for device_get_named_child_node() mentions this
-important point:
+Friedrich Weber reported a kernel crash problem and bisected to commit
+81ada09cc25e ("blk-flush: reuse rq queuelist in flush state machine").
 
-"
-The caller is responsible for calling fwnode_handle_put() on the
-returned fwnode pointer.
-"
+The root cause is that we use "list_move_tail(&rq->queuelist, pending)"
+in the PREFLUSH/POSTFLUSH sequences. But rq->queuelist.next == xxx since
+it's popped out from plug->cached_rq in __blk_mq_alloc_requests_batch().
+We don't initialize its queuelist just for this first request, although
+the queuelist of all later popped requests will be initialized.
 
-Add fwnode_handle_put() to avoid leaked references.
+Fix it by changing to use "list_add_tail(&rq->queuelist, pending)" so
+rq->queuelist doesn't need to be initialized. It should be ok since rq
+can't be on any list when PREFLUSH or POSTFLUSH, has no move actually.
 
-Fixes: 1e264f9d2918 ("net: dsa: qca8k: add LEDs basic support")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Please note the commit 81ada09cc25e ("blk-flush: reuse rq queuelist in
+flush state machine") also has another requirement that no drivers would
+touch rq->queuelist after blk_mq_end_request() since we will reuse it to
+add rq to the post-flush pending list in POSTFLUSH. If this is not true,
+we will have to revert that commit IMHO.
+
+This updated version adds "list_del_init(&rq->queuelist)" in flush rq
+callback since the dm layer may submit request of a weird invalid format
+(REQ_FSEQ_PREFLUSH | REQ_FSEQ_POSTFLUSH), which causes double list_add
+if without this "list_del_init(&rq->queuelist)". The weird invalid format
+problem should be fixed in dm layer.
+
+Reported-by: Friedrich Weber <f.weber@proxmox.com>
+Closes: https://lore.kernel.org/lkml/14b89dfb-505c-49f7-aebb-01c54451db40@proxmox.com/
+Closes: https://lore.kernel.org/lkml/c9d03ff7-27c5-4ebd-b3f6-5a90d96f35ba@proxmox.com/
+Fixes: 81ada09cc25e ("blk-flush: reuse rq queuelist in flush state machine")
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: ming.lei@redhat.com
+Cc: bvanassche@acm.org
+Tested-by: Friedrich Weber <f.weber@proxmox.com>
+Signed-off-by: Chengming Zhou <chengming.zhou@linux.dev>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240608143115.972486-1-chengming.zhou@linux.dev
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/qca/qca8k-leds.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ block/blk-flush.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/qca/qca8k-leds.c b/drivers/net/dsa/qca/qca8k-leds.c
-index 811ebeeff4ed7..43ac68052baf9 100644
---- a/drivers/net/dsa/qca/qca8k-leds.c
-+++ b/drivers/net/dsa/qca/qca8k-leds.c
-@@ -431,8 +431,11 @@ qca8k_parse_port_leds(struct qca8k_priv *priv, struct fwnode_handle *port, int p
- 		init_data.devicename = kasprintf(GFP_KERNEL, "%s:0%d",
- 						 priv->internal_mdio_bus->id,
- 						 port_num);
--		if (!init_data.devicename)
-+		if (!init_data.devicename) {
-+			fwnode_handle_put(led);
-+			fwnode_handle_put(leds);
- 			return -ENOMEM;
-+		}
+diff --git a/block/blk-flush.c b/block/blk-flush.c
+index e73dc22d05c1d..313f0ffcce42e 100644
+--- a/block/blk-flush.c
++++ b/block/blk-flush.c
+@@ -183,7 +183,7 @@ static void blk_flush_complete_seq(struct request *rq,
+ 		/* queue for flush */
+ 		if (list_empty(pending))
+ 			fq->flush_pending_since = jiffies;
+-		list_move_tail(&rq->queuelist, pending);
++		list_add_tail(&rq->queuelist, pending);
+ 		break;
  
- 		ret = devm_led_classdev_register_ext(priv->dev, &port_led->cdev, &init_data);
- 		if (ret)
-@@ -441,6 +444,7 @@ qca8k_parse_port_leds(struct qca8k_priv *priv, struct fwnode_handle *port, int p
- 		kfree(init_data.devicename);
+ 	case REQ_FSEQ_DATA:
+@@ -261,6 +261,7 @@ static enum rq_end_io_ret flush_end_io(struct request *flush_rq,
+ 		unsigned int seq = blk_flush_cur_seq(rq);
+ 
+ 		BUG_ON(seq != REQ_FSEQ_PREFLUSH && seq != REQ_FSEQ_POSTFLUSH);
++		list_del_init(&rq->queuelist);
+ 		blk_flush_complete_seq(rq, fq, seq, error);
  	}
  
-+	fwnode_handle_put(leds);
- 	return 0;
- }
- 
-@@ -471,9 +475,13 @@ qca8k_setup_led_ctrl(struct qca8k_priv *priv)
- 		 * the correct port for LED setup.
- 		 */
- 		ret = qca8k_parse_port_leds(priv, port, qca8k_port_to_phy(port_num));
--		if (ret)
-+		if (ret) {
-+			fwnode_handle_put(port);
-+			fwnode_handle_put(ports);
- 			return ret;
-+		}
- 	}
- 
-+	fwnode_handle_put(ports);
- 	return 0;
- }
 -- 
 2.43.0
 
