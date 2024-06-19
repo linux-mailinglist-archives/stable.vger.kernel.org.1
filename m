@@ -1,155 +1,89 @@
-Return-Path: <stable+bounces-53832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D5CF90E981
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3879290E9E3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 659611C21FB2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:33:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A47DC28A5C5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3759713C695;
-	Wed, 19 Jun 2024 11:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A27213E04B;
+	Wed, 19 Jun 2024 11:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="hb1uWTXz";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CSb5RTRB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9UnC05P"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh4-smtp.messagingengine.com (fhigh4-smtp.messagingengine.com [103.168.172.155])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A88713B583;
-	Wed, 19 Jun 2024 11:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76A8157478;
+	Wed, 19 Jun 2024 11:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718796809; cv=none; b=FC8FK6zh4tCieYtCWbV5o7kHydsPZ1DzUvJ/hdRFS5Af2vRmR2XmPXF/8pESLvWAAxY/Nzy0/Bsf5Js5FnEO5sHC5RXYyivOVeoQ3doUDmq/c53tQWheqoy+rwajhPCJIULSoF5vo7PNJxG+ksCfwh71HQ+ROxnJ8b80kURyuRk=
+	t=1718796972; cv=none; b=X87qYTNnpezrBwZfgA1ZS2LR5uh6cEqRzVVc1DC2zqmKpfrzcRqLhMM1pBnRvejUSAfpeK7b6p2RHKZChXvGAIbbWCkGaQpCc1JlgipAC4TAHFfC5kDlUJUJnNQYQcdt6HDgXPsoWywHs/+D0HOWWU+5zT+ktYUc45o/R7JP6dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718796809; c=relaxed/simple;
-	bh=VWvnmoFIlOj6btiz8Jh00kSCgZVAlN2H0RXQfJabBmo=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=JkpugQmr9IhAqVaE/NUYSdxdsU6Y1ALx7TJ4M18CvXpqiu7hs6DpEe6VSZs9rquRtDxVBWdcestRxoygr3kP60F/bwQ4pendUFws6Zixh8c4HDlJ6NF6/cUmUdPF7NIJjqS2iXG4HL0MVm1KGD9P/p3r23PNyfU3JJysEl3ziWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=hb1uWTXz; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CSb5RTRB; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 656A8114010E;
-	Wed, 19 Jun 2024 07:33:27 -0400 (EDT)
-Received: from imap44 ([10.202.2.94])
-  by compute3.internal (MEProxy); Wed, 19 Jun 2024 07:33:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1718796807;
-	 x=1718883207; bh=kDIE2Hn4BfwvhYLdbxICkDPcyzDjOxJr9UO616nJz2I=; b=
-	hb1uWTXzGe4fI8RqXGly3ydCZUfjdDuyz3YTqPYyiDZopvsqvv3MuwuyHmf4NfV+
-	HJAreFvaYQwlMBGuCpQMAWxmFuB6B1x//V+UHvw/HNoFu/Au7E06+fS9kd+DquvH
-	3I7JhhrxuBuCT5DHO17Ppobhg/oQoSUObeDV4FqfVW1kUTQRRszOOzmHosG5Utde
-	Ak5u1IrxavqTtdU66llP3N57rLYyF9I3wwB4nsSR36AHgcXibBP1mrtUZQ/v7t2f
-	ClZpsgUZohCSe/jygsdXbHP7Am4foiInfb6T8jprTiBoiqomkXuQyuPu6AdlPZQw
-	ntdHG6N4Q0oVNx2B3M5EOQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1718796807; x=
-	1718883207; bh=kDIE2Hn4BfwvhYLdbxICkDPcyzDjOxJr9UO616nJz2I=; b=C
-	Sb5RTRB+vSDqHmDYf96iPx0UWbFzJRUNyYuVSFX0NxdT5kv7B7S86a0xfg/p6LYj
-	avPW9YMttvLXaEzbl9uCIEAViEvN6c3odmUsqESuwZtiAS0Docp8FGTtiWnaew42
-	TMa+4rwV3kYS4VZrZx4myQKIJu7+xj5QKulqaaHjtZnVtmTscQ3KxGscjC7PAT93
-	0xKcscbYckxgqJhISJuruy2Tt3QVKjGb0qk8MndEl4RP1Yh2Jw25MvrzKHrES1CV
-	x/Ws6SHhKOnNYhyNRdobuO0qoLvxT41wnsoa54p+tG6y9P/fPIK9OucNxquM38oQ
-	JDWNOzVHjZcc37JCFQLeA==
-X-ME-Sender: <xms:B8JyZqVwt7lbl9ejfvBpfBKYLdKWhrvCUPgDMr8r78DiLkGNjo_h1Q>
-    <xme:B8JyZmlQYRh_jTTGM0LV4PCd3PIAvzb3gALhZygMy7loQGhk6HBbsPyp5IKCMb2fy
-    fEI4qYzIcVWFzMqTH4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeeftddggeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdfl
-    ihgrgihunhcujggrnhhgfdcuoehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtoh
-    hmqeenucggtffrrghtthgvrhhnpedufeegfeetudeghefftdehfefgveffleefgfehhfej
-    ueegveethfduuddvieehgfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:B8JyZubq2fXNzQxjs4OrhA01ZziFUZShK-rGoSnmw5wPX6tWCNgRuw>
-    <xmx:B8JyZhUUv7s8w5PdIcnkRi5xP7qePglLICpUU86RV0BPvCN8-BIo7A>
-    <xmx:B8JyZkkvBpJ9aNJ871R4sK2SHIRoZ3UBz3RW9NRP9V6ekR-HMXlKeg>
-    <xmx:B8JyZmdUUCFatZSQ00_9-3n93yFf5xLVfWxf8kDupuVZJ6fcovpDHg>
-    <xmx:B8JyZug_UkH9xDFNumR3Te0Gb9YnFVd1_Gvs2vqnXgdy_WbUU-yfgEwX>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 1B53036A0074; Wed, 19 Jun 2024 07:33:26 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-522-ga39cca1d5-fm-20240610.002-ga39cca1d
+	s=arc-20240116; t=1718796972; c=relaxed/simple;
+	bh=bJoUrQep+Xld5CWrSeUQDKonP5r/o9cAywy+GxrQR4g=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ZMvSz02uiL7tJoTMRCQudgD/YIID45p1pA2lPBcxuuCmiGs0BDYqV847jbFPRzXNghZHUFBjPKmx5ubzLh2x/LMxXhwz0rwZLyEvbgN+XXVltpT/SjcUPDrvUH7b1889YFC8EOqQjTXg/IqGi+8HBZd60Xgyb+2Z0gx2vwXmYfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9UnC05P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31E2C4AF1A;
+	Wed, 19 Jun 2024 11:36:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718796972;
+	bh=bJoUrQep+Xld5CWrSeUQDKonP5r/o9cAywy+GxrQR4g=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=l9UnC05PwBWOHL7lJetZ4WReM9XTAQBkpd4xhSydIsvLnqqj8by0ODArJtRPQ9Y+T
+	 RJHzPsVeX1K/P013InlOZY+l3BdBSg2AWnRFEgI1Rs+kJ0Uq5vh4If24xu5uQ2DqQ0
+	 1Y+sc3OJ2gdSEEpQQ92iyFoyQJGnI+n9w35UOMLTtmhHSRUXUHsrIBJnkd7xdDucik
+	 oCnQrmgsq1zywqHi2/gXZNPqOtVmjxx1HsPQjD/h/v5UeOmn/t1gsh75NIQ+g97OBN
+	 V6AAZa+YtBD3hXhsZQDZflqueprnmc3sY1XFDphe+wku1cXpyia3IbUmz38uoQsrlZ
+	 cO3fgGn29FdrQ==
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>, 
+ Mario Limonciello <mario.limonciello@amd.com>, 
+ Mika Westerberg <mika.westerberg@linux.intel.com>, 
+ Jian-Hong Pan <jhp@endlessos.org>, Niklas Cassel <cassel@kernel.org>
+Cc: stable@vger.kernel.org, linux-ide@vger.kernel.org
+In-Reply-To: <20240618152828.2686771-2-cassel@kernel.org>
+References: <20240618152828.2686771-2-cassel@kernel.org>
+Subject: Re: [PATCH v2] ata: ahci: Do not enable LPM if no LPM states are
+ supported by the HBA
+Message-Id: <171879697042.2747608.12473669104731916394.b4-ty@kernel.org>
+Date: Wed, 19 Jun 2024 13:36:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <859402a6-4e31-4029-a6ad-87c3be4d3fdd@app.fastmail.com>
-In-Reply-To: <20240616-mips-mt-fixes-v1-1-83913e0e60fc@flygoat.com>
-References: <20240616-mips-mt-fixes-v1-0-83913e0e60fc@flygoat.com>
- <20240616-mips-mt-fixes-v1-1-83913e0e60fc@flygoat.com>
-Date: Wed, 19 Jun 2024 12:32:50 +0100
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>
-Cc: "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- linux-kernel@vger.kernel.org,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH fixes 1/4] MIPS: mipsmtregs: Fix target register for MFTC0
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
+On Tue, 18 Jun 2024 17:28:29 +0200, Niklas Cassel wrote:
+> LPM consists of HIPM (host initiated power management) and DIPM
+> (device initiated power management).
+> 
+> ata_eh_set_lpm() will only enable HIPM if both the HBA and the device
+> supports it.
+> 
+> However, DIPM will be enabled as long as the device supports it.
+> The HBA will later reject the device's request to enter a power state
+> that it does not support (Slumber/Partial/DevSleep) (DevSleep is never
+> initiated by the device).
+> 
+> [...]
 
+Applied to libata/linux.git (for-6.10-fixes), thanks!
 
-=E5=9C=A82024=E5=B9=B46=E6=9C=8816=E6=97=A5=E5=85=AD=E6=9C=88 =E4=B8=8B=E5=
-=8D=882:25=EF=BC=8CJiaxun Yang=E5=86=99=E9=81=93=EF=BC=9A
-> Target register of mftc0 should be __res instead of $1, this is
-> a leftover from old .insn code.
->
-> Fixes: dd6d29a61489 ("MIPS: Implement microMIPS MT ASE helpers")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+[1/1] ata: ahci: Do not enable LPM if no LPM states are supported by the HBA
+      https://git.kernel.org/libata/linux/c/fa997b05
 
-Hi Thomas,
+Kind regards,
+-- 
+Niklas Cassel <cassel@kernel.org>
 
-I saw you sent mips-fixes_6.10_1 pull request but this series is
-not included in that PR while one of my later patch is included.
-
-If you think the whole series is not fit for fixes tree then please
-at least let this series go through fixes tree. There are many MT
-users for routers etc and I don't want to risk break things for them
-in linus tree for too long.
-
-The patch itself is obvious.
-
-Thanks
-- Jiaxun
-
-> ---
->  arch/mips/include/asm/mipsmtregs.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/mips/include/asm/mipsmtregs.h=20
-> b/arch/mips/include/asm/mipsmtregs.h
-> index 30e86861c206..b1ee3c48e84b 100644
-> --- a/arch/mips/include/asm/mipsmtregs.h
-> +++ b/arch/mips/include/asm/mipsmtregs.h
-> @@ -322,7 +322,7 @@ static inline void ehb(void)
->  	"	.set	push				\n"	\
->  	"	.set	"MIPS_ISA_LEVEL"		\n"	\
->  	_ASM_SET_MFTC0							\
-> -	"	mftc0	$1, " #rt ", " #sel "		\n"	\
-> +	"	mftc0	%0, " #rt ", " #sel "		\n"	\
->  	_ASM_UNSET_MFTC0						\
->  	"	.set	pop				\n"	\
->  	: "=3Dr" (__res));						\
->
-> --=20
-> 2.43.0
-
---=20
-- Jiaxun
 
