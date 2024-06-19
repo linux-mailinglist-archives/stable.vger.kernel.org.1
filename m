@@ -1,151 +1,155 @@
-Return-Path: <stable+bounces-53811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417BD90E80E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 770B790E830
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:17:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD69A1F22C53
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:14:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E16F91F21CCD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89D712FF88;
-	Wed, 19 Jun 2024 10:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785BE82889;
+	Wed, 19 Jun 2024 10:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WrNv3JH1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U2jjgt+k"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732C212FB37;
-	Wed, 19 Jun 2024 10:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDEF40879;
+	Wed, 19 Jun 2024 10:17:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718791988; cv=none; b=EjQHbnhD3xbsIRmu2aRWcSJ3EjhfYr7rxz7m0H3ugu36mKTx0YmqPqrlkzleCmy7OvFkNliMlQnjzZrIhrRE+EmQsWqhbGhvLy/tyCB5wk7U5Eg6/RJwpD5SFfM3CGkmT44e8FR8ibFbSU5kJ7u25sHKhUPViWn6KUAc7B2A8DM=
+	t=1718792227; cv=none; b=M9gShEmLh5Iwem1qk0YZ8LYtaFE618qaR1pyesi1fPzEZlt48a30EVqmFcuiQ21uma/BC87e/R2dt9NoHY7JbVp4W2tswOSM+PDb5638PxkKGgHkCcTEQYqQLzBWoRPoiZgEx2aIUH0lWQ8EEYm+RhBMhOxxy60doAEHM52F1LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718791988; c=relaxed/simple;
-	bh=NP0B7SlSGUBGAul8qyE+Revon1rkLfT8ghClH9lPF1c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AmGsuGaBtSUFsdyS7GI9kv/21i0fy5I+P/bI53CKuzaICZZ0iEz3LbcQ1e8QMtPedHj7ZHRRXVIZDIeS7JAnNfjDiYbnH3kFpQTuFm0KYOBYjkkF/ONUgoO6RAFvGFHFRZ/jzlkdeMCEromstmtOrqb+Vag2yZgloGJV7fKFkLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WrNv3JH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F8B7C2BBFC;
-	Wed, 19 Jun 2024 10:13:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718791988;
-	bh=NP0B7SlSGUBGAul8qyE+Revon1rkLfT8ghClH9lPF1c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WrNv3JH1lllExsc3t32OY99tM90JR8LS6TVTyXasgjuSKAiOakdZ1VycpBjqTvcwd
-	 qjc/d/bR7WodhYycVLJhDQqUDSugEz7KfJfORm0rN6wdsEI+dk6VEWdHOTsa0M5Toc
-	 JNYHAkCTGzaZs7eZy0Lu/SiRWxzeLp1sFIi7VQFtngIFtSJAT1tEs+bJdTniAcoACA
-	 BoAOG84TLsqQ/r129n97i/wF3ownkpQEVjdb20IywKVS+qw+0rjUBpghwbG8f5DhYU
-	 4/eKd5x3ju/vtE3khIzAGDSBXjlrS6uvYDHG+YiV7oGwlsZnT4jZ5o8ip3RKD42yJJ
-	 ilqyj/Bwxx45w==
-Date: Wed, 19 Jun 2024 12:13:03 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jian-Hong Pan <jhp@endlessos.org>, stable@vger.kernel.org,
-	linux-ide@vger.kernel.org
-Subject: Re: [PATCH v2] ata: ahci: Do not enable LPM if no LPM states are
- supported by the HBA
-Message-ID: <ZnKvLy4_a3U6835Q@ryzen.lan>
-References: <20240618152828.2686771-2-cassel@kernel.org>
- <4522f403-8419-4c59-b28b-9d460780c389@kernel.org>
+	s=arc-20240116; t=1718792227; c=relaxed/simple;
+	bh=s8RGpgeY+vRW4/m+qjUvrAqK08qjnonhzeUqyirvVDU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sqUtCwbWLqB3gHYK39j+tKyfw5Z6SPX5uv9fzRdj34zzc25Hun0ZVPkC1KBdl3V57EqEnLKdXdVUrl6v+XTC3mU+Bqi7HZ3wAYErIBALwsqCRby9JoIMh7D7xev1fKNcmjjiOdFuMZc0LYNM6Qa2QL7WTc/WOsJ2PQXlMRTHqys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U2jjgt+k; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-4ecf8af13edso1879141e0c.0;
+        Wed, 19 Jun 2024 03:17:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718792224; x=1719397024; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=n1+gV2xNiNv7dJowBjT3GHgsvdp/pTsHCWmzCeg/qiU=;
+        b=U2jjgt+kPgtMu7gOQdMUWMtEWCSXs9ojoLtik+sNuFIQ1adf3rEQpAgK1fJcHph76C
+         qyOdnrPW8j9RQuNNQFS/Bjjm+2dVNHgmb+gkcyz+BIe+j/WEUietGLjcZy/20x+H5/o/
+         HFXcEQTLP594k8uLwBGyyHlUvVu3YiLuVbRi+9bfUM5iuwAp+9XyrQss7kn3qG8xX0I6
+         dq5oUMDHGiLMOmbFZvMDu85mD28sKBFhXyTnsO3ejv7Y4xZECkVyqGazQz11Y36noxYR
+         +Gk1Qa2AzOVYVfsbJud6keAE5uKD3ENVOCt171dMury5kDbyOYgafz214xKgjaAClWfQ
+         dcXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718792224; x=1719397024;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n1+gV2xNiNv7dJowBjT3GHgsvdp/pTsHCWmzCeg/qiU=;
+        b=N8KA7q8IejkrjUiviqKbAV0hiFxC1aAYGWb2r+Dn2COsGGCuf07tC4yf500q/ozrob
+         +ftqy6k2X459/5kQQWLP+4sGVcrrJ/rxjNMNqg9c+U6EaWJT3wYPl9kNk054GVtumv68
+         VsPvz340Ur/NMxq/FIHzp8cMHnQoWMOF3VQDacbb1vY4RnSitHt5LziPwboDIVz8QGz8
+         Hrwh8YrqSy7utvecTzXfzmcb8Oe19sybVWTj5Y7Xb7wtTLZprz4Hs74xrvi2bUTz/7Me
+         /KD2MNrCr9ZdYqIudQ8xGUBB1U+KyI5oLKJq5i9LSTTic0u5tqx5z1p1o7TKhcSvfNi8
+         MoiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXgOWKaufGYpElrVCyPn3PFPPDMiChf5z67PusLYmo75aTxsA5EbawOZLnyp/X7birQlfEUGwQBNBoRKVrcOxPWuSRVLUSFeueJlIIKltVKyw8tJ+lOjKc00EwVSyaXkMmRYrke
+X-Gm-Message-State: AOJu0Yx8FV3LWYIm2z4RF9EFrDPUuwWRGxiIv0KD/WeU0yS7BKG7PTNf
+	9Xd3dzIxTV1ZsmdPbd/H01hK8QPXjR5KOFR5F8btlMiZeJT6c7ht
+X-Google-Smtp-Source: AGHT+IGVQZTkpTltaF1a8GtUuojLUQqcDiAP0ZTCxOeNqMHgEy0zocGIOoTEz5SYB6pCzt28FeUSWQ==
+X-Received: by 2002:a05:6122:3c8a:b0:4ef:2480:391b with SMTP id 71dfb90a1353d-4ef2766fe4bmr2528690e0c.1.1718792224524;
+        Wed, 19 Jun 2024 03:17:04 -0700 (PDT)
+Received: from [192.168.75.133] (mobile-166-172-56-136.mycingular.net. [166.172.56.136])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecbf27sm594785285a.29.2024.06.19.03.16.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Jun 2024 03:17:03 -0700 (PDT)
+Message-ID: <b683505c-817d-407b-a633-f1c8036e23c3@gmail.com>
+Date: Wed, 19 Jun 2024 11:16:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4522f403-8419-4c59-b28b-9d460780c389@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/770] 5.10.220-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240618123407.280171066@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ HGuUuzv+GKZ6nsysJw==
+In-Reply-To: <20240618123407.280171066@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jun 19, 2024 at 12:45:51PM +0900, Damien Le Moal wrote:
-> On 6/19/24 00:28, Niklas Cassel wrote:
-> > LPM consists of HIPM (host initiated power management) and DIPM
-> > (device initiated power management).
-> > 
-> > ata_eh_set_lpm() will only enable HIPM if both the HBA and the device
-> > supports it.
-> > 
-> > However, DIPM will be enabled as long as the device supports it.
-> > The HBA will later reject the device's request to enter a power state
-> > that it does not support (Slumber/Partial/DevSleep) (DevSleep is never
-> > initiated by the device).
-> > 
-> > For a HBA that doesn't support any LPM states, simply don't set a LPM
-> > policy such that all the HIPM/DIPM probing/enabling will be skipped.
-> > 
-> > Not enabling HIPM or DIPM in the first place is safer than relying on
-> > the device following the AHCI specification and respecting the NAK.
-> > (There are comments in the code that some devices misbehave when
-> > receiving a NAK.)
-> > 
-> > Performing this check in ahci_update_initial_lpm_policy() also has the
-> > advantage that a HBA that doesn't support any LPM states will take the
-> > exact same code paths as a port that is external/hot plug capable.
-> > 
-> > Side note: the port in ata_port_dbg() has not been given a unique id yet,
-> > but this is not overly important as the debug print is disabled unless
-> > explicitly enabled using dynamic debug. A follow-up series will make sure
-> > that the unique id assignment will be done earlier. For now, the important
-> > thing is that the function returns before setting the LPM policy.
-> > 
-> > Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Niklas Cassel <cassel@kernel.org>
-> > ---
-> > Changes since v1: Add debug print as suggested by Mika.
-> > 
-> >  drivers/ata/ahci.c | 8 ++++++++
-> >  1 file changed, 8 insertions(+)
-> > 
-> > diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-> > index 07d66d2c5f0d..5eb38fbbbecd 100644
-> > --- a/drivers/ata/ahci.c
-> > +++ b/drivers/ata/ahci.c
-> > @@ -1735,6 +1735,14 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
-> >  	if (ap->pflags & ATA_PFLAG_EXTERNAL)
-> >  		return;
-> >  
-> > +	/* If no LPM states are supported by the HBA, do not bother with LPM */
-> > +	if ((ap->host->flags & ATA_HOST_NO_PART) &&
-> > +	    (ap->host->flags & ATA_HOST_NO_SSC) &&
-> > +	    (ap->host->flags & ATA_HOST_NO_DEVSLP)) {
+
+
+On 6/18/2024 1:27 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.220 release.
+> There are 770 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Nit: Maybe:
+> Responses should be made by Thu, 20 Jun 2024 12:32:00 +0000.
+> Anything received after that time might be too late.
 > 
-> #define ATA_HOST_NO_LPM		\
-> 	(ATA_HOST_NO_PART | ATA_HOST_NO_SSC | ATA_HOST_NO_DEVSLP)
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.220-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 > 
-> and then the if becomes:
+> thanks,
 > 
-> 	if ((ap->host->flags & ATA_HOST_NO_LPM) == ATA_HOST_NO_LPM) {
-> 
-> But no strong feelings about it. So:
-> 
-> Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+> greg k-h
 
-Thank you for the R-b and your suggestion.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Personally, I do not think that your suggestion is significantly easier to
-read than what is already there (especially with the comment to give
-context).
-
-My brain always has to read a:
-if ((foo & bar) == bar)
-twice anyway.
-
-I guess a:
-if (!ata_host_has_lpm(ap->host))
-would be clearer, but considering that we wouldn't be able to use this
-helper function anywhere else in the libata subsystem, I'm not sure if
-it is worth it, so I will just apply this patch as is.
-
-
-Kind regards,
-Niklas
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
