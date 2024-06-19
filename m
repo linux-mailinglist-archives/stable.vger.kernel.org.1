@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-54366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12A490EDD9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAB790ECB5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DB751F22DF9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB9A91F2117B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EF514A0A7;
-	Wed, 19 Jun 2024 13:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9412E145354;
+	Wed, 19 Jun 2024 13:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBGr2Nmc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3vs73U4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35586147C60;
-	Wed, 19 Jun 2024 13:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE1512FB31;
+	Wed, 19 Jun 2024 13:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803368; cv=none; b=eQ7VmBokWaSM+0RNIJoy93mHnGBne0O7/jsZEISa/tGWbwf0S81Wk/huxdOBzzGylmU1f4zf15Ll4dXvLaNkoEdSW3u6kqnvMYmJx91R1jeIjC2mmau5Hb8ZGX2rSKjCvWw9dk2BVX90Fhg3dSlYfWShwk3WJtCxiT1vTp4hb6k=
+	t=1718802600; cv=none; b=jQmVJXzo3WcXZZ6/V0yyhhkFveUsvEhTh0+e9lXVCEPGBmSEK4OHtoM1SsvqbypMSHivOP0p8q3gfiURtY4gJIRisCp2TGsze26f1eI4ZW8KOU5LitTvRIvF+MUlZOSDG4qwl9G/XiCyCN2itLNJ+9ZKEj7gkyqeJMZHZNMDCqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803368; c=relaxed/simple;
-	bh=dG1urc/0FYVY0+Z46o4v0fnX/b8RT18naUMFqqkniXs=;
+	s=arc-20240116; t=1718802600; c=relaxed/simple;
+	bh=VV919UURObOpWiM6NE+Q9Ku6hmAoZcCF0pgl5kUFSho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TmQz1ciWdjuVQJFbZg6Fia/5TasQgdMsr5gd1hGJcDeSMmT4lY3CV9l5SVwzlpKnMcC0qVT+tZz6Ekz+wE/ozBS0s40/KB598sYX87DJI0FOk2Yilo9YK7GOhzWi88u621SdGMvoONO3mN1iE3JbtkC4LAHf2+Pkp5HPdJiIaqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBGr2Nmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8FAC2BBFC;
-	Wed, 19 Jun 2024 13:22:47 +0000 (UTC)
+	 MIME-Version; b=enAHk95CEh11EOy6V2dq0rjEyrodyGNsGK9zq/jVLYLSHbY21fnAQE5/cEJopb+kyPfl4VAndJ51qKeBTA2Qm9dQEpc2wIZxVCAc8BrppOGXD0rWJKoPjDdhPD1nl4/ua/jDKHqFg94AHuDSmjXeIT0yHSdfEnD81wefMDOvkmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3vs73U4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1859C2BBFC;
+	Wed, 19 Jun 2024 13:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803368;
-	bh=dG1urc/0FYVY0+Z46o4v0fnX/b8RT18naUMFqqkniXs=;
+	s=korg; t=1718802600;
+	bh=VV919UURObOpWiM6NE+Q9Ku6hmAoZcCF0pgl5kUFSho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RBGr2NmcMmB9XScXd280uBeRnftkZMXfIQeSrNnuXyCCivX7vgPfJxOLIQODNdZIn
-	 kPrSVBAGKO4hfXiOtv/guDQnUcSoRn+7eo2xUaNmUYAMc8P8smwCkoDJ+fO79meUSn
-	 xMr+lHPoB2+f4HMFN/oizNR/13elp9hQGz8h5OT0=
+	b=Z3vs73U4KyYuNwHV/FZ3rIIfeeOgoB49+RbhaNTfdXlwsp+qJKKDkb2xSUwTrJ+BK
+	 MVC0rh5vd9wg1+gp04NFIISdqcIKpoV6fcECwjN5i2JlsEs4GwQ9hZ9E+fQu+pxTQE
+	 YwVRK1qiKlKf2afftngwgTEKVGqv+lILXSARGoN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Eric Wheeler <linux-integrity@lists.ewheeler.net>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.9 242/281] dm-integrity: set discard_granularity to logical block size
+	Marc Dionne <marc.dionne@auristor.com>,
+	David Howells <dhowells@redhat.com>,
+	Gao Xiang <xiang@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Yue Hu <huyue2@coolpad.com>,
+	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	linux-erofs@lists.ozlabs.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH 6.6 250/267] cachefiles, erofs: Fix NULL deref in when cachefiles is not doing ondemand-mode
 Date: Wed, 19 Jun 2024 14:56:41 +0200
-Message-ID: <20240619125619.274437021@linuxfoundation.org>
+Message-ID: <20240619125615.915210973@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +68,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 69381cf88a8dfa0ab27fb801b78be813e7e8fb80 upstream.
+commit c3d6569a43322f371e7ba0ad386112723757ac8f upstream.
 
-dm-integrity could set discard_granularity lower than the logical block
-size. This could result in failures when sending discard requests to
-dm-integrity.
+cachefiles_ondemand_init_object() as called from cachefiles_open_file() and
+cachefiles_create_tmpfile() does not check if object->ondemand is set
+before dereferencing it, leading to an oops something like:
 
-This fix is needed for kernels prior to 6.10.
+	RIP: 0010:cachefiles_ondemand_init_object+0x9/0x41
+	...
+	Call Trace:
+	 <TASK>
+	 cachefiles_open_file+0xc9/0x187
+	 cachefiles_lookup_cookie+0x122/0x2be
+	 fscache_cookie_state_machine+0xbe/0x32b
+	 fscache_cookie_worker+0x1f/0x2d
+	 process_one_work+0x136/0x208
+	 process_scheduled_works+0x3a/0x41
+	 worker_thread+0x1a2/0x1f6
+	 kthread+0xca/0xd2
+	 ret_from_fork+0x21/0x33
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reported-by: Eric Wheeler <linux-integrity@lists.ewheeler.net>
-Cc: stable@vger.kernel.org # <= 6.9
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Fix this by making cachefiles_ondemand_init_object() return immediately if
+cachefiles->ondemand is NULL.
+
+Fixes: 3c5ecfe16e76 ("cachefiles: extract ondemand info field from cachefiles_object")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Gao Xiang <xiang@kernel.org>
+cc: Chao Yu <chao@kernel.org>
+cc: Yue Hu <huyue2@coolpad.com>
+cc: Jeffle Xu <jefflexu@linux.alibaba.com>
+cc: linux-erofs@lists.ozlabs.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-integrity.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/cachefiles/ondemand.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
-index 7f3dc8ee6ab8..417fddebe367 100644
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -3492,6 +3492,7 @@ static void dm_integrity_io_hints(struct dm_target *ti, struct queue_limits *lim
- 		limits->physical_block_size = ic->sectors_per_block << SECTOR_SHIFT;
- 		blk_limits_io_min(limits, ic->sectors_per_block << SECTOR_SHIFT);
- 		limits->dma_alignment = limits->logical_block_size - 1;
-+		limits->discard_granularity = ic->sectors_per_block << SECTOR_SHIFT;
- 	}
- 	limits->max_integrity_segments = USHRT_MAX;
- }
--- 
-2.45.2
-
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -611,6 +611,9 @@ int cachefiles_ondemand_init_object(stru
+ 	struct fscache_volume *volume = object->volume->vcookie;
+ 	size_t volume_key_size, cookie_key_size, data_len;
+ 
++	if (!object->ondemand)
++		return 0;
++
+ 	/*
+ 	 * CacheFiles will firstly check the cache file under the root cache
+ 	 * directory. If the coherency check failed, it will fallback to
 
 
 
