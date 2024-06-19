@@ -1,165 +1,77 @@
-Return-Path: <stable+bounces-53817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111F090E8A4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:52:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 789EA90E8B6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9474D2840E8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:52:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04F20286A11
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4F912FB27;
-	Wed, 19 Jun 2024 10:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C376913210E;
+	Wed, 19 Jun 2024 10:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZjuewND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vbgezun5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D85675811
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 10:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860074D8B2
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 10:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718794319; cv=none; b=MOMlLgmXKqptceQVbr+tAVUKqv3sWTF+VPzWYl9Er8s6HnmK9Dfy6tgID+ReB4IrSJYiHseQcypVQxUiMsM1We4mKeSiX8+cvztARRLWMaGMxB+5YxAxudcX+nsPA8ghVRm2vJU4mVuSMhoCzbY7W0gQ+fAGUEpEyXx9tLENZ3E=
+	t=1718794457; cv=none; b=X73PS2ml9puFQhQvrgDQ0PxtcBTFwwicZsWyrRJEoNA6SoGMLUzi4w0YoIREIkyFtEMRah3wkktPX/l8y/AN291wdPHtcpT3OCXLL2okck36d0pnG6q+O+HcXEcgBG80GR3vTlcvwMO70WrZLbMd4xEjgRzXLEkafAosjIO/Wk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718794319; c=relaxed/simple;
-	bh=CuaRLi1tmzTJ7D6ZP1HcAdkBlKhP69emUoOTwxf5CUQ=;
+	s=arc-20240116; t=1718794457; c=relaxed/simple;
+	bh=AS4R5+Kn5AOXCP7/IDS2va+JS5CbricxGwIUkyXjNy8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UiHEiTeTqWIkUrG8ZVrPV1yNE3n1g7FTe808QwnAAVLHtofGX0jsytf1W1R/Sa9Yj/qei2J0XkMAXbVnKeboZ0clJfbEtJVg9NUJahFwz8pj2G/txerRIcdbwO+eK1pL2/NYms59NG6eyV5uDpBCbO0CxByxTPQAdX4LOngGJk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZjuewND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EEBC4AF1C;
-	Wed, 19 Jun 2024 10:51:57 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=lwQid4jWC7ZEhjwdU8iP01V+joBDnlr7/59L4oOWrUhjYe9BENC/bTV0YL0hUzsOuSwS21A/o0T2Zskx9xNrul53uGWQAzWe04FzmacGrpg9KUq4d4ESZFRTj8kQOBlNXg2beOldIvY8reaRE8Xudb8gP3wmkuVH5O5LDX5m6BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vbgezun5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920F7C2BBFC;
+	Wed, 19 Jun 2024 10:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718794318;
-	bh=CuaRLi1tmzTJ7D6ZP1HcAdkBlKhP69emUoOTwxf5CUQ=;
+	s=korg; t=1718794457;
+	bh=AS4R5+Kn5AOXCP7/IDS2va+JS5CbricxGwIUkyXjNy8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nZjuewNDEY8VQy9xTsHZOYX8OnKxmaTrrFsMLPXM5izlaSvlWsOtCOurc9yH6VBSK
-	 EDij7bo5v09YhXDMoOTIgltHowyh1OvWDva717GPEVCHgsdS0Sf0ZhUELX3hJ92TYt
-	 M38eWAIRTTwAgr/ZZ2zUyyeIssqD4B0dZh7XeZho=
-Date: Wed, 19 Jun 2024 12:51:55 +0200
+	b=Vbgezun5gw9O2Y7lIl1l0F7e3tHWSoBVJ/4CY014WnNgIFLw3GImd3qsmugaCbFZY
+	 tcjX66kn103R9WG7l0JdSWJKeKeyFwrBuDijQp1gxdY2wBodVwpCEeG3JoMKP+tlpv
+	 TuG9rzduGIOJoxqnXeLscagXX733ZrtmoKT+AfjE=
+Date: Wed, 19 Jun 2024 12:54:14 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] kbuild: Remove support for Clang's ThinLTO caching
-Message-ID: <2024061937-footpad-altitude-1462@gregkh>
-References: <2024061340-troubling-automated-9989@gregkh>
- <20240613183322.1088226-1-nathan@kernel.org>
+To: Sam James <sam@gentoo.org>
+Cc: stable@vger.kernel.org, leah.rumancik@gmail.com,
+	Miaohe Lin <linmiaohe@huawei.com>
+Subject: Re: [PATCH 6.1] Revert "fork: defer linking file vma until vma is
+ fully initialized"
+Message-ID: <2024061905-hatbox-congrats-2274@gregkh>
+References: <20240614084038.3133260-1-sam@gentoo.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240613183322.1088226-1-nathan@kernel.org>
+In-Reply-To: <20240614084038.3133260-1-sam@gentoo.org>
 
-On Thu, Jun 13, 2024 at 11:33:22AM -0700, Nathan Chancellor wrote:
-> commit aba091547ef6159d52471f42a3ef531b7b660ed8 upstream.
+On Fri, Jun 14, 2024 at 09:40:28AM +0100, Sam James wrote:
+> This reverts commit 0c42f7e039aba3de6d7dbf92da708e2b2ecba557.
 > 
-> There is an issue in clang's ThinLTO caching (enabled for the kernel via
-> '--thinlto-cache-dir') with .incbin, which the kernel occasionally uses
-> to include data within the kernel, such as the .config file for
-> /proc/config.gz. For example, when changing the .config and rebuilding
-> vmlinux, the copy of .config in vmlinux does not match the copy of
-> .config in the build folder:
+> The backport is incomplete and causes xfstests failures. The consequences
+> of the incomplete backport seem worse than the original issue, so pick
+> the lesser evil and revert until a full backport is ready.
 > 
->   $ echo 'CONFIG_LTO_NONE=n
->   CONFIG_LTO_CLANG_THIN=y
->   CONFIG_IKCONFIG=y
->   CONFIG_HEADERS_INSTALL=y' >kernel/configs/repro.config
-> 
->   $ make -skj"$(nproc)" ARCH=x86_64 LLVM=1 clean defconfig repro.config vmlinux
->   ...
-> 
->   $ grep CONFIG_HEADERS_INSTALL .config
->   CONFIG_HEADERS_INSTALL=y
-> 
->   $ scripts/extract-ikconfig vmlinux | grep CONFIG_HEADERS_INSTALL
->   CONFIG_HEADERS_INSTALL=y
-> 
->   $ scripts/config -d HEADERS_INSTALL
-> 
->   $ make -kj"$(nproc)" ARCH=x86_64 LLVM=1 vmlinux
->   ...
->     UPD     kernel/config_data
->     GZIP    kernel/config_data.gz
->     CC      kernel/configs.o
->   ...
->     LD      vmlinux
->   ...
-> 
->   $ grep CONFIG_HEADERS_INSTALL .config
->   # CONFIG_HEADERS_INSTALL is not set
-> 
->   $ scripts/extract-ikconfig vmlinux | grep CONFIG_HEADERS_INSTALL
->   CONFIG_HEADERS_INSTALL=y
-> 
-> Without '--thinlto-cache-dir' or when using full LTO, this issue does
-> not occur.
-> 
-> Benchmarking incremental builds on a few different machines with and
-> without the cache shows a 20% increase in incremental build time without
-> the cache when measured by touching init/main.c and running 'make all'.
-> 
-> ARCH=arm64 defconfig + CONFIG_LTO_CLANG_THIN=y on an arm64 host:
-> 
->   Benchmark 1: With ThinLTO cache
->     Time (mean ± σ):     56.347 s ±  0.163 s    [User: 83.768 s, System: 24.661 s]
->     Range (min … max):   56.109 s … 56.594 s    10 runs
-> 
->   Benchmark 2: Without ThinLTO cache
->     Time (mean ± σ):     67.740 s ±  0.479 s    [User: 718.458 s, System: 31.797 s]
->     Range (min … max):   67.059 s … 68.556 s    10 runs
-> 
->   Summary
->     With ThinLTO cache ran
->       1.20 ± 0.01 times faster than Without ThinLTO cache
-> 
-> ARCH=x86_64 defconfig + CONFIG_LTO_CLANG_THIN=y on an x86_64 host:
-> 
->   Benchmark 1: With ThinLTO cache
->     Time (mean ± σ):     85.772 s ±  0.252 s    [User: 91.505 s, System: 8.408 s]
->     Range (min … max):   85.447 s … 86.244 s    10 runs
-> 
->   Benchmark 2: Without ThinLTO cache
->     Time (mean ± σ):     103.833 s ±  0.288 s    [User: 232.058 s, System: 8.569 s]
->     Range (min … max):   103.286 s … 104.124 s    10 runs
-> 
->   Summary
->     With ThinLTO cache ran
->       1.21 ± 0.00 times faster than Without ThinLTO cache
-> 
-> While it is unfortunate to take this performance improvement off the
-> table, correctness is more important. If/when this is fixed in LLVM, it
-> can potentially be brought back in a conditional manner. Alternatively,
-> a developer can just disable LTO if doing incremental compiles quickly
-> is important, as a full compile cycle can still take over a minute even
-> with the cache and it is unlikely that LTO will result in functional
-> differences for a kernel change.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: dc5723b02e52 ("kbuild: add support for Clang LTO")
-> Reported-by: Yifan Hong <elsk@google.com>
-> Closes: https://github.com/ClangBuiltLinux/linux/issues/2021
-> Reported-by: Masami Hiramatsu <mhiramat@kernel.org>
-> Closes: https://lore.kernel.org/r/20220327115526.cc4b0ff55fc53c97683c3e4d@kernel.org/
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> [nathan: Address conflict in Makefile]
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> Link: https://lore.kernel.org/stable/20240604004751.3883227-1-leah.rumancik@gmail.com/
+> Reported-by: Leah Rumancik <leah.rumancik@gmail.com>
+> Signed-off-by: Sam James <sam@gentoo.org>
 > ---
->  Makefile | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+>  kernel/fork.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
 
-This applied to 5.15.y, not 6.1.y :(
-
-Can you rebase and resend a fix for 6.1.y?
-
-thanks,
+Both reverts now queued up, thanks.
 
 greg k-h
 
