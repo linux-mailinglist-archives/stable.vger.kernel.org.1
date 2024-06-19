@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-53927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DAF90EBEB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:02:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E9790ED1A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEBAC1C2431A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:02:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C9E282A21
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0F214B978;
-	Wed, 19 Jun 2024 13:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932B4145334;
+	Wed, 19 Jun 2024 13:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHL/pIME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FW8VbUBj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097AC143C58;
-	Wed, 19 Jun 2024 13:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED421422B8;
+	Wed, 19 Jun 2024 13:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802084; cv=none; b=Mf6GHKWdnkcwkPaeEzHtQIor/C5iTbFN7b/+5Ekot5rjvvQL/gu7oOF2EkUuqh+fpPbk2zD4K+49iEo+H+OYtPoTLhj7+enxS+UpL+RazywtUTj9++4cjXSv9klvJIpSCNzuudzv1psFYVYrnQqNuBETuez4uVgo4cfMZQ8RpAc=
+	t=1718802851; cv=none; b=aRl54BKsUWzR945sSYGG+Dz4qunTMFR3NVteQlQb3aXGdIn6ix4bWnKyJLa3CQhvGCJzUFZ5c6gw35YcXpAXr8vk1h1lGTDmab9ybliUehLVEXTuVX82gBShd4WZ6xA8gOT9lorwxXuoVfl+35eB4cz+iU5L3901KSYqp78Pyt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802084; c=relaxed/simple;
-	bh=LVg08ReBNXHbs9R8JcStNBx84PJ2D/PdFUdeKvQUacs=;
+	s=arc-20240116; t=1718802851; c=relaxed/simple;
+	bh=068A3g2vCJG71gkG876ahjKCR3yaYnbVUsQIt8zsF7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TH8HYpvMWSOhxfaxriv2+mAAwgEzczb8GGxIMSP8AWru7sffZ7Un/JxuIOyCSbSSsen3BfkrgFn5mrziJYTDiGmgTMx6rdabdLB+BXZG25BN4CSP2+UlmRyYwJwMBc+Upt+utE6J5K9LZEi2iLmXHP8GbfcT66A99AX3Fo0Zkr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHL/pIME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8095FC2BBFC;
-	Wed, 19 Jun 2024 13:01:23 +0000 (UTC)
+	 MIME-Version; b=KbCmH+XfB8Iojr1R7EYs1MTMb7luKLK1u7uzs1v5F/u8ltxAygL8O9kY9DMKjwF+nedSamDMzwMQ6+QjewA044HNBENyIvJHEnhLJP7g7QS7f9RQ/jROiu8zxI2EDbJcEODBWvi6JpGPk81DAD9QyvNdchRt81ERwRrCoDM2LJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FW8VbUBj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADB4C2BBFC;
+	Wed, 19 Jun 2024 13:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802083;
-	bh=LVg08ReBNXHbs9R8JcStNBx84PJ2D/PdFUdeKvQUacs=;
+	s=korg; t=1718802851;
+	bh=068A3g2vCJG71gkG876ahjKCR3yaYnbVUsQIt8zsF7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lHL/pIMEQPYHS9S50ZWeet+tVtbJSmcFqEKBwEul+VLZ/g6l0EJZ8R3ENNx0Bt6ew
-	 Im15+Rbt/3qQlcyupBiKLu2B0oE3+gIa/lxwkr84YUb0bHyVC9gswTaNx/LMwz/DnR
-	 7VqAg81XPzhlAV7HJy+o0474f8/BOJDohgyh+FOU=
+	b=FW8VbUBjyvkndS5PLFa1KcYtxVcCNuWdcsg2crbN4zojxVQ9fAECoEzcWb69MzRCw
+	 FE56nxX/r4v05Am7fuj7z1ONqOAhDAwbzLzbNZ8cXgz4f5XyB0PrRZnKd/109U9Jev
+	 h0cZkbvPS/35Hu5hS9pAVdbjtnEpuUVdPpHKF+yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/267] nilfs2: return the mapped address from nilfs_get_page()
+Subject: [PATCH 6.9 068/281] af_unix: Use skb_queue_empty_lockless() in unix_release_sock().
 Date: Wed, 19 Jun 2024 14:53:47 +0200
-Message-ID: <20240619125609.271605990@linuxfoundation.org>
+Message-ID: <20240619125612.461380641@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,148 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 09a46acb3697e50548bb265afa1d79163659dd85 ]
+[ Upstream commit 83690b82d228b3570565ebd0b41873933238b97f ]
 
-In prepartion for switching from kmap() to kmap_local(), return the kmap
-address from nilfs_get_page() instead of having the caller look up
-page_address().
+If the socket type is SOCK_STREAM or SOCK_SEQPACKET, unix_release_sock()
+checks the length of the peer socket's recvq under unix_state_lock().
 
-[konishi.ryusuke: fixed a missing blank line after declaration]
-Link: https://lkml.kernel.org/r/20231127143036.2425-7-konishi.ryusuke@gmail.com
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 7373a51e7998 ("nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors")
+However, unix_stream_read_generic() calls skb_unlink() after releasing
+the lock.  Also, for SOCK_SEQPACKET, __skb_try_recv_datagram() unlinks
+skb without unix_state_lock().
+
+Thues, unix_state_lock() does not protect qlen.
+
+Let's use skb_queue_empty_lockless() in unix_release_sock().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/dir.c | 57 +++++++++++++++++++++++--------------------------
- 1 file changed, 27 insertions(+), 30 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index 929edc0b101a0..c6b88be8a9d73 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -186,19 +186,24 @@ static bool nilfs_check_page(struct page *page)
- 	return false;
- }
- 
--static struct page *nilfs_get_page(struct inode *dir, unsigned long n)
-+static void *nilfs_get_page(struct inode *dir, unsigned long n,
-+		struct page **pagep)
- {
- 	struct address_space *mapping = dir->i_mapping;
- 	struct page *page = read_mapping_page(mapping, n, NULL);
-+	void *kaddr;
- 
--	if (!IS_ERR(page)) {
--		kmap(page);
--		if (unlikely(!PageChecked(page))) {
--			if (!nilfs_check_page(page))
--				goto fail;
--		}
-+	if (IS_ERR(page))
-+		return page;
-+
-+	kaddr = kmap(page);
-+	if (unlikely(!PageChecked(page))) {
-+		if (!nilfs_check_page(page))
-+			goto fail;
- 	}
--	return page;
-+
-+	*pagep = page;
-+	return kaddr;
- 
- fail:
- 	nilfs_put_page(page);
-@@ -275,14 +280,14 @@ static int nilfs_readdir(struct file *file, struct dir_context *ctx)
- 	for ( ; n < npages; n++, offset = 0) {
- 		char *kaddr, *limit;
- 		struct nilfs_dir_entry *de;
--		struct page *page = nilfs_get_page(inode, n);
-+		struct page *page;
- 
--		if (IS_ERR(page)) {
-+		kaddr = nilfs_get_page(inode, n, &page);
-+		if (IS_ERR(kaddr)) {
- 			nilfs_error(sb, "bad page in #%lu", inode->i_ino);
- 			ctx->pos += PAGE_SIZE - offset;
- 			return -EIO;
- 		}
--		kaddr = page_address(page);
- 		de = (struct nilfs_dir_entry *)(kaddr + offset);
- 		limit = kaddr + nilfs_last_byte(inode, n) -
- 			NILFS_DIR_REC_LEN(1);
-@@ -345,11 +350,9 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
- 		start = 0;
- 	n = start;
- 	do {
--		char *kaddr;
-+		char *kaddr = nilfs_get_page(dir, n, &page);
- 
--		page = nilfs_get_page(dir, n);
--		if (!IS_ERR(page)) {
--			kaddr = page_address(page);
-+		if (!IS_ERR(kaddr)) {
- 			de = (struct nilfs_dir_entry *)kaddr;
- 			kaddr += nilfs_last_byte(dir, n) - reclen;
- 			while ((char *) de <= kaddr) {
-@@ -387,15 +390,11 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
- 
- struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
- {
--	struct page *page = nilfs_get_page(dir, 0);
--	struct nilfs_dir_entry *de = NULL;
-+	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
- 
--	if (!IS_ERR(page)) {
--		de = nilfs_next_entry(
--			(struct nilfs_dir_entry *)page_address(page));
--		*p = page;
--	}
--	return de;
-+	if (IS_ERR(de))
-+		return NULL;
-+	return nilfs_next_entry(de);
- }
- 
- ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
-@@ -459,12 +458,11 @@ int nilfs_add_link(struct dentry *dentry, struct inode *inode)
- 	for (n = 0; n <= npages; n++) {
- 		char *dir_end;
- 
--		page = nilfs_get_page(dir, n);
--		err = PTR_ERR(page);
--		if (IS_ERR(page))
-+		kaddr = nilfs_get_page(dir, n, &page);
-+		err = PTR_ERR(kaddr);
-+		if (IS_ERR(kaddr))
- 			goto out;
- 		lock_page(page);
--		kaddr = page_address(page);
- 		dir_end = kaddr + nilfs_last_byte(dir, n);
- 		de = (struct nilfs_dir_entry *)kaddr;
- 		kaddr += PAGE_SIZE - reclen;
-@@ -627,11 +625,10 @@ int nilfs_empty_dir(struct inode *inode)
- 		char *kaddr;
- 		struct nilfs_dir_entry *de;
- 
--		page = nilfs_get_page(inode, i);
--		if (IS_ERR(page))
-+		kaddr = nilfs_get_page(inode, i, &page);
-+		if (IS_ERR(kaddr))
- 			continue;
- 
--		kaddr = page_address(page);
- 		de = (struct nilfs_dir_entry *)kaddr;
- 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
- 
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index f0760afad71fe..cbc011ceb89b4 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -631,7 +631,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
+ 			unix_state_lock(skpair);
+ 			/* No more writes */
+ 			WRITE_ONCE(skpair->sk_shutdown, SHUTDOWN_MASK);
+-			if (!skb_queue_empty(&sk->sk_receive_queue) || embrion)
++			if (!skb_queue_empty_lockless(&sk->sk_receive_queue) || embrion)
+ 				WRITE_ONCE(skpair->sk_err, ECONNRESET);
+ 			unix_state_unlock(skpair);
+ 			skpair->sk_state_change(skpair);
 -- 
 2.43.0
 
