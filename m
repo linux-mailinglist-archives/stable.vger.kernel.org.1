@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8EE990EFE0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:14:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B4F90F006
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:17:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65C5F281608
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:14:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 503A028341C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A931514E4;
-	Wed, 19 Jun 2024 14:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5217D12B7F;
+	Wed, 19 Jun 2024 14:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIgUTdRW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4o80CmE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF8681509BF;
-	Wed, 19 Jun 2024 14:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BD3125C9;
+	Wed, 19 Jun 2024 14:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718806462; cv=none; b=tV6rJPc4kUenWs3l2P7ye8LlD7AK211IOq28kbyOy4wy1yoRoFJYda47sG8/38JJIplPiBNVxklgGbdaFxkEhSE3igbF/r2Qw+iHT2qyWW5k6WhQ8xuyXC/XxmsuVdI/3wta6iGEK3mVY1MM9U2HBUEd+Ojc2pnE9gDeEVWdAYw=
+	t=1718806620; cv=none; b=QcOdutJttFH+YaTLo7fXfKZkgD0DashyjwdCI7E3/rwdOyQthRgC/tcYDJ/1DzXAwSZiKJ4H/PpnsMe0GfxU2I/h5pMeKmowqkGEK8Uo9mNn+FUjamW7sgNpr6rIeMYVvjeoE+PFcPUpyhMy+stv4LNwh4vHaHe+SbZff4hXJgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718806462; c=relaxed/simple;
-	bh=geZZ9r9QIaXr11UIqQ/HNcvurorYi/PCLRL6sWqc/5I=;
+	s=arc-20240116; t=1718806620; c=relaxed/simple;
+	bh=U78dG7ay6Z6stYMXeY4z3olLbftB6uTCp+H5K1LJWaw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MPQoxe9eLlpYurfc7lQ5mnNGDSrnXeqd03vajhnrZ1N0fccLsLaUNT75gxIWS0OiFowMOoAoYucdiAlytYVMxyFuF/pbB2jHacjMg23wOYRtWMig0ppkMsl63E98sky9R473hyUnNfP3XdGpDwpQMtp9VZhw/3pmaNk8lWvza7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIgUTdRW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F872C32786;
-	Wed, 19 Jun 2024 14:14:20 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=IgaK3PHxRIqRQqAac7PucMXdEQbUyjtHjY9Zjfa+F4MPC25cAn64rzOQtzl1+i9qqn7S2O2P2fxrJz7eIND3IIHh3Z5a5RSw0SvnWh6kLCuSs3skvsLo0GB+rsUQCEJZI5FXMlG0auBSJFGp+DS4xdg9vV0YskyXfk6iVKmnV14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4o80CmE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC4FC2BBFC;
+	Wed, 19 Jun 2024 14:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718806461;
-	bh=geZZ9r9QIaXr11UIqQ/HNcvurorYi/PCLRL6sWqc/5I=;
+	s=korg; t=1718806619;
+	bh=U78dG7ay6Z6stYMXeY4z3olLbftB6uTCp+H5K1LJWaw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uIgUTdRWHdl9qwEOu8hrOVemL+5TXDvJB1NpsId9WTSM5p65vPxdRwS9ucWgnDjrS
-	 AXEkrd8rjl6QQ9u+Ls0nTsY5o9jPFGhnmQnma24ptxgQ1cqFHVIQmzHurAxyZZFLQN
-	 JosS6g5mAIaMRPVWJB2V0fs+FadgfEecPyQB2lTY=
-Date: Wed, 19 Jun 2024 16:14:18 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Lee Jones <lee@kernel.org>, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/1 resend] MAINTAINERS: Fix 32-bit i.MX platform paths
-Message-ID: <2024061951-singular-jersey-ffd0@gregkh>
-References: <20240619115610.2045421-1-alexander.stein@ew.tq-group.com>
- <13561511.uLZWGnKmhe@steina-w>
- <2024061933-oxidizing-backspin-8c4e@gregkh>
- <3326703.44csPzL39Z@steina-w>
+	b=s4o80CmErPUS6TT482NcCiAzSpjAEevN9GVCHhhQ9HOM6CeIY2xJ6iksWwvEDxo/r
+	 M5OnsbQLgChrT3b7FMBpcWnk7TKKYz5DygED4NpA1XOsfrj4P2UveZ9lCO+hv2iPo8
+	 dhc7swujQ0kWxErYTCuMLwx++cgNYtmC4u86fq30=
+Date: Wed, 19 Jun 2024 16:16:56 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Francois Dugast <francois.dugast@intel.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Matthew Brost <matthew.brost@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.9 073/281] drm/xe: Use ordered WQ for G2H handler
+Message-ID: <2024061946-salvaging-tying-a320@gregkh>
+References: <20240619125609.836313103@linuxfoundation.org>
+ <20240619125612.651602452@linuxfoundation.org>
+ <ZnLlMdyrtHEnrWkB@fdugast-desk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,66 +58,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3326703.44csPzL39Z@steina-w>
+In-Reply-To: <ZnLlMdyrtHEnrWkB@fdugast-desk>
 
-On Wed, Jun 19, 2024 at 03:40:54PM +0200, Alexander Stein wrote:
-> Am Mittwoch, 19. Juni 2024, 14:37:09 CEST schrieb Greg KH:
-> > On Wed, Jun 19, 2024 at 02:23:36PM +0200, Alexander Stein wrote:
-> > > Am Mittwoch, 19. Juni 2024, 14:18:35 CEST schrieb Greg KH:
-> > > > On Wed, Jun 19, 2024 at 01:56:10PM +0200, Alexander Stein wrote:
-> > > > > The original patch was created way before the .dts movement on arch/arm.
-> > > > > But it was patch merged after the .dts reorganization. Fix the arch/arm
-> > > > > paths accordingly.
-> > > > > 
-> > > > > Fixes: 7564efb37346a ("MAINTAINERS: Add entry for TQ-Systems device trees and drivers")
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > > > > ---
-> > > > >  MAINTAINERS | 6 +++---
-> > > > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > > > > 
-> > > > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > > > index c36d72143b995..762e97653aa3c 100644
-> > > > > --- a/MAINTAINERS
-> > > > > +++ b/MAINTAINERS
-> > > > > @@ -22930,9 +22930,9 @@ TQ SYSTEMS BOARD & DRIVER SUPPORT
-> > > > >  L:	linux@ew.tq-group.com
-> > > > >  S:	Supported
-> > > > >  W:	https://www.tq-group.com/en/products/tq-embedded/
-> > > > > -F:	arch/arm/boot/dts/imx*mba*.dts*
-> > > > > -F:	arch/arm/boot/dts/imx*tqma*.dts*
-> > > > > -F:	arch/arm/boot/dts/mba*.dtsi
-> > > > > +F:	arch/arm/boot/dts/nxp/imx/imx*mba*.dts*
-> > > > > +F:	arch/arm/boot/dts/nxp/imx/imx*tqma*.dts*
-> > > > > +F:	arch/arm/boot/dts/nxp/imx/mba*.dtsi
-> > > > >  F:	arch/arm64/boot/dts/freescale/fsl-*tqml*.dts*
-> > > > >  F:	arch/arm64/boot/dts/freescale/imx*mba*.dts*
-> > > > >  F:	arch/arm64/boot/dts/freescale/imx*tqma*.dts*
-> > > > 
-> > > > Why is a MAINTAINERS change needed for stable kernels?
-> > > 
-> > > This fixes the original commit introducing these entries, mainlined in v6.6
-> > > Unfortunately that got delayed so much it was merged after commit
-> > > 724ba67515320 ("ARM: dts: Move .dts files to vendor sub-directories"), which
-> > > was merged in v6.5.
-> > > Thus the (32-Bit) arm DT paths are incorrect from the very beginning.
-> > 
-> > That's fine, who is using these paths on older kernels anyway?  You
-> > should always be doing development on the latest kernel tree, so they
-> > shouldn't matter here.
-> > 
-> > or am I missing something?
+On Wed, Jun 19, 2024 at 04:03:29PM +0200, Francois Dugast wrote:
+> On Wed, Jun 19, 2024 at 02:53:52PM +0200, Greg Kroah-Hartman wrote:
+> > 6.9-stable review patch.  If anyone has any objections, please let me know.
 > 
-> Sure development is on newer trees, but I'm wondering if anyone uses
-> scripts on that stable version evaluating this file.
+> Hi Greg,
+> 
+> This patch seems to be a duplicate and should be dropped.
 
-Usually not, otherwise we would be backporting all of these types of
-changes all the time.
+How are we supposed to be able to determine this?
 
-> I don't mind if this is not applied to stable. Want me to send without Fixes
-> and CC tag?
+When you all check in commits into multiple branches, and tag them for
+stable: and then they hit Linus's tree, and all hell breaks loose on our
+scripts.  "Normally" this tag:
 
-Please do, thanks!
+> > (cherry picked from commit 50aec9665e0babd62b9eee4e613d9a1ef8d2b7de)
+
+Would help out here, but it doesn't.  Why not, what went wrong?
+
+I'll go drop this, but ugh, what a mess. It makes me dread every drm
+patch that gets tagged for stable, and so I postpone taking them until I
+am done with everything else and can't ignore them anymore.
+
+Please fix your broken process.
 
 greg k-h
 
