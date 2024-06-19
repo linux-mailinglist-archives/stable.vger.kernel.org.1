@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E1B890EE40
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2FF790EC2C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B4CEB24A9D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:27:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11AD11C24736
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6384B14EC4B;
-	Wed, 19 Jun 2024 13:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7861F143C43;
+	Wed, 19 Jun 2024 13:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jjd6WgaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMsIHhRO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E2214EC4C;
-	Wed, 19 Jun 2024 13:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385A182871;
+	Wed, 19 Jun 2024 13:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803613; cv=none; b=izBZL+aqhDiH6rd5bF0HW3h6kjk3rKJtUAn5Qd12ouNdiqE2Ein3by3QHMabhGYuMb+nnsDBzqWaZqtuHPAPIhbI2XX6uyH0pKwvrFEWSqFB9J4OeCaYVxBmw2fSJTAdppREn2y3+RJTr6dUrsPBGBkTpvIClU3x65f1v3oYQ9I=
+	t=1718802264; cv=none; b=qsqtUkBTx6wihAdlXxBunThZE53rzLELcc4F7dtIx9Ox90RPVy9i15igoNihI5gaVQ5KaODDvTTxxvVKII2QUd4ck6bCP9QytlNeEH0r3OUnCb5Id3JTkj4R9It0AQIioaBfBHxaj/ewSuMXA1sHGe6T/0EluvNNciyb+pzdG6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803613; c=relaxed/simple;
-	bh=C7UeVYEXHTh1PJTkd9YWm0awVV4ePILgOMCfsUOmWm0=;
+	s=arc-20240116; t=1718802264; c=relaxed/simple;
+	bh=9MC16PRgkwB5F5qqvlNKNMnJ50Qzp85medvMXMirCK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9ijUI75ULVL6qBSaycCxjH79keor7vcncOxvgIrcAVAbkgelWmkLsBOSL8JQcyBJM3TFQLweR7+CUbh6VD5pEmh59VNIZlqFAOBdDHYYDUzK7PFpJffdoYf0TWb0zZwzhUTmnWDk28ZEWlWi2ovsRE2SbuQmWWmc2aoOiAHp6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jjd6WgaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E2E5C2BBFC;
-	Wed, 19 Jun 2024 13:26:52 +0000 (UTC)
+	 MIME-Version; b=ZYiKG8XK+Al3MfeHxBLUxgdbpaX358PiExB4aZyO2XO0mRJf+eeDV0WV6arPHaH+giFRRsUzt/V17nizPbxVrcLDV8UCJ3gHRnUmdxKW9ZsZt6gtVuaFuFt3s4sus23yVzCLiFC1OzZPfHck412ZvpI4G4kxhYpxMVPTP1vGyIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMsIHhRO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF66EC2BBFC;
+	Wed, 19 Jun 2024 13:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803613;
-	bh=C7UeVYEXHTh1PJTkd9YWm0awVV4ePILgOMCfsUOmWm0=;
+	s=korg; t=1718802264;
+	bh=9MC16PRgkwB5F5qqvlNKNMnJ50Qzp85medvMXMirCK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jjd6WgaImxReehBaBNJntkYSgvcO5e/yJCQ8Nsa0w8gJxgTs5SMFtqfvteCK8Vevy
-	 JACkUFRuz9aJdHiTzeIJ03NCzzWGSMAG2f6yDWD8hG4XILoyYHUdHeX2CAX1BRiPK/
-	 W7+mtWSubdUjEVZDE0R9U48HW2dWxKI4RkaaTP2g=
+	b=bMsIHhROwRURHwrLFA01nS0DWZaQHnuafuFGkIsfK3/j1ywewwxE/GLwZf6QLyqYR
+	 lLDRTRUPDgt19HyhDSytjq+ZD3xJ2WsJkdznwbDpAoBtlVCQTqA7Yi11xbyJDKfgAw
+	 HExRZt+tavBjAfHBKCLCA27OK7TvVOzDcxVc9Qso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/217] af_unix: annotate lockless accesses to sk->sk_err
+Subject: [PATCH 6.6 137/267] drm/vmwgfx: 3D disabled should not effect STDU memory limits
 Date: Wed, 19 Jun 2024 14:54:48 +0200
-Message-ID: <20240619125558.402096371@linuxfoundation.org>
+Message-ID: <20240619125611.607491100@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit cc04410af7de348234ac36a5f50c4ce416efdb4b ]
+[ Upstream commit fb5e19d2dd03eb995ccd468d599b2337f7f66555 ]
 
-unix_poll() and unix_dgram_poll() read sk->sk_err
-without any lock held.
+This limit became a hard cap starting with the change referenced below.
+Surface creation on the device will fail if the requested size is larger
+than this limit so altering the value arbitrarily will expose modes that
+are too large for the device's hard limits.
 
-Add relevant READ_ONCE()/WRITE_ONCE() annotations.
+Fixes: 7ebb47c9f9ab ("drm/vmwgfx: Read new register for GB memory when available")
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 83690b82d228 ("af_unix: Use skb_queue_empty_lockless() in unix_release_sock().")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240521184720.767-3-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 359d4f604ebda..02d8612385bd9 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -548,7 +548,7 @@ static void unix_dgram_disconnected(struct sock *sk, struct sock *other)
- 		 * when peer was not connected to us.
- 		 */
- 		if (!sock_flag(other, SOCK_DEAD) && unix_peer(other) == sk) {
--			other->sk_err = ECONNRESET;
-+			WRITE_ONCE(other->sk_err, ECONNRESET);
- 			sk_error_report(other);
- 		}
- 	}
-@@ -620,7 +620,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 			/* No more writes */
- 			WRITE_ONCE(skpair->sk_shutdown, SHUTDOWN_MASK);
- 			if (!skb_queue_empty(&sk->sk_receive_queue) || embrion)
--				skpair->sk_err = ECONNRESET;
-+				WRITE_ONCE(skpair->sk_err, ECONNRESET);
- 			unix_state_unlock(skpair);
- 			skpair->sk_state_change(skpair);
- 			sk_wake_async(skpair, SOCK_WAKE_WAITD, POLL_HUP);
-@@ -3181,7 +3181,7 @@ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wa
- 	state = READ_ONCE(sk->sk_state);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+index 58fb40c93100a..bea576434e475 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
+@@ -956,13 +956,6 @@ static int vmw_driver_load(struct vmw_private *dev_priv, u32 pci_id)
+ 				vmw_read(dev_priv,
+ 					 SVGA_REG_SUGGESTED_GBOBJECT_MEM_SIZE_KB);
  
- 	/* exceptional events? */
--	if (sk->sk_err)
-+	if (READ_ONCE(sk->sk_err))
- 		mask |= EPOLLERR;
- 	if (shutdown == SHUTDOWN_MASK)
- 		mask |= EPOLLHUP;
-@@ -3228,7 +3228,8 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- 	state = READ_ONCE(sk->sk_state);
- 
- 	/* exceptional events? */
--	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
-+	if (READ_ONCE(sk->sk_err) ||
-+	    !skb_queue_empty_lockless(&sk->sk_error_queue))
- 		mask |= EPOLLERR |
- 			(sock_flag(sk, SOCK_SELECT_ERR_QUEUE) ? EPOLLPRI : 0);
- 
+-		/*
+-		 * Workaround for low memory 2D VMs to compensate for the
+-		 * allocation taken by fbdev
+-		 */
+-		if (!(dev_priv->capabilities & SVGA_CAP_3D))
+-			mem_size *= 3;
+-
+ 		dev_priv->max_mob_pages = mem_size * 1024 / PAGE_SIZE;
+ 		dev_priv->max_primary_mem =
+ 			vmw_read(dev_priv, SVGA_REG_MAX_PRIMARY_MEM);
 -- 
 2.43.0
 
