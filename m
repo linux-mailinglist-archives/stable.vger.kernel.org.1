@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C19F90ECF5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB8D90EBAF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24F6328310B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0221C236C3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A641465BD;
-	Wed, 19 Jun 2024 13:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E232B1304AD;
+	Wed, 19 Jun 2024 12:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GblmtiXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mvg5IDh6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6706143C58;
-	Wed, 19 Jun 2024 13:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFC21459F2;
+	Wed, 19 Jun 2024 12:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802753; cv=none; b=i6RvtRRcZE9A3M5pnImMjCV7m/QNL9JqAItFhKl+A/pfHnI8fNn3z5vooknawIyjVFD5/mACW1Rmor33BXOjBfPAl2VcYU5P24/O+Hx2zbjBSjq8xE1AflN9XDC281NXOLoTFFz658UqTtNRDtFrAQ08OX+MyF89nI5gpNGbPuk=
+	t=1718801986; cv=none; b=SuDbHd8PKsjZ5j+iSy+hUxgKOGuzXcim2yA3ZLJVYIppIYxOL7s+LvAcVgsuXRNkS8yKg9GqNByWHjMAo+Q7yNqvQwU6LJAQAv+T+i8/lxkcuyAqinuFBO0ivRemrJD59tcVnlvZy9+K+Qt6nskPaO3msESqWOVP8KdM+ENstlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802753; c=relaxed/simple;
-	bh=aMd9KQYVvw2G8r6N8XdRihiyAGMBPaSSkLK5EkCiFaY=;
+	s=arc-20240116; t=1718801986; c=relaxed/simple;
+	bh=tN4Guvku0s8tlEAq3k9N2NrgluQK5CbSwo/bk6lr8Wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XYKufSHH0jFxsl73ZWiOKJFNobh1Ofh2AZslVBKaJIsi16NmAFXt+V8pWRa7mCanUvHoBkpW67+nlYeYa3JYgp8zsrkkDCLRs0wgJFfS6JfETbDed655k/CptgbpexYYdDqfWD+FbMDOHuHl0QoA0d1GylZMeJfxn2Y2FWMAi4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GblmtiXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3C5C2BBFC;
-	Wed, 19 Jun 2024 13:12:33 +0000 (UTC)
+	 MIME-Version; b=LsB6bPI9dlLC7on+QluIopdPmK+LhJ4fk4LPkdA/jTdUp00GBj5GaIuambrdP4lYz70IUKNYry9OHkpP11kG3GZHUrl/RkwhOp+zqZEJAjzrG7SdHwa3HUgBhlIGSbXNERUqnEnySS5ZjnbWJthzAONzSihae1uz1p1FTsjvaXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mvg5IDh6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F45C2BBFC;
+	Wed, 19 Jun 2024 12:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802753;
-	bh=aMd9KQYVvw2G8r6N8XdRihiyAGMBPaSSkLK5EkCiFaY=;
+	s=korg; t=1718801986;
+	bh=tN4Guvku0s8tlEAq3k9N2NrgluQK5CbSwo/bk6lr8Wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GblmtiXNR4pyKfBlEa7BG8j2BjDQ179ZErPAjN7bfj8hJgT6lGcQFvslum+BAkmGz
-	 tJhm81EwmZA8VyV/gXcO4T8vnsci2TPPtsSha/FSXjCKMzCF4rtgPhpoNzxcLxwtSp
-	 agjX6ACugWngVvp6CG1MfZB3S/SZM86XyE85erXI=
+	b=Mvg5IDh6TO3jh9q6w3g04XqXrzgu3vhgStm658DwkR8cvM9P9lFuN1shBULo3ZDPx
+	 z24afXlbUX56QkLzJRSL6C+CoUcd/kv0/O530JwZQjN783FL+ORJDGS6mTyK/DlESE
+	 2k6ESBKmZO1IoGlhQtW17zYI0/Pf3XPyUDgevbkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3ab78ff125b7979e45f9@syzkaller.appspotmail.com,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Karol Kolacinski <karol.kolacinski@intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 035/281] bpf: Set run context for rawtp test_run callback
+Subject: [PATCH 6.6 043/267] ptp: Fix error message on failed pin verification
 Date: Wed, 19 Jun 2024 14:53:14 +0200
-Message-ID: <20240619125611.201170044@linuxfoundation.org>
+Message-ID: <20240619125608.021131980@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Karol Kolacinski <karol.kolacinski@intel.com>
 
-[ Upstream commit d0d1df8ba18abc57f28fb3bc053b2bf319367f2c ]
+[ Upstream commit 323a359f9b077f382f4483023d096a4d316fd135 ]
 
-syzbot reported crash when rawtp program executed through the
-test_run interface calls bpf_get_attach_cookie helper or any
-other helper that touches task->bpf_ctx pointer.
+On failed verification of PTP clock pin, error message prints channel
+number instead of pin index after "pin", which is incorrect.
 
-Setting the run context (task->bpf_ctx pointer) for test_run
-callback.
+Fix error message by adding channel number to the message and printing
+pin number instead of channel number.
 
-Fixes: 7adfc6c9b315 ("bpf: Add bpf_get_attach_cookie() BPF helper to access bpf_cookie value")
-Reported-by: syzbot+3ab78ff125b7979e45f9@syzkaller.appspotmail.com
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://syzkaller.appspot.com/bug?extid=3ab78ff125b7979e45f9
-Link: https://lore.kernel.org/bpf/20240604150024.359247-1-jolsa@kernel.org
+Fixes: 6092315dfdec ("ptp: introduce programmable pins.")
+Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Link: https://lore.kernel.org/r/20240604120555.16643-1-karol.kolacinski@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/ptp/ptp_chardev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 61efeadaff8db..4cd29fb490f7c 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -719,10 +719,16 @@ static void
- __bpf_prog_test_run_raw_tp(void *data)
- {
- 	struct bpf_raw_tp_test_run_info *info = data;
-+	struct bpf_trace_run_ctx run_ctx = {};
-+	struct bpf_run_ctx *old_run_ctx;
-+
-+	old_run_ctx = bpf_set_run_ctx(&run_ctx.run_ctx);
+diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
+index 5a3a4cc0bec82..91cc6ffa0095e 100644
+--- a/drivers/ptp/ptp_chardev.c
++++ b/drivers/ptp/ptp_chardev.c
+@@ -84,7 +84,8 @@ int ptp_set_pinfunc(struct ptp_clock *ptp, unsigned int pin,
+ 	}
  
- 	rcu_read_lock();
- 	info->retval = bpf_prog_run(info->prog, info->ctx);
- 	rcu_read_unlock();
-+
-+	bpf_reset_run_ctx(old_run_ctx);
- }
+ 	if (info->verify(info, pin, func, chan)) {
+-		pr_err("driver cannot use function %u on pin %u\n", func, chan);
++		pr_err("driver cannot use function %u and channel %u on pin %u\n",
++		       func, chan, pin);
+ 		return -EOPNOTSUPP;
+ 	}
  
- int bpf_prog_test_run_raw_tp(struct bpf_prog *prog,
 -- 
 2.43.0
 
