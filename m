@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6970F90EC63
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C1290EE7B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E871C1F21607
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A156D1C241FD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A86143873;
-	Wed, 19 Jun 2024 13:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5197214F130;
+	Wed, 19 Jun 2024 13:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWScmIt1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CV9GVb61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004C812FB31;
-	Wed, 19 Jun 2024 13:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1091414D711;
+	Wed, 19 Jun 2024 13:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802418; cv=none; b=J2doMyP6V9kk1oPihQ000ryRVX7fLv5s/VR5i1vdO8dImZUnfvcf1pUyB4qjB1SiJWZBK3RhepmsjexgtgKwwsSBQUAK7mau5EiOypQgA+vF7IXWQsOx6RbYhxIhy1FbfaWy4MBtj95P6S7vYx7vRCubSANCOlnhobx2mojsySs=
+	t=1718803731; cv=none; b=qG69WD25iNC0pTLa7foNueuP6dGhwu55sPuxzYihRrj7F9pm/hd8swwG2DlKj3Utb0BkZV6/l6x7L5jCDxeN9Tvyoel/xodTreQmQ3yTwX0HW1QSnx3zCyxELoSubGpW/YrqIsk+Gw8uBy1nHxK55zy0F25h+0ucbePPkzMqUBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802418; c=relaxed/simple;
-	bh=+2utLW3i+mWCzDvWM9ofz7OO7DHHv9C0IuP37rvzZSE=;
+	s=arc-20240116; t=1718803731; c=relaxed/simple;
+	bh=ufSNOUwPVi97Yp1McyYEiE8T3xIaMlbtp6FZONGGty0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XIdl5DTgDoRjpiIO5cE6iRuFGNXks1NnT6KPbK1MM7cyS4XBy1Rqrhzon7RLr8qx5ZdSPuJrvYdU9moIO22EsfrUOcLQz2cVIZ+Thdf4gWb8KSo3FoiQc307qVXAc/ICfE0cnzTfggRpwgTycDVI6MaTlzYFtWhbAN8yaAVvb9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWScmIt1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7954DC2BBFC;
-	Wed, 19 Jun 2024 13:06:57 +0000 (UTC)
+	 MIME-Version; b=ICXM1+orEXz67LJHNChK51C5Yu2JO0L/+OnTI20lkX08zPf7MxUgUnaZiVaAqsjZIQdIHly+U+99cfos1p7eOZ7tmxD40gqJsA7Golh8ke2eNbyLKKow+jIz2NP898fhvm5Mzcf0DPn4ckMfPsBn7iIfzPm5fq5M4hyCZUcR3lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CV9GVb61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1CAC4AF1D;
+	Wed, 19 Jun 2024 13:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802417;
-	bh=+2utLW3i+mWCzDvWM9ofz7OO7DHHv9C0IuP37rvzZSE=;
+	s=korg; t=1718803730;
+	bh=ufSNOUwPVi97Yp1McyYEiE8T3xIaMlbtp6FZONGGty0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pWScmIt16rJk4I0F9oQHy7uNXAkmS/A5AUiof45QTkAm06IL5wCBb8iaainxOX3jI
-	 yEqOscl01H2vzmoAfSlYntNHGgDeoFkCfGeQ7u8sz4PT+pFzzVZSvK5g2R/o4Xf3qY
-	 GsyQRvFbBAWbIYjkKLzhUHxGgrJiqOPJk/Yt9cWc=
+	b=CV9GVb61PjP7Xl6lSYG5ainIa5WnP5rcs7imcfH1n5Z1Lq0Slk0Uvp/W9kG1xROIG
+	 TEN6Dx1fHAcuw/V/Gcmz+sm9T6PDbz0pCFJYImwhUzDF/pJ2LHX9roxt5se1yh1jLC
+	 Kvgf2ivLvMWYeer/wJlYQ79ZUYgprzuU+yEIqD5U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Can Guo <quic_cang@quicinc.com>,
-	Ziqi Chen <quic_ziqichen@quicinc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/267] scsi: ufs: core: Quiesce request queues before checking pending cmds
+Subject: [PATCH 6.1 067/217] firmware: qcom_scm: disable clocks if qcom_scm_bw_enable() fails
 Date: Wed, 19 Jun 2024 14:55:10 +0200
-Message-ID: <20240619125612.446616001@linuxfoundation.org>
+Message-ID: <20240619125559.269725634@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,111 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziqi Chen <quic_ziqichen@quicinc.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 77691af484e28af7a692e511b9ed5ca63012ec6e ]
+[ Upstream commit 0c50b7fcf2773b4853e83fc15aba1a196ba95966 ]
 
-In ufshcd_clock_scaling_prepare(), after SCSI layer is blocked,
-ufshcd_pending_cmds() is called to check whether there are pending
-transactions or not. And only if there are no pending transactions can we
-proceed to kickstart the clock scaling sequence.
+There are several functions which are calling qcom_scm_bw_enable()
+then returns immediately if the call fails and leaves the clocks
+enabled.
 
-ufshcd_pending_cmds() traverses over all SCSI devices and calls
-sbitmap_weight() on their budget_map. sbitmap_weight() can be broken down
-to three steps:
+Change the code of these functions to disable clocks when the
+qcom_scm_bw_enable() call fails. This also fixes a possible dma
+buffer leak in the qcom_scm_pas_init_image() function.
 
- 1. Calculate the nr outstanding bits set in the 'word' bitmap.
+Compile tested only due to lack of hardware with interconnect
+support.
 
- 2. Calculate the nr outstanding bits set in the 'cleared' bitmap.
-
- 3. Subtract the result from step 1 by the result from step 2.
-
-This can lead to a race condition as outlined below:
-
-Assume there is one pending transaction in the request queue of one SCSI
-device, say sda, and the budget token of this request is 0, the 'word' is
-0x1 and the 'cleared' is 0x0.
-
- 1. When step 1 executes, it gets the result as 1.
-
- 2. Before step 2 executes, block layer tries to dispatch a new request to
-    sda. Since the SCSI layer is blocked, the request cannot pass through
-    SCSI but the block layer would do budget_get() and budget_put() to
-    sda's budget map regardless, so the 'word' has become 0x3 and 'cleared'
-    has become 0x2 (assume the new request got budget token 1).
-
- 3. When step 2 executes, it gets the result as 1.
-
- 4. When step 3 executes, it gets the result as 0, meaning there is no
-    pending transactions, which is wrong.
-
-    Thread A                        Thread B
-    ufshcd_pending_cmds()           __blk_mq_sched_dispatch_requests()
-    |                               |
-    sbitmap_weight(word)            |
-    |                               scsi_mq_get_budget()
-    |                               |
-    |                               scsi_mq_put_budget()
-    |                               |
-    sbitmap_weight(cleared)
-    ...
-
-When this race condition happens, the clock scaling sequence is started
-with transactions still in flight, leading to subsequent hibernate enter
-failure, broken link, task abort and back to back error recovery.
-
-Fix this race condition by quiescing the request queues before calling
-ufshcd_pending_cmds() so that block layer won't touch the budget map when
-ufshcd_pending_cmds() is working on it. In addition, remove the SCSI layer
-blocking/unblocking to reduce redundancies and latencies.
-
-Fixes: 8d077ede48c1 ("scsi: ufs: Optimize the command queueing code")
-Co-developed-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Ziqi Chen <quic_ziqichen@quicinc.com>
-Link: https://lore.kernel.org/r/1717754818-39863-1-git-send-email-quic_ziqichen@quicinc.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: stable@vger.kernel.org
+Fixes: 65b7ebda5028 ("firmware: qcom_scm: Add bw voting support to the SCM interface")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Link: https://lore.kernel.org/r/20240304-qcom-scm-disable-clk-v1-1-b36e51577ca1@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/firmware/qcom_scm.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 589c90f4d4021..40689757a2690 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -1267,7 +1267,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
- 	 * make sure that there are no outstanding requests when
- 	 * clock scaling is in progress
- 	 */
--	ufshcd_scsi_block_requests(hba);
-+	blk_mq_quiesce_tagset(&hba->host->tag_set);
- 	mutex_lock(&hba->wb_mutex);
- 	down_write(&hba->clk_scaling_lock);
+diff --git a/drivers/firmware/qcom_scm.c b/drivers/firmware/qcom_scm.c
+index 58f1a86065dc9..619cd6548cf64 100644
+--- a/drivers/firmware/qcom_scm.c
++++ b/drivers/firmware/qcom_scm.c
+@@ -495,13 +495,14 @@ int qcom_scm_pas_init_image(u32 peripheral, const void *metadata, size_t size,
  
-@@ -1276,7 +1276,7 @@ static int ufshcd_clock_scaling_prepare(struct ufs_hba *hba, u64 timeout_us)
- 		ret = -EBUSY;
- 		up_write(&hba->clk_scaling_lock);
- 		mutex_unlock(&hba->wb_mutex);
--		ufshcd_scsi_unblock_requests(hba);
-+		blk_mq_unquiesce_tagset(&hba->host->tag_set);
- 		goto out;
- 	}
+ 	ret = qcom_scm_bw_enable();
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
  
-@@ -1297,7 +1297,7 @@ static void ufshcd_clock_scaling_unprepare(struct ufs_hba *hba, int err, bool sc
+ 	desc.args[1] = mdata_phys;
  
- 	mutex_unlock(&hba->wb_mutex);
+ 	ret = qcom_scm_call(__scm->dev, &desc, &res);
+-
+ 	qcom_scm_bw_disable();
++
++disable_clk:
+ 	qcom_scm_clk_disable();
  
--	ufshcd_scsi_unblock_requests(hba);
-+	blk_mq_unquiesce_tagset(&hba->host->tag_set);
- 	ufshcd_release(hba);
- }
+ out:
+@@ -563,10 +564,12 @@ int qcom_scm_pas_mem_setup(u32 peripheral, phys_addr_t addr, phys_addr_t size)
  
+ 	ret = qcom_scm_bw_enable();
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = qcom_scm_call(__scm->dev, &desc, &res);
+ 	qcom_scm_bw_disable();
++
++disable_clk:
+ 	qcom_scm_clk_disable();
+ 
+ 	return ret ? : res.result[0];
+@@ -598,10 +601,12 @@ int qcom_scm_pas_auth_and_reset(u32 peripheral)
+ 
+ 	ret = qcom_scm_bw_enable();
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = qcom_scm_call(__scm->dev, &desc, &res);
+ 	qcom_scm_bw_disable();
++
++disable_clk:
+ 	qcom_scm_clk_disable();
+ 
+ 	return ret ? : res.result[0];
+@@ -632,11 +637,12 @@ int qcom_scm_pas_shutdown(u32 peripheral)
+ 
+ 	ret = qcom_scm_bw_enable();
+ 	if (ret)
+-		return ret;
++		goto disable_clk;
+ 
+ 	ret = qcom_scm_call(__scm->dev, &desc, &res);
+-
+ 	qcom_scm_bw_disable();
++
++disable_clk:
+ 	qcom_scm_clk_disable();
+ 
+ 	return ret ? : res.result[0];
 -- 
 2.43.0
 
