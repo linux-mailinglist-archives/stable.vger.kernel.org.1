@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C350490E601
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:39:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E9D90E602
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:39:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EB36282285
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:39:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4C3C1C21475
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3C57C6EB;
-	Wed, 19 Jun 2024 08:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3857CF25;
+	Wed, 19 Jun 2024 08:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DD5LN/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAqyKSZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0DA7A705
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:39:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F57179952
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718786345; cv=none; b=Ws5qLggXXweuXLHYbnsSDx6pptavfFzRh4G5fqT+IqupAc/VUwdSxC+De2cQuICIgFCE2T7r7wf6F3ceYsERWbQq0sFcWK/PkcvhBoW1ex+YAPjPDnCgq75xxw2GD+e4X2QKxYN7KiQS06grQjP2/tCaNvaMN2IJJTPixS9NuXw=
+	t=1718786348; cv=none; b=NPEE9/h4umnBZyG/qGKw2hWtrInzjMkpmATwg8hO+3uSa9zR+rFVGgAkqE5A01Pueel7DjoavpYlzA0kRmdXyLaonsNJIE8t3QmtdgmlZT3VeDLJXQPM/pUkUYbQfaVdISzSOahfElAEz+61ZKR+C3+1Gb/1aiFywyyj0j+O4x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718786345; c=relaxed/simple;
-	bh=e8fcP8cQsuDKOj+2ECa68MRQ1xkdYqq4LzyxEn1Rhio=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h6KN4/EeNP3/TeaLZtldOV7DtZQsd42YbXMESZguuH7pEkK+iZxQLMU/kva5iB2EUpfrmNP/uyYrChWhFORrGi+snyKjHdW13UfJUzm2z9aWXpR2UDVg+J/7ZVk/5rTbFJRXZwJoH4HL7k02r1stBrrZ7V/eK8pFEZETmC4BVBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DD5LN/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FCBC2BBFC;
-	Wed, 19 Jun 2024 08:39:04 +0000 (UTC)
+	s=arc-20240116; t=1718786348; c=relaxed/simple;
+	bh=AgzCN61+rJleJohgj2ETndaIgxXzvgEi0EJFreWRPss=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EcAX7ECMpT8speiJ++JmUNRczo27xBYpgmjlCfX9L4lgCLKuRh8UNt8SC7FNPCeQae2lCLPrpOZ3aqCHhErkvcAlv35NaHOdyZ8K5RSATZoIbITKy24UNwhEye0lSyn6HGzzAXolpb6LrTV1xNe/U0C/dH2B5cTkk8rRx8ea/ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAqyKSZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C37C2BBFC;
+	Wed, 19 Jun 2024 08:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718786345;
-	bh=e8fcP8cQsuDKOj+2ECa68MRQ1xkdYqq4LzyxEn1Rhio=;
+	s=korg; t=1718786348;
+	bh=AgzCN61+rJleJohgj2ETndaIgxXzvgEi0EJFreWRPss=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2DD5LN/BukTrlXAksp2yzv2bXwT0zsqRVGjTnsSI8lru2q5a8m8MUW3IDAxTMeAWL
-	 TZGQGE79wy7GdMjjPK8ej6Ue3OX4nZU675fkVN0SYp3B8kpLa1krHDVq8yDyj2xolJ
-	 vyOK6XPINERmhydWKt4hVk8M6onODITScYCYgz3s=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: Reset dGPU if suspend got aborted" failed to apply to 4.19-stable tree
-To: lijo.lazar@amd.com,Hawking.Zhang@amd.com,alexander.deucher@amd.com,kevinyang.wang@amd.com
+	b=jAqyKSZ40sac54F8OwbKaoWB+4/zUN+/DFAXOql2pyftA43jyLUJ7BLXrCR9Mv7JK
+	 +AtIynxJxHI4vUpjhelX64In/8/zX20hV6gdV4UtKz+T5HXUQ4h6nOzgEGf9O5DMW5
+	 SaRVxkMKXOAn6apOIFyFcoKJbwihDmfGxcRFWEcA=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Set VSC SDP Colorimetry same way for MST and" failed to apply to 6.6-stable tree
+To: harry.wentland@amd.com,agustin.gutierrez@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Jun 2024 10:38:36 +0200
-Message-ID: <2024061935-greyhound-collar-369c@gregkh>
+Date: Wed, 19 Jun 2024 10:38:46 +0200
+Message-ID: <2024061946-founder-prelaunch-f19b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x df3c7dc5c58b1f85033d2cd9a121b27844700ca2
+git cherry-pick -x 038e2e2e0150f1649d40f7d915561cdf9e4dd5bf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061935-greyhound-collar-369c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061946-founder-prelaunch-f19b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-df3c7dc5c58b ("drm/amdgpu: Reset dGPU if suspend got aborted")
-71199aa47bbc ("drm/amdgpu: add soc21 common ip block v2")
-0d055f09e121 ("drm/amdgpu: drop navi reg init functions")
-bf99b9b03265 ("drm/amdgpu: drop nv_set_ip_blocks()")
-f76f795a8ffa ("drm/amdgpu: move headless sku check into harvest function")
-3f68c01be9a2 ("drm/amd/display: add cyan_skillfish display support")
-59066d0083d2 ("drm/amdgpu: handle VCN instances when harvesting (v2)")
-733ee71ae0d0 ("drm/amdgpu: replace dce_virtual with amdgpu_vkms (v3)")
-fd922f7a0e90 ("drm/amdgpu: cleanup dce_virtual")
-84ec374bd580 ("drm/amdgpu: create amdgpu_vkms (v4)")
-641df0990487 ("drm/amdgpu: enable SMU for cyan_skilfish")
-1c7916af55a7 ("drm/amdgpu: enable psp v11.0.8 for cyan_skillfish")
-338b3cf0b9f8 ("drm/amdgpu: add nbio support for cyan_skillfish")
-f36fb5a0e361 ("drm/amdgpu: set ip blocks for cyan_skillfish")
-708391977be5 ("drm/amdgpu: dynamic initialize ip offset for cyan_skillfish")
-46ddb8965882 ("drm/amd/display: implement workaround for riommu related hang")
-9604b74bff62 ("drm/amdgpu: Correct the irq numbers for virtual crtc")
-8fe44c080a53 ("drm/amdgpu/display: fold DRM_AMD_DC_DCN3_1 into DRM_AMD_DC_DCN")
-30adeee52d1e ("drm/amd/display: Enforce DPCD Address ranges")
-c5bc8c1bd4c7 ("drm/amd/display: Read LTTPR caps first on bootup")
+038e2e2e0150 ("drm/amd/display: Set VSC SDP Colorimetry same way for MST and SST")
+1abfb9f9c767 ("drm/amd/display: Program VSC SDP colorimetry for all DP sinks >= 1.4")
+285a7054bf81 ("drm/amd/display: Remove plane and stream pointers from dc scratch")
+02367f529019 ("drm/amd/display: fix a dereference of a NULL pointer")
+5daa29473cf6 ("Revert "drm/amd/display: Fix sending VSC (+ colorimetry) packets for DP/eDP displays without PSR"")
+d62d5551dd61 ("drm/amd/display: Backup and restore only on full updates")
+2d5bb791e24f ("drm/amd/display: Implement update_planes_and_stream_v3 sequence")
+d2dea1f14038 ("drm/amd/display: Generalize new minimal transition path")
+0701117efd1e ("Revert "drm/amd/display: For FPO and SubVP/DRR configs program vmin/max sel"")
+a9b1a4f684b3 ("drm/amd/display: Add more checks for exiting idle in DC")
+dcbf438d4834 ("drm/amd/display: Unify optimize_required flags and VRR adjustments")
+9ccfe80d022d ("drm/amd/display: Fix potential NULL pointer dereferences in 'dcn10_set_output_transfer_func()'")
+8457bddc266c ("drm/amd/display: Revert "Rework DC Z10 restore"")
+2a8e918f48bd ("drm/amd/display: add power_state and pme_pending flag")
+e6f82bd44b40 ("drm/amd/display: Rework DC Z10 restore")
+012fe0674af0 ("drm/amd/display: Add logging resource checks")
+a465536ebff8 ("drm/amd/display: revert "Optimize VRR updates to only necessary ones"")
+30afdffb3f60 ("drm/amd/display: Fix sending VSC (+ colorimetry) packets for DP/eDP displays without PSR")
+ca1ecae145b2 ("drm/amd/display: Add null pointer guards where needed")
+a71e1310a43f ("drm/amd/display: Add more mechanisms for tests")
 
 thanks,
 
@@ -96,61 +96,44 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From df3c7dc5c58b1f85033d2cd9a121b27844700ca2 Mon Sep 17 00:00:00 2001
-From: Lijo Lazar <lijo.lazar@amd.com>
-Date: Wed, 14 Feb 2024 17:55:54 +0530
-Subject: [PATCH] drm/amdgpu: Reset dGPU if suspend got aborted
+From 038e2e2e0150f1649d40f7d915561cdf9e4dd5bf Mon Sep 17 00:00:00 2001
+From: Harry Wentland <harry.wentland@amd.com>
+Date: Thu, 21 Mar 2024 11:13:38 -0400
+Subject: [PATCH] drm/amd/display: Set VSC SDP Colorimetry same way for MST and
+ SST
 
-For SOC21 ASICs, there is an issue in re-enabling PM features if a
-suspend got aborted. In such cases, reset the device during resume
-phase. This is a workaround till a proper solution is finalized.
+The previous check for the is_vsc_sdp_colorimetry_supported flag
+for MST sink signals did nothing. Simplify the code and use the
+same check for MST and SST.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
+Reviewed-by: Agustin Gutierrez <agustin.gutierrez@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/soc21.c b/drivers/gpu/drm/amd/amdgpu/soc21.c
-index 8526282f4da1..abe319b0f063 100644
---- a/drivers/gpu/drm/amd/amdgpu/soc21.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc21.c
-@@ -867,10 +867,35 @@ static int soc21_common_suspend(void *handle)
- 	return soc21_common_hw_fini(adev);
- }
- 
-+static bool soc21_need_reset_on_resume(struct amdgpu_device *adev)
-+{
-+	u32 sol_reg1, sol_reg2;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 7b016a2125e0..4d9a76446df8 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6333,15 +6333,9 @@ create_stream_for_sink(struct drm_connector *connector,
+ 		// should decide stream support vsc sdp colorimetry capability
+ 		// before building vsc info packet
+ 		//
+-		stream->use_vsc_sdp_for_colorimetry = false;
+-		if (aconnector->dc_sink->sink_signal == SIGNAL_TYPE_DISPLAY_PORT_MST) {
+-			stream->use_vsc_sdp_for_colorimetry =
+-				aconnector->dc_sink->is_vsc_sdp_colorimetry_supported;
+-		} else {
+-			if (stream->link->dpcd_caps.dpcd_rev.raw >= 0x14 &&
+-			    stream->link->dpcd_caps.dprx_feature.bits.VSC_SDP_COLORIMETRY_SUPPORTED)
+-				stream->use_vsc_sdp_for_colorimetry = true;
+-		}
++		stream->use_vsc_sdp_for_colorimetry = stream->link->dpcd_caps.dpcd_rev.raw >= 0x14 &&
++						      stream->link->dpcd_caps.dprx_feature.bits.VSC_SDP_COLORIMETRY_SUPPORTED;
 +
-+	/* Will reset for the following suspend abort cases.
-+	 * 1) Only reset dGPU side.
-+	 * 2) S3 suspend got aborted and TOS is active.
-+	 */
-+	if (!(adev->flags & AMD_IS_APU) && adev->in_s3 &&
-+	    !adev->suspend_complete) {
-+		sol_reg1 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
-+		msleep(100);
-+		sol_reg2 = RREG32_SOC15(MP0, 0, regMP0_SMN_C2PMSG_81);
-+
-+		return (sol_reg1 != sol_reg2);
-+	}
-+
-+	return false;
-+}
-+
- static int soc21_common_resume(void *handle)
- {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 
-+	if (soc21_need_reset_on_resume(adev)) {
-+		dev_info(adev->dev, "S3 suspend aborted, resetting...");
-+		soc21_asic_reset(adev);
-+	}
-+
- 	return soc21_common_hw_init(adev);
- }
- 
+ 		if (stream->out_transfer_func.tf == TRANSFER_FUNCTION_GAMMA22)
+ 			tf = TRANSFER_FUNC_GAMMA_22;
+ 		mod_build_vsc_infopacket(stream, &stream->vsc_infopacket, stream->output_color_space, tf);
 
 
