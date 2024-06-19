@@ -1,231 +1,354 @@
-Return-Path: <stable+bounces-54083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1A2090EC96
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4089390ECAC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D41721C22C15
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF2AF281171
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D481E143C4A;
-	Wed, 19 Jun 2024 13:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="dMDtwO8D"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C6D13F426;
+	Wed, 19 Jun 2024 13:09:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2120C146016
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 13:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0533E146D49;
+	Wed, 19 Jun 2024 13:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802538; cv=none; b=rouVgj0OSQCzKj0me3vf1VHxqVIpbvlGTcSWQgt704DqedmRGbZwJAB/nC2gSg1QeHkMbe+wtZ5M6IuPkL2Dfx0mFqw3UaLa9NkrmGS7eTDAEhQwWop2SKgBEXKqQRAJ7nZq2OylG7mkXRBn/tIeN8fC4vVR/diYuzZBGkqy79A=
+	t=1718802575; cv=none; b=q9FrXM6+NMJ4VJkttXg8XjHw82imB0m5El/0XlInWH36Is/PEQTUhQOC5L//JRt9NLkhCi+dpN9FEWBaoruZHjaXnRDgjNHWDj+9ziOzX2gJcSUKOtjL9m7CVFsIuqf7A18ArTTC/fyk+0hvaofFlrrXE/+V0H5+bc8fTDyr17g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802538; c=relaxed/simple;
-	bh=5/ZgA8zhLrdVDYchq6/Y99NUFdbXaCiUTPCiwdCmYYM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CYNUTdIK5bn5lJxDWYviLsQZJmMDPmKTZOz8QZp/xUY6F3ldOBJy3jjjA+0U0gl0BbImEKTiHTo6l3VMt9WoxFw6NClYa34ymwV/J+o3cpAZrNtkXg8PZAkh/c3CG4k74fPCOiWp6zqWzF0tMbs23S+TUaaCoxQi54ftVgLu9vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=dMDtwO8D; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-652fd0bb5e6so5122754a12.0
-        for <stable@vger.kernel.org>; Wed, 19 Jun 2024 06:08:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1718802536; x=1719407336; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p7QBxRjX6bK4nfQFtvwlMhqO1YN0X8hSMyp1M5GJNSs=;
-        b=dMDtwO8D4rRZpxE+ZilOMCvkuFWoxd4wuZH1TLWWmsHrWGhQiBLL7pgZmlMF/Hi/ix
-         jKXx+NGuNJGTgB0PnFO4OS1MW2wVJLbg4P+GVA8wW/ZL42ziX5fyceoEQByaKOrniZUx
-         TGY1olKRSVSqDlAAm4qcGWj9e7CKNC9oq5TwBioL144/cr6k7ylufN5VVkD+fIEBLwyp
-         jp2U6x6sUfG+QOiYrYHANmG0r2bt76P6rHSPgm3pXXeGsuJ5ntgP77/p6e1oMNCMHH6I
-         cDqOmX3E4B3A+ckxF0Rb6qJQUgiQGibpDMT+Oi+572A0MYDetADXmFuV1rBW96QlcE/x
-         15jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718802536; x=1719407336;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=p7QBxRjX6bK4nfQFtvwlMhqO1YN0X8hSMyp1M5GJNSs=;
-        b=AUuCEvnvUlBbt4DgoJQIXg7w80P7ihuPif6PXUQs3bsKiVXUIDDgR2NtTAWPvRlPU1
-         vY43vweBqA+C+93tp4CTWUxyWSlriCxt8X6KEgLRgHIgehk0KbRnoKPJkDkxauWWuJAr
-         06OrITBr3JgYE/RmoQyFod07uwgyyniWERBUC64RisOrd7nO485itnIOr39IKLa67fnW
-         lfueMqkdScF74q/C10oY77hFlBEnPOBEJhvnRiJr3amfRQO9Dc65D8q3yKUvMVJZXmht
-         uyrpsoSes8YBA4XMGxjH7bcFB4Uv0lc7b4sqcXJHn1Zt7kYmjFunDLVGJhT2ECMtRdj2
-         VC3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWDh/N2+WhdOsDT8EVHKMBcc6vCBi+6qQdGaxbnoNIWdpWKea28u+tgYIIkSJilNC9F6twtkWt1FjU8G2dGmB3Z3py3R/fD
-X-Gm-Message-State: AOJu0Yy+Kax2NYbjGEiBxAHApui0qGKEnEP2goQBw2qdlcbeVpojT2Lq
-	8hvzKkzLORzVh/JH2vAsWfwfmBtACBixRtt8GuBQjDYVtpn6sSlIjyxprN6qxHAzxRpOruODEsz
-	8yWQynBkM3XFfSPPC0diGm/orloT0USrtUOTuEa9zwPZ0tUnHYH1Vnw==
-X-Google-Smtp-Source: AGHT+IE0FPXNumij9mjrz3O1ImHZTXZjz3dyjeywqSnPUCIu/Ng38CP6z8Kvps/xrN0z7q87QtndEIlgt/vVLUqsO7E=
-X-Received: by 2002:a17:90a:f0d4:b0:2c2:fa5e:106a with SMTP id
- 98e67ed59e1d1-2c7b5db2a3fmr2356670a91.48.1718802536199; Wed, 19 Jun 2024
- 06:08:56 -0700 (PDT)
+	s=arc-20240116; t=1718802575; c=relaxed/simple;
+	bh=A47JHpogVS1asWaQwf3YfvAu7CsaAEh2pS5ORet8sv8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SgdGZdSJKPmhqHSLfGv8F5bVrVN/Wz299mb7T/PP3p7buW5ZejJXbajQa/T1R63NK4l/r8T1kjkt4jBGPQ7ugE+b7JHXHpCQ0B8Rm+dEtAOLbIUBf6M29NxTilpdJFBIFUMkzdaYKoQ8J4sN1ZOqVzv4oJkif9811148fUx1tZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
+Received: from [78.30.37.63] (port=49664 helo=gnumonks.org)
+	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <pablo@gnumonks.org>)
+	id 1sJv43-00F3zX-8K; Wed, 19 Jun 2024 15:09:29 +0200
+Date: Wed, 19 Jun 2024 15:09:26 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Lion Ackermann <nnamrec@gmail.com>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 156/267] netfilter: ipset: Fix race between namespace
+ cleanup and gc in the list:set type
+Message-ID: <ZnLYhm9eGtxOOeoF@calendula>
+References: <20240619125606.345939659@linuxfoundation.org>
+ <20240619125612.331843461@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240617210205.67311-1-ignat@cloudflare.com> <c9446790-9bac-4541-919b-0af396349c59@linux.alibaba.com>
-In-Reply-To: <c9446790-9bac-4541-919b-0af396349c59@linux.alibaba.com>
-From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Wed, 19 Jun 2024 14:08:45 +0100
-Message-ID: <CALrw=nGSf49VnRVy--b5qSM7_rSRyDBUFe_t8taFs2tmRP2QTw@mail.gmail.com>
-Subject: Re: [PATCH net v3] net: do not leave a dangling sk pointer, when
- socket creation fails
-To: "D. Wythe" <alibuda@linux.alibaba.com>
-Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Florent Revest <revest@chromium.org>, kernel-team@cloudflare.com, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240619125612.331843461@linuxfoundation.org>
+X-Spam-Score: -1.8 (-)
 
-On Wed, Jun 19, 2024 at 1:31=E2=80=AFPM D. Wythe <alibuda@linux.alibaba.com=
-> wrote:
->
->
->
-> On 6/18/24 5:02 AM, Ignat Korchagin wrote:
-> > It is possible to trigger a use-after-free by:
-> >    * attaching an fentry probe to __sock_release() and the probe callin=
-g the
-> >      bpf_get_socket_cookie() helper
-> >    * running traceroute -I 1.1.1.1 on a freshly booted VM
-> >
-> > A KASAN enabled kernel will log something like below (decoded and strip=
-ped):
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > BUG: KASAN: slab-use-after-free in __sock_gen_cookie (./arch/x86/includ=
-e/asm/atomic64_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 .=
-/include/linux/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
-> > Read of size 8 at addr ffff888007110dd8 by task traceroute/299
-> >
-> > CPU: 2 PID: 299 Comm: traceroute Tainted: G            E      6.10.0-rc=
-2+ #2
-> > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debi=
-an-1.16.2-1 04/01/2014
-> > Call Trace:
-> >   <TASK>
-> > dump_stack_lvl (lib/dump_stack.c:117 (discriminator 1))
-> > print_report (mm/kasan/report.c:378 mm/kasan/report.c:488)
-> > ? __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/=
-linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-inst=
-rumented.h:1611 net/core/sock_diag.c:29)
-> > kasan_report (mm/kasan/report.c:603)
-> > ? __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/=
-linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-inst=
-rumented.h:1611 net/core/sock_diag.c:29)
-> > kasan_check_range (mm/kasan/generic.c:183 mm/kasan/generic.c:189)
-> > __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/li=
-nux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-instru=
-mented.h:1611 net/core/sock_diag.c:29)
-> > bpf_get_socket_ptr_cookie (./arch/x86/include/asm/preempt.h:94 ./includ=
-e/linux/sock_diag.h:42 net/core/filter.c:5094 net/core/filter.c:5092)
-> > bpf_prog_875642cf11f1d139___sock_release+0x6e/0x8e
-> > bpf_trampoline_6442506592+0x47/0xaf
-> > __sock_release (net/socket.c:652)
-> > __sock_create (net/socket.c:1601)
-> > ...
-> > Allocated by task 299 on cpu 2 at 78.328492s:
-> > kasan_save_stack (mm/kasan/common.c:48)
-> > kasan_save_track (mm/kasan/common.c:68)
-> > __kasan_slab_alloc (mm/kasan/common.c:312 mm/kasan/common.c:338)
-> > kmem_cache_alloc_noprof (mm/slub.c:3941 mm/slub.c:4000 mm/slub.c:4007)
-> > sk_prot_alloc (net/core/sock.c:2075)
-> > sk_alloc (net/core/sock.c:2134)
-> > inet_create (net/ipv4/af_inet.c:327 net/ipv4/af_inet.c:252)
-> > __sock_create (net/socket.c:1572)
-> > __sys_socket (net/socket.c:1660 net/socket.c:1644 net/socket.c:1706)
-> > __x64_sys_socket (net/socket.c:1718)
-> > do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-> > entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-> >
-> > Freed by task 299 on cpu 2 at 78.328502s:
-> > kasan_save_stack (mm/kasan/common.c:48)
-> > kasan_save_track (mm/kasan/common.c:68)
-> > kasan_save_free_info (mm/kasan/generic.c:582)
-> > poison_slab_object (mm/kasan/common.c:242)
-> > __kasan_slab_free (mm/kasan/common.c:256)
-> > kmem_cache_free (mm/slub.c:4437 mm/slub.c:4511)
-> > __sk_destruct (net/core/sock.c:2117 net/core/sock.c:2208)
-> > inet_create (net/ipv4/af_inet.c:397 net/ipv4/af_inet.c:252)
-> > __sock_create (net/socket.c:1572)
-> > __sys_socket (net/socket.c:1660 net/socket.c:1644 net/socket.c:1706)
-> > __x64_sys_socket (net/socket.c:1718)
-> > do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-> > entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-> >
-> > Fix this by clearing the struct socket reference in sk_common_release()=
- to cover
-> > all protocol families create functions, which may already attached the
-> > reference to the sk object with sock_init_data().
-> >
-> > Fixes: c5dbb89fc2ac ("bpf: Expose bpf_get_socket_cookie to tracing prog=
-rams")
-> > Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-> > Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-> > Cc: stable@vger.kernel.org
-> > Link: https://lore.kernel.org/netdev/20240613194047.36478-1-kuniyu@amaz=
-on.com/T/
-> > ---
-> > Changes in v3:
-> >    * re-added KASAN repro steps to the commit message (somehow stripped=
- in v2)
-> >    * stripped timestamps and thread id from the KASAN splat
-> >    * removed comment from the code (commit message should be enough)
-> >
-> > Changes in v2:
-> >    * moved the NULL-ing of the socket reference to sk_common_release() =
-(as
-> >      suggested by Kuniyuki Iwashima)
-> >    * trimmed down the KASAN report in the commit message to show only r=
-elevant
-> >      info
-> >
-> >   net/core/sock.c | 3 +++
-> >   1 file changed, 3 insertions(+)
-> >
-> > diff --git a/net/core/sock.c b/net/core/sock.c
-> > index 8629f9aecf91..100e975073ca 100644
-> > --- a/net/core/sock.c
-> > +++ b/net/core/sock.c
-> > @@ -3742,6 +3742,9 @@ void sk_common_release(struct sock *sk)
-> >
-> >       sk->sk_prot->unhash(sk);
-> >
-> > +     if (sk->sk_socket)
-> > +             sk->sk_socket->sk =3D NULL;
-> > +
-> >       /*
-> >        * In this point socket cannot receive new packets, but it is pos=
-sible
-> >        * that some packets are in flight because some CPU runs receiver=
- and
->
-> Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
->
->
-> A small tip:
->
-> It seems that you might have missed CCing some maintainers, using
-> scripts/get_maintainer.pl "Your patch" can help you avoid this issue
-> again.
+Hi Greg,
 
-Thanks. I did scripts/get_maintainer.pl <file I'm modifying>. Not sure
-if it is different.
+Please, hold on with this one patch for ipset until an incremental fix hits upstream.
 
->
-> D. Wythe
->
->
->
+On Wed, Jun 19, 2024 at 02:55:07PM +0200, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Jozsef Kadlecsik <kadlec@netfilter.org>
+> 
+> [ Upstream commit 4e7aaa6b82d63e8ddcbfb56b4fd3d014ca586f10 ]
+> 
+> Lion Ackermann reported that there is a race condition between namespace cleanup
+> in ipset and the garbage collection of the list:set type. The namespace
+> cleanup can destroy the list:set type of sets while the gc of the set type is
+> waiting to run in rcu cleanup. The latter uses data from the destroyed set which
+> thus leads use after free. The patch contains the following parts:
+> 
+> - When destroying all sets, first remove the garbage collectors, then wait
+>   if needed and then destroy the sets.
+> - Fix the badly ordered "wait then remove gc" for the destroy a single set
+>   case.
+> - Fix the missing rcu locking in the list:set type in the userspace test
+>   case.
+> - Use proper RCU list handlings in the list:set type.
+> 
+> The patch depends on c1193d9bbbd3 (netfilter: ipset: Add list flush to cancel_gc).
+> 
+> Fixes: 97f7cf1cd80e (netfilter: ipset: fix performance regression in swap operation)
+> Reported-by: Lion Ackermann <nnamrec@gmail.com>
+> Tested-by: Lion Ackermann <nnamrec@gmail.com>
+> Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  net/netfilter/ipset/ip_set_core.c     | 81 +++++++++++++++------------
+>  net/netfilter/ipset/ip_set_list_set.c | 30 +++++-----
+>  2 files changed, 60 insertions(+), 51 deletions(-)
+> 
+> diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+> index 3184cc6be4c9d..c7ae4d9bf3d24 100644
+> --- a/net/netfilter/ipset/ip_set_core.c
+> +++ b/net/netfilter/ipset/ip_set_core.c
+> @@ -1172,23 +1172,50 @@ ip_set_setname_policy[IPSET_ATTR_CMD_MAX + 1] = {
+>  				    .len = IPSET_MAXNAMELEN - 1 },
+>  };
+>  
+> +/* In order to return quickly when destroying a single set, it is split
+> + * into two stages:
+> + * - Cancel garbage collector
+> + * - Destroy the set itself via call_rcu()
+> + */
+> +
+>  static void
+> -ip_set_destroy_set(struct ip_set *set)
+> +ip_set_destroy_set_rcu(struct rcu_head *head)
+>  {
+> -	pr_debug("set: %s\n",  set->name);
+> +	struct ip_set *set = container_of(head, struct ip_set, rcu);
+>  
+> -	/* Must call it without holding any lock */
+>  	set->variant->destroy(set);
+>  	module_put(set->type->me);
+>  	kfree(set);
+>  }
+>  
+>  static void
+> -ip_set_destroy_set_rcu(struct rcu_head *head)
+> +_destroy_all_sets(struct ip_set_net *inst)
+>  {
+> -	struct ip_set *set = container_of(head, struct ip_set, rcu);
+> +	struct ip_set *set;
+> +	ip_set_id_t i;
+> +	bool need_wait = false;
+>  
+> -	ip_set_destroy_set(set);
+> +	/* First cancel gc's: set:list sets are flushed as well */
+> +	for (i = 0; i < inst->ip_set_max; i++) {
+> +		set = ip_set(inst, i);
+> +		if (set) {
+> +			set->variant->cancel_gc(set);
+> +			if (set->type->features & IPSET_TYPE_NAME)
+> +				need_wait = true;
+> +		}
+> +	}
+> +	/* Must wait for flush to be really finished  */
+> +	if (need_wait)
+> +		rcu_barrier();
+> +	for (i = 0; i < inst->ip_set_max; i++) {
+> +		set = ip_set(inst, i);
+> +		if (set) {
+> +			ip_set(inst, i) = NULL;
+> +			set->variant->destroy(set);
+> +			module_put(set->type->me);
+> +			kfree(set);
+> +		}
+> +	}
+>  }
+>  
+>  static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+> @@ -1202,11 +1229,10 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+>  	if (unlikely(protocol_min_failed(attr)))
+>  		return -IPSET_ERR_PROTOCOL;
+>  
+> -
+>  	/* Commands are serialized and references are
+>  	 * protected by the ip_set_ref_lock.
+>  	 * External systems (i.e. xt_set) must call
+> -	 * ip_set_put|get_nfnl_* functions, that way we
+> +	 * ip_set_nfnl_get_* functions, that way we
+>  	 * can safely check references here.
+>  	 *
+>  	 * list:set timer can only decrement the reference
+> @@ -1214,8 +1240,6 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+>  	 * without holding the lock.
+>  	 */
+>  	if (!attr[IPSET_ATTR_SETNAME]) {
+> -		/* Must wait for flush to be really finished in list:set */
+> -		rcu_barrier();
+>  		read_lock_bh(&ip_set_ref_lock);
+>  		for (i = 0; i < inst->ip_set_max; i++) {
+>  			s = ip_set(inst, i);
+> @@ -1226,15 +1250,7 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+>  		}
+>  		inst->is_destroyed = true;
+>  		read_unlock_bh(&ip_set_ref_lock);
+> -		for (i = 0; i < inst->ip_set_max; i++) {
+> -			s = ip_set(inst, i);
+> -			if (s) {
+> -				ip_set(inst, i) = NULL;
+> -				/* Must cancel garbage collectors */
+> -				s->variant->cancel_gc(s);
+> -				ip_set_destroy_set(s);
+> -			}
+> -		}
+> +		_destroy_all_sets(inst);
+>  		/* Modified by ip_set_destroy() only, which is serialized */
+>  		inst->is_destroyed = false;
+>  	} else {
+> @@ -1255,12 +1271,12 @@ static int ip_set_destroy(struct sk_buff *skb, const struct nfnl_info *info,
+>  		features = s->type->features;
+>  		ip_set(inst, i) = NULL;
+>  		read_unlock_bh(&ip_set_ref_lock);
+> +		/* Must cancel garbage collectors */
+> +		s->variant->cancel_gc(s);
+>  		if (features & IPSET_TYPE_NAME) {
+>  			/* Must wait for flush to be really finished  */
+>  			rcu_barrier();
+>  		}
+> -		/* Must cancel garbage collectors */
+> -		s->variant->cancel_gc(s);
+>  		call_rcu(&s->rcu, ip_set_destroy_set_rcu);
+>  	}
+>  	return 0;
+> @@ -2365,30 +2381,25 @@ ip_set_net_init(struct net *net)
+>  }
+>  
+>  static void __net_exit
+> -ip_set_net_exit(struct net *net)
+> +ip_set_net_pre_exit(struct net *net)
+>  {
+>  	struct ip_set_net *inst = ip_set_pernet(net);
+>  
+> -	struct ip_set *set = NULL;
+> -	ip_set_id_t i;
+> -
+>  	inst->is_deleted = true; /* flag for ip_set_nfnl_put */
+> +}
+>  
+> -	nfnl_lock(NFNL_SUBSYS_IPSET);
+> -	for (i = 0; i < inst->ip_set_max; i++) {
+> -		set = ip_set(inst, i);
+> -		if (set) {
+> -			ip_set(inst, i) = NULL;
+> -			set->variant->cancel_gc(set);
+> -			ip_set_destroy_set(set);
+> -		}
+> -	}
+> -	nfnl_unlock(NFNL_SUBSYS_IPSET);
+> +static void __net_exit
+> +ip_set_net_exit(struct net *net)
+> +{
+> +	struct ip_set_net *inst = ip_set_pernet(net);
+> +
+> +	_destroy_all_sets(inst);
+>  	kvfree(rcu_dereference_protected(inst->ip_set_list, 1));
+>  }
+>  
+>  static struct pernet_operations ip_set_net_ops = {
+>  	.init	= ip_set_net_init,
+> +	.pre_exit = ip_set_net_pre_exit,
+>  	.exit   = ip_set_net_exit,
+>  	.id	= &ip_set_net_id,
+>  	.size	= sizeof(struct ip_set_net),
+> diff --git a/net/netfilter/ipset/ip_set_list_set.c b/net/netfilter/ipset/ip_set_list_set.c
+> index 54e2a1dd7f5f5..bfae7066936bb 100644
+> --- a/net/netfilter/ipset/ip_set_list_set.c
+> +++ b/net/netfilter/ipset/ip_set_list_set.c
+> @@ -79,7 +79,7 @@ list_set_kadd(struct ip_set *set, const struct sk_buff *skb,
+>  	struct set_elem *e;
+>  	int ret;
+>  
+> -	list_for_each_entry(e, &map->members, list) {
+> +	list_for_each_entry_rcu(e, &map->members, list) {
+>  		if (SET_WITH_TIMEOUT(set) &&
+>  		    ip_set_timeout_expired(ext_timeout(e, set)))
+>  			continue;
+> @@ -99,7 +99,7 @@ list_set_kdel(struct ip_set *set, const struct sk_buff *skb,
+>  	struct set_elem *e;
+>  	int ret;
+>  
+> -	list_for_each_entry(e, &map->members, list) {
+> +	list_for_each_entry_rcu(e, &map->members, list) {
+>  		if (SET_WITH_TIMEOUT(set) &&
+>  		    ip_set_timeout_expired(ext_timeout(e, set)))
+>  			continue;
+> @@ -188,9 +188,10 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+>  	struct list_set *map = set->data;
+>  	struct set_adt_elem *d = value;
+>  	struct set_elem *e, *next, *prev = NULL;
+> -	int ret;
+> +	int ret = 0;
+>  
+> -	list_for_each_entry(e, &map->members, list) {
+> +	rcu_read_lock();
+> +	list_for_each_entry_rcu(e, &map->members, list) {
+>  		if (SET_WITH_TIMEOUT(set) &&
+>  		    ip_set_timeout_expired(ext_timeout(e, set)))
+>  			continue;
+> @@ -201,6 +202,7 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+>  
+>  		if (d->before == 0) {
+>  			ret = 1;
+> +			goto out;
+>  		} else if (d->before > 0) {
+>  			next = list_next_entry(e, list);
+>  			ret = !list_is_last(&e->list, &map->members) &&
+> @@ -208,9 +210,11 @@ list_set_utest(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+>  		} else {
+>  			ret = prev && prev->id == d->refid;
+>  		}
+> -		return ret;
+> +		goto out;
+>  	}
+> -	return 0;
+> +out:
+> +	rcu_read_unlock();
+> +	return ret;
+>  }
+>  
+>  static void
+> @@ -239,7 +243,7 @@ list_set_uadd(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+>  
+>  	/* Find where to add the new entry */
+>  	n = prev = next = NULL;
+> -	list_for_each_entry(e, &map->members, list) {
+> +	list_for_each_entry_rcu(e, &map->members, list) {
+>  		if (SET_WITH_TIMEOUT(set) &&
+>  		    ip_set_timeout_expired(ext_timeout(e, set)))
+>  			continue;
+> @@ -316,9 +320,9 @@ list_set_udel(struct ip_set *set, void *value, const struct ip_set_ext *ext,
+>  {
+>  	struct list_set *map = set->data;
+>  	struct set_adt_elem *d = value;
+> -	struct set_elem *e, *next, *prev = NULL;
+> +	struct set_elem *e, *n, *next, *prev = NULL;
+>  
+> -	list_for_each_entry(e, &map->members, list) {
+> +	list_for_each_entry_safe(e, n, &map->members, list) {
+>  		if (SET_WITH_TIMEOUT(set) &&
+>  		    ip_set_timeout_expired(ext_timeout(e, set)))
+>  			continue;
+> @@ -424,14 +428,8 @@ static void
+>  list_set_destroy(struct ip_set *set)
+>  {
+>  	struct list_set *map = set->data;
+> -	struct set_elem *e, *n;
+>  
+> -	list_for_each_entry_safe(e, n, &map->members, list) {
+> -		list_del(&e->list);
+> -		ip_set_put_byindex(map->net, e->id);
+> -		ip_set_ext_destroy(set, e);
+> -		kfree(e);
+> -	}
+> +	WARN_ON_ONCE(!list_empty(&map->members));
+>  	kfree(map);
+>  
+>  	set->data = NULL;
+> -- 
+> 2.43.0
+> 
+> 
+> 
 
