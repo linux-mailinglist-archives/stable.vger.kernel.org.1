@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-54643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4114E90F081
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:29:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA34590F088
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 682221C2220E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:29:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63643282820
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BAB1AACA;
-	Wed, 19 Jun 2024 14:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF0910A03;
+	Wed, 19 Jun 2024 14:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ItVtshbH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiyQRlp9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAAA18029;
-	Wed, 19 Jun 2024 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4E623775;
+	Wed, 19 Jun 2024 14:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718807371; cv=none; b=EZLc/WE3Cl4HVG5pjEEHCQXeraRKCVXsKaCtjCjCBxh2qXTIZpJ/M3r8xTBD/JzIQ0b3XqZ1jPt3DFKzBfdmgut/00TQbRHHZVJlLRfTaHn5oOo6FCyyQtE2X7Y+CBIJM8XiyEmRKAScZXuuk6dGBNNA0v75dN/NlenzYco9Sd8=
+	t=1718807428; cv=none; b=vASi1CSUGUI5JJDx3cIRnlnPTWL1rcQsoTV9RKUQWgtC93c7juGIwYND6GkR3MEbh6oAxrWltSX6en1bu+9dGU2wmnSvnqBXM++WXCkqbUm730mAHuLXuE6kYhwKpn0DqD71Msqs5QqtZTtqGP4vw41lcxou+hqawJrWyE/w7J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718807371; c=relaxed/simple;
-	bh=LY0WnLp+W/1ARBwbKbyLgeTCAST9Fx+qA+xH79e35zU=;
+	s=arc-20240116; t=1718807428; c=relaxed/simple;
+	bh=5P4+U94Sj+hrx7FTYMGgX4hD00hQheT4KmraZdUEYZw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A8SeEgOh2lxRnMNQaAXwEJR1VLDDFGjzt0TEQNHJjlemD2IGSSni0gUUliEMXEJdyl8SmCh4OcRHU0wJJDs35FHlgsn0ymtOyO8tPNaSve1YW1dsJ/92Kb83JAz3ZQe4RIBqAA7bDtBi5VbixCj4hL8ReS899Ty2Iftvim35mZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ItVtshbH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DD7C32781;
-	Wed, 19 Jun 2024 14:29:30 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=uBChMv0VJTKnFsS5OOoN3bfhCec7RZXX3ThrYu4PfZ1JknlVF6AwbzQ/7hbRIn1QTp4XinkDr2ZV4WcgmxFZo4w31R9Ryag6+AuzAH6cQ+ii3k+jXdo25FB+Puom9EU7x8mzu6qfHdEQGiDPNdFBWGSagc13VpwpjvM3OrSWiIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiyQRlp9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9479EC2BBFC;
+	Wed, 19 Jun 2024 14:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718807370;
-	bh=LY0WnLp+W/1ARBwbKbyLgeTCAST9Fx+qA+xH79e35zU=;
+	s=k20201202; t=1718807427;
+	bh=5P4+U94Sj+hrx7FTYMGgX4hD00hQheT4KmraZdUEYZw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ItVtshbHcoOexpDp5RGraVN4BcxbYtPdgo2JqhUXOCioZVxFnbrNOyqkIDJbXDX5J
-	 jO4Ar9PsrbYnmnvAsIuaeQlCmUAYVL6ELEglRqCSadn2irCOQQ5MorSG2tdXUPH4Py
-	 rQDXcdrLKxigbm7CKBX74wcWeh5+Y+wg++GPmpWPHjq2/cy+3Z8baRghJdxTtyspl/
-	 6TMOSLUusvZ+TI+rdtsbv7nyl5b4Qt6lQTDYZy4Z86JbInkRaK1I8K7ysLl0Y20Mav
-	 VOzjE/zgOSYPG/iYzHo56681mv6hfWiJK0SEuPXzfUlrW021m6scMCd/4wzwPgWyK1
-	 ki+04RD4kLj4w==
-Date: Wed, 19 Jun 2024 10:29:28 -0400
+	b=CiyQRlp9GSAIxk7ym3Xfl08V9zmLHG9z9EicTuHhXcckzp4MxAB/Vjqs5Jyq59MJi
+	 jkk5XZzmEZEWMpQABr6UjiQuHmWAlahX8ch3QJacJi9vpLkZ18NdBv+MUHfGmK0wEQ
+	 h+irmSwp3MA/fiG8VDUMzci2gh0bsGk3RtMAj21zPxOEsBHZ1pu3I6xWyioQkIyuku
+	 hv40ls0BfUgw7oYiRvbJO7aayLt6Kt+a3AT/yRuxDkkLecs1seXObPB8MTn7wtS94+
+	 5hUDuYYbfPODY0eGMuRMlLghxl7c4JCx3fpE+JVZZ6HFpW4QjeIZ86iMMVUOJdjGYd
+	 uehKS7xw1tt5Q==
+Date: Wed, 19 Jun 2024 10:30:25 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Benjamin Tissoires <bentiss@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Peter Hutterer <peter.hutterer@who-t.net>, jikos@kernel.org,
-	linux-input@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.9 31/35] HID: bpf: add in-tree HID-BPF fix for
- the HP Elite Presenter Mouse
-Message-ID: <ZnLrSNTUjy73J9o9@sashalap>
-References: <20240527141214.3844331-1-sashal@kernel.org>
- <20240527141214.3844331-31-sashal@kernel.org>
- <k4j2pjxg23i6tggjc7beodock2q7pbjbgzombidzlowb7rpr37@ziaqvisevijj>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Pavel Machek <pavel@denx.de>, Sourabh Jain <sourabhjain@linux.ibm.com>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	hbathini@linux.ibm.com, bhe@redhat.com, akpm@linux-foundation.org,
+	bhelgaas@google.com, aneesh.kumar@kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Naveen N Rao <naveen@kernel.org>
+Subject: Re: [PATCH AUTOSEL 6.9 18/23] powerpc: make fadump resilient with
+ memory add/remove events
+Message-ID: <ZnLrgSFIdWAcTQp3@sashalap>
+References: <20240527155123.3863983-1-sashal@kernel.org>
+ <20240527155123.3863983-18-sashal@kernel.org>
+ <944f47df-96f0-40e8-a8e2-750fb9fa358e@linux.ibm.com>
+ <ZnFQQEBeFfO8vOnl@duo.ucw.cz>
+ <87a5jhe94t.fsf@mail.lhotse>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,29 +67,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <k4j2pjxg23i6tggjc7beodock2q7pbjbgzombidzlowb7rpr37@ziaqvisevijj>
+In-Reply-To: <87a5jhe94t.fsf@mail.lhotse>
 
-On Mon, May 27, 2024 at 04:50:02PM +0200, Benjamin Tissoires wrote:
->On May 27 2024, Sasha Levin wrote:
->> From: Benjamin Tissoires <bentiss@kernel.org>
+On Wed, Jun 19, 2024 at 04:31:30PM +1000, Michael Ellerman wrote:
+>Pavel Machek <pavel@denx.de> writes:
+>>> Hello Sasha,
+>>>
+>>> Thank you for considering this patch for the stable tree 6.9, 6.8, 6.6, and
+>>> 6.1.
+>>>
+>>> This patch does two things:
+>>> 1. Fixes a potential memory corruption issue mentioned as the third point in
+>>> the commit message
+>>> 2. Enables the kernel to avoid unnecessary fadump re-registration on memory
+>>> add/remove events
 >>
->> [ Upstream commit 4e6d2a297dd5be26ad409b7a05b20bd033d1c95e ]
->>
->> Duplicate of commit 0db117359e47 ("HID: add quirk for 03f0:464a HP Elite
->> Presenter Mouse"), but in a slightly better way.
->>
->> This time we actually change the application collection, making clearer
->> for userspace what the second mouse is.
->>
->> Note that having both hid-quirks fix and this HID-BPF fix is not a
->> problem at all.
+>> Actually, I'd suggest dropping this one, as it fixes two things and is
+>> over 200 lines long, as per stable kernel rules.
 >
->Please drop this patch in all backports (and FWIW, any fix in drivers/hid/bpf/progs/).
->
->HID-BPF is only available since kernel v6.3, and the compilation output
->of the in-tree file is not used directly, but shipped from udev-hid-bpf.
->
->TL;DR: this just adds noise to those stable kernel trees.
+>Yeah I agree, best to drop this one. It's a bit big and involved, and
+>has other dependencies.
 
 I'll drop it, thanks!
 
