@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-54395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAD6190EDF7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:24:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A85ED90EEF6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43286B226C0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2691BB26324
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A43D143C65;
-	Wed, 19 Jun 2024 13:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BAA1422D9;
+	Wed, 19 Jun 2024 13:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIKepv/Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVdDXpB6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBD9143757;
-	Wed, 19 Jun 2024 13:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F5D13DDC0;
+	Wed, 19 Jun 2024 13:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803454; cv=none; b=r7vVOE2VnR8qSMpCV53YRzh4XFa9EoUC+osQs+925ubHkM0yKsg3CZafup6AGErlcBjpQHID8akA+FIwEbCeaUq8DGRfpk8HvOz+b2Mg0XN4EhQtNSD7SYPs61VkyAen9wzP5VNZelLbg+dvK4A2pZf18BSVS6KM5zGhbV+ZIq0=
+	t=1718804039; cv=none; b=kd3jl6JR1TH8C8EvbVBm3XSX3ALd8UJFxP8tRV/+pKtwaxKAi+D59KFgPhYd8nbKVnuqHaBSDckCTYAIGLVUhNyjMlcpGE0baeTnh/aoLi9NkJVzlZFbEOGEpjix5lC/aQNmWOL7OR9BrHGqkhCShhjzbJA7ZGNvl7Y2UX1Yyq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803454; c=relaxed/simple;
-	bh=by/qSSysD2VS49vj9Hgk8Mrw+pDpaThGDcn1YMI1vpk=;
+	s=arc-20240116; t=1718804039; c=relaxed/simple;
+	bh=Lew2qnw5w94fnmgtIpo9FCYKvo6Q2+yEsAAyMtVvHMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6AYIMhg2hMfT282KU08cYIm1OFbYKYrCI2tMgZU+2Psabq/LxToqF+TzFiOjWR+0PkUmKqWcjfcbwZ3Duk7vP6PmiKPi/msYVclfRf0LEdEXXAS8B7LXWrGkgVI+wCgbQbeTd252ZCcE+nieh9FAd49li/EEPRFry29/1PjTRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIKepv/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E64C2BBFC;
-	Wed, 19 Jun 2024 13:24:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oKeH5oZtfHf/2lslsgB9ZhGpW/ZsVvADfQZmFX8ktMnn/SlJ9h0KqQLB6TFoMFdpyyUoFCCMPSHzdij7zBQ7rl5egjMmkeQF7wQkIfdZjOQ5LvJASi8q9N7cySlPNhXUc+Lc0Ff7fmvrYQ6k0olHwstz6KeXdzEEU+sL6hXvrmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVdDXpB6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23CCC2BBFC;
+	Wed, 19 Jun 2024 13:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803454;
-	bh=by/qSSysD2VS49vj9Hgk8Mrw+pDpaThGDcn1YMI1vpk=;
+	s=korg; t=1718804039;
+	bh=Lew2qnw5w94fnmgtIpo9FCYKvo6Q2+yEsAAyMtVvHMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fIKepv/ZlcIuLFSw1JkIFgaoVBLLlUQ4bc1moGZNLuxmMY3szoEFPN0XnXdQlhdNu
-	 pGfLxniHnKVqnXof8XI7iu4i8uC1vmRrmQkvdvWLjSmvFNs2dOpnYqAFYZ4hrP3ceJ
-	 wIrnYgjG6SsDaHGeJ21r8t1E/FeAYjfwL42krFtc=
+	b=kVdDXpB6Wq2ll9Z6emssx/B6brBbcPcnLVjmGqXPMIga4glK1gw5ziQSxgTYlt6rI
+	 70g0nmC+/0Bo1rxlHQlXkMX9Cx2+dz5XZ2XPn0qsXqwsttLe9mwm9JeKRZjhYVuiJP
+	 Luidq2RhobYCvWV4Locjld1CmuTR2z0tzAMpbGEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sicong Huang <congei42@163.com>,
-	Ronnie Sahlberg <rsahlberg@ciq.com>
-Subject: [PATCH 6.9 272/281] greybus: Fix use-after-free bug in gb_interface_release due to race condition.
+	Shawn Lee <shawn.c.lee@intel.com>,
+	Vidya Srinivas <vidya.srinivas@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.1 188/217] drm/i915/dpt: Make DPT object unshrinkable
 Date: Wed, 19 Jun 2024 14:57:11 +0200
-Message-ID: <20240619125620.449232904@linuxfoundation.org>
+Message-ID: <20240619125603.940454993@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,59 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sicong Huang <congei42@163.com>
+From: Vidya Srinivas <vidya.srinivas@intel.com>
 
-commit 5c9c5d7f26acc2c669c1dcf57d1bb43ee99220ce upstream.
+commit 43e2b37e2ab660c3565d4cff27922bc70e79c3f1 upstream.
 
-In gb_interface_create, &intf->mode_switch_completion is bound with
-gb_interface_mode_switch_work. Then it will be started by
-gb_interface_request_mode_switch. Here is the relevant code.
-if (!queue_work(system_long_wq, &intf->mode_switch_work)) {
-	...
-}
+In some scenarios, the DPT object gets shrunk but
+the actual framebuffer did not and thus its still
+there on the DPT's vm->bound_list. Then it tries to
+rewrite the PTEs via a stale CPU mapping. This causes panic.
 
-If we call gb_interface_release to make cleanup, there may be an
-unfinished work. This function will call kfree to free the object
-"intf". However, if gb_interface_mode_switch_work is scheduled to
-run after kfree, it may cause use-after-free error as
-gb_interface_mode_switch_work will use the object "intf".
-The possible execution flow that may lead to the issue is as follows:
-
-CPU0                            CPU1
-
-                            |   gb_interface_create
-                            |   gb_interface_request_mode_switch
-gb_interface_release        |
-kfree(intf) (free)          |
-                            |   gb_interface_mode_switch_work
-                            |   mutex_lock(&intf->mutex) (use)
-
-Fix it by canceling the work before kfree.
-
-Signed-off-by: Sicong Huang <congei42@163.com>
-Link: https://lore.kernel.org/r/20240416080313.92306-1-congei42@163.com
-Cc: Ronnie Sahlberg <rsahlberg@ciq.com>
+Cc: stable@vger.kernel.org
+Reported-by: Shawn Lee <shawn.c.lee@intel.com>
+Fixes: 0dc987b699ce ("drm/i915/display: Add smem fallback allocation for dpt")
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+[vsyrjala: Add TODO comment]
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240520165634.1162470-1-vidya.srinivas@intel.com
+(cherry picked from commit 51064d471c53dcc8eddd2333c3f1c1d9131ba36c)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/greybus/interface.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/gem/i915_gem_object.h |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/greybus/interface.c
-+++ b/drivers/greybus/interface.c
-@@ -693,6 +693,7 @@ static void gb_interface_release(struct
- 
- 	trace_gb_interface_release(intf);
- 
-+	cancel_work_sync(&intf->mode_switch_work);
- 	kfree(intf);
+--- a/drivers/gpu/drm/i915/gem/i915_gem_object.h
++++ b/drivers/gpu/drm/i915/gem/i915_gem_object.h
+@@ -295,7 +295,9 @@ bool i915_gem_object_has_iomem(const str
+ static inline bool
+ i915_gem_object_is_shrinkable(const struct drm_i915_gem_object *obj)
+ {
+-	return i915_gem_object_type_has(obj, I915_GEM_OBJECT_IS_SHRINKABLE);
++	/* TODO: make DPT shrinkable when it has no bound vmas */
++	return i915_gem_object_type_has(obj, I915_GEM_OBJECT_IS_SHRINKABLE) &&
++		!obj->is_dpt;
  }
  
+ static inline bool
 
 
 
