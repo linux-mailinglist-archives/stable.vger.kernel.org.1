@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-54592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D78090EEF5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C251E90EDF6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34DA21C20D2E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43F8AB2272E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B62B146016;
-	Wed, 19 Jun 2024 13:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9751459F2;
+	Wed, 19 Jun 2024 13:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNypDlpS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZUaxrKh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A03613DDC0;
-	Wed, 19 Jun 2024 13:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58328143757;
+	Wed, 19 Jun 2024 13:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804036; cv=none; b=X6dCbWwtmIylJUa17Zx6G6ONLh7Z0HzrrHmQvil4EiG8fF2Hga+2Ene0B5rPj7v+9bdao1B/oWxWCRDEUg6yyVALPxDy8sW3AiHBdX/VC7ySZRi65aomuj6jnT87e6JxT5A0cxta2DiREqap3hNAeduoCqepTg5rQUcrqvbUp0o=
+	t=1718803451; cv=none; b=HsYf+kAayDyRbx5ce7IrafnhRrzURx+2ssdMnrUhukgmMe7J9JmXP/9MZ353wN7P4RlK+GqiZ3bzeyB4vLs8HSaZiv96oNfs2GpdzkRNK1RRYAS/h6ZrWCnkvG8s0IOmMAILJ8K5SHfj4Buleooc/p3XYgOL069UVIWcc+MmD5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804036; c=relaxed/simple;
-	bh=oMwugdzWcpQmcBnwq1s4E2F2PQ150EErjivq2lSWE3w=;
+	s=arc-20240116; t=1718803451; c=relaxed/simple;
+	bh=/LN4wgnJVuW3lhuNILY+6i1rBMjtEo4iHWQOuDE6PDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jE+B0x5QO8xggGWxt5eBoE+rpt5aTxXCpG252OkacKsOKs+Pj700K6yxHSUfa0XdpV13sHAkeLI3QeBmIoAxPfFRatmv8rxQ5rlNH+ZUzGP+KmGqhQoWfb3sbsDGM3JMXlUg7fVXZHuXDHaCbMSKCyP6VHGYK3Rvg73e8IAXLAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNypDlpS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6063C2BBFC;
-	Wed, 19 Jun 2024 13:33:55 +0000 (UTC)
+	 MIME-Version; b=Z5I8y0f/y2EJ3jqbUFWG+g4lJpj54ogE3n5Wp39aTmT7/s6HQpO0jsksgwF7B18mrmDyZiNwAA2zjZSMc9an00K/oOJ7d+J5Z6f//PAEEgSK/85YGu+WuCIXW1sugHatHZKymJVBzYAGs2de+BKeHkx5yviSjjDepyBAoPqokyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZUaxrKh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C63C2BBFC;
+	Wed, 19 Jun 2024 13:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804036;
-	bh=oMwugdzWcpQmcBnwq1s4E2F2PQ150EErjivq2lSWE3w=;
+	s=korg; t=1718803451;
+	bh=/LN4wgnJVuW3lhuNILY+6i1rBMjtEo4iHWQOuDE6PDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rNypDlpSF6NCFVgMP2Ff210nUEVsLzJ5VmFhGKTTGjvh9lgmdIPoGERlyPFskYR5B
-	 b8NEzIaxELRu7ze52hKY6xdeTc4QYrOJenu/jc5vbYbM4aVRd+o3kaUzjxgUoF4OOx
-	 iSuzhWzzUHVxAszJpd4+WUaCW95y4FQSv9bBZecw=
+	b=cZUaxrKhzm54NdOhiV0TyDyDf0uDUy4gmg9VxRMhZKIA/6XxjBXhUEUYC/pai+Sbe
+	 YiPfYqQf5b/c17uGJkzI7IcsdJBiIi3FjeDyCPKymlefimAXd53ROiSUvsNimPengh
+	 Ck3nNwiywb3SAageD0SdFPQHZgNyJnceK1RZgMMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Wilson <chris@chris-wilson.co.uk>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.1 187/217] drm/i915/gt: Disarm breadcrumbs if engines are already idle
+	Beleswar Padhi <b-padhi@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.9 271/281] remoteproc: k3-r5: Jump to error handling labels in start/stop errors
 Date: Wed, 19 Jun 2024 14:57:10 +0200
-Message-ID: <20240619125603.900913190@linuxfoundation.org>
+Message-ID: <20240619125620.410174303@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,112 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+From: Beleswar Padhi <b-padhi@ti.com>
 
-commit 70cb9188ffc75e643debf292fcddff36c9dbd4ae upstream.
+commit 1dc7242f6ee0c99852cb90676d7fe201cf5de422 upstream.
 
-The breadcrumbs use a GT wakeref for guarding the interrupt, but are
-disarmed during release of the engine wakeref. This leaves a hole where
-we may attach a breadcrumb just as the engine is parking (after it has
-parked its breadcrumbs), execute the irq worker with some signalers still
-attached, but never be woken again.
+In case of errors during core start operation from sysfs, the driver
+directly returns with the -EPERM error code. Fix this to ensure that
+mailbox channels are freed on error before returning by jumping to the
+'put_mbox' error handling label. Similarly, jump to the 'out' error
+handling label to return with required -EPERM error code during the
+core stop operation from sysfs.
 
-That issue manifests itself in CI with IGT runner timeouts while tests
-are waiting indefinitely for release of all GT wakerefs.
-
-<6> [209.151778] i915: Running live_engine_pm_selftests/live_engine_busy_stats
-<7> [209.231628] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_5
-<7> [209.231816] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_4
-<7> [209.231944] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_3
-<7> [209.232056] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_2
-<7> [209.232166] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling DC_off
-<7> [209.232270] i915 0000:00:02.0: [drm:skl_enable_dc6 [i915]] Enabling DC6
-<7> [209.232368] i915 0000:00:02.0: [drm:gen9_set_dc_state.part.0 [i915]] Setting DC state from 00 to 02
-<4> [299.356116] [IGT] Inactivity timeout exceeded. Killing the current test with SIGQUIT.
-...
-<6> [299.356526] sysrq: Show State
-...
-<6> [299.373964] task:i915_selftest   state:D stack:11784 pid:5578  tgid:5578  ppid:873    flags:0x00004002
-<6> [299.373967] Call Trace:
-<6> [299.373968]  <TASK>
-<6> [299.373970]  __schedule+0x3bb/0xda0
-<6> [299.373974]  schedule+0x41/0x110
-<6> [299.373976]  intel_wakeref_wait_for_idle+0x82/0x100 [i915]
-<6> [299.374083]  ? __pfx_var_wake_function+0x10/0x10
-<6> [299.374087]  live_engine_busy_stats+0x9b/0x500 [i915]
-<6> [299.374173]  __i915_subtests+0xbe/0x240 [i915]
-<6> [299.374277]  ? __pfx___intel_gt_live_setup+0x10/0x10 [i915]
-<6> [299.374369]  ? __pfx___intel_gt_live_teardown+0x10/0x10 [i915]
-<6> [299.374456]  intel_engine_live_selftests+0x1c/0x30 [i915]
-<6> [299.374547]  __run_selftests+0xbb/0x190 [i915]
-<6> [299.374635]  i915_live_selftests+0x4b/0x90 [i915]
-<6> [299.374717]  i915_pci_probe+0x10d/0x210 [i915]
-
-At the end of the interrupt worker, if there are no more engines awake,
-disarm the breadcrumb and go to sleep.
-
-Fixes: 9d5612ca165a ("drm/i915/gt: Defer enabling the breadcrumb interrupt to after submission")
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/10026
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: <stable@vger.kernel.org> # v5.12+
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Acked-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240423165505.465734-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit fbad43eccae5cb14594195c20113369aabaa22b5)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: 3c8a9066d584 ("remoteproc: k3-r5: Do not allow core1 to power up before core0 via sysfs")
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Link: https://lore.kernel.org/r/20240506141849.1735679-1-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_breadcrumbs.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
-+++ b/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
-@@ -258,8 +258,13 @@ static void signal_irq_work(struct irq_w
- 		i915_request_put(rq);
- 	}
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -580,7 +580,8 @@ static int k3_r5_rproc_start(struct rpro
+ 		if (core != core0 && core0->rproc->state == RPROC_OFFLINE) {
+ 			dev_err(dev, "%s: can not start core 1 before core 0\n",
+ 				__func__);
+-			return -EPERM;
++			ret = -EPERM;
++			goto put_mbox;
+ 		}
  
-+	/* Lazy irq enabling after HW submission */
- 	if (!READ_ONCE(b->irq_armed) && !list_empty(&b->signalers))
- 		intel_breadcrumbs_arm_irq(b);
-+
-+	/* And confirm that we still want irqs enabled before we yield */
-+	if (READ_ONCE(b->irq_armed) && !atomic_read(&b->active))
-+		intel_breadcrumbs_disarm_irq(b);
- }
+ 		ret = k3_r5_core_run(core);
+@@ -648,7 +649,8 @@ static int k3_r5_rproc_stop(struct rproc
+ 		if (core != core1 && core1->rproc->state != RPROC_OFFLINE) {
+ 			dev_err(dev, "%s: can not stop core 0 before core 1\n",
+ 				__func__);
+-			return -EPERM;
++			ret = -EPERM;
++			goto out;
+ 		}
  
- struct intel_breadcrumbs *
-@@ -310,13 +315,7 @@ void __intel_breadcrumbs_park(struct int
- 		return;
- 
- 	/* Kick the work once more to drain the signalers, and disarm the irq */
--	irq_work_sync(&b->irq_work);
--	while (READ_ONCE(b->irq_armed) && !atomic_read(&b->active)) {
--		local_irq_disable();
--		signal_irq_work(&b->irq_work);
--		local_irq_enable();
--		cond_resched();
--	}
-+	irq_work_queue(&b->irq_work);
- }
- 
- void intel_breadcrumbs_free(struct kref *kref)
-@@ -399,7 +398,7 @@ static void insert_breadcrumb(struct i91
- 	 * the request as it may have completed and raised the interrupt as
- 	 * we were attaching it into the lists.
- 	 */
--	if (!b->irq_armed || __i915_request_is_complete(rq))
-+	if (!READ_ONCE(b->irq_armed) || __i915_request_is_complete(rq))
- 		irq_work_queue(&b->irq_work);
- }
- 
+ 		ret = k3_r5_core_halt(core);
 
 
 
