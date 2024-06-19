@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7ACD90EF0A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D38F90EDEB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 902081F21B69
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FC391C208F0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BAF14387E;
-	Wed, 19 Jun 2024 13:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EAC143757;
+	Wed, 19 Jun 2024 13:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cL36vKQC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVt3OrvE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C460A13DDC0;
-	Wed, 19 Jun 2024 13:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A464D9EA;
+	Wed, 19 Jun 2024 13:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804095; cv=none; b=AyF1ZyQCG5rZ1pPOpSO3S3ugASVzh8XgKx1IusrFXyLwW5DJ8TUcDSU0V2RYVDNhydvZbO2UwEXYWny7xNHDvqDz18AHJ5CNbagMudJEjIZ4fArroCR8Ox8x0nJ9BEAPgQnS7xiwXnbDsQilfspgS7dEpOGdAcBExFUs3pnRM7w=
+	t=1718803418; cv=none; b=iaAq4ini+82HB02o1y0Z5kchLA8q/pl+iNziO9rgtyqBe5sijozIb8IzK3KEqn/ln8WBr6Rxh7OQS1Yp8r/JMhHieP3s+ZlLXKy/e7xFOauOSovzdOfCMG6zoYkMkDwsECNtdSkW3UkRKj8ES/Z9z3dlJ3pc72ll15lTKsSCuDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804095; c=relaxed/simple;
-	bh=RCgMBelj5qNMBcy7+PoozlNX7PcOlAeeJ5fjgig+UOA=;
+	s=arc-20240116; t=1718803418; c=relaxed/simple;
+	bh=ywnvxbakoGQhlsa2YEkHJ3/uGjsjdZ5JGwxJuBKTMuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tELpg6mKefI8ArFbiijuUXRTenudmWLpHws7WXIWfdmQW/AEXjvl/Z5GuR5j3KupwU+7TO/fxRj306GZwzywvTDeKKdHZ18xPkAF4EE5/Uj08y/KCBZPD7bW+ZgFP0A9MX2Sg4FgzWakx3mD/y8zKjac89xl0EhfZZ+0aWl+4GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cL36vKQC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466FCC2BBFC;
-	Wed, 19 Jun 2024 13:34:55 +0000 (UTC)
+	 MIME-Version; b=NQA9wZ0b1bBYl0shj98DVIx7c02Uj8pqehtRGtl/sBNFzmS1Qpsi2AV+ywsZkCvu2mTEfVx7Dpx/+BoduKZI+JDIsjGqQazilgAuKlRLd16wuB2KHdWMymmgytI17UU86QjyhyjNuSg21nuVukbtN7ILVKSRHOhPXjT9zdrkDEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVt3OrvE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF31FC2BBFC;
+	Wed, 19 Jun 2024 13:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804095;
-	bh=RCgMBelj5qNMBcy7+PoozlNX7PcOlAeeJ5fjgig+UOA=;
+	s=korg; t=1718803418;
+	bh=ywnvxbakoGQhlsa2YEkHJ3/uGjsjdZ5JGwxJuBKTMuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cL36vKQCpChSwu+JF14V29pFSs28tyUVdv5aMpC8Nna/dPE4Hlj62J/HiNVrm0ASh
-	 1FVmrFc3L9jfZEXnh6OzHD1w0ziB0Aw7DnPeST7TcShn5lZqmrXw6/A6bR2SkATeNe
-	 CyWYV63WzzJ1cnhNMVwaswMjUqFRakffS0XoYTN4=
+	b=fVt3OrvEXVlP8yyAYu/WqDFvXRVCTGgpgyBekf+1hTQh7zvPAW3m4ODVXd1Ht43ZG
+	 /Jrq0jIgGL13/oqerjrPvqjFBkQc4SsEhIP6CooTOv40uEzOGP3SleJyYgbSxK8TYm
+	 EI1mW6WE0GtFGJ/YQAqHChdz6P/a0ScoHg1+sIb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Subject: [PATCH 6.1 176/217] vmci: prevent speculation leaks by sanitizing event in event_deliver()
-Date: Wed, 19 Jun 2024 14:56:59 +0200
-Message-ID: <20240619125603.478680273@linuxfoundation.org>
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.9 261/281] intel_th: pci: Add Granite Rapids support
+Date: Wed, 19 Jun 2024 14:57:00 +0200
+Message-ID: <20240619125620.023322467@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-commit 8003f00d895310d409b2bf9ef907c56b42a4e0f4 upstream.
+commit e44937889bdf4ecd1f0c25762b7226406b9b7a69 upstream.
 
-Coverity spotted that event_msg is controlled by user-space,
-event_msg->event_data.event is passed to event_deliver() and used
-as an index without sanitization.
+Add support for the Trace Hub in Granite Rapids.
 
-This change ensures that the event index is sanitized to mitigate any
-possibility of speculative information leaks.
-
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
-
-Only compile tested, no access to HW.
-
-Fixes: 1d990201f9bb ("VMCI: event handling implementation.")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Link: https://lore.kernel.org/stable/20231127193533.46174-1-hagarhem%40amazon.com
-Link: https://lore.kernel.org/r/20240430085916.4753-1-hagarhem@amazon.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-11-alexander.shishkin@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/vmw_vmci/vmci_event.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/misc/vmw_vmci/vmci_event.c
-+++ b/drivers/misc/vmw_vmci/vmci_event.c
-@@ -9,6 +9,7 @@
- #include <linux/vmw_vmci_api.h>
- #include <linux/list.h>
- #include <linux/module.h>
-+#include <linux/nospec.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/rculist.h>
-@@ -86,9 +87,12 @@ static void event_deliver(struct vmci_ev
- {
- 	struct vmci_subscription *cur;
- 	struct list_head *subscriber_list;
-+	u32 sanitized_event, max_vmci_event;
- 
- 	rcu_read_lock();
--	subscriber_list = &subscriber_array[event_msg->event_data.event];
-+	max_vmci_event = ARRAY_SIZE(subscriber_array);
-+	sanitized_event = array_index_nospec(event_msg->event_data.event, max_vmci_event);
-+	subscriber_list = &subscriber_array[sanitized_event];
- 	list_for_each_entry_rcu(cur, subscriber_list, node) {
- 		cur->callback(cur->id, &event_msg->event_data,
- 			      cur->callback_data);
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -305,6 +305,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Granite Rapids */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x0963),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Alder Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
