@@ -1,145 +1,115 @@
-Return-Path: <stable+bounces-54621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDC290EF16
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:35:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D02D90EC3E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7751EB26818
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:35:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC642287F7F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9FC147C89;
-	Wed, 19 Jun 2024 13:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07479143C4E;
+	Wed, 19 Jun 2024 13:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYS8LDFv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nhFD+ouJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A01E147C6E;
-	Wed, 19 Jun 2024 13:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A703A82871;
+	Wed, 19 Jun 2024 13:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804122; cv=none; b=Qt5GMjB1ROLXsVZtX4FKOvZlI7jR8heaMXpfa+TXvDzqnwlLRoW/bdMimRBkiN+kYjKNF/9atcxfP+nyTutIpouLMjH73IthR+8UBomNEDJ4jzNVieTYEm/rybM9nAo5I7pOYu/ZZhy4UBVPFsbzmoWq1wN2YwfYM2HMRWEqNHk=
+	t=1718802313; cv=none; b=TNsxrnCxKFdZD97IKvRfHNAi+QQMnkZCZADqGiJb3WlyptUmSqjDXDMuFypOAT1utrNMAn7XqIfDybBnfT+3PgceE31n8+qoq2DrWCFz516G2MpE85FD4a3IGKzDHRr8NqhzBd36nbfkTvLqvPlE9SvIOAN6we8Ah+JocdGcQaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804122; c=relaxed/simple;
-	bh=YEzzZmp5JQSEMjyvX5WGQzCCINGyJy3LYd0aA1TXqfE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2tmgIRb/DL31y/zaAmr/Q+GSiTSSiP5ICIIJVKMD7yaOiEdyY5vISSwHfWpv9ncNvDz8jHVc7iNDLD2okQCCC+MsRoyN00/RO0gc+ASSmo6n/XglI3EXzhb3bqA0RjLh4KSqcfMQxirURTcGnrz8pfwkP8Z4e0qIvqztqllGck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYS8LDFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B52BC2BBFC;
-	Wed, 19 Jun 2024 13:35:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804122;
-	bh=YEzzZmp5JQSEMjyvX5WGQzCCINGyJy3LYd0aA1TXqfE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WYS8LDFvHqLfmqu2OCxRNVgAqf7Os4uz79Fq8K84bmblujhy7TZAEC9D5HWqYBo+r
-	 SPth75YgKw87nWDj9ueFoo+DxbKoObM5wiHVriVxxOxIaNj7BSsWYe6DNOq3sHj7fP
-	 6iJttwbgRpu6PouxEBi+hqN1S2CyTFzcxLyPG4iM=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Rachel Menge <rachelmenge@linux.microsoft.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Wei Fu <fuweid89@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Allen Pais <apais@linux.microsoft.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	Joel Granados <j.granados@samsung.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	s=arc-20240116; t=1718802313; c=relaxed/simple;
+	bh=PTRu9LXtUGp3s0mBOOAQcnj4X6eQ12NeJbkhz+7wh7c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UViRkS7rq/1MR57pXX+qP9ZYe949yMXC9kQMuHXUau+nJTb7U3KnX4OsWZO2Bsx4DeIvSmfzOeCWHRKZ8MqJIP9CqyZFrnYjM0NgPg2S3aZrfgrXHGwDRRbJS+EEDX1Kx6qJby0dfJdMys8CO+3UfsOIOstwd1eh6VdxeLDj+Vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nhFD+ouJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD62FC32786;
+	Wed, 19 Jun 2024 13:05:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718802313;
+	bh=PTRu9LXtUGp3s0mBOOAQcnj4X6eQ12NeJbkhz+7wh7c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nhFD+ouJLyF8aMkRyqhYXC5Q5DjPG8/UJR/GKCUPna5Dd+lnWwp6kMtpmrz1hlESk
+	 jjr444Xu0jDB0CGkuOJdyaXSr0/QuF6EhCg5Tgx2ZMoGLK9TsQlyyzY1Q/+Ef7uuVg
+	 ROsD/PlfKPdMwOql1Zu1zMScbrC1kMnNJXduO4JIE4xT2NAlcJp62c0tOxg3CL7FEq
+	 QfHS1y1aqAIcYjpSx6OD2iGBuhWLrwGBea9Qr3WYV9BVg2WsMD4cjM08BIEREugsN+
+	 IHZ+eZQfPJVaK3Zhh7wTWFytS+BaW5vLVQEnxZZAKfhkDgtGeVtENyFRYn2ceXNal7
+	 GqKkTBkFaqzrA==
+Date: Wed, 19 Jun 2024 14:05:08 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 217/217] zap_pid_ns_processes: clear TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING
-Date: Wed, 19 Jun 2024 14:57:40 +0200
-Message-ID: <20240619125605.066814661@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+Subject: Re: [PATCH 6.6 069/267] selftests/mm: log a consistent test name for
+ check_compaction
+Message-ID: <72b9e2cd-be65-4fb7-82dc-04e870464b3f@sirena.org.uk>
+References: <20240619125606.345939659@linuxfoundation.org>
+ <20240619125609.005611983@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-6.1-stable review patch.  If anyone has any objections, please let me know.
-
-------------------
-
-From: Oleg Nesterov <oleg@redhat.com>
-
-[ Upstream commit 7fea700e04bd3f424c2d836e98425782f97b494e ]
-
-kernel_wait4() doesn't sleep and returns -EINTR if there is no
-eligible child and signal_pending() is true.
-
-That is why zap_pid_ns_processes() clears TIF_SIGPENDING but this is not
-enough, it should also clear TIF_NOTIFY_SIGNAL to make signal_pending()
-return false and avoid a busy-wait loop.
-
-Link: https://lkml.kernel.org/r/20240608120616.GB7947@redhat.com
-Fixes: 12db8b690010 ("entry: Add support for TIF_NOTIFY_SIGNAL")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Reported-by: Rachel Menge <rachelmenge@linux.microsoft.com>
-Closes: https://lore.kernel.org/all/1386cd49-36d0-4a5c-85e9-bc42056a5a38@linux.microsoft.com/
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Tested-by: Wei Fu <fuweid89@gmail.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Cc: Allen Pais <apais@linux.microsoft.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
-Cc: Joel Granados <j.granados@samsung.com>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Mike Christie <michael.christie@oracle.com>
-Cc: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Zqiang <qiang.zhang1211@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- kernel/pid_namespace.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
-index fc21c5d5fd5de..1daadbefcee3a 100644
---- a/kernel/pid_namespace.c
-+++ b/kernel/pid_namespace.c
-@@ -214,6 +214,7 @@ void zap_pid_ns_processes(struct pid_namespace *pid_ns)
- 	 */
- 	do {
- 		clear_thread_flag(TIF_SIGPENDING);
-+		clear_thread_flag(TIF_NOTIFY_SIGNAL);
- 		rc = kernel_wait4(-1, NULL, __WALL, NULL);
- 	} while (rc != -ECHILD);
- 
--- 
-2.43.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="S1swdCi9UCbRMg3p"
+Content-Disposition: inline
+In-Reply-To: <20240619125609.005611983@linuxfoundation.org>
+X-Cookie: Don't I know you?
 
 
+--S1swdCi9UCbRMg3p
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Jun 19, 2024 at 02:53:40PM +0200, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me kno=
+w.
+>=20
+> ------------------
+>=20
+> From: Mark Brown <broonie@kernel.org>
+>=20
+> [ Upstream commit f3b7568c49420d2dcd251032c9ca1e069ec8a6c9 ]
+>=20
+> Every test result report in the compaction test prints a distinct log
+> messae, and some of the reports print a name that varies at runtime.  This
+> causes problems for automation since a lot of automation software uses the
+> printed string as the name of the test, if the name varies from run to run
+> and from pass to fail then the automation software can't identify that a
+> test changed result or that the same tests are being run.
+>=20
+> Refactor the logging to use a consistent name when printing the result of
+> the test, printing the existing messages as diagnostic information instead
+> so they are still available for people trying to interpret the results.
+
+This will change the test names for these tests which might disrupt
+people's CI.
+
+--S1swdCi9UCbRMg3p
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZy14QACgkQJNaLcl1U
+h9Aiiwf8D+Yagu4pmsdH3sCcpTR853zF7/x6i3YJ69KW3zswvzDuSDGwfLtWeKBM
+JIy5LjkWnbMfFN+/Q/ujQrtH0DDAsqfhvdabvlC7qQeLmiPIGw69gszUj+SssDDx
+xWvzkmCQDbm0smJQrajSGAHROZiG0eWb4BBgSKm/F+hQjVlydu7nB0p2fa6g2UMU
+UGCkXCUQodIGrGkU/sOniwgcwIQ8I6LSDYM4GJldRgbM4d5LVHuglpsAciz3U9uv
+eF1auV2d6UEpCRjI5rg7SOPH3d2J4jcx61jcEgTE0gBck0onIRSK+G6IJH7FfxRQ
+haP+GefoxDWeE8uQcpbGsQ7U7bf7bw==
+=Htcm
+-----END PGP SIGNATURE-----
+
+--S1swdCi9UCbRMg3p--
 
