@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-54243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A6A90ED52
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72EBF90EC22
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A73251F21D29
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 848FC1C2430D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A06012FB27;
-	Wed, 19 Jun 2024 13:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD99149DFC;
+	Wed, 19 Jun 2024 13:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQX8c4W0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Py3nV7zA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD9B4315F;
-	Wed, 19 Jun 2024 13:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5AE143C43;
+	Wed, 19 Jun 2024 13:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803004; cv=none; b=cwaj2UAL+HJktwKSWi/Nrh/YmJ5gQXgMh8UEAC3JD+pwllinAo7dxaJviJsEwohfM9oBBhuMjRUlBB1ncMeMX/GFa8cqVV3RNQ6INjt4W+NFhJ2Jwnpy2orwmVqZQEo814GbL/VHl7fQAMiVeHgkTokBdWGMbnRyI1quCe3YKV4=
+	t=1718802237; cv=none; b=HEmA2XhBo/Dt5HNtG/X5IpPg8b8r0MnwO9Dix3kOmE0ysSR3mbBgLZ5VitQa/nj/23h/dudq8JA1kZFfEacYcW9qJ0Z5xSlhifRjJTzXoOnE7FSJEtFALbAcxXFVM7slH6Fi4br9SY3tdIbM/g0r5mj3M0vjhAW49F+2OtXnaRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803004; c=relaxed/simple;
-	bh=7Z48nCJ9Sw2Ehfr0KWkCF0B+9cTDNFoLwoA4WKAD6p8=;
+	s=arc-20240116; t=1718802237; c=relaxed/simple;
+	bh=gICHEDLeW11TyUPe703o3KZYJZXA14zmpvkpbJIgeZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plqbIbVJUBBDi/sWN1XHDSO1nirvcyNZNqZqdF2QwlfTbLzOKwtQG0AsUj5x8KJqZ7WjL55xXcimAHJl7pLchWYmSAvLQes0M3XjnzW//vCDN+zSvWbitgqtZQYTTMo92nI2UuMYKueU14d3WE47mQKIa6LlVm9YWoWwKQ68Kwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQX8c4W0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C9BC2BBFC;
-	Wed, 19 Jun 2024 13:16:44 +0000 (UTC)
+	 MIME-Version; b=gjkIgjhMUadN6CT8D3zYHAON+G2+JPQWUVi+eGEHEti2dyllli9HmatiiK4r5TbQRtPRY7amU+Ha8HdoGAJZArgV3l6FbazfyqkRsO4F/dfDwwkVaXuQdrDOyGVtRyq8NFQICO8zWdx/qId+TSMQBRtWaLcHWREPMqW47JvMNwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Py3nV7zA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D14C2BBFC;
+	Wed, 19 Jun 2024 13:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803004;
-	bh=7Z48nCJ9Sw2Ehfr0KWkCF0B+9cTDNFoLwoA4WKAD6p8=;
+	s=korg; t=1718802237;
+	bh=gICHEDLeW11TyUPe703o3KZYJZXA14zmpvkpbJIgeZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQX8c4W0t2FV+sh6uApPdHZroMkxNJbi1FCbIh+L+4Z2mQ1/PRVrdqtDL57bL0Gy+
-	 Mje0FQBLwkYFBEJOLhS1ncj5mevbLwoqMLBMsUhUDOqC/GPpkFyWHDb+Fe5tSEdVDS
-	 IFpAobT6e3CFtTJbWiqwlk0wORTmfFzWptDqj1kE=
+	b=Py3nV7zADLVp0MGeZWpjHXuchV3gVCsuSPOhzkMu1udOC/uQLNPmo7jmkjOBn0b+W
+	 5jCfSOxUy/X5Z5ADeHsryIYPUVzYGwo7ElGDQxx27mA6AJ0Z4m8wxR3B/dEJvojXsn
+	 +4iFaODBCmVUntQHaravnq/9kKcMJmiZbWA6133A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Russell King <linux@armlinux.org.uk>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 121/281] clk: sifive: Do not register clkdevs for PRCI clocks
+Subject: [PATCH 6.6 129/267] HID: core: remove unnecessary WARN_ON() in implement()
 Date: Wed, 19 Jun 2024 14:54:40 +0200
-Message-ID: <20240619125614.501756683@linuxfoundation.org>
+Message-ID: <20240619125611.302426361@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 2607133196c35f31892ee199ce7ffa717bea4ad1 ]
+[ Upstream commit 4aa2dcfbad538adf7becd0034a3754e1bd01b2b5 ]
 
-These clkdevs were unnecessary, because systems using this driver always
-look up clocks using the devicetree. And as Russell King points out[1],
-since the provided device name was truncated, lookups via clkdev would
-never match.
+Syzkaller hit a warning [1] in a call to implement() when trying
+to write a value into a field of smaller size in an output report.
 
-Recently, commit 8d532528ff6a ("clkdev: report over-sized strings when
-creating clkdev entries") caused clkdev registration to fail due to the
-truncation, and this now prevents the driver from probing. Fix the
-driver by removing the clkdev registration.
+Since implement() already has a warn message printed out with the
+help of hid_warn() and value in question gets trimmed with:
+	...
+	value &= m;
+	...
+WARN_ON may be considered superfluous. Remove it to suppress future
+syzkaller triggers.
 
-Link: https://lore.kernel.org/linux-clk/ZkfYqj+OcAxd9O2t@shell.armlinux.org.uk/ [1]
-Fixes: 30b8e27e3b58 ("clk: sifive: add a driver for the SiFive FU540 PRCI IP block")
-Fixes: 8d532528ff6a ("clkdev: report over-sized strings when creating clkdev entries")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/linux-clk/7eda7621-0dde-4153-89e4-172e4c095d01@roeck-us.net/
-Suggested-by: Russell King <linux@armlinux.org.uk>
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20240528001432.1200403-1-samuel.holland@sifive.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+[1]
+WARNING: CPU: 0 PID: 5084 at drivers/hid/hid-core.c:1451 implement drivers/hid/hid-core.c:1451 [inline]
+WARNING: CPU: 0 PID: 5084 at drivers/hid/hid-core.c:1451 hid_output_report+0x548/0x760 drivers/hid/hid-core.c:1863
+Modules linked in:
+CPU: 0 PID: 5084 Comm: syz-executor424 Not tainted 6.9.0-rc7-syzkaller-00183-gcf87f46fd34d #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+RIP: 0010:implement drivers/hid/hid-core.c:1451 [inline]
+RIP: 0010:hid_output_report+0x548/0x760 drivers/hid/hid-core.c:1863
+...
+Call Trace:
+ <TASK>
+ __usbhid_submit_report drivers/hid/usbhid/hid-core.c:591 [inline]
+ usbhid_submit_report+0x43d/0x9e0 drivers/hid/usbhid/hid-core.c:636
+ hiddev_ioctl+0x138b/0x1f00 drivers/hid/usbhid/hiddev.c:726
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:904 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:890
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf5/0x240 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+...
+
+Fixes: 95d1c8951e5b ("HID: simplify implement() a bit")
+Reported-by: <syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sifive/sifive-prci.c | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/hid/hid-core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/clk/sifive/sifive-prci.c b/drivers/clk/sifive/sifive-prci.c
-index 25b8e1a80ddce..b32a59fe55e74 100644
---- a/drivers/clk/sifive/sifive-prci.c
-+++ b/drivers/clk/sifive/sifive-prci.c
-@@ -4,7 +4,6 @@
-  * Copyright (C) 2020 Zong Li
-  */
- 
--#include <linux/clkdev.h>
- #include <linux/delay.h>
- #include <linux/io.h>
- #include <linux/module.h>
-@@ -537,13 +536,6 @@ static int __prci_register_clocks(struct device *dev, struct __prci_data *pd,
- 			return r;
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index e0181218ad857..85ddeb13a3fae 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1448,7 +1448,6 @@ static void implement(const struct hid_device *hid, u8 *report,
+ 			hid_warn(hid,
+ 				 "%s() called with too large value %d (n: %d)! (%s)\n",
+ 				 __func__, value, n, current->comm);
+-			WARN_ON(1);
+ 			value &= m;
  		}
- 
--		r = clk_hw_register_clkdev(&pic->hw, pic->name, dev_name(dev));
--		if (r) {
--			dev_warn(dev, "Failed to register clkdev for %s: %d\n",
--				 init.name, r);
--			return r;
--		}
--
- 		pd->hw_clks.hws[i] = &pic->hw;
  	}
- 
 -- 
 2.43.0
 
