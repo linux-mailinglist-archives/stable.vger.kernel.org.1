@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-53953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5502A90EC08
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC7A090EE10
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D64D0B2681C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3F0B1C20F73
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E31614A62A;
-	Wed, 19 Jun 2024 13:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E581459F2;
+	Wed, 19 Jun 2024 13:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EWP9af+b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCBbtphb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC12143873;
-	Wed, 19 Jun 2024 13:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2FA143757;
+	Wed, 19 Jun 2024 13:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802161; cv=none; b=h1P7WYE/uEtZ2SV8pAaEdoixJSiqvGtn+oVDXdmXwd0/g6kpE1kOeIfaxRza6K55n8fqUqWYxCnSQjnyWlqzgFsp6h4iTzRS6Vx/fvWyxMMBCOl3YllEOu9M9f/MSWhsmJKLA8qkzaBFFnPT31qi0NKKncoGfxJ808UlziltrcQ=
+	t=1718803510; cv=none; b=PMF7GOycq8P2ABucBZJfua2i8vUS3jsRA4SNfqLJeqowIRrti0XQgCu9fJY1zdO1+k15dFAs4ACbdVorJ2SgqUP8r5+fzrZgUN/p4CEXKEECq9uasohGVc6Fj2laM2y8rZ7mUFIiKFJUGgilNpomt/UV8t066cHemIbxPEEpAr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802161; c=relaxed/simple;
-	bh=UXGTAQh/dIcduBo7ktV+C2Zce0tmwAXRCDMic+hrVmc=;
+	s=arc-20240116; t=1718803510; c=relaxed/simple;
+	bh=SuuKks/yYisA+i6IPYMPgnC+c8o6UvTJiX7F11jiU9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEO1LNkhuR7RmgFvaE0W6sZhOkmGbsKHPd/29aGPIlQanru0clQESb/tnkxhRoxO9hxLXDAEIIWB70tHW/Q8ZKjg8p5kRIoyc6yVE5Y0pjAapfrQSANdq/hdqHCUlRmN5VibKBVsmwb1OEoFfpCOfzFTTD9zuI/yjyAErwvBRaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EWP9af+b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46703C2BBFC;
-	Wed, 19 Jun 2024 13:02:40 +0000 (UTC)
+	 MIME-Version; b=r3Txg90SfnFhiAlk4oU8vGFCj3T5gnHdFq3gqpfiYInNgXrsaTWjg2OsHff0y2Mzy15oJc55/ejceFcIU3QIPrb0wheDZgZm4H5ADJiBB9XUhB815xCZbuUiF0fb+H12qkMjqL0cV8+55UryTzp+zqGIDkhYfyWeVo1HsQ+xhVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCBbtphb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C73C2BBFC;
+	Wed, 19 Jun 2024 13:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802160;
-	bh=UXGTAQh/dIcduBo7ktV+C2Zce0tmwAXRCDMic+hrVmc=;
+	s=korg; t=1718803510;
+	bh=SuuKks/yYisA+i6IPYMPgnC+c8o6UvTJiX7F11jiU9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EWP9af+b8wAU9Ve+A2KoH1WxGCiBr1YSUasj4RRwoMYgxTkcN7MrGKp6ALGlReNKS
-	 jd5P+WGs3KZrbizbGwJ/esiNNRe39S9VNwryWdegKzJwJ5HcHERY8WRkz8T3MLfgbq
-	 7ztRe7+DBtZ9or2zwq0SJ/lbYIih0zYvPrHk94rI=
+	b=fCBbtphblCS9kvcTkDRnZD3bavpQdYVS5FF+JkuV4o4jWP7I9GdGZsl28J8Gf73C2
+	 6RScOWJdK3xBozLEe5HRrwV3QADDXjoRrn2uA6DbC/KrIyM/oENKIyrM2lLIANdrzh
+	 +sdNt6EenoWzjrj9VRXxYZQkb7+xw6Eet+mAfEFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Lingbo Kong <quic_lingbok@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/267] cxl/region: Fix memregion leaks in devm_cxl_add_region()
+Subject: [PATCH 6.1 010/217] wifi: mac80211: correctly parse Spatial Reuse Parameter Set element
 Date: Wed, 19 Jun 2024 14:54:13 +0200
-Message-ID: <20240619125610.268796556@linuxfoundation.org>
+Message-ID: <20240619125556.902502405@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Lingbo Kong <quic_lingbok@quicinc.com>
 
-[ Upstream commit 49ba7b515c4c0719b866d16f068e62d16a8a3dd1 ]
+[ Upstream commit a26d8dc5227f449a54518a8b40733a54c6600a8b ]
 
-Move the mode verification to __create_region() before allocating the
-memregion to avoid the memregion leaks.
+Currently, the way of parsing Spatial Reuse Parameter Set element is
+incorrect and some members of struct ieee80211_he_obss_pd are not assigned.
 
-Fixes: 6e099264185d ("cxl/region: Add volatile region creation support")
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://lore.kernel.org/r/20240507053421.456439-1-lizhijian@fujitsu.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+To address this issue, it must be parsed in the order of the elements of
+Spatial Reuse Parameter Set defined in the IEEE Std 802.11ax specification.
+
+The diagram of the Spatial Reuse Parameter Set element (IEEE Std 802.11ax
+-2021-9.4.2.252).
+
+-------------------------------------------------------------------------
+|       |      |         |       |Non-SRG|  SRG  | SRG   | SRG  | SRG   |
+|Element|Length| Element |  SR   |OBSS PD|OBSS PD|OBSS PD| BSS  |Partial|
+|   ID  |      |   ID    |Control|  Max  |  Min  | Max   |Color | BSSID |
+|       |      |Extension|       | Offset| Offset|Offset |Bitmap|Bitmap |
+-------------------------------------------------------------------------
+
+Fixes: 1ced169cc1c2 ("mac80211: allow setting spatial reuse parameters from bss_conf")
+Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+Link: https://msgid.link/20240516021854.5682-3-quic_lingbok@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/region.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ net/mac80211/he.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index c65ab42546238..7a646fed17211 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -2186,15 +2186,6 @@ static struct cxl_region *devm_cxl_add_region(struct cxl_root_decoder *cxlrd,
- 	struct device *dev;
- 	int rc;
+diff --git a/net/mac80211/he.c b/net/mac80211/he.c
+index 0322abae08250..147ff0f71b9bb 100644
+--- a/net/mac80211/he.c
++++ b/net/mac80211/he.c
+@@ -231,15 +231,21 @@ ieee80211_he_spr_ie_to_bss_conf(struct ieee80211_vif *vif,
  
--	switch (mode) {
--	case CXL_DECODER_RAM:
--	case CXL_DECODER_PMEM:
--		break;
--	default:
--		dev_err(&cxlrd->cxlsd.cxld.dev, "unsupported mode %d\n", mode);
--		return ERR_PTR(-EINVAL);
--	}
--
- 	cxlr = cxl_region_alloc(cxlrd, id);
- 	if (IS_ERR(cxlr))
- 		return cxlr;
-@@ -2245,6 +2236,15 @@ static struct cxl_region *__create_region(struct cxl_root_decoder *cxlrd,
- {
- 	int rc;
- 
-+	switch (mode) {
-+	case CXL_DECODER_RAM:
-+	case CXL_DECODER_PMEM:
-+		break;
-+	default:
-+		dev_err(&cxlrd->cxlsd.cxld.dev, "unsupported mode %d\n", mode);
-+		return ERR_PTR(-EINVAL);
-+	}
+ 	if (!he_spr_ie_elem)
+ 		return;
 +
- 	rc = memregion_alloc(GFP_KERNEL);
- 	if (rc < 0)
- 		return ERR_PTR(rc);
++	he_obss_pd->sr_ctrl = he_spr_ie_elem->he_sr_control;
+ 	data = he_spr_ie_elem->optional;
+ 
+ 	if (he_spr_ie_elem->he_sr_control &
+ 	    IEEE80211_HE_SPR_NON_SRG_OFFSET_PRESENT)
+-		data++;
++		he_obss_pd->non_srg_max_offset = *data++;
++
+ 	if (he_spr_ie_elem->he_sr_control &
+ 	    IEEE80211_HE_SPR_SRG_INFORMATION_PRESENT) {
+-		he_obss_pd->max_offset = *data++;
+ 		he_obss_pd->min_offset = *data++;
++		he_obss_pd->max_offset = *data++;
++		memcpy(he_obss_pd->bss_color_bitmap, data, 8);
++		data += 8;
++		memcpy(he_obss_pd->partial_bssid_bitmap, data, 8);
+ 		he_obss_pd->enable = true;
+ 	}
+ }
 -- 
 2.43.0
 
