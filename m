@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8C390EC53
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B6490ED82
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA2B4B254F3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 661E91F22480
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AEE01459E3;
-	Wed, 19 Jun 2024 13:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9805143757;
+	Wed, 19 Jun 2024 13:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="18+P5kmq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMfzcVEW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4FB144D3E;
-	Wed, 19 Jun 2024 13:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D1882495;
+	Wed, 19 Jun 2024 13:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802371; cv=none; b=NhTHxpPrRKitI1Rcb047+pnm2HZ6ehZYuQSsy24vv1rIa5Sq8IzDCtzRd+BR6he20fbvfqsMJX4b+at0JU+RTyqtJA7Bsg746YzmPtdesWpwlOcoMVqS4idfGZ3Gt++p7LDbcE/0CBcTvJvfuLebOVNQR9rzRP1bRUDs4wmh5H0=
+	t=1718803137; cv=none; b=Rqtcm3rDMDLwTTCuasVQHNRfxbXDfzWJHT8YJejQn0DipLfpeqVi2QAf2BMqZggINPZBbdiPhJL5hdHJPxLzSUVzWw5ZpctPybQQQY3aX0NHvHr/TGs659eH0+oAAau97SflcaghLzMvQytPwouLD4zSR8jhpw4lW8qlTAUllMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802371; c=relaxed/simple;
-	bh=eEgx1OU6qF3kYyYzMAvUVC7woKHur7dtGllThj/Fchs=;
+	s=arc-20240116; t=1718803137; c=relaxed/simple;
+	bh=0EZPGZzsZviI8vLwbfZzAMThvuZbUVBqNC39GyUqJoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ISdDuXvWfT4GbGBL0NAE125siyABEiFKi4KFscs9Ak+Qe+TcCJ4ir+jwupggDUT4BZblfRB+v5pBz1z56LHZrOxGg3GxZomAJKDWPoXChAN/MF2PylN418PTV5RTvVVJp79Aluuf0+nXyrfN1m1KazvbO52wf7958y0U7scZ7rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=18+P5kmq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136F4C32786;
-	Wed, 19 Jun 2024 13:06:09 +0000 (UTC)
+	 MIME-Version; b=LDMDuU40a2c6yED82NbuCi4XlUDGwEjCTbZFtUdnKJVJ6P3JHGvCbdS3owS7Z0MvliG1gHHeugvkkrqBwUGF4Wm3F9YHuxjJYP8xppa/NmlRbS3BnIcG1KlQbBwRapOgYC8Dybqbm+Bkmv5onGKUnF6pDvskFHfsi1TXKUefaww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMfzcVEW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA34C2BBFC;
+	Wed, 19 Jun 2024 13:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802370;
-	bh=eEgx1OU6qF3kYyYzMAvUVC7woKHur7dtGllThj/Fchs=;
+	s=korg; t=1718803137;
+	bh=0EZPGZzsZviI8vLwbfZzAMThvuZbUVBqNC39GyUqJoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=18+P5kmq7zy6QjkbvmHW8yc6TVqPDHezhJEBnelvmGHjoM+A2YKWXHyoFGLtG0dGS
-	 1vp3fBJFBWidp+Y2ex4DJwUb0NDNMDs6zLGyvM1JNfsmbAz0BX8rgzbywWrU/Ff144
-	 S1BtkgB4mWJ9SX6u9IRQlloWLtIOK6cw0K2XTVsY=
+	b=pMfzcVEWo7B4DDPd0fc+XBfeAP5gsHnJ/emaY6ri7nhINDlmap0XkNBdTpid412yh
+	 kx0UVFyiwfjsscDRD3hnYYQzPoXjwsUdK5qsFXaOQQe/mI+AJ4cA0uHOR2QS7ujv8Z
+	 Dk0s2CloIL/LYT0pFORyXZhoTFehtEws5NI7RG1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 173/267] ksmbd: move leading slash check to smb2_get_name()
+	Davide Ornaghi <d.ornaghi97@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 165/281] netfilter: nft_inner: validate mandatory meta and payload
 Date: Wed, 19 Jun 2024 14:55:24 +0200
-Message-ID: <20240619125612.982076870@linuxfoundation.org>
+Message-ID: <20240619125616.187226672@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Davide Ornaghi <d.ornaghi97@gmail.com>
 
-commit 1cdeca6a7264021e20157de0baf7880ff0ced822 upstream.
+[ Upstream commit c4ab9da85b9df3692f861512fe6c9812f38b7471 ]
 
-If the directory name in the root of the share starts with
-character like 镜(0x955c) or Ṝ(0x1e5c), it (and anything inside)
-cannot be accessed. The leading slash check must be checked after
-converting unicode to nls string.
+Check for mandatory netlink attributes in payload and meta expression
+when used embedded from the inner expression, otherwise NULL pointer
+dereference is possible from userspace.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a150d122b6bd ("netfilter: nft_meta: add inner match support")
+Fixes: 3a07327d10a0 ("netfilter: nft_inner: support for inner tunnel header matching")
+Signed-off-by: Davide Ornaghi <d.ornaghi97@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ net/netfilter/nft_meta.c    | 3 +++
+ net/netfilter/nft_payload.c | 4 ++++
+ 2 files changed, 7 insertions(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -630,6 +630,12 @@ smb2_get_name(const char *src, const int
- 		return name;
- 	}
+diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
+index ba0d3683a45d3..9139ce38ea7b9 100644
+--- a/net/netfilter/nft_meta.c
++++ b/net/netfilter/nft_meta.c
+@@ -839,6 +839,9 @@ static int nft_meta_inner_init(const struct nft_ctx *ctx,
+ 	struct nft_meta *priv = nft_expr_priv(expr);
+ 	unsigned int len;
  
-+	if (*name == '\\') {
-+		pr_err("not allow directory name included leading slash\n");
-+		kfree(name);
-+		return ERR_PTR(-EINVAL);
-+	}
++	if (!tb[NFTA_META_KEY] || !tb[NFTA_META_DREG])
++		return -EINVAL;
 +
- 	ksmbd_conv_path_to_unix(name);
- 	ksmbd_strip_last_slash(name);
- 	return name;
-@@ -2842,20 +2848,11 @@ int smb2_open(struct ksmbd_work *work)
- 	}
+ 	priv->key = ntohl(nla_get_be32(tb[NFTA_META_KEY]));
+ 	switch (priv->key) {
+ 	case NFT_META_PROTOCOL:
+diff --git a/net/netfilter/nft_payload.c b/net/netfilter/nft_payload.c
+index 0c43d748e23ae..50429cbd42da4 100644
+--- a/net/netfilter/nft_payload.c
++++ b/net/netfilter/nft_payload.c
+@@ -650,6 +650,10 @@ static int nft_payload_inner_init(const struct nft_ctx *ctx,
+ 	struct nft_payload *priv = nft_expr_priv(expr);
+ 	u32 base;
  
- 	if (req->NameLength) {
--		if ((req->CreateOptions & FILE_DIRECTORY_FILE_LE) &&
--		    *(char *)req->Buffer == '\\') {
--			pr_err("not allow directory name included leading slash\n");
--			rc = -EINVAL;
--			goto err_out2;
--		}
--
- 		name = smb2_get_name((char *)req + le16_to_cpu(req->NameOffset),
- 				     le16_to_cpu(req->NameLength),
- 				     work->conn->local_nls);
- 		if (IS_ERR(name)) {
- 			rc = PTR_ERR(name);
--			if (rc != -ENOMEM)
--				rc = -ENOENT;
- 			name = NULL;
- 			goto err_out2;
- 		}
++	if (!tb[NFTA_PAYLOAD_BASE] || !tb[NFTA_PAYLOAD_OFFSET] ||
++	    !tb[NFTA_PAYLOAD_LEN] || !tb[NFTA_PAYLOAD_DREG])
++		return -EINVAL;
++
+ 	base   = ntohl(nla_get_be32(tb[NFTA_PAYLOAD_BASE]));
+ 	switch (base) {
+ 	case NFT_PAYLOAD_TUN_HEADER:
+-- 
+2.43.0
+
 
 
 
