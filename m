@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5AB890ED94
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA8D90EE83
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AC532816A4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4721E1F211F9
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD58A144D3E;
-	Wed, 19 Jun 2024 13:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A16149C43;
+	Wed, 19 Jun 2024 13:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bycgJWeu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bxuiAHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD4C82495;
-	Wed, 19 Jun 2024 13:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D84145324;
+	Wed, 19 Jun 2024 13:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803190; cv=none; b=ViFA3bviVg2Ebj7L6juVrw4WokuLyYfZ6sBlPkrcagYyNEtVAzAQyMUTzA85uuxoKtrkTFLvjSEw6z2RJ2MZciGxU3WALUauPhBSnDNTdINlSom8JP4FDzcp1KRq4SqYb86gNgoHOR4Vic6iImtbM0NhjMzMBcH6HzRWhuAtiqE=
+	t=1718803754; cv=none; b=Q1jhGeUugYxJLgEEsTwFj7rket04ZwwKNu31HSL8g27N5zBCAlsBSDggZKz8ERofx9ALYGYSdzgSh9nKz48Ozt6UrqFOlno+vIWDM2jG6t6VijP8rKBeo1oo1Tph3wf1uKvdCVLGa/3nQbW05N6cdrLzcjSc/ZPXTkL0bcOYlgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803190; c=relaxed/simple;
-	bh=oI84tCHi6gqdJQK0UOOtRmo/4oc9u3jyGVTuAcWWSx4=;
+	s=arc-20240116; t=1718803754; c=relaxed/simple;
+	bh=m0rjaMopze7iNiJEAmUXc+K+ViSN5U9xsjrk7EgRvn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a74Q5rd0fqFgQVDFj2HtSAiJb/FLvmxAPPkiQFIQ3vjxKcj0g4NdvQ+OM0tNLSB3CduuDUEmDtf+KjP69TAOkAFFfVwp5sLr52Q8UJGosrQXh4Z0w8B4rk8am++lyDEgqnMCY5KUqdG28JPQ+2cwwN+e/KPT9pe0su9k02IMnyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bycgJWeu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F232C2BBFC;
-	Wed, 19 Jun 2024 13:19:49 +0000 (UTC)
+	 MIME-Version; b=hod19KGtCuXwUMn9LMfR//F3rF7b/1OsOMs2lZ6URkFtZ8cQws6wxFSXM5MWXWPfoeO5coEXMKtAYJgWB4wvCxsmmxVSblrIBNhjvPJHtxQ3x+/beoHVqy0DftCxzlXGT4t3NSgD5dYaUNcN8sMe2gyXof3m3VpWvmshOTplQpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bxuiAHk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE5BC2BBFC;
+	Wed, 19 Jun 2024 13:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803190;
-	bh=oI84tCHi6gqdJQK0UOOtRmo/4oc9u3jyGVTuAcWWSx4=;
+	s=korg; t=1718803754;
+	bh=m0rjaMopze7iNiJEAmUXc+K+ViSN5U9xsjrk7EgRvn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bycgJWeuzQjT4skZfYKbovdrNP/d36Md5pqV9OSl2DVSqkuzTPuR2nHkD5PgvXAkH
-	 E7veLW2BrOzlnv7gIhmCEhuVnmja+VEejmZKZW723bun1aw+2exnOxZfsRbu6sfNOT
-	 0V1GDucjDF4ikPzkqi0uEtdNB+PEWszCbYxP1wig=
+	b=2bxuiAHkYDhn6E6r2X8xAdUpTy+CClTgLNSZrYS1oEHgM0eCZOTz2tTpM1K7zvzoc
+	 Zo7JjXhBnyAmhda5ZZmLiA4ELQZWX8/P9acmSMHSfo/mvFEXC6ba9XNQWx7s8FmD7l
+	 S6VanOOw8H/PDju8LflcftKtMLf+cR8zpCLjZWCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 176/281] net/ipv6: Fix the RT cache flush via sysctl using a previous delay
+	syzbot+9dfe490c8176301c1d06@syzkaller.appspotmail.com,
+	Dave Kleikamp <shaggy@kernel.org>
+Subject: [PATCH 6.1 092/217] jfs: xattr: fix buffer overflow for invalid xattr
 Date: Wed, 19 Jun 2024 14:55:35 +0200
-Message-ID: <20240619125616.607530655@linuxfoundation.org>
+Message-ID: <20240619125600.238767002@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 14a20e5b4ad998793c5f43b0330d9e1388446cf3 ]
+commit 7c55b78818cfb732680c4a72ab270cc2d2ee3d0f upstream.
 
-The net.ipv6.route.flush system parameter takes a value which specifies
-a delay used during the flush operation for aging exception routes. The
-written value is however not used in the currently requested flush and
-instead utilized only in the next one.
+When an xattr size is not what is expected, it is printed out to the
+kernel log in hex format as a form of debugging.  But when that xattr
+size is bigger than the expected size, printing it out can cause an
+access off the end of the buffer.
 
-A problem is that ipv6_sysctl_rtcache_flush() first reads the old value
-of net->ipv6.sysctl.flush_delay into a local delay variable and then
-calls proc_dointvec() which actually updates the sysctl based on the
-provided input.
+Fix this all up by properly restricting the size of the debug hex dump
+in the kernel log.
 
-Fix the problem by switching the order of the two operations.
-
-Fixes: 4990509f19e8 ("[NETNS][IPV6]: Make sysctls route per namespace.")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240607112828.30285-1-petr.pavlu@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+9dfe490c8176301c1d06@syzkaller.appspotmail.com
+Cc: Dave Kleikamp <shaggy@kernel.org>
+Link: https://lore.kernel.org/r/2024051433-slider-cloning-98f9@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/jfs/xattr.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index bca6f33c7bb9e..8f8c8fcfd1c21 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -6343,12 +6343,12 @@ static int ipv6_sysctl_rtcache_flush(struct ctl_table *ctl, int write,
- 	if (!write)
- 		return -EINVAL;
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -557,9 +557,11 @@ static int ea_get(struct inode *inode, s
  
--	net = (struct net *)ctl->extra1;
--	delay = net->ipv6.sysctl.flush_delay;
- 	ret = proc_dointvec(ctl, write, buffer, lenp, ppos);
- 	if (ret)
- 		return ret;
- 
-+	net = (struct net *)ctl->extra1;
-+	delay = net->ipv6.sysctl.flush_delay;
- 	fib6_run_gc(delay <= 0 ? 0 : (unsigned long)delay, net, delay > 0);
- 	return 0;
- }
--- 
-2.43.0
-
+       size_check:
+ 	if (EALIST_SIZE(ea_buf->xattr) != ea_size) {
++		int size = min_t(int, EALIST_SIZE(ea_buf->xattr), ea_size);
++
+ 		printk(KERN_ERR "ea_get: invalid extended attribute\n");
+ 		print_hex_dump(KERN_ERR, "", DUMP_PREFIX_ADDRESS, 16, 1,
+-				     ea_buf->xattr, ea_size, 1);
++				     ea_buf->xattr, size, 1);
+ 		ea_release(inode, ea_buf);
+ 		rc = -EIO;
+ 		goto clean_up;
 
 
 
