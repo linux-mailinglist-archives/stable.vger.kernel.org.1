@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-54040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7098990EC62
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00EE290EE67
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB2D9283D6D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1572A1C23EF0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E14143C43;
-	Wed, 19 Jun 2024 13:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F3114B07B;
+	Wed, 19 Jun 2024 13:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+tDkA+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fFupJ0n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576F712FB31;
-	Wed, 19 Jun 2024 13:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D78D714373E;
+	Wed, 19 Jun 2024 13:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802415; cv=none; b=tSrZ58rGWaDLIA0/WLlymlEq02gtaHCviiCbVXdyq+yYHwrzWdsEKTBkOI2W+fTUSS/WZ3Hhe+kaap2ww+dK5ScE6wIfQ3FML7CRd0hCEwGrwWZsACNDqFdA2Bbv908JbtxZYMbVl2gU2ZpTLjKTptQjwAUFNjRWFukolQbNke4=
+	t=1718803698; cv=none; b=EhX8HLaIV2lrFe1h9dQkeLconOLj2q7RCELZt9SpBUa65GrJ5htCRNRV5l+Bp9oca2CvUYVtL0ggND+NV2B+QuZTPYe89KIBra6U6O1NGrbWR4EN/G5j+3duadKJAAlnvD0DqfyPHvNLwLFtT9TXVnjHiSkmZXMNLEiKHrqBzjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802415; c=relaxed/simple;
-	bh=hgvitopahzjiQR/PGv5xlNa1s0hPdHVBuak4YWnhPaA=;
+	s=arc-20240116; t=1718803698; c=relaxed/simple;
+	bh=o1PYL/ms42babaE4luvdeYXOL9Dmew5RvOoSxW13Dvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nY6n3FhJscpoPvZ51FOa3GmVnWwNGuCj9AB8EvkLtt0HSTUTMI6xEpREPztRTXzBouPRTeidl+mHo/A8PNPGxXHZOTpJgU2sKuEPcNY2MXsSIDKvUQwt3zkxEHOYnCSZts57MIh818XqPczOdrpF4pDAL7ChcBOX+7xlfFvmzbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+tDkA+X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88793C2BBFC;
-	Wed, 19 Jun 2024 13:06:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rGCOPASsqhsQafV+CuZDDsaAnGMv6UTGAiitaTzDqm6/ac8brQ5ckDKSoz6w/AJqtK820gxYvlKQIEdXXvAL5LqKpCsjMEmpGQ1m7iXFpD6JpF6pa9g72zLUtDDWKIrP+oA9/vOJw+Hx/A1022mZPnsC9+gkXElbMEBEFCB378M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fFupJ0n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD4FC2BBFC;
+	Wed, 19 Jun 2024 13:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802414;
-	bh=hgvitopahzjiQR/PGv5xlNa1s0hPdHVBuak4YWnhPaA=;
+	s=korg; t=1718803698;
+	bh=o1PYL/ms42babaE4luvdeYXOL9Dmew5RvOoSxW13Dvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+tDkA+XvhGMwQz6h4id5oDrUdm1l1DphfAdaRQxF28RKGSLR3B4bgIBlhXxtTXhg
-	 Tz+LjolwNyY52aPOXNmXQTZrOjzbB/pa2t13DczPjUhKN+UX/n/rYHWPFN1JJMtsCI
-	 WYo/Gn5ALCFSkeLNn4F1VZQI+3FpEQoypa+f7Jr4=
+	b=1fFupJ0n9/P5dquMhnw5yDVUNNsntRp2kBxOpSEIiyzo/WxmVt1VbUNGABD46em75
+	 D9xhVgKQKvOjrrAPENstv6qOBfAZm9fklxN4+TVIoGQWTlRh9eN+zmSqXVwKgUqVEa
+	 ZtvNfa12zErAop+7QpxXjIa30jPsX01jiDzTlb10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <davidgow@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/267] x86/uaccess: Fix missed zeroing of ia32 u64 get_user() range checking
+Subject: [PATCH 6.1 066/217] mmc: davinci: Dont strip remove function when driver is builtin
 Date: Wed, 19 Jun 2024 14:55:09 +0200
-Message-ID: <20240619125612.407945009@linuxfoundation.org>
+Message-ID: <20240619125559.231909177@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 8c860ed825cb85f6672cd7b10a8f33e3498a7c81 ]
+[ Upstream commit 55c421b364482b61c4c45313a535e61ed5ae4ea3 ]
 
-When reworking the range checking for get_user(), the get_user_8() case
-on 32-bit wasn't zeroing the high register. (The jump to bad_get_user_8
-was accidentally dropped.) Restore the correct error handling
-destination (and rename the jump to using the expected ".L" prefix).
+Using __exit for the remove function results in the remove callback being
+discarded with CONFIG_MMC_DAVINCI=y. When such a device gets unbound (e.g.
+using sysfs or hotplug), the driver is just removed without the cleanup
+being performed. This results in resource leaks. Fix it by compiling in the
+remove callback unconditionally.
 
-While here, switch to using a named argument ("size") for the call
-template ("%c4" to "%c[size]") as already used in the other call
-templates in this file.
+This also fixes a W=1 modpost warning:
 
-Found after moving the usercopy selftests to KUnit:
+WARNING: modpost: drivers/mmc/host/davinci_mmc: section mismatch in
+reference: davinci_mmcsd_driver+0x10 (section: .data) ->
+davinci_mmcsd_remove (section: .exit.text)
 
-      # usercopy_test_invalid: EXPECTATION FAILED at
-      lib/usercopy_kunit.c:278
-      Expected val_u64 == 0, but
-          val_u64 == -60129542144 (0xfffffff200000000)
-
-Closes: https://lore.kernel.org/all/CABVgOSn=tb=Lj9SxHuT4_9MTjjKVxsq-ikdXC4kGHO4CfKVmGQ@mail.gmail.com
-Fixes: b19b74bc99b1 ("x86/mm: Rework address range check in get_user() and put_user()")
-Reported-by: David Gow <davidgow@google.com>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Tested-by: David Gow <davidgow@google.com>
-Link: https://lore.kernel.org/all/20240610210213.work.143-kees%40kernel.org
+Fixes: b4cff4549b7a ("DaVinci: MMC: MMC/SD controller driver for DaVinci family")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240324114017.231936-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/uaccess.h | 4 ++--
- arch/x86/lib/getuser.S         | 6 +++++-
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/mmc/host/davinci_mmc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 0f9bab92a43d7..3a7755c1a4410 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -78,10 +78,10 @@ extern int __get_user_bad(void);
- 	int __ret_gu;							\
- 	register __inttype(*(ptr)) __val_gu asm("%"_ASM_DX);		\
- 	__chk_user_ptr(ptr);						\
--	asm volatile("call __" #fn "_%c4"				\
-+	asm volatile("call __" #fn "_%c[size]"				\
- 		     : "=a" (__ret_gu), "=r" (__val_gu),		\
- 			ASM_CALL_CONSTRAINT				\
--		     : "0" (ptr), "i" (sizeof(*(ptr))));		\
-+		     : "0" (ptr), [size] "i" (sizeof(*(ptr))));		\
- 	instrument_get_user(__val_gu);					\
- 	(x) = (__force __typeof__(*(ptr))) __val_gu;			\
- 	__builtin_expect(__ret_gu, 0);					\
-diff --git a/arch/x86/lib/getuser.S b/arch/x86/lib/getuser.S
-index f6aad480febd3..6913fbce6544f 100644
---- a/arch/x86/lib/getuser.S
-+++ b/arch/x86/lib/getuser.S
-@@ -44,7 +44,11 @@
- 	or %rdx, %rax
- .else
- 	cmp $TASK_SIZE_MAX-\size+1, %eax
-+.if \size != 8
- 	jae .Lbad_get_user
-+.else
-+	jae .Lbad_get_user_8
-+.endif
- 	sbb %edx, %edx		/* array_index_mask_nospec() */
- 	and %edx, %eax
- .endif
-@@ -154,7 +158,7 @@ SYM_CODE_END(__get_user_handle_exception)
- #ifdef CONFIG_X86_32
- SYM_CODE_START_LOCAL(__get_user_8_handle_exception)
- 	ASM_CLAC
--bad_get_user_8:
-+.Lbad_get_user_8:
- 	xor %edx,%edx
- 	xor %ecx,%ecx
- 	mov $(-EFAULT),%_ASM_AX
+diff --git a/drivers/mmc/host/davinci_mmc.c b/drivers/mmc/host/davinci_mmc.c
+index 7138dfa065bfa..e89a97b415154 100644
+--- a/drivers/mmc/host/davinci_mmc.c
++++ b/drivers/mmc/host/davinci_mmc.c
+@@ -1345,7 +1345,7 @@ static int davinci_mmcsd_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static int __exit davinci_mmcsd_remove(struct platform_device *pdev)
++static int davinci_mmcsd_remove(struct platform_device *pdev)
+ {
+ 	struct mmc_davinci_host *host = platform_get_drvdata(pdev);
+ 
+@@ -1402,7 +1402,7 @@ static struct platform_driver davinci_mmcsd_driver = {
+ 		.of_match_table = davinci_mmc_dt_ids,
+ 	},
+ 	.probe		= davinci_mmcsd_probe,
+-	.remove		= __exit_p(davinci_mmcsd_remove),
++	.remove		= davinci_mmcsd_remove,
+ 	.id_table	= davinci_mmc_devtype,
+ };
+ 
 -- 
 2.43.0
 
