@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6AB90EDED
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 683F090ECC8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39A11B21856
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 585391C208F4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4183143C65;
-	Wed, 19 Jun 2024 13:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99D7143C4E;
+	Wed, 19 Jun 2024 13:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krUEA1Nt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2+9tiEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644E74D9EA;
-	Wed, 19 Jun 2024 13:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789B312FB31;
+	Wed, 19 Jun 2024 13:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803424; cv=none; b=BZ/RDDfcaR5xO52r1BiHEhaphPGQG+dL9YTe/oOvPzqQXm9Lo2EKDKpYca57lqcpzegqdYs5wDr+Uxz0sOdGYOitE+5jx0UF0xYkx7S+vOh6yICLL5lsw35ulKMlq7UDMz00jSgiqv2yNMSaPBtPbmZc+dwsZtKKW28MjF2+QTw=
+	t=1718802647; cv=none; b=LIwyhJFCu+JbiiLEovT+ysPpMUNJW6NqUDjYwg1baukIpk2UxlW2VOZ41QIoYaKfBeb+ssFuAqUQegailRXl1DpjnnXA4UUTgAwUcxYm0QiWsDvV3fcsRVuBRE6SFhID77SIG5mUeSEAbH6RDNwy9T9fYRFjoBYwjWtxPMKA0bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803424; c=relaxed/simple;
-	bh=r+mhcUL0/IaQgJX3DX+BfGuOPtX+7qTWD9qT8TP5qq0=;
+	s=arc-20240116; t=1718802647; c=relaxed/simple;
+	bh=qlyZzCGD4vkj0rY4TB3tZIx9RoBKNBJ0G2cVGxlv144=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CvJc3rLSj33KcgOlR7KwE/Ggo7oi/kBy3wCyoOrr7e6Kc4QSr6Bi6igRNvykvPtXhZBulvYBHongq4NIG1V3HKaRooL2Jl3+bgXzRkaOkdts48evvzsMPCByVnmyxVLO5xOuDO48QKDgK8YB+PzqO5ZMHKc2UB625Iz8bXX9/XY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krUEA1Nt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE096C2BBFC;
-	Wed, 19 Jun 2024 13:23:43 +0000 (UTC)
+	 MIME-Version; b=roXLfdLYHdOciXyAS3G/zDeAjlAQE6rynromtzTEv9C/TDuHEQFAWIEwj/vIyMT/kEUAaej1KrigzLXN/3mQkDWuGNyAbwVsFPifSSRC4bTa6iyNeGybw3XpnAdUZa6l8wWeqBtxZ34xfOFhDEkhFvW3ZtsK1JIJKvKciAqtkYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2+9tiEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02D2C2BBFC;
+	Wed, 19 Jun 2024 13:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803424;
-	bh=r+mhcUL0/IaQgJX3DX+BfGuOPtX+7qTWD9qT8TP5qq0=;
+	s=korg; t=1718802647;
+	bh=qlyZzCGD4vkj0rY4TB3tZIx9RoBKNBJ0G2cVGxlv144=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=krUEA1Nt5lU1xDdX0l8up36l1gAcIijXzfNTsRNFJxnVW6YUxDaeHHJfoOXa8tRy+
-	 g6RFZzN3vwXdCc2ktHvjbJvNyZzD6Mi4fIp3rIctX+RT/ogq+jrMUbZBYyDX8DQgF1
-	 w0oLiD2vR42wOhEbt2sI0P7DZYgYCLYXyjN34NiM=
+	b=o2+9tiEMpY81Pquv0eGDfWQYmoKWZtq2bmTHoWcDwPXI5/lvZ/3feisO3r54G1INK
+	 m9piRpTl0FDaik3a9rxNCATtYGCSRWsIK7jK4kqHxzZ8ylu2OJq2PV5o85Pz4OSTOq
+	 viE3U44XfaQYwEQ70aoYdIdiC1kATYRRUPU3R/OU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	stable <stable@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.9 245/281] drm/bridge: aux-hpd-bridge: correct devm_drm_dp_hpd_bridge_add() stub
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 253/267] selftests: net: lib: support errexit with busywait
 Date: Wed, 19 Jun 2024 14:56:44 +0200
-Message-ID: <20240619125619.391242954@linuxfoundation.org>
+Message-ID: <20240619125616.028227612@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 51474ab44abf907023a8a875e799b07de461e466 upstream.
+commit 41b02ea4c0adfcc6761fbfed42c3ce6b6412d881 upstream.
 
-If CONFIG_DRM_AUX_HPD_BRIDGE is not enabled, the aux-bridge.h header
-provides a stub for the bridge's functions. Correct the arguments list
-of one of those stubs to match the argument list of the non-stubbed
-function.
+If errexit is enabled ('set -e'), loopy_wait -- or busywait and others
+using it -- will stop after the first failure.
 
-Fixes: e5ca263508f7 ("drm/bridge: aux-hpd: separate allocation and registration")
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: stable <stable@kernel.org>
-Closes: https://lore.kernel.org/oe-kbuild-all/202405110428.TMCfb1Ut-lkp@intel.com/
-Cc: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240511-fix-aux-hpd-stubs-v1-1-98dae71dfaec@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that if the returned status of loopy_wait is checked, and even if
+errexit is enabled, Bash will not stop at the first error.
+
+Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
+Cc: stable@vger.kernel.org
+Acked-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20240605-upstream-net-20240605-selftests-net-lib-fixes-v1-1-b3afadd368c9@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/drm/bridge/aux-bridge.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/lib.sh |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/include/drm/bridge/aux-bridge.h
-+++ b/include/drm/bridge/aux-bridge.h
-@@ -33,7 +33,7 @@ static inline struct auxiliary_device *d
- 	return NULL;
- }
- 
--static inline int devm_drm_dp_hpd_bridge_add(struct auxiliary_device *adev)
-+static inline int devm_drm_dp_hpd_bridge_add(struct device *dev, struct auxiliary_device *adev)
- {
- 	return 0;
- }
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -22,9 +22,7 @@ busywait()
+ 	while true
+ 	do
+ 		local out
+-		out=$("$@")
+-		local ret=$?
+-		if ((!ret)); then
++		if out=$("$@"); then
+ 			echo -n "$out"
+ 			return 0
+ 		fi
 
 
 
