@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-53907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A57790EBBE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A1290ED02
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE9C1F24FD4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BE35284200
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8B313F426;
-	Wed, 19 Jun 2024 13:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C52143C65;
+	Wed, 19 Jun 2024 13:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWt29hxW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ah9gE4Uh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A254C74;
-	Wed, 19 Jun 2024 13:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7891422B8;
+	Wed, 19 Jun 2024 13:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802025; cv=none; b=AzmAccanDZyPv9TJ0x6opQG+ZW3WcjzO2shzQE9lt21GTTn+qJSEGGpBU20Jo65acczQIBKhL0XVvTyN0cQ2f+Nrrj628S4kBOg80hLBGrhf8P7e7mr0hYF4ohlfAkTxazy5QBLeofcbDEDH5MW7M5wvVjTMAb2LiE7mevi7q4I=
+	t=1718802792; cv=none; b=rZhEYpkxCXOUJ8fK1w6UOkDt4GD33MWD2AAmrUJblRkGtJ9VH+L2ddhG746qXZw+ufr7FlXJ64sC/64WJ9Ek04StaXj/c0K6BHGlmI6e7Z+0W2zz58/gjR8+0OHcRZH+3fbv/izR8SxZka+hHUaxsPmEz3T+yJqE/k9lBoJOKWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802025; c=relaxed/simple;
-	bh=65E4s1ehXyhg/mTmaKmQ0U4GUTGpf17aNF+tzciQDE0=;
+	s=arc-20240116; t=1718802792; c=relaxed/simple;
+	bh=ix2UFgJ/vzbJUbiB9G2g7L06zmV8U69UgdUpuAiOq1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZh96sn5Ggd/YRxcvwntB/a5qsFnffv/EqQxfKaypep0m7kkPuP419XkUchisxX2IZJ0snePKTAfAWlXnVlVw95sJyWvo9A1lHYhN+Dn953IR5tsaKpHj/8S/77tESoWpg3gcaa+7BLYj1oUl2SjI9Riy/tfAElCtL+pp/d3pHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWt29hxW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FD8C2BBFC;
-	Wed, 19 Jun 2024 13:00:24 +0000 (UTC)
+	 MIME-Version; b=cshzN5+jNWf4o99saCq8EuM4bng7ZVaVoGHcmAu9/i6GqvPIV9dirEebi84UssfeUqEJzHbOMvASBDbfSt4K8/+CgKIG8X8PQwdIC0eTaOSFH3rzp8IIQwbZtz5LQsWxVF/b4Y9oLKw34f9rqp2I6HDaPMpR4JELJAois1jSmWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ah9gE4Uh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD13C2BBFC;
+	Wed, 19 Jun 2024 13:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802025;
-	bh=65E4s1ehXyhg/mTmaKmQ0U4GUTGpf17aNF+tzciQDE0=;
+	s=korg; t=1718802792;
+	bh=ix2UFgJ/vzbJUbiB9G2g7L06zmV8U69UgdUpuAiOq1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWt29hxWcdEJ6Y+sqe90opWhqFxlgNW6BJovjI8AUa0PkvdWCwfm6KtJHz3Ht3mV+
-	 lfMFPFZrLxH5MwJlMw9y9hYsSZAIioVyldvfd4d77WuVEq6BV10sV7Xn5GjEqK3wTB
-	 a9hSlZSVk57/9UTVGmOUlEuvJc/s63I0swBZK2yE=
+	b=ah9gE4Uh/64tkjYVqN9iwl8Gc91mpK1den1eM+D+AgLT5jeSmIqIuWFGprTMSyQJC
+	 3B2G8wdRM08pezGSry+yxjpWcZQNbR4suDTS6cKTdX/d8KY9OOs/mZi5ayf8idZ9SO
+	 ydXqrNCIqN/leRDMiiIfGyggae+9Nc4/uUDhWRus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jason Xing <kernelxing@tencent.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/267] af_unix: Annodate data-races around sk->sk_state for writers.
+Subject: [PATCH 6.9 041/281] tcp: count CLOSE-WAIT sockets for TCP_MIB_CURRESTAB
 Date: Wed, 19 Jun 2024 14:53:20 +0200
-Message-ID: <20240619125608.246847030@linuxfoundation.org>
+Message-ID: <20240619125611.430770651@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit 942238f9735a4a4ebf8274b218d9a910158941d1 ]
+[ Upstream commit a46d0ea5c94205f40ecf912d1bb7806a8a64704f ]
 
-sk->sk_state is changed under unix_state_lock(), but it's read locklessly
-in many places.
+According to RFC 1213, we should also take CLOSE-WAIT sockets into
+consideration:
 
-This patch adds WRITE_ONCE() on the writer side.
+  "tcpCurrEstab OBJECT-TYPE
+   ...
+   The number of TCP connections for which the current state
+   is either ESTABLISHED or CLOSE- WAIT."
 
-We will add READ_ONCE() to the lockless readers in the following patches.
+After this, CurrEstab counter will display the total number of
+ESTABLISHED and CLOSE-WAIT sockets.
 
-Fixes: 83301b5367a9 ("af_unix: Set TCP_ESTABLISHED for datagram sockets too")
+The logic of counting
+When we increment the counter?
+a) if we change the state to ESTABLISHED.
+b) if we change the state from SYN-RECEIVED to CLOSE-WAIT.
+
+When we decrement the counter?
+a) if the socket leaves ESTABLISHED and will never go into CLOSE-WAIT,
+say, on the client side, changing from ESTABLISHED to FIN-WAIT-1.
+b) if the socket leaves CLOSE-WAIT, say, on the server side, changing
+from CLOSE-WAIT to LAST-ACK.
+
+Please note: there are two chances that old state of socket can be changed
+to CLOSE-WAIT in tcp_fin(). One is SYN-RECV, the other is ESTABLISHED.
+So we have to take care of the former case.
+
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ net/ipv4/tcp.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 348f9e34f6696..bd2af62f58605 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -617,7 +617,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
- 	u->path.dentry = NULL;
- 	u->path.mnt = NULL;
- 	state = sk->sk_state;
--	sk->sk_state = TCP_CLOSE;
-+	WRITE_ONCE(sk->sk_state, TCP_CLOSE);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 5c79836e4c9e7..77ee1eda3fd86 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2640,6 +2640,10 @@ void tcp_set_state(struct sock *sk, int state)
+ 		if (oldstate != TCP_ESTABLISHED)
+ 			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
+ 		break;
++	case TCP_CLOSE_WAIT:
++		if (oldstate == TCP_SYN_RECV)
++			TCP_INC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
++		break;
  
- 	skpair = unix_peer(sk);
- 	unix_peer(sk) = NULL;
-@@ -739,7 +739,8 @@ static int unix_listen(struct socket *sock, int backlog)
- 	if (backlog > sk->sk_max_ack_backlog)
- 		wake_up_interruptible_all(&u->peer_wait);
- 	sk->sk_max_ack_backlog	= backlog;
--	sk->sk_state		= TCP_LISTEN;
-+	WRITE_ONCE(sk->sk_state, TCP_LISTEN);
-+
- 	/* set credentials so connect can copy them */
- 	init_peercred(sk);
- 	err = 0;
-@@ -1411,7 +1412,8 @@ static int unix_dgram_connect(struct socket *sock, struct sockaddr *addr,
- 		if (err)
- 			goto out_unlock;
+ 	case TCP_CLOSE:
+ 		if (oldstate == TCP_CLOSE_WAIT || oldstate == TCP_ESTABLISHED)
+@@ -2651,7 +2655,7 @@ void tcp_set_state(struct sock *sk, int state)
+ 			inet_put_port(sk);
+ 		fallthrough;
+ 	default:
+-		if (oldstate == TCP_ESTABLISHED)
++		if (oldstate == TCP_ESTABLISHED || oldstate == TCP_CLOSE_WAIT)
+ 			TCP_DEC_STATS(sock_net(sk), TCP_MIB_CURRESTAB);
+ 	}
  
--		sk->sk_state = other->sk_state = TCP_ESTABLISHED;
-+		WRITE_ONCE(sk->sk_state, TCP_ESTABLISHED);
-+		WRITE_ONCE(other->sk_state, TCP_ESTABLISHED);
- 	} else {
- 		/*
- 		 *	1003.1g breaking connected state with AF_UNSPEC
-@@ -1428,7 +1430,7 @@ static int unix_dgram_connect(struct socket *sock, struct sockaddr *addr,
- 
- 		unix_peer(sk) = other;
- 		if (!other)
--			sk->sk_state = TCP_CLOSE;
-+			WRITE_ONCE(sk->sk_state, TCP_CLOSE);
- 		unix_dgram_peer_wake_disconnect_wakeup(sk, old_peer);
- 
- 		unix_state_double_unlock(sk, other);
-@@ -1644,7 +1646,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 	copy_peercred(sk, other);
- 
- 	sock->state	= SS_CONNECTED;
--	sk->sk_state	= TCP_ESTABLISHED;
-+	WRITE_ONCE(sk->sk_state, TCP_ESTABLISHED);
- 	sock_hold(newsk);
- 
- 	smp_mb__after_atomic();	/* sock_hold() does an atomic_inc() */
-@@ -2027,7 +2029,7 @@ static int unix_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
- 			unix_peer(sk) = NULL;
- 			unix_dgram_peer_wake_disconnect_wakeup(sk, other);
- 
--			sk->sk_state = TCP_CLOSE;
-+			WRITE_ONCE(sk->sk_state, TCP_CLOSE);
- 			unix_state_unlock(sk);
- 
- 			unix_dgram_disconnected(sk, other);
 -- 
 2.43.0
 
