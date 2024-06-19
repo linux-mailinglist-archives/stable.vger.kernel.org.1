@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E1490EC72
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C8790ED9F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4106328427F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 865901C20B28
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A387143C4E;
-	Wed, 19 Jun 2024 13:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDAA144D3E;
+	Wed, 19 Jun 2024 13:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMcWXl+r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/QxQnkp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EEA12FB31;
-	Wed, 19 Jun 2024 13:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CA382495;
+	Wed, 19 Jun 2024 13:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802456; cv=none; b=TYalX75EIbcer5hFR97fda7YPHaWvHeAYzzqOUe9cto6ueZYUZdSia/qJd3Sqnwq1W4xAmTz7RdUKZ1tN0J2WXsIqHVy7Dc0hqzoETCFbdFlR4+elMaAsF6OZstiQv5rCtxhlW2NSg8M4eeE7dp/Adb1CDEpLxFhgcAMGzxygME=
+	t=1718803222; cv=none; b=YHC+wBDeu8Z9kniQmWz1tUQqLxzACOi/PZa/DGsBs64jkxhMYeERsZnfwXjx+i3BMh2YjNTPzv1unxacNH6zMj2cHR2mPd5p87n3OZ+U0WqxdUQuTvS6o1aTP+viPU4Nihkqzzg/6XDDmbcWaxMk9KbVMzqtXpVRkfASjkr4enA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802456; c=relaxed/simple;
-	bh=yQc88MsKZKWTydGpELv+NDZRg4Mzbdr18yUlzvz4qTc=;
+	s=arc-20240116; t=1718803222; c=relaxed/simple;
+	bh=cJSSOw+LORJ2Uay9AMdMft/nUb73sJjrfJAqeDEwxyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFDmLVeBjmktp3sgAyh1hrdG5hgpIEsjv9nu1y1HSWXHnoDwIPxM0B90NdIdEnTCLMgwf3KoK46tzNpk5jb+al8kV8E1+3d6oaq6fVnkUMYOyt2MKhZebbP6V3EmXdxfD2NGe36yb0SvC9S7cYNR1ccgr9eMIMXn2EGgSz4nJCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BMcWXl+r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA1BDC2BBFC;
-	Wed, 19 Jun 2024 13:07:35 +0000 (UTC)
+	 MIME-Version; b=mOfYY8ytIFhMfubwSZfaOF3AD6D+j8t/8Fo0t/+l6PD64Q1A1hroBGR9jhPOXFRIR6tUGHW69KSqhUnoH9ASHVdNrtVLrb8s3PWH8a6Cs7lcqVdOwJEJLexLGPXGIJQQr1r34wNqP7OWySEHO7kVe33IIw5i8U8ax90DYZ5kt0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/QxQnkp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4EEC2BBFC;
+	Wed, 19 Jun 2024 13:20:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802456;
-	bh=yQc88MsKZKWTydGpELv+NDZRg4Mzbdr18yUlzvz4qTc=;
+	s=korg; t=1718803222;
+	bh=cJSSOw+LORJ2Uay9AMdMft/nUb73sJjrfJAqeDEwxyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BMcWXl+ridqeS2514HmSMV2Ij3bXkMIcf+D2AbZG/NZMu8eJm86+al+8CIIrzXVjs
-	 UUjXYSOHzmRCStVbRtfuZOpvbJwXWJkgbmHVjR8IHNCcttaStfbCF/KzLIWNBtiXIT
-	 wLJ6DTPcgrZQFWqcwAdsgsdF3F60mqu0FbGun2jE=
+	b=S/QxQnkpaavBf4O0GC/Ewy5/cF0jnmXiYgk9bOZNqJWrPPNzF4eotNj17q2M0kJUb
+	 AgvcLt+XDeSvuRadk40QhyhdEb2iqBMcT9A8qu9VEhPpJPalc5f6WEsmMV4+jo3tyk
+	 Va5DJeqUTzxoD+zInS1tGiklkLxInLP0wuYiUtU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	Christoph Paasch <cpaasch@apple.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 185/267] mptcp: ensure snd_una is properly initialized on connect
+	syzbot+9bbe2de1bc9d470eb5fe@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 177/281] net: bridge: mst: pass vlan group directly to br_mst_vlan_set_state
 Date: Wed, 19 Jun 2024 14:55:36 +0200
-Message-ID: <20240619125613.444159669@linuxfoundation.org>
+Message-ID: <20240619125616.646637333@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-commit 8031b58c3a9b1db3ef68b3bd749fbee2e1e1aaa3 upstream.
+[ Upstream commit 36c92936e868601fa1f43da6758cf55805043509 ]
 
-This is strictly related to commit fb7a0d334894 ("mptcp: ensure snd_nxt
-is properly initialized on connect"). It turns out that syzkaller can
-trigger the retransmit after fallback and before processing any other
-incoming packet - so that snd_una is still left uninitialized.
+Pass the already obtained vlan group pointer to br_mst_vlan_set_state()
+instead of dereferencing it again. Each caller has already correctly
+dereferenced it for their context. This change is required for the
+following suspicious RCU dereference fix. No functional changes
+intended.
 
-Address the issue explicitly initializing snd_una together with snd_nxt
-and write_seq.
-
-Suggested-by: Mat Martineau <martineau@kernel.org>
-Fixes: 8fd738049ac3 ("mptcp: fallback in case of simultaneous connect")
-Cc: stable@vger.kernel.org
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/485
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-1-1ab9ddfa3d00@kernel.org
+Fixes: 3a7c1661ae13 ("net: bridge: mst: fix vlan use-after-free")
+Reported-by: syzbot+9bbe2de1bc9d470eb5fe@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9bbe2de1bc9d470eb5fe
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240609103654.914987-2-razor@blackwall.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/bridge/br_mst.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3706,6 +3706,7 @@ static int mptcp_connect(struct sock *sk
+diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
+index 3c66141d34d62..1de72816b0fb2 100644
+--- a/net/bridge/br_mst.c
++++ b/net/bridge/br_mst.c
+@@ -73,11 +73,10 @@ int br_mst_get_state(const struct net_device *dev, u16 msti, u8 *state)
+ }
+ EXPORT_SYMBOL_GPL(br_mst_get_state);
  
- 	WRITE_ONCE(msk->write_seq, subflow->idsn);
- 	WRITE_ONCE(msk->snd_nxt, subflow->idsn);
-+	WRITE_ONCE(msk->snd_una, subflow->idsn);
- 	if (likely(!__mptcp_check_fallback(msk)))
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPCAPABLEACTIVE);
+-static void br_mst_vlan_set_state(struct net_bridge_port *p, struct net_bridge_vlan *v,
++static void br_mst_vlan_set_state(struct net_bridge_vlan_group *vg,
++				  struct net_bridge_vlan *v,
+ 				  u8 state)
+ {
+-	struct net_bridge_vlan_group *vg = nbp_vlan_group(p);
+-
+ 	if (br_vlan_get_state(v) == state)
+ 		return;
  
+@@ -121,7 +120,7 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+ 		if (v->brvlan->msti != msti)
+ 			continue;
+ 
+-		br_mst_vlan_set_state(p, v, state);
++		br_mst_vlan_set_state(vg, v, state);
+ 	}
+ 
+ out:
+@@ -140,13 +139,13 @@ static void br_mst_vlan_sync_state(struct net_bridge_vlan *pv, u16 msti)
+ 		 * it.
+ 		 */
+ 		if (v != pv && v->brvlan->msti == msti) {
+-			br_mst_vlan_set_state(pv->port, pv, v->state);
++			br_mst_vlan_set_state(vg, pv, v->state);
+ 			return;
+ 		}
+ 	}
+ 
+ 	/* Otherwise, start out in a new MSTI with all ports disabled. */
+-	return br_mst_vlan_set_state(pv->port, pv, BR_STATE_DISABLED);
++	return br_mst_vlan_set_state(vg, pv, BR_STATE_DISABLED);
+ }
+ 
+ int br_mst_vlan_set_msti(struct net_bridge_vlan *mv, u16 msti)
+-- 
+2.43.0
+
 
 
 
