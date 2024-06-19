@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DEBB90EEB0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:31:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E940E90ECB1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE4182820CC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:31:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 952CA1F21C68
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E06B13E037;
-	Wed, 19 Jun 2024 13:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B998C145334;
+	Wed, 19 Jun 2024 13:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YV0YQRdx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyictHwi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B021E492;
-	Wed, 19 Jun 2024 13:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7904B14389C;
+	Wed, 19 Jun 2024 13:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803861; cv=none; b=UxZ+4D6yjuesMnmm7zPvxfi7t5NAveg12CeDN2+9D72c9UBZvpCmONyEB3xJjtqnp5gLIHcQOe9sYrMIm4GP8NdqMQ4lC87vAK+TZztS1VoTsCE20qFMK1BCP9jcVdvVoT/x5qYO6cDGn5VydD5ax8yHiy8P/32w82HRATaugag=
+	t=1718802588; cv=none; b=fhG9IOHFvnsvY8DYOJO+FIC80bfEtLGCaeO5hp8hu/d9+nDwHtiYeyz+07JtoKzMqfaAix83ivd9PJUiJnTSr936wN6CyGyILUU2ttsxGHCJzfpyg8hYxG+UFx49HoYrrJCPCmAe1aH/Fm1h24XPchkauWUMWxsnSPmQ1/yjyVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803861; c=relaxed/simple;
-	bh=FpE/lsa+16q7iSTrAO9qUlRxXrGxjfEKxrvNEYmmdpI=;
+	s=arc-20240116; t=1718802588; c=relaxed/simple;
+	bh=9AZwRBxiNBR9fZgm4Sb8YjecrwbZ/WiHm5RKHF8DJxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cbYcaXBKFDbhCFeVkBMh0v5JEOqikYJMIOto4RM79VNGJiLpN44aMnZlJmJ2RvVMS0QdT+pL/8/xvHh9+/tWxRikW1YFM4WUqvDyXeQ/OttyP/smD5p0h2gofFR65veJpOlf2BBjxZja/VN6SINSOnjk2P3XBSgJ1I6V1zK7m3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YV0YQRdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324B1C4AF1A;
-	Wed, 19 Jun 2024 13:31:00 +0000 (UTC)
+	 MIME-Version; b=XY5geCnKqXiPYEzVafMC+tcvK8HQ6lu2Trfysm6ij5Pm+3TShmga4XaGGP7k1hpAsizbjUhx9aPHONO4uZLn8c1R/bwDET5mwDgMYYJdvBZi5qDps6o0QfyV/dQ29qKzjIdyPDl0eUb0EPCL224fvZdzyrSJ51+h5S7qmqkVjQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyictHwi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1CFCC2BBFC;
+	Wed, 19 Jun 2024 13:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803860;
-	bh=FpE/lsa+16q7iSTrAO9qUlRxXrGxjfEKxrvNEYmmdpI=;
+	s=korg; t=1718802588;
+	bh=9AZwRBxiNBR9fZgm4Sb8YjecrwbZ/WiHm5RKHF8DJxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YV0YQRdxrFmha1YDDxqTG0WHxp/bGhcHJm30W/Q97ow58SbHXXZobu+JCzQLUtEia
-	 bJ4f+2kqzztgcGyKFoUDOPibSPEjgHhTmXdgh2QYIeHJ0FMvCC/D1/MKFfjPY9r2Pm
-	 ZwCXwunBChoyOvbxuD3zvFH3zsSEwMvXkVuHpjbo=
+	b=GyictHwi5C/XiB8TkZE8Wo8w2ZliDy8PTNU6YJrnAoQEc+H8YHZUS0KX/dFQn/jv5
+	 xhQF2jO5l220sVQy4f5OV2VEy5zNqRfbccSy5wDNDTU3tKRzcJli2IegC5cJyZ1fyN
+	 EUnQW4eNdwLCDkE8/oNPmoXaPLfqO6Eo1ESA5nBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/217] gpio: tqmx86: store IRQ trigger type and unmask status separately
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	stable@kernel.org
+Subject: [PATCH 6.6 220/267] intel_th: pci: Add Granite Rapids SOC support
 Date: Wed, 19 Jun 2024 14:56:11 +0200
-Message-ID: <20240619125601.627258134@linuxfoundation.org>
+Message-ID: <20240619125614.770961216@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Alexander Shishkin <alexander.shishkin@linux.intel.com>
 
-[ Upstream commit 08af509efdf8dad08e972b48de0e2c2a7919ea8b ]
+commit 854afe461b009801a171b3a49c5f75ea43e4c04c upstream.
 
-irq_set_type() should not implicitly unmask the IRQ.
+Add support for the Trace Hub in Granite Rapids SOC.
 
-All accesses to the interrupt configuration register are moved to a new
-helper tqmx86_gpio_irq_config(). We also introduce the new rule that
-accessing irq_type must happen while locked, which will become
-significant for fixing EDGE_BOTH handling.
-
-Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Link: https://lore.kernel.org/r/6aa4f207f77cb58ef64ffb947e91949b0f753ccd.1717063994.git.matthias.schiffer@ew.tq-group.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20240429130119.1518073-12-alexander.shishkin@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-tqmx86.c | 48 ++++++++++++++++++++++----------------
- 1 file changed, 28 insertions(+), 20 deletions(-)
+ drivers/hwtracing/intel_th/pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpio/gpio-tqmx86.c b/drivers/gpio/gpio-tqmx86.c
-index b7e2dbbdc4ebe..7e428c872a257 100644
---- a/drivers/gpio/gpio-tqmx86.c
-+++ b/drivers/gpio/gpio-tqmx86.c
-@@ -29,15 +29,19 @@
- #define TQMX86_GPIIC	3	/* GPI Interrupt Configuration Register */
- #define TQMX86_GPIIS	4	/* GPI Interrupt Status Register */
- 
-+#define TQMX86_GPII_NONE	0
- #define TQMX86_GPII_FALLING	BIT(0)
- #define TQMX86_GPII_RISING	BIT(1)
- #define TQMX86_GPII_MASK	(BIT(0) | BIT(1))
- #define TQMX86_GPII_BITS	2
-+/* Stored in irq_type with GPII bits */
-+#define TQMX86_INT_UNMASKED	BIT(2)
- 
- struct tqmx86_gpio_data {
- 	struct gpio_chip	chip;
- 	void __iomem		*io_base;
- 	int			irq;
-+	/* Lock must be held for accessing output and irq_type fields */
- 	raw_spinlock_t		spinlock;
- 	DECLARE_BITMAP(output, TQMX86_NGPIO);
- 	u8			irq_type[TQMX86_NGPI];
-@@ -104,21 +108,32 @@ static int tqmx86_gpio_get_direction(struct gpio_chip *chip,
- 	return GPIO_LINE_DIRECTION_OUT;
- }
- 
-+static void tqmx86_gpio_irq_config(struct tqmx86_gpio_data *gpio, int offset)
-+	__must_hold(&gpio->spinlock)
-+{
-+	u8 type = TQMX86_GPII_NONE, gpiic;
-+
-+	if (gpio->irq_type[offset] & TQMX86_INT_UNMASKED)
-+		type = gpio->irq_type[offset] & TQMX86_GPII_MASK;
-+
-+	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
-+	gpiic &= ~(TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS));
-+	gpiic |= type << (offset * TQMX86_GPII_BITS);
-+	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
-+}
-+
- static void tqmx86_gpio_irq_mask(struct irq_data *data)
- {
- 	unsigned int offset = (data->hwirq - TQMX86_NGPO);
- 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(
- 		irq_data_get_irq_chip_data(data));
- 	unsigned long flags;
--	u8 gpiic, mask;
--
--	mask = TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS);
- 
- 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
--	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
--	gpiic &= ~mask;
--	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
-+	gpio->irq_type[offset] &= ~TQMX86_INT_UNMASKED;
-+	tqmx86_gpio_irq_config(gpio, offset);
- 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
-+
- 	gpiochip_disable_irq(&gpio->chip, irqd_to_hwirq(data));
- }
- 
-@@ -128,16 +143,12 @@ static void tqmx86_gpio_irq_unmask(struct irq_data *data)
- 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(
- 		irq_data_get_irq_chip_data(data));
- 	unsigned long flags;
--	u8 gpiic, mask;
--
--	mask = TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS);
- 
- 	gpiochip_enable_irq(&gpio->chip, irqd_to_hwirq(data));
-+
- 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
--	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
--	gpiic &= ~mask;
--	gpiic |= gpio->irq_type[offset] << (offset * TQMX86_GPII_BITS);
--	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
-+	gpio->irq_type[offset] |= TQMX86_INT_UNMASKED;
-+	tqmx86_gpio_irq_config(gpio, offset);
- 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
- }
- 
-@@ -148,7 +159,7 @@ static int tqmx86_gpio_irq_set_type(struct irq_data *data, unsigned int type)
- 	unsigned int offset = (data->hwirq - TQMX86_NGPO);
- 	unsigned int edge_type = type & IRQF_TRIGGER_MASK;
- 	unsigned long flags;
--	u8 new_type, gpiic;
-+	u8 new_type;
- 
- 	switch (edge_type) {
- 	case IRQ_TYPE_EDGE_RISING:
-@@ -164,13 +175,10 @@ static int tqmx86_gpio_irq_set_type(struct irq_data *data, unsigned int type)
- 		return -EINVAL; /* not supported */
- 	}
- 
--	gpio->irq_type[offset] = new_type;
--
- 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
--	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
--	gpiic &= ~((TQMX86_GPII_MASK) << (offset * TQMX86_GPII_BITS));
--	gpiic |= new_type << (offset * TQMX86_GPII_BITS);
--	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
-+	gpio->irq_type[offset] &= ~TQMX86_GPII_MASK;
-+	gpio->irq_type[offset] |= new_type;
-+	tqmx86_gpio_irq_config(gpio, offset);
- 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
- 
- 	return 0;
--- 
-2.43.0
-
+--- a/drivers/hwtracing/intel_th/pci.c
++++ b/drivers/hwtracing/intel_th/pci.c
+@@ -310,6 +310,11 @@ static const struct pci_device_id intel_
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
+ 	},
+ 	{
++		/* Granite Rapids SOC */
++		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x3256),
++		.driver_data = (kernel_ulong_t)&intel_th_2x,
++	},
++	{
+ 		/* Alder Lake CPU */
+ 		PCI_DEVICE(PCI_VENDOR_ID_INTEL, 0x466f),
+ 		.driver_data = (kernel_ulong_t)&intel_th_2x,
 
 
 
