@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-54547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5529390EEC2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:31:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E538490ECA0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BC281C24336
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:31:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64CD6286BF2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D2C1422B8;
-	Wed, 19 Jun 2024 13:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3ACA147C7B;
+	Wed, 19 Jun 2024 13:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HReWjS1V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtKzvoiO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FED13DDC0;
-	Wed, 19 Jun 2024 13:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F598143C65;
+	Wed, 19 Jun 2024 13:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803902; cv=none; b=RfrmnJ7XYABx6zQsLTFttuw2kDpbclXETZEyRmUOYe7IB6TcdErROF6Y86EatQlaqu1n7ATF3K6/oL4gBhdW1VCqtKHsL1hesIJ0FfBlkijm3Wl1W3tXlErSxzmHIn0+p946X2EGigYG/D32gmdmWYDdjJXByTsuEPwWqCpTb5w=
+	t=1718802550; cv=none; b=IhFQugWdiy7bmnukxEGLc/3VoQDWW2u86mdnUOJ/+WCNxcKMqnD+bKvvK68NJm3e5JkLmtfiUDVgOKn7WHKz81hn9+ecnpn6sx7wZQy2d7p9dHwqvWd/EbgeeEG1YpTMvFCu5cxjJrfieEpyIiQ5SxrYwMUZ5YYUA6F+9zN4Apw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803902; c=relaxed/simple;
-	bh=tVl/sZbMh3qQ83dfz5Rih11imMnYb+Z6rTj6vizGMcI=;
+	s=arc-20240116; t=1718802550; c=relaxed/simple;
+	bh=uufU/yDy8njaMpWxmCpa01KyjI4YrqRdRnS4tGqUK3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1eB1RfyGWpFEpedq/osJ+lzo4tkgrmgcrEG4O2EbI1vEd7zKhMfgJprnsUi0G9JF754qp2Fb6sFgM7WZMhDgdGxSasKvE5CtoIvpjH7hYvaENmTqx8cyBVNaV+/QuJu0S0RcTi8GaSPBAZl8awiFaZ7MSYK1veZo5rbcqx1BW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HReWjS1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4009C2BBFC;
-	Wed, 19 Jun 2024 13:31:41 +0000 (UTC)
+	 MIME-Version; b=Y9elFTY2TAlSf2VVEjrLa1SzX89KrIky5JMXcIiqzN3a1fpNlOq8Fe2dhBoSlcRcga858tsuGfEKgDZH867GCAD8wiGqU2AAPxu0GzwMFiJL/2X/Ql52ljsK9VyIXqENYVATzRCWcoKKt6HZhTNc39nTMJDPfrdC5RlCuai3t0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtKzvoiO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0F1C2BBFC;
+	Wed, 19 Jun 2024 13:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803902;
-	bh=tVl/sZbMh3qQ83dfz5Rih11imMnYb+Z6rTj6vizGMcI=;
+	s=korg; t=1718802550;
+	bh=uufU/yDy8njaMpWxmCpa01KyjI4YrqRdRnS4tGqUK3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HReWjS1VJ0qPH5H8DfoeWp5qhUgc8o4Ts8ce5/p7H2/EGDJgQUs3OG+rxTfrZ2jGO
-	 uYPZD87Nh2eeyHgKLfxyBTKwXXbSG2gsXgq+uOclUs7J9XuPy1+beHCZ5ualYXjkzH
-	 8qQLY0V/np4raDUmpyPlqNC2btKpbvSiPYt4Y73U=
+	b=vtKzvoiOB33IInPsWjsf9Dm3sKCSyWjEtGA7gnmCAf3CR8OqYJLRm2Jndz4bF2DZD
+	 /gqbMjNXTgOMF8DIVVVzplN8m5WClnUDI+5C5uAef1Dj1/Nvr6OwUCtv4SnSKB0AXR
+	 BAUcACoN2Khoex4+Y2CGxzrfP5oGoJlAccE+qqCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Miotk <adam.miotk@arm.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 143/217] drm/bridge/panel: Fix runtime warning on panel bridge release
+	linux-xfs@vger.kernel.org,
+	Dave Chinner <dchinner@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>
+Subject: [PATCH 6.6 235/267] xfs: allow sunit mount option to repair bad primary sb stripe values
 Date: Wed, 19 Jun 2024 14:56:26 +0200
-Message-ID: <20240619125602.209795525@linuxfoundation.org>
+Message-ID: <20240619125615.343040594@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +65,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Miotk <adam.miotk@arm.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-[ Upstream commit ce62600c4dbee8d43b02277669dd91785a9b81d9 ]
+commit 15922f5dbf51dad334cde888ce6835d377678dc9 upstream.
 
-Device managed panel bridge wrappers are created by calling to
-drm_panel_bridge_add_typed() and registering a release handler for
-clean-up when the device gets unbound.
+If a filesystem has a busted stripe alignment configuration on disk
+(e.g. because broken RAID firmware told mkfs that swidth was smaller
+than sunit), then the filesystem will refuse to mount due to the
+stripe validation failing. This failure is triggering during distro
+upgrades from old kernels lacking this check to newer kernels with
+this check, and currently the only way to fix it is with offline
+xfs_db surgery.
 
-Since the memory for this bridge is also managed and linked to the panel
-device, the release function should not try to free that memory.
-Moreover, the call to devm_kfree() inside drm_panel_bridge_remove() will
-fail in this case and emit a warning because the panel bridge resource
-is no longer on the device resources list (it has been removed from
-there before the call to release handlers).
+This runtime validity checking occurs when we read the superblock
+for the first time and causes the mount to fail immediately. This
+prevents the rewrite of stripe unit/width via
+mount options that occurs later in the mount process. Hence there is
+no way to recover this situation without resorting to offline xfs_db
+rewrite of the values.
 
-Fixes: 67022227ffb1 ("drm/bridge: Add a devm_ allocator for panel bridge.")
-Signed-off-by: Adam Miotk <adam.miotk@arm.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240610102739.139852-1-adam.miotk@arm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, we parse the mount options long before we read the
+superblock, and we know if the mount has been asked to re-write the
+stripe alignment configuration when we are reading the superblock
+and verifying it for the first time. Hence we can conditionally
+ignore stripe verification failures if the mount options specified
+will correct the issue.
+
+We validate that the new stripe unit/width are valid before we
+overwrite the superblock values, so we can ignore the invalid config
+at verification and fail the mount later if the new values are not
+valid. This, at least, gives users the chance of correcting the
+issue after a kernel upgrade without having to resort to xfs-db
+hacks.
+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/panel.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/xfs/libxfs/xfs_sb.c |   40 +++++++++++++++++++++++++++++++---------
+ fs/xfs/libxfs/xfs_sb.h |    5 +++--
+ 2 files changed, 34 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/panel.c
-index 216af76d00427..cdfcdbecd4c80 100644
---- a/drivers/gpu/drm/bridge/panel.c
-+++ b/drivers/gpu/drm/bridge/panel.c
-@@ -306,9 +306,12 @@ EXPORT_SYMBOL(drm_panel_bridge_set_orientation);
+--- a/fs/xfs/libxfs/xfs_sb.c
++++ b/fs/xfs/libxfs/xfs_sb.c
+@@ -530,7 +530,8 @@ xfs_validate_sb_common(
+ 	}
  
- static void devm_drm_panel_bridge_release(struct device *dev, void *res)
- {
--	struct drm_bridge **bridge = res;
-+	struct drm_bridge *bridge = *(struct drm_bridge **)res;
+ 	if (!xfs_validate_stripe_geometry(mp, XFS_FSB_TO_B(mp, sbp->sb_unit),
+-			XFS_FSB_TO_B(mp, sbp->sb_width), 0, false))
++			XFS_FSB_TO_B(mp, sbp->sb_width), 0,
++			xfs_buf_daddr(bp) == XFS_SB_DADDR, false))
+ 		return -EFSCORRUPTED;
  
--	drm_panel_bridge_remove(*bridge);
-+	if (!bridge)
-+		return;
-+
-+	drm_bridge_remove(bridge);
+ 	/*
+@@ -1319,8 +1320,10 @@ xfs_sb_get_secondary(
  }
  
- /**
--- 
-2.43.0
-
+ /*
+- * sunit, swidth, sectorsize(optional with 0) should be all in bytes,
+- * so users won't be confused by values in error messages.
++ * sunit, swidth, sectorsize(optional with 0) should be all in bytes, so users
++ * won't be confused by values in error messages.  This function returns false
++ * if the stripe geometry is invalid and the caller is unable to repair the
++ * stripe configuration later in the mount process.
+  */
+ bool
+ xfs_validate_stripe_geometry(
+@@ -1328,20 +1331,21 @@ xfs_validate_stripe_geometry(
+ 	__s64			sunit,
+ 	__s64			swidth,
+ 	int			sectorsize,
++	bool			may_repair,
+ 	bool			silent)
+ {
+ 	if (swidth > INT_MAX) {
+ 		if (!silent)
+ 			xfs_notice(mp,
+ "stripe width (%lld) is too large", swidth);
+-		return false;
++		goto check_override;
+ 	}
+ 
+ 	if (sunit > swidth) {
+ 		if (!silent)
+ 			xfs_notice(mp,
+ "stripe unit (%lld) is larger than the stripe width (%lld)", sunit, swidth);
+-		return false;
++		goto check_override;
+ 	}
+ 
+ 	if (sectorsize && (int)sunit % sectorsize) {
+@@ -1349,21 +1353,21 @@ xfs_validate_stripe_geometry(
+ 			xfs_notice(mp,
+ "stripe unit (%lld) must be a multiple of the sector size (%d)",
+ 				   sunit, sectorsize);
+-		return false;
++		goto check_override;
+ 	}
+ 
+ 	if (sunit && !swidth) {
+ 		if (!silent)
+ 			xfs_notice(mp,
+ "invalid stripe unit (%lld) and stripe width of 0", sunit);
+-		return false;
++		goto check_override;
+ 	}
+ 
+ 	if (!sunit && swidth) {
+ 		if (!silent)
+ 			xfs_notice(mp,
+ "invalid stripe width (%lld) and stripe unit of 0", swidth);
+-		return false;
++		goto check_override;
+ 	}
+ 
+ 	if (sunit && (int)swidth % (int)sunit) {
+@@ -1371,9 +1375,27 @@ xfs_validate_stripe_geometry(
+ 			xfs_notice(mp,
+ "stripe width (%lld) must be a multiple of the stripe unit (%lld)",
+ 				   swidth, sunit);
+-		return false;
++		goto check_override;
+ 	}
+ 	return true;
++
++check_override:
++	if (!may_repair)
++		return false;
++	/*
++	 * During mount, mp->m_dalign will not be set unless the sunit mount
++	 * option was set. If it was set, ignore the bad stripe alignment values
++	 * and allow the validation and overwrite later in the mount process to
++	 * attempt to overwrite the bad stripe alignment values with the values
++	 * supplied by mount options.
++	 */
++	if (!mp->m_dalign)
++		return false;
++	if (!silent)
++		xfs_notice(mp,
++"Will try to correct with specified mount options sunit (%d) and swidth (%d)",
++			BBTOB(mp->m_dalign), BBTOB(mp->m_swidth));
++	return true;
+ }
+ 
+ /*
+--- a/fs/xfs/libxfs/xfs_sb.h
++++ b/fs/xfs/libxfs/xfs_sb.h
+@@ -35,8 +35,9 @@ extern int	xfs_sb_get_secondary(struct x
+ 				struct xfs_trans *tp, xfs_agnumber_t agno,
+ 				struct xfs_buf **bpp);
+ 
+-extern bool	xfs_validate_stripe_geometry(struct xfs_mount *mp,
+-		__s64 sunit, __s64 swidth, int sectorsize, bool silent);
++bool	xfs_validate_stripe_geometry(struct xfs_mount *mp,
++		__s64 sunit, __s64 swidth, int sectorsize, bool may_repair,
++		bool silent);
+ 
+ uint8_t xfs_compute_rextslog(xfs_rtbxlen_t rtextents);
+ 
 
 
 
