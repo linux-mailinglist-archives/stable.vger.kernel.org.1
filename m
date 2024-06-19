@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D2590EE1A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B95C090ED41
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 034171C22E54
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62FA21F2191A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2744D14A615;
-	Wed, 19 Jun 2024 13:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF01143C65;
+	Wed, 19 Jun 2024 13:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbQcpxAU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvKLw8XD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8397143757;
-	Wed, 19 Jun 2024 13:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3CCAD58;
+	Wed, 19 Jun 2024 13:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803533; cv=none; b=UG/WWxWjvAn2O8yROo4XPKHFR+qoDbSMxgXwRbq3CgiU9M7N5TG2lY9D4KrjfSkmdi04dgxDqMVaObwKOotw3CFB9E19sylo2dV4k3tTeS0hm3ha2GthQK/u0FIyWxVcyvsZGrV8KGtWv8gQOJaSFsmXMAalu1cuLIt6lew/QQY=
+	t=1718802954; cv=none; b=GcSe5TZV1LP4M68zVpvRDEbUWHRdMA2uhOaME/uDmqxeiUY3BZGMQuOJY3VtT+9JW5mpMkRiidcGkSoLOBhe6Iy9jsjkIIJfPbmHbVb44ApYZZ1IXB+FS0QxLewaR4OvHzBwBOSEHq+a+iqhlttTKfa+YGqjPiTt+gUdTPoow1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803533; c=relaxed/simple;
-	bh=IlO5YIQS+vcBUT+Ozn3M0fJ8w9uHqYZIXgNVpWAkh1k=;
+	s=arc-20240116; t=1718802954; c=relaxed/simple;
+	bh=Fo6WaBN8y3PBGRersXQS4POEqQpQ4r0UCvHxOyahM5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uUL9euIIzCYN6V9p0fGaZ4gdN5IrpwyK7adZh7lOBCiUFBuKEvIPMQBRJx0RDS8zMxP8RfMV3WAA3b1YoRR92Y0KMKHiDIHkYl0Vv4GasrDPkf5DaFyVAzGbxYdKXyIFqZODu4+IHo3FzEF3rUMwX4MXVgk9evB23LBlAkeEXOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbQcpxAU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AF1C2BBFC;
-	Wed, 19 Jun 2024 13:25:32 +0000 (UTC)
+	 MIME-Version; b=pbZGqIrkHUM1So1BH7lHX5BpF41Ltybhfk/aVbrCNBIJyk8+8TuMU12EvZli5VzhQdbcnqZXq9uj7rxJVLIcHJJ/n76mYq0ZYcqAJ8SNIcQkCV79TxRi9ZBy6Cwvjdta+i3IO6Zkl6xTjS75pkntWgnmCIFM7sohnqOBb32xJOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvKLw8XD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D686C2BBFC;
+	Wed, 19 Jun 2024 13:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803533;
-	bh=IlO5YIQS+vcBUT+Ozn3M0fJ8w9uHqYZIXgNVpWAkh1k=;
+	s=korg; t=1718802954;
+	bh=Fo6WaBN8y3PBGRersXQS4POEqQpQ4r0UCvHxOyahM5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbQcpxAUiCvvfJAEOJTU0Nn8gMOXGDGy0OA5vCQ5S5ZTf+q+WgDtrGIs+2SUZRv0G
-	 uW5uPGWOKHW+K7GhjMd0wHpfyEAcQaAni6qox1RGW3coK2k0clN3+mlCEcpdBoUe1d
-	 k95TVwAx4+Xr0wIWcsHafsqi/TqdnINWWB2BbLUM=
+	b=wvKLw8XDFA/28QqRlO2sqPqW7qEv5gGCDtduYoGxV0KC3/WHhX1cpWBwWi+BnUTni
+	 ZwkivyEysA1dcTOWnhV5ejZUg5sruwzeViWXHzDGr9j1dnkHAuht5UwBVaBWGvI1Hu
+	 g96gHNL7shcAFweWEbfTqZMDxbBtf/uelh31K0dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/217] octeontx2-af: Always allocate PF entries from low prioriy zone
-Date: Wed, 19 Jun 2024 14:54:21 +0200
-Message-ID: <20240619125557.347051426@linuxfoundation.org>
+	Pierre Tomon <pierretom+12@ik.me>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.9 103/281] scsi: sd: Use READ(16) when reading block zero on large capacity disks
+Date: Wed, 19 Jun 2024 14:54:22 +0200
+Message-ID: <20240619125613.811050344@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Martin K. Petersen <martin.petersen@oracle.com>
 
-[ Upstream commit 8b0f7410942cdc420c4557eda02bfcdf60ccec17 ]
+commit 7926d51f73e0434a6250c2fd1a0555f98d9a62da upstream.
 
-PF mcam entries has to be at low priority always so that VF
-can install longest prefix match rules at higher priority.
-This was taken care currently but when priority allocation
-wrt reference entry is requested then entries are allocated
-from mid-zone instead of low priority zone. Fix this and
-always allocate entries from low priority zone for PFs.
+Commit 321da3dc1f3c ("scsi: sd: usb_storage: uas: Access media prior
+to querying device properties") triggered a read to LBA 0 before
+attempting to inquire about device characteristics. This was done
+because some protocol bridge devices will return generic values until
+an attached storage device's media has been accessed.
 
-Fixes: 7df5b4b260dd ("octeontx2-af: Allocate low priority entries for PF")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Pierre Tomon reported that this change caused problems on a large
+capacity external drive connected via a bridge device. The bridge in
+question does not appear to implement the READ(10) command.
+
+Issue a READ(16) instead of READ(10) when a device has been identified
+as preferring 16-byte commands (use_16_for_rw heuristic).
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218890
+Link: https://lore.kernel.org/r/70dd7ae0-b6b1-48e1-bb59-53b7c7f18274@rowland.harvard.edu
+Link: https://lore.kernel.org/r/20240605022521.3960956-1-martin.petersen@oracle.com
+Fixes: 321da3dc1f3c ("scsi: sd: usb_storage: uas: Access media prior to querying device properties")
+Cc: stable@vger.kernel.org
+Reported-by: Pierre Tomon <pierretom+12@ik.me>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Tested-by: Pierre Tomon <pierretom+12@ik.me>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 33 ++++++++++++-------
- 1 file changed, 22 insertions(+), 11 deletions(-)
+ drivers/scsi/sd.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 91a4ea529d077..00ef6d201b973 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -2506,7 +2506,17 @@ static int npc_mcam_alloc_entries(struct npc_mcam *mcam, u16 pcifunc,
- 	 * - when available free entries are less.
- 	 * Lower priority ones out of avaialble free entries are always
- 	 * chosen when 'high vs low' question arises.
-+	 *
-+	 * For a VF base MCAM match rule is set by its PF. And all the
-+	 * further MCAM rules installed by VF on its own are
-+	 * concatenated with the base rule set by its PF. Hence PF entries
-+	 * should be at lower priority compared to VF entries. Otherwise
-+	 * base rule is hit always and rules installed by VF will be of
-+	 * no use. Hence if the request is from PF then allocate low
-+	 * priority entries.
- 	 */
-+	if (!(pcifunc & RVU_PFVF_FUNC_MASK))
-+		goto lprio_alloc;
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3572,16 +3572,23 @@ static bool sd_validate_opt_xfer_size(st
  
- 	/* Get the search range for priority allocation request */
- 	if (req->priority) {
-@@ -2515,17 +2525,6 @@ static int npc_mcam_alloc_entries(struct npc_mcam *mcam, u16 pcifunc,
- 		goto alloc;
- 	}
+ static void sd_read_block_zero(struct scsi_disk *sdkp)
+ {
+-	unsigned int buf_len = sdkp->device->sector_size;
+-	char *buffer, cmd[10] = { };
++	struct scsi_device *sdev = sdkp->device;
++	unsigned int buf_len = sdev->sector_size;
++	u8 *buffer, cmd[16] = { };
  
--	/* For a VF base MCAM match rule is set by its PF. And all the
--	 * further MCAM rules installed by VF on its own are
--	 * concatenated with the base rule set by its PF. Hence PF entries
--	 * should be at lower priority compared to VF entries. Otherwise
--	 * base rule is hit always and rules installed by VF will be of
--	 * no use. Hence if the request is from PF and NOT a priority
--	 * allocation request then allocate low priority entries.
--	 */
--	if (!(pcifunc & RVU_PFVF_FUNC_MASK))
--		goto lprio_alloc;
--
- 	/* Find out the search range for non-priority allocation request
- 	 *
- 	 * Get MCAM free entry count in middle zone.
-@@ -2555,6 +2554,18 @@ static int npc_mcam_alloc_entries(struct npc_mcam *mcam, u16 pcifunc,
- 		reverse = true;
- 		start = 0;
- 		end = mcam->bmap_entries;
-+		/* Ensure PF requests are always at bottom and if PF requests
-+		 * for higher/lower priority entry wrt reference entry then
-+		 * honour that criteria and start search for entries from bottom
-+		 * and not in mid zone.
-+		 */
-+		if (!(pcifunc & RVU_PFVF_FUNC_MASK) &&
-+		    req->priority == NPC_MCAM_HIGHER_PRIO)
-+			end = req->ref_entry;
-+
-+		if (!(pcifunc & RVU_PFVF_FUNC_MASK) &&
-+		    req->priority == NPC_MCAM_LOWER_PRIO)
-+			start = req->ref_entry;
- 	}
+ 	buffer = kmalloc(buf_len, GFP_KERNEL);
+ 	if (!buffer)
+ 		return;
  
- alloc:
--- 
-2.43.0
-
+-	cmd[0] = READ_10;
+-	put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
+-	put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
++	if (sdev->use_16_for_rw) {
++		cmd[0] = READ_16;
++		put_unaligned_be64(0, &cmd[2]); /* Logical block address 0 */
++		put_unaligned_be32(1, &cmd[10]);/* Transfer 1 logical block */
++	} else {
++		cmd[0] = READ_10;
++		put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
++		put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
++	}
+ 
+ 	scsi_execute_cmd(sdkp->device, cmd, REQ_OP_DRV_IN, buffer, buf_len,
+ 			 SD_TIMEOUT, sdkp->max_retries, NULL);
 
 
 
