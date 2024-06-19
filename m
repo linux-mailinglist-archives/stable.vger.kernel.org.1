@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9348A90E5E5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:38:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D4B90E5E6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:38:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 495AA1F21FD7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:38:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F014282911
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8469E7CF1A;
-	Wed, 19 Jun 2024 08:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8247D7CF3A;
+	Wed, 19 Jun 2024 08:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T59LYmqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1SXuFio"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44ECB7C6DF
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4165279B84
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718786265; cv=none; b=ECkmJEelidMJE7X1X1dUjXxBvvu2lKKhRJlx6k+3W0uVbAyqE6H5C8Z7+yU4qwE+gaLZIOsVExQGzi4ekxz5z8JZ32qMLc1BA0+PlIqTBTmwf6WDJfUB6Qelsz1e1mRmEZXq030iUaZq6uxcjmAF+3reeTxWBZgqDyhDkj/N6To=
+	t=1718786274; cv=none; b=VENJd6uV70bXM10lTE2CxOGvgw/SjdqFB7h8HB4sdWDlL+6yO3AK+v+pnBmubyzxOzbf7uPctkfrxnMsDTnJEgMqjcDjkOTzm2Wfs5yWTKl7nGao3DnK8MZqBTX9lqn9xHx9UXA8QQgFRkRvzTD3hANMDbbiiAkAnancdJkARqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718786265; c=relaxed/simple;
-	bh=icIqFtEsDmJuFWMnt3xQR4N1wZyXVtH9nlzKtiCeRC0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gQKIkaz8EU+DtZ1EAooN/5Emdoftqtuu8et5wZtnr0Yoc5oxzUiXmh5a2NWzeI/JTvywwPxlVRdMnhQL2N5sE/aac67WZHBdkArrrIBsddq/MXpCmiBudG9tLcWCwTVXpzEhrs+gLu1HQr4TY0kquOebT94uBQqrnpApW8JyGy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T59LYmqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B287C4AF48;
-	Wed, 19 Jun 2024 08:37:44 +0000 (UTC)
+	s=arc-20240116; t=1718786274; c=relaxed/simple;
+	bh=ishpWahjeOn3mVGoH1XIDZ6MfkTRycN58Bo+waAyML0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pFGNP1d5jCGtE3XJDnTGKirFZpIRYQW9kPfEKcaxLsxhb3FWBFBJX8bmKMexmL2exlXW3Le0iR+KqhKP/wKSDYMdqF/ehWxHoycJmrVPPf8lF5zdregewthmYNGQIYFbZvtepH9fgUOS8lWs7znhCCn+Q4HG8nRSDey8m8zOBJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1SXuFio; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF0DC4AF1A;
+	Wed, 19 Jun 2024 08:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718786264;
-	bh=icIqFtEsDmJuFWMnt3xQR4N1wZyXVtH9nlzKtiCeRC0=;
+	s=korg; t=1718786274;
+	bh=ishpWahjeOn3mVGoH1XIDZ6MfkTRycN58Bo+waAyML0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=T59LYmqrpFw9qyw9Ynq+M62zBv0vwDncOw+AJrAXZnF+j2Po4thL3+yXkRGiXCVzX
-	 rXD54537q4bqE8pmhPKYq1+TsGGA0+kMRgdQgsAse2ZbFn9DY57PwDi/3eoL8hn6Cx
-	 WWxb801JHB6QEnwdmvC5xmp6+kh0Hqj//hFA8CTE=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Set DCN351 BB and IP the same as DCN35" failed to apply to 5.4-stable tree
-To: xi.liu@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,jun.lei@amd.com,mario.limonciello@amd.com
+	b=G1SXuFiom3Yn0SYms/ohODNTv9jiV7y5zHdehmOav5P3CeseswXG0Bq419lyVLnD2
+	 aQ364nFChmGazsE7QqaEYYW4UD6H/Qr5eyogGipV8yHOcXp0RrsjdW5zFKDW0yAofW
+	 7H1YIl6ZQjW62wM558AK5XdRPRvZrdm+FZkKkkBc=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: fix deadlock while reading mqd from debugfs" failed to apply to 6.9-stable tree
+To: hannes@cmpxchg.org,alexander.deucher@amd.com,shashank.sharma@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Jun 2024 10:37:30 +0200
-Message-ID: <2024061929-irritably-ogle-3966@gregkh>
+Date: Wed, 19 Jun 2024 10:37:51 +0200
+Message-ID: <2024061951-speckled-aspirin-223a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,36 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.9-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1c5c36530a573de1a4b647b7d8c36f3b298e60ed
+git cherry-pick -x c25d09bcb79fa6a6f45beb558ccc77e68f757e19
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061929-irritably-ogle-3966@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061951-speckled-aspirin-223a@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
 
 Possible dependencies:
 
-1c5c36530a57 ("drm/amd/display: Set DCN351 BB and IP the same as DCN35")
-115009d11ccf ("drm/amd/display: Add DCN35 DML2 support")
-7966f319c66d ("drm/amd/display: Introduce DML2")
-6e2c4941ce0c ("drm/amd/display: Move dml code under CONFIG_DRM_AMD_DC_FP guard")
-c51d87202d1f ("drm/amd/display: do not attempt ODM power optimization if minimal transition doesn't exist")
-1cb87e048975 ("drm/amd/display: Add DCN35 blocks to Makefile")
-0fa45b6aeae4 ("drm/amd/display: Add DCN35 Resource")
-39d39a019657 ("drm/amd/display: switch to new ODM policy for windowed MPO ODM support")
-0b9dc439f404 ("drm/amd/display: Write flip addr to scratch reg for subvp")
-96182df99dad ("drm/amd/display: Enable runtime register offset init for DCN32 DMUB")
-ca030d83f53b ("drm/amd/display: always acquire MPO pipe for every blending tree")
-71ba6b577a35 ("drm/amd/display: Add interface to enable DPIA trace")
-70e64c4d522b ("drm/amd: Disable S/G for APUs when 64GB or more host memory")
-3d00c59d1477 ("Merge tag 'amd-drm-next-6.6-2023-07-28' of https://gitlab.freedesktop.org/agd5f/linux into drm-next")
+c25d09bcb79f ("drm/amdgpu: fix deadlock while reading mqd from debugfs")
 
 thanks,
 
@@ -90,45 +77,206 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1c5c36530a573de1a4b647b7d8c36f3b298e60ed Mon Sep 17 00:00:00 2001
-From: Xi Liu <xi.liu@amd.com>
-Date: Tue, 27 Feb 2024 13:39:00 -0500
-Subject: [PATCH] drm/amd/display: Set DCN351 BB and IP the same as DCN35
+From c25d09bcb79fa6a6f45beb558ccc77e68f757e19 Mon Sep 17 00:00:00 2001
+From: Johannes Weiner <hannes@cmpxchg.org>
+Date: Thu, 7 Mar 2024 17:07:37 -0500
+Subject: [PATCH] drm/amdgpu: fix deadlock while reading mqd from debugfs
 
-[WHY & HOW]
-DCN351 and DCN35 should use the same bounding box and IP settings.
+An errant disk backup on my desktop got into debugfs and triggered the
+following deadlock scenario in the amdgpu debugfs files. The machine
+also hard-resets immediately after those lines are printed (although I
+wasn't able to reproduce that part when reading by hand):
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Xi Liu <xi.liu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+[ 1318.016074][ T1082] ======================================================
+[ 1318.016607][ T1082] WARNING: possible circular locking dependency detected
+[ 1318.017107][ T1082] 6.8.0-rc7-00015-ge0c8221b72c0 #17 Not tainted
+[ 1318.017598][ T1082] ------------------------------------------------------
+[ 1318.018096][ T1082] tar/1082 is trying to acquire lock:
+[ 1318.018585][ T1082] ffff98c44175d6a0 (&mm->mmap_lock){++++}-{3:3}, at: __might_fault+0x40/0x80
+[ 1318.019084][ T1082]
+[ 1318.019084][ T1082] but task is already holding lock:
+[ 1318.020052][ T1082] ffff98c4c13f55f8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: amdgpu_debugfs_mqd_read+0x6a/0x250 [amdgpu]
+[ 1318.020607][ T1082]
+[ 1318.020607][ T1082] which lock already depends on the new lock.
+[ 1318.020607][ T1082]
+[ 1318.022081][ T1082]
+[ 1318.022081][ T1082] the existing dependency chain (in reverse order) is:
+[ 1318.023083][ T1082]
+[ 1318.023083][ T1082] -> #2 (reservation_ww_class_mutex){+.+.}-{3:3}:
+[ 1318.024114][ T1082]        __ww_mutex_lock.constprop.0+0xe0/0x12f0
+[ 1318.024639][ T1082]        ww_mutex_lock+0x32/0x90
+[ 1318.025161][ T1082]        dma_resv_lockdep+0x18a/0x330
+[ 1318.025683][ T1082]        do_one_initcall+0x6a/0x350
+[ 1318.026210][ T1082]        kernel_init_freeable+0x1a3/0x310
+[ 1318.026728][ T1082]        kernel_init+0x15/0x1a0
+[ 1318.027242][ T1082]        ret_from_fork+0x2c/0x40
+[ 1318.027759][ T1082]        ret_from_fork_asm+0x11/0x20
+[ 1318.028281][ T1082]
+[ 1318.028281][ T1082] -> #1 (reservation_ww_class_acquire){+.+.}-{0:0}:
+[ 1318.029297][ T1082]        dma_resv_lockdep+0x16c/0x330
+[ 1318.029790][ T1082]        do_one_initcall+0x6a/0x350
+[ 1318.030263][ T1082]        kernel_init_freeable+0x1a3/0x310
+[ 1318.030722][ T1082]        kernel_init+0x15/0x1a0
+[ 1318.031168][ T1082]        ret_from_fork+0x2c/0x40
+[ 1318.031598][ T1082]        ret_from_fork_asm+0x11/0x20
+[ 1318.032011][ T1082]
+[ 1318.032011][ T1082] -> #0 (&mm->mmap_lock){++++}-{3:3}:
+[ 1318.032778][ T1082]        __lock_acquire+0x14bf/0x2680
+[ 1318.033141][ T1082]        lock_acquire+0xcd/0x2c0
+[ 1318.033487][ T1082]        __might_fault+0x58/0x80
+[ 1318.033814][ T1082]        amdgpu_debugfs_mqd_read+0x103/0x250 [amdgpu]
+[ 1318.034181][ T1082]        full_proxy_read+0x55/0x80
+[ 1318.034487][ T1082]        vfs_read+0xa7/0x360
+[ 1318.034788][ T1082]        ksys_read+0x70/0xf0
+[ 1318.035085][ T1082]        do_syscall_64+0x94/0x180
+[ 1318.035375][ T1082]        entry_SYSCALL_64_after_hwframe+0x46/0x4e
+[ 1318.035664][ T1082]
+[ 1318.035664][ T1082] other info that might help us debug this:
+[ 1318.035664][ T1082]
+[ 1318.036487][ T1082] Chain exists of:
+[ 1318.036487][ T1082]   &mm->mmap_lock --> reservation_ww_class_acquire --> reservation_ww_class_mutex
+[ 1318.036487][ T1082]
+[ 1318.037310][ T1082]  Possible unsafe locking scenario:
+[ 1318.037310][ T1082]
+[ 1318.037838][ T1082]        CPU0                    CPU1
+[ 1318.038101][ T1082]        ----                    ----
+[ 1318.038350][ T1082]   lock(reservation_ww_class_mutex);
+[ 1318.038590][ T1082]                                lock(reservation_ww_class_acquire);
+[ 1318.038839][ T1082]                                lock(reservation_ww_class_mutex);
+[ 1318.039083][ T1082]   rlock(&mm->mmap_lock);
+[ 1318.039328][ T1082]
+[ 1318.039328][ T1082]  *** DEADLOCK ***
+[ 1318.039328][ T1082]
+[ 1318.040029][ T1082] 1 lock held by tar/1082:
+[ 1318.040259][ T1082]  #0: ffff98c4c13f55f8 (reservation_ww_class_mutex){+.+.}-{3:3}, at: amdgpu_debugfs_mqd_read+0x6a/0x250 [amdgpu]
+[ 1318.040560][ T1082]
+[ 1318.040560][ T1082] stack backtrace:
+[ 1318.041053][ T1082] CPU: 22 PID: 1082 Comm: tar Not tainted 6.8.0-rc7-00015-ge0c8221b72c0 #17 3316c85d50e282c5643b075d1f01a4f6365e39c2
+[ 1318.041329][ T1082] Hardware name: Gigabyte Technology Co., Ltd. B650 AORUS PRO AX/B650 AORUS PRO AX, BIOS F20 12/14/2023
+[ 1318.041614][ T1082] Call Trace:
+[ 1318.041895][ T1082]  <TASK>
+[ 1318.042175][ T1082]  dump_stack_lvl+0x4a/0x80
+[ 1318.042460][ T1082]  check_noncircular+0x145/0x160
+[ 1318.042743][ T1082]  __lock_acquire+0x14bf/0x2680
+[ 1318.043022][ T1082]  lock_acquire+0xcd/0x2c0
+[ 1318.043301][ T1082]  ? __might_fault+0x40/0x80
+[ 1318.043580][ T1082]  ? __might_fault+0x40/0x80
+[ 1318.043856][ T1082]  __might_fault+0x58/0x80
+[ 1318.044131][ T1082]  ? __might_fault+0x40/0x80
+[ 1318.044408][ T1082]  amdgpu_debugfs_mqd_read+0x103/0x250 [amdgpu 8fe2afaa910cbd7654c8cab23563a94d6caebaab]
+[ 1318.044749][ T1082]  full_proxy_read+0x55/0x80
+[ 1318.045042][ T1082]  vfs_read+0xa7/0x360
+[ 1318.045333][ T1082]  ksys_read+0x70/0xf0
+[ 1318.045623][ T1082]  do_syscall_64+0x94/0x180
+[ 1318.045913][ T1082]  ? do_syscall_64+0xa0/0x180
+[ 1318.046201][ T1082]  ? lockdep_hardirqs_on+0x7d/0x100
+[ 1318.046487][ T1082]  ? do_syscall_64+0xa0/0x180
+[ 1318.046773][ T1082]  ? do_syscall_64+0xa0/0x180
+[ 1318.047057][ T1082]  ? do_syscall_64+0xa0/0x180
+[ 1318.047337][ T1082]  ? do_syscall_64+0xa0/0x180
+[ 1318.047611][ T1082]  entry_SYSCALL_64_after_hwframe+0x46/0x4e
+[ 1318.047887][ T1082] RIP: 0033:0x7f480b70a39d
+[ 1318.048162][ T1082] Code: 91 ba 0d 00 f7 d8 64 89 02 b8 ff ff ff ff eb b2 e8 18 a3 01 00 0f 1f 84 00 00 00 00 00 80 3d a9 3c 0e 00 00 74 17 31 c0 0f 05 <48> 3d 00 f0 ff ff 77 5b c3 66 2e 0f 1f 84 00 00 00 00 00 53 48 83
+[ 1318.048769][ T1082] RSP: 002b:00007ffde77f5c68 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+[ 1318.049083][ T1082] RAX: ffffffffffffffda RBX: 0000000000000800 RCX: 00007f480b70a39d
+[ 1318.049392][ T1082] RDX: 0000000000000800 RSI: 000055c9f2120c00 RDI: 0000000000000008
+[ 1318.049703][ T1082] RBP: 0000000000000800 R08: 000055c9f2120a94 R09: 0000000000000007
+[ 1318.050011][ T1082] R10: 0000000000000000 R11: 0000000000000246 R12: 000055c9f2120c00
+[ 1318.050324][ T1082] R13: 0000000000000008 R14: 0000000000000008 R15: 0000000000000800
+[ 1318.050638][ T1082]  </TASK>
+
+amdgpu_debugfs_mqd_read() holds a reservation when it calls
+put_user(), which may fault and acquire the mmap_sem. This violates
+the established locking order.
+
+Bounce the mqd data through a kernel buffer to get put_user() out of
+the illegal section.
+
+Fixes: 445d85e3c1df ("drm/amdgpu: add debugfs interface for reading MQDs")
+Cc: stable@vger.kernel.org # v6.5+
+Reviewed-by: Shashank Sharma <shashank.sharma@amd.com>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-index cf98411d0799..151b480b3cea 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -229,17 +229,13 @@ void dml2_init_socbb_params(struct dml2_context *dml2, const struct dc *in_dc, s
- 		break;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+index 5505d646f43a..06f0a6534a94 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -524,46 +524,58 @@ static ssize_t amdgpu_debugfs_mqd_read(struct file *f, char __user *buf,
+ {
+ 	struct amdgpu_ring *ring = file_inode(f)->i_private;
+ 	volatile u32 *mqd;
+-	int r;
++	u32 *kbuf;
++	int r, i;
+ 	uint32_t value, result;
  
- 	case dml_project_dcn35:
-+	case dml_project_dcn351:
- 		out->num_chans = 4;
- 		out->round_trip_ping_latency_dcfclk_cycles = 106;
- 		out->smn_latency_us = 2;
- 		out->dispclk_dppclk_vco_speed_mhz = 3600;
- 		break;
+ 	if (*pos & 3 || size & 3)
+ 		return -EINVAL;
  
--	case dml_project_dcn351:
--		out->num_chans = 16;
--		out->round_trip_ping_latency_dcfclk_cycles = 1100;
--		out->smn_latency_us = 2;
--		break;
+-	result = 0;
++	kbuf = kmalloc(ring->mqd_size, GFP_KERNEL);
++	if (!kbuf)
++		return -ENOMEM;
+ 
+ 	r = amdgpu_bo_reserve(ring->mqd_obj, false);
+ 	if (unlikely(r != 0))
+-		return r;
++		goto err_free;
+ 
+ 	r = amdgpu_bo_kmap(ring->mqd_obj, (void **)&mqd);
+-	if (r) {
+-		amdgpu_bo_unreserve(ring->mqd_obj);
+-		return r;
+-	}
++	if (r)
++		goto err_unreserve;
+ 
++	/*
++	 * Copy to local buffer to avoid put_user(), which might fault
++	 * and acquire mmap_sem, under reservation_ww_class_mutex.
++	 */
++	for (i = 0; i < ring->mqd_size/sizeof(u32); i++)
++		kbuf[i] = mqd[i];
++
++	amdgpu_bo_kunmap(ring->mqd_obj);
++	amdgpu_bo_unreserve(ring->mqd_obj);
++
++	result = 0;
+ 	while (size) {
+ 		if (*pos >= ring->mqd_size)
+-			goto done;
++			break;
+ 
+-		value = mqd[*pos/4];
++		value = kbuf[*pos/4];
+ 		r = put_user(value, (uint32_t *)buf);
+ 		if (r)
+-			goto done;
++			goto err_free;
+ 		buf += 4;
+ 		result += 4;
+ 		size -= 4;
+ 		*pos += 4;
  	}
- 	/* ---Overrides if available--- */
- 	if (dml2->config.bbox_overrides.dram_num_chan)
+ 
+-done:
+-	amdgpu_bo_kunmap(ring->mqd_obj);
+-	mqd = NULL;
+-	amdgpu_bo_unreserve(ring->mqd_obj);
+-	if (r)
+-		return r;
+-
++	kfree(kbuf);
+ 	return result;
++
++err_unreserve:
++	amdgpu_bo_unreserve(ring->mqd_obj);
++err_free:
++	kfree(kbuf);
++	return r;
+ }
+ 
+ static const struct file_operations amdgpu_debugfs_mqd_fops = {
 
 
