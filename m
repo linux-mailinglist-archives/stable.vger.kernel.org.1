@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-54608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC3FF90EF06
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3832190ECC5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E58E1C21852
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7822B232DF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A0113DDC0;
-	Wed, 19 Jun 2024 13:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D209D143C4A;
+	Wed, 19 Jun 2024 13:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbr7Who8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9OHQNDb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1670013F428;
-	Wed, 19 Jun 2024 13:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9E312FB31;
+	Wed, 19 Jun 2024 13:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804084; cv=none; b=sOrbEEClAFzB5YVzh967MSYhWpJ0BzlahjKOKwj0xT1dRnr3nnHrLfBFIj16HJgwxhrINeqhBTjtUH/YkINis/ecu2w0iz1auFxoc7KpBxsZMYuklZI92N/KHVzxZHIlRt5Xw3Mp6YdtPneD1qq1SbfLkW0Vchzabp3mTKjJaC0=
+	t=1718802635; cv=none; b=lHKkw7Y4iVCt781rRwzCpAysVKndvqABNx4YU7LKo3V08RpCwj3Qf9OfdhVdd8NyatkM5d6or4QHRLDvJbCXL/vCRbTAoY/u5FQ1PLqrLaskg3MPe+bGaRwoSD4tusSobcdUZnW7axGlOoxPVdxpgV1vPTvCOqDZeTfeQbsTEPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804084; c=relaxed/simple;
-	bh=0sS7c4A7pJ3M6XxMuI0UuUqjFmqBUMz+7tCPn3Gc/aY=;
+	s=arc-20240116; t=1718802635; c=relaxed/simple;
+	bh=4tkcWRvYPh7yevbqnVdxhtNm4vyO+nx8NIMawQIHr9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=meI6TQUGI8KhqEKd8x62GrIhnjeXYA8B2aLasLslqHb6MOO/VhFepwnzeRvzqb1PeWA08GLSPIVl6669etor8U/hy6/aTosm1erGhXiyP0+y7MhU8xJ7/9Ca8UNXORwizSWSb2HK2Y0UKjKKSKjfL5BwscTDANmFy3ZA2qxjGbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbr7Who8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A2F3C2BBFC;
-	Wed, 19 Jun 2024 13:34:43 +0000 (UTC)
+	 MIME-Version; b=IrXYJqiA+Qib1ByMhhq4HxeyT2qWN8MJB55BdU+xvi4tfO8eyYU8dfD+vz5PP9I/Oas8IFSg1/NBJIFNkH85CX+sasJDBrUuiaH7C0ofkuZQOdUkW1KALtU/sc5U0LhYI/49eVIwSlxFNxWeZjXKI5G9XaG537JH3edA5tiq7Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9OHQNDb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15FC4C2BBFC;
+	Wed, 19 Jun 2024 13:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804083;
-	bh=0sS7c4A7pJ3M6XxMuI0UuUqjFmqBUMz+7tCPn3Gc/aY=;
+	s=korg; t=1718802635;
+	bh=4tkcWRvYPh7yevbqnVdxhtNm4vyO+nx8NIMawQIHr9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbr7Who8vJUK3wV6ol7RroUGU81iN8NrPdCQPVhn4jYE4RWAwgbM4sY6LcifWIdta
-	 ZAQqrEs8biXsP+jXywC7mJkmfNmd0GyuauZsQ4IZXd1ViyTATRTrqGZpr1bP8U0ffl
-	 l0CyeuAkbPGPGV3EBp0VWhA9vakh9WuLS/O/saZQ=
+	b=J9OHQNDbXjGyDoLv79lBCL2vRw+9xdLORzw9YzYCu+RepydtPSJQ6IUaWDUjRaMdU
+	 M0DGGfyCAxH4wGJeb/nHlZmI+i6Ic9sKO0+h66BkNeJCl9ljkZGzpVT3sor2p3bawY
+	 fc0dLOHeXjbooIgly+Ou9OX2c6TLXKWZiVAIBDmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Nam Cao <namcao@linutronix.de>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 172/217] riscv: fix overlap of allocated page and PTR_ERR
+	Yongzhi Liu <hyperlyzcs@gmail.com>,
+	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 264/267] misc: microchip: pci1xxxx: Fix a memory leak in the error handling of gp_aux_bus_probe()
 Date: Wed, 19 Jun 2024 14:56:55 +0200
-Message-ID: <20240619125603.325351148@linuxfoundation.org>
+Message-ID: <20240619125616.454773104@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Yongzhi Liu <hyperlyzcs@gmail.com>
 
-commit 994af1825a2aa286f4903ff64a1c7378b52defe6 upstream.
+[ Upstream commit 77427e3d5c353e3dd98c7c0af322f8d9e3131ace ]
 
-On riscv32, it is possible for the last page in virtual address space
-(0xfffff000) to be allocated. This page overlaps with PTR_ERR, so that
-shouldn't happen.
+There is a memory leak (forget to free allocated buffers) in a
+memory allocation failure path.
 
-There is already some code to ensure memblock won't allocate the last page.
-However, buddy allocator is left unchecked.
+Fix it to jump to the correct error handling code.
 
-Fix this by reserving physical memory that would be mapped at virtual
-addresses greater than 0xfffff000.
-
-Reported-by: Björn Töpel <bjorn@kernel.org>
-Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
-Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Link: https://lore.kernel.org/r/20240425115201.3044202-1-namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 393fc2f5948f ("misc: microchip: pci1xxxx: load auxiliary bus driver for the PIO function in the multi-function endpoint of pci1xxxx device.")
+Signed-off-by: Yongzhi Liu <hyperlyzcs@gmail.com>
+Reviewed-by: Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>
+Link: https://lore.kernel.org/r/20240523121434.21855-4-hyperlyzcs@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/init.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -213,18 +213,19 @@ static void __init setup_bootmem(void)
- 	if (!IS_ENABLED(CONFIG_XIP_KERNEL))
- 		phys_ram_base = memblock_start_of_DRAM();
- 	/*
--	 * memblock allocator is not aware of the fact that last 4K bytes of
--	 * the addressable memory can not be mapped because of IS_ERR_VALUE
--	 * macro. Make sure that last 4k bytes are not usable by memblock
--	 * if end of dram is equal to maximum addressable memory.  For 64-bit
--	 * kernel, this problem can't happen here as the end of the virtual
--	 * address space is occupied by the kernel mapping then this check must
--	 * be done as soon as the kernel mapping base address is determined.
-+	 * Reserve physical address space that would be mapped to virtual
-+	 * addresses greater than (void *)(-PAGE_SIZE) because:
-+	 *  - This memory would overlap with ERR_PTR
-+	 *  - This memory belongs to high memory, which is not supported
-+	 *
-+	 * This is not applicable to 64-bit kernel, because virtual addresses
-+	 * after (void *)(-PAGE_SIZE) are not linearly mapped: they are
-+	 * occupied by kernel mapping. Also it is unrealistic for high memory
-+	 * to exist on 64-bit platforms.
- 	 */
- 	if (!IS_ENABLED(CONFIG_64BIT)) {
--		max_mapped_addr = __pa(~(ulong)0);
--		if (max_mapped_addr == (phys_ram_end - 1))
--			memblock_set_current_limit(max_mapped_addr - 4096);
-+		max_mapped_addr = __va_to_pa_nodebug(-PAGE_SIZE);
-+		memblock_reserve(max_mapped_addr, (phys_addr_t)-max_mapped_addr);
- 	}
+diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+index de75d89ef53e8..34c9be437432a 100644
+--- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
++++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
+@@ -69,8 +69,10 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
  
- 	min_low_pfn = PFN_UP(phys_ram_base);
+ 	aux_bus->aux_device_wrapper[1] = kzalloc(sizeof(*aux_bus->aux_device_wrapper[1]),
+ 						 GFP_KERNEL);
+-	if (!aux_bus->aux_device_wrapper[1])
+-		return -ENOMEM;
++	if (!aux_bus->aux_device_wrapper[1]) {
++		retval =  -ENOMEM;
++		goto err_aux_dev_add_0;
++	}
+ 
+ 	retval = ida_alloc(&gp_client_ida, GFP_KERNEL);
+ 	if (retval < 0)
+-- 
+2.43.0
+
 
 
 
