@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-54138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D2390ECE2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A8590EB9B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7211FB234BB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6E18B24A58
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588EC14B06C;
-	Wed, 19 Jun 2024 13:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F81EFC1F;
+	Wed, 19 Jun 2024 12:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gnaI/Qeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcfYKC3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1106514E2DA;
-	Wed, 19 Jun 2024 13:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D89A147C60;
+	Wed, 19 Jun 2024 12:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802698; cv=none; b=d/b87hnyQPvgems/La9NN4PcgdGyBerp/P2Nu5Wa4pMsnEPCfgHGD7znwNN1pJRAn1zkxSvUcE6ytyGhuizsva2H6by4oqAwMzFjP5emfBDHd1ynmcGpl2vZHh+yh6eHf44q/3FUzX4+YYnbbdexOTc16+owaNhtc9TbXQ0auGQ=
+	t=1718801931; cv=none; b=A3+iisklOr+NaTo66TcPqUV5aOGDOAR96Z+RTvvHWArM/ekhEA0aLuZrzHqTs9n3lJ6LCEhKR8zhD8xZEs2cNtwq0xbSo66SDRiDbEF1WOCb8SvlRiXq8NTWuzW/LjIxZ46qXcUfsRTg0uTjg+sQsr0P8T62O70q4Nh5ISXx4k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802698; c=relaxed/simple;
-	bh=9Ef3Us25Ldsx5Zne13H1QZOKL4W6ipFmh94hVWpVzk4=;
+	s=arc-20240116; t=1718801931; c=relaxed/simple;
+	bh=1LmvkUhxMkT6EkfciRLy9MBPNmiRIhunrzEkJ0DQINk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RGhE/toz5kuh3sZICqPXvSCzFF4Zioig6GCV6xnmdaq+ePcw7xXPqa6VWX2FyswwSmBqWWPJZtUqsfeUvXj8/pWmp1L/fhWZnqDJb8Pg/LU3h5N6H5+tvGkannRG6nGLBjNJaOTnzTv5iAmzt5bKqSfy+XpOFX50lcxuROtqgp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gnaI/Qeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481E0C32786;
-	Wed, 19 Jun 2024 13:11:37 +0000 (UTC)
+	 MIME-Version; b=GJRNHxnVl7n6DRmx1vPZm4Nvw71CSxjSqbieuHIu3P95H+M5fyzVwK1nqawvJb0WbEgOyCVty5BGB4DIJ/+XpvNVuvG9xUuJOr2wh7yrB3DcqxwuCIdvwS05KJw1TZ3XtwJl6AEgCmmuFCtmmliFLNTnNpjfG/R1lTCkNN3vzA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcfYKC3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD5BC2BBFC;
+	Wed, 19 Jun 2024 12:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802697;
-	bh=9Ef3Us25Ldsx5Zne13H1QZOKL4W6ipFmh94hVWpVzk4=;
+	s=korg; t=1718801930;
+	bh=1LmvkUhxMkT6EkfciRLy9MBPNmiRIhunrzEkJ0DQINk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gnaI/QehawrGqmpsntvFkGRXgx85rfExTEruIzOfSO7VXcEjAz7c6xqxu2qhxJUzO
-	 pYT/HVJB1BSF09KmPyK2QSPuZYS+BpM3nKe7rzaGZm7bmTH5OasXYOt4Vt8SOtQ5PZ
-	 SN4ywB7XvQ3rc7QfFOBDeJpMcoBT49qw5sOdpYk4=
+	b=bcfYKC3ZBOPRCyDgM2M6cDZuOjPI17x7no9hGpV/pao6RUcDum4+L8hu8VVmAFzIZ
+	 uQ0XpKaQfu3iaV17hIC991Qv1VQqF2Mt2aaDJSU0PMogVjzWhgiTu6u0s1M3S8HRlq
+	 3oDYe/SSeyXVt4dSX1msjW8F/MBMzx7qxTfRL4P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Michael Roth <michael.roth@amd.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 017/281] wifi: iwlwifi: mvm: dont read past the mfuart notifcation
+Subject: [PATCH 6.6 025/267] KVM: SEV: Do not intercept accesses to MSR_IA32_XSS for SEV-ES guests
 Date: Wed, 19 Jun 2024 14:52:56 +0200
-Message-ID: <20240619125610.511616865@linuxfoundation.org>
+Message-ID: <20240619125607.327017916@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Michael Roth <michael.roth@amd.com>
 
-[ Upstream commit 4bb95f4535489ed830cf9b34b0a891e384d1aee4 ]
+[ Upstream commit a26b7cd2254695f8258cc370f33280db0a9a3813 ]
 
-In case the firmware sends a notification that claims it has more data
-than it has, we will read past that was allocated for the notification.
-Remove the print of the buffer, we won't see it by default. If needed,
-we can see the content with tracing.
+When intercepts are enabled for MSR_IA32_XSS, the host will swap in/out
+the guest-defined values while context-switching to/from guest mode.
+However, in the case of SEV-ES, vcpu->arch.guest_state_protected is set,
+so the guest-defined value is effectively ignored when switching to
+guest mode with the understanding that the VMSA will handle swapping
+in/out this register state.
 
-This was reported by KFENCE.
+However, SVM is still configured to intercept these accesses for SEV-ES
+guests, so the values in the initial MSR_IA32_XSS are effectively
+read-only, and a guest will experience undefined behavior if it actually
+tries to write to this MSR. Fortunately, only CET/shadowstack makes use
+of this register on SEV-ES-capable systems currently, which isn't yet
+widely used, but this may become more of an issue in the future.
 
-Fixes: bdccdb854f2f ("iwlwifi: mvm: support MFUART dump in case of MFUART assert")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240513132416.ba82a01a559e.Ia91dd20f5e1ca1ad380b95e68aebf2794f553d9b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Additionally, enabling intercepts of MSR_IA32_XSS results in #VC
+exceptions in the guest in certain paths that can lead to unexpected #VC
+nesting levels. One example is SEV-SNP guests when handling #VC
+exceptions for CPUID instructions involving leaf 0xD, subleaf 0x1, since
+they will access MSR_IA32_XSS as part of servicing the CPUID #VC, then
+generate another #VC when accessing MSR_IA32_XSS, which can lead to
+guest crashes if an NMI occurs at that point in time. Running perf on a
+guest while it is issuing such a sequence is one example where these can
+be problematic.
+
+Address this by disabling intercepts of MSR_IA32_XSS for SEV-ES guests
+if the host/guest configuration allows it. If the host/guest
+configuration doesn't allow for MSR_IA32_XSS, leave it intercepted so
+that it can be caught by the existing checks in
+kvm_{set,get}_msr_common() if the guest still attempts to access it.
+
+Fixes: 376c6d285017 ("KVM: SVM: Provide support for SEV-ES vCPU creation/loading")
+Cc: Alexey Kardashevskiy <aik@amd.com>
+Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Michael Roth <michael.roth@amd.com>
+Message-Id: <20231016132819.1002933-4-michael.roth@amd.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Stable-dep-of: b7e4be0a224f ("KVM: SEV-ES: Delegate LBR virtualization to the processor")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ arch/x86/kvm/svm/sev.c | 19 +++++++++++++++++++
+ arch/x86/kvm/svm/svm.c |  1 +
+ arch/x86/kvm/svm/svm.h |  2 +-
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index e1c2b7fc92ab9..c56212c2c3066 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -94,20 +94,10 @@ void iwl_mvm_mfu_assert_dump_notif(struct iwl_mvm *mvm,
- {
- 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
- 	struct iwl_mfu_assert_dump_notif *mfu_dump_notif = (void *)pkt->data;
--	__le32 *dump_data = mfu_dump_notif->data;
--	int n_words = le32_to_cpu(mfu_dump_notif->data_size) / sizeof(__le32);
--	int i;
+diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+index 0e643d7a06d9e..f809dcfacc8a3 100644
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2994,6 +2994,25 @@ static void sev_es_vcpu_after_set_cpuid(struct vcpu_svm *svm)
  
- 	if (mfu_dump_notif->index_num == 0)
- 		IWL_INFO(mvm, "MFUART assert id 0x%x occurred\n",
- 			 le32_to_cpu(mfu_dump_notif->assert_id));
--
--	for (i = 0; i < n_words; i++)
--		IWL_DEBUG_INFO(mvm,
--			       "MFUART assert dump, dword %u: 0x%08x\n",
--			       le16_to_cpu(mfu_dump_notif->index_num) *
--			       n_words + i,
--			       le32_to_cpu(dump_data[i]));
+ 		set_msr_interception(vcpu, svm->msrpm, MSR_TSC_AUX, v_tsc_aux, v_tsc_aux);
+ 	}
++
++	/*
++	 * For SEV-ES, accesses to MSR_IA32_XSS should not be intercepted if
++	 * the host/guest supports its use.
++	 *
++	 * guest_can_use() checks a number of requirements on the host/guest to
++	 * ensure that MSR_IA32_XSS is available, but it might report true even
++	 * if X86_FEATURE_XSAVES isn't configured in the guest to ensure host
++	 * MSR_IA32_XSS is always properly restored. For SEV-ES, it is better
++	 * to further check that the guest CPUID actually supports
++	 * X86_FEATURE_XSAVES so that accesses to MSR_IA32_XSS by misbehaved
++	 * guests will still get intercepted and caught in the normal
++	 * kvm_emulate_rdmsr()/kvm_emulated_wrmsr() paths.
++	 */
++	if (guest_can_use(vcpu, X86_FEATURE_XSAVES) &&
++	    guest_cpuid_has(vcpu, X86_FEATURE_XSAVES))
++		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_XSS, 1, 1);
++	else
++		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_XSS, 0, 0);
  }
  
- static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
+ void sev_vcpu_after_set_cpuid(struct vcpu_svm *svm)
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 9e084e22a12f7..08f1397138c80 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -103,6 +103,7 @@ static const struct svm_direct_access_msrs {
+ 	{ .index = MSR_IA32_LASTBRANCHTOIP,		.always = false },
+ 	{ .index = MSR_IA32_LASTINTFROMIP,		.always = false },
+ 	{ .index = MSR_IA32_LASTINTTOIP,		.always = false },
++	{ .index = MSR_IA32_XSS,			.always = false },
+ 	{ .index = MSR_EFER,				.always = false },
+ 	{ .index = MSR_IA32_CR_PAT,			.always = false },
+ 	{ .index = MSR_AMD64_SEV_ES_GHCB,		.always = true  },
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 53bc4b0e388be..fb0ac8497fb20 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -30,7 +30,7 @@
+ #define	IOPM_SIZE PAGE_SIZE * 3
+ #define	MSRPM_SIZE PAGE_SIZE * 2
+ 
+-#define MAX_DIRECT_ACCESS_MSRS	46
++#define MAX_DIRECT_ACCESS_MSRS	47
+ #define MSRPM_OFFSETS	32
+ extern u32 msrpm_offsets[MSRPM_OFFSETS] __read_mostly;
+ extern bool npt_enabled;
 -- 
 2.43.0
 
