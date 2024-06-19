@@ -1,115 +1,231 @@
-Return-Path: <stable+bounces-54005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D02D90EC3E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A2090EC96
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC642287F7F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D41721C22C15
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07479143C4E;
-	Wed, 19 Jun 2024 13:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D481E143C4A;
+	Wed, 19 Jun 2024 13:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nhFD+ouJ"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="dMDtwO8D"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A703A82871;
-	Wed, 19 Jun 2024 13:05:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2120C146016
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 13:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802313; cv=none; b=TNsxrnCxKFdZD97IKvRfHNAi+QQMnkZCZADqGiJb3WlyptUmSqjDXDMuFypOAT1utrNMAn7XqIfDybBnfT+3PgceE31n8+qoq2DrWCFz516G2MpE85FD4a3IGKzDHRr8NqhzBd36nbfkTvLqvPlE9SvIOAN6we8Ah+JocdGcQaI=
+	t=1718802538; cv=none; b=rouVgj0OSQCzKj0me3vf1VHxqVIpbvlGTcSWQgt704DqedmRGbZwJAB/nC2gSg1QeHkMbe+wtZ5M6IuPkL2Dfx0mFqw3UaLa9NkrmGS7eTDAEhQwWop2SKgBEXKqQRAJ7nZq2OylG7mkXRBn/tIeN8fC4vVR/diYuzZBGkqy79A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802313; c=relaxed/simple;
-	bh=PTRu9LXtUGp3s0mBOOAQcnj4X6eQ12NeJbkhz+7wh7c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UViRkS7rq/1MR57pXX+qP9ZYe949yMXC9kQMuHXUau+nJTb7U3KnX4OsWZO2Bsx4DeIvSmfzOeCWHRKZ8MqJIP9CqyZFrnYjM0NgPg2S3aZrfgrXHGwDRRbJS+EEDX1Kx6qJby0dfJdMys8CO+3UfsOIOstwd1eh6VdxeLDj+Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nhFD+ouJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD62FC32786;
-	Wed, 19 Jun 2024 13:05:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718802313;
-	bh=PTRu9LXtUGp3s0mBOOAQcnj4X6eQ12NeJbkhz+7wh7c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nhFD+ouJLyF8aMkRyqhYXC5Q5DjPG8/UJR/GKCUPna5Dd+lnWwp6kMtpmrz1hlESk
-	 jjr444Xu0jDB0CGkuOJdyaXSr0/QuF6EhCg5Tgx2ZMoGLK9TsQlyyzY1Q/+Ef7uuVg
-	 ROsD/PlfKPdMwOql1Zu1zMScbrC1kMnNJXduO4JIE4xT2NAlcJp62c0tOxg3CL7FEq
-	 QfHS1y1aqAIcYjpSx6OD2iGBuhWLrwGBea9Qr3WYV9BVg2WsMD4cjM08BIEREugsN+
-	 IHZ+eZQfPJVaK3Zhh7wTWFytS+BaW5vLVQEnxZZAKfhkDgtGeVtENyFRYn2ceXNal7
-	 GqKkTBkFaqzrA==
-Date: Wed, 19 Jun 2024 14:05:08 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 069/267] selftests/mm: log a consistent test name for
- check_compaction
-Message-ID: <72b9e2cd-be65-4fb7-82dc-04e870464b3f@sirena.org.uk>
-References: <20240619125606.345939659@linuxfoundation.org>
- <20240619125609.005611983@linuxfoundation.org>
+	s=arc-20240116; t=1718802538; c=relaxed/simple;
+	bh=5/ZgA8zhLrdVDYchq6/Y99NUFdbXaCiUTPCiwdCmYYM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CYNUTdIK5bn5lJxDWYviLsQZJmMDPmKTZOz8QZp/xUY6F3ldOBJy3jjjA+0U0gl0BbImEKTiHTo6l3VMt9WoxFw6NClYa34ymwV/J+o3cpAZrNtkXg8PZAkh/c3CG4k74fPCOiWp6zqWzF0tMbs23S+TUaaCoxQi54ftVgLu9vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=dMDtwO8D; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-652fd0bb5e6so5122754a12.0
+        for <stable@vger.kernel.org>; Wed, 19 Jun 2024 06:08:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1718802536; x=1719407336; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p7QBxRjX6bK4nfQFtvwlMhqO1YN0X8hSMyp1M5GJNSs=;
+        b=dMDtwO8D4rRZpxE+ZilOMCvkuFWoxd4wuZH1TLWWmsHrWGhQiBLL7pgZmlMF/Hi/ix
+         jKXx+NGuNJGTgB0PnFO4OS1MW2wVJLbg4P+GVA8wW/ZL42ziX5fyceoEQByaKOrniZUx
+         TGY1olKRSVSqDlAAm4qcGWj9e7CKNC9oq5TwBioL144/cr6k7ylufN5VVkD+fIEBLwyp
+         jp2U6x6sUfG+QOiYrYHANmG0r2bt76P6rHSPgm3pXXeGsuJ5ntgP77/p6e1oMNCMHH6I
+         cDqOmX3E4B3A+ckxF0Rb6qJQUgiQGibpDMT+Oi+572A0MYDetADXmFuV1rBW96QlcE/x
+         15jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718802536; x=1719407336;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p7QBxRjX6bK4nfQFtvwlMhqO1YN0X8hSMyp1M5GJNSs=;
+        b=AUuCEvnvUlBbt4DgoJQIXg7w80P7ihuPif6PXUQs3bsKiVXUIDDgR2NtTAWPvRlPU1
+         vY43vweBqA+C+93tp4CTWUxyWSlriCxt8X6KEgLRgHIgehk0KbRnoKPJkDkxauWWuJAr
+         06OrITBr3JgYE/RmoQyFod07uwgyyniWERBUC64RisOrd7nO485itnIOr39IKLa67fnW
+         lfueMqkdScF74q/C10oY77hFlBEnPOBEJhvnRiJr3amfRQO9Dc65D8q3yKUvMVJZXmht
+         uyrpsoSes8YBA4XMGxjH7bcFB4Uv0lc7b4sqcXJHn1Zt7kYmjFunDLVGJhT2ECMtRdj2
+         VC3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWDh/N2+WhdOsDT8EVHKMBcc6vCBi+6qQdGaxbnoNIWdpWKea28u+tgYIIkSJilNC9F6twtkWt1FjU8G2dGmB3Z3py3R/fD
+X-Gm-Message-State: AOJu0Yy+Kax2NYbjGEiBxAHApui0qGKEnEP2goQBw2qdlcbeVpojT2Lq
+	8hvzKkzLORzVh/JH2vAsWfwfmBtACBixRtt8GuBQjDYVtpn6sSlIjyxprN6qxHAzxRpOruODEsz
+	8yWQynBkM3XFfSPPC0diGm/orloT0USrtUOTuEa9zwPZ0tUnHYH1Vnw==
+X-Google-Smtp-Source: AGHT+IE0FPXNumij9mjrz3O1ImHZTXZjz3dyjeywqSnPUCIu/Ng38CP6z8Kvps/xrN0z7q87QtndEIlgt/vVLUqsO7E=
+X-Received: by 2002:a17:90a:f0d4:b0:2c2:fa5e:106a with SMTP id
+ 98e67ed59e1d1-2c7b5db2a3fmr2356670a91.48.1718802536199; Wed, 19 Jun 2024
+ 06:08:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="S1swdCi9UCbRMg3p"
-Content-Disposition: inline
-In-Reply-To: <20240619125609.005611983@linuxfoundation.org>
-X-Cookie: Don't I know you?
-
-
---S1swdCi9UCbRMg3p
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20240617210205.67311-1-ignat@cloudflare.com> <c9446790-9bac-4541-919b-0af396349c59@linux.alibaba.com>
+In-Reply-To: <c9446790-9bac-4541-919b-0af396349c59@linux.alibaba.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
+Date: Wed, 19 Jun 2024 14:08:45 +0100
+Message-ID: <CALrw=nGSf49VnRVy--b5qSM7_rSRyDBUFe_t8taFs2tmRP2QTw@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: do not leave a dangling sk pointer, when
+ socket creation fails
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Florent Revest <revest@chromium.org>, kernel-team@cloudflare.com, 
+	Kuniyuki Iwashima <kuniyu@amazon.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 19, 2024 at 02:53:40PM +0200, Greg Kroah-Hartman wrote:
-> 6.6-stable review patch.  If anyone has any objections, please let me kno=
-w.
->=20
-> ------------------
->=20
-> From: Mark Brown <broonie@kernel.org>
->=20
-> [ Upstream commit f3b7568c49420d2dcd251032c9ca1e069ec8a6c9 ]
->=20
-> Every test result report in the compaction test prints a distinct log
-> messae, and some of the reports print a name that varies at runtime.  This
-> causes problems for automation since a lot of automation software uses the
-> printed string as the name of the test, if the name varies from run to run
-> and from pass to fail then the automation software can't identify that a
-> test changed result or that the same tests are being run.
->=20
-> Refactor the logging to use a consistent name when printing the result of
-> the test, printing the existing messages as diagnostic information instead
-> so they are still available for people trying to interpret the results.
+On Wed, Jun 19, 2024 at 1:31=E2=80=AFPM D. Wythe <alibuda@linux.alibaba.com=
+> wrote:
+>
+>
+>
+> On 6/18/24 5:02 AM, Ignat Korchagin wrote:
+> > It is possible to trigger a use-after-free by:
+> >    * attaching an fentry probe to __sock_release() and the probe callin=
+g the
+> >      bpf_get_socket_cookie() helper
+> >    * running traceroute -I 1.1.1.1 on a freshly booted VM
+> >
+> > A KASAN enabled kernel will log something like below (decoded and strip=
+ped):
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > BUG: KASAN: slab-use-after-free in __sock_gen_cookie (./arch/x86/includ=
+e/asm/atomic64_64.h:15 ./include/linux/atomic/atomic-arch-fallback.h:2583 .=
+/include/linux/atomic/atomic-instrumented.h:1611 net/core/sock_diag.c:29)
+> > Read of size 8 at addr ffff888007110dd8 by task traceroute/299
+> >
+> > CPU: 2 PID: 299 Comm: traceroute Tainted: G            E      6.10.0-rc=
+2+ #2
+> > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debi=
+an-1.16.2-1 04/01/2014
+> > Call Trace:
+> >   <TASK>
+> > dump_stack_lvl (lib/dump_stack.c:117 (discriminator 1))
+> > print_report (mm/kasan/report.c:378 mm/kasan/report.c:488)
+> > ? __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/=
+linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-inst=
+rumented.h:1611 net/core/sock_diag.c:29)
+> > kasan_report (mm/kasan/report.c:603)
+> > ? __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/=
+linux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-inst=
+rumented.h:1611 net/core/sock_diag.c:29)
+> > kasan_check_range (mm/kasan/generic.c:183 mm/kasan/generic.c:189)
+> > __sock_gen_cookie (./arch/x86/include/asm/atomic64_64.h:15 ./include/li=
+nux/atomic/atomic-arch-fallback.h:2583 ./include/linux/atomic/atomic-instru=
+mented.h:1611 net/core/sock_diag.c:29)
+> > bpf_get_socket_ptr_cookie (./arch/x86/include/asm/preempt.h:94 ./includ=
+e/linux/sock_diag.h:42 net/core/filter.c:5094 net/core/filter.c:5092)
+> > bpf_prog_875642cf11f1d139___sock_release+0x6e/0x8e
+> > bpf_trampoline_6442506592+0x47/0xaf
+> > __sock_release (net/socket.c:652)
+> > __sock_create (net/socket.c:1601)
+> > ...
+> > Allocated by task 299 on cpu 2 at 78.328492s:
+> > kasan_save_stack (mm/kasan/common.c:48)
+> > kasan_save_track (mm/kasan/common.c:68)
+> > __kasan_slab_alloc (mm/kasan/common.c:312 mm/kasan/common.c:338)
+> > kmem_cache_alloc_noprof (mm/slub.c:3941 mm/slub.c:4000 mm/slub.c:4007)
+> > sk_prot_alloc (net/core/sock.c:2075)
+> > sk_alloc (net/core/sock.c:2134)
+> > inet_create (net/ipv4/af_inet.c:327 net/ipv4/af_inet.c:252)
+> > __sock_create (net/socket.c:1572)
+> > __sys_socket (net/socket.c:1660 net/socket.c:1644 net/socket.c:1706)
+> > __x64_sys_socket (net/socket.c:1718)
+> > do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+> > entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+> >
+> > Freed by task 299 on cpu 2 at 78.328502s:
+> > kasan_save_stack (mm/kasan/common.c:48)
+> > kasan_save_track (mm/kasan/common.c:68)
+> > kasan_save_free_info (mm/kasan/generic.c:582)
+> > poison_slab_object (mm/kasan/common.c:242)
+> > __kasan_slab_free (mm/kasan/common.c:256)
+> > kmem_cache_free (mm/slub.c:4437 mm/slub.c:4511)
+> > __sk_destruct (net/core/sock.c:2117 net/core/sock.c:2208)
+> > inet_create (net/ipv4/af_inet.c:397 net/ipv4/af_inet.c:252)
+> > __sock_create (net/socket.c:1572)
+> > __sys_socket (net/socket.c:1660 net/socket.c:1644 net/socket.c:1706)
+> > __x64_sys_socket (net/socket.c:1718)
+> > do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+> > entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+> >
+> > Fix this by clearing the struct socket reference in sk_common_release()=
+ to cover
+> > all protocol families create functions, which may already attached the
+> > reference to the sk object with sock_init_data().
+> >
+> > Fixes: c5dbb89fc2ac ("bpf: Expose bpf_get_socket_cookie to tracing prog=
+rams")
+> > Suggested-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+> > Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+> > Cc: stable@vger.kernel.org
+> > Link: https://lore.kernel.org/netdev/20240613194047.36478-1-kuniyu@amaz=
+on.com/T/
+> > ---
+> > Changes in v3:
+> >    * re-added KASAN repro steps to the commit message (somehow stripped=
+ in v2)
+> >    * stripped timestamps and thread id from the KASAN splat
+> >    * removed comment from the code (commit message should be enough)
+> >
+> > Changes in v2:
+> >    * moved the NULL-ing of the socket reference to sk_common_release() =
+(as
+> >      suggested by Kuniyuki Iwashima)
+> >    * trimmed down the KASAN report in the commit message to show only r=
+elevant
+> >      info
+> >
+> >   net/core/sock.c | 3 +++
+> >   1 file changed, 3 insertions(+)
+> >
+> > diff --git a/net/core/sock.c b/net/core/sock.c
+> > index 8629f9aecf91..100e975073ca 100644
+> > --- a/net/core/sock.c
+> > +++ b/net/core/sock.c
+> > @@ -3742,6 +3742,9 @@ void sk_common_release(struct sock *sk)
+> >
+> >       sk->sk_prot->unhash(sk);
+> >
+> > +     if (sk->sk_socket)
+> > +             sk->sk_socket->sk =3D NULL;
+> > +
+> >       /*
+> >        * In this point socket cannot receive new packets, but it is pos=
+sible
+> >        * that some packets are in flight because some CPU runs receiver=
+ and
+>
+> Reviewed-by: D. Wythe <alibuda@linux.alibaba.com>
+>
+>
+> A small tip:
+>
+> It seems that you might have missed CCing some maintainers, using
+> scripts/get_maintainer.pl "Your patch" can help you avoid this issue
+> again.
 
-This will change the test names for these tests which might disrupt
-people's CI.
+Thanks. I did scripts/get_maintainer.pl <file I'm modifying>. Not sure
+if it is different.
 
---S1swdCi9UCbRMg3p
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZy14QACgkQJNaLcl1U
-h9Aiiwf8D+Yagu4pmsdH3sCcpTR853zF7/x6i3YJ69KW3zswvzDuSDGwfLtWeKBM
-JIy5LjkWnbMfFN+/Q/ujQrtH0DDAsqfhvdabvlC7qQeLmiPIGw69gszUj+SssDDx
-xWvzkmCQDbm0smJQrajSGAHROZiG0eWb4BBgSKm/F+hQjVlydu7nB0p2fa6g2UMU
-UGCkXCUQodIGrGkU/sOniwgcwIQ8I6LSDYM4GJldRgbM4d5LVHuglpsAciz3U9uv
-eF1auV2d6UEpCRjI5rg7SOPH3d2J4jcx61jcEgTE0gBck0onIRSK+G6IJH7FfxRQ
-haP+GefoxDWeE8uQcpbGsQ7U7bf7bw==
-=Htcm
------END PGP SIGNATURE-----
-
---S1swdCi9UCbRMg3p--
+>
+> D. Wythe
+>
+>
+>
 
