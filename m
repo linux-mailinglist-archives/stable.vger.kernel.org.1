@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-54197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED4890ED21
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D89DC90ED4D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AC032810C3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9018E1F2120C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36719143C4E;
-	Wed, 19 Jun 2024 13:14:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CD613F435;
+	Wed, 19 Jun 2024 13:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VU7AtiHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8RflkR5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81491422B8;
-	Wed, 19 Jun 2024 13:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26383AD58;
+	Wed, 19 Jun 2024 13:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802869; cv=none; b=i0htSYYgZeTKmbElipQl/OeO+/yX+3451Uui1535rEi6C2ZQFNfQihdQO7s6WQc+Cm6HJhQ7u9viT/+ahCkmlUeJECXoBKyv47t1WbegnzmVHefpTF3ToR8Ny7jj0OLI/qRaJ2QL95aYv+oZxQDMHiCrLshx5qy9XPDePY9CKlU=
+	t=1718802990; cv=none; b=hjNiDzOu2qy9lyp5y1p37DCS6hnmCb64NAA98glCHyWQGxYa0cUFzl9JR0f9FOXPSYIVixQ3L5HG4E01rq6Atua8ZR0wdRXvPSYtkpmfa6XrhHm0hZJJYcNYJHcqoV7yfMydwRducrpZQO84fsnp/oTKOQf6WNDSngxsNbkGxTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802869; c=relaxed/simple;
-	bh=6UqHI/1G7nMtEWCLvaunXwbyKVgTM3pOdRVdUZr4PLA=;
+	s=arc-20240116; t=1718802990; c=relaxed/simple;
+	bh=7TC2TwH90Gchz71t9Ahnnoja4+kua/Jneo5payEt0A0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VoKabF7ALxE98XCZk5Z0ftrIgCkAfwvupoW5HQdvccmC/tGXbx3DEG7T1+0qoJOPHfzrwBlj+j5l9RkUqk4rcEi6JOQ76WymURNUGG8g8wQZfWXc1UX32A1AulAh1KVKSzj6Or7Tkk7HoybYXOdFwfsdUOYUqyAseAxUgq6BXvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VU7AtiHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E17DC2BBFC;
-	Wed, 19 Jun 2024 13:14:28 +0000 (UTC)
+	 MIME-Version; b=TRGk/XBBhX+eZgtcbVhKTTcZczwj/Uow1vX6mobnnn9OchmagtRXkk1KQYJWYWDMHKzoZpBpcTTT0fNPiOSxDHFwx0HvoiY+kQBfC9bqp14xxMi0DC33Qf8eMcG34L0sfk5bEK/4St0cLHj259CeYYYLXucqcmpcYl0KDwKk/pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8RflkR5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34EAC2BBFC;
+	Wed, 19 Jun 2024 13:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802868;
-	bh=6UqHI/1G7nMtEWCLvaunXwbyKVgTM3pOdRVdUZr4PLA=;
+	s=korg; t=1718802990;
+	bh=7TC2TwH90Gchz71t9Ahnnoja4+kua/Jneo5payEt0A0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VU7AtiHCC1EWpE4h2fDrvwzEmDUx/I+1ik479rk2Fz3gStSsBvF99iF0CWaYIDkJa
-	 YJjugvCtAYkyaXyCP5O3kLYwxUnsxQxyIwZMNMeBrTzWnP3igC24jzgZAkaDNxj7ga
-	 mhfKNErwig3ljZZKOi/2bzYmyKLyOthKTxCv2AQA=
+	b=P8RflkR5Ujx4tBkiKLAqDYljtHrzcTPBwMmLrUoZrHAnL4V6H9o0Qniv2VrGUDbO/
+	 kfzAoKsNQKdVCBbbIj6IphnAsfM2J52fOBTB2tVvnnml3yeszsYv0SMIGbDt4sFcho
+	 bI5ojRNLlI0VwpZsCrUBEUIX5t6H9J9gvOim8+OQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Francois Dugast <francois.dugast@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 073/281] drm/xe: Use ordered WQ for G2H handler
-Date: Wed, 19 Jun 2024 14:53:52 +0200
-Message-ID: <20240619125612.651602452@linuxfoundation.org>
+Subject: [PATCH 6.9 074/281] x86/cpu: Get rid of an unnecessary local variable in get_cpu_address_sizes()
+Date: Wed, 19 Jun 2024 14:53:53 +0200
+Message-ID: <20240619125612.689560201@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
 References: <20240619125609.836313103@linuxfoundation.org>
@@ -61,47 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-[ Upstream commit 2d9c72f676e6f79a021b74c6c1c88235e7d5b722 ]
+[ Upstream commit 95bfb35269b2e85cff0dd2c957b2d42ebf95ae5f ]
 
-System work queues are shared, use a dedicated work queue for G2H
-processing to avoid G2H processing getting block behind system tasks.
+Drop 'vp_bits_from_cpuid' as it is not really needed.
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240506034758.3697397-1-matthew.brost@intel.com
-(cherry picked from commit 50aec9665e0babd62b9eee4e613d9a1ef8d2b7de)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+No functional changes.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20240316120706.4352-1-bp@alien8.de
+Stable-dep-of: 2a38e4ca3022 ("x86/cpu: Provide default cache line size if not enumerated")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/cpu/common.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-index 8bbfa45798e2e..6ac86936faaf9 100644
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -146,6 +146,10 @@ int xe_guc_ct_init(struct xe_guc_ct *ct)
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index ae987a26f26e4..d636991536a5f 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1053,18 +1053,9 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
+ void get_cpu_address_sizes(struct cpuinfo_x86 *c)
+ {
+ 	u32 eax, ebx, ecx, edx;
+-	bool vp_bits_from_cpuid = true;
  
- 	xe_assert(xe, !(guc_ct_size() % PAGE_SIZE));
- 
-+	ct->g2h_wq = alloc_ordered_workqueue("xe-g2h-wq", 0);
-+	if (!ct->g2h_wq)
-+		return -ENOMEM;
+ 	if (!cpu_has(c, X86_FEATURE_CPUID) ||
+-	    (c->extended_cpuid_level < 0x80000008))
+-		vp_bits_from_cpuid = false;
+-
+-	if (vp_bits_from_cpuid) {
+-		cpuid(0x80000008, &eax, &ebx, &ecx, &edx);
+-
+-		c->x86_virt_bits = (eax >> 8) & 0xff;
+-		c->x86_phys_bits = eax & 0xff;
+-	} else {
++	    (c->extended_cpuid_level < 0x80000008)) {
+ 		if (IS_ENABLED(CONFIG_X86_64)) {
+ 			c->x86_clflush_size = 64;
+ 			c->x86_phys_bits = 36;
+@@ -1078,7 +1069,13 @@ void get_cpu_address_sizes(struct cpuinfo_x86 *c)
+ 			    cpu_has(c, X86_FEATURE_PSE36))
+ 				c->x86_phys_bits = 36;
+ 		}
++	} else {
++		cpuid(0x80000008, &eax, &ebx, &ecx, &edx);
 +
- 	ct->g2h_wq = alloc_ordered_workqueue("xe-g2h-wq", 0);
- 	if (!ct->g2h_wq)
- 		return -ENOMEM;
++		c->x86_virt_bits = (eax >> 8) & 0xff;
++		c->x86_phys_bits = eax & 0xff;
+ 	}
++
+ 	c->x86_cache_bits = c->x86_phys_bits;
+ 	c->x86_cache_alignment = c->x86_clflush_size;
+ }
 -- 
 2.43.0
 
