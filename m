@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F3490EDE2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B11C690EEF4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBEDE1C223D7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 489A5B26295
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4605B143C4E;
-	Wed, 19 Jun 2024 13:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77811422D9;
+	Wed, 19 Jun 2024 13:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IyrJgHn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRg8LHrB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0541F4D9EA;
-	Wed, 19 Jun 2024 13:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C45613DDC0;
+	Wed, 19 Jun 2024 13:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803395; cv=none; b=twREF7J7aKWdubegETO9VhnWIvpZ1Y05cGhdhzpbFhr6Q/+FRibk+p4cCDL4Ie2R5ZmxsIBbYuGnW16tQjNdJdjfnV3/7aHov+SYl5nD8wMdfLnFafvD1hFiyI8QZ7H6Kmex+RToSLX8zn4WU3WOQmVOISae/vC6PTv/WcnZEmw=
+	t=1718804033; cv=none; b=JTZNi/r4tSiNcfX+Aq1VkNgkeOs4rrpJ7eYU73SpQKkf4MrljVKfp9oiSSRNTSReD+0psWnAhj3aMs3r7lHi/z3bDCAFqICxuKMGRXUiJe4fuNBjCWGFuccyFAqgZFxRVYPXv6VhEAyq/eahP2/22skZp0C6+4gNyNZ7vHqTCvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803395; c=relaxed/simple;
-	bh=YoanIqUjafiqNHYOSbe7KqP8pSLezbGkoQkkfdp5UWQ=;
+	s=arc-20240116; t=1718804033; c=relaxed/simple;
+	bh=uR75YvrNJUgg9ywhrQC0WzpK1q0kRqB0msfUvCt1r7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CTXElviMjfCTgsOGuH3R4D89qn28mZ9fPLIdOjK5d0PsbLxIykHa3tdZvOSPiPGyUZZtSM5s7Ygr0nX26gchsbyCaOqqc1WcqJqiNhFbmioN7kye63FcRMNE7z8X2gds/ATw8u5CnEqnPMbS7qrl22B8QZuwFB2fwlaXAduIJhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IyrJgHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3767DC2BBFC;
-	Wed, 19 Jun 2024 13:23:14 +0000 (UTC)
+	 MIME-Version; b=OnQ30N73mkUoi8LjQf7IMALo3CV4B+tAlY3oSRzEPJFFHOeKZpIrF3DSZ9GgOsISiMB2yNMIbPc2Fi+LzWfP12GwRg14d/i7rFl2Hh3KlETx5n3c2WMBSlC7sV+HHJkrsfVagI4H8IkWG7brIW87VGlWQwt627PDVYIEU26BbjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRg8LHrB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64C4C2BBFC;
+	Wed, 19 Jun 2024 13:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803394;
-	bh=YoanIqUjafiqNHYOSbe7KqP8pSLezbGkoQkkfdp5UWQ=;
+	s=korg; t=1718804033;
+	bh=uR75YvrNJUgg9ywhrQC0WzpK1q0kRqB0msfUvCt1r7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1IyrJgHn/UfFrSKlBHgUi1gA7jk+OKmKOobEtu0JVV91Fvk8tiybZXNgD1xXOx3pc
-	 4fvhfNtawCha6F3ZJyGfLfz74O2cXNzhY82naXhk0KbM5KsWtQpng40aNJC4ss2BMZ
-	 /wox68k6/3lqVgu4CFfPXbYtsoZJX/VZw5Hb6Irk=
+	b=JRg8LHrBf523a8CMpODmCy9tJHIXSRNbQFB15NfRWvRNmh8jPM9ntD1+HRCENwAKi
+	 SEnKkolisQVtCKic/rsOpW0QTew2TTQJgqL2HyL4YNEagga768bQ/eHGHVzAJ///TV
+	 rI01Xq8sUa+hrwGKFj8dLi32GLwl+9rSUw4WSHuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.9 253/281] riscv: force PAGE_SIZE linear mapping if debug_pagealloc is enabled
+	Marc Zyngier <maz@kernel.org>,
+	Hagar Hemdan <hagarhem@amazon.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 169/217] irqchip/gic-v3-its: Fix potential race condition in its_vlpi_prop_update()
 Date: Wed, 19 Jun 2024 14:56:52 +0200
-Message-ID: <20240619125619.714166665@linuxfoundation.org>
+Message-ID: <20240619125603.210995800@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Hagar Hemdan <hagarhem@amazon.com>
 
-commit c67ddf59ac44adc60649730bf8347e37c516b001 upstream.
+commit b97e8a2f7130a4b30d1502003095833d16c028b3 upstream.
 
-debug_pagealloc is a debug feature which clears the valid bit in page table
-entry for freed pages to detect illegal accesses to freed memory.
+its_vlpi_prop_update() calls lpi_write_config() which obtains the
+mapping information for a VLPI without lock held. So it could race
+with its_vlpi_unmap().
 
-For this feature to work, virtual mapping must have PAGE_SIZE resolution.
-(No, we cannot map with huge pages and split them only when needed; because
-pages can be allocated/freed in atomic context and page splitting cannot be
-done in atomic context)
+Since all calls from its_irq_set_vcpu_affinity() require the same
+lock to be held, hoist the locking there instead of sprinkling the
+locking all over the place.
 
-Force linear mapping to use small pages if debug_pagealloc is enabled.
+This bug was discovered using Coverity Static Analysis Security Testing
+(SAST) by Synopsys, Inc.
 
-Note that it is not necessary to force the entire linear mapping, but only
-those that are given to memory allocator. Some parts of memory can keep
-using huge page mapping (for example, kernel's executable code). But these
-parts are minority, so keep it simple. This is just a debug feature, some
-extra overhead should be acceptable.
+[ tglx: Use guard() instead of goto ]
 
-Fixes: 5fde3db5eb02 ("riscv: add ARCH_SUPPORTS_DEBUG_PAGEALLOC support")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
+Fixes: 015ec0386ab6 ("irqchip/gic-v3-its: Add VLPI configuration handling")
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/2e391fa6c6f9b3fcf1b41cefbace02ee4ab4bf59.1715750938.git.namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240531162144.28650-1-hagarhem@amazon.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/init.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/irqchip/irq-gic-v3-its.c |   44 ++++++++++-----------------------------
+ 1 file changed, 12 insertions(+), 32 deletions(-)
 
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -669,6 +669,9 @@ void __init create_pgd_mapping(pgd_t *pg
- static uintptr_t __init best_map_size(phys_addr_t pa, uintptr_t va,
- 				      phys_addr_t size)
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -1837,28 +1837,22 @@ static int its_vlpi_map(struct irq_data
  {
-+	if (debug_pagealloc_enabled())
-+		return PAGE_SIZE;
+ 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+ 	u32 event = its_get_event_id(d);
+-	int ret = 0;
+ 
+ 	if (!info->map)
+ 		return -EINVAL;
+ 
+-	raw_spin_lock(&its_dev->event_map.vlpi_lock);
+-
+ 	if (!its_dev->event_map.vm) {
+ 		struct its_vlpi_map *maps;
+ 
+ 		maps = kcalloc(its_dev->event_map.nr_lpis, sizeof(*maps),
+ 			       GFP_ATOMIC);
+-		if (!maps) {
+-			ret = -ENOMEM;
+-			goto out;
+-		}
++		if (!maps)
++			return -ENOMEM;
+ 
+ 		its_dev->event_map.vm = info->map->vm;
+ 		its_dev->event_map.vlpi_maps = maps;
+ 	} else if (its_dev->event_map.vm != info->map->vm) {
+-		ret = -EINVAL;
+-		goto out;
++		return -EINVAL;
+ 	}
+ 
+ 	/* Get our private copy of the mapping information */
+@@ -1890,46 +1884,32 @@ static int its_vlpi_map(struct irq_data
+ 		its_dev->event_map.nr_vlpis++;
+ 	}
+ 
+-out:
+-	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
+-	return ret;
++	return 0;
+ }
+ 
+ static int its_vlpi_get(struct irq_data *d, struct its_cmd_info *info)
+ {
+ 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+ 	struct its_vlpi_map *map;
+-	int ret = 0;
+-
+-	raw_spin_lock(&its_dev->event_map.vlpi_lock);
+ 
+ 	map = get_vlpi_map(d);
+ 
+-	if (!its_dev->event_map.vm || !map) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
++	if (!its_dev->event_map.vm || !map)
++		return -EINVAL;
+ 
+ 	/* Copy our mapping information to the incoming request */
+ 	*info->map = *map;
+ 
+-out:
+-	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
+-	return ret;
++	return 0;
+ }
+ 
+ static int its_vlpi_unmap(struct irq_data *d)
+ {
+ 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
+ 	u32 event = its_get_event_id(d);
+-	int ret = 0;
+ 
+-	raw_spin_lock(&its_dev->event_map.vlpi_lock);
+-
+-	if (!its_dev->event_map.vm || !irqd_is_forwarded_to_vcpu(d)) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
++	if (!its_dev->event_map.vm || !irqd_is_forwarded_to_vcpu(d))
++		return -EINVAL;
+ 
+ 	/* Drop the virtual mapping */
+ 	its_send_discard(its_dev, event);
+@@ -1953,9 +1933,7 @@ static int its_vlpi_unmap(struct irq_dat
+ 		kfree(its_dev->event_map.vlpi_maps);
+ 	}
+ 
+-out:
+-	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
+-	return ret;
++	return 0;
+ }
+ 
+ static int its_vlpi_prop_update(struct irq_data *d, struct its_cmd_info *info)
+@@ -1983,6 +1961,8 @@ static int its_irq_set_vcpu_affinity(str
+ 	if (!is_v4(its_dev->its))
+ 		return -EINVAL;
+ 
++	guard(raw_spinlock_irq)(&its_dev->event_map.vlpi_lock);
 +
- 	if (pgtable_l5_enabled &&
- 	    !(pa & (P4D_SIZE - 1)) && !(va & (P4D_SIZE - 1)) && size >= P4D_SIZE)
- 		return P4D_SIZE;
+ 	/* Unmap request? */
+ 	if (!info)
+ 		return its_vlpi_unmap(d);
 
 
 
