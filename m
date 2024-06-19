@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B4E90E61D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:40:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6561290E61E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:40:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8FF728371C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:40:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B5601C2188D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B0C7C082;
-	Wed, 19 Jun 2024 08:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35547C6DF;
+	Wed, 19 Jun 2024 08:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K443RVQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZMjO01z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2B97BB15
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15FE77117
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718786416; cv=none; b=erCwWvMhMtGDKl4j8g3a/uGsUJX2A4qJm5zNzMFo6fnsFBIOPXJkujlNuXg5oGLQUdLoGtUH0/iiJYb0d/FDoJWw0h2PQnt7wFLAg/58CcHXjM57wpdYDldezfOwwIxdRTenHpfSzdVOqJKuvDpH0W8veip1KpydXEepwhNsb8g=
+	t=1718786419; cv=none; b=nb5ot7oct+SOgxhUemtjevBH+rgo8rchdkU0ldxv97y3HpN4D0xPRN62Co8xt1AgAczV+jzVThzW6p/MmDKc6QG+bCtQYeGj4dnBEKUUY8r240xuSrXX6DOws/3nW9HBBg6M8MpLXhB6DmDaxIogVvGIOId6QSJmbQcObD3S2d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718786416; c=relaxed/simple;
-	bh=UzPmX9cjR8ntsOwJM1AyKpjRDGs0fO8fv7j3ALJuBOA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bdwvbRFOx/FNZEUSudwCESu535TuMo966gt6SmMEcRhQ0oli/Wdd61M3nKwWZmAJCCcEgylQsXAeECDlI6wQAFlpPCMwPB+gbls792cQN6n3OV1RECglG+0xDDlu9is4Msj9trodrfEQpsIc7jicxbfiFlp29kBN9D487vlXrQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K443RVQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40426C2BBFC;
-	Wed, 19 Jun 2024 08:40:16 +0000 (UTC)
+	s=arc-20240116; t=1718786419; c=relaxed/simple;
+	bh=zAXXbjQqN9DbatF6vJAwouhLEAn7ngzIW9JJ1H4xsRI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Kwv4RhKH7yzM8wufFv0DsaDuR37yrEfUZBwWZ4m5rfK619KrPKaMvmMeX8AGiAwNsTmSwz8hMf3setdZWO7HWXhWyqJfTmxWVGoVd0HV/Z7L3Xaram/udk+uqLqaSgEXqeY2V99jQHJuz3ceavjAOrK+mZOMTtaXZyv5MG1Wd0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZMjO01z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310A0C2BBFC;
+	Wed, 19 Jun 2024 08:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718786416;
-	bh=UzPmX9cjR8ntsOwJM1AyKpjRDGs0fO8fv7j3ALJuBOA=;
+	s=korg; t=1718786419;
+	bh=zAXXbjQqN9DbatF6vJAwouhLEAn7ngzIW9JJ1H4xsRI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=K443RVQLIjV5+GrIbbZU/QT1VYaoRn6AsK0dva4EKsjrCsoqNOEBIGmoIzwX9LjfI
-	 bxnLbFkHnhMiIgAt/A3deZdGempTl8eisE558wvxiI0s0fg2pdWRJnkl+agM7yi6OV
-	 iDkegaJXet8CGYJGrNPi2JqIYenx1+A1OKROpL/I=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: fix visible VRAM handling during faults" failed to apply to 6.9-stable tree
+	b=vZMjO01zlD5KnbXEnSpXHu3psgmyFg4PyncrLuRXDERnd5tIyAjrBinfrtkVxorva
+	 hzY+PUTF3xrZRpOZIwMTNRbSep4KuHix92lc7qeI+haIL4DCKK3V13Oavrkb75TCH/
+	 tOv4JDzJGcWMd4lXV+Kjo8+tpwt9RklJQvQF0QZw=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: fix visible VRAM handling during faults" failed to apply to 6.6-stable tree
 To: christian.koenig@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Jun 2024 10:39:27 +0200
-Message-ID: <2024061927-catalyst-patronage-ad61@gregkh>
+Date: Wed, 19 Jun 2024 10:39:28 +0200
+Message-ID: <2024061927-object-lake-0f28@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,24 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.9-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 394ae0603a6764d36437a26c097ef549e0eee1ff
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061927-catalyst-patronage-ad61@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061927-object-lake-0f28@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 394ae0603a67 ("drm/amdgpu: fix visible VRAM handling during faults")
+ba1a58d5b907 ("drm/amdgpu: add shared fdinfo stats")
 
 thanks,
 
