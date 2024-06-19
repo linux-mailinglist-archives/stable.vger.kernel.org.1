@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-54379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D9F290EDE6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64BE790EF07
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B873B2251D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2A5D2872BE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB391459F2;
-	Wed, 19 Jun 2024 13:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE19146016;
+	Wed, 19 Jun 2024 13:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fuR9pA8T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bdSzOBk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8513143757;
-	Wed, 19 Jun 2024 13:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A08213F428;
+	Wed, 19 Jun 2024 13:34:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803406; cv=none; b=BlBgzhbTfYCtEpSmiwxzq3XTUwd1TXiiH38THDBBGA/PSM4C4ls3yQkoD136qD1aozpEUhG/08xEEItIWUvhQ05ql2szYOSKQBZUmRfvzYLX+wJK+AJTobHvXpwlSkJku7sby1epHIWRCW21Vhah6sl8FYIEoch3NqIY+FNvKog=
+	t=1718804087; cv=none; b=OX2o1dqlKQwNJANpRT1C/T/PDuVoNPg4fzKvHcsUThVQuLu88K1CQ03324wj2p+XyoD24hCuN7VXU5JR0iFH9C9rqUISWF3VP3WhSzg8v9qpe1BJrjZ5kMOeZeiAafrtJiY8AIbFfTdjdjLCJ0Q4ohQt1rHQKqNh58KqQI9eIzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803406; c=relaxed/simple;
-	bh=ycFEkXDl6y1C0l2RytQLpK194U5NA3UpzsP2SnMdgTY=;
+	s=arc-20240116; t=1718804087; c=relaxed/simple;
+	bh=9x357pJEwSCl+JijoohLxH93mMSeXgJCnkgmoqq1PFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HmQ4oa4klGrqZjQqm5ocZ1zS50ocu0TM7y3AjR/+EVE2JBO13y2K34VVlBZyKdmIany2OoECBfrFVNZ0lCoJc4Bv4X2yN2N7KdYDLP/VbEXH7VmgzDIjn3YrXd84labQEJO1p2K1z/AtGjXC9sBSU3cAW7mduxPN9tOL/AC7nwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fuR9pA8T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F349CC2BBFC;
-	Wed, 19 Jun 2024 13:23:25 +0000 (UTC)
+	 MIME-Version; b=DP/YxifHheA4/kuu72lgE28XztBLMZJOrhR4F0cohoj/d46UDDOwszUxpE8e7pURBJM5qHvYs8O2CTC/23w3M5IO9q4OpX6Wp5tuqgiSwiGe2sn5MVvRD8A+wraXGUqgqgQr8YrJSCuYHClOhgI2sU6ytXd8Oofn9wk+CM39MzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bdSzOBk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7806BC2BBFC;
+	Wed, 19 Jun 2024 13:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803406;
-	bh=ycFEkXDl6y1C0l2RytQLpK194U5NA3UpzsP2SnMdgTY=;
+	s=korg; t=1718804086;
+	bh=9x357pJEwSCl+JijoohLxH93mMSeXgJCnkgmoqq1PFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fuR9pA8TgkV6QKeH9vkmyg3X+RZR47rIxhm8AxCrnuQat+ONQcP9kDML4MiaSmH8f
-	 98pBn4Kj6UXcSHpicqAEQXBdKOrLTWcjUNHvFBTtJ6OxThH0bHG2ATaLtHGm01qbsW
-	 dsCw/3hQowCLEQqyOZTXPZc5yREAJDDQ47OzZMko=
+	b=2bdSzOBk557OF0fY9m1e5b606TSIrNqgCcbk4q6d9hiSEwrobIiv0a/NFcFJx7rNm
+	 Sj4Bv3O9MGj6h7S/n0RE4ZMzvZetl4868EQc29OovEH0/V8rI0yi4tpbj/72IM6yOL
+	 6njKPDzBotDXdeb4hUyAu0Ql0GTAX7ocqSJ05zls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
-	Eric Anholt <eric@anholt.net>, Rob Herring <robh@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	"Wachowski, Karol" <karol.wachowski@intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>, Wachowski@web.codeaurora.org
-Subject: [PATCH 6.9 257/281] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.1 173/217] tracing/selftests: Fix kprobe event name test for .isra. functions
 Date: Wed, 19 Jun 2024 14:56:56 +0200
-Message-ID: <20240619125619.869018718@linuxfoundation.org>
+Message-ID: <20240619125603.363113416@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wachowski, Karol <karol.wachowski@intel.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
+commit 23a4b108accc29a6125ed14de4a044689ffeda78 upstream.
 
-Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
-allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
-causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
-BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
+The kprobe_eventname.tc test checks if a function with .isra. can have a
+kprobe attached to it. It loops through the kallsyms file for all the
+functions that have the .isra. name, and checks if it exists in the
+available_filter_functions file, and if it does, it uses it to attach a
+kprobe to it.
 
-Return -EINVAL early if COW mapping is detected.
+The issue is that kprobes can not attach to functions that are listed more
+than once in available_filter_functions. With the latest kernel, the
+function that is found is: rapl_event_update.isra.0
 
-This bug affects all drm drivers using default shmem helpers.
-It can be reproduced by this simple example:
-void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
-ptr[0] = 0;
+  # grep rapl_event_update.isra.0 /sys/kernel/tracing/available_filter_functions
+  rapl_event_update.isra.0
+  rapl_event_update.isra.0
 
-Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
-Cc: Noralf Trønnes <noralf@tronnes.org>
-Cc: Eric Anholt <eric@anholt.net>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.2+
-Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com
+It is listed twice. This causes the attached kprobe to it to fail which in
+turn fails the test. Instead of just picking the function function that is
+found in available_filter_functions, pick the first one that is listed
+only once in available_filter_functions.
+
+Cc: stable@vger.kernel.org
+Fixes: 604e3548236d ("selftests/ftrace: Select an existing function in kprobe_eventname test")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem_shmem_helper.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-+++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -610,6 +610,9 @@ int drm_gem_shmem_mmap(struct drm_gem_sh
- 		return ret;
- 	}
+--- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
++++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
+@@ -30,7 +30,8 @@ find_dot_func() {
+ 	fi
  
-+	if (is_cow_mapping(vma->vm_flags))
-+		return -EINVAL;
-+
- 	dma_resv_lock(shmem->base.resv, NULL);
- 	ret = drm_gem_shmem_get_pages(shmem);
- 	dma_resv_unlock(shmem->base.resv);
+ 	grep " [tT] .*\.isra\..*" /proc/kallsyms | cut -f 3 -d " " | while read f; do
+-		if grep -s $f available_filter_functions; then
++		cnt=`grep -s $f available_filter_functions | wc -l`;
++		if [ $cnt -eq 1 ]; then
+ 			echo $f
+ 			break
+ 		fi
 
 
 
