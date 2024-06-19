@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12EF90ED4A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A7590EC1C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6A3E1C20F5F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A2D5287801
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37423143C4E;
-	Wed, 19 Jun 2024 13:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A392146A85;
+	Wed, 19 Jun 2024 13:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6KXEyfO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dunzKtHU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F69AD58;
-	Wed, 19 Jun 2024 13:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5769132129;
+	Wed, 19 Jun 2024 13:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802981; cv=none; b=gKwkfjcqqSf/3TKb2qvuEH5kgHnPmPWseJRP6lQ2UJFI3ZcUO8a9aBqD/46M4YzwT3n1X0fCv475ZG4r2EsNF4yl6hnRuNHtv4XA9HeWBwtj+43NXBkG608HCC9q91ClpBOJ6yGDdpTl6MeY3zVFd77s2LatVT6sdZ1UBou8hfA=
+	t=1718802217; cv=none; b=VP9gAKvXAxQns4Zc8i3sZs5cDIZmKxSZrdSmS6ZbimFfWk+u63TM8LCUFLWKrdSFQnG/Auh7z2caPdsMROyYeI+2ZSZRH173G0MWaLBUJxg4v+ojMGFnXxEBlTcnhnQZ2KCeleyckV1HnllMkpxGGIo/nbZOhRUhb5QRPDUfOtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802981; c=relaxed/simple;
-	bh=VtUebr6zfl7MWB8+2pZb1gP972zDsxwft05DhJqJRj8=;
+	s=arc-20240116; t=1718802217; c=relaxed/simple;
+	bh=cGzil62Gwl/vnlb38YEw4obFp6OD3uwgVpzqKD+Yve8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HO0/mC39Hyr5EYznFKcF5D90QRpwH3nJnNez6FBCtpee9wLcS7WgTLqriIEZTNgXgrTLy8k2XEOFw+GTaYwMgwogXbz3JQHhhOEQVATIVeBOOjJ/kkRUDp0VEoQcTBJaJQMZ3lKUVsI2UQhnFBRmD8M8ch+cpSo2O7enAdqqTo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6KXEyfO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C25FC2BBFC;
-	Wed, 19 Jun 2024 13:16:20 +0000 (UTC)
+	 MIME-Version; b=NIgzgsihJftNQGAC3dD3q/E3NO3P1xMRc1mRa/e2ppvNL8m5es3xrq6rbbTJ0FLd/xLZrdVQOAXAa1HcjF8Gi7HFq7Ia7n9csF0aSzXuk8Pg2ERkG7hT7g2PdWBeetjVC8W1/C3f4+OV8s+m7coDMKCHmKNYAhk+eKUN+hjc8VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dunzKtHU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D322C2BBFC;
+	Wed, 19 Jun 2024 13:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802980;
-	bh=VtUebr6zfl7MWB8+2pZb1gP972zDsxwft05DhJqJRj8=;
+	s=korg; t=1718802216;
+	bh=cGzil62Gwl/vnlb38YEw4obFp6OD3uwgVpzqKD+Yve8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S6KXEyfO9XJN2qFBZ+wSv72T3Bq+LqDY9/pu4Q76QLDo0fVuh3upD+UYxoMU1uI8f
-	 Xkt+fBWIMoMBRCKIz3Wy9kBx9A+LLhfzFyx4QSnv0Qx5+evuWYrcCDu8ck6KETY8LA
-	 IMjrNKJyqwC65l2iMaXiXmYnNhK7yWVvOB2yNpqc=
+	b=dunzKtHULa5ZK7d28lpjLra19YVq/RoK+CoaSmveQypbgLY1Gl3LToUcJxjakGeMM
+	 7U736rxFoxOmr61382EUUEcSUixW2uhs+WeuXSoiFrMQrgSeXdr+zlDsQbFrftRUNt
+	 8yhjhQic1IsOzaGHxLbCWWaUXqQGA8Pk1utelYFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Shi <sl1589472800@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.9 081/281] io_uring: fix cancellation overwriting req->flags
-Date: Wed, 19 Jun 2024 14:54:00 +0200
-Message-ID: <20240619125612.959202138@linuxfoundation.org>
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 090/267] xhci: Apply reset resume quirk to Etron EJ188 xHCI host
+Date: Wed, 19 Jun 2024 14:54:01 +0200
+Message-ID: <20240619125609.805669134@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-commit f4a1254f2a076afb0edd473589bf40f9b4d36b41 upstream.
+commit 17bd54555c2aaecfdb38e2734149f684a73fa584 upstream.
 
-Only the current owner of a request is allowed to write into req->flags.
-Hence, the cancellation path should never touch it. Add a new field
-instead of the flag, move it into the 3rd cache line because it should
-always be initialised. poll_refs can move further as polling is an
-involved process anyway.
+As described in commit c877b3b2ad5c ("xhci: Add reset on resume quirk for
+asrock p67 host"), EJ188 have the same issue as EJ168, where completely
+dies on resume. So apply XHCI_RESET_ON_RESUME quirk to EJ188 as well.
 
-It's a minimal patch, in the future we can and should find a better
-place for it and remove now unused REQ_F_CANCEL_SEQ.
-
-Fixes: 521223d7c229f ("io_uring/cancel: don't default to setting req->work.cancel_seq")
 Cc: stable@vger.kernel.org
-Reported-by: Li Shi <sl1589472800@gmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/6827b129f8f0ad76fa9d1f0a773de938b240ffab.1718323430.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-3-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/io_uring_types.h |    3 ++-
- io_uring/cancel.h              |    4 ++--
- io_uring/io_uring.c            |    1 +
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ drivers/usb/host/xhci-pci.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/include/linux/io_uring_types.h
-+++ b/include/linux/io_uring_types.h
-@@ -653,7 +653,7 @@ struct io_kiocb {
- 	struct io_rsrc_node		*rsrc_node;
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -36,6 +36,7 @@
  
- 	atomic_t			refs;
--	atomic_t			poll_refs;
-+	bool				cancel_seq_set;
- 	struct io_task_work		io_task_work;
- 	/* for polled requests, i.e. IORING_OP_POLL_ADD and async armed poll */
- 	struct hlist_node		hash_node;
-@@ -662,6 +662,7 @@ struct io_kiocb {
- 	/* opcode allocated if it needs to store data for async defer */
- 	void				*async_data;
- 	/* linked requests, IFF REQ_F_HARDLINK or REQ_F_LINK are set */
-+	atomic_t			poll_refs;
- 	struct io_kiocb			*link;
- 	/* custom credentials, valid IFF REQ_F_CREDS is set */
- 	const struct cred		*creds;
---- a/io_uring/cancel.h
-+++ b/io_uring/cancel.h
-@@ -27,10 +27,10 @@ bool io_cancel_req_match(struct io_kiocb
+ #define PCI_VENDOR_ID_ETRON		0x1b6f
+ #define PCI_DEVICE_ID_EJ168		0x7023
++#define PCI_DEVICE_ID_EJ188		0x7052
  
- static inline bool io_cancel_match_sequence(struct io_kiocb *req, int sequence)
- {
--	if ((req->flags & REQ_F_CANCEL_SEQ) && sequence == req->work.cancel_seq)
-+	if (req->cancel_seq_set && sequence == req->work.cancel_seq)
- 		return true;
- 
--	req->flags |= REQ_F_CANCEL_SEQ;
-+	req->cancel_seq_set = true;
- 	req->work.cancel_seq = sequence;
- 	return false;
- }
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2211,6 +2211,7 @@ static int io_init_req(struct io_ring_ct
- 	req->file = NULL;
- 	req->rsrc_node = NULL;
- 	req->task = current;
-+	req->cancel_seq_set = false;
- 
- 	if (unlikely(opcode >= IORING_OP_LAST)) {
- 		req->opcode = 0;
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_XHCI	0x8c31
+ #define PCI_DEVICE_ID_INTEL_LYNXPOINT_LP_XHCI	0x9c31
+@@ -461,6 +462,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
++	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
++			pdev->device == PCI_DEVICE_ID_EJ188)
++		xhci->quirks |= XHCI_RESET_ON_RESUME;
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
+ 		xhci->quirks |= XHCI_TRUST_TX_LENGTH;
 
 
 
