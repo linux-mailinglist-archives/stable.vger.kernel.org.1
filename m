@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C710990ECB0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC42790EED2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BE45281EDF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D929B25EBC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB6A13F426;
-	Wed, 19 Jun 2024 13:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0568C14387E;
+	Wed, 19 Jun 2024 13:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYBC6u55"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guY/hZ5I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC0912FB31;
-	Wed, 19 Jun 2024 13:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B803F13DDC0;
+	Wed, 19 Jun 2024 13:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802585; cv=none; b=FtZPQybRAt2OxMIfuv5kAGnEU9AqZU8n0Gv8Tc2EpLdWB3gK07aQlPgwtVxr2fMZKHf4yHcW+K50WQ//QLONhq/4hO/6IAbBz16qo2Mx/Cq5+2Yt1pkw2md61Nx9+Sed/4mwfGJ+dmLJT3pz9OPKrl+RT6PFmc2XtK4JJFztWuQ=
+	t=1718803938; cv=none; b=k5wJKHxN+FAmVZUTl8JmlveHOZ+1Iv4blpeofP1xbU84baYwWXxmUl2dUYkpXnTFycd5vPiVze39YKunop81dsGDXGQ+/kvVc5NG3bI+hrDmQf63qUCDK2aM/THukZjoAdYA/HtJ0VmO6JiQVvo5512iEjpa+hd23vbk6qiPW1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802585; c=relaxed/simple;
-	bh=MQo+UcnOfct0hNKkRCuNdRH51dATaMLh3mSdyf5e9DU=;
+	s=arc-20240116; t=1718803938; c=relaxed/simple;
+	bh=FBhw3j+L/CIaakoQOgIlBpnIqJTn023Wc4fhY8L6NIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o3YOaNLaQLijwdTnfUUkbaQomdi+tJiUskrfsG9X7LIkgJn1xbfDu3YB44UyzT9eG4uA2Jazs/mGonBhNI8HfkgJ5m3yAPLgi6suz/2F0n9smNADIXa82qpzMyS7nu3RMRACb5b0p/3LKuaNbrQdw1ADTSTmt52n0n6gMCkuVUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYBC6u55; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022EBC2BBFC;
-	Wed, 19 Jun 2024 13:09:44 +0000 (UTC)
+	 MIME-Version; b=XQXuNS2d6po6XmgyzLduA61Pi4i2VX0yM42kiaf1IVVEaH/+RmhcwA7ptgHBLJAFU7uNcrbW+I2HhQDnR8rFHTAtiJwsgJyNvoZfTdyDl8wqabxNFe4RNBQ/CncCMtyziik0mAw9Q8YmjWV2xXcaAWmPNkkA+CBbwa0moji4yI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guY/hZ5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A98C2BBFC;
+	Wed, 19 Jun 2024 13:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802585;
-	bh=MQo+UcnOfct0hNKkRCuNdRH51dATaMLh3mSdyf5e9DU=;
+	s=korg; t=1718803938;
+	bh=FBhw3j+L/CIaakoQOgIlBpnIqJTn023Wc4fhY8L6NIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYBC6u55zpGtN8AD+93mB0CnUwMMw6+StCHaPUg4FbrrkLZna6TZKTbYEDBp+8h7y
-	 RtmeQht0fZlHNdap6+DkHeMYiZVPk1hT081pfjhx55/Ft8K2bHacjQuxHT+NEhDVZc
-	 Cjb0z5mnJqr/FmOHklGrd7Jg6boM9Ei77+mw7UWU=
+	b=guY/hZ5IwGcCY3HCjyDTn4RNSz4EwPI6m/c+qqqlBl602Pn+YZ0t2frZmNUwjTbir
+	 EtiviXSTFPXUmZOENnQcZ5PMZg1quEhr9ZVEMKe5GH3GZvFD46FU60VaeT2J5RBvX5
+	 dhKbWRkQd0CVs6iOd+84v759xLOvsDeUn+FU2xSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Po-Hsu Lin <po-hsu.lin@canonical.com>
-Subject: [PATCH 6.6 246/267] selftests/net: add lib.sh
+	syzbot+9bbe2de1bc9d470eb5fe@syzkaller.appspotmail.com,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 154/217] net: bridge: mst: pass vlan group directly to br_mst_vlan_set_state
 Date: Wed, 19 Jun 2024 14:56:37 +0200
-Message-ID: <20240619125615.763345695@linuxfoundation.org>
+Message-ID: <20240619125602.632200828@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,184 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-commit 25ae948b447881bf689d459cd5bd4629d9c04b20 upstream.
+[ Upstream commit 36c92936e868601fa1f43da6758cf55805043509 ]
 
-Add a lib.sh for net selftests. This file can be used to define commonly
-used variables and functions. Some commonly used functions can be moved
-from forwarding/lib.sh to this lib file. e.g. busywait().
+Pass the already obtained vlan group pointer to br_mst_vlan_set_state()
+instead of dereferencing it again. Each caller has already correctly
+dereferenced it for their context. This change is required for the
+following suspicious RCU dereference fix. No functional changes
+intended.
 
-Add function setup_ns() for user to create unique namespaces with given
-prefix name.
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[PHLin: add lib.sh to TEST_FILES directly as we already have upstream
-        commit 06efafd8 landed in 6.6.y]
-Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3a7c1661ae13 ("net: bridge: mst: fix vlan use-after-free")
+Reported-by: syzbot+9bbe2de1bc9d470eb5fe@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9bbe2de1bc9d470eb5fe
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240609103654.914987-2-razor@blackwall.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/Makefile          |    2 
- tools/testing/selftests/net/forwarding/lib.sh |   27 --------
- tools/testing/selftests/net/lib.sh            |   85 ++++++++++++++++++++++++++
- 3 files changed, 87 insertions(+), 27 deletions(-)
- create mode 100644 tools/testing/selftests/net/lib.sh
+ net/bridge/br_mst.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -92,7 +92,7 @@ TEST_PROGS += test_vxlan_nolocalbypass.s
- TEST_PROGS += test_bridge_backup_port.sh
+diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
+index 3c66141d34d62..1de72816b0fb2 100644
+--- a/net/bridge/br_mst.c
++++ b/net/bridge/br_mst.c
+@@ -73,11 +73,10 @@ int br_mst_get_state(const struct net_device *dev, u16 msti, u8 *state)
+ }
+ EXPORT_SYMBOL_GPL(br_mst_get_state);
  
- TEST_FILES := settings
--TEST_FILES += in_netns.sh net_helper.sh setup_loopback.sh setup_veth.sh
-+TEST_FILES += in_netns.sh lib.sh net_helper.sh setup_loopback.sh setup_veth.sh
- 
- include ../lib.mk
- 
---- a/tools/testing/selftests/net/forwarding/lib.sh
-+++ b/tools/testing/selftests/net/forwarding/lib.sh
-@@ -4,9 +4,6 @@
- ##############################################################################
- # Defines
- 
--# Kselftest framework requirement - SKIP code is 4.
--ksft_skip=4
+-static void br_mst_vlan_set_state(struct net_bridge_port *p, struct net_bridge_vlan *v,
++static void br_mst_vlan_set_state(struct net_bridge_vlan_group *vg,
++				  struct net_bridge_vlan *v,
+ 				  u8 state)
+ {
+-	struct net_bridge_vlan_group *vg = nbp_vlan_group(p);
 -
- # Can be overridden by the configuration file.
- PING=${PING:=ping}
- PING6=${PING6:=ping6}
-@@ -41,6 +38,7 @@ if [[ -f $relative_path/forwarding.confi
- 	source "$relative_path/forwarding.config"
- fi
+ 	if (br_vlan_get_state(v) == state)
+ 		return;
  
-+source ../lib.sh
- ##############################################################################
- # Sanity checks
+@@ -121,7 +120,7 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
+ 		if (v->brvlan->msti != msti)
+ 			continue;
  
-@@ -395,29 +393,6 @@ log_info()
- 	echo "INFO: $msg"
+-		br_mst_vlan_set_state(p, v, state);
++		br_mst_vlan_set_state(vg, v, state);
+ 	}
+ 
+ out:
+@@ -140,13 +139,13 @@ static void br_mst_vlan_sync_state(struct net_bridge_vlan *pv, u16 msti)
+ 		 * it.
+ 		 */
+ 		if (v != pv && v->brvlan->msti == msti) {
+-			br_mst_vlan_set_state(pv->port, pv, v->state);
++			br_mst_vlan_set_state(vg, pv, v->state);
+ 			return;
+ 		}
+ 	}
+ 
+ 	/* Otherwise, start out in a new MSTI with all ports disabled. */
+-	return br_mst_vlan_set_state(pv->port, pv, BR_STATE_DISABLED);
++	return br_mst_vlan_set_state(vg, pv, BR_STATE_DISABLED);
  }
  
--busywait()
--{
--	local timeout=$1; shift
--
--	local start_time="$(date -u +%s%3N)"
--	while true
--	do
--		local out
--		out=$("$@")
--		local ret=$?
--		if ((!ret)); then
--			echo -n "$out"
--			return 0
--		fi
--
--		local current_time="$(date -u +%s%3N)"
--		if ((current_time - start_time > timeout)); then
--			echo -n "$out"
--			return 1
--		fi
--	done
--}
--
- not()
- {
- 	"$@"
---- /dev/null
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -0,0 +1,85 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+##############################################################################
-+# Defines
-+
-+# Kselftest framework requirement - SKIP code is 4.
-+ksft_skip=4
-+
-+##############################################################################
-+# Helpers
-+busywait()
-+{
-+	local timeout=$1; shift
-+
-+	local start_time="$(date -u +%s%3N)"
-+	while true
-+	do
-+		local out
-+		out=$("$@")
-+		local ret=$?
-+		if ((!ret)); then
-+			echo -n "$out"
-+			return 0
-+		fi
-+
-+		local current_time="$(date -u +%s%3N)"
-+		if ((current_time - start_time > timeout)); then
-+			echo -n "$out"
-+			return 1
-+		fi
-+	done
-+}
-+
-+cleanup_ns()
-+{
-+	local ns=""
-+	local errexit=0
-+	local ret=0
-+
-+	# disable errexit temporary
-+	if [[ $- =~ "e" ]]; then
-+		errexit=1
-+		set +e
-+	fi
-+
-+	for ns in "$@"; do
-+		ip netns delete "${ns}" &> /dev/null
-+		if ! busywait 2 ip netns list \| grep -vq "^$ns$" &> /dev/null; then
-+			echo "Warn: Failed to remove namespace $ns"
-+			ret=1
-+		fi
-+	done
-+
-+	[ $errexit -eq 1 ] && set -e
-+	return $ret
-+}
-+
-+# setup netns with given names as prefix. e.g
-+# setup_ns local remote
-+setup_ns()
-+{
-+	local ns=""
-+	local ns_name=""
-+	local ns_list=""
-+	for ns_name in "$@"; do
-+		# Some test may setup/remove same netns multi times
-+		if unset ${ns_name} 2> /dev/null; then
-+			ns="${ns_name,,}-$(mktemp -u XXXXXX)"
-+			eval readonly ${ns_name}="$ns"
-+		else
-+			eval ns='$'${ns_name}
-+			cleanup_ns "$ns"
-+
-+		fi
-+
-+		if ! ip netns add "$ns"; then
-+			echo "Failed to create namespace $ns_name"
-+			cleanup_ns "$ns_list"
-+			return $ksft_skip
-+		fi
-+		ip -n "$ns" link set lo up
-+		ns_list="$ns_list $ns"
-+	done
-+}
+ int br_mst_vlan_set_msti(struct net_bridge_vlan *mv, u16 msti)
+-- 
+2.43.0
+
 
 
 
