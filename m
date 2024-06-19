@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F8590ECFC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B76D90EBB9
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 701DB1F210AE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 376EEB25F2C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0470C143C4E;
-	Wed, 19 Jun 2024 13:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFC1145334;
+	Wed, 19 Jun 2024 13:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3LUUApa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNAVuFJM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63B21422B8;
-	Wed, 19 Jun 2024 13:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678CD13F426;
+	Wed, 19 Jun 2024 13:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802774; cv=none; b=CVm5O0yYmaY+pXyft0MRDb0vUq6K5Sl5/OP9yv8cBBat/lVzb/3k2n7rmmndMrEQ9ORDfQLeoV3ra0Inm05dqLxfasw/e0pgTB91anKwdCJEyrgUM09Ojsiome3OMRsuIlg1/7OmcmwJGVL6dhRBIt9x+ZBzOvsiEq3Whw9e2aU=
+	t=1718802010; cv=none; b=c6mnrjhkPfvy85P4uV6nyUzyYt8OdfT14nOtULcCuuPeZqkR+GWRLeGZuRQvt831mrOLZGehiwix0H+SIxeCi7UneaN2K9X5xnczojkpHGcOp1ra5tQUAEoLz8x3niwg/YWW5PIaDv8/nfEYAsrvU/cQunuW4qMeNIenayCbCpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802774; c=relaxed/simple;
-	bh=7cleDlm7Vjdxqa1DyB5CnDWcV3IUwCXZrBWDiWhYctc=;
+	s=arc-20240116; t=1718802010; c=relaxed/simple;
+	bh=46idOyPJblJ9aacubz8tWaLxBywLwBdwKchqbTG50kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiNZqIjlVc2OfA2s3GrXhZ3pOb22nFZ2bfMeD5sQ617Pbg+6jYLdtk627YsScUAsU0rmRrcRVyAxfha8CyTOeZpBEZ+E8FqjjN6hoOIE81eFSdT4I/MHEkixj8zksawr6pznvHjgNPwwStAEOZZeLtOF8nWgLRLo0Uy/HQdSK1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3LUUApa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3F4C2BBFC;
-	Wed, 19 Jun 2024 13:12:54 +0000 (UTC)
+	 MIME-Version; b=fjvRfP5YOImUtGDtKZStAZVyiWwtWnV2S19l/SEd46thJJi7tcLVOl35Dbjfz0ur8WSitluggEDmsA0DG+ApRkxcHWQf0ehcsmvV2TYqFpOl/DxYaAj0bN4OGD7rQxd/z9gk6oy6LMvBx358KRc7b6cdg43xKYSn505BvipZfNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNAVuFJM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2016C2BBFC;
+	Wed, 19 Jun 2024 13:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802774;
-	bh=7cleDlm7Vjdxqa1DyB5CnDWcV3IUwCXZrBWDiWhYctc=;
+	s=korg; t=1718802010;
+	bh=46idOyPJblJ9aacubz8tWaLxBywLwBdwKchqbTG50kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3LUUApaZQMFRs2r7I35xiVTlsZg7Ypp8VK974cbx1FsmkzksUr92iUf3evpf8qCg
-	 A7a/JrWVslttW/YAteyjauMheZ4Ye1sA/sbTrMpPAjZggQ+gjMM2nZ0bgQXovxVzGQ
-	 CzjyvGihzRc82GmcO8ONa3t4YkTVSheCHnkl/7Po=
+	b=WNAVuFJMOplACZKmUB58edmHEFihRF+qDV371HbvQ5Er2Vpdzy8d0PSyVRRcCrCN3
+	 bDc3DruuDA2ASjlwjVN3kfT2+RVN4pix0JNCb4DwQbXiR5XYwH+eYdlBrUz49o85ON
+	 68dn4JcZbHSOcRkyUtEguGit2t543Nn26N4Mrua0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Kumar Singh <quic_adisi@quicinc.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Tristram Ha <tristram.ha@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 011/281] wifi: mac80211: pass proper link id for channel switch started notification
-Date: Wed, 19 Jun 2024 14:52:50 +0200
-Message-ID: <20240619125610.280896762@linuxfoundation.org>
+Subject: [PATCH 6.6 020/267] net: phy: micrel: fix KSZ9477 PHY issues after suspend/resume
+Date: Wed, 19 Jun 2024 14:52:51 +0200
+Message-ID: <20240619125607.132443829@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+From: Tristram Ha <tristram.ha@microchip.com>
 
-[ Upstream commit 8ecc4d7a7cd3e9704b63b8e4f6cd8b6b7314210f ]
+[ Upstream commit 6149db4997f582e958da675092f21c666e3b67b7 ]
 
-Original changes[1] posted is having proper changes. However, at the same
-time, there was chandef puncturing changes which had a conflict with this.
-While applying, two errors crept in -
-   a) Whitespace error.
-   b) Link ID being passed to channel switch started notifier function is
-      0. However proper link ID is present in the function.
+When the PHY is powered up after powered down most of the registers are
+reset, so the PHY setup code needs to be done again.  In addition the
+interrupt register will need to be setup again so that link status
+indication works again.
 
-Fix these now.
-
-[1] https://lore.kernel.org/all/20240130140918.1172387-5-quic_adisi@quicinc.com/
-
-Fixes: 1a96bb4e8a79 ("wifi: mac80211: start and finalize channel switch on link basis")
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Link: https://msgid.link/20240509032555.263933-1-quic_adisi@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 26dd2974c5b5 ("net: phy: micrel: Move KSZ9477 errata fixes to PHY driver")
+Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/micrel.c | 62 ++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 56 insertions(+), 6 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 07abaf7820c56..51dc2d9dd6b84 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4012,7 +4012,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 		goto out;
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index fc31fcfb0cdb4..048704758b150 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -1821,7 +1821,7 @@ static const struct ksz9477_errata_write ksz9477_errata_writes[] = {
+ 	{0x1c, 0x20, 0xeeee},
+ };
+ 
+-static int ksz9477_config_init(struct phy_device *phydev)
++static int ksz9477_phy_errata(struct phy_device *phydev)
+ {
+ 	int err;
+ 	int i;
+@@ -1849,16 +1849,30 @@ static int ksz9477_config_init(struct phy_device *phydev)
+ 			return err;
  	}
  
--	link_data->csa_chanreq = chanreq; 
-+	link_data->csa_chanreq = chanreq;
- 	link_conf->csa_active = true;
++	err = genphy_restart_aneg(phydev);
++	if (err)
++		return err;
++
++	return err;
++}
++
++static int ksz9477_config_init(struct phy_device *phydev)
++{
++	int err;
++
++	/* Only KSZ9897 family of switches needs this fix. */
++	if ((phydev->phy_id & 0xf) == 1) {
++		err = ksz9477_phy_errata(phydev);
++		if (err)
++			return err;
++	}
++
+ 	/* According to KSZ9477 Errata DS80000754C (Module 4) all EEE modes
+ 	 * in this switch shall be regarded as broken.
+ 	 */
+ 	if (phydev->dev_flags & MICREL_NO_EEE)
+ 		phydev->eee_broken_modes = -1;
  
- 	if (params->block_tx &&
-@@ -4023,7 +4023,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
- 	}
+-	err = genphy_restart_aneg(phydev);
+-	if (err)
+-		return err;
+-
+ 	return kszphy_config_init(phydev);
+ }
  
- 	cfg80211_ch_switch_started_notify(sdata->dev,
--					  &link_data->csa_chanreq.oper, 0,
-+					  &link_data->csa_chanreq.oper, link_id,
- 					  params->count, params->block_tx);
+@@ -1967,6 +1981,42 @@ static int kszphy_resume(struct phy_device *phydev)
+ 	return 0;
+ }
  
- 	if (changed) {
++static int ksz9477_resume(struct phy_device *phydev)
++{
++	int ret;
++
++	/* No need to initialize registers if not powered down. */
++	ret = phy_read(phydev, MII_BMCR);
++	if (ret < 0)
++		return ret;
++	if (!(ret & BMCR_PDOWN))
++		return 0;
++
++	genphy_resume(phydev);
++
++	/* After switching from power-down to normal mode, an internal global
++	 * reset is automatically generated. Wait a minimum of 1 ms before
++	 * read/write access to the PHY registers.
++	 */
++	usleep_range(1000, 2000);
++
++	/* Only KSZ9897 family of switches needs this fix. */
++	if ((phydev->phy_id & 0xf) == 1) {
++		ret = ksz9477_phy_errata(phydev);
++		if (ret)
++			return ret;
++	}
++
++	/* Enable PHY Interrupts */
++	if (phy_interrupt_is_valid(phydev)) {
++		phydev->interrupts = PHY_INTERRUPT_ENABLED;
++		if (phydev->drv->config_intr)
++			phydev->drv->config_intr(phydev);
++	}
++
++	return 0;
++}
++
+ static int kszphy_probe(struct phy_device *phydev)
+ {
+ 	const struct kszphy_type *type = phydev->drv->driver_data;
+@@ -4916,7 +4966,7 @@ static struct phy_driver ksphy_driver[] = {
+ 	.config_intr	= kszphy_config_intr,
+ 	.handle_interrupt = kszphy_handle_interrupt,
+ 	.suspend	= genphy_suspend,
+-	.resume		= genphy_resume,
++	.resume		= ksz9477_resume,
+ 	.get_features	= ksz9477_get_features,
+ } };
+ 
 -- 
 2.43.0
 
