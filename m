@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-54039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6664290EC61
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F8590ED91
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D74C9283CC7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D071BB245AE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C310143873;
-	Wed, 19 Jun 2024 13:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F11145334;
+	Wed, 19 Jun 2024 13:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNJsocEq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="foVIXcyi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D2512FB31;
-	Wed, 19 Jun 2024 13:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B553282495;
+	Wed, 19 Jun 2024 13:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802412; cv=none; b=uBt1Ykj6Z4/PScCB+aia52HoI6BMHd7TlUKnwcxOH3tKjiyZKLZBhs0uipjy//eaSUaOf8yBKy4jiZ7+0Z1B30ccDyQDOsw0MRhmW8hNEnVX3U9plQCvPG3xpV7JM6CQMXHTePMgFmFKRwDmduHxrlGb7YQt8q+RyQ+1Zmc9eOc=
+	t=1718803181; cv=none; b=flFnQ3hcKoN0pNKIYrMx0HTgbbMr+fKPefNc/SiYqSbcF0PGPxu/YteBfGQcj1DwiRTN9PxdNfrLCcGclKpfVvEes9dmga8+uzSOfyFWuXhp706zUY9p7DA9nAoHRXQoeK1NYCdBMisn0GYBRb2kkaL83VnB2SGrXdeaI37FijY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802412; c=relaxed/simple;
-	bh=tsxqd5hM8nH19OSkO/4ZfQHO6vH3MoBOmCPncYNRmyY=;
+	s=arc-20240116; t=1718803181; c=relaxed/simple;
+	bh=6PfhWGOmBvUweNQkNu4yo0hjbQaTz+9wBsLHxrAUjAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9DKfyeaJg9fhH29A6AgtUBTK/lGidXfFOgLGG6kb2Zy++7flca7cwrZTCT2ikNSM+iH6frBU0oN0le9A5j2G0LHcJQCjf3Z2FRQLjcp418QO62lZHR5L8DtZl9tYiMWAmdql/eBUGv/bpF7JNCe8XWirTNvuhlU2fnAf3AJ7X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNJsocEq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B970C2BBFC;
-	Wed, 19 Jun 2024 13:06:51 +0000 (UTC)
+	 MIME-Version; b=BnTx++rreEEov0S9j4QsoisMK4IZUzDKxMUh4D3uObn2fYUeNr7vVRW2VR3YvEoEz/z6gbeFt5ZLW9bvED3cPpYSHwJD5wkyc6hFQFSbStPAx2r+svjhMvc68FWvFjPjuD8rEOCjJJYUgdykSaIl/QGIVUv55MTpm5KH+Vi5x94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=foVIXcyi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6F8C2BBFC;
+	Wed, 19 Jun 2024 13:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802412;
-	bh=tsxqd5hM8nH19OSkO/4ZfQHO6vH3MoBOmCPncYNRmyY=;
+	s=korg; t=1718803181;
+	bh=6PfhWGOmBvUweNQkNu4yo0hjbQaTz+9wBsLHxrAUjAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gNJsocEqh0Dtas+TxzMNFim67wwtMqEouZvGeZoHKF6Texv6P6pKqKkmPKin+9h3C
-	 vHLY0iVbto680vCDm6rnZl7AYC6bV8V/QU/Ps72poy6b13clhGl9KO+cV1aK1BJVsM
-	 DnGIoeQr5GOL0JcIgB6lWAGLEZvy7skhGIPR+njA=
+	b=foVIXcyi2OILJH6+SXEfY6oHis8o0Jex1tzEypMLh1Jt1g+BaxxmKj9kC6MdS+Rl+
+	 jHWOKhl4z5VlBxn5hY5proQphiVz1H4gRtGo/IzxbHPq+EVDnJsEua+fNJUBUWIS1U
+	 5UKTg7go4Aa/+9bbyEhOI3wQrdWO4diEZnFx+2VI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
+	Laura Nao <laura.nao@collabora.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/267] x86/asm: Use %c/%n instead of %P operand modifier in asm templates
+Subject: [PATCH 6.9 149/281] thermal: core: Do not fail cdev registration because of invalid initial state
 Date: Wed, 19 Jun 2024 14:55:08 +0200
-Message-ID: <20240619125612.369676842@linuxfoundation.org>
+Message-ID: <20240619125615.574366060@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,165 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uros Bizjak <ubizjak@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 41cd2e1ee96e56401a18dbce6f42f0bdaebcbf3b ]
+[ Upstream commit 1af89dedc8a58006d8e385b1e0d2cd24df8a3b69 ]
 
-The "P" asm operand modifier is a x86 target-specific modifier.
+It is reported that commit 31a0fa0019b0 ("thermal/debugfs: Pass cooling
+device state to thermal_debug_cdev_add()") causes the ACPI fan driver
+to fail probing on some systems which turns out to be due to the _FST
+control method returning an invalid value until _FSL is first evaluated
+for the given fan.  If this happens, the .get_cur_state() cooling device
+callback returns an error and __thermal_cooling_device_register() fails
+as uses that callback after commit 31a0fa0019b0.
 
-When used with a constant, the "P" modifier emits "cst" instead of
-"$cst". This property is currently used to emit the bare constant
-without all syntax-specific prefixes.
+Arguably, _FST should not return an invalid value even if it is
+evaluated before _FSL, so this may be regarded as a platform firmware
+issue, but at the same time it is not a good enough reason for failing
+the cooling device registration where the initial cooling device state
+is only needed to initialize a thermal debug facility.
 
-The generic "c" resp. "n" operand modifier should be used instead.
+Accordingly, modify __thermal_cooling_device_register() to avoid
+calling thermal_debug_cdev_add() instead of returning an error if the
+initial .get_cur_state() callback invocation fails.
 
-No functional changes intended.
-
-Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Josh Poimboeuf <jpoimboe@redhat.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/20240319104418.284519-3-ubizjak@gmail.com
-Stable-dep-of: 8c860ed825cb ("x86/uaccess: Fix missed zeroing of ia32 u64 get_user() range checking")
+Fixes: 31a0fa0019b0 ("thermal/debugfs: Pass cooling device state to thermal_debug_cdev_add()")
+Closes: https://lore.kernel.org/linux-acpi/20240530153727.843378-1-laura.nao@collabora.com
+Reported-by: Laura Nao <laura.nao@collabora.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Tested-by: Laura Nao <laura.nao@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/main.c               |  4 ++--
- arch/x86/include/asm/alternative.h | 22 +++++++++++-----------
- arch/x86/include/asm/atomic64_32.h |  2 +-
- arch/x86/include/asm/cpufeature.h  |  2 +-
- arch/x86/include/asm/irq_stack.h   |  2 +-
- arch/x86/include/asm/uaccess.h     |  4 ++--
- 6 files changed, 18 insertions(+), 18 deletions(-)
+ drivers/thermal/thermal_core.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/boot/main.c b/arch/x86/boot/main.c
-index c4ea5258ab558..9049f390d8347 100644
---- a/arch/x86/boot/main.c
-+++ b/arch/x86/boot/main.c
-@@ -119,8 +119,8 @@ static void init_heap(void)
- 	char *stack_end;
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index 38b7d02384d7c..258482036f1e9 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -936,9 +936,17 @@ __thermal_cooling_device_register(struct device_node *np,
+ 	if (ret)
+ 		goto out_cdev_type;
  
- 	if (boot_params.hdr.loadflags & CAN_USE_HEAP) {
--		asm("leal %P1(%%esp),%0"
--		    : "=r" (stack_end) : "i" (-STACK_SIZE));
-+		asm("leal %n1(%%esp),%0"
-+		    : "=r" (stack_end) : "i" (STACK_SIZE));
++	/*
++	 * The cooling device's current state is only needed for debug
++	 * initialization below, so a failure to get it does not cause
++	 * the entire cooling device initialization to fail.  However,
++	 * the debug will not work for the device if its initial state
++	 * cannot be determined and drivers are responsible for ensuring
++	 * that this will not happen.
++	 */
+ 	ret = cdev->ops->get_cur_state(cdev, &current_state);
+ 	if (ret)
+-		goto out_cdev_type;
++		current_state = ULONG_MAX;
  
- 		heap_end = (char *)
- 			((size_t)boot_params.hdr.heap_end_ptr + 0x200);
-diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
-index 65f79092c9d9e..cb9ce0f9e78e0 100644
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -288,10 +288,10 @@ static inline int alternatives_text_reserved(void *start, void *end)
-  * Otherwise, if CPU has feature1, newinstr1 is used.
-  * Otherwise, oldinstr is used.
-  */
--#define alternative_input_2(oldinstr, newinstr1, ft_flags1, newinstr2,	     \
--			   ft_flags2, input...)				     \
--	asm_inline volatile(ALTERNATIVE_2(oldinstr, newinstr1, ft_flags1,     \
--		newinstr2, ft_flags2)					     \
-+#define alternative_input_2(oldinstr, newinstr1, ft_flags1, newinstr2,	\
-+			   ft_flags2, input...)				\
-+	asm_inline volatile(ALTERNATIVE_2(oldinstr, newinstr1, ft_flags1, \
-+		newinstr2, ft_flags2)					\
- 		: : "i" (0), ## input)
+ 	thermal_cooling_device_setup_sysfs(cdev);
  
- /* Like alternative_input, but with a single output argument */
-@@ -301,7 +301,7 @@ static inline int alternatives_text_reserved(void *start, void *end)
+@@ -953,7 +961,8 @@ __thermal_cooling_device_register(struct device_node *np,
+ 		return ERR_PTR(ret);
+ 	}
  
- /* Like alternative_io, but for replacing a direct call with another one. */
- #define alternative_call(oldfunc, newfunc, ft_flags, output, input...)	\
--	asm_inline volatile (ALTERNATIVE("call %P[old]", "call %P[new]", ft_flags) \
-+	asm_inline volatile (ALTERNATIVE("call %c[old]", "call %c[new]", ft_flags) \
- 		: output : [old] "i" (oldfunc), [new] "i" (newfunc), ## input)
+-	thermal_debug_cdev_add(cdev, current_state);
++	if (current_state <= cdev->max_state)
++		thermal_debug_cdev_add(cdev, current_state);
  
- /*
-@@ -310,12 +310,12 @@ static inline int alternatives_text_reserved(void *start, void *end)
-  * Otherwise, if CPU has feature1, function1 is used.
-  * Otherwise, old function is used.
-  */
--#define alternative_call_2(oldfunc, newfunc1, ft_flags1, newfunc2, ft_flags2,   \
--			   output, input...)				      \
--	asm_inline volatile (ALTERNATIVE_2("call %P[old]", "call %P[new1]", ft_flags1,\
--		"call %P[new2]", ft_flags2)				      \
--		: output, ASM_CALL_CONSTRAINT				      \
--		: [old] "i" (oldfunc), [new1] "i" (newfunc1),		      \
-+#define alternative_call_2(oldfunc, newfunc1, ft_flags1, newfunc2, ft_flags2, \
-+			   output, input...)				\
-+	asm_inline volatile (ALTERNATIVE_2("call %c[old]", "call %c[new1]", ft_flags1, \
-+		"call %c[new2]", ft_flags2)				\
-+		: output, ASM_CALL_CONSTRAINT				\
-+		: [old] "i" (oldfunc), [new1] "i" (newfunc1),		\
- 		  [new2] "i" (newfunc2), ## input)
- 
- /*
-diff --git a/arch/x86/include/asm/atomic64_32.h b/arch/x86/include/asm/atomic64_32.h
-index 3486d91b8595f..d510405e4e1de 100644
---- a/arch/x86/include/asm/atomic64_32.h
-+++ b/arch/x86/include/asm/atomic64_32.h
-@@ -24,7 +24,7 @@ typedef struct {
- 
- #ifdef CONFIG_X86_CMPXCHG64
- #define __alternative_atomic64(f, g, out, in...) \
--	asm volatile("call %P[func]" \
-+	asm volatile("call %c[func]" \
- 		     : out : [func] "i" (atomic64_##g##_cx8), ## in)
- 
- #define ATOMIC64_DECL(sym) ATOMIC64_DECL_ONE(sym##_cx8)
-diff --git a/arch/x86/include/asm/cpufeature.h b/arch/x86/include/asm/cpufeature.h
-index 686e92d2663ee..3508f3fc928d4 100644
---- a/arch/x86/include/asm/cpufeature.h
-+++ b/arch/x86/include/asm/cpufeature.h
-@@ -173,7 +173,7 @@ extern void clear_cpu_cap(struct cpuinfo_x86 *c, unsigned int bit);
- static __always_inline bool _static_cpu_has(u16 bit)
- {
- 	asm goto(
--		ALTERNATIVE_TERNARY("jmp 6f", %P[feature], "", "jmp %l[t_no]")
-+		ALTERNATIVE_TERNARY("jmp 6f", %c[feature], "", "jmp %l[t_no]")
- 		".pushsection .altinstr_aux,\"ax\"\n"
- 		"6:\n"
- 		" testb %[bitnum]," _ASM_RIP(%P[cap_byte]) "\n"
-diff --git a/arch/x86/include/asm/irq_stack.h b/arch/x86/include/asm/irq_stack.h
-index 798183867d789..b71ad173f8776 100644
---- a/arch/x86/include/asm/irq_stack.h
-+++ b/arch/x86/include/asm/irq_stack.h
-@@ -100,7 +100,7 @@
- }
- 
- #define ASM_CALL_ARG0							\
--	"call %P[__func]				\n"		\
-+	"call %c[__func]				\n"		\
- 	ASM_REACHABLE
- 
- #define ASM_CALL_ARG1							\
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index 237dc8cdd12b9..0f9bab92a43d7 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -78,7 +78,7 @@ extern int __get_user_bad(void);
- 	int __ret_gu;							\
- 	register __inttype(*(ptr)) __val_gu asm("%"_ASM_DX);		\
- 	__chk_user_ptr(ptr);						\
--	asm volatile("call __" #fn "_%P4"				\
-+	asm volatile("call __" #fn "_%c4"				\
- 		     : "=a" (__ret_gu), "=r" (__val_gu),		\
- 			ASM_CALL_CONSTRAINT				\
- 		     : "0" (ptr), "i" (sizeof(*(ptr))));		\
-@@ -177,7 +177,7 @@ extern void __put_user_nocheck_8(void);
- 	__chk_user_ptr(__ptr);						\
- 	__ptr_pu = __ptr;						\
- 	__val_pu = __x;							\
--	asm volatile("call __" #fn "_%P[size]"				\
-+	asm volatile("call __" #fn "_%c[size]"				\
- 		     : "=c" (__ret_pu),					\
- 			ASM_CALL_CONSTRAINT				\
- 		     : "0" (__ptr_pu),					\
+ 	/* Add 'this' new cdev to the global cdev list */
+ 	mutex_lock(&thermal_list_lock);
 -- 
 2.43.0
 
