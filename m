@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-54407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE3890EE06
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:24:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA33F90ECD4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7593288CB4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CD8CB247EF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068A4144D3E;
-	Wed, 19 Jun 2024 13:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56463145334;
+	Wed, 19 Jun 2024 13:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Osciyg2V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rsUmNbNO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99B2143757;
-	Wed, 19 Jun 2024 13:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1162E14A609;
+	Wed, 19 Jun 2024 13:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803489; cv=none; b=lBXJnaAefxIIPK1XyQxaZgI/3MKLw1Co7rqFb44g0pNwSuZmDQ5pmmSAdpsHaLOR52n9xDJhNOU6Sc7G6QS01/pvye1LFBPKcCxjBWo3l15lNeM6EYmKWpKQJP4Y1IyVgaMOMqSeFHqWmZB3W7Aq/wiyaSJJPoiVU7j/UqGCUyM=
+	t=1718802671; cv=none; b=aX5qxK8VkPBCdoxd6aGygt2RlyLDqpMDYhV2ZJuSlmeZ8W5TUMUOHoNrTdWxWaiuLGbLuctvGtblcJc76ZQ7QHNUldqvGdpHskKWZSStf6A4FRM8nOze+K6H4ctrHNd7wJvRa/7MYhcIig++RnAut+Bs+BjIvZ5eIHednbgiHDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803489; c=relaxed/simple;
-	bh=Z7KDLXxmAz2kkcD6N8lfPRwHPzyupQWhWin7WQq2czU=;
+	s=arc-20240116; t=1718802671; c=relaxed/simple;
+	bh=/lNQcPvVnfcNhfaBYdCq8/0r96ZNK9OUGQ1+SlTCBCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e+Cw66gP4WuPmtqUDtyFTLHfad3IYDPfbX1Av4ehY2G9YALbBACAeeW3dWed0Rntv/YCkN/Dn4+/guIDxGuilu4neKCED6ruq0Y1t3WZKo1hFBtE+WMFZn1bh/yxTwvrDJKvFlAbM7ZchP6mBlv0kf1K2fjvbbX44EWigw2IY2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Osciyg2V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E61DC2BBFC;
-	Wed, 19 Jun 2024 13:24:49 +0000 (UTC)
+	 MIME-Version; b=aTlBHCyx76a/pXmXJ1hb5oTk+BCiWsGM2Ng90M9Xw5AQJBv+jh/K5I2EpY1zdu3SGKTZxbH/G2pBDcDuddjpLh8rBRqEKuD8NZ+4yzC75gDU1fjG0G6Lj8ieXX+ejkwK0LQ2vcxj2yRyytm9ZMN0KKYYUb287zyCDF57dHSR1WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rsUmNbNO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D60C4AF55;
+	Wed, 19 Jun 2024 13:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803489;
-	bh=Z7KDLXxmAz2kkcD6N8lfPRwHPzyupQWhWin7WQq2czU=;
+	s=korg; t=1718802670;
+	bh=/lNQcPvVnfcNhfaBYdCq8/0r96ZNK9OUGQ1+SlTCBCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Osciyg2VZ1rRteRm4FVl8aC3UGBhAQCvvetlqnUnOrRPGEWyKI+J6/DF+II/st+fp
-	 x8CS96mYYWmwB8BgV+IrY6VdIZdJhm1W78Xx5Q82ip51gg4W490Hwqbx2fMzXi5rTv
-	 JNE5fFmD5viuT5Pw1MgtXgMM350GydYER9LaSBpY=
+	b=rsUmNbNOM9XQ6pqCunraH1Ko+UW2xt5JqJazXG34nf2fPSe9LWEaJmqY+niryJydm
+	 zZOei9WM0Gv0PfUFAC4odgoPX2rXH5hjUn5TiMcW1QFWCfHeHkctN/pFBqkTqbCjH2
+	 ujvRGJpwx/gP30nP1Kj2kuvVoNOyV9mZXvQemq/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.9 243/281] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 251/267] selftests/net/lib: update busywait timeout value
 Date: Wed, 19 Jun 2024 14:56:42 +0200
-Message-ID: <20240619125619.313334512@linuxfoundation.org>
+Message-ID: <20240619125615.953274662@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 2dba285caba53f309d6060fca911b43d63f41697 upstream.
+commit fc836129f708407502632107e58d48f54b1caf75 upstream.
 
-Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
-Vendor ID are u16 variables and are written to a u32 register of the
-controller. The Subsystem Vendor ID was always 0 because the u16 value
-was masked incorrectly with GENMASK(31,16) resulting in all lower 16
-bits being set to 0 prior to the shift.
+The busywait timeout value is a millisecond, not a second. So the
+current setting 2 is too small. On slow/busy host (or VMs) the
+current timeout can expire even on "correct" execution, causing random
+failures. Let's copy the WAIT_TIMEOUT from forwarding/lib.sh and set
+BUSYWAIT_TIMEOUT here.
 
-Remove both masks as they are unnecessary and set the register correctly
-i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
-Subsystem Vendor ID.
-
-This is documented in the RK3399 TRM section 17.6.7.1.17
-
-[kwilczynski: removed unnecesary newline]
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Link: https://lore.kernel.org/linux-pci/20240403144508.489835-1-rick.wertenbroek@gmail.com
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
+Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240124061344.1864484-1-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/lib.sh |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -98,10 +98,8 @@ static int rockchip_pcie_ep_write_header
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -4,6 +4,9 @@
+ ##############################################################################
+ # Defines
  
- 	/* All functions share the same vendor ID with function 0 */
- 	if (fn == 0) {
--		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
--			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
--
--		rockchip_pcie_write(rockchip, vid_regs,
-+		rockchip_pcie_write(rockchip,
-+				    hdr->vendorid | hdr->subsys_vendor_id << 16,
- 				    PCIE_CORE_CONFIG_VENDOR);
- 	}
++WAIT_TIMEOUT=${WAIT_TIMEOUT:=20}
++BUSYWAIT_TIMEOUT=$((WAIT_TIMEOUT * 1000)) # ms
++
+ # Kselftest framework requirement - SKIP code is 4.
+ ksft_skip=4
+ # namespace list created by setup_ns
+@@ -48,7 +51,7 @@ cleanup_ns()
  
+ 	for ns in "$@"; do
+ 		ip netns delete "${ns}" &> /dev/null
+-		if ! busywait 2 ip netns list \| grep -vq "^$ns$" &> /dev/null; then
++		if ! busywait $BUSYWAIT_TIMEOUT ip netns list \| grep -vq "^$ns$" &> /dev/null; then
+ 			echo "Warn: Failed to remove namespace $ns"
+ 			ret=1
+ 		fi
 
 
 
