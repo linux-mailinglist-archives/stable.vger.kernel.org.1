@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9386490EC5A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6AAF90ED8D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 189FB283A28
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E7F61F217E1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899A0143C4A;
-	Wed, 19 Jun 2024 13:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A329143C65;
+	Wed, 19 Jun 2024 13:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOqUsEpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFl9EF60"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464A6132129;
-	Wed, 19 Jun 2024 13:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075BD82495;
+	Wed, 19 Jun 2024 13:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802391; cv=none; b=Mcf12BMuoGE9QYGAxOlYpn8lYbSD7s96AVzFLw7KLBKRqZz2osVJCi15lhFusZz7Bx1QaktRvb2Q1L410FIvkgkcyOOT3Z/ROMrlM4VpGcJCypsZ6IcOsZ4mDH5qxhg65ATiwA38t4hePOnUik4R/tz+6mtmmwywGihr0iG0wuU=
+	t=1718803170; cv=none; b=dfn6pMmqxKZuSVgqG+9Hg8bmc9qLbwgSTvZDnyHrl0mNGqUqzHzO0TFscjbJLH+NOkzY9c87ou+1BIrQ2Rt/Scot3FC3ac65ytA+lNaONufbpse9uGRqb/Rqm5ohzG5/kbo1LE10cBMuq2vjzjpGjh0P+fx0KhKRXE5YG/Eco8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802391; c=relaxed/simple;
-	bh=JmEo4Qs4L8sIOotB0vKCpKNFGExS/3l4zTWVZL8aBRA=;
+	s=arc-20240116; t=1718803170; c=relaxed/simple;
+	bh=9Ypry8GwffCLuCOrIlexPV8+rpYiwlPRqzeBX8dA9eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFF45BVSVlmKYsn0vhu5T7X6guXrgZYV9S2uut2vAVi+PcG8BbmN5yxZmsuAPBLy3ahi01m+uMgGm0dZSTX2GFj+9dD+ZTuTjomR04uv42qVvsXodneTPgxxNiNuJlgJD96FHgScQ+MnoqMCDQoX5I2j1MrrUizFTbyaK7eNMeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOqUsEpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEA8C2BBFC;
-	Wed, 19 Jun 2024 13:06:30 +0000 (UTC)
+	 MIME-Version; b=eqvUspi4x+MM4RKVUJXAevVnLuAGRf9yy6ziYIwaM7jt5hp6a8Jll6ql3VOhOUICHNxlhlMYQXI+3VgxLBe0B41YLGZVfCpKvOD/7aD4bQgg/80kQfTiSuvdaxHJImtgJMPTtsS3o/4tWrOcO7USvuTxHMh0Mvdpt54mDLs/LDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFl9EF60; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F3DC2BBFC;
+	Wed, 19 Jun 2024 13:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802391;
-	bh=JmEo4Qs4L8sIOotB0vKCpKNFGExS/3l4zTWVZL8aBRA=;
+	s=korg; t=1718803169;
+	bh=9Ypry8GwffCLuCOrIlexPV8+rpYiwlPRqzeBX8dA9eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yOqUsEpONC2WqeLoV/FJlPklzPWugJ73ZKu1sBktenr2u45hv4arwl+vjc3vxgRV9
-	 YaAROpVVQ9RTz5WleOw8e+3fwGelPU0zOmzsxORyaLkPFa+2KucypqkzRexy/6Vy+m
-	 nYd+s0NbxqwYyXua+jkFukDk+EKzBReT77AyIo3w=
+	b=NFl9EF60cfSslITjTvlx5/F+YpFyr0h22GiYDbWt064ID3HlcLXx2loDIXHmlWjxX
+	 Vo6gRxpwV9jWpDVTHBKdMGb0FtB4XyrtyhDh2bN0OLornM2wAXPnqQmU3r9BtOO99G
+	 xcdK785pob2JAWV3kWtPovN1EoKLhS7z4nbrRy+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/267] Bluetooth: L2CAP: Fix rejecting L2CAP_CONN_PARAM_UPDATE_REQ
+Subject: [PATCH 6.9 145/281] modpost: do not warn about missing MODULE_DESCRIPTION() for vmlinux.o
 Date: Wed, 19 Jun 2024 14:55:04 +0200
-Message-ID: <20240619125612.217481349@linuxfoundation.org>
+Message-ID: <20240619125615.420137792@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 806a5198c05987b748b50f3d0c0cfb3d417381a4 ]
+[ Upstream commit 9185afeac2a3dcce8300a5684291a43c2838cfd6 ]
 
-This removes the bogus check for max > hcon->le_conn_max_interval since
-the later is just the initial maximum conn interval not the maximum the
-stack could support which is really 3200=4000ms.
+Building with W=1 incorrectly emits the following warning:
 
-In order to pass GAP/CONN/CPUP/BV-05-C one shall probably enter values
-of the following fields in IXIT that would cause hci_check_conn_params
-to fail:
+  WARNING: modpost: missing MODULE_DESCRIPTION() in vmlinux.o
 
-TSPX_conn_update_int_min
-TSPX_conn_update_int_max
-TSPX_conn_update_peripheral_latency
-TSPX_conn_update_supervision_timeout
+This check should apply only to modules.
 
-Link: https://github.com/bluez/bluez/issues/847
-Fixes: e4b019515f95 ("Bluetooth: Enforce validation on max value of connection interval")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 1fffe7a34c89 ("script: modpost: emit a warning when the description is missing")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h | 36 ++++++++++++++++++++++++++++----
- net/bluetooth/l2cap_core.c       |  8 +------
- 2 files changed, 33 insertions(+), 11 deletions(-)
+ scripts/mod/modpost.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index f786d2d62fa5e..f89d6d43ba8f1 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -2071,18 +2071,46 @@ static inline int hci_check_conn_params(u16 min, u16 max, u16 latency,
- {
- 	u16 max_latency;
- 
--	if (min > max || min < 6 || max > 3200)
-+	if (min > max) {
-+		BT_WARN("min %d > max %d", min, max);
- 		return -EINVAL;
-+	}
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index 2f5b91da5afa9..c27c762e68807 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -1652,10 +1652,11 @@ static void read_symbols(const char *modname)
+ 			namespace = get_next_modinfo(&info, "import_ns",
+ 						     namespace);
+ 		}
 +
-+	if (min < 6) {
-+		BT_WARN("min %d < 6", min);
-+		return -EINVAL;
-+	}
-+
-+	if (max > 3200) {
-+		BT_WARN("max %d > 3200", max);
-+		return -EINVAL;
-+	}
-+
-+	if (to_multiplier < 10) {
-+		BT_WARN("to_multiplier %d < 10", to_multiplier);
-+		return -EINVAL;
-+	}
++		if (extra_warn && !get_modinfo(&info, "description"))
++			warn("missing MODULE_DESCRIPTION() in %s\n", modname);
+ 	}
  
--	if (to_multiplier < 10 || to_multiplier > 3200)
-+	if (to_multiplier > 3200) {
-+		BT_WARN("to_multiplier %d > 3200", to_multiplier);
- 		return -EINVAL;
-+	}
+-	if (extra_warn && !get_modinfo(&info, "description"))
+-		warn("missing MODULE_DESCRIPTION() in %s\n", modname);
+ 	for (sym = info.symtab_start; sym < info.symtab_stop; sym++) {
+ 		symname = remove_dot(info.strtab + sym->st_name);
  
--	if (max >= to_multiplier * 8)
-+	if (max >= to_multiplier * 8) {
-+		BT_WARN("max %d >= to_multiplier %d * 8", max, to_multiplier);
- 		return -EINVAL;
-+	}
- 
- 	max_latency = (to_multiplier * 4 / max) - 1;
--	if (latency > 499 || latency > max_latency)
-+	if (latency > 499) {
-+		BT_WARN("latency %d > 499", latency);
- 		return -EINVAL;
-+	}
-+
-+	if (latency > max_latency) {
-+		BT_WARN("latency %d > max_latency %d", latency, max_latency);
-+		return -EINVAL;
-+	}
- 
- 	return 0;
- }
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 37210567fbfbe..d5fb78c604cf3 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4645,13 +4645,7 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
- 
- 	memset(&rsp, 0, sizeof(rsp));
- 
--	if (max > hcon->le_conn_max_interval) {
--		BT_DBG("requested connection interval exceeds current bounds.");
--		err = -EINVAL;
--	} else {
--		err = hci_check_conn_params(min, max, latency, to_multiplier);
--	}
--
-+	err = hci_check_conn_params(min, max, latency, to_multiplier);
- 	if (err)
- 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
- 	else
 -- 
 2.43.0
 
