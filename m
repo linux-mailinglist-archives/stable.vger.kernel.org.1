@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260C290EDAD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:21:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C033C90EC7F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D073E1F215ED
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EE031F2153A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4F3145FEF;
-	Wed, 19 Jun 2024 13:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6EE143C43;
+	Wed, 19 Jun 2024 13:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGn8uAPr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8q4JtkO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279E0143757;
-	Wed, 19 Jun 2024 13:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831FC132129;
+	Wed, 19 Jun 2024 13:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803258; cv=none; b=q72OBPSq08gGbf+/g88u2JSI/htWcp5b4rbbtBmDQJCazxaFr/OU2SNwSOcPyznsJYCDZOtIYcHi3V2Vamyq0IqFzGAH0nfIsqz8aX0aLn0OFgx+Y2JUEIIf/9u+vjQpsnmgMMLCISrS2HQL2Orn4XsSFOV9NvLbTJVKjlQ09sk=
+	t=1718802491; cv=none; b=IlhTU3RUzLo5PROrlOIa2eSDTcJUq4ncgpiTUSi+yFUJKfb0AA44MeFPZUUNYsswv09p/j3sfTQ1n04u6MZCOngVLGgGxR8ERQ9VWX27MNH9cwl1Lk+l+qvl/f/Uiq5k4zRURGwBJs7+ZJywlfhqgyaNcjOHKEZXqoTCfpf/L8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803258; c=relaxed/simple;
-	bh=hisnOorvDbekk7VFC99rIDyxLMCR/nEi6sgwEDbb0wI=;
+	s=arc-20240116; t=1718802491; c=relaxed/simple;
+	bh=PCRfG7Uwr6EPnVZT7V4d0hjsYUpwhJ/qr2bj+1Y98hQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFmmvclb5tu3oLECzydpV50IX81kfjkOfJfC7qf3bxhwI1F+0nd1slrzZAMiP+gaFvY2wtzpZhvoyetX5Muo+d4vOUzCMiyRMS6smuoCzFOSQsrGtGSoIctFb0hE64g9YnmDlt2wfiCREc3J37AIkT1J+aQqQmd9uA768k8InFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGn8uAPr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D76C2BBFC;
-	Wed, 19 Jun 2024 13:20:57 +0000 (UTC)
+	 MIME-Version; b=blxF5We9gnTVXnaH2JOB0Ga4vP2jmbpsFb0rH4MciheziMK4IbkZucORe2pyJI164CogPl4FZCLM1NwI+F36vyCRegaiNGhQmOYtd6i/N5y1tPHt9xyZi10Fab6HosmQNzZywFOoKpnxM0lI31MMBuZzZHMLgb5t+DGHMMxuua0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8q4JtkO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0907FC2BBFC;
+	Wed, 19 Jun 2024 13:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803258;
-	bh=hisnOorvDbekk7VFC99rIDyxLMCR/nEi6sgwEDbb0wI=;
+	s=korg; t=1718802491;
+	bh=PCRfG7Uwr6EPnVZT7V4d0hjsYUpwhJ/qr2bj+1Y98hQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGn8uAPrjRcdyXrZh6TNWBdFwYlbUVbIB3l7GHidePd/ckG100auhII7vKh4IgMk/
-	 9qBox/qYfr8pjmveRgrYjRnILrXQMe1huxJrfXtM5ssDvwRoKpTtJejSDAueblwpch
-	 Nwx2lxO/ltx4fjDBTcjAG+EJ69VMuRouuMt/uHnc=
+	b=O8q4JtkObgq7WkDlYciPSnp8e5w+7tlGxIG4QAnD4Ail6kqLrzmtpidBR3ZXl0E5Y
+	 hCSDLzvW/c+jGFGFEl6yvH4aDPoS1rp9sQA0yDyeLtNsUZKvf97n7Yo7ksNZxjXgUB
+	 Kz+KcxX8iiGnuIO2MQeG0GqmyWIlPS1VJlWupuVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tibor Billes <tbilles@gmx.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.9 205/281] thermal: ACPI: Invalidate trip points with temperature of 0 or below
+	Jonathan Corbet <corbet@lwn.net>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Daniel Bristot de Oliveira <bristot@kernel.org>
+Subject: [PATCH 6.6 213/267] rtla/timerlat: Simplify "no value" printing on top
 Date: Wed, 19 Jun 2024 14:56:04 +0200
-Message-ID: <20240619125617.838461860@linuxfoundation.org>
+Message-ID: <20240619125614.501791773@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Daniel Bristot de Oliveira <bristot@kernel.org>
 
-commit 7f18bd49cb6b6a3ab6d860fefccdc94f2a247db0 upstream.
+commit 5f0769331a965675cdfec97c09f3f6e875d7c246 upstream.
 
-It is reported that commit 950210887670 ("thermal: core: Drop
-trips_disabled bitmask") causes the maximum frequency of CPUs to drop
-further down with every system sleep-wake cycle on Intel Core i7-4710HQ.
+Instead of printing three times the same output, print it only once,
+reducing lines and being sure that all no values have the same length.
 
-This turns out to be due to a trip point whose temperature is equal to 0
-degrees Celsius which is acted on every time the system wakes from sleep.
+It also fixes an extra '\n' when running the with kernel threads, like
+here:
 
-Before commit 950210887670 this trip point would be disabled wia the
-trips_disabled bitmask, but now it is treated as a valid one.
+     =============== %< ==============
+                                      Timer Latency
 
-Since ACPI thermal control is generally about protection against
-overheating, trip points with temperature of 0 centigrade or below are
-not particularly useful there, so initialize them all as invalid which
-fixes the problem at hand.
+   0 00:00:01   |          IRQ Timer Latency (us)        |         Thread Timer Latency (us)
+ CPU COUNT      |      cur       min       avg       max |      cur       min       avg       max
+   2 #0         |        -         -         -         - |      161       161       161       161
+   3 #0         |        -         -         -         - |      161       161       161       161
+   8 #1         |       54        54        54        54 |        -         -         -         -'\n'
 
-Fixes: 950210887670 ("thermal: core: Drop trips_disabled bitmask")
-Closes: https://lore.kernel.org/linux-pm/3f71747b-f852-4ee0-b384-cf46b2aefa3f@gmx.com
-Reported-by: Tibor Billes <tbilles@gmx.com>
-Tested-by: Tibor Billes <tbilles@gmx.com>
-Cc: 6.7+ <stable@vger.kernel.org> # 6.7+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+ ---------------|----------------------------------------|---------------------------------------
+ ALL #1      e0 |                 54        54        54 |                161       161       161
+     =============== %< ==============
+
+This '\n' should have been removed with the user-space support that
+added another '\n' if not running with kernel threads.
+
+Link: https://lkml.kernel.org/r/0a4d8085e7cd706733a5dc10a81ca38b82bd4992.1713968967.git.bristot@kernel.org
+
+Cc: stable@vger.kernel.org
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Fixes: cdca4f4e5e8e ("rtla/timerlat_top: Add timerlat user-space support")
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/thermal.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/tracing/rtla/src/timerlat_top.c |   17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
---- a/drivers/acpi/thermal.c
-+++ b/drivers/acpi/thermal.c
-@@ -168,11 +168,17 @@ static int acpi_thermal_get_polling_freq
- 
- static int acpi_thermal_temp(struct acpi_thermal *tz, int temp_deci_k)
- {
-+	int temp;
-+
- 	if (temp_deci_k == THERMAL_TEMP_INVALID)
- 		return THERMAL_TEMP_INVALID;
- 
--	return deci_kelvin_to_millicelsius_with_offset(temp_deci_k,
-+	temp = deci_kelvin_to_millicelsius_with_offset(temp_deci_k,
- 						       tz->kelvin_offset);
-+	if (temp <= 0)
-+		return THERMAL_TEMP_INVALID;
-+
-+	return temp;
+--- a/tools/tracing/rtla/src/timerlat_top.c
++++ b/tools/tracing/rtla/src/timerlat_top.c
+@@ -211,6 +211,8 @@ static void timerlat_top_header(struct o
+ 	trace_seq_printf(s, "\n");
  }
  
- static bool acpi_thermal_trip_valid(struct acpi_thermal_trip *acpi_trip)
++static const char *no_value = "        -";
++
+ /*
+  * timerlat_top_print - prints the output of a given CPU
+  */
+@@ -238,10 +240,7 @@ static void timerlat_top_print(struct os
+ 	trace_seq_printf(s, "%3d #%-9d |", cpu, cpu_data->irq_count);
+ 
+ 	if (!cpu_data->irq_count) {
+-		trace_seq_printf(s, "        - ");
+-		trace_seq_printf(s, "        - ");
+-		trace_seq_printf(s, "        - ");
+-		trace_seq_printf(s, "        - |");
++		trace_seq_printf(s, "%s %s %s %s |", no_value, no_value, no_value, no_value);
+ 	} else {
+ 		trace_seq_printf(s, "%9llu ", cpu_data->cur_irq / params->output_divisor);
+ 		trace_seq_printf(s, "%9llu ", cpu_data->min_irq / params->output_divisor);
+@@ -250,10 +249,7 @@ static void timerlat_top_print(struct os
+ 	}
+ 
+ 	if (!cpu_data->thread_count) {
+-		trace_seq_printf(s, "        - ");
+-		trace_seq_printf(s, "        - ");
+-		trace_seq_printf(s, "        - ");
+-		trace_seq_printf(s, "        -\n");
++		trace_seq_printf(s, "%s %s %s %s", no_value, no_value, no_value, no_value);
+ 	} else {
+ 		trace_seq_printf(s, "%9llu ", cpu_data->cur_thread / divisor);
+ 		trace_seq_printf(s, "%9llu ", cpu_data->min_thread / divisor);
+@@ -270,10 +266,7 @@ static void timerlat_top_print(struct os
+ 	trace_seq_printf(s, " |");
+ 
+ 	if (!cpu_data->user_count) {
+-		trace_seq_printf(s, "        - ");
+-		trace_seq_printf(s, "        - ");
+-		trace_seq_printf(s, "        - ");
+-		trace_seq_printf(s, "        -\n");
++		trace_seq_printf(s, "%s %s %s %s\n", no_value, no_value, no_value, no_value);
+ 	} else {
+ 		trace_seq_printf(s, "%9llu ", cpu_data->cur_user / divisor);
+ 		trace_seq_printf(s, "%9llu ", cpu_data->min_user / divisor);
 
 
 
