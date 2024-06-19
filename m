@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6AED90EC85
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8773090EDB4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:21:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECAD01C20CB5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE511C20FA5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E364143C65;
-	Wed, 19 Jun 2024 13:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F17147C6E;
+	Wed, 19 Jun 2024 13:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A61UgWQJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtAkbC3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196C212FB31;
-	Wed, 19 Jun 2024 13:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D4782495;
+	Wed, 19 Jun 2024 13:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802506; cv=none; b=uRAq59lvmLaWw5X/lX7JAwn/etKAIeg5c80wFJSa8fMe+gyFJ+lCmaizLaySBKQ41w5YkrR6NJ8T2/XrNJ2T26EQmg+CEK/Qa0zTxkB2Bqr6jWExsb1ic2fk7hDQ1brLJA4fIVroqpI9aqclt5AVYmktk9dMIe0gwJp8wQlkCjM=
+	t=1718803273; cv=none; b=ihiaszqTVPrpbD9doLdN+vvtU7oBD831W2Y+/j7I3qcxdg/TZk2Pj14o9SDy8LG31N5qvuAuFe3KQFya3vnW++ocdMxsjWAth/togOvPv6G0u+nOYFl3FfJqWQl1AM5OUVOTV1u8Lr4dQjnXlJnrDSjU05g+eRd1XgTsj7qIPuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802506; c=relaxed/simple;
-	bh=gh9sFv8YCEjwh6onXerNR9flz2WbtmazLG5I/TV0CKI=;
+	s=arc-20240116; t=1718803273; c=relaxed/simple;
+	bh=lKjwkPn+hVF2wJ7Nmtiwm2ncB8g3OTxwn9NNdENRBR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aT7hN4OUlWPtPj0REDUSCHUVPhW3b7q9y0a48K44Jy1mxj6r78h03cEambynpUVnlJhlCIPjtp3jCZAyrVfMTJVPoLP0ev2fNjr3KLCP+t7qogltihGEcUGJ4uemsA3DrBRi9Yl2oNIjYtBj7TAnlc9IcQ7ePfk4D3rpQYB0N3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A61UgWQJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B17FC4AF51;
-	Wed, 19 Jun 2024 13:08:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QyVgmMoSqEfNDcuNHuFZjZXjLQzUFNPv8Oxxb82fHqBkguuG+HN0SpEXYCTrR2q3u/YcRjVAxZx722iFfOIUS+h8P4IjTPG+Kd+wiP7BQQevyt9cH77crTJBmROYgslctwEwGbtS1pgOC1KnXofnPi0zM8vvicQwXZuQ9GggwI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtAkbC3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437D4C4AF49;
+	Wed, 19 Jun 2024 13:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802505;
-	bh=gh9sFv8YCEjwh6onXerNR9flz2WbtmazLG5I/TV0CKI=;
+	s=korg; t=1718803272;
+	bh=lKjwkPn+hVF2wJ7Nmtiwm2ncB8g3OTxwn9NNdENRBR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A61UgWQJqjbDzMreZctdBrSxMA6RiM6RNA5mPwRKhVy57rclBoJLsl7kJvmi/4MEd
-	 gG6mc/u9Npelq+aag4tFaeP1uv9V/JeKaraZGc/6LKL57a1eO/qh2qaDwDiRCHBjF9
-	 GDKRD7FSBekPa2a6QZkjZUarLlSmH3oDTcS2eDfA=
+	b=FtAkbC3u3wTmJv+PfUqgwAzFjRhSqeR7/zZxREOfr6YVhx+XdRlWCrHqj1hwVdCBg
+	 VeVLZdu0qU9ZfPBtZ/5wXGKKEo7H2gwJDbyn4zC30Z4YXy9MPpbxqsi/yGk/ndmE0u
+	 0zArsxaliTbjqpB0i/nCItHHD+8pK+SUxZiCS9t8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	"Michael J. Ruhl" <michael.j.ruhl@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 188/267] clkdev: Update clkdev id usage to allow for longer names
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 180/281] drm/xe: flush engine buffers before signalling user fence on all engines
 Date: Wed, 19 Jun 2024 14:55:39 +0200
-Message-ID: <20240619125613.557162266@linuxfoundation.org>
+Message-ID: <20240619125616.761773282@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael J. Ruhl <michael.j.ruhl@intel.com>
+From: Andrzej Hajda <andrzej.hajda@intel.com>
 
-commit 99f4570cfba1e60daafde737cb7e395006d719e6 upstream.
+[ Upstream commit b5e3a9b83f352a737b77a01734a6661d1130ed49 ]
 
-clkdev DEV ID information is limited to an array of 20 bytes
-(MAX_DEV_ID).  It is possible that the ID could be longer than
-that.  If so, the lookup will fail because the "real ID" will
-not match the copied value.
+Tests show that user fence signalling requires kind of write barrier,
+otherwise not all writes performed by the workload will be available
+to userspace. It is already done for render and compute, we need it
+also for the rest: video, gsc, copy.
 
-For instance, generating a device name for the I2C Designware
-module using the PCI ID can result in a name of:
-
-i2c_designware.39424
-
-clkdev_create() will store:
-
-i2c_designware.3942
-
-The stored name is one off and will not match correctly during probe.
-
-Increase the size of the ID to allow for a longer name.
-
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
-Link: https://lore.kernel.org/r/20240223202556.2194021-1-michael.j.ruhl@intel.com
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240605-fix_user_fence_posted-v3-2-06e7932f784a@intel.com
+(cherry picked from commit 3ad7d18c5dad75ed38098c7cc3bc9594b4701399)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clkdev.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_ring_ops.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/clkdev.c
-+++ b/drivers/clk/clkdev.c
-@@ -144,7 +144,7 @@ void clkdev_add_table(struct clk_lookup
- 	mutex_unlock(&clocks_mutex);
+diff --git a/drivers/gpu/drm/xe/xe_ring_ops.c b/drivers/gpu/drm/xe/xe_ring_ops.c
+index 5b2b37b598130..820c8d73c464f 100644
+--- a/drivers/gpu/drm/xe/xe_ring_ops.c
++++ b/drivers/gpu/drm/xe/xe_ring_ops.c
+@@ -79,6 +79,16 @@ static int emit_store_imm_ggtt(u32 addr, u32 value, u32 *dw, int i)
+ 	return i;
  }
  
--#define MAX_DEV_ID	20
-+#define MAX_DEV_ID	24
- #define MAX_CON_ID	16
++static int emit_flush_dw(u32 *dw, int i)
++{
++	dw[i++] = MI_FLUSH_DW | MI_FLUSH_IMM_DW;
++	dw[i++] = 0;
++	dw[i++] = 0;
++	dw[i++] = 0;
++
++	return i;
++}
++
+ static int emit_flush_imm_ggtt(u32 addr, u32 value, bool invalidate_tlb,
+ 			       u32 *dw, int i)
+ {
+@@ -233,10 +243,12 @@ static void __emit_job_gen12_simple(struct xe_sched_job *job, struct xe_lrc *lrc
  
- struct clk_lookup_alloc {
+ 	i = emit_bb_start(batch_addr, ppgtt_flag, dw, i);
+ 
+-	if (job->user_fence.used)
++	if (job->user_fence.used) {
++		i = emit_flush_dw(dw, i);
+ 		i = emit_store_imm_ppgtt_posted(job->user_fence.addr,
+ 						job->user_fence.value,
+ 						dw, i);
++	}
+ 
+ 	i = emit_flush_imm_ggtt(xe_lrc_seqno_ggtt_addr(lrc), seqno, false, dw, i);
+ 
+@@ -292,10 +304,12 @@ static void __emit_job_gen12_video(struct xe_sched_job *job, struct xe_lrc *lrc,
+ 
+ 	i = emit_bb_start(batch_addr, ppgtt_flag, dw, i);
+ 
+-	if (job->user_fence.used)
++	if (job->user_fence.used) {
++		i = emit_flush_dw(dw, i);
+ 		i = emit_store_imm_ppgtt_posted(job->user_fence.addr,
+ 						job->user_fence.value,
+ 						dw, i);
++	}
+ 
+ 	i = emit_flush_imm_ggtt(xe_lrc_seqno_ggtt_addr(lrc), seqno, false, dw, i);
+ 
+-- 
+2.43.0
+
 
 
 
