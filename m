@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A37C90EE62
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E63990EC25
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 161031F232DD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1137B2436A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A77149C43;
-	Wed, 19 Jun 2024 13:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D237146586;
+	Wed, 19 Jun 2024 13:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+Omz+6G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhcFP7ld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E627914601E;
-	Wed, 19 Jun 2024 13:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1484143C43;
+	Wed, 19 Jun 2024 13:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803684; cv=none; b=B77Nv4gRXFFKVzl0lYADEbKQ48mIG9Zm7q5ZBIfhsDbP8vauEGMG8lon22TvyrUuBd9KeLHj12RLer05FgiYUFdrvcdoqLYctvOS3S7x8EvT++KWJIlXfiUWyeaZ8pBoaAkrUyI0CfF6oBbXzWejf21D5yToqZt33P8Tcd7DCmE=
+	t=1718802240; cv=none; b=ayr/FeEsHcJnLBsy6YhnInNJ1bJkuWe1mh4nhCmPP9WvBYeLOdmcSUknZ6Omjag2I0KCbp2U535DhonLNQRAmNYIXZSor+tBampFTt+mwAYPmq2QZ6Z43ds+z1U8qUlrt40gVo7xTs0J62fDZ07jbBZ+NPvlm+opcRT1TIFs2eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803684; c=relaxed/simple;
-	bh=nNGtQYkSiDNBhmzrRDxfIOmhwiysDuLncl6xssSt6AA=;
+	s=arc-20240116; t=1718802240; c=relaxed/simple;
+	bh=++zPPp/xfinhWiGnZXcRCll0Y4y7nh+0ZhfGenOpH0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JfgQYWW3YRuRIpoUPDpy192++oAzmYHf0HgqZTVZRHu4j0V9AjOXjYxX+lKyTBg3kmjKxbJl3HN06u9LvGkV1rsl+tpEhIU3waKE/SxxOl+OKCfcExsoJbtQfKh2dYazIJQV3MjA+XBE6bcTjw9wRGRVeCsc2rFaiXfdoibOACM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+Omz+6G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2AFC2BBFC;
-	Wed, 19 Jun 2024 13:28:03 +0000 (UTC)
+	 MIME-Version; b=o676w1rZf3fVVKYP5H2zbAnceGbxRzw28TioitflVaXW5ehX/gJ9qNsQ8IdF9LE8LRIWtCP9TT6JCOL+jLIB/AW00d2iQaAHvwXE9xOBPtd8nmIuyAepe/H1BInp2ARkKRQG/hXK0PwU1Ve8/Ep6quqeesXRM6XDfXZ6rB5zHXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhcFP7ld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3CBC2BBFC;
+	Wed, 19 Jun 2024 13:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803683;
-	bh=nNGtQYkSiDNBhmzrRDxfIOmhwiysDuLncl6xssSt6AA=;
+	s=korg; t=1718802240;
+	bh=++zPPp/xfinhWiGnZXcRCll0Y4y7nh+0ZhfGenOpH0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+Omz+6GJR+05pIcm989mWcd4LxHQPHa3iDEjrKA6XviJHe3pU1J/FdRdhK1+7ZA6
-	 L9I0sR7TwAOS544EUyP+Vm2YH+gDpv7kHpTLbpiP09B4bJySnlUzsV0v07uVtL90W7
-	 7ME2T3RvlPkJQQ67RR4TfcRCbB5lEF/qMQ8m5nEk=
+	b=GhcFP7ldj3aldM3EzA60K2+qbNpnvMeProX4spVhLnO8lkSOk0gZlR0/Go4zmzATa
+	 bacwhXnD/XnXtO0SV+TLTk6MD8zJrKhLBQiLlGS8VID/pHYfs1W5H92ZeK46qOcr+D
+	 TN+isC1yK9NhNhzmQpBoumPI1oEDt7NcmmYzL+rE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	"Kun(llfl)" <llfl@linux.alibaba.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/217] af_unix: Annotate data-races around sk->sk_state in unix_write_space() and poll().
+Subject: [PATCH 6.6 130/267] iommu/amd: Fix sysfs leak in iommu init
 Date: Wed, 19 Jun 2024 14:54:41 +0200
-Message-ID: <20240619125558.125854665@linuxfoundation.org>
+Message-ID: <20240619125611.341159844@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Kun(llfl) <llfl@linux.alibaba.com>
 
-[ Upstream commit eb0718fb3e97ad0d6f4529b810103451c90adf94 ]
+[ Upstream commit a295ec52c8624883885396fde7b4df1a179627c3 ]
 
-unix_poll() and unix_dgram_poll() read sk->sk_state locklessly and
-calls unix_writable() which also reads sk->sk_state without holding
-unix_state_lock().
+During the iommu initialization, iommu_init_pci() adds sysfs nodes.
+However, these nodes aren't remove in free_iommu_resources() subsequently.
 
-Let's use READ_ONCE() in unix_poll() and unix_dgram_poll() and pass
-it to unix_writable().
-
-While at it, we remove TCP_SYN_SENT check in unix_dgram_poll() as
-that state does not exist for AF_UNIX socket since the code was added.
-
-Fixes: 1586a5877db9 ("af_unix: do not report POLLOUT on listeners")
-Fixes: 3c73419c09a5 ("af_unix: fix 'poll for write'/ connected DGRAM sockets")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 39ab9555c241 ("iommu: Add sysfs bindings for struct iommu_device")
+Signed-off-by: Kun(llfl) <llfl@linux.alibaba.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/c8e0d11c6ab1ee48299c288009cf9c5dae07b42d.1715215003.git.llfl@linux.alibaba.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ drivers/iommu/amd/init.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 6d7e1cd97c52e..67a2a0e842e4f 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -518,9 +518,9 @@ static int unix_dgram_peer_wake_me(struct sock *sk, struct sock *other)
- 	return 0;
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index a2ad2dbd04d92..ef3fae113dd64 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -1692,8 +1692,17 @@ static void __init free_pci_segments(void)
+ 	}
  }
  
--static int unix_writable(const struct sock *sk)
-+static int unix_writable(const struct sock *sk, unsigned char state)
++static void __init free_sysfs(struct amd_iommu *iommu)
++{
++	if (iommu->iommu.dev) {
++		iommu_device_unregister(&iommu->iommu);
++		iommu_device_sysfs_remove(&iommu->iommu);
++	}
++}
++
+ static void __init free_iommu_one(struct amd_iommu *iommu)
  {
--	return sk->sk_state != TCP_LISTEN &&
-+	return state != TCP_LISTEN &&
- 	       (refcount_read(&sk->sk_wmem_alloc) << 2) <= sk->sk_sndbuf;
- }
- 
-@@ -529,7 +529,7 @@ static void unix_write_space(struct sock *sk)
- 	struct socket_wq *wq;
- 
- 	rcu_read_lock();
--	if (unix_writable(sk)) {
-+	if (unix_writable(sk, READ_ONCE(sk->sk_state))) {
- 		wq = rcu_dereference(sk->sk_wq);
- 		if (skwq_has_sleeper(wq))
- 			wake_up_interruptible_sync_poll(&wq->wait,
-@@ -3180,12 +3180,14 @@ static int unix_compat_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
- static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wait)
- {
- 	struct sock *sk = sock->sk;
-+	unsigned char state;
- 	__poll_t mask;
- 	u8 shutdown;
- 
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
- 	shutdown = READ_ONCE(sk->sk_shutdown);
-+	state = READ_ONCE(sk->sk_state);
- 
- 	/* exceptional events? */
- 	if (sk->sk_err)
-@@ -3207,14 +3209,14 @@ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wa
- 
- 	/* Connection-based need to check for termination and startup */
- 	if ((sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) &&
--	    sk->sk_state == TCP_CLOSE)
-+	    state == TCP_CLOSE)
- 		mask |= EPOLLHUP;
- 
- 	/*
- 	 * we set writable also when the other side has shut down the
- 	 * connection. This prevents stuck sockets.
- 	 */
--	if (unix_writable(sk))
-+	if (unix_writable(sk, state))
- 		mask |= EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND;
- 
- 	return mask;
-@@ -3225,12 +3227,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- {
- 	struct sock *sk = sock->sk, *other;
- 	unsigned int writable;
-+	unsigned char state;
- 	__poll_t mask;
- 	u8 shutdown;
- 
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
- 	shutdown = READ_ONCE(sk->sk_shutdown);
-+	state = READ_ONCE(sk->sk_state);
- 
- 	/* exceptional events? */
- 	if (sk->sk_err || !skb_queue_empty_lockless(&sk->sk_error_queue))
-@@ -3249,19 +3253,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 
- 	/* Connection-based need to check for termination and startup */
--	if (sk->sk_type == SOCK_SEQPACKET) {
--		if (sk->sk_state == TCP_CLOSE)
--			mask |= EPOLLHUP;
--		/* connection hasn't started yet? */
--		if (sk->sk_state == TCP_SYN_SENT)
--			return mask;
--	}
-+	if (sk->sk_type == SOCK_SEQPACKET && state == TCP_CLOSE)
-+		mask |= EPOLLHUP;
- 
- 	/* No write status requested, avoid expensive OUT tests. */
- 	if (!(poll_requested_events(wait) & (EPOLLWRBAND|EPOLLWRNORM|EPOLLOUT)))
- 		return mask;
- 
--	writable = unix_writable(sk);
-+	writable = unix_writable(sk, state);
- 	if (writable) {
- 		unix_state_lock(sk);
- 
++	free_sysfs(iommu);
+ 	free_cwwb_sem(iommu);
+ 	free_command_buffer(iommu);
+ 	free_event_buffer(iommu);
 -- 
 2.43.0
 
