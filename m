@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-54362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283D190EDD5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DEBB90EEB0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:31:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FBD81C22626
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE4182820CC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642D91474AD;
-	Wed, 19 Jun 2024 13:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E06B13E037;
+	Wed, 19 Jun 2024 13:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCegKVp8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YV0YQRdx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D0B82495;
-	Wed, 19 Jun 2024 13:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B021E492;
+	Wed, 19 Jun 2024 13:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803356; cv=none; b=I3ERGd7kg46HxuY0dt5t3rLGPA6PxnNzAT/4HiEy2bCoa15bxKpCfxYh0SG7tTT9TA4JyMV7AQa5cPONlhu52fGBKtJ1nLODkwXZ398lYfXg0RcqDHJ7INaswf98GjiI0FF2mZMY20nBjZEdLdVYoM8tU6yuCFQPGxiBe6M0Ha8=
+	t=1718803861; cv=none; b=UxZ+4D6yjuesMnmm7zPvxfi7t5NAveg12CeDN2+9D72c9UBZvpCmONyEB3xJjtqnp5gLIHcQOe9sYrMIm4GP8NdqMQ4lC87vAK+TZztS1VoTsCE20qFMK1BCP9jcVdvVoT/x5qYO6cDGn5VydD5ax8yHiy8P/32w82HRATaugag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803356; c=relaxed/simple;
-	bh=2MaU1hlRBoGA0he2lLMcZ2RiUCoT8LWQFedpmHMB4qo=;
+	s=arc-20240116; t=1718803861; c=relaxed/simple;
+	bh=FpE/lsa+16q7iSTrAO9qUlRxXrGxjfEKxrvNEYmmdpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LdQ02orXTgVRfw4xp8m9NPfp4T7F8WNpDqcNDk6r5jSXmEUlEtImtpyCk4nSXIrIi7cQCsXUYmymN9XZqhFKDcLoucM+Ds1gGcbSz4CPuX/EcSBx3xKbuTuYniiuMGYWjmR+W2Sa6zlhvTGF/Fy5LlzDqZnB7gfhV8MtPKPLLQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCegKVp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B30DC2BBFC;
-	Wed, 19 Jun 2024 13:22:35 +0000 (UTC)
+	 MIME-Version; b=cbYcaXBKFDbhCFeVkBMh0v5JEOqikYJMIOto4RM79VNGJiLpN44aMnZlJmJ2RvVMS0QdT+pL/8/xvHh9+/tWxRikW1YFM4WUqvDyXeQ/OttyP/smD5p0h2gofFR65veJpOlf2BBjxZja/VN6SINSOnjk2P3XBSgJ1I6V1zK7m3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YV0YQRdx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324B1C4AF1A;
+	Wed, 19 Jun 2024 13:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803356;
-	bh=2MaU1hlRBoGA0he2lLMcZ2RiUCoT8LWQFedpmHMB4qo=;
+	s=korg; t=1718803860;
+	bh=FpE/lsa+16q7iSTrAO9qUlRxXrGxjfEKxrvNEYmmdpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCegKVp8t5bne+2uI6LIVphtTrTqZOy3cmnF5vyQx5NRFu9K19xbY0J4h0/s5Yqbg
-	 ySD//jR6WmoQnL4Lbn9k5ewwZxOOG7pWfJEG/Gk27LPfVmX+RSbBl8jQ3IqM8V7uEQ
-	 OOfIMh6wP4lfejfb0yyEhwGwcz2JZPuiiwyAKdLI=
+	b=YV0YQRdxrFmha1YDDxqTG0WHxp/bGhcHJm30W/Q97ow58SbHXXZobu+JCzQLUtEia
+	 bJ4f+2kqzztgcGyKFoUDOPibSPEjgHhTmXdgh2QYIeHJ0FMvCC/D1/MKFfjPY9r2Pm
+	 ZwCXwunBChoyOvbxuD3zvFH3zsSEwMvXkVuHpjbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	YonglongLi <liyonglong@chinatelecom.cn>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.9 212/281] mptcp: pm: update add_addr counters after connect
+	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/217] gpio: tqmx86: store IRQ trigger type and unmask status separately
 Date: Wed, 19 Jun 2024 14:56:11 +0200
-Message-ID: <20240619125618.118740333@linuxfoundation.org>
+Message-ID: <20240619125601.627258134@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YonglongLi <liyonglong@chinatelecom.cn>
+From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
 
-commit 40eec1795cc27b076d49236649a29507c7ed8c2d upstream.
+[ Upstream commit 08af509efdf8dad08e972b48de0e2c2a7919ea8b ]
 
-The creation of new subflows can fail for different reasons. If no
-subflow have been created using the received ADD_ADDR, the related
-counters should not be updated, otherwise they will never be decremented
-for events related to this ID later on.
+irq_set_type() should not implicitly unmask the IRQ.
 
-For the moment, the number of accepted ADD_ADDR is only decremented upon
-the reception of a related RM_ADDR, and only if the remote address ID is
-currently being used by at least one subflow. In other words, if no
-subflow can be created with the received address, the counter will not
-be decremented. In this case, it is then important not to increment
-pm.add_addr_accepted counter, and not to modify pm.accept_addr bit.
+All accesses to the interrupt configuration register are moved to a new
+helper tqmx86_gpio_irq_config(). We also introduce the new rule that
+accessing irq_type must happen while locked, which will become
+significant for fixing EDGE_BOTH handling.
 
-Note that this patch does not modify the behaviour in case of failures
-later on, e.g. if the MP Join is dropped or rejected.
-
-The "remove invalid addresses" MP Join subtest has been modified to
-validate this case. The broadcast IP address is added before the "valid"
-address that will be used to successfully create a subflow, and the
-limit is decreased by one: without this patch, it was not possible to
-create the last subflow, because:
-
-- the broadcast address would have been accepted even if it was not
-  usable: the creation of a subflow to this address results in an error,
-
-- the limit of 2 accepted ADD_ADDR would have then been reached.
-
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-3-1ab9ddfa3d00@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
+Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Link: https://lore.kernel.org/r/6aa4f207f77cb58ef64ffb947e91949b0f753ccd.1717063994.git.matthias.schiffer@ew.tq-group.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c                          |   16 ++++++++++------
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++--
- 2 files changed, 12 insertions(+), 8 deletions(-)
+ drivers/gpio/gpio-tqmx86.c | 48 ++++++++++++++++++++++----------------
+ 1 file changed, 28 insertions(+), 20 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -676,6 +676,7 @@ static void mptcp_pm_nl_add_addr_receive
- 	unsigned int add_addr_accept_max;
- 	struct mptcp_addr_info remote;
- 	unsigned int subflows_max;
-+	bool sf_created = false;
- 	int i, nr;
+diff --git a/drivers/gpio/gpio-tqmx86.c b/drivers/gpio/gpio-tqmx86.c
+index b7e2dbbdc4ebe..7e428c872a257 100644
+--- a/drivers/gpio/gpio-tqmx86.c
++++ b/drivers/gpio/gpio-tqmx86.c
+@@ -29,15 +29,19 @@
+ #define TQMX86_GPIIC	3	/* GPI Interrupt Configuration Register */
+ #define TQMX86_GPIIS	4	/* GPI Interrupt Status Register */
  
- 	add_addr_accept_max = mptcp_pm_get_add_addr_accept_max(msk);
-@@ -703,15 +704,18 @@ static void mptcp_pm_nl_add_addr_receive
- 	if (nr == 0)
- 		return;
++#define TQMX86_GPII_NONE	0
+ #define TQMX86_GPII_FALLING	BIT(0)
+ #define TQMX86_GPII_RISING	BIT(1)
+ #define TQMX86_GPII_MASK	(BIT(0) | BIT(1))
+ #define TQMX86_GPII_BITS	2
++/* Stored in irq_type with GPII bits */
++#define TQMX86_INT_UNMASKED	BIT(2)
  
--	msk->pm.add_addr_accepted++;
--	if (msk->pm.add_addr_accepted >= add_addr_accept_max ||
--	    msk->pm.subflows >= subflows_max)
--		WRITE_ONCE(msk->pm.accept_addr, false);
--
- 	spin_unlock_bh(&msk->pm.lock);
- 	for (i = 0; i < nr; i++)
--		__mptcp_subflow_connect(sk, &addrs[i], &remote);
-+		if (__mptcp_subflow_connect(sk, &addrs[i], &remote) == 0)
-+			sf_created = true;
- 	spin_lock_bh(&msk->pm.lock);
-+
-+	if (sf_created) {
-+		msk->pm.add_addr_accepted++;
-+		if (msk->pm.add_addr_accepted >= add_addr_accept_max ||
-+		    msk->pm.subflows >= subflows_max)
-+			WRITE_ONCE(msk->pm.accept_addr, false);
-+	}
+ struct tqmx86_gpio_data {
+ 	struct gpio_chip	chip;
+ 	void __iomem		*io_base;
+ 	int			irq;
++	/* Lock must be held for accessing output and irq_type fields */
+ 	raw_spinlock_t		spinlock;
+ 	DECLARE_BITMAP(output, TQMX86_NGPIO);
+ 	u8			irq_type[TQMX86_NGPI];
+@@ -104,21 +108,32 @@ static int tqmx86_gpio_get_direction(struct gpio_chip *chip,
+ 	return GPIO_LINE_DIRECTION_OUT;
  }
  
- void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2358,10 +2358,10 @@ remove_tests()
- 	if reset "remove invalid addresses"; then
- 		pm_nl_set_limits $ns1 3 3
- 		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
- 		# broadcast IP: no packet for this address will be received on ns1
- 		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal
--		pm_nl_set_limits $ns2 3 3
-+		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
-+		pm_nl_set_limits $ns2 2 2
- 		addr_nr_ns1=-3 speed=10 \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 1 1 1
++static void tqmx86_gpio_irq_config(struct tqmx86_gpio_data *gpio, int offset)
++	__must_hold(&gpio->spinlock)
++{
++	u8 type = TQMX86_GPII_NONE, gpiic;
++
++	if (gpio->irq_type[offset] & TQMX86_INT_UNMASKED)
++		type = gpio->irq_type[offset] & TQMX86_GPII_MASK;
++
++	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
++	gpiic &= ~(TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS));
++	gpiic |= type << (offset * TQMX86_GPII_BITS);
++	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
++}
++
+ static void tqmx86_gpio_irq_mask(struct irq_data *data)
+ {
+ 	unsigned int offset = (data->hwirq - TQMX86_NGPO);
+ 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(
+ 		irq_data_get_irq_chip_data(data));
+ 	unsigned long flags;
+-	u8 gpiic, mask;
+-
+-	mask = TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS);
+ 
+ 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
+-	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
+-	gpiic &= ~mask;
+-	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
++	gpio->irq_type[offset] &= ~TQMX86_INT_UNMASKED;
++	tqmx86_gpio_irq_config(gpio, offset);
+ 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
++
+ 	gpiochip_disable_irq(&gpio->chip, irqd_to_hwirq(data));
+ }
+ 
+@@ -128,16 +143,12 @@ static void tqmx86_gpio_irq_unmask(struct irq_data *data)
+ 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(
+ 		irq_data_get_irq_chip_data(data));
+ 	unsigned long flags;
+-	u8 gpiic, mask;
+-
+-	mask = TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS);
+ 
+ 	gpiochip_enable_irq(&gpio->chip, irqd_to_hwirq(data));
++
+ 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
+-	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
+-	gpiic &= ~mask;
+-	gpiic |= gpio->irq_type[offset] << (offset * TQMX86_GPII_BITS);
+-	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
++	gpio->irq_type[offset] |= TQMX86_INT_UNMASKED;
++	tqmx86_gpio_irq_config(gpio, offset);
+ 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
+ }
+ 
+@@ -148,7 +159,7 @@ static int tqmx86_gpio_irq_set_type(struct irq_data *data, unsigned int type)
+ 	unsigned int offset = (data->hwirq - TQMX86_NGPO);
+ 	unsigned int edge_type = type & IRQF_TRIGGER_MASK;
+ 	unsigned long flags;
+-	u8 new_type, gpiic;
++	u8 new_type;
+ 
+ 	switch (edge_type) {
+ 	case IRQ_TYPE_EDGE_RISING:
+@@ -164,13 +175,10 @@ static int tqmx86_gpio_irq_set_type(struct irq_data *data, unsigned int type)
+ 		return -EINVAL; /* not supported */
+ 	}
+ 
+-	gpio->irq_type[offset] = new_type;
+-
+ 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
+-	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
+-	gpiic &= ~((TQMX86_GPII_MASK) << (offset * TQMX86_GPII_BITS));
+-	gpiic |= new_type << (offset * TQMX86_GPII_BITS);
+-	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
++	gpio->irq_type[offset] &= ~TQMX86_GPII_MASK;
++	gpio->irq_type[offset] |= new_type;
++	tqmx86_gpio_irq_config(gpio, offset);
+ 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
