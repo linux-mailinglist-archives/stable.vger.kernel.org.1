@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-54128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81F390ECD0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:11:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF62490ECC0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B49F1F21DA8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:11:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7460D2814BB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E35C147C6E;
-	Wed, 19 Jun 2024 13:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E96912FB31;
+	Wed, 19 Jun 2024 13:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N90+AWbl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pD7V930r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F83146D49;
-	Wed, 19 Jun 2024 13:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19DB1422B8;
+	Wed, 19 Jun 2024 13:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802668; cv=none; b=szAt35JbbRjzvfY+JKo6wbACvmiBRa/ASaTpTl1iagLdJkhOqIsfaxDriAX8ONCqMCA9Yoom4DiHrAqZqclYBW6HpkzxaI1L3L6SqRsAdKRA6XVLEUJmgRSgvVsiTgJnm/UiTXP5ohyD0FSXgLxBx0mh8syF9YK5KgVRBRpSFUg=
+	t=1718802626; cv=none; b=b1Yc+nXvfL8omJ6nqIgVEwjXk2SnoHPWO82OSJbUglsQEk7GAJU+mjE6/kIZBwDPBNqjFYmeGBy9/5U30M7R+EbC//6o8xM+99TQCk49UYVkWM20VpcrkpQiSWg6nw1kf/l54ViHZbYQBTsa2U/tpyVmj4kTAdIVi0oM9cCiQJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802668; c=relaxed/simple;
-	bh=zAbkVeKMRYnlvDx0pxbFjZuOYe+MaIbfPkJ4RnYQj1E=;
+	s=arc-20240116; t=1718802626; c=relaxed/simple;
+	bh=cJQgjVF10pBRPllN7ZLPtvM0C+97xY6fs16EZ19UNnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7lvM7b0VSiHgpHinrjxLuAjhNA6wiusXFboxKBmfdgI9m6HkvXeYXscGIjXZyy+ejJmymL8+7P/aoqTP37bwOm5Revd0iUTXzmtMKq26a+W52lzuqsGTHnpcdG9+9OXBKTjfhRoyH6O4z06zmH5/ecOj1CQ9tReUXo8Ne3q4pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N90+AWbl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F7CC4AF1A;
-	Wed, 19 Jun 2024 13:11:07 +0000 (UTC)
+	 MIME-Version; b=Gxyil1SMbX2DWQNVGcB6CT1E23c7UakbUfP8RJ1JY9Zda0ZWmPD69OvW17T3JSEfD1b9lNQEaSK2t6okXICJBEnjuIBomxmppvEGpwUQP1WykW5pCFqJHxewnibMyoQGGqhkfrVR5u4ocD8XnxNtZSPrMZ+QShTeS9azAvLqjEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pD7V930r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48278C2BBFC;
+	Wed, 19 Jun 2024 13:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802668;
-	bh=zAbkVeKMRYnlvDx0pxbFjZuOYe+MaIbfPkJ4RnYQj1E=;
+	s=korg; t=1718802626;
+	bh=cJQgjVF10pBRPllN7ZLPtvM0C+97xY6fs16EZ19UNnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N90+AWblUnc/p2MUQxssFdBjIE4NMOra5zRdN+YJg2ZgR34fPOGt4Apxlb7ZsAyqd
-	 yXFIvzpiU8ABTOogGEyG6FfcPwjycN75DXKD2TlSIEqXkwuNtZ+80IgF9TbF6koXDU
-	 w6Al9dtxqsqDTvcwmKn8VBPqLp5hgCTlTemTnVm0=
+	b=pD7V930rkawhYctsTrfU7ptCYXbq36p8oNYSGk+7IUqCDf0PDsDppY+a6sBNtpVOm
+	 5yD6pUjn36r851b1yr+IR1jPU/C7PdFnHIfXQfV9o1TZ6mKkW8YUj3rnQq6zdREjEH
+	 u10Re9zyKNhy3oOF+VZ+leeEx7b6i0Pl0mMjpyPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Shyti <andi.shyti@linux.intel.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 260/267] serial: 8250_dw: Switch to use uart_read_port_properties()
-Date: Wed, 19 Jun 2024 14:56:51 +0200
-Message-ID: <20240619125616.294445975@linuxfoundation.org>
+Subject: [PATCH 6.6 261/267] serial: 8250_dw: Replace ACPI device check by a quirk
+Date: Wed, 19 Jun 2024 14:56:52 +0200
+Message-ID: <20240619125616.332221957@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
 References: <20240619125606.345939659@linuxfoundation.org>
@@ -68,152 +67,113 @@ Content-Transfer-Encoding: 8bit
 
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit e6a46d073e11baba785245860c9f51adbbb8b68d ]
+[ Upstream commit 173b097dcc8d74d6e135aed1bad38dbfa21c4d04 ]
 
-Since we have now a common helper to read port properties
-use it instead of sparse home grown solution.
+Instead of checking for APMC0D08 ACPI device presence,
+use a quirk based on driver data.
 
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240304123035.758700-8-andriy.shevchenko@linux.intel.com
+Link: https://lore.kernel.org/r/20240306143322.3291123-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: 87d80bfbd577 ("serial: 8250_dw: Don't use struct dw8250_data outside of 8250_dw")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_dw.c | 67 +++++++++++++------------------
- 1 file changed, 27 insertions(+), 40 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c | 51 ++++++++++++++++---------------
+ 1 file changed, 26 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
-index a1f2259cc9a98..0446ac145cd4a 100644
+index 0446ac145cd4a..a7659e536d3c0 100644
 --- a/drivers/tty/serial/8250/8250_dw.c
 +++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -17,7 +17,6 @@
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/notifier.h>
--#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
- #include <linux/property.h>
-@@ -449,12 +448,7 @@ static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
+@@ -9,7 +9,6 @@
+  * LCR is written whilst busy.  If it is, then a busy detect interrupt is
+  * raised, the LCR needs to be rewritten and the uart status register read.
+  */
+-#include <linux/acpi.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+@@ -55,6 +54,7 @@
+ #define DW_UART_QUIRK_ARMADA_38X	BIT(1)
+ #define DW_UART_QUIRK_SKIP_SET_RATE	BIT(2)
+ #define DW_UART_QUIRK_IS_DMA_FC		BIT(3)
++#define DW_UART_QUIRK_APMC0D08		BIT(4)
  
- 	if (np) {
- 		unsigned int quirks = data->pdata->quirks;
--		int id;
+ static inline struct dw8250_data *clk_to_dw8250_data(struct notifier_block *nb)
+ {
+@@ -444,33 +444,29 @@ static void dw8250_prepare_rx_dma(struct uart_8250_port *p)
  
--		/* get index of serial line, if found in DT aliases */
--		id = of_alias_get_id(np, "serial");
--		if (id >= 0)
--			p->line = id;
+ static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
+ {
+-	struct device_node *np = p->dev->of_node;
+-
+-	if (np) {
+-		unsigned int quirks = data->pdata->quirks;
++	unsigned int quirks = data->pdata ? data->pdata->quirks : 0;
+ 
  #ifdef CONFIG_64BIT
- 		if (quirks & DW_UART_QUIRK_OCTEON) {
- 			p->serial_in = dw8250_serial_inq;
-@@ -465,12 +459,6 @@ static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
- 		}
+-		if (quirks & DW_UART_QUIRK_OCTEON) {
+-			p->serial_in = dw8250_serial_inq;
+-			p->serial_out = dw8250_serial_outq;
+-			p->flags = UPF_SKIP_TEST | UPF_SHARE_IRQ | UPF_FIXED_TYPE;
+-			p->type = PORT_OCTEON;
+-			data->skip_autocfg = true;
+-		}
++	if (quirks & DW_UART_QUIRK_OCTEON) {
++		p->serial_in = dw8250_serial_inq;
++		p->serial_out = dw8250_serial_outq;
++		p->flags = UPF_SKIP_TEST | UPF_SHARE_IRQ | UPF_FIXED_TYPE;
++		p->type = PORT_OCTEON;
++		data->skip_autocfg = true;
++	}
  #endif
  
--		if (of_device_is_big_endian(np)) {
--			p->iotype = UPIO_MEM32BE;
--			p->serial_in = dw8250_serial_in32be;
--			p->serial_out = dw8250_serial_out32be;
+-		if (quirks & DW_UART_QUIRK_ARMADA_38X)
+-			p->serial_out = dw8250_serial_out38x;
+-		if (quirks & DW_UART_QUIRK_SKIP_SET_RATE)
+-			p->set_termios = dw8250_do_set_termios;
+-		if (quirks & DW_UART_QUIRK_IS_DMA_FC) {
+-			data->data.dma.txconf.device_fc = 1;
+-			data->data.dma.rxconf.device_fc = 1;
+-			data->data.dma.prepare_tx_dma = dw8250_prepare_tx_dma;
+-			data->data.dma.prepare_rx_dma = dw8250_prepare_rx_dma;
 -		}
 -
- 		if (quirks & DW_UART_QUIRK_ARMADA_38X)
- 			p->serial_out = dw8250_serial_out38x;
- 		if (quirks & DW_UART_QUIRK_SKIP_SET_RATE)
-@@ -515,39 +503,21 @@ static int dw8250_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct dw8250_data *data;
- 	struct resource *regs;
--	int irq;
- 	int err;
--	u32 val;
- 
- 	regs = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!regs)
- 		return dev_err_probe(dev, -EINVAL, "no registers defined\n");
- 
--	irq = platform_get_irq_optional(pdev, 0);
--	/* no interrupt -> fall back to polling */
--	if (irq == -ENXIO)
--		irq = 0;
--	if (irq < 0)
--		return irq;
--
- 	spin_lock_init(&p->lock);
--	p->mapbase	= regs->start;
--	p->irq		= irq;
- 	p->handle_irq	= dw8250_handle_irq;
- 	p->pm		= dw8250_do_pm;
- 	p->type		= PORT_8250;
--	p->flags	= UPF_SHARE_IRQ | UPF_FIXED_PORT;
-+	p->flags	= UPF_FIXED_PORT;
- 	p->dev		= dev;
--	p->iotype	= UPIO_MEM;
--	p->serial_in	= dw8250_serial_in;
--	p->serial_out	= dw8250_serial_out;
- 	p->set_ldisc	= dw8250_set_ldisc;
- 	p->set_termios	= dw8250_set_termios;
- 
--	p->membase = devm_ioremap(dev, regs->start, resource_size(regs));
--	if (!p->membase)
--		return -ENOMEM;
--
- 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
- 	if (!data)
- 		return -ENOMEM;
-@@ -559,15 +529,35 @@ static int dw8250_probe(struct platform_device *pdev)
- 	data->uart_16550_compatible = device_property_read_bool(dev,
- 						"snps,uart-16550-compatible");
- 
--	err = device_property_read_u32(dev, "reg-shift", &val);
--	if (!err)
--		p->regshift = val;
-+	p->mapbase = regs->start;
-+	p->mapsize = resource_size(regs);
- 
--	err = device_property_read_u32(dev, "reg-io-width", &val);
--	if (!err && val == 4) {
--		p->iotype = UPIO_MEM32;
-+	p->membase = devm_ioremap(dev, p->mapbase, p->mapsize);
-+	if (!p->membase)
-+		return -ENOMEM;
-+
-+	err = uart_read_port_properties(p);
-+	/* no interrupt -> fall back to polling */
-+	if (err == -ENXIO)
-+		err = 0;
-+	if (err)
-+		return err;
-+
-+	switch (p->iotype) {
-+	case UPIO_MEM:
-+		p->serial_in = dw8250_serial_in;
-+		p->serial_out = dw8250_serial_out;
-+		break;
-+	case UPIO_MEM32:
+-	} else if (acpi_dev_present("APMC0D08", NULL, -1)) {
++	if (quirks & DW_UART_QUIRK_ARMADA_38X)
++		p->serial_out = dw8250_serial_out38x;
++	if (quirks & DW_UART_QUIRK_SKIP_SET_RATE)
++		p->set_termios = dw8250_do_set_termios;
++	if (quirks & DW_UART_QUIRK_IS_DMA_FC) {
++		data->data.dma.txconf.device_fc = 1;
++		data->data.dma.rxconf.device_fc = 1;
++		data->data.dma.prepare_tx_dma = dw8250_prepare_tx_dma;
++		data->data.dma.prepare_rx_dma = dw8250_prepare_rx_dma;
++	}
++	if (quirks & DW_UART_QUIRK_APMC0D08) {
+ 		p->iotype = UPIO_MEM32;
+ 		p->regshift = 2;
  		p->serial_in = dw8250_serial_in32;
- 		p->serial_out = dw8250_serial_out32;
-+		break;
-+	case UPIO_MEM32BE:
-+		p->serial_in = dw8250_serial_in32be;
-+		p->serial_out = dw8250_serial_out32be;
-+		break;
-+	default:
-+		return -ENODEV;
- 	}
+@@ -772,13 +768,18 @@ static const struct of_device_id dw8250_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, dw8250_of_match);
  
- 	if (device_property_read_bool(dev, "dcd-override")) {
-@@ -594,9 +584,6 @@ static int dw8250_probe(struct platform_device *pdev)
- 		data->msr_mask_off |= UART_MSR_TERI;
- 	}
- 
--	/* Always ask for fixed clock rate from a property. */
--	device_property_read_u32(dev, "clock-frequency", &p->uartclk);
--
- 	/* If there is separate baudclk, get the rate from it. */
- 	data->clk = devm_clk_get_optional(dev, "baudclk");
- 	if (data->clk == NULL)
++static const struct dw8250_platform_data dw8250_apmc0d08 = {
++	.usr_reg = DW_UART_USR,
++	.quirks = DW_UART_QUIRK_APMC0D08,
++};
++
+ static const struct acpi_device_id dw8250_acpi_match[] = {
+ 	{ "80860F0A", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "8086228A", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "AMD0020", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "AMDI0020", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "AMDI0022", (kernel_ulong_t)&dw8250_dw_apb },
+-	{ "APMC0D08", (kernel_ulong_t)&dw8250_dw_apb},
++	{ "APMC0D08", (kernel_ulong_t)&dw8250_apmc0d08 },
+ 	{ "BRCM2032", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "HISI0031", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "INT33C4", (kernel_ulong_t)&dw8250_dw_apb },
 -- 
 2.43.0
 
