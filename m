@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-54488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFD490EE77
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE3890EC57
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3941289652
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D77E91F217E2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6250514B963;
-	Wed, 19 Jun 2024 13:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2B2132129;
+	Wed, 19 Jun 2024 13:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uz8ppCil"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jrlg5R6V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195A113E409;
-	Wed, 19 Jun 2024 13:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBF612FB31;
+	Wed, 19 Jun 2024 13:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803728; cv=none; b=JiqHTdFLSEwvOBQElVjHg4mVG9xozc1ELtEmwRxngbXV/IxWdSJbwhRzIqzTaNbMniFYBhHAzEfdmzBsoSiFKcpsKE9PCc3MWtHjvT88cUj4tW9y6tjoAe23i7RcKtV53G8z0GCAAIBTkfXNsksyMsNuOklz/ST7YbymCAAy2ZA=
+	t=1718802382; cv=none; b=oXgqYLuR70m7dUeXEUtzGWYbuEuuDTLVlunO/wtsHByp9aB8QoDB0hej/nYDGbeQVYQqmPsubC+uyPO6GGM8V+G7K6KqyHa6WbFZf3dhN5Ih/6vYcVUoy4Dp3aUZyntFAniqtjPe4HQKTSuQNzrDl6z3WK9eR2VBCDS1MtH7+48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803728; c=relaxed/simple;
-	bh=4Kn4V8tc8Dg9hRmbI/ktmENWHIMZVCbixGVM3VltUkM=;
+	s=arc-20240116; t=1718802382; c=relaxed/simple;
+	bh=FQAX9eRe2m7wYJ6PMdywmM+1K8Mwlx8vtsunzvxByVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OUYuCA0IoX7lZFikULLC+pHw/ySsPBb2nMRe8yQ7sTk56PSIABKvxeJsqZPRITMnMK5Yoc6aoGasJtdZRaGTJkNRS+uRiWk5Za+2/mTITISWUvCqIyKtN9MVO61Lu+a0ybl0Kk8xxKD0w2sRulGaFRFUJSMZOXWLV0RBOrp2HDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uz8ppCil; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94943C2BBFC;
-	Wed, 19 Jun 2024 13:28:47 +0000 (UTC)
+	 MIME-Version; b=ZGUL9VQV2V+AzLJi3NjLk3cynbxUu0IT5+vr8C11DD5AJPZlmlw7JJ/6Ak4nrpiCdXalqF7qTPtM13WARiLjvjAMu2Rm/uBUkzl0VKve2eTwSHP9gWdevYMEwwM2gkZpMxcR3CqM8Ei+lhD1M4/ApJAuNER35/s33Y6DJspwRmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jrlg5R6V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84FBC2BBFC;
+	Wed, 19 Jun 2024 13:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803728;
-	bh=4Kn4V8tc8Dg9hRmbI/ktmENWHIMZVCbixGVM3VltUkM=;
+	s=korg; t=1718802382;
+	bh=FQAX9eRe2m7wYJ6PMdywmM+1K8Mwlx8vtsunzvxByVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uz8ppCilTF77CvNnlHakCTeerTeNE8JtkhKQo7GVJKYomRVsjmo5pR2wnjm87TzNc
-	 bBVpga09cf+NXwg2hz9IKbKFT9/ntN1FG/WDFoibayjZG1SpywP120Kzj1NG5nOTlz
-	 AoCC0ug6NYCev3drxXIlKV9cNlqaAdunw7+8AuMM=
+	b=Jrlg5R6VN2YszykjOLKTesFJFyDDgJ9fNNjeYCpNyInQFpL50RH3hW5QF7Y7caOS6
+	 tUVYHPF0QIjGPf2aQ33xZ/OGGWAgj3THX4zyW+zV9CW7PRdII6gaoeK/2/CLXPxwy8
+	 7ZaTcpOaverXsN24LY8gxDFPl1JvVVikfjL+8Zds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 084/217] io_uring: check for non-NULL file pointer in io_file_can_poll()
-Date: Wed, 19 Jun 2024 14:55:27 +0200
-Message-ID: <20240619125559.930211343@linuxfoundation.org>
+	Marc Ferland <marc.ferland@sonatest.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 177/267] iio: dac: ad5592r: fix temperature channel scaling value
+Date: Wed, 19 Jun 2024 14:55:28 +0200
+Message-ID: <20240619125613.137442484@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,82 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Marc Ferland <marc.ferland@sonatest.com>
 
-commit 5fc16fa5f13b3c06fdb959ef262050bd810416a2 upstream.
+commit 279428df888319bf68f2686934897301a250bb84 upstream.
 
-In earlier kernels, it was possible to trigger a NULL pointer
-dereference off the forced async preparation path, if no file had
-been assigned. The trace leading to that looks as follows:
+The scale value for the temperature channel is (assuming Vref=2.5 and
+the datasheet):
 
-BUG: kernel NULL pointer dereference, address: 00000000000000b0
-PGD 0 P4D 0
-Oops: 0000 [#1] PREEMPT SMP
-CPU: 67 PID: 1633 Comm: buf-ring-invali Not tainted 6.8.0-rc3+ #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS unknown 2/2/2022
-RIP: 0010:io_buffer_select+0xc3/0x210
-Code: 00 00 48 39 d1 0f 82 ae 00 00 00 48 81 4b 48 00 00 01 00 48 89 73 70 0f b7 50 0c 66 89 53 42 85 ed 0f 85 d2 00 00 00 48 8b 13 <48> 8b 92 b0 00 00 00 48 83 7a 40 00 0f 84 21 01 00 00 4c 8b 20 5b
-RSP: 0018:ffffb7bec38c7d88 EFLAGS: 00010246
-RAX: ffff97af2be61000 RBX: ffff97af234f1700 RCX: 0000000000000040
-RDX: 0000000000000000 RSI: ffff97aecfb04820 RDI: ffff97af234f1700
-RBP: 0000000000000000 R08: 0000000000200030 R09: 0000000000000020
-R10: ffffb7bec38c7dc8 R11: 000000000000c000 R12: ffffb7bec38c7db8
-R13: ffff97aecfb05800 R14: ffff97aecfb05800 R15: ffff97af2be5e000
-FS:  00007f852f74b740(0000) GS:ffff97b1eeec0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000000000b0 CR3: 000000016deab005 CR4: 0000000000370ef0
-Call Trace:
- <TASK>
- ? __die+0x1f/0x60
- ? page_fault_oops+0x14d/0x420
- ? do_user_addr_fault+0x61/0x6a0
- ? exc_page_fault+0x6c/0x150
- ? asm_exc_page_fault+0x22/0x30
- ? io_buffer_select+0xc3/0x210
- __io_import_iovec+0xb5/0x120
- io_readv_prep_async+0x36/0x70
- io_queue_sqe_fallback+0x20/0x260
- io_submit_sqes+0x314/0x630
- __do_sys_io_uring_enter+0x339/0xbc0
- ? __do_sys_io_uring_register+0x11b/0xc50
- ? vm_mmap_pgoff+0xce/0x160
- do_syscall_64+0x5f/0x180
- entry_SYSCALL_64_after_hwframe+0x46/0x4e
-RIP: 0033:0x55e0a110a67e
-Code: ba cc 00 00 00 45 31 c0 44 0f b6 92 d0 00 00 00 31 d2 41 b9 08 00 00 00 41 83 e2 01 41 c1 e2 04 41 09 c2 b8 aa 01 00 00 0f 05 <c3> 90 89 30 eb a9 0f 1f 40 00 48 8b 42 20 8b 00 a8 06 75 af 85 f6
+    376.7897513
 
-because the request is marked forced ASYNC and has a bad file fd, and
-hence takes the forced async prep path.
+When calculating both val and val2 for the temperature scale we
+use (3767897513/25) and multiply it by Vref (here I assume 2500mV) to
+obtain:
 
-Current kernels with the request async prep cleaned up can no longer hit
-this issue, but for ease of backporting, let's add this safety check in
-here too as it really doesn't hurt. For both cases, this will inevitably
-end with a CQE posted with -EBADF.
+  2500 * (3767897513/25) ==> 376789751300
 
-Cc: stable@vger.kernel.org
-Fixes: a76c0b31eef5 ("io_uring: commit non-pollable provided mapped buffers upfront")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Finally we divide with remainder by 10^9 to get:
+
+    val = 376
+    val2 = 789751300
+
+However, we return IIO_VAL_INT_PLUS_MICRO (should have been NANO) as
+the scale type. So when converting the raw temperature value to the
+'processed' temperature value we will get (assuming raw=810,
+offset=-753):
+
+    processed = (raw + offset) * scale_val
+              = (810 + -753) * 376
+	      = 21432
+
+    processed += div((raw + offset) * scale_val2, 10^6)
+              += div((810 + -753) * 789751300, 10^6)
+	      += 45015
+    ==> 66447
+    ==> 66.4 Celcius
+
+instead of the expected 21.5 Celsius.
+
+Fix this issue by changing IIO_VAL_INT_PLUS_MICRO to
+IIO_VAL_INT_PLUS_NANO.
+
+Fixes: 56ca9db862bf ("iio: dac: Add support for the AD5592R/AD5593R ADCs/DACs")
+Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
+Link: https://lore.kernel.org/r/20240501150554.1871390-1-marc.ferland@sonatest.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/kbuf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/dac/ad5592r-base.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -154,7 +154,8 @@ static void __user *io_ring_buffer_selec
- 	req->buf_list = bl;
- 	req->buf_index = buf->bid;
+--- a/drivers/iio/dac/ad5592r-base.c
++++ b/drivers/iio/dac/ad5592r-base.c
+@@ -415,7 +415,7 @@ static int ad5592r_read_raw(struct iio_d
+ 			s64 tmp = *val * (3767897513LL / 25LL);
+ 			*val = div_s64_rem(tmp, 1000000000LL, val2);
  
--	if (issue_flags & IO_URING_F_UNLOCKED || !file_can_poll(req->file)) {
-+	if (issue_flags & IO_URING_F_UNLOCKED ||
-+	    (req->file && !file_can_poll(req->file))) {
- 		/*
- 		 * If we came in unlocked, we have no choice but to consume the
- 		 * buffer here, otherwise nothing ensures that the buffer won't
+-			return IIO_VAL_INT_PLUS_MICRO;
++			return IIO_VAL_INT_PLUS_NANO;
+ 		}
+ 
+ 		mutex_lock(&st->lock);
 
 
 
