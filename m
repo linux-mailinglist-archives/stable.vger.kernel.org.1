@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-54027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0496290EC55
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B6990ED84
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A608E1F21940
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AC341F213C6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57E6143C4E;
-	Wed, 19 Jun 2024 13:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9888143757;
+	Wed, 19 Jun 2024 13:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9MNXMxN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5yJxnFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945E812FB31;
-	Wed, 19 Jun 2024 13:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EFB82495;
+	Wed, 19 Jun 2024 13:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802376; cv=none; b=f39YoZ5F/17jLbxd+2AMVpnb37xSn/m41OUFuJnGAlf/b1Pi06uA3a/tqiLh13o3bx789NMInVURpsThtHIi74DSdxwNs5bdojOymbHqeLLJxoGgXbwEk1u8iTE3peO/BFFsFjDkT1GN/UXppeV0IN2p4+IGyTpcmrqp0qOzA0U=
+	t=1718803143; cv=none; b=FFzqkJUezTdhnXZfcq62QeOeObsBjD7NtovPFpWNQLqFFQF9S9jwg4P20JeQUDXv1x+z5Vw18vBtGJPc1+3eLRwzsBAsrDPs5LpbXVECXDhq+nZvDyXX4V8Wmq70LW2jmaf+DWWJ8MBnwpgFmCsm1gzCZ4CtdzZRSoPCA9Me+tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802376; c=relaxed/simple;
-	bh=Nk++o5bXqlx/UweZpPGPh3AYxikfZsLL1HKX93wdybE=;
+	s=arc-20240116; t=1718803143; c=relaxed/simple;
+	bh=4V3uxCZkiVGDAoeZgi9vljr08xmD1nvkzgHoYXVuMo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Un5ORHR88NFPVlYAax4HjVaqCgVlA7lt/OcKZVjKkCBTWNigArYzWOlaOjTNu7aqT+zwlE41sMEczQZJZuFvfcGy79R0i0xLAdJGyIh2c9PuI/A2nWwTqlMFgpkFddAbUEvEZVyZIo10TegUNPbAS8whtS+Ol/zDbtT3ctlQ6TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9MNXMxN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E69C2BBFC;
-	Wed, 19 Jun 2024 13:06:15 +0000 (UTC)
+	 MIME-Version; b=IuVInd8WxVm88OzrmwK+LMaLzyLLHaJIcG0XyQofW7ZfntlFRZhOIStVPFyw5oL9n1FaT67AftBZu9pElM+xeqNzHGLppYDxGq7Eq+krGQUjQ37VaskMQz/ks3dexPh4OxXSR4JX+e7yyZYioiUZu3Ierlvck7wUlep+Mya9n5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5yJxnFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C11C2BBFC;
+	Wed, 19 Jun 2024 13:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802376;
-	bh=Nk++o5bXqlx/UweZpPGPh3AYxikfZsLL1HKX93wdybE=;
+	s=korg; t=1718803143;
+	bh=4V3uxCZkiVGDAoeZgi9vljr08xmD1nvkzgHoYXVuMo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y9MNXMxNH2S1a647p9E1//52c1l0wABZoVOf1jBNMbBujWIxDEowsJR9be3fH/VdB
-	 Bx/F0ngyjKl/gHua+7p0xUSwY/pIJwNsBo5v2oS8XGS1ht8PAtC2HPee5b60nH9r67
-	 5qoLCQTX+LqK2rHIoK51PpdbSWcltKQO726JogkE=
+	b=y5yJxnFnq4xGR0omBvCoNx5dAV3woEoeyZD5MirNHEB8gJ4K78X75JBlczOuQSu0y
+	 b/RJwSjHym9AO5esM3Z83gHukMGqwIdhfNdIlGyt3JzMQrEnN1cr/WA7lHnCDhKwkB
+	 SShEL4wKrOSQNh7RvcpRyXBHn6L8CEO41B76soPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Segall <bsegall@google.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.6 175/267] x86/boot: Dont add the EFI stub to targets, again
+	Uros Bizjak <ubizjak@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 167/281] x86/asm: Use %c/%n instead of %P operand modifier in asm templates
 Date: Wed, 19 Jun 2024 14:55:26 +0200
-Message-ID: <20240619125613.060390566@linuxfoundation.org>
+Message-ID: <20240619125616.263650277@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +66,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Segall <bsegall@google.com>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-commit b2747f108b8034271fd5289bd8f3a7003e0775a3 upstream.
+[ Upstream commit 41cd2e1ee96e56401a18dbce6f42f0bdaebcbf3b ]
 
-This is a re-commit of
+The "P" asm operand modifier is a x86 target-specific modifier.
 
-  da05b143a308 ("x86/boot: Don't add the EFI stub to targets")
+When used with a constant, the "P" modifier emits "cst" instead of
+"$cst". This property is currently used to emit the bare constant
+without all syntax-specific prefixes.
 
-after the tagged patch incorrectly reverted it.
+The generic "c" resp. "n" operand modifier should be used instead.
 
-vmlinux-objs-y is added to targets, with an assumption that they are all
-relative to $(obj); adding a $(objtree)/drivers/...  path causes the
-build to incorrectly create a useless
-arch/x86/boot/compressed/drivers/...  directory tree.
+No functional changes intended.
 
-Fix this just by using a different make variable for the EFI stub.
-
-Fixes: cb8bda8ad443 ("x86/boot/compressed: Rename efi_thunk_64.S to efi-mixed.S")
-Signed-off-by: Ben Segall <bsegall@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: stable@vger.kernel.org # v6.1+
-Link: https://lore.kernel.org/r/xm267ceukksz.fsf@bsegall.svl.corp.google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Josh Poimboeuf <jpoimboe@redhat.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20240319104418.284519-3-ubizjak@gmail.com
+Stable-dep-of: 8c860ed825cb ("x86/uaccess: Fix missed zeroing of ia32 u64 get_user() range checking")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/boot/main.c               |  4 ++--
+ arch/x86/include/asm/alternative.h | 22 +++++++++++-----------
+ arch/x86/include/asm/atomic64_32.h |  2 +-
+ arch/x86/include/asm/cpufeature.h  |  2 +-
+ arch/x86/include/asm/irq_stack.h   |  2 +-
+ arch/x86/include/asm/uaccess.h     |  4 ++--
+ 6 files changed, 18 insertions(+), 18 deletions(-)
 
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -116,9 +116,9 @@ vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY)
+diff --git a/arch/x86/boot/main.c b/arch/x86/boot/main.c
+index c4ea5258ab558..9049f390d8347 100644
+--- a/arch/x86/boot/main.c
++++ b/arch/x86/boot/main.c
+@@ -119,8 +119,8 @@ static void init_heap(void)
+ 	char *stack_end;
  
- vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
- vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
--vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
-+vmlinux-libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+ 	if (boot_params.hdr.loadflags & CAN_USE_HEAP) {
+-		asm("leal %P1(%%esp),%0"
+-		    : "=r" (stack_end) : "i" (-STACK_SIZE));
++		asm("leal %n1(%%esp),%0"
++		    : "=r" (stack_end) : "i" (STACK_SIZE));
  
--$(obj)/vmlinux: $(vmlinux-objs-y) FORCE
-+$(obj)/vmlinux: $(vmlinux-objs-y) $(vmlinux-libs-y) FORCE
- 	$(call if_changed,ld)
+ 		heap_end = (char *)
+ 			((size_t)boot_params.hdr.heap_end_ptr + 0x200);
+diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
+index 67b68d0d17d1e..0cb2396de066d 100644
+--- a/arch/x86/include/asm/alternative.h
++++ b/arch/x86/include/asm/alternative.h
+@@ -294,10 +294,10 @@ static inline int alternatives_text_reserved(void *start, void *end)
+  * Otherwise, if CPU has feature1, newinstr1 is used.
+  * Otherwise, oldinstr is used.
+  */
+-#define alternative_input_2(oldinstr, newinstr1, ft_flags1, newinstr2,	     \
+-			   ft_flags2, input...)				     \
+-	asm_inline volatile(ALTERNATIVE_2(oldinstr, newinstr1, ft_flags1,     \
+-		newinstr2, ft_flags2)					     \
++#define alternative_input_2(oldinstr, newinstr1, ft_flags1, newinstr2,	\
++			   ft_flags2, input...)				\
++	asm_inline volatile(ALTERNATIVE_2(oldinstr, newinstr1, ft_flags1, \
++		newinstr2, ft_flags2)					\
+ 		: : "i" (0), ## input)
  
- OBJCOPYFLAGS_vmlinux.bin :=  -R .comment -S
+ /* Like alternative_input, but with a single output argument */
+@@ -307,7 +307,7 @@ static inline int alternatives_text_reserved(void *start, void *end)
+ 
+ /* Like alternative_io, but for replacing a direct call with another one. */
+ #define alternative_call(oldfunc, newfunc, ft_flags, output, input...)	\
+-	asm_inline volatile (ALTERNATIVE("call %P[old]", "call %P[new]", ft_flags) \
++	asm_inline volatile (ALTERNATIVE("call %c[old]", "call %c[new]", ft_flags) \
+ 		: output : [old] "i" (oldfunc), [new] "i" (newfunc), ## input)
+ 
+ /*
+@@ -316,12 +316,12 @@ static inline int alternatives_text_reserved(void *start, void *end)
+  * Otherwise, if CPU has feature1, function1 is used.
+  * Otherwise, old function is used.
+  */
+-#define alternative_call_2(oldfunc, newfunc1, ft_flags1, newfunc2, ft_flags2,   \
+-			   output, input...)				      \
+-	asm_inline volatile (ALTERNATIVE_2("call %P[old]", "call %P[new1]", ft_flags1,\
+-		"call %P[new2]", ft_flags2)				      \
+-		: output, ASM_CALL_CONSTRAINT				      \
+-		: [old] "i" (oldfunc), [new1] "i" (newfunc1),		      \
++#define alternative_call_2(oldfunc, newfunc1, ft_flags1, newfunc2, ft_flags2, \
++			   output, input...)				\
++	asm_inline volatile (ALTERNATIVE_2("call %c[old]", "call %c[new1]", ft_flags1, \
++		"call %c[new2]", ft_flags2)				\
++		: output, ASM_CALL_CONSTRAINT				\
++		: [old] "i" (oldfunc), [new1] "i" (newfunc1),		\
+ 		  [new2] "i" (newfunc2), ## input)
+ 
+ /*
+diff --git a/arch/x86/include/asm/atomic64_32.h b/arch/x86/include/asm/atomic64_32.h
+index 3486d91b8595f..d510405e4e1de 100644
+--- a/arch/x86/include/asm/atomic64_32.h
++++ b/arch/x86/include/asm/atomic64_32.h
+@@ -24,7 +24,7 @@ typedef struct {
+ 
+ #ifdef CONFIG_X86_CMPXCHG64
+ #define __alternative_atomic64(f, g, out, in...) \
+-	asm volatile("call %P[func]" \
++	asm volatile("call %c[func]" \
+ 		     : out : [func] "i" (atomic64_##g##_cx8), ## in)
+ 
+ #define ATOMIC64_DECL(sym) ATOMIC64_DECL_ONE(sym##_cx8)
+diff --git a/arch/x86/include/asm/cpufeature.h b/arch/x86/include/asm/cpufeature.h
+index 686e92d2663ee..3508f3fc928d4 100644
+--- a/arch/x86/include/asm/cpufeature.h
++++ b/arch/x86/include/asm/cpufeature.h
+@@ -173,7 +173,7 @@ extern void clear_cpu_cap(struct cpuinfo_x86 *c, unsigned int bit);
+ static __always_inline bool _static_cpu_has(u16 bit)
+ {
+ 	asm goto(
+-		ALTERNATIVE_TERNARY("jmp 6f", %P[feature], "", "jmp %l[t_no]")
++		ALTERNATIVE_TERNARY("jmp 6f", %c[feature], "", "jmp %l[t_no]")
+ 		".pushsection .altinstr_aux,\"ax\"\n"
+ 		"6:\n"
+ 		" testb %[bitnum]," _ASM_RIP(%P[cap_byte]) "\n"
+diff --git a/arch/x86/include/asm/irq_stack.h b/arch/x86/include/asm/irq_stack.h
+index 798183867d789..b71ad173f8776 100644
+--- a/arch/x86/include/asm/irq_stack.h
++++ b/arch/x86/include/asm/irq_stack.h
+@@ -100,7 +100,7 @@
+ }
+ 
+ #define ASM_CALL_ARG0							\
+-	"call %P[__func]				\n"		\
++	"call %c[__func]				\n"		\
+ 	ASM_REACHABLE
+ 
+ #define ASM_CALL_ARG1							\
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index 237dc8cdd12b9..0f9bab92a43d7 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -78,7 +78,7 @@ extern int __get_user_bad(void);
+ 	int __ret_gu;							\
+ 	register __inttype(*(ptr)) __val_gu asm("%"_ASM_DX);		\
+ 	__chk_user_ptr(ptr);						\
+-	asm volatile("call __" #fn "_%P4"				\
++	asm volatile("call __" #fn "_%c4"				\
+ 		     : "=a" (__ret_gu), "=r" (__val_gu),		\
+ 			ASM_CALL_CONSTRAINT				\
+ 		     : "0" (ptr), "i" (sizeof(*(ptr))));		\
+@@ -177,7 +177,7 @@ extern void __put_user_nocheck_8(void);
+ 	__chk_user_ptr(__ptr);						\
+ 	__ptr_pu = __ptr;						\
+ 	__val_pu = __x;							\
+-	asm volatile("call __" #fn "_%P[size]"				\
++	asm volatile("call __" #fn "_%c[size]"				\
+ 		     : "=c" (__ret_pu),					\
+ 			ASM_CALL_CONSTRAINT				\
+ 		     : "0" (__ptr_pu),					\
+-- 
+2.43.0
+
 
 
 
