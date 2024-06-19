@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF22E90ED9E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C58090EE9A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 774451F2203C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 605A11C2463E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE8B144D3E;
-	Wed, 19 Jun 2024 13:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2526E14A618;
+	Wed, 19 Jun 2024 13:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRb4pmc0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HigH4vOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB0582495;
-	Wed, 19 Jun 2024 13:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E9513E037;
+	Wed, 19 Jun 2024 13:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803219; cv=none; b=PO4mO4Vf9rw/ljgwHF+0qW7SGmCkupT43slZMmPvjCbPb7sjBmknM0f4pm1MAN3nDsO07nDZYkfGVaYTq5N/bvAzi9jOw3woqG6jSSYzF9bIY6LrEGtvMZxcaQsW9jIlInXkiFR+arp35WB6mAoRn2RNJDEmlGLy1+hlesTVblY=
+	t=1718803804; cv=none; b=G+hMTVVz+fRXBRhRGiOvTGkCVb0O1XxEQDc3VgjBL8qlQcuJrXaQurIdVwo7zXXfTj/Jv/Jt0/Ec3nqMkuAT0ofClcKwgIxNICc4nun6nHnI7mXRw/MD89Eg84x+y3Z8Q4S1zzKDU91HnXkgAskBUxDHMX5UJ5xzFGP0YmEt7bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803219; c=relaxed/simple;
-	bh=bwsZxtAyRsnBMOb/QyrYAn45qsvX8/XJB7K8F/AHmeo=;
+	s=arc-20240116; t=1718803804; c=relaxed/simple;
+	bh=4CRYk92OWVlrV9HzpI9ih7CRq+BJ+lo9B8goW2v95CQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JR811bRUqDd5pGztJy604ThCrmKKe7HE1Li7vb1VyQYCHVY9ZokAW9s01n0RsbPj5A1G4knv77d1wIOP8/DwuOC0IE8bEwpqB///G+ZZ/iYhWQaGd8PEWiZv6e1TAx3TTGfBev+On7BRSj9V9KE2hozB90q6jjRp+yni6lbh6Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRb4pmc0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA4BC2BBFC;
-	Wed, 19 Jun 2024 13:20:19 +0000 (UTC)
+	 MIME-Version; b=lgkmuSDrrwcfnvcmR7siKyDK4lCL+/nsTQ5OFWTYANEcEVn9i4ujCC0YSr4idmVcSljRFVRPWPrsoaUvNTKwtpYytpag9V03XzeDh1s8qrtpzgPW8ganPY05pR8VHYG0Q7E2aWUiG6K6iyx6lXuS5n++d+XKQa1ef9zrlHGsj34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HigH4vOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F88C2BBFC;
+	Wed, 19 Jun 2024 13:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803219;
-	bh=bwsZxtAyRsnBMOb/QyrYAn45qsvX8/XJB7K8F/AHmeo=;
+	s=korg; t=1718803804;
+	bh=4CRYk92OWVlrV9HzpI9ih7CRq+BJ+lo9B8goW2v95CQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rRb4pmc0GPhXFi87P+7NmXKvnCmXlVjCUT6/PrA01Th/g0pQvrzkxLB+tTk+YPRVH
-	 jXSrNRzPGnoVGpDB7MJ4doyK8BTbk96eeQnNETq51sm+Sa+0UqNplzzX9LLZ2aYG/u
-	 ND0rZwJ9MVcvdfudm27t7sz2CzVt1xRdGk2/O8wM=
+	b=HigH4vOH/fR4XbhXMaa+Uy7/i2TC+4/TBHbBYWfkGp4cdZpj5HlljsSrnsWl1ViFP
+	 /ckhScPEllD/ynXo9mfS1O0i2xXUG/DoEm/S9HbRYqwzqIkjLvc8wBCdX4osdG2IUX
+	 8Bthn2tiFlPMOrYZjYwZFncjZTftbinrvDmNEC3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Ferland <marc.ferland@sonatest.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.9 194/281] iio: dac: ad5592r: fix temperature channel scaling value
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 110/217] cachefiles: add spin_lock for cachefiles_ondemand_info
 Date: Wed, 19 Jun 2024 14:55:53 +0200
-Message-ID: <20240619125617.417857029@linuxfoundation.org>
+Message-ID: <20240619125600.932636634@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Ferland <marc.ferland@sonatest.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 279428df888319bf68f2686934897301a250bb84 upstream.
+[ Upstream commit 0a790040838c736495d5afd6b2d636f159f817f1 ]
 
-The scale value for the temperature channel is (assuming Vref=2.5 and
-the datasheet):
+The following concurrency may cause a read request to fail to be completed
+and result in a hung:
 
-    376.7897513
+           t1             |             t2
+---------------------------------------------------------
+                            cachefiles_ondemand_copen
+                              req = xa_erase(&cache->reqs, id)
+// Anon fd is maliciously closed.
+cachefiles_ondemand_fd_release
+  xa_lock(&cache->reqs)
+  cachefiles_ondemand_set_object_close(object)
+  xa_unlock(&cache->reqs)
+                              cachefiles_ondemand_set_object_open
+                              // No one will ever close it again.
+cachefiles_ondemand_daemon_read
+  cachefiles_ondemand_select_req
+  // Get a read req but its fd is already closed.
+  // The daemon can't issue a cread ioctl with an closed fd, then hung.
 
-When calculating both val and val2 for the temperature scale we
-use (3767897513/25) and multiply it by Vref (here I assume 2500mV) to
-obtain:
+So add spin_lock for cachefiles_ondemand_info to protect ondemand_id and
+state, thus we can avoid the above problem in cachefiles_ondemand_copen()
+by using ondemand_id to determine if fd has been closed.
 
-  2500 * (3767897513/25) ==> 376789751300
-
-Finally we divide with remainder by 10^9 to get:
-
-    val = 376
-    val2 = 789751300
-
-However, we return IIO_VAL_INT_PLUS_MICRO (should have been NANO) as
-the scale type. So when converting the raw temperature value to the
-'processed' temperature value we will get (assuming raw=810,
-offset=-753):
-
-    processed = (raw + offset) * scale_val
-              = (810 + -753) * 376
-	      = 21432
-
-    processed += div((raw + offset) * scale_val2, 10^6)
-              += div((810 + -753) * 789751300, 10^6)
-	      += 45015
-    ==> 66447
-    ==> 66.4 Celcius
-
-instead of the expected 21.5 Celsius.
-
-Fix this issue by changing IIO_VAL_INT_PLUS_MICRO to
-IIO_VAL_INT_PLUS_NANO.
-
-Fixes: 56ca9db862bf ("iio: dac: Add support for the AD5592R/AD5593R ADCs/DACs")
-Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
-Link: https://lore.kernel.org/r/20240501150554.1871390-1-marc.ferland@sonatest.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240522114308.2402121-8-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/dac/ad5592r-base.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/cachefiles/internal.h |  1 +
+ fs/cachefiles/ondemand.c | 35 ++++++++++++++++++++++++++++++++++-
+ 2 files changed, 35 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/dac/ad5592r-base.c
-+++ b/drivers/iio/dac/ad5592r-base.c
-@@ -415,7 +415,7 @@ static int ad5592r_read_raw(struct iio_d
- 			s64 tmp = *val * (3767897513LL / 25LL);
- 			*val = div_s64_rem(tmp, 1000000000LL, val2);
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index b9a90f1a0c015..33fe418aca770 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -55,6 +55,7 @@ struct cachefiles_ondemand_info {
+ 	int				ondemand_id;
+ 	enum cachefiles_object_state	state;
+ 	struct cachefiles_object	*object;
++	spinlock_t			lock;
+ };
  
--			return IIO_VAL_INT_PLUS_MICRO;
-+			return IIO_VAL_INT_PLUS_NANO;
- 		}
+ /*
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index 8e130de952f7d..8118649d30727 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -10,13 +10,16 @@ static int cachefiles_ondemand_fd_release(struct inode *inode,
+ 	struct cachefiles_object *object = file->private_data;
+ 	struct cachefiles_cache *cache = object->volume->cache;
+ 	struct cachefiles_ondemand_info *info = object->ondemand;
+-	int object_id = info->ondemand_id;
++	int object_id;
+ 	struct cachefiles_req *req;
+ 	XA_STATE(xas, &cache->reqs, 0);
  
- 		mutex_lock(&st->lock);
+ 	xa_lock(&cache->reqs);
++	spin_lock(&info->lock);
++	object_id = info->ondemand_id;
+ 	info->ondemand_id = CACHEFILES_ONDEMAND_ID_CLOSED;
+ 	cachefiles_ondemand_set_object_close(object);
++	spin_unlock(&info->lock);
+ 
+ 	/* Only flush CACHEFILES_REQ_NEW marked req to avoid race with daemon_read */
+ 	xas_for_each_marked(&xas, req, ULONG_MAX, CACHEFILES_REQ_NEW) {
+@@ -116,6 +119,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ {
+ 	struct cachefiles_req *req;
+ 	struct fscache_cookie *cookie;
++	struct cachefiles_ondemand_info *info;
+ 	char *pid, *psize;
+ 	unsigned long id;
+ 	long size;
+@@ -166,6 +170,33 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 		goto out;
+ 	}
+ 
++	info = req->object->ondemand;
++	spin_lock(&info->lock);
++	/*
++	 * The anonymous fd was closed before copen ? Fail the request.
++	 *
++	 *             t1             |             t2
++	 * ---------------------------------------------------------
++	 *                             cachefiles_ondemand_copen
++	 *                             req = xa_erase(&cache->reqs, id)
++	 * // Anon fd is maliciously closed.
++	 * cachefiles_ondemand_fd_release
++	 * xa_lock(&cache->reqs)
++	 * cachefiles_ondemand_set_object_close(object)
++	 * xa_unlock(&cache->reqs)
++	 *                             cachefiles_ondemand_set_object_open
++	 *                             // No one will ever close it again.
++	 * cachefiles_ondemand_daemon_read
++	 * cachefiles_ondemand_select_req
++	 *
++	 * Get a read req but its fd is already closed. The daemon can't
++	 * issue a cread ioctl with an closed fd, then hung.
++	 */
++	if (info->ondemand_id == CACHEFILES_ONDEMAND_ID_CLOSED) {
++		spin_unlock(&info->lock);
++		req->error = -EBADFD;
++		goto out;
++	}
+ 	cookie = req->object->cookie;
+ 	cookie->object_size = size;
+ 	if (size)
+@@ -175,6 +206,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 	trace_cachefiles_ondemand_copen(req->object, id, size);
+ 
+ 	cachefiles_ondemand_set_object_open(req->object);
++	spin_unlock(&info->lock);
+ 	wake_up_all(&cache->daemon_pollwq);
+ 
+ out:
+@@ -552,6 +584,7 @@ int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
+ 		return -ENOMEM;
+ 
+ 	object->ondemand->object = object;
++	spin_lock_init(&object->ondemand->lock);
+ 	INIT_WORK(&object->ondemand->ondemand_work, ondemand_object_worker);
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
