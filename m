@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-53912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1168390EBCE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7CF90ED08
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:13:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74E62B26360
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:01:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1591CB25B2A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8429F14B07B;
-	Wed, 19 Jun 2024 13:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6788F143C4E;
+	Wed, 19 Jun 2024 13:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iwgq1yg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpmiR+YV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F91314A618;
-	Wed, 19 Jun 2024 13:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C34F1422B8;
+	Wed, 19 Jun 2024 13:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802040; cv=none; b=a8y/Q8vl8T669ZLFWZ6lU71Sjeo1KktCkWVBqD2c7gnjGNvIztUlvAWimoPtlQzXbxfZ5SgzZf+XSE7D7NpxjmN1Xunmxj2+RswxU7hKdSgvaSLl5dRlsIXz2XXXICToCLcQTWFBiGFj0blQ0qYMrhHvfrzuw0I/2FXGnnDhLUg=
+	t=1718802807; cv=none; b=OoWNGVDO+34ONWs57vyfhrvMTrmqr2+qAtexbXRvjyfuFWDBrKh6pg87zOi+ANrGg/7pTgzghdOE3FgkqcXirhKy6e/tfG7YEYTSYiAgrKV9cQFdynkqkDjGuW9g4oRWMpfTP8Ms4vkZd9LpJSHuAuTPCwROvUg4jszxHq+KVtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802040; c=relaxed/simple;
-	bh=M9mcRP55jcq2HF2uY2RMJYOV2i/9LKiXmR9tgSzFIGM=;
+	s=arc-20240116; t=1718802807; c=relaxed/simple;
+	bh=67ypC9o4tAIC0HIf63AhY8FaszqLtfErKSJPAtYEccA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WXuVplaqfYTqSkDqgVUxwVIOGCCopHGsyuWyluUBj92U4PydrR6YOcw0TlzEGmYs7RJ/vy74OxP171Kr/BHVUamrPv1qMLumTmXUL/GiSf6LPVB56/WRp8+hFvW6s2ujxKbPEgbfjEEmp9CvMheLSgQ/5S5L3wYz6TFW7rBDyws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iwgq1yg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B11C4AF1A;
-	Wed, 19 Jun 2024 13:00:39 +0000 (UTC)
+	 MIME-Version; b=Y2NA1fFkgUDWEAwaDNy5g5zgROHz6Bgsz7q4F/G9oyxKPP2XK5S/c+6kaxQ+Iw6iQvnIBq+PxmEUSzWGkjFxKWqjZmRB8AirLeXd+5nMiRNAqgFpziWdYAGoQ5SNzvUfIF7es3vEc9RyLb8w6YaQkkEAQ9xIH20z1Xh0emV3+4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpmiR+YV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EE0C32786;
+	Wed, 19 Jun 2024 13:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802039;
-	bh=M9mcRP55jcq2HF2uY2RMJYOV2i/9LKiXmR9tgSzFIGM=;
+	s=korg; t=1718802807;
+	bh=67ypC9o4tAIC0HIf63AhY8FaszqLtfErKSJPAtYEccA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iwgq1ygA58KhLHkuBQBOGnDjGxvfEAzWnMTF6/ZYp5r1vAIwFjXV2a0DKI8gLXfz
-	 qzoARWEffNOljEVgRfpv2lbDteGN4bbxhTHJp4rYdPBmaw7juFp6YxYC0mc5LdcVCd
-	 a9/seUdzqyyncfnJY9xv5vhG8BRt0ExuFGSdJXZU=
+	b=CpmiR+YVYzKoOtaUsV2bG2z90+ZyMl19NCBQha8e9S59m9Nx8QE/nrqwl9PkdbqU9
+	 /JCy5M/cCa/zLPWE5B0KeEjmPSwHdXrXn22xrVejtz5IVOoZRDkg+zn84vE4eS63Kc
+	 1W7swYJ0jYH9+uAj5FFOEcWEL1IWFg1BSU0C4pj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Martin KaFai Lau <kafai@fb.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/267] ipv6: fix possible race in __fib6_drop_pcpu_from()
+Subject: [PATCH 6.9 054/281] ice: map XDP queues to vectors in ice_vsi_map_rings_to_vectors()
 Date: Wed, 19 Jun 2024 14:53:33 +0200
-Message-ID: <20240619125608.739484527@linuxfoundation.org>
+Message-ID: <20240619125611.930497968@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,132 +66,231 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-[ Upstream commit b01e1c030770ff3b4fe37fc7cc6bca03f594133f ]
+[ Upstream commit f3df4044254c98128890b512bf19cc05588f1fe5 ]
 
-syzbot found a race in __fib6_drop_pcpu_from() [1]
+ice_pf_dcb_recfg() re-maps queues to vectors with
+ice_vsi_map_rings_to_vectors(), which does not restore the previous
+state for XDP queues. This leads to no AF_XDP traffic after rebuild.
 
-If compiler reads more than once (*ppcpu_rt),
-second read could read NULL, if another cpu clears
-the value in rt6_get_pcpu_route().
+Map XDP queues to vectors in ice_vsi_map_rings_to_vectors().
+Also, move the code around, so XDP queues are mapped independently only
+through .ndo_bpf().
 
-Add a READ_ONCE() to prevent this race.
-
-Also add rcu_read_lock()/rcu_read_unlock() because
-we rely on RCU protection while dereferencing pcpu_rt.
-
-[1]
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000012: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000090-0x0000000000000097]
-CPU: 0 PID: 7543 Comm: kworker/u8:17 Not tainted 6.10.0-rc1-syzkaller-00013-g2bfcfd584ff5 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
-Workqueue: netns cleanup_net
- RIP: 0010:__fib6_drop_pcpu_from.part.0+0x10a/0x370 net/ipv6/ip6_fib.c:984
-Code: f8 48 c1 e8 03 80 3c 28 00 0f 85 16 02 00 00 4d 8b 3f 4d 85 ff 74 31 e8 74 a7 fa f7 49 8d bf 90 00 00 00 48 89 f8 48 c1 e8 03 <80> 3c 28 00 0f 85 1e 02 00 00 49 8b 87 90 00 00 00 48 8b 0c 24 48
-RSP: 0018:ffffc900040df070 EFLAGS: 00010206
-RAX: 0000000000000012 RBX: 0000000000000001 RCX: ffffffff89932e16
-RDX: ffff888049dd1e00 RSI: ffffffff89932d7c RDI: 0000000000000091
-RBP: dffffc0000000000 R08: 0000000000000005 R09: 0000000000000007
-R10: 0000000000000001 R11: 0000000000000006 R12: ffff88807fa080b8
-R13: fffffbfff1a9a07d R14: ffffed100ff41022 R15: 0000000000000001
-FS:  0000000000000000(0000) GS:ffff8880b9200000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b32c26000 CR3: 000000005d56e000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  __fib6_drop_pcpu_from net/ipv6/ip6_fib.c:966 [inline]
-  fib6_drop_pcpu_from net/ipv6/ip6_fib.c:1027 [inline]
-  fib6_purge_rt+0x7f2/0x9f0 net/ipv6/ip6_fib.c:1038
-  fib6_del_route net/ipv6/ip6_fib.c:1998 [inline]
-  fib6_del+0xa70/0x17b0 net/ipv6/ip6_fib.c:2043
-  fib6_clean_node+0x426/0x5b0 net/ipv6/ip6_fib.c:2205
-  fib6_walk_continue+0x44f/0x8d0 net/ipv6/ip6_fib.c:2127
-  fib6_walk+0x182/0x370 net/ipv6/ip6_fib.c:2175
-  fib6_clean_tree+0xd7/0x120 net/ipv6/ip6_fib.c:2255
-  __fib6_clean_all+0x100/0x2d0 net/ipv6/ip6_fib.c:2271
-  rt6_sync_down_dev net/ipv6/route.c:4906 [inline]
-  rt6_disable_ip+0x7ed/0xa00 net/ipv6/route.c:4911
-  addrconf_ifdown.isra.0+0x117/0x1b40 net/ipv6/addrconf.c:3855
-  addrconf_notify+0x223/0x19e0 net/ipv6/addrconf.c:3778
-  notifier_call_chain+0xb9/0x410 kernel/notifier.c:93
-  call_netdevice_notifiers_info+0xbe/0x140 net/core/dev.c:1992
-  call_netdevice_notifiers_extack net/core/dev.c:2030 [inline]
-  call_netdevice_notifiers net/core/dev.c:2044 [inline]
-  dev_close_many+0x333/0x6a0 net/core/dev.c:1585
-  unregister_netdevice_many_notify+0x46d/0x19f0 net/core/dev.c:11193
-  unregister_netdevice_many net/core/dev.c:11276 [inline]
-  default_device_exit_batch+0x85b/0xae0 net/core/dev.c:11759
-  ops_exit_list+0x128/0x180 net/core/net_namespace.c:178
-  cleanup_net+0x5b7/0xbf0 net/core/net_namespace.c:640
-  process_one_work+0x9fb/0x1b60 kernel/workqueue.c:3231
-  process_scheduled_works kernel/workqueue.c:3312 [inline]
-  worker_thread+0x6c8/0xf70 kernel/workqueue.c:3393
-  kthread+0x2c1/0x3a0 kernel/kthread.c:389
-  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-Fixes: d52d3997f843 ("ipv6: Create percpu rt6_info")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Martin KaFai Lau <kafai@fb.com>
-Link: https://lore.kernel.org/r/20240604193549.981839-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 6624e780a577 ("ice: split ice_vsi_setup into smaller functions")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20240603-net-2024-05-30-intel-net-fixes-v2-5-e3563aa89b0c@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_fib.c | 6 +++++-
- net/ipv6/route.c   | 1 +
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice.h      |  1 +
+ drivers/net/ethernet/intel/ice/ice_base.c |  3 +
+ drivers/net/ethernet/intel/ice/ice_lib.c  | 14 ++--
+ drivers/net/ethernet/intel/ice/ice_main.c | 96 ++++++++++++++---------
+ 4 files changed, 68 insertions(+), 46 deletions(-)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index 8184076a3924e..4356806b52bd5 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -961,6 +961,7 @@ static void __fib6_drop_pcpu_from(struct fib6_nh *fib6_nh,
- 	if (!fib6_nh->rt6i_pcpu)
- 		return;
- 
-+	rcu_read_lock();
- 	/* release the reference to this fib entry from
- 	 * all of its cached pcpu routes
- 	 */
-@@ -969,7 +970,9 @@ static void __fib6_drop_pcpu_from(struct fib6_nh *fib6_nh,
- 		struct rt6_info *pcpu_rt;
- 
- 		ppcpu_rt = per_cpu_ptr(fib6_nh->rt6i_pcpu, cpu);
--		pcpu_rt = *ppcpu_rt;
-+
-+		/* Paired with xchg() in rt6_get_pcpu_route() */
-+		pcpu_rt = READ_ONCE(*ppcpu_rt);
- 
- 		/* only dropping the 'from' reference if the cached route
- 		 * is using 'match'. The cached pcpu_rt->from only changes
-@@ -983,6 +986,7 @@ static void __fib6_drop_pcpu_from(struct fib6_nh *fib6_nh,
- 			fib6_info_release(from);
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index a3286964d6c31..8e40f26aa5060 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -942,6 +942,7 @@ int ice_vsi_determine_xdp_res(struct ice_vsi *vsi);
+ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 			  enum ice_xdp_cfg cfg_type);
+ int ice_destroy_xdp_rings(struct ice_vsi *vsi, enum ice_xdp_cfg cfg_type);
++void ice_map_xdp_rings(struct ice_vsi *vsi);
+ int
+ ice_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
+ 	     u32 flags);
+diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
+index a545a7917e4fc..9d23a436d2a6a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_base.c
++++ b/drivers/net/ethernet/intel/ice/ice_base.c
+@@ -860,6 +860,9 @@ void ice_vsi_map_rings_to_vectors(struct ice_vsi *vsi)
  		}
+ 		rx_rings_rem -= rx_rings_per_v;
  	}
-+	rcu_read_unlock();
++
++	if (ice_is_xdp_ena_vsi(vsi))
++		ice_map_xdp_rings(vsi);
  }
  
- struct fib6_nh_pcpu_arg {
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index c48eaa7c23401..0a37f04177337 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -1399,6 +1399,7 @@ static struct rt6_info *rt6_get_pcpu_route(const struct fib6_result *res)
- 		struct rt6_info *prev, **p;
+ /**
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 5de7c50b439e1..acf732ce04ed6 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -2323,13 +2323,6 @@ ice_vsi_cfg_def(struct ice_vsi *vsi, struct ice_vsi_cfg_params *params)
+ 		if (ret)
+ 			goto unroll_vector_base;
  
- 		p = this_cpu_ptr(res->nh->rt6i_pcpu);
-+		/* Paired with READ_ONCE() in __fib6_drop_pcpu_from() */
- 		prev = xchg(p, NULL);
- 		if (prev) {
- 			dst_dev_put(&prev->dst);
+-		ice_vsi_map_rings_to_vectors(vsi);
+-
+-		/* Associate q_vector rings to napi */
+-		ice_vsi_set_napi_queues(vsi);
+-
+-		vsi->stat_offsets_loaded = false;
+-
+ 		if (ice_is_xdp_ena_vsi(vsi)) {
+ 			ret = ice_vsi_determine_xdp_res(vsi);
+ 			if (ret)
+@@ -2340,6 +2333,13 @@ ice_vsi_cfg_def(struct ice_vsi *vsi, struct ice_vsi_cfg_params *params)
+ 				goto unroll_vector_base;
+ 		}
+ 
++		ice_vsi_map_rings_to_vectors(vsi);
++
++		/* Associate q_vector rings to napi */
++		ice_vsi_set_napi_queues(vsi);
++
++		vsi->stat_offsets_loaded = false;
++
+ 		/* ICE_VSI_CTRL does not need RSS so skip RSS processing */
+ 		if (vsi->type != ICE_VSI_CTRL)
+ 			/* Do not exit if configuring RSS had an issue, at
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index b53fe27dbed7d..10fef2e726b39 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -2670,6 +2670,60 @@ static void ice_vsi_assign_bpf_prog(struct ice_vsi *vsi, struct bpf_prog *prog)
+ 		bpf_prog_put(old_prog);
+ }
+ 
++static struct ice_tx_ring *ice_xdp_ring_from_qid(struct ice_vsi *vsi, int qid)
++{
++	struct ice_q_vector *q_vector;
++	struct ice_tx_ring *ring;
++
++	if (static_key_enabled(&ice_xdp_locking_key))
++		return vsi->xdp_rings[qid % vsi->num_xdp_txq];
++
++	q_vector = vsi->rx_rings[qid]->q_vector;
++	ice_for_each_tx_ring(ring, q_vector->tx)
++		if (ice_ring_is_xdp(ring))
++			return ring;
++
++	return NULL;
++}
++
++/**
++ * ice_map_xdp_rings - Map XDP rings to interrupt vectors
++ * @vsi: the VSI with XDP rings being configured
++ *
++ * Map XDP rings to interrupt vectors and perform the configuration steps
++ * dependent on the mapping.
++ */
++void ice_map_xdp_rings(struct ice_vsi *vsi)
++{
++	int xdp_rings_rem = vsi->num_xdp_txq;
++	int v_idx, q_idx;
++
++	/* follow the logic from ice_vsi_map_rings_to_vectors */
++	ice_for_each_q_vector(vsi, v_idx) {
++		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
++		int xdp_rings_per_v, q_id, q_base;
++
++		xdp_rings_per_v = DIV_ROUND_UP(xdp_rings_rem,
++					       vsi->num_q_vectors - v_idx);
++		q_base = vsi->num_xdp_txq - xdp_rings_rem;
++
++		for (q_id = q_base; q_id < (q_base + xdp_rings_per_v); q_id++) {
++			struct ice_tx_ring *xdp_ring = vsi->xdp_rings[q_id];
++
++			xdp_ring->q_vector = q_vector;
++			xdp_ring->next = q_vector->tx.tx_ring;
++			q_vector->tx.tx_ring = xdp_ring;
++		}
++		xdp_rings_rem -= xdp_rings_per_v;
++	}
++
++	ice_for_each_rxq(vsi, q_idx) {
++		vsi->rx_rings[q_idx]->xdp_ring = ice_xdp_ring_from_qid(vsi,
++								       q_idx);
++		ice_tx_xsk_pool(vsi, q_idx);
++	}
++}
++
+ /**
+  * ice_prepare_xdp_rings - Allocate, configure and setup Tx rings for XDP
+  * @vsi: VSI to bring up Tx rings used by XDP
+@@ -2682,7 +2736,6 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 			  enum ice_xdp_cfg cfg_type)
+ {
+ 	u16 max_txqs[ICE_MAX_TRAFFIC_CLASS] = { 0 };
+-	int xdp_rings_rem = vsi->num_xdp_txq;
+ 	struct ice_pf *pf = vsi->back;
+ 	struct ice_qs_cfg xdp_qs_cfg = {
+ 		.qs_mutex = &pf->avail_q_mutex,
+@@ -2695,8 +2748,7 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 		.mapping_mode = ICE_VSI_MAP_CONTIG
+ 	};
+ 	struct device *dev;
+-	int i, v_idx;
+-	int status;
++	int status, i;
+ 
+ 	dev = ice_pf_to_dev(pf);
+ 	vsi->xdp_rings = devm_kcalloc(dev, vsi->num_xdp_txq,
+@@ -2715,42 +2767,6 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 	if (ice_xdp_alloc_setup_rings(vsi))
+ 		goto clear_xdp_rings;
+ 
+-	/* follow the logic from ice_vsi_map_rings_to_vectors */
+-	ice_for_each_q_vector(vsi, v_idx) {
+-		struct ice_q_vector *q_vector = vsi->q_vectors[v_idx];
+-		int xdp_rings_per_v, q_id, q_base;
+-
+-		xdp_rings_per_v = DIV_ROUND_UP(xdp_rings_rem,
+-					       vsi->num_q_vectors - v_idx);
+-		q_base = vsi->num_xdp_txq - xdp_rings_rem;
+-
+-		for (q_id = q_base; q_id < (q_base + xdp_rings_per_v); q_id++) {
+-			struct ice_tx_ring *xdp_ring = vsi->xdp_rings[q_id];
+-
+-			xdp_ring->q_vector = q_vector;
+-			xdp_ring->next = q_vector->tx.tx_ring;
+-			q_vector->tx.tx_ring = xdp_ring;
+-		}
+-		xdp_rings_rem -= xdp_rings_per_v;
+-	}
+-
+-	ice_for_each_rxq(vsi, i) {
+-		if (static_key_enabled(&ice_xdp_locking_key)) {
+-			vsi->rx_rings[i]->xdp_ring = vsi->xdp_rings[i % vsi->num_xdp_txq];
+-		} else {
+-			struct ice_q_vector *q_vector = vsi->rx_rings[i]->q_vector;
+-			struct ice_tx_ring *ring;
+-
+-			ice_for_each_tx_ring(ring, q_vector->tx) {
+-				if (ice_ring_is_xdp(ring)) {
+-					vsi->rx_rings[i]->xdp_ring = ring;
+-					break;
+-				}
+-			}
+-		}
+-		ice_tx_xsk_pool(vsi, i);
+-	}
+-
+ 	/* omit the scheduler update if in reset path; XDP queues will be
+ 	 * taken into account at the end of ice_vsi_rebuild, where
+ 	 * ice_cfg_vsi_lan is being called
+@@ -2758,6 +2774,8 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 	if (cfg_type == ICE_XDP_CFG_PART)
+ 		return 0;
+ 
++	ice_map_xdp_rings(vsi);
++
+ 	/* tell the Tx scheduler that right now we have
+ 	 * additional queues
+ 	 */
 -- 
 2.43.0
 
