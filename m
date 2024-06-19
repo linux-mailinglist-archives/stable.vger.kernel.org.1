@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-53976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AA8C90EC20
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD8C90ED4F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3307B1C24321
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF58A281091
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC03143873;
-	Wed, 19 Jun 2024 13:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F7D143C4E;
+	Wed, 19 Jun 2024 13:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hD4Zd6/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7rBPNtA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE74143C43;
-	Wed, 19 Jun 2024 13:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DB3AD58;
+	Wed, 19 Jun 2024 13:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802228; cv=none; b=Yc4g01y9dGHxLhDFHWtqDQDYRIykoEwuehj17MCHplF1lzP1dvSngX/i3oxa22hYfMWwLNvTTfFHoKKIYXn7H3rDnFVr9TjmdVfjUNHMYs5rz0KMEw/v/gzKxYbRaHPi9Q7mlAXmm4OH/e/+A5aocTn6o4vTduLy67z4pvyElhU=
+	t=1718802996; cv=none; b=Gh7Nv8lZEtZRwh2uZZaKoPOIGc0dOeo6qmX7pKd/E0Zn158FMA1YpCMwX4BzoJTbyG0XC4wbbF9CHJPl2vE+EVZsi96u2fszEuWOffXvelYUJ4L1INicyay/goEU+rZKm5iPpWEQcDIiysFZDymEA8dkFXhbJ1V5u9A83/V8LIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802228; c=relaxed/simple;
-	bh=NW0JfIrMx9adK61uPD0Om+nLjk2X8ML5EHP5bK53Udk=;
+	s=arc-20240116; t=1718802996; c=relaxed/simple;
+	bh=OsEqO6e2o7BeV+tgcEcGdayN3SnJE/cfhrJbhadz65Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GwaB7eXaj6DTexUHGE+UPHrv6eue1Mq5tEBQynFTvOMVttjpuR9r8aJGToxoYBqgKZcQIAHoJYUm5iKQuOCN7s0j+2EXKN2jL3EKxtuL9O1zQCpwowZL0MMJe2kVJXzw3TMpHEW4ltfXxcHyGqjzK4/+y91nKCTR+ArnIDuFNj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hD4Zd6/n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44468C2BBFC;
-	Wed, 19 Jun 2024 13:03:48 +0000 (UTC)
+	 MIME-Version; b=C7GxgFB1zL1YjG4NH0hAj0cL1MRKrdAlvZAzDvQymbYOcYkqcJuIyzyDqESJVJzOPux2yP5E5WkaLT9jlwM1tU47Kr3J1VDzcpSxFLUrfB5wtZCpgsPGuKl84kAeZCWoK26O6w/ZjYrJrJPLJDsP74bXLXc5P1Y3SO5MIPlSrwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7rBPNtA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B3BC2BBFC;
+	Wed, 19 Jun 2024 13:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802228;
-	bh=NW0JfIrMx9adK61uPD0Om+nLjk2X8ML5EHP5bK53Udk=;
+	s=korg; t=1718802995;
+	bh=OsEqO6e2o7BeV+tgcEcGdayN3SnJE/cfhrJbhadz65Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hD4Zd6/nAWBV3vKfdBv6AsfrrtP/mAXWEia9LxnDkzVdIC5WUHFWeRUSnDcZTLf6n
-	 9SQgXkitTuwqhWuPmS49mS2Oq85uLHeHfOQujkYNiVjERGbEhIFLpiXf46MD55ORXp
-	 jE6WEaBTsLPVuYKGXrl47Mh6kdCyiOwzam9ixx0U=
+	b=z7rBPNtAL+SzAxJvnbXPDCz6L5zcWP5gAqyNuy0oqx2+BUAmkYk3m1W+unXE+r56D
+	 GbCqcr80vvFQK48gBi17r3WEAjqRSYDhIL47sRC3CjQphfq/LAru8g09ZzqIP/xJ8y
+	 j1LvCzkiJJ/G6kYZ7FtJKYZBF/cvplNdiYllvwyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/267] gpio: tqmx86: introduce shadow register for GPIO output value
+Subject: [PATCH 6.9 118/281] cachefiles: flush all requests after setting CACHEFILES_DEAD
 Date: Wed, 19 Jun 2024 14:54:37 +0200
-Message-ID: <20240619125611.188469035@linuxfoundation.org>
+Message-ID: <20240619125614.387549928@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 9d6a811b522ba558bcb4ec01d12e72a0af8e9f6e ]
+[ Upstream commit 85e833cd7243bda7285492b0653c3abb1e2e757b ]
 
-The TQMx86 GPIO controller uses the same register address for input and
-output data. Reading the register will always return current inputs
-rather than the previously set outputs (regardless of the current
-direction setting). Therefore, using a RMW pattern does not make sense
-when setting output values. Instead, the previously set output register
-value needs to be stored as a shadow register.
+In ondemand mode, when the daemon is processing an open request, if the
+kernel flags the cache as CACHEFILES_DEAD, the cachefiles_daemon_write()
+will always return -EIO, so the daemon can't pass the copen to the kernel.
+Then the kernel process that is waiting for the copen triggers a hung_task.
 
-As there is no reliable way to get the current output values from the
-hardware, also initialize all channels to 0, to ensure that stored and
-actual output values match. This should usually not have any effect in
-practise, as the TQMx86 UEFI sets all outputs to 0 during boot.
+Since the DEAD state is irreversible, it can only be exited by closing
+/dev/cachefiles. Therefore, after calling cachefiles_io_error() to mark
+the cache as CACHEFILES_DEAD, if in ondemand mode, flush all requests to
+avoid the above hungtask. We may still be able to read some of the cached
+data before closing the fd of /dev/cachefiles.
 
-Also prepare for extension of the driver to more than 8 GPIOs by using
-DECLARE_BITMAP.
+Note that this relies on the patch that adds reference counting to the req,
+otherwise it may UAF.
 
-Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/d0555933becd45fa92a85675d26e4d59343ddc01.1717063994.git.matthias.schiffer@ew.tq-group.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240522114308.2402121-12-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tqmx86.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ fs/cachefiles/daemon.c   | 2 +-
+ fs/cachefiles/internal.h | 3 +++
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-tqmx86.c b/drivers/gpio/gpio-tqmx86.c
-index 3a28c1f273c39..b7e2dbbdc4ebe 100644
---- a/drivers/gpio/gpio-tqmx86.c
-+++ b/drivers/gpio/gpio-tqmx86.c
-@@ -6,6 +6,7 @@
-  *   Vadim V.Vlasov <vvlasov@dev.rtsoft.ru>
-  */
- 
-+#include <linux/bitmap.h>
- #include <linux/bitops.h>
- #include <linux/errno.h>
- #include <linux/gpio/driver.h>
-@@ -38,6 +39,7 @@ struct tqmx86_gpio_data {
- 	void __iomem		*io_base;
- 	int			irq;
- 	raw_spinlock_t		spinlock;
-+	DECLARE_BITMAP(output, TQMX86_NGPIO);
- 	u8			irq_type[TQMX86_NGPI];
- };
- 
-@@ -64,15 +66,10 @@ static void tqmx86_gpio_set(struct gpio_chip *chip, unsigned int offset,
- {
- 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(chip);
- 	unsigned long flags;
--	u8 val;
- 
- 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
--	val = tqmx86_gpio_read(gpio, TQMX86_GPIOD);
--	if (value)
--		val |= BIT(offset);
--	else
--		val &= ~BIT(offset);
--	tqmx86_gpio_write(gpio, val, TQMX86_GPIOD);
-+	__assign_bit(offset, gpio->output, value);
-+	tqmx86_gpio_write(gpio, bitmap_get_value8(gpio->output, 0), TQMX86_GPIOD);
- 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index ccb7b707ea4b7..06cdf1a8a16f6 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -133,7 +133,7 @@ static int cachefiles_daemon_open(struct inode *inode, struct file *file)
+ 	return 0;
  }
  
-@@ -277,6 +274,13 @@ static int tqmx86_gpio_probe(struct platform_device *pdev)
+-static void cachefiles_flush_reqs(struct cachefiles_cache *cache)
++void cachefiles_flush_reqs(struct cachefiles_cache *cache)
+ {
+ 	struct xarray *xa = &cache->reqs;
+ 	struct cachefiles_req *req;
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index 45c8bed605383..6845a90cdfcce 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -188,6 +188,7 @@ extern int cachefiles_has_space(struct cachefiles_cache *cache,
+  * daemon.c
+  */
+ extern const struct file_operations cachefiles_daemon_fops;
++extern void cachefiles_flush_reqs(struct cachefiles_cache *cache);
+ extern void cachefiles_get_unbind_pincount(struct cachefiles_cache *cache);
+ extern void cachefiles_put_unbind_pincount(struct cachefiles_cache *cache);
  
- 	tqmx86_gpio_write(gpio, (u8)~TQMX86_DIR_INPUT_MASK, TQMX86_GPIODD);
+@@ -426,6 +427,8 @@ do {							\
+ 	pr_err("I/O Error: " FMT"\n", ##__VA_ARGS__);	\
+ 	fscache_io_error((___cache)->cache);		\
+ 	set_bit(CACHEFILES_DEAD, &(___cache)->flags);	\
++	if (cachefiles_in_ondemand_mode(___cache))	\
++		cachefiles_flush_reqs(___cache);	\
+ } while (0)
  
-+	/*
-+	 * Reading the previous output state is not possible with TQMx86 hardware.
-+	 * Initialize all outputs to 0 to have a defined state that matches the
-+	 * shadow register.
-+	 */
-+	tqmx86_gpio_write(gpio, 0, TQMX86_GPIOD);
-+
- 	chip = &gpio->chip;
- 	chip->label = "gpio-tqmx86";
- 	chip->owner = THIS_MODULE;
+ #define cachefiles_io_error_obj(object, FMT, ...)			\
 -- 
 2.43.0
 
