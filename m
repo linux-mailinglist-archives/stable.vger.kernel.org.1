@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-54318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC3290EDA0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A0C290EC75
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A05761C21AEE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24AABB21620
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09A2143C65;
-	Wed, 19 Jun 2024 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8988C146590;
+	Wed, 19 Jun 2024 13:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0/G8NGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWdIYD5d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F04B82495;
-	Wed, 19 Jun 2024 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4844C13AA40;
+	Wed, 19 Jun 2024 13:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803225; cv=none; b=A4xRj7vY5KH1+8Ei8hCVwY6EciDmU1i8SNVFT1wywp0PiXOcqzqbtUDa289TQcDZUy/94LJNiGy73uUDWh3la6PsELCo8EfoipSzQdupQuz3FkEEZvQz6N4sofpjW2fRJe2X0qYftCRx7Xv+XKOuKazqQy7hcF7RxVTePRIJja0=
+	t=1718802459; cv=none; b=TpgWe6qs1OSYGaC9ZB/f+MpgBqrgtOprqZNwQyHBIf3aO90OwKjiHBbArt7xrYsFH6Q5h7a16gzGKMUPdX6OTm1pp5+4Pj6SJ328K+Mnv5mSJUr0gng9nmVExMt48xinG0R3Kf8lBeeeh4P4nni58iBsTuPV43FkBe8W95vVdIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803225; c=relaxed/simple;
-	bh=bbNcgGhRhWqmC5DOxqEaloZJwSzNk0OTrFKkgkO3Z3M=;
+	s=arc-20240116; t=1718802459; c=relaxed/simple;
+	bh=fYL5dtM1TilbZDPva09dLvPoZI/ZsyX7TXVWkkVzrog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oIc8wLYMNR9ggdBj7oQYqLpNp7F6s3VyJoEJDvB6e2WU6JehX9AvFvFVwduqeIuY0vha0gTxIi3yrkb2pSS3yaMQkWb7vrCRwEMJZ83i98BEyuQajacZh+wnNkjqAFHvjcs4NOH+Sm2WFSwedlMpa96SiOzYmiq3LrlbMFT4+34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0/G8NGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20585C32786;
-	Wed, 19 Jun 2024 13:20:24 +0000 (UTC)
+	 MIME-Version; b=VE6UQb4L3oHRT3MHim/pwvhp5e2ACDzKH80Pw4d9m0DugXO1rlZa8yaxUxz0YijRE5Iz7iO/oJ3CV+DhIAO8YaYKKKqR+npLyaPG6sBxf6S+YFzeADa+vunlZ5kjlW5TnNZoYeT0cI8Q59JO8/am/E2C/wsTZ8czd2ACf4o7DT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWdIYD5d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C13DEC2BBFC;
+	Wed, 19 Jun 2024 13:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803225;
-	bh=bbNcgGhRhWqmC5DOxqEaloZJwSzNk0OTrFKkgkO3Z3M=;
+	s=korg; t=1718802459;
+	bh=fYL5dtM1TilbZDPva09dLvPoZI/ZsyX7TXVWkkVzrog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i0/G8NGfUvciq+fddsWdRwiX9f6/3OthdAQ6usZrCyw58oxW0Pm1tKNCs674SxKaZ
-	 Su0DdKDhj89qCbEh7UpkkRAyrtve18o4tSi4zy0cHlpaRtj+l03fx06gaa9l2aNcad
-	 ssJbpjYD9WTvfymDcHwcNgEBRt54fw7dHpnbPIzo=
+	b=lWdIYD5dcQZ6Ga4EbVcDXoyzuVBWoNnyG2xRvX8cW6H4h4PncyNoUTOvrjLiJvegb
+	 MKEyqbigREJEMTdlNI4YoqxEmzI6BC49VTyuyJH+VSv3kD6TrilntP5RTvmM8Mm34m
+	 Cyb5AL7/h6r95kG9y6cYwrNhyzJ56/b26PLXmL3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.9 195/281] iio: imu: bmi323: Fix trigger notification in case of error
+	Rik van Riel <riel@surriel.com>,
+	Baoquan He <bhe@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 203/267] fs/proc: fix softlockup in __read_vmcore
 Date: Wed, 19 Jun 2024 14:55:54 +0200
-Message-ID: <20240619125617.455356863@linuxfoundation.org>
+Message-ID: <20240619125614.122154898@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
+From: Rik van Riel <riel@surriel.com>
 
-commit bedb2ccb566de5ca0c336ca3fd3588cea6d50414 upstream.
+commit 5cbcb62dddf5346077feb82b7b0c9254222d3445 upstream.
 
-In case of error in the bmi323_trigger_handler() function, the
-function exits without calling the iio_trigger_notify_done()
-which is responsible for informing the attached trigger that
-the process is done and in case there is a .reenable(), to
-call it.
+While taking a kernel core dump with makedumpfile on a larger system,
+softlockup messages often appear.
 
-Fixes: 8a636db3aa57 ("iio: imu: Add driver for BMI323 IMU")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Link: https://lore.kernel.org/r/20240508155407.139805-1-vassilisamir@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+While softlockup warnings can be harmless, they can also interfere with
+things like RCU freeing memory, which can be problematic when the kdump
+kexec image is configured with as little memory as possible.
+
+Avoid the softlockup, and give things like work items and RCU a chance to
+do their thing during __read_vmcore by adding a cond_resched.
+
+Link: https://lkml.kernel.org/r/20240507091858.36ff767f@imladris.surriel.com
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/bmi323/bmi323_core.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/proc/vmcore.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iio/imu/bmi323/bmi323_core.c
-+++ b/drivers/iio/imu/bmi323/bmi323_core.c
-@@ -1391,7 +1391,7 @@ static irqreturn_t bmi323_trigger_handle
- 				       &data->buffer.channels,
- 				       ARRAY_SIZE(data->buffer.channels));
- 		if (ret)
--			return IRQ_NONE;
-+			goto out;
- 	} else {
- 		for_each_set_bit(bit, indio_dev->active_scan_mask,
- 				 BMI323_CHAN_MAX) {
-@@ -1400,13 +1400,14 @@ static irqreturn_t bmi323_trigger_handle
- 					      &data->buffer.channels[index++],
- 					      BMI323_BYTES_PER_SAMPLE);
- 			if (ret)
--				return IRQ_NONE;
-+				goto out;
- 		}
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -383,6 +383,8 @@ static ssize_t __read_vmcore(struct iov_
+ 		/* leave now if filled buffer already */
+ 		if (!iov_iter_count(iter))
+ 			return acc;
++
++		cond_resched();
  	}
  
- 	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
- 					   iio_get_time_ns(indio_dev));
- 
-+out:
- 	iio_trigger_notify_done(indio_dev->trig);
- 
- 	return IRQ_HANDLED;
+ 	list_for_each_entry(m, &vmcore_list, list) {
 
 
 
