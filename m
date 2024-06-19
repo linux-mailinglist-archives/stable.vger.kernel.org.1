@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C915590EDCF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D98C90ECAA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92F21C22644
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64DD81C2315B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE5214B967;
-	Wed, 19 Jun 2024 13:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91C4145FEF;
+	Wed, 19 Jun 2024 13:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDar1KV7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlmR/iRq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE0814A4FC;
-	Wed, 19 Jun 2024 13:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94754143C43;
+	Wed, 19 Jun 2024 13:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803338; cv=none; b=aCanXdjBaHE5g7I7A+4vemfWLvnhv3bvKgXin62BUC5qhzWUtlqD6K2o1DTQt8AAr8Gikzm8giKESOWgNWBe6FTQPcwF8dfUg4Ews/dzgc1hip5GLYjHPAGlez78HS4mt6vqTPhiQDiEQI1lZKUfxUTSzY9ZjxZLHkRDpiZcMZQ=
+	t=1718802571; cv=none; b=LZUv+mGnHWaPgPgugwsQfve4bmpQag6rU0/SGZpaoP/q1Zuu1WVI0TTuqrLuf2U0+dVfeijOB/X7pAvfy8+quFuUd1yAWRI6aKvlqaEyfSGoygJ1bgE2jhHZ8w6Pj+aHPk+RHZvqxXopo510Pjv5dD7DBdgvCQh58lUm2O4oSYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803338; c=relaxed/simple;
-	bh=7HiSB+sC9K7okOk0LJ3C6cOJfz74Qa1O3p98CU+UhFY=;
+	s=arc-20240116; t=1718802571; c=relaxed/simple;
+	bh=G6b3vmfI3vC1ovxifJLX6pUz7r9I/aSaPSOF5Ro5sQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VTVk1q0wCidTUJzMpfOCNWofj4NcyaITSGYw9q3JP1lYtTe15bkSdFG8Z3VSK2vw4jto4lsS8wijGNOrt2DPY1YRPHAudEkwdCURTNnOmJhDdgg+Bi09zWVIoYRxjbcK6yebFgY5xGr7j5G0HvxW9PhVUk/rUf3ZQGl/oFNzr6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDar1KV7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020EEC2BBFC;
-	Wed, 19 Jun 2024 13:22:17 +0000 (UTC)
+	 MIME-Version; b=LkAKuf8Bq4FbkJUXemUmxjOvObsYyRv928ZD6Xc3CXHBTa2KfJpTrQ+YH81Y7LeD1IqqOhrhkAdvVl7OSlnG4z5+brRpqdliUI9hwvpjq7aPeOgU5E6F+1DycXTu5bUSW2aZZLaZHWVjkhYlzYxPEStp+9GG9rxHYY4UrMO3uLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlmR/iRq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A1AC2BBFC;
+	Wed, 19 Jun 2024 13:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803338;
-	bh=7HiSB+sC9K7okOk0LJ3C6cOJfz74Qa1O3p98CU+UhFY=;
+	s=korg; t=1718802570;
+	bh=G6b3vmfI3vC1ovxifJLX6pUz7r9I/aSaPSOF5Ro5sQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kDar1KV7aV3zWtp3ETkYyZb5qP7getcr+3dFR+V5t0+hAUQj6OI7bI8W0t3vi2v7D
-	 +KTf6wyYUPpHeOofWvyJ8rTZGM0KTbzo4e0Kj2gktYIY5qeYpwphjZctguxsRumkB0
-	 fMyik3TmH4yAUhoaDo2mijweLCdkszY1BBD4Xc+A=
+	b=TlmR/iRqmVmBMP9xraBUCapy2sWU8+hZWzKlFocF7LOcLmm0b0n80MpvpLjS+RTFC
+	 N/jrEEqVEBIpomirwMq17kruUQHnUNMMDY+DCzV5UbgNkLjnohupsDVvFTxbq0Vahs
+	 0sCPHZcZbff130vf/R8L0U0u4yhre/6t5DFyKpzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.9 233/281] dma-buf: handle testing kthreads creation failure
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 241/267] nilfs2: fix potential kernel bug due to lack of writeback flag waiting
 Date: Wed, 19 Jun 2024 14:56:32 +0200
-Message-ID: <20240619125618.928196231@linuxfoundation.org>
+Message-ID: <20240619125615.573182851@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 6cb05d89fd62a76a9b74bd16211fb0930e89fea8 upstream.
+commit a4ca369ca221bb7e06c725792ac107f0e48e82e7 upstream.
 
-kthread creation may possibly fail inside race_signal_callback(). In
-such a case stop the already started threads, put the already taken
-references to them and return with error code.
+Destructive writes to a block device on which nilfs2 is mounted can cause
+a kernel bug in the folio/page writeback start routine or writeback end
+routine (__folio_start_writeback in the log below):
 
-Found by Linux Verification Center (linuxtesting.org).
+ kernel BUG at mm/page-writeback.c:3070!
+ Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN PTI
+ ...
+ RIP: 0010:__folio_start_writeback+0xbaa/0x10e0
+ Code: 25 ff 0f 00 00 0f 84 18 01 00 00 e8 40 ca c6 ff e9 17 f6 ff ff
+  e8 36 ca c6 ff 4c 89 f7 48 c7 c6 80 c0 12 84 e8 e7 b3 0f 00 90 <0f>
+  0b e8 1f ca c6 ff 4c 89 f7 48 c7 c6 a0 c6 12 84 e8 d0 b3 0f 00
+ ...
+ Call Trace:
+  <TASK>
+  nilfs_segctor_do_construct+0x4654/0x69d0 [nilfs2]
+  nilfs_segctor_construct+0x181/0x6b0 [nilfs2]
+  nilfs_segctor_thread+0x548/0x11c0 [nilfs2]
+  kthread+0x2f0/0x390
+  ret_from_fork+0x4b/0x80
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
 
-Fixes: 2989f6451084 ("dma-buf: Add selftests for dma-fence")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: T.J. Mercier <tjmercier@google.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240522181308.841686-1-pchelkin@ispras.ru
-Signed-off-by: Christian König <christian.koenig@amd.com>
+This is because when the log writer starts a writeback for segment summary
+blocks or a super root block that use the backing device's page cache, it
+does not wait for the ongoing folio/page writeback, resulting in an
+inconsistent writeback state.
+
+Fix this issue by waiting for ongoing writebacks when putting
+folios/pages on the backing device into writeback state.
+
+Link: https://lkml.kernel.org/r/20240530141556.4411-1-konishi.ryusuke@gmail.com
+Fixes: 9ff05123e3bf ("nilfs2: segment constructor")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/st-dma-fence.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nilfs2/segment.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/dma-buf/st-dma-fence.c
-+++ b/drivers/dma-buf/st-dma-fence.c
-@@ -540,6 +540,12 @@ static int race_signal_callback(void *ar
- 			t[i].before = pass;
- 			t[i].task = kthread_run(thread_signal_callback, &t[i],
- 						"dma-fence:%d", i);
-+			if (IS_ERR(t[i].task)) {
-+				ret = PTR_ERR(t[i].task);
-+				while (--i >= 0)
-+					kthread_stop_put(t[i].task);
-+				return ret;
-+			}
- 			get_task_struct(t[i].task);
- 		}
- 
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -1694,6 +1694,7 @@ static void nilfs_segctor_prepare_write(
+ 			if (bh->b_page != bd_page) {
+ 				if (bd_page) {
+ 					lock_page(bd_page);
++					wait_on_page_writeback(bd_page);
+ 					clear_page_dirty_for_io(bd_page);
+ 					set_page_writeback(bd_page);
+ 					unlock_page(bd_page);
+@@ -1707,6 +1708,7 @@ static void nilfs_segctor_prepare_write(
+ 			if (bh == segbuf->sb_super_root) {
+ 				if (bh->b_page != bd_page) {
+ 					lock_page(bd_page);
++					wait_on_page_writeback(bd_page);
+ 					clear_page_dirty_for_io(bd_page);
+ 					set_page_writeback(bd_page);
+ 					unlock_page(bd_page);
+@@ -1723,6 +1725,7 @@ static void nilfs_segctor_prepare_write(
+ 	}
+ 	if (bd_page) {
+ 		lock_page(bd_page);
++		wait_on_page_writeback(bd_page);
+ 		clear_page_dirty_for_io(bd_page);
+ 		set_page_writeback(bd_page);
+ 		unlock_page(bd_page);
 
 
 
