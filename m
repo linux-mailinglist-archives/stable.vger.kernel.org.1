@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-54286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116B490ED80
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 468CE90EC50
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B32271F21671
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E021E1F2142D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4261474AD;
-	Wed, 19 Jun 2024 13:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305FB143C43;
+	Wed, 19 Jun 2024 13:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hk9S31n9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtI3dUFT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D52145FEF;
-	Wed, 19 Jun 2024 13:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31C012FB31;
+	Wed, 19 Jun 2024 13:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803131; cv=none; b=Fl3fhlBsDIGHjNEHjgIT9gbjuw3wBg85eKHESi8kuRc0TWK5gZLssyz26ITnG6VatPKkbFmDZ44JjP9R1UCL8VNPGRa25iSbJKU5+S7zvpuGQr8BTdG4W0QUjirkcU/N01J/ELDbII0OiBkZV9OnkCJnLDW2kL2UPwmSX5vTjU8=
+	t=1718802365; cv=none; b=K7DUmeemmk0k5HrUZFVME11sV2ZgGTtO/xnyck+czn25hHy6wff3TBvU6Oi1SQIQ+S2EVfQneFVVWo2eRLzMQ0Uni20dXyJIgRbiJvoatQ/BXl+mqtKo+aIDELBh7NMcOOfbUEvk67tGFDcB9sVYn2uPQu/s7XNjebHNo1kDEWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803131; c=relaxed/simple;
-	bh=fn0wxMUeRjkKx2mR7U1eR2Te+pxZ1S6KCwMN7wlUVkU=;
+	s=arc-20240116; t=1718802365; c=relaxed/simple;
+	bh=Z/YFbcRJB6D6BEqgwz7aarHvOrlmGo64SCGSjlNIhFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eV5NZA08WtHlQqWdzcJm2ffY0ri9DDkjG+lgmc/CyOxTcJZ/LkBeeJ2pyFXCR7cCm++8hatdIHvuQM64oJaZEYlEQSQ5ZUlDpo5cUXGFUbqejj2oGxFrJoljckJi9rBOYr04lQrzQCYHKj4jLvKwcIJXfjy/0fzICbmwd/tseL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hk9S31n9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47034C2BBFC;
-	Wed, 19 Jun 2024 13:18:51 +0000 (UTC)
+	 MIME-Version; b=KJayQ0jfopi1aj0MsVOwGrRv0pteCwwx1RT3Wua9H4CeINlw55RHpWdJIv69CehSgyIOfwBB6v0ryBy4RQeB3Fr8cVyTHo5XkCNPGbxpRrqZt8z2e3j+uFNINKWtLM9aDIF1/Z1xTKBJzuu/Lf8bM6pRWE59YOtqK5tLDL1p3mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtI3dUFT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D2CC2BBFC;
+	Wed, 19 Jun 2024 13:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803131;
-	bh=fn0wxMUeRjkKx2mR7U1eR2Te+pxZ1S6KCwMN7wlUVkU=;
+	s=korg; t=1718802364;
+	bh=Z/YFbcRJB6D6BEqgwz7aarHvOrlmGo64SCGSjlNIhFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hk9S31n9cn6u6iQLPpuwpHTprFogJlS0p2GEJwENaHCjRkxBn/Kg/N21FwJOHlGlj
-	 Wm+3HrnN0YKmOUkuLOvi1kwlqXjLWT3Cmdsg9An5W3RQD4QguVYUrxaWT+taMfDaxc
-	 OgIyhT2anxCA+JlgJ3tLvWEPlxJ+Vk7fvJPdEwDY=
+	b=AtI3dUFTlhEVZleqX17jjAGO/c3iytpNPK2m5AdUA4ywHZRUMWF+vb25kMty5ZDYy
+	 7i1A55ZjJDSSWDISnQFer/4pY82V5aBI1TFieFhC42SXfQNYq5Cc/H73J6I7EHMhar
+	 uzHG8YmoVez4vX66dsciJwCact2ubx8kaRj/6D3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Menglong Dong <imagedong@tencent.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 163/281] tcp: use signed arithmetic in tcp_rtx_probe0_timed_out()
+Subject: [PATCH 6.6 171/267] bnxt_en: Adjust logging of firmware messages in case of released token in __hwrm_send()
 Date: Wed, 19 Jun 2024 14:55:22 +0200
-Message-ID: <20240619125616.110543780@linuxfoundation.org>
+Message-ID: <20240619125612.905147632@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 36534d3c54537bf098224a32dc31397793d4594d ]
+[ Upstream commit a9b9741854a9fe9df948af49ca5514e0ed0429df ]
 
-Due to timer wheel implementation, a timer will usually fire
-after its schedule.
+In case of token is released due to token->state == BNXT_HWRM_DEFERRED,
+released token (set to NULL) is used in log messages. This issue is
+expected to be prevented by HWRM_ERR_CODE_PF_UNAVAILABLE error code. But
+this error code is returned by recent firmware. So some firmware may not
+return it. This may lead to NULL pointer dereference.
+Adjust this issue by adding token pointer check.
 
-For instance, for HZ=1000, a timeout between 512ms and 4s
-has a granularity of 64ms.
-For this range of values, the extra delay could be up to 63ms.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-For TCP, this means that tp->rcv_tstamp may be after
-inet_csk(sk)->icsk_timeout whenever the timer interrupt
-finally triggers, if one packet came during the extra delay.
-
-We need to make sure tcp_rtx_probe0_timed_out() handles this case.
-
-Fixes: e89688e3e978 ("net: tcp: fix unexcepted socket die when snd_wnd is 0")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Menglong Dong <imagedong@tencent.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Link: https://lore.kernel.org/r/20240607125652.1472540-1-edumazet@google.com
+Fixes: 8fa4219dba8e ("bnxt_en: add dynamic debug support for HWRM messages")
+Suggested-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/20240611082547.12178-1-amishin@t-argos.ru
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_timer.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
-index d1ad20ce1c8c7..f96f68cf7961c 100644
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -483,8 +483,12 @@ static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
- {
- 	const struct tcp_sock *tp = tcp_sk(sk);
- 	const int timeout = TCP_RTO_MAX * 2;
--	u32 rcv_delta;
-+	s32 rcv_delta;
- 
-+	/* Note: timer interrupt might have been delayed by at least one jiffy,
-+	 * and tp->rcv_tstamp might very well have been written recently.
-+	 * rcv_delta can thus be negative.
-+	 */
- 	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
- 	if (rcv_delta <= timeout)
- 		return false;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
+index 132442f16fe67..7a4e08b5a8c1b 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_hwrm.c
+@@ -678,7 +678,7 @@ static int __hwrm_send(struct bnxt *bp, struct bnxt_hwrm_ctx *ctx)
+ 			    req_type);
+ 	else if (rc && rc != HWRM_ERR_CODE_PF_UNAVAILABLE)
+ 		hwrm_err(bp, ctx, "hwrm req_type 0x%x seq id 0x%x error 0x%x\n",
+-			 req_type, token->seq_id, rc);
++			 req_type, le16_to_cpu(ctx->req->seq_id), rc);
+ 	rc = __hwrm_to_stderr(rc);
+ exit:
+ 	if (token)
 -- 
 2.43.0
 
