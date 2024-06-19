@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-54457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B2890EE48
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3ACC90ED64
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B310E284CB6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:27:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 824042810A6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00D31474AD;
-	Wed, 19 Jun 2024 13:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2150D13F435;
+	Wed, 19 Jun 2024 13:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCSwJ8+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/NhnAG8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8459B14B96E;
-	Wed, 19 Jun 2024 13:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40174315F;
+	Wed, 19 Jun 2024 13:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803636; cv=none; b=bVi+TnSUH03sLv+IlrfqdOop9HyNmXsAAg9g4PaOeDQpyGlc759gz9kPiscXzCrYrecgrLwVFFvwi7LXkc73+NI7POHlh3e8mWV0aMqIYNao1gmcdF6ZGDX+4yzWvn4gtgYWgySDkLA9B0dIFH5KH9YeywULLPr9p9SdQsscsZ0=
+	t=1718803051; cv=none; b=BitGkmzBsE0MkoY9cwcwlifijFnp61BfUbQO4v6Etnzi8KabAR8skhvAjpzf9J8skTmTRIQ8CX9JwxGHbvlJo0K3cTEprxfMuLY+R/nbWEdxfTVAj+cnznAQx9/eVmehFgxAut2MitZR2Fu/1ZtuEugmTXbTBzy6JR+cVJ3DdxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803636; c=relaxed/simple;
-	bh=NiCnGM3KY6Zsgxlz1VJ4afgcE1yFaGOp7sIX4hrTS6A=;
+	s=arc-20240116; t=1718803051; c=relaxed/simple;
+	bh=F5xiAuW6MjxSgJ4y54rr1haHf5CXP4fIgUSqGlh5n5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iOkxXl6YpwtJAYPhQXq0Mx10R/+aAe+KsK3q9l7E0JMM5rYJYnAxA1Kz4wLncGOxGet76HxSZ6havwxRZXYE+4o14b0+GLpkos67XWrRfIayWSkYr37OKpHbz4mT36/ZPpgs0AtUUIitM1syaGS9anRuD4l7s+Fr1JGyjkXw/j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCSwJ8+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B586C2BBFC;
-	Wed, 19 Jun 2024 13:27:15 +0000 (UTC)
+	 MIME-Version; b=TaHcQdHg7NonkorAnN8PRYz+TYwChfogZj3Gd6q1v4Wbyg2/fV9Ly5rTnQPYW2G9FxQSviIRnwGVP5SqG/YGgrTzm/2eWqkcI/tXSjkQYyFQ4e6/Pt+MqmeZ/11QfCzUryenIcHAc2AxYRfJDCzAhG2mB+g8x4h6U+k7/TlMOQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/NhnAG8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54DCCC2BBFC;
+	Wed, 19 Jun 2024 13:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803636;
-	bh=NiCnGM3KY6Zsgxlz1VJ4afgcE1yFaGOp7sIX4hrTS6A=;
+	s=korg; t=1718803051;
+	bh=F5xiAuW6MjxSgJ4y54rr1haHf5CXP4fIgUSqGlh5n5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VCSwJ8+Y8wd4KMdm7PgMPDoV7BVIsWBLyfp6JKE4+03PsvpOv8xiuHkNOHxSgsOfG
-	 fUZcLEFtHa9gFvMSSlhaFGBRGXg7EMGVsFqZeFFfZcLcTKazT9UnsoSOTeLDUHZt91
-	 wglpQ7QB/SyGuhGmRfGadd+kom9TUPTG+YPs9tjw=
+	b=a/NhnAG8YMDK2NLNUMRM7405LWaLimeGJtYSuNk2i/Wv3F2ixjAphgacnqMGfY3Hz
+	 9w5bloIoLb4CwP1lFZQ7IAxZovb7uHmhmev9KoBP/5kkBUxcDtFeRZBUbZ0rkb59zD
+	 BCy50vdK2cl51XWA+0rTSifTYB4W3E4951n3JNwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linyu Yuan <quic_linyyuan@quicinc.com>,
-	John Keeping <john@metanate.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Jean-Philippe Brucker <jean-philippe@linaro.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/217] usb: gadget: f_fs: use io_data->status consistently
+Subject: [PATCH 6.9 136/281] iommu: Return right value in iommu_sva_bind_device()
 Date: Wed, 19 Jun 2024 14:54:55 +0200
-Message-ID: <20240619125558.673853428@linuxfoundation.org>
+Message-ID: <20240619125615.075992180@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <john@metanate.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit b566d38857fcb6777f25b674b90a831eec0817a2 ]
+[ Upstream commit 89e8a2366e3bce584b6c01549d5019c5cda1205e ]
 
-Commit fb1f16d74e26 ("usb: gadget: f_fs: change ep->status safe in
-ffs_epfile_io()") added a new ffs_io_data::status field to fix lifetime
-issues in synchronous requests.
+iommu_sva_bind_device() should return either a sva bond handle or an
+ERR_PTR value in error cases. Existing drivers (idxd and uacce) only
+check the return value with IS_ERR(). This could potentially lead to
+a kernel NULL pointer dereference issue if the function returns NULL
+instead of an error pointer.
 
-While there are no similar lifetime issues for asynchronous requests
-(the separate ep member in ffs_io_data avoids them) using the status
-field means the USB request can be freed earlier and that there is more
-consistency between the synchronous and asynchronous I/O paths.
+In reality, this doesn't cause any problems because iommu_sva_bind_device()
+only returns NULL when the kernel is not configured with CONFIG_IOMMU_SVA.
+In this case, iommu_dev_enable_feature(dev, IOMMU_DEV_FEAT_SVA) will
+return an error, and the device drivers won't call iommu_sva_bind_device()
+at all.
 
-Cc: Linyu Yuan <quic_linyyuan@quicinc.com>
-Signed-off-by: John Keeping <john@metanate.com>
-Reviewed-by: Linyu Yuan <quic_linyyuan@quicinc.com>
-Link: https://lore.kernel.org/r/20221124170430.3998755-1-john@metanate.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 24729b307eef ("usb: gadget: f_fs: Fix race between aio_cancel() and AIO request complete")
+Fixes: 26b25a2b98e4 ("iommu: Bind process address spaces to devices")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20240528042528.71396-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_fs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/iommu.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index b2da74bb107af..d32e1ece3e0a1 100644
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -830,8 +830,7 @@ static void ffs_user_copy_worker(struct work_struct *work)
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index 2e925b5eba534..3b67d59a36bf9 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -1537,7 +1537,7 @@ struct iommu_domain *iommu_sva_domain_alloc(struct device *dev,
+ static inline struct iommu_sva *
+ iommu_sva_bind_device(struct device *dev, struct mm_struct *mm)
  {
- 	struct ffs_io_data *io_data = container_of(work, struct ffs_io_data,
- 						   work);
--	int ret = io_data->req->status ? io_data->req->status :
--					 io_data->req->actual;
-+	int ret = io_data->status;
- 	bool kiocb_has_eventfd = io_data->kiocb->ki_flags & IOCB_EVENTFD;
- 
- 	if (io_data->read && ret > 0) {
-@@ -845,8 +844,6 @@ static void ffs_user_copy_worker(struct work_struct *work)
- 	if (io_data->ffs->ffs_eventfd && !kiocb_has_eventfd)
- 		eventfd_signal(io_data->ffs->ffs_eventfd, 1);
- 
--	usb_ep_free_request(io_data->ep, io_data->req);
--
- 	if (io_data->read)
- 		kfree(io_data->to_free);
- 	ffs_free_buffer(io_data);
-@@ -861,6 +858,9 @@ static void ffs_epfile_async_io_complete(struct usb_ep *_ep,
- 
- 	ENTER();
- 
-+	io_data->status = req->status ? req->status : req->actual;
-+	usb_ep_free_request(_ep, req);
-+
- 	INIT_WORK(&io_data->work, ffs_user_copy_worker);
- 	queue_work(ffs->io_completion_wq, &io_data->work);
+-	return NULL;
++	return ERR_PTR(-ENODEV);
  }
+ 
+ static inline void iommu_sva_unbind_device(struct iommu_sva *handle)
 -- 
 2.43.0
 
