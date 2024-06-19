@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-54092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AAD290ECA8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D0D90EECA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDAEA2871B8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1398F1C2332C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B359143C4A;
-	Wed, 19 Jun 2024 13:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643D614C580;
+	Wed, 19 Jun 2024 13:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kL0jo1T/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVyAVL/i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0894513F426;
-	Wed, 19 Jun 2024 13:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2309E14BF89;
+	Wed, 19 Jun 2024 13:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802565; cv=none; b=dfuViznda1DNsd6SCnsJN+79+Zo2q3vGfcp9+C5vfz3JoNlkPh+mwsCsXKOSk9gHogLx24LC+B/NxlHOow8P9MMYM/cj93s8GRUEqSGjPn/t5xku8okfVJITbgMbi2vjWDO2madq5vHg0DETXxaOV17akbiOwpJIXEY63GTxSiw=
+	t=1718803914; cv=none; b=G1lJBoq+ZPOkIp8uYbjFy/j5Mpz4Bndd2gXlmRrGYRuJUIDy6/RlhFJ8XZxGs5jcpLysvV4UD4WKhGzm8ru+V9libnTTMU2sEJ4LigFc+f7C27MBtje2FV3GeicwFXgvyRok/zNOAhF5LANIrbKkz3V2OTFtTj3XaTH/Ep11FMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802565; c=relaxed/simple;
-	bh=yYFHpKpSbVgPV9vWMOChv98i+8KqzbrEM2wIKE/MPyU=;
+	s=arc-20240116; t=1718803914; c=relaxed/simple;
+	bh=qGX4Xk8DXjC6yWEfqIF/LYEMdEHc65BrW4ehbVPdnMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bgc+0IzcE06+/pbDk8XE9qDgaUfTz8OgVsyO65gJcMxPZgQXD57FvJ7mu06PiCNntbSaEAk0aSy+eScdje9h85fTwgxCLZTsIu743vbV3ZoAVXLjgmT5NskUmtVuJfRByvvftPByIs4L+KHAh8MmoqHxlJkU2VvPb0W/OHlA8Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kL0jo1T/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82737C2BBFC;
-	Wed, 19 Jun 2024 13:09:24 +0000 (UTC)
+	 MIME-Version; b=Twix6h7k+Bb+yiradt7vpUJSid5mMdssoGp55uTo87TNHt2kMbk6hxj+vw8wssQlcyKI5PFLJZPeWh9g6zzokuEUaH34Mh8Me41MOJulYwyrKc8iGvZjF/QVW88AQo+2N1Q/uD16PogGpVHoKlZW27R9vM8N/qvBBPVhVBWYYns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVyAVL/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8F9C2BBFC;
+	Wed, 19 Jun 2024 13:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802564;
-	bh=yYFHpKpSbVgPV9vWMOChv98i+8KqzbrEM2wIKE/MPyU=;
+	s=korg; t=1718803914;
+	bh=qGX4Xk8DXjC6yWEfqIF/LYEMdEHc65BrW4ehbVPdnMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kL0jo1T/LNP/vsI1C6oC8Fj/fRFtcB0p2lCqyGY3AaLQBatXlGhAlbVzJ5HpT75+R
-	 2EPdazSkQ9cVX8TFge3FbBIvoYjXU6XnUR9jxN7FlCORuywB/iOKvmN7ViSwl+4Uah
-	 qMAKj/M4QpkiPptnGDTkhB0Ij9/2rA3pvUjlPYZs=
+	b=kVyAVL/isaV84c5XkLAsKS4puhFBwAE5XHLGE1Mx16V2aKjycfARnznUqAAGGW0P9
+	 yD0lcOgjvsYQq4XAE/u1v76fnCJEG3CBSIh5Jh/IQpQeAv23LZi2UBFWKmUFaPPbJR
+	 SlZrtnSr0JYpAxQ0ewFPV5eRj6pP90Znnyfq2H0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Petr Tesarik <petr.tesarik1@huawei-partners.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Fabio Estevam <festevam@denx.de>
-Subject: [PATCH 6.6 239/267] swiotlb: Reinstate page-alignment for mappings >= PAGE_SIZE
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 147/217] Bluetooth: L2CAP: Fix rejecting L2CAP_CONN_PARAM_UPDATE_REQ
 Date: Wed, 19 Jun 2024 14:56:30 +0200
-Message-ID: <20240619125615.494983503@linuxfoundation.org>
+Message-ID: <20240619125602.361971872@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +61,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 14cebf689a78e8a1c041138af221ef6eac6bc7da upstream.
+[ Upstream commit 806a5198c05987b748b50f3d0c0cfb3d417381a4 ]
 
-For swiotlb allocations >= PAGE_SIZE, the slab search historically
-adjusted the stride to avoid checking unaligned slots. This had the
-side-effect of aligning large mapping requests to PAGE_SIZE, but that
-was broken by 0eee5ae10256 ("swiotlb: fix slot alignment checks").
+This removes the bogus check for max > hcon->le_conn_max_interval since
+the later is just the initial maximum conn interval not the maximum the
+stack could support which is really 3200=4000ms.
 
-Since this alignment could be relied upon drivers, reinstate PAGE_SIZE
-alignment for swiotlb mappings >= PAGE_SIZE.
+In order to pass GAP/CONN/CPUP/BV-05-C one shall probably enter values
+of the following fields in IXIT that would cause hci_check_conn_params
+to fail:
 
-Cc: stable@vger.kernel.org # v6.6+
-Reported-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Tested-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+TSPX_conn_update_int_min
+TSPX_conn_update_int_max
+TSPX_conn_update_peripheral_latency
+TSPX_conn_update_supervision_timeout
+
+Link: https://github.com/bluez/bluez/issues/847
+Fixes: e4b019515f95 ("Bluetooth: Enforce validation on max value of connection interval")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/swiotlb.c |   18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ include/net/bluetooth/hci_core.h | 36 ++++++++++++++++++++++++++++----
+ net/bluetooth/l2cap_core.c       |  8 +------
+ 2 files changed, 33 insertions(+), 11 deletions(-)
 
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -993,6 +993,17 @@ static int swiotlb_area_find_slots(struc
- 	BUG_ON(area_index >= pool->nareas);
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index c50a41f1782a4..9df7e29386bcc 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1936,18 +1936,46 @@ static inline int hci_check_conn_params(u16 min, u16 max, u16 latency,
+ {
+ 	u16 max_latency;
  
- 	/*
-+	 * Historically, swiotlb allocations >= PAGE_SIZE were guaranteed to be
-+	 * page-aligned in the absence of any other alignment requirements.
-+	 * 'alloc_align_mask' was later introduced to specify the alignment
-+	 * explicitly, however this is passed as zero for streaming mappings
-+	 * and so we preserve the old behaviour there in case any drivers are
-+	 * relying on it.
-+	 */
-+	if (!alloc_align_mask && !iotlb_align_mask && alloc_size >= PAGE_SIZE)
-+		alloc_align_mask = PAGE_SIZE - 1;
+-	if (min > max || min < 6 || max > 3200)
++	if (min > max) {
++		BT_WARN("min %d > max %d", min, max);
+ 		return -EINVAL;
++	}
 +
-+	/*
- 	 * Ensure that the allocation is at least slot-aligned and update
- 	 * 'iotlb_align_mask' to ignore bits that will be preserved when
- 	 * offsetting into the allocation.
-@@ -1006,13 +1017,6 @@ static int swiotlb_area_find_slots(struc
- 	 */
- 	stride = get_max_slots(max(alloc_align_mask, iotlb_align_mask));
++	if (min < 6) {
++		BT_WARN("min %d < 6", min);
++		return -EINVAL;
++	}
++
++	if (max > 3200) {
++		BT_WARN("max %d > 3200", max);
++		return -EINVAL;
++	}
++
++	if (to_multiplier < 10) {
++		BT_WARN("to_multiplier %d < 10", to_multiplier);
++		return -EINVAL;
++	}
  
--	/*
--	 * For allocations of PAGE_SIZE or larger only look for page aligned
--	 * allocations.
--	 */
--	if (alloc_size >= PAGE_SIZE)
--		stride = umax(stride, PAGE_SHIFT - IO_TLB_SHIFT + 1);
+-	if (to_multiplier < 10 || to_multiplier > 3200)
++	if (to_multiplier > 3200) {
++		BT_WARN("to_multiplier %d > 3200", to_multiplier);
+ 		return -EINVAL;
++	}
+ 
+-	if (max >= to_multiplier * 8)
++	if (max >= to_multiplier * 8) {
++		BT_WARN("max %d >= to_multiplier %d * 8", max, to_multiplier);
+ 		return -EINVAL;
++	}
+ 
+ 	max_latency = (to_multiplier * 4 / max) - 1;
+-	if (latency > 499 || latency > max_latency)
++	if (latency > 499) {
++		BT_WARN("latency %d > 499", latency);
+ 		return -EINVAL;
++	}
++
++	if (latency > max_latency) {
++		BT_WARN("latency %d > max_latency %d", latency, max_latency);
++		return -EINVAL;
++	}
+ 
+ 	return 0;
+ }
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 5f9a599baa34d..a204488a21759 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5641,13 +5641,7 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
+ 
+ 	memset(&rsp, 0, sizeof(rsp));
+ 
+-	if (max > hcon->le_conn_max_interval) {
+-		BT_DBG("requested connection interval exceeds current bounds.");
+-		err = -EINVAL;
+-	} else {
+-		err = hci_check_conn_params(min, max, latency, to_multiplier);
+-	}
 -
- 	spin_lock_irqsave(&area->lock, flags);
- 	if (unlikely(nslots > pool->area_nslabs - area->used))
- 		goto not_found;
++	err = hci_check_conn_params(min, max, latency, to_multiplier);
+ 	if (err)
+ 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
+ 	else
+-- 
+2.43.0
+
 
 
 
