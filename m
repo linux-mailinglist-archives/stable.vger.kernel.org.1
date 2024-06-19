@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-54270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C51C90ED6F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1463C90EE32
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CED9B230A5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A8AA1F221F9
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059A7143C4E;
-	Wed, 19 Jun 2024 13:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76501482EE;
+	Wed, 19 Jun 2024 13:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wtU+c8s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ol9NCOgY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B9282495;
-	Wed, 19 Jun 2024 13:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6448D147C6E;
+	Wed, 19 Jun 2024 13:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803084; cv=none; b=NY2vFImIv0rBIQFYmGQBEw2n0nZradl9ENyx1ZjEYSb9w6XmV+MDCCZALtC+qTAgEJtOzul9TdVZAqOb4GOAuJVADqflF/bK+NfpB2saxubDUAtxjixGcF+qmHpOzFQGgI9YrlxJ6Cw6DB1VSNL6gKBTdaLLTCZDLphdVjJFNlk=
+	t=1718803601; cv=none; b=TgF039w+VuuI/qrgtvmF1BESVdhlMwLtasmc4kvmC2MbrLYI8rxArd0ETPp2cwO0E2eaUmlxkjoy08jFTLqYfrR9U6vnsv704cJzhQLIzQQqYs1/D8YjGOJF2hZZWfelcQR5YkZmf0z/IIV8KGsf5D5q7TnHMqIBXl4UOER7t9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803084; c=relaxed/simple;
-	bh=krfp/BOVt9k4WcpgnxHYQrnObjWvCA+Xooxd4nX9tT8=;
+	s=arc-20240116; t=1718803601; c=relaxed/simple;
+	bh=pHPrr+MpOOszytcllcR5OPjEd2yfo3zvpx5OY1g0PMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIVKUoCnbsDybowFrVseytc+lSiY+8NJLw+AGXgvN9SDwPbgzBG0D3J/4qa7TJ/cOiupx+SZ7kGq6h3K2Bb8fXhnmqA+9Un6STYEbIF2gKSTugdifVZsfe8wpVVnOu6Okwk6CxOhhlSw7HAScVMxYo8M+2chURhEVs8Nb8qjnhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wtU+c8s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBB1C2BBFC;
-	Wed, 19 Jun 2024 13:18:03 +0000 (UTC)
+	 MIME-Version; b=nmB06pBBmQZfIu2LjAJQwGVU2fxL9zt9kEvcN95EnWc3G2C/f7owm52VMAeKLughkSVcdLkN8IBFQ6Qn5fHJ594JaXWXL731Yb5c6X30/g7mGao+A2WAeTNmmOYxakhWNA5YRzd640fP+xY9FRgCARO73r+OXsPwFLNIvJf3z54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ol9NCOgY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAB4C32786;
+	Wed, 19 Jun 2024 13:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803084;
-	bh=krfp/BOVt9k4WcpgnxHYQrnObjWvCA+Xooxd4nX9tT8=;
+	s=korg; t=1718803601;
+	bh=pHPrr+MpOOszytcllcR5OPjEd2yfo3zvpx5OY1g0PMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1wtU+c8sxGmf5rm+NWHPmhe8tOMuQ9SAHtCd0IdTLvrrGx1ONlXZJjl1ur2Q5APGj
-	 uy68RkyKLqYOdu9lOf87xmQqVdxOQQiYWbRSXqyfuWWh1zvaS81OvaYjdEBJxn6eZo
-	 NkiweKbDgXMCpurlVdr3gVvT9xrqlTJtQORdgs+w=
+	b=ol9NCOgYU49Z8tt3ckPHKak6tpVZWIiuJ1n1pnGqnwf31Y5GHdZy6XX6LLbgVyX5t
+	 tzd5AcP8Cb4EG+zfDxMcO8t+WlrBqMq4KBHZ5EMwkEWSgWceSrRpyW+OVE0LiUXJCn
+	 t2Wgil+NFFtskPIc39WLuUcfMQAkYbcPUSHGMqsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 117/281] cachefiles: defer exposing anon_fd until after copy_to_user() succeeds
+Subject: [PATCH 6.1 033/217] ice: remove af_xdp_zc_qps bitmap
 Date: Wed, 19 Jun 2024 14:54:36 +0200
-Message-ID: <20240619125614.349336531@linuxfoundation.org>
+Message-ID: <20240619125557.930526056@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,165 +66,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-[ Upstream commit 4b4391e77a6bf24cba2ef1590e113d9b73b11039 ]
+[ Upstream commit adbf5a42341f6ea038d3626cd4437d9f0ad0b2dd ]
 
-After installing the anonymous fd, we can now see it in userland and close
-it. However, at this point we may not have gotten the reference count of
-the cache, but we will put it during colse fd, so this may cause a cache
-UAF.
+Referenced commit has introduced a bitmap to distinguish between ZC and
+copy-mode AF_XDP queues, because xsk_get_pool_from_qid() does not do this
+for us.
 
-So grab the cache reference count before fd_install(). In addition, by
-kernel convention, fd is taken over by the user land after fd_install(),
-and the kernel should not call close_fd() after that, i.e., it should call
-fd_install() after everything is ready, thus fd_install() is called after
-copy_to_user() succeeds.
+The bitmap would be especially useful when restoring previous state after
+rebuild, if only it was not reallocated in the process. This leads to e.g.
+xdpsock dying after changing number of queues.
 
-Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
-Suggested-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240522114308.2402121-10-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Instead of preserving the bitmap during the rebuild, remove it completely
+and distinguish between ZC and copy-mode queues based on the presence of
+a device associated with the pool.
+
+Fixes: e102db780e1c ("ice: track AF_XDP ZC enabled queues in bitmap")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20240603-net-2024-05-30-intel-net-fixes-v2-3-e3563aa89b0c@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/ondemand.c | 53 +++++++++++++++++++++++++---------------
- 1 file changed, 33 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/intel/ice/ice.h     | 32 ++++++++++++++++--------
+ drivers/net/ethernet/intel/ice/ice_lib.c |  8 ------
+ drivers/net/ethernet/intel/ice/ice_xsk.c | 13 +++++-----
+ 3 files changed, 27 insertions(+), 26 deletions(-)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index dbcd4161ea3a1..89f118d68d125 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -4,6 +4,11 @@
- #include <linux/uio.h>
- #include "internal.h"
+diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+index f2be383d97df5..6d75e5638f665 100644
+--- a/drivers/net/ethernet/intel/ice/ice.h
++++ b/drivers/net/ethernet/intel/ice/ice.h
+@@ -388,7 +388,6 @@ struct ice_vsi {
+ 	struct ice_tc_cfg tc_cfg;
+ 	struct bpf_prog *xdp_prog;
+ 	struct ice_tx_ring **xdp_rings;	 /* XDP ring array */
+-	unsigned long *af_xdp_zc_qps;	 /* tracks AF_XDP ZC enabled qps */
+ 	u16 num_xdp_txq;		 /* Used XDP queues */
+ 	u8 xdp_mapping_mode;		 /* ICE_MAP_MODE_[CONTIG|SCATTER] */
  
-+struct ondemand_anon_file {
-+	struct file *file;
-+	int fd;
-+};
+@@ -688,6 +687,25 @@ static inline void ice_set_ring_xdp(struct ice_tx_ring *ring)
+ 	ring->flags |= ICE_TX_FLAGS_RING_XDP;
+ }
+ 
++/**
++ * ice_get_xp_from_qid - get ZC XSK buffer pool bound to a queue ID
++ * @vsi: pointer to VSI
++ * @qid: index of a queue to look at XSK buff pool presence
++ *
++ * Return: A pointer to xsk_buff_pool structure if there is a buffer pool
++ * attached and configured as zero-copy, NULL otherwise.
++ */
++static inline struct xsk_buff_pool *ice_get_xp_from_qid(struct ice_vsi *vsi,
++							u16 qid)
++{
++	struct xsk_buff_pool *pool = xsk_get_pool_from_qid(vsi->netdev, qid);
 +
- static inline void cachefiles_req_put(struct cachefiles_req *req)
- {
- 	if (refcount_dec_and_test(&req->ref))
-@@ -250,14 +255,14 @@ int cachefiles_ondemand_restore(struct cachefiles_cache *cache, char *args)
++	if (!ice_is_xdp_ena_vsi(vsi))
++		return NULL;
++
++	return (pool && pool->dev) ? pool : NULL;
++}
++
+ /**
+  * ice_xsk_pool - get XSK buffer pool bound to a ring
+  * @ring: Rx ring to use
+@@ -700,10 +718,7 @@ static inline struct xsk_buff_pool *ice_xsk_pool(struct ice_rx_ring *ring)
+ 	struct ice_vsi *vsi = ring->vsi;
+ 	u16 qid = ring->q_index;
+ 
+-	if (!ice_is_xdp_ena_vsi(vsi) || !test_bit(qid, vsi->af_xdp_zc_qps))
+-		return NULL;
+-
+-	return xsk_get_pool_from_qid(vsi->netdev, qid);
++	return ice_get_xp_from_qid(vsi, qid);
+ }
+ 
+ /**
+@@ -728,12 +743,7 @@ static inline void ice_tx_xsk_pool(struct ice_vsi *vsi, u16 qid)
+ 	if (!ring)
+ 		return;
+ 
+-	if (!ice_is_xdp_ena_vsi(vsi) || !test_bit(qid, vsi->af_xdp_zc_qps)) {
+-		ring->xsk_pool = NULL;
+-		return;
+-	}
+-
+-	ring->xsk_pool = xsk_get_pool_from_qid(vsi->netdev, qid);
++	ring->xsk_pool = ice_get_xp_from_qid(vsi, qid);
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index cd161c03c5e39..7661e735d0992 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -117,14 +117,8 @@ static int ice_vsi_alloc_arrays(struct ice_vsi *vsi)
+ 	if (!vsi->q_vectors)
+ 		goto err_vectors;
+ 
+-	vsi->af_xdp_zc_qps = bitmap_zalloc(max_t(int, vsi->alloc_txq, vsi->alloc_rxq), GFP_KERNEL);
+-	if (!vsi->af_xdp_zc_qps)
+-		goto err_zc_qps;
+-
+ 	return 0;
+ 
+-err_zc_qps:
+-	devm_kfree(dev, vsi->q_vectors);
+ err_vectors:
+ 	devm_kfree(dev, vsi->rxq_map);
+ err_rxq_map:
+@@ -320,8 +314,6 @@ static void ice_vsi_free_arrays(struct ice_vsi *vsi)
+ 
+ 	dev = ice_pf_to_dev(pf);
+ 
+-	bitmap_free(vsi->af_xdp_zc_qps);
+-	vsi->af_xdp_zc_qps = NULL;
+ 	/* free the ring and vector containers */
+ 	devm_kfree(dev, vsi->q_vectors);
+ 	vsi->q_vectors = NULL;
+diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+index 48cf24709fe32..b917f271cdac1 100644
+--- a/drivers/net/ethernet/intel/ice/ice_xsk.c
++++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+@@ -281,7 +281,6 @@ static int ice_xsk_pool_disable(struct ice_vsi *vsi, u16 qid)
+ 	if (!pool)
+ 		return -EINVAL;
+ 
+-	clear_bit(qid, vsi->af_xdp_zc_qps);
+ 	xsk_pool_dma_unmap(pool, ICE_RX_DMA_ATTR);
+ 
+ 	return 0;
+@@ -312,8 +311,6 @@ ice_xsk_pool_enable(struct ice_vsi *vsi, struct xsk_buff_pool *pool, u16 qid)
+ 	if (err)
+ 		return err;
+ 
+-	set_bit(qid, vsi->af_xdp_zc_qps);
+-
  	return 0;
  }
  
--static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
-+static int cachefiles_ondemand_get_fd(struct cachefiles_req *req,
-+				      struct ondemand_anon_file *anon_file)
+@@ -361,11 +358,13 @@ ice_realloc_rx_xdp_bufs(struct ice_rx_ring *rx_ring, bool pool_present)
+ int ice_realloc_zc_buf(struct ice_vsi *vsi, bool zc)
  {
- 	struct cachefiles_object *object;
- 	struct cachefiles_cache *cache;
- 	struct cachefiles_open *load;
--	struct file *file;
- 	u32 object_id;
--	int ret, fd;
-+	int ret;
- 
- 	object = cachefiles_grab_object(req->object,
- 			cachefiles_obj_get_ondemand_fd);
-@@ -269,16 +274,16 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
- 	if (ret < 0)
- 		goto err;
- 
--	fd = get_unused_fd_flags(O_WRONLY);
--	if (fd < 0) {
--		ret = fd;
-+	anon_file->fd = get_unused_fd_flags(O_WRONLY);
-+	if (anon_file->fd < 0) {
-+		ret = anon_file->fd;
- 		goto err_free_id;
- 	}
- 
--	file = anon_inode_getfile("[cachefiles]", &cachefiles_ondemand_fd_fops,
--				  object, O_WRONLY);
--	if (IS_ERR(file)) {
--		ret = PTR_ERR(file);
-+	anon_file->file = anon_inode_getfile("[cachefiles]",
-+				&cachefiles_ondemand_fd_fops, object, O_WRONLY);
-+	if (IS_ERR(anon_file->file)) {
-+		ret = PTR_ERR(anon_file->file);
- 		goto err_put_fd;
- 	}
- 
-@@ -286,16 +291,15 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
- 	if (object->ondemand->ondemand_id > 0) {
- 		spin_unlock(&object->ondemand->lock);
- 		/* Pair with check in cachefiles_ondemand_fd_release(). */
--		file->private_data = NULL;
-+		anon_file->file->private_data = NULL;
- 		ret = -EEXIST;
- 		goto err_put_file;
- 	}
- 
--	file->f_mode |= FMODE_PWRITE | FMODE_LSEEK;
--	fd_install(fd, file);
-+	anon_file->file->f_mode |= FMODE_PWRITE | FMODE_LSEEK;
- 
- 	load = (void *)req->msg.data;
--	load->fd = fd;
-+	load->fd = anon_file->fd;
- 	object->ondemand->ondemand_id = object_id;
- 	spin_unlock(&object->ondemand->lock);
- 
-@@ -304,9 +308,11 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
- 	return 0;
- 
- err_put_file:
--	fput(file);
-+	fput(anon_file->file);
-+	anon_file->file = NULL;
- err_put_fd:
--	put_unused_fd(fd);
-+	put_unused_fd(anon_file->fd);
-+	anon_file->fd = ret;
- err_free_id:
- 	xa_erase(&cache->ondemand_ids, object_id);
- err:
-@@ -363,6 +369,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 	struct cachefiles_msg *msg;
- 	size_t n;
- 	int ret = 0;
-+	struct ondemand_anon_file anon_file;
- 	XA_STATE(xas, &cache->reqs, cache->req_id_next);
- 
- 	xa_lock(&cache->reqs);
-@@ -396,7 +403,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 	xa_unlock(&cache->reqs);
- 
- 	if (msg->opcode == CACHEFILES_OP_OPEN) {
--		ret = cachefiles_ondemand_get_fd(req);
-+		ret = cachefiles_ondemand_get_fd(req, &anon_file);
- 		if (ret)
- 			goto out;
- 	}
-@@ -404,10 +411,16 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 	msg->msg_id = xas.xa_index;
- 	msg->object_id = req->object->ondemand->ondemand_id;
- 
--	if (copy_to_user(_buffer, msg, n) != 0) {
-+	if (copy_to_user(_buffer, msg, n) != 0)
- 		ret = -EFAULT;
--		if (msg->opcode == CACHEFILES_OP_OPEN)
--			close_fd(((struct cachefiles_open *)msg->data)->fd);
+ 	struct ice_rx_ring *rx_ring;
+-	unsigned long q;
++	uint i;
 +
-+	if (msg->opcode == CACHEFILES_OP_OPEN) {
-+		if (ret < 0) {
-+			fput(anon_file.file);
-+			put_unused_fd(anon_file.fd);
-+			goto out;
-+		}
-+		fd_install(anon_file.fd, anon_file.file);
++	ice_for_each_rxq(vsi, i) {
++		rx_ring = vsi->rx_rings[i];
++		if (!rx_ring->xsk_pool)
++			continue;
+ 
+-	for_each_set_bit(q, vsi->af_xdp_zc_qps,
+-			 max_t(int, vsi->alloc_txq, vsi->alloc_rxq)) {
+-		rx_ring = vsi->rx_rings[q];
+ 		if (ice_realloc_rx_xdp_bufs(rx_ring, zc))
+ 			return -ENOMEM;
  	}
- out:
- 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
 -- 
 2.43.0
 
