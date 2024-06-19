@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-53988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2FF790EC2C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08E990ED5D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11AD11C24736
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F59DB22061
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7861F143C43;
-	Wed, 19 Jun 2024 13:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B7D146A85;
+	Wed, 19 Jun 2024 13:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMsIHhRO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1bViCBV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385A182871;
-	Wed, 19 Jun 2024 13:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518FC145334;
+	Wed, 19 Jun 2024 13:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802264; cv=none; b=qsqtUkBTx6wihAdlXxBunThZE53rzLELcc4F7dtIx9Ox90RPVy9i15igoNihI5gaVQ5KaODDvTTxxvVKII2QUd4ck6bCP9QytlNeEH0r3OUnCb5Id3JTkj4R9It0AQIioaBfBHxaj/ewSuMXA1sHGe6T/0EluvNNciyb+pzdG6I=
+	t=1718803031; cv=none; b=niSBDOE7e7zO6dIz0vL3J2/HQ6NgyS+noNyWZxmUPoJyHlim2851nbA7xXXHrqBY5qaz2D7upg1COXWEO5yFlmeokZVaaJxc4yDrWPTSHco9ecxqXrRSWT3a55SzTAIkzoqiQ/73S7pGM8mP+mBBIVy7fETHAYMaYJrTxo48HPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802264; c=relaxed/simple;
-	bh=9MC16PRgkwB5F5qqvlNKNMnJ50Qzp85medvMXMirCK0=;
+	s=arc-20240116; t=1718803031; c=relaxed/simple;
+	bh=LJ0Np/rfn4IDHsYwK43BqyFCm/clhpw99uG+SLJvzmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZYiKG8XK+Al3MfeHxBLUxgdbpaX358PiExB4aZyO2XO0mRJf+eeDV0WV6arPHaH+giFRRsUzt/V17nizPbxVrcLDV8UCJ3gHRnUmdxKW9ZsZt6gtVuaFuFt3s4sus23yVzCLiFC1OzZPfHck412ZvpI4G4kxhYpxMVPTP1vGyIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMsIHhRO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF66EC2BBFC;
-	Wed, 19 Jun 2024 13:04:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MKmnzS9Ny8bQwe3e1Aco936ClUZcl2X/PdQGUZaPWKXCMDrf/MzPOngmnDN5WUazb8DAwg9qvImA5fLnEoqUImKGY/TJl9M32gJwKxqEn/2lOyOaSMImRrekCo0PKre2N+IWIBzvRS05ss4LoiVI4RoRwjAV1LhxoYAdiFD658Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e1bViCBV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA42DC32786;
+	Wed, 19 Jun 2024 13:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802264;
-	bh=9MC16PRgkwB5F5qqvlNKNMnJ50Qzp85medvMXMirCK0=;
+	s=korg; t=1718803031;
+	bh=LJ0Np/rfn4IDHsYwK43BqyFCm/clhpw99uG+SLJvzmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMsIHhROwRURHwrLFA01nS0DWZaQHnuafuFGkIsfK3/j1ywewwxE/GLwZf6QLyqYR
-	 lLDRTRUPDgt19HyhDSytjq+ZD3xJ2WsJkdznwbDpAoBtlVCQTqA7Yi11xbyJDKfgAw
-	 HExRZt+tavBjAfHBKCLCA27OK7TvVOzDcxVc9Qso=
+	b=e1bViCBV4vJ/k/FT3L/nc/rxSAVKCMsVY1F1tChoD0XuPx8SVM7ULLoOTmFQvpNrW
+	 PJXR/3gN73Cf7pCt5LVQYtwV1y+byCjQ+7LyLIBYye3isxj+Zif/pv3QxKG2qC1Bob
+	 g3PGjNTaQkYFrGnebsWvVpPa0ps392A1QyJHhTow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/267] drm/vmwgfx: 3D disabled should not effect STDU memory limits
+Subject: [PATCH 6.9 129/281] platform/x86: dell-smbios: Fix wrong token data in sysfs
 Date: Wed, 19 Jun 2024 14:54:48 +0200
-Message-ID: <20240619125611.607491100@linuxfoundation.org>
+Message-ID: <20240619125614.808402621@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,228 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit fb5e19d2dd03eb995ccd468d599b2337f7f66555 ]
+[ Upstream commit 1981b296f858010eae409548fd297659b2cc570e ]
 
-This limit became a hard cap starting with the change referenced below.
-Surface creation on the device will fail if the requested size is larger
-than this limit so altering the value arbitrarily will expose modes that
-are too large for the device's hard limits.
+When reading token data from sysfs on my Inspiron 3505, the token
+locations and values are wrong. This happens because match_attribute()
+blindly assumes that all entries in da_tokens have an associated
+entry in token_attrs.
 
-Fixes: 7ebb47c9f9ab ("drm/vmwgfx: Read new register for GB memory when available")
+This however is not true as soon as da_tokens[] contains zeroed
+token entries. Those entries are being skipped when initialising
+token_attrs, breaking the core assumption of match_attribute().
 
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240521184720.767-3-ian.forbes@broadcom.com
+Fix this by defining an extra struct for each pair of token attributes
+and use container_of() to retrieve token information.
+
+Tested on a Dell Inspiron 3050.
+
+Fixes: 33b9ca1e53b4 ("platform/x86: dell-smbios: Add a sysfs interface for SMBIOS tokens")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240528204903.445546-1-W_Armin@gmx.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/platform/x86/dell/dell-smbios-base.c | 92 ++++++++------------
+ 1 file changed, 36 insertions(+), 56 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-index 58fb40c93100a..bea576434e475 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-@@ -956,13 +956,6 @@ static int vmw_driver_load(struct vmw_private *dev_priv, u32 pci_id)
- 				vmw_read(dev_priv,
- 					 SVGA_REG_SUGGESTED_GBOBJECT_MEM_SIZE_KB);
+diff --git a/drivers/platform/x86/dell/dell-smbios-base.c b/drivers/platform/x86/dell/dell-smbios-base.c
+index e61bfaf8b5c48..86b95206cb1bd 100644
+--- a/drivers/platform/x86/dell/dell-smbios-base.c
++++ b/drivers/platform/x86/dell/dell-smbios-base.c
+@@ -11,6 +11,7 @@
+  */
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
--		/*
--		 * Workaround for low memory 2D VMs to compensate for the
--		 * allocation taken by fbdev
--		 */
--		if (!(dev_priv->capabilities & SVGA_CAP_3D))
--			mem_size *= 3;
++#include <linux/container_of.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/capability.h>
+@@ -25,11 +26,16 @@ static u32 da_supported_commands;
+ static int da_num_tokens;
+ static struct platform_device *platform_device;
+ static struct calling_interface_token *da_tokens;
+-static struct device_attribute *token_location_attrs;
+-static struct device_attribute *token_value_attrs;
++static struct token_sysfs_data *token_entries;
+ static struct attribute **token_attrs;
+ static DEFINE_MUTEX(smbios_mutex);
+ 
++struct token_sysfs_data {
++	struct device_attribute location_attr;
++	struct device_attribute value_attr;
++	struct calling_interface_token *token;
++};
++
+ struct smbios_device {
+ 	struct list_head list;
+ 	struct device *device;
+@@ -416,47 +422,26 @@ static void __init find_tokens(const struct dmi_header *dm, void *dummy)
+ 	}
+ }
+ 
+-static int match_attribute(struct device *dev,
+-			   struct device_attribute *attr)
+-{
+-	int i;
 -
- 		dev_priv->max_mob_pages = mem_size * 1024 / PAGE_SIZE;
- 		dev_priv->max_primary_mem =
- 			vmw_read(dev_priv, SVGA_REG_MAX_PRIMARY_MEM);
+-	for (i = 0; i < da_num_tokens * 2; i++) {
+-		if (!token_attrs[i])
+-			continue;
+-		if (strcmp(token_attrs[i]->name, attr->attr.name) == 0)
+-			return i/2;
+-	}
+-	dev_dbg(dev, "couldn't match: %s\n", attr->attr.name);
+-	return -EINVAL;
+-}
+-
+ static ssize_t location_show(struct device *dev,
+ 			     struct device_attribute *attr, char *buf)
+ {
+-	int i;
++	struct token_sysfs_data *data = container_of(attr, struct token_sysfs_data, location_attr);
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
+-	i = match_attribute(dev, attr);
+-	if (i > 0)
+-		return sysfs_emit(buf, "%08x", da_tokens[i].location);
+-	return 0;
++	return sysfs_emit(buf, "%08x", data->token->location);
+ }
+ 
+ static ssize_t value_show(struct device *dev,
+ 			  struct device_attribute *attr, char *buf)
+ {
+-	int i;
++	struct token_sysfs_data *data = container_of(attr, struct token_sysfs_data, value_attr);
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
+-	i = match_attribute(dev, attr);
+-	if (i > 0)
+-		return sysfs_emit(buf, "%08x", da_tokens[i].value);
+-	return 0;
++	return sysfs_emit(buf, "%08x", data->token->value);
+ }
+ 
+ static struct attribute_group smbios_attribute_group = {
+@@ -473,22 +458,15 @@ static int build_tokens_sysfs(struct platform_device *dev)
+ {
+ 	char *location_name;
+ 	char *value_name;
+-	size_t size;
+ 	int ret;
+ 	int i, j;
+ 
+-	/* (number of tokens  + 1 for null terminated */
+-	size = sizeof(struct device_attribute) * (da_num_tokens + 1);
+-	token_location_attrs = kzalloc(size, GFP_KERNEL);
+-	if (!token_location_attrs)
++	token_entries = kcalloc(da_num_tokens, sizeof(*token_entries), GFP_KERNEL);
++	if (!token_entries)
+ 		return -ENOMEM;
+-	token_value_attrs = kzalloc(size, GFP_KERNEL);
+-	if (!token_value_attrs)
+-		goto out_allocate_value;
+ 
+ 	/* need to store both location and value + terminator*/
+-	size = sizeof(struct attribute *) * ((2 * da_num_tokens) + 1);
+-	token_attrs = kzalloc(size, GFP_KERNEL);
++	token_attrs = kcalloc((2 * da_num_tokens) + 1, sizeof(*token_attrs), GFP_KERNEL);
+ 	if (!token_attrs)
+ 		goto out_allocate_attrs;
+ 
+@@ -496,27 +474,32 @@ static int build_tokens_sysfs(struct platform_device *dev)
+ 		/* skip empty */
+ 		if (da_tokens[i].tokenID == 0)
+ 			continue;
++
++		token_entries[i].token = &da_tokens[i];
++
+ 		/* add location */
+ 		location_name = kasprintf(GFP_KERNEL, "%04x_location",
+ 					  da_tokens[i].tokenID);
+ 		if (location_name == NULL)
+ 			goto out_unwind_strings;
+-		sysfs_attr_init(&token_location_attrs[i].attr);
+-		token_location_attrs[i].attr.name = location_name;
+-		token_location_attrs[i].attr.mode = 0444;
+-		token_location_attrs[i].show = location_show;
+-		token_attrs[j++] = &token_location_attrs[i].attr;
++
++		sysfs_attr_init(&token_entries[i].location_attr.attr);
++		token_entries[i].location_attr.attr.name = location_name;
++		token_entries[i].location_attr.attr.mode = 0444;
++		token_entries[i].location_attr.show = location_show;
++		token_attrs[j++] = &token_entries[i].location_attr.attr;
+ 
+ 		/* add value */
+ 		value_name = kasprintf(GFP_KERNEL, "%04x_value",
+ 				       da_tokens[i].tokenID);
+ 		if (value_name == NULL)
+ 			goto loop_fail_create_value;
+-		sysfs_attr_init(&token_value_attrs[i].attr);
+-		token_value_attrs[i].attr.name = value_name;
+-		token_value_attrs[i].attr.mode = 0444;
+-		token_value_attrs[i].show = value_show;
+-		token_attrs[j++] = &token_value_attrs[i].attr;
++
++		sysfs_attr_init(&token_entries[i].value_attr.attr);
++		token_entries[i].value_attr.attr.name = value_name;
++		token_entries[i].value_attr.attr.mode = 0444;
++		token_entries[i].value_attr.show = value_show;
++		token_attrs[j++] = &token_entries[i].value_attr.attr;
+ 		continue;
+ 
+ loop_fail_create_value:
+@@ -532,14 +515,12 @@ static int build_tokens_sysfs(struct platform_device *dev)
+ 
+ out_unwind_strings:
+ 	while (i--) {
+-		kfree(token_location_attrs[i].attr.name);
+-		kfree(token_value_attrs[i].attr.name);
++		kfree(token_entries[i].location_attr.attr.name);
++		kfree(token_entries[i].value_attr.attr.name);
+ 	}
+ 	kfree(token_attrs);
+ out_allocate_attrs:
+-	kfree(token_value_attrs);
+-out_allocate_value:
+-	kfree(token_location_attrs);
++	kfree(token_entries);
+ 
+ 	return -ENOMEM;
+ }
+@@ -551,12 +532,11 @@ static void free_group(struct platform_device *pdev)
+ 	sysfs_remove_group(&pdev->dev.kobj,
+ 				&smbios_attribute_group);
+ 	for (i = 0; i < da_num_tokens; i++) {
+-		kfree(token_location_attrs[i].attr.name);
+-		kfree(token_value_attrs[i].attr.name);
++		kfree(token_entries[i].location_attr.attr.name);
++		kfree(token_entries[i].value_attr.attr.name);
+ 	}
+ 	kfree(token_attrs);
+-	kfree(token_value_attrs);
+-	kfree(token_location_attrs);
++	kfree(token_entries);
+ }
+ 
+ static int __init dell_smbios_init(void)
 -- 
 2.43.0
 
