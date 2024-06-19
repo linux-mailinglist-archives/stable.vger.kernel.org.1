@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8773090EDB4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:21:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB43F90EE8E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE511C20FA5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:21:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67A571F2175A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F17147C6E;
-	Wed, 19 Jun 2024 13:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2AB314BF87;
+	Wed, 19 Jun 2024 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtAkbC3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="laioUaeS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D4782495;
-	Wed, 19 Jun 2024 13:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609CC147C6E;
+	Wed, 19 Jun 2024 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803273; cv=none; b=ihiaszqTVPrpbD9doLdN+vvtU7oBD831W2Y+/j7I3qcxdg/TZk2Pj14o9SDy8LG31N5qvuAuFe3KQFya3vnW++ocdMxsjWAth/togOvPv6G0u+nOYFl3FfJqWQl1AM5OUVOTV1u8Lr4dQjnXlJnrDSjU05g+eRd1XgTsj7qIPuo=
+	t=1718803769; cv=none; b=Lz/XPHj/nW4ov+QlyS9D5BOuMsNn+SXtyQB7FBAi9ccfrlmFjCTn7v3wGSob73BSOz1NuSuXOSdjJoHyj56lnpRX7p+gE7N4DzFC7boQAQAVbAdEmqUAUMUYSI1YMgp3ugXojdCCR+ZEWUgD8Wt/kqb7/tkneaJ6KRlI3sfuNxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803273; c=relaxed/simple;
-	bh=lKjwkPn+hVF2wJ7Nmtiwm2ncB8g3OTxwn9NNdENRBR8=;
+	s=arc-20240116; t=1718803769; c=relaxed/simple;
+	bh=TRLwRBFjNYzn9wKW1u5BVa29CUCWjBMRpru/NobJVFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QyVgmMoSqEfNDcuNHuFZjZXjLQzUFNPv8Oxxb82fHqBkguuG+HN0SpEXYCTrR2q3u/YcRjVAxZx722iFfOIUS+h8P4IjTPG+Kd+wiP7BQQevyt9cH77crTJBmROYgslctwEwGbtS1pgOC1KnXofnPi0zM8vvicQwXZuQ9GggwI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtAkbC3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437D4C4AF49;
-	Wed, 19 Jun 2024 13:21:12 +0000 (UTC)
+	 MIME-Version; b=g7BnNFm8v7W6C60rBRq88yPoy/ZE5k3m32rFlU+RhbrARbYOEGL6G7pENo5owlAnhBHuzePneXor7Q8sxkbnzLWq1YQNlkc0qsB+zpyPMrnGPaiYCCpqhKtjZSHTkRWXqN0HJAVc2OeCuCklOQdgt8USwNKhmNBo6BNzlUyI8JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=laioUaeS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0699C2BBFC;
+	Wed, 19 Jun 2024 13:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803272;
-	bh=lKjwkPn+hVF2wJ7Nmtiwm2ncB8g3OTxwn9NNdENRBR8=;
+	s=korg; t=1718803769;
+	bh=TRLwRBFjNYzn9wKW1u5BVa29CUCWjBMRpru/NobJVFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtAkbC3u3wTmJv+PfUqgwAzFjRhSqeR7/zZxREOfr6YVhx+XdRlWCrHqj1hwVdCBg
-	 VeVLZdu0qU9ZfPBtZ/5wXGKKEo7H2gwJDbyn4zC30Z4YXy9MPpbxqsi/yGk/ndmE0u
-	 0zArsxaliTbjqpB0i/nCItHHD+8pK+SUxZiCS9t8=
+	b=laioUaeSHS6GjOAJlcfurDhagSqqwHNHLHwb49QciagADQwbh91z4SOuYTBwaIRPU
+	 dJZroQW2jxKNEVPXA2E2lCnwtsPEQJCdyR+Lz9xh1VGnMJOLcQrs+zYO/DL3fVYQyD
+	 psRcMr1I/JLJwqrrxIFfD/KibHMge0tgwb93Ffs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 180/281] drm/xe: flush engine buffers before signalling user fence on all engines
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.1 096/217] xhci: Apply broken streams quirk to Etron EJ188 xHCI host
 Date: Wed, 19 Jun 2024 14:55:39 +0200
-Message-ID: <20240619125616.761773282@linuxfoundation.org>
+Message-ID: <20240619125600.395118696@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrzej Hajda <andrzej.hajda@intel.com>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-[ Upstream commit b5e3a9b83f352a737b77a01734a6661d1130ed49 ]
+commit 91f7a1524a92c70ffe264db8bdfa075f15bbbeb9 upstream.
 
-Tests show that user fence signalling requires kind of write barrier,
-otherwise not all writes performed by the workload will be available
-to userspace. It is already done for render and compute, we need it
-also for the rest: video, gsc, copy.
+As described in commit 8f873c1ff4ca ("xhci: Blacklist using streams on the
+Etron EJ168 controller"), EJ188 have the same issue as EJ168, where Streams
+do not work reliable on EJ188. So apply XHCI_BROKEN_STREAMS quirk to EJ188
+as well.
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240605-fix_user_fence_posted-v3-2-06e7932f784a@intel.com
-(cherry picked from commit 3ad7d18c5dad75ed38098c7cc3bc9594b4701399)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_ring_ops.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-pci.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_ring_ops.c b/drivers/gpu/drm/xe/xe_ring_ops.c
-index 5b2b37b598130..820c8d73c464f 100644
---- a/drivers/gpu/drm/xe/xe_ring_ops.c
-+++ b/drivers/gpu/drm/xe/xe_ring_ops.c
-@@ -79,6 +79,16 @@ static int emit_store_imm_ggtt(u32 addr, u32 value, u32 *dw, int i)
- 	return i;
- }
- 
-+static int emit_flush_dw(u32 *dw, int i)
-+{
-+	dw[i++] = MI_FLUSH_DW | MI_FLUSH_IMM_DW;
-+	dw[i++] = 0;
-+	dw[i++] = 0;
-+	dw[i++] = 0;
-+
-+	return i;
-+}
-+
- static int emit_flush_imm_ggtt(u32 addr, u32 value, bool invalidate_tlb,
- 			       u32 *dw, int i)
- {
-@@ -233,10 +243,12 @@ static void __emit_job_gen12_simple(struct xe_sched_job *job, struct xe_lrc *lrc
- 
- 	i = emit_bb_start(batch_addr, ppgtt_flag, dw, i);
- 
--	if (job->user_fence.used)
-+	if (job->user_fence.used) {
-+		i = emit_flush_dw(dw, i);
- 		i = emit_store_imm_ppgtt_posted(job->user_fence.addr,
- 						job->user_fence.value,
- 						dw, i);
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -277,8 +277,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 	}
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ188)
++			pdev->device == PCI_DEVICE_ID_EJ188) {
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
++		xhci->quirks |= XHCI_BROKEN_STREAMS;
 +	}
  
- 	i = emit_flush_imm_ggtt(xe_lrc_seqno_ggtt_addr(lrc), seqno, false, dw, i);
- 
-@@ -292,10 +304,12 @@ static void __emit_job_gen12_video(struct xe_sched_job *job, struct xe_lrc *lrc,
- 
- 	i = emit_bb_start(batch_addr, ppgtt_flag, dw, i);
- 
--	if (job->user_fence.used)
-+	if (job->user_fence.used) {
-+		i = emit_flush_dw(dw, i);
- 		i = emit_store_imm_ppgtt_posted(job->user_fence.addr,
- 						job->user_fence.value,
- 						dw, i);
-+	}
- 
- 	i = emit_flush_imm_ggtt(xe_lrc_seqno_ggtt_addr(lrc), seqno, false, dw, i);
- 
--- 
-2.43.0
-
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
 
 
 
