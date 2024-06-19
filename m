@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-54440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3219390EE2C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E82F90EC02
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 456471C228B9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:26:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 406991C23E65
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995D7145FEF;
-	Wed, 19 Jun 2024 13:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C3714A4FC;
+	Wed, 19 Jun 2024 13:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xvJSoaTt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzvG5gR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585A94D9EA;
-	Wed, 19 Jun 2024 13:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AD9143C4A;
+	Wed, 19 Jun 2024 13:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803586; cv=none; b=dkW7bvvOUyiwigaHkg5aG4a0V6vIMTbsWNAAuuQlTKsTfG2KUssCFVXIl0Vcw59tWpsMjYjd1Gi0SPXFGSgB6s8NAwRV41cNn2us6/IogsYQ2o48Vlvkath8dgHt3VDkYaW+0ocZUi+R9gpKvfgv4tBH6Uj4MW0vkutUv2JgJzY=
+	t=1718802145; cv=none; b=aa0MNi3uByzVEwFuV3Dd5HS0tnLIZ+m5+mJRDbGLOi60uqYbisXaiSXky4xCtiGdNJd3x8v4bUGbnx9tMSnG9+YMKZfvGNI1y4tr1QixP23tTdfuaQFAjxCWEfHiUMwXfy5quNrzWd8V20pNT29SlXGxcsass/H0F2SUP7Y/sWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803586; c=relaxed/simple;
-	bh=QVEt0jS8yKgcYRGK4eoxS8B3eFteVMjcajqDwimHo9A=;
+	s=arc-20240116; t=1718802145; c=relaxed/simple;
+	bh=O+gUPzujCZZ8cj+E9fQuIDuV0I6okX+CG+N9NJcnZR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kdt379K9kNHBJP0oNSvhEnvASzKN23GZBkmB0ZGowpeZVfPM86bMG07xzd4p/nvHI6bjQDEisT/swWaRn2adTdf4zkXjJLQlK1+PvbAkVn2PjuB4yXDOKHT2DKj5SYWX7AHW/8fyv2xK65bLeAofM2Je+LicvepK9nkgo6bPRK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xvJSoaTt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D321EC2BBFC;
-	Wed, 19 Jun 2024 13:26:25 +0000 (UTC)
+	 MIME-Version; b=irj5VzU+xVQLcqLO0lI/DsUSF7jAIMf3D5YM6LDtID2GuCvFaV4Qy5/qt/GwFR14C03wUwCBahLImhDn6jWc5nY2gmrmf3xmxLlsUj5WuDI0VWnkiBrjZw5WIK1dg2+iaEnLnvj4e5JHXSIu9qirsK7EPWLqU3YqWKVlLa02Dqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzvG5gR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E0EC2BBFC;
+	Wed, 19 Jun 2024 13:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803586;
-	bh=QVEt0jS8yKgcYRGK4eoxS8B3eFteVMjcajqDwimHo9A=;
+	s=korg; t=1718802145;
+	bh=O+gUPzujCZZ8cj+E9fQuIDuV0I6okX+CG+N9NJcnZR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xvJSoaTt82kEmlYblaJPOiFjVvZe2IlP3Vas/7qj1X/JreXBczU1hTadE5AgVnaYI
-	 5V76wrvaLO8+Z+u9xSQlCUwA7/DMU7/qib9MGIsv7k9PSncvHdN6cF7A33oX0UYF8K
-	 Cuys/13fTKVsN49FqCiEXpbgf8tt5KEG2JKeVcpM=
+	b=gzvG5gR9UFvvXOkdgfl2mWZjbc8X7URCa4JoVp9lwBPvFc3mz9ZrX10fOLcQyfjKr
+	 OSxSM9HC+bPu5QwXKltfFR5mFXy8rCRecUR8zUNtfAYeoY3ydKOBtkJMTc+tM67OkU
+	 pngyYtx0leTrOyzGdagRiOe8yisq2zdTTE2Z8cNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Liad Kaufman <liad.kaufman@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/217] wifi: iwlwifi: mvm: revert gen2 TX A-MPDU size to 64
+	Shailend Chand <shailend@google.com>,
+	Ziwei Xiao <ziweixiao@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 098/267] gve: Clear napi->skb before dev_kfree_skb_any()
 Date: Wed, 19 Jun 2024 14:54:09 +0200
-Message-ID: <20240619125556.745971715@linuxfoundation.org>
+Message-ID: <20240619125610.115079520@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ziwei Xiao <ziweixiao@google.com>
 
-[ Upstream commit 4a7aace2899711592327463c1a29ffee44fcc66e ]
+commit 6f4d93b78ade0a4c2cafd587f7b429ce95abb02e upstream.
 
-We don't actually support >64 even for HE devices, so revert
-back to 64. This fixes an issue where the session is refused
-because the queue is configured differently from the actual
-session later.
+gve_rx_free_skb incorrectly leaves napi->skb referencing an skb after it
+is freed with dev_kfree_skb_any(). This can result in a subsequent call
+to napi_get_frags returning a dangling pointer.
 
-Fixes: 514c30696fbc ("iwlwifi: add support for IEEE802.11ax")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Liad Kaufman <liad.kaufman@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.52f7b4cf83aa.If47e43adddf7fe250ed7f5571fbb35d8221c7c47@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by clearing napi->skb before the skb is freed.
+
+Fixes: 9b8dd5e5ea48 ("gve: DQO: Add RX path")
+Cc: stable@vger.kernel.org
+Reported-by: Shailend Chand <shailend@google.com>
+Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Shailend Chand <shailend@google.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Link: https://lore.kernel.org/r/20240612001654.923887-1-ziweixiao@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/rs.h | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-index b7bc8c1b2ddae..00f04f675cbbb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
-@@ -123,13 +123,8 @@ enum {
+--- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+@@ -506,11 +506,13 @@ static void gve_rx_skb_hash(struct sk_bu
+ 	skb_set_hash(skb, le32_to_cpu(compl_desc->hash), hash_type);
+ }
  
- #define LINK_QUAL_AGG_FRAME_LIMIT_DEF	(63)
- #define LINK_QUAL_AGG_FRAME_LIMIT_MAX	(63)
--/*
-- * FIXME - various places in firmware API still use u8,
-- * e.g. LQ command and SCD config command.
-- * This should be 256 instead.
-- */
--#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(255)
--#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(255)
-+#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(64)
-+#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(64)
- #define LINK_QUAL_AGG_FRAME_LIMIT_MIN	(0)
+-static void gve_rx_free_skb(struct gve_rx_ring *rx)
++static void gve_rx_free_skb(struct napi_struct *napi, struct gve_rx_ring *rx)
+ {
+ 	if (!rx->ctx.skb_head)
+ 		return;
  
- #define LQ_SIZE		2	/* 2 mode tables:  "Active" and "Search" */
--- 
-2.43.0
-
++	if (rx->ctx.skb_head == napi->skb)
++		napi->skb = NULL;
+ 	dev_kfree_skb_any(rx->ctx.skb_head);
+ 	rx->ctx.skb_head = NULL;
+ 	rx->ctx.skb_tail = NULL;
+@@ -783,7 +785,7 @@ int gve_rx_poll_dqo(struct gve_notify_bl
+ 
+ 		err = gve_rx_dqo(napi, rx, compl_desc, rx->q_num);
+ 		if (err < 0) {
+-			gve_rx_free_skb(rx);
++			gve_rx_free_skb(napi, rx);
+ 			u64_stats_update_begin(&rx->statss);
+ 			if (err == -ENOMEM)
+ 				rx->rx_skb_alloc_fail++;
+@@ -826,7 +828,7 @@ int gve_rx_poll_dqo(struct gve_notify_bl
+ 
+ 		/* gve_rx_complete_skb() will consume skb if successful */
+ 		if (gve_rx_complete_skb(rx, napi, compl_desc, feat) != 0) {
+-			gve_rx_free_skb(rx);
++			gve_rx_free_skb(napi, rx);
+ 			u64_stats_update_begin(&rx->statss);
+ 			rx->rx_desc_err_dropped_pkt++;
+ 			u64_stats_update_end(&rx->statss);
 
 
 
