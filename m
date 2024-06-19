@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-54085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D1390EC9C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4163790EEE5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 247701F21AF9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEF7E1F21B15
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1274146A85;
-	Wed, 19 Jun 2024 13:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1594414387E;
+	Wed, 19 Jun 2024 13:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOE0Rw7+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHGTF0/v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C54513F426;
-	Wed, 19 Jun 2024 13:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C867E1E492;
+	Wed, 19 Jun 2024 13:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802544; cv=none; b=mXOJNY9r5E9wbqh8iY1iJ2Rey4JdXGLsppO2uJou104pg9L3Eq6O+p90b1h+BFnAto0LNWAz/BzBZoIFsheLloNOzJN6LF1mGcAiS8Ak592N5Sfp9cogJfRsLrJvsNQipj/9496kj5AQkhTnpsqe+DeeKooII9NfY0fCnKIEKGI=
+	t=1718803991; cv=none; b=Yr1C3s/PGdXNTr/eTVOYZYwPf3Oa9V0mAJOvSZSFrKSpjpL8sIuf+xLo6QSbqv67kJXKvgR+jLoibB9T5hdJqj8wRaJuY+QStr4ICt5OjHfhzZV1yji8zzFpf5ztSyDg1HF0GMVQVMSVywujKOUKot7M0lfEc6lqiatpxy1eRU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802544; c=relaxed/simple;
-	bh=UM+/6Zmk6L7AyyhKwP/dTL3iV+ggR8L0ar4wJ/0DGnk=;
+	s=arc-20240116; t=1718803991; c=relaxed/simple;
+	bh=mv9+WARAGVBdoYda71aUDJtop7jlMackufQngIaPEho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHtjlTWc9sjUX2EpO/gvPUbIuwzseFcTZRlUE5UZ2sZ/dSNGSCcdcWl9E3AsJytj0oK9vE1pNzzKdkujQmHDCqF1ZLQdnUodN8HC4lKAt/mY+g6HhZM2+nZ+Is/auFcNXYZHLPaQjcWOrbMXI0yuMOR+fRR2p8UDROlQ2qS2eNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOE0Rw7+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C5EC2BBFC;
-	Wed, 19 Jun 2024 13:09:03 +0000 (UTC)
+	 MIME-Version; b=Z1J/7v7BffrxX6i30GNoI+6ILSfDXaWncVE+gzzQshvRPjsZP14FHSqTmQ2Pb1VGxUZTfnKurSjnKjw9h/Y9yqTSRc26MMJA9U0fg366jf3LMoeHXvvVS0bsGJWASZfJlcFXFLD/vcqyMZYnLd50ap+6I3UeCHOQqRTWNXb/DaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHGTF0/v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7C8C2BBFC;
+	Wed, 19 Jun 2024 13:33:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802544;
-	bh=UM+/6Zmk6L7AyyhKwP/dTL3iV+ggR8L0ar4wJ/0DGnk=;
+	s=korg; t=1718803991;
+	bh=mv9+WARAGVBdoYda71aUDJtop7jlMackufQngIaPEho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OOE0Rw7+bUR6icGD46DSEZvR9GHOcnGEKoi1Q6DUkN1pSLZPUYcTDlau8i2SuAdu/
-	 ndvOETA671MTqIQtsFF7W4Jjojszs5xIccZxcBjonKrUrIWffZ3kpQwmb5BrGSCxWk
-	 b3VEajXHfyVOAM3zc5gLV8aZ7Qk4Cv3iR5NXgj60=
+	b=uHGTF0/vzXanC+XF6M1hAv0Ie/tn/TuCOQcLYrTT2NZOV/AC3zosfhrS+Fgt/aoBy
+	 NiE7r5gSLTWLz9m+erIw8xbGCroeenuBAgwS22chh1Z9J3y/784FfFMw8h6u5kpRm4
+	 8znm4N8zoldrMIxGWFda8AgZDHlS3az07KeWP9FY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	"Darrick J. Wong" <djwong@kernel.org>
-Subject: [PATCH 6.6 233/267] xfs: shrink failure needs to hold AGI buffer
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 141/217] liquidio: Adjust a NULL pointer handling path in lio_vf_rep_copy_packet
 Date: Wed, 19 Jun 2024 14:56:24 +0200
-Message-ID: <20240619125615.267123185@linuxfoundation.org>
+Message-ID: <20240619125602.132415744@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit 75bcffbb9e7563259b7aed0fa77459d6a3a35627 upstream.
+[ Upstream commit c44711b78608c98a3e6b49ce91678cd0917d5349 ]
 
-Chandan reported a AGI/AGF lock order hang on xfs/168 during recent
-testing. The cause of the problem was the task running xfs_growfs
-to shrink the filesystem. A failure occurred trying to remove the
-free space from the btrees that the shrink would make disappear,
-and that meant it ran the error handling for a partial failure.
+In lio_vf_rep_copy_packet() pg_info->page is compared to a NULL value,
+but then it is unconditionally passed to skb_add_rx_frag() which looks
+strange and could lead to null pointer dereference.
 
-This error path involves restoring the per-ag block reservations,
-and that requires calculating the amount of space needed to be
-reserved for the free inode btree. The growfs operation hung here:
+lio_vf_rep_copy_packet() call trace looks like:
+	octeon_droq_process_packets
+	 octeon_droq_fast_process_packets
+	  octeon_droq_dispatch_pkt
+	   octeon_create_recv_info
+	    ...search in the dispatch_list...
+	     ->disp_fn(rdisp->rinfo, ...)
+	      lio_vf_rep_pkt_recv(struct octeon_recv_info *recv_info, ...)
+In this path there is no code which sets pg_info->page to NULL.
+So this check looks unneeded and doesn't solve potential problem.
+But I guess the author had reason to add a check and I have no such card
+and can't do real test.
+In addition, the code in the function liquidio_push_packet() in
+liquidio/lio_core.c does exactly the same.
 
-[18679.536829]  down+0x71/0xa0
-[18679.537657]  xfs_buf_lock+0xa4/0x290 [xfs]
-[18679.538731]  xfs_buf_find_lock+0xf7/0x4d0 [xfs]
-[18679.539920]  xfs_buf_lookup.constprop.0+0x289/0x500 [xfs]
-[18679.542628]  xfs_buf_get_map+0x2b3/0xe40 [xfs]
-[18679.547076]  xfs_buf_read_map+0xbb/0x900 [xfs]
-[18679.562616]  xfs_trans_read_buf_map+0x449/0xb10 [xfs]
-[18679.569778]  xfs_read_agi+0x1cd/0x500 [xfs]
-[18679.573126]  xfs_ialloc_read_agi+0xc2/0x5b0 [xfs]
-[18679.578708]  xfs_finobt_calc_reserves+0xe7/0x4d0 [xfs]
-[18679.582480]  xfs_ag_resv_init+0x2c5/0x490 [xfs]
-[18679.586023]  xfs_ag_shrink_space+0x736/0xd30 [xfs]
-[18679.590730]  xfs_growfs_data_private.isra.0+0x55e/0x990 [xfs]
-[18679.599764]  xfs_growfs_data+0x2f1/0x410 [xfs]
-[18679.602212]  xfs_file_ioctl+0xd1e/0x1370 [xfs]
+Based on this, I consider the most acceptable compromise solution to
+adjust this issue by moving skb_add_rx_frag() into conditional scope.
 
-trying to get the AGI lock. The AGI lock was held by a fstress task
-trying to do an inode allocation, and it was waiting on the AGF
-lock to allocate a new inode chunk on disk. Hence deadlock.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-The fix for this is for the growfs code to hold the AGI over the
-transaction roll it does in the error path. It already holds the AGF
-locked across this, and that is what causes the lock order inversion
-in the xfs_ag_resv_init() call.
-
-Reported-by: Chandan Babu R <chandanbabu@kernel.org>
-Fixes: 46141dc891f7 ("xfs: introduce xfs_ag_shrink_space()")
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1f233f327913 ("liquidio: switchdev support for LiquidIO NIC")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_ag.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_ag.c
-+++ b/fs/xfs/libxfs/xfs_ag.c
-@@ -979,14 +979,23 @@ xfs_ag_shrink_space(
- 
- 	if (error) {
- 		/*
--		 * if extent allocation fails, need to roll the transaction to
-+		 * If extent allocation fails, need to roll the transaction to
- 		 * ensure that the AGFL fixup has been committed anyway.
-+		 *
-+		 * We need to hold the AGF across the roll to ensure nothing can
-+		 * access the AG for allocation until the shrink is fully
-+		 * cleaned up. And due to the resetting of the AG block
-+		 * reservation space needing to lock the AGI, we also have to
-+		 * hold that so we don't get AGI/AGF lock order inversions in
-+		 * the error handling path.
- 		 */
- 		xfs_trans_bhold(*tpp, agfbp);
-+		xfs_trans_bhold(*tpp, agibp);
- 		err2 = xfs_trans_roll(tpp);
- 		if (err2)
- 			return err2;
- 		xfs_trans_bjoin(*tpp, agfbp);
-+		xfs_trans_bjoin(*tpp, agibp);
- 		goto resv_init_out;
- 	}
- 
+diff --git a/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c b/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
+index 600de587d7a98..e70b9ccca380e 100644
+--- a/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
++++ b/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
+@@ -272,13 +272,12 @@ lio_vf_rep_copy_packet(struct octeon_device *oct,
+ 				pg_info->page_offset;
+ 			memcpy(skb->data, va, MIN_SKB_SIZE);
+ 			skb_put(skb, MIN_SKB_SIZE);
++			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
++					pg_info->page,
++					pg_info->page_offset + MIN_SKB_SIZE,
++					len - MIN_SKB_SIZE,
++					LIO_RXBUFFER_SZ);
+ 		}
+-
+-		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+-				pg_info->page,
+-				pg_info->page_offset + MIN_SKB_SIZE,
+-				len - MIN_SKB_SIZE,
+-				LIO_RXBUFFER_SZ);
+ 	} else {
+ 		struct octeon_skb_page_info *pg_info =
+ 			((struct octeon_skb_page_info *)(skb->cb));
+-- 
+2.43.0
+
 
 
 
