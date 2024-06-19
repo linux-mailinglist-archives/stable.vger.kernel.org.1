@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A161890EE8B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81A290ED74
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA5571C249C4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 526F7B214D0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B869314F11D;
-	Wed, 19 Jun 2024 13:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B9A143757;
+	Wed, 19 Jun 2024 13:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjetkQek"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yezy66Cl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7662014B967;
-	Wed, 19 Jun 2024 13:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8113E82495;
+	Wed, 19 Jun 2024 13:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803763; cv=none; b=raWJxADV/dvgqT4c/kVGrSuTAPVGcjXzZQ3gIjt+5DrGAbZngZoKXvgm+RJbALrTZArtj0GQEk6W4olfAEiffU0+7eHOX/c9DtF9P9gw//XyjL4PpH8M6xHfD5fFTdokfBhMG+LLYNfP0SINRznLQDy0cOxMb69ifdeV4DU2XG8=
+	t=1718803096; cv=none; b=k+uh3J9g1+dlO6fxY3lZOjsFd14DK/k8NU+QNZsEc567HfqZcfGUBAD+ay6S2N2aGt/kksqdzkGbPq/kmOJ76s2MGddrncS0qNowudL7ZcBMu0ATOHvfLSoir9MXIwuEba5i/8xBp49qXCu/ATJu2Ix3xYtG14QMiC2TmZEAz08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803763; c=relaxed/simple;
-	bh=w/FwBrh5SY3GXQKfFRL3I27lVLECUBKYQ3aCCpgFhXs=;
+	s=arc-20240116; t=1718803096; c=relaxed/simple;
+	bh=qewfXIV7g0wR6/vwU2qbXiRLk7PzWWIfffTSQTJev1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2+HjrG2FPc4ErqmGz+Kf76opHm+40L7kyGRPzIip6fryzq4kbWdlNNAOmXzGWRHVDCITm5k2lKjb+gKjoEydZXiXYe14I2XlHQq8k6df1KFw2YgJHCZ+DqpEf1Wh9/AScoWjk8iNdxnzgIKyq3GMIBaKJPcQFZk48DEImLaR0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjetkQek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8A0C4AF49;
-	Wed, 19 Jun 2024 13:29:22 +0000 (UTC)
+	 MIME-Version; b=fHugSRoPBgfh5RDZ5ocoqVqb2UlezCLeqX3QChElID79eprNkp1aYHhteRwmSBG/ZghYckTAZZdREMefmgX7WL47BRj4KQtsZ6zvbNR3MkGBaNUs18Iqr6JDJhNOQSZNVx2obnJSt36pfxz4xUtIyF+DRssNDocLNWV4f5ttXJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yezy66Cl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C2BC2BBFC;
+	Wed, 19 Jun 2024 13:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803763;
-	bh=w/FwBrh5SY3GXQKfFRL3I27lVLECUBKYQ3aCCpgFhXs=;
+	s=korg; t=1718803096;
+	bh=qewfXIV7g0wR6/vwU2qbXiRLk7PzWWIfffTSQTJev1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fjetkQekMyfYgK/7S16hfwG8kp/k2VnkaA7nRfp0KeC7546gUDYXPctxmSotNuNSs
-	 IbmB72aD8Lfo9EdMP5ypwNEu9VlGpq4RUM18c41buoFuGTz/cNqrojrSZhPfdbTAn8
-	 kAYyrrhFg6xy83tBaq/idXN7cJr7z9Jc9+sfQB0U=
+	b=Yezy66ClUGb1JvwIfiA8v6P7DU8sYnowOUJOqYNq34MJHE+1D4fG0bobPJeksfSBf
+	 A5xysiBwv/J3nc+4fqAD4gc1EFVUEmK4c3hH9d2oivcT2r/WaVm9LEPvMARBjEMTUV
+	 CSzPTZjDB8LFjmtVL5+f4Kvnco1yoHeRcnNGvQD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Cong Yang <yangcong5@huaqin.corp-partner.google.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+	Yu Watanabe <watanabe.yu@gmail.com>,
+	David Wei <dw@davidwei.uk>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/217] HID: i2c-hid: elan: Add ili9882t timing
+Subject: [PATCH 6.9 152/281] netdevsim: fix backwards compatibility in nsim_get_iflink()
 Date: Wed, 19 Jun 2024 14:55:11 +0200
-Message-ID: <20240619125559.307572092@linuxfoundation.org>
+Message-ID: <20240619125615.689274169@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,142 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Yang <yangcong5@huaqin.corp-partner.google.com>
+From: David Wei <dw@davidwei.uk>
 
-[ Upstream commit f2f43bf15d7aa3286eced18d5199ee579e2c2614 ]
+[ Upstream commit 5add2f7288468f35a374620dabf126c13baaea9c ]
 
-The ili9882t is a TDDI IC (Touch with Display Driver). The
-datasheet specifies there should be 60ms between touch SDA
-sleep and panel RESX. Doug's series[1] allows panels and
-touchscreens to power on/off together, so we can add the 65 ms
-delay in i2c_hid_core_suspend before panel_unprepare.
+The default ndo_get_iflink() implementation returns the current ifindex
+of the netdev. But the overridden nsim_get_iflink() returns 0 if the
+current nsim is not linked, breaking backwards compatibility for
+userspace that depend on this behaviour.
 
-Because ili9882t touchscrgeen is a panel follower, and
-needs to use vccio-supply instead of vcc33-supply, so set
-it NULL to ili9882t_chip_data, then not use vcc33 regulator.
+Fix the problem by returning the current ifindex if not linked to a
+peer.
 
-[1]: https://lore.kernel.org/all/20230727171750.633410-1-dianders@chromium.org
-
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Cong Yang <yangcong5@huaqin.corp-partner.google.com>
-Acked-by: Benjamin Tissoires <bentiss@kernel.org>
-Link: https://lore.kernel.org/r/20230802071947.1683318-3-yangcong5@huaqin.corp-partner.google.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Stable-dep-of: 0eafc58f2194 ("HID: i2c-hid: elan: fix reset suspend current leakage")
+Fixes: 8debcf5832c3 ("netdevsim: add ndo_get_iflink() implementation")
+Reported-by: Yu Watanabe <watanabe.yu@gmail.com>
+Suggested-by: Yu Watanabe <watanabe.yu@gmail.com>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/i2c-hid/i2c-hid-of-elan.c | 50 ++++++++++++++++++++-------
- 1 file changed, 38 insertions(+), 12 deletions(-)
+ drivers/net/netdevsim/netdev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/i2c-hid/i2c-hid-of-elan.c b/drivers/hid/i2c-hid/i2c-hid-of-elan.c
-index 2d991325e734c..35986e8297095 100644
---- a/drivers/hid/i2c-hid/i2c-hid-of-elan.c
-+++ b/drivers/hid/i2c-hid/i2c-hid-of-elan.c
-@@ -18,9 +18,11 @@
- #include "i2c-hid.h"
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index 8330bc0bcb7e5..d405809030aab 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -292,7 +292,8 @@ static int nsim_get_iflink(const struct net_device *dev)
  
- struct elan_i2c_hid_chip_data {
--	unsigned int post_gpio_reset_delay_ms;
-+	unsigned int post_gpio_reset_on_delay_ms;
-+	unsigned int post_gpio_reset_off_delay_ms;
- 	unsigned int post_power_delay_ms;
- 	u16 hid_descriptor_address;
-+	const char *main_supply_name;
- };
+ 	rcu_read_lock();
+ 	peer = rcu_dereference(nsim->peer);
+-	iflink = peer ? READ_ONCE(peer->netdev->ifindex) : 0;
++	iflink = peer ? READ_ONCE(peer->netdev->ifindex) :
++			READ_ONCE(dev->ifindex);
+ 	rcu_read_unlock();
  
- struct i2c_hid_of_elan {
-@@ -38,9 +40,11 @@ static int elan_i2c_hid_power_up(struct i2chid_ops *ops)
- 		container_of(ops, struct i2c_hid_of_elan, ops);
- 	int ret;
- 
--	ret = regulator_enable(ihid_elan->vcc33);
--	if (ret)
--		return ret;
-+	if (ihid_elan->vcc33) {
-+		ret = regulator_enable(ihid_elan->vcc33);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	ret = regulator_enable(ihid_elan->vccio);
- 	if (ret) {
-@@ -52,8 +56,8 @@ static int elan_i2c_hid_power_up(struct i2chid_ops *ops)
- 		msleep(ihid_elan->chip_data->post_power_delay_ms);
- 
- 	gpiod_set_value_cansleep(ihid_elan->reset_gpio, 0);
--	if (ihid_elan->chip_data->post_gpio_reset_delay_ms)
--		msleep(ihid_elan->chip_data->post_gpio_reset_delay_ms);
-+	if (ihid_elan->chip_data->post_gpio_reset_on_delay_ms)
-+		msleep(ihid_elan->chip_data->post_gpio_reset_on_delay_ms);
- 
- 	return 0;
- }
-@@ -64,8 +68,12 @@ static void elan_i2c_hid_power_down(struct i2chid_ops *ops)
- 		container_of(ops, struct i2c_hid_of_elan, ops);
- 
- 	gpiod_set_value_cansleep(ihid_elan->reset_gpio, 1);
-+	if (ihid_elan->chip_data->post_gpio_reset_off_delay_ms)
-+		msleep(ihid_elan->chip_data->post_gpio_reset_off_delay_ms);
-+
- 	regulator_disable(ihid_elan->vccio);
--	regulator_disable(ihid_elan->vcc33);
-+	if (ihid_elan->vcc33)
-+		regulator_disable(ihid_elan->vcc33);
- }
- 
- static int i2c_hid_of_elan_probe(struct i2c_client *client,
-@@ -90,24 +98,42 @@ static int i2c_hid_of_elan_probe(struct i2c_client *client,
- 	if (IS_ERR(ihid_elan->vccio))
- 		return PTR_ERR(ihid_elan->vccio);
- 
--	ihid_elan->vcc33 = devm_regulator_get(&client->dev, "vcc33");
--	if (IS_ERR(ihid_elan->vcc33))
--		return PTR_ERR(ihid_elan->vcc33);
--
- 	ihid_elan->chip_data = device_get_match_data(&client->dev);
- 
-+	if (ihid_elan->chip_data->main_supply_name) {
-+		ihid_elan->vcc33 = devm_regulator_get(&client->dev,
-+						      ihid_elan->chip_data->main_supply_name);
-+		if (IS_ERR(ihid_elan->vcc33))
-+			return PTR_ERR(ihid_elan->vcc33);
-+	}
-+
- 	return i2c_hid_core_probe(client, &ihid_elan->ops,
- 				  ihid_elan->chip_data->hid_descriptor_address, 0);
- }
- 
- static const struct elan_i2c_hid_chip_data elan_ekth6915_chip_data = {
- 	.post_power_delay_ms = 1,
--	.post_gpio_reset_delay_ms = 300,
-+	.post_gpio_reset_on_delay_ms = 300,
-+	.hid_descriptor_address = 0x0001,
-+	.main_supply_name = "vcc33",
-+};
-+
-+static const struct elan_i2c_hid_chip_data ilitek_ili9882t_chip_data = {
-+	.post_power_delay_ms = 1,
-+	.post_gpio_reset_on_delay_ms = 200,
-+	.post_gpio_reset_off_delay_ms = 65,
- 	.hid_descriptor_address = 0x0001,
-+	/*
-+	 * this touchscreen is tightly integrated with the panel and assumes
-+	 * that the relevant power rails (other than the IO rail) have already
-+	 * been turned on by the panel driver because we're a panel follower.
-+	 */
-+	.main_supply_name = NULL,
- };
- 
- static const struct of_device_id elan_i2c_hid_of_match[] = {
- 	{ .compatible = "elan,ekth6915", .data = &elan_ekth6915_chip_data },
-+	{ .compatible = "ilitek,ili9882t", .data = &ilitek_ili9882t_chip_data },
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, elan_i2c_hid_of_match);
+ 	return iflink;
 -- 
 2.43.0
 
