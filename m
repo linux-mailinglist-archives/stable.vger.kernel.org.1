@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-54523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C02B90EEA5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D6990EC66
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3EECB259AB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 889DA1F2158A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB27F770F4;
-	Wed, 19 Jun 2024 13:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093DC143C58;
+	Wed, 19 Jun 2024 13:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCxm5LJE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YD4nO2ky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976D73C0B;
-	Wed, 19 Jun 2024 13:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD03C12FB31;
+	Wed, 19 Jun 2024 13:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803833; cv=none; b=EMStdZeHIf3CBIHNoSF6596F0pKOjD/imZkYrMd+Ssx9OwTkU8WGATA8MNPXRg/THgTttYMhSoV1TzkmOow1yYacC+/tCYkeqmSKZp7kUdc8b+lDGT8wGn7R/Sgrpy0IVCajOtUEb8/jOhYMPU6kBLQ85nm22m/Kgk6jXVd1Pco=
+	t=1718802426; cv=none; b=bxnAjJblJxWsoodxjLQrIFcP6iPq1wbWzJ1gzQZtJrgHV0192HczG1ajFa/93h9JeuO2CuJuwltOL+sTWgET8vHgUyvPOnqLpiXPjsLJ5bKTqHQxJsuCgmuhrvOf8DjvWQbqgnJ5//1xsEFtIY7gw+G9fbOiz0JOdz4bJTmR83w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803833; c=relaxed/simple;
-	bh=9NPh+mYbsEmt3G0cXVWEP+fiJgZLmpRkNYeeeLHA6Gs=;
+	s=arc-20240116; t=1718802426; c=relaxed/simple;
+	bh=lZ36BWbBv/69Iug7UkBud50yrNLOgRMEMKoZ4fZm0bM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrBY5XIKvcoYh1rSDKYziNFDal/v0xgBhsuOlxa5Qw7VVVzdPK/Axh2hPrKK7Sr2UKUqHAXvNa488D9EiEGADi2qgAM4/aVJVYDCNm5lcRs2jpUpSAviZmI7YabjcbWp+THGzWMcfqNLtr8xBZCZNtoyAforYNvUCKC9cxkPjYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCxm5LJE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42D9C32786;
-	Wed, 19 Jun 2024 13:30:30 +0000 (UTC)
+	 MIME-Version; b=sdFRk64sslrSgVTGvROvtCYlkUxrImj9NkLHM7dy+Gl/v0A8Tb1Yi1zxAbq5xvARtoqS3ri9MpesEhW6IhSQgP+mZ4SCfVew6tiGNlx69sbyessnBQJDT0IAeCV+4Nut5OUCFKkKJCiY4hMEYjKEiX1jPSAMgR01+gWHm6DbGh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YD4nO2ky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41180C2BBFC;
+	Wed, 19 Jun 2024 13:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803831;
-	bh=9NPh+mYbsEmt3G0cXVWEP+fiJgZLmpRkNYeeeLHA6Gs=;
+	s=korg; t=1718802426;
+	bh=lZ36BWbBv/69Iug7UkBud50yrNLOgRMEMKoZ4fZm0bM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCxm5LJElEUKcBkRECl38iuDfXg9eNscv0eU1slntyP9KQYF4EMeq0rkM+UfVfDAc
-	 w8/Tjf8YnJglEoWQhhzZr4HNPDV8HBa6ucwdSh6KZVcoac810X0F8G089sVphkvrlg
-	 t761Tzu/U36JoH32F/+FWjJyMtPwpbDLWmLwJrnE=
+	b=YD4nO2ky4cme4vQMt2sizgl7PPb7WUnAL9F2pHFBEdCQHX0QstvhhcuMMhhtYNyMG
+	 89JKp6prCPKPK+0cnTjC43VjSKpgZ2vqG8CeJ+za+VTcaMGNeCtRDh99PkQu6CHPJd
+	 w2idCAw2kZ1AYJymGHbwi+9gez1su1coC/1DUXEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shailend Chand <shailend@google.com>,
-	Ziwei Xiao <ziweixiao@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 101/217] gve: Clear napi->skb before dev_kfree_skb_any()
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 6.6 193/267] perf auxtrace: Fix multiple use of --itrace option
 Date: Wed, 19 Jun 2024 14:55:44 +0200
-Message-ID: <20240619125600.587546845@linuxfoundation.org>
+Message-ID: <20240619125613.745426247@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +65,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziwei Xiao <ziweixiao@google.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 6f4d93b78ade0a4c2cafd587f7b429ce95abb02e upstream.
+commit bb69c912c4e8005cf1ee6c63782d2fc28838dee2 upstream.
 
-gve_rx_free_skb incorrectly leaves napi->skb referencing an skb after it
-is freed with dev_kfree_skb_any(). This can result in a subsequent call
-to napi_get_frags returning a dangling pointer.
+If the --itrace option is used more than once, the options are
+combined, but "i" and "y" (sub-)options can be corrupted because
+itrace_do_parse_synth_opts() incorrectly overwrites the period type and
+period with default values.
 
-Fix this by clearing napi->skb before the skb is freed.
+For example, with:
 
-Fixes: 9b8dd5e5ea48 ("gve: DQO: Add RX path")
+	--itrace=i0ns --itrace=e
+
+The processing of "--itrace=e", resets the "i" period from 0 nanoseconds
+to the default 100 microseconds.
+
+Fix by performing the default setting of period type and period only if
+"i" or "y" are present in the currently processed --itrace value.
+
+Fixes: f6986c95af84ff2a ("perf session: Add instruction tracing options")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: stable@vger.kernel.org
-Reported-by: Shailend Chand <shailend@google.com>
-Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Shailend Chand <shailend@google.com>
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Link: https://lore.kernel.org/r/20240612001654.923887-1-ziweixiao@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20240315071334.3478-2-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_rx_dqo.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tools/perf/util/auxtrace.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-@@ -465,11 +465,13 @@ static void gve_rx_skb_hash(struct sk_bu
- 	skb_set_hash(skb, le32_to_cpu(compl_desc->hash), hash_type);
- }
+--- a/tools/perf/util/auxtrace.c
++++ b/tools/perf/util/auxtrace.c
+@@ -1466,6 +1466,7 @@ int itrace_do_parse_synth_opts(struct it
+ 	char *endptr;
+ 	bool period_type_set = false;
+ 	bool period_set = false;
++	bool iy = false;
  
--static void gve_rx_free_skb(struct gve_rx_ring *rx)
-+static void gve_rx_free_skb(struct napi_struct *napi, struct gve_rx_ring *rx)
- {
- 	if (!rx->ctx.skb_head)
- 		return;
+ 	synth_opts->set = true;
  
-+	if (rx->ctx.skb_head == napi->skb)
-+		napi->skb = NULL;
- 	dev_kfree_skb_any(rx->ctx.skb_head);
- 	rx->ctx.skb_head = NULL;
- 	rx->ctx.skb_tail = NULL;
-@@ -693,7 +695,7 @@ int gve_rx_poll_dqo(struct gve_notify_bl
- 
- 		err = gve_rx_dqo(napi, rx, compl_desc, rx->q_num);
- 		if (err < 0) {
--			gve_rx_free_skb(rx);
-+			gve_rx_free_skb(napi, rx);
- 			u64_stats_update_begin(&rx->statss);
- 			if (err == -ENOMEM)
- 				rx->rx_skb_alloc_fail++;
-@@ -736,7 +738,7 @@ int gve_rx_poll_dqo(struct gve_notify_bl
- 
- 		/* gve_rx_complete_skb() will consume skb if successful */
- 		if (gve_rx_complete_skb(rx, napi, compl_desc, feat) != 0) {
--			gve_rx_free_skb(rx);
-+			gve_rx_free_skb(napi, rx);
- 			u64_stats_update_begin(&rx->statss);
- 			rx->rx_desc_err_dropped_pkt++;
- 			u64_stats_update_end(&rx->statss);
+@@ -1484,6 +1485,7 @@ int itrace_do_parse_synth_opts(struct it
+ 		switch (*p++) {
+ 		case 'i':
+ 		case 'y':
++			iy = true;
+ 			if (p[-1] == 'y')
+ 				synth_opts->cycles = true;
+ 			else
+@@ -1646,7 +1648,7 @@ int itrace_do_parse_synth_opts(struct it
+ 		}
+ 	}
+ out:
+-	if (synth_opts->instructions || synth_opts->cycles) {
++	if (iy) {
+ 		if (!period_type_set)
+ 			synth_opts->period_type =
+ 					PERF_ITRACE_DEFAULT_PERIOD_TYPE;
 
 
 
