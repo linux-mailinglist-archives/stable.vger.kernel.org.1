@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-54207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C786F90ED2E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70C590EE0F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62CDE28118F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCCE71C22BC8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5F2149DFC;
-	Wed, 19 Jun 2024 13:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1227147C7B;
+	Wed, 19 Jun 2024 13:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Othd4Ehd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbq50j1v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE3FA1494A9;
-	Wed, 19 Jun 2024 13:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D678143757;
+	Wed, 19 Jun 2024 13:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802898; cv=none; b=Pe74wtqijzzZ3lkfnXW9DDNuwANWzfJ9ijm0vxD4kCEjgn30sKW7jTOZo52mtjeXQPufNflU4iYg4wG1/AalcQUDoahu4bSsPcoEw1LIv4nGuLaxBN+JW4UjJDI2KwVmKskrnAPAsPsx5RTZnX6EISRgqqvkA/azaZ/CDBm15dk=
+	t=1718803507; cv=none; b=Z+ODp/+A58M+HFLdu6YwDPtDCwGU1doD2JDx/E4GaXOP3B7HXYcH2xNHG6KT6VrQUyRT60jmMhJHZPPXxXPyLraZ024zo0H1yovScUcCnZihUSekxLamzMZTzFAn88Mltj0HZo7cgrSqPXGpdImdaYp5EDW/1rqQfK5y4A3m4MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802898; c=relaxed/simple;
-	bh=0uWX1OlRYIhFGWZY7tI56uZg0Uqe/BKYypzUZxOfWkw=;
+	s=arc-20240116; t=1718803507; c=relaxed/simple;
+	bh=CUS3eRls1VBEHGKe1yn4HhXTAWm/M2REkZhXRFH2cCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2pFNkIHGrRpDHsYJ/lDh/rqO/4Ldqn92BhB8YlYlSGcDm6HDeCd01u0MQOzy1aSjYtl6rA2yR+YT8RKM0zeUCGRQqVK/BmZwBncHoA/rpJ4MX+TgNOVMY0qemYjWRuZGLz+4nfQ0wQMZAdpOH8/YeFhbn4/3ax34llhae3eU3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Othd4Ehd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01A2EC2BBFC;
-	Wed, 19 Jun 2024 13:14:57 +0000 (UTC)
+	 MIME-Version; b=B6JFROEB2bwXOVbJ8tGE/5RGkjb/I9LMS3/jnp+Ms7306i8DXCICJt6QDFtXbO0xUYD9dWLNfKa0mPjBHbL0a+N2Mhy8WloyZzzsSntU+4fyfdlTG+e4F9Wktqlavs9NRtl3Y5gT0pjf5fZKsWwrarWBLTuX5MilSx8qaD6YqmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbq50j1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B2CC32786;
+	Wed, 19 Jun 2024 13:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802898;
-	bh=0uWX1OlRYIhFGWZY7tI56uZg0Uqe/BKYypzUZxOfWkw=;
+	s=korg; t=1718803507;
+	bh=CUS3eRls1VBEHGKe1yn4HhXTAWm/M2REkZhXRFH2cCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Othd4EhdMRRr3fd/gSwsmXINHuT+efttXcLn1DJ9j6hEWo2RTlbwwbQxSXYpRCzVW
-	 i7/PQCunJixKjzSkV6nRJAFxZ6Ufn9iS/RhzpIF1/vTo8cdXpWaJidyfTmjRTR2u5j
-	 IRtAzOlGpj72IHpqkvthLwrlUAlZPqfKHeSsIhZU=
+	b=tbq50j1viuQdAgOZi4Ek3oOCfi1ng2q7Zl+fDaQs2MpnvCvm0b1K8oxffXKW2ciS9
+	 YRMAywwLUmQXRevCe/7wnsN2SedL4YNFmo0wrlHhW15aedTxdmqs09jQ9KBPq6fI4p
+	 XL59A9q6gztcPW86A7B+NVKEq0II7tYFJeUPvBZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Ondrej Jirman <megi@xff.cz>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.9 085/281] usb: typec: tcpm: fix use-after-free case in tcpm_register_source_caps
+	Nicolas Escande <nico.escande@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 001/217] wifi: mac80211: mesh: Fix leak of mesh_preq_queue objects
 Date: Wed, 19 Jun 2024 14:54:04 +0200
-Message-ID: <20240619125613.115396003@linuxfoundation.org>
+Message-ID: <20240619125556.551304432@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-commit e7e921918d905544500ca7a95889f898121ba886 upstream.
+[ Upstream commit b7d7f11a291830fdf69d3301075dd0fb347ced84 ]
 
-There could be a potential use-after-free case in
-tcpm_register_source_caps(). This could happen when:
- * new (say invalid) source caps are advertised
- * the existing source caps are unregistered
- * tcpm_register_source_caps() returns with an error as
-   usb_power_delivery_register_capabilities() fails
+The hwmp code use objects of type mesh_preq_queue, added to a list in
+ieee80211_if_mesh, to keep track of mpath we need to resolve. If the mpath
+gets deleted, ex mesh interface is removed, the entries in that list will
+never get cleaned. Fix this by flushing all corresponding items of the
+preq_queue in mesh_path_flush_pending().
 
-This causes port->partner_source_caps to hold on to the now freed source
-caps.
+This should take care of KASAN reports like this:
 
-Reset port->partner_source_caps value to NULL after unregistering
-existing source caps.
+unreferenced object 0xffff00000668d800 (size 128):
+  comm "kworker/u8:4", pid 67, jiffies 4295419552 (age 1836.444s)
+  hex dump (first 32 bytes):
+    00 1f 05 09 00 00 ff ff 00 d5 68 06 00 00 ff ff  ..........h.....
+    8e 97 ea eb 3e b8 01 00 00 00 00 00 00 00 00 00  ....>...........
+  backtrace:
+    [<000000007302a0b6>] __kmem_cache_alloc_node+0x1e0/0x35c
+    [<00000000049bd418>] kmalloc_trace+0x34/0x80
+    [<0000000000d792bb>] mesh_queue_preq+0x44/0x2a8
+    [<00000000c99c3696>] mesh_nexthop_resolve+0x198/0x19c
+    [<00000000926bf598>] ieee80211_xmit+0x1d0/0x1f4
+    [<00000000fc8c2284>] __ieee80211_subif_start_xmit+0x30c/0x764
+    [<000000005926ee38>] ieee80211_subif_start_xmit+0x9c/0x7a4
+    [<000000004c86e916>] dev_hard_start_xmit+0x174/0x440
+    [<0000000023495647>] __dev_queue_xmit+0xe24/0x111c
+    [<00000000cfe9ca78>] batadv_send_skb_packet+0x180/0x1e4
+    [<000000007bacc5d5>] batadv_v_elp_periodic_work+0x2f4/0x508
+    [<00000000adc3cd94>] process_one_work+0x4b8/0xa1c
+    [<00000000b36425d1>] worker_thread+0x9c/0x634
+    [<0000000005852dd5>] kthread+0x1bc/0x1c4
+    [<000000005fccd770>] ret_from_fork+0x10/0x20
+unreferenced object 0xffff000009051f00 (size 128):
+  comm "kworker/u8:4", pid 67, jiffies 4295419553 (age 1836.440s)
+  hex dump (first 32 bytes):
+    90 d6 92 0d 00 00 ff ff 00 d8 68 06 00 00 ff ff  ..........h.....
+    36 27 92 e4 02 e0 01 00 00 58 79 06 00 00 ff ff  6'.......Xy.....
+  backtrace:
+    [<000000007302a0b6>] __kmem_cache_alloc_node+0x1e0/0x35c
+    [<00000000049bd418>] kmalloc_trace+0x34/0x80
+    [<0000000000d792bb>] mesh_queue_preq+0x44/0x2a8
+    [<00000000c99c3696>] mesh_nexthop_resolve+0x198/0x19c
+    [<00000000926bf598>] ieee80211_xmit+0x1d0/0x1f4
+    [<00000000fc8c2284>] __ieee80211_subif_start_xmit+0x30c/0x764
+    [<000000005926ee38>] ieee80211_subif_start_xmit+0x9c/0x7a4
+    [<000000004c86e916>] dev_hard_start_xmit+0x174/0x440
+    [<0000000023495647>] __dev_queue_xmit+0xe24/0x111c
+    [<00000000cfe9ca78>] batadv_send_skb_packet+0x180/0x1e4
+    [<000000007bacc5d5>] batadv_v_elp_periodic_work+0x2f4/0x508
+    [<00000000adc3cd94>] process_one_work+0x4b8/0xa1c
+    [<00000000b36425d1>] worker_thread+0x9c/0x634
+    [<0000000005852dd5>] kthread+0x1bc/0x1c4
+    [<000000005fccd770>] ret_from_fork+0x10/0x20
 
-Fixes: 230ecdf71a64 ("usb: typec: tcpm: unregister existing source caps before re-registration")
-Cc: stable@vger.kernel.org
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Reviewed-by: Ondrej Jirman <megi@xff.cz>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240514220134.2143181-1-amitsd@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 050ac52cbe1f ("mac80211: code for on-demand Hybrid Wireless Mesh Protocol")
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Link: https://msgid.link/20240528142605.1060566-1-nico.escande@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/mesh_pathtbl.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -3014,8 +3014,10 @@ static int tcpm_register_source_caps(str
- 	memcpy(caps.pdo, port->source_caps, sizeof(u32) * port->nr_source_caps);
- 	caps.role = TYPEC_SOURCE;
+diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
+index 69d5e1ec6edef..e7b9dcf30adc9 100644
+--- a/net/mac80211/mesh_pathtbl.c
++++ b/net/mac80211/mesh_pathtbl.c
+@@ -723,10 +723,23 @@ void mesh_path_discard_frame(struct ieee80211_sub_if_data *sdata,
+  */
+ void mesh_path_flush_pending(struct mesh_path *mpath)
+ {
++	struct ieee80211_sub_if_data *sdata = mpath->sdata;
++	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
++	struct mesh_preq_queue *preq, *tmp;
+ 	struct sk_buff *skb;
  
--	if (cap)
-+	if (cap) {
- 		usb_power_delivery_unregister_capabilities(cap);
-+		port->partner_source_caps = NULL;
+ 	while ((skb = skb_dequeue(&mpath->frame_queue)) != NULL)
+ 		mesh_path_discard_frame(mpath->sdata, skb);
++
++	spin_lock_bh(&ifmsh->mesh_preq_queue_lock);
++	list_for_each_entry_safe(preq, tmp, &ifmsh->preq_queue.list, list) {
++		if (ether_addr_equal(mpath->dst, preq->dst)) {
++			list_del(&preq->list);
++			kfree(preq);
++			--ifmsh->preq_queue_len;
++		}
 +	}
++	spin_unlock_bh(&ifmsh->mesh_preq_queue_lock);
+ }
  
- 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
- 	if (IS_ERR(cap))
+ /**
+-- 
+2.43.0
+
 
 
 
