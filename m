@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A31490ED9A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A5D90EC6F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DB96281733
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 283C3B212DB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C7C143C65;
-	Wed, 19 Jun 2024 13:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E30145FEF;
+	Wed, 19 Jun 2024 13:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2M8gXl5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfucVs3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C6982495;
-	Wed, 19 Jun 2024 13:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E4E132129;
+	Wed, 19 Jun 2024 13:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803208; cv=none; b=ar812wC2tvsuEi8eESPLZDzmuA7ZfaLNNqMpg2hfGgbdhGhu6RHWIVglqvQN92DO/JDW0OIzxv/wrsrLasINmCSWktNpQ/klte6kv+Xupe8P+gX0X59YaIbZjvWax+zgzvKAAtT3TMkOnlriiyNCFu5y1BsSQC17h3MZGisc7p0=
+	t=1718802444; cv=none; b=LO8UuqwicCbIPsHzWbZkbM8h9YLI1GnSx/4ChqNukvSQP8S4WhDtaHNLi3SEfwTgm/S5e1+UcJDEUNfQv44Z1kCBjIRnKZZwJNz13smCh/hSMi0J0hGYbTqHEdXlWk0cWuzgbW5OSyWMXvv6bNbF61WFQmEEWDVn0CRyZbL4TLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803208; c=relaxed/simple;
-	bh=Ezzu5qfMTEd2ejyJ2HpBMCqBl8yomQzAaTIMflc9t6o=;
+	s=arc-20240116; t=1718802444; c=relaxed/simple;
+	bh=YD4oFD3ayz8qfMKnX6GjCuAUWbnqIqMku8qsTiUkkOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P2rajILAOVkGz4sXn45t+D4DOzPUV3jWQihE5V5zdlLgTmc90xIFgWV064A36Aw1Wf+sGYvmSM4+tLFGtX9Tp49VgbN6TB+sKdu0yIleQsLeILxGWQvzS2TufaCYV42ddwCbr5GJ8IcLUsl/jcyLFlDPgePGepOlD/gkNjGAHcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2M8gXl5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E5BC2BBFC;
-	Wed, 19 Jun 2024 13:20:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JsBJCz5OJV745IvgRylqaGI2fmoHrndZSUIQKLBVTB2H3R/m0mpKlZL+nqd411mWF12T1W27u15IJiFI0ybG+2cXTKSbmI0Q8AfeKAncOqkR1HCa0kTCaaO6bRS3mKKw79zZYvdzJruu3ZdPw7e6Wj+RsRhiqeGvFCLPknQEAec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfucVs3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF38FC2BBFC;
+	Wed, 19 Jun 2024 13:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803208;
-	bh=Ezzu5qfMTEd2ejyJ2HpBMCqBl8yomQzAaTIMflc9t6o=;
+	s=korg; t=1718802444;
+	bh=YD4oFD3ayz8qfMKnX6GjCuAUWbnqIqMku8qsTiUkkOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k2M8gXl5VWgGQ5mZut2kj2C+L7dkDxO+futcL4lllucK2Za/C4z2P3uWzFGKZjKpe
-	 gEaHm4/iY7G2JNUig7yW56V4/3zQVyXajQFj81UTUr57ZcoIiBRP8k5Gb0UZk9UcqN
-	 6CJbT3L9IGwbsYrOl9/ydo6ZLs4RVcnkDT4Z+cjM=
+	b=bfucVs3Wn8ombCZK28pt7GEGdZvvh4NkdTeJwqz0dnchh86fra2HaLucRT5wAAM0Q
+	 EBkbR3UeS/yPsnEyHW6lLZF8nM35OA/ihsfeIIcnkeeWp4ZkYLJF1cv2Pk+YWekqrm
+	 Pggg/1IqlY0Upadn72dmd2OJQ1OHY9m8PDNQp2oI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.9 190/281] tick/nohz_full: Dont abuse smp_call_function_single() in tick_setup_device()
-Date: Wed, 19 Jun 2024 14:55:49 +0200
-Message-ID: <20240619125617.260470941@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.6 199/267] dma-buf: handle testing kthreads creation failure
+Date: Wed, 19 Jun 2024 14:55:50 +0200
+Message-ID: <20240619125613.971810185@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,99 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 07c54cc5988f19c9642fd463c2dbdac7fc52f777 upstream.
+commit 6cb05d89fd62a76a9b74bd16211fb0930e89fea8 upstream.
 
-After the recent commit 5097cbcb38e6 ("sched/isolation: Prevent boot crash
-when the boot CPU is nohz_full") the kernel no longer crashes, but there is
-another problem.
+kthread creation may possibly fail inside race_signal_callback(). In
+such a case stop the already started threads, put the already taken
+references to them and return with error code.
 
-In this case tick_setup_device() calls tick_take_do_timer_from_boot() to
-update tick_do_timer_cpu and this triggers the WARN_ON_ONCE(irqs_disabled)
-in smp_call_function_single().
+Found by Linux Verification Center (linuxtesting.org).
 
-Kill tick_take_do_timer_from_boot() and just use WRITE_ONCE(), the new
-comment explains why this is safe (thanks Thomas!).
-
-Fixes: 08ae95f4fd3b ("nohz_full: Allow the boot CPU to be nohz_full")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 2989f6451084 ("dma-buf: Add selftests for dma-fence")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240528122019.GA28794@redhat.com
-Link: https://lore.kernel.org/all/20240522151742.GA10400@redhat.com
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: T.J. Mercier <tjmercier@google.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240522181308.841686-1-pchelkin@ispras.ru
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/tick-common.c |   42 ++++++++++++++----------------------------
- 1 file changed, 14 insertions(+), 28 deletions(-)
+ drivers/dma-buf/st-dma-fence.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -178,26 +178,6 @@ void tick_setup_periodic(struct clock_ev
- 	}
- }
- 
--#ifdef CONFIG_NO_HZ_FULL
--static void giveup_do_timer(void *info)
--{
--	int cpu = *(unsigned int *)info;
--
--	WARN_ON(tick_do_timer_cpu != smp_processor_id());
--
--	tick_do_timer_cpu = cpu;
--}
--
--static void tick_take_do_timer_from_boot(void)
--{
--	int cpu = smp_processor_id();
--	int from = tick_do_timer_boot_cpu;
--
--	if (from >= 0 && from != cpu)
--		smp_call_function_single(from, giveup_do_timer, &cpu, 1);
--}
--#endif
--
- /*
-  * Setup the tick device
-  */
-@@ -221,19 +201,25 @@ static void tick_setup_device(struct tic
- 			tick_next_period = ktime_get();
- #ifdef CONFIG_NO_HZ_FULL
- 			/*
--			 * The boot CPU may be nohz_full, in which case set
--			 * tick_do_timer_boot_cpu so the first housekeeping
--			 * secondary that comes up will take do_timer from
--			 * us.
-+			 * The boot CPU may be nohz_full, in which case the
-+			 * first housekeeping secondary will take do_timer()
-+			 * from it.
- 			 */
- 			if (tick_nohz_full_cpu(cpu))
- 				tick_do_timer_boot_cpu = cpu;
- 
--		} else if (tick_do_timer_boot_cpu != -1 &&
--						!tick_nohz_full_cpu(cpu)) {
--			tick_take_do_timer_from_boot();
-+		} else if (tick_do_timer_boot_cpu != -1 && !tick_nohz_full_cpu(cpu)) {
- 			tick_do_timer_boot_cpu = -1;
--			WARN_ON(READ_ONCE(tick_do_timer_cpu) != cpu);
-+			/*
-+			 * The boot CPU will stay in periodic (NOHZ disabled)
-+			 * mode until clocksource_done_booting() called after
-+			 * smp_init() selects a high resolution clocksource and
-+			 * timekeeping_notify() kicks the NOHZ stuff alive.
-+			 *
-+			 * So this WRITE_ONCE can only race with the READ_ONCE
-+			 * check in tick_periodic() but this race is harmless.
-+			 */
-+			WRITE_ONCE(tick_do_timer_cpu, cpu);
- #endif
+--- a/drivers/dma-buf/st-dma-fence.c
++++ b/drivers/dma-buf/st-dma-fence.c
+@@ -540,6 +540,12 @@ static int race_signal_callback(void *ar
+ 			t[i].before = pass;
+ 			t[i].task = kthread_run(thread_signal_callback, &t[i],
+ 						"dma-fence:%d", i);
++			if (IS_ERR(t[i].task)) {
++				ret = PTR_ERR(t[i].task);
++				while (--i >= 0)
++					kthread_stop_put(t[i].task);
++				return ret;
++			}
+ 			get_task_struct(t[i].task);
  		}
  
 
