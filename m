@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-53997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6B4690EC36
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C338690EE25
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4726F287CCA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF4481C22699
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE30A143C4A;
-	Wed, 19 Jun 2024 13:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F970144D3E;
+	Wed, 19 Jun 2024 13:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rp5hFV6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seDjKPH+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC02382871;
-	Wed, 19 Jun 2024 13:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18FB4D9EA;
+	Wed, 19 Jun 2024 13:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802290; cv=none; b=ezZR/P8m+TDiDUR7z/zNJhCEZk93b1C9Nl8Arv8uOzrHrTzqucrZQPzlx731YwDdPknwvrvYKCNXfSgXyLYY7jKHYulE34RnFted4qRWbdjvATx8D6ndZCHsv5cX08rojO1z6T5RPa72dtMEmLIvUGGuk+PVau3teANm0K0PSIU=
+	t=1718803565; cv=none; b=FUeMpCHU74u06VD/49R/mUsDWOFBdS5SwF2VKJ2178YYhjVrEVtqXZgL1xeiuhnuQHSrkMkdU7HNimM+oqCVKnew9um0MM9L93SAW0CQMEIjdMNGCgIvDyAosSS5b5UCET5EMFFqbRFBnlSfEm/kzU5mo/K0in+hdOyrtku9fFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802290; c=relaxed/simple;
-	bh=viym7NXw/0jAXH0HCg1+BtVH/DgOiS4w/vQ0pdI/kfI=;
+	s=arc-20240116; t=1718803565; c=relaxed/simple;
+	bh=CuCLLSPvRWv4fYuVUsaQddek3NIBF7iY4nFcG83/dC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVycvHyUb3UYs/GdgX+a5b5Q2X+cIFMbJ3+z+YFGzjUnjHGZWFlJ74nmK2VjcXQdQ7/63YRWnziqOtDQCqi0Bcx/aqefJzC6TFkhlw+mXAF2j/sZ5DQnc/QhaNsNxXVk8vDka0zqx+jWVVz9txGjezLZtr+KGjoqxLZIt8VuQtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rp5hFV6z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7FAC2BBFC;
-	Wed, 19 Jun 2024 13:04:50 +0000 (UTC)
+	 MIME-Version; b=S6LqiD89vDuasB/4hZMgrIKHP25rCFwT6N/5bUliLUSAMz2a9n//mKWpbji7+RMo5j/zsf/Xf20NIAXuLrAGl92xS6JtStH2gSxSCvOfZkJ570L5QSwbGVLlSQAaCKY0v/vC6SCirABlBpwugHRZOox5PLOuqNAp9+NhoCF6C0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seDjKPH+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5845CC2BBFC;
+	Wed, 19 Jun 2024 13:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802290;
-	bh=viym7NXw/0jAXH0HCg1+BtVH/DgOiS4w/vQ0pdI/kfI=;
+	s=korg; t=1718803565;
+	bh=CuCLLSPvRWv4fYuVUsaQddek3NIBF7iY4nFcG83/dC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rp5hFV6zrGPbz+jG+UZNTdFfrSW931B7GXsHSxsmutSX/RLGlzqqZEfmcXIVokDRQ
-	 Kq4O95iyhr/nT8+9wxr6x34SEPRP3Getf/gk4RHDMcqB2DgEHiLdL/dcpIflTdOH32
-	 R2Tq3dN9luQo2abVZVIYe5aozOj0pKocBMI8K2VA=
+	b=seDjKPH+t1RWr68GSSVelZSwOatM6RZRqTe9gtUSDdX0+GXcbHvHsgy6Sk8oT3YBq
+	 u+wXotGAf4Kwab4zqoTcxaw80uorlBgQzL1shXV4spc3IjhuQocJLRJKSUDk23a2yw
+	 Zw3LEiVGxMT17YtcCV/H9K6yedCt/MRatYbfL58I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Noam Rathaus <noamr@ssd-disclosure.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/267] SUNRPC: return proper error from gss_wrap_req_priv
-Date: Wed, 19 Jun 2024 14:54:30 +0200
-Message-ID: <20240619125610.917195286@linuxfoundation.org>
+Subject: [PATCH 6.1 028/217] net/sched: taprio: always validate TCA_TAPRIO_ATTR_PRIOMAP
+Date: Wed, 19 Jun 2024 14:54:31 +0200
+Message-ID: <20240619125557.735156688@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 33c94d7e3cb84f6d130678d6d59ba475a6c489cf ]
+[ Upstream commit f921a58ae20852d188f70842431ce6519c4fdc36 ]
 
-don't return 0 if snd_buf->len really greater than snd_buf->buflen
+If one TCA_TAPRIO_ATTR_PRIOMAP attribute has been provided,
+taprio_parse_mqprio_opt() must validate it, or userspace
+can inject arbitrary data to the kernel, the second time
+taprio_change() is called.
 
-Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
-Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+First call (with valid attributes) sets dev->num_tc
+to a non zero value.
+
+Second call (with arbitrary mqprio attributes)
+returns early from taprio_parse_mqprio_opt()
+and bad things can happen.
+
+Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
+Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://lore.kernel.org/r/20240604181511.769870-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/auth_gss/auth_gss.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/sched/sch_taprio.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
-index 1af71fbb0d805..00753bc5f1b14 100644
---- a/net/sunrpc/auth_gss/auth_gss.c
-+++ b/net/sunrpc/auth_gss/auth_gss.c
-@@ -1875,8 +1875,10 @@ gss_wrap_req_priv(struct rpc_cred *cred, struct gss_cl_ctx *ctx,
- 	offset = (u8 *)p - (u8 *)snd_buf->head[0].iov_base;
- 	maj_stat = gss_wrap(ctx->gc_gss_ctx, offset, snd_buf, inpages);
- 	/* slack space should prevent this ever happening: */
--	if (unlikely(snd_buf->len > snd_buf->buflen))
-+	if (unlikely(snd_buf->len > snd_buf->buflen)) {
-+		status = -EIO;
- 		goto wrap_failed;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 1d4638aa4254f..41187bbd25ee9 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -938,16 +938,13 @@ static int taprio_parse_mqprio_opt(struct net_device *dev,
+ {
+ 	int i, j;
+ 
+-	if (!qopt && !dev->num_tc) {
+-		NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
+-		return -EINVAL;
+-	}
+-
+-	/* If num_tc is already set, it means that the user already
+-	 * configured the mqprio part
+-	 */
+-	if (dev->num_tc)
++	if (!qopt) {
++		if (!dev->num_tc) {
++			NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
++			return -EINVAL;
++		}
+ 		return 0;
 +	}
- 	/* We're assuming that when GSS_S_CONTEXT_EXPIRED, the encryption was
- 	 * done anyway, so it's safe to put the request on the wire: */
- 	if (maj_stat == GSS_S_CONTEXT_EXPIRED)
+ 
+ 	/* Verify num_tc is not out of max range */
+ 	if (qopt->num_tc > TC_MAX_QUEUE) {
 -- 
 2.43.0
 
