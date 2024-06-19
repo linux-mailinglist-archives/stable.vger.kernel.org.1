@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D478990ECEF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C735790EBAA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 667442828B3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FAD0286BE1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464E314389C;
-	Wed, 19 Jun 2024 13:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C0B14532C;
+	Wed, 19 Jun 2024 12:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDmWS52i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q69r6i0p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F2E146016;
-	Wed, 19 Jun 2024 13:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015111304AD;
+	Wed, 19 Jun 2024 12:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802736; cv=none; b=uT/Tp2wszU1trvfdebxGImo1gn4W9XVyEaQ+E0UtzIRv+rkcRLUbDqUtalszBGBXItTeCTe9iSf2qx4msnFH/ZfDMwsVjjL5XCs0uzJJtNJAygIW7E0fQ6NF4XRit2YiBADkZLj9e+wnhUmVts8T4sDufU9hZstPcfEHl+f5KEY=
+	t=1718801972; cv=none; b=b5Y7IBs8ra2cYs09v+yvebbYm51yzIvxZpwrE2I++RRNvGkmcP5fdhj5+wBWfe3GRgrByBsTAHfy/Z+6F6twmPa8AI0Ql21S7xZ2h/4mWD9t/BIuDdJejAbx1wJx6baVYiu3JEf8S+g3iMs34qJsn/KJFZGYwdN4ingrj+1qono=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802736; c=relaxed/simple;
-	bh=623eSG/ub38iZ5YpZoZEcMdQy2rkyicg0Ooj8qrg/XA=;
+	s=arc-20240116; t=1718801972; c=relaxed/simple;
+	bh=q+L+fF48qE448ZMrd6NvaI81gyYalx5S55WdFVAjNUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQzqfrQGVBt81TfkZ3coUsNhk23qD2sKRasieksM51Uwtoc/ZjLCbzzl41q7jeIlSOUldjrTD0xgMI7/Riz8hgDParBf071ae+4alFI5OFS7dE2LcDj96ibaHTZCxef6aqGvqxwLPjwxoKG6iADU7dhszwxQYVYSriQOjSlrecs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDmWS52i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF76C2BBFC;
-	Wed, 19 Jun 2024 13:12:15 +0000 (UTC)
+	 MIME-Version; b=hUWMKSY+4+cS2T5QlTGTbscXva/pjiQtJE263GiMfb9ligilk6ZWYxFO/pxNLi6JXpsgu0csJcANwKEYjGTo4kGACQ+Bgfu1g3o8WGtHWSrnTN/i0t9Sy3Khnk2oMzhwi4lLZb3SblJ4qwFORwcE8OizT8FywHE8yPhdzr3GAho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q69r6i0p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD04C2BBFC;
+	Wed, 19 Jun 2024 12:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802735;
-	bh=623eSG/ub38iZ5YpZoZEcMdQy2rkyicg0Ooj8qrg/XA=;
+	s=korg; t=1718801971;
+	bh=q+L+fF48qE448ZMrd6NvaI81gyYalx5S55WdFVAjNUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KDmWS52iFbuYNwOfXONYP+ZGzSMAkdtRgU/Tm3vejZKc83/QE0t8+hyFGfxVmX0L6
-	 ftYtmO2GvaIXO3Y0jqlaJnGHkH5LjbCtypF98X2gW6w5uGCs5msRNlWzdSqZY8Rt+S
-	 D8ZPFF3qWcLcuqsocrJuCtgeAZA7aZkhi4nLSjgM=
+	b=Q69r6i0pCmd4XwM2oW3BGq97Xc5UDkS0pdeNsdYYv2Lm4C/B7K+Gm9PbCzdCfgf3J
+	 SvwQMIdDtvbEyfZ89E78JTh3ca59Qi0X8Na+EVrYxZZdEQm5gobxJSdfYH1kqkvxit
+	 W+hHzgd8RgIDT/sPCom9VuatdLtBP6Fgcdlxkrf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	Jason Xing <kernelxing@tencent.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 029/281] KVM: SEV-ES: Disallow SEV-ES guests when X86_FEATURE_LBRV is absent
-Date: Wed, 19 Jun 2024 14:53:08 +0200
-Message-ID: <20240619125610.967653895@linuxfoundation.org>
+Subject: [PATCH 6.6 038/267] mptcp: count CLOSE-WAIT sockets for MPTCP_MIB_CURRESTAB
+Date: Wed, 19 Jun 2024 14:53:09 +0200
+Message-ID: <20240619125607.830760885@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Bangoria <ravi.bangoria@amd.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit d922056215617eedfbdbc29fe49953423686fe5e ]
+[ Upstream commit 9633e9377e6af0244f7381e86b9aac5276f5be97 ]
 
-As documented in APM[1], LBR Virtualization must be enabled for SEV-ES
-guests. So, prevent SEV-ES guests when LBRV support is missing.
+Like previous patch does in TCP, we need to adhere to RFC 1213:
 
-[1]: AMD64 Architecture Programmer's Manual Pub. 40332, Rev. 4.07 - June
-     2023, Vol 2, 15.35.2 Enabling SEV-ES.
-     https://bugzilla.kernel.org/attachment.cgi?id=304653
+  "tcpCurrEstab OBJECT-TYPE
+   ...
+   The number of TCP connections for which the current state
+   is either ESTABLISHED or CLOSE- WAIT."
 
-Fixes: 376c6d285017 ("KVM: SVM: Provide support for SEV-ES vCPU creation/loading")
-Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Message-ID: <20240531044644.768-3-ravi.bangoria@amd.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+So let's consider CLOSE-WAIT sockets.
+
+The logic of counting
+When we increment the counter?
+a) Only if we change the state to ESTABLISHED.
+
+When we decrement the counter?
+a) if the socket leaves ESTABLISHED and will never go into CLOSE-WAIT,
+say, on the client side, changing from ESTABLISHED to FIN-WAIT-1.
+b) if the socket leaves CLOSE-WAIT, say, on the server side, changing
+from CLOSE-WAIT to LAST-ACK.
+
+Fixes: d9cd27b8cd19 ("mptcp: add CurrEstab MIB counter support")
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c |  6 ++++++
- arch/x86/kvm/svm/svm.c | 16 +++++++---------
- arch/x86/kvm/svm/svm.h |  1 +
- 3 files changed, 14 insertions(+), 9 deletions(-)
+ net/mptcp/protocol.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 759581bb2128d..43b7d76a27a56 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2269,6 +2269,12 @@ void __init sev_hardware_setup(void)
- 	if (!boot_cpu_has(X86_FEATURE_SEV_ES))
- 		goto out;
- 
-+	if (!lbrv) {
-+		WARN_ONCE(!boot_cpu_has(X86_FEATURE_LBRV),
-+			  "LBRV must be present for SEV-ES support");
-+		goto out;
-+	}
-+
- 	/* Has the system been allocated ASIDs for SEV-ES? */
- 	if (min_sev_asid == 1)
- 		goto out;
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 308416b50b036..3363e5ba0fff5 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -215,7 +215,7 @@ int vgif = true;
- module_param(vgif, int, 0444);
- 
- /* enable/disable LBR virtualization */
--static int lbrv = true;
-+int lbrv = true;
- module_param(lbrv, int, 0444);
- 
- static int tsc_scaling = true;
-@@ -5260,6 +5260,12 @@ static __init int svm_hardware_setup(void)
- 
- 	nrips = nrips && boot_cpu_has(X86_FEATURE_NRIPS);
- 
-+	if (lbrv) {
-+		if (!boot_cpu_has(X86_FEATURE_LBRV))
-+			lbrv = false;
-+		else
-+			pr_info("LBR virtualization supported\n");
-+	}
- 	/*
- 	 * Note, SEV setup consumes npt_enabled and enable_mmio_caching (which
- 	 * may be modified by svm_adjust_mmio_mask()), as well as nrips.
-@@ -5313,14 +5319,6 @@ static __init int svm_hardware_setup(void)
- 		svm_x86_ops.set_vnmi_pending = NULL;
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 618d80112d1e2..4ace52e4211ad 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2873,9 +2873,14 @@ void mptcp_set_state(struct sock *sk, int state)
+ 		if (oldstate != TCP_ESTABLISHED)
+ 			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_CURRESTAB);
+ 		break;
+-
++	case TCP_CLOSE_WAIT:
++		/* Unlike TCP, MPTCP sk would not have the TCP_SYN_RECV state:
++		 * MPTCP "accepted" sockets will be created later on. So no
++		 * transition from TCP_SYN_RECV to TCP_CLOSE_WAIT.
++		 */
++		break;
+ 	default:
+-		if (oldstate == TCP_ESTABLISHED)
++		if (oldstate == TCP_ESTABLISHED || oldstate == TCP_CLOSE_WAIT)
+ 			MPTCP_DEC_STATS(sock_net(sk), MPTCP_MIB_CURRESTAB);
  	}
  
--
--	if (lbrv) {
--		if (!boot_cpu_has(X86_FEATURE_LBRV))
--			lbrv = false;
--		else
--			pr_info("LBR virtualization supported\n");
--	}
--
- 	if (!enable_pmu)
- 		pr_info("PMU virtualization is disabled\n");
- 
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index 33878efdebc82..4bf9af529ae03 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -39,6 +39,7 @@ extern int vgif;
- extern bool intercept_smi;
- extern bool x2avic_enabled;
- extern bool vnmi;
-+extern int lbrv;
- 
- /*
-  * Clean bits in VMCB.
 -- 
 2.43.0
 
