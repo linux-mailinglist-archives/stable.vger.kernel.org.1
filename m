@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC2C90EDBA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:21:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4000290EE98
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE3B6286EE0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:21:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EB091C24573
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB8C14E2E2;
-	Wed, 19 Jun 2024 13:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362F5148308;
+	Wed, 19 Jun 2024 13:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ1fIgLT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abQY0XVI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890B814E2D9;
-	Wed, 19 Jun 2024 13:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E745678C91;
+	Wed, 19 Jun 2024 13:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803281; cv=none; b=U9Ss+cdKpv4oVppeo28tO1PrgEmVMMpJXD4IxmO9eiXD/LvawdKLUo/Nt1A9GzMiL8yXQAlgm4jH86o9s5hfbvCUSI48wMhObwHGwwAtLOKyw+ygqQR6QVvB6vp7RcIPJf45IOHZOLqB0Zfa56XSlOS9q7Hv+fM9Q7XKWsb3ODs=
+	t=1718803799; cv=none; b=incdZHAnvVIrES1mrBZCh/6T8aD21SdnrJAm+67fmAOxk+mLEblFkAe9z6Xo/jT+sDuAi0H7NVYwx04EJAvoDzRzpUdttGkpducRUBixQtRh+r4jYfIZ25gq91ecLwG+O7Xw5430epSVtTJSihcfnIE1H7vWWqgvopYPdPcxkmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803281; c=relaxed/simple;
-	bh=H3DnCYOtTx/C08fmXXEN4gLzHmgFNuTF4XkOHNAypQ4=;
+	s=arc-20240116; t=1718803799; c=relaxed/simple;
+	bh=+j72SpN7qhvVgV2zQ946Us/fE+ardtOmNT2Xdlex2Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NLoZgu1DcVzHUPskei07VIShllhuVVXDNW1ERPSkdIGrAeDGj8PPEwt6lKGlomVmc53fFLIN/mvjOkRnrgdxyVl1TUX/JX2XXaTruB9hYUqSqReZtLUQ7NeworoQMUb/uYgqRwjbpTlwY08xXgrcsUmHZGnuU45gNrCXOIjrd5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ1fIgLT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05031C2BBFC;
-	Wed, 19 Jun 2024 13:21:20 +0000 (UTC)
+	 MIME-Version; b=OaMqCgm/tmFrqral3GjUXez3aP8IsrA52K1b3A5w8S9zMcKBUWdoj98CiID1w0gLl9WA96p8AEMx5tJfwGIkwRaNvCAbsU6wcWJ/hrUQaq94vsIhKsSVjqqmnfj2F24WHHx82L9HQD86vXmw0FVGs6NhXzZGPENx5ItkXnuX+uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abQY0XVI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E9E0C2BBFC;
+	Wed, 19 Jun 2024 13:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803281;
-	bh=H3DnCYOtTx/C08fmXXEN4gLzHmgFNuTF4XkOHNAypQ4=;
+	s=korg; t=1718803798;
+	bh=+j72SpN7qhvVgV2zQ946Us/fE+ardtOmNT2Xdlex2Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZ1fIgLT5ZQEgzHPibyRFnXk4PkYlHd3HVN01ccBi0WXGTb75MYyKyXrtSjXUlZf3
-	 KHm6fzpHqV4PeMo3+pOM2/uPgUX0Uk6SMJk39Zn35nGl7CuRa9mllGud1kbSnUOYzI
-	 9YQsjx0bS1KW2qiDFFqMBBZh5Omu8NawxFSpjaGA=
+	b=abQY0XVIDtgMBEcl5aafdZo5S1MQR3ejGbhv54ajQJaZRHSysXS3SIefsNBZzPI7r
+	 MARYnbc9bUaSRKX8HXMpVyLzwFWKQRsua/FNiapTdVRMOpqAxR38C04bqxUCANSDih
+	 +HiXBBj5/Hd1fGOlP/Xaj1mlWYMoyPNyta8jrFwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 183/281] ionic: fix use after netif_napi_del()
-Date: Wed, 19 Jun 2024 14:55:42 +0200
-Message-ID: <20240619125616.878366125@linuxfoundation.org>
+	Pierre Tomon <pierretom+12@ik.me>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 100/217] scsi: sd: Use READ(16) when reading block zero on large capacity disks
+Date: Wed, 19 Jun 2024 14:55:43 +0200
+Message-ID: <20240619125600.549019754@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Martin K. Petersen <martin.petersen@oracle.com>
 
-[ Upstream commit 79f18a41dd056115d685f3b0a419c7cd40055e13 ]
+commit 7926d51f73e0434a6250c2fd1a0555f98d9a62da upstream.
 
-When queues are started, netif_napi_add() and napi_enable() are called.
-If there are 4 queues and only 3 queues are used for the current
-configuration, only 3 queues' napi should be registered and enabled.
-The ionic_qcq_enable() checks whether the .poll pointer is not NULL for
-enabling only the using queue' napi. Unused queues' napi will not be
-registered by netif_napi_add(), so the .poll pointer indicates NULL.
-But it couldn't distinguish whether the napi was unregistered or not
-because netif_napi_del() doesn't reset the .poll pointer to NULL.
-So, ionic_qcq_enable() calls napi_enable() for the queue, which was
-unregistered by netif_napi_del().
+Commit 321da3dc1f3c ("scsi: sd: usb_storage: uas: Access media prior
+to querying device properties") triggered a read to LBA 0 before
+attempting to inquire about device characteristics. This was done
+because some protocol bridge devices will return generic values until
+an attached storage device's media has been accessed.
 
-Reproducer:
-   ethtool -L <interface name> rx 1 tx 1 combined 0
-   ethtool -L <interface name> rx 0 tx 0 combined 1
-   ethtool -L <interface name> rx 0 tx 0 combined 4
+Pierre Tomon reported that this change caused problems on a large
+capacity external drive connected via a bridge device. The bridge in
+question does not appear to implement the READ(10) command.
 
-Splat looks like:
-kernel BUG at net/core/dev.c:6666!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 3 PID: 1057 Comm: kworker/3:3 Not tainted 6.10.0-rc2+ #16
-Workqueue: events ionic_lif_deferred_work [ionic]
-RIP: 0010:napi_enable+0x3b/0x40
-Code: 48 89 c2 48 83 e2 f6 80 b9 61 09 00 00 00 74 0d 48 83 bf 60 01 00 00 00 74 03 80 ce 01 f0 4f
-RSP: 0018:ffffb6ed83227d48 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff97560cda0828 RCX: 0000000000000029
-RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff97560cda0a28
-RBP: ffffb6ed83227d50 R08: 0000000000000400 R09: 0000000000000001
-R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000000
-R13: ffff97560ce3c1a0 R14: 0000000000000000 R15: ffff975613ba0a20
-FS:  0000000000000000(0000) GS:ffff975d5f780000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8f734ee200 CR3: 0000000103e50000 CR4: 00000000007506f0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? die+0x33/0x90
- ? do_trap+0xd9/0x100
- ? napi_enable+0x3b/0x40
- ? do_error_trap+0x83/0xb0
- ? napi_enable+0x3b/0x40
- ? napi_enable+0x3b/0x40
- ? exc_invalid_op+0x4e/0x70
- ? napi_enable+0x3b/0x40
- ? asm_exc_invalid_op+0x16/0x20
- ? napi_enable+0x3b/0x40
- ionic_qcq_enable+0xb7/0x180 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
- ionic_start_queues+0xc4/0x290 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
- ionic_link_status_check+0x11c/0x170 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
- ionic_lif_deferred_work+0x129/0x280 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
- process_one_work+0x145/0x360
- worker_thread+0x2bb/0x3d0
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xcc/0x100
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x2d/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
+Issue a READ(16) instead of READ(10) when a device has been identified
+as preferring 16-byte commands (use_16_for_rw heuristic).
 
-Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://lore.kernel.org/r/20240612060446.1754392-1-ap420073@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218890
+Link: https://lore.kernel.org/r/70dd7ae0-b6b1-48e1-bb59-53b7c7f18274@rowland.harvard.edu
+Link: https://lore.kernel.org/r/20240605022521.3960956-1-martin.petersen@oracle.com
+Fixes: 321da3dc1f3c ("scsi: sd: usb_storage: uas: Access media prior to querying device properties")
+Cc: stable@vger.kernel.org
+Reported-by: Pierre Tomon <pierretom+12@ik.me>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Tested-by: Pierre Tomon <pierretom+12@ik.me>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/scsi/sd.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 7f0c6cdc375e3..0cd819bc4ae35 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -304,10 +304,8 @@ static int ionic_qcq_enable(struct ionic_qcq *qcq)
- 	if (ret)
- 		return ret;
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3288,16 +3288,23 @@ static bool sd_validate_opt_xfer_size(st
  
--	if (qcq->napi.poll)
--		napi_enable(&qcq->napi);
--
- 	if (qcq->flags & IONIC_QCQ_F_INTR) {
-+		napi_enable(&qcq->napi);
- 		irq_set_affinity_hint(qcq->intr.vector,
- 				      &qcq->intr.affinity_mask);
- 		ionic_intr_mask(idev->intr_ctrl, qcq->intr.index,
--- 
-2.43.0
-
+ static void sd_read_block_zero(struct scsi_disk *sdkp)
+ {
+-	unsigned int buf_len = sdkp->device->sector_size;
+-	char *buffer, cmd[10] = { };
++	struct scsi_device *sdev = sdkp->device;
++	unsigned int buf_len = sdev->sector_size;
++	u8 *buffer, cmd[16] = { };
+ 
+ 	buffer = kmalloc(buf_len, GFP_KERNEL);
+ 	if (!buffer)
+ 		return;
+ 
+-	cmd[0] = READ_10;
+-	put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
+-	put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
++	if (sdev->use_16_for_rw) {
++		cmd[0] = READ_16;
++		put_unaligned_be64(0, &cmd[2]); /* Logical block address 0 */
++		put_unaligned_be32(1, &cmd[10]);/* Transfer 1 logical block */
++	} else {
++		cmd[0] = READ_10;
++		put_unaligned_be32(0, &cmd[2]); /* Logical block address 0 */
++		put_unaligned_be16(1, &cmd[7]);	/* Transfer 1 logical block */
++	}
+ 
+ 	scsi_execute_req(sdkp->device, cmd, DMA_FROM_DEVICE, buffer, buf_len,
+ 			 NULL, SD_TIMEOUT, sdkp->max_retries, NULL);
 
 
 
