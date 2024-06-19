@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FFA190ED31
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4054C90EE1C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0967DB264CA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 398621C22E35
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0890146D49;
-	Wed, 19 Jun 2024 13:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7142144D3E;
+	Wed, 19 Jun 2024 13:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIR4Gc60"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xowz7kjH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E75614389C;
-	Wed, 19 Jun 2024 13:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751E84D9EA;
+	Wed, 19 Jun 2024 13:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802901; cv=none; b=e5u0O458nXdIEi8bvatDCZNXH7OZRA9FU5mCf3AL8KCoYZIPDyg5wZlKF4OokxkykS3qI9+Q+O/Lhwt9ncFg6cFIUkARMvPuecDraTQL692rOQya9ChW/Ls9hdOrJOytA31f6gAGHHdvblSo+XAfPuvGZOSLmcMeW7s0f8hJ3UI=
+	t=1718803539; cv=none; b=uJGpv17treoIBW5Y2a7O9IRqpABm57YyHyFi4TgihKou6PYBMIbFa7lbF8LzPwlMDbSmAounXlF6CNz0QAtis84jNLqQnJDklrDCc3qM5DpYXKowi9AJ0BvkV76QNY9t6hHIA6SCDEL4WikG7m2+mQ1xhS8xDXvEBL15TfeP3sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802901; c=relaxed/simple;
-	bh=YtFgw3iMWBI76nixDenyGXbciuoBqF1K63Q8Kpfwwaw=;
+	s=arc-20240116; t=1718803539; c=relaxed/simple;
+	bh=NDTkKtibCqK3aQbTCstpC38Yo7/yGEWyloW5d+xkpzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejmpG4Ahp1X6aIYG6QEKsKmD2hto+QopGv8yWk+09VawmeA98q6YdFIkbgd4k4WxQh1U/7QJ3ci0Yst5WMwBHJu8ZtPx5g/kg1d5Etyw7eFVcAOYe7UQHhVr74M6pLKCRNQZDfCmakLAt+fcY9mu7aTFN56WdDtMUyI8zNUq4/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIR4Gc60; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9731C32786;
-	Wed, 19 Jun 2024 13:15:00 +0000 (UTC)
+	 MIME-Version; b=ldK3Kr56x9d7CyXm6DQVK+wbSI24xe0j6LWUyb8uXeySXdQwOcKNh5VTCUJqluAvDhmz4eaS3DrT6rc4BtTq/FM4v1jMMGYwHFKsBRPVnRGSuTREH0qnG9Wh0HTMrp+vC7gFuhjysf8K9CiZMWhvBY00dboBl7EsPJf/LpPn4N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xowz7kjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB1BC2BBFC;
+	Wed, 19 Jun 2024 13:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802901;
-	bh=YtFgw3iMWBI76nixDenyGXbciuoBqF1K63Q8Kpfwwaw=;
+	s=korg; t=1718803539;
+	bh=NDTkKtibCqK3aQbTCstpC38Yo7/yGEWyloW5d+xkpzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NIR4Gc60ks5WYHSiNLNTGzfEIgKWtmTX4ilbKkw5Z/5G7hVvf/v/wrnxGRheBDqKU
-	 Jkk92eQZVNf3tl1y3/3bl30NNoyzI8Jkcz+7KjvJHiLlYn8/SYOQwCUKDi6wmQv+FI
-	 8hHTeFJOkVpBLyB2GWDudyKDwJc5ojvtg1Ebyu3M=
+	b=Xowz7kjHcse06dafn5CWn/ucWjKnTTlx9xJWhwHrkNmw/luAcDPE9pj977isEm+Nf
+	 1k9iSvaFyj4hYQVO5vl8Eawm6TwTTeIn1twUZnmFGwSNsDqDFHae2hPpd7PZb2HjJj
+	 PwGb5MLwZ5bANcjkXSW5eSvbt0AH7xfPRq/GaLZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyle Tso <kyletso@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.9 086/281] usb: typec: tcpm: Ignore received Hard Reset in TOGGLING state
+	Remi Pommarel <repk@triplefau.lt>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 002/217] wifi: mac80211: Fix deadlock in ieee80211_sta_ps_deliver_wakeup()
 Date: Wed, 19 Jun 2024 14:54:05 +0200
-Message-ID: <20240619125613.153116035@linuxfoundation.org>
+Message-ID: <20240619125556.589177917@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Tso <kyletso@google.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-commit fc8fb9eea94d8f476e15f3a4a7addeb16b3b99d6 upstream.
+[ Upstream commit 44c06bbde6443de206b30f513100b5670b23fc5e ]
 
-Similar to what fixed in Commit a6fe37f428c1 ("usb: typec: tcpm: Skip
-hard reset when in error recovery"), the handling of the received Hard
-Reset has to be skipped during TOGGLING state.
+The ieee80211_sta_ps_deliver_wakeup() function takes sta->ps_lock to
+synchronizes with ieee80211_tx_h_unicast_ps_buf() which is called from
+softirq context. However using only spin_lock() to get sta->ps_lock in
+ieee80211_sta_ps_deliver_wakeup() does not prevent softirq to execute
+on this same CPU, to run ieee80211_tx_h_unicast_ps_buf() and try to
+take this same lock ending in deadlock. Below is an example of rcu stall
+that arises in such situation.
 
-[ 4086.021288] VBUS off
-[ 4086.021295] pending state change SNK_READY -> SNK_UNATTACHED @ 650 ms [rev2 NONE_AMS]
-[ 4086.022113] VBUS VSAFE0V
-[ 4086.022117] state change SNK_READY -> SNK_UNATTACHED [rev2 NONE_AMS]
-[ 4086.022447] VBUS off
-[ 4086.022450] state change SNK_UNATTACHED -> SNK_UNATTACHED [rev2 NONE_AMS]
-[ 4086.023060] VBUS VSAFE0V
-[ 4086.023064] state change SNK_UNATTACHED -> SNK_UNATTACHED [rev2 NONE_AMS]
-[ 4086.023070] disable BIST MODE TESTDATA
-[ 4086.023766] disable vbus discharge ret:0
-[ 4086.023911] Setting usb_comm capable false
-[ 4086.028874] Setting voltage/current limit 0 mV 0 mA
-[ 4086.028888] polarity 0
-[ 4086.030305] Requesting mux state 0, usb-role 0, orientation 0
-[ 4086.033539] Start toggling
-[ 4086.038496] state change SNK_UNATTACHED -> TOGGLING [rev2 NONE_AMS]
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:    2-....: (42413413 ticks this GP) idle=b154/1/0x4000000000000000 softirq=1763/1765 fqs=21206996
+ rcu:    (t=42586894 jiffies g=2057 q=362405 ncpus=4)
+ CPU: 2 PID: 719 Comm: wpa_supplicant Tainted: G        W          6.4.0-02158-g1b062f552873 #742
+ Hardware name: RPT (r1) (DT)
+ pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : queued_spin_lock_slowpath+0x58/0x2d0
+ lr : invoke_tx_handlers_early+0x5b4/0x5c0
+ sp : ffff00001ef64660
+ x29: ffff00001ef64660 x28: ffff000009bc1070 x27: ffff000009bc0ad8
+ x26: ffff000009bc0900 x25: ffff00001ef647a8 x24: 0000000000000000
+ x23: ffff000009bc0900 x22: ffff000009bc0900 x21: ffff00000ac0e000
+ x20: ffff00000a279e00 x19: ffff00001ef646e8 x18: 0000000000000000
+ x17: ffff800016468000 x16: ffff00001ef608c0 x15: 0010533c93f64f80
+ x14: 0010395c9faa3946 x13: 0000000000000000 x12: 00000000fa83b2da
+ x11: 000000012edeceea x10: ffff0000010fbe00 x9 : 0000000000895440
+ x8 : 000000000010533c x7 : ffff00000ad8b740 x6 : ffff00000c350880
+ x5 : 0000000000000007 x4 : 0000000000000001 x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffff00000ac0e0e8
+ Call trace:
+  queued_spin_lock_slowpath+0x58/0x2d0
+  ieee80211_tx+0x80/0x12c
+  ieee80211_tx_pending+0x110/0x278
+  tasklet_action_common.constprop.0+0x10c/0x144
+  tasklet_action+0x20/0x28
+  _stext+0x11c/0x284
+  ____do_softirq+0xc/0x14
+  call_on_irq_stack+0x24/0x34
+  do_softirq_own_stack+0x18/0x20
+  do_softirq+0x74/0x7c
+  __local_bh_enable_ip+0xa0/0xa4
+  _ieee80211_wake_txqs+0x3b0/0x4b8
+  __ieee80211_wake_queue+0x12c/0x168
+  ieee80211_add_pending_skbs+0xec/0x138
+  ieee80211_sta_ps_deliver_wakeup+0x2a4/0x480
+  ieee80211_mps_sta_status_update.part.0+0xd8/0x11c
+  ieee80211_mps_sta_status_update+0x18/0x24
+  sta_apply_parameters+0x3bc/0x4c0
+  ieee80211_change_station+0x1b8/0x2dc
+  nl80211_set_station+0x444/0x49c
+  genl_family_rcv_msg_doit.isra.0+0xa4/0xfc
+  genl_rcv_msg+0x1b0/0x244
+  netlink_rcv_skb+0x38/0x10c
+  genl_rcv+0x34/0x48
+  netlink_unicast+0x254/0x2bc
+  netlink_sendmsg+0x190/0x3b4
+  ____sys_sendmsg+0x1e8/0x218
+  ___sys_sendmsg+0x68/0x8c
+  __sys_sendmsg+0x44/0x84
+  __arm64_sys_sendmsg+0x20/0x28
+  do_el0_svc+0x6c/0xe8
+  el0_svc+0x14/0x48
+  el0t_64_sync_handler+0xb0/0xb4
+  el0t_64_sync+0x14c/0x150
 
-// This Hard Reset is unexpected
-[ 4086.038499] Received hard reset
-[ 4086.038501] state change TOGGLING -> HARD_RESET_START [rev2 HARD_RESET]
+Using spin_lock_bh()/spin_unlock_bh() instead prevents softirq to raise
+on the same CPU that is holding the lock.
 
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kyle Tso <kyletso@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240520154858.1072347-1-kyletso@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1d147bfa6429 ("mac80211: fix AP powersave TX vs. wakeup race")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://msgid.link/8e36fe07d0fbc146f89196cd47a53c8a0afe84aa.1716910344.git.repk@triplefau.lt
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/sta_info.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -6174,6 +6174,7 @@ static void _tcpm_pd_hard_reset(struct t
- 		port->tcpc->set_bist_data(port->tcpc, false);
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index bd56015b29258..f388b39531748 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -1555,7 +1555,7 @@ void ieee80211_sta_ps_deliver_wakeup(struct sta_info *sta)
+ 	skb_queue_head_init(&pending);
  
- 	switch (port->state) {
-+	case TOGGLING:
- 	case ERROR_RECOVERY:
- 	case PORT_RESET:
- 	case PORT_RESET_WAIT_OFF:
+ 	/* sync with ieee80211_tx_h_unicast_ps_buf */
+-	spin_lock(&sta->ps_lock);
++	spin_lock_bh(&sta->ps_lock);
+ 	/* Send all buffered frames to the station */
+ 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
+ 		int count = skb_queue_len(&pending), tmp;
+@@ -1584,7 +1584,7 @@ void ieee80211_sta_ps_deliver_wakeup(struct sta_info *sta)
+ 	 */
+ 	clear_sta_flag(sta, WLAN_STA_PSPOLL);
+ 	clear_sta_flag(sta, WLAN_STA_UAPSD);
+-	spin_unlock(&sta->ps_lock);
++	spin_unlock_bh(&sta->ps_lock);
+ 
+ 	atomic_dec(&ps->num_sta_ps);
+ 
+-- 
+2.43.0
+
 
 
 
