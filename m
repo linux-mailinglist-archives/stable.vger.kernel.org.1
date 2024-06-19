@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-53796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB69490E6FA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:26:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC96F90E6F8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 11:26:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36906B221E5
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86C2E288032
 	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 09:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B067B7FBD1;
-	Wed, 19 Jun 2024 09:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122A37FBCF;
+	Wed, 19 Jun 2024 09:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="DyXPKDnS"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="q9WR3sOF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1657FBC5
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 09:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CF280035
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 09:26:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718789208; cv=none; b=MtXy1smVJpE/81JwK64b4CXAOqbUGQSDFa4RZARVPbipEvU+EfU4CgyN33xZAe8Vu7xdaGKcEvRGlvAmxc3eGQRlQaUCtq53ihTZ1A7dypFvYoMKnP+5pnPe7zDfQlJTAVtXlA1M8PnC+CP9WnC9veK/Ux+enP6Fw4lzs+QEaOQ=
+	t=1718789209; cv=none; b=rBeK04d3DmTFb4S9dGkRON4vQO8VAAS8aoXgIrJ1WH+koQvKIBEtq8E6X8WfEQ05KA1IVADNNPUYUtJOS7Flv65vN3hlTFn0dq58jkVrDXuQNH7R9YRKVHiRHkGhIlG58BvWIjYG/LWL6q3czOIhuYIhBKYt85EDhoYbHema9fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718789208; c=relaxed/simple;
-	bh=t/egHWd+wmcQlgsPv+ZLw8ZljE6PdVD/61DykbjcgzU=;
+	s=arc-20240116; t=1718789209; c=relaxed/simple;
+	bh=uprloTlZWW2ITNEvdDXN3a5XnP9pblOhaEltw1mAAZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KLoPHuVY8pp5bCcWlmpIV39mS6Il82Q463Fpcx8P8TewC9I4FSi1OA1LsLc78H0wqG9MWEBjC6Wc61MvkQibsgkOZ6vFIVr3c+7quH55UZ7ALNFVtnnwP8Q42Uq3edQm5du1ihOAgj3WbYslIB7J2N1Mmtgmc18OWQu0qiZ7BHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=DyXPKDnS; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version:Content-Type; b=rgY0448AIfoF0FAR37K8QqgSopNJ3A6kAdlTtDX3ymKdtfiQAIyPLFIrnSACnW5f3FiLsGtKkKqc9KEIpemhG1SKANZw4vdSVMiWqn4sGR8nbB6X8wKLbn/m02o5XhRr13r4bqP2xm0/+6OL1Z93K+zgJj1l1wcmNpoVThECUOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=q9WR3sOF; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4218314a6c7so54103945e9.0
-        for <stable@vger.kernel.org>; Wed, 19 Jun 2024 02:26:46 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42172ed3597so4647725e9.0
+        for <stable@vger.kernel.org>; Wed, 19 Jun 2024 02:26:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718789205; x=1719394005; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718789206; x=1719394006; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DR7DaLA90oi7Sx2UQfP1lchaT92bhvbec7yBR4cuGW8=;
-        b=DyXPKDnSSVzmpf1QYlg4LsYzgvHQKsHe3jQ34VvYcPi6rDjtrUTnRSe444eSdDVpbf
-         8IlI8rWxGvUO8vH1fbtoT3wjib68HYuEq7p9ZLi/sVfWumjNfgGTIC/JPfWN3mFhQj4j
-         9Qua2mX68jKx4rsYol5jBdate16Rw4nwcJxtqpdaCbKtCpcU0qA2YLR9zOqt3aiMFcnH
-         Ge4SVxe3ig/IAs2Cznsb1PZJax3ViiclItx3IXaET9MIS33cGot8irTTeXhzjg/YEgzi
-         P4k+9GO2u0ds16qnvNZS9cCK224ZdGCdn46pkUraJ8oab/jzlGgQgQulcjxkVOgKmCfg
-         64FA==
+        bh=7+qqb0yobL2/RGgvLBdYrDcwIAeg34/SRC7j1a+9BQM=;
+        b=q9WR3sOFuUKCgBdDTYtcmlhaovJBlx/nAzjniddOs7l6qwQ0BKGF/Iy1UFSD8kEbu1
+         IuWPI0PwcWoFUKzbODmNC7BrHe7uTds6ero1lSBrY06qccAd2EjZnKp+2BFTbG3M5XZH
+         tTP3pu5l58mpMHivj2xe7lXKeeWSke1fACvJzkNJVDqKXCVu4KwYre7UTsP/C0s5G5/5
+         J1Y5KCRgTF/paXfgHie6Nit+NuXPe4O6jCKU14Jn4Da/95VEKqOFsQaW/R44qHiWLlHU
+         OIhSOcfr9MMglGuqQhP1KzEGRH+fFlYdi0ihJUark11WhoLGVG1b7pXPRTnPMIflfSHq
+         MEaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718789205; x=1719394005;
+        d=1e100.net; s=20230601; t=1718789206; x=1719394006;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DR7DaLA90oi7Sx2UQfP1lchaT92bhvbec7yBR4cuGW8=;
-        b=gpc3oNLgbLnCYCjZodGZe6N8SugdT7z+c/u0MJlfUwYZT+41I/HkSr5L+QPfvkSZ4a
-         c5A80TwDyc/XqIArPXr/oyys9dRXvgKigbpNh9MYl+3/+1FMzAluEgRQqFyJC9Rib1un
-         RMA89sbjWXf+Yr7nGPYDFoByD0wBvoTun8f2I6cqX/IbFCli5ksimFWnxh5XPvXUk5v0
-         TpLOcC5SAg9JJMemLDnsR3hT/H3s5j6wRQlAPGgq6u88cAtP0GGnXgQtVA/SQpJmfr6g
-         ZXamPjuCHDk5uktQoH0wsLAK0FEtD/b1vWtFtfIId5zGIrqjoYwf8twn0ZAHuFIE7rCE
-         Gzpg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrf86X5M0fNYmUoFD85gu9e7i6p5B0NOizVBijE27nvghTGGiGFGYMaW7G3FiQh6yYeZ74d8+0K0bxkFrjecX0GMk8AwYK
-X-Gm-Message-State: AOJu0YwBKEs/qhA8TjSHmozihQi9aWeWgl2soc5tkCpNaR1C/gVIPSCL
-	+ouljBrolfVaX3lr/XxGTetlBtuoStIMJbmxmTqpMFylzAK0aRDXOtGEF/GPr4I=
-X-Google-Smtp-Source: AGHT+IECQtiC0VKWzrySd3phzgKGLPkfzADfJEpWsC3603JzVYfretGLD12PgHyZjjXmDS4xZ154rg==
-X-Received: by 2002:a7b:cd07:0:b0:422:370a:ca57 with SMTP id 5b1f17b1804b1-4247529bd22mr12959225e9.36.1718789204826;
-        Wed, 19 Jun 2024 02:26:44 -0700 (PDT)
+        bh=7+qqb0yobL2/RGgvLBdYrDcwIAeg34/SRC7j1a+9BQM=;
+        b=J26hBYPkxoiihHL1pdsY6onHVmWwCxwyMz25xT36NLx1AyZM2Fk5E7lMqLA+sR6zke
+         jZN2v8QijOhVHL8ZkvS2qGC5+8cfK3wN181Tx6SxhuQVfD7GagxcMX6wVPDtIeQFnDF9
+         xfyK2RmDsCMr/+yu2auhUZZMGBLvGrj9yqIukYf+7wPqvH79Rf5G/sBGipsiUX/ruvvu
+         TH31suiqPCaMgvEd3umBM3ZG6igZMGgLaXB3cTxWmhPA2K1/GdebJ+tWOL2UJP7yGNV+
+         AwAOxM9oAi4LE9o2dVFY3BBwrUPvaRpYGu+YCaoonb89FWMhXXpyva9DVg1IR2HFDF5X
+         pliQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUHKnfz0l85oLE00PRdajn0JigtD95BUb7zmXua7xFuhseCns4RNnEqWjU4UCzJUYWatkppT5k4SBL9W/PA0rZASvzg4xQ6
+X-Gm-Message-State: AOJu0Yx9wz9kYwpCluSEgli44DnMnkyXCUiwPsZDH93DSuFwwKK2jQtn
+	aOBvb1Fdrkpn3ZKIs2RScTB4joOVzHzeEyv/DqdXpeO3iYo7epoyPsIhkiQh6xY=
+X-Google-Smtp-Source: AGHT+IGfWLTr9ssnbsRhjkvHvT/KYb0ndiiJ29jhEvmScaQZp69vPy0UokUJtxlEqZze+8ABe7aCoQ==
+X-Received: by 2002:a05:600c:319c:b0:424:71e6:258b with SMTP id 5b1f17b1804b1-42471e6273bmr40938175e9.6.1718789206193;
+        Wed, 19 Jun 2024 02:26:46 -0700 (PDT)
 Received: from localhost (p509153eb.dip0.t-ipconnect.de. [80.145.83.235])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422870e9590sm257894845e9.23.2024.06.19.02.26.44
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36075114dcfsm16587999f8f.114.2024.06.19.02.26.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jun 2024 02:26:44 -0700 (PDT)
+        Wed, 19 Jun 2024 02:26:45 -0700 (PDT)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
 	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
@@ -77,9 +77,9 @@ Cc: linux-pwm@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com,
 	linux-arm-kernel@lists.infradead.org,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] pwm: stm32: Refuse too small period requests
-Date: Wed, 19 Jun 2024 11:26:24 +0200
-Message-ID:  <c523cc0fa14dd16785c85f4b204ba6d5e02a77a3.1718788826.git.u.kleine-koenig@baylibre.com>
+Subject: [PATCH 2/2] pwm: stm32: Fix calculation of prescaler
+Date: Wed, 19 Jun 2024 11:26:25 +0200
+Message-ID:  <e6a1aa8343971c0b8f77d9e4d88c08b26279bf09.1718788826.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <cover.1718788826.git.u.kleine-koenig@baylibre.com>
 References: <cover.1718788826.git.u.kleine-koenig@baylibre.com>
@@ -90,37 +90,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=916; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=t/egHWd+wmcQlgsPv+ZLw8ZljE6PdVD/61DykbjcgzU=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmcqREO8R0IRhIv2cdHZmB13NIe9ta4LYlDZM/y NzbWbt7RF2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZnKkRAAKCRCPgPtYfRL+ TiHoB/0RVZ9pnx+IyNBO+qORuAclGa8F4EDvd1uHdrU9quZ5Vo2GZqZGHKe+jsPAwrnq5cDTuVL uRzTEYQN15LjnjI3DVpjzCXMdmxlSX8AR3oENWmvoURE8AvQjDS/aEEmkIC2M5qjg5JqtRSO475 b90u24VQc9RElRsZ+/44CaINWsndASrwah18oJ9ymattO4Zreaz2tyKDe08sImU50zAekOAbtAj /l7p8ln/vSiXb4xAuR9aSaknu6FuWBlgumoeguo47sJFpL7zbrOg1yTPdBW2JELuJ6JMbMSI9uS SuECLulflPslzng2EkpawVELbT7Kaeg/FdHL4xsR7rKXmJL7
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2596; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=uprloTlZWW2ITNEvdDXN3a5XnP9pblOhaEltw1mAAZI=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmcqRH6SJGfFE/V8DVVjzbmOURvUhFQT3Nwp0Hw XiLMsfjVsuJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZnKkRwAKCRCPgPtYfRL+ ThXDCACwzZkJ8F2VHE/jJurLEZHTn+Is/zOVkDK5pPfy6uPLFPgQ3wTiaffvjAojLi8o7SCenwc PTNzMByX0+QENQYaYOgU+aFImVfTMNOFytVtNlozMHJFc8iAttlSnpVgYcAJLwnfvL89sC6XdvA 4fNIeL29SRmOv2DbKR+JQFdDXUFKNbCecR3xbxhEmIwB6M8xAq3gfbLzT56M/N4JrdkMdpYfL0F tehelyoRLei/rPaRuqnx6q4oYk/YgB/nAkDayV+xexI9ls75YJTbTncg1CEldC3CNJJRSN5j/rD aIiTU5NiM9HiVv0hVmREkOTdZqZw5h1nmlOlUlCrdy/eW1mB
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-If period_ns is small, prd might well become 0. Catch that case because
-otherwise with
+A small prescaler is beneficial, as this improves the resolution of the
+duty_cycle configuration. However if the prescaler is too small, the
+maximal possible period becomes considerably smaller than the requested
+value.
 
-	regmap_write(priv->regmap, TIM_ARR, prd - 1);
+One situation where this goes wrong is the following: With a parent
+clock rate of 208877930 Hz and max_arr = 0xffff = 65535, a request for
+period = 941243 ns currently results in PSC = 1. The value for ARR is
+then calculated to
 
-a few lines down quite a big period is configured.
+	PSC = 941243 * 208877930 / (1000000000 * 2) - 1 = 98301
 
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
+This value is bigger than 65535 however and so doesn't fit into the
+respective register. In this particular case the PWM was configured for
+a period of 313733.4806027616 ns (with ARR = 98301 & 0xffff). Even if
+ARR was configured to its maximal value, only period = 627495.6861167669
+ns would be achievable.
+
+Fix the calculation accordingly and adapt the comment to match the new
+algorithm.
+
+With the calculation fixed the above case results in PSC = 2 and so an
+actual period of 941229.1667195285 ns.
+
+Fixes: 8002fbeef1e4 ("pwm: stm32: Calculate prescaler with a division instead of a loop")
 Cc: stable@vger.kernel.org
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- drivers/pwm/pwm-stm32.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pwm/pwm-stm32.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index a2f231d13a9f..3e7b2a8e34e7 100644
+index 3e7b2a8e34e7..2de7195e43a9 100644
 --- a/drivers/pwm/pwm-stm32.c
 +++ b/drivers/pwm/pwm-stm32.c
-@@ -337,6 +337,8 @@ static int stm32_pwm_config(struct stm32_pwm *priv, unsigned int ch,
+@@ -321,17 +321,24 @@ static int stm32_pwm_config(struct stm32_pwm *priv, unsigned int ch,
+ 	 * First we need to find the minimal value for prescaler such that
+ 	 *
+ 	 *        period_ns * clkrate
+-	 *   ------------------------------
++	 *   ------------------------------ ≤ max_arr
+ 	 *   NSEC_PER_SEC * (prescaler + 1)
+ 	 *
+-	 * isn't bigger than max_arr.
++	 * This equation is equivalent to
++	 *
++	 *     period_ns * clkrate
++	 *   ---------------------- ≤ prescaler + 1
++	 *   NSEC_PER_SEC * max_arr
++	 *
++	 * As the left hand side might not be integer but the right hand side
++	 * is, the division must be rounded up when doing integer math. There
++	 * is no variant of mul_u64_u64_div_u64() that rounds up, so we're
++	 * trading that against the +1 which results in a non-optimal prescaler
++	 * only if the division's result is integer.
+ 	 */
  
- 	prd = mul_u64_u64_div_u64(period_ns, clk_get_rate(priv->clk),
- 				  (u64)NSEC_PER_SEC * (prescaler + 1));
-+	if (!prd)
-+		return -EINVAL;
+ 	prescaler = mul_u64_u64_div_u64(period_ns, clk_get_rate(priv->clk),
+ 					(u64)NSEC_PER_SEC * priv->max_arr);
+-	if (prescaler > 0)
+-		prescaler -= 1;
+-
+ 	if (prescaler > MAX_TIM_PSC)
+ 		return -EINVAL;
  
- 	/*
- 	 * All channels share the same prescaler and counter so when two
 -- 
 2.43.0
 
