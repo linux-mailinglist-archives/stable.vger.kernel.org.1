@@ -1,75 +1,56 @@
-Return-Path: <stable+bounces-54411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC69490EE0C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB45490EF02
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F0751F2159D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73EE01F21A95
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29EB145FEF;
-	Wed, 19 Jun 2024 13:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1179214388B;
+	Wed, 19 Jun 2024 13:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ujzg70Wk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDdnsSYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A9E143757;
-	Wed, 19 Jun 2024 13:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF88613DDC0;
+	Wed, 19 Jun 2024 13:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803501; cv=none; b=cT50lhtZQtn/wzZJt2nJBqikrn/ZEH2UaUoQ0K7AUcGnDILHPE0HvL6quKhAKvCA1cfV51Irt4BtE1t1etk7b2dZDiSLlT9JoRnzGFKD+KIEBCXyeDaEM6B9R5OhKaKg32HqSDDGktguLx+csdJSsDNUkUUTeZHPr30O8+6VoUs=
+	t=1718804071; cv=none; b=T9GDiGXyRgkYJ0gAG3wTEgsEAkXhmkxxjm2X1uECnzelK1td0rqcmJE0KTfI7kT2vO3l0uiZCo+8jzyrYNXkAx2lsuUsjt+np2Dtxoo4QcPw9CDUEM7f+Xkha1KVEM7HBb+Ro59gWa55h2bnX59kNXSc6+u0Ezn7RoQfHgIvEEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803501; c=relaxed/simple;
-	bh=8ZBmUdfnT5eqHYgbbvFbMoX38vxR8WNE64X56jEnYU4=;
+	s=arc-20240116; t=1718804071; c=relaxed/simple;
+	bh=dK/wXZNghaqJOE0WfDkOwkbPCgcsRhu6UAiFmoVxtIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SaM1UDSc6vfhoguy282sg9+1+n9hyjeHMlmUGD1rn6TeJkesVsgZ8rDvXbJiN0jqQmRITvUWw7hIjdoNMAgm9KfSVePvcNW88EzIkTDRfhSNgOHzOIQt6V6+5mWzXRg9IejeO+7NrrL0heoQa/cpT73abwVVotOxMvBn6R1qOAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ujzg70Wk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB02C2BBFC;
-	Wed, 19 Jun 2024 13:25:00 +0000 (UTC)
+	 MIME-Version; b=UNob9vlLNIU11cmg+cJQvxjd8nKcKIRB192EjwJpBrPv3XeG+jqy8ASj1JTEhjWc1yvK+61qMHLBWB9ZfDQVm//02mJOXzR5OwY6zKlj1KA/F7cPzbQDgy/Btp8hXIsLevjgtS23e6brCCCzeKWnXbVasn3pTuugrm80SnWeooI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDdnsSYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C0AC2BBFC;
+	Wed, 19 Jun 2024 13:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803501;
-	bh=8ZBmUdfnT5eqHYgbbvFbMoX38vxR8WNE64X56jEnYU4=;
+	s=korg; t=1718804071;
+	bh=dK/wXZNghaqJOE0WfDkOwkbPCgcsRhu6UAiFmoVxtIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ujzg70Wkure5uwESIjW4XmJuNmsp+zEWRJ6FVagpoCyTNXkxMh+VbZ+tO8YLoHbI3
-	 25udQP5GT1LDJZ9aHLssjE1QFP712XKAs047un7ZwYNP3V8vvPFCSgPfhneJULxHFM
-	 GwKjZHTzVTrRQOPztphh0v4Hi4CdgmgUwJJGGZxc=
+	b=bDdnsSYOmMpNzlx7KGpafuWMAach9yyaFy8rrqBZI0OAR8pqffNen6Vf5gpEziI/y
+	 cCNfIZaWj9hOQA0sRGIRtDDGUGAuE4fCMNXoRuBuJZkf4bHgnynWeXAYKWGVc/l3AG
+	 7gQciv9uQIPRCTLprh48FoMNKzm7kxiyTmHvzqd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Rachel Menge <rachelmenge@linux.microsoft.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Wei Fu <fuweid89@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Allen Pais <apais@linux.microsoft.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	Joel Granados <j.granados@samsung.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 281/281] zap_pid_ns_processes: clear TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING
-Date: Wed, 19 Jun 2024 14:57:20 +0200
-Message-ID: <20240619125620.793382495@linuxfoundation.org>
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 198/217] btrfs: zoned: fix use-after-free due to race with dev replace
+Date: Wed, 19 Jun 2024 14:57:21 +0200
+Message-ID: <20240619125604.324365058@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,65 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 7fea700e04bd3f424c2d836e98425782f97b494e ]
+commit 0090d6e1b210551e63cf43958dc7a1ec942cdde9 upstream.
 
-kernel_wait4() doesn't sleep and returns -EINTR if there is no
-eligible child and signal_pending() is true.
+While loading a zone's info during creation of a block group, we can race
+with a device replace operation and then trigger a use-after-free on the
+device that was just replaced (source device of the replace operation).
 
-That is why zap_pid_ns_processes() clears TIF_SIGPENDING but this is not
-enough, it should also clear TIF_NOTIFY_SIGNAL to make signal_pending()
-return false and avoid a busy-wait loop.
+This happens because at btrfs_load_zone_info() we extract a device from
+the chunk map into a local variable and then use the device while not
+under the protection of the device replace rwsem. So if there's a device
+replace operation happening when we extract the device and that device
+is the source of the replace operation, we will trigger a use-after-free
+if before we finish using the device the replace operation finishes and
+frees the device.
 
-Link: https://lkml.kernel.org/r/20240608120616.GB7947@redhat.com
-Fixes: 12db8b690010 ("entry: Add support for TIF_NOTIFY_SIGNAL")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Reported-by: Rachel Menge <rachelmenge@linux.microsoft.com>
-Closes: https://lore.kernel.org/all/1386cd49-36d0-4a5c-85e9-bc42056a5a38@linux.microsoft.com/
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Tested-by: Wei Fu <fuweid89@gmail.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Cc: Allen Pais <apais@linux.microsoft.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
-Cc: Joel Granados <j.granados@samsung.com>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Mike Christie <michael.christie@oracle.com>
-Cc: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Zqiang <qiang.zhang1211@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by enlarging the critical section under the protection of the
+device replace rwsem so that all uses of the device are done inside the
+critical section.
+
+CC: stable@vger.kernel.org # 6.1.x: 15c12fcc50a1: btrfs: zoned: introduce a zone_info struct in btrfs_load_block_group_zone_info
+CC: stable@vger.kernel.org # 6.1.x: 09a46725cc84: btrfs: zoned: factor out per-zone logic from btrfs_load_block_group_zone_info
+CC: stable@vger.kernel.org # 6.1.x: 9e0e3e74dc69: btrfs: zoned: factor out single bg handling from btrfs_load_block_group_zone_info
+CC: stable@vger.kernel.org # 6.1.x: 87463f7e0250: btrfs: zoned: factor out DUP bg handling from btrfs_load_block_group_zone_info
+CC: stable@vger.kernel.org # 6.1.x
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/pid_namespace.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/zoned.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
-index 7ade20e952321..415201ca0c7e4 100644
---- a/kernel/pid_namespace.c
-+++ b/kernel/pid_namespace.c
-@@ -218,6 +218,7 @@ void zap_pid_ns_processes(struct pid_namespace *pid_ns)
- 	 */
- 	do {
- 		clear_thread_flag(TIF_SIGPENDING);
-+		clear_thread_flag(TIF_NOTIFY_SIGNAL);
- 		rc = kernel_wait4(-1, NULL, __WALL, NULL);
- 	} while (rc != -ECHILD);
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1281,7 +1281,7 @@ static int btrfs_load_zone_info(struct b
+ 				struct map_lookup *map)
+ {
+ 	struct btrfs_dev_replace *dev_replace = &fs_info->dev_replace;
+-	struct btrfs_device *device = map->stripes[zone_idx].dev;
++	struct btrfs_device *device;
+ 	int dev_replace_is_ongoing = 0;
+ 	unsigned int nofs_flag;
+ 	struct blk_zone zone;
+@@ -1289,7 +1289,11 @@ static int btrfs_load_zone_info(struct b
  
--- 
-2.43.0
-
+ 	info->physical = map->stripes[zone_idx].physical;
+ 
++	down_read(&dev_replace->rwsem);
++	device = map->stripes[zone_idx].dev;
++
+ 	if (!device->bdev) {
++		up_read(&dev_replace->rwsem);
+ 		info->alloc_offset = WP_MISSING_DEV;
+ 		return 0;
+ 	}
+@@ -1299,6 +1303,7 @@ static int btrfs_load_zone_info(struct b
+ 		__set_bit(zone_idx, active);
+ 
+ 	if (!btrfs_dev_is_sequential(device, info->physical)) {
++		up_read(&dev_replace->rwsem);
+ 		info->alloc_offset = WP_CONVENTIONAL;
+ 		return 0;
+ 	}
+@@ -1306,11 +1311,9 @@ static int btrfs_load_zone_info(struct b
+ 	/* This zone will be used for allocation, so mark this zone non-empty. */
+ 	btrfs_dev_clear_zone_empty(device, info->physical);
+ 
+-	down_read(&dev_replace->rwsem);
+ 	dev_replace_is_ongoing = btrfs_dev_replace_is_ongoing(dev_replace);
+ 	if (dev_replace_is_ongoing && dev_replace->tgtdev != NULL)
+ 		btrfs_dev_clear_zone_empty(dev_replace->tgtdev, info->physical);
+-	up_read(&dev_replace->rwsem);
+ 
+ 	/*
+ 	 * The group is mapped to a sequential zone. Get the zone write pointer
+@@ -1321,6 +1324,7 @@ static int btrfs_load_zone_info(struct b
+ 	ret = btrfs_get_dev_zone(device, info->physical, &zone);
+ 	memalloc_nofs_restore(nofs_flag);
+ 	if (ret) {
++		up_read(&dev_replace->rwsem);
+ 		if (ret != -EIO && ret != -EOPNOTSUPP)
+ 			return ret;
+ 		info->alloc_offset = WP_MISSING_DEV;
+@@ -1332,6 +1336,7 @@ static int btrfs_load_zone_info(struct b
+ 		"zoned: unexpected conventional zone %llu on device %s (devid %llu)",
+ 			zone.start << SECTOR_SHIFT, rcu_str_deref(device->name),
+ 			device->devid);
++		up_read(&dev_replace->rwsem);
+ 		return -EIO;
+ 	}
+ 
+@@ -1359,6 +1364,8 @@ static int btrfs_load_zone_info(struct b
+ 		break;
+ 	}
+ 
++	up_read(&dev_replace->rwsem);
++
+ 	return 0;
+ }
+ 
 
 
 
