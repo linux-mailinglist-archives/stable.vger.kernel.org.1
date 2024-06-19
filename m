@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2BC90EE09
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:24:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F4F90EEFC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1ECFB22D35
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93B5A286D6B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BC114532C;
-	Wed, 19 Jun 2024 13:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6041422CA;
+	Wed, 19 Jun 2024 13:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGXgpMeL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXdPr5LY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF46F143757;
-	Wed, 19 Jun 2024 13:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA4113DDC0;
+	Wed, 19 Jun 2024 13:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803492; cv=none; b=igYAHPOVMbHr7aVMONYN/WSr9oPqjVpdVexHORpA9qLACvaVMJ8AIDYBLCkChcAXAhJaAAmt0/24UxseKWZKd45c9F9cqOWpdt4lLqam1p7brWDw3MG43DF/V3OEUYJ8nME+UL8JWrGQdIEbT9p/LkLuqpg2b2iLplmqQ7mmlwI=
+	t=1718804057; cv=none; b=T9i7gCPbF1FvEMrNjrYqjcMHZq4BG3pAzVzo6Qhyc9HpkSRjZbZDtyuRijwD+Ndi5Lhd7XAxZVinBDOsu7Y2VbnSRFWeRM2CFBmVJlaAftmeJNT9RIxjjMXt12nBRQ1Np6oE/02/E4sFWyx11rJEXYe8UTBdQtyoDtGxoHHXp/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803492; c=relaxed/simple;
-	bh=HUVV6tqSU4RynbOXY+QnT2jrNQqO1qWCMEvJueFp+hc=;
+	s=arc-20240116; t=1718804057; c=relaxed/simple;
+	bh=KDiUj0+FMjknYKW9wwoA4OZZh0MxnM9KkHmf6WKRlFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gaJCfyemFk/JXPJmkSuzxkQZgAq2NJi4Oru68xELj275M4TY5SE1yRqaqdm+wy9UuPyGeRAtxWh297Lgu+8c2NKN0PGlcZyAcX5PveMCWQ8zJ07aOzMwpxruOrty9vTum/SHhkPdRFOv4NEg1idfjy1PMdZuFAF4L4vn+bGhDmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGXgpMeL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D3CC2BBFC;
-	Wed, 19 Jun 2024 13:24:52 +0000 (UTC)
+	 MIME-Version; b=SpX6chXfabDSkWA9skrC9jug9qNFrxelcI51LgF7FQ8gZyrdIEUc/PU0Rnku15gd0BHfREqCg6jnlw/D/eQCQMhI30HsDYj+cLOdFgHMLkBcmf9n8kfCBERMXfohYc/6j7jrQSp+7c3zjCFtz/QBwYMurqinj5tU0AI45QhryzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXdPr5LY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7821EC2BBFC;
+	Wed, 19 Jun 2024 13:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803492;
-	bh=HUVV6tqSU4RynbOXY+QnT2jrNQqO1qWCMEvJueFp+hc=;
+	s=korg; t=1718804056;
+	bh=KDiUj0+FMjknYKW9wwoA4OZZh0MxnM9KkHmf6WKRlFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGXgpMeLdCCwe1GGVCnxYU0ZYVqlTj1f/LP8Qt9EENH7HmC7uk+7idODC0QzfWd8L
-	 KDkgI5XiZhlJUj3OI/hRs1BG971COc3F/LUYmVMJXPuUsizpsBxQyRAAp1jUAGkVw7
-	 Py+NUJTGohrJPoWnW21nFnklQFNsbvsJB7E+4DW8=
+	b=lXdPr5LY9zFLo0Pvf6s+it/Rl97dRxn8AhkjhDSW3SoXKKzgcpO4IYjUPoFrNlEz8
+	 cO1H6Gb7mkUyDtza9TRZNabQ1TpsP1N2HsYkK1q7Bb2KHAdvK3jVWETakEQkmC3Lvv
+	 wIsugVpl7mw+/JodjIKp/SPtjEzuRX3f3HzfZ0vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongzhi Liu <hyperlyzcs@gmail.com>,
-	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 278/281] misc: microchip: pci1xxxx: Fix a memory leak in the error handling of gp_aux_bus_probe()
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 194/217] btrfs: zoned: introduce a zone_info struct in btrfs_load_block_group_zone_info
 Date: Wed, 19 Jun 2024 14:57:17 +0200
-Message-ID: <20240619125620.676151245@linuxfoundation.org>
+Message-ID: <20240619125604.170462487@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,247 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongzhi Liu <hyperlyzcs@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 77427e3d5c353e3dd98c7c0af322f8d9e3131ace ]
+commit 15c12fcc50a1b12a747f8b6ec05cdb18c537a4d1 upstream.
 
-There is a memory leak (forget to free allocated buffers) in a
-memory allocation failure path.
+Add a new zone_info structure to hold per-zone information in
+btrfs_load_block_group_zone_info and prepare for breaking out helpers
+from it.
 
-Fix it to jump to the correct error handling code.
-
-Fixes: 393fc2f5948f ("misc: microchip: pci1xxxx: load auxiliary bus driver for the PIO function in the multi-function endpoint of pci1xxxx device.")
-Signed-off-by: Yongzhi Liu <hyperlyzcs@gmail.com>
-Reviewed-by: Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>
-Link: https://lore.kernel.org/r/20240523121434.21855-4-hyperlyzcs@gmail.com
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/btrfs/zoned.c |   84 ++++++++++++++++++++++++-------------------------------
+ 1 file changed, 37 insertions(+), 47 deletions(-)
 
-diff --git a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
-index de75d89ef53e8..34c9be437432a 100644
---- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
-+++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
-@@ -69,8 +69,10 @@ static int gp_aux_bus_probe(struct pci_dev *pdev, const struct pci_device_id *id
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1270,6 +1270,12 @@ out:
+ 	return ret;
+ }
  
- 	aux_bus->aux_device_wrapper[1] = kzalloc(sizeof(*aux_bus->aux_device_wrapper[1]),
- 						 GFP_KERNEL);
--	if (!aux_bus->aux_device_wrapper[1])
--		return -ENOMEM;
-+	if (!aux_bus->aux_device_wrapper[1]) {
-+		retval =  -ENOMEM;
-+		goto err_aux_dev_add_0;
-+	}
++struct zone_info {
++	u64 physical;
++	u64 capacity;
++	u64 alloc_offset;
++};
++
+ int btrfs_load_block_group_zone_info(struct btrfs_block_group *cache, bool new)
+ {
+ 	struct btrfs_fs_info *fs_info = cache->fs_info;
+@@ -1279,12 +1285,10 @@ int btrfs_load_block_group_zone_info(str
+ 	struct btrfs_device *device;
+ 	u64 logical = cache->start;
+ 	u64 length = cache->length;
++	struct zone_info *zone_info = NULL;
+ 	int ret;
+ 	int i;
+ 	unsigned int nofs_flag;
+-	u64 *alloc_offsets = NULL;
+-	u64 *caps = NULL;
+-	u64 *physical = NULL;
+ 	unsigned long *active = NULL;
+ 	u64 last_alloc = 0;
+ 	u32 num_sequential = 0, num_conventional = 0;
+@@ -1316,20 +1320,8 @@ int btrfs_load_block_group_zone_info(str
+ 		goto out;
+ 	}
  
- 	retval = ida_alloc(&gp_client_ida, GFP_KERNEL);
- 	if (retval < 0)
--- 
-2.43.0
-
+-	alloc_offsets = kcalloc(map->num_stripes, sizeof(*alloc_offsets), GFP_NOFS);
+-	if (!alloc_offsets) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
+-
+-	caps = kcalloc(map->num_stripes, sizeof(*caps), GFP_NOFS);
+-	if (!caps) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
+-
+-	physical = kcalloc(map->num_stripes, sizeof(*physical), GFP_NOFS);
+-	if (!physical) {
++	zone_info = kcalloc(map->num_stripes, sizeof(*zone_info), GFP_NOFS);
++	if (!zone_info) {
+ 		ret = -ENOMEM;
+ 		goto out;
+ 	}
+@@ -1341,20 +1333,21 @@ int btrfs_load_block_group_zone_info(str
+ 	}
+ 
+ 	for (i = 0; i < map->num_stripes; i++) {
++		struct zone_info *info = &zone_info[i];
+ 		bool is_sequential;
+ 		struct blk_zone zone;
+ 		struct btrfs_dev_replace *dev_replace = &fs_info->dev_replace;
+ 		int dev_replace_is_ongoing = 0;
+ 
+ 		device = map->stripes[i].dev;
+-		physical[i] = map->stripes[i].physical;
++		info->physical = map->stripes[i].physical;
+ 
+ 		if (device->bdev == NULL) {
+-			alloc_offsets[i] = WP_MISSING_DEV;
++			info->alloc_offset = WP_MISSING_DEV;
+ 			continue;
+ 		}
+ 
+-		is_sequential = btrfs_dev_is_sequential(device, physical[i]);
++		is_sequential = btrfs_dev_is_sequential(device, info->physical);
+ 		if (is_sequential)
+ 			num_sequential++;
+ 		else
+@@ -1368,7 +1361,7 @@ int btrfs_load_block_group_zone_info(str
+ 			__set_bit(i, active);
+ 
+ 		if (!is_sequential) {
+-			alloc_offsets[i] = WP_CONVENTIONAL;
++			info->alloc_offset = WP_CONVENTIONAL;
+ 			continue;
+ 		}
+ 
+@@ -1376,25 +1369,25 @@ int btrfs_load_block_group_zone_info(str
+ 		 * This zone will be used for allocation, so mark this zone
+ 		 * non-empty.
+ 		 */
+-		btrfs_dev_clear_zone_empty(device, physical[i]);
++		btrfs_dev_clear_zone_empty(device, info->physical);
+ 
+ 		down_read(&dev_replace->rwsem);
+ 		dev_replace_is_ongoing = btrfs_dev_replace_is_ongoing(dev_replace);
+ 		if (dev_replace_is_ongoing && dev_replace->tgtdev != NULL)
+-			btrfs_dev_clear_zone_empty(dev_replace->tgtdev, physical[i]);
++			btrfs_dev_clear_zone_empty(dev_replace->tgtdev, info->physical);
+ 		up_read(&dev_replace->rwsem);
+ 
+ 		/*
+ 		 * The group is mapped to a sequential zone. Get the zone write
+ 		 * pointer to determine the allocation offset within the zone.
+ 		 */
+-		WARN_ON(!IS_ALIGNED(physical[i], fs_info->zone_size));
++		WARN_ON(!IS_ALIGNED(info->physical, fs_info->zone_size));
+ 		nofs_flag = memalloc_nofs_save();
+-		ret = btrfs_get_dev_zone(device, physical[i], &zone);
++		ret = btrfs_get_dev_zone(device, info->physical, &zone);
+ 		memalloc_nofs_restore(nofs_flag);
+ 		if (ret == -EIO || ret == -EOPNOTSUPP) {
+ 			ret = 0;
+-			alloc_offsets[i] = WP_MISSING_DEV;
++			info->alloc_offset = WP_MISSING_DEV;
+ 			continue;
+ 		} else if (ret) {
+ 			goto out;
+@@ -1409,27 +1402,26 @@ int btrfs_load_block_group_zone_info(str
+ 			goto out;
+ 		}
+ 
+-		caps[i] = (zone.capacity << SECTOR_SHIFT);
++		info->capacity = (zone.capacity << SECTOR_SHIFT);
+ 
+ 		switch (zone.cond) {
+ 		case BLK_ZONE_COND_OFFLINE:
+ 		case BLK_ZONE_COND_READONLY:
+ 			btrfs_err(fs_info,
+ 		"zoned: offline/readonly zone %llu on device %s (devid %llu)",
+-				  physical[i] >> device->zone_info->zone_size_shift,
++				  info->physical >> device->zone_info->zone_size_shift,
+ 				  rcu_str_deref(device->name), device->devid);
+-			alloc_offsets[i] = WP_MISSING_DEV;
++			info->alloc_offset = WP_MISSING_DEV;
+ 			break;
+ 		case BLK_ZONE_COND_EMPTY:
+-			alloc_offsets[i] = 0;
++			info->alloc_offset = 0;
+ 			break;
+ 		case BLK_ZONE_COND_FULL:
+-			alloc_offsets[i] = caps[i];
++			info->alloc_offset = info->capacity;
+ 			break;
+ 		default:
+ 			/* Partially used zone */
+-			alloc_offsets[i] =
+-					((zone.wp - zone.start) << SECTOR_SHIFT);
++			info->alloc_offset = ((zone.wp - zone.start) << SECTOR_SHIFT);
+ 			__set_bit(i, active);
+ 			break;
+ 		}
+@@ -1456,15 +1448,15 @@ int btrfs_load_block_group_zone_info(str
+ 
+ 	switch (map->type & BTRFS_BLOCK_GROUP_PROFILE_MASK) {
+ 	case 0: /* single */
+-		if (alloc_offsets[0] == WP_MISSING_DEV) {
++		if (zone_info[0].alloc_offset == WP_MISSING_DEV) {
+ 			btrfs_err(fs_info,
+ 			"zoned: cannot recover write pointer for zone %llu",
+-				physical[0]);
++				zone_info[0].physical);
+ 			ret = -EIO;
+ 			goto out;
+ 		}
+-		cache->alloc_offset = alloc_offsets[0];
+-		cache->zone_capacity = caps[0];
++		cache->alloc_offset = zone_info[0].alloc_offset;
++		cache->zone_capacity = zone_info[0].capacity;
+ 		if (test_bit(0, active))
+ 			set_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &cache->runtime_flags);
+ 		break;
+@@ -1474,21 +1466,21 @@ int btrfs_load_block_group_zone_info(str
+ 			ret = -EINVAL;
+ 			goto out;
+ 		}
+-		if (alloc_offsets[0] == WP_MISSING_DEV) {
++		if (zone_info[0].alloc_offset == WP_MISSING_DEV) {
+ 			btrfs_err(fs_info,
+ 			"zoned: cannot recover write pointer for zone %llu",
+-				physical[0]);
++				zone_info[0].physical);
+ 			ret = -EIO;
+ 			goto out;
+ 		}
+-		if (alloc_offsets[1] == WP_MISSING_DEV) {
++		if (zone_info[1].alloc_offset == WP_MISSING_DEV) {
+ 			btrfs_err(fs_info,
+ 			"zoned: cannot recover write pointer for zone %llu",
+-				physical[1]);
++				zone_info[1].physical);
+ 			ret = -EIO;
+ 			goto out;
+ 		}
+-		if (alloc_offsets[0] != alloc_offsets[1]) {
++		if (zone_info[0].alloc_offset != zone_info[1].alloc_offset) {
+ 			btrfs_err(fs_info,
+ 			"zoned: write pointer offset mismatch of zones in DUP profile");
+ 			ret = -EIO;
+@@ -1504,8 +1496,8 @@ int btrfs_load_block_group_zone_info(str
+ 				set_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE,
+ 					&cache->runtime_flags);
+ 		}
+-		cache->alloc_offset = alloc_offsets[0];
+-		cache->zone_capacity = min(caps[0], caps[1]);
++		cache->alloc_offset = zone_info[0].alloc_offset;
++		cache->zone_capacity = min(zone_info[0].capacity, zone_info[1].capacity);
+ 		break;
+ 	case BTRFS_BLOCK_GROUP_RAID1:
+ 	case BTRFS_BLOCK_GROUP_RAID0:
+@@ -1558,9 +1550,7 @@ out:
+ 		cache->physical_map = NULL;
+ 	}
+ 	bitmap_free(active);
+-	kfree(physical);
+-	kfree(caps);
+-	kfree(alloc_offsets);
++	kfree(zone_info);
+ 	free_extent_map(em);
+ 
+ 	return ret;
 
 
 
