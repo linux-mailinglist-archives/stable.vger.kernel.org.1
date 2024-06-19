@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B432790ECDA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:11:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCDA590EB8D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43C4428237C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:11:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77B17B2188F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DDF14389C;
-	Wed, 19 Jun 2024 13:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49D8143C58;
+	Wed, 19 Jun 2024 12:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wan+kxrq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xq/IY9+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3086D1494A6;
-	Wed, 19 Jun 2024 13:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817C3143C45;
+	Wed, 19 Jun 2024 12:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802687; cv=none; b=rcVxhgbLI15BTd0VN+U808z8TAaDVAbLFY23AjA4Gm26M2Z19nvJgWkmjgw5nXSsCg5w+Dzb77c1vuZ5n5sfOtMLZauEvKkyB7owP5WjvbFASpsrQy6Mm1o3aqkjUWALwQ0DJxny6rNTgZzuhnM/UbQnsuilt6vN7tP3Tg1lhdc=
+	t=1718801895; cv=none; b=L3UNGKktSB/wrIBviIPuByW3Cxk+rmOU2vtH2ETP6kKMnShxgOsu0oDF5hb39Lsu19rUKOh4Q5+V2tNa6LOlDbLk2T2UWNc9RbIZiLQU4uaE53csB1U2/kxJgJF6pcnFinICRIp/SjHKfqVwJiWy5jPqrsK42bCiEFrkGToqXo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802687; c=relaxed/simple;
-	bh=hY3ItH+G3kYiK0NZSjnutB2vbJynyptBAmp8yJaS33k=;
+	s=arc-20240116; t=1718801895; c=relaxed/simple;
+	bh=Lbh8t8szIfevDEda5lh7LfmS/PnBiP1+w3wGB7wXb7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2QZ+xeIG55mk+PzIa95CT5jEX85+qG2L/Cc2vMqWFNrRb/FnIyEo6maNtmqSQXaxduqk7RmlIYuBUon4nsqDQ/qEidL/qMM6PASsLaEZARO6gdV3s9VTatDWxAovZVw5NMWQS0fNroDexb75SETRhki/V7GUqZLU2DoFqtWaN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wan+kxrq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F46C32786;
-	Wed, 19 Jun 2024 13:11:25 +0000 (UTC)
+	 MIME-Version; b=SNxjEpNV6EZXAxDn++IZSKI1w8l3/KhvjYD6BHOSxfJcCbwgWU3YWwFfBcoQ1nGPvbMsMFZSbjsa3oq7ujhDwtZe5WngbTzoETRY/XxRYVf/pITYTeUdFLTMXi1OJzQHbb8XZ5lDyMEure6iMYhAYotng46JqFzpn9gp/lxHc4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xq/IY9+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31C2C2BBFC;
+	Wed, 19 Jun 2024 12:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802685;
-	bh=hY3ItH+G3kYiK0NZSjnutB2vbJynyptBAmp8yJaS33k=;
+	s=korg; t=1718801895;
+	bh=Lbh8t8szIfevDEda5lh7LfmS/PnBiP1+w3wGB7wXb7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wan+kxrq6mWtkbMBq5M+LttJmux4fXSbuGUbwaATMlzcuW4IiCrgqRne1TvOnJro5
-	 Wt3EMRgwVJkJmXn38NVt55QaXkhgBct4MQV90R3emEU4Gwi4kpa1SwczL/U3e3vJK+
-	 p3gm4YMczdklJp/9kwl7XyH90FUi8q+DX+q3C9lY=
+	b=Xq/IY9+Q2TwHePnmjjR8yCdtMGUJLAy0hCq9jqqgQfcFstUVe6BlqelsYzzHb4NJ8
+	 DVR5dhMJqH3gJ6fT/ot9BJkIavmRskdMA7ABjMlic2L7kUHLEIR3qBOYieqbr93WPb
+	 pf0Vbs6HtxFAEVT5QIFr1QiPx/KczWLW6J3n+aYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Chanwoo Lee <cw9316.lee@samsung.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 005/281] cpufreq: amd-pstate: remove global header file
+Subject: [PATCH 6.6 013/267] scsi: ufs: mcq: Fix error output and clean up ufshcd_mcq_abort()
 Date: Wed, 19 Jun 2024 14:52:44 +0200
-Message-ID: <20240619125610.049884759@linuxfoundation.org>
+Message-ID: <20240619125606.863777081@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,186 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chanwoo Lee <cw9316.lee@samsung.com>
 
-[ Upstream commit 779b8a14afde110dd3502566be907289eba72447 ]
+[ Upstream commit d53b681ce9ca7db5ef4ecb8d2cf465ae4a031264 ]
 
-When extra warnings are enabled, gcc points out a global variable
-definition in a header:
+An error unrelated to ufshcd_try_to_abort_task is being logged and can
+cause confusion. Modify ufshcd_mcq_abort() to print the result of the abort
+failure. For readability, return immediately instead of 'goto'.
 
-In file included from drivers/cpufreq/amd-pstate-ut.c:29:
-include/linux/amd-pstate.h:123:27: error: 'amd_pstate_mode_string' defined but not used [-Werror=unused-const-variable=]
-  123 | static const char * const amd_pstate_mode_string[] = {
-      |                           ^~~~~~~~~~~~~~~~~~~~~~
-
-This header is only included from two files in the same directory,
-and one of them uses only a single definition from it, so clean it
-up by moving most of the contents into the driver that uses them,
-and making shared bits a local header file.
-
-Fixes: 36c5014e5460 ("cpufreq: amd-pstate: optimize driver working mode selection in amd_pstate_param()")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: f1304d442077 ("scsi: ufs: mcq: Added ufshcd_mcq_abort()")
+Signed-off-by: Chanwoo Lee <cw9316.lee@samsung.com>
+Link: https://lore.kernel.org/r/20240524015904.1116005-1-cw9316.lee@samsung.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- MAINTAINERS                                   |  1 -
- drivers/cpufreq/amd-pstate-ut.c               |  3 +-
- drivers/cpufreq/amd-pstate.c                  | 34 ++++++++++++++++++-
- .../linux => drivers/cpufreq}/amd-pstate.h    | 33 ------------------
- 4 files changed, 35 insertions(+), 36 deletions(-)
- rename {include/linux => drivers/cpufreq}/amd-pstate.h (81%)
+ drivers/ufs/core/ufs-mcq.c | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 28e20975c26f5..3121709d99e3b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1066,7 +1066,6 @@ L:	linux-pm@vger.kernel.org
- S:	Supported
- F:	Documentation/admin-guide/pm/amd-pstate.rst
- F:	drivers/cpufreq/amd-pstate*
--F:	include/linux/amd-pstate.h
- F:	tools/power/x86/amd_pstate_tracer/amd_pstate_trace.py
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index 7ae3096814282..4e84ee6564d4b 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -630,20 +630,20 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
+ 	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
+ 	struct ufs_hw_queue *hwq;
+ 	unsigned long flags;
+-	int err = FAILED;
++	int err;
  
- AMD PTDMA DRIVER
-diff --git a/drivers/cpufreq/amd-pstate-ut.c b/drivers/cpufreq/amd-pstate-ut.c
-index f04ae67dda372..fc275d41d51e9 100644
---- a/drivers/cpufreq/amd-pstate-ut.c
-+++ b/drivers/cpufreq/amd-pstate-ut.c
-@@ -26,10 +26,11 @@
- #include <linux/module.h>
- #include <linux/moduleparam.h>
- #include <linux/fs.h>
--#include <linux/amd-pstate.h>
+ 	if (!ufshcd_cmd_inflight(lrbp->cmd)) {
+ 		dev_err(hba->dev,
+ 			"%s: skip abort. cmd at tag %d already completed.\n",
+ 			__func__, tag);
+-		goto out;
++		return FAILED;
+ 	}
  
- #include <acpi/cppc_acpi.h>
+ 	/* Skip task abort in case previous aborts failed and report failure */
+ 	if (lrbp->req_abort_skip) {
+ 		dev_err(hba->dev, "%s: skip abort. tag %d failed earlier\n",
+ 			__func__, tag);
+-		goto out;
++		return FAILED;
+ 	}
  
-+#include "amd-pstate.h"
-+
- /*
-  * Abbreviations:
-  * amd_pstate_ut: used as a shortform for AMD P-State unit test.
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 605b037913ff8..6c989d859b396 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -36,7 +36,6 @@
- #include <linux/delay.h>
- #include <linux/uaccess.h>
- #include <linux/static_call.h>
--#include <linux/amd-pstate.h>
- #include <linux/topology.h>
+ 	hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(cmd));
+@@ -655,7 +655,7 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
+ 		 */
+ 		dev_err(hba->dev, "%s: cmd found in sq. hwq=%d, tag=%d\n",
+ 			__func__, hwq->id, tag);
+-		goto out;
++		return FAILED;
+ 	}
  
- #include <acpi/processor.h>
-@@ -46,6 +45,8 @@
- #include <asm/processor.h>
- #include <asm/cpufeature.h>
- #include <asm/cpu_device_id.h>
-+
-+#include "amd-pstate.h"
- #include "amd-pstate-trace.h"
+ 	/*
+@@ -663,18 +663,17 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
+ 	 * in the completion queue either. Query the device to see if
+ 	 * the command is being processed in the device.
+ 	 */
+-	if (ufshcd_try_to_abort_task(hba, tag)) {
++	err = ufshcd_try_to_abort_task(hba, tag);
++	if (err) {
+ 		dev_err(hba->dev, "%s: device abort failed %d\n", __func__, err);
+ 		lrbp->req_abort_skip = true;
+-		goto out;
++		return FAILED;
+ 	}
  
- #define AMD_PSTATE_TRANSITION_LATENCY	20000
-@@ -53,6 +54,37 @@
- #define CPPC_HIGHEST_PERF_PERFORMANCE	196
- #define CPPC_HIGHEST_PERF_DEFAULT	166
+-	err = SUCCESS;
+ 	spin_lock_irqsave(&hwq->cq_lock, flags);
+ 	if (ufshcd_cmd_inflight(lrbp->cmd))
+ 		ufshcd_release_scsi_cmd(hba, lrbp);
+ 	spin_unlock_irqrestore(&hwq->cq_lock, flags);
  
-+#define AMD_CPPC_EPP_PERFORMANCE		0x00
-+#define AMD_CPPC_EPP_BALANCE_PERFORMANCE	0x80
-+#define AMD_CPPC_EPP_BALANCE_POWERSAVE		0xBF
-+#define AMD_CPPC_EPP_POWERSAVE			0xFF
-+
-+/*
-+ * enum amd_pstate_mode - driver working mode of amd pstate
-+ */
-+enum amd_pstate_mode {
-+	AMD_PSTATE_UNDEFINED = 0,
-+	AMD_PSTATE_DISABLE,
-+	AMD_PSTATE_PASSIVE,
-+	AMD_PSTATE_ACTIVE,
-+	AMD_PSTATE_GUIDED,
-+	AMD_PSTATE_MAX,
-+};
-+
-+static const char * const amd_pstate_mode_string[] = {
-+	[AMD_PSTATE_UNDEFINED]   = "undefined",
-+	[AMD_PSTATE_DISABLE]     = "disable",
-+	[AMD_PSTATE_PASSIVE]     = "passive",
-+	[AMD_PSTATE_ACTIVE]      = "active",
-+	[AMD_PSTATE_GUIDED]      = "guided",
-+	NULL,
-+};
-+
-+struct quirk_entry {
-+	u32 nominal_freq;
-+	u32 lowest_freq;
-+};
-+
- /*
-  * TODO: We need more time to fine tune processors with shared memory solution
-  * with community together.
-diff --git a/include/linux/amd-pstate.h b/drivers/cpufreq/amd-pstate.h
-similarity index 81%
-rename from include/linux/amd-pstate.h
-rename to drivers/cpufreq/amd-pstate.h
-index 7b2cbb892fd91..bc341f35908d7 100644
---- a/include/linux/amd-pstate.h
-+++ b/drivers/cpufreq/amd-pstate.h
-@@ -1,7 +1,5 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-- * linux/include/linux/amd-pstate.h
-- *
-  * Copyright (C) 2022 Advanced Micro Devices, Inc.
-  *
-  * Author: Meng Li <li.meng@amd.com>
-@@ -12,11 +10,6 @@
- 
- #include <linux/pm_qos.h>
- 
--#define AMD_CPPC_EPP_PERFORMANCE		0x00
--#define AMD_CPPC_EPP_BALANCE_PERFORMANCE	0x80
--#define AMD_CPPC_EPP_BALANCE_POWERSAVE		0xBF
--#define AMD_CPPC_EPP_POWERSAVE			0xFF
--
- /*********************************************************************
-  *                        AMD P-state INTERFACE                       *
-  *********************************************************************/
-@@ -104,30 +97,4 @@ struct amd_cpudata {
- 	bool	suspended;
- };
- 
--/*
-- * enum amd_pstate_mode - driver working mode of amd pstate
-- */
--enum amd_pstate_mode {
--	AMD_PSTATE_UNDEFINED = 0,
--	AMD_PSTATE_DISABLE,
--	AMD_PSTATE_PASSIVE,
--	AMD_PSTATE_ACTIVE,
--	AMD_PSTATE_GUIDED,
--	AMD_PSTATE_MAX,
--};
--
--static const char * const amd_pstate_mode_string[] = {
--	[AMD_PSTATE_UNDEFINED]   = "undefined",
--	[AMD_PSTATE_DISABLE]     = "disable",
--	[AMD_PSTATE_PASSIVE]     = "passive",
--	[AMD_PSTATE_ACTIVE]      = "active",
--	[AMD_PSTATE_GUIDED]      = "guided",
--	NULL,
--};
--
--struct quirk_entry {
--	u32 nominal_freq;
--	u32 lowest_freq;
--};
--
- #endif /* _LINUX_AMD_PSTATE_H */
+-out:
+-	return err;
++	return SUCCESS;
+ }
 -- 
 2.43.0
 
