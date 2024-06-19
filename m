@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-54416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D0090EE12
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB87490ED3B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A885D1F213C6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB3D11C2101B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B9C14532C;
-	Wed, 19 Jun 2024 13:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3852712FB27;
+	Wed, 19 Jun 2024 13:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXjZzJ1i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z283CkW/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156C4143757;
-	Wed, 19 Jun 2024 13:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7E1AD58;
+	Wed, 19 Jun 2024 13:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803516; cv=none; b=NBy2O87QCXnB12Ko3M9rtjXH6ciAqM76G0qiKTrv8UtYb6YSDABuMAmL+6LKd+B+RrokBUCYwWcksDQEkj9wdq9oQBy1QKNHf4SVHjdC0j4K1nR6R3RX6L5oWNFzIOmXn3wKiD+it+c21XZAYuHROEdQXfKfT+O63UJz7nXt1tI=
+	t=1718802937; cv=none; b=KCxNdst5/J052lSIBjWASvJYrfCbD5sA+pT7eQk2ydd7uudCkiq4z6nlyQEZfFx5bug5z/FEga8eWqHORwVXSe6GwQE+2IzmJa6QMqGIEGtJeBv7ZIf6+YVN32fbdCI7P8V94QCgBdcrIPDfMZLgQf6UO52HAnLuN0EA7yCbXls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803516; c=relaxed/simple;
-	bh=ywIOVuAcG6xaNACwb0cNTY1K1iLJrR+x/sNaJIKvXWI=;
+	s=arc-20240116; t=1718802937; c=relaxed/simple;
+	bh=lGI6DQJpVUgXNiJ0XzJ19e8xG9kPVAOYoypAtx8Y46M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DIgobldYvQgT+/X2IjPwL8+/Lwp24cNuf3szCLMVDX7oHoo8h56Q8/Fp+KlEyYaIEHwVCs91yz/nOm3Rk0k4yKL2vDrE7IdCCsnkRCpDaupUaSe2AxnVfwFWwGLv97v9kcNiL8jEpLq1Qu4yNe60Cq5Ww+vY3wVC5wUPDiBQWf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXjZzJ1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C0AC2BBFC;
-	Wed, 19 Jun 2024 13:25:15 +0000 (UTC)
+	 MIME-Version; b=qndVtWBnTUyqYOwBqYUHCBwBYnK38C9pE8P8U6cuqN7fAsnQR41LXLRwarRBqb69T3EsLDrpS4G7bnwJVc34xcYdadKsR0LOrQ67sty0WmmOTP4/0PjpLmwzeCzK5+EYE+HrWpTRmCdXTJLEyhfPT4eUQfOZySEBfdru33ccOY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z283CkW/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CF4C2BBFC;
+	Wed, 19 Jun 2024 13:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803515;
-	bh=ywIOVuAcG6xaNACwb0cNTY1K1iLJrR+x/sNaJIKvXWI=;
+	s=korg; t=1718802936;
+	bh=lGI6DQJpVUgXNiJ0XzJ19e8xG9kPVAOYoypAtx8Y46M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OXjZzJ1iUkaU1YQfBLi9QPbZSmgiOYsd+ovnjFZ8wnf/tcA+YkdvNEgXB94q+kfeM
-	 JgCLuvlTHm52tm+rp1r7K9xSoqA3kTeUjH8pgwk+kZYuDzIYfVPBTsusiVy1ce+7gU
-	 TWfI6mG3hIMfQEs936MKNvdeYsIfSDBRDVQh6D98=
+	b=Z283CkW/rmxU2yGPQplusRPXx7rn2ox927lwI8JoZfe9NsxWfMRWLgKMDhrDUcsJf
+	 V9wp8ZU9GL8G2YAsp/N9fEmCkHYL1g3zhaXcUGAn85PfEKWwRLBUTxYAtVcuVMJLS1
+	 ukO5Mf8svA3mWlVRrXg2AP0m4waeIkC0r3Rl99RQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/217] ax25: Replace kfree() in ax25_dev_free() with ax25_dev_put()
-Date: Wed, 19 Jun 2024 14:54:15 +0200
-Message-ID: <20240619125556.980697995@linuxfoundation.org>
+	Kuangyi Chiang <ki.chiang65@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.9 097/281] xhci: Apply broken streams quirk to Etron EJ188 xHCI host
+Date: Wed, 19 Jun 2024 14:54:16 +0200
+Message-ID: <20240619125613.584322557@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
 
-[ Upstream commit 166fcf86cd34e15c7f383eda4642d7a212393008 ]
+commit 91f7a1524a92c70ffe264db8bdfa075f15bbbeb9 upstream.
 
-The object "ax25_dev" is managed by reference counting. Thus it should
-not be directly released by kfree(), replace with ax25_dev_put().
+As described in commit 8f873c1ff4ca ("xhci: Blacklist using streams on the
+Etron EJ168 controller"), EJ188 have the same issue as EJ168, where Streams
+do not work reliable on EJ188. So apply XHCI_BROKEN_STREAMS quirk to EJ188
+as well.
 
-Fixes: d01ffb9eee4a ("ax25: add refcount in ax25_dev to avoid UAF bugs")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240530051733.11416-1-duoming@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240611120610.3264502-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ax25/ax25_dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-pci.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ax25/ax25_dev.c b/net/ax25/ax25_dev.c
-index fcc64645bbf5e..e165fe108bb00 100644
---- a/net/ax25/ax25_dev.c
-+++ b/net/ax25/ax25_dev.c
-@@ -193,7 +193,7 @@ void __exit ax25_dev_free(void)
- 	list_for_each_entry_safe(s, n, &ax25_dev_list, list) {
- 		netdev_put(s->dev, &s->dev_tracker);
- 		list_del(&s->list);
--		kfree(s);
-+		ax25_dev_put(s);
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -404,8 +404,10 @@ static void xhci_pci_quirks(struct devic
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
  	}
- 	spin_unlock_bh(&ax25_dev_lock);
- }
--- 
-2.43.0
-
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+-			pdev->device == PCI_DEVICE_ID_EJ188)
++			pdev->device == PCI_DEVICE_ID_EJ188) {
+ 		xhci->quirks |= XHCI_RESET_ON_RESUME;
++		xhci->quirks |= XHCI_BROKEN_STREAMS;
++	}
+ 
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
+ 	    pdev->device == 0x0014) {
 
 
 
