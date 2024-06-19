@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-53841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEA690EA51
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:03:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FCB90EA59
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC3D21C21803
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:02:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97F542813D6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288C813E3EB;
-	Wed, 19 Jun 2024 12:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 464A113DDC7;
+	Wed, 19 Jun 2024 12:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xotcFIWj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIJCj/Fe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBFB135A6D
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 12:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0583913D242
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 12:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718798576; cv=none; b=a9q/bLnfzThBFOoMj83EC2CvfzNF+sQPgxikvRwszOBNKcJSA5eyf1kjo7FGj4jEouYpY1t5NmkFm4GXgo4natP8zMZK2jh9XgSwzXgqfXJShHzXTTGqX9xDudYTwDZGqFEGWnNB+Vf6h7CKNUWUSN4SZs24nw8Bsnj2b+pakes=
+	t=1718798731; cv=none; b=PMwGe1o7xM1AXQ3gPdurgmfIzcC03hcp0ZZflisKMk67bamNEwQy5hjekjhRCCqf0mE6Jrj1yBGjXt6+LEe200hktiiws7Z6y1cDPFz2AuZ//fzSNoFHD9tnKXCw1n7Y9OSBzPjMv2DEu+tz6WBeXtp6tNNqDEOmRCvAaIQfjBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718798576; c=relaxed/simple;
-	bh=mEhPAZ6TLMcGlK/ESlx9IlF5gbMk+0kZ8Z1G/TW7aNY=;
+	s=arc-20240116; t=1718798731; c=relaxed/simple;
+	bh=/1nYD6qQcbscp7Bm1iftdGhfBtwHwIUjd23sT6Qquok=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ilMBz5dOzhPSm9reKOSwYOkYZw3E6+D3CoCsq4n5ijXYxJWbFu9c/+XU6BelutdgqmUqxQHzo0qRxphb5wJ17XLNYlvV2aRfc5XGoMB1M2PH7GiAx9x74VxMvLULgooTSsTQqXNZ2Df4ouRDgHbO9mMRLK3y+cXYvB+6XQLpD4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xotcFIWj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C12CC2BBFC;
-	Wed, 19 Jun 2024 12:02:55 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=kBKGIDi+21LQIh/b/TcJEdKxyEOEoKqVav4hAxpl+j39wam4PCIvOeRRQx9tTALU+Ql/yITVyK0QB+4FPDSwD079VhF6EKMn0ZktbvraW0qfRK7vKiugwltVlVi+jagY4S7N2PSceF7fIAEscY5oylE4v3QGoAkCYZkoYNwM3qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIJCj/Fe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CF7C2BBFC;
+	Wed, 19 Jun 2024 12:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718798576;
-	bh=mEhPAZ6TLMcGlK/ESlx9IlF5gbMk+0kZ8Z1G/TW7aNY=;
+	s=korg; t=1718798730;
+	bh=/1nYD6qQcbscp7Bm1iftdGhfBtwHwIUjd23sT6Qquok=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xotcFIWjXdJ7ATuGmS8/aQAQWuekMo4wP8TFWA3JWuy/eX0/Ulr2zA/WqsDHmu6r/
-	 JpAuFRQb0ptSpaOlVJRb6J7K9gcX63HS/peTSrAWkPPPKLCfmdwvj63l98JRXjvI9o
-	 D7zGWzYUyfQoy9TUTZKIkGBTmCsx5MVjiYl+vaLA=
-Date: Wed, 19 Jun 2024 14:02:53 +0200
+	b=iIJCj/FeLVeyYY+ZezrQtM8YYvMiwiA3rMfMjEq215BTmvkVcGA1FCXzltgzvXi1w
+	 /PSYh/tXPteJzbLh2SJ1iXdz2qMLy5Wb1NLhLXFMzDt4jy9V56mtdoDje9zfNBMVmi
+	 0oj1znW5ZR1ZN3T/RJxrtyjOAlwD/3ucZYq59zvI=
+Date: Wed, 19 Jun 2024 14:05:27 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Ronnie Sahlberg <rsahlberg@ciq.com>
 Cc: stable@vger.kernel.org
-Subject: Re: Candidates for stable v6.9..v6.10-rc3 Use after free
-Message-ID: <2024061944-womankind-oak-e74b@gregkh>
-References: <CAK4epfx_PohoB=QwKb96NE6yOFX1U3LYCAnfdZumaJT_qSan_g@mail.gmail.com>
+Subject: Re: Candidates for stable v6.9..v6.10-rc1 Deadlock
+Message-ID: <2024061917-ruined-retype-2167@gregkh>
+References: <CAK4epfz9B58Dfz=wwNP2PJQzeqvT3J_kjY9d7PNY_VPKDKE=dA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,30 +53,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAK4epfx_PohoB=QwKb96NE6yOFX1U3LYCAnfdZumaJT_qSan_g@mail.gmail.com>
+In-Reply-To: <CAK4epfz9B58Dfz=wwNP2PJQzeqvT3J_kjY9d7PNY_VPKDKE=dA@mail.gmail.com>
 
-On Fri, Jun 14, 2024 at 07:11:04PM -0400, Ronnie Sahlberg wrote:
-> Here is a list of potential Use after free that are not yet in
-> linux-running-stable
-> The list has been manually pruned and I believe they are all genuine issues.
+On Mon, Jun 03, 2024 at 04:48:56PM -0400, Ronnie Sahlberg wrote:
+> These commits reference Deadlock between v6.9 and v6.10-rc1
 > 
-> 546ceb1dfdac866648ec
-> 36c92936e868601fa1f4
-> 4e7aaa6b82d63e8ddcbf
-> 2884dc7d08d98a89d8d6
-> 166fcf86cd34e15c7f38
-> 4b4391e77a6bf24cba2e
-> da4a827416066191aafe
-> de3e26f9e5b76fc62807
-> 0fc75c5940fa634d84e6
-> 647535760a00a854c185
-> a4edf675ba3357f60e2e
-> 90e823498881fb8a91d8
-> 2c6b531020f0590db3b6
-> 7172dc93d621d5dc302d
-> 86735b57c905e775f05d
-> 795bb82d12a16a4cee42
-> 2ecd487b670fcbb1ad48
+> These commits are not, yet, in stable/linux-rolling-stable.
+> Let me know if you would rather me compare to a different repo/branch.
+> The list has been manually pruned to only contain commits that look like
+> actual issues.
+> If they contain a Fixes line it has been verified that at least one of the
+> commits that the Fixes tag(s) reference is in stable/linux-rolling-stable
+> 
+> 
+> 56c35f43eef013579c76
+> eec7620800081e27dbf8
+> 4268254a39484fc11ba9
+> 0a46ef234756dca04623
+> ecf0b2b8a37c84641866
+> e03a5d3e95f22d15d8df
+> 4d3421e04c5dc38baf15
+> 9cc6290991e6cfc9a644
+> 77e619a82fc384ae3d1d
 
-Again, lots of false-positives here :(
+I just grabbed one of these at random, and this commit message says:
+	This patch brings no functional change.
+
+and in reading it, it's just a "let's quiet the tools for now, but
+really, all is good".  So that's not something we should be applying,
+right?
+
+thanks,
+
+greg k-h
 
