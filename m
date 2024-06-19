@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D314990ED51
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED8B90EE61
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5AF51C2184E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C9192869D6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22ABA14375A;
-	Wed, 19 Jun 2024 13:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4235A14BF89;
+	Wed, 19 Jun 2024 13:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgSSNrTO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olnuwQhR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4769AD58;
-	Wed, 19 Jun 2024 13:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0168114373E;
+	Wed, 19 Jun 2024 13:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803001; cv=none; b=g5FXV9xGUuYiWzdUCGnqKiBoEKWnCwLxxn9oJ55pq34B/7zd0Q5V7XX5E7fn5GmzidEFlMo6g+zicD7QsU6jjiNek7ct/fSP9Z5EAemCGLt1NNpYXZiQoiR7e0TK1L6VjW16GtI13KSs0+qvevDtkoI9TGRE8p7HvKpXwSaH+Ic=
+	t=1718803681; cv=none; b=MoSIG6Gce/oM4K78F0rn0jdEpkLWGR2YhpCgNOmCU05ZgTZVi1ZmvVWhX6ERhCPPeOnofTEQFsJA9sl6GMRH0EPdEgBgpmskmD+QWss6Ymgc+8wQ3e9ZMk04hU7WZXGL5WgjzTcUhrycWducDm0M27U4u6oKQjcnuvsRUa5j0rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803001; c=relaxed/simple;
-	bh=1gDBUjJi7tQq/JKCYKn+g5wquDjwXhrzd1WJ+WhG+OA=;
+	s=arc-20240116; t=1718803681; c=relaxed/simple;
+	bh=WXtXFOcLARng3twWNeOVBHcerkDW+i32YCfwxGSzLD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KXrqXmRJ+gczA/2ifEbT4NEYOXW7XfDTy8+Tid1Rmwatw2ommlxNz4bx9WiasiYk86OQPcq7A0UKGsWXdassJRtT2xog/rH8EK5cwTjtPvLaZHoc57qfSUR//XMuO4y83axQXkIzfP06/ou9w+HXtNxHxb9H3mfYMN2Inm8NliQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgSSNrTO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B255C2BBFC;
-	Wed, 19 Jun 2024 13:16:41 +0000 (UTC)
+	 MIME-Version; b=ZLf8FlulGsCxhBnX7qL0jn2KiuhBJ9sy1eGPGIFmzyWMFkuc0bFfOGjgy8PXDA2LR/0miqOc4TMXh0PtMkniKv2cQIZTeTGsp4QKSfYNXgdgkSa8NETGnqgWakaBpeLu9zRYxkS6WlwF1m8GtSobUVmOZmafL3bfVMcdM1P7Yno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olnuwQhR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79430C2BBFC;
+	Wed, 19 Jun 2024 13:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803001;
-	bh=1gDBUjJi7tQq/JKCYKn+g5wquDjwXhrzd1WJ+WhG+OA=;
+	s=korg; t=1718803680;
+	bh=WXtXFOcLARng3twWNeOVBHcerkDW+i32YCfwxGSzLD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WgSSNrTODJTqBkvqU9c11TCmPMB6LnIq6viRAbOccrFxjbeL7+6iAjPPbQOLvMRAb
-	 d7OEG9jkD8DeHGVO2VT0v5IGbWfjli0eoXmCVcdnhaYOJlD0SrZHW113Y2Vo3+CIdm
-	 eRr7/AyiaSgimzKw0x8QZFOMAJoNOO+88fmBQsqI=
+	b=olnuwQhRWS7PA6m7e3OroD2qWPtWqwcQ/idLGzvyk06LUF/DN+Nkei47nny9jYKd5
+	 NrdjZ2OcTwQ4wOwBDQ+5LYMB/nf2Oxndxz6+rFcUTRqaT2fwtKqR6h7NC6cpLISljS
+	 rSWQGPcuy0OgQ033VYRV9sOgXYSx9weCk/rJZTEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 120/281] selftests/ftrace: Fix to check required event file
-Date: Wed, 19 Jun 2024 14:54:39 +0200
-Message-ID: <20240619125614.463939383@linuxfoundation.org>
+Subject: [PATCH 6.1 037/217] af_unix: Annotate data-race of sk->sk_state in unix_inq_len().
+Date: Wed, 19 Jun 2024 14:54:40 +0200
+Message-ID: <20240619125558.086970268@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit f6c3c83db1d939ebdb8c8922748ae647d8126d91 ]
+[ Upstream commit 3a0f38eb285c8c2eead4b3230c7ac2983707599d ]
 
-The dynevent/test_duplicates.tc test case uses `syscalls/sys_enter_openat`
-event for defining eprobe on it. Since this `syscalls` events depend on
-CONFIG_FTRACE_SYSCALLS=y, if it is not set, the test will fail.
+ioctl(SIOCINQ) calls unix_inq_len() that checks sk->sk_state first
+and returns -EINVAL if it's TCP_LISTEN.
 
-Add the event file to `required` line so that the test will return
-`unsupported` result.
+Then, for SOCK_STREAM sockets, unix_inq_len() returns the number of
+bytes in recvq.
 
-Fixes: 297e1dcdca3d ("selftests/ftrace: Add selftest for testing duplicate eprobes and kprobes")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+However, unix_inq_len() does not hold unix_state_lock(), and the
+concurrent listen() might change the state after checking sk->sk_state.
+
+If the race occurs, 0 is returned for the listener, instead of -EINVAL,
+because the length of skb with embryo is 0.
+
+We could hold unix_state_lock() in unix_inq_len(), but it's overkill
+given the result is true for pre-listen() TCP_CLOSE state.
+
+So, let's use READ_ONCE() for sk->sk_state in unix_inq_len().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/ftrace/test.d/dynevent/test_duplicates.tc | 2 +-
+ net/unix/af_unix.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/test_duplicates.tc b/tools/testing/selftests/ftrace/test.d/dynevent/test_duplicates.tc
-index d3a79da215c8b..5f72abe6fa79b 100644
---- a/tools/testing/selftests/ftrace/test.d/dynevent/test_duplicates.tc
-+++ b/tools/testing/selftests/ftrace/test.d/dynevent/test_duplicates.tc
-@@ -1,7 +1,7 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- # description: Generic dynamic event - check if duplicate events are caught
--# requires: dynamic_events "e[:[<group>/][<event>]] <attached-group>.<attached-event> [<args>]":README
-+# requires: dynamic_events "e[:[<group>/][<event>]] <attached-group>.<attached-event> [<args>]":README events/syscalls/sys_enter_openat
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 358e80956cb7b..6d7e1cd97c52e 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -3068,7 +3068,7 @@ long unix_inq_len(struct sock *sk)
+ 	struct sk_buff *skb;
+ 	long amount = 0;
  
- echo 0 > events/enable
+-	if (sk->sk_state == TCP_LISTEN)
++	if (READ_ONCE(sk->sk_state) == TCP_LISTEN)
+ 		return -EINVAL;
  
+ 	spin_lock(&sk->sk_receive_queue.lock);
 -- 
 2.43.0
 
