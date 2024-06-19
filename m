@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC3B90EC54
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF67B90EE75
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF938282A47
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A10C2895E4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132A4147C7B;
-	Wed, 19 Jun 2024 13:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6AA14A4FC;
+	Wed, 19 Jun 2024 13:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSD0Ez3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drHByhz2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C9D13AA40;
-	Wed, 19 Jun 2024 13:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7973B13E409;
+	Wed, 19 Jun 2024 13:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802373; cv=none; b=Knbq+6G4ZwtCBpIC5vPvI1vkLRA1rJWy+iWaeG7IfAFa6SB5wkh4xij+Sze1LcdaJlSMXWn48Rs3KcOKh0Ddkex850tEBFtUQjq/qPWEbxk5dNHbVfNlIS4PAGT4jARiHOPwPTIy07Hu+3uLjucdA71+Svo7DKy5CwwPDy54N7k=
+	t=1718803722; cv=none; b=hm8X99MmzEbT8jw3IIFaMxp+NPGiWISqIpMuT5EEPx39dBxWZS1wyUc2tIXqSefocoUEOpJr7ZSqObl3szatu4hCkRZ/4Bn8ZU56rYV2AeROVlUN7FEtdq1bqXuS+cY5xn+22Q5O2Fh6/AIGTxUL4rUnB3SiS8QuuJyEvpeCYpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802373; c=relaxed/simple;
-	bh=3+xFgaNhOsiAgwNt1bN7SVgR0HPjqr5BBLK7UbtBLOE=;
+	s=arc-20240116; t=1718803722; c=relaxed/simple;
+	bh=iscAh1QAHxBDp5j8ntvNdlb/nXmWrxm9PeClmDgT27c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N26OpaaMmStvsNsb4ZA1lZzhhYyDG9+xnFeuOTI0Ks/bRMuj4Aqp0MPUYy6nuUins6WY2UxXqGM6vp58rjrP++CanmGTo5U/Kgie2nN7QNy+NmRP7DO0my32lrjSRSFa2ccZ11W5azSm50eF9V8z1MAXUBFv9E2Ma3DVl4mhKUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSD0Ez3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0122EC4AF1A;
-	Wed, 19 Jun 2024 13:06:12 +0000 (UTC)
+	 MIME-Version; b=Br2KJibPjeLwMdW7N2xfFv0LbIsRLPN2unD71DXpkW7XZnhoPz+BOsgiJjC3t1Gr828CRLqIf0N1S+spi7q0Bi7FopKwEMp3gxe2DLJWQwJBPZTOL/E9ji0CSdRwlME0fvlBk9PQyVwldsdzo/5aS2aLX6Pmi99nrrvwFFyhnN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drHByhz2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99CBC2BBFC;
+	Wed, 19 Jun 2024 13:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802373;
-	bh=3+xFgaNhOsiAgwNt1bN7SVgR0HPjqr5BBLK7UbtBLOE=;
+	s=korg; t=1718803722;
+	bh=iscAh1QAHxBDp5j8ntvNdlb/nXmWrxm9PeClmDgT27c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSD0Ez3uieAnZ7aYoX8S3sQF3JMpwx2BYDuyI1myVFwF9OLRtSCAC0AwggXLtJmwq
-	 hr/OOwcu6CVcd00PntWwC0j1+WlC/h2+NJ2AhjglE/Nb0OJhNS5EdsC0FGAG497ZBl
-	 sD+x7CHiBdJE9TcKu0ODAmWDdSXBOzMPUgBHKwY8=
+	b=drHByhz2P0E1eAk6h1RFHhVxUKgkIZ8H76qTTuZ8DX6NVbiPmjs+L0iCK6I5u72pZ
+	 X3NnYIOIpQUmTz6vYzsb/54W0Z7Fu3MygdQ3+k0v5x9pkK7jBmrouotoKF5Z2Vynx9
+	 j3PU9utR4jlF6p/GF7uwEZR2eKg7QGIOnVczuTGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhaolong <wangzhaolong1@huawei.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 174/267] ksmbd: fix missing use of get_write in in smb2_set_ea()
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 082/217] nilfs2: return the mapped address from nilfs_get_page()
 Date: Wed, 19 Jun 2024 14:55:25 +0200
-Message-ID: <20240619125613.020649614@linuxfoundation.org>
+Message-ID: <20240619125559.852413477@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +63,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit 2bfc4214c69c62da13a9da8e3c3db5539da2ccd3 upstream.
+[ Upstream commit 09a46acb3697e50548bb265afa1d79163659dd85 ]
 
-Fix an issue where get_write is not used in smb2_set_ea().
+In prepartion for switching from kmap() to kmap_local(), return the kmap
+address from nilfs_get_page() instead of having the caller look up
+page_address().
 
-Fixes: 6fc0a265e1b9 ("ksmbd: fix potential circular locking issue in smb2_set_ea()")
-Cc: stable@vger.kernel.org
-Reported-by: Wang Zhaolong <wangzhaolong1@huawei.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[konishi.ryusuke: fixed a missing blank line after declaration]
+Link: https://lkml.kernel.org/r/20231127143036.2425-7-konishi.ryusuke@gmail.com
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7373a51e7998 ("nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c   |    7 ++++---
- fs/smb/server/vfs.c       |   17 +++++++++++------
- fs/smb/server/vfs.h       |    3 ++-
- fs/smb/server/vfs_cache.c |    3 ++-
- 4 files changed, 19 insertions(+), 11 deletions(-)
+ fs/nilfs2/dir.c | 57 +++++++++++++++++++++++--------------------------
+ 1 file changed, 27 insertions(+), 30 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2367,7 +2367,8 @@ static int smb2_set_ea(struct smb2_ea_in
- 			if (rc > 0) {
- 				rc = ksmbd_vfs_remove_xattr(idmap,
- 							    path,
--							    attr_name);
-+							    attr_name,
-+							    get_write);
- 
- 				if (rc < 0) {
- 					ksmbd_debug(SMB,
-@@ -2382,7 +2383,7 @@ static int smb2_set_ea(struct smb2_ea_in
- 		} else {
- 			rc = ksmbd_vfs_setxattr(idmap, path, attr_name, value,
- 						le16_to_cpu(eabuf->EaValueLength),
--						0, true);
-+						0, get_write);
- 			if (rc < 0) {
- 				ksmbd_debug(SMB,
- 					    "ksmbd_vfs_setxattr is failed(%d)\n",
-@@ -2474,7 +2475,7 @@ static int smb2_remove_smb_xattrs(const
- 		    !strncmp(&name[XATTR_USER_PREFIX_LEN], STREAM_PREFIX,
- 			     STREAM_PREFIX_LEN)) {
- 			err = ksmbd_vfs_remove_xattr(idmap, path,
--						     name);
-+						     name, true);
- 			if (err)
- 				ksmbd_debug(SMB, "remove xattr failed : %s\n",
- 					    name);
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -1053,16 +1053,21 @@ int ksmbd_vfs_fqar_lseek(struct ksmbd_fi
+diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
+index 760405da852f6..4911f09eb68b0 100644
+--- a/fs/nilfs2/dir.c
++++ b/fs/nilfs2/dir.c
+@@ -186,19 +186,24 @@ static bool nilfs_check_page(struct page *page)
+ 	return false;
  }
  
- int ksmbd_vfs_remove_xattr(struct mnt_idmap *idmap,
--			   const struct path *path, char *attr_name)
-+			   const struct path *path, char *attr_name,
-+			   bool get_write)
+-static struct page *nilfs_get_page(struct inode *dir, unsigned long n)
++static void *nilfs_get_page(struct inode *dir, unsigned long n,
++		struct page **pagep)
  {
- 	int err;
+ 	struct address_space *mapping = dir->i_mapping;
+ 	struct page *page = read_mapping_page(mapping, n, NULL);
++	void *kaddr;
  
--	err = mnt_want_write(path->mnt);
--	if (err)
--		return err;
-+	if (get_write == true) {
-+		err = mnt_want_write(path->mnt);
-+		if (err)
-+			return err;
-+	}
- 
- 	err = vfs_removexattr(idmap, path->dentry, attr_name);
--	mnt_drop_write(path->mnt);
+-	if (!IS_ERR(page)) {
+-		kmap(page);
+-		if (unlikely(!PageChecked(page))) {
+-			if (!nilfs_check_page(page))
+-				goto fail;
+-		}
++	if (IS_ERR(page))
++		return page;
 +
-+	if (get_write == true)
-+		mnt_drop_write(path->mnt);
++	kaddr = kmap(page);
++	if (unlikely(!PageChecked(page))) {
++		if (!nilfs_check_page(page))
++			goto fail;
+ 	}
+-	return page;
++
++	*pagep = page;
++	return kaddr;
  
- 	return err;
- }
-@@ -1375,7 +1380,7 @@ int ksmbd_vfs_remove_sd_xattrs(struct mn
- 		ksmbd_debug(SMB, "%s, len %zd\n", name, strlen(name));
+ fail:
+ 	nilfs_put_page(page);
+@@ -275,14 +280,14 @@ static int nilfs_readdir(struct file *file, struct dir_context *ctx)
+ 	for ( ; n < npages; n++, offset = 0) {
+ 		char *kaddr, *limit;
+ 		struct nilfs_dir_entry *de;
+-		struct page *page = nilfs_get_page(inode, n);
++		struct page *page;
  
- 		if (!strncmp(name, XATTR_NAME_SD, XATTR_NAME_SD_LEN)) {
--			err = ksmbd_vfs_remove_xattr(idmap, path, name);
-+			err = ksmbd_vfs_remove_xattr(idmap, path, name, true);
- 			if (err)
- 				ksmbd_debug(SMB, "remove xattr failed : %s\n", name);
+-		if (IS_ERR(page)) {
++		kaddr = nilfs_get_page(inode, n, &page);
++		if (IS_ERR(kaddr)) {
+ 			nilfs_error(sb, "bad page in #%lu", inode->i_ino);
+ 			ctx->pos += PAGE_SIZE - offset;
+ 			return -EIO;
  		}
---- a/fs/smb/server/vfs.h
-+++ b/fs/smb/server/vfs.h
-@@ -114,7 +114,8 @@ int ksmbd_vfs_setxattr(struct mnt_idmap
- int ksmbd_vfs_xattr_stream_name(char *stream_name, char **xattr_stream_name,
- 				size_t *xattr_stream_name_size, int s_type);
- int ksmbd_vfs_remove_xattr(struct mnt_idmap *idmap,
--			   const struct path *path, char *attr_name);
-+			   const struct path *path, char *attr_name,
-+			   bool get_write);
- int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
- 			       unsigned int flags, struct path *parent_path,
- 			       struct path *path, bool caseless);
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -254,7 +254,8 @@ static void __ksmbd_inode_close(struct k
- 		ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
- 		err = ksmbd_vfs_remove_xattr(file_mnt_idmap(filp),
- 					     &filp->f_path,
--					     fp->stream.name);
-+					     fp->stream.name,
-+					     true);
- 		if (err)
- 			pr_err("remove xattr failed : %s\n",
- 			       fp->stream.name);
+-		kaddr = page_address(page);
+ 		de = (struct nilfs_dir_entry *)(kaddr + offset);
+ 		limit = kaddr + nilfs_last_byte(inode, n) -
+ 			NILFS_DIR_REC_LEN(1);
+@@ -345,11 +350,9 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
+ 		start = 0;
+ 	n = start;
+ 	do {
+-		char *kaddr;
++		char *kaddr = nilfs_get_page(dir, n, &page);
+ 
+-		page = nilfs_get_page(dir, n);
+-		if (!IS_ERR(page)) {
+-			kaddr = page_address(page);
++		if (!IS_ERR(kaddr)) {
+ 			de = (struct nilfs_dir_entry *)kaddr;
+ 			kaddr += nilfs_last_byte(dir, n) - reclen;
+ 			while ((char *) de <= kaddr) {
+@@ -387,15 +390,11 @@ nilfs_find_entry(struct inode *dir, const struct qstr *qstr,
+ 
+ struct nilfs_dir_entry *nilfs_dotdot(struct inode *dir, struct page **p)
+ {
+-	struct page *page = nilfs_get_page(dir, 0);
+-	struct nilfs_dir_entry *de = NULL;
++	struct nilfs_dir_entry *de = nilfs_get_page(dir, 0, p);
+ 
+-	if (!IS_ERR(page)) {
+-		de = nilfs_next_entry(
+-			(struct nilfs_dir_entry *)page_address(page));
+-		*p = page;
+-	}
+-	return de;
++	if (IS_ERR(de))
++		return NULL;
++	return nilfs_next_entry(de);
+ }
+ 
+ ino_t nilfs_inode_by_name(struct inode *dir, const struct qstr *qstr)
+@@ -459,12 +458,11 @@ int nilfs_add_link(struct dentry *dentry, struct inode *inode)
+ 	for (n = 0; n <= npages; n++) {
+ 		char *dir_end;
+ 
+-		page = nilfs_get_page(dir, n);
+-		err = PTR_ERR(page);
+-		if (IS_ERR(page))
++		kaddr = nilfs_get_page(dir, n, &page);
++		err = PTR_ERR(kaddr);
++		if (IS_ERR(kaddr))
+ 			goto out;
+ 		lock_page(page);
+-		kaddr = page_address(page);
+ 		dir_end = kaddr + nilfs_last_byte(dir, n);
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += PAGE_SIZE - reclen;
+@@ -627,11 +625,10 @@ int nilfs_empty_dir(struct inode *inode)
+ 		char *kaddr;
+ 		struct nilfs_dir_entry *de;
+ 
+-		page = nilfs_get_page(inode, i);
+-		if (IS_ERR(page))
++		kaddr = nilfs_get_page(inode, i, &page);
++		if (IS_ERR(kaddr))
+ 			continue;
+ 
+-		kaddr = page_address(page);
+ 		de = (struct nilfs_dir_entry *)kaddr;
+ 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
+ 
+-- 
+2.43.0
+
 
 
 
