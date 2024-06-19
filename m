@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 609E990ECFA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D4490EBB6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5D20283B10
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03E41B24B7D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10566143C58;
-	Wed, 19 Jun 2024 13:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961F6145B31;
+	Wed, 19 Jun 2024 13:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="th3t7ktz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLfczZpE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44C91422B8;
-	Wed, 19 Jun 2024 13:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537F612FB31;
+	Wed, 19 Jun 2024 13:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802771; cv=none; b=bVSlxGYFfuWhnjVy7nHLj6HjK75pcobI6KhFNkseeg8MQp5QMgl9qRWi7D++zGKz0gDrl2cRxQoQzGMj6uX22RjcrWv4B4uJmoLghMyH5/dDgRqmXxU5pDUb12BuTQLSVJAj2KSqRjS5zy+Vtdvp1u7C1Qrtm6h/Zz+6GcYPWI0=
+	t=1718802004; cv=none; b=mPr+azaHqR9QnQvR8NyVLsUqYpku1nAEX1PHReB8IFlc03De8Q9wxSW8lDnF79Ht2KOed+uq1rLWXZ1qSQH6CsRYswVhQzJsePRChf1u+dDA4sXaG6NBiP//PpWxjI3+WhLx7yiHAytyGTlUroY7NFwvrnIzAGRcSJMYqlyg1pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802771; c=relaxed/simple;
-	bh=l0JJpMfXGJOtBsP74DtHUxGGr/1p6ULVmkRHhyjNpso=;
+	s=arc-20240116; t=1718802004; c=relaxed/simple;
+	bh=Fr06uckbajw09kY8vpzLo8XrtGdy7cAYFUziEfKL3W4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m9kePGDs4WeeeLEtjKfWNVPHTpUXlS1xl5fWua0R9Fqb2hXTQExd0hvoazCq+mpKWxEhp4SQpM6mNvD5c3nYkm6QmtmDUS3+dblouPOvC24QXAuRgSGHJlwZled1hh0uI+om65oxD9tMqyQLvdYwoPh6XBmb9a25EINPzAwTEtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=th3t7ktz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A39EC2BBFC;
-	Wed, 19 Jun 2024 13:12:51 +0000 (UTC)
+	 MIME-Version; b=Dj7OihB8rhIaJtO4cvW9ymnBCcHkEHcDjMJtdBISMlxNWBexhbvXNeE8mruSlj7GdGDuh7viwMaY+y3MHzgFAl4vOnL6J3YNgFCVpZ8AvxkSYD1Ow6VZrgDc07Gcxv2wf3xVSTdM/U9TkiZDabOVrdMonHUme7WF9hUQIlEkSZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLfczZpE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE64FC2BBFC;
+	Wed, 19 Jun 2024 13:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802771;
-	bh=l0JJpMfXGJOtBsP74DtHUxGGr/1p6ULVmkRHhyjNpso=;
+	s=korg; t=1718802004;
+	bh=Fr06uckbajw09kY8vpzLo8XrtGdy7cAYFUziEfKL3W4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=th3t7ktzN4P36npPQbCEZ9myuqXkrkW5II7gDS1W5n1zVK9f/o1jZ7LeusA/zR4c3
-	 R6m5Iyk3W9uFzCt7I+s4jOofPtKJyWPsEvTQaRsZx3gNsplyV1agvF0ikYYutQRTX6
-	 CFvYlJccd0bX2R2qhrsO7NO4+OnfsM3rVjN7XfjA=
+	b=DLfczZpEPszlcNwj9WOP1NCvQuP8ICQtR5UM2Wij+ZuuVhglvlxs8xEvfgUgsfZNl
+	 1QLmfFdnMrbsGMJmyxfFf/Gwycka67ukDSyMrIojtcGvsVuns+yxVIS7TPFKibnppE
+	 3DXoCECcUlptCNlnFt5B5MF+Gu9VQoa/Ey7d43/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Peter Delevoryas <peter@pjd.dev>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 010/281] wifi: cfg80211: pmsr: use correct nla_get_uX functions
+Subject: [PATCH 6.6 018/267] net/ncsi: Simplify Kconfig/dts control flow
 Date: Wed, 19 Jun 2024 14:52:49 +0200
-Message-ID: <20240619125610.243026191@linuxfoundation.org>
+Message-ID: <20240619125607.056283825@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Peter Delevoryas <peter@pjd.dev>
 
-[ Upstream commit ab904521f4de52fef4f179d2dfc1877645ef5f5c ]
+[ Upstream commit c797ce168930ce3d62a9b7fc4d7040963ee6a01e ]
 
-The commit 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM
-initiator API") defines four attributes NL80211_PMSR_FTM_REQ_ATTR_
-{NUM_BURSTS_EXP}/{BURST_PERIOD}/{BURST_DURATION}/{FTMS_PER_BURST} in
-following ways.
+Background:
 
-static const struct nla_policy
-nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
-    ...
-    [NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP] =
-        NLA_POLICY_MAX(NLA_U8, 15),
-    [NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD] = { .type = NLA_U16 },
-    [NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION] =
-        NLA_POLICY_MAX(NLA_U8, 15),
-    [NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST] =
-        NLA_POLICY_MAX(NLA_U8, 31),
-    ...
-};
+1. CONFIG_NCSI_OEM_CMD_KEEP_PHY
 
-That is, those attributes are expected to be NLA_U8 and NLA_U16 types.
-However, the consumers of these attributes in `pmsr_parse_ftm` blindly
-all use `nla_get_u32`, which is incorrect and causes functionality issues
-on little-endian platforms. Hence, fix them with the correct `nla_get_u8`
-and `nla_get_u16` functions.
+If this is enabled, we send an extra OEM Intel command in the probe
+sequence immediately after discovering a channel (e.g. after "Clear
+Initial State").
 
-Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Link: https://msgid.link/20240521075059.47999-1-linma@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+2. CONFIG_NCSI_OEM_CMD_GET_MAC
+
+If this is enabled, we send one of 3 OEM "Get MAC Address" commands from
+Broadcom, Mellanox (Nvidida), and Intel in the *configuration* sequence
+for a channel.
+
+3. mellanox,multi-host (or mlx,multi-host)
+
+Introduced by this patch:
+
+https://lore.kernel.org/all/20200108234341.2590674-1-vijaykhemka@fb.com/
+
+Which was actually originally from cosmo.chou@quantatw.com:
+
+https://github.com/facebook/openbmc-linux/commit/9f132a10ec48db84613519258cd8a317fb9c8f1b
+
+Cosmo claimed that the Nvidia ConnectX-4 and ConnectX-6 NIC's don't
+respond to Get Version ID, et. al in the probe sequence unless you send
+the Set MC Affinity command first.
+
+Problem Statement:
+
+We've been using a combination of #ifdef code blocks and IS_ENABLED()
+conditions to conditionally send these OEM commands.
+
+It makes adding any new code around these commands hard to understand.
+
+Solution:
+
+In this patch, I just want to remove the conditionally compiled blocks
+of code, and always use IS_ENABLED(...) to do dynamic control flow.
+
+I don't think the small amount of code this adds to non-users of the OEM
+Kconfigs is a big deal.
+
+Signed-off-by: Peter Delevoryas <peter@pjd.dev>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e85e271dec02 ("net/ncsi: Fix the multi thread manner of NCSI driver")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/pmsr.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ncsi/ncsi-manage.c | 20 +++-----------------
+ 1 file changed, 3 insertions(+), 17 deletions(-)
 
-diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index e106dcea39778..c569c37da3175 100644
---- a/net/wireless/pmsr.c
-+++ b/net/wireless/pmsr.c
-@@ -56,7 +56,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 	out->ftm.burst_period = 0;
- 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD])
- 		out->ftm.burst_period =
--			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
-+			nla_get_u16(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index d9da942ad53dd..f3d7fe86fea13 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -689,8 +689,6 @@ static int set_one_vid(struct ncsi_dev_priv *ndp, struct ncsi_channel *nc,
+ 	return 0;
+ }
  
- 	out->ftm.asap = !!tb[NL80211_PMSR_FTM_REQ_ATTR_ASAP];
- 	if (out->ftm.asap && !capa->ftm.asap) {
-@@ -75,7 +75,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 	out->ftm.num_bursts_exp = 0;
- 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP])
- 		out->ftm.num_bursts_exp =
--			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
-+			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
+-#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY)
+-
+ static int ncsi_oem_keep_phy_intel(struct ncsi_cmd_arg *nca)
+ {
+ 	unsigned char data[NCSI_OEM_INTEL_CMD_KEEP_PHY_LEN];
+@@ -716,10 +714,6 @@ static int ncsi_oem_keep_phy_intel(struct ncsi_cmd_arg *nca)
+ 	return ret;
+ }
  
- 	if (capa->ftm.max_bursts_exponent >= 0 &&
- 	    out->ftm.num_bursts_exp > capa->ftm.max_bursts_exponent) {
-@@ -88,7 +88,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 	out->ftm.burst_duration = 15;
- 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION])
- 		out->ftm.burst_duration =
--			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
-+			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
+-#endif
+-
+-#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_GET_MAC)
+-
+ /* NCSI OEM Command APIs */
+ static int ncsi_oem_gma_handler_bcm(struct ncsi_cmd_arg *nca)
+ {
+@@ -856,8 +850,6 @@ static int ncsi_gma_handler(struct ncsi_cmd_arg *nca, unsigned int mf_id)
+ 	return nch->handler(nca);
+ }
  
- 	out->ftm.ftms_per_burst = 0;
- 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST])
-@@ -107,7 +107,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 	out->ftm.ftmr_retries = 3;
- 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES])
- 		out->ftm.ftmr_retries =
--			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
-+			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
+-#endif /* CONFIG_NCSI_OEM_CMD_GET_MAC */
+-
+ /* Determine if a given channel from the channel_queue should be used for Tx */
+ static bool ncsi_channel_is_tx(struct ncsi_dev_priv *ndp,
+ 			       struct ncsi_channel *nc)
+@@ -1039,20 +1031,18 @@ static void ncsi_configure_channel(struct ncsi_dev_priv *ndp)
+ 			goto error;
+ 		}
  
- 	out->ftm.request_lci = !!tb[NL80211_PMSR_FTM_REQ_ATTR_REQUEST_LCI];
- 	if (out->ftm.request_lci && !capa->ftm.request_lci) {
+-		nd->state = ncsi_dev_state_config_oem_gma;
++		nd->state = IS_ENABLED(CONFIG_NCSI_OEM_CMD_GET_MAC)
++			  ? ncsi_dev_state_config_oem_gma
++			  : ncsi_dev_state_config_clear_vids;
+ 		break;
+ 	case ncsi_dev_state_config_oem_gma:
+ 		nd->state = ncsi_dev_state_config_clear_vids;
+-		ret = -1;
+ 
+-#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_GET_MAC)
+ 		nca.type = NCSI_PKT_CMD_OEM;
+ 		nca.package = np->id;
+ 		nca.channel = nc->id;
+ 		ndp->pending_req_num = 1;
+ 		ret = ncsi_gma_handler(&nca, nc->version.mf_id);
+-#endif /* CONFIG_NCSI_OEM_CMD_GET_MAC */
+-
+ 		if (ret < 0)
+ 			schedule_work(&ndp->work);
+ 
+@@ -1404,7 +1394,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
+ 
+ 		schedule_work(&ndp->work);
+ 		break;
+-#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_GET_MAC)
+ 	case ncsi_dev_state_probe_mlx_gma:
+ 		ndp->pending_req_num = 1;
+ 
+@@ -1429,7 +1418,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
+ 
+ 		nd->state = ncsi_dev_state_probe_cis;
+ 		break;
+-#endif /* CONFIG_NCSI_OEM_CMD_GET_MAC */
+ 	case ncsi_dev_state_probe_cis:
+ 		ndp->pending_req_num = NCSI_RESERVED_CHANNEL;
+ 
+@@ -1447,7 +1435,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
+ 		if (IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY))
+ 			nd->state = ncsi_dev_state_probe_keep_phy;
+ 		break;
+-#if IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY)
+ 	case ncsi_dev_state_probe_keep_phy:
+ 		ndp->pending_req_num = 1;
+ 
+@@ -1460,7 +1447,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
+ 
+ 		nd->state = ncsi_dev_state_probe_gvi;
+ 		break;
+-#endif /* CONFIG_NCSI_OEM_CMD_KEEP_PHY */
+ 	case ncsi_dev_state_probe_gvi:
+ 	case ncsi_dev_state_probe_gc:
+ 	case ncsi_dev_state_probe_gls:
 -- 
 2.43.0
 
