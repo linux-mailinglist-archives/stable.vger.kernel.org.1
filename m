@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-53967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D584C90EC16
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 780DF90EE1F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7ACD1C24729
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87ED51C2147F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85076149007;
-	Wed, 19 Jun 2024 13:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE6E147C60;
+	Wed, 19 Jun 2024 13:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fXbgmSvK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xseuCOq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40ACA12FB31;
-	Wed, 19 Jun 2024 13:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8291459F2;
+	Wed, 19 Jun 2024 13:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802202; cv=none; b=qFJedGUmNDFlV0R21wiM5pbvryknNgnjLzCRxTHcKJ3IunXufuyKqoxcdtWIijlpMH0dVREuXk5eXxfm7DJLiR+NQHUbcHtIzwSiEivDHfX5NY9R3q+7DU6gUmXE2I9MftAEJF5EP3QYscCHc8ZfMLTarH5wpxNPdYEsTKI/PfI=
+	t=1718803551; cv=none; b=I7vD+9JliEOU+mdXoGEM+6/j9nJHOgGtMrUAXksfI4145e1q6fAWf224Z8D/LkXvaYVRKtbNtG7fvkAm22Imk8VcmyRgD45nuzfuqxagv8PuhsBWSQco4JUZCcm34WkzjWENEo7cAvCOOSWQFWiTSi0jJCkwUA8eHVxF3MtemIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802202; c=relaxed/simple;
-	bh=yf0vl1x5dNyfp2npKzq0OpDpjDTyP3WsJ65vAdqzRFA=;
+	s=arc-20240116; t=1718803551; c=relaxed/simple;
+	bh=Cl85Pvd7TzNn/L5+co9eAJ6TDtnNiVozvL4yAtG4kPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G9z51KVT2yJHuGswZ1J6p2CaJOQrY8G1TCUhowZZxjKhbjEeUUxzd8jYcF+V8yxYSxO/ofTGVYM8c8tWhSyWElMVXzdNeDzxzWFj8xczk0ukh33yBTily64C58gYosyDKrZbi2bR/Qfblt5P/ldzOJZhhgjkpwe2b/56ZIlg+to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fXbgmSvK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCA7C2BBFC;
-	Wed, 19 Jun 2024 13:03:21 +0000 (UTC)
+	 MIME-Version; b=mWx5Ltdb9Jx70lwkxU0CqOU/T05buqfXb1LJaMT3hrEKDf635Zcm2RPcVh45qpMdkdoJIPh2OTQ8qAzqhVgwopb6FVLgMDO0ZrQNTQZJljNRcxbEcOkBHhcxSoRmRtR4q+HpIof0PeXbExnDZu6X/d6hWNXkgUO0QDsjS9Uhftc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xseuCOq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA23C4AF1A;
+	Wed, 19 Jun 2024 13:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802202;
-	bh=yf0vl1x5dNyfp2npKzq0OpDpjDTyP3WsJ65vAdqzRFA=;
+	s=korg; t=1718803551;
+	bh=Cl85Pvd7TzNn/L5+co9eAJ6TDtnNiVozvL4yAtG4kPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fXbgmSvKKY0vA8e2/d6+E2HE0MlH7jyCRBR9SpAYBY9tOTlUcbSxq3V3X/91kuJPP
-	 c3DRMfQm2kWf6APDzpaY3qHEJ4H+Y35xGW9jdIar2BH6T5KGIQRB5jHRwcEINoRy1y
-	 EGbqlSgNIqybHeDRH3dqGe5vkBpaPRUwQn8sq0Ro=
+	b=xseuCOq0pV3AwWLLJz85TKi2ekH7qQ9Uw/ZAyh5WeLWqr/zPvVWqxjBkbuCYOwPFT
+	 E4G0zCSR8Yt2ueaFMfc1tPC3nyuZ9txLVIyZ0M6Z8U+hKBYMZ4oZrun+ZIADd40D6H
+	 BlvLGpYK9DwLeYyGabYCEn64Pw6lsDWy6O8yRR7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Moshe Shemesh <moshe@mellanox.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/267] cachefiles: flush all requests after setting CACHEFILES_DEAD
+Subject: [PATCH 6.1 023/217] net/mlx5: Stop waiting for PCI up if teardown was triggered
 Date: Wed, 19 Jun 2024 14:54:26 +0200
-Message-ID: <20240619125610.764860715@linuxfoundation.org>
+Message-ID: <20240619125557.542685731@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Moshe Shemesh <moshe@mellanox.com>
 
-[ Upstream commit 85e833cd7243bda7285492b0653c3abb1e2e757b ]
+[ Upstream commit 8ff38e730c3f5ee717f25365ef8aa4739562d567 ]
 
-In ondemand mode, when the daemon is processing an open request, if the
-kernel flags the cache as CACHEFILES_DEAD, the cachefiles_daemon_write()
-will always return -EIO, so the daemon can't pass the copen to the kernel.
-Then the kernel process that is waiting for the copen triggers a hung_task.
+If driver teardown is called while PCI is turned off, there is a race
+between health recovery and teardown. If health recovery already started
+it will wait 60 sec trying to see if PCI gets back and it can recover,
+but actually there is no need to wait anymore once teardown was called.
 
-Since the DEAD state is irreversible, it can only be exited by closing
-/dev/cachefiles. Therefore, after calling cachefiles_io_error() to mark
-the cache as CACHEFILES_DEAD, if in ondemand mode, flush all requests to
-avoid the above hungtask. We may still be able to read some of the cached
-data before closing the fd of /dev/cachefiles.
+Use the MLX5_BREAK_FW_WAIT flag which is set on driver teardown to break
+waiting for PCI up.
 
-Note that this relies on the patch that adds reference counting to the req,
-otherwise it may UAF.
-
-Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240522114308.2402121-12-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Moshe Shemesh <moshe@mellanox.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/r/20230314054234.267365-3-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 33afbfcc105a ("net/mlx5: Stop waiting for PCI if pci channel is offline")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/daemon.c   | 2 +-
- fs/cachefiles/internal.h | 3 +++
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/health.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index 26b487e112596..b9945e4f697be 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -133,7 +133,7 @@ static int cachefiles_daemon_open(struct inode *inode, struct file *file)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+index e42e4ac231c64..e9462de771fd3 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+@@ -325,6 +325,10 @@ int mlx5_health_wait_pci_up(struct mlx5_core_dev *dev)
+ 	while (sensor_pci_not_working(dev)) {
+ 		if (time_after(jiffies, end))
+ 			return -ETIMEDOUT;
++		if (test_bit(MLX5_BREAK_FW_WAIT, &dev->intf_state)) {
++			mlx5_core_warn(dev, "device is being removed, stop waiting for PCI\n");
++			return -ENODEV;
++		}
+ 		msleep(100);
+ 	}
  	return 0;
- }
- 
--static void cachefiles_flush_reqs(struct cachefiles_cache *cache)
-+void cachefiles_flush_reqs(struct cachefiles_cache *cache)
- {
- 	struct xarray *xa = &cache->reqs;
- 	struct cachefiles_req *req;
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 28799c8e2c6f6..3eea52462fc87 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -188,6 +188,7 @@ extern int cachefiles_has_space(struct cachefiles_cache *cache,
-  * daemon.c
-  */
- extern const struct file_operations cachefiles_daemon_fops;
-+extern void cachefiles_flush_reqs(struct cachefiles_cache *cache);
- extern void cachefiles_get_unbind_pincount(struct cachefiles_cache *cache);
- extern void cachefiles_put_unbind_pincount(struct cachefiles_cache *cache);
- 
-@@ -414,6 +415,8 @@ do {							\
- 	pr_err("I/O Error: " FMT"\n", ##__VA_ARGS__);	\
- 	fscache_io_error((___cache)->cache);		\
- 	set_bit(CACHEFILES_DEAD, &(___cache)->flags);	\
-+	if (cachefiles_in_ondemand_mode(___cache))	\
-+		cachefiles_flush_reqs(___cache);	\
- } while (0)
- 
- #define cachefiles_io_error_obj(object, FMT, ...)			\
 -- 
 2.43.0
 
