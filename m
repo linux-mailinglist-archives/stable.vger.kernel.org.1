@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-54553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BCC790EECC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C915590EDCF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01A4F2830A6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92F21C22644
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E284B146016;
-	Wed, 19 Jun 2024 13:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE5214B967;
+	Wed, 19 Jun 2024 13:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZRso4R3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDar1KV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1371459F2;
-	Wed, 19 Jun 2024 13:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE0814A4FC;
+	Wed, 19 Jun 2024 13:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803920; cv=none; b=UEjQbUIwsuap2IxJohy+TDyN9CuQVrcl3orl1wzNmleTBtM+7gT88DXHMzWekYP6h46c6Gr1xoSjsanz7bv/GWMRZK43tdKNYSk4+CqB4kWPvD8iiReWHPYVNqpsN8oxDPkwFWYhF0dcmr0jPjcf12xCa9LXMrU7YkDgYD5zJ2c=
+	t=1718803338; cv=none; b=aCanXdjBaHE5g7I7A+4vemfWLvnhv3bvKgXin62BUC5qhzWUtlqD6K2o1DTQt8AAr8Gikzm8giKESOWgNWBe6FTQPcwF8dfUg4Ews/dzgc1hip5GLYjHPAGlez78HS4mt6vqTPhiQDiEQI1lZKUfxUTSzY9ZjxZLHkRDpiZcMZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803920; c=relaxed/simple;
-	bh=RRSk+Ma5T8cGy3H2EmGTXeRDZ/EqDdHd4zCULACVnSc=;
+	s=arc-20240116; t=1718803338; c=relaxed/simple;
+	bh=7HiSB+sC9K7okOk0LJ3C6cOJfz74Qa1O3p98CU+UhFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FlgTYJRUDxzEcqCaXM8dgUSTj6RnWfGxEAhmzevsSAgYb5nt6BKMayU9jRi3Adl8Yj1Q/5+FFMXqxa6H9lKy3lOO+ysbprUNiDwKpPz0jIzKG6/2NhBa9U+aZaKdLtO294VlNFHUAe8kFpjX9055ZH/IPX+EosPExpV9bd25X1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZRso4R3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DC2C2BBFC;
-	Wed, 19 Jun 2024 13:31:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VTVk1q0wCidTUJzMpfOCNWofj4NcyaITSGYw9q3JP1lYtTe15bkSdFG8Z3VSK2vw4jto4lsS8wijGNOrt2DPY1YRPHAudEkwdCURTNnOmJhDdgg+Bi09zWVIoYRxjbcK6yebFgY5xGr7j5G0HvxW9PhVUk/rUf3ZQGl/oFNzr6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDar1KV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020EEC2BBFC;
+	Wed, 19 Jun 2024 13:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803920;
-	bh=RRSk+Ma5T8cGy3H2EmGTXeRDZ/EqDdHd4zCULACVnSc=;
+	s=korg; t=1718803338;
+	bh=7HiSB+sC9K7okOk0LJ3C6cOJfz74Qa1O3p98CU+UhFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZRso4R3tDtHv46wgd9oc3RF30MxOj1QTC8bf6+JODAfDJ8k/6bv3kVMmv0dti6Vh
-	 nl7UDvQrVlMUVPCfxe251uAeurbwy+duGw2C1aZLwZOVVDFxiqumWWxw8Iq+MKDC+p
-	 RD5dN7G3J97K9ur7YSfqk7+SIe6+FHpO/drtx+zM=
+	b=kDar1KV7aV3zWtp3ETkYyZb5qP7getcr+3dFR+V5t0+hAUQj6OI7bI8W0t3vi2v7D
+	 +KTf6wyYUPpHeOofWvyJ8rTZGM0KTbzo4e0Kj2gktYIY5qeYpwphjZctguxsRumkB0
+	 fMyik3TmH4yAUhoaDo2mijweLCdkszY1BBD4Xc+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/217] net: pse-pd: Use EOPNOTSUPP error code instead of ENOTSUPP
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.9 233/281] dma-buf: handle testing kthreads creation failure
 Date: Wed, 19 Jun 2024 14:56:32 +0200
-Message-ID: <20240619125602.438566530@linuxfoundation.org>
+Message-ID: <20240619125618.928196231@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 144ba8580bcb82b2686c3d1a043299d844b9a682 ]
+commit 6cb05d89fd62a76a9b74bd16211fb0930e89fea8 upstream.
 
-ENOTSUPP is not a SUSV4 error code, prefer EOPNOTSUPP as reported by
-checkpatch script.
+kthread creation may possibly fail inside race_signal_callback(). In
+such a case stop the already started threads, put the already taken
+references to them and return with error code.
 
-Fixes: 18ff0bcda6d1 ("ethtool: add interface to interact with Ethernet Power Equipment")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://lore.kernel.org/r/20240610083426.740660-1-kory.maincent@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 2989f6451084 ("dma-buf: Add selftests for dma-fence")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: T.J. Mercier <tjmercier@google.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240522181308.841686-1-pchelkin@ispras.ru
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pse-pd/pse.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma-buf/st-dma-fence.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
-index fb724c65c77bc..5ce0cd76956e0 100644
---- a/include/linux/pse-pd/pse.h
-+++ b/include/linux/pse-pd/pse.h
-@@ -114,14 +114,14 @@ static inline int pse_ethtool_get_status(struct pse_control *psec,
- 					 struct netlink_ext_ack *extack,
- 					 struct pse_control_status *status)
- {
--	return -ENOTSUPP;
-+	return -EOPNOTSUPP;
- }
+--- a/drivers/dma-buf/st-dma-fence.c
++++ b/drivers/dma-buf/st-dma-fence.c
+@@ -540,6 +540,12 @@ static int race_signal_callback(void *ar
+ 			t[i].before = pass;
+ 			t[i].task = kthread_run(thread_signal_callback, &t[i],
+ 						"dma-fence:%d", i);
++			if (IS_ERR(t[i].task)) {
++				ret = PTR_ERR(t[i].task);
++				while (--i >= 0)
++					kthread_stop_put(t[i].task);
++				return ret;
++			}
+ 			get_task_struct(t[i].task);
+ 		}
  
- static inline int pse_ethtool_set_config(struct pse_control *psec,
- 					 struct netlink_ext_ack *extack,
- 					 const struct pse_control_config *config)
- {
--	return -ENOTSUPP;
-+	return -EOPNOTSUPP;
- }
- 
- #endif
--- 
-2.43.0
-
 
 
 
