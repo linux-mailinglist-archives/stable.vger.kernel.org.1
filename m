@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-53973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2E4D90EC1D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14DF290ED4C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75E961F227B8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5577281082
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7EE147C60;
-	Wed, 19 Jun 2024 13:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C46E144D3E;
+	Wed, 19 Jun 2024 13:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGrI5qfz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROTq7yx3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D489182871;
-	Wed, 19 Jun 2024 13:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE674AD58;
+	Wed, 19 Jun 2024 13:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802219; cv=none; b=DVt5PpXPgGPQ2nVjTkm8AHUzx1OJAzgsJ82Ee29wltjXs9yQeAmMXBwfcxh9+PWueVYQIgnREGFiCn7FjKd34lTJ+CrI7bXAHX2mjLQ1GBHQB6y2kFuc39MRvn9BW8wfiSVLJXEOD4q/l1MpHC912r24R8d5UuByjcdTaYG0XhM=
+	t=1718802986; cv=none; b=scEL2vQ0Nnr9FEf4mx+NaQQyto54yGKvR7k8ZD0Yvd5jtrOqeHOOqhbaPC7TFNVzfJvXkcs+axRYiEsuMpw9/OcjwgrgTm9htYNQnRPTBy/8udQq2dja3jr3WyOgoEKNO6/WIZriMjFNi9mghEN0eHqqW/12/9vzn5TVjqxjTNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802219; c=relaxed/simple;
-	bh=6pvYXQw4+ImEMu1lYgaqi7NnLGU2RwgDS0CESB1WAjw=;
+	s=arc-20240116; t=1718802986; c=relaxed/simple;
+	bh=j2PEMCtIsb1kLLwrQTT98eamhv/g9VLB/CiWMGO7aSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eKbQvDL8gn1RzyoFzKTBX1iKYIJctLmdMwJFUs1O92yXfeZmC2gJc5HWFK03hrVeloG5jNkCcUqYPEP2bJ9tVaHadWPkQfjx7wwkhQyzccgX8aPsX6qn2KEbXJ1G6wbeSEIJlE/zOjljQ6XDKdl8nENT4V/BsokylgcBG8ppwyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGrI5qfz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD73C2BBFC;
-	Wed, 19 Jun 2024 13:03:39 +0000 (UTC)
+	 MIME-Version; b=iM+MpunaXxtcl0ggf/WqBx3qxh2JC+d99WdgWIoO7cSuzm700DeYwhpSBQkuzVyjVRUMzC5PxdIZpxoQutKhloQPXlE9pmyXcGh5b+3W9EKqFUz2t8txlKOe3/nF9EUWc5BfgOfoavz5SVmtcPj6X7v5VCZPtFv2ukZCpdgOBvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROTq7yx3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45243C2BBFC;
+	Wed, 19 Jun 2024 13:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802219;
-	bh=6pvYXQw4+ImEMu1lYgaqi7NnLGU2RwgDS0CESB1WAjw=;
+	s=korg; t=1718802986;
+	bh=j2PEMCtIsb1kLLwrQTT98eamhv/g9VLB/CiWMGO7aSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lGrI5qfzzrfca0H5T/y0Zq1uWR+shxZuiJ99kCXJmTh5XLKUEyhtsrRnzGNAQ8c8x
-	 PKdW8c8W+9nK9puovAg1j5gXekj+KZDbDv2DcBEWss9S6x9D6JAg/8rupFUQ9lGF36
-	 H3zSjoBd7Neitt6zkWISEVtI6EKpmAi2gjkpGPOA=
+	b=ROTq7yx3RF30RWgdU6Hs8pPkrSQPNpZzXbH/sbWb4kppsXPKLBCUYBRWcLY0jnwvB
+	 JUBHq656qgGqGXIOvDjfiU+KyCPEjV227ZPVlQk1tY/hjMOrJ3Rq50kwksGuws78g9
+	 bCwDyRHsO/QPmJyvl7XH6TBIHXCkesZq2PEouKTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	security@kernel.org,
-	Neal Gompa <neal@gompa.dev>,
-	Hector Martin <marcan@marcan.st>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 091/267] xhci: Handle TD clearing for multiple streams case
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>
+Subject: [PATCH 6.9 083/281] kcov, usb: disable interrupts in kcov_remote_start_usb_softirq
 Date: Wed, 19 Jun 2024 14:54:02 +0200
-Message-ID: <20240619125609.843366516@linuxfoundation.org>
+Message-ID: <20240619125613.035421293@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,210 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-commit 5ceac4402f5d975e5a01c806438eb4e554771577 upstream.
+commit f85d39dd7ed89ffdd622bc1de247ffba8d961504 upstream.
 
-When multiple streams are in use, multiple TDs might be in flight when
-an endpoint is stopped. We need to issue a Set TR Dequeue Pointer for
-each, to ensure everything is reset properly and the caches cleared.
-Change the logic so that any N>1 TDs found active for different streams
-are deferred until after the first one is processed, calling
-xhci_invalidate_cancelled_tds() again from xhci_handle_cmd_set_deq() to
-queue another command until we are done with all of them. Also change
-the error/"should never happen" paths to ensure we at least clear any
-affected TDs, even if we can't issue a command to clear the hardware
-cache, and complain loudly with an xhci_warn() if this ever happens.
+After commit 8fea0c8fda30 ("usb: core: hcd: Convert from tasklet to BH
+workqueue"), usb_giveback_urb_bh() runs in the BH workqueue with
+interrupts enabled.
 
-This problem case dates back to commit e9df17eb1408 ("USB: xhci: Correct
-assumptions about number of rings per endpoint.") early on in the XHCI
-driver's life, when stream support was first added.
-It was then identified but not fixed nor made into a warning in commit
-674f8438c121 ("xhci: split handling halted endpoints into two steps"),
-which added a FIXME comment for the problem case (without materially
-changing the behavior as far as I can tell, though the new logic made
-the problem more obvious).
+Thus, the remote coverage collection section in usb_giveback_urb_bh()->
+__usb_hcd_giveback_urb() might be interrupted, and the interrupt handler
+might invoke __usb_hcd_giveback_urb() again.
 
-Then later, in commit 94f339147fc3 ("xhci: Fix failure to give back some
-cached cancelled URBs."), it was acknowledged again.
+This breaks KCOV, as it does not support nested remote coverage collection
+sections within the same context (neither in task nor in softirq).
 
-[Mathias: commit 94f339147fc3 ("xhci: Fix failure to give back some cached
-cancelled URBs.") was a targeted regression fix to the previously mentioned
-patch. Users reported issues with usb stuck after unmounting/disconnecting
-UAS devices. This rolled back the TD clearing of multiple streams to its
-original state.]
+Update kcov_remote_start/stop_usb_softirq() to disable interrupts for the
+duration of the coverage collection section to avoid nested sections in
+the softirq context (in addition to such in the task context, which are
+already handled).
 
-Apparently the commit author was aware of the problem (yet still chose
-to submit it): It was still mentioned as a FIXME, an xhci_dbg() was
-added to log the problem condition, and the remaining issue was mentioned
-in the commit description. The choice of making the log type xhci_dbg()
-for what is, at this point, a completely unhandled and known broken
-condition is puzzling and unfortunate, as it guarantees that no actual
-users would see the log in production, thereby making it nigh
-undebuggable (indeed, even if you turn on DEBUG, the message doesn't
-really hint at there being a problem at all).
-
-It took me *months* of random xHC crashes to finally find a reliable
-repro and be able to do a deep dive debug session, which could all have
-been avoided had this unhandled, broken condition been actually reported
-with a warning, as it should have been as a bug intentionally left in
-unfixed (never mind that it shouldn't have been left in at all).
-
-> Another fix to solve clearing the caches of all stream rings with
-> cancelled TDs is needed, but not as urgent.
-
-3 years after that statement and 14 years after the original bug was
-introduced, I think it's finally time to fix it. And maybe next time
-let's not leave bugs unfixed (that are actually worse than the original
-bug), and let's actually get people to review kernel commits please.
-
-Fixes xHC crashes and IOMMU faults with UAS devices when handling
-errors/faults. Easiest repro is to use `hdparm` to mark an early sector
-(e.g. 1024) on a disk as bad, then `cat /dev/sdX > /dev/null` in a loop.
-At least in the case of JMicron controllers, the read errors end up
-having to cancel two TDs (for two queued requests to different streams)
-and the one that didn't get cleared properly ends up faulting the xHC
-entirely when it tries to access DMA pages that have since been unmapped,
-referred to by the stale TDs. This normally happens quickly (after two
-or three loops). After this fix, I left the `cat` in a loop running
-overnight and experienced no xHC failures, with all read errors
-recovered properly. Repro'd and tested on an Apple M1 Mac Mini
-(dwc3 host).
-
-On systems without an IOMMU, this bug would instead silently corrupt
-freed memory, making this a security bug (even on systems with IOMMUs
-this could silently corrupt memory belonging to other USB devices on the
-same controller, so it's still a security bug). Given that the kernel
-autoprobes partition tables, I'm pretty sure a malicious USB device
-pretending to be a UAS device and reporting an error with the right
-timing could deliberately trigger a UAF and write to freed memory, with
-no user action.
-
-[Mathias: Commit message and code comment edit, original at:]
-https://lore.kernel.org/linux-usb/20240524-xhci-streams-v1-1-6b1f13819bea@marcan.st/
-
-Fixes: e9df17eb1408 ("USB: xhci: Correct assumptions about number of rings per endpoint.")
-Fixes: 94f339147fc3 ("xhci: Fix failure to give back some cached cancelled URBs.")
-Fixes: 674f8438c121 ("xhci: split handling halted endpoints into two steps")
+Reported-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Closes: https://lore.kernel.org/linux-usb/0f4d1964-7397-485b-bc48-11c01e2fcbca@I-love.SAKURA.ne.jp/
+Closes: https://syzkaller.appspot.com/bug?extid=0438378d6f157baae1a2
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 8fea0c8fda30 ("usb: core: hcd: Convert from tasklet to BH workqueue")
 Cc: stable@vger.kernel.org
-Cc: security@kernel.org
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240611120610.3264502-5-mathias.nyman@linux.intel.com
+Acked-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://lore.kernel.org/r/20240527173538.4989-1-andrey.konovalov@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |   54 ++++++++++++++++++++++++++++++++++---------
- drivers/usb/host/xhci.h      |    1 
- 2 files changed, 44 insertions(+), 11 deletions(-)
+ drivers/usb/core/hcd.c |   12 +++++++-----
+ include/linux/kcov.h   |   47 ++++++++++++++++++++++++++++++++++++++---------
+ 2 files changed, 45 insertions(+), 14 deletions(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1027,13 +1027,27 @@ static int xhci_invalidate_cancelled_tds
- 				break;
- 			case TD_DIRTY: /* TD is cached, clear it */
- 			case TD_HALTED:
-+			case TD_CLEARING_CACHE_DEFERRED:
-+				if (cached_td) {
-+					if (cached_td->urb->stream_id != td->urb->stream_id) {
-+						/* Multiple streams case, defer move dq */
-+						xhci_dbg(xhci,
-+							 "Move dq deferred: stream %u URB %p\n",
-+							 td->urb->stream_id, td->urb);
-+						td->cancel_status = TD_CLEARING_CACHE_DEFERRED;
-+						break;
-+					}
-+
-+					/* Should never happen, but clear the TD if it does */
-+					xhci_warn(xhci,
-+						  "Found multiple active URBs %p and %p in stream %u?\n",
-+						  td->urb, cached_td->urb,
-+						  td->urb->stream_id);
-+					td_to_noop(xhci, ring, cached_td, false);
-+					cached_td->cancel_status = TD_CLEARED;
-+				}
-+
- 				td->cancel_status = TD_CLEARING_CACHE;
--				if (cached_td)
--					/* FIXME  stream case, several stopped rings */
--					xhci_dbg(xhci,
--						 "Move dq past stream %u URB %p instead of stream %u URB %p\n",
--						 td->urb->stream_id, td->urb,
--						 cached_td->urb->stream_id, cached_td->urb);
- 				cached_td = td;
- 				break;
- 			}
-@@ -1053,10 +1067,16 @@ static int xhci_invalidate_cancelled_tds
- 	if (err) {
- 		/* Failed to move past cached td, just set cached TDs to no-op */
- 		list_for_each_entry_safe(td, tmp_td, &ep->cancelled_td_list, cancelled_td_list) {
--			if (td->cancel_status != TD_CLEARING_CACHE)
-+			/*
-+			 * Deferred TDs need to have the deq pointer set after the above command
-+			 * completes, so if that failed we just give up on all of them (and
-+			 * complain loudly since this could cause issues due to caching).
-+			 */
-+			if (td->cancel_status != TD_CLEARING_CACHE &&
-+			    td->cancel_status != TD_CLEARING_CACHE_DEFERRED)
- 				continue;
--			xhci_dbg(xhci, "Failed to clear cancelled cached URB %p, mark clear anyway\n",
--				 td->urb);
-+			xhci_warn(xhci, "Failed to clear cancelled cached URB %p, mark clear anyway\n",
-+				  td->urb);
- 			td_to_noop(xhci, ring, td, false);
- 			td->cancel_status = TD_CLEARED;
- 		}
-@@ -1334,6 +1354,7 @@ static void xhci_handle_cmd_set_deq(stru
- 	struct xhci_ep_ctx *ep_ctx;
- 	struct xhci_slot_ctx *slot_ctx;
- 	struct xhci_td *td, *tmp_td;
-+	bool deferred = false;
+--- a/drivers/usb/core/hcd.c
++++ b/drivers/usb/core/hcd.c
+@@ -1623,6 +1623,7 @@ static void __usb_hcd_giveback_urb(struc
+ 	struct usb_hcd *hcd = bus_to_hcd(urb->dev->bus);
+ 	struct usb_anchor *anchor = urb->anchor;
+ 	int status = urb->unlinked;
++	unsigned long flags;
  
- 	ep_index = TRB_TO_EP_INDEX(le32_to_cpu(trb->generic.field[3]));
- 	stream_id = TRB_TO_STREAM_ID(le32_to_cpu(trb->generic.field[2]));
-@@ -1420,6 +1441,8 @@ static void xhci_handle_cmd_set_deq(stru
- 			xhci_dbg(ep->xhci, "%s: Giveback cancelled URB %p TD\n",
- 				 __func__, td->urb);
- 			xhci_td_cleanup(ep->xhci, td, ep_ring, td->status);
-+		} else if (td->cancel_status == TD_CLEARING_CACHE_DEFERRED) {
-+			deferred = true;
- 		} else {
- 			xhci_dbg(ep->xhci, "%s: Keep cancelled URB %p TD as cancel_status is %d\n",
- 				 __func__, td->urb, td->cancel_status);
-@@ -1429,8 +1452,17 @@ cleanup:
- 	ep->ep_state &= ~SET_DEQ_PENDING;
- 	ep->queued_deq_seg = NULL;
- 	ep->queued_deq_ptr = NULL;
--	/* Restart any rings with pending URBs */
--	ring_doorbell_for_active_rings(xhci, slot_id, ep_index);
+ 	urb->hcpriv = NULL;
+ 	if (unlikely((urb->transfer_flags & URB_SHORT_NOT_OK) &&
+@@ -1640,13 +1641,14 @@ static void __usb_hcd_giveback_urb(struc
+ 	/* pass ownership to the completion handler */
+ 	urb->status = status;
+ 	/*
+-	 * This function can be called in task context inside another remote
+-	 * coverage collection section, but kcov doesn't support that kind of
+-	 * recursion yet. Only collect coverage in softirq context for now.
++	 * Only collect coverage in the softirq context and disable interrupts
++	 * to avoid scenarios with nested remote coverage collection sections
++	 * that KCOV does not support.
++	 * See the comment next to kcov_remote_start_usb_softirq() for details.
+ 	 */
+-	kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
++	flags = kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
+ 	urb->complete(urb);
+-	kcov_remote_stop_softirq();
++	kcov_remote_stop_softirq(flags);
+ 
+ 	usb_anchor_resume_wakeups(anchor);
+ 	atomic_dec(&urb->use_count);
+--- a/include/linux/kcov.h
++++ b/include/linux/kcov.h
+@@ -55,21 +55,47 @@ static inline void kcov_remote_start_usb
+ 
+ /*
+  * The softirq flavor of kcov_remote_*() functions is introduced as a temporary
+- * work around for kcov's lack of nested remote coverage sections support in
+- * task context. Adding support for nested sections is tracked in:
+- * https://bugzilla.kernel.org/show_bug.cgi?id=210337
++ * workaround for KCOV's lack of nested remote coverage sections support.
++ *
++ * Adding support is tracked in https://bugzilla.kernel.org/show_bug.cgi?id=210337.
++ *
++ * kcov_remote_start_usb_softirq():
++ *
++ * 1. Only collects coverage when called in the softirq context. This allows
++ *    avoiding nested remote coverage collection sections in the task context.
++ *    For example, USB/IP calls usb_hcd_giveback_urb() in the task context
++ *    within an existing remote coverage collection section. Thus, KCOV should
++ *    not attempt to start collecting coverage within the coverage collection
++ *    section in __usb_hcd_giveback_urb() in this case.
++ *
++ * 2. Disables interrupts for the duration of the coverage collection section.
++ *    This allows avoiding nested remote coverage collection sections in the
++ *    softirq context (a softirq might occur during the execution of a work in
++ *    the BH workqueue, which runs with in_serving_softirq() > 0).
++ *    For example, usb_giveback_urb_bh() runs in the BH workqueue with
++ *    interrupts enabled, so __usb_hcd_giveback_urb() might be interrupted in
++ *    the middle of its remote coverage collection section, and the interrupt
++ *    handler might invoke __usb_hcd_giveback_urb() again.
+  */
+ 
+-static inline void kcov_remote_start_usb_softirq(u64 id)
++static inline unsigned long kcov_remote_start_usb_softirq(u64 id)
+ {
+-	if (in_serving_softirq())
++	unsigned long flags = 0;
 +
-+	if (deferred) {
-+		/* We have more streams to clear */
-+		xhci_dbg(ep->xhci, "%s: Pending TDs to clear, continuing with invalidation\n",
-+			 __func__);
-+		xhci_invalidate_cancelled_tds(ep);
-+	} else {
-+		/* Restart any rings with pending URBs */
-+		xhci_dbg(ep->xhci, "%s: All TDs cleared, ring doorbell\n", __func__);
-+		ring_doorbell_for_active_rings(xhci, slot_id, ep_index);
++	if (in_serving_softirq()) {
++		local_irq_save(flags);
+ 		kcov_remote_start_usb(id);
++	}
++
++	return flags;
+ }
+ 
+-static inline void kcov_remote_stop_softirq(void)
++static inline void kcov_remote_stop_softirq(unsigned long flags)
+ {
+-	if (in_serving_softirq())
++	if (in_serving_softirq()) {
+ 		kcov_remote_stop();
++		local_irq_restore(flags);
 +	}
  }
  
- static void xhci_handle_cmd_reset_ep(struct xhci_hcd *xhci, int slot_id,
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1559,6 +1559,7 @@ enum xhci_cancelled_td_status {
- 	TD_DIRTY = 0,
- 	TD_HALTED,
- 	TD_CLEARING_CACHE,
-+	TD_CLEARING_CACHE_DEFERRED,
- 	TD_CLEARED,
- };
+ #ifdef CONFIG_64BIT
+@@ -103,8 +129,11 @@ static inline u64 kcov_common_handle(voi
+ }
+ static inline void kcov_remote_start_common(u64 id) {}
+ static inline void kcov_remote_start_usb(u64 id) {}
+-static inline void kcov_remote_start_usb_softirq(u64 id) {}
+-static inline void kcov_remote_stop_softirq(void) {}
++static inline unsigned long kcov_remote_start_usb_softirq(u64 id)
++{
++	return 0;
++}
++static inline void kcov_remote_stop_softirq(unsigned long flags) {}
  
+ #endif /* CONFIG_KCOV */
+ #endif /* _LINUX_KCOV_H */
 
 
 
