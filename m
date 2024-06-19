@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-53924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBCF90EBE4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:02:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35D5690ED18
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE819282A8A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:02:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DE211C22117
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0A214B95F;
-	Wed, 19 Jun 2024 13:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7819146586;
+	Wed, 19 Jun 2024 13:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIHk3w0U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/PPaI4X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6869314AD35;
-	Wed, 19 Jun 2024 13:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66945145334;
+	Wed, 19 Jun 2024 13:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802075; cv=none; b=Ie9ZgqjnI1TAmymiZpMpZ4cHlmIsl5nOEG3O1xu3FqUNjykQ+qoyyW3dTfCCo6dJbA6VK8ndCfrBJkubIdugrPP/QmruVDZ05rWz/ihkIGwx8JYI2EjVk7xD+35OWUUWs8PR7abeV1GZrL42Nx4lWv2Y2pcWmegdSmTjKqk41Zs=
+	t=1718802845; cv=none; b=O7dC8p7p3Bsiy00VL3WLuk2zOt7Sgyiy1rb8CJZYIxAff1xCInLU7jSf5Br/DTMyec5vZOSygIM3wJ1cRGxsmTZJ1tAYmzxjqW6x01I67stEWplTvvItyZK9iJ/GaH0OsLtxRMHcrJqaqTcIIlKCjkzb9UAe3Rmo0C+maH0+z8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802075; c=relaxed/simple;
-	bh=gMID78jSTKl0Td8uTmdR4bSIXfKYo+vbLKYi/O+BY0A=;
+	s=arc-20240116; t=1718802845; c=relaxed/simple;
+	bh=I/awBOsqi8yv+BDpqfGRPuWjsskbAoRs6ccN/2iRZNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P8zoYj9RmgWWewm98dnPp8Za1BYgs7kCZRqe1ZrmRxrGH4UWASvkvO+hYyCkqc/+a1c4l8kcFFiyMrgDGJWTqwQvztXJyvAlvbbaJ7IYA4ASfpGyJy+Rmb4tG2J901z3z/Afco6Ks17wD2FV2dPNec5qnjozZOMqvaZ7+rks4R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIHk3w0U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D3BDC4AF1A;
-	Wed, 19 Jun 2024 13:01:14 +0000 (UTC)
+	 MIME-Version; b=SWPw4lBBfzewZbZpVVJNNknlWghjCEQBRUhScO6uZhIWxnwpe3k8k/YVCgxZGTGcPyJBA53kKOFPmW/iUCiGgDOto4kHef3RAqAwz3Sz0Y7t3iNstQ9psfyqpiDgffV72TAxH2yAnHR7Ke2y3wR7b+aiAbpXoPvBpoGEkvA9ECo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/PPaI4X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0399C2BBFC;
+	Wed, 19 Jun 2024 13:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802075;
-	bh=gMID78jSTKl0Td8uTmdR4bSIXfKYo+vbLKYi/O+BY0A=;
+	s=korg; t=1718802845;
+	bh=I/awBOsqi8yv+BDpqfGRPuWjsskbAoRs6ccN/2iRZNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIHk3w0U9BOLToqeoEsWBztbpY+DaROQs8v6nOa5pybBOx6dXPT+YHuR6JYb0qlI8
-	 yxu8n4lqHq6iWOXiQchZvlekLkXEYvweR+ZeqpDLUUKlx+Jekt0zK9/1bVaLKTNGM3
-	 y7DD5hIw3RP7Pi9ajEI8kFiZC6Che/YcoefPp13U=
+	b=I/PPaI4XwkQ8dKEwEtFQOR0psuU8QGrxdjr42inOOEbD57GYdwWmgNN8pSJN9xym5
+	 Pe+Ia/8SYrXcDckhzJ477DfjfMtltUYIfcB3F9OBi93BoPkVIZMmTjMSLLiAJXQBpz
+	 USQPYE6Y79e+lBHiV2xvzh54LtbaPFzgxgZmA4Bk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Anup Patel <anup@brainfault.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/267] irqchip/riscv-intc: Prevent memory leak when riscv_intc_init_common() fails
-Date: Wed, 19 Jun 2024 14:53:44 +0200
-Message-ID: <20240619125609.158016261@linuxfoundation.org>
+Subject: [PATCH 6.9 066/281] af_unix: Annotate data-race of net->unx.sysctl_max_dgram_qlen.
+Date: Wed, 19 Jun 2024 14:53:45 +0200
+Message-ID: <20240619125612.384812508@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sunil V L <sunilvl@ventanamicro.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 0110c4b110477bb1f19b0d02361846be7ab08300 ]
+[ Upstream commit bd9f2d05731f6a112d0c7391a0d537bfc588dbe6 ]
 
-When riscv_intc_init_common() fails, the firmware node allocated is not
-freed. Add the missing free().
+net->unx.sysctl_max_dgram_qlen is exposed as a sysctl knob and can be
+changed concurrently.
 
-Fixes: 7023b9d83f03 ("irqchip/riscv-intc: Add ACPI support")
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240527081113.616189-1-sunilvl@ventanamicro.com
+Let's use READ_ONCE() in unix_create1().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-intc.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
-index 0cd6b48a5dbf9..627beae9649a2 100644
---- a/drivers/irqchip/irq-riscv-intc.c
-+++ b/drivers/irqchip/irq-riscv-intc.c
-@@ -232,8 +232,9 @@ IRQCHIP_DECLARE(andes, "andestech,cpu-intc", riscv_intc_init);
- static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
- 				       const unsigned long end)
- {
--	struct fwnode_handle *fn;
- 	struct acpi_madt_rintc *rintc;
-+	struct fwnode_handle *fn;
-+	int rc;
- 
- 	rintc = (struct acpi_madt_rintc *)header;
- 
-@@ -252,7 +253,11 @@ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
- 		return -ENOMEM;
- 	}
- 
--	return riscv_intc_init_common(fn, &riscv_intc_chip);
-+	rc = riscv_intc_init_common(fn, &riscv_intc_chip);
-+	if (rc)
-+		irq_domain_free_fwnode(fn);
-+
-+	return rc;
- }
- 
- IRQCHIP_ACPI_DECLARE(riscv_intc, ACPI_MADT_TYPE_RINTC, NULL,
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 84bc1de2fd967..0c217ac17e053 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -976,7 +976,7 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern,
+ 	sk->sk_hash		= unix_unbound_hash(sk);
+ 	sk->sk_allocation	= GFP_KERNEL_ACCOUNT;
+ 	sk->sk_write_space	= unix_write_space;
+-	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
++	sk->sk_max_ack_backlog	= READ_ONCE(net->unx.sysctl_max_dgram_qlen);
+ 	sk->sk_destruct		= unix_sock_destructor;
+ 	u = unix_sk(sk);
+ 	u->inflight = 0;
 -- 
 2.43.0
 
