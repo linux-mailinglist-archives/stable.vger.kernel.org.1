@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648B190EDDC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 895F590EEB4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:31:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01353B22227
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 340C71F2141D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608DF14A4FC;
-	Wed, 19 Jun 2024 13:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B682213F428;
+	Wed, 19 Jun 2024 13:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P7YCCDMc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzObCKh6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6F5147C60;
-	Wed, 19 Jun 2024 13:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A8B1E492;
+	Wed, 19 Jun 2024 13:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803374; cv=none; b=DeC1mqa7iyORZ8xqmg5mB/8L58MkpU/J4yQGIxoS2ZpLaMCjScGOUIvPnoPRemyVFTSxteQ5Tqh4OwafY26/ZYh1c8/jFdcKkNnDSMdm9kjBfsMhd0Vk2Gu264d/FEdlh/WPGUZh6MPaMIpmzGHEaspY1/jyBsuZyZ9Mv3JtFPc=
+	t=1718803872; cv=none; b=DQltRRwPw//EamzWh0aQlmtuJpVw0a0gHMGbgLzxnrOGXpXpNSoSEPOtTPRSS9mjn2mW9GnSaiEaRy+v5N37n91n3yY04wZWtu/8hPbWqOLbV5LBdt0OY7x5WuB3BqelfktCzmUVNtOJocyuEqqdbB7Pq5ay7cVunY5hTsrScVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803374; c=relaxed/simple;
-	bh=+9FJdkTBZJQ5V8hmH/7mnLpHseeJEuV7msrjej0QaJ8=;
+	s=arc-20240116; t=1718803872; c=relaxed/simple;
+	bh=/Ecka8V3B8LjAamGzmXqlxlDgeJWPSYrprd7Kc8fajc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlIqSCWlIWEB5ovsi195fEMlGx8dOD4pho1LkGrVwzdE6OZm+WI3SzRZJA8fnf8WibbCWp8jQWvzxmxJww4Ssoen9+WDTaz1irqdcJK8vMFjiin08u54gQDzLCqgFX2iQuCF7QLbssHzvpAjpLSyfgEeKUAoqaRlz1S5CXe5xPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P7YCCDMc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9666CC2BBFC;
-	Wed, 19 Jun 2024 13:22:53 +0000 (UTC)
+	 MIME-Version; b=bxYxvkKX0WqbxFAYPn2tFIiqr2uY8z9XqtjShD1aSrsFgsZ/062th1jiheA465dfKGlrHxDFiw5tXH6VFWGGMyvYoAtpDOsRDs1+XWmB2zDe1r9Q1xHDzbN1h5y7CA7YhLewcGVHO4PZBlJ9olFiY3m+CihtJB1IJnZDmGWT9Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzObCKh6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBCFC2BBFC;
+	Wed, 19 Jun 2024 13:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803374;
-	bh=+9FJdkTBZJQ5V8hmH/7mnLpHseeJEuV7msrjej0QaJ8=;
+	s=korg; t=1718803872;
+	bh=/Ecka8V3B8LjAamGzmXqlxlDgeJWPSYrprd7Kc8fajc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P7YCCDMcbSUi2hvU9Ud4V9wWj9/IirgP9PnGGWs0wR9+EPKOuDGXKdyaiAwoivQ7U
-	 P9ZnJRaAjmSI19mEqQnnSb/+MvkOyOZyT0ZSVp4UAVi1NHlFAzf2+ZtILWR56IVOhi
-	 dkf7OS1blzwLbFHgSb3z4sz4F7xxzTW0COgZ4P7Y=
+	b=DzObCKh6+STpj8WV77qKvTSo5Pa/how3OzrE7wkwScF4sYUoQ6b/G8hsjZiz8JfvU
+	 udNhqJdFKFCBw42YxKsg3SWxCEUXC7WdAynxk4F5tPRTywNpnmwCiynusQqv1Gtf+b
+	 NV6MNJvHH6qXAYeLDZ4wOYTLD2O2EtGT/gzPBahA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Hagar Hemdan <hagarhem@amazon.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.9 214/281] irqchip/gic-v3-its: Fix potential race condition in its_vlpi_prop_update()
-Date: Wed, 19 Jun 2024 14:56:13 +0200
-Message-ID: <20240619125618.195519765@linuxfoundation.org>
+	"Kun(llfl)" <llfl@linux.alibaba.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 131/217] iommu/amd: Fix sysfs leak in iommu init
+Date: Wed, 19 Jun 2024 14:56:14 +0200
+Message-ID: <20240619125601.744485372@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,146 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hagar Hemdan <hagarhem@amazon.com>
+From: Kun(llfl) <llfl@linux.alibaba.com>
 
-commit b97e8a2f7130a4b30d1502003095833d16c028b3 upstream.
+[ Upstream commit a295ec52c8624883885396fde7b4df1a179627c3 ]
 
-its_vlpi_prop_update() calls lpi_write_config() which obtains the
-mapping information for a VLPI without lock held. So it could race
-with its_vlpi_unmap().
+During the iommu initialization, iommu_init_pci() adds sysfs nodes.
+However, these nodes aren't remove in free_iommu_resources() subsequently.
 
-Since all calls from its_irq_set_vcpu_affinity() require the same
-lock to be held, hoist the locking there instead of sprinkling the
-locking all over the place.
-
-This bug was discovered using Coverity Static Analysis Security Testing
-(SAST) by Synopsys, Inc.
-
-[ tglx: Use guard() instead of goto ]
-
-Fixes: 015ec0386ab6 ("irqchip/gic-v3-its: Add VLPI configuration handling")
-Suggested-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Hagar Hemdan <hagarhem@amazon.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240531162144.28650-1-hagarhem@amazon.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 39ab9555c241 ("iommu: Add sysfs bindings for struct iommu_device")
+Signed-off-by: Kun(llfl) <llfl@linux.alibaba.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/c8e0d11c6ab1ee48299c288009cf9c5dae07b42d.1715215003.git.llfl@linux.alibaba.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |   44 ++++++++++-----------------------------
- 1 file changed, 12 insertions(+), 32 deletions(-)
+ drivers/iommu/amd/init.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -1846,28 +1846,22 @@ static int its_vlpi_map(struct irq_data
- {
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
- 	u32 event = its_get_event_id(d);
--	int ret = 0;
- 
- 	if (!info->map)
- 		return -EINVAL;
- 
--	raw_spin_lock(&its_dev->event_map.vlpi_lock);
--
- 	if (!its_dev->event_map.vm) {
- 		struct its_vlpi_map *maps;
- 
- 		maps = kcalloc(its_dev->event_map.nr_lpis, sizeof(*maps),
- 			       GFP_ATOMIC);
--		if (!maps) {
--			ret = -ENOMEM;
--			goto out;
--		}
-+		if (!maps)
-+			return -ENOMEM;
- 
- 		its_dev->event_map.vm = info->map->vm;
- 		its_dev->event_map.vlpi_maps = maps;
- 	} else if (its_dev->event_map.vm != info->map->vm) {
--		ret = -EINVAL;
--		goto out;
-+		return -EINVAL;
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index cc94ac6662339..c9598c506ff94 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -1655,8 +1655,17 @@ static void __init free_pci_segments(void)
  	}
- 
- 	/* Get our private copy of the mapping information */
-@@ -1899,46 +1893,32 @@ static int its_vlpi_map(struct irq_data
- 		its_dev->event_map.nr_vlpis++;
- 	}
- 
--out:
--	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
--	return ret;
-+	return 0;
  }
  
- static int its_vlpi_get(struct irq_data *d, struct its_cmd_info *info)
- {
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
- 	struct its_vlpi_map *map;
--	int ret = 0;
--
--	raw_spin_lock(&its_dev->event_map.vlpi_lock);
- 
- 	map = get_vlpi_map(d);
- 
--	if (!its_dev->event_map.vm || !map) {
--		ret = -EINVAL;
--		goto out;
--	}
-+	if (!its_dev->event_map.vm || !map)
-+		return -EINVAL;
- 
- 	/* Copy our mapping information to the incoming request */
- 	*info->map = *map;
- 
--out:
--	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
--	return ret;
-+	return 0;
- }
- 
- static int its_vlpi_unmap(struct irq_data *d)
- {
- 	struct its_device *its_dev = irq_data_get_irq_chip_data(d);
- 	u32 event = its_get_event_id(d);
--	int ret = 0;
- 
--	raw_spin_lock(&its_dev->event_map.vlpi_lock);
--
--	if (!its_dev->event_map.vm || !irqd_is_forwarded_to_vcpu(d)) {
--		ret = -EINVAL;
--		goto out;
--	}
-+	if (!its_dev->event_map.vm || !irqd_is_forwarded_to_vcpu(d))
-+		return -EINVAL;
- 
- 	/* Drop the virtual mapping */
- 	its_send_discard(its_dev, event);
-@@ -1962,9 +1942,7 @@ static int its_vlpi_unmap(struct irq_dat
- 		kfree(its_dev->event_map.vlpi_maps);
- 	}
- 
--out:
--	raw_spin_unlock(&its_dev->event_map.vlpi_lock);
--	return ret;
-+	return 0;
- }
- 
- static int its_vlpi_prop_update(struct irq_data *d, struct its_cmd_info *info)
-@@ -1992,6 +1970,8 @@ static int its_irq_set_vcpu_affinity(str
- 	if (!is_v4(its_dev->its))
- 		return -EINVAL;
- 
-+	guard(raw_spinlock_irq)(&its_dev->event_map.vlpi_lock);
++static void __init free_sysfs(struct amd_iommu *iommu)
++{
++	if (iommu->iommu.dev) {
++		iommu_device_unregister(&iommu->iommu);
++		iommu_device_sysfs_remove(&iommu->iommu);
++	}
++}
 +
- 	/* Unmap request? */
- 	if (!info)
- 		return its_vlpi_unmap(d);
+ static void __init free_iommu_one(struct amd_iommu *iommu)
+ {
++	free_sysfs(iommu);
+ 	free_cwwb_sem(iommu);
+ 	free_command_buffer(iommu);
+ 	free_event_buffer(iommu);
+-- 
+2.43.0
+
 
 
 
