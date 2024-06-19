@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-53952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E439E90EC06
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0FC90ED37
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 922041F255CB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E09C1C20F8A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20383146D49;
-	Wed, 19 Jun 2024 13:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8013E143C4E;
+	Wed, 19 Jun 2024 13:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SR3+JiC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yv9b/ZuV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10DD143873;
-	Wed, 19 Jun 2024 13:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F30912FB27;
+	Wed, 19 Jun 2024 13:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802157; cv=none; b=tzMqWD/WSgdGDGMDbXcKsIgBf0QeXLSPvRtKle7Uy7n9GSIqb9OBL7CHEHUMtaVFOZh0Fa1B/Q51Wq5cxvUboB/UcVkBxE1fzujGWTAY5yxXQhOGRf7i15TNQ9+E/O6CyVj1LynH9bkJDuxMg4CTykFMebnhEDFSLRDWZ7sLfm4=
+	t=1718802925; cv=none; b=rX34pkXqH9DjrE8FpWdSKqrXyzDgPksWj3WY3qSeHca3ZhJIfgHzeFXsQKWVCIrTP3tS2v0Co3iVVAwj1I9Hs7KJLQMnUEZENV2l+EhDIPXSsqyRr7Y2h0O7Z6M1kSIaBvntU+qZBdPeWkMxHl2ePIV1/DVD/mpdwJ3vL/5e2CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802157; c=relaxed/simple;
-	bh=qyBDvWki4JdZ0eg9T/YlNw/VkJnOA8prU+4uXPg7Pp8=;
+	s=arc-20240116; t=1718802925; c=relaxed/simple;
+	bh=Xj/73lCK0toh16hmKmG9ObXL2J6QN/L1N5nlHbe7BrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tfsoKCUzN6A7X1nZH1SlEu5v58Yi6iYQ/QhvSKF9g5mQVTRRaazUOE0/E85wohHsPMVxPGLgd+GFMOixU2Z3IZcLSaqUN9kLnGB21QiXjw3SG8w2d7e4lVRwYMc7PaNbXafRWddGYvEOsiztYU/pIFCTn9wbDb+amNktocW23ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SR3+JiC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A2DC4AF1A;
-	Wed, 19 Jun 2024 13:02:37 +0000 (UTC)
+	 MIME-Version; b=dv9LlUeHuiNNwYHnSl7hu21nv9afFWnpIEUI0sQYKfakN/30w0IStST1biaiHc8iYJy5XRedJxfABDFmY56dTIy2/iTb4H7Z8S04RZlGNmw0uCT5TYXprcEFIfwXmohH83Qi4q6kQ5Kzi007fZNjleL3mk6N5llJFDLNAIK4GOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yv9b/ZuV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B87C2BBFC;
+	Wed, 19 Jun 2024 13:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802157;
-	bh=qyBDvWki4JdZ0eg9T/YlNw/VkJnOA8prU+4uXPg7Pp8=;
+	s=korg; t=1718802925;
+	bh=Xj/73lCK0toh16hmKmG9ObXL2J6QN/L1N5nlHbe7BrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SR3+JiC7kkB7VLk7nE8RC2dhY1iu/JZuXahuyxtr3SMt5a2j/ZuwmifOCyPfJcHK5
-	 RKKGJ+V01T1MYDdTPGi0COadC55CPlrZQU5SKCqYK6hw5H9qwB6yJIt0XG7RmYM9Ou
-	 TH5AmLH9ga75Y94xNnphJBGG4Gv9N9U5uJbTUqzY=
+	b=yv9b/ZuVJ/mJiS05SvwFDOGhzKWMHR+33s6+1ldmlaHg3mCzuFPU9UjG5G8AB6IwC
+	 yKDplFIrb6xzFGNtyOIuMtd+PR4go6qgcFcCjydvhT93+4aTcwc8z76ImW6M0Ij8v3
+	 D2cMtHdcbYzgIj/gHlTY2UogUoHc3BjgwaDS0jy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [PATCH 6.6 084/267] mei: me: release irq in mei_me_pci_resume error path
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 076/281] selftests/mm: ksft_exit functions do not return
 Date: Wed, 19 Jun 2024 14:53:55 +0200
-Message-ID: <20240619125609.575591255@linuxfoundation.org>
+Message-ID: <20240619125612.765858086@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Winkler <tomas.winkler@intel.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 283cb234ef95d94c61f59e1cd070cd9499b51292 upstream.
+[ Upstream commit 69e545edbe8b17c26aa06ef7e430d0be7f08d876 ]
 
-The mei_me_pci_resume doesn't release irq on the error path,
-in case mei_start() fails.
+After commit f7d5bcd35d42 ("selftests: kselftest: Mark functions that
+unconditionally call exit() as __noreturn"), ksft_exit_...() functions
+are marked as __noreturn, which means the return type should not be
+'int' but 'void' because they are not returning anything (and never were
+since exit() has always been called).
 
-Cc: <stable@kernel.org>
-Fixes: 33ec08263147 ("mei: revamp mei reset state machine")
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240604090728.1027307-1-tomas.winkler@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To facilitate updating the return type of these functions, remove
+'return' before the calls to ksft_exit_...(), as __noreturn prevents the
+compiler from warning that a caller of the ksft_exit functions does not
+return a value because the program will terminate upon calling these
+functions.
+
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: fb9293b6b015 ("selftests/mm: compaction_test: fix bogus test success and reduce probability of OOM-killer invocation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/pci-me.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/mm/compaction_test.c      | 6 +++---
+ tools/testing/selftests/mm/cow.c                  | 2 +-
+ tools/testing/selftests/mm/gup_longterm.c         | 2 +-
+ tools/testing/selftests/mm/gup_test.c             | 4 ++--
+ tools/testing/selftests/mm/ksm_functional_tests.c | 2 +-
+ tools/testing/selftests/mm/madv_populate.c        | 2 +-
+ tools/testing/selftests/mm/mkdirty.c              | 2 +-
+ tools/testing/selftests/mm/pagemap_ioctl.c        | 4 ++--
+ tools/testing/selftests/mm/soft-dirty.c           | 2 +-
+ 9 files changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -400,8 +400,10 @@ static int mei_me_pci_resume(struct devi
+diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
+index 326a893647bab..5e9bd1da9370c 100644
+--- a/tools/testing/selftests/mm/compaction_test.c
++++ b/tools/testing/selftests/mm/compaction_test.c
+@@ -185,7 +185,7 @@ int main(int argc, char **argv)
+ 	ksft_print_header();
+ 
+ 	if (prereq() || geteuid())
+-		return ksft_exit_skip("Prerequisites unsatisfied\n");
++		ksft_exit_skip("Prerequisites unsatisfied\n");
+ 
+ 	ksft_set_plan(1);
+ 
+@@ -233,7 +233,7 @@ int main(int argc, char **argv)
  	}
  
- 	err = mei_restart(dev);
--	if (err)
-+	if (err) {
-+		free_irq(pdev->irq, dev);
- 		return err;
-+	}
+ 	if (check_compaction(mem_free, hugepage_size) == 0)
+-		return ksft_exit_pass();
++		ksft_exit_pass();
  
- 	/* Start timer if stopped in suspend */
- 	schedule_delayed_work(&dev->timer_work, HZ);
+-	return ksft_exit_fail();
++	ksft_exit_fail();
+ }
+diff --git a/tools/testing/selftests/mm/cow.c b/tools/testing/selftests/mm/cow.c
+index 363bf5f801be5..fe078d6e18064 100644
+--- a/tools/testing/selftests/mm/cow.c
++++ b/tools/testing/selftests/mm/cow.c
+@@ -1779,5 +1779,5 @@ int main(int argc, char **argv)
+ 	if (err)
+ 		ksft_exit_fail_msg("%d out of %d tests failed\n",
+ 				   err, ksft_test_num());
+-	return ksft_exit_pass();
++	ksft_exit_pass();
+ }
+diff --git a/tools/testing/selftests/mm/gup_longterm.c b/tools/testing/selftests/mm/gup_longterm.c
+index ad168d35b23b7..d7eaca5bbe9b1 100644
+--- a/tools/testing/selftests/mm/gup_longterm.c
++++ b/tools/testing/selftests/mm/gup_longterm.c
+@@ -456,5 +456,5 @@ int main(int argc, char **argv)
+ 	if (err)
+ 		ksft_exit_fail_msg("%d out of %d tests failed\n",
+ 				   err, ksft_test_num());
+-	return ksft_exit_pass();
++	ksft_exit_pass();
+ }
+diff --git a/tools/testing/selftests/mm/gup_test.c b/tools/testing/selftests/mm/gup_test.c
+index 7821cf45c323b..bdeaac67ff9aa 100644
+--- a/tools/testing/selftests/mm/gup_test.c
++++ b/tools/testing/selftests/mm/gup_test.c
+@@ -229,7 +229,7 @@ int main(int argc, char **argv)
+ 			break;
+ 		}
+ 		ksft_test_result_skip("Please run this test as root\n");
+-		return ksft_exit_pass();
++		ksft_exit_pass();
+ 	}
+ 
+ 	p = mmap(NULL, size, PROT_READ | PROT_WRITE, flags, filed, 0);
+@@ -268,5 +268,5 @@ int main(int argc, char **argv)
+ 
+ 	free(tid);
+ 
+-	return ksft_exit_pass();
++	ksft_exit_pass();
+ }
+diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
+index d615767e396be..508287560c455 100644
+--- a/tools/testing/selftests/mm/ksm_functional_tests.c
++++ b/tools/testing/selftests/mm/ksm_functional_tests.c
+@@ -646,5 +646,5 @@ int main(int argc, char **argv)
+ 	if (err)
+ 		ksft_exit_fail_msg("%d out of %d tests failed\n",
+ 				   err, ksft_test_num());
+-	return ksft_exit_pass();
++	ksft_exit_pass();
+ }
+diff --git a/tools/testing/selftests/mm/madv_populate.c b/tools/testing/selftests/mm/madv_populate.c
+index 17bcb07f19f34..ef7d911da13e0 100644
+--- a/tools/testing/selftests/mm/madv_populate.c
++++ b/tools/testing/selftests/mm/madv_populate.c
+@@ -307,5 +307,5 @@ int main(int argc, char **argv)
+ 	if (err)
+ 		ksft_exit_fail_msg("%d out of %d tests failed\n",
+ 				   err, ksft_test_num());
+-	return ksft_exit_pass();
++	ksft_exit_pass();
+ }
+diff --git a/tools/testing/selftests/mm/mkdirty.c b/tools/testing/selftests/mm/mkdirty.c
+index 301abb99e027e..b8a7efe9204ea 100644
+--- a/tools/testing/selftests/mm/mkdirty.c
++++ b/tools/testing/selftests/mm/mkdirty.c
+@@ -375,5 +375,5 @@ int main(void)
+ 	if (err)
+ 		ksft_exit_fail_msg("%d out of %d tests failed\n",
+ 				   err, ksft_test_num());
+-	return ksft_exit_pass();
++	ksft_exit_pass();
+ }
+diff --git a/tools/testing/selftests/mm/pagemap_ioctl.c b/tools/testing/selftests/mm/pagemap_ioctl.c
+index d59517ed3d48b..2d785aca72a5c 100644
+--- a/tools/testing/selftests/mm/pagemap_ioctl.c
++++ b/tools/testing/selftests/mm/pagemap_ioctl.c
+@@ -1484,7 +1484,7 @@ int main(int argc, char *argv[])
+ 	ksft_print_header();
+ 
+ 	if (init_uffd())
+-		return ksft_exit_pass();
++		ksft_exit_pass();
+ 
+ 	ksft_set_plan(115);
+ 
+@@ -1660,5 +1660,5 @@ int main(int argc, char *argv[])
+ 	userfaultfd_tests();
+ 
+ 	close(pagemap_fd);
+-	return ksft_exit_pass();
++	ksft_exit_pass();
+ }
+diff --git a/tools/testing/selftests/mm/soft-dirty.c b/tools/testing/selftests/mm/soft-dirty.c
+index 7dbfa53d93a05..d9dbf879748b2 100644
+--- a/tools/testing/selftests/mm/soft-dirty.c
++++ b/tools/testing/selftests/mm/soft-dirty.c
+@@ -209,5 +209,5 @@ int main(int argc, char **argv)
+ 
+ 	close(pagemap_fd);
+ 
+-	return ksft_exit_pass();
++	ksft_exit_pass();
+ }
+-- 
+2.43.0
+
 
 
 
