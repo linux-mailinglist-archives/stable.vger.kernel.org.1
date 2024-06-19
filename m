@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-54098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 818DC90ECAE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B347490EED1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C47F1F21A99
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C8E7B25EF1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CCC147C6E;
-	Wed, 19 Jun 2024 13:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127441422D9;
+	Wed, 19 Jun 2024 13:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r35cp9HX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmJuOkMv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F62F12FB31;
-	Wed, 19 Jun 2024 13:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45E413F428;
+	Wed, 19 Jun 2024 13:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802579; cv=none; b=B002gtFjrhsTYqI26TGdM5ip+xxCfdlgNR1c1UA0uuuQ29OJpXeyF3S0nwpcF7NpkoN+CFxnJ0QN0Dy+We3A1k95ZQfVdcfKpZokdvvd5aMp39H4ZYvvLGhSxWol5uMc1SQ5buGrZ2XVCJqKtQw/lTS2OvLYQ1WPyHDYD0hhgSA=
+	t=1718803935; cv=none; b=ndQyVglC1FCJJ/A2inXsSdftk3Qvkk7gEwqQBpTHIOJziGZGBw93SvhE8ASBhtzkiZ++NdTU+UTRyU1RVJSAzV74ig5lSrQVrcEC40qH62PLmbTWJmgg0ZIzp9Eo64gbGJcQUJKNeyK5SJG/EGoqqW7Wxs4GbH8M88n/OUfUVZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802579; c=relaxed/simple;
-	bh=JduzhcQN04G+Dwz8yqURhrhb5c7oiZazWJklCw+uNI8=;
+	s=arc-20240116; t=1718803935; c=relaxed/simple;
+	bh=uo3MoFD06EnBIuw7DHXkZ9wHw7eGv1AEjxi38Pb0JYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYpFxJ458UC+XdCExtHUlNbRXg/bhBGC5DHX13grjIKHWYQhnztbpd/o6cYFIhrZA+bBXN6CdDsOSWecMNKXzByER1YV77OHesmdgQ438p9mRQBbXimEWReox5DllAcrlsNdnW9MyF6s3OUdi3LD6HFvonLdRhfdNhVRWNUJdY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r35cp9HX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233F1C2BBFC;
-	Wed, 19 Jun 2024 13:09:38 +0000 (UTC)
+	 MIME-Version; b=GSWbG6+e0NzxwWlFslspLed4rXnqA4vr7h+ZddoyQoj/SUYRA6PjPHrkhewgarivaEla3SjPHB5dEfAHazetyeVNorkXaoI6tlw+/VAThLFYiWIYLSKAvBSQbXjtPkIeeWpnM7w5olQCyNENvFGMgasW9DaAmX6gu/1YdZfsCM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmJuOkMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45508C2BBFC;
+	Wed, 19 Jun 2024 13:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802579;
-	bh=JduzhcQN04G+Dwz8yqURhrhb5c7oiZazWJklCw+uNI8=;
+	s=korg; t=1718803935;
+	bh=uo3MoFD06EnBIuw7DHXkZ9wHw7eGv1AEjxi38Pb0JYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r35cp9HXbksJMcYFwatDUWmgrF6eSjTvI3ic8u0cl3xXphe/2aJnAoouSrQPnG+Wc
-	 t87gWdKALpYdNK5cXoEHEA3WFeCjGEtP6ng7JqghdWeKiOlJisgZu+hnWaqUO8xwA6
-	 B/P3C/cYS/wGoanVYBct5ohVdS5JvgbubNFK03e0=
+	b=DmJuOkMvses5mRogx2h/fAp+iUqQZQ8t7c4gW8bzz8vhUm0gUOTXG6UdHbreFY7Wq
+	 hpA9TTcLliIXwvEfcR9Fuj3hW2mAlelJtfCwMGnWbPPBWfsx0ucH6lLEnt32pmeXXj
+	 1O8g+UWFk/sVn0u5lOg0vSGPGOvDQuAsJb8aOBJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Brown <doug@schmorgal.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 244/267] serial: 8250_pxa: Configure tx_loadsz to match FIFO IRQ level
-Date: Wed, 19 Jun 2024 14:56:35 +0200
-Message-ID: <20240619125615.687293537@linuxfoundation.org>
+	Petr Pavlu <petr.pavlu@suse.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 153/217] net/ipv6: Fix the RT cache flush via sysctl using a previous delay
+Date: Wed, 19 Jun 2024 14:56:36 +0200
+Message-ID: <20240619125602.593818076@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Brown <doug@schmorgal.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-commit 5208e7ced520a813b4f4774451fbac4e517e78b2 upstream.
+[ Upstream commit 14a20e5b4ad998793c5f43b0330d9e1388446cf3 ]
 
-The FIFO is 64 bytes, but the FCR is configured to fire the TX interrupt
-when the FIFO is half empty (bit 3 = 0). Thus, we should only write 32
-bytes when a TX interrupt occurs.
+The net.ipv6.route.flush system parameter takes a value which specifies
+a delay used during the flush operation for aging exception routes. The
+written value is however not used in the currently requested flush and
+instead utilized only in the next one.
 
-This fixes a problem observed on the PXA168 that dropped a bunch of TX
-bytes during large transmissions.
+A problem is that ipv6_sysctl_rtcache_flush() first reads the old value
+of net->ipv6.sysctl.flush_delay into a local delay variable and then
+calls proc_dointvec() which actually updates the sysctl based on the
+provided input.
 
-Fixes: ab28f51c77cd ("serial: rewrite pxa2xx-uart to use 8250_core")
-Signed-off-by: Doug Brown <doug@schmorgal.com>
-Link: https://lore.kernel.org/r/20240519191929.122202-1-doug@schmorgal.com
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the problem by switching the order of the two operations.
+
+Fixes: 4990509f19e8 ("[NETNS][IPV6]: Make sysctls route per namespace.")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240607112828.30285-1-petr.pavlu@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_pxa.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/route.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_pxa.c
-+++ b/drivers/tty/serial/8250/8250_pxa.c
-@@ -124,6 +124,7 @@ static int serial_pxa_probe(struct platf
- 	uart.port.regshift = 2;
- 	uart.port.irq = irq;
- 	uart.port.fifosize = 64;
-+	uart.tx_loadsz = 32;
- 	uart.port.flags = UPF_IOREMAP | UPF_SKIP_TEST | UPF_FIXED_TYPE;
- 	uart.port.dev = &pdev->dev;
- 	uart.port.uartclk = clk_get_rate(data->clk);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 627431722f9d6..d305051e8ab5f 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -6335,12 +6335,12 @@ static int ipv6_sysctl_rtcache_flush(struct ctl_table *ctl, int write,
+ 	if (!write)
+ 		return -EINVAL;
+ 
+-	net = (struct net *)ctl->extra1;
+-	delay = net->ipv6.sysctl.flush_delay;
+ 	ret = proc_dointvec(ctl, write, buffer, lenp, ppos);
+ 	if (ret)
+ 		return ret;
+ 
++	net = (struct net *)ctl->extra1;
++	delay = net->ipv6.sysctl.flush_delay;
+ 	fib6_run_gc(delay <= 0 ? 0 : (unsigned long)delay, net, delay > 0);
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
