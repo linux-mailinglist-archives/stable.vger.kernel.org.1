@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-54310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C5B90ED98
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2775190EC6B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D68CB28172E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA47C284003
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B415144D3E;
-	Wed, 19 Jun 2024 13:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B8B14900C;
+	Wed, 19 Jun 2024 13:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzgpHKWi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTfftw7p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4890182495;
-	Wed, 19 Jun 2024 13:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83419148308;
+	Wed, 19 Jun 2024 13:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803202; cv=none; b=S6V/WkRh0AuvdrTUXw6DppDPbGE049BQVON3fyLdlWYAOjKV5nJgEbRLsziiePbKe8dJtdGmApLjjeU4076n+rwMbeIUTUYmjsCA/eJQaaM2YQCcF2mx5Y6GGKGk65HNG9MX1oTWzKv8i7bJxOtAkA42WzKaofDHONDgFwXO59E=
+	t=1718802435; cv=none; b=byGWtpzl9btR4YbwOa8DFg0ngf1KD9KEde0zpCAQN2WL+iHSdR8sj49ao6GgyRP/q/x6LhkF0akq3c/fsm0CTH05rb4kfzyQKvdz+CFxUDGXHrN7nkiLqOLPWCo/apx03m0nK7iaczJtJxkz+jIp9CYWRveDAu/OGHXtSYMPtfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803202; c=relaxed/simple;
-	bh=nBpC3t/X2oKLTANyju7Ix3mCrGVwpf5a5t5LMJaCnCE=;
+	s=arc-20240116; t=1718802435; c=relaxed/simple;
+	bh=p6JjRN67d0MHVXyWNV1THzpU3oh4XU9pjj5d2Y6GOK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z5OIsHQmU+J4+QjIf1MFdaPvC39DSlyxUTdl60CXH2xMlf47r2htAR5urY36gK2oVvB0w3KpoJKdP6LGc7bWp3RDfl0CLkRsw7jf45guJM/9o+sYoxHrOGNMnyRt3zrxHeOjOYyIqyRvAES4Nx//ZIrSRR85PPSxyox2aT1bbHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzgpHKWi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7884C2BBFC;
-	Wed, 19 Jun 2024 13:20:01 +0000 (UTC)
+	 MIME-Version; b=KKGrJov7LFIQXd/9OAuT9GJ1c0xL7H0dptSp7VzeLK6WJrgClIQGKxteZj5MNLmVHdFw0OFDNk1Rbj2vHA/OvEJCGL0gC9HCli+QOfNX+ZnyOXebgBgLHsrL/Lp01ZFvYHXGhZHbDB6ENr548Gd3DHawbUJhnex+cmnr86je32o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTfftw7p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B54C4AF1A;
+	Wed, 19 Jun 2024 13:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803202;
-	bh=nBpC3t/X2oKLTANyju7Ix3mCrGVwpf5a5t5LMJaCnCE=;
+	s=korg; t=1718802435;
+	bh=p6JjRN67d0MHVXyWNV1THzpU3oh4XU9pjj5d2Y6GOK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzgpHKWiqeMnxMYSjWOHXNAKhUtoiS8e/FH+8bVk2OyY53VwVAvmGcCuYToigiFnw
-	 W8R+A1f9UaQksF2WnMTsO0JgIjzHuUaPbg5pLsM0z3d7476EAe0YbqR9gEixSlPvb3
-	 0aZgCwvVls79SHhPSI5Red4KRSOYSmkoUTTMRmOs=
+	b=bTfftw7p+6aINMtOPqhFvWGh0jVxinYVaojJWluouZ0VBXH/uZVo2jvOf3WrpdZdz
+	 B255psRiLCNhhJ2h/RLyn9J5qIGnrWuEjWO4jehVIKXrgtaeLVIEk9tUjXkjqoZ8hO
+	 4iDf2HTEoQwoJPhkNXhc76/XgXi0MzVZko8PA4hI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.9 188/281] ksmbd: move leading slash check to smb2_get_name()
+	Matthias Maennich <maennich@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.6 196/267] kheaders: explicitly define file modes for archived headers
 Date: Wed, 19 Jun 2024 14:55:47 +0200
-Message-ID: <20240619125617.182043524@linuxfoundation.org>
+Message-ID: <20240619125613.857602761@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Matthias Maennich <maennich@google.com>
 
-commit 1cdeca6a7264021e20157de0baf7880ff0ced822 upstream.
+commit 3bd27a847a3a4827a948387cc8f0dbc9fa5931d5 upstream.
 
-If the directory name in the root of the share starts with
-character like 镜(0x955c) or Ṝ(0x1e5c), it (and anything inside)
-cannot be accessed. The leading slash check must be checked after
-converting unicode to nls string.
+Build environments might be running with different umask settings
+resulting in indeterministic file modes for the files contained in
+kheaders.tar.xz. The file itself is served with 444, i.e. world
+readable. Archive the files explicitly with 744,a+X to improve
+reproducibility across build environments.
+
+--mode=0444 is not suitable as directories need to be executable. Also,
+444 makes it hard to delete all the readonly files after extraction.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Matthias Maennich <maennich@google.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |   15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ kernel/gen_kheaders.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -630,6 +630,12 @@ smb2_get_name(const char *src, const int
- 		return name;
- 	}
+--- a/kernel/gen_kheaders.sh
++++ b/kernel/gen_kheaders.sh
+@@ -89,7 +89,7 @@ find $cpio_dir -type f -print0 |
  
-+	if (*name == '\\') {
-+		pr_err("not allow directory name included leading slash\n");
-+		kfree(name);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
- 	ksmbd_conv_path_to_unix(name);
- 	ksmbd_strip_last_slash(name);
- 	return name;
-@@ -2842,20 +2848,11 @@ int smb2_open(struct ksmbd_work *work)
- 	}
+ # Create archive and try to normalize metadata for reproducibility.
+ tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
+-    --owner=0 --group=0 --sort=name --numeric-owner \
++    --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
+     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
  
- 	if (req->NameLength) {
--		if ((req->CreateOptions & FILE_DIRECTORY_FILE_LE) &&
--		    *(char *)req->Buffer == '\\') {
--			pr_err("not allow directory name included leading slash\n");
--			rc = -EINVAL;
--			goto err_out2;
--		}
--
- 		name = smb2_get_name((char *)req + le16_to_cpu(req->NameOffset),
- 				     le16_to_cpu(req->NameLength),
- 				     work->conn->local_nls);
- 		if (IS_ERR(name)) {
- 			rc = PTR_ERR(name);
--			if (rc != -ENOMEM)
--				rc = -ENOENT;
- 			name = NULL;
- 			goto err_out2;
- 		}
+ echo $headers_md5 > kernel/kheaders.md5
 
 
 
