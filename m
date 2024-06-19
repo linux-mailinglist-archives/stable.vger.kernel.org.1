@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-53965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B87A90EC17
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593C390ED44
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D798B255BB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07FFB28106E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13ED145334;
-	Wed, 19 Jun 2024 13:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE5912FB27;
+	Wed, 19 Jun 2024 13:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+WAhCnq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vsefiia4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4731487F1;
-	Wed, 19 Jun 2024 13:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C04DAD58;
+	Wed, 19 Jun 2024 13:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802196; cv=none; b=AAVZAs3KheWfsE95PsouGTFfM7XfcTIy8kfBImcuobZQ9u7Dh1A2a9PGO+VHzjL8Z2vD9aVAz09KCjb14w6V/Lko7YAkquRtJ6HetP2O5XTB7LQURRivJ4zumeLf+VbuIUTkKeuczLkpkCg37EtTfbFICqwNNOF1Wv16H1McTWk=
+	t=1718802963; cv=none; b=ZNK179j3k5xLw+GyfpxUqJxl9i3iZAT/JoOKvzNkwYGZzBH8WyeExuWcfGmnt78MglTeiH94RQNLRUena5Lsz1VPLmZGB+ehWboLaV9yEflGshCTcg1MT6h85M5zK+n/nVO8o9GDo2CJjJq1RMI2cvrbEAUZYth0zrSI8HiZRLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802196; c=relaxed/simple;
-	bh=LmnYjva5XnEY7dIm70pcZWK+0G/0L0udklOPDCyByVI=;
+	s=arc-20240116; t=1718802963; c=relaxed/simple;
+	bh=Egeh1QLE3n4ITCatH8BaFa/kQ5/FKX+yzPO1ymBA0DQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XhJD9ZnNdGNnvfOldDFYGVDGTLqKsOK0J6F/4+EMEMB54s6Oq5PWHpo+Rhx+nMHgWsnLPWqY7ur/QIi2Aefc8t84UUya4t/tLKZcjVyJ4V8/oWwChhhlOsGyokRuH7tqLHgPRtr3+wnCIL5DveqUNn/ochUx4ciz3HVAczEUVOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+WAhCnq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82AEC2BBFC;
-	Wed, 19 Jun 2024 13:03:15 +0000 (UTC)
+	 MIME-Version; b=MCoOVeBmCR+Rhyd1w++IFst/4hm2/dm5kpvI/w56MiOJA3u8UzvhxSAu0JejFUVUICAYrLoUTTNTIPCbQXTWmwvTfzGMO95MZQOpWUlPSkRa8t4UA067KPQ6bEerXiPiQoEF5YK+aKFg/3HEJ/ShbRYUrGPCHquxOhKJ/LwuJR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vsefiia4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7173C2BBFC;
+	Wed, 19 Jun 2024 13:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802196;
-	bh=LmnYjva5XnEY7dIm70pcZWK+0G/0L0udklOPDCyByVI=;
+	s=korg; t=1718802963;
+	bh=Egeh1QLE3n4ITCatH8BaFa/kQ5/FKX+yzPO1ymBA0DQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+WAhCnqY/MrBR5VXEmkov1BIYgR38S+FPuOGU3NFoV22V3/rkLyqrjAjuicFFTSx
-	 YXbbaYSGaKcC/L41Kn9mfgMxSqjFhXJgK6k5IEdJEY7f3SZ3Ml+qxFIjiyuhbVgsnr
-	 +wtjTaWpKYVCIGKZkyMm56IlfIsaFkjJBaLgQclM=
+	b=Vsefiia4vXx57lgqfNwmJEC8Ft3956+RqK7Nq5o4I+swIBWrZLY0CjFuhWOJu1bjx
+	 W0E+ZPlb1se2oMqx9+B5uBCg9D6IV2MLErvFmA5pQbjJs8jmePYehJ2SW8FpdvXNhH
+	 wwYa348muyL5rSa1EhMvHwFZ04k6w8hvxxkam0oE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/267] cachefiles: never get a new anonymous fd if ondemand_id is valid
+	Christian Zigotzky <chzigotzky@xenosoft.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Hari Bathini <hbathini@linux.ibm.com>
+Subject: [PATCH 6.9 105/281] powerpc/85xx: fix compile error without CONFIG_CRASH_DUMP
 Date: Wed, 19 Jun 2024 14:54:24 +0200
-Message-ID: <20240619125610.689028587@linuxfoundation.org>
+Message-ID: <20240619125613.886769824@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,171 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Hari Bathini <hbathini@linux.ibm.com>
 
-[ Upstream commit 4988e35e95fc938bdde0e15880fe72042fc86acf ]
+commit 7b090b6ff51b9a9f002139660672f662b95f0630 upstream.
 
-Now every time the daemon reads an open request, it gets a new anonymous fd
-and ondemand_id. With the introduction of "restore", it is possible to read
-the same open request more than once, and therefore an object can have more
-than one anonymous fd.
+Since commit 5c4233cc0920 ("powerpc/kdump: Split KEXEC_CORE and
+CRASH_DUMP dependency"), crashing_cpu is not available without
+CONFIG_CRASH_DUMP. Fix compile error on 64-BIT 85xx owing to this
+change.
 
-If the anonymous fd is not unique, the following concurrencies will result
-in an fd leak:
-
-     t1     |         t2         |          t3
-------------------------------------------------------------
- cachefiles_ondemand_init_object
-  cachefiles_ondemand_send_req
-   REQ_A = kzalloc(sizeof(*req) + data_len)
-   wait_for_completion(&REQ_A->done)
-            cachefiles_daemon_read
-             cachefiles_ondemand_daemon_read
-              REQ_A = cachefiles_ondemand_select_req
-              cachefiles_ondemand_get_fd
-                load->fd = fd0
-                ondemand_id = object_id0
-                                  ------ restore ------
-                                  cachefiles_ondemand_restore
-                                   // restore REQ_A
-                                  cachefiles_daemon_read
-                                   cachefiles_ondemand_daemon_read
-                                    REQ_A = cachefiles_ondemand_select_req
-                                      cachefiles_ondemand_get_fd
-                                        load->fd = fd1
-                                        ondemand_id = object_id1
-             process_open_req(REQ_A)
-             write(devfd, ("copen %u,%llu", msg->msg_id, size))
-             cachefiles_ondemand_copen
-              xa_erase(&cache->reqs, id)
-              complete(&REQ_A->done)
-   kfree(REQ_A)
-                                  process_open_req(REQ_A)
-                                  // copen fails due to no req
-                                  // daemon close(fd1)
-                                  cachefiles_ondemand_fd_release
-                                   // set object closed
- -- umount --
- cachefiles_withdraw_cookie
-  cachefiles_ondemand_clean_object
-   cachefiles_ondemand_init_close_req
-    if (!cachefiles_ondemand_object_is_open(object))
-      return -ENOENT;
-    // The fd0 is not closed until the daemon exits.
-
-However, the anonymous fd holds the reference count of the object and the
-object holds the reference count of the cookie. So even though the cookie
-has been relinquished, it will not be unhashed and freed until the daemon
-exits.
-
-In fscache_hash_cookie(), when the same cookie is found in the hash list,
-if the cookie is set with the FSCACHE_COOKIE_RELINQUISHED bit, then the new
-cookie waits for the old cookie to be unhashed, while the old cookie is
-waiting for the leaked fd to be closed, if the daemon does not exit in time
-it will trigger a hung task.
-
-To avoid this, allocate a new anonymous fd only if no anonymous fd has
-been allocated (ondemand_id == 0) or if the previously allocated anonymous
-fd has been closed (ondemand_id == -1). Moreover, returns an error if
-ondemand_id is valid, letting the daemon know that the current userland
-restore logic is abnormal and needs to be checked.
-
-Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240522114308.2402121-9-libaokun@huaweicloud.com
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 4b4391e77a6b ("cachefiles: defer exposing anon_fd until after copy_to_user() succeeds")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5c4233cc0920 ("powerpc/kdump: Split KEXEC_CORE and CRASH_DUMP dependency")
+Cc: stable@vger.kernel.org # v6.9+
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Closes: https://lore.kernel.org/all/fa247ae4-5825-4dbe-a737-d93b7ab4d4b9@xenosoft.de/
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240510080757.560159-1-hbathini@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cachefiles/ondemand.c | 34 ++++++++++++++++++++++++++++------
- 1 file changed, 28 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/85xx/smp.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 99b4bffad4a4f..773c3b407a33b 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -14,11 +14,18 @@ static int cachefiles_ondemand_fd_release(struct inode *inode,
- 					  struct file *file)
- {
- 	struct cachefiles_object *object = file->private_data;
--	struct cachefiles_cache *cache = object->volume->cache;
--	struct cachefiles_ondemand_info *info = object->ondemand;
-+	struct cachefiles_cache *cache;
-+	struct cachefiles_ondemand_info *info;
- 	int object_id;
- 	struct cachefiles_req *req;
--	XA_STATE(xas, &cache->reqs, 0);
-+	XA_STATE(xas, NULL, 0);
-+
-+	if (!object)
-+		return 0;
-+
-+	info = object->ondemand;
-+	cache = object->volume->cache;
-+	xas.xa = &cache->reqs;
+--- a/arch/powerpc/platforms/85xx/smp.c
++++ b/arch/powerpc/platforms/85xx/smp.c
+@@ -398,6 +398,7 @@ static void mpc85xx_smp_kexec_cpu_down(i
+ 	hard_irq_disable();
+ 	mpic_teardown_this_cpu(secondary);
  
- 	xa_lock(&cache->reqs);
- 	spin_lock(&info->lock);
-@@ -275,22 +282,39 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
- 		goto err_put_fd;
- 	}
- 
-+	spin_lock(&object->ondemand->lock);
-+	if (object->ondemand->ondemand_id > 0) {
-+		spin_unlock(&object->ondemand->lock);
-+		/* Pair with check in cachefiles_ondemand_fd_release(). */
-+		file->private_data = NULL;
-+		ret = -EEXIST;
-+		goto err_put_file;
++#ifdef CONFIG_CRASH_DUMP
+ 	if (cpu == crashing_cpu && cpu_thread_in_core(cpu) != 0) {
+ 		/*
+ 		 * We enter the crash kernel on whatever cpu crashed,
+@@ -406,9 +407,11 @@ static void mpc85xx_smp_kexec_cpu_down(i
+ 		 */
+ 		disable_threadbit = 1;
+ 		disable_cpu = cpu_first_thread_sibling(cpu);
+-	} else if (sibling != crashing_cpu &&
+-		   cpu_thread_in_core(cpu) == 0 &&
+-		   cpu_thread_in_core(sibling) != 0) {
++	} else if (sibling == crashing_cpu) {
++		return;
 +	}
-+
- 	file->f_mode |= FMODE_PWRITE | FMODE_LSEEK;
- 	fd_install(fd, file);
- 
- 	load = (void *)req->msg.data;
- 	load->fd = fd;
- 	object->ondemand->ondemand_id = object_id;
-+	spin_unlock(&object->ondemand->lock);
- 
- 	cachefiles_get_unbind_pincount(cache);
- 	trace_cachefiles_ondemand_open(object, &req->msg, load);
- 	return 0;
- 
-+err_put_file:
-+	fput(file);
- err_put_fd:
- 	put_unused_fd(fd);
- err_free_id:
- 	xa_erase(&cache->ondemand_ids, object_id);
- err:
-+	spin_lock(&object->ondemand->lock);
-+	/* Avoid marking an opened object as closed. */
-+	if (object->ondemand->ondemand_id <= 0)
-+		cachefiles_ondemand_set_object_close(object);
-+	spin_unlock(&object->ondemand->lock);
- 	cachefiles_put_object(object, cachefiles_obj_put_ondemand_fd);
- 	return ret;
- }
-@@ -373,10 +397,8 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- 
- 	if (msg->opcode == CACHEFILES_OP_OPEN) {
- 		ret = cachefiles_ondemand_get_fd(req);
--		if (ret) {
--			cachefiles_ondemand_set_object_close(req->object);
-+		if (ret)
- 			goto out;
--		}
++#endif
++	if (cpu_thread_in_core(cpu) == 0 && cpu_thread_in_core(sibling) != 0) {
+ 		disable_threadbit = 2;
+ 		disable_cpu = sibling;
  	}
- 
- 	msg->msg_id = xas.xa_index;
--- 
-2.43.0
-
 
 
 
