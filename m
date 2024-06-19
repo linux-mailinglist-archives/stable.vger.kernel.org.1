@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EAD690EDAA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1C9D90EC7B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFA011F21BC1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54D652849EB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C795143C65;
-	Wed, 19 Jun 2024 13:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E700E143C43;
+	Wed, 19 Jun 2024 13:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIVG1IYT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnGpl7sJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4FA82495;
-	Wed, 19 Jun 2024 13:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E80132129;
+	Wed, 19 Jun 2024 13:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803246; cv=none; b=E4zwONA5PTSZ3QSIOBlTjCg4hZCgwqD83i4XecwWAu29xRDwRih2shZ33JVnaPcQ16ravBrdATI9ibRzj0/0aoo7zbWmCinuFD3HQJEiaMRTMeZTKyHzcFCKbEGt1Ttyaw9GnDDExkw4ugxMPHCM2nNSy8vQ9/06arTcUfu5IM4=
+	t=1718802482; cv=none; b=EP+QuLqFBltuCMPXPuNQZDAOtTupVI1kDEgt2NHgmPBTR/b2okByl2ou0vN4oC32gJyuF3AGJkPjQJCWYW4xHOoyLUJkILyF0vTmqNjK/PMtXpPXOsoAhNpBbd3N6scHaEcBVdWb07UEopKINJAnrf5sPjevFKci9zUjZcoY+2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803246; c=relaxed/simple;
-	bh=jGEzDX4LQzfgPncb9NIjy3L5oBkgqeKy5FCqILsgUBQ=;
+	s=arc-20240116; t=1718802482; c=relaxed/simple;
+	bh=yx5BZ6hYtGAfCNJSZDVfo9/+ikARv/wdKjSdID7/HVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSHc1jEzpzM5i1FHVcfAY+WmKhWh7HJZXuO2JrLjc7w4YAg8IcNP2pbDjVkSTgn1PRyhOjugF0o+eN/gkSRdUeRVeR/VLTirE1oAgnrYgFbkS9Ou00a74g8LmbxeP+gNzx44MvmkXjA6+eFRI3phTovEHCibFzWHNJQeW3kIarU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIVG1IYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E64C2BBFC;
-	Wed, 19 Jun 2024 13:20:45 +0000 (UTC)
+	 MIME-Version; b=uQH2iAe20sMrrCE5AIGYA3+ZDqaFWpt3loVsuGjW0JOLmFU9vQ3hzojAR5jzSHctgCMubEko1pC0VuqPmYV0Om9yjhorj6vsMc87v7EdQ8/nAywpInduZE9uhF95Hbx4b7kbPYjSKw5O83sYPTgOu/Re9JPOW2v3dl9i73A/hBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnGpl7sJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB6EC2BBFC;
+	Wed, 19 Jun 2024 13:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803246;
-	bh=jGEzDX4LQzfgPncb9NIjy3L5oBkgqeKy5FCqILsgUBQ=;
+	s=korg; t=1718802482;
+	bh=yx5BZ6hYtGAfCNJSZDVfo9/+ikARv/wdKjSdID7/HVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dIVG1IYTV9TprWUrp21o9a6jXpH5KrdRbQYA++6bvuMBF1++kap7lrDeGfvFXaCD5
-	 eszCoYED9q4DPgSADZkJ2/Qw3nYj9+01DsVUS2t+qmxboLM1V5mCgz0XKi8Tpis433
-	 sAb+O7ZgU3aIi0+vX7hMaDKgtfsjfGmtf9CXaG3w=
+	b=OnGpl7sJWdJ4sdmnLI13s+xWNFCM4Tloi5z8z882iFUy/KRW6Mmk6L3RQj0cg/npw
+	 CTZf7jIDASemcmVWvnQ4l6+lkbSu1ukiq4mkVAuoX4EwbFV5ChqoSI+OE30dZcCdZB
+	 bo91fK01URKqnBk3dyMY9rqRxbx1l8+C7CsUkjQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.9 202/281] RAS/AMD/ATL: Fix MI300 bank hash
-Date: Wed, 19 Jun 2024 14:56:01 +0200
-Message-ID: <20240619125617.725178384@linuxfoundation.org>
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 211/267] iio: invensense: fix interrupt timestamp alignment
+Date: Wed, 19 Jun 2024 14:56:02 +0200
+Message-ID: <20240619125614.425947863@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-commit fe8a08973a0dea9757394c5adbdc3c0a03b0b432 upstream.
+commit 0340dc4c82590d8735c58cf904a8aa1173273ab5 upstream.
 
-Apply the SID bits to the correct offset in the Bank value. Do this in
-the temporary value so they don't need to be masked off later.
+Restrict interrupt timestamp alignment for not overflowing max/min
+period thresholds.
 
-Fixes: 87a612375307 ("RAS/AMD/ATL: Add MI300 DRAM to normalized address translation support")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240607-mi300-dram-xl-fix-v1-1-2f11547a178c@amd.com
+Fixes: 0ecc363ccea7 ("iio: make invensense timestamp module generic")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://lore.kernel.org/r/20240426135814.141837-1-inv.git-commit@tdk.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ras/amd/atl/umc.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/iio/common/inv_sensors/inv_sensors_timestamp.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ras/amd/atl/umc.c b/drivers/ras/amd/atl/umc.c
-index 59b6169093f7..5cb92330dc67 100644
---- a/drivers/ras/amd/atl/umc.c
-+++ b/drivers/ras/amd/atl/umc.c
-@@ -189,16 +189,11 @@ static unsigned long convert_dram_to_norm_addr_mi300(unsigned long addr)
+--- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
++++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
+@@ -105,6 +105,9 @@ static bool inv_update_chip_period(struc
  
- 	/* Calculate hash for PC bit. */
- 	if (addr_hash.pc.xor_enable) {
--		/* Bits SID[1:0] act as Bank[6:5] for PC hash, so apply them here. */
--		bank |= sid << 5;
--
- 		temp  = bitwise_xor_bits(col  & addr_hash.pc.col_xor);
- 		temp ^= bitwise_xor_bits(row  & addr_hash.pc.row_xor);
--		temp ^= bitwise_xor_bits(bank & addr_hash.bank_xor);
-+		/* Bits SID[1:0] act as Bank[5:4] for PC hash, so apply them here. */
-+		temp ^= bitwise_xor_bits((bank | sid << NUM_BANK_BITS) & addr_hash.bank_xor);
- 		pc   ^= temp;
--
--		/* Drop SID bits for the sake of debug printing later. */
--		bank &= 0x1F;
- 	}
+ static void inv_align_timestamp_it(struct inv_sensors_timestamp *ts)
+ {
++	const int64_t period_min = ts->min_period * ts->mult;
++	const int64_t period_max = ts->max_period * ts->mult;
++	int64_t add_max, sub_max;
+ 	int64_t delta, jitter;
+ 	int64_t adjust;
  
- 	/* Reconstruct the normalized address starting with NA[4:0] = 0 */
--- 
-2.45.2
-
+@@ -112,11 +115,13 @@ static void inv_align_timestamp_it(struc
+ 	delta = ts->it.lo - ts->timestamp;
+ 
+ 	/* adjust timestamp while respecting jitter */
++	add_max = period_max - (int64_t)ts->period;
++	sub_max = period_min - (int64_t)ts->period;
+ 	jitter = INV_SENSORS_TIMESTAMP_JITTER((int64_t)ts->period, ts->chip.jitter);
+ 	if (delta > jitter)
+-		adjust = jitter;
++		adjust = add_max;
+ 	else if (delta < -jitter)
+-		adjust = -jitter;
++		adjust = sub_max;
+ 	else
+ 		adjust = 0;
+ 
 
 
 
