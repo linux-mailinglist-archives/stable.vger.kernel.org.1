@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A84E90EC4D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6BB90ED7E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B6A81C22BB2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD0EC1F21671
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10006143C4A;
-	Wed, 19 Jun 2024 13:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21ADF145354;
+	Wed, 19 Jun 2024 13:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HX/+TPgO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ABGepthO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C206F13AA40;
-	Wed, 19 Jun 2024 13:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44C7143C65;
+	Wed, 19 Jun 2024 13:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802355; cv=none; b=Dwy8fRAsnxwy/8SRsBbNtWHjFyE7Jx2wRayrRne9HN7tlNwkpykzX6htEwolfhuCx1rP7+5+sdChEsAf2aqCSU2D3cHMi2tTlm9hZLQuOxWddyBzeiTZh5GxyFUoAuTzB//YeZV/mVwsLFukJlIuZMNnBJagETXAwLo8gsibhAE=
+	t=1718803128; cv=none; b=sMfODgV7XcOTfu23lQsGTZnto7e5kqe/97LZdPnt/fK+Yz0Hk5W4DajDzqqWZt2329DEcuC+xGHbyc4ggiuBYkHybmCpJ36OeaoS66KJI7acXehbQ0iQdQCFkBmIKuK6XRFYEo5Q0mH2TE1JLMreSPs2aWmqfCZeCkFIIqTg8G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802355; c=relaxed/simple;
-	bh=flwYmM16sByYPtKPu2BKhteSPGzvILvUR7xj6zAygGg=;
+	s=arc-20240116; t=1718803128; c=relaxed/simple;
+	bh=DsVzL0ElhbxAVAHv2StyoLftzJ5+iZ6LbniwhXdCCEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pNKrv7EMbuyUdobw1Czq/dho5a9aFQrp6r2Py5md1boX+GJ8Iv5r62BUxsbRpThHJ+XkWe/JCIR3+MUE7oflJZzeTHOhNNVftiR5LT3cuAdTHOUU0cnVXUta+YkfbKvojYWLVOmz6ydXNdxLdkji8J8LVI2FoaknKbDSRIZYzwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HX/+TPgO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43B20C2BBFC;
-	Wed, 19 Jun 2024 13:05:55 +0000 (UTC)
+	 MIME-Version; b=ILFgiCKu0mjaQcM7MyTJHMD/OwfH2fqe4vA/HvGeo2Y0BGKbRgE6dksWv3+iOC3ObsDlaPN4upbzFpi8xt3F+61HNS4FJGU05BmLQRD4XgP10vif9RW6bx6Qf/Mp3q6JmXFI979tXM9gNB2T7QHt1sAW+FUoMWgTKtMie3shmaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ABGepthO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588E7C2BBFC;
+	Wed, 19 Jun 2024 13:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802355;
-	bh=flwYmM16sByYPtKPu2BKhteSPGzvILvUR7xj6zAygGg=;
+	s=korg; t=1718803128;
+	bh=DsVzL0ElhbxAVAHv2StyoLftzJ5+iZ6LbniwhXdCCEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HX/+TPgOuB9X45Z8ainNr+vK59bVxv0BjoXlO/rIaz872TidHdv5NxWlu+aUsqu4l
-	 HWScviPt8uirr5mW1iJ2HS/MUw8UpQnQhIOGCvLHshShuh7+hqoNRFGLUjy5MIS+tx
-	 3ef8Kr/coBkki3uRHf7cxVGrO/Teb1s7vy1zxvJM=
+	b=ABGepthO2Ea3vdd1PYF3vRUbwaBf1aB2Bbe0ePvqvOdBKcVzN/NcllhgJfjGxeAVR
+	 Bg4pvaQSYYA4NdLqw1xONHoMx7SqAoRvR6FEuI91zAk9twm7K3u8tQwUlMyvF0kEEm
+	 DTJ/XP7EzMbO1BeiT18zaZnymqYLVTTb6+QvmbsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/267] ionic: fix use after netif_napi_del()
-Date: Wed, 19 Jun 2024 14:55:20 +0200
-Message-ID: <20240619125612.828845286@linuxfoundation.org>
+Subject: [PATCH 6.9 162/281] net/sched: initialize noop_qdisc owner
+Date: Wed, 19 Jun 2024 14:55:21 +0200
+Message-ID: <20240619125616.072663230@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 79f18a41dd056115d685f3b0a419c7cd40055e13 ]
+[ Upstream commit 44180feaccf266d9b0b28cc4ceaac019817deb5c ]
 
-When queues are started, netif_napi_add() and napi_enable() are called.
-If there are 4 queues and only 3 queues are used for the current
-configuration, only 3 queues' napi should be registered and enabled.
-The ionic_qcq_enable() checks whether the .poll pointer is not NULL for
-enabling only the using queue' napi. Unused queues' napi will not be
-registered by netif_napi_add(), so the .poll pointer indicates NULL.
-But it couldn't distinguish whether the napi was unregistered or not
-because netif_napi_del() doesn't reset the .poll pointer to NULL.
-So, ionic_qcq_enable() calls napi_enable() for the queue, which was
-unregistered by netif_napi_del().
+When the noop_qdisc owner isn't initialized, then it will be 0,
+so packets will erroneously be regarded as having been subject
+to recursion as long as only CPU 0 queues them. For non-SMP,
+that's all packets, of course. This causes a change in what's
+reported to userspace, normally noop_qdisc would drop packets
+silently, but with this change the syscall returns -ENOBUFS if
+RECVERR is also set on the socket.
 
-Reproducer:
-   ethtool -L <interface name> rx 1 tx 1 combined 0
-   ethtool -L <interface name> rx 0 tx 0 combined 1
-   ethtool -L <interface name> rx 0 tx 0 combined 4
+Fix this by initializing the owner field to -1, just like it
+would be for dynamically allocated qdiscs by qdisc_alloc().
 
-Splat looks like:
-kernel BUG at net/core/dev.c:6666!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 3 PID: 1057 Comm: kworker/3:3 Not tainted 6.10.0-rc2+ #16
-Workqueue: events ionic_lif_deferred_work [ionic]
-RIP: 0010:napi_enable+0x3b/0x40
-Code: 48 89 c2 48 83 e2 f6 80 b9 61 09 00 00 00 74 0d 48 83 bf 60 01 00 00 00 74 03 80 ce 01 f0 4f
-RSP: 0018:ffffb6ed83227d48 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff97560cda0828 RCX: 0000000000000029
-RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff97560cda0a28
-RBP: ffffb6ed83227d50 R08: 0000000000000400 R09: 0000000000000001
-R10: 0000000000000001 R11: 0000000000000001 R12: 0000000000000000
-R13: ffff97560ce3c1a0 R14: 0000000000000000 R15: ffff975613ba0a20
-FS:  0000000000000000(0000) GS:ffff975d5f780000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f8f734ee200 CR3: 0000000103e50000 CR4: 00000000007506f0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? die+0x33/0x90
- ? do_trap+0xd9/0x100
- ? napi_enable+0x3b/0x40
- ? do_error_trap+0x83/0xb0
- ? napi_enable+0x3b/0x40
- ? napi_enable+0x3b/0x40
- ? exc_invalid_op+0x4e/0x70
- ? napi_enable+0x3b/0x40
- ? asm_exc_invalid_op+0x16/0x20
- ? napi_enable+0x3b/0x40
- ionic_qcq_enable+0xb7/0x180 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
- ionic_start_queues+0xc4/0x290 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
- ionic_link_status_check+0x11c/0x170 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
- ionic_lif_deferred_work+0x129/0x280 [ionic 59bdfc8a035436e1c4224ff7d10789e3f14643f8]
- process_one_work+0x145/0x360
- worker_thread+0x2bb/0x3d0
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xcc/0x100
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x2d/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
-
-Fixes: 0f3154e6bcb3 ("ionic: Add Tx and Rx handling")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://lore.kernel.org/r/20240612060446.1754392-1-ap420073@gmail.com
+Fixes: 0f022d32c3ec ("net/sched: Fix mirred deadlock on device recursion")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240607175340.786bfb938803.I493bf8422e36be4454c08880a8d3703cea8e421a@changeid
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/sched/sch_generic.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 4f05cddc65cb4..7e6e1bed525af 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -296,10 +296,8 @@ static int ionic_qcq_enable(struct ionic_qcq *qcq)
- 	if (ret)
- 		return ret;
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index 4a2c763e2d116..10b1491d55809 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -673,6 +673,7 @@ struct Qdisc noop_qdisc = {
+ 		.qlen = 0,
+ 		.lock = __SPIN_LOCK_UNLOCKED(noop_qdisc.skb_bad_txq.lock),
+ 	},
++	.owner = -1,
+ };
+ EXPORT_SYMBOL(noop_qdisc);
  
--	if (qcq->napi.poll)
--		napi_enable(&qcq->napi);
--
- 	if (qcq->flags & IONIC_QCQ_F_INTR) {
-+		napi_enable(&qcq->napi);
- 		irq_set_affinity_hint(qcq->intr.vector,
- 				      &qcq->intr.affinity_mask);
- 		ionic_intr_mask(idev->intr_ctrl, qcq->intr.index,
 -- 
 2.43.0
 
