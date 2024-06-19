@@ -1,170 +1,210 @@
-Return-Path: <stable+bounces-53857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697D990EB7D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:55:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F3890ED6B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D205E281E2C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:55:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9769FB232F4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494A8143881;
-	Wed, 19 Jun 2024 12:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE6E145334;
+	Wed, 19 Jun 2024 13:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="ZcEAFWRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OviB8pEq"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.7])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CCCFC1F;
-	Wed, 19 Jun 2024 12:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.7
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA7E82495;
+	Wed, 19 Jun 2024 13:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801712; cv=none; b=NeV0g3BjBkAfaSFsxeFnig/F2ACXd2xMEXEGPRahdNIDj3qCvOuK3WeTeUeyTHBmGw8hVa9BqZDmYyx38aLIPjdhlxYSnIF/VgXceaZkKUhJW1G9DONtYqSURaMJondWLWhIvATtQO+Igu9/gnENZKFue+PCTuclSrAnBBQvoHs=
+	t=1718803072; cv=none; b=sSvkRz7RUzVT4fxGOWuFe3NM3xTMmEDJpNmc9bl3BMQ8gy//XnZN19HYFFxRFcDJrHuXvMxotzyqohz51tKH+xUmHTEkbEZi+ZvOr8sb5xemnBA+hbaQqvZR5LVVmdQR0PNFCZcL9v2r4aJGlZeI7YmKUjE02aCITrV07gBy7OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801712; c=relaxed/simple;
-	bh=yF9033MtIrZltsgP5bIC3MvhEmxrCHKUFIbtWhBiDmw=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=J7phNwzcuC+rPF+XQq6xtrvHCHKsPAKMA6uBvIQMLc/e4RPVbHDU4fguJwTIwABr1PJV6t88J+tridozRKaSVFPg4rjvZjDYZK0W5Ek37EbyiLUoY1hVCDewV7ry2I8cJdLRynC+oAuHAlBIAGyFFw8/N3v6wHl4fFCGplEHpB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=ZcEAFWRk; arc=none smtp.client-ip=220.197.31.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id; bh=BWbJKJrKISUYvlz18r
-	IPuVxukddjG6yGS92jiK8VMdY=; b=ZcEAFWRkIYOXRuPGREZuoEQj+PNYSi0amg
-	cSW0B8HdBJDzv5fbY9WWmryADS60l+TmR8RRtNs0u8JdO//qoFg4rv+mhZu7yTH/
-	6lfZ7Jq4wB4CIFbGwQSNvHH1bjx3QZSU9ckVBQQSl91j06q3BmxyOrad3OzGt8YF
-	WCnlZuxmk=
-Received: from hg-OptiPlex-7040.hygon.cn (unknown [118.242.3.34])
-	by gzga-smtp-mta-g1-1 (Coremail) with SMTP id _____wCnd28K1XJmBrxyBQ--.10118S2;
-	Wed, 19 Jun 2024 20:54:38 +0800 (CST)
-From: yangge1116@126.com
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	21cnbao@gmail.com,
-	baolin.wang@linux.alibaba.com,
-	mgorman@techsingularity.net,
-	liuzixing@hygon.cn,
-	yangge <yangge1116@126.com>
-Subject: [PATCH] mm/page_alloc: add one PCP list for THP
-Date: Wed, 19 Jun 2024 20:54:32 +0800
-Message-Id: <1718801672-30152-1-git-send-email-yangge1116@126.com>
-X-Mailer: git-send-email 2.7.4
-X-CM-TRANSID:_____wCnd28K1XJmBrxyBQ--.10118S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxAFWUtF17Xw18JF1UuFWDXFb_yoWrAr18pF
-	WxJr4ayayjqryYyr1xA3Wqkr1rCwnxGFsrCrW8ury8ZwsxJFyS9a4UK3WqvF95ArW7AF48
-	XryDt34fCF4DZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UfhL5UUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOg8DG2VEw410VQAAsj
+	s=arc-20240116; t=1718803072; c=relaxed/simple;
+	bh=swK+N+MVJvaNJeA66V7QCUYPwoBHxQs86IT9kPGljV0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mYgpJOM9Tp3pNhnthgnY8h3/1NjQHh9pYGc3pJ6dBqk7bzt8WRbcS4fNom/N3+818yOIbdXSC5jGCPp8/q4s5qdeL5Jp0BK+YAt4hzqJFaFJDvBsARch09NDFD02eujlUjgB16cTafXJ9OxzxDrtUOJT5SR5hx95mjpHiE1nF9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OviB8pEq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DCAAC2BBFC;
+	Wed, 19 Jun 2024 13:17:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718803072;
+	bh=swK+N+MVJvaNJeA66V7QCUYPwoBHxQs86IT9kPGljV0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OviB8pEqD+4HiOWvJcYbciC/i8uwHmWdyNuJ5FD1Gb2WBR8y1hbqTDQvRn7MM2qVZ
+	 82+0z0NDamC9ni15lz+rtxC5njggxIX3bAuLhMB6v1MznjU25dDwxKyzS7H8VYp710
+	 fmarUBe5sbriBxJOYMsV+byyRst+8yRonniXvDAQ=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 113/281] cachefiles: fix slab-use-after-free in cachefiles_ondemand_daemon_read()
+Date: Wed, 19 Jun 2024 14:54:32 +0200
+Message-ID: <20240619125614.196375593@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: yangge <yangge1116@126.com>
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
-Since commit 5d0a661d808f ("mm/page_alloc: use only one PCP list for
-THP-sized allocations") no longer differentiates the migration type
-of pages in THP-sized PCP list, it's possible that non-movable
-allocation requests may get a CMA page from the list, in some cases,
-it's not acceptable.
+------------------
 
-If a large number of CMA memory are configured in system (for
-example, the CMA memory accounts for 50% of the system memory),
-starting a virtual machine with device passthrough will get stuck.
-During starting the virtual machine, it will call
-pin_user_pages_remote(..., FOLL_LONGTERM, ...) to pin memory. Normally
-if a page is present and in CMA area, pin_user_pages_remote() will
-migrate the page from CMA area to non-CMA area because of
-FOLL_LONGTERM flag. But if non-movable allocation requests return
-CMA memory, migrate_longterm_unpinnable_pages() will migrate a CMA
-page to another CMA page, which will fail to pass the check in
-check_and_migrate_movable_pages() and cause migration endless.
-Call trace:
-pin_user_pages_remote
---__gup_longterm_locked // endless loops in this function
-----_get_user_pages_locked
-----check_and_migrate_movable_pages
-------migrate_longterm_unpinnable_pages
---------alloc_migration_target
+From: Baokun Li <libaokun1@huawei.com>
 
-This problem will also have a negative impact on CMA itself. For
-example, when CMA is borrowed by THP, and we need to reclaim it
-through cma_alloc() or dma_alloc_coherent(), we must move those
-pages out to ensure CMA's users can retrieve that contigous memory.
-Currently, CMA's memory is occupied by non-movable pages, meaning
-we can't relocate them. As a result, cma_alloc() is more likely to
-fail.
+[ Upstream commit da4a827416066191aafeeccee50a8836a826ba10 ]
 
-To fix the problem above, we add one PCP list for THP, which will
-not introduce a new cacheline for struct per_cpu_pages. THP will
-have 2 PCP lists, one PCP list is used by MOVABLE allocation, and
-the other PCP list is used by UNMOVABLE allocation. MOVABLE
-allocation contains GPF_MOVABLE, and UNMOVABLE allocation contains
-GFP_UNMOVABLE and GFP_RECLAIMABLE.
+We got the following issue in a fuzz test of randomly issuing the restore
+command:
 
-Fixes: 5d0a661d808f ("mm/page_alloc: use only one PCP list for THP-sized allocations")
-Signed-off-by: yangge <yangge1116@126.com>
+==================================================================
+BUG: KASAN: slab-use-after-free in cachefiles_ondemand_daemon_read+0xb41/0xb60
+Read of size 8 at addr ffff888122e84088 by task ondemand-04-dae/963
+
+CPU: 13 PID: 963 Comm: ondemand-04-dae Not tainted 6.8.0-dirty #564
+Call Trace:
+ kasan_report+0x93/0xc0
+ cachefiles_ondemand_daemon_read+0xb41/0xb60
+ vfs_read+0x169/0xb50
+ ksys_read+0xf5/0x1e0
+
+Allocated by task 116:
+ kmem_cache_alloc+0x140/0x3a0
+ cachefiles_lookup_cookie+0x140/0xcd0
+ fscache_cookie_state_machine+0x43c/0x1230
+ [...]
+
+Freed by task 792:
+ kmem_cache_free+0xfe/0x390
+ cachefiles_put_object+0x241/0x480
+ fscache_cookie_state_machine+0x5c8/0x1230
+ [...]
+==================================================================
+
+Following is the process that triggers the issue:
+
+     mount  |   daemon_thread1    |    daemon_thread2
+------------------------------------------------------------
+cachefiles_withdraw_cookie
+ cachefiles_ondemand_clean_object(object)
+  cachefiles_ondemand_send_req
+   REQ_A = kzalloc(sizeof(*req) + data_len)
+   wait_for_completion(&REQ_A->done)
+
+            cachefiles_daemon_read
+             cachefiles_ondemand_daemon_read
+              REQ_A = cachefiles_ondemand_select_req
+              msg->object_id = req->object->ondemand->ondemand_id
+                                  ------ restore ------
+                                  cachefiles_ondemand_restore
+                                  xas_for_each(&xas, req, ULONG_MAX)
+                                   xas_set_mark(&xas, CACHEFILES_REQ_NEW)
+
+                                  cachefiles_daemon_read
+                                   cachefiles_ondemand_daemon_read
+                                    REQ_A = cachefiles_ondemand_select_req
+              copy_to_user(_buffer, msg, n)
+               xa_erase(&cache->reqs, id)
+               complete(&REQ_A->done)
+              ------ close(fd) ------
+              cachefiles_ondemand_fd_release
+               cachefiles_put_object
+ cachefiles_put_object
+  kmem_cache_free(cachefiles_object_jar, object)
+                                    REQ_A->object->ondemand->ondemand_id
+                                     // object UAF !!!
+
+When we see the request within xa_lock, req->object must not have been
+freed yet, so grab the reference count of object before xa_unlock to
+avoid the above issue.
+
+Fixes: 0a7e54c1959c ("cachefiles: resend an open request if the read request's object is closed")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240522114308.2402121-5-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mmzone.h | 9 ++++-----
- mm/page_alloc.c        | 9 +++++++--
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ fs/cachefiles/ondemand.c          | 3 +++
+ include/trace/events/cachefiles.h | 6 +++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index b7546dd..cb7f265 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -656,13 +656,12 @@ enum zone_watermarks {
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index c011fb24d2382..3dd002108a872 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -337,6 +337,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 	xas_clear_mark(&xas, CACHEFILES_REQ_NEW);
+ 	cache->req_id_next = xas.xa_index + 1;
+ 	refcount_inc(&req->ref);
++	cachefiles_grab_object(req->object, cachefiles_obj_get_read_req);
+ 	xa_unlock(&cache->reqs);
+ 
+ 	id = xas.xa_index;
+@@ -357,6 +358,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 		goto err_put_fd;
+ 	}
+ 
++	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
+ 	/* CLOSE request has no reply */
+ 	if (msg->opcode == CACHEFILES_OP_CLOSE) {
+ 		xa_erase(&cache->reqs, id);
+@@ -370,6 +372,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 	if (msg->opcode == CACHEFILES_OP_OPEN)
+ 		close_fd(((struct cachefiles_open *)msg->data)->fd);
+ error:
++	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
+ 	xas_reset(&xas);
+ 	xas_lock(&xas);
+ 	if (xas_load(&xas) == req) {
+diff --git a/include/trace/events/cachefiles.h b/include/trace/events/cachefiles.h
+index e3213af847cdf..7d931db02b934 100644
+--- a/include/trace/events/cachefiles.h
++++ b/include/trace/events/cachefiles.h
+@@ -33,6 +33,8 @@ enum cachefiles_obj_ref_trace {
+ 	cachefiles_obj_see_withdrawal,
+ 	cachefiles_obj_get_ondemand_fd,
+ 	cachefiles_obj_put_ondemand_fd,
++	cachefiles_obj_get_read_req,
++	cachefiles_obj_put_read_req,
  };
  
- /*
-- * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. One additional list
-- * for THP which will usually be GFP_MOVABLE. Even if it is another type,
-- * it should not contribute to serious fragmentation causing THP allocation
-- * failures.
-+ * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. Two additional lists
-+ * are added for THP. One PCP list is used by GPF_MOVABLE, and the other PCP list
-+ * is used by GFP_UNMOVABLE and GFP_RECLAIMABLE.
-  */
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--#define NR_PCP_THP 1
-+#define NR_PCP_THP 2
- #else
- #define NR_PCP_THP 0
- #endif
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 8f416a0..0a837e6 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -504,10 +504,15 @@ static void bad_page(struct page *page, const char *reason)
+ enum fscache_why_object_killed {
+@@ -129,7 +131,9 @@ enum cachefiles_error_trace {
+ 	EM(cachefiles_obj_see_withdraw_cookie,	"SEE withdraw_cookie")	\
+ 	EM(cachefiles_obj_see_withdrawal,	"SEE withdrawal")	\
+ 	EM(cachefiles_obj_get_ondemand_fd,      "GET ondemand_fd")	\
+-	E_(cachefiles_obj_put_ondemand_fd,      "PUT ondemand_fd")
++	EM(cachefiles_obj_put_ondemand_fd,      "PUT ondemand_fd")	\
++	EM(cachefiles_obj_get_read_req,		"GET read_req")		\
++	E_(cachefiles_obj_put_read_req,		"PUT read_req")
  
- static inline unsigned int order_to_pindex(int migratetype, int order)
- {
-+	bool __maybe_unused movable;
-+
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
- 		VM_BUG_ON(order != HPAGE_PMD_ORDER);
--		return NR_LOWORDER_PCP_LISTS;
-+
-+		movable = migratetype == MIGRATE_MOVABLE;
-+
-+		return NR_LOWORDER_PCP_LISTS + movable;
- 	}
- #else
- 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
-@@ -521,7 +526,7 @@ static inline int pindex_to_order(unsigned int pindex)
- 	int order = pindex / MIGRATE_PCPTYPES;
- 
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	if (pindex == NR_LOWORDER_PCP_LISTS)
-+	if (pindex >= NR_LOWORDER_PCP_LISTS)
- 		order = HPAGE_PMD_ORDER;
- #else
- 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
+ #define cachefiles_coherency_traces					\
+ 	EM(cachefiles_coherency_check_aux,	"BAD aux ")		\
 -- 
-2.7.4
+2.43.0
+
+
 
 
