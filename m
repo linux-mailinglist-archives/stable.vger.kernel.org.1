@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-53971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3B790EC1B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B12EF90ED4A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C12A1F221F8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6A3E1C20F5F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED8E143C65;
-	Wed, 19 Jun 2024 13:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37423143C4E;
+	Wed, 19 Jun 2024 13:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9JrRkPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6KXEyfO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C98482871;
-	Wed, 19 Jun 2024 13:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F69AD58;
+	Wed, 19 Jun 2024 13:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802214; cv=none; b=Si6I/KXqN7hwi8pVlLInxLrolc4fzdy8QVb17wsqKXGrtl4mNFFRD3YVKorvn1y4KM2IV24dEmrj3LH/Dmnin92GQuMm9Ss/+ssJ1jf4WlWsHZiERHLmSUfEevkpTpDpGsggeerZ6NPjOOSuDx/Jg/wBLijiPoYxjgxaq7SmLkE=
+	t=1718802981; cv=none; b=gKwkfjcqqSf/3TKb2qvuEH5kgHnPmPWseJRP6lQ2UJFI3ZcUO8a9aBqD/46M4YzwT3n1X0fCv475ZG4r2EsNF4yl6hnRuNHtv4XA9HeWBwtj+43NXBkG608HCC9q91ClpBOJ6yGDdpTl6MeY3zVFd77s2LatVT6sdZ1UBou8hfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802214; c=relaxed/simple;
-	bh=c3Y9W8t/OV5gJUdpnFxh/V83CVXj5W1fttoXvf4xEd0=;
+	s=arc-20240116; t=1718802981; c=relaxed/simple;
+	bh=VtUebr6zfl7MWB8+2pZb1gP972zDsxwft05DhJqJRj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MIIOI10nE5wvJZ9af7NED40P15WGiqSoCvP3NsHx3JDz87HX0/wP3a1xteWv5Iv+/iCGY6OAuM9Su0F1LZi5zPygG0pQTjoc02IDQC/a5JvJ63+tQKEwd4d8ukk9KnqhsNpind9/BgFG4L9H+Q2S9ET5kMOgNKR29qHuDI9hGgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9JrRkPL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85221C2BBFC;
-	Wed, 19 Jun 2024 13:03:33 +0000 (UTC)
+	 MIME-Version; b=HO0/mC39Hyr5EYznFKcF5D90QRpwH3nJnNez6FBCtpee9wLcS7WgTLqriIEZTNgXgrTLy8k2XEOFw+GTaYwMgwogXbz3JQHhhOEQVATIVeBOOjJ/kkRUDp0VEoQcTBJaJQMZ3lKUVsI2UQhnFBRmD8M8ch+cpSo2O7enAdqqTo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6KXEyfO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C25FC2BBFC;
+	Wed, 19 Jun 2024 13:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802213;
-	bh=c3Y9W8t/OV5gJUdpnFxh/V83CVXj5W1fttoXvf4xEd0=;
+	s=korg; t=1718802980;
+	bh=VtUebr6zfl7MWB8+2pZb1gP972zDsxwft05DhJqJRj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w9JrRkPLoJ5Agg4SySUlB48LMCEK/rXxfi6hhttvLPxsk2ydTNMMNhYeyViEh1zGg
-	 zk+u/dPHycsS+DfLQgC36RBanIiy3yYbVA9cFpIdW8x6tq6gvgmsO8c2SnNk/0tm37
-	 0nLx6V7uWV4RT/vEpKWynLSDCuwc+FHtcHRl0qsM=
+	b=S6KXEyfO9XJN2qFBZ+wSv72T3Bq+LqDY9/pu4Q76QLDo0fVuh3upD+UYxoMU1uI8f
+	 Xkt+fBWIMoMBRCKIz3Wy9kBx9A+LLhfzFyx4QSnv0Qx5+evuWYrcCDu8ck6KETY8LA
+	 IMjrNKJyqwC65l2iMaXiXmYnNhK7yWVvOB2yNpqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre Tomon <pierretom+12@ik.me>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 089/267] xhci: Set correct transferred length for cancelled bulk transfers
+	Li Shi <sl1589472800@gmail.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.9 081/281] io_uring: fix cancellation overwriting req->flags
 Date: Wed, 19 Jun 2024 14:54:00 +0200
-Message-ID: <20240619125609.766237070@linuxfoundation.org>
+Message-ID: <20240619125612.959202138@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit f0260589b439e2637ad54a2b25f00a516ef28a57 upstream.
+commit f4a1254f2a076afb0edd473589bf40f9b4d36b41 upstream.
 
-The transferred length is set incorrectly for cancelled bulk
-transfer TDs in case the bulk transfer ring stops on the last transfer
-block with a 'Stop - Length Invalid' completion code.
+Only the current owner of a request is allowed to write into req->flags.
+Hence, the cancellation path should never touch it. Add a new field
+instead of the flag, move it into the 3rd cache line because it should
+always be initialised. poll_refs can move further as polling is an
+involved process anyway.
 
-length essentially ends up being set to the requested length:
-urb->actual_length = urb->transfer_buffer_length
+It's a minimal patch, in the future we can and should find a better
+place for it and remove now unused REQ_F_CANCEL_SEQ.
 
-Length for 'Stop - Length Invalid' cases should be the sum of all
-TRB transfer block lengths up to the one the ring stopped on,
-_excluding_ the one stopped on.
-
-Fix this by always summing up TRB lengths for 'Stop - Length Invalid'
-bulk cases.
-
-This issue was discovered by Alan Stern while debugging
-https://bugzilla.kernel.org/show_bug.cgi?id=218890, but does not
-solve that bug. Issue is older than 4.10 kernel but fix won't apply
-to those due to major reworks in that area.
-
-Tested-by: Pierre Tomon <pierretom+12@ik.me>
-Cc: stable@vger.kernel.org # v4.10+
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240611120610.3264502-2-mathias.nyman@linux.intel.com
+Fixes: 521223d7c229f ("io_uring/cancel: don't default to setting req->work.cancel_seq")
+Cc: stable@vger.kernel.org
+Reported-by: Li Shi <sl1589472800@gmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/6827b129f8f0ad76fa9d1f0a773de938b240ffab.1718323430.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/linux/io_uring_types.h |    3 ++-
+ io_uring/cancel.h              |    4 ++--
+ io_uring/io_uring.c            |    1 +
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2525,9 +2525,8 @@ static int process_bulk_intr_td(struct x
- 		goto finish_td;
- 	case COMP_STOPPED_LENGTH_INVALID:
- 		/* stopped on ep trb with invalid length, exclude it */
--		ep_trb_len	= 0;
--		remaining	= 0;
--		break;
-+		td->urb->actual_length = sum_trb_lengths(xhci, ep_ring, ep_trb);
-+		goto finish_td;
- 	case COMP_USB_TRANSACTION_ERROR:
- 		if (xhci->quirks & XHCI_NO_SOFT_RETRY ||
- 		    (ep->err_count++ > MAX_SOFT_RETRY) ||
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -653,7 +653,7 @@ struct io_kiocb {
+ 	struct io_rsrc_node		*rsrc_node;
+ 
+ 	atomic_t			refs;
+-	atomic_t			poll_refs;
++	bool				cancel_seq_set;
+ 	struct io_task_work		io_task_work;
+ 	/* for polled requests, i.e. IORING_OP_POLL_ADD and async armed poll */
+ 	struct hlist_node		hash_node;
+@@ -662,6 +662,7 @@ struct io_kiocb {
+ 	/* opcode allocated if it needs to store data for async defer */
+ 	void				*async_data;
+ 	/* linked requests, IFF REQ_F_HARDLINK or REQ_F_LINK are set */
++	atomic_t			poll_refs;
+ 	struct io_kiocb			*link;
+ 	/* custom credentials, valid IFF REQ_F_CREDS is set */
+ 	const struct cred		*creds;
+--- a/io_uring/cancel.h
++++ b/io_uring/cancel.h
+@@ -27,10 +27,10 @@ bool io_cancel_req_match(struct io_kiocb
+ 
+ static inline bool io_cancel_match_sequence(struct io_kiocb *req, int sequence)
+ {
+-	if ((req->flags & REQ_F_CANCEL_SEQ) && sequence == req->work.cancel_seq)
++	if (req->cancel_seq_set && sequence == req->work.cancel_seq)
+ 		return true;
+ 
+-	req->flags |= REQ_F_CANCEL_SEQ;
++	req->cancel_seq_set = true;
+ 	req->work.cancel_seq = sequence;
+ 	return false;
+ }
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2211,6 +2211,7 @@ static int io_init_req(struct io_ring_ct
+ 	req->file = NULL;
+ 	req->rsrc_node = NULL;
+ 	req->task = current;
++	req->cancel_seq_set = false;
+ 
+ 	if (unlikely(opcode >= IORING_OP_LAST)) {
+ 		req->opcode = 0;
 
 
 
