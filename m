@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-53940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D5B90EBFA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FDE90ED29
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 023D21F24D4D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B7DB1F212C4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB28114E2E1;
-	Wed, 19 Jun 2024 13:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57CA14375A;
+	Wed, 19 Jun 2024 13:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNZQ0ADf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zp49/YGb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D4914900C;
-	Wed, 19 Jun 2024 13:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BE5143C58;
+	Wed, 19 Jun 2024 13:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802122; cv=none; b=qIFOqSnaGW6nmgA5iq1fX7LL6tWHHPofbq8NjFld2SAE31LytAgZBTPcuFD4PR+Ktu1kX2ofU3obwRHgJn4xxNC+WP24GvIok2mFO623owH5Cf4l83n+7XsMpzH+XIoMRs53TJz+MWVmJmJrXTwyg9YbPoqBeyIWYJ74HImK8Tk=
+	t=1718802889; cv=none; b=JL4Zf4Ph+naqi8a5JLkp2qdvI7tj5FQPvyvxOB02Q6nh1EFq4uGxCa7dn+YhsSLx5SMEy/Hv035LsImP4QWyQPdNqj9WuBNQQegtone6I/jDNB9M7pOEriJ/Fy41JFWFEXIXFA+u53bR5NjCCp0zcJzgcGCAEriKyQWj07SN+uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802122; c=relaxed/simple;
-	bh=EcWbleftUVtE2ZTnWOYHNP/BklYxmsB+HKgDARHz/+c=;
+	s=arc-20240116; t=1718802889; c=relaxed/simple;
+	bh=bm/0Tr0CdwwNQZR6JJwv2qTUeymw45Ofus8IHuvfO7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OhatTbOIgDKs0uvf4mgcK9nNH/YfYI53aA40vH1KPd11KcdZy6JzSE89/hBpQj8Q9CSevYAnZBJx0cF5UOiHVZ8JU3X7VHYbG6db7n8ldwP7YzWm9YweJl+qL3neFkcgR7cwAUvlbB1k82jTHUngmo9CTrrvOtvQ1lQBePrGlik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNZQ0ADf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5EEC2BBFC;
-	Wed, 19 Jun 2024 13:02:01 +0000 (UTC)
+	 MIME-Version; b=DD/ME2MYO1xjfEqpeDWzwErtFJ6w5ii126IMeQtV/Ov8mDUzQSclWiBG09TL91QPfCUTLLO15avborF2vSoHuwJnwY8LMc0n8tmg6Dv4rq7zWIXO8eeOcYAEQfLFHrzCggQny//jZ97CoaJ/OZgX7gkaGySNf9uoUx3Lu6N9lMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zp49/YGb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DDEC2BBFC;
+	Wed, 19 Jun 2024 13:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802122;
-	bh=EcWbleftUVtE2ZTnWOYHNP/BklYxmsB+HKgDARHz/+c=;
+	s=korg; t=1718802889;
+	bh=bm/0Tr0CdwwNQZR6JJwv2qTUeymw45Ofus8IHuvfO7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HNZQ0ADfPgdQ9k6GIdr0qAxIVUkgRlpY1HKZcGNpU5VV2udkVXsoMjzgU+L3DPhhF
-	 QeDQGwj93bMGGvy3W3Lg+tQPv/O2ODfXH1c9kgqatjoI5610UvXKumfCaIw+p3528E
-	 DXdAHk9eHnuXWHmGlODbqkIa4hdI3Yf8TwMzKCjs=
+	b=zp49/YGb7VB5u9YsP+O+ZTTL42QFuvyYwvZx8rUbjS6obuI3YfKpZivZsnahHG0rq
+	 nJtw/dAPoRC1oCDpC3Hbblfy2LcAWIoUr2spGpLE7G0YOagLsjY1s/Sts8H8x6cLi4
+	 8BzBVcvAE3iuNeUP/feG7/Ku3yjn21kxUOAgbVGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Hangyu Hua <hbh25y@gmail.com>,
+	Cong Wang <cong.wang@bytedance.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/267] af_unix: Set sk->sk_state under unix_state_lock() for truly disconencted peer.
+Subject: [PATCH 6.9 040/281] net: sched: sch_multiq: fix possible OOB write in multiq_tune()
 Date: Wed, 19 Jun 2024 14:53:19 +0200
-Message-ID: <20240619125608.209095299@linuxfoundation.org>
+Message-ID: <20240619125611.392021699@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit 26bfb8b57063f52b867f9b6c8d1742fcb5bd656c ]
+[ Upstream commit affc18fdc694190ca7575b9a86632a73b9fe043d ]
 
-When a SOCK_DGRAM socket connect()s to another socket, the both sockets'
-sk->sk_state are changed to TCP_ESTABLISHED so that we can register them
-to BPF SOCKMAP.
+q->bands will be assigned to qopt->bands to execute subsequent code logic
+after kmalloc. So the old q->bands should not be used in kmalloc.
+Otherwise, an out-of-bounds write will occur.
 
-When the socket disconnects from the peer by connect(AF_UNSPEC), the state
-is set back to TCP_CLOSE.
-
-Then, the peer's state is also set to TCP_CLOSE, but the update is done
-locklessly and unconditionally.
-
-Let's say socket A connect()ed to B, B connect()ed to C, and A disconnects
-from B.
-
-After the first two connect()s, all three sockets' sk->sk_state are
-TCP_ESTABLISHED:
-
-  $ ss -xa
-  Netid State  Recv-Q Send-Q  Local Address:Port  Peer Address:PortProcess
-  u_dgr ESTAB  0      0       @A 641              * 642
-  u_dgr ESTAB  0      0       @B 642              * 643
-  u_dgr ESTAB  0      0       @C 643              * 0
-
-And after the disconnect, B's state is TCP_CLOSE even though it's still
-connected to C and C's state is TCP_ESTABLISHED.
-
-  $ ss -xa
-  Netid State  Recv-Q Send-Q  Local Address:Port  Peer Address:PortProcess
-  u_dgr UNCONN 0      0       @A 641              * 0
-  u_dgr UNCONN 0      0       @B 642              * 643
-  u_dgr ESTAB  0      0       @C 643              * 0
-
-In this case, we cannot register B to SOCKMAP.
-
-So, when a socket disconnects from the peer, we should not set TCP_CLOSE to
-the peer if the peer is connected to yet another socket, and this must be
-done under unix_state_lock().
-
-Note that we use WRITE_ONCE() for sk->sk_state as there are many lockless
-readers.  These data-races will be fixed in the following patches.
-
-Fixes: 83301b5367a9 ("af_unix: Set TCP_ESTABLISHED for datagram sockets too")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c2999f7fb05b ("net: sched: multiq: don't call qdisc_put() while holding tree lock")
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Acked-by: Cong Wang <cong.wang@bytedance.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/sched/sch_multiq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index d01314dc86ecb..348f9e34f6696 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -571,7 +571,6 @@ static void unix_dgram_disconnected(struct sock *sk, struct sock *other)
- 			sk_error_report(other);
- 		}
- 	}
--	other->sk_state = TCP_CLOSE;
- }
+diff --git a/net/sched/sch_multiq.c b/net/sched/sch_multiq.c
+index 79e93a19d5fab..06e03f5cd7ce1 100644
+--- a/net/sched/sch_multiq.c
++++ b/net/sched/sch_multiq.c
+@@ -185,7 +185,7 @@ static int multiq_tune(struct Qdisc *sch, struct nlattr *opt,
  
- static void unix_sock_destructor(struct sock *sk)
-@@ -1434,8 +1433,15 @@ static int unix_dgram_connect(struct socket *sock, struct sockaddr *addr,
+ 	qopt->bands = qdisc_dev(sch)->real_num_tx_queues;
  
- 		unix_state_double_unlock(sk, other);
- 
--		if (other != old_peer)
-+		if (other != old_peer) {
- 			unix_dgram_disconnected(sk, old_peer);
-+
-+			unix_state_lock(old_peer);
-+			if (!unix_peer(old_peer))
-+				WRITE_ONCE(old_peer->sk_state, TCP_CLOSE);
-+			unix_state_unlock(old_peer);
-+		}
-+
- 		sock_put(old_peer);
- 	} else {
- 		unix_peer(sk) = other;
+-	removed = kmalloc(sizeof(*removed) * (q->max_bands - q->bands),
++	removed = kmalloc(sizeof(*removed) * (q->max_bands - qopt->bands),
+ 			  GFP_KERNEL);
+ 	if (!removed)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
