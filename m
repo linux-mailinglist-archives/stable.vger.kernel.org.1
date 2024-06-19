@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F053490EE27
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DF7690ED2F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B8C728942C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:26:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D30B8280F57
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0710D144D3E;
-	Wed, 19 Jun 2024 13:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA44714AD35;
+	Wed, 19 Jun 2024 13:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyUfblts"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DiKli2f7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B932C4D9EA;
-	Wed, 19 Jun 2024 13:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9868D1474C8;
+	Wed, 19 Jun 2024 13:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803571; cv=none; b=raC+8RMXG8Jpe9eZLZlsJXzIVQGrJ0mDj6NcQPDVg/a8nUs6C3D0WJiTXJ3EA+LuvuF2Sa8LB2GRuAtkV9AmC+gCmcuIsXcExdXMnhUFsS3M8cMXmUJ/I8IQ21ZYJxExE/Jk7eISkqTYlIuxdcZ5t4JPazkQsm5zFIGTKws5Rmk=
+	t=1718802904; cv=none; b=NEAOH7Ot9Gml4Anuavf5kiMxu7pBA19MEkgP5DIVyUsm4qg4PX9I4zv2PNmKLRj7kLw1Ikx7YP0xJCdZvX4K87swIJmysDKlbEYdjuVW6Nj22QNlE4pmYuGowVzBjUG9RMEorC6hDapc9/4gOxScrwRKn1LCMvCib/GxOFKcNVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803571; c=relaxed/simple;
-	bh=J/VLXPQx6rysQgfXPhz312uAbUlKT8fLfcCx2oobwYs=;
+	s=arc-20240116; t=1718802904; c=relaxed/simple;
+	bh=0jIb3T4Zv86pUGiBuiQdZ06ZjgvmQIwi25G8htLsyYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFuhmdOCCsofn47Xk5xwPzhjJhRB+qCGTJQN7+DhFVE+a6e7tZYqd8hKZSSHY28TOnbk2ErBc6EIAE8hcqHnc831Rd8K66PvuiEblsVaczvbNec+E4Zxxyp89niyhcGz70KBtuIcSJKomTs6lzhCNi+O1twCdaS02i0tq27WMuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyUfblts; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34072C2BBFC;
-	Wed, 19 Jun 2024 13:26:11 +0000 (UTC)
+	 MIME-Version; b=IevV6fiaZMUZanqahccMQWLRzMZGAO8hJgi6arHU/n9ZxeQn27NTQyKP5uDEN30+dahGKtAQTcDcY7P/RnSZGhoJQ/aehU4EMuteqwwi2l0GLgCK0m0GbLdt9ixbQrjL8gHHuhsHTUHq/yzY0FmWgMgVu5pd3rZMVEgq3uVUdLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DiKli2f7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C07C2BBFC;
+	Wed, 19 Jun 2024 13:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803571;
-	bh=J/VLXPQx6rysQgfXPhz312uAbUlKT8fLfcCx2oobwYs=;
+	s=korg; t=1718802904;
+	bh=0jIb3T4Zv86pUGiBuiQdZ06ZjgvmQIwi25G8htLsyYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zyUfblts6qb+S6a8BKN6QwlkhWy/6A9YnFilpAfDrhh8nngUR1TyTNcjvNaL57gFE
-	 4kGdVju+vFRDhcX2oD88s/qBpEO8fbDFBnrWSFlGZ7rIEvIZaursuE6DabWUsB+U8h
-	 UPLPWg1tpBOdReefehLnPs0+Ehoyi+wM7/A6kAVs=
+	b=DiKli2f7W2d4HNIpf0FuhuZIrLO01BLprRXVxOuEHaPt6yFh6/dtCKzqMTqEQCxC9
+	 5h52jBkIXrf0DfCjLxP8pfTXIrpyD7R05RpX4+ZL711VJOg/MkfO78P5CMv2w9dlr3
+	 nF3DkzHuxEieJA6hXPA39PIt0O7dGRUxgQJy460U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/217] wifi: cfg80211: fully move wiphy work to unbound workqueue
+	stable@kernel.org,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [PATCH 6.9 087/281] mei: me: release irq in mei_me_pci_resume error path
 Date: Wed, 19 Jun 2024 14:54:06 +0200
-Message-ID: <20240619125556.628441941@linuxfoundation.org>
+Message-ID: <20240619125613.197774041@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tomas Winkler <tomas.winkler@intel.com>
 
-[ Upstream commit e296c95eac655008d5a709b8cf54d0018da1c916 ]
+commit 283cb234ef95d94c61f59e1cd070cd9499b51292 upstream.
 
-Previously I had moved the wiphy work to the unbound
-system workqueue, but missed that when it restarts and
-during resume it was still using the normal system
-workqueue. Fix that.
+The mei_me_pci_resume doesn't release irq on the error path,
+in case mei_start() fails.
 
-Fixes: 91d20ab9d9ca ("wifi: cfg80211: use system_unbound_wq for wiphy work")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240522124126.7ca959f2cbd3.I3e2a71ef445d167b84000ccf934ea245aef8d395@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@kernel.org>
+Fixes: 33ec08263147 ("mei: revamp mei reset state machine")
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240604090728.1027307-1-tomas.winkler@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/core.c  | 2 +-
- net/wireless/sysfs.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/misc/mei/pci-me.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 3fcddc8687ed4..22f67b64135d2 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -427,7 +427,7 @@ static void cfg80211_wiphy_work(struct work_struct *work)
- 	if (wk) {
- 		list_del_init(&wk->entry);
- 		if (!list_empty(&rdev->wiphy_work_list))
--			schedule_work(work);
-+			queue_work(system_unbound_wq, work);
- 		spin_unlock_irq(&rdev->wiphy_work_lock);
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -385,8 +385,10 @@ static int mei_me_pci_resume(struct devi
+ 	}
  
- 		wk->func(&rdev->wiphy, wk);
-diff --git a/net/wireless/sysfs.c b/net/wireless/sysfs.c
-index a88f338c61d31..17ccb9c6091e8 100644
---- a/net/wireless/sysfs.c
-+++ b/net/wireless/sysfs.c
-@@ -5,7 +5,7 @@
-  *
-  * Copyright 2005-2006	Jiri Benc <jbenc@suse.cz>
-  * Copyright 2006	Johannes Berg <johannes@sipsolutions.net>
-- * Copyright (C) 2020-2021, 2023 Intel Corporation
-+ * Copyright (C) 2020-2021, 2023-2024 Intel Corporation
-  */
+ 	err = mei_restart(dev);
+-	if (err)
++	if (err) {
++		free_irq(pdev->irq, dev);
+ 		return err;
++	}
  
- #include <linux/device.h>
-@@ -137,7 +137,7 @@ static int wiphy_resume(struct device *dev)
- 	if (rdev->wiphy.registered && rdev->ops->resume)
- 		ret = rdev_resume(rdev);
- 	rdev->suspended = false;
--	schedule_work(&rdev->wiphy_work);
-+	queue_work(system_unbound_wq, &rdev->wiphy_work);
- 	wiphy_unlock(&rdev->wiphy);
- 
- 	if (ret)
--- 
-2.43.0
-
+ 	/* Start timer if stopped in suspend */
+ 	schedule_delayed_work(&dev->timer_work, HZ);
 
 
 
