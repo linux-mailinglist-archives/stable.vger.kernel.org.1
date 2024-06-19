@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DB490EE46
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF0A90ED63
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C1491F21C27
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:27:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7753428122F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E60147C60;
-	Wed, 19 Jun 2024 13:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2958A143C65;
+	Wed, 19 Jun 2024 13:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHuhsa3f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSnpe65I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11431474AD;
-	Wed, 19 Jun 2024 13:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD76A4315F;
+	Wed, 19 Jun 2024 13:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803630; cv=none; b=Jipgd6vfyC9QyG8hL+uLbV3+kmmEWmi32/VL/eRN6KlfP/HOsr1QSojUPDaRAfueiNIoEByz5qnmxywD/i6Z03vryoJXVdjzQ37/shod026HsmdSEB+zva2/c7aHIxueyUWq6aqwrJgupJ4y7oNVlbUItqZsmo2DnNobCPW4tyI=
+	t=1718803049; cv=none; b=B9XsgggGmdQRLRNOoynUOho3Zg/BH8EHBgMDpRQJLsOpXaO+UfXKDQVGKQOYEzPncG4q5qbvCrrO22TV1E3j7Ed0e+DF+gpypMwKi/FMneDxShboqGWpv7ENNAAS2b2colyaWPKCQCZ+n3kS/sf9Fv2m7BeBRV77C2kDBTcm/8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803630; c=relaxed/simple;
-	bh=zwWG6tJKF/JQvu/TxavtbkjH7cY5nDt8JCGIfTyZZSc=;
+	s=arc-20240116; t=1718803049; c=relaxed/simple;
+	bh=EdoSEatLao7np4qdFTljLsLhQ2t98eWG3zq3SGh6Y7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q+ANqRZ/o+8i9sT8EzWj15UrFzLoMfdVa4XbLxb+sSd60IMHKdawCY8bePqDVDQzX7e9U8Z0tJJac/W4WQMjUjj1NIA2yi0D+GTmlcmn6y/QBDLPShVV0zwLzb2g3RxjP65crh0RZyaKP5rqWoYRN2tWxacturUuQ1w8esdbYso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHuhsa3f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298AEC2BBFC;
-	Wed, 19 Jun 2024 13:27:09 +0000 (UTC)
+	 MIME-Version; b=CfhMm4zK06F4ouheh0mIsB0HNFYIBU0OzcYvZnPocZQjpdbgd7lJyQK3CFX0+vvxI+EeCTJKWE4wX4SU0flB7GVk8FAKfvfoJJTk2RGSCarabybzBipAm0mkFJW/SCR28k2tgjopF/uAZm7ZvMVrA6k1yTt2gtdscGuQ+Jv4FA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSnpe65I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6154DC2BBFC;
+	Wed, 19 Jun 2024 13:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803630;
-	bh=zwWG6tJKF/JQvu/TxavtbkjH7cY5nDt8JCGIfTyZZSc=;
+	s=korg; t=1718803048;
+	bh=EdoSEatLao7np4qdFTljLsLhQ2t98eWG3zq3SGh6Y7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHuhsa3fqwexITOdfSaWyKVGiBBG0TgGg23SSf2tWxDpbQoRWt49D3c5TO4cnXk41
-	 6aG6oDhLBCeHkDcuvUJAwBWY6vPfNaYC4rVoisv7G9fCwUx8N6t1HtkXu1jmL8rC8p
-	 ysqN+qWRIjfzPJzrQUeeS6m5aiGdu9sMgdw7mytM=
+	b=lSnpe65IaXVw48+vTdebKCjuJxUHO/J3TqKGIuipFVwf1psd4IRELBBuCTX/RvHLf
+	 GtanCUguSIgDXnCTBbt8cljc3V2Xxi1GZZBGDe42XCFJ2x6IE8ShMW9X5rSjz+HMPp
+	 So2RVqaL4bBmbgBUtQP9QuNtQyGIY/cEP3R3fitk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	"Kun(llfl)" <llfl@linux.alibaba.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/217] btrfs: fix wrong block_start calculation for btrfs_drop_extent_map_range()
+Subject: [PATCH 6.9 135/281] iommu/amd: Fix sysfs leak in iommu init
 Date: Wed, 19 Jun 2024 14:54:54 +0200
-Message-ID: <20240619125558.633372546@linuxfoundation.org>
+Message-ID: <20240619125615.038511226@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Kun(llfl) <llfl@linux.alibaba.com>
 
-[ Upstream commit fe1c6c7acce10baf9521d6dccc17268d91ee2305 ]
+[ Upstream commit a295ec52c8624883885396fde7b4df1a179627c3 ]
 
-[BUG]
-During my extent_map cleanup/refactor, with extra sanity checks,
-extent-map-tests::test_case_7() would not pass the checks.
+During the iommu initialization, iommu_init_pci() adds sysfs nodes.
+However, these nodes aren't remove in free_iommu_resources() subsequently.
 
-The problem is, after btrfs_drop_extent_map_range(), the resulted
-extent_map has a @block_start way too large.
-Meanwhile my btrfs_file_extent_item based members are returning a
-correct @disk_bytenr/@offset combination.
-
-The extent map layout looks like this:
-
-     0        16K    32K       48K
-     | PINNED |      | Regular |
-
-The regular em at [32K, 48K) also has 32K @block_start.
-
-Then drop range [0, 36K), which should shrink the regular one to be
-[36K, 48K).
-However the @block_start is incorrect, we expect 32K + 4K, but got 52K.
-
-[CAUSE]
-Inside btrfs_drop_extent_map_range() function, if we hit an extent_map
-that covers the target range but is still beyond it, we need to split
-that extent map into half:
-
-	|<-- drop range -->|
-		 |<----- existing extent_map --->|
-
-And if the extent map is not compressed, we need to forward
-extent_map::block_start by the difference between the end of drop range
-and the extent map start.
-
-However in that particular case, the difference is calculated using
-(start + len - em->start).
-
-The problem is @start can be modified if the drop range covers any
-pinned extent.
-
-This leads to wrong calculation, and would be caught by my later
-extent_map sanity checks, which checks the em::block_start against
-btrfs_file_extent_item::disk_bytenr + btrfs_file_extent_item::offset.
-
-This is a regression caused by commit c962098ca4af ("btrfs: fix
-incorrect splitting in btrfs_drop_extent_map_range"), which removed the
-@len update for pinned extents.
-
-[FIX]
-Fix it by avoiding using @start completely, and use @end - em->start
-instead, which @end is exclusive bytenr number.
-
-And update the test case to verify the @block_start to prevent such
-problem from happening.
-
-Thankfully this is not going to lead to any data corruption, as IO path
-does not utilize btrfs_drop_extent_map_range() with @skip_pinned set.
-
-So this fix is only here for the sake of consistency/correctness.
-
-CC: stable@vger.kernel.org # 6.5+
-Fixes: c962098ca4af ("btrfs: fix incorrect splitting in btrfs_drop_extent_map_range")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 39ab9555c241 ("iommu: Add sysfs bindings for struct iommu_device")
+Signed-off-by: Kun(llfl) <llfl@linux.alibaba.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/c8e0d11c6ab1ee48299c288009cf9c5dae07b42d.1715215003.git.llfl@linux.alibaba.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_map.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/init.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/btrfs/extent_map.c b/fs/btrfs/extent_map.c
-index 56d7580fdc3c4..3518e638374ea 100644
---- a/fs/btrfs/extent_map.c
-+++ b/fs/btrfs/extent_map.c
-@@ -867,7 +867,7 @@ void btrfs_drop_extent_map_range(struct btrfs_inode *inode, u64 start, u64 end,
- 					split->block_len = em->block_len;
- 					split->orig_start = em->orig_start;
- 				} else {
--					const u64 diff = start + len - em->start;
-+					const u64 diff = end - em->start;
+diff --git a/drivers/iommu/amd/init.c b/drivers/iommu/amd/init.c
+index f440ca440d924..e740dc54c4685 100644
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -1678,8 +1678,17 @@ static void __init free_pci_segments(void)
+ 	}
+ }
  
- 					split->block_len = split->len;
- 					split->block_start += diff;
++static void __init free_sysfs(struct amd_iommu *iommu)
++{
++	if (iommu->iommu.dev) {
++		iommu_device_unregister(&iommu->iommu);
++		iommu_device_sysfs_remove(&iommu->iommu);
++	}
++}
++
+ static void __init free_iommu_one(struct amd_iommu *iommu)
+ {
++	free_sysfs(iommu);
+ 	free_cwwb_sem(iommu);
+ 	free_command_buffer(iommu);
+ 	free_event_buffer(iommu);
 -- 
 2.43.0
 
