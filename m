@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-54024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30D090EC51
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C4890EE73
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F2ED281FBE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E0E01C24A05
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C26143873;
-	Wed, 19 Jun 2024 13:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBAEA1494BD;
+	Wed, 19 Jun 2024 13:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sl9NH2ai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CyZKQjpU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B7812FB31;
-	Wed, 19 Jun 2024 13:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BB2147C60;
+	Wed, 19 Jun 2024 13:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802367; cv=none; b=KLi/fdUYYioFypORd89SFUELQF9k/HcrjR7eA4F401adth6ttkGm44QGFYvVvanBrRTSe1S9StpXxNw+EAyQ/fp87wu6F8m3FbdhcTt/6i7Gz6S4gBh1dzPfg87lpPvwjsWPC835TNpfoz/5dj2b4nD/+sQimUxJU/w/p9Muv0A=
+	t=1718803716; cv=none; b=COMj+9MRBVExc4w+/4SMSaTeTA0IZYc/R5Be2IyCTgbdfiJ5RCbfZTh7/cdguZk9O9kRNpvLehJhRVFJpWLBTEaygJk5RwKbBKYod6ofKa9sja/ywGLCvtOQvO/2AKIeBpR5RLrdRe2q4uSYaTzMkSMFXqfbSFW7ljAXnMnJ+bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802367; c=relaxed/simple;
-	bh=pAXOIfG7gOYtRPzObOgPzZHPEI8hD7a1Sia3sSHWKho=;
+	s=arc-20240116; t=1718803716; c=relaxed/simple;
+	bh=SarL7kLBG2E8JVkMXpNuoQsOPT9vyUbZ3pzXN57Upr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K/xYnIXQreCvbIM0zj68TmlbzkXx9p/tKkb97m1bZ9PsDI7X4wN3whyHKlQG/bYCs6Mm2SVq4VQRFVojcBcmW7tWwBdwv9bOotrX0ohwlyTVRtUEZ4R09C8wTWGKwMJj9TGhxC4APtsxUPX9BhSYDeny3jM85y05f4o14pmmaZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sl9NH2ai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E150C2BBFC;
-	Wed, 19 Jun 2024 13:06:06 +0000 (UTC)
+	 MIME-Version; b=WBEpHR/XnPup+zGJghRnHybN1rLa8jLtdyquZBD7oXI/KNsLyF144SD4Lhs+HoEfAnN1vU5M8NlzVCnpGEU/PnZ36xeZQxj+pLmt8ymui4zVPtYdzwf610hXoDVMF4yDUkc8qzTUx3Wv1zG+cvqXnnVtxTcBrLsAKcs4nkghcI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CyZKQjpU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC39FC2BBFC;
+	Wed, 19 Jun 2024 13:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802367;
-	bh=pAXOIfG7gOYtRPzObOgPzZHPEI8hD7a1Sia3sSHWKho=;
+	s=korg; t=1718803716;
+	bh=SarL7kLBG2E8JVkMXpNuoQsOPT9vyUbZ3pzXN57Upr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sl9NH2ai6dbnzKNwL/RpSGvpu+5OtebH4oy2nrfRujfQoKS2t0/LpfAWH0EV+Bt3k
-	 RIW2tM9F4aT7rQOfoIas2UQWQCDYUIaqV1xE5L1i+vZpaATfotAApcehwkuaq2AUXM
-	 USMIhdNR4Q016w3BcRM/Tfjg5jhCFba3v0LZ7x1E=
+	b=CyZKQjpUvFcNnR7pwNeonolAQAOyGQxEo5wu3etJBJ+VzCwiZoKdT3bcMx6VRRjby
+	 8IvW4VF8a685dvZsXWn1XN9pk4ryl4tHCOHqYx6MkjSZqbQXOnV4FBbRGnNXkUj2xi
+	 +18rXBF2nXydC6wyu/nqCEDmQwLJSLdkROhfxXb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongzhi Liu <hyperlyzcs@gmail.com>
-Subject: [PATCH 6.6 172/267] misc: microchip: pci1xxxx: fix double free in the error handling of gp_aux_bus_probe()
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 080/217] btrfs: make btrfs_destroy_delayed_refs() return void
 Date: Wed, 19 Jun 2024 14:55:23 +0200
-Message-ID: <20240619125612.943965933@linuxfoundation.org>
+Message-ID: <20240619125559.773252706@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongzhi Liu <hyperlyzcs@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 086c6cbcc563c81d55257f9b27e14faf1d0963d3 upstream.
+[ Upstream commit 99f09ce309b8307ce8dca209f936e99a7c332214 ]
 
-When auxiliary_device_add() returns error and then calls
-auxiliary_device_uninit(), callback function
-gp_auxiliary_device_release() calls ida_free() and
-kfree(aux_device_wrapper) to free memory. We should't
-call them again in the error handling path.
+btrfs_destroy_delayed_refs() always returns 0 and its single caller does
+not check its return value, as it also returns void, and so does the
+callers' caller and so on. This is because we are in the transaction abort
+path, where we have no way to deal with errors (we are in a critical
+situation) and all cleanup of resources works in a best effort fashion.
+So make btrfs_destroy_delayed_refs() return void.
 
-Fix this by skipping the redundant cleanup functions.
-
-Fixes: 393fc2f5948f ("misc: microchip: pci1xxxx: load auxiliary bus driver for the PIO function in the multi-function endpoint of pci1xxxx device.")
-Signed-off-by: Yongzhi Liu <hyperlyzcs@gmail.com>
-Link: https://lore.kernel.org/r/20240523121434.21855-3-hyperlyzcs@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: fb33eb2ef0d8 ("btrfs: fix leak of qgroup extent records after transaction abort")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/disk-io.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
-+++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c
-@@ -111,6 +111,7 @@ static int gp_aux_bus_probe(struct pci_d
- 
- err_aux_dev_add_1:
- 	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[1]->aux_dev);
-+	goto err_aux_dev_add_0;
- 
- err_aux_dev_init_1:
- 	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[1]->aux_dev.id);
-@@ -120,6 +121,7 @@ err_ida_alloc_1:
- 
- err_aux_dev_add_0:
- 	auxiliary_device_uninit(&aux_bus->aux_device_wrapper[0]->aux_dev);
-+	goto err_ret;
- 
- err_aux_dev_init_0:
- 	ida_free(&gp_client_ida, aux_bus->aux_device_wrapper[0]->aux_dev.id);
-@@ -127,6 +129,7 @@ err_aux_dev_init_0:
- err_ida_alloc_0:
- 	kfree(aux_bus->aux_device_wrapper[0]);
- 
-+err_ret:
- 	return retval;
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 0111eda33aa9c..5eac900f5d168 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -4939,13 +4939,12 @@ static void btrfs_destroy_all_ordered_extents(struct btrfs_fs_info *fs_info)
+ 	btrfs_wait_ordered_roots(fs_info, U64_MAX, 0, (u64)-1);
  }
  
+-static int btrfs_destroy_delayed_refs(struct btrfs_transaction *trans,
+-				      struct btrfs_fs_info *fs_info)
++static void btrfs_destroy_delayed_refs(struct btrfs_transaction *trans,
++				       struct btrfs_fs_info *fs_info)
+ {
+ 	struct rb_node *node;
+ 	struct btrfs_delayed_ref_root *delayed_refs;
+ 	struct btrfs_delayed_ref_node *ref;
+-	int ret = 0;
+ 
+ 	delayed_refs = &trans->delayed_refs;
+ 
+@@ -4953,7 +4952,7 @@ static int btrfs_destroy_delayed_refs(struct btrfs_transaction *trans,
+ 	if (atomic_read(&delayed_refs->num_entries) == 0) {
+ 		spin_unlock(&delayed_refs->lock);
+ 		btrfs_debug(fs_info, "delayed_refs has NO entry");
+-		return ret;
++		return;
+ 	}
+ 
+ 	while ((node = rb_first_cached(&delayed_refs->href_root)) != NULL) {
+@@ -5015,8 +5014,6 @@ static int btrfs_destroy_delayed_refs(struct btrfs_transaction *trans,
+ 	btrfs_qgroup_destroy_extent_records(trans);
+ 
+ 	spin_unlock(&delayed_refs->lock);
+-
+-	return ret;
+ }
+ 
+ static void btrfs_destroy_delalloc_inodes(struct btrfs_root *root)
+-- 
+2.43.0
+
 
 
 
