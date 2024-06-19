@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-54127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B0290ECCE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:11:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB6390EE03
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:24:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C503A1C20FD6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:11:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16D971C21F61
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67556143C4E;
-	Wed, 19 Jun 2024 13:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2329614532C;
+	Wed, 19 Jun 2024 13:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQwumNBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGIkY7r5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DD712FB31;
-	Wed, 19 Jun 2024 13:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE02E143757;
+	Wed, 19 Jun 2024 13:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802665; cv=none; b=J3W9fK6/LQAVqy17kiCsKlka/f9QjXvQ24JfDzc2He0KENH0095l18oKD3tMTQ0SGoQDkRmW/eQUmKUkhu7hdAsb0WhcCZmss9uHOWylFkzdLIx1nKb6xYxZdiopF6t7NLXKplIrlAnI8ZqYvjIy4ATbGmI5AKO5boi+ieP82QY=
+	t=1718803483; cv=none; b=ivAkyecwJgEC32YWmd/SZwAypF26vBt0nVbDpo9u0jM9nYyc7Hc0nwFxiJVRQ60Ef9gwMhGC1w6YmziD9qasakb0BmA29iMGlcNs2eS4WD5CqD6/37WC9N3zzZLmtJn0wmxn6i1YDboPzNHaPXy/ijRev79U9ob1F+fZ+elATeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802665; c=relaxed/simple;
-	bh=/vXV4t95s0B2f55fOplJj9wGJcFabYNjcRZ2aEXPcI0=;
+	s=arc-20240116; t=1718803483; c=relaxed/simple;
+	bh=MsLlM5Lat8wJPQ5rNvN5IGUI6LWH3Gk/sgUKLbGs/OE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srS7IqzCWxDf4KNFYSoM4AOf0so9D9Pl/NVZt8F1vDWKBGayLYIv4OURjrwwyc0DXGumIsa7gonnQsUv9ST6sV5WuT0L7LCD0f6gGtDGKeq63rvvjNA7gjtr565J7dSHkKHYQWQBakRPB0jjTz6h2/5AL7aRU/G72A/D/7bTzLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQwumNBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99002C2BBFC;
-	Wed, 19 Jun 2024 13:11:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y1EySt5v8LbHI0GxhuZjydSqB7dWoQXqNLbn6OgucvI+9EJLgAykSe1Hr4yDw7eVl4UAkJ2bda3GoqStqoANQFEpQ+fMRWVwfEWNZKCnkGSrQyO03yF6HABSlvH0D/TjNQLsJwk55Bx/S6dShmPoMl5pLNPoSX1Ej7dAXJ+nayM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGIkY7r5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51435C2BBFC;
+	Wed, 19 Jun 2024 13:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802665;
-	bh=/vXV4t95s0B2f55fOplJj9wGJcFabYNjcRZ2aEXPcI0=;
+	s=korg; t=1718803483;
+	bh=MsLlM5Lat8wJPQ5rNvN5IGUI6LWH3Gk/sgUKLbGs/OE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQwumNBqRKr9HHKDn6Z4BOTy1kUFm38zXOyrV+KhjZp+0M5VxFmGI3EVAmQRzijrU
-	 JxHSmew77Hwnon+jIGgIxU73lHgq/3oH+G70SC+k4BLFwO8tYFP8SYnK0o10phBej8
-	 j6z+Fr8tDXbnAN5PyFekM+h4Kkz80JrrDd+DjFtQ=
+	b=VGIkY7r5Alo/poUP3pgX5oVZPZIH/RKqFW8EAvSvJT9d/nY1+KhvJU7WDZtqUdKYK
+	 6kYZVIImWzxt03zd+VhAJtPwRE09EjfoUVGjziVw04JxKe7T8sh7k4RWno5f4R1qeZ
+	 Uzz9mFyTR+6AFhE6RCeA8O3UtfkBCQZm2X3Hwpr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 259/267] serial: port: Introduce a common helper to read properties
+	=?UTF-8?q?Leon=20Wei=C3=9F?= <leon.weiss@ruhr-uni-bochum.de>,
+	lyude@redhat.com,
+	imre.deak@intel.com,
+	regressions@lists.linux.dev,
+	Harry Wentland <harry.wentland@amd.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.9 251/281] drm/mst: Fix NULL pointer dereference at drm_dp_add_payload_part2
 Date: Wed, 19 Jun 2024 14:56:50 +0200
-Message-ID: <20240619125616.256641904@linuxfoundation.org>
+Message-ID: <20240619125619.637367093@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,209 +65,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-[ Upstream commit e894b6005dce0ed621b2788d6a249708fb6f95f9 ]
+commit 5a507b7d2be15fddb95bf8dee01110b723e2bcd9 upstream.
 
-Several serial drivers want to read the same or similar set of
-the port properties. Make a common helper for them.
+[Why]
+Commit:
+- commit 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload allocation/removement")
+accidently overwrite the commit
+- commit 54d217406afe ("drm: use mgr->dev in drm_dbg_kms in drm_dp_add_payload_part2")
+which cause regression.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240304123035.758700-4-andriy.shevchenko@linux.intel.com
+[How]
+Recover the original NULL fix and remove the unnecessary input parameter 'state' for
+drm_dp_add_payload_part2().
+
+Fixes: 5aa1dfcdf0a4 ("drm/mst: Refactor the flow for payload allocation/removement")
+Reported-by: Leon Weiß <leon.weiss@ruhr-uni-bochum.de>
+Link: https://lore.kernel.org/r/38c253ea42072cc825dc969ac4e6b9b600371cc8.camel@ruhr-uni-bochum.de/
+Cc: lyude@redhat.com
+Cc: imre.deak@intel.com
+Cc: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240307062957.2323620-1-Wayne.Lin@amd.com
+(cherry picked from commit 4545614c1d8da603e57b60dd66224d81b6ffc305)
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 87d80bfbd577 ("serial: 8250_dw: Don't use struct dw8250_data outside of 8250_dw")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_port.c | 145 +++++++++++++++++++++++++++++++
- include/linux/serial_core.h      |   2 +
- 2 files changed, 147 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |    2 +-
+ drivers/gpu/drm/display/drm_dp_mst_topology.c             |    4 +---
+ drivers/gpu/drm/i915/display/intel_dp_mst.c               |    2 +-
+ drivers/gpu/drm/nouveau/dispnv50/disp.c                   |    2 +-
+ include/drm/display/drm_dp_mst_helper.h                   |    1 -
+ 5 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/tty/serial/serial_port.c b/drivers/tty/serial/serial_port.c
-index ed3953bd04073..469ad26cde487 100644
---- a/drivers/tty/serial/serial_port.c
-+++ b/drivers/tty/serial/serial_port.c
-@@ -8,7 +8,10 @@
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -363,7 +363,7 @@ void dm_helpers_dp_mst_send_payload_allo
+ 	mst_state = to_drm_dp_mst_topology_state(mst_mgr->base.state);
+ 	new_payload = drm_atomic_get_mst_payload_state(mst_state, aconnector->mst_output_port);
  
- #include <linux/device.h>
- #include <linux/module.h>
-+#include <linux/of.h>
-+#include <linux/platform_device.h>
- #include <linux/pm_runtime.h>
-+#include <linux/property.h>
- #include <linux/serial_core.h>
- #include <linux/spinlock.h>
+-	ret = drm_dp_add_payload_part2(mst_mgr, mst_state->base.state, new_payload);
++	ret = drm_dp_add_payload_part2(mst_mgr, new_payload);
  
-@@ -146,6 +149,148 @@ void uart_remove_one_port(struct uart_driver *drv, struct uart_port *port)
+ 	if (ret) {
+ 		amdgpu_dm_set_mst_status(&aconnector->mst_status,
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -3421,7 +3421,6 @@ EXPORT_SYMBOL(drm_dp_remove_payload_part
+ /**
+  * drm_dp_add_payload_part2() - Execute payload update part 2
+  * @mgr: Manager to use.
+- * @state: The global atomic state
+  * @payload: The payload to update
+  *
+  * If @payload was successfully assigned a starting time slot by drm_dp_add_payload_part1(), this
+@@ -3430,14 +3429,13 @@ EXPORT_SYMBOL(drm_dp_remove_payload_part
+  * Returns: 0 on success, negative error code on failure.
+  */
+ int drm_dp_add_payload_part2(struct drm_dp_mst_topology_mgr *mgr,
+-			     struct drm_atomic_state *state,
+ 			     struct drm_dp_mst_atomic_payload *payload)
+ {
+ 	int ret = 0;
+ 
+ 	/* Skip failed payloads */
+ 	if (payload->payload_allocation_status != DRM_DP_MST_PAYLOAD_ALLOCATION_DFP) {
+-		drm_dbg_kms(state->dev, "Part 1 of payload creation for %s failed, skipping part 2\n",
++		drm_dbg_kms(mgr->dev, "Part 1 of payload creation for %s failed, skipping part 2\n",
+ 			    payload->port->connector->name);
+ 		return -EIO;
+ 	}
+--- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+@@ -1160,7 +1160,7 @@ static void intel_mst_enable_dp(struct i
+ 	if (first_mst_stream)
+ 		intel_ddi_wait_for_fec_status(encoder, pipe_config, true);
+ 
+-	drm_dp_add_payload_part2(&intel_dp->mst_mgr, &state->base,
++	drm_dp_add_payload_part2(&intel_dp->mst_mgr,
+ 				 drm_atomic_get_mst_payload_state(mst_state, connector->port));
+ 
+ 	if (DISPLAY_VER(dev_priv) >= 12)
+--- a/drivers/gpu/drm/nouveau/dispnv50/disp.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/disp.c
+@@ -915,7 +915,7 @@ nv50_msto_cleanup(struct drm_atomic_stat
+ 		msto->disabled = false;
+ 		drm_dp_remove_payload_part2(mgr, new_mst_state, old_payload, new_payload);
+ 	} else if (msto->enabled) {
+-		drm_dp_add_payload_part2(mgr, state, new_payload);
++		drm_dp_add_payload_part2(mgr, new_payload);
+ 		msto->enabled = false;
+ 	}
  }
- EXPORT_SYMBOL(uart_remove_one_port);
- 
-+/**
-+ * __uart_read_properties - read firmware properties of the given UART port
-+ * @port: corresponding port
-+ * @use_defaults: apply defaults (when %true) or validate the values (when %false)
-+ *
-+ * The following device properties are supported:
-+ *   - clock-frequency (optional)
-+ *   - fifo-size (optional)
-+ *   - no-loopback-test (optional)
-+ *   - reg-shift (defaults may apply)
-+ *   - reg-offset (value may be validated)
-+ *   - reg-io-width (defaults may apply or value may be validated)
-+ *   - interrupts (OF only)
-+ *   - serial [alias ID] (OF only)
-+ *
-+ * If the port->dev is of struct platform_device type the interrupt line
-+ * will be retrieved via platform_get_irq() call against that device.
-+ * Otherwise it will be assigned by fwnode_irq_get() call. In both cases
-+ * the index 0 of the resource is used.
-+ *
-+ * The caller is responsible to initialize the following fields of the @port
-+ *   ->dev (must be valid)
-+ *   ->flags
-+ *   ->mapbase
-+ *   ->mapsize
-+ *   ->regshift (if @use_defaults is false)
-+ * before calling this function. Alternatively the above mentioned fields
-+ * may be zeroed, in such case the only ones, that have associated properties
-+ * found, will be set to the respective values.
-+ *
-+ * If no error happened, the ->irq, ->mapbase, ->mapsize will be altered.
-+ * The ->iotype is always altered.
-+ *
-+ * When @use_defaults is true and the respective property is not found
-+ * the following values will be applied:
-+ *   ->regshift = 0
-+ * In this case IRQ must be provided, otherwise an error will be returned.
-+ *
-+ * When @use_defaults is false and the respective property is found
-+ * the following values will be validated:
-+ *   - reg-io-width (->iotype)
-+ *   - reg-offset (->mapsize against ->mapbase)
-+ *
-+ * Returns: 0 on success or negative errno on failure
-+ */
-+static int __uart_read_properties(struct uart_port *port, bool use_defaults)
-+{
-+	struct device *dev = port->dev;
-+	u32 value;
-+	int ret;
-+
-+	/* Read optional UART functional clock frequency */
-+	device_property_read_u32(dev, "clock-frequency", &port->uartclk);
-+
-+	/* Read the registers alignment (default: 8-bit) */
-+	ret = device_property_read_u32(dev, "reg-shift", &value);
-+	if (ret)
-+		port->regshift = use_defaults ? 0 : port->regshift;
-+	else
-+		port->regshift = value;
-+
-+	/* Read the registers I/O access type (default: MMIO 8-bit) */
-+	ret = device_property_read_u32(dev, "reg-io-width", &value);
-+	if (ret) {
-+		port->iotype = UPIO_MEM;
-+	} else {
-+		switch (value) {
-+		case 1:
-+			port->iotype = UPIO_MEM;
-+			break;
-+		case 2:
-+			port->iotype = UPIO_MEM16;
-+			break;
-+		case 4:
-+			port->iotype = device_is_big_endian(dev) ? UPIO_MEM32BE : UPIO_MEM32;
-+			break;
-+		default:
-+			if (!use_defaults) {
-+				dev_err(dev, "Unsupported reg-io-width (%u)\n", value);
-+				return -EINVAL;
-+			}
-+			port->iotype = UPIO_UNKNOWN;
-+			break;
-+		}
-+	}
-+
-+	/* Read the address mapping base offset (default: no offset) */
-+	ret = device_property_read_u32(dev, "reg-offset", &value);
-+	if (ret)
-+		value = 0;
-+
-+	/* Check for shifted address mapping overflow */
-+	if (!use_defaults && port->mapsize < value) {
-+		dev_err(dev, "reg-offset %u exceeds region size %pa\n", value, &port->mapsize);
-+		return -EINVAL;
-+	}
-+
-+	port->mapbase += value;
-+	port->mapsize -= value;
-+
-+	/* Read optional FIFO size */
-+	device_property_read_u32(dev, "fifo-size", &port->fifosize);
-+
-+	if (device_property_read_bool(dev, "no-loopback-test"))
-+		port->flags |= UPF_SKIP_TEST;
-+
-+	/* Get index of serial line, if found in DT aliases */
-+	ret = of_alias_get_id(dev_of_node(dev), "serial");
-+	if (ret >= 0)
-+		port->line = ret;
-+
-+	if (dev_is_platform(dev))
-+		ret = platform_get_irq(to_platform_device(dev), 0);
-+	else
-+		ret = fwnode_irq_get(dev_fwnode(dev), 0);
-+	if (ret == -EPROBE_DEFER)
-+		return ret;
-+	if (ret > 0)
-+		port->irq = ret;
-+	else if (use_defaults)
-+		/* By default IRQ support is mandatory */
-+		return ret;
-+	else
-+		port->irq = 0;
-+
-+	port->flags |= UPF_SHARE_IRQ;
-+
-+	return 0;
-+}
-+
-+int uart_read_port_properties(struct uart_port *port)
-+{
-+	return __uart_read_properties(port, true);
-+}
-+EXPORT_SYMBOL_GPL(uart_read_port_properties);
-+
-+int uart_read_and_validate_port_properties(struct uart_port *port)
-+{
-+	return __uart_read_properties(port, false);
-+}
-+EXPORT_SYMBOL_GPL(uart_read_and_validate_port_properties);
-+
- static struct device_driver serial_port_driver = {
- 	.name = "port",
- 	.suppress_bind_attrs = true,
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 412de73547521..5da5eb719f614 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -961,6 +961,8 @@ int uart_register_driver(struct uart_driver *uart);
- void uart_unregister_driver(struct uart_driver *uart);
- int uart_add_one_port(struct uart_driver *reg, struct uart_port *port);
- void uart_remove_one_port(struct uart_driver *reg, struct uart_port *port);
-+int uart_read_port_properties(struct uart_port *port);
-+int uart_read_and_validate_port_properties(struct uart_port *port);
- bool uart_match_port(const struct uart_port *port1,
- 		const struct uart_port *port2);
- 
--- 
-2.43.0
-
+--- a/include/drm/display/drm_dp_mst_helper.h
++++ b/include/drm/display/drm_dp_mst_helper.h
+@@ -851,7 +851,6 @@ int drm_dp_add_payload_part1(struct drm_
+ 			     struct drm_dp_mst_topology_state *mst_state,
+ 			     struct drm_dp_mst_atomic_payload *payload);
+ int drm_dp_add_payload_part2(struct drm_dp_mst_topology_mgr *mgr,
+-			     struct drm_atomic_state *state,
+ 			     struct drm_dp_mst_atomic_payload *payload);
+ void drm_dp_remove_payload_part1(struct drm_dp_mst_topology_mgr *mgr,
+ 				 struct drm_dp_mst_topology_state *mst_state,
 
 
 
