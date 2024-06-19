@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-54141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01CE490ECE7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62A4790EB9E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 734CDB236C1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B2D91F22F41
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A51C147C89;
-	Wed, 19 Jun 2024 13:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E40C145352;
+	Wed, 19 Jun 2024 12:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KP6ZYWcA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvtDRdEA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8F7143C58;
-	Wed, 19 Jun 2024 13:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C157214388C;
+	Wed, 19 Jun 2024 12:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802706; cv=none; b=VZLbIx2jDJbnvPH8apNKy0V9IR0/yIBmztLSNXIxcfVJwKssahzeyDs942ux3fdGiqfL6x1jPLq/kPwKwlsSPEAScBSfmDSUPlcwvkovWoHhHL72MAb5IumJ1/63dja1CTc9va2elPedTdrNm6RD+SrkwrsKuBmwzfiCGialDms=
+	t=1718801939; cv=none; b=f8Zt7le2PmSzECSR2jXLChcNQ7K3wshB3yY3UsKHfvAljlwmqzaawiwnLljfpYmPdb9ONnKPBDHmSt9wUP25QaNAJN4tIyPD86w3YP8Sc+da2gSwjKtuzSWjKC6Z4IAxVx0ErYJIGzc6nr/STbTRWlM1q53LMkim9caO0x73cnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802706; c=relaxed/simple;
-	bh=JxIESsJKq4LWKt50G66ajxf+eYuvGuibKPCq1rrExzg=;
+	s=arc-20240116; t=1718801939; c=relaxed/simple;
+	bh=mRZ55QTw4vvJrYH/im8ItzVw11KEN26UwQlt4wUFsBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gl8Lv+9Sk38EX0xHB+xZ1Gw20xnUQ7tAfgzmUBiahGKLZiXdXBWslYfnxhe0jBDOnvD5225gEoGhlGJJbDQ0Q+W65GQfPhJubZooTtm0cuicMTWePVFTt0t1Ag5XSAeo6KGmJVN/HiFgTeCGK4TSloK90LHbZ56R7WP9ede8zI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KP6ZYWcA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFD9C2BBFC;
-	Wed, 19 Jun 2024 13:11:45 +0000 (UTC)
+	 MIME-Version; b=qmujKfXJmhk6ZDXtxFxq8KAiEfGTrfOnxxox6kB+mLg5TQ9QrZXBtgRVvRjkaGJVBAT14+3KVcT/L/tNMsHR8PlHxnwSZ2xduDnWLvby037C2o9XZAq4olITzzv80S5EHtHG7RsbVIlS3g7JEQnDhXTYyns5LcHsdjuq765xX44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uvtDRdEA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC3BC2BBFC;
+	Wed, 19 Jun 2024 12:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802706;
-	bh=JxIESsJKq4LWKt50G66ajxf+eYuvGuibKPCq1rrExzg=;
+	s=korg; t=1718801939;
+	bh=mRZ55QTw4vvJrYH/im8ItzVw11KEN26UwQlt4wUFsBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KP6ZYWcA135+85Y4RpMLtQE25x6TycINxpu2MNtci5ZRry6Aq0JD6MqGrDnVrVFZv
-	 jfg4A3WTuu/Np/88BuFJN8vhqG7qsQEoiVjEcuZxvdzvi8P3dx5rrW5HmbaHjNxnnj
-	 enkyIpVspd2QeIvSF6OaeDPYXP/WtHdmIPdyAXB4=
+	b=uvtDRdEAMFsIlaYMdzcaZEqO4YNLIWwgpcg17Zel9xTt+3GGhJQV487ogGIYNGffl
+	 tNrB6Gum3vNmuf3UwvF4EYz6hTF4Ag7yiYILjm2b36ApPhEOdD1HhJTilhQ/PP5oWb
+	 6Lclpd6JjwFDSdHZOceZEw+9PXoarxG5SIJB3QxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chanwoo Lee <cw9316.lee@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 020/281] scsi: ufs: mcq: Fix error output and clean up ufshcd_mcq_abort()
+Subject: [PATCH 6.6 028/267] ipv6: ioam: block BH from ioam6_output()
 Date: Wed, 19 Jun 2024 14:52:59 +0200
-Message-ID: <20240619125610.625907418@linuxfoundation.org>
+Message-ID: <20240619125607.445063970@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chanwoo Lee <cw9316.lee@samsung.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d53b681ce9ca7db5ef4ecb8d2cf465ae4a031264 ]
+[ Upstream commit 2fe40483ec257de2a0d819ef88e3e76c7e261319 ]
 
-An error unrelated to ufshcd_try_to_abort_task is being logged and can
-cause confusion. Modify ufshcd_mcq_abort() to print the result of the abort
-failure. For readability, return immediately instead of 'goto'.
+As explained in commit 1378817486d6 ("tipc: block BH
+before using dst_cache"), net/core/dst_cache.c
+helpers need to be called with BH disabled.
 
-Fixes: f1304d442077 ("scsi: ufs: mcq: Added ufshcd_mcq_abort()")
-Signed-off-by: Chanwoo Lee <cw9316.lee@samsung.com>
-Link: https://lore.kernel.org/r/20240524015904.1116005-1-cw9316.lee@samsung.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Disabling preemption in ioam6_output() is not good enough,
+because ioam6_output() is called from process context,
+lwtunnel_output() only uses rcu_read_lock().
+
+We might be interrupted by a softirq, re-enter ioam6_output()
+and corrupt dst_cache data structures.
+
+Fix the race by using local_bh_disable() instead of
+preempt_disable().
+
+Fixes: 8cb3bf8bff3c ("ipv6: ioam: Add support for the ip6ip6 encapsulation")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Justin Iurman <justin.iurman@uliege.be>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/20240531132636.2637995-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-mcq.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ net/ipv6/ioam6_iptunnel.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index 005d63ab1f441..8944548c30fa1 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -634,20 +634,20 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
- 	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
- 	struct ufs_hw_queue *hwq;
- 	unsigned long flags;
--	int err = FAILED;
-+	int err;
+diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
+index f6f5b83dd954d..a5cfc5b0b206b 100644
+--- a/net/ipv6/ioam6_iptunnel.c
++++ b/net/ipv6/ioam6_iptunnel.c
+@@ -351,9 +351,9 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 		goto drop;
  
- 	if (!ufshcd_cmd_inflight(lrbp->cmd)) {
- 		dev_err(hba->dev,
- 			"%s: skip abort. cmd at tag %d already completed.\n",
- 			__func__, tag);
--		goto out;
-+		return FAILED;
- 	}
+ 	if (!ipv6_addr_equal(&orig_daddr, &ipv6_hdr(skb)->daddr)) {
+-		preempt_disable();
++		local_bh_disable();
+ 		dst = dst_cache_get(&ilwt->cache);
+-		preempt_enable();
++		local_bh_enable();
  
- 	/* Skip task abort in case previous aborts failed and report failure */
- 	if (lrbp->req_abort_skip) {
- 		dev_err(hba->dev, "%s: skip abort. tag %d failed earlier\n",
- 			__func__, tag);
--		goto out;
-+		return FAILED;
- 	}
+ 		if (unlikely(!dst)) {
+ 			struct ipv6hdr *hdr = ipv6_hdr(skb);
+@@ -373,9 +373,9 @@ static int ioam6_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ 				goto drop;
+ 			}
  
- 	hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(cmd));
-@@ -659,7 +659,7 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
- 		 */
- 		dev_err(hba->dev, "%s: cmd found in sq. hwq=%d, tag=%d\n",
- 			__func__, hwq->id, tag);
--		goto out;
-+		return FAILED;
- 	}
+-			preempt_disable();
++			local_bh_disable();
+ 			dst_cache_set_ip6(&ilwt->cache, dst, &fl6.saddr);
+-			preempt_enable();
++			local_bh_enable();
+ 		}
  
- 	/*
-@@ -667,18 +667,17 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
- 	 * in the completion queue either. Query the device to see if
- 	 * the command is being processed in the device.
- 	 */
--	if (ufshcd_try_to_abort_task(hba, tag)) {
-+	err = ufshcd_try_to_abort_task(hba, tag);
-+	if (err) {
- 		dev_err(hba->dev, "%s: device abort failed %d\n", __func__, err);
- 		lrbp->req_abort_skip = true;
--		goto out;
-+		return FAILED;
- 	}
- 
--	err = SUCCESS;
- 	spin_lock_irqsave(&hwq->cq_lock, flags);
- 	if (ufshcd_cmd_inflight(lrbp->cmd))
- 		ufshcd_release_scsi_cmd(hba, lrbp);
- 	spin_unlock_irqrestore(&hwq->cq_lock, flags);
- 
--out:
--	return err;
-+	return SUCCESS;
- }
+ 		skb_dst_drop(skb);
 -- 
 2.43.0
 
