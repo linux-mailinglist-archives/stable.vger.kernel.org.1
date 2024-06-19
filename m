@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-53877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC88290EB9D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DCDA90ECE4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2BBF1C20EF6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D3AF1C20D5E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7541459F2;
-	Wed, 19 Jun 2024 12:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94FB14B95F;
+	Wed, 19 Jun 2024 13:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnLgsAFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LmU7E/q/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99DF14388C;
-	Wed, 19 Jun 2024 12:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CB5147C7B;
+	Wed, 19 Jun 2024 13:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801937; cv=none; b=qIXQP+NLhuaGuqzaMeUt4Z+azBqKJR64cvRGj7lGl4aJPcrrUK6InJhsFw8x4nqHWaKlUYE5XWuj9YFTMDYp4BptQann5OP8/Xs36oWwMV8vHlGLPaK8oB1eraS1/FgW6lozezsi0+eo9+CN1CAEGjy2xgP9gJQv2YZiz5vDTO0=
+	t=1718802703; cv=none; b=iVNpesXE0GDo36xpbuRl5/NCjxv73W9kc1WEcd97r6NzGR8JIxkv9Sh6468flc2K18gheMGr3PAL9X0BI1IZK8UylqJWiZy17nLJ9qFVpfXgUWssMh6+ltmcVMJ0WBE62+64ARRzBQE6BSAPba0utrJHoG/ejqTJEpnJGhbinZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801937; c=relaxed/simple;
-	bh=NnhkjcEELnvG7x2b50p4xV//WXW+ISD/E1FrD4UY0j8=;
+	s=arc-20240116; t=1718802703; c=relaxed/simple;
+	bh=D0sILxWCFRjBig6K6bKh5JXJqo37PtD2JYbrASP0rvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJeZG16v9NN9JzBy7HURxyIPPOX/0V/+tMY3LhLcEgnkgzcun7q582goXRy2jWSakQXWder6LOG+udAwie857eLkwMuTpHUDemQK82te4Dt5LxF5BWzsGnqDJ3uXJIgQvckc7ulM1ZTuhENAJQKYNLZyZR73aGCs0GQpewLAeDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnLgsAFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C2DC2BBFC;
-	Wed, 19 Jun 2024 12:58:56 +0000 (UTC)
+	 MIME-Version; b=FCLrCU5Qb/ss4tJGPW97krq3iizzfgQJSqgChhCsyDZ136hiRYTjaWJOXPS4/ELsIcqU+TzpVNrFf9gadpZ77eToKUWooYO8LX1gkoUz9IMYbZAgFjBO3Q0sluDMRtTXwYK6QcRrkFdosg4IiRBttTETzsuUDF8Mfhv5du9Wu+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LmU7E/q/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C734C2BBFC;
+	Wed, 19 Jun 2024 13:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718801936;
-	bh=NnhkjcEELnvG7x2b50p4xV//WXW+ISD/E1FrD4UY0j8=;
+	s=korg; t=1718802703;
+	bh=D0sILxWCFRjBig6K6bKh5JXJqo37PtD2JYbrASP0rvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HnLgsAFNjkuU8smg3WygyIIViUX3YvmytaKd84xymXkXDJLuTYuLJW/3oAvF2yzpE
-	 agraJDxAPjdYI9bzj5N5XugELgGpO48yro/3cZgXctiExjSCuZM1cPAyBZNekUtdfZ
-	 AiYNjvUm1Q6t17l6mSNF3eBHPuc/WHKz9KWewiGA=
+	b=LmU7E/q/0LM22y8DDznSgKlMlV8kvx+1h6OADTeXtMG9rrY+6L+LjAxRT2xdi0Klr
+	 SCs9ocngG7WXsQt6XNk7FByrraK5cI4jBlNhR99hx1Rwv+7K1xi9c9StPgwLPeCzfR
+	 h5b1xBqbdKtwC9Vv66h4iaulIPOi6Mq+AtfH+I2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Stocker <mstocker@barracuda.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Ronak Doshi <ronak.doshi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lingbo Kong <quic_lingbok@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/267] vmxnet3: disable rx data ring on dma allocation failure
+Subject: [PATCH 6.9 019/281] wifi: mac80211: correctly parse Spatial Reuse Parameter Set element
 Date: Wed, 19 Jun 2024 14:52:58 +0200
-Message-ID: <20240619125607.405687595@linuxfoundation.org>
+Message-ID: <20240619125610.588028218@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Stocker <mstocker@barracuda.com>
+From: Lingbo Kong <quic_lingbok@quicinc.com>
 
-[ Upstream commit ffbe335b8d471f79b259e950cb20999700670456 ]
+[ Upstream commit a26d8dc5227f449a54518a8b40733a54c6600a8b ]
 
-When vmxnet3_rq_create() fails to allocate memory for rq->data_ring.base,
-the subsequent call to vmxnet3_rq_destroy_all_rxdataring does not reset
-rq->data_ring.desc_size for the data ring that failed, which presumably
-causes the hypervisor to reference it on packet reception.
+Currently, the way of parsing Spatial Reuse Parameter Set element is
+incorrect and some members of struct ieee80211_he_obss_pd are not assigned.
 
-To fix this bug, rq->data_ring.desc_size needs to be set to 0 to tell
-the hypervisor to disable this feature.
+To address this issue, it must be parsed in the order of the elements of
+Spatial Reuse Parameter Set defined in the IEEE Std 802.11ax specification.
 
-[   95.436876] kernel BUG at net/core/skbuff.c:207!
-[   95.439074] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-[   95.440411] CPU: 7 PID: 0 Comm: swapper/7 Not tainted 6.9.3-dirty #1
-[   95.441558] Hardware name: VMware, Inc. VMware Virtual
-Platform/440BX Desktop Reference Platform, BIOS 6.00 12/12/2018
-[   95.443481] RIP: 0010:skb_panic+0x4d/0x4f
-[   95.444404] Code: 4f 70 50 8b 87 c0 00 00 00 50 8b 87 bc 00 00 00 50
-ff b7 d0 00 00 00 4c 8b 8f c8 00 00 00 48 c7 c7 68 e8 be 9f e8 63 58 f9
-ff <0f> 0b 48 8b 14 24 48 c7 c1 d0 73 65 9f e8 a1 ff ff ff 48 8b 14 24
-[   95.447684] RSP: 0018:ffffa13340274dd0 EFLAGS: 00010246
-[   95.448762] RAX: 0000000000000089 RBX: ffff8fbbc72b02d0 RCX: 000000000000083f
-[   95.450148] RDX: 0000000000000000 RSI: 00000000000000f6 RDI: 000000000000083f
-[   95.451520] RBP: 000000000000002d R08: 0000000000000000 R09: ffffa13340274c60
-[   95.452886] R10: ffffffffa04ed468 R11: 0000000000000002 R12: 0000000000000000
-[   95.454293] R13: ffff8fbbdab3c2d0 R14: ffff8fbbdbd829e0 R15: ffff8fbbdbd809e0
-[   95.455682] FS:  0000000000000000(0000) GS:ffff8fbeefd80000(0000) knlGS:0000000000000000
-[   95.457178] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   95.458340] CR2: 00007fd0d1f650c8 CR3: 0000000115f28000 CR4: 00000000000406f0
-[   95.459791] Call Trace:
-[   95.460515]  <IRQ>
-[   95.461180]  ? __die_body.cold+0x19/0x27
-[   95.462150]  ? die+0x2e/0x50
-[   95.462976]  ? do_trap+0xca/0x110
-[   95.463973]  ? do_error_trap+0x6a/0x90
-[   95.464966]  ? skb_panic+0x4d/0x4f
-[   95.465901]  ? exc_invalid_op+0x50/0x70
-[   95.466849]  ? skb_panic+0x4d/0x4f
-[   95.467718]  ? asm_exc_invalid_op+0x1a/0x20
-[   95.468758]  ? skb_panic+0x4d/0x4f
-[   95.469655]  skb_put.cold+0x10/0x10
-[   95.470573]  vmxnet3_rq_rx_complete+0x862/0x11e0 [vmxnet3]
-[   95.471853]  vmxnet3_poll_rx_only+0x36/0xb0 [vmxnet3]
-[   95.473185]  __napi_poll+0x2b/0x160
-[   95.474145]  net_rx_action+0x2c6/0x3b0
-[   95.475115]  handle_softirqs+0xe7/0x2a0
-[   95.476122]  __irq_exit_rcu+0x97/0xb0
-[   95.477109]  common_interrupt+0x85/0xa0
-[   95.478102]  </IRQ>
-[   95.478846]  <TASK>
-[   95.479603]  asm_common_interrupt+0x26/0x40
-[   95.480657] RIP: 0010:pv_native_safe_halt+0xf/0x20
-[   95.481801] Code: 22 d7 e9 54 87 01 00 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa eb 07 0f 00 2d 93 ba 3b 00 fb f4 <e9> 2c 87 01 00 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90
-[   95.485563] RSP: 0018:ffffa133400ffe58 EFLAGS: 00000246
-[   95.486882] RAX: 0000000000004000 RBX: ffff8fbbc1d14064 RCX: 0000000000000000
-[   95.488477] RDX: ffff8fbeefd80000 RSI: ffff8fbbc1d14000 RDI: 0000000000000001
-[   95.490067] RBP: ffff8fbbc1d14064 R08: ffffffffa0652260 R09: 00000000000010d3
-[   95.491683] R10: 0000000000000018 R11: ffff8fbeefdb4764 R12: ffffffffa0652260
-[   95.493389] R13: ffffffffa06522e0 R14: 0000000000000001 R15: 0000000000000000
-[   95.495035]  acpi_safe_halt+0x14/0x20
-[   95.496127]  acpi_idle_do_entry+0x2f/0x50
-[   95.497221]  acpi_idle_enter+0x7f/0xd0
-[   95.498272]  cpuidle_enter_state+0x81/0x420
-[   95.499375]  cpuidle_enter+0x2d/0x40
-[   95.500400]  do_idle+0x1e5/0x240
-[   95.501385]  cpu_startup_entry+0x29/0x30
-[   95.502422]  start_secondary+0x11c/0x140
-[   95.503454]  common_startup_64+0x13e/0x141
-[   95.504466]  </TASK>
-[   95.505197] Modules linked in: nft_fib_inet nft_fib_ipv4
-nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6
-nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6
-nf_defrag_ipv4 rfkill ip_set nf_tables vsock_loopback
-vmw_vsock_virtio_transport_common qrtr vmw_vsock_vmci_transport vsock
-sunrpc binfmt_misc pktcdvd vmw_balloon pcspkr vmw_vmci i2c_piix4 joydev
-loop dm_multipath nfnetlink zram crct10dif_pclmul crc32_pclmul vmwgfx
-crc32c_intel polyval_clmulni polyval_generic ghash_clmulni_intel
-sha512_ssse3 sha256_ssse3 vmxnet3 sha1_ssse3 drm_ttm_helper vmw_pvscsi
-ttm ata_generic pata_acpi serio_raw scsi_dh_rdac scsi_dh_emc
-scsi_dh_alua ip6_tables ip_tables fuse
-[   95.516536] ---[ end trace 0000000000000000 ]---
+The diagram of the Spatial Reuse Parameter Set element (IEEE Std 802.11ax
+-2021-9.4.2.252).
 
-Fixes: 6f4833383e85 ("net: vmxnet3: Fix NULL pointer dereference in vmxnet3_rq_rx_complete()")
-Signed-off-by: Matthias Stocker <mstocker@barracuda.com>
-Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Reviewed-by: Ronak Doshi <ronak.doshi@broadcom.com>
-Link: https://lore.kernel.org/r/20240531103711.101961-1-mstocker@barracuda.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+-------------------------------------------------------------------------
+|       |      |         |       |Non-SRG|  SRG  | SRG   | SRG  | SRG   |
+|Element|Length| Element |  SR   |OBSS PD|OBSS PD|OBSS PD| BSS  |Partial|
+|   ID  |      |   ID    |Control|  Max  |  Min  | Max   |Color | BSSID |
+|       |      |Extension|       | Offset| Offset|Offset |Bitmap|Bitmap |
+-------------------------------------------------------------------------
+
+Fixes: 1ced169cc1c2 ("mac80211: allow setting spatial reuse parameters from bss_conf")
+Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+Link: https://msgid.link/20240516021854.5682-3-quic_lingbok@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vmxnet3/vmxnet3_drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/he.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
-index 0578864792b60..beebe09eb88ff 100644
---- a/drivers/net/vmxnet3/vmxnet3_drv.c
-+++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -2034,8 +2034,8 @@ vmxnet3_rq_destroy_all_rxdataring(struct vmxnet3_adapter *adapter)
- 					  rq->data_ring.base,
- 					  rq->data_ring.basePA);
- 			rq->data_ring.base = NULL;
--			rq->data_ring.desc_size = 0;
- 		}
-+		rq->data_ring.desc_size = 0;
+diff --git a/net/mac80211/he.c b/net/mac80211/he.c
+index 9f5ffdc9db284..ecbb042dd0433 100644
+--- a/net/mac80211/he.c
++++ b/net/mac80211/he.c
+@@ -230,15 +230,21 @@ ieee80211_he_spr_ie_to_bss_conf(struct ieee80211_vif *vif,
+ 
+ 	if (!he_spr_ie_elem)
+ 		return;
++
++	he_obss_pd->sr_ctrl = he_spr_ie_elem->he_sr_control;
+ 	data = he_spr_ie_elem->optional;
+ 
+ 	if (he_spr_ie_elem->he_sr_control &
+ 	    IEEE80211_HE_SPR_NON_SRG_OFFSET_PRESENT)
+-		data++;
++		he_obss_pd->non_srg_max_offset = *data++;
++
+ 	if (he_spr_ie_elem->he_sr_control &
+ 	    IEEE80211_HE_SPR_SRG_INFORMATION_PRESENT) {
+-		he_obss_pd->max_offset = *data++;
+ 		he_obss_pd->min_offset = *data++;
++		he_obss_pd->max_offset = *data++;
++		memcpy(he_obss_pd->bss_color_bitmap, data, 8);
++		data += 8;
++		memcpy(he_obss_pd->partial_bssid_bitmap, data, 8);
+ 		he_obss_pd->enable = true;
  	}
  }
- 
 -- 
 2.43.0
 
