@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-53929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327AA90EBED
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:02:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AF790ED1D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD9361F24CDF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:02:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 044041C20AFB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347AB14BF89;
-	Wed, 19 Jun 2024 13:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68296145334;
+	Wed, 19 Jun 2024 13:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UenQMEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckcimpYy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E590513DB90;
-	Wed, 19 Jun 2024 13:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265891422B8;
+	Wed, 19 Jun 2024 13:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802090; cv=none; b=qvUxAn3cnERiy8Tua4oqlyEIRKJ1WLABpzFP9fsuWv40ywTnxY8AWTh+bbe9r9/CMkmYerlgz8tiiXH4z0JZXjXdvxozXXpw9kpbqq8r8wvVW7J41YGBdw96LOwJgdLSt10x8DQacTeIl4jhRDI52QCx6iIJNJfPXV0sbLc4rWM=
+	t=1718802857; cv=none; b=ry2ZwoNf2i1klCffHqoZVJtLbiQv2p3c6WmupRjKis40oB+GCfUCgdtlgBU6NT8Cb8RQPmjoitVMq7ep5Ox6dJXV1EEAsXHkgd/2mTRTQuTew3arftsuPkYYUJLQ5Z7rdKa8pd+3ZjyaPb1cXpQb3Mt1t/jVSfEGV1iMsn5ie7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802090; c=relaxed/simple;
-	bh=WMfxHNsmxmhx9JgcPc/Vu1GpFlYAwNgpL+LcQYM1QaY=;
+	s=arc-20240116; t=1718802857; c=relaxed/simple;
+	bh=OdJ5+HSLrbZpMwlEDbHD8ZsDmQ+aV5dRX43cWvc1Dqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aKb5Ssr9+CTTyAA7cCyqGeyDypduqn4mHjRAxnCPes63qgJH6tCxOzB7010cs8m1BaywVrjXuZs8WOa05f4mroS2W9QFEpGHtwspnQrSDYQk3RUgIfkiC+iJxWAt9/ss1KYxmOk2amp9piqsul4mnx/BIvuv0ozMQQRdCrF5POw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UenQMEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D1BC2BBFC;
-	Wed, 19 Jun 2024 13:01:29 +0000 (UTC)
+	 MIME-Version; b=Ys/Aa1dXRXqWb/Lz8S60IxRpmFAM7D1+LsU7iCm1NqmCwCY8Yo3GFrHQhzzs67OJm76Z6efShCQAcawJR/g2A01VITTtTpUE2ktqxVflVlZzeupkujSujgp7qS4ERpUst7XX00SZsxWc7S/D2nN6+4vwQf65cWTm7Z5+cvlf2zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckcimpYy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1995C2BBFC;
+	Wed, 19 Jun 2024 13:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802089;
-	bh=WMfxHNsmxmhx9JgcPc/Vu1GpFlYAwNgpL+LcQYM1QaY=;
+	s=korg; t=1718802857;
+	bh=OdJ5+HSLrbZpMwlEDbHD8ZsDmQ+aV5dRX43cWvc1Dqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2UenQMEECGE6TPwoXZusBu1t78kC2YfsA74luwBroKzDGYK9eTGoM8Itb+bt7lGIY
-	 99BZsKFLOkhaDXj4AbxGJyWAmkuxoY47hXNwze/4Kn0hkaT922La05KvRPNSpxoc+z
-	 oGtOWrKDnMOtpJPabpaAZstNMuc1gw6uIrvjPpgQ=
+	b=ckcimpYy7U8oPnh3gHsdn4xDD/TMbo+RcVcYrfmRWDRlwUa3Cv0l7OohtDdfmdAcX
+	 TPn1tqtaUP/NpVrQwBNmMQxpJrh4GBYGL+1lvaxLhOXTc7GlOYBUAis9Iqh67ewcZt
+	 r+veXSYGZ0UksPsVeQxDK/L0A2s6sG5UyyeipeJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/267] af_unix: Annotate data-races around sk->sk_state in unix_write_space() and poll().
+Subject: [PATCH 6.9 043/281] rtnetlink: make the "split" NLM_DONE handling generic
 Date: Wed, 19 Jun 2024 14:53:22 +0200
-Message-ID: <20240619125608.321862156@linuxfoundation.org>
+Message-ID: <20240619125611.507096825@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +64,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit eb0718fb3e97ad0d6f4529b810103451c90adf94 ]
+[ Upstream commit 5b4b62a169e10401cca34a6e7ac39161986f5605 ]
 
-unix_poll() and unix_dgram_poll() read sk->sk_state locklessly and
-calls unix_writable() which also reads sk->sk_state without holding
-unix_state_lock().
+Jaroslav reports Dell's OMSA Systems Management Data Engine
+expects NLM_DONE in a separate recvmsg(), both for rtnl_dump_ifinfo()
+and inet_dump_ifaddr(). We already added a similar fix previously in
+commit 460b0d33cf10 ("inet: bring NLM_DONE out to a separate recv() again")
 
-Let's use READ_ONCE() in unix_poll() and unix_dgram_poll() and pass
-it to unix_writable().
+Instead of modifying all the dump handlers, and making them look
+different than modern for_each_netdev_dump()-based dump handlers -
+put the workaround in rtnetlink code. This will also help us move
+the custom rtnl-locking from af_netlink in the future (in net-next).
 
-While at it, we remove TCP_SYN_SENT check in unix_dgram_poll() as
-that state does not exist for AF_UNIX socket since the code was added.
+Note that this change is not touching rtnl_dump_all(). rtnl_dump_all()
+is different kettle of fish and a potential problem. We now mix families
+in a single recvmsg(), but NLM_DONE is not coalesced.
 
-Fixes: 1586a5877db9 ("af_unix: do not report POLLOUT on listeners")
-Fixes: 3c73419c09a5 ("af_unix: fix 'poll for write'/ connected DGRAM sockets")
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested:
+
+  ./cli.py --dbg-small-recv 4096 --spec netlink/specs/rt_addr.yaml \
+           --dump getaddr --json '{"ifa-family": 2}'
+
+  ./cli.py --dbg-small-recv 4096 --spec netlink/specs/rt_route.yaml \
+           --dump getroute --json '{"rtm-family": 2}'
+
+  ./cli.py --dbg-small-recv 4096 --spec netlink/specs/rt_link.yaml \
+           --dump getlink
+
+Fixes: 3e41af90767d ("rtnetlink: use xarray iterator to implement rtnl_dump_ifinfo()")
+Fixes: cdb2f80f1c10 ("inet: use xa_array iterator to implement inet_dump_ifaddr()")
+Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Link: https://lore.kernel.org/all/CAK8fFZ7MKoFSEzMBDAOjoUt+vTZRRQgLDNXEOfdCCXSoXXKE0g@mail.gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ include/net/rtnetlink.h |  1 +
+ net/core/rtnetlink.c    | 44 +++++++++++++++++++++++++++++++++++++++--
+ net/ipv4/devinet.c      |  2 +-
+ net/ipv4/fib_frontend.c |  7 +------
+ 4 files changed, 45 insertions(+), 9 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 8d0918a112a9d..4a43091c95419 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -531,9 +531,9 @@ static int unix_dgram_peer_wake_me(struct sock *sk, struct sock *other)
- 	return 0;
+diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
+index 3bfb80bad1739..b45d57b5968af 100644
+--- a/include/net/rtnetlink.h
++++ b/include/net/rtnetlink.h
+@@ -13,6 +13,7 @@ enum rtnl_link_flags {
+ 	RTNL_FLAG_DOIT_UNLOCKED		= BIT(0),
+ 	RTNL_FLAG_BULK_DEL_SUPPORTED	= BIT(1),
+ 	RTNL_FLAG_DUMP_UNLOCKED		= BIT(2),
++	RTNL_FLAG_DUMP_SPLIT_NLM_DONE	= BIT(3),	/* legacy behavior */
+ };
+ 
+ enum rtnl_kinds {
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 8ba6a4e4be266..74e6f9746fb30 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -6484,6 +6484,46 @@ static int rtnl_mdb_del(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 
+ /* Process one rtnetlink message. */
+ 
++static int rtnl_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
++{
++	rtnl_dumpit_func dumpit = cb->data;
++	int err;
++
++	/* Previous iteration have already finished, avoid calling->dumpit()
++	 * again, it may not expect to be called after it reached the end.
++	 */
++	if (!dumpit)
++		return 0;
++
++	err = dumpit(skb, cb);
++
++	/* Old dump handlers used to send NLM_DONE as in a separate recvmsg().
++	 * Some applications which parse netlink manually depend on this.
++	 */
++	if (cb->flags & RTNL_FLAG_DUMP_SPLIT_NLM_DONE) {
++		if (err < 0 && err != -EMSGSIZE)
++			return err;
++		if (!err)
++			cb->data = NULL;
++
++		return skb->len;
++	}
++	return err;
++}
++
++static int rtnetlink_dump_start(struct sock *ssk, struct sk_buff *skb,
++				const struct nlmsghdr *nlh,
++				struct netlink_dump_control *control)
++{
++	if (control->flags & RTNL_FLAG_DUMP_SPLIT_NLM_DONE) {
++		WARN_ON(control->data);
++		control->data = control->dump;
++		control->dump = rtnl_dumpit;
++	}
++
++	return netlink_dump_start(ssk, skb, nlh, control);
++}
++
+ static int rtnetlink_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			     struct netlink_ext_ack *extack)
+ {
+@@ -6548,7 +6588,7 @@ static int rtnetlink_rcv_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 				.module		= owner,
+ 				.flags		= flags,
+ 			};
+-			err = netlink_dump_start(rtnl, skb, nlh, &c);
++			err = rtnetlink_dump_start(rtnl, skb, nlh, &c);
+ 			/* netlink_dump_start() will keep a reference on
+ 			 * module if dump is still in progress.
+ 			 */
+@@ -6694,7 +6734,7 @@ void __init rtnetlink_init(void)
+ 	register_netdevice_notifier(&rtnetlink_dev_notifier);
+ 
+ 	rtnl_register(PF_UNSPEC, RTM_GETLINK, rtnl_getlink,
+-		      rtnl_dump_ifinfo, 0);
++		      rtnl_dump_ifinfo, RTNL_FLAG_DUMP_SPLIT_NLM_DONE);
+ 	rtnl_register(PF_UNSPEC, RTM_SETLINK, rtnl_setlink, NULL, 0);
+ 	rtnl_register(PF_UNSPEC, RTM_NEWLINK, rtnl_newlink, NULL, 0);
+ 	rtnl_register(PF_UNSPEC, RTM_DELLINK, rtnl_dellink, NULL, 0);
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index 8382cc998bff8..84b5d1ccf716a 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -2801,7 +2801,7 @@ void __init devinet_init(void)
+ 	rtnl_register(PF_INET, RTM_NEWADDR, inet_rtm_newaddr, NULL, 0);
+ 	rtnl_register(PF_INET, RTM_DELADDR, inet_rtm_deladdr, NULL, 0);
+ 	rtnl_register(PF_INET, RTM_GETADDR, NULL, inet_dump_ifaddr,
+-		      RTNL_FLAG_DUMP_UNLOCKED);
++		      RTNL_FLAG_DUMP_UNLOCKED | RTNL_FLAG_DUMP_SPLIT_NLM_DONE);
+ 	rtnl_register(PF_INET, RTM_GETNETCONF, inet_netconf_get_devconf,
+ 		      inet_netconf_dump_devconf,
+ 		      RTNL_FLAG_DOIT_UNLOCKED | RTNL_FLAG_DUMP_UNLOCKED);
+diff --git a/net/ipv4/fib_frontend.c b/net/ipv4/fib_frontend.c
+index c484b1c0fc00a..7ad2cafb92763 100644
+--- a/net/ipv4/fib_frontend.c
++++ b/net/ipv4/fib_frontend.c
+@@ -1050,11 +1050,6 @@ static int inet_dump_fib(struct sk_buff *skb, struct netlink_callback *cb)
+ 			e++;
+ 		}
+ 	}
+-
+-	/* Don't let NLM_DONE coalesce into a message, even if it could.
+-	 * Some user space expects NLM_DONE in a separate recv().
+-	 */
+-	err = skb->len;
+ out:
+ 
+ 	cb->args[1] = e;
+@@ -1665,5 +1660,5 @@ void __init ip_fib_init(void)
+ 	rtnl_register(PF_INET, RTM_NEWROUTE, inet_rtm_newroute, NULL, 0);
+ 	rtnl_register(PF_INET, RTM_DELROUTE, inet_rtm_delroute, NULL, 0);
+ 	rtnl_register(PF_INET, RTM_GETROUTE, NULL, inet_dump_fib,
+-		      RTNL_FLAG_DUMP_UNLOCKED);
++		      RTNL_FLAG_DUMP_UNLOCKED | RTNL_FLAG_DUMP_SPLIT_NLM_DONE);
  }
- 
--static int unix_writable(const struct sock *sk)
-+static int unix_writable(const struct sock *sk, unsigned char state)
- {
--	return sk->sk_state != TCP_LISTEN &&
-+	return state != TCP_LISTEN &&
- 	       (refcount_read(&sk->sk_wmem_alloc) << 2) <= sk->sk_sndbuf;
- }
- 
-@@ -542,7 +542,7 @@ static void unix_write_space(struct sock *sk)
- 	struct socket_wq *wq;
- 
- 	rcu_read_lock();
--	if (unix_writable(sk)) {
-+	if (unix_writable(sk, READ_ONCE(sk->sk_state))) {
- 		wq = rcu_dereference(sk->sk_wq);
- 		if (skwq_has_sleeper(wq))
- 			wake_up_interruptible_sync_poll(&wq->wait,
-@@ -3095,12 +3095,14 @@ static int unix_compat_ioctl(struct socket *sock, unsigned int cmd, unsigned lon
- static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wait)
- {
- 	struct sock *sk = sock->sk;
-+	unsigned char state;
- 	__poll_t mask;
- 	u8 shutdown;
- 
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
- 	shutdown = READ_ONCE(sk->sk_shutdown);
-+	state = READ_ONCE(sk->sk_state);
- 
- 	/* exceptional events? */
- 	if (READ_ONCE(sk->sk_err))
-@@ -3122,14 +3124,14 @@ static __poll_t unix_poll(struct file *file, struct socket *sock, poll_table *wa
- 
- 	/* Connection-based need to check for termination and startup */
- 	if ((sk->sk_type == SOCK_STREAM || sk->sk_type == SOCK_SEQPACKET) &&
--	    sk->sk_state == TCP_CLOSE)
-+	    state == TCP_CLOSE)
- 		mask |= EPOLLHUP;
- 
- 	/*
- 	 * we set writable also when the other side has shut down the
- 	 * connection. This prevents stuck sockets.
- 	 */
--	if (unix_writable(sk))
-+	if (unix_writable(sk, state))
- 		mask |= EPOLLOUT | EPOLLWRNORM | EPOLLWRBAND;
- 
- 	return mask;
-@@ -3140,12 +3142,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- {
- 	struct sock *sk = sock->sk, *other;
- 	unsigned int writable;
-+	unsigned char state;
- 	__poll_t mask;
- 	u8 shutdown;
- 
- 	sock_poll_wait(file, sock, wait);
- 	mask = 0;
- 	shutdown = READ_ONCE(sk->sk_shutdown);
-+	state = READ_ONCE(sk->sk_state);
- 
- 	/* exceptional events? */
- 	if (READ_ONCE(sk->sk_err) ||
-@@ -3165,19 +3169,14 @@ static __poll_t unix_dgram_poll(struct file *file, struct socket *sock,
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 
- 	/* Connection-based need to check for termination and startup */
--	if (sk->sk_type == SOCK_SEQPACKET) {
--		if (sk->sk_state == TCP_CLOSE)
--			mask |= EPOLLHUP;
--		/* connection hasn't started yet? */
--		if (sk->sk_state == TCP_SYN_SENT)
--			return mask;
--	}
-+	if (sk->sk_type == SOCK_SEQPACKET && state == TCP_CLOSE)
-+		mask |= EPOLLHUP;
- 
- 	/* No write status requested, avoid expensive OUT tests. */
- 	if (!(poll_requested_events(wait) & (EPOLLWRBAND|EPOLLWRNORM|EPOLLOUT)))
- 		return mask;
- 
--	writable = unix_writable(sk);
-+	writable = unix_writable(sk, state);
- 	if (writable) {
- 		unix_state_lock(sk);
- 
 -- 
 2.43.0
 
