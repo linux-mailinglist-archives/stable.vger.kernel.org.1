@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-53881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0939B90EBA2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A46AA90ECE8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D837286ABA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6A331C21413
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D19E914A4FC;
-	Wed, 19 Jun 2024 12:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7881494A9;
+	Wed, 19 Jun 2024 13:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2WrjRsQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtDQ3TGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD19146016;
-	Wed, 19 Jun 2024 12:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F414147C74;
+	Wed, 19 Jun 2024 13:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801948; cv=none; b=BXogua2DoNCQTMLOQAK0UgskbbzkH4tUk7lM1syagLkpfFyBrHf94Zq5fV9OgYrxKLtUNoFWvVDsxOt0EJlUWb3pHuN+SRDJWbsWI81S1+jedFaas61kf60Xy6ZoGOfSB9FAK/iBUxtdn4MP2bB3CuZBdlkkm9eCgKy1tjruekM=
+	t=1718802715; cv=none; b=li9QZc4awNIXtauuuN80j82rFODHms/F84jiWbQxN+S58imwOYT4HYYdL9d7VaDgFnIWsSm0TzWn94TTILpKsu91ZMdoFjHEpz7y0Jxc1o8jUDGY9Xi4Wno3STi2j78OpWofrBfoWYD3MVt+C+2eyMBXMHKal33bhuqfEnSd+dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801948; c=relaxed/simple;
-	bh=B7juaJO7hOscMxH16SWFWAKREQZ+o0BOhS7XchZWax0=;
+	s=arc-20240116; t=1718802715; c=relaxed/simple;
+	bh=C6f94mmjFhtlAIVGBWUSyMOX1pNiCDEwKtaAHsIcJW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RV80cyldYM4jU0WdrqGVV6QTFIa/VAcqaCEStyyzqB0UNvrCFsNAO3gYF0Oac6Zy3IuqXI1hQLapX/2JQlVXlf52TUV9G7mdo7iJJhVrQMDcP8Njis6TfDEJILxQK+C/cP/h7xp+0TezVYDQaUtf7WRLD5dva7l5im9UtSwQVGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2WrjRsQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA62C2BBFC;
-	Wed, 19 Jun 2024 12:59:07 +0000 (UTC)
+	 MIME-Version; b=KcZHpthShtXzW6L5w/aOZeKeA6nsIEAOxGwaN9Q7j+0t7WqtFFJ6t6hmTT9qI0lGSNfV9KkptCIGmEs455WXXG8w6+jzR0Yd/41kWSybt1sBpNkrF8/8ZPmKY/YAqM7fVZUMeBvqlDE2UD+QtD/z+CJ3PDY4AErzb1ZTdKPz+DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtDQ3TGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D4EC2BBFC;
+	Wed, 19 Jun 2024 13:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718801948;
-	bh=B7juaJO7hOscMxH16SWFWAKREQZ+o0BOhS7XchZWax0=;
+	s=korg; t=1718802715;
+	bh=C6f94mmjFhtlAIVGBWUSyMOX1pNiCDEwKtaAHsIcJW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2WrjRsQcy2TX0gOimsmZFI9C24gWv4YSaAxh8D8WvleBo45DAJ+/lOnWas7JIScA
-	 HdvnPnO4OKXk7PvWK5jjV4LCfXWMfjOaBpt443Vw7wcXSzcP9xkvEnUaR5OLUm8Nl2
-	 UUK+zYOwjpy23juMBSll+OgUER3BAzS3pLyCPjKg=
+	b=RtDQ3TGTgzoU/jIGp+S8dpk10deNoQCWiGgtvcl/XYp+JxhTeDHbOMyhJfGcmzOF8
+	 4WDRUCgt+PrZ8V0avWIoL04OjqXl3QQ4UL89Kbu9o0hPbzQQRvrwQzPoA3ElWPdj2H
+	 fUswagZmAYRs417PbJJGKa1SMty9XdiNMwrGG/+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3ab78ff125b7979e45f9@syzkaller.appspotmail.com,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/267] bpf: Set run context for rawtp test_run callback
+Subject: [PATCH 6.9 023/281] virtio_net: fix possible dim status unrecoverable
 Date: Wed, 19 Jun 2024 14:53:02 +0200
-Message-ID: <20240619125607.558754217@linuxfoundation.org>
+Message-ID: <20240619125610.739375178@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Heng Qi <hengqi@linux.alibaba.com>
 
-[ Upstream commit d0d1df8ba18abc57f28fb3bc053b2bf319367f2c ]
+[ Upstream commit 9e0945b1901c9eed4fbee3b8a3870487b2bdc936 ]
 
-syzbot reported crash when rawtp program executed through the
-test_run interface calls bpf_get_attach_cookie helper or any
-other helper that touches task->bpf_ctx pointer.
+When the dim worker is scheduled, if it no longer needs to issue
+commands, dim may not be able to return to the working state later.
 
-Setting the run context (task->bpf_ctx pointer) for test_run
-callback.
+For example, the following single queue scenario:
+  1. The dim worker of rxq0 is scheduled, and the dim status is
+     changed to DIM_APPLY_NEW_PROFILE;
+  2. dim is disabled or parameters have not been modified;
+  3. virtnet_rx_dim_work exits directly;
 
-Fixes: 7adfc6c9b315 ("bpf: Add bpf_get_attach_cookie() BPF helper to access bpf_cookie value")
-Reported-by: syzbot+3ab78ff125b7979e45f9@syzkaller.appspotmail.com
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://syzkaller.appspot.com/bug?extid=3ab78ff125b7979e45f9
-Link: https://lore.kernel.org/bpf/20240604150024.359247-1-jolsa@kernel.org
+Then, even if net_dim is invoked again, it cannot work because the
+state is not restored to DIM_START_MEASURE.
+
+Fixes: 6208799553a8 ("virtio-net: support rx netdim")
+Signed-off-by: Heng Qi <hengqi@linux.alibaba.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20240528134116.117426-2-hengqi@linux.alibaba.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/virtio_net.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 478ee7aba85f3..12a2934b28ffb 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -707,10 +707,16 @@ static void
- __bpf_prog_test_run_raw_tp(void *data)
- {
- 	struct bpf_raw_tp_test_run_info *info = data;
-+	struct bpf_trace_run_ctx run_ctx = {};
-+	struct bpf_run_ctx *old_run_ctx;
-+
-+	old_run_ctx = bpf_set_run_ctx(&run_ctx.run_ctx);
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 115c3c5414f2a..574b052a517d7 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3589,10 +3589,10 @@ static void virtnet_rx_dim_work(struct work_struct *work)
+ 			if (err)
+ 				pr_debug("%s: Failed to send dim parameters on rxq%d\n",
+ 					 dev->name, qnum);
+-			dim->state = DIM_START_MEASURE;
+ 		}
+ 	}
  
- 	rcu_read_lock();
- 	info->retval = bpf_prog_run(info->prog, info->ctx);
- 	rcu_read_unlock();
-+
-+	bpf_reset_run_ctx(old_run_ctx);
++	dim->state = DIM_START_MEASURE;
+ 	rtnl_unlock();
  }
  
- int bpf_prog_test_run_raw_tp(struct bpf_prog *prog,
 -- 
 2.43.0
 
