@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-54554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C2590EECD
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67EF890EDD0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1269C1F218A0
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A6AB2882FD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE6B147C7B;
-	Wed, 19 Jun 2024 13:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B331D14A4FC;
+	Wed, 19 Jun 2024 13:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rd9OTCme"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLOx9sjx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B24F14373E;
-	Wed, 19 Jun 2024 13:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708E1145FEF;
+	Wed, 19 Jun 2024 13:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803924; cv=none; b=KhkNi3wHlOPkuJirTpoWiQ4SbhGIskqj/uzWOBb2qGm3M3PeoQc3fiuWLC3Uh9/9wd+Vf6GP1cN5SZHabHyOpwL6pI7VX9gMd+hfiaGf8XXK0x4fL0ZPBBh6rhUtxGR2fS/WhQrRjc87o5UMGuzQjEoNJ0lygq/Kr2pnI2AtDIQ=
+	t=1718803341; cv=none; b=T53SIBnl7IUgQ0zLLTs5Vlhn37NlkOgNjQ6DowZHSd9oGSwjXAbqf4nsItixnJSgZmcNzQxRbAno/txA+gPf98xagGD7zKA5VrMmKVCdA61KMnp5yrlPRli3zxt5Fn+g90Wj+NUdnzsuY5Ppip8CzU4aGvjsxoqmGzoB5Di+Y6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803924; c=relaxed/simple;
-	bh=QGVTDG/b5yF2L+/HnUI0RqkOAiZqMucnK8vJM1DYDw4=;
+	s=arc-20240116; t=1718803341; c=relaxed/simple;
+	bh=ALDcpCO6qEE6oVjEFa2Q3IFMIJna1tz2YZ6tINBweqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UkOzgCyCpAduvjQiEVpOyfiu1aAVhPGyMmlKALVjJv2AZr0h2V7IYjMIcVaGgN7SlY7LJlb1RVzlrDL6OO85OSfzbQu7taocmxuSOJoztsMwlInpd5+/JzRCIJ4FGOnXGW+No0pWaZq78VuuqUu69IRDBvQ/y5aX6b/Ipct4Bk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rd9OTCme; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF46C4AF1A;
-	Wed, 19 Jun 2024 13:32:02 +0000 (UTC)
+	 MIME-Version; b=r4dXVdCv/43UjuqF9y4kbnU3QkzgY4G5Ta7q6dzRr8LUon7T4glRnpNGpqSp07v9PKr+NkzGrL/YkHIT9AMLw7UbeSehM7mslWnH5H9tePI1u/eKvyTVk6frJTw6+VzfjQNAR9JWeP/KDU0RkFCdY7bJYV5t6hSnQZ56Iv5xAO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLOx9sjx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8875C2BBFC;
+	Wed, 19 Jun 2024 13:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803923;
-	bh=QGVTDG/b5yF2L+/HnUI0RqkOAiZqMucnK8vJM1DYDw4=;
+	s=korg; t=1718803341;
+	bh=ALDcpCO6qEE6oVjEFa2Q3IFMIJna1tz2YZ6tINBweqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rd9OTCmePiczyoFv7JfNsBvntTK8ZzT9uge8wLS9QUTERPf9eG/qW7NaYHXn8mr/c
-	 JFTADfPoIZOoDa+GI92IlbX5LtXfUiTkrmseJTCwIg6n6go3H5YBscysmt+/lntHGv
-	 9RicfltTJJFN8xrbu354cyKM0Bx0E/RJ17JRzTfg=
+	b=TLOx9sjxDhIRB6vSlGwkZ8lgKCbRn+p15xE0NZuRGT2c83snviKOGwfSJd2faagLR
+	 U5RapnC1Pxl9TAuSbGiGHoaPWEAUY3PMe9m9e7+APRr4wjS1TtZ3HbxJgRU8JtD616
+	 rzBwXNNCRtUMrN4hwrQ2yEQimIByGPtF5cd14O44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Washington <joshwash@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrei Vagin <avagin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 150/217] gve: ignore nonrelevant GSO type bits when processing TSO headers
+	stable <stable@kernel.org>,
+	Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
+Subject: [PATCH 6.9 234/281] vmci: prevent speculation leaks by sanitizing event in event_deliver()
 Date: Wed, 19 Jun 2024 14:56:33 +0200
-Message-ID: <20240619125602.476854684@linuxfoundation.org>
+Message-ID: <20240619125618.965819385@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,91 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Washington <joshwash@google.com>
+From: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
 
-[ Upstream commit 1b9f756344416e02b41439bf2324b26aa25e141c ]
+commit 8003f00d895310d409b2bf9ef907c56b42a4e0f4 upstream.
 
-TSO currently fails when the skb's gso_type field has more than one bit
-set.
+Coverity spotted that event_msg is controlled by user-space,
+event_msg->event_data.event is passed to event_deliver() and used
+as an index without sanitization.
 
-TSO packets can be passed from userspace using PF_PACKET, TUNTAP and a
-few others, using virtio_net_hdr (e.g., PACKET_VNET_HDR). This includes
-virtualization, such as QEMU, a real use-case.
+This change ensures that the event index is sanitized to mitigate any
+possibility of speculative information leaks.
 
-The gso_type and gso_size fields as passed from userspace in
-virtio_net_hdr are not trusted blindly by the kernel. It adds gso_type
-|= SKB_GSO_DODGY to force the packet to enter the software GSO stack
-for verification.
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
-This issue might similarly come up when the CWR bit is set in the TCP
-header for congestion control, causing the SKB_GSO_TCP_ECN gso_type bit
-to be set.
+Only compile tested, no access to HW.
 
-Fixes: a57e5de476be ("gve: DQO: Add TX path")
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Andrei Vagin <avagin@gmail.com>
-
-v2 - Remove unnecessary comments, remove line break between fixes tag
-and signoffs.
-
-v3 - Add back unrelated empty line removal.
-
-Link: https://lore.kernel.org/r/20240610225729.2985343-1-joshwash@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1d990201f9bb ("VMCI: event handling implementation.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
+Link: https://lore.kernel.org/stable/20231127193533.46174-1-hagarhem%40amazon.com
+Link: https://lore.kernel.org/r/20240430085916.4753-1-hagarhem@amazon.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_tx_dqo.c | 20 +++++---------------
- 1 file changed, 5 insertions(+), 15 deletions(-)
+ drivers/misc/vmw_vmci/vmci_event.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-index e84e944d751d2..5147fb37929e0 100644
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -370,28 +370,18 @@ static int gve_prep_tso(struct sk_buff *skb)
- 	if (unlikely(skb_shinfo(skb)->gso_size < GVE_TX_MIN_TSO_MSS_DQO))
- 		return -1;
+--- a/drivers/misc/vmw_vmci/vmci_event.c
++++ b/drivers/misc/vmw_vmci/vmci_event.c
+@@ -9,6 +9,7 @@
+ #include <linux/vmw_vmci_api.h>
+ #include <linux/list.h>
+ #include <linux/module.h>
++#include <linux/nospec.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <linux/rculist.h>
+@@ -86,9 +87,12 @@ static void event_deliver(struct vmci_ev
+ {
+ 	struct vmci_subscription *cur;
+ 	struct list_head *subscriber_list;
++	u32 sanitized_event, max_vmci_event;
  
-+	if (!(skb_shinfo(skb)->gso_type & (SKB_GSO_TCPV4 | SKB_GSO_TCPV6)))
-+		return -EINVAL;
-+
- 	/* Needed because we will modify header. */
- 	err = skb_cow_head(skb, 0);
- 	if (err < 0)
- 		return err;
- 
- 	tcp = tcp_hdr(skb);
--
--	/* Remove payload length from checksum. */
- 	paylen = skb->len - skb_transport_offset(skb);
--
--	switch (skb_shinfo(skb)->gso_type) {
--	case SKB_GSO_TCPV4:
--	case SKB_GSO_TCPV6:
--		csum_replace_by_diff(&tcp->check,
--				     (__force __wsum)htonl(paylen));
--
--		/* Compute length of segmentation header. */
--		header_len = skb_tcp_all_headers(skb);
--		break;
--	default:
--		return -EINVAL;
--	}
-+	csum_replace_by_diff(&tcp->check, (__force __wsum)htonl(paylen));
-+	header_len = skb_tcp_all_headers(skb);
- 
- 	if (unlikely(header_len > GVE_TX_MAX_HDR_SIZE_DQO))
- 		return -EINVAL;
--- 
-2.43.0
-
+ 	rcu_read_lock();
+-	subscriber_list = &subscriber_array[event_msg->event_data.event];
++	max_vmci_event = ARRAY_SIZE(subscriber_array);
++	sanitized_event = array_index_nospec(event_msg->event_data.event, max_vmci_event);
++	subscriber_list = &subscriber_array[sanitized_event];
+ 	list_for_each_entry_rcu(cur, subscriber_list, node) {
+ 		cur->callback(cur->id, &event_msg->event_data,
+ 			      cur->callback_data);
 
 
 
