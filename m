@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-54008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDDE90EC41
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C51C90ED6F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10DD71C24AA2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CED9B230A5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D2282871;
-	Wed, 19 Jun 2024 13:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059A7143C4E;
+	Wed, 19 Jun 2024 13:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCaE4+xN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wtU+c8s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D9112FB31;
-	Wed, 19 Jun 2024 13:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B9282495;
+	Wed, 19 Jun 2024 13:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802320; cv=none; b=JkQWHh+KHQ+MJyYjqRYuEgYYavf+mcOzZo6jytBX5XcVSTREGeHLFa+rbfkhFE3CUhjSu2FJVhqe2luV6+oZPmSLxRaHrXdDEwPRyAYgeY3ImuPbkFKRSTHG37RRihbxhJ6rPaUgUIJ7oUTetqGq1oGSfODmgBb+XqpomZCWpQs=
+	t=1718803084; cv=none; b=NY2vFImIv0rBIQFYmGQBEw2n0nZradl9ENyx1ZjEYSb9w6XmV+MDCCZALtC+qTAgEJtOzul9TdVZAqOb4GOAuJVADqflF/bK+NfpB2saxubDUAtxjixGcF+qmHpOzFQGgI9YrlxJ6Cw6DB1VSNL6gKBTdaLLTCZDLphdVjJFNlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802320; c=relaxed/simple;
-	bh=ATAZIlNZqKxh+Mcl3uUO93AypmoXUy0/qW8xXZjcq9Q=;
+	s=arc-20240116; t=1718803084; c=relaxed/simple;
+	bh=krfp/BOVt9k4WcpgnxHYQrnObjWvCA+Xooxd4nX9tT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFP1xCWzB1hRT78HrJOC1jTvZkneynIW1rxDCBfCDpihmgLLt5HEovolqTz/y7GcVtqT+xp0XEFNqVWRI7KNfB4C1L4JZ5IKLene3briYb4VGubIB+Ob0UkAcsxTMQEeTOpMlAAFmnC16Bnz7QXRLb0NDhagCouZKqjI4TOWkFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCaE4+xN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77D7C2BBFC;
-	Wed, 19 Jun 2024 13:05:19 +0000 (UTC)
+	 MIME-Version; b=RIVKUoCnbsDybowFrVseytc+lSiY+8NJLw+AGXgvN9SDwPbgzBG0D3J/4qa7TJ/cOiupx+SZ7kGq6h3K2Bb8fXhnmqA+9Un6STYEbIF2gKSTugdifVZsfe8wpVVnOu6Okwk6CxOhhlSw7HAScVMxYo8M+2chURhEVs8Nb8qjnhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wtU+c8s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBB1C2BBFC;
+	Wed, 19 Jun 2024 13:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802320;
-	bh=ATAZIlNZqKxh+Mcl3uUO93AypmoXUy0/qW8xXZjcq9Q=;
+	s=korg; t=1718803084;
+	bh=krfp/BOVt9k4WcpgnxHYQrnObjWvCA+Xooxd4nX9tT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCaE4+xNn098CZAlwY9OTCE2s+P/iDE9nIS1IGwdi0or1qEbFKjJY63sJrKQF9jjL
-	 A86Dcz9tZcS9frRrzdAx7avFSJRLwt+gya0LtY1LnMad8K6nHPCteRS7tY7wJju5Tf
-	 ZqLLG6FWsWFLTpr+3C4R7nrkQwKd65XuErCNI5cA=
+	b=1wtU+c8sxGmf5rm+NWHPmhe8tOMuQ9SAHtCd0IdTLvrrGx1ONlXZJjl1ur2Q5APGj
+	 uy68RkyKLqYOdu9lOf87xmQqVdxOQQiYWbRSXqyfuWWh1zvaS81OvaYjdEBJxn6eZo
+	 NkiweKbDgXMCpurlVdr3gVvT9xrqlTJtQORdgs+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregor Herburger <gregor.herburger@tq-group.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 125/267] gpio: tqmx86: fix typo in Kconfig label
+Subject: [PATCH 6.9 117/281] cachefiles: defer exposing anon_fd until after copy_to_user() succeeds
 Date: Wed, 19 Jun 2024 14:54:36 +0200
-Message-ID: <20240619125611.147496525@linuxfoundation.org>
+Message-ID: <20240619125614.349336531@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +64,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregor Herburger <gregor.herburger@tq-group.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 8c219e52ca4d9a67cd6a7074e91bf29b55edc075 ]
+[ Upstream commit 4b4391e77a6bf24cba2ef1590e113d9b73b11039 ]
 
-Fix description for GPIO_TQMX86 from QTMX86 to TQMx86.
+After installing the anonymous fd, we can now see it in userland and close
+it. However, at this point we may not have gotten the reference count of
+the cache, but we will put it during colse fd, so this may cause a cache
+UAF.
 
-Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
-Signed-off-by: Gregor Herburger <gregor.herburger@tq-group.com>
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/e0e38c9944ad6d281d9a662a45d289b88edc808e.1717063994.git.matthias.schiffer@ew.tq-group.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+So grab the cache reference count before fd_install(). In addition, by
+kernel convention, fd is taken over by the user land after fd_install(),
+and the kernel should not call close_fd() after that, i.e., it should call
+fd_install() after everything is ready, thus fd_install() is called after
+copy_to_user() succeeds.
+
+Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
+Suggested-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240522114308.2402121-10-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/cachefiles/ondemand.c | 53 +++++++++++++++++++++++++---------------
+ 1 file changed, 33 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index d56b835359d3b..ebd4e113dc265 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -1507,7 +1507,7 @@ config GPIO_TPS68470
- 	  are "output only" GPIOs.
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index dbcd4161ea3a1..89f118d68d125 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -4,6 +4,11 @@
+ #include <linux/uio.h>
+ #include "internal.h"
  
- config GPIO_TQMX86
--	tristate "TQ-Systems QTMX86 GPIO"
-+	tristate "TQ-Systems TQMx86 GPIO"
- 	depends on MFD_TQMX86 || COMPILE_TEST
- 	depends on HAS_IOPORT_MAP
- 	select GPIOLIB_IRQCHIP
++struct ondemand_anon_file {
++	struct file *file;
++	int fd;
++};
++
+ static inline void cachefiles_req_put(struct cachefiles_req *req)
+ {
+ 	if (refcount_dec_and_test(&req->ref))
+@@ -250,14 +255,14 @@ int cachefiles_ondemand_restore(struct cachefiles_cache *cache, char *args)
+ 	return 0;
+ }
+ 
+-static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
++static int cachefiles_ondemand_get_fd(struct cachefiles_req *req,
++				      struct ondemand_anon_file *anon_file)
+ {
+ 	struct cachefiles_object *object;
+ 	struct cachefiles_cache *cache;
+ 	struct cachefiles_open *load;
+-	struct file *file;
+ 	u32 object_id;
+-	int ret, fd;
++	int ret;
+ 
+ 	object = cachefiles_grab_object(req->object,
+ 			cachefiles_obj_get_ondemand_fd);
+@@ -269,16 +274,16 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
+ 	if (ret < 0)
+ 		goto err;
+ 
+-	fd = get_unused_fd_flags(O_WRONLY);
+-	if (fd < 0) {
+-		ret = fd;
++	anon_file->fd = get_unused_fd_flags(O_WRONLY);
++	if (anon_file->fd < 0) {
++		ret = anon_file->fd;
+ 		goto err_free_id;
+ 	}
+ 
+-	file = anon_inode_getfile("[cachefiles]", &cachefiles_ondemand_fd_fops,
+-				  object, O_WRONLY);
+-	if (IS_ERR(file)) {
+-		ret = PTR_ERR(file);
++	anon_file->file = anon_inode_getfile("[cachefiles]",
++				&cachefiles_ondemand_fd_fops, object, O_WRONLY);
++	if (IS_ERR(anon_file->file)) {
++		ret = PTR_ERR(anon_file->file);
+ 		goto err_put_fd;
+ 	}
+ 
+@@ -286,16 +291,15 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
+ 	if (object->ondemand->ondemand_id > 0) {
+ 		spin_unlock(&object->ondemand->lock);
+ 		/* Pair with check in cachefiles_ondemand_fd_release(). */
+-		file->private_data = NULL;
++		anon_file->file->private_data = NULL;
+ 		ret = -EEXIST;
+ 		goto err_put_file;
+ 	}
+ 
+-	file->f_mode |= FMODE_PWRITE | FMODE_LSEEK;
+-	fd_install(fd, file);
++	anon_file->file->f_mode |= FMODE_PWRITE | FMODE_LSEEK;
+ 
+ 	load = (void *)req->msg.data;
+-	load->fd = fd;
++	load->fd = anon_file->fd;
+ 	object->ondemand->ondemand_id = object_id;
+ 	spin_unlock(&object->ondemand->lock);
+ 
+@@ -304,9 +308,11 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
+ 	return 0;
+ 
+ err_put_file:
+-	fput(file);
++	fput(anon_file->file);
++	anon_file->file = NULL;
+ err_put_fd:
+-	put_unused_fd(fd);
++	put_unused_fd(anon_file->fd);
++	anon_file->fd = ret;
+ err_free_id:
+ 	xa_erase(&cache->ondemand_ids, object_id);
+ err:
+@@ -363,6 +369,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 	struct cachefiles_msg *msg;
+ 	size_t n;
+ 	int ret = 0;
++	struct ondemand_anon_file anon_file;
+ 	XA_STATE(xas, &cache->reqs, cache->req_id_next);
+ 
+ 	xa_lock(&cache->reqs);
+@@ -396,7 +403,7 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 	xa_unlock(&cache->reqs);
+ 
+ 	if (msg->opcode == CACHEFILES_OP_OPEN) {
+-		ret = cachefiles_ondemand_get_fd(req);
++		ret = cachefiles_ondemand_get_fd(req, &anon_file);
+ 		if (ret)
+ 			goto out;
+ 	}
+@@ -404,10 +411,16 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 	msg->msg_id = xas.xa_index;
+ 	msg->object_id = req->object->ondemand->ondemand_id;
+ 
+-	if (copy_to_user(_buffer, msg, n) != 0) {
++	if (copy_to_user(_buffer, msg, n) != 0)
+ 		ret = -EFAULT;
+-		if (msg->opcode == CACHEFILES_OP_OPEN)
+-			close_fd(((struct cachefiles_open *)msg->data)->fd);
++
++	if (msg->opcode == CACHEFILES_OP_OPEN) {
++		if (ret < 0) {
++			fput(anon_file.file);
++			put_unused_fd(anon_file.fd);
++			goto out;
++		}
++		fd_install(anon_file.fd, anon_file.file);
+ 	}
+ out:
+ 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
 -- 
 2.43.0
 
