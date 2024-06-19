@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39ACA90EEDA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2045190EDFF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:24:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFB29285439
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C905E1F216F3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DF4146016;
-	Wed, 19 Jun 2024 13:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57C0314532C;
+	Wed, 19 Jun 2024 13:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QlAqMIiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dt05i1Ve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436C613DDC0;
-	Wed, 19 Jun 2024 13:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E7A143757;
+	Wed, 19 Jun 2024 13:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803962; cv=none; b=qpsAvYAWG4gqRO+ouHxcEJX2VB5UI0RpD1DQNTYfK2Qg0Uy0fLHSGY8DqzfVciccO5WjNGnMZP7GO3IKpVyHMCYWsq9NPKx/XnT0Cf3AJNmzXq2z3C6XslVJlYegluHvMk16ApaNJGPSTCz9NytSV+Z9RWyz8jLmq36Q7LC+jzc=
+	t=1718803472; cv=none; b=pFKVMmHlvR4KfSndQAw/bbI8BvpQwTxY60w4AHKfvjmtG6batjL4FgoVF5SYQexWensCSDBWpXN6Q+YTDqHTvZKRn5DUCFKdJIebEW8SoXk67c+8vLoMYqzD18OmtFksAzCFzagf0n62ODg9ZuvbAPe2cgBzPXt5Tbye8gEeO1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803962; c=relaxed/simple;
-	bh=9dIxBXm79B66d6HhPC2f8n1uauhMeRRgZiGcC7Itgxw=;
+	s=arc-20240116; t=1718803472; c=relaxed/simple;
+	bh=z5nE7RHBHj4kYe1xcFpQUS6dBi3ruZtnGI4NIU5LnA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fb6XckMSO6Jv+yIeAXzet5KgPc2TgDTOwwGtlDbqtyiuGdYhWFKfkbguokDGHhcIsohhGtlGYQLxYDgZd0lmRj+AyMc2kSIHf/44G7qcV9BysUBONhqPkId1F5G/UA0qAmYzg/QTu+TvjxpCcaV/ktHEcKNHiun5mxtSbSxsdLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QlAqMIiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB45EC32786;
-	Wed, 19 Jun 2024 13:32:41 +0000 (UTC)
+	 MIME-Version; b=mwi2B/Q7NpevS+Bu4PpROHx93sZaTDPUYdSysDohSkHaK5RW9gvkVteTK4m3U3XyXByhpHyylmJ71u575gAS6N8/POCkFrITNhy943m05cQ/ZPrKFBe0abmmmr3WFRhz3pH3v9yMFWvhhLPyZbZ+uRyRhTCD36HhSW5bzJ7Hjcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dt05i1Ve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A3EC2BBFC;
+	Wed, 19 Jun 2024 13:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803962;
-	bh=9dIxBXm79B66d6HhPC2f8n1uauhMeRRgZiGcC7Itgxw=;
+	s=korg; t=1718803471;
+	bh=z5nE7RHBHj4kYe1xcFpQUS6dBi3ruZtnGI4NIU5LnA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QlAqMIiS2us8kRrmwZ0jjIZTsDX0iIQrpqBxVNYNfKyEjRazUpSQ5GgLrwGS2Mz8R
-	 060WqfMFONF22vOSfruZzYGfOW5/HTORff/oa0XHhNf8cP6d7mSA5sWUrH0e6AEk/9
-	 ggphyWb9i96Mq48xRe9k49rnN3X9HNfocyG37E6k=
+	b=Dt05i1VeUI2Y+5iKAthTrBpli6+iq4upG3RPPSgIJ254gVBzQkKJyZ7VF4+Ayxy2w
+	 eBP22BTjyJjcasBHo5o7rpYyVU9hCKch76wFKKLQTyCZ34Gi5zQ6c5eQKYMmqVhCsE
+	 ZuEho9QTWQtDGdrw+JdhbISelSK/dPQY0nBM/tU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Ferland <marc.ferland@sonatest.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 162/217] iio: dac: ad5592r: fix temperature channel scaling value
-Date: Wed, 19 Jun 2024 14:56:45 +0200
-Message-ID: <20240619125602.942735031@linuxfoundation.org>
+	Beleswar Padhi <b-padhi@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.9 247/281] remoteproc: k3-r5: Do not allow core1 to power up before core0 via sysfs
+Date: Wed, 19 Jun 2024 14:56:46 +0200
+Message-ID: <20240619125619.467813070@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Ferland <marc.ferland@sonatest.com>
+From: Beleswar Padhi <b-padhi@ti.com>
 
-commit 279428df888319bf68f2686934897301a250bb84 upstream.
+commit 3c8a9066d584f5010b6f4ba03bf6b19d28973d52 upstream.
 
-The scale value for the temperature channel is (assuming Vref=2.5 and
-the datasheet):
+PSC controller has a limitation that it can only power-up the second
+core when the first core is in ON state. Power-state for core0 should be
+equal to or higher than core1.
 
-    376.7897513
+Therefore, prevent core1 from powering up before core0 during the start
+process from sysfs. Similarly, prevent core0 from shutting down before
+core1 has been shut down from sysfs.
 
-When calculating both val and val2 for the temperature scale we
-use (3767897513/25) and multiply it by Vref (here I assume 2500mV) to
-obtain:
-
-  2500 * (3767897513/25) ==> 376789751300
-
-Finally we divide with remainder by 10^9 to get:
-
-    val = 376
-    val2 = 789751300
-
-However, we return IIO_VAL_INT_PLUS_MICRO (should have been NANO) as
-the scale type. So when converting the raw temperature value to the
-'processed' temperature value we will get (assuming raw=810,
-offset=-753):
-
-    processed = (raw + offset) * scale_val
-              = (810 + -753) * 376
-	      = 21432
-
-    processed += div((raw + offset) * scale_val2, 10^6)
-              += div((810 + -753) * 789751300, 10^6)
-	      += 45015
-    ==> 66447
-    ==> 66.4 Celcius
-
-instead of the expected 21.5 Celsius.
-
-Fix this issue by changing IIO_VAL_INT_PLUS_MICRO to
-IIO_VAL_INT_PLUS_NANO.
-
-Fixes: 56ca9db862bf ("iio: dac: Add support for the AD5592R/AD5593R ADCs/DACs")
-Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
-Link: https://lore.kernel.org/r/20240501150554.1871390-1-marc.ferland@sonatest.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 6dedbd1d5443 ("remoteproc: k3-r5: Add a remoteproc driver for R5F subsystem")
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240430105307.1190615-3-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad5592r-base.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c |   23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/dac/ad5592r-base.c
-+++ b/drivers/iio/dac/ad5592r-base.c
-@@ -410,7 +410,7 @@ static int ad5592r_read_raw(struct iio_d
- 			s64 tmp = *val * (3767897513LL / 25LL);
- 			*val = div_s64_rem(tmp, 1000000000LL, val2);
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -548,7 +548,7 @@ static int k3_r5_rproc_start(struct rpro
+ 	struct k3_r5_rproc *kproc = rproc->priv;
+ 	struct k3_r5_cluster *cluster = kproc->cluster;
+ 	struct device *dev = kproc->dev;
+-	struct k3_r5_core *core;
++	struct k3_r5_core *core0, *core;
+ 	u32 boot_addr;
+ 	int ret;
  
--			return IIO_VAL_INT_PLUS_MICRO;
-+			return IIO_VAL_INT_PLUS_NANO;
+@@ -574,6 +574,15 @@ static int k3_r5_rproc_start(struct rpro
+ 				goto unroll_core_run;
  		}
+ 	} else {
++		/* do not allow core 1 to start before core 0 */
++		core0 = list_first_entry(&cluster->cores, struct k3_r5_core,
++					 elem);
++		if (core != core0 && core0->rproc->state == RPROC_OFFLINE) {
++			dev_err(dev, "%s: can not start core 1 before core 0\n",
++				__func__);
++			return -EPERM;
++		}
++
+ 		ret = k3_r5_core_run(core);
+ 		if (ret)
+ 			goto put_mbox;
+@@ -619,7 +628,8 @@ static int k3_r5_rproc_stop(struct rproc
+ {
+ 	struct k3_r5_rproc *kproc = rproc->priv;
+ 	struct k3_r5_cluster *cluster = kproc->cluster;
+-	struct k3_r5_core *core = kproc->core;
++	struct device *dev = kproc->dev;
++	struct k3_r5_core *core1, *core = kproc->core;
+ 	int ret;
  
- 		mutex_lock(&st->lock);
+ 	/* halt all applicable cores */
+@@ -632,6 +642,15 @@ static int k3_r5_rproc_stop(struct rproc
+ 			}
+ 		}
+ 	} else {
++		/* do not allow core 0 to stop before core 1 */
++		core1 = list_last_entry(&cluster->cores, struct k3_r5_core,
++					elem);
++		if (core != core1 && core1->rproc->state != RPROC_OFFLINE) {
++			dev_err(dev, "%s: can not stop core 0 before core 1\n",
++				__func__);
++			return -EPERM;
++		}
++
+ 		ret = k3_r5_core_halt(core);
+ 		if (ret)
+ 			goto out;
 
 
 
