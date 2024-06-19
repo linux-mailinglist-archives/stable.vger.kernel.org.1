@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-53897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B09A90EBB4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA6590ECF9
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7718AB25E89
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D16FB24489
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47101474DA;
-	Wed, 19 Jun 2024 12:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35787146016;
+	Wed, 19 Jun 2024 13:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7PnpKsd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IONRr+o2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922BD146D54;
-	Wed, 19 Jun 2024 12:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BC414389C;
+	Wed, 19 Jun 2024 13:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801995; cv=none; b=nw2FPCe4bSsoIMv2AJbbh6b5zAikeJ04nRB//bngUsJ5IQy4yLfqX7skT47ZojXmt83OqB6wG8b+7EdeWr+RgM2+S4opQDD2CV/aDR+tiM0BRmsy55RZza7KHr4LUXSwBVbyOtkf1XzEX7xQPUVcdJi7aH5599SVT9ZGvtgau/0=
+	t=1718802763; cv=none; b=Y/9/xiAl18iyYMlXv4iYcZqn8M5qczCR6HI8bdgJJMzALen3FhXzgjh0yD92W92K2IQoDY/q2Cmbmuvn+AZX0mjoCe1hBz9mLusFL5MkMMd7p+LIUrjdExzcoLuBBvfzLJZhI+DvO1FEtL/Sg5a4XhsVrSVcQR+G5HlSm898tTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801995; c=relaxed/simple;
-	bh=3Y+xMmea2p/Nl3Dej+fP55baWRme/sz8EzOrEet8kz4=;
+	s=arc-20240116; t=1718802763; c=relaxed/simple;
+	bh=tMhptKip71JApJaakFOmpvKiITuVjbFdYpj2Ni+RjQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQpC//h5dwVXJzTy7lE8KmQs6Zh4lGg6dKyD54yQZETiSzL7KP19R1l1BqUUI0938Pse5CXcG5WA5NVv8jhdVbpPwpWpoCZtzbeutGxTpC8wlZj3OGtmF9OzWndwNQn40klnMofAMs9phjrKcz5eGXiA7fiNlUv9WkK0HzgWxMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7PnpKsd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B3BC32786;
-	Wed, 19 Jun 2024 12:59:54 +0000 (UTC)
+	 MIME-Version; b=gfcm2vTqcHrHYZeDfhnL/RUNPBzHtFJlYf2TEZko+B9uBC8pMfLvFcb1y1hicyEmrYPxqT5mW8LM51RYqsunaszPZ14fWDbodWFRqv8YyiOGWEKPb8TfI+6sZ3VC/BmndBl5b3SSg3m2AbrzV5HE6h/ONUTc77NhilznadhLp0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IONRr+o2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F61CC4AF1A;
+	Wed, 19 Jun 2024 13:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718801995;
-	bh=3Y+xMmea2p/Nl3Dej+fP55baWRme/sz8EzOrEet8kz4=;
+	s=korg; t=1718802762;
+	bh=tMhptKip71JApJaakFOmpvKiITuVjbFdYpj2Ni+RjQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n7PnpKsd0F03w0qbt4aNg1DHKm+JcT7kOcby7eD2ypPgLyEdJYvGKOeqyPquQWNMA
-	 Tcy9crrFRUJ7u314GJUP8cQ5lhQgrlkQq6LK9XX3tCPJV5xWcRrZvfgSg45SXDyYwR
-	 0+AJGMz7AKmB57K0lI/Jab4R21lZF9JVnVcB2py4=
+	b=IONRr+o2ivtCKBUC3Wvekr4vtgte9PPGDgRfaW8hhSU7xqdKOaMWFqIjHlvVXZo70
+	 n1MYsi3hpQY/OicNz/iP67wGgr6TQEIheFz1/Qj5KCF6W4QANywaj+A+88pJz/JT9E
+	 VLavqlCxC15Pt+jcB+KoUUeU+jWizlinAEOrWf84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/267] ice: remove af_xdp_zc_qps bitmap
+	Wen Gu <guwen@linux.alibaba.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	Gerd Bayer <gbayer@linux.ibm.com>
+Subject: [PATCH 6.9 037/281] net/smc: avoid overwriting when adjusting sock bufsizes
 Date: Wed, 19 Jun 2024 14:53:16 +0200
-Message-ID: <20240619125608.096494402@linuxfoundation.org>
+Message-ID: <20240619125611.277071273@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,172 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Wen Gu <guwen@linux.alibaba.com>
 
-[ Upstream commit adbf5a42341f6ea038d3626cd4437d9f0ad0b2dd ]
+[ Upstream commit fb0aa0781a5f457e3864da68af52c3b1f4f7fd8f ]
 
-Referenced commit has introduced a bitmap to distinguish between ZC and
-copy-mode AF_XDP queues, because xsk_get_pool_from_qid() does not do this
-for us.
+When copying smc settings to clcsock, avoid setting clcsock's sk_sndbuf
+to sysctl_tcp_wmem[1], since this may overwrite the value set by
+tcp_sndbuf_expand() in TCP connection establishment.
 
-The bitmap would be especially useful when restoring previous state after
-rebuild, if only it was not reallocated in the process. This leads to e.g.
-xdpsock dying after changing number of queues.
+And the other setting sk_{snd|rcv}buf to sysctl value in
+smc_adjust_sock_bufsizes() can also be omitted since the initialization
+of smc sock and clcsock has set sk_{snd|rcv}buf to smc.sysctl_{w|r}mem
+or ipv4_sysctl_tcp_{w|r}mem[1].
 
-Instead of preserving the bitmap during the rebuild, remove it completely
-and distinguish between ZC and copy-mode queues based on the presence of
-a device associated with the pool.
-
-Fixes: e102db780e1c ("ice: track AF_XDP ZC enabled queues in bitmap")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20240603-net-2024-05-30-intel-net-fixes-v2-3-e3563aa89b0c@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 30c3c4a4497c ("net/smc: Use correct buffer sizes when switching between TCP and SMC")
+Link: https://lore.kernel.org/r/5eaf3858-e7fd-4db8-83e8-3d7a3e0e9ae2@linux.alibaba.com
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>, too.
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice.h     | 32 ++++++++++++++++--------
- drivers/net/ethernet/intel/ice/ice_lib.c |  8 ------
- drivers/net/ethernet/intel/ice/ice_xsk.c | 13 +++++-----
- 3 files changed, 27 insertions(+), 26 deletions(-)
+ net/smc/af_smc.c | 22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index 5022b036ca4f9..cf00eaa3e9955 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -407,7 +407,6 @@ struct ice_vsi {
- 	struct ice_tc_cfg tc_cfg;
- 	struct bpf_prog *xdp_prog;
- 	struct ice_tx_ring **xdp_rings;	 /* XDP ring array */
--	unsigned long *af_xdp_zc_qps;	 /* tracks AF_XDP ZC enabled qps */
- 	u16 num_xdp_txq;		 /* Used XDP queues */
- 	u8 xdp_mapping_mode;		 /* ICE_MAP_MODE_[CONTIG|SCATTER] */
- 
-@@ -714,6 +713,25 @@ static inline void ice_set_ring_xdp(struct ice_tx_ring *ring)
- 	ring->flags |= ICE_TX_FLAGS_RING_XDP;
- }
- 
-+/**
-+ * ice_get_xp_from_qid - get ZC XSK buffer pool bound to a queue ID
-+ * @vsi: pointer to VSI
-+ * @qid: index of a queue to look at XSK buff pool presence
-+ *
-+ * Return: A pointer to xsk_buff_pool structure if there is a buffer pool
-+ * attached and configured as zero-copy, NULL otherwise.
-+ */
-+static inline struct xsk_buff_pool *ice_get_xp_from_qid(struct ice_vsi *vsi,
-+							u16 qid)
-+{
-+	struct xsk_buff_pool *pool = xsk_get_pool_from_qid(vsi->netdev, qid);
-+
-+	if (!ice_is_xdp_ena_vsi(vsi))
-+		return NULL;
-+
-+	return (pool && pool->dev) ? pool : NULL;
-+}
-+
- /**
-  * ice_xsk_pool - get XSK buffer pool bound to a ring
-  * @ring: Rx ring to use
-@@ -726,10 +744,7 @@ static inline struct xsk_buff_pool *ice_xsk_pool(struct ice_rx_ring *ring)
- 	struct ice_vsi *vsi = ring->vsi;
- 	u16 qid = ring->q_index;
- 
--	if (!ice_is_xdp_ena_vsi(vsi) || !test_bit(qid, vsi->af_xdp_zc_qps))
--		return NULL;
--
--	return xsk_get_pool_from_qid(vsi->netdev, qid);
-+	return ice_get_xp_from_qid(vsi, qid);
- }
- 
- /**
-@@ -754,12 +769,7 @@ static inline void ice_tx_xsk_pool(struct ice_vsi *vsi, u16 qid)
- 	if (!ring)
- 		return;
- 
--	if (!ice_is_xdp_ena_vsi(vsi) || !test_bit(qid, vsi->af_xdp_zc_qps)) {
--		ring->xsk_pool = NULL;
--		return;
--	}
--
--	ring->xsk_pool = xsk_get_pool_from_qid(vsi->netdev, qid);
-+	ring->xsk_pool = ice_get_xp_from_qid(vsi, qid);
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 2004120a58acd..5a7ba0355d338 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -117,14 +117,8 @@ static int ice_vsi_alloc_arrays(struct ice_vsi *vsi)
- 	if (!vsi->q_vectors)
- 		goto err_vectors;
- 
--	vsi->af_xdp_zc_qps = bitmap_zalloc(max_t(int, vsi->alloc_txq, vsi->alloc_rxq), GFP_KERNEL);
--	if (!vsi->af_xdp_zc_qps)
--		goto err_zc_qps;
--
- 	return 0;
- 
--err_zc_qps:
--	devm_kfree(dev, vsi->q_vectors);
- err_vectors:
- 	devm_kfree(dev, vsi->rxq_map);
- err_rxq_map:
-@@ -321,8 +315,6 @@ static void ice_vsi_free_arrays(struct ice_vsi *vsi)
- 
- 	dev = ice_pf_to_dev(pf);
- 
--	bitmap_free(vsi->af_xdp_zc_qps);
--	vsi->af_xdp_zc_qps = NULL;
- 	/* free the ring and vector containers */
- 	devm_kfree(dev, vsi->q_vectors);
- 	vsi->q_vectors = NULL;
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-index 7bd71660011e4..f53566cb6bfbd 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-@@ -289,7 +289,6 @@ static int ice_xsk_pool_disable(struct ice_vsi *vsi, u16 qid)
- 	if (!pool)
- 		return -EINVAL;
- 
--	clear_bit(qid, vsi->af_xdp_zc_qps);
- 	xsk_pool_dma_unmap(pool, ICE_RX_DMA_ATTR);
- 
- 	return 0;
-@@ -320,8 +319,6 @@ ice_xsk_pool_enable(struct ice_vsi *vsi, struct xsk_buff_pool *pool, u16 qid)
- 	if (err)
- 		return err;
- 
--	set_bit(qid, vsi->af_xdp_zc_qps);
--
- 	return 0;
- }
- 
-@@ -369,11 +366,13 @@ ice_realloc_rx_xdp_bufs(struct ice_rx_ring *rx_ring, bool pool_present)
- int ice_realloc_zc_buf(struct ice_vsi *vsi, bool zc)
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 4b52b3b159c0e..5f9f3d4c1df5f 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -460,29 +460,11 @@ static int smc_bind(struct socket *sock, struct sockaddr *uaddr,
+ static void smc_adjust_sock_bufsizes(struct sock *nsk, struct sock *osk,
+ 				     unsigned long mask)
  {
- 	struct ice_rx_ring *rx_ring;
--	unsigned long q;
-+	uint i;
-+
-+	ice_for_each_rxq(vsi, i) {
-+		rx_ring = vsi->rx_rings[i];
-+		if (!rx_ring->xsk_pool)
-+			continue;
+-	struct net *nnet = sock_net(nsk);
+-
+ 	nsk->sk_userlocks = osk->sk_userlocks;
+-	if (osk->sk_userlocks & SOCK_SNDBUF_LOCK) {
++	if (osk->sk_userlocks & SOCK_SNDBUF_LOCK)
+ 		nsk->sk_sndbuf = osk->sk_sndbuf;
+-	} else {
+-		if (mask == SK_FLAGS_SMC_TO_CLC)
+-			WRITE_ONCE(nsk->sk_sndbuf,
+-				   READ_ONCE(nnet->ipv4.sysctl_tcp_wmem[1]));
+-		else
+-			WRITE_ONCE(nsk->sk_sndbuf,
+-				   2 * READ_ONCE(nnet->smc.sysctl_wmem));
+-	}
+-	if (osk->sk_userlocks & SOCK_RCVBUF_LOCK) {
++	if (osk->sk_userlocks & SOCK_RCVBUF_LOCK)
+ 		nsk->sk_rcvbuf = osk->sk_rcvbuf;
+-	} else {
+-		if (mask == SK_FLAGS_SMC_TO_CLC)
+-			WRITE_ONCE(nsk->sk_rcvbuf,
+-				   READ_ONCE(nnet->ipv4.sysctl_tcp_rmem[1]));
+-		else
+-			WRITE_ONCE(nsk->sk_rcvbuf,
+-				   2 * READ_ONCE(nnet->smc.sysctl_rmem));
+-	}
+ }
  
--	for_each_set_bit(q, vsi->af_xdp_zc_qps,
--			 max_t(int, vsi->alloc_txq, vsi->alloc_rxq)) {
--		rx_ring = vsi->rx_rings[q];
- 		if (ice_realloc_rx_xdp_bufs(rx_ring, zc))
- 			return -ENOMEM;
- 	}
+ static void smc_copy_sock_settings(struct sock *nsk, struct sock *osk,
 -- 
 2.43.0
 
