@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-54508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D73190EE94
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BDE090ED77
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFAAC28665A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B314F1C20EF6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544A314D44D;
-	Wed, 19 Jun 2024 13:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DA0143C65;
+	Wed, 19 Jun 2024 13:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efEXfnjB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYLZfsCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10E6314B96F;
-	Wed, 19 Jun 2024 13:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A5682495;
+	Wed, 19 Jun 2024 13:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803787; cv=none; b=BuD4/wI+txd1kisdsFZbBVUFQLodL/wVtx+5L7UVueBYvwx8p2NQKDT9LNKtxeXEnuFar0c4nIsbaxNUpRWj89qIILkFLLP7S4n2xw94YCFSWQupnjfyZL/IkNbItvEPgnPCZnKnRPS242mBxgc+E0ixBYcQKhTAlKukDwDypRE=
+	t=1718803108; cv=none; b=AdV0I8dY7oU5EGwr552LT0b+83QZNcZDCFd50SGWHVW15BD1NA4Rcov1ShfYTNw+e1gaLmg6RwXt0p6Rvb9DRXe6u6lzFEDcxixN9DKhSQiNx8aWzBIC1Kdtm4NBcDhGfLofurezCdKC9rpzy//EpkbdEpGkQ/Q82rSWIPnTRLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803787; c=relaxed/simple;
-	bh=dH0kR/iFLSON3irqr8qXIMFYOerx3atf6kxomtx0nPg=;
+	s=arc-20240116; t=1718803108; c=relaxed/simple;
+	bh=SVvsGqhoOKlpq2El0rN5FSypTv+SapiFWmp2H70Y8/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqrDEJ6m16VNK1CMYDYxRIoQzmFWzkuammllratkzZdqliA1AzhKm1LdqpsaCDuGng99avjy18GH7mjksdhv20MVdJtOJNfy5dtDSWDJGvaXTOYbNbVastSUR4l5khGGMx+EOucdK+BN3gDIzwwWLm5Djl4NQ9PHaOaGuH2jT1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efEXfnjB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B700C2BBFC;
-	Wed, 19 Jun 2024 13:29:46 +0000 (UTC)
+	 MIME-Version; b=SVWkY+KGYhCuNBsk6bRnJfbkXNTNIWRM6x88JZUZY6neWpcBezsiIfm+n/jtBsBGJJr+FV5P8IKpyvs5LKYjlz9JXYBPwGL2yGnVadIFDF4nLr82bevWB68chMjkgJ6XG6xSMLsmrDULdQg3Ah2ld6WHaRaeHNkI8bPagyuR+/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYLZfsCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CD7C32786;
+	Wed, 19 Jun 2024 13:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803786;
-	bh=dH0kR/iFLSON3irqr8qXIMFYOerx3atf6kxomtx0nPg=;
+	s=korg; t=1718803108;
+	bh=SVvsGqhoOKlpq2El0rN5FSypTv+SapiFWmp2H70Y8/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=efEXfnjBBA1B0+VcpHcahQKkje+2/mc6iR7nCWi9poqoX1YRrf06L9uhjaT9yTvL6
-	 dDwVDmjBH3VzgpRdgSt6+/+7/I0QzTy74O5MAzrVPd7w6HgkiueqpJEbk16fZReStj
-	 qgi3s9qRBeXTypTkM9WoZ4TpZLNsci15cf2pA6t4=
+	b=oYLZfsCadS6UooHoUY/DPilsc+EeEu3Ajococ1ew0GzhjeuXh2gbbMkhWPBMbZ1/y
+	 i7pGBovjKzIfKLFvJS10A3F/YR+XBiAvgw91dSGAityXZdCSdUPggho9H7R3OA6lLu
+	 T6Wonluri5KGG2grG2aJPAQDHYQ3YdfNimykauHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Baoquan He <bhe@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Simon Horman <horms@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/217] mm, vmalloc: fix high order __GFP_NOFAIL allocations
+Subject: [PATCH 6.9 156/281] net dsa: qca8k: fix usages of device_get_named_child_node()
 Date: Wed, 19 Jun 2024 14:55:15 +0200
-Message-ID: <20240619125559.462342381@linuxfoundation.org>
+Message-ID: <20240619125615.842487114@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,116 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Hocko <mhocko@suse.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit e9c3cda4d86e56bf7fe403729f38c4f0f65d3860 ]
+[ Upstream commit d029edefed39647c797c2710aedd9d31f84c069e ]
 
-Gao Xiang has reported that the page allocator complains about high order
-__GFP_NOFAIL request coming from the vmalloc core:
+The documentation for device_get_named_child_node() mentions this
+important point:
 
- __alloc_pages+0x1cb/0x5b0 mm/page_alloc.c:5549
- alloc_pages+0x1aa/0x270 mm/mempolicy.c:2286
- vm_area_alloc_pages mm/vmalloc.c:2989 [inline]
- __vmalloc_area_node mm/vmalloc.c:3057 [inline]
- __vmalloc_node_range+0x978/0x13c0 mm/vmalloc.c:3227
- kvmalloc_node+0x156/0x1a0 mm/util.c:606
- kvmalloc include/linux/slab.h:737 [inline]
- kvmalloc_array include/linux/slab.h:755 [inline]
- kvcalloc include/linux/slab.h:760 [inline]
+"
+The caller is responsible for calling fwnode_handle_put() on the
+returned fwnode pointer.
+"
 
-it seems that I have completely missed high order allocation backing
-vmalloc areas case when implementing __GFP_NOFAIL support.  This means
-that [k]vmalloc at al.  can allocate higher order allocations with
-__GFP_NOFAIL which can trigger OOM killer for non-costly orders easily or
-cause a lot of reclaim/compaction activity if those requests cannot be
-satisfied.
+Add fwnode_handle_put() to avoid leaked references.
 
-Fix the issue by falling back to zero order allocations for __GFP_NOFAIL
-requests if the high order request fails.
-
-Link: https://lkml.kernel.org/r/ZAXynvdNqcI0f6Us@dhcp22.suse.cz
-Fixes: 9376130c390a ("mm/vmalloc: add support for __GFP_NOFAIL")
-Reported-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-  Link: https://lkml.kernel.org/r/20230305053035.1911-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Michal Hocko <mhocko@suse.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 8e0545c83d67 ("mm/vmalloc: fix vmalloc which may return null if called with __GFP_NOFAIL")
+Fixes: 1e264f9d2918 ("net: dsa: qca8k: add LEDs basic support")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmalloc.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ drivers/net/dsa/qca/qca8k-leds.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 67a10a04df041..cab30d9497e6b 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2923,6 +2923,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 		unsigned int order, unsigned int nr_pages, struct page **pages)
- {
- 	unsigned int nr_allocated = 0;
-+	gfp_t alloc_gfp = gfp;
-+	bool nofail = false;
- 	struct page *page;
- 	int i;
+diff --git a/drivers/net/dsa/qca/qca8k-leds.c b/drivers/net/dsa/qca/qca8k-leds.c
+index 811ebeeff4ed7..43ac68052baf9 100644
+--- a/drivers/net/dsa/qca/qca8k-leds.c
++++ b/drivers/net/dsa/qca/qca8k-leds.c
+@@ -431,8 +431,11 @@ qca8k_parse_port_leds(struct qca8k_priv *priv, struct fwnode_handle *port, int p
+ 		init_data.devicename = kasprintf(GFP_KERNEL, "%s:0%d",
+ 						 priv->internal_mdio_bus->id,
+ 						 port_num);
+-		if (!init_data.devicename)
++		if (!init_data.devicename) {
++			fwnode_handle_put(led);
++			fwnode_handle_put(leds);
+ 			return -ENOMEM;
++		}
  
-@@ -2933,6 +2935,7 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 	 * more permissive.
- 	 */
- 	if (!order) {
-+		/* bulk allocator doesn't support nofail req. officially */
- 		gfp_t bulk_gfp = gfp & ~__GFP_NOFAIL;
- 
- 		while (nr_allocated < nr_pages) {
-@@ -2971,20 +2974,35 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 			if (nr != nr_pages_request)
- 				break;
- 		}
-+	} else if (gfp & __GFP_NOFAIL) {
-+		/*
-+		 * Higher order nofail allocations are really expensive and
-+		 * potentially dangerous (pre-mature OOM, disruptive reclaim
-+		 * and compaction etc.
-+		 */
-+		alloc_gfp &= ~__GFP_NOFAIL;
-+		nofail = true;
+ 		ret = devm_led_classdev_register_ext(priv->dev, &port_led->cdev, &init_data);
+ 		if (ret)
+@@ -441,6 +444,7 @@ qca8k_parse_port_leds(struct qca8k_priv *priv, struct fwnode_handle *port, int p
+ 		kfree(init_data.devicename);
  	}
  
- 	/* High-order pages or fallback path if "bulk" fails. */
--
- 	while (nr_allocated < nr_pages) {
- 		if (fatal_signal_pending(current))
- 			break;
++	fwnode_handle_put(leds);
+ 	return 0;
+ }
  
- 		if (nid == NUMA_NO_NODE)
--			page = alloc_pages(gfp, order);
-+			page = alloc_pages(alloc_gfp, order);
- 		else
--			page = alloc_pages_node(nid, gfp, order);
--		if (unlikely(!page))
--			break;
-+			page = alloc_pages_node(nid, alloc_gfp, order);
-+		if (unlikely(!page)) {
-+			if (!nofail)
-+				break;
-+
-+			/* fall back to the zero order allocations */
-+			alloc_gfp |= __GFP_NOFAIL;
-+			order = 0;
-+			continue;
+@@ -471,9 +475,13 @@ qca8k_setup_led_ctrl(struct qca8k_priv *priv)
+ 		 * the correct port for LED setup.
+ 		 */
+ 		ret = qca8k_parse_port_leds(priv, port, qca8k_port_to_phy(port_num));
+-		if (ret)
++		if (ret) {
++			fwnode_handle_put(port);
++			fwnode_handle_put(ports);
+ 			return ret;
 +		}
-+
- 		/*
- 		 * Higher order allocations must be able to be treated as
- 		 * indepdenent small pages by callers (as they can with
+ 	}
+ 
++	fwnode_handle_put(ports);
+ 	return 0;
+ }
 -- 
 2.43.0
 
