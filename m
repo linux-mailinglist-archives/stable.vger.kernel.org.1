@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-53788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC4C90E63A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:47:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 393A290E63E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8C89B2139A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:47:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7712283F2D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0189577113;
-	Wed, 19 Jun 2024 08:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F47F7C6DF;
+	Wed, 19 Jun 2024 08:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBMky5p0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FaBOVCgX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61A62139B1
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009F42139B1
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718786816; cv=none; b=L3aCg2VpKZV8zHARMclfvIpGmTGJnJ8hpNvDQ+sZ5TBJaYfBAlsI8Ca7JQRtf6hB9cWrFwzt584r0lhUrP1zQtHNwD/424uoH8TDNXW/QcDlhvj+4YosQJqwT41mZyIm23qYGdyvO9goygWa54lGbp5NcqQmASCTL/rsmDsX/fk=
+	t=1718786984; cv=none; b=eaujY7KevEjjZXdPvFAmFYQuOpjOPQdUdtHQsu3/GJcZcs1JYoW35SY6CV/CkmH0qVCTSmY5skjeHt8sxyEqqa30kaWo9bO5n6hXqEBbPGYESXoI16CMHLdk5NS884CJzNnrWCxyOISwVYjlRpGiq96A4XzJb0jxPErE4Six8iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718786816; c=relaxed/simple;
-	bh=bgv2oOUtsWpSxcTFU+52dNG2tgw9597YPBZ44A3ZxqA=;
+	s=arc-20240116; t=1718786984; c=relaxed/simple;
+	bh=fcZDrjD29BXKZPcDZwkx78OBSTrsUN8FD8jiw4Q/8A4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A+0290GFdjturqcK2FXhsUhobSR3bGjWGWhO/Az7DMduX8XCte1hvLDHm4rA0BvUlsxvLqkhDoHGBk5j4mgWQ8d/bedTzKLRx5T77/GdkSsiSl/eoN85ryrI6MFWthhIsWxM2aI99f2+MppIki86X9b+9hBqccaUybjOSx6sHHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBMky5p0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB76BC2BBFC;
-	Wed, 19 Jun 2024 08:46:55 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jw3I3c/nv+kFm/imO1lvqQlXuCtCJ//3J3PglkYr5our13iOcmyz+pzEu8XL4gWclXKtkGoUhOW46oml4eS+Wh8nO4FFT/MTyXuMYdSwPODWVXS6v3ZoBw7IwYByMoB2Dzzh6p1djKb57C0XN4IXzX/NXCPQrCCQs8bmDkx3kuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FaBOVCgX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708C0C2BBFC;
+	Wed, 19 Jun 2024 08:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718786816;
-	bh=bgv2oOUtsWpSxcTFU+52dNG2tgw9597YPBZ44A3ZxqA=;
+	s=korg; t=1718786983;
+	bh=fcZDrjD29BXKZPcDZwkx78OBSTrsUN8FD8jiw4Q/8A4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bBMky5p0/irM/RV6Hq1CHkwNdC2p4XFLCqkOmRBVBvnrdyw5kiN3Ae86zCCocHXO3
-	 gwMY5fp3CO5+0ghZSQwrQinWcgSaq6Jychy0kcdKiWpfdQCL83lMO3R7Ctc4uTfTJ2
-	 qCY7KuNunN4+MsVpfE9GRxR9W5C95lF5nmjlaHl4=
-Date: Wed, 19 Jun 2024 10:46:48 +0200
+	b=FaBOVCgXvAeqfGIAKVm5PFdaLSgUXUkf9A8N53xN53ggwoA1GDu+HZuk7MZ7TDvXV
+	 Vud4vahQLc3z5YnD9hL4peHoXHK0BzNcnUA5u5r4jXhWjN/CScG+71eDLXf3xJZ6Es
+	 6GPKaZ76w/6+syEXQWvmVK2UrxC4a26l3xf3MN4c=
+Date: Wed, 19 Jun 2024 10:49:41 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Fabio Estevam <festevam@gmail.com>
-Cc: stable@vger.kernel.org, will@kernel.org, mhklinux@outlook.com,
-	petr.tesarik1@huawei-partners.com, nicolinc@nvidia.com, hch@lst.de
-Subject: Re: [PATCH 0/3] swiotlb: Backport to linux-stable 6.6
-Message-ID: <2024061940-specks-onyx-18e0@gregkh>
-References: <20240617142315.2656683-1-festevam@gmail.com>
+To: Po-Hsu Lin <po-hsu.lin@canonical.com>
+Cc: stable@vger.kernel.org, petrm@nvidia.com, liuhangbin@gmail.com,
+	pabeni@redhat.com, kuba@kernel.org, bpoirier@nvidia.com,
+	idosch@nvidia.com
+Subject: Re: [PATCHv2 6.6.y 1/3] selftests/net: add lib.sh
+Message-ID: <2024061911-crinkly-pointer-f564@gregkh>
+References: <20240618075306.1073405-1-po-hsu.lin@canonical.com>
+ <20240618075306.1073405-2-po-hsu.lin@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,55 +56,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240617142315.2656683-1-festevam@gmail.com>
+In-Reply-To: <20240618075306.1073405-2-po-hsu.lin@canonical.com>
 
-On Mon, Jun 17, 2024 at 11:23:12AM -0300, Fabio Estevam wrote:
-> This series of swiotlb patches fixes a iwlwifi regression on the
-> i.MX8MM IoT Gateway board running kernel 6.6.
+On Tue, Jun 18, 2024 at 03:53:04PM +0800, Po-Hsu Lin wrote:
+> From: Hangbin Liu <liuhangbin@gmail.com>
 > 
-> This was noticed when updating the kernel from 5.10 to 6.6.
+> commit 25ae948b447881bf689d459cd5bd4629d9c04b20 upstream.
 > 
-> Without this series, the board cannot boot kernel 6.6 due to the storm
-> of alignment errors from the iwlwifi driver.
+> Add a lib.sh for net selftests. This file can be used to define commonly
+> used variables and functions. Some commonly used functions can be moved
+> from forwarding/lib.sh to this lib file. e.g. busywait().
 > 
-> This has been reported and discussed in the linux-wireless list:
-> https://lore.kernel.org/linux-wireless/CAOMZO5D2Atb=rnvmNLvu8nrsn+3L9X9NbG1bkZx_MenCCmJK2Q@mail.gmail.com/T/#md2b5063655dfcadf8740285573d504fd46ad0145
+> Add function setup_ns() for user to create unique namespaces with given
+> prefix name.
 > 
-> Will Deacon suggested:
-> 
-> "If you want to backport that change, then I think you should probably
-> take the whole series:
-> 
-> https://lore.kernel.org/all/20240308152829.25754-1-will@kernel.org/
-> 
-> (and there were some follow-ups from Michael iirc; you're best off
-> checking the git history for kernel/dma/swiotlb.c).
-> 
-> FWIW: we have this series backported to 6.6 in the android15-6.6 tree."
-> 
-> >From this series, only the two patches below are not present in the
-> 6.6 stable tree:
-> 
-> swiotlb: Enforce page alignment in swiotlb_alloc()
-> swiotlb: Reinstate page-alignment for mappings >= PAGE_SIZE
-> 
-> While at it, also backport:
-> swiotlb: extend buffer pre-padding to alloc_align_mask if necessary
-> 
-> as it fixes a commit that is present in 6.6.
-> 
-> Petr Tesarik (1):
->   swiotlb: extend buffer pre-padding to alloc_align_mask if necessary
-> 
-> Will Deacon (2):
->   swiotlb: Enforce page alignment in swiotlb_alloc()
->   swiotlb: Reinstate page-alignment for mappings >= PAGE_SIZE
-> 
->  kernel/dma/swiotlb.c | 83 +++++++++++++++++++++++++++++++++-----------
->  1 file changed, 63 insertions(+), 20 deletions(-)
-> 
+> Reviewed-by: Petr Machata <petrm@nvidia.com>
+> Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
+> ---
+>  tools/testing/selftests/net/Makefile          |  2 +-
+>  tools/testing/selftests/net/forwarding/lib.sh | 27 +--------
+>  tools/testing/selftests/net/lib.sh            | 85 +++++++++++++++++++++++++++
+>  3 files changed, 87 insertions(+), 27 deletions(-)
+>  create mode 100644 tools/testing/selftests/net/lib.sh
 
-All now queued up, thanks.
+This patch fails to apply on the lates 6.6.y tree:
+	checking file tools/testing/selftests/net/Makefile
+	Hunk #1 FAILED at 54.
+	1 out of 1 hunk FAILED
+	checking file tools/testing/selftests/net/forwarding/lib.sh
+	checking file tools/testing/selftests/net/lib.sh
+
+Please rebase and resubmit.
+
+thanks,
 
 greg k-h
 
