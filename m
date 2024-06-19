@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-54145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66B390ECE9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EBB290EBA3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCF161C21605
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C01FB286A43
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F071422B8;
-	Wed, 19 Jun 2024 13:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE97D14B952;
+	Wed, 19 Jun 2024 12:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZeozBkf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6fgUqb8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91D014389C;
-	Wed, 19 Jun 2024 13:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5DC14388C;
+	Wed, 19 Jun 2024 12:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802718; cv=none; b=YYtzI665Sf3ZoWJMYlCNBXRrrhgWzkKPHOlnz1vlpAKVkxjdOaDyPYeH2Ph8Gx/lpF91336u+pOZxYjWQvYydFdNC1pSQLePYZpfEJJ0rVyLqSVCeCnAdVYze1m0w0586VHVWE3bOITMRJeGGYtg5ALoXoaLOC+mtmO9xdscKJU=
+	t=1718801951; cv=none; b=t7fUgAjDYgIQU/qPLoI/OeSFxmPik4m8wf92NR2fRLewlBWpAiIxRSSE1TROEWMGFFbAh+YUyhXjk9vZlFNALwu1gu3mn3v4pF6gqfyREBeEM1LBpo8qDLpyGWET4RUExzVYuud04xlPAseUumbR1dsvH45WQfq1fw6Ui6G/ef4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802718; c=relaxed/simple;
-	bh=eZ0BViPgLRBhm+57YIAa3KK1o0lg2Q+iVlukafhJJpw=;
+	s=arc-20240116; t=1718801951; c=relaxed/simple;
+	bh=IDxi58p/ohpFxgiT4UiVx3ZJ/Jnh/sLSiuLAFt/185M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q+GRGV4L8h6EAjDtnqV+a+DxnpqU9flJdd16gJfRTH3Z3NfG6E9Hzxnt8wo0z0aU+hg1lOxVoZQlWaG39tADgL20FYBrXpGBW4NunobrO5UqrkM/sKUluhdnqgUMCGjHditK6HonVAbP38mxsSa/NbU+AHhO8AUSmKetP/o4e6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZeozBkf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2639C2BBFC;
-	Wed, 19 Jun 2024 13:11:57 +0000 (UTC)
+	 MIME-Version; b=O+I/r4L0uUCstUEhSW054N28wMgUrCskg8i6/tmBjDkTfTkRwrn7fXMLTqHlc9Vv69aM1a3B1Y8lj0y0Oqrp7gF/3h9og22bFdbIqX93rfNapMCEz+ZzVM18wmloOnhyMEoR8A7bvgzyY5xKH6IhX5OP++wZM39pTiazLIkqSv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6fgUqb8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FE5C2BBFC;
+	Wed, 19 Jun 2024 12:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802718;
-	bh=eZ0BViPgLRBhm+57YIAa3KK1o0lg2Q+iVlukafhJJpw=;
+	s=korg; t=1718801951;
+	bh=IDxi58p/ohpFxgiT4UiVx3ZJ/Jnh/sLSiuLAFt/185M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZeozBkf4UWujeIvhlhwG92jCnfgaYgBUfVC/Hd4TpxeMc+twpDAkAD3hoyry0mSm
-	 CWSLC5iYEGrJsQ3JYkB44Rj9kvIg+7hcj/Q1Eia7LmlAcE0K36GPk0MRxNO/3QlJ8+
-	 S798H52zLC64NoZGKWo+bwGupJEVunHIb1gcUL5U=
+	b=u6fgUqb8g5g7fx6ac7cOSSgNZiIImi8BFKBlEPJ9ldWNzEQtNoXU43vocuBIAZfxq
+	 mcfKDutdEjItFE6+WPMOgHD9DGbsLuD2R2NJzbiRmYzsZnBvHLbrKLanSiUTcqBovw
+	 1u2o7OGk7QfIZrLh+dh932lEu1cALzLPi4xXYP6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lars Kellogg-Stedman <lars@oddbit.com>,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Dan Cross <crossd@gmail.com>,
-	Chris Maness <christopher.maness@gmail.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 024/281] ax25: Fix refcount imbalance on inbound connections
+Subject: [PATCH 6.6 032/267] octeontx2-af: Always allocate PF entries from low prioriy zone
 Date: Wed, 19 Jun 2024 14:53:03 +0200
-Message-ID: <20240619125610.777085509@linuxfoundation.org>
+Message-ID: <20240619125607.596575597@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,95 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lars Kellogg-Stedman <lars@oddbit.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit 3c34fb0bd4a4237592c5ecb5b2e2531900c55774 ]
+[ Upstream commit 8b0f7410942cdc420c4557eda02bfcdf60ccec17 ]
 
-When releasing a socket in ax25_release(), we call netdev_put() to
-decrease the refcount on the associated ax.25 device. However, the
-execution path for accepting an incoming connection never calls
-netdev_hold(). This imbalance leads to refcount errors, and ultimately
-to kernel crashes.
+PF mcam entries has to be at low priority always so that VF
+can install longest prefix match rules at higher priority.
+This was taken care currently but when priority allocation
+wrt reference entry is requested then entries are allocated
+from mid-zone instead of low priority zone. Fix this and
+always allocate entries from low priority zone for PFs.
 
-A typical call trace for the above situation will start with one of the
-following errors:
-
-    refcount_t: decrement hit 0; leaking memory.
-    refcount_t: underflow; use-after-free.
-
-And will then have a trace like:
-
-    Call Trace:
-    <TASK>
-    ? show_regs+0x64/0x70
-    ? __warn+0x83/0x120
-    ? refcount_warn_saturate+0xb2/0x100
-    ? report_bug+0x158/0x190
-    ? prb_read_valid+0x20/0x30
-    ? handle_bug+0x3e/0x70
-    ? exc_invalid_op+0x1c/0x70
-    ? asm_exc_invalid_op+0x1f/0x30
-    ? refcount_warn_saturate+0xb2/0x100
-    ? refcount_warn_saturate+0xb2/0x100
-    ax25_release+0x2ad/0x360
-    __sock_release+0x35/0xa0
-    sock_close+0x19/0x20
-    [...]
-
-On reboot (or any attempt to remove the interface), the kernel gets
-stuck in an infinite loop:
-
-    unregister_netdevice: waiting for ax0 to become free. Usage count = 0
-
-This patch corrects these issues by ensuring that we call netdev_hold()
-and ax25_dev_hold() for new connections in ax25_accept(). This makes the
-logic leading to ax25_accept() match the logic for ax25_bind(): in both
-cases we increment the refcount, which is ultimately decremented in
-ax25_release().
-
-Fixes: 9fd75b66b8f6 ("ax25: Fix refcount leaks caused by ax25_cb_del()")
-Signed-off-by: Lars Kellogg-Stedman <lars@oddbit.com>
-Tested-by: Duoming Zhou <duoming@zju.edu.cn>
-Tested-by: Dan Cross <crossd@gmail.com>
-Tested-by: Chris Maness <christopher.maness@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240529210242.3346844-2-lars@oddbit.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7df5b4b260dd ("octeontx2-af: Allocate low priority entries for PF")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ax25/af_ax25.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 33 ++++++++++++-------
+ 1 file changed, 22 insertions(+), 11 deletions(-)
 
-diff --git a/net/ax25/af_ax25.c b/net/ax25/af_ax25.c
-index 9169efb2f43aa..5fff5930e4deb 100644
---- a/net/ax25/af_ax25.c
-+++ b/net/ax25/af_ax25.c
-@@ -1378,8 +1378,10 @@ static int ax25_accept(struct socket *sock, struct socket *newsock, int flags,
- {
- 	struct sk_buff *skb;
- 	struct sock *newsk;
-+	ax25_dev *ax25_dev;
- 	DEFINE_WAIT(wait);
- 	struct sock *sk;
-+	ax25_cb *ax25;
- 	int err = 0;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index 91a4ea529d077..00ef6d201b973 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -2506,7 +2506,17 @@ static int npc_mcam_alloc_entries(struct npc_mcam *mcam, u16 pcifunc,
+ 	 * - when available free entries are less.
+ 	 * Lower priority ones out of avaialble free entries are always
+ 	 * chosen when 'high vs low' question arises.
++	 *
++	 * For a VF base MCAM match rule is set by its PF. And all the
++	 * further MCAM rules installed by VF on its own are
++	 * concatenated with the base rule set by its PF. Hence PF entries
++	 * should be at lower priority compared to VF entries. Otherwise
++	 * base rule is hit always and rules installed by VF will be of
++	 * no use. Hence if the request is from PF then allocate low
++	 * priority entries.
+ 	 */
++	if (!(pcifunc & RVU_PFVF_FUNC_MASK))
++		goto lprio_alloc;
  
- 	if (sock->state != SS_UNCONNECTED)
-@@ -1434,6 +1436,10 @@ static int ax25_accept(struct socket *sock, struct socket *newsock, int flags,
- 	kfree_skb(skb);
- 	sk_acceptq_removed(sk);
- 	newsock->state = SS_CONNECTED;
-+	ax25 = sk_to_ax25(newsk);
-+	ax25_dev = ax25->ax25_dev;
-+	netdev_hold(ax25_dev->dev, &ax25->dev_tracker, GFP_ATOMIC);
-+	ax25_dev_hold(ax25_dev);
+ 	/* Get the search range for priority allocation request */
+ 	if (req->priority) {
+@@ -2515,17 +2525,6 @@ static int npc_mcam_alloc_entries(struct npc_mcam *mcam, u16 pcifunc,
+ 		goto alloc;
+ 	}
  
- out:
- 	release_sock(sk);
+-	/* For a VF base MCAM match rule is set by its PF. And all the
+-	 * further MCAM rules installed by VF on its own are
+-	 * concatenated with the base rule set by its PF. Hence PF entries
+-	 * should be at lower priority compared to VF entries. Otherwise
+-	 * base rule is hit always and rules installed by VF will be of
+-	 * no use. Hence if the request is from PF and NOT a priority
+-	 * allocation request then allocate low priority entries.
+-	 */
+-	if (!(pcifunc & RVU_PFVF_FUNC_MASK))
+-		goto lprio_alloc;
+-
+ 	/* Find out the search range for non-priority allocation request
+ 	 *
+ 	 * Get MCAM free entry count in middle zone.
+@@ -2555,6 +2554,18 @@ static int npc_mcam_alloc_entries(struct npc_mcam *mcam, u16 pcifunc,
+ 		reverse = true;
+ 		start = 0;
+ 		end = mcam->bmap_entries;
++		/* Ensure PF requests are always at bottom and if PF requests
++		 * for higher/lower priority entry wrt reference entry then
++		 * honour that criteria and start search for entries from bottom
++		 * and not in mid zone.
++		 */
++		if (!(pcifunc & RVU_PFVF_FUNC_MASK) &&
++		    req->priority == NPC_MCAM_HIGHER_PRIO)
++			end = req->ref_entry;
++
++		if (!(pcifunc & RVU_PFVF_FUNC_MASK) &&
++		    req->priority == NPC_MCAM_LOWER_PRIO)
++			start = req->ref_entry;
+ 	}
+ 
+ alloc:
 -- 
 2.43.0
 
