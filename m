@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-54487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF9F90EE76
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0496290EC55
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB7BD1C24A34
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A608E1F21940
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B6414AD35;
-	Wed, 19 Jun 2024 13:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57E6143C4E;
+	Wed, 19 Jun 2024 13:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAkd89T8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9MNXMxN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B4113E409;
-	Wed, 19 Jun 2024 13:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945E812FB31;
+	Wed, 19 Jun 2024 13:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803725; cv=none; b=WPCgfn1CIzKSp1RJL45WxxYM0/bgqTcT6dWvquY4NVtxz6Pg55bFYK9tWkWyN5h8QNs99gqgKyOs7N+J5CGWWZl/GpSLwCDYa7K/dcUSgZOahNFMqzcxBzrgLM+7fOQqhMgdgxH5fEM5kleGWD4gvdVdXFcYqwrnH2TFwZd18Bg=
+	t=1718802376; cv=none; b=f39YoZ5F/17jLbxd+2AMVpnb37xSn/m41OUFuJnGAlf/b1Pi06uA3a/tqiLh13o3bx789NMInVURpsThtHIi74DSdxwNs5bdojOymbHqeLLJxoGgXbwEk1u8iTE3peO/BFFsFjDkT1GN/UXppeV0IN2p4+IGyTpcmrqp0qOzA0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803725; c=relaxed/simple;
-	bh=2Zjw+wXT1tkJbBawKLC2XYUGJOk1g9cVuijasova+UQ=;
+	s=arc-20240116; t=1718802376; c=relaxed/simple;
+	bh=Nk++o5bXqlx/UweZpPGPh3AYxikfZsLL1HKX93wdybE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFSIfTh96D72AGKytfX1BF9qRdCiEDTF7E4Jc27le1L3KuB72XYAHHgMKuNCowBOsieX+iZPZ8rO0B8FeUqFNh1HKJ78F3nph7DuKxTlG5ckKto8iYcWQaT6sDnQMSFz+njpI9TYVY2c7NH4++RGK1bOBJy6R09lBRMzQkjEqFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAkd89T8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAC2C2BBFC;
-	Wed, 19 Jun 2024 13:28:44 +0000 (UTC)
+	 MIME-Version; b=Un5ORHR88NFPVlYAax4HjVaqCgVlA7lt/OcKZVjKkCBTWNigArYzWOlaOjTNu7aqT+zwlE41sMEczQZJZuFvfcGy79R0i0xLAdJGyIh2c9PuI/A2nWwTqlMFgpkFddAbUEvEZVyZIo10TegUNPbAS8whtS+Ol/zDbtT3ctlQ6TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9MNXMxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E69C2BBFC;
+	Wed, 19 Jun 2024 13:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803725;
-	bh=2Zjw+wXT1tkJbBawKLC2XYUGJOk1g9cVuijasova+UQ=;
+	s=korg; t=1718802376;
+	bh=Nk++o5bXqlx/UweZpPGPh3AYxikfZsLL1HKX93wdybE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAkd89T841CCFvWuQ2/1UaeMdJN+CJxDdW1dj9WWbqZ4dXnTeqSFxBI1Z22NeZxiR
-	 qIq6GMht7Y9nicvw/+LJKmKInQQTkJ7unnGJ0MgmFClcGa62A82Zrr5AhDBNbwL0i4
-	 e/MNXDc0g1Ul+fSFFICkrKzk5Df7WRKPlOnYwifE=
+	b=y9MNXMxNH2S1a647p9E1//52c1l0wABZoVOf1jBNMbBujWIxDEowsJR9be3fH/VdB
+	 Bx/F0ngyjKl/gHua+7p0xUSwY/pIJwNsBo5v2oS8XGS1ht8PAtC2HPee5b60nH9r67
+	 5qoLCQTX+LqK2rHIoK51PpdbSWcltKQO726JogkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/217] nilfs2: fix nilfs_empty_dir() misjudgment and long loop on I/O errors
+	Ben Segall <bsegall@google.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.6 175/267] x86/boot: Dont add the EFI stub to targets, again
 Date: Wed, 19 Jun 2024 14:55:26 +0200
-Message-ID: <20240619125559.891470904@linuxfoundation.org>
+Message-ID: <20240619125613.060390566@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Benjamin Segall <bsegall@google.com>
 
-[ Upstream commit 7373a51e7998b508af7136530f3a997b286ce81c ]
+commit b2747f108b8034271fd5289bd8f3a7003e0775a3 upstream.
 
-The error handling in nilfs_empty_dir() when a directory folio/page read
-fails is incorrect, as in the old ext2 implementation, and if the
-folio/page cannot be read or nilfs_check_folio() fails, it will falsely
-determine the directory as empty and corrupt the file system.
+This is a re-commit of
 
-In addition, since nilfs_empty_dir() does not immediately return on a
-failed folio/page read, but continues to loop, this can cause a long loop
-with I/O if i_size of the directory's inode is also corrupted, causing the
-log writer thread to wait and hang, as reported by syzbot.
+  da05b143a308 ("x86/boot: Don't add the EFI stub to targets")
 
-Fix these issues by making nilfs_empty_dir() immediately return a false
-value (0) if it fails to get a directory folio/page.
+after the tagged patch incorrectly reverted it.
 
-Link: https://lkml.kernel.org/r/20240604134255.7165-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+c8166c541d3971bf6c87@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c8166c541d3971bf6c87
-Fixes: 2ba466d74ed7 ("nilfs2: directory entry operations")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+vmlinux-objs-y is added to targets, with an assumption that they are all
+relative to $(obj); adding a $(objtree)/drivers/...  path causes the
+build to incorrectly create a useless
+arch/x86/boot/compressed/drivers/...  directory tree.
+
+Fix this just by using a different make variable for the EFI stub.
+
+Fixes: cb8bda8ad443 ("x86/boot/compressed: Rename efi_thunk_64.S to efi-mixed.S")
+Signed-off-by: Ben Segall <bsegall@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org # v6.1+
+Link: https://lore.kernel.org/r/xm267ceukksz.fsf@bsegall.svl.corp.google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/boot/compressed/Makefile |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nilfs2/dir.c b/fs/nilfs2/dir.c
-index 4911f09eb68b0..e9668e455a35e 100644
---- a/fs/nilfs2/dir.c
-+++ b/fs/nilfs2/dir.c
-@@ -627,7 +627,7 @@ int nilfs_empty_dir(struct inode *inode)
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -116,9 +116,9 @@ vmlinux-objs-$(CONFIG_UNACCEPTED_MEMORY)
  
- 		kaddr = nilfs_get_page(inode, i, &page);
- 		if (IS_ERR(kaddr))
--			continue;
-+			return 0;
+ vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+ vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
+-vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
++vmlinux-libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
  
- 		de = (struct nilfs_dir_entry *)kaddr;
- 		kaddr += nilfs_last_byte(inode, i) - NILFS_DIR_REC_LEN(1);
--- 
-2.43.0
-
+-$(obj)/vmlinux: $(vmlinux-objs-y) FORCE
++$(obj)/vmlinux: $(vmlinux-objs-y) $(vmlinux-libs-y) FORCE
+ 	$(call if_changed,ld)
+ 
+ OBJCOPYFLAGS_vmlinux.bin :=  -R .comment -S
 
 
 
