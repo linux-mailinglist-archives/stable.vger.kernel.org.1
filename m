@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-53985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1331590EC2B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8576F90ED5B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 407F1B242E6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31B8B28114C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEE4145324;
-	Wed, 19 Jun 2024 13:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC17F13F435;
+	Wed, 19 Jun 2024 13:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5+lRA7+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCBl/lDw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE5682871;
-	Wed, 19 Jun 2024 13:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C224315F;
+	Wed, 19 Jun 2024 13:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802255; cv=none; b=URdjGIfNcfnPDRsvXjGUHUz5wH2IlAluTr6kKugZQSDkm2QAdIp5UsN+LrfW/z+7zrcpyU26zhHUZaywg6zidUbuSYa3MQRifWtdpUtutbyWA19el7mwO/nnEiUfsb59V/V6ExCwvIOjvBOc7/bIg3PTnJIt5/uRpI6vno1NSxI=
+	t=1718803028; cv=none; b=YCMVyOH0fO8zMznGi9LRFSdlEWwzVGXFRBsrwJcwKfSlhNLvNWwjlzkPJGwQDB0F/yH1N2QsSj5g8JTBddv96GaPDrcN2Ox7TWNJcgOB5+dwTjrnNqblXO3BVTwYk0eyXa4H6MO0+3sAzx8vdoI+woiFcHHFxUpsOg2qNHVGkns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802255; c=relaxed/simple;
-	bh=kSUEMgcCGlLpVO7oF4AA3NtaRQROboaZnYFd1KFPBXM=;
+	s=arc-20240116; t=1718803028; c=relaxed/simple;
+	bh=maBNDNFB0Oa7CNyDTkF4ejAESCBSW700Z5d/fC5BFhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uhQMXJWkppL8bX/BU3mGMIaj65fMuSHiXne7oR18L7puHR8ih+SNVrgzDUvgpTnj5NN374vFfw5tDPxKzF0XMMwvz39/0i13COAAofT91oak5mu9KEMWl6tUic0YvDrQelFk/g12FUU6Cy+uds4eZHKsskDVERSxX7/uKVZRg20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5+lRA7+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5796C4AF1A;
-	Wed, 19 Jun 2024 13:04:14 +0000 (UTC)
+	 MIME-Version; b=HASfOuSoGktejDQq7L1rQ8ZfO+cM3JrqE6n8TcI5Gwk2Dh/T7m1dUOV9gbodYY3sCs7frHgggM5zjAcwff1fPwAlzjReaFPkQf1OZ6u1Bo2avbEjHJHr7qtfItWIdCHLL54lCoLWjRVejRV0JTn9r/NCeklCV/ZxtbL6VWvH3wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCBl/lDw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D43C2BBFC;
+	Wed, 19 Jun 2024 13:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802255;
-	bh=kSUEMgcCGlLpVO7oF4AA3NtaRQROboaZnYFd1KFPBXM=;
+	s=korg; t=1718803028;
+	bh=maBNDNFB0Oa7CNyDTkF4ejAESCBSW700Z5d/fC5BFhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5+lRA7+AwRb4EcCaCq6PIh9D86e6HWn69e6knxSdjo1RDxwAAYToJvySnas+/tZd
-	 tEGuavxoheY/RKiHU0eQJlJfbDb6//sYbsjOB53pQCZMl5gyHGBlma4kVC+79QjrlZ
-	 9ngQAKcB/FhB34FVwjPjCJv25ryrvl4kImjY+lpo=
+	b=KCBl/lDwjb64GcwKtEGlDlM7J8F1b5vQgB+yY+Ry7kv8i5AeN6Ds0MvG6BVLmVi4Y
+	 2yzUnK2/M0QNH2qZNGvmhLReS3a5FgY38HCbVGu54h3dY1I+Faq1NBFTFMhcttsN6+
+	 6+1xRboumUlPKOsk/hYL5j6aovUNcabE8S9oO2ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Krastev <martin.krastev@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Michael Riesch <michael.riesch@wolfvision.net>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/267] drm/vmwgfx: Refactor drm connector probing for display modes
-Date: Wed, 19 Jun 2024 14:54:46 +0200
-Message-ID: <20240619125611.531998157@linuxfoundation.org>
+Subject: [PATCH 6.9 128/281] drm/panel: sitronix-st7789v: Add check for of_drm_get_panel_orientation
+Date: Wed, 19 Jun 2024 14:54:47 +0200
+Message-ID: <20240619125614.770196313@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,446 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Krastev <martin.krastev@broadcom.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 935f795045a6f9b13d28d46ebdad04bfea8750dd ]
+[ Upstream commit 629f2b4e05225e53125aaf7ff0b87d5d53897128 ]
 
-Implement drm_connector_helper_funcs.mode_valid and .get_modes,
-replacing custom drm_connector_funcs.fill_modes code with
-drm_helper_probe_single_connector_modes; for STDU, LDU & SOU
-display units.
+Add check for the return value of of_drm_get_panel_orientation() and
+return the error if it fails in order to catch the error.
 
-Signed-off-by: Martin Krastev <martin.krastev@broadcom.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240126200804.732454-2-zack.rusin@broadcom.com
-Stable-dep-of: 426826933109 ("drm/vmwgfx: Filter modes which exceed graphics memory")
+Fixes: b27c0f6d208d ("drm/panel: sitronix-st7789v: add panel orientation support")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Michael Riesch <michael.riesch@wolfvision.net>
+Acked-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Link: https://lore.kernel.org/r/20240528030832.2529471-1-nichen@iscas.ac.cn
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240528030832.2529471-1-nichen@iscas.ac.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c  | 272 +++++++++------------------
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.h  |   6 +-
- drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c  |   5 +-
- drivers/gpu/drm/vmwgfx/vmwgfx_scrn.c |   5 +-
- drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c |   4 +-
- 5 files changed, 101 insertions(+), 191 deletions(-)
+ drivers/gpu/drm/panel/panel-sitronix-st7789v.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index a884072851322..59de170a31853 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -35,6 +35,7 @@
- #include <drm/drm_fourcc.h>
- #include <drm/drm_rect.h>
- #include <drm/drm_sysfs.h>
-+#include <drm/drm_edid.h>
+diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7789v.c b/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
+index e8f385b9c6182..28bfc48a91272 100644
+--- a/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
++++ b/drivers/gpu/drm/panel/panel-sitronix-st7789v.c
+@@ -643,7 +643,9 @@ static int st7789v_probe(struct spi_device *spi)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to get backlight\n");
  
- void vmw_du_cleanup(struct vmw_display_unit *du)
- {
-@@ -2279,107 +2280,6 @@ vmw_du_connector_detect(struct drm_connector *connector, bool force)
- 		connector_status_connected : connector_status_disconnected);
- }
+-	of_drm_get_panel_orientation(spi->dev.of_node, &ctx->orientation);
++	ret = of_drm_get_panel_orientation(spi->dev.of_node, &ctx->orientation);
++	if (ret)
++		return dev_err_probe(&spi->dev, ret, "Failed to get orientation\n");
  
--static struct drm_display_mode vmw_kms_connector_builtin[] = {
--	/* 640x480@60Hz */
--	{ DRM_MODE("640x480", DRM_MODE_TYPE_DRIVER, 25175, 640, 656,
--		   752, 800, 0, 480, 489, 492, 525, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC) },
--	/* 800x600@60Hz */
--	{ DRM_MODE("800x600", DRM_MODE_TYPE_DRIVER, 40000, 800, 840,
--		   968, 1056, 0, 600, 601, 605, 628, 0,
--		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1024x768@60Hz */
--	{ DRM_MODE("1024x768", DRM_MODE_TYPE_DRIVER, 65000, 1024, 1048,
--		   1184, 1344, 0, 768, 771, 777, 806, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC) },
--	/* 1152x864@75Hz */
--	{ DRM_MODE("1152x864", DRM_MODE_TYPE_DRIVER, 108000, 1152, 1216,
--		   1344, 1600, 0, 864, 865, 868, 900, 0,
--		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1280x720@60Hz */
--	{ DRM_MODE("1280x720", DRM_MODE_TYPE_DRIVER, 74500, 1280, 1344,
--		   1472, 1664, 0, 720, 723, 728, 748, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1280x768@60Hz */
--	{ DRM_MODE("1280x768", DRM_MODE_TYPE_DRIVER, 79500, 1280, 1344,
--		   1472, 1664, 0, 768, 771, 778, 798, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1280x800@60Hz */
--	{ DRM_MODE("1280x800", DRM_MODE_TYPE_DRIVER, 83500, 1280, 1352,
--		   1480, 1680, 0, 800, 803, 809, 831, 0,
--		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_NVSYNC) },
--	/* 1280x960@60Hz */
--	{ DRM_MODE("1280x960", DRM_MODE_TYPE_DRIVER, 108000, 1280, 1376,
--		   1488, 1800, 0, 960, 961, 964, 1000, 0,
--		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1280x1024@60Hz */
--	{ DRM_MODE("1280x1024", DRM_MODE_TYPE_DRIVER, 108000, 1280, 1328,
--		   1440, 1688, 0, 1024, 1025, 1028, 1066, 0,
--		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1360x768@60Hz */
--	{ DRM_MODE("1360x768", DRM_MODE_TYPE_DRIVER, 85500, 1360, 1424,
--		   1536, 1792, 0, 768, 771, 777, 795, 0,
--		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1440x1050@60Hz */
--	{ DRM_MODE("1400x1050", DRM_MODE_TYPE_DRIVER, 121750, 1400, 1488,
--		   1632, 1864, 0, 1050, 1053, 1057, 1089, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1440x900@60Hz */
--	{ DRM_MODE("1440x900", DRM_MODE_TYPE_DRIVER, 106500, 1440, 1520,
--		   1672, 1904, 0, 900, 903, 909, 934, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1600x1200@60Hz */
--	{ DRM_MODE("1600x1200", DRM_MODE_TYPE_DRIVER, 162000, 1600, 1664,
--		   1856, 2160, 0, 1200, 1201, 1204, 1250, 0,
--		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1680x1050@60Hz */
--	{ DRM_MODE("1680x1050", DRM_MODE_TYPE_DRIVER, 146250, 1680, 1784,
--		   1960, 2240, 0, 1050, 1053, 1059, 1089, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1792x1344@60Hz */
--	{ DRM_MODE("1792x1344", DRM_MODE_TYPE_DRIVER, 204750, 1792, 1920,
--		   2120, 2448, 0, 1344, 1345, 1348, 1394, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1853x1392@60Hz */
--	{ DRM_MODE("1856x1392", DRM_MODE_TYPE_DRIVER, 218250, 1856, 1952,
--		   2176, 2528, 0, 1392, 1393, 1396, 1439, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1920x1080@60Hz */
--	{ DRM_MODE("1920x1080", DRM_MODE_TYPE_DRIVER, 173000, 1920, 2048,
--		   2248, 2576, 0, 1080, 1083, 1088, 1120, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1920x1200@60Hz */
--	{ DRM_MODE("1920x1200", DRM_MODE_TYPE_DRIVER, 193250, 1920, 2056,
--		   2256, 2592, 0, 1200, 1203, 1209, 1245, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 1920x1440@60Hz */
--	{ DRM_MODE("1920x1440", DRM_MODE_TYPE_DRIVER, 234000, 1920, 2048,
--		   2256, 2600, 0, 1440, 1441, 1444, 1500, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 2560x1440@60Hz */
--	{ DRM_MODE("2560x1440", DRM_MODE_TYPE_DRIVER, 241500, 2560, 2608,
--		   2640, 2720, 0, 1440, 1443, 1448, 1481, 0,
--		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_NVSYNC) },
--	/* 2560x1600@60Hz */
--	{ DRM_MODE("2560x1600", DRM_MODE_TYPE_DRIVER, 348500, 2560, 2752,
--		   3032, 3504, 0, 1600, 1603, 1609, 1658, 0,
--		   DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC) },
--	/* 2880x1800@60Hz */
--	{ DRM_MODE("2880x1800", DRM_MODE_TYPE_DRIVER, 337500, 2880, 2928,
--		   2960, 3040, 0, 1800, 1803, 1809, 1852, 0,
--		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_NVSYNC) },
--	/* 3840x2160@60Hz */
--	{ DRM_MODE("3840x2160", DRM_MODE_TYPE_DRIVER, 533000, 3840, 3888,
--		   3920, 4000, 0, 2160, 2163, 2168, 2222, 0,
--		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_NVSYNC) },
--	/* 3840x2400@60Hz */
--	{ DRM_MODE("3840x2400", DRM_MODE_TYPE_DRIVER, 592250, 3840, 3888,
--		   3920, 4000, 0, 2400, 2403, 2409, 2469, 0,
--		   DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_NVSYNC) },
--	/* Terminate */
--	{ DRM_MODE("", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0) },
--};
--
- /**
-  * vmw_guess_mode_timing - Provide fake timings for a
-  * 60Hz vrefresh mode.
-@@ -2401,88 +2301,6 @@ void vmw_guess_mode_timing(struct drm_display_mode *mode)
- }
- 
- 
--int vmw_du_connector_fill_modes(struct drm_connector *connector,
--				uint32_t max_width, uint32_t max_height)
--{
--	struct vmw_display_unit *du = vmw_connector_to_du(connector);
--	struct drm_device *dev = connector->dev;
--	struct vmw_private *dev_priv = vmw_priv(dev);
--	struct drm_display_mode *mode = NULL;
--	struct drm_display_mode *bmode;
--	struct drm_display_mode prefmode = { DRM_MODE("preferred",
--		DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
--		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
--		DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC)
--	};
--	int i;
--	u32 assumed_bpp = 4;
--
--	if (dev_priv->assume_16bpp)
--		assumed_bpp = 2;
--
--	max_width  = min(max_width,  dev_priv->texture_max_width);
--	max_height = min(max_height, dev_priv->texture_max_height);
--
--	/*
--	 * For STDU extra limit for a mode on SVGA_REG_SCREENTARGET_MAX_WIDTH/
--	 * HEIGHT registers.
--	 */
--	if (dev_priv->active_display_unit == vmw_du_screen_target) {
--		max_width  = min(max_width,  dev_priv->stdu_max_width);
--		max_height = min(max_height, dev_priv->stdu_max_height);
--	}
--
--	/* Add preferred mode */
--	mode = drm_mode_duplicate(dev, &prefmode);
--	if (!mode)
--		return 0;
--	mode->hdisplay = du->pref_width;
--	mode->vdisplay = du->pref_height;
--	vmw_guess_mode_timing(mode);
--	drm_mode_set_name(mode);
--
--	if (vmw_kms_validate_mode_vram(dev_priv,
--					mode->hdisplay * assumed_bpp,
--					mode->vdisplay)) {
--		drm_mode_probed_add(connector, mode);
--	} else {
--		drm_mode_destroy(dev, mode);
--		mode = NULL;
--	}
--
--	if (du->pref_mode) {
--		list_del_init(&du->pref_mode->head);
--		drm_mode_destroy(dev, du->pref_mode);
--	}
--
--	/* mode might be null here, this is intended */
--	du->pref_mode = mode;
--
--	for (i = 0; vmw_kms_connector_builtin[i].type != 0; i++) {
--		bmode = &vmw_kms_connector_builtin[i];
--		if (bmode->hdisplay > max_width ||
--		    bmode->vdisplay > max_height)
--			continue;
--
--		if (!vmw_kms_validate_mode_vram(dev_priv,
--						bmode->hdisplay * assumed_bpp,
--						bmode->vdisplay))
--			continue;
--
--		mode = drm_mode_duplicate(dev, bmode);
--		if (!mode)
--			return 0;
--
--		drm_mode_probed_add(connector, mode);
--	}
--
--	drm_connector_list_update(connector);
--	/* Move the prefered mode first, help apps pick the right mode. */
--	drm_mode_sort(&connector->modes);
--
--	return 1;
--}
--
- /**
-  * vmw_kms_update_layout_ioctl - Handler for DRM_VMW_UPDATE_LAYOUT ioctl
-  * @dev: drm device for the ioctl
-@@ -3023,3 +2841,91 @@ int vmw_du_helper_plane_update(struct vmw_du_update_plane *update)
- 	vmw_validation_unref_lists(&val_ctx);
- 	return ret;
- }
-+
-+/**
-+ * vmw_connector_mode_valid - implements drm_connector_helper_funcs.mode_valid callback
-+ *
-+ * @connector: the drm connector, part of a DU container
-+ * @mode: drm mode to check
-+ *
-+ * Returns MODE_OK on success, or a drm_mode_status error code.
-+ */
-+enum drm_mode_status vmw_connector_mode_valid(struct drm_connector *connector,
-+					      struct drm_display_mode *mode)
-+{
-+	struct drm_device *dev = connector->dev;
-+	struct vmw_private *dev_priv = vmw_priv(dev);
-+	u32 max_width = dev_priv->texture_max_width;
-+	u32 max_height = dev_priv->texture_max_height;
-+	u32 assumed_cpp = 4;
-+
-+	if (dev_priv->assume_16bpp)
-+		assumed_cpp = 2;
-+
-+	if (dev_priv->active_display_unit == vmw_du_screen_target) {
-+		max_width  = min(dev_priv->stdu_max_width,  max_width);
-+		max_height = min(dev_priv->stdu_max_height, max_height);
-+	}
-+
-+	if (max_width < mode->hdisplay)
-+		return MODE_BAD_HVALUE;
-+
-+	if (max_height < mode->vdisplay)
-+		return MODE_BAD_VVALUE;
-+
-+	if (!vmw_kms_validate_mode_vram(dev_priv,
-+					mode->hdisplay * assumed_cpp,
-+					mode->vdisplay))
-+		return MODE_MEM;
-+
-+	return MODE_OK;
-+}
-+
-+/**
-+ * vmw_connector_get_modes - implements drm_connector_helper_funcs.get_modes callback
-+ *
-+ * @connector: the drm connector, part of a DU container
-+ *
-+ * Returns the number of added modes.
-+ */
-+int vmw_connector_get_modes(struct drm_connector *connector)
-+{
-+	struct vmw_display_unit *du = vmw_connector_to_du(connector);
-+	struct drm_device *dev = connector->dev;
-+	struct vmw_private *dev_priv = vmw_priv(dev);
-+	struct drm_display_mode *mode = NULL;
-+	struct drm_display_mode prefmode = { DRM_MODE("preferred",
-+		DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED,
-+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-+		DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_PVSYNC)
-+	};
-+	u32 max_width;
-+	u32 max_height;
-+	u32 num_modes;
-+
-+	/* Add preferred mode */
-+	mode = drm_mode_duplicate(dev, &prefmode);
-+	if (!mode)
-+		return 0;
-+
-+	mode->hdisplay = du->pref_width;
-+	mode->vdisplay = du->pref_height;
-+	vmw_guess_mode_timing(mode);
-+	drm_mode_set_name(mode);
-+
-+	drm_mode_probed_add(connector, mode);
-+	drm_dbg_kms(dev, "preferred mode " DRM_MODE_FMT "\n", DRM_MODE_ARG(mode));
-+
-+	/* Probe connector for all modes not exceeding our geom limits */
-+	max_width  = dev_priv->texture_max_width;
-+	max_height = dev_priv->texture_max_height;
-+
-+	if (dev_priv->active_display_unit == vmw_du_screen_target) {
-+		max_width  = min(dev_priv->stdu_max_width,  max_width);
-+		max_height = min(dev_priv->stdu_max_height, max_height);
-+	}
-+
-+	num_modes = 1 + drm_add_modes_noedid(connector, max_width, max_height);
-+
-+	return num_modes;
-+}
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-index 9fda4f4ec7a97..19a843da87b78 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.h
-@@ -378,7 +378,6 @@ struct vmw_display_unit {
- 	unsigned pref_width;
- 	unsigned pref_height;
- 	bool pref_active;
--	struct drm_display_mode *pref_mode;
- 
- 	/*
- 	 * Gui positioning
-@@ -428,8 +427,6 @@ void vmw_du_connector_save(struct drm_connector *connector);
- void vmw_du_connector_restore(struct drm_connector *connector);
- enum drm_connector_status
- vmw_du_connector_detect(struct drm_connector *connector, bool force);
--int vmw_du_connector_fill_modes(struct drm_connector *connector,
--				uint32_t max_width, uint32_t max_height);
- int vmw_kms_helper_dirty(struct vmw_private *dev_priv,
- 			 struct vmw_framebuffer *framebuffer,
- 			 const struct drm_clip_rect *clips,
-@@ -438,6 +435,9 @@ int vmw_kms_helper_dirty(struct vmw_private *dev_priv,
- 			 int num_clips,
- 			 int increment,
- 			 struct vmw_kms_dirty *dirty);
-+enum drm_mode_status vmw_connector_mode_valid(struct drm_connector *connector,
-+					      struct drm_display_mode *mode);
-+int vmw_connector_get_modes(struct drm_connector *connector);
- 
- void vmw_kms_helper_validation_finish(struct vmw_private *dev_priv,
- 				      struct drm_file *file_priv,
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c
-index a82fa97003705..c4db4aecca6c3 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_ldu.c
-@@ -304,7 +304,7 @@ static void vmw_ldu_connector_destroy(struct drm_connector *connector)
- static const struct drm_connector_funcs vmw_legacy_connector_funcs = {
- 	.dpms = vmw_du_connector_dpms,
- 	.detect = vmw_du_connector_detect,
--	.fill_modes = vmw_du_connector_fill_modes,
-+	.fill_modes = drm_helper_probe_single_connector_modes,
- 	.destroy = vmw_ldu_connector_destroy,
- 	.reset = vmw_du_connector_reset,
- 	.atomic_duplicate_state = vmw_du_connector_duplicate_state,
-@@ -313,6 +313,8 @@ static const struct drm_connector_funcs vmw_legacy_connector_funcs = {
- 
- static const struct
- drm_connector_helper_funcs vmw_ldu_connector_helper_funcs = {
-+	.get_modes = vmw_connector_get_modes,
-+	.mode_valid = vmw_connector_mode_valid
- };
- 
- static int vmw_kms_ldu_do_bo_dirty(struct vmw_private *dev_priv,
-@@ -449,7 +451,6 @@ static int vmw_ldu_init(struct vmw_private *dev_priv, unsigned unit)
- 	ldu->base.pref_active = (unit == 0);
- 	ldu->base.pref_width = dev_priv->initial_width;
- 	ldu->base.pref_height = dev_priv->initial_height;
--	ldu->base.pref_mode = NULL;
- 
- 	/*
- 	 * Remove this after enabling atomic because property values can
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_scrn.c b/drivers/gpu/drm/vmwgfx/vmwgfx_scrn.c
-index 556a403b7eb56..30c3ad27b6629 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_scrn.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_scrn.c
-@@ -347,7 +347,7 @@ static void vmw_sou_connector_destroy(struct drm_connector *connector)
- static const struct drm_connector_funcs vmw_sou_connector_funcs = {
- 	.dpms = vmw_du_connector_dpms,
- 	.detect = vmw_du_connector_detect,
--	.fill_modes = vmw_du_connector_fill_modes,
-+	.fill_modes = drm_helper_probe_single_connector_modes,
- 	.destroy = vmw_sou_connector_destroy,
- 	.reset = vmw_du_connector_reset,
- 	.atomic_duplicate_state = vmw_du_connector_duplicate_state,
-@@ -357,6 +357,8 @@ static const struct drm_connector_funcs vmw_sou_connector_funcs = {
- 
- static const struct
- drm_connector_helper_funcs vmw_sou_connector_helper_funcs = {
-+	.get_modes = vmw_connector_get_modes,
-+	.mode_valid = vmw_connector_mode_valid
- };
- 
- 
-@@ -826,7 +828,6 @@ static int vmw_sou_init(struct vmw_private *dev_priv, unsigned unit)
- 	sou->base.pref_active = (unit == 0);
- 	sou->base.pref_width = dev_priv->initial_width;
- 	sou->base.pref_height = dev_priv->initial_height;
--	sou->base.pref_mode = NULL;
- 
- 	/*
- 	 * Remove this after enabling atomic because property values can
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-index ba0c0e12cfe9d..12d623ee59c25 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-@@ -830,7 +830,7 @@ static void vmw_stdu_connector_destroy(struct drm_connector *connector)
- static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
- 	.dpms = vmw_du_connector_dpms,
- 	.detect = vmw_du_connector_detect,
--	.fill_modes = vmw_du_connector_fill_modes,
-+	.fill_modes = drm_helper_probe_single_connector_modes,
- 	.destroy = vmw_stdu_connector_destroy,
- 	.reset = vmw_du_connector_reset,
- 	.atomic_duplicate_state = vmw_du_connector_duplicate_state,
-@@ -840,6 +840,8 @@ static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
- 
- static const struct
- drm_connector_helper_funcs vmw_stdu_connector_helper_funcs = {
-+	.get_modes = vmw_connector_get_modes,
-+	.mode_valid = vmw_connector_mode_valid
- };
- 
+ 	drm_panel_add(&ctx->panel);
  
 -- 
 2.43.0
