@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4054C90EE1C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 212E590EBFF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 398621C22E35
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:25:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ABAF1F251D6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7142144D3E;
-	Wed, 19 Jun 2024 13:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B3882871;
+	Wed, 19 Jun 2024 13:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xowz7kjH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPk7asge"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751E84D9EA;
-	Wed, 19 Jun 2024 13:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405C9149DFC;
+	Wed, 19 Jun 2024 13:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803539; cv=none; b=uJGpv17treoIBW5Y2a7O9IRqpABm57YyHyFi4TgihKou6PYBMIbFa7lbF8LzPwlMDbSmAounXlF6CNz0QAtis84jNLqQnJDklrDCc3qM5DpYXKowi9AJ0BvkV76QNY9t6hHIA6SCDEL4WikG7m2+mQ1xhS8xDXvEBL15TfeP3sg=
+	t=1718802137; cv=none; b=Qs1TBNh6nbu9Yb7vsBYgE2+iHcdCriiaO3q2VfDXSNENOqjyNRYi7MihH5P/ijtMAFPL9Az4Yq0chx5ks3vd9g6VAXMmtZQJbXZWt+scwacBWIAvKWUDMR/Th/Dh4pDfIqcJ06kZ8tQRncWliKSofahAhVH3nUuo6jG+t308a9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803539; c=relaxed/simple;
-	bh=NDTkKtibCqK3aQbTCstpC38Yo7/yGEWyloW5d+xkpzc=;
+	s=arc-20240116; t=1718802137; c=relaxed/simple;
+	bh=AKx0MEFtS0bJquE/71vzipkmrtnSXJvNXJtAit2HoZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ldK3Kr56x9d7CyXm6DQVK+wbSI24xe0j6LWUyb8uXeySXdQwOcKNh5VTCUJqluAvDhmz4eaS3DrT6rc4BtTq/FM4v1jMMGYwHFKsBRPVnRGSuTREH0qnG9Wh0HTMrp+vC7gFuhjysf8K9CiZMWhvBY00dboBl7EsPJf/LpPn4N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xowz7kjH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB1BC2BBFC;
-	Wed, 19 Jun 2024 13:25:38 +0000 (UTC)
+	 MIME-Version; b=ujYjUjXOTnSdhGveilTreFFGU4T6CrMCVjrYf+q4qx5XIeeyN8TFufF8WOLuGNF43IOfvWFYLNCPgHFNmzy6b/LW3mfbJjDB9Ow293Qjxju8rsdNiRidT8GxrqLzgfX5LZWWv+Jy+Vz3wxMLbVfXtKK0cRizjwaV07ECmoKfCX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPk7asge; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840C8C2BBFC;
+	Wed, 19 Jun 2024 13:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803539;
-	bh=NDTkKtibCqK3aQbTCstpC38Yo7/yGEWyloW5d+xkpzc=;
+	s=korg; t=1718802136;
+	bh=AKx0MEFtS0bJquE/71vzipkmrtnSXJvNXJtAit2HoZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xowz7kjHcse06dafn5CWn/ucWjKnTTlx9xJWhwHrkNmw/luAcDPE9pj977isEm+Nf
-	 1k9iSvaFyj4hYQVO5vl8Eawm6TwTTeIn1twUZnmFGwSNsDqDFHae2hPpd7PZb2HjJj
-	 PwGb5MLwZ5bANcjkXSW5eSvbt0AH7xfPRq/GaLZU=
+	b=UPk7asgelxj+CeMnSd/hFSnaJ7rqveVjw7TPmVXhO5bmpwneOhEeZFxY0Gi6e9/tL
+	 7x8+62iiDIIN/kS+Hm4lPxBARjrHmk27hmfose2vs/7qqT7ts6Wav9YvZqL6DfjUW5
+	 9T87WFFeRTH5gtmXqnmdYU2m8Fu6C03f+wlCD6eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/217] wifi: mac80211: Fix deadlock in ieee80211_sta_ps_deliver_wakeup()
-Date: Wed, 19 Jun 2024 14:54:05 +0200
-Message-ID: <20240619125556.589177917@linuxfoundation.org>
+	Scott McCoy <scott.mccoy@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 095/267] scsi: mpi3mr: Fix ATA NCQ priority support
+Date: Wed, 19 Jun 2024 14:54:06 +0200
+Message-ID: <20240619125609.997858935@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +63,232 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 44c06bbde6443de206b30f513100b5670b23fc5e ]
+commit 90e6f08915ec6efe46570420412a65050ec826b2 upstream.
 
-The ieee80211_sta_ps_deliver_wakeup() function takes sta->ps_lock to
-synchronizes with ieee80211_tx_h_unicast_ps_buf() which is called from
-softirq context. However using only spin_lock() to get sta->ps_lock in
-ieee80211_sta_ps_deliver_wakeup() does not prevent softirq to execute
-on this same CPU, to run ieee80211_tx_h_unicast_ps_buf() and try to
-take this same lock ending in deadlock. Below is an example of rcu stall
-that arises in such situation.
+The function mpi3mr_qcmd() of the mpi3mr driver is able to indicate to
+the HBA if a read or write command directed at an ATA device should be
+translated to an NCQ read/write command with the high prioiryt bit set
+when the request uses the RT priority class and the user has enabled NCQ
+priority through sysfs.
 
- rcu: INFO: rcu_sched self-detected stall on CPU
- rcu:    2-....: (42413413 ticks this GP) idle=b154/1/0x4000000000000000 softirq=1763/1765 fqs=21206996
- rcu:    (t=42586894 jiffies g=2057 q=362405 ncpus=4)
- CPU: 2 PID: 719 Comm: wpa_supplicant Tainted: G        W          6.4.0-02158-g1b062f552873 #742
- Hardware name: RPT (r1) (DT)
- pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : queued_spin_lock_slowpath+0x58/0x2d0
- lr : invoke_tx_handlers_early+0x5b4/0x5c0
- sp : ffff00001ef64660
- x29: ffff00001ef64660 x28: ffff000009bc1070 x27: ffff000009bc0ad8
- x26: ffff000009bc0900 x25: ffff00001ef647a8 x24: 0000000000000000
- x23: ffff000009bc0900 x22: ffff000009bc0900 x21: ffff00000ac0e000
- x20: ffff00000a279e00 x19: ffff00001ef646e8 x18: 0000000000000000
- x17: ffff800016468000 x16: ffff00001ef608c0 x15: 0010533c93f64f80
- x14: 0010395c9faa3946 x13: 0000000000000000 x12: 00000000fa83b2da
- x11: 000000012edeceea x10: ffff0000010fbe00 x9 : 0000000000895440
- x8 : 000000000010533c x7 : ffff00000ad8b740 x6 : ffff00000c350880
- x5 : 0000000000000007 x4 : 0000000000000001 x3 : 0000000000000000
- x2 : 0000000000000000 x1 : 0000000000000001 x0 : ffff00000ac0e0e8
- Call trace:
-  queued_spin_lock_slowpath+0x58/0x2d0
-  ieee80211_tx+0x80/0x12c
-  ieee80211_tx_pending+0x110/0x278
-  tasklet_action_common.constprop.0+0x10c/0x144
-  tasklet_action+0x20/0x28
-  _stext+0x11c/0x284
-  ____do_softirq+0xc/0x14
-  call_on_irq_stack+0x24/0x34
-  do_softirq_own_stack+0x18/0x20
-  do_softirq+0x74/0x7c
-  __local_bh_enable_ip+0xa0/0xa4
-  _ieee80211_wake_txqs+0x3b0/0x4b8
-  __ieee80211_wake_queue+0x12c/0x168
-  ieee80211_add_pending_skbs+0xec/0x138
-  ieee80211_sta_ps_deliver_wakeup+0x2a4/0x480
-  ieee80211_mps_sta_status_update.part.0+0xd8/0x11c
-  ieee80211_mps_sta_status_update+0x18/0x24
-  sta_apply_parameters+0x3bc/0x4c0
-  ieee80211_change_station+0x1b8/0x2dc
-  nl80211_set_station+0x444/0x49c
-  genl_family_rcv_msg_doit.isra.0+0xa4/0xfc
-  genl_rcv_msg+0x1b0/0x244
-  netlink_rcv_skb+0x38/0x10c
-  genl_rcv+0x34/0x48
-  netlink_unicast+0x254/0x2bc
-  netlink_sendmsg+0x190/0x3b4
-  ____sys_sendmsg+0x1e8/0x218
-  ___sys_sendmsg+0x68/0x8c
-  __sys_sendmsg+0x44/0x84
-  __arm64_sys_sendmsg+0x20/0x28
-  do_el0_svc+0x6c/0xe8
-  el0_svc+0x14/0x48
-  el0t_64_sync_handler+0xb0/0xb4
-  el0t_64_sync+0x14c/0x150
+However, unlike the mpt3sas driver, the mpi3mr driver does not define
+the sas_ncq_prio_supported and sas_ncq_prio_enable sysfs attributes, so
+the ncq_prio_enable field of struct mpi3mr_sdev_priv_data is never
+actually set and NCQ Priority cannot ever be used.
 
-Using spin_lock_bh()/spin_unlock_bh() instead prevents softirq to raise
-on the same CPU that is holding the lock.
+Fix this by defining these missing atributes to allow a user to check if
+an ATA device supports NCQ priority and to enable/disable the use of NCQ
+priority. To do this, lift the function scsih_ncq_prio_supp() out of the
+mpt3sas driver and make it the generic SCSI SAS transport function
+sas_ata_ncq_prio_supported(). Nothing in that function is hardware
+specific, so this function can be used in both the mpt3sas driver and
+the mpi3mr driver.
 
-Fixes: 1d147bfa6429 ("mac80211: fix AP powersave TX vs. wakeup race")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://msgid.link/8e36fe07d0fbc146f89196cd47a53c8a0afe84aa.1716910344.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Scott McCoy <scott.mccoy@wdc.com>
+Fixes: 023ab2a9b4ed ("scsi: mpi3mr: Add support for queue command processing")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240611083435.92961-1-dlemoal@kernel.org
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/sta_info.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_app.c     |   62 +++++++++++++++++++++++++++++++++++
+ drivers/scsi/mpt3sas/mpt3sas_base.h  |    3 -
+ drivers/scsi/mpt3sas/mpt3sas_ctl.c   |    4 +-
+ drivers/scsi/mpt3sas/mpt3sas_scsih.c |   23 ------------
+ drivers/scsi/scsi_transport_sas.c    |   23 ++++++++++++
+ include/scsi/scsi_transport_sas.h    |    2 +
+ 6 files changed, 89 insertions(+), 28 deletions(-)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index bd56015b29258..f388b39531748 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1555,7 +1555,7 @@ void ieee80211_sta_ps_deliver_wakeup(struct sta_info *sta)
- 	skb_queue_head_init(&pending);
+--- a/drivers/scsi/mpi3mr/mpi3mr_app.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
+@@ -1854,10 +1854,72 @@ persistent_id_show(struct device *dev, s
+ }
+ static DEVICE_ATTR_RO(persistent_id);
  
- 	/* sync with ieee80211_tx_h_unicast_ps_buf */
--	spin_lock(&sta->ps_lock);
-+	spin_lock_bh(&sta->ps_lock);
- 	/* Send all buffered frames to the station */
- 	for (ac = 0; ac < IEEE80211_NUM_ACS; ac++) {
- 		int count = skb_queue_len(&pending), tmp;
-@@ -1584,7 +1584,7 @@ void ieee80211_sta_ps_deliver_wakeup(struct sta_info *sta)
- 	 */
- 	clear_sta_flag(sta, WLAN_STA_PSPOLL);
- 	clear_sta_flag(sta, WLAN_STA_UAPSD);
--	spin_unlock(&sta->ps_lock);
-+	spin_unlock_bh(&sta->ps_lock);
++/**
++ * sas_ncq_prio_supported_show - Indicate if device supports NCQ priority
++ * @dev: pointer to embedded device
++ * @attr: sas_ncq_prio_supported attribute descriptor
++ * @buf: the buffer returned
++ *
++ * A sysfs 'read-only' sdev attribute, only works with SATA devices
++ */
++static ssize_t
++sas_ncq_prio_supported_show(struct device *dev,
++			    struct device_attribute *attr, char *buf)
++{
++	struct scsi_device *sdev = to_scsi_device(dev);
++
++	return sysfs_emit(buf, "%d\n", sas_ata_ncq_prio_supported(sdev));
++}
++static DEVICE_ATTR_RO(sas_ncq_prio_supported);
++
++/**
++ * sas_ncq_prio_enable_show - send prioritized io commands to device
++ * @dev: pointer to embedded device
++ * @attr: sas_ncq_prio_enable attribute descriptor
++ * @buf: the buffer returned
++ *
++ * A sysfs 'read/write' sdev attribute, only works with SATA devices
++ */
++static ssize_t
++sas_ncq_prio_enable_show(struct device *dev,
++				 struct device_attribute *attr, char *buf)
++{
++	struct scsi_device *sdev = to_scsi_device(dev);
++	struct mpi3mr_sdev_priv_data *sdev_priv_data =  sdev->hostdata;
++
++	if (!sdev_priv_data)
++		return 0;
++
++	return sysfs_emit(buf, "%d\n", sdev_priv_data->ncq_prio_enable);
++}
++
++static ssize_t
++sas_ncq_prio_enable_store(struct device *dev,
++				  struct device_attribute *attr,
++				  const char *buf, size_t count)
++{
++	struct scsi_device *sdev = to_scsi_device(dev);
++	struct mpi3mr_sdev_priv_data *sdev_priv_data =  sdev->hostdata;
++	bool ncq_prio_enable = 0;
++
++	if (kstrtobool(buf, &ncq_prio_enable))
++		return -EINVAL;
++
++	if (!sas_ata_ncq_prio_supported(sdev))
++		return -EINVAL;
++
++	sdev_priv_data->ncq_prio_enable = ncq_prio_enable;
++
++	return strlen(buf);
++}
++static DEVICE_ATTR_RW(sas_ncq_prio_enable);
++
+ static struct attribute *mpi3mr_dev_attrs[] = {
+ 	&dev_attr_sas_address.attr,
+ 	&dev_attr_device_handle.attr,
+ 	&dev_attr_persistent_id.attr,
++	&dev_attr_sas_ncq_prio_supported.attr,
++	&dev_attr_sas_ncq_prio_enable.attr,
+ 	NULL,
+ };
  
- 	atomic_dec(&ps->num_sta_ps);
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.h
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.h
+@@ -2045,9 +2045,6 @@ void
+ mpt3sas_setup_direct_io(struct MPT3SAS_ADAPTER *ioc, struct scsi_cmnd *scmd,
+ 	struct _raid_device *raid_device, Mpi25SCSIIORequest_t *mpi_request);
  
--- 
-2.43.0
-
+-/* NCQ Prio Handling Check */
+-bool scsih_ncq_prio_supp(struct scsi_device *sdev);
+-
+ void mpt3sas_setup_debugfs(struct MPT3SAS_ADAPTER *ioc);
+ void mpt3sas_destroy_debugfs(struct MPT3SAS_ADAPTER *ioc);
+ void mpt3sas_init_debugfs(void);
+--- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
+@@ -4034,7 +4034,7 @@ sas_ncq_prio_supported_show(struct devic
+ {
+ 	struct scsi_device *sdev = to_scsi_device(dev);
+ 
+-	return sysfs_emit(buf, "%d\n", scsih_ncq_prio_supp(sdev));
++	return sysfs_emit(buf, "%d\n", sas_ata_ncq_prio_supported(sdev));
+ }
+ static DEVICE_ATTR_RO(sas_ncq_prio_supported);
+ 
+@@ -4069,7 +4069,7 @@ sas_ncq_prio_enable_store(struct device
+ 	if (kstrtobool(buf, &ncq_prio_enable))
+ 		return -EINVAL;
+ 
+-	if (!scsih_ncq_prio_supp(sdev))
++	if (!sas_ata_ncq_prio_supported(sdev))
+ 		return -EINVAL;
+ 
+ 	sas_device_priv_data->ncq_prio_enable = ncq_prio_enable;
+--- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+@@ -12590,29 +12590,6 @@ scsih_pci_mmio_enabled(struct pci_dev *p
+ 	return PCI_ERS_RESULT_RECOVERED;
+ }
+ 
+-/**
+- * scsih_ncq_prio_supp - Check for NCQ command priority support
+- * @sdev: scsi device struct
+- *
+- * This is called when a user indicates they would like to enable
+- * ncq command priorities. This works only on SATA devices.
+- */
+-bool scsih_ncq_prio_supp(struct scsi_device *sdev)
+-{
+-	struct scsi_vpd *vpd;
+-	bool ncq_prio_supp = false;
+-
+-	rcu_read_lock();
+-	vpd = rcu_dereference(sdev->vpd_pg89);
+-	if (!vpd || vpd->len < 214)
+-		goto out;
+-
+-	ncq_prio_supp = (vpd->data[213] >> 4) & 1;
+-out:
+-	rcu_read_unlock();
+-
+-	return ncq_prio_supp;
+-}
+ /*
+  * The pci device ids are defined in mpi/mpi2_cnfg.h.
+  */
+--- a/drivers/scsi/scsi_transport_sas.c
++++ b/drivers/scsi/scsi_transport_sas.c
+@@ -416,6 +416,29 @@ unsigned int sas_is_tlr_enabled(struct s
+ }
+ EXPORT_SYMBOL_GPL(sas_is_tlr_enabled);
+ 
++/**
++ * sas_ata_ncq_prio_supported - Check for ATA NCQ command priority support
++ * @sdev: SCSI device
++ *
++ * Check if an ATA device supports NCQ priority using VPD page 89h (ATA
++ * Information). Since this VPD page is implemented only for ATA devices,
++ * this function always returns false for SCSI devices.
++ */
++bool sas_ata_ncq_prio_supported(struct scsi_device *sdev)
++{
++	struct scsi_vpd *vpd;
++	bool ncq_prio_supported = false;
++
++	rcu_read_lock();
++	vpd = rcu_dereference(sdev->vpd_pg89);
++	if (vpd && vpd->len >= 214)
++		ncq_prio_supported = (vpd->data[213] >> 4) & 1;
++	rcu_read_unlock();
++
++	return ncq_prio_supported;
++}
++EXPORT_SYMBOL_GPL(sas_ata_ncq_prio_supported);
++
+ /*
+  * SAS Phy attributes
+  */
+--- a/include/scsi/scsi_transport_sas.h
++++ b/include/scsi/scsi_transport_sas.h
+@@ -200,6 +200,8 @@ unsigned int sas_is_tlr_enabled(struct s
+ void sas_disable_tlr(struct scsi_device *);
+ void sas_enable_tlr(struct scsi_device *);
+ 
++bool sas_ata_ncq_prio_supported(struct scsi_device *sdev);
++
+ extern struct sas_rphy *sas_end_device_alloc(struct sas_port *);
+ extern struct sas_rphy *sas_expander_alloc(struct sas_port *, enum sas_device_type);
+ void sas_rphy_free(struct sas_rphy *);
 
 
 
