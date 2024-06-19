@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-54410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4EE590EE0B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D306290EEFF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9E921C20A83
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:24:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E36A31C2160C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFB114601E;
-	Wed, 19 Jun 2024 13:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 575E614387E;
+	Wed, 19 Jun 2024 13:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpYxhmCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eB0ZMUND"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E308143757;
-	Wed, 19 Jun 2024 13:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5D013DDC0;
+	Wed, 19 Jun 2024 13:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803498; cv=none; b=g3+PxAtYT3QgAWqUkVJYmxMjlkz7HD4qLs0CMHZW32v3Aqs0PlbeoNRNuC4O1deaDPIlgz89J+SDi6ojWAZKxiQjjKFhn1gD7qcBRafsypz4R95Gjewh0rkl9T1clrLhoagHNptu7mLZDUB1R5gCWEAdI7JL0tLNA+Sp7Te4Avw=
+	t=1718804063; cv=none; b=kNV+04cd3H6iSNrEQX2OE8AFViH6T8UkHyf5YdzNenLgrg6c1XUIePsmUrBjHD9tWBcvK8RiEcy0mSYM2LKqQAqioVfUshCga1KjPvkF40ID7tkg3SxtiS+/QU1jjvYQCu7K3wBL3LI/JTwi95LcOvFN6iRLSQqhKZXrJzDy+PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803498; c=relaxed/simple;
-	bh=KTfaokCNG9O1CSAUDRI6XKPzOzzUNodcp5G5t1GkXPg=;
+	s=arc-20240116; t=1718804063; c=relaxed/simple;
+	bh=Nq2FmWu+OI0y7phbCcGSqobAoe5FrRNfOPc+VVLWmoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kR0RGvfWEkOjk6zj4Cji6qJebBZYGnaYtklKS9G9pmqh7GRdb/Xzao2YWgonVMm2+WASQ9SBFdtW36wh6s0Fvyjxbd8TURUvPxtbhQET3ge0FdZgJwAuJd3/4MvMiFz2Z9gZyg9CXNL+TcELevWIOHMr4p/5uSSnx7kyTtMIzC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpYxhmCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13184C2BBFC;
-	Wed, 19 Jun 2024 13:24:57 +0000 (UTC)
+	 MIME-Version; b=htoid2pWVi+vRRwjfAISZz4IhI3l4Mm6ejcj8ZbRa7E54C8hYQmpLS5rJbyGzlTx5VG9uEgcuyDJh1+M00425OMXNpoZFs1MrZGrb9hFbVMsW4ClR/gpAXBDV7qyzVbW3f4Jeo8V2Z0npWXigPe8FF8ha4UqEIAhtigEkZXyjkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eB0ZMUND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56EFEC2BBFC;
+	Wed, 19 Jun 2024 13:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803498;
-	bh=KTfaokCNG9O1CSAUDRI6XKPzOzzUNodcp5G5t1GkXPg=;
+	s=korg; t=1718804062;
+	bh=Nq2FmWu+OI0y7phbCcGSqobAoe5FrRNfOPc+VVLWmoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GpYxhmChNNER++5fDaq97+QYC9PpconQmOWeXOVcQ5T2UcnzAIRMH73LJWXfaUJpz
-	 uDr6Z6C1guFyL9DS5XcHlptIduDgXG9rGHo3ykfe7Wu8F22FqtGsuB7ndxBGHH0r8S
-	 4kPsaV5XeLcYN7Qf8ZxK6WjNNhYvdDynlYLVHVfc=
+	b=eB0ZMUNDsdz7efmGPt7fBZQisBKkJEUYLnXVX9JhOc+owZe+SMtcevjAa4gXF2Tx8
+	 kSb3QISqBPtnWCXIZYPyGogAHIuw+acj9G4iFfcVdvLP+i//Q6KJjhYPHZhVuK3n7k
+	 GmoiZV5a9WHKdpzsTRuhIgS72o11Gkr1aYhgh5tU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.de>,
-	Luis Oliveira <lolivei@synopsys.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jan Dabros <jsd@semihalf.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 280/281] i2c: designware: Fix the functionality flags of the slave-only interface
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 196/217] btrfs: zoned: factor out single bg handling from btrfs_load_block_group_zone_info
 Date: Wed, 19 Jun 2024 14:57:19 +0200
-Message-ID: <20240619125620.755268926@linuxfoundation.org>
+Message-ID: <20240619125604.247479182@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,50 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean Delvare <jdelvare@suse.de>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit cbf3fb5b29e99e3689d63a88c3cddbffa1b8de99 ]
+commit 9e0e3e74dc6928a0956f4e27e24d473c65887e96 upstream.
 
-When an I2C adapter acts only as a slave, it should not claim to
-support I2C master capabilities.
+Split the code handling a type single block group from
+btrfs_load_block_group_zone_info to make the code more readable.
 
-Fixes: 5b6d721b266a ("i2c: designware: enable SLAVE in platform module")
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
-Cc: Luis Oliveira <lolivei@synopsys.com>
-Cc: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
-Cc: Jan Dabros <jsd@semihalf.com>
-Cc: Andi Shyti <andi.shyti@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Tested-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-designware-slave.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/zoned.c |   30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
-index 2e079cf20bb5b..78e2c47e3d7da 100644
---- a/drivers/i2c/busses/i2c-designware-slave.c
-+++ b/drivers/i2c/busses/i2c-designware-slave.c
-@@ -220,7 +220,7 @@ static const struct i2c_algorithm i2c_dw_algo = {
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -1362,6 +1362,24 @@ static int btrfs_load_zone_info(struct b
+ 	return 0;
+ }
  
- void i2c_dw_configure_slave(struct dw_i2c_dev *dev)
++static int btrfs_load_block_group_single(struct btrfs_block_group *bg,
++					 struct zone_info *info,
++					 unsigned long *active)
++{
++	if (info->alloc_offset == WP_MISSING_DEV) {
++		btrfs_err(bg->fs_info,
++			"zoned: cannot recover write pointer for zone %llu",
++			info->physical);
++		return -EIO;
++	}
++
++	bg->alloc_offset = info->alloc_offset;
++	bg->zone_capacity = info->capacity;
++	if (test_bit(0, active))
++		set_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &bg->runtime_flags);
++	return 0;
++}
++
+ int btrfs_load_block_group_zone_info(struct btrfs_block_group *cache, bool new)
  {
--	dev->functionality = I2C_FUNC_SLAVE | DW_IC_DEFAULT_FUNCTIONALITY;
-+	dev->functionality = I2C_FUNC_SLAVE;
+ 	struct btrfs_fs_info *fs_info = cache->fs_info;
+@@ -1448,17 +1466,7 @@ int btrfs_load_block_group_zone_info(str
  
- 	dev->slave_cfg = DW_IC_CON_RX_FIFO_FULL_HLD_CTRL |
- 			 DW_IC_CON_RESTART_EN | DW_IC_CON_STOP_DET_IFADDRESSED;
--- 
-2.43.0
-
+ 	switch (map->type & BTRFS_BLOCK_GROUP_PROFILE_MASK) {
+ 	case 0: /* single */
+-		if (zone_info[0].alloc_offset == WP_MISSING_DEV) {
+-			btrfs_err(fs_info,
+-			"zoned: cannot recover write pointer for zone %llu",
+-				zone_info[0].physical);
+-			ret = -EIO;
+-			goto out;
+-		}
+-		cache->alloc_offset = zone_info[0].alloc_offset;
+-		cache->zone_capacity = zone_info[0].capacity;
+-		if (test_bit(0, active))
+-			set_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &cache->runtime_flags);
++		ret = btrfs_load_block_group_single(cache, &zone_info[0], active);
+ 		break;
+ 	case BTRFS_BLOCK_GROUP_DUP:
+ 		if (map->type & BTRFS_BLOCK_GROUP_DATA) {
 
 
 
