@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BEDE90EC5D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76DDB90EE81
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 997B6B20518
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1154128230F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11261143C65;
-	Wed, 19 Jun 2024 13:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1582214E2E2;
+	Wed, 19 Jun 2024 13:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g68k/Vum"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DU+ruQQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A9712FB31;
-	Wed, 19 Jun 2024 13:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF451146016;
+	Wed, 19 Jun 2024 13:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802400; cv=none; b=VLLoQT6Oirj82t/ZqY+dYLXXTwWHju5+9RI4pPemvKHgWbXu9XQehtqOTkvzzWfwdY7syqm6kovWyS9EKFuRupPkvThOTFXM5fqINeJpuUAxA4dUO9Vd65oZJiKnGtiE9o1+BfAEgumiVUOpHAUKwN3/podsTTYWS6DHHvOHdrw=
+	t=1718803748; cv=none; b=ZhhWWNWIeK/BV0Le7o4U02YjjDqlOyxRSp5nFVBiNcdoqgkj8RMa+tVWgbk5TDui7xV/gGNNoTBaJLTrAsVfpZB7Y7fNcwAb0Me/ZYSspRQLL64kdyiyqc9eDH3aRNdDby+OfHODay/GUtiYfimaB4OywwtPNa081oPidzQ4ge8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802400; c=relaxed/simple;
-	bh=MVhMPVidpCIxYZoidtKC28VKKgxYp0+SxK+dkfzI8Jg=;
+	s=arc-20240116; t=1718803748; c=relaxed/simple;
+	bh=hv2F3rUIGfdVtma68HIzZ4kA1PFKo7S9yid3tmcNfOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OqOJWmVC3lOWJRqOuSGeSd+1t7PxuceyCCylGoaXRKXCpFSpvZlFfxvviq3HR9G/liLg9RbdqcdPb6k0l0CbdV01CDyAsHpVUWNzNXmKz8CM7xsPteV/WT7WDmkp85Skkzp2h1VPxgbbL3xSzL/c4likBMbbaJs3Gt/9N6PhG6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g68k/Vum; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1F2C2BBFC;
-	Wed, 19 Jun 2024 13:06:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=msZq3AA69oRltFr/yG/dZidcQRjrW0GbyvUCfBV3Drr2vXsi0YmV+Y6Dc97E7tIVQ8Ltx5/VA+RR5s6U41KIfYdFKeQoE8CS9CilwT0khV8IaBAIy1nrfsplylF0zDzlvmDxS7pf5eBIsqKhZaTOH0BYfPKneLck7tiDMwivfmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DU+ruQQU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448F0C2BBFC;
+	Wed, 19 Jun 2024 13:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802400;
-	bh=MVhMPVidpCIxYZoidtKC28VKKgxYp0+SxK+dkfzI8Jg=;
+	s=korg; t=1718803748;
+	bh=hv2F3rUIGfdVtma68HIzZ4kA1PFKo7S9yid3tmcNfOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g68k/Vum9ki4kKXgKobe1J5QROTSokiNWhtiAkP4xLYkS4xUvP3kjn46kbrw+EHct
-	 5LwoDf4tcDsv6qjjUdLrgdIxbDcH6FVNOizRbHi/1KuZpDGESTx+4U/0X9uFIJuma3
-	 BTMkuy8qCQN93dJmHDVhfS7Dzwqll4MoefHF8ksY=
+	b=DU+ruQQUSFXzbfyarzLsMK4Pvc00SMydaMFukAYyEsi1nYO2zUUEXKoJ1TVITb2x0
+	 Zh9MSnchsAlQpHoON1DDWKEyJh9vLeDbyPGy8QcJ/QBZrJX6UaSicjKqtGfgzFM6th
+	 sEtkZhZ3gUlEZG8yg4D3jnz5kUpxLCeCxl89cHPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 182/267] ACPI: x86: Force StorageD3Enable on more products
+	Vadym Krevs <vkrevs@yahoo.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.1 090/217] tty: n_tty: Fix buffer offsets when lookahead is used
 Date: Wed, 19 Jun 2024 14:55:33 +0200
-Message-ID: <20240619125613.329948465@linuxfoundation.org>
+Message-ID: <20240619125600.161618990@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit e79a10652bbd320649da705ca1ea0c04351af403 upstream.
+commit b19ab7ee2c4c1ec5f27c18413c3ab63907f7d55c upstream.
 
-A Rembrandt-based HP thin client is reported to have problems where
-the NVME disk isn't present after resume from s2idle.
+When lookahead has "consumed" some characters (la_count > 0),
+n_tty_receive_buf_standard() and n_tty_receive_buf_closing() for
+characters beyond the la_count are given wrong cp/fp offsets which
+leads to duplicating and losing some characters.
 
-This is because the NVME disk wasn't put into D3 at suspend, and
-that happened because the StorageD3Enable _DSD was missing in the BIOS.
+If la_count > 0, correct buffer pointers and make count consistent too
+(the latter is not strictly necessary to fix the issue but seems more
+logical to adjust all variables immediately to keep state consistent).
 
-As AMD's architecture requires that the NVME is in D3 for s2idle, adjust
-the criteria for force_storage_d3 to match *all* Zen SoCs when the FADT
-advertises low power idle support.
-
-This will ensure that any future products with this BIOS deficiency don't
-need to be added to the allow list of overrides.
-
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Vadym Krevs <vkrevs@yahoo.com>
+Fixes: 6bb6fa6908eb ("tty: Implement lookahead to process XON/XOFF timely")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218834
+Tested-by: Vadym Krevs <vkrevs@yahoo.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240514140429.12087-1-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/x86/utils.c |   24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ drivers/tty/n_tty.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -198,16 +198,16 @@ bool acpi_device_override_status(struct
- }
+--- a/drivers/tty/n_tty.c
++++ b/drivers/tty/n_tty.c
+@@ -1602,15 +1602,25 @@ static void __receive_buf(struct tty_str
+ 	else if (ldata->raw || (L_EXTPROC(tty) && !preops))
+ 		n_tty_receive_buf_raw(tty, cp, fp, count);
+ 	else if (tty->closing && !L_EXTPROC(tty)) {
+-		if (la_count > 0)
++		if (la_count > 0) {
+ 			n_tty_receive_buf_closing(tty, cp, fp, la_count, true);
+-		if (count > la_count)
+-			n_tty_receive_buf_closing(tty, cp, fp, count - la_count, false);
++			cp += la_count;
++			if (fp)
++				fp += la_count;
++			count -= la_count;
++		}
++		if (count > 0)
++			n_tty_receive_buf_closing(tty, cp, fp, count, false);
+ 	} else {
+-		if (la_count > 0)
++		if (la_count > 0) {
+ 			n_tty_receive_buf_standard(tty, cp, fp, la_count, true);
+-		if (count > la_count)
+-			n_tty_receive_buf_standard(tty, cp, fp, count - la_count, false);
++			cp += la_count;
++			if (fp)
++				fp += la_count;
++			count -= la_count;
++		}
++		if (count > 0)
++			n_tty_receive_buf_standard(tty, cp, fp, count, false);
  
- /*
-- * AMD systems from Renoir and Lucienne *require* that the NVME controller
-+ * AMD systems from Renoir onwards *require* that the NVME controller
-  * is put into D3 over a Modern Standby / suspend-to-idle cycle.
-  *
-  * This is "typically" accomplished using the `StorageD3Enable`
-  * property in the _DSD that is checked via the `acpi_storage_d3` function
-- * but this property was introduced after many of these systems launched
-- * and most OEM systems don't have it in their BIOS.
-+ * but some OEM systems still don't have it in their BIOS.
-  *
-  * The Microsoft documentation for StorageD3Enable mentioned that Windows has
-- * a hardcoded allowlist for D3 support, which was used for these platforms.
-+ * a hardcoded allowlist for D3 support as well as a registry key to override
-+ * the BIOS, which has been used for these cases.
-  *
-  * This allows quirking on Linux in a similar fashion.
-  *
-@@ -220,19 +220,15 @@ bool acpi_device_override_status(struct
-  *    https://bugzilla.kernel.org/show_bug.cgi?id=216773
-  *    https://bugzilla.kernel.org/show_bug.cgi?id=217003
-  * 2) On at least one HP system StorageD3Enable is missing on the second NVME
--      disk in the system.
-+ *    disk in the system.
-+ * 3) On at least one HP Rembrandt system StorageD3Enable is missing on the only
-+ *    NVME device.
-  */
--static const struct x86_cpu_id storage_d3_cpu_ids[] = {
--	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 24, NULL),  /* Picasso */
--	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 96, NULL),	/* Renoir */
--	X86_MATCH_VENDOR_FAM_MODEL(AMD, 23, 104, NULL),	/* Lucienne */
--	X86_MATCH_VENDOR_FAM_MODEL(AMD, 25, 80, NULL),	/* Cezanne */
--	{}
--};
--
- bool force_storage_d3(void)
- {
--	return x86_match_cpu(storage_d3_cpu_ids);
-+	if (!cpu_feature_enabled(X86_FEATURE_ZEN))
-+		return false;
-+	return acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0;
- }
- 
- /*
+ 		flush_echoes(tty);
+ 		if (tty->ops->flush_chars)
 
 
 
