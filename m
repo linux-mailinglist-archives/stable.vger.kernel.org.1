@@ -1,75 +1,55 @@
-Return-Path: <stable+bounces-54120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B421A90ECC7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A36C90EDEA
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34DD1282041
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 719A81C226A4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AFB143C4A;
-	Wed, 19 Jun 2024 13:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08D6144D3E;
+	Wed, 19 Jun 2024 13:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXOVp30x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IqRd0sC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8629312FB31;
-	Wed, 19 Jun 2024 13:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F11F82495;
+	Wed, 19 Jun 2024 13:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802644; cv=none; b=dpzKHylp14wCL79pYmYLJBvvD8ynddLH4/m41NvB1va47PGiJzMdmhghfUC62oD2Hsa6ZIh5nozZLaRZ9MjRG7rOIM511gwuezn2P/iJFeISJRJVQnmIKHXOCiuGiQ/6Ct5KDfrgrcA8LKjfZuNlefF78DERln6ybzKlc5fx9I0=
+	t=1718803415; cv=none; b=gryk/+WT0TkQag03jo0bNm6fn0MPD445YFPAuWLnX8pOJzn7JDNP9TtlQyckgwvnECWAAgdDm6/IaTfeWt2LEgBK4gsEHUM2nZy3JOqTeTgsM3ZbVJpMF2VcJU9T5L7G2KILS+HFSXFXgUZgToI7LscKcLSzFmgaU/R8e+1t0DE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802644; c=relaxed/simple;
-	bh=NnxyGiJfQz9YF739YggpTIOj2zty754q6gg3VEgnOEI=;
+	s=arc-20240116; t=1718803415; c=relaxed/simple;
+	bh=voP0DfBi9L5Y0lvTR4Fo1vM32uu3jlUgusMcvbg2yF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GuKXoOPTM2Urdryf6J9o56A4Thl4zbKhjmf+mu2aHe5fNu+z7FUXu2qIsNM+7BX7+wckEPmFOhULP44pgDJa4OJ7aYYW1/YQxId+1vPwQ+zJtYPCGm8OhV4bt3QIpv0huU5Su3TIRMS87Llb2w1/RnYHArek2tQKhslQ0o93Y8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXOVp30x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8817C2BBFC;
-	Wed, 19 Jun 2024 13:10:43 +0000 (UTC)
+	 MIME-Version; b=EajJv81mkeCGdJcZba5cQQUM0W2AiMBtRyfWNW2cKF19IDK7lc8g+/ovl1bR11OxVjNtOLp3bxw8L9AuIaLT0xksQQD2PGKrAau3OE0symarHc+o6e4z1jVV5k0idPwoViP/Flw3NkQ4JKbVKq4TxZ+9luvdm5M0DPmtpFtw93k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IqRd0sC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019DAC32786;
+	Wed, 19 Jun 2024 13:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802644;
-	bh=NnxyGiJfQz9YF739YggpTIOj2zty754q6gg3VEgnOEI=;
+	s=korg; t=1718803415;
+	bh=voP0DfBi9L5Y0lvTR4Fo1vM32uu3jlUgusMcvbg2yF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dXOVp30xLQUTnoy6j3MNinZJ4elqX8zZ9nsKKY/2BV4e8O9pgEwlLX3V3+I+9DG7m
-	 ReLJGj1NAsx69qTg1YFNYGacoX654IqaLAyOji5TT7uhbq0uxGud+Dii4oGKuv5oFh
-	 oCiiBpjOWLfAfiDdGHXoGcVvpet73Zn4B00iiASw=
+	b=1IqRd0sCU5+gW91U9K1JfyK6UZYGOi87pQYw61c8ButlnYsQOd3ua8zMuaYLGV480
+	 dQ1fPUOmfr0q9es2YC1FWZOmmVpfAAFBWc2dUgYTH3fi6k7s2jACB0X6DhpAKuTcMp
+	 cJnw4sXyMY4BkRIChHXlr5rWq3LqUgcfrzxNzCco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	Rachel Menge <rachelmenge@linux.microsoft.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Wei Fu <fuweid89@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Allen Pais <apais@linux.microsoft.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	Joel Granados <j.granados@samsung.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 267/267] zap_pid_ns_processes: clear TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING
-Date: Wed, 19 Jun 2024 14:56:58 +0200
-Message-ID: <20240619125616.568058309@linuxfoundation.org>
+	Imre Deak <imre.deak@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.9 260/281] drm/i915: Fix audio component initialization
+Date: Wed, 19 Jun 2024 14:56:59 +0200
+Message-ID: <20240619125619.984659783@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,65 +61,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 7fea700e04bd3f424c2d836e98425782f97b494e ]
+commit 75800e2e4203ea83bbc9d4f63ad97ea582244a08 upstream.
 
-kernel_wait4() doesn't sleep and returns -EINTR if there is no
-eligible child and signal_pending() is true.
+After registering the audio component in i915_audio_component_init()
+the audio driver may call i915_audio_component_get_power() via the
+component ops. This could program AUD_FREQ_CNTRL with an uninitialized
+value if the latter function is called before display.audio.freq_cntrl
+gets initialized. The get_power() function also does a modeset which in
+the above case happens too early before the initialization step and
+triggers the
 
-That is why zap_pid_ns_processes() clears TIF_SIGPENDING but this is not
-enough, it should also clear TIF_NOTIFY_SIGNAL to make signal_pending()
-return false and avoid a busy-wait loop.
+"Reject display access from task"
 
-Link: https://lkml.kernel.org/r/20240608120616.GB7947@redhat.com
-Fixes: 12db8b690010 ("entry: Add support for TIF_NOTIFY_SIGNAL")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Reported-by: Rachel Menge <rachelmenge@linux.microsoft.com>
-Closes: https://lore.kernel.org/all/1386cd49-36d0-4a5c-85e9-bc42056a5a38@linux.microsoft.com/
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Tested-by: Wei Fu <fuweid89@gmail.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Cc: Allen Pais <apais@linux.microsoft.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
-Cc: Joel Granados <j.granados@samsung.com>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Mike Christie <michael.christie@oracle.com>
-Cc: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Zqiang <qiang.zhang1211@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+error message added by the Fixes: commit below.
+
+Fix the above issue by registering the audio component only after the
+initialization step.
+
+Fixes: 87c1694533c9 ("drm/i915: save AUD_FREQ_CNTRL state at audio domain suspend")
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10291
+Cc: stable@vger.kernel.org # v5.5+
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240521143022.3784539-1-imre.deak@intel.com
+(cherry picked from commit fdd0b80172758ce284f19fa8a26d90c61e4371d2)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/pid_namespace.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/display/intel_audio.c          |   32 +++++++++++++-------
+ drivers/gpu/drm/i915/display/intel_audio.h          |    1 
+ drivers/gpu/drm/i915/display/intel_display_driver.c |    2 +
+ 3 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
-index 619972c78774f..e9b2bb260ee6c 100644
---- a/kernel/pid_namespace.c
-+++ b/kernel/pid_namespace.c
-@@ -217,6 +217,7 @@ void zap_pid_ns_processes(struct pid_namespace *pid_ns)
- 	 */
- 	do {
- 		clear_thread_flag(TIF_SIGPENDING);
-+		clear_thread_flag(TIF_NOTIFY_SIGNAL);
- 		rc = kernel_wait4(-1, NULL, __WALL, NULL);
- 	} while (rc != -ECHILD);
+--- a/drivers/gpu/drm/i915/display/intel_audio.c
++++ b/drivers/gpu/drm/i915/display/intel_audio.c
+@@ -1252,17 +1252,6 @@ static const struct component_ops i915_a
+ static void i915_audio_component_init(struct drm_i915_private *i915)
+ {
+ 	u32 aud_freq, aud_freq_init;
+-	int ret;
+-
+-	ret = component_add_typed(i915->drm.dev,
+-				  &i915_audio_component_bind_ops,
+-				  I915_COMPONENT_AUDIO);
+-	if (ret < 0) {
+-		drm_err(&i915->drm,
+-			"failed to add audio component (%d)\n", ret);
+-		/* continue with reduced functionality */
+-		return;
+-	}
  
--- 
-2.43.0
-
+ 	if (DISPLAY_VER(i915) >= 9) {
+ 		aud_freq_init = intel_de_read(i915, AUD_FREQ_CNTRL);
+@@ -1285,6 +1274,21 @@ static void i915_audio_component_init(st
+ 
+ 	/* init with current cdclk */
+ 	intel_audio_cdclk_change_post(i915);
++}
++
++static void i915_audio_component_register(struct drm_i915_private *i915)
++{
++	int ret;
++
++	ret = component_add_typed(i915->drm.dev,
++				  &i915_audio_component_bind_ops,
++				  I915_COMPONENT_AUDIO);
++	if (ret < 0) {
++		drm_err(&i915->drm,
++			"failed to add audio component (%d)\n", ret);
++		/* continue with reduced functionality */
++		return;
++	}
+ 
+ 	i915->display.audio.component_registered = true;
+ }
+@@ -1317,6 +1321,12 @@ void intel_audio_init(struct drm_i915_pr
+ 		i915_audio_component_init(i915);
+ }
+ 
++void intel_audio_register(struct drm_i915_private *i915)
++{
++	if (!i915->display.audio.lpe.platdev)
++		i915_audio_component_register(i915);
++}
++
+ /**
+  * intel_audio_deinit() - deinitialize the audio driver
+  * @i915: the i915 drm device private data
+--- a/drivers/gpu/drm/i915/display/intel_audio.h
++++ b/drivers/gpu/drm/i915/display/intel_audio.h
+@@ -28,6 +28,7 @@ void intel_audio_codec_get_config(struct
+ void intel_audio_cdclk_change_pre(struct drm_i915_private *dev_priv);
+ void intel_audio_cdclk_change_post(struct drm_i915_private *dev_priv);
+ void intel_audio_init(struct drm_i915_private *dev_priv);
++void intel_audio_register(struct drm_i915_private *i915);
+ void intel_audio_deinit(struct drm_i915_private *dev_priv);
+ void intel_audio_sdp_split_update(const struct intel_crtc_state *crtc_state);
+ 
+--- a/drivers/gpu/drm/i915/display/intel_display_driver.c
++++ b/drivers/gpu/drm/i915/display/intel_display_driver.c
+@@ -542,6 +542,8 @@ void intel_display_driver_register(struc
+ 
+ 	intel_display_driver_enable_user_access(i915);
+ 
++	intel_audio_register(i915);
++
+ 	intel_display_debugfs_register(i915);
+ 
+ 	/*
 
 
 
