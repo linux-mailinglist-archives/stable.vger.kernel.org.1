@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-54042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C6090EC64
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C31D290ED7D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA7811C20845
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D7022816F9
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30228143C58;
-	Wed, 19 Jun 2024 13:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B6C4143C4E;
+	Wed, 19 Jun 2024 13:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NriLUh4/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdD2XXEC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BAE12FB31;
-	Wed, 19 Jun 2024 13:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE23144D3E;
+	Wed, 19 Jun 2024 13:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802421; cv=none; b=iMmLjsKEjmSYWqIFoAiind3pJaVg+12ldPewwqyfZAzLhluCGU8J1EV/cujTPtjORtW+S8gpBA6WWzL9jODE+kLsJRc/OeocSR+edwKKDESd7hpjipO6RG+i7aQPa1dVhTS1GWpj2XivXg1Sfpdwg9+LmxFGPO1y3VcVHPZyxZg=
+	t=1718803123; cv=none; b=FWbsHZKiPXxhggGoZ6cwDVZKeKxbpH4n5Gs5WjW06s4nGDX/DR1brejA4r+Avu13cuXuYXU8UKGfgrwFlaJJFXrPg6qXJkspoVQt7SOxdl7LwqbeGHpUf/vwgCo7zIi8WI7ibfNFJCd+6JgnhehgtekkETpybMjM6Js2CM18ofo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802421; c=relaxed/simple;
-	bh=NRiF4HD4ZWoQS8ZAv+bu+HOowb/FZwUm3yQ888vJYFk=;
+	s=arc-20240116; t=1718803123; c=relaxed/simple;
+	bh=CRY9K3TNyRQ8TJQ3nBbMfx6HLjePLJUP7HBADSkjrbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bfr1279QkXWpyecdkwKlvBkvOLBJA8DGyswSSO9KR1L8g2UsdhHFcO4KkoE7Ez8Wt5ET2AJazKKgpXWgATekD/aQZRP2yORkXORggCMQVhRz9fzhcISUBXbhDBQek6SKhKZ6GbRkcoMympMxJChzRY85NYE1rZKmpr20PdZVcc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NriLUh4/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BCBDC2BBFC;
-	Wed, 19 Jun 2024 13:07:00 +0000 (UTC)
+	 MIME-Version; b=pysTqLqZQBaDmLEN/MhVAuDNvnIkWzK+0fW4Azt9vBzwEbwLRH9dbTtus5r2ZYXwEn2mC1dvUSHg9BQ4iAXltzxsH4fGlN6ZzSziUJIsxx50ZSmBKSXc3h27SoiPKeUi5q2hb0p2mesZt/h7tnCLZTrCk0n9YD49Z2CAe68+pKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdD2XXEC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70346C32786;
+	Wed, 19 Jun 2024 13:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802420;
-	bh=NRiF4HD4ZWoQS8ZAv+bu+HOowb/FZwUm3yQ888vJYFk=;
+	s=korg; t=1718803122;
+	bh=CRY9K3TNyRQ8TJQ3nBbMfx6HLjePLJUP7HBADSkjrbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NriLUh4/KlvNaeYpoA1cUu+h/bqFnuabGAbfn+B5mSJdhzuddsP4ZUA2XfQkNa3p9
-	 VCVtHeFzx2730Y1FhWWUe5Ana8HidBPPZqkQzXHPuXLA8HAQf4BQkx5u695xl4/uo8
-	 jWs264aI67iVDVsLsjDRePQfM836OTQydWaJzJIw=
+	b=sdD2XXECBchryJ8Boy8kNKBaS0BySXo71QRzJjHMvuQ0G/6VXH9nN5FFdvjyIv5ES
+	 XIkUQ1iXeZncUNHYXjYr1uhKCWH9S/SR5VSLR8xI+xCPOXo8JU6IxWhUIls4ZkJ+kt
+	 m1OwW6GiJEGGBvagrGoBB2fP2bFady4KfdLiquxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 150/267] net dsa: qca8k: fix usages of device_get_named_child_node()
-Date: Wed, 19 Jun 2024 14:55:01 +0200
-Message-ID: <20240619125612.104007047@linuxfoundation.org>
+Subject: [PATCH 6.9 143/281] drm/vmwgfx: Dont memcmp equivalent pointers
+Date: Wed, 19 Jun 2024 14:55:02 +0200
+Message-ID: <20240619125615.344067005@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit d029edefed39647c797c2710aedd9d31f84c069e ]
+[ Upstream commit 5703fc058efdafcdd6b70776ee562478f0753acb ]
 
-The documentation for device_get_named_child_node() mentions this
-important point:
+These pointers are frequently the same and memcmp does not compare the
+pointers before comparing their contents so this was wasting cycles
+comparing 16 KiB of memory which will always be equal.
 
-"
-The caller is responsible for calling fwnode_handle_put() on the
-returned fwnode pointer.
-"
-
-Add fwnode_handle_put() to avoid leaked references.
-
-Fixes: 1e264f9d2918 ("net: dsa: qca8k: add LEDs basic support")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: bb6780aa5a1d ("drm/vmwgfx: Diff cursors when using cmds")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240328190716.27367-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/qca/qca8k-leds.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/qca/qca8k-leds.c b/drivers/net/dsa/qca/qca8k-leds.c
-index e8c16e76e34bb..77a79c2494022 100644
---- a/drivers/net/dsa/qca/qca8k-leds.c
-+++ b/drivers/net/dsa/qca/qca8k-leds.c
-@@ -431,8 +431,11 @@ qca8k_parse_port_leds(struct qca8k_priv *priv, struct fwnode_handle *port, int p
- 		init_data.devname_mandatory = true;
- 		init_data.devicename = kasprintf(GFP_KERNEL, "%s:0%d", ds->slave_mii_bus->id,
- 						 port_num);
--		if (!init_data.devicename)
-+		if (!init_data.devicename) {
-+			fwnode_handle_put(led);
-+			fwnode_handle_put(leds);
- 			return -ENOMEM;
-+		}
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 42fcf4698aba9..11755d143e657 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -216,7 +216,7 @@ static bool vmw_du_cursor_plane_has_changed(struct vmw_plane_state *old_vps,
+ 	new_image = vmw_du_cursor_plane_acquire_image(new_vps);
  
- 		ret = devm_led_classdev_register_ext(priv->dev, &port_led->cdev, &init_data);
- 		if (ret)
-@@ -441,6 +444,7 @@ qca8k_parse_port_leds(struct qca8k_priv *priv, struct fwnode_handle *port, int p
- 		kfree(init_data.devicename);
- 	}
+ 	changed = false;
+-	if (old_image && new_image)
++	if (old_image && new_image && old_image != new_image)
+ 		changed = memcmp(old_image, new_image, size) != 0;
  
-+	fwnode_handle_put(leds);
- 	return 0;
- }
- 
-@@ -471,9 +475,13 @@ qca8k_setup_led_ctrl(struct qca8k_priv *priv)
- 		 * the correct port for LED setup.
- 		 */
- 		ret = qca8k_parse_port_leds(priv, port, qca8k_port_to_phy(port_num));
--		if (ret)
-+		if (ret) {
-+			fwnode_handle_put(port);
-+			fwnode_handle_put(ports);
- 			return ret;
-+		}
- 	}
- 
-+	fwnode_handle_put(ports);
- 	return 0;
- }
+ 	return changed;
 -- 
 2.43.0
 
