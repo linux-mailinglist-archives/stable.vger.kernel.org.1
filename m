@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-54253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C8C90ED5E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F57490EE41
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 388801C21F78
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF2601F22931
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:27:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822B2144D3E;
-	Wed, 19 Jun 2024 13:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B99714EC7F;
+	Wed, 19 Jun 2024 13:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2EX9ajG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smeanmlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4075A4315F;
-	Wed, 19 Jun 2024 13:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079A014F108;
+	Wed, 19 Jun 2024 13:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803034; cv=none; b=Ufr3l3pfu2QJXlOUkRajVPLCNI+JVxukJFN7cG1Rsnvlg624oUie6y6SsMcZq/qn0Ap8F5kaRtSEZfBrajbuC2E9Mc0tQn+vxd9GnwfrZIQSm1MQpKCpQy7xR9MLBv3eYz5J2vtntH9cY43dzGnCac+VhLE5MyPjjkCK/SXA6xE=
+	t=1718803616; cv=none; b=bnhnAfWH/OuHzJLjpRDCQ+AAEYtmiyR8Z55Jt6Sa70WSDO5zv1e1wdqx2BIF2ea1lpUZyj9S8nFI3mtY1YkGOuVnq2cAUWLpJj3s4BQXL7eF8opXxrqF1qgHR/+AppPhY0gmNRtRatjKNLy78ulFR5VbvrbWNFzEPKeDRPkRDj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803034; c=relaxed/simple;
-	bh=2gT78EgSgpbPr7v3VVdEPBs1BLD4AcI6bjYpK60TSVc=;
+	s=arc-20240116; t=1718803616; c=relaxed/simple;
+	bh=72h1cEcFeBzU7MwoUUC7wu4ZO1RhMYTDLzq9CyJ6bjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/40W92KmmUH6nLYUOuAt66LuT4NEytwzLiYq0SKYOc83RXkp1OwI2vAes5/s8CjIbDg6LllWwzSd4yE9tTIxpP4BnbAtXJmVVze6uqY6gIsLNaOxpDoWruNSvLYhZNbeWcp5PvOzDS4T4J/IfKLqRdPUxoDEMzM0KuJU6oVWl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2EX9ajG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B379EC2BBFC;
-	Wed, 19 Jun 2024 13:17:13 +0000 (UTC)
+	 MIME-Version; b=Qz5G3Vlr44St1qML6XvN+F5z2jaMYppwCw7GqCEHib4MRUDdhjyFTSaN4tDophqjxbNRfV2D01CLxjmtowgl9q+5IIg0b0OWYUaaHYgc0haR+WCKRssh8aQyo7uPzQEyyPknZw4yMtEMrxMeNI5ui0IwQGLT4D7s31wgtZD7iu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smeanmlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AAEC4AF1D;
+	Wed, 19 Jun 2024 13:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803034;
-	bh=2gT78EgSgpbPr7v3VVdEPBs1BLD4AcI6bjYpK60TSVc=;
+	s=korg; t=1718803615;
+	bh=72h1cEcFeBzU7MwoUUC7wu4ZO1RhMYTDLzq9CyJ6bjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2EX9ajG1xmpebTWoQaTOaL5wNa4xO5l8qewEnaEe4M/W4N3tORjxkIWfav4T9aOA
-	 LVcK4bxID9RqpoxHvn/wkGYpyUMGOzScm3Rg9L1XTZkUuOJTjk/8nj7zjVwjNpUDfI
-	 lUFgj2rdfl13bkw3En/9J8wMMi0nWjJW/ZL3m7FI=
+	b=smeanmlPxjvdmaFR9CB5V6TpW5ayVea9nPqPZ+kNpA3+vItowU718r6DRPPMKBz97
+	 nnOfsVHCRt7mIPYwTPpsehyCL9H/OrxR27g6Flrqyo9rBXyg27WA3fy3UGw+vPRTy2
+	 92+vGBAktMj8H9Pt+oJXLO4LpJF9aHnz053/dtCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregor Herburger <gregor.herburger@tq-group.com>,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 130/281] gpio: tqmx86: fix typo in Kconfig label
+Subject: [PATCH 6.1 046/217] af_unix: Use skb_queue_empty_lockless() in unix_release_sock().
 Date: Wed, 19 Jun 2024 14:54:49 +0200
-Message-ID: <20240619125614.846712987@linuxfoundation.org>
+Message-ID: <20240619125558.441558772@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregor Herburger <gregor.herburger@tq-group.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 8c219e52ca4d9a67cd6a7074e91bf29b55edc075 ]
+[ Upstream commit 83690b82d228b3570565ebd0b41873933238b97f ]
 
-Fix description for GPIO_TQMX86 from QTMX86 to TQMx86.
+If the socket type is SOCK_STREAM or SOCK_SEQPACKET, unix_release_sock()
+checks the length of the peer socket's recvq under unix_state_lock().
 
-Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
-Signed-off-by: Gregor Herburger <gregor.herburger@tq-group.com>
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/e0e38c9944ad6d281d9a662a45d289b88edc808e.1717063994.git.matthias.schiffer@ew.tq-group.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+However, unix_stream_read_generic() calls skb_unlink() after releasing
+the lock.  Also, for SOCK_SEQPACKET, __skb_try_recv_datagram() unlinks
+skb without unix_state_lock().
+
+Thues, unix_state_lock() does not protect qlen.
+
+Let's use skb_queue_empty_lockless() in unix_release_sock().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/Kconfig | 2 +-
+ net/unix/af_unix.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
-index b50d0b4708497..cbfcfefdb5da1 100644
---- a/drivers/gpio/Kconfig
-+++ b/drivers/gpio/Kconfig
-@@ -1549,7 +1549,7 @@ config GPIO_TPS68470
- 	  are "output only" GPIOs.
- 
- config GPIO_TQMX86
--	tristate "TQ-Systems QTMX86 GPIO"
-+	tristate "TQ-Systems TQMx86 GPIO"
- 	depends on MFD_TQMX86 || COMPILE_TEST
- 	depends on HAS_IOPORT_MAP
- 	select GPIOLIB_IRQCHIP
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 02d8612385bd9..bb94a67229aa3 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -619,7 +619,7 @@ static void unix_release_sock(struct sock *sk, int embrion)
+ 			unix_state_lock(skpair);
+ 			/* No more writes */
+ 			WRITE_ONCE(skpair->sk_shutdown, SHUTDOWN_MASK);
+-			if (!skb_queue_empty(&sk->sk_receive_queue) || embrion)
++			if (!skb_queue_empty_lockless(&sk->sk_receive_queue) || embrion)
+ 				WRITE_ONCE(skpair->sk_err, ECONNRESET);
+ 			unix_state_unlock(skpair);
+ 			skpair->sk_state_change(skpair);
 -- 
 2.43.0
 
