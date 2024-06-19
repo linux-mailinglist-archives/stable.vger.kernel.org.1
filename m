@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-54276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F356B90ED75
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E3C90EC46
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 269431C213A9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFE391C20E08
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C76145334;
-	Wed, 19 Jun 2024 13:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EDA513D525;
+	Wed, 19 Jun 2024 13:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldvnfNDz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wa0VRS6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365CE82495;
-	Wed, 19 Jun 2024 13:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDAB82871;
+	Wed, 19 Jun 2024 13:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803102; cv=none; b=jSWg0pRm8TGIcawnAzI/zDgUCONQoXccn+79wbrgfgGzFVSOgaRhkftr38M8bOscOKRom3b1P0gfrc6gfc9YsN4T4d1T9Q79uFyE2pru3zl4shoTZs4uD9/fKfS6rHpBnRRCRTzc1wsTFOzbViBeNNTttNkLHe//MvAnlBHy1PA=
+	t=1718802335; cv=none; b=B6uHcTv7riGK4KTc8JBVUSPiqCM4gqKLSXlEOvZTd4JabSN1FvKOvZ3Up1ujdyvMi2SM1cmG3z0zBohESfBgATAxlloCMRhxY2BjbdMaa202WC3Phq96ysWA/CGbNt/PAjkWZKisBOb5MjBw5U/K8QSf9ZEqBDOMXkT4z2ggY1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803102; c=relaxed/simple;
-	bh=YQuEI2j4IwQQQd02OZ7/X0Gb6Ag2F40m4Dg6Q6FgDv4=;
+	s=arc-20240116; t=1718802335; c=relaxed/simple;
+	bh=QjB7q8LHJ4sYu0XdBJu4P1unCTn9cGIUHvyRSuVIxqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+9hrJ2bNqd6/tRQLhi0WlNAfnWTcXYfX6ISYBbHZPoG0KvMYH8xsyEcY6zKZPluay5NhY61OfERBhQT/1qS8KSQvZxfJEugXz6KfeiH0aRaaj3wTzchmqhaMLfar3fW4Ix97mt62bhnLIkIQ6qacxMDxXyqJENpEj7uBTkYA4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldvnfNDz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC11C2BBFC;
-	Wed, 19 Jun 2024 13:18:21 +0000 (UTC)
+	 MIME-Version; b=Yo1ztiKO6WayCtjzOunzuNSiyAydtQydGk0F8uCo76AuwrW9j7/x3KwCGsgT17GHoVh0BXQX3DqkFKonNEiwUMzmN8bOmX1cAwj3L2du5KLIps08klVEnG6IGILqwjfv+5T6dcjQF4SoRavQK9FHZNcw+ETwOfOcTcRpVHDboNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wa0VRS6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94320C2BBFC;
+	Wed, 19 Jun 2024 13:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803102;
-	bh=YQuEI2j4IwQQQd02OZ7/X0Gb6Ag2F40m4Dg6Q6FgDv4=;
+	s=korg; t=1718802335;
+	bh=QjB7q8LHJ4sYu0XdBJu4P1unCTn9cGIUHvyRSuVIxqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ldvnfNDzSp7jOFUKZBl+AC5fAsRcVqNCMgYHi65J1NhJ6OwZ9GKTJzVIjnCaN6ckI
-	 ZBrKncWRU4mlldjGDRFQeyP79bS/5waLJJdrG/QhR/nfXP9u7cWiZBPnBXmWZU2GrQ
-	 R12npnj+4KWEcFvrTygWkFDej0MGM19iLCoTg0Hg=
+	b=2wa0VRS67d87OnHXI7xSFmB8BGRXYUGbLZGfqjffScAQWVAX3FmB8CEcVMa4VwxLV
+	 /w9TIPiaDBLDdBPCVMX2DIu95i5CSLxskAURPOubwdd0cefijdgbU7/YoSF+OpMuXR
+	 OQ1fFCEu1iWjb7etPZwuZLb2q2PvsYHP8Ma3IZJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Miotk <adam.miotk@arm.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 154/281] drm/bridge/panel: Fix runtime warning on panel bridge release
+Subject: [PATCH 6.6 162/267] net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters
 Date: Wed, 19 Jun 2024 14:55:13 +0200
-Message-ID: <20240619125615.765615384@linuxfoundation.org>
+Message-ID: <20240619125612.561244752@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Miotk <adam.miotk@arm.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit ce62600c4dbee8d43b02277669dd91785a9b81d9 ]
+[ Upstream commit be27b896529787e23a35ae4befb6337ce73fcca0 ]
 
-Device managed panel bridge wrappers are created by calling to
-drm_panel_bridge_add_typed() and registering a release handler for
-clean-up when the device gets unbound.
+The current cbs parameter depends on speed after uplinking,
+which is not needed and will report a configuration error
+if the port is not initially connected. The UAPI exposed by
+tc-cbs requires userspace to recalculate the send slope anyway,
+because the formula depends on port_transmit_rate (see man tc-cbs),
+which is not an invariant from tc's perspective. Therefore, we
+use offload->sendslope and offload->idleslope to derive the
+original port_transmit_rate from the CBS formula.
 
-Since the memory for this bridge is also managed and linked to the panel
-device, the release function should not try to free that memory.
-Moreover, the call to devm_kfree() inside drm_panel_bridge_remove() will
-fail in this case and emit a warning because the panel bridge resource
-is no longer on the device resources list (it has been removed from
-there before the call to release handlers).
-
-Fixes: 67022227ffb1 ("drm/bridge: Add a devm_ allocator for panel bridge.")
-Signed-off-by: Adam Miotk <adam.miotk@arm.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240610102739.139852-1-adam.miotk@arm.com
+Fixes: 1f705bc61aee ("net: stmmac: Add support for CBS QDISC")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://lore.kernel.org/r/20240608143524.2065736-1-xiaolei.wang@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/panel.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 25 ++++++++-----------
+ 1 file changed, 11 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/panel.c b/drivers/gpu/drm/bridge/panel.c
-index 7f41525f7a6e6..3d6e8f096a5d4 100644
---- a/drivers/gpu/drm/bridge/panel.c
-+++ b/drivers/gpu/drm/bridge/panel.c
-@@ -358,9 +358,12 @@ EXPORT_SYMBOL(drm_panel_bridge_set_orientation);
- 
- static void devm_drm_panel_bridge_release(struct device *dev, void *res)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index 6ad3e0a119366..2467598f9d92f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -343,10 +343,11 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+ 			struct tc_cbs_qopt_offload *qopt)
  {
--	struct drm_bridge **bridge = res;
-+	struct drm_bridge *bridge = *(struct drm_bridge **)res;
+ 	u32 tx_queues_count = priv->plat->tx_queues_to_use;
++	s64 port_transmit_rate_kbps;
+ 	u32 queue = qopt->queue;
+-	u32 ptr, speed_div;
+ 	u32 mode_to_use;
+ 	u64 value;
++	u32 ptr;
+ 	int ret;
  
--	drm_panel_bridge_remove(*bridge);
-+	if (!bridge)
-+		return;
+ 	/* Queue 0 is not AVB capable */
+@@ -355,30 +356,26 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+ 	if (!priv->dma_cap.av)
+ 		return -EOPNOTSUPP;
+ 
++	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
 +
-+	drm_bridge_remove(bridge);
- }
+ 	/* Port Transmit Rate and Speed Divider */
+-	switch (priv->speed) {
++	switch (div_s64(port_transmit_rate_kbps, 1000)) {
+ 	case SPEED_10000:
+-		ptr = 32;
+-		speed_div = 10000000;
+-		break;
+ 	case SPEED_5000:
+ 		ptr = 32;
+-		speed_div = 5000000;
+ 		break;
+ 	case SPEED_2500:
+-		ptr = 8;
+-		speed_div = 2500000;
+-		break;
+ 	case SPEED_1000:
+ 		ptr = 8;
+-		speed_div = 1000000;
+ 		break;
+ 	case SPEED_100:
+ 		ptr = 4;
+-		speed_div = 100000;
+ 		break;
+ 	default:
+-		return -EOPNOTSUPP;
++		netdev_err(priv->dev,
++			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
++			   port_transmit_rate_kbps);
++		return -EINVAL;
+ 	}
  
- /**
+ 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
+@@ -398,10 +395,10 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+ 	}
+ 
+ 	/* Final adjustments for HW */
+-	value = div_s64(qopt->idleslope * 1024ll * ptr, speed_div);
++	value = div_s64(qopt->idleslope * 1024ll * ptr, port_transmit_rate_kbps);
+ 	priv->plat->tx_queues_cfg[queue].idle_slope = value & GENMASK(31, 0);
+ 
+-	value = div_s64(-qopt->sendslope * 1024ll * ptr, speed_div);
++	value = div_s64(-qopt->sendslope * 1024ll * ptr, port_transmit_rate_kbps);
+ 	priv->plat->tx_queues_cfg[queue].send_slope = value & GENMASK(31, 0);
+ 
+ 	value = qopt->hicredit * 1024ll * 8;
 -- 
 2.43.0
 
