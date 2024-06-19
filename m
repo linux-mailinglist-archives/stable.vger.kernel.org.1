@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8DB90ED17
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EBCF90EBE4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:02:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23DA91C22034
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE819282A8A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B481E146016;
-	Wed, 19 Jun 2024 13:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0A214B95F;
+	Wed, 19 Jun 2024 13:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmCyhR6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIHk3w0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7202714389C;
-	Wed, 19 Jun 2024 13:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6869314AD35;
+	Wed, 19 Jun 2024 13:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802842; cv=none; b=kIN7BBOhSiIxripLLGZJNyQ58LCekdmlHaKxoXaM8tI/vlThzN45Pol6qnwcKSx/3X64DKEYku6uW3GScMwhIdeZrv09Hi8NLfHu2VWeOaIpPojA9EuGMFgGZqbFRydwbZVMSLBjy4TFMDKOQdmkirdC4/AZX9v4UTnAjkxCvz8=
+	t=1718802075; cv=none; b=Ie9ZgqjnI1TAmymiZpMpZ4cHlmIsl5nOEG3O1xu3FqUNjykQ+qoyyW3dTfCCo6dJbA6VK8ndCfrBJkubIdugrPP/QmruVDZ05rWz/ihkIGwx8JYI2EjVk7xD+35OWUUWs8PR7abeV1GZrL42Nx4lWv2Y2pcWmegdSmTjKqk41Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802842; c=relaxed/simple;
-	bh=iBzJ6MLas2NlI8KI6+Su1v1pHemcUavJJbCyrgr7CiM=;
+	s=arc-20240116; t=1718802075; c=relaxed/simple;
+	bh=gMID78jSTKl0Td8uTmdR4bSIXfKYo+vbLKYi/O+BY0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOYKAUa3Bs4UXR/7BJK5sGSliDCnCPINiGBgLQxdT8aNwRwjoh2mBMrX0S9jvUmTAY8r9ZLVmUxg6ivBpRjRPTTPc3+raM9J9Xmk079LkHKc/eNfhWTvf64t6iwW9pgCo1xmYHB7Kl3epxHSOQSz0vbyLGCPDF8AK+kczLIQcrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmCyhR6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA21CC2BBFC;
-	Wed, 19 Jun 2024 13:14:01 +0000 (UTC)
+	 MIME-Version; b=P8zoYj9RmgWWewm98dnPp8Za1BYgs7kCZRqe1ZrmRxrGH4UWASvkvO+hYyCkqc/+a1c4l8kcFFiyMrgDGJWTqwQvztXJyvAlvbbaJ7IYA4ASfpGyJy+Rmb4tG2J901z3z/Afco6Ks17wD2FV2dPNec5qnjozZOMqvaZ7+rks4R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIHk3w0U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D3BDC4AF1A;
+	Wed, 19 Jun 2024 13:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802842;
-	bh=iBzJ6MLas2NlI8KI6+Su1v1pHemcUavJJbCyrgr7CiM=;
+	s=korg; t=1718802075;
+	bh=gMID78jSTKl0Td8uTmdR4bSIXfKYo+vbLKYi/O+BY0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vmCyhR6BmnUD+lXAMeS6GTtyUWoCMUyzNzGcTia0EnwvFQS9JyArNzg/1wB8E42vg
-	 +HC/Qgi3bY1tLgx6luPzNaF9mPhrLsoHXG3U3Bs2kXDm7W3oaGjUgtWXkyedjQvvIT
-	 W5X6JFX6ev1dAqlErwgATsysE82e+m8tGtpCGRtY=
+	b=eIHk3w0U9BOLToqeoEsWBztbpY+DaROQs8v6nOa5pybBOx6dXPT+YHuR6JYb0qlI8
+	 yxu8n4lqHq6iWOXiQchZvlekLkXEYvweR+ZeqpDLUUKlx+Jekt0zK9/1bVaLKTNGM3
+	 y7DD5hIw3RP7Pi9ajEI8kFiZC6Che/YcoefPp13U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 065/281] af_unix: Annotate data-races around sk->sk_sndbuf.
+Subject: [PATCH 6.6 073/267] irqchip/riscv-intc: Prevent memory leak when riscv_intc_init_common() fails
 Date: Wed, 19 Jun 2024 14:53:44 +0200
-Message-ID: <20240619125612.347353664@linuxfoundation.org>
+Message-ID: <20240619125609.158016261@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-[ Upstream commit b0632e53e0da8054e36bc973f0eec69d30f1b7c6 ]
+[ Upstream commit 0110c4b110477bb1f19b0d02361846be7ab08300 ]
 
-sk_setsockopt() changes sk->sk_sndbuf under lock_sock(), but it's
-not used in af_unix.c.
+When riscv_intc_init_common() fails, the firmware node allocated is not
+freed. Add the missing free().
 
-Let's use READ_ONCE() to read sk->sk_sndbuf in unix_writable(),
-unix_dgram_sendmsg(), and unix_stream_sendmsg().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 7023b9d83f03 ("irqchip/riscv-intc: Add ACPI support")
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240527081113.616189-1-sunilvl@ventanamicro.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-riscv-intc.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 9f266a7679cbc..84bc1de2fd967 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -533,7 +533,7 @@ static int unix_dgram_peer_wake_me(struct sock *sk, struct sock *other)
- static int unix_writable(const struct sock *sk, unsigned char state)
+diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
+index 0cd6b48a5dbf9..627beae9649a2 100644
+--- a/drivers/irqchip/irq-riscv-intc.c
++++ b/drivers/irqchip/irq-riscv-intc.c
+@@ -232,8 +232,9 @@ IRQCHIP_DECLARE(andes, "andestech,cpu-intc", riscv_intc_init);
+ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
+ 				       const unsigned long end)
  {
- 	return state != TCP_LISTEN &&
--	       (refcount_read(&sk->sk_wmem_alloc) << 2) <= sk->sk_sndbuf;
-+		(refcount_read(&sk->sk_wmem_alloc) << 2) <= READ_ONCE(sk->sk_sndbuf);
- }
+-	struct fwnode_handle *fn;
+ 	struct acpi_madt_rintc *rintc;
++	struct fwnode_handle *fn;
++	int rc;
  
- static void unix_write_space(struct sock *sk)
-@@ -2014,7 +2014,7 @@ static int unix_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
+ 	rintc = (struct acpi_madt_rintc *)header;
+ 
+@@ -252,7 +253,11 @@ static int __init riscv_intc_acpi_init(union acpi_subtable_headers *header,
+ 		return -ENOMEM;
  	}
  
- 	err = -EMSGSIZE;
--	if (len > sk->sk_sndbuf - 32)
-+	if (len > READ_ONCE(sk->sk_sndbuf) - 32)
- 		goto out;
+-	return riscv_intc_init_common(fn, &riscv_intc_chip);
++	rc = riscv_intc_init_common(fn, &riscv_intc_chip);
++	if (rc)
++		irq_domain_free_fwnode(fn);
++
++	return rc;
+ }
  
- 	if (len > SKB_MAX_ALLOC) {
-@@ -2294,7 +2294,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
- 						   &err, 0);
- 		} else {
- 			/* Keep two messages in the pipe so it schedules better */
--			size = min_t(int, size, (sk->sk_sndbuf >> 1) - 64);
-+			size = min_t(int, size, (READ_ONCE(sk->sk_sndbuf) >> 1) - 64);
- 
- 			/* allow fallback to order-0 allocations */
- 			size = min_t(int, size, SKB_MAX_HEAD(0) + UNIX_SKB_FRAGS_SZ);
+ IRQCHIP_ACPI_DECLARE(riscv_intc, ACPI_MADT_TYPE_RINTC, NULL,
 -- 
 2.43.0
 
