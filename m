@@ -1,119 +1,145 @@
-Return-Path: <stable+bounces-53677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1E890E197
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 04:17:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B633190E20C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 05:46:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED07C1F236E5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 02:17:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50543284F2F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 03:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69536224DD;
-	Wed, 19 Jun 2024 02:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC9141EB2C;
+	Wed, 19 Jun 2024 03:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=schmorgal.com header.i=@schmorgal.com header.b="FkH41XZW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fwqMP2jh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30B92E859
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 02:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761712139D3;
+	Wed, 19 Jun 2024 03:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718763448; cv=none; b=F8cqW7tc4G/g89Q0v0/6w0k4yMWvmSBvHK3GMDWFEC2qZ4jr+vxlFFnb4vQxZKE+euRHrk2jIqz+4BvhoxoMltW6u+4igP9uYX+1IOznYAgE6XoThp+/kLtK9xWL9voO/54mDu/7UgkJza5XIp8tIuaeb5u/OVHjtZ09lUZXapY=
+	t=1718768754; cv=none; b=R63V2+o4ChNpyRIsVfhmiVswmGzL6XkcdsbGH9xBIVN2lNw2RWXjZ1731bShr42SMk9VPcP0clj3LqiQ5EZlNaFyX2v2yjO688WHO4TxhCNBjFC/KFNK2iwgDDPfJ5imJAO+CWENSr4CZRxHcXaodCrkmsf3z6PsthL137CAQaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718763448; c=relaxed/simple;
-	bh=q2YGzhO8UrTaJ+Y8fuj2TS8BD0FNqLIzJndeKvmJQss=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=T3PMmc5xa0NQXYS2yCSV1MDtTujupsgCln59r3mihpZwaNZs+Y1HBJNLDO9D+PVf9H7DrK/YgMy2yVgf6kVhsMtPd2+M+QYHVb2Qz/rImr/5g7zxLZh4DjpgzUV+LYpJ81ODK2yt11A3bULHvmP4jU7XaIHHMsHUThMRupOECSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=schmorgal.com; spf=pass smtp.mailfrom=schmorgal.com; dkim=pass (1024-bit key) header.d=schmorgal.com header.i=@schmorgal.com header.b=FkH41XZW; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=schmorgal.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schmorgal.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2c036a14583so1143098a91.1
-        for <stable@vger.kernel.org>; Tue, 18 Jun 2024 19:17:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=schmorgal.com; s=google; t=1718763446; x=1719368246; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MkZFb4EXZYqzUEjX1RAn9tzpuhmFQrMHo0qA6DbBo+M=;
-        b=FkH41XZW1S83qKvL8p7L5WQd9rK3DrpwCEIwLrlypody+6t41Hls3yqth6DnL/x+gG
-         f4l/y8csB46KLGrvv9PN0Z106+SeWvrpk4WwFYL7V/RoXFs14nwCY2WP4p5UttxBs/Gm
-         WdwdHEX7tMNJ7XFeHoYB7nkdhXvYodbgFAk3M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718763446; x=1719368246;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MkZFb4EXZYqzUEjX1RAn9tzpuhmFQrMHo0qA6DbBo+M=;
-        b=XV5U7Kigcpph+HCFM7gNtyC2j6fjAc0Pf9JBNMRAW7bjiyg5XKZUkJ1d9iX+MX0hzZ
-         a0eODPI+iu8NcbwJxtE8LrHtrMSQFLyz05LyatCIWoBzgqJYoX+TBR7o7T8vjIFCZoSQ
-         hyFIMNRoOYX5SFG9OrnkcgXgsYPPUbNNXpbCOIQXv8huOE0I0Uxq/eeRt58gDTwOY6cI
-         BqRi8Y47YByjgbta9XYvEWGOSTjxmpJxXmC40z/56Iy3inQsRoLuLWS3tldruYhxk9Jy
-         B+Mw0VIrEQK61vfF8r8lDuunpsa85XME1D1gL5Uw6fIAUWukVGNhjazhIb90HCBS8XSX
-         Drtg==
-X-Gm-Message-State: AOJu0YyCMW4ZqeNtNW6EXeInRXQ83T3Vvi5wLnTpmjhdD/A3NwqMuBkt
-	ximh40y0WHnLpb1/+F5280AY3Uf+i02wePlvwF4UE1+OmFmKFuUD0LvljP9cCcPMOWWPa6neMIp
-	I4vE=
-X-Google-Smtp-Source: AGHT+IGIsVvgJ/XfSfGhGaUSObS5DzcxTgF+cFpgAiW52pX+vkNS4Fx49u+D1dy4wgCVwyMp12kmtg==
-X-Received: by 2002:a17:90a:6787:b0:2c7:ad55:85d8 with SMTP id 98e67ed59e1d1-2c7b5d76cabmr1346937a91.2.1718763445416;
-        Tue, 18 Jun 2024 19:17:25 -0700 (PDT)
-Received: from doug-ryzen-5700G.. ([50.120.71.169])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c7a2ae3f36sm1608755a91.13.2024.06.18.19.17.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 19:17:25 -0700 (PDT)
-From: Doug Brown <doug@schmorgal.com>
-To: stable@vger.kernel.org
-Cc: Doug Brown <doug@schmorgal.com>,
-	stable <stable@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 5.10.y] serial: 8250_pxa: Configure tx_loadsz to match FIFO IRQ level
-Date: Tue, 18 Jun 2024 19:17:02 -0700
-Message-Id: <20240619021701.503264-1-doug@schmorgal.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2024061757-squid-skating-bd26@gregkh>
-References: <2024061757-squid-skating-bd26@gregkh>
+	s=arc-20240116; t=1718768754; c=relaxed/simple;
+	bh=QqYGHcyDPY9LWxGs+XmZSvVbr6bVLIuCDo6EWKGDoHg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XwVtG1MNzPxkrmu1MtjfmEqYMOXIR5BLQJB74S8kO4HAZNebsf3l3lQYrPlgJ/BfGn41BA2Cm26OMHkK34Y/YmHlrNIP60D6U7BXBWHKYHeMTn1/V7jWm3RYwlJf5UgLuU/vs7lmwst3IW8sBlyXGJbzdXzuousKgkzaLD2mcVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fwqMP2jh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E40C2BBFC;
+	Wed, 19 Jun 2024 03:45:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718768753;
+	bh=QqYGHcyDPY9LWxGs+XmZSvVbr6bVLIuCDo6EWKGDoHg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fwqMP2jhpXm+LNo5551atW6mBcgCBVrm6TuBoEBzd3mUaDx5lB1pmTYNrTLnHaiCQ
+	 jlxPfifN9eRHAIwgOd4p0hw5EnQf2jupVYJNgQODdiX/q/0VU/xBXkk3/nbklZ6JH5
+	 2NoQ6v0ti1eIfiAwIi117kiPqX0V3qy6EgY9qwW3rYznm4xpFYuIaOhIL5KC8BeSzB
+	 UdERmRn8Xv7F/5rSQPDPO9qtdxCcNp7HvBJ0GdxILGShYkIROJ0zd1XaErxPrsFB5B
+	 lLvAkxauEVYZUrJhr2dSXFcPqX+C42B/IVp5N+WRTT2SLgQTv9qWy+1M2dCo+Fqn2U
+	 xeiCs2Gn4HKGg==
+Message-ID: <4522f403-8419-4c59-b28b-9d460780c389@kernel.org>
+Date: Wed, 19 Jun 2024 12:45:51 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ata: ahci: Do not enable LPM if no LPM states are
+ supported by the HBA
+To: Niklas Cassel <cassel@kernel.org>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Jian-Hong Pan <jhp@endlessos.org>
+Cc: stable@vger.kernel.org, linux-ide@vger.kernel.org
+References: <20240618152828.2686771-2-cassel@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20240618152828.2686771-2-cassel@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The FIFO is 64 bytes, but the FCR is configured to fire the TX interrupt
-when the FIFO is half empty (bit 3 = 0). Thus, we should only write 32
-bytes when a TX interrupt occurs.
+On 6/19/24 00:28, Niklas Cassel wrote:
+> LPM consists of HIPM (host initiated power management) and DIPM
+> (device initiated power management).
+> 
+> ata_eh_set_lpm() will only enable HIPM if both the HBA and the device
+> supports it.
+> 
+> However, DIPM will be enabled as long as the device supports it.
+> The HBA will later reject the device's request to enter a power state
+> that it does not support (Slumber/Partial/DevSleep) (DevSleep is never
+> initiated by the device).
+> 
+> For a HBA that doesn't support any LPM states, simply don't set a LPM
+> policy such that all the HIPM/DIPM probing/enabling will be skipped.
+> 
+> Not enabling HIPM or DIPM in the first place is safer than relying on
+> the device following the AHCI specification and respecting the NAK.
+> (There are comments in the code that some devices misbehave when
+> receiving a NAK.)
+> 
+> Performing this check in ahci_update_initial_lpm_policy() also has the
+> advantage that a HBA that doesn't support any LPM states will take the
+> exact same code paths as a port that is external/hot plug capable.
+> 
+> Side note: the port in ata_port_dbg() has not been given a unique id yet,
+> but this is not overly important as the debug print is disabled unless
+> explicitly enabled using dynamic debug. A follow-up series will make sure
+> that the unique id assignment will be done earlier. For now, the important
+> thing is that the function returns before setting the LPM policy.
+> 
+> Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> ---
+> Changes since v1: Add debug print as suggested by Mika.
+> 
+>  drivers/ata/ahci.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+> index 07d66d2c5f0d..5eb38fbbbecd 100644
+> --- a/drivers/ata/ahci.c
+> +++ b/drivers/ata/ahci.c
+> @@ -1735,6 +1735,14 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
+>  	if (ap->pflags & ATA_PFLAG_EXTERNAL)
+>  		return;
+>  
+> +	/* If no LPM states are supported by the HBA, do not bother with LPM */
+> +	if ((ap->host->flags & ATA_HOST_NO_PART) &&
+> +	    (ap->host->flags & ATA_HOST_NO_SSC) &&
+> +	    (ap->host->flags & ATA_HOST_NO_DEVSLP)) {
 
-This fixes a problem observed on the PXA168 that dropped a bunch of TX
-bytes during large transmissions.
+Nit: Maybe:
 
-Fixes: ab28f51c77cd ("serial: rewrite pxa2xx-uart to use 8250_core")
-Signed-off-by: Doug Brown <doug@schmorgal.com>
-Link: https://lore.kernel.org/r/20240519191929.122202-1-doug@schmorgal.com
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-(cherry picked from commit 5208e7ced520a813b4f4774451fbac4e517e78b2)
-Signed-off-by: Doug Brown <doug@schmorgal.com>
----
- drivers/tty/serial/8250/8250_pxa.c | 1 +
- 1 file changed, 1 insertion(+)
+#define ATA_HOST_NO_LPM		\
+	(ATA_HOST_NO_PART | ATA_HOST_NO_SSC | ATA_HOST_NO_DEVSLP)
 
-diff --git a/drivers/tty/serial/8250/8250_pxa.c b/drivers/tty/serial/8250/8250_pxa.c
-index 33ca98bfa5b3..0780f5d7be62 100644
---- a/drivers/tty/serial/8250/8250_pxa.c
-+++ b/drivers/tty/serial/8250/8250_pxa.c
-@@ -125,6 +125,7 @@ static int serial_pxa_probe(struct platform_device *pdev)
- 	uart.port.regshift = 2;
- 	uart.port.irq = irq;
- 	uart.port.fifosize = 64;
-+	uart.tx_loadsz = 32;
- 	uart.port.flags = UPF_IOREMAP | UPF_SKIP_TEST | UPF_FIXED_TYPE;
- 	uart.port.dev = &pdev->dev;
- 	uart.port.uartclk = clk_get_rate(data->clk);
+and then the if becomes:
+
+	if ((ap->host->flags & ATA_HOST_NO_LPM) == ATA_HOST_NO_LPM) {
+
+But no strong feelings about it. So:
+
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+
+> +		ata_port_dbg(ap, "no LPM states supported, not enabling LPM\n");
+> +		return;
+> +	}
+> +
+>  	/* user modified policy via module param */
+>  	if (mobile_lpm_policy != -1) {
+>  		policy = mobile_lpm_policy;
+
 -- 
-2.34.1
+Damien Le Moal
+Western Digital Research
 
 
