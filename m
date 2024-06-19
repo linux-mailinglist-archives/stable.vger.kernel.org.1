@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB48390E3E8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD75A90E3EE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 09:01:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DEE4B232C3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 06:59:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7123EB22D96
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 07:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F096F319;
-	Wed, 19 Jun 2024 06:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5A36F307;
+	Wed, 19 Jun 2024 07:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiE+lqvp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMvRo3oT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0D96F317
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 06:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7B717583
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 07:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718780378; cv=none; b=f1cZ1wYmccLGRwK958Kz8BFshlVmkdFqJjYf5n0RG9gfzs2BpK6iVJkaYZqr5uwPD8+lLbv/d7U+qBOkCUPpomirYDiz/OKC2ZblE5stsR8/ZTVVVJ6D/bHDBwZfsXzy4zRiOf+jwhORAaBDR+mrAp97O2WXL43VQcoGqufEkHo=
+	t=1718780475; cv=none; b=Bh/SoK6C1pYvWw/ORpvJ/KKgx9z42XXpAu/Ev9K3JeaDRHT3M7kB5+5q6JLHnySfLDlv5LZXiQ+HFJZPOdNM+m3rySV0nk3joq8oilP4c8SVTpDxgQu0BexCyZqdKClFCD5eZqlhRmW/zSxQ9Cva+iI0gHkpGtXvcMcYB0MUsWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718780378; c=relaxed/simple;
-	bh=YyaLYo2VDOw6/ELqg/NmOsWvxXFScp2m1zQjlXYLY1g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=TDFezcLkkgsSCHM7PtXQ9VoozwSdK76E3fekMfj19UvpinWY/JIZqKfvInh62tNR7U9i49jqZMqb4edpCukPaMBHtlXGeeyrf/kcdzsnLBmZ4j4zS9PREbnTDlrpAD0472AHEKiRkl3jd5RDdxx0OAxaDyIMDclT480w3qIBS8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiE+lqvp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4C8C2BBFC;
-	Wed, 19 Jun 2024 06:59:37 +0000 (UTC)
+	s=arc-20240116; t=1718780475; c=relaxed/simple;
+	bh=KUJ0mgKc4cxfbC9A/gmzLXnm82zcQOX6CuKNIIa1VDk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ki7JTcrJXwUf0ZkzBLlBvMlZE4myEQ8wiP+VUzfwYwsbOJ+dA8BwxT1zwjZLP5voOAe5LRuyPIbB3fks12mk1dooUgs5MvZz52UhrAOpfJeq7zjQXJapKArHuZ6aJnYlAfOX4vEHA7ojq7C8yjz1xpDOJvNFDEUgljCVvuYmjVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMvRo3oT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACC5C2BBFC;
+	Wed, 19 Jun 2024 07:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718780377;
-	bh=YyaLYo2VDOw6/ELqg/NmOsWvxXFScp2m1zQjlXYLY1g=;
+	s=korg; t=1718780474;
+	bh=KUJ0mgKc4cxfbC9A/gmzLXnm82zcQOX6CuKNIIa1VDk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HiE+lqvpaEVFz0IlViFuQP5JKDYS/1tlGbJdfZ8a5rPIvRyNhgK8dPTFKkCHcwG07
-	 k9SNgeN37Q/ZFqmx5cRXbdoF1FZY9x9LF3KnwOMEcsRgT0svevLU4444gqqIJj6Cpx
-	 pnNpX2/GNPA43L8GHVbz5hSa3R0Pr7r/wVHgpAmE=
-Subject: FAILED: patch "[PATCH] drm/i915: Fix audio component initialization" failed to apply to 5.10-stable tree
-To: imre.deak@intel.com,jani.nikula@intel.com
+	b=dMvRo3oTSQWf1PbO8fet8c/0jwdprpLUzwyGY8qFxlvIE7wZzo6/517/8a/4eMXpz
+	 l7+JvEa4QsDKmwX21JKulTw/2b0ila2dJQFCdzhybcxU4FI1YzCRASsVW/l7rcHRWh
+	 L8F4PhDLMY4eDCm0hS8kqNPPLn1QLvYelEQUFUsA=
+Subject: FAILED: patch "[PATCH] pmdomain: ti-sci: Fix duplicate PD referrals" failed to apply to 5.15-stable tree
+To: tomi.valkeinen@ideasonboard.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Wed, 19 Jun 2024 08:59:27 +0200
-Message-ID: <2024061927-nullify-thinner-4906@gregkh>
+Date: Wed, 19 Jun 2024 09:01:03 +0200
+Message-ID: <2024061903-corroding-resurrect-6119@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 75800e2e4203ea83bbc9d4f63ad97ea582244a08
+git cherry-pick -x 670c900f69645db394efb38934b3344d8804171a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061927-nullify-thinner-4906@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061903-corroding-resurrect-6119@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-75800e2e4203 ("drm/i915: Fix audio component initialization")
-bd738d859e71 ("drm/i915: Prevent modesets during driver init/shutdown")
-1ef28d86bea9 ("drm/i915: Suspend the framebuffer console earlier during system suspend")
-24b412b1bfeb ("drm/i915: Disable intel HPD poll after DRM poll init/enable")
-a1a0e8630711 ("drm/i915: Move audio deinit after disabling polling")
-6a18ae51d265 ("drm/i915/display: Print display info inside driver display initialization")
-40053823baad ("drm/i915/display: move modeset probe/remove functions to intel_display_driver.c")
-15e4f0b541d4 ("drm/i915/display: rename intel_modeset_probe_defer() -> intel_display_driver_probe_defer()")
-ff2c80be1a00 ("drm/i915/display: move intel_modeset_probe_defer() to intel_display_driver.[ch]")
-77316e755213 ("drm/i915/display: start high level display driver file")
-d670c78ea756 ("drm/i915: rename intel_pm.[ch] to intel_clock_gating.[ch]")
-673515ba0249 ("drm/i915/opregion: Register display debugfs later, after initialization steps")
-893a6c224a24 ("drm/i915/pm: drop intel_suspend_hw()")
-d3708182cbc3 ("drm/i915/pm: drop intel_pm_setup()")
-3dadb4a17035 ("drm/i915/wm: move ILK watermark sanitization to i9xx_wm.[ch]")
-94b49d53acec ("drm/i915/wm: move remaining watermark code out of intel_pm.c")
-1b2146de7c5b ("drm/i915: move memory frequency detection to intel_dram.c")
-2bf91341ee42 ("drm/i915: Move display power initialization during driver probing later")
-e5e43d3363d7 ("drm/i915/display: Pass drm_i915_private as param to i915 funcs")
-7ee6f99dbc45 ("drm/i915: Replace wm.max_levels with wm.num_levels and use it everywhere")
+670c900f6964 ("pmdomain: ti-sci: Fix duplicate PD referrals")
 
 thanks,
 
@@ -96,116 +77,64 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 75800e2e4203ea83bbc9d4f63ad97ea582244a08 Mon Sep 17 00:00:00 2001
-From: Imre Deak <imre.deak@intel.com>
-Date: Tue, 21 May 2024 17:30:22 +0300
-Subject: [PATCH] drm/i915: Fix audio component initialization
+From 670c900f69645db394efb38934b3344d8804171a Mon Sep 17 00:00:00 2001
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Date: Mon, 15 Apr 2024 19:00:23 +0300
+Subject: [PATCH] pmdomain: ti-sci: Fix duplicate PD referrals
 
-After registering the audio component in i915_audio_component_init()
-the audio driver may call i915_audio_component_get_power() via the
-component ops. This could program AUD_FREQ_CNTRL with an uninitialized
-value if the latter function is called before display.audio.freq_cntrl
-gets initialized. The get_power() function also does a modeset which in
-the above case happens too early before the initialization step and
-triggers the
+When the dts file has multiple referrers to a single PD (e.g.
+simple-framebuffer and dss nodes both point to the DSS power-domain) the
+ti-sci driver will create two power domains, both with the same ID, and
+that will cause problems as one of the power domains will hide the other
+one.
 
-"Reject display access from task"
+Fix this checking if a PD with the ID has already been created, and only
+create a PD for new IDs.
 
-error message added by the Fixes: commit below.
+Fixes: efa5c01cd7ee ("soc: ti: ti_sci_pm_domains: switch to use multiple genpds instead of one")
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240415-ti-sci-pd-v1-1-a0e56b8ad897@ideasonboard.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-Fix the above issue by registering the audio component only after the
-initialization step.
-
-Fixes: 87c1694533c9 ("drm/i915: save AUD_FREQ_CNTRL state at audio domain suspend")
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10291
-Cc: stable@vger.kernel.org # v5.5+
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240521143022.3784539-1-imre.deak@intel.com
-(cherry picked from commit fdd0b80172758ce284f19fa8a26d90c61e4371d2)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-
-diff --git a/drivers/gpu/drm/i915/display/intel_audio.c b/drivers/gpu/drm/i915/display/intel_audio.c
-index ed81e1466c4b..40e7d862675e 100644
---- a/drivers/gpu/drm/i915/display/intel_audio.c
-+++ b/drivers/gpu/drm/i915/display/intel_audio.c
-@@ -1252,17 +1252,6 @@ static const struct component_ops i915_audio_component_bind_ops = {
- static void i915_audio_component_init(struct drm_i915_private *i915)
- {
- 	u32 aud_freq, aud_freq_init;
--	int ret;
--
--	ret = component_add_typed(i915->drm.dev,
--				  &i915_audio_component_bind_ops,
--				  I915_COMPONENT_AUDIO);
--	if (ret < 0) {
--		drm_err(&i915->drm,
--			"failed to add audio component (%d)\n", ret);
--		/* continue with reduced functionality */
--		return;
--	}
+diff --git a/drivers/pmdomain/ti/ti_sci_pm_domains.c b/drivers/pmdomain/ti/ti_sci_pm_domains.c
+index 9dddf227a3a6..1510d5ddae3d 100644
+--- a/drivers/pmdomain/ti/ti_sci_pm_domains.c
++++ b/drivers/pmdomain/ti/ti_sci_pm_domains.c
+@@ -114,6 +114,18 @@ static const struct of_device_id ti_sci_pm_domain_matches[] = {
+ };
+ MODULE_DEVICE_TABLE(of, ti_sci_pm_domain_matches);
  
- 	if (DISPLAY_VER(i915) >= 9) {
- 		aud_freq_init = intel_de_read(i915, AUD_FREQ_CNTRL);
-@@ -1285,6 +1274,21 @@ static void i915_audio_component_init(struct drm_i915_private *i915)
- 
- 	/* init with current cdclk */
- 	intel_audio_cdclk_change_post(i915);
-+}
-+
-+static void i915_audio_component_register(struct drm_i915_private *i915)
++static bool ti_sci_pm_idx_exists(struct ti_sci_genpd_provider *pd_provider, u32 idx)
 +{
-+	int ret;
++	struct ti_sci_pm_domain *pd;
 +
-+	ret = component_add_typed(i915->drm.dev,
-+				  &i915_audio_component_bind_ops,
-+				  I915_COMPONENT_AUDIO);
-+	if (ret < 0) {
-+		drm_err(&i915->drm,
-+			"failed to add audio component (%d)\n", ret);
-+		/* continue with reduced functionality */
-+		return;
++	list_for_each_entry(pd, &pd_provider->pd_list, node) {
++		if (pd->idx == idx)
++			return true;
 +	}
- 
- 	i915->display.audio.component_registered = true;
- }
-@@ -1317,6 +1321,12 @@ void intel_audio_init(struct drm_i915_private *i915)
- 		i915_audio_component_init(i915);
- }
- 
-+void intel_audio_register(struct drm_i915_private *i915)
-+{
-+	if (!i915->display.audio.lpe.platdev)
-+		i915_audio_component_register(i915);
++
++	return false;
 +}
 +
- /**
-  * intel_audio_deinit() - deinitialize the audio driver
-  * @i915: the i915 drm device private data
-diff --git a/drivers/gpu/drm/i915/display/intel_audio.h b/drivers/gpu/drm/i915/display/intel_audio.h
-index 9327954b801e..576c061d72a4 100644
---- a/drivers/gpu/drm/i915/display/intel_audio.h
-+++ b/drivers/gpu/drm/i915/display/intel_audio.h
-@@ -28,6 +28,7 @@ void intel_audio_codec_get_config(struct intel_encoder *encoder,
- void intel_audio_cdclk_change_pre(struct drm_i915_private *dev_priv);
- void intel_audio_cdclk_change_post(struct drm_i915_private *dev_priv);
- void intel_audio_init(struct drm_i915_private *dev_priv);
-+void intel_audio_register(struct drm_i915_private *i915);
- void intel_audio_deinit(struct drm_i915_private *dev_priv);
- void intel_audio_sdp_split_update(const struct intel_crtc_state *crtc_state);
+ static int ti_sci_pm_domain_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -149,8 +161,14 @@ static int ti_sci_pm_domain_probe(struct platform_device *pdev)
+ 				break;
  
-diff --git a/drivers/gpu/drm/i915/display/intel_display_driver.c b/drivers/gpu/drm/i915/display/intel_display_driver.c
-index 89bd032ed995..794b4af38055 100644
---- a/drivers/gpu/drm/i915/display/intel_display_driver.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_driver.c
-@@ -540,6 +540,8 @@ void intel_display_driver_register(struct drm_i915_private *i915)
+ 			if (args.args_count >= 1 && args.np == dev->of_node) {
+-				if (args.args[0] > max_id)
++				if (args.args[0] > max_id) {
+ 					max_id = args.args[0];
++				} else {
++					if (ti_sci_pm_idx_exists(pd_provider, args.args[0])) {
++						index++;
++						continue;
++					}
++				}
  
- 	intel_display_driver_enable_user_access(i915);
- 
-+	intel_audio_register(i915);
-+
- 	intel_display_debugfs_register(i915);
- 
- 	/*
+ 				pd = devm_kzalloc(dev, sizeof(*pd), GFP_KERNEL);
+ 				if (!pd) {
 
 
