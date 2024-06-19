@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6AAF90ED8D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2CD990EC5E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E7F61F217E1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F3621F20FA4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A329143C65;
-	Wed, 19 Jun 2024 13:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B99513D525;
+	Wed, 19 Jun 2024 13:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFl9EF60"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tO8F5sEu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075BD82495;
-	Wed, 19 Jun 2024 13:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585B412FB31;
+	Wed, 19 Jun 2024 13:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803170; cv=none; b=dfn6pMmqxKZuSVgqG+9Hg8bmc9qLbwgSTvZDnyHrl0mNGqUqzHzO0TFscjbJLH+NOkzY9c87ou+1BIrQ2Rt/Scot3FC3ac65ytA+lNaONufbpse9uGRqb/Rqm5ohzG5/kbo1LE10cBMuq2vjzjpGjh0P+fx0KhKRXE5YG/Eco8g=
+	t=1718802403; cv=none; b=DP2bowmRXwXHr4Hb67X9QPhWSN0jw0HWxw11ob+AV4N25ejnJtrcmJMVGhVs5Axy2yzOWnib2snWVxbl5DCg1GGZQLJRcI6JV91mjo3gTH/emN7j8r7hCiu8QRY6RzWNz2gHxZ5us5gLFbbwKIwKGszdeo42osHSVmsT/YKD0gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803170; c=relaxed/simple;
-	bh=9Ypry8GwffCLuCOrIlexPV8+rpYiwlPRqzeBX8dA9eA=;
+	s=arc-20240116; t=1718802403; c=relaxed/simple;
+	bh=XIbgUqSgG77x08uFR9EIj8P+DTWOw8Q0VPzbFJppY78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqvUspi4x+MM4RKVUJXAevVnLuAGRf9yy6ziYIwaM7jt5hp6a8Jll6ql3VOhOUICHNxlhlMYQXI+3VgxLBe0B41YLGZVfCpKvOD/7aD4bQgg/80kQfTiSuvdaxHJImtgJMPTtsS3o/4tWrOcO7USvuTxHMh0Mvdpt54mDLs/LDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFl9EF60; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F3DC2BBFC;
-	Wed, 19 Jun 2024 13:19:29 +0000 (UTC)
+	 MIME-Version; b=WWOYOZcseeDnJIMXSMAMjDE2ionOK31Uc4XyxxELPHD08Rpb0gIk80zTi3ycp8pXFfLg4vbfyhKtX5JSGRL4zhO2eRjIS1BQiZG4BScGEddf2r2BZJKxS9ojfAwrFA77+QxMtoZ/6D86bve4/sEWImIsTeJaunCs8pv77OPj6ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tO8F5sEu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5078C2BBFC;
+	Wed, 19 Jun 2024 13:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803169;
-	bh=9Ypry8GwffCLuCOrIlexPV8+rpYiwlPRqzeBX8dA9eA=;
+	s=korg; t=1718802403;
+	bh=XIbgUqSgG77x08uFR9EIj8P+DTWOw8Q0VPzbFJppY78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NFl9EF60cfSslITjTvlx5/F+YpFyr0h22GiYDbWt064ID3HlcLXx2loDIXHmlWjxX
-	 Vo6gRxpwV9jWpDVTHBKdMGb0FtB4XyrtyhDh2bN0OLornM2wAXPnqQmU3r9BtOO99G
-	 xcdK785pob2JAWV3kWtPovN1EoKLhS7z4nbrRy+Q=
+	b=tO8F5sEueR6u+vTiHFOJ3fFvEfElRrYjK/3rW/yRAzVIX0xEFr5v92kZOesU07CPQ
+	 JlnH+FwoCpMA3slEgsaOocNl07BOJ5k5y1dOgkmzUAdHEz0a3OClz65Tpu1OpAAzK6
+	 wNujgYbD4EuZsWMvYx8XY49gH4hc/FqqfHzx2SF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Vincenzo Palazzo <vincenzopalazzodev@gmail.com>,
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 145/281] modpost: do not warn about missing MODULE_DESCRIPTION() for vmlinux.o
-Date: Wed, 19 Jun 2024 14:55:04 +0200
-Message-ID: <20240619125615.420137792@linuxfoundation.org>
+Subject: [PATCH 6.6 154/267] Bluetooth: fix connection setup in l2cap_connect
+Date: Wed, 19 Jun 2024 14:55:05 +0200
+Message-ID: <20240619125612.255255820@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Pauli Virtanen <pav@iki.fi>
 
-[ Upstream commit 9185afeac2a3dcce8300a5684291a43c2838cfd6 ]
+[ Upstream commit c695439d198d30e10553a3b98360c5efe77b6903 ]
 
-Building with W=1 incorrectly emits the following warning:
+The amp_id argument of l2cap_connect() was removed in
+commit 84a4bb6548a2 ("Bluetooth: HCI: Remove HCI_AMP support")
 
-  WARNING: modpost: missing MODULE_DESCRIPTION() in vmlinux.o
+It was always called with amp_id == 0, i.e. AMP_ID_BREDR == 0x00 (ie.
+non-AMP controller).  In the above commit, the code path for amp_id != 0
+was preserved, although it should have used the amp_id == 0 one.
 
-This check should apply only to modules.
+Restore the previous behavior of the non-AMP code path, to fix problems
+with L2CAP connections.
 
-Fixes: 1fffe7a34c89 ("script: modpost: emit a warning when the description is missing")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Fixes: 84a4bb6548a2 ("Bluetooth: HCI: Remove HCI_AMP support")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/modpost.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
-index 2f5b91da5afa9..c27c762e68807 100644
---- a/scripts/mod/modpost.c
-+++ b/scripts/mod/modpost.c
-@@ -1652,10 +1652,11 @@ static void read_symbols(const char *modname)
- 			namespace = get_next_modinfo(&info, "import_ns",
- 						     namespace);
- 		}
-+
-+		if (extra_warn && !get_modinfo(&info, "description"))
-+			warn("missing MODULE_DESCRIPTION() in %s\n", modname);
- 	}
- 
--	if (extra_warn && !get_modinfo(&info, "description"))
--		warn("missing MODULE_DESCRIPTION() in %s\n", modname);
- 	for (sym = info.symtab_start; sym < info.symtab_stop; sym++) {
- 		symname = remove_dot(info.strtab + sym->st_name);
- 
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index d5fb78c604cf3..bf31c5bae218f 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4009,8 +4009,8 @@ static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
+ 				status = L2CAP_CS_AUTHOR_PEND;
+ 				chan->ops->defer(chan);
+ 			} else {
+-				l2cap_state_change(chan, BT_CONNECT2);
+-				result = L2CAP_CR_PEND;
++				l2cap_state_change(chan, BT_CONFIG);
++				result = L2CAP_CR_SUCCESS;
+ 				status = L2CAP_CS_NO_INFO;
+ 			}
+ 		} else {
 -- 
 2.43.0
 
