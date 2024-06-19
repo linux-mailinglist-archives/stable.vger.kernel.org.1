@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-54202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A99D590ED28
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9088190EBF9
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4656FB261DA
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D9CE284A19
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD00143C4E;
-	Wed, 19 Jun 2024 13:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912B814E2E2;
+	Wed, 19 Jun 2024 13:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykDmCBp3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1be7kBtg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA06414389C;
-	Wed, 19 Jun 2024 13:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501BA14D6FF;
+	Wed, 19 Jun 2024 13:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802883; cv=none; b=TLO9S8q8q8twzTATedndOxnGKVTXj5+P0dBc43K9ARSyFvW+SOyCA+eSIf2Tf1F+rJkE1Hr+xvYVu6jcGdim8XRs3LP2XB1DkWju+nsSqBqRsc367yuchB/WUUpkbIwxSbHu8Vgdt1EvA6R5ihjglHoZqCVjtFmFAIfxWkO+l94=
+	t=1718802119; cv=none; b=HzL6sM3uVVAKNUVLhlRAEkEZab3nWGXCMMKOE3ZFdCp2NCy0Ty76hAyfnyqrgoJukrZxZU5Xud9SiFLEFXeHWKdSk4rfYjo4HQYE8B9FxKSSB/fZ89G+nYIHsP6YxmxVupmw6aDQiP2i0kEgz5CJKgJoU73C6bVbRCwcJ7VEh6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802883; c=relaxed/simple;
-	bh=m7NO6yG4cTxMJpsiIzuzu+CvWk3CZsMcGsPd4CRJ7vs=;
+	s=arc-20240116; t=1718802119; c=relaxed/simple;
+	bh=boYJKt/P5yriSnnkSRqyafLC5v67NijfvKduTrvs0rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1hFvLN7YZkzbGoJNLOvREcr+3pHojUmtpRTG6fcx8M8UQUkWTA88Ph20PmnZzbUd3K++AIUZsvo2ea3cj7uigPVekdEREdYDhvWFPwYjhW0kO2vsrQmnJWwCm/31nrhlAYsNJ1GiIid7ATTooeI3eoYuky6WgRSSHm3zGZcHwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykDmCBp3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20AAAC2BBFC;
-	Wed, 19 Jun 2024 13:14:42 +0000 (UTC)
+	 MIME-Version; b=OL7U+9qGi253+DcwY3Fbvf9EEmQXJti1BmRLzqLR7PrXYqzdtKcjbqoBidplMpk4kQ64f2JKjGu2Z5oiSyNWyuQdp5fW1tK5U7wk+P3EHAaR1/D0yIawj7l+R6m1tgnGCINEy7P3+iB/s1vHPLO4yIfG5oATDjimLhtmFRwjfLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1be7kBtg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE30CC2BBFC;
+	Wed, 19 Jun 2024 13:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802883;
-	bh=m7NO6yG4cTxMJpsiIzuzu+CvWk3CZsMcGsPd4CRJ7vs=;
+	s=korg; t=1718802119;
+	bh=boYJKt/P5yriSnnkSRqyafLC5v67NijfvKduTrvs0rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ykDmCBp3ai7hsa3lO8EpD/ydZ5dPKtNAx5giZhdk/ygdPlovM/bMoCgh2bZZX9FdW
-	 vrAfAomqxsUJRUS7e5zdBzTaWpve0DEM28REJm7YFwQR74PsPeq3PNFcW14l8fbrA8
-	 f5FzEHW1avCheR+rDLCOdkOX1uNFOP752KxIJy/Y=
+	b=1be7kBtgEuXZtZwWlm+WHpeIs1gnnhYongrwSl4YkWLqp+2NQi1L9rFo4MgoadQpp
+	 HDkw/xlCp7Wt0Ry+TZ8TaKR+AWP36AL/a1b5KW1NyegKWTWRn4SJLEoI9pAXsZY5p2
+	 TNjz7rEn969KjB+5fxv5ZH3YgbHQXMt37We5wAVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Noam Rathaus <noamr@ssd-disclosure.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 048/281] net/sched: taprio: always validate TCA_TAPRIO_ATTR_PRIOMAP
-Date: Wed, 19 Jun 2024 14:53:27 +0200
-Message-ID: <20240619125611.698065729@linuxfoundation.org>
+Subject: [PATCH 6.6 057/267] af_unix: Annotate data-race of net->unx.sysctl_max_dgram_qlen.
+Date: Wed, 19 Jun 2024 14:53:28 +0200
+Message-ID: <20240619125608.549796944@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit f921a58ae20852d188f70842431ce6519c4fdc36 ]
+[ Upstream commit bd9f2d05731f6a112d0c7391a0d537bfc588dbe6 ]
 
-If one TCA_TAPRIO_ATTR_PRIOMAP attribute has been provided,
-taprio_parse_mqprio_opt() must validate it, or userspace
-can inject arbitrary data to the kernel, the second time
-taprio_change() is called.
+net->unx.sysctl_max_dgram_qlen is exposed as a sysctl knob and can be
+changed concurrently.
 
-First call (with valid attributes) sets dev->num_tc
-to a non zero value.
+Let's use READ_ONCE() in unix_create1().
 
-Second call (with arbitrary mqprio attributes)
-returns early from taprio_parse_mqprio_opt()
-and bad things can happen.
-
-Fixes: a3d43c0d56f1 ("taprio: Add support adding an admin schedule")
-Reported-by: Noam Rathaus <noamr@ssd-disclosure.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://lore.kernel.org/r/20240604181511.769870-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index 5c3f8a278fc2f..0b150b13bee7a 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -1176,16 +1176,13 @@ static int taprio_parse_mqprio_opt(struct net_device *dev,
- {
- 	bool allow_overlapping_txqs = TXTIME_ASSIST_IS_ENABLED(taprio_flags);
- 
--	if (!qopt && !dev->num_tc) {
--		NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
--		return -EINVAL;
--	}
--
--	/* If num_tc is already set, it means that the user already
--	 * configured the mqprio part
--	 */
--	if (dev->num_tc)
-+	if (!qopt) {
-+		if (!dev->num_tc) {
-+			NL_SET_ERR_MSG(extack, "'mqprio' configuration is necessary");
-+			return -EINVAL;
-+		}
- 		return 0;
-+	}
- 
- 	/* taprio imposes that traffic classes map 1:n to tx queues */
- 	if (qopt->num_tc > dev->num_tx_queues) {
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 4640497c29da4..2b35c517be718 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -990,7 +990,7 @@ static struct sock *unix_create1(struct net *net, struct socket *sock, int kern,
+ 	sk->sk_hash		= unix_unbound_hash(sk);
+ 	sk->sk_allocation	= GFP_KERNEL_ACCOUNT;
+ 	sk->sk_write_space	= unix_write_space;
+-	sk->sk_max_ack_backlog	= net->unx.sysctl_max_dgram_qlen;
++	sk->sk_max_ack_backlog	= READ_ONCE(net->unx.sysctl_max_dgram_qlen);
+ 	sk->sk_destruct		= unix_sock_destructor;
+ 	u = unix_sk(sk);
+ 	u->inflight = 0;
 -- 
 2.43.0
 
