@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-53903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E18090EBBB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DC390ECFE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:13:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55BAE1F24E64
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32F2D283DD6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93B1147C71;
-	Wed, 19 Jun 2024 13:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71CB143C4A;
+	Wed, 19 Jun 2024 13:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZKySTF9s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDJA/USg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6866E147C60;
-	Wed, 19 Jun 2024 13:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960461422B8;
+	Wed, 19 Jun 2024 13:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802013; cv=none; b=kZji/PXkfLsDrjDvq6GzWi4pXjTOI7ofKloD6N0pZiKB9ukfrXqhFXVdULfWBm4b+e7fG+GfBcAwCK6PiMTQCf8JqnpwCtiPCGkrppHF7/60zoPig4foG5z91i3BHHug8k03TO20c656c4HXVphL6KFRLR8Mn8ZrDH/UqsF2M5w=
+	t=1718802780; cv=none; b=e0P8dHcwIjue8UwPKOYZLIh2MXNo7o9wWdNV4ly+i/g9WtmWJRVV1QKlJwJy2JHUqdM/bphHf+4U+WG3BXj2aO/Hf1bVqMneKttGod1mv9UGwuCxdeQYU32zVVOuc+95QMvlRSXg2gfcUCgbVE9TZNnRgwPqxFYDgL06z9y+TIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802013; c=relaxed/simple;
-	bh=eNOAKkUYvQ7hSg1v4BGMvwQItebbpz0+1vRUyUOadxQ=;
+	s=arc-20240116; t=1718802780; c=relaxed/simple;
+	bh=hIgpPi60w6MmXL3C2oXdF71iTq2m3LqMrJEEibNvw1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMpPp8J4a2y+F9RbgZO82ikmoKMHlf4Q1EZsDM3LNRupnKfY1ARjSeRP7BbGGuV9OHrV/GUfVBt/LqVUxARwMWt9HzuSvG1g9wma+Kd/FOCMKOF/ZL+t9EVgrfKVjw7K9Dbj/qGFoFk1b9+gky2MK5ynhiojRffbrmJZlNawSt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZKySTF9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6EBC32786;
-	Wed, 19 Jun 2024 13:00:12 +0000 (UTC)
+	 MIME-Version; b=PfEYdHglIRMFTvvmIfhQD9+VmPfiF9M4BQZQJN7d5l9dYFv5WRq0Kk0684Bo4VeW/gYQ411zZi5b7FABvdSEDFnQGsNrAQjDMI9p8ByGJYwc6FOZyysVq6ZJVZzhKtTADHx3Q/3JBlHWBG6hHh8caVYx7CHNyiywVvp3Q+INkrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDJA/USg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A115C2BBFC;
+	Wed, 19 Jun 2024 13:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802013;
-	bh=eNOAKkUYvQ7hSg1v4BGMvwQItebbpz0+1vRUyUOadxQ=;
+	s=korg; t=1718802780;
+	bh=hIgpPi60w6MmXL3C2oXdF71iTq2m3LqMrJEEibNvw1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZKySTF9syDmXs/GJatthYWTEBjWkI89Xj9C1uFxS3T77DN0bMNksPkpwmDi82cGpM
-	 wJuI+XBpgo2F/bkztvefT+Lcn1r/RiQZoeQhSAWZOWrep16kwtSTqUNDtssEnXZhg+
-	 GvoLdpsW3IjevA2jl8x4Y+LBbl37l9B97k3IAPZs=
+	b=EDJA/USgPSKFXaweh3a/bOPYol8EcrlHl0S9Y3c+zU27qKpUsU1ceiaQszvIqV9H/
+	 mMpe74vHvEJkN2o32Lhrazc1+yQLSrLqg/0y9n4/qDDdo7UUkxFe/8yVmG0UQ2kf1i
+	 bT/d4e0U2oHTxDH6KAY9gAVDNttcSnZQj5FzVIdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Song Liu <song@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Liad Kaufman <liad.kaufman@intel.com>,
+	Luciano Coelho <luciano.coelho@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/267] bpf: Store ref_ctr_offsets values in bpf_uprobe array
+Subject: [PATCH 6.9 013/281] wifi: iwlwifi: mvm: revert gen2 TX A-MPDU size to 64
 Date: Wed, 19 Jun 2024 14:52:52 +0200
-Message-ID: <20240619125607.170347989@linuxfoundation.org>
+Message-ID: <20240619125610.357090806@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 4930b7f53a298533bc31d7540b6ea8b79a000331 ]
+[ Upstream commit 4a7aace2899711592327463c1a29ffee44fcc66e ]
 
-We will need to return ref_ctr_offsets values through link_info
-interface in following change, so we need to keep them around.
+We don't actually support >64 even for HE devices, so revert
+back to 64. This fixes an issue where the session is refused
+because the queue is configured differently from the actual
+session later.
 
-Storing ref_ctr_offsets values directly into bpf_uprobe array.
-
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/bpf/20231125193130.834322-3-jolsa@kernel.org
-Stable-dep-of: 2884dc7d08d9 ("bpf: Fix a potential use-after-free in bpf_link_free()")
+Fixes: 514c30696fbc ("iwlwifi: add support for IEEE802.11ax")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Liad Kaufman <liad.kaufman@intel.com>
+Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240510170500.52f7b4cf83aa.If47e43adddf7fe250ed7f5571fbb35d8221c7c47@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rs.h | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 1e79084a9d9d2..8edbafe0d4cdf 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -3030,6 +3030,7 @@ struct bpf_uprobe_multi_link;
- struct bpf_uprobe {
- 	struct bpf_uprobe_multi_link *link;
- 	loff_t offset;
-+	unsigned long ref_ctr_offset;
- 	u64 cookie;
- 	struct uprobe_consumer consumer;
- };
-@@ -3169,7 +3170,6 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
- {
- 	struct bpf_uprobe_multi_link *link = NULL;
- 	unsigned long __user *uref_ctr_offsets;
--	unsigned long *ref_ctr_offsets = NULL;
- 	struct bpf_link_primer link_primer;
- 	struct bpf_uprobe *uprobes = NULL;
- 	struct task_struct *task = NULL;
-@@ -3244,18 +3244,12 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
- 	if (!uprobes || !link)
- 		goto error_free;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
+index 376b23b409dca..6cd4ec4d8f344 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs.h
+@@ -122,13 +122,8 @@ enum {
  
--	if (uref_ctr_offsets) {
--		ref_ctr_offsets = kvcalloc(cnt, sizeof(*ref_ctr_offsets), GFP_KERNEL);
--		if (!ref_ctr_offsets)
--			goto error_free;
--	}
--
- 	for (i = 0; i < cnt; i++) {
- 		if (ucookies && __get_user(uprobes[i].cookie, ucookies + i)) {
- 			err = -EFAULT;
- 			goto error_free;
- 		}
--		if (uref_ctr_offsets && __get_user(ref_ctr_offsets[i], uref_ctr_offsets + i)) {
-+		if (uref_ctr_offsets && __get_user(uprobes[i].ref_ctr_offset, uref_ctr_offsets + i)) {
- 			err = -EFAULT;
- 			goto error_free;
- 		}
-@@ -3286,7 +3280,7 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
- 	for (i = 0; i < cnt; i++) {
- 		err = uprobe_register_refctr(d_real_inode(link->path.dentry),
- 					     uprobes[i].offset,
--					     ref_ctr_offsets ? ref_ctr_offsets[i] : 0,
-+					     uprobes[i].ref_ctr_offset,
- 					     &uprobes[i].consumer);
- 		if (err) {
- 			bpf_uprobe_unregister(&path, uprobes, i);
-@@ -3298,11 +3292,9 @@ int bpf_uprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
- 	if (err)
- 		goto error_free;
+ #define LINK_QUAL_AGG_FRAME_LIMIT_DEF	(63)
+ #define LINK_QUAL_AGG_FRAME_LIMIT_MAX	(63)
+-/*
+- * FIXME - various places in firmware API still use u8,
+- * e.g. LQ command and SCD config command.
+- * This should be 256 instead.
+- */
+-#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(255)
+-#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(255)
++#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_DEF	(64)
++#define LINK_QUAL_AGG_FRAME_LIMIT_GEN2_MAX	(64)
+ #define LINK_QUAL_AGG_FRAME_LIMIT_MIN	(0)
  
--	kvfree(ref_ctr_offsets);
- 	return bpf_link_settle(&link_primer);
- 
- error_free:
--	kvfree(ref_ctr_offsets);
- 	kvfree(uprobes);
- 	kfree(link);
- 	if (task)
+ #define LQ_SIZE		2	/* 2 mode tables:  "Active" and "Search" */
 -- 
 2.43.0
 
