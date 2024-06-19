@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC42790EED2
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAAC90EDD4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D929B25EBC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F8E21C22659
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0568C14387E;
-	Wed, 19 Jun 2024 13:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB6514659A;
+	Wed, 19 Jun 2024 13:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guY/hZ5I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsGv7KHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B803F13DDC0;
-	Wed, 19 Jun 2024 13:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8A814375A;
+	Wed, 19 Jun 2024 13:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803938; cv=none; b=k5wJKHxN+FAmVZUTl8JmlveHOZ+1Iv4blpeofP1xbU84baYwWXxmUl2dUYkpXnTFycd5vPiVze39YKunop81dsGDXGQ+/kvVc5NG3bI+hrDmQf63qUCDK2aM/THukZjoAdYA/HtJ0VmO6JiQVvo5512iEjpa+hd23vbk6qiPW1Q=
+	t=1718803353; cv=none; b=pwwhMUJY9ku99OsM95K3Mc3H07lcITePZ3Es8ML3zusOvVXXRCqjep8eF6R6nSPG9P+4qOpb2HuGak8tLuraIYR+PYyS8d4BwDKJvcOHhvGyvo+ojGlNv2GewaGQC4O9Yeu98Fv61DVequtZoHWBpJobxampfim5NUYvBiPhh0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803938; c=relaxed/simple;
-	bh=FBhw3j+L/CIaakoQOgIlBpnIqJTn023Wc4fhY8L6NIw=;
+	s=arc-20240116; t=1718803353; c=relaxed/simple;
+	bh=l/c0aGzW941c/uodfuaysiQrvdZAQ3snSzsVk/ggPoo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQXuNS2d6po6XmgyzLduA61Pi4i2VX0yM42kiaf1IVVEaH/+RmhcwA7ptgHBLJAFU7uNcrbW+I2HhQDnR8rFHTAtiJwsgJyNvoZfTdyDl8wqabxNFe4RNBQ/CncCMtyziik0mAw9Q8YmjWV2xXcaAWmPNkkA+CBbwa0moji4yI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guY/hZ5I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A98C2BBFC;
-	Wed, 19 Jun 2024 13:32:18 +0000 (UTC)
+	 MIME-Version; b=toWEpGuKsv5dLGpMpsH0Oo4zjEEVQnEN4qUG/ucfVP3DGDFqHRSc76d3KEHIhKr4PC0t1AfxJjXZICR6gMFMFLDykcDL9W7M15quf4MqV7gH6ziNxF+EiuSaPVZpDP4DePklyLCVjJJEGMQ57B+RoSBAkY2ITo1LvC8FAX9PwO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsGv7KHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D20C2BBFC;
+	Wed, 19 Jun 2024 13:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803938;
-	bh=FBhw3j+L/CIaakoQOgIlBpnIqJTn023Wc4fhY8L6NIw=;
+	s=korg; t=1718803353;
+	bh=l/c0aGzW941c/uodfuaysiQrvdZAQ3snSzsVk/ggPoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=guY/hZ5IwGcCY3HCjyDTn4RNSz4EwPI6m/c+qqqlBl602Pn+YZ0t2frZmNUwjTbir
-	 EtiviXSTFPXUmZOENnQcZ5PMZg1quEhr9ZVEMKe5GH3GZvFD46FU60VaeT2J5RBvX5
-	 dhKbWRkQd0CVs6iOd+84v759xLOvsDeUn+FU2xSs=
+	b=wsGv7KHjbF7ZANbS+XOHC283R1w60Sde9/sqjicLbGmYLTpszmQcxLuwKyGH5fA/x
+	 r4bFESmw3CufJUgrogO1OatIMxIjEEiJLcSwTcKgz3SpWLyxjVqTmvHa+nRSDyrDGC
+	 ZmD2ZFNxEoe0Ncnw2FWS66FFTI54JwBHkgA/+7sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9bbe2de1bc9d470eb5fe@syzkaller.appspotmail.com,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 154/217] net: bridge: mst: pass vlan group directly to br_mst_vlan_set_state
+	Baoquan He <bhe@redhat.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Dave Young <dyoung@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 238/281] kexec: fix the unexpected kexec_dprintk() macro
 Date: Wed, 19 Jun 2024 14:56:37 +0200
-Message-ID: <20240619125602.632200828@linuxfoundation.org>
+Message-ID: <20240619125619.120088154@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit 36c92936e868601fa1f43da6758cf55805043509 ]
+commit f4af41bf177add167e39e4b0203460b1d0b531f6 upstream.
 
-Pass the already obtained vlan group pointer to br_mst_vlan_set_state()
-instead of dereferencing it again. Each caller has already correctly
-dereferenced it for their context. This change is required for the
-following suspicious RCU dereference fix. No functional changes
-intended.
+Jiri reported that the current kexec_dprintk() always prints out debugging
+message whenever kexec/kdmmp loading is triggered.  That is not wanted.
+The debugging message is supposed to be printed out when 'kexec -s -d' is
+specified for kexec/kdump loading.
 
-Fixes: 3a7c1661ae13 ("net: bridge: mst: fix vlan use-after-free")
-Reported-by: syzbot+9bbe2de1bc9d470eb5fe@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9bbe2de1bc9d470eb5fe
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20240609103654.914987-2-razor@blackwall.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After investigating, the reason is the current kexec_dprintk() takes
+printk(KERN_INFO) or printk(KERN_DEBUG) depending on whether '-d' is
+specified.  However, distros usually have defaulg log level like below:
+
+ [~]# cat /proc/sys/kernel/printk
+ 7       4      1       7
+
+So, even though '-d' is not specified, printk(KERN_DEBUG) also always
+prints out.  I thought printk(KERN_DEBUG) is equal to pr_debug(), it's
+not.
+
+Fix it by changing to use pr_info() instead which are expected to work.
+
+Link: https://lkml.kernel.org/r/20240409042238.1240462-1-bhe@redhat.com
+Fixes: cbc2fe9d9cb2 ("kexec_file: add kexec_file flag to control debug printing")
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Closes: https://lore.kernel.org/all/4c775fca-5def-4a2d-8437-7130b02722a2@kernel.org
+Reviewed-by: Dave Young <dyoung@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_mst.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ include/linux/kexec.h | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
-index 3c66141d34d62..1de72816b0fb2 100644
---- a/net/bridge/br_mst.c
-+++ b/net/bridge/br_mst.c
-@@ -73,11 +73,10 @@ int br_mst_get_state(const struct net_device *dev, u16 msti, u8 *state)
- }
- EXPORT_SYMBOL_GPL(br_mst_get_state);
+diff --git a/include/linux/kexec.h b/include/linux/kexec.h
+index 060835bb82d5..f31bd304df45 100644
+--- a/include/linux/kexec.h
++++ b/include/linux/kexec.h
+@@ -461,10 +461,8 @@ static inline void arch_kexec_pre_free_pages(void *vaddr, unsigned int pages) {
  
--static void br_mst_vlan_set_state(struct net_bridge_port *p, struct net_bridge_vlan *v,
-+static void br_mst_vlan_set_state(struct net_bridge_vlan_group *vg,
-+				  struct net_bridge_vlan *v,
- 				  u8 state)
- {
--	struct net_bridge_vlan_group *vg = nbp_vlan_group(p);
--
- 	if (br_vlan_get_state(v) == state)
- 		return;
+ extern bool kexec_file_dbg_print;
  
-@@ -121,7 +120,7 @@ int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
- 		if (v->brvlan->msti != msti)
- 			continue;
+-#define kexec_dprintk(fmt, ...)					\
+-	printk("%s" fmt,					\
+-	       kexec_file_dbg_print ? KERN_INFO : KERN_DEBUG,	\
+-	       ##__VA_ARGS__)
++#define kexec_dprintk(fmt, arg...) \
++        do { if (kexec_file_dbg_print) pr_info(fmt, ##arg); } while (0)
  
--		br_mst_vlan_set_state(p, v, state);
-+		br_mst_vlan_set_state(vg, v, state);
- 	}
- 
- out:
-@@ -140,13 +139,13 @@ static void br_mst_vlan_sync_state(struct net_bridge_vlan *pv, u16 msti)
- 		 * it.
- 		 */
- 		if (v != pv && v->brvlan->msti == msti) {
--			br_mst_vlan_set_state(pv->port, pv, v->state);
-+			br_mst_vlan_set_state(vg, pv, v->state);
- 			return;
- 		}
- 	}
- 
- 	/* Otherwise, start out in a new MSTI with all ports disabled. */
--	return br_mst_vlan_set_state(pv->port, pv, BR_STATE_DISABLED);
-+	return br_mst_vlan_set_state(vg, pv, BR_STATE_DISABLED);
- }
- 
- int br_mst_vlan_set_msti(struct net_bridge_vlan *mv, u16 msti)
+ #else /* !CONFIG_KEXEC_CORE */
+ struct pt_regs;
 -- 
-2.43.0
+2.45.2
 
 
 
