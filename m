@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A1D90EE97
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FFC390ED92
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B3CE1F211F9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FAE1B248E3
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:19:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4F9147C89;
-	Wed, 19 Jun 2024 13:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044561459F2;
+	Wed, 19 Jun 2024 13:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjZWqLUK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aF0QKu0l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7B51419BA;
-	Wed, 19 Jun 2024 13:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B369282495;
+	Wed, 19 Jun 2024 13:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803796; cv=none; b=e/yyYzWI5iBqoPfJeKO8hfqI0GbdxocAa2GWpWMiJa8VdsMvJWBrbRbqeNJpXot0hH1/bLisNYo2lskXsGqxONcLfXuEvcD/Lslq9KGjdue2+YuqrHrRZm818sr1HqwpUVwXQfQ0R1p6dYiDY7rFTLydJrziN/cpSIjK3hqhglY=
+	t=1718803184; cv=none; b=jJh7bTwTmWT3XOIgZM7tDg3LlwZOT8disgJOkSo7DJQTJ/M8cTYEl63ePSSd3STbVRnIL4k9dZ889JEjq+sogLoYHd6xl6KWX3ns+J9KddesmoZm5LiJ0vQgdQPkkV23Ie4NV/ybtU8mFkQYpsmdS0AFppdaf/dj+K2HiO8pi4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803796; c=relaxed/simple;
-	bh=T9hRnQdr3kZ6ZdFW1TiWLQW/7wzOROkqmgZweF2CPS4=;
+	s=arc-20240116; t=1718803184; c=relaxed/simple;
+	bh=w0S2zNffkKiHQuhmRBeWx5WhaE5m1boOId+kNgqC6Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nHIrGUGGnOnNfprC5FzPJ3lQ9GCH0jwCwS/qDy0x+44M4RG11WF/XjdARXtw39gS8c9qpapkzUtlbhsHdF9jexI12Hotkb1Y3B5S5yL/SGyF4EAdebSUdLSeT9Eh20mHqaH4zdXCsXTPoIbM18GkDm9M8oriRdqmnknFG3I3+sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjZWqLUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712ABC2BBFC;
-	Wed, 19 Jun 2024 13:29:55 +0000 (UTC)
+	 MIME-Version; b=t7nOe4fwldFglJ9n76LY9oR9q2OP1UCxwF6zGIk5kXQ+gmTltC8ygleg4iceGlEbbnCN0vdc8D+sbuCnqql05nQhqG+D+QDciTSZQB5jbo6Y40GXIj0c1cGEDV30l9DpEjAkab+xkvIonnMJRupdB5S39jFVu48Md8B7jPXt290=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aF0QKu0l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303D0C32786;
+	Wed, 19 Jun 2024 13:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803795;
-	bh=T9hRnQdr3kZ6ZdFW1TiWLQW/7wzOROkqmgZweF2CPS4=;
+	s=korg; t=1718803184;
+	bh=w0S2zNffkKiHQuhmRBeWx5WhaE5m1boOId+kNgqC6Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjZWqLUKYRnxqPlbXXsSvQgfWNfZU2vFzUGeMji55MQDKfqax7xqbj6UhFN9gbiox
-	 1xuxH/v38Pv8gcolKEJtPgSVFx4UPdqP5BOGQ+LfapBAQHJPvPpcPHDRrAJPJzKgls
-	 G6V51mpIZ/ivo9WHjMMlREmj7tiAmIl4hPnmXuGo=
+	b=aF0QKu0lUT0utO9sM+9UjGoWO1+Q7jmvHO1xwf9PUksOr/w0ZRYSWIZirPCU+5Udt
+	 HvPqE7NbdAxzjUgZs4Eo7U19wtfwUw914aa5PQ1P+NXPXGAFh7tSV1r0Ei89GKE4ea
+	 YA2oeLZv4Dmm8Sn1lmbTmiMDZVuGtuofOU108TkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/217] serial: sc16is7xx: fix bug in sc16is7xx_set_baud() when using prescaler
-Date: Wed, 19 Jun 2024 14:55:08 +0200
-Message-ID: <20240619125559.193706871@linuxfoundation.org>
+Subject: [PATCH 6.9 150/281] liquidio: Adjust a NULL pointer handling path in lio_vf_rep_copy_packet
+Date: Wed, 19 Jun 2024 14:55:09 +0200
+Message-ID: <20240619125615.612787425@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 8492bd91aa055907c67ef04f2b56f6dadd1f44bf ]
+[ Upstream commit c44711b78608c98a3e6b49ce91678cd0917d5349 ]
 
-When using a high speed clock with a low baud rate, the 4x prescaler is
-automatically selected if required. In that case, sc16is7xx_set_baud()
-properly configures the chip registers, but returns an incorrect baud
-rate by not taking into account the prescaler value. This incorrect baud
-rate is then fed to uart_update_timeout().
+In lio_vf_rep_copy_packet() pg_info->page is compared to a NULL value,
+but then it is unconditionally passed to skb_add_rx_frag() which looks
+strange and could lead to null pointer dereference.
 
-For example, with an input clock of 80MHz, and a selected baud rate of 50,
-sc16is7xx_set_baud() will return 200 instead of 50.
+lio_vf_rep_copy_packet() call trace looks like:
+	octeon_droq_process_packets
+	 octeon_droq_fast_process_packets
+	  octeon_droq_dispatch_pkt
+	   octeon_create_recv_info
+	    ...search in the dispatch_list...
+	     ->disp_fn(rdisp->rinfo, ...)
+	      lio_vf_rep_pkt_recv(struct octeon_recv_info *recv_info, ...)
+In this path there is no code which sets pg_info->page to NULL.
+So this check looks unneeded and doesn't solve potential problem.
+But I guess the author had reason to add a check and I have no such card
+and can't do real test.
+In addition, the code in the function liquidio_push_packet() in
+liquidio/lio_core.c does exactly the same.
 
-Fix this by first changing the prescaler variable to hold the selected
-prescaler value instead of the MCR bitfield. Then properly take into
-account the selected prescaler value in the return value computation.
+Based on this, I consider the most acceptable compromise solution to
+adjust this issue by moving skb_add_rx_frag() into conditional scope.
 
-Also add better documentation about the divisor value computation.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20240430200431.4102923-1-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1f233f327913 ("liquidio: switchdev support for LiquidIO NIC")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 08da7cc221d0e..a723df9b37dd9 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -482,16 +482,28 @@ static bool sc16is7xx_regmap_noinc(struct device *dev, unsigned int reg)
- 	return reg == SC16IS7XX_RHR_REG;
- }
- 
-+/*
-+ * Configure programmable baud rate generator (divisor) according to the
-+ * desired baud rate.
-+ *
-+ * From the datasheet, the divisor is computed according to:
-+ *
-+ *              XTAL1 input frequency
-+ *             -----------------------
-+ *                    prescaler
-+ * divisor = ---------------------------
-+ *            baud-rate x sampling-rate
-+ */
- static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- {
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
- 	u8 lcr;
--	u8 prescaler = 0;
-+	unsigned int prescaler = 1;
- 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
- 
- 	if (div >= BIT(16)) {
--		prescaler = SC16IS7XX_MCR_CLKSEL_BIT;
--		div /= 4;
-+		prescaler = 4;
-+		div /= prescaler;
- 	}
- 
- 	/* In an amazing feat of design, the Enhanced Features Register shares
-@@ -528,9 +540,10 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 
- 	mutex_unlock(&one->efr_lock);
- 
-+	/* If bit MCR_CLKSEL is set, the divide by 4 prescaler is activated. */
- 	sc16is7xx_port_update(port, SC16IS7XX_MCR_REG,
- 			      SC16IS7XX_MCR_CLKSEL_BIT,
--			      prescaler);
-+			      prescaler == 1 ? 0 : SC16IS7XX_MCR_CLKSEL_BIT);
- 
- 	/* Open the LCR divisors for configuration */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
-@@ -545,7 +558,7 @@ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- 	/* Put LCR back to the normal mode */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
- 
--	return DIV_ROUND_CLOSEST(clk / 16, div);
-+	return DIV_ROUND_CLOSEST((clk / prescaler) / 16, div);
- }
- 
- static void sc16is7xx_handle_rx(struct uart_port *port, unsigned int rxlen,
+diff --git a/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c b/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
+index aa6c0dfb6f1ca..e26b4ed33dc83 100644
+--- a/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
++++ b/drivers/net/ethernet/cavium/liquidio/lio_vf_rep.c
+@@ -272,13 +272,12 @@ lio_vf_rep_copy_packet(struct octeon_device *oct,
+ 				pg_info->page_offset;
+ 			memcpy(skb->data, va, MIN_SKB_SIZE);
+ 			skb_put(skb, MIN_SKB_SIZE);
++			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
++					pg_info->page,
++					pg_info->page_offset + MIN_SKB_SIZE,
++					len - MIN_SKB_SIZE,
++					LIO_RXBUFFER_SZ);
+ 		}
+-
+-		skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+-				pg_info->page,
+-				pg_info->page_offset + MIN_SKB_SIZE,
+-				len - MIN_SKB_SIZE,
+-				LIO_RXBUFFER_SZ);
+ 	} else {
+ 		struct octeon_skb_page_info *pg_info =
+ 			((struct octeon_skb_page_info *)(skb->cb));
 -- 
 2.43.0
 
