@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-53963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9186390EC13
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 251A290EC18
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B1A428753D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D07A91F25813
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFDB14E2C9;
-	Wed, 19 Jun 2024 13:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836A7143C4A;
+	Wed, 19 Jun 2024 13:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQno8KaP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUGg5VLQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAEB14D6FF;
-	Wed, 19 Jun 2024 13:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4058382871;
+	Wed, 19 Jun 2024 13:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802190; cv=none; b=W/7Q+oY2czBacG5EbovEge7QWGZrrGdj3eaNVL49AUE+G2ZGwldzw17a88BEMbno0OQXhqbTeMQpv0kHAuRI+Qp5s8PZIhyHLPt1ap6lVS/zXDJLBf6VCSZbu0L1uFIYWHYByUZe2UKRV5CAJI3ToJ80NOOgWG9COPQVPFunis8=
+	t=1718802205; cv=none; b=KL4IJiPyfj86b6MRyYvxjJV5q55RfCEpXhMFU2cL0vbmPo0FK3zjbDjW9WiduIHK0q+ObVY/ZTAiYIzeR0lCtub4o/Ign03GlZW++X426lsV2/6BE6yhgDtmw51sDn7t5mG2GbmeiqfVY1Dzs1wq226/tVCMpSD5a/y3w4/agag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802190; c=relaxed/simple;
-	bh=0Iy5QIXpapFQblTvygagHYZt+Rpgr72YVw6EDx1OA7c=;
+	s=arc-20240116; t=1718802205; c=relaxed/simple;
+	bh=JJPP7MJgZbH+njx/bAV38YV4Fxeflfm2h+OqEIicuZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MpW0Wv7/G58c87qw13CT3jpcfZ2pdUiMB2cMcx8l6V0tq+xVw61Gc/YnONJCQyweYRhFm17W7hZ23fCAzBVSk+y2xH9wHDFKNnlvzcvwKNkmtzQyw/RdRrPYLaVazn7GHxJcUnpQK5+2m5BfsVjECEOYsX8M+ObTmIBCU6fFeDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQno8KaP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10546C2BBFC;
-	Wed, 19 Jun 2024 13:03:09 +0000 (UTC)
+	 MIME-Version; b=jauW9ovWhjlgI4GuKV2E66LSjYHv8AndnN30L1SmNJkksoi3YzVP+Hrx7hJbU9ttj1SOIRmAWHK7rKWILAof4DGKC4F3/ks/TJ3GYIzqdpC6GE2uUhb3rIqhTs4jDjdDtgOSRD4uV0v/9JbeyUsUgoNhd83x1EoJl6/zpOVrhj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUGg5VLQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A1BC2BBFC;
+	Wed, 19 Jun 2024 13:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802190;
-	bh=0Iy5QIXpapFQblTvygagHYZt+Rpgr72YVw6EDx1OA7c=;
+	s=korg; t=1718802205;
+	bh=JJPP7MJgZbH+njx/bAV38YV4Fxeflfm2h+OqEIicuZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQno8KaPHr8vN+w65tq+Q7ff+GoQm3I82mvwP+tzaXH9kfy0fqN2s5ofsrumKCOIN
-	 GGRLsdzVbWNLsik5FX01JxDmDdpKPcYDE0yteQJB43gOrZ+pVEHGzixi3vESer2EhO
-	 zNi7MWrLyDE5alciZnHuSG91xr4KI67F7RbgKXlc=
+	b=FUGg5VLQ1TBE/4smlf1xdx56dXR2xkisZsDd9ftTq3UWQnP5GftVdRt1nWDWpnZhu
+	 Ki8DmsDYvsfLQyFxS1ojus2qo94reuoL3Uyf/VRbuoXrTugePGIVO+/RXVBL9VmmXo
+	 ml2iqcdEgzF5PBo3yoaAuFVz5zyRtJZXRMSA3v14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadym Krevs <vkrevs@yahoo.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 085/267] tty: n_tty: Fix buffer offsets when lookahead is used
-Date: Wed, 19 Jun 2024 14:53:56 +0200
-Message-ID: <20240619125609.613317546@linuxfoundation.org>
+	Tony Lindgren <tony.lindgren@linux.intel.com>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 6.6 086/267] serial: port: Dont block system suspend even if bytes are left to xmit
+Date: Wed, 19 Jun 2024 14:53:57 +0200
+Message-ID: <20240619125609.651361774@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
 References: <20240619125606.345939659@linuxfoundation.org>
@@ -59,72 +59,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit b19ab7ee2c4c1ec5f27c18413c3ab63907f7d55c upstream.
+commit ca84cd379b45e9b1775b9e026f069a3a886b409d upstream.
 
-When lookahead has "consumed" some characters (la_count > 0),
-n_tty_receive_buf_standard() and n_tty_receive_buf_closing() for
-characters beyond the la_count are given wrong cp/fp offsets which
-leads to duplicating and losing some characters.
+Recently, suspend testing on sc7180-trogdor based devices has started
+to sometimes fail with messages like this:
 
-If la_count > 0, correct buffer pointers and make count consistent too
-(the latter is not strictly necessary to fix the issue but seems more
-logical to adjust all variables immediately to keep state consistent).
+  port a88000.serial:0.0: PM: calling pm_runtime_force_suspend+0x0/0xf8 @ 28934, parent: a88000.serial:0
+  port a88000.serial:0.0: PM: dpm_run_callback(): pm_runtime_force_suspend+0x0/0xf8 returns -16
+  port a88000.serial:0.0: PM: pm_runtime_force_suspend+0x0/0xf8 returned -16 after 33 usecs
+  port a88000.serial:0.0: PM: failed to suspend: error -16
 
-Reported-by: Vadym Krevs <vkrevs@yahoo.com>
-Fixes: 6bb6fa6908eb ("tty: Implement lookahead to process XON/XOFF timely")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218834
-Tested-by: Vadym Krevs <vkrevs@yahoo.com>
+I could reproduce these problems by logging in via an agetty on the
+debug serial port (which was _not_ used for kernel console) and
+running:
+  cat /var/log/messages
+...and then (via an SSH session) forcing a few suspend/resume cycles.
+
+Tracing through the code and doing some printf()-based debugging shows
+that the -16 (-EBUSY) comes from the recently added
+serial_port_runtime_suspend().
+
+The idea of the serial_port_runtime_suspend() function is to prevent
+the port from being _runtime_ suspended if it still has bytes left to
+transmit. Having bytes left to transmit isn't a reason to block
+_system_ suspend, though. If a serdev device in the kernel needs to
+block system suspend it should block its own suspend and it can use
+serdev_device_wait_until_sent() to ensure bytes are sent.
+
+The DEFINE_RUNTIME_DEV_PM_OPS() used by the serial_port code means
+that the system suspend function will be pm_runtime_force_suspend().
+In pm_runtime_force_suspend() we can see that before calling the
+runtime suspend function we'll call pm_runtime_disable(). This should
+be a reliable way to detect that we're called from system suspend and
+that we shouldn't look for busyness.
+
+Fixes: 43066e32227e ("serial: port: Don't suspend if the port is still busy")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240514140429.12087-1-ilpo.jarvinen@linux.intel.com
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240531080914.v3.1.I2395e66cf70c6e67d774c56943825c289b9c13e4@changeid
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/n_tty.c |   22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/tty/serial/serial_port.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/tty/n_tty.c
-+++ b/drivers/tty/n_tty.c
-@@ -1624,15 +1624,25 @@ static void __receive_buf(struct tty_str
- 	else if (ldata->raw || (L_EXTPROC(tty) && !preops))
- 		n_tty_receive_buf_raw(tty, cp, fp, count);
- 	else if (tty->closing && !L_EXTPROC(tty)) {
--		if (la_count > 0)
-+		if (la_count > 0) {
- 			n_tty_receive_buf_closing(tty, cp, fp, la_count, true);
--		if (count > la_count)
--			n_tty_receive_buf_closing(tty, cp, fp, count - la_count, false);
-+			cp += la_count;
-+			if (fp)
-+				fp += la_count;
-+			count -= la_count;
-+		}
-+		if (count > 0)
-+			n_tty_receive_buf_closing(tty, cp, fp, count, false);
- 	} else {
--		if (la_count > 0)
-+		if (la_count > 0) {
- 			n_tty_receive_buf_standard(tty, cp, fp, la_count, true);
--		if (count > la_count)
--			n_tty_receive_buf_standard(tty, cp, fp, count - la_count, false);
-+			cp += la_count;
-+			if (fp)
-+				fp += la_count;
-+			count -= la_count;
-+		}
-+		if (count > 0)
-+			n_tty_receive_buf_standard(tty, cp, fp, count, false);
+--- a/drivers/tty/serial/serial_port.c
++++ b/drivers/tty/serial/serial_port.c
+@@ -60,6 +60,13 @@ static int serial_port_runtime_suspend(s
+ 	if (port->flags & UPF_DEAD)
+ 		return 0;
  
- 		flush_echoes(tty);
- 		if (tty->ops->flush_chars)
++	/*
++	 * Nothing to do on pm_runtime_force_suspend(), see
++	 * DEFINE_RUNTIME_DEV_PM_OPS.
++	 */
++	if (!pm_runtime_enabled(dev))
++		return 0;
++
+ 	uart_port_lock_irqsave(port, &flags);
+ 	if (!port_dev->tx_enabled) {
+ 		uart_port_unlock_irqrestore(port, flags);
 
 
 
