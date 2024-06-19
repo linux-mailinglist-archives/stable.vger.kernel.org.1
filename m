@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-54534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E443790EEAF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:31:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC3090EC69
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ED8A1F2141D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:31:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDF3E1F217EB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E943F13F428;
-	Wed, 19 Jun 2024 13:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA65312FB31;
+	Wed, 19 Jun 2024 13:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iY5kxYk3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jv/bKfDe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77C71E492;
-	Wed, 19 Jun 2024 13:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F9613D525;
+	Wed, 19 Jun 2024 13:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803863; cv=none; b=YLpgNsIBo7WKSOeE1xUSNAMMjdyQoeBI5ur52pmYrB10yx7qmfgM2fukCM81CdQ7xp6hKHo6M6DjW9+8kIHvjf+6+SZ/6UA6rAo00BbflIA/euVtkps+/oNAe+mkGWK33fcPdyenYhZFZynj7Ovv11Nym0M9OI2ylXFaK2jZN48=
+	t=1718802432; cv=none; b=qh+HOaXqa4V/8Fqq3yyTl+kybqlJ4oKjuMWx+6c/bPNvnYUN83YHsElE0nzxAgOlplM5xycetgtTiKzGT+c2TvIpTuK7QT1l4zD1Lsx2GQViOzUUVCJwy7Ac2fTX0MUGNhnfRGV+bx13P3rvdGjG3yUl3wr+rz5lZ9k3u16BSII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803863; c=relaxed/simple;
-	bh=Yx3t+EIbEecQb8w7dRn5fAgZLHxkADkDI8zdeiBo+uU=;
+	s=arc-20240116; t=1718802432; c=relaxed/simple;
+	bh=ZsjqtGCcUWl6iCJxE/UY+MG/EwnDyCbZiDupIwdjOxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AT3e6q0YTIVd7SrFhk4hPxObVddolwRDYqn5Hho6akkuRT0MZSo50HaBrS5Ffg5bKGjtNS0yquvZ1Kr/HqrX44YMLccX3h1fee7ozc8SAqQxZ09utN5+IXADZvO/1mWqB7S+34JrSEKZUnjOrlLyuhROLBh3/oXc9WH05W2Cx6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iY5kxYk3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B54EC2BBFC;
-	Wed, 19 Jun 2024 13:31:02 +0000 (UTC)
+	 MIME-Version; b=Yd9ddUxHQomyLEsKypso7Z+Q5O2rFSueZQWKemskljyQKQu1pBEjRP4ziBMFu0VgFIc0cqtt3olLjpoKiEgXz/ZZmN+/ioK3J4nRYeHqY5dMp9R7XJoZnIj8gXmQin1KjAJnMXqNyJbS4ZtKVqS8876CVUqbGKBQkF0DyQpfrJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jv/bKfDe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC65C32786;
+	Wed, 19 Jun 2024 13:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803863;
-	bh=Yx3t+EIbEecQb8w7dRn5fAgZLHxkADkDI8zdeiBo+uU=;
+	s=korg; t=1718802432;
+	bh=ZsjqtGCcUWl6iCJxE/UY+MG/EwnDyCbZiDupIwdjOxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iY5kxYk36o2CEsuAlQCsXpU1UPVOgYIB1HcORBEvrXe4jhTqtLDvxTxMQCJzb8W1N
-	 axnUhDdy6gWGgiwNmfEASBwRmZGaX+nwMI1sowffAUduGjTtenSws4RajYLPlVj1DF
-	 UN28jF3TjS9DRDrbLYMMcmdrUXCbeBZBS71u+9DU=
+	b=Jv/bKfDe0Oetu+58N0fFbGkgkLe4f2IGKOseMM8A05QCrsIi+lXOIbQcTyUT8kRT3
+	 U0NkAuTRgJZC4V6VcgzBzW0tBLWsn916G8PAkonNChqsxaA1D9EAWAB6DYm82LznxB
+	 BXH5AinLhKupcDSgnAbZLDWS7vU7G2Fz1BlU711M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kewen Lin <linkw@gcc.gnu.org>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.1 102/217] powerpc/uaccess: Fix build errors seen with GCC 13/14
-Date: Wed, 19 Jun 2024 14:55:45 +0200
-Message-ID: <20240619125600.626001537@linuxfoundation.org>
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.6 195/267] tracing/selftests: Fix kprobe event name test for .isra. functions
+Date: Wed, 19 Jun 2024 14:55:46 +0200
+Message-ID: <20240619125613.819755521@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 2d43cc701b96f910f50915ac4c2a0cae5deb734c upstream.
+commit 23a4b108accc29a6125ed14de4a044689ffeda78 upstream.
 
-Building ppc64le_defconfig with GCC 14 fails with assembler errors:
+The kprobe_eventname.tc test checks if a function with .isra. can have a
+kprobe attached to it. It loops through the kallsyms file for all the
+functions that have the .isra. name, and checks if it exists in the
+available_filter_functions file, and if it does, it uses it to attach a
+kprobe to it.
 
-    CC      fs/readdir.o
-  /tmp/ccdQn0mD.s: Assembler messages:
-  /tmp/ccdQn0mD.s:212: Error: operand out of domain (18 is not a multiple of 4)
-  /tmp/ccdQn0mD.s:226: Error: operand out of domain (18 is not a multiple of 4)
-  ... [6 lines]
-  /tmp/ccdQn0mD.s:1699: Error: operand out of domain (18 is not a multiple of 4)
+The issue is that kprobes can not attach to functions that are listed more
+than once in available_filter_functions. With the latest kernel, the
+function that is found is: rapl_event_update.isra.0
 
-A snippet of the asm shows:
+  # grep rapl_event_update.isra.0 /sys/kernel/tracing/available_filter_functions
+  rapl_event_update.isra.0
+  rapl_event_update.isra.0
 
-  # ../fs/readdir.c:210:         unsafe_copy_dirent_name(dirent->d_name, name, namlen, efault_end);
-         ld 9,0(29)       # MEM[(u64 *)name_38(D) + _88 * 1], MEM[(u64 *)name_38(D) + _88 * 1]
-  # 210 "../fs/readdir.c" 1
-         1:      std 9,18(8)     # put_user       # *__pus_addr_52, MEM[(u64 *)name_38(D) + _88 * 1]
+It is listed twice. This causes the attached kprobe to it to fail which in
+turn fails the test. Instead of just picking the function function that is
+found in available_filter_functions, pick the first one that is listed
+only once in available_filter_functions.
 
-The 'std' instruction requires a 4-byte aligned displacement because
-it is a DS-form instruction, and as the assembler says, 18 is not a
-multiple of 4.
-
-A similar error is seen with GCC 13 and CONFIG_UBSAN_SIGNED_WRAP=y.
-
-The fix is to change the constraint on the memory operand to put_user(),
-from "m" which is a general memory reference to "YZ".
-
-The "Z" constraint is documented in the GCC manual PowerPC machine
-constraints, and specifies a "memory operand accessed with indexed or
-indirect addressing". "Y" is not documented in the manual but specifies
-a "memory operand for a DS-form instruction". Using both allows the
-compiler to generate a DS-form "std" or X-form "stdx" as appropriate.
-
-The change has to be conditional on CONFIG_PPC_KERNEL_PREFIXED because
-the "Y" constraint does not guarantee 4-byte alignment when prefixed
-instructions are enabled.
-
-Unfortunately clang doesn't support the "Y" constraint so that has to be
-behind an ifdef.
-
-Although the build error is only seen with GCC 13/14, that appears
-to just be luck. The constraint has been incorrect since it was first
-added.
-
-Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
-Cc: stable@vger.kernel.org # v5.10+
-Suggested-by: Kewen Lin <linkw@gcc.gnu.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240529123029.146953-1-mpe@ellerman.id.au
+Cc: stable@vger.kernel.org
+Fixes: 604e3548236d ("selftests/ftrace: Select an existing function in kprobe_eventname test")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/uaccess.h |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -80,9 +80,20 @@ __pu_failed:							\
- 		:						\
- 		: label)
+--- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
++++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_eventname.tc
+@@ -30,7 +30,8 @@ find_dot_func() {
+ 	fi
  
-+#ifdef CONFIG_CC_IS_CLANG
-+#define DS_FORM_CONSTRAINT "Z<>"
-+#else
-+#define DS_FORM_CONSTRAINT "YZ<>"
-+#endif
-+
- #ifdef __powerpc64__
--#define __put_user_asm2_goto(x, ptr, label)			\
--	__put_user_asm_goto(x, ptr, label, "std")
-+#define __put_user_asm2_goto(x, addr, label)			\
-+	asm goto ("1: std%U1%X1 %0,%1	# put_user\n"		\
-+		EX_TABLE(1b, %l2)				\
-+		:						\
-+		: "r" (x), DS_FORM_CONSTRAINT (*addr)		\
-+		:						\
-+		: label)
- #else /* __powerpc64__ */
- #define __put_user_asm2_goto(x, addr, label)			\
- 	asm goto(					\
+ 	grep " [tT] .*\.isra\..*" /proc/kallsyms | cut -f 3 -d " " | while read f; do
+-		if grep -s $f available_filter_functions; then
++		cnt=`grep -s $f available_filter_functions | wc -l`;
++		if [ $cnt -eq 1 ]; then
+ 			echo $f
+ 			break
+ 		fi
 
 
 
