@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C04690EC7D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2611F90EEA4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27E711F20FA4
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2C5C1F2132C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF15A143C4E;
-	Wed, 19 Jun 2024 13:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592F51422B8;
+	Wed, 19 Jun 2024 13:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pglsfNfV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/cv/Z8z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF0012FB31;
-	Wed, 19 Jun 2024 13:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BFF3C0B;
+	Wed, 19 Jun 2024 13:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802485; cv=none; b=el58xfJcw9UvNTdNOaXnkB9WHDRYwQ490YvfhBlII1LnV4k+6RgrLelrwuMrE3Nw3vyM3SRAyCxJmemXoKuaw/IwQA3IkaRkR7kM3ZV0O+Z2GqyzEKrdGlP8FlROJht06bOphY2fdCf1f0oivQy2LfC222VSHT1XRHrMJmWcFGc=
+	t=1718803837; cv=none; b=mwynn4j4d+VLhzRp0HsXVG1aiQUxtMwzJxzmpW3JWN4aEg/O7/evFZYy4uyKNTKcGYH1EDj2QNTB2EV5bE8X8fq6C4Oan3yuN2ubldVTfgqL+96VL+iG8zE54jfyxdhSnuxknlusxU0vXiIYgE4o5rZXDYx0cBDQUtrBSpC9OLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802485; c=relaxed/simple;
-	bh=HrbOhwwLFuDo4d64/PpJDDP+fiEJg6dGtUZDEBuWl70=;
+	s=arc-20240116; t=1718803837; c=relaxed/simple;
+	bh=noXEukVCxN2BJIzq8A3kaF1KAlLMkEVo2JVglrNIcgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGEgptjv4X7X81dmuV3BfQJet9xpddAi8vajMUTvdNmEJLp0wLx6vJkWOKPFTPPcfd87ChfqZlu3DFrUzciqHOhh0Tmpy0vJwMFZfju7iGEv9Sjn29HPdGXTvUNbBSXIVTSdNhmAucvuTOOUJKxwt6oz5i6TC0WL1ESis7MvI70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pglsfNfV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D16C2BBFC;
-	Wed, 19 Jun 2024 13:08:04 +0000 (UTC)
+	 MIME-Version; b=opmdmQUMpRwiffgiYgjJXzDX8mJXzYhKcxj5KymtaJ9A9WNoDVL8yUKEfIDofwGq3B8bi5O/NHFZjwI3aesmw9SgAuxyQdi15e6tMOsaT8L+a+ZoeYdpQmiozLTapX7Y6su6gW9Kpoq/NlxTLAl90f7DlHkKNpEpee/2snjbQ9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/cv/Z8z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAF5C2BBFC;
+	Wed, 19 Jun 2024 13:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802485;
-	bh=HrbOhwwLFuDo4d64/PpJDDP+fiEJg6dGtUZDEBuWl70=;
+	s=korg; t=1718803837;
+	bh=noXEukVCxN2BJIzq8A3kaF1KAlLMkEVo2JVglrNIcgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pglsfNfV9teaVLl33Xmuomv1CB2OfSDYKMMEc7MDoifhRUqGmoOFNyAry99W/MhY6
-	 VtbZviXZmfkjo2C9N4M6beyBWNuKec68kl4Z2a5twMUCfaaH5KaIliUn2jLjiwrW2U
-	 uu/a9ejjnlpS9E6kj5RcYENgsHBsipPL9G3ZMqj8=
+	b=d/cv/Z8zPppbDy8sa4Kqq7DqIhC5L7W97EQ6xXGno+idIwdJqu1Au/8HXq0maG0Li
+	 O5H62RrGLGcBOQW7jfvxhVSh9zm+SZqHQK1NX/GqJq8+r76+mq5tklDORglTC6CcIH
+	 lzfxo7HZGCKVpHnrImHuTKh2GXCAlInQP0xyhXTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 212/267] riscv: rewrite __kernel_map_pages() to fix sleeping in invalid context
+	Olga Kornievskaia <kolga@netapp.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 120/217] NFSv4.1 enforce rootpath check in fs_location query
 Date: Wed, 19 Jun 2024 14:56:03 +0200
-Message-ID: <20240619125614.463781144@linuxfoundation.org>
+Message-ID: <20240619125601.320394777@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-commit fb1cf0878328fe75d47f0aed0a65b30126fcefc4 upstream.
+[ Upstream commit 28568c906c1bb5f7560e18082ed7d6295860f1c2 ]
 
-__kernel_map_pages() is a debug function which clears the valid bit in page
-table entry for deallocated pages to detect illegal memory accesses to
-freed pages.
+In commit 4ca9f31a2be66 ("NFSv4.1 test and add 4.1 trunking transport"),
+we introduce the ability to query the NFS server for possible trunking
+locations of the existing filesystem. However, we never checked the
+returned file system path for these alternative locations. According
+to the RFC, the server can say that the filesystem currently known
+under "fs_root" of fs_location also resides under these server
+locations under the following "rootpath" pathname. The client cannot
+handle trunking a filesystem that reside under different location
+under different paths other than what the main path is. This patch
+enforces the check that fs_root path and rootpath path in fs_location
+reply is the same.
 
-This function set/clear the valid bit using __set_memory(). __set_memory()
-acquires init_mm's semaphore, and this operation may sleep. This is
-problematic, because  __kernel_map_pages() can be called in atomic context,
-and thus is illegal to sleep. An example warning that this causes:
-
-BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1578
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2, name: kthreadd
-preempt_count: 2, expected: 0
-CPU: 0 PID: 2 Comm: kthreadd Not tainted 6.9.0-g1d4c6d784ef6 #37
-Hardware name: riscv-virtio,qemu (DT)
-Call Trace:
-[<ffffffff800060dc>] dump_backtrace+0x1c/0x24
-[<ffffffff8091ef6e>] show_stack+0x2c/0x38
-[<ffffffff8092baf8>] dump_stack_lvl+0x5a/0x72
-[<ffffffff8092bb24>] dump_stack+0x14/0x1c
-[<ffffffff8003b7ac>] __might_resched+0x104/0x10e
-[<ffffffff8003b7f4>] __might_sleep+0x3e/0x62
-[<ffffffff8093276a>] down_write+0x20/0x72
-[<ffffffff8000cf00>] __set_memory+0x82/0x2fa
-[<ffffffff8000d324>] __kernel_map_pages+0x5a/0xd4
-[<ffffffff80196cca>] __alloc_pages_bulk+0x3b2/0x43a
-[<ffffffff8018ee82>] __vmalloc_node_range+0x196/0x6ba
-[<ffffffff80011904>] copy_process+0x72c/0x17ec
-[<ffffffff80012ab4>] kernel_clone+0x60/0x2fe
-[<ffffffff80012f62>] kernel_thread+0x82/0xa0
-[<ffffffff8003552c>] kthreadd+0x14a/0x1be
-[<ffffffff809357de>] ret_from_fork+0xe/0x1c
-
-Rewrite this function with apply_to_existing_page_range(). It is fine to
-not have any locking, because __kernel_map_pages() works with pages being
-allocated/deallocated and those pages are not changed by anyone else in the
-meantime.
-
-Fixes: 5fde3db5eb02 ("riscv: add ARCH_SUPPORTS_DEBUG_PAGEALLOC support")
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/1289ecba9606a19917bc12b6c27da8aa23e1e5ae.1715750938.git.namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4ca9f31a2be6 ("NFSv4.1 test and add 4.1 trunking transport")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/pageattr.c |   28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ fs/nfs/nfs4proc.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -387,17 +387,33 @@ int set_direct_map_default_noflush(struc
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index bda3050817c90..ec641a8f6604b 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -4009,6 +4009,23 @@ static void test_fs_location_for_trunking(struct nfs4_fs_location *location,
+ 	}
  }
  
- #ifdef CONFIG_DEBUG_PAGEALLOC
-+static int debug_pagealloc_set_page(pte_t *pte, unsigned long addr, void *data)
++static bool _is_same_nfs4_pathname(struct nfs4_pathname *path1,
++				   struct nfs4_pathname *path2)
 +{
-+	int enable = *(int *)data;
++	int i;
 +
-+	unsigned long val = pte_val(ptep_get(pte));
-+
-+	if (enable)
-+		val |= _PAGE_PRESENT;
-+	else
-+		val &= ~_PAGE_PRESENT;
-+
-+	set_pte(pte, __pte(val));
-+
-+	return 0;
++	if (path1->ncomponents != path2->ncomponents)
++		return false;
++	for (i = 0; i < path1->ncomponents; i++) {
++		if (path1->components[i].len != path2->components[i].len)
++			return false;
++		if (memcmp(path1->components[i].data, path2->components[i].data,
++				path1->components[i].len))
++			return false;
++	}
++	return true;
 +}
 +
- void __kernel_map_pages(struct page *page, int numpages, int enable)
+ static int _nfs4_discover_trunking(struct nfs_server *server,
+ 				   struct nfs_fh *fhandle)
  {
- 	if (!debug_pagealloc_enabled())
- 		return;
+@@ -4042,9 +4059,13 @@ static int _nfs4_discover_trunking(struct nfs_server *server,
+ 	if (status)
+ 		goto out_free_3;
  
--	if (enable)
--		__set_memory((unsigned long)page_address(page), numpages,
--			     __pgprot(_PAGE_PRESENT), __pgprot(0));
--	else
--		__set_memory((unsigned long)page_address(page), numpages,
--			     __pgprot(0), __pgprot(_PAGE_PRESENT));
-+	unsigned long start = (unsigned long)page_address(page);
-+	unsigned long size = PAGE_SIZE * numpages;
-+
-+	apply_to_existing_page_range(&init_mm, start, size, debug_pagealloc_set_page, &enable);
-+
-+	flush_tlb_kernel_range(start, start + size);
- }
- #endif
- 
+-	for (i = 0; i < locations->nlocations; i++)
++	for (i = 0; i < locations->nlocations; i++) {
++		if (!_is_same_nfs4_pathname(&locations->fs_path,
++					&locations->locations[i].rootpath))
++			continue;
+ 		test_fs_location_for_trunking(&locations->locations[i], clp,
+ 					      server);
++	}
+ out_free_3:
+ 	kfree(locations->fattr);
+ out_free_2:
+-- 
+2.43.0
+
 
 
 
