@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-54084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726A290EC9A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3824990EDC4
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1099628533B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46BC01C20AF7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B9714A4C8;
-	Wed, 19 Jun 2024 13:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B6C14884F;
+	Wed, 19 Jun 2024 13:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGE0wogK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZqCCJje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45291442F1;
-	Wed, 19 Jun 2024 13:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2437D1459F2;
+	Wed, 19 Jun 2024 13:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802541; cv=none; b=uBsvA0PdVVvaxvHXLXEINTJHhOYLOVkMdqhYzPYLcjBrUQrCfFclkH+cifd3UYelEctumNeNzRUpIRxaJiCDaY0X6z5Ao09Qw3co+bKItjN+F3NV8efyLl9Tz91FDm9q92bRdGrt5OECPv8ZrQ+6bmGDhqhc72qfI6Te1UhuUzA=
+	t=1718803308; cv=none; b=qYJekahE339CWKmlZxz965hwSpXiQIkoFYVikUkkQlBtLSiKoBfFdLDLFyD6tCa42q/E63tbSVW4NDoCE6vpuwwspcQnx0V5pLA1fYfaF7r3N1nXF0mgsTOKSDc48mJPMnrY6zRFYKIY6MRo9izQdQKL6zmNJG/NmyJbmLjRu1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802541; c=relaxed/simple;
-	bh=b+tBdHVMoCRTjSldnw0N0JUddTvynjYAFxce9CcgIiA=;
+	s=arc-20240116; t=1718803308; c=relaxed/simple;
+	bh=TcB3JEw8ld6WiI5xC0wzW3QISw5Kp9SuYKqhl/Ag7tU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+FBWv1vyp+OZ/ZkR4VwlH/ZswtmLHXixW4HzR5cE13yTlUrXgwxSmqaaAZ0EuGnyZ02CKdQVPFwuPQ9ywN7CINZAkLi1mFVuQYDTByeS3MnHM2vnLHbSOEXxsRbII6UBKnHVhfdj+1hC5W0bUle9K47ghj49g7s88XFW5nphS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGE0wogK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58D0C2BBFC;
-	Wed, 19 Jun 2024 13:09:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d0x/Qzh9VTI5+TQ/cERl3Y7nRO1tLjsZoOx6sMHVlBH7wELDtqdwYdVBLOnDi4g77XgUwFDaOv4n7e9RW9Z4SIWQvbXN4VByZE5hX4HMgO9ZnX/dfGcZIkZ3vl0ma99nTihpqlUw8KXoVA2TugSFzEte11hcbY01rtzWhq9SSf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZqCCJje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 939ADC2BBFC;
+	Wed, 19 Jun 2024 13:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802541;
-	bh=b+tBdHVMoCRTjSldnw0N0JUddTvynjYAFxce9CcgIiA=;
+	s=korg; t=1718803308;
+	bh=TcB3JEw8ld6WiI5xC0wzW3QISw5Kp9SuYKqhl/Ag7tU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sGE0wogK/py2C1LkT0TY0dSJjuJa6pYGyGa+5ARJzllJ5w4wB7dCV4MU52pYmZmJT
-	 KJGjcAvLhw5TLy1jD+OqXBte6Az9yW03KHkFxY3BeZ97kPUGbX2nYIS+3YB07yC46S
-	 DJlaV/meYJByzgRRlS8xXSsBxLJRhhAy8zlHi6+s=
+	b=tZqCCJjeZrOIJFJlR7F1GZWaoSaaOp4u9Q+W7LNUGVkqy42H9i0Tnh02niU6KwmUb
+	 fH2kf7O181TpaCu6d8D6jv2iFGEmdUd0BDOTXPpBMt7ajWd4t/hh/VfqICGsrMxVw+
+	 jyWiIjDz14alHK+aX2ZasOkm1gIxeraV3Y6EyacQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-xfs@vger.kernel.org,
-	Dave Chinner <dchinner@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>
-Subject: [PATCH 6.6 232/267] xfs: fix SEEK_HOLE/DATA for regions with active COW extents
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Nam Cao <namcao@linutronix.de>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.9 224/281] riscv: fix overlap of allocated page and PTR_ERR
 Date: Wed, 19 Jun 2024 14:56:23 +0200
-Message-ID: <20240619125615.229835689@linuxfoundation.org>
+Message-ID: <20240619125618.578259559@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 4b2f459d86252619448455013f581836c8b1b7da upstream.
+commit 994af1825a2aa286f4903ff64a1c7378b52defe6 upstream.
 
-A data corruption problem was reported by CoreOS image builders
-when using reflink based disk image copies and then converting
-them to qcow2 images. The converted images failed the conversion
-verification step, and it was isolated down to the fact that
-qemu-img uses SEEK_HOLE/SEEK_DATA to find the data it is supposed to
-copy.
+On riscv32, it is possible for the last page in virtual address space
+(0xfffff000) to be allocated. This page overlaps with PTR_ERR, so that
+shouldn't happen.
 
-The reproducer allowed me to isolate the issue down to a region of
-the file that had overlapping data and COW fork extents, and the
-problem was that the COW fork extent was being reported in it's
-entirity by xfs_seek_iomap_begin() and so skipping over the real
-data fork extents in that range.
+There is already some code to ensure memblock won't allocate the last page.
+However, buddy allocator is left unchecked.
 
-This was somewhat hidden by the fact that 'xfs_bmap -vvp' reported
-all the extents correctly, and reading the file completely (i.e. not
-using seek to skip holes) would map the file correctly and all the
-correct data extents are read. Hence the problem is isolated to just
-the xfs_seek_iomap_begin() implementation.
+Fix this by reserving physical memory that would be mapped at virtual
+addresses greater than 0xfffff000.
 
-Instrumentation with trace_printk made the problem obvious: we are
-passing the wrong length to xfs_trim_extent() in
-xfs_seek_iomap_begin(). We are passing the end_fsb, not the
-maximum length of the extent we want to trim the map too. Hence the
-COW extent map never gets trimmed to the start of the next data fork
-extent, and so the seek code treats the entire COW fork extent as
-unwritten and skips entirely over the data fork extents in that
-range.
-
-Link: https://github.com/coreos/coreos-assembler/issues/3728
-Fixes: 60271ab79d40 ("xfs: fix SEEK_DATA for speculative COW fork preallocation")
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
+Reported-by: Björn Töpel <bjorn@kernel.org>
+Closes: https://lore.kernel.org/linux-riscv/878r1ibpdn.fsf@all.your.base.are.belong.to.us
+Fixes: 76d2a0493a17 ("RISC-V: Init and Halt Code")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Tested-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Link: https://lore.kernel.org/r/20240425115201.3044202-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_iomap.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/riscv/mm/init.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -1323,7 +1323,7 @@ xfs_seek_iomap_begin(
- 	if (cow_fsb != NULLFILEOFF && cow_fsb <= offset_fsb) {
- 		if (data_fsb < cow_fsb + cmap.br_blockcount)
- 			end_fsb = min(end_fsb, data_fsb);
--		xfs_trim_extent(&cmap, offset_fsb, end_fsb);
-+		xfs_trim_extent(&cmap, offset_fsb, end_fsb - offset_fsb);
- 		seq = xfs_iomap_inode_sequence(ip, IOMAP_F_SHARED);
- 		error = xfs_bmbt_to_iomap(ip, iomap, &cmap, flags,
- 				IOMAP_F_SHARED, seq);
-@@ -1348,7 +1348,7 @@ xfs_seek_iomap_begin(
- 	imap.br_state = XFS_EXT_NORM;
- done:
- 	seq = xfs_iomap_inode_sequence(ip, 0);
--	xfs_trim_extent(&imap, offset_fsb, end_fsb);
-+	xfs_trim_extent(&imap, offset_fsb, end_fsb - offset_fsb);
- 	error = xfs_bmbt_to_iomap(ip, iomap, &imap, flags, 0, seq);
- out_unlock:
- 	xfs_iunlock(ip, lockmode);
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -235,18 +235,19 @@ static void __init setup_bootmem(void)
+ 		kernel_map.va_pa_offset = PAGE_OFFSET - phys_ram_base;
+ 
+ 	/*
+-	 * memblock allocator is not aware of the fact that last 4K bytes of
+-	 * the addressable memory can not be mapped because of IS_ERR_VALUE
+-	 * macro. Make sure that last 4k bytes are not usable by memblock
+-	 * if end of dram is equal to maximum addressable memory.  For 64-bit
+-	 * kernel, this problem can't happen here as the end of the virtual
+-	 * address space is occupied by the kernel mapping then this check must
+-	 * be done as soon as the kernel mapping base address is determined.
++	 * Reserve physical address space that would be mapped to virtual
++	 * addresses greater than (void *)(-PAGE_SIZE) because:
++	 *  - This memory would overlap with ERR_PTR
++	 *  - This memory belongs to high memory, which is not supported
++	 *
++	 * This is not applicable to 64-bit kernel, because virtual addresses
++	 * after (void *)(-PAGE_SIZE) are not linearly mapped: they are
++	 * occupied by kernel mapping. Also it is unrealistic for high memory
++	 * to exist on 64-bit platforms.
+ 	 */
+ 	if (!IS_ENABLED(CONFIG_64BIT)) {
+-		max_mapped_addr = __pa(~(ulong)0);
+-		if (max_mapped_addr == (phys_ram_end - 1))
+-			memblock_set_current_limit(max_mapped_addr - 4096);
++		max_mapped_addr = __va_to_pa_nodebug(-PAGE_SIZE);
++		memblock_reserve(max_mapped_addr, (phys_addr_t)-max_mapped_addr);
+ 	}
+ 
+ 	min_low_pfn = PFN_UP(phys_ram_base);
 
 
 
