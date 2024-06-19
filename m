@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-53968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 251A290EC18
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 806FA90ED47
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D07A91F25813
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BCF9B23362
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836A7143C4A;
-	Wed, 19 Jun 2024 13:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E2812FB27;
+	Wed, 19 Jun 2024 13:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUGg5VLQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBKtrxtS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4058382871;
-	Wed, 19 Jun 2024 13:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2662CAD58;
+	Wed, 19 Jun 2024 13:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802205; cv=none; b=KL4IJiPyfj86b6MRyYvxjJV5q55RfCEpXhMFU2cL0vbmPo0FK3zjbDjW9WiduIHK0q+ObVY/ZTAiYIzeR0lCtub4o/Ign03GlZW++X426lsV2/6BE6yhgDtmw51sDn7t5mG2GbmeiqfVY1Dzs1wq226/tVCMpSD5a/y3w4/agag=
+	t=1718802972; cv=none; b=TAznjbmAuww0pHve3p2RB7IrjVC1GowX5rtL9Aum8mV+jNCdHP6Opk/mqxnP/q3fK7P6QpiWCJDR0G6v92j7034JMjHVMFIiFgzxMMIfdgy+tfUmDGCrxAqpu5sVWjvhZZ2+ZYMkNbZLPMeUvbpaPcD6bf4SKwJWPhSw+Y72Tl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802205; c=relaxed/simple;
-	bh=JJPP7MJgZbH+njx/bAV38YV4Fxeflfm2h+OqEIicuZM=;
+	s=arc-20240116; t=1718802972; c=relaxed/simple;
+	bh=gK7V3+FYrcdciQ9GmHkkiN5h/hkt2FvN5mzN/xbRYo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jauW9ovWhjlgI4GuKV2E66LSjYHv8AndnN30L1SmNJkksoi3YzVP+Hrx7hJbU9ttj1SOIRmAWHK7rKWILAof4DGKC4F3/ks/TJ3GYIzqdpC6GE2uUhb3rIqhTs4jDjdDtgOSRD4uV0v/9JbeyUsUgoNhd83x1EoJl6/zpOVrhj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUGg5VLQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A1BC2BBFC;
-	Wed, 19 Jun 2024 13:03:24 +0000 (UTC)
+	 MIME-Version; b=KYb+XiNVLNs1WP3OC9nS2l2EGq1AM/zViZFRlC9dVHzwxYLgNt9keJA1a1Xs9hxXWIWw3eTZzVLU9RXh5+OEnX613NZU9hFfQgdZfM3LazBXwg5fVpNheoITJdrUXjqlk83i8i43tLt5fbTJPBrhOZ1quYOZqecwVypUlElyVT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBKtrxtS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC1FC2BBFC;
+	Wed, 19 Jun 2024 13:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802205;
-	bh=JJPP7MJgZbH+njx/bAV38YV4Fxeflfm2h+OqEIicuZM=;
+	s=korg; t=1718802972;
+	bh=gK7V3+FYrcdciQ9GmHkkiN5h/hkt2FvN5mzN/xbRYo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUGg5VLQ1TBE/4smlf1xdx56dXR2xkisZsDd9ftTq3UWQnP5GftVdRt1nWDWpnZhu
-	 Ki8DmsDYvsfLQyFxS1ojus2qo94reuoL3Uyf/VRbuoXrTugePGIVO+/RXVBL9VmmXo
-	 ml2iqcdEgzF5PBo3yoaAuFVz5zyRtJZXRMSA3v14=
+	b=QBKtrxtSE3o/9s2jtpq4VvEqU5JP6q7yUWB9Y1n+MKwswn13hoGOkVu/DdY5Mto8g
+	 UEMmwy/YhrKS7NX/nNIRdS4K/WsEuwvy4ttyRkXkdTVMXGtEVVSBzbpQN8nGHEke/t
+	 7OOKrARQSufMegowTvOH8Rd3fLlx6H4wmsONdQ3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Lindgren <tony.lindgren@linux.intel.com>,
-	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH 6.6 086/267] serial: port: Dont block system suspend even if bytes are left to xmit
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.9 078/281] eventfs: Update all the eventfs_inodes from the events descriptor
 Date: Wed, 19 Jun 2024 14:53:57 +0200
-Message-ID: <20240619125609.651361774@linuxfoundation.org>
+Message-ID: <20240619125612.842967653@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +66,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit ca84cd379b45e9b1775b9e026f069a3a886b409d upstream.
+[ Upstream commit 340f0c7067a95281ad13734f8225f49c6cf52067 ]
 
-Recently, suspend testing on sc7180-trogdor based devices has started
-to sometimes fail with messages like this:
+The change to update the permissions of the eventfs_inode had the
+misconception that using the tracefs_inode would find all the
+eventfs_inodes that have been updated and reset them on remount.
+The problem with this approach is that the eventfs_inodes are freed when
+they are no longer used (basically the reason the eventfs system exists).
+When they are freed, the updated eventfs_inodes are not reset on a remount
+because their tracefs_inodes have been freed.
 
-  port a88000.serial:0.0: PM: calling pm_runtime_force_suspend+0x0/0xf8 @ 28934, parent: a88000.serial:0
-  port a88000.serial:0.0: PM: dpm_run_callback(): pm_runtime_force_suspend+0x0/0xf8 returns -16
-  port a88000.serial:0.0: PM: pm_runtime_force_suspend+0x0/0xf8 returned -16 after 33 usecs
-  port a88000.serial:0.0: PM: failed to suspend: error -16
+Instead, since the events directory eventfs_inode always has a
+tracefs_inode pointing to it (it is not freed when finished), and the
+events directory has a link to all its children, have the
+eventfs_remount() function only operate on the events eventfs_inode and
+have it descend into its children updating their uid and gids.
 
-I could reproduce these problems by logging in via an agetty on the
-debug serial port (which was _not_ used for kernel console) and
-running:
-  cat /var/log/messages
-...and then (via an SSH session) forcing a few suspend/resume cycles.
+Link: https://lore.kernel.org/all/CAK7LNARXgaWw3kH9JgrnH4vK6fr8LDkNKf3wq8NhMWJrVwJyVQ@mail.gmail.com/
+Link: https://lore.kernel.org/linux-trace-kernel/20240523051539.754424703@goodmis.org
 
-Tracing through the code and doing some printf()-based debugging shows
-that the -16 (-EBUSY) comes from the recently added
-serial_port_runtime_suspend().
-
-The idea of the serial_port_runtime_suspend() function is to prevent
-the port from being _runtime_ suspended if it still has bytes left to
-transmit. Having bytes left to transmit isn't a reason to block
-_system_ suspend, though. If a serdev device in the kernel needs to
-block system suspend it should block its own suspend and it can use
-serdev_device_wait_until_sent() to ensure bytes are sent.
-
-The DEFINE_RUNTIME_DEV_PM_OPS() used by the serial_port code means
-that the system suspend function will be pm_runtime_force_suspend().
-In pm_runtime_force_suspend() we can see that before calling the
-runtime suspend function we'll call pm_runtime_disable(). This should
-be a reliable way to detect that we're called from system suspend and
-that we shouldn't look for busyness.
-
-Fixes: 43066e32227e ("serial: port: Don't suspend if the port is still busy")
 Cc: stable@vger.kernel.org
-Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240531080914.v3.1.I2395e66cf70c6e67d774c56943825c289b9c13e4@changeid
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: baa23a8d4360d ("tracefs: Reset permissions on remount if permissions are options")
+Reported-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_port.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/tracefs/event_inode.c | 51 ++++++++++++++++++++++++++++++----------
+ 1 file changed, 39 insertions(+), 12 deletions(-)
 
---- a/drivers/tty/serial/serial_port.c
-+++ b/drivers/tty/serial/serial_port.c
-@@ -60,6 +60,13 @@ static int serial_port_runtime_suspend(s
- 	if (port->flags & UPF_DEAD)
- 		return 0;
+diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+index 55a40a730b10c..129d0f54ba62f 100644
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -305,33 +305,60 @@ static const struct file_operations eventfs_file_operations = {
+ 	.llseek		= generic_file_llseek,
+ };
  
-+	/*
-+	 * Nothing to do on pm_runtime_force_suspend(), see
-+	 * DEFINE_RUNTIME_DEV_PM_OPS.
-+	 */
-+	if (!pm_runtime_enabled(dev))
-+		return 0;
+-/*
+- * On a remount of tracefs, if UID or GID options are set, then
+- * the mount point inode permissions should be used.
+- * Reset the saved permission flags appropriately.
+- */
+-void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid)
++static void eventfs_set_attrs(struct eventfs_inode *ei, bool update_uid, kuid_t uid,
++			      bool update_gid, kgid_t gid, int level)
+ {
+-	struct eventfs_inode *ei = ti->private;
++	struct eventfs_inode *ei_child;
+ 
+-	if (!ei)
++	/* Update events/<system>/<event> */
++	if (WARN_ON_ONCE(level > 3))
+ 		return;
+ 
+-	if (update_uid)
++	if (update_uid) {
+ 		ei->attr.mode &= ~EVENTFS_SAVE_UID;
++		ei->attr.uid = uid;
++	}
+ 
+-	if (update_gid)
++	if (update_gid) {
+ 		ei->attr.mode &= ~EVENTFS_SAVE_GID;
++		ei->attr.gid = gid;
++	}
 +
- 	uart_port_lock_irqsave(port, &flags);
- 	if (!port_dev->tx_enabled) {
- 		uart_port_unlock_irqrestore(port, flags);
++	list_for_each_entry(ei_child, &ei->children, list) {
++		eventfs_set_attrs(ei_child, update_uid, uid, update_gid, gid, level + 1);
++	}
+ 
+ 	if (!ei->entry_attrs)
+ 		return;
+ 
+ 	for (int i = 0; i < ei->nr_entries; i++) {
+-		if (update_uid)
++		if (update_uid) {
+ 			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_UID;
+-		if (update_gid)
++			ei->entry_attrs[i].uid = uid;
++		}
++		if (update_gid) {
+ 			ei->entry_attrs[i].mode &= ~EVENTFS_SAVE_GID;
++			ei->entry_attrs[i].gid = gid;
++		}
+ 	}
++
++}
++
++/*
++ * On a remount of tracefs, if UID or GID options are set, then
++ * the mount point inode permissions should be used.
++ * Reset the saved permission flags appropriately.
++ */
++void eventfs_remount(struct tracefs_inode *ti, bool update_uid, bool update_gid)
++{
++	struct eventfs_inode *ei = ti->private;
++
++	/* Only the events directory does the updates */
++	if (!ei || !ei->is_events || ei->is_freed)
++		return;
++
++	eventfs_set_attrs(ei, update_uid, ti->vfs_inode.i_uid,
++			  update_gid, ti->vfs_inode.i_gid, 0);
+ }
+ 
+ /* Return the evenfs_inode of the "events" directory */
+-- 
+2.43.0
+
 
 
 
