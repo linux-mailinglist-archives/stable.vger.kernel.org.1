@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-54058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B59090EC77
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C6C90EDA6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8A89B2142B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 713BB281862
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1A6143C4A;
-	Wed, 19 Jun 2024 13:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C30146A85;
+	Wed, 19 Jun 2024 13:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hd4J9bxw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q75pSlf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5E012FB31;
-	Wed, 19 Jun 2024 13:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC3182495;
+	Wed, 19 Jun 2024 13:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802468; cv=none; b=HzSB0oOqSiTZ+V54lBFqWtWaA9bdKop99KEpp+lKTkr9Lvzv6if61bPNYsmNr91SQeluKEy/a34jTp4pQmJFrgy5GL/Km2XGAG5F13vSyBT8OnJe1fdPI8xBfrPnHJsX7q0Und+2TbEpjjKM1BtoiiBI3buqR7xX3qvZtPdyBpY=
+	t=1718803234; cv=none; b=JoUXr5Pb1B239nCavu8giViIK7BlN2ciKrqVODkWfBXY/LLJOtD01iOhZzrdFJDJ6ESLmeEgmTCeMBSCfExVMin024xWD8Aw3OINmqdOzDdG2Qi5gXn/WIQau3BDMB1rYzsiMJbDP5FxHbXVsDH+t50LATp3nIATpELm3bbYgwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802468; c=relaxed/simple;
-	bh=MOry8bF5vO9MU8Jb0KrbSQ77k2Q+TeXxhMVSljhtbwQ=;
+	s=arc-20240116; t=1718803234; c=relaxed/simple;
+	bh=H6mex0kS9qrn+3WVeI9/RLeTN1XoyIC/HQSbB9EPZnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YakSNnS3KBKaeP/ZyeEc2OuzJu/f+VLCaiwg/1vcSUdo6tslv+V4207nM5W31e7z+d7lCTleR3tPzXj/QP2uphf7/uPQERpNXQIb8DTPqK9KgIKuHWglkbrkwnpTKn3vMid7/QCPJH9cLpXjEnErSyGKE+qkId1UhneDiwvLc6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hd4J9bxw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BD1C32786;
-	Wed, 19 Jun 2024 13:07:47 +0000 (UTC)
+	 MIME-Version; b=NW+woLp6TKPYvuEff06JW+R9wcnrqMtYMzv/2p9YS1JWQLl6Yi46qe3TXeEYIbVHX0GE6MTDEsTCkC9hRh8MAgm6by386Oj8YXgjL+CK1fDZvEirWPCIY9BGU/mdcv9PJvxID2QO0Ayicx6KvvE+bHahyALL1gRhTiYcSBlmSLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q75pSlf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC5CC4AF1A;
+	Wed, 19 Jun 2024 13:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802467;
-	bh=MOry8bF5vO9MU8Jb0KrbSQ77k2Q+TeXxhMVSljhtbwQ=;
+	s=korg; t=1718803234;
+	bh=H6mex0kS9qrn+3WVeI9/RLeTN1XoyIC/HQSbB9EPZnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hd4J9bxwjJPootsjG40/eTSrElj21CTkBGSh8tK4wQcrWDxh+cZdl52mfSJaKaWpw
-	 7746d6830rQGpntpryo60Cw5HVWVGAie8EgeEJ9lATNsCLtWgr3wnvm91m9x010/EX
-	 Y4PT20JnUaQrVd86Aar4qC8iby16XRmzw0KwE0D0=
+	b=Q75pSlf/tcmoXLH+IX/6ZSJ40zphuEQMI59shSiCh/8HaT9wIAE+5s4sM7MHabtqd
+	 S5OtiKuh3MSXQ+3SqXogRoeyogJPQkfu6Osmp1cKxCse6itjdQ8WpB4/SfhjcEFkXG
+	 EX0eYh0rg1zAfHOca5gjP5w1SB1sVqxyWAzQU2vA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.6 206/267] PCI: rockchip-ep: Remove wrong mask on subsys_vendor_id
+	Crt Mori <cmo@melexis.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.9 198/281] iio: temperature: mlx90635: Fix ERR_PTR dereference in mlx90635_probe()
 Date: Wed, 19 Jun 2024 14:55:57 +0200
-Message-ID: <20240619125614.235089175@linuxfoundation.org>
+Message-ID: <20240619125617.569716229@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-commit 2dba285caba53f309d6060fca911b43d63f41697 upstream.
+commit a23c14b062d8800a2192077d83273bbfe6c7552d upstream.
 
-Remove wrong mask on subsys_vendor_id. Both the Vendor ID and Subsystem
-Vendor ID are u16 variables and are written to a u32 register of the
-controller. The Subsystem Vendor ID was always 0 because the u16 value
-was masked incorrectly with GENMASK(31,16) resulting in all lower 16
-bits being set to 0 prior to the shift.
+When devm_regmap_init_i2c() fails, regmap_ee could be error pointer,
+instead of checking for IS_ERR(regmap_ee), regmap is checked which looks
+like a copy paste error.
 
-Remove both masks as they are unnecessary and set the register correctly
-i.e., the lower 16-bits are the Vendor ID and the upper 16-bits are the
-Subsystem Vendor ID.
-
-This is documented in the RK3399 TRM section 17.6.7.1.17
-
-[kwilczynski: removed unnecesary newline]
-Fixes: cf590b078391 ("PCI: rockchip: Add EP driver for Rockchip PCIe controller")
-Link: https://lore.kernel.org/linux-pci/20240403144508.489835-1-rick.wertenbroek@gmail.com
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
+Fixes: a1d1ba5e1c28 ("iio: temperature: mlx90635 MLX90635 IR Temperature sensor")
+Reviewed-by: Crt Mori<cmo@melexis.com>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Link: https://lore.kernel.org/r/20240513203427.3208696-1-harshit.m.mogalapalli@oracle.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-rockchip-ep.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/iio/temperature/mlx90635.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/pci/controller/pcie-rockchip-ep.c
-+++ b/drivers/pci/controller/pcie-rockchip-ep.c
-@@ -98,10 +98,8 @@ static int rockchip_pcie_ep_write_header
+--- a/drivers/iio/temperature/mlx90635.c
++++ b/drivers/iio/temperature/mlx90635.c
+@@ -947,9 +947,9 @@ static int mlx90635_probe(struct i2c_cli
+ 				     "failed to allocate regmap\n");
  
- 	/* All functions share the same vendor ID with function 0 */
- 	if (fn == 0) {
--		u32 vid_regs = (hdr->vendorid & GENMASK(15, 0)) |
--			       (hdr->subsys_vendor_id & GENMASK(31, 16)) << 16;
--
--		rockchip_pcie_write(rockchip, vid_regs,
-+		rockchip_pcie_write(rockchip,
-+				    hdr->vendorid | hdr->subsys_vendor_id << 16,
- 				    PCIE_CORE_CONFIG_VENDOR);
- 	}
+ 	regmap_ee = devm_regmap_init_i2c(client, &mlx90635_regmap_ee);
+-	if (IS_ERR(regmap))
+-		return dev_err_probe(&client->dev, PTR_ERR(regmap),
+-				     "failed to allocate regmap\n");
++	if (IS_ERR(regmap_ee))
++		return dev_err_probe(&client->dev, PTR_ERR(regmap_ee),
++				     "failed to allocate EEPROM regmap\n");
  
+ 	mlx90635 = iio_priv(indio_dev);
+ 	i2c_set_clientdata(client, indio_dev);
 
 
 
