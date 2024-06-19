@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5A0490EE71
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 093B790EC4F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E509289595
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B381281E76
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0307C14F11D;
-	Wed, 19 Jun 2024 13:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E907B143873;
+	Wed, 19 Jun 2024 13:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2lBfKlH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQnztSe+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66EA14F111;
-	Wed, 19 Jun 2024 13:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A870E12FB31;
+	Wed, 19 Jun 2024 13:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803710; cv=none; b=A8ay4j6Brfj1F1YfXBmkruKrvHhVtl/1qoNJDDfN/kHdIM61YoThFIiV+zn1nzlhVqHArqGHUCQLpGM2WMrC9NLdBh4I1nQb7dcnPOP+I0lrfd6IoDEwKLb0ZbrBGiVUwTcsEI21jsGCUDlNcu1UKg03QH6KMuQoTPw08uCsI7w=
+	t=1718802361; cv=none; b=bTq4QFk3N3cz9g6XxWSVuaJbjeWcCab0Uu7/oOXwyv0ddAAprpqTuZE8GncQL32gnI4y9MMreLxiKoh7/msBKhVgzauWyqIXVFrRJKHE/2OcFjPuytcGwPAD9Njxw6s3y4Uwko+gZAK559fUlE+2ukhwimHLn7vSBiwiRU9knfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803710; c=relaxed/simple;
-	bh=S3zw0VwKsJ7UaRoNjXjhCEBRqWosNtvnXY5SQcSrRmc=;
+	s=arc-20240116; t=1718802361; c=relaxed/simple;
+	bh=YwMu2Vad0/oPVu/BkPL/dD1ejUnSmX+SLEUZZHQpCyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ne2uSrqiruGc/6UjoGsV3vFsHJV0pMecKQ0MU6w5iTqSmauUXQtM60GB8CvWIVKDeIItkj0evJq6NyYD2rS4nCt7wgxGYXfptaQ2MwCquEilaOlmTfjV8LvjOZcIn/lNjOPOTCAeWXrXKJPGRZvd5+BhuiFKZPczta6oONk2ukY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2lBfKlH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA26CC32786;
-	Wed, 19 Jun 2024 13:28:29 +0000 (UTC)
+	 MIME-Version; b=ZpjFEq0AnLiha2YT/s+81FYr24hxTttS1B31eOQLxGvtIRaxN7YrYP/0b3kyX9b9SE9dBsOFO7TOYrMb1GT6YzrF9re7rYwhC1NJS0T5obKqgx1WYQaIx9lsiVfFareABPOkq1QkdVFC5rW3jW0UJvY7WsxbvuzCDxC2oe59A/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQnztSe+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B1DC2BBFC;
+	Wed, 19 Jun 2024 13:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803710;
-	bh=S3zw0VwKsJ7UaRoNjXjhCEBRqWosNtvnXY5SQcSrRmc=;
+	s=korg; t=1718802361;
+	bh=YwMu2Vad0/oPVu/BkPL/dD1ejUnSmX+SLEUZZHQpCyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V2lBfKlHGK2Y1aSMkmOZok32MP1YxB2oB9aKU7xz7W5s5k95C7/+KPXGUAkEjQMf5
-	 p7ZNVhAocuyyy6eMNVfWXa824yhqyXAF1ZqGT4y/1yyixOjRaoPfWv/8KPlOBrQOSD
-	 fbIvY85Ercq+a0vVYYPLPKN0Xv0ldEIqcdOyVunw=
+	b=VQnztSe+D1ldz0gIWZDGIwcIImihqZD7tvvJWrMaJbw32k4CM+S2qOtbhaf0GnHnO
+	 qPVkxkFsbaRitjo+98JVG7Mrg1TvpeeHowd3MSPoKs0hEOcI00u7MrwV2NMG9alp31
+	 JmpdIByu5+f2QUA8NbYOMKL3Lu7Ra0XsYan/Jk5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Rao Shoaib <Rao.Shoaib@oracle.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/217] wifi: ath10k: fix QCOM_RPROC_COMMON dependency
+Subject: [PATCH 6.6 170/267] af_unix: Read with MSG_PEEK loops if the first unread byte is OOB
 Date: Wed, 19 Jun 2024 14:55:21 +0200
-Message-ID: <20240619125559.697172694@linuxfoundation.org>
+Message-ID: <20240619125612.866818876@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Rao Shoaib <Rao.Shoaib@oracle.com>
 
-[ Upstream commit 21ae74e1bf18331ae5e279bd96304b3630828009 ]
+[ Upstream commit a6736a0addd60fccc3a3508461d72314cc609772 ]
 
-If ath10k_snoc is built-in, while Qualcomm remoteprocs are built as
-modules, compilation fails with:
+Read with MSG_PEEK flag loops if the first byte to read is an OOB byte.
+commit 22dd70eb2c3d ("af_unix: Don't peek OOB data without MSG_OOB.")
+addresses the loop issue but does not address the issue that no data
+beyond OOB byte can be read.
 
-/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_init':
-drivers/net/wireless/ath/ath10k/snoc.c:1534: undefined reference to `qcom_register_ssr_notifier'
-/usr/bin/aarch64-linux-gnu-ld: drivers/net/wireless/ath/ath10k/snoc.o: in function `ath10k_modem_deinit':
-drivers/net/wireless/ath/ath10k/snoc.c:1551: undefined reference to `qcom_unregister_ssr_notifier'
+>>> from socket import *
+>>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+>>> c1.send(b'a', MSG_OOB)
+1
+>>> c1.send(b'b')
+1
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'b'
 
-Add corresponding dependency to ATH10K_SNOC Kconfig entry so that it's
-built as module if QCOM_RPROC_COMMON is built as module too.
+>>> from socket import *
+>>> c1, c2 = socketpair(AF_UNIX, SOCK_STREAM)
+>>> c2.setsockopt(SOL_SOCKET, SO_OOBINLINE, 1)
+>>> c1.send(b'a', MSG_OOB)
+1
+>>> c1.send(b'b')
+1
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_DONTWAIT)
+b'a'
+>>> c2.recv(1, MSG_PEEK | MSG_DONTWAIT)
+b'b'
+>>>
 
-Fixes: 747ff7d3d742 ("ath10k: Don't always treat modem stop events as crashes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240511-ath10k-snoc-dep-v1-1-9666e3af5c27@linaro.org
+Fixes: 314001f0bf92 ("af_unix: Add OOB support")
+Signed-off-by: Rao Shoaib <Rao.Shoaib@oracle.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240611084639.2248934-1-Rao.Shoaib@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ net/unix/af_unix.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/drivers/net/wireless/ath/ath10k/Kconfig
-+++ b/drivers/net/wireless/ath/ath10k/Kconfig
-@@ -44,6 +44,7 @@ config ATH10K_SNOC
- 	tristate "Qualcomm ath10k SNOC support"
- 	depends on ATH10K
- 	depends on ARCH_QCOM || COMPILE_TEST
-+	depends on QCOM_RPROC_COMMON || QCOM_RPROC_COMMON=n
- 	select QCOM_SCM
- 	select QCOM_QMI_HELPERS
- 	help
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2596,18 +2596,18 @@ static struct sk_buff *manage_oob(struct
+ 		if (skb == u->oob_skb) {
+ 			if (copied) {
+ 				skb = NULL;
+-			} else if (sock_flag(sk, SOCK_URGINLINE)) {
+-				if (!(flags & MSG_PEEK)) {
++			} else if (!(flags & MSG_PEEK)) {
++				if (sock_flag(sk, SOCK_URGINLINE)) {
+ 					WRITE_ONCE(u->oob_skb, NULL);
+ 					consume_skb(skb);
++				} else {
++					__skb_unlink(skb, &sk->sk_receive_queue);
++					WRITE_ONCE(u->oob_skb, NULL);
++					unlinked_skb = skb;
++					skb = skb_peek(&sk->sk_receive_queue);
+ 				}
+-			} else if (flags & MSG_PEEK) {
+-				skb = NULL;
+-			} else {
+-				__skb_unlink(skb, &sk->sk_receive_queue);
+-				WRITE_ONCE(u->oob_skb, NULL);
+-				unlinked_skb = skb;
+-				skb = skb_peek(&sk->sk_receive_queue);
++			} else if (!sock_flag(sk, SOCK_URGINLINE)) {
++				skb = skb_peek_next(skb, &sk->sk_receive_queue);
+ 			}
+ 		}
+ 
 
 
 
