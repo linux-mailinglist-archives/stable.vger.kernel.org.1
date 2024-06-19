@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-54031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C29A90EC59
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:06:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D02C90EE7E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9A732830EE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:06:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C92F61F21587
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC09A143C4E;
-	Wed, 19 Jun 2024 13:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D8A14E2D7;
+	Wed, 19 Jun 2024 13:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Iqp/7x5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GN1nBn2M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8858F12FB31;
-	Wed, 19 Jun 2024 13:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CCE146016;
+	Wed, 19 Jun 2024 13:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802388; cv=none; b=ToW2uE3gRxfXGzi1jXr3xJD9h6KcCBJiyGQxmWpwZ8eusvVst1yQexGB4aBTVEGbA8gMqrRy8fjekugtmvQyuxqSWQKK0ruUvOoI3Zx/NhfewQ5q6sJBoijYv4ZChKX3GaUYuveEZV4vNtQnWKZYftp6/OFTMZj/sN2rg0HW830=
+	t=1718803740; cv=none; b=uADrY6rOBHWItYeGNhqPXUx5M7qgqTW6gFofuBLM4adPz7fg9/swCPH7OnJ/cC+bkFppelpi6kai2+EsoGf4UeS8XSUmRbkzGG7Ittl2JPz7hr2lpEg6x/6cumN2Cxx8gLOnj8r+GdqQNDEsNfMIA7AB1XVwLbFKw1dABB3UYG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802388; c=relaxed/simple;
-	bh=zUZax/HxMTt4cwgahFku/ZlguCynivuZA9JQ1xJ/Nrc=;
+	s=arc-20240116; t=1718803740; c=relaxed/simple;
+	bh=4jJi+ff3jyXXsJ/Z6Xdv2jakEUSH0rQBtxMMf2zsa8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b4sNlmnAYcJ4LrkUB7EkbhHkzurLH9S6qO1Ug4aaLKqCy0gHOStYFEUjRiXVqfW6HvFhWqeazE0PFp85N+UFplU1aV+Kp816CawgIaVzzN1LEqj/rQjbOVFGH1bXOwmFuHuAY2VGlV9GwRQlw9xZu+thw8fQTjrXFkFT2NzSLo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Iqp/7x5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACEB7C2BBFC;
-	Wed, 19 Jun 2024 13:06:27 +0000 (UTC)
+	 MIME-Version; b=fkvuuKvrIB8w+ttYdgMKUxF4Rte9mCqhmGHR3pYHAV8WFCliz3FW//ffTmeWK1zJLEi3XxJ6oDl/AvCb5lcP2gTfHT424ZboqOjFYzDvdWM/C+Y/2E1m70EKqwE0HIVKIVuC7VxYKwXXJ3lo/jpTsrv7kliNeINl6+SC2m3Z9jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GN1nBn2M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C110C2BBFC;
+	Wed, 19 Jun 2024 13:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802388;
-	bh=zUZax/HxMTt4cwgahFku/ZlguCynivuZA9JQ1xJ/Nrc=;
+	s=korg; t=1718803739;
+	bh=4jJi+ff3jyXXsJ/Z6Xdv2jakEUSH0rQBtxMMf2zsa8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Iqp/7x5GEauSXAuDsaETN/VGVjREBkkfKXhDMMb7gYbeYOil3ywGe1o5En8FDSnN
-	 AAXJVbgcFfvwz3B3r3/GuAf7d07fG2XP4hvoH3E4wxr4QCM30byEtev9NFSdNE0QWp
-	 YRq/K9SNpFxKjkowqlNu8t3t2Tna/0Tbhf9YBBaI=
+	b=GN1nBn2MaBOA6elTQBvO4Xwk4mr4xo0A5XFXnLtjKkChQeEdAVbHvt4jyLAyxTcHU
+	 JlKVzBtKRIWzqDc8wEdeZUN/msgexnVV3pwPRz+p3LaXnbgYZpsuZ//Id9Tr5pN1up
+	 gq2bTswt0JBsVpjE8lnrQ0B3zA7vW94k8SfdwYRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 179/267] iio: imu: inv_icm42600: delete unneeded update watermark call
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Ondrej Jirman <megi@xff.cz>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.1 087/217] usb: typec: tcpm: fix use-after-free case in tcpm_register_source_caps
 Date: Wed, 19 Jun 2024 14:55:30 +0200
-Message-ID: <20240619125613.213564631@linuxfoundation.org>
+Message-ID: <20240619125600.046390121@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-commit 245f3b149e6cc3ac6ee612cdb7042263bfc9e73c upstream.
+commit e7e921918d905544500ca7a95889f898121ba886 upstream.
 
-Update watermark will be done inside the hwfifo_set_watermark callback
-just after the update_scan_mode. It is useless to do it here.
+There could be a potential use-after-free case in
+tcpm_register_source_caps(). This could happen when:
+ * new (say invalid) source caps are advertised
+ * the existing source caps are unregistered
+ * tcpm_register_source_caps() returns with an error as
+   usb_power_delivery_register_capabilities() fails
 
-Fixes: 7f85e42a6c54 ("iio: imu: inv_icm42600: add buffer support in iio devices")
+This causes port->partner_source_caps to hold on to the now freed source
+caps.
+
+Reset port->partner_source_caps value to NULL after unregistering
+existing source caps.
+
+Fixes: 230ecdf71a64 ("usb: typec: tcpm: unregister existing source caps before re-registration")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://lore.kernel.org/r/20240527210008.612932-1-inv.git-commit@tdk.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Ondrej Jirman <megi@xff.cz>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240514220134.2143181-1-amitsd@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    4 ----
- drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    4 ----
- 2 files changed, 8 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
-@@ -129,10 +129,6 @@ static int inv_icm42600_accel_update_sca
- 	/* update data FIFO write */
- 	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
- 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
--	if (ret)
--		goto out_unlock;
--
--	ret = inv_icm42600_buffer_update_watermark(st);
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -2430,8 +2430,10 @@ static int tcpm_register_sink_caps(struc
+ 	memcpy(caps.pdo, port->sink_caps, sizeof(u32) * port->nr_sink_caps);
+ 	caps.role = TYPEC_SINK;
  
- out_unlock:
- 	mutex_unlock(&st->lock);
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
-@@ -129,10 +129,6 @@ static int inv_icm42600_gyro_update_scan
- 	/* update data FIFO write */
- 	inv_sensors_timestamp_apply_odr(ts, 0, 0, 0);
- 	ret = inv_icm42600_buffer_set_fifo_en(st, fifo_en | st->fifo.en);
--	if (ret)
--		goto out_unlock;
--
--	ret = inv_icm42600_buffer_update_watermark(st);
+-	if (cap)
++	if (cap) {
+ 		usb_power_delivery_unregister_capabilities(cap);
++		port->partner_source_caps = NULL;
++	}
  
- out_unlock:
- 	mutex_unlock(&st->lock);
+ 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
+ 	if (IS_ERR(cap))
 
 
 
