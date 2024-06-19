@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-53960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050E090EC10
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C25090ED3F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F8991F258EE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95A1A1C2129D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54CB14EC51;
-	Wed, 19 Jun 2024 13:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063D613F435;
+	Wed, 19 Jun 2024 13:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vreRDSez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uR36T/0L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7468214EC4D;
-	Wed, 19 Jun 2024 13:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77B382495;
+	Wed, 19 Jun 2024 13:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802181; cv=none; b=nao0RwDHAtJ7kbR3ZVzxzs1HEmHBSxyaDipR/uk0O9AZxZ1tCYsqWz808oZtBKyOWS+LrfHjzjLDjMh4UrZHxencYiVQC41RGPGQZjxg0O0JmlPloWiiXVxutgJjkZUJS2LpMlLbaQb0O459TwHvcu24VSPssNEZKkOi9BMz8Og=
+	t=1718802948; cv=none; b=A2xu/CiNIAeTrFFR8tT0cuI5P8xnfocWBT4MeOaGmFA7Zlgw+gC+B+GqHu0M+pa8lzavSirmMrSogPn9amUONRSeboODcmBCdDBOVftNs9JZaF0lJUXhxWjmjNq1wa2PJYUbggHhKwLWyR/55GmPKiw60elpV9ttBadf3fFg0W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802181; c=relaxed/simple;
-	bh=dYxZnGZeGLLIa64JjKjUeC5hIlhK7ZlQJ1Qr45s1rDE=;
+	s=arc-20240116; t=1718802948; c=relaxed/simple;
+	bh=ZgHDkQXBhZZz9X4qLqh35HUB3zJfn0B4Rx6l5/klQ2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcNE8iCT0eFAxaTbnoRzsOBxatuBjiQyVMBKTDcUbEUMWGV0ACplVSR7nuynZ2ZygLNx+aBHh0MQpEe3y4KD+q3n9P6iqHBXSNsxAVTuhRWE3/oXx3RhwtBW18qU0WfEPacmYwvmvl65h8x3cqV07lPf15kvO2GlXkERB67xS4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vreRDSez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE406C2BBFC;
-	Wed, 19 Jun 2024 13:03:00 +0000 (UTC)
+	 MIME-Version; b=ZeBt2NAlAPcvDneOCxxVTZZoQTYVJ49UJWbe/sjQumAZGLqhzG+zBurDHAoHUg7wF0gK0vHQjgGEKlOA5QqcRw9efpgm17Rt39AEjegI43FZ+uooLi7kwXG5yrvWAwt9G2F/YUe6eOJhsw0P11+f3wxwIYUy6c5nm84hzVVSg9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uR36T/0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F20C2BBFC;
+	Wed, 19 Jun 2024 13:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802181;
-	bh=dYxZnGZeGLLIa64JjKjUeC5hIlhK7ZlQJ1Qr45s1rDE=;
+	s=korg; t=1718802948;
+	bh=ZgHDkQXBhZZz9X4qLqh35HUB3zJfn0B4Rx6l5/klQ2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vreRDSezoJFZKa+rETZdRi3tYzEyonlpJrU/U3Z/N5Y5fRGR9euaiX7eXL6Jvq96h
-	 wzDMkuG5mCtJ4EnMGAjjHm7ImhNKQ2pGpuM1AEgMEPil6FiVQ/HtV9l2blM2SO+IpR
-	 mn1N0iFS8Z4fRNBCYqx+kevVj/d1iUzWqakXlJ2c=
+	b=uR36T/0LZSIqYzZUDVU6txjsWosd//mPFunnIpJCokwxY0gpoPmUFgS8LBl2CVmJJ
+	 3iSgYffa8xxEeyfoCccoBDrUJtfvc9bIffPJUKmEFObFr24JRYk6/zHw7yqWWnr1m9
+	 Cmx5ba2aMp1CZtihN85J3E8Ojk7udzP8ex4pyRrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Jia Zhu <zhujia.zj@bytedance.com>,
-	Xin Yin <yinxin.x@bytedance.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 109/267] cachefiles: add restore command to recover inflight ondemand read requests
+	Scott McCoy <scott.mccoy@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.9 101/281] scsi: mpi3mr: Fix ATA NCQ priority support
 Date: Wed, 19 Jun 2024 14:54:20 +0200
-Message-ID: <20240619125610.537951305@linuxfoundation.org>
+Message-ID: <20240619125613.736359323@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,98 +63,232 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia Zhu <zhujia.zj@bytedance.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit e73fa11a356ca0905c3cc648eaacc6f0f2d2c8b3 ]
+commit 90e6f08915ec6efe46570420412a65050ec826b2 upstream.
 
-Previously, in ondemand read scenario, if the anonymous fd was closed by
-user daemon, inflight and subsequent read requests would return EIO.
-As long as the device connection is not released, user daemon can hold
-and restore inflight requests by setting the request flag to
-CACHEFILES_REQ_NEW.
+The function mpi3mr_qcmd() of the mpi3mr driver is able to indicate to
+the HBA if a read or write command directed at an ATA device should be
+translated to an NCQ read/write command with the high prioiryt bit set
+when the request uses the RT priority class and the user has enabled NCQ
+priority through sysfs.
 
-Suggested-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Jia Zhu <zhujia.zj@bytedance.com>
-Signed-off-by: Xin Yin <yinxin.x@bytedance.com>
-Link: https://lore.kernel.org/r/20231120041422.75170-6-zhujia.zj@bytedance.com
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 4b4391e77a6b ("cachefiles: defer exposing anon_fd until after copy_to_user() succeeds")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, unlike the mpt3sas driver, the mpi3mr driver does not define
+the sas_ncq_prio_supported and sas_ncq_prio_enable sysfs attributes, so
+the ncq_prio_enable field of struct mpi3mr_sdev_priv_data is never
+actually set and NCQ Priority cannot ever be used.
+
+Fix this by defining these missing atributes to allow a user to check if
+an ATA device supports NCQ priority and to enable/disable the use of NCQ
+priority. To do this, lift the function scsih_ncq_prio_supp() out of the
+mpt3sas driver and make it the generic SCSI SAS transport function
+sas_ata_ncq_prio_supported(). Nothing in that function is hardware
+specific, so this function can be used in both the mpt3sas driver and
+the mpi3mr driver.
+
+Reported-by: Scott McCoy <scott.mccoy@wdc.com>
+Fixes: 023ab2a9b4ed ("scsi: mpi3mr: Add support for queue command processing")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240611083435.92961-1-dlemoal@kernel.org
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cachefiles/daemon.c   |  1 +
- fs/cachefiles/internal.h |  3 +++
- fs/cachefiles/ondemand.c | 23 +++++++++++++++++++++++
- 3 files changed, 27 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr_app.c     |   62 +++++++++++++++++++++++++++++++++++
+ drivers/scsi/mpt3sas/mpt3sas_base.h  |    3 -
+ drivers/scsi/mpt3sas/mpt3sas_ctl.c   |    4 +-
+ drivers/scsi/mpt3sas/mpt3sas_scsih.c |   23 ------------
+ drivers/scsi/scsi_transport_sas.c    |   23 ++++++++++++
+ include/scsi/scsi_transport_sas.h    |    2 +
+ 6 files changed, 89 insertions(+), 28 deletions(-)
 
-diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
-index 7d1f456e376dd..26b487e112596 100644
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -77,6 +77,7 @@ static const struct cachefiles_daemon_cmd cachefiles_daemon_cmds[] = {
- 	{ "tag",	cachefiles_daemon_tag		},
- #ifdef CONFIG_CACHEFILES_ONDEMAND
- 	{ "copen",	cachefiles_ondemand_copen	},
-+	{ "restore",	cachefiles_ondemand_restore	},
- #endif
- 	{ "",		NULL				}
- };
-diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
-index 33fe418aca770..361356d0e866a 100644
---- a/fs/cachefiles/internal.h
-+++ b/fs/cachefiles/internal.h
-@@ -304,6 +304,9 @@ extern ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
- extern int cachefiles_ondemand_copen(struct cachefiles_cache *cache,
- 				     char *args);
- 
-+extern int cachefiles_ondemand_restore(struct cachefiles_cache *cache,
-+					char *args);
-+
- extern int cachefiles_ondemand_init_object(struct cachefiles_object *object);
- extern void cachefiles_ondemand_clean_object(struct cachefiles_object *object);
- 
-diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index 8118649d30727..6d8f7f01a73ac 100644
---- a/fs/cachefiles/ondemand.c
-+++ b/fs/cachefiles/ondemand.c
-@@ -214,6 +214,29 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 	return ret;
+--- a/drivers/scsi/mpi3mr/mpi3mr_app.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
+@@ -2158,10 +2158,72 @@ persistent_id_show(struct device *dev, s
  }
+ static DEVICE_ATTR_RO(persistent_id);
  
-+int cachefiles_ondemand_restore(struct cachefiles_cache *cache, char *args)
++/**
++ * sas_ncq_prio_supported_show - Indicate if device supports NCQ priority
++ * @dev: pointer to embedded device
++ * @attr: sas_ncq_prio_supported attribute descriptor
++ * @buf: the buffer returned
++ *
++ * A sysfs 'read-only' sdev attribute, only works with SATA devices
++ */
++static ssize_t
++sas_ncq_prio_supported_show(struct device *dev,
++			    struct device_attribute *attr, char *buf)
 +{
-+	struct cachefiles_req *req;
++	struct scsi_device *sdev = to_scsi_device(dev);
 +
-+	XA_STATE(xas, &cache->reqs, 0);
++	return sysfs_emit(buf, "%d\n", sas_ata_ncq_prio_supported(sdev));
++}
++static DEVICE_ATTR_RO(sas_ncq_prio_supported);
 +
-+	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
-+		return -EOPNOTSUPP;
++/**
++ * sas_ncq_prio_enable_show - send prioritized io commands to device
++ * @dev: pointer to embedded device
++ * @attr: sas_ncq_prio_enable attribute descriptor
++ * @buf: the buffer returned
++ *
++ * A sysfs 'read/write' sdev attribute, only works with SATA devices
++ */
++static ssize_t
++sas_ncq_prio_enable_show(struct device *dev,
++				 struct device_attribute *attr, char *buf)
++{
++	struct scsi_device *sdev = to_scsi_device(dev);
++	struct mpi3mr_sdev_priv_data *sdev_priv_data =  sdev->hostdata;
 +
-+	/*
-+	 * Reset the requests to CACHEFILES_REQ_NEW state, so that the
-+	 * requests have been processed halfway before the crash of the
-+	 * user daemon could be reprocessed after the recovery.
-+	 */
-+	xas_lock(&xas);
-+	xas_for_each(&xas, req, ULONG_MAX)
-+		xas_set_mark(&xas, CACHEFILES_REQ_NEW);
-+	xas_unlock(&xas);
++	if (!sdev_priv_data)
++		return 0;
 +
-+	wake_up_all(&cache->daemon_pollwq);
-+	return 0;
++	return sysfs_emit(buf, "%d\n", sdev_priv_data->ncq_prio_enable);
 +}
 +
- static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
++static ssize_t
++sas_ncq_prio_enable_store(struct device *dev,
++				  struct device_attribute *attr,
++				  const char *buf, size_t count)
++{
++	struct scsi_device *sdev = to_scsi_device(dev);
++	struct mpi3mr_sdev_priv_data *sdev_priv_data =  sdev->hostdata;
++	bool ncq_prio_enable = 0;
++
++	if (kstrtobool(buf, &ncq_prio_enable))
++		return -EINVAL;
++
++	if (!sas_ata_ncq_prio_supported(sdev))
++		return -EINVAL;
++
++	sdev_priv_data->ncq_prio_enable = ncq_prio_enable;
++
++	return strlen(buf);
++}
++static DEVICE_ATTR_RW(sas_ncq_prio_enable);
++
+ static struct attribute *mpi3mr_dev_attrs[] = {
+ 	&dev_attr_sas_address.attr,
+ 	&dev_attr_device_handle.attr,
+ 	&dev_attr_persistent_id.attr,
++	&dev_attr_sas_ncq_prio_supported.attr,
++	&dev_attr_sas_ncq_prio_enable.attr,
+ 	NULL,
+ };
+ 
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.h
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.h
+@@ -2048,9 +2048,6 @@ void
+ mpt3sas_setup_direct_io(struct MPT3SAS_ADAPTER *ioc, struct scsi_cmnd *scmd,
+ 	struct _raid_device *raid_device, Mpi25SCSIIORequest_t *mpi_request);
+ 
+-/* NCQ Prio Handling Check */
+-bool scsih_ncq_prio_supp(struct scsi_device *sdev);
+-
+ void mpt3sas_setup_debugfs(struct MPT3SAS_ADAPTER *ioc);
+ void mpt3sas_destroy_debugfs(struct MPT3SAS_ADAPTER *ioc);
+ void mpt3sas_init_debugfs(void);
+--- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
+@@ -4088,7 +4088,7 @@ sas_ncq_prio_supported_show(struct devic
  {
- 	struct cachefiles_object *object;
--- 
-2.43.0
-
+ 	struct scsi_device *sdev = to_scsi_device(dev);
+ 
+-	return sysfs_emit(buf, "%d\n", scsih_ncq_prio_supp(sdev));
++	return sysfs_emit(buf, "%d\n", sas_ata_ncq_prio_supported(sdev));
+ }
+ static DEVICE_ATTR_RO(sas_ncq_prio_supported);
+ 
+@@ -4123,7 +4123,7 @@ sas_ncq_prio_enable_store(struct device
+ 	if (kstrtobool(buf, &ncq_prio_enable))
+ 		return -EINVAL;
+ 
+-	if (!scsih_ncq_prio_supp(sdev))
++	if (!sas_ata_ncq_prio_supported(sdev))
+ 		return -EINVAL;
+ 
+ 	sas_device_priv_data->ncq_prio_enable = ncq_prio_enable;
+--- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+@@ -12573,29 +12573,6 @@ scsih_pci_mmio_enabled(struct pci_dev *p
+ 	return PCI_ERS_RESULT_RECOVERED;
+ }
+ 
+-/**
+- * scsih_ncq_prio_supp - Check for NCQ command priority support
+- * @sdev: scsi device struct
+- *
+- * This is called when a user indicates they would like to enable
+- * ncq command priorities. This works only on SATA devices.
+- */
+-bool scsih_ncq_prio_supp(struct scsi_device *sdev)
+-{
+-	struct scsi_vpd *vpd;
+-	bool ncq_prio_supp = false;
+-
+-	rcu_read_lock();
+-	vpd = rcu_dereference(sdev->vpd_pg89);
+-	if (!vpd || vpd->len < 214)
+-		goto out;
+-
+-	ncq_prio_supp = (vpd->data[213] >> 4) & 1;
+-out:
+-	rcu_read_unlock();
+-
+-	return ncq_prio_supp;
+-}
+ /*
+  * The pci device ids are defined in mpi/mpi2_cnfg.h.
+  */
+--- a/drivers/scsi/scsi_transport_sas.c
++++ b/drivers/scsi/scsi_transport_sas.c
+@@ -416,6 +416,29 @@ unsigned int sas_is_tlr_enabled(struct s
+ }
+ EXPORT_SYMBOL_GPL(sas_is_tlr_enabled);
+ 
++/**
++ * sas_ata_ncq_prio_supported - Check for ATA NCQ command priority support
++ * @sdev: SCSI device
++ *
++ * Check if an ATA device supports NCQ priority using VPD page 89h (ATA
++ * Information). Since this VPD page is implemented only for ATA devices,
++ * this function always returns false for SCSI devices.
++ */
++bool sas_ata_ncq_prio_supported(struct scsi_device *sdev)
++{
++	struct scsi_vpd *vpd;
++	bool ncq_prio_supported = false;
++
++	rcu_read_lock();
++	vpd = rcu_dereference(sdev->vpd_pg89);
++	if (vpd && vpd->len >= 214)
++		ncq_prio_supported = (vpd->data[213] >> 4) & 1;
++	rcu_read_unlock();
++
++	return ncq_prio_supported;
++}
++EXPORT_SYMBOL_GPL(sas_ata_ncq_prio_supported);
++
+ /*
+  * SAS Phy attributes
+  */
+--- a/include/scsi/scsi_transport_sas.h
++++ b/include/scsi/scsi_transport_sas.h
+@@ -200,6 +200,8 @@ unsigned int sas_is_tlr_enabled(struct s
+ void sas_disable_tlr(struct scsi_device *);
+ void sas_enable_tlr(struct scsi_device *);
+ 
++bool sas_ata_ncq_prio_supported(struct scsi_device *sdev);
++
+ extern struct sas_rphy *sas_end_device_alloc(struct sas_port *);
+ extern struct sas_rphy *sas_expander_alloc(struct sas_port *, enum sas_device_type);
+ void sas_rphy_free(struct sas_rphy *);
 
 
 
