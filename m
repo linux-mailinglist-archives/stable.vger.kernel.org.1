@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-54175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8EE90ED07
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:13:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C21B590EBC7
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F4D4B25B25
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:13:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E4BE1F25232
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D698143C58;
-	Wed, 19 Jun 2024 13:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E70143C65;
+	Wed, 19 Jun 2024 13:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aW6/max/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbK8pncJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2D414389C;
-	Wed, 19 Jun 2024 13:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22017D08F;
+	Wed, 19 Jun 2024 13:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802804; cv=none; b=EClQsD0c51I/1WqPJ6Zk6u0PE85wwTa4YFLL257QuoYvTTT05pnASeA9dNptdOKpKLnK392j3g/MSlyzv7v0i3neRiTanhTCthU95R7MUf5dGqkXOZAbpWb2B7w6FYtQ3LSiiz+jGPNNQAZdoQIwXG+fOYQLVR2YukJlmUAOX90=
+	t=1718802036; cv=none; b=VPGsavKYvgSdHlSItQFZ9cqUEHQIGFlLISWYf91JmkLQpTQqOyoGstIao09DAfZTRUry5uHmCBR0IzatEaBEU5UQS2AyyTRtKHGUS6jrl21vymcKe9eGJB6u8plew39HA0ukFrsv/pWuBZSs2HYjrgUeyePMQlBETXiWMsbS5Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802804; c=relaxed/simple;
-	bh=ecZkp2USKTFe9Pq9mPqgtQilxS5vsN0xhcsvcny2fOc=;
+	s=arc-20240116; t=1718802036; c=relaxed/simple;
+	bh=U2rLwJPbukXWcG4AQttOYLKnT/O4gOxO2xKGgb2UF9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJxP4ekNtUO8rgCPiiYknWtPEx35U/jqfyZ3M6snUNb7bSDbnTDR9p/p+BbjY/Qeq+CkkK6lXnRJbyQ0EN7tR4Haz6q9ywLZEEWv2uSKMrSjsC9K+V+DiWXzOv9yVuuXQS8n7P40lBIA8Z3712bGlUmxtHO5h4u3gKDTab1UF+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aW6/max/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A355DC2BBFC;
-	Wed, 19 Jun 2024 13:13:23 +0000 (UTC)
+	 MIME-Version; b=JkPzhkDipe8DwRaJJ3eMTek5qeu8LobI7tQNhZCCCKgrRM84aH/V7WsJMRbjYMMOK12uIGkR3OW3roZoQc68j5aAi3Sa/u/a/kflFn0aeIVN3aerCI0XhRYEpqnTX5NkjJ5TEZYxatrBTiKdr0WA3W6/rgxeT9IQbqzYeDfMFk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbK8pncJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57675C2BBFC;
+	Wed, 19 Jun 2024 13:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802804;
-	bh=ecZkp2USKTFe9Pq9mPqgtQilxS5vsN0xhcsvcny2fOc=;
+	s=korg; t=1718802036;
+	bh=U2rLwJPbukXWcG4AQttOYLKnT/O4gOxO2xKGgb2UF9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aW6/max/Lir1GQuItivvv73/OPbh1AghNFiJjKmbXyYkIfTXRiETVYZrmgsxUKXmS
-	 BZoE84/1WCmT7wRJG08JItjY95q2VU3mBPjD3Rt/pSlVW3qs7r/Se6pCAaX8O1CBYS
-	 5c0J2yqAA4dZLR08/p2N95wq5nw/I/pogw7iz5XE=
+	b=GbK8pncJRqo3KuJOET96+OUbxqRHvlxBJT5mQ+baQKW221wNwW7yRY5MmpLTtzff2
+	 UnLPiAsdFDR+FpMB84hoOzmVxbTAJkJgp1o8RjtI3ZLGl+Q7/ilWovl5jFTcug/+N2
+	 vO+ag07wEZuxBFRR61HAMO76AG7NpnLM1LJJoD04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Bagnucki <igor.bagnucki@intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 053/281] ice: add flag to distinguish reset from .ndo_bpf in XDP rings config
+Subject: [PATCH 6.6 061/267] af_unix: Annotate data-race of sk->sk_shutdown in sk_diag_fill().
 Date: Wed, 19 Jun 2024 14:53:32 +0200
-Message-ID: <20240619125611.892722556@linuxfoundation.org>
+Message-ID: <20240619125608.702072784@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,183 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 744d197162c2070a6045a71e2666ed93a57cc65d ]
+[ Upstream commit efaf24e30ec39ebbea9112227485805a48b0ceb1 ]
 
-Commit 6624e780a577 ("ice: split ice_vsi_setup into smaller functions")
-has placed ice_vsi_free_q_vectors() after ice_destroy_xdp_rings() in
-the rebuild process. The behaviour of the XDP rings config functions is
-context-dependent, so the change of order has led to
-ice_destroy_xdp_rings() doing additional work and removing XDP prog, when
-it was supposed to be preserved.
+While dumping sockets via UNIX_DIAG, we do not hold unix_state_lock().
 
-Also, dependency on the PF state reset flags creates an additional,
-fortunately less common problem:
+Let's use READ_ONCE() to read sk->sk_shutdown.
 
-* PFR is requested e.g. by tx_timeout handler
-* .ndo_bpf() is asked to delete the program, calls ice_destroy_xdp_rings(),
-  but reset flag is set, so rings are destroyed without deleting the
-  program
-* ice_vsi_rebuild tries to delete non-existent XDP rings, because the
-  program is still on the VSI
-* system crashes
-
-With a similar race, when requested to attach a program,
-ice_prepare_xdp_rings() can actually skip setting the program in the VSI
-and nevertheless report success.
-
-Instead of reverting to the old order of function calls, add an enum
-argument to both ice_prepare_xdp_rings() and ice_destroy_xdp_rings() in
-order to distinguish between calls from rebuild and .ndo_bpf().
-
-Fixes: efc2214b6047 ("ice: Add support for XDP")
-Reviewed-by: Igor Bagnucki <igor.bagnucki@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20240603-net-2024-05-30-intel-net-fixes-v2-4-e3563aa89b0c@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e4e541a84863 ("sock-diag: Report shutdown for inet and unix sockets (v2)")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice.h      | 11 +++++++++--
- drivers/net/ethernet/intel/ice/ice_lib.c  |  5 +++--
- drivers/net/ethernet/intel/ice/ice_main.c | 22 ++++++++++++----------
- 3 files changed, 24 insertions(+), 14 deletions(-)
+ net/unix/diag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index ca9b56d625841..a3286964d6c31 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -932,9 +932,16 @@ int ice_down(struct ice_vsi *vsi);
- int ice_down_up(struct ice_vsi *vsi);
- int ice_vsi_cfg_lan(struct ice_vsi *vsi);
- struct ice_vsi *ice_lb_vsi_setup(struct ice_pf *pf, struct ice_port_info *pi);
-+
-+enum ice_xdp_cfg {
-+	ICE_XDP_CFG_FULL,	/* Fully apply new config in .ndo_bpf() */
-+	ICE_XDP_CFG_PART,	/* Save/use part of config in VSI rebuild */
-+};
-+
- int ice_vsi_determine_xdp_res(struct ice_vsi *vsi);
--int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog);
--int ice_destroy_xdp_rings(struct ice_vsi *vsi);
-+int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
-+			  enum ice_xdp_cfg cfg_type);
-+int ice_destroy_xdp_rings(struct ice_vsi *vsi, enum ice_xdp_cfg cfg_type);
- int
- ice_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
- 	     u32 flags);
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 7d401a4dc4513..5de7c50b439e1 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -2334,7 +2334,8 @@ ice_vsi_cfg_def(struct ice_vsi *vsi, struct ice_vsi_cfg_params *params)
- 			ret = ice_vsi_determine_xdp_res(vsi);
- 			if (ret)
- 				goto unroll_vector_base;
--			ret = ice_prepare_xdp_rings(vsi, vsi->xdp_prog);
-+			ret = ice_prepare_xdp_rings(vsi, vsi->xdp_prog,
-+						    ICE_XDP_CFG_PART);
- 			if (ret)
- 				goto unroll_vector_base;
- 		}
-@@ -2485,7 +2486,7 @@ void ice_vsi_decfg(struct ice_vsi *vsi)
- 		/* return value check can be skipped here, it always returns
- 		 * 0 if reset is in progress
- 		 */
--		ice_destroy_xdp_rings(vsi);
-+		ice_destroy_xdp_rings(vsi, ICE_XDP_CFG_PART);
+diff --git a/net/unix/diag.c b/net/unix/diag.c
+index fc56244214c30..1de7500b41b61 100644
+--- a/net/unix/diag.c
++++ b/net/unix/diag.c
+@@ -165,7 +165,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_r
+ 	    sock_diag_put_meminfo(sk, skb, UNIX_DIAG_MEMINFO))
+ 		goto out_nlmsg_trim;
  
- 	ice_vsi_clear_rings(vsi);
- 	ice_vsi_free_q_vectors(vsi);
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 33a164fa325ac..b53fe27dbed7d 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -2674,10 +2674,12 @@ static void ice_vsi_assign_bpf_prog(struct ice_vsi *vsi, struct bpf_prog *prog)
-  * ice_prepare_xdp_rings - Allocate, configure and setup Tx rings for XDP
-  * @vsi: VSI to bring up Tx rings used by XDP
-  * @prog: bpf program that will be assigned to VSI
-+ * @cfg_type: create from scratch or restore the existing configuration
-  *
-  * Return 0 on success and negative value on error
-  */
--int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog)
-+int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog,
-+			  enum ice_xdp_cfg cfg_type)
- {
- 	u16 max_txqs[ICE_MAX_TRAFFIC_CLASS] = { 0 };
- 	int xdp_rings_rem = vsi->num_xdp_txq;
-@@ -2753,7 +2755,7 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog)
- 	 * taken into account at the end of ice_vsi_rebuild, where
- 	 * ice_cfg_vsi_lan is being called
- 	 */
--	if (ice_is_reset_in_progress(pf->state))
-+	if (cfg_type == ICE_XDP_CFG_PART)
- 		return 0;
+-	if (nla_put_u8(skb, UNIX_DIAG_SHUTDOWN, sk->sk_shutdown))
++	if (nla_put_u8(skb, UNIX_DIAG_SHUTDOWN, READ_ONCE(sk->sk_shutdown)))
+ 		goto out_nlmsg_trim;
  
- 	/* tell the Tx scheduler that right now we have
-@@ -2805,22 +2807,21 @@ int ice_prepare_xdp_rings(struct ice_vsi *vsi, struct bpf_prog *prog)
- /**
-  * ice_destroy_xdp_rings - undo the configuration made by ice_prepare_xdp_rings
-  * @vsi: VSI to remove XDP rings
-+ * @cfg_type: disable XDP permanently or allow it to be restored later
-  *
-  * Detach XDP rings from irq vectors, clean up the PF bitmap and free
-  * resources
-  */
--int ice_destroy_xdp_rings(struct ice_vsi *vsi)
-+int ice_destroy_xdp_rings(struct ice_vsi *vsi, enum ice_xdp_cfg cfg_type)
- {
- 	u16 max_txqs[ICE_MAX_TRAFFIC_CLASS] = { 0 };
- 	struct ice_pf *pf = vsi->back;
- 	int i, v_idx;
- 
- 	/* q_vectors are freed in reset path so there's no point in detaching
--	 * rings; in case of rebuild being triggered not from reset bits
--	 * in pf->state won't be set, so additionally check first q_vector
--	 * against NULL
-+	 * rings
- 	 */
--	if (ice_is_reset_in_progress(pf->state) || !vsi->q_vectors[0])
-+	if (cfg_type == ICE_XDP_CFG_PART)
- 		goto free_qmap;
- 
- 	ice_for_each_q_vector(vsi, v_idx) {
-@@ -2861,7 +2862,7 @@ int ice_destroy_xdp_rings(struct ice_vsi *vsi)
- 	if (static_key_enabled(&ice_xdp_locking_key))
- 		static_branch_dec(&ice_xdp_locking_key);
- 
--	if (ice_is_reset_in_progress(pf->state) || !vsi->q_vectors[0])
-+	if (cfg_type == ICE_XDP_CFG_PART)
- 		return 0;
- 
- 	ice_vsi_assign_bpf_prog(vsi, NULL);
-@@ -2972,7 +2973,8 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
- 		if (xdp_ring_err) {
- 			NL_SET_ERR_MSG_MOD(extack, "Not enough Tx resources for XDP");
- 		} else {
--			xdp_ring_err = ice_prepare_xdp_rings(vsi, prog);
-+			xdp_ring_err = ice_prepare_xdp_rings(vsi, prog,
-+							     ICE_XDP_CFG_FULL);
- 			if (xdp_ring_err)
- 				NL_SET_ERR_MSG_MOD(extack, "Setting up XDP Tx resources failed");
- 		}
-@@ -2983,7 +2985,7 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
- 			NL_SET_ERR_MSG_MOD(extack, "Setting up XDP Rx resources failed");
- 	} else if (ice_is_xdp_ena_vsi(vsi) && !prog) {
- 		xdp_features_clear_redirect_target(vsi->netdev);
--		xdp_ring_err = ice_destroy_xdp_rings(vsi);
-+		xdp_ring_err = ice_destroy_xdp_rings(vsi, ICE_XDP_CFG_FULL);
- 		if (xdp_ring_err)
- 			NL_SET_ERR_MSG_MOD(extack, "Freeing XDP Tx resources failed");
- 		/* reallocate Rx queues that were used for zero-copy */
+ 	if ((req->udiag_show & UDIAG_SHOW_UID) &&
 -- 
 2.43.0
 
