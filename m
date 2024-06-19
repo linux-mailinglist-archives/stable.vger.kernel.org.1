@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-54222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C3490ED3D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B637190EC0C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA4AA1C212C7
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ED0E287117
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D9512FB27;
-	Wed, 19 Jun 2024 13:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33CE147C6E;
+	Wed, 19 Jun 2024 13:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcWpBj1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTzg3bFM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B2EAD58;
-	Wed, 19 Jun 2024 13:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF05143C43;
+	Wed, 19 Jun 2024 13:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802942; cv=none; b=XYbT/vQWt9lA9aMiLyibrXBnZbaCQ1LRnwqfEJqHVIZzEXw3SnPLZJoygHBWf6XdG3TnEaKGzzKJvDRHcD1jrZAbYztnU40qEgCmfh6gK+jIy+wbOYL4YeBeUiykaAXUWx9Gw04Q5gc9jTJuu8puMVSGaqWcZvLIvTna1qQK9BE=
+	t=1718802175; cv=none; b=OqkwDqyMm9FfpBtp6PFS/HBGiLjSE4Bw3IIYRsvit7Y68f6W8Zhf4i6UcODl0inXkLwht7pdtp6lAux74p0nC9oJpsILeaE7W6jxmiu2E8v3AdJQNenf2rRDXn1qHXelqbS8WqNBhNXBmXNLdsbSqBzAeJ5GUdBjwSV18frAgzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802942; c=relaxed/simple;
-	bh=Ukcb7h6ZgrmuUUOQcx1M+6rUjqDRy70R5DJpH22pBeU=;
+	s=arc-20240116; t=1718802175; c=relaxed/simple;
+	bh=fBgiwpkxTZT2rvj4QtihdssT2F+Hg96DcTkrt6ylDAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SksIPe3/eyXoFSlGTD+VH6n20BWMPZMJRjgnLKrTB1XBkGdzBkuZUEA+DkoG4+dFJdy5y0Yvq7JTNG2LsAbHVZeDGLOvFoxL0fjUsjr6h7eZq15UmtC23GFASZ4XKzIjy4hbaVepEiHmzy16nOnOxjyRRgPaSOtuRukWMh32Xpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcWpBj1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58648C2BBFC;
-	Wed, 19 Jun 2024 13:15:42 +0000 (UTC)
+	 MIME-Version; b=Zvwu1rPyCs7AP7T8BcCWBIXs6ApFHGIjH2JDU4LVEeJyOcZeyvq+A1kK+zcCMWdVxhDyctjjntlbzJadKA7cIPAaGKNEd2JyyN617b4eZgf7TIIfHkCfjpofwdDyvNKaQcnJM2jdprelvu0Tf8Wp95oMq0ZoOZkK0A2M0GB98uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTzg3bFM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B65C2BBFC;
+	Wed, 19 Jun 2024 13:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802942;
-	bh=Ukcb7h6ZgrmuUUOQcx1M+6rUjqDRy70R5DJpH22pBeU=;
+	s=korg; t=1718802175;
+	bh=fBgiwpkxTZT2rvj4QtihdssT2F+Hg96DcTkrt6ylDAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcWpBj1uv5w9jV3J4qYRX4VFoICEJkCQt536Qk0n7zkWSUrlHfhUFhut/ROiJ9qOU
-	 XQY/+7X020lG2MuPozAjvmqewj09ET/pgbhwYKEin0bdT1AWSoRLxNx6jFcupMy1Bu
-	 2FNhS1ZIrtIwcQLykxU7fQikTkng9/+jW3F7arM0=
+	b=mTzg3bFMmtamArjM2Z60vI5utUeEEDazZvBOZrnJ08NtlrrIu/ZS1gD12ho6ZSAF6
+	 iwwyc0FAwVMmCKjuHch1wx+NCYkUYe7ukxTsuK+LurL6Ra5zcQECZko+bzgKtT6Vwy
+	 9hEFtTjMf/KXLFgJ+tQTw7IyXPw2bspEKbxBmOeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.9 099/281] ata: libata-scsi: Set the RMB bit only for removable media devices
+	Jia Zhu <zhujia.zj@bytedance.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 107/267] cachefiles: resend an open request if the read requests object is closed
 Date: Wed, 19 Jun 2024 14:54:18 +0200
-Message-ID: <20240619125613.660267796@linuxfoundation.org>
+Message-ID: <20240619125610.462185425@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,105 +62,278 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Jia Zhu <zhujia.zj@bytedance.com>
 
-commit a6a75edc8669a4f030546c7390808ef0cc034742 upstream.
+[ Upstream commit 0a7e54c1959c0feb2de23397ec09c7692364313e ]
 
-The SCSI Removable Media Bit (RMB) should only be set for removable media,
-where the device stays and the media changes, e.g. CD-ROM or floppy.
+When an anonymous fd is closed by user daemon, if there is a new read
+request for this file comes up, the anonymous fd should be re-opened
+to handle that read request rather than fail it directly.
 
-The ATA removable media device bit is obsoleted since ATA-8 ACS (2006),
-but before that it was used to indicate that the device can have its media
-removed (while the device stays).
+1. Introduce reopening state for objects that are closed but have
+   inflight/subsequent read requests.
+2. No longer flush READ requests but only CLOSE requests when anonymous
+   fd is closed.
+3. Enqueue the reopen work to workqueue, thus user daemon could get rid
+   of daemon_read context and handle that request smoothly. Otherwise,
+   the user daemon will send a reopen request and wait for itself to
+   process the request.
 
-Commit 8a3e33cf92c7 ("ata: ahci: find eSATA ports and flag them as
-removable") introduced a change to set the RMB bit if the port has either
-the eSATA bit or the hot-plug capable bit set. The reasoning was that the
-author wanted his eSATA ports to get treated like a USB stick.
-
-This is however wrong. See "20-082r23SPC-6: Removable Medium Bit
-Expectations" which has since been integrated to SPC, which states that:
-
-"""
-Reports have been received that some USB Memory Stick device servers set
-the removable medium (RMB) bit to one. The rub comes when the medium is
-actually removed, because... The device server is removed concurrently
-with the medium removal. If there is no device server, then there is no
-device server that is waiting to have removable medium inserted.
-
-Sufficient numbers of SCSI analysts see such a device:
-- not as a device that supports removable medium;
-but
-- as a removable, hot pluggable device.
-"""
-
-The definition of the RMB bit in the SPC specification has since been
-clarified to match this.
-
-Thus, a USB stick should not have the RMB bit set (and neither shall an
-eSATA nor a hot-plug capable port).
-
-Commit dc8b4afc4a04 ("ata: ahci: don't mark HotPlugCapable Ports as
-external/removable") then changed so that the RMB bit is only set for the
-eSATA bit (and not for the hot-plug capable bit), because of a lot of bug
-reports of SATA devices were being automounted by udisks. However,
-treating eSATA and hot-plug capable ports differently is not correct.
-
->From the AHCI 1.3.1 spec:
-Hot Plug Capable Port (HPCP): When set to '1', indicates that this port's
-signal and power connectors are externally accessible via a joint signal
-and power connector for blindmate device hot plug.
-
-So a hot-plug capable port is an external port, just like commit
-45b96d65ec68 ("ata: ahci: a hotplug capable port is an external port")
-claims.
-
-In order to not violate the SPC specification, modify the SCSI INQUIRY
-data to only set the RMB bit if the ATA device can have its media removed.
-
-This fixes a reported problem where GNOME/udisks was automounting devices
-connected to hot-plug capable ports.
-
-Fixes: 45b96d65ec68 ("ata: ahci: a hotplug capable port is an external port")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
-Tested-by: Thomas Weißschuh <linux@weissschuh.net>
-Reported-by: Thomas Weißschuh <linux@weissschuh.net>
-Closes: https://lore.kernel.org/linux-ide/c0de8262-dc4b-4c22-9fac-33432e5bddd3@t-8ch.de/
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-[cassel: wrote commit message]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jia Zhu <zhujia.zj@bytedance.com>
+Link: https://lore.kernel.org/r/20231120041422.75170-4-zhujia.zj@bytedance.com
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 0a790040838c ("cachefiles: add spin_lock for cachefiles_ondemand_info")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/cachefiles/internal.h |  3 ++
+ fs/cachefiles/ondemand.c | 98 ++++++++++++++++++++++++++++------------
+ 2 files changed, 72 insertions(+), 29 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1828,11 +1828,11 @@ static unsigned int ata_scsiop_inq_std(s
- 		2
- 	};
+diff --git a/fs/cachefiles/internal.h b/fs/cachefiles/internal.h
+index b0fe76964bc0d..b9a90f1a0c015 100644
+--- a/fs/cachefiles/internal.h
++++ b/fs/cachefiles/internal.h
+@@ -47,9 +47,11 @@ struct cachefiles_volume {
+ enum cachefiles_object_state {
+ 	CACHEFILES_ONDEMAND_OBJSTATE_CLOSE, /* Anonymous fd closed by daemon or initial state */
+ 	CACHEFILES_ONDEMAND_OBJSTATE_OPEN, /* Anonymous fd associated with object is available */
++	CACHEFILES_ONDEMAND_OBJSTATE_REOPENING, /* Object that was closed and is being reopened. */
+ };
  
--	/* set scsi removable (RMB) bit per ata bit, or if the
--	 * AHCI port says it's external (Hotplug-capable, eSATA).
-+	/*
-+	 * Set the SCSI Removable Media Bit (RMB) if the ATA removable media
-+	 * device bit (obsolete since ATA-8 ACS) is set.
+ struct cachefiles_ondemand_info {
++	struct work_struct		ondemand_work;
+ 	int				ondemand_id;
+ 	enum cachefiles_object_state	state;
+ 	struct cachefiles_object	*object;
+@@ -326,6 +328,7 @@ cachefiles_ondemand_set_object_##_state(struct cachefiles_object *object) \
+ 
+ CACHEFILES_OBJECT_STATE_FUNCS(open, OPEN);
+ CACHEFILES_OBJECT_STATE_FUNCS(close, CLOSE);
++CACHEFILES_OBJECT_STATE_FUNCS(reopening, REOPENING);
+ #else
+ static inline ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 					char __user *_buffer, size_t buflen)
+diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
+index deb7e3007aa1d..8e130de952f7d 100644
+--- a/fs/cachefiles/ondemand.c
++++ b/fs/cachefiles/ondemand.c
+@@ -18,14 +18,10 @@ static int cachefiles_ondemand_fd_release(struct inode *inode,
+ 	info->ondemand_id = CACHEFILES_ONDEMAND_ID_CLOSED;
+ 	cachefiles_ondemand_set_object_close(object);
+ 
+-	/*
+-	 * Flush all pending READ requests since their completion depends on
+-	 * anon_fd.
+-	 */
+-	xas_for_each(&xas, req, ULONG_MAX) {
++	/* Only flush CACHEFILES_REQ_NEW marked req to avoid race with daemon_read */
++	xas_for_each_marked(&xas, req, ULONG_MAX, CACHEFILES_REQ_NEW) {
+ 		if (req->msg.object_id == object_id &&
+-		    req->msg.opcode == CACHEFILES_OP_READ) {
+-			req->error = -EIO;
++		    req->msg.opcode == CACHEFILES_OP_CLOSE) {
+ 			complete(&req->done);
+ 			xas_store(&xas, NULL);
+ 		}
+@@ -179,6 +175,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
+ 	trace_cachefiles_ondemand_copen(req->object, id, size);
+ 
+ 	cachefiles_ondemand_set_object_open(req->object);
++	wake_up_all(&cache->daemon_pollwq);
+ 
+ out:
+ 	complete(&req->done);
+@@ -222,7 +219,6 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
+ 
+ 	load = (void *)req->msg.data;
+ 	load->fd = fd;
+-	req->msg.object_id = object_id;
+ 	object->ondemand->ondemand_id = object_id;
+ 
+ 	cachefiles_get_unbind_pincount(cache);
+@@ -238,6 +234,43 @@ static int cachefiles_ondemand_get_fd(struct cachefiles_req *req)
+ 	return ret;
+ }
+ 
++static void ondemand_object_worker(struct work_struct *work)
++{
++	struct cachefiles_ondemand_info *info =
++		container_of(work, struct cachefiles_ondemand_info, ondemand_work);
++
++	cachefiles_ondemand_init_object(info->object);
++}
++
++/*
++ * If there are any inflight or subsequent READ requests on the
++ * closed object, reopen it.
++ * Skip read requests whose related object is reopening.
++ */
++static struct cachefiles_req *cachefiles_ondemand_select_req(struct xa_state *xas,
++							      unsigned long xa_max)
++{
++	struct cachefiles_req *req;
++	struct cachefiles_object *object;
++	struct cachefiles_ondemand_info *info;
++
++	xas_for_each_marked(xas, req, xa_max, CACHEFILES_REQ_NEW) {
++		if (req->msg.opcode != CACHEFILES_OP_READ)
++			return req;
++		object = req->object;
++		info = object->ondemand;
++		if (cachefiles_ondemand_object_is_close(object)) {
++			cachefiles_ondemand_set_object_reopening(object);
++			queue_work(fscache_wq, &info->ondemand_work);
++			continue;
++		}
++		if (cachefiles_ondemand_object_is_reopening(object))
++			continue;
++		return req;
++	}
++	return NULL;
++}
++
+ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 					char __user *_buffer, size_t buflen)
+ {
+@@ -248,16 +281,16 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 	int ret = 0;
+ 	XA_STATE(xas, &cache->reqs, cache->req_id_next);
+ 
++	xa_lock(&cache->reqs);
+ 	/*
+ 	 * Cyclically search for a request that has not ever been processed,
+ 	 * to prevent requests from being processed repeatedly, and make
+ 	 * request distribution fair.
  	 */
--	if (ata_id_removable(args->id) ||
--	    (args->dev->link->ap->pflags & ATA_PFLAG_EXTERNAL))
-+	if (ata_id_removable(args->id))
- 		hdr[1] |= (1 << 7);
+-	xa_lock(&cache->reqs);
+-	req = xas_find_marked(&xas, UINT_MAX, CACHEFILES_REQ_NEW);
++	req = cachefiles_ondemand_select_req(&xas, ULONG_MAX);
+ 	if (!req && cache->req_id_next > 0) {
+ 		xas_set(&xas, 0);
+-		req = xas_find_marked(&xas, cache->req_id_next - 1, CACHEFILES_REQ_NEW);
++		req = cachefiles_ondemand_select_req(&xas, cache->req_id_next - 1);
+ 	}
+ 	if (!req) {
+ 		xa_unlock(&cache->reqs);
+@@ -277,14 +310,18 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 	xa_unlock(&cache->reqs);
  
- 	if (args->dev->class == ATA_DEV_ZAC) {
+ 	id = xas.xa_index;
+-	msg->msg_id = id;
+ 
+ 	if (msg->opcode == CACHEFILES_OP_OPEN) {
+ 		ret = cachefiles_ondemand_get_fd(req);
+-		if (ret)
++		if (ret) {
++			cachefiles_ondemand_set_object_close(req->object);
+ 			goto error;
++		}
+ 	}
+ 
++	msg->msg_id = id;
++	msg->object_id = req->object->ondemand->ondemand_id;
++
+ 	if (copy_to_user(_buffer, msg, n) != 0) {
+ 		ret = -EFAULT;
+ 		goto err_put_fd;
+@@ -317,19 +354,23 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+ 					void *private)
+ {
+ 	struct cachefiles_cache *cache = object->volume->cache;
+-	struct cachefiles_req *req;
++	struct cachefiles_req *req = NULL;
+ 	XA_STATE(xas, &cache->reqs, 0);
+ 	int ret;
+ 
+ 	if (!test_bit(CACHEFILES_ONDEMAND_MODE, &cache->flags))
+ 		return 0;
+ 
+-	if (test_bit(CACHEFILES_DEAD, &cache->flags))
+-		return -EIO;
++	if (test_bit(CACHEFILES_DEAD, &cache->flags)) {
++		ret = -EIO;
++		goto out;
++	}
+ 
+ 	req = kzalloc(sizeof(*req) + data_len, GFP_KERNEL);
+-	if (!req)
+-		return -ENOMEM;
++	if (!req) {
++		ret = -ENOMEM;
++		goto out;
++	}
+ 
+ 	req->object = object;
+ 	init_completion(&req->done);
+@@ -367,7 +408,7 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+ 		/* coupled with the barrier in cachefiles_flush_reqs() */
+ 		smp_mb();
+ 
+-		if (opcode != CACHEFILES_OP_OPEN &&
++		if (opcode == CACHEFILES_OP_CLOSE &&
+ 			!cachefiles_ondemand_object_is_open(object)) {
+ 			WARN_ON_ONCE(object->ondemand->ondemand_id == 0);
+ 			xas_unlock(&xas);
+@@ -392,7 +433,15 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+ 	wake_up_all(&cache->daemon_pollwq);
+ 	wait_for_completion(&req->done);
+ 	ret = req->error;
++	kfree(req);
++	return ret;
+ out:
++	/* Reset the object to close state in error handling path.
++	 * If error occurs after creating the anonymous fd,
++	 * cachefiles_ondemand_fd_release() will set object to close.
++	 */
++	if (opcode == CACHEFILES_OP_OPEN)
++		cachefiles_ondemand_set_object_close(object);
+ 	kfree(req);
+ 	return ret;
+ }
+@@ -439,7 +488,6 @@ static int cachefiles_ondemand_init_close_req(struct cachefiles_req *req,
+ 	if (!cachefiles_ondemand_object_is_open(object))
+ 		return -ENOENT;
+ 
+-	req->msg.object_id = object->ondemand->ondemand_id;
+ 	trace_cachefiles_ondemand_close(object, &req->msg);
+ 	return 0;
+ }
+@@ -455,16 +503,7 @@ static int cachefiles_ondemand_init_read_req(struct cachefiles_req *req,
+ 	struct cachefiles_object *object = req->object;
+ 	struct cachefiles_read *load = (void *)req->msg.data;
+ 	struct cachefiles_read_ctx *read_ctx = private;
+-	int object_id = object->ondemand->ondemand_id;
+-
+-	/* Stop enqueuing requests when daemon has closed anon_fd. */
+-	if (!cachefiles_ondemand_object_is_open(object)) {
+-		WARN_ON_ONCE(object_id == 0);
+-		pr_info_once("READ: anonymous fd closed prematurely.\n");
+-		return -EIO;
+-	}
+ 
+-	req->msg.object_id = object_id;
+ 	load->off = read_ctx->off;
+ 	load->len = read_ctx->len;
+ 	trace_cachefiles_ondemand_read(object, &req->msg, load);
+@@ -513,6 +552,7 @@ int cachefiles_ondemand_init_obj_info(struct cachefiles_object *object,
+ 		return -ENOMEM;
+ 
+ 	object->ondemand->object = object;
++	INIT_WORK(&object->ondemand->ondemand_work, ondemand_object_worker);
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
