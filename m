@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-54568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B6190EEDB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC4890EEE0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 323021F21519
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C02A72855BE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B94151422B8;
-	Wed, 19 Jun 2024 13:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6064C146016;
+	Wed, 19 Jun 2024 13:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5rLZojN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpjFLOgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773261E492;
-	Wed, 19 Jun 2024 13:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210721E492;
+	Wed, 19 Jun 2024 13:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803965; cv=none; b=CYH4wN/N/Ns/PqCJ8jtf7CwqKRhK/uhMRUrPhC2WRuFTtlx2KdVBVVTyuHtgt602w+XeW4EwXH6SSwquuvXmhcmdGdxmix5No/4JdwsM0Q59C+6Iut4oMx5EC4R7kVDzzdoGxkk7ohaJic7+00+iCvPiFd89VygJh1Px85YK2W0=
+	t=1718803980; cv=none; b=RIQBgAPFdc24UjItcvkZnC2HdETOyYQajqkIgAa274ACMfWgyd6g/Jp5qUeHUt8y4mQpzZ6Za5L7hS78clpwDg5HUD3BSWilumLPhirJCjuykRhuYDRp9x6GFvqsBzGU651NkIbLSJD8N9maBwWywUMphw+LixPCIcm1XQeRz3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803965; c=relaxed/simple;
-	bh=VFt/f5AmiT7nkmjTXml/OAOpF5ABDdX5dFq+rntIpLU=;
+	s=arc-20240116; t=1718803980; c=relaxed/simple;
+	bh=0eE3zYqXwkg3NTeY+cUXK9VkKerf1XYwUf9X2dad9dA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jk/vSO458GezmElR482RmDL2Pg3MXRQV8lmHp993vTzTiorI05vbL39jDnDxjR4vaI6Ogw7llFLoTij6Ap6QoxfgSb+KigbvS4o6M8mZFDEvb3uuSiKQ48oQ++xAAMg4ty0yjg4XhzYM3PW6T3y4roEc9fbo91AOLRv1rMILz7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5rLZojN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E606BC2BBFC;
-	Wed, 19 Jun 2024 13:32:44 +0000 (UTC)
+	 MIME-Version; b=uR8P07A3slLLXQbiBfL2KO08R9d7hGGLdZ6GTg9TEK64d3uc83XacR/R8JMeFNGKyT8wrm+JHCHuzzJ14iSuS78kZpGzxDih34gSgKuureisoIkEhhZYz8Vumx0MeuaHTJg9VgTWzE8zoIncH5TxdHkVqCgZ1lodZQz+B0T3ZF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpjFLOgF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB2CC2BBFC;
+	Wed, 19 Jun 2024 13:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803965;
-	bh=VFt/f5AmiT7nkmjTXml/OAOpF5ABDdX5dFq+rntIpLU=;
+	s=korg; t=1718803980;
+	bh=0eE3zYqXwkg3NTeY+cUXK9VkKerf1XYwUf9X2dad9dA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5rLZojNyFSmmcXTdhJj8tqZObzVeER8iuHOYY7OkZUEAYTR8ZmLzJT7igStKMPWy
-	 m8/HH99xvvwPipxfSEC2FMB1Z0jugEqoOvlQs9ZaG72VHrh+KL6dU3irdh+4HBvui3
-	 0BpzRvJf+6uhqJfDp5jotHORjYRxVpHb2aa4mbB4=
+	b=fpjFLOgFnAl/gVnY4C16+IOXuQFP9N/3uCCsBdCkrOGTElkNQXDesvV7Wcspz2N/2
+	 i+rDLC1ZLkOdVV+a/Y5JadKpKe3VT2NyNaUQIblzxuwoL7m6mgsceH4R25+VLDWnRv
+	 jI96r2X5aJSIulCYgsOUAmy5E0kAPGvt5OuVXURo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ian Forbes <ian.forbes@broadcom.com>,
 	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/217] drm/vmwgfx: 3D disabled should not effect STDU memory limits
-Date: Wed, 19 Jun 2024 14:56:19 +0200
-Message-ID: <20240619125601.937945474@linuxfoundation.org>
+Subject: [PATCH 6.1 137/217] drm/vmwgfx: Remove STDU logic from generic mode_valid function
+Date: Wed, 19 Jun 2024 14:56:20 +0200
+Message-ID: <20240619125601.976214197@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
 References: <20240619125556.491243678@linuxfoundation.org>
@@ -68,41 +68,89 @@ Content-Transfer-Encoding: 8bit
 
 From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit fb5e19d2dd03eb995ccd468d599b2337f7f66555 ]
+[ Upstream commit dde1de06bd7248fd83c4ce5cf0dbe9e4e95bbb91 ]
 
-This limit became a hard cap starting with the change referenced below.
-Surface creation on the device will fail if the requested size is larger
-than this limit so altering the value arbitrarily will expose modes that
-are too large for the device's hard limits.
+STDU has its own mode_valid function now so this logic can be removed from
+the generic version.
 
-Fixes: 7ebb47c9f9ab ("drm/vmwgfx: Read new register for GB memory when available")
+Fixes: 935f795045a6 ("drm/vmwgfx: Refactor drm connector probing for display modes")
 
 Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
 Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240521184720.767-3-ian.forbes@broadcom.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20240521184720.767-4-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.h |  3 ---
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 26 +++++++++-----------------
+ 2 files changed, 9 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-index 0a75084cd32a2..be27f9a3bf67b 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.c
-@@ -938,13 +938,6 @@ static int vmw_driver_load(struct vmw_private *dev_priv, u32 pci_id)
- 				vmw_read(dev_priv,
- 					 SVGA_REG_SUGGESTED_GBOBJECT_MEM_SIZE_KB);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+index 00d9e58b7e149..b0c23559511a1 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+@@ -1194,9 +1194,6 @@ void vmw_kms_cursor_snoop(struct vmw_surface *srf,
+ int vmw_kms_write_svga(struct vmw_private *vmw_priv,
+ 		       unsigned width, unsigned height, unsigned pitch,
+ 		       unsigned bpp, unsigned depth);
+-bool vmw_kms_validate_mode_vram(struct vmw_private *dev_priv,
+-				uint32_t pitch,
+-				uint32_t height);
+ int vmw_kms_present(struct vmw_private *dev_priv,
+ 		    struct drm_file *file_priv,
+ 		    struct vmw_framebuffer *vfb,
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 7a2d29370a534..5b30e4ba2811a 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -2085,13 +2085,12 @@ int vmw_kms_write_svga(struct vmw_private *vmw_priv,
+ 	return 0;
+ }
  
--		/*
--		 * Workaround for low memory 2D VMs to compensate for the
--		 * allocation taken by fbdev
--		 */
--		if (!(dev_priv->capabilities & SVGA_CAP_3D))
--			mem_size *= 3;
++static
+ bool vmw_kms_validate_mode_vram(struct vmw_private *dev_priv,
+-				uint32_t pitch,
+-				uint32_t height)
++				u64 pitch,
++				u64 height)
+ {
+-	return ((u64) pitch * (u64) height) < (u64)
+-		((dev_priv->active_display_unit == vmw_du_screen_target) ?
+-		 dev_priv->max_primary_mem : dev_priv->vram_size);
++	return (pitch * height) < (u64)dev_priv->vram_size;
+ }
+ 
+ /**
+@@ -2775,25 +2774,18 @@ int vmw_du_helper_plane_update(struct vmw_du_update_plane *update)
+ enum drm_mode_status vmw_connector_mode_valid(struct drm_connector *connector,
+ 					      struct drm_display_mode *mode)
+ {
++	enum drm_mode_status ret;
+ 	struct drm_device *dev = connector->dev;
+ 	struct vmw_private *dev_priv = vmw_priv(dev);
+-	u32 max_width = dev_priv->texture_max_width;
+-	u32 max_height = dev_priv->texture_max_height;
+ 	u32 assumed_cpp = 4;
+ 
+ 	if (dev_priv->assume_16bpp)
+ 		assumed_cpp = 2;
+ 
+-	if (dev_priv->active_display_unit == vmw_du_screen_target) {
+-		max_width  = min(dev_priv->stdu_max_width,  max_width);
+-		max_height = min(dev_priv->stdu_max_height, max_height);
+-	}
 -
- 		dev_priv->max_mob_pages = mem_size * 1024 / PAGE_SIZE;
- 		dev_priv->max_primary_mem =
- 			vmw_read(dev_priv, SVGA_REG_MAX_PRIMARY_MEM);
+-	if (max_width < mode->hdisplay)
+-		return MODE_BAD_HVALUE;
+-
+-	if (max_height < mode->vdisplay)
+-		return MODE_BAD_VVALUE;
++	ret = drm_mode_validate_size(mode, dev_priv->texture_max_width,
++				     dev_priv->texture_max_height);
++	if (ret != MODE_OK)
++		return ret;
+ 
+ 	if (!vmw_kms_validate_mode_vram(dev_priv,
+ 					mode->hdisplay * assumed_cpp,
 -- 
 2.43.0
 
