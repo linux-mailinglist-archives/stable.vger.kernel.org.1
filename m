@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 608DB90EC6C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5DA90ED99
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D86311F218B9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA5DB1F21FDF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E84144D3E;
-	Wed, 19 Jun 2024 13:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A558143C4E;
+	Wed, 19 Jun 2024 13:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiY+PxhV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgv1330j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DE3143C4E;
-	Wed, 19 Jun 2024 13:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3466B82495;
+	Wed, 19 Jun 2024 13:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802438; cv=none; b=nvNx/45649X2YjVCQ4GO1mTNd5UbYIEQ46tGcg5FhLQFF/nXIXTXbLbPCCH6jnZTOwnlDe7/lMLBAZMWEBMMUMJSEMhTzhPchCFusVjmVVsWV/9r+3keSCPqfAGNn5NReK1HogWyJYJxmloWpCcqb7gay5+u7ciPLhrNUyKsWaQ=
+	t=1718803205; cv=none; b=BfJWlf2lniQsiFKjyEt5XU3DxtyjcdbCZN79x11ORvdEZ3z2iN7elJnY7kJhfDkZVHQM27GpyPhp8fgBTvgN7gLvinvdu2+q9WEzrkLdcekpikmO8MWh48YQte9l7xsU7IJ5I8rTwRwvU0N91UB1ToJ+fo/RFUyNFC1Yy6ge+zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802438; c=relaxed/simple;
-	bh=BrDZDrKTLp5qS72EdONpQVw3y3MVACzerMX1JH2UDQw=;
+	s=arc-20240116; t=1718803205; c=relaxed/simple;
+	bh=OGs8P4Fv7SPVG122WM8vrBaGKDQgdmWM5TYgIB4Wdak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RnUxm2xFAkpr/Lv5CpxSMpdYdhJcj8yZyH4y27Z3tiyClEU5desFnsNkwRBOPltvwOzZmw5UBjEw0cmYj83w5DVGb2JSEBynazK9Sw95+YNDtPggdZTsBhPkJxdZPPABxntEAyLhnyRHm/CoWKJNT24mQ1uFgCGPEuo1uqB0kyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiY+PxhV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE17DC2BBFC;
-	Wed, 19 Jun 2024 13:07:17 +0000 (UTC)
+	 MIME-Version; b=qKnzsz5AAv7XZlQeVkrhbPikGclGsgOdKTGOOm2yJ+lE22/3ew5SQ2daaGTuv3utXCwTzBK0jIPGGXo6wkZPTGLfQaG8ZB7nEFMo4p5HOY2UUp3rIE5pZBqlvkp7MSQPI7w+kxwACYA0/GLmeFU/LNYqYjz0DHF1PSDcyzxfj9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgv1330j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDF9C2BBFC;
+	Wed, 19 Jun 2024 13:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802438;
-	bh=BrDZDrKTLp5qS72EdONpQVw3y3MVACzerMX1JH2UDQw=;
+	s=korg; t=1718803205;
+	bh=OGs8P4Fv7SPVG122WM8vrBaGKDQgdmWM5TYgIB4Wdak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiY+PxhVC5+RBKcFQVoFtDSkNP7162gjozjh8yKlEKtOzFIAvPc0qo+ps4F46fFum
-	 kcPN528yw+NMKkWPuG8pRQqqeAuwGwyALh0nkXO+GKVB233CQbTmC2995WmZ69ULyF
-	 IARC/8Emh2r7jU3aj3hCoUvj+5uRSLVZHD01382s=
+	b=mgv1330jRwtYpN4GZO8Tph1+wrMXWUNz/O23itG3wjbkLth4AiJ65A0LhynhAiomv
+	 f7VQzUkPIhtdRWH4gMxW6Adjr6KYZm7Var9sa4oq+SD6qp4zzhL/ZmontKQWIUJ0I7
+	 2b1nN1fFOaufOJOEhV918lBWiZ8ktHQAXDsgXzm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 197/267] null_blk: Print correct max open zones limit in null_init_zoned_dev()
+	Wang Zhaolong <wangzhaolong1@huawei.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.9 189/281] ksmbd: fix missing use of get_write in in smb2_set_ea()
 Date: Wed, 19 Jun 2024 14:55:48 +0200
-Message-ID: <20240619125613.895074935@linuxfoundation.org>
+Message-ID: <20240619125617.220757248@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 233e27b4d21c3e44eb863f03e566d3a22e81a7ae upstream.
+commit 2bfc4214c69c62da13a9da8e3c3db5539da2ccd3 upstream.
 
-When changing the maximum number of open zones, print that number
-instead of the total number of zones.
+Fix an issue where get_write is not used in smb2_set_ea().
 
-Fixes: dc4d137ee3b7 ("null_blk: add support for max open/active zone limit for zoned devices")
+Fixes: 6fc0a265e1b9 ("ksmbd: fix potential circular locking issue in smb2_set_ea()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Link: https://lore.kernel.org/r/20240528062852.437599-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Wang Zhaolong <wangzhaolong1@huawei.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/null_blk/zoned.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c   |    7 ++++---
+ fs/smb/server/vfs.c       |   17 +++++++++++------
+ fs/smb/server/vfs.h       |    3 ++-
+ fs/smb/server/vfs_cache.c |    3 ++-
+ 4 files changed, 19 insertions(+), 11 deletions(-)
 
---- a/drivers/block/null_blk/zoned.c
-+++ b/drivers/block/null_blk/zoned.c
-@@ -112,7 +112,7 @@ int null_init_zoned_dev(struct nullb_dev
- 	if (dev->zone_max_active && dev->zone_max_open > dev->zone_max_active) {
- 		dev->zone_max_open = dev->zone_max_active;
- 		pr_info("changed the maximum number of open zones to %u\n",
--			dev->nr_zones);
-+			dev->zone_max_open);
- 	} else if (dev->zone_max_open >= dev->nr_zones - dev->zone_nr_conv) {
- 		dev->zone_max_open = 0;
- 		pr_info("zone_max_open limit disabled, limit >= zone count\n");
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2367,7 +2367,8 @@ static int smb2_set_ea(struct smb2_ea_in
+ 			if (rc > 0) {
+ 				rc = ksmbd_vfs_remove_xattr(idmap,
+ 							    path,
+-							    attr_name);
++							    attr_name,
++							    get_write);
+ 
+ 				if (rc < 0) {
+ 					ksmbd_debug(SMB,
+@@ -2382,7 +2383,7 @@ static int smb2_set_ea(struct smb2_ea_in
+ 		} else {
+ 			rc = ksmbd_vfs_setxattr(idmap, path, attr_name, value,
+ 						le16_to_cpu(eabuf->EaValueLength),
+-						0, true);
++						0, get_write);
+ 			if (rc < 0) {
+ 				ksmbd_debug(SMB,
+ 					    "ksmbd_vfs_setxattr is failed(%d)\n",
+@@ -2474,7 +2475,7 @@ static int smb2_remove_smb_xattrs(const
+ 		    !strncmp(&name[XATTR_USER_PREFIX_LEN], STREAM_PREFIX,
+ 			     STREAM_PREFIX_LEN)) {
+ 			err = ksmbd_vfs_remove_xattr(idmap, path,
+-						     name);
++						     name, true);
+ 			if (err)
+ 				ksmbd_debug(SMB, "remove xattr failed : %s\n",
+ 					    name);
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1058,16 +1058,21 @@ int ksmbd_vfs_fqar_lseek(struct ksmbd_fi
+ }
+ 
+ int ksmbd_vfs_remove_xattr(struct mnt_idmap *idmap,
+-			   const struct path *path, char *attr_name)
++			   const struct path *path, char *attr_name,
++			   bool get_write)
+ {
+ 	int err;
+ 
+-	err = mnt_want_write(path->mnt);
+-	if (err)
+-		return err;
++	if (get_write == true) {
++		err = mnt_want_write(path->mnt);
++		if (err)
++			return err;
++	}
+ 
+ 	err = vfs_removexattr(idmap, path->dentry, attr_name);
+-	mnt_drop_write(path->mnt);
++
++	if (get_write == true)
++		mnt_drop_write(path->mnt);
+ 
+ 	return err;
+ }
+@@ -1380,7 +1385,7 @@ int ksmbd_vfs_remove_sd_xattrs(struct mn
+ 		ksmbd_debug(SMB, "%s, len %zd\n", name, strlen(name));
+ 
+ 		if (!strncmp(name, XATTR_NAME_SD, XATTR_NAME_SD_LEN)) {
+-			err = ksmbd_vfs_remove_xattr(idmap, path, name);
++			err = ksmbd_vfs_remove_xattr(idmap, path, name, true);
+ 			if (err)
+ 				ksmbd_debug(SMB, "remove xattr failed : %s\n", name);
+ 		}
+--- a/fs/smb/server/vfs.h
++++ b/fs/smb/server/vfs.h
+@@ -114,7 +114,8 @@ int ksmbd_vfs_setxattr(struct mnt_idmap
+ int ksmbd_vfs_xattr_stream_name(char *stream_name, char **xattr_stream_name,
+ 				size_t *xattr_stream_name_size, int s_type);
+ int ksmbd_vfs_remove_xattr(struct mnt_idmap *idmap,
+-			   const struct path *path, char *attr_name);
++			   const struct path *path, char *attr_name,
++			   bool get_write);
+ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
+ 			       unsigned int flags, struct path *parent_path,
+ 			       struct path *path, bool caseless);
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -254,7 +254,8 @@ static void __ksmbd_inode_close(struct k
+ 		ci->m_flags &= ~S_DEL_ON_CLS_STREAM;
+ 		err = ksmbd_vfs_remove_xattr(file_mnt_idmap(filp),
+ 					     &filp->f_path,
+-					     fp->stream.name);
++					     fp->stream.name,
++					     true);
+ 		if (err)
+ 			pr_err("remove xattr failed : %s\n",
+ 			       fp->stream.name);
 
 
 
