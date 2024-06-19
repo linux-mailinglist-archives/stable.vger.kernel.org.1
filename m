@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2CAB90ED60
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB9390EC2F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0625C1C21315
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C9351C2486F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9B913F435;
-	Wed, 19 Jun 2024 13:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5F213D525;
+	Wed, 19 Jun 2024 13:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XrVAiXUx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8ifDTVi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2890A4315F;
-	Wed, 19 Jun 2024 13:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A23F82871;
+	Wed, 19 Jun 2024 13:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803040; cv=none; b=gfAKCIlNIWPKySJE8dE7+EfFPyouLDWponHt9GMSzhFx/uC/RmLmt4iSU4cPMOyZdClrF7ZAcNO8yQeGJ+0vXBEc6EnF6Yy1GGK2raEVKXx0TD8Yz4wb2fArBWUxCpHqexBqfDujkVsYdL102AmEoeuP4S7KmkIumvIHFsfOKCk=
+	t=1718802273; cv=none; b=FoW/xctk4HFiYWl2248R49RbMoaHQypPHBN2MDpSAZSvcG73fZdGoHFbEjA3FbPJYWqmWqW31+tB/NdskMssEE9cAIn+v/GE6X/iMqjz8+rdeYCSpC0zm1JLzOwVyrmXeecH+hJfMBggriO9zAHfuEagOqCdccm9zsaahptFH6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803040; c=relaxed/simple;
-	bh=axqWo8ukUklgnNO30Q9fr0TmR7MDHGuIcu/D2HXcsZU=;
+	s=arc-20240116; t=1718802273; c=relaxed/simple;
+	bh=jRIgtNfssuzajYyNgLJCWuj5EYFb3q1aSXDtapevWBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etB2Q9CgVAbsKUU4oRbiOfO5fcLo7cUuMzQDYS7pjiBfbNVNt3vWKAdIOIHOYwex2gSgB5XMBBeOw/Stl9wyMHsIyoj+J6eYqbPokuGqcwYi7o8P2S/ZzAaeGkvkAfGx8wVsd6hR47tLZRM8AWSC3IaiZ55HUbXuq7vs5dYw0YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XrVAiXUx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0781C2BBFC;
-	Wed, 19 Jun 2024 13:17:19 +0000 (UTC)
+	 MIME-Version; b=Lb/PWo3Q34xWrOapaYS5a3G14ktCgCERtl1zKp2EbddVG8/5IixFEhocCqWleyGzcA7EO5Yr4q87X4Se+FI1fJ7ii9HAtfXahi7I8heX3IBg/8s4MScaP4mS9tv9LEzYbuo7JPrfCnBch04N1MyVLkSlGwKSEvw73XKF6n4QwGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8ifDTVi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BBBC2BBFC;
+	Wed, 19 Jun 2024 13:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803040;
-	bh=axqWo8ukUklgnNO30Q9fr0TmR7MDHGuIcu/D2HXcsZU=;
+	s=korg; t=1718802273;
+	bh=jRIgtNfssuzajYyNgLJCWuj5EYFb3q1aSXDtapevWBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XrVAiXUxNu2RrhI5u37VAe4m2rOqGcwQOcbZN2LIVJ0OEWDbPmfJILCEF25Hx6uWG
-	 lc0pGjqy4Lxg+GpLUxdzJybFiM7jAdQOktuxwcIIc/f+KFzjLTP2btuTROOHX3v48T
-	 03TBl9tCB3NAk7yxZfWDFCXceC5l1fu1UaG8EgQc=
+	b=r8ifDTViU7uJLC2lBOvazbmj5ccJiPRRqTw3dUJs0RwUAwbPGniVQhO9VvhaWOB0f
+	 8YXbCIeGBbvyoOixoiOJraI+zN1HO3zU8Ttq+6Lj/6PJ5sgNVBwfUaL/NKNQxfrvgL
+	 GpYD0QYUXHWSNVWxU9h6ZM53vEU5agEEDJgzqFmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@ew.tq-group.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 132/281] gpio: tqmx86: store IRQ trigger type and unmask status separately
+Subject: [PATCH 6.6 140/267] af_unix: Annotate data-race of sk->sk_state in unix_accept().
 Date: Wed, 19 Jun 2024 14:54:51 +0200
-Message-ID: <20240619125614.922715835@linuxfoundation.org>
+Message-ID: <20240619125611.721295017@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,142 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 08af509efdf8dad08e972b48de0e2c2a7919ea8b ]
+[ Upstream commit 1b536948e805aab61a48c5aa5db10c9afee880bd ]
 
-irq_set_type() should not implicitly unmask the IRQ.
+Once sk->sk_state is changed to TCP_LISTEN, it never changes.
 
-All accesses to the interrupt configuration register are moved to a new
-helper tqmx86_gpio_irq_config(). We also introduce the new rule that
-accessing irq_type must happen while locked, which will become
-significant for fixing EDGE_BOTH handling.
+unix_accept() takes the advantage and reads sk->sk_state without
+holding unix_state_lock().
 
-Fixes: b868db94a6a7 ("gpio: tqmx86: Add GPIO from for this IO controller")
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Link: https://lore.kernel.org/r/6aa4f207f77cb58ef64ffb947e91949b0f753ccd.1717063994.git.matthias.schiffer@ew.tq-group.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Let's use READ_ONCE() there.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tqmx86.c | 48 ++++++++++++++++++++++----------------
- 1 file changed, 28 insertions(+), 20 deletions(-)
+ net/unix/af_unix.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-tqmx86.c b/drivers/gpio/gpio-tqmx86.c
-index b7e2dbbdc4ebe..7e428c872a257 100644
---- a/drivers/gpio/gpio-tqmx86.c
-+++ b/drivers/gpio/gpio-tqmx86.c
-@@ -29,15 +29,19 @@
- #define TQMX86_GPIIC	3	/* GPI Interrupt Configuration Register */
- #define TQMX86_GPIIS	4	/* GPI Interrupt Status Register */
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1710,7 +1710,7 @@ static int unix_accept(struct socket *so
+ 		goto out;
  
-+#define TQMX86_GPII_NONE	0
- #define TQMX86_GPII_FALLING	BIT(0)
- #define TQMX86_GPII_RISING	BIT(1)
- #define TQMX86_GPII_MASK	(BIT(0) | BIT(1))
- #define TQMX86_GPII_BITS	2
-+/* Stored in irq_type with GPII bits */
-+#define TQMX86_INT_UNMASKED	BIT(2)
+ 	err = -EINVAL;
+-	if (sk->sk_state != TCP_LISTEN)
++	if (READ_ONCE(sk->sk_state) != TCP_LISTEN)
+ 		goto out;
  
- struct tqmx86_gpio_data {
- 	struct gpio_chip	chip;
- 	void __iomem		*io_base;
- 	int			irq;
-+	/* Lock must be held for accessing output and irq_type fields */
- 	raw_spinlock_t		spinlock;
- 	DECLARE_BITMAP(output, TQMX86_NGPIO);
- 	u8			irq_type[TQMX86_NGPI];
-@@ -104,21 +108,32 @@ static int tqmx86_gpio_get_direction(struct gpio_chip *chip,
- 	return GPIO_LINE_DIRECTION_OUT;
- }
- 
-+static void tqmx86_gpio_irq_config(struct tqmx86_gpio_data *gpio, int offset)
-+	__must_hold(&gpio->spinlock)
-+{
-+	u8 type = TQMX86_GPII_NONE, gpiic;
-+
-+	if (gpio->irq_type[offset] & TQMX86_INT_UNMASKED)
-+		type = gpio->irq_type[offset] & TQMX86_GPII_MASK;
-+
-+	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
-+	gpiic &= ~(TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS));
-+	gpiic |= type << (offset * TQMX86_GPII_BITS);
-+	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
-+}
-+
- static void tqmx86_gpio_irq_mask(struct irq_data *data)
- {
- 	unsigned int offset = (data->hwirq - TQMX86_NGPO);
- 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(
- 		irq_data_get_irq_chip_data(data));
- 	unsigned long flags;
--	u8 gpiic, mask;
--
--	mask = TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS);
- 
- 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
--	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
--	gpiic &= ~mask;
--	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
-+	gpio->irq_type[offset] &= ~TQMX86_INT_UNMASKED;
-+	tqmx86_gpio_irq_config(gpio, offset);
- 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
-+
- 	gpiochip_disable_irq(&gpio->chip, irqd_to_hwirq(data));
- }
- 
-@@ -128,16 +143,12 @@ static void tqmx86_gpio_irq_unmask(struct irq_data *data)
- 	struct tqmx86_gpio_data *gpio = gpiochip_get_data(
- 		irq_data_get_irq_chip_data(data));
- 	unsigned long flags;
--	u8 gpiic, mask;
--
--	mask = TQMX86_GPII_MASK << (offset * TQMX86_GPII_BITS);
- 
- 	gpiochip_enable_irq(&gpio->chip, irqd_to_hwirq(data));
-+
- 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
--	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
--	gpiic &= ~mask;
--	gpiic |= gpio->irq_type[offset] << (offset * TQMX86_GPII_BITS);
--	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
-+	gpio->irq_type[offset] |= TQMX86_INT_UNMASKED;
-+	tqmx86_gpio_irq_config(gpio, offset);
- 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
- }
- 
-@@ -148,7 +159,7 @@ static int tqmx86_gpio_irq_set_type(struct irq_data *data, unsigned int type)
- 	unsigned int offset = (data->hwirq - TQMX86_NGPO);
- 	unsigned int edge_type = type & IRQF_TRIGGER_MASK;
- 	unsigned long flags;
--	u8 new_type, gpiic;
-+	u8 new_type;
- 
- 	switch (edge_type) {
- 	case IRQ_TYPE_EDGE_RISING:
-@@ -164,13 +175,10 @@ static int tqmx86_gpio_irq_set_type(struct irq_data *data, unsigned int type)
- 		return -EINVAL; /* not supported */
- 	}
- 
--	gpio->irq_type[offset] = new_type;
--
- 	raw_spin_lock_irqsave(&gpio->spinlock, flags);
--	gpiic = tqmx86_gpio_read(gpio, TQMX86_GPIIC);
--	gpiic &= ~((TQMX86_GPII_MASK) << (offset * TQMX86_GPII_BITS));
--	gpiic |= new_type << (offset * TQMX86_GPII_BITS);
--	tqmx86_gpio_write(gpio, gpiic, TQMX86_GPIIC);
-+	gpio->irq_type[offset] &= ~TQMX86_GPII_MASK;
-+	gpio->irq_type[offset] |= new_type;
-+	tqmx86_gpio_irq_config(gpio, offset);
- 	raw_spin_unlock_irqrestore(&gpio->spinlock, flags);
- 
- 	return 0;
--- 
-2.43.0
-
+ 	/* If socket state is TCP_LISTEN it cannot change (for now...),
 
 
 
