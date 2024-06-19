@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-54016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 212F190EC49
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:05:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B63A90ED79
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 827772814BB
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:05:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCADD1F21B32
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35820143873;
-	Wed, 19 Jun 2024 13:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B239145334;
+	Wed, 19 Jun 2024 13:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmGVFBWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="or2ENqju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E879C82871;
-	Wed, 19 Jun 2024 13:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1883982495;
+	Wed, 19 Jun 2024 13:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802344; cv=none; b=hZOyelZRHXkXE9qd3W0oOIWoa48Fca22CXGYeKyXhk/2lFlmBCb142tBgZ8AG8DbaK+Sum1zYqje6wIMV3YiLxtgs+FYnxjX4VC3tcmn5LecJ0hwowSur6iJ/WTLDnJyqCKqRe9CscZAcaJXDAtL1ZnYfjUNFbvonfiTC2XFOyM=
+	t=1718803114; cv=none; b=ScXaFMd3gQ1pa60WkYZjfAZbaOTf2IEZFQeXyoz8awAolZTZP8gHSyPHOz45b0CCfDqO23oK46pOOC5BeKiPS01ZAnmVOZquWOI6TY6VpxE0z4XclTrIN9USAQtZ133tKVKIezhhWHIo7yQiQtI+hzJibZQiEL4GJ0v+Kv/7C/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802344; c=relaxed/simple;
-	bh=+13jNWMwRK7PXxSLdKLCDoFW76KbPFTFDw4D6DoSgS8=;
+	s=arc-20240116; t=1718803114; c=relaxed/simple;
+	bh=aKtKAM1E2QJ6yn0/rOwjMnxUkdTSewx1hoMF+PgAuvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AE6icq0brNvRUzM1r2c+CARR7VU9H7ujymV77aXk2L1uIEgWd51zDpk5NFryUbX5JA/B//aKPHG8kCelsq8EfHxW049J2bmdMvpVKVB9UXYkvx4NeDi/zXpZn0r/FCY+c82G7umUTZIqGszDvxyxpo1dJu15uO4dhei4zSclPUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmGVFBWc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0C5C2BBFC;
-	Wed, 19 Jun 2024 13:05:43 +0000 (UTC)
+	 MIME-Version; b=Xo3eopPUqI9zkyYS6NyZ+Ws6ptpzVXcD4/qDmGoG7Xo/kq5j+xRHbbcYhsAxHRMbzKKeuZwgyAcd3dsqXx8HRrMdvbb1ad3ghWyyV7RRboAnTwWN1V3p3sl+QrO8uRtNlPb8ThdX37BIZhRw+Kfo8U0/g8uHnpjmOHiRTdcapRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=or2ENqju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95473C2BBFC;
+	Wed, 19 Jun 2024 13:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802343;
-	bh=+13jNWMwRK7PXxSLdKLCDoFW76KbPFTFDw4D6DoSgS8=;
+	s=korg; t=1718803114;
+	bh=aKtKAM1E2QJ6yn0/rOwjMnxUkdTSewx1hoMF+PgAuvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RmGVFBWcChBBOVLAS0LyZejBe597HFwBeiB8GnFwwxVDS/iT019CRE2qB85kXpoF5
-	 /4iauBXQRG4JoHqUSs8XoSI7/fGhEemVTwQTk3dKc5kVB3SnRSDLLHCQLvp8hxAVUW
-	 2R4lDPBLo053z2tZhjb5f4+x8UlvjHFUP+RQeWjg=
+	b=or2ENqjuza6G/ZJ/lydzyJFvJq1R7yFlJr8wUICb/GQKDXVBKRILsSiUy6kofwVQL
+	 SFN4Hl/dADEKZ5tjKGJc0IrQSGj4ZWkMaSZ7uvooQ2+QSyAkrEr+fJ2dXMwiK2Tdn/
+	 RkUFn5oKHPluZtUO3cgJuxETW2G/DnIrz8z57OZI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <dwagner@suse.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Gal Pressman <gal@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 165/267] nvmet-passthru: propagate status from id override functions
-Date: Wed, 19 Jun 2024 14:55:16 +0200
-Message-ID: <20240619125612.677909091@linuxfoundation.org>
+Subject: [PATCH 6.9 158/281] net/mlx5e: Fix features validation check for tunneled UDP (non-VXLAN) packets
+Date: Wed, 19 Jun 2024 14:55:17 +0200
+Message-ID: <20240619125615.920165667@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit d76584e53f4244dbc154bec447c3852600acc914 ]
+[ Upstream commit 791b4089e326271424b78f2fae778b20e53d071b ]
 
-The id override functions return a status which is not propagated to the
-caller.
+Move the vxlan_features_check() call to after we verified the packet is
+a tunneled VXLAN packet.
 
-Fixes: c1fef73f793b ("nvmet: add passthru code to process commands")
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Without this, tunneled UDP non-VXLAN packets (for ex. GENENVE) might
+wrongly not get offloaded.
+In some cases, it worked by chance as GENEVE header is the same size as
+VXLAN, but it is obviously incorrect.
+
+Fixes: e3cfc7e6b7bd ("net/mlx5e: TX, Add geneve tunnel stateless offload support")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/passthru.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/passthru.c b/drivers/nvme/target/passthru.c
-index 9fe07d7efa96c..d4a61645d61a5 100644
---- a/drivers/nvme/target/passthru.c
-+++ b/drivers/nvme/target/passthru.c
-@@ -226,13 +226,13 @@ static void nvmet_passthru_execute_cmd_work(struct work_struct *w)
- 	    req->cmd->common.opcode == nvme_admin_identify) {
- 		switch (req->cmd->identify.cns) {
- 		case NVME_ID_CNS_CTRL:
--			nvmet_passthru_override_id_ctrl(req);
-+			status = nvmet_passthru_override_id_ctrl(req);
- 			break;
- 		case NVME_ID_CNS_NS:
--			nvmet_passthru_override_id_ns(req);
-+			status = nvmet_passthru_override_id_ns(req);
- 			break;
- 		case NVME_ID_CNS_NS_DESC_LIST:
--			nvmet_passthru_override_id_descs(req);
-+			status = nvmet_passthru_override_id_descs(req);
- 			break;
- 		}
- 	} else if (status < 0)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 47be07af214ff..981a3e058840d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -4738,7 +4738,7 @@ static netdev_features_t mlx5e_tunnel_features_check(struct mlx5e_priv *priv,
+ 
+ 		/* Verify if UDP port is being offloaded by HW */
+ 		if (mlx5_vxlan_lookup_port(priv->mdev->vxlan, port))
+-			return features;
++			return vxlan_features_check(skb, features);
+ 
+ #if IS_ENABLED(CONFIG_GENEVE)
+ 		/* Support Geneve offload for default UDP port */
+@@ -4764,7 +4764,6 @@ netdev_features_t mlx5e_features_check(struct sk_buff *skb,
+ 	struct mlx5e_priv *priv = netdev_priv(netdev);
+ 
+ 	features = vlan_features_check(skb, features);
+-	features = vxlan_features_check(skb, features);
+ 
+ 	/* Validate if the tunneled packet is being offloaded by HW */
+ 	if (skb->encapsulation &&
 -- 
 2.43.0
 
