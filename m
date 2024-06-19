@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-54439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF9390EE2B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:26:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F98390ED32
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DAD5289356
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:26:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B4FA1F2191A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3B511459F2;
-	Wed, 19 Jun 2024 13:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF7F145FEF;
+	Wed, 19 Jun 2024 13:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hiofuf5a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W+dp9fl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FA04D9EA;
-	Wed, 19 Jun 2024 13:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8668D13F435;
+	Wed, 19 Jun 2024 13:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803583; cv=none; b=fcWGFMaqsJmv1Eg6/SZYhEP0IQAHhpLbE1+ywES/UDOZLNoWJvRaZ0k9UOmUaPGl7JgpIUAKAHlBnNn0FsFPY5I9Ht01899sTYlnPiAs0OT5tHES0fun6HvRX1V6IDvqwqI7ZyzYr4INhB3HJqZLweV++IrcI4lcKIgBHzIc0eE=
+	t=1718802910; cv=none; b=T+CfZ1rlcPPzDWhNQUPaK9A+pFEu9KyFU/sU3K4ex79oukDeFUSGSxJ/J+6Uy9TS/cjgu3UX+8Zfp5D1qaqn72XVuhDFNWLcZaIrO3miCfYaGgy6e2Lv/QdfGK7iF0qBDJ6VFpL7anWlxBfOZFX/L3+HBSWN4D6769mKh+jwh2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803583; c=relaxed/simple;
-	bh=QpCcz8TFsFYjDqNkVgxdOLfw2L3ea88FpAyihwrwnQA=;
+	s=arc-20240116; t=1718802910; c=relaxed/simple;
+	bh=2GVFJpKJC784hjAbmGaq83SRxJOZIGt3jQ79qZ6xCqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QoNtHvLCiR7RP2hf1uf/63NDo9x2kAe9rIa22UXaep9RyytJ+z7lI+AJDIsYHnsBzkPXe2ZVCzIZ0pfA0XMXPu0vMBG6MCYUhqZFcIuJtexBuHw55ngdlXf085D8e+/c2w2mQAJRmj6Rcv01qSAldH/nczbHKv17cDIIYCBvo10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hiofuf5a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFD4C2BBFC;
-	Wed, 19 Jun 2024 13:26:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WfFTjkwxnr6k7WGoILERmaoCCbM3ZhAOzMfTzNzh+iKuYgVAVjfddP3I2i+6kh7JGo++01tu93W/JXQhG03dKk2qYWdHYY8iwa9ir4G/XcmulNyG3QmuB684om1PQ7nMIyeGeuoRiguMtVjm4dxhT0bcxKaKmAFHZagNFahta1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W+dp9fl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0952DC2BBFC;
+	Wed, 19 Jun 2024 13:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803583;
-	bh=QpCcz8TFsFYjDqNkVgxdOLfw2L3ea88FpAyihwrwnQA=;
+	s=korg; t=1718802910;
+	bh=2GVFJpKJC784hjAbmGaq83SRxJOZIGt3jQ79qZ6xCqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hiofuf5aggY2NZOrPzaXN/1Um4XJK1+oUXE9jafzW6bN4kssXISRrTR6rAAn6Bduv
-	 E1LRD6psi8uZzziTbmVkZH0S39oguxpoSpI30ZbOkfnhUZ0/NbKfX5IadD2vKRgoQG
-	 wRUT3M6VyvEf0/tMHarksroHgmKfICIBHMifuHSQ=
+	b=0W+dp9flPTs28NK4Jwr9sv47Re7XDMV84P310BQIknuKgcLLxYb73yBN1uYcjSWNV
+	 dIEz8O2sjXRzGJT9eptGrVnsWxG3qSwcnGe1+FU4s2itpCXWf9Xrc3Bsknpp/OLtn6
+	 hrl+baz0W7GOoDuaQ3iX2Tm8buzhONaNADDj+4Ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/217] wifi: cfg80211: pmsr: use correct nla_get_uX functions
+	Vadym Krevs <vkrevs@yahoo.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.9 089/281] tty: n_tty: Fix buffer offsets when lookahead is used
 Date: Wed, 19 Jun 2024 14:54:08 +0200
-Message-ID: <20240619125556.707058788@linuxfoundation.org>
+Message-ID: <20240619125613.275781779@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +59,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit ab904521f4de52fef4f179d2dfc1877645ef5f5c ]
+commit b19ab7ee2c4c1ec5f27c18413c3ab63907f7d55c upstream.
 
-The commit 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM
-initiator API") defines four attributes NL80211_PMSR_FTM_REQ_ATTR_
-{NUM_BURSTS_EXP}/{BURST_PERIOD}/{BURST_DURATION}/{FTMS_PER_BURST} in
-following ways.
+When lookahead has "consumed" some characters (la_count > 0),
+n_tty_receive_buf_standard() and n_tty_receive_buf_closing() for
+characters beyond the la_count are given wrong cp/fp offsets which
+leads to duplicating and losing some characters.
 
-static const struct nla_policy
-nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
-    ...
-    [NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP] =
-        NLA_POLICY_MAX(NLA_U8, 15),
-    [NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD] = { .type = NLA_U16 },
-    [NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION] =
-        NLA_POLICY_MAX(NLA_U8, 15),
-    [NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST] =
-        NLA_POLICY_MAX(NLA_U8, 31),
-    ...
-};
+If la_count > 0, correct buffer pointers and make count consistent too
+(the latter is not strictly necessary to fix the issue but seems more
+logical to adjust all variables immediately to keep state consistent).
 
-That is, those attributes are expected to be NLA_U8 and NLA_U16 types.
-However, the consumers of these attributes in `pmsr_parse_ftm` blindly
-all use `nla_get_u32`, which is incorrect and causes functionality issues
-on little-endian platforms. Hence, fix them with the correct `nla_get_u8`
-and `nla_get_u16` functions.
-
-Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Link: https://msgid.link/20240521075059.47999-1-linma@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Vadym Krevs <vkrevs@yahoo.com>
+Fixes: 6bb6fa6908eb ("tty: Implement lookahead to process XON/XOFF timely")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218834
+Tested-by: Vadym Krevs <vkrevs@yahoo.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20240514140429.12087-1-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/pmsr.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/n_tty.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index 2bc647720cda5..d26daa0370e71 100644
---- a/net/wireless/pmsr.c
-+++ b/net/wireless/pmsr.c
-@@ -56,7 +56,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 	out->ftm.burst_period = 0;
- 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD])
- 		out->ftm.burst_period =
--			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
-+			nla_get_u16(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_PERIOD]);
+--- a/drivers/tty/n_tty.c
++++ b/drivers/tty/n_tty.c
+@@ -1619,15 +1619,25 @@ static void __receive_buf(struct tty_str
+ 	else if (ldata->raw || (L_EXTPROC(tty) && !preops))
+ 		n_tty_receive_buf_raw(tty, cp, fp, count);
+ 	else if (tty->closing && !L_EXTPROC(tty)) {
+-		if (la_count > 0)
++		if (la_count > 0) {
+ 			n_tty_receive_buf_closing(tty, cp, fp, la_count, true);
+-		if (count > la_count)
+-			n_tty_receive_buf_closing(tty, cp, fp, count - la_count, false);
++			cp += la_count;
++			if (fp)
++				fp += la_count;
++			count -= la_count;
++		}
++		if (count > 0)
++			n_tty_receive_buf_closing(tty, cp, fp, count, false);
+ 	} else {
+-		if (la_count > 0)
++		if (la_count > 0) {
+ 			n_tty_receive_buf_standard(tty, cp, fp, la_count, true);
+-		if (count > la_count)
+-			n_tty_receive_buf_standard(tty, cp, fp, count - la_count, false);
++			cp += la_count;
++			if (fp)
++				fp += la_count;
++			count -= la_count;
++		}
++		if (count > 0)
++			n_tty_receive_buf_standard(tty, cp, fp, count, false);
  
- 	out->ftm.asap = !!tb[NL80211_PMSR_FTM_REQ_ATTR_ASAP];
- 	if (out->ftm.asap && !capa->ftm.asap) {
-@@ -75,7 +75,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 	out->ftm.num_bursts_exp = 0;
- 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP])
- 		out->ftm.num_bursts_exp =
--			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
-+			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_BURSTS_EXP]);
- 
- 	if (capa->ftm.max_bursts_exponent >= 0 &&
- 	    out->ftm.num_bursts_exp > capa->ftm.max_bursts_exponent) {
-@@ -88,7 +88,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 	out->ftm.burst_duration = 15;
- 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION])
- 		out->ftm.burst_duration =
--			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
-+			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_BURST_DURATION]);
- 
- 	out->ftm.ftms_per_burst = 0;
- 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_FTMS_PER_BURST])
-@@ -107,7 +107,7 @@ static int pmsr_parse_ftm(struct cfg80211_registered_device *rdev,
- 	out->ftm.ftmr_retries = 3;
- 	if (tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES])
- 		out->ftm.ftmr_retries =
--			nla_get_u32(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
-+			nla_get_u8(tb[NL80211_PMSR_FTM_REQ_ATTR_NUM_FTMR_RETRIES]);
- 
- 	out->ftm.request_lci = !!tb[NL80211_PMSR_FTM_REQ_ATTR_REQUEST_LCI];
- 	if (out->ftm.request_lci && !capa->ftm.request_lci) {
--- 
-2.43.0
-
+ 		flush_echoes(tty);
+ 		if (tty->ops->flush_chars)
 
 
 
