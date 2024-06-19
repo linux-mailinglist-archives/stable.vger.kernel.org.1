@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC5690EDB3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:21:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51EB190EC84
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DFF81C21A62
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:21:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 657B61C20A41
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223B4143C65;
-	Wed, 19 Jun 2024 13:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C1B132129;
+	Wed, 19 Jun 2024 13:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Gn60S4k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVk2er8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66BD1487F1;
-	Wed, 19 Jun 2024 13:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B9812FB31;
+	Wed, 19 Jun 2024 13:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803269; cv=none; b=iHHxwTPb2B4jlx164n3kngCQNH26IFX0it89Bu0jrxJraUR1h5FNcktOy+mjXWEVJ/ZdfpxPnH6PBm7dbmX8BCReIrHHYoYhYDRXeitc1ylC911qPuU+48kq5LaE4FsNN8VaVcvvFy+t+U7gFV2yZvLl7IBhZ0EXAvnSHM3WZJY=
+	t=1718802503; cv=none; b=ejsztQ2qAxT491w9SZdboFgS7dfLmdsZ1qSnjOvoQsWDIRwe0hf02+2/Bj/WxNx3orj8zaNoYg3AwuT2BaRjHrvX1r679N+RQWkCv8etfCAtaRgPVW/6zgsRLWfZo7XRPiIZKzW5l42sx75QTY2PGZZaSw0mOOzWZBtba8xDw84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803269; c=relaxed/simple;
-	bh=h1SlYjAqtQF0oS69k/XZdgOHGxqwNPBQ5LmuJ8wbbsg=;
+	s=arc-20240116; t=1718802503; c=relaxed/simple;
+	bh=1O2Qs4DJtY039mB7JcaF/qShDhsBGsZ4yygZzwhH4wQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lnUKzk0BrnTbKvgOCNOmZ312imDs0kDL2k6DiucX37R41BW1z3mz44Q8LtEFObPFdz0c78Bp4THNLQy8Pum+ZeOnH+xuYKEODKyPKdhDBnaIqnvzOhnqDmoP0rULmlsSqcBeN7vd/4srAnYU+sFaNYcW+xc04GoSeGc+iRFq7GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Gn60S4k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF53C32786;
-	Wed, 19 Jun 2024 13:21:09 +0000 (UTC)
+	 MIME-Version; b=jioFWdIOc/+tZ5Ni9mg1kUAXGgzyG3zG81QLTPAYAn1a0b+QE6RqyNE/tS0XpY2htfgm+aqfFp7/BzHZqjayDFbK0rQtfOtUShjQSAg7sbkxMfCypda7rbSVX9rTjUECGFX8LzUVBTttmz+7WjlmUQtg3YJmu7ldorqlW40qryQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVk2er8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A268C2BBFC;
+	Wed, 19 Jun 2024 13:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803269;
-	bh=h1SlYjAqtQF0oS69k/XZdgOHGxqwNPBQ5LmuJ8wbbsg=;
+	s=korg; t=1718802503;
+	bh=1O2Qs4DJtY039mB7JcaF/qShDhsBGsZ4yygZzwhH4wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Gn60S4kN9KRVcrEbnC0x//PP4XeLqmyW2GMjakqgT+SunODH/x/AN4q99HXNslFx
-	 ZjUPr87tfm6FkltOqgSV9WeB1TA1pBRykWmoo7YQgP7ydMpZODqWjhHTtnGPmev47w
-	 YdVDYwzY9u+kwUN8i2iXk7TL0rLIllyXX1Pc+EJM=
+	b=oVk2er8u009Gjm3zz2gPsB5blrZs6qly3WnxCo4Ca0fcUDhe8jkeKwznLZuZqxaBa
+	 iHfC3m1ZBOmK1EZMwqARXb2u+5hiNvqKexLEIvM0wgDqswBI37SHaKtDwLHMzrgMvq
+	 7ddzmTJxbFcFNduHqGNa8Brwd4RX9igewM38xUew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Riana Tauro <riana.tauro@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 179/281] drm/xe/xe_gt_idle: use GT forcewake domain assertion
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	YonglongLi <liyonglong@chinatelecom.cn>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 187/267] mptcp: pm: update add_addr counters after connect
 Date: Wed, 19 Jun 2024 14:55:38 +0200
-Message-ID: <20240619125616.723758813@linuxfoundation.org>
+Message-ID: <20240619125613.519182266@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Riana Tauro <riana.tauro@intel.com>
+From: YonglongLi <liyonglong@chinatelecom.cn>
 
-[ Upstream commit 7c877115da4196fa108dcfefd49f5a9b67b8d8ca ]
+commit 40eec1795cc27b076d49236649a29507c7ed8c2d upstream.
 
-The rc6 registers used in disable_c6 function belong
-to the GT forcewake domain. Hence change the forcewake
-assertion to check GT forcewake domain.
+The creation of new subflows can fail for different reasons. If no
+subflow have been created using the received ADD_ADDR, the related
+counters should not be updated, otherwise they will never be decremented
+for events related to this ID later on.
 
-v2: add fixes tag (Himal)
+For the moment, the number of accepted ADD_ADDR is only decremented upon
+the reception of a related RM_ADDR, and only if the remote address ID is
+currently being used by at least one subflow. In other words, if no
+subflow can be created with the received address, the counter will not
+be decremented. In this case, it is then important not to increment
+pm.add_addr_accepted counter, and not to modify pm.accept_addr bit.
 
-Fixes: 975e4a3795d4 ("drm/xe: Manually setup C6 when skip_guc_pc is set")
-Signed-off-by: Riana Tauro <riana.tauro@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240606100842.956072-2-riana.tauro@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 21b708554648177a0078962c31629bce31ef5d83)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that this patch does not modify the behaviour in case of failures
+later on, e.g. if the MP Join is dropped or rejected.
+
+The "remove invalid addresses" MP Join subtest has been modified to
+validate this case. The broadcast IP address is added before the "valid"
+address that will be used to successfully create a subflow, and the
+limit is decreased by one: without this patch, it was not possible to
+create the last subflow, because:
+
+- the broadcast address would have been accepted even if it was not
+  usable: the creation of a subflow to this address results in an error,
+
+- the limit of 2 accepted ADD_ADDR would have then been reached.
+
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
+Cc: stable@vger.kernel.org
+Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-3-1ab9ddfa3d00@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_gt_idle.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c                          |   16 ++++++++++------
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++--
+ 2 files changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt_idle.c b/drivers/gpu/drm/xe/xe_gt_idle.c
-index 9fcae65b64699..1521b3d9933c7 100644
---- a/drivers/gpu/drm/xe/xe_gt_idle.c
-+++ b/drivers/gpu/drm/xe/xe_gt_idle.c
-@@ -184,7 +184,7 @@ void xe_gt_idle_enable_c6(struct xe_gt *gt)
- void xe_gt_idle_disable_c6(struct xe_gt *gt)
- {
- 	xe_device_assert_mem_access(gt_to_xe(gt));
--	xe_force_wake_assert_held(gt_to_fw(gt), XE_FORCEWAKE_ALL);
-+	xe_force_wake_assert_held(gt_to_fw(gt), XE_FW_GT);
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -685,6 +685,7 @@ static void mptcp_pm_nl_add_addr_receive
+ 	unsigned int add_addr_accept_max;
+ 	struct mptcp_addr_info remote;
+ 	unsigned int subflows_max;
++	bool sf_created = false;
+ 	int i, nr;
  
- 	xe_mmio_write32(gt, PG_ENABLE, 0);
- 	xe_mmio_write32(gt, RC_CONTROL, 0);
--- 
-2.43.0
-
+ 	add_addr_accept_max = mptcp_pm_get_add_addr_accept_max(msk);
+@@ -712,15 +713,18 @@ static void mptcp_pm_nl_add_addr_receive
+ 	if (nr == 0)
+ 		return;
+ 
+-	msk->pm.add_addr_accepted++;
+-	if (msk->pm.add_addr_accepted >= add_addr_accept_max ||
+-	    msk->pm.subflows >= subflows_max)
+-		WRITE_ONCE(msk->pm.accept_addr, false);
+-
+ 	spin_unlock_bh(&msk->pm.lock);
+ 	for (i = 0; i < nr; i++)
+-		__mptcp_subflow_connect(sk, &addrs[i], &remote);
++		if (__mptcp_subflow_connect(sk, &addrs[i], &remote) == 0)
++			sf_created = true;
+ 	spin_lock_bh(&msk->pm.lock);
++
++	if (sf_created) {
++		msk->pm.add_addr_accepted++;
++		if (msk->pm.add_addr_accepted >= add_addr_accept_max ||
++		    msk->pm.subflows >= subflows_max)
++			WRITE_ONCE(msk->pm.accept_addr, false);
++	}
+ }
+ 
+ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2393,10 +2393,10 @@ remove_tests()
+ 	if reset "remove invalid addresses"; then
+ 		pm_nl_set_limits $ns1 3 3
+ 		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
+-		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
+ 		# broadcast IP: no packet for this address will be received on ns1
+ 		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal
+-		pm_nl_set_limits $ns2 3 3
++		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
++		pm_nl_set_limits $ns2 2 2
+ 		addr_nr_ns1=-3 speed=10 \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 1 1 1
 
 
 
