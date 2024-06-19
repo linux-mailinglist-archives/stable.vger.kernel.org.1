@@ -1,155 +1,176 @@
-Return-Path: <stable+bounces-54637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7752B90F04F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:22:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3927790F052
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 16:23:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE8D928353E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:22:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4B7728187C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8B814F98;
-	Wed, 19 Jun 2024 14:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3633915E81;
+	Wed, 19 Jun 2024 14:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dl7uyhDS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k4BFccYm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B4D15E81;
-	Wed, 19 Jun 2024 14:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8A514A82
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 14:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718806950; cv=none; b=SDyKlkWT8aQZuUXPVJi0buEa+rx6xUYLRjpCH/EsiiUMgT47o+K8wuXR6RNNvIx0+FyLrqgNOer6HHmZ5T4c4boYqN2SjFuzAMXH6UpGy1h/rVuFScK3Lq+7/APmbv6UFqumrGv4l/5NXApi2QQZY/3AoO4OQ+BiSQYxsE7xALg=
+	t=1718807021; cv=none; b=KlKvHJmy5u4rLm5G4xQPVSe4Emfygcpywup1vXGHPNhKpe2ld7A1F0cs6/sWozzkLcNgdb8khJWTmLdgB/rSmCPjBa2mji/w1JItDtq8wPI8YfWw5icVpL+fyrEuiz+qu4AAJp7C1MkTsjDdZQhy4/PqStmhdlsXb/mOc3hMtyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718806950; c=relaxed/simple;
-	bh=IwIM7Kg1Plaw1z4rcEPuGqh/TD8hwdP/SZqooKMtSBs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=efPL5VsBk0zSzIpUmM2cRDVvlX+fI1parc3iD27EaAJHJoWVHkgwy2OTDXVoakv6fTYL4FXzEWvYx0od6fWLOR+Ki5m+ZALouhehIliLWgeUmf3BYYjYAXybrUzeVGIFOax4BnpfV3xVGG1PworvBJXBxq+dmQCcHxdKh+MbrYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dl7uyhDS; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7023b6d810bso4952653b3a.3;
-        Wed, 19 Jun 2024 07:22:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718806949; x=1719411749; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=MxKrhGAvZDqBsLSohk4oXKfHYYe8dlWMfAw5GLqLZG4=;
-        b=dl7uyhDSdWUiMv0Sl09cGbjUqYECcWnv/heJWhx5BoHGYFif7V328KvQ5LZE5OI/wf
-         ZxvnyouXomTROXU6vp4zGxXJG3mIXldyeE13v39nlH9J2je2zzYE1aIFU5X4Ezo9XPHe
-         xAhFVfKR8MOM+yUP1aTfoecg9lImGqtxpw33tXEmnlaCqc4mhLJrFeJwEp9Qe9HzeDRI
-         qbXxt0GgVklTGZB/osOfSol+TvfX2aznImKxHU9jZCLlm5Yt87jbbfD3z4exjrXHTXOs
-         BNa7w31UMXEyi4VG5vEKTvaYX+plczaQkBv7FNj/iaZfXsscjE4794JBS7taEarmASIl
-         dzJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718806949; x=1719411749;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MxKrhGAvZDqBsLSohk4oXKfHYYe8dlWMfAw5GLqLZG4=;
-        b=HjtuXqtMYF+Q/GQcmjAanJmg+3KEPXMK7ld/vyty9vAHsF7z/bXqZRpicZKt3KjTKk
-         /f4TrzIb6MKOFoXe078by84s9Il9uEQYFoT3Lxcp7fI7OHaEycy2RhKB71RUt11ernG/
-         Rjd6H9S2Y0ojXKYM7k7pOkOxcAY951rwBJfX6uR+gXHY4TMgPdc8JN8yiTKfXaCA0E5f
-         d9VFkKdMq5sDVjW/5KqaTBClDRu7sQvJqP/SXpV10y03OsIP32zsqMV7QrTgv4id+dHi
-         C7J4PG6nmXkKxm0u+IZMZkUIJb85vljQmoVcqtgCkPPp5Xy27GzU41y0MIg3iebXIrDq
-         26Yw==
-X-Forwarded-Encrypted: i=1; AJvYcCUT7LPRETEGcp4pwxBxyAlZcEa6pgkO+LdRmIOrZHD5+hD04oZhe6IW3wqeVO7hDkVb9k6xk0S0wTbL5CDD3/QKlAdIZyZJc0/WLd5PMRyT6ZReMyRvi881gkT5a07jSjpOuM+I
-X-Gm-Message-State: AOJu0Yx0VwlaoOIOQPCr0gUZUiy3PmfB6J9ye1DOfNweBtHmfA7WpDRW
-	OOZ0r8lhdW1/b98EiNthfu44IML5smDI19fvfXqdGlmRvFMKrW8hdsYRsG00yy0=
-X-Google-Smtp-Source: AGHT+IEy8mHxmzM987zou9BKhhP9Q+SIN/FwEeYL0xtfpbf1fgldjqo9uE/Negb8dSHrcQlAFgOmnQ==
-X-Received: by 2002:a05:6a20:8b97:b0:1b7:a9d4:f503 with SMTP id adf61e73a8af0-1bcbb40dd37mr2524982637.15.1718806948489;
-        Wed, 19 Jun 2024 07:22:28 -0700 (PDT)
-Received: from [192.168.75.133] (mobile-166-172-56-136.mycingular.net. [166.172.56.136])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705ccb917f2sm10716189b3a.189.2024.06.19.07.22.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jun 2024 07:22:27 -0700 (PDT)
-Message-ID: <c72f5b46-0d43-4581-b8c7-417156118590@gmail.com>
-Date: Wed, 19 Jun 2024 15:22:09 +0100
+	s=arc-20240116; t=1718807021; c=relaxed/simple;
+	bh=E3CTTqhTne2YlNf6LRAW9Y7fzpkSc7Sj09P8H1Htm/U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ruzgHOGCJt2Buw/NwM7BheHlsLoTdjLMtZR0QNCTI/oPGPsjnXIjk4KX3LHmFf0b+10P2/IlbPqtJldTWeyAKsBE8lG2CJ17jZTxAfZywAyTzKeYrQbRgGgQbmzFkYNKzv6+GxMoIdk8qNMl+EgE9Mr67f/N1ZzWNBmHjNWOzF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k4BFccYm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9C0C2BBFC;
+	Wed, 19 Jun 2024 14:23:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718807020;
+	bh=E3CTTqhTne2YlNf6LRAW9Y7fzpkSc7Sj09P8H1Htm/U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k4BFccYm2njTLxvK+9lUIGmfYFIKc+8TexwaWHjKKBclahabrqa5ICAlMbQTc5nah
+	 44MtX0nV4oNblOV8mF7xcjcbc/iX0jZaLDNcXBzcIxIm8xOHCCwMqeHsbW0jFqSwmB
+	 ZK+223zzrT2fTjM7O0XTEqGg/mkkVHXqGKp+eNJGjnIh97qtWz2aIpOrt7DDbODBdY
+	 vuft3JVitTozFTfwDAbOr/1Mh8qf9MlVbmGoVvLSdQxEszrBEXUukkVDgutc7MKbwc
+	 5UADia0ZHiGhtOezErZjXI1nqWGyjhY0F9SrTO1Gj3GWRnLOzVMmp3tMM+pteh3szm
+	 ercy23GrSWNCw==
+Date: Wed, 19 Jun 2024 07:23:39 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] kbuild: Remove support for Clang's ThinLTO caching
+Message-ID: <20240619142339.GA1832103@thelio-3990X>
+References: <2024061340-troubling-automated-9989@gregkh>
+ <20240613183322.1088226-1-nathan@kernel.org>
+ <2024061937-footpad-altitude-1462@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/217] 6.1.95-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240619125556.491243678@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- HGuUuzv+GKZ6nsysJw==
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2024061937-footpad-altitude-1462@gregkh>
 
-
-
-On 6/19/2024 1:54 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.95 release.
-> There are 217 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Jun 19, 2024 at 12:51:55PM +0200, Greg KH wrote:
+> On Thu, Jun 13, 2024 at 11:33:22AM -0700, Nathan Chancellor wrote:
+> > commit aba091547ef6159d52471f42a3ef531b7b660ed8 upstream.
+> > 
+> > There is an issue in clang's ThinLTO caching (enabled for the kernel via
+> > '--thinlto-cache-dir') with .incbin, which the kernel occasionally uses
+> > to include data within the kernel, such as the .config file for
+> > /proc/config.gz. For example, when changing the .config and rebuilding
+> > vmlinux, the copy of .config in vmlinux does not match the copy of
+> > .config in the build folder:
+> > 
+> >   $ echo 'CONFIG_LTO_NONE=n
+> >   CONFIG_LTO_CLANG_THIN=y
+> >   CONFIG_IKCONFIG=y
+> >   CONFIG_HEADERS_INSTALL=y' >kernel/configs/repro.config
+> > 
+> >   $ make -skj"$(nproc)" ARCH=x86_64 LLVM=1 clean defconfig repro.config vmlinux
+> >   ...
+> > 
+> >   $ grep CONFIG_HEADERS_INSTALL .config
+> >   CONFIG_HEADERS_INSTALL=y
+> > 
+> >   $ scripts/extract-ikconfig vmlinux | grep CONFIG_HEADERS_INSTALL
+> >   CONFIG_HEADERS_INSTALL=y
+> > 
+> >   $ scripts/config -d HEADERS_INSTALL
+> > 
+> >   $ make -kj"$(nproc)" ARCH=x86_64 LLVM=1 vmlinux
+> >   ...
+> >     UPD     kernel/config_data
+> >     GZIP    kernel/config_data.gz
+> >     CC      kernel/configs.o
+> >   ...
+> >     LD      vmlinux
+> >   ...
+> > 
+> >   $ grep CONFIG_HEADERS_INSTALL .config
+> >   # CONFIG_HEADERS_INSTALL is not set
+> > 
+> >   $ scripts/extract-ikconfig vmlinux | grep CONFIG_HEADERS_INSTALL
+> >   CONFIG_HEADERS_INSTALL=y
+> > 
+> > Without '--thinlto-cache-dir' or when using full LTO, this issue does
+> > not occur.
+> > 
+> > Benchmarking incremental builds on a few different machines with and
+> > without the cache shows a 20% increase in incremental build time without
+> > the cache when measured by touching init/main.c and running 'make all'.
+> > 
+> > ARCH=arm64 defconfig + CONFIG_LTO_CLANG_THIN=y on an arm64 host:
+> > 
+> >   Benchmark 1: With ThinLTO cache
+> >     Time (mean ± σ):     56.347 s ±  0.163 s    [User: 83.768 s, System: 24.661 s]
+> >     Range (min … max):   56.109 s … 56.594 s    10 runs
+> > 
+> >   Benchmark 2: Without ThinLTO cache
+> >     Time (mean ± σ):     67.740 s ±  0.479 s    [User: 718.458 s, System: 31.797 s]
+> >     Range (min … max):   67.059 s … 68.556 s    10 runs
+> > 
+> >   Summary
+> >     With ThinLTO cache ran
+> >       1.20 ± 0.01 times faster than Without ThinLTO cache
+> > 
+> > ARCH=x86_64 defconfig + CONFIG_LTO_CLANG_THIN=y on an x86_64 host:
+> > 
+> >   Benchmark 1: With ThinLTO cache
+> >     Time (mean ± σ):     85.772 s ±  0.252 s    [User: 91.505 s, System: 8.408 s]
+> >     Range (min … max):   85.447 s … 86.244 s    10 runs
+> > 
+> >   Benchmark 2: Without ThinLTO cache
+> >     Time (mean ± σ):     103.833 s ±  0.288 s    [User: 232.058 s, System: 8.569 s]
+> >     Range (min … max):   103.286 s … 104.124 s    10 runs
+> > 
+> >   Summary
+> >     With ThinLTO cache ran
+> >       1.21 ± 0.00 times faster than Without ThinLTO cache
+> > 
+> > While it is unfortunate to take this performance improvement off the
+> > table, correctness is more important. If/when this is fixed in LLVM, it
+> > can potentially be brought back in a conditional manner. Alternatively,
+> > a developer can just disable LTO if doing incremental compiles quickly
+> > is important, as a full compile cycle can still take over a minute even
+> > with the cache and it is unlikely that LTO will result in functional
+> > differences for a kernel change.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: dc5723b02e52 ("kbuild: add support for Clang LTO")
+> > Reported-by: Yifan Hong <elsk@google.com>
+> > Closes: https://github.com/ClangBuiltLinux/linux/issues/2021
+> > Reported-by: Masami Hiramatsu <mhiramat@kernel.org>
+> > Closes: https://lore.kernel.org/r/20220327115526.cc4b0ff55fc53c97683c3e4d@kernel.org/
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> > [nathan: Address conflict in Makefile]
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > ---
+> >  Makefile | 5 ++---
+> >  1 file changed, 2 insertions(+), 3 deletions(-)
 > 
-> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
-> Anything received after that time might be too late.
+> This applied to 5.15.y, not 6.1.y :(
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.95-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> Can you rebase and resend a fix for 6.1.y?
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+I don't understand how that is possible, this was generated directly on
+top of 6.1.93 (as evidenced by the base commit) and there were no
+changes to Makefile in 6.1.94. It still applies cleanly for me?
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+  $ curl -LSs https://lore.kernel.org/all/20240613183322.1088226-1-nathan@kernel.org/raw | patch -p1
+  patching file Makefile
+
+Cheers,
+Nathan
 
