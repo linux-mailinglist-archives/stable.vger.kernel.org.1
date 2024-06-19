@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-53789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393A290E63E
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:49:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701DA90E64C
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7712283F2D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:49:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819F91C2197A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F47F7C6DF;
-	Wed, 19 Jun 2024 08:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3417D075;
+	Wed, 19 Jun 2024 08:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FaBOVCgX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQ5+b5tZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009F42139B1
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7E17BB15
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718786984; cv=none; b=eaujY7KevEjjZXdPvFAmFYQuOpjOPQdUdtHQsu3/GJcZcs1JYoW35SY6CV/CkmH0qVCTSmY5skjeHt8sxyEqqa30kaWo9bO5n6hXqEBbPGYESXoI16CMHLdk5NS884CJzNnrWCxyOISwVYjlRpGiq96A4XzJb0jxPErE4Six8iw=
+	t=1718787092; cv=none; b=S8PXSwVNf/eobbKZQyppBuNosNHHTqjd/hFC7vG+Jhy1YhPi5P3v+gY/ukki1lKUKPBjXVGHyqHiTHtlCmitnag5c+XXTY3bj5xvO//WL8DsLfaEf+9JQ28TlD5yJ0/hhpGzjQS5zfyDX81jjvZSbh2VaDpbljLe/jlOHeLWTDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718786984; c=relaxed/simple;
-	bh=fcZDrjD29BXKZPcDZwkx78OBSTrsUN8FD8jiw4Q/8A4=;
+	s=arc-20240116; t=1718787092; c=relaxed/simple;
+	bh=BW/0xiWauTklwmPyBYspH//6h+G191srJ+5J1pw9obI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jw3I3c/nv+kFm/imO1lvqQlXuCtCJ//3J3PglkYr5our13iOcmyz+pzEu8XL4gWclXKtkGoUhOW46oml4eS+Wh8nO4FFT/MTyXuMYdSwPODWVXS6v3ZoBw7IwYByMoB2Dzzh6p1djKb57C0XN4IXzX/NXCPQrCCQs8bmDkx3kuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FaBOVCgX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 708C0C2BBFC;
-	Wed, 19 Jun 2024 08:49:43 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=j2Nxn6rGlYgs9wQ50MBhnXvDtmsTBHwp2jJ5uM/onVBIRKw/W/S+Z8CSvFyg3eOa6bQ3v92iHUPQGnyhzR/BVKunXWYWtgt9LVpKkOahECA9nv2jg+V8gu8UBAPjtwu27psJzk/dNRuXc14MYCVlmU21d8+EH8sG2rxUER8ZRRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQ5+b5tZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89098C2BBFC;
+	Wed, 19 Jun 2024 08:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718786983;
-	bh=fcZDrjD29BXKZPcDZwkx78OBSTrsUN8FD8jiw4Q/8A4=;
+	s=korg; t=1718787091;
+	bh=BW/0xiWauTklwmPyBYspH//6h+G191srJ+5J1pw9obI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FaBOVCgXvAeqfGIAKVm5PFdaLSgUXUkf9A8N53xN53ggwoA1GDu+HZuk7MZ7TDvXV
-	 Vud4vahQLc3z5YnD9hL4peHoXHK0BzNcnUA5u5r4jXhWjN/CScG+71eDLXf3xJZ6Es
-	 6GPKaZ76w/6+syEXQWvmVK2UrxC4a26l3xf3MN4c=
-Date: Wed, 19 Jun 2024 10:49:41 +0200
+	b=RQ5+b5tZTIMWqqDf7ofGAXil3Bbj2J1lU3mivvompWm6k+qCJNEN+VQ8qj6j1kvoB
+	 Ane4XM4QDvxKLK0cEuNMDxzKmd5XIph0FeOuPZl2pvjNhCu76vCo1R1qWG2eoztjSv
+	 ju5l42lkVtxtpZdrEvQy/adgBgERFdJy9cvTc94I=
+Date: Wed, 19 Jun 2024 10:51:28 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Po-Hsu Lin <po-hsu.lin@canonical.com>
-Cc: stable@vger.kernel.org, petrm@nvidia.com, liuhangbin@gmail.com,
-	pabeni@redhat.com, kuba@kernel.org, bpoirier@nvidia.com,
-	idosch@nvidia.com
-Subject: Re: [PATCHv2 6.6.y 1/3] selftests/net: add lib.sh
-Message-ID: <2024061911-crinkly-pointer-f564@gregkh>
-References: <20240618075306.1073405-1-po-hsu.lin@canonical.com>
- <20240618075306.1073405-2-po-hsu.lin@canonical.com>
+To: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Cc: stable@vger.kernel.org,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH 6.9 1/2] wifi: iwlwifi: mvm: support
+ iwl_dev_tx_power_cmd_v8
+Message-ID: <2024061917-kinswoman-nylon-c35f@gregkh>
+References: <20240618110924.24509-1-emmanuel.grumbach@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,41 +56,22 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240618075306.1073405-2-po-hsu.lin@canonical.com>
+In-Reply-To: <20240618110924.24509-1-emmanuel.grumbach@intel.com>
 
-On Tue, Jun 18, 2024 at 03:53:04PM +0800, Po-Hsu Lin wrote:
-> From: Hangbin Liu <liuhangbin@gmail.com>
+On Tue, Jun 18, 2024 at 02:09:23PM +0300, Emmanuel Grumbach wrote:
+> commit 8f892e225f416fcf2b55a0f9161162e08e2b0cc7 upstream.
 > 
-> commit 25ae948b447881bf689d459cd5bd4629d9c04b20 upstream.
-> 
-> Add a lib.sh for net selftests. This file can be used to define commonly
-> used variables and functions. Some commonly used functions can be moved
-> from forwarding/lib.sh to this lib file. e.g. busywait().
-> 
-> Add function setup_ns() for user to create unique namespaces with given
-> prefix name.
-> 
-> Reviewed-by: Petr Machata <petrm@nvidia.com>
-> Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> Signed-off-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
-> ---
->  tools/testing/selftests/net/Makefile          |  2 +-
->  tools/testing/selftests/net/forwarding/lib.sh | 27 +--------
->  tools/testing/selftests/net/lib.sh            | 85 +++++++++++++++++++++++++++
->  3 files changed, 87 insertions(+), 27 deletions(-)
->  create mode 100644 tools/testing/selftests/net/lib.sh
+> This just adds a __le32 that we (currently) don't use.
 
-This patch fails to apply on the lates 6.6.y tree:
-	checking file tools/testing/selftests/net/Makefile
-	Hunk #1 FAILED at 54.
-	1 out of 1 hunk FAILED
-	checking file tools/testing/selftests/net/forwarding/lib.sh
-	checking file tools/testing/selftests/net/lib.sh
+Why is this needed for a stable tree if this is nothing that is actually
+used and then we need another fix for it after that?
 
-Please rebase and resubmit.
+I can't see how this commit actually does anything on it's own, what am
+I missing?
 
-thanks,
+What bug is this fixing?  A regression?  Is this a new feature?
+
+confused,
 
 greg k-h
 
