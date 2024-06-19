@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-54341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED67190EDBF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:22:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6387E90EED0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85E50287389
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:22:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 101791F21683
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B11A14E2CB;
-	Wed, 19 Jun 2024 13:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1559614B07B;
+	Wed, 19 Jun 2024 13:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvKVwb9k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCsXuSAk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4991E14B95F;
-	Wed, 19 Jun 2024 13:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C684D14387E;
+	Wed, 19 Jun 2024 13:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803293; cv=none; b=ktRUCjP4Jxu3Dn+Svhv3XK69mSUsyPH1ZPSiOHBm/U5ihBs2stx6u1SlgD1R8eZNO3bmetJooOOgPc5PmfzaS1YqxbVv0R7OLQHMENXOn/WuknG1gSjn+52shPni2lYwmqI7D/n4iwqGBew/rKe7LLD9wXge/ibZDjn2bdHr2oY=
+	t=1718803932; cv=none; b=Mw7kQkCWgpTxj32xbrC6dnMenDJLOdzSpSBG8fntbYcnumbzjD4jnRFwUDX2/lAJMqxrUSJyRwuQB8EqX4hFHZR4tBV+rlInB3xEhyjsbT+72/kMXIlsCvfEn0ScBorcVz0kBrSQbkjcJ44c2ZfJSZyGpD4bANt6wX7Er/sjGj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803293; c=relaxed/simple;
-	bh=c/pLYxiI+4mo21F7cPkYMyhO4BWVNYO+crBNBsBKLCA=;
+	s=arc-20240116; t=1718803932; c=relaxed/simple;
+	bh=ZUfagm6xbeCanYB+nEN7Vgy54cgwxhkhekEABUfgAdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8GpYQFeTplYU5TZKWm3ZeBuo6l7zJPWvdThOjTWcZkkZTaJcBPH8FHi9W00cjk1bnhw67CZtHjBXD0Jt1e8RVm3Z7kO71D+b6ZOQQWJm+Ol6512D9F/qgscRICxZ9ZYlB024Pn5ns10JYiGEN/f/+WL2zhHcI0zwsX4ji9CRd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvKVwb9k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C046EC2BBFC;
-	Wed, 19 Jun 2024 13:21:32 +0000 (UTC)
+	 MIME-Version; b=Wo0WoX6J6D2y/vyQ3tiwhLkB4kLHwpQCPuBb/dUF0zSmIphmx9thVJMrhi5xcDFgNOp6dC+Zm7BoSXSoZqgPWk4FGoRK5Gg0dyAMITn2gV89XqHb2YxsTTzKODDT+zHPnAkSWitoaJqoSeYT7mCkVD/ytKx5/u2IyLfqm+plXk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCsXuSAk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBD0C2BBFC;
+	Wed, 19 Jun 2024 13:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803293;
-	bh=c/pLYxiI+4mo21F7cPkYMyhO4BWVNYO+crBNBsBKLCA=;
+	s=korg; t=1718803932;
+	bh=ZUfagm6xbeCanYB+nEN7Vgy54cgwxhkhekEABUfgAdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZvKVwb9k6aaBLgETVqpSk2bxjMNX5b10p5YzPlD6JeJk5Riz4QzDEihIX8nX8oHyL
-	 4e9bobgbKAymb+9qoYo7StPzEqqa4nwX2yTvU9ElldVXaQQgIS6UpMUfKX0MPKKrOc
-	 5XRZrjG1GXjE0a68IPvQnyFnoV9RulJ/+Qys0v1U=
+	b=FCsXuSAkntlef8Q3JKAHGZU9dwOezDWy44CVoe/Qxj0WP4rgYN+4uKriy0+rF46hT
+	 ZEn6oORamOFpZvChbYyxBn61lxC/pZHvAYSadzI7qv+H7KlQbJhGF09WCr9drIIT4O
+	 s+3ts2y8Fg4IUevYoQpIJQHO7fHpHEThW5V4MCMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Kleen <ak@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 6.9 219/281] perf script: Show also errors for --insn-trace option
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 135/217] drm/vmwgfx: Filter modes which exceed graphics memory
 Date: Wed, 19 Jun 2024 14:56:18 +0200
-Message-ID: <20240619125618.388332098@linuxfoundation.org>
+Message-ID: <20240619125601.899858187@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-commit d4a98b45fbe6d06f4b79ed90d0bb05ced8674c23 upstream.
+[ Upstream commit 426826933109093503e7ef15d49348fc5ab505fe ]
 
-The trace could be misleading if trace errors are not taken into
-account, so display them also by adding the itrace "e" option.
+SVGA requires individual surfaces to fit within graphics memory
+(max_mob_pages) which means that modes with a final buffer size that would
+exceed graphics memory must be pruned otherwise creation will fail.
 
-Note --call-trace and --call-ret-trace already add the itrace "e"
-option.
+Additionally llvmpipe requires its buffer height and width to be a multiple
+of its tile size which is 64. As a result we have to anticipate that
+llvmpipe will round up the mode size passed to it by the compositor when
+it creates buffers and filter modes where this rounding exceeds graphics
+memory.
 
-Fixes: b585ebdb5912cf14 ("perf script: Add --insn-trace for instruction decoding")
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240315071334.3478-1-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes an issue where VMs with low graphics memory (< 64MiB) configured
+with high resolution mode boot to a black screen because surface creation
+fails.
+
+Fixes: d947d1b71deb ("drm/vmwgfx: Add and connect connector helper function")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240521184720.767-2-ian.forbes@broadcom.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-script.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c | 45 ++++++++++++++++++++++++++--
+ 1 file changed, 43 insertions(+), 2 deletions(-)
 
---- a/tools/perf/builtin-script.c
-+++ b/tools/perf/builtin-script.c
-@@ -3806,7 +3806,7 @@ static int parse_insn_trace(const struct
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+index b3e70ace6d9b0..6dd33d1258d11 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+@@ -40,7 +40,14 @@
+ #define vmw_connector_to_stdu(x) \
+ 	container_of(x, struct vmw_screen_target_display_unit, base.connector)
  
--	itrace_parse_synth_opts(opt, "i0ns", 0);
-+	itrace_parse_synth_opts(opt, "i0nse", 0);
- 	symbol_conf.nanosecs = true;
- 	return 0;
+-
++/*
++ * Some renderers such as llvmpipe will align the width and height of their
++ * buffers to match their tile size. We need to keep this in mind when exposing
++ * modes to userspace so that this possible over-allocation will not exceed
++ * graphics memory. 64x64 pixels seems to be a reasonable upper bound for the
++ * tile size of current renderers.
++ */
++#define GPU_TILE_SIZE 64
+ 
+ enum stdu_content_type {
+ 	SAME_AS_DISPLAY = 0,
+@@ -972,7 +979,41 @@ static void vmw_stdu_connector_destroy(struct drm_connector *connector)
+ 	vmw_stdu_destroy(vmw_connector_to_stdu(connector));
  }
+ 
++static enum drm_mode_status
++vmw_stdu_connector_mode_valid(struct drm_connector *connector,
++			      struct drm_display_mode *mode)
++{
++	enum drm_mode_status ret;
++	struct drm_device *dev = connector->dev;
++	struct vmw_private *dev_priv = vmw_priv(dev);
++	u64 assumed_cpp = dev_priv->assume_16bpp ? 2 : 4;
++	/* Align width and height to account for GPU tile over-alignment */
++	u64 required_mem = ALIGN(mode->hdisplay, GPU_TILE_SIZE) *
++			   ALIGN(mode->vdisplay, GPU_TILE_SIZE) *
++			   assumed_cpp;
++	required_mem = ALIGN(required_mem, PAGE_SIZE);
++
++	ret = drm_mode_validate_size(mode, dev_priv->stdu_max_width,
++				     dev_priv->stdu_max_height);
++	if (ret != MODE_OK)
++		return ret;
+ 
++	ret = drm_mode_validate_size(mode, dev_priv->texture_max_width,
++				     dev_priv->texture_max_height);
++	if (ret != MODE_OK)
++		return ret;
++
++	if (required_mem > dev_priv->max_primary_mem)
++		return MODE_MEM;
++
++	if (required_mem > dev_priv->max_mob_pages * PAGE_SIZE)
++		return MODE_MEM;
++
++	if (required_mem > dev_priv->max_mob_size)
++		return MODE_MEM;
++
++	return MODE_OK;
++}
+ 
+ static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
+ 	.dpms = vmw_du_connector_dpms,
+@@ -988,7 +1029,7 @@ static const struct drm_connector_funcs vmw_stdu_connector_funcs = {
+ static const struct
+ drm_connector_helper_funcs vmw_stdu_connector_helper_funcs = {
+ 	.get_modes = vmw_connector_get_modes,
+-	.mode_valid = vmw_connector_mode_valid
++	.mode_valid = vmw_stdu_connector_mode_valid
+ };
+ 
+ 
+-- 
+2.43.0
+
 
 
 
