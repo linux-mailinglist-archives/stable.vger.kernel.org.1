@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-53984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF0090EC28
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9628C90ED58
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1981F2390F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 421171F21F1A
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90967143873;
-	Wed, 19 Jun 2024 13:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8852143C65;
+	Wed, 19 Jun 2024 13:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ap5LLgzF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dvy8YZOY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C11982871;
-	Wed, 19 Jun 2024 13:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96C134315F;
+	Wed, 19 Jun 2024 13:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802252; cv=none; b=csUUC8SfROakc2qZ+mKN8+N7LzwDeRPibB6FgrK68hO0N/6pkIwR5gGHmiu6CEd8FfnxjaANnfGK9v7Owp9B1XLwovnLlVnbnK2olxraYVzkNB0PuCXKrNGvi12pkSOuf7FvgljI4B/jmTlyfsOqS/EocFTsUBnCCUx4vmW7GaE=
+	t=1718803019; cv=none; b=XhXZjCW534hFfEsGWhRRfCG3Fs8xCSLQrTeRo/5vkD3bHY+uHO94HGdqLK7lB52Nv+WGEaYBBTrbD/dlb+9wujvrvWRznR53oVOtyVlEjAxDYQ0O2UoAFUAMs6wJaK8PXjUKMAhBNXM6pgpUrw0IcxQ7HDcJwn3v6jXOnO2ccIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802252; c=relaxed/simple;
-	bh=hT99GLNEp4L+0D9aYJLSvC7eqBedVB31EQQNOG6NkAQ=;
+	s=arc-20240116; t=1718803019; c=relaxed/simple;
+	bh=mF2mOPWDHBMM+TC8BtWIHOTxfz8fsFbjmcgq6li51j0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E1pa+42/gph4v/8MTeKeoOMjStVo4fBg1TT4QazK+XMli/RcIdp6L0I3h7xdZXsfb2KAd0CMkyiFhizZhcyFNbYXLxIUzaEyIKPiRsNp/BQPsY6C3+lSDMo4+aARBUWegsotEpXM5EyDwVSSR1GB39pjPJ/6y0rVjP3mi6ymzaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ap5LLgzF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DA1C4AF1D;
-	Wed, 19 Jun 2024 13:04:11 +0000 (UTC)
+	 MIME-Version; b=ZhMRfEKC52Bw+4O5wI37VOAc9CY8Jsz+TxWr302vC1ziVl/hPTOjgfdmW7AeJyTjB51fh6hKORj30FH0L1MZPQfE4EubgOseCa78lyd514dR/yLFI6cAD92IOhJJDuaJTHsrDMREpZBdCADLBnorHegmQMNkwT4vUDFaGMaMPEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dvy8YZOY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E707C32786;
+	Wed, 19 Jun 2024 13:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802252;
-	bh=hT99GLNEp4L+0D9aYJLSvC7eqBedVB31EQQNOG6NkAQ=;
+	s=korg; t=1718803019;
+	bh=mF2mOPWDHBMM+TC8BtWIHOTxfz8fsFbjmcgq6li51j0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ap5LLgzFyOIBCMYsQHWsvI5lsiOdeVzwk4DyQO2ZquriPdrQqfddW6IwLmuaqj0PN
-	 JtnPj/a9jUNrVsZy+rW3RNOCxpUJReY1A142OWrGo1Nvi+iapSGRadGtvKeGcMdwdz
-	 WE2fiGSYnEB+irPQx03B9c8Mi9uWkRFn0NVr8x+s=
+	b=Dvy8YZOYSyW3ZNNztTKGc6Gxj1opu41GbkvLbnifPGrMai9QSJr5thXojJY62TJym
+	 DvHhKcVw6icNHKryL8flQM4QqGBaT02/QDiG6Gydl60FyGLf8HXzsiHQRCkWBaPtkk
+	 2tjXbcjj69Jbqb4CaQjDyl5612MtfJWqYBSGkTA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/267] HID: logitech-dj: Fix memory leak in logi_dj_recv_switch_to_dj_mode()
+Subject: [PATCH 6.9 126/281] selftests/futex: dont pass a const char* to asprintf(3)
 Date: Wed, 19 Jun 2024 14:54:45 +0200
-Message-ID: <20240619125611.493665613@linuxfoundation.org>
+Message-ID: <20240619125614.693591261@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Expósito <jose.exposito89@gmail.com>
+From: John Hubbard <jhubbard@nvidia.com>
 
-[ Upstream commit ce3af2ee95170b7d9e15fff6e500d67deab1e7b3 ]
+[ Upstream commit 4bf15b1c657d22d1d70173e43264e4606dfe75ff ]
 
-Fix a memory leak on logi_dj_recv_send_report() error path.
+When building with clang, via:
 
-Fixes: 6f20d3261265 ("HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()")
-Signed-off-by: José Expósito <jose.exposito89@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+    make LLVM=1 -C tools/testing/selftests
+
+...clang issues this warning:
+
+futex_requeue_pi.c:403:17: warning: passing 'const char **' to parameter
+of type 'char **' discards qualifiers in nested pointer types
+[-Wincompatible-pointer-types-discards-qualifiers]
+
+This warning fires because test_name is passed into asprintf(3), which
+then changes it.
+
+Fix this by simply removing the const qualifier. This is a local
+automatic variable in a very short function, so there is not much need
+to use the compiler to enforce const-ness at this scope.
+
+[1] https://lore.kernel.org/all/20240329-selftests-libmk-llvm-rfc-v1-1-2f9ed7d1c49f@valentinobst.de/
+
+Fixes: f17d8a87ecb5 ("selftests: fuxex: Report a unique test name per run of futex_requeue_pi")
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-dj.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/testing/selftests/futex/functional/futex_requeue_pi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
-index 3c3c497b6b911..37958edec55f5 100644
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -1284,8 +1284,10 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
- 		 */
- 		msleep(50);
+diff --git a/tools/testing/selftests/futex/functional/futex_requeue_pi.c b/tools/testing/selftests/futex/functional/futex_requeue_pi.c
+index 7f3ca5c78df12..215c6cb539b4a 100644
+--- a/tools/testing/selftests/futex/functional/futex_requeue_pi.c
++++ b/tools/testing/selftests/futex/functional/futex_requeue_pi.c
+@@ -360,7 +360,7 @@ int unit_test(int broadcast, long lock, int third_party_owner, long timeout_ns)
  
--		if (retval)
-+		if (retval) {
-+			kfree(dj_report);
- 			return retval;
-+		}
- 	}
+ int main(int argc, char *argv[])
+ {
+-	const char *test_name;
++	char *test_name;
+ 	int c, ret;
  
- 	/*
+ 	while ((c = getopt(argc, argv, "bchlot:v:")) != -1) {
 -- 
 2.43.0
 
