@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-53922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B083290EBE1
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:02:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E1F90ED16
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 672C61F2562B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:02:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4D2B2825AC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3FF14A4FC;
-	Wed, 19 Jun 2024 13:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D613D1474C8;
+	Wed, 19 Jun 2024 13:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJCZLLwk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFDanWSf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0101304AD;
-	Wed, 19 Jun 2024 13:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EE114389C;
+	Wed, 19 Jun 2024 13:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802069; cv=none; b=MBZEQM9Qrz+fv2czF9I9ChBzEI5cov6DwCq85FpJuV5Fln+g2wM39SsjH7774wJGhfYF0hfNwO5dGhX98b87FMF9T4iaozWaxfVGRHDuVRH2dVQVVX1jYY1tdRS9BgwonwTJK8A1dT3EuifYU8zWMkht8b5vrqyThfbYVFEwR8c=
+	t=1718802836; cv=none; b=donxpGhlKTw50v2tBtySSlbsxS/w0khcSDMXDRu5eoEW3CP5gh8CeXPPb1VYNkL8HgBgmqY1CagZIf1tX+neQ9dvwUbtgUe2t3e7zlHpYQ7EnCj3lrZf4Rk3hyGzY2NB2t8CLBRx/VBrjENDrKO00QNCwCftWyF6vnekx+4X1e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802069; c=relaxed/simple;
-	bh=+EjE2tPMHHhuoiB5txqcnd0A6YG7CbaBjf8DL+4g6BE=;
+	s=arc-20240116; t=1718802836; c=relaxed/simple;
+	bh=fSWJ9w++qsXy3ALzpFO6HFVcUyEMV+gDESgBM3a5DQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QdFVByc5+xnFoozS9l6sZJIzdc00CeJR3idKrxgjVTDqOz31mz09K618nY+8718e9CtpG/96EojH2z9Y3w7ASfqUWzBI0SveQsq8Jpz4yqAr57r+vqK42ZhZc9vsYMfpQjAJ0W/ryqzVx6RRzcWs6TiFQFpB2W272Cgjoo3pk7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJCZLLwk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61DCC2BBFC;
-	Wed, 19 Jun 2024 13:01:08 +0000 (UTC)
+	 MIME-Version; b=MrGfmKP+l4YPhmegAPRaYjp0Co9lAvVBc4WWsEsNt8NqiS5NnbOB/zgAiLD+OfCw1q17doogVKMFFUQsDS5JK5Sx9E+9RSVwKzJhjeBBDeH5pI52WVv5X2iYJMnl8+9M4MHuvPerAoheRInlpM59s+YT3zXvQhzoUp54sJGxSzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFDanWSf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E824C2BBFC;
+	Wed, 19 Jun 2024 13:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802069;
-	bh=+EjE2tPMHHhuoiB5txqcnd0A6YG7CbaBjf8DL+4g6BE=;
+	s=korg; t=1718802836;
+	bh=fSWJ9w++qsXy3ALzpFO6HFVcUyEMV+gDESgBM3a5DQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJCZLLwk0JFdYa6trI+aYAsWIOlhkumRJLkOVNSepcBOwqlCBUysWmsev5FK6m3Hh
-	 OeGZSxnoixR+d+0QE68tJCYZkRy6iCuHzFyqfY0PL8QQ3pdoRnw2w2AGV2gx2t2+oM
-	 V2kRIDvmwO85bkARgISNGpCGXBCTPSAG9RT5zk6Q=
+	b=WFDanWSfIyGXVY5p4+YL2LVE/kxiRs+vahHxaM5HHa77ImX6QLda1oaUQlSabPEEE
+	 rNy4VFyxse3jMDIi0x21JO7+/CmtM0LLSINZ38iNcxSsRa+ZjkZba0fUt5zwzfbr3b
+	 hOW14jz4a5uh+RibTPJPNTV7P+rP3tRvfoRs4gTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Chien Peter Lin <peterlin@andestech.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Randolph <randolph@andestech.com>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atishp@rivosinc.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/267] irqchip/riscv-intc: Allow large non-standard interrupt number
+Subject: [PATCH 6.9 063/281] af_unix: Annotate data-race of sk->sk_state in unix_stream_read_skb().
 Date: Wed, 19 Jun 2024 14:53:42 +0200
-Message-ID: <20240619125609.081985755@linuxfoundation.org>
+Message-ID: <20240619125612.271435336@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Chien Peter Lin <peterlin@andestech.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 96303bcb401c21dc1426d8d9bb1fc74aae5c02a9 ]
+[ Upstream commit af4c733b6b1aded4dc808fafece7dfe6e9d2ebb3 ]
 
-Currently, the implementation of the RISC-V INTC driver uses the
-interrupt cause as the hardware interrupt number, with a maximum of
-64 interrupts. However, the platform can expand the interrupt number
-further for custom local interrupts.
+unix_stream_read_skb() is called from sk->sk_data_ready() context
+where unix_state_lock() is not held.
 
-To fully utilize the available local interrupt sources, switch
-to using irq_domain_create_tree() that creates the radix tree
-map, add global variables (riscv_intc_nr_irqs, riscv_intc_custom_base
-and riscv_intc_custom_nr_irqs) to determine the valid range of local
-interrupt number (hwirq).
+Let's use READ_ONCE() there.
 
-Signed-off-by: Yu Chien Peter Lin <peterlin@andestech.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Randolph <randolph@andestech.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/r/20240222083946.3977135-3-peterlin@andestech.com
-Stable-dep-of: 0110c4b11047 ("irqchip/riscv-intc: Prevent memory leak when riscv_intc_init_common() fails")
+Fixes: 77462de14a43 ("af_unix: Add read_sock for stream socket types")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-intc.c | 26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ net/unix/af_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
-index e8d01b14ccdde..684875c397280 100644
---- a/drivers/irqchip/irq-riscv-intc.c
-+++ b/drivers/irqchip/irq-riscv-intc.c
-@@ -19,15 +19,16 @@
- #include <linux/smp.h>
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index d92e664032121..9f266a7679cbc 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -2706,7 +2706,7 @@ static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk,
  
- static struct irq_domain *intc_domain;
-+static unsigned int riscv_intc_nr_irqs __ro_after_init = BITS_PER_LONG;
-+static unsigned int riscv_intc_custom_base __ro_after_init = BITS_PER_LONG;
-+static unsigned int riscv_intc_custom_nr_irqs __ro_after_init;
- 
- static asmlinkage void riscv_intc_irq(struct pt_regs *regs)
+ static int unix_stream_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
  {
- 	unsigned long cause = regs->cause & ~CAUSE_IRQ_FLAG;
+-	if (unlikely(sk->sk_state != TCP_ESTABLISHED))
++	if (unlikely(READ_ONCE(sk->sk_state) != TCP_ESTABLISHED))
+ 		return -ENOTCONN;
  
--	if (unlikely(cause >= BITS_PER_LONG))
--		panic("unexpected interrupt cause");
--
--	generic_handle_domain_irq(intc_domain, cause);
-+	if (generic_handle_domain_irq(intc_domain, cause))
-+		pr_warn_ratelimited("Failed to handle interrupt (cause: %ld)\n", cause);
- }
- 
- /*
-@@ -93,6 +94,14 @@ static int riscv_intc_domain_alloc(struct irq_domain *domain,
- 	if (ret)
- 		return ret;
- 
-+	/*
-+	 * Only allow hwirq for which we have corresponding standard or
-+	 * custom interrupt enable register.
-+	 */
-+	if ((hwirq >= riscv_intc_nr_irqs && hwirq < riscv_intc_custom_base) ||
-+	    (hwirq >= riscv_intc_custom_base + riscv_intc_custom_nr_irqs))
-+		return -EINVAL;
-+
- 	for (i = 0; i < nr_irqs; i++) {
- 		ret = riscv_intc_domain_map(domain, virq + i, hwirq + i);
- 		if (ret)
-@@ -117,8 +126,7 @@ static int __init riscv_intc_init_common(struct fwnode_handle *fn)
- {
- 	int rc;
- 
--	intc_domain = irq_domain_create_linear(fn, BITS_PER_LONG,
--					       &riscv_intc_domain_ops, NULL);
-+	intc_domain = irq_domain_create_tree(fn, &riscv_intc_domain_ops, NULL);
- 	if (!intc_domain) {
- 		pr_err("unable to add IRQ domain\n");
- 		return -ENXIO;
-@@ -132,7 +140,11 @@ static int __init riscv_intc_init_common(struct fwnode_handle *fn)
- 
- 	riscv_set_intc_hwnode_fn(riscv_intc_hwnode);
- 
--	pr_info("%d local interrupts mapped\n", BITS_PER_LONG);
-+	pr_info("%d local interrupts mapped\n", riscv_intc_nr_irqs);
-+	if (riscv_intc_custom_nr_irqs) {
-+		pr_info("%d custom local interrupts mapped\n",
-+			riscv_intc_custom_nr_irqs);
-+	}
- 
- 	return 0;
- }
+ 	return unix_read_skb(sk, recv_actor);
 -- 
 2.43.0
 
