@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-54047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2775190EC6B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:07:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5A090EEB8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA47C284003
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:07:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7B3E1C244AF
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B8B14900C;
-	Wed, 19 Jun 2024 13:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B1913D8BF;
+	Wed, 19 Jun 2024 13:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTfftw7p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0p3zTXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83419148308;
-	Wed, 19 Jun 2024 13:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E0A1E492;
+	Wed, 19 Jun 2024 13:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802435; cv=none; b=byGWtpzl9btR4YbwOa8DFg0ngf1KD9KEde0zpCAQN2WL+iHSdR8sj49ao6GgyRP/q/x6LhkF0akq3c/fsm0CTH05rb4kfzyQKvdz+CFxUDGXHrN7nkiLqOLPWCo/apx03m0nK7iaczJtJxkz+jIp9CYWRveDAu/OGHXtSYMPtfo=
+	t=1718803884; cv=none; b=GuAfSBULEg7FFZKhzriUaGc6rjo6wt7DLpe4n7wQugqKcbi98WizutoMhcFPW23xuzvYZ0My1yzuqlAYNEhR292zUQXd2IakfJYPGaRTrcEL1JDoJGpjfDIdxJA6DuixS12pbAIihMfoXaSVxMogrZbbCzMD8pbXKfEwbqDTYcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802435; c=relaxed/simple;
-	bh=p6JjRN67d0MHVXyWNV1THzpU3oh4XU9pjj5d2Y6GOK0=;
+	s=arc-20240116; t=1718803884; c=relaxed/simple;
+	bh=uKDYojAEwYv0T5pSfVnoTIupPs45N5gxsNhpIu219Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKGrJov7LFIQXd/9OAuT9GJ1c0xL7H0dptSp7VzeLK6WJrgClIQGKxteZj5MNLmVHdFw0OFDNk1Rbj2vHA/OvEJCGL0gC9HCli+QOfNX+ZnyOXebgBgLHsrL/Lp01ZFvYHXGhZHbDB6ENr548Gd3DHawbUJhnex+cmnr86je32o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTfftw7p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B54C4AF1A;
-	Wed, 19 Jun 2024 13:07:14 +0000 (UTC)
+	 MIME-Version; b=t3/B7euyJ7bky2DAUPdaGV/EM/ycCNNXHXRQZDhKTzONLFYG3LfK0Dk6kj9iFDCSytIihvc1luYukYrOogJ+jEAA7D6FYgU9wxKM0qJXEXzVVwvUhxIKCDee+UAo7wgLJopDBNLddr38KGlDpUj9AmSJiEffu/LghyAjwV0n+1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0p3zTXY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245D2C2BBFC;
+	Wed, 19 Jun 2024 13:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802435;
-	bh=p6JjRN67d0MHVXyWNV1THzpU3oh4XU9pjj5d2Y6GOK0=;
+	s=korg; t=1718803884;
+	bh=uKDYojAEwYv0T5pSfVnoTIupPs45N5gxsNhpIu219Dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bTfftw7p+6aINMtOPqhFvWGh0jVxinYVaojJWluouZ0VBXH/uZVo2jvOf3WrpdZdz
-	 B255psRiLCNhhJ2h/RLyn9J5qIGnrWuEjWO4jehVIKXrgtaeLVIEk9tUjXkjqoZ8hO
-	 4iDf2HTEoQwoJPhkNXhc76/XgXi0MzVZko8PA4hI=
+	b=n0p3zTXYI67AGm3HOF/44wvq4LdRcq+HD2sZhlPzuRtf1KT5srOp0OnNAGvcBTVcl
+	 bN9Llt5jfeANP4xz+cJcXbW6sc6y8s6HKAZylKpuniyjuYUOzw15GyXGMzglxCp3Ha
+	 +CLwSUid+15qxH0gwRBU/owfc+Fvzj5NllHg0SiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Maennich <maennich@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.6 196/267] kheaders: explicitly define file modes for archived headers
-Date: Wed, 19 Jun 2024 14:55:47 +0200
-Message-ID: <20240619125613.857602761@linuxfoundation.org>
+	Baokun Li <libaokun1@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/217] cachefiles: add output string to cachefiles_obj_[get|put]_ondemand_fd
+Date: Wed, 19 Jun 2024 14:55:48 +0200
+Message-ID: <20240619125600.742357615@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Maennich <maennich@google.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 3bd27a847a3a4827a948387cc8f0dbc9fa5931d5 upstream.
+[ Upstream commit cc5ac966f26193ab185cc43d64d9f1ae998ccb6e ]
 
-Build environments might be running with different umask settings
-resulting in indeterministic file modes for the files contained in
-kheaders.tar.xz. The file itself is served with 444, i.e. world
-readable. Archive the files explicitly with 744,a+X to improve
-reproducibility across build environments.
+This lets us see the correct trace output.
 
---mode=0444 is not suitable as directories need to be executable. Also,
-444 makes it hard to delete all the readonly files after extraction.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthias Maennich <maennich@google.com>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8383054506c ("cachefiles: notify the user daemon when looking up cookie")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240522114308.2402121-2-libaokun@huaweicloud.com
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/gen_kheaders.sh |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/trace/events/cachefiles.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/gen_kheaders.sh
-+++ b/kernel/gen_kheaders.sh
-@@ -89,7 +89,7 @@ find $cpio_dir -type f -print0 |
+diff --git a/include/trace/events/cachefiles.h b/include/trace/events/cachefiles.h
+index d8d4d73fe7b6a..b4939097f5116 100644
+--- a/include/trace/events/cachefiles.h
++++ b/include/trace/events/cachefiles.h
+@@ -127,7 +127,9 @@ enum cachefiles_error_trace {
+ 	EM(cachefiles_obj_see_lookup_cookie,	"SEE lookup_cookie")	\
+ 	EM(cachefiles_obj_see_lookup_failed,	"SEE lookup_failed")	\
+ 	EM(cachefiles_obj_see_withdraw_cookie,	"SEE withdraw_cookie")	\
+-	E_(cachefiles_obj_see_withdrawal,	"SEE withdrawal")
++	EM(cachefiles_obj_see_withdrawal,	"SEE withdrawal")	\
++	EM(cachefiles_obj_get_ondemand_fd,      "GET ondemand_fd")	\
++	E_(cachefiles_obj_put_ondemand_fd,      "PUT ondemand_fd")
  
- # Create archive and try to normalize metadata for reproducibility.
- tar "${KBUILD_BUILD_TIMESTAMP:+--mtime=$KBUILD_BUILD_TIMESTAMP}" \
--    --owner=0 --group=0 --sort=name --numeric-owner \
-+    --owner=0 --group=0 --sort=name --numeric-owner --mode=u=rw,go=r,a+X \
-     -I $XZ -cf $tarfile -C $cpio_dir/ . > /dev/null
- 
- echo $headers_md5 > kernel/kheaders.md5
+ #define cachefiles_coherency_traces					\
+ 	EM(cachefiles_coherency_check_aux,	"BAD aux ")		\
+-- 
+2.43.0
+
 
 
 
