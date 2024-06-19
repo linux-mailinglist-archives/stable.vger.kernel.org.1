@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-54282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592F790ED7C
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:18:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B48E90EE6B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8C96B2228B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:18:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 504B6286D67
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A722143C65;
-	Wed, 19 Jun 2024 13:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B043F14D29C;
+	Wed, 19 Jun 2024 13:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKWye92A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE7esjnA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B4512FB27;
-	Wed, 19 Jun 2024 13:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCAB14B975;
+	Wed, 19 Jun 2024 13:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803120; cv=none; b=l+Wia2gN8ZKoWOFvmbxkD1DwKU9vwUgVUeq5hM11vus43pFKfx5mwQ9w/oUzLFoaSTXH+pbSqkEMIt9k/mdXh79JXpSEWfqDdscTqPRRunGH1x4WLrhtavVbhrKzAbjNx3889lkfZXDrGQhKqLGtql3BGKvGVAQn02ry3C0njjo=
+	t=1718803704; cv=none; b=LvN1hbKDHeDMifpGpQzy1NTpJidiriscsCKvONd2ImLxQJWhuoLZ8xC3Mv0sNat0eQ508ZCEtBi3HtjG9wqF6U7Xo9qOSrtDCQ2ZiDXJoHRAVtdkgURcSjmUmNaMg91Xmb6Ng3nYJtz6QntDXC7WWuDaUWPJSe7ACZncIXmijOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803120; c=relaxed/simple;
-	bh=Fbvbj3JRewqhps7JQzbwaNZAES8ZKjjlD4RYysN57Bo=;
+	s=arc-20240116; t=1718803704; c=relaxed/simple;
+	bh=PE7+ZIMJGb5/+YcBypABvO2QT3EAYkZPd6lsavLqnk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oEuyXlAYDlBWRGvu4TEn7dfI4fDKElxJ3OwaQ9rV+f4KISEQPkus48sAeKAZQ1bQ5z91ZXeYOu1aZNUYmnwbnp7ueaS0aPSllVq2x5Pm4iec10BLx2SgthIBLUQPUatD7YS/tFMKuxNKaZ3/W62prnQPN2nkX3N0FXIS1gc+S8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKWye92A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF42C2BBFC;
-	Wed, 19 Jun 2024 13:18:39 +0000 (UTC)
+	 MIME-Version; b=ZwUN8ciI4Fy70OQYUCYQ158ZgSNdFVmTI9XjrzSCpWIU2kUbJ6gS3NwGWxOGnVuZx7JEKiYEYp6zcNzwF5DDxzvQgWQvzJcibUOEWihrUtKOqytkq6EJLoGRv0FDZ9MmVqwY7vVQ5co57LiJ3XcEcAmDmCPj5LeJVmtgZF9dmN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE7esjnA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD985C32786;
+	Wed, 19 Jun 2024 13:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803119;
-	bh=Fbvbj3JRewqhps7JQzbwaNZAES8ZKjjlD4RYysN57Bo=;
+	s=korg; t=1718803704;
+	bh=PE7+ZIMJGb5/+YcBypABvO2QT3EAYkZPd6lsavLqnk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mKWye92Awmcu2KY7p1X9yjvdJJHz10T2meE9LWJsSnT0EIWCbrHkjJwljlKjUwav/
-	 dDsmBozPTvzzO40nGumWSN0e4IWdibBlqiA1iKQP1R+pHrRjrAjyUV7xkth5oQQiA0
-	 LBEstMAt0N4rKDf1QO5iZo64/s/AKlNIzU3d2jiQ=
+	b=tE7esjnATNpzWB8MAa5cf2Co1pUqCxEj+sV8uMPXp01Z7tVRBBFGYlJx9gDuS6vXl
+	 avxrHLNIhdTSLZh9GKKQXQXfTmyiWg6Rf8DjzmnXeOI2AeVOUreZBcQIc4TPlb+jNk
+	 ZrneWszumfODJ89Ay1ttN46+ffQDjb2IQhD6mdok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 160/281] Bluetooth: L2CAP: Fix rejecting L2CAP_CONN_PARAM_UPDATE_REQ
+Subject: [PATCH 6.1 076/217] selftests/mm: log a consistent test name for check_compaction
 Date: Wed, 19 Jun 2024 14:55:19 +0200
-Message-ID: <20240619125615.996563891@linuxfoundation.org>
+Message-ID: <20240619125559.618494627@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +65,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 806a5198c05987b748b50f3d0c0cfb3d417381a4 ]
+[ Upstream commit f3b7568c49420d2dcd251032c9ca1e069ec8a6c9 ]
 
-This removes the bogus check for max > hcon->le_conn_max_interval since
-the later is just the initial maximum conn interval not the maximum the
-stack could support which is really 3200=4000ms.
+Every test result report in the compaction test prints a distinct log
+messae, and some of the reports print a name that varies at runtime.  This
+causes problems for automation since a lot of automation software uses the
+printed string as the name of the test, if the name varies from run to run
+and from pass to fail then the automation software can't identify that a
+test changed result or that the same tests are being run.
 
-In order to pass GAP/CONN/CPUP/BV-05-C one shall probably enter values
-of the following fields in IXIT that would cause hci_check_conn_params
-to fail:
+Refactor the logging to use a consistent name when printing the result of
+the test, printing the existing messages as diagnostic information instead
+so they are still available for people trying to interpret the results.
 
-TSPX_conn_update_int_min
-TSPX_conn_update_int_max
-TSPX_conn_update_peripheral_latency
-TSPX_conn_update_supervision_timeout
-
-Link: https://github.com/bluez/bluez/issues/847
-Fixes: e4b019515f95 ("Bluetooth: Enforce validation on max value of connection interval")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://lkml.kernel.org/r/20240209-kselftest-mm-cleanup-v1-2-a3c0386496b5@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: d4202e66a4b1 ("selftests/mm: compaction_test: fix bogus test success on Aarch64")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h | 36 ++++++++++++++++++++++++++++----
- net/bluetooth/l2cap_core.c       |  8 +------
- 2 files changed, 33 insertions(+), 11 deletions(-)
+ tools/testing/selftests/vm/compaction_test.c | 35 +++++++++++---------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 970101184cf10..17b2a7baa4d8f 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -2113,18 +2113,46 @@ static inline int hci_check_conn_params(u16 min, u16 max, u16 latency,
- {
- 	u16 max_latency;
+diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
+index f81931c1f8386..6aa6460b854ea 100644
+--- a/tools/testing/selftests/vm/compaction_test.c
++++ b/tools/testing/selftests/vm/compaction_test.c
+@@ -95,14 +95,15 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
  
--	if (min > max || min < 6 || max > 3200)
-+	if (min > max) {
-+		BT_WARN("min %d > max %d", min, max);
- 		return -EINVAL;
-+	}
+ 	fd = open("/proc/sys/vm/nr_hugepages", O_RDWR | O_NONBLOCK);
+ 	if (fd < 0) {
+-		ksft_test_result_fail("Failed to open /proc/sys/vm/nr_hugepages: %s\n",
+-				      strerror(errno));
+-		return -1;
++		ksft_print_msg("Failed to open /proc/sys/vm/nr_hugepages: %s\n",
++			       strerror(errno));
++		ret = -1;
++		goto out;
+ 	}
+ 
+ 	if (read(fd, initial_nr_hugepages, sizeof(initial_nr_hugepages)) <= 0) {
+-		ksft_test_result_fail("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
+-				      strerror(errno));
++		ksft_print_msg("Failed to read from /proc/sys/vm/nr_hugepages: %s\n",
++			       strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+@@ -110,8 +111,8 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 
+ 	/* Start with the initial condition of 0 huge pages*/
+ 	if (write(fd, "0", sizeof(char)) != sizeof(char)) {
+-		ksft_test_result_fail("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
+-				      strerror(errno));
++		ksft_print_msg("Failed to write 0 to /proc/sys/vm/nr_hugepages: %s\n",
++			       strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+@@ -120,16 +121,16 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 	/* Request a large number of huge pages. The Kernel will allocate
+ 	   as much as it can */
+ 	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
+-		ksft_test_result_fail("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
+-				      strerror(errno));
++		ksft_print_msg("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
++			       strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+ 	lseek(fd, 0, SEEK_SET);
+ 
+ 	if (read(fd, nr_hugepages, sizeof(nr_hugepages)) <= 0) {
+-		ksft_test_result_fail("Failed to re-read from /proc/sys/vm/nr_hugepages: %s\n",
+-				      strerror(errno));
++		ksft_print_msg("Failed to re-read from /proc/sys/vm/nr_hugepages: %s\n",
++			       strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+@@ -141,24 +142,26 @@ int check_compaction(unsigned long mem_free, unsigned int hugepage_size)
+ 
+ 	if (write(fd, initial_nr_hugepages, strlen(initial_nr_hugepages))
+ 	    != strlen(initial_nr_hugepages)) {
+-		ksft_test_result_fail("Failed to write value to /proc/sys/vm/nr_hugepages: %s\n",
+-				      strerror(errno));
++		ksft_print_msg("Failed to write value to /proc/sys/vm/nr_hugepages: %s\n",
++			       strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
++	ksft_print_msg("Number of huge pages allocated = %d\n",
++		       atoi(nr_hugepages));
 +
-+	if (min < 6) {
-+		BT_WARN("min %d < 6", min);
-+		return -EINVAL;
-+	}
-+
-+	if (max > 3200) {
-+		BT_WARN("max %d > 3200", max);
-+		return -EINVAL;
-+	}
-+
-+	if (to_multiplier < 10) {
-+		BT_WARN("to_multiplier %d < 10", to_multiplier);
-+		return -EINVAL;
-+	}
+ 	if (compaction_index > 3) {
+ 		ksft_print_msg("ERROR: Less that 1/%d of memory is available\n"
+ 			       "as huge pages\n", compaction_index);
+-		ksft_test_result_fail("No of huge pages allocated = %d\n", (atoi(nr_hugepages)));
+ 		goto close_fd;
+ 	}
  
--	if (to_multiplier < 10 || to_multiplier > 3200)
-+	if (to_multiplier > 3200) {
-+		BT_WARN("to_multiplier %d > 3200", to_multiplier);
- 		return -EINVAL;
-+	}
+-	ksft_test_result_pass("Memory compaction succeeded. No of huge pages allocated = %d\n",
+-			      (atoi(nr_hugepages)));
+ 	ret = 0;
  
--	if (max >= to_multiplier * 8)
-+	if (max >= to_multiplier * 8) {
-+		BT_WARN("max %d >= to_multiplier %d * 8", max, to_multiplier);
- 		return -EINVAL;
-+	}
- 
- 	max_latency = (to_multiplier * 4 / max) - 1;
--	if (latency > 499 || latency > max_latency)
-+	if (latency > 499) {
-+		BT_WARN("latency %d > 499", latency);
- 		return -EINVAL;
-+	}
-+
-+	if (latency > max_latency) {
-+		BT_WARN("latency %d > max_latency %d", latency, max_latency);
-+		return -EINVAL;
-+	}
- 
- 	return 0;
+  close_fd:
+ 	close(fd);
++ out:
++	ksft_test_result(ret == 0, "check_compaction\n");
+ 	return ret;
  }
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 4a633c1b68825..e3f5d830e42bf 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4645,13 +4645,7 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
  
- 	memset(&rsp, 0, sizeof(rsp));
- 
--	if (max > hcon->le_conn_max_interval) {
--		BT_DBG("requested connection interval exceeds current bounds.");
--		err = -EINVAL;
--	} else {
--		err = hci_check_conn_params(min, max, latency, to_multiplier);
--	}
--
-+	err = hci_check_conn_params(min, max, latency, to_multiplier);
- 	if (err)
- 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
- 	else
 -- 
 2.43.0
 
