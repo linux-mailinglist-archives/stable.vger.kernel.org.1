@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-53901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B93490EBB5
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F8590ECFC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318521C2424F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 701DB1F210AE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9D912FB31;
-	Wed, 19 Jun 2024 13:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0470C143C4E;
+	Wed, 19 Jun 2024 13:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLSrFhlx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3LUUApa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4B84C74;
-	Wed, 19 Jun 2024 13:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63B21422B8;
+	Wed, 19 Jun 2024 13:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802007; cv=none; b=qd0l/qw6ibZkuOcQmHb1DfB92jXP3V4L54xLwcwxRHcFuch54MD+6W1c14JjT17PqzVjT33rXf1+01iToDqzSSxwgpNWEvmJKAsSBjV1BXJJhuREyZ9zwAhInfs6Ig1Q4kwDtUVKdaCKu+SAtQBlsTPXW/JkmOzquxQWWWHO0wk=
+	t=1718802774; cv=none; b=CVm5O0yYmaY+pXyft0MRDb0vUq6K5Sl5/OP9yv8cBBat/lVzb/3k2n7rmmndMrEQ9ORDfQLeoV3ra0Inm05dqLxfasw/e0pgTB91anKwdCJEyrgUM09Ojsiome3OMRsuIlg1/7OmcmwJGVL6dhRBIt9x+ZBzOvsiEq3Whw9e2aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802007; c=relaxed/simple;
-	bh=O3WtgIlRd75iJMg8Y8BDuP7ZkI9pPbWcdxhIOYs7/pE=;
+	s=arc-20240116; t=1718802774; c=relaxed/simple;
+	bh=7cleDlm7Vjdxqa1DyB5CnDWcV3IUwCXZrBWDiWhYctc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h22FHeqoWcF1k4TUPpbRljErV9+Ql0qRwViqub3G6uCRId9+WHm+eSpV+oqofeozpFvTGPlqBLDZZ2tP8PhRweYlU3HBrLcOtVQu/Cp2n3Io73awxXH6rMY2iHLSjlCKXddWuWqHx6EKC598w9bPqF5hK4X2YUWcGeU3MCg3/HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLSrFhlx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C433DC32786;
-	Wed, 19 Jun 2024 13:00:06 +0000 (UTC)
+	 MIME-Version; b=YiNZqIjlVc2OfA2s3GrXhZ3pOb22nFZ2bfMeD5sQ617Pbg+6jYLdtk627YsScUAsU0rmRrcRVyAxfha8CyTOeZpBEZ+E8FqjjN6hoOIE81eFSdT4I/MHEkixj8zksawr6pznvHjgNPwwStAEOZZeLtOF8nWgLRLo0Uy/HQdSK1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3LUUApa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3F4C2BBFC;
+	Wed, 19 Jun 2024 13:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802007;
-	bh=O3WtgIlRd75iJMg8Y8BDuP7ZkI9pPbWcdxhIOYs7/pE=;
+	s=korg; t=1718802774;
+	bh=7cleDlm7Vjdxqa1DyB5CnDWcV3IUwCXZrBWDiWhYctc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLSrFhlxE2SwqQrdRcRHXdepFp9pgBbqKa3Gffy8tulGFRzterzRnjVzwWuB53SFC
-	 uo09cB/RcqXdUgAS2S27TRXxLlht0BQPn3jcenLUbtHs/6mex5Q8XNwaGG9NFmWHp0
-	 yCRM+TZAyIJtfq4yg2dw0IMDI2OofKBPvQ2uVP04=
+	b=U3LUUApaZQMFRs2r7I35xiVTlsZg7Ypp8VK974cbx1FsmkzksUr92iUf3evpf8qCg
+	 A7a/JrWVslttW/YAteyjauMheZ4Ye1sA/sbTrMpPAjZggQ+gjMM2nZ0bgQXovxVzGQ
+	 CzjyvGihzRc82GmcO8ONa3t4YkTVSheCHnkl/7Po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DelphineCCChiu <delphine_cc_chiu@wiwynn.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aditya Kumar Singh <quic_adisi@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/267] net/ncsi: Fix the multi thread manner of NCSI driver
+Subject: [PATCH 6.9 011/281] wifi: mac80211: pass proper link id for channel switch started notification
 Date: Wed, 19 Jun 2024 14:52:50 +0200
-Message-ID: <20240619125607.094437442@linuxfoundation.org>
+Message-ID: <20240619125610.280896762@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,222 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DelphineCCChiu <delphine_cc_chiu@wiwynn.com>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 
-[ Upstream commit e85e271dec0270982afed84f70dc37703fcc1d52 ]
+[ Upstream commit 8ecc4d7a7cd3e9704b63b8e4f6cd8b6b7314210f ]
 
-Currently NCSI driver will send several NCSI commands back to back without
-waiting the response of previous NCSI command or timeout in some state
-when NIC have multi channel. This operation against the single thread
-manner defined by NCSI SPEC(section 6.3.2.3 in DSP0222_1.1.1)
+Original changes[1] posted is having proper changes. However, at the same
+time, there was chandef puncturing changes which had a conflict with this.
+While applying, two errors crept in -
+   a) Whitespace error.
+   b) Link ID being passed to channel switch started notifier function is
+      0. However proper link ID is present in the function.
 
-According to NCSI SPEC(section 6.2.13.1 in DSP0222_1.1.1), we should probe
-one channel at a time by sending NCSI commands (Clear initial state, Get
-version ID, Get capabilities...), than repeat this steps until the max
-number of channels which we got from NCSI command (Get capabilities) has
-been probed.
+Fix these now.
 
-Fixes: e6f44ed6d04d ("net/ncsi: Package and channel management")
-Signed-off-by: DelphineCCChiu <delphine_cc_chiu@wiwynn.com>
-Link: https://lore.kernel.org/r/20240529065856.825241-1-delphine_cc_chiu@wiwynn.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[1] https://lore.kernel.org/all/20240130140918.1172387-5-quic_adisi@quicinc.com/
+
+Fixes: 1a96bb4e8a79 ("wifi: mac80211: start and finalize channel switch on link basis")
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Link: https://msgid.link/20240509032555.263933-1-quic_adisi@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/internal.h    |  2 ++
- net/ncsi/ncsi-manage.c | 73 +++++++++++++++++++++---------------------
- net/ncsi/ncsi-rsp.c    |  4 ++-
- 3 files changed, 41 insertions(+), 38 deletions(-)
+ net/mac80211/cfg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
-index 374412ed780b6..ef0f8f73826f5 100644
---- a/net/ncsi/internal.h
-+++ b/net/ncsi/internal.h
-@@ -325,6 +325,7 @@ struct ncsi_dev_priv {
- 	spinlock_t          lock;            /* Protect the NCSI device    */
- 	unsigned int        package_probe_id;/* Current ID during probe    */
- 	unsigned int        package_num;     /* Number of packages         */
-+	unsigned int        channel_probe_id;/* Current cahnnel ID during probe */
- 	struct list_head    packages;        /* List of packages           */
- 	struct ncsi_channel *hot_channel;    /* Channel was ever active    */
- 	struct ncsi_request requests[256];   /* Request table              */
-@@ -343,6 +344,7 @@ struct ncsi_dev_priv {
- 	bool                multi_package;   /* Enable multiple packages   */
- 	bool                mlx_multi_host;  /* Enable multi host Mellanox */
- 	u32                 package_whitelist; /* Packages to configure    */
-+	unsigned char       channel_count;     /* Num of channels to probe   */
- };
- 
- struct ncsi_cmd_arg {
-diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index f3d7fe86fea13..90c6cf676221a 100644
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -510,17 +510,19 @@ static void ncsi_suspend_channel(struct ncsi_dev_priv *ndp)
- 
- 		break;
- 	case ncsi_dev_state_suspend_gls:
--		ndp->pending_req_num = np->channel_num;
-+		ndp->pending_req_num = 1;
- 
- 		nca.type = NCSI_PKT_CMD_GLS;
- 		nca.package = np->id;
-+		nca.channel = ndp->channel_probe_id;
-+		ret = ncsi_xmit_cmd(&nca);
-+		if (ret)
-+			goto error;
-+		ndp->channel_probe_id++;
- 
--		nd->state = ncsi_dev_state_suspend_dcnt;
--		NCSI_FOR_EACH_CHANNEL(np, nc) {
--			nca.channel = nc->id;
--			ret = ncsi_xmit_cmd(&nca);
--			if (ret)
--				goto error;
-+		if (ndp->channel_probe_id == ndp->channel_count) {
-+			ndp->channel_probe_id = 0;
-+			nd->state = ncsi_dev_state_suspend_dcnt;
- 		}
- 
- 		break;
-@@ -1340,7 +1342,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
- {
- 	struct ncsi_dev *nd = &ndp->ndev;
- 	struct ncsi_package *np;
--	struct ncsi_channel *nc;
- 	struct ncsi_cmd_arg nca;
- 	unsigned char index;
- 	int ret;
-@@ -1418,23 +1419,6 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
- 
- 		nd->state = ncsi_dev_state_probe_cis;
- 		break;
--	case ncsi_dev_state_probe_cis:
--		ndp->pending_req_num = NCSI_RESERVED_CHANNEL;
--
--		/* Clear initial state */
--		nca.type = NCSI_PKT_CMD_CIS;
--		nca.package = ndp->active_package->id;
--		for (index = 0; index < NCSI_RESERVED_CHANNEL; index++) {
--			nca.channel = index;
--			ret = ncsi_xmit_cmd(&nca);
--			if (ret)
--				goto error;
--		}
--
--		nd->state = ncsi_dev_state_probe_gvi;
--		if (IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY))
--			nd->state = ncsi_dev_state_probe_keep_phy;
--		break;
- 	case ncsi_dev_state_probe_keep_phy:
- 		ndp->pending_req_num = 1;
- 
-@@ -1447,14 +1431,17 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
- 
- 		nd->state = ncsi_dev_state_probe_gvi;
- 		break;
-+	case ncsi_dev_state_probe_cis:
- 	case ncsi_dev_state_probe_gvi:
- 	case ncsi_dev_state_probe_gc:
- 	case ncsi_dev_state_probe_gls:
- 		np = ndp->active_package;
--		ndp->pending_req_num = np->channel_num;
-+		ndp->pending_req_num = 1;
- 
--		/* Retrieve version, capability or link status */
--		if (nd->state == ncsi_dev_state_probe_gvi)
-+		/* Clear initial state Retrieve version, capability or link status */
-+		if (nd->state == ncsi_dev_state_probe_cis)
-+			nca.type = NCSI_PKT_CMD_CIS;
-+		else if (nd->state == ncsi_dev_state_probe_gvi)
- 			nca.type = NCSI_PKT_CMD_GVI;
- 		else if (nd->state == ncsi_dev_state_probe_gc)
- 			nca.type = NCSI_PKT_CMD_GC;
-@@ -1462,19 +1449,29 @@ static void ncsi_probe_channel(struct ncsi_dev_priv *ndp)
- 			nca.type = NCSI_PKT_CMD_GLS;
- 
- 		nca.package = np->id;
--		NCSI_FOR_EACH_CHANNEL(np, nc) {
--			nca.channel = nc->id;
--			ret = ncsi_xmit_cmd(&nca);
--			if (ret)
--				goto error;
--		}
-+		nca.channel = ndp->channel_probe_id;
- 
--		if (nd->state == ncsi_dev_state_probe_gvi)
-+		ret = ncsi_xmit_cmd(&nca);
-+		if (ret)
-+			goto error;
-+
-+		if (nd->state == ncsi_dev_state_probe_cis) {
-+			nd->state = ncsi_dev_state_probe_gvi;
-+			if (IS_ENABLED(CONFIG_NCSI_OEM_CMD_KEEP_PHY) && ndp->channel_probe_id == 0)
-+				nd->state = ncsi_dev_state_probe_keep_phy;
-+		} else if (nd->state == ncsi_dev_state_probe_gvi) {
- 			nd->state = ncsi_dev_state_probe_gc;
--		else if (nd->state == ncsi_dev_state_probe_gc)
-+		} else if (nd->state == ncsi_dev_state_probe_gc) {
- 			nd->state = ncsi_dev_state_probe_gls;
--		else
-+		} else {
-+			nd->state = ncsi_dev_state_probe_cis;
-+			ndp->channel_probe_id++;
-+		}
-+
-+		if (ndp->channel_probe_id == ndp->channel_count) {
-+			ndp->channel_probe_id = 0;
- 			nd->state = ncsi_dev_state_probe_dp;
-+		}
- 		break;
- 	case ncsi_dev_state_probe_dp:
- 		ndp->pending_req_num = 1;
-@@ -1775,6 +1772,7 @@ struct ncsi_dev *ncsi_register_dev(struct net_device *dev,
- 		ndp->requests[i].ndp = ndp;
- 		timer_setup(&ndp->requests[i].timer, ncsi_request_timeout, 0);
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 07abaf7820c56..51dc2d9dd6b84 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -4012,7 +4012,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ 		goto out;
  	}
-+	ndp->channel_count = NCSI_RESERVED_CHANNEL;
  
- 	spin_lock_irqsave(&ncsi_dev_lock, flags);
- 	list_add_tail_rcu(&ndp->node, &ncsi_dev_list);
-@@ -1808,6 +1806,7 @@ int ncsi_start_dev(struct ncsi_dev *nd)
+-	link_data->csa_chanreq = chanreq; 
++	link_data->csa_chanreq = chanreq;
+ 	link_conf->csa_active = true;
  
- 	if (!(ndp->flags & NCSI_DEV_PROBED)) {
- 		ndp->package_probe_id = 0;
-+		ndp->channel_probe_id = 0;
- 		nd->state = ncsi_dev_state_probe;
- 		schedule_work(&ndp->work);
- 		return 0;
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index 480e80e3c2836..f22d67cb04d37 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -795,12 +795,13 @@ static int ncsi_rsp_handler_gc(struct ncsi_request *nr)
- 	struct ncsi_rsp_gc_pkt *rsp;
- 	struct ncsi_dev_priv *ndp = nr->ndp;
- 	struct ncsi_channel *nc;
-+	struct ncsi_package *np;
- 	size_t size;
+ 	if (params->block_tx &&
+@@ -4023,7 +4023,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
+ 	}
  
- 	/* Find the channel */
- 	rsp = (struct ncsi_rsp_gc_pkt *)skb_network_header(nr->rsp);
- 	ncsi_find_package_and_channel(ndp, rsp->rsp.common.channel,
--				      NULL, &nc);
-+				      &np, &nc);
- 	if (!nc)
- 		return -ENODEV;
+ 	cfg80211_ch_switch_started_notify(sdata->dev,
+-					  &link_data->csa_chanreq.oper, 0,
++					  &link_data->csa_chanreq.oper, link_id,
+ 					  params->count, params->block_tx);
  
-@@ -835,6 +836,7 @@ static int ncsi_rsp_handler_gc(struct ncsi_request *nr)
- 	 */
- 	nc->vlan_filter.bitmap = U64_MAX;
- 	nc->vlan_filter.n_vids = rsp->vlan_cnt;
-+	np->ndp->channel_count = rsp->channel_cnt;
- 
- 	return 0;
- }
+ 	if (changed) {
 -- 
 2.43.0
 
