@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-53739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63EC90E5F2
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D52390E5F1
 	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 10:39:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06CF81C21533
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:39:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98401281ADC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 08:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746A92AE9B;
-	Wed, 19 Jun 2024 08:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD0E7E10B;
+	Wed, 19 Jun 2024 08:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRh2c41E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TU6W4QQY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351527E576
-	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09E22AE9B
+	for <stable@vger.kernel.org>; Wed, 19 Jun 2024 08:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718786310; cv=none; b=oY8MHG/BU4D2JdwUFEyLXdf9o5MgbXQiHf0SwwQypSyAbDcbqb5laELL8hhgOZrXofTf0Ybx0scf5ua7axejvw8roy5eXQDSQvfqA5BPxtWe6duAf9C8+zjPp7y+9p34ZRWskMIXpzOFO3ePPijEUsYS688wXts2f5muYkziwmM=
+	t=1718786307; cv=none; b=s/N8G2xDwNluGN/w4SM6AY/7A/nUhJpKCTuOW6xGHWCrxOMT7jbfBhAzvQni6pZw0DwOLh417fBOiRXf5ph4rFtcRHjlhvfpsVE0OaFoBzQ22n2AO2OPRreoiFx24gJ3o38na+wmPPzKTEwLyUr9TC1/Y42ASXwh+CXXCZHTopw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718786310; c=relaxed/simple;
-	bh=1aW8E74CXA1AChzTv9OtfiuYgXAPvD7a5stU95mtBoY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XUw1U2viXpAaDZxfrNDRr46sk0fYLzH+gurxHdhRKCW07zO857dK/hvEP4kr5KDO4PgeCIvp+w5JxxDfFicTdVHjHFIsWDAnmZEooM2n8WpWgpK5GXBplN25IqB9ZOQg//zkHHpIhCItS1aAr5GVGM65wRmwIVhp/fXkBXME8w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRh2c41E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6AFC2BBFC;
-	Wed, 19 Jun 2024 08:38:29 +0000 (UTC)
+	s=arc-20240116; t=1718786307; c=relaxed/simple;
+	bh=AmUjs4IcYpzWHWX+NP0pnCFlGvH0ikGRsRZu2AmwyV8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=UJkG/feqEt4b9/3Vr9rZyON37lbgRxodiH/t+Qj5IT3YVJZkrFWvBGtXU7DZBXFQ9SMSOuFoxX0n49LDE+oLB0MD3oeSpsA59FHWoU5ed+mQqHi5suBpqz0vqUMcltbjeOYgNc2z6C1TmcL+VqZzo7BoMCjVVbiiJN7nxGXhVH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TU6W4QQY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB81C2BBFC;
+	Wed, 19 Jun 2024 08:38:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718786310;
-	bh=1aW8E74CXA1AChzTv9OtfiuYgXAPvD7a5stU95mtBoY=;
+	s=korg; t=1718786307;
+	bh=AmUjs4IcYpzWHWX+NP0pnCFlGvH0ikGRsRZu2AmwyV8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DRh2c41EuF8qdUQBJMTTBSpPmfYYWzxCi1EyrdCjdoGFitcbIRr/8x3rshwIROrav
-	 goA7HcBh7Qaot/ntLavQOTXxufL0r3AnabDxk60qdSJXk6jGPW9ibgVn2DrtD7gD7t
-	 5vxSONX0F2iG4quumm8ww7P9KbgDztV3bDp8ocfw=
-Subject: FAILED: patch "[PATCH] drm/amd/display: always reset ODM mode in context when adding" failed to apply to 6.9-stable tree
+	b=TU6W4QQYo2uHxb0i6DkOEpOkXta4MJq/bAUEWEIhGtwXxTY8tl8+u09AQZiPWIG9R
+	 0DNWCsByb1jKn8a06S4F0pz7g0XVbb4PnMIKOLmSAGQ0OJMyEEbgRsWk5taZTo4eiW
+	 qviVavcD+rQCivRFai4Tk8S+IhoPNRsK5hxZdtaM=
+Subject: FAILED: patch "[PATCH] drm/amd/display: always reset ODM mode in context when adding" failed to apply to 6.6-stable tree
 To: wenjing.liu@amd.com,alexander.deucher@amd.com,alvin.lee2@amd.com,hamza.mahfooz@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Wed, 19 Jun 2024 10:38:22 +0200
-Message-ID: <2024061921-hardcover-jubilance-30ec@gregkh>
+Message-ID: <2024061922-mooned-unthread-2c5a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.9-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4a5b171299e59d51322f4c6bd376c5acbeca0a4a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061921-hardcover-jubilance-30ec@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024061922-mooned-unthread-2c5a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 4a5b171299e5 ("drm/amd/display: always reset ODM mode in context when adding first plane")
+09a4ec5da92c ("drm/amd/display: Refactor dc_state interface")
+abd26a3252cb ("drm/amd/display: Add dml2 copy functions")
+ed6e2782e974 ("drm/amd/display: For cursor P-State allow for SubVP")
+f583db812bc9 ("drm/amd/display: Update FAMS sequence for DCN30 & DCN32")
+ddd5298c63e4 ("drm/amd/display: Update cursor limits based on SW cursor fallback limits")
+7966f319c66d ("drm/amd/display: Introduce DML2")
+6e2c4941ce0c ("drm/amd/display: Move dml code under CONFIG_DRM_AMD_DC_FP guard")
+13c0e836316a ("drm/amd/display: Adjust code style for hw_sequencer.h")
+1288d7020809 ("drm/amd/display: Improve x86 and dmub ips handshake")
+ad3b63a0d298 ("drm/amd/display: add new windowed mpo odm minimal transition sequence")
+177ea58bef72 ("drm/amd/display: reset stream slice count for new ODM policy")
+c0f8b83188c7 ("drm/amd/display: disable IPS")
+93a66cef607c ("drm/amd/display: Add IPS control flag")
+dc01c4b79bfe ("drm/amd/display: Update driver and IPS interop")
+83b5b7bb8673 ("drm/amd/display: minior logging improvements")
+15c6798ae26d ("drm/amd/display: add seamless pipe topology transition check")
+c06ef68a7946 ("drm/amd/display: Add check for vrr_active_fixed")
+c51d87202d1f ("drm/amd/display: do not attempt ODM power optimization if minimal transition doesn't exist")
+a4246c635166 ("drm/amd/display: fix the white screen issue when >= 64GB DRAM")
 
 thanks,
 
