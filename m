@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-54555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F64490EECE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:32:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 666B790ECAD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:09:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AB37282F84
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:32:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02F6E287281
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40880147C89;
-	Wed, 19 Jun 2024 13:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00541474C8;
+	Wed, 19 Jun 2024 13:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQ8vJFJJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tj6t8cWR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D8E14373E;
-	Wed, 19 Jun 2024 13:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF188146586;
+	Wed, 19 Jun 2024 13:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803927; cv=none; b=Ix5bfnmdKxD4X/20kf6sWF3lacyyCRz/Wh4f8hLf9j1/AXO05YYUqUDahmJvzcpj1iH8jTXV23IGNwoNo3H/+/xtaLu0EdW2Cf6tJOAd3o9XQMGTw7cSIiAC8W+T0850qpE9xzTyDhjP7pfpM2knnmlEDu6xWwbNHvtnwKam2+g=
+	t=1718802576; cv=none; b=OTIdtUVnWtn6t/1nGDeI7ATh1v2+7secDm4S8E9iO1NSF0t61AOvzKMABhHl0hf4JYGdUWotYayehuB6BhKjRYS0kV0gFxrpoTVQxULMESywG9moteqV6g9ebgbs1qFue06rY+zt8ltwUrBfr8UCGwLyc1qU1AMHBtopdHcBegs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803927; c=relaxed/simple;
-	bh=2LQtkaxMrlW8BVSbkAL4HjOFl0+lTVQgRo+XQn/YSNI=;
+	s=arc-20240116; t=1718802576; c=relaxed/simple;
+	bh=XhvEhZAWaMaJ7hNbMByFFqkDHdrDlX0wYOgJ/BW7n2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kd0XBdW7BI6RnM3WrGFhwT5dkkYN3URN0LElMPGDX2wXxPHBRdHottHZaXdRtjqWHyxzicsSiKK3ekOZGdfraXz2rc48VWecK9jKMUBe8osx/+KBW8qGxGM60W/qttNahiZllmFOjShrEsTn/t7lGA2fpmql+cwgd1IzHzxsgrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQ8vJFJJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746ACC2BBFC;
-	Wed, 19 Jun 2024 13:32:06 +0000 (UTC)
+	 MIME-Version; b=BMspx+Y19dOJ75kO9LjKHJIsbsacNqAEHJa0qdsY+BCj3eukXlUbqO+ISwXBqi0hCdPn4vUn+KYSuFs/8ySkDxurs1Mwshq5byksSjwEWrOsvtjl+UZha8NEnQDqBJcsFLp3IRDKUyJ4Ri+jCHmYax/3w7nX63/z7msThwtAkAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tj6t8cWR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A06C2BBFC;
+	Wed, 19 Jun 2024 13:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803926;
-	bh=2LQtkaxMrlW8BVSbkAL4HjOFl0+lTVQgRo+XQn/YSNI=;
+	s=korg; t=1718802576;
+	bh=XhvEhZAWaMaJ7hNbMByFFqkDHdrDlX0wYOgJ/BW7n2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQ8vJFJJBiTztbUojeknOTc4fGYN2KHjc24igAgpZqCzIEy+v1VA8fo+HXUn4T9eH
-	 Mmz/NulvKei1NVOc+Qbj/KZxwHevSuQ1ZNxiGD7vXbk7vdsGlHOxdW8NZNHiReW3wS
-	 1gLtFS47s78BL+rztEGIAKMYbLrxB6huQkrhOxLo=
+	b=tj6t8cWRevuO9urilGE17uPvwF6szE9HLtaOZHyMpFVkFT6kPF9OacAJbihRkUVBR
+	 6Wv+ger6yDGgoFlzOc8FG+R7+rMsKJKDk441myonucm2/px514AJqYLPRXruUdN3JA
+	 VnCUfQtk+zemRte455Zsx5g3ikoRo8vUujdkdIs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 151/217] net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters
+	Miaohe Lin <linmiaohe@huawei.com>,
+	David Hildenbrand <david@redhat.com>,
+	Yang Shi <shy828301@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Xu Yu <xuyu@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 243/267] mm/huge_memory: dont unpoison huge_zero_folio
 Date: Wed, 19 Jun 2024 14:56:34 +0200
-Message-ID: <20240619125602.515218826@linuxfoundation.org>
+Message-ID: <20240619125615.649487666@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +67,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-[ Upstream commit be27b896529787e23a35ae4befb6337ce73fcca0 ]
+commit fe6f86f4b40855a130a19aa589f9ba7f650423f4 upstream.
 
-The current cbs parameter depends on speed after uplinking,
-which is not needed and will report a configuration error
-if the port is not initially connected. The UAPI exposed by
-tc-cbs requires userspace to recalculate the send slope anyway,
-because the formula depends on port_transmit_rate (see man tc-cbs),
-which is not an invariant from tc's perspective. Therefore, we
-use offload->sendslope and offload->idleslope to derive the
-original port_transmit_rate from the CBS formula.
+When I did memory failure tests recently, below panic occurs:
 
-Fixes: 1f705bc61aee ("net: stmmac: Add support for CBS QDISC")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20240608143524.2065736-1-xiaolei.wang@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ kernel BUG at include/linux/mm.h:1135!
+ invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+ CPU: 9 PID: 137 Comm: kswapd1 Not tainted 6.9.0-rc4-00491-gd5ce28f156fe-dirty #14
+ RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
+ RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
+ RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
+ RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
+ RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
+ R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
+ R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
+ FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
+ Call Trace:
+  <TASK>
+  do_shrink_slab+0x14f/0x6a0
+  shrink_slab+0xca/0x8c0
+  shrink_node+0x2d0/0x7d0
+  balance_pgdat+0x33a/0x720
+  kswapd+0x1f3/0x410
+  kthread+0xd5/0x100
+  ret_from_fork+0x2f/0x50
+  ret_from_fork_asm+0x1a/0x30
+  </TASK>
+ Modules linked in: mce_inject hwpoison_inject
+ ---[ end trace 0000000000000000 ]---
+ RIP: 0010:shrink_huge_zero_page_scan+0x168/0x1a0
+ RSP: 0018:ffff9933c6c57bd0 EFLAGS: 00000246
+ RAX: 000000000000003e RBX: 0000000000000000 RCX: ffff88f61fc5c9c8
+ RDX: 0000000000000000 RSI: 0000000000000027 RDI: ffff88f61fc5c9c0
+ RBP: ffffcd7c446b0000 R08: ffffffff9a9405f0 R09: 0000000000005492
+ R10: 00000000000030ea R11: ffffffff9a9405f0 R12: 0000000000000000
+ R13: 0000000000000000 R14: 0000000000000000 R15: ffff88e703c4ac00
+ FS:  0000000000000000(0000) GS:ffff88f61fc40000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055f4da6e9878 CR3: 0000000c71048000 CR4: 00000000000006f0
+
+The root cause is that HWPoison flag will be set for huge_zero_folio
+without increasing the folio refcnt.  But then unpoison_memory() will
+decrease the folio refcnt unexpectedly as it appears like a successfully
+hwpoisoned folio leading to VM_BUG_ON_PAGE(page_ref_count(page) == 0) when
+releasing huge_zero_folio.
+
+Skip unpoisoning huge_zero_folio in unpoison_memory() to fix this issue.
+We're not prepared to unpoison huge_zero_folio yet.
+
+Link: https://lkml.kernel.org/r/20240516122608.22610-1-linmiaohe@huawei.com
+Fixes: 478d134e9506 ("mm/huge_memory: do not overkill when splitting huge_zero_page")
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Yang Shi <shy828301@gmail.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Xu Yu <xuyu@linux.alibaba.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 25 ++++++++-----------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ mm/memory-failure.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 390c900832cd2..074ff289eaf25 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -343,10 +343,11 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 			struct tc_cbs_qopt_offload *qopt)
- {
- 	u32 tx_queues_count = priv->plat->tx_queues_to_use;
-+	s64 port_transmit_rate_kbps;
- 	u32 queue = qopt->queue;
--	u32 ptr, speed_div;
- 	u32 mode_to_use;
- 	u64 value;
-+	u32 ptr;
- 	int ret;
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2535,6 +2535,13 @@ int unpoison_memory(unsigned long pfn)
+ 		goto unlock_mutex;
+ 	}
  
- 	/* Queue 0 is not AVB capable */
-@@ -355,30 +356,26 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 	if (!priv->dma_cap.av)
- 		return -EOPNOTSUPP;
- 
-+	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
++	if (is_huge_zero_page(&folio->page)) {
++		unpoison_pr_info("Unpoison: huge zero page is not supported %#lx\n",
++				 pfn, &unpoison_rs);
++		ret = -EOPNOTSUPP;
++		goto unlock_mutex;
++	}
 +
- 	/* Port Transmit Rate and Speed Divider */
--	switch (priv->speed) {
-+	switch (div_s64(port_transmit_rate_kbps, 1000)) {
- 	case SPEED_10000:
--		ptr = 32;
--		speed_div = 10000000;
--		break;
- 	case SPEED_5000:
- 		ptr = 32;
--		speed_div = 5000000;
- 		break;
- 	case SPEED_2500:
--		ptr = 8;
--		speed_div = 2500000;
--		break;
- 	case SPEED_1000:
- 		ptr = 8;
--		speed_div = 1000000;
- 		break;
- 	case SPEED_100:
- 		ptr = 4;
--		speed_div = 100000;
- 		break;
- 	default:
--		return -EOPNOTSUPP;
-+		netdev_err(priv->dev,
-+			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
-+			   port_transmit_rate_kbps);
-+		return -EINVAL;
- 	}
- 
- 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
-@@ -398,10 +395,10 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
- 	}
- 
- 	/* Final adjustments for HW */
--	value = div_s64(qopt->idleslope * 1024ll * ptr, speed_div);
-+	value = div_s64(qopt->idleslope * 1024ll * ptr, port_transmit_rate_kbps);
- 	priv->plat->tx_queues_cfg[queue].idle_slope = value & GENMASK(31, 0);
- 
--	value = div_s64(-qopt->sendslope * 1024ll * ptr, speed_div);
-+	value = div_s64(-qopt->sendslope * 1024ll * ptr, port_transmit_rate_kbps);
- 	priv->plat->tx_queues_cfg[queue].send_slope = value & GENMASK(31, 0);
- 
- 	value = qopt->hicredit * 1024ll * 8;
--- 
-2.43.0
-
+ 	if (!PageHWPoison(p)) {
+ 		unpoison_pr_info("Unpoison: Page was already unpoisoned %#lx\n",
+ 				 pfn, &unpoison_rs);
 
 
 
