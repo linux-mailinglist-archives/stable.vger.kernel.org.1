@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE7090EEE8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:33:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81F390ECD0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:11:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0C392824D9
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:33:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B49F1F21DA8
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276321494A6;
-	Wed, 19 Jun 2024 13:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E35C147C6E;
+	Wed, 19 Jun 2024 13:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMGqlwvb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N90+AWbl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5A4147C60;
-	Wed, 19 Jun 2024 13:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F83146D49;
+	Wed, 19 Jun 2024 13:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804000; cv=none; b=QdHBl2l40Ns+XTsytyMo86DjFsD6bWhO8RhvVVX+bRbVz+A+pZ2l9oBEJ4Yees0lj4FZ6aJKCWDKDCV3aoiB2zkV5OKElDJx/fOD7NBqxToakQd9a0o7c4Xsp8Z5pZH761Pr5CNHkNTD1IGbwLxMJvgR64TAL/BP09p7FG0uYg4=
+	t=1718802668; cv=none; b=szAt35JbbRjzvfY+JKo6wbACvmiBRa/ASaTpTl1iagLdJkhOqIsfaxDriAX8ONCqMCA9Yoom4DiHrAqZqclYBW6HpkzxaI1L3L6SqRsAdKRA6XVLEUJmgRSgvVsiTgJnm/UiTXP5ohyD0FSXgLxBx0mh8syF9YK5KgVRBRpSFUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804000; c=relaxed/simple;
-	bh=MN2WUswfZdDp0egM3G5ReSY804gQjquJWvPGBFJilBk=;
+	s=arc-20240116; t=1718802668; c=relaxed/simple;
+	bh=zAbkVeKMRYnlvDx0pxbFjZuOYe+MaIbfPkJ4RnYQj1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9WvJxa8UoLBVCE49FVAS1dGPT+GncU5DZSmv9voSXAqnyq9PaSrG400IyDW/I/lEXKKfmb7U0VIqOBk35LC23Cwmpc3QJqjagy/UK2ST6j6Kcr5ZAcFD/JDFbroTs5w4u1HhaCdOwc9FpIw8hwvePmIFDlKne1N/omA6H+Uqag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMGqlwvb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B05BC4AF1D;
-	Wed, 19 Jun 2024 13:33:20 +0000 (UTC)
+	 MIME-Version; b=G7lvM7b0VSiHgpHinrjxLuAjhNA6wiusXFboxKBmfdgI9m6HkvXeYXscGIjXZyy+ejJmymL8+7P/aoqTP37bwOm5Revd0iUTXzmtMKq26a+W52lzuqsGTHnpcdG9+9OXBKTjfhRoyH6O4z06zmH5/ecOj1CQ9tReUXo8Ne3q4pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N90+AWbl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F7CC4AF1A;
+	Wed, 19 Jun 2024 13:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718804000;
-	bh=MN2WUswfZdDp0egM3G5ReSY804gQjquJWvPGBFJilBk=;
+	s=korg; t=1718802668;
+	bh=zAbkVeKMRYnlvDx0pxbFjZuOYe+MaIbfPkJ4RnYQj1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EMGqlwvb3WmYEalaBnTW6U5iMCA+I8JhitPbGlyY238sFTR5jABCqXjIygNhR7Osm
-	 ZFYtB+lepld/Am7QtLilgMA+5EvV16fYdrKLU6Gb86XVdvJ8sCwXpAwMqYxkrfNcTU
-	 vfGjLPjeTbA16VZ/XO2RiHsYDmxPCnsfLPlvGG7w=
+	b=N90+AWblUnc/p2MUQxssFdBjIE4NMOra5zRdN+YJg2ZgR34fPOGt4Apxlb7ZsAyqd
+	 yXFIvzpiU8ABTOogGEyG6FfcPwjycN75DXKD2TlSIEqXkwuNtZ+80IgF9TbF6koXDU
+	 w6Al9dtxqsqDTvcwmKn8VBPqLp5hgCTlTemTnVm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	YonglongLi <liyonglong@chinatelecom.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 168/217] mptcp: pm: inc RmAddr MIB counter once per RM_ADDR ID
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 260/267] serial: 8250_dw: Switch to use uart_read_port_properties()
 Date: Wed, 19 Jun 2024 14:56:51 +0200
-Message-ID: <20240619125603.171278938@linuxfoundation.org>
+Message-ID: <20240619125616.294445975@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YonglongLi <liyonglong@chinatelecom.cn>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 6a09788c1a66e3d8b04b3b3e7618cc817bb60ae9 upstream.
+[ Upstream commit e6a46d073e11baba785245860c9f51adbbb8b68d ]
 
-The RmAddr MIB counter is supposed to be incremented once when a valid
-RM_ADDR has been received. Before this patch, it could have been
-incremented as many times as the number of subflows connected to the
-linked address ID, so it could have been 0, 1 or more than 1.
+Since we have now a common helper to read port properties
+use it instead of sparse home grown solution.
 
-The "RmSubflow" is incremented after a local operation. In this case,
-it is normal to tied it with the number of subflows that have been
-actually removed.
-
-The "remove invalid addresses" MP Join subtest has been modified to
-validate this case. A broadcast IP address is now used instead: the
-client will not be able to create a subflow to this address. The
-consequence is that when receiving the RM_ADDR with the ID attached to
-this broadcast IP address, no subflow linked to this ID will be found.
-
-Fixes: 7a7e52e38a40 ("mptcp: add RM_ADDR related mibs")
-Cc: stable@vger.kernel.org
-Co-developed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: YonglongLi <liyonglong@chinatelecom.cn>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240607-upstream-net-20240607-misc-fixes-v1-2-1ab9ddfa3d00@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240304123035.758700-8-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 87d80bfbd577 ("serial: 8250_dw: Don't use struct dw8250_data outside of 8250_dw")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c                          |    5 ++++-
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    3 ++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c | 67 +++++++++++++------------------
+ 1 file changed, 27 insertions(+), 40 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -820,10 +820,13 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 			spin_lock_bh(&msk->pm.lock);
+diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/8250_dw.c
+index a1f2259cc9a98..0446ac145cd4a 100644
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -17,7 +17,6 @@
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/notifier.h>
+-#include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/property.h>
+@@ -449,12 +448,7 @@ static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
  
- 			removed = true;
--			__MPTCP_INC_STATS(sock_net(sk), rm_type);
-+			if (rm_type == MPTCP_MIB_RMSUBFLOW)
-+				__MPTCP_INC_STATS(sock_net(sk), rm_type);
+ 	if (np) {
+ 		unsigned int quirks = data->pdata->quirks;
+-		int id;
+ 
+-		/* get index of serial line, if found in DT aliases */
+-		id = of_alias_get_id(np, "serial");
+-		if (id >= 0)
+-			p->line = id;
+ #ifdef CONFIG_64BIT
+ 		if (quirks & DW_UART_QUIRK_OCTEON) {
+ 			p->serial_in = dw8250_serial_inq;
+@@ -465,12 +459,6 @@ static void dw8250_quirks(struct uart_port *p, struct dw8250_data *data)
  		}
- 		if (rm_type == MPTCP_MIB_RMSUBFLOW)
- 			__set_bit(rm_id ? rm_id : msk->mpc_endpoint_id, msk->pm.id_avail_bitmap);
-+		else if (rm_type == MPTCP_MIB_RMADDR)
-+			__MPTCP_INC_STATS(sock_net(sk), rm_type);
- 		if (!removed)
- 			continue;
+ #endif
  
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2344,7 +2344,8 @@ remove_tests()
- 		pm_nl_set_limits $ns1 3 3
- 		pm_nl_add_endpoint $ns1 10.0.12.1 flags signal
- 		pm_nl_add_endpoint $ns1 10.0.3.1 flags signal
--		pm_nl_add_endpoint $ns1 10.0.14.1 flags signal
-+		# broadcast IP: no packet for this address will be received on ns1
-+		pm_nl_add_endpoint $ns1 224.0.0.1 flags signal
- 		pm_nl_set_limits $ns2 3 3
- 		run_tests $ns1 $ns2 10.0.1.1 0 -3 0 speed_10
- 		chk_join_nr 1 1 1
+-		if (of_device_is_big_endian(np)) {
+-			p->iotype = UPIO_MEM32BE;
+-			p->serial_in = dw8250_serial_in32be;
+-			p->serial_out = dw8250_serial_out32be;
+-		}
+-
+ 		if (quirks & DW_UART_QUIRK_ARMADA_38X)
+ 			p->serial_out = dw8250_serial_out38x;
+ 		if (quirks & DW_UART_QUIRK_SKIP_SET_RATE)
+@@ -515,39 +503,21 @@ static int dw8250_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct dw8250_data *data;
+ 	struct resource *regs;
+-	int irq;
+ 	int err;
+-	u32 val;
+ 
+ 	regs = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	if (!regs)
+ 		return dev_err_probe(dev, -EINVAL, "no registers defined\n");
+ 
+-	irq = platform_get_irq_optional(pdev, 0);
+-	/* no interrupt -> fall back to polling */
+-	if (irq == -ENXIO)
+-		irq = 0;
+-	if (irq < 0)
+-		return irq;
+-
+ 	spin_lock_init(&p->lock);
+-	p->mapbase	= regs->start;
+-	p->irq		= irq;
+ 	p->handle_irq	= dw8250_handle_irq;
+ 	p->pm		= dw8250_do_pm;
+ 	p->type		= PORT_8250;
+-	p->flags	= UPF_SHARE_IRQ | UPF_FIXED_PORT;
++	p->flags	= UPF_FIXED_PORT;
+ 	p->dev		= dev;
+-	p->iotype	= UPIO_MEM;
+-	p->serial_in	= dw8250_serial_in;
+-	p->serial_out	= dw8250_serial_out;
+ 	p->set_ldisc	= dw8250_set_ldisc;
+ 	p->set_termios	= dw8250_set_termios;
+ 
+-	p->membase = devm_ioremap(dev, regs->start, resource_size(regs));
+-	if (!p->membase)
+-		return -ENOMEM;
+-
+ 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+@@ -559,15 +529,35 @@ static int dw8250_probe(struct platform_device *pdev)
+ 	data->uart_16550_compatible = device_property_read_bool(dev,
+ 						"snps,uart-16550-compatible");
+ 
+-	err = device_property_read_u32(dev, "reg-shift", &val);
+-	if (!err)
+-		p->regshift = val;
++	p->mapbase = regs->start;
++	p->mapsize = resource_size(regs);
+ 
+-	err = device_property_read_u32(dev, "reg-io-width", &val);
+-	if (!err && val == 4) {
+-		p->iotype = UPIO_MEM32;
++	p->membase = devm_ioremap(dev, p->mapbase, p->mapsize);
++	if (!p->membase)
++		return -ENOMEM;
++
++	err = uart_read_port_properties(p);
++	/* no interrupt -> fall back to polling */
++	if (err == -ENXIO)
++		err = 0;
++	if (err)
++		return err;
++
++	switch (p->iotype) {
++	case UPIO_MEM:
++		p->serial_in = dw8250_serial_in;
++		p->serial_out = dw8250_serial_out;
++		break;
++	case UPIO_MEM32:
+ 		p->serial_in = dw8250_serial_in32;
+ 		p->serial_out = dw8250_serial_out32;
++		break;
++	case UPIO_MEM32BE:
++		p->serial_in = dw8250_serial_in32be;
++		p->serial_out = dw8250_serial_out32be;
++		break;
++	default:
++		return -ENODEV;
+ 	}
+ 
+ 	if (device_property_read_bool(dev, "dcd-override")) {
+@@ -594,9 +584,6 @@ static int dw8250_probe(struct platform_device *pdev)
+ 		data->msr_mask_off |= UART_MSR_TERI;
+ 	}
+ 
+-	/* Always ask for fixed clock rate from a property. */
+-	device_property_read_u32(dev, "clock-frequency", &p->uartclk);
+-
+ 	/* If there is separate baudclk, get the rate from it. */
+ 	data->clk = devm_clk_get_optional(dev, "baudclk");
+ 	if (data->clk == NULL)
+-- 
+2.43.0
+
 
 
 
