@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F075B90EEAC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ACFF90ECBE
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A001B28979F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D964B22E9E
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FAE148308;
-	Wed, 19 Jun 2024 13:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33491143C58;
+	Wed, 19 Jun 2024 13:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIXsADsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbmqkZEL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6E9770F4;
-	Wed, 19 Jun 2024 13:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E639C12FB31;
+	Wed, 19 Jun 2024 13:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803851; cv=none; b=mF6COAUExji+7NzsD+eRq79QDatDPSsjq6/q1F9WMvRclJfnMA1XGJAdAeJ67eliJ8aeVfznjRDydfx4CD3iNU40noHrKu2eOIEoxHp6qYwyaHQjclWHyIg1TofFjaE6+2SYFAw2Xej7szEiBvGfmFgnHyhWsbrUl8AQ9rSbWDA=
+	t=1718802621; cv=none; b=FBjOAeiPa4IAtCcm6a8Us1rQoaNGwS2d2S1l86O+N9NuyDEhfZD3dbau+Hrw5A8MJvh8vGBD6q11L5PkGiXC/wmIyPDg10XFW1NvD2vf65LYRxr0EZoI8NQ8c9OpYOhqF057oJyXmTKiwaGqbWulJiNEe7bbSnXHrL/O8zGnbmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803851; c=relaxed/simple;
-	bh=N7/oDHiQwJ0hGM6fFnJl6g/dJzcOvd7g8Aw4GKZq7uE=;
+	s=arc-20240116; t=1718802621; c=relaxed/simple;
+	bh=3oNGLoQAgRoMM68D8C6PNxeGmClh1Pb+BZrEHhPyI3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qD62WYf2NB52TnHJIqK04+tA3EHTmqoLCeQmdXhHIYShcqPznu/n1mQWXP0x3u9Nc4muI2mNmrKIPsmtc/eAENvy3gXFuPkmdXNCRom539Qz8FhJKahEnrhhaY5SYqwcQUZHCqmi3qnCN5SFMv+dxvypg7wwCcYmZJyg9lCdpBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIXsADsX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5074FC2BBFC;
-	Wed, 19 Jun 2024 13:30:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WBFYUR0fWgVx7L3AAG3elJUTJw6w74yN6vwyjsJX6MQ5+tn/HPtEmCv/mmO7K/qDxPayjbf/NlYIH+ScstuYJYoWVuLvUVnvI6ZsPMamx7Fx+zOApXpIvnNL4PlG6YVeUn65f9JHSmfuw08IW9pwnqOHqUA7qLhOREkF3EBUjWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbmqkZEL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFA7C2BBFC;
+	Wed, 19 Jun 2024 13:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803851;
-	bh=N7/oDHiQwJ0hGM6fFnJl6g/dJzcOvd7g8Aw4GKZq7uE=;
+	s=korg; t=1718802620;
+	bh=3oNGLoQAgRoMM68D8C6PNxeGmClh1Pb+BZrEHhPyI3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIXsADsXlk9x/ggD0vQzqCLA3KW/uP2S8sN502OW4bpwdIcbwtt9tyauJ64OUfSru
-	 GhUPIOIX4ssJ9WJAM7POm+yjcvW6ILHS6yzF8NOyU3CLt2EvNCzqQsx0eCaTSsI2wx
-	 olP0D1iYjd/QZ2bf8JWIvFv4xgPIwnW+cllSeduI=
+	b=nbmqkZELKcvlF5VBRMR7/NFThecd43kO9jjTLrkOLPHRoqBklyoR0wh5tPRwgGxZt
+	 EWuj3V3ZdxMdgN2IUFTOZPgoXPmD52NdDR7uthGZH+XvfpLQWsJLbizdIcip8W2+Un
+	 Mr5kEXpGvHQaqnfsSZSBdw1VOJFdnOjjz82EahJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Ardelean <alex@shruggie.ro>,
-	Andrei Coardos <aboutphysycs@gmail.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/217] gpio: tqmx86: remove unneeded call to platform_set_drvdata()
+	Shawn Lee <shawn.c.lee@intel.com>,
+	Vidya Srinivas <vidya.srinivas@intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 217/267] drm/i915/dpt: Make DPT object unshrinkable
 Date: Wed, 19 Jun 2024 14:56:08 +0200
-Message-ID: <20240619125601.512779878@linuxfoundation.org>
+Message-ID: <20240619125614.656576312@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Coardos <aboutphysycs@gmail.com>
+From: Vidya Srinivas <vidya.srinivas@intel.com>
 
-[ Upstream commit 0a5e9306b812fe3517548fab92b3d3d6ce7576e5 ]
+commit 43e2b37e2ab660c3565d4cff27922bc70e79c3f1 upstream.
 
-This function call was found to be unnecessary as there is no equivalent
-platform_get_drvdata() call to access the private data of the driver. Also,
-the private data is defined in this driver, so there is no risk of it being
-accessed outside of this driver file.
+In some scenarios, the DPT object gets shrunk but
+the actual framebuffer did not and thus its still
+there on the DPT's vm->bound_list. Then it tries to
+rewrite the PTEs via a stale CPU mapping. This causes panic.
 
-Reviewed-by: Alexandru Ardelean <alex@shruggie.ro>
-Signed-off-by: Andrei Coardos <aboutphysycs@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Stable-dep-of: 9d6a811b522b ("gpio: tqmx86: introduce shadow register for GPIO output value")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Shawn Lee <shawn.c.lee@intel.com>
+Fixes: 0dc987b699ce ("drm/i915/display: Add smem fallback allocation for dpt")
+Signed-off-by: Vidya Srinivas <vidya.srinivas@intel.com>
+[vsyrjala: Add TODO comment]
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240520165634.1162470-1-vidya.srinivas@intel.com
+(cherry picked from commit 51064d471c53dcc8eddd2333c3f1c1d9131ba36c)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-tqmx86.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_object.h |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-tqmx86.c b/drivers/gpio/gpio-tqmx86.c
-index e739dcea61b23..f0a2cf4b06796 100644
---- a/drivers/gpio/gpio-tqmx86.c
-+++ b/drivers/gpio/gpio-tqmx86.c
-@@ -259,8 +259,6 @@ static int tqmx86_gpio_probe(struct platform_device *pdev)
+--- a/drivers/gpu/drm/i915/gem/i915_gem_object.h
++++ b/drivers/gpu/drm/i915/gem/i915_gem_object.h
+@@ -285,7 +285,9 @@ bool i915_gem_object_has_iomem(const str
+ static inline bool
+ i915_gem_object_is_shrinkable(const struct drm_i915_gem_object *obj)
+ {
+-	return i915_gem_object_type_has(obj, I915_GEM_OBJECT_IS_SHRINKABLE);
++	/* TODO: make DPT shrinkable when it has no bound vmas */
++	return i915_gem_object_type_has(obj, I915_GEM_OBJECT_IS_SHRINKABLE) &&
++		!obj->is_dpt;
+ }
  
- 	tqmx86_gpio_write(gpio, (u8)~TQMX86_DIR_INPUT_MASK, TQMX86_GPIODD);
- 
--	platform_set_drvdata(pdev, gpio);
--
- 	chip = &gpio->chip;
- 	chip->label = "gpio-tqmx86";
- 	chip->owner = THIS_MODULE;
--- 
-2.43.0
-
+ static inline bool
 
 
 
