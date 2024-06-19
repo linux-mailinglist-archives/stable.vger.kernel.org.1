@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-54446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4542490EE38
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:27:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DF0090EC28
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:04:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8CC228954B
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:26:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1981F2390F
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A042C14B963;
-	Wed, 19 Jun 2024 13:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90967143873;
+	Wed, 19 Jun 2024 13:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hceU72IF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ap5LLgzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDA114A609;
-	Wed, 19 Jun 2024 13:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C11982871;
+	Wed, 19 Jun 2024 13:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803604; cv=none; b=bMUdlkPvkZkzhCqZ2oiVtPYM9XlQ2XjDsZ1KmPGHqabRIy5D1qWLzki+pyPaxzTpfeDjbjKvqzZL7YnOTe8BSHh7jjCDDCoDNwu7/z6fbnoK/ZMKQhzUpj5gFFL1zHQFnNNNaEitwrI9eFM97jznaF65P9s1No+8ijrB4lJo7kI=
+	t=1718802252; cv=none; b=csUUC8SfROakc2qZ+mKN8+N7LzwDeRPibB6FgrK68hO0N/6pkIwR5gGHmiu6CEd8FfnxjaANnfGK9v7Owp9B1XLwovnLlVnbnK2olxraYVzkNB0PuCXKrNGvi12pkSOuf7FvgljI4B/jmTlyfsOqS/EocFTsUBnCCUx4vmW7GaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803604; c=relaxed/simple;
-	bh=ZrTeDAWyPxLs8ccYGTNSygLdBW+4VY0BIsPGanPkp/o=;
+	s=arc-20240116; t=1718802252; c=relaxed/simple;
+	bh=hT99GLNEp4L+0D9aYJLSvC7eqBedVB31EQQNOG6NkAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJX1A7bqPCq06ijul4C3CtsspSzJ2NC0MmL5SXafTU8vI7DcdnPHUckx3cLXc3PDqbpkz8InOfr3wuwjc27/hF5sWb0QYiRLGRfaYV7ndIXds+hyn/nlvFI+nUXojR3+l64WNOvepxc82J4mZaa2AflbFuwIuqexX1xYrfv5CWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hceU72IF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE87BC4AF1A;
-	Wed, 19 Jun 2024 13:26:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E1pa+42/gph4v/8MTeKeoOMjStVo4fBg1TT4QazK+XMli/RcIdp6L0I3h7xdZXsfb2KAd0CMkyiFhizZhcyFNbYXLxIUzaEyIKPiRsNp/BQPsY6C3+lSDMo4+aARBUWegsotEpXM5EyDwVSSR1GB39pjPJ/6y0rVjP3mi6ymzaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ap5LLgzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DA1C4AF1D;
+	Wed, 19 Jun 2024 13:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803604;
-	bh=ZrTeDAWyPxLs8ccYGTNSygLdBW+4VY0BIsPGanPkp/o=;
+	s=korg; t=1718802252;
+	bh=hT99GLNEp4L+0D9aYJLSvC7eqBedVB31EQQNOG6NkAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hceU72IFLvBUn9mBsOHsi4Iu+hvIbtnL+qjKShhRfFPBCNFb5q4WlP0xlePsHHGDK
-	 otm9Jeg+Cu5RE+Pf5tLAfHAIz1IW0VCMhqlNxABk3mfUuPaupxPURA5QILQFbSQhXO
-	 YrP0HKIGUD2WY2wILn1I2GUAQfBStA6hWd9GDRjE=
+	b=ap5LLgzFyOIBCMYsQHWsvI5lsiOdeVzwk4DyQO2ZquriPdrQqfddW6IwLmuaqj0PN
+	 JtnPj/a9jUNrVsZy+rW3RNOCxpUJReY1A142OWrGo1Nvi+iapSGRadGtvKeGcMdwdz
+	 WE2fiGSYnEB+irPQx03B9c8Mi9uWkRFn0NVr8x+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Jos=C3=A9=20Exp=C3=B3sito?= <jose.exposito89@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/217] af_unix: Annotate data-races around sk->sk_state in UNIX_DIAG.
+Subject: [PATCH 6.6 134/267] HID: logitech-dj: Fix memory leak in logi_dj_recv_switch_to_dj_mode()
 Date: Wed, 19 Jun 2024 14:54:45 +0200
-Message-ID: <20240619125558.280560405@linuxfoundation.org>
+Message-ID: <20240619125611.493665613@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: José Expósito <jose.exposito89@gmail.com>
 
-[ Upstream commit 0aa3be7b3e1f8f997312cc4705f8165e02806f8f ]
+[ Upstream commit ce3af2ee95170b7d9e15fff6e500d67deab1e7b3 ]
 
-While dumping AF_UNIX sockets via UNIX_DIAG, sk->sk_state is read
-locklessly.
+Fix a memory leak on logi_dj_recv_send_report() error path.
 
-Let's use READ_ONCE() there.
-
-Note that the result could be inconsistent if the socket is dumped
-during the state change.  This is common for other SOCK_DIAG and
-similar interfaces.
-
-Fixes: c9da99e6475f ("unix_diag: Fixup RQLEN extension report")
-Fixes: 2aac7a2cb0d9 ("unix_diag: Pending connections IDs NLA")
-Fixes: 45a96b9be6ec ("unix_diag: Dumping all sockets core")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 6f20d3261265 ("HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()")
+Signed-off-by: José Expósito <jose.exposito89@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/diag.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/hid/hid-logitech-dj.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/unix/diag.c b/net/unix/diag.c
-index 3438b7af09af5..9151c72e742fc 100644
---- a/net/unix/diag.c
-+++ b/net/unix/diag.c
-@@ -65,7 +65,7 @@ static int sk_diag_dump_icons(struct sock *sk, struct sk_buff *nlskb)
- 	u32 *buf;
- 	int i;
+diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
+index 3c3c497b6b911..37958edec55f5 100644
+--- a/drivers/hid/hid-logitech-dj.c
++++ b/drivers/hid/hid-logitech-dj.c
+@@ -1284,8 +1284,10 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
+ 		 */
+ 		msleep(50);
  
--	if (sk->sk_state == TCP_LISTEN) {
-+	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
- 		spin_lock(&sk->sk_receive_queue.lock);
+-		if (retval)
++		if (retval) {
++			kfree(dj_report);
+ 			return retval;
++		}
+ 	}
  
- 		attr = nla_reserve(nlskb, UNIX_DIAG_ICONS,
-@@ -103,7 +103,7 @@ static int sk_diag_show_rqlen(struct sock *sk, struct sk_buff *nlskb)
- {
- 	struct unix_diag_rqlen rql;
- 
--	if (sk->sk_state == TCP_LISTEN) {
-+	if (READ_ONCE(sk->sk_state) == TCP_LISTEN) {
- 		rql.udiag_rqueue = sk->sk_receive_queue.qlen;
- 		rql.udiag_wqueue = sk->sk_max_ack_backlog;
- 	} else {
-@@ -136,7 +136,7 @@ static int sk_diag_fill(struct sock *sk, struct sk_buff *skb, struct unix_diag_r
- 	rep = nlmsg_data(nlh);
- 	rep->udiag_family = AF_UNIX;
- 	rep->udiag_type = sk->sk_type;
--	rep->udiag_state = sk->sk_state;
-+	rep->udiag_state = READ_ONCE(sk->sk_state);
- 	rep->pad = 0;
- 	rep->udiag_ino = sk_ino;
- 	sock_diag_save_cookie(sk, rep->udiag_cookie);
-@@ -215,7 +215,7 @@ static int unix_diag_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 		sk_for_each(sk, &net->unx.table.buckets[slot]) {
- 			if (num < s_num)
- 				goto next;
--			if (!(req->udiag_states & (1 << sk->sk_state)))
-+			if (!(req->udiag_states & (1 << READ_ONCE(sk->sk_state))))
- 				goto next;
- 			if (sk_diag_dump(sk, skb, req, sk_user_ns(skb->sk),
- 					 NETLINK_CB(cb->skb).portid,
+ 	/*
 -- 
 2.43.0
 
