@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-54526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE4D90EEA8
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:30:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260C290EDAD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF2621C24665
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:30:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D073E1F215ED
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413F014B956;
-	Wed, 19 Jun 2024 13:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4F3145FEF;
+	Wed, 19 Jun 2024 13:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFR7A3H1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGn8uAPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07F713D8BF;
-	Wed, 19 Jun 2024 13:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279E0143757;
+	Wed, 19 Jun 2024 13:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803840; cv=none; b=EaW8m+yqcMxm2HXBZ08LwEw8noO8/fj8RN6SK3h1hmiSCUfS0pz6M9Oq7+yD7ad012kmKRC1eYfaECVlN/jMyo6WzZgIqGhjSzUWtlnp65YdQwxh4yTxJqNvVb9VIh7Z3qbzBWYXNfHDiWAumFfwGzm5swNSqJCPiaztpFj4Pow=
+	t=1718803258; cv=none; b=q72OBPSq08gGbf+/g88u2JSI/htWcp5b4rbbtBmDQJCazxaFr/OU2SNwSOcPyznsJYCDZOtIYcHi3V2Vamyq0IqFzGAH0nfIsqz8aX0aLn0OFgx+Y2JUEIIf/9u+vjQpsnmgMMLCISrS2HQL2Orn4XsSFOV9NvLbTJVKjlQ09sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803840; c=relaxed/simple;
-	bh=Q4O02rfqfeDpSm1xtE7m6er+bY413FkFv+LiP0AKFIg=;
+	s=arc-20240116; t=1718803258; c=relaxed/simple;
+	bh=hisnOorvDbekk7VFC99rIDyxLMCR/nEi6sgwEDbb0wI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tqKbZt+UfSlTrs8RcORtbxsqMH3GEKy/mtpH2cEQ09zntGFZkXHcdkND4cqp5RLUT/nHjTu2TMJGRSAvUJkD1gUOtk2F7ho/T2YucTr2mfoxKzHkAaEXffi+EAAynkf3usK3QERr7AHIt3Sajo6krgKV+kqgKXprSG2uatOPV8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFR7A3H1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BC8C32786;
-	Wed, 19 Jun 2024 13:30:39 +0000 (UTC)
+	 MIME-Version; b=vFmmvclb5tu3oLECzydpV50IX81kfjkOfJfC7qf3bxhwI1F+0nd1slrzZAMiP+gaFvY2wtzpZhvoyetX5Muo+d4vOUzCMiyRMS6smuoCzFOSQsrGtGSoIctFb0hE64g9YnmDlt2wfiCREc3J37AIkT1J+aQqQmd9uA768k8InFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGn8uAPr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D76C2BBFC;
+	Wed, 19 Jun 2024 13:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718803839;
-	bh=Q4O02rfqfeDpSm1xtE7m6er+bY413FkFv+LiP0AKFIg=;
+	s=korg; t=1718803258;
+	bh=hisnOorvDbekk7VFC99rIDyxLMCR/nEi6sgwEDbb0wI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFR7A3H1UxOcd8BWFyit0ZBafkwMMz6KXt3ewV/+9vEy6BUnCQka/sGM3kpGotb/Z
-	 6Xc4IpAlIUv02Wc4QT2N7QquCLrTL0jIwhPLS8XYulPQLCdTb7kFQxkfShZO6CG7ke
-	 eFz6Fj1yKLzXHtTpySCL1VSbrw/sX4r9I6MS4FjM=
+	b=IGn8uAPrjRcdyXrZh6TNWBdFwYlbUVbIB3l7GHidePd/ckG100auhII7vKh4IgMk/
+	 9qBox/qYfr8pjmveRgrYjRnILrXQMe1huxJrfXtM5ssDvwRoKpTtJejSDAueblwpch
+	 Nwx2lxO/ltx4fjDBTcjAG+EJ69VMuRouuMt/uHnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/217] SUNRPC: return proper error from gss_wrap_req_priv
+	Tibor Billes <tbilles@gmx.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.9 205/281] thermal: ACPI: Invalidate trip points with temperature of 0 or below
 Date: Wed, 19 Jun 2024 14:56:04 +0200
-Message-ID: <20240619125601.358178686@linuxfoundation.org>
+Message-ID: <20240619125617.838461860@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 33c94d7e3cb84f6d130678d6d59ba475a6c489cf ]
+commit 7f18bd49cb6b6a3ab6d860fefccdc94f2a247db0 upstream.
 
-don't return 0 if snd_buf->len really greater than snd_buf->buflen
+It is reported that commit 950210887670 ("thermal: core: Drop
+trips_disabled bitmask") causes the maximum frequency of CPUs to drop
+further down with every system sleep-wake cycle on Intel Core i7-4710HQ.
 
-Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
-Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This turns out to be due to a trip point whose temperature is equal to 0
+degrees Celsius which is acted on every time the system wakes from sleep.
+
+Before commit 950210887670 this trip point would be disabled wia the
+trips_disabled bitmask, but now it is treated as a valid one.
+
+Since ACPI thermal control is generally about protection against
+overheating, trip points with temperature of 0 centigrade or below are
+not particularly useful there, so initialize them all as invalid which
+fixes the problem at hand.
+
+Fixes: 950210887670 ("thermal: core: Drop trips_disabled bitmask")
+Closes: https://lore.kernel.org/linux-pm/3f71747b-f852-4ee0-b384-cf46b2aefa3f@gmx.com
+Reported-by: Tibor Billes <tbilles@gmx.com>
+Tested-by: Tibor Billes <tbilles@gmx.com>
+Cc: 6.7+ <stable@vger.kernel.org> # 6.7+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/auth_gss/auth_gss.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/thermal.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
-index 2d7b1e03110ae..3ef511d7af190 100644
---- a/net/sunrpc/auth_gss/auth_gss.c
-+++ b/net/sunrpc/auth_gss/auth_gss.c
-@@ -1858,8 +1858,10 @@ gss_wrap_req_priv(struct rpc_cred *cred, struct gss_cl_ctx *ctx,
- 	offset = (u8 *)p - (u8 *)snd_buf->head[0].iov_base;
- 	maj_stat = gss_wrap(ctx->gc_gss_ctx, offset, snd_buf, inpages);
- 	/* slack space should prevent this ever happening: */
--	if (unlikely(snd_buf->len > snd_buf->buflen))
-+	if (unlikely(snd_buf->len > snd_buf->buflen)) {
-+		status = -EIO;
- 		goto wrap_failed;
-+	}
- 	/* We're assuming that when GSS_S_CONTEXT_EXPIRED, the encryption was
- 	 * done anyway, so it's safe to put the request on the wire: */
- 	if (maj_stat == GSS_S_CONTEXT_EXPIRED)
--- 
-2.43.0
-
+--- a/drivers/acpi/thermal.c
++++ b/drivers/acpi/thermal.c
+@@ -168,11 +168,17 @@ static int acpi_thermal_get_polling_freq
+ 
+ static int acpi_thermal_temp(struct acpi_thermal *tz, int temp_deci_k)
+ {
++	int temp;
++
+ 	if (temp_deci_k == THERMAL_TEMP_INVALID)
+ 		return THERMAL_TEMP_INVALID;
+ 
+-	return deci_kelvin_to_millicelsius_with_offset(temp_deci_k,
++	temp = deci_kelvin_to_millicelsius_with_offset(temp_deci_k,
+ 						       tz->kelvin_offset);
++	if (temp <= 0)
++		return THERMAL_TEMP_INVALID;
++
++	return temp;
+ }
+ 
+ static bool acpi_thermal_trip_valid(struct acpi_thermal_trip *acpi_trip)
 
 
 
