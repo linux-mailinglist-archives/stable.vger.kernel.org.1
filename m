@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-54241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 314ED90ED50
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:16:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE43290EE52
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 031681C21442
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:16:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 017B11C23B16
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A48082871;
-	Wed, 19 Jun 2024 13:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BCF14AD35;
+	Wed, 19 Jun 2024 13:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAz5+TO6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6U/VD96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB132AD58;
-	Wed, 19 Jun 2024 13:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5498714373E;
+	Wed, 19 Jun 2024 13:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802998; cv=none; b=jOR6fvZWdzOt7oC5Jh0OxPwx7DA+bM0BKLHsz60gKeUcklmcIpacSyEpByqQXWOjVLBRVFpLlrQL3y2e9s2Z1+KJYWPU3qxk9wu54FBUWh7luxofZ3dw/kOEvMfUif5pLbBu1tpOAinjeN7gJMx+Br+nd1odQuOr6Y+63OrPMwI=
+	t=1718803666; cv=none; b=jLlLjCpy8nSRMpepFSIR0Box4/TiBafO3DphLFbnNxMgYBIr1pnw0DQVUANp9GdpyteJ6Ssp97wtaEWJS2RTX5AJrD2TDVsLawiktfQRN+4ubAyHvi0buneo6NbaLB/YQLCFxwRqwIgo7HvnIKGrNukkPfaqQxEMWDafQ8YLIwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802998; c=relaxed/simple;
-	bh=NB6pQCHZbchV5M5+VgVEHk415t0PLuSZhPhgAQzw07s=;
+	s=arc-20240116; t=1718803666; c=relaxed/simple;
+	bh=SM2NIXRxxD3e4G4WEA9h1+FdWMFMmh/Pif3vzGv+mvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qic75jgneBqRoSAvFOjc84CMQhlz+c1qy9gDSHhOOE8UBC0ySnwxvQleJy9gS2PHGainFPAQI25+7TiMG07ABGKdoOE8eP5VwgqU+vI9f6RZvJhwsXxcSg6Qp8kmz0/xoc5Y3yNE1PrrItcP4IpJT6igv2UPJ9PBetojas3OFTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAz5+TO6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62941C2BBFC;
-	Wed, 19 Jun 2024 13:16:38 +0000 (UTC)
+	 MIME-Version; b=Hck8MgMzDhuxe1rqMRCAqZFOyYJx565fD8l6XkjI6XSX7ntMGvIT82Vzs3eW/l1x2pzq2To8fJDi6ndjVmZH3UB1nCh4C8LmcUk4P1LH3Xw4qbgL4yUgkezDkrRYtlMkxrAhtNIvCkYrenGpW1ArNSSJg9x3wQ00uIiPSi9KvaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N6U/VD96; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5EEC2BBFC;
+	Wed, 19 Jun 2024 13:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802998;
-	bh=NB6pQCHZbchV5M5+VgVEHk415t0PLuSZhPhgAQzw07s=;
+	s=korg; t=1718803666;
+	bh=SM2NIXRxxD3e4G4WEA9h1+FdWMFMmh/Pif3vzGv+mvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iAz5+TO6CYxIm7AXyGnUVvVCa0tgxXPKn1G1+7e2kf2/90lIYSys59b5jzHn9AEYq
-	 EGBqR5r7Tg0QiGP3yOpvSNbtCS5zVMYjjHLeUdpGHOjkqkwv+dFrQ5W4/9nEBW9/MM
-	 IY5FtNZl1NkbSGpUdRIOeR3CkHvgf5gljD5jxy6A=
+	b=N6U/VD962L23pYdcADKLMPYeu3TVjDps/drga62Yc6UCFmxZjy1suXhy8lxmZN7K2
+	 z/Fs7QE9nF4vnzDg1Y2Y+2TULIAsuB0vKvuVKOKAivB8gG4HVuvFR8GYRHq84coh0k
+	 w1RTKTCoWpq0QdrniWFYOpl4MpuOwk02+z3pkEOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 119/281] kselftest/alsa: Ensure _GNU_SOURCE is defined
+Subject: [PATCH 6.1 035/217] af_unix: Set sk->sk_state under unix_state_lock() for truly disconencted peer.
 Date: Wed, 19 Jun 2024 14:54:38 +0200
-Message-ID: <20240619125614.425610756@linuxfoundation.org>
+Message-ID: <20240619125558.009106023@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 2032e61e24fe9fe55d6c7a34fb5506c911b3e280 ]
+[ Upstream commit 26bfb8b57063f52b867f9b6c8d1742fcb5bd656c ]
 
-The pcmtest driver tests use the kselftest harness which requires that
-_GNU_SOURCE is defined but nothing causes it to be defined.  Since the
-KHDR_INCLUDES Makefile variable has had the required define added let's
-use that, this should provide some futureproofing.
+When a SOCK_DGRAM socket connect()s to another socket, the both sockets'
+sk->sk_state are changed to TCP_ESTABLISHED so that we can register them
+to BPF SOCKMAP.
 
-Fixes: daef47b89efd ("selftests: Compile kselftest headers with -D_GNU_SOURCE")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+When the socket disconnects from the peer by connect(AF_UNSPEC), the state
+is set back to TCP_CLOSE.
+
+Then, the peer's state is also set to TCP_CLOSE, but the update is done
+locklessly and unconditionally.
+
+Let's say socket A connect()ed to B, B connect()ed to C, and A disconnects
+from B.
+
+After the first two connect()s, all three sockets' sk->sk_state are
+TCP_ESTABLISHED:
+
+  $ ss -xa
+  Netid State  Recv-Q Send-Q  Local Address:Port  Peer Address:PortProcess
+  u_dgr ESTAB  0      0       @A 641              * 642
+  u_dgr ESTAB  0      0       @B 642              * 643
+  u_dgr ESTAB  0      0       @C 643              * 0
+
+And after the disconnect, B's state is TCP_CLOSE even though it's still
+connected to C and C's state is TCP_ESTABLISHED.
+
+  $ ss -xa
+  Netid State  Recv-Q Send-Q  Local Address:Port  Peer Address:PortProcess
+  u_dgr UNCONN 0      0       @A 641              * 0
+  u_dgr UNCONN 0      0       @B 642              * 643
+  u_dgr ESTAB  0      0       @C 643              * 0
+
+In this case, we cannot register B to SOCKMAP.
+
+So, when a socket disconnects from the peer, we should not set TCP_CLOSE to
+the peer if the peer is connected to yet another socket, and this must be
+done under unix_state_lock().
+
+Note that we use WRITE_ONCE() for sk->sk_state as there are many lockless
+readers.  These data-races will be fixed in the following patches.
+
+Fixes: 83301b5367a9 ("af_unix: Set TCP_ESTABLISHED for datagram sockets too")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/alsa/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/unix/af_unix.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/alsa/Makefile b/tools/testing/selftests/alsa/Makefile
-index 5af9ba8a4645b..c1ce39874e2b5 100644
---- a/tools/testing/selftests/alsa/Makefile
-+++ b/tools/testing/selftests/alsa/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- #
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 7d2a3b42b456a..5d6203b6e25c3 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -558,7 +558,6 @@ static void unix_dgram_disconnected(struct sock *sk, struct sock *other)
+ 			sk_error_report(other);
+ 		}
+ 	}
+-	other->sk_state = TCP_CLOSE;
+ }
  
--CFLAGS += $(shell pkg-config --cflags alsa)
-+CFLAGS += $(shell pkg-config --cflags alsa) $(KHDR_INCLUDES)
- LDLIBS += $(shell pkg-config --libs alsa)
- ifeq ($(LDLIBS),)
- LDLIBS += -lasound
+ static void unix_sock_destructor(struct sock *sk)
+@@ -1412,8 +1411,15 @@ static int unix_dgram_connect(struct socket *sock, struct sockaddr *addr,
+ 
+ 		unix_state_double_unlock(sk, other);
+ 
+-		if (other != old_peer)
++		if (other != old_peer) {
+ 			unix_dgram_disconnected(sk, old_peer);
++
++			unix_state_lock(old_peer);
++			if (!unix_peer(old_peer))
++				WRITE_ONCE(old_peer->sk_state, TCP_CLOSE);
++			unix_state_unlock(old_peer);
++		}
++
+ 		sock_put(old_peer);
+ 	} else {
+ 		unix_peer(sk) = other;
 -- 
 2.43.0
 
