@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-53863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDA590EB8D
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:58:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D1490EBBD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77B17B2188F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:58:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DD461C23FBD
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49D8143C58;
-	Wed, 19 Jun 2024 12:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77AFC143C43;
+	Wed, 19 Jun 2024 13:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xq/IY9+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+fyFueK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817C3143C45;
-	Wed, 19 Jun 2024 12:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3565A13DB90;
+	Wed, 19 Jun 2024 13:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801895; cv=none; b=L3UNGKktSB/wrIBviIPuByW3Cxk+rmOU2vtH2ETP6kKMnShxgOsu0oDF5hb39Lsu19rUKOh4Q5+V2tNa6LOlDbLk2T2UWNc9RbIZiLQU4uaE53csB1U2/kxJgJF6pcnFinICRIp/SjHKfqVwJiWy5jPqrsK42bCiEFrkGToqXo4=
+	t=1718802022; cv=none; b=R6el+4oldiKvwrpbKnUmp98h4GCSDgobDYuBAkmw5g/GeljUjVtMelQXpWQQC7H5r60WwIN9Vrxyd34YrcuC3W2hTg7mDdQ96fVQcnvmzPMOItcCjvHb8VSumgXEsr/ByP9Df3JVh0vGAWkvELoy6xRqC+el6uL2FDgqnbmxz1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801895; c=relaxed/simple;
-	bh=Lbh8t8szIfevDEda5lh7LfmS/PnBiP1+w3wGB7wXb7w=;
+	s=arc-20240116; t=1718802022; c=relaxed/simple;
+	bh=YBuf8o2pj8Fcobwo9z9qEG/yfhBRLMieUmEPQtJ4RtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SNxjEpNV6EZXAxDn++IZSKI1w8l3/KhvjYD6BHOSxfJcCbwgWU3YWwFfBcoQ1nGPvbMsMFZSbjsa3oq7ujhDwtZe5WngbTzoETRY/XxRYVf/pITYTeUdFLTMXi1OJzQHbb8XZ5lDyMEure6iMYhAYotng46JqFzpn9gp/lxHc4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xq/IY9+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31C2C2BBFC;
-	Wed, 19 Jun 2024 12:58:14 +0000 (UTC)
+	 MIME-Version; b=rD7mf6xnuMWO3ja1LK/0CKmNDbog6Sd57jWDLxJHc8Y1l4phngMMnG7NiGGvkZ18FcqxBfJet65QnY1y2Xx5f6vN2GPaXWU8MmPN9dXR/kChliHW+yVt4omCJRLiUDBiw4+UwW9uColADiIAhTAVaj97Xbse67p+Fn9DY2/X5GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+fyFueK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD861C32786;
+	Wed, 19 Jun 2024 13:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718801895;
-	bh=Lbh8t8szIfevDEda5lh7LfmS/PnBiP1+w3wGB7wXb7w=;
+	s=korg; t=1718802022;
+	bh=YBuf8o2pj8Fcobwo9z9qEG/yfhBRLMieUmEPQtJ4RtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xq/IY9+Q2TwHePnmjjR8yCdtMGUJLAy0hCq9jqqgQfcFstUVe6BlqelsYzzHb4NJ8
-	 DVR5dhMJqH3gJ6fT/ot9BJkIavmRskdMA7ABjMlic2L7kUHLEIR3qBOYieqbr93WPb
-	 pf0Vbs6HtxFAEVT5QIFr1QiPx/KczWLW6J3n+aYc=
+	b=M+fyFueK1nMPIU/+Kg5BeVaKAOqTHIZrFZ/mHZmKzAlbkqYwiegZbbJwvRk3FpThr
+	 lTZrJgHoAi7lLp2EvvLK+zTj5quZSArLHrhFwvZu8QrtIakMbw8c83qMzs0CtOtClD
+	 7bJbC8zkoO/uHP1ZMWcgV2lZbQjPxQWraTrbolho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chanwoo Lee <cw9316.lee@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/267] scsi: ufs: mcq: Fix error output and clean up ufshcd_mcq_abort()
-Date: Wed, 19 Jun 2024 14:52:44 +0200
-Message-ID: <20240619125606.863777081@linuxfoundation.org>
+Subject: [PATCH 6.6 014/267] RISC-V: KVM: No need to use mask when hart-index-bit is 0
+Date: Wed, 19 Jun 2024 14:52:45 +0200
+Message-ID: <20240619125606.901893949@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
 References: <20240619125606.345939659@linuxfoundation.org>
@@ -67,84 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chanwoo Lee <cw9316.lee@samsung.com>
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-[ Upstream commit d53b681ce9ca7db5ef4ecb8d2cf465ae4a031264 ]
+[ Upstream commit 2d707b4e37f9b0c37b8b2392f91b04c5b63ea538 ]
 
-An error unrelated to ufshcd_try_to_abort_task is being logged and can
-cause confusion. Modify ufshcd_mcq_abort() to print the result of the abort
-failure. For readability, return immediately instead of 'goto'.
+When the maximum hart number within groups is 1, hart-index-bit is set to
+0. Consequently, there is no need to restore the hart ID from IMSIC
+addresses and hart-index-bit settings. Currently, QEMU and kvmtool do not
+pass correct hart-index-bit values when the maximum hart number is a
+power of 2, thereby avoiding this issue. Corresponding patches for QEMU
+and kvmtool will also be dispatched.
 
-Fixes: f1304d442077 ("scsi: ufs: mcq: Added ufshcd_mcq_abort()")
-Signed-off-by: Chanwoo Lee <cw9316.lee@samsung.com>
-Link: https://lore.kernel.org/r/20240524015904.1116005-1-cw9316.lee@samsung.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 89d01306e34d ("RISC-V: KVM: Implement device interface for AIA irqchip")
+Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20240415064905.25184-1-yongxuan.wang@sifive.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-mcq.c | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ arch/riscv/kvm/aia_device.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index 7ae3096814282..4e84ee6564d4b 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -630,20 +630,20 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
- 	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
- 	struct ufs_hw_queue *hwq;
- 	unsigned long flags;
--	int err = FAILED;
-+	int err;
+diff --git a/arch/riscv/kvm/aia_device.c b/arch/riscv/kvm/aia_device.c
+index 0eb689351b7d0..5cd407c6a8e4f 100644
+--- a/arch/riscv/kvm/aia_device.c
++++ b/arch/riscv/kvm/aia_device.c
+@@ -237,10 +237,11 @@ static gpa_t aia_imsic_ppn(struct kvm_aia *aia, gpa_t addr)
  
- 	if (!ufshcd_cmd_inflight(lrbp->cmd)) {
- 		dev_err(hba->dev,
- 			"%s: skip abort. cmd at tag %d already completed.\n",
- 			__func__, tag);
--		goto out;
-+		return FAILED;
- 	}
+ static u32 aia_imsic_hart_index(struct kvm_aia *aia, gpa_t addr)
+ {
+-	u32 hart, group = 0;
++	u32 hart = 0, group = 0;
  
- 	/* Skip task abort in case previous aborts failed and report failure */
- 	if (lrbp->req_abort_skip) {
- 		dev_err(hba->dev, "%s: skip abort. tag %d failed earlier\n",
- 			__func__, tag);
--		goto out;
-+		return FAILED;
- 	}
- 
- 	hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(cmd));
-@@ -655,7 +655,7 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
- 		 */
- 		dev_err(hba->dev, "%s: cmd found in sq. hwq=%d, tag=%d\n",
- 			__func__, hwq->id, tag);
--		goto out;
-+		return FAILED;
- 	}
- 
- 	/*
-@@ -663,18 +663,17 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
- 	 * in the completion queue either. Query the device to see if
- 	 * the command is being processed in the device.
- 	 */
--	if (ufshcd_try_to_abort_task(hba, tag)) {
-+	err = ufshcd_try_to_abort_task(hba, tag);
-+	if (err) {
- 		dev_err(hba->dev, "%s: device abort failed %d\n", __func__, err);
- 		lrbp->req_abort_skip = true;
--		goto out;
-+		return FAILED;
- 	}
- 
--	err = SUCCESS;
- 	spin_lock_irqsave(&hwq->cq_lock, flags);
- 	if (ufshcd_cmd_inflight(lrbp->cmd))
- 		ufshcd_release_scsi_cmd(hba, lrbp);
- 	spin_unlock_irqrestore(&hwq->cq_lock, flags);
- 
--out:
--	return err;
-+	return SUCCESS;
- }
+-	hart = (addr >> (aia->nr_guest_bits + IMSIC_MMIO_PAGE_SHIFT)) &
+-		GENMASK_ULL(aia->nr_hart_bits - 1, 0);
++	if (aia->nr_hart_bits)
++		hart = (addr >> (aia->nr_guest_bits + IMSIC_MMIO_PAGE_SHIFT)) &
++		       GENMASK_ULL(aia->nr_hart_bits - 1, 0);
+ 	if (aia->nr_group_bits)
+ 		group = (addr >> aia->nr_group_shift) &
+ 			GENMASK_ULL(aia->nr_group_bits - 1, 0);
 -- 
 2.43.0
 
