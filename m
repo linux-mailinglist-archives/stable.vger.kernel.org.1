@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA7590ECC3
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:10:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A0690EF04
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:34:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B266D1C20F80
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:10:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 107C61C21004
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F66143C58;
-	Wed, 19 Jun 2024 13:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F99714387E;
+	Wed, 19 Jun 2024 13:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wS9f5A7P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDfFnPaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F80A12FB31;
-	Wed, 19 Jun 2024 13:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD9A13DDC0;
+	Wed, 19 Jun 2024 13:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802632; cv=none; b=qqq4zfMm0jxnb1BOnZuQU+KSQXhaPW4YNiiEm1pOLkwFndcxtP8gB1cpa3NLHnXaf/hohipn7s9L3vs/RWn8COTeEKh8qiQeTC1R8OVpHHrzyuU0o+wgyxD2uV5a5JoQkR/ecsocJ/Dyt/awGoN/oNzDathZqOlfSLUfFYhHXug=
+	t=1718804081; cv=none; b=Pyp4u4THbF/53H14bn7gWhfIwx19zdlCEUj1vu/jitw2K6qLEQGwy0F6XtP2uAdJpmO2RA//+Bcdgnh0y2uU22NtVMFvErhNLhE68O4yU2eQ/jI1tWSEHyBv8fZjERI+bif0JMdkr3tRMx9vE1tgMZIN1z2YTclNLcumoZ5B9L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802632; c=relaxed/simple;
-	bh=uesf7ynkjS97c6ej9yXWljnepuMeI2WLGImuIzgGbfE=;
+	s=arc-20240116; t=1718804081; c=relaxed/simple;
+	bh=HNx8hpdL78dviv4tIeDXdqyUeWbyzNM1Yufm6Wwt2Hw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyViAQ7xNYr+VAAyGjRdGesWE+d1fCxyb+eWmfo69ifXztRsoGq0iOo+Uqbxrrdynlw9cMV4daZI/bibLwkYiFOYlbAtQeFrvXc3nWMTw6x6rwzItfxENiT9DPMoWS12cgLBwUWCLA3Gp6wYtvZ/SkCQ4gjWKDT3iF3wV3+duaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wS9f5A7P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED71C2BBFC;
-	Wed, 19 Jun 2024 13:10:31 +0000 (UTC)
+	 MIME-Version; b=rzqzCnvYtOhH9XTJMawZKKC8lFqmZ55S1nMIu52xglGb9VdqPrrkt+MWd20jBEHTjhiWndfIUul6Znr209dhlcxrplQslMtswAQRt56J9Pw4/NdZpverE+ctdfNL2q7iB4DZNu1jg1h4JRGiRXZCaYnT8J+c7synriiBmVUM83E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDfFnPaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96099C2BBFC;
+	Wed, 19 Jun 2024 13:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802632;
-	bh=uesf7ynkjS97c6ej9yXWljnepuMeI2WLGImuIzgGbfE=;
+	s=korg; t=1718804081;
+	bh=HNx8hpdL78dviv4tIeDXdqyUeWbyzNM1Yufm6Wwt2Hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wS9f5A7PwhdMIulI36BJhak5CQ3H+uQzbStTFqsx4q5Qx7Hde8/b+I5014tNlUZqJ
-	 FgpB2oPp6vDdYf569T62IJSxBpNKO+Gv4vB2CwijAF8ew1uoe2NnvT2rBSohNmMU8N
-	 31gMbT7TlflYR8YDz+ab0FlDflfdOpk1uEiHdKvo=
+	b=FDfFnPaNExv3BLNPwIbC5N5eZ6+nzvI0S461EcMhDdCsPWIvH4sb/txNZ2TLunxri
+	 u3UpcmbBoUy9avYuT7zsCYZOcLfwj+1PWYHgoTDTuK+J7PTj7MVg58UWP261/rUin3
+	 hFDS+5BDyabG3DsibPbEVOrH5xjZZI7HVrUu8h30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xingwei lee <xrivendell7@gmail.com>,
-	yue sun <samsun1006219@gmail.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Shichao Lai <shichaorai@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 263/267] usb-storage: alauda: Check whether the media is initialized
+	Haifeng Xu <haifeng.xu@shopee.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 6.1 171/217] perf/core: Fix missing wakeup when waiting for context reference
 Date: Wed, 19 Jun 2024 14:56:54 +0200
-Message-ID: <20240619125616.416757685@linuxfoundation.org>
+Message-ID: <20240619125603.287088903@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+References: <20240619125556.491243678@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +63,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shichao Lai <shichaorai@gmail.com>
+From: Haifeng Xu <haifeng.xu@shopee.com>
 
-[ Upstream commit 16637fea001ab3c8df528a8995b3211906165a30 ]
+commit 74751ef5c1912ebd3e65c3b65f45587e05ce5d36 upstream.
 
-The member "uzonesize" of struct alauda_info will remain 0
-if alauda_init_media() fails, potentially causing divide errors
-in alauda_read_data() and alauda_write_lba().
-- Add a member "media_initialized" to struct alauda_info.
-- Change a condition in alauda_check_media() to ensure the
-  first initialization.
-- Add an error check for the return value of alauda_init_media().
+In our production environment, we found many hung tasks which are
+blocked for more than 18 hours. Their call traces are like this:
 
-Fixes: e80b0fade09e ("[PATCH] USB Storage: add alauda support")
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Reported-by: yue sun <samsun1006219@gmail.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Shichao Lai <shichaorai@gmail.com>
-Link: https://lore.kernel.org/r/20240526012745.2852061-1-shichaorai@gmail.com
+[346278.191038] __schedule+0x2d8/0x890
+[346278.191046] schedule+0x4e/0xb0
+[346278.191049] perf_event_free_task+0x220/0x270
+[346278.191056] ? init_wait_var_entry+0x50/0x50
+[346278.191060] copy_process+0x663/0x18d0
+[346278.191068] kernel_clone+0x9d/0x3d0
+[346278.191072] __do_sys_clone+0x5d/0x80
+[346278.191076] __x64_sys_clone+0x25/0x30
+[346278.191079] do_syscall_64+0x5c/0xc0
+[346278.191083] ? syscall_exit_to_user_mode+0x27/0x50
+[346278.191086] ? do_syscall_64+0x69/0xc0
+[346278.191088] ? irqentry_exit_to_user_mode+0x9/0x20
+[346278.191092] ? irqentry_exit+0x19/0x30
+[346278.191095] ? exc_page_fault+0x89/0x160
+[346278.191097] ? asm_exc_page_fault+0x8/0x30
+[346278.191102] entry_SYSCALL_64_after_hwframe+0x44/0xae
+
+The task was waiting for the refcount become to 1, but from the vmcore,
+we found the refcount has already been 1. It seems that the task didn't
+get woken up by perf_event_release_kernel() and got stuck forever. The
+below scenario may cause the problem.
+
+Thread A					Thread B
+...						...
+perf_event_free_task				perf_event_release_kernel
+						   ...
+						   acquire event->child_mutex
+						   ...
+						   get_ctx
+   ...						   release event->child_mutex
+   acquire ctx->mutex
+   ...
+   perf_free_event (acquire/release event->child_mutex)
+   ...
+   release ctx->mutex
+   wait_var_event
+						   acquire ctx->mutex
+						   acquire event->child_mutex
+						   # move existing events to free_list
+						   release event->child_mutex
+						   release ctx->mutex
+						   put_ctx
+...						...
+
+In this case, all events of the ctx have been freed, so we couldn't
+find the ctx in free_list and Thread A will miss the wakeup. It's thus
+necessary to add a wakeup after dropping the reference.
+
+Fixes: 1cf8dfe8a661 ("perf/core: Fix race between close() and fork()")
+Signed-off-by: Haifeng Xu <haifeng.xu@shopee.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20240513103948.33570-1-haifeng.xu@shopee.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/alauda.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ kernel/events/core.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/usb/storage/alauda.c b/drivers/usb/storage/alauda.c
-index 115f05a6201a1..40d34cc28344a 100644
---- a/drivers/usb/storage/alauda.c
-+++ b/drivers/usb/storage/alauda.c
-@@ -105,6 +105,8 @@ struct alauda_info {
- 	unsigned char sense_key;
- 	unsigned long sense_asc;	/* additional sense code */
- 	unsigned long sense_ascq;	/* additional sense code qualifier */
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5182,6 +5182,7 @@ int perf_event_release_kernel(struct per
+ again:
+ 	mutex_lock(&event->child_mutex);
+ 	list_for_each_entry(child, &event->child_list, child_list) {
++		void *var = NULL;
+ 
+ 		/*
+ 		 * Cannot change, child events are not migrated, see the
+@@ -5222,11 +5223,23 @@ again:
+ 			 * this can't be the last reference.
+ 			 */
+ 			put_event(event);
++		} else {
++			var = &ctx->refcount;
+ 		}
+ 
+ 		mutex_unlock(&event->child_mutex);
+ 		mutex_unlock(&ctx->mutex);
+ 		put_ctx(ctx);
 +
-+	bool media_initialized;
- };
- 
- #define short_pack(lsb,msb) ( ((u16)(lsb)) | ( ((u16)(msb))<<8 ) )
-@@ -476,11 +478,12 @@ static int alauda_check_media(struct us_data *us)
++		if (var) {
++			/*
++			 * If perf_event_free_task() has deleted all events from the
++			 * ctx while the child_mutex got released above, make sure to
++			 * notify about the preceding put_ctx().
++			 */
++			smp_mb(); /* pairs with wait_var_event() */
++			wake_up_var(var);
++		}
+ 		goto again;
  	}
- 
- 	/* Check for media change */
--	if (status[0] & 0x08) {
-+	if (status[0] & 0x08 || !info->media_initialized) {
- 		usb_stor_dbg(us, "Media change detected\n");
- 		alauda_free_maps(&MEDIA_INFO(us));
--		alauda_init_media(us);
--
-+		rc = alauda_init_media(us);
-+		if (rc == USB_STOR_TRANSPORT_GOOD)
-+			info->media_initialized = true;
- 		info->sense_key = UNIT_ATTENTION;
- 		info->sense_asc = 0x28;
- 		info->sense_ascq = 0x00;
--- 
-2.43.0
-
+ 	mutex_unlock(&event->child_mutex);
 
 
 
