@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-54149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D278190ECEE
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5AA90EBA6
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C618B2522F
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18AC5286B5B
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6636014A4E2;
-	Wed, 19 Jun 2024 13:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA73143C65;
+	Wed, 19 Jun 2024 12:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9Nyxy3E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJWDbam5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242ED14389C;
-	Wed, 19 Jun 2024 13:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6ED143C4E;
+	Wed, 19 Jun 2024 12:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802730; cv=none; b=KD5EwPvjQ6iOZRNNaloF27IJuLUaitMuMmD58/lGmzACKI+58pPwb2exwRx761knDq/5xu8Ivif2I2GN3Oil3uA1zs1XBMz2W5CDIWzhvnTmSJwe1rsp4SGo7HEUEyG4Xwkm+2LjE3cxMinryV9C2H5CZR37vRLYpZPHdgYakow=
+	t=1718801963; cv=none; b=cO46x6SOXQ49ux4qyQ2AX3thCqp37Gq5yiCoK1mf59GDVLECLdhR7J04pA3o/hfL1lQxtrezZKSf9ehWrJp7ZbHtHpgDtIjEBZawN7UNd+X3tDEU4OTGK3wyLhTy2bhoK5scbAUE1rIjYh1IlCjgpN5H5XQipol/LLVOITyXcZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802730; c=relaxed/simple;
-	bh=TAZrouNyg7nlwLXd9SQvni8eJZhULbaXQNtODB6S4Ro=;
+	s=arc-20240116; t=1718801963; c=relaxed/simple;
+	bh=KIKd3cs6666Td+sbHGGezzO3Wsw+BCpQHZ0QVIVDiZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+ovEmXFvnt756mNAqfA+YCcPzUucpXFnMWfMqL3B/GKdDMPKdroqECNTgNXcsbtJ5RKmveMXs75Ap9UfLj6GfSlKWdH4SXF0uqJc0+RxXW4u1AhWSBAT/1d3BgUKwVCtr/kjRKofTnSIM2oGyzlTKvsyPZoV6lOX5cH1j5lc9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9Nyxy3E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0583C2BBFC;
-	Wed, 19 Jun 2024 13:12:09 +0000 (UTC)
+	 MIME-Version; b=DXwnwNf54CvrPhMN+g3AiX4oxnY+EeVKvQmyYgOOTq0NiZDMKeRn48EeUrsFRxFZe2GyUHq9X7q2Z4yHPz6FBsJSpLulTiuE+Wd9vk7hx4HadgyfM8UjqcnW6yXCe03DjhSejreuu0naeXBbzLf2O1Pc6zzm9OIV6a2X8e9/Vuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJWDbam5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCE5C2BBFC;
+	Wed, 19 Jun 2024 12:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802730;
-	bh=TAZrouNyg7nlwLXd9SQvni8eJZhULbaXQNtODB6S4Ro=;
+	s=korg; t=1718801963;
+	bh=KIKd3cs6666Td+sbHGGezzO3Wsw+BCpQHZ0QVIVDiZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9Nyxy3Ebp1seGnmmM244FCTdEtgec+BafkjJICrBJZmxqj8eZgfgXZFEapfxHlmh
-	 U6ZR0FQKApzfkF79/PRqtNvKK0yhx96p+8OVCBpehM6KfhTpSEVnmcXBXyN6SZ9mpa
-	 Wyz+amMvNv2gH40CV4GW9AYy3BeK8uygoHW35zzo=
+	b=WJWDbam5C7h3tJWIukzBYs9GRoxKau6TjDttOu6ToaXtDwotowKA+wDHwxmREfPmx
+	 zxkmsI4DEQusIEpPU+fsKMzfNsU7rCkn7RtpRB0L9pLmtNqeI0iGz16pqi3MzCuBQN
+	 99PxXxXnDVQEuOBiQBUb+22gnwmPxf/Dj52inicc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristram Ha <tristram.ha@microchip.com>,
+	Hangyu Hua <hbh25y@gmail.com>,
+	Cong Wang <cong.wang@bytedance.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 027/281] net: phy: micrel: fix KSZ9477 PHY issues after suspend/resume
+Subject: [PATCH 6.6 035/267] net: sched: sch_multiq: fix possible OOB write in multiq_tune()
 Date: Wed, 19 Jun 2024 14:53:06 +0200
-Message-ID: <20240619125610.890656649@linuxfoundation.org>
+Message-ID: <20240619125607.712284564@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristram Ha <tristram.ha@microchip.com>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit 6149db4997f582e958da675092f21c666e3b67b7 ]
+[ Upstream commit affc18fdc694190ca7575b9a86632a73b9fe043d ]
 
-When the PHY is powered up after powered down most of the registers are
-reset, so the PHY setup code needs to be done again.  In addition the
-interrupt register will need to be setup again so that link status
-indication works again.
+q->bands will be assigned to qopt->bands to execute subsequent code logic
+after kmalloc. So the old q->bands should not be used in kmalloc.
+Otherwise, an out-of-bounds write will occur.
 
-Fixes: 26dd2974c5b5 ("net: phy: micrel: Move KSZ9477 errata fixes to PHY driver")
-Signed-off-by: Tristram Ha <tristram.ha@microchip.com>
+Fixes: c2999f7fb05b ("net: sched: multiq: don't call qdisc_put() while holding tree lock")
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Acked-by: Cong Wang <cong.wang@bytedance.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 62 ++++++++++++++++++++++++++++++++++++----
- 1 file changed, 56 insertions(+), 6 deletions(-)
+ net/sched/sch_multiq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 13370439a7cae..c2d99344ade41 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -1858,7 +1858,7 @@ static const struct ksz9477_errata_write ksz9477_errata_writes[] = {
- 	{0x1c, 0x20, 0xeeee},
- };
+diff --git a/net/sched/sch_multiq.c b/net/sched/sch_multiq.c
+index 75c9c860182b4..0d6649d937c9f 100644
+--- a/net/sched/sch_multiq.c
++++ b/net/sched/sch_multiq.c
+@@ -185,7 +185,7 @@ static int multiq_tune(struct Qdisc *sch, struct nlattr *opt,
  
--static int ksz9477_config_init(struct phy_device *phydev)
-+static int ksz9477_phy_errata(struct phy_device *phydev)
- {
- 	int err;
- 	int i;
-@@ -1886,16 +1886,30 @@ static int ksz9477_config_init(struct phy_device *phydev)
- 			return err;
- 	}
+ 	qopt->bands = qdisc_dev(sch)->real_num_tx_queues;
  
-+	err = genphy_restart_aneg(phydev);
-+	if (err)
-+		return err;
-+
-+	return err;
-+}
-+
-+static int ksz9477_config_init(struct phy_device *phydev)
-+{
-+	int err;
-+
-+	/* Only KSZ9897 family of switches needs this fix. */
-+	if ((phydev->phy_id & 0xf) == 1) {
-+		err = ksz9477_phy_errata(phydev);
-+		if (err)
-+			return err;
-+	}
-+
- 	/* According to KSZ9477 Errata DS80000754C (Module 4) all EEE modes
- 	 * in this switch shall be regarded as broken.
- 	 */
- 	if (phydev->dev_flags & MICREL_NO_EEE)
- 		phydev->eee_broken_modes = -1;
- 
--	err = genphy_restart_aneg(phydev);
--	if (err)
--		return err;
--
- 	return kszphy_config_init(phydev);
- }
- 
-@@ -2004,6 +2018,42 @@ static int kszphy_resume(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int ksz9477_resume(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	/* No need to initialize registers if not powered down. */
-+	ret = phy_read(phydev, MII_BMCR);
-+	if (ret < 0)
-+		return ret;
-+	if (!(ret & BMCR_PDOWN))
-+		return 0;
-+
-+	genphy_resume(phydev);
-+
-+	/* After switching from power-down to normal mode, an internal global
-+	 * reset is automatically generated. Wait a minimum of 1 ms before
-+	 * read/write access to the PHY registers.
-+	 */
-+	usleep_range(1000, 2000);
-+
-+	/* Only KSZ9897 family of switches needs this fix. */
-+	if ((phydev->phy_id & 0xf) == 1) {
-+		ret = ksz9477_phy_errata(phydev);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	/* Enable PHY Interrupts */
-+	if (phy_interrupt_is_valid(phydev)) {
-+		phydev->interrupts = PHY_INTERRUPT_ENABLED;
-+		if (phydev->drv->config_intr)
-+			phydev->drv->config_intr(phydev);
-+	}
-+
-+	return 0;
-+}
-+
- static int kszphy_probe(struct phy_device *phydev)
- {
- 	const struct kszphy_type *type = phydev->drv->driver_data;
-@@ -4980,7 +5030,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.config_intr	= kszphy_config_intr,
- 	.handle_interrupt = kszphy_handle_interrupt,
- 	.suspend	= genphy_suspend,
--	.resume		= genphy_resume,
-+	.resume		= ksz9477_resume,
- 	.get_features	= ksz9477_get_features,
- } };
- 
+-	removed = kmalloc(sizeof(*removed) * (q->max_bands - q->bands),
++	removed = kmalloc(sizeof(*removed) * (q->max_bands - qopt->bands),
+ 			  GFP_KERNEL);
+ 	if (!removed)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
