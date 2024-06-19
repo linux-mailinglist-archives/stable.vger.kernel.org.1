@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-53942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC7990EBFC
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:03:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F2090ED2D
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7618E1C23918
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:03:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B33CEB263D5
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A907149007;
-	Wed, 19 Jun 2024 13:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4850A14389C;
+	Wed, 19 Jun 2024 13:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nx70/ipQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGHc4GMf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B2014389C;
-	Wed, 19 Jun 2024 13:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0193414375A;
+	Wed, 19 Jun 2024 13:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802128; cv=none; b=AGWLUp0nNsLLT092Scc0pf+TJcD9eugxlq4UFeq+YrNZCoJuUhyaGIhs8WDeSSKFbJK8hDFcf20p0928n9nWy2QRya+H40TdvLQVOzQH78DK/hDxYMGo193/puqLti0rmV7VBTtL1gSiYUjQ+hZu7JB+3s2/8R0eyJWKFL+h1B8=
+	t=1718802896; cv=none; b=GxAoAUZscskIxx/U3IprCAkLXyTlBFOoVBQxlexk7fNOxH2NCgsmX3T8Ns8uWeixYVhVsLqxKOqbTcYaSwFVdZztsqya599FzM1DOsijbZgdtc9DAvn9MhDK9WcNEAoF4uk2c+6N6SM886yWO9NnsuAgeWxI3l8qVYTOCBAKb8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802128; c=relaxed/simple;
-	bh=KNeA4R4x12CckLbxRrykSixDPpXQMCxHCysG5c1U2C8=;
+	s=arc-20240116; t=1718802896; c=relaxed/simple;
+	bh=7EBfyLt0lzdzqLeaTqtu6WcWcjZRi/pJCevNGtqAWmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MmSYk0zcSYTWWfpHqfLXbTN7G0Mmmsd8rKZucl7YLwxotsrBsd0iH5TyiX04YTrYZXJLHxKWLMYaT1cKpVNQ7J+SqqrcnpRCrkCFKZJwVz7Msa1e9ABvvCEKAqL5TZ7bH0tsP6Gx8FaIdbP0Ekj5gpRnTAbnkQzqlV+s7zB7pHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nx70/ipQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5585C2BBFC;
-	Wed, 19 Jun 2024 13:02:07 +0000 (UTC)
+	 MIME-Version; b=A9wPNpgK2YC4Ny5WvoVbuN0v7DLILq5VZcQ2NxVfw5DW29H/+iszYDMoUAUu8Gtel3LBhRxMEH0rR3DgmULJ04Wy/TiK18pm9/HzIedd14J7Xe45vJ4cuxso6mp4UFsriSs17mYUmug7gBgDaqJXYvwJJNJb5TXFVLeptvcbwVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGHc4GMf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114A5C2BBFC;
+	Wed, 19 Jun 2024 13:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802128;
-	bh=KNeA4R4x12CckLbxRrykSixDPpXQMCxHCysG5c1U2C8=;
+	s=korg; t=1718802895;
+	bh=7EBfyLt0lzdzqLeaTqtu6WcWcjZRi/pJCevNGtqAWmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nx70/ipQqiua5tUB3/3WTynM7kiBza7cG+EG5XduJIU1donlRbT9t0sH2ks/BVj0g
-	 y0Af6+OXVhvtle4NM2ds1+oCD/cCwPbyu8Qh9zXAZ5gXmbzLy2pRy9lq6tVqFAYwHx
-	 455s2af51cJaHAeXMGhV5XMGysw0te4YS5w8Z6Mw=
+	b=DGHc4GMfUX1oTPg2+hzneD+Q9kmkgMIAbpoUVQc008Eeb85yS/QNXP4AKJ+wMrV6i
+	 gBacooRP+ET9GJWKrr3fhCmR8JFy8bd5ic89Pok83KbernwPVmYW8BmBIx9HTSMMUv
+	 DRN8FBIzOmIot0PTo0/rW/COTLd1i0LkuB+JU2Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuangyi Chiang <ki.chiang65@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.6 092/267] xhci: Apply broken streams quirk to Etron EJ188 xHCI host
+	John Ernberg <john.ernberg@actia.se>
+Subject: [PATCH 6.9 084/281] USB: xen-hcd: Traverse host/ when CONFIG_USB_XEN_HCD is selected
 Date: Wed, 19 Jun 2024 14:54:03 +0200
-Message-ID: <20240619125609.883017689@linuxfoundation.org>
+Message-ID: <20240619125613.073858748@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
+From: John Ernberg <john.ernberg@actia.se>
 
-commit 91f7a1524a92c70ffe264db8bdfa075f15bbbeb9 upstream.
+commit 8475ffcfb381a77075562207ce08552414a80326 upstream.
 
-As described in commit 8f873c1ff4ca ("xhci: Blacklist using streams on the
-Etron EJ168 controller"), EJ188 have the same issue as EJ168, where Streams
-do not work reliable on EJ188. So apply XHCI_BROKEN_STREAMS quirk to EJ188
-as well.
+If no other USB HCDs are selected when compiling a small pure virutal
+machine, the Xen HCD driver cannot be built.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240611120610.3264502-4-mathias.nyman@linux.intel.com
+Fix it by traversing down host/ if CONFIG_USB_XEN_HCD is selected.
+
+Fixes: 494ed3997d75 ("usb: Introduce Xen pvUSB frontend (xen hcd)")
+Cc: stable@vger.kernel.org # v5.17+
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+Link: https://lore.kernel.org/r/20240517114345.1190755-1-john.ernberg@actia.se
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-pci.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -463,8 +463,10 @@ static void xhci_pci_quirks(struct devic
- 		xhci->quirks |= XHCI_BROKEN_STREAMS;
- 	}
- 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
--			pdev->device == PCI_DEVICE_ID_EJ188)
-+			pdev->device == PCI_DEVICE_ID_EJ188) {
- 		xhci->quirks |= XHCI_RESET_ON_RESUME;
-+		xhci->quirks |= XHCI_BROKEN_STREAMS;
-+	}
+--- a/drivers/usb/Makefile
++++ b/drivers/usb/Makefile
+@@ -35,6 +35,7 @@ obj-$(CONFIG_USB_R8A66597_HCD)	+= host/
+ obj-$(CONFIG_USB_FSL_USB2)	+= host/
+ obj-$(CONFIG_USB_FOTG210_HCD)	+= host/
+ obj-$(CONFIG_USB_MAX3421_HCD)	+= host/
++obj-$(CONFIG_USB_XEN_HCD)	+= host/
  
- 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
- 	    pdev->device == 0x0014) {
+ obj-$(CONFIG_USB_C67X00_HCD)	+= c67x00/
+ 
 
 
 
