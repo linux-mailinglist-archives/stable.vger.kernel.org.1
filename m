@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-53874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD68790EB9A
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 14:59:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D2390ECE2
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FA451C213BF
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 12:59:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7211FB234BB
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B31D13D525;
-	Wed, 19 Jun 2024 12:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588EC14B06C;
+	Wed, 19 Jun 2024 13:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APB2kVBj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gnaI/Qeh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3688C147C60;
-	Wed, 19 Jun 2024 12:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1106514E2DA;
+	Wed, 19 Jun 2024 13:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718801928; cv=none; b=sFzmPHDwU2wlOif0pprS4khNivXupBtjt0EkFPeMoeYrgyz5vnW7nVTk6sVbn1uE9so9Ia+lpNQsJYCLCOxn3Z/Fu+DLRzl2CTqIZIKPcY0u1/ASYSAqL2uUIl3iQdI7lrb9hqnWQBZdGmEIL5ME/O994KgFme6DTHvbif+vbTA=
+	t=1718802698; cv=none; b=d/b87hnyQPvgems/La9NN4PcgdGyBerp/P2Nu5Wa4pMsnEPCfgHGD7znwNN1pJRAn1zkxSvUcE6ytyGhuizsva2H6by4oqAwMzFjP5emfBDHd1ynmcGpl2vZHh+yh6eHf44q/3FUzX4+YYnbbdexOTc16+owaNhtc9TbXQ0auGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718801928; c=relaxed/simple;
-	bh=/YuYYYZUjYPolwEMdaIVX6hRAmi7FDUXhBicJt9B3lc=;
+	s=arc-20240116; t=1718802698; c=relaxed/simple;
+	bh=9Ef3Us25Ldsx5Zne13H1QZOKL4W6ipFmh94hVWpVzk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etESfe9TI0wL7ft43NBvvdihwJB7fnqO7f/1H6/hHbOQtKJqjJDQ9ccYxHsH3uRtYpFtnLCU1cqDuhLaOPXg6/qaPvcRoyOwrP/AaNU93G832p5aC0inkIminBe87SHqMAQgKuqv3s+I0KkRVmL95FfaustSod3Svz7oOWKJ2jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APB2kVBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F228C2BBFC;
-	Wed, 19 Jun 2024 12:58:47 +0000 (UTC)
+	 MIME-Version; b=RGhE/toz5kuh3sZICqPXvSCzFF4Zioig6GCV6xnmdaq+ePcw7xXPqa6VWX2FyswwSmBqWWPJZtUqsfeUvXj8/pWmp1L/fhWZnqDJb8Pg/LU3h5N6H5+tvGkannRG6nGLBjNJaOTnzTv5iAmzt5bKqSfy+XpOFX50lcxuROtqgp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gnaI/Qeh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481E0C32786;
+	Wed, 19 Jun 2024 13:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718801927;
-	bh=/YuYYYZUjYPolwEMdaIVX6hRAmi7FDUXhBicJt9B3lc=;
+	s=korg; t=1718802697;
+	bh=9Ef3Us25Ldsx5Zne13H1QZOKL4W6ipFmh94hVWpVzk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APB2kVBjbkHcH9VMzZGxLzBWMMD+WfDioGJyLz0CoqsMM1e45+wHScDe7HLn0gIZ3
-	 YdbimZ5O2VKxYocZWf22l7oTHvNg+eqb+DmptTL8mn/jBXc2+H4BxYe4wnzZsuP7La
-	 x6N7pCT3bfgIR9a1a5z0DBkFuUnYLibtcyZGMF9Q=
+	b=gnaI/QehawrGqmpsntvFkGRXgx85rfExTEruIzOfSO7VXcEjAz7c6xqxu2qhxJUzO
+	 pYT/HVJB1BSF09KmPyK2QSPuZYS+BpM3nKe7rzaGZm7bmTH5OasXYOt4Vt8SOtQ5PZ
+	 SN4ywB7XvQ3rc7QfFOBDeJpMcoBT49qw5sOdpYk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/267] KVM: SEV-ES: Disallow SEV-ES guests when X86_FEATURE_LBRV is absent
-Date: Wed, 19 Jun 2024 14:52:55 +0200
-Message-ID: <20240619125607.287087376@linuxfoundation.org>
+Subject: [PATCH 6.9 017/281] wifi: iwlwifi: mvm: dont read past the mfuart notifcation
+Date: Wed, 19 Jun 2024 14:52:56 +0200
+Message-ID: <20240619125610.511616865@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Bangoria <ravi.bangoria@amd.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit d922056215617eedfbdbc29fe49953423686fe5e ]
+[ Upstream commit 4bb95f4535489ed830cf9b34b0a891e384d1aee4 ]
 
-As documented in APM[1], LBR Virtualization must be enabled for SEV-ES
-guests. So, prevent SEV-ES guests when LBRV support is missing.
+In case the firmware sends a notification that claims it has more data
+than it has, we will read past that was allocated for the notification.
+Remove the print of the buffer, we won't see it by default. If needed,
+we can see the content with tracing.
 
-[1]: AMD64 Architecture Programmer's Manual Pub. 40332, Rev. 4.07 - June
-     2023, Vol 2, 15.35.2 Enabling SEV-ES.
-     https://bugzilla.kernel.org/attachment.cgi?id=304653
+This was reported by KFENCE.
 
-Fixes: 376c6d285017 ("KVM: SVM: Provide support for SEV-ES vCPU creation/loading")
-Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Message-ID: <20240531044644.768-3-ravi.bangoria@amd.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Fixes: bdccdb854f2f ("iwlwifi: mvm: support MFUART dump in case of MFUART assert")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240513132416.ba82a01a559e.Ia91dd20f5e1ca1ad380b95e68aebf2794f553d9b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c |  6 ++++++
- arch/x86/kvm/svm/svm.c | 16 +++++++---------
- arch/x86/kvm/svm/svm.h |  1 +
- 3 files changed, 14 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index c5845f31c34dc..0e643d7a06d9e 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2264,6 +2264,12 @@ void __init sev_hardware_setup(void)
- 	if (!boot_cpu_has(X86_FEATURE_SEV_ES))
- 		goto out;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index e1c2b7fc92ab9..c56212c2c3066 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -94,20 +94,10 @@ void iwl_mvm_mfu_assert_dump_notif(struct iwl_mvm *mvm,
+ {
+ 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
+ 	struct iwl_mfu_assert_dump_notif *mfu_dump_notif = (void *)pkt->data;
+-	__le32 *dump_data = mfu_dump_notif->data;
+-	int n_words = le32_to_cpu(mfu_dump_notif->data_size) / sizeof(__le32);
+-	int i;
  
-+	if (!lbrv) {
-+		WARN_ONCE(!boot_cpu_has(X86_FEATURE_LBRV),
-+			  "LBRV must be present for SEV-ES support");
-+		goto out;
-+	}
-+
- 	/* Has the system been allocated ASIDs for SEV-ES? */
- 	if (min_sev_asid == 1)
- 		goto out;
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 1efbe8b33f6a1..9e084e22a12f7 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -214,7 +214,7 @@ int vgif = true;
- module_param(vgif, int, 0444);
- 
- /* enable/disable LBR virtualization */
--static int lbrv = true;
-+int lbrv = true;
- module_param(lbrv, int, 0444);
- 
- static int tsc_scaling = true;
-@@ -5248,6 +5248,12 @@ static __init int svm_hardware_setup(void)
- 
- 	nrips = nrips && boot_cpu_has(X86_FEATURE_NRIPS);
- 
-+	if (lbrv) {
-+		if (!boot_cpu_has(X86_FEATURE_LBRV))
-+			lbrv = false;
-+		else
-+			pr_info("LBR virtualization supported\n");
-+	}
- 	/*
- 	 * Note, SEV setup consumes npt_enabled and enable_mmio_caching (which
- 	 * may be modified by svm_adjust_mmio_mask()), as well as nrips.
-@@ -5301,14 +5307,6 @@ static __init int svm_hardware_setup(void)
- 		svm_x86_ops.set_vnmi_pending = NULL;
- 	}
- 
+ 	if (mfu_dump_notif->index_num == 0)
+ 		IWL_INFO(mvm, "MFUART assert id 0x%x occurred\n",
+ 			 le32_to_cpu(mfu_dump_notif->assert_id));
 -
--	if (lbrv) {
--		if (!boot_cpu_has(X86_FEATURE_LBRV))
--			lbrv = false;
--		else
--			pr_info("LBR virtualization supported\n");
--	}
--
- 	if (!enable_pmu)
- 		pr_info("PMU virtualization is disabled\n");
+-	for (i = 0; i < n_words; i++)
+-		IWL_DEBUG_INFO(mvm,
+-			       "MFUART assert dump, dword %u: 0x%08x\n",
+-			       le16_to_cpu(mfu_dump_notif->index_num) *
+-			       n_words + i,
+-			       le32_to_cpu(dump_data[i]));
+ }
  
-diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
-index be67ab7fdd104..53bc4b0e388be 100644
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -39,6 +39,7 @@ extern int vgif;
- extern bool intercept_smi;
- extern bool x2avic_enabled;
- extern bool vnmi;
-+extern int lbrv;
- 
- /*
-  * Clean bits in VMCB.
+ static bool iwl_alive_fn(struct iwl_notif_wait_data *notif_wait,
 -- 
 2.43.0
 
