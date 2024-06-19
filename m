@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-54069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DAB90EC82
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:08:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B02290EDB1
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:21:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 172761C20AE6
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:08:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3BD281ABC
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7A1143C58;
-	Wed, 19 Jun 2024 13:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373A1146016;
+	Wed, 19 Jun 2024 13:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfIG7Zen"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F92fG+ce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A85E12FB31;
-	Wed, 19 Jun 2024 13:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D3B143757;
+	Wed, 19 Jun 2024 13:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802500; cv=none; b=ePJAU6GTZb4ZtzvnsND8pspPMRPGFIuRfPpOmc/oMnUg5QrOPHWoBMyw8w+iwhhshURHkUCi/c/HtkVLwrvMpNWX/fuBIn2RDS4qDo61dWN/Kd10mi5xPY74W7UUgu82g4wyfey3kMP64AvWjVabRKQUB3QhE8qb9JBs8gKUEhA=
+	t=1718803267; cv=none; b=m5LLTLsO6tIoU+tidQayrrHEPh9NRdpnV8csNvuItmTjfsKJlKkX+XyDZxKBVTtwhTl7n3hyyvIHWw+6142+hNOTckCfNlc3DSudq8rbAGAlKXZCVicIRb5XLv7Xdpay9bApwqA54zFznZh8fO79Eo9UAFFCuPh/8yQIWsCjlZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802500; c=relaxed/simple;
-	bh=RrxeNDELkhqSka3IaZHvkjYL/q9BXL5K3qpWnghvISA=;
+	s=arc-20240116; t=1718803267; c=relaxed/simple;
+	bh=JI0dt6hwEv0HpOh5SHijoZeG16ZilRn4Fr6ohgUklmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u0FTHAA3qscniUDce02vHn65WevxmgMaXZUHJ3n7zLl/B91tn8F7tLpmvf1vQNLAIaS74g+5jNLx8SjJJmAp/MjfNM4apMWNtW1TvFbTGPAUkUkll03SPCsk6WwQEYUVx7bqB4XpJaIo6D20omWIQ56I5qqFDvvKXJpYSiq17wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfIG7Zen; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4F4C2BBFC;
-	Wed, 19 Jun 2024 13:08:19 +0000 (UTC)
+	 MIME-Version; b=JeTyygVZKrl1exSSd1b5fTRnCDezEvxkEolUmXOV0TWHzRzhsQY0gD9flgJg/jhodDJLuCu7SFQwwFc4gGVGADtFR2Si0qjR8QhIozjErYW0ZPABdNyXzn92DRuATGwJ0yIgdZpgwSLbqpyEXOa+Y6g9El9EvhVrnfhNQXKqMUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F92fG+ce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65A1AC2BBFC;
+	Wed, 19 Jun 2024 13:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802500;
-	bh=RrxeNDELkhqSka3IaZHvkjYL/q9BXL5K3qpWnghvISA=;
+	s=korg; t=1718803266;
+	bh=JI0dt6hwEv0HpOh5SHijoZeG16ZilRn4Fr6ohgUklmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QfIG7ZennfX1HlzujttDRfNmBZxBQ8Hd1z7mlIpJU921pB0/czlrOE2zlPaPx1JPe
-	 lAHKSxvISgozY69RlPY/ZAToW6MFm+MdfvQqmmgHnL5GIBGMkPWYuepbpKcPNIbpDL
-	 ttCYKtEwg+THbxK+uyDJjMHdKLglzDkrmlmJjgaU=
+	b=F92fG+ce7AiKMGHUdh8xHzT8CKzpULu6ohUycrPFUiZXjU0fwTbAHbFcx/O878PU7
+	 tQrpllciGwHoWpMTUbK5BDWLyWLjk4YtENzczjVHNFKHxNAdcvEq8JdlXfG00LPp2i
+	 an1cfNe8UqLVfMWQaW4BUMnU2o9fzEDxfblB4UYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Noralf=20Tr=C3=B8nnes?= <noralf@tronnes.org>,
-	Eric Anholt <eric@anholt.net>, Rob Herring <robh@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	"Wachowski, Karol" <karol.wachowski@intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>, Wachowski@web.codeaurora.org
-Subject: [PATCH 6.6 216/267] drm/shmem-helper: Fix BUG_ON() on mmap(PROT_WRITE, MAP_PRIVATE)
+	Jani Nikula <jani.nikula@intel.com>,
+	Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 6.9 208/281] drm/exynos/vidi: fix memory leak in .get_modes()
 Date: Wed, 19 Jun 2024 14:56:07 +0200
-Message-ID: <20240619125614.617693962@linuxfoundation.org>
+Message-ID: <20240619125617.955574770@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
-References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+References: <20240619125609.836313103@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wachowski, Karol <karol.wachowski@intel.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 39bc27bd688066a63e56f7f64ad34fae03fbe3b8 upstream.
+commit 38e3825631b1f314b21e3ade00b5a4d737eb054e upstream.
 
-Lack of check for copy-on-write (COW) mapping in drm_gem_shmem_mmap
-allows users to call mmap with PROT_WRITE and MAP_PRIVATE flag
-causing a kernel panic due to BUG_ON in vmf_insert_pfn_prot:
-BUG_ON((vma->vm_flags & VM_PFNMAP) && is_cow_mapping(vma->vm_flags));
+The duplicated EDID is never freed. Fix it.
 
-Return -EINVAL early if COW mapping is detected.
-
-This bug affects all drm drivers using default shmem helpers.
-It can be reproduced by this simple example:
-void *ptr = mmap(0, size, PROT_WRITE, MAP_PRIVATE, fd, mmap_offset);
-ptr[0] = 0;
-
-Fixes: 2194a63a818d ("drm: Add library for shmem backed GEM objects")
-Cc: Noralf Trønnes <noralf@tronnes.org>
-Cc: Eric Anholt <eric@anholt.net>
-Cc: Rob Herring <robh@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.2+
-Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240520100514.925681-1-jacek.lawrynowicz@linux.intel.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_gem_shmem_helper.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_gem_shmem_helper.c
-+++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -610,6 +610,9 @@ int drm_gem_shmem_mmap(struct drm_gem_sh
- 		return ret;
- 	}
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -309,6 +309,7 @@ static int vidi_get_modes(struct drm_con
+ 	struct vidi_context *ctx = ctx_from_connector(connector);
+ 	struct edid *edid;
+ 	int edid_len;
++	int count;
  
-+	if (is_cow_mapping(vma->vm_flags))
-+		return -EINVAL;
+ 	/*
+ 	 * the edid data comes from user side and it would be set
+@@ -328,7 +329,11 @@ static int vidi_get_modes(struct drm_con
+ 
+ 	drm_connector_update_edid_property(connector, edid);
+ 
+-	return drm_add_edid_modes(connector, edid);
++	count = drm_add_edid_modes(connector, edid);
 +
- 	dma_resv_lock(shmem->base.resv, NULL);
- 	ret = drm_gem_shmem_get_pages(shmem);
- 	dma_resv_unlock(shmem->base.resv);
++	kfree(edid);
++
++	return count;
+ }
+ 
+ static const struct drm_connector_helper_funcs vidi_connector_helper_funcs = {
 
 
 
