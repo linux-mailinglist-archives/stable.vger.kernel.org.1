@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-54196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-53932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F312090ED20
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:14:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58F390EBF0
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 15:02:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0DC91F21390
-	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:14:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3884B284316
+	for <lists+stable@lfdr.de>; Wed, 19 Jun 2024 13:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474E51459E3;
-	Wed, 19 Jun 2024 13:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4043E147C7B;
+	Wed, 19 Jun 2024 13:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ci8jBYPn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOz4TXEq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056B31422B8;
-	Wed, 19 Jun 2024 13:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BC0143873;
+	Wed, 19 Jun 2024 13:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718802866; cv=none; b=FvJ5RpFFWCPiXxC0/+4QMhz8oTEv/19oD8TQnyS1C/UT5cJi8+KWFB1cDgGfRAPXXZE2sywqD0xWGSONqdAzwW+CRRhDTLO4j7emn8gpZ3MxsKVJcGIepKZAbKpCYyVJB9lI0l2W8QUTbnJGnGj4baYrcKvuszYqZ59LEG8sySs=
+	t=1718802099; cv=none; b=uTr1s8altjIC2DqLflksIPerHc20dWwEekubgC3m0FzQqLLiNmcV9+/gRyDwk4bk2tvTtX0n+hU2++V8faCoP23YFuN/07eAH4bAC2aHIhyDljwTfRxeDuvp6wMaMnOuIVZreuDWPLPg8HGsf07OtlBxWXv5NlrmO0fqOzJNWeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718802866; c=relaxed/simple;
-	bh=kE7AFNbmhg9hG47jo/kt4+jgU+o8QzF1Cx0CLM5iVWk=;
+	s=arc-20240116; t=1718802099; c=relaxed/simple;
+	bh=lXm+e5FBaEthuQ1pLVmLW/TZgE6HIbqLZU6SzhFXqaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDT3tUVqGBwULDcFfqm/58mPhJOFmBM5ajiwLWczCHX9duDqSGNB/E1ciPI+T8YupY3SM6JJaegLw8Yk1RXX8OgPoyq6Sz7i6JG3DVC4069fYqwRQ9ysWXHTrQmom4dcGA3QxcnDAoW768G/JXQiIfMGaiCK3OP42o0N7gObmYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ci8jBYPn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D811C2BBFC;
-	Wed, 19 Jun 2024 13:14:25 +0000 (UTC)
+	 MIME-Version; b=GxEGF2b/+bOTs7vfC7ctI4Ve7+NhBdgKGCcaYbnJwZSq4Gx+slfuqMNv6IGxEKPI265jtM4Wj2djN4mtKvzfC05ACbZeZu8vNEf76t8q7Y8Ol/KSs96HwaX6KMaL3Q3+Gh43yccdYq0hJCQzqrbT5umciYTVr8jEhR+G6plc61c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOz4TXEq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDB6C32786;
+	Wed, 19 Jun 2024 13:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718802865;
-	bh=kE7AFNbmhg9hG47jo/kt4+jgU+o8QzF1Cx0CLM5iVWk=;
+	s=korg; t=1718802098;
+	bh=lXm+e5FBaEthuQ1pLVmLW/TZgE6HIbqLZU6SzhFXqaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ci8jBYPnx9kueb9GgZLEdHA0qB5mjOhlYs1JY2oBltXMZhsrRN4DLCRjoXW5L18U+
-	 o4+gSp0Gv8UhtFPr+VsdYFor3sTmPsm5KE9p3afTDXa5EaFYCtn8hM7o9F1zS8SP6R
-	 HK3t5kuMVxi1YhfCIhVrLeEPW737tTON/uovAW3Y=
+	b=eOz4TXEqC/p6+TjJzwpLlAAfTqrNCENeV8cDUQih3GYTs/2YTsNMMczCT4uDRvL4X
+	 KamZkIIHhWlQdn/Bu8aqpf/j7dck6awleU7jxudZXXn/EM+OYimC6dwnMfoUJ/DWHE
+	 B1zxrJ0b+lxxReULp0pqTt8YDcKRUx1XY7XI9Crw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 072/281] net: ethtool: fix the error condition in ethtool_get_phy_stats_ethtool()
+	Alan Stern <stern@rowland.harvard.edu>,
+	syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com,
+	syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 080/267] USB: class: cdc-wdm: Fix CPU lockup caused by excessive log messages
 Date: Wed, 19 Jun 2024 14:53:51 +0200
-Message-ID: <20240619125612.614151237@linuxfoundation.org>
+Message-ID: <20240619125609.423381094@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
-References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+References: <20240619125606.345939659@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 0dcc53abf58d572d34c5313de85f607cd33fc691 ]
+commit 22f00812862564b314784167a89f27b444f82a46 upstream.
 
-Clang static checker (scan-build) warning:
-net/ethtool/ioctl.c:line 2233, column 2
-Called function pointer is null (null dereference).
+The syzbot fuzzer found that the interrupt-URB completion callback in
+the cdc-wdm driver was taking too long, and the driver's immediate
+resubmission of interrupt URBs with -EPROTO status combined with the
+dummy-hcd emulation to cause a CPU lockup:
 
-Return '-EOPNOTSUPP' when 'ops->get_ethtool_phy_stats' is NULL to fix
-this typo error.
+cdc_wdm 1-1:1.0: nonzero urb status received: -71
+cdc_wdm 1-1:1.0: wdm_int_callback - 0 bytes
+watchdog: BUG: soft lockup - CPU#0 stuck for 26s! [syz-executor782:6625]
+CPU#0 Utilization every 4s during lockup:
+	#1:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#2:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#3:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#4:  98% system,	  0% softirq,	  3% hardirq,	  0% idle
+	#5:  98% system,	  1% softirq,	  3% hardirq,	  0% idle
+Modules linked in:
+irq event stamp: 73096
+hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_emit_next_record kernel/printk/printk.c:2935 [inline]
+hardirqs last  enabled at (73095): [<ffff80008037bc00>] console_flush_all+0x650/0xb74 kernel/printk/printk.c:2994
+hardirqs last disabled at (73096): [<ffff80008af10b00>] __el1_irq arch/arm64/kernel/entry-common.c:533 [inline]
+hardirqs last disabled at (73096): [<ffff80008af10b00>] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:551
+softirqs last  enabled at (73048): [<ffff8000801ea530>] softirq_handle_end kernel/softirq.c:400 [inline]
+softirqs last  enabled at (73048): [<ffff8000801ea530>] handle_softirqs+0xa60/0xc34 kernel/softirq.c:582
+softirqs last disabled at (73043): [<ffff800080020de8>] __do_softirq+0x14/0x20 kernel/softirq.c:588
+CPU: 0 PID: 6625 Comm: syz-executor782 Tainted: G        W          6.10.0-rc2-syzkaller-g8867bbd4a056 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
 
-Fixes: 201ed315f967 ("net/ethtool/ioctl: split ethtool_get_phy_stats into multiple helpers")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Link: https://lore.kernel.org/r/20240605034742.921751-1-suhui@nfschina.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Testing showed that the problem did not occur if the two error
+messages -- the first two lines above -- were removed; apparently adding
+material to the kernel log takes a surprisingly large amount of time.
+
+In any case, the best approach for preventing these lockups and to
+avoid spamming the log with thousands of error messages per second is
+to ratelimit the two dev_err() calls.  Therefore we replace them with
+dev_err_ratelimited().
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Suggested-by: Greg KH <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+5f996b83575ef4058638@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/00000000000073d54b061a6a1c65@google.com/
+Reported-and-tested-by: syzbot+1b2abad17596ad03dcff@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/000000000000f45085061aa9b37e@google.com/
+Fixes: 9908a32e94de ("USB: remove err() macro from usb class drivers")
+Link: https://lore.kernel.org/linux-usb/40dfa45b-5f21-4eef-a8c1-51a2f320e267@rowland.harvard.edu/
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/29855215-52f5-4385-b058-91f42c2bee18@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ethtool/ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/class/cdc-wdm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 5a55270aa86e8..e645d751a5e89 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -2220,7 +2220,7 @@ static int ethtool_get_phy_stats_ethtool(struct net_device *dev,
- 	const struct ethtool_ops *ops = dev->ethtool_ops;
- 	int n_stats, ret;
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -266,14 +266,14 @@ static void wdm_int_callback(struct urb
+ 			dev_err(&desc->intf->dev, "Stall on int endpoint\n");
+ 			goto sw; /* halt is cleared in work */
+ 		default:
+-			dev_err(&desc->intf->dev,
++			dev_err_ratelimited(&desc->intf->dev,
+ 				"nonzero urb status received: %d\n", status);
+ 			break;
+ 		}
+ 	}
  
--	if (!ops || !ops->get_sset_count || ops->get_ethtool_phy_stats)
-+	if (!ops || !ops->get_sset_count || !ops->get_ethtool_phy_stats)
- 		return -EOPNOTSUPP;
- 
- 	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
--- 
-2.43.0
-
+ 	if (urb->actual_length < sizeof(struct usb_cdc_notification)) {
+-		dev_err(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
++		dev_err_ratelimited(&desc->intf->dev, "wdm_int_callback - %d bytes\n",
+ 			urb->actual_length);
+ 		goto exit;
+ 	}
 
 
 
