@@ -1,176 +1,223 @@
-Return-Path: <stable+bounces-54777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258C29113A4
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 22:49:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C487E911443
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 23:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21971B20F63
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 20:49:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E72871C21A60
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 21:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7334762DC;
-	Thu, 20 Jun 2024 20:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E0B757F6;
+	Thu, 20 Jun 2024 21:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=exalondelft.nl header.i=@exalondelft.nl header.b="FFfDeY9P"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="aj1IXv9S"
 X-Original-To: stable@vger.kernel.org
-Received: from mailfilter01-out30.webhostingserver.nl (mailfilter01-out30.webhostingserver.nl [195.211.72.101])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10olkn2019.outbound.protection.outlook.com [40.92.42.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACAC7602B
-	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 20:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.211.72.101
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718916558; cv=pass; b=hlRumE42flBx6J7UkZEeA996P2I9J8CmGZQP3dV0d9zFTa1NRfAlGCDvjVMqlu6odsSkcduQi+8kjejPEKmap4n0PwX6O1g7L4BJhWbCGfjNOCE27gTTdoue/FsqOgnu3QDGaYXRUhcAcbGHg/7ggQ35cWEvqRFcWw50/qRNZW4=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718916558; c=relaxed/simple;
-	bh=Ld5ASmG9FMMRdEUjUfMH7sWmeNaTeG016GMjdzyYZPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X9rZT9hbsgDmZdFAmyJwYN5/J1tfIU00fLKPeHl7gcYPc4+dwPUIC1obfR5Gyd495vKjTsUMmaLftCw1NGa2SONTaEdPnsfwvjwJ/IRyD19+OiCU8qHgZR4YVyk5C9XkMKakShPCVuoAGmMGRJcRSHwopOZcowo2qabg6oQ7FhY=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=exalondelft.nl; spf=pass smtp.mailfrom=exalondelft.nl; dkim=pass (2048-bit key) header.d=exalondelft.nl header.i=@exalondelft.nl header.b=FFfDeY9P; arc=pass smtp.client-ip=195.211.72.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=exalondelft.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=exalondelft.nl
-ARC-Seal: i=2; a=rsa-sha256; t=1718916555; cv=pass;
-	d=webhostingserver.nl; s=whs1;
-	b=m92bH04fwqa3sjYGaYoEAfoUt1MrkquPul32ssSU6Lz0CoWhvkT8X3nnY4RXM69jYYdSpjlz/e+ld
-	 bg2ICijDchpBcV6lW+xHFjMywotWeJJb0/3p2E7cN8PZ6mDJ/f9VsHDgdqaXF6VebxfBXfl3bxhTBT
-	 SBVyQroWOJocvPozMWcZIgDzWZka7VOUQWUAOg9sHwomNaTAv/NhKEWQF4i59BRK9/KG+Ek6TXTSd2
-	 7VZ4/iZjIrB86DX5nSHoRwGHccLqqf2qNr4OoOeqMOIOhMxrjNJWx7O7wwl/0F1ajjTfV58z7+ca/h
-	 tyDQG7p83kHSQ0eow3UrWfUZKGyaIZg==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed;
-	d=webhostingserver.nl; s=whs1;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:dkim-signature:from;
-	bh=LrKKBuRVYfy5q97eN3qeR+FCdiBw0++yHl2osFhoIYQ=;
-	b=j/sVmzw/cUXlHh12MAICtkHLdN1dNeHKDR3d3qGmSYny4JHo36PqTFj4dh3PmO0thnIJlRxl/yBmH
-	 fiTgeUP3vNv9wWmWFPIB6urENA+MkOXF/yOz8xJ1yT5DS3I/aRyjF0meKl1LKQyvFtCXOxpnhKcynU
-	 kIej+vG4e2fKFK/+d4b8BSKoBj9s/YNr+Ds+epm1Q8vekv2n6mYZS3fXQwSq5b0bWn3sTVT3BwnPmT
-	 lgCcxxXrSVp7FSTqNjysHky2DefTDNa1TQ0RUKeSApeyP2IZ3pcjJFONZLW305nXFC9/kLYilNQHtD
-	 uo4afIFNfYqZQsqnup6Vaj15oYD1lAQ==
-ARC-Authentication-Results: i=2; mailfilter01.webhostingserver.nl;
-	spf=pass smtp.mailfrom=exalondelft.nl smtp.remote-ip=141.138.168.154;
-	dmarc=pass header.from=exalondelft.nl;
-	arc=pass header.oldest-pass=0;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=exalondelft.nl; s=whs1;
-	h=content-transfer-encoding:mime-version:references:in-reply-to:message-id:date:
-	 subject:cc:to:from:from;
-	bh=LrKKBuRVYfy5q97eN3qeR+FCdiBw0++yHl2osFhoIYQ=;
-	b=FFfDeY9P6QUEK1fUJmKsIv/7Rv6hML6gXfjCTu2ENdF65pzjJP8Ad2y27vsHw1rtZQ+GvkE9lQBCi
-	 c95vkWdChmr8qCq6tQFshnfam7ph9mwEy5xgZeS6vonsApPP0f5FUb2IuLwXDtpUgLl4nCMDseyQmr
-	 o6GLC0Qu04Wlnq8lk9u/UcuLJcVeiBsUdgAx3ZDYFaSq2hsWiHhTljXT7pzmLrlgujflO/S3KMQo0z
-	 X1nzbPjLlCLaqhjk5j1AO2a/7iNBq3bSJqop/Sntdxi0v0h65SZwilT12DklyRBgOWh0GSXB3TAHX+
-	 6psTkFJcxpowAARK3voACz7HO1qMEqg==
-X-Halon-ID: 8d18ed33-2f46-11ef-8d21-001a4a4cb906
-Received: from s198.webhostingserver.nl (s198.webhostingserver.nl [141.138.168.154])
-	by mailfilter01.webhostingserver.nl (Halon) with ESMTPSA
-	id 8d18ed33-2f46-11ef-8d21-001a4a4cb906;
-	Thu, 20 Jun 2024 22:49:13 +0200 (CEST)
-ARC-Seal: i=1; cv=none; a=rsa-sha256; d=webhostingserver.nl; s=whs1; t=1718916553;
-	 b=KBrlsz8HN5oKRCKtlZ+iihffjXGAE0tQavr/swym0wpQN6sElCAp7uNgxOtD2MCN3K+5/cF3tB
-	  c/KzkKCKf2widX9i82QDKP5184k6aJIbvBxIg32fkJBPLonBS904cn6VPzhZHRnY+5ByrULcQq
-	  5tSD9JUFYY5EqLWG0MuH1UrrFkYf2UFdm7mz2jLAfYbQBErmpq7ce2ukLUIxP7AKxnGSEqUYgj
-	  6JWORy4PbskWvY9tjlf+kEvYcX1kE/hPYrqA4YFajS3OVc3ErdAVfJMNyA/cRPC8vZ6kzknuYg
-	  u6SRhx1M6m0CUUxbZvk8EwImyk/IBNxQtyqhrNkUAFfcxA==;
-ARC-Authentication-Results: i=1; webhostingserver.nl; smtp.remote-ip=2a02:a466:68ed:1:d31:9797:59c3:1c58;
-	iprev=pass (2a02-a466-68ed-1-d31-9797-59c3-1c58.fixed6.kpn.net) smtp.remote-ip=2a02:a466:68ed:1:d31:9797:59c3:1c58;
-	auth=pass (PLAIN) smtp.auth=ferry.toth@elsinga.info;
-	spf=softfail smtp.mailfrom=exalondelft.nl;
-	dmarc=skipped header.from=exalondelft.nl;
-	arc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed; d=webhostingserver.nl; s=whs1; t=1718916553;
-	bh=Ld5ASmG9FMMRdEUjUfMH7sWmeNaTeG016GMjdzyYZPE=;
-	h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:
-	  Date:Subject:Cc:To:From;
-	b=ydd/Q4KFL9WsBVly2PEfT/5PWeLVYJ4vqH/T7S/wQNQYNCbrIuDdEdJpQk/ioD9sYBPa5eWCfp
-	  2Sqxl5/3UflNmiL86JvecK6y4yZDQ0MLRNXEp3UGsa/mvr5Dky5BPieiMltRo6kNxVVjeKJnoE
-	  LeBy7Zuydki0+Wq9XxLijIzCMMjZadtr0Iwzmtb3oGTGHAjWmje/6wTikdPWg4Jv8OfrzP242j
-	  p++nvbJeQCC61AQGnvWM+102RgcFVUD8mfzcRA1D73qbvElXXpTOGezXyX8FARiq5fdfEAyB0x
-	  6k/bSoHswdcEFQ6EIrRweMxpGm2brcpo7KemmNc7/5v4tw==;
-Authentication-Results: webhostingserver.nl;
-	iprev=pass (2a02-a466-68ed-1-d31-9797-59c3-1c58.fixed6.kpn.net) smtp.remote-ip=2a02:a466:68ed:1:d31:9797:59c3:1c58;
-	auth=pass (PLAIN) smtp.auth=ferry.toth@elsinga.info;
-	spf=softfail smtp.mailfrom=exalondelft.nl;
-	dmarc=skipped header.from=exalondelft.nl;
-	arc=none
-Received: from 2a02-a466-68ed-1-d31-9797-59c3-1c58.fixed6.kpn.net ([2a02:a466:68ed:1:d31:9797:59c3:1c58] helo=submission)
-	by s198.webhostingserver.nl with esmtpa (Exim 4.97.1)
-	(envelope-from <ftoth@exalondelft.nl>)
-	id 1sKOiX-0000000CsKj-0hdm;
-	Thu, 20 Jun 2024 22:49:13 +0200
-From: Ferry Toth <ftoth@exalondelft.nl>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ferry Toth <ftoth@exalondelft.nl>,
-	Richard Acayan <mailingradian@gmail.com>,
-	Justin Stitt <justinstitt@google.com>,
-	"Ricardo B. Marliere" <ricardo@marliere.net>,
-	Linyu Yuan <quic_linyyuan@quicinc.com>,
-	Hardik Gajjar <hgajjar@de.adit-jv.com>,
-	linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@intel.com>,
-	s.hauer@pengutronix.de,
-	jonathanh@nvidia.com,
-	paul@crapouillou.net,
-	quic_eserrao@quicinc.com,
-	erosca@de.adit-jv.com,
-	regressions@leemhuis.info,
-	Ferry Toth <fntoth@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] Revert "usb: gadget: u_ether: Replace netif_stop_queue with netif_device_detach"
-Date: Thu, 20 Jun 2024 22:46:42 +0200
-Message-ID: <20240620204832.24518-3-ftoth@exalondelft.nl>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240620204832.24518-1-ftoth@exalondelft.nl>
-References: <20240620204832.24518-1-ftoth@exalondelft.nl>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893FA1C680;
+	Thu, 20 Jun 2024 21:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.42.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718918337; cv=fail; b=Zh/jzupvveAM2ishu2hVeDZ/lli5MRmARhoXiJP8lr4PkSvuQ1U5XyyHsj7k42Knn/nyrs3SySSdBKHNCPP0I+pbGvD98/fTqPvp8BH4Qx0/M9wWYFFilMM5wj3RhXn8TllTQnI30/dX87QCwvsfq4ZjeRwV8SW5TsSgF76u0SM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718918337; c=relaxed/simple;
+	bh=RG0EFKyBkQFjcSwe9tJrPCjAg/4g2iedLSOx7mMkIz8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hvvBP11qh8d6hJ+e/p9R+M9siappJUFxIlAJZeudVMxPUiRY9Sd/tKy1QDTIbTCLnCEE4t3swsCIVSjcMfPb52Xzi4VpnSuh/+ce/iyUlUdr49HVBxkfmCaxCQCP/IAHjFo5GLctKcFAJgx07WmDTwIrUZ+UFTdxO3FlwEE3+U0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=aj1IXv9S; arc=fail smtp.client-ip=40.92.42.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IbRCzca0UWoLkf6xhUIW0yajx09Jie3osT5Gm+N0VES1gcvpl8UDm43xqMx60kRc7O7eZMeZKxCTLQ2h7y6q+ZZQ1cRfN/JyUfvOaMdLHz4CfL67ljpXeibYVxY/ZoMeYOTzuY8KhKZN8t1uYoX2RbRH+xDN3Nah/uquLxkdbFPeB+Nk9FTj6oyCNXRKSKFJBfvu46Pg57cEjfirCGY7X8Hn4yMEKHLbkpGIuSI/k5oeIcZsM9pi0NgnzUM9FM4WsmL0qlIybzb4Xuy42xBDalJ3aa792Z10iIUg62/m4vOyQfmuDrz2JAzie99PY6WiLQqw4QyN4kr4IAQISwyWfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mSy9QMBNQP/U+R6aui3seFdCy+AghuNQtAA7JGI4P44=;
+ b=hdCABA1HoXNWpyS0hd6YmN/aMlP4mTfVD9ERwaIzYTr7qN2NBgh7ciKrOdjQblcEMhJeWlXtGlDF8GiuQgWitsJkpoRLRMyLqPPjc1f1iwUgzU1LRZev3lba1w2erLC89QdMH6gKy3xacH5YLvketlkDF1b4zqqfs3LIekRZzjkBNwHNJPe56pHSnU4iCBLyGv/HxVyfPyLkdpXBuyLLnbqP3eR2j8mAzEmMrVZNauofGPRFZRCBlIbNXvMNhXgerUdEduXd5PY6vd77yGAYepg+OA9uK6oddnP8/mzlgARyi46aQZjN82VZ1AjwG3gD/7SLDoBMklkRriuPeFUVFA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mSy9QMBNQP/U+R6aui3seFdCy+AghuNQtAA7JGI4P44=;
+ b=aj1IXv9SqOHZZ8opQhhFc1azXcrbjNt3g5PNwBdLgDP8AWFc6vnjhFhemJ9VN5MBW4tIUfg6jEivDDLtGk2uID8RyThA/z8pKHaTirxrgmax12JmIVr2az8T+2qzFE53WgVWJqYsaCo2W9vpv7Q9kxX+/yB253ibBDvlQbYfE6iq5gHbYo/oNyAT376ieXOYU+KoyXqhpS0r55zhedH9JKor7d3340SPKwksXskZRFyAxzJEh4aSWDaAyRVBeTak/zDZOzeNwOabBQCCB0pmm8jgbiLA+7Z6t3M6Mih8lGJxduoud9JCDOwEYXhimxzr4GgdO83l/IDBK0XSf37S4A==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by SA6PR02MB10598.namprd02.prod.outlook.com (2603:10b6:806:406::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.19; Thu, 20 Jun
+ 2024 21:18:52 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::cedd:1e64:8f61:b9df%2]) with mapi id 15.20.7698.017; Thu, 20 Jun 2024
+ 21:18:52 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Dexuan Cui <decui@microsoft.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Thomas
+ Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter
+ Anvin" <hpa@zytor.com>, Daniel Lezcano <daniel.lezcano@linaro.org>, "open
+ list:Hyper-V/Azure CORE AND DRIVERS" <linux-hyperv@vger.kernel.org>, "open
+ list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] clocksource: hyper-v: Use lapic timer in a TDX VM without
+ paravisor
+Thread-Topic: [PATCH] clocksource: hyper-v: Use lapic timer in a TDX VM
+ without paravisor
+Thread-Index: AQHawd9ON2/Wh7TteU6ShycRrBy/N7HRJy7w
+Date: Thu, 20 Jun 2024 21:18:52 +0000
+Message-ID:
+ <SN6PR02MB4157C155D258F9DE76650E3FD4C82@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20240619002504.3652-1-decui@microsoft.com>
+In-Reply-To: <20240619002504.3652-1-decui@microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-tmn: [aN4dhZWAuLQP+BictPgnadaTKELhVCdu]
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|SA6PR02MB10598:EE_
+x-ms-office365-filtering-correlation-id: 8df7bf81-d5b0-490c-f297-08dc916e95e5
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|461199025|3412199022|102099029|440099025;
+x-microsoft-antispam-message-info:
+ 8eW3tPHp9vN1uOCCBRhjm2zqy+5cB4XlEuuHkItEYJCECO7wj3y+Q+CWkOBd1+AuT54MLErHEAT1zA63W3IlNSf+tAvlX1eD6b+zqfZuTIlzQ1OHPnT+vTBgol9Lwxa9Cdl4l8PM8huOTw52KMp8jKS/bW7XIsrCuzR4uiU80bp+Q4bG1SQfx/Ui/Z5CcAZc1SG7M42zgFzwixp4mI+u9lRwE+jSowwAvxR8j7H7q9kH2qg6XZ052DWZesslx+gglNqH12Wi8FHMwgfwm0gI0cWtKQ4PQdEX3PSXEyhHpt61BD8+3FDL+Lolb5f92bKAIfi5wqQ1EUlKbFGckuVYGe//d0MD7PfMNBzKDby1lBUbkY6UQkDcNi16mUw4Gfa1ckfDM3BhWOPDpacZc2BowyNg6SmQW+cvrgN54y//gdYjT6sTNU3q3QtPVHUxLvstz+mfkM4gjV9pioTahizA+ZYbQO/yMOyxCgycxMvNtA2ajSFpGhdfFLxCwcGYSbWVWZmToLZVc3VlDrfar8XWdc2Hgf1qY/DpByIgfMOXiwCWpOs9oy53JC3OxT/xXh0P
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?8SimNfLz23u+YGM387F/8YPMRI7KhibASm8YKvL49CijKVcmRhTiiKMkirV3?=
+ =?us-ascii?Q?+k5MXE9WV4b+Enz89zMeaMlfmtHY990J2F/Szn1XiPJcy6uJazAlHoBXtvXO?=
+ =?us-ascii?Q?Xv6vDXvtEX1kZTp4MbNrKlEachfPJZA2r9P2BmpIX9guyVeSMY8SkoSB+P1X?=
+ =?us-ascii?Q?xUTLjlTe4UL08kX0xnfNW3jmhNHCU92Es7WeDFPwNtdDVbDJmWzNlcwR1a9d?=
+ =?us-ascii?Q?o00wCel6nC+TsgeYe9DjD8ignXrr+RQ48O1L7TN/7LO1WhQPqUJDOEa2wxtM?=
+ =?us-ascii?Q?0bZxypxnHXpwr9RfRfcGXlmxWBTEfXbC1wHrXdYK4putb/DT7AX9GXA/fbX3?=
+ =?us-ascii?Q?+GgUxzCdLZM33WOtJ6Elzjv1MVhB7PetG04vID8hKlgTsEIMicxLa0EhN0Ur?=
+ =?us-ascii?Q?TWrikAea818LGXTMEpvMakOYd5XoJmHaI/U43em69aJyke5h9a98tFNYQVwE?=
+ =?us-ascii?Q?m156eiLa3nOlFVKDw/vK9WhnVNRGVyrMC7SFRBa19dJEfr3ZrcLncPaEfOZb?=
+ =?us-ascii?Q?wIMMdCO6PZbPNN0OcS+/+wKNr1cpUx72yj555EG1A9TAiS68ESe0FXrDGj+2?=
+ =?us-ascii?Q?57l7sjTDGEM8uxgvefGnMTaxYgqQlXG4ki2NuNzQK2lOMM22gdMd53xVzlg6?=
+ =?us-ascii?Q?B4xvm05mSHINLOj/yiwyZZFdJ9FOa5x+pti2E7rh7JH3tQFKpHQIS7MViemy?=
+ =?us-ascii?Q?iKpGbinDi5y3r0zn0r2v4RMsPiYJ0MTPgVep+x6IBk4F0mgYFodH6tDZk1LP?=
+ =?us-ascii?Q?TTBsY0vFobHATQRwbeLD8DoH3dMt8ml/kOaYtDQeMDn2xcRbEdG/TYlYJ8Cl?=
+ =?us-ascii?Q?3YM9+8kX2K47VpCNpv7jOx/5aN5JNoiv5EMzobAtotnGxsQJAGsKPrDh9FRo?=
+ =?us-ascii?Q?Ohh19ZimH30sF5oqzFcMdt7YlhR7w0QQSFGsvN5PTDAWswBzo09iJIA/7neP?=
+ =?us-ascii?Q?tGxsy6853rkRhXGhSfkhvn2Sdis82oP15fY8I0k6Q1JBswMPlqf7ufo69jEs?=
+ =?us-ascii?Q?ihj2Qyp3Oj+iaLH+I11NW7EF/+eQOZ3cdwI4XloQJBvjca7GHODN+TP5TRyw?=
+ =?us-ascii?Q?iVpK3DJBa95+/fZYNLW+AvFZKdS2r8bJ/9/iKsPxkSQoncU1046BzE0NqQ7B?=
+ =?us-ascii?Q?GPcKAT9GZW4yO34PrRzAP8bAfiPHNPZJqaaxD3etKikG5MRdMx9fBmnk73Es?=
+ =?us-ascii?Q?EX98qqZBsg1zspRCSADp62S0Xi5zstAu3LTU302XqxKm4sgfBbami7Ve55Q?=
+ =?us-ascii?Q?=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ACL-Warn: Sender domain ( exalondelft.nl ) must match your domain name used in authenticated email user ( ferry.toth@elsinga.info ).
-X-ACL-Warn: From-header domain ( exalondelft.nl} ) must match your domain name used in authenticated email user ( ferry.toth@elsinga.info )
-X-Antivirus-Scanner: Clean mail though you should still use an Antivirus
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8df7bf81-d5b0-490c-f297-08dc916e95e5
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jun 2024 21:18:52.7055
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA6PR02MB10598
 
-This reverts commit f49449fbc21e7e9550a5203902d69c8ae7dfd918.
+From: Dexuan Cui <decui@microsoft.com> Sent: Tuesday, June 18, 2024 5:25 PM
+>=20
+> In a TDX VM without paravisor, currently the default timer is the Hyper-V
+> timer, which depends on the slow VM Reference Counter MSR: the Hyper-V TS=
+C
+> page is not enabled in such a VM because the VM uses Invariant TSC as a
+> better clocksource and it's challenging to mark the Hyper-V TSC page shar=
+ed
+> in very early boot.
+>=20
+> Lower the rating of the Hyper-V timer so the local APIC timer becomes the
+> the default timer in such a VM. This change should cause no perceivable
+> performance difference.
+>=20
+> Cc: stable@vger.kernel.org # 6.6+
+> Signed-off-by: Dexuan Cui <decui@microsoft.com>
+> ---
+>  arch/x86/kernel/cpu/mshyperv.c     |  6 +++++-
+>  drivers/clocksource/hyperv_timer.c | 16 +++++++++++++++-
+>  2 files changed, 20 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyper=
+v.c
+> index e0fd57a8ba840..745af47ca0459 100644
+> --- a/arch/x86/kernel/cpu/mshyperv.c
+> +++ b/arch/x86/kernel/cpu/mshyperv.c
+> @@ -449,9 +449,13 @@ static void __init ms_hyperv_init_platform(void)
+>  			ms_hyperv.hints &=3D ~HV_X64_APIC_ACCESS_RECOMMENDED;
+>=20
+>  			if (!ms_hyperv.paravisor_present) {
+> -				/* To be supported: more work is required.  */
+> +				/* Use Invariant TSC as a better clocksource. */
 
-This commit breaks u_ether on some setups (at least Merrifield). The fix
-"usb: gadget: u_ether: Re-attach netif device to mirror detachment" party
-restores u-ether. However the netif usb: remains up even usb is switched
-from device to host mode. This creates problems for user space as the
-interface remains in the routing table while not realy present and network
-managers (connman) not detecting a network change.
+I got confused by this comment, partly because I've forgotten the
+meaning of the ms_hyperv.feature flags. :-( Perhaps you could be
+more explicit in the comment and say "Mark the Hyper-V TSC page
+feature as disabled in a TDX VM so that the Invariant TSC, which is
+a better clocksource anyway, is used instead."
 
-Various attempts to find the root cause were unsuccesful up to now. Therefore
-revert until a solution is found.
+>  				ms_hyperv.features &=3D ~HV_MSR_REFERENCE_TSC_AVAILABLE;
+>=20
+> +				/* Use the Ref Counter in case Invariant TSC is unavailable. */
+> +				if (!(ms_hyperv.features & HV_ACCESS_TSC_INVARIANT))
+> +					pr_warn("Hyper-V: Invariant TSC is unavailable\n");
 
-Link: https://lore.kernel.org/linux-usb/20231006141231.7220-1-hgajjar@de.adit-jv.com/
-Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reported-by: Ferry Toth <fntoth@gmail.com>
-Fixes: f49449fbc21e ("usb: gadget: u_ether: Replace netif_stop_queue with netif_device_detach")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ferry Toth <fntoth@gmail.com>
----
- drivers/usb/gadget/function/u_ether.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The above comment was even more confusing, because the code block
+doesn't do anything except print a message. The code doesn't force
+the use of the Ref Counter. I'd suggest something like: "The Invariant
+TSC is expected to be available, but if not, print a warning message.
+The slower Hyper-V MSR-based Ref Counter should end up being
+the clocksource."
 
-diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
-index aa0511c3a62c..95191083b455 100644
---- a/drivers/usb/gadget/function/u_ether.c
-+++ b/drivers/usb/gadget/function/u_ether.c
-@@ -1200,7 +1200,7 @@ void gether_disconnect(struct gether *link)
- 
- 	DBG(dev, "%s\n", __func__);
- 
--	netif_device_detach(dev->net);
-+	netif_stop_queue(dev->net);
- 	netif_carrier_off(dev->net);
- 
- 	/* disable endpoints, forcing (synchronous) completion
--- 
-2.43.0
+Michael
+
+> +
+>  				/* HV_MSR_CRASH_CTL is unsupported. */
+>  				ms_hyperv.misc_features &=3D ~HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE;
+>=20
+> diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyp=
+erv_timer.c
+> index b2a080647e413..99177835cadec 100644
+> --- a/drivers/clocksource/hyperv_timer.c
+> +++ b/drivers/clocksource/hyperv_timer.c
+> @@ -137,7 +137,21 @@ static int hv_stimer_init(unsigned int cpu)
+>  	ce->name =3D "Hyper-V clockevent";
+>  	ce->features =3D CLOCK_EVT_FEAT_ONESHOT;
+>  	ce->cpumask =3D cpumask_of(cpu);
+> -	ce->rating =3D 1000;
+> +
+> +	/*
+> +	 * Lower the rating of the Hyper-V timer in a TDX VM without paravisor,
+> +	 * so the local APIC timer (lapic_clockevent) is the default timer in
+> +	 * such a VM. The Hyper-V timer is not preferred in such a VM because
+> +	 * it depends on the slow VM Reference Counter MSR (the Hyper-V TSC
+> +	 * page is not enbled in such a VM because the VM uses Invariant TSC
+> +	 * as a better clocksource and it's challenging to mark the Hyper-V
+> +	 * TSC page shared in very early boot).
+> +	 */
+> +	if (!ms_hyperv.paravisor_present && hv_isolation_type_tdx())
+> +		ce->rating =3D 90;
+> +	else
+> +		ce->rating =3D 1000;
+> +
+>  	ce->set_state_shutdown =3D hv_ce_shutdown;
+>  	ce->set_state_oneshot =3D hv_ce_set_oneshot;
+>  	ce->set_next_event =3D hv_ce_set_next_event;
+> --
+> 2.25.1
+>=20
 
 
