@@ -1,187 +1,106 @@
-Return-Path: <stable+bounces-54682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A3BA90FB03
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 03:40:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C2090FB64
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 04:49:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB9FB2837D8
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 01:40:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C357A1C20D62
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 02:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BCB012E7F;
-	Thu, 20 Jun 2024 01:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mKaMbnp9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DC8171A1;
+	Thu, 20 Jun 2024 02:49:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.124.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5916DBA46;
-	Thu, 20 Jun 2024 01:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A77E57E;
+	Thu, 20 Jun 2024 02:49:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.124.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718847599; cv=none; b=bRRqsV0hM3AoSMFXrTdk2e7vbyKrXffEQ3euGOxj5kLZank/aKX+KjMd7RKrOUBqMFqlJwxZyImop2tTtZDSNk4gyPSYGSLNrN5yZAGHz7Mnz9WMPfDo+vhNC1/48CVzvrXTQp6kYMVii+apQHneEmj0tSajspv8rcu46m0MD3o=
+	t=1718851753; cv=none; b=VqKN6ss/9TFTPMGR8BaFImHY9TX7E+/pAeR7MSs7kfUkKnqlzray/iB9qJ5vN/wuSYIALVFljURpBFWUk+byL2jfhjYj7DRPTB6iQEaiLeOsHFG4oYhTeUVBCGNyrc3Nv+DcxkiChe/b4rMYmuhrLFweO21udPsSl23wzbRF/2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718847599; c=relaxed/simple;
-	bh=3wrHQP8lDHaazvhk1TFVq0s3mb5+EMeEmGGrg8sCL5I=;
-	h=Date:To:From:Subject:Message-Id; b=e5vLQxd2EESXAgDzaTdE1pnxVoLJukBTU1pM3/tDfdhLspnaSaIIHHfJ+uI1PD0G1cKqNrSdfR69fHWM03EWrrnu2NFsG/xkgZ3oKUcQjxSZPaIilxStcvFfd5f9dorbHIdfOi995QkcJI9NfPdNeqQOLiW3Pwu8qGUPpsrA2m0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mKaMbnp9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255E1C2BBFC;
-	Thu, 20 Jun 2024 01:39:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1718847599;
-	bh=3wrHQP8lDHaazvhk1TFVq0s3mb5+EMeEmGGrg8sCL5I=;
-	h=Date:To:From:Subject:From;
-	b=mKaMbnp9esRq2G6bD+1YGtMS+hsfOIFsbB3qq8ENGyNO2yQqIEh5sLCg6XlnFocs0
-	 cKAuBK3sxTuxg7WFswipEzglEfsyLzrSzqLjnowZY9f21Cs1B270o/EQ4lx4z09ywI
-	 kZqnCvnhn5ar1ywSvssknii4j1TQXcw2uNHIvxOM=
-Date: Wed, 19 Jun 2024 18:39:58 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,mgorman@techsingularity.net,baolin.wang@linux.alibaba.com,21cnbao@gmail.com,yangge1116@126.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-page_alloc-separate-thp-pcp-into-movable-and-non-movable-categories.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240620013959.255E1C2BBFC@smtp.kernel.org>
+	s=arc-20240116; t=1718851753; c=relaxed/simple;
+	bh=Y/rDw2bzCXwt+Sd6tTdo6KTXR1kTgawHQy3Q4jGSmAQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=pSlzxCOrJ4dYga5gkNb2QUlNqdtWRqKDllA1OyW9/UXgAKGxrcLQJkn0BxWc6QygtEMg2SF4rXy94yhc3j16q6Io6WCBin/F2IdnFJ2JFwodoQd7UE42HmnM1sDxNlWnkA7OaBx31fa/ivmqMaucE6WYCkdFDsg7cBrWpTXuxNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass smtp.mailfrom=shingroup.cn; arc=none smtp.client-ip=114.132.124.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shingroup.cn
+X-QQ-mid: bizesmtp89t1718851638tsf77eb2
+X-QQ-Originating-IP: Cnxcf0yE6w+MsvywbXobZi1OIKdeiMnOlWen8+fPLAs=
+Received: from HX01040082.powercore.com.cn ( [14.19.141.254])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 20 Jun 2024 10:47:16 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 16810093544147674005
+From: Jinglin Wen <jinglin.wen@shingroup.cn>
+To: mpe@ellerman.id.au
+Cc: npiggin@gmail.com,
+	christophe.leroy@csgroup.eu,
+	naveen.n.rao@linux.ibm.com,
+	masahiroy@kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Jinglin Wen <jinglin.wen@shingroup.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] powerpc: Fix unnecessary copy to 0 when kernel is booted at address 0.
+Date: Thu, 20 Jun 2024 10:41:50 +0800
+Message-Id: <20240620024150.14857-1-jinglin.wen@shingroup.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240617023509.5674-1-jinglin.wen@shingroup.cn>
+References: <20240617023509.5674-1-jinglin.wen@shingroup.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-2
 
+According to the code logic, when the kernel is loaded to address 0,
+no copying operation should be performed, but it is currently being
+done.
 
-The patch titled
-     Subject: mm/page_alloc: Separate THP PCP into movable and non-movable categories
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-page_alloc-separate-thp-pcp-into-movable-and-non-movable-categories.patch
+This patch fixes the issue where the kernel code was incorrectly
+duplicated to address 0 when booting from address 0.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_alloc-separate-thp-pcp-into-movable-and-non-movable-categories.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: yangge <yangge1116@126.com>
-Subject: mm/page_alloc: Separate THP PCP into movable and non-movable categories
-Date: Thu, 20 Jun 2024 08:59:50 +0800
-
-Since commit 5d0a661d808f ("mm/page_alloc: use only one PCP list for
-THP-sized allocations") no longer differentiates the migration type of
-pages in THP-sized PCP list, it's possible that non-movable allocation
-requests may get a CMA page from the list, in some cases, it's not
-acceptable.
-
-If a large number of CMA memory are configured in system (for example, the
-CMA memory accounts for 50% of the system memory), starting a virtual
-machine with device passthrough will get stuck.  During starting the
-virtual machine, it will call pin_user_pages_remote(..., FOLL_LONGTERM,
-...) to pin memory.  Normally if a page is present and in CMA area,
-pin_user_pages_remote() will migrate the page from CMA area to non-CMA
-area because of FOLL_LONGTERM flag.  But if non-movable allocation
-requests return CMA memory, migrate_longterm_unpinnable_pages() will
-migrate a CMA page to another CMA page, which will fail to pass the check
-in check_and_migrate_movable_pages() and cause migration endless.
-
-Call trace:
-pin_user_pages_remote
---__gup_longterm_locked // endless loops in this function
-----_get_user_pages_locked
-----check_and_migrate_movable_pages
-------migrate_longterm_unpinnable_pages
---------alloc_migration_target
-
-This problem will also have a negative impact on CMA itself.  For example,
-when CMA is borrowed by THP, and we need to reclaim it through cma_alloc()
-or dma_alloc_coherent(), we must move those pages out to ensure CMA's
-users can retrieve that contigous memory.  Currently, CMA's memory is
-occupied by non-movable pages, meaning we can't relocate them.  As a
-result, cma_alloc() is more likely to fail.
-
-To fix the problem above, we add one PCP list for THP, which will not
-introduce a new cacheline for struct per_cpu_pages.  THP will have 2 PCP
-lists, one PCP list is used by MOVABLE allocation, and the other PCP list
-is used by UNMOVABLE allocation.  MOVABLE allocation contains GPF_MOVABLE,
-and UNMOVABLE allocation contains GFP_UNMOVABLE and GFP_RECLAIMABLE.
-
-Link: https://lkml.kernel.org/r/1718845190-4456-1-git-send-email-yangge1116@126.com
-Fixes: 5d0a661d808f ("mm/page_alloc: use only one PCP list for THP-sized allocations")
-Signed-off-by: yangge <yangge1116@126.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: Mel Gorman <mgorman@techsingularity.net>
+Fixes: b270bebd34e3 ("powerpc/64s: Run at the kernel virtual address earlier in boot")
+Signed-off-by: Jinglin Wen <jinglin.wen@shingroup.cn>
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/mmzone.h |    9 ++++-----
- mm/page_alloc.c        |    9 +++++++--
- 2 files changed, 11 insertions(+), 7 deletions(-)
+v2:
+  - According to 87le336c6k.fsf@mail.lhotse, improve this patch.
+v1:
+  - 20240617023509.5674-1-jinglin.wen@shingroup.cn
 
---- a/include/linux/mmzone.h~mm-page_alloc-separate-thp-pcp-into-movable-and-non-movable-categories
-+++ a/include/linux/mmzone.h
-@@ -654,13 +654,12 @@ enum zone_watermarks {
- };
- 
- /*
-- * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. One additional list
-- * for THP which will usually be GFP_MOVABLE. Even if it is another type,
-- * it should not contribute to serious fragmentation causing THP allocation
-- * failures.
-+ * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. Two additional lists
-+ * are added for THP. One PCP list is used by GPF_MOVABLE, and the other PCP list
-+ * is used by GFP_UNMOVABLE and GFP_RECLAIMABLE.
+ arch/powerpc/kernel/head_64.S | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/arch/powerpc/kernel/head_64.S b/arch/powerpc/kernel/head_64.S
+index 4690c219bfa4..63432a33ec49 100644
+--- a/arch/powerpc/kernel/head_64.S
++++ b/arch/powerpc/kernel/head_64.S
+@@ -647,8 +647,9 @@ __after_prom_start:
+  * Note: This process overwrites the OF exception vectors.
   */
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--#define NR_PCP_THP 1
-+#define NR_PCP_THP 2
- #else
- #define NR_PCP_THP 0
- #endif
---- a/mm/page_alloc.c~mm-page_alloc-separate-thp-pcp-into-movable-and-non-movable-categories
-+++ a/mm/page_alloc.c
-@@ -504,10 +504,15 @@ out:
+ 	LOAD_REG_IMMEDIATE(r3, PAGE_OFFSET)
+-	mr.	r4,r26			/* In some cases the loader may  */
+-	beq	9f			/* have already put us at zero */
++	mr	r4,r26			/* Load the virtual source address into r4 */
++	cmpld	r3,r4			/* Check if source == dest */
++	beq	9f			/* If so skip the copy  */
+ 	li	r6,0x100		/* Start offset, the first 0x100 */
+ 					/* bytes were copied earlier.	 */
  
- static inline unsigned int order_to_pindex(int migratetype, int order)
- {
-+	bool __maybe_unused movable;
-+
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
- 		VM_BUG_ON(order != HPAGE_PMD_ORDER);
--		return NR_LOWORDER_PCP_LISTS;
-+
-+		movable = migratetype == MIGRATE_MOVABLE;
-+
-+		return NR_LOWORDER_PCP_LISTS + movable;
- 	}
- #else
- 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
-@@ -521,7 +526,7 @@ static inline int pindex_to_order(unsign
- 	int order = pindex / MIGRATE_PCPTYPES;
- 
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	if (pindex == NR_LOWORDER_PCP_LISTS)
-+	if (pindex >= NR_LOWORDER_PCP_LISTS)
- 		order = HPAGE_PMD_ORDER;
- #else
- 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
-_
-
-Patches currently in -mm which might be from yangge1116@126.com are
-
-mm-page_alloc-separate-thp-pcp-into-movable-and-non-movable-categories.patch
-mm-page_alloc-add-one-pcp-list-for-thp.patch
+-- 
+2.25.1
 
 
