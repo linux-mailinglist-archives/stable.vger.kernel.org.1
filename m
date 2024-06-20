@@ -1,245 +1,176 @@
-Return-Path: <stable+bounces-54676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B22A90FA84
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 02:55:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5CA90FAB8
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 03:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF7D4282FB1
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 00:55:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D69A282F9A
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 01:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC84171A5;
-	Thu, 20 Jun 2024 00:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B021173F;
+	Thu, 20 Jun 2024 01:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RzDIg2ly"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="Evr4HUDJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8FCDDC7;
-	Thu, 20 Jun 2024 00:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.8])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5612211717;
+	Thu, 20 Jun 2024 01:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718844852; cv=none; b=XJk74X2dhhqY4RP9r+a1+aJiCJ4oAKYvv/ugtBrjt9YAwqxPIgSul2rN7BUP1pc/g7Dhxt+k0uERf9bQ2T14uu4wWGAsMgTUSr1WLMTSybpMNuwwJXlf4xlLg58u2cDQ14Ok2pKTgnHs/5SA2hiK8lM/ufHl1oVveLz1GpMUX7Y=
+	t=1718845229; cv=none; b=d+10GJXP3RK5ZsI8MhJ8fcjKimVEM5o9Tnjoo2wnw5BHxY0EnTJ0s8Ht2brYY49c46NPwrZ8Jax/OOXaUvCFMCNCYQ5iyD9TM4hsjcR5WSfaJvdJzYsgi8O+ychlmcP0qVTA9fad6yUAu3zKBs9T+Dqz+3zHrimuAY7hJKNXKSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718844852; c=relaxed/simple;
-	bh=5ZzxlnPl6QHH8zZM0Bxkh6bNL5fo2OEy/Yyo92Jqi6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M+pvBw1/lNq3InpS/VdGSCu0KtvbhQWlpg6+Oiv2p3vJrjZVgoVYSXlaDWsCkImgMi6g34rdjvNwavBVld+lBgs+DQuy8S3lbg8aWf7REJY+Kkh2lAa29462mgU8SivYjEBsKb6dqTjYE5kdtZ9HsbZuET0hQdCo3Vxw0ssJigY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RzDIg2ly; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1f70131063cso2976285ad.2;
-        Wed, 19 Jun 2024 17:54:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718844850; x=1719449650; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=kos3a5+8tgScme3AXUkmStzF9iR6lkKUT5lESoizK2o=;
-        b=RzDIg2lyr+BgLVuE2ZDQHBIIRNc4itKHK4Ux8npTamWtfPHBDrhnPDedn1PpH4xctb
-         WwQgPpyCcHzSQF2gwiBkEv6qp7+4nPfgOaLrNctK7PQ0+ThqCGtta1VL7zo7OLdlkQv4
-         GdxHzhhjove+OIQmfmJ0y0479wCKYxgj1T4SmtgU2ThrhfbW8hPdEqGf0S3ogrcNIb1F
-         OEYmdauQ3GfAkV2Ll6fQf1otA+eZe4oEmVJz7seBLZcsImR/KTCaLarKJNW20k2j9Et6
-         IdWeemVwlr3O9HQjwAJE4fIiyV1iL3OkOs09EyXxaqrQYJ0WqSGArNSeyELV73lU3TtV
-         WQHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718844850; x=1719449650;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kos3a5+8tgScme3AXUkmStzF9iR6lkKUT5lESoizK2o=;
-        b=SCOk7hYxmwmzOUt3ExMWY+odUbXSrY8O84OCsD8g9oVNVwLfS7nN+dBggOipBfzAO6
-         zECM3T3eK3D9arDvClPigAbKj0+SrE5wUrkCSqYp1PEsJiYaQuvz5JTTD8u1O6F9FiwG
-         sbjdryfUde9nLq0d7xw0kGJutkWQVW5n/O+1sAT+skPpt8u8OIOFhpmz0sxJl9m1XkmK
-         dNBFC7TzJJ5bUCRBG3kNMlhHf0vhjkxfmSEB8olS+yupVDEsPCrNPadUEcj3FsBm3Tv+
-         fmkR5A771KEi7GTKQOMT0/CcxC/AYI+okUZi6oPrvl7DRpKsTfXdhWX297QSV4Vo5WFn
-         Shmg==
-X-Forwarded-Encrypted: i=1; AJvYcCUYYt6WtoewCazTZOAt9dqpUIMyJLQ49OjaWQ3qzJ7o6ztYfJCAjdksgM5SWtUgZCY2xPnBm5U5xjvgOsraSFkvxPBB/RWTY1gZJNGn7Aw/GeEpl3ZyL7RHLCrisa5H/x1E+GynEWo47j5hi1IwEcVTKcc9DOYY2liYbnwA41IqrA==
-X-Gm-Message-State: AOJu0YxA9Qws/Rw4m5Jgin8PCb2c9ajzq0CgoYJwKaUaX0E8SsGhMkGM
-	LYS2FXddUPAtsCjNfaQcOH5+v7PiXC7s1T7c3HoxYjZc3WMaunT5
-X-Google-Smtp-Source: AGHT+IHUZRsqBZONk1cnHXYagT0xqKFsmQ1HV2Poe9z4T6xIIhlzFZn750OVF/2JqoteiFDZy2TAdA==
-X-Received: by 2002:a17:902:da8e:b0:1f9:99d8:4a9e with SMTP id d9443c01a7336-1f9aa3ddab3mr46103265ad.25.1718844849641;
-        Wed, 19 Jun 2024 17:54:09 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:36d9:2b1f:59f:8e9e])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f99cfbfa1bsm37273355ad.26.2024.06.19.17.54.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jun 2024 17:54:09 -0700 (PDT)
-Date: Wed, 19 Jun 2024 17:54:06 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Martin Schiller <ms@dev.tdt.de>
-Cc: Hauke Mehrtens <hauke@hauke-m.de>, tsbogend@alpha.franken.de,
-	rdunlap@infradead.org, robh@kernel.org, bhelgaas@google.com,
-	linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1718845229; c=relaxed/simple;
+	bh=HBbvf6mGWYY2vBmXTbBw4PqxmXkX8gtpifzLpLUDVeo=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=dLU28h0uwl+wx6Tm+P989forj22ipKtdo+kTuIs2qVBtt6Heya9kgi6nFD5pZ1v/W+i1TyAr9QLfwCNnUgZOm9P7iHuXMXQEDMDT5WuHkU9gTEHkXmTWoMvBJIfTu3w9pZFbPOixt6TIDebQuCuS7Q98tR365+xsG3+qmivpVco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=Evr4HUDJ; arc=none smtp.client-ip=220.197.31.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id; bh=WW4Jez97mtesbicc+3
+	7OFwctvMHDtr7/KR4+TtH6+9g=; b=Evr4HUDJ2s/qE45eFJx7vru73EiMvFzUBC
+	BvG6v9swuXJFTq6yPYE+2W7i79I0jouzFWrRJ0H9iLMl+Vdk8MwP9J4QMAuk3UNp
+	FLMIbDRCNw+K+SwSGxgMMND5yBxFZyTH9VIrIhq1lyA9l1VPd5rwz0+FrLcETaMT
+	cbatK7kxs=
+Received: from hg-OptiPlex-7040.hygon.cn (unknown [118.242.3.34])
+	by gzga-smtp-mta-g0-1 (Coremail) with SMTP id _____wDn758Nf3NmX9+2AA--.51251S2;
+	Thu, 20 Jun 2024 08:59:59 +0800 (CST)
+From: yangge1116@126.com
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	21cnbao@gmail.com,
+	baolin.wang@linux.alibaba.com,
+	mgorman@techsingularity.net,
+	liuzixing@hygon.cn,
+	yangge <yangge1116@126.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: pci: lantiq: restore reset gpio polarity
-Message-ID: <ZnN9rkNqucEYuXzR@google.com>
-References: <20240607090400.1816612-1-ms@dev.tdt.de>
- <ZmnfQWFoIw5UCV-k@google.com>
- <7d34eb4017e809245daa342e3ccddf4f@dev.tdt.de>
- <b6bea9239050ed39ce3a051a5985b86d@dev.tdt.de>
- <6e4eed26-0a15-4ab4-8f3f-7ed0e223db5e@hauke-m.de>
- <c1813503ba16e1d46a93382dd806ffa6@dev.tdt.de>
+Subject: [PATCH V2] mm/page_alloc: Separate THP PCP into movable and non-movable categories
+Date: Thu, 20 Jun 2024 08:59:50 +0800
+Message-Id: <1718845190-4456-1-git-send-email-yangge1116@126.com>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID:_____wDn758Nf3NmX9+2AA--.51251S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAFWUtF17Xw18JF1UuFWDXFb_yoWrAFy3pF
+	WxJr4ayayjqry3Ar1xA3Wqkr1rCwnxGFsrCr1xury8ZwsxJFyS9a4UK3WqvF95ArW7AF48
+	Xr9rt34fCF4DZ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jbPEhUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiGBQEG2VLb4BrvgABsG
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c1813503ba16e1d46a93382dd806ffa6@dev.tdt.de>
 
-On Fri, Jun 14, 2024 at 10:43:29AM +0200, Martin Schiller wrote:
-> On 2024-06-13 22:06, Hauke Mehrtens wrote:
-> > On 6/12/24 21:47, Martin Schiller wrote:
-> > > On 2024-06-12 20:39, Martin Schiller wrote:
-> > > > On 2024-06-12 19:47, Dmitry Torokhov wrote:
-> > > > > Hi Marton,
-> > > > 
-> > > > Hi Dmitry,
-> > > > 
-> > > > > 
-> > > > > On Fri, Jun 07, 2024 at 11:04:00AM +0200, Martin Schiller wrote:
-> > > > > > Commit 90c2d2eb7ab5 ("MIPS: pci: lantiq: switch to using
-> > > > > > gpiod API") not
-> > > > > > only switched to the gpiod API, but also inverted /
-> > > > > > changed the polarity
-> > > > > > of the GPIO.
-> > > > > > 
-> > > > > > According to the PCI specification, the RST# pin is an active-low
-> > > > > > signal. However, most of the device trees that have been
-> > > > > > widely used for
-> > > > > > a long time (mainly in the openWrt project) define this GPIO as
-> > > > > > active-high and the old driver code inverted the signal internally.
-> > > > > > 
-> > > > > > Apparently there are actually boards where the reset gpio must be
-> > > > > > operated inverted. For this reason, we cannot use the
-> > > > > > GPIOD_OUT_LOW/HIGH
-> > > > > > flag for initialization. Instead, we must explicitly set
-> > > > > > the gpio to
-> > > > > > value 1 in order to take into account any
-> > > > > > "GPIO_ACTIVE_LOW" flag that
-> > > > > > may have been set.
-> > > > > 
-> > > > > Do you have example of such boards? They could not have
-> > > > > worked before
-> > > > > 90c2d2eb7ab5 because it was actively setting the reset line
-> > > > > to physical
-> > > > > high, which should leave the device in reset state if there is an
-> > > > > inverter between the AP and the device.
-> > > > 
-> > > > Oh, you're right. I totally missed that '__gpio_set_value' was
-> > > > used in
-> > > > the original code and that raw accesses took place without paying
-> > > > attention to the GPIO_ACTIVE_* flags.
-> > > > 
-> > > > You can find the device trees I am talking about in [1].
-> > > > 
-> > > > @Thomas Bogendoerfer:
-> > > > Would it be possible to stop the merging of this patch?
-> > > > I think We have to do do some further/other changes.
-> > > > 
-> > > > > 
-> > > > > > 
-> > > > > > In order to remain compatible with all these existing
-> > > > > > device trees, we
-> > > > > > should therefore keep the logic as it was before the commit.
-> > > > > 
-> > > > > With gpiod API operating with logical states there's still
-> > > > > difference in
-> > > > > logic:
-> > > > > 
-> > > > >     gpiod_set_value_cansleep(reset_gpio, 1);
-> > > > > 
-> > > > > will leave GPIO at 1 if it is described as GPIO_ACTIVE_HIGH
-> > > > > (which is
-> > > > > apparently what you want for boards with broken DTS) but for boards
-> > > > > that accurately describe GPIO as GPIO_ACTIVE_LOW it well
-> > > > > drive GPIO to
-> > > > > 0, leaving the card in reset state.
-> > > > > 
-> > > > > You should either use gpiod_set_raw_value_calsleep() or we
-> > > > > can try and
-> > > > > quirk it in gpiolib (like we do for many other cases of
-> > > > > incorrect GPIO
-> > > > > polarity descriptions and which is my preference).
-> > > 
-> > > So you mean we should add an entry for "lantiq,pci-xway" to the
-> > > of_gpio_try_fixup_polarity()?
-> > > Do you know any dts / device outside the openWrt universe which is
-> > > using
-> > > this driver.
-> > > 
-> > > For the lantiq targets in openWrt, the devicetree blob is appended to
-> > > the kernel image and therefore also updated when doing a firmware
-> > > upgrade. So, maybe it would also be an option to fix the driver (using
-> > > GPIO_ACTIVE_* flag for the initial level and set it to 0 -> 1 -> 0)
-> > > and
-> > > rework all the dts files to use GPIO_ACTIVE_LOW.
+From: yangge <yangge1116@126.com>
 
-Yes, cleaning up DTS files when it is possible is nice.
+Since commit 5d0a661d808f ("mm/page_alloc: use only one PCP list for
+THP-sized allocations") no longer differentiates the migration type
+of pages in THP-sized PCP list, it's possible that non-movable
+allocation requests may get a CMA page from the list, in some cases,
+it's not acceptable.
 
-> > > 
-> > > Then we won't need any quirks.
+If a large number of CMA memory are configured in system (for
+example, the CMA memory accounts for 50% of the system memory),
+starting a virtual machine with device passthrough will get stuck.
+During starting the virtual machine, it will call
+pin_user_pages_remote(..., FOLL_LONGTERM, ...) to pin memory. Normally
+if a page is present and in CMA area, pin_user_pages_remote() will
+migrate the page from CMA area to non-CMA area because of
+FOLL_LONGTERM flag. But if non-movable allocation requests return
+CMA memory, migrate_longterm_unpinnable_pages() will migrate a CMA
+page to another CMA page, which will fail to pass the check in
+check_and_migrate_movable_pages() and cause migration endless.
+Call trace:
+pin_user_pages_remote
+--__gup_longterm_locked // endless loops in this function
+----_get_user_pages_locked
+----check_and_migrate_movable_pages
+------migrate_longterm_unpinnable_pages
+--------alloc_migration_target
 
-Quirks are fairly cheap and we are not in a hot path here.
+This problem will also have a negative impact on CMA itself. For
+example, when CMA is borrowed by THP, and we need to reclaim it
+through cma_alloc() or dma_alloc_coherent(), we must move those
+pages out to ensure CMA's users can retrieve that contigous memory.
+Currently, CMA's memory is occupied by non-movable pages, meaning
+we can't relocate them. As a result, cma_alloc() is more likely to
+fail.
 
-> > 
-> > I am not aware that anyone is using a recent kernel on the VRX200
-> > outside of OpenWrt. I am also not aware that anyone is *not* appending
-> > the DTB to the kernel. The SoC is pretty old now, the successor of
-> > this SoC was released about 10 years ago.
-> > 
-> 
-> We're not just talking about VRX200 (VR9) here, but even older devices
-> such as AR9 and Danube.
-> 
-> > For me it would be fine if you fix the broken device device trees
-> > shipped with the upstream kernel and with OpenWrt to make them work
-> > with the PCI driver instead of investing too much time into handling
-> > old DTBs.
-> > 
-> > The PCI reset is inverted on some boards to handle a dying gasp. If
-> > the power breaks down the reset should get triggered and the PCIe
-> > device can send a dying gasp signal to the other side. This is done on
-> > the reference designs of some Lantiq PCIe DSL card for the VRX318 and
-> > probably also some other components.
-> > 
-> > Hauke
-> 
-> What I missed so far is the fact that the driver used '__gpio_set_value'
-> before Dmitry's commit and thus used raw access to the GPIO.
-> 
-> This effectively means that every device that has worked with the driver
-> so far must have an ACTIVE_LOW reset, no matter what was configured in
-> the device tree.
-> 
-> 
-> So renaming the property in the dts from "gpio-reset" to "reset-gpios"
-> and setting the FLAGS to "GPIO_ACTIVE_LOW" should actually solve the
-> problem.
+To fix the problem above, we add one PCP list for THP, which will
+not introduce a new cacheline for struct per_cpu_pages. THP will
+have 2 PCP lists, one PCP list is used by MOVABLE allocation, and
+the other PCP list is used by UNMOVABLE allocation. MOVABLE
+allocation contains GPF_MOVABLE, and UNMOVABLE allocation contains
+GFP_UNMOVABLE and GFP_RECLAIMABLE.
 
-Right, luckily (to a definition of luckily) the driver and DTB used
-"wrong" syntax for the gpio property, so we can quirk it and make
-force ACTIVE_LOW polarity on old DTBs, and new DTBs with "reset-gpios"
-property will follow polarity specified in DTB.
+Fixes: 5d0a661d808f ("mm/page_alloc: use only one PCP list for THP-sized allocations")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: yangge <yangge1116@126.com>
+---
 
-> 
-> What still bothers me about the driver itself are 2 things:
-> 1. the initial value of GPIOD_OUT_LOW. This means that there is no real
->    defined HIGH -> LOW -> HIGH on reset.
+V2:
+- Change the commit title
+- Add Cc to stable
 
-Is this actually needed? Typically a card requires certain time in reset
-state (with reset line active) before it can be released, however there
-usually no restrictions on line being inactive beforehand. But typically
-it will be pulled up to avoid leakage...
+ include/linux/mmzone.h | 9 ++++-----
+ mm/page_alloc.c        | 9 +++++++--
+ 2 files changed, 11 insertions(+), 7 deletions(-)
 
-Thanks.
-
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index b7546dd..cb7f265 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -656,13 +656,12 @@ enum zone_watermarks {
+ };
+ 
+ /*
+- * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. One additional list
+- * for THP which will usually be GFP_MOVABLE. Even if it is another type,
+- * it should not contribute to serious fragmentation causing THP allocation
+- * failures.
++ * One per migratetype for each PAGE_ALLOC_COSTLY_ORDER. Two additional lists
++ * are added for THP. One PCP list is used by GPF_MOVABLE, and the other PCP list
++ * is used by GFP_UNMOVABLE and GFP_RECLAIMABLE.
+  */
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-#define NR_PCP_THP 1
++#define NR_PCP_THP 2
+ #else
+ #define NR_PCP_THP 0
+ #endif
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 8f416a0..0a837e6 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -504,10 +504,15 @@ static void bad_page(struct page *page, const char *reason)
+ 
+ static inline unsigned int order_to_pindex(int migratetype, int order)
+ {
++	bool __maybe_unused movable;
++
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	if (order > PAGE_ALLOC_COSTLY_ORDER) {
+ 		VM_BUG_ON(order != HPAGE_PMD_ORDER);
+-		return NR_LOWORDER_PCP_LISTS;
++
++		movable = migratetype == MIGRATE_MOVABLE;
++
++		return NR_LOWORDER_PCP_LISTS + movable;
+ 	}
+ #else
+ 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
+@@ -521,7 +526,7 @@ static inline int pindex_to_order(unsigned int pindex)
+ 	int order = pindex / MIGRATE_PCPTYPES;
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	if (pindex == NR_LOWORDER_PCP_LISTS)
++	if (pindex >= NR_LOWORDER_PCP_LISTS)
+ 		order = HPAGE_PMD_ORDER;
+ #else
+ 	VM_BUG_ON(order > PAGE_ALLOC_COSTLY_ORDER);
 -- 
-Dmitry
+2.7.4
+
 
