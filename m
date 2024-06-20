@@ -1,221 +1,131 @@
-Return-Path: <stable+bounces-54720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14970910761
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 16:04:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E55EE9107F1
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 16:18:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BB892871BA
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 14:04:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 987B21F2262B
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 14:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A361AD9EC;
-	Thu, 20 Jun 2024 14:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4071AD9CD;
+	Thu, 20 Jun 2024 14:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="m5MSdxqN"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="cRMrVZj0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1B71AD9EB
-	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 14:03:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC861AE0AB
+	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 14:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718892185; cv=none; b=e6UThoZcQYu9Z/yO2GWyBPiaOvZjJSRrHyQ+zyg/Lx3pQi7tkt9EXh3mj2jABDJPB0Emxzqp1AzODlUlh8+2SO9vlqfRKxT0N3XdimaY0t/7kefwK5XsdFMeyIG1uYfGoPaJbHciiddUXOI++UO1IwAv97lEJHj17DOm04goyNU=
+	t=1718893112; cv=none; b=rSAQUdZl12IdLcDY6JFYKrczO2yt0yFR866y4wsHiUO6gs/3ntCXWbS49dcOZiLTnjEkwuO2tCN64KOqgR4lVdWIId/7uQm2BVy7hDKYGOyhhjv3FvjWjJZTl/dQTIJaM9pr1pBfY7L/Esza4rPi/wurIr5p9CR4k2SuqM7p3/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718892185; c=relaxed/simple;
-	bh=Oklm0Cw05TNvTzfvJtb1ocw12E15edBRA2IP+0NVAUY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pJR0b1tmK+BDvzitzeqIngMQfCmlcuQARaifz7bjS/1OUc28rkgWItGJZ8hRZ9Lj/BCUjoe8AE+tjB+kPRJNSC+pqkcsC2hubhlSJHWh0UmyriWZ1fFq0CvWHs2je0MsCyjWWbK42y5Ru3RpKLJASUmKnKJXLZ3Lc41zBCs7nko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=m5MSdxqN; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-57d07673185so828303a12.1
-        for <stable@vger.kernel.org>; Thu, 20 Jun 2024 07:03:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718892182; x=1719496982; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DivZWPPAJboyHT631bWOCfrq3h9RoUn6v0uBNxSBQyA=;
-        b=m5MSdxqNJ1bGewFSOTaEjKNdFZigyFuq+r3O1zRuZUovN5lfP69M6gS4G9ok8fdMs1
-         UV5A03E5mZlCMcKypyu7kFG/keY/sT0vZD9FEFOQ6Fb4regtt3WsUF6PV3VwiDPjUu3K
-         S4yWYFgsJxSazUEXSxIPctALXndnBm0aHo0kpTzaqtOelWQ31e5w+L+gUACoP7nD/YAv
-         fN3xqnVhPMtmW4+2u9vh/yRjE7JVoq6psSQzfUu6ar5cL/N4uZaYmdMyJ5ixkN6+M8wh
-         4PINWqRGg1ARhh6mAsjkKAsO5nc8T66FH7LI3cS6qyl2/U4EJHLszL3jYXDiMBIVfkqh
-         4Www==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718892182; x=1719496982;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DivZWPPAJboyHT631bWOCfrq3h9RoUn6v0uBNxSBQyA=;
-        b=JeIFwClX5La2K6XMVMZbwV+f8LVWcCYefV4A3PMKO7jWTaDX0Xd3GQsahCa0ik1EEq
-         71JtIK2MAjfs4J2l7BjsXxFGZfuH5RjWLX2BIz6Qoagpc3iX5S8pYMlW3CdNh5q5faKX
-         wSRaLrMTVXu/BifBTw9fjNDQxJsaOeIndhPTlJEm9t41iJ9CcqErwoegFuIFb/VgqCbn
-         J6Q4f7CJUvOlGl84xgVTjTMNQ+iiiAGS6NJb9JXHkwN0W22INa5A+p19TS7CggPjH00p
-         mjn0idqdb50WkE5/tnhDCenBy1lL6artZ0ZbGgrzi0q5RBrPzJtLTvi9ISbCkQHtk67E
-         WJmA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNvMvMDX3uPl3/hNVqb5v5SSz0FH/dIBxpLcDcZiVK8FfX1PvcAS4M4eiblcCwFeMYGXfkWWuGG5MYaBOfK/Vc4euf3mM+
-X-Gm-Message-State: AOJu0Yxb3MfG72+2Es0zRQd92Hw7DNBnbMFbeKKeknaWRF/mWVYGdzKA
-	tex6cauRqgeSdr4OydMGBlDTl1/UHtTJEaY2cXMKFW26sjg+QxiqcDQaK3XZ5UvkGiVx8ncIreY
-	zAGYsk37A+U3W8muyJCFZgteZAGxVHwCODaa4wQ==
-X-Google-Smtp-Source: AGHT+IE5IRidUBv1Rz0+z0UgilsHsNZAP3E8TZx/Yqczpa77Xl1ZAhegOmt9dztWkCt7PzES3N0d2ChrSeAxTflAWLc=
-X-Received: by 2002:a17:906:b816:b0:a6f:5922:54e7 with SMTP id
- a640c23a62f3a-a6fab7d0bd8mr334461966b.65.1718892181739; Thu, 20 Jun 2024
- 07:03:01 -0700 (PDT)
+	s=arc-20240116; t=1718893112; c=relaxed/simple;
+	bh=FiTIEM2586OeYCc04M4ohcysGxM456/1S9cHdyWyxlI=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=Ny0F2MNWbGPXfQAQrcT6qA/r3IaToE7TrQ5QU11cYgRX29waRUOuomrD3s/8PTHljQXrixM+sBGQaGk666LOUqKoUHJTFMjZ1jqHEhPIIW6WO22IQvKXoQo5vrX+Oyh4Z1X/Q5wkZWVUw9wJOH5xTAr/pZOF44qFVFcnpZWJw6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=cRMrVZj0; arc=none smtp.client-ip=44.202.169.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5004a.ext.cloudfilter.net ([10.0.29.221])
+	by cmsmtp with ESMTPS
+	id KI0vsWRuZxs4FKIcJsYAtk; Thu, 20 Jun 2024 14:18:23 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id KIcIsatFRGDo0KIcIsU6RO; Thu, 20 Jun 2024 14:18:23 +0000
+X-Authority-Analysis: v=2.4 cv=I+uuR8gg c=1 sm=1 tr=0 ts=66743a2f
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=T1WGqf2p2xoA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=kNzFyEQwpmlpIjNtX5zmjNPnL9cJHaoTaVBgjYFDMbA=; b=cRMrVZj0AJvLQz2cxQk8O6LZxA
+	feTp3+P55CLY05MKDc5sS5bMVlwOVDHIyzQJDvMeCHYt/hoBK8LE9R+V3F29SoBayI+ayoQFqnriM
+	aQJGvBty/YfsbDla4pf4fQv4KVD3vMRLt+R5RPEA1tiwH87l54NyFBRLLeVRC1nPNVZt7KSZpymS5
+	7v2BvDP+J/6HULZk4juRuIXK3nx8O3DI1SJ84rH90d1jl6Tr7iYIWSs0ao7lInd102pJZIz+dyi9y
+	lW9jsF2tbXXmcdnGeBPVl1tYByxUMRliJMAX4HIR931RAcEE/MGoRy2FnWw2C/T3ejufK2t9rql5Z
+	z+/aHiYg==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:44936 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sKIcG-001dNG-0V;
+	Thu, 20 Jun 2024 08:18:20 -0600
+Subject: Re: [PATCH 6.9 000/281] 6.9.6-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240619125609.836313103@linuxfoundation.org>
+In-Reply-To: <20240619125609.836313103@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <8ac334b8-2b8e-41b9-e532-873216d57c5a@w6rz.net>
+Date: Thu, 20 Jun 2024 07:18:17 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240619125609.836313103@linuxfoundation.org> <CA+G9fYtPV3kskAyc4NQws68-CpBrV+ohxkt1EEaAN54Dh6J6Uw@mail.gmail.com>
- <2024062028-caloric-cost-2ab9@gregkh> <CA+G9fYsr0=_Yzew1uyUtrZ7ayZFYqmaNzAwFZJPjFnDXZEwYcQ@mail.gmail.com>
- <36a38846-0250-4ac2-b2d0-c72e00d6898d@redhat.com>
-In-Reply-To: <36a38846-0250-4ac2-b2d0-c72e00d6898d@redhat.com>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 20 Jun 2024 19:32:48 +0530
-Message-ID: <CA+G9fYv4fZiB-pL7=4SNfudh2Aqknf5+OXo1RFAFRhJFZMsEsg@mail.gmail.com>
-Subject: Re: [PATCH 6.9 000/281] 6.9.6-rc1 review
-To: David Hildenbrand <david@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
-	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
-	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org, 
-	Miaohe Lin <linmiaohe@huawei.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Cgroups <cgroups@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, jbeulich@suse.com, 
-	LTP List <ltp@lists.linux.it>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1sKIcG-001dNG-0V
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:44936
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfGElcw/24afFnWNiJSVY1u1Df/498gI+GzMkhv4R327TXU8FGGGa7mgUIO378E09kMGUgk+JcWJ0+Pqp6Aqm/swg5uUvuWCs9rBAdQ6i7j99YTUkyscf
+ UPfzsT7IIOHWMivTA4co3KZLf3yV05ELILsbYcrpANtI+Hz2+CCyyx+1fBJnM6YbwmbQyV4YYWJuWg==
 
-On Thu, 20 Jun 2024 at 19:23, David Hildenbrand <david@redhat.com> wrote:
+On 6/19/24 5:52 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.9.6 release.
+> There are 281 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> On 20.06.24 15:14, Naresh Kamboju wrote:
-> > On Thu, 20 Jun 2024 at 17:59, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> >>
-> >> On Thu, Jun 20, 2024 at 05:21:09PM +0530, Naresh Kamboju wrote:
-> >>> On Wed, 19 Jun 2024 at 18:41, Greg Kroah-Hartman
-> >>> <gregkh@linuxfoundation.org> wrote:
-> >>>>
-> >>>> This is the start of the stable review cycle for the 6.9.6 release.
-> >>>> There are 281 patches in this series, all will be posted as a response
-> >>>> to this one.  If anyone has any issues with these being applied, please
-> >>>> let me know.
-> >>>>
-> >>>> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
-> >>>> Anything received after that time might be too late.
-> >>>>
-> >>>> The whole patch series can be found in one patch at:
-> >>>>          https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.6-rc1.gz
-> >>>> or in the git tree and branch at:
-> >>>>          git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-> >>>> and the diffstat can be found below.
-> >>>>
-> >>>> thanks,
-> >>>>
-> >>>> greg k-h
-> >>>
-> >>> There are two major issues on arm64 Juno-r2 on Linux stable-rc 6.9.6-rc1
-> >>>
-> >>> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> >>>
-> >>> 1)
-> >>> The LTP controllers cgroup_fj_stress test cases causing kernel crash
-> >>> on arm64 Juno-r2 with
-> >>> compat mode testing with stable-rc 6.9 kernel.
-> >>>
-> >>> In the recent past I have reported this issues on Linux mainline.
-> >>>
-> >>> LTP: fork13: kernel panic on rk3399-rock-pi-4 running mainline 6.10.rc3
-> >>>    - https://lore.kernel.org/all/CA+G9fYvKmr84WzTArmfaypKM9+=Aw0uXCtuUKHQKFCNMGJyOgQ@mail.gmail.com/
-> >>>
-> >>> it goes like this,
-> >>>    Unable to handle kernel NULL pointer dereference at virtual address
-> >>>    ...
-> >>>    Insufficient stack space to handle exception!
-> >>>    end Kernel panic - not syncing: kernel stack overflow
-> >>>
+> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
+> Anything received after that time might be too late.
 >
-> How is that related to 6.9.6-rc1? That report is from mainline (6.10.rc3).
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.6-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+> and the diffstat can be found below.
 >
-> Can you share a similar kernel dmesg output from  the issue on 6.9.6-rc1?
-
-I request you to use this link for detailed boot log, test log and crash log.
- - https://lkft.validation.linaro.org/scheduler/job/7687060#L23314
-
-Few more logs related to build artifacts links provided in the original
-email thread and bottom of this email.
-
-crash log:
----
-
-[ 0.000000] Booting Linux on physical CPU 0x0000000100 [0x410fd033]
-[ 0.000000] Linux version 6.9.6-rc1 (tuxmake@tuxmake)
-(aarch64-linux-gnu-gcc (Debian 13.2.0-12) 13.2.0, GNU ld (GNU Binutils
-for Debian) 2.42) #1 SMP PREEMPT @1718817000
-...
-[ 1786.336761] Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000070
-[ 1786.345564] Mem abort info:
-[ 1786.348359]   ESR = 0x0000000096000004
-[ 1786.352112]   EC = 0x25: DABT (current EL), IL = 32 bits
-[ 1786.357434]   SET = 0, FnV = 0
-[ 1786.360492]   EA = 0, S1PTW = 0
-[ 1786.363637]   FSC = 0x04: level 0 translation fault
-[ 1786.368523] Data abort info:
-[ 1786.371405]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[ 1786.376900]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[ 1786.381960]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[ 1786.387284] Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000070
-[ 1786.387293] Insufficient stack space to handle exception!
-[ 1786.387296] ESR: 0x0000000096000047 -- DABT (current EL)
-[ 1786.387302] FAR: 0xffff80008399ffe0
-[ 1786.387306] Task stack:     [0xffff8000839a0000..0xffff8000839a4000]
-[ 1786.387312] IRQ stack:      [0xffff8000837f8000..0xffff8000837fc000]
-[ 1786.387319] Overflow stack: [0xffff00097ec95320..0xffff00097ec96320]
-[ 1786.387327] CPU: 4 PID: 0 Comm: swapper/4 Not tainted 6.9.6-rc1 #1
-[ 1786.387338] Hardware name: ARM Juno development board (r2) (DT)
-[ 1786.387344] pstate: a00003c5 (NzCv DAIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[ 1786.387355] pc : _prb_read_valid (kernel/printk/printk_ringbuffer.c:2109)
-[ 1786.387374] lr : prb_read_valid (kernel/printk/printk_ringbuffer.c:2183)
-[ 1786.387385] sp : ffff80008399ffe0
-[ 1786.387390] x29: ffff8000839a0030 x28: ffff000800365f00 x27: ffff800082530008
-[ 1786.387407] x26: ffff8000834e33b8 x25: ffff8000839a00b0 x24: 0000000000000001
-[ 1786.387423] x23: ffff8000839a00a8 x22: ffff8000830e3e40 x21: 0000000000001e9e
-[ 1786.387438] x20: 0000000000000000 x19: ffff8000839a01c8 x18: 0000000000000010
-[ 1786.387453] x17: 72646461206c6175 x16: 7472697620746120 x15: 65636e6572656665
-[ 1786.387468] x14: 726564207265746e x13: 3037303030303030 x12: 3030303030303030
-[ 1786.387483] x11: 2073736572646461 x10: ffff800083151ea0 x9 : ffff80008014273c
-[ 1786.387498] x8 : ffff8000839a0120 x7 : 0000000000000000 x6 : 0000000000000e9f
-[ 1786.387512] x5 : ffff8000839a00c8 x4 : ffff8000837157c0 x3 : 0000000000000000
-[ 1786.387526] x2 : ffff8000839a00b0 x1 : 0000000000000000 x0 : ffff8000830e3f58
-[ 1786.387542] Kernel panic - not syncing: kernel stack overflow
-[ 1786.387549] SMP: stopping secondary CPUs
-[ 1787.510055] SMP: failed to stop secondary CPUs 0,4
-[ 1787.510065] Kernel Offset: disabled
-[ 1787.510068] CPU features: 0x4,00001061,e0100000,0200421b
-[ 1787.510076] Memory Limit: none
-[ 1787.680436] ---[ end Kernel panic - not syncing: kernel stack overflow ]---
-
-
-1)
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.9.y/build/v6.9.5-282-g93f303762da5/testrun/24410131/suite/log-parser-test/test/check-kernel-panic/log
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.9.y/build/v6.9.5-282-g93f303762da5/testrun/24410131/suite/log-parser-test/test/check-kernel-panic-a44367e5836148d6e94412d6de8ab7a0ca37c18d2bfb6a639947ecd2704ad6b1/details/
- - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2i6h1Ah6I8CP7ABUzTl9shfaW60
- - https://lkft.validation.linaro.org/scheduler/job/7687060#L23314
-
-- Naresh
-
+> thanks,
 >
-> --
-> Cheers,
->
-> David / dhildenb
->
+> greg k-h
+
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+
+Tested-by: Ron Economos <re@w6rz.net>
+
 
