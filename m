@@ -1,81 +1,111 @@
-Return-Path: <stable+bounces-54762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A339F910E40
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 19:16:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F5CD910F31
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 19:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4016BB25DD4
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 17:16:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C003B2A29F
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 17:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61A81B3754;
-	Thu, 20 Jun 2024 17:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EA21BD91B;
+	Thu, 20 Jun 2024 17:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nfy4McdF"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b="gbnJn78c"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EA51AB8F0;
-	Thu, 20 Jun 2024 17:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35F81B4C57;
+	Thu, 20 Jun 2024 17:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718903775; cv=none; b=pVcKgHbapiLd4cZ/gQ7EDiB/zN0WHReow6h007mZxqHHLelGHUu0+MJKoqBGz1VbFASrl6T262h+P6puUdfNAJuK/MABM2Iv7uNPZ/RW5QyMRjKAr6dCxw2BZHOxxR2+QlXETlnPu+3T/IO6pUrn9mrRFd3I9JZB7LPbqaFgWYQ=
+	t=1718904759; cv=none; b=uqXAt2N28lyUOboZlMBxWsR2JTNnNKUw+YtnXCPJNApQ+x2kdYuV2+1mIuC7wU1eTer4H8xBm19K9APS1jLfm1zCuySVcS9V20qAKqHN3NY/Jgw9FsbVEOJZoH2tAIXd73Rbwpx5IE6sHP9SyZNY7qpuR11BrpQRJMZQeP3nHAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718903775; c=relaxed/simple;
-	bh=nTUjyvPJwsjHGiR5ySPNqFmwFDArPcRIv7+YmkcFFU4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fY1v2zv4YeiBzKkqmocRUBiVS278+e75Gv7Z59Czk7YairUjHxEXnLbHJnd2QA4V2c/qIT65mYJoWZopJaBlv0wXPkruhgGGWIEVg92ykPH+ePSMbpF3udIudnSncXhgaIl1rSWvvmmaawI5bSjjJY5iR8ElxO+LcA+6s5lA0Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nfy4McdF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83661C2BD10;
-	Thu, 20 Jun 2024 17:16:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718903774;
-	bh=nTUjyvPJwsjHGiR5ySPNqFmwFDArPcRIv7+YmkcFFU4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Nfy4McdF386W/gXzEyZ1mJEuc3YaDXHDojaIAbWNI66xGKUkCTx8dGqwzj1fP+Xgt
-	 zX9gmQnLf+m5SJXfZa1lty5JuVhZdZh8Bn8Re6+zKZ//1CziFcwaaiNynNH4FwgZb4
-	 Zh5ut+a0k+bKp1lIfiKzYKE75F77VqLCTUOoU2xg=
-Date: Thu, 20 Jun 2024 19:16:12 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: joswang <joswang1221@gmail.com>
-Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Jos Wang <joswang@lenovo.com>
-Subject: Re: [PATCH v7] usb: dwc3: core: Workaround for CSR read timeout
-Message-ID: <2024062051-washtub-sufferer-d756@gregkh>
-References: <20240619114529.3441-1-joswang1221@gmail.com>
+	s=arc-20240116; t=1718904759; c=relaxed/simple;
+	bh=Ts+o4DLTXehjZyeHtMv6S5vqB21Rs0oTAypOtLp54rU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Khe3cXGUdErFiM1S0TTgwy1KfJwd6A7IXdjTPye55SbE+ZjTzNZfX+THhjLy7LD8tDXt0vI1K+JEgTVaKLB7TO8BtKxvLbSLNzb8bF0QK/zWnE17mkh1TSS1CG1X1lunT6SS73z3zQ1uUyfs+jvwxEuF1xlI089lthwAatXy8lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b=gbnJn78c; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1718904729; x=1719509529; i=svenjoac@gmx.de;
+	bh=+a/gBdVUBp3b37TjJVSy0kNY3Cl6AVJmqidg8Y53dB4=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 Message-ID:MIME-Version:Content-Type:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=gbnJn78cSkCXp8vtbWZG0QE9i6MlkuVPiA8GOL57+0+jTP83+E7JIFdLmWnSvatF
+	 QXavR+X9K25IDZDjosJgPGvw3und67imfCb0jTe6n/FeJaKlHnbxfvhM1vmNGr1Vr
+	 G4GObPQqo6iJa0+IQotGctofZYcFBqMfIe3Zy/eSq4Yx0Yi7e26iQdME8/nA6hFmg
+	 7M+YkKlsuj/POrCka5SrdJk+8esLkC8MoIQV4bt1OPmoA4OVKww1yjOItsQcc1wcR
+	 AlgILYeUrjAsuKOfCNLJHshjSbsjK2VoTnsPfjTkfL5IEty2bX4jhcRVai3JDMC1z
+	 rsz80sZQJ1ND4WpPXQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost.localdomain ([79.203.67.129]) by mail.gmx.net
+ (mrgmx004 [212.227.17.190]) with ESMTPSA (Nemesis) id
+ 1MXXyP-1rrOGU1fOJ-00XS1t; Thu, 20 Jun 2024 19:32:09 +0200
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id 758908009A; Thu, 20 Jun 2024 19:32:07 +0200 (CEST)
+From: Sven Joachim <svenjoac@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,  patches@lists.linux.dev,
+  linux-kernel@vger.kernel.org,  torvalds@linux-foundation.org,
+  akpm@linux-foundation.org,  linux@roeck-us.net,  shuah@kernel.org,
+  patches@kernelci.org,  lkft-triage@lists.linaro.org,  pavel@denx.de,
+  jonathanh@nvidia.com,  f.fainelli@gmail.com,  sudipm.mukherjee@gmail.com,
+  srw@sladewatkins.net,  rwarsow@gmx.de,  conor@kernel.org,
+  allen.lkml@gmail.com,  broonie@kernel.org
+Subject: Re: [PATCH 6.1 000/217] 6.1.95-rc1 review
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org> (Greg
+	Kroah-Hartman's message of "Wed, 19 Jun 2024 14:54:03 +0200")
+References: <20240619125556.491243678@linuxfoundation.org>
+Date: Thu, 20 Jun 2024 19:32:07 +0200
+Message-ID: <874j9n1pwo.fsf@turtle.gmx.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240619114529.3441-1-joswang1221@gmail.com>
+Content-Type: text/plain
+X-Provags-ID: V03:K1:i+b2EJiqseAXzgK5UePzEeGyPoIp8OIxqKVASacOhRqeE11/NGA
+ Rk3U0jvuSR76ewmbxJHQYFzZc43fu12JhT4p+iVjRGxWzLdHKSWqeEHZzYnzXdLAnJUVAqR
+ j0B9RCrpk0OEMfG4/O7NkhR11jryrasI0g9/jqRSz4mOIizZsm5KpceIsz7XRiCLDlkcu2X
+ K18RAs4T6DL6LhEwf91GA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:sDEeG2sWfDg=;lfcIxVmUkhuGU7E1+qtpD+qzUL/
+ M9R0KldLs1E4SsFWExATp33gQq03wnUH0HTiDjIPGfSUxDEtOfR3bPMRvKVtAjPmsxVrlq+P8
+ td/WUn/g7tJ1UfiGgLOrq3lJdfXfncR+SfKTI79BwL/uMEr8AOCjyWFmcWxVoVQ/bKbdVFlfe
+ mbUiUyDZ5KpuBVTvz9izK7W9sMl52biFlLdq+IOo9k4vwIaDpn4fSGqgdTxMlPrCR0Afdfs/o
+ mlVx1hMwRp/Hhrk1hLa9wJbA1EsbYozd4Ds4o+ahon3ZLOIGk4A4hDYzLBNJ2xiB265X0aUqK
+ miN7ONY/dNjIf3xe4YzLDwiTKVgkwrQyg0Ejc3BVqJWEkfQU+KCW7d+WGmowKAHdY/sx6fsj9
+ /Iu+5092mxASIfumMd0fjUnKdYwfyTTLT79K1zyxaTxWvu1p23OEw9+zmyFM2qaug33Ul2Xa3
+ e4yeJ76TcF7+nR1uVnbrn317i7xOGLmBgyv1/QKGDNFlitiQ+TYZj704EHmo7J98+4i06Xsvc
+ N5YCR7yQeTFrDn+YAM4Ek0rroK99Wgy+vtEjy95iVLvlNWZS1lihQeRxnILfZnygV70hVZ7ms
+ Ed5LsdKcdO5vdsQ9tZXZIQH6vs9cZM+3qwiIIFYLx63PjNRatIxpvfjYfppzhDsKSJyS/Av1G
+ 942MQPfnT01NKwj+jRJeqgOcmVbLTtsyju271OJGHJuy5McANlucACLtcxusgeY/CeYqZS1NE
+ Bae15jcJyA9CxKtgn12mzagJaKDS8POvNbKV66WLYquUYWbfzwWkEkztL5e1v0L3A94vbnSbY
+ PiFSE4ly2JnTcqCZuqunlmhOAYnN8pmT14UZdhIqC9zNc=
 
-On Wed, Jun 19, 2024 at 07:45:29PM +0800, joswang wrote:
-> From: Jos Wang <joswang@lenovo.com>
-> 
-> This is a workaround for STAR 4846132, which only affects
-> DWC_usb31 version2.00a operating in host mode.
-> 
-> There is a problem in DWC_usb31 version 2.00a operating
-> in host mode that would cause a CSR read timeout When CSR
-> read coincides with RAM Clock Gating Entry. By disable
-> Clock Gating, sacrificing power consumption for normal
-> operation.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jos Wang <joswang@lenovo.com>
+On 2024-06-19 14:54 +0200, Greg Kroah-Hartman wrote:
 
-What commit id does this fix?  How far back should it be backported in
-the stable releases?
+> This is the start of the stable review cycle for the 6.1.95 release.
+> There are 217 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
+> Anything received after that time might be too late.
 
-thanks,
+Works fine for me on x86_64.
 
-greg k-h
+Tested-by: Sven Joachim <svenjoac@gmx.de>
+
+Cheers,
+       Sven
 
