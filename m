@@ -1,74 +1,47 @@
-Return-Path: <stable+bounces-54768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CBED9111AE
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 21:00:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D02F911206
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 21:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18297289637
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 19:00:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62CFEB21CBE
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 19:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21AB3FB2C;
-	Thu, 20 Jun 2024 19:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15351B4C3D;
+	Thu, 20 Jun 2024 19:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ID9rkr4M"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="HFoeBB5g"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3565724B26;
-	Thu, 20 Jun 2024 19:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4039F22EED;
+	Thu, 20 Jun 2024 19:23:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718910052; cv=none; b=E5FbvbIsZhGPTg6+mOC3BkQc7kKLFvwh55+0hgOa+0ZhBMdSTeIBlIhUg5xNvMyjepNbyacgIaJfrRxd7OCCE3dlWyRGqxkX5KtQSdCLpXW6s/hx8JolSV080JSOpqzKXLNmsvGMGnhiXbBAQ9gt+T+FhukxMzD8FV17lwiNN04=
+	t=1718911388; cv=none; b=I0Hg/uE+Fq4nU4Wh6DGF8AOyMcQvVScKHuVYOm11T3iGJ7GeaOEt8BuLbGU8U+J0AE1HhsdqUgZbbs/OneKdF5bHz4feGiUx37PZIQXM9fi/GfZdVK6LSD5EBRAFS/Ly+3zbN1AYn0p36FemmwZLwiFYkRli61Rdwbm71CsRXd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718910052; c=relaxed/simple;
-	bh=lfvgxczR5/qk6zthHHFAgmMi+9NrXVi8m5IfPXhpsK8=;
+	s=arc-20240116; t=1718911388; c=relaxed/simple;
+	bh=eCMeN0lzP9UrNuCqV1ZUPlK/kylfQtBMoQitfd2StEg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AVm/sVYBpM0p4CrYT9nbS2p2nNu3GQ4iyU2AeiiTJp5jTiPgb43BHMIwHOvqc+F6Qy7aZHT961niwFW7QAyynVO4BYWX9hSv7mtdXl2IaMeqBS/m+Jin2N1fHPRKlGQ31FqZzJJUOeEgYh6XbedBnfORtuwx2QtnIbuyhg9Bi9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ID9rkr4M; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a63359aaacaso185316566b.1;
-        Thu, 20 Jun 2024 12:00:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718910049; x=1719514849; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QsxQYin5JojAxp6enhq9SBRWoC/pFwUM1omQr9TXbXg=;
-        b=ID9rkr4MYdMgCSIomVqngdN1gUKUa/x+0TzHvjFkHlO8w2dBNmBbG685KOofrpmBTv
-         qNnzjQjX1QJL/40Te9Y1QONPwIeHF1X9Dehr8+UGYZg4+lqQUajq4O+CB4zZVSAgw1T5
-         dhIRRKc/ZXNj/TUqSPaNBQ6IdvgddHijXCcviYL1G7ilZNGGEmHuvwBrha1kLhEfsk7P
-         fkmUJHoxxF7XzCyHbQ7mzzFHYXoryr444PnX477307tuDcezmIbvozytu88Po052jmKk
-         J+aOJNEJ6r3kKZN4b+V8vOyQIQLNMEMLjcerSz6QPyuydU2BNNPx5wg3R4iT5h6/2vUX
-         Ppkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718910049; x=1719514849;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QsxQYin5JojAxp6enhq9SBRWoC/pFwUM1omQr9TXbXg=;
-        b=pJkCGCKEQ6bJ4DrQSwQp7CbrWsDBg1/sYEbpSh7xk2OShwfczCq+ZmlrYvy5lMu3qO
-         OAEeh7hnDMe8KP/F/8pkWNLYOs60NM9mzdfkjeqUNCsuzRWpwj8vTUKvzUdgYA5KaEft
-         XgfSIasGxRjJwZy1uY77Uq9NFyF1WNrGQ97rBpEV1C3uUh/dnOjtd8X+HDecymuoE9eT
-         IVsZlTJXcnXD722kVdcc78MjQGHWaGTQ2K5qgi8GhynkhxNm+xsym2yf1EC+r7Plk/8N
-         c2EdWwHaGC+V2jBDEhWxuCXDfcgngeJGKnCGoDXORpMEBJ5etTPJSSxJanphrGRwDK/m
-         cFYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcHTaiKpkBAKezbTrjrbUga4v5KMAUY+TYPZDjgUYTBbkKbhkaQrBaGxKS/LQ680SJBM7+bhtROJh21QetVwIVpP0Q5ejQB8437Jr27gcQmjiDKI5qiNkcqXLHvg+0I+higNxtWxioauz7/WqEX69PywAhiaKctnTOq4tWDqPZ
-X-Gm-Message-State: AOJu0YzSgkg0yRGzzF+cMFfgzEV/l75KwvdMyX2HngmbyGVolDqrJDa8
-	NakKYP8zX+oB2N6FgV8hWa+TucztQmpAQPDV9W9Qs9rtdQR8eE6Q
-X-Google-Smtp-Source: AGHT+IEsaHPa7oPhZt6UNr4ZreNLGXyKk5qeWjcJ2EyTCeovJYLkdVnc8RPPNkK6wg/LQESENHd5vQ==
-X-Received: by 2002:a17:906:1515:b0:a6f:e36:abae with SMTP id a640c23a62f3a-a6fab6451ffmr387881566b.42.1718910048904;
-        Thu, 20 Jun 2024 12:00:48 -0700 (PDT)
-Received: from ?IPV6:2a02:a466:68ed:1:a810:a6b8:d8d0:6594? (2a02-a466-68ed-1-a810-a6b8-d8d0-6594.fixed6.kpn.net. [2a02:a466:68ed:1:a810:a6b8:d8d0:6594])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6fcf54942dsm958266b.137.2024.06.20.12.00.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jun 2024 12:00:48 -0700 (PDT)
-Message-ID: <1a4925bd-558d-4169-b4e6-f37fb33ae0b9@gmail.com>
-Date: Thu, 20 Jun 2024 21:00:46 +0200
+	 In-Reply-To:Content-Type; b=MY0dzFy/+NKqnpOFjIgCkJo5tQ62454aY3KLabv6MtqrmVNz+P4HqOilML/m156Qo5Ebz0912SoliglvzNhZZk0/7MVgYDg6CFsPMEaa7Ff++vzzmHV8xVr9fC4akEiVL0BOeIBONrCvDcoDpoul0q9zZZRzbCKtBpMlHR3mdmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=HFoeBB5g; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.137.186.190] (unknown [131.107.159.62])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 7CB4820B7004;
+	Thu, 20 Jun 2024 12:23:06 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7CB4820B7004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1718911386;
+	bh=VnHT0brBrdifbJ8+mZwZG6m8zfp7b8yTRmWCV073osI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=HFoeBB5gWFzriPUx6xUfOnLsQp1SheK3ziWa/tKzSJUUEVOUJd5CPp494VhSQzrd2
+	 wuwUVA6hrCT0b2rfagoubPI6/uY0sifbenRqgzK2QQtUmcj2+dDG/43GRpDUxIAEkV
+	 fVqMZMOsGH3HKSggFYXc/mqR+frM4fMFR6uxsR+Y=
+Message-ID: <d0382b2a-2d8f-45f3-a29b-0bd49103a182@linux.microsoft.com>
+Date: Thu, 20 Jun 2024 12:23:06 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,52 +49,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/2] Revert "usb: gadget: u_ether: Re-attach netif
- device to mirror detachment"
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ferry Toth <ftoth@exalondelft.nl>
-Cc: "Ricardo B. Marliere" <ricardo@marliere.net>, Kees Cook
- <kees@kernel.org>, Linyu Yuan <quic_linyyuan@quicinc.com>,
- Justin Stitt <justinstitt@google.com>,
- Richard Acayan <mailingradian@gmail.com>,
- Hardik Gajjar <hgajjar@de.adit-jv.com>, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andy Shevchenko <andriy.shevchenko@intel.com>,
- s.hauer@pengutronix.de, jonathanh@nvidia.com, paul@crapouillou.net,
- quic_eserrao@quicinc.com, erosca@de.adit-jv.com, regressions@leemhuis.info,
- stable@vger.kernel.org
-References: <20240606210436.54100-1-ftoth@exalondelft.nl>
- <20240606210436.54100-2-ftoth@exalondelft.nl>
- <2024062009-unison-coauthor-46a0@gregkh>
+Subject: Re: [PATCH] clocksource: hyper-v: Use lapic timer in a TDX VM without
+ paravisor
+To: Dexuan Cui <decui@microsoft.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Daniel Lezcano
+ <daniel.lezcano@linaro.org>,
+ "open list:Hyper-V/Azure CORE AND DRIVERS" <linux-hyperv@vger.kernel.org>,
+ "open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)"
+ <linux-kernel@vger.kernel.org>
+Cc: stable@vger.kernel.org
+References: <20240619002504.3652-1-decui@microsoft.com>
 Content-Language: en-US
-From: Ferry Toth <fntoth@gmail.com>
-In-Reply-To: <2024062009-unison-coauthor-46a0@gregkh>
+From: Roman Kisel <romank@linux.microsoft.com>
+In-Reply-To: <20240619002504.3652-1-decui@microsoft.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-Hi Greg,
 
-Op 20-06-2024 om 19:35 schreef Greg Kroah-Hartman:
-> On Thu, Jun 06, 2024 at 11:02:31PM +0200, Ferry Toth wrote:
->> This reverts commit 76c945730cdffb572c7767073cc6515fd3f646b4.
->>
->> Prerequisite revert for the reverting of the original commit f49449fbc21e.
->>
->> Fixes: 76c945730cdf ("usb: gadget: u_ether: Re-attach netif device to mirror detachment")
->> Fixes: f49449fbc21e ("usb: gadget: u_ether: Replace netif_stop_queue with netif_device_detach")
->> Reported-by: Ferry Toth <fntoth@gmail.com>
->> Cc: stable@vger.kernel.org
->> ---
->>   drivers/usb/gadget/function/u_ether.c | 2 --
->>   1 file changed, 2 deletions(-)
+
+On 6/18/2024 5:25 PM, Dexuan Cui wrote:
+> In a TDX VM without paravisor, currently the default timer is the Hyper-V
+> timer, which depends on the slow VM Reference Counter MSR: the Hyper-V TSC
+> page is not enabled in such a VM because the VM uses Invariant TSC as a
+> better clocksource and it's challenging to mark the Hyper-V TSC page shared
+> in very early boot.
 > 
-> You have to sign-off on your changes, otherwise the tools will reject
-> them (as will I).  Please fix up for both of these and resend.
-
-Oops, I knew that. Just didn't notice SoB wasn't auto added.
-I'll that up, sorry.
-
-> thanks,
+> Lower the rating of the Hyper-V timer so the local APIC timer becomes the
+> the default timer in such a VM. This change should cause no perceivable
+> performance difference.
 > 
-> greg k-h
+> Cc: stable@vger.kernel.org # 6.6+
+> Signed-off-by: Dexuan Cui <decui@microsoft.com>
+> ---
+>   arch/x86/kernel/cpu/mshyperv.c     |  6 +++++-
+>   drivers/clocksource/hyperv_timer.c | 16 +++++++++++++++-
+>   2 files changed, 20 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+> index e0fd57a8ba840..745af47ca0459 100644
+> --- a/arch/x86/kernel/cpu/mshyperv.c
+> +++ b/arch/x86/kernel/cpu/mshyperv.c
+> @@ -449,9 +449,13 @@ static void __init ms_hyperv_init_platform(void)
+>   			ms_hyperv.hints &= ~HV_X64_APIC_ACCESS_RECOMMENDED;
+>   
+>   			if (!ms_hyperv.paravisor_present) {
+> -				/* To be supported: more work is required.  */
+> +				/* Use Invariant TSC as a better clocksource. */
+>   				ms_hyperv.features &= ~HV_MSR_REFERENCE_TSC_AVAILABLE;
+>   
+> +				/* Use the Ref Counter in case Invariant TSC is unavailable. */
+> +				if (!(ms_hyperv.features & HV_ACCESS_TSC_INVARIANT))
+> +					pr_warn("Hyper-V: Invariant TSC is unavailable\n");
+> +
+>   				/* HV_MSR_CRASH_CTL is unsupported. */
+>   				ms_hyperv.misc_features &= ~HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE;
+>   
+> diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
+> index b2a080647e413..99177835cadec 100644
+> --- a/drivers/clocksource/hyperv_timer.c
+> +++ b/drivers/clocksource/hyperv_timer.c
+> @@ -137,7 +137,21 @@ static int hv_stimer_init(unsigned int cpu)
+>   	ce->name = "Hyper-V clockevent";
+>   	ce->features = CLOCK_EVT_FEAT_ONESHOT;
+>   	ce->cpumask = cpumask_of(cpu);
+> -	ce->rating = 1000;
+> +
+> +	/*
+> +	 * Lower the rating of the Hyper-V timer in a TDX VM without paravisor,
+> +	 * so the local APIC timer (lapic_clockevent) is the default timer in
+> +	 * such a VM. The Hyper-V timer is not preferred in such a VM because
+> +	 * it depends on the slow VM Reference Counter MSR (the Hyper-V TSC
+> +	 * page is not enbled in such a VM because the VM uses Invariant TSC
+> +	 * as a better clocksource and it's challenging to mark the Hyper-V
+> +	 * TSC page shared in very early boot).
+> +	 */
+> +	if (!ms_hyperv.paravisor_present && hv_isolation_type_tdx())
+> +		ce->rating = 90;
+> +	else
+> +		ce->rating = 1000;
+> +
+>   	ce->set_state_shutdown = hv_ce_shutdown;
+>   	ce->set_state_oneshot = hv_ce_set_oneshot;
+>   	ce->set_next_event = hv_ce_set_next_event;
 
+LGTM.
+
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+
+-- 
+Thank you,
+Roman
 
