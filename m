@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-54750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B351D910C0B
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 18:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1053A910C0C
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 18:21:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2F161C2191A
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 16:21:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 331FC1C23834
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 16:21:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D448B1B372F;
-	Thu, 20 Jun 2024 16:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361E21B14F3;
+	Thu, 20 Jun 2024 16:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="p2k/ucA5"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="tgVzG0+Q"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2053.outbound.protection.outlook.com [40.107.243.53])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2068.outbound.protection.outlook.com [40.107.236.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0551B14F3
-	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 16:19:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E231AED20
+	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 16:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718900383; cv=fail; b=XZmsijvADqiWAPGrjtqV4CNTCuP6dHeXm8EQIajsT9sox96pABzaWZtaudbS93SEYeLIMCLsQz5D095jwBmEg5NbabbPCS4qFQ1xJapxdQ7gKs0/lR/4PB+QZNk4FKtB0o3LBwERWTi2Nf6qVXBU3uc8OcwAz61dwFCLcKbLcBY=
+	t=1718900402; cv=fail; b=ZMRngtdIMMZG5l25Rcual9SJ3l3cYy464sb5cf2DeocIERThhHzhOBHkbfIlbNUfcDlQJsJJ3ULaV5tX4MOYVbBQmK1EYEkK+fOx/7iE3De7A6YwrEeQ203y7wgHJBnI7mSIjHTYO8W73kFM7bUYo+pO2Qfg8Df5ZBc4HzGe0ng=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718900383; c=relaxed/simple;
-	bh=4/9J3RPPort4PNACvXotB51Utv9mGmA0JNWraZUrA8U=;
+	s=arc-20240116; t=1718900402; c=relaxed/simple;
+	bh=GUkoX4r1VYLFBfxrY7T+J172G6SOQhm0VMZU/yndTsg=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kU6fwnrkqN+YHFjbBYhnMmIFGdINQIykhM963QyM44/dFE7OIXcIylu3pl9Yq7gfItrsALBeERUL6KERAmoFyw9RDBz20qYMvelJsonUEBGfySoemC+FgfDROpKUS/mqoKoPxzkreQuv7KRmR7wSwaiLEW6cIPiN/u0qEM+4piQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=p2k/ucA5; arc=fail smtp.client-ip=40.107.243.53
+	 MIME-Version:Content-Type; b=KuJlpVvGnyPkbx2ZaLuFbKm8hY9mqGy5rlF6b9670/jCmJGoAkq4jW7OBxdQY8SPcoFOqygjyxqCZAkWT9cFEncqq0PdmtHpAxDaSyq6076J3bngE/X2jA7gcOnfeXQEev0hkv4l3h4DA/CSpdluGir1pE9Pz91PnH1gUmnync8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=tgVzG0+Q; arc=fail smtp.client-ip=40.107.236.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DXa+mFqtwbuBzbA6q6ZJo/R08BWjNTTAYFHit5Qaf8eI6KHL2/vPSGcr2hgNVk4Ujhr1gUXcVrRqcOzrFxenqrcxXq1UYiKxFCmb7y9LHH4MqEDelCItDSXTUdGDDRvTYpsXa+ongWOE6y6Qlt/sSqETWvfON1G2mVvaL3Y//k0Ev7cMupf9F5ZHHIQ/jYjjI5ZcmfVAaQHsxZPVWg3yNunTiaMPlR/q3g8beSt3zJqPtlf4BbZ5p6nd9LrXV0kpvd0azxWtBgPAEdZUENs2ShC0JLrq6zalSvw+HHozF91WC1oUf/v8vi17IXPIlubB2Ne0K7ilocrQMVYo6pO3Pg==
+ b=EGt1hJDVVrYsOl6Y/n83241MuCTXfxO5acgzpWfw2Ko85+sY9/Zcx8SLyRBPn5YcIMdTlMLqaNejtSagVTfiAUpLaCwgekjmNVeDsuy1ScLDf4Jon2rNhekjz7D3IjdQl6J+SQK2z+BLjyHH3n4+iYozEc0QhWCdDs2uOuUpX2xXu5ye1CugqLYJHwwOW2v1Hre/LqKduOpRS1bg7b/TXBMc0MgcdNk1uduZorvLQ6jhHYdC+32fAbymZcHtzNxtaP7FtHQh3LwZm3uWyfQ50WqYxJYYIraKUX5UBixiO62OBNd4EIS8pXVEqi488zVYh64sffudXCzcY4E0+/ZO+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dnXUgeOSF0JivaiRg5TfJSeICSk4lQ71cEPFRhQ+nEk=;
- b=XAW32KkquQu7vLksRGCqrjKK7ChIT/DAncjEa0tV5CU5iJh2dvd3M6UGUUTHbxGd2vLYJkRBd8wtOVSWRI0hUku0DG+I2r4Ut04b85imwAcOkRKxRhwDkSjPfRFEY8/l4LtAQHmFQRciFc/Zsix7e3roNUSmkirX3yHbEVJsElCaJLt2ZBVRmrqCXfYv6cad3irI1aoACQf9h1ioZ8rKDExkzltTTsCPRHkpV+ep7cwB1omGdGpoCsPVc5+gMxdmuHIxGmElxQwuiW2BUw1dG9r19oltoy88T7FGwIje9fCyScrvFCSTn+3ZWqM0StDCCZGb7O2Ri3XmoD7RQlBaJQ==
+ bh=wWQo4PQtL9LizZMSgS4kwEh2gk4xdhpkabEXRf4UXaU=;
+ b=kIVt/y9v5zYzJ2jTjN+1y70aRG8hd+v4SiaAhwUYVqVnaWeNXzwjm3k5ucGBLZc9vBU5bLtEV5RFvakN9bbD46zz/suFM+QUPXg0wbi+mgrtoS/hqvEh0GfbL09KQVlykzC3xtwiYSqE/DlhYsXqVSkfHOih32VQyPx8XUtqYJ0BdZVfTon+ktbprRqcsMcN2DdDOIPa4wGEo39XIN4wxwqckSBbTMZmN6e99zqJVuwfFwPt/1iyC7xY+oypd8TQ0pvNKpIccnwH9wRszmCAXtjuhcIZXwnJOudQFZs1neZv9z/DRR35y5nEB3EJU1UJ//OS7LFdBK0zNLNxCXiLOg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dnXUgeOSF0JivaiRg5TfJSeICSk4lQ71cEPFRhQ+nEk=;
- b=p2k/ucA5uxmoHr5os3AMHMWQYq2uZty7jHxyWRMCDOloFTf7ijOeZVRUEU1Hi4vUBq/+472fGhzO+lX9/cCWzoi/eFGjcosCP4zmlZCJ02A4iIGbVCjM7yiAEWZq5lcDBCtN77G+ANhk9IdfoTxsOdhuF7LvwmdexObaNuG8dJU=
-Received: from CH5PR03CA0013.namprd03.prod.outlook.com (2603:10b6:610:1f1::11)
- by SJ2PR12MB7919.namprd12.prod.outlook.com (2603:10b6:a03:4cc::11) with
+ bh=wWQo4PQtL9LizZMSgS4kwEh2gk4xdhpkabEXRf4UXaU=;
+ b=tgVzG0+Qk7ys3EBl5FTurIoWE95tn2oavR3Fwif64hTReVWBXZzryqx2O4ZLLqAGeIlOXkiy/rE+EvmmIwkGF8q6O3a3CqDSFM9K/YdZ8mAQf9R31iBoJbtYl/5EJnn6R14evkWhYaS2o3+85uP4T3e/bCMBmgldHAD3vnWuK34=
+Received: from CH2PR15CA0024.namprd15.prod.outlook.com (2603:10b6:610:51::34)
+ by MN0PR12MB6176.namprd12.prod.outlook.com (2603:10b6:208:3c3::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.30; Thu, 20 Jun
- 2024 16:19:38 +0000
-Received: from CH2PEPF0000009F.namprd02.prod.outlook.com
- (2603:10b6:610:1f1:cafe::b9) by CH5PR03CA0013.outlook.office365.com
- (2603:10b6:610:1f1::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31; Thu, 20 Jun
+ 2024 16:19:54 +0000
+Received: from CH2PEPF00000099.namprd02.prod.outlook.com
+ (2603:10b6:610:51:cafe::ff) by CH2PR15CA0024.outlook.office365.com
+ (2603:10b6:610:51::34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.33 via Frontend
- Transport; Thu, 20 Jun 2024 16:19:37 +0000
+ Transport; Thu, 20 Jun 2024 16:19:52 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -63,25 +63,25 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CH2PEPF0000009F.mail.protection.outlook.com (10.167.244.21) with Microsoft
+ CH2PEPF00000099.mail.protection.outlook.com (10.167.244.20) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7677.15 via Frontend Transport; Thu, 20 Jun 2024 16:19:37 +0000
+ 15.20.7677.15 via Frontend Transport; Thu, 20 Jun 2024 16:19:51 +0000
 Received: from 10.254.92.128.in-addr.arpa (10.180.168.240) by
  SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 20 Jun 2024 11:19:35 -0500
+ 15.1.2507.39; Thu, 20 Jun 2024 11:19:49 -0500
 From: Alex Hung <alex.hung@amd.com>
 To: <amd-gfx@lists.freedesktop.org>
 CC: <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
 	<Rodrigo.Siqueira@amd.com>, <Aurabindo.Pillai@amd.com>, <roman.li@amd.com>,
 	<wayne.lin@amd.com>, <agustin.gutierrez@amd.com>, <chiahsuan.chung@amd.com>,
-	<jerry.zuo@amd.com>, Relja Vojvodic <relja.vojvodic@amd.com>, Ilya Bakoulin
-	<ilya.bakoulin@amd.co>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
- Deucher" <alexander.deucher@amd.com>, <stable@vger.kernel.org>, Alex Hung
+	<jerry.zuo@amd.com>, Aurabindo Pillai <aurabindo.pillai@amd.com>, "Mario
+ Limonciello" <mario.limonciello@amd.com>, Alex Deucher
+	<alexander.deucher@amd.com>, <stable@vger.kernel.org>, Alex Hung
 	<alex.hung@amd.com>
-Subject: [PATCH 31/39] drm/amd/display: Fix 1DLUT setting for NL SDR blending
-Date: Thu, 20 Jun 2024 10:11:37 -0600
-Message-ID: <20240620161145.2489774-32-alex.hung@amd.com>
+Subject: [PATCH 32/39] drm/amd/display: Use periodic detection for ipx/headless
+Date: Thu, 20 Jun 2024 10:11:38 -0600
+Message-ID: <20240620161145.2489774-33-alex.hung@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240620161145.2489774-1-alex.hung@amd.com>
 References: <20240620161145.2489774-1-alex.hung@amd.com>
@@ -97,98 +97,179 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000009F:EE_|SJ2PR12MB7919:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1548bac3-054c-4952-6994-08dc9144c7f5
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000099:EE_|MN0PR12MB6176:EE_
+X-MS-Office365-Filtering-Correlation-Id: 98216778-9a8e-455c-5dbb-08dc9144d06c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230037|1800799021|36860700010|376011|82310400023;
+	BCL:0;ARA:13230037|1800799021|82310400023|36860700010|376011;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BS1ecctwnwCjo44ljDHMDMc/pIpQLcrLaO9QTiz+Ehg0z0gHlJgThQ/v4XWL?=
- =?us-ascii?Q?1PUcCyNiHEYNUueur4DLqm4T4mDam/6CCXVJiG7rPcPE1AqBy6TFNNSJMJUK?=
- =?us-ascii?Q?fIueAP/W9a0ruaz/hQbTY6gNSGUisLACBZw8J4U/8IqMvATrIwuBQUx8om7h?=
- =?us-ascii?Q?up9+eL1wvLDS5UAFqohKOsJo0PAGLZ/Lp0TMXkf3t3YDFJEmiXvESXovf2K8?=
- =?us-ascii?Q?Epm+Ph4Ux8F130ggM/3W5K+g4hg0Ei7IVqDvzrIOnxU9dl+L92lxT+tejoBf?=
- =?us-ascii?Q?GDTOiQDgjhy9OQxrc3erdVzsmAJE1gsW+H2w6qtXGNIxhnkIV7K7MxmB9wsM?=
- =?us-ascii?Q?QfMiOuqXRn2ym2eGJOHf1uze8wQ6k+Eq8Mq8gCo5bTkqnkLvY8KQ2cDBCsWq?=
- =?us-ascii?Q?dO1Jt8Dm0YLzRP/UFyJkCl0HDV2i1fsfxVtbefduAepqyY0fxAoVqrpfEpdw?=
- =?us-ascii?Q?xqAShWVEUD/lbgn2RyJPHgqD6MgX2cWTyS12hPj+Cj0EFz3MMIaPSAUkB/pn?=
- =?us-ascii?Q?8U+7I2JhphTCmqhsWmOdC68Yt3C+Jx05b30LbYP6+ks5UC3OjBkqGLgz8d94?=
- =?us-ascii?Q?h7jfJGlGCKGFoTJTNRuu/PaJbgzFapTTuoznsYBUM7lsyAHQjxqSFGiihy6q?=
- =?us-ascii?Q?TDp4AXSvbmmpsAc6Fx/U5psJutDq8FO1EuTwRPIoEPAoV/tctNYHsL/FlmDf?=
- =?us-ascii?Q?acUqsc4PWia0FDwxy7NOi/8SnLHxaEeu22IAiUALDLRud08ZMsyRcHPaAtye?=
- =?us-ascii?Q?+JF5U0IDyYoAY7ycymis6MpjXSllqNF9a4PQXcVlvtPLbdwkdnTVOyLpPbaV?=
- =?us-ascii?Q?HP5oV8oi2LZ7/RddyFMCLyKVX7IvhdUxeXOWlQtE7lXLArdkun6EcDQR0pi0?=
- =?us-ascii?Q?a/r/mkvdMZN2xpCqlroTCuu1VU/vzztXDQBMrJYB6wVnjEWBVcL+wEeCTeLZ?=
- =?us-ascii?Q?42T5iyo99YUTgxt98n2GCYMv6qIvdIFZGZ/SX3MvKXAfrxahbLXNXw74ICBi?=
- =?us-ascii?Q?6V/E98t4d02ZKmBeZzV/zdZsQ3kn0VZqcP9LwhZDzMJu+StK1TFLg1g5nVjQ?=
- =?us-ascii?Q?Hjh53D7p9KzrWCfUWjoUgvu4x1aC9RTkztheJ0oomAuyagJO0hjyGkktz+d2?=
- =?us-ascii?Q?VwnRisbO0ULs7TGoMAydin/J9XjvZ0WbqFmX9ASWqZLroCSUIb1fx9HAcvzQ?=
- =?us-ascii?Q?ohru96TZgRLrja9tmlQkhyNpjgkC3X3fu082HGSy0kHCxxGUX1i8RPeDx0a0?=
- =?us-ascii?Q?E4T76NvZ9QgvD1qaU6V5v1Rc27NZKWfQgni2phX6efhsFFjhcbvToo19SNbS?=
- =?us-ascii?Q?h9MGJLmGovfyc9SPmc/mVzgGIV9ERqwy/F4BX7Yi3nPRJZZPBqHTIiCYU/qv?=
- =?us-ascii?Q?GwekmvLCEVuqkkZVwCW6Nq9YoduaYQG2pAE+pHaCOxG8FqTfYw=3D=3D?=
+	=?us-ascii?Q?GN6SiZSiPrDpBegU7AJoTCkSyPJ5CyG47OP9MpGT5vk2qAMwyXmWvSRhEfBC?=
+ =?us-ascii?Q?gju6nwpUaiZGgyJrFMMipZI3tRE+I/Kjy0wFadE6mo786wbrP/8snkLZXHdm?=
+ =?us-ascii?Q?RNY5w33e4k05uZuisgFxLeXDMhrP4/VkyauKbzYZiQR761RBWmpRTLO7Zn2C?=
+ =?us-ascii?Q?XjXs+wP+Op0SQaYRYVWQD11xHbc8QXdhIpT0DpY5kOT3RJqHgO8A1AemAU5W?=
+ =?us-ascii?Q?H/2FeN5u9T7AHlx2h+SJwEpXRwgPpSSYbY8KS15G2NmdIJ9LwZMXAIXY8uav?=
+ =?us-ascii?Q?nF0Vcf4SpKeUTPTlsIVbLHwafquHNRMcPVq+00HQQJll1oFE6w2dv3nsfO/l?=
+ =?us-ascii?Q?4HBGPg4mSG7yunUHDrI5hxFcq6xfj5JOi/HS2ZV+NJq9IBZFgmxunweeXJA9?=
+ =?us-ascii?Q?rkwA5IKl2ZPKxUVi7xPJe8/rNlEGXV9dStQjsWMwCkKVVJDhmt52Zu2qrzqL?=
+ =?us-ascii?Q?qZ7Wb4hi0saEljOl4PHHJIeXUqqe4H5VCMgTTb1lIuF2y+a2VApTRwY+vREm?=
+ =?us-ascii?Q?Cldr3me1d3uNEUcB0Iaa7JPKMTTUAAhDsPaGggZdsXXbvE9W6ZsP6Rntx0GR?=
+ =?us-ascii?Q?53ZyxCThfpVrdXJvCeigRZH1zmLO3VONH9GjmBeO4kU62S0uys9zlShxj4ip?=
+ =?us-ascii?Q?xJ/hMugKhpOumAqdGpZPy0if+ALnZhlGvW5M+Vot7JOIDU5TT9QDBy650tVv?=
+ =?us-ascii?Q?vkyJ1EM/NpDwq7Q29xCyMSrI14Q7vH9X0SldBLEr71iRolQkwMn+7lq75qf0?=
+ =?us-ascii?Q?d2Lu69Nzr/e3FvzJoTv+os0dH6Mk1diXPTGfouP5IxeSHBJdni9s4EK3zsJi?=
+ =?us-ascii?Q?862vchRnTnKKD0prJeYj2n3Rr8rhr3iuHT5k/B9s6WHZ50alCyDW/i8Ay5R7?=
+ =?us-ascii?Q?ClDNlOr7+kvfr/jTVGm6aAtldrKDIq7U69jVap5vNcomFkjYw0y+DYoV46hm?=
+ =?us-ascii?Q?iJFWx3A+iPpvlkrRK1lsuHBOk2RC4yjtUsOhEIYRdwwmb+Zuq0C+X71CR5Ra?=
+ =?us-ascii?Q?3Yf1xXIMDCl34X0fWiKnPMF2Z+5QuH6zSlu5mAEsa9iYxiSdnXbNEao/sCVe?=
+ =?us-ascii?Q?iqRcL1e7cSBrMvRZCx/+7FdubFha5mU0cv7h+GA/BH2wjJvrSa8afjs8YH16?=
+ =?us-ascii?Q?KFurreobSnFnoUauAA8d5cFvlu2dF/xxaEZ62jpLuAFtTdcumkzmqLLESEQn?=
+ =?us-ascii?Q?r/RELqr7u6CQKPzV1FXNSggbsCuWVk0BZQBiwQkO7IREFf9zdDZpPXDqFVxN?=
+ =?us-ascii?Q?pwL8PO8tsG5c3ZbHkBMTG4hKHMnqLA1KrXDDYfapw3PLrrKadp0aMdDkxRT6?=
+ =?us-ascii?Q?Mgl6a/hrSPHtYV/2Ltz6wjkAECLAF4VpArlHkcs/zI0SBhtnIStsQVGmDXAA?=
+ =?us-ascii?Q?a90UPQYykRr7wnTa8LyQGzK7tNZhxfAO9JoxQrMQzUWDd//CJw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230037)(1800799021)(36860700010)(376011)(82310400023);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230037)(1800799021)(82310400023)(36860700010)(376011);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 16:19:37.7383
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 16:19:51.9553
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1548bac3-054c-4952-6994-08dc9144c7f5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98216778-9a8e-455c-5dbb-08dc9144d06c
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000009F.namprd02.prod.outlook.com
+	CH2PEPF00000099.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7919
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6176
 
-From: Relja Vojvodic <relja.vojvodic@amd.com>
+From: Roman Li <roman.li@amd.com>
 
 [WHY]
-Enabling NL SDR blending caused the 1D LUTs to be set/populated in two
-different functions. This caused flickering as the LUT was set differently
-by the two functions, one of which should only have been modifying the 1D
-LUT if 3D LUT was enabled.
+Hotplug is not detected in headless (no eDP) mode on dcn35x.
+With no display dcn35x goes to IPS2 powersaving state where HPD interrupt
+is not handled.
 
 [HOW]
-Added check to only modify the 1D LUT in populate_mcm if 3D LUT was
-enabled.
+Use idle worker thread for periodic detection of HPD in headless mode.
 
-Added blend_tf function update for non-main planes if the 3D LUT path
-was taken.
-
-Reviewed-by: Ilya Bakoulin <ilya.bakoulin@amd.co>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Relja Vojvodic <relja.vojvodic@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h |  3 ++
+ .../amd/display/amdgpu_dm/amdgpu_dm_crtc.c    | 48 +++++++++++++++----
+ .../amd/display/amdgpu_dm/amdgpu_dm_helpers.c |  5 +-
+ 3 files changed, 46 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-index 5306c8c170c5..b5a02a8fc9d8 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-@@ -502,7 +502,7 @@ void dcn401_populate_mcm_luts(struct dc *dc,
- 	dcn401_get_mcm_lut_xable_from_pipe_ctx(dc, pipe_ctx, &shaper_xable, &lut3d_xable, &lut1d_xable);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index dfcbc1970fe6..5fd1b6b44577 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -989,4 +989,7 @@ void *dm_allocate_gpu_mem(struct amdgpu_device *adev,
+ 						  enum dc_gpu_mem_alloc_type type,
+ 						  size_t size,
+ 						  long long *addr);
++
++bool amdgpu_dm_is_headless(struct amdgpu_device *adev);
++
+ #endif /* __AMDGPU_DM_H__ */
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+index e16eecb146fd..99014339aaa3 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -162,33 +162,63 @@ static void amdgpu_dm_crtc_set_panel_sr_feature(
+ 	}
+ }
  
- 	/* 1D LUT */
--	if (mcm_luts.lut1d_func) {
-+	if (mcm_luts.lut1d_func && lut3d_xable != MCM_LUT_DISABLE) {
- 		memset(&m_lut_params, 0, sizeof(m_lut_params));
- 		if (mcm_luts.lut1d_func->type == TF_TYPE_HWPWL)
- 			m_lut_params.pwl = &mcm_luts.lut1d_func->pwl;
-@@ -674,7 +674,7 @@ bool dcn401_set_mcm_luts(struct pipe_ctx *pipe_ctx,
- 	mpc->funcs->set_movable_cm_location(mpc, MPCC_MOVABLE_CM_LOCATION_BEFORE, mpcc_id);
- 	pipe_ctx->plane_state->mcm_location = MPCC_MOVABLE_CM_LOCATION_BEFORE;
- 	// 1D LUT
--	if (!plane_state->mcm_lut1d_enable) {
-+	if (plane_state->mcm_shaper_3dlut_setting == DC_CM2_SHAPER_3DLUT_SETTING_BYPASS_ALL) {
- 		if (plane_state->blend_tf.type == TF_TYPE_HWPWL)
- 			lut_params = &plane_state->blend_tf.pwl;
- 		else if (plane_state->blend_tf.type == TF_TYPE_DISTRIBUTED_POINTS) {
++bool amdgpu_dm_is_headless(struct amdgpu_device *adev)
++{
++	struct drm_connector *connector;
++	struct drm_connector_list_iter iter;
++	struct drm_device *dev;
++	bool is_headless = true;
++
++	if (adev == NULL)
++		return true;
++
++	dev = adev->dm.ddev;
++
++	drm_connector_list_iter_begin(dev, &iter);
++	drm_for_each_connector_iter(connector, &iter) {
++
++		if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK)
++			continue;
++
++		if (connector->status == connector_status_connected) {
++			is_headless = false;
++			break;
++		}
++	}
++	drm_connector_list_iter_end(&iter);
++	return is_headless;
++}
++
+ static void amdgpu_dm_idle_worker(struct work_struct *work)
+ {
+ 	struct idle_workqueue *idle_work;
+ 
+ 	idle_work = container_of(work, struct idle_workqueue, work);
+ 	idle_work->dm->idle_workqueue->running = true;
+-	fsleep(HPD_DETECTION_PERIOD_uS);
+-	mutex_lock(&idle_work->dm->dc_lock);
++
+ 	while (idle_work->enable) {
+-		if (!idle_work->dm->dc->idle_optimizations_allowed)
++		fsleep(HPD_DETECTION_PERIOD_uS);
++		mutex_lock(&idle_work->dm->dc_lock);
++		if (!idle_work->dm->dc->idle_optimizations_allowed) {
++			mutex_unlock(&idle_work->dm->dc_lock);
+ 			break;
+-
++		}
+ 		dc_allow_idle_optimizations(idle_work->dm->dc, false);
+ 
+ 		mutex_unlock(&idle_work->dm->dc_lock);
+ 		fsleep(HPD_DETECTION_TIME_uS);
+ 		mutex_lock(&idle_work->dm->dc_lock);
+ 
+-		if (!amdgpu_dm_psr_is_active_allowed(idle_work->dm))
++		if (!amdgpu_dm_is_headless(idle_work->dm->adev) &&
++		    !amdgpu_dm_psr_is_active_allowed(idle_work->dm)) {
++			mutex_unlock(&idle_work->dm->dc_lock);
+ 			break;
++		}
+ 
+-		dc_allow_idle_optimizations(idle_work->dm->dc, true);
++		if (idle_work->enable)
++			dc_allow_idle_optimizations(idle_work->dm->dc, true);
+ 		mutex_unlock(&idle_work->dm->dc_lock);
+-		fsleep(HPD_DETECTION_PERIOD_uS);
+-		mutex_lock(&idle_work->dm->dc_lock);
+ 	}
+-	mutex_unlock(&idle_work->dm->dc_lock);
+ 	idle_work->dm->idle_workqueue->running = false;
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+index 659dd67be1ba..f5e1f2d1c5f2 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -1239,8 +1239,11 @@ void dm_helpers_enable_periodic_detection(struct dc_context *ctx, bool enable)
+ {
+ 	struct amdgpu_device *adev = ctx->driver_context;
+ 
+-	if (adev->dm.idle_workqueue)
++	if (adev->dm.idle_workqueue) {
+ 		adev->dm.idle_workqueue->enable = enable;
++		if (enable && !adev->dm.idle_workqueue->running && amdgpu_dm_is_headless(adev))
++			schedule_work(&adev->dm.idle_workqueue->work);
++	}
+ }
+ 
+ void dm_helpers_dp_mst_update_branch_bandwidth(
 -- 
 2.34.1
 
