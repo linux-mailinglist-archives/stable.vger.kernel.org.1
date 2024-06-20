@@ -1,131 +1,87 @@
-Return-Path: <stable+bounces-54725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75936910884
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 16:35:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1EB49108C4
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 16:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 004A1B24235
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 14:35:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63868B256D4
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 14:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7ABC1ACE9C;
-	Thu, 20 Jun 2024 14:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="xpVpg/rH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F070C1AE087;
+	Thu, 20 Jun 2024 14:45:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9874A1AB535
-	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 14:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D448176255;
+	Thu, 20 Jun 2024 14:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.175.24.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718894094; cv=none; b=N48L0Ae0ZPY1F1G13JiES07z4rqJXRhKIL6FkDDOH1QmZLhFGfiLSL/X7Jz5J7F60dZr5ilmvwt+0MXHCWAJe9NsriFZ31muhSzBGgC3nikyIiFdOsjYADLlz3bh9wjC4a/1b3vZF+npfCRYWgRzg8Ac3Oo38RyRlHwWZcK0i84=
+	t=1718894759; cv=none; b=Ve+wY+CXoYWXaAVRdsgpgAL9Mm8V43e1SjHkG83xIZ7SzLRHj89wSWOlgfmu2fOmP52Y5+hn57KIKGBDqqniVVKFKOW6jkfDzSWGusqjiqcJaPh+RvuS1BpYf1m1243hhSewDNOl1+4lo0LKhcGkkxMfcrLyAF/bMvw+bW1gxjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718894094; c=relaxed/simple;
-	bh=RVThDafy3uo4pg7emhG9LvZxYfFJ576f9DT/KxUruuk=;
-	h=Subject:To:Cc:References:From:In-Reply-To:Message-ID:Date:
-	 MIME-Version:Content-Type; b=izyJkrs6NNVChKsxRpXe2Wlgf6yI24FxtysC2QGCwyN0xBw5RFcajvrfeU7Rjzvbyp56yr65KKx0mCgSJEmxwMOJ7yVXJYY94G2O05jOPe/RkJsYQMSoyQfdRfHUwPME1CZJzxusZS6g53tqUEDnAwXD3pUCX9edK8kJ8p7EFpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=xpVpg/rH; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5003a.ext.cloudfilter.net ([10.0.29.159])
-	by cmsmtp with ESMTPS
-	id K2PWs2MxRSLKxKIsGsVNMq; Thu, 20 Jun 2024 14:34:52 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id KIsFsekdFsT9BKIsFsCxcU; Thu, 20 Jun 2024 14:34:51 +0000
-X-Authority-Analysis: v=2.4 cv=LIutQ4W9 c=1 sm=1 tr=0 ts=66743e0b
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=T1WGqf2p2xoA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:In-Reply-To:From:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tMc74o+tTpNs+4XE+x0fYcX611m4Lf2fIXT5GrOocLY=; b=xpVpg/rHvOCoLG8blbg2M9c0rj
-	8CJpTBvQZarZrZYoltKU1NwXQhcfiNaN98OoTAYqnT9TmPDTU7w2Ud9TyioPvVdrrrybOVXkhwCWD
-	h0p77YiUn0Dbyc1ruIH5cd1LVbBhlCJXNAujYO0ZX2aZmjdQUkDhhulY4J/C40GflD8bSz8zhGEaQ
-	LOesGHphfKC2Te39nmC9wv6P2b6Qz6Ij6vlDYUGj9Wrk6mIbyPN66ZovQBsy5tHYn7KUH/Wxgt2QJ
-	1Hhr8ee2ieFsNzTwSJuv8yx9RPJBf3wPARHiQC4DeCDsbGonemPPRcHRih99x0g6TvaIjBk6lIoXV
-	sRsaGQCA==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:44958 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1sKIsD-001k5i-0L;
-	Thu, 20 Jun 2024 08:34:49 -0600
-Subject: Re: [PATCH 6.1 000/217] 6.1.95-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240619125556.491243678@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-Message-ID: <3e96b216-383f-6e0b-b62f-6fccbe45b0ba@w6rz.net>
-Date: Thu, 20 Jun 2024 07:34:46 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1718894759; c=relaxed/simple;
+	bh=uL73iW/sBxwetobM0anVhjrpZe0qhCcB/4/aFNL5+ok=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qwn5+3u6Ut+jkPwayZj6Dz4e+BEL+vBJJRRdeLeA2Z9A07twFD8BysCdBEEvGsKfFnSyEUmvJlf6AdFu+d5V4ENitjg6xDEF7whVct/wJzmIXV9AHlcmmsNzAaRoLa99FR23y9yu3W7P3fvtetyvqGgZSUGRd/9st6lBGDyj6Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de; spf=pass smtp.mailfrom=alpha.franken.de; arc=none smtp.client-ip=193.175.24.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpha.franken.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpha.franken.de
+Received: from uucp by elvis.franken.de with local-rmail (Exim 3.36 #1)
+	id 1sKJ2m-0000tN-00; Thu, 20 Jun 2024 16:45:44 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+	id BEB89C031A; Thu, 20 Jun 2024 16:43:31 +0200 (CEST)
+Date: Thu, 20 Jun 2024 16:43:31 +0200
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+	linux-kernel@vger.kernel.org,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH fixes 1/4] MIPS: mipsmtregs: Fix target register for MFTC0
+Message-ID: <ZnRAEzRQpfm7yHHc@alpha.franken.de>
+References: <20240616-mips-mt-fixes-v1-0-83913e0e60fc@flygoat.com>
+ <20240616-mips-mt-fixes-v1-1-83913e0e60fc@flygoat.com>
+ <859402a6-4e31-4029-a6ad-87c3be4d3fdd@app.fastmail.com>
+ <14cc8572-406e-47c4-a590-540d6c69466b@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1sKIsD-001k5i-0L
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:44958
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 40
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfHdqleNU7iobvtdWXVzMRyOR8gB7AOs0FuXmFfANqReO64PqNki5K+Fzg0lKNOt8vGuWDAaG+vLpHAIptDwmGlmvdiR+rNwSjc1xRzS8S9D0kGBwXdD5
- 5Agpys76Hbu0TqZ1mIC9TAu3Wtk9hJJDQIz40mkSR/dXbfsfFkA1ZOOY95BC8oFDTDjtYrBnx7ZkcA==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <14cc8572-406e-47c4-a590-540d6c69466b@app.fastmail.com>
 
-On 6/19/24 5:54 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.95 release.
-> There are 217 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.95-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Wed, Jun 19, 2024 at 12:37:48PM +0100, Jiaxun Yang wrote:
+> 
+> 
+> 在2024年6月19日六月 下午12:32，Jiaxun Yang写道：
+> > 在2024年6月16日六月 下午2:25，Jiaxun Yang写道：
+> >> Target register of mftc0 should be __res instead of $1, this is
+> >> a leftover from old .insn code.
+> >>
+> >> Fixes: dd6d29a61489 ("MIPS: Implement microMIPS MT ASE helpers")
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> >
+> > Hi Thomas,
+> >
+> > I saw you sent mips-fixes_6.10_1 pull request but this series is
+> > not included in that PR while one of my later patch is included.
+> >
+> > If you think the whole series is not fit for fixes tree then please
+> > at least let this series go through fixes tree. There are many MT
+>                     ^ Sorry I meant patch.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+sorry I've missed the fixes tag. As the rest looks like a lot of re-shuffling
+I'd prefer to just place the first patch to mips-fixes and the rest to
+mips-next.
 
-Tested-by: Ron Economos <re@w6rz.net>
+Thomas.
 
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
 
