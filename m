@@ -1,106 +1,96 @@
-Return-Path: <stable+bounces-54784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A044911648
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 01:05:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46BF29116B4
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 01:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D342D1F220DA
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 23:05:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE745B215C3
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 23:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519941459E3;
-	Thu, 20 Jun 2024 23:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dGsfH1Gp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFDA7CF39;
+	Thu, 20 Jun 2024 23:28:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 6.mo575.mail-out.ovh.net (6.mo575.mail-out.ovh.net [46.105.63.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D8782D83;
-	Thu, 20 Jun 2024 23:05:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E2443ABC
+	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 23:28:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.105.63.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718924741; cv=none; b=ejrbX45lgDc7C5JxvicTPnxJMlAUtsLS342p7U7Z+n5acDvFbSNdCLvYHcTjE1eTlioHiXoVm0px/pHlC6cIm6Y6w985Yyi2uCKctFdq8O9CornZKBLNBE8cKS1Q7VDYIdKcfRXS0gXMBkgMqRrcxpcLOE+KeWawcDUj4JPGtRc=
+	t=1718926094; cv=none; b=lBEO5Gze0dxXT3/T4MCH9aHieJAeDpPo1Qav2AFnyhuQ+Y9+d85dOkJe4aWNaNR1SZYu2VL0a2Qkv/5kv686fl/wNkODeu2dc3zelKZmQwnfNdBTW/BbPytlfePgWyPb55x+A8b/XVuM15UEytKg4xW3NLeapGsLV7MpGElgT/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718924741; c=relaxed/simple;
-	bh=SaOaFRr/ohEIO5+x2sHjKUAw9989Q79otM9vhPABR3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JBdkHgR1PAa7QZZJrG9d22mqZe6ThcwRYtlL8QnqJnYXjEdig8HsVSAzQtZKp0p440mJDOGIjKe+baXDwMLWyFBxCNddz3ZuF17O0BEbI1VTnpnR2BdrG0nfTc3bG3p6STuoAETTNsAcNGYc5IfWYHLVyfeDa55xOwfWoz5aQnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dGsfH1Gp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32575C2BD10;
-	Thu, 20 Jun 2024 23:05:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718924740;
-	bh=SaOaFRr/ohEIO5+x2sHjKUAw9989Q79otM9vhPABR3c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dGsfH1GpHmQGHTfZ1l4tF8Yc8IR5UiRboDTNredObqxtOQx82e5s0tzE5UQ3HRdti
-	 YEn9NRju/HM5BF130UGn7A/JtXSjes40KzIwRc9JuVBmqI+8j7E1dPyQ28nSZcPIyG
-	 TOptG9SYCZtxheOmn5MCrlB4o/pGRyWPoX1UppgceSz8O/DTcsfVNH4ydUcWt+i5IJ
-	 oqlDDSWtyhj2zce34mKlyDG9TYhoG/y5KLT8TEJYWtVuC7gL+IKxBIvHGJphOe3KMf
-	 rP0msnieHjZGex3A1fC77vPMeqWKD0e19wRR09Ly11BI6lTQHNI85BCFts6ZIC+fOW
-	 QUnaqIuN62HjA==
-Date: Fri, 21 Jun 2024 01:05:37 +0200
+	s=arc-20240116; t=1718926094; c=relaxed/simple;
+	bh=20Bno1n30DsBD2LYX6UR5S9jh4So2fbTQRi6hmhPU14=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=rPutvjQtvpWmyduuQQJTZfXA6ikcGJlX8+aRgIrXQtiAYlIyHSlwbUj0dq3wiTdjK2Y0nnQzaNNZiG495Gym39y1+zOMbax2Brmb+ECKPBQqS+y49kkPtxn6wzao2IHy+rXULz4Sz7AUaRFkMfRqdzwNcwgbuvb3ccZfIWqswiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=etezian.org; arc=none smtp.client-ip=46.105.63.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etezian.org
+Received: from director1.ghost.mail-out.ovh.net (unknown [10.109.140.28])
+	by mo575.mail-out.ovh.net (Postfix) with ESMTP id 4W4xKJ156Fz1VLD
+	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 23:19:48 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-bvkjt (unknown [10.110.96.185])
+	by director1.ghost.mail-out.ovh.net (Postfix) with ESMTPS id 541F31FD4C;
+	Thu, 20 Jun 2024 23:19:47 +0000 (UTC)
+Received: from etezian.org ([37.59.142.110])
+	by ghost-submission-6684bf9d7b-bvkjt with ESMTPSA
+	id O1+2EhO5dGb3AgAA/KbBAQ
+	(envelope-from <andi@etezian.org>); Thu, 20 Jun 2024 23:19:47 +0000
+Authentication-Results:garm.ovh; auth=pass (GARM-110S0040f310b2f-be15-42b6-bcff-984cf221b99d,
+                    C57D3D2E0A03F635C8A27B63C027BBD507C09C29) smtp.auth=andi@etezian.org
+X-OVh-ClientIp:89.217.109.169
 From: Andi Shyti <andi.shyti@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Sergiu Moga <sergiu.moga@microchip.com>, 
-	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
-	Doug Anderson <dianders@chromium.org>, Enric Balletbo i Serra <eballetbo@kernel.org>, 
-	Ricardo =?utf-8?Q?Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>, Thierry Reding <thierry.reding@gmail.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Vignesh R <vigneshr@ti.com>, 
-	Kamal Dasu <kamal.dasu@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Chris Brandt <chris.brandt@renesas.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
-	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>, linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
-	linux-tegra@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, 
-	linux-omap@vger.kernel.org, Kamal Dasu <kdasu.kdev@gmail.com>, 
-	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, stable@vger.kernel.org
-Subject: Re: [PATCH 0/7] dt-bindings: i2c: few fixes and cleanups
-Message-ID: <qru4aqjphjnjpo6yjxl2oznhlz774iv77u4u7u4jldnmlanps5@vpzxntuz6arp>
-References: <20240620-dt-bindings-i2c-clean-v1-0-3a1016a95f9d@linaro.org>
+To: Markus Elfring <Markus.Elfring@web.de>, 
+ Peter Korsgaard <peter@korsgaard.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Thomas Gleixner <tglx@linutronix.de>, linux-i2c@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Grygorii Tertychnyi <grembeter@gmail.com>
+Cc: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>, 
+ bsp-development.geo@leica-geosystems.com, stable@vger.kernel.org
+In-Reply-To: <20240520153932.116731-1-grygorii.tertychnyi@leica-geosystems.com>
+References: <20240520153932.116731-1-grygorii.tertychnyi@leica-geosystems.com>
+Subject: Re: [PATCH v2] i2c: ocores: set IACK bit after core is enabled
+Message-Id: <171892558671.2178094.6404949110171049934.b4-ty@kernel.org>
+Date: Fri, 21 Jun 2024 01:19:46 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240620-dt-bindings-i2c-clean-v1-0-3a1016a95f9d@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
+X-Ovh-Tracer-Id: 13336284400655993449
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrfeeffedgvddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvegjfhfukfffgggtgffosehtjeertdertdejnecuhfhrohhmpeetnhguihcuufhhhihtihcuoegrnhguihdrshhhhihtiheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpeffteehudffvdfhudfgffdugfejjeduheehgeefgeeuhfeiuefghffgueffvdfgfeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppeduvdejrddtrddtrddupdekledrvddujedruddtledrudeiledpfeejrdehledrudegvddruddutdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomheprghnughisegvthgviihirghnrdhorhhgpdhnsggprhgtphhtthhopedupdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehjeehpdhmohguvgepshhmthhpohhuth
 
-Cześć Krzysztof,
+Hi
 
-On Thu, Jun 20, 2024 at 01:34:48PM GMT, Krzysztof Kozlowski wrote:
-> Few fixes for I2C controller schemas. The third patch (atmel,at91sam)
-> depends on first, so I suggest not splitting this into fixes branch but
-> take as is via next branch.
+On Mon, 20 May 2024 17:39:32 +0200, Grygorii Tertychnyi wrote:
+> Setting IACK bit when core is disabled does not clear the "Interrupt Flag"
+> bit in the status register, and the interrupt remains pending.
 > 
-> Best regards,
-> Krzysztof
+> Sometimes it causes failure for the very first message transfer, that is
+> usually a device probe.
 > 
-> ---
-> Krzysztof Kozlowski (7):
->       dt-bindings: i2c: atmel,at91sam: correct path to i2c-controller schema
->       dt-bindings: i2c: google,cros-ec-i2c-tunnel: correct path to i2c-controller schema
+> Hence, set IACK bit after core is enabled to clear pending interrupt.
+> 
+> [...]
 
-merged to i2c/i2c-host-fixes
+Applied to i2c/i2c-host-next on
 
->       dt-bindings: i2c: atmel,at91sam: drop unneeded address/size-cells
->       dt-bindings: i2c: nvidia,tegra20: drop unneeded address/size-cells
->       dt-bindings: i2c: samsung,s3c2410: drop unneeded address/size-cells
->       dt-bindings: i2c: ti,omap4: reference i2c-controller.yaml schema
->       dt-bindings: i2c: adjust indentation in DTS example to coding style
+git://git.kernel.org/pub/scm/linux/kernel/git/local tree
 
-merged to i2c/i2c-host
-
-Thanks,
+Thank you,
 Andi
+
+Patches applied
+===============
+[1/1] i2c: ocores: set IACK bit after core is enabled
+      commit: 5a72477273066b5b357801ab2d315ef14949d402
+
 
