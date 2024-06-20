@@ -1,98 +1,151 @@
-Return-Path: <stable+bounces-54706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2124291033E
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 13:42:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84B5F910342
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 13:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C80B81F237D8
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 11:42:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7832F1C220F6
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 11:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF56A1ABCB1;
-	Thu, 20 Jun 2024 11:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4065E1ABCD8;
+	Thu, 20 Jun 2024 11:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oydk22UJ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QWoyWzaY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695911AAE12;
-	Thu, 20 Jun 2024 11:42:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EFAA1AAE2E
+	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 11:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718883726; cv=none; b=MO/P38Wjn/MdUi0b68uYazETu4puKmC+qOhJGsYNMvmpmZCFz5pnGVL0IE1KXmTgjz/HaAzeBpsWbphTYrrIAP2VN7PnfkEMCzOrxB/9IAqGkb21W/2dzaYPsKZ+zHwplIWPXVheqoZSw1KbNhCDS3Yyk96hC+HZAz1Zch8HoAk=
+	t=1718883841; cv=none; b=MaJ1dga8Ek394QwtvudforEZyQ3Zl8bfWOTX9fuW7XedHCyzxm0AUQ97EDp2cnfSDwQZW3LxWPlkEyZgWfavo6A28bINxuBxIVapLSXSX6VZMImMwfO3FAS5BhZFKNC+kJqBZAFnH2Bjw+NdPErNdeg7b4mSPNV6jzwhO7+37HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718883726; c=relaxed/simple;
-	bh=Fl/meoJ9hW24/lUGw0b0OdTMIjc0zn4uaifHlua49hI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l3xlH5k5t2xXYOUlM8RDX2xDQ5a6WGDzXZwR1At5J7Nk5scaFb+XXrZKx1S5aRYSVY86irt2VBdw0ZgXuxnYpS/EZ8QK9cwU4FfIjt9YVJes0BrD4RdjzTZnZYqoVCLNVnrQpGek910krwLGK2S0YbT98Xrj2SEx1spvDqadGpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oydk22UJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946F6C2BD10;
-	Thu, 20 Jun 2024 11:42:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718883726;
-	bh=Fl/meoJ9hW24/lUGw0b0OdTMIjc0zn4uaifHlua49hI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oydk22UJfdc3kWGqOeAIhU49QYcl4Lc6HnbUo72+VutuFphIPPPXsjhZJE89qikBs
-	 dx8LV5lhbeb24YNDV5WZGSSNKgI0+WXbuDA+lzLsWt5KoJIo1TyS2gndsUzs6leA+q
-	 S52HBtapaL91C+f7aSDNYQZFBVWvNH8c2To6pCzcCJvKuZXNr1+Yu+qBmyzBb97ogp
-	 YR7p9ji2ObXex/g/yqPf68I3WKdKgIINEjv+r/4eC69L2XaiAy3PNTGBQ/PBZyC/Q9
-	 cXtNm+obnpLkTcYiPYmSb2gIIgQ0dj2mrBjasaWetsOE8OsNwVsuSJ3Gh5KlwPEaGr
-	 Ih8dg2QpPGc+g==
-Date: Thu, 20 Jun 2024 12:41:58 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/217] 6.1.95-rc1 review
-Message-ID: <7ee343a4-f42a-42b3-84cf-2617b0131197@sirena.org.uk>
-References: <20240619125556.491243678@linuxfoundation.org>
+	s=arc-20240116; t=1718883841; c=relaxed/simple;
+	bh=sUtS8W51dT3L0ul8hIazPODbd/otl0eNspJXJPrWCnA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WGzc4dOTG+kPSosskyPdJMHUMCbNconUC7z0AgNvvXlictwF+R/bDpq4zwRBu6CKhKUkcZoTeBDxvv6JrBROd4QPTYJ2Lct2Xmj8xG5eYkr8Bigza6IumKfgqJq/jJmYMF0/Dm24aUT/ig1y30mvGdexZVptsAQoGDxL3GVy0GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QWoyWzaY; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718883838;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=9LHnXr1dLaOuf5iJD69TLLMfEQC+zklonGqGsW0jKFE=;
+	b=QWoyWzaYWOpe0MVG02jGobCp7BXOAoOYmgdhKExRWl3wQEg1SPMIAAlQZBuMTOKR+1BKpL
+	GnO2Ktfso/Of1xj1szCrnccNxr8HYEVjOpLNbZaKKQunQrXfTcV01YOLVEzH2Q5ds7DzFo
+	DGbOVfuZDuGtlsLK6G+6o29FuLvDTl0=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-465-kVmwBfJQPwGkZ6ZSzHPe8Q-1; Thu, 20 Jun 2024 07:43:57 -0400
+X-MC-Unique: kVmwBfJQPwGkZ6ZSzHPe8Q-1
+Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-3d21a80b89eso28712b6e.3
+        for <stable@vger.kernel.org>; Thu, 20 Jun 2024 04:43:57 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718883836; x=1719488636;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9LHnXr1dLaOuf5iJD69TLLMfEQC+zklonGqGsW0jKFE=;
+        b=w8wt+fj0nf3XAzyl0WWmHWC5Qn7gdf3OVQjXDcOZOf+1kkRWqDVucFY4UjOTaZzGmQ
+         ZUmTycjg/W1/jSCGIvV/1QgLOWXLXuank210iU7zkKzxXKqocBRi1oQOj69tw1VckLWX
+         vKi9CxdVyC14VPfBU+5RyCU7+D4iZxrfBISq1SnZDxjbYg3o0CdMwEzQtlzFud0SI6dN
+         0sZ3qw4oy3+r7OEBocSB7kZ00wVG1whBXxc5DFaZYhwndrW963Ai/uMJaT5YgjFLQwww
+         Z1F3P6p9qaleI2xRMuqjk6/92NUPN579Y2goIfNDC+Nj9NGSEBfDmZPStV989KEwm+HL
+         U63g==
+X-Gm-Message-State: AOJu0YzcGOYN8+K73YuTMRBQHoBFMja5jEBJVcdcDMBnz3DElNgGcEnZ
+	7d2pFzTiAKMMMyZkr1jf5idwctYhL6iZtN4/gZq/Edn0fY5WmoQJ320YZup3HWSj/gsDaC4UDnb
+	UVojqIz11xxbjKfXLw0LvR1kUPsp/Nuf5gYM8oOfi9kbify0HHmcxUQ==
+X-Received: by 2002:a05:6808:1b22:b0:3d2:2755:3300 with SMTP id 5614622812f47-3d51bb1a5eemr5584726b6e.5.1718883836567;
+        Thu, 20 Jun 2024 04:43:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFNO8UolfSq8Wa0y7Zsg/4/vlxB2P5l49ds3c6yjja5vIFPszlLSH+v5Sw6c1KsemJfnkhpJg==
+X-Received: by 2002:a05:6808:1b22:b0:3d2:2755:3300 with SMTP id 5614622812f47-3d51bb1a5eemr5584710b6e.5.1718883836205;
+        Thu, 20 Jun 2024 04:43:56 -0700 (PDT)
+Received: from gerbillo.redhat.com ([2a0d:3341:b0b7:b110::f71])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798abc0cfb9sm689021485a.92.2024.06.20.04.43.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jun 2024 04:43:55 -0700 (PDT)
+Message-ID: <c76d1786c308aeb6e4c836334084e3049c0f108a.camel@redhat.com>
+Subject: Re: [PATCH v2] net: usb: ax88179_178a: improve link status logs
+From: Paolo Abeni <pabeni@redhat.com>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>, davem@davemloft.net,
+  edumazet@google.com, kuba@kernel.org, horms@kernel.org,
+ linux-usb@vger.kernel.org,  netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Date: Thu, 20 Jun 2024 13:43:52 +0200
+In-Reply-To: <20240618115054.101577-1-jtornosm@redhat.com>
+References: <20240618115054.101577-1-jtornosm@redhat.com>
+Autocrypt: addr=pabeni@redhat.com; prefer-encrypt=mutual; keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="r/iM7pK6grmTiquK"
-Content-Disposition: inline
-In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
-X-Cookie: You're already carrying the sphere!
+
+On Tue, 2024-06-18 at 13:50 +0200, Jose Ignacio Tornos Martinez wrote:
+> Avoid spurious link status logs that may ultimately be wrong; for example=
+,
+> if the link is set to down with the cable plugged, then the cable is
+> unplugged and after this the link is set to up, the last new log that is
+> appearing is incorrectly telling that the link is up.
+>=20
+> In order to avoid errors, show link status logs after link_reset
+> processing, and in order to avoid spurious as much as possible, only show
+> the link loss when some link status change is detected.
+>=20
+> cc: stable@vger.kernel.org
+> Fixes: e2ca90c276e1 ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to giga=
+bit ethernet adapter driver")
+> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+
+Please always include the target tree in the subj prefix - in this case
+it should have been 'net'.
+
+> ---
+> v2:
+>   - Fix the nits
+> v1: https://lore.kernel.org/netdev/20240617103405.654567-1-jtornosm@redha=
+t.com/
+>=20
+>  drivers/net/usb/ax88179_178a.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178=
+a.c
+> index c2fb736f78b2..d90ceab282ff 100644
+> --- a/drivers/net/usb/ax88179_178a.c
+> +++ b/drivers/net/usb/ax88179_178a.c
+> @@ -326,7 +326,9 @@ static void ax88179_status(struct usbnet *dev, struct=
+ urb *urb)
+> =20
+>  	if (netif_carrier_ok(dev->net) !=3D link) {
+>  		usbnet_link_change(dev, link, 1);
+> -		netdev_info(dev->net, "ax88179 - Link status is: %d\n", link);
+> +		if (!link)
+> +			netdev_info(dev->net, "ax88179 - Link status is: %d\n",
+> +				    link);
+
+Here                                ^^^^ link value is always 0, so you
+should using a constant string.
 
 
---r/iM7pK6grmTiquK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks,
 
-On Wed, Jun 19, 2024 at 02:54:03PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.95 release.
-> There are 217 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Paolo
 
-Tested-by: Mark Brown <broonie@kernel.org>
-
---r/iM7pK6grmTiquK
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZ0FYYACgkQJNaLcl1U
-h9CB2gf+L1/PKInBdGKJiUkjMlfN3sZOyot/+neHLRc/tax1VkZXOoUzpuU7aP0K
-pIfgUk4eXItwYqNsXYbDxKwCme1/v30Rjb3TBeEUr4VVALHnCe74OffYPaRih+gm
-JbscxCqTxPdewm767XCjggZkKlIkNMCV1B57anHEejVh/3h18wtymjW8VnoYWat4
-PM4ntRWKZSFYpFfkmRLBNJfTxNCxkV1FNHo/wEXCrH0NbtgjewtKQhpY2wjEJgE2
-LD6aiRrhw5yTz4MME+S27Gndqn6GpXAEtmgx181ft5vAXp7JbLaHwFlSMMrTXd4K
-Y/+Yw2hT9gZLy5wZUryJBBdzb2MuKA==
-=AKAY
------END PGP SIGNATURE-----
-
---r/iM7pK6grmTiquK--
 
