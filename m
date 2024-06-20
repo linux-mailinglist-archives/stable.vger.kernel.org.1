@@ -1,288 +1,131 @@
-Return-Path: <stable+bounces-54722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E7E49107FE
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 16:20:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E56910830
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 16:28:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E73F4281299
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 14:20:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67D0BB25BBB
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 14:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5382A1A8C1B;
-	Thu, 20 Jun 2024 14:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BB31AD9EB;
+	Thu, 20 Jun 2024 14:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S72+N/V4"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="MOWS+snf"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054401AD4B1
-	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 14:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26441AD9E6
+	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 14:26:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718893222; cv=none; b=BHk8N4N0cbTP7mVJFe4pJ0rBW42o6XxOq9XYfMyGr0OZvmBHD2yfPtLa0O/7ZsPwG/pVYVRTBfTYswm3xGZRXbekiXDat0lqqZdD//Sa+eTHEDYEmxkef3s93XNvmHu+ytWIRS0B7sEit52NXbPGqFbYMuIv4SNptmUrUzcdOus=
+	t=1718893596; cv=none; b=STwC3n1PKaSLN/6NVgWK3k2B12+MAvkU24akgYIU6pm6IgofYo5AgFZ4dFJILqGH2+6ZPxRe423z7KXNnFKM50E7aplyiI5hi9vOsuRjVR4ZGVPQNXv6aDCYGPge4i0a5XPWbL1GMLZ65HMwFg3UNfFjbx9iq3dMUV8p3fde1sY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718893222; c=relaxed/simple;
-	bh=EP81fzKArsSo2Fm95OfrjSibEXltMZuTIs31bJ74/aQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UCgggIrAwZs2fnCezEu/WGeUIcvkwmjhlloax5oJ78Ogiep/faLIHcNJwgg2Z39JTKUTYsnH1isK5vAncpXzBDOX3OVEG2WHxmJ/1xFwRW1BSlXw6cdDPS2mJCRoBbHpDTo2AQh9HikXPXGMUUit4vb+V4VOrM2DR3DnaXJPxOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S72+N/V4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718893218;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5YwJR1NKRwN4fL5jNH9a/kXcG9cHy+5EzEQU+rHMO3I=;
-	b=S72+N/V483POiE9wFosQyDNytEF4o9GCKDj+5CbyQG42Dca70iYA1a4lNxw5ehEeRy3yOA
-	aQxSp9MSvIDvztJ8o7cFHUobuxO+IyBOYjUvS7zkxaBkZ88omIGQ4R14REcweHqMCiUg3W
-	iW+yB4V2AuKKm7S2qES5CDEZIOe4Ox4=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-623-IvgxyR8tPkq2cU7NlWXMAg-1; Thu, 20 Jun 2024 10:20:16 -0400
-X-MC-Unique: IvgxyR8tPkq2cU7NlWXMAg-1
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-52bc124ef2eso643424e87.1
-        for <stable@vger.kernel.org>; Thu, 20 Jun 2024 07:20:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718893215; x=1719498015;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5YwJR1NKRwN4fL5jNH9a/kXcG9cHy+5EzEQU+rHMO3I=;
-        b=HUVlmnYij8q3/uLxtL51zoLDyKaDB4i6JnQiNhGCIqcHZM4TvMo5jizWHeT1iojri8
-         u4GNBUD8HBBSWJ3UmKyUZRYP7sKnndrvXg0VkFDsn3HZL5t5zY5ELI8ZEfqFX2t380bi
-         rl4/zm9eXdDsCKM2eGJoiuhdjA2YTuT8j4U23myv/FAAXoHpeZb5rYwzg+5MdeCVFRIw
-         T1kHpfACyamKFkBQhUwv6u+MbAaI9HDWBQC34Sm0hO3jhR9GpVoyAv2bgy7eTwAvF/OO
-         zDSogP2R6FAohqjtkqjhbtCfHSLR1m9X+2irY0lwBXNvG3R2OCc1pIYJfJpXdfbxFY0l
-         9Iyw==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ4xCBk4vK8ZV49234Ey8zfBkMBU1Mk+utwegk8i0XNEqs5dMKhTj3brz0GuhRAe+5hBG1Zx/e6DPcW5ZIowMXHmmufpJv
-X-Gm-Message-State: AOJu0YwAXBt0quV8mdKSpZw3YJo0WL1JkttO7QEvRZWpuZLh5T/BgeBj
-	mRv/2IR7CUGMnLA4QDzTj0ygyBwmLk9CxMcwjtj2UmPDy44EfzhiLukulSjagfvfAPkQ2GLzp7g
-	8/oRiiKIOOxsIZBFuQAJwL0obA9kJxUugDkUf14OS94MprvnCjtK/Zw==
-X-Received: by 2002:a05:6512:3d04:b0:52b:c262:99b3 with SMTP id 2adb3069b0e04-52ccaa5693emr4100926e87.11.1718893214980;
-        Thu, 20 Jun 2024 07:20:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHeTQL8Yco26PVM8D0V3en6/5afdIHWF/18NOFXb2mr5OHhn1CZokrSB4RjI8WqqCIc8xXp9g==
-X-Received: by 2002:a05:6512:3d04:b0:52b:c262:99b3 with SMTP id 2adb3069b0e04-52ccaa5693emr4100901e87.11.1718893214477;
-        Thu, 20 Jun 2024 07:20:14 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c719:5b00:61af:900f:3aef:3af3? (p200300cbc7195b0061af900f3aef3af3.dip0.t-ipconnect.de. [2003:cb:c719:5b00:61af:900f:3aef:3af3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247d0b63b5sm27811365e9.7.2024.06.20.07.20.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Jun 2024 07:20:13 -0700 (PDT)
-Message-ID: <3cd2cdca-5c89-447e-b6f1-f68112cf3f7b@redhat.com>
-Date: Thu, 20 Jun 2024 16:20:12 +0200
+	s=arc-20240116; t=1718893596; c=relaxed/simple;
+	bh=OtWs8cW/5ov0RRwfm21rf58AsHqQtNVE1O5G1Hjb5SM=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=c72cx43P3UfexelKrVdZsw2j/xk79KWM0TSF5PK4MWkjH44Cfbrp4pmUkgp1eiIg/6fwtYvUgpkDalT51uM/lV0EmRI1cLqJ8I0vI8oa9zMw6KZVYFRz1h5fEwH6uHwfcrjIdvceGVPMLsPvYe93+z+7HrHGDX2KL8tHIbEV6CQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=MOWS+snf; arc=none smtp.client-ip=35.89.44.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5001a.ext.cloudfilter.net ([10.0.29.139])
+	by cmsmtp with ESMTPS
+	id K0XNs1sLLSLKxKIkEsVHY5; Thu, 20 Jun 2024 14:26:34 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id KIkDsZsDDCaXoKIkDsmHhL; Thu, 20 Jun 2024 14:26:33 +0000
+X-Authority-Analysis: v=2.4 cv=deBL3mXe c=1 sm=1 tr=0 ts=66743c19
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=T1WGqf2p2xoA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=lvk90vOh/9SOXSj80jTDyWfb41nLZq4JTiFFLtCM7MY=; b=MOWS+snf180hF3Jjm+v9SX8ms9
+	47BN90+q9M2I1rIFT23hkkjS7Y/uThipsfzXaE11Y0la4pn2p16hBiWhwis23Xxiz7GZA2h2fJVWC
+	UDWTvceYVh3OUy+nhBamM4q2jyTwd1GKeaW8Qy/ZK96SPxIQ9gnuEO1h8Hl8El+WBOvk/ryo2tYJ2
+	JVwgQnExvvyRAUwBKHWPn4c+uXxr3bCA1ka2/9yhbXO5fLbsdm34JRgtHcCBaqU3K0k9oX9oW5di1
+	/lSjjBMtmth6esl6+RazPNZfoXaEDUcfTYxPJxKBkbdX7sUIy0eq2rQLGsTja4P8I32KgzvY9F9Ra
+	CRxlcZPw==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:44944 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sKIkA-001g1T-2Y;
+	Thu, 20 Jun 2024 08:26:30 -0600
+Subject: Re: [PATCH 6.6 000/267] 6.6.35-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240619125606.345939659@linuxfoundation.org>
+In-Reply-To: <20240619125606.345939659@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <5412986b-a0f8-27c7-11c1-2471d7beb3c2@w6rz.net>
+Date: Thu, 20 Jun 2024 07:26:28 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.9 000/281] 6.9.6-rc1 review
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
- patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
- Miaohe Lin <linmiaohe@huawei.com>, Arnd Bergmann <arnd@arndb.de>,
- Dan Carpenter <dan.carpenter@linaro.org>, Cgroups <cgroups@vger.kernel.org>,
- linux-mm <linux-mm@kvack.org>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- jbeulich@suse.com, LTP List <ltp@lists.linux.it>
-References: <20240619125609.836313103@linuxfoundation.org>
- <CA+G9fYtPV3kskAyc4NQws68-CpBrV+ohxkt1EEaAN54Dh6J6Uw@mail.gmail.com>
- <2024062028-caloric-cost-2ab9@gregkh>
- <CA+G9fYsr0=_Yzew1uyUtrZ7ayZFYqmaNzAwFZJPjFnDXZEwYcQ@mail.gmail.com>
- <36a38846-0250-4ac2-b2d0-c72e00d6898d@redhat.com>
- <CA+G9fYv4fZiB-pL7=4SNfudh2Aqknf5+OXo1RFAFRhJFZMsEsg@mail.gmail.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <CA+G9fYv4fZiB-pL7=4SNfudh2Aqknf5+OXo1RFAFRhJFZMsEsg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1sKIkA-001g1T-2Y
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:44944
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 21
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfMYLPzKEh30c/Rj9j3DvfRLrAkdIxPwzrsZQTAtkbdkNNfgUtBVWsLcFicoimnpq0Mr83KPuvCvCbOOF6NUENLF4Zux4w6KoYXuaMaxbkXYQNHzgA2ir
+ bY9FAc62dzfcv3VweXbcwGo8git+fyHmKGl8xHjxb8vVm+ZrWpWt+MckrbG3VcT5TwnhxsMuVXxhkg==
 
-On 20.06.24 16:02, Naresh Kamboju wrote:
-> On Thu, 20 Jun 2024 at 19:23, David Hildenbrand <david@redhat.com> wrote:
->>
->> On 20.06.24 15:14, Naresh Kamboju wrote:
->>> On Thu, 20 Jun 2024 at 17:59, Greg Kroah-Hartman
->>> <gregkh@linuxfoundation.org> wrote:
->>>>
->>>> On Thu, Jun 20, 2024 at 05:21:09PM +0530, Naresh Kamboju wrote:
->>>>> On Wed, 19 Jun 2024 at 18:41, Greg Kroah-Hartman
->>>>> <gregkh@linuxfoundation.org> wrote:
->>>>>>
->>>>>> This is the start of the stable review cycle for the 6.9.6 release.
->>>>>> There are 281 patches in this series, all will be posted as a response
->>>>>> to this one.  If anyone has any issues with these being applied, please
->>>>>> let me know.
->>>>>>
->>>>>> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
->>>>>> Anything received after that time might be too late.
->>>>>>
->>>>>> The whole patch series can be found in one patch at:
->>>>>>           https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.6-rc1.gz
->>>>>> or in the git tree and branch at:
->>>>>>           git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
->>>>>> and the diffstat can be found below.
->>>>>>
->>>>>> thanks,
->>>>>>
->>>>>> greg k-h
->>>>>
->>>>> There are two major issues on arm64 Juno-r2 on Linux stable-rc 6.9.6-rc1
->>>>>
->>>>> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->>>>>
->>>>> 1)
->>>>> The LTP controllers cgroup_fj_stress test cases causing kernel crash
->>>>> on arm64 Juno-r2 with
->>>>> compat mode testing with stable-rc 6.9 kernel.
->>>>>
->>>>> In the recent past I have reported this issues on Linux mainline.
->>>>>
->>>>> LTP: fork13: kernel panic on rk3399-rock-pi-4 running mainline 6.10.rc3
->>>>>     - https://lore.kernel.org/all/CA+G9fYvKmr84WzTArmfaypKM9+=Aw0uXCtuUKHQKFCNMGJyOgQ@mail.gmail.com/
->>>>>
->>>>> it goes like this,
->>>>>     Unable to handle kernel NULL pointer dereference at virtual address
->>>>>     ...
->>>>>     Insufficient stack space to handle exception!
->>>>>     end Kernel panic - not syncing: kernel stack overflow
->>>>>
->>
->> How is that related to 6.9.6-rc1? That report is from mainline (6.10.rc3).
->>
->> Can you share a similar kernel dmesg output from  the issue on 6.9.6-rc1?
-> 
-> I request you to use this link for detailed boot log, test log and crash log.
->   - https://lkft.validation.linaro.org/scheduler/job/7687060#L23314
-> 
-> Few more logs related to build artifacts links provided in the original
-> email thread and bottom of this email.
-> 
-> crash log:
-> ---
-> 
+On 6/19/24 5:52 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.35 release.
+> There are 267 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.35-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Thanks, so this is something different than the
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-"BUG: Bad page map in process fork13
-  BUG: Bad rss-counter state mm:"
-
-stuff on mainline you referenced.
-
-Looks like some recursive exception until we exhausted the stack.
-
-
-Trying to connect the dots here, can you enlighten me how this is 
-related to the fork13 mainline report?
-
-> [ 0.000000] Booting Linux on physical CPU 0x0000000100 [0x410fd033]
-> [ 0.000000] Linux version 6.9.6-rc1 (tuxmake@tuxmake)
-> (aarch64-linux-gnu-gcc (Debian 13.2.0-12) 13.2.0, GNU ld (GNU Binutils
-> for Debian) 2.42) #1 SMP PREEMPT @1718817000
-> ...
-> [ 1786.336761] Unable to handle kernel NULL pointer dereference at
-> virtual address 0000000000000070
-> [ 1786.345564] Mem abort info:
-> [ 1786.348359]   ESR = 0x0000000096000004
-> [ 1786.352112]   EC = 0x25: DABT (current EL), IL = 32 bits
-> [ 1786.357434]   SET = 0, FnV = 0
-> [ 1786.360492]   EA = 0, S1PTW = 0
-> [ 1786.363637]   FSC = 0x04: level 0 translation fault
-> [ 1786.368523] Data abort info:
-> [ 1786.371405]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-> [ 1786.376900]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-> [ 1786.381960]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-> [ 1786.387284] Unable to handle kernel NULL pointer dereference at
-> virtual address 0000000000000070
-> [ 1786.387293] Insufficient stack space to handle exception!
-> [ 1786.387296] ESR: 0x0000000096000047 -- DABT (current EL)
-> [ 1786.387302] FAR: 0xffff80008399ffe0
-> [ 1786.387306] Task stack:     [0xffff8000839a0000..0xffff8000839a4000]
-> [ 1786.387312] IRQ stack:      [0xffff8000837f8000..0xffff8000837fc000]
-> [ 1786.387319] Overflow stack: [0xffff00097ec95320..0xffff00097ec96320]
-> [ 1786.387327] CPU: 4 PID: 0 Comm: swapper/4 Not tainted 6.9.6-rc1 #1
-> [ 1786.387338] Hardware name: ARM Juno development board (r2) (DT)
-> [ 1786.387344] pstate: a00003c5 (NzCv DAIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [ 1786.387355] pc : _prb_read_valid (kernel/printk/printk_ringbuffer.c:2109)
-> [ 1786.387374] lr : prb_read_valid (kernel/printk/printk_ringbuffer.c:2183)
-> [ 1786.387385] sp : ffff80008399ffe0
-> [ 1786.387390] x29: ffff8000839a0030 x28: ffff000800365f00 x27: ffff800082530008
-> [ 1786.387407] x26: ffff8000834e33b8 x25: ffff8000839a00b0 x24: 0000000000000001
-> [ 1786.387423] x23: ffff8000839a00a8 x22: ffff8000830e3e40 x21: 0000000000001e9e
-> [ 1786.387438] x20: 0000000000000000 x19: ffff8000839a01c8 x18: 0000000000000010
-> [ 1786.387453] x17: 72646461206c6175 x16: 7472697620746120 x15: 65636e6572656665
-> [ 1786.387468] x14: 726564207265746e x13: 3037303030303030 x12: 3030303030303030
-> [ 1786.387483] x11: 2073736572646461 x10: ffff800083151ea0 x9 : ffff80008014273c
-> [ 1786.387498] x8 : ffff8000839a0120 x7 : 0000000000000000 x6 : 0000000000000e9f
-> [ 1786.387512] x5 : ffff8000839a00c8 x4 : ffff8000837157c0 x3 : 0000000000000000
-> [ 1786.387526] x2 : ffff8000839a00b0 x1 : 0000000000000000 x0 : ffff8000830e3f58
-> [ 1786.387542] Kernel panic - not syncing: kernel stack overflow
-> [ 1786.387549] SMP: stopping secondary CPUs
-> [ 1787.510055] SMP: failed to stop secondary CPUs 0,4
-> [ 1787.510065] Kernel Offset: disabled
-> [ 1787.510068] CPU features: 0x4,00001061,e0100000,0200421b
-> [ 1787.510076] Memory Limit: none
-> [ 1787.680436] ---[ end Kernel panic - not syncing: kernel stack overflow ]---
-
-
--- 
-Cheers,
-
-David / dhildenb
+Tested-by: Ron Economos <re@w6rz.net>
 
 
