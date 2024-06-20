@@ -1,434 +1,255 @@
-Return-Path: <stable+bounces-54758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060E0910CD0
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 18:30:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DC2910C44
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 18:25:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AD44B27E1F
-	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 16:30:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3A03281BBD
+	for <lists+stable@lfdr.de>; Thu, 20 Jun 2024 16:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076EB1B47A0;
-	Thu, 20 Jun 2024 16:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD20F1B47B4;
+	Thu, 20 Jun 2024 16:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmS8IYAQ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jVy4dqoG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF851B3F17;
-	Thu, 20 Jun 2024 16:25:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA2F1B47C0
+	for <stable@vger.kernel.org>; Thu, 20 Jun 2024 16:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718900712; cv=none; b=Dx6JmCjAJkcJ2MShrempVVMIN3trqNh0LkYObX332JmadvllZOCvm/xqhj13BZDNJKu1LQTtFX+qDNlHO7MuAk4+svSFBxkG44DZkPBY3BqsxTKhY1bSAO7vmlCYC73EOA/1oj+qHZJsVlHNwBlGxnpG1uztqMb4IsbqjoZC+Ks=
+	t=1718900635; cv=none; b=q1o5Y2wHTowXmGxuwA1BSthFuFBKaijf1j8/ly8MH7/mcYuoMUPuUhxmAMoHeiADEC5SEcLNYXP7ikIxKJ4mNnGFeaiGquZTaHLYDK4X/H2oNQcgohIte37Y1OHHfCkRQCpMzMPKo3/sRDvhN8TrST+j+dcKuePVDdDhAWLbuP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718900712; c=relaxed/simple;
-	bh=DmBAxbeYTBncX5bl/HvCmLsEpHQvV2w2CK/NjV0qTMw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NzQylYd77aXKtoahNXkGuSsVCipoA/WomAcD5zvNd6AGulNFDFDTbtA3LM5dxdoT2ZcdKgV6R93eTmS27nenUGcqYdnABx4RAzT1jEKiMD6jBy/CAAmPmXsqLNs3c4NgY3wenfQam6NV9rJe8QXjLeHwnWOPnk1RCLLk0kIoAG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmS8IYAQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27D5C2BD10;
-	Thu, 20 Jun 2024 16:25:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718900712;
-	bh=DmBAxbeYTBncX5bl/HvCmLsEpHQvV2w2CK/NjV0qTMw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmS8IYAQWW69dqUsoOQK9VgMXj75HkeXssxpRMqHnXS7IEXYdB8lDpuV539MnmBAh
-	 s5gbZn3TjHFYOMff/qbOKiB91FcdJJ/B1yEBb87oOBGhFSSYAdGQ2TItgY+Uw8EkGX
-	 g3gJpNwiRu+JLbhJ7yhZWxOK3wGEsIi6ljHwvnrJ2xTSutwPldayRZs/di4mcOMrbT
-	 llX1acIQCyrfixIxAG/jVId1PA68MhgRz9IalJBS/cPw2/WhuLizVaP4BajooQVYtC
-	 /KGI86ltLy3bRQy9J9vDepyHlhzcDRFgo8sX9ImC4EISDALjAc1kQaLDqQ5ZoGgC1c
-	 GJtOFr4c9ZTEA==
-From: Arnd Bergmann <arnd@kernel.org>
-To: linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mips@vger.kernel.org,
-	Helge Deller <deller@gmx.de>,
-	linux-parisc@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	sparclinux@vger.kernel.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Brian Cain <bcain@quicinc.com>,
-	linux-hexagon@vger.kernel.org,
-	Guo Ren <guoren@kernel.org>,
-	linux-csky@vger.kernel.org,
-	Heiko Carstens <hca@linux.ibm.com>,
-	linux-s390@vger.kernel.org,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	linux-sh@vger.kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	libc-alpha@sourceware.org,
-	musl@lists.openwall.com,
-	ltp@lists.linux.it,
-	stable@vger.kernel.org
-Subject: [PATCH 14/15] asm-generic: unistd: fix time32 compat syscall handling
-Date: Thu, 20 Jun 2024 18:23:15 +0200
-Message-Id: <20240620162316.3674955-15-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240620162316.3674955-1-arnd@kernel.org>
-References: <20240620162316.3674955-1-arnd@kernel.org>
+	s=arc-20240116; t=1718900635; c=relaxed/simple;
+	bh=Fx1smBOU7+g5gN1krwDVwIdwdPcrGDOEe1sKrAvkiEY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cEuA1MagxZf595x3nt28ykt0ZIIDiC6LZBtKEw6sg0M3p4FvxBGnq9EBnzhQoGqRYraGcOGRtMUJZ6UJgW2LHv3Jm4Iiym9d2drbsh5AYh446ziY+lbk6dbeKgzTR8tqgGIlfnWY+ZsGlDoWYr37K7sTdw1pvjrM9VTtJiJB/rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jVy4dqoG; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-57d203d4682so1348179a12.0
+        for <stable@vger.kernel.org>; Thu, 20 Jun 2024 09:23:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718900632; x=1719505432; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LlwMIJz/BLrmB2WpkXjrpRTAkcL0lyiD4VvvoeLE5V4=;
+        b=jVy4dqoGz5c2AQMRQ+EDk9ZP0lHrRSM7yVcgWsB6xM+nc23/sUwWcuggrsHsQRCSQX
+         FvItdD9fuwFrx0ptO3i+X9cgqIWpkkkRQUC3GU9jn3g3mOk+2gnEe9Jin6i+ZBMYweev
+         pxnDTfm4sp7MZg1ghc9OAx/LjfA4bXM4eiqGLysINJXlO0gn2s/9m7ihKKC70Iwzjmb3
+         1iFsq/Fsyd7xA9yB7m8hWuXhHk1wZ+lIjPU9WrUSHokTwXKixkfsEirPJloCfqydzgbd
+         fwVkfKUMfY2tmjDWrddKQYyTC/7gnutHNEGTsZ5+xhfy9pls2+O8yUqol0MvcJC3WI/0
+         BFGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718900632; x=1719505432;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LlwMIJz/BLrmB2WpkXjrpRTAkcL0lyiD4VvvoeLE5V4=;
+        b=fdrU9KlvqZBgnyp4RFO9yBDoyFFAE+5NQRvzz+uogGFVpbjzHTmUuXiIeHTt+FvDi6
+         7RdjN0cBXxZHMtIUzPDt6vSvb7z3Gebv+LoOTyi4IFsQk24RyQhrKHQRoMiRKkmTT2R9
+         koUC7QXB3/3v/hiFJAfNtP5fTwenXqotG5nkbvDVPfOAwKwqm4mwFfw9/9hlS+U4NaRw
+         Ad05b1pJy0X0ZW6ubkYRhx2gq+sweEI8rij/LpegmDsiV77rgaTWBR12Pkt7KzLbQ8eu
+         0Z65wiEzptptisjpSHpH5fhf6uDjv+Qsbh09Mo7LoHMv2E/ifg3DzSEci9I+cdJu2Xyc
+         nS7A==
+X-Gm-Message-State: AOJu0YyLk+2QXOAuhamsuzHECIwkLdV4ETIn4ZC+0/LRNsepMAnMUDSF
+	C3RskP9wuFkzxH4cGtbKAx6IP1w4BQSJXq+usL2lE/nw2ykCqO84Sg8xBTkBtNkYacHoUOuGj+j
+	fVpDITksWCFk9gHfN575EbkBE8zxAKSSJVnZzWw==
+X-Google-Smtp-Source: AGHT+IEiUurqA8/vupAfbQYgfZXpGG83X+0xfR1yK7bM0GHwHo0LQaZYIH41GdenK+O+unfb1dHXnKUo8wy8Glq5Rs0=
+X-Received: by 2002:a50:99c2:0:b0:57c:ff94:c817 with SMTP id
+ 4fb4d7f45d1cf-57d07e7b28bmr4498282a12.16.1718900631856; Thu, 20 Jun 2024
+ 09:23:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240619125556.491243678@linuxfoundation.org>
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 20 Jun 2024 21:53:39 +0530
+Message-ID: <CA+G9fYsnxHwaPb2YvcLJXrgPRkqJbm7w=cF6b-Ap1mQ7jHHMsA@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/217] 6.1.95-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Wed, 19 Jun 2024 at 18:56, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.95 release.
+> There are 217 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.95-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-arch/riscv/ appears to have accidentally enabled the compat time32
-syscalls in 64-bit kernels even though the native 32-bit ABI does
-not expose those.
 
-Address this by adding another level of indirection, checking for both
-the target ABI (32 or 64) and the __ARCH_WANT_TIME32_SYSCALLS macro.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-The macro arguments are meant to follow the syscall.tbl format, the idea
-here is that by the end of the series, all other syscalls are changed
-to the same format to make it possible to move all architectures over
-to generating the system call table consistently.
-Only this patch needs to be backported though.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Cc: stable@vger.kernel.org # v5.19+
-Fixes: 7eb6369d7acf ("RISC-V: Add support for rv32 userspace via COMPAT")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- include/uapi/asm-generic/unistd.h | 146 +++++++++++++++++++-----------
- 1 file changed, 94 insertions(+), 52 deletions(-)
+## Build
+* kernel: 6.1.95-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: 0891d95b9db39ae51c0edef73f56d41521be9fbd
+* git describe: v6.1.94-218-g0891d95b9db3
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.9=
+4-218-g0891d95b9db3
 
-diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
-index 3fdaa573d661..e47c966557d0 100644
---- a/include/uapi/asm-generic/unistd.h
-+++ b/include/uapi/asm-generic/unistd.h
-@@ -16,10 +16,32 @@
- #define __SYSCALL(x, y)
- #endif
- 
-+#ifndef __SC
-+#define __SC(_cond, _nr, _sys) __SYSCALL_ ## _cond (_nr, _sys)
-+#endif
-+
-+#ifndef __SCC
-+#ifdef __SYSCALL_COMPAT
-+#define __SCC(_cond, _nr, _sys, _comp) __SC(_cond, _nr, _comp)
-+#else
-+#define __SCC(_cond, _nr, _sys, _comp) __SC(_cond, _nr, _sys)
-+#endif
-+#endif
-+
- #if __BITS_PER_LONG == 32 || defined(__SYSCALL_COMPAT)
- #define __SC_3264(_nr, _32, _64) __SYSCALL(_nr, _32)
-+#define __SYSCALL_32(_nr, _sys)		__SYSCALL(__NR_ ## _nr, _sys)
-+#define __SYSCALL_64(_nr, _sys)
- #else
- #define __SC_3264(_nr, _32, _64) __SYSCALL(_nr, _64)
-+#define __SYSCALL_32(_nr, _sys)
-+#define __SYSCALL_64(_nr, _sys)		__SYSCALL(__NR_ ## _nr, _sys)
-+#endif
-+
-+#if defined(__ARCH_WANT_TIME32_SYSCALLS)
-+#define __SYSCALL_time32(_nr, _sys)	__SYSCALL_32(__NR_ ## _nr, _sys)
-+#else
-+#define __SYSCALL_time32(_nr, _sys)
- #endif
- 
- #ifdef __SYSCALL_COMPAT
-@@ -41,7 +63,8 @@ __SYSCALL(__NR_io_cancel, sys_io_cancel)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_io_getevents 4
--__SC_3264(__NR_io_getevents, sys_io_getevents_time32, sys_io_getevents)
-+__SC(time32, io_getevents, sys_io_getevents_time32)
-+__SC(64, io_getevents, sys_io_getevents)
- #endif
- 
- #define __NR_setxattr 5
-@@ -190,9 +213,11 @@ __SYSCALL(__NR3264_sendfile, sys_sendfile64)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_pselect6 72
--__SC_COMP_3264(__NR_pselect6, sys_pselect6_time32, sys_pselect6, compat_sys_pselect6_time32)
-+__SCC(time32, pselect6, sys_pselect6_time32, compat_sys_pselect6_time32)
-+__SC(64, pselect6, sys_pselect6)
- #define __NR_ppoll 73
--__SC_COMP_3264(__NR_ppoll, sys_ppoll_time32, sys_ppoll, compat_sys_ppoll_time32)
-+__SCC(time32, ppoll, sys_ppoll_time32, compat_sys_ppoll_time32)
-+__SC(64, ppoll, sys_ppoll)
- #endif
- 
- #define __NR_signalfd4 74
-@@ -235,16 +260,17 @@ __SYSCALL(__NR_timerfd_create, sys_timerfd_create)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_timerfd_settime 86
--__SC_3264(__NR_timerfd_settime, sys_timerfd_settime32, \
--	  sys_timerfd_settime)
-+__SC(time32, timerfd_settime, sys_timerfd_settime32)
-+__SC(64, timerfd_settime, sys_timerfd_settime)
- #define __NR_timerfd_gettime 87
--__SC_3264(__NR_timerfd_gettime, sys_timerfd_gettime32, \
--	  sys_timerfd_gettime)
-+__SC(time32, timerfd_gettime, sys_timerfd_gettime32)
-+__SC(64, timerfd_gettime, sys_timerfd_gettime)
- #endif
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_utimensat 88
--__SC_3264(__NR_utimensat, sys_utimensat_time32, sys_utimensat)
-+__SC(time32, utimensat, sys_utimensat_time32)
-+__SC(64, utimensat, sys_utimensat)
- #endif
- 
- #define __NR_acct 89
-@@ -268,7 +294,8 @@ __SYSCALL(__NR_unshare, sys_unshare)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_futex 98
--__SC_3264(__NR_futex, sys_futex_time32, sys_futex)
-+__SC(time32, futex, sys_futex_time32)
-+__SC(64, futex, sys_futex)
- #endif
- 
- #define __NR_set_robust_list 99
-@@ -280,7 +307,8 @@ __SC_COMP(__NR_get_robust_list, sys_get_robust_list, \
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_nanosleep 101
--__SC_3264(__NR_nanosleep, sys_nanosleep_time32, sys_nanosleep)
-+__SC(time32, nanosleep, sys_nanosleep_time32)
-+__SC(64, nanosleep, sys_nanosleep)
- #endif
- 
- #define __NR_getitimer 102
-@@ -298,7 +326,8 @@ __SC_COMP(__NR_timer_create, sys_timer_create, compat_sys_timer_create)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_timer_gettime 108
--__SC_3264(__NR_timer_gettime, sys_timer_gettime32, sys_timer_gettime)
-+__SC(time32, timer_gettime, sys_timer_gettime32)
-+__SC(64, timer_gettime, sys_timer_gettime)
- #endif
- 
- #define __NR_timer_getoverrun 109
-@@ -306,7 +335,8 @@ __SYSCALL(__NR_timer_getoverrun, sys_timer_getoverrun)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_timer_settime 110
--__SC_3264(__NR_timer_settime, sys_timer_settime32, sys_timer_settime)
-+__SC(time32, timer_settime, sys_timer_settime32)
-+__SC(64, timer_settime, sys_timer_settime)
- #endif
- 
- #define __NR_timer_delete 111
-@@ -314,14 +344,17 @@ __SYSCALL(__NR_timer_delete, sys_timer_delete)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_clock_settime 112
--__SC_3264(__NR_clock_settime, sys_clock_settime32, sys_clock_settime)
-+__SC(time32, clock_settime, sys_clock_settime32)
-+__SC(64, clock_settime, sys_clock_settime)
- #define __NR_clock_gettime 113
--__SC_3264(__NR_clock_gettime, sys_clock_gettime32, sys_clock_gettime)
-+__SC(time32, clock_gettime, sys_clock_gettime32)
-+__SC(64, clock_gettime, sys_clock_gettime)
- #define __NR_clock_getres 114
--__SC_3264(__NR_clock_getres, sys_clock_getres_time32, sys_clock_getres)
-+__SC(time32, clock_getres, sys_clock_getres_time32)
-+__SC(64, clock_getres, sys_clock_getres)
- #define __NR_clock_nanosleep 115
--__SC_3264(__NR_clock_nanosleep, sys_clock_nanosleep_time32, \
--	  sys_clock_nanosleep)
-+__SC(time32, clock_nanosleep, sys_clock_nanosleep_time32)
-+__SC(64, clock_nanosleep, sys_clock_nanosleep)
- #endif
- 
- #define __NR_syslog 116
-@@ -351,8 +384,8 @@ __SYSCALL(__NR_sched_get_priority_min, sys_sched_get_priority_min)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_sched_rr_get_interval 127
--__SC_3264(__NR_sched_rr_get_interval, sys_sched_rr_get_interval_time32, \
--	  sys_sched_rr_get_interval)
-+__SC(time32, sched_rr_get_interval, sys_sched_rr_get_interval_time32)
-+__SC(64, sched_rr_get_interval, sys_sched_rr_get_interval)
- #endif
- 
- #define __NR_restart_syscall 128
-@@ -376,8 +409,8 @@ __SC_COMP(__NR_rt_sigpending, sys_rt_sigpending, compat_sys_rt_sigpending)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_rt_sigtimedwait 137
--__SC_COMP_3264(__NR_rt_sigtimedwait, sys_rt_sigtimedwait_time32, \
--	  sys_rt_sigtimedwait, compat_sys_rt_sigtimedwait_time32)
-+__SCC(time32, rt_sigtimedwait, sys_rt_sigtimedwait_time32, compat_sys_rt_sigtimedwait_time32)
-+__SC(64, rt_sigtimedwait, sys_rt_sigtimedwait)
- #endif
- 
- #define __NR_rt_sigqueueinfo 138
-@@ -451,11 +484,14 @@ __SYSCALL(__NR_getcpu, sys_getcpu)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_gettimeofday 169
--__SC_COMP(__NR_gettimeofday, sys_gettimeofday, compat_sys_gettimeofday)
-+__SCC(time32, gettimeofday, sys_gettimeofday, compat_sys_gettimeofday)
-+__SC(64, gettimeofday, sys_gettimeofday)
- #define __NR_settimeofday 170
--__SC_COMP(__NR_settimeofday, sys_settimeofday, compat_sys_settimeofday)
-+__SCC(time32, settimeofday, sys_settimeofday, compat_sys_settimeofday)
-+__SC(64, settimeofday, sys_settimeofday)
- #define __NR_adjtimex 171
--__SC_3264(__NR_adjtimex, sys_adjtimex_time32, sys_adjtimex)
-+__SC(time32, adjtimex, sys_adjtimex_time32)
-+__SC(64, adjtimex, sys_adjtimex)
- #endif
- 
- #define __NR_getpid 172
-@@ -481,10 +517,11 @@ __SYSCALL(__NR_mq_unlink, sys_mq_unlink)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_mq_timedsend 182
--__SC_3264(__NR_mq_timedsend, sys_mq_timedsend_time32, sys_mq_timedsend)
-+__SC(time32, mq_timedsend, sys_mq_timedsend_time32)
-+__SC(64, mq_timedsend, sys_mq_timedsend)
- #define __NR_mq_timedreceive 183
--__SC_3264(__NR_mq_timedreceive, sys_mq_timedreceive_time32, \
--	  sys_mq_timedreceive)
-+__SC(time32, mq_timedreceive, sys_mq_timedreceive_time32)
-+__SC(64, mq_timedreceive, sys_mq_timedreceive)
- #endif
- 
- #define __NR_mq_notify 184
-@@ -506,7 +543,8 @@ __SC_COMP(__NR_semctl, sys_semctl, compat_sys_semctl)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_semtimedop 192
--__SC_3264(__NR_semtimedop, sys_semtimedop_time32, sys_semtimedop)
-+__SC(time32, semtimedop, sys_semtimedop_time32)
-+__SC(64, semtimedop, sys_semtimedop)
- #endif
- 
- #define __NR_semop 193
-@@ -618,7 +656,8 @@ __SYSCALL(__NR_accept4, sys_accept4)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_recvmmsg 243
--__SC_COMP_3264(__NR_recvmmsg, sys_recvmmsg_time32, sys_recvmmsg, compat_sys_recvmmsg_time32)
-+__SCC(time32, recvmmsg, sys_recvmmsg_time32, compat_sys_recvmmsg_time32)
-+__SC(64, recvmmsg, sys_recvmmsg)
- #endif
- 
- /*
-@@ -629,7 +668,8 @@ __SC_COMP_3264(__NR_recvmmsg, sys_recvmmsg_time32, sys_recvmmsg, compat_sys_recv
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_wait4 260
--__SC_COMP(__NR_wait4, sys_wait4, compat_sys_wait4)
-+__SCC(time32, wait4, sys_wait4, compat_sys_wait4)
-+__SC(64, wait4, sys_wait4)
- #endif
- 
- #define __NR_prlimit64 261
-@@ -645,7 +685,8 @@ __SYSCALL(__NR_open_by_handle_at, sys_open_by_handle_at)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_clock_adjtime 266
--__SC_3264(__NR_clock_adjtime, sys_clock_adjtime32, sys_clock_adjtime)
-+__SC(time32, clock_adjtime, sys_clock_adjtime32)
-+__SC(64, clock_adjtime, sys_clock_adjtime)
- #endif
- 
- #define __NR_syncfs 267
-@@ -701,7 +742,8 @@ __SYSCALL(__NR_statx,     sys_statx)
- 
- #if defined(__ARCH_WANT_TIME32_SYSCALLS) || __BITS_PER_LONG != 32
- #define __NR_io_pgetevents 292
--__SC_COMP_3264(__NR_io_pgetevents, sys_io_pgetevents_time32, sys_io_pgetevents, compat_sys_io_pgetevents)
-+__SCC(time32, io_pgetevents, sys_io_pgetevents_time32, compat_sys_io_pgetevents)
-+__SC(64, io_pgetevents, sys_io_pgetevents)
- #endif
- 
- #define __NR_rseq 293
-@@ -713,45 +755,45 @@ __SYSCALL(__NR_kexec_file_load,     sys_kexec_file_load)
- 
- #if defined(__SYSCALL_COMPAT) || __BITS_PER_LONG == 32
- #define __NR_clock_gettime64 403
--__SYSCALL(__NR_clock_gettime64, sys_clock_gettime)
-+__SC(32, clock_gettime64, sys_clock_gettime)
- #define __NR_clock_settime64 404
--__SYSCALL(__NR_clock_settime64, sys_clock_settime)
-+__SC(32, clock_settime64, sys_clock_settime)
- #define __NR_clock_adjtime64 405
--__SYSCALL(__NR_clock_adjtime64, sys_clock_adjtime)
-+__SC(32, clock_adjtime64, sys_clock_adjtime)
- #define __NR_clock_getres_time64 406
--__SYSCALL(__NR_clock_getres_time64, sys_clock_getres)
-+__SC(32, clock_getres_time64, sys_clock_getres)
- #define __NR_clock_nanosleep_time64 407
--__SYSCALL(__NR_clock_nanosleep_time64, sys_clock_nanosleep)
-+__SC(32, clock_nanosleep_time64, sys_clock_nanosleep)
- #define __NR_timer_gettime64 408
--__SYSCALL(__NR_timer_gettime64, sys_timer_gettime)
-+__SC(32, timer_gettime64, sys_timer_gettime)
- #define __NR_timer_settime64 409
--__SYSCALL(__NR_timer_settime64, sys_timer_settime)
-+__SC(32, timer_settime64, sys_timer_settime)
- #define __NR_timerfd_gettime64 410
--__SYSCALL(__NR_timerfd_gettime64, sys_timerfd_gettime)
-+__SC(32, timerfd_gettime64, sys_timerfd_gettime)
- #define __NR_timerfd_settime64 411
--__SYSCALL(__NR_timerfd_settime64, sys_timerfd_settime)
-+__SC(32, timerfd_settime64, sys_timerfd_settime)
- #define __NR_utimensat_time64 412
--__SYSCALL(__NR_utimensat_time64, sys_utimensat)
-+__SC(32, utimensat_time64, sys_utimensat)
- #define __NR_pselect6_time64 413
--__SC_COMP(__NR_pselect6_time64, sys_pselect6, compat_sys_pselect6_time64)
-+__SCC(32, pselect6_time64, sys_pselect6, compat_sys_pselect6_time64)
- #define __NR_ppoll_time64 414
--__SC_COMP(__NR_ppoll_time64, sys_ppoll, compat_sys_ppoll_time64)
-+__SCC(32, ppoll_time64, sys_ppoll, compat_sys_ppoll_time64)
- #define __NR_io_pgetevents_time64 416
--__SYSCALL(__NR_io_pgetevents_time64, sys_io_pgetevents, compat_sys_io_pgetevents_time64)
-+__SCC(32, io_pgetevents_time64, sys_io_pgetevents, compat_sys_io_pgetevents_time64)
- #define __NR_recvmmsg_time64 417
--__SC_COMP(__NR_recvmmsg_time64, sys_recvmmsg, compat_sys_recvmmsg_time64)
-+__SCC(32, recvmmsg_time64, sys_recvmmsg, compat_sys_recvmmsg_time64)
- #define __NR_mq_timedsend_time64 418
--__SYSCALL(__NR_mq_timedsend_time64, sys_mq_timedsend)
-+__SC(32, mq_timedsend_time64, sys_mq_timedsend)
- #define __NR_mq_timedreceive_time64 419
--__SYSCALL(__NR_mq_timedreceive_time64, sys_mq_timedreceive)
-+__SC(32, mq_timedreceive_time64, sys_mq_timedreceive)
- #define __NR_semtimedop_time64 420
--__SYSCALL(__NR_semtimedop_time64, sys_semtimedop)
-+__SC(32, semtimedop_time64, sys_semtimedop)
- #define __NR_rt_sigtimedwait_time64 421
--__SC_COMP(__NR_rt_sigtimedwait_time64, sys_rt_sigtimedwait, compat_sys_rt_sigtimedwait_time64)
-+__SCC(32, rt_sigtimedwait_time64, sys_rt_sigtimedwait, compat_sys_rt_sigtimedwait_time64)
- #define __NR_futex_time64 422
--__SYSCALL(__NR_futex_time64, sys_futex)
-+__SC(32, futex_time64, sys_futex)
- #define __NR_sched_rr_get_interval_time64 423
--__SYSCALL(__NR_sched_rr_get_interval_time64, sys_sched_rr_get_interval)
-+__SC(32, sched_rr_get_interval_time64, sys_sched_rr_get_interval)
- #endif
- 
- #define __NR_pidfd_send_signal 424
--- 
-2.39.2
+## Test Regressions (compared to v6.1.94)
 
+## Metric Regressions (compared to v6.1.94)
+
+## Test Fixes (compared to v6.1.94)
+
+## Metric Fixes (compared to v6.1.94)
+
+## Test result summary
+total: 171975, pass: 145682, fail: 3002, skip: 23038, xfail: 253
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 135 total, 135 passed, 0 failed
+* arm64: 38 total, 38 passed, 0 failed
+* i386: 29 total, 29 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 33 total, 33 passed, 0 failed
+* riscv: 9 total, 9 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 33 total, 33 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mm
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
