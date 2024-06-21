@@ -1,154 +1,148 @@
-Return-Path: <stable+bounces-54797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77875911C6D
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 09:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5550E911D01
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 09:40:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A89831C20DFC
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 07:09:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8167B1C220FB
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 07:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905E8168C1D;
-	Fri, 21 Jun 2024 07:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9812216B74F;
+	Fri, 21 Jun 2024 07:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YuiNfFBj"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vis34gig";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="rWLYepDS";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vis34gig";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="rWLYepDS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282D614038F;
-	Fri, 21 Jun 2024 07:09:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5507E16B722;
+	Fri, 21 Jun 2024 07:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718953747; cv=none; b=mLXG5MYF7WDl0q1SVJyByXeBP0+VJP6IYm9I/lJq/0hU98Rte4bTw+44OofLca/TDCh28vJMLD/+JnEu5xrXazLmVgOgpsKIRIJ6rGnKkGRW7iWO1ToRJ4oVswTIytjNZluVUei3KKDVYXb2gimX/SHgUEiAjgf6xvzIhjy6rxw=
+	t=1718955609; cv=none; b=hsNRbSbT/GGquD5fp2XsJ/mSKYSEwQasxmsHpFxzjIeeymA2UqxGg4A/3n92hQsUd+WJU2y7az5Y7LWped7ESHNM2D/Zh3qpCxNKAWuhznAVxFkFwlYV2HxLYSs1ZimGU6FZFIr4vaS7om/dZ3JFuM/etzhflr77Qmi1d9jrW7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718953747; c=relaxed/simple;
-	bh=JNeSznPsu6rMM8q9i1YN4cUCJ34wg5WxXaxe2u+XauI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LYGEkNJKZc0QHUQepdlBsIXSPEfEB3cTOKiTeQfxEpoUYTsHPwGX/f6Z48VqpsSf/W5KiP4AV1Q9dOw/qTyGi/Ndg+HRy+CLhLkVJCZM5PwTQc3XZd5XTFysY7+lr+0FfhKP+P+5upJoUFArZ7LcG4OiBUybphZImBDfeyfYtAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YuiNfFBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522EBC2BBFC;
-	Fri, 21 Jun 2024 07:09:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718953746;
-	bh=JNeSznPsu6rMM8q9i1YN4cUCJ34wg5WxXaxe2u+XauI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YuiNfFBjYQZ4LWbVZN2X73hS5tUPBXHgfp6QswTqOZ2KDQNS6n7gypHuB7O9Ltu5l
-	 btpKVynQuyMi1uu5NaLbZzYltuiNLZoYU/ya58uhWbgtzPeJf7s6FrsaSqhBSNKVta
-	 8AB9fKEKDbvJHvK/anMsronwVvkEkcxdaDOw0rcQ=
-Date: Fri, 21 Jun 2024 09:09:03 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: joswang <joswang1221@gmail.com>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Jos Wang <joswang@lenovo.com>
-Subject: Re: [PATCH v7] usb: dwc3: core: Workaround for CSR read timeout
-Message-ID: <2024062126-whacky-employee-74a4@gregkh>
-References: <20240619114529.3441-1-joswang1221@gmail.com>
- <2024062051-washtub-sufferer-d756@gregkh>
- <CAMtoTm06MTJ_Gc4NvenycvWRxhLSaPptT1DLvBRs4RWVZO9Y_g@mail.gmail.com>
- <2024062151-professor-squeak-a4a7@gregkh>
- <20240621054239.mskjqbuhovydvmu4@synopsys.com>
- <2024062150-justify-skillet-e80e@gregkh>
- <20240621062036.2rhksldny7dzijv2@synopsys.com>
+	s=arc-20240116; t=1718955609; c=relaxed/simple;
+	bh=n8mjHVE4QI7Gt/+GbdHZbPHB1yW24UL/gEzfpVEpO1o=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=M9GlpoefsnKGZAqGPZeZjJ2PhqBlZHXVQk2q4mYbmkCjnBEbj7X4DLcCg8H955/avXX5WGxK3N73qo+ZvPQ8bvvIgB6nuYunuMYg8tZDoRJazlu3M7khqTGwy+mA41kPs6gTZaooo1iEMFW8FK/t8ZaWcRKprUD5Jcu/BBYoY8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vis34gig; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=rWLYepDS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vis34gig; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=rWLYepDS; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9591F21AB6;
+	Fri, 21 Jun 2024 07:40:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718955605; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yhxsmOBFtZ6Zm2jXACqTnbq4HaCbZfBCpgBPf2JObqA=;
+	b=vis34gigNN9mH/lVAjb5hXFcb18zUIBSMf8W4fwC6CSzJoj/Jq6mGUz9GmttMWYUR7tJ+f
+	uYLIWz1R7K17N71nMDqFmgu5Rmqwqs/xqvjQOSuWqH/JWLZHvQhIkNk3B0djGbD2Vk1dMV
+	yiKR5Or4jsOCJzRB1rsP/jgEh8jD4yY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718955605;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yhxsmOBFtZ6Zm2jXACqTnbq4HaCbZfBCpgBPf2JObqA=;
+	b=rWLYepDSCUZuFvrGlYVf2hR5s/ULlbMYQt3omR78JaH1UNe0welOYf6gG2RQUMtp6minGS
+	YrmiGwFuWAyGT6CA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1718955605; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yhxsmOBFtZ6Zm2jXACqTnbq4HaCbZfBCpgBPf2JObqA=;
+	b=vis34gigNN9mH/lVAjb5hXFcb18zUIBSMf8W4fwC6CSzJoj/Jq6mGUz9GmttMWYUR7tJ+f
+	uYLIWz1R7K17N71nMDqFmgu5Rmqwqs/xqvjQOSuWqH/JWLZHvQhIkNk3B0djGbD2Vk1dMV
+	yiKR5Or4jsOCJzRB1rsP/jgEh8jD4yY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1718955605;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yhxsmOBFtZ6Zm2jXACqTnbq4HaCbZfBCpgBPf2JObqA=;
+	b=rWLYepDSCUZuFvrGlYVf2hR5s/ULlbMYQt3omR78JaH1UNe0welOYf6gG2RQUMtp6minGS
+	YrmiGwFuWAyGT6CA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6CDF713AAA;
+	Fri, 21 Jun 2024 07:40:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id VfBKGVUudWaOGQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Fri, 21 Jun 2024 07:40:05 +0000
+Date: Fri, 21 Jun 2024 09:40:31 +0200
+Message-ID: <87msnezqts.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Pablo =?ISO-8859-1?Q?Ca=F1o?= <pablocpascual@gmail.com>
+Cc: linux-sound@vger.kernel.org,
+	stable@vger.kernel.org,
+	tiwai@suse.de
+Subject: Re: [PATCH] ALSA: hda/realtek: Add quirk for Lenovo Yoga Pro 7 14AHP9
+In-Reply-To: <20240620152533.76712-1-pablocpascual@gmail.com>
+References: <20240620152533.76712-1-pablocpascual@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240621062036.2rhksldny7dzijv2@synopsys.com>
+X-Spam-Score: -3.29
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-3.29 / 50.00];
+	BAYES_HAM(-3.00)[99.98%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-0.998];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
 
-On Fri, Jun 21, 2024 at 06:20:38AM +0000, Thinh Nguyen wrote:
-> On Fri, Jun 21, 2024, Greg KH wrote:
-> > On Fri, Jun 21, 2024 at 05:42:42AM +0000, Thinh Nguyen wrote:
-> > > On Fri, Jun 21, 2024, Greg KH wrote:
-> > > > On Fri, Jun 21, 2024 at 09:40:10AM +0800, joswang wrote:
-> > > > > On Fri, Jun 21, 2024 at 1:16â€¯AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > > > > >
-> > > > > > On Wed, Jun 19, 2024 at 07:45:29PM +0800, joswang wrote:
-> > > > > > > From: Jos Wang <joswang@lenovo.com>
-> > > > > > >
-> > > > > > > This is a workaround for STAR 4846132, which only affects
-> > > > > > > DWC_usb31 version2.00a operating in host mode.
-> > > > > > >
-> > > > > > > There is a problem in DWC_usb31 version 2.00a operating
-> > > > > > > in host mode that would cause a CSR read timeout When CSR
-> > > > > > > read coincides with RAM Clock Gating Entry. By disable
-> > > > > > > Clock Gating, sacrificing power consumption for normal
-> > > > > > > operation.
-> > > > > > >
-> > > > > > > Cc: stable@vger.kernel.org
-> > > > > > > Signed-off-by: Jos Wang <joswang@lenovo.com>
-> > > > > >
-> > > > > > What commit id does this fix?  How far back should it be backported in
-> > > > > > the stable releases?
-> > > > > >
-> > > > > > thanks,
-> > > > > >
-> > > > > > greg k-h
-> > > > > 
-> > > > > Hello Greg Thinh
-> > > > > 
-> > > > > It seems first begin from the commit 1e43c86d84fb ("usb: dwc3: core:
-> > > > > Add DWC31 version 2.00a controller")
-> > > > > in 6.8.0-rc6 branch ?
-> > > > 
-> > > > That commit showed up in 6.9, not 6.8.  And if so, please resend with a
-> > > > proper "Fixes:" tag.
-> > > > 
-> > > 
-> > > This patch workarounds the controller's issue.
-> > 
-> > So it fixes a bug?  Or does not fix a bug?  I'm confused.
+On Thu, 20 Jun 2024 17:25:33 +0200,
+Pablo Caño wrote:
 > 
-> The bug is not a driver's bug. The fix applies to a hardware bug and not
-> any particular commit that can be referenced with a "Fixes" tag.
-
-So it's a bug that the kernel needs to work around, that's fine.  But
-that implies it should go to "all" stable kernels that it can, right?
-
-> > > It doesn't resolve any
-> > > particular commit that requires a "Fixes" tag. So, this should go on
-> > > "next". It can be backported as needed.
-> > 
-> > Who would do the backporting and when?
+> Lenovo Yoga Pro 7 14AHP9 (PCI SSID 17aa:3891) seems requiring a similar workaround like Yoga 9 model and Yoga 7 Pro 14APH8 for the bass speaker.
 > 
-> For anyone who doesn't use mainline kernel that needs this patch
-> backported to their kernel version.
+> Cc: <stable@vger.kernel.org>
+> Link: https://lore.kernel.org/all/20231207182035.30248-1-tiwai@suse.de/
+> Signed-off-by: Pablo Caño <pablocpascual@gmail.com>
 
-I can not poarse this, sorry.  We can't do anything about people who
-don't use our kernel trees, so what does this mean?
+Thanks, applied now.
 
-> > > If it's to be backported, it can
-> > > probably go back to as far as v4.3, to commit 690fb3718a70 ("usb: dwc3:
-> > > Support Synopsys USB 3.1 IP"). But you'd need to collect all the
-> > > dependencies including the commit mention above.
-> > 
-> > I don't understand, sorry.  Is this just a normal "evolve the driver to
-> > work better" change, or is it a "fix broken code" change, or is it
-> > something else?
-> > 
-> > In other words, what do you want to see happen to this?  What tree(s)
-> > would you want it applied to?
-> > 
-> 
-> It's up to you, but it seems to fit "usb-testing" branch more since it
-> doesn't have a "Fixes" tag. The severity of this fix is debatable since
-> it doesn't apply to every DWC_usb31 configuration or every scenario.
 
-As it is "cc: stable" that implies that it should get to Linus for
-6.10-final, not wait for 6.11-rc1 as the 6.11 release is months away,
-and anyone who has this issue would want it fixed sooner.
-
-still confused,
-
-greg k-h
+Takashi
 
