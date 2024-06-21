@@ -1,134 +1,241 @@
-Return-Path: <stable+bounces-54838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB5F912C6C
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 19:27:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C667A912D1B
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 20:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C5841C20F62
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 17:27:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5107B1F26004
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 18:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0EEA1607A1;
-	Fri, 21 Jun 2024 17:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE7812CDBE;
+	Fri, 21 Jun 2024 18:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ujsUDzi/"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="YGHI9Wrr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-190a.mail.infomaniak.ch (smtp-190a.mail.infomaniak.ch [185.125.25.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C929D15D1
-	for <stable@vger.kernel.org>; Fri, 21 Jun 2024 17:27:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08D28C1E
+	for <stable@vger.kernel.org>; Fri, 21 Jun 2024 18:15:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718990835; cv=none; b=WgCbCduK2W5yLvbHljZ8FopiZdoO811bnWDB5Amq1TQePcd+oUe/hr6q05p3A1hIpHmHfkE+yxGPhaMy6mGp2FDuzxnkbPKu09NKFDjCUxItOIbzKx12dWOGFW8h2PAWHu4LhJ4aOsfkEzqpxAFZdUblmpGz3guWbApuPmu42xU=
+	t=1718993749; cv=none; b=WikwkCYSFmMlpb9R1GuVFjierrQARnlDTuqkL8kmi7Tm/g63bY+Ge+pYIeRwYoUGfVEZHNOUaGwrvaJObuV00wRD7H7qZDb99TI6FW/oUH02ETLkTgzFYtgqPkcwCHlsi7RUAx0wvHM1dzFeim0gvGvOXUO5SqMz6GaOvr9hPII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718990835; c=relaxed/simple;
-	bh=wiGpqyGq0pz+671ybpoV6GcrH0nBUI9hmsIPKIpFk80=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u6qeLeiPGvIR4pykKxATyGsw/4tKHlWTEJGtZIMEsqaWCfbs6Z7Ixq0Oq53VeJM60Uawj5uhqPvM3HRc5Qw8pNrTEHiLCYjF+rWRidNd7O0GdNd3Ipga8c31lxDG2LLF2lbdWpXr48oT6IawSH8k9mvtJ91TT7ARTY7coHJShKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ujsUDzi/; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-57a16f4b8bfso22712a12.0
-        for <stable@vger.kernel.org>; Fri, 21 Jun 2024 10:27:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718990832; x=1719595632; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dZEECrhQjBIpDFBsE7AD3QeFYzB3SERdZGpooJJm1Aw=;
-        b=ujsUDzi/HwvcPF9/soVwA1ZwTO9rrjQovweXrA1bI6bylpMtysyAJjbHaaoOjdA8XB
-         kaLrbhq5iESUHzUkouXVZdHweK1fTH4ITk8bldzbCIL26TfqJK4Mh/Q3ROzYe0xRdp4S
-         7MfbSo5nns01rrxxGzBPD6RnfNcmNPoof6tSHqCU73rLFBzGuUGqVQ0hoNa/vq4xUTyi
-         7V1dembfL3fa/hZcMEI4CRI8S71Ap9+P4boZaxKXtEgYS6OrfSvPn6Or5hLwrVOQv0hY
-         3tlZK36UjP4lubBKEaeUNf2nGD2V5RVyjm96fQgsh0rUHL3E8ceH0g9RxeJlMbc6aLAW
-         Rzsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718990832; x=1719595632;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dZEECrhQjBIpDFBsE7AD3QeFYzB3SERdZGpooJJm1Aw=;
-        b=BjvDIALSyN7TAx8c8Ddqdu+UIhvdCWZzH872C0o7PKiOZPx0eJnNWKHztxd+FUeLya
-         El4auVSxssp+CjrMgjIHbG7iLoGkmta3PhFXivFNiU6VSPmbQgikuOci/MRNiaDSwiMN
-         /EpBmcQkQHOiofiwFlpiLWsAau39yuWcd41Y8/mikC1XG9fVaPDqx/pJJAZwx35Cmn1g
-         cEq1CRWY5dOgzGoMCjQK+lrS2y58GRWfClBmohJv3yR3n9dQfVfCUQpKl0tmQ8ppTDXQ
-         zzfs3ElrX1f5dcyjBJ64K0YR8aN4RyXQqRc/B3jPrZ0uCAISuAS+6d+O+oCJsIneOlo5
-         QeNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVluCmqVPZ+77A7GlTf3RSdBLxGX8IIYusAGsoRZIye+GoewII1s0gWadkNQqJeyS/UjD1EzayngmNY8p86AHT1juJnGrVM
-X-Gm-Message-State: AOJu0YwM0nvqwFhjf91zuSe93oxKI2XwXHTxL1af50lhpnGSni6paPuo
-	hkQ/aRFttO8hkmUbK7gCjqG2ug9VSeNvtHsIOs0Q4dqwiGySvRbtQFSKAR1rCMWw7pfiry5jlZX
-	IefUiHAg9duMLD7PIo8RuH4RpKzjyiVdmBf/P
-X-Google-Smtp-Source: AGHT+IF6tEiRT/9KGWlVNCP+9uwkKC3MsFDZH8IrIH6duITWkOQqgznDYKPEamEZ2wZ//k6/c8eXxVE1ENPTGHesQ7Q=
-X-Received: by 2002:a05:6402:35c1:b0:57c:fb0f:1355 with SMTP id
- 4fb4d7f45d1cf-57d3f1db8b5mr34243a12.0.1718990831973; Fri, 21 Jun 2024
- 10:27:11 -0700 (PDT)
+	s=arc-20240116; t=1718993749; c=relaxed/simple;
+	bh=G1+LMnVYjuipUm7A53Qs1WbYqgdsKBtjjKsWuTWGXxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sz7c4ckk00qf0zYBAur5QGRMImLjvvEjPVgS2Vk5JoF2ny3GQ4XnUhUgNHBKzZLg7Cr5+YXttg4BiCvhFc+CTgv799EHPvmCSMnx3PEeMLfZ6ZZJ9lboWr7Oso7xpichWcqqTuFbQTVsTtuL0kedHztjvL+4mm543Hsp62/OlHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=YGHI9Wrr; arc=none smtp.client-ip=185.125.25.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-3-0001.mail.infomaniak.ch (smtp-3-0001.mail.infomaniak.ch [10.4.36.108])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4W5QK92v4LzPFs;
+	Fri, 21 Jun 2024 20:06:21 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1718993181;
+	bh=6zm24rznEW9/wKRnfzUKzbrn4dwriuF/US2vViMaVSs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YGHI9WrrckgcP33dYfqWS92FX0inLWuu+RUeMrATGaGmqr0ZLJEmXUP5nzRBmZFO3
+	 oZgAMU7R1BZVI1eiDu10BPeRfpEMMoGqryfFh+swMp9vuDfSF7r/llDi9vQBdjzoy+
+	 vQLJSzdOS1bwkzNSzTEY1GnLCtyuIFjZlmTxJgqg=
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4W5QK65KCbzQTy;
+	Fri, 21 Jun 2024 20:06:18 +0200 (CEST)
+From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To: Christian Brauner <brauner@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Shengyu Li <shengyu.li.evgeny@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Brendan Higgins <brendanhiggins@google.com>,
+	David Gow <davidgow@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Ron Economos <re@w6rz.net>,
+	Ronald Warsow <rwarsow@gmx.de>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Will Drewry <wad@chromium.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v1] selftests/harness: Fix tests timeout and race condition
+Date: Fri, 21 Jun 2024 20:06:05 +0200
+Message-ID: <20240621180605.834676-1-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240621144017.30993-1-jack@suse.cz> <20240621144246.11148-1-jack@suse.cz>
-In-Reply-To: <20240621144246.11148-1-jack@suse.cz>
-From: "Zach O'Keefe" <zokeefe@google.com>
-Date: Fri, 21 Jun 2024 10:26:34 -0700
-Message-ID: <CAAa6QmRdzoMuf3PyLcYP1X_uQAWj9_1mB0oD5dYpPT4hJqFHBw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] Revert "mm/writeback: fix possible divide-by-zero in
- wb_dirty_limits(), again"
-To: Jan Kara <jack@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
 
-On Fri, Jun 21, 2024 at 7:42=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
->
-> This reverts commit 9319b647902cbd5cc884ac08a8a6d54ce111fc78.
->
-> The commit is broken in several ways. Firstly, the removed (u64) cast
-> from the multiplication will introduce a multiplication overflow on
-> 32-bit archs if wb_thresh * bg_thresh >=3D 1<<32 (which is actually commo=
-n
-> - the default settings with 4GB of RAM will trigger this). Secondly, the
->   div64_u64() is unnecessarily expensive on 32-bit archs. We have
-> div64_ul() in case we want to be safe & cheap. Thirdly, if dirty
-> thresholds are larger than 1<<32 pages, then dirty balancing is
-> going to blow up in many other spectacular ways anyway so trying to fix
-> one possible overflow is just moot.
->
-> CC: stable@vger.kernel.org
-> Fixes: 9319b647902c ("mm/writeback: fix possible divide-by-zero in wb_dir=
-ty_limits(), again")
-> Signed-off-by: Jan Kara <jack@suse.cz>
-> ---
->  mm/page-writeback.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index 12c9297ed4a7..2573e2d504af 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -1660,7 +1660,7 @@ static inline void wb_dirty_limits(struct dirty_thr=
-ottle_control *dtc)
->          */
->         dtc->wb_thresh =3D __wb_calc_thresh(dtc, dtc->thresh);
->         dtc->wb_bg_thresh =3D dtc->thresh ?
-> -               div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) :=
- 0;
-> +               div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh=
-) : 0;
->
->         /*
->          * In order to avoid the stacked BDI deadlock we need
-> --
-> 2.35.3
->
->
+We cannot use CLONE_VFORK because we also need to wait for the timeout
+signal.
 
-Thanks Jan,
+Restore tests timeout by using the original fork() call in __run_test()
+but also in __TEST_F_IMPL().  Also fix a race condition when waiting for
+the test child process.
 
-Reviewed-By: Zach O'Keefe <zokeefe@google.com>
+Because test metadata are shared between test processes, only the
+parent process must set the test PID (child).  Otherwise, t->pid may be
+set to zero, leading to inconsistent error cases:
+
+  #  RUN           layout1.rule_on_mountpoint ...
+  # rule_on_mountpoint: Test ended in some other way [127]
+  #            OK  layout1.rule_on_mountpoint
+  ok 20 layout1.rule_on_mountpoint
+
+As safeguards, initialize the "status" variable with a valid exit code,
+and handle unknown test exits as errors.
+
+The use of fork() introduces a new race condition in landlock/fs_test.c
+which seems to be specific to hostfs bind mounts, but I haven't found
+the root cause and it's difficult to trigger.  I'll try to fix it with
+another patch.
+
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Günther Noack <gnoack@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Will Drewry <wad@chromium.org>
+Cc: stable@vger.kernel.org
+Closes: https://lore.kernel.org/r/9341d4db-5e21-418c-bf9e-9ae2da7877e1@sirena.org.uk
+Fixes: a86f18903db9 ("selftests/harness: Fix interleaved scheduling leading to race conditions")
+Fixes: 24cf65a62266 ("selftests/harness: Share _metadata between forked processes")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Link: https://lore.kernel.org/r/20240621180605.834676-1-mic@digikod.net
+---
+ tools/testing/selftests/kselftest_harness.h | 43 ++++++++++++---------
+ 1 file changed, 24 insertions(+), 19 deletions(-)
+
+diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
+index b634969cbb6f..40723a6a083f 100644
+--- a/tools/testing/selftests/kselftest_harness.h
++++ b/tools/testing/selftests/kselftest_harness.h
+@@ -66,8 +66,6 @@
+ #include <sys/wait.h>
+ #include <unistd.h>
+ #include <setjmp.h>
+-#include <syscall.h>
+-#include <linux/sched.h>
+ 
+ #include "kselftest.h"
+ 
+@@ -82,17 +80,6 @@
+ #  define TH_LOG_ENABLED 1
+ #endif
+ 
+-/* Wait for the child process to end but without sharing memory mapping. */
+-static inline pid_t clone3_vfork(void)
+-{
+-	struct clone_args args = {
+-		.flags = CLONE_VFORK,
+-		.exit_signal = SIGCHLD,
+-	};
+-
+-	return syscall(__NR_clone3, &args, sizeof(args));
+-}
+-
+ /**
+  * TH_LOG()
+  *
+@@ -437,7 +424,7 @@ static inline pid_t clone3_vfork(void)
+ 		} \
+ 		if (setjmp(_metadata->env) == 0) { \
+ 			/* _metadata and potentially self are shared with all forks. */ \
+-			child = clone3_vfork(); \
++			child = fork(); \
+ 			if (child == 0) { \
+ 				fixture_name##_setup(_metadata, self, variant->data); \
+ 				/* Let setup failure terminate early. */ \
+@@ -1016,7 +1003,14 @@ void __wait_for_test(struct __test_metadata *t)
+ 		.sa_flags = SA_SIGINFO,
+ 	};
+ 	struct sigaction saved_action;
+-	int status;
++	/*
++	 * Sets status so that WIFEXITED(status) returns true and
++	 * WEXITSTATUS(status) returns KSFT_FAIL.  This safe default value
++	 * should never be evaluated because of the waitpid(2) check and
++	 * SIGALRM handling.
++	 */
++	int status = KSFT_FAIL << 8;
++	int child;
+ 
+ 	if (sigaction(SIGALRM, &action, &saved_action)) {
+ 		t->exit_code = KSFT_FAIL;
+@@ -1028,7 +1022,15 @@ void __wait_for_test(struct __test_metadata *t)
+ 	__active_test = t;
+ 	t->timed_out = false;
+ 	alarm(t->timeout);
+-	waitpid(t->pid, &status, 0);
++	child = waitpid(t->pid, &status, 0);
++	if (child == -1 && errno != EINTR) {
++		t->exit_code = KSFT_FAIL;
++		fprintf(TH_LOG_STREAM,
++			"# %s: Failed to wait for PID %d (errno: %d)\n",
++			t->name, t->pid, errno);
++		return;
++	}
++
+ 	alarm(0);
+ 	if (sigaction(SIGALRM, &saved_action, NULL)) {
+ 		t->exit_code = KSFT_FAIL;
+@@ -1083,6 +1085,7 @@ void __wait_for_test(struct __test_metadata *t)
+ 				WTERMSIG(status));
+ 		}
+ 	} else {
++		t->exit_code = KSFT_FAIL;
+ 		fprintf(TH_LOG_STREAM,
+ 			"# %s: Test ended in some other way [%u]\n",
+ 			t->name,
+@@ -1218,6 +1221,7 @@ void __run_test(struct __fixture_metadata *f,
+ 	struct __test_xfail *xfail;
+ 	char test_name[1024];
+ 	const char *diagnostic;
++	int child;
+ 
+ 	/* reset test struct */
+ 	t->exit_code = KSFT_PASS;
+@@ -1236,15 +1240,16 @@ void __run_test(struct __fixture_metadata *f,
+ 	fflush(stdout);
+ 	fflush(stderr);
+ 
+-	t->pid = clone3_vfork();
+-	if (t->pid < 0) {
++	child = fork();
++	if (child < 0) {
+ 		ksft_print_msg("ERROR SPAWNING TEST CHILD\n");
+ 		t->exit_code = KSFT_FAIL;
+-	} else if (t->pid == 0) {
++	} else if (child == 0) {
+ 		setpgrp();
+ 		t->fn(t, variant);
+ 		_exit(t->exit_code);
+ 	} else {
++		t->pid = child;
+ 		__wait_for_test(t);
+ 	}
+ 	ksft_print_msg("         %4s  %s\n",
+
+base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
+-- 
+2.45.2
+
 
