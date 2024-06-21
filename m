@@ -1,112 +1,154 @@
-Return-Path: <stable+bounces-54796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98289911B97
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 08:23:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77875911C6D
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 09:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 271B4B249A8
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 06:23:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A89831C20DFC
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 07:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76395155A52;
-	Fri, 21 Jun 2024 06:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905E8168C1D;
+	Fri, 21 Jun 2024 07:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="nSYnOUQW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YuiNfFBj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A339813C802
-	for <stable@vger.kernel.org>; Fri, 21 Jun 2024 06:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282D614038F;
+	Fri, 21 Jun 2024 07:09:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718951011; cv=none; b=VtjPNSYRum6QqtgRIbwZL5csdy6DwbDl2Pq7enL+GhzAT3UBzksjj0qbYZtOzzL6nBG4hCkCklXKnNzyLGNwkpZv0xWvNocOLv9n+uY8t1RQ1IwavPX6EOWKMPvRYhVlGuqdodWqb0vlzqvTaRlDn7oF+B0Rb3nNr67nAT41zT4=
+	t=1718953747; cv=none; b=mLXG5MYF7WDl0q1SVJyByXeBP0+VJP6IYm9I/lJq/0hU98Rte4bTw+44OofLca/TDCh28vJMLD/+JnEu5xrXazLmVgOgpsKIRIJ6rGnKkGRW7iWO1ToRJ4oVswTIytjNZluVUei3KKDVYXb2gimX/SHgUEiAjgf6xvzIhjy6rxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718951011; c=relaxed/simple;
-	bh=srVvD7HVss2RcU2p6v6VTDCoVlILB5rAU2uw0cXOokE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=BI3szmxg23A4wqyFFIlYoyqmc58wifB8UgPJ3tBh5HwYL29Gf1b9OHcMvyUQN030Uo189uNQgWrkeenbQCueI4qoUo+Qp9dbvfaEX80kppIZjHxzUVAr6+DF7RZ371NKcYolowRaPUJf2B40K05mmmHakPwTwoND5Hv2b9aengU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=nSYnOUQW; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42179dafd6bso16557615e9.0
-        for <stable@vger.kernel.org>; Thu, 20 Jun 2024 23:23:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718951007; x=1719555807; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nSTFejqy3D/uJvo9d5Piv5WiCvKpQae7b38TSTQDNPk=;
-        b=nSYnOUQWbDkrJ7q2PjrAuj41GRCwDQi6T7ySx+znGApNKSFF9M9DJrP8RCsPCh+Zzk
-         4FYdjzQbxSco7iQTOBkvcqcIJ9U375tqAMYm3fwtHYS34nP8/UiLXQ2rF5JDFjsc1zfj
-         HihPl1qXxFvu016i4YFXlnFucpGmDV0p9S4/QuzQT5dJ8fAD53+3nsw0Qp/qwL24UIpY
-         ZY6Ku2GAR0Tg6HjF5XFP2PGpGsAIqk5RKXX1EulEvA4R2PXWNu0xq+tHGF6tVnFKDs7w
-         lDyfsRlLag5zCA3VaG244Ygm3BfKHqFgzE1P3lulDQ/5Kyfka6sU3Uyuo6lWDKUtnrKR
-         4nIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718951007; x=1719555807;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nSTFejqy3D/uJvo9d5Piv5WiCvKpQae7b38TSTQDNPk=;
-        b=PwB+MiQRuMiHihF823ov0u64eHQVyFtVha3xsAPCySuozDAFxrO/SNYnE4AqZ2VI5p
-         Mwm+nkwWxVEUfK90pTJj3iWyS0hNUe7DPa2nDralyF+WuwAJ4QbCwASO2MawyB/jmE00
-         HM+gJNPcEMmGgeJwx48K4t5VFQL0pHKNhoPZ+3nGbLDbaTvaG6xylNuLF+yrulfMxVDS
-         gvlFjEIYpwwZrjSB99msBMVOjfuTxpuD2sqrgwyGfrcoPoZGJQypUVMnUBK57bYbWfaX
-         0AzbplXZ+Hs3+8/QS3aOFpgwJcgnFg5NgsqLZMxgrtM6lH6mwUbhkoYddexu6J+9i/8S
-         Bi7w==
-X-Forwarded-Encrypted: i=1; AJvYcCV2144/8ej+1s5xBWdVrK1Vjkz49A49NA8Ec03+G/7Dw/vtM+JKuMaEhto31oLf8srwmX5mOMkLmFVQzArBr8zgHZ78zBW7
-X-Gm-Message-State: AOJu0YxYb+gddCAPWj1v1+2kK4a4va5+DGJ39sVPJ+QhvOw8+Cf1YfNb
-	fA9bHR7Mr7uVFwa47+KXB/DObEuz8MSrPUf6r4YcZJmfp+rlsSlPPaTnphawCJZ4GRFKhFLQsqr
-	yYI4=
-X-Google-Smtp-Source: AGHT+IG0iGX0t3lNlYtnvogVlhJQiyMgokqT9gSK9cdmSOHSR5MCOKAxL+BQj9ux3uttWBRmZyVkNw==
-X-Received: by 2002:adf:f691:0:b0:362:e874:54e8 with SMTP id ffacd0b85a97d-362e8745790mr7067636f8f.30.1718951007595;
-        Thu, 20 Jun 2024 23:23:27 -0700 (PDT)
-Received: from [192.168.1.195] ([5.133.47.210])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-424817aa340sm14204335e9.19.2024.06.20.23.23.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 23:23:26 -0700 (PDT)
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>, 
- Dan Carpenter <dan.carpenter@linaro.org>, 
- Joy Chakraborty <joychakr@google.com>
-Cc: linux-rtc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20240612083635.1253039-1-joychakr@google.com>
-References: <20240612083635.1253039-1-joychakr@google.com>
-Subject: Re: [PATCH] rtc: cmos: Fix return value of nvmem callbacks
-Message-Id: <171895100542.14088.10936476837707237106.b4-ty@linaro.org>
-Date: Fri, 21 Jun 2024 07:23:25 +0100
+	s=arc-20240116; t=1718953747; c=relaxed/simple;
+	bh=JNeSznPsu6rMM8q9i1YN4cUCJ34wg5WxXaxe2u+XauI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LYGEkNJKZc0QHUQepdlBsIXSPEfEB3cTOKiTeQfxEpoUYTsHPwGX/f6Z48VqpsSf/W5KiP4AV1Q9dOw/qTyGi/Ndg+HRy+CLhLkVJCZM5PwTQc3XZd5XTFysY7+lr+0FfhKP+P+5upJoUFArZ7LcG4OiBUybphZImBDfeyfYtAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YuiNfFBj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522EBC2BBFC;
+	Fri, 21 Jun 2024 07:09:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718953746;
+	bh=JNeSznPsu6rMM8q9i1YN4cUCJ34wg5WxXaxe2u+XauI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YuiNfFBjYQZ4LWbVZN2X73hS5tUPBXHgfp6QswTqOZ2KDQNS6n7gypHuB7O9Ltu5l
+	 btpKVynQuyMi1uu5NaLbZzYltuiNLZoYU/ya58uhWbgtzPeJf7s6FrsaSqhBSNKVta
+	 8AB9fKEKDbvJHvK/anMsronwVvkEkcxdaDOw0rcQ=
+Date: Fri, 21 Jun 2024 09:09:03 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: joswang <joswang1221@gmail.com>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Jos Wang <joswang@lenovo.com>
+Subject: Re: [PATCH v7] usb: dwc3: core: Workaround for CSR read timeout
+Message-ID: <2024062126-whacky-employee-74a4@gregkh>
+References: <20240619114529.3441-1-joswang1221@gmail.com>
+ <2024062051-washtub-sufferer-d756@gregkh>
+ <CAMtoTm06MTJ_Gc4NvenycvWRxhLSaPptT1DLvBRs4RWVZO9Y_g@mail.gmail.com>
+ <2024062151-professor-squeak-a4a7@gregkh>
+ <20240621054239.mskjqbuhovydvmu4@synopsys.com>
+ <2024062150-justify-skillet-e80e@gregkh>
+ <20240621062036.2rhksldny7dzijv2@synopsys.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240621062036.2rhksldny7dzijv2@synopsys.com>
 
-
-On Wed, 12 Jun 2024 08:36:35 +0000, Joy Chakraborty wrote:
-> Read/write callbacks registered with nvmem core expect 0 to be returned
-> on success and a negative value to be returned on failure.
+On Fri, Jun 21, 2024 at 06:20:38AM +0000, Thinh Nguyen wrote:
+> On Fri, Jun 21, 2024, Greg KH wrote:
+> > On Fri, Jun 21, 2024 at 05:42:42AM +0000, Thinh Nguyen wrote:
+> > > On Fri, Jun 21, 2024, Greg KH wrote:
+> > > > On Fri, Jun 21, 2024 at 09:40:10AM +0800, joswang wrote:
+> > > > > On Fri, Jun 21, 2024 at 1:16 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > > > >
+> > > > > > On Wed, Jun 19, 2024 at 07:45:29PM +0800, joswang wrote:
+> > > > > > > From: Jos Wang <joswang@lenovo.com>
+> > > > > > >
+> > > > > > > This is a workaround for STAR 4846132, which only affects
+> > > > > > > DWC_usb31 version2.00a operating in host mode.
+> > > > > > >
+> > > > > > > There is a problem in DWC_usb31 version 2.00a operating
+> > > > > > > in host mode that would cause a CSR read timeout When CSR
+> > > > > > > read coincides with RAM Clock Gating Entry. By disable
+> > > > > > > Clock Gating, sacrificing power consumption for normal
+> > > > > > > operation.
+> > > > > > >
+> > > > > > > Cc: stable@vger.kernel.org
+> > > > > > > Signed-off-by: Jos Wang <joswang@lenovo.com>
+> > > > > >
+> > > > > > What commit id does this fix?  How far back should it be backported in
+> > > > > > the stable releases?
+> > > > > >
+> > > > > > thanks,
+> > > > > >
+> > > > > > greg k-h
+> > > > > 
+> > > > > Hello Greg Thinh
+> > > > > 
+> > > > > It seems first begin from the commit 1e43c86d84fb ("usb: dwc3: core:
+> > > > > Add DWC31 version 2.00a controller")
+> > > > > in 6.8.0-rc6 branch ?
+> > > > 
+> > > > That commit showed up in 6.9, not 6.8.  And if so, please resend with a
+> > > > proper "Fixes:" tag.
+> > > > 
+> > > 
+> > > This patch workarounds the controller's issue.
+> > 
+> > So it fixes a bug?  Or does not fix a bug?  I'm confused.
 > 
-> cmos_nvram_read()/cmos_nvram_write() currently return the number of
-> bytes read or written, fix to return 0 on success and -EIO incase number
-> of bytes requested was not read or written.
+> The bug is not a driver's bug. The fix applies to a hardware bug and not
+> any particular commit that can be referenced with a "Fixes" tag.
+
+So it's a bug that the kernel needs to work around, that's fine.  But
+that implies it should go to "all" stable kernels that it can, right?
+
+> > > It doesn't resolve any
+> > > particular commit that requires a "Fixes" tag. So, this should go on
+> > > "next". It can be backported as needed.
+> > 
+> > Who would do the backporting and when?
 > 
-> [...]
+> For anyone who doesn't use mainline kernel that needs this patch
+> backported to their kernel version.
 
-Applied, thanks!
+I can not poarse this, sorry.  We can't do anything about people who
+don't use our kernel trees, so what does this mean?
 
-[1/1] rtc: cmos: Fix return value of nvmem callbacks
-      commit: ac9b2633e85f6b53cf368f90ae7589553e8998b6
+> > > If it's to be backported, it can
+> > > probably go back to as far as v4.3, to commit 690fb3718a70 ("usb: dwc3:
+> > > Support Synopsys USB 3.1 IP"). But you'd need to collect all the
+> > > dependencies including the commit mention above.
+> > 
+> > I don't understand, sorry.  Is this just a normal "evolve the driver to
+> > work better" change, or is it a "fix broken code" change, or is it
+> > something else?
+> > 
+> > In other words, what do you want to see happen to this?  What tree(s)
+> > would you want it applied to?
+> > 
+> 
+> It's up to you, but it seems to fit "usb-testing" branch more since it
+> doesn't have a "Fixes" tag. The severity of this fix is debatable since
+> it doesn't apply to every DWC_usb31 configuration or every scenario.
 
-Best regards,
--- 
-Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+As it is "cc: stable" that implies that it should get to Linus for
+6.10-final, not wait for 6.11-rc1 as the 6.11 release is months away,
+and anyone who has this issue would want it fixed sooner.
 
+still confused,
+
+greg k-h
 
