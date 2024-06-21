@@ -1,241 +1,102 @@
-Return-Path: <stable+bounces-54839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C667A912D1B
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 20:15:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21CC7912D55
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 20:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5107B1F26004
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 18:15:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 526871C25A07
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 18:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE7812CDBE;
-	Fri, 21 Jun 2024 18:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED9D17B50A;
+	Fri, 21 Jun 2024 18:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="YGHI9Wrr"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dz70knYH";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v74VARbF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-190a.mail.infomaniak.ch (smtp-190a.mail.infomaniak.ch [185.125.25.10])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08D28C1E
-	for <stable@vger.kernel.org>; Fri, 21 Jun 2024 18:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0140E17B4F1;
+	Fri, 21 Jun 2024 18:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718993749; cv=none; b=WikwkCYSFmMlpb9R1GuVFjierrQARnlDTuqkL8kmi7Tm/g63bY+Ge+pYIeRwYoUGfVEZHNOUaGwrvaJObuV00wRD7H7qZDb99TI6FW/oUH02ETLkTgzFYtgqPkcwCHlsi7RUAx0wvHM1dzFeim0gvGvOXUO5SqMz6GaOvr9hPII=
+	t=1718995221; cv=none; b=rAmaBs4WAhFB1YIPnVWwigHpl7lTBeel5rFMcuhtffj/w7rJXlIKCa2q0YmFXui/7xnDMNsVdeanA0mcGIFYLzdQ9Ok7hGbVGIzD67w+nZU/0QDcmS/LlPjeMP7LdghfoZ3C/CVrtGbhpIXbShzjV4O/rEc1rWWv2JqbMILVUbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718993749; c=relaxed/simple;
-	bh=G1+LMnVYjuipUm7A53Qs1WbYqgdsKBtjjKsWuTWGXxE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sz7c4ckk00qf0zYBAur5QGRMImLjvvEjPVgS2Vk5JoF2ny3GQ4XnUhUgNHBKzZLg7Cr5+YXttg4BiCvhFc+CTgv799EHPvmCSMnx3PEeMLfZ6ZZJ9lboWr7Oso7xpichWcqqTuFbQTVsTtuL0kedHztjvL+4mm543Hsp62/OlHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=YGHI9Wrr; arc=none smtp.client-ip=185.125.25.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
-Received: from smtp-3-0001.mail.infomaniak.ch (smtp-3-0001.mail.infomaniak.ch [10.4.36.108])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4W5QK92v4LzPFs;
-	Fri, 21 Jun 2024 20:06:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1718993181;
-	bh=6zm24rznEW9/wKRnfzUKzbrn4dwriuF/US2vViMaVSs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YGHI9WrrckgcP33dYfqWS92FX0inLWuu+RUeMrATGaGmqr0ZLJEmXUP5nzRBmZFO3
-	 oZgAMU7R1BZVI1eiDu10BPeRfpEMMoGqryfFh+swMp9vuDfSF7r/llDi9vQBdjzoy+
-	 vQLJSzdOS1bwkzNSzTEY1GnLCtyuIFjZlmTxJgqg=
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4W5QK65KCbzQTy;
-	Fri, 21 Jun 2024 20:06:18 +0200 (CEST)
-From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-To: Christian Brauner <brauner@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Shengyu Li <shengyu.li.evgeny@gmail.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Brendan Higgins <brendanhiggins@google.com>,
-	David Gow <davidgow@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Ron Economos <re@w6rz.net>,
-	Ronald Warsow <rwarsow@gmx.de>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Will Drewry <wad@chromium.org>,
-	kernel test robot <oliver.sang@intel.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v1] selftests/harness: Fix tests timeout and race condition
-Date: Fri, 21 Jun 2024 20:06:05 +0200
-Message-ID: <20240621180605.834676-1-mic@digikod.net>
+	s=arc-20240116; t=1718995221; c=relaxed/simple;
+	bh=kVkfeZyHUj69SoWVDqqVjTUP9SejBG/wsfbPMuTeoeQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=CNI9AbiAzkN7KuUkmy3jFlR7qtzbslIXwzBxUWzfXFqAzx4pQAIT0eyqax9MqJtF+mw8GkxoxSjC7bbV7NwgCCKHETRt44Ja1bT0aJh8luwQ/5aCxb5q0/q6hWr3rp6PrhefX3d9a+Z6MI3vD3RIkZcGuYvz6/IwCjNberJ8b8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dz70knYH; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v74VARbF; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1718995218;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t8oL0HVT+pepGRoZ/t/HRR9+/cVmQREcSm1WoUChEDM=;
+	b=dz70knYH5ZZh+XdoBqh2v3zLwuSZDvomDJEPzqJfK1q13ts4l+ofk4kmLVJplmXM8fCedu
+	FuzAqg5F3Fo5dtQsHbfy559XvEB1+6dndfpoz9JILCMirWmRAQgk/dUHP5VyIibAmF+e06
+	ebBYe1FwuPpxoyjReb1ebs0FqqlGsX4w3LuEYxqvI+y15sYrjxT8KyfMYdnqDwy51fPxX9
+	B5XNj5ykhMyC/6fyt8J6yNI2Af2VbN9KGLMI1eESgKOqod8YRgjk30uqG1yUvvJp2MoC66
+	c7BNW587ksNiYAxKoYLbSToqxAsxFqPVvqUmsiL1mjVLphXEU4Zcc3ZOwQZs5Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1718995218;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t8oL0HVT+pepGRoZ/t/HRR9+/cVmQREcSm1WoUChEDM=;
+	b=v74VARbFXunQIVQadu4FBPBTChxVuZG4e6v+KDHBqvcte0bHRZ29hNzgUWw9sx9tApYIC2
+	S8nenCY1VG8zGbAw==
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, Xuefeng Li
+ <lixuefeng@loongson.cn>, Huacai Chen <chenhuacai@gmail.com>, Jiaxun Yang
+ <jiaxun.yang@flygoat.com>, Huacai Chen <chenhuacai@loongson.cn>,
+ stable@vger.kernel.org, Tianli Xiong <xiongtianli@loongson.cn>
+Subject: Re: [PATCH] irqchip/loongson-liointc: Set different ISRs for
+ different cores
+In-Reply-To: <20240612070106.2060334-1-chenhuacai@loongson.cn>
+References: <20240612070106.2060334-1-chenhuacai@loongson.cn>
+Date: Fri, 21 Jun 2024 20:40:17 +0200
+Message-ID: <87y16ym966.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain
 
-We cannot use CLONE_VFORK because we also need to wait for the timeout
-signal.
+On Wed, Jun 12 2024 at 15:01, Huacai Chen wrote:
+> In the liointc hardware, there are different ISRs for different cores.
 
-Restore tests timeout by using the original fork() call in __run_test()
-but also in __TEST_F_IMPL().  Also fix a race condition when waiting for
-the test child process.
+I have no idea what ISR means in that context. Can you please spell it
+out with proper words so that people not familiar with the details can
+understand it?
 
-Because test metadata are shared between test processes, only the
-parent process must set the test PID (child).  Otherwise, t->pid may be
-set to zero, leading to inconsistent error cases:
+> We always use core#0's ISR before but has no problem, it is because the
+> interrupts are routed to core#0 by default. If we change the routing,
+> we should set correct ISRs for different cores.
 
-  #  RUN           layout1.rule_on_mountpoint ...
-  # rule_on_mountpoint: Test ended in some other way [127]
-  #            OK  layout1.rule_on_mountpoint
-  ok 20 layout1.rule_on_mountpoint
+We do nothing. The code does.
 
-As safeguards, initialize the "status" variable with a valid exit code,
-and handle unknown test exits as errors.
+See https://www.kernel.org/doc/html/latest/process/maintainer-tip.html#changelog
 
-The use of fork() introduces a new race condition in landlock/fs_test.c
-which seems to be specific to hostfs bind mounts, but I haven't found
-the root cause and it's difficult to trigger.  I'll try to fix it with
-another patch.
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Tianli Xiong <xiongtianli@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Günther Noack <gnoack@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Will Drewry <wad@chromium.org>
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/r/9341d4db-5e21-418c-bf9e-9ae2da7877e1@sirena.org.uk
-Fixes: a86f18903db9 ("selftests/harness: Fix interleaved scheduling leading to race conditions")
-Fixes: 24cf65a62266 ("selftests/harness: Share _metadata between forked processes")
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
-Link: https://lore.kernel.org/r/20240621180605.834676-1-mic@digikod.net
----
- tools/testing/selftests/kselftest_harness.h | 43 ++++++++++++---------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+This Signed-off-by chain is wrong. If Tianli is the author then this
+needs a From: Tianli in the changelog. If you developed it together then
+this lacks a Co-developed-by tag.
 
-diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
-index b634969cbb6f..40723a6a083f 100644
---- a/tools/testing/selftests/kselftest_harness.h
-+++ b/tools/testing/selftests/kselftest_harness.h
-@@ -66,8 +66,6 @@
- #include <sys/wait.h>
- #include <unistd.h>
- #include <setjmp.h>
--#include <syscall.h>
--#include <linux/sched.h>
- 
- #include "kselftest.h"
- 
-@@ -82,17 +80,6 @@
- #  define TH_LOG_ENABLED 1
- #endif
- 
--/* Wait for the child process to end but without sharing memory mapping. */
--static inline pid_t clone3_vfork(void)
--{
--	struct clone_args args = {
--		.flags = CLONE_VFORK,
--		.exit_signal = SIGCHLD,
--	};
--
--	return syscall(__NR_clone3, &args, sizeof(args));
--}
--
- /**
-  * TH_LOG()
-  *
-@@ -437,7 +424,7 @@ static inline pid_t clone3_vfork(void)
- 		} \
- 		if (setjmp(_metadata->env) == 0) { \
- 			/* _metadata and potentially self are shared with all forks. */ \
--			child = clone3_vfork(); \
-+			child = fork(); \
- 			if (child == 0) { \
- 				fixture_name##_setup(_metadata, self, variant->data); \
- 				/* Let setup failure terminate early. */ \
-@@ -1016,7 +1003,14 @@ void __wait_for_test(struct __test_metadata *t)
- 		.sa_flags = SA_SIGINFO,
- 	};
- 	struct sigaction saved_action;
--	int status;
-+	/*
-+	 * Sets status so that WIFEXITED(status) returns true and
-+	 * WEXITSTATUS(status) returns KSFT_FAIL.  This safe default value
-+	 * should never be evaluated because of the waitpid(2) check and
-+	 * SIGALRM handling.
-+	 */
-+	int status = KSFT_FAIL << 8;
-+	int child;
- 
- 	if (sigaction(SIGALRM, &action, &saved_action)) {
- 		t->exit_code = KSFT_FAIL;
-@@ -1028,7 +1022,15 @@ void __wait_for_test(struct __test_metadata *t)
- 	__active_test = t;
- 	t->timed_out = false;
- 	alarm(t->timeout);
--	waitpid(t->pid, &status, 0);
-+	child = waitpid(t->pid, &status, 0);
-+	if (child == -1 && errno != EINTR) {
-+		t->exit_code = KSFT_FAIL;
-+		fprintf(TH_LOG_STREAM,
-+			"# %s: Failed to wait for PID %d (errno: %d)\n",
-+			t->name, t->pid, errno);
-+		return;
-+	}
-+
- 	alarm(0);
- 	if (sigaction(SIGALRM, &saved_action, NULL)) {
- 		t->exit_code = KSFT_FAIL;
-@@ -1083,6 +1085,7 @@ void __wait_for_test(struct __test_metadata *t)
- 				WTERMSIG(status));
- 		}
- 	} else {
-+		t->exit_code = KSFT_FAIL;
- 		fprintf(TH_LOG_STREAM,
- 			"# %s: Test ended in some other way [%u]\n",
- 			t->name,
-@@ -1218,6 +1221,7 @@ void __run_test(struct __fixture_metadata *f,
- 	struct __test_xfail *xfail;
- 	char test_name[1024];
- 	const char *diagnostic;
-+	int child;
- 
- 	/* reset test struct */
- 	t->exit_code = KSFT_PASS;
-@@ -1236,15 +1240,16 @@ void __run_test(struct __fixture_metadata *f,
- 	fflush(stdout);
- 	fflush(stderr);
- 
--	t->pid = clone3_vfork();
--	if (t->pid < 0) {
-+	child = fork();
-+	if (child < 0) {
- 		ksft_print_msg("ERROR SPAWNING TEST CHILD\n");
- 		t->exit_code = KSFT_FAIL;
--	} else if (t->pid == 0) {
-+	} else if (child == 0) {
- 		setpgrp();
- 		t->fn(t, variant);
- 		_exit(t->exit_code);
- 	} else {
-+		t->pid = child;
- 		__wait_for_test(t);
- 	}
- 	ksft_print_msg("         %4s  %s\n",
+See Documentation/process/
 
-base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
--- 
-2.45.2
+Thanks,
 
+        tglx
 
