@@ -1,228 +1,287 @@
-Return-Path: <stable+bounces-54830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4195D912949
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 17:18:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F9991297E
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 17:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8D6B1F26B87
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 15:18:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E80A1C23C89
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 15:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CDD6A8DB;
-	Fri, 21 Jun 2024 15:18:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="soE/sBnO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEB5E757F8;
+	Fri, 21 Jun 2024 15:23:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12olkn2027.outbound.protection.outlook.com [40.92.23.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171AE38DE1;
-	Fri, 21 Jun 2024 15:18:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.23.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718983119; cv=fail; b=RXobiIr9ha7hwljajaXK2ARLAQFl0NNXOAbKn3jhUt+uynueyBAc0WU1PQhzEW12GGiLSMhiI99R6NuhrwDROz+tpi/jaB/KLQyDv7wC/5cWDD3OFvqVNymGgUz2qE7XoMEjYeWIFEi6SKjsgU1OJ8IJP3RtyZJ8qHrVgqY/Xx0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718983119; c=relaxed/simple;
-	bh=SRHwyjZXTEaCiZnoY9QUdRUkB2ktF+ALQo37gRdq7SI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=PQTckGvYGc+YwI/KSSbmgkJfnrYfZTtHOIURq6CUDhlvVhG4n0rwKyFHlpgXS5hpom3xQqvZ1dFD3NK8fm6mI7T5KpbkJy+w8Crk50CuQp9eseiqs5WNdTrYFyOT7ne7CLMCaJSCl2usHFQPTTZi7s07vkTCtt5NlFzZNKkuDMw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=soE/sBnO; arc=fail smtp.client-ip=40.92.23.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=BH2HTfFN4k85dkdAPIilQ3XY8kBCO3X9DrdsbHyBSqVg5NgQghv1OMWXYfFGYjrlx5dbNBJKreDWpr0FyYZUjcQ4ZfGKtAzmWpCPJskLoJqmZcHHs9TexoMnYlR/JZsZOqsP8izgPkdUevX8tiDH5puyflXKfcokeuxEeduOdgtkQIuJsYBYQSKP5R5XJlAm4mle/cVC0QhFL5HV75q2Ydb/fl6kQ4SQg4ai2jmdoayWVNvVDa1bEgxMfvXeefkCsrm7JlOZkpDwlTfdieZ8tsKjxp2b1LrLX+uSbcQ6O9bMv+OZsEgy47H6kbEqmmjqroSyWMaQoDVWD38TVFx9jQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HF1y6NiatmkPVsUBu2jZEF2IEgCXTGFfvNOsLwWzJSE=;
- b=Ivs3qy/D9kbfYFCw5NU6oYLdllLlUW878ZVbyommK8JpwfqmW+vFk31MARqQeCH2x8YjfF80P64tFovg0PDXeXLlbLKIyuS5yZLKhu+4vu2EUUsCPG5d5jftoRPRNREKAYzbcm7Rh3+LyZqaJj1WG+kSlclw94bYGbphn/ZFEBd25wH5RHyEvRb33zmzBYjhxgRsA4uuQzQ7FJVFf7GxflvBNdsT8SEDAQOK47JuH/2FAibLvurZWU+2EXreY4UIbQWZltbxs50rD1XzvmlUdL5ejzi9Wyj9l37XNObxnvMIWeZMpVIB/hvMh+9wTIa+Xd4PgWWmwMyt/FZVlsBt6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HF1y6NiatmkPVsUBu2jZEF2IEgCXTGFfvNOsLwWzJSE=;
- b=soE/sBnOMU+UMjbvyT1cMYc/lxp1HfOA3hjcJ6w+inwFFaVQOJSPy5OyNEK9gAZ3swvbHonGsJrkW+IKV6z3ypqFCwbFRhFfD3JRCRcnE3W0ZXfQHabj7FjT2EoGtjWrNMHU3wVPzSbyfIQ+UYQ0IPUs4gZYjmtdnzjhOAu8zseAN9gHdArNqkDHRa0taLTeQTZAvvJfrhsYg/yJdRzR8yU28zBJz22tSDrY8oCXrFmh7tMHWqaAPKuyvwYdlEtMyLDpw5OA1tFpa6wQCPi/41s7TQrXQ1dVrWh2cZ1UaRot5Iylwp1xVn2MZSQaP10adetkxyR5bzaR2M3wXsp30Q==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by SJ0PR02MB8497.namprd02.prod.outlook.com (2603:10b6:a03:3e5::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.22; Fri, 21 Jun
- 2024 15:18:32 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df%2]) with mapi id 15.20.7698.017; Fri, 21 Jun 2024
- 15:18:31 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Dexuan Cui <decui@microsoft.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Thomas
- Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav
- Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter
- Anvin" <hpa@zytor.com>, Daniel Lezcano <daniel.lezcano@linaro.org>, "open
- list:Hyper-V/Azure CORE AND DRIVERS" <linux-hyperv@vger.kernel.org>, "open
- list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, Roman Kisel
-	<romank@linux.microsoft.com>
-Subject: RE: [PATCH v2] clocksource: hyper-v: Use lapic timer in a TDX VM
- without paravisor
-Thread-Topic: [PATCH v2] clocksource: hyper-v: Use lapic timer in a TDX VM
- without paravisor
-Thread-Index: AQHaw6KqBhSJMhSVSU+BM+3i2rTULrHSVPkQ
-Date: Fri, 21 Jun 2024 15:18:31 +0000
-Message-ID:
- <SN6PR02MB4157A232D59ADF60CA3BD265D4C92@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <20240621061614.8339-1-decui@microsoft.com>
-In-Reply-To: <20240621061614.8339-1-decui@microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-tmn: [SD+EfaiptBWMiS58pP4W3G6dYj6hGzUr]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|SJ0PR02MB8497:EE_
-x-ms-office365-filtering-correlation-id: 71a3fa82-36c5-4143-326e-08dc9205690b
-x-microsoft-antispam:
- BCL:0;ARA:14566002|461199025|440099025|3412199022|102099029;
-x-microsoft-antispam-message-info:
- dwcONAf9tdJZHH81odxkfp6q1Sotyopiu4sy74HyUBrdQ/gpTXCHPfL+XgxBuYq+uouVOz23gZfie9x8C2ROcj0aiZdjErpRwietauI6X6m9KjEaNWaocbTeHwt1TX2J5DSrIDlfzpEU7B0LQ1uUl12+4dfCrlOh/bXbWiByQuxft9mvKcNTETpCnLKYVa52GmWJxWbboPHiMDyRFqhEn8WrLxAokd11bh8uT2vhC7spSWCst/yI/WiAOlxkuQEe+dUMqquT53jqVQFSjv5n4Qzd33VBizRXCvoJtH8hCnLxjFIZhNHONCPpro1WD6T+oHXBlZN0TK6SmRXLsL57e47jaYlEWS2nJ8FV9sMO3qiy2DAGk98nf4BCk8j3uLjj29yH9JXiN880ke4XZSz1RXZdSPChSVnJJqdcwF34qFVNfYP7wmKk8bNkATuv6t5XZbLoZnE1h40vCet5ZYr31uVxdE0f7Riygj7vgQiaKDKAUibKe9vgc0b5CFqv1OuJYN4JmRGtlFL5a1bSf4b7fEq1tYlwtFtr4c3FyYEPSmZHExbg8yW88yJWwDnK2LYF
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?S+sYVzWtCa5R2tn9sbM7l3Fh4BtjQN9dzX+wU7w4iWLfcRBqww7v+woMhf3H?=
- =?us-ascii?Q?BdIvTRZxo1Mf7JjNY78bSgQyaoJ4dWp0a39aV+7FsX3OBp86RWWkmFqEBe9g?=
- =?us-ascii?Q?tnP6t3s8IwT1HwGJe8zMaBUbzCUkoFR94qB7gfzEe3LREjTlVn702hJA31Ai?=
- =?us-ascii?Q?qUcgaw//HW9B3I/Hr0PxoomMdRRZQEqYjADeb0Er+PuIQSnG3nxn4drrHzD6?=
- =?us-ascii?Q?gJ57zaCZ6jd2A1Mn77R+gLzA5FBupAnQlA3rg0b32SDVTpIXCiJe56WXkZoq?=
- =?us-ascii?Q?6huHm7h7AbcAL896V78z7b7ZjRhV2uzVTS2NaZOjMqLlXI4DOrJUQ8paKvmx?=
- =?us-ascii?Q?nONiDDRAYMfhUZeojJt26YHV/v4JshSLbz9lh+iDSr1xJ3X47GXSnwwgotId?=
- =?us-ascii?Q?HZIgWSR9rVTo1mi6MbfSCanK+PAKhFsEn6f9WvEB8fskfm6Zkm2nxJRCKBXP?=
- =?us-ascii?Q?RetvnK7ryFy+eR967Gdcy0/6PJc8hHqeYErt+gV3PO8nlgKs40gCg/jPX/LP?=
- =?us-ascii?Q?qsR5wxVZsqMfTdq0sWcmsWTtVhFpSJgYxUk/efadPjBo0YU97n3wo+V7izB/?=
- =?us-ascii?Q?/6VIZeTwOurNkD5O2DgDEMSVgadTO3U70EwCC/BbHGEencOatiYeCWEYBa3u?=
- =?us-ascii?Q?NWqjc64ua0rbGAk5N6Z9fMPOIUup7Ip/anDyWfu22X8u1ShIgxKNvkNe0MkG?=
- =?us-ascii?Q?n14gr/F/1/5anb8KNng8MMV33lrWgCPjo13oyZVe2jLp86yi2od/J4faOXPf?=
- =?us-ascii?Q?LSL6dTh/zEB9E957blFnc5UdgI6UUF9IcKGb7X/iLL3Wa/a//6MT42IehqvG?=
- =?us-ascii?Q?2mV1DQK/iF6mw0O1WyoprN8yJsuCx0AWL6o+EpHhRFwiu4gnWCotpq+IzZDP?=
- =?us-ascii?Q?34yb+Bx4v+15YsKdvBve5DOYUmQjDi36kHn6ZgsvWhCWhJxFm8EZQw3MtrIj?=
- =?us-ascii?Q?JQM8e1ixqPrVUP94+2VmI9tvnxyG6ZACEB3mnnb4vT/Dm8EFflm3Oc1QJLHu?=
- =?us-ascii?Q?2A9ZhfJ2ON/cwO5W3WfZD+TWr9pUMCvcYxnNk0TxBV84mOpJafMiWmBkR10z?=
- =?us-ascii?Q?f2DW8kIyV15QdVDQGApmr5HMz9XO4lIdQHJTX6fYhYaH8cbzi4pOdGn27iRo?=
- =?us-ascii?Q?YwzrKd2T4zf6yj92HodChvq38WowUot8enBjwwmFytQmm6Mb1K+IWqz3UVg8?=
- =?us-ascii?Q?sUjs3cDw0aMdrNliDzaS0vBOmrJBkGoUQJfoZ6CMht0vJZvMWRrT284aO6A?=
- =?us-ascii?Q?=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD77A57CA7
+	for <stable@vger.kernel.org>; Fri, 21 Jun 2024 15:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718983382; cv=none; b=brYnMWNdZvYXCATiiIudKf0WKnXpDb3GdJFJLOwKJT3gYFKlIaX1ty4JLp4L+sywk/fkuIsGqEHDA05+/f6dXXUYeL8jxktXO3WPIKxXB8jt0DSbTwfWpngeX85NXbKp4l0ShYtqUC/ashoRJqU4K5Z2nL0qwDd2hT0bsVKDRso=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718983382; c=relaxed/simple;
+	bh=2uxcy69KbE7ro4Q5cd1M73Q4HpDbClq5Fe8h9BiMJfk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gOIE00clRDC8lFRuQD/ua9mpHB9IvYCbBujQBbwGABXjmVt0QZb61BxpHbTbF75IDXS5WiJw5hIdDY0NPIGVqsPPSaA7UaAktnLv+hAaVRwz4BEdxdxSr5y9J7UnsbufPQbFBneaiB22pTYCS4wsFv3aEj1IWPl0eFjaCHW87w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B3787DA7;
+	Fri, 21 Jun 2024 08:23:23 -0700 (PDT)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 27A253F6A8;
+	Fri, 21 Jun 2024 08:22:56 -0700 (PDT)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: stable@vger.kernel.org
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15.y] mm: fix race between __split_huge_pmd_locked() and GUP-fast
+Date: Fri, 21 Jun 2024 16:22:43 +0100
+Message-ID: <20240621152243.131800-1-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024061316-brook-imaging-a202@gregkh>
+References: <2024061316-brook-imaging-a202@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71a3fa82-36c5-4143-326e-08dc9205690b
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Jun 2024 15:18:31.4315
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB8497
+Content-Transfer-Encoding: 8bit
 
-From: Dexuan Cui <decui@microsoft.com> Sent: Thursday, June 20, 2024 11:16 =
-PM
->=20
-> In a TDX VM without paravisor, currently the default timer is the Hyper-V
-> timer, which depends on the slow VM Reference Counter MSR: the Hyper-V TS=
-C
-> page is not enabled in such a VM because the VM uses Invariant TSC as a
-> better clocksource and it's challenging to mark the Hyper-V TSC page shar=
-ed
-> in very early boot.
->=20
-> Lower the rating of the Hyper-V timer so the local APIC timer becomes the
-> the default timer in such a VM, and print a warning in case Invariant TSC
-> is unavailable in such a VM. This change should cause no perceivable
-> performance difference.
->=20
-> Cc: stable@vger.kernel.org # 6.6+
-> Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-> Signed-off-by: Dexuan Cui <decui@microsoft.com>
-> ---
->=20
-> Changes in v2:
->     Improved the comments in ms_hyperv_init_platform() [Michael Kelley]
->     Added "print a warning in case Invariant TSC  unavailable" in the cha=
-ngelog.
->     Added Roman's Reviewed-by.
->=20
->  arch/x86/kernel/cpu/mshyperv.c     | 16 +++++++++++++++-
->  drivers/clocksource/hyperv_timer.c | 16 +++++++++++++++-
->  2 files changed, 30 insertions(+), 2 deletions(-)
->=20
-> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyper=
-v.c
-> index e0fd57a8ba840..954b7cbfa2f02 100644
-> --- a/arch/x86/kernel/cpu/mshyperv.c
-> +++ b/arch/x86/kernel/cpu/mshyperv.c
-> @@ -449,9 +449,23 @@ static void __init ms_hyperv_init_platform(void)
->  			ms_hyperv.hints &=3D ~HV_X64_APIC_ACCESS_RECOMMENDED;
->=20
->  			if (!ms_hyperv.paravisor_present) {
-> -				/* To be supported: more work is required.  */
-> +				/*
-> +				 * Mark the Hyper-V TSC page feature as disabled
-> +				 * in a TDX VM without paravisor so that the
-> +				 * Invariant TSC, which is a better clocksource
-> +				 * anyway, is used instead.
-> +				 */
->  				ms_hyperv.features &=3D ~HV_MSR_REFERENCE_TSC_AVAILABLE;
->=20
-> +				/*
-> +				 * The Invariant TSC is expected to be available
-> +				 * in a TDX VM without paravisor, but if not,
-> +				 * print a warning message. The slower Hyper-V MSR-based
-> +				 * Ref Counter should end up being the clocksource.
-> +				 */
-> +				if (!(ms_hyperv.features & HV_ACCESS_TSC_INVARIANT))
-> +					pr_warn("Hyper-V: Invariant TSC is unavailable\n");
-> +
->  				/* HV_MSR_CRASH_CTL is unsupported. */
->  				ms_hyperv.misc_features &=3D ~HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE;
->=20
-> diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyp=
-erv_timer.c
-> index b2a080647e413..99177835cadec 100644
-> --- a/drivers/clocksource/hyperv_timer.c
-> +++ b/drivers/clocksource/hyperv_timer.c
-> @@ -137,7 +137,21 @@ static int hv_stimer_init(unsigned int cpu)
->  	ce->name =3D "Hyper-V clockevent";
->  	ce->features =3D CLOCK_EVT_FEAT_ONESHOT;
->  	ce->cpumask =3D cpumask_of(cpu);
-> -	ce->rating =3D 1000;
-> +
-> +	/*
-> +	 * Lower the rating of the Hyper-V timer in a TDX VM without paravisor,
-> +	 * so the local APIC timer (lapic_clockevent) is the default timer in
-> +	 * such a VM. The Hyper-V timer is not preferred in such a VM because
-> +	 * it depends on the slow VM Reference Counter MSR (the Hyper-V TSC
-> +	 * page is not enbled in such a VM because the VM uses Invariant TSC
-> +	 * as a better clocksource and it's challenging to mark the Hyper-V
-> +	 * TSC page shared in very early boot).
-> +	 */
-> +	if (!ms_hyperv.paravisor_present && hv_isolation_type_tdx())
-> +		ce->rating =3D 90;
-> +	else
-> +		ce->rating =3D 1000;
-> +
->  	ce->set_state_shutdown =3D hv_ce_shutdown;
->  	ce->set_state_oneshot =3D hv_ce_set_oneshot;
->  	ce->set_next_event =3D hv_ce_set_next_event;
-> --
-> 2.25.1
+__split_huge_pmd_locked() can be called for a present THP, devmap or
+(non-present) migration entry.  It calls pmdp_invalidate() unconditionally
+on the pmdp and only determines if it is present or not based on the
+returned old pmd.  This is a problem for the migration entry case because
+pmd_mkinvalid(), called by pmdp_invalidate() must only be called for a
+present pmd.
 
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+On arm64 at least, pmd_mkinvalid() will mark the pmd such that any future
+call to pmd_present() will return true.  And therefore any lockless
+pgtable walker could see the migration entry pmd in this state and start
+interpretting the fields as if it were present, leading to BadThings (TM).
+GUP-fast appears to be one such lockless pgtable walker.
+
+x86 does not suffer the above problem, but instead pmd_mkinvalid() will
+corrupt the offset field of the swap entry within the swap pte.  See link
+below for discussion of that problem.
+
+Fix all of this by only calling pmdp_invalidate() for a present pmd.  And
+for good measure let's add a warning to all implementations of
+pmdp_invalidate[_ad]().  I've manually reviewed all other
+pmdp_invalidate[_ad]() call sites and believe all others to be conformant.
+
+This is a theoretical bug found during code review.  I don't have any test
+case to trigger it in practice.
+
+Link: https://lkml.kernel.org/r/20240501143310.1381675-1-ryan.roberts@arm.com
+Link: https://lore.kernel.org/all/0dd7827a-6334-439a-8fd0-43c98e6af22b@arm.com/
+Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 3a5a8d343e1cf96eb9971b17cbd4b832ab19b8e7)
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+---
+ Documentation/vm/arch_pgtable_helpers.rst |  6 ++-
+ arch/powerpc/mm/book3s64/pgtable.c        |  1 +
+ arch/s390/include/asm/pgtable.h           |  4 +-
+ arch/sparc/mm/tlb.c                       |  1 +
+ mm/huge_memory.c                          | 49 ++++++++++++-----------
+ mm/pgtable-generic.c                      |  1 +
+ 6 files changed, 36 insertions(+), 26 deletions(-)
+
+diff --git a/Documentation/vm/arch_pgtable_helpers.rst b/Documentation/vm/arch_pgtable_helpers.rst
+index 552567d863b8..b8ae5d040b99 100644
+--- a/Documentation/vm/arch_pgtable_helpers.rst
++++ b/Documentation/vm/arch_pgtable_helpers.rst
+@@ -134,7 +134,8 @@ PMD Page Table Helpers
+ +---------------------------+--------------------------------------------------+
+ | pmd_swp_clear_soft_dirty  | Clears a soft dirty swapped PMD                  |
+ +---------------------------+--------------------------------------------------+
+-| pmd_mkinvalid             | Invalidates a mapped PMD [1]                     |
++| pmd_mkinvalid             | Invalidates a present PMD; do not call for       |
++|                           | non-present PMD [1]                              |
+ +---------------------------+--------------------------------------------------+
+ | pmd_set_huge              | Creates a PMD huge mapping                       |
+ +---------------------------+--------------------------------------------------+
+@@ -190,7 +191,8 @@ PUD Page Table Helpers
+ +---------------------------+--------------------------------------------------+
+ | pud_mkdevmap              | Creates a ZONE_DEVICE mapped PUD                 |
+ +---------------------------+--------------------------------------------------+
+-| pud_mkinvalid             | Invalidates a mapped PUD [1]                     |
++| pud_mkinvalid             | Invalidates a present PUD; do not call for       |
++|                           | non-present PUD [1]                              |
+ +---------------------------+--------------------------------------------------+
+ | pud_set_huge              | Creates a PUD huge mapping                       |
+ +---------------------------+--------------------------------------------------+
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index da15f28c7b13..3a22e7d970f3 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -115,6 +115,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ {
+ 	unsigned long old_pmd;
+ 
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+ 	old_pmd = pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, _PAGE_INVALID);
+ 	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+ 	return __pmd(old_pmd);
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index b61426c9ef17..b65ce0c90dd0 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -1625,8 +1625,10 @@ static inline pmd_t pmdp_huge_clear_flush(struct vm_area_struct *vma,
+ static inline pmd_t pmdp_invalidate(struct vm_area_struct *vma,
+ 				   unsigned long addr, pmd_t *pmdp)
+ {
+-	pmd_t pmd = __pmd(pmd_val(*pmdp) | _SEGMENT_ENTRY_INVALID);
++	pmd_t pmd;
+ 
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
++	pmd = __pmd(pmd_val(*pmdp) | _SEGMENT_ENTRY_INVALID);
+ 	return pmdp_xchg_direct(vma->vm_mm, addr, pmdp, pmd);
+ }
+ 
+diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+index 9a725547578e..946f33c1b032 100644
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -245,6 +245,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ {
+ 	pmd_t old, entry;
+ 
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+ 	entry = __pmd(pmd_val(*pmdp) & ~_PAGE_VALID);
+ 	old = pmdp_establish(vma, address, pmdp, entry);
+ 	flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 98ff57c8eda6..4e9dbaded0a4 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2017,32 +2017,11 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 		return __split_huge_zero_page_pmd(vma, haddr, pmd);
+ 	}
+ 
+-	/*
+-	 * Up to this point the pmd is present and huge and userland has the
+-	 * whole access to the hugepage during the split (which happens in
+-	 * place). If we overwrite the pmd with the not-huge version pointing
+-	 * to the pte here (which of course we could if all CPUs were bug
+-	 * free), userland could trigger a small page size TLB miss on the
+-	 * small sized TLB while the hugepage TLB entry is still established in
+-	 * the huge TLB. Some CPU doesn't like that.
+-	 * See http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf, Erratum
+-	 * 383 on page 105. Intel should be safe but is also warns that it's
+-	 * only safe if the permission and cache attributes of the two entries
+-	 * loaded in the two TLB is identical (which should be the case here).
+-	 * But it is generally safer to never allow small and huge TLB entries
+-	 * for the same virtual address to be loaded simultaneously. So instead
+-	 * of doing "pmd_populate(); flush_pmd_tlb_range();" we first mark the
+-	 * current pmd notpresent (atomically because here the pmd_trans_huge
+-	 * must remain set at all times on the pmd until the split is complete
+-	 * for this pmd), then we flush the SMP TLB and finally we write the
+-	 * non-huge version of the pmd entry with pmd_populate.
+-	 */
+-	old_pmd = pmdp_invalidate(vma, haddr, pmd);
+-
+-	pmd_migration = is_pmd_migration_entry(old_pmd);
++	pmd_migration = is_pmd_migration_entry(*pmd);
+ 	if (unlikely(pmd_migration)) {
+ 		swp_entry_t entry;
+ 
++		old_pmd = *pmd;
+ 		entry = pmd_to_swp_entry(old_pmd);
+ 		page = pfn_swap_entry_to_page(entry);
+ 		write = is_writable_migration_entry(entry);
+@@ -2050,6 +2029,30 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 		soft_dirty = pmd_swp_soft_dirty(old_pmd);
+ 		uffd_wp = pmd_swp_uffd_wp(old_pmd);
+ 	} else {
++		/*
++		 * Up to this point the pmd is present and huge and userland has
++		 * the whole access to the hugepage during the split (which
++		 * happens in place). If we overwrite the pmd with the not-huge
++		 * version pointing to the pte here (which of course we could if
++		 * all CPUs were bug free), userland could trigger a small page
++		 * size TLB miss on the small sized TLB while the hugepage TLB
++		 * entry is still established in the huge TLB. Some CPU doesn't
++		 * like that. See
++		 * http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf, Erratum
++		 * 383 on page 105. Intel should be safe but is also warns that
++		 * it's only safe if the permission and cache attributes of the
++		 * two entries loaded in the two TLB is identical (which should
++		 * be the case here). But it is generally safer to never allow
++		 * small and huge TLB entries for the same virtual address to be
++		 * loaded simultaneously. So instead of doing "pmd_populate();
++		 * flush_pmd_tlb_range();" we first mark the current pmd
++		 * notpresent (atomically because here the pmd_trans_huge must
++		 * remain set at all times on the pmd until the split is
++		 * complete for this pmd), then we flush the SMP TLB and finally
++		 * we write the non-huge version of the pmd entry with
++		 * pmd_populate.
++		 */
++		old_pmd = pmdp_invalidate(vma, haddr, pmd);
+ 		page = pmd_page(old_pmd);
+ 		if (pmd_dirty(old_pmd))
+ 			SetPageDirty(page);
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index 4e640baf9794..3bfc31a7cb38 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -194,6 +194,7 @@ pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
+ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ 		     pmd_t *pmdp)
+ {
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+ 	pmd_t old = pmdp_establish(vma, address, pmdp, pmd_mkinvalid(*pmdp));
+ 	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+ 	return old;
+-- 
+2.43.0
 
 
