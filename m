@@ -1,141 +1,118 @@
-Return-Path: <stable+bounces-54803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4DD911F32
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 10:47:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B96091207F
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 11:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 649EE28668C
-	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 08:47:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96C7AB2321C
+	for <lists+stable@lfdr.de>; Fri, 21 Jun 2024 09:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EA216E877;
-	Fri, 21 Jun 2024 08:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F26416E884;
+	Fri, 21 Jun 2024 09:27:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MvDBwLWb"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8194E16DECF
-	for <stable@vger.kernel.org>; Fri, 21 Jun 2024 08:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E377112D1EB;
+	Fri, 21 Jun 2024 09:27:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718959597; cv=none; b=XluBMt6oLyPU0UoWBRHHz3VlHA6t4S5d4wLCaPziebm6OP+P5kPok49VifxxOrUAKdyTclMnDMe+WWt71g0G533i4ENll1vA6X5ly42FhtiN9pVXvXZWoNWrLVQhiL5HlV7v26xwlZTX6Vg8rzfRhQ1KHFfHj35ClawkD3a5wx0=
+	t=1718962048; cv=none; b=M7jtpBGUVhEttzMh+/N4c/HUd8hVN0k6b7fVG2TZCTx6N2i6Tp9DOJu8ZRo1GA7Ujg7nbU9eiTIsPwU6N5IU7n+VFF+ZcoP/H+KSuNd48YFCT5mf4H7CIEr1ipaJSdUatQlBCiAcSqbwM49Kvzot5qPteyVKYbA9k8QIW1oG+dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718959597; c=relaxed/simple;
-	bh=JBA97vHqUcrYOqs1UJsb2QIBrtsaj8MberWuOGafYoU=;
+	s=arc-20240116; t=1718962048; c=relaxed/simple;
+	bh=uhH10vmIJUKkPbdPA4/INQpMI+q9x/UjstbjxvXrdJE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R4fJIxloXRTCVTuTxUDREUrsXoxrSOanHRGOmJHVoi1b+PqFQFOkb28m8prNhVjVhhS9A/hdwvMCbaWsLTVxtdKCpb76XGBcTU2dyoXdn4uYpxxzBxsQXpLH2TjmMaBg4IlPlconPqsp4NfmUbIMiYICqRyuwNU2yJ/lmzT7N/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sKZuZ-0001RS-G9; Fri, 21 Jun 2024 10:46:23 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sKZuY-003tx4-Ed; Fri, 21 Jun 2024 10:46:22 +0200
-Received: from pengutronix.de (p5de45302.dip0.t-ipconnect.de [93.228.83.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 211C62EE5B2;
-	Fri, 21 Jun 2024 08:46:22 +0000 (UTC)
-Date: Fri, 21 Jun 2024 10:46:21 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Vitor Soares <ivitro@gmail.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
-	Thomas Kopp <thomas.kopp@microchip.com>, Vincent Mailhol <mailhol.vincent@wanadoo.fr>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Vitor Soares <vitor.soares@toradex.com>, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v6] can: mcp251xfd: fix infinite loop when xmit fails
-Message-ID: <20240621-wise-thistle-hound-49a307-mkl@pengutronix.de>
-References: <20240517134355.770777-1-ivitro@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bp+ricdlcQ9eAFMfxPiVCrLdhN4866P4WABO2DOReaRPrfpcm+TDBGsA4mYTDk8Oq+jONWUMEtFbB2p/bb6+AbZv8h6mFnQTR9chTuctP9Yvz6y5NG1qGvFx6m/A57QdTcsCy8PY2TLTG9AFqrLh2iOIEy4GCMPNNGEacdgLdss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MvDBwLWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE34C2BBFC;
+	Fri, 21 Jun 2024 09:27:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718962047;
+	bh=uhH10vmIJUKkPbdPA4/INQpMI+q9x/UjstbjxvXrdJE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MvDBwLWb2dv893GPCGGbeTdvIWAMyKlOsPT/1BC5DgW8PlNDKB8sb9QRzT1auO0Q2
+	 lVxKjTcfQUsdJUTUT0vdx9mBmGvm9lGgwEvm6fwUW07u92IkS0lsWDnzoTl/NqoTE6
+	 eSArKee1Bsqtdy3KpGfXRDr1E+ZsnP2Q2JHUhUYmzipoD8sgrmFJg38on8AjE+O8qG
+	 ftviQRYS9VkELyn58VdzALl2sa9TQj5ph9057h7xNzdDMRRSmVuTjfPC1OxsC9Vpxc
+	 oOFLLdUfr1c2w/qRQBlLTGDjMm8YxxDZrrXpxIqahjcSO7wR6GB0oDXFxPfLQ4p776
+	 4H9YFZxq9vsXg==
+Date: Fri, 21 Jun 2024 11:27:23 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Sergiu Moga <sergiu.moga@microchip.com>, 
+	Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+	Doug Anderson <dianders@chromium.org>, Enric Balletbo i Serra <eballetbo@kernel.org>, 
+	Ricardo =?utf-8?Q?Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>, Thierry Reding <thierry.reding@gmail.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Vignesh R <vigneshr@ti.com>, 
+	Kamal Dasu <kamal.dasu@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Wolfram Sang <wsa+renesas@sang-engineering.com>, Chris Brandt <chris.brandt@renesas.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>, 
+	Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>, linux-i2c@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev, 
+	linux-tegra@vger.kernel.org, Krzysztof Kozlowski <krzk@kernel.org>, 
+	linux-omap@vger.kernel.org, Kamal Dasu <kdasu.kdev@gmail.com>, 
+	linux-renesas-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, stable@vger.kernel.org
+Subject: Re: [PATCH 0/7] dt-bindings: i2c: few fixes and cleanups
+Message-ID: <5vbvx7qnbv7dwugmnp2sitlpvvsor4hn573spbwaklwbwvilfy@evntmrout65x>
+References: <20240620-dt-bindings-i2c-clean-v1-0-3a1016a95f9d@linaro.org>
+ <qru4aqjphjnjpo6yjxl2oznhlz774iv77u4u7u4jldnmlanps5@vpzxntuz6arp>
+ <6bc864d6-11de-4762-b309-2e2a3bffaa24@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5dpitlhc7bwdsspr"
-Content-Disposition: inline
-In-Reply-To: <20240517134355.770777-1-ivitro@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-
-
---5dpitlhc7bwdsspr
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6bc864d6-11de-4762-b309-2e2a3bffaa24@linaro.org>
 
-On 17.05.2024 14:43:55, Vitor Soares wrote:
-> From: Vitor Soares <vitor.soares@toradex.com>
->=20
-> When the mcp251xfd_start_xmit() function fails, the driver stops
-> processing messages, and the interrupt routine does not return,
-> running indefinitely even after killing the running application.
->=20
-> Error messages:
-> [  441.298819] mcp251xfd spi2.0 can0: ERROR in mcp251xfd_start_xmit: -16
-> [  441.306498] mcp251xfd spi2.0 can0: Transmit Event FIFO buffer not empt=
-y. (seq=3D0x000017c7, tef_tail=3D0x000017cf, tef_head=3D0x000017d0, tx_head=
-=3D0x000017d3).
-> ... and repeat forever.
->=20
-> The issue can be triggered when multiple devices share the same
-> SPI interface. And there is concurrent access to the bus.
->=20
-> The problem occurs because tx_ring->head increments even if
-> mcp251xfd_start_xmit() fails. Consequently, the driver skips one
-> TX package while still expecting a response in
-> mcp251xfd_handle_tefif_one().
->=20
-> This patch resolves the issue by starting a workqueue to write
-> the tx obj synchronously if err =3D -EBUSY. In case of another error,
-> it decrements tx_ring->head, removes skb from the echo stack, and
-> drops the message.
->=20
-> Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD =
-SPI CAN")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+On Fri, Jun 21, 2024 at 08:02:03AM GMT, Krzysztof Kozlowski wrote:
+> On 21/06/2024 01:05, Andi Shyti wrote:
+> > Cześć Krzysztof,
+> > 
+> > On Thu, Jun 20, 2024 at 01:34:48PM GMT, Krzysztof Kozlowski wrote:
+> >> Few fixes for I2C controller schemas. The third patch (atmel,at91sam)
+> >> depends on first, so I suggest not splitting this into fixes branch but
+> >> take as is via next branch.
+> >>
+> >> Best regards,
+> >> Krzysztof
+> >>
+> >> ---
+> >> Krzysztof Kozlowski (7):
+> >>       dt-bindings: i2c: atmel,at91sam: correct path to i2c-controller schema
+> >>       dt-bindings: i2c: google,cros-ec-i2c-tunnel: correct path to i2c-controller schema
+> > 
+> > merged to i2c/i2c-host-fixes
+> > 
+> >>       dt-bindings: i2c: atmel,at91sam: drop unneeded address/size-cells
+> >>       dt-bindings: i2c: nvidia,tegra20: drop unneeded address/size-cells
+> >>       dt-bindings: i2c: samsung,s3c2410: drop unneeded address/size-cells
+> >>       dt-bindings: i2c: ti,omap4: reference i2c-controller.yaml schema
+> >>       dt-bindings: i2c: adjust indentation in DTS example to coding style
+> > 
+> > merged to i2c/i2c-host
+> 
+> So you broke the binding... Why openly ignoring my first sentence?
 
-I've reworked the last sentence for a bit and applied to linux-can.
+It's not an issue. We can get the fixes first and apply the rest
+later, I can keep them in my -next branch and reapply next week.
+
+Otherwise I would wait for everything at the merge window, but I
+don't want to wait so long.
 
 Thanks,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---5dpitlhc7bwdsspr
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmZ1PdsACgkQKDiiPnot
-vG/3Jwf/Q7/WWQa/V0JIjwsh++Q42TCZN2oOvdIDCEeKutISQF4MybxEk09tyNLy
-8P2q4KyB1Vb1IG/pWNQQD3TWs/05UcYEzxUSx6ciiGlzf6cyCra8CDmtLegxWOcW
-IAwTuXv6bBK7H1Hhpy8Bx6pOpYoQUuJ2DSuqMcdUoLDctm6mvhpWugICpxZEY5FG
-AsUwLGpwg+PXV/2UE0ivdwfvEb7/P4iJVbiaQgg80550rLaE1zGSTaOoaY+N/OWM
-5kU63kScoE1veTrCR1QPAxWOMLWl+EoVkrSTHaCC8Qcp/L0MwPBilsQV5sJf+uv5
-eFH428lDYCgthJkveWj8tOiOaHaMDA==
-=AosI
------END PGP SIGNATURE-----
-
---5dpitlhc7bwdsspr--
+Andi
 
