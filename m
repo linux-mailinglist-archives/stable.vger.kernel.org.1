@@ -1,76 +1,76 @@
-Return-Path: <stable+bounces-54873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7493913520
-	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 18:38:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722ED913558
+	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 19:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D54E283B65
-	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 16:38:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17D71F2286A
+	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 17:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A17516FF44;
-	Sat, 22 Jun 2024 16:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E56417C77;
+	Sat, 22 Jun 2024 17:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cy8b6E2D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aPqj1UuX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A5F155310;
-	Sat, 22 Jun 2024 16:37:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1742C144;
+	Sat, 22 Jun 2024 17:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719074279; cv=none; b=cONP4YSur6Sf1ZV4MEr9CMAdy7dp9Jg5+jDqVO0Je5FBvN/hS52DS1vve2jOgOcli9dKUXrvhXN9YZI3KbRyhN+onZS2m3GSbCpTNzOJoJ41bUZVYMzCSu9CPECVhNC0DtCuklcYXla7ysuHMlIXDyif0BckM4ewbAJ4bOHK5ec=
+	t=1719076911; cv=none; b=d1EoS3SRmVFpEIhqv/445npxG1BfQvKYy7LVNfr2YRnJoNWnbk0pHHmvun3lz0mT9QZHDjsYPi6x4QpaqckV8BFvPAgVg5B+a00D1rIyF/ruppf0fs+nPThGlzWWi516J1yGuuwEC0f7m8giXa37SmMJ/8BKlY2UEJEGh8t6YnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719074279; c=relaxed/simple;
-	bh=wicbUPOHbDVXPTgZ3JV1UYv1hXKn5Q/LtgJ6YffpcnU=;
+	s=arc-20240116; t=1719076911; c=relaxed/simple;
+	bh=wi1zijj/NaTT97gyb/PBd3LtxmwV0hv21d/gsbmq8ic=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gqysC+TKe4g2nzdEKGCHCbMt6tKt2waXpKsd2lIdYP6cQwQc+n0yF5aTPVVHBP4U9gDYT5RQDIwlzYF9ScfraIiIKqF5+pnGrmf0q3vc/uJQUL0AqwOY+26uRueq/PuPZcb3qObZHqY1sGBAdwnGMeCWa3YtzFCDdZEfRkbqhz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cy8b6E2D; arc=none smtp.client-ip=209.85.214.176
+	 In-Reply-To:Content-Type; b=YInM8Pmv/UMHERpnQnq+sft4g9WniY6/hcL/T1zskzGQfaBL2lxO8LFRo9pLwkrM2qgYcx3HWMv87CG/hLoZXzTb0V0lGdeICaVHJml6zebGHWv5swwQ1REDUztu9AjvUIgtkniCYW6QYh8GnXOL485J3PW7mq00W2G/83nbbr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aPqj1UuX; arc=none smtp.client-ip=209.85.210.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1f9d9b57b90so19958485ad.0;
-        Sat, 22 Jun 2024 09:37:58 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7065a2f4573so1041766b3a.2;
+        Sat, 22 Jun 2024 10:21:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719074278; x=1719679078; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719076909; x=1719681709; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=LVWh8aXIRdw6KlJx42lPJzU1iUTgDenarPm7inF+GRU=;
-        b=Cy8b6E2D09xWqWqfpVm9r5auLFEhk+dsHtU0gQLQPfJs/nPhIeF+1HlQI/8kH+1iLT
-         RfbGl9DpMiDs8EI9+agdu5cR77EeIRG9EdGseq9EZw4MqeIaaDF22Hq5ZSCrEdt7Tc1X
-         1lQjGPemOgw+dslgd3XZoxFgFc487jcYJks+pqIGQ8VhNnE4/Ex0PKRX9pCLIvkbgPOI
-         kERHLKF3jNwyVS+8VYY2Qw74s91NmL4gPeEb4qf4sMLEdpbTVF7OKVEWj+X3CI20ObCk
-         PTwhtLYulkEZvHiq3Fi2NSGisAo5N+F0R0F/WUKbg55RqGtee+V6fA599z9zoUVWT3H4
-         p+mQ==
+        bh=7EkDbyT3Dt70fUNnAz4nlBxrbTY5DZaErD75W4as88k=;
+        b=aPqj1UuXR4QnBakw8ZjEAIUgPn1sxjf5STg4WvRyN1UbNQoZidnuzwJtTXQlC8o4v5
+         MRollO0zeUMaPIwP4Cgba/7joFDwGWeH2XhZVrbb9G1XQg/obIg7HOz7jDT0/Aa9iT1t
+         UngKarfrmX1CALLsO0M55XugXk7Wf/alzHVMuPh22PxRmfh/jzI6K7+slFHv95Cg1jZB
+         yzM9indPbpf1ySBzGgF5qbWos/FTpj74UXSuNYZ8JChyiNwqOh/ZqYy/wSbCYVJWlOVX
+         8HltGtnzANM4ui9CAcPRfjHwTfK6pI2lh/itXoZvSESehFvATYu1viFqEZ3JVD98ROf8
+         bInA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719074278; x=1719679078;
+        d=1e100.net; s=20230601; t=1719076909; x=1719681709;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LVWh8aXIRdw6KlJx42lPJzU1iUTgDenarPm7inF+GRU=;
-        b=ofWucf2bGTLwCpybikAIObq/1QtnY/0if3rMdWMHqQaGsrUoxR/6sha9ZzyKeJvIBm
-         seRMIUR9OjHPGQBFLIsf2yVcDD/F/md/T2sYFS9rK8HCKVpWw54kxg7/q7D/vIjshH0h
-         UWa78oLW/OtWrhyXri7TR7Tq3X6ANj28taFscKoFo0fUpaWMQqcaGg56KBh8OhNP5t9i
-         U5fYl5Hv5XPsHnmLat4FzotREggpg8hALYVhGJVmGb0goZSdQqWywqNE85LWWZC1kC9m
-         l/7mglw3MlkPuHPvQUwsIx3x8BpOUZwMuhaNfLYWm0yNnBS9+nh0Mc+hA+nxCR3HbpbS
-         Cvug==
-X-Forwarded-Encrypted: i=1; AJvYcCVEfvjGS71gTaBr2dG0CARO2Aw35x7TBgwFky5D/YppEkrFKVHQ/2QgD5pEFonWw9Byt5PIuPPB0u2laIxaHPWidptO25AvnVNF2DK4PVaBVRxuqa8n+bHHZ8N4IPX74jV5CbC+IlvHUWp3ZapG5XI8wNlzSOW480W7nj22Y5s/RJco
-X-Gm-Message-State: AOJu0YyDqE0p2oQFG9Arc3xNENGqvMoVkC/7Vfckj5H5WUeT86qjbKqv
-	/pK+R+rGuGcW5NgD+SMWNMzeyrPdlU5kICWMFruvpHg4mP8gAuqIUBoteA==
-X-Google-Smtp-Source: AGHT+IG6a4OA5LnNPQiwBz8nuGa5Qz7uWt4ILXcxnsimT2BzX691J9GZeOlylM4aKL+GQUkjZ1s6tw==
-X-Received: by 2002:a17:902:ec8e:b0:1fa:15ca:e61a with SMTP id d9443c01a7336-1fa23bd1afdmr5192875ad.8.1719074277601;
-        Sat, 22 Jun 2024 09:37:57 -0700 (PDT)
+        bh=7EkDbyT3Dt70fUNnAz4nlBxrbTY5DZaErD75W4as88k=;
+        b=Yu2h+OmeJcUF4BlDZRhAmbXGq/QbwXsQ3FsOidIfwpmxUJYgmECfaqyjiTGpf+WWLB
+         FBGscpHPNfXjKrjfV4uYjKBpRseWVLpSkh8TKQ7QNX8j4uH95oQpwTm3Kcg2J60IZWfS
+         gAZAdCTqWhKppOySxQXNQuj9lN8oL1rb0+qNhJBAoJTOZkB0X3xLc9XrQeJhZ08M8Fhw
+         1UpF9XqSdQ0iQd9NebO7/RvgXH3fgQrsd9M9vvLin+pozwTWSEVTDrMqDdhzat2R7H8G
+         F+loYBmY0MIh2zkegLizpUPH9kcO/QiFo5qu/73BXcsO34Xm6D4AN7WW6fakGVa0Oglc
+         OShQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV6MgdkRc18w5937FVHnguxHoqQwiEBiz4KLrSNqXhrffZ/Nl5CCEgGCtQsfIyL3q54eCPx2tmOEIRlcTBUGvslZSbaJWzKaILkkjSv3ez48fLhzHjlKTszuk0E+s62cPNa4Webr1HT2kj1u/iK4wcrU5DZngKTYHmWhxLDVqSFm7RR
+X-Gm-Message-State: AOJu0Yye0ByaWi7TQ3/2xQbh7hOcmIP+AQ3fhWDRYbxYHS6SzlWipxaI
+	4joMNqROzJk9pkbmCjQCOSVGldTZK6iaHXrZvNh/weLeiOMyXjLv
+X-Google-Smtp-Source: AGHT+IHYEHPLjoCQlVctUffypJdS55HqBSmMlsOea7YoyGgEtJhzdDwTXJcnJHDFWNJkHod6UJcDBQ==
+X-Received: by 2002:a05:6a00:26d9:b0:704:2bdd:82fe with SMTP id d2e1a72fcca58-706745b2ademr451664b3a.15.1719076908935;
+        Sat, 22 Jun 2024 10:21:48 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9eb3c6011sm32988965ad.144.2024.06.22.09.37.55
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7066857e9a8sm1411789b3a.89.2024.06.22.10.21.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jun 2024 09:37:56 -0700 (PDT)
+        Sat, 22 Jun 2024 10:21:48 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <11983f65-ec2f-4092-917f-7a09bae7c4b2@roeck-us.net>
-Date: Sat, 22 Jun 2024 09:37:54 -0700
+Message-ID: <3171b508-eb23-4a2c-a78d-c538c50be615@roeck-us.net>
+Date: Sat, 22 Jun 2024 10:21:45 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -142,76 +142,18 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
 In-Reply-To: <48aa5db8-2605-42e3-a1e3-1bf3428380ee@gmx.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 On 6/22/24 08:49, Helge Deller wrote:
-> On 6/22/24 17:34, Guenter Roeck wrote:
->> On 6/22/24 08:13, Helge Deller wrote:
->>> On 6/22/24 16:58, Guenter Roeck wrote:
->>>> [ Copying parisc maintainers - maybe they can test on real hardware ]
->>>>
->>>> On 6/19/24 05:54, Greg Kroah-Hartman wrote:
->>>>> This is the start of the stable review cycle for the 6.1.95 release.
->>>>> There are 217 patches in this series, all will be posted as a response
->>>>> to this one.  If anyone has any issues with these being applied, please
->>>>> let me know.
->>>>>
->>>>> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
->>>>> Anything received after that time might be too late.
->>>>>
->>>> ...
->>>>> Oleg Nesterov <oleg@redhat.com>
->>>>>      zap_pid_ns_processes: clear TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING
->>>>>
->>>>
->>>> I can not explain it, but this patch causes all my parisc64 (C3700)
->>>> boot tests to crash. There are lots of memory corruption BUGs such as
->>>>
->>>> [    0.000000] =============================================================================
->>>> [    0.000000] BUG kmalloc-96 (Not tainted): Padding overwritten. 0x0000000043411dd0-0x0000000043411f5f @offset=3536
->>>>
->>>> ultimately followed by
->>>>
->>>> [    0.462562] Unaligned handler failed, ret = -14
->>>> ...
->>>> [    0.469160]  IAOQ[0]: idr_alloc_cyclic+0x48/0x118
->>>> [    0.469372]  IAOQ[1]: idr_alloc_cyclic+0x54/0x118
->>>> [    0.469548]  RP(r2): __kernfs_new_node.constprop.0+0x160/0x420
->>>> [    0.469782] Backtrace:
->>>> [    0.469928]  [<00000000404af108>] __kernfs_new_node.constprop.0+0x160/0x420
->>>> [    0.470285]  [<00000000404b0cac>] kernfs_new_node+0xbc/0x118
->>>> [    0.470523]  [<00000000404b158c>] kernfs_create_empty_dir+0x54/0xf0
->>>> [    0.470756]  [<00000000404b665c>] sysfs_create_mount_point+0x4c/0xb0
->>>> [    0.470996]  [<00000000401181cc>] cgroup_init+0x5b4/0x738
->>>> [    0.471213]  [<0000000040102220>] start_kernel+0x1238/0x1308
->>>> [    0.471429]  [<0000000040107c90>] start_parisc+0x188/0x1d0
->>>> ...
->>>> [    0.474956] Kernel panic - not syncing: Attempted to kill the idle task!
->>>> SeaBIOS wants SYSTEM RESET.
->>>>
->>>> This is with qemu v9.0.1.
->>>
->>> Just to be sure, did you tested the same kernel on physical hardware as well?
->>>
->>
->> No, I don't have hardware. I only have qemu. That is why I copied you and
->> the parisc mailing list.
-> 
-> Yes, sorry, I saw your top line in the mail after I already sent my reply....
-> 
->> I would hope that someone can either confirm that
->> this is a real problem or that it is qemu related. If it is qemu related,
->> I'll just stop testing c3700 64-bit support with qemu on v6.1.y and other
->> branches if/when the problem shows up there as well.
+[ ... ]
 > 
 > I just booted 6.1.95 successfully in qemu and on my physical C3700 machine.
-> I assume the problem can be reproduced with your .config ?
-> Please send it to me off-list, then I can try again.
-> 
 
-Done.
+FWIW, I don't see the problem either if I just build and boot
+generic-64bit_defconfig. Sorry, I didn't really expect this,
+so I didn't mention that my configuration adds lots of debug and
+unit test options.
 
-Thanks,
 Guenter
 
 
