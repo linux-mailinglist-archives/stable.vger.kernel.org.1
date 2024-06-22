@@ -1,202 +1,120 @@
-Return-Path: <stable+bounces-54859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA3491326B
-	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 08:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA5991329B
+	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 09:45:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D818284E96
-	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 06:48:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1842D283A19
+	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 07:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B293212C550;
-	Sat, 22 Jun 2024 06:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88356DDB3;
+	Sat, 22 Jun 2024 07:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="D/eTzu26"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ivjiMI/Y"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85B64696;
-	Sat, 22 Jun 2024 06:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AFC4436;
+	Sat, 22 Jun 2024 07:45:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719038922; cv=none; b=EoG5kPN0DmmtKp2VhJqQu0ekIQz2EfTQ4LuntFPSNiYYGa14wFDZtYH9cNggIZUzdqZMxI9U8yv4TK3ENLZwsfVf7+qEzMzHwdLEtJ+nyCPk3hpdWksKNdg1SlXo1MeDqPt2U2VgG6UURiSKWemzu+d3/6V0cS+Z2/oSuZLoT7c=
+	t=1719042342; cv=none; b=PdlusTPsKGiBKMCBX8beEob1Q47R0LA0eBUke4RdbDScQNz0La+/EGRws4PBLxK3QvWB64OINJ4i2mM0ueZu+gioP1GiyjJx8OxpDksBIXb8cYQUiJRBmlCkW7R7xoYwx+xQi4IGMvFy+EuD8TlF0W0fyplsIGVYakYHuAC3IzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719038922; c=relaxed/simple;
-	bh=WMYndEbvL6OMXhVtHmvwY4g+jhYqACDm3KG11+egEbY=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=p90JPw2OKKB1hL3DKn+Fl3VrVCWrw9QmLZwZM+9OOYFru7jrN3U43JK4D76UlrOUAP9fgWXfo6xfMyK5AiqR2Kw40pgjzzwQkTzNOrNM0EH+ekR9psn3blyKF3uVG1gHoB0khtylfGE3XVa5K8kXM+nBCYiygNNVVF5/ivoGwJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=D/eTzu26; arc=none smtp.client-ip=220.197.31.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id; bh=4PQv0PvTVRL/ItON0f
-	L1teaBFOQB7W1EZ8kO5egpB0c=; b=D/eTzu26yO2HFv+BJzfEzXGSpFAl8iajwD
-	GAbph4rFmCFJAHeu3KgkSkYg8qnIu8Bd3rmez+K5SenSs77ctEsDdN1Xly4ksoze
-	eCe830XisU6FxLBg65QOCmWfZogVmQ1RL4CgVJCjOJoWTERFAYYX/8LwGV+uVKHu
-	Ekcfl5ijQ=
-Received: from hg-OptiPlex-7040.hygon.cn (unknown [118.242.3.34])
-	by gzga-smtp-mta-g1-0 (Coremail) with SMTP id _____wDH7WCmc3ZmqHYEAA--.12787S2;
-	Sat, 22 Jun 2024 14:48:07 +0800 (CST)
-From: yangge1116@126.com
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	21cnbao@gmail.com,
-	david@redhat.com,
-	baolin.wang@linux.alibaba.com,
-	liuzixing@hygon.cn,
-	yangge <yangge1116@126.com>
-Subject: [PATCH V2] mm/gup: Clear the LRU flag of a page before adding to LRU batch
-Date: Sat, 22 Jun 2024 14:48:04 +0800
-Message-Id: <1719038884-1903-1-git-send-email-yangge1116@126.com>
-X-Mailer: git-send-email 2.7.4
-X-CM-TRANSID:_____wDH7WCmc3ZmqHYEAA--.12787S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW3WF4rXF4xZrWUGFWUJFyUtrb_yoW7XF1xpF
-	W7Gr9IqF4DGFnrWr47Xw15Jr1Yk393Xa1UJFWxGry7AF15Xw1qkF1xtw1UJa9xJryruFn3
-	Z3W8JF1vgF1UAF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjLvNUUUUU=
-X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiOggGG2VEw83b2AAAsD
+	s=arc-20240116; t=1719042342; c=relaxed/simple;
+	bh=IR0hYburUiw/cByL4+6sKzPdofCEFTWUZ/1nF9KctUo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kiG8eL7axXzat+tp/zN4SvJvOVkYJhs+EfITqTmLaYdlNYssxEnf2YK7whgUF90Uo2JTma5BiFM2pVd29hVqfmpJUME9Kfbsod1XREpWVhyt9mLBAtDd0KD0b5nMJ902JEMExEkKd9j7S0y1TQZyD8pFPR5PgwCG0XuM1P+odrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ivjiMI/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933F1C4AF09;
+	Sat, 22 Jun 2024 07:45:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719042341;
+	bh=IR0hYburUiw/cByL4+6sKzPdofCEFTWUZ/1nF9KctUo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ivjiMI/YoMWwvSoIR9+MMEkr8qyyPdF+79qrasJuYvGaMcPVSA69xU9ycH6NTk4yV
+	 tH9BhVpSO9gSuoUeBOfB2EWezgZBuxMNze9WItgL3GyI3qtxwXSyPdOP82TnSubn6N
+	 RMq6CskKJ05XkNQUUm4ql/MQaM45LbMUB8AiFOheaiiY9o+jEaWWTpt0zXjjrEa2j3
+	 hIy/bREeos5oN2ABh5Xfsa7qw3pTIMpDHO59WgiK/53DAwKm0S6/lLeVVUpYamuDdV
+	 Ni+EmhN+dFQwvr9OIoA5Dn9h70INXzs43TxEEMGLl7Dauo9Bt6/h7aF/Ykfz8Gkk64
+	 HF6evbJc3kgrQ==
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-57d106e69a2so1364089a12.0;
+        Sat, 22 Jun 2024 00:45:41 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXLkjPhtGhhvbngfLbz8QV0+0ukJstRRt+CkzvX2sO4U/j43Te5BSaMZuCN6ingKEsQEngJK0LWx5j6IcmoHhyIr08rlNEI9K8DaUVKcrn9WBvxQsPpwb7ZFVeEn+jGLYvXz4pftSC9dJyjt1CVxlggh18bDCywhJ1GN9+IvmBMlQ==
+X-Gm-Message-State: AOJu0YzWLSTriBRBGTfwCTAOHtQWYCqJUc9J6MW/FVdu78pfhSEdvWKB
+	xJ0CiBDDqAKUO9cuYI725toqgoSRUAJGswJuKNJnSKSCaGmtH/PH2DrryGI2H2noym1w+IIhGaz
+	PFsrXeEK+kMdxSzqSxtEq/Oku+5g=
+X-Google-Smtp-Source: AGHT+IHM67hEoabZwNKJlQUmc8LsuA/PkXEjHzd5RrTVkS/4e5XvvFbb4B1o7Z+G2WUp6v6pQRrtpMxPa2IycXBdeyI=
+X-Received: by 2002:a05:6402:1809:b0:57d:455:d395 with SMTP id
+ 4fb4d7f45d1cf-57d447e23f3mr461623a12.7.1719042340180; Sat, 22 Jun 2024
+ 00:45:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240511100157.2334539-1-chenhuacai@loongson.cn>
+ <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com> <CAAhV-H5kn2xPLqgop0iOyg-tc5kAYcuNo3cd+f3yCdkN=cJDug@mail.gmail.com>
+ <fcdeb993-37d6-42e0-8737-3be41413f03d@app.fastmail.com> <CAAhV-H4s_utEOtFDwjPTqxnMWTVjWhmS7bEVRX+t8HK5QDA8Vg@mail.gmail.com>
+ <a21a0878-021e-4990-a59d-b10f204a018b@app.fastmail.com> <CAAhV-H7OR5tkbjj-BPLStneXFr=1DUaFvvh8+a5Bk_jhCAP25Q@mail.gmail.com>
+ <cdef45d36d0e71da5f0534b3783b81c82405bda3.camel@xry111.site>
+ <CAAhV-H4R_HJAB0baqUgA8ucbwWNVN4sc9EV91zAk9Ch302_7zg@mail.gmail.com>
+ <56ace686-d4b4-4b4c-a8a6-af06ec0d48f2@app.fastmail.com> <08ff168afc09fd108ec489a3c9360d4e704fa7dc.camel@xry111.site>
+ <a70e8b062fc422e351fe2369b9979a623fa05dfa.camel@xry111.site>
+ <4fd0531d-e8f8-4a4c-9136-50fcc31ba5f2@app.fastmail.com> <c2b1ca127504e519c04a36179ba6c486f2ec0a08.camel@xry111.site>
+In-Reply-To: <c2b1ca127504e519c04a36179ba6c486f2ec0a08.camel@xry111.site>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sat, 22 Jun 2024 15:45:27 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4HaAnKJFnDpfUY6qdEtoKPxLSgHgU8isMryrab=cq6pA@mail.gmail.com>
+Message-ID: <CAAhV-H4HaAnKJFnDpfUY6qdEtoKPxLSgHgU8isMryrab=cq6pA@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: Arnd Bergmann <arnd@arndb.de>, Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, 
+	Linux-Arch <linux-arch@vger.kernel.org>, Xuefeng Li <lixuefeng@loongson.cn>, 
+	guoren <guoren@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org, 
+	loongson-kernel@lists.loongnix.cn, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: yangge <yangge1116@126.com>
+Hi, Ruoyao,
 
-If a large number of CMA memory are configured in system (for example, the
-CMA memory accounts for 50% of the system memory), starting a virtual
-virtual machine, it will call pin_user_pages_remote(..., FOLL_LONGTERM,
-...) to pin memory.  Normally if a page is present and in CMA area,
-pin_user_pages_remote() will migrate the page from CMA area to non-CMA
-area because of FOLL_LONGTERM flag. But the current code will cause the
-migration failure due to unexpected page refcounts, and eventually cause
-the virtual machine fail to start.
+On Mon, Jun 17, 2024 at 2:45=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wrot=
+e:
+>
+> On Mon, 2024-06-17 at 08:35 +0200, Arnd Bergmann wrote:
+> > On Sat, Jun 15, 2024, at 15:12, Xi Ruoyao wrote:
+> > > On Sat, 2024-06-15 at 20:12 +0800, Xi Ruoyao wrote:
+> > > >
+> > > > [Firefox]:
+> > > > https://searchfox.org/mozilla-central/source/security/sandbox/linu
+> > > > x/SandboxFilter.cpp#364
+> > >
+> > > Just spent some brain cycles to make a quick hack adding a new statx
+> > > flag.  Patch attached.
+> > >
+> >
+> > Thanks for the prototype. I agree that this is not a good API
+>
+> What is particular bad with it?  Maybe we can improve before annoying
+> VFS guys :).
+>
+> > but that it would address the issue and I am fine with merging
+> > something like this if you can convince the VFS maintainers.
+>
+> Before that I'd like someone to purpose a better name.  I really dislike
+> "AT_FORCE_EMPTY_PATH" but I cannot come up with something better.
+Any updates? Have you submitted this patch? I hope we can end up at 6.11. :=
+)
 
-If a page is added in LRU batch, its refcount increases one, remove the
-page from LRU batch decreases one. Page migration requires the page is not
-referenced by others except page mapping. Before migrating a page, we
-should try to drain the page from LRU batch in case the page is in it,
-however, folio_test_lru() is not sufficient to tell whether the page is
-in LRU batch or not, if the page is in LRU batch, the migration will fail.
+Huacai
 
-To solve the problem above, we modify the logic of adding to LRU batch.
-Before adding a page to LRU batch, we clear the LRU flag of the page so
-that we can check whether the page is in LRU batch by folio_test_lru(page).
-Seems making the LRU flag of the page invisible a long time is no problem,
-because a new page is allocated from buddy and added to the lru batch,
-its LRU flag is also not visible for a long time.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: yangge <yangge1116@126.com>
----
- mm/swap.c | 43 +++++++++++++++++++++++++++++++------------
- 1 file changed, 31 insertions(+), 12 deletions(-)
-
-diff --git a/mm/swap.c b/mm/swap.c
-index dc205bd..9caf6b0 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -211,10 +211,6 @@ static void folio_batch_move_lru(struct folio_batch *fbatch, move_fn_t move_fn)
- 	for (i = 0; i < folio_batch_count(fbatch); i++) {
- 		struct folio *folio = fbatch->folios[i];
- 
--		/* block memcg migration while the folio moves between lru */
--		if (move_fn != lru_add_fn && !folio_test_clear_lru(folio))
--			continue;
--
- 		folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
- 		move_fn(lruvec, folio);
- 
-@@ -255,11 +251,16 @@ static void lru_move_tail_fn(struct lruvec *lruvec, struct folio *folio)
- void folio_rotate_reclaimable(struct folio *folio)
- {
- 	if (!folio_test_locked(folio) && !folio_test_dirty(folio) &&
--	    !folio_test_unevictable(folio) && folio_test_lru(folio)) {
-+	    !folio_test_unevictable(folio)) {
- 		struct folio_batch *fbatch;
- 		unsigned long flags;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
-+
- 		local_lock_irqsave(&lru_rotate.lock, flags);
- 		fbatch = this_cpu_ptr(&lru_rotate.fbatch);
- 		folio_batch_add_and_move(fbatch, folio, lru_move_tail_fn);
-@@ -352,11 +353,15 @@ static void folio_activate_drain(int cpu)
- 
- void folio_activate(struct folio *folio)
- {
--	if (folio_test_lru(folio) && !folio_test_active(folio) &&
--	    !folio_test_unevictable(folio)) {
-+	if (!folio_test_active(folio) && !folio_test_unevictable(folio)) {
- 		struct folio_batch *fbatch;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
-+
- 		local_lock(&cpu_fbatches.lock);
- 		fbatch = this_cpu_ptr(&cpu_fbatches.activate);
- 		folio_batch_add_and_move(fbatch, folio, folio_activate_fn);
-@@ -700,6 +705,11 @@ void deactivate_file_folio(struct folio *folio)
- 		return;
- 
- 	folio_get(folio);
-+	if (!folio_test_clear_lru(folio)) {
-+		folio_put(folio);
-+		return;
-+	}
-+
- 	local_lock(&cpu_fbatches.lock);
- 	fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate_file);
- 	folio_batch_add_and_move(fbatch, folio, lru_deactivate_file_fn);
-@@ -716,11 +726,16 @@ void deactivate_file_folio(struct folio *folio)
-  */
- void folio_deactivate(struct folio *folio)
- {
--	if (folio_test_lru(folio) && !folio_test_unevictable(folio) &&
--	    (folio_test_active(folio) || lru_gen_enabled())) {
-+	if (!folio_test_unevictable(folio) && (folio_test_active(folio) ||
-+	    lru_gen_enabled())) {
- 		struct folio_batch *fbatch;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
-+
- 		local_lock(&cpu_fbatches.lock);
- 		fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate);
- 		folio_batch_add_and_move(fbatch, folio, lru_deactivate_fn);
-@@ -737,12 +752,16 @@ void folio_deactivate(struct folio *folio)
-  */
- void folio_mark_lazyfree(struct folio *folio)
- {
--	if (folio_test_lru(folio) && folio_test_anon(folio) &&
--	    folio_test_swapbacked(folio) && !folio_test_swapcache(folio) &&
--	    !folio_test_unevictable(folio)) {
-+	if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
-+	    !folio_test_swapcache(folio) && !folio_test_unevictable(folio)) {
- 		struct folio_batch *fbatch;
- 
- 		folio_get(folio);
-+		if (!folio_test_clear_lru(folio)) {
-+			folio_put(folio);
-+			return;
-+		}
-+
- 		local_lock(&cpu_fbatches.lock);
- 		fbatch = this_cpu_ptr(&cpu_fbatches.lru_lazyfree);
- 		folio_batch_add_and_move(fbatch, folio, lru_lazyfree_fn);
--- 
-2.7.4
-
+>
+> --
+> Xi Ruoyao <xry111@xry111.site>
+> School of Aerospace Science and Technology, Xidian University
 
