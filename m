@@ -1,120 +1,141 @@
-Return-Path: <stable+bounces-54860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA5991329B
-	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 09:45:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5579132F4
+	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 12:11:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1842D283A19
-	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 07:45:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA4E4283DEB
+	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 10:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88356DDB3;
-	Sat, 22 Jun 2024 07:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8361E14B959;
+	Sat, 22 Jun 2024 10:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ivjiMI/Y"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oIVTEvze"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33AFC4436;
-	Sat, 22 Jun 2024 07:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E91714A606
+	for <stable@vger.kernel.org>; Sat, 22 Jun 2024 10:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719042342; cv=none; b=PdlusTPsKGiBKMCBX8beEob1Q47R0LA0eBUke4RdbDScQNz0La+/EGRws4PBLxK3QvWB64OINJ4i2mM0ueZu+gioP1GiyjJx8OxpDksBIXb8cYQUiJRBmlCkW7R7xoYwx+xQi4IGMvFy+EuD8TlF0W0fyplsIGVYakYHuAC3IzA=
+	t=1719051066; cv=none; b=IG0BRV9xRZWXHoj/q+SrifhEjvbwrwgWXT5nZGC7EP/gVJQuWwK7JSdinhhgwSkQajfXQHSnqcTwyNGqodU2ZxFUSBFMS8Kw2Up3FLQYtd5rFW9dKt3mBCWxAqyvGrF2csI5KEhTlB5NWNzyudPzJQAI4jMFbf7Cg9wm37XBbW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719042342; c=relaxed/simple;
-	bh=IR0hYburUiw/cByL4+6sKzPdofCEFTWUZ/1nF9KctUo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kiG8eL7axXzat+tp/zN4SvJvOVkYJhs+EfITqTmLaYdlNYssxEnf2YK7whgUF90Uo2JTma5BiFM2pVd29hVqfmpJUME9Kfbsod1XREpWVhyt9mLBAtDd0KD0b5nMJ902JEMExEkKd9j7S0y1TQZyD8pFPR5PgwCG0XuM1P+odrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ivjiMI/Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933F1C4AF09;
-	Sat, 22 Jun 2024 07:45:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719042341;
-	bh=IR0hYburUiw/cByL4+6sKzPdofCEFTWUZ/1nF9KctUo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ivjiMI/YoMWwvSoIR9+MMEkr8qyyPdF+79qrasJuYvGaMcPVSA69xU9ycH6NTk4yV
-	 tH9BhVpSO9gSuoUeBOfB2EWezgZBuxMNze9WItgL3GyI3qtxwXSyPdOP82TnSubn6N
-	 RMq6CskKJ05XkNQUUm4ql/MQaM45LbMUB8AiFOheaiiY9o+jEaWWTpt0zXjjrEa2j3
-	 hIy/bREeos5oN2ABh5Xfsa7qw3pTIMpDHO59WgiK/53DAwKm0S6/lLeVVUpYamuDdV
-	 Ni+EmhN+dFQwvr9OIoA5Dn9h70INXzs43TxEEMGLl7Dauo9Bt6/h7aF/Ykfz8Gkk64
-	 HF6evbJc3kgrQ==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-57d106e69a2so1364089a12.0;
-        Sat, 22 Jun 2024 00:45:41 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXLkjPhtGhhvbngfLbz8QV0+0ukJstRRt+CkzvX2sO4U/j43Te5BSaMZuCN6ingKEsQEngJK0LWx5j6IcmoHhyIr08rlNEI9K8DaUVKcrn9WBvxQsPpwb7ZFVeEn+jGLYvXz4pftSC9dJyjt1CVxlggh18bDCywhJ1GN9+IvmBMlQ==
-X-Gm-Message-State: AOJu0YzWLSTriBRBGTfwCTAOHtQWYCqJUc9J6MW/FVdu78pfhSEdvWKB
-	xJ0CiBDDqAKUO9cuYI725toqgoSRUAJGswJuKNJnSKSCaGmtH/PH2DrryGI2H2noym1w+IIhGaz
-	PFsrXeEK+kMdxSzqSxtEq/Oku+5g=
-X-Google-Smtp-Source: AGHT+IHM67hEoabZwNKJlQUmc8LsuA/PkXEjHzd5RrTVkS/4e5XvvFbb4B1o7Z+G2WUp6v6pQRrtpMxPa2IycXBdeyI=
-X-Received: by 2002:a05:6402:1809:b0:57d:455:d395 with SMTP id
- 4fb4d7f45d1cf-57d447e23f3mr461623a12.7.1719042340180; Sat, 22 Jun 2024
- 00:45:40 -0700 (PDT)
+	s=arc-20240116; t=1719051066; c=relaxed/simple;
+	bh=xStPxu56NKR5AZX+Gj7MCK4+Fcx4CxuAPdTvEB6csKk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hYUjrwAir7zVA9MQEz+dYkgZKkaXgwo+orhYijy+jIBqernjETR6LSr4dcQVE0h6fgouMjv/fVFA1Zlr0XcvGXtVTT7U++3208t7TMB5kN2rac/bOizNsYbTxrGgs5uGr93binzl0Yv4S+VCnI+6V3Ea+b8cyl3oqmJdN+BwV4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oIVTEvze; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4217136a74dso23523615e9.2
+        for <stable@vger.kernel.org>; Sat, 22 Jun 2024 03:11:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719051062; x=1719655862; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RsQGvp+qGQjpw8YL28OmQskK7HTEsVWEKYoqU07XWo0=;
+        b=oIVTEvzerf7JKPbCXH4cjNUemQYHZjxow4hYGrcngX8o30KzU1zSZ0iXaY2PEY0VEC
+         NB3YLIdXVsnojhh6JGIEfOWdHSA1Q5vetD3FMmRPoZcX2IWywl5XF66W/mlLLyJw2jZ7
+         4POERxeFW7IRAld8jrKJzMA2x/Iymxm4FaBAk7u5E+I9OtQez4+b/IK0RGGaPCoFBCt3
+         yCL7ajQAtKfZGtvq/AoUXycFyaMma+BOcozpN8JQiMlBicHS+rkglwQChTF3IPbC4Sa+
+         P0YhR1m0y3O9Vd3KTFq9TfKhZchzQTuH8jhBq0hkHjZ+p78eOzX+yH6E3lrE4EFSKVpU
+         qOkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719051062; x=1719655862;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RsQGvp+qGQjpw8YL28OmQskK7HTEsVWEKYoqU07XWo0=;
+        b=mYuryqPYgvzq0Yh4h/oK2sVxYKA5+8nSh5ccwcNVWCzPclAq7rPkonLtPCeJXlfanX
+         JCYttr+9pxwsFJAwmP0N2YLCBphZXj/toyIgdJuriLte8qb/qQJ6Ml/5HSsckswZ1Zs8
+         fOMx1o8B3x6S4swo+B/DmEK3F+3DsiKMQtk0kXO0jj2cpiGIeEVVK/AnHkjpwkSyKp6N
+         MUiXE+zurw2cPJPEUdvcrfuZ/h2Aqr//Lc3YB/IweoQjMozkm9KjYc0zsNhbLyZyqvXG
+         haM1eHxPTeMKQLja06/KIBcVGiflxE6Wi/DLwewf/5oknoMQANoRVDG2L6PZBOEre0Ms
+         g/JQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUDTZjop/df4hJpxJzFJct1E22ADlXWYaFM+cFhh0slPDaUv22aXOb+Jhmxb/CkTW40PnOkNxN1e/fLab/x18o3AgIUogHg
+X-Gm-Message-State: AOJu0YxtAyQnZh2cppDXHcxgRfbyzLco3d40BbeFSeXiAi9smVyswgZj
+	B1EEAmglH8eGWJaqs+1YttmrZfDucq+/4G7/0Vcz9yFxAX8KXfMcFCORQpH88f4=
+X-Google-Smtp-Source: AGHT+IGu1VMVHM1in3bew6TKF/LOVzW8ud+KEi2XpY8URRBQjXEnSYQfIbrIgVM07kRbmhpQ0baWuA==
+X-Received: by 2002:a05:600c:4896:b0:421:d8d4:75e3 with SMTP id 5b1f17b1804b1-4247529bcd9mr70390545e9.40.1719051062029;
+        Sat, 22 Jun 2024 03:11:02 -0700 (PDT)
+Received: from [172.20.10.4] (82-132-215-235.dab.02.net. [82.132.215.235])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4248179d3afsm62166325e9.5.2024.06.22.03.11.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 22 Jun 2024 03:11:01 -0700 (PDT)
+Message-ID: <9af37f6c-cd44-4a57-8a34-969e23b0342f@linaro.org>
+Date: Sat, 22 Jun 2024 11:10:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240511100157.2334539-1-chenhuacai@loongson.cn>
- <f92e23be-3f3f-4bc6-8711-3bcf6beb7fa2@app.fastmail.com> <CAAhV-H5kn2xPLqgop0iOyg-tc5kAYcuNo3cd+f3yCdkN=cJDug@mail.gmail.com>
- <fcdeb993-37d6-42e0-8737-3be41413f03d@app.fastmail.com> <CAAhV-H4s_utEOtFDwjPTqxnMWTVjWhmS7bEVRX+t8HK5QDA8Vg@mail.gmail.com>
- <a21a0878-021e-4990-a59d-b10f204a018b@app.fastmail.com> <CAAhV-H7OR5tkbjj-BPLStneXFr=1DUaFvvh8+a5Bk_jhCAP25Q@mail.gmail.com>
- <cdef45d36d0e71da5f0534b3783b81c82405bda3.camel@xry111.site>
- <CAAhV-H4R_HJAB0baqUgA8ucbwWNVN4sc9EV91zAk9Ch302_7zg@mail.gmail.com>
- <56ace686-d4b4-4b4c-a8a6-af06ec0d48f2@app.fastmail.com> <08ff168afc09fd108ec489a3c9360d4e704fa7dc.camel@xry111.site>
- <a70e8b062fc422e351fe2369b9979a623fa05dfa.camel@xry111.site>
- <4fd0531d-e8f8-4a4c-9136-50fcc31ba5f2@app.fastmail.com> <c2b1ca127504e519c04a36179ba6c486f2ec0a08.camel@xry111.site>
-In-Reply-To: <c2b1ca127504e519c04a36179ba6c486f2ec0a08.camel@xry111.site>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 22 Jun 2024 15:45:27 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4HaAnKJFnDpfUY6qdEtoKPxLSgHgU8isMryrab=cq6pA@mail.gmail.com>
-Message-ID: <CAAhV-H4HaAnKJFnDpfUY6qdEtoKPxLSgHgU8isMryrab=cq6pA@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
-To: Xi Ruoyao <xry111@xry111.site>
-Cc: Arnd Bergmann <arnd@arndb.de>, Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev, 
-	Linux-Arch <linux-arch@vger.kernel.org>, Xuefeng Li <lixuefeng@loongson.cn>, 
-	guoren <guoren@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org, 
-	loongson-kernel@lists.loongnix.cn, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] nvmem: core: limit cell sysfs permissions to main
+ attribute ones
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Marco Felsch <m.felsch@pengutronix.de>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240619-nvmem-cell-sysfs-perm-v1-1-e5b7882fdfa8@weissschuh.net>
+Content-Language: en-US
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+In-Reply-To: <20240619-nvmem-cell-sysfs-perm-v1-1-e5b7882fdfa8@weissschuh.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi, Ruoyao,
 
-On Mon, Jun 17, 2024 at 2:45=E2=80=AFPM Xi Ruoyao <xry111@xry111.site> wrot=
-e:
->
-> On Mon, 2024-06-17 at 08:35 +0200, Arnd Bergmann wrote:
-> > On Sat, Jun 15, 2024, at 15:12, Xi Ruoyao wrote:
-> > > On Sat, 2024-06-15 at 20:12 +0800, Xi Ruoyao wrote:
-> > > >
-> > > > [Firefox]:
-> > > > https://searchfox.org/mozilla-central/source/security/sandbox/linu
-> > > > x/SandboxFilter.cpp#364
-> > >
-> > > Just spent some brain cycles to make a quick hack adding a new statx
-> > > flag.  Patch attached.
-> > >
-> >
-> > Thanks for the prototype. I agree that this is not a good API
->
-> What is particular bad with it?  Maybe we can improve before annoying
-> VFS guys :).
->
-> > but that it would address the issue and I am fine with merging
-> > something like this if you can convince the VFS maintainers.
->
-> Before that I'd like someone to purpose a better name.  I really dislike
-> "AT_FORCE_EMPTY_PATH" but I cannot come up with something better.
-Any updates? Have you submitted this patch? I hope we can end up at 6.11. :=
-)
 
-Huacai
+On 19/06/2024 19:09, Thomas Weißschuh wrote:
+> The cell sysfs attribute should not provide more access to the nvmem
+> data than the main attribute itself.
+> For example if nvme_config::root_only was set, the cell attribute
+> would still provide read access to everybody.
+> 
+> Mask out permissions not available on the main attribute.
+> 
+> Fixes: 0331c611949f ("nvmem: core: Expose cells through sysfs")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> ---
+> This was also discussed as part of
+> "[PATCH] nvmem: core: add sysfs cell write support" [0].
+> But there haven't been updates to that patch and this is arguably a
+> standalone bugfix.
+> 
+> [0] https://lore.kernel.org/lkml/20240223154129.1902905-1-m.felsch@pengutronix.de/
+> ---
+>   drivers/nvmem/core.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+> index e1ec3b7200d7..acfea1e56849 100644
+> --- a/drivers/nvmem/core.c
+> +++ b/drivers/nvmem/core.c
+> @@ -463,7 +463,7 @@ static int nvmem_populate_sysfs_cells(struct nvmem_device *nvmem)
+>   						    "%s@%x,%x", entry->name,
+>   						    entry->offset,
+>   						    entry->bit_offset);
+> -		attrs[i].attr.mode = 0444;
+> +		attrs[i].attr.mode = 0444 & nvmem_bin_attr_get_umode(nvmem);
+Why not just
+attrs[i].attr.mode = nvmem_bin_attr_get_umode(nvmem);
+?
 
->
-> --
-> Xi Ruoyao <xry111@xry111.site>
-> School of Aerospace Science and Technology, Xidian University
+--srini
+>   		attrs[i].size = entry->bytes;
+>   		attrs[i].read = &nvmem_cell_attr_read;
+>   		attrs[i].private = entry;
+> 
+> ---
+> base-commit: 92e5605a199efbaee59fb19e15d6cc2103a04ec2
+> change-id: 20240619-nvmem-cell-sysfs-perm-156fde0d7460
+> 
+> Best regards,
 
