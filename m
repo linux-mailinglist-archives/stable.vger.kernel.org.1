@@ -1,74 +1,76 @@
-Return-Path: <stable+bounces-54868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA6B9133A5
-	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 14:02:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 278A391348B
+	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 16:58:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E7891F228B4
-	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 12:02:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42A241C218EB
+	for <lists+stable@lfdr.de>; Sat, 22 Jun 2024 14:58:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17567155741;
-	Sat, 22 Jun 2024 12:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CF11E488;
+	Sat, 22 Jun 2024 14:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BAePYSVP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cuWqQqG5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0A9155353;
-	Sat, 22 Jun 2024 12:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2095B16F299;
+	Sat, 22 Jun 2024 14:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719057725; cv=none; b=ctm11n3MBU4z+3vGEPM4930HhbXY5IBI0Mc48jc/HU2H7ZZoh855mOrMoQR2+my1QpMwY6mmPWOqkoJvEd3qVoh5ZqqHYxxfoNsi8OyUriQetrKEbTSMdfmwhtEiK56NYRFOErVhUpNjdNOs8AW8csyudWMDDlQiOYju3n8X5Qs=
+	t=1719068316; cv=none; b=Phwy0P60xLmsFLLwQrVI8Xaju4sXeBMcdmUzfI0/HNd6qRrp0p8wpiL3saqaSt7WmXL+2zz7Xc/VMj204PQ41bdQoYyhaHqSld78gjUjJsKSea660oO0tBxIbtYyWojKFqs6ZLoFWCvYG1fsTvOjvwWpI5CvRuC4uhw1Em4ZtKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719057725; c=relaxed/simple;
-	bh=pKm7aBnB4eQyN2yxIeRksOuD82htf6dmCnmcX+fqIbs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=NHT/2R6VQDMA2D5MjxR8T6IbBxsNPAIfk1E7kfaGF3URL8thG4PkaQY1imORGyvsfo39GjY2DknrOdistaGyMT1QLpNHk9ZjWarsCM6A6N/gF9NxTBN8UdwTLHLsOmZSCJhisECOmD8dC8Li1qFTziXGpqIWr4x2W1LSyfy6ggg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BAePYSVP; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1719068316; c=relaxed/simple;
+	bh=MQoKloZEpoKquI1arZ549tKGjKUMWJxM2hFahY1T8MQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AUOrLsq5yrzUz6nQA7DdFiu7DP336nn2hK8CB8aS1Zom3RFn2UNdxGlmLD/uOWj+8xtfX1A623x8iXkjfjDyYO+/b4EHYH1U6u8iUzF+LMLcJTT4+al3kDbh3GSWykiMHUxaDoEys+dMQQZDy7RnjCvKPQQ8y9hyVfyTS6sT6VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cuWqQqG5; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1f4c7b022f8so25017715ad.1;
-        Sat, 22 Jun 2024 05:02:04 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7066c9741b7so210313b3a.1;
+        Sat, 22 Jun 2024 07:58:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719057723; x=1719662523; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=7BUAtZoN7iWs7Su2BECN/OwNZupudGage3ZVXNwoGn0=;
-        b=BAePYSVP3ecJ3uJcvfrSWgXCG+csDh1tBb3RhPEG7r9jWZxygk5m0FKBDGWUcUS4f8
-         592DJku1UYle3tnhtpAPaCneXAsmKaCfpSRL3GjylWScLGRvtwxFZsDm1HRbYJDkI6QE
-         tmosQk/7ezGqCb9QftWjNMeQ1WTbaXUPvrNxWwQ+H7+EYU/U0o46R/8xgayhp8TiPz6C
-         4Rb4tsfUnxeYPnJKOiHBCkdRy4PA/oRYB59iZqNnlZBYCoiRZ+8gzNJjiA3XHtN4kcwH
-         CHaVI34g843ffe7vuPvajZ8QdTZ7YOQKO1RUNSTFJk4PmkPuLHt1VLSmiqzmT9VMZV07
-         PPkg==
+        d=gmail.com; s=20230601; t=1719068314; x=1719673114; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=7AgK+NRrJzSdnlqO628yfSFZnHrjqGjFCisQ7jDYWCc=;
+        b=cuWqQqG53S55Vz/4WBM+H5uGS396N0wRUBe4S9n56ZTPSRKQCEiYh1CEPqEv+DVr+m
+         LgQkjCGiygpXJyHzXBvsMk9Veom80vxWluuLZgHTXveB+TUCnn9Q0t0hkZlrbJ6HJSmf
+         KCpdog/0kzMFqSMu9T6pfHp0jCbCFMmr2IdOG60mB+W1AIwa6IAQRowCQ6FGswa2JKLb
+         DKzFcTpoteEECR+Q6OcMS+RPuCAfvfomEX4t2WgqbhdfDBTOqbWYGZ6zkVbwXyB1jjS7
+         6MnAS/OCmk/loFGXcX/5wcxk+80MiNOluEWBx1UUXp256GLNLDxVN2+lHf9IZq9q9apa
+         jO1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719057723; x=1719662523;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7BUAtZoN7iWs7Su2BECN/OwNZupudGage3ZVXNwoGn0=;
-        b=QJzAgwWd5SiKrH36CU/yBQdfXDNgPBfxav7F86VCJ9dIFhh3YLLUvlA2ejObdwEXck
-         neeqHznPudzXL4qe2w40C09Fh07opEEthrdGEfsKsoNE1mxLGTgSIsV4Ngbh5hMf37vg
-         BJ8Rs5AEMwLtNOcPCGzIbK5QQ4+qQ20ftjWUUYmryUKUtWIlk5tb6pEygcMHlV47ssLQ
-         /bCEtbGn3zzhFkE6b2RbDUxUULqjQ2Z7QZUmhz76+oL4kYEq3YQ6WX1BuKBn2JbcfKt+
-         fQtmwV2rIBOM2oH5AQHP8O9bn43lG5bxRgE4uzj+ODMIcQgvq4WDtSTldofP7naoA3/W
-         YZXA==
-X-Forwarded-Encrypted: i=1; AJvYcCUJNj9Wf0+jHW0KiAy+caT29Thi3YAK0fATNNdxkCgIPLbhQZhcbA8efUaRhJP24tlh+kdgIHnwdCijRmVr8EBhZmogLyf8+lwmIsRBmmWNxewfAUCKUQLY7CriLpnxu0LF6uP/hSUSSlCRqo0Mnr7+mgo4Bu+8OyWIJQupxAM0HYi9ITowkBN+dg+3wQPEkLEJ6GjbxnIWA+SV0IxpCDPP
-X-Gm-Message-State: AOJu0YzSnHAbvM32MKRUxRlAPBZVXdJHJggEqpmJM5Np5KWGaNNznexH
-	djQPZv2NOa2XdPgAaiffHbmW7o1VJNc49EZsRjcI/mg3JOMHWuyZ
-X-Google-Smtp-Source: AGHT+IFHL0Zt01i2MdAdOvx3XYxPHff1JpAd7jFwiKPOD/dtP5oKNpEh0R8HvXZcSw645QE3uh0qdg==
-X-Received: by 2002:a17:902:e742:b0:1f9:fca9:742d with SMTP id d9443c01a7336-1f9fca977e3mr36663935ad.37.1719057722908;
-        Sat, 22 Jun 2024 05:02:02 -0700 (PDT)
-Received: from [192.168.50.95] ([118.32.98.101])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9eb2f0374sm29596165ad.22.2024.06.22.05.01.57
+        d=1e100.net; s=20230601; t=1719068314; x=1719673114;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7AgK+NRrJzSdnlqO628yfSFZnHrjqGjFCisQ7jDYWCc=;
+        b=hrxAhwJKdBN6bPC84LO4vK3DBS9XCUASS+nlk+P6x4/6T9jJJInlQyU/dAX/VUwQCK
+         Yxzvvysh3kibP54mjuoNC5YXvInjbr4aO7enHOqHfW1JVkYjJuKk2anufW6sfd3MEi+R
+         mm1wsfZbyTQRd2PoKPgSoWsApTUNZf52/IR+tV7HYFxYgXjrs2IUD8PX7g8TejRyNsWA
+         QUXsWGIicztXX0BQU4PckVilh5Ik2XmpjKfBuuDOctBzel1IuPh9F6T5sT0Ba1VavVWa
+         Bn/thnoha7By+275sGe0mY1Yjp5y+u2+1vEtba2RyCa1CL36vWsvMKPUGwIRSPshP/H0
+         79oA==
+X-Forwarded-Encrypted: i=1; AJvYcCUkMkz4afuwq7f6TNPt7hNZCi0pzceJfYDdkMxm4pOt5eNR1JVIx/doS8dKecbODnZxoHhA5928gSn7S+Izz8fqrScS6d599USG9MH6pT+IzimDj3SpJpLqhJV+fFThrM0TMgC6Dwbsew/SwlnOgWVqzYzUht71+JKj8Ff0Jd8u1lOe
+X-Gm-Message-State: AOJu0YzlXZkDT6h4h8AFQ+RbgNbbiIsJNxUrxlopDHVBn9ZL/j+KiHO1
+	yw0zMTFfcAyVvmSt2i4pAXtEz45cCv1e+IJvvZEnsXTUBQ5m0jaa
+X-Google-Smtp-Source: AGHT+IGF2n1dVpiBWBJ2Nwnir/oVdjRpuBbP8g5U6FCGd0rTNvV2FQSnPTF61qFjieLTt51XrpVNeA==
+X-Received: by 2002:a05:6a21:6d96:b0:1b5:2fbb:2d84 with SMTP id adf61e73a8af0-1bcf7ee908fmr49833637.28.1719068314173;
+        Sat, 22 Jun 2024 07:58:34 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70651194b21sm3184619b3a.68.2024.06.22.07.58.31
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jun 2024 05:02:02 -0700 (PDT)
-Message-ID: <e2f9da4e-919d-4a98-919d-167726ef6bc7@gmail.com>
-Date: Sat, 22 Jun 2024 21:01:55 +0900
+        Sat, 22 Jun 2024 07:58:33 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <614d86a1-72c4-489b-94f9-fbe553c25f28@roeck-us.net>
+Date: Sat, 22 Jun 2024 07:58:31 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,185 +78,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] tracing/net_sched: NULL pointer dereference in
- perf_trace_qdisc_reset()
-From: Yunseong Kim <yskelg@gmail.com>
-To: Taehee Yoo <ap420073@gmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>, Pedro Tammela <pctammela@mojatatu.com>,
- netdev@vger.kernel.org, stable@vger.kernel.org,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Takashi Iwai <tiwai@suse.de>, "David S. Miller" <davem@davemloft.net>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- "Rafael J. Wysocki" <rafael@kernel.org>, Jamal Hadi Salim
- <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>,
- Jiri Pirko <jiri@resnulli.us>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Austin Kim <austindh.kim@gmail.com>,
- shjy180909@gmail.com, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, ppbuk5246@gmail.com,
- Yeoreum Yun <yeoreum.yun@arm.com>, virtualization@lists.linux.dev
-References: <20240622045701.8152-2-yskelg@gmail.com>
- <CAMArcTVgpAq8dC_u8eFE=asMWriWjNfYsmo6KVFi=tpHebdmCA@mail.gmail.com>
- <80f28cfb-f287-419b-a448-b5967bc778ae@gmail.com>
+Subject: Re: [PATCH 6.1 000/217] 6.1.95-rc1 review [parisc64/C3700 boot
+ failures]
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ allen.lkml@gmail.com, broonie@kernel.org, Oleg Nesterov <oleg@redhat.com>,
+ linux-parisc@vger.kernel.org, Helge Deller <deller@gmx.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+References: <20240619125556.491243678@linuxfoundation.org>
 Content-Language: en-US
-In-Reply-To: <80f28cfb-f287-419b-a448-b5967bc778ae@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20240619125556.491243678@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi,
+[ Copying parisc maintainers - maybe they can test on real hardware ]
 
-On 6/22/24 3:12 오후, Yunseong Kim wrote:
-> Hi Taehee,
+On 6/19/24 05:54, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.95 release.
+> There are 217 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> On 6/22/24 2:50 오후, Taehee Yoo wrote:
->> On Sat, Jun 22, 2024 at 1:58 PM <yskelg@gmail.com> wrote:
->>>
->>> From: Yunseong Kim <yskelg@gmail.com>
->>>
->>
->> Hi Yunseong,
->> Thanks a lot for this work!
+> Responses should be made by Fri, 21 Jun 2024 12:55:11 +0000.
+> Anything received after that time might be too late.
 > 
-> Thank you Taehee for reviewing our patch. It's greatly appreciated.
+...
+> Oleg Nesterov <oleg@redhat.com>
+>      zap_pid_ns_processes: clear TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING
 > 
->>> During qdisc initialization, qdisc was being set to noop_queue.
->>> In veth_init_queue, the initial tx_num was reduced back to one,
->>> causing the qdisc reset to be called with noop, which led to the kernel panic.
->>>
->>> I've attached the GitHub gist link that C converted syz-execprogram
->>> source code and 3 log of reproduced vmcore-dmesg.
->>>
->>>  https://gist.github.com/yskelg/cc64562873ce249cdd0d5a358b77d740
->>>
->>> Yeoreum and I use two fuzzing tool simultaneously.
->>>
->>> One process with syz-executor : https://github.com/google/syzkaller
->>>
->>>  $ ./syz-execprog -executor=./syz-executor -repeat=1 -sandbox=setuid \
->>>     -enable=none -collide=false log1
->>>
->>> The other process with perf fuzzer:
->>>  https://github.com/deater/perf_event_tests/tree/master/fuzzer
->>>
->>>  $ perf_event_tests/fuzzer/perf_fuzzer
->>>
->>> I think this will happen on the kernel version.
->>>
->>>  Linux kernel version +v6.7.10, +v6.8, +v6.9 and it could happen in v6.10.
->>>
->>> This occurred from 51270d573a8d. I think this patch is absolutely
->>> necessary. Previously, It was showing not intended string value of name.
-> 
-> 
->> I found a simple reproducer, please use the below command to test this patch.
->>
->> echo 1 > /sys/kernel/debug/tracing/events/enable
->> ip link add veth0 type veth peer name veth1
 
-After applying our patch, I didn't find any message or kernel panic errors.
+I can not explain it, but this patch causes all my parisc64 (C3700)
+boot tests to crash. There are lots of memory corruption BUGs such as
 
- # echo 1 > /sys/kernel/debug/tracing/events/qdisc/qdisc_reset/enable
- # ip link add veth0 type veth peer name veth1
- Error: Unknown device type.
+[    0.000000] =============================================================================
+[    0.000000] BUG kmalloc-96 (Not tainted): Padding overwritten. 0x0000000043411dd0-0x0000000043411f5f @offset=3536
 
-However, without our patch applied, I tested Tahee's command line on the
-upstream 6.10.0-rc3 kernel using the qdisc_reset event and the ip command.
+ultimately followed by
 
- $ echo 1 > /sys/kernel/debug/tracing/events/qdisc/qdisc_reset/enable
+[    0.462562] Unaligned handler failed, ret = -14
+...
+[    0.469160]  IAOQ[0]: idr_alloc_cyclic+0x48/0x118
+[    0.469372]  IAOQ[1]: idr_alloc_cyclic+0x54/0x118
+[    0.469548]  RP(r2): __kernfs_new_node.constprop.0+0x160/0x420
+[    0.469782] Backtrace:
+[    0.469928]  [<00000000404af108>] __kernfs_new_node.constprop.0+0x160/0x420
+[    0.470285]  [<00000000404b0cac>] kernfs_new_node+0xbc/0x118
+[    0.470523]  [<00000000404b158c>] kernfs_create_empty_dir+0x54/0xf0
+[    0.470756]  [<00000000404b665c>] sysfs_create_mount_point+0x4c/0xb0
+[    0.470996]  [<00000000401181cc>] cgroup_init+0x5b4/0x738
+[    0.471213]  [<0000000040102220>] start_kernel+0x1238/0x1308
+[    0.471429]  [<0000000040107c90>] start_parisc+0x188/0x1d0
+...
+[    0.474956] Kernel panic - not syncing: Attempted to kill the idle task!
+SeaBIOS wants SYSTEM RESET.
 
- $ ip link add veth0 type veth peer name veth1
+This is with qemu v9.0.1.
 
-This make always kernel panic.
+Reverting this patch fixes the problem (I tried several times to be sure
+since I don't see the connection). I don't see the problem in any other
+branch. Bisect log is attached for reference.
 
-Linux version: 6.10.0-rc3
+Guenter
 
-[    0.000000] Linux version 6.10.0-rc3-00164-g44ef20baed8e-dirty
-(paran@fedora) (gcc (GCC) 14.1.1 20240522 (Red Hat 14.1.1-4), GNU ld
-version 2.41-34.fc40) #20 SMP PREEMPT Sat Jun 15 16:51:25 KST 2024
+---
+# bad: [a6398e37309000e35cedb5cc328a0f8d00d7d7b9] Linux 6.1.95
+# good: [eb44d83053d66372327e69145e8d2fa7400a4991] Linux 6.1.94
+git bisect start 'HEAD' 'v6.1.94'
+# good: [f17443d52d805c9a7fab5e67a4e8b973626fe1cd] cachefiles: resend an open request if the read request's object is closed
+git bisect good f17443d52d805c9a7fab5e67a4e8b973626fe1cd
+# good: [cc09e1d3519feab823685f4297853d468f44549d] iio: imu: inv_icm42600: delete unneeded update watermark call
+git bisect good cc09e1d3519feab823685f4297853d468f44549d
+# good: [b7b6bc60edb2132a569899bcd9ca099a0556c6ee] intel_th: pci: Add Granite Rapids SOC support
+git bisect good b7b6bc60edb2132a569899bcd9ca099a0556c6ee
+# good: [35e395373ecd14b64da7d54f565927a9368dcf20] mptcp: pm: update add_addr counters after connect
+git bisect good 35e395373ecd14b64da7d54f565927a9368dcf20
+# good: [29d35f0b53d4bd82ebc37c500a8dd73da61318ff] serial: 8250_dw: fall back to poll if there's no interrupt
+git bisect good 29d35f0b53d4bd82ebc37c500a8dd73da61318ff
+# good: [ea25a4c0de5700928c7fd0aa789eee39a457ba95] misc: microchip: pci1xxxx: Fix a memory leak in the error handling of gp_aux_bus_probe()
+git bisect good ea25a4c0de5700928c7fd0aa789eee39a457ba95
+# good: [e44999ec0b49dca9a9a2090c5432d893ea4f8d20] i2c: designware: Fix the functionality flags of the slave-only interface
+git bisect good e44999ec0b49dca9a9a2090c5432d893ea4f8d20
+# bad: [edd2754a62bee8d97b4808a15de024f66a1ddccf] zap_pid_ns_processes: clear TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING
+git bisect bad edd2754a62bee8d97b4808a15de024f66a1ddccf
+# first bad commit: [edd2754a62bee8d97b4808a15de024f66a1ddccf] zap_pid_ns_processes: clear TIF_NOTIFY_SIGNAL along with TIF_SIGPENDING
 
-Kernel panic message:
-
-[  615.236484] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-[  615.237250] Dumping ftrace buffer:
-[  615.237679]    (ftrace buffer empty)
-[  615.238097] Modules linked in: veth crct10dif_ce virtio_gpu
-virtio_dma_buf drm_shmem_helper drm_kms_helper zynqmp_fpga xilinx_can
-xilinx_spi xilinx_selectmap xilinx_core xilinx_pr_decoupler versal_fpga
-uvcvideo uvc videobuf2_vmalloc videobuf2_memops videobuf2_v4l2 videodev
-videobuf2_common mc usbnet deflate zstd ubifs ubi rcar_canfd rcar_can
-omap_mailbox ntb_msi_test ntb_hw_epf lattice_sysconfig_spi
-lattice_sysconfig ice40_spi gpio_xilinx dwmac_altr_socfpga mdio_regmap
-stmmac_platform stmmac pcs_xpcs dfl_fme_region dfl_fme_mgr dfl_fme_br
-dfl_afu dfl fpga_region fpga_bridge can can_dev br_netfilter bridge stp
-llc atl1c ath11k_pci mhi ath11k_ahb ath11k qmi_helpers ath10k_sdio
-ath10k_pci ath10k_core ath mac80211 libarc4 cfg80211 drm fuse backlight ipv6
-Jun 22 02:36:5[3   6k152.62-4sm98k4-0k]v  kCePUr:n e1l :P IUDn:a b4le6
-8t oC ohmma: nidpl eN oketr nteali nptaedg i6n.g1 0re.0q-urecs3t- 0at0
-1v6i4r-tgu4a4le fa2d0dbraeeds0se-dir tyd f#f2f08
-  615.252376] Hardware name: linux,dummy-virt (DT)
-[  615.253220] pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS
-BTYPE=--)
-[  615.254433] pc : strnlen+0x6c/0xe0
-[  615.255096] lr : trace_event_get_offsets_qdisc_reset+0x94/0x3d0
-[  615.256088] sp : ffff800080b269a0
-[  615.256615] x29: ffff800080b269a0 x28: ffffc070f3f98500 x27:
-0000000000000001
-[  615.257831] x26: 0000000000000010 x25: ffffc070f3f98540 x24:
-ffffc070f619cf60
-[  615.259020] x23: 0000000000000128 x22: 0000000000000138 x21:
-dfff800000000000
-[  615.260241] x20: ffffc070f631ad00 x19: 0000000000000128 x18:
-ffffc070f448b800
-[  615.261454] x17: 0000000000000000 x16: 0000000000000001 x15:
-ffffc070f4ba2a90
-[  615.262635] x14: ffff700010164d73 x13: 1ffff80e1e8d5eb3 x12:
-1ffff00010164d72
-[  615.263877] x11: ffff700010164d72 x10: dfff800000000000 x9 :
-ffffc070e85d6184
-[  615.265047] x8 : ffffc070e4402070 x7 : 000000000000f1f1 x6 :
-000000001504a6d3
-[  615.266336] x5 : ffff28ca21122140 x4 : ffffc070f5043ea8 x3 :
-0000000000000000
-[  615.267528] x2 : 0000000000000025 x1 : 0000000000000000 x0 :
-0000000000000000
-[  615.268747] Call trace:
-[  615.269180]  strnlen+0x6c/0xe0
-[  615.269767]  trace_event_get_offsets_qdisc_reset+0x94/0x3d0
-[  615.270716]  trace_event_raw_event_qdisc_reset+0xe8/0x4e8
-[  615.271667]  __traceiter_qdisc_reset+0xa0/0x140
-[  615.272499]  qdisc_reset+0x554/0x848
-[  615.273134]  netif_set_real_num_tx_queues+0x360/0x9a8
-[  615.274050]  veth_init_queues+0x110/0x220 [veth]
-[  615.275110]  veth_newlink+0x538/0xa50 [veth]
-[  615.276172]  __rtnl_newlink+0x11e4/0x1bc8
-[  615.276944]  rtnl_newlink+0xac/0x120
-[  615.277657]  rtnetlink_rcv_msg+0x4e4/0x1370
-[  615.278409]  netlink_rcv_skb+0x25c/0x4f0
-[  615.279122]  rtnetlink_rcv+0x48/0x70
-[  615.279769]  netlink_unicast+0x5a8/0x7b8
-[  615.280462]  netlink_sendmsg+0xa70/0x1190
-
-> The perf event is activated by perf_fuzzer, and it's indeed a similar
-> environment with veth.
-> 
->> In my machine, the splat looks like:
->>
->> BUG: kernel NULL pointer dereference, address: 0000000000000130
->> #PF: supervisor read access in kernel mode
-
->> Thanks a lot!
->> Taehee Yoo
-> 
-> I think this bug might cause inconvenience for developers working on net
-> devices driver in a virtual machine when they use tracing.
-> 
-> I'm appreciate your effort in reproducing it.
-> 
-> Warm Regards,
-> Yunseong Kim
-I believe our patch can prevent panics in all stable kernels released
-after +v6.7.10.
-
-Warm Regards,
-Yunseong Kim
 
