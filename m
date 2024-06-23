@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-54926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4438913B42
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:53:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21610913B45
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:53:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 131541C20CF9
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:53:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5463D1C20CAA
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:53:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B832C1946A6;
-	Sun, 23 Jun 2024 13:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B781946D4;
+	Sun, 23 Jun 2024 13:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DwuB7TXT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MPEcG3vK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A1719415A;
-	Sun, 23 Jun 2024 13:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56111946C1;
+	Sun, 23 Jun 2024 13:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719150308; cv=none; b=tcchQHHc/C0Layv/kruaJAdbAz01HG6muP++GtF74QbBRTJGCI6Fgg/5wcFCTMdLaqFtwpNLAoBq+ayaxNR1RA2QtxPGdApKJ5wfnXmQpz7zVe96zu4Rj1l0jx5ZiUmdWF4xQGvQphTLB4JOkcFzzsFv5iDDke6lhnEFAbmvuy4=
+	t=1719150309; cv=none; b=NzLi8hHs78QrG+qBXR6W3g9vI9LSRPx5MFlSAq9KJkO2OlnLiAS/dZvEx6ut+JUaE+HwBNqcpJ0dH1ih9GVV0L5F7wcmFNx7spj4KUDmeySyGZ/+o3ojIkBU6D80sffPKD2Dia4xlD+7VaaD+MlIAkaRFvLjT0yhvZUVXsSwy0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719150308; c=relaxed/simple;
-	bh=e2nUYJcqOmmveWyyVEjm37yY43tInovyngLChMBlzxk=;
+	s=arc-20240116; t=1719150309; c=relaxed/simple;
+	bh=4nkdyw11JFFQf6jwYWNjBj2N7W+HZsqxpLYv6cEgvGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JzT9Z40D52TlsMmCK6NCDbLMwT9zKSgvWD2ummtIbwcEyhTmM8h/Tf4f8S29bRAwTe570lww1Xy6PIRHZtegC+wav1Fm59So0ucHadhA8U6xp6mReMrUzR8nCcgnM0EcfGnEYV0Brlah2WEnbRI1DSHoQVxEnPHtNCuct2OezoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DwuB7TXT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844A5C2BD10;
-	Sun, 23 Jun 2024 13:45:06 +0000 (UTC)
+	 MIME-Version; b=Pk5ZHGf9SL7lBRDA4iGli4QlrXC6w/O0dGNmYJEQVT3D6LUAWuBLrrawS9ZE/BC90QKMGe5BLXhQerlMJEZHWFOeQJk90qfnVP8dOu3foRt1hiCgaFVOpBbw/raT5QHPQOydCvmNxfQ/PDENM+spGmMntu+FWnKANg5RWlhaj4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MPEcG3vK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D1D6C32781;
+	Sun, 23 Jun 2024 13:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719150308;
-	bh=e2nUYJcqOmmveWyyVEjm37yY43tInovyngLChMBlzxk=;
+	s=k20201202; t=1719150309;
+	bh=4nkdyw11JFFQf6jwYWNjBj2N7W+HZsqxpLYv6cEgvGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DwuB7TXTo7YsLtj6eD3P2F2R9JBEY38oJEV6l4e4EF9xvx0BohQeuHLaaw2n1SFvG
-	 xmHMBwpAnBNg8cKRDEs4oSbwcmWFdy9rHesKQXDU5SBTUaWwqfFKU3J67inTmzDQis
-	 hro/i+xzKre55ffavLdmfW+B+sY4c55Onw1sZw2BClWxBH0u7vtWL6R5uDLzTaqhZm
-	 YIZ/WzNxpDo5diSW5j75RHnJBfM3xDCTOAugYzcj30K6ZkcQ/qmWgabzIvor3KNm/U
-	 //y9WIEr1AfVmcYP45YMwd2noCMoJv5RnmL20OMzFiAukBIW0oFTgyQNUg4Q69hULb
-	 jUY2nHEwSSRPw==
+	b=MPEcG3vKgufaqQ4nauVUasp+8bKunM6BKpPM5CCc8WJWaxJe+Kkb+QAlLPKDd+rlf
+	 Mm3ulDNWTiwgVr9FwxTmfnH7Xo10r34GsKPoXK1u5qhzdXTYpw2rdDkhYpm5/Yvxv5
+	 W/Mwq6kzvhLITwod+n2hPXTcym4fIc3qE71Sdv7qFVwsobWhxSiBCNJpu9ovmYqXlb
+	 ljP4ACvpnLfjR0DuKEkm62q8HAfTPB1ryMABK8iNG4ufe76fqqc9ExDz6v9zhIk/q9
+	 4ilP3NsD1m69Gu6dpt4ydYCEzW7ySn4qReNmqzO3GikZfI+vdRh8wb5JGEomkzevEo
+	 aMHkxLboOAqWg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Inki Dae <inki.dae@samsung.com>,
+Cc: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jingoohan1@gmail.com,
-	sw0312.kim@samsung.com,
-	kyungmin.park@samsung.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	krzk@kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 12/16] drm/exynos: dp: drop driver owner initialization
-Date: Sun, 23 Jun 2024 09:44:41 -0400
-Message-ID: <20240623134448.809470-12-sashal@kernel.org>
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.6 13/16] drm: panel-orientation-quirks: Add quirk for Aya Neo KUN
+Date: Sun, 23 Jun 2024 09:44:42 -0400
+Message-ID: <20240623134448.809470-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240623134448.809470-1-sashal@kernel.org>
 References: <20240623134448.809470-1-sashal@kernel.org>
@@ -73,33 +70,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.35
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
 
-[ Upstream commit 1f3512cdf8299f9edaea9046d53ea324a7730bab ]
+[ Upstream commit f74fb5df429ebc6a614dc5aa9e44d7194d402e5a ]
 
-Core in platform_driver_register() already sets the .owner, so driver
-does not need to.  Whatever is set here will be anyway overwritten by
-main driver calling platform_driver_register().
+Similar to the other Aya Neo devices this one features
+again a portrait screen, here with a native resolution
+of 1600x2560.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240310220401.895591-1-tjakobi@math.uni-bielefeld.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_dp.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_dp.c b/drivers/gpu/drm/exynos/exynos_dp.c
-index 3404ec1367fb9..71ee824c4140b 100644
---- a/drivers/gpu/drm/exynos/exynos_dp.c
-+++ b/drivers/gpu/drm/exynos/exynos_dp.c
-@@ -288,7 +288,6 @@ struct platform_driver dp_driver = {
- 	.remove		= exynos_dp_remove,
- 	.driver		= {
- 		.name	= "exynos-dp",
--		.owner	= THIS_MODULE,
- 		.pm	= pm_ptr(&exynos_dp_pm_ops),
- 		.of_match_table = exynos_dp_match,
- 	},
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index aa93129c3397e..2166208a961d6 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -202,6 +202,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_MATCH(DMI_BOARD_NAME, "NEXT"),
+ 		},
+ 		.driver_data = (void *)&lcd800x1280_rightside_up,
++	}, {	/* AYA NEO KUN */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "AYANEO"),
++		  DMI_MATCH(DMI_BOARD_NAME, "KUN"),
++		},
++		.driver_data = (void *)&lcd1600x2560_rightside_up,
+ 	}, {	/* Chuwi HiBook (CWI514) */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "Hampoo"),
 -- 
 2.43.0
 
