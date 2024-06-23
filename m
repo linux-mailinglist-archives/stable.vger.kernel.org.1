@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-54959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0EC913D8E
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 20:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD53913D8C
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 20:10:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69D941C211D0
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 18:10:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28B1A1C21245
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 18:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DF6184139;
-	Sun, 23 Jun 2024 18:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D828A184130;
+	Sun, 23 Jun 2024 18:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BEw5UKbh";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dlTSFG/Z"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="LkAuFYbU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YiUaPl94"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB36184106;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD3918410F;
 	Sun, 23 Jun 2024 18:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719166230; cv=none; b=ANRlgSZ1wigxA/8RynNpwBVyHZEeOOgxlS5Pl2xIkGk+MMRH9YoJR70LI10eGJerKC+vZN8UtYvdCEAo5FP35stQL+P+ETEfQP9dORorAz89YtSDK4rwWhLcl7tSzXfhmRdsvfb34eeqLGp/oz1l89WIPLsclPI5fFcu6BncMKE=
+	t=1719166230; cv=none; b=df2538x9h5eyQMy+Im4ptDR/BmheTvqR+WSawspbhluAtQAdk4i+5MOHzPRMKK+LjfiyPYcMPBgc+kIEbcCBufZ6SWEKd5gDoAz6RXOXXIEJ1uQNzGZWuUBjSicwZkYleNhofMJ4//NVbmRULsWco/eFAHob4JD+uhSnhN8lWiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1719166230; c=relaxed/simple;
-	bh=WwX9TPSRKyYBlPRCMCpQflwonYvF0f5ZSglVYKYhIEw=;
+	bh=v+0wMCepz0q4COGL4z8xN5Riklf1Q54BG20Mf+yrcx4=;
 	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=VwXNwqIQqQOk9ySQ/okbjua9fvc4p7p5zcERRh3HoQ1HBvDU49xO0Hdst0QNpGTNjjGuBo+Jxz8Aw4zx33pqOlCOfbejm6X+oqyxrSJB2mYgK2Hf75PnpOCO6nal20MEYWNsR9zX/kQANJ1C8MwQbPxIG9fWtz1BaYJg4L9aboU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BEw5UKbh; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dlTSFG/Z; arc=none smtp.client-ip=193.142.43.55
+	 Message-ID:Content-Type; b=C/kpIRNW4sJdcNGa7j98QQ1cohH6G//TeZdPI7oyJJACfChZ1U67Uy63jLfpwCaSpUC0E0sj2i5M4Fnz6VJDfrTzNU1UVa1PxetFop+hjpQhOYNxGRCSJAB4wyJhZQsk4bRy+qGezGQe0TExV6A19YS/ZSYUTKXvLkRjD8fxsrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=LkAuFYbU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YiUaPl94; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Sun, 23 Jun 2024 18:10:26 -0000
+Date: Sun, 23 Jun 2024 18:10:27 -0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1719166227;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -40,12 +40,12 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+cgei92uAq08pdTY7eAGcOv6ThOTFM0vwvtNUO5lQoI=;
-	b=BEw5UKbhzXupS+A/NgJSKNWb5GsLpaLJlWeA298fEyNYUCYbx8kjjjCYXYmnI8hzLjtaFa
-	x0Yuv6Yaf6T7UPJ8aGboMMXX0/O9glksEYfPsIwuh34ydMZcw+mCmmaT/6t/x4n6rfzB9Y
-	RlvZK7Kh28jcNRuKmna+7k01040OCoCYw7/8sLOz36SfMkskoqTfMnQ7qMQJ3JLnpTRqEe
-	D7OaekwSQRedLUHmDyAbKtA6GLdzwgSd584e5NWHYg8SktmxheqBqid3CwoYisxycF7DrQ
-	IMrG6pHuk1rhTlymTe6TIDVqSO06gDDnWyz8rb9//2H+vGkWCRj07wQPHa2Bkg==
+	bh=uh2bAnLm3YZDzZFxO37dHGycVUv4ngpeet/vgZcAdQo=;
+	b=LkAuFYbUnFurgMVPSDCue7Q42FFauEGOyOx2olnxgEDzcaa2x/yKUG3HUofrOfLaCTNwMD
+	LZ5YSX4OzPqn70OMxyj4dpWNMRUPwDYSBLsNiJ4TX5UPEN7bZouRr5QvyKXf7upxH3kwMU
+	oGTYIqt7dfohrmn+7PF86zGEmWRaSFMYp6BUTKJ/9baOeUmkgU5V8pmTeVfKIY7v96Cte4
+	sZmq0HOcEKGnMRY1OcvSUWfLTvQmkLGWBzo40wWwkytNC7Jd8FYR/4cvAVtttWr7BwOFl9
+	RF2+/UpmXceULkPPNjmH525DrqU9tVqfl4g/3GWSFQIPmEJGkmkIw3ZG/YYFUg==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1719166227;
 	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
@@ -53,25 +53,26 @@ DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+cgei92uAq08pdTY7eAGcOv6ThOTFM0vwvtNUO5lQoI=;
-	b=dlTSFG/ZW15gfYeHjJT/yt2kkrjJT590Y6U0+CmmZSaBidq0XmRhMkW3Q/2pLuj7j2/TrU
-	n2vP2/ZtILqJfxCw==
-From: "tip-bot2 for Huacai Chen" <tip-bot2@linutronix.de>
+	bh=uh2bAnLm3YZDzZFxO37dHGycVUv4ngpeet/vgZcAdQo=;
+	b=YiUaPl94i24Eu4jqq9RN02afeqkMR9nwXeS6vboiOqP0pnt7DsTMGVA4nHt0ZNHhpzROvM
+	EGar3v0zsKV4JEDQ==
+From: "tip-bot2 for Yuntao Wang" <tip-bot2@linutronix.de>
 Sender: tip-bot2@linutronix.de
 Reply-to: linux-kernel@vger.kernel.org
 To: linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/urgent] cpu: Fix broken cmdline "nosmp" and "maxcpus=0"
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Thomas Gleixner <tglx@linutronix.de>,
+Subject: [tip: smp/urgent] cpu/hotplug: Fix dynstate assignment in
+ __cpuhp_setup_state_cpuslocked()
+Cc: Yuntao Wang <ytcoode@gmail.com>, Thomas Gleixner <tglx@linutronix.de>,
  stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240618081336.3996825-1-chenhuacai@loongson.cn>
-References: <20240618081336.3996825-1-chenhuacai@loongson.cn>
+In-Reply-To: <20240515134554.427071-1-ytcoode@gmail.com>
+References: <20240515134554.427071-1-ytcoode@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171916622698.10875.11108299425462824566.tip-bot2@tip-bot2>
+Message-ID: <171916622725.10875.11057800130531608547.tip-bot2@tip-bot2>
 Robot-ID: <tip-bot2@linutronix.de>
 Robot-Unsubscribe:
  Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
@@ -81,49 +82,66 @@ Content-Transfer-Encoding: 7bit
 
 The following commit has been merged into the smp/urgent branch of tip:
 
-Commit-ID:     6ef8eb5125722c241fd60d7b0c872d5c2e5dd4ca
-Gitweb:        https://git.kernel.org/tip/6ef8eb5125722c241fd60d7b0c872d5c2e5dd4ca
-Author:        Huacai Chen <chenhuacai@loongson.cn>
-AuthorDate:    Tue, 18 Jun 2024 16:13:36 +08:00
+Commit-ID:     932d8476399f622aa0767a4a0a9e78e5341dc0e1
+Gitweb:        https://git.kernel.org/tip/932d8476399f622aa0767a4a0a9e78e5341dc0e1
+Author:        Yuntao Wang <ytcoode@gmail.com>
+AuthorDate:    Wed, 15 May 2024 21:45:54 +08:00
 Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Sun, 23 Jun 2024 20:04:14 +02:00
+CommitterDate: Mon, 17 Jun 2024 15:08:04 +02:00
 
-cpu: Fix broken cmdline "nosmp" and "maxcpus=0"
+cpu/hotplug: Fix dynstate assignment in __cpuhp_setup_state_cpuslocked()
 
-After the rework of "Parallel CPU bringup", the cmdline "nosmp" and
-"maxcpus=0" parameters are not working anymore. These parameters set
-setup_max_cpus to zero and that's handed to bringup_nonboot_cpus().
+Commit 4205e4786d0b ("cpu/hotplug: Provide dynamic range for prepare
+stage") added a dynamic range for the prepare states, but did not handle
+the assignment of the dynstate variable in __cpuhp_setup_state_cpuslocked().
 
-The code there does a decrement before checking for zero, which brings it
-into the negative space and brings up all CPUs.
+This causes the corresponding startup callback not to be invoked when
+calling __cpuhp_setup_state_cpuslocked() with the CPUHP_BP_PREPARE_DYN
+parameter, even though it should be.
 
-Add a zero check at the beginning of the function to prevent this.
+Currently, the users of __cpuhp_setup_state_cpuslocked(), for one reason or
+another, have not triggered this bug.
 
-[ tglx: Massaged change log ]
-
-Fixes: 18415f33e2ac4ab382 ("cpu/hotplug: Allow "parallel" bringup up to CPUHP_BP_KICK_AP_STATE")
-Fixes: 06c6796e0304234da6 ("cpu/hotplug: Fix off by one in cpuhp_bringup_mask()")
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: 4205e4786d0b ("cpu/hotplug: Provide dynamic range for prepare stage")
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240618081336.3996825-1-chenhuacai@loongson.cn
-
+Link: https://lore.kernel.org/r/20240515134554.427071-1-ytcoode@gmail.com
 ---
- kernel/cpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/cpu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 74cfdb6..3d2bf1d 100644
+index 563877d..74cfdb6 100644
 --- a/kernel/cpu.c
 +++ b/kernel/cpu.c
-@@ -1859,6 +1859,9 @@ static inline bool cpuhp_bringup_cpus_parallel(unsigned int ncpus) { return fals
+@@ -2446,7 +2446,7 @@ EXPORT_SYMBOL_GPL(__cpuhp_state_add_instance);
+  * The caller needs to hold cpus read locked while calling this function.
+  * Return:
+  *   On success:
+- *      Positive state number if @state is CPUHP_AP_ONLINE_DYN;
++ *      Positive state number if @state is CPUHP_AP_ONLINE_DYN or CPUHP_BP_PREPARE_DYN;
+  *      0 for all other states
+  *   On failure: proper (negative) error code
+  */
+@@ -2469,7 +2469,7 @@ int __cpuhp_setup_state_cpuslocked(enum cpuhp_state state,
+ 	ret = cpuhp_store_callbacks(state, name, startup, teardown,
+ 				    multi_instance);
  
- void __init bringup_nonboot_cpus(unsigned int max_cpus)
- {
-+	if (!max_cpus)
-+		return;
-+
- 	/* Try parallel bringup optimization if enabled */
- 	if (cpuhp_bringup_cpus_parallel(max_cpus))
- 		return;
+-	dynstate = state == CPUHP_AP_ONLINE_DYN;
++	dynstate = state == CPUHP_AP_ONLINE_DYN || state == CPUHP_BP_PREPARE_DYN;
+ 	if (ret > 0 && dynstate) {
+ 		state = ret;
+ 		ret = 0;
+@@ -2500,8 +2500,8 @@ int __cpuhp_setup_state_cpuslocked(enum cpuhp_state state,
+ out:
+ 	mutex_unlock(&cpuhp_state_mutex);
+ 	/*
+-	 * If the requested state is CPUHP_AP_ONLINE_DYN, return the
+-	 * dynamically allocated state in case of success.
++	 * If the requested state is CPUHP_AP_ONLINE_DYN or CPUHP_BP_PREPARE_DYN,
++	 * return the dynamically allocated state in case of success.
+ 	 */
+ 	if (!ret && dynstate)
+ 		return state;
 
