@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-54905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B82913B06
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:46:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99242913B09
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C061C20C17
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:46:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 454E41F219E1
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C961849E4;
-	Sun, 23 Jun 2024 13:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D481850A8;
+	Sun, 23 Jun 2024 13:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0epEJFA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uuO2VDL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9A91849CB;
-	Sun, 23 Jun 2024 13:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D29E18509C;
+	Sun, 23 Jun 2024 13:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719150266; cv=none; b=BZBeVt7obkmGDZ4Kd+xXdbssRZrqiwgEn+KdOI71kwGmYJ0XReW/iqNJTsJm1hFxVMukUDKHA6W2NZFk/TYiHslbFbh0tFuzF4+Lj5FC+1+JK7wF2FZpvOQPuOLL8kKIV7rFSvtNYV4gvM764Iygdjg6SfdgH+CYgnTuzmVPfeA=
+	t=1719150268; cv=none; b=P6z2fiBp0L/GWHqPHSdPzAvPK+ffjdZ0QbbD8XRj8XnT/k4c4/D3IIimGXgtwtjGLd0V0h3ONGFvVD3oBqd4RSSJ+nTYeUwzq9YQcEAZX9E8HYgYiAYmTC+04ab+pie/T+Jx0pHHEyrSHSEySnp3tr3MpirdsRs60D2XNeflIvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719150266; c=relaxed/simple;
-	bh=fhKGUJQllVcPbn3/3BUDDYeanVxvFBtXK0o0H+N7akA=;
+	s=arc-20240116; t=1719150268; c=relaxed/simple;
+	bh=IdgYiV42Nt1zZJ2w6LGmyiX8+CN1IJdt0YLmcF1eiuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VJ8GZ48WBalyihl3zlVwLa+AtIm9/+rWJ1sb6jHzu1L6bQSloLBS8p32mAzl2L+3m1/X2g2xVSs4XJQeY5hp69nIkzmYlKU8bhrTvX2En1n9Wrr9hfnYgbHzNid9/XKhmDvwjom1f0Tl/uaHgvBCVgFBE7TBmVN9rFT8b5gxHmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0epEJFA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6584CC2BD10;
-	Sun, 23 Jun 2024 13:44:25 +0000 (UTC)
+	 MIME-Version; b=Kvz83k/Qxq6tWKmkAL40ACDMtZRfT63Gpisx3cMJtoCHu7vAV4kMuaU4EDFv6O3bPmDAkpx/47RHSaTyi8IKIJydoUbd+rFat5s96Va5gub5GQyGJglydXjpZBUlDgMeaolt6mMoLnZF2Pj9eNtv3hDBDsORon6ZKNgsqXzx7O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uuO2VDL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E48BC2BD10;
+	Sun, 23 Jun 2024 13:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719150266;
-	bh=fhKGUJQllVcPbn3/3BUDDYeanVxvFBtXK0o0H+N7akA=;
+	s=k20201202; t=1719150267;
+	bh=IdgYiV42Nt1zZJ2w6LGmyiX8+CN1IJdt0YLmcF1eiuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J0epEJFAT1QVwqFGEpQfhU5esJnnZtC84Y/+WrULaCSZ1+yR52D2109RviBYAg1Ue
-	 OIVmZ7qwXfFlgDQjYWPUAEpm8rQS9PH0H5/6uMFzYXqLyVWAqkRH5xwitSWbs7dJ6R
-	 9h3qEY/v3x22VevcNN0ESWolnONKBqzgx4XjNNmTv1jinmJ+3Bp5At13cEM0yY1I3B
-	 830HbouojoFHmyiLqJNB4mPCuRfAlZOtQLIVCCbJfqvKD+laq5DRp1jrHTLx/uXSU6
-	 q2ePPOk3mI6IDZep3VQG4ZoOJmQP/TmJk2IU9FtTW+jfhbzSZPnE0mGW7a6+XFGoA0
-	 9coEhKIVodZ8w==
+	b=uuO2VDL24AVqpG6F/pYTQU7Qh87fgQgvPVLx9xvghWSdTs8zjSvlKgA3M3j7If8oU
+	 XKaqrRyfUWULTQrzkmb/9Hk+DIk+Q1Aq9ueaKtfLS8W4BT0lRlZYo4AxBit//C/dGu
+	 PUgsw+l5oeBf00usMjmTMJ2rwp5gx3XVWxv9Tl1QAy3ZClHMyQz+cKVr9Y+Q9Hr2ZW
+	 blvV14at/fovbEAPbfU1xof7Eonktib7d6hM41gTKnCDrNSNGeTO0ckgbb9q3VsH94
+	 vx/r2LvOx3rhcb64wvVDSH7YPi/AzX7eEO8vc3eRhPVCCIY1TzqNxen2gKvyH1J41k
+	 AWiRh/T/kHPrg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sudipm.mukherjee@gmail.com
-Subject: [PATCH AUTOSEL 6.9 12/21] parport: amiga: Mark driver struct with __refdata to prevent section mismatch
-Date: Sun, 23 Jun 2024 09:43:45 -0400
-Message-ID: <20240623134405.809025-12-sashal@kernel.org>
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 13/21] iomap: Fix iomap_adjust_read_range for plen calculation
+Date: Sun, 23 Jun 2024 09:43:46 -0400
+Message-ID: <20240623134405.809025-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240623134405.809025-1-sashal@kernel.org>
 References: <20240623134405.809025-1-sashal@kernel.org>
@@ -60,51 +65,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.6
 Content-Transfer-Encoding: 8bit
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 
-[ Upstream commit 73fedc31fed38cb6039fd8a7efea1774143b68b0 ]
+[ Upstream commit f5ceb1bbc98c69536d4673a97315e8427e67de1b ]
 
-As described in the added code comment, a reference to .exit.text is ok
-for drivers registered via module_platform_driver_probe(). Make this
-explicit to prevent the following section mismatch warning
+If the extent spans the block that contains i_size, we need to handle
+both halves separately so that we properly zero data in the page cache
+for blocks that are entirely outside of i_size. But this is needed only
+when i_size is within the current folio under processing.
+"orig_pos + length > isize" can be true for all folios if the mapped
+extent length is greater than the folio size. That is making plen to
+break for every folio instead of only the last folio.
 
-	WARNING: modpost: drivers/parport/parport_amiga: section mismatch in reference: amiga_parallel_driver+0x8 (section: .data) -> amiga_parallel_remove (section: .exit.text)
+So use orig_plen for checking if "orig_pos + orig_plen > isize".
 
-that triggers on an allmodconfig W=1 build.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20240513075206.2337310-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/a32e5f9a4fcfdb99077300c4020ed7ae61d6e0f9.1715067055.git.ritesh.list@gmail.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parport/parport_amiga.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/iomap/buffered-io.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/parport/parport_amiga.c b/drivers/parport/parport_amiga.c
-index e6dc857aac3fe..e06c7b2aac5c4 100644
---- a/drivers/parport/parport_amiga.c
-+++ b/drivers/parport/parport_amiga.c
-@@ -229,7 +229,13 @@ static void __exit amiga_parallel_remove(struct platform_device *pdev)
- 	parport_put_port(port);
- }
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 4ac6c8c403c26..248e615270ff7 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -241,6 +241,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 	unsigned block_size = (1 << block_bits);
+ 	size_t poff = offset_in_folio(folio, *pos);
+ 	size_t plen = min_t(loff_t, folio_size(folio) - poff, length);
++	size_t orig_plen = plen;
+ 	unsigned first = poff >> block_bits;
+ 	unsigned last = (poff + plen - 1) >> block_bits;
  
--static struct platform_driver amiga_parallel_driver = {
-+/*
-+ * amiga_parallel_remove() lives in .exit.text. For drivers registered via
-+ * module_platform_driver_probe() this is ok because they cannot get unbound at
-+ * runtime. So mark the driver struct with __refdata to prevent modpost
-+ * triggering a section mismatch warning.
-+ */
-+static struct platform_driver amiga_parallel_driver __refdata = {
- 	.remove_new = __exit_p(amiga_parallel_remove),
- 	.driver   = {
- 		.name	= "amiga-parallel",
+@@ -277,7 +278,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 	 * handle both halves separately so that we properly zero data in the
+ 	 * page cache for blocks that are entirely outside of i_size.
+ 	 */
+-	if (orig_pos <= isize && orig_pos + length > isize) {
++	if (orig_pos <= isize && orig_pos + orig_plen > isize) {
+ 		unsigned end = offset_in_folio(folio, isize - 1) >> block_bits;
+ 
+ 		if (first <= end && last > end)
 -- 
 2.43.0
 
