@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-54924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 211A6913B3C
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:52:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A45913B3E
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE541F21A93
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:52:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A8D61C209C2
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6486193067;
-	Sun, 23 Jun 2024 13:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A8B1822F6;
+	Sun, 23 Jun 2024 13:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GuJNTny1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TRGaXpQn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838A0192B93;
-	Sun, 23 Jun 2024 13:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7001719308A;
+	Sun, 23 Jun 2024 13:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719150304; cv=none; b=piDUXkgcHTRcQBqf6NX6qdx1eDnPkUDoUq+KZEW73BFp9K6D3lzSfa+juZ9TLR2EdbS0jCt5omfMRfOVtuo+dkEZ4ClyjBIDB7R9hHP2wjIwBI+VucW+hA2B/KQne8YynMbRrkXy3r0GpS4z1O8iEzT1/wjpZRWLe7zTp2JSWjE=
+	t=1719150306; cv=none; b=KhFmvaqhrlZ9NGewa3nCocwmDbAY2xrLyUQpzWWAoSTf3rf8XC7wmjvht4kN4klF0PocD1YAsg9qZsPRsD7ZoZiV5NTC81jat39wQOjyVPIUL+FjyJc57N9r27E7anAqD3bMlsF8syMS+6xJCvDx7qGxzqcoTxRg1xjWU7Emy08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719150304; c=relaxed/simple;
-	bh=y8uvdmfORf3nk7mi6zAzHTn5eJ7ZcWbeD6bCIZtOy/w=;
+	s=arc-20240116; t=1719150306; c=relaxed/simple;
+	bh=Z0o+PpSYbQAdYjRFyAKGeoFs8grNJbIhab7koImLDDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SK/wx/cTtU0GwIN5Y1+7FMdeW9UL7VxoVSzE4tb++SMuVVleGO5VnX5gF1A2K2bbqKhW5FoSdxgXPJ2FTNOKh184h+dr59IM0fxQ7cNdQB2y5iANt12nt6HxEI4GJN2XJnWb6dK1iZZnMwDwz3UMTchcsJfoshDsG7l99BGz5OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GuJNTny1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D23C2BD10;
-	Sun, 23 Jun 2024 13:45:03 +0000 (UTC)
+	 MIME-Version; b=mb7Q/nqe1G9oJ1GaRLUcCtPmuzvi7wanbkP4c8yCU0npcAmAv89Z6Lx3WpxfypqfEaVyALaRbZjnSPNlJrQN+uEOGyFcNkrARQ8rxz1OtymW9rEW8yQ7EzKo6N/T7tGOjf5LsQjVmdPr0g/tjGoGKBdIjQWijT2x/M9VfQRPFF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TRGaXpQn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB682C4AF09;
+	Sun, 23 Jun 2024 13:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719150304;
-	bh=y8uvdmfORf3nk7mi6zAzHTn5eJ7ZcWbeD6bCIZtOy/w=;
+	s=k20201202; t=1719150306;
+	bh=Z0o+PpSYbQAdYjRFyAKGeoFs8grNJbIhab7koImLDDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GuJNTny1OV8S3ayMh5z+50K+GeCOafPoJcN/Vmfco93RKt1C4jXQLsMaZRAmDFU43
-	 VTyCOu0Ho31btyzwyJ3oyWI1Y3a8T/mKGWXchLdU36ImAg0YmdRwVKsHCgJQLhFqEJ
-	 yGm5heU/fC8fa86qUDcdubiWb3WQ90AGmFLiHn8H04e5uCwZJtvAv16jGFtKwO+0Vz
-	 HL5L473TAB1QjfdWVYRfi5RtMYnEoXSA3FzQ6Y1HORP1Oj6ae5YEtfIu9nbCJkeTzU
-	 L9y1QgMPx6hwjbuOaUHHQ7VQOgpuGZeGkt+LGAt7t30alJXVX7olNiPRXinE+QnUG9
-	 YXS+vaEPUk+Qg==
+	b=TRGaXpQnRv4L/BaaTrO4LXefGOF0BjfTas6r7DOu11nydrTtF/O5VUxLeuf9xne6q
+	 vjBR7ryC9bg4AkENdlElg4rDopWPq1B8T/DtxQKO/m9YhWrZjOGwh+VvxfCyKxI0KP
+	 tN2jPM0PULhLYB9ZN6FFuAx4X+35FbvPoebtBPe2S/JCWfrLJSEhnlGZ8AH+VslaAC
+	 d3MRE3P938K6jbOYMJylilTIcYdUV7VS9v8QVBQnv/HAhFtULGCD88eqIVi2vXVxOF
+	 XoNQiwtfkApuZeu9pCQC9HWlH7Be4sUd/dNmPduzwFkuveM997uQhc7Vb2gxi9KRER
+	 Z6EwPImT3NL0A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
-	Tomas Winkler <tomas.winkler@intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.6 10/16] mei: demote client disconnect warning on suspend to debug
-Date: Sun, 23 Jun 2024 09:44:39 -0400
-Message-ID: <20240623134448.809470-10-sashal@kernel.org>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 11/16] iomap: Fix iomap_adjust_read_range for plen calculation
+Date: Sun, 23 Jun 2024 09:44:40 -0400
+Message-ID: <20240623134448.809470-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240623134448.809470-1-sashal@kernel.org>
 References: <20240623134448.809470-1-sashal@kernel.org>
@@ -65,46 +70,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.35
 Content-Transfer-Encoding: 8bit
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 
-[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
+[ Upstream commit f5ceb1bbc98c69536d4673a97315e8427e67de1b ]
 
-Change level for the "not connected" client message in the write
-callback from error to debug.
+If the extent spans the block that contains i_size, we need to handle
+both halves separately so that we properly zero data in the page cache
+for blocks that are entirely outside of i_size. But this is needed only
+when i_size is within the current folio under processing.
+"orig_pos + length > isize" can be true for all folios if the mapped
+extent length is greater than the folio size. That is making plen to
+break for every folio instead of only the last folio.
 
-The MEI driver currently disconnects all clients upon system suspend.
-This behavior is by design and user-space applications with
-open connections before the suspend are expected to handle errors upon
-resume, by reopening their handles, reconnecting,
-and retrying their operations.
+So use orig_plen for checking if "orig_pos + orig_plen > isize".
 
-However, the current driver implementation logs an error message every
-time a write operation is attempted on a disconnected client.
-Since this is a normal and expected flow after system resume
-logging this as an error can be misleading.
-
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
-Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/a32e5f9a4fcfdb99077300c4020ed7ae61d6e0f9.1715067055.git.ritesh.list@gmail.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+cc: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/iomap/buffered-io.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
-index bb4e9eabda978..c018534c780f9 100644
---- a/drivers/misc/mei/main.c
-+++ b/drivers/misc/mei/main.c
-@@ -329,7 +329,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
- 	}
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 129a85633797a..975fd88c1f0f4 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -201,6 +201,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 	unsigned block_size = (1 << block_bits);
+ 	size_t poff = offset_in_folio(folio, *pos);
+ 	size_t plen = min_t(loff_t, folio_size(folio) - poff, length);
++	size_t orig_plen = plen;
+ 	unsigned first = poff >> block_bits;
+ 	unsigned last = (poff + plen - 1) >> block_bits;
  
- 	if (!mei_cl_is_connected(cl)) {
--		cl_err(dev, cl, "is not connected");
-+		cl_dbg(dev, cl, "is not connected");
- 		rets = -ENODEV;
- 		goto out;
- 	}
+@@ -237,7 +238,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
+ 	 * handle both halves separately so that we properly zero data in the
+ 	 * page cache for blocks that are entirely outside of i_size.
+ 	 */
+-	if (orig_pos <= isize && orig_pos + length > isize) {
++	if (orig_pos <= isize && orig_pos + orig_plen > isize) {
+ 		unsigned end = offset_in_folio(folio, isize - 1) >> block_bits;
+ 
+ 		if (first <= end && last > end)
 -- 
 2.43.0
 
