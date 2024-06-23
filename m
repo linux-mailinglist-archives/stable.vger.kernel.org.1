@@ -1,109 +1,122 @@
-Return-Path: <stable+bounces-54887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A10913943
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 11:33:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4994F913961
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 12:06:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BB3E1C20C98
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 09:33:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A45A4B21BA3
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 10:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E1A12FF73;
-	Sun, 23 Jun 2024 09:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7AF6762FF;
+	Sun, 23 Jun 2024 10:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hY8P5ew4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W/qJ+nri"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03D612FB0B;
-	Sun, 23 Jun 2024 09:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891052CA7;
+	Sun, 23 Jun 2024 10:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719135169; cv=none; b=BI+I32e6uPQrRMjuHsRyEPAdwTTJaan/CG5dlHhydZWM2why/sfqeqfb0L/i60DqhGHItIx4dKnxHJ87qlopL0l5VSc0PO+6sLL4yqDUdr4PyXKR3iO0t13utyN5nv+prPX/hjGnUPwSI/JLYhK06O8v3cGi/oxSFnW47vQuJqM=
+	t=1719137191; cv=none; b=PPViRILW1+v+zi6YXHPF1qfEGAaN7krgkXhWvQFy2FcfLpBn+D/gZBV8jIVkZ7QAs6iNGcipwY10KEcOcPrgBfgpGM0ySKgBtUiCD8/YIYMVXb+M3xA2lMPlY2vcd73d9CLdtcOPJ6b3wMD1E04NLh6kUgYULs8bbLVytPj9iAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719135169; c=relaxed/simple;
-	bh=qTMPWsu7YkfJAzlZHprziJZbdGJsTuC7Lk0WAHlkJxc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kpWpWdqYXXBwfLc71AHdz7BJfN1uxRlcs/sS1M5qSsCCxlEQIgtAtuIN74r7RuFwHczl7yOENkp682i8yHpBm37OmWVlMsgY5sP8xvcNNdcEdsOOEH2AxsA5xooD2H9kMHoTmwWfhirWlOmY6+rO0MGERPeqzR7bR5yqlyjiKQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hY8P5ew4; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1719137191; c=relaxed/simple;
+	bh=E+6cl0ki8qlLXqRwIpyYg/tusmYMNU0CoFmFdvS5Aw8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kHM5UKk9wrLpBA5hfSiifOmS5CuMyHmOJonNRrEpHYtEClj1cLEQm6ODB4dxViOXEDcgTz1dSW65KO2znUA6saeErcJKcdkrrhzSxVmZ3uFR7E7Odm8/kOPXu14VmGokNS3jiOhu2RNKnDaf4B4226pOUAg1W4JVdqwjkJZSK74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W/qJ+nri; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719135167; x=1750671167;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qTMPWsu7YkfJAzlZHprziJZbdGJsTuC7Lk0WAHlkJxc=;
-  b=hY8P5ew4ricWVO0nOlGmq7U0/jPtCRiMu6LmwNcJuWntiYxeOiZOmzME
-   ySdLdnC0RIEbrDpRzSiAHJHpqbLL9ijCOg8e8uLONwxT9X/GHYhSavNiW
-   K9Qcx6hJh2KdeVGDqhOMc5Ym1Ap7PCNhiZN6MsOAtpvefC74pq0zrERPC
-   RZcYRCa8YAA3xpZCHZqYrcxqWi51WcUA9zJAS5qQyMNPl8sIukPjLgppm
-   X3d0q+jTZJyvQgMkrOLSF5ymEi3fyq7J76qU96Z6glbHNimhaElfHt4cw
-   BHK+tnJpdPcDAjSYpsftPs1aRLd/DjHRjLY13VXl8RItPnbdEmjnWN5t0
-   A==;
-X-CSE-ConnectionGUID: 9cQ7nr0iRMOARSd9cZoimQ==
-X-CSE-MsgGUID: 95p+SxW6RfmIYSACAitdPw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11111"; a="16089102"
+  t=1719137190; x=1750673190;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=E+6cl0ki8qlLXqRwIpyYg/tusmYMNU0CoFmFdvS5Aw8=;
+  b=W/qJ+nriwFA43RYzj8aJZAx9vOasyJyaHTxSL1hm/1Qgc0DQ5iDaWX7x
+   JxnPkmfFVrZqNsldQd3XzT1R8M645gRKYS4RjX5H7u6Sv046XNrV/ugrb
+   QFbfiFSTiVz4YBanoUaJIZ7yRYwPTjzUUhWOJsWdhvmsoNZlZTaaAoWHI
+   ZmAg9k5660LcDSz+969h/St6gi4WWA1sXkgMBOrB3DyOvdwKnHItThBnC
+   9mj1JtsdUDEn1nRSd2l1mABaG+7wsuOWtSTjZscKCJ+9VeeObqLwlvozL
+   SCxqDySimC3ihYhzBLvOd6uPG4yXj4zTWPl0jC4eO9KFZfhY5RwNnfn4f
+   g==;
+X-CSE-ConnectionGUID: fYkg943YS3i9i4m7W9Wheg==
+X-CSE-MsgGUID: wCPUikUlT9W91QZ0DL4UtA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11111"; a="15876407"
 X-IronPort-AV: E=Sophos;i="6.08,259,1712646000"; 
-   d="scan'208";a="16089102"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 02:32:47 -0700
-X-CSE-ConnectionGUID: 4iRWJGYiQKuYIlgF3Orcag==
-X-CSE-MsgGUID: 7Nl+VDi5Sy63vc3skNEwow==
+   d="scan'208";a="15876407"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 03:06:29 -0700
+X-CSE-ConnectionGUID: K8cxUD+TQoac3luu2QNUAg==
+X-CSE-MsgGUID: eXRHbMY5RfWbSfin9nhklw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,259,1712646000"; 
-   d="scan'208";a="73761761"
-Received: from wentongw-optiplex-7000.sh.intel.com ([10.239.154.127])
-  by orviesa002.jf.intel.com with ESMTP; 23 Jun 2024 02:32:46 -0700
-From: Wentong Wu <wentong.wu@intel.com>
-To: sakari.ailus@linux.intel.com,
-	tomas.winkler@intel.com,
-	gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org,
-	Wentong Wu <wentong.wu@intel.com>,
-	stable@vger.kernel.org,
+   d="scan'208";a="43461577"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 03:06:27 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 03C6511FA94;
+	Sun, 23 Jun 2024 13:06:24 +0300 (EEST)
+Date: Sun, 23 Jun 2024 10:06:23 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Wentong Wu <wentong.wu@intel.com>
+Cc: tomas.winkler@intel.com, gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
 	Jason Chen <jason.z.chen@intel.com>
-Subject: [PATCH 6/6] mei: vsc: Fix spelling error
-Date: Sun, 23 Jun 2024 17:30:56 +0800
-Message-Id: <20240623093056.4169438-7-wentong.wu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240623093056.4169438-1-wentong.wu@intel.com>
+Subject: Re: [PATCH 1/6] mei: vsc: Enhance IVSC chipset reset toggling
+Message-ID: <Znfznzd6Mt55XsmN@kekkonen.localdomain>
 References: <20240623093056.4169438-1-wentong.wu@intel.com>
+ <20240623093056.4169438-2-wentong.wu@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240623093056.4169438-2-wentong.wu@intel.com>
 
-Fix a spelling error in a comment.
+Hi Wentong,
 
-Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
-Cc: stable@vger.kernel.org # for 6.8+
-Signed-off-by: Wentong Wu <wentong.wu@intel.com>
-Tested-by: Jason Chen <jason.z.chen@intel.com>
----
- drivers/misc/mei/vsc-fw-loader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks for the set.
 
-diff --git a/drivers/misc/mei/vsc-fw-loader.c b/drivers/misc/mei/vsc-fw-loader.c
-index 596a9d695dfc..084d0205f97d 100644
---- a/drivers/misc/mei/vsc-fw-loader.c
-+++ b/drivers/misc/mei/vsc-fw-loader.c
-@@ -204,7 +204,7 @@ struct vsc_img_frag {
- 
- /**
-  * struct vsc_fw_loader - represent vsc firmware loader
-- * @dev: device used to request fimware
-+ * @dev: device used to request firmware
-  * @tp: transport layer used with the firmware loader
-  * @csi: CSI image
-  * @ace: ACE image
+On Sun, Jun 23, 2024 at 05:30:51PM +0800, Wentong Wu wrote:
+> Implementing the hardware recommendation to toggle the chipset reset.
+> 
+> Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
+> Cc: stable@vger.kernel.org # for 6.8+
+> Signed-off-by: Wentong Wu <wentong.wu@intel.com>
+> Tested-by: Jason Chen <jason.z.chen@intel.com>
+> ---
+>  drivers/misc/mei/vsc-tp.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/misc/mei/vsc-tp.c b/drivers/misc/mei/vsc-tp.c
+> index e6a98dba8a73..dcab5174bf00 100644
+> --- a/drivers/misc/mei/vsc-tp.c
+> +++ b/drivers/misc/mei/vsc-tp.c
+> @@ -350,6 +350,8 @@ void vsc_tp_reset(struct vsc_tp *tp)
+>  	disable_irq(tp->spi->irq);
+>  
+>  	/* toggle reset pin */
+> +	gpiod_set_value_cansleep(tp->resetfw, 1);
+> +	msleep(VSC_TP_RESET_PIN_TOGGLE_INTERVAL_MS);
+>  	gpiod_set_value_cansleep(tp->resetfw, 0);
+>  	msleep(VSC_TP_RESET_PIN_TOGGLE_INTERVAL_MS);
+>  	gpiod_set_value_cansleep(tp->resetfw, 1);
+
+Looking at the patch, the driver appears to leave the reset signal enabled.
+As it currently works, also the polarity appears to be wrong.
+
+Could you addrss this, after this patch?
+
 -- 
-2.34.1
+Kind regards,
 
+Sakari Ailus
 
