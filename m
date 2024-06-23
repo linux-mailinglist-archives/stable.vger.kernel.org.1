@@ -1,176 +1,137 @@
-Return-Path: <stable+bounces-54960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8E0913D9F
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 21:00:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF017913EA6
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 23:56:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29799282D89
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 19:00:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E27721C20BE5
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 21:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9091A1836F0;
-	Sun, 23 Jun 2024 19:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ans.pl header.i=@ans.pl header.b="i4YLnqOv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB8B185090;
+	Sun, 23 Jun 2024 21:56:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.emenem.pl (cmyk.emenem.pl [217.79.154.63])
+Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250A714884C;
-	Sun, 23 Jun 2024 19:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.79.154.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263EF2F24
+	for <stable@vger.kernel.org>; Sun, 23 Jun 2024 21:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719169233; cv=none; b=YZYCcM2sxd9zUdptnlAWSx6T1lFzhQsoNH0SRSit9hdFf0+txOXUGeFsah4Igv3rXrS60aq4yfKHIiwo2iC6ZujHkD9ottD2so+P49n3euWKgL5GEC8q+ZZd7GQ85bEXIVsCpI7AFg13wXLehTc9gU42I2xDqlfxOS3x6wFlqWU=
+	t=1719179784; cv=none; b=ItAzceh9ZzM7Fupu2iBXQoMqvQGS/ELe6N0fI9BnyC1F6CsCUFzgdbYRJQ7g20cbaGJ6TWJay6PiRCEb8n8zLNSpZsAX8uCu6aO9wbrxUhktRXgI4rb+0wyk0G35N5+okP4A+joH159fiTgbWkcKHbVhRoSx5cRItY3IG5pZHuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719169233; c=relaxed/simple;
-	bh=qzc1rsDiN8j7iEnMzlh7jqK3ss+j7dWOOp7vhyRU7YY=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=SufqUtcgmGplruBJuj6mIuo/bczupl8PXIPPuw+7FMU9vyh/m8fkjHqC1CLuee4Unjp2qAFvtmKnhtjwmMkKwruSBokxMi7G+kHnCb+8k6i/916M8QZnEVtaY/z/g7Qf6rF2DsFNlWr8vvaxFVmHSZi8EEZmXOxQOTZVPmeVN9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ans.pl; spf=none smtp.mailfrom=ans.pl; dkim=pass (1024-bit key) header.d=ans.pl header.i=@ans.pl header.b=i4YLnqOv; arc=none smtp.client-ip=217.79.154.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ans.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ans.pl
-X-Virus-Scanned: amavisd-new at emenem.pl
-Received: from [192.168.1.10] (c-98-45-176-131.hsd1.ca.comcast.net [98.45.176.131])
-	(authenticated bits=0)
-	by cmyk.emenem.pl (8.17.1.9/8.17.1.9) with ESMTPSA id 45NIlfW5005236
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sun, 23 Jun 2024 20:47:42 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ans.pl; s=20190507;
-	t=1719168466; bh=blP9kTlShQLTEEvQ48fKrZcg3eT1y3M9qA5WwxT5rN4=;
-	h=Date:From:To:Cc:Subject;
-	b=i4YLnqOv6jMrMjpF5FKdSZmRcyUvkxVNDtrc6u8ant03qzut3cSXx/kL8V/SsRuED
-	 fdXc0JR9hOG3L/v/us8Drcv5gOFXoD/xKSWtHarq/VvAcsZXRubWXHZxsi2J2X8kdh
-	 gkYziZhyEEJYrX/ZGSlEUQbIPknOvDASrsq0U0t8=
-Message-ID: <a57e9a39-13ce-4e4d-a7a1-c591f6b4ac65@ans.pl>
-Date: Sun, 23 Jun 2024 11:47:39 -0700
+	s=arc-20240116; t=1719179784; c=relaxed/simple;
+	bh=0SofmzLA8abpPlU2xRUR1GKD2TI5OBacnt5Afe9NDwA=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qWL+TKP6cDDYvLzAccUT9q9FIpccW0bPvOXNfe6Ng6R5fQ1iVXMnJqQW98hJdeai1c3knh1KS1PtHwsjpAQqHR1htqmlbHODBnbXrwoJKLBdR7El+DsaIeOfPgn78jo5KpM391qtMER8SbziB9iCXYqs99a3+9ka9gPNzQVWnS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
+Received: from [78.30.37.63] (port=44500 helo=gnumonks.org)
+	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <pablo@gnumonks.org>)
+	id 1sLVBw-003vvR-Ug
+	for stable@vger.kernel.org; Sun, 23 Jun 2024 23:56:11 +0200
+Date: Sun, 23 Jun 2024 23:56:08 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: stable@vger.kernel.org
+Subject: Re: Patch "netfilter: ipset: Fix suspicious
+ rcu_dereference_protected()" has been added to the 6.9-stable tree
+Message-ID: <ZniZ-PxADNomK8E4@calendula>
+References: <20240622234125.195700-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: =?UTF-8?Q?Krzysztof_Ol=C4=99dzki?= <ole@ans.pl>
-To: Heiner Kallweit <hkallweit1@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: stable@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-hwmon@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Regression caused by "eeprom: at24: Probe for DDR3 thermal sensor in
- the SPD case" - "sysfs: cannot create duplicate filename"
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240622234125.195700-1-sashal@kernel.org>
+X-Spam-Score: -1.8 (-)
 
-Hi,
+Hi
 
-After upgrading kernel to Linux 6.6.34 on one of my systems, I noticed "sysfs: cannot create duplicate filename" and i2c registration errors in dmesg, please see below.
+Side note: This fix requires
 
-This seems to be related to https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=linux-6.6.y&id=4d5ace787273cb159bfdcf1c523df957938b3e42 - reverting the change fixes the problem.
+        4e7aaa6b82d6 ("netfilter: ipset: Fix race between namespace cleanup and gc in the list:set type"
 
-Note that jc42 devices are registered correctly and work with and without the change.
+in first place, as a dependency.
 
-# grep . /sys/devices/pci0000:00/0000:00:1f.3/i2c-12/12-*/name
-/sys/devices/pci0000:00/0000:00:1f.3/i2c-12/12-0018/name:jc42
-/sys/devices/pci0000:00/0000:00:1f.3/i2c-12/12-0019/name:jc42
-/sys/devices/pci0000:00/0000:00:1f.3/i2c-12/12-001a/name:jc42
-/sys/devices/pci0000:00/0000:00:1f.3/i2c-12/12-001b/name:jc42
-/sys/devices/pci0000:00/0000:00:1f.3/i2c-12/12-0050/name:spd
-/sys/devices/pci0000:00/0000:00:1f.3/i2c-12/12-0051/name:spd
-/sys/devices/pci0000:00/0000:00:1f.3/i2c-12/12-0052/name:spd
-/sys/devices/pci0000:00/0000:00:1f.3/i2c-12/12-0053/name:spd
+Thanks
 
-# sensors|grep -A4 jc42-i2c
-jc42-i2c-12-1b
-Adapter: SMBus I801 adapter at 3000
-temp1:        +33.2°C  (low  =  +0.0°C)
-                       (high = +91.0°C, hyst = +91.0°C)
-                       (crit = +95.0°C, hyst = +95.0°C)
---
-jc42-i2c-12-19
-Adapter: SMBus I801 adapter at 3000
-temp1:        +33.5°C  (low  =  +0.0°C)
-                       (high = +91.0°C, hyst = +91.0°C)
-                       (crit = +95.0°C, hyst = +95.0°C)
---
-jc42-i2c-12-1a
-Adapter: SMBus I801 adapter at 3000
-temp1:        +33.5°C  (low  =  +0.0°C)
-                       (high = +91.0°C, hyst = +91.0°C)
-                       (crit = +95.0°C, hyst = +95.0°C)
---
-jc42-i2c-12-18
-Adapter: SMBus I801 adapter at 3000
-temp1:        +33.2°C  (low  =  +0.0°C)
-                       (high = +91.0°C, hyst = +91.0°C)
-                       (crit = +95.0°C, hyst = +95.0°C)
-
-
-dmesg:
-[    0.000000] DMI: Dell Inc. PowerEdge T110 II/0PM2CW, BIOS 2.10.0 05/24/2018
-(...)
-[    7.681132] i2c_dev: i2c /dev entries driver
-[    7.687116] i2c i2c-12: 4/4 memory slots populated (from DMI)
-[    7.690623] at24 12-0050: 256 byte spd EEPROM, read-only
-[    7.691812] i2c i2c-12: Successfully instantiated SPD at 0x50
-[    7.698246] at24 12-0051: 256 byte spd EEPROM, read-only
-[    7.699465] i2c i2c-12: Successfully instantiated SPD at 0x51
-[    7.700043] i2c i2c-12: Failed to register i2c client jc42 at 0x19 (-16)
-[    7.700047] i2c i2c-12: Failed creating jc42 at 0x19
-[    7.705248] sysfs: cannot create duplicate filename '/devices/pci0000:00/0000:00:1f.3/i2c-12/12-001a'
-[    7.711617]  <TASK>
-[    7.712612]  dump_stack_lvl+0x37/0x4a
-[    7.712612]  sysfs_warn_dup+0x55/0x61
-[    7.715616]  sysfs_create_dir_ns+0xa6/0xd2
-[    7.716620]  kobject_add_internal+0xc3/0x1c0
-[    7.716620]  kobject_add+0xba/0xe4
-[    7.719615]  ? device_add+0x53/0x726
-[    7.720611]  device_add+0x132/0x726
-[    7.720611]  i2c_new_client_device+0x1ee/0x246
-[    7.723616]  at24_probe+0x5f8/0x666
-[    7.724642]  ? __pfx_at24_read+0x10/0x10
-[    7.724642]  ? __pfx_at24_write+0x10/0x10
-[    7.724642]  ? __pfx___device_attach_driver+0x10/0x10
-[    7.727619]  i2c_device_probe+0x1b7/0x240
-[    7.728612]  really_probe+0x101/0x248
-[    7.728612]  __driver_probe_device+0xbb/0xed
-[    7.731620]  driver_probe_device+0x1a/0x72
-[    7.732621]  __device_attach_driver+0x82/0x96
-[    7.732621]  bus_for_each_drv+0xa6/0xd4
-[    7.732621]  __device_attach+0xa8/0x12a
-[    7.735619]  bus_probe_device+0x31/0x95
-[    7.736614]  device_add+0x265/0x726
-[    7.736614]  i2c_new_client_device+0x1ee/0x246
-[    7.739618]  i2c_register_spd+0x1a1/0x1ed
-[    7.740613]  i801_probe+0x589/0x603
-[    7.740613]  ? up_write+0x37/0x4d
-[    7.740613]  ? kernfs_add_one+0x104/0x126
-[    7.743618]  ? __raw_spin_unlock_irqrestore+0x14/0x29
-[    7.744612]  pci_device_probe+0xbe/0x12f
-[    7.744612]  really_probe+0x101/0x248
-[    7.744612]  __driver_probe_device+0xbb/0xed
-[    7.747618]  driver_probe_device+0x1a/0x72
-[    7.748612]  __driver_attach_async_helper+0x2d/0x42
-[    7.748612]  async_run_entry_fn+0x25/0xa0
-[    7.748612]  process_scheduled_works+0x193/0x291
-[    7.748612]  worker_thread+0x1c5/0x21f
-[    7.751619]  ? __pfx_worker_thread+0x10/0x10
-[    7.752611]  kthread+0xf6/0xfe
-[    7.752611]  ? __pfx_kthread+0x10/0x10
-[    7.752611]  ret_from_fork+0x23/0x35
-[    7.755621]  ? __pfx_kthread+0x10/0x10
-[    7.756613]  ret_from_fork_asm+0x1b/0x30
-[    7.756613]  </TASK>
-[    7.759637] i2c i2c-12: Failed to register i2c client jc42 at 0x1a (-17)
-[    7.760815] at24 12-0052: 256 byte spd EEPROM, read-only
-[    7.762047] i2c i2c-12: Successfully instantiated SPD at 0x52
-[    7.765252] i2c i2c-12: Failed to register i2c client jc42 at 0x1b (-16)
-[    7.766126] at24 12-0053: 256 byte spd EEPROM, read-only
-[    7.767584] i2c i2c-12: Successfully instantiated SPD at 0x53
-
-Thanks,
- Krzysztof
+On Sat, Jun 22, 2024 at 07:41:24PM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>     netfilter: ipset: Fix suspicious rcu_dereference_protected()
+> 
+> to the 6.9-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      netfilter-ipset-fix-suspicious-rcu_dereference_prote.patch
+> and it can be found in the queue-6.9 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit 0226dfa53edc90463c1b0d50167da948c88025ef
+> Author: Jozsef Kadlecsik <kadlec@netfilter.org>
+> Date:   Mon Jun 17 11:18:15 2024 +0200
+> 
+>     netfilter: ipset: Fix suspicious rcu_dereference_protected()
+>     
+>     [ Upstream commit 8ecd06277a7664f4ef018abae3abd3451d64e7a6 ]
+>     
+>     When destroying all sets, we are either in pernet exit phase or
+>     are executing a "destroy all sets command" from userspace. The latter
+>     was taken into account in ip_set_dereference() (nfnetlink mutex is held),
+>     but the former was not. The patch adds the required check to
+>     rcu_dereference_protected() in ip_set_dereference().
+>     
+>     Fixes: 4e7aaa6b82d6 ("netfilter: ipset: Fix race between namespace cleanup and gc in the list:set type")
+>     Reported-by: syzbot+b62c37cdd58103293a5a@syzkaller.appspotmail.com
+>     Reported-by: syzbot+cfbe1da5fdfc39efc293@syzkaller.appspotmail.com
+>     Reported-by: kernel test robot <oliver.sang@intel.com>
+>     Closes: https://lore.kernel.org/oe-lkp/202406141556.e0b6f17e-lkp@intel.com
+>     Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+>     Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+> index c7ae4d9bf3d24..61431690cbd5f 100644
+> --- a/net/netfilter/ipset/ip_set_core.c
+> +++ b/net/netfilter/ipset/ip_set_core.c
+> @@ -53,12 +53,13 @@ MODULE_DESCRIPTION("core IP set support");
+>  MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_IPSET);
+>  
+>  /* When the nfnl mutex or ip_set_ref_lock is held: */
+> -#define ip_set_dereference(p)		\
+> -	rcu_dereference_protected(p,	\
+> +#define ip_set_dereference(inst)	\
+> +	rcu_dereference_protected((inst)->ip_set_list,	\
+>  		lockdep_nfnl_is_held(NFNL_SUBSYS_IPSET) || \
+> -		lockdep_is_held(&ip_set_ref_lock))
+> +		lockdep_is_held(&ip_set_ref_lock) || \
+> +		(inst)->is_deleted)
+>  #define ip_set(inst, id)		\
+> -	ip_set_dereference((inst)->ip_set_list)[id]
+> +	ip_set_dereference(inst)[id]
+>  #define ip_set_ref_netlink(inst,id)	\
+>  	rcu_dereference_raw((inst)->ip_set_list)[id]
+>  #define ip_set_dereference_nfnl(p)	\
+> @@ -1133,7 +1134,7 @@ static int ip_set_create(struct sk_buff *skb, const struct nfnl_info *info,
+>  		if (!list)
+>  			goto cleanup;
+>  		/* nfnl mutex is held, both lists are valid */
+> -		tmp = ip_set_dereference(inst->ip_set_list);
+> +		tmp = ip_set_dereference(inst);
+>  		memcpy(list, tmp, sizeof(struct ip_set *) * inst->ip_set_max);
+>  		rcu_assign_pointer(inst->ip_set_list, list);
+>  		/* Make sure all current packets have passed through */
 
