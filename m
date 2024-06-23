@@ -1,168 +1,230 @@
-Return-Path: <stable+bounces-54880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13669913915
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 10:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD1F913918
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 10:54:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF69E1F21BE3
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 08:51:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3BE31F2163A
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 08:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B945A4D5;
-	Sun, 23 Jun 2024 08:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEB051004;
+	Sun, 23 Jun 2024 08:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b="1/6wsBso"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B5mCzG/i"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0DB3AC1F;
-	Sun, 23 Jun 2024 08:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4894D6E5ED;
+	Sun, 23 Jun 2024 08:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719132703; cv=none; b=q2TDRy1Cs9Nvj0iHkcoblztPRhOYXGbsnDu6mVKI8hX1O5JRWwmM6dBFZKV3GLemZAvyvII0DySVH+sN9a0d+nzsEVBCor3GVZqyQdul1Or2G5qnCYYgVuN4P2NV1J+2eiENImVrH7eqwPtUx7uMw5WH5rWG0aga/NxHT6ne2DA=
+	t=1719132863; cv=none; b=WvpYg8hgRU/+YEVio17vCMMwf3iSNUuRFjWOOeyg81rMLNgbFnRoryRmVC7QxeQMDPVooUjLyKedsG4tkwymKNRGn0t6NORNxmqjZiR7J9ldNf+4GiHwJB/g8hubMrFEpmENoYd8DR23Q+KFcRWMdK9gtGcFCBuJFJNlhPH3pvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719132703; c=relaxed/simple;
-	bh=/MbTc5IrzQ+vqZwxbntKS8rLbbH4xOE6FLZfVgj6O04=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uAR9QldAN9hhTg8nPcIn1QF2nLyXjV51DZFxdPVxwqOvitx+hr+R2jxCDMqGAgzzQaihokmHH+DpLNlsRyCqJKxlwLsYq620YOKn3eodb4F63w3WW90wDiZREVAb6rhVYCSlOQJAvaU/vb4ZFB5xr7JCF+rhdcsyC6iVWc2FlSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev; spf=pass smtp.mailfrom=oltmanns.dev; dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b=1/6wsBso; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oltmanns.dev
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4W6Pp3012bz9sdT;
-	Sun, 23 Jun 2024 10:46:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oltmanns.dev;
-	s=MBO0001; t=1719132379;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wt2mGoI760pT5VMOq6V2aEAJ75svBaYqL2cmxLmHat0=;
-	b=1/6wsBsoXw9MhiP3LTPhgn32X0RW4xqZ9NqZokA5hIumFYs2RdRWYfn4JrHiYJtWbynzba
-	BPjY4Doiovu9UYj5FP3y9PmNRsY5fhj47WWxxd16cV3zUpTF5fIMgUSGKonigbTUVNp6m6
-	flrYpSdFVk5lIwiDBwrdp4KWREIxqvfzbaTlyF7orI0CAZqIwM4LLlF8vYuZ77O3xZKGc6
-	aCbkekiPPpJNOfOHjhUAUOoImcWyit5LJ/RABgAahjppnSsd8bJVP2EqVA3QWX8zGVIrhK
-	7pA7RpuD7XCfoAoE58FpswNWhr2iHH7cgpzHd9vFl0THchWOwQIMQ89AP0Rqcw==
-From: Frank Oltmanns <frank@oltmanns.dev>
-Date: Sun, 23 Jun 2024 10:45:58 +0200
-Subject: [PATCH] clk: sunxi-ng: common: Don't call hw_to_ccu_common on hw
- without common
+	s=arc-20240116; t=1719132863; c=relaxed/simple;
+	bh=NK+GSlkQYz6auxu2HnNKbWueXrURc2LeDnNadxDvjFo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UkMmGwCP/TxPa8I3ueQWoGIlXm1VBffik40yCPPHyJd1YicEoMiYo5l7HVd8b13XShptkir4orXgUoyc9jF5MmiYez/vw+mSNXraMzHR8EvBDMiEKDMRdBA5+3dOPAydzuAk4qXOqvShZxQM2xa55LRLpEsIOZDUCwNGt0tgGK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B5mCzG/i; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719132861; x=1750668861;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=NK+GSlkQYz6auxu2HnNKbWueXrURc2LeDnNadxDvjFo=;
+  b=B5mCzG/isdOhEs6iJX/sQ4DxqtQGKbz/YRprVYjQFOjlTffzTd8UxDow
+   nD9VlbmaKKLxkbvvKJIkBYH9JGhn13uL96KQvJXV+fxP7g5uBvWLtcF00
+   NM01eRbOq3iTu7MPfFBOMlfetzzZg7YT71pq1k7BUcwZ9cmAWVGcUCeni
+   uAiZmCTVPbZBGzpFoy0H+qqh0kCBlWamNd9UE4p5dvufZ48HAS0RuiEh+
+   85tC5wRop8bZLwNCkzp8DQwgvn8OIE6tXlKNACP7guIg+1bfWkYNu/KDz
+   X0+iMagYtfLmBzldUNAVzm7QvuWWKUV4Jh3QBWqxs4NELYFTh0Ri3k0vZ
+   g==;
+X-CSE-ConnectionGUID: JANSssXNR/i1ILvkjnYDLg==
+X-CSE-MsgGUID: kZPgHcNHTmiy+tNpGlDszw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11111"; a="26707221"
+X-IronPort-AV: E=Sophos;i="6.08,259,1712646000"; 
+   d="scan'208";a="26707221"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 01:54:21 -0700
+X-CSE-ConnectionGUID: /yL1qXlkTaKXiBTvwO9Tsw==
+X-CSE-MsgGUID: KW9gJ6q7QDSLGlx5Eu8bEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,259,1712646000"; 
+   d="scan'208";a="43123308"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 01:54:19 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 058F711FA94;
+	Sun, 23 Jun 2024 11:54:17 +0300 (EEST)
+Date: Sun, 23 Jun 2024 08:54:16 +0000
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>, linux-acpi@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] ACPI: scan: Ignore camera graph port nodes on all
+ Dell Tiger, Alder and Raptor Lake models
+Message-ID: <ZnfiuExIpLh-Nw-S@kekkonen.localdomain>
+References: <20240612104220.22219-1-hdegoede@redhat.com>
+ <CAJZ5v0iZPs9gdaeCG+c-FAuEeoHDTbyR2TsmFLC837fy+TQrvQ@mail.gmail.com>
+ <ZnCYwPFyIM1HYkt3@kekkonen.localdomain>
+ <CAJZ5v0hg-EMzgce5FH10uQqY1d37sGW3dyyZ-P8Uizg2i8+MOA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240623-sunxi-ng_fix_common_probe-v1-1-7c97e32824a1@oltmanns.dev>
-X-B4-Tracking: v=1; b=H4sIAMXgd2YC/x2MWwqAIBAArxL7nWD2MLpKhJSttR+toRRCdPekz
- 4GZeSBiIIwwFA8EvCmS5wxVWYDdZ95Q0JoZlFSN7JQS8eJEgjfjKBnrj8OzOYNfULSd1rbGptf
- OQu7PgNn53+P0vh9hoB8SawAAAA==
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, Maxime Ripard <mripard@kernel.org>
-Cc: =?utf-8?q?M=C3=A5ns_Rullg=C3=A5rd?= <mans@mansr.com>, 
- linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
- "Robert J. Pafford" <pafford.9@buckeyemail.osu.edu>, stable@vger.kernel.org, 
- Frank Oltmanns <frank@oltmanns.dev>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2817; i=frank@oltmanns.dev;
- h=from:subject:message-id; bh=/MbTc5IrzQ+vqZwxbntKS8rLbbH4xOE6FLZfVgj6O04=;
- b=owEB7QES/pANAwAIAZppogiUStPHAcsmYgBmd+DXrOE3LcA6aYi57bl6p32pUr0kuFo+nsrWf
- /LS/2jw7RmJAbMEAAEIAB0WIQQC/SV7f5DmuaVET5aaaaIIlErTxwUCZnfg1wAKCRCaaaIIlErT
- x0GVC/4vLLhNxs05792lSZo5ox+4SDMVmuSHieQ5Me/oS7yC6CJMsBXkm8fFJSJk1YtNkC7QQve
- 2ykhrFUbI7IrbBwDrNQFaLFjDJt2YlsSDvpY2AQQyiJa4jx2g59N6gpjV3hgSveyijb3vb+DcA7
- kOgB/Zddcp56czKp4TXsHa0nSQ+2DwQn4Cpe8Ss6cwJxWrKgzWN8duGS38t7NV5i8MiInW/ELmB
- lo4kvF5oAAPW75eCP2DY9P3mcdnPZWDBTmFvhkL0S44HuhL/mUAwtlUdDfF9hleI/m3TIyn7y8b
- 9USZYyJmsKGLuYf88CoCnIM+R4npW1DwWESH5lN3JS9d03lz0Md/r0YCTJOZx/6651cYaqGwVJY
- lM4i4GtcKV7o6La5+Sb9EGzffxE+HRnXLeeoi3eSrIbAIFdPHCFlAnv0XWHF0CIMGW7BY9h4nlo
- rdgetJ1y4ZZlBhdcQnzMOXjTuyBr4KGWPDj+7yNqwtmdDux43bQl90/vQ113xxsIhFkcw=
-X-Developer-Key: i=frank@oltmanns.dev; a=openpgp;
- fpr=02FD257B7F90E6B9A5444F969A69A208944AD3C7
+In-Reply-To: <CAJZ5v0hg-EMzgce5FH10uQqY1d37sGW3dyyZ-P8Uizg2i8+MOA@mail.gmail.com>
 
-In order to set the rate range of a hw sunxi_ccu_probe calls
-hw_to_ccu_common() assuming all entries in desc->ccu_clks are contained
-in a ccu_common struct. This assumption is incorrect and, in
-consequence, causes invalid pointer de-references.
+Hi Rafael,
 
-Remove the faulty call. Instead, add one more loop that iterates over
-the ccu_clks and sets the rate range, if required.
+On Tue, Jun 18, 2024 at 02:49:25PM +0200, Rafael J. Wysocki wrote:
+> Hi Sakari,
+> 
+> On Mon, Jun 17, 2024 at 10:12 PM Sakari Ailus
+> <sakari.ailus@linux.intel.com> wrote:
+> >
+> > Hi Rafael,
+> >
+> > On Mon, Jun 17, 2024 at 09:41:57PM +0200, Rafael J. Wysocki wrote:
+> > > On Wed, Jun 12, 2024 at 12:42 PM Hans de Goede <hdegoede@redhat.com> wrote:
+> > > >
+> > > > It seems that all Dell laptops with IPU6 camera or the Tiger Lake,
+> > > > Alder Lake and Raptor Lake generations have broken ACPI MIPI DISCO
+> > > > information.
+> > > >
+> > > > Instead of adding a lot of DMI quirks for this, check for these CPU
+> > > > generations and disable ACPI MIPI DISCO support on all Dell laptops
+> > > > with these CPU generations.
+> > > >
+> > > > Fixes: bd721b934323 ("ACPI: scan: Extract CSI-2 connection graph from _CRS")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> > > > ---
+> > > >  drivers/acpi/internal.h       |  4 ++++
+> > > >  drivers/acpi/mipi-disco-img.c | 28 +++++++++++++++++++---------
+> > > >  2 files changed, 23 insertions(+), 9 deletions(-)
+> > > >
+> > > > diff --git a/drivers/acpi/internal.h b/drivers/acpi/internal.h
+> > > > index 2a0e9fc7b74c..601b670356e5 100644
+> > > > --- a/drivers/acpi/internal.h
+> > > > +++ b/drivers/acpi/internal.h
+> > > > @@ -302,6 +302,10 @@ void acpi_mipi_check_crs_csi2(acpi_handle handle);
+> > > >  void acpi_mipi_scan_crs_csi2(void);
+> > > >  void acpi_mipi_init_crs_csi2_swnodes(void);
+> > > >  void acpi_mipi_crs_csi2_cleanup(void);
+> > > > +#ifdef CONFIG_X86
+> > > >  bool acpi_graph_ignore_port(acpi_handle handle);
+> > > > +#else
+> > > > +static inline bool acpi_graph_ignore_port(acpi_handle handle) { return false; }
+> > > > +#endif
+> > > >
+> > > >  #endif /* _ACPI_INTERNAL_H_ */
+> > > > diff --git a/drivers/acpi/mipi-disco-img.c b/drivers/acpi/mipi-disco-img.c
+> > > > index d05413a0672a..0ab13751f0db 100644
+> > > > --- a/drivers/acpi/mipi-disco-img.c
+> > > > +++ b/drivers/acpi/mipi-disco-img.c
+> > > > @@ -725,14 +725,20 @@ void acpi_mipi_crs_csi2_cleanup(void)
+> > > >                 acpi_mipi_del_crs_csi2(csi2);
+> > > >  }
+> > > >
+> > > > -static const struct dmi_system_id dmi_ignore_port_nodes[] = {
+> > > > -       {
+> > > > -               .matches = {
+> > > > -                       DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
+> > > > -                       DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "XPS 9315"),
+> > > > -               },
+> > > > -       },
+> > > > -       { }
+> > > > +#ifdef CONFIG_X86
+> > > > +#include <asm/cpu_device_id.h>
+> > > > +#include <asm/intel-family.h>
+> > > > +
+> > > > +/* CPU matches for Dell generations with broken ACPI MIPI DISCO info */
+> > > > +static const struct x86_cpu_id dell_broken_mipi_disco_cpu_gens[] = {
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE_L, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P, NULL),
+> > > > +       X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S, NULL),
+> > > > +       {}
+> > > >  };
+> > > >
+> > > >  static const char *strnext(const char *s1, const char *s2)
+> > > > @@ -761,7 +767,10 @@ bool acpi_graph_ignore_port(acpi_handle handle)
+> > > >         static bool dmi_tested, ignore_port;
+> > > >
+> > > >         if (!dmi_tested) {
+> > > > -               ignore_port = dmi_first_match(dmi_ignore_port_nodes);
+> > > > +               if (dmi_name_in_vendors("Dell Inc.") &&
+> > > > +                   x86_match_cpu(dell_broken_mipi_disco_cpu_gens))
+> > > > +                       ignore_port = true;
+> > > > +
+> > > >                 dmi_tested = true;
+> > > >         }
+> > > >
+> > > > @@ -794,3 +803,4 @@ bool acpi_graph_ignore_port(acpi_handle handle)
+> > > >         kfree(orig_path);
+> > > >         return false;
+> > > >  }
+> > > > +#endif
+> > > > --
+> > >
+> > > Applied as 6.10-rc material, along with the [2/2], with the following changelog:
+> > >
+> > > "Dell laptops with IPU6 camera (the Tiger Lake, Alder Lake and Raptor
+> > > Lake generations) have broken ACPI MIPI DISCO information (this results
+> > > from an OEM attempt to make Linux work by supplying it with custom data
+> > > in the ACPI tables which has never been supported in the mainline).
+> >
+> > I was expecting to see v2 with fixed changelog from Hans.
+> 
+> Hans asked me offline to take care of this.
 
-Fixes: b914ec33b391 ("clk: sunxi-ng: common: Support minimum and maximum rate")
-Reported-by: Robert J. Pafford <pafford.9@buckeyemail.osu.edu>
-Closes: https://lore.kernel.org/lkml/DM6PR01MB58047C810DDD5D0AE397CADFF7C22@DM6PR01MB5804.prod.exchangelabs.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
----
-Robert, could you please test if this fixes the issue you reported.
+Ok.
 
-I'm CC'ing Måns here, because he observed some strange behavior [1] with
-the original patch. Is it possible for you to look into if this patch
-fixes your issue without the need for the following (seemingly
-unrelated) patches:
-      cedb7dd193f6 "drm/sun4i: hdmi: Convert encoder to atomic"
-      9ca6bc246035 "drm/sun4i: hdmi: Move mode_set into enable"
+> 
+> > These issues with these (full list unknown) Dell laptops have nothing to do
+> > with DisCo for Imaging, not the spec nor the implementation. Instead the
+> > DSDT partially aligns with Documentation/firmware-guide/acpi/dsd/graph.rst
+> > but lacks e.g. IVSC from the graph as well as ACPI power resources for
+> > devices related to camera. IOW it's always been unusable.
+> 
+> The code related to DisCo for Imaging ends up using them and failing,
+> though, IIUC.
+> 
+> So what should I change in the paragraph quoted above?
 
-Thanks,
-  Frank
+How about this:
 
-[1]: https://lore.kernel.org/lkml/yw1xo78z8ez0.fsf@mansr.com/
----
- drivers/clk/sunxi-ng/ccu_common.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+Many Dell laptops, possibly all of them with IPU6 camera (the Tiger Lake,
+Alder Lake and Raptor Lake generations) have Linux ACPI graph describing
+camera connections only partially while the rest of what would be required
+for the cameras to function in these systems is simply missing in DSDT.
 
-diff --git a/drivers/clk/sunxi-ng/ccu_common.c b/drivers/clk/sunxi-ng/ccu_common.c
-index ac0091b4ce24..be375ce0149c 100644
---- a/drivers/clk/sunxi-ng/ccu_common.c
-+++ b/drivers/clk/sunxi-ng/ccu_common.c
-@@ -132,7 +132,6 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu, struct device *dev,
- 
- 	for (i = 0; i < desc->hw_clks->num ; i++) {
- 		struct clk_hw *hw = desc->hw_clks->hws[i];
--		struct ccu_common *common = hw_to_ccu_common(hw);
- 		const char *name;
- 
- 		if (!hw)
-@@ -147,14 +146,21 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu, struct device *dev,
- 			pr_err("Couldn't register clock %d - %s\n", i, name);
- 			goto err_clk_unreg;
- 		}
-+	}
-+
-+	for (i = 0; i < desc->num_ccu_clks; i++) {
-+		struct ccu_common *cclk = desc->ccu_clks[i];
-+
-+		if (!cclk)
-+			continue;
- 
--		if (common->max_rate)
--			clk_hw_set_rate_range(hw, common->min_rate,
--					      common->max_rate);
-+		if (cclk->max_rate)
-+			clk_hw_set_rate_range(&cclk->hw, cclk->min_rate,
-+					      cclk->max_rate);
- 		else
--			WARN(common->min_rate,
-+			WARN(cclk->min_rate,
- 			     "No max_rate, ignoring min_rate of clock %d - %s\n",
--			     i, name);
-+			     i, clk_hw_get_name(&cclk->hw));
- 	}
- 
- 	ret = of_clk_add_hw_provider(node, of_clk_hw_onecell_get,
+> 
+> > >
+> > > Instead of adding a lot of DMI quirks for this, check for Dell platforms
+> > > based on the processor generations in question and drop the ACPI graph
+> > > port nodes, likely to be created with the help of invalid data, on all
+> > > of them."
+> 
+> Am I guessing correctly that the remaining part of it is fine?
 
----
-base-commit: 2607133196c35f31892ee199ce7ffa717bea4ad1
-change-id: 20240622-sunxi-ng_fix_common_probe-5677c3e487fc
+Seems good to me.
 
-Best regards,
 -- 
-Frank Oltmanns <frank@oltmanns.dev>
+Kind regards,
 
+Sakari Ailus
 
