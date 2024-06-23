@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-54912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE746913B18
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A21913B1C
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87E461F210B8
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:48:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06EB91F2106B
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FDA187570;
-	Sun, 23 Jun 2024 13:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DF218A943;
+	Sun, 23 Jun 2024 13:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LFGokYHD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y08whOsm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01FB181D0E;
-	Sun, 23 Jun 2024 13:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC42181D0E;
+	Sun, 23 Jun 2024 13:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719150278; cv=none; b=a5KNlJxOA0EmLnB6sMyq6uALznOtX4ukPhNnAr75j3+2iSptfM0JSYzA0P5ppPQEDlJHJ9YuI+Fewv3Srcm1NvaPoPMxqYYqspdTZSauacQncP59EJTdDFwZhDA8jo1o86X73hWNoRnYg6lhhJjeRU0dgiedcg3IXKYIk0Jzu/A=
+	t=1719150282; cv=none; b=AHHu9OAwuQt/32I+n6/p0qxPG/ptUrrbdF5wQfvVMIaM73ByI3Ejm+41mlzNqRm1zrm13u8S2abgQd254sr/pFzbhEW0QkNhEF4qGBUTyqDIXW6PoAPOg8SoeT5hTbZgNEXoO/wx2bybSCUtMmlpLixsNrCsHbICijKBjJK/Ty0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719150278; c=relaxed/simple;
-	bh=kneZVnQX/xGvS8R5iLK83sOS5TyfkaXQ1vIlBiY/tw4=;
+	s=arc-20240116; t=1719150282; c=relaxed/simple;
+	bh=FhkXUSWTBbbwG5f8YbvesGJIvquKOnAw8mEO1OeSpzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2QGihEKP/s+Bn52W7DZmtoMKHKyF/mF/+OlM7sp2ckOEYjR8XzSk1mNK2KLMZxtyBZNwK+6mrg0OMEFntZG1xnOPAdUtsRXRmfsNx8N6ly309sKMkz+1ZnnbX88pZDq9Vr+LEK1Oniq956s0v/bdI3eo3mY5wRR7ErrnbZPPmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LFGokYHD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80DF4C32781;
-	Sun, 23 Jun 2024 13:44:37 +0000 (UTC)
+	 MIME-Version; b=J8gtIe06WLEhBB9fBCCwGE/tGi9l62srE3ZXYsKrG6Xuv/gE9PngTHCFH9jdXr4fMsbma4siMhKtRAUYiK0dmpQAc4Sm2SaNnBS4+3mT2sz+4FZbYEWnhmOp+S7XNuHIOVLV3aiCNc8uPEh1DGXD6cpC9Sk5suciPpScUe1KsMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y08whOsm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68E8C32781;
+	Sun, 23 Jun 2024 13:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719150278;
-	bh=kneZVnQX/xGvS8R5iLK83sOS5TyfkaXQ1vIlBiY/tw4=;
+	s=k20201202; t=1719150282;
+	bh=FhkXUSWTBbbwG5f8YbvesGJIvquKOnAw8mEO1OeSpzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LFGokYHDBw3d7ipWeUILAAA57bJFumaYrw2XG4JjDRc+py4u/Bl0HW+KdUpRAaonH
-	 URT0GaT7RxVLCxd7Gchs0FBLaCXr11Mu7biVgvqGICikfu2dDfFgNpIXMHeJziEk/n
-	 82y19XPZsJ1Tiv8JzdF1oTRxYBkVMY/2O7qreorb0umkN5+0Wyj6V6ikj6tq9XYZVQ
-	 rXo0UXfEdHgLPSuFPhqm/wCATvmDS4WHzvn3WS6QCCplg5hL30MU2bm5jikkwXwV/K
-	 d/guLbsZZiK8Nz/EB8VXUaDO7tZ99oEtUNV+C1l5mE4rk4OBUSnwjefzJqQqoER7aJ
-	 Z9DqdxIUCI1LQ==
+	b=Y08whOsmaYxNwV+IT+yvUjeGSie0RWMkje7zMLg54zt7FRxFxk5VbM6KGdUaIK7Vb
+	 wZD1Y0xfAIiPV8vjeTYEeUyQE5rrY5SpPFkNnCwP+7aV//qcoKa5S7Yji3evHrWu1D
+	 2oSsMXeeAmGrdpdxYiPOYrX8TwPGZEEPS/6fDJcoXpqyypqy8jTmM5QhGBiSOiabzC
+	 UjZ3dqDcf3JXRyClq5kWAYTWY6qVtm9QvyNMzdCnQuFBo9oTKDjLIQSOc13ZnXcKnB
+	 XJobDNR5rwcNC6nVn1nuLX/Jgiisw6SZb52fYFPQS5kLZYGTP7vYTOw8VR9ze3m/Od
+	 fMiah0igDd0fQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Wagner <dwagner@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	Yan Zhao <yan.y.zhao@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sagi@grimberg.me,
-	kch@nvidia.com,
-	hare@suse.de,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.9 19/21] nvmet: always initialize cqe.result
-Date: Sun, 23 Jun 2024 09:43:52 -0400
-Message-ID: <20240623134405.809025-19-sashal@kernel.org>
+	jgg@ziepe.ca,
+	yi.l.liu@intel.com,
+	kevin.tian@intel.com,
+	eric.auger@redhat.com,
+	brauner@kernel.org,
+	ankita@nvidia.com,
+	stefanha@redhat.com,
+	kvm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 20/21] vfio/pci: Insert full vma on mmap'd MMIO fault
+Date: Sun, 23 Jun 2024 09:43:53 -0400
+Message-ID: <20240623134405.809025-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240623134405.809025-1-sashal@kernel.org>
 References: <20240623134405.809025-1-sashal@kernel.org>
@@ -69,85 +72,71 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.6
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit cd0c1b8e045a8d2785342b385cb2684d9b48e426 ]
+[ Upstream commit d71a989cf5d961989c273093cdff2550acdde314 ]
 
-The spec doesn't mandate that the first two double words (aka results)
-for the command queue entry need to be set to 0 when they are not
-used (not specified). Though, the target implemention returns 0 for TCP
-and FC but not for RDMA.
+In order to improve performance of typical scenarios we can try to insert
+the entire vma on fault.  This accelerates typical cases, such as when
+the MMIO region is DMA mapped by QEMU.  The vfio_iommu_type1 driver will
+fault in the entire DMA mapped range through fixup_user_fault().
 
-Let's make RDMA behave the same and thus explicitly initializing the
-result field. This prevents leaking any data from the stack.
+In synthetic testing, this improves the time required to walk a PCI BAR
+mapping from userspace by roughly 1/3rd.
 
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+This is likely an interim solution until vmf_insert_pfn_{pmd,pud}() gain
+support for pfnmaps.
+
+Suggested-by: Yan Zhao <yan.y.zhao@intel.com>
+Link: https://lore.kernel.org/all/Zl6XdUkt%2FzMMGOLF@yzhao56-desk.sh.intel.com/
+Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
+Link: https://lore.kernel.org/r/20240607035213.2054226-1-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/core.c             | 1 +
- drivers/nvme/target/fabrics-cmd-auth.c | 3 ---
- drivers/nvme/target/fabrics-cmd.c      | 6 ------
- 3 files changed, 1 insertion(+), 9 deletions(-)
+ drivers/vfio/pci/vfio_pci_core.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/core.c b/drivers/nvme/target/core.c
-index 2fde22323622e..29d324b97f8c3 100644
---- a/drivers/nvme/target/core.c
-+++ b/drivers/nvme/target/core.c
-@@ -948,6 +948,7 @@ bool nvmet_req_init(struct nvmet_req *req, struct nvmet_cq *cq,
- 	req->metadata_sg_cnt = 0;
- 	req->transfer_len = 0;
- 	req->metadata_len = 0;
-+	req->cqe->result.u64 = 0;
- 	req->cqe->status = 0;
- 	req->cqe->sq_head = 0;
- 	req->ns = NULL;
-diff --git a/drivers/nvme/target/fabrics-cmd-auth.c b/drivers/nvme/target/fabrics-cmd-auth.c
-index eb7785be0ca77..ee76491e8b12c 100644
---- a/drivers/nvme/target/fabrics-cmd-auth.c
-+++ b/drivers/nvme/target/fabrics-cmd-auth.c
-@@ -332,7 +332,6 @@ void nvmet_execute_auth_send(struct nvmet_req *req)
- 		pr_debug("%s: ctrl %d qid %d nvme status %x error loc %d\n",
- 			 __func__, ctrl->cntlid, req->sq->qid,
- 			 status, req->error_loc);
--	req->cqe->result.u64 = 0;
- 	if (req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2 &&
- 	    req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_FAILURE2) {
- 		unsigned long auth_expire_secs = ctrl->kato ? ctrl->kato : 120;
-@@ -515,8 +514,6 @@ void nvmet_execute_auth_receive(struct nvmet_req *req)
- 	status = nvmet_copy_to_sgl(req, 0, d, al);
- 	kfree(d);
- done:
--	req->cqe->result.u64 = 0;
--
- 	if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2)
- 		nvmet_auth_sq_free(req->sq);
- 	else if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_FAILURE1) {
-diff --git a/drivers/nvme/target/fabrics-cmd.c b/drivers/nvme/target/fabrics-cmd.c
-index b23f4cf840bd5..f6714453b8bb3 100644
---- a/drivers/nvme/target/fabrics-cmd.c
-+++ b/drivers/nvme/target/fabrics-cmd.c
-@@ -226,9 +226,6 @@ static void nvmet_execute_admin_connect(struct nvmet_req *req)
- 	if (status)
- 		goto out;
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 2baf4dfac3f43..9eaf10a8f134b 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -1639,6 +1639,7 @@ static vm_fault_t vfio_pci_mmap_fault(struct vm_fault *vmf)
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
+ 	unsigned long pfn, pgoff = vmf->pgoff - vma->vm_pgoff;
++	unsigned long addr = vma->vm_start;
+ 	vm_fault_t ret = VM_FAULT_SIGBUS;
  
--	/* zero out initial completion result, assign values as needed */
--	req->cqe->result.u32 = 0;
--
- 	if (c->recfmt != 0) {
- 		pr_warn("invalid connect version (%d).\n",
- 			le16_to_cpu(c->recfmt));
-@@ -304,9 +301,6 @@ static void nvmet_execute_io_connect(struct nvmet_req *req)
- 	if (status)
- 		goto out;
+ 	pfn = vma_to_pfn(vma);
+@@ -1646,11 +1647,25 @@ static vm_fault_t vfio_pci_mmap_fault(struct vm_fault *vmf)
+ 	down_read(&vdev->memory_lock);
  
--	/* zero out initial completion result, assign values as needed */
--	req->cqe->result.u32 = 0;
--
- 	if (c->recfmt != 0) {
- 		pr_warn("invalid connect version (%d).\n",
- 			le16_to_cpu(c->recfmt));
+ 	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
+-		goto out_disabled;
++		goto out_unlock;
+ 
+ 	ret = vmf_insert_pfn(vma, vmf->address, pfn + pgoff);
++	if (ret & VM_FAULT_ERROR)
++		goto out_unlock;
+ 
+-out_disabled:
++	/*
++	 * Pre-fault the remainder of the vma, abort further insertions and
++	 * supress error if fault is encountered during pre-fault.
++	 */
++	for (; addr < vma->vm_end; addr += PAGE_SIZE, pfn++) {
++		if (addr == vmf->address)
++			continue;
++
++		if (vmf_insert_pfn(vma, addr, pfn) & VM_FAULT_ERROR)
++			break;
++	}
++
++out_unlock:
+ 	up_read(&vdev->memory_lock);
+ 
+ 	return ret;
 -- 
 2.43.0
 
