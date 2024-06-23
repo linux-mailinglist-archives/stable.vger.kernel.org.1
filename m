@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-54882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69485913939
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 11:32:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4426D91393B
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 11:32:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D12A3282317
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 09:32:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E389A1F21C88
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 09:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441017F492;
-	Sun, 23 Jun 2024 09:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3638E7442F;
+	Sun, 23 Jun 2024 09:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zjj8sv7u"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L5qiUZVf"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2235DD51C;
-	Sun, 23 Jun 2024 09:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CD05FB9C;
+	Sun, 23 Jun 2024 09:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719135145; cv=none; b=Hv2wlgdtta1u4cx6LJKyfAm/iK+9KuLl9Ys34wJs3Pi9HTklSDvj5ic25XTcNTTa3vf3N71+216rRlvaMzm7Wg2TXWMVyO3gDMdtGI+PORQYxYJomvFHVkTt8PJO7+yr5ZsPzZ1K8u6u5DvMIry34MUhUvflhDCqtM5Q03zdUic=
+	t=1719135151; cv=none; b=qHot9+MoZraDnJ8HMFSA0aWPjSdJqb1y8x++AhIvUx57pCqDsXB9ObVHnToiCIteHWw5da1j8uLKuCv3Em86r6dCMyZFEa9wIlrOimNuQ+souaNL1wqDwyU/Zn8HW9vEgxy3FsuXfpYwM95wRhDMYEzJM2SM7cJJMHwB49KAtjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719135145; c=relaxed/simple;
-	bh=o+ppC9cqSZaFmTTXQs9RvqE76Ildur/5zLcTVfC39hE=;
+	s=arc-20240116; t=1719135151; c=relaxed/simple;
+	bh=XmOQcTrxfUfHjL/0izCrhg/Yqc+CNqGhOUcXysJjsvA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=X8Tt6/RXbQfHtDp4+huK2NhcNsx6AN8spF8XOx3D+O6XjrFMiwzW1fWKknjnF+kizA4+dyyc7uzysaczw1uZGa8TvnDpOv0dZ1iQ50SveekYRBgZdDExjppaWaWVXLIwSFPeZ4oQC4GTGiAeB1FI6Vh4MORplCL89Jqu0iq/XYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zjj8sv7u; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=DOQG3t/nefJQ7debzE8n1JJAV2eghJJzXingtSKmpqxBFDBxxjfbOZijqEjz5ZG18lbo5EzVKa5+WdxF5kC6mvZ9+E0GfIcns4rE4MAGCc9q3seaqFSKF0k+QH7YaWCOrulGqO7p/QqQQWt21/zYQLxwKjM9kOwpy9IMZC6YIVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L5qiUZVf; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719135143; x=1750671143;
+  t=1719135149; x=1750671149;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=o+ppC9cqSZaFmTTXQs9RvqE76Ildur/5zLcTVfC39hE=;
-  b=Zjj8sv7uyLnhIjxtcYYh9IUiFQ2R/oreF6vD8IfYMp/L3zxLsgilwZwG
-   VXAV/raj1NHKjUvzoO2w5UQqP6TyFPAQW/98CnkTtf/fNKrT9hYHZpHeV
-   oXnG1EBJUSGnM1WCn4x9ZVkeS1flMQLNkXwIbJO7lLo8WcyCJbzQvVc4c
-   d9SpbyEM7NP8AFu+ENDLb/dG7Q315zkAYKrxatz/KyKqUQhAb9ol5feha
-   vL/Ll9Qrf7wsQZwvOO2L+UKpmW+zb6PQps9dVP/aKeXQjNNN8nqMiEhWC
-   I5oS30ciJPwWv4dnzi9ngNNXYbGl131k1FB9M5H/oQP9JBfjAqGGFMdeG
-   w==;
-X-CSE-ConnectionGUID: T6dKxOzmQnGlxLU0TuCQOQ==
-X-CSE-MsgGUID: NG2ukBj/SBagNhIO6k83VQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11111"; a="16089078"
+  bh=XmOQcTrxfUfHjL/0izCrhg/Yqc+CNqGhOUcXysJjsvA=;
+  b=L5qiUZVfs/28nSMPdFJYtcohhoV8gbXW32vo+DnnSCJFTw45d6sIoXrQ
+   3QP7ILno3T3PSYs7/zima6WEgPZGre6D+1nsRlBYe6W/7vrqBcwK1ATjk
+   6HbgK8LBkZNi/Xy5ZCX+m/o2j8jXM6ObqUCiIOK9RQiy9YK0R/xu7d9f7
+   oqAR860+Ik/X96ezOb4nc0Hz+UMEE4yHqhRFRhr4xZ+ZqRm3+sj9DuaMt
+   coij4CM/TE4LzhRQ1gE4N3DcbAOd6U/Ae3Y5JTFUfy+tS5dVRBcHd5Vwc
+   Xh4v9ZaVrML8rKsTd3CfIa1htVH73nPYa9BQAcQEwLZ1sFW4QPhj81ocM
+   A==;
+X-CSE-ConnectionGUID: toXZe1SNQYym5rN010STbA==
+X-CSE-MsgGUID: QDrb+Un0SM+/pCiSP1Mw7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11111"; a="16089086"
 X-IronPort-AV: E=Sophos;i="6.08,259,1712646000"; 
-   d="scan'208";a="16089078"
+   d="scan'208";a="16089086"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 02:32:23 -0700
-X-CSE-ConnectionGUID: 0zZQzj9EQYqUsncoeReyXA==
-X-CSE-MsgGUID: 3C4DSRbIRtWyvz8FuqJd1g==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 02:32:29 -0700
+X-CSE-ConnectionGUID: l0olGh5WTniS46YTWBw8fA==
+X-CSE-MsgGUID: Md9Tz+HIQmm5mXVYkSMaxg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,259,1712646000"; 
-   d="scan'208";a="73761700"
+   d="scan'208";a="73761709"
 Received: from wentongw-optiplex-7000.sh.intel.com ([10.239.154.127])
-  by orviesa002.jf.intel.com with ESMTP; 23 Jun 2024 02:32:21 -0700
+  by orviesa002.jf.intel.com with ESMTP; 23 Jun 2024 02:32:27 -0700
 From: Wentong Wu <wentong.wu@intel.com>
 To: sakari.ailus@linux.intel.com,
 	tomas.winkler@intel.com,
@@ -66,9 +66,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Wentong Wu <wentong.wu@intel.com>,
 	stable@vger.kernel.org,
 	Jason Chen <jason.z.chen@intel.com>
-Subject: [PATCH 1/6] mei: vsc: Enhance IVSC chipset reset toggling
-Date: Sun, 23 Jun 2024 17:30:51 +0800
-Message-Id: <20240623093056.4169438-2-wentong.wu@intel.com>
+Subject: [PATCH 2/6] mei: vsc: Enhance IVSC chipset stability during warm reboot
+Date: Sun, 23 Jun 2024 17:30:52 +0800
+Message-Id: <20240623093056.4169438-3-wentong.wu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240623093056.4169438-1-wentong.wu@intel.com>
 References: <20240623093056.4169438-1-wentong.wu@intel.com>
@@ -80,29 +80,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Implementing the hardware recommendation to toggle the chipset reset.
+During system shutdown, incorporate reset logic to ensure the IVSC
+chipset remains in a valid state. This adjustment guarantees that
+the IVSC chipset operates in a known state following a warm reboot.
 
 Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
 Cc: stable@vger.kernel.org # for 6.8+
 Signed-off-by: Wentong Wu <wentong.wu@intel.com>
 Tested-by: Jason Chen <jason.z.chen@intel.com>
 ---
- drivers/misc/mei/vsc-tp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/misc/mei/vsc-tp.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/drivers/misc/mei/vsc-tp.c b/drivers/misc/mei/vsc-tp.c
-index e6a98dba8a73..dcab5174bf00 100644
+index dcab5174bf00..4595b1a25536 100644
 --- a/drivers/misc/mei/vsc-tp.c
 +++ b/drivers/misc/mei/vsc-tp.c
-@@ -350,6 +350,8 @@ void vsc_tp_reset(struct vsc_tp *tp)
- 	disable_irq(tp->spi->irq);
+@@ -570,6 +570,19 @@ static void vsc_tp_remove(struct spi_device *spi)
+ 	free_irq(spi->irq, tp);
+ }
  
- 	/* toggle reset pin */
-+	gpiod_set_value_cansleep(tp->resetfw, 1);
-+	msleep(VSC_TP_RESET_PIN_TOGGLE_INTERVAL_MS);
- 	gpiod_set_value_cansleep(tp->resetfw, 0);
- 	msleep(VSC_TP_RESET_PIN_TOGGLE_INTERVAL_MS);
- 	gpiod_set_value_cansleep(tp->resetfw, 1);
++static void vsc_tp_shutdown(struct spi_device *spi)
++{
++	struct vsc_tp *tp = spi_get_drvdata(spi);
++
++	platform_device_unregister(tp->pdev);
++
++	mutex_destroy(&tp->mutex);
++
++	vsc_tp_reset(tp);
++
++	free_irq(spi->irq, tp);
++}
++
+ static const struct acpi_device_id vsc_tp_acpi_ids[] = {
+ 	{ "INTC1009" }, /* Raptor Lake */
+ 	{ "INTC1058" }, /* Tiger Lake */
+@@ -582,6 +595,7 @@ MODULE_DEVICE_TABLE(acpi, vsc_tp_acpi_ids);
+ static struct spi_driver vsc_tp_driver = {
+ 	.probe = vsc_tp_probe,
+ 	.remove = vsc_tp_remove,
++	.shutdown = vsc_tp_shutdown,
+ 	.driver = {
+ 		.name = "vsc-tp",
+ 		.acpi_match_table = vsc_tp_acpi_ids,
 -- 
 2.34.1
 
