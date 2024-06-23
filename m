@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-54901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8CCE913AFB
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1ABD913AFE
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 071061C20366
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:45:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E63561C20CB0
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608AF18307E;
-	Sun, 23 Jun 2024 13:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F541836E5;
+	Sun, 23 Jun 2024 13:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5UtIyL+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dx/CjLks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E65183099;
-	Sun, 23 Jun 2024 13:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4032A1836D8;
+	Sun, 23 Jun 2024 13:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719150259; cv=none; b=Y4YoFINwp/I6C8unxfHdT3oc+OS7sPOsG5mY9vjBotCms8j75a/HHqDwvP+8+1mtgi66VI8Y6dDm4LrOGxmrcGBL9pa/jrd83ijAoFt2ncelssKHgMAfFkXets3iaGwD4Th9RX+rOMQqypCeJQjhY3uFcDr9e7RPi47JuoZTFc0=
+	t=1719150260; cv=none; b=M7CCUZ4q7GCpLH9V152HQ+dfgxJT6xBiZZemg++t79E9X4WRM8C0aLIfCGbKoblsSnTtOPSr8uZqxduFYgBAMiv5cxPb6e5RQcmbUQunrHdbHMin227MeeBj0IGaU1hddPWYsf/6mLjnqr0HMh2kh012bn0Vwd8UmMPegtTnXlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719150259; c=relaxed/simple;
-	bh=h4HoumRLcnlemmdGi+U+5lsemQjRD/5NVqMgn8aVb4M=;
+	s=arc-20240116; t=1719150260; c=relaxed/simple;
+	bh=D+u11N6meZgue2RjrKJKF/KRFSvT9tdbZSH27n2GtsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j7vJsI8dOHboX3G7YTvFAvkKpqoAqKCj2yGANz5Mlh1SeqywrkMy+Kz+ZmPEEDwBf2Q8NiWazmXR6Fu4WQTXBaP6WMkDl5GKKEYaj4urjSZUvpKfKlcsdYxlI+RaftOX68rPXzi1pKVdA1gWqkHvaB2/LMCTPhEBfn3ZO0AX5Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5UtIyL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F12C4AF07;
-	Sun, 23 Jun 2024 13:44:17 +0000 (UTC)
+	 MIME-Version; b=VuqPUIyvkRgHsfcexJAFgUgHy292ToANIVrHMSS5hllunI6nEnLie5gD48Ke+s369hI3mjY1fAoepTur/mYfYR4MqEcc1jPe/gX1ExVobthzz1PkrLi8Z38vCrfTfQwIy3CAOxEUGQbs7Q2DqfW9ox/VUSF5/PjoSYLQFsza9tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dx/CjLks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52BC5C2BD10;
+	Sun, 23 Jun 2024 13:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719150258;
-	bh=h4HoumRLcnlemmdGi+U+5lsemQjRD/5NVqMgn8aVb4M=;
+	s=k20201202; t=1719150260;
+	bh=D+u11N6meZgue2RjrKJKF/KRFSvT9tdbZSH27n2GtsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e5UtIyL+bha9b4ewSrb6JO1Uxea2dFxTDAeABfLP2hdregIionEH4z/ajhTTDLoL5
-	 iwR9yfj9ny4YavDiS+xmeYPH4mj8C57aNy2x3KwcI1F5buYyzkBLF9LxFOKVZaMRIg
-	 Sqo++LHq+/AeYq4WHStaoaAJLTTclYVBarsrRjcsjqgxJwCcGdZV6BCRkm1kY5kaNA
-	 KJWHetJK24THiRUZ79MOI69sTVbNY3qYFBZOqhUoV56ivgGkn6lpjrHPpbK41gYCWF
-	 ng8STvfwaHpBCt+acXwtJPeyvv83/vzcEoTUBBV0HBWiFtLbfzARZIwTME0U6lCL86
-	 /NzRUcrlCIZAw==
+	b=dx/CjLksXqwUsGX9RBlZHkHgRLF60rFDDrU54FzYCuBPqLP2WTDBBcOU8FOAKan28
+	 4xkosT+b/wJ4NKmZayyhwMIe5uuJ+ITPBL+bU4uVH09c0Yb+5IMrFK+73e6VhM+wB7
+	 bMq9qgU1NdmMDLAuHgOF1V+9TARA5lqQVTzcx0tPUEHfiWknJWSv41Dmg20IG9uGdg
+	 KlpkCm92poikR82dDaLvGkbYjN4V+rZ+MH2ehIwiJLJp65QcVs4WoFv1iQp1JsDNv7
+	 cbaPDGPFwky7b0cNaT9BmC9KMoNRXvTcvLhZRERSIXFngY+A1CM8GAfloftX6d8qr+
+	 UPMCwfMgUJ7XQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yuntao Wang <yuntao.wang@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 08/21] fs/file: fix the check in find_next_fd()
-Date: Sun, 23 Jun 2024 09:43:41 -0400
-Message-ID: <20240623134405.809025-8-sashal@kernel.org>
+	kvm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 09/21] vfio: Create vfio_fs_type with inode per device
+Date: Sun, 23 Jun 2024 09:43:42 -0400
+Message-ID: <20240623134405.809025-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240623134405.809025-1-sashal@kernel.org>
 References: <20240623134405.809025-1-sashal@kernel.org>
@@ -67,49 +66,170 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.6
 Content-Transfer-Encoding: 8bit
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit ed8c7fbdfe117abbef81f65428ba263118ef298a ]
+[ Upstream commit b7c5e64fecfa88764791679cca4786ac65de739e ]
 
-The maximum possible return value of find_next_zero_bit(fdt->full_fds_bits,
-maxbit, bitbit) is maxbit. This return value, multiplied by BITS_PER_LONG,
-gives the value of bitbit, which can never be greater than maxfd, it can
-only be equal to maxfd at most, so the following check 'if (bitbit > maxfd)'
-will never be true.
+By linking all the device fds we provide to userspace to an
+address space through a new pseudo fs, we can use tools like
+unmap_mapping_range() to zap all vmas associated with a device.
 
-Moreover, when bitbit equals maxfd, it indicates that there are no unused
-fds, and the function can directly return.
-
-Fix this check.
-
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://lore.kernel.org/r/20240529160656.209352-1-yuntao.wang@linux.dev
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20240530045236.1005864-2-alex.williamson@redhat.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/vfio/device_cdev.c |  7 ++++++
+ drivers/vfio/group.c       |  7 ++++++
+ drivers/vfio/vfio_main.c   | 44 ++++++++++++++++++++++++++++++++++++++
+ include/linux/vfio.h       |  1 +
+ 4 files changed, 59 insertions(+)
 
-diff --git a/fs/file.c b/fs/file.c
-index 3b683b9101d84..005841dd35977 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -481,12 +481,12 @@ struct files_struct init_files = {
+diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
+index e75da0a70d1f8..bb1817bd4ff31 100644
+--- a/drivers/vfio/device_cdev.c
++++ b/drivers/vfio/device_cdev.c
+@@ -39,6 +39,13 @@ int vfio_device_fops_cdev_open(struct inode *inode, struct file *filep)
  
- static unsigned int find_next_fd(struct fdtable *fdt, unsigned int start)
- {
--	unsigned int maxfd = fdt->max_fds;
-+	unsigned int maxfd = fdt->max_fds; /* always multiple of BITS_PER_LONG */
- 	unsigned int maxbit = maxfd / BITS_PER_LONG;
- 	unsigned int bitbit = start / BITS_PER_LONG;
+ 	filep->private_data = df;
  
- 	bitbit = find_next_zero_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
--	if (bitbit > maxfd)
-+	if (bitbit >= maxfd)
- 		return maxfd;
- 	if (bitbit > start)
- 		start = bitbit;
++	/*
++	 * Use the pseudo fs inode on the device to link all mmaps
++	 * to the same address space, allowing us to unmap all vmas
++	 * associated to this device using unmap_mapping_range().
++	 */
++	filep->f_mapping = device->inode->i_mapping;
++
+ 	return 0;
+ 
+ err_put_registration:
+diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
+index 610a429c61912..ded364588d297 100644
+--- a/drivers/vfio/group.c
++++ b/drivers/vfio/group.c
+@@ -286,6 +286,13 @@ static struct file *vfio_device_open_file(struct vfio_device *device)
+ 	 */
+ 	filep->f_mode |= (FMODE_PREAD | FMODE_PWRITE);
+ 
++	/*
++	 * Use the pseudo fs inode on the device to link all mmaps
++	 * to the same address space, allowing us to unmap all vmas
++	 * associated to this device using unmap_mapping_range().
++	 */
++	filep->f_mapping = device->inode->i_mapping;
++
+ 	if (device->group->type == VFIO_NO_IOMMU)
+ 		dev_warn(device->dev, "vfio-noiommu device opened by user "
+ 			 "(%s:%d)\n", current->comm, task_pid_nr(current));
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index e97d796a54fba..a5a62d9d963f7 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -22,8 +22,10 @@
+ #include <linux/list.h>
+ #include <linux/miscdevice.h>
+ #include <linux/module.h>
++#include <linux/mount.h>
+ #include <linux/mutex.h>
+ #include <linux/pci.h>
++#include <linux/pseudo_fs.h>
+ #include <linux/rwsem.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
+@@ -43,9 +45,13 @@
+ #define DRIVER_AUTHOR	"Alex Williamson <alex.williamson@redhat.com>"
+ #define DRIVER_DESC	"VFIO - User Level meta-driver"
+ 
++#define VFIO_MAGIC 0x5646494f /* "VFIO" */
++
+ static struct vfio {
+ 	struct class			*device_class;
+ 	struct ida			device_ida;
++	struct vfsmount			*vfs_mount;
++	int				fs_count;
+ } vfio;
+ 
+ #ifdef CONFIG_VFIO_NOIOMMU
+@@ -186,6 +192,8 @@ static void vfio_device_release(struct device *dev)
+ 	if (device->ops->release)
+ 		device->ops->release(device);
+ 
++	iput(device->inode);
++	simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
+ 	kvfree(device);
+ }
+ 
+@@ -228,6 +236,34 @@ struct vfio_device *_vfio_alloc_device(size_t size, struct device *dev,
+ }
+ EXPORT_SYMBOL_GPL(_vfio_alloc_device);
+ 
++static int vfio_fs_init_fs_context(struct fs_context *fc)
++{
++	return init_pseudo(fc, VFIO_MAGIC) ? 0 : -ENOMEM;
++}
++
++static struct file_system_type vfio_fs_type = {
++	.name = "vfio",
++	.owner = THIS_MODULE,
++	.init_fs_context = vfio_fs_init_fs_context,
++	.kill_sb = kill_anon_super,
++};
++
++static struct inode *vfio_fs_inode_new(void)
++{
++	struct inode *inode;
++	int ret;
++
++	ret = simple_pin_fs(&vfio_fs_type, &vfio.vfs_mount, &vfio.fs_count);
++	if (ret)
++		return ERR_PTR(ret);
++
++	inode = alloc_anon_inode(vfio.vfs_mount->mnt_sb);
++	if (IS_ERR(inode))
++		simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
++
++	return inode;
++}
++
+ /*
+  * Initialize a vfio_device so it can be registered to vfio core.
+  */
+@@ -246,6 +282,11 @@ static int vfio_init_device(struct vfio_device *device, struct device *dev,
+ 	init_completion(&device->comp);
+ 	device->dev = dev;
+ 	device->ops = ops;
++	device->inode = vfio_fs_inode_new();
++	if (IS_ERR(device->inode)) {
++		ret = PTR_ERR(device->inode);
++		goto out_inode;
++	}
+ 
+ 	if (ops->init) {
+ 		ret = ops->init(device);
+@@ -260,6 +301,9 @@ static int vfio_init_device(struct vfio_device *device, struct device *dev,
+ 	return 0;
+ 
+ out_uninit:
++	iput(device->inode);
++	simple_release_fs(&vfio.vfs_mount, &vfio.fs_count);
++out_inode:
+ 	vfio_release_device_set(device);
+ 	ida_free(&vfio.device_ida, device->index);
+ 	return ret;
+diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+index 8b1a298204091..000a6cab2d318 100644
+--- a/include/linux/vfio.h
++++ b/include/linux/vfio.h
+@@ -64,6 +64,7 @@ struct vfio_device {
+ 	struct completion comp;
+ 	struct iommufd_access *iommufd_access;
+ 	void (*put_kvm)(struct kvm *kvm);
++	struct inode *inode;
+ #if IS_ENABLED(CONFIG_IOMMUFD)
+ 	struct iommufd_device *iommufd_device;
+ 	u8 iommufd_attached:1;
 -- 
 2.43.0
 
