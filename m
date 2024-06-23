@@ -1,208 +1,168 @@
-Return-Path: <stable+bounces-54879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 076449137A4
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 06:39:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13669913915
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 10:51:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50D60B227D2
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 04:39:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF69E1F21BE3
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 08:51:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6319D168CC;
-	Sun, 23 Jun 2024 04:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B945A4D5;
+	Sun, 23 Jun 2024 08:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R6lODbS3"
+	dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b="1/6wsBso"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26A7D518;
-	Sun, 23 Jun 2024 04:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0DB3AC1F;
+	Sun, 23 Jun 2024 08:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719117564; cv=none; b=q9Nt1LAB0dEOTrmb5mrLaHZU7jLrHXsEURw6Nu19vfxaWz4gclLkzVPBLl7lUsAvCaMw/D7xNpfj/bFKAJnXy/7e3o5tbDRSeQMj5FbltHrmHqrCPzs+WAuyJjGwTpS8TDr5R1G5mzgGUlc8fLgON/bNtauLK33mkqP2fK1t3Pk=
+	t=1719132703; cv=none; b=q2TDRy1Cs9Nvj0iHkcoblztPRhOYXGbsnDu6mVKI8hX1O5JRWwmM6dBFZKV3GLemZAvyvII0DySVH+sN9a0d+nzsEVBCor3GVZqyQdul1Or2G5qnCYYgVuN4P2NV1J+2eiENImVrH7eqwPtUx7uMw5WH5rWG0aga/NxHT6ne2DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719117564; c=relaxed/simple;
-	bh=EKy19ZjGn/aS+LlJEXMy4mVOfboYhqedqM97sjJR2xU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lcgQdHAt2Hc7XLYzBgj+EBsQpa8+qUeKD71y6mzFSJotl932rRsimkjFWZ/Ap5xxHGgKxUBlJsG228OQwVwLqk14joQ6uD1pW6KanjmCtAlacucrfRq+qPEzAG+p8XvLxLu1FnHrNZ8Q/WzfVi9h9S9nUjD6m+4NGRyqlYr9zcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R6lODbS3; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1f9cc1d7379so662835ad.1;
-        Sat, 22 Jun 2024 21:39:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719117562; x=1719722362; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8PnQ01roy4700N+vwuQEr8zP1UPIft7myTscZi49+x8=;
-        b=R6lODbS3T39Ws+beurS7EirmOTPa4LSeR45JNrCxqiwlNuOiOM/AEpJuxZMJV+PBNy
-         QtqLf0IIjU5cny3qYmTBxhbHZh57VCwN/uETp9BqQGxyQwXm9vxEBAcjuxxnkLFWjZLX
-         vovliMhS8oWtSvKgkSbc5NZobYwhyAZjdvh7DIynLWLHQ1iemV7KHaqyNVceEwgCfxS+
-         BM3wQ0e24v0QJJbzhAl0NkQt1yvHu1pZLuQewWcI+vYk3mNFnO26qMEupl66HM8UpJuJ
-         mYT/oCy3z9G2tWiH907OVpkNhcDtXciUAyZ7jIquoLPJEYZO2qjoVC+vVG3RtukRDNY4
-         rApg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719117562; x=1719722362;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8PnQ01roy4700N+vwuQEr8zP1UPIft7myTscZi49+x8=;
-        b=Lmki24jdqvQcjIuVTua3nC6wileuAX5hh7mvM8OuC+rCe5rYBjyjuyFCj1a4poGKUK
-         keGKPKbo6LhGdZArTMFYfe4H7PIC9D3bcYgHQVURJ2KDQykn0/30Uy1lTaEpWPofzUQs
-         jmO6EBlOhAUNb3LMR4pOIDaDMPeWL7yBDDNuY0/bUpVF2VtuKPvRrgA2LoyuiOSnnrYd
-         RoHLnYYb0tcUfL0pHOnpbRwOwmC34wtpyyq0B4vhXHSR/yOTA6yrbcZ+V+v2DGytVu3D
-         E6VqWg/CQ2bfePMf+YHDcip3zPnwISQikdif1RtujABbjjpRtPGAQzmWC7JkHm/DiZtq
-         awWg==
-X-Forwarded-Encrypted: i=1; AJvYcCXm7QVWZ8ieD/lLGc+nGVez6M01ZJMXVS++0nQM0qrYCZ8WFZFGlbxe5l2JzuOuYMtU6km0b1/MaLFy7zOoB8HooURvRjq9E2JTEDSyUhEsYFV1Q+0bcl9TrkVyCPtnCPf3UP8HPLnYbX9rEYVKAYCcGJ+AQ2S486A3zuLCViqo
-X-Gm-Message-State: AOJu0YwxyZh88QfYu1c91LnmYPyWvtrOor9Jro39Bl8wQBOZGr1AAwcQ
-	uCaV4Y/3rXz8QAJg7vjfi/2NIgeqP9y5f1Y52p7nZdZaVTK6HXiLgX6cLhzrPraeICLQZ1Oqu2Z
-	aqW5U4gdPeF50azeUHWwH0ONQNew=
-X-Google-Smtp-Source: AGHT+IEuu0QwsdejhKfPShJWJoz+ec41/6FyOZ32R9rp5sOVmGlXuGGSg68xJZLuEm99D/3jKPARtKqtkdMXQmY2yuY=
-X-Received: by 2002:a17:903:234a:b0:1f9:b35f:65dc with SMTP id
- d9443c01a7336-1fa0d832226mr33410285ad.6.1719117561784; Sat, 22 Jun 2024
- 21:39:21 -0700 (PDT)
+	s=arc-20240116; t=1719132703; c=relaxed/simple;
+	bh=/MbTc5IrzQ+vqZwxbntKS8rLbbH4xOE6FLZfVgj6O04=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=uAR9QldAN9hhTg8nPcIn1QF2nLyXjV51DZFxdPVxwqOvitx+hr+R2jxCDMqGAgzzQaihokmHH+DpLNlsRyCqJKxlwLsYq620YOKn3eodb4F63w3WW90wDiZREVAb6rhVYCSlOQJAvaU/vb4ZFB5xr7JCF+rhdcsyC6iVWc2FlSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev; spf=pass smtp.mailfrom=oltmanns.dev; dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b=1/6wsBso; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oltmanns.dev
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4W6Pp3012bz9sdT;
+	Sun, 23 Jun 2024 10:46:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oltmanns.dev;
+	s=MBO0001; t=1719132379;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wt2mGoI760pT5VMOq6V2aEAJ75svBaYqL2cmxLmHat0=;
+	b=1/6wsBsoXw9MhiP3LTPhgn32X0RW4xqZ9NqZokA5hIumFYs2RdRWYfn4JrHiYJtWbynzba
+	BPjY4Doiovu9UYj5FP3y9PmNRsY5fhj47WWxxd16cV3zUpTF5fIMgUSGKonigbTUVNp6m6
+	flrYpSdFVk5lIwiDBwrdp4KWREIxqvfzbaTlyF7orI0CAZqIwM4LLlF8vYuZ77O3xZKGc6
+	aCbkekiPPpJNOfOHjhUAUOoImcWyit5LJ/RABgAahjppnSsd8bJVP2EqVA3QWX8zGVIrhK
+	7pA7RpuD7XCfoAoE58FpswNWhr2iHH7cgpzHd9vFl0THchWOwQIMQ89AP0Rqcw==
+From: Frank Oltmanns <frank@oltmanns.dev>
+Date: Sun, 23 Jun 2024 10:45:58 +0200
+Subject: [PATCH] clk: sunxi-ng: common: Don't call hw_to_ccu_common on hw
+ without common
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240619054808.12861-1-ki.chiang65@gmail.com> <2024061903-shadow-pesky-1205@gregkh>
-In-Reply-To: <2024061903-shadow-pesky-1205@gregkh>
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
-Date: Sun, 23 Jun 2024 12:39:10 +0800
-Message-ID: <CAHN5xi2qy666O_SBkGb2SadRyPFPaxsk5HFH01bgSZTy05R6Sw@mail.gmail.com>
-Subject: Re: [PATCH v2] xhci: Don't issue Reset Device command to Etron xHCI host
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: mathias.nyman@intel.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240623-sunxi-ng_fix_common_probe-v1-1-7c97e32824a1@oltmanns.dev>
+X-B4-Tracking: v=1; b=H4sIAMXgd2YC/x2MWwqAIBAArxL7nWD2MLpKhJSttR+toRRCdPekz
+ 4GZeSBiIIwwFA8EvCmS5wxVWYDdZ95Q0JoZlFSN7JQS8eJEgjfjKBnrj8OzOYNfULSd1rbGptf
+ OQu7PgNn53+P0vh9hoB8SawAAAA==
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, Maxime Ripard <mripard@kernel.org>
+Cc: =?utf-8?q?M=C3=A5ns_Rullg=C3=A5rd?= <mans@mansr.com>, 
+ linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ "Robert J. Pafford" <pafford.9@buckeyemail.osu.edu>, stable@vger.kernel.org, 
+ Frank Oltmanns <frank@oltmanns.dev>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2817; i=frank@oltmanns.dev;
+ h=from:subject:message-id; bh=/MbTc5IrzQ+vqZwxbntKS8rLbbH4xOE6FLZfVgj6O04=;
+ b=owEB7QES/pANAwAIAZppogiUStPHAcsmYgBmd+DXrOE3LcA6aYi57bl6p32pUr0kuFo+nsrWf
+ /LS/2jw7RmJAbMEAAEIAB0WIQQC/SV7f5DmuaVET5aaaaIIlErTxwUCZnfg1wAKCRCaaaIIlErT
+ x0GVC/4vLLhNxs05792lSZo5ox+4SDMVmuSHieQ5Me/oS7yC6CJMsBXkm8fFJSJk1YtNkC7QQve
+ 2ykhrFUbI7IrbBwDrNQFaLFjDJt2YlsSDvpY2AQQyiJa4jx2g59N6gpjV3hgSveyijb3vb+DcA7
+ kOgB/Zddcp56czKp4TXsHa0nSQ+2DwQn4Cpe8Ss6cwJxWrKgzWN8duGS38t7NV5i8MiInW/ELmB
+ lo4kvF5oAAPW75eCP2DY9P3mcdnPZWDBTmFvhkL0S44HuhL/mUAwtlUdDfF9hleI/m3TIyn7y8b
+ 9USZYyJmsKGLuYf88CoCnIM+R4npW1DwWESH5lN3JS9d03lz0Md/r0YCTJOZx/6651cYaqGwVJY
+ lM4i4GtcKV7o6La5+Sb9EGzffxE+HRnXLeeoi3eSrIbAIFdPHCFlAnv0XWHF0CIMGW7BY9h4nlo
+ rdgetJ1y4ZZlBhdcQnzMOXjTuyBr4KGWPDj+7yNqwtmdDux43bQl90/vQ113xxsIhFkcw=
+X-Developer-Key: i=frank@oltmanns.dev; a=openpgp;
+ fpr=02FD257B7F90E6B9A5444F969A69A208944AD3C7
 
-Hi Greg,
+In order to set the rate range of a hw sunxi_ccu_probe calls
+hw_to_ccu_common() assuming all entries in desc->ccu_clks are contained
+in a ccu_common struct. This assumption is incorrect and, in
+consequence, causes invalid pointer de-references.
 
-Greg KH <gregkh@linuxfoundation.org> =E6=96=BC 2024=E5=B9=B46=E6=9C=8819=E6=
-=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=882:15=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Wed, Jun 19, 2024 at 01:48:08PM +0800, Kuangyi Chiang wrote:
-> > Sometimes the hub driver does not recognize the USB device connected
-> > to the external USB2.0 hub when the system resumes from S4.
-> >
-> > This happens when the xHCI driver issue the Reset Device command to
-> > inform the Etron xHCI host that the USB device has been reset.
-> >
-> > Seems that the Etron xHCI host can not perform this command correctly,
-> > affecting the USB device.
-> >
-> > Instead, to avoid this, disabling slot ID and then enabling slot ID
-> > is a workable solution to replace the Reset Device command.
-> >
-> > An easy way to issue these commands in sequence is to call
-> > xhci_free_dev() and then xhci_alloc_dev().
-> >
-> > Applying this patch then the issue is gone.
-> >
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
->
-> What commit id does this fix?
+Remove the faulty call. Instead, add one more loop that iterates over
+the ccu_clks and sets the rate range, if required.
 
-Fixes: 2a8f82c4ceaf ("USB: xhci: Notify the xHC when a device is reset.")
+Fixes: b914ec33b391 ("clk: sunxi-ng: common: Support minimum and maximum rate")
+Reported-by: Robert J. Pafford <pafford.9@buckeyemail.osu.edu>
+Closes: https://lore.kernel.org/lkml/DM6PR01MB58047C810DDD5D0AE397CADFF7C22@DM6PR01MB5804.prod.exchangelabs.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+---
+Robert, could you please test if this fixes the issue you reported.
 
-However, this patch is a workaround for Etron xHCI hosts, should I add this
-in the commit message?
-
->
-> > ---
-> > Changes in v2:
-> > - Change commit log
-> > - Add a comment for the workaround
-> > - Revert "global xhci_free_dev()"
-> > - Remove XHCI_ETRON_HOST quirk bit
-> >
-> >  drivers/usb/host/xhci.c | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> >
-> > diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-> > index 37eb37b0affa..c892750a89c5 100644
-> > --- a/drivers/usb/host/xhci.c
-> > +++ b/drivers/usb/host/xhci.c
-> > @@ -3682,6 +3682,8 @@ void xhci_free_device_endpoint_resources(struct x=
-hci_hcd *xhci,
-> >                               xhci->num_active_eps);
-> >  }
-> >
-> > +static void xhci_free_dev(struct usb_hcd *hcd, struct usb_device *udev=
-);
-> > +
-> >  /*
-> >   * This submits a Reset Device Command, which will set the device stat=
-e to 0,
-> >   * set the device address to 0, and disable all the endpoints except t=
-he default
-> > @@ -3752,6 +3754,20 @@ static int xhci_discover_or_reset_device(struct =
-usb_hcd *hcd,
-> >                                               SLOT_STATE_DISABLED)
-> >               return 0;
-> >
-> > +     if (dev_is_pci(hcd->self.controller) &&
-> > +             to_pci_dev(hcd->self.controller)->vendor =3D=3D 0x1b6f) {
->
-> Odd indentation :(
-
-Oops, one tab is missing, right? I will modify it.
-
->
-> Also, that's a specific value, shouldn't it be in a #define somewhere?
-
-OK, I will add a #define near xhci_discover_or_reset_device() in the same f=
-ile.
-
->
-> > +             /*
-> > +              * Disabling and then enabling device slot ID to inform x=
-HCI
-> > +              * host that the USB device has been reset.
-> > +              */
-> > +             xhci_free_dev(hcd, udev);
-> > +             ret =3D xhci_alloc_dev(hcd, udev);
->
-> You are relying on the behavior of free/alloc here to disable/enable the
-> slot id, why not just do that instead?  What happens if the free/alloc
-> call stops doing that?  This feels very fragile to me.
->
-
-These functions are helpers that can be used to enable/disable the slot id
-and allocate/free associated data structures, I think they should be
-called, right?
-
-Or you would like to call xhci_disable_slot() + xhci_alloc_dev(), as in com=
-mit
-651aaf36a7d7 ("usb: xhci: Handle USB transaction error on address command")=
-.
-
-If so, I will modify it and resend this patch.
-
-> > +             if (ret =3D=3D 1)
-> > +                     return 0;
-> > +             else
-> > +                     return -EINVAL;
->
-> Why -EINVAL?  What value was wrong?
-
-I followed commit f0615c45ce5f ("USB: xHCI: change xhci_reset_device()
-to allocate new device") to return -EINVAL, I think it means running out of
-device slots.
-
->
-> thanks,
->
-> greg k-h
+I'm CC'ing Måns here, because he observed some strange behavior [1] with
+the original patch. Is it possible for you to look into if this patch
+fixes your issue without the need for the following (seemingly
+unrelated) patches:
+      cedb7dd193f6 "drm/sun4i: hdmi: Convert encoder to atomic"
+      9ca6bc246035 "drm/sun4i: hdmi: Move mode_set into enable"
 
 Thanks,
-Kuangyi Chiang
+  Frank
+
+[1]: https://lore.kernel.org/lkml/yw1xo78z8ez0.fsf@mansr.com/
+---
+ drivers/clk/sunxi-ng/ccu_common.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/clk/sunxi-ng/ccu_common.c b/drivers/clk/sunxi-ng/ccu_common.c
+index ac0091b4ce24..be375ce0149c 100644
+--- a/drivers/clk/sunxi-ng/ccu_common.c
++++ b/drivers/clk/sunxi-ng/ccu_common.c
+@@ -132,7 +132,6 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu, struct device *dev,
+ 
+ 	for (i = 0; i < desc->hw_clks->num ; i++) {
+ 		struct clk_hw *hw = desc->hw_clks->hws[i];
+-		struct ccu_common *common = hw_to_ccu_common(hw);
+ 		const char *name;
+ 
+ 		if (!hw)
+@@ -147,14 +146,21 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu, struct device *dev,
+ 			pr_err("Couldn't register clock %d - %s\n", i, name);
+ 			goto err_clk_unreg;
+ 		}
++	}
++
++	for (i = 0; i < desc->num_ccu_clks; i++) {
++		struct ccu_common *cclk = desc->ccu_clks[i];
++
++		if (!cclk)
++			continue;
+ 
+-		if (common->max_rate)
+-			clk_hw_set_rate_range(hw, common->min_rate,
+-					      common->max_rate);
++		if (cclk->max_rate)
++			clk_hw_set_rate_range(&cclk->hw, cclk->min_rate,
++					      cclk->max_rate);
+ 		else
+-			WARN(common->min_rate,
++			WARN(cclk->min_rate,
+ 			     "No max_rate, ignoring min_rate of clock %d - %s\n",
+-			     i, name);
++			     i, clk_hw_get_name(&cclk->hw));
+ 	}
+ 
+ 	ret = of_clk_add_hw_provider(node, of_clk_hw_onecell_get,
+
+---
+base-commit: 2607133196c35f31892ee199ce7ffa717bea4ad1
+change-id: 20240622-sunxi-ng_fix_common_probe-5677c3e487fc
+
+Best regards,
+-- 
+Frank Oltmanns <frank@oltmanns.dev>
+
 
