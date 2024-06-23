@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-54886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7137E913941
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 11:33:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A10913943
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 11:33:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CC6D1F21F2F
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 09:33:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BB3E1C20C98
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 09:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94DE412F5A0;
-	Sun, 23 Jun 2024 09:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E1A12FF73;
+	Sun, 23 Jun 2024 09:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h9xdMbrj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hY8P5ew4"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9952912E1CE;
-	Sun, 23 Jun 2024 09:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03D612FB0B;
+	Sun, 23 Jun 2024 09:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719135166; cv=none; b=OnH2OeCnavjgs7/9/1s/0oXTXHleSC2nWE673EUo/duoGgQeHA5METBfug9B+CQRbxqGMeFxbwlDirKJsxI9OvW7DGfs0eZ8PIfJpgBwx4ATSgyUtDobfWaWNtv/kfqs8C2s6xHx5f6YYOZVOukghHFkw/JPi99HUI7yrTxw8m8=
+	t=1719135169; cv=none; b=BI+I32e6uPQrRMjuHsRyEPAdwTTJaan/CG5dlHhydZWM2why/sfqeqfb0L/i60DqhGHItIx4dKnxHJ87qlopL0l5VSc0PO+6sLL4yqDUdr4PyXKR3iO0t13utyN5nv+prPX/hjGnUPwSI/JLYhK06O8v3cGi/oxSFnW47vQuJqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719135166; c=relaxed/simple;
-	bh=JM1sD9QP4RyHSPhRqlUabkVUXwe0DuYqN6xM1zvvobw=;
+	s=arc-20240116; t=1719135169; c=relaxed/simple;
+	bh=qTMPWsu7YkfJAzlZHprziJZbdGJsTuC7Lk0WAHlkJxc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k4HrI6yKZI1KDml9jkqIhQEzVhB/YEAnmFSCV0Aoy1w/GYeM9wR6gPAVfd3C0gN7Cb0p2V0YOesCt+mC0HOJiU+NoFbx3eqnt7aaLnIj6bdF3LR1Pn8+vCaCvz/BM8eeZ9FdyU36CRMxCBrqxiC+3KfuipkNufFfXkU0wC+nYSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h9xdMbrj; arc=none smtp.client-ip=198.175.65.21
+	 MIME-Version; b=kpWpWdqYXXBwfLc71AHdz7BJfN1uxRlcs/sS1M5qSsCCxlEQIgtAtuIN74r7RuFwHczl7yOENkp682i8yHpBm37OmWVlMsgY5sP8xvcNNdcEdsOOEH2AxsA5xooD2H9kMHoTmwWfhirWlOmY6+rO0MGERPeqzR7bR5yqlyjiKQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hY8P5ew4; arc=none smtp.client-ip=198.175.65.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719135164; x=1750671164;
+  t=1719135167; x=1750671167;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=JM1sD9QP4RyHSPhRqlUabkVUXwe0DuYqN6xM1zvvobw=;
-  b=h9xdMbrjV2k3RJx/2j8wlokYqibL1JMJfGLt0z0U7kDxUHMvGTQ0VKxI
-   a9iesIwT6GEzldDo/dQonx6rdg/zFj98IN/og6IQSp8PLPIMQ7hI8zNJ7
-   sUY08yctto1X/R83IsjDBtK6NhJpStXYB6tsneSLMWC+XqbfLJtU+pan0
-   Bddkj7SzOeDcVMN8aYS11JXkfUDm6Yy/9lHKgeN88ECKzfOoCSBBoXEbg
-   r4q8HwnzkQqIaLFgVqk9JNiRLgf5p4zNZLN29HkCeJOy/poGMmDDH1iUK
-   UYKzZSByqz+sNquXhh7ET3lloamIsc/NXPZrbutPXGNDEwPN/1JRtOA0V
-   w==;
-X-CSE-ConnectionGUID: FqoXEs9gS2utdn/Ndwmktg==
-X-CSE-MsgGUID: tFaomdIiRnytyI+oQ4UuSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11111"; a="16089098"
+  bh=qTMPWsu7YkfJAzlZHprziJZbdGJsTuC7Lk0WAHlkJxc=;
+  b=hY8P5ew4ricWVO0nOlGmq7U0/jPtCRiMu6LmwNcJuWntiYxeOiZOmzME
+   ySdLdnC0RIEbrDpRzSiAHJHpqbLL9ijCOg8e8uLONwxT9X/GHYhSavNiW
+   K9Qcx6hJh2KdeVGDqhOMc5Ym1Ap7PCNhiZN6MsOAtpvefC74pq0zrERPC
+   RZcYRCa8YAA3xpZCHZqYrcxqWi51WcUA9zJAS5qQyMNPl8sIukPjLgppm
+   X3d0q+jTZJyvQgMkrOLSF5ymEi3fyq7J76qU96Z6glbHNimhaElfHt4cw
+   BHK+tnJpdPcDAjSYpsftPs1aRLd/DjHRjLY13VXl8RItPnbdEmjnWN5t0
+   A==;
+X-CSE-ConnectionGUID: 9cQ7nr0iRMOARSd9cZoimQ==
+X-CSE-MsgGUID: 95p+SxW6RfmIYSACAitdPw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11111"; a="16089102"
 X-IronPort-AV: E=Sophos;i="6.08,259,1712646000"; 
-   d="scan'208";a="16089098"
+   d="scan'208";a="16089102"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 02:32:44 -0700
-X-CSE-ConnectionGUID: wCZye3qESUy0kwHa2b+nxQ==
-X-CSE-MsgGUID: SUUb/IcfTy6jTTz8eKuVFQ==
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 02:32:47 -0700
+X-CSE-ConnectionGUID: 4iRWJGYiQKuYIlgF3Orcag==
+X-CSE-MsgGUID: 7Nl+VDi5Sy63vc3skNEwow==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,259,1712646000"; 
-   d="scan'208";a="73761754"
+   d="scan'208";a="73761761"
 Received: from wentongw-optiplex-7000.sh.intel.com ([10.239.154.127])
-  by orviesa002.jf.intel.com with ESMTP; 23 Jun 2024 02:32:43 -0700
+  by orviesa002.jf.intel.com with ESMTP; 23 Jun 2024 02:32:46 -0700
 From: Wentong Wu <wentong.wu@intel.com>
 To: sakari.ailus@linux.intel.com,
 	tomas.winkler@intel.com,
@@ -66,9 +66,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Wentong Wu <wentong.wu@intel.com>,
 	stable@vger.kernel.org,
 	Jason Chen <jason.z.chen@intel.com>
-Subject: [PATCH 5/6] mei: vsc: Prevent timeout error with added delay post-firmware download
-Date: Sun, 23 Jun 2024 17:30:55 +0800
-Message-Id: <20240623093056.4169438-6-wentong.wu@intel.com>
+Subject: [PATCH 6/6] mei: vsc: Fix spelling error
+Date: Sun, 23 Jun 2024 17:30:56 +0800
+Message-Id: <20240623093056.4169438-7-wentong.wu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240623093056.4169438-1-wentong.wu@intel.com>
 References: <20240623093056.4169438-1-wentong.wu@intel.com>
@@ -80,34 +80,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-After completing the firmware download, the firmware requires some
-time to become functional. This change introduces additional sleep
-time before the first read operation to prevent a confusing timeout
-error in vsc_tp_xfer().
+Fix a spelling error in a comment.
 
 Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
 Cc: stable@vger.kernel.org # for 6.8+
 Signed-off-by: Wentong Wu <wentong.wu@intel.com>
 Tested-by: Jason Chen <jason.z.chen@intel.com>
 ---
- drivers/misc/mei/platform-vsc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/mei/vsc-fw-loader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/mei/platform-vsc.c b/drivers/misc/mei/platform-vsc.c
-index 1ec65d87488a..d02f6e881139 100644
---- a/drivers/misc/mei/platform-vsc.c
-+++ b/drivers/misc/mei/platform-vsc.c
-@@ -28,8 +28,8 @@
+diff --git a/drivers/misc/mei/vsc-fw-loader.c b/drivers/misc/mei/vsc-fw-loader.c
+index 596a9d695dfc..084d0205f97d 100644
+--- a/drivers/misc/mei/vsc-fw-loader.c
++++ b/drivers/misc/mei/vsc-fw-loader.c
+@@ -204,7 +204,7 @@ struct vsc_img_frag {
  
- #define MEI_VSC_MAX_MSG_SIZE		512
- 
--#define MEI_VSC_POLL_DELAY_US		(50 * USEC_PER_MSEC)
--#define MEI_VSC_POLL_TIMEOUT_US		(200 * USEC_PER_MSEC)
-+#define MEI_VSC_POLL_DELAY_US		(100 * USEC_PER_MSEC)
-+#define MEI_VSC_POLL_TIMEOUT_US		(400 * USEC_PER_MSEC)
- 
- #define mei_dev_to_vsc_hw(dev)		((struct mei_vsc_hw *)((dev)->hw))
- 
+ /**
+  * struct vsc_fw_loader - represent vsc firmware loader
+- * @dev: device used to request fimware
++ * @dev: device used to request firmware
+  * @tp: transport layer used with the firmware loader
+  * @csi: CSI image
+  * @ace: ACE image
 -- 
 2.34.1
 
