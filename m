@@ -1,145 +1,119 @@
-Return-Path: <stable+bounces-54956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8340F913D06
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 19:10:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DF3913D44
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 19:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABF621C22073
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 17:10:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FDA32827C4
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 17:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1829F183097;
-	Sun, 23 Jun 2024 17:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CF71836C0;
+	Sun, 23 Jun 2024 17:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SHcWkbRT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mQaWJ7dP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9549F183082;
-	Sun, 23 Jun 2024 17:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B721F183099;
+	Sun, 23 Jun 2024 17:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719162640; cv=none; b=KJZQqP/BhlVu6ZhCAgMZdmQuoDwd2SfyD2NwEDwfyGqJbOIoFEH3iZ40SRa8XDlTWKX1p0FFYVZhImbiX9lfwoQHQrwbHLEgo5CLP/LOHO/QUddYNWoi/9/AgYVWcCEypQ/jC1ob/bdm4sDKft/OxTrQxp60vols2R3TlWmKBVQ=
+	t=1719163659; cv=none; b=dMDycHlskGydjca5LkRusx0qbps2QKbLKOsERmHcAlW6rI7Z/n0f8u5CgnCHY8G5AM9swRFBBzmo7tmfFoUFnK+/htJlhevvZSrSq/QVems1hQ8+esXzxEJaIhebcLFDbrVP0Z0BSlJK1qcLgS2RKx9k1t3tmpwlR9EFqNE6zY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719162640; c=relaxed/simple;
-	bh=aosSO/S+etUamgM4SS3mlQ3heoMUr6FZbeXpiXEovy0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OtiE5Nt0nFcnQljGlPPSqKqqVt9Ta7s/HUCXkDn/V4bo76YLtVeH6GBdyEVZJqf7Z1z+LNIJhaDnH4Do1ogb1FPxyQ0BjymFDIYH7Sb0oKfTNnGO8Tf5dwGG+I57rGIXar6MKGvALPUhXBRLlaDGp8bc+5gU+L9J+U8pc0kBr2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SHcWkbRT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1215EC4AF19;
-	Sun, 23 Jun 2024 17:10:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719162640;
-	bh=aosSO/S+etUamgM4SS3mlQ3heoMUr6FZbeXpiXEovy0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SHcWkbRTRysffowmKeNtbvp9bhDl+zoDvjEJ2fFDHg7LSDrwqFsJdD9YYXV4Vr+sp
-	 2E8pAnecGBkfcW3fYWlLjSsfPlPKcXnQ8nJbcMvEmYSYZS0YcgH+rt/qDOrTB8Gvu+
-	 agZuIo6AmTpr2D4xK4pBnUswovpS9ueZT7VqTzkz0VoNehsJKjKIbT7Hxbmzrk7px2
-	 nKkeeohgJbLaTj1UD/4bc2iBlfTD7iIkm5ON/CNdK03bV+FGcWIvguDXvdHM+5cgLf
-	 OB8EHfsL2MFz6vrCmyH5CregCIOmWkoz7MbvmFg/cF39yMwxMHUAlyiXqW1imSaGS0
-	 Nv1EJ4Jnnv/6A==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2eaafda3b5cso38463451fa.3;
-        Sun, 23 Jun 2024 10:10:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUABcrWO+546WA1uq/7iZtUfrtI/F8b3SCqjuQoTkdlv00T6gIbcBPtNW860k9lZCksUyptHLTKTPx5Ry9PlTGpYgXaz8Q6Pc8d4ViFGEGXd00NSe5SY080a7But/HVjU/K/XbEm4TcqPYSyFraOEjoGPQnCETFMgAS8syfAd1KuhZHOKsCiFbYygqoLXuKzE0YDjH0BIZok7JLuYRNtKYh1cDqEbYIg0zMOffnXEuL8oCsRUB5E9Aoo2HxJXIHkOHykqq+OmC0s6JxPGesMrTN0oAr467I+B4OJgef7fy8pVehj7mUnWwR71Jgmti7yYhFuLBR83jIcWn74u8BqTaD9Qr7CrC/Q+W7WixgrxRhm5Oym2OJ533GrvLiArZ7iNUNPgi8XL/4e/YCewaZ1V2EWkcIdpt+F9D7lLyZ6/aZYhBr5cMOLgMJ5d0=
-X-Gm-Message-State: AOJu0YwlgS3fibMxZXsahhE6nqg8Txd2oqTFnvZr/y0iSDTRuMZIOiFl
-	AzkjI2K/klNnQ5tYVDglow4ULt7DWn7CPfw2aHP8VAbsQZFzWYqAIK/Jh76DQE+I6ik18Zmwi9B
-	sWDR9R06h9ucP+I2mFYh3Nt8ApuI=
-X-Google-Smtp-Source: AGHT+IHxMABTsjE/bTBoMOuJE1ctF+u0ZebsEtw1bh3nJ1bb3woGpWj5W/Pz1qQmYslYoKzzGRd0eu1pNlr+yN6Ofzo=
-X-Received: by 2002:a2e:3101:0:b0:2ec:1cf1:b74c with SMTP id
- 38308e7fff4ca-2ec594cfe8fmr16740431fa.32.1719162638077; Sun, 23 Jun 2024
- 10:10:38 -0700 (PDT)
+	s=arc-20240116; t=1719163659; c=relaxed/simple;
+	bh=bHjJ/UFsisAATvMmZ8nO02PbyPzunLK80yjWDJJZiLI=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=o1ZSGa0I5fy8/DEzqulYVUhxQQBAQugz/lWd8UzDO+vZJ5NPt3YdRu7hKBK626kCG3Q78+m8Rodcy4Cec1JQe1Bd7tnYRmvI2ljCrmIHT35DtZpTe5+wf1d+7UBs2SpA7Sz1zvNn4MrKle/tCWaKsaEuf8QLgXnxx7v+N/4bTl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mQaWJ7dP; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719163657; x=1750699657;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=bHjJ/UFsisAATvMmZ8nO02PbyPzunLK80yjWDJJZiLI=;
+  b=mQaWJ7dPvH1LBbcSXIG/uPjQ4XgOuzEvu5hez1EMGiw4dlGFPuyiv1uG
+   uC8AJDR9lJMpccLk+4znxKmWkSeL55iBSwhoW93Alfh9UdKTn7BWZFOb/
+   SyygUdDEJPQl5ZkEfG1diWFICreQEklzG824/iCqmQ+U1FronBBQt58//
+   kUjXnNR6QT0W3lRsR6EGsDyYq+DVTN+dab6XSQOimHvwFJcJLaON83tys
+   jsIkfj3IW0Y5NIWZsqFsxQ4YRmLpZPzWqCUtHQxDhAKFkT22H5ftReD+0
+   o4Eq7B73n1BplGRowsGxC7vX+nSps5n8kNvly72gBSXV1mQihIOmlF66S
+   A==;
+X-CSE-ConnectionGUID: /WeivNjXS/aK6UpCrNh3jA==
+X-CSE-MsgGUID: 5cl1ttLMSVmNeSjYq1ZPGQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="16272107"
+X-IronPort-AV: E=Sophos;i="6.08,260,1712646000"; 
+   d="scan'208";a="16272107"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 10:27:37 -0700
+X-CSE-ConnectionGUID: fO0s43NfSPaJr9J3H+jq9w==
+X-CSE-MsgGUID: 63eV8MN6Tgi2Z6y1hfIH4A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,260,1712646000"; 
+   d="scan'208";a="43192063"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.247.55])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 10:27:32 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Sun, 23 Jun 2024 20:27:29 +0300 (EEST)
+To: Borislav Petkov <bp@alien8.de>
+cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+    Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+    "H. Peter Anvin" <hpa@zytor.com>, Grant Likely <grant.likely@secretlab.ca>, 
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/4] x86/of: Return consistent error type from
+ x86_of_pci_irq_enable()
+In-Reply-To: <20240621141507.GHZnWK6-r6XEH2a9CR@fat_crate.local>
+Message-ID: <ba1d6bba-847a-f249-72f0-0fd2a0a461eb@linux.intel.com>
+References: <20240527125538.13620-1-ilpo.jarvinen@linux.intel.com> <20240621141507.GHZnWK6-r6XEH2a9CR@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240620162316.3674955-1-arnd@kernel.org> <20240620162316.3674955-11-arnd@kernel.org>
-In-Reply-To: <20240620162316.3674955-11-arnd@kernel.org>
-From: Guo Ren <guoren@kernel.org>
-Date: Mon, 24 Jun 2024 01:10:25 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTS9xKLSbSN2Scs016Boxzr6TdNxVLr2TYEfbJ0KqSgppw@mail.gmail.com>
-Message-ID: <CAJF2gTS9xKLSbSN2Scs016Boxzr6TdNxVLr2TYEfbJ0KqSgppw@mail.gmail.com>
-Subject: Re: [PATCH 10/15] csky, hexagon: fix broken sys_sync_file_range
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Arnd Bergmann <arnd@arndb.de>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, 
-	Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, sparclinux@vger.kernel.org, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>, 
-	linuxppc-dev@lists.ozlabs.org, Brian Cain <bcain@quicinc.com>, 
-	linux-hexagon@vger.kernel.org, linux-csky@vger.kernel.org, 
-	Heiko Carstens <hca@linux.ibm.com>, linux-s390@vger.kernel.org, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, linux-sh@vger.kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	libc-alpha@sourceware.org, musl@lists.openwall.com, ltp@lists.linux.it, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/mixed; boundary="8323328-216487811-1719163649=:1423"
 
-On Fri, Jun 21, 2024 at 12:24=E2=80=AFAM Arnd Bergmann <arnd@kernel.org> wr=
-ote:
->
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> Both of these architectures require u64 function arguments to be
-> passed in even/odd pairs of registers or stack slots, which in case of
-> sync_file_range would result in a seven-argument system call that is
-> not currently possible. The system call is therefore incompatible with
-> all existing binaries.
->
-> While it would be possible to implement support for seven arguments
-> like on mips, it seems better to use a six-argument version, either
-> with the normal argument order but misaligned as on most architectures
-> or with the reordered sync_file_range2() calling conventions as on
-> arm and powerpc.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/csky/include/uapi/asm/unistd.h    | 1 +
->  arch/hexagon/include/uapi/asm/unistd.h | 1 +
->  2 files changed, 2 insertions(+)
->
-> diff --git a/arch/csky/include/uapi/asm/unistd.h b/arch/csky/include/uapi=
-/asm/unistd.h
-> index 7ff6a2466af1..e0594b6370a6 100644
-> --- a/arch/csky/include/uapi/asm/unistd.h
-> +++ b/arch/csky/include/uapi/asm/unistd.h
-> @@ -6,6 +6,7 @@
->  #define __ARCH_WANT_SYS_CLONE3
->  #define __ARCH_WANT_SET_GET_RLIMIT
->  #define __ARCH_WANT_TIME32_SYSCALLS
-> +#define __ARCH_WANT_SYNC_FILE_RANGE2
-For csky part.
-Acked-by: Guo Ren <guoren@kernel.org>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
->  #include <asm-generic/unistd.h>
->
->  #define __NR_set_thread_area   (__NR_arch_specific_syscall + 0)
-> diff --git a/arch/hexagon/include/uapi/asm/unistd.h b/arch/hexagon/includ=
-e/uapi/asm/unistd.h
-> index 432c4db1b623..21ae22306b5d 100644
-> --- a/arch/hexagon/include/uapi/asm/unistd.h
-> +++ b/arch/hexagon/include/uapi/asm/unistd.h
-> @@ -36,5 +36,6 @@
->  #define __ARCH_WANT_SYS_VFORK
->  #define __ARCH_WANT_SYS_FORK
->  #define __ARCH_WANT_TIME32_SYSCALLS
-> +#define __ARCH_WANT_SYNC_FILE_RANGE2
->
->  #include <asm-generic/unistd.h>
-> --
-> 2.39.2
->
+--8323328-216487811-1719163649=:1423
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
+On Fri, 21 Jun 2024, Borislav Petkov wrote:
+
+> On Mon, May 27, 2024 at 03:55:35PM +0300, Ilpo J=C3=A4rvinen wrote:
+> > x86_of_pci_irq_enable() returns PCIBIOS_* code received from
+> > pci_read_config_byte() directly and also -EINVAL which are not
+> > compatible error types. x86_of_pci_irq_enable() is used as
+> > (*pcibios_enable_irq) function which should not return PCIBIOS_* codes.
+> >=20
+> > Convert the PCIBIOS_* return code from pci_read_config_byte() into
+> > normal errno using pcibios_err_to_errno().
+> >=20
+> > Fixes: 96e0a0797eba ("x86: dtb: Add support for PCI devices backed by d=
+tb nodes")
+> > Signed-off-by: Ilpo J=C3=A4rvinen <ilpo.jarvinen@linux.intel.com>
+> > Cc: stable@vger.kernel.org
+>=20
+> Any particular reason why this is CC:stable?
+>=20
+> I'd say unless you're fixing a specific failure, this should go the norma=
+l
+> route to 6.11...
+
+It can go the normal route. And feel free to drop Cc stable too but I=20
+don't think it matters much as stable folks will autoselect things=20
+regardless of cc being there or not.
 
 --=20
-Best Regards
- Guo Ren
+ i.
+
+--8323328-216487811-1719163649=:1423--
 
