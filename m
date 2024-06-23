@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-54913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A21913B1C
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:49:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E767913B21
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06EB91F2106B
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:49:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2814B2140D
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DF218A943;
-	Sun, 23 Jun 2024 13:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1625218C35D;
+	Sun, 23 Jun 2024 13:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y08whOsm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u1qb005i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC42181D0E;
-	Sun, 23 Jun 2024 13:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2FA18C335;
+	Sun, 23 Jun 2024 13:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719150282; cv=none; b=AHHu9OAwuQt/32I+n6/p0qxPG/ptUrrbdF5wQfvVMIaM73ByI3Ejm+41mlzNqRm1zrm13u8S2abgQd254sr/pFzbhEW0QkNhEF4qGBUTyqDIXW6PoAPOg8SoeT5hTbZgNEXoO/wx2bybSCUtMmlpLixsNrCsHbICijKBjJK/Ty0=
+	t=1719150283; cv=none; b=HYLdnW+bMwfK6VfhbAYCXKd+Ob2W9i5HXgyz/iOgTDhE64ByMtWwjQYemxxNJIpDnAihchDCXhLyUZYvCKKCisHmcuI7eDrOadmO9ktueUbB+RR46I3GRy7EmLCbeHz8KY99c96KMqoBjOq2PSm5FNAyUHGi8Ve+B3ua811ChMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719150282; c=relaxed/simple;
-	bh=FhkXUSWTBbbwG5f8YbvesGJIvquKOnAw8mEO1OeSpzg=;
+	s=arc-20240116; t=1719150283; c=relaxed/simple;
+	bh=TIqYV/DnQm52v3SsiEvply4u33fseIDKi2tfoRZaOQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J8gtIe06WLEhBB9fBCCwGE/tGi9l62srE3ZXYsKrG6Xuv/gE9PngTHCFH9jdXr4fMsbma4siMhKtRAUYiK0dmpQAc4Sm2SaNnBS4+3mT2sz+4FZbYEWnhmOp+S7XNuHIOVLV3aiCNc8uPEh1DGXD6cpC9Sk5suciPpScUe1KsMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y08whOsm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68E8C32781;
-	Sun, 23 Jun 2024 13:44:40 +0000 (UTC)
+	 MIME-Version; b=WWLDhpjqg2ZnvZSTENXLTsGY1mFLBXDAq4L1OncOrOsFfWxNvS/KEthblYWid5e+VuermEIryWNefPwvx5vJJCVlJeESrqvsQSEnhMCcs2QtsCP2sAuzIJRtrYALrNM28P/z/H7gVoUfRR6xBFQoI5U7K6ecAb2PRh7ba8Xc+gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u1qb005i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84255C4AF07;
+	Sun, 23 Jun 2024 13:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719150282;
-	bh=FhkXUSWTBbbwG5f8YbvesGJIvquKOnAw8mEO1OeSpzg=;
+	s=k20201202; t=1719150283;
+	bh=TIqYV/DnQm52v3SsiEvply4u33fseIDKi2tfoRZaOQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y08whOsmaYxNwV+IT+yvUjeGSie0RWMkje7zMLg54zt7FRxFxk5VbM6KGdUaIK7Vb
-	 wZD1Y0xfAIiPV8vjeTYEeUyQE5rrY5SpPFkNnCwP+7aV//qcoKa5S7Yji3evHrWu1D
-	 2oSsMXeeAmGrdpdxYiPOYrX8TwPGZEEPS/6fDJcoXpqyypqy8jTmM5QhGBiSOiabzC
-	 UjZ3dqDcf3JXRyClq5kWAYTWY6qVtm9QvyNMzdCnQuFBo9oTKDjLIQSOc13ZnXcKnB
-	 XJobDNR5rwcNC6nVn1nuLX/Jgiisw6SZb52fYFPQS5kLZYGTP7vYTOw8VR9ze3m/Od
-	 fMiah0igDd0fQ==
+	b=u1qb005ijnbs6UgPT5vSDxr8BSLLsMEE68Yd8sQw0KiV+xrEBB2gYVwMc1WXLnwOI
+	 FAQKXWYT+DwiDoGGM0kRWaMHfZIdYyf0MX5CO1SnekcM1ND6x9j1f10RefcUUuMzZ4
+	 /WVYJ34MEXVq8HhLXt0ebK0ZzewXgaKYFRnI6aqSnUxZ/MTBTuCJk/seQZhe/FHsTB
+	 GUE0xyldhWcoYHKutiGtaugofpGu8iZjSrgKQRXhdRKMGcQNqbC7k+5dwOgoBuxyvz
+	 iJzdIPBvW0ukD4+DNjJxMUcyl8E6XN8OwMNOa/snFk/DG9qxssGOi/DucZc3CIpOJh
+	 TxQMZuaesQhLA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
-	Yan Zhao <yan.y.zhao@intel.com>,
+Cc: Cyril Hrubis <chrubis@suse.cz>,
+	Jan Kara <jack@suse.cz>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	jgg@ziepe.ca,
-	yi.l.liu@intel.com,
-	kevin.tian@intel.com,
-	eric.auger@redhat.com,
-	brauner@kernel.org,
-	ankita@nvidia.com,
-	stefanha@redhat.com,
-	kvm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 20/21] vfio/pci: Insert full vma on mmap'd MMIO fault
-Date: Sun, 23 Jun 2024 09:43:53 -0400
-Message-ID: <20240623134405.809025-20-sashal@kernel.org>
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.9 21/21] loop: Disable fallocate() zero and discard if not supported
+Date: Sun, 23 Jun 2024 09:43:54 -0400
+Message-ID: <20240623134405.809025-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240623134405.809025-1-sashal@kernel.org>
 References: <20240623134405.809025-1-sashal@kernel.org>
@@ -72,71 +67,94 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.9.6
 Content-Transfer-Encoding: 8bit
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Cyril Hrubis <chrubis@suse.cz>
 
-[ Upstream commit d71a989cf5d961989c273093cdff2550acdde314 ]
+[ Upstream commit 5f75e081ab5cbfbe7aca2112a802e69576ee9778 ]
 
-In order to improve performance of typical scenarios we can try to insert
-the entire vma on fault.  This accelerates typical cases, such as when
-the MMIO region is DMA mapped by QEMU.  The vfio_iommu_type1 driver will
-fault in the entire DMA mapped range through fixup_user_fault().
+If fallcate is implemented but zero and discard operations are not
+supported by the filesystem the backing file is on we continue to fill
+dmesg with errors from the blk_mq_end_request() since each time we call
+fallocate() on the loop device the EOPNOTSUPP error from lo_fallocate()
+ends up propagated into the block layer. In the end syscall succeeds
+since the blkdev_issue_zeroout() falls back to writing zeroes which
+makes the errors even more misleading and confusing.
 
-In synthetic testing, this improves the time required to walk a PCI BAR
-mapping from userspace by roughly 1/3rd.
+How to reproduce:
 
-This is likely an interim solution until vmf_insert_pfn_{pmd,pud}() gain
-support for pfnmaps.
+1. make sure /tmp is mounted as tmpfs
+2. dd if=/dev/zero of=/tmp/disk.img bs=1M count=100
+3. losetup /dev/loop0 /tmp/disk.img
+4. mkfs.ext2 /dev/loop0
+5. dmesg |tail
 
-Suggested-by: Yan Zhao <yan.y.zhao@intel.com>
-Link: https://lore.kernel.org/all/Zl6XdUkt%2FzMMGOLF@yzhao56-desk.sh.intel.com/
-Reviewed-by: Yan Zhao <yan.y.zhao@intel.com>
-Link: https://lore.kernel.org/r/20240607035213.2054226-1-alex.williamson@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+[710690.898214] operation not supported error, dev loop0, sector 204672 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
+[710690.898279] operation not supported error, dev loop0, sector 522 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
+[710690.898603] operation not supported error, dev loop0, sector 16906 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
+[710690.898917] operation not supported error, dev loop0, sector 32774 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
+[710690.899218] operation not supported error, dev loop0, sector 49674 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
+[710690.899484] operation not supported error, dev loop0, sector 65542 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
+[710690.899743] operation not supported error, dev loop0, sector 82442 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
+[710690.900015] operation not supported error, dev loop0, sector 98310 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
+[710690.900276] operation not supported error, dev loop0, sector 115210 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
+[710690.900546] operation not supported error, dev loop0, sector 131078 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
+
+This patch changes the lo_fallocate() to clear the flags for zero and
+discard operations if we get EOPNOTSUPP from the backing file fallocate
+callback, that way we at least stop spewing errors after the first
+unsuccessful try.
+
+CC: Jan Kara <jack@suse.cz>
+Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240613163817.22640-1-chrubis@suse.cz
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/block/loop.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 2baf4dfac3f43..9eaf10a8f134b 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -1639,6 +1639,7 @@ static vm_fault_t vfio_pci_mmap_fault(struct vm_fault *vmf)
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
- 	unsigned long pfn, pgoff = vmf->pgoff - vma->vm_pgoff;
-+	unsigned long addr = vma->vm_start;
- 	vm_fault_t ret = VM_FAULT_SIGBUS;
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 28a95fd366fea..95a468eaa7013 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -302,6 +302,21 @@ static int lo_read_simple(struct loop_device *lo, struct request *rq,
+ 	return 0;
+ }
  
- 	pfn = vma_to_pfn(vma);
-@@ -1646,11 +1647,25 @@ static vm_fault_t vfio_pci_mmap_fault(struct vm_fault *vmf)
- 	down_read(&vdev->memory_lock);
- 
- 	if (vdev->pm_runtime_engaged || !__vfio_pci_memory_enabled(vdev))
--		goto out_disabled;
-+		goto out_unlock;
- 
- 	ret = vmf_insert_pfn(vma, vmf->address, pfn + pgoff);
-+	if (ret & VM_FAULT_ERROR)
-+		goto out_unlock;
- 
--out_disabled:
-+	/*
-+	 * Pre-fault the remainder of the vma, abort further insertions and
-+	 * supress error if fault is encountered during pre-fault.
-+	 */
-+	for (; addr < vma->vm_end; addr += PAGE_SIZE, pfn++) {
-+		if (addr == vmf->address)
-+			continue;
++static void loop_clear_limits(struct loop_device *lo, int mode)
++{
++	struct queue_limits lim = queue_limits_start_update(lo->lo_queue);
 +
-+		if (vmf_insert_pfn(vma, addr, pfn) & VM_FAULT_ERROR)
-+			break;
++	if (mode & FALLOC_FL_ZERO_RANGE)
++		lim.max_write_zeroes_sectors = 0;
++
++	if (mode & FALLOC_FL_PUNCH_HOLE) {
++		lim.max_hw_discard_sectors = 0;
++		lim.discard_granularity = 0;
 +	}
 +
-+out_unlock:
- 	up_read(&vdev->memory_lock);
- 
++	queue_limits_commit_update(lo->lo_queue, &lim);
++}
++
+ static int lo_fallocate(struct loop_device *lo, struct request *rq, loff_t pos,
+ 			int mode)
+ {
+@@ -320,6 +335,14 @@ static int lo_fallocate(struct loop_device *lo, struct request *rq, loff_t pos,
+ 	ret = file->f_op->fallocate(file, mode, pos, blk_rq_bytes(rq));
+ 	if (unlikely(ret && ret != -EINVAL && ret != -EOPNOTSUPP))
+ 		return -EIO;
++
++	/*
++	 * We initially configure the limits in a hope that fallocate is
++	 * supported and clear them here if that turns out not to be true.
++	 */
++	if (unlikely(ret == -EOPNOTSUPP))
++		loop_clear_limits(lo, mode);
++
  	return ret;
+ }
+ 
 -- 
 2.43.0
 
