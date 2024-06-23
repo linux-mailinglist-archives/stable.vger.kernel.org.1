@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-54935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F82913B58
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:56:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FCD913B5A
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:56:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 658311C20CAC
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:56:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAC091C20D0D
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78D01993AD;
-	Sun, 23 Jun 2024 13:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE78F199EB0;
+	Sun, 23 Jun 2024 13:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dtzVYNh1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NocbtCaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C1B199398;
-	Sun, 23 Jun 2024 13:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79216199EA9;
+	Sun, 23 Jun 2024 13:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719150326; cv=none; b=lzWFqGMlns1McM92Y4eNo1T3nciKaiv28au74BLFlLox8WL0G1/wG/5muCFgmKfVVS/EyU8OCPS2Rmr7tfRxKVqL9Qpy2xd03/EX4TLUHil5ABOlofoUjLc9hBcQeyCPu6WgmN6dKMscT8bLq7ETCC3oQ15Whp78jpJOczOq7uM=
+	t=1719150328; cv=none; b=T9Gy6w4ZIHL4wyQgAJczVlBNyrEq/qMIkFbRr/Vc33fm5p5BldbB7dlNbeDX0oodw/nNs3pgH22Hgq1teHr+Xkkea3DIXREFOKBH8hXK+yHW3FiC0vCzSnXPa3NCb1L4NayDqUPpO15Zk+qG0OuW60yJnhGnteous/Jd/NvxEos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719150326; c=relaxed/simple;
-	bh=JXifNuJFZLxzMxs/tL65AKn/n+CiUJ4hs5hZuDPTYHM=;
+	s=arc-20240116; t=1719150328; c=relaxed/simple;
+	bh=2dMvc69zDQ6giKu4nIZpePNxADLoHCon0Vcf5Hbapu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ux+ChiVNbw06SIOjvyBtG3b0t2xHhmDNTgEwiTnSXF24DFIoZc0yqKM8BDgbTg6RROEG0zxuvx0MHl/ihS1roRaLEP3WiHncfao3O1zHFNn+bY4+SvlNKgGq9ajrR1akf9nWhjhRaEQ0jnKj1F8xoM3wu5GthA6YfYhM8Lip92Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dtzVYNh1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F18AC4AF09;
-	Sun, 23 Jun 2024 13:45:25 +0000 (UTC)
+	 MIME-Version; b=cMTe55GhwDeP/F8v7bGgi+yDDkrWgd6ii3+DnwYTO0blGB/Y4INgxa1IOg9Pxozuy+wYRDGHiL5jVb/GGFoDqmjHcbDKPXxZJ03+JPH02pmgRxr4PVxQNTJ7ZfWZp/iDmz3zzJaRbaVEyZUGU+zmPmcZBhrTs3f5FZW8EojrzqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NocbtCaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B44BC4AF07;
+	Sun, 23 Jun 2024 13:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719150326;
-	bh=JXifNuJFZLxzMxs/tL65AKn/n+CiUJ4hs5hZuDPTYHM=;
+	s=k20201202; t=1719150328;
+	bh=2dMvc69zDQ6giKu4nIZpePNxADLoHCon0Vcf5Hbapu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtzVYNh17m1YxWlu3cO80yExJPRUc7Rxs1nhzgN6Xmhugs1zihirFShoLcm61dCCU
-	 dHpMuR8huEnJTdZ1XQTQK3nthMbx47zma12E9qu8NBIq2WuOsYU86r7j8bRO++Fj6Y
-	 InoR8tDXmRkJVuuK+EFyVc09QPTxJi5RWqxwFdjfOnsHK+rVMVrYy447B4uHKpcMp+
-	 UkYXhPatm05B4XW3IUVIPZgDTXQ2euOBbBg/tH51zMjvuCTL8wxXhbOS4wI3RlqwyW
-	 VrO+lbC630QgK+/aJdM0O5BAkLjtQmhps2wfUL/QijCK9vNEFP8fvj97b8coDgzLnB
-	 /rAs3vIu5hn8g==
+	b=NocbtCaMOHQXmZ+xNxcf4TPjSPsDsAUU34HBzFWLIREsCCGfNfe/S0oHVkdNk+Lbo
+	 Y4LWqkde0daLVBrHmHga1JqWoRw3Ocqs5A70fPZmiczwbS0ihPj+V7bgTtMxv4w0wA
+	 GpD2Ogc1Knxy4d9GIiZ4AkjGPWUd/afnxvzV/tcS2DiUhPURRB4A9I2L1ubnNywu8D
+	 s5r+fZMpSIrzzEkNB+qSSXA+IagMitpOyapm/oN826EouQ6tuUeajRWTUraUT9IBeo
+	 Wy7mquiywnoh8M/2YL27w7L7JX727H/glyyrU7RT9iar3H4nvgga4Iumete69/WvRF
+	 50uZENtSQ5mGg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zizhi Wo <wozizhi@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
+Cc: Baokun Li <libaokun1@huawei.com>,
+	Hou Tao <houtao1@huawei.com>,
 	Jeff Layton <jlayton@kernel.org>,
 	Jia Zhu <zhujia.zj@bytedance.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	dhowells@redhat.com,
 	netfs@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.1 05/12] cachefiles: Set object to close if ondemand_id < 0 in copen
-Date: Sun, 23 Jun 2024 09:45:08 -0400
-Message-ID: <20240623134518.809802-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 06/12] cachefiles: make on-demand read killable
+Date: Sun, 23 Jun 2024 09:45:09 -0400
+Message-ID: <20240623134518.809802-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240623134518.809802-1-sashal@kernel.org>
 References: <20240623134518.809802-1-sashal@kernel.org>
@@ -69,63 +69,101 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.95
 Content-Transfer-Encoding: 8bit
 
-From: Zizhi Wo <wozizhi@huawei.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 4f8703fb3482f92edcfd31661857b16fec89c2c0 ]
+[ Upstream commit bc9dde6155464e906e630a0a5c17a4cab241ffbb ]
 
-If copen is maliciously called in the user mode, it may delete the request
-corresponding to the random id. And the request may have not been read yet.
+Replacing wait_for_completion() with wait_for_completion_killable() in
+cachefiles_ondemand_send_req() allows us to kill processes that might
+trigger a hunk_task if the daemon is abnormal.
 
-Note that when the object is set to reopen, the open request will be done
-with the still reopen state in above case. As a result, the request
-corresponding to this object is always skipped in select_req function, so
-the read request is never completed and blocks other process.
+But now only CACHEFILES_OP_READ is killable, because OP_CLOSE and OP_OPEN
+is initiated from kworker context and the signal is prohibited in these
+kworker.
 
-Fix this issue by simply set object to close if its id < 0 in copen.
+Note that when the req in xas changes, i.e. xas_load(&xas) != req, it
+means that a process will complete the current request soon, so wait
+again for the request to be completed.
 
-Signed-off-by: Zizhi Wo <wozizhi@huawei.com>
+In addition, add the cachefiles_ondemand_finish_req() helper function to
+simplify the code.
+
+Suggested-by: Hou Tao <houtao1@huawei.com>
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240522114308.2402121-11-libaokun@huaweicloud.com
+Link: https://lore.kernel.org/r/20240522114308.2402121-13-libaokun@huaweicloud.com
 Acked-by: Jeff Layton <jlayton@kernel.org>
 Reviewed-by: Jia Zhu <zhujia.zj@bytedance.com>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/ondemand.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/cachefiles/ondemand.c | 40 ++++++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
 
 diff --git a/fs/cachefiles/ondemand.c b/fs/cachefiles/ondemand.c
-index b8e9cdc93643e..0862d69d64759 100644
+index 0862d69d64759..9513efaeb7ab6 100644
 --- a/fs/cachefiles/ondemand.c
 +++ b/fs/cachefiles/ondemand.c
-@@ -182,6 +182,7 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 	xas_store(&xas, NULL);
- 	xa_unlock(&cache->reqs);
- 
-+	info = req->object->ondemand;
- 	/* fail OPEN request if copen format is invalid */
- 	ret = kstrtol(psize, 0, &size);
- 	if (ret) {
-@@ -201,7 +202,6 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 		goto out;
- 	}
- 
--	info = req->object->ondemand;
- 	spin_lock(&info->lock);
- 	/*
- 	 * The anonymous fd was closed before copen ? Fail the request.
-@@ -241,6 +241,11 @@ int cachefiles_ondemand_copen(struct cachefiles_cache *cache, char *args)
- 	wake_up_all(&cache->daemon_pollwq);
- 
- out:
-+	spin_lock(&info->lock);
-+	/* Need to set object close to avoid reopen status continuing */
-+	if (info->ondemand_id == CACHEFILES_ONDEMAND_ID_CLOSED)
-+		cachefiles_ondemand_set_object_close(req->object);
-+	spin_unlock(&info->lock);
- 	complete(&req->done);
- 	return ret;
+@@ -380,6 +380,20 @@ static struct cachefiles_req *cachefiles_ondemand_select_req(struct xa_state *xa
+ 	return NULL;
  }
+ 
++static inline bool cachefiles_ondemand_finish_req(struct cachefiles_req *req,
++						  struct xa_state *xas, int err)
++{
++	if (unlikely(!xas || !req))
++		return false;
++
++	if (xa_cmpxchg(xas->xa, xas->xa_index, req, NULL, 0) != req)
++		return false;
++
++	req->error = err;
++	complete(&req->done);
++	return true;
++}
++
+ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ 					char __user *_buffer, size_t buflen)
+ {
+@@ -443,16 +457,8 @@ ssize_t cachefiles_ondemand_daemon_read(struct cachefiles_cache *cache,
+ out:
+ 	cachefiles_put_object(req->object, cachefiles_obj_put_read_req);
+ 	/* Remove error request and CLOSE request has no reply */
+-	if (ret || msg->opcode == CACHEFILES_OP_CLOSE) {
+-		xas_reset(&xas);
+-		xas_lock(&xas);
+-		if (xas_load(&xas) == req) {
+-			req->error = ret;
+-			complete(&req->done);
+-			xas_store(&xas, NULL);
+-		}
+-		xas_unlock(&xas);
+-	}
++	if (ret || msg->opcode == CACHEFILES_OP_CLOSE)
++		cachefiles_ondemand_finish_req(req, &xas, ret);
+ 	cachefiles_req_put(req);
+ 	return ret ? ret : n;
+ }
+@@ -544,8 +550,18 @@ static int cachefiles_ondemand_send_req(struct cachefiles_object *object,
+ 		goto out;
+ 
+ 	wake_up_all(&cache->daemon_pollwq);
+-	wait_for_completion(&req->done);
+-	ret = req->error;
++wait:
++	ret = wait_for_completion_killable(&req->done);
++	if (!ret) {
++		ret = req->error;
++	} else {
++		ret = -EINTR;
++		if (!cachefiles_ondemand_finish_req(req, &xas, ret)) {
++			/* Someone will complete it soon. */
++			cpu_relax();
++			goto wait;
++		}
++	}
+ 	cachefiles_req_put(req);
+ 	return ret;
+ out:
 -- 
 2.43.0
 
