@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-54945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB155913B72
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:58:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C3A3913B74
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A0D61C20D93
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:58:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5AECB212D8
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCBF19D06F;
-	Sun, 23 Jun 2024 13:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A0019D886;
+	Sun, 23 Jun 2024 13:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eJ/j+G0A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YCCOP8A4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DCC19D063;
-	Sun, 23 Jun 2024 13:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEA219D09C;
+	Sun, 23 Jun 2024 13:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719150343; cv=none; b=AzjTkYESTnfiBhavuRTk9DJqldVXjmMK706Ih9ysHPdXvXyR+uESxOvtDf7gFBUU2bmT/7am3NoYR/DJiCK9b+RfYsaanuF2G81TU92/k1h98Hon8iBrjNxGA2eY1c2VXtWNOr6dLVyODB+hEUmWIyVeQHKux8buX9ZBCFG8Nkw=
+	t=1719150346; cv=none; b=n1yQT5814pCEVS/inG/m8Ng+h+oe93jfIsjKvX3SMySsFnbRFF4EQ9ZHhVLU7PfQNNcIrPnCm1gaBiefDoJkzuwqG/+mGgjTgS44X4UdtVLKF7XaHcZ4tF9LJA/L5kX3JBz5/S7Uv7f74sawlGyqbEUIUGenpDYpPBSX2JxHwPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719150343; c=relaxed/simple;
-	bh=/9xR0m08+eK08nMnV1XouuDRAiT3dPoGZes7iFkvC7I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YKvwKRcoFPaXfgamZdHIYkCwweD/Im0XC4WX7+HiOXt6zBnOi51fPMLptHDG3PfJnFuD6D3GyP2UanEc2n73s8svZbo69iZu0tHRX+G7I7roBQKHYV8A1rRCy/1X3SrzAX0uSbLTVyaVii5H8CofWtRKjge7MbrRPy2Par+6TfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eJ/j+G0A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD73C4AF07;
-	Sun, 23 Jun 2024 13:45:42 +0000 (UTC)
+	s=arc-20240116; t=1719150346; c=relaxed/simple;
+	bh=A2bSITlnLcwpG+GIR5EBmTrO6XsC5owo3dU/WKyBNsY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VOOONSWHxCmfjiwHWb3VOGcifrsFVZAQdek7cbGWwEEWqfGS3nyJbfIsz3IP7iaaCnamVrUhGW5jMAUiiqHbfaTe8ahhz7YHSLL4iqv3lfbBX4v8TSYFFw0vKvdxUBoJSbC8M4Fua67Yr470XwhRRumi47C//Lpdlx/frqEHzs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YCCOP8A4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56901C32781;
+	Sun, 23 Jun 2024 13:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719150343;
-	bh=/9xR0m08+eK08nMnV1XouuDRAiT3dPoGZes7iFkvC7I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eJ/j+G0AwEEcS+FlnbzlhpoGBGtJy1RboiqhTnJrqK5bEqfTdGEoYnFgWfr2wZzdE
-	 qiNsZzxa2O2+NcWhHzkP2nBna+j0UtXrZ52hohE77H6yt39h/M7nQxEhaTSg0R7z4f
-	 ZJhTvO50YQZ3lCfTJx1Metw5SsAOqPSNGlwJAZlclm45XJQB5whoQv41N46kOlOcMc
-	 paxd+TrO3oXQUuWMviBVLZfH7ul9zdAiChpaVRvgMarvCAccvMHDe3aJwOe3xaS0Kv
-	 QbXYCdu1rhW3JnKm9c8NOhdn1cEYqHFtXQrFelxUuATfpWATZPZan6uUOGVrFGiGuB
-	 koyEloTR/jqWA==
+	s=k20201202; t=1719150346;
+	bh=A2bSITlnLcwpG+GIR5EBmTrO6XsC5owo3dU/WKyBNsY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YCCOP8A4/TDBer4+Kzeb54sdlPxUg8HBToXHPrq47sYdmR5Q5tBtXqTDhw6v/blMu
+	 iLxE9XygtaBXDr/ASsrjtuxlcb4BcRQbkGmODr5un0UHyyrWEiR+VGGrzgIOAH60rF
+	 213KVMbLYcZ1yCCICJ/zOGwR91L7Ym5TtPdYV1ksOedl8EhQXIuyuchg0iXPMBG/We
+	 K/ZNQQ4RSB8q41VeFf45pdERm3k54otRRKXokhXqbkdSTdu/akd6SWbCoCIbwPckBh
+	 XwYzFxN1SYe6TR6vRsHjC02nmD5AiGokxtjBZEDO7tOkHfpco4WbIH444GnII1z6Lr
+	 00ZycSefu8NKQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chunguang Xu <chunguang.xu@shopee.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Yuntao Wang <yuntao.wang@linux.dev>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.15 3/3] nvme: avoid double free special payload
-Date: Sun, 23 Jun 2024 09:45:37 -0400
-Message-ID: <20240623134538.810055-3-sashal@kernel.org>
+	viro@zeniv.linux.org.uk,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 1/2] fs/file: fix the check in find_next_fd()
+Date: Sun, 23 Jun 2024 09:45:42 -0400
+Message-ID: <20240623134544.810127-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240623134538.810055-1-sashal@kernel.org>
-References: <20240623134538.810055-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,38 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.161
+X-stable-base: Linux 5.10.220
 Content-Transfer-Encoding: 8bit
 
-From: Chunguang Xu <chunguang.xu@shopee.com>
+From: Yuntao Wang <yuntao.wang@linux.dev>
 
-[ Upstream commit e5d574ab37f5f2e7937405613d9b1a724811e5ad ]
+[ Upstream commit ed8c7fbdfe117abbef81f65428ba263118ef298a ]
 
-If a discard request needs to be retried, and that retry may fail before
-a new special payload is added, a double free will result. Clear the
-RQF_SPECIAL_LOAD when the request is cleaned.
+The maximum possible return value of find_next_zero_bit(fdt->full_fds_bits,
+maxbit, bitbit) is maxbit. This return value, multiplied by BITS_PER_LONG,
+gives the value of bitbit, which can never be greater than maxfd, it can
+only be equal to maxfd at most, so the following check 'if (bitbit > maxfd)'
+will never be true.
 
-Signed-off-by: Chunguang Xu <chunguang.xu@shopee.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Moreover, when bitbit equals maxfd, it indicates that there are no unused
+fds, and the function can directly return.
+
+Fix this check.
+
+Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
+Link: https://lore.kernel.org/r/20240529160656.209352-1-yuntao.wang@linux.dev
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/file.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 960a31e3307a2..93a19588ae92a 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -981,6 +981,7 @@ void nvme_cleanup_cmd(struct request *req)
- 			clear_bit_unlock(0, &ctrl->discard_page_busy);
- 		else
- 			kfree(bvec_virt(&req->special_vec));
-+		req->rq_flags &= ~RQF_SPECIAL_PAYLOAD;
- 	}
- }
- EXPORT_SYMBOL_GPL(nvme_cleanup_cmd);
+diff --git a/fs/file.c b/fs/file.c
+index fdb84a64724b7..913f7d897d2fc 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -494,12 +494,12 @@ struct files_struct init_files = {
+ 
+ static unsigned int find_next_fd(struct fdtable *fdt, unsigned int start)
+ {
+-	unsigned int maxfd = fdt->max_fds;
++	unsigned int maxfd = fdt->max_fds; /* always multiple of BITS_PER_LONG */
+ 	unsigned int maxbit = maxfd / BITS_PER_LONG;
+ 	unsigned int bitbit = start / BITS_PER_LONG;
+ 
+ 	bitbit = find_next_zero_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
+-	if (bitbit > maxfd)
++	if (bitbit >= maxfd)
+ 		return maxfd;
+ 	if (bitbit > start)
+ 		start = bitbit;
 -- 
 2.43.0
 
