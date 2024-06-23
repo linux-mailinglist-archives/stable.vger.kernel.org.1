@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-54914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E767913B21
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:49:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B52913B25
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:50:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2814B2140D
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:49:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0707AB21C38
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1625218C35D;
-	Sun, 23 Jun 2024 13:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E961822CD;
+	Sun, 23 Jun 2024 13:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u1qb005i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sVv4EzZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2FA18C335;
-	Sun, 23 Jun 2024 13:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1926181CF2;
+	Sun, 23 Jun 2024 13:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719150283; cv=none; b=HYLdnW+bMwfK6VfhbAYCXKd+Ob2W9i5HXgyz/iOgTDhE64ByMtWwjQYemxxNJIpDnAihchDCXhLyUZYvCKKCisHmcuI7eDrOadmO9ktueUbB+RR46I3GRy7EmLCbeHz8KY99c96KMqoBjOq2PSm5FNAyUHGi8Ve+B3ua811ChMI=
+	t=1719150291; cv=none; b=UYi8PLL3loVI1TkSudeseImTOXfNZvud8H4BUbZJCsRgAN0OnPYWGqQ5tGBTEG8zQAY598mRbEpMJypzpd69v+J4axCzC/X2mNpy9IqQMX5Hr/C+ZmWqTEBygVE+Xz4iM0VUB9m4K5d1GrD2Ch7kBjFq1qr76NG5NRrQ/ZDGCAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719150283; c=relaxed/simple;
-	bh=TIqYV/DnQm52v3SsiEvply4u33fseIDKi2tfoRZaOQg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WWLDhpjqg2ZnvZSTENXLTsGY1mFLBXDAq4L1OncOrOsFfWxNvS/KEthblYWid5e+VuermEIryWNefPwvx5vJJCVlJeESrqvsQSEnhMCcs2QtsCP2sAuzIJRtrYALrNM28P/z/H7gVoUfRR6xBFQoI5U7K6ecAb2PRh7ba8Xc+gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u1qb005i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84255C4AF07;
-	Sun, 23 Jun 2024 13:44:42 +0000 (UTC)
+	s=arc-20240116; t=1719150291; c=relaxed/simple;
+	bh=5XKhNOxh2hgc99lxRWJbgPZBH8yheI69UKNwcOC84m8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K/f19iOu01m1GTwc+gT8L6MfbEDv2YIny4KdvDFADw4z3LxK9bxlLDPUrc1V9gchouU6n3q+Mm/Gg8BE8VwqX0TuY1SOabOMrb/u0yZEudNGBwT7N1wNrpTSlcJ5KrhmyeTDOFJ4MxVfeRTW6yEsW7mFdStFI9NkHJKvKDGHvPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sVv4EzZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E66BC2BD10;
+	Sun, 23 Jun 2024 13:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719150283;
-	bh=TIqYV/DnQm52v3SsiEvply4u33fseIDKi2tfoRZaOQg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u1qb005ijnbs6UgPT5vSDxr8BSLLsMEE68Yd8sQw0KiV+xrEBB2gYVwMc1WXLnwOI
-	 FAQKXWYT+DwiDoGGM0kRWaMHfZIdYyf0MX5CO1SnekcM1ND6x9j1f10RefcUUuMzZ4
-	 /WVYJ34MEXVq8HhLXt0ebK0ZzewXgaKYFRnI6aqSnUxZ/MTBTuCJk/seQZhe/FHsTB
-	 GUE0xyldhWcoYHKutiGtaugofpGu8iZjSrgKQRXhdRKMGcQNqbC7k+5dwOgoBuxyvz
-	 iJzdIPBvW0ukD4+DNjJxMUcyl8E6XN8OwMNOa/snFk/DG9qxssGOi/DucZc3CIpOJh
-	 TxQMZuaesQhLA==
+	s=k20201202; t=1719150291;
+	bh=5XKhNOxh2hgc99lxRWJbgPZBH8yheI69UKNwcOC84m8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sVv4EzZ1I32LPII2pJkEYPQBjL0/tyt4sQ754FKMzMS2Lwdcv7K39vL/Xt/C8rJRj
+	 gzTV4XxrqmUMPyKKxZEFEL7byJFPXLU2L4IIO2w6V5xz/N4e5vzjq1p/NnM+qHanl9
+	 2XDZgGxdBoXfeCMP1ANUdCSKw5oVlB0x8bZS2u/nGKZxzzTn7SDt9wTeyrZ07qO9sC
+	 yijiGuo+1ZKbpDQt3Tpvw39nbMCLrOjTTpD7KE2p2DLGC+MQAws1giXMlKqnXJA6eD
+	 0yeU5NLOaRltiH3wrUomW+PRy2L1L4oEN1ZtzIgmWsin2idyjLFxRdFEy5IseVU3nA
+	 DVspPm9oI1zSA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Cyril Hrubis <chrubis@suse.cz>,
-	Jan Kara <jack@suse.cz>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Dmitry Mastykin <mastichi@gmail.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.9 21/21] loop: Disable fallocate() zero and discard if not supported
-Date: Sun, 23 Jun 2024 09:43:54 -0400
-Message-ID: <20240623134405.809025-21-sashal@kernel.org>
+	trondmy@kernel.org,
+	anna@kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/16] NFSv4: Fix memory leak in nfs4_set_security_label
+Date: Sun, 23 Jun 2024 09:44:30 -0400
+Message-ID: <20240623134448.809470-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240623134405.809025-1-sashal@kernel.org>
-References: <20240623134405.809025-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,97 +61,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.9.6
+X-stable-base: Linux 6.6.35
 Content-Transfer-Encoding: 8bit
 
-From: Cyril Hrubis <chrubis@suse.cz>
+From: Dmitry Mastykin <mastichi@gmail.com>
 
-[ Upstream commit 5f75e081ab5cbfbe7aca2112a802e69576ee9778 ]
+[ Upstream commit aad11473f8f4be3df86461081ce35ec5b145ba68 ]
 
-If fallcate is implemented but zero and discard operations are not
-supported by the filesystem the backing file is on we continue to fill
-dmesg with errors from the blk_mq_end_request() since each time we call
-fallocate() on the loop device the EOPNOTSUPP error from lo_fallocate()
-ends up propagated into the block layer. In the end syscall succeeds
-since the blkdev_issue_zeroout() falls back to writing zeroes which
-makes the errors even more misleading and confusing.
+We leak nfs_fattr and nfs4_label every time we set a security xattr.
 
-How to reproduce:
-
-1. make sure /tmp is mounted as tmpfs
-2. dd if=/dev/zero of=/tmp/disk.img bs=1M count=100
-3. losetup /dev/loop0 /tmp/disk.img
-4. mkfs.ext2 /dev/loop0
-5. dmesg |tail
-
-[710690.898214] operation not supported error, dev loop0, sector 204672 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
-[710690.898279] operation not supported error, dev loop0, sector 522 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
-[710690.898603] operation not supported error, dev loop0, sector 16906 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
-[710690.898917] operation not supported error, dev loop0, sector 32774 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
-[710690.899218] operation not supported error, dev loop0, sector 49674 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
-[710690.899484] operation not supported error, dev loop0, sector 65542 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
-[710690.899743] operation not supported error, dev loop0, sector 82442 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
-[710690.900015] operation not supported error, dev loop0, sector 98310 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
-[710690.900276] operation not supported error, dev loop0, sector 115210 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
-[710690.900546] operation not supported error, dev loop0, sector 131078 op 0x9:(WRITE_ZEROES) flags 0x8000800 phys_seg 0 prio class 0
-
-This patch changes the lo_fallocate() to clear the flags for zero and
-discard operations if we get EOPNOTSUPP from the backing file fallocate
-callback, that way we at least stop spewing errors after the first
-unsuccessful try.
-
-CC: Jan Kara <jack@suse.cz>
-Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240613163817.22640-1-chrubis@suse.cz
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Dmitry Mastykin <mastichi@gmail.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ fs/nfs/nfs4proc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 28a95fd366fea..95a468eaa7013 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -302,6 +302,21 @@ static int lo_read_simple(struct loop_device *lo, struct request *rq,
- 	return 0;
- }
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index f0953200acd08..05490d4784f1a 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -6268,6 +6268,7 @@ nfs4_set_security_label(struct inode *inode, const void *buf, size_t buflen)
+ 	if (status == 0)
+ 		nfs_setsecurity(inode, fattr);
  
-+static void loop_clear_limits(struct loop_device *lo, int mode)
-+{
-+	struct queue_limits lim = queue_limits_start_update(lo->lo_queue);
-+
-+	if (mode & FALLOC_FL_ZERO_RANGE)
-+		lim.max_write_zeroes_sectors = 0;
-+
-+	if (mode & FALLOC_FL_PUNCH_HOLE) {
-+		lim.max_hw_discard_sectors = 0;
-+		lim.discard_granularity = 0;
-+	}
-+
-+	queue_limits_commit_update(lo->lo_queue, &lim);
-+}
-+
- static int lo_fallocate(struct loop_device *lo, struct request *rq, loff_t pos,
- 			int mode)
- {
-@@ -320,6 +335,14 @@ static int lo_fallocate(struct loop_device *lo, struct request *rq, loff_t pos,
- 	ret = file->f_op->fallocate(file, mode, pos, blk_rq_bytes(rq));
- 	if (unlikely(ret && ret != -EINVAL && ret != -EOPNOTSUPP))
- 		return -EIO;
-+
-+	/*
-+	 * We initially configure the limits in a hope that fallocate is
-+	 * supported and clear them here if that turns out not to be true.
-+	 */
-+	if (unlikely(ret == -EOPNOTSUPP))
-+		loop_clear_limits(lo, mode);
-+
- 	return ret;
++	nfs_free_fattr(fattr);
+ 	return status;
  }
- 
+ #endif	/* CONFIG_NFS_V4_SECURITY_LABEL */
 -- 
 2.43.0
 
