@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-54946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3A3913B74
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:59:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA3C913B77
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 15:59:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5AECB212D8
-	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:59:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 649731F233CF
+	for <lists+stable@lfdr.de>; Sun, 23 Jun 2024 13:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A0019D886;
-	Sun, 23 Jun 2024 13:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2318219D8AB;
+	Sun, 23 Jun 2024 13:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YCCOP8A4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="esrB4W0F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEA219D09C;
-	Sun, 23 Jun 2024 13:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AF519D8A5;
+	Sun, 23 Jun 2024 13:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719150346; cv=none; b=n1yQT5814pCEVS/inG/m8Ng+h+oe93jfIsjKvX3SMySsFnbRFF4EQ9ZHhVLU7PfQNNcIrPnCm1gaBiefDoJkzuwqG/+mGgjTgS44X4UdtVLKF7XaHcZ4tF9LJA/L5kX3JBz5/S7Uv7f74sawlGyqbEUIUGenpDYpPBSX2JxHwPs=
+	t=1719150347; cv=none; b=UfUxa00lz42gK+bIVi5VTnkhYvwt/TNem4Z5mJmy79TBkiJWVvCXX6hUbMeVTunZpxvmdyZe67xebeD4QYhJ+95Z4Acd/JahTMwyz0sJ9kYG78LfjKSLic3L7KFUJnqD4y/7p7uh66hn9t0NjDWOe4uN4gOn+dDN9PRchoOe2XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719150346; c=relaxed/simple;
-	bh=A2bSITlnLcwpG+GIR5EBmTrO6XsC5owo3dU/WKyBNsY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VOOONSWHxCmfjiwHWb3VOGcifrsFVZAQdek7cbGWwEEWqfGS3nyJbfIsz3IP7iaaCnamVrUhGW5jMAUiiqHbfaTe8ahhz7YHSLL4iqv3lfbBX4v8TSYFFw0vKvdxUBoJSbC8M4Fua67Yr470XwhRRumi47C//Lpdlx/frqEHzs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YCCOP8A4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56901C32781;
-	Sun, 23 Jun 2024 13:45:45 +0000 (UTC)
+	s=arc-20240116; t=1719150347; c=relaxed/simple;
+	bh=ymXZA8LSRBFeCTSXK9QR9TX2OnFX4Blatoipvsm2phk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HSZ7I2+1PwFjbwB7HEJX2OLzfF1pJT5QodpMxvI2YVxXuvC9aS/rlzbIzzF5EUfKHVOuR7jWDdTBrE3oU7fYO1litSV7ynCNd5jYDS5UiU0XDp8HFiu7PyNmRdZ2JBdGHfyqZaov6AA5nwACOsr/phzxR3KYqKe5aiV41xLH0lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=esrB4W0F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12C9C4AF0A;
+	Sun, 23 Jun 2024 13:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719150346;
-	bh=A2bSITlnLcwpG+GIR5EBmTrO6XsC5owo3dU/WKyBNsY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YCCOP8A4/TDBer4+Kzeb54sdlPxUg8HBToXHPrq47sYdmR5Q5tBtXqTDhw6v/blMu
-	 iLxE9XygtaBXDr/ASsrjtuxlcb4BcRQbkGmODr5un0UHyyrWEiR+VGGrzgIOAH60rF
-	 213KVMbLYcZ1yCCICJ/zOGwR91L7Ym5TtPdYV1ksOedl8EhQXIuyuchg0iXPMBG/We
-	 K/ZNQQ4RSB8q41VeFf45pdERm3k54otRRKXokhXqbkdSTdu/akd6SWbCoCIbwPckBh
-	 XwYzFxN1SYe6TR6vRsHjC02nmD5AiGokxtjBZEDO7tOkHfpco4WbIH444GnII1z6Lr
-	 00ZycSefu8NKQ==
+	s=k20201202; t=1719150347;
+	bh=ymXZA8LSRBFeCTSXK9QR9TX2OnFX4Blatoipvsm2phk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=esrB4W0F1HznJce92hSiAtG/hk9OQkSc4uGxIxc6NCWwjd5ZmeUQEMhIhSpURem1N
+	 hzW/JBdlPoYVGuP63SD7PQ3vlR2d/MQDw3xjS3AWDt2Y4yW6gm+QbwEdo3dtgtl8P2
+	 S6gBeWoDkPYdRI8IYMAtqg8QL+qSa/ejZQM7thTh+DSubTpIK2wuhypjHdx2dzBYlK
+	 G8cSEs4WINpiEWY7zwJISCDVoXIm/+UGLOigivSN2UNCtFjWZwvCBMYocwqV7mIK5j
+	 psiZR3g/Ioj95pwV1M+KXNFvO4r4jCtmStMACC9dzE1GnjcP2d5oHsHJNLewtQEwgV
+	 CxuIv0xqrrZ1A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yuntao Wang <yuntao.wang@linux.dev>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 1/2] fs/file: fix the check in find_next_fd()
-Date: Sun, 23 Jun 2024 09:45:42 -0400
-Message-ID: <20240623134544.810127-1-sashal@kernel.org>
+Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
+	Tomas Winkler <tomas.winkler@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 2/2] mei: demote client disconnect warning on suspend to debug
+Date: Sun, 23 Jun 2024 09:45:43 -0400
+Message-ID: <20240623134544.810127-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240623134544.810127-1-sashal@kernel.org>
+References: <20240623134544.810127-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,49 +65,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.220
 Content-Transfer-Encoding: 8bit
 
-From: Yuntao Wang <yuntao.wang@linux.dev>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit ed8c7fbdfe117abbef81f65428ba263118ef298a ]
+[ Upstream commit 1db5322b7e6b58e1b304ce69a50e9dca798ca95b ]
 
-The maximum possible return value of find_next_zero_bit(fdt->full_fds_bits,
-maxbit, bitbit) is maxbit. This return value, multiplied by BITS_PER_LONG,
-gives the value of bitbit, which can never be greater than maxfd, it can
-only be equal to maxfd at most, so the following check 'if (bitbit > maxfd)'
-will never be true.
+Change level for the "not connected" client message in the write
+callback from error to debug.
 
-Moreover, when bitbit equals maxfd, it indicates that there are no unused
-fds, and the function can directly return.
+The MEI driver currently disconnects all clients upon system suspend.
+This behavior is by design and user-space applications with
+open connections before the suspend are expected to handle errors upon
+resume, by reopening their handles, reconnecting,
+and retrying their operations.
 
-Fix this check.
+However, the current driver implementation logs an error message every
+time a write operation is attempted on a disconnected client.
+Since this is a normal and expected flow after system resume
+logging this as an error can be misleading.
 
-Signed-off-by: Yuntao Wang <yuntao.wang@linux.dev>
-Link: https://lore.kernel.org/r/20240529160656.209352-1-yuntao.wang@linux.dev
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+Link: https://lore.kernel.org/r/20240530091415.725247-1-tomas.winkler@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/mei/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/file.c b/fs/file.c
-index fdb84a64724b7..913f7d897d2fc 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -494,12 +494,12 @@ struct files_struct init_files = {
+diff --git a/drivers/misc/mei/main.c b/drivers/misc/mei/main.c
+index 9f6682033ed7e..d8311d41f0a7b 100644
+--- a/drivers/misc/mei/main.c
++++ b/drivers/misc/mei/main.c
+@@ -329,7 +329,7 @@ static ssize_t mei_write(struct file *file, const char __user *ubuf,
+ 	}
  
- static unsigned int find_next_fd(struct fdtable *fdt, unsigned int start)
- {
--	unsigned int maxfd = fdt->max_fds;
-+	unsigned int maxfd = fdt->max_fds; /* always multiple of BITS_PER_LONG */
- 	unsigned int maxbit = maxfd / BITS_PER_LONG;
- 	unsigned int bitbit = start / BITS_PER_LONG;
- 
- 	bitbit = find_next_zero_bit(fdt->full_fds_bits, maxbit, bitbit) * BITS_PER_LONG;
--	if (bitbit > maxfd)
-+	if (bitbit >= maxfd)
- 		return maxfd;
- 	if (bitbit > start)
- 		start = bitbit;
+ 	if (!mei_cl_is_connected(cl)) {
+-		cl_err(dev, cl, "is not connected");
++		cl_dbg(dev, cl, "is not connected");
+ 		rets = -ENODEV;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
