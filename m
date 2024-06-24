@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-54988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C7F914637
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:22:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C596C91466A
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3434B228C2
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 09:22:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E91051C20A60
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 09:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208D05C603;
-	Mon, 24 Jun 2024 09:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F93130E40;
+	Mon, 24 Jun 2024 09:27:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1B213049E
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 09:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E252B7FBA4
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 09:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719220920; cv=none; b=lxbXytyHERz3f8aVoKimjC1Airy+/Xh86pbyVT9nqWj3r+zO4M+bso62Tig+WirxoQoBf1MDAoTh/spImlMbZgWO6nc3ZH2Djun9aCTf8bft9xGgA3Vu4q5tTBs0GMiY3rPMdrrv3NimUFS5HI2C4vPlC68bzlkiVhoaR2k25co=
+	t=1719221278; cv=none; b=AXQB71Nk8AgE5pAqjocrk9lfZJ3zNQdM+QT92j0bUWa3komwBYUzu3vqN6bbZ9g+KvYs/TAJTHbdpQVOdKtw7Ax0GP9IxaILXM6p5MMNYDVT+6KzVw5aqhl77KtTzklidfCJmSzP0If1IyMAAP5dJWN6K1IvMm6559a/5BJqsH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719220920; c=relaxed/simple;
-	bh=2xRF+ZDnQWHp49AacHxANJnvWRLWOql/KXjySZdX5M8=;
+	s=arc-20240116; t=1719221278; c=relaxed/simple;
+	bh=+AJYvCoPL+3sm1HyLkRz2qIxmcXmzM6ZFnIDRk3tifU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrJ+p4bHVn66vLLlIgwI2E9+QV5HY7GDTdMVYpyWdBQ0+eW/3rAnF+v/GkNGQK3nS8KJKn38KoIdVGIbZRgzwqo0cGaiUTNoKyElvXaNch0QvNdqREk1h5JTQuvSvOgdkTmWFpcFLEocyFcino/rLHop+a7eCuQX1SJ6MFmfjHI=
+	 MIME-Version; b=XR4wQMu/x8X+bX6M2TQAgBHsvpr/rKsCbCo9OzgnSez4hEWwiJFVobR8/i84+zotOXoRcrWm1pHd+BkPN9eub8P+rXkTlv+2d2LTYtC8ygF2CPrcSjN6AOyVPQtBkx/mMEgRs8P//A41IAP8zhy8lv6Mh3dqsUAEmtD0thCiorY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 69EFEDA7;
-	Mon, 24 Jun 2024 02:22:21 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D64F9DA7;
+	Mon, 24 Jun 2024 02:28:19 -0700 (PDT)
 Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 210BC3F6A8;
-	Mon, 24 Jun 2024 02:21:53 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8C0503F6A8;
+	Mon, 24 Jun 2024 02:27:51 -0700 (PDT)
 From: Ryan Roberts <ryan.roberts@arm.com>
 To: stable@vger.kernel.org
 Cc: Ryan Roberts <ryan.roberts@arm.com>,
@@ -58,12 +58,12 @@ Cc: Ryan Roberts <ryan.roberts@arm.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Will Deacon <will@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4.y] mm: fix race between __split_huge_pmd_locked() and GUP-fast
-Date: Mon, 24 Jun 2024 10:21:38 +0100
-Message-ID: <20240624092138.534503-1-ryan.roberts@arm.com>
+Subject: [PATCH 4.19.y] mm: fix race between __split_huge_pmd_locked() and GUP-fast
+Date: Mon, 24 Jun 2024 10:27:43 +0100
+Message-ID: <20240624092743.568016-1-ryan.roberts@arm.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024061319-skater-sculptor-905f@gregkh>
-References: <2024061319-skater-sculptor-905f@gregkh>
+In-Reply-To: <2024061320-handcart-crook-0519@gregkh>
+References: <2024061320-handcart-crook-0519@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -127,30 +127,30 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 (cherry picked from commit 3a5a8d343e1cf96eb9971b17cbd4b832ab19b8e7)
 Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 ---
- arch/powerpc/mm/book3s64/pgtable.c |  1 +
+ arch/powerpc/mm/pgtable-book3s64.c |  1 +
  arch/s390/include/asm/pgtable.h    |  4 ++-
  arch/sparc/mm/tlb.c                |  1 +
  mm/huge_memory.c                   | 49 ++++++++++++++++--------------
  mm/pgtable-generic.c               |  5 ++-
  5 files changed, 35 insertions(+), 25 deletions(-)
 
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index c4890f4b0b6c..7effd6767602 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -107,6 +107,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+diff --git a/arch/powerpc/mm/pgtable-book3s64.c b/arch/powerpc/mm/pgtable-book3s64.c
+index 297db665d953..fc8286e94070 100644
+--- a/arch/powerpc/mm/pgtable-book3s64.c
++++ b/arch/powerpc/mm/pgtable-book3s64.c
+@@ -106,6 +106,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
  {
  	unsigned long old_pmd;
  
 +	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
- 	old_pmd = pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, _PAGE_INVALID);
+ 	old_pmd = pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, 0);
  	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
  	/*
 diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index 5ce586948d92..166906a81c9b 100644
+index 0a326da1562f..8520b269c0f9 100644
 --- a/arch/s390/include/asm/pgtable.h
 +++ b/arch/s390/include/asm/pgtable.h
-@@ -1609,8 +1609,10 @@ static inline pmd_t pmdp_huge_clear_flush(struct vm_area_struct *vma,
+@@ -1532,8 +1532,10 @@ static inline pmd_t pmdp_huge_clear_flush(struct vm_area_struct *vma,
  static inline pmd_t pmdp_invalidate(struct vm_area_struct *vma,
  				   unsigned long addr, pmd_t *pmdp)
  {
@@ -175,10 +175,10 @@ index 3d72d2deb13b..57351409957a 100644
  	old = pmdp_establish(vma, address, pmdp, entry);
  	flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 03b57323c53b..05d3188dccd0 100644
+index 800d7de32af8..9512fb7ff712 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -2198,38 +2198,41 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+@@ -2168,38 +2168,41 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
  		return __split_huge_zero_page_pmd(vma, haddr, pmd);
  	}
  
@@ -244,10 +244,10 @@ index 03b57323c53b..05d3188dccd0 100644
  		if (pmd_dirty(old_pmd))
  			SetPageDirty(page);
 diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index 49e8a4fbc205..2c5f8faeb996 100644
+index 36770fcdc358..3d30f9a2064b 100644
 --- a/mm/pgtable-generic.c
 +++ b/mm/pgtable-generic.c
-@@ -185,7 +185,10 @@ pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
+@@ -184,7 +184,10 @@ pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
  pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
  		     pmd_t *pmdp)
  {
