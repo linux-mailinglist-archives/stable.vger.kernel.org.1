@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-55033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F5C915160
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 17:06:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 609C4915179
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 17:09:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 425B0288EFB
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:06:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1764F1F21A05
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5966619ADB3;
-	Mon, 24 Jun 2024 15:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676B419B3EF;
+	Mon, 24 Jun 2024 15:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yF8e4AHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6yhnEcH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A08D1E869
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 15:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2400E19B3ED
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 15:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719241571; cv=none; b=E95VP4kesp/iUIq7hPUmsyyfPYEl79CP+GBc1ZSramgabdHLRBcykD9X2Oug3MRedkfjZmchb71TxC4ivv7Qp/Oo8rHSBN7taF318JOHnsNQZPTI/4IfbqYnsYCnAMYO44Tnaex5JsugtQvtKjtpzxl0np/acXfNgbUBDOyp9pw=
+	t=1719241759; cv=none; b=l9E/gsXcJwUS8TLBWJ+7fseMbQ7Iu/RrqBCOX+fnkBo3Rj7DAARY7dyf/QJkOjI1a9UVvno9yX8wJTyHIO4oih2Pqy9yfK1Vt3g66SQir1WBBjW1Qn9+m2J/F1r2fbRYy95PFaAsKLxFzj9uPJCTgswWG83mBPuBDaGrGak8hgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719241571; c=relaxed/simple;
-	bh=Cs8nO89DSEc/kOEYAaG5PgbrHfuzyB598i+zl4tvZTU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kPSkPV4PQhVzTbuHwaglDlj2pVHa/8hEAzX27ypR9DHRNbYAPuNhgmETZIWmv6VUkwDd/ptfcngNZZvkLyK+XtAHGRcFaUAFdWFTTvb+wutDMqtCLd1JM5itVZneg38alZEAgxhU2CGFudFxCOXRKmNEo1Bz4XvFoDvHzasv0MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yF8e4AHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D0FC32782;
-	Mon, 24 Jun 2024 15:06:10 +0000 (UTC)
+	s=arc-20240116; t=1719241759; c=relaxed/simple;
+	bh=QcuAkur8EHz/khA5gyvnXGlycV8XmoiVN3eQb4MxaHE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=s10XwdNekt3yisx8sCIzTzvyh718ZGf5MTTNhT3+W6C38t2BZzvNfKB0qaxREpadjZWPbdlTIkrulrgcOL9GS40y/oL+i1gzyBWjnFM98DaGUYdAZywzJzWeCFmIwJKiQQJ7ptGhVaRTepFQasSaJBBlApZ2eKiCFANK4R0X7dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6yhnEcH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55642C2BBFC;
+	Mon, 24 Jun 2024 15:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719241570;
-	bh=Cs8nO89DSEc/kOEYAaG5PgbrHfuzyB598i+zl4tvZTU=;
+	s=korg; t=1719241758;
+	bh=QcuAkur8EHz/khA5gyvnXGlycV8XmoiVN3eQb4MxaHE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=yF8e4AHPkDeqf7u5H69jGWwBhUM59S3EQh2H54dY6ZSnKMrggJFPtV6UMpEZp0olq
-	 EXKffm+jU+YwyZfYqW0lj7NTr/Ey7NDzPw+RZkdti6I8Yy1XEsJ7WaRjNx4uH5ezyr
-	 mz51euXgwaf56FNg2f+BEnMYVF43oOqe5Gfw0ISc=
-Subject: FAILED: patch "[PATCH] net: stmmac: Assign configured channel value to EXTTS event" failed to apply to 5.15-stable tree
-To: o.rempel@pengutronix.de,pabeni@redhat.com,wojciech.drewek@intel.com
+	b=z6yhnEcHswevFbFiyA1+C6fJZn9RRQpEHlaXkHjL5xBv+7JRDyBjxaNO1vTipu0s5
+	 eMh3+WGQlJRUkZ5hfKTB0vucJo32PUSAUfn8fRjfpjiRpCUT9peUzYa7VCA23comQk
+	 UpA04Rfi7dhiZ7+G2mXyV8Mf3ShqzlIhN0uWk0CA=
+Subject: FAILED: patch "[PATCH] cifs: fix typo in module parameter enable_gcm_256" failed to apply to 5.15-stable tree
+To: stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Jun 2024 17:06:02 +0200
-Message-ID: <2024062402-reabsorb-plausible-88b5@gregkh>
+Date: Mon, 24 Jun 2024 17:09:12 +0200
+Message-ID: <2024062411-ipad-conical-35fb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,14 +62,14 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8851346912a1fa33e7a5966fe51f07313b274627
+git cherry-pick -x 8bf0287528da1992c5e49d757b99ad6bbc34b522
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062402-reabsorb-plausible-88b5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062411-ipad-conical-35fb@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-8851346912a1 ("net: stmmac: Assign configured channel value to EXTTS event")
+
 
 thanks,
 
@@ -77,60 +77,31 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8851346912a1fa33e7a5966fe51f07313b274627 Mon Sep 17 00:00:00 2001
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue, 18 Jun 2024 09:38:21 +0200
-Subject: [PATCH] net: stmmac: Assign configured channel value to EXTTS event
+From 8bf0287528da1992c5e49d757b99ad6bbc34b522 Mon Sep 17 00:00:00 2001
+From: Steve French <stfrench@microsoft.com>
+Date: Wed, 19 Jun 2024 14:46:48 -0500
+Subject: [PATCH] cifs: fix typo in module parameter enable_gcm_256
 
-Assign the configured channel value to the EXTTS event in the timestamp
-interrupt handler. Without assigning the correct channel, applications
-like ts2phc will refuse to accept the event, resulting in errors such
-as:
-...
-ts2phc[656.834]: config item end1.ts2phc.pin_index is 0
-ts2phc[656.834]: config item end1.ts2phc.channel is 3
-ts2phc[656.834]: config item end1.ts2phc.extts_polarity is 2
-ts2phc[656.834]: config item end1.ts2phc.extts_correction is 0
-...
-ts2phc[656.862]: extts on unexpected channel
-ts2phc[658.141]: extts on unexpected channel
-ts2phc[659.140]: extts on unexpected channel
+enable_gcm_256 (which allows the server to require the strongest
+encryption) is enabled by default, but the modinfo description
+incorrectly showed it disabled by default. Fix the typo.
 
-Fixes: f4da56529da60 ("net: stmmac: Add support for external trigger timestamping")
 Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://lore.kernel.org/r/20240618073821.619751-1-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: fee742b50289 ("smb3.1.1: enable negotiating stronger encryption by default")
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-index f05bd757dfe5..5ef52ef2698f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-@@ -218,6 +218,7 @@ static void timestamp_interrupt(struct stmmac_priv *priv)
- {
- 	u32 num_snapshot, ts_status, tsync_int;
- 	struct ptp_clock_event event;
-+	u32 acr_value, channel;
- 	unsigned long flags;
- 	u64 ptp_time;
- 	int i;
-@@ -243,12 +244,15 @@ static void timestamp_interrupt(struct stmmac_priv *priv)
- 	num_snapshot = (ts_status & GMAC_TIMESTAMP_ATSNS_MASK) >>
- 		       GMAC_TIMESTAMP_ATSNS_SHIFT;
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index bb86fc0641d8..6397fdefd876 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -134,7 +134,7 @@ module_param(enable_oplocks, bool, 0644);
+ MODULE_PARM_DESC(enable_oplocks, "Enable or disable oplocks. Default: y/Y/1");
  
-+	acr_value = readl(priv->ptpaddr + PTP_ACR);
-+	channel = ilog2(FIELD_GET(PTP_ACR_MASK, acr_value));
-+
- 	for (i = 0; i < num_snapshot; i++) {
- 		read_lock_irqsave(&priv->ptp_lock, flags);
- 		get_ptptime(priv->ptpaddr, &ptp_time);
- 		read_unlock_irqrestore(&priv->ptp_lock, flags);
- 		event.type = PTP_CLOCK_EXTTS;
--		event.index = 0;
-+		event.index = channel;
- 		event.timestamp = ptp_time;
- 		ptp_clock_event(priv->ptp_clock, &event);
- 	}
+ module_param(enable_gcm_256, bool, 0644);
+-MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: n/N/0");
++MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: y/Y/0");
+ 
+ module_param(require_gcm_256, bool, 0644);
+ MODULE_PARM_DESC(require_gcm_256, "Require strongest (256 bit) GCM encryption. Default: n/N/0");
 
 
