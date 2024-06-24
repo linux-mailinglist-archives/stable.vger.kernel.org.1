@@ -1,181 +1,226 @@
-Return-Path: <stable+bounces-55052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD15915398
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B0D9153DF
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 610DD1C22D87
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:25:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FC5A1C20DB5
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72B719DFAD;
-	Mon, 24 Jun 2024 16:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D835719DF93;
+	Mon, 24 Jun 2024 16:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IfNlybxC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbaqyPuP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1823C3BBEA;
-	Mon, 24 Jun 2024 16:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A14D19DF88
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 16:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719246240; cv=none; b=pAPaLg8A6SaIoGgHl8QJYj9F13Q1T+Rd+Igeqq30KUDClfwnPHIDbT/nnJwVk2ELwqAccwx3m7noFWssqvl84nfbYALRgZXKvk2cPu/0C/eBVEu18m5MJIdizKdnmRijX09eM9Flx2SBVyuqoeq4HuSxtq/vSd5f7O5dy/vCNd8=
+	t=1719246757; cv=none; b=JlTKMKK9Bp0TK4LnHmv9bk87Do766tNPumpGYk1YpUaVJI6en4J41QGsEfiQ1BAecOpqdCr/Wa1h44LhBMnLB7U5lQ5LqWFX2nEnmsOlg0CdBamjuc4ZYaPkG9/e14Rr6Cis6xSgbJgsdUAHqtObscq6YbSU5JjlJl1IUwXUpng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719246240; c=relaxed/simple;
-	bh=+eBIeVrIJD++n/NSAuh6WeP3yslrINZ6lCOQeUUBoFk=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=nSu9V+lalmuO/EmxzfnnGKUZeRTAco70taAkhVKpDHR4UmNx2r64H5aXuIrKiOoc/WkbStCCNPncd6kVEt3cjmLbzwyNZxQojDfAc2isnOVzomqt1SLqEHBx94Y00fXpZY7aYEQSjHIPFqlQPfJrPwAIol+xHhDNTXn7nq2D1yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IfNlybxC; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7066f68e22cso1303337b3a.2;
-        Mon, 24 Jun 2024 09:23:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719246238; x=1719851038; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=1ybx5MVtGZCgmx+dK4yMNsCUvY5sltUR+PwrGVhhEgM=;
-        b=IfNlybxC0YDJ5LWs4CHsFuO7bGV2f1WYSFr+x1nWcyUWXvI7LgAGleSxtsvN5vTPZH
-         AtM4eyc7O2vu8D5GXcmGNjCatNBxGzuZnJQjbTH5OhABP9oNzJTrdfMDmF5LH1fLTUit
-         4X5q3S7IUtfe7CiiqOkyMTmZSpc/I8Qn9iHMF62gGJUMTKY6hNYKRE13DlE46teSLAEp
-         z+WAiygy1XK3trZ9cQplggnIj5FPgqTENWKUaAR6IEUrd3lGI8mehQgaPw9xajsgLNot
-         y28NPtBdRl1uGEaYbACdYU/EyKZfQ2GA4RqqlteNMDqXpigx9Udf7WJ9X6/LnYQKRzIS
-         jgvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719246238; x=1719851038;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1ybx5MVtGZCgmx+dK4yMNsCUvY5sltUR+PwrGVhhEgM=;
-        b=E5QNaxQ7lehH56oJFdXVnpjxYoPWNynTszfByrTbfIVTXGRuC3aSNx5ypi8gRjlyH6
-         qZ1Y+6Zp+6hu8dEpxU6zrMFV81DPWi+T0Ql31Gdkrxb7zP58hpj5M2PH/xD9Xvih18vq
-         s/UPgvPJ/D66CMq5KniiDBE4eWJl1s3nCEq5fHdEUN+SBHhz4H4+0wwbci8xY3tpmSK+
-         RhPuar2ndEFJszfo7a/QxEGv+uqbi2rG5TOQKjaVSYyZdkniUWQkvp4mFO9DEMG35agV
-         kkYC5a+yL2eiJ18niEJCRbEF8NY/7cW7a80Xi9/Uew+bbd1yBPU83OCZyU11Hl9OEuLe
-         EddA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxfpNmwieS6NyaNvZzOoYKuiEC3gz87+neU0U81z+4HzNN+mZRpBS0EGDwttSlpg7Kub//BYw2RTElvkpmhU2fLFI3dqhjV2najL/YRo3K54nTzplQNznHgNWKo/5x+W/fNOl96+OP+hKZs1/4r7IXV2ppQJP/hIsAFK7v4/WLh0Fn6ZM=
-X-Gm-Message-State: AOJu0Yz8WHu1vOpAaiwnFmU8lAeVu1bxrvCLCWYNxXhi2vU68R+OvhBR
-	2DgLe12orpvphifpsk3u6dGaJaPO45LXeR5ynKrahyIlhwd/CPgW
-X-Google-Smtp-Source: AGHT+IFX94My+LC6fNixecp3qCmDOgpw+PEJqo1lUdHYT1eKEYptlfQ10u0p3FSBrcbqQ7KjfYJL/A==
-X-Received: by 2002:a05:6a00:2d9:b0:705:e5da:8290 with SMTP id d2e1a72fcca58-70670fd5feamr5565778b3a.24.1719246238164;
-        Mon, 24 Jun 2024 09:23:58 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70672f89fc0sm3505903b3a.85.2024.06.24.09.23.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jun 2024 09:23:57 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <f91aee3c-9a24-4f4b-aa03-1707283512a0@roeck-us.net>
-Date: Mon, 24 Jun 2024 09:23:55 -0700
+	s=arc-20240116; t=1719246757; c=relaxed/simple;
+	bh=AMR78hDtxsW6d9j8plKsXCnurMEvSp1xC5T05AwEqok=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hbDVmC6LgA6SuFjcFBtfISk/42Iro7xk2PhMIn39dHgqMc4mtxna0dgL4juakpHk+UVGEzWWBALQ86xQURirXesL0bw4ZLuhUaDDhiZtmr+B/b/oazkg5JAyqlHyxa9swho0OsyMMprlurH2tG/WUkz1xRnEyITk4i13Ts80PCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbaqyPuP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7488C32789;
+	Mon, 24 Jun 2024 16:32:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1719246757;
+	bh=AMR78hDtxsW6d9j8plKsXCnurMEvSp1xC5T05AwEqok=;
+	h=Subject:To:Cc:From:Date:From;
+	b=nbaqyPuPp9N8L+wsSno4cnRZMJVUPGJM3+ZgBH/hE3qYL9bmzxi8JcF05LKv+DKEG
+	 tRshGtpn0F5EVHJqnEZcTZmrlR9vBhw26NRfcPnBpbwz3vX5WByazMwX8AVwdwtFQ9
+	 sIT4hbX5b6jBgMFOHY2/brUP8KmGOP0+3Isc+Slk=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: revert "take runtime pm reference when we attach" failed to apply to 6.9-stable tree
+To: christian.koenig@amd.com,alexander.deucher@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 24 Jun 2024 18:32:33 +0200
+Message-ID: <2024062432-cinch-refining-262b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Regression caused by "eeprom: at24: Probe for DDR3 thermal sensor
- in the SPD case" - "sysfs: cannot create duplicate filename"
-From: Guenter Roeck <linux@roeck-us.net>
-To: =?UTF-8?Q?Krzysztof_Ol=C4=99dzki?= <ole@ans.pl>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Bartosz Golaszewski <brgl@bgdev.pl>,
- Geert Uytterhoeven <geert+renesas@glider.be>,
- Wolfram Sang <wsa@the-dreams.de>
-Cc: stable@vger.kernel.org, linux-i2c@vger.kernel.org,
- linux-hwmon@vger.kernel.org,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <a57e9a39-13ce-4e4d-a7a1-c591f6b4ac65@ans.pl>
- <0dfa2919-98eb-4433-acb4-aa1830787c9b@roeck-us.net>
- <77c1b740-9e6d-40f7-83f0-9a949366f1c9@ans.pl>
- <97c497ae-44f7-4cec-b7d9-f639e4597571@roeck-us.net>
-Content-Language: en-US
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <97c497ae-44f7-4cec-b7d9-f639e4597571@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 6/24/24 07:54, Guenter Roeck wrote:
-[ ... ]
 
->> That said, I have some follow-up questions:
->>
->> 1. if the jc42 driver handles this already, I wonder what's the point of adding
->> at24_probe_temp_sensor()? Is there a situation where it would not do it properly?
->> Or do we expect to remove the probing functionally from jc42.c?
->>
-> 
-> The jc42 driver is not auto-loaded. When suggesting to remove the "probing
-> functionally", I assume you mean to remove its detect function. That would only
-> work if SPD EEPROMs were only connected to I2C adapters calling i2c_register_spd(),
-> and if the systems with those adapters would support DMI.
-> 
-> In v6.9, i2c_register_spd() is only called from the i801 driver (Intel systems).
-> In v6.11, piix4 (AMD) will be added. Even after that, all non-Intel / non-AMD systems
-> would no longer be able to support jc42 compatible chips by just loading the jc42
-> driver. That would not be acceptable.
-> 
+The patch below does not apply to the 6.9-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-There is another reason to not remove the detect function, one that I just found in
-my system when I tried to reproduce the problem: While SPD data is supposed to identify
-if a DIMM supports a temperature sensor, this is not always the case. The DIMMs
-in one of my systems (F4-3200C14-16GTZSW) do support temperature sensors, but the
-respective bit in the SPD data is not set. From raw SPD data:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-000000 23 10 0c 02 85 21 00 08 00 40 00 03 09 03 00 00
-                                                  ^^
-Bit 7 is supposed to be set but isn't.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8bd82363e2ee2eb3a9a8ea1fa94ebe1900d05a71
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062432-cinch-refining-262b@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
 
-This means that the thermal sensors on the DIMMs in my system would not be instantiated
-without detect function and require manual instantiation.
+Possible dependencies:
 
-Guenter
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8bd82363e2ee2eb3a9a8ea1fa94ebe1900d05a71 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Date: Wed, 5 Jun 2024 13:27:20 +0200
+Subject: [PATCH] drm/amdgpu: revert "take runtime pm reference when we attach
+ a buffer" v2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This reverts commit b8c415e3bf98 ("drm/amdgpu: take runtime pm reference
+when we attach a buffer") and commit 425285d39afd ("drm/amdgpu: add amdgpu
+runpm usage trace for separate funcs").
+
+Taking a runtime pm reference for DMA-buf is actually completely
+unnecessary and even dangerous.
+
+The problem is that calling pm_runtime_get_sync() from the DMA-buf
+callbacks is illegal because we have the reservation locked here
+which is also taken during resume. So this would deadlock.
+
+When the buffer is in GTT it is still accessible even when the GPU
+is powered down and when it is in VRAM the buffer gets migrated to
+GTT before powering down.
+
+The only use case which would make it mandatory to keep the runtime
+pm reference would be if we pin the buffer into VRAM, and that's not
+something we currently do.
+
+v2: improve the commit message
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+CC: stable@vger.kernel.org
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+index 055ba2ea4c12..662d0f28f358 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+@@ -41,8 +41,6 @@
+ #include <linux/dma-buf.h>
+ #include <linux/dma-fence-array.h>
+ #include <linux/pci-p2pdma.h>
+-#include <linux/pm_runtime.h>
+-#include "amdgpu_trace.h"
+ 
+ /**
+  * amdgpu_dma_buf_attach - &dma_buf_ops.attach implementation
+@@ -58,42 +56,11 @@ static int amdgpu_dma_buf_attach(struct dma_buf *dmabuf,
+ 	struct drm_gem_object *obj = dmabuf->priv;
+ 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
+ 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
+-	int r;
+ 
+ 	if (pci_p2pdma_distance(adev->pdev, attach->dev, false) < 0)
+ 		attach->peer2peer = false;
+ 
+-	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
+-	trace_amdgpu_runpm_reference_dumps(1, __func__);
+-	if (r < 0)
+-		goto out;
+-
+ 	return 0;
+-
+-out:
+-	pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
+-	trace_amdgpu_runpm_reference_dumps(0, __func__);
+-	return r;
+-}
+-
+-/**
+- * amdgpu_dma_buf_detach - &dma_buf_ops.detach implementation
+- *
+- * @dmabuf: DMA-buf where we remove the attachment from
+- * @attach: the attachment to remove
+- *
+- * Called when an attachment is removed from the DMA-buf.
+- */
+-static void amdgpu_dma_buf_detach(struct dma_buf *dmabuf,
+-				  struct dma_buf_attachment *attach)
+-{
+-	struct drm_gem_object *obj = dmabuf->priv;
+-	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
+-	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
+-
+-	pm_runtime_mark_last_busy(adev_to_drm(adev)->dev);
+-	pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
+-	trace_amdgpu_runpm_reference_dumps(0, __func__);
+ }
+ 
+ /**
+@@ -267,7 +234,6 @@ static int amdgpu_dma_buf_begin_cpu_access(struct dma_buf *dma_buf,
+ 
+ const struct dma_buf_ops amdgpu_dmabuf_ops = {
+ 	.attach = amdgpu_dma_buf_attach,
+-	.detach = amdgpu_dma_buf_detach,
+ 	.pin = amdgpu_dma_buf_pin,
+ 	.unpin = amdgpu_dma_buf_unpin,
+ 	.map_dma_buf = amdgpu_dma_buf_map,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
+index 10832b470448..bc3ac73b6b8d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
+@@ -181,7 +181,6 @@ int amdgpu_fence_emit(struct amdgpu_ring *ring, struct dma_fence **f, struct amd
+ 	amdgpu_ring_emit_fence(ring, ring->fence_drv.gpu_addr,
+ 			       seq, flags | AMDGPU_FENCE_FLAG_INT);
+ 	pm_runtime_get_noresume(adev_to_drm(adev)->dev);
+-	trace_amdgpu_runpm_reference_dumps(1, __func__);
+ 	ptr = &ring->fence_drv.fences[seq & ring->fence_drv.num_fences_mask];
+ 	if (unlikely(rcu_dereference_protected(*ptr, 1))) {
+ 		struct dma_fence *old;
+@@ -309,7 +308,6 @@ bool amdgpu_fence_process(struct amdgpu_ring *ring)
+ 		dma_fence_put(fence);
+ 		pm_runtime_mark_last_busy(adev_to_drm(adev)->dev);
+ 		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
+-		trace_amdgpu_runpm_reference_dumps(0, __func__);
+ 	} while (last_seq != seq);
+ 
+ 	return true;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h
+index 7aafeb763e5d..383fce40d4dd 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h
+@@ -554,21 +554,6 @@ TRACE_EVENT(amdgpu_reset_reg_dumps,
+ 		      __entry->value)
+ );
+ 
+-TRACE_EVENT(amdgpu_runpm_reference_dumps,
+-	    TP_PROTO(uint32_t index, const char *func),
+-	    TP_ARGS(index, func),
+-	    TP_STRUCT__entry(
+-			     __field(uint32_t, index)
+-			     __string(func, func)
+-			     ),
+-	    TP_fast_assign(
+-			   __entry->index = index;
+-			   __assign_str(func);
+-			   ),
+-	    TP_printk("amdgpu runpm reference dump 0x%x: 0x%s\n",
+-		      __entry->index,
+-		      __get_str(func))
+-);
+ #undef AMDGPU_JOB_GET_TIMELINE_NAME
+ #endif
+ 
 
 
