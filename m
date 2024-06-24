@@ -1,77 +1,67 @@
-Return-Path: <stable+bounces-55018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4624B914EA5
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D95D914EBF
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0218A2850AA
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 13:33:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27D47283D10
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 13:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEFF1411C8;
-	Mon, 24 Jun 2024 13:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58A9143880;
+	Mon, 24 Jun 2024 13:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eDoJCowY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rCzQE2Yg"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820C81448D9;
-	Mon, 24 Jun 2024 13:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76723143739;
+	Mon, 24 Jun 2024 13:31:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719235795; cv=none; b=OwZ3/8VRxZ/oefJhvU3O/qMA5qZjzsFiP+G8q7nevZr+CXIfDTkHmHTkzGRY7dmFTcOx60r9Y66efAfMB2i9XkOohKGuZAxrHthXB0M7uA3HOrP0jNHzzuX+x2NWJ5WMvTFLX9wAMfaxRN/PxBgmG1iAT+GjipHWGTsnSJhqmAE=
+	t=1719235901; cv=none; b=XeZxudDtavjODIut7deOK42g9NSVQzCJKnYMQmvHJTbE7nleck33D7RBynwS55V1y39Kg7/NKQg4lCeUHKxJPBvTZxiI3DxXdrDFxJB6slF8qS5l9hQj0xZNy8LcuobJ05PBSwwgnwD9ujgsTyO6DlYHB3Ztg9/T7xKgCw1dZS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719235795; c=relaxed/simple;
-	bh=JM1sD9QP4RyHSPhRqlUabkVUXwe0DuYqN6xM1zvvobw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=h7fhmh+Bg+c+lofj+zrJTwc55z+oDTKlKIzJ+pxHP/BOah+2Yj0+aXjOUxBKzxgb+uhYZ2o/DbBVBbYzJMBVKbVZwBH3avwsJ2mO/06lv5IizW4D33aUH7lyVvuafI4ZXq0Rv+Asn4prADmnNvwvsKYGD69+1KTBrfJuwyeJ68Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eDoJCowY; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719235794; x=1750771794;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=JM1sD9QP4RyHSPhRqlUabkVUXwe0DuYqN6xM1zvvobw=;
-  b=eDoJCowYyDhPVtxYhrwt6h0zt/u3fseu6y1oldX0P3mCCFmnsnSHeIz+
-   iHDiHUXU1WuBp9Hsf3qHIrmcDA1tNXNfPF2RGTr/c2Ys53ulyQyXZPl4d
-   Fz3YRicHKNvn0WLo7tINKQUnA3bg0OG9zm9dybQ+lrbP9vclFdGlSKom3
-   0mdGkxLsNYNjM1mJgvL597VsbnjKOxZTgps52z+mNIGwGy6S8h8kfuOu3
-   0wKtbQRVJfJ3c2av+0jbvk2x86oBPp0gf1EqAxbjf69PIKqm8XuVkBRy2
-   9vQ8bTvq9T974/4fkp5dszEJpR52rIpydISb/DXEYFYoPjY6a85nPAeWs
-   A==;
-X-CSE-ConnectionGUID: JaBHE5U1RcaED/hWOVPynw==
-X-CSE-MsgGUID: wEQl7WLCRteK4wIEEuZWWQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="26830755"
-X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; 
-   d="scan'208";a="26830755"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2024 06:29:54 -0700
-X-CSE-ConnectionGUID: K+q5CI5dTZaceQrjTvCvmA==
-X-CSE-MsgGUID: xXN1cEZkQIG+SfpCEqsjiQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; 
-   d="scan'208";a="47746743"
-Received: from wentongw-optiplex-7000.sh.intel.com ([10.239.154.127])
-  by fmviesa005.fm.intel.com with ESMTP; 24 Jun 2024 06:29:51 -0700
-From: Wentong Wu <wentong.wu@intel.com>
-To: sakari.ailus@linux.intel.com,
-	tomas.winkler@intel.com,
-	gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org,
-	Wentong Wu <wentong.wu@intel.com>,
-	stable@vger.kernel.org,
-	Jason Chen <jason.z.chen@intel.com>
-Subject: [PATCH v3 4/5] mei: vsc: Prevent timeout error with added delay post-firmware download
-Date: Mon, 24 Jun 2024 21:28:48 +0800
-Message-Id: <20240624132849.4174494-5-wentong.wu@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240624132849.4174494-1-wentong.wu@intel.com>
-References: <20240624132849.4174494-1-wentong.wu@intel.com>
+	s=arc-20240116; t=1719235901; c=relaxed/simple;
+	bh=iaBx0pKDhCtH1GENa4aTAEo0/WKpJ6n5K95+bmY8LOo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NDPggz2HsLIIh3d6L+ZVHwDN8UiVP5oe2zZxbex0qgyVdpk1N0fO9m9EsPIZBfyOyteE7w5kewJc4zgiEdEo9/MQGaQq7lnI3HGZT0hf49ILD6yLBQ7ld64koR3qIrxmrF6fbcW94Tv2Jub6/T6rtFGuGgFw0A3cxzgLIl4nLpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rCzQE2Yg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF43C4AF0C;
+	Mon, 24 Jun 2024 13:31:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719235901;
+	bh=iaBx0pKDhCtH1GENa4aTAEo0/WKpJ6n5K95+bmY8LOo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rCzQE2Yg0lqmETb8TJ1/zkmnO7Rp2BwFfitRhF7MALOvcaR910Dri3TO9I8yECWnS
+	 DVx66kwp7A5M524psW4+za38z6XGl2NyA7x70wHXZr2zPYmAsNMOdYXB83gDv+QKWi
+	 VSBQXAgJ1nUwtEaTW9gAUr/7+gibvDtk1KDF8Z0mvINUKZY5xsuko9Qt0WJY9L4VXs
+	 JF6EZY0d0mPJzgoU72DoYUyEwKwjkXZL6NbPX/EOFfpGJTPqrVeEjJmJgz0pnx1XQ4
+	 j15FUCc3IAK0VT7MSns6hINh4E7SbcReYGaMX8Yje0Ste21WOgihv8ywZJvaCDbAzS
+	 yrYsANG4GM1JQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1sLjnP-000000001wW-0HIo;
+	Mon, 24 Jun 2024 15:31:47 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/3] serial: qcom-geni: fix soft lockup on sw flow control and suspend
+Date: Mon, 24 Jun 2024 15:31:34 +0200
+Message-ID: <20240624133135.7445-3-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.44.1
+In-Reply-To: <20240624133135.7445-1-johan+linaro@kernel.org>
+References: <20240624133135.7445-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,35 +70,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-After completing the firmware download, the firmware requires some
-time to become functional. This change introduces additional sleep
-time before the first read operation to prevent a confusing timeout
-error in vsc_tp_xfer().
+The stop_tx() callback is used to implement software flow control and
+must not discard data as the Qualcomm GENI driver is currently doing
+when there is an active TX command.
 
-Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
-Cc: stable@vger.kernel.org # for 6.8+
-Signed-off-by: Wentong Wu <wentong.wu@intel.com>
-Tested-by: Jason Chen <jason.z.chen@intel.com>
+Cancelling an active command can also leave data in the hardware FIFO,
+which prevents the watermark interrupt from being enabled when TX is
+later restarted. This results in a soft lockup and is easily triggered
+by stopping TX using software flow control in a serial console but this
+can also happen after suspend.
+
+Fix this by only stopping any active command, and effectively clearing
+the hardware fifo, when shutting down the port. Make sure to temporarily
+raise the watermark level so that the interrupt fires when TX is
+restarted.
+
+Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
+Cc: stable@vger.kernel.org	# 4.17
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- drivers/misc/mei/platform-vsc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c | 28 +++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/misc/mei/platform-vsc.c b/drivers/misc/mei/platform-vsc.c
-index 1ec65d87488a..d02f6e881139 100644
---- a/drivers/misc/mei/platform-vsc.c
-+++ b/drivers/misc/mei/platform-vsc.c
-@@ -28,8 +28,8 @@
+diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+index 1d5d6045879a..72addeb9f461 100644
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -651,13 +651,8 @@ static void qcom_geni_serial_start_tx_fifo(struct uart_port *uport)
+ {
+ 	u32 irq_en;
  
- #define MEI_VSC_MAX_MSG_SIZE		512
+-	if (qcom_geni_serial_main_active(uport) ||
+-	    !qcom_geni_serial_tx_empty(uport))
+-		return;
+-
+ 	irq_en = readl(uport->membase +	SE_GENI_M_IRQ_EN);
+ 	irq_en |= M_TX_FIFO_WATERMARK_EN | M_CMD_DONE_EN;
+-
+ 	writel(DEF_TX_WM, uport->membase + SE_GENI_TX_WATERMARK_REG);
+ 	writel(irq_en, uport->membase +	SE_GENI_M_IRQ_EN);
+ }
+@@ -665,16 +660,28 @@ static void qcom_geni_serial_start_tx_fifo(struct uart_port *uport)
+ static void qcom_geni_serial_stop_tx_fifo(struct uart_port *uport)
+ {
+ 	u32 irq_en;
+-	struct qcom_geni_serial_port *port = to_dev_port(uport);
  
--#define MEI_VSC_POLL_DELAY_US		(50 * USEC_PER_MSEC)
--#define MEI_VSC_POLL_TIMEOUT_US		(200 * USEC_PER_MSEC)
-+#define MEI_VSC_POLL_DELAY_US		(100 * USEC_PER_MSEC)
-+#define MEI_VSC_POLL_TIMEOUT_US		(400 * USEC_PER_MSEC)
+ 	irq_en = readl(uport->membase + SE_GENI_M_IRQ_EN);
+ 	irq_en &= ~(M_CMD_DONE_EN | M_TX_FIFO_WATERMARK_EN);
+ 	writel(0, uport->membase + SE_GENI_TX_WATERMARK_REG);
+ 	writel(irq_en, uport->membase + SE_GENI_M_IRQ_EN);
+-	/* Possible stop tx is called multiple times. */
++}
++
++static void qcom_geni_serial_clear_tx_fifo(struct uart_port *uport)
++{
++	struct qcom_geni_serial_port *port = to_dev_port(uport);
++
+ 	if (!qcom_geni_serial_main_active(uport))
+ 		return;
  
- #define mei_dev_to_vsc_hw(dev)		((struct mei_vsc_hw *)((dev)->hw))
++	/*
++	 * Increase watermark level so that TX can be restarted and wait for
++	 * sequencer to start to prevent lockups.
++	 */
++	writel(port->tx_fifo_depth, uport->membase + SE_GENI_TX_WATERMARK_REG);
++	qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
++					M_TX_FIFO_WATERMARK_EN, true);
++
+ 	geni_se_cancel_m_cmd(&port->se);
+ 	if (!qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
+ 						M_CMD_CANCEL_EN, true)) {
+@@ -684,6 +691,8 @@ static void qcom_geni_serial_stop_tx_fifo(struct uart_port *uport)
+ 		writel(M_CMD_ABORT_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
+ 	}
+ 	writel(M_CMD_CANCEL_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
++
++	port->tx_remaining = 0;
+ }
  
+ static void qcom_geni_serial_handle_rx_fifo(struct uart_port *uport, bool drop)
+@@ -1069,11 +1078,10 @@ static void qcom_geni_serial_shutdown(struct uart_port *uport)
+ {
+ 	disable_irq(uport->irq);
+ 
+-	if (uart_console(uport))
+-		return;
+-
+ 	qcom_geni_serial_stop_tx(uport);
+ 	qcom_geni_serial_stop_rx(uport);
++
++	qcom_geni_serial_clear_tx_fifo(uport);
+ }
+ 
+ static int qcom_geni_serial_port_setup(struct uart_port *uport)
 -- 
-2.34.1
+2.44.1
 
 
