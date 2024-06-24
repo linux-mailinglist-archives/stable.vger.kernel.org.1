@@ -1,119 +1,184 @@
-Return-Path: <stable+bounces-54996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B813C9148A2
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 13:29:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94AC2914903
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 13:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74B7C280DAA
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:29:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F2DE1C22BAB
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29589139D03;
-	Mon, 24 Jun 2024 11:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA88213C9A2;
+	Mon, 24 Jun 2024 11:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="WhbIIPsv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MixrinrA"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE2C13210F;
-	Mon, 24 Jun 2024 11:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C5213C3F5;
+	Mon, 24 Jun 2024 11:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719228547; cv=none; b=NYwUWvlDlZrvL8MnMcQOZMSNT+UDmRwtIQY3rRCOp5BmeNP2NQVJOgN9NL0ULNK64feaz3ETerdqSTf7ty0fT0Js6ugWG7bYZkTMbTtcgkT8guNtM3oFJqO92mRkhx7IIp5i2czEsq39ohWT1y58iFjWbUabfqyqVV/9TJeK6fY=
+	t=1719229334; cv=none; b=by0o12ZEblKS+AdDcmLUGBH0I9bmd5InNgc5eo3+7NngwKUn8bIJTGjwsrRxZHk8XD/W3ptbGeb7q1hEVPya5TSOqsqywq7/Mo3R03f6bHYEGfBQ7vOVxYuZ5NDr0QmSG/6vIPqwpW/2IKj37yZWJRTIyGFNQ4aYyX8+/OUe3kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719228547; c=relaxed/simple;
-	bh=W+Od/xdu7fJvPbDjVdQXS0nEF6AudVWgglSNsQYl48E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=emHj7M1OEnxzz8qshUM7sClErH9SP0eGUvpnZ0i1lFrBGxpejCBo64y+U2XOStOpeOb+CMYTO8lk+zdi0Y087ef7NpMszD0dNCxhpSE8Qa1KMDBeSzazCslyZGQOWgLnPmSNThcAID8Q5iHNO5ARD5TKl8EJUEOy61h5g6txuLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=WhbIIPsv; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1719228535; x=1719833335; i=markus.elfring@web.de;
-	bh=W+Od/xdu7fJvPbDjVdQXS0nEF6AudVWgglSNsQYl48E=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=WhbIIPsvyMMv3qLuzqEpCsXWNLd5MI0ScQSEiCrVQjZj/6vP4oxbqOqwsaULW1F4
-	 oVvXKLPtoxnz3auJSWfFOaQT2KORLn1fzUi9bNlSMqk7oOw/jWFixJzCxzrqlb1Kl
-	 Cr9olzyHR7GzwJ7BtbXgQ2kR4NQMAC3pRYte8dS8AsEtmyfQwoN6QkGSybEEUxbF6
-	 1tf2HhpZJVBPBpxTHV2TtwU865oMujVqYzdyWtQNiFq3eBM0SbgFvkCEUbvIcKfam
-	 tplSHPdMc/T0Kgs110ifAxUhz16i0MyzharVJa0/qFiE2zNHyZGbBAuWfezcnmDRa
-	 Zz8yYNW7IJedLZ2Wng==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1M3V26-1sMG6n1UVG-00BM6u; Mon, 24
- Jun 2024 13:28:55 +0200
-Message-ID: <8d076c38-f5d0-477b-9b9b-bceee3e2fec4@web.de>
-Date: Mon, 24 Jun 2024 13:28:54 +0200
+	s=arc-20240116; t=1719229334; c=relaxed/simple;
+	bh=Nbsl3p9OLbL48cTueVzxumNtwMa9kobgVhE46dIs0EU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AnTSCIu0fdyDXdgT3z3LVOqY/bRj7h5Ejyvlct48GH8YlTPK4Kagx9vnv0w4pT+l5r5XiXi4dZUukB6L2IgMBypm/WBzHpB1UnrBHo7e8W/CWzFd+n1cWoY7kl4/R1X082UQ0zex5xKUQclhwyZyGRmofNulAwtz57Je5fB0+8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MixrinrA; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719229334; x=1750765334;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Nbsl3p9OLbL48cTueVzxumNtwMa9kobgVhE46dIs0EU=;
+  b=MixrinrA0p/hIytwnz84hdZawbll0v97oAmInn8hH98WbRqh2NpgKJV9
+   OmrwSGoLaQDBMum+7+uONk+yhterR9/41+L4OuGgmsHHGZqIB8g8v208S
+   u6P3LlC2C7sGmX2/GVIMTXF3FHAGSdZDARDQo9F9coMgyFsXuJ/UqwDNv
+   MWs8AK3DdCA6NyvaRNomRCZWpXkhYJCt4xKfWl3JJFx38F3pG2j03h4AZ
+   mBLny1jb4aZ/5Trw6xim9kLQOsOEjenJ/usvrhlkWsrAt+qd4yttyXPVK
+   XtM3sCZtkzr9BsRVU1z25RagwDNZP+w6ggcpgNlvQu81448LCYbPFVcjL
+   w==;
+X-CSE-ConnectionGUID: 5WGTbE5gQ3a8UFjo3cGWuQ==
+X-CSE-MsgGUID: UmBP6gHMT0OJPLmkWCyQzQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="20008065"
+X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; 
+   d="scan'208";a="20008065"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2024 04:42:10 -0700
+X-CSE-ConnectionGUID: YqMPaDEYRR2oV68GG2oC4w==
+X-CSE-MsgGUID: 3tULNehySuWW5nz5eB4Seg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; 
+   d="scan'208";a="74502454"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa001.fm.intel.com with ESMTP; 24 Jun 2024 04:42:07 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 52D0D122; Mon, 24 Jun 2024 14:42:05 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>
+Cc: linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Kai Huang <kai.huang@intel.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCHv5 1/4] x86/tdx: Introduce wrappers to read and write TD metadata
+Date: Mon, 24 Jun 2024 14:41:46 +0300
+Message-ID: <20240624114149.377492-2-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
+References: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] aoe: fix the potential use-after-free problem in more
- places
-To: Chun-Yi Lee <jlee@suse.com>, linux-block@vger.kernel.org
-Cc: Chun-Yi Lee <joeyli.kernel@gmail.com>, stable@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>, "David S. Miller"
- <davem@davemloft.net>, Jens Axboe <axboe@kernel.dk>,
- Justin Sanders <justin@coraid.com>, Kirill Korotaev <dev@openvz.org>,
- Nicolai Stange <nstange@suse.com>, Pavel Emelianov <xemul@openvz.org>
-References: <20240624064418.27043-1-jlee@suse.com>
- <e44297c0-f45a-4753-8316-c6b74190a440@web.de>
- <20240624110449.GJ7611@linux-l9pv.suse>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240624110449.GJ7611@linux-l9pv.suse>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:HgMl98ZoBQNlDKB/XPSzWGvOEv0sndZjLM1zLv9laQtbhwF2ecC
- qlxYvUFiA/+esJhvnQ8lDPwdifKhIcN/eUIG27USNsOgzWHhfAUbgVFkBWds6w0M9zcrkmC
- gzooqU/tFCq7r992xylVa0Hz4HotSMKgGQNhYtu7XbRPOtKQ5fs0vMifYvuTCqf6QrfMJOv
- yeLLv5IRINmocNRxQdlCg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:F6TkXs+l3WI=;mDalcAG2+hF+DB8raCUqk5y8zSZ
- mZFbHtSIFrrP2kUCoEGi2sZMfPjySolKROsHmU6SdGs9oLLts1+q0D3RYKmbMsycValwVSkp3
- mM3O/DEyw2ffFETnXtP/G5QWC6kCt9OwQDiQ7v2WlZECtcLskY8bjZOI1eyiMreu7s1Us31Q4
- pzN4DbNUFt9FApfHfB3/JxZUfElfN5h5i9DbcuOU/cNjM/lyrO0Ku7WWzAuortuLUCmZLEAa/
- gaD23g3lt0tMP4XFOD7HVF0F9XRlFN25fe+hQ8R9lMcSFDKGGubmtupgf9qqlOaZOFdzncJ0Q
- POjeergBkV6fPcPXAZWb9ZZM1VRYrKwzgYarzZuU+O4sVA6mu+8pfFwChldLxVZU76svxKkoQ
- O+OL8Cr/F0Hgl+ZTrI8WT7Cy+zxkZyB5E6T8+D5PttX3CE7UwUkDr4bB2MlBc+Z48RLBV898T
- lztzBBiDqOHWv3tsgWLKH4y9EsLgLIi3WM8zDIwMc926bxLjvVg04UpNIedPndTjN2kh2cDzi
- i1L27Fat1n+TnltvtLjdABO9Vr7cFwkUfRxzdMttM4vyC4BLPMsJvpk6EnoOUceLU+ZNxJVWm
- O4XUJ3MPRHdBFrPCLnyx0/fpYP7pmGu1kqnYia53JndL0OEcRzu9sDwT88nt7p3e0II1HCVOX
- t7ReZ2/EBIe+m1tzKInSN3ow0I9wh7BcZMObiepzKr3r8gOq8jDnpavx8ep3Ivm3DJa994mJi
- gZfHlIoTYtQGIJm3HrV7EIzPWl/vdoZ0ruVOv38q8crJY80o8HLwfmkkE0qvLRJmYW6nKLAay
- t/1ILwptX6JC9vfE+ccjodDVTodApd2yCtSosZ4s9DD8A=
+Content-Transfer-Encoding: 8bit
 
->> Please reconsider the version identification in this patch subject once=
- more.
->>
->>
->> =E2=80=A6
->>> ---
->>>
->>> v2:
->>> - Improve patch description
->> =E2=80=A6
->>
->> How many patch variations were discussed and reviewed in the meantime?
->>
->
-> Only v2. I sent v2 patch again because nobody response my code in patch.
-> But I still want to grap comments for my code.
+The TDG_VM_WR TDCALL is used to ask the TDX module to change some
+TD-specific VM configuration. There is currently only one user in the
+kernel of this TDCALL leaf.  More will be added shortly.
 
-How does such a feedback fit to my previous patch review?
-https://lore.kernel.org/r/e8331545-d261-44af-b500-93b90d77d8b7@web.de/
-https://lkml.org/lkml/2024/5/14/551
+Refactor to make way for more users of TDG_VM_WR who will need to modify
+other TD configuration values.
 
-Regards,
-Markus
+Add a wrapper for the TDG_VM_RD TDCALL that requests TD-specific
+metadata from the TDX module. There are currently no users for
+TDG_VM_RD. Mark it as __maybe_unused until the first user appears.
+
+This is preparation for enumeration and enabling optional TD features.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/coco/tdx/tdx.c           | 32 ++++++++++++++++++++++++++-----
+ arch/x86/include/asm/shared/tdx.h |  1 +
+ 2 files changed, 28 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 078e2bac2553..64717a96a936 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -77,6 +77,32 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+ 		panic("TDCALL %lld failed (Buggy TDX module!)\n", fn);
+ }
+ 
++/* Read TD-scoped metadata */
++static inline u64 __maybe_unused tdg_vm_rd(u64 field, u64 *value)
++{
++	struct tdx_module_args args = {
++		.rdx = field,
++	};
++	u64 ret;
++
++	ret = __tdcall_ret(TDG_VM_RD, &args);
++	*value = args.r8;
++
++	return ret;
++}
++
++/* Write TD-scoped metadata */
++static inline u64 tdg_vm_wr(u64 field, u64 value, u64 mask)
++{
++	struct tdx_module_args args = {
++		.rdx = field,
++		.r8 = value,
++		.r9 = mask,
++	};
++
++	return __tdcall(TDG_VM_WR, &args);
++}
++
+ /**
+  * tdx_mcall_get_report0() - Wrapper to get TDREPORT0 (a.k.a. TDREPORT
+  *                           subtype 0) using TDG.MR.REPORT TDCALL.
+@@ -924,10 +950,6 @@ static void tdx_kexec_finish(void)
+ 
+ void __init tdx_early_init(void)
+ {
+-	struct tdx_module_args args = {
+-		.rdx = TDCS_NOTIFY_ENABLES,
+-		.r9 = -1ULL,
+-	};
+ 	u64 cc_mask;
+ 	u32 eax, sig[3];
+ 
+@@ -946,7 +968,7 @@ void __init tdx_early_init(void)
+ 	cc_set_mask(cc_mask);
+ 
+ 	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
+-	tdcall(TDG_VM_WR, &args);
++	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
+ 
+ 	/*
+ 	 * All bits above GPA width are reserved and kernel treats shared bit
+diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
+index fdfd41511b02..7e12cfa28bec 100644
+--- a/arch/x86/include/asm/shared/tdx.h
++++ b/arch/x86/include/asm/shared/tdx.h
+@@ -16,6 +16,7 @@
+ #define TDG_VP_VEINFO_GET		3
+ #define TDG_MR_REPORT			4
+ #define TDG_MEM_PAGE_ACCEPT		6
++#define TDG_VM_RD			7
+ #define TDG_VM_WR			8
+ 
+ /* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
+-- 
+2.43.0
+
 
