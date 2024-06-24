@@ -1,146 +1,154 @@
-Return-Path: <stable+bounces-55007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FFE7914A44
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 14:37:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD5A3914AEF
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 14:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08720B2377A
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 12:37:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49BB41F23AFD
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 12:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD5513C83A;
-	Mon, 24 Jun 2024 12:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2DD13CABC;
+	Mon, 24 Jun 2024 12:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="HKfHHn7u";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SqE/KFUp"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="2S6rDUXA";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="frRNYPVV"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh7-smtp.messagingengine.com (fhigh7-smtp.messagingengine.com [103.168.172.158])
+Received: from wflow4-smtp.messagingengine.com (wflow4-smtp.messagingengine.com [64.147.123.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E959F1386DA;
-	Mon, 24 Jun 2024 12:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3A81E4A9;
+	Mon, 24 Jun 2024 12:45:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719232631; cv=none; b=u5PKPBsMQh5BdRTxwEXl6ZxRP6b4l3dIEgTLuKi3VEAAUeeWAOEp9KanPjqZH4nLOOmlXWzur+VSf/VFgGNZQaIMb93F9I0tPJU5iaiqsh4NriKvmAueQ+qYBINSvrMelxKwlKip5zoukTXLIwncXVJ82V1yWr6bz8Bke7p4cH4=
+	t=1719233151; cv=none; b=dxvdHlYFn0Fzitvk/yh5R2mXZEWfDWBvLe86K+3Up2rNPwhRkLw3VWxJnQXFyVcblcXv7cMGxLvVBlGQxXI/LNFyPdf32hSxa0iWy+VRL3vv99EXP6SaL6PS7vBU8oEWxd7GKtwHFK9eV4HQHe8oLpj8EyWnVoRqi8yz43VRHIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719232631; c=relaxed/simple;
-	bh=TbmH+yoyAgf4fe9CUvwuV5yJgzh5ZHwbkVCsLRZgEQ8=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=UyEObqEv0W7q47teygKnMYdf+FuJzUPP+2QoJRe/Len2hnAvPYUzi9gww2O4ecbPQBXejxKwAZE+6IhAPorNIXblrp4elQvOYBxt3TyFdFkgbqzlXzvE3Vc0J5OTHS1M2PaDsXvI7syb2fIGp6aJihVJYiJgSQ5mFo9X+J+LYjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=HKfHHn7u; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SqE/KFUp; arc=none smtp.client-ip=103.168.172.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 07C5B11400E4;
-	Mon, 24 Jun 2024 08:37:08 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Mon, 24 Jun 2024 08:37:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1719232628; x=1719319028; bh=lFXvov0ksU
-	8Pc4ucksxO9SvwB7S7ZcSyst60pbeeZH8=; b=HKfHHn7umsdW+0c1ehuSJQ99eI
-	Myjn3JHII41XjBGkBE82U3ZLF1gpqJUHWfu0fD1R2wDTT4O5lDapBn9tPESvQu77
-	8adNnRplVreG2sPNDp0X/rfGleHLut9Gk/BSzkxRKhL04EDXsG1YRKgxv6IL6gBV
-	hiECEd8aKPxpc7cvdwq2YkiIfftlQjXB9+KAYBuvYvOjmxwZ7/F9l3LRlEL5RFo3
-	063MmLg36ab0j12O1asXtLt3D5DVUiK5EvC72HFvCSk3AleE/g7i2STrQpvD5No4
-	i+lJKlbqcQQIUGGQGOvBpwpmcMBptK7y9aRt5R4yzWI1IbKl5+ANpAHr7VSA==
+	s=arc-20240116; t=1719233151; c=relaxed/simple;
+	bh=bHk7oVY4HJSJXdcXraPj+8uJig3F5xX26sfibOwI8eE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gibUnF+4ayXkISZR7UR0xUNg2gJ7iM76stVn4YS7Y3Jx/VtYm2Us/xVssh6BztlfeY3PGB/yOipRT0z3g6YHZFgfvQYHvNDy5hQqMfIGyWg0yJCeydAOaIbnaM0jtUa0oapdketBdYgDNlNWXzqFoTA/1pmnqZL0FjLrkf9Vxoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=2S6rDUXA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=frRNYPVV; arc=none smtp.client-ip=64.147.123.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailflow.west.internal (Postfix) with ESMTP id D38FB2CC00FE;
+	Mon, 24 Jun 2024 08:45:42 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Mon, 24 Jun 2024 08:45:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1719233142;
+	 x=1719240342; bh=VYXob4vhayXt3Bmdcst9br5mK/yayifQnerAn2TAL6o=; b=
+	2S6rDUXAJzJNfiTEwjdnFBRJcsQiu7lpzuhnbS7SaKurMHzWXklj4gA/B2p5Vt3o
+	XUM+C4KKErcyqF+a6+IXnKD3q4HdO/oxeRQwZr2DY+2V57pVArBnyuGbqrWfGtQH
+	tJN5NbQs1ha9Pi9/ze/Ih+etMcljFpIgwNKt8EFECgqGkbd43++t5PakJrkAQD7c
+	QOBLFaqLBCTwaGxVq5ndkSCI38twUpEpj16cv6ENKTTmar2mhf2NoOJjt3DP1npH
+	1QmVuJ/wpEv3emEulsCuUZxswDhWuYIClxJYbZkMjMUe1+gD6E3ZIgDqDqQ8wNU7
+	GbLw29QnQxVjTeBAUL8SKw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1719232628; x=1719319028; bh=lFXvov0ksU8Pc4ucksxO9SvwB7S7
-	ZcSyst60pbeeZH8=; b=SqE/KFUphRWeVMJb+kfwzgwN1/Hu23nlRESAJfYgc8ML
-	pUz2mmmI8F5nmEqE+5ox0g/rjJ6d0Zb285uqwFyeJQcQZsscUdL/sXj/UaEluip+
-	Y8hGi2uVUqhxSS2j+Tg9/Mp0Zm2wYNokTin+aYRk4BLKmOWC6+/LDFt4sIkWw2DL
-	h/Je6x5AernFk742JykHMAJAodzv6NFC7WvmD1gw90TOsbHe5Ze1AinDq0CmjjKA
-	Z95MIl9q9aP4NXQ+7dphFhlbY9tl+CfCvo6YBxD12RGqejBt7qQshI8pAPifYgLG
-	pqaC18LuaHL4DH+Btw3GZ5ixeMLofnITMxBNO+thYQ==
-X-ME-Sender: <xms:cWh5ZrLj7Is9v5gIq1mXIwuK3B6Z67FMFXi_sBM56MqeKqAR64n6TQ>
-    <xme:cWh5ZvL6fPST5egK7_VqUyPLzOA0tCn6X6DlKYOektXFx1cgWvkKCjEMrv6PEjXyW
-    4yPi_m7QPeT9rWgx9c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeeguddgheegucetufdoteggodetrfdotf
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1719233142; x=
+	1719240342; bh=VYXob4vhayXt3Bmdcst9br5mK/yayifQnerAn2TAL6o=; b=f
+	rRNYPVV/EqGu77I3z4gxzgFZq2jcV99gSpQWSPmed1ICqRPfznUwiQ90Fm/rAeie
+	LJEoiBluZSJ0Ts9EMzS42YaUzlXXr4lO7Du0tEgESRue86aY3kixa+hthEaSVjaW
+	1lVGG+uUCU2HzhiYV0ebNWiCkFq7RvFU33EU7YVTUK71cr1B8OfWMWBQImXWmR4T
+	1KcBlGWB8o/3o6CPEAXEMfZ4908oDQfB7WHvyx1TR5mVu/5RrKp8Aq0kKAYwIlns
+	e3hfKUlSYN/q8AH/A4mG4LsjBpMB6/5tEv8mISyX5+IwgikXVxI+tUSvb/Z1mL9y
+	f2cKGNzrR6lUaVW3T+Gsw==
+X-ME-Sender: <xms:dmp5ZhDvel6ocBI6jPwwhS9zrM4QRjc74tRGKyoYfEcnAknrul8_fA>
+    <xme:dmp5ZvhF1jfZ8IGlKHQt7nXLNddjZtpwPwBjCDcMdb06YGsxruheDBNFw64wkWDt3
+    4Pwrh4zBHJNqA>
+X-ME-Received: <xmr:dmp5ZsnyGNEng4qlOTsAxDpHXb-kZSYOkR-8solMDOPHHeyRJGkS_J1YLBTtRJKxQ9owKLe8lVqkQWNYZuEYoQ09voen-Bdg79wbkw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeeguddgheeiucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:cWh5ZjudJI3oixudlca83stC9GtoJPVF-yfqIooUyooPVxKMkRay5w>
-    <xmx:cWh5ZkZgIV_EAxNKJdd3dn5ts0jsz0iQNgpwAoaYwIkaiwKIL8UoqA>
-    <xmx:cWh5ZiamgC5g2Z463RDvkqIdIU3iA-8c5MxvqJ4odiwM6cjvoG_-fQ>
-    <xmx:cWh5ZoB--wGmM0xyN9laN1DWgxiskyw40gTH9IFx_cFQRyZCDpYBHA>
-    <xmx:c2h5ZhnZnhgadejE1PelPCjBJhfYQ9s6ZgcSotBgFkM80Ux8nV4bq0wf>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 838B9B6008D; Mon, 24 Jun 2024 08:37:05 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-522-ga39cca1d5-fm-20240610.002-ga39cca1d
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeelke
+    ehjeejieehjedvteehjeevkedugeeuiefgfedufefgfffhfeetueeikedufeenucffohhm
+    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:dmp5Zrxh79Ui8GtIN-vX5zQgPXmInzKsXaNl6zy_lCRG74tbsVcnRg>
+    <xmx:dmp5ZmRJT4Y9h0XoySEBLUtCn_ueaR5LFl9M1WTrBO_X0rmfrvRYVA>
+    <xmx:dmp5ZuazyEzbraA2iyHw1Sf-83siaKwmzLM2QVHObBUeL_iSvKY-7g>
+    <xmx:dmp5ZnTOusHuWZP5Jp3LAWg4gCcd3OLt2kcwiSUHFlyWg1ItRMaHdw>
+    <xmx:dmp5ZmJp-dg4Lw9dzogqq4oCJ9wEj-UYmf-V3nEA1KUZN5tGnZ5cKqMn>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Jun 2024 08:45:41 -0400 (EDT)
+Date: Mon, 24 Jun 2024 14:45:38 +0200
+From: Greg KH <greg@kroah.com>
+To: joeyli <jlee@suse.com>
+Cc: Markus Elfring <Markus.Elfring@web.de>, linux-block@vger.kernel.org,
+	Chun-Yi Lee <joeyli.kernel@gmail.com>, stable@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jens Axboe <axboe@kernel.dk>, Justin Sanders <justin@coraid.com>,
+	Kirill Korotaev <dev@openvz.org>, Nicolai Stange <nstange@suse.com>,
+	Pavel Emelianov <xemul@openvz.org>
+Subject: Re: [PATCH v2] aoe: fix the potential use-after-free problem in more
+ places
+Message-ID: <2024062433-maximum-purplish-4ccc@gregkh>
+References: <20240624064418.27043-1-jlee@suse.com>
+ <b75a3e00-f3ec-4d06-8de8-6e93f74597e4@web.de>
+ <20240624110137.GI7611@linux-l9pv.suse>
+ <74d3454d-6141-462d-9de8-b11cf6ac814c@web.de>
+ <20240624115445.GL7611@linux-l9pv.suse>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <eaa0ffaf-e42d-4b86-9eed-534684815cf8@app.fastmail.com>
-In-Reply-To: <20240620162316.3674955-15-arnd@kernel.org>
-References: <20240620162316.3674955-1-arnd@kernel.org>
- <20240620162316.3674955-15-arnd@kernel.org>
-Date: Mon, 24 Jun 2024 14:36:45 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Arnd Bergmann" <arnd@kernel.org>,
- Linux-Arch <linux-arch@vger.kernel.org>, linux-kernel@vger.kernel.org
-Cc: "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- linux-mips@vger.kernel.org, "Helge Deller" <deller@gmx.de>,
- linux-parisc@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
- "Andreas Larsson" <andreas@gaisler.com>, sparclinux@vger.kernel.org,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, "Brian Cain" <bcain@quicinc.com>,
- linux-hexagon@vger.kernel.org, guoren <guoren@kernel.org>,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
- "Rich Felker" <dalias@libc.org>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
- linux-sh@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
- "Xi Ruoyao" <libc-alpha@sourceware.org>,
- "musl@lists.openwall.com" <musl@lists.openwall.com>,
- "LTP List" <ltp@lists.linux.it>, stable@vger.kernel.org
-Subject: Re: [PATCH 14/15] asm-generic: unistd: fix time32 compat syscall handling
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240624115445.GL7611@linux-l9pv.suse>
 
-On Thu, Jun 20, 2024, at 18:23, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> arch/riscv/ appears to have accidentally enabled the compat time32
-> syscalls in 64-bit kernels even though the native 32-bit ABI does
-> not expose those.
->
-> Address this by adding another level of indirection, checking for both
-> the target ABI (32 or 64) and the __ARCH_WANT_TIME32_SYSCALLS macro.
->
-> The macro arguments are meant to follow the syscall.tbl format, the idea
-> here is that by the end of the series, all other syscalls are changed
-> to the same format to make it possible to move all architectures over
-> to generating the system call table consistently.
-> Only this patch needs to be backported though.
->
-> Cc: stable@vger.kernel.org # v5.19+
-> Fixes: 7eb6369d7acf ("RISC-V: Add support for rv32 userspace via COMPAT")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On Mon, Jun 24, 2024 at 07:54:45PM +0800, joeyli wrote:
+> On Mon, Jun 24, 2024 at 01:43:25PM +0200, Markus Elfring wrote:
+> > >>>                   … So they should also use dev_hold() to increase the
+> > >>> refcnt of skb->dev.
+> > >> …
+> > >>
+> > >>   reference counter of “skb->dev”?
+> > >
+> > > Yes, I will update my wording.
+> > 
+> > Would you like to improve such a change description also with imperative wordings?
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.10-rc4#n94
+> > 
+> > 
+> > How do you think about the text “Prevent use-after-free issues at more places”
+> > for a summary phrase?
+> >
+> 
+> Thanks for your suggestion. I will update the wording in next version. 
 
-I had pulled this in from my longer series, but as the kernel
-build bot reported, this produced build time regressions, so
-I'll drop it from the v6.10 fixes and will integrated it back
-as part of the cleanup series.
 
-     Arnd
+Hi,
+
+This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+
+Markus, you seem to have sent a nonsensical or otherwise pointless
+review comment to a patch submission on a Linux kernel developer mailing
+list.  I strongly suggest that you not do this anymore.  Please do not
+bother developers who are actively working to produce patches and
+features with comments that, in the end, are a waste of time.
+
+Patch submitter, please ignore Markus's suggestion; you do not need to
+follow it at all.  The person/bot/AI that sent it is being ignored by
+almost all Linux kernel maintainers for having a persistent pattern of
+behavior of producing distracting and pointless commentary, and
+inability to adapt to feedback.  Please feel free to also ignore emails
+from them.
+
+thanks,
+
+greg k-h's patch email bot
 
