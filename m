@@ -1,103 +1,146 @@
-Return-Path: <stable+bounces-55006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 677FB914A3A
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 14:36:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFE7914A44
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 14:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AC221F24052
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 12:36:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08720B2377A
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 12:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6052A13C693;
-	Mon, 24 Jun 2024 12:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD5513C83A;
+	Mon, 24 Jun 2024 12:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4gMb4kg"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="HKfHHn7u";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SqE/KFUp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh7-smtp.messagingengine.com (fhigh7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B61A13C67C;
-	Mon, 24 Jun 2024 12:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E959F1386DA;
+	Mon, 24 Jun 2024 12:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719232591; cv=none; b=K1gG8aXtVlR9k0Zg4Rejhm0Y6hCsLIX1sIOVK4PGiXk9+XCrpvG3mS9YbzIIKCHlOAqhJN4eI8i30t3Mcs7XO4Z0KuJzMaGt6ZBZus+GKv6m0lBkbXfv9NJ8RBZ8XzJWbx944MHjc9JYZ5hus1RU8lxjplHGd+op7iG47D14vvc=
+	t=1719232631; cv=none; b=u5PKPBsMQh5BdRTxwEXl6ZxRP6b4l3dIEgTLuKi3VEAAUeeWAOEp9KanPjqZH4nLOOmlXWzur+VSf/VFgGNZQaIMb93F9I0tPJU5iaiqsh4NriKvmAueQ+qYBINSvrMelxKwlKip5zoukTXLIwncXVJ82V1yWr6bz8Bke7p4cH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719232591; c=relaxed/simple;
-	bh=VhurbZFA7Gb2R3cH1kKEN0MzJ83p+dO1GdwBiN0/gWo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HBgTmdlKPnjKk0qBAonNcEthnaJEgy4evt4NBwKW0QDhIjU8KccUSnS12IUUPlLr4NqWb60l1Ky0f01qQoZyfghigNO0VbiG5i+arN+2b1JZ2onAe5xSOufFG7ckmAeEUuGsDq6C5KsnvRA6rYYXr1dWzVZFITgENwJ7BYRbS4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4gMb4kg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFB6C32781;
-	Mon, 24 Jun 2024 12:36:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719232590;
-	bh=VhurbZFA7Gb2R3cH1kKEN0MzJ83p+dO1GdwBiN0/gWo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V4gMb4kgV4cGzMttn8KHyuP8htrKOo4XQD2tUbLsqByayHguV46787kuw4Mi9jjyc
-	 D3lxr1Q66qpkY8irbGfqo/hybxWFN12QIlUoNkPWkrjTu/NtsL9s6r1UR6bkokuHcI
-	 daHlrICrdsCzeQYZO+Qp6AsrFWqsxkzcXbvV2cNZT0Uccn9O9ZowrH8PJ4m7kfBEZt
-	 25xqGr/cYHY/QaS3Zbp49IAP+V+D4Kiy8P4wTsafs/WatZI0PbK6U80FYI1afzLQKU
-	 STziVuCXOvwQ1PTW9IDIDjH95A6hJG4lHIGuOQ4XqfWJjmj/GV8ZSlIwbwVQw3uVml
-	 NbWGQl8ngvWWQ==
-Date: Mon, 24 Jun 2024 13:36:25 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Cc: linux-sound@vger.kernel.org, alsa-devel@alsa-project.org, tiwai@suse.de,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] ASoC: SOF: ipc4-topology: Use correct queue_id for
- requesting input pin format
-Message-ID: <ec992bf9-667c-48a4-81ed-3a1232123987@sirena.org.uk>
-References: <20240624121519.91703-1-pierre-louis.bossart@linux.intel.com>
- <20240624121519.91703-3-pierre-louis.bossart@linux.intel.com>
+	s=arc-20240116; t=1719232631; c=relaxed/simple;
+	bh=TbmH+yoyAgf4fe9CUvwuV5yJgzh5ZHwbkVCsLRZgEQ8=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=UyEObqEv0W7q47teygKnMYdf+FuJzUPP+2QoJRe/Len2hnAvPYUzi9gww2O4ecbPQBXejxKwAZE+6IhAPorNIXblrp4elQvOYBxt3TyFdFkgbqzlXzvE3Vc0J5OTHS1M2PaDsXvI7syb2fIGp6aJihVJYiJgSQ5mFo9X+J+LYjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=HKfHHn7u; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SqE/KFUp; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 07C5B11400E4;
+	Mon, 24 Jun 2024 08:37:08 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Mon, 24 Jun 2024 08:37:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1719232628; x=1719319028; bh=lFXvov0ksU
+	8Pc4ucksxO9SvwB7S7ZcSyst60pbeeZH8=; b=HKfHHn7umsdW+0c1ehuSJQ99eI
+	Myjn3JHII41XjBGkBE82U3ZLF1gpqJUHWfu0fD1R2wDTT4O5lDapBn9tPESvQu77
+	8adNnRplVreG2sPNDp0X/rfGleHLut9Gk/BSzkxRKhL04EDXsG1YRKgxv6IL6gBV
+	hiECEd8aKPxpc7cvdwq2YkiIfftlQjXB9+KAYBuvYvOjmxwZ7/F9l3LRlEL5RFo3
+	063MmLg36ab0j12O1asXtLt3D5DVUiK5EvC72HFvCSk3AleE/g7i2STrQpvD5No4
+	i+lJKlbqcQQIUGGQGOvBpwpmcMBptK7y9aRt5R4yzWI1IbKl5+ANpAHr7VSA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1719232628; x=1719319028; bh=lFXvov0ksU8Pc4ucksxO9SvwB7S7
+	ZcSyst60pbeeZH8=; b=SqE/KFUphRWeVMJb+kfwzgwN1/Hu23nlRESAJfYgc8ML
+	pUz2mmmI8F5nmEqE+5ox0g/rjJ6d0Zb285uqwFyeJQcQZsscUdL/sXj/UaEluip+
+	Y8hGi2uVUqhxSS2j+Tg9/Mp0Zm2wYNokTin+aYRk4BLKmOWC6+/LDFt4sIkWw2DL
+	h/Je6x5AernFk742JykHMAJAodzv6NFC7WvmD1gw90TOsbHe5Ze1AinDq0CmjjKA
+	Z95MIl9q9aP4NXQ+7dphFhlbY9tl+CfCvo6YBxD12RGqejBt7qQshI8pAPifYgLG
+	pqaC18LuaHL4DH+Btw3GZ5ixeMLofnITMxBNO+thYQ==
+X-ME-Sender: <xms:cWh5ZrLj7Is9v5gIq1mXIwuK3B6Z67FMFXi_sBM56MqeKqAR64n6TQ>
+    <xme:cWh5ZvL6fPST5egK7_VqUyPLzOA0tCn6X6DlKYOektXFx1cgWvkKCjEMrv6PEjXyW
+    4yPi_m7QPeT9rWgx9c>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeeguddgheegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:cWh5ZjudJI3oixudlca83stC9GtoJPVF-yfqIooUyooPVxKMkRay5w>
+    <xmx:cWh5ZkZgIV_EAxNKJdd3dn5ts0jsz0iQNgpwAoaYwIkaiwKIL8UoqA>
+    <xmx:cWh5ZiamgC5g2Z463RDvkqIdIU3iA-8c5MxvqJ4odiwM6cjvoG_-fQ>
+    <xmx:cWh5ZoB--wGmM0xyN9laN1DWgxiskyw40gTH9IFx_cFQRyZCDpYBHA>
+    <xmx:c2h5ZhnZnhgadejE1PelPCjBJhfYQ9s6ZgcSotBgFkM80Ux8nV4bq0wf>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 838B9B6008D; Mon, 24 Jun 2024 08:37:05 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-522-ga39cca1d5-fm-20240610.002-ga39cca1d
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="5pBrGhTLrwRGNC0f"
-Content-Disposition: inline
-In-Reply-To: <20240624121519.91703-3-pierre-louis.bossart@linux.intel.com>
-X-Cookie: Allow 6 to 8 weeks for delivery.
+Message-Id: <eaa0ffaf-e42d-4b86-9eed-534684815cf8@app.fastmail.com>
+In-Reply-To: <20240620162316.3674955-15-arnd@kernel.org>
+References: <20240620162316.3674955-1-arnd@kernel.org>
+ <20240620162316.3674955-15-arnd@kernel.org>
+Date: Mon, 24 Jun 2024 14:36:45 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Arnd Bergmann" <arnd@kernel.org>,
+ Linux-Arch <linux-arch@vger.kernel.org>, linux-kernel@vger.kernel.org
+Cc: "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ linux-mips@vger.kernel.org, "Helge Deller" <deller@gmx.de>,
+ linux-parisc@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
+ "Andreas Larsson" <andreas@gaisler.com>, sparclinux@vger.kernel.org,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, "Brian Cain" <bcain@quicinc.com>,
+ linux-hexagon@vger.kernel.org, guoren <guoren@kernel.org>,
+ "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+ "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
+ "Rich Felker" <dalias@libc.org>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+ linux-sh@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
+ "Xi Ruoyao" <libc-alpha@sourceware.org>,
+ "musl@lists.openwall.com" <musl@lists.openwall.com>,
+ "LTP List" <ltp@lists.linux.it>, stable@vger.kernel.org
+Subject: Re: [PATCH 14/15] asm-generic: unistd: fix time32 compat syscall handling
+Content-Type: text/plain
 
+On Thu, Jun 20, 2024, at 18:23, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> arch/riscv/ appears to have accidentally enabled the compat time32
+> syscalls in 64-bit kernels even though the native 32-bit ABI does
+> not expose those.
+>
+> Address this by adding another level of indirection, checking for both
+> the target ABI (32 or 64) and the __ARCH_WANT_TIME32_SYSCALLS macro.
+>
+> The macro arguments are meant to follow the syscall.tbl format, the idea
+> here is that by the end of the series, all other syscalls are changed
+> to the same format to make it possible to move all architectures over
+> to generating the system call table consistently.
+> Only this patch needs to be backported though.
+>
+> Cc: stable@vger.kernel.org # v5.19+
+> Fixes: 7eb6369d7acf ("RISC-V: Add support for rv32 userspace via COMPAT")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
---5pBrGhTLrwRGNC0f
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+I had pulled this in from my longer series, but as the kernel
+build bot reported, this produced build time regressions, so
+I'll drop it from the v6.10 fixes and will integrated it back
+as part of the cleanup series.
 
-On Mon, Jun 24, 2024 at 02:15:18PM +0200, Pierre-Louis Bossart wrote:
-> Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-> Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-> Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-> Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-> Cc: <stable@vger.kernel.org> # v6.8+
-> ---
-
-Please put fixes at the start of serieses, or send them separately -
-it makes things much easier to handle if they're separate.  This ensures
-that the fixes don't end up with spurious dependencies on non-fix
-changes.
-
---5pBrGhTLrwRGNC0f
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZ5aEkACgkQJNaLcl1U
-h9CWEwf/Wtk/DTzMdgsjQzFf2YB0zOwvpw0DSBQgZpLSkWnOvPb0k6o/wsMhK07l
-AtUfI6rSUzBTQ6fBhRDyLvYMGGDeyDZXcP8zQUUbk83zws7Mq9dSbBZR2JB8r9UK
-D39PW7vG4mz7U8xWeiZUQcvpkDFb0gPCjXCd0DcZrRmBl1KPFwRYjQ6nogAZ0nVy
-xvwwQEpmnp9yLMriXcBz53npaaiHj8CnGkwbp8i7tDn1ZOte/JM9LNYeJCI34ZIN
-iQyezU3Wo4CRdFvPw1kqY0N6wRcgi1f8hrnYz5A2oQoekmEpIR7Xoo9mFFpJvWNg
-H25FDFbhmMOLCH6c0FhZ5+phfpsj4A==
-=zJlx
------END PGP SIGNATURE-----
-
---5pBrGhTLrwRGNC0f--
+     Arnd
 
