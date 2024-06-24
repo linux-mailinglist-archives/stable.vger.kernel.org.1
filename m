@@ -1,71 +1,55 @@
-Return-Path: <stable+bounces-55030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191FE915135
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:59:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 918EC915143
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 17:02:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2EC828684B
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 14:59:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 025CAB24D13
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901B2192B67;
-	Mon, 24 Jun 2024 14:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E8D19ADB1;
+	Mon, 24 Jun 2024 15:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a7RTbJYC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hg/S7Tqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE5F14264F
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 14:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B880B19ADA6
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 15:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719241158; cv=none; b=iLV4U4mHku+BgcGmSOh5nM7LYMEMbrIF33WKN0ldtzFodfY5yM1ANG0kMbZXOiMADCopVVO2OaXtjbLZRHF3ciBJOgRzqJRD61BVS0sDHC9neishhWmNxAKOCyi2AhEN7v9VpPyDxfCiGxYYQLfZPurL9JNi6TFyFrNUT3kwyDU=
+	t=1719241364; cv=none; b=QtRFdIuMdpNAvnJEiNHF4oSZI3YAjH90v+VqTJM86Jf6y4X7PXMfciXaF4U49buZuIQsbb3BLIPsPAL6zboM7LFxyoberlMa0BNVw7uC8HD+dgW2Cv5QJ1186ObmaAEuloNnH2jploqZgybYMAx+843KyJQr4N6RpEwJORyhJ68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719241158; c=relaxed/simple;
-	bh=VS/KUs1WrEa9BQfqVtNHXpqWtkbYN19nW17eOlEoBgM=;
+	s=arc-20240116; t=1719241364; c=relaxed/simple;
+	bh=RA3Apruz/CuoUIjTrn0djMsTyql07dJdEE1i3MOT8+U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FSHGLXH2mEkDoCuD7byPvDTxLIgDPAVrVJZ8Q4Qs6TCQfqqAtf2zXADLskKFkb/GAZEOYVIU/XS07U7mezPU82KDQrk9JKM0grkFQP4P9wJA6ahTiMpScRF6T14G87f+cu9k4asbT5t9QWyXiIdtrU5GT8cbPkMNYW01vdO79DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a7RTbJYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92546C2BBFC;
-	Mon, 24 Jun 2024 14:59:17 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=YnUOEOACdkh6a2wzB+2bpsYl/JWy/T6F27mM9Hiait2tQxUhzP5iD9IhSiyb56GvQRIKBOy9ICdyLhmpuij7nXxC3UqoqtQ+tpLf4Xph39cBwXlt3bN8U2lVPHsr+8KO6z2+6p1xvC4TGzzL/58lQVt3WhpcZrvKbm0SaDO+hYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hg/S7Tqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377ABC2BBFC;
+	Mon, 24 Jun 2024 15:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719241158;
-	bh=VS/KUs1WrEa9BQfqVtNHXpqWtkbYN19nW17eOlEoBgM=;
+	s=korg; t=1719241364;
+	bh=RA3Apruz/CuoUIjTrn0djMsTyql07dJdEE1i3MOT8+U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a7RTbJYCDY7yAF9L29ONdqmZ82dbsudDGpN81YJXmfvv8+QIFSV8+pTWX/G8Fku07
-	 b/AXkJk0PY3WFJKiMn/oZpRSRwFcH2h/yaxsfGd7zjSmfdFBHXV8bE82ErvXkr1owY
-	 nXT0tVJDa5hR2OTWJnI5PLw6FljdRTDUdtzyLRUg=
-Date: Mon, 24 Jun 2024 16:59:10 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ryan Roberts <ryan.roberts@arm.com>
-Cc: stable@vger.kernel.org, Zi Yan <ziy@nvidia.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Ingo Molnar <mingo@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>, Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 4.19.y] mm: fix race between __split_huge_pmd_locked()
- and GUP-fast
-Message-ID: <2024062402-whiny-retreat-fbac@gregkh>
-References: <2024061320-handcart-crook-0519@gregkh>
- <20240624092743.568016-1-ryan.roberts@arm.com>
+	b=hg/S7TqmgHkZveUMadhsYdKyMK8agWEty8q1mSY9V3HlZYqRqRe/0iRMVnXpe1z0X
+	 zkhjDg4LCdOaE/oAYQ7BEh/OhBklCK6EAUYL0BorsdRDOKm2aHZEHaKv7+iLi2Wlfd
+	 W6uhzJsLPtX9ZJiTWU3/vLUWWyBUwtkaLicnM9qk=
+Date: Mon, 24 Jun 2024 17:02:32 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Cc: stable@vger.kernel.org, linux-amarula@amarulasolutions.com,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Erwan Le Ray <erwan.leray@foss.st.com>,
+	Valentin Caron <valentin.caron@foss.st.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Subject: Re: [PATCH 5.15] serial: stm32: rework RX over DMA
+Message-ID: <2024062424-appeasing-mobster-9276@gregkh>
+References: <20240620152658.1033479-1-dario.binacchi@amarulasolutions.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,65 +58,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240624092743.568016-1-ryan.roberts@arm.com>
+In-Reply-To: <20240620152658.1033479-1-dario.binacchi@amarulasolutions.com>
 
-On Mon, Jun 24, 2024 at 10:27:43AM +0100, Ryan Roberts wrote:
-> __split_huge_pmd_locked() can be called for a present THP, devmap or
-> (non-present) migration entry.  It calls pmdp_invalidate() unconditionally
-> on the pmdp and only determines if it is present or not based on the
-> returned old pmd.  This is a problem for the migration entry case because
-> pmd_mkinvalid(), called by pmdp_invalidate() must only be called for a
-> present pmd.
+On Thu, Jun 20, 2024 at 05:26:57PM +0200, Dario Binacchi wrote:
+> From: Erwan Le Ray <erwan.leray@foss.st.com>
 > 
-> On arm64 at least, pmd_mkinvalid() will mark the pmd such that any future
-> call to pmd_present() will return true.  And therefore any lockless
-> pgtable walker could see the migration entry pmd in this state and start
-> interpretting the fields as if it were present, leading to BadThings (TM).
-> GUP-fast appears to be one such lockless pgtable walker.
+> commit 33bb2f6ac3088936b7aad3cab6f439f91af0223c upstream.
 > 
-> x86 does not suffer the above problem, but instead pmd_mkinvalid() will
-> corrupt the offset field of the swap entry within the swap pte.  See link
-> below for discussion of that problem.
+> This patch reworks RX support over DMA to improve reliability:
+> - change dma buffer cyclic configuration by using 2 periods. DMA buffer
+> data are handled by a flip-flop between the 2 periods in order to avoid
+> risk of data loss/corruption
+> - change the size of dma buffer to 4096 to limit overruns
+> - add rx errors management (breaks, parity, framing and overrun).
+>   When an error occurs on the uart line, the dma request line is masked at
+>   HW level. The SW must 1st clear DMAR (dma request line enable), to
+>   handle the error, then re-enable DMAR to recover. So, any correct data
+>   is taken from the DMA buffer, before handling the error itself. Then
+>   errors are handled from RDR/ISR/FIFO (e.g. in PIO mode). Last, DMA
+>   reception is resumed.
+> - add a condition on DMA request line in DMA RX routines in order to
+> switch to PIO mode when no DMA request line is disabled, even if the DMA
+> channel is still enabled.
+>   When the UART is wakeup source and is configured to use DMA for RX, any
+>   incoming data that wakes up the system isn't correctly received.
+>   At data reception, the irq_handler handles the WUF irq, and then the
+>   data reception over DMA.
+>   As the DMA transfer has been terminated at suspend, and will be restored
+>   by resume callback (which has no yet been called by system), the data
+>   can't be received.
+>   The wake-up data has to be handled in PIO mode while suspend callback
+>   has not been called.
 > 
-> Fix all of this by only calling pmdp_invalidate() for a present pmd.  And
-> for good measure let's add a warning to all implementations of
-> pmdp_invalidate[_ad]().  I've manually reviewed all other
-> pmdp_invalidate[_ad]() call sites and believe all others to be conformant.
+> Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
+> Signed-off-by: Erwan Le Ray <erwan.leray@foss.st.com>
+> Link: https://lore.kernel.org/r/20211020150332.10214-3-erwan.leray@foss.st.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> [ dario: fix conflicts for backport to v5.15. From the [1] series, only the
+>   first patch was applied to the v5.15 branch. This caused a regression in
+>   character reception, which can be fixed by applying the second patch. The
+>   patch has been tested on the stm32f469-disco board.
+>   [1] https://lore.kernel.org/all/20211020150332.10214-1-erwan.leray@foss.st.com/. ]
+> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 > 
-> This is a theoretical bug found during code review.  I don't have any test
-> case to trigger it in practice.
+> ---
 > 
-> Link: https://lkml.kernel.org/r/20240501143310.1381675-1-ryan.roberts@arm.com
-> Link: https://lore.kernel.org/all/0dd7827a-6334-439a-8fd0-43c98e6af22b@arm.com/
-> Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Cc: Andreas Larsson <andreas@gaisler.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-> Cc: Borislav Petkov (AMD) <bp@alien8.de>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Sven Schnelle <svens@linux.ibm.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> (cherry picked from commit 3a5a8d343e1cf96eb9971b17cbd4b832ab19b8e7)
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>  drivers/tty/serial/stm32-usart.c | 206 ++++++++++++++++++++++++-------
+>  drivers/tty/serial/stm32-usart.h |  12 +-
+>  2 files changed, 165 insertions(+), 53 deletions(-)
+> 
 
-All now queued up, thanks.
+Now queued up, thanks.
 
 greg k-h
 
