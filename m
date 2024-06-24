@@ -1,231 +1,344 @@
-Return-Path: <stable+bounces-55108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEEE9158CF
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 23:24:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BE8915922
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 23:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A21C728120A
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 21:24:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3F791C222EF
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 21:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55491A0AFB;
-	Mon, 24 Jun 2024 21:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1161A0AEC;
+	Mon, 24 Jun 2024 21:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="kDNZt61U"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="j4WYO95X"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC651A08DF
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 21:24:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719264255; cv=none; b=h5zk4DTGQZpucQAN9Vjk6Kn1lom8+KKvLUScr9Tb15Lo5EvyTzL8Sy8kfsWKLDYUoPCbM+Kxhd/JfRucGN6whoOp1xlOngErG4ZgeGpmSU44I4K0JJau+817ee0sbz+XxzTkiB1sI2TOs5ij6WQQNVA7HQ8AwtKh3kVj0UwbuwU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719264255; c=relaxed/simple;
-	bh=IFZr6MV4AR6r14kqmLG6qUlrfX6va9/24Y1lP+Gq/00=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Jd78v4iANlYYlH2Fbf/2h2tQlFygpPvavW/dkf4Cb8JDoJQdaQO2ujl9jBR0FeffO/ka4FFjSYoW+ttNlBqHCmJ+RLgSiO/0q51vbsS0ox42Qm7l7mSNFhypod8kUwsSAkvweMC5olOnoddRbxwht4d7zN3B8s7XPMZWO3wq9nA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=kDNZt61U; arc=none smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-4421cbba106so33920991cf.2
-        for <stable@vger.kernel.org>; Mon, 24 Jun 2024 14:24:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1719264248; x=1719869048; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1JOTUT9twe9eD9jXfuDuG0OciOCniJECQvgGWn276Tc=;
-        b=kDNZt61UVaPfgB+JV8yoAvwIn6c1tSD91QszRvvzy8GzFti2r9PfhumRND6D7SsDnP
-         gnZecWiDFXsNbMikWj2S2WQY2eIhzNRRIHOEnBz7sHtaXJyDNAfFxivDticcmn4CzpG0
-         IXYO8c0UqW6upmhfaxGkP04x1vyN9fZPeQIFw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719264248; x=1719869048;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1JOTUT9twe9eD9jXfuDuG0OciOCniJECQvgGWn276Tc=;
-        b=ANVxcTI1n+QFHkgc3mfGByDC8etmKcbVUQ/EPl0kM9RmHaCRMu/iNQdRZSX3gnC4hb
-         nMhf8X1Ll5T+x3ZxmESFM5jEXnp4MyWiUlJWQRkCyplgK8zS4WQwXtyOjA4MJJmfUnfG
-         zPDGjzaeWtk+yASQa/64UGo68f4tr6YsE2BQJR5jRQYSfr4lkJ3WZ3/RTyfJ6S1dVYtr
-         Z/+rqvcb7acISM/5UfFIqTYs3nv/S0sxHyuaci6t2sio2Iw+33uN7JWwz3b0uqP8L+Gg
-         Wuw0tjxTAO8Jw8J1ueb85Va27AWdj1ZOS/9krAGoR0HaFFxeh1o3XX/Eoz6AGaTtKKbp
-         wcuw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZVlsGTtFDCNZJh2Ok2xtLIHv8FZLPuN2TVdP6+uOrBCVPU4WGSAj1eE8mbdkhalZP4D2sOzlG2Zmqq3L/7+sUTTMGTwQq
-X-Gm-Message-State: AOJu0YxcOuQtd74e/w3UoR5zlggC6zHL6uogchsT8lNkWSmMYNccr6HP
-	roxydzW3WhE5p7JROHPjhDy+qsjg3HYpkrCDkAwS0ljJE57fBUJqxhq7Gl2bKgkxZ8YeEfPuSBU
-	=
-X-Google-Smtp-Source: AGHT+IG2h3S6WsvEQjM0tjNjk4nUyIV4UsPRModU58dO/1Kto3cPvJHtt49y/oOcsXKZtf1MtRGUuw==
-X-Received: by 2002:a05:622a:1a86:b0:441:569a:9c67 with SMTP id d75a77b69052e-444d939e813mr62366691cf.56.1719264247772;
-        Mon, 24 Jun 2024 14:24:07 -0700 (PDT)
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com. [209.85.160.173])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-444f3eb260fsm42361cf.85.2024.06.24.14.24.04
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jun 2024 14:24:07 -0700 (PDT)
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-443580f290dso30551cf.1
-        for <stable@vger.kernel.org>; Mon, 24 Jun 2024 14:24:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUZU5J5Og7gPhKqXChf8p/sMlj76SOeIChxQJ7CielOgB++VauJ1CrfGfQBZ+8pDksooTGiqjaQmHM7XHD1X3uP6vNtrCu9
-X-Received: by 2002:ac8:7fc6:0:b0:444:b755:2aa1 with SMTP id
- d75a77b69052e-444f368e55amr295621cf.17.1719264244099; Mon, 24 Jun 2024
- 14:24:04 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2B91A0B03
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 21:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719265068; cv=fail; b=mL2iO+HHJAfnyZgpS1xMEydElVCny16HHIaRkG0H4vlQthTQDFigFkbRmLxS7fmaQaU5vynDyuVI6oHhc0a1gvYKNP8iQ/bZ9cusRlM05xPxnfauHfwkZkSBRrc9o8F6henEf/WzfmbF2m0QVy/72yzHvjgDuNFD+xiC3sG26EA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719265068; c=relaxed/simple;
+	bh=Ixyw7/SBpXzkZdFIihS7BwMJjQkV/kSqA23a2HfZKlI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ONTVxyL5rQLPICxtZlYhtn6jSPiQvVr1lxYZ21iPFh9iEbrU2ZzOK8vx4/zhlToWPSpdTTLxOcXoMA+hw593dsRGXeOw2e4sGEQ9n5d1PTZ+i72llXAx5Xh4yBMK8xhGil9wgqCdPm1gqEutMH8bTezgYj0l98QMP1yytaqXh2w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=j4WYO95X; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719265066; x=1750801066;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=Ixyw7/SBpXzkZdFIihS7BwMJjQkV/kSqA23a2HfZKlI=;
+  b=j4WYO95X7GgzlapFNbAAGFDxdBYe4UExD0HUPhvDlSaSGzZNwgQKl0FC
+   sMOGHj9P4e01ETBaJD0U8ouh41N+dJyIJ1D5dLcPlDk5r/e2lZMsYwqrm
+   AKdbROVXbDDT6bYWw/7ou3zt7qQOF1mRQ3/uR/NSBaIkihuE3gycMql7M
+   CsymmNdKqU5K5XiFhiTebJO2Av52Oida6nPSRHFdU0IU658I3mdavYAvV
+   pLhb5Fu9FigO1zcNFh9U3hInrzi54SFqSNqq1/0K97IO9IFvpZ2eARlzj
+   pF4oXW/CSF0gTOluJcAWJICQwVNxCdomeD9wvv5YK7lpM5ptEafV7pMUR
+   g==;
+X-CSE-ConnectionGUID: B5ass54JTV2scY53ER8V3w==
+X-CSE-MsgGUID: +T34vg3AR1uLiqoTheXkcw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="16084310"
+X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; 
+   d="scan'208";a="16084310"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2024 14:37:46 -0700
+X-CSE-ConnectionGUID: XVAdVJ3nSzGa0+rv5/Q7Tg==
+X-CSE-MsgGUID: 5kmGA7pmRgaKPtNCbYHsjA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; 
+   d="scan'208";a="47966280"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 24 Jun 2024 14:37:45 -0700
+Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 24 Jun 2024 14:37:45 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Mon, 24 Jun 2024 14:37:45 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 24 Jun 2024 14:37:45 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IBOgVKa3wNiccOWiQ2BOqjM5bm44K7J456DvdM5dCMHBkQdpmkEpdcOIyaMWE1hWZyxQobOZy+wZqOSjC5NKlneoaqxAqIYjPII5993s+8OtbntP1RB0Eog8K6Wu4tX9pNVtsjQvksXJa8phrxUULryvjc3qQgMdD/iYtFBBXMq/yJR1ilhMm7rbjg5LW+FtfdzUFu+YYi5P1BQE1EIAC/6UiKLwXirz9JgWIuEd0bN2HiIPBMZX0mjyjlGx/Nuu0Y/fGlzCzdZRA3L8lBLiRpw8OfYQfwl+aFa62a47MtTq+cjW/qNjHTfHm7fv2erUuS5TCkNThW21IuS10Sc5BA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nof6cS+GWSfypgtEXR2kJizKQ5/h0xd9u9CRzaffazE=;
+ b=W3gNscimI+fJRBy/uhakGjE2UXOPv2nKy99XE9b/VaxzauHZaKXSVCDCNARHw56WYuAd2Z3aRlXfEGscuGp99eajh0Qx0Q+a4v+ICMotgsAr26X+riEWZfKkTE5vzhbiB+E7hZL9omwp433x+naa5SFBOF9eM2B6g/JkfP25OZz/RWyTd/vbDKWq/wtFMTM4JijfT/DMvmYcsRTcgneRfCH0CdHFUUSiFy3dlA2U5KfdRWXzknNOEB4hpMpbfJLkKPkmPl7rjYCEoDj1jvBmPYVHFFGkofU+wCHd/1TGGKf6cv0gHX70q7yIfrj/92nN61hN7y/hann+i5OXOtlxuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
+ by SA3PR11MB8119.namprd11.prod.outlook.com (2603:10b6:806:2f2::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.25; Mon, 24 Jun
+ 2024 21:37:43 +0000
+Received: from DS0PR11MB8182.namprd11.prod.outlook.com
+ ([fe80::8dd1:f169:5266:e16e]) by DS0PR11MB8182.namprd11.prod.outlook.com
+ ([fe80::8dd1:f169:5266:e16e%3]) with mapi id 15.20.7698.025; Mon, 24 Jun 2024
+ 21:37:43 +0000
+Date: Mon, 24 Jun 2024 14:37:39 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+CC: <intel-xe@lists.freedesktop.org>, Pallavi Mishra
+	<pallavi.mishra@intel.com>, Matthew Auld <matthew.auld@intel.com>,
+	<dri-devel@lists.freedesktop.org>, Joonas Lahtinen
+	<joonas.lahtinen@linux.intel.com>, Effie Yu <effie.yu@intel.com>, "Matthew
+ Brost" <matthew.brost@intel.com>, Maarten Lankhorst
+	<maarten.lankhorst@linux.intel.com>, Jose Souza <jose.souza@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/xe: Use write-back caching mode for system memory on
+ DGFX
+Message-ID: <20240624213739.GU2906448@mdroper-desk1.amr.corp.intel.com>
+References: <20240619163904.2935-1-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240619163904.2935-1-thomas.hellstrom@linux.intel.com>
+X-ClientProxiedBy: BYAPR06CA0052.namprd06.prod.outlook.com
+ (2603:10b6:a03:14b::29) To DS0PR11MB8182.namprd11.prod.outlook.com
+ (2603:10b6:8:163::17)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240624133135.7445-1-johan+linaro@kernel.org> <20240624133135.7445-3-johan+linaro@kernel.org>
-In-Reply-To: <20240624133135.7445-3-johan+linaro@kernel.org>
-From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 24 Jun 2024 14:23:52 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UauWffRM45FsU2SHoKtkVaOEf=Adno+jV+Ashf7NFHuA@mail.gmail.com>
-Message-ID: <CAD=FV=UauWffRM45FsU2SHoKtkVaOEf=Adno+jV+Ashf7NFHuA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] serial: qcom-geni: fix soft lockup on sw flow control
- and suspend
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|SA3PR11MB8119:EE_
+X-MS-Office365-Filtering-Correlation-Id: 244b9c6c-428c-4669-080a-08dc9495e144
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230037|366013|376011|1800799021;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?NYMlvCBeCAaKH1S0V1cQS0eXVyRSAcYedLix0r2q5eudIgqXJHmGvfjWji?=
+ =?iso-8859-1?Q?hS8Ivc1ZFFu499ZLQqln0XPuOIITE8ZngENh+4z3CrMsOOV7Nu13hWFuq2?=
+ =?iso-8859-1?Q?FtR7RDtnqDGtKkVVjGmQvdFayJLr1nMjjxpt9cK9aFKVLeYOMOoT4N10+3?=
+ =?iso-8859-1?Q?15TumdiNi9bWKLz4jd4qyk3bZa6MiCzrvM7ImNRQffaLCNa1MO7GhVPVOn?=
+ =?iso-8859-1?Q?HA0/T7j1h+fFyh5ARlfd3Xr2Fw/PxYYio/oJaPbidMPcfA2JUCgzW4Z//Z?=
+ =?iso-8859-1?Q?0pZk77ouy95P1BO/198ZmnftM2r3gErd5WYItxaSVhaFIMK77HFDR+HJJb?=
+ =?iso-8859-1?Q?gMsxlqRQccZt9D9mBSZYyuJ/fXOJrtMwlffvD/ZOsPiLFtQjIMLlKBm+3l?=
+ =?iso-8859-1?Q?pW6+acFNMIblOoN4A6wWvnDBCjrnEBzMucDcnBzCsSd/sm+mzQxR3XdVJc?=
+ =?iso-8859-1?Q?WB9rdSvRuP3EkWy+i2twsf4ETVKgABq2St5kv05IdjvlYrJhlTZIdhOwkA?=
+ =?iso-8859-1?Q?bngSIZvjfAVjtn5BRKnT2imbxEbr0NzWnXhK+IEf/lb2bid1MVVswKYc0+?=
+ =?iso-8859-1?Q?rhnWJMsO9nuo5/YInbBE5aMkIbELrhyvZKQCODKNDaGAOAfQLV4rrhAdaB?=
+ =?iso-8859-1?Q?NtZLFKOkKKkDpVv4O6726mTlZQyATBpilSeA2S9cYntQO+A4x6irp8fOfP?=
+ =?iso-8859-1?Q?usVhoFTfMEIbOCV0ClVRJakAvw33rHr4LO1o6W+lW1wDIoxGDs7KjhhSoa?=
+ =?iso-8859-1?Q?djGTY/pJit+mshX0Q38MZyPtKO5tGKMQYKUNifiNvfSmdhcP1Bbj2A6yH2?=
+ =?iso-8859-1?Q?yHp75aLPQaIDvE4VB0ZbwVshb4/l9xU/axMV5/bOld5fKYoufBhLb2f6dg?=
+ =?iso-8859-1?Q?Cw2IoRbhAS4P1UZfl/YjL1EmYgi0qcFRVGNLXKG8ANo06hyLlWYgNJsxfG?=
+ =?iso-8859-1?Q?ynOhKPkuI7S4BhIS2ynrbC3qNeWHFKVsdqxH9sggUPOZFziMmkFAMgT/1B?=
+ =?iso-8859-1?Q?rqF6oGQ1Qeos9X9dAmYhGdjX7RI6hLFhCMYXNOPpXjx/IQSi5gBGSGenzY?=
+ =?iso-8859-1?Q?l/7nIJVjZ2h33TgoSEpNFToYtaTBxm4V3+PzrVEEyo4Yy6Y703gC+5XT3L?=
+ =?iso-8859-1?Q?D832JkikMID6kbHI6o82Yg2dSz//4k8tk4UFB1ftjV28ounWHPC2eFk2gN?=
+ =?iso-8859-1?Q?An2yBK7pSVDgfl2FYKnkQSVF2MJL8il+9Oqz2JpUKzVV8DA204FPZybBlE?=
+ =?iso-8859-1?Q?unoyE5FrTNL7r7CP39GzToUsprNlwwh8sCkcRaIhi882s8iYtiaEMKmOnw?=
+ =?iso-8859-1?Q?y/SqIz4L8bgg1Hdv0l8T/7ppQ3Scz16WGHUHGSwci/VxnBSg2axe4ATJol?=
+ =?iso-8859-1?Q?VrgEWBPmhs?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8182.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(366013)(376011)(1800799021);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?+MgsJuED7KiEHsXCdXm9i93dVeVRWligQ8GV86oZfjIDVutMJMG9fCr5R0?=
+ =?iso-8859-1?Q?nuNLqKFkue8uv3tDAE54JNCKHFrdy3l2Zbr2NOzruPzKmmiUx6PwjghB2+?=
+ =?iso-8859-1?Q?KS4CeWpuWpx05Vby0DExN3pxNSlPK5CJZChM2Q/pKTwq8rAUBNod4Txzej?=
+ =?iso-8859-1?Q?vO8ydpRw9XwNGMhnkGVMZPS8iO9j2o5OyxzA9CKUpthedAilwoeUsf+8d7?=
+ =?iso-8859-1?Q?BDLCH5hZNmBn4hRqN3vsstRMiopIuPnfecpP4Pdb1BQQ7rMZynFpN9cmxL?=
+ =?iso-8859-1?Q?leR0BIrlQZ1SkyoXT8Mrk1hTgLQ7O2mbbrvLZfxKnNZoq5ddXur0wby0fs?=
+ =?iso-8859-1?Q?QMiDyMIgdn1+hEFvGivLCo50tJ1bA7AwOW31sNbACXiOAqVmXMI5dcBasK?=
+ =?iso-8859-1?Q?03XHfhmydhlg4JfBv90iUTFK846RKIBYv/3iND4HFyDOiVUi1IiqBupipF?=
+ =?iso-8859-1?Q?iWnaQBclVpj1HPjA8/2WGN97gwy7tbmfEdUksvXkkeajikcqNmd0QNoS49?=
+ =?iso-8859-1?Q?Adfq6NXY2F9u7wsAmlpPR6is06UT1PqOk1mw8I74cMOxw6ph4kwdzxq8uf?=
+ =?iso-8859-1?Q?OqDZqJcUzOeOxrRGcvMJ60f5ftMdWaSyX8G4QP782oUc9kbWhqR7FOgzvG?=
+ =?iso-8859-1?Q?ROWcshbp9jeWLVyj2s6MPonCgJkufb/2Y22PtTPWCfi1bFHK8K/bMB1oX7?=
+ =?iso-8859-1?Q?5EVXMmtjIyKOoYULnPipPWV8mSJqPHpaw+V1wwFQ5XzbkVcldMmHCgqr59?=
+ =?iso-8859-1?Q?G5I/0zqC4MdCduJ2FE2Z+29HDVM+XyC9BLHb/jtqM+QplZSpHrKZlt88FL?=
+ =?iso-8859-1?Q?JwuVp0+X9SKJevevyH4OceSznMMHezwgDOOCkue9nwWBk6pDOQwlFbTyP2?=
+ =?iso-8859-1?Q?x2z7jPTXcZP9YPGb6e/5UqNWFljKLT32DLqVrcjekUtJiD1J4CfhwBKuzi?=
+ =?iso-8859-1?Q?aSMwOP+aEmEHWKB6UdtnIs9Y8+tN0yWiTUH8V7mG0YvfhLkWUagPGwcJFf?=
+ =?iso-8859-1?Q?+DHclPKxVr4ZyB2o0US14pDcqBJJadikKKkqMjoiFuuQekDx/7BVGN6eIn?=
+ =?iso-8859-1?Q?HdOZ+PtwjnYY+fG7SP/6l/kKfARS1vurSyapHwyIGHWgmpGso79BWjpcPx?=
+ =?iso-8859-1?Q?s7vahXtGJwnFBzMts8YR7Ovyca/vSanGheRKKit/mhqexpA2YNrZ4fQYCE?=
+ =?iso-8859-1?Q?5CjBTunBwPfzDO+s4eX74I78WjT2O31qwk+yeyaswZhFCkMGVfZ/HkW+A8?=
+ =?iso-8859-1?Q?3cg174sqHRKoHL8g5ZbgdNBGNPAoz10Sw3ukGkyJdETwcNNX07y3K7kivO?=
+ =?iso-8859-1?Q?0Yzwf30saIwTzqE6BuSJk4a9nYGCkS0qXyK9CeLbNdBx7rh62UVFXL+H/T?=
+ =?iso-8859-1?Q?Td9gEgzC48k3Hycyze6K4cau8wyx6zzUyBCBtjbvnN+UbUfFiwrUZX3yCW?=
+ =?iso-8859-1?Q?WFw5BUYYMyaC7YYGwp9aJ1xW/MU1vKnverDhFsfxZnGOLuE/furQcznKN1?=
+ =?iso-8859-1?Q?OwQqa/iG5BWoIhE9owNrf1XtF9AvgXOCbklTEyKBsfVgJ7LPBWgvu55VNA?=
+ =?iso-8859-1?Q?+HrmWS+tcyWmyLBGAIO/t2+zQHzcAEW5wcUi1wqFCti1Ey4KHphrYzxBJj?=
+ =?iso-8859-1?Q?tBgXT1ImSBCbvn1znj8cFBrdxi3Vzr5Sb0RkHHo1eOi5+ORxe1AhtyLw?=
+ =?iso-8859-1?Q?=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 244b9c6c-428c-4669-080a-08dc9495e144
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2024 21:37:43.3449
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ehhF2CWzo2ND1O4Oe4+lqu25DZJuDD1cQcSts56Emd9hhTJWzM2lCwWtNwLvsZFXwLx5fCeGkwB8vpQKKsf0vBYFSLzsAX/aYz9Mzwim8Uw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB8119
+X-OriginatorOrg: intel.com
 
-Hi,
-
-On Mon, Jun 24, 2024 at 6:31=E2=80=AFAM Johan Hovold <johan+linaro@kernel.o=
-rg> wrote:
->
-> The stop_tx() callback is used to implement software flow control and
-> must not discard data as the Qualcomm GENI driver is currently doing
-> when there is an active TX command.
->
-> Cancelling an active command can also leave data in the hardware FIFO,
-> which prevents the watermark interrupt from being enabled when TX is
-> later restarted. This results in a soft lockup and is easily triggered
-> by stopping TX using software flow control in a serial console but this
-> can also happen after suspend.
->
-> Fix this by only stopping any active command, and effectively clearing
-> the hardware fifo, when shutting down the port. Make sure to temporarily
-> raise the watermark level so that the interrupt fires when TX is
-> restarted.
-
-Nice! I did quite a few experiments, but it sounds like you found
-something that I wasn't able to find. Specifically once I cancelled an
-ongoing command I could never manage to get it started back up, but it
-must have just been that data was still in the FIFO and thus the
-watermark never fired again.
-
-When I was experimenting, I also swore that there were cases where
-geni would sometimes fully drop bytes when I tried to "cancel" a
-command, but maybe I was mistaken. Everything I figured out was
-essentially by running experiments and I could easily have had a bug
-in my experiment.
-
-
-> Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver sup=
-port for GENI based QUP")
-> Cc: stable@vger.kernel.org      # 4.17
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+On Wed, Jun 19, 2024 at 06:39:04PM +0200, Thomas Hellström wrote:
+> The caching mode for buffer objects with VRAM as a possible
+> placement was forced to write-combined, regardless of placement.
+> 
+> However, write-combined system memory is expensive to allocate and
+> even though it is pooled, the pool is expensive to shrink, since
+> it involves global CPU TLB flushes.
+> 
+> Moreover write-combined system memory from TTM is only reliably
+> available on x86 and DGFX doesn't have an x86 restriction.
+> 
+> So regardless of the cpu caching mode selected for a bo,
+> internally use write-back caching mode for system memory on DGFX.
+> 
+> Coherency is maintained, but user-space clients may perceive a
+> difference in cpu access speeds.
+> 
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Fixes: 622f709ca629 ("drm/xe/uapi: Add support for CPU caching mode")
+> Cc: Pallavi Mishra <pallavi.mishra@intel.com>
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> Cc: Effie Yu <effie.yu@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Jose Souza <jose.souza@intel.com>
+> Cc: Michal Mrozek <michal.mrozek@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.8+
 > ---
->  drivers/tty/serial/qcom_geni_serial.c | 28 +++++++++++++++++----------
->  1 file changed, 18 insertions(+), 10 deletions(-)
->
-> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/q=
-com_geni_serial.c
-> index 1d5d6045879a..72addeb9f461 100644
-> --- a/drivers/tty/serial/qcom_geni_serial.c
-> +++ b/drivers/tty/serial/qcom_geni_serial.c
-> @@ -651,13 +651,8 @@ static void qcom_geni_serial_start_tx_fifo(struct ua=
-rt_port *uport)
->  {
->         u32 irq_en;
->
-> -       if (qcom_geni_serial_main_active(uport) ||
-> -           !qcom_geni_serial_tx_empty(uport))
-> -               return;
+>  drivers/gpu/drm/xe/xe_bo.c       | 47 +++++++++++++++++++-------------
+>  drivers/gpu/drm/xe/xe_bo_types.h |  3 +-
+>  include/uapi/drm/xe_drm.h        |  8 +++++-
+>  3 files changed, 37 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+> index 65c696966e96..31192d983d9e 100644
+> --- a/drivers/gpu/drm/xe/xe_bo.c
+> +++ b/drivers/gpu/drm/xe/xe_bo.c
+> @@ -343,7 +343,7 @@ static struct ttm_tt *xe_ttm_tt_create(struct ttm_buffer_object *ttm_bo,
+>  	struct xe_device *xe = xe_bo_device(bo);
+>  	struct xe_ttm_tt *tt;
+>  	unsigned long extra_pages;
+> -	enum ttm_caching caching;
+> +	enum ttm_caching caching = ttm_cached;
+>  	int err;
+>  
+>  	tt = kzalloc(sizeof(*tt), GFP_KERNEL);
+> @@ -357,26 +357,35 @@ static struct ttm_tt *xe_ttm_tt_create(struct ttm_buffer_object *ttm_bo,
+>  		extra_pages = DIV_ROUND_UP(xe_device_ccs_bytes(xe, bo->size),
+>  					   PAGE_SIZE);
+>  
+> -	switch (bo->cpu_caching) {
+> -	case DRM_XE_GEM_CPU_CACHING_WC:
+> -		caching = ttm_write_combined;
+> -		break;
+> -	default:
+> -		caching = ttm_cached;
+> -		break;
+> -	}
 > -
->         irq_en =3D readl(uport->membase + SE_GENI_M_IRQ_EN);
->         irq_en |=3D M_TX_FIFO_WATERMARK_EN | M_CMD_DONE_EN;
+> -	WARN_ON((bo->flags & XE_BO_FLAG_USER) && !bo->cpu_caching);
 > -
->         writel(DEF_TX_WM, uport->membase + SE_GENI_TX_WATERMARK_REG);
->         writel(irq_en, uport->membase + SE_GENI_M_IRQ_EN);
->  }
-> @@ -665,16 +660,28 @@ static void qcom_geni_serial_start_tx_fifo(struct u=
-art_port *uport)
->  static void qcom_geni_serial_stop_tx_fifo(struct uart_port *uport)
->  {
->         u32 irq_en;
-> -       struct qcom_geni_serial_port *port =3D to_dev_port(uport);
->
->         irq_en =3D readl(uport->membase + SE_GENI_M_IRQ_EN);
->         irq_en &=3D ~(M_CMD_DONE_EN | M_TX_FIFO_WATERMARK_EN);
->         writel(0, uport->membase + SE_GENI_TX_WATERMARK_REG);
->         writel(irq_en, uport->membase + SE_GENI_M_IRQ_EN);
-> -       /* Possible stop tx is called multiple times. */
-
-If qcom_geni_serial_stop_tx_fifo() is supposed to be used for UART
-flow control and you have a way to stop the transfer immediately
-without losing data (by using geni_se_cancel_m_cmd), maybe we should
-do that? If the other side wants us to stop transferring data and we
-can stop it right away that would be ideal...
-
-
-> +}
+>  	/*
+> -	 * Display scanout is always non-coherent with the CPU cache.
+> -	 *
+> -	 * For Xe_LPG and beyond, PPGTT PTE lookups are also non-coherent and
+> -	 * require a CPU:WC mapping.
+> +	 * DGFX system memory is always WB / ttm_cached, since
+> +	 * other caching modes are only supported on x86. DGFX
+> +	 * GPU system memory accesses are always coherent with the
+> +	 * CPU.
+>  	 */
+> -	if ((!bo->cpu_caching && bo->flags & XE_BO_FLAG_SCANOUT) ||
+> -	    (xe->info.graphics_verx100 >= 1270 && bo->flags & XE_BO_FLAG_PAGETABLE))
+> -		caching = ttm_write_combined;
+> +	if (!IS_DGFX(xe)) {
+> +		switch (bo->cpu_caching) {
+> +		case DRM_XE_GEM_CPU_CACHING_WC:
+> +			caching = ttm_write_combined;
+> +			break;
+> +		default:
+> +			caching = ttm_cached;
+> +			break;
+> +		}
 > +
-> +static void qcom_geni_serial_clear_tx_fifo(struct uart_port *uport)
-> +{
-> +       struct qcom_geni_serial_port *port =3D to_dev_port(uport);
+> +		WARN_ON((bo->flags & XE_BO_FLAG_USER) && !bo->cpu_caching);
 > +
->         if (!qcom_geni_serial_main_active(uport))
->                 return;
->
-> +       /*
-> +        * Increase watermark level so that TX can be restarted and wait =
-for
-> +        * sequencer to start to prevent lockups.
-> +        */
-> +       writel(port->tx_fifo_depth, uport->membase + SE_GENI_TX_WATERMARK=
-_REG);
-> +       qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
-> +                                       M_TX_FIFO_WATERMARK_EN, true);
+> +		/*
+> +		 * Display scanout is always non-coherent with the CPU cache.
+> +		 *
+> +		 * For Xe_LPG and beyond, PPGTT PTE lookups are also
+> +		 * non-coherent and require a CPU:WC mapping.
+> +		 */
+> +		if ((!bo->cpu_caching && bo->flags & XE_BO_FLAG_SCANOUT) ||
+> +		    (xe->info.graphics_verx100 >= 1270 &&
+> +		     bo->flags & XE_BO_FLAG_PAGETABLE))
+> +			caching = ttm_write_combined;
+> +	}
+>  
+>  	if (bo->flags & XE_BO_FLAG_NEEDS_UC) {
+>  		/*
+> diff --git a/drivers/gpu/drm/xe/xe_bo_types.h b/drivers/gpu/drm/xe/xe_bo_types.h
+> index 86422e113d39..10450f1fbbde 100644
+> --- a/drivers/gpu/drm/xe/xe_bo_types.h
+> +++ b/drivers/gpu/drm/xe/xe_bo_types.h
+> @@ -66,7 +66,8 @@ struct xe_bo {
+>  
+>  	/**
+>  	 * @cpu_caching: CPU caching mode. Currently only used for userspace
+> -	 * objects.
+> +	 * objects. Exceptions are system memory on DGFX, which is always
+> +	 * WB.
+>  	 */
+>  	u16 cpu_caching;
+>  
+> diff --git a/include/uapi/drm/xe_drm.h b/include/uapi/drm/xe_drm.h
+> index 93e00be44b2d..1189b3044723 100644
+> --- a/include/uapi/drm/xe_drm.h
+> +++ b/include/uapi/drm/xe_drm.h
+> @@ -783,7 +783,13 @@ struct drm_xe_gem_create {
+>  #define DRM_XE_GEM_CPU_CACHING_WC                      2
+>  	/**
+>  	 * @cpu_caching: The CPU caching mode to select for this object. If
+> -	 * mmaping the object the mode selected here will also be used.
+> +	 * mmaping the object the mode selected here will also be used. The
+> +	 * exception is when mapping system memory (including evicted
+> +	 * system memory) on discrete GPUs. The caching mode selected will
 
-Oh, maybe this "wait for sequencer to start to prevent lockups." is
-the part that I was missing? Can you explain more about what's going
-on here? Why does waiting for the watermark interrupt to fire prevent
-lockups? I would have imagined that the watermark interrupt would be
-part of the geni hardware and have nothing to do with the firmware
-running on the other end, so I'm not sure why it firing somehow would
-prevent a lockup. Was this just by trial and error?
+Was this supposed to say "including evicted vram?"
 
 
-> @@ -684,6 +691,8 @@ static void qcom_geni_serial_stop_tx_fifo(struct uart=
-_port *uport)
->                 writel(M_CMD_ABORT_EN, uport->membase + SE_GENI_M_IRQ_CLE=
-AR);
->         }
->         writel(M_CMD_CANCEL_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
-> +
-> +       port->tx_remaining =3D 0;
->  }
->
->  static void qcom_geni_serial_handle_rx_fifo(struct uart_port *uport, boo=
-l drop)
-> @@ -1069,11 +1078,10 @@ static void qcom_geni_serial_shutdown(struct uart=
-_port *uport)
->  {
->         disable_irq(uport->irq);
->
-> -       if (uart_console(uport))
-> -               return;
+Matt
 
-Can you explain this part of the patch? I'm not saying it's wrong to
-remove this special case since this driver seems to have lots of
-needless special cases that are already handled by the core or by
-other parts of the driver, but this change seems unrelated to the rest
-of the patch. Could it be a separate patch?
+> +	 * then be overridden to DRM_XE_GEM_CPU_CACHING_WB, and coherency
+> +	 * between GPU- and CPU is guaranteed. The caching mode of
+> +	 * existing CPU-mappings will be updated transparently to
+> +	 * user-space clients.
+>  	 */
+>  	__u16 cpu_caching;
+>  	/** @pad: MBZ */
+> -- 
+> 2.44.0
+> 
+
+-- 
+Matt Roper
+Graphics Software Engineer
+Linux GPU Platform Enablement
+Intel Corporation
 
