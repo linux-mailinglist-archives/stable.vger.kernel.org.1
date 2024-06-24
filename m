@@ -1,124 +1,186 @@
-Return-Path: <stable+bounces-55098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB7F915610
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 19:58:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C79BB91561B
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 19:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA9528C7FC
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 17:58:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D8FEB221E9
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 17:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A9D19FA60;
-	Mon, 24 Jun 2024 17:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682A719F48B;
+	Mon, 24 Jun 2024 17:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENjwz9wd"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="KiAkohik"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B0019EEDA;
-	Mon, 24 Jun 2024 17:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1F819E822;
+	Mon, 24 Jun 2024 17:59:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719251897; cv=none; b=RS1qLa+jg5IXLGTXIEoLH0lw1XXjdppqeaJ5C9VZEiKzZB6iZwA5G/4r/PU79oN07TwGlJFx72JSkd8RVGFL0Lyl7tyGS+FUQq2h/XU1AjDZdNJFqfg5sryF42zr+9ZyvcaRUNWgre/MrVyxoKS5AhumGgCkYJYZgLeqRkQSwvc=
+	t=1719251976; cv=none; b=TicpoxEdv2oSZzEXcautYovlzVq33aPFT3Z70nk2uhrTQecGh88B6GedSErBuuyf+7vs73VhRB5JHIKeDvDAn+fcnAmeLeiWefT1rvMY1cVntbYSSnOP6bCnLdXm4cIKyJs8F6Tx9QhXnr55uq9f/4Df2dGxF/viMtqts+gWasM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719251897; c=relaxed/simple;
-	bh=YTBdXq2TGG2GhM+XlgLTSVVwIadpxauvL8szohE7zO0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QJzLZyzE3RJBtCbsRyFuexlwTis5y2rndCvyaRSRKoPuI2dPG4BmLyET9Ov9Jkce1pMAmdFSdAOuDTHUPJeNYX7sN+xc2fQabXPOSSoc7Sqf5z4SPr5zbjtGlF0GOvJcCTkZUnlucA5F+BbXRTOTqJ8ILtVmXbFWFnPNNUccYZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENjwz9wd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADCEC2BBFC;
-	Mon, 24 Jun 2024 17:58:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719251897;
-	bh=YTBdXq2TGG2GhM+XlgLTSVVwIadpxauvL8szohE7zO0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ENjwz9wdsaeRlckaB8ZWYIdy5ErpdGluAMVz1vjPPy1hd7Uvf31aeWSt87r96sab/
-	 RQl+VYURfa2tZJShM21Bdsrvw8sTmFl8XY5sezW25kc0WhW1Gi0mZmAFan6yDB/NC7
-	 erwKzeamoUHkFvVBysnGh2R2j5PPndzfdt51UjaKC/A4R88J/hdN0rlolmDJY10Wsu
-	 /9XDUMWTOQkZkrm2+LQcNVKxmJaz0kYUl9/MFAvfrO1ktlPgNPiDTs4zIF+ChgSBW7
-	 DZ+oszY0aqJWKacBJLwCa89ogO2KfnlbEXq9Xz+GDZ+TBG/73xptVAAjzSCuAvpIIC
-	 QXTLDTXtwYIbQ==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/damon/core: merge regions aggressively when max_nr_regions is unmet
-Date: Mon, 24 Jun 2024 10:58:14 -0700
-Message-Id: <20240624175814.89611-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1719251976; c=relaxed/simple;
+	bh=M/phQX0hH9rYXb4ZxBy7KtQfTLRuPv3EdCjqqg+AHBM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KdNr7a8rheUv2wfC3PV0U0sl9RtRXnxlmrRbwMmTfz3EuU62c/f2xnx5kAYVfVDdFrWUCQesnBeQ3uQYShhLuJgol/EIkPe9wGQ4cgazjT141B+MVKA33oWKrLNj/dY6sVBO8yFuHbbEp6uCd8roqRdcoJvlSJmQ1DO8Zx6b6a4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=KiAkohik; arc=none smtp.client-ip=52.95.49.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1719251975; x=1750787975;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=PPo7y8yv85Odnfu13ied03pGxbHHn3NHPUOOH3BEjqo=;
+  b=KiAkohikrzdWr52DjK/FbhRRDm88JBHoj+cRuZPlpRWv/PVt6HTZYRjq
+   fuCEYAJvUTqRC5jNCRvh6YCc8Ho+zo/WwqIjzHLxRTUyql82Q/0CUN8Uo
+   zidZsM1nqMk0b1NGt5QqhB1pV7q+NkvgJAeLDrQp6ZwxEvP7qn2CRvSQ5
+   c=;
+X-IronPort-AV: E=Sophos;i="6.08,262,1712620800"; 
+   d="scan'208";a="415435616"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2024 17:59:32 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [10.0.10.100:64698]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.9.151:2525] with esmtp (Farcaster)
+ id a92c4f05-8ddd-4534-b9e4-baab03ee6158; Mon, 24 Jun 2024 17:59:31 +0000 (UTC)
+X-Farcaster-Flow-ID: a92c4f05-8ddd-4534-b9e4-baab03ee6158
+Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.223) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Mon, 24 Jun 2024 17:59:31 +0000
+Received: from 3c06303d853a.ant.amazon.com (10.106.239.13) by
+ EX19D026EUB004.ant.amazon.com (10.252.61.64) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Mon, 24 Jun 2024 17:59:27 +0000
+Date: Mon, 24 Jun 2024 10:59:20 -0700
+From: Andrew Paniakin <apanyaki@amazon.com>
+To: <pc@cjr.nz>, <stfrench@microsoft.com>, <sashal@kernel.org>,
+	<pc@manguebit.com>
+CC: <regressions@lists.linux.dev>, <stable@vger.kernel.org>,
+	<linux-cifs@vger.kernel.org>, <abuehaze@amazon.com>, <simbarb@amazon.com>,
+	<benh@amazon.com>
+Subject: Re: [REGRESSION][BISECTED] Commit 60e3318e3e900 in
+ stable/linux-6.1.y breaks cifs client failover to another server in DFS
+ namespace
+Message-ID: <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
+References: <ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com>
+X-ClientProxiedBy: EX19D043UWA003.ant.amazon.com (10.13.139.31) To
+ EX19D026EUB004.ant.amazon.com (10.252.61.64)
 
-DAMON keeps the number of regions under max_nr_regions by skipping
-regions split operations when doing so can make the number higher than
-the limit.  It works well for preventing violation of the limit.  But,
-if somehow the violation happens, it cannot recovery well depending on
-the situation.  In detail, if the real number of regions having
-different access pattern is higher than the limit, the mechanism cannot
-reduce the number below the limit.  In such a case, the system could
-suffer from high monitoring overhead of DAMON.
+On 19/06/2024, Andrew Paniakin wrote:
+> Commit 60e3318e3e900 ("cifs: use fs_context for automounts") was
+> released in v6.1.54 and broke the failover when one of the servers
+> inside DFS becomes unavailable. We reproduced the problem on the EC2
+> instances of different types. Reverting aforementioned commint on top of
+> the latest stable verison v6.1.94 helps to resolve the problem.
+> 
+> Earliest working version is v6.2-rc1. There were two big merges of CIFS fixes:
+> [1] and [2]. We would like to ask for the help to investigate this problem and
+> if some of those patches need to be backported. Also, is it safe to just revert
+> problematic commit until proper fixes/backports will be available?
+> 
+> We will help to do testing and confirm if fix works, but let me also list the
+> steps we used to reproduce the problem if it will help to identify the problem:
+> 1. Create Active Directory domain eg. 'corp.fsxtest.local' in AWS Directory
+> Service with:
+> - three AWS FSX file systems filesystem1..filesystem3
+> - three Windows servers; They have DFS installed as per
+>   https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespaces/dfs-overview:
+>     - dfs-srv1: EC2AMAZ-2EGTM59
+>     - dfs-srv2: EC2AMAZ-1N36PRD
+>     - dfs-srv3: EC2AMAZ-0PAUH2U 
+> 
+>  2. Create DFS namespace eg. 'dfs-namespace' in Windows server 2008 mode
+>  and three folders targets in it:
+> - referral-a mapped to filesystem1.corp.local
+> - referral-b mapped to filesystem2.corp.local
+> - referral-c mapped to filesystem3.corp.local
+> - local folders dfs-srv1..dfs-srv3 in C:\DFSRoots\dfs-namespace of every
+>   Windows server. This helps to quickly define underlying server when
+>   DFS is mounted.
+> 
+> 3. Enabled cifs debug logs:
+> ```
+> echo 'module cifs +p' > /sys/kernel/debug/dynamic_debug/control
+> echo 'file fs/cifs/* +p' > /sys/kernel/debug/dynamic_debug/control
+> echo 7 > /proc/fs/cifs/cifsFYI
+> ```
+> 
+> 4. Mount DFS namespace on Amazon Linux 2023 instance running any vanilla
+> kernel v6.1.54+:
+> ```
+> dmesg -c &>/dev/null
+> cd /mnt
+> mount -t cifs -o cred=/mnt/creds,echo_interval=5 \
+>     //corp.fsxtest.local/dfs-namespace \
+>     ./dfs-namespace
+> ```
+> 
+> 5. List DFS root, it's also required to avoid recursive mounts that happen
+> during regular 'ls' run:
+> ```
+> sh -c 'ls dfs-namespace'
+> dfs-srv2  referral-a  referral-b
+> ```
+> 
+> The DFS server is EC2AMAZ-1N36PRD, it's also listed in mount:
+> ```
+> [root@ip-172-31-2-82 mnt]# mount | grep dfs
+> //corp.fsxtest.local/dfs-namespace on /mnt/dfs-namespace type cifs (rw,relatime,vers=3.1.1,cache=strict,username=Admin,domain=corp.fsxtest.local,uid=0,noforceuid,gid=0,noforcegid,addr=172.31.11.26,file_mode=0755,dir_mode=0755,soft,nounix,mapposix,rsize=4194304,wsize=4194304,bsize=1048576,echo_interval=5,actimeo=1,closetimeo=1)
+> //EC2AMAZ-1N36PRD.corp.fsxtest.local/dfs-namespace/referral-a on /mnt/dfs-namespace/referral-a type cifs (rw,relatime,vers=3.1.1,cache=strict,username=Admin,domain=corp.fsxtest.local,uid=0,noforceuid,gid=0,noforcegid,addr=172.31.12.80,file_mode=0755,dir_mode=0755,soft,nounix,mapposix,rsize=4194304,wsize=4194304,bsize=1048576,echo_interval=5,actimeo=1,closetimeo=1)
+> ```
+> 
+> List files in first folder:
+> ```
+> sh -c 'ls dfs-namespace/referral-a'
+> filea.txt.txt
+> ```
+> 
+> 6. Shutdown DFS server-2.
+> List DFS root again, server changed from dfs-srv2 to dfs-srv1 EC2AMAZ-2EGTM59:
+> ```
+> sh -c 'ls dfs-namespace'
+> dfs-srv1  referral-a  referral-b
+> ```
+> 
+> 7. Try to list files in another folder, this causes ls to fail with error:
+> ```
+> sh -c 'ls dfs-namespace/referral-b'
+> ls: cannot access 'dfs-namespace/referral-b': No route to host```
+> 
+> Sometimes it's also 'Operation now in progress' error.
+> 
+> mount shows the same output:
+> ```
+> //corp.fsxtest.local/dfs-namespace on /mnt/dfs-namespace type cifs (rw,relatime,vers=3.1.1,cache=strict,username=Admin,domain=corp.fsxtest.local,uid=0,noforceuid,gid=0,noforcegid,addr=172.31.11.26,file_mode=0755,dir_mode=0755,soft,nounix,mapposix,rsize=4194304,wsize=4194304,bsize=1048576,echo_interval=5,actimeo=1,closetimeo=1)
+> //EC2AMAZ-1N36PRD.corp.fsxtest.local/dfs-namespace/referral-a on /mnt/dfs-namespace/referral-a type cifs (rw,relatime,vers=3.1.1,cache=strict,username=Admin,domain=corp.fsxtest.local,uid=0,noforceuid,gid=0,noforcegid,addr=172.31.12.80,file_mode=0755,dir_mode=0755,soft,nounix,mapposix,rsize=4194304,wsize=4194304,bsize=1048576,echo_interval=5,actimeo=1,closetimeo=1)
+> ```
+> 
+> I also attached kernel debug logs from this test.
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=851f657a86421
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0a924817d2ed9
+> 
+> Reported-by: Andrei Paniakin <apanyaki@amazon.com>
+> Bisected-by: Simba Bonga <simbarb@amazon.com>
+> ---
+> 
+> #regzbot introduced: v6.1.54..v6.2-rc1
 
-The violation can actually happen.  For an example, the user could
-reduce max_nr_regions while DAMON is running, to be lower than the
-current number of regions.  Fix the problem by repeating the merge
-operations with increasing aggressiveness in kdamond_merge_regions() for
-the case, until the limit is met.
 
-Fixes: b9a6ac4e4ede ("mm/damon: adaptively adjust regions")
-Cc: <stable@vger.kernel.org> # 5.15.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/core.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index f69250b68bcc..e6598c44b53c 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1694,14 +1694,30 @@ static void damon_merge_regions_of(struct damon_target *t, unsigned int thres,
-  * access frequencies are similar.  This is for minimizing the monitoring
-  * overhead under the dynamically changeable access pattern.  If a merge was
-  * unnecessarily made, later 'kdamond_split_regions()' will revert it.
-+ *
-+ * The total number of regions could be temporarily higher than the
-+ * user-defined limit, max_nr_regions for some cases.  For an example, the user
-+ * updates max_nr_regions to a number that lower than the current number of
-+ * regions while DAMON is running.  Depending on the access pattern, it could
-+ * take indefinitve time to reduce the number below the limit.  For such a
-+ * case, repeat merging until the limit is met while increasing @threshold and
-+ * @sz_limit.
-  */
- static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 				  unsigned long sz_limit)
- {
- 	struct damon_target *t;
-+	unsigned int nr_regions;
- 
--	damon_for_each_target(t, c)
--		damon_merge_regions_of(t, threshold, sz_limit);
-+	do {
-+		nr_regions = 0;
-+		damon_for_each_target(t, c) {
-+			damon_merge_regions_of(t, threshold, sz_limit);
-+			nr_regions += damon_nr_regions(t);
-+		}
-+		threshold = max(1, threshold * 2);
-+		sz_limit = max(1, sz_limit * 2);
-+	} while (nr_regions > c->attrs.max_nr_regions);
- }
- 
- /*
--- 
-2.39.2
-
+Friendly reminder, did anyone had a chance to look into this report?
 
