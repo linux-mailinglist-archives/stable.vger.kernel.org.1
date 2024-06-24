@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-54963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB000914022
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 03:43:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F84D914024
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 03:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B363282CB2
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 01:43:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8B551F2319E
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 01:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215005256;
-	Mon, 24 Jun 2024 01:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D386DC8FF;
+	Mon, 24 Jun 2024 01:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lSh/xBMG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S0LO/7rP"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70D32564;
-	Mon, 24 Jun 2024 01:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8D779F6;
+	Mon, 24 Jun 2024 01:43:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719193397; cv=none; b=Oyjs4pmruZ1f2o0SixeauNASZAQgbAJqA+HA1d3auutZ+tZtpy7du+o8wsPCzP0dZ1/ChgzuLvk1pf+XWNrxP6ZhfJH86bcmoIGBkA1xjbwpzKb++UtUCiuG7p+riTXLkhGXS2/5jLx+xoARfOMXLjMnJmly+cdJNKZXJwbM2p4=
+	t=1719193400; cv=none; b=oTn/g2HiHQB6RiFhQuUHb5Cy8ZsrROAlJonG2HlmlX1GJGtzkfUMKTYvzdr0gcpLTCfcFcNpWztuE2jEd3PKKOsbbub/m1QnzY3AiCAY59LE4H/uMlTTLXxUe7X0u6NXr80DE5HOnIaYJuUb6JE1kcUWmtYEXNv8PDBbag15Py8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719193397; c=relaxed/simple;
-	bh=dQSS+cisNfaft2A5cQ4bXxLvcIiPOe9EipzRaGlA4QI=;
+	s=arc-20240116; t=1719193400; c=relaxed/simple;
+	bh=dlSC/zVmzLNuhEKcph1rM7e1p5iGGVD5RK80YRfDr3E=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UzLcILbHylzI+yJARSYM3tjMc3v2gkNBDY/+UKKpWCiokLNzYNp50wLVNnRyzszlXl6IwiLQeL0nUNMjvoyPhe6DuPlOUdmotfAiTwFfQgyXi7xw1uJ/i8qlbQw0gNRUHQ1WDWjmYougNPM6IeaRPtG5obtN/hJZDI28KWAYVPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lSh/xBMG; arc=none smtp.client-ip=192.198.163.16
+	 MIME-Version; b=bTRw8j+PxoSDTsEq05D96R/u/8kgPnFBIrP3ffrqb7QVdleb9vId1PGx1VFAwQ5dib23GxFMA5+UPySpiBy8iFYBBqJOVdKyLOz2mP7PptTzrOUaFNLcjXY9IlNbA+ZfFoZhrjanb4CN5uvRBiDxSE6ZD6cKzn+9/D+v2dWqIxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S0LO/7rP; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719193396; x=1750729396;
+  t=1719193399; x=1750729399;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=dQSS+cisNfaft2A5cQ4bXxLvcIiPOe9EipzRaGlA4QI=;
-  b=lSh/xBMGM6pBzH1iys/UOrgg8kVKhoagccTbp5q/EQpM+tht8fnZWKGp
-   02orl9pOPC+lFIjtU5m9LylhrMmPqVEEqyMshCag+RGvrNIFbNmW3P+aG
-   k1f3/Vz7SR9hnFo2KpcdJst+YgMcn60y+NZJ+gT/0AqJTSk204inK07mr
-   ILG+QvzdEr8S7nT+LxBjKbH6LLgrEHRUIK3kE+CSHNQj7VYh+NAwcHlH1
-   H/LBfN06guxfqFKg7x1uP8aDYJyqggXy8BFIBiS5BOj6//L2o+2SgdIAT
-   /g4StshFxi1tik6FmbRiYQdVdjpVifEmfKYwgHPu8/RFLPQdI8hsMLnwu
+  bh=dlSC/zVmzLNuhEKcph1rM7e1p5iGGVD5RK80YRfDr3E=;
+  b=S0LO/7rP6KyEWVyD8/egXoSPWQktHEwBq/GIv76lKPhYteRys2FI7eXK
+   pCmybBVxNLocJO9xtrst0xj3CwlGcnb4bWay7Oex3io8/fpKTPNaYN8+r
+   /qWE2goX0GgP5lsguR12+0ruwGTC/UtHpxetqOXeN5U8e5PVQnj8HOG+d
+   KW3bxatEY3U9j7BuG+3Xm3vc9O2VME3MBMmIJCRe0RTZWQmdlYVnFRT5U
+   YZ47jNzAbyVQOEmGxwc/9CUYb1tN+5BiBtTSae7vE6swh+vx5XpsSIzgd
+   BjPzVnL+4zYPNqeBGzFXlwqPCmQ0RJSApQH3ew80cL1bFfVsVNnbHeKEg
    w==;
-X-CSE-ConnectionGUID: DNG8NNPPSXyMomvLVng0VQ==
-X-CSE-MsgGUID: JwJVOIdAQGmrG5vqC2UKUQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="12202748"
+X-CSE-ConnectionGUID: wU4ZmImBSK69R+K/JLBmiw==
+X-CSE-MsgGUID: +fHO8bG6StGBFDhUiiDgCQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="12202754"
 X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; 
-   d="scan'208";a="12202748"
+   d="scan'208";a="12202754"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 18:43:16 -0700
-X-CSE-ConnectionGUID: b+DP2NKySZWqjRby6sfcFQ==
-X-CSE-MsgGUID: ZCT72PlLQ0OMgcIHe9+V0Q==
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2024 18:43:18 -0700
+X-CSE-ConnectionGUID: WRb/btplTfeXyShIZm08YQ==
+X-CSE-MsgGUID: vwnc/n6OTfCuija306mzLQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; 
-   d="scan'208";a="43821151"
+   d="scan'208";a="43821188"
 Received: from wentongw-optiplex-7000.sh.intel.com ([10.239.154.127])
-  by orviesa007.jf.intel.com with ESMTP; 23 Jun 2024 18:43:14 -0700
+  by orviesa007.jf.intel.com with ESMTP; 23 Jun 2024 18:43:17 -0700
 From: Wentong Wu <wentong.wu@intel.com>
 To: sakari.ailus@linux.intel.com,
 	tomas.winkler@intel.com,
@@ -66,9 +66,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Wentong Wu <wentong.wu@intel.com>,
 	stable@vger.kernel.org,
 	Jason Chen <jason.z.chen@intel.com>
-Subject: [PATCH v2 1/5] mei: vsc: Enhance IVSC chipset stability during warm reboot
-Date: Mon, 24 Jun 2024 09:42:19 +0800
-Message-Id: <20240624014223.4171341-2-wentong.wu@intel.com>
+Subject: [PATCH v2 2/5] mei: vsc: Enhance SPI transfer of IVSC rom
+Date: Mon, 24 Jun 2024 09:42:20 +0800
+Message-Id: <20240624014223.4171341-3-wentong.wu@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240624014223.4171341-1-wentong.wu@intel.com>
 References: <20240624014223.4171341-1-wentong.wu@intel.com>
@@ -80,50 +80,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-During system shutdown, incorporate reset logic to ensure the IVSC
-chipset remains in a valid state. This adjustment guarantees that
-the IVSC chipset operates in a known state following a warm reboot.
+Constructing the SPI transfer command as per the specific request.
 
 Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
 Cc: stable@vger.kernel.org # for 6.8+
 Signed-off-by: Wentong Wu <wentong.wu@intel.com>
 Tested-by: Jason Chen <jason.z.chen@intel.com>
 ---
- drivers/misc/mei/vsc-tp.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/misc/mei/vsc-tp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/misc/mei/vsc-tp.c b/drivers/misc/mei/vsc-tp.c
-index e6a98dba8a73..5f3195636e53 100644
+index 5f3195636e53..fed156919fda 100644
 --- a/drivers/misc/mei/vsc-tp.c
 +++ b/drivers/misc/mei/vsc-tp.c
-@@ -568,6 +568,19 @@ static void vsc_tp_remove(struct spi_device *spi)
- 	free_irq(spi->irq, tp);
- }
+@@ -331,7 +331,7 @@ int vsc_tp_rom_xfer(struct vsc_tp *tp, const void *obuf, void *ibuf, size_t len)
+ 		return ret;
+ 	}
  
-+static void vsc_tp_shutdown(struct spi_device *spi)
-+{
-+	struct vsc_tp *tp = spi_get_drvdata(spi);
-+
-+	platform_device_unregister(tp->pdev);
-+
-+	mutex_destroy(&tp->mutex);
-+
-+	vsc_tp_reset(tp);
-+
-+	free_irq(spi->irq, tp);
-+}
-+
- static const struct acpi_device_id vsc_tp_acpi_ids[] = {
- 	{ "INTC1009" }, /* Raptor Lake */
- 	{ "INTC1058" }, /* Tiger Lake */
-@@ -580,6 +593,7 @@ MODULE_DEVICE_TABLE(acpi, vsc_tp_acpi_ids);
- static struct spi_driver vsc_tp_driver = {
- 	.probe = vsc_tp_probe,
- 	.remove = vsc_tp_remove,
-+	.shutdown = vsc_tp_shutdown,
- 	.driver = {
- 		.name = "vsc-tp",
- 		.acpi_match_table = vsc_tp_acpi_ids,
+-	ret = vsc_tp_dev_xfer(tp, tp->tx_buf, tp->rx_buf, len);
++	ret = vsc_tp_dev_xfer(tp, tp->tx_buf, ibuf ? tp->rx_buf : ibuf, len);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.34.1
 
