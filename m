@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-55119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 125AB915A34
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 01:03:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF37A915A47
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 01:16:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87FD51F22120
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 23:03:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EF571C226C2
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 23:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FB71A2573;
-	Mon, 24 Jun 2024 23:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5877519E7F4;
+	Mon, 24 Jun 2024 23:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="na9Owsrn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="kPtAGS3x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C7D1A256A;
-	Mon, 24 Jun 2024 23:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2F649655;
+	Mon, 24 Jun 2024 23:16:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719270192; cv=none; b=bP9OzYd/a8Roqju9fgf9pGPxJEvdo7Lvtol+wvY2rSThC5LJMx8zPf+gGQ2TPAwCgXQsc5voXvFgrIAtACS6n4HTz4JwZHMLGH7/R+jATkWAQzvbB/eP9NGPuDhVDiKx1CM47NrrmOT/l7v8rTzAZ4b8oGwaoLBGa21+PV2Cl+g=
+	t=1719270967; cv=none; b=D21pYBh3zLIKHiU9fR2MLWon0qUAHkEEou84iogRXjd82WPwZoDhYINUEJn1hu3MEqOvVMWfigOFhLCm0uu2WaN8ZyYJQqf6EwD3A/WebPiQo5trBylUhwsiGp8YeErHEiwpkY23uEA6qhZ0FJSrVyBsuOTItRJZtFl4HgxGzL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719270192; c=relaxed/simple;
-	bh=ZJyysTIMxWSKQeITd/lJ3Oj3oUC7p/FBe8w489TSImo=;
-	h=Date:To:From:Subject:Message-Id; b=Tx+qMPi4RJWjZsdvwWRSITm3BGFwfqGwx69Xk+jItLg0PQN68huG3As6wZlJ5ldnFSAs4FBWuV3wwRrZUOtA6HqfqjRPb8huDM5fZnup6b2r6TF4VK01wkiT9VLKjhYViPfcYVjcJz5u0rNhZ8GLZ1Rmw9vr7gnmH5Wn7lOpdrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=na9Owsrn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB3AC2BBFC;
-	Mon, 24 Jun 2024 23:03:12 +0000 (UTC)
+	s=arc-20240116; t=1719270967; c=relaxed/simple;
+	bh=GyPLuDKzZ9rc7g0cL7UY9cFki+/ZfjPPvwqx/nIBl78=;
+	h=Date:To:From:Subject:Message-Id; b=Of9nuHctG2mRSTo/4JICjEKZObhTlANEojdCNfVKhK2BOSScilA8biU2vMixUAPFBg42zkvYzjoPZwgvXC95kSw080QebA5BNEOssPtmNTEs91ZtvxXoxTQdzuAIek0Vb9l3cq24c7hDP8SuTcKJp+ncZ+8whdjKKSU0NSSKmtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=kPtAGS3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7F7C2BBFC;
+	Mon, 24 Jun 2024 23:16:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1719270192;
-	bh=ZJyysTIMxWSKQeITd/lJ3Oj3oUC7p/FBe8w489TSImo=;
+	s=korg; t=1719270966;
+	bh=GyPLuDKzZ9rc7g0cL7UY9cFki+/ZfjPPvwqx/nIBl78=;
 	h=Date:To:From:Subject:From;
-	b=na9OwsrnXd2I7cUTO6cm0zbFOHiaicB8Y18C5jesseyzjPc0dqhaM8btaaAUKJPMA
-	 XQXc/CLcmNMn/B2Wszfmb9CJO897UyD8MmBP2Q4E4CWYEAgdRz0ejOKwW6pSpgC8cp
-	 RHW9CqGYwtqQfutvABWWvlmeEAJVtCJirnC5Liu0=
-Date: Mon, 24 Jun 2024 16:03:11 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,jack@suse.cz,hdanton@sina.com,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
+	b=kPtAGS3xFSiOl8Pso0ZghlxyGjhTXLmDWLluZtNOYIuDzZm/7Gy9M7Mib3KUNKl8b
+	 QldX2zaayCcmpWWEijIL8a1U4lgiuCZ9dk465wjR76IguVLplaFpeH4OF3md5Y5xoi
+	 ibn8ORxBUeCuA9tuz/nMjViRtdbNB+rX2neLR5Xs=
+Date: Mon, 24 Jun 2024 16:16:05 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shli@kernel.org,david@redhat.com,baolin.wang@linux.alibaba.com,alex.shi@linux.alibaba.com,yangge1116@126.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240624230312.2EB3AC2BBFC@smtp.kernel.org>
+Subject: + mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240624231606.6A7F7C2BBFC@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: nilfs2: fix incorrect inode allocation from reserved inodes
+     Subject: mm/gup: clear the LRU flag of a page before adding to LRU batch
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes.patch
+     mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,158 +73,151 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Subject: nilfs2: fix incorrect inode allocation from reserved inodes
-Date: Sun, 23 Jun 2024 14:11:35 +0900
+From: yangge <yangge1116@126.com>
+Subject: mm/gup: clear the LRU flag of a page before adding to LRU batch
+Date: Sat, 22 Jun 2024 14:48:04 +0800
 
-If the bitmap block that manages the inode allocation status is corrupted,
-nilfs_ifile_create_inode() may allocate a new inode from the reserved
-inode area where it should not be allocated.
+If a large number of CMA memory are configured in system (for example, the
+CMA memory accounts for 50% of the system memory), starting a virtual
+machine, it will call pin_user_pages_remote(..., FOLL_LONGTERM, ...) to
+pin memory.  Normally if a page is present and in CMA area,
+pin_user_pages_remote() will migrate the page from CMA area to non-CMA
+area because of FOLL_LONGTERM flag.  But the current code will cause the
+migration failure due to unexpected page refcounts, and eventually cause
+the virtual machine fail to start.
 
-Previous fix commit d325dc6eb763 ("nilfs2: fix use-after-free bug of
-struct nilfs_root"), fixed the problem that reserved inodes with inode
-numbers less than NILFS_USER_INO (=11) were incorrectly reallocated due to
-bitmap corruption, but since the start number of non-reserved inodes is
-read from the super block and may change, in which case inode allocation
-may occur from the extended reserved inode area.
+If a page is added in LRU batch, its refcount increases one, remove the
+page from LRU batch decreases one.  Page migration requires the page is
+not referenced by others except page mapping.  Before migrating a page, we
+should try to drain the page from LRU batch in case the page is in it,
+however, folio_test_lru() is not sufficient to tell whether the page is in
+LRU batch or not, if the page is in LRU batch, the migration will fail.
 
-If that happens, access to that inode will cause an IO error, causing the
-file system to degrade to an error state.
+To solve the problem above, we modify the logic of adding to LRU batch. 
+Before adding a page to LRU batch, we clear the LRU flag of the page so
+that we can check whether the page is in LRU batch by
+folio_test_lru(page).  Seems making the LRU flag of the page invisible a
+long time is no problem, because a new page is allocated from buddy and
+added to the lru batch, its LRU flag is also not visible for a long time.
 
-Fix this potential issue by adding a wraparound option to the common
-metadata object allocation routine and by modifying
-nilfs_ifile_create_inode() to disable the option so that it only allocates
-inodes with inode numbers greater than or equal to the inode number read
-in "nilfs->ns_first_ino", regardless of the bitmap status of reserved
-inodes.
-
-Link: https://lkml.kernel.org/r/20240623051135.4180-4-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Hillf Danton <hdanton@sina.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lkml.kernel.org/r/1719038884-1903-1-git-send-email-yangge1116@126.com
+Signed-off-by: yangge <yangge1116@126.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Alex Shi <alex.shi@linux.alibaba.com>
+Cc: Shaohua Li <shli@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/nilfs2/alloc.c |   19 +++++++++++++++----
- fs/nilfs2/alloc.h |    4 ++--
- fs/nilfs2/dat.c   |    2 +-
- fs/nilfs2/ifile.c |    7 ++-----
- 4 files changed, 20 insertions(+), 12 deletions(-)
+ mm/swap.c |   43 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 31 insertions(+), 12 deletions(-)
 
---- a/fs/nilfs2/alloc.c~nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes
-+++ a/fs/nilfs2/alloc.c
-@@ -377,11 +377,12 @@ void *nilfs_palloc_block_get_entry(const
-  * @target: offset number of an entry in the group (start point)
-  * @bsize: size in bits
-  * @lock: spin lock protecting @bitmap
-+ * @wrap: whether to wrap around
+--- a/mm/swap.c~mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch
++++ a/mm/swap.c
+@@ -212,10 +212,6 @@ static void folio_batch_move_lru(struct
+ 	for (i = 0; i < folio_batch_count(fbatch); i++) {
+ 		struct folio *folio = fbatch->folios[i];
+ 
+-		/* block memcg migration while the folio moves between lru */
+-		if (move_fn != lru_add_fn && !folio_test_clear_lru(folio))
+-			continue;
+-
+ 		folio_lruvec_relock_irqsave(folio, &lruvec, &flags);
+ 		move_fn(lruvec, folio);
+ 
+@@ -256,11 +252,16 @@ static void lru_move_tail_fn(struct lruv
+ void folio_rotate_reclaimable(struct folio *folio)
+ {
+ 	if (!folio_test_locked(folio) && !folio_test_dirty(folio) &&
+-	    !folio_test_unevictable(folio) && folio_test_lru(folio)) {
++	    !folio_test_unevictable(folio)) {
+ 		struct folio_batch *fbatch;
+ 		unsigned long flags;
+ 
+ 		folio_get(folio);
++		if (!folio_test_clear_lru(folio)) {
++			folio_put(folio);
++			return;
++		}
++
+ 		local_lock_irqsave(&lru_rotate.lock, flags);
+ 		fbatch = this_cpu_ptr(&lru_rotate.fbatch);
+ 		folio_batch_add_and_move(fbatch, folio, lru_move_tail_fn);
+@@ -353,11 +354,15 @@ static void folio_activate_drain(int cpu
+ 
+ void folio_activate(struct folio *folio)
+ {
+-	if (folio_test_lru(folio) && !folio_test_active(folio) &&
+-	    !folio_test_unevictable(folio)) {
++	if (!folio_test_active(folio) && !folio_test_unevictable(folio)) {
+ 		struct folio_batch *fbatch;
+ 
+ 		folio_get(folio);
++		if (!folio_test_clear_lru(folio)) {
++			folio_put(folio);
++			return;
++		}
++
+ 		local_lock(&cpu_fbatches.lock);
+ 		fbatch = this_cpu_ptr(&cpu_fbatches.activate);
+ 		folio_batch_add_and_move(fbatch, folio, folio_activate_fn);
+@@ -701,6 +706,11 @@ void deactivate_file_folio(struct folio
+ 		return;
+ 
+ 	folio_get(folio);
++	if (!folio_test_clear_lru(folio)) {
++		folio_put(folio);
++		return;
++	}
++
+ 	local_lock(&cpu_fbatches.lock);
+ 	fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate_file);
+ 	folio_batch_add_and_move(fbatch, folio, lru_deactivate_file_fn);
+@@ -717,11 +727,16 @@ void deactivate_file_folio(struct folio
   */
- static int nilfs_palloc_find_available_slot(unsigned char *bitmap,
- 					    unsigned long target,
- 					    unsigned int bsize,
--					    spinlock_t *lock)
-+					    spinlock_t *lock, bool wrap)
+ void folio_deactivate(struct folio *folio)
  {
- 	int pos, end = bsize;
+-	if (folio_test_lru(folio) && !folio_test_unevictable(folio) &&
+-	    (folio_test_active(folio) || lru_gen_enabled())) {
++	if (!folio_test_unevictable(folio) && (folio_test_active(folio) ||
++	    lru_gen_enabled())) {
+ 		struct folio_batch *fbatch;
  
-@@ -397,6 +398,8 @@ static int nilfs_palloc_find_available_s
- 
- 		end = target;
- 	}
-+	if (!wrap)
-+		return -ENOSPC;
- 
- 	/* wrap around */
- 	for (pos = 0; pos < end; pos++) {
-@@ -495,9 +498,10 @@ int nilfs_palloc_count_max_entries(struc
-  * nilfs_palloc_prepare_alloc_entry - prepare to allocate a persistent object
-  * @inode: inode of metadata file using this allocator
-  * @req: nilfs_palloc_req structure exchanged for the allocation
-+ * @wrap: whether to wrap around
+ 		folio_get(folio);
++		if (!folio_test_clear_lru(folio)) {
++			folio_put(folio);
++			return;
++		}
++
+ 		local_lock(&cpu_fbatches.lock);
+ 		fbatch = this_cpu_ptr(&cpu_fbatches.lru_deactivate);
+ 		folio_batch_add_and_move(fbatch, folio, lru_deactivate_fn);
+@@ -738,12 +753,16 @@ void folio_deactivate(struct folio *foli
   */
- int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
--				     struct nilfs_palloc_req *req)
-+				     struct nilfs_palloc_req *req, bool wrap)
+ void folio_mark_lazyfree(struct folio *folio)
  {
- 	struct buffer_head *desc_bh, *bitmap_bh;
- 	struct nilfs_palloc_group_desc *desc;
-@@ -516,7 +520,7 @@ int nilfs_palloc_prepare_alloc_entry(str
- 	entries_per_group = nilfs_palloc_entries_per_group(inode);
+-	if (folio_test_lru(folio) && folio_test_anon(folio) &&
+-	    folio_test_swapbacked(folio) && !folio_test_swapcache(folio) &&
+-	    !folio_test_unevictable(folio)) {
++	if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
++	    !folio_test_swapcache(folio) && !folio_test_unevictable(folio)) {
+ 		struct folio_batch *fbatch;
  
- 	for (i = 0; i < ngroups; i += n) {
--		if (group >= ngroups) {
-+		if (group >= ngroups && wrap) {
- 			/* wrap around */
- 			group = 0;
- 			maxgroup = nilfs_palloc_group(inode, req->pr_entry_nr,
-@@ -550,7 +554,14 @@ int nilfs_palloc_prepare_alloc_entry(str
- 			bitmap_kaddr = kmap_local_page(bitmap_bh->b_page);
- 			bitmap = bitmap_kaddr + bh_offset(bitmap_bh);
- 			pos = nilfs_palloc_find_available_slot(
--				bitmap, group_offset, entries_per_group, lock);
-+				bitmap, group_offset, entries_per_group, lock,
-+				wrap);
-+			/*
-+			 * Since the search for a free slot in the second and
-+			 * subsequent bitmap blocks always starts from the
-+			 * beginning, the wrap flag only has an effect on the
-+			 * first search.
-+			 */
- 			kunmap_local(bitmap_kaddr);
- 			if (pos >= 0)
- 				goto found;
---- a/fs/nilfs2/alloc.h~nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes
-+++ a/fs/nilfs2/alloc.h
-@@ -50,8 +50,8 @@ struct nilfs_palloc_req {
- 	struct buffer_head *pr_entry_bh;
- };
- 
--int nilfs_palloc_prepare_alloc_entry(struct inode *,
--				     struct nilfs_palloc_req *);
-+int nilfs_palloc_prepare_alloc_entry(struct inode *inode,
-+				     struct nilfs_palloc_req *req, bool wrap);
- void nilfs_palloc_commit_alloc_entry(struct inode *,
- 				     struct nilfs_palloc_req *);
- void nilfs_palloc_abort_alloc_entry(struct inode *, struct nilfs_palloc_req *);
---- a/fs/nilfs2/dat.c~nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes
-+++ a/fs/nilfs2/dat.c
-@@ -75,7 +75,7 @@ int nilfs_dat_prepare_alloc(struct inode
- {
- 	int ret;
- 
--	ret = nilfs_palloc_prepare_alloc_entry(dat, req);
-+	ret = nilfs_palloc_prepare_alloc_entry(dat, req, true);
- 	if (ret < 0)
- 		return ret;
- 
---- a/fs/nilfs2/ifile.c~nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes
-+++ a/fs/nilfs2/ifile.c
-@@ -56,13 +56,10 @@ int nilfs_ifile_create_inode(struct inod
- 	struct nilfs_palloc_req req;
- 	int ret;
- 
--	req.pr_entry_nr = 0;  /*
--			       * 0 says find free inode from beginning
--			       * of a group. dull code!!
--			       */
-+	req.pr_entry_nr = NILFS_FIRST_INO(ifile->i_sb);
- 	req.pr_entry_bh = NULL;
- 
--	ret = nilfs_palloc_prepare_alloc_entry(ifile, &req);
-+	ret = nilfs_palloc_prepare_alloc_entry(ifile, &req, false);
- 	if (!ret) {
- 		ret = nilfs_palloc_get_entry_block(ifile, req.pr_entry_nr, 1,
- 						   &req.pr_entry_bh);
+ 		folio_get(folio);
++		if (!folio_test_clear_lru(folio)) {
++			folio_put(folio);
++			return;
++		}
++
+ 		local_lock(&cpu_fbatches.lock);
+ 		fbatch = this_cpu_ptr(&cpu_fbatches.lru_lazyfree);
+ 		folio_batch_add_and_move(fbatch, folio, lru_lazyfree_fn);
 _
 
-Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
+Patches currently in -mm which might be from yangge1116@126.com are
 
-nilfs2-fix-inode-number-range-checks.patch
-nilfs2-add-missing-check-for-inode-numbers-on-directory-entries.patch
-nilfs2-fix-incorrect-inode-allocation-from-reserved-inodes.patch
-nilfs2-prepare-backing-device-folios-for-writing-after-adding-checksums.patch
-nilfs2-do-not-call-inode_attach_wb-directly.patch
+mm-page_alloc-separate-thp-pcp-into-movable-and-non-movable-categories.patch
+mm-gup-clear-the-lru-flag-of-a-page-before-adding-to-lru-batch.patch
 
 
