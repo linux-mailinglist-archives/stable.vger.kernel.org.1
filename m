@@ -1,78 +1,69 @@
-Return-Path: <stable+bounces-54984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3525D914525
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 10:43:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C639145AC
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2E6F2853F3
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 08:43:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 890401C22076
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 09:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8573E12EBF5;
-	Mon, 24 Jun 2024 08:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Qlt54Ecx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29ADD4962B;
+	Mon, 24 Jun 2024 09:02:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCC484D03;
-	Mon, 24 Jun 2024 08:42:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BF61805E
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 09:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719218582; cv=none; b=hu3moUhG+uhfCC4A38r1piStqkf3YPA6tfKsko5p8EAOEPhmkdjhaYMQDjfG0fxYIkgEH06sB7hJk6icILOR2nWpeyAOIIHyO8KGcysXwGQFocnScY6/P/xLChm1HuqAFFN0spxX3Pu4hSPr5yA0cIbROvj74t4Q4u+IsTXYZlo=
+	t=1719219775; cv=none; b=t3owbRwneAtkyAI+cxkzoJMkQy6/YtymdT4mbTxxg+pxzMt1vwLZyMAnlPCF4R1Jh0jRP1lEGPyOr8ElYhmcNMH3gTP0NeK80PCTvG9X7PZ+6B7uWI8lgVy5Uapxkfs8Vb7kxoHdcMUN1BXpR8QJXQ3Xgb7zEM8rn/lNBp/S54w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719218582; c=relaxed/simple;
-	bh=1Ql/rPJr9B//lnVoSBXI6kmGKjaCsxZKPQJn0Q/2P7E=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VhFGhMOT7JC7tBObRs9bdk+YGbZ2EKPIWLfICCwJ7Jejq2cGk11J0jl2xbXw14YvGpmiC2uwntR+CIZaVcw3F7GDTf1IgjuZe7N+sIoYnSljdpPfuk4R77YyShgvwaEQWc9J3Seai6Gq+yrz+WAIcSU//9Ij6lMpibXWYUbVZ3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Qlt54Ecx; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45O82p4Y006217;
-	Mon, 24 Jun 2024 10:42:37 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=selector1; bh=AeCFDncPm+RmmKekJr5ls2
-	XtImCTJaOsCJTIji/uvL0=; b=Qlt54Ecxz/AioprZnMS6IBTR4WI7IwO74hsiZw
-	ooMmltq5IR7S8dCj7knsL0Fmdwyqnc39lfqgij+C2Bdb0CvY3It7PYf48rDNW+0D
-	3wpWjhSn6I0TILWpq3drbChLOTpgcte9/0HD1jcTA/6hzHYJZAP886j+oxpFJKrO
-	floMB63eWxqXMRPULya+Wat58WixUln7pF+6KAF3MPJ9hmaw6EZZE+FGtNdg3PwW
-	E+wgOW73TXyoDmhDwJs0Cjp5CEreUxAkSzKBH6ma7szU7b6vKkCtWi7VbbnOnVhl
-	OJQTLHRA2DD6b9Iq9W+VdPIuftrChjd1hQ5iQCWEyUErs00A==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3yx860by2y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jun 2024 10:42:37 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id D804A4002D;
-	Mon, 24 Jun 2024 10:42:31 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id C6134209EC7;
-	Mon, 24 Jun 2024 10:41:53 +0200 (CEST)
-Received: from localhost (10.129.178.213) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 24 Jun
- 2024 10:41:53 +0200
-From: Alain Volmat <alain.volmat@foss.st.com>
-To: Hugues Fruchet <hugues.fruchet@foss.st.com>,
-        Alain Volmat
-	<alain.volmat@foss.st.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue
-	<alexandre.torgue@foss.st.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-CC: <stable@vger.kernel.org>, <linux-media@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] media: stm32: dcmipp: correct error handling in dcmipp_create_subdevs
-Date: Mon, 24 Jun 2024 10:41:22 +0200
-Message-ID: <20240624084123.3009122-1-alain.volmat@foss.st.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1719219775; c=relaxed/simple;
+	bh=x2zGMyXgKFnzPjURotjwGkhrZImF+REr4u2EndIry9I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CQLCRIMbUb2916I456KhBY+sq5e6aTIkwJhnGhphCdf3xCNLEnlkvoaAo+ffcm+8hMaO48UdvQ5J8ZbAM//BpfYcBZWVj/tC+oLE1Y8EgGh2pOvFXhkWVyZjg2cDkRSg2opsePa9ppgQq9dbMx0ZQIPHb565DUkbTegMx5zoLk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3E7E8DA7;
+	Mon, 24 Jun 2024 02:03:16 -0700 (PDT)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EAD2F3F6A8;
+	Mon, 24 Jun 2024 02:02:47 -0700 (PDT)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: stable@vger.kernel.org
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10.y] mm: fix race between __split_huge_pmd_locked() and GUP-fast
+Date: Mon, 24 Jun 2024 10:02:36 +0100
+Message-ID: <20240624090236.476077-1-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024061317-promoter-record-bc91@gregkh>
+References: <2024061317-promoter-record-bc91@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,37 +71,221 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-24_07,2024-06-21_01,2024-05-17_01
 
-Correct error handling within the dcmipp_create_subdevs by properly
-decrementing the i counter when releasing the subdeves.
+__split_huge_pmd_locked() can be called for a present THP, devmap or
+(non-present) migration entry.  It calls pmdp_invalidate() unconditionally
+on the pmdp and only determines if it is present or not based on the
+returned old pmd.  This is a problem for the migration entry case because
+pmd_mkinvalid(), called by pmdp_invalidate() must only be called for a
+present pmd.
 
-Fixes: 28e0f3772296 ("media: stm32-dcmipp: STM32 DCMIPP camera interface driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+On arm64 at least, pmd_mkinvalid() will mark the pmd such that any future
+call to pmd_present() will return true.  And therefore any lockless
+pgtable walker could see the migration entry pmd in this state and start
+interpretting the fields as if it were present, leading to BadThings (TM).
+GUP-fast appears to be one such lockless pgtable walker.
+
+x86 does not suffer the above problem, but instead pmd_mkinvalid() will
+corrupt the offset field of the swap entry within the swap pte.  See link
+below for discussion of that problem.
+
+Fix all of this by only calling pmdp_invalidate() for a present pmd.  And
+for good measure let's add a warning to all implementations of
+pmdp_invalidate[_ad]().  I've manually reviewed all other
+pmdp_invalidate[_ad]() call sites and believe all others to be conformant.
+
+This is a theoretical bug found during code review.  I don't have any test
+case to trigger it in practice.
+
+Link: https://lkml.kernel.org/r/20240501143310.1381675-1-ryan.roberts@arm.com
+Link: https://lore.kernel.org/all/0dd7827a-6334-439a-8fd0-43c98e6af22b@arm.com/
+Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 3a5a8d343e1cf96eb9971b17cbd4b832ab19b8e7)
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 ---
- drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/vm/arch_pgtable_helpers.rst |  6 ++-
+ arch/powerpc/mm/book3s64/pgtable.c        |  1 +
+ arch/s390/include/asm/pgtable.h           |  4 +-
+ arch/sparc/mm/tlb.c                       |  1 +
+ mm/huge_memory.c                          | 49 ++++++++++++-----------
+ mm/pgtable-generic.c                      |  5 ++-
+ 6 files changed, 39 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-index 4acc3b90d03a..4924ee36cfda 100644
---- a/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-+++ b/drivers/media/platform/st/stm32/stm32-dcmipp/dcmipp-core.c
-@@ -202,7 +202,7 @@ static int dcmipp_create_subdevs(struct dcmipp_device *dcmipp)
- 	return 0;
+diff --git a/Documentation/vm/arch_pgtable_helpers.rst b/Documentation/vm/arch_pgtable_helpers.rst
+index 552567d863b8..b8ae5d040b99 100644
+--- a/Documentation/vm/arch_pgtable_helpers.rst
++++ b/Documentation/vm/arch_pgtable_helpers.rst
+@@ -134,7 +134,8 @@ PMD Page Table Helpers
+ +---------------------------+--------------------------------------------------+
+ | pmd_swp_clear_soft_dirty  | Clears a soft dirty swapped PMD                  |
+ +---------------------------+--------------------------------------------------+
+-| pmd_mkinvalid             | Invalidates a mapped PMD [1]                     |
++| pmd_mkinvalid             | Invalidates a present PMD; do not call for       |
++|                           | non-present PMD [1]                              |
+ +---------------------------+--------------------------------------------------+
+ | pmd_set_huge              | Creates a PMD huge mapping                       |
+ +---------------------------+--------------------------------------------------+
+@@ -190,7 +191,8 @@ PUD Page Table Helpers
+ +---------------------------+--------------------------------------------------+
+ | pud_mkdevmap              | Creates a ZONE_DEVICE mapped PUD                 |
+ +---------------------------+--------------------------------------------------+
+-| pud_mkinvalid             | Invalidates a mapped PUD [1]                     |
++| pud_mkinvalid             | Invalidates a present PUD; do not call for       |
++|                           | non-present PUD [1]                              |
+ +---------------------------+--------------------------------------------------+
+ | pud_set_huge              | Creates a PUD huge mapping                       |
+ +---------------------------+--------------------------------------------------+
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index a86d932a7c30..5e93931da415 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -108,6 +108,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ {
+ 	unsigned long old_pmd;
  
- err_init_entity:
--	while (i > 0)
-+	while (i-- > 0)
- 		dcmipp->pipe_cfg->ents[i - 1].release(dcmipp->entity[i - 1]);
- 	return ret;
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+ 	old_pmd = pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, _PAGE_INVALID);
+ 	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+ 	return __pmd(old_pmd);
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index 2338345912a3..3b43a292ffbb 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -1631,8 +1631,10 @@ static inline pmd_t pmdp_huge_clear_flush(struct vm_area_struct *vma,
+ static inline pmd_t pmdp_invalidate(struct vm_area_struct *vma,
+ 				   unsigned long addr, pmd_t *pmdp)
+ {
+-	pmd_t pmd = __pmd(pmd_val(*pmdp) | _SEGMENT_ENTRY_INVALID);
++	pmd_t pmd;
+ 
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
++	pmd = __pmd(pmd_val(*pmdp) | _SEGMENT_ENTRY_INVALID);
+ 	return pmdp_xchg_direct(vma->vm_mm, addr, pmdp, pmd);
+ }
+ 
+diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+index 20ee14739333..136a3c3cd695 100644
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -244,6 +244,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ {
+ 	pmd_t old, entry;
+ 
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+ 	entry = __pmd(pmd_val(*pmdp) & ~_PAGE_VALID);
+ 	old = pmdp_establish(vma, address, pmdp, entry);
+ 	flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index e4c690c21fc9..16c7e8f4b5e9 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2085,32 +2085,11 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 		return __split_huge_zero_page_pmd(vma, haddr, pmd);
+ 	}
+ 
+-	/*
+-	 * Up to this point the pmd is present and huge and userland has the
+-	 * whole access to the hugepage during the split (which happens in
+-	 * place). If we overwrite the pmd with the not-huge version pointing
+-	 * to the pte here (which of course we could if all CPUs were bug
+-	 * free), userland could trigger a small page size TLB miss on the
+-	 * small sized TLB while the hugepage TLB entry is still established in
+-	 * the huge TLB. Some CPU doesn't like that.
+-	 * See http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf, Erratum
+-	 * 383 on page 105. Intel should be safe but is also warns that it's
+-	 * only safe if the permission and cache attributes of the two entries
+-	 * loaded in the two TLB is identical (which should be the case here).
+-	 * But it is generally safer to never allow small and huge TLB entries
+-	 * for the same virtual address to be loaded simultaneously. So instead
+-	 * of doing "pmd_populate(); flush_pmd_tlb_range();" we first mark the
+-	 * current pmd notpresent (atomically because here the pmd_trans_huge
+-	 * must remain set at all times on the pmd until the split is complete
+-	 * for this pmd), then we flush the SMP TLB and finally we write the
+-	 * non-huge version of the pmd entry with pmd_populate.
+-	 */
+-	old_pmd = pmdp_invalidate(vma, haddr, pmd);
+-
+-	pmd_migration = is_pmd_migration_entry(old_pmd);
++	pmd_migration = is_pmd_migration_entry(*pmd);
+ 	if (unlikely(pmd_migration)) {
+ 		swp_entry_t entry;
+ 
++		old_pmd = *pmd;
+ 		entry = pmd_to_swp_entry(old_pmd);
+ 		page = migration_entry_to_page(entry);
+ 		write = is_write_migration_entry(entry);
+@@ -2118,6 +2097,30 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 		soft_dirty = pmd_swp_soft_dirty(old_pmd);
+ 		uffd_wp = pmd_swp_uffd_wp(old_pmd);
+ 	} else {
++		/*
++		 * Up to this point the pmd is present and huge and userland has
++		 * the whole access to the hugepage during the split (which
++		 * happens in place). If we overwrite the pmd with the not-huge
++		 * version pointing to the pte here (which of course we could if
++		 * all CPUs were bug free), userland could trigger a small page
++		 * size TLB miss on the small sized TLB while the hugepage TLB
++		 * entry is still established in the huge TLB. Some CPU doesn't
++		 * like that. See
++		 * http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf, Erratum
++		 * 383 on page 105. Intel should be safe but is also warns that
++		 * it's only safe if the permission and cache attributes of the
++		 * two entries loaded in the two TLB is identical (which should
++		 * be the case here). But it is generally safer to never allow
++		 * small and huge TLB entries for the same virtual address to be
++		 * loaded simultaneously. So instead of doing "pmd_populate();
++		 * flush_pmd_tlb_range();" we first mark the current pmd
++		 * notpresent (atomically because here the pmd_trans_huge must
++		 * remain set at all times on the pmd until the split is
++		 * complete for this pmd), then we flush the SMP TLB and finally
++		 * we write the non-huge version of the pmd entry with
++		 * pmd_populate.
++		 */
++		old_pmd = pmdp_invalidate(vma, haddr, pmd);
+ 		page = pmd_page(old_pmd);
+ 		if (pmd_dirty(old_pmd))
+ 			SetPageDirty(page);
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index 4e640baf9794..efa5ab28f471 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -194,7 +194,10 @@ pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
+ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ 		     pmd_t *pmdp)
+ {
+-	pmd_t old = pmdp_establish(vma, address, pmdp, pmd_mkinvalid(*pmdp));
++	pmd_t old;
++
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
++	old = pmdp_establish(vma, address, pmdp, pmd_mkinvalid(*pmdp));
+ 	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+ 	return old;
  }
 -- 
-2.25.1
+2.43.0
 
 
