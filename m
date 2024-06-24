@@ -1,130 +1,163 @@
-Return-Path: <stable+bounces-55056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E5B915402
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:36:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FC7915420
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58BB1B209E9
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:36:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0672BB236D7
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E027D19DF6F;
-	Mon, 24 Jun 2024 16:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B6619E7E1;
+	Mon, 24 Jun 2024 16:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufguTDRc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FhTmssAm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1F019AA7E
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 16:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E726419DFAD;
+	Mon, 24 Jun 2024 16:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719246957; cv=none; b=gVigMmFc7BRMgAUpU00IpqmY4ec2AiSiA9nEq+08wB98EfEI+rxRCCusYYqHDtN0mfFVzZIfIqJitTldATJyzFMHB6iY7ICMlp2VtTSNwcOF2LTfu3rMPI4iPWGSttGAl2KDVNQ0iLImXX7I4hPdUGbjz268YBjPMF37VKrCEvQ=
+	t=1719247047; cv=none; b=hNQY1t5zYUgY+1RR767N4NYBsk9kBE57VApuSRqC7CmR6+s+E1fcNMYksic7ZVRb8ulYcd7q6YBFaaf3zSVRRakM2BKaZo6Y0RMIfu3M/aD2ZA7O87lKs7iz4jbnDxcSlnFpVYwwBhaJHyUh6Rh66GOFTzKXxMsS+6QDXrN0AVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719246957; c=relaxed/simple;
-	bh=YrGM0EyR/T2p/02B+5Mz6+KiDPd9puyEo1Jw35Yc/WI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FcPaggjSffkKJiU+AsBPK8vnNSYVkdHz0E3sDk90/k9JOjOIpLYvt3YOgMLtDi4gmZMRJnuWZm88RL2Usvib76rRNrN25NpdHITLEBKAROkyYggdMmAgpMnGGMf+M8o0USmMBGH5XiUfGFNC9TIlsj5/5CLrIo9KAPHTAb7AR50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufguTDRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF80BC2BBFC;
-	Mon, 24 Jun 2024 16:35:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719246957;
-	bh=YrGM0EyR/T2p/02B+5Mz6+KiDPd9puyEo1Jw35Yc/WI=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ufguTDRcP2nVyOo3aY0TF9IpYcB8RFzSbIfNHaMdSJ0WRsIVitGvMk31F5CS7kRYI
-	 m0yRySIgMSCQrYBst3W8GQjwYsfa63ilGPokct8uMwCxvlAh5+0U7ikYCTXNeQnkBF
-	 RnGp3nq/utj6X61z5trTb5lvZDlJ9SOiLPcAW96w=
-Subject: FAILED: patch "[PATCH] drm/amd/display: prevent register access while in IPS" failed to apply to 6.6-stable tree
-To: hamza.mahfooz@amd.com,alexander.deucher@amd.com,roman.li@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Jun 2024 18:35:54 +0200
-Message-ID: <2024062453-fretted-sulfur-3c0f@gregkh>
+	s=arc-20240116; t=1719247047; c=relaxed/simple;
+	bh=EwPpX0S1DTr+6EvIenNObE+xZCXTGGAFxEeI1J4w98A=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=narmM+bHjVFqvjqiIo4RmzwxCI8QmrDCM+SDQ7LHFSC1BuB5fLY2msZQAPmxuQorc5qXbE5kOMYP80hRjp23yXtZDZ3q6WXbQb59Jn2lBLbMrorDeeKklVRpfF8knrlVv902ExY8UEXAEds/z4CZMocQTxCOPqFURwyTANFiYwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FhTmssAm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B69CC32782;
+	Mon, 24 Jun 2024 16:37:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719247046;
+	bh=EwPpX0S1DTr+6EvIenNObE+xZCXTGGAFxEeI1J4w98A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FhTmssAmbe2m7XIZuY8gNTeVo+Lkit5BxwKeUJVUTZwbQDs+G38+66PslSvzLgbPX
+	 5VKaiDIhlfUucsc4cjoE7TqvsIBTcMhplYbPShFl5s9bpnQzl7TNnyubJlrQWYBJtL
+	 +/n0rSYNeyLLM8kjj7zO4V6y9CBf8tcSacuRTYHi/44G5yRnMmt4Ieqoj6GlBy9sPc
+	 dZ2nLCKQKHprpGR0yeVZy2oKdDUOIcxuh6Y4DBO8vU3exBZJH7F0XMADo/asFimmTq
+	 sKPNph/E2CBt9PEnVWdZ6rFALDcWj8IxJTdgWx9kRIgFVlh8ERnRYJV9VwZ/nU3ne/
+	 suhAPd1WlO1Pw==
+From: Arnd Bergmann <arnd@kernel.org>
+To: linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@vger.kernel.org,
+	Helge Deller <deller@gmx.de>,
+	linux-parisc@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	sparclinux@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	Brian Cain <bcain@quicinc.com>,
+	linux-hexagon@vger.kernel.org,
+	Guo Ren <guoren@kernel.org>,
+	linux-csky@vger.kernel.org,
+	Heiko Carstens <hca@linux.ibm.com>,
+	linux-s390@vger.kernel.org,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	linux-sh@vger.kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-fsdevel@vger.kernel.org,
+	libc-alpha@sourceware.org,
+	musl@lists.openwall.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 01/13] ftruncate: pass a signed offset
+Date: Mon, 24 Jun 2024 18:36:59 +0200
+Message-Id: <20240624163707.299494-2-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240624163707.299494-1-arnd@kernel.org>
+References: <20240624163707.299494-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+From: Arnd Bergmann <arnd@arndb.de>
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+The old ftruncate() syscall, using the 32-bit off_t misses a sign
+extension when called in compat mode on 64-bit architectures.  As a
+result, passing a negative length accidentally succeeds in truncating
+to file size between 2GiB and 4GiB.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Changing the type of the compat syscall to the signed compat_off_t
+changes the behavior so it instead returns -EINVAL.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 56342da3d8cc15efe9df7f29985ba8d256bdc258
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062453-fretted-sulfur-3c0f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+The native entry point, the truncate() syscall and the corresponding
+loff_t based variants are all correct already and do not suffer
+from this mistake.
 
-Possible dependencies:
+Fixes: 3f6d078d4acc ("fix compat truncate/ftruncate")
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ fs/open.c                | 4 ++--
+ include/linux/compat.h   | 2 +-
+ include/linux/syscalls.h | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 56342da3d8cc15efe9df7f29985ba8d256bdc258 Mon Sep 17 00:00:00 2001
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Date: Mon, 3 Jun 2024 10:16:45 -0400
-Subject: [PATCH] drm/amd/display: prevent register access while in IPS
-
-We can't read/write to DCN registers while in IPS. Since, that can cause
-the system to hang. So, before proceeding with the access in that
-scenario, force the system out of IPS.
-
-Cc: stable@vger.kernel.org # 6.6+
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index e426adf95d7d..e9ac20bed0f2 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -11437,6 +11437,12 @@ void amdgpu_dm_trigger_timing_sync(struct drm_device *dev)
- 	mutex_unlock(&adev->dm.dc_lock);
+diff --git a/fs/open.c b/fs/open.c
+index 89cafb572061..50e45bc7c4d8 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -202,13 +202,13 @@ long do_sys_ftruncate(unsigned int fd, loff_t length, int small)
+ 	return error;
  }
  
-+static inline void amdgpu_dm_exit_ips_for_hw_access(struct dc *dc)
-+{
-+	if (dc->ctx->dmub_srv && !dc->ctx->dmub_srv->idle_exit_counter)
-+		dc_exit_ips_for_hw_access(dc);
-+}
-+
- void dm_write_reg_func(const struct dc_context *ctx, uint32_t address,
- 		       u32 value, const char *func_name)
+-SYSCALL_DEFINE2(ftruncate, unsigned int, fd, unsigned long, length)
++SYSCALL_DEFINE2(ftruncate, unsigned int, fd, off_t, length)
  {
-@@ -11447,6 +11453,8 @@ void dm_write_reg_func(const struct dc_context *ctx, uint32_t address,
- 		return;
- 	}
- #endif
-+
-+	amdgpu_dm_exit_ips_for_hw_access(ctx->dc);
- 	cgs_write_register(ctx->cgs_device, address, value);
- 	trace_amdgpu_dc_wreg(&ctx->perf_trace->write_count, address, value);
+ 	return do_sys_ftruncate(fd, length, 1);
  }
-@@ -11470,6 +11478,8 @@ uint32_t dm_read_reg_func(const struct dc_context *ctx, uint32_t address,
- 		return 0;
- 	}
  
-+	amdgpu_dm_exit_ips_for_hw_access(ctx->dc);
-+
- 	value = cgs_read_register(ctx->cgs_device, address);
- 
- 	trace_amdgpu_dc_rreg(&ctx->perf_trace->read_count, address, value);
+ #ifdef CONFIG_COMPAT
+-COMPAT_SYSCALL_DEFINE2(ftruncate, unsigned int, fd, compat_ulong_t, length)
++COMPAT_SYSCALL_DEFINE2(ftruncate, unsigned int, fd, compat_off_t, length)
+ {
+ 	return do_sys_ftruncate(fd, length, 1);
+ }
+diff --git a/include/linux/compat.h b/include/linux/compat.h
+index 233f61ec8afc..56cebaff0c91 100644
+--- a/include/linux/compat.h
++++ b/include/linux/compat.h
+@@ -608,7 +608,7 @@ asmlinkage long compat_sys_fstatfs(unsigned int fd,
+ asmlinkage long compat_sys_fstatfs64(unsigned int fd, compat_size_t sz,
+ 				     struct compat_statfs64 __user *buf);
+ asmlinkage long compat_sys_truncate(const char __user *, compat_off_t);
+-asmlinkage long compat_sys_ftruncate(unsigned int, compat_ulong_t);
++asmlinkage long compat_sys_ftruncate(unsigned int, compat_off_t);
+ /* No generic prototype for truncate64, ftruncate64, fallocate */
+ asmlinkage long compat_sys_openat(int dfd, const char __user *filename,
+ 				  int flags, umode_t mode);
+diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+index 9104952d323d..ba9337709878 100644
+--- a/include/linux/syscalls.h
++++ b/include/linux/syscalls.h
+@@ -418,7 +418,7 @@ asmlinkage long sys_listmount(const struct mnt_id_req __user *req,
+ 			      u64 __user *mnt_ids, size_t nr_mnt_ids,
+ 			      unsigned int flags);
+ asmlinkage long sys_truncate(const char __user *path, long length);
+-asmlinkage long sys_ftruncate(unsigned int fd, unsigned long length);
++asmlinkage long sys_ftruncate(unsigned int fd, off_t length);
+ #if BITS_PER_LONG == 32
+ asmlinkage long sys_truncate64(const char __user *path, loff_t length);
+ asmlinkage long sys_ftruncate64(unsigned int fd, loff_t length);
+-- 
+2.39.2
 
 
