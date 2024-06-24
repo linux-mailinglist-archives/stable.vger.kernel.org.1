@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-55080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4747F9154B6
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:48:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79E09154B8
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:48:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A25E1C21485
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:48:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62BDBB27AAF
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042D819D8BB;
-	Mon, 24 Jun 2024 16:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB56E19E7FF;
+	Mon, 24 Jun 2024 16:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLvStqlU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKEtpchl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA3A82F24
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 16:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB1E19E7F3
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 16:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719247697; cv=none; b=g3L1IkFZBElbRk2d4ZlybVAeadLNyW9QlyJ6jGMzQcm/laSD6j53dVeNSDTJ9B0P7b8S8ppqdfj39hQHWmlq3ZMVD89cK7ytfe4fI3lsnLQGj7QpgujdlPLerbxEl8w5RIh5jz3Cdu3rblEDEYqV6xjD9RuhpFOn0mr0KXqSkBA=
+	t=1719247703; cv=none; b=RqDXeVw+Boxv/O7XOacPPbmGjtXBgWERWruDeLqclNQccptNm8GsWjNpie+6vf0wdhgJ7g2ewMtmudDGmOw77TU23xNikejqJTICvOnmEykkLDO9yW9+iVWBH0Hd3XzKP0AnSKOdWdhJz2Yn0LSO4ekY4rsEUH0GbsFOyruLS74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719247697; c=relaxed/simple;
-	bh=sTtmiXuYARKAycS3jniFDCGI2UYlcxMYRWOB4hTk/sk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ap1mONIoVTOJzNG4mKNQordp9WYhig9f7ktjfM/12GyinEvYWZ3HCR4MrwSeBTveg5THWsIo147mv4BZ3OS8P+blC3QnixzzioIQfdRKWgBcIMkz+V4U18R3WNgXbq/FdFM1qnqIXIbGLpsdo0YAk3nyOXvolRGLIy972W0RBhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLvStqlU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404EFC2BBFC;
-	Mon, 24 Jun 2024 16:48:17 +0000 (UTC)
+	s=arc-20240116; t=1719247703; c=relaxed/simple;
+	bh=p2qlgYfyuBC1pRUzktQY1OafkDJPhxPsroA7kjlV6x8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LtG8BNcS4mzC5WyZvMB/rq0ZBbL1SmDqcIxW99wLNfXhU+Hw+fXdFrehemrmMzhXWcirfZPDfRxj+l5NwGmPLLCiXbvh3xS9kxatImRh5t3woi2Eitzy+va0fJmS3oTg9jMjYxuq2BaiWPLxMhQrDINAFpKaO2+0++F8rN01wMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKEtpchl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EF5C2BBFC;
+	Mon, 24 Jun 2024 16:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719247697;
-	bh=sTtmiXuYARKAycS3jniFDCGI2UYlcxMYRWOB4hTk/sk=;
+	s=korg; t=1719247703;
+	bh=p2qlgYfyuBC1pRUzktQY1OafkDJPhxPsroA7kjlV6x8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TLvStqlUAutGlGdUyt5QPPZH/h/ADhpn/KQE3Z/NP8yZDsBIgJeNN5dr1A5hSu4au
-	 BU2h0hHDPMTchlp19x2BL67fmio3sJZB78363HgshBRi5mXdZeq9XnCYpmtkGFzU6Y
-	 A4dTi/kWEiCvIWUgk+iWYuUwHkT4bDf/UwVOgqbg=
-Subject: FAILED: patch "[PATCH] pwm: stm32: Refuse too small period requests" failed to apply to 4.19-stable tree
-To: u.kleine-koenig@baylibre.com,tgamblin@baylibre.com,ukleinek@kernel.org
+	b=kKEtpchl0JHP5BmOwXx6R4g6yAaJhW+0kawXp8gcB5licWMKzly3Yf6FaINC50nsf
+	 0uqSMdP9/VIKd4zAURmZTh7gRwpNbj8SsjMfbyEHf2iBRTxixaBn7ctr/J77hgR3Ue
+	 bE+PJJJKOOwGh4Ht5BoCMfRFrktui9RuYcqEQN6s=
+Subject: FAILED: patch "[PATCH] i2c: ocores: set IACK bit after core is enabled" failed to apply to 4.19-stable tree
+To: grembeter@gmail.com,andi.shyti@kernel.org,grygorii.tertychnyi@leica-geosystems.com,peter@korsgaard.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Jun 2024 18:47:59 +0200
-Message-ID: <2024062459-ebay-electable-e94e@gregkh>
+Date: Mon, 24 Jun 2024 18:48:12 +0200
+Message-ID: <2024062412-mobster-doable-acc6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x c45fcf46ca2368dafe7e5c513a711a6f0f974308
+git cherry-pick -x 5a72477273066b5b357801ab2d315ef14949d402
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062459-ebay-electable-e94e@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062412-mobster-doable-acc6@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,40 +77,38 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c45fcf46ca2368dafe7e5c513a711a6f0f974308 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-Date: Fri, 21 Jun 2024 16:37:12 +0200
-Subject: [PATCH] pwm: stm32: Refuse too small period requests
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 5a72477273066b5b357801ab2d315ef14949d402 Mon Sep 17 00:00:00 2001
+From: Grygorii Tertychnyi <grembeter@gmail.com>
+Date: Mon, 20 May 2024 17:39:32 +0200
+Subject: [PATCH] i2c: ocores: set IACK bit after core is enabled
 
-If period_ns is small, prd might well become 0. Catch that case because
-otherwise with
+Setting IACK bit when core is disabled does not clear the "Interrupt Flag"
+bit in the status register, and the interrupt remains pending.
 
-	regmap_write(priv->regmap, TIM_ARR, prd - 1);
+Sometimes it causes failure for the very first message transfer, that is
+usually a device probe.
 
-a few lines down quite a big period is configured.
+Hence, set IACK bit after core is enabled to clear pending interrupt.
 
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
+Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C controller")
+Signed-off-by: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/b86f62f099983646f97eeb6bfc0117bb2d0c340d.1718979150.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index a2f231d13a9f..3e7b2a8e34e7 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -337,6 +337,8 @@ static int stm32_pwm_config(struct stm32_pwm *priv, unsigned int ch,
+diff --git a/drivers/i2c/busses/i2c-ocores.c b/drivers/i2c/busses/i2c-ocores.c
+index 56a4dabf5a38..4ad670a80a63 100644
+--- a/drivers/i2c/busses/i2c-ocores.c
++++ b/drivers/i2c/busses/i2c-ocores.c
+@@ -431,8 +431,8 @@ static int ocores_init(struct device *dev, struct ocores_i2c *i2c)
+ 	oc_setreg(i2c, OCI2C_PREHIGH, prescale >> 8);
  
- 	prd = mul_u64_u64_div_u64(period_ns, clk_get_rate(priv->clk),
- 				  (u64)NSEC_PER_SEC * (prescaler + 1));
-+	if (!prd)
-+		return -EINVAL;
+ 	/* Init the device */
+-	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
+ 	oc_setreg(i2c, OCI2C_CONTROL, ctrl | OCI2C_CTRL_EN);
++	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
  
- 	/*
- 	 * All channels share the same prescaler and counter so when two
+ 	return 0;
+ }
 
 
