@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-55035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4EB91518B
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 17:11:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA35915190
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 17:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97DE51F22004
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:11:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A12428ABB2
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0758319B3F9;
-	Mon, 24 Jun 2024 15:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE1919E7FA;
+	Mon, 24 Jun 2024 15:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wb8tR8eQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOYHTbV5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE1F19E7E7
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 15:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8C319E7F6
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 15:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719241772; cv=none; b=U6z0vQcdG603yaafal1odvJqLJMnFXBTPk7AWCOXCkx2/a34sLNhOa4e2qpghhRhqk2IpPhokJL/uSc38WOCSeZQPXagAMqzctN/XqgIHBQ+ovGsYVDUce2nVESUMnckufOaanbBF2FTaxeIrdL6fA+yfHpfU5Ao7Etpxm0NgvY=
+	t=1719241780; cv=none; b=VZwGCUelhvQM4HbNh7CQyuYsWdQ4FLm+p11BolKBLhVYyFsq5Mn5sGQ2Za3pGO0vxrXhTqwIpWdtAV7jk1kiiAN5NSMgNx7cyb8WWQqrGCQwNhjupNYkUBTWucyPADLhl9dJuGgnDvfg0UY1fNEm3GL4zOfRMobOE0HeYLzC2oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719241772; c=relaxed/simple;
-	bh=i8lfafPA8hYY1B6g2RfUt7+8CQ9JYbpi0eRr019CkoE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Qts/VbHKFrhZBe6z6CHsCZZGGPUGARaAsbmgLpbiUTw0xvkKJXu1PLn9H5fjUKSZxt+tcornSUWqbIfPiPAjM6AaaapLRgkF7/1b7uK7hfG0CfI2VXOmGZO1732PWnUdyI3CqIF5SpQo/IaHeZc/LUOOPGBxAUKLSl+teyEtdkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wb8tR8eQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A02DC32782;
-	Mon, 24 Jun 2024 15:09:30 +0000 (UTC)
+	s=arc-20240116; t=1719241780; c=relaxed/simple;
+	bh=VR7xoD13Fj3s2ZRKT0WmKl5DlVizzpTFmVU4fhrbaSU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QZCt8KPDIQkN+7qYikHgqM8KtjivzgViW41sbNK6N5xeptWgG+KpUDpAkAhKqLIC3FJhDINLFQXLamw8S/ogt+/+Y8hR86HcWyzRkf+yWcSMpU1A0a7Cft8Mxqew5N9mreLScW/5qIsjFU0fgM0UDv5DYOMp0+a1gRZ+bU6TlII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOYHTbV5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99058C32789;
+	Mon, 24 Jun 2024 15:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719241771;
-	bh=i8lfafPA8hYY1B6g2RfUt7+8CQ9JYbpi0eRr019CkoE=;
+	s=korg; t=1719241780;
+	bh=VR7xoD13Fj3s2ZRKT0WmKl5DlVizzpTFmVU4fhrbaSU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Wb8tR8eQSZWNpUGb6fcpKZVf2nmgudFwCJLjKqc2T6lONOCTBMHkE8dKMrb0Twph5
-	 FPYEsiqoBIaHbQJPR79xvC4hzjmjO0O5BLqp0I53Jt6GnsDOtyM/oZAIcSbxo7mKYX
-	 TTmJvJvSUy5ch7fhx4U2I8Ngw4zJ51M9HgZv0Un0=
-Subject: FAILED: patch "[PATCH] cifs: drop the incorrect assertion in cifs_swap_rw()" failed to apply to 6.9-stable tree
+	b=jOYHTbV5zYFfwJHA4uXPjZMUK7F5GzXI5cNvFook2Qimx5BwxX+mk7X5rWdXIDPRr
+	 RLNg2j0jW1W7VQdhBYSfnQXnNrc32y4YIi4TAV1gMEGpfN+iHgoVED4Ibxagf15uWj
+	 YP8GaGNv9fWvIn65oXJtUjXi8h7fgd8hkc0rmfzk=
+Subject: FAILED: patch "[PATCH] cifs: drop the incorrect assertion in cifs_swap_rw()" failed to apply to 6.6-stable tree
 To: baohua@kernel.org,anna@kernel.org,bharathsm@microsoft.com,chrisl@kernel.org,hanchuanhua@oppo.com,hch@lst.de,jlayton@kernel.org,neilb@suse.de,pc@manguebit.com,ronniesahlberg@gmail.com,ryan.roberts@arm.com,sfrench@samba.org,sprasad@microsoft.com,stable@vger.kernel.org,stfrench@microsoft.com,tom@talpey.com,trondmy@kernel.org,v-songbaohua@oppo.com,ying.huang@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Jun 2024 17:09:28 +0200
-Message-ID: <2024062428-captivate-grasp-a4cf@gregkh>
+Date: Mon, 24 Jun 2024 17:09:29 +0200
+Message-ID: <2024062428-juggle-shrine-cd22@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.9-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.9.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 29433a17a79caa8680b9c0761f2b10502fda9ce3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062428-captivate-grasp-a4cf@gregkh' --subject-prefix 'PATCH 6.9.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062428-juggle-shrine-cd22@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
