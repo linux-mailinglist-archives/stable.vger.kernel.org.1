@@ -1,242 +1,326 @@
-Return-Path: <stable+bounces-55112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7981915958
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 23:59:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB8491599F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 00:12:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78DA028141D
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 21:59:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 519401C21C13
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 22:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E33C19E837;
-	Mon, 24 Jun 2024 21:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7421A2559;
+	Mon, 24 Jun 2024 22:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="BhQycbr5"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Vs4QjN1h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50526135A4B
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 21:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB201A254F
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 22:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719266340; cv=none; b=VWBPxkumOqKpwZojHF8Px2gOuwE7OJuSIiaMl6QdYTc7TiNJdFSXc5svW57hx574FY/l3nx4ifY2oO8t6ZMkp6grIeHkk3QTikI9ihh453mNkIgXYqi9iyooCXdy7A4ibNjmbV7mNQNngUiaxtGoTssF4RxU+ikUo+75K+quLEY=
+	t=1719267154; cv=none; b=afqIyHYFyVM9SDvxmHiKRFLMNH9Vk6kxWw1b2bCIVh414GMFrTAMRGQgZYF4Q6SFU+uVNoqVdmRweDyWMf6Yto/9R6XFa5MGmMsLKoB7+vRBjfiNS+w3P1l0JM0BwN4aWzhImvOjr2qDfadY4LMTNr0NkZdctpNpk02PVjlpIzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719266340; c=relaxed/simple;
-	bh=VLdhJLIwaxQ8wxTJQNH+te/BcT//2ZP5Bbh7eH2t22E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AH3up3NtMUfunJBbrFcNt+xzjcJOCxjhl7ltClED1poUE41Q1Ih9NIst5R21iKPDLRXE8HIJHiZTCZ4FMjBmx0sbXRxUcE1zXO/TFFENWFrsz3ye5ybMpGrDaXsC3jNoOejiLOrGv+DxGvFAVJYAsQZGLSQLKgCLzJmNFapbnT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=BhQycbr5; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-444cd0ee46aso14486471cf.3
-        for <stable@vger.kernel.org>; Mon, 24 Jun 2024 14:58:58 -0700 (PDT)
+	s=arc-20240116; t=1719267154; c=relaxed/simple;
+	bh=+UCCdZQ3eCuIV7Y1LzKbJGHc3JfjUkOY8QeVYo3jO2w=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TAqo0Fabbom+ZLmS2cPHwpJ2YZ92rkYPmlecCZyas7qCO6qgcSjpWqJXiu2WLHJ06VLodZqSDdyPpl58ZOh/PaUBumDmT/x5teHFHp3IRwJ8JWZNYZMUsKyvotdYLpfHMF5lbxuHqXbRpFTijooGdVHN1Je45ivtC9U1V3Mr8uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Vs4QjN1h; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-1fa5139f66bso12163545ad.0
+        for <stable@vger.kernel.org>; Mon, 24 Jun 2024 15:12:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1719266335; x=1719871135; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PykbmAe7/RecVGDwZZ/IKDsll6JeakGvoiBa3T2dozg=;
-        b=BhQycbr5Gv+j5mUT5pcLolID+cPjQxl9s9QpOZmIvpIWpPVXQmMytFaWd0o705JEdT
-         gvwr7rAl6YDjKf3j5N3XcoGWgte+ncksUnzLWh9+4V71DMv9v84nnYlRPeW7FQC3hQwX
-         eFqN7f+Hk503dGmVfgHE1M7PXUHBv925IHSqo=
+        d=google.com; s=20230601; t=1719267152; x=1719871952; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pPYUfgs5zw04kzOhQ8+F9AbTYxqJaear32gPB/pl9ow=;
+        b=Vs4QjN1h1aE9QMbVibdZ7Wi/cj53XvESsgrVGCrCeP9mOcaojZGBGw4C34hrJgJ+PL
+         LQ7M8Ifl1hZ0KjWwG2e9P7y1/dIsfewViPZ9r6akT3/1UPLxRSoQBuy/erkk8sKDa3Pf
+         NqPV1YWFBfI1ATe3kxjs67tO1yW6Ue74KjGO4Uwk6U5tc1JCl4uYAJQnnqIIoLIxZeMf
+         Ph36SjD6uEnXVdbVoxN6+Udhs+oZoQiy5wuHinqtzYyhvBZiurGmbDAzF1kAI6E90TrA
+         UsKlBlx14QKIQsTPoPyUAV3HiymZX2B4myXeuJeSZ6Jdpa5/6IAvDIdw6bkmnHUgVzFe
+         xlyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719266335; x=1719871135;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PykbmAe7/RecVGDwZZ/IKDsll6JeakGvoiBa3T2dozg=;
-        b=TZ660M4TKiGpidWUCK1zS3Di7ki66dl6uiylDPYtijWM7qoruYl7Di861fGWn3krIs
-         YcKouTMk3fWOg7/MOnifpZQTYLYMG/eEpEmpCCRmmqksx00P9/gS77qvMS0hJzEEEVdS
-         sK43OrfeWYlbZxYfPwqwcARrcY/bTsH85TnjnBBDEKvAGYcHV5SbMAVYiGRvGVEVfOno
-         Mu3tA/VMD7Q3hKWgT9kAfNbW6gBD48SlFIAUPmTy118/D+BD7DEs6gw0JHAnsgJD/b5e
-         CdMYtlAi0Ro9FG18JlAcAdZfvfZ0+hghFbsNgc9l+gJQ1riP79iQFy8rzY5Fe0vbpMiO
-         rK8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWG5aaNq9/ARP3iJfDjosS9V9Y79F2zABXLVPrHX0NLLhITH4EQFcR7yLuaZniUTC86N9TFLvaKk5dlh8suzDj6/nY7+Lxg
-X-Gm-Message-State: AOJu0YymUq1U25NmssnzJZmXWH2h8bUXG8CCKN5JBnWHL5qWpGAtiDDA
-	WtGim1oAXpmMzbcRpa8tZIbkUeBhSZrc4YywEA4PJptvCkQv6wklqXXOXXbwJArDB8HqVuAjZOk
-	=
-X-Google-Smtp-Source: AGHT+IGKJlMY308wqnVYHh5kqbt9/PZ1qHZeb/sKyhFFRECZRIt1Lpx/rjVTS00+Z6DvBo/SVV8d6w==
-X-Received: by 2002:a05:622a:4fcc:b0:444:f0b5:8a5e with SMTP id d75a77b69052e-444f0b58da0mr15213351cf.32.1719266335496;
-        Mon, 24 Jun 2024 14:58:55 -0700 (PDT)
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com. [209.85.160.176])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-444c2cac5acsm46745101cf.97.2024.06.24.14.58.54
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jun 2024 14:58:54 -0700 (PDT)
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-443586c2091so55571cf.0
-        for <stable@vger.kernel.org>; Mon, 24 Jun 2024 14:58:54 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV2e5zOIPnpj9NbfYIgsbhRhgXY15oOZPNrMD/vfQwVnucEDdi2VsLmt8kWeAfaDkro7A3JF6ClZl8Dmhaw/2If48Tuqqqv
-X-Received: by 2002:ac8:59d0:0:b0:444:ba78:c32c with SMTP id
- d75a77b69052e-444f36a7810mr388891cf.11.1719266334099; Mon, 24 Jun 2024
- 14:58:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1719267152; x=1719871952;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pPYUfgs5zw04kzOhQ8+F9AbTYxqJaear32gPB/pl9ow=;
+        b=Y6YX/1JxE4xLM0EM3FSSXvsUo9zN2cR+cptN3vwxdt2vjuJuRI4cYGFdYvZHajAVbC
+         VihpnLkxEvDTwnsk3YnKJYfufP1x9J6wFUtyLuMiUElxFPhE+Li9MPy1xESqvi/mNzGr
+         g31KsIV88PfcOpQua3PCr7TTmykMvVytulCoGmRXXybgU5vo/osSIhGvdF56tp2H6KVM
+         mD1bVj4S7NSAKhAyNDpATevv7ggi82TzA3BxGOKTReHM54IXO5dkWbK0JGBDDrmbMXTY
+         FhZ7hTKYvZvrbwM6+d5FUoJwkibo4m7INRc604ctJQypnwT4LD1DM7Cz5aEldEBNVHJt
+         qMBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUhcTef1ZGS+h7PveQ8ClIEct4f352xn1OUglOcgfMkNA8OXXRxDHRaz4rQEKp0yELYJ/AFadZHKmBgjkHJSgRvVqEw+WWE
+X-Gm-Message-State: AOJu0Yyr9OdXFblLZ8ZytGV9iPseyhK133+fkd7BkCL35x2HqJYROaqu
+	UJh3Mjfw4yAIqfEgnS1ZpKsjaGJMKk0NaaksaEp2fyL+4hyFvGbKxIsIXgg+pq8zu6V+rwhqesY
+	sh53YN4XwBg==
+X-Google-Smtp-Source: AGHT+IF6xzy8x66j2jk6t+LDSAGlwtGWFsJBo+x/FEq/umMjUFalVzUGvRMupb1SHy0uxFHIyYxLIGjs7WR2SQ==
+X-Received: from ip.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:57f3])
+ (user=ipylypiv job=sendgmr) by 2002:a17:902:f685:b0:1f6:917b:e064 with SMTP
+ id d9443c01a7336-1fa1d624449mr6528115ad.6.1719267151816; Mon, 24 Jun 2024
+ 15:12:31 -0700 (PDT)
+Date: Mon, 24 Jun 2024 22:12:05 +0000
+In-Reply-To: <20240624221211.2593736-1-ipylypiv@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240624133135.7445-1-johan+linaro@kernel.org>
- <20240624133135.7445-3-johan+linaro@kernel.org> <CAD=FV=UauWffRM45FsU2SHoKtkVaOEf=Adno+jV+Ashf7NFHuA@mail.gmail.com>
-In-Reply-To: <CAD=FV=UauWffRM45FsU2SHoKtkVaOEf=Adno+jV+Ashf7NFHuA@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Mon, 24 Jun 2024 14:58:39 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=XPKqjMcWhqk4OKxSOPgDKh-VM4J4oMEdQtgpFBw8WSXA@mail.gmail.com>
-Message-ID: <CAD=FV=XPKqjMcWhqk4OKxSOPgDKh-VM4J4oMEdQtgpFBw8WSXA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] serial: qcom-geni: fix soft lockup on sw flow control
- and suspend
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Bjorn Andersson <andersson@kernel.org>, 
-	linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Mime-Version: 1.0
+References: <20240624221211.2593736-1-ipylypiv@google.com>
+X-Mailer: git-send-email 2.45.2.741.gdbec12cfda-goog
+Message-ID: <20240624221211.2593736-2-ipylypiv@google.com>
+Subject: [PATCH v2 1/6] ata: libata-scsi: Do not overwrite valid sense data
+ when CK_COND=1
+From: Igor Pylypiv <ipylypiv@google.com>
+To: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>, Hannes Reinecke <hare@suse.de>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, Jason Yan <yanaijie@huawei.com>, 
+	linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Igor Pylypiv <ipylypiv@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Current ata_gen_passthru_sense() code performs two actions:
+1. Generates sense data based on the ATA 'status' and ATA 'error' fields.
+2. Populates "ATA Status Return sense data descriptor" / "Fixed format
+   sense data" with ATA taskfile fields.
 
-On Mon, Jun 24, 2024 at 2:23=E2=80=AFPM Doug Anderson <dianders@chromium.or=
-g> wrote:
->
-> Hi,
->
-> On Mon, Jun 24, 2024 at 6:31=E2=80=AFAM Johan Hovold <johan+linaro@kernel=
-.org> wrote:
-> >
-> > The stop_tx() callback is used to implement software flow control and
-> > must not discard data as the Qualcomm GENI driver is currently doing
-> > when there is an active TX command.
-> >
-> > Cancelling an active command can also leave data in the hardware FIFO,
-> > which prevents the watermark interrupt from being enabled when TX is
-> > later restarted. This results in a soft lockup and is easily triggered
-> > by stopping TX using software flow control in a serial console but this
-> > can also happen after suspend.
-> >
-> > Fix this by only stopping any active command, and effectively clearing
-> > the hardware fifo, when shutting down the port. Make sure to temporaril=
-y
-> > raise the watermark level so that the interrupt fires when TX is
-> > restarted.
->
-> Nice! I did quite a few experiments, but it sounds like you found
-> something that I wasn't able to find. Specifically once I cancelled an
-> ongoing command I could never manage to get it started back up, but it
-> must have just been that data was still in the FIFO and thus the
-> watermark never fired again.
->
-> When I was experimenting, I also swore that there were cases where
-> geni would sometimes fully drop bytes when I tried to "cancel" a
-> command, but maybe I was mistaken. Everything I figured out was
-> essentially by running experiments and I could easily have had a bug
-> in my experiment.
->
->
-> > Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver s=
-upport for GENI based QUP")
-> > Cc: stable@vger.kernel.org      # 4.17
-> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> > ---
-> >  drivers/tty/serial/qcom_geni_serial.c | 28 +++++++++++++++++----------
-> >  1 file changed, 18 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial=
-/qcom_geni_serial.c
-> > index 1d5d6045879a..72addeb9f461 100644
-> > --- a/drivers/tty/serial/qcom_geni_serial.c
-> > +++ b/drivers/tty/serial/qcom_geni_serial.c
-> > @@ -651,13 +651,8 @@ static void qcom_geni_serial_start_tx_fifo(struct =
-uart_port *uport)
-> >  {
-> >         u32 irq_en;
-> >
-> > -       if (qcom_geni_serial_main_active(uport) ||
-> > -           !qcom_geni_serial_tx_empty(uport))
-> > -               return;
-> > -
-> >         irq_en =3D readl(uport->membase + SE_GENI_M_IRQ_EN);
-> >         irq_en |=3D M_TX_FIFO_WATERMARK_EN | M_CMD_DONE_EN;
-> > -
-> >         writel(DEF_TX_WM, uport->membase + SE_GENI_TX_WATERMARK_REG);
-> >         writel(irq_en, uport->membase + SE_GENI_M_IRQ_EN);
-> >  }
-> > @@ -665,16 +660,28 @@ static void qcom_geni_serial_start_tx_fifo(struct=
- uart_port *uport)
-> >  static void qcom_geni_serial_stop_tx_fifo(struct uart_port *uport)
-> >  {
-> >         u32 irq_en;
-> > -       struct qcom_geni_serial_port *port =3D to_dev_port(uport);
-> >
-> >         irq_en =3D readl(uport->membase + SE_GENI_M_IRQ_EN);
-> >         irq_en &=3D ~(M_CMD_DONE_EN | M_TX_FIFO_WATERMARK_EN);
-> >         writel(0, uport->membase + SE_GENI_TX_WATERMARK_REG);
-> >         writel(irq_en, uport->membase + SE_GENI_M_IRQ_EN);
-> > -       /* Possible stop tx is called multiple times. */
->
-> If qcom_geni_serial_stop_tx_fifo() is supposed to be used for UART
-> flow control and you have a way to stop the transfer immediately
-> without losing data (by using geni_se_cancel_m_cmd), maybe we should
-> do that? If the other side wants us to stop transferring data and we
-> can stop it right away that would be ideal...
->
->
-> > +}
-> > +
-> > +static void qcom_geni_serial_clear_tx_fifo(struct uart_port *uport)
-> > +{
-> > +       struct qcom_geni_serial_port *port =3D to_dev_port(uport);
-> > +
-> >         if (!qcom_geni_serial_main_active(uport))
-> >                 return;
-> >
-> > +       /*
-> > +        * Increase watermark level so that TX can be restarted and wai=
-t for
-> > +        * sequencer to start to prevent lockups.
-> > +        */
-> > +       writel(port->tx_fifo_depth, uport->membase + SE_GENI_TX_WATERMA=
-RK_REG);
-> > +       qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
-> > +                                       M_TX_FIFO_WATERMARK_EN, true);
->
-> Oh, maybe this "wait for sequencer to start to prevent lockups." is
-> the part that I was missing? Can you explain more about what's going
-> on here? Why does waiting for the watermark interrupt to fire prevent
-> lockups? I would have imagined that the watermark interrupt would be
-> part of the geni hardware and have nothing to do with the firmware
-> running on the other end, so I'm not sure why it firing somehow would
-> prevent a lockup. Was this just by trial and error?
+The problem is that #1 generates sense data even when a valid sense data
+is already present (ATA_QCFLAG_SENSE_VALID is set). Factoring out #2 into
+a separate function allows us to generate sense data only when there is
+no valid sense data (ATA_QCFLAG_SENSE_VALID is not set).
 
-Actually, the more I look at it the more confused I am about your
-qcom_geni_serial_clear_tx_fifo(). Can you explain and maybe add some
-inline comments in the function since it's not obvious? Specifically,
-things I'm confused about with your patch:
+As a bonus, we can now delete a FIXME comment in atapi_qc_complete()
+which states that we don't want to translate taskfile registers into
+sense descriptors for ATAPI.
 
-1. The function is named qcom_geni_serial_clear_tx_fifo() which
-implies that when it finishes that the hardware FIFO will have nothing
-in it. ...but how does your code ensure this?
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+---
+ drivers/ata/libata-scsi.c | 158 +++++++++++++++++++++-----------------
+ 1 file changed, 86 insertions(+), 72 deletions(-)
 
-2. If the function is really clearing the FIFOs then why do we need to
-adjust the watermark level? The fact that you need to adjust the
-watermark levels implies (to me) that there are things stuck in the
-FIFO still. ...but then what happens to those characters? When are
-they sent?
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index bb4d30d377ae..54fed6a427b1 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -230,6 +230,80 @@ void ata_scsi_set_sense_information(struct ata_device *dev,
+ 				   SCSI_SENSE_BUFFERSIZE, information);
+ }
+ 
++/**
++ *	ata_scsi_set_passthru_sense_fields - Set ATA fields in sense buffer
++ *	@qc: ATA PASS-THROUGH command.
++ *
++ *	Populates "ATA Status Return sense data descriptor" / "Fixed format
++ *	sense data" with ATA taskfile fields.
++ *
++ *	LOCKING:
++ *	None.
++ */
++static void ata_scsi_set_passthru_sense_fields(struct ata_queued_cmd *qc)
++{
++	struct scsi_cmnd *cmd = qc->scsicmd;
++	struct ata_taskfile *tf = &qc->result_tf;
++	unsigned char *sb = cmd->sense_buffer;
++	unsigned char *desc = sb + 8;
++
++	if ((cmd->sense_buffer[0] & 0x7f) >= 0x72) {
++		u8 len;
++
++		/* descriptor format */
++		len = sb[7];
++		desc = (char *)scsi_sense_desc_find(sb, len + 8, 9);
++		if (!desc) {
++			if (SCSI_SENSE_BUFFERSIZE < len + 14)
++				return;
++			sb[7] = len + 14;
++			desc = sb + 8 + len;
++		}
++		desc[0] = 9;
++		desc[1] = 12;
++		/*
++		 * Copy registers into sense buffer.
++		 */
++		desc[2] = 0x00;
++		desc[3] = tf->error;
++		desc[5] = tf->nsect;
++		desc[7] = tf->lbal;
++		desc[9] = tf->lbam;
++		desc[11] = tf->lbah;
++		desc[12] = tf->device;
++		desc[13] = tf->status;
++
++		/*
++		 * Fill in Extend bit, and the high order bytes
++		 * if applicable.
++		 */
++		if (tf->flags & ATA_TFLAG_LBA48) {
++			desc[2] |= 0x01;
++			desc[4] = tf->hob_nsect;
++			desc[6] = tf->hob_lbal;
++			desc[8] = tf->hob_lbam;
++			desc[10] = tf->hob_lbah;
++		}
++	} else {
++		/* Fixed sense format */
++		desc[0] = tf->error;
++		desc[1] = tf->status;
++		desc[2] = tf->device;
++		desc[3] = tf->nsect;
++		desc[7] = 0;
++		if (tf->flags & ATA_TFLAG_LBA48)  {
++			desc[8] |= 0x80;
++			if (tf->hob_nsect)
++				desc[8] |= 0x40;
++			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
++				desc[8] |= 0x20;
++		}
++		desc[9] = tf->lbal;
++		desc[10] = tf->lbam;
++		desc[11] = tf->lbah;
++	}
++}
++
+ static void ata_scsi_set_invalid_field(struct ata_device *dev,
+ 				       struct scsi_cmnd *cmd, u16 field, u8 bit)
+ {
+@@ -837,10 +911,8 @@ static void ata_to_sense_error(unsigned id, u8 drv_stat, u8 drv_err, u8 *sk,
+  *	ata_gen_passthru_sense - Generate check condition sense block.
+  *	@qc: Command that completed.
+  *
+- *	This function is specific to the ATA descriptor format sense
+- *	block specified for the ATA pass through commands.  Regardless
+- *	of whether the command errored or not, return a sense
+- *	block. Copy all controller registers into the sense
++ *	This function is specific to the ATA pass through commands.
++ *	Regardless of whether the command errored or not, return a sense
+  *	block. If there was no error, we get the request from an ATA
+  *	passthrough command, so we use the following sense data:
+  *	sk = RECOVERED ERROR
+@@ -855,7 +927,6 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+ 	struct scsi_cmnd *cmd = qc->scsicmd;
+ 	struct ata_taskfile *tf = &qc->result_tf;
+ 	unsigned char *sb = cmd->sense_buffer;
+-	unsigned char *desc = sb + 8;
+ 	u8 sense_key, asc, ascq;
+ 
+ 	memset(sb, 0, SCSI_SENSE_BUFFERSIZE);
+@@ -876,62 +947,6 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+ 		 */
+ 		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
+ 	}
+-
+-	if ((cmd->sense_buffer[0] & 0x7f) >= 0x72) {
+-		u8 len;
+-
+-		/* descriptor format */
+-		len = sb[7];
+-		desc = (char *)scsi_sense_desc_find(sb, len + 8, 9);
+-		if (!desc) {
+-			if (SCSI_SENSE_BUFFERSIZE < len + 14)
+-				return;
+-			sb[7] = len + 14;
+-			desc = sb + 8 + len;
+-		}
+-		desc[0] = 9;
+-		desc[1] = 12;
+-		/*
+-		 * Copy registers into sense buffer.
+-		 */
+-		desc[2] = 0x00;
+-		desc[3] = tf->error;
+-		desc[5] = tf->nsect;
+-		desc[7] = tf->lbal;
+-		desc[9] = tf->lbam;
+-		desc[11] = tf->lbah;
+-		desc[12] = tf->device;
+-		desc[13] = tf->status;
+-
+-		/*
+-		 * Fill in Extend bit, and the high order bytes
+-		 * if applicable.
+-		 */
+-		if (tf->flags & ATA_TFLAG_LBA48) {
+-			desc[2] |= 0x01;
+-			desc[4] = tf->hob_nsect;
+-			desc[6] = tf->hob_lbal;
+-			desc[8] = tf->hob_lbam;
+-			desc[10] = tf->hob_lbah;
+-		}
+-	} else {
+-		/* Fixed sense format */
+-		desc[0] = tf->error;
+-		desc[1] = tf->status;
+-		desc[2] = tf->device;
+-		desc[3] = tf->nsect;
+-		desc[7] = 0;
+-		if (tf->flags & ATA_TFLAG_LBA48)  {
+-			desc[8] |= 0x80;
+-			if (tf->hob_nsect)
+-				desc[8] |= 0x40;
+-			if (tf->hob_lbal || tf->hob_lbam || tf->hob_lbah)
+-				desc[8] |= 0x20;
+-		}
+-		desc[9] = tf->lbal;
+-		desc[10] = tf->lbam;
+-		desc[11] = tf->lbah;
+-	}
+ }
+ 
+ /**
+@@ -1634,6 +1649,8 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
+ 	u8 *cdb = cmd->cmnd;
+ 	int need_sense = (qc->err_mask != 0) &&
+ 		!(qc->flags & ATA_QCFLAG_SENSE_VALID);
++	int need_passthru_sense = (qc->err_mask != 0) ||
++		(qc->flags & ATA_QCFLAG_SENSE_VALID);
+ 
+ 	/* For ATA pass thru (SAT) commands, generate a sense block if
+ 	 * user mandated it or if there's an error.  Note that if we
+@@ -1645,13 +1662,16 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
+ 	 * asc,ascq = ATA PASS-THROUGH INFORMATION AVAILABLE
+ 	 */
+ 	if (((cdb[0] == ATA_16) || (cdb[0] == ATA_12)) &&
+-	    ((cdb[2] & 0x20) || need_sense))
+-		ata_gen_passthru_sense(qc);
+-	else if (need_sense)
++	    ((cdb[2] & 0x20) || need_passthru_sense)) {
++		if (!(qc->flags & ATA_QCFLAG_SENSE_VALID))
++			ata_gen_passthru_sense(qc);
++		ata_scsi_set_passthru_sense_fields(qc);
++	} else if (need_sense) {
+ 		ata_gen_ata_sense(qc);
+-	else
++	} else {
+ 		/* Keep the SCSI ML and status byte, clear host byte. */
+ 		cmd->result &= 0x0000ffff;
++	}
+ 
+ 	ata_qc_done(qc);
+ }
+@@ -2590,14 +2610,8 @@ static void atapi_qc_complete(struct ata_queued_cmd *qc)
+ 	/* handle completion from EH */
+ 	if (unlikely(err_mask || qc->flags & ATA_QCFLAG_SENSE_VALID)) {
+ 
+-		if (!(qc->flags & ATA_QCFLAG_SENSE_VALID)) {
+-			/* FIXME: not quite right; we don't want the
+-			 * translation of taskfile registers into a
+-			 * sense descriptors, since that's only
+-			 * correct for ATA, not ATAPI
+-			 */
++		if (!(qc->flags & ATA_QCFLAG_SENSE_VALID))
+ 			ata_gen_passthru_sense(qc);
+-		}
+ 
+ 		/* SCSI EH automatically locks door if sdev->locked is
+ 		 * set.  Sometimes door lock request continues to
+-- 
+2.45.2.741.gdbec12cfda-goog
 
-3. On my hardware you're setting the FIFO level to 16 here. The docs I
-have say that if the FIFO level is "less than" the value you set here
-then the interrupt will go off and further clarifies that if you set
-the register to 1 here then you'll get interrupted when the FIFO is
-empty. So what happens with your solution if the FIFO is completely
-full? In that case you'd have to set this to 17, right? ...but then I
-could believe that might confuse the interrupt handler which would get
-told to start transmitting when there is no room for anything.
-
-
-Maybe something is missing in my mental model here and testing your
-patch and hitting Ctrl-C seems to work, but I don't really understand
-why so hopefully you can clarify! :-)
-
--Doug
 
