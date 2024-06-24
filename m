@@ -1,74 +1,75 @@
-Return-Path: <stable+bounces-55065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F8191548E
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:44:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4971915494
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:44:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1D5B1C22A05
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:44:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EDF41F24AEA
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3517FC08;
-	Mon, 24 Jun 2024 16:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD7419E7F7;
+	Mon, 24 Jun 2024 16:44:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bKNJAwm8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LrPJ3p5X"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74F419E7F7;
-	Mon, 24 Jun 2024 16:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FBD19E813;
+	Mon, 24 Jun 2024 16:44:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719247446; cv=none; b=OuZxyApZ9PWhiKheqQVu1M3RnRa2CHYyfvTvaxB4gen1gN8jRWLU6wIgRNJ5Y+aJL2MAL7YVgV9W3UrxUjqzRY+i4GwY2VjITDF4GA3ZFLZbNp/xU13ffJU+WiAvTujuDjv4e+N/zwWUJwXi92wL8Z+Yy+fgBvfTrz4V9vxEu8c=
+	t=1719247449; cv=none; b=TZ553iU3l6er8Xau2r+T5F6ZtCwXD0iDkitDf3ebHL5nKbxRfX3OJ2mDICuVWaPfwv3dUbnUNzvWzevom6SzGYRDJLhqxAHWu4wxQSUg9dG07pWqsYUr8ixJ9aOhgpjJj3a7i0H7QiPeVCM2wttsu+QTTE/Nl1IA7esY+ZL7dKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719247446; c=relaxed/simple;
-	bh=ROPDCII861NLGqzE80k9+DtJm8iQ/4QlSPD6kcUJ+YY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HY6EG2eM48YhPv2ZUtdJCvVxCN9SwCoq7ce28HEHzx5lPigC9uDgLqugelofqRYEfGSkPci5ME1D6FlsmKn5PRTWyEtYH9Fg++eB9A0n+AXfY5d+lWGy57GnuicoX/y6NDcL1IJg/vxCqJnqL+2pDaZzfgmZOm89tLu8lrHfzU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bKNJAwm8; arc=none smtp.client-ip=209.85.128.41
+	s=arc-20240116; t=1719247449; c=relaxed/simple;
+	bh=Y2BB2weXpa+LoCNHgaMdua1IE8aKDXJvx8s/YfYa6MI=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dV4o33kPq/DFLIqQ7Wk77a+g/X5bh+l0y9j1V3yhQpwvc4FdsSiiv2GNqbSmJLMbWuwzjY6btfIZye2ATDx/1yiG9VqBAsNJ1zYJqf0YJJtf+oF6XthfNsIIRCKODx7l6CT1v7waWdAjdZjc3o3iM7YXnUnlE5SnpKZw2WFS2PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LrPJ3p5X; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42249a4f9e4so34824785e9.2;
-        Mon, 24 Jun 2024 09:44:04 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4248ea53493so11085795e9.3;
+        Mon, 24 Jun 2024 09:44:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719247443; x=1719852243; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uPl1ZQhtp404/46Icx++0xUILGoKNCSD4Zi+KclrJiY=;
-        b=bKNJAwm8g+ph2AAdhF13Eb/jIXNcsYe473XVhEsSYaBAdcq/S4q8fUXoAOEiOfzACG
-         bJGE5tVwsBDD4LKEvXyNecXldrWk1jhUrvQD5GWgz7GowQlJPC9IDGUji0euoN8HCNzz
-         4I7GNjCRpkgXuQ4o1C68T437NAo/sdeaQNDz94Vb8AF2qAFTWQzCGVxGEqKZ1DlV/qmc
-         OwQBzRf03VBcCabwqk5wiB45hobTzhyYWyveZzbcwRuwiVKYE5FPHd3lxLDNd0j53HP0
-         +QWbm0yxHbvoMxaQ6R+KfDxCbRuT8axKDXziQfkFrgl+wky5HBLdc7AKYNLvhIwRSYOY
-         a9Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719247443; x=1719852243;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1719247446; x=1719852246; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uPl1ZQhtp404/46Icx++0xUILGoKNCSD4Zi+KclrJiY=;
-        b=IkJ5RPHpoxRTyyGqha7jXdD++Pt8CLckiyVckkT4pGZ+00KuO0DQsxUCjQJEkqoRn/
-         q/AsjpC6Q5cGaJZvoyeIRNt+4GFke+GFD4fp5gjOMjbLuaNxnO+5np2DGdpPr+jxay1Y
-         CVBry7F1RKuHWxD7mIiE9Mzu3/9blwfpJq+a1BnCQ6D/QNu6wFxL3aqF4iMiEQ0C3CDb
-         HFYYIhSDRuM8uX8BrZv4RoWZ7aL/3z0CFjdtUCmL6JC9g6crkGuB0+2CKeT6f9z+BuiC
-         qIFZfFGd6Bn0XrpUw5nIkXAQzpE7GwoUbmA84Rjl8RDfAsJKuLtFyt/3nYBrWxGYlLJD
-         zoFg==
-X-Forwarded-Encrypted: i=1; AJvYcCVGKuyNd+GYvU2CGVUTlyzJcvyG8unYOC2VeVYoWlyV7seEw0bf3yVlsJDSTW7zozkq0ncYy/T53gOdjQrZctLEEDHl6T6NqpkXfaxo9sxpYMgWsKnPpAdEp7GHEQ5zQYNv6hmQ
-X-Gm-Message-State: AOJu0Yxif/elXW7PSXFoCwsmSILKoNuhO67wWk8FrlUqNthaYZ4rU4mQ
-	ETmpFMh51WLFqKq13Mit+zSId31yjY/r8YSjoXkUJPUghx/yoX7K
-X-Google-Smtp-Source: AGHT+IHZL64bTgMiLUEUoyTtjAuoK7dRxFHbZnfAkyi5qDaE8VVg4wQ9jBw8En6Ky+VVdvaKH93RwQ==
-X-Received: by 2002:a05:600c:4fd0:b0:424:74ed:dbfc with SMTP id 5b1f17b1804b1-4248cc66abbmr38179755e9.35.1719247443096;
-        Mon, 24 Jun 2024 09:44:03 -0700 (PDT)
+        bh=uw74zf66DQORFJn85kqFB7s36On7KUi5ywYxV+PBn+Q=;
+        b=LrPJ3p5Xgck3I8V55ZhMo9joe/r6VXI1n5qREcE9CKfW11fwACTNVwpWo8qTiFL9t+
+         l+kysnxc4EMuSeeDAI5L5OvRDI9CV+NgAyUoMK2LF/JQpPVSkjSnGjJMzIwtji5m16VW
+         b6p+RtkqmLomHg4S7A8WusAFrVNalE0qs86mQeS6lkcnJc/7NKxTXvZVyh88+c2RXQXH
+         qrPmLZG6JOLfSokGafovBfCdvx9LSCPKRfEj0T1tGJrO3E8Hkwu/pUjiP2kcVStocoox
+         rHusZvl6PvwPqHVrAsW++Az3WZUZ3oC7lg5yoIwzbwwav1S9oqSXAA/5PY8/Y4Annk55
+         BjPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719247446; x=1719852246;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uw74zf66DQORFJn85kqFB7s36On7KUi5ywYxV+PBn+Q=;
+        b=W310B0drnN8gyo9hQ36+Wo1s4zhhYHHJ+PxmFxe/tt8ZNkv72CjZpR/U4FjSdHyb+7
+         zpXdgJWqeOGryQ8J376mvffOn222v4HQA0n5AXnpH6NxnpYfvN7eyxpW6ktpqov/YRDZ
+         3DI1np3pfr+IsMXXWDImbXka04Vf7hC4r/xRFWjvmMNQWs+nloks4d+f5pY8H0mUFdQn
+         9uFcXIgy6DbTILzNfgYa8LFP7qx897hgU9BQK9rZnde1ZSUwlLsmOOWryz86Ei3l8mxb
+         DIlR+6f3YgZsEVGUVakC+0ncgHj0LjaWKOdKYBVQUA4eEiQUearHO/2wKy1c1iWBabA3
+         KEdA==
+X-Forwarded-Encrypted: i=1; AJvYcCUMVVLLPVOlyb60BxW5E2uZzZ8B1uu8c7nNVq8DUVo166UY/CMHVsiNfUZlj7DVigH+jbX+KNEEg3dxbcPfwRZJP0miAM7zbI9NP5LtmGLc/m11MFVnL1P+Rt4fEJQHLjgBKXeO
+X-Gm-Message-State: AOJu0YzJNGjAyXkrS8ls2f456kAeErnz3LH56a3/vkoQ0yr+DbnQwv05
+	zV5Gp37aJvtXkwhZWBfceKcmb8iHyYktoRYsnmrKplLbO3zD4g6O
+X-Google-Smtp-Source: AGHT+IFJgazm2qcBXOO1WWxGq23AutwedIYScGjsNMAPrLSl9grCFKoRB3d22V6hGWsVj6fq6F18nQ==
+X-Received: by 2002:a05:600c:6ca:b0:424:8dc4:ee43 with SMTP id 5b1f17b1804b1-4248dc4ef8cmr40224005e9.6.1719247446267;
+        Mon, 24 Jun 2024 09:44:06 -0700 (PDT)
 Received: from [127.0.1.1] (84-115-213-103.cable.dynamic.surfer.at. [84.115.213.103])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42484fc0aecsm126090365e9.12.2024.06.24.09.44.01
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42484fc0aecsm126090365e9.12.2024.06.24.09.44.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jun 2024 09:44:02 -0700 (PDT)
+        Mon, 24 Jun 2024 09:44:05 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: [PATCH 0/3] drm/mediatek: fixes for ovl_adaptor
-Date: Mon, 24 Jun 2024 18:43:45 +0200
-Message-Id: <20240624-mtk_disp_ovl_adaptor_scoped-v1-0-9fa1e074d881@gmail.com>
+Date: Mon, 24 Jun 2024 18:43:47 +0200
+Subject: [PATCH 2/3] drm/mediatek: ovl_adaptor: add missing of_node_put()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,9 +78,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEGieWYC/x3MSwqDMBAA0KvIrA3EMVjwKiIhTUY7+EnIiBSCd
- 2/o8m1eAaHMJDA2BTLdLBzPiq5twH/cuZLiUA2o0egBjTquzQaWZOO9WxdcumK24mOioPRLoxv
- e2BvTQx1SpoW//32an+cHv+QRl20AAAA=
+Message-Id: <20240624-mtk_disp_ovl_adaptor_scoped-v1-2-9fa1e074d881@gmail.com>
+References: <20240624-mtk_disp_ovl_adaptor_scoped-v1-0-9fa1e074d881@gmail.com>
+In-Reply-To: <20240624-mtk_disp_ovl_adaptor_scoped-v1-0-9fa1e074d881@gmail.com>
 To: Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
  Philipp Zabel <p.zabel@pengutronix.de>, David Airlie <airlied@gmail.com>, 
  Daniel Vetter <daniel@ffwll.ch>, Matthias Brugger <matthias.bgg@gmail.com>, 
@@ -89,38 +90,44 @@ Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org,
  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1719247441; l=1065;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1719247441; l=1042;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=ROPDCII861NLGqzE80k9+DtJm8iQ/4QlSPD6kcUJ+YY=;
- b=pk334UJ3+WtdigFDy/IyUejM7j4FgWaYmPUO9ZXnCA9jfFn1yVyJk19bsKp+cRJMFnnrkWzpz
- lSZ8e01j9sfDdOUxhI2QnN//s+lP7nzC5B3oCoMDOacSUVG55AN/ACX
+ bh=Y2BB2weXpa+LoCNHgaMdua1IE8aKDXJvx8s/YfYa6MI=;
+ b=RAqXlU9Qx0xyXFz5ElRIdZf5wbyhqD1m5J/GrWFrXfBbUzgeeyRE+ciEsRkz6rmFpz1gue41A
+ vrubTA59EmVC63CZJ8zl+7GhwXzFo2s4l6d2Ty9wnfS3yvCWNVBinoH
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-The main fix is a possible memory leak on an early exit in the
-for_each_child_of_node() loop. That fix has been divided into a patch
-that can be backported (a simple of_node_put()), and another one that
-uses the scoped variant of the macro, removing the need for any
-of_node_put(). That prevents mistakes if new break/return instructions
-are added, but the macro might not be available in older kernels.
+Error paths that exit for_each_child_of_node() need to call
+of_node_put() to decerement the child refcount and avoid memory leaks.
 
-When at it, an unused header has been dropped.
+Add the missing of_node_put().
 
+Cc: stable@vger.kernel.org
+Fixes: 453c3364632a ("drm/mediatek: Add ovl_adaptor support for MT8195")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-Javier Carrasco (3):
-      drm/mediatek: ovl_adaptor: drop unused mtk_crtc.h header
-      drm/mediatek: ovl_adaptor: add missing of_node_put()
-      drm/mediatek: ovl_adaptor: use scoped variant of for_each_child_of_node()
+ drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
- drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
----
-base-commit: f76698bd9a8ca01d3581236082d786e9a6b72bb7
-change-id: 20240624-mtk_disp_ovl_adaptor_scoped-0702a6b23443
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
+index 1418992311c4..3faf26a55e77 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
+@@ -522,8 +522,10 @@ static int ovl_adaptor_comp_init(struct device *dev, struct component_match **ma
+ 		}
+ 
+ 		comp_pdev = of_find_device_by_node(node);
+-		if (!comp_pdev)
++		if (!comp_pdev) {
++			of_node_put(node);
+ 			return -EPROBE_DEFER;
++		}
+ 
+ 		priv->ovl_adaptor_comp[id] = &comp_pdev->dev;
+ 
 
-Best regards,
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+2.40.1
 
 
