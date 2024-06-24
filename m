@@ -1,55 +1,95 @@
-Return-Path: <stable+bounces-55031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 918EC915143
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 17:02:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFC391514B
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 17:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 025CAB24D13
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:02:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16F9D1C23601
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E8D19ADB1;
-	Mon, 24 Jun 2024 15:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D667419B3CB;
+	Mon, 24 Jun 2024 15:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hg/S7Tqm"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="XbVQYQnn";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CoEv1afr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wfout1-smtp.messagingengine.com (wfout1-smtp.messagingengine.com [64.147.123.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B880B19ADA6
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 15:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120F119B3DD
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 15:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719241364; cv=none; b=QtRFdIuMdpNAvnJEiNHF4oSZI3YAjH90v+VqTJM86Jf6y4X7PXMfciXaF4U49buZuIQsbb3BLIPsPAL6zboM7LFxyoberlMa0BNVw7uC8HD+dgW2Cv5QJ1186ObmaAEuloNnH2jploqZgybYMAx+843KyJQr4N6RpEwJORyhJ68=
+	t=1719241424; cv=none; b=uvwpxTlDsNgAlOxuRPaumNXeap4FZjNGQxwhFOejYR2IX4LfanwjxkeozIZBHOMsSXg7cneGrTiHIobYBgzeaztSE0K89wGpnvtp6JU1cxtIh1kxI3BqBj9RX2TSanvvsrecAN7jFBwa9rkIxUiMiPoWff1h9/Rcuebpp60b4zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719241364; c=relaxed/simple;
-	bh=RA3Apruz/CuoUIjTrn0djMsTyql07dJdEE1i3MOT8+U=;
+	s=arc-20240116; t=1719241424; c=relaxed/simple;
+	bh=QvJ0d61aEXA0PMbPQl54ADIEor98DJNgNAXqypA9sFs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YnUOEOACdkh6a2wzB+2bpsYl/JWy/T6F27mM9Hiait2tQxUhzP5iD9IhSiyb56GvQRIKBOy9ICdyLhmpuij7nXxC3UqoqtQ+tpLf4Xph39cBwXlt3bN8U2lVPHsr+8KO6z2+6p1xvC4TGzzL/58lQVt3WhpcZrvKbm0SaDO+hYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hg/S7Tqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377ABC2BBFC;
-	Mon, 24 Jun 2024 15:02:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719241364;
-	bh=RA3Apruz/CuoUIjTrn0djMsTyql07dJdEE1i3MOT8+U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hg/S7TqmgHkZveUMadhsYdKyMK8agWEty8q1mSY9V3HlZYqRqRe/0iRMVnXpe1z0X
-	 zkhjDg4LCdOaE/oAYQ7BEh/OhBklCK6EAUYL0BorsdRDOKm2aHZEHaKv7+iLi2Wlfd
-	 W6uhzJsLPtX9ZJiTWU3/vLUWWyBUwtkaLicnM9qk=
-Date: Mon, 24 Jun 2024 17:02:32 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-Cc: stable@vger.kernel.org, linux-amarula@amarulasolutions.com,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Erwan Le Ray <erwan.leray@foss.st.com>,
-	Valentin Caron <valentin.caron@foss.st.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Subject: Re: [PATCH 5.15] serial: stm32: rework RX over DMA
-Message-ID: <2024062424-appeasing-mobster-9276@gregkh>
-References: <20240620152658.1033479-1-dario.binacchi@amarulasolutions.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PgivzSNEuyhkZfjIRtEA1Dl8ezUHc235ovaswo6k4utx3myp2pU5HUJP4kHw7P8QT3xGpI3TOY8LUu5mgtsTvHtkqEw4J00qu/+h7Zf81MHAvV9X5scbSfFMtk1TFFctyBjSLF0aakHDXFP3UtbXub7DlP4DrV+7IiinZgl0YzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=XbVQYQnn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CoEv1afr; arc=none smtp.client-ip=64.147.123.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfout.west.internal (Postfix) with ESMTP id AFFE41C0008E;
+	Mon, 24 Jun 2024 11:03:41 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Mon, 24 Jun 2024 11:03:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1719241421; x=1719327821; bh=4pwBuN8hkJ
+	qTQI93fLja+eeZn+NqmMdj8TPGI5UsfI8=; b=XbVQYQnn8QUNh3uwa+p/eRvXHD
+	2lDEp7LnMCQrt5oQfetHhkpvXF3YUi30ODx0361dnbE46EA5UFbqyoJiahhSXAhM
+	PTdM/aBUIvtoa6ytd4lRY6ZDgvZ25L8Vsk4rWVgYXTFICgS1ltI47Mxd4SDOknm6
+	iKNScg1D30j2cNBl/Sfh8nJ+gpGt+IF0MA9C2xXx4s6d0Iv1wtES9WsZw+ex9pRR
+	X0H0s6J38T4fFAK+/ecGLbZk3mVHjHPQIg4qf1sHcHqLtOtCVldSKmnUCk70wwcb
+	Io/N1nOn02XmIId15+T0h4rNYs/y4S4BpLoiK8nnBqmt32plqJrBciie85sA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1719241421; x=1719327821; bh=4pwBuN8hkJqTQI93fLja+eeZn+Nq
+	mMdj8TPGI5UsfI8=; b=CoEv1afrbpn5T6bnjFtym8yd0ZT/zYCggidQ2B0ETj5D
+	eAka61oCz9iw2v93XMmiZMEgrxlpmlv0VUBq3Qow6OqwlHPnZHs2qbBbssafvSxZ
+	aDfhQu1AMaqulB+25nnL/QOTSLwtS/7JxQd5IjU8okNw5DCwQF5EgGAwIJDfbeUI
+	LJj1X73OdJCR4C+Zn+CJX4gTPlpn/CEM7BDIHgnFDMjxbM7IoLihNZqe73d4CzS7
+	Ybseo6Mmg8TkppuahI4RcSN8RSwPvoJ7RtXPTT6uXn1D2vCSVfvVOm7Pi8gd9ow6
+	I/ARI0sMSFXFuqbPPwrCcI9i4QKUZVpRk4LG9qqDhQ==
+X-ME-Sender: <xms:zIp5Zq7NQTOSwaNCZemvYV0yS3T5V4rVO321XYct6ru7OxW_KRT4Qg>
+    <xme:zIp5Zj4DLbo-CRwP6ZFrWBKN3t9gG4XDsE4WoDgJfQ4fbT3cACKXa1Y6LrTD7TW3-
+    xBLZ26zxux_gg>
+X-ME-Received: <xmr:zIp5ZpdtnG5n93wUkJ3uGx3ZRVd_14G3wYpXoYuHLQbvCu47cuIfTyRC5sCsMu6E1OYeP4tNxCgqzmXlGaXdawjw0Q1PziI70pKdIw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeeguddgkeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
+    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
+    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:zYp5ZnK_J-GkNEwdOPXxjRiP2QuWTMXQ2-3JruehtLnkVlp__aYk4g>
+    <xmx:zYp5ZuKzSCnyGg5pWURdH9UFp6aTXPjrASMgK2uWdEs59gg7xmgZSQ>
+    <xmx:zYp5Zow_0DZ8XYoRmKmGoXvc2xJuSogrqzr-fjMf2Bafhql6wZYBJg>
+    <xmx:zYp5ZiJocN_CLaY8ZU8TwM80B9EFS1LP0qb3-iT65cBQsBhreA29Qw>
+    <xmx:zYp5ZrACrN-3486k2JKXzFgDiTTVkH45njycnVijrNiKkW6ry76jGLWd>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 24 Jun 2024 11:03:40 -0400 (EDT)
+Date: Mon, 24 Jun 2024 17:03:26 +0200
+From: Greg KH <greg@kroah.com>
+To: Carlos Llamas <cmllamas@google.com>
+Cc: stable@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Kees Cook <keescook@chromium.org>
+Subject: Re: [PATCH 6.6.y] locking/atomic: scripts: fix
+ ${atomic}_sub_and_test() kerneldoc
+Message-ID: <2024062416-engine-client-8b0a@gregkh>
+References: <2024061810-overflow-president-399a@gregkh>
+ <20240620181805.2713680-1-cmllamas@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,55 +98,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240620152658.1033479-1-dario.binacchi@amarulasolutions.com>
+In-Reply-To: <20240620181805.2713680-1-cmllamas@google.com>
 
-On Thu, Jun 20, 2024 at 05:26:57PM +0200, Dario Binacchi wrote:
-> From: Erwan Le Ray <erwan.leray@foss.st.com>
+On Thu, Jun 20, 2024 at 06:18:05PM +0000, Carlos Llamas wrote:
+> commit f92a59f6d12e31ead999fee9585471b95a8ae8a3 upstream.
 > 
-> commit 33bb2f6ac3088936b7aad3cab6f439f91af0223c upstream.
+> For ${atomic}_sub_and_test() the @i parameter is the value to subtract,
+> not add. Fix the typo in the kerneldoc template and generate the headers
+> with this update.
 > 
-> This patch reworks RX support over DMA to improve reliability:
-> - change dma buffer cyclic configuration by using 2 periods. DMA buffer
-> data are handled by a flip-flop between the 2 periods in order to avoid
-> risk of data loss/corruption
-> - change the size of dma buffer to 4096 to limit overruns
-> - add rx errors management (breaks, parity, framing and overrun).
->   When an error occurs on the uart line, the dma request line is masked at
->   HW level. The SW must 1st clear DMAR (dma request line enable), to
->   handle the error, then re-enable DMAR to recover. So, any correct data
->   is taken from the DMA buffer, before handling the error itself. Then
->   errors are handled from RDR/ISR/FIFO (e.g. in PIO mode). Last, DMA
->   reception is resumed.
-> - add a condition on DMA request line in DMA RX routines in order to
-> switch to PIO mode when no DMA request line is disabled, even if the DMA
-> channel is still enabled.
->   When the UART is wakeup source and is configured to use DMA for RX, any
->   incoming data that wakes up the system isn't correctly received.
->   At data reception, the irq_handler handles the WUF irq, and then the
->   data reception over DMA.
->   As the DMA transfer has been terminated at suspend, and will be restored
->   by resume callback (which has no yet been called by system), the data
->   can't be received.
->   The wake-up data has to be handled in PIO mode while suspend callback
->   has not been called.
-> 
-> Signed-off-by: Valentin Caron <valentin.caron@foss.st.com>
-> Signed-off-by: Erwan Le Ray <erwan.leray@foss.st.com>
-> Link: https://lore.kernel.org/r/20211020150332.10214-3-erwan.leray@foss.st.com
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> [ dario: fix conflicts for backport to v5.15. From the [1] series, only the
->   first patch was applied to the v5.15 branch. This caused a regression in
->   character reception, which can be fixed by applying the second patch. The
->   patch has been tested on the stm32f469-disco board.
->   [1] https://lore.kernel.org/all/20211020150332.10214-1-erwan.leray@foss.st.com/. ]
-> Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
-> 
+> Fixes: ad8110706f38 ("locking/atomic: scripts: generate kerneldoc comments")
+> Suggested-by: Mark Rutland <mark.rutland@arm.com>
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Acked-by: Mark Rutland <mark.rutland@arm.com>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Cc: stable@vger.kernel.org
+> Link: https://lkml.kernel.org/r/20240515133844.3502360-1-cmllamas@google.com
+> [cmllamas: generate headers with gen-atomics.sh]
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 > ---
-> 
->  drivers/tty/serial/stm32-usart.c | 206 ++++++++++++++++++++++++-------
->  drivers/tty/serial/stm32-usart.h |  12 +-
->  2 files changed, 165 insertions(+), 53 deletions(-)
-> 
 
 Now queued up, thanks.
 
