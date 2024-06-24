@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-55063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10542915485
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:42:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA4D915486
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:42:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFE561F22F1B
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:42:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB631C21F27
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9679B19E7F2;
-	Mon, 24 Jun 2024 16:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 956CA19E7ED;
+	Mon, 24 Jun 2024 16:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/lvouoA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlYfOVgr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E7519E7EC
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 16:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5641419E7EA
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 16:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719247321; cv=none; b=EEg3qIKnJ7+dWjFd+xLF4qTiXzWgiN7EZX/P2gAlQHsyh3eLgnF4sCdC1+qGNvHWyuFI3hoR781y0elP48jx2LaHiLM9q7JrYmHZZQYTQ5yGEnVUGDDvmXjSHBvuHPuLQOrKXb0RKBkSckhCWW1DuSX3UHY6cyG6EKKdN2ls0Lg=
+	t=1719247324; cv=none; b=P5FlvSddmJYmJaPpwkaXRMz+ExyaXCZqRz1rzIksMf40U3bPRIU4h4ThdBYIjLBjsKB+21avKKVwMDVNWJV5LbgdF5PtFHDa3ZOSax5sN5vfhgRkdj19HJJ032PeFyVEer9AR7LOQxxAZ+uxb1ix+/IUAI4KQGDornv5UXAypdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719247321; c=relaxed/simple;
-	bh=crDGzoUHwIve+f2/L6LkwaHLqu33hOKV+g9t7oIpX2Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CMuy6AdWJWFEVy++SnrSGlLvw1VvhVof5+OYc0FIzpLIPhvLJ4BOkl1KdgllfXPSGr17rFJbkHrB75ZXVnzkgxzEI0PYZHJh0Tiw/VlCGENZr4NswWxf2lb+uPtneLUaJjkdrsO0E/N+4PbbF8Do1fmTeCq7iqWxkxH/weLcQWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/lvouoA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29C5C2BBFC;
-	Mon, 24 Jun 2024 16:42:00 +0000 (UTC)
+	s=arc-20240116; t=1719247324; c=relaxed/simple;
+	bh=l3k2fizr7T7IkruwqSwWNUVtOPp2VG1/4aQBYU9qLvQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=n/Y3pMp49wwUdBAqNHyi2kC/Dr16ZJzrCGfwAC0JWQYb4+mbT0rRn5FpvkqbqL/fvZbDct4UFyXYQXBX6y+IPq4NB5jOUb56J1xaNkdRY4XSjpaai4waQoYhw1iIwr5iwTmNydE0ovd2BVF4zxwUaZUpemARVdjXKCSTbimuEe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlYfOVgr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEFA4C2BBFC;
+	Mon, 24 Jun 2024 16:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719247321;
-	bh=crDGzoUHwIve+f2/L6LkwaHLqu33hOKV+g9t7oIpX2Y=;
+	s=korg; t=1719247324;
+	bh=l3k2fizr7T7IkruwqSwWNUVtOPp2VG1/4aQBYU9qLvQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=S/lvouoAa/ww6vQv537f6etx3dsW0dC7BQ/TC17Ec3rPABedYjXgnwMXd2+DRza0s
-	 PWCdBo6CmId1wMuvXFfxBOd6bBsAKMtQgXanD60Sz1LzQP/4ZYIKS+i+TQuzUBau+D
-	 +jonGl4PIbUvjgVrTiqqC3o4GL+bBC4LqqUEiFfE=
-Subject: FAILED: patch "[PATCH] efi/x86: Free EFI memory map only when installing a new one." failed to apply to 5.15-stable tree
+	b=UlYfOVgrMXVnkJD17nNULEFy3Oumkst2ximt7Lg3AhURcRIBcyX3/x2DAwlIE7qZ+
+	 Cbj4uKUPUobcfFg0b2iTPrXOYHR5LFbFox2/vB4AdFQEJrLnTKu0saYYCZCX/iChwb
+	 eh5/VtjVo1cdJ6VzDcITKLVp9ITWcGyvjDTuON1U=
+Subject: FAILED: patch "[PATCH] efi/x86: Free EFI memory map only when installing a new one." failed to apply to 5.10-stable tree
 To: ardb@kernel.org,Ashish.Kalra@amd.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Jun 2024 18:40:50 +0200
-Message-ID: <2024062448-overspend-lucid-de35@gregkh>
+Date: Mon, 24 Jun 2024 18:40:56 +0200
+Message-ID: <2024062455-glazing-flask-cf0c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 75dde792d6f6c2d0af50278bd374bf0c512fe196
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062448-overspend-lucid-de35@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062455-glazing-flask-cf0c@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,8 @@ fdc6d38d64a2 ("efi: memmap: Move manipulation routines into x86 arch tree")
 db01ea882bf6 ("efi: Correct comment on efi_memmap_alloc")
 3ecc68349bba ("memblock: rename memblock_free to memblock_phys_free")
 fa27717110ae ("memblock: drop memblock_free_early_nid() and memblock_free_early()")
+658aafc8139c ("memblock: exclude MEMBLOCK_NOMAP regions from kmemleak")
+c6460daea23d ("Merge tag 'for-linus-5.15b-rc2-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/xen/tip")
 
 thanks,
 
