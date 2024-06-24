@@ -1,101 +1,130 @@
-Return-Path: <stable+bounces-55014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88DF9914E5E
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:27:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A515914E9F
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBF431C22167
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 13:27:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B88041F23176
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 13:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8867C13D892;
-	Mon, 24 Jun 2024 13:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74FE13F42C;
+	Mon, 24 Jun 2024 13:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fKT/8ndL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bFnUBlxH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EC11311A1;
-	Mon, 24 Jun 2024 13:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE4513D8A4;
+	Mon, 24 Jun 2024 13:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719235655; cv=none; b=En41L5/axcE03YoeZvbH46xGORrs8F5sjxfhzsCYVXd4voQywCZqyjiEDzx3nGI0qeEOgkq9GOYVFWTmjrvMVPsUlfd1d+EbCOS1zMKlPYrvxgGZfpexSdcfTo/PX4ECLShaf6mYOfXFfJr02uEYDsXXXW7oI1ito96Uc/WGnxg=
+	t=1719235783; cv=none; b=JZT4RoZN3424uZkv/fN+zys5pT6I9CPQZAALvhx7MflpN7WPKqBparVevLtzGilqGBPj3v4bawhJ2yXcKkPzTkQuMKc/sj6qUG+Uzr3UXT/qOfRtBm0jTAOX0Kk1CbnE3mIvTP6fMNcF060+Bzw8h//8vFmwYooSDcfRZCEcEpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719235655; c=relaxed/simple;
-	bh=1e3z6vcF3WKxRwqZHX5NVT6nTrvCoZ7drBVb62m44C8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uqEq4L4R2BPPnx7uf/s2cQ4QPZ/AIvDocTtrKeiiNU+Zsb5vs4J2g36Zv3uc2JpjyolxAwM0+4wYcFSmMuUBTqOi7/TDyOq16u6lUo1FLJWDMCRm0OHGKniSI5JNVO11edNwZ7avxERkDzqD8cXv5UgMAqGiVVeGveYAq6LOV9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fKT/8ndL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCE7C32782;
-	Mon, 24 Jun 2024 13:27:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719235654;
-	bh=1e3z6vcF3WKxRwqZHX5NVT6nTrvCoZ7drBVb62m44C8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=fKT/8ndLjeusD9tfkfIaW+ylRhEcT+5+h4xq9WdaJ3tWZO883yCv8jG5vFcfuRII9
-	 MEJ5DyLpOcGMHepB2m1nDS/38ede3gAyoSw25nMxnoizv/kd7YEYqB7485hKmHYaAH
-	 Cxk0+6UOIua6pZnjYAuZoX6wrpmMPJsxZdXD9Qjm0DeO6YpJEVi/Y3hLQMftwEggL+
-	 EV/aOq/9mWAkcjHFwBW21hh3MFZgOkpQxhrgQEHSh/qC+ARoGLoiWR/5eWQ2IuXsEl
-	 1W8Q5iE63mer5j3YsuQduKhN3GgvJlDSbAK9CB6Pm3xQn767/gB9Xgo9w6+jZvjilh
-	 jysbVjYSaNYkA==
-From: Niklas Cassel <cassel@kernel.org>
-To: dlemoal@kernel.org
-Cc: linux-ide@vger.kernel.org,
-	lp610mh@gmail.com,
-	Niklas Cassel <cassel@kernel.org>,
+	s=arc-20240116; t=1719235783; c=relaxed/simple;
+	bh=dQSS+cisNfaft2A5cQ4bXxLvcIiPOe9EipzRaGlA4QI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=OK1Unn9g9+2SEK+EpOJ4Jph5YpMuuk/LI4DV3J60AcECcNGu0k7fzoN44lWN2bHK+Ir5cmgoDZFRWoU/Lt54xW04HuRioWngmcCE66m4TPdozK72MCiM8dHCf1gsarX+HTZ2tT3pcho7+3S+ePPFpqa/U0k5Z4rjJ+0e/yBhXoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bFnUBlxH; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719235782; x=1750771782;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=dQSS+cisNfaft2A5cQ4bXxLvcIiPOe9EipzRaGlA4QI=;
+  b=bFnUBlxHgy8aSi+FOxl9DCjldfh7x/oHhlZTpjfKJWurtveLgzw2/1PI
+   d1cViWao8h7+5iGEvr5uEq+vU9nz6w02gybIlzGphCvK+67JRuSP+w/R6
+   DKGictQa+j3x3MMu9IZkK0ljZ0VdiARAMBBeLgix3KbUnlO1UTlfnv1Jj
+   ZqdB/CeaLaaxJOxum0pE8RyJPuXtesO3GDEsmCBkHyIQADacHSKLMJqFa
+   OFrXRzwruq3Hmh4AMMFXtBBzH/xPX/pyoT9GcRFtlljfKxgeL9fANu8rp
+   uFYjmJ06AwfN/K3z3hthsep2jMjFKMaCA0UZjwFU/v5g+291g6WLPXVSU
+   A==;
+X-CSE-ConnectionGUID: Tu0QBPLXRH+fIH7fKqNp3w==
+X-CSE-MsgGUID: vwg2eRgeQ2eCGd9SE5W5Kw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="26830737"
+X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; 
+   d="scan'208";a="26830737"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2024 06:29:41 -0700
+X-CSE-ConnectionGUID: 9RPJwmkCQZy7zLJsmO+BpA==
+X-CSE-MsgGUID: mygQ8wcYT5+1+DphH/JbIQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; 
+   d="scan'208";a="47746673"
+Received: from wentongw-optiplex-7000.sh.intel.com ([10.239.154.127])
+  by fmviesa005.fm.intel.com with ESMTP; 24 Jun 2024 06:29:39 -0700
+From: Wentong Wu <wentong.wu@intel.com>
+To: sakari.ailus@linux.intel.com,
+	tomas.winkler@intel.com,
+	gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org,
+	Wentong Wu <wentong.wu@intel.com>,
 	stable@vger.kernel.org,
-	Tkd-Alex <alex.tkd.alex@gmail.com>
-Subject: [PATCH] ata: libata-core: Add ATA_HORKAGE_NOLPM for all Crucial BX SSD1 models
-Date: Mon, 24 Jun 2024 15:27:30 +0200
-Message-ID: <20240624132729.3001688-2-cassel@kernel.org>
-X-Mailer: git-send-email 2.45.2
+	Jason Chen <jason.z.chen@intel.com>
+Subject: [PATCH v3 1/5] mei: vsc: Enhance IVSC chipset stability during warm reboot
+Date: Mon, 24 Jun 2024 21:28:45 +0800
+Message-Id: <20240624132849.4174494-2-wentong.wu@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240624132849.4174494-1-wentong.wu@intel.com>
+References: <20240624132849.4174494-1-wentong.wu@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1502; i=cassel@kernel.org; h=from:subject; bh=1e3z6vcF3WKxRwqZHX5NVT6nTrvCoZ7drBVb62m44C8=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNIqSxy543ffLM7dIX+wQFOtirV9nfXB6ArG535uQUfM+ /mEPDQ7SlkYxLgYZMUUWXx/uOwv7nafclzxjg3MHFYmkCEMXJwCMJGlKxn+Byp+zbEw6v5+U+xz EVt879+kFyt37Vl+zNt0Ncfhz1YtGQx/xacEMJ89tKv5TnL7wY0i+6qX/LN+7LLf6IPdIUOF+FO SfAA=
-X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
 Content-Transfer-Encoding: 8bit
 
-We got another report that CT1000BX500SSD1 does not work with LPM.
+During system shutdown, incorporate reset logic to ensure the IVSC
+chipset remains in a valid state. This adjustment guarantees that
+the IVSC chipset operates in a known state following a warm reboot.
 
-If you look in libata-core.c, we have six different Crucial devices that
-are marked with ATA_HORKAGE_NOLPM. This model would have been the seventh.
-(This quirk is used on Crucial models starting with both CT* and
-Crucial_CT*)
-
-It is obvious that this vendor does not have a great history of supporting
-LPM properly, therefore, add the ATA_HORKAGE_NOLPM quirk for all Crucial
-BX SSD1 models.
-
-Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
-Cc: stable@vger.kernel.org
-Reported-by: Tkd-Alex <alex.tkd.alex@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218832
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
+Cc: stable@vger.kernel.org # for 6.8+
+Signed-off-by: Wentong Wu <wentong.wu@intel.com>
+Tested-by: Jason Chen <jason.z.chen@intel.com>
 ---
- drivers/ata/libata-core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/misc/mei/vsc-tp.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index e1bf8a19b3c8..efb5195da60c 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4137,8 +4137,7 @@ static const struct ata_blacklist_entry ata_device_blacklist [] = {
- 	{ "PIONEER BD-RW   BDR-205",	NULL,	ATA_HORKAGE_NOLPM },
+diff --git a/drivers/misc/mei/vsc-tp.c b/drivers/misc/mei/vsc-tp.c
+index e6a98dba8a73..5f3195636e53 100644
+--- a/drivers/misc/mei/vsc-tp.c
++++ b/drivers/misc/mei/vsc-tp.c
+@@ -568,6 +568,19 @@ static void vsc_tp_remove(struct spi_device *spi)
+ 	free_irq(spi->irq, tp);
+ }
  
- 	/* Crucial devices with broken LPM support */
--	{ "CT500BX100SSD1",		NULL,	ATA_HORKAGE_NOLPM },
--	{ "CT240BX500SSD1",		NULL,	ATA_HORKAGE_NOLPM },
-+	{ "CT*0BX*00SSD1",		NULL,	ATA_HORKAGE_NOLPM },
- 
- 	/* 512GB MX100 with MU01 firmware has both queued TRIM and LPM issues */
- 	{ "Crucial_CT512MX100*",	"MU01",	ATA_HORKAGE_NO_NCQ_TRIM |
++static void vsc_tp_shutdown(struct spi_device *spi)
++{
++	struct vsc_tp *tp = spi_get_drvdata(spi);
++
++	platform_device_unregister(tp->pdev);
++
++	mutex_destroy(&tp->mutex);
++
++	vsc_tp_reset(tp);
++
++	free_irq(spi->irq, tp);
++}
++
+ static const struct acpi_device_id vsc_tp_acpi_ids[] = {
+ 	{ "INTC1009" }, /* Raptor Lake */
+ 	{ "INTC1058" }, /* Tiger Lake */
+@@ -580,6 +593,7 @@ MODULE_DEVICE_TABLE(acpi, vsc_tp_acpi_ids);
+ static struct spi_driver vsc_tp_driver = {
+ 	.probe = vsc_tp_probe,
+ 	.remove = vsc_tp_remove,
++	.shutdown = vsc_tp_shutdown,
+ 	.driver = {
+ 		.name = "vsc-tp",
+ 		.acpi_match_table = vsc_tp_acpi_ids,
 -- 
-2.45.2
+2.34.1
 
 
