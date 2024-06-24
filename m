@@ -1,177 +1,138 @@
-Return-Path: <stable+bounces-55010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB203914DBE
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 14:53:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6834914DF9
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 15:09:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 960162851FF
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 12:53:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8BE81C21434
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 13:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7263213D51A;
-	Mon, 24 Jun 2024 12:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82AC13D889;
+	Mon, 24 Jun 2024 13:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="hj8g+3Oo";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ZCi/NfA7"
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="VQpIOSZ5"
 X-Original-To: stable@vger.kernel.org
-Received: from fout2-smtp.messagingengine.com (fout2-smtp.messagingengine.com [103.168.172.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f97.google.com (mail-lf1-f97.google.com [209.85.167.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74D4E1E868;
-	Mon, 24 Jun 2024 12:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9467613D630
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 13:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719233591; cv=none; b=rh7WCkuRvxT1sXT14/zKzJYs+ND4uE0/MhrwKEZCj6R7pMjEuAQr6w+cyVIHyzCeTmh9Q1PH3NzCP5GJ5BfDzQ4oFwWC4NyMLMA62VjdxIrkwAYGB9zT3S+xXFEYojb5xxYjM6TXZBSJt87ODagm509Y0bfbWmLF9N1tSCzSrVw=
+	t=1719234546; cv=none; b=hH0gT17FgDH8G4bp7uS4zRaqhxZXzkgA8rSC3lPof7AVMY+GDg7DnRLSk6WvcFgEPo3/jonM7zazdEBKsAdJd6ARhIo+WOi/44299RW5wnPtGNBQHXCJh+Daei2r28J1QedA7Vz+QR59zPlj7FcKHwk4rcookxC7SrdMnFpTgRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719233591; c=relaxed/simple;
-	bh=gkOCJdJk+yKTW4RqeE1LxGsDvjSflGa8F/6v/0JODbY=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=F1bLJsyUCvUJDZYviBF19UzMOkleWyLVIZGnhLXnyYeBxXPxoMZAgp3VxixgLxqcyZMG3pXyFK+aUUbsCkH/cq2KdLkUQ1kets2TvWwURsHlDVnM1TdtA+TzxnWlZ5CZiEDQq+erlWQT75g5RJv6nadLDpRy8MrP+kPS8uo9tOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=hj8g+3Oo; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ZCi/NfA7; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 8F9E313801B5;
-	Mon, 24 Jun 2024 08:53:08 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Mon, 24 Jun 2024 08:53:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1719233588; x=1719319988; bh=xWKRucLiTm
-	pWwmmRX8FZ+pQR2gzXCPeFFp5WbUeFfbU=; b=hj8g+3OooVka8gNBjbWNY0qyAL
-	Z6vhvHJoz9J9I0++1woXG7Ge7EifFpbLdlmvrkBZicJ0Vuzhe4E65yfemaw0dpnz
-	ezbi2d09aLDF7ImuAp7ePDjUCcxqHHTdYBm1BZek/TB0JoKaPQYXQIQoZ6Ju8mOB
-	wJHI0OVjjjp4u23oFnNEB7nzInWRR+TgaFrQTVv59rGbcP+I49knsJba70p5D5dX
-	Q5dWWoC06j/c71Hvbmvv7UXEBlX1BHogMWVK0cFu3TYfKqxJtX6AOJv/ZHj8k8Wz
-	mczS6v5JUo7LbjeTVmLp9rK2m7s3ayQKBQJwHt4h6ceJB75BnOFzmPxvTpcQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1719233588; x=1719319988; bh=xWKRucLiTmpWwmmRX8FZ+pQR2gzX
-	CPeFFp5WbUeFfbU=; b=ZCi/NfA7A/RQ9uffYWdnOth3zq0Nr7nYZ6oyyv9JWPOj
-	xm28gfJIalTQ9/Kdb3z5NDEv5ViTQHpwDzh6N2EeBHUDTVkRXgciUBMMS7AkgJUj
-	m/mZbf+ejaW10hmpd2gpqA98HnK/cBDtPVX3x7KTkifmry6qtJLpqiIaPkXjblZ4
-	K7U1Q9y0NRupMUuTkp76UIKEdKjVDI2+kJz8w5XDLyPvrBl9f3pDL8siN6LnFZYc
-	NHOsGh9Hg19uIehl2i3Z+NCBcSIcICMOlvBqO5de2EYJe0DcK20O5S+BIXOjPhfU
-	Ags7pPfYnlnunrnOo2Ffj4stHt2oG0X14wweQw4qyQ==
-X-ME-Sender: <xms:NGx5ZiVg1gGRlt9ve2AaCtdW00-4mkL4YYmnOlzPKKmgIemKoVjYew>
-    <xme:NGx5ZulJumI0JaGXmMii6JT6fzQIe9Qzlss726rjLTBIdsG1udtt43SlcJaGFmM4z
-    _U7v720kyBtwitGg-E>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeeguddgheejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:NGx5ZmYm5Y8_qZxXMutSnpZE-wAmIMkn8Co-Mc0N0PmSj90GZrpw9g>
-    <xmx:NGx5ZpVp_EN-CxgbfK-hH9-RsnW40Aj5LDE45CtCcZJj11OxT0IahQ>
-    <xmx:NGx5ZsmW9IB7O6E2KjShAvsf5qyGRubEB8ghp8lTi4rt0SC82Pq-OQ>
-    <xmx:NGx5Zudlz3chAaIISEKXN8oIN5P3itL3KhonJd_OA7jWYnsbt1Oh_g>
-    <xmx:NGx5ZnCn48KYTyY9DzCFIK7ydsxiaLAQcCK1tdYkGjcqKFPdDXZkeYYz>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 47B3CB6008D; Mon, 24 Jun 2024 08:53:08 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-522-ga39cca1d5-fm-20240610.002-ga39cca1d
+	s=arc-20240116; t=1719234546; c=relaxed/simple;
+	bh=F18MNQqMgi2s1pXAA8VazUOW/a2/fCiXeYMprACDpHo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Ur2EEa1kC9orMNs9XsohodroW9WGo87AhQ6gyxty3IGT3RjU5p5WRBzSmtFR5I9cIbnUVdvtCqr1F6qXZvGpL50mp9sq6WXnkOtYTsxOputCT8HYfdxKTjbDFPz4fLq+jVHmXM5GaKq8k9C7H3AeW+8VmruKRcRIpWn6bafh8go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=VQpIOSZ5; arc=none smtp.client-ip=209.85.167.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+Received: by mail-lf1-f97.google.com with SMTP id 2adb3069b0e04-52cd9f9505cso3166590e87.0
+        for <stable@vger.kernel.org>; Mon, 24 Jun 2024 06:09:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1719234543; x=1719839343; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cua0A6GEdu0iOk0GUptHeWMm27awSaljV0LV/Qv+59A=;
+        b=VQpIOSZ5DnV8YzmSsUKwgl6J/svEeSgdfs33Vnl1dKAGSCpcDhvo0bbZcLpBt7ScEm
+         JgFpfEnJeDYRZKliXsOhYcloninrfxjy8D2KMGmI8ruu+E6O1LhJvDaeB7cNtllcxxD4
+         iQz13uY0TKPTYwxAPsK3ES1oKdli8TS9szqVMHzH3JO4jS6LG1TivJpcmjC3vOGJ8uXC
+         qY5YoYb0JNPV/ZxH6HPCMCezC3mkPu5PHXyAb/pGel6/bIyObKgATVx5WTBRkCNSmoDx
+         H8+JqPvMVBNoPvV6UC51QVvZ5XuiP5tBoGgaGN3zLrhVlu6cPinxy+EF5oORSHeyekmc
+         ZkgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719234543; x=1719839343;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Cua0A6GEdu0iOk0GUptHeWMm27awSaljV0LV/Qv+59A=;
+        b=MvciEgMtp58OiulvDa0q4HG32Pk6H4gudelQlGAMGHrjOnz+Sw8CIHu2uSVnRxYkTo
+         Rj18/sKYdG/NAolfqR7fRRKwRMG64Euk2rpU3+V9pnV60P5i5tvyHGylAGwCYftMbCag
+         S5dokgOnHqFrpCqdvz+c/vyOEsTFID9M/TViupeI+oiNYlQNfXcKaXtnhdLWTGm81CNC
+         urzL/gtJa2ZVGWRPG7RqS5o30BbJ2fx8GqVggPakUeFuYhaOSSW0pEGpBIEJhJsII0+F
+         VfuaUW8ym+wT341sRsjkNIZvU94mENGxQV+eNG4Y8w7YbmdSQ9nPnziydvb1tFWwbJv1
+         kAxw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFiO57vXW3OwnL0tT95dOFB2Ojk136wJFCwVSb/K2UFaV4kBpeKo5DTTFGGv4o6k7W1zvY34eaNk43ErzIAO1mYr8EXTge
+X-Gm-Message-State: AOJu0YwIK/HXXEMlGGNYIonZX1hItTTSEgYBeCkeOP2K/UoGFa/rrgad
+	veAgbSed4K0oBejAz0hioQOSIEly/oel0FddCjKl4BYA0wE+VLE/AwzpcVjFHzV+bEAYMTsuwGZ
+	ATO7rjnabBURWBofpQM8A/ZCEnCEBeQnf
+X-Google-Smtp-Source: AGHT+IEBpaCODeI242sIP+AcMfTXd1Z+51gSpsbjgQUQQht0K2WifHxuQsjBq8JFYi/VigFtbtGnLlvQoPKX
+X-Received: by 2002:ac2:5f63:0:b0:52c:a002:1afc with SMTP id 2adb3069b0e04-52cdf7f66f2mr3244175e87.34.1719234542615;
+        Mon, 24 Jun 2024 06:09:02 -0700 (PDT)
+Received: from smtpservice.6wind.com ([185.13.181.2])
+        by smtp-relay.gmail.com with ESMTP id 5b1f17b1804b1-424817fcc5esm3530725e9.41.2024.06.24.06.09.02;
+        Mon, 24 Jun 2024 06:09:02 -0700 (PDT)
+X-Relaying-Domain: 6wind.com
+Received: from bretzel (bretzel.dev.6wind.com [10.17.1.57])
+	by smtpservice.6wind.com (Postfix) with ESMTPS id 495B86036F;
+	Mon, 24 Jun 2024 15:09:02 +0200 (CEST)
+Received: from dichtel by bretzel with local (Exim 4.94.2)
+	(envelope-from <nicolas.dichtel@6wind.com>)
+	id 1sLjRO-004067-03; Mon, 24 Jun 2024 15:09:02 +0200
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>
+Cc: David Ahern <dsahern@kernel.org>,
+	netdev@vger.kernel.org,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net 1/4] ipv4: fix source address selection with route leak
+Date: Mon, 24 Jun 2024 15:07:53 +0200
+Message-ID: <20240624130859.953608-2-nicolas.dichtel@6wind.com>
+X-Mailer: git-send-email 2.43.1
+In-Reply-To: <20240624130859.953608-1-nicolas.dichtel@6wind.com>
+References: <20240624130859.953608-1-nicolas.dichtel@6wind.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <b31072d5-865b-4cda-be37-d93c36397d39@app.fastmail.com>
-In-Reply-To: <20240620162316.3674955-3-arnd@kernel.org>
-References: <20240620162316.3674955-1-arnd@kernel.org>
- <20240620162316.3674955-3-arnd@kernel.org>
-Date: Mon, 24 Jun 2024 14:52:47 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Arnd Bergmann" <arnd@kernel.org>,
- Linux-Arch <linux-arch@vger.kernel.org>, linux-kernel@vger.kernel.org
-Cc: "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- linux-mips@vger.kernel.org, "Helge Deller" <deller@gmx.de>,
- linux-parisc@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
- "Andreas Larsson" <andreas@gaisler.com>, sparclinux@vger.kernel.org,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, "Brian Cain" <bcain@quicinc.com>,
- linux-hexagon@vger.kernel.org, guoren <guoren@kernel.org>,
- "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
- "Heiko Carstens" <hca@linux.ibm.com>, linux-s390@vger.kernel.org,
- "Rich Felker" <dalias@libc.org>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
- linux-sh@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
- "Xi Ruoyao" <libc-alpha@sourceware.org>,
- "musl@lists.openwall.com" <musl@lists.openwall.com>,
- "LTP List" <ltp@lists.linux.it>, stable@vger.kernel.org
-Subject: Re: [PATCH 02/15] syscalls: fix compat_sys_io_pgetevents_time64 usage
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 20, 2024, at 18:23, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> Using sys_io_pgetevents() as the entry point for compat mode tasks
-> works almost correctly, but misses the sign extension for the min_nr
-> and nr arguments.
->
-> This was addressed on parisc by switching to
-> compat_sys_io_pgetevents_time64() in commit 6431e92fc827 ("parisc:
-> io_pgetevents_time64() needs compat syscall in 32-bit compat mode"),
-> as well as by using more sophisticated system call wrappers on x86 and
-> s390. However, arm64, mips, powerpc, sparc and riscv still have the
-> same bug.
->
-> Changes all of them over to use compat_sys_io_pgetevents_time64()
-> like parisc already does. This was clearly the intention when the
-> function was originally added, but it got hooked up incorrectly in
-> the tables.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 48166e6ea47d ("y2038: add 64-bit time_t syscalls to all 32-bit 
-> architectures")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->  arch/arm64/include/asm/unistd32.h         | 2 +-
->  arch/mips/kernel/syscalls/syscall_n32.tbl | 2 +-
->  arch/mips/kernel/syscalls/syscall_o32.tbl | 2 +-
->  arch/powerpc/kernel/syscalls/syscall.tbl  | 2 +-
->  arch/s390/kernel/syscalls/syscall.tbl     | 2 +-
->  arch/sparc/kernel/syscalls/syscall.tbl    | 2 +-
->  arch/x86/entry/syscalls/syscall_32.tbl    | 2 +-
->  include/uapi/asm-generic/unistd.h         | 2 +-
->  8 files changed, 8 insertions(+), 8 deletions(-)
+By default, an address assigned to the output interface is selected when
+the source address is not specified. This is problematic when a route,
+configured in a vrf, uses an interface from another vrf (aka route leak).
+The original vrf does not own the selected source address.
 
-The build bot reported a randconfig regressions with this
-patch, which I've now fixed up like this:
+Let's add a check against the output interface and call the appropriate
+function to select the source address.
 
-diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
-index d7eee421d4bc..b696b85ac63e 100644
---- a/kernel/sys_ni.c
-+++ b/kernel/sys_ni.c
-@@ -46,8 +46,8 @@ COND_SYSCALL(io_getevents_time32);
- COND_SYSCALL(io_getevents);
- COND_SYSCALL(io_pgetevents_time32);
- COND_SYSCALL(io_pgetevents);
--COND_SYSCALL_COMPAT(io_pgetevents_time32);
- COND_SYSCALL_COMPAT(io_pgetevents);
-+COND_SYSCALL_COMPAT(io_pgetevents_time64);
- COND_SYSCALL(io_uring_setup);
- COND_SYSCALL(io_uring_enter);
- COND_SYSCALL(io_uring_register);
+CC: stable@vger.kernel.org
+Fixes: 8cbb512c923d ("net: Add source address lookup op for VRF")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+---
+ net/ipv4/fib_semantics.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-This was already broken on parisc the same way, but the
-mistake in sys_ni.c turned into a link failure for every
-compat architecture after my patch.
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index f669da98d11d..459082f4936d 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -2270,6 +2270,13 @@ void fib_select_path(struct net *net, struct fib_result *res,
+ 		fib_select_default(fl4, res);
+ 
+ check_saddr:
+-	if (!fl4->saddr)
+-		fl4->saddr = fib_result_prefsrc(net, res);
++	if (!fl4->saddr) {
++		struct net_device *l3mdev = dev_get_by_index_rcu(net, fl4->flowi4_l3mdev);
++
++		if (!l3mdev ||
++		    l3mdev_master_dev_rcu(FIB_RES_DEV(*res)) == l3mdev)
++			fl4->saddr = fib_result_prefsrc(net, res);
++		else
++			fl4->saddr = inet_select_addr(l3mdev, 0, RT_SCOPE_LINK);
++	}
+ }
+-- 
+2.43.1
 
-      Arnd
 
