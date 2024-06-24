@@ -1,101 +1,183 @@
-Return-Path: <stable+bounces-54977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED8F91432D
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 09:07:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9042C914336
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 09:10:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F08311C2103B
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 07:07:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 124D31F23DF1
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 07:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8897F3A27E;
-	Mon, 24 Jun 2024 07:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD3D3A27E;
+	Mon, 24 Jun 2024 07:10:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="bQoWLQwT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2EF376;
-	Mon, 24 Jun 2024 07:06:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D0D38DD2
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 07:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719212820; cv=none; b=Wpg2a0+yFJMikz+t5EJblQ/0OtEvwresobI1mpy50HIS9BgGhynJzYMCh4t0jleaTnq/OSZIMa7RFJPZ8KARlYp2BHSy9dMBQBv7rfBjCiac2hwOaHu5yqvl1rWHZO64hd4PdRGHVHpW9fF3HdRYaR8q+/fKi4iuWvmdzu+S9q4=
+	t=1719213030; cv=none; b=SztYj9iu4YT6eYcVfFCQf8XDTMawhebBxu00x1ZBYeyFWvXvhGVBwJT01DPjUxjMW00hbxi2MY4CtBNhYLWGSFlBtinPTGVe9iGRdsarfb+bGSlJQtUJlAthn/iuxH4vzlXeaeJiBp0xXYw9MYSeyZTPWipudLBjog3zgk0xTZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719212820; c=relaxed/simple;
-	bh=zm04avjiqQZBn5KYoGNw+kGHuCoJrS4M9EjVbFU044Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ScsW9Tm8SYAuMgpP8Pvo4+fU/G+722oG2RKL3Wxo+LIhTSYbcYKowCvECcv558JXelcSjZBp4Q/MyIQ1Gn/bBc2p+v7bhpE1WLD1JHUjvB36rQVWZQxoxJOg6NFEhP6zhggNDxcdzt36TMSBYYH/IhLaCd6l8Hs27PA7o2Aua6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6f9b4d69f53so2229152a34.0;
-        Mon, 24 Jun 2024 00:06:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719212818; x=1719817618;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gr4VGylpKfe5jMi8mL9RhC6vYgLNd3Lq3GNPGy76NUA=;
-        b=VskuYmLRIFp24qvPSbBE9jMM2ThFZSDA40rMutUFuBXdLhyblS72tFSmgNJV7VR5Qz
-         vgMLQhojtp5/3mRcNDCv8Wwn6ixsq0i/GV8LDXpqES/0PMld86nLEn9UTFU15oVMvUMr
-         /ZIqcz0Uj6k9w1fgEbhhPsHKXdfAFdP8QDVn1t5iuvF3gNHFFKWvoJKR33x/+awOzi41
-         y39M5wg1w0LLVpPxKsQtrrkSVkY0Ebj+l00MOGjzcQJ5IUNZ4B//1Xwjnd+lVEYejzmC
-         dIZ9ZbEEktew7V/PexX2+o3vRoKK9dpFFGE2eG334hzjVVgL1d6/mE04qdUj0s8A8rlV
-         dZpg==
-X-Forwarded-Encrypted: i=1; AJvYcCX7Em0s2pqNmroWpJsJM97M3tDfR4yoRM04uQyvqYA987qDSK+E/umPpnSzK19VQuZR1c6Cu9kmb/JRaBqj2bjwIsEEWsGhXnIWPkev38JF7zr1NxYx4XjeANKw5/MhWszBP3x2rAAzgFDpbK3pQCe3FeDT0Xj7vCfknYEAscMX/zUP
-X-Gm-Message-State: AOJu0Yxqte62CYApTmcrYw+50bn1/PYq96lOJl2OYpTwUfd5vMT6SasU
-	rJwHzxnhgNJ3iX3POnduAHeFwsbMamSMGnQAqZSOYPAs9TfqSXsq
-X-Google-Smtp-Source: AGHT+IFVgbLtqk9su7HvLOSkwZwXr3Asb6+QVGzFFmt6I+NRQOYit5CDFSpqlwRE6ZczWCj8iWBtig==
-X-Received: by 2002:a05:6359:5a8d:b0:19f:1e0c:e1a5 with SMTP id e5c5f4694b2df-1a23c1b1f97mr554831255d.20.1719212817982;
-        Mon, 24 Jun 2024 00:06:57 -0700 (PDT)
-Received: from liuwe-devbox-debian-v2 ([20.69.120.36])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-716ba5b5f7asm4774472a12.64.2024.06.24.00.06.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jun 2024 00:06:57 -0700 (PDT)
-Date: Mon, 24 Jun 2024 07:06:50 +0000
-From: Wei Liu <wei.liu@kernel.org>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: mhklinux@outlook.com, "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	"open list:Hyper-V/Azure CORE AND DRIVERS" <linux-hyperv@vger.kernel.org>,
-	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
-	stable@vger.kernel.org, Roman Kisel <romank@linux.microsoft.com>
-Subject: Re: [PATCH v2] clocksource: hyper-v: Use lapic timer in a TDX VM
- without paravisor
-Message-ID: <ZnkbCoLqm7wbZGch@liuwe-devbox-debian-v2>
-References: <20240621061614.8339-1-decui@microsoft.com>
+	s=arc-20240116; t=1719213030; c=relaxed/simple;
+	bh=T2MNa32awk6X9QG4HCaxxmQuqYyaq446iozFUpi4Hkg=;
+	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:References; b=shJyajYdlvC9E6+XecD/axloVU5gqT4zZ462ITCZwRAh3YD74Qyk8W4C9AyUA0CJi1dRqtlE57AYmioJHtSaqGFCDjWMbld8W8bc+3GifH2QrBp7iT0ASQokX8r6ypl//Jppc6oxU8T0LtjAaGwwUyqsZ+4QkKLg8/dx5tFpXvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=bQoWLQwT; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240624071020euoutp02e8ab22d253fa8bc6e8a37dbc8e6b0375~b3yIusUOO1159511595euoutp02T
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 07:10:20 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240624071020euoutp02e8ab22d253fa8bc6e8a37dbc8e6b0375~b3yIusUOO1159511595euoutp02T
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1719213020;
+	bh=kQJPx6cP8ETGgfHUlMSqBMmgeoB44+zqZLO9fBDGPAY=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=bQoWLQwTrrIN+cBcu9TW7VYxgld2q7WS0W9uxOv2QvHrt1cRRTA3SzkBPgz1gNJUp
+	 nMy7yyhaHPE6L648dtPlgy527iBsEyVrwJ3etI728+5RnsnqgBnJhr/ZSOxw6ysiUA
+	 lO9JdczArHd68Ivw7ryuZ90bJbtP7YzEv3Ft/ydY=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+	20240624071020eucas1p22b87a6b1272f896a89d8e8ae0d92e61f~b3yIYRF101207712077eucas1p2S;
+	Mon, 24 Jun 2024 07:10:20 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+	eusmges2new.samsung.com (EUCPMTA) with SMTP id 89.C6.09875.CDB19766; Mon, 24
+	Jun 2024 08:10:20 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+	20240624071019eucas1p28813f47227bf863ed6603d9d9588394f~b3yIB9-Aq0147701477eucas1p2Z;
+	Mon, 24 Jun 2024 07:10:19 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20240624071019eusmtrp19706cd34d1335c096eb8d529cd5d57f3~b3yIBSKu_2498424984eusmtrp1S;
+	Mon, 24 Jun 2024 07:10:19 +0000 (GMT)
+X-AuditID: cbfec7f4-11bff70000002693-0b-66791bdce308
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+	eusmgms2.samsung.com (EUCPMTA) with SMTP id 99.A3.09010.BDB19766; Mon, 24
+	Jun 2024 08:10:19 +0100 (BST)
+Received: from CAMSVWEXC01.scsc.local (unknown [106.1.227.71]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20240624071019eusmtip2d49b501dede0bed73f519d4a1985cfdc~b3yH2KU190040800408eusmtip2h;
+	Mon, 24 Jun 2024 07:10:19 +0000 (GMT)
+Received: from localhost (106.110.32.44) by CAMSVWEXC01.scsc.local
+	(2002:6a01:e347::6a01:e347) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
+	Mon, 24 Jun 2024 08:10:08 +0100
+Date: Mon, 24 Jun 2024 09:10:05 +0200
+From: Joel Granados <j.granados@samsung.com>
+To: <stable@vger.kernel.org>
+CC: <stable-commits@vger.kernel.org>, Pablo Neira Ayuso
+	<pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, Roopa Prabhu
+	<roopa@nvidia.com>, Nikolay Aleksandrov <razor@blackwall.org>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+	Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern
+	<dsahern@kernel.org>, Simon Horman <horms@verge.net.au>, Julian Anastasov
+	<ja@ssi.bg>
+Subject: Re: Patch
+ "netfilter: Remove the now superfluous sentinel elements from ctl_table array"
+ has been added to the 6.6-stable tree
+Message-ID: <20240624071005.tnijkj7b36bvztks@joelS2.panther.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20240621061614.8339-1-decui@microsoft.com>
+In-Reply-To: <20240622234538.197608-1-sashal@kernel.org>
+X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
+	CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrBKsWRmVeSWpSXmKPExsWy7djPc7p3pCvTDOat4LOYc76FxWLdrlYm
+	i6fHHrFbNG/9ymjxpP8Rq8XMrmYmiwvb+lgtvp1+w2gx/c1VZotTX/4zWXyeo2FxeOlVFosF
+	Gx8xOvB6vDt3ktFjy8qbTB4LNpV6bFrVyebx9vcJJo/e5ndsHu/3XWXzmNi6h9Fjzs9vLB6f
+	N8kFcEVx2aSk5mSWpRbp2yVwZWxYuoupYIFgxc9bX5gbGM/wdTFyckgImEjsnHiVsYuRi0NI
+	YAWjxPn7t5ghnC+MEn92HmaFcD4zSrQcvssK0zLh9D82iMRyRonNnX+Y4ap2r9vIDuFsZpR4
+	tb+XCaSFRUBVYnr3SmYQm01AR+L8mztgtoiAjMT01r1gNcwCB5klrrVKgTQLC3QzSlw7ewCs
+	iFfAQWLe04esELagxMmZT1ggGnQkFuz+BHQHB5AtLbH8HweIySlgIXH6giXEpYoSXxffY4Gw
+	ayXWHjvDDmGv5pS4viMYwnaRmPn5HBuELSzx6vgWqBoZidOTe1hAzpEQmMwosf/fB3YIZzWj
+	xLLGr0wQVdYSLVeeQHU4Sky718AIcoSEAJ/EjbeCEGfySUzaNp0ZIswr0dEmBFGtJrH63huW
+	CYzKs5A8NgvJY7MQHlvAyLyKUTy1tDg3PbXYKC+1XK84Mbe4NC9dLzk/dxMjMLGd/nf8yw7G
+	5a8+6h1iZOJgPMQowcGsJMI7vb4sTYg3JbGyKrUoP76oNCe1+BCjNAeLkjivaop8qpBAemJJ
+	anZqakFqEUyWiYNTqoHJb1Lfz1dCl7Ir9J/s6w1IZ4y7kd5gndFRnvKN+cL0RrPGc0+beqV4
+	41e+2Zd9o5BD6Jj0gpp9DC+1XQQnfLo9IZK9yNqnJSirtcDcYN+rA5+uVZmy6i/at+NPWcRh
+	22OmgQ7LLiWdeTQ3vVeEVyIvqWlbwC52/2kRC99/6+PfzOfdw5r46UhazgtmnYkhLpPzd1pK
+	lZ1TF3DMbnnV2Jnyad2KufcM6tNSIs7PtDm0XvzJzZNFN2I993tJLfx4QEDc++Ri3yy1tD+Z
+	0hJfHq2Y/XD1Zw7XnAlyP/8IinZm3wksP/Pz6L/gXQcyToSVnOgJPrVrq4DLJ1FHCbMbVe+f
+	Xfg578KuJf5f14RG+nErsRRnJBpqMRcVJwIAXui2NNsDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrGIsWRmVeSWpSXmKPExsVy+t/xe7q3pSvTDE4eNraYc76FxWLdrlYm
+	i6fHHrFbNG/9ymjxpP8Rq8XMrmYmiwvb+lgtvp1+w2gx/c1VZotTX/4zWXyeo2FxeOlVFosF
+	Gx8xOvB6vDt3ktFjy8qbTB4LNpV6bFrVyebx9vcJJo/e5ndsHu/3XWXzmNi6h9Fjzs9vLB6f
+	N8kFcEXp2RTll5akKmTkF5fYKkUbWhjpGVpa6BmZWOoZGpvHWhmZKunb2aSk5mSWpRbp2yXo
+	ZWxYuoupYIFgxc9bX5gbGM/wdTFyckgImEhMOP2PrYuRi0NIYCmjRNP8FYwQCRmJjV+uskLY
+	whJ/rnVBFX1klFix5AwrhLOZUeLrreVsIFUsAqoS07tXMoPYbAI6Euff3AGzRYAmTW/dywTS
+	wCxwkFmiZ+JmsG5hgU5GiVknDoN18wo4SMx7+hBqbDejRMesDqiEoMTJmU9YQGxmoLELdn8C
+	inMA2dISy/9xgJicAhYSpy9YQpyqKPF18T0WCLtW4tX93YwTGIVnIRk0C8mgWQiDFjAyr2IU
+	SS0tzk3PLTbSK07MLS7NS9dLzs/dxAiM8G3Hfm7Zwbjy1Ue9Q4xMHIyHGCU4mJVEeKfXl6UJ
+	8aYkVlalFuXHF5XmpBYfYjQFhsVEZinR5HxgiskriTc0MzA1NDGzNDC1NDNWEuf1LOhIFBJI
+	TyxJzU5NLUgtgulj4uCUamAyL/FPzqltv1+Ye6UmlMF+puDs7nTWK+vXWLF/lHqVcErR0J/z
+	+TPH8mv/Dn59Y3+FcfYKW5VTX963TCwOFm/afengnMJH3J3muuf+fdfeEJyha5PZUfI1zFay
+	LTO5Tefgrcw3/Fl500X4ZE8Ef0pvW+gzq+TLxaJ9fFwCSdXF+0wfC7EnlgqGXz/c43tKkOXK
+	+11WSpPenUz86PyRkZVLO/DD9z2l7BZektmeJhZ7YhlFr53PObNt1uHAUqYXgb/NxapeWedP
+	NTj8iU99z04Vnik3Ym67rq1NfRcpWbk+qpL3aZZTqPvqp48N0mfZH/px9e9tldppFWYbmlgV
+	yu5Pd5awFnP9W1F5fmbULyWW4oxEQy3mouJEAD1VYFB5AwAA
+X-CMS-MailID: 20240624071019eucas1p28813f47227bf863ed6603d9d9588394f
+X-Msg-Generator: CA
+X-RootMTR: 20240622234558eucas1p2a6211f0643e368f34541573847b7105e
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20240622234558eucas1p2a6211f0643e368f34541573847b7105e
+References: <CGME20240622234558eucas1p2a6211f0643e368f34541573847b7105e@eucas1p2.samsung.com>
+	<20240622234538.197608-1-sashal@kernel.org>
 
-On Thu, Jun 20, 2024 at 11:16:14PM -0700, Dexuan Cui wrote:
-> In a TDX VM without paravisor, currently the default timer is the Hyper-V
-> timer, which depends on the slow VM Reference Counter MSR: the Hyper-V TSC
-> page is not enabled in such a VM because the VM uses Invariant TSC as a
-> better clocksource and it's challenging to mark the Hyper-V TSC page shared
-> in very early boot.
+On Sat, Jun 22, 2024 at 07:45:37PM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
 > 
-> Lower the rating of the Hyper-V timer so the local APIC timer becomes the
-> the default timer in such a VM, and print a warning in case Invariant TSC
-> is unavailable in such a VM. This change should cause no perceivable
-> performance difference.
+>     netfilter: Remove the now superfluous sentinel elements from ctl_table array
 > 
-> Cc: stable@vger.kernel.org # 6.6+
-> Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-> Signed-off-by: Dexuan Cui <decui@microsoft.com>
+> to the 6.6-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      netfilter-remove-the-now-superfluous-sentinel-elemen.patch
+> and it can be found in the queue-6.6 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-Applied to hyperv-fixes. Thanks.
+I don't understand why we are putting these in stable. IMO, they should
+not go there and this is why:
+
+1. This is not a fix.
+   The main motivation for doing these sentinel removals is to avoid
+   bloat in the boot and compiled image (read more in cover letters for
+   [1,2,3,4,5,6]) in future kernel versions. This makes no sense in
+   stable IMO.
+
+2. There are lots of moving parts and no "bang for the buck"
+   If you are going to bring one of them, you need to bring all of them.
+   This means brining in the preparation [7], the intermediate
+   [1,2,3,4,5,6] and the final patch [8]. This is not only prone to
+   error, but there is no real reason to do that in stable.
+
+If I'm missing something, please let me know.
+
+Best
+
+Joel
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git/log/?h=archive/remsent_net
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git/log/?h=archive/remsent_kernel
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git/log/?h=archive/remsent_misc
+[4] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git/log/?h=archive/remsent_fs
+[5] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git/log/?h=archive/remsent_driver
+[6] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git/log/?h=archive/remsent_arch
+[7] https://lore.kernel.org/20230731071728.3493794-1-j.granados@samsung.com
+[8] https://lore.kernel.org/20240604-jag-sysctl_remset-v1-0-2df7ecdba0bd@samsung.com
+
 
