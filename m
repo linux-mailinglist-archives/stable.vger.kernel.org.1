@@ -1,119 +1,202 @@
-Return-Path: <stable+bounces-55002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA982914930
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 13:55:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F4591496F
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 14:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 031A01C2218B
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:55:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CB75B240DC
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 12:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FBD13B2B2;
-	Mon, 24 Jun 2024 11:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F1413BAE7;
+	Mon, 24 Jun 2024 12:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UBlTTvnV"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="p+2l7ZXV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C031B13B294
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 11:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7679713B58D;
+	Mon, 24 Jun 2024 12:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719230094; cv=none; b=k0x1z1jDwuLyrirQwW3E+sqc855DcmAF6EQPq8w9aaTBV9AdOU+kKuCET1mfP3jRiqkf4ew7rmN5qVMlBibk9O3S7ull5QLHdbJytgiKwp9lL4CDvJ5IP3asseKcRHrmqQkKmfMhDlyS9TukwzTfBgDQ1IXSQkHGEMwmd/07mX8=
+	t=1719231132; cv=none; b=WHjUtuxmAlBj23pugpnykGjh22t43Pm/7TzWbb8ycE/q94VoHI/8Vtbo8+whHN4mzlGq4h7e4yXbVvjKpcFhwfFHJGkMVeaK34te/qex4KzY/9PDsIECSCPf1Mce9iC4n93/vyfpw3P/knJbJS/JWDKyQ4bDbSzEwmG9bO9OgUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719230094; c=relaxed/simple;
-	bh=RIBzyttbnIx3xo6Gg2bfeC6s+vozslF84fVAL4fCBHo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dEOE0H72tJWhZsUAoHGdWA6CXyDEcpIixl5+K0pTqM8X8vOmK+ws+u7GA6On6OINMb0VuN58zeyNkMe87amERLoWwrdyEyP3x7zRrvYhIxhWzEPnMZXG5V0++oU0hzq7m5QzYNLmoYwXFdN/xrSU2sDtHxq0xpLzm0S21+Bh9+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UBlTTvnV; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2eabd22d3f4so52237491fa.1
-        for <stable@vger.kernel.org>; Mon, 24 Jun 2024 04:54:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1719230091; x=1719834891; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ze9vbnZpr8znrDr98Uu7ZnbDLQCcy3z3Uq8+cN2lFv0=;
-        b=UBlTTvnVroTUPGVDIkHj7J55NCR+13OCLOgpdokFS2UFmbMMOx4N4G+T8hl/jOtSOO
-         3zvgOzX3R8nVdtt7l3KO7xlda9glhxV0V1FtK9z7elnaStLAwKcJ+47TLuqF72DKcS8+
-         kuLa9F6FZDHtojny/xpnUZLZZWhR+U65NUVJa5LwMILqI7ixXSUTHBaz+v+jD9uH07ZB
-         UkCJCLuoNKHc/k0+zIkYEKUyqFzRC/NNnTHSr2qc4+xGza2P0T7lqP6ZCaCt1aTnKCfV
-         gyD4B/a8cVZYu8PB/uv+4nRW4dOM0jpyIFZUddRhbInZY2q4EG1RwE+hzYI9oDGKFA4t
-         n6pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719230091; x=1719834891;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ze9vbnZpr8znrDr98Uu7ZnbDLQCcy3z3Uq8+cN2lFv0=;
-        b=LWLNis+pawlGV2rX62BymM8Gawm8WUUAhA52Dmq+X7Y3Y1JgeBcghaj5IWCmH01aWy
-         8ikX6g44EUDQkxQs4jaCSPQ2ejqtFutAlwrC4CaCeYA+Gtn+LBF9RWOqILhSAqSyogCs
-         sIY9vCapPwUWP4IzDDQm08t72yzVJQgMBkZ+vz97Dl9iwsWlXjCu93qmz0pdteiZ4+NB
-         mjWtMIUEhx7wMotR2VbTjbol/l889vZ7HrT/ywM4uJERu5e4XLAELunrdIj/4hk5HgGq
-         JlOss1jLIWC4Fpdz5OxK4CE8gyC9OdOlsfZu2JPbca2C2TfZ2db1Rfz2Cy4ltv3XS7dz
-         /DFA==
-X-Forwarded-Encrypted: i=1; AJvYcCUIdcLt2y9st9UtRedH7LWbpS4S0TsN5z2zJY23rWHuNbnDU/fUuP4L0A5y3ZTUMPg09UCn8nIScsexe6hXFLTwoDbguhnD
-X-Gm-Message-State: AOJu0YyurQiH9fvTa1YS3JjBI+2w6cAqZpxuLNbc1gMQHf+hCtTE5sPY
-	rDcW/TV3QKTS6jJsrO5d9xdGCBozssdF3yHmTWeSoeBZu1MR2rJ0HUNcyiUOY10=
-X-Google-Smtp-Source: AGHT+IEs268J1dbf/Poin2jSVJfSZKlaiIGJxuKqPVENP6Dw7mUDRAueKSuTgreqGyP8pJ8uPSEUfA==
-X-Received: by 2002:a2e:890d:0:b0:2eb:e258:717f with SMTP id 38308e7fff4ca-2ec5b2f0400mr26153431fa.42.1719230090648;
-        Mon, 24 Jun 2024 04:54:50 -0700 (PDT)
-Received: from linux-l9pv.suse ([124.11.22.254])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-706512e708bsm6003185b3a.191.2024.06.24.04.54.48
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 24 Jun 2024 04:54:50 -0700 (PDT)
-Date: Mon, 24 Jun 2024 19:54:45 +0800
-From: joeyli <jlee@suse.com>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: linux-block@vger.kernel.org, Chun-Yi Lee <joeyli.kernel@gmail.com>,
-	stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jens Axboe <axboe@kernel.dk>, Justin Sanders <justin@coraid.com>,
-	Kirill Korotaev <dev@openvz.org>, Nicolai Stange <nstange@suse.com>,
-	Pavel Emelianov <xemul@openvz.org>
-Subject: Re: [PATCH v2] aoe: fix the potential use-after-free problem in more
- places
-Message-ID: <20240624115445.GL7611@linux-l9pv.suse>
-References: <20240624064418.27043-1-jlee@suse.com>
- <b75a3e00-f3ec-4d06-8de8-6e93f74597e4@web.de>
- <20240624110137.GI7611@linux-l9pv.suse>
- <74d3454d-6141-462d-9de8-b11cf6ac814c@web.de>
+	s=arc-20240116; t=1719231132; c=relaxed/simple;
+	bh=csxvwcEGX8Jgl/BPH4QmAJFpyauXRgyOqljB6Rkjhe8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jPIHWVObp/m2e+/51lX4PkbYgk2kVxvNqz8XnvjPwD9sFCW7pISUVuy8jRldboyN67L4dEdZ6QrYwNvSP56PSDsAXdf5DE1YKmTK8XCcYgeyTST0M6F4Qlyhz2i8GmDxyvDacfUETvN/yk88+vmgUKVzj5cPwt3k4Up5F4r7BaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=p+2l7ZXV; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: f7969528322211ef8da6557f11777fc4-20240624
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=i2jYQbB2j4nvENCVMGA7xPeqY9+B3KTTX1K9D7GjK/Q=;
+	b=p+2l7ZXVIg3tACqu/QVPy/Sg01/o9DcmRMtheNNpEwN/1cGg8rgabb4UB2ErNq8k7UTXvGZgO27z8xUs6OV8NOo/TkeL3HriXjX4huFlq5rxQ/K+kwt93EAlH2tJHQOVdqmBzv7Ewg8NYg2DVqMvAWkPMNc/M4sAkU3IynO9X0c=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.39,REQID:f8fa26b5-1831-4773-8bea-6f75f2d9ba37,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:393d96e,CLOUDID:1a755e94-e2c0-40b0-a8fe-7c7e47299109,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: f7969528322211ef8da6557f11777fc4-20240624
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+	(envelope-from <peter.wang@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 132791005; Mon, 24 Jun 2024 20:12:03 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Mon, 24 Jun 2024 20:12:00 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Mon, 24 Jun 2024 20:12:00 +0800
+From: <peter.wang@mediatek.com>
+To: <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>,
+	<avri.altman@wdc.com>, <quic_nguyenb@quicinc.com>, <alim.akhtar@samsung.com>,
+	<jejb@linux.ibm.com>
+CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
+	<peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
+	<alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
+	<chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
+	<powen.kao@mediatek.com>, <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
+	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
+	<naomi.chu@mediatek.com>, <chu.stanley@gmail.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2] ufs: core: fix ufshcd_abort_all racing issue
+Date: Mon, 24 Jun 2024 20:11:58 +0800
+Message-ID: <20240624121158.21354-1-peter.wang@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <74d3454d-6141-462d-9de8-b11cf6ac814c@web.de>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--12.315100-8.000000
+X-TMASE-MatchedRID: SAABl2Xm4hsMQLXc2MGSbEKcYi5Qw/RVFJFr2qlKix/FJnEpmt9OE34U
+	OBQdfZJqNhxcj7T04bO1ONGFQGwumuV35K+BqYWNGVyS87Wb4lx+tO36GYDlsk04B0iWfKSh+oA
+	N6qKcRV8Sz/bGxf+BBtuTkfZxmWFnrRlLslggfyruykw7cfAoIEo8jH4wkX2j31GU/N5W5BBYua
+	/kyrSLK1MqZVuLxgGS393jXWrWwbiR9GF2J2xqMxRFJJyf5BJerSFs54Y4wbX6C0ePs7A07cNbT
+	FVOzjU8cJKtxUrql0U39SUJmeP8pNTl0N+pk8qbWQEZREt3xE0=
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--12.315100-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP: 9F8D39E9FF3C2E9EFF60B4303561EE1B8BFAEF490EC8E7EFB0F6C9599AD520ED2000:8
+X-MTK: N
 
-On Mon, Jun 24, 2024 at 01:43:25PM +0200, Markus Elfring wrote:
-> >>>                   … So they should also use dev_hold() to increase the
-> >>> refcnt of skb->dev.
-> >> …
-> >>
-> >>   reference counter of “skb->dev”?
-> >
-> > Yes, I will update my wording.
-> 
-> Would you like to improve such a change description also with imperative wordings?
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?h=v6.10-rc4#n94
-> 
-> 
-> How do you think about the text “Prevent use-after-free issues at more places”
-> for a summary phrase?
->
+From: Peter Wang <peter.wang@mediatek.com>
 
-Thanks for your suggestion. I will update the wording in next version. 
+When ufshcd_abort_all racing with complete ISR,
+the completed tag of request will be release by ISR.
+And ufshca_abort_all call ufshcd_mcq_req_to_hwq will
+get NULL pointer KE.
+Also change the return value success when request is
+completed by ISR beacuse sq dosen't need cleanup.
 
-Joey Lee 
+Below is KE back trace.
+  ufshcd_try_to_abort_task: cmd at tag 41 not pending in the device.
+  ufshcd_try_to_abort_task: cmd at tag=41 is cleared.
+  Aborting tag 41 / CDB 0x28 succeeded
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000194
+  pc : [0xffffffddd7a79bf8] blk_mq_unique_tag+0x8/0x14
+  lr : [0xffffffddd6155b84] ufshcd_mcq_req_to_hwq+0x1c/0x40 [ufs_mediatek_mod_ise]
+   do_mem_abort+0x58/0x118
+   el1_abort+0x3c/0x5c
+   el1h_64_sync_handler+0x54/0x90
+   el1h_64_sync+0x68/0x6c
+   blk_mq_unique_tag+0x8/0x14
+   ufshcd_err_handler+0xae4/0xfa8 [ufs_mediatek_mod_ise]
+   process_one_work+0x208/0x4fc
+   worker_thread+0x228/0x438
+   kthread+0x104/0x1d4
+   ret_from_fork+0x10/0x20
+
+  ufshcd_try_to_abort_task: cmd pending in the device. tag = 6
+  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000194
+   pc : [0xffffffd589679bf8] blk_mq_unique_tag+0x8/0x14
+   lr : [0xffffffd5862f95b4] ufshcd_mcq_sq_cleanup+0x6c/0x1cc [ufs_mediatek_mod_ise]
+   Workqueue: ufs_eh_wq_0 ufshcd_err_handler [ufs_mediatek_mod_ise]
+   Call trace:
+    dump_backtrace+0xf8/0x148
+    show_stack+0x18/0x24
+    dump_stack_lvl+0x60/0x7c
+    dump_stack+0x18/0x3c
+    mrdump_common_die+0x24c/0x398 [mrdump]
+    ipanic_die+0x20/0x34 [mrdump]
+    notify_die+0x80/0xd8
+    die+0x94/0x2b8
+    __do_kernel_fault+0x264/0x298
+    do_page_fault+0xa4/0x4b8
+    do_translation_fault+0x38/0x54
+    do_mem_abort+0x58/0x118
+    el1_abort+0x3c/0x5c
+    el1h_64_sync_handler+0x54/0x90
+    el1h_64_sync+0x68/0x6c
+    blk_mq_unique_tag+0x8/0x14
+    ufshcd_clear_cmd+0x34/0x118 [ufs_mediatek_mod_ise]
+    ufshcd_try_to_abort_task+0x2c8/0x5b4 [ufs_mediatek_mod_ise]
+    ufshcd_err_handler+0xa7c/0xfa8 [ufs_mediatek_mod_ise]
+    process_one_work+0x208/0x4fc
+    worker_thread+0x228/0x438
+    kthread+0x104/0x1d4
+    ret_from_fork+0x10/0x20
+
+Fixes: 8d7290348992 ("scsi: ufs: mcq: Add supporting functions for MCQ abort")
+Fixes: 93e6c0e19d5b ("scsi: ufs: core: Clear cmd if abort succeeds in MCQ mode")
+Cc: <stable@vger.kernel.org> 6.6.x
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+---
+ drivers/ufs/core/ufs-mcq.c | 5 +++--
+ drivers/ufs/core/ufshcd.c  | 9 +++++----
+ 2 files changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index 8944548c30fa..3b2e5bcb08a7 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -512,8 +512,9 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba *hba, int task_tag)
+ 		return -ETIMEDOUT;
+ 
+ 	if (task_tag != hba->nutrs - UFSHCD_NUM_RESERVED) {
+-		if (!cmd)
+-			return -EINVAL;
++		/* Should return 0 if cmd is already complete by irq */
++		if (!cmd || !ufshcd_cmd_inflight(cmd))
++			return 0;
+ 		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(cmd));
+ 	} else {
+ 		hwq = hba->dev_cmd_queue;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index e5e9da61f15d..e8bca62ceed8 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -6455,11 +6455,12 @@ static bool ufshcd_abort_one(struct request *rq, void *priv)
+ 
+ 	/* Release cmd in MCQ mode if abort succeeds */
+ 	if (is_mcq_enabled(hba) && (*ret == 0)) {
+-		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(lrbp->cmd));
+-		spin_lock_irqsave(&hwq->cq_lock, flags);
+-		if (ufshcd_cmd_inflight(lrbp->cmd))
++		if (ufshcd_cmd_inflight(lrbp->cmd)) {
++			hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(lrbp->cmd));
++			spin_lock_irqsave(&hwq->cq_lock, flags);
+ 			ufshcd_release_scsi_cmd(hba, lrbp);
+-		spin_unlock_irqrestore(&hwq->cq_lock, flags);
++			spin_unlock_irqrestore(&hwq->cq_lock, flags);
++		}
+ 	}
+ 
+ 	return *ret == 0;
+-- 
+2.18.0
+
 
