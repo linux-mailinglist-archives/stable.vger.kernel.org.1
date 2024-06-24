@@ -1,246 +1,117 @@
-Return-Path: <stable+bounces-54997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67717914900
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 13:42:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D03E91490D
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 13:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0FAB1F24152
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:42:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 616DC1C23328
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8680213C67C;
-	Mon, 24 Jun 2024 11:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E230D13A25D;
+	Mon, 24 Jun 2024 11:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AdK0EaVo"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="HDBGSjKY"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE3C13A86D;
-	Mon, 24 Jun 2024 11:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DCB71386DA;
+	Mon, 24 Jun 2024 11:43:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719229333; cv=none; b=i1c1JTCxtHSjpYiLMUlhiIzR/tWxpuwfxZyL8E2GTYXc5mUeKfQNQjJaZJLycsmRy2xLIH5ZqQgOAPtLd7Dfvmaa7RnPoY4pF9tLZ9H3ZWMJDma1on9tGUoW+vYStf+Ly8pj0AjYjjmCScgKkGFXDAd1SxOzM0ogJEaMqABjwnc=
+	t=1719229426; cv=none; b=d64zuZLNAoUta63VPiC8bfQS9tya4akwMyxyXySk8UPLhg+grRtl9fSwBp5V7CsSovSJZ+ypoxSnHfNPokbCTdry0FMgW1Ahk4qlH1YLtF6rwGWoVqVIXGHtZBomtCuYjyZiCnrM2lrA7J3pUXp8znorbCDj90PDQ8/+vk7jdK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719229333; c=relaxed/simple;
-	bh=RbdVYBMpUql0CacT6O1+T/AB4vC+vtaU3JhJr8gTEt8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p5c+wefsDHm+5AyG1oJyEnozGWI7J+EQemN4C3Hl1VZnXxbJpjcgiXy211TG1bZpLtu+CgKc08BWkmEcr51o+E55SGsDiOrA8VscgUejkygCiHJaZg/bwFUTTyJs4JU8yjh4uSxJwY3puJyPIREMZJP9DpQAlD2K/Ss1TOomnQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AdK0EaVo; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719229330; x=1750765330;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=RbdVYBMpUql0CacT6O1+T/AB4vC+vtaU3JhJr8gTEt8=;
-  b=AdK0EaVoof9i8wRjNMAiUMY0ykFUaJlcZGOCMex3dyJvIkur/FP5+oE3
-   dZMDMrfG2FHzLIaR1uVFg0llKY+AlPWCLH3UYz4dDIDbXJORW33BbkHz8
-   K+nsqh1FjWNiVhqe0jkQntcrtz915abGZmcJ449ziQ9yiireRVf78ij5g
-   Xq8vGMwW0q7cOVnLD6KE7yC5q2Mp/GSam8YB3sE6f9/hzqFpo4APxIEVz
-   DQ1f49cGwEwx3HU6gPypf6lnSPmioFCFzsUHdhiux5j2+0Ml3N4tj7TMh
-   KY9/2moIc46U/zGdLt6BeKEfj7rdO67qIJ8yXM2/ZM4AY83DTnGZI7sFw
-   A==;
-X-CSE-ConnectionGUID: ZtRk1gWrQxWWl8hcGreMeA==
-X-CSE-MsgGUID: AArpXuV4R46ZuludLzi+WQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="20008061"
-X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; 
-   d="scan'208";a="20008061"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2024 04:42:09 -0700
-X-CSE-ConnectionGUID: TRoEmMsTR1iY+FX2sNsKbQ==
-X-CSE-MsgGUID: s14xP+WISTeoHoDTNy6TIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; 
-   d="scan'208";a="74502437"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa001.fm.intel.com with ESMTP; 24 Jun 2024 04:42:07 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 6B71D3F9; Mon, 24 Jun 2024 14:42:05 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCHv5 3/4] x86/tdx: Dynamically disable SEPT violations from causing #VEs
-Date: Mon, 24 Jun 2024 14:41:48 +0300
-Message-ID: <20240624114149.377492-4-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
-References: <20240624114149.377492-1-kirill.shutemov@linux.intel.com>
+	s=arc-20240116; t=1719229426; c=relaxed/simple;
+	bh=rf3ndeDJhEWP+M6CohKCaCCA2ikeqoukdX1sw5tM7xs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jng54M2BN6g94wdU7Ei8D9kJ0n5LiRvzDgnCBDx9R8Yr1V6aYWnH8EndkSAqX+AGFW8qnZYTzVF9ZgbmRmxIHE9G5OjLUPjIidw2u0GER+LsFQeoHHI3DteZGZ7cw+g5jyj4FcKa/GemyjCVyz/6D8tpLuD8hzOdBQJCa/MVCFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=HDBGSjKY; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1719229408; x=1719834208; i=markus.elfring@web.de;
+	bh=kQnixXovs1rVbARPRiGh60zwV7J4BuYooo3fLFqaWKI=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=HDBGSjKYy1s1eImSqm/YOgXOSa0KG/bxHhWPrPvPwOOsz0ImCKYibzCjrs5MeptK
+	 MrhiMyxq1GNJv3pT3UkTRMM+9CWDzCh08BIh8dmGLm8Dxsqbc1Z/h/+ZFo3wjJAIZ
+	 REzGEmFSMDEs0y1PgdHfSvQC2DfzxwoAecXcmHNvFC9KLdxQWqXLfHwDYyAhlVT4O
+	 j6AEBeSHJ7xBeqn2J05gZNlPxnPgklefCoM773TOJV9NfPzRPhEXabnSqMhnn+Mrb
+	 bMCFqHRpc71zClxLi1LrxUmMw6sV+/zQVltATnshxjdz+7tJyjOfNgdKyOnGn4/Q0
+	 vr7W+WFM4J4Xf23kWQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N0Zo6-1sa44C1UI8-012ydn; Mon, 24
+ Jun 2024 13:43:28 +0200
+Message-ID: <74d3454d-6141-462d-9de8-b11cf6ac814c@web.de>
+Date: Mon, 24 Jun 2024 13:43:25 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] aoe: fix the potential use-after-free problem in more
+ places
+To: Chun-Yi Lee <jlee@suse.com>, linux-block@vger.kernel.org
+Cc: Chun-Yi Lee <joeyli.kernel@gmail.com>, stable@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>, "David S. Miller"
+ <davem@davemloft.net>, Jens Axboe <axboe@kernel.dk>,
+ Justin Sanders <justin@coraid.com>, Kirill Korotaev <dev@openvz.org>,
+ Nicolai Stange <nstange@suse.com>, Pavel Emelianov <xemul@openvz.org>
+References: <20240624064418.27043-1-jlee@suse.com>
+ <b75a3e00-f3ec-4d06-8de8-6e93f74597e4@web.de>
+ <20240624110137.GI7611@linux-l9pv.suse>
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240624110137.GI7611@linux-l9pv.suse>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:2vSVncxPuAtq2in1aGT1tuFEEIu3belkC4agn58SDgVuFmFMP5Z
+ tDq5aE2Ne4VMVNpqsvyemjdkBO/myYwrdPNIca28y4LJbGcJCsnKKmzOnjqYZuPNbFC6C8w
+ YTWnLZBaBOdnTRZsm3/ZH/Hs2bnTJ5OuRDvxxGiIY2D28oU32JNuHR0qlGIuHY+McJ7aFKj
+ vvmfaHwCwxq1icQVapIkQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:8lhSuuBh9fI=;aFhCcEShFFP+/JOIEsPaighCfes
+ 8wtvO7OK0PiuS78JnBXuhYdqSjDxEwNz5bStREUBieGmsPufMstY9AdLMnUBvCvAm00c9z/3c
+ LGobkGBzIybMQ6svSJI5PTScTwE5s3Jpld0A2Ws/X+XhMpVhYL6q24NXKW52eR8wsZ/Fah5qe
+ YgIAhzW6GXuTlXOtVleswfStn1i5fdsEjq94vbOcoKycZOAnkEbnFOnHibyIylmeMdSl1DfgL
+ NuZR0EiWw88hrboXdPMoTNmdKrQ0GTrqTLXpLuIjx6arSgAE+CvpC98mewusTA6UEFGZotmsX
+ lofWnPTfmKRcpLvpqvA2kc9GV8mzOIYdZ5s1OFEameOYxM/1YphBf4Dv69XozxkAidjApdmmG
+ 2HeMCG+raag7+dxNRLo+DaAS9scm+1FfGpBrG5HYrwITHzVFMOAdyc8FfMw1QsvvgnAWZA8QG
+ xU5L5lnieHqecjGn1slGEi2hyDikUvtRnfC9Avsje4soJM5D+PLZne+CPH2LbLr+V8DG9EJ2v
+ uf6Nc/8IFqewtOy7sGdoFufctFenRbhjSg5D5vPh9rmFMIpdNASiRyGLGDvYlGnzkS7u3Kdqm
+ KY8TBDB7fqx83mKJTu+My2F7LwfLDfAkbehZaSbpppCu3LBg0efbaZX+MOwP9OHFMLqWk8MFE
+ fDo+ozK+RMSMWSaqN+yuCIodfWbHDGLFOR4klKuKR8/9SAYNwYxPOv5DxKzRbuDfgyULpiXIO
+ eA1dNZgX73hhWehrZiwdE1XHhfCEZ/7O9P/dPoF0tYLDDmIGIwjFtVBWrmYWUEdOp3Vd47Rms
+ l8Jb0PGvByB8CRrQD4wpSc7t+asNDa1dlPFDen0GNJdaE=
 
-Memory access #VE's are hard for Linux to handle in contexts like the
-entry code or NMIs.  But other OSes need them for functionality.
-There's a static (pre-guest-boot) way for a VMM to choose one or the
-other.  But VMMs don't always know which OS they are booting, so they
-choose to deliver those #VE's so the "other" OSes will work.  That,
-unfortunately has left us in the lurch and exposed to these
-hard-to-handle #VEs.
+>>>                   =E2=80=A6 So they should also use dev_hold() to incr=
+ease the
+>>> refcnt of skb->dev.
+>> =E2=80=A6
+>>
+>>   reference counter of =E2=80=9Cskb->dev=E2=80=9D?
+>
+> Yes, I will update my wording.
 
-The TDX module has introduced a new feature.  Even if the static
-configuration is "send nasty #VE's", the kernel can dynamically request
-that they be disabled.
+Would you like to improve such a change description also with imperative w=
+ordings?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.10-rc4#n94
 
-Check if the feature is available and disable SEPT #VE if possible.
 
-If the TD allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
-attribute is no longer reliable. It reflects the initial state of the
-control for the TD, but it will not be updated if someone (e.g. bootloader)
-changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
-determine if SEPT #VEs are enabled or disabled.
+How do you think about the text =E2=80=9CPrevent use-after-free issues at =
+more places=E2=80=9D
+for a summary phrase?
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: 373e715e31bf ("x86/tdx: Panic on bad configs that #VE on "private" memory access")
-Cc: stable@vger.kernel.org
----
- arch/x86/coco/tdx/tdx.c           | 76 ++++++++++++++++++++++++-------
- arch/x86/include/asm/shared/tdx.h | 10 +++-
- 2 files changed, 69 insertions(+), 17 deletions(-)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 08ce488b54d0..ba3103877b21 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -78,7 +78,7 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
- }
- 
- /* Read TD-scoped metadata */
--static inline u64 __maybe_unused tdg_vm_rd(u64 field, u64 *value)
-+static inline u64 tdg_vm_rd(u64 field, u64 *value)
- {
- 	struct tdx_module_args args = {
- 		.rdx = field,
-@@ -193,6 +193,62 @@ static void __noreturn tdx_panic(const char *msg)
- 		__tdx_hypercall(&args);
- }
- 
-+/*
-+ * The kernel cannot handle #VEs when accessing normal kernel memory. Ensure
-+ * that no #VE will be delivered for accesses to TD-private memory.
-+ *
-+ * TDX 1.0 does not allow the guest to disable SEPT #VE on its own. The VMM
-+ * controls if the guest will receive such #VE with TD attribute
-+ * ATTR_SEPT_VE_DISABLE.
-+ *
-+ * Newer TDX module allows the guest to control if it wants to receive SEPT
-+ * violation #VEs.
-+ *
-+ * Check if the feature is available and disable SEPT #VE if possible.
-+ *
-+ * If the TD allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
-+ * attribute is no longer reliable. It reflects the initial state of the
-+ * control for the TD, but it will not be updated if someone (e.g. bootloader)
-+ * changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
-+ * determine if SEPT #VEs are enabled or disabled.
-+ */
-+static void disable_sept_ve(u64 td_attr)
-+{
-+	const char *msg = "TD misconfiguration: SEPT #VE has to be disabled";
-+	bool debug = td_attr & ATTR_DEBUG;
-+	u64 config, controls;
-+
-+	/* Is this TD allowed to disable SEPT #VE */
-+	tdg_vm_rd(TDCS_CONFIG_FLAGS, &config);
-+	if (!(config & TDCS_CONFIG_FLEXIBLE_PENDING_VE)) {
-+		/* No SEPT #VE controls for the guest: check the attribute */
-+		if (td_attr & ATTR_SEPT_VE_DISABLE)
-+			return;
-+
-+		/* Relax SEPT_VE_DISABLE check for debug TD for backtraces */
-+		if (debug)
-+			pr_warn("%s\n", msg);
-+		else
-+			tdx_panic(msg);
-+		return;
-+	}
-+
-+	/* Check if SEPT #VE has been disabled before us */
-+	tdg_vm_rd(TDCS_TD_CTLS, &controls);
-+	if (controls & TD_CTLS_PENDING_VE_DISABLE)
-+		return;
-+
-+	/* Keep #VEs enabled for splats in debugging environments */
-+	if (debug)
-+		return;
-+
-+	/* Disable SEPT #VEs */
-+	tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_PENDING_VE_DISABLE,
-+		  TD_CTLS_PENDING_VE_DISABLE);
-+
-+	return;
-+}
-+
- static void tdx_setup(u64 *cc_mask)
- {
- 	struct tdx_module_args args = {};
-@@ -218,24 +274,12 @@ static void tdx_setup(u64 *cc_mask)
- 	gpa_width = args.rcx & GENMASK(5, 0);
- 	*cc_mask = BIT_ULL(gpa_width - 1);
- 
-+	td_attr = args.rdx;
-+
- 	/* Kernel does not use NOTIFY_ENABLES and does not need random #VEs */
- 	tdg_vm_wr(TDCS_NOTIFY_ENABLES, 0, -1ULL);
- 
--	/*
--	 * The kernel can not handle #VE's when accessing normal kernel
--	 * memory.  Ensure that no #VE will be delivered for accesses to
--	 * TD-private memory.  Only VMM-shared memory (MMIO) will #VE.
--	 */
--	td_attr = args.rdx;
--	if (!(td_attr & ATTR_SEPT_VE_DISABLE)) {
--		const char *msg = "TD misconfiguration: SEPT_VE_DISABLE attribute must be set.";
--
--		/* Relax SEPT_VE_DISABLE check for debug TD. */
--		if (td_attr & ATTR_DEBUG)
--			pr_warn("%s\n", msg);
--		else
--			tdx_panic(msg);
--	}
-+	disable_sept_ve(td_attr);
- }
- 
- /*
-diff --git a/arch/x86/include/asm/shared/tdx.h b/arch/x86/include/asm/shared/tdx.h
-index 7e12cfa28bec..fecb2a6e864b 100644
---- a/arch/x86/include/asm/shared/tdx.h
-+++ b/arch/x86/include/asm/shared/tdx.h
-@@ -19,9 +19,17 @@
- #define TDG_VM_RD			7
- #define TDG_VM_WR			8
- 
--/* TDCS fields. To be used by TDG.VM.WR and TDG.VM.RD module calls */
-+/* TDX TD-Scope Metadata. To be used by TDG.VM.WR and TDG.VM.RD */
-+#define TDCS_CONFIG_FLAGS		0x1110000300000016
-+#define TDCS_TD_CTLS			0x1110000300000017
- #define TDCS_NOTIFY_ENABLES		0x9100000000000010
- 
-+/* TDCS_CONFIG_FLAGS bits */
-+#define TDCS_CONFIG_FLEXIBLE_PENDING_VE	BIT_ULL(1)
-+
-+/* TDCS_TD_CTLS bits */
-+#define TD_CTLS_PENDING_VE_DISABLE	BIT_ULL(0)
-+
- /* TDX hypercall Leaf IDs */
- #define TDVMCALL_MAP_GPA		0x10001
- #define TDVMCALL_GET_QUOTE		0x10002
--- 
-2.43.0
-
+Regards,
+Markus
 
