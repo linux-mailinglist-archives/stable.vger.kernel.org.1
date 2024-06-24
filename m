@@ -1,72 +1,84 @@
-Return-Path: <stable+bounces-55102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0675891581C
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 22:39:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB39491582B
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 22:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31DE0285C31
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 20:39:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D99C31C21CE2
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 20:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150AD1A073E;
-	Mon, 24 Jun 2024 20:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE761A0AFD;
+	Mon, 24 Jun 2024 20:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SaIHlxej"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="aKTzGVGQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCB72233B
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 20:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E715B1A08CA
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 20:41:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719261557; cv=none; b=aJRfbyZa4LqctHGb/DjbyjZ74pDZlnmz4legIMFveIHt9mmRv3WF7cPRAUya3/3RTo/aCrTu8ReYpC7Ikwvj5Pnnosk9l0gwd2LO82GNK3XZ69jwomX02l8zlI66kOxV9OtMlzLvHU6wtXN2CHB1LK9zppWpAxCDPRtjSDZUxC0=
+	t=1719261703; cv=none; b=gD5kiBnPUSDfQzKs7Yr/4mvyMAnwChNCllAiowxhqmGitdCPX+3mMIGirvsU6eCEA1J8nKtVl6hbroRPw0LgOh7V0oKdpUI1hZIKHKNRCgjHlX3UEUGD1eZPlyLsIs1JovYTmhs3YG3Itp8AfR5fcWQ3lHsHzN1XLeM6yOuUCuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719261557; c=relaxed/simple;
-	bh=qp1rsKA8JlxRKDBOpmiN+WwWtR4s0TDQZ5UZ8aYrpY0=;
+	s=arc-20240116; t=1719261703; c=relaxed/simple;
+	bh=SpEcgF+fnF0/U+HAnrXTQeOcOE/TyuaAS0xcGefqEYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJ3DRTyVwv9vLOhyGPljaeDVC25dig0YOz6Zf3nZh1vjM6pqiNwQA+Xp8SirDf5O2g/IW7m4H8H2T4z2j7FplCpXXEUMrRi+1zB/XqqZvu1VhlFRI7He/hym4dV3732QB2p1v8cXEIMgDQ1Z645U7y5l8hU72NbpcqkQv4LhE44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SaIHlxej; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719261556; x=1750797556;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qp1rsKA8JlxRKDBOpmiN+WwWtR4s0TDQZ5UZ8aYrpY0=;
-  b=SaIHlxejZGTqrpsW8iB4dttQps2v2mM+37s5oaP6P7BZf/lXkWMqlbfd
-   RdvnjR9YfiNyEVLpR2Vw8bQdLJfdtgWn5lQR4xH/fGk5vBSYLx+ycZc08
-   tLtpDZkWUBpiTa7tZc8Vx4VfsKZjricNSL2f1PqvN2PqTE5RE4rHW8yhz
-   1J/o0sEACWPEnS6j8aphqSFHTegjlimxTjUKkjOGUHtsAfJ0oDdBXZ4N0
-   BnXoJ6nRlx5HC2FvDVc4mQq3hB7mFujc3Oz+splQHco+3T5qQFTj0Sds7
-   GJW59P9KadCrruj267XhrnA1ZrIJMeU2gVXKYqPeRw7aOFfv2qb5ThToG
-   g==;
-X-CSE-ConnectionGUID: TQhtQa1kRSm4UtNr3pdCtg==
-X-CSE-MsgGUID: q8L03NGYQ+KumEPmt9MCrQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="33711562"
-X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; 
-   d="scan'208";a="33711562"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2024 13:39:15 -0700
-X-CSE-ConnectionGUID: 9JCo60XdSpq5JkXmV5aLIA==
-X-CSE-MsgGUID: j8r+ORyRT8+6PN2LL0UUjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; 
-   d="scan'208";a="66633983"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO jkrzyszt-mobl2.intranet) ([10.213.22.228])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2024 13:39:14 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH 5.15.y] drm/i915/gt: Disarm breadcrumbs if engines are already idle
-Date: Mon, 24 Jun 2024 22:38:02 +0200
-Message-ID: <20240624203901.630305-2-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024061929-scalding-tweak-f522@gregkh>
-References: <2024061929-scalding-tweak-f522@gregkh>
+	 MIME-Version; b=jDTy2tUlR3dkKYUjFTgHbEUAzFjt6IMfsT1pqDJdGVtm1Diebd3p2g5SndSFPwfXZLwK7T60ei+QRfctLstUl1tY5iRrQFW7Kij2CfEiRQ64o/Hb35vQ/TBsJfikgpBijbAIXe96JEP136krGBOBdMBD3IsHMHO7nT0Waa+yRpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=aKTzGVGQ; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+X-Envelope-To: val@packett.cool
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1719261699;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ybNct5VISNj9THQmTwh5irL9J90lY2CWVHgOZSZgZdY=;
+	b=aKTzGVGQFfcBAmyxxxVdXouKRzMC/qDAjVqrVesHY7zCjjaktkFomQJ8+zq+fr684XhO9M
+	Ol1ocuf1jOorb7Et5gD0mSIUQZ5JsQ/EF48Kr0viSD3pHeaWcUsXUuMKNLBu5TuCLCBHIw
+	/l2XYoFh3A8jFP2FGYZz430++y2U/uQsVikeycgv4ArJDgXcbVDi3FWsf4HYQhkCHDoX2c
+	EvwIwfhm6Ror4WreNMn0GWGtmm5Ymrz5lihpTrfIMOP+UY5ZqaZt62zzEf9Um0+OzdfOsO
+	rtrCYR9l6YQQQnLEnBaMFrIOsOJmDV+rbmoeOc4RKa1hQoJ8oYKxPxi//qav4Q==
+X-Envelope-To: stable@vger.kernel.org
+X-Envelope-To: hjc@rock-chips.com
+X-Envelope-To: heiko@sntech.de
+X-Envelope-To: andy.yan@rock-chips.com
+X-Envelope-To: maarten.lankhorst@linux.intel.com
+X-Envelope-To: mripard@kernel.org
+X-Envelope-To: tzimmermann@suse.de
+X-Envelope-To: airlied@gmail.com
+X-Envelope-To: daniel@ffwll.ch
+X-Envelope-To: dri-devel@lists.freedesktop.org
+X-Envelope-To: linux-arm-kernel@lists.infradead.org
+X-Envelope-To: linux-rockchip@lists.infradead.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Val Packett <val@packett.cool>
+To: 
+Cc: Val Packett <val@packett.cool>,
+	stable@vger.kernel.org,
+	Sandy Huang <hjc@rock-chips.com>,
+	=?UTF-8?q?Heiko=20St=C3=BCbner?= <heiko@sntech.de>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/2] drm/rockchip: vop: clear DMA stop bit on RK3066
+Date: Mon, 24 Jun 2024 17:40:48 -0300
+Message-ID: <20240624204054.5524-2-val@packett.cool>
+In-Reply-To: <20240624204054.5524-1-val@packett.cool>
+References: <20240624204054.5524-1-val@packett.cool>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,101 +86,68 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-From: Chris Wilson <chris@chris-wilson.co.uk>
+The RK3066 VOP sets a dma_stop bit when it's done scanning out a frame
+and needs the driver to acknowledge that by clearing the bit.
 
-The breadcrumbs use a GT wakeref for guarding the interrupt, but are
-disarmed during release of the engine wakeref. This leaves a hole where
-we may attach a breadcrumb just as the engine is parking (after it has
-parked its breadcrumbs), execute the irq worker with some signalers still
-attached, but never be woken again.
+Unless we clear it "between" frames, the RGB output only shows noise
+instead of the picture. atomic_flush is the place for it that least
+affects other code (doing it on vblank would require converting all
+other usages of the reg_lock to spin_(un)lock_irq, which would affect
+performance for everyone).
 
-That issue manifests itself in CI with IGT runner timeouts while tests
-are waiting indefinitely for release of all GT wakerefs.
+This seems to be a redundant synchronization mechanism that was removed
+in later iterations of the VOP hardware block.
 
-<6> [209.151778] i915: Running live_engine_pm_selftests/live_engine_busy_stats
-<7> [209.231628] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_5
-<7> [209.231816] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_4
-<7> [209.231944] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_3
-<7> [209.232056] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling PW_2
-<7> [209.232166] i915 0000:00:02.0: [drm:intel_power_well_disable [i915]] disabling DC_off
-<7> [209.232270] i915 0000:00:02.0: [drm:skl_enable_dc6 [i915]] Enabling DC6
-<7> [209.232368] i915 0000:00:02.0: [drm:gen9_set_dc_state.part.0 [i915]] Setting DC state from 00 to 02
-<4> [299.356116] [IGT] Inactivity timeout exceeded. Killing the current test with SIGQUIT.
-...
-<6> [299.356526] sysrq: Show State
-...
-<6> [299.373964] task:i915_selftest   state:D stack:11784 pid:5578  tgid:5578  ppid:873    flags:0x00004002
-<6> [299.373967] Call Trace:
-<6> [299.373968]  <TASK>
-<6> [299.373970]  __schedule+0x3bb/0xda0
-<6> [299.373974]  schedule+0x41/0x110
-<6> [299.373976]  intel_wakeref_wait_for_idle+0x82/0x100 [i915]
-<6> [299.374083]  ? __pfx_var_wake_function+0x10/0x10
-<6> [299.374087]  live_engine_busy_stats+0x9b/0x500 [i915]
-<6> [299.374173]  __i915_subtests+0xbe/0x240 [i915]
-<6> [299.374277]  ? __pfx___intel_gt_live_setup+0x10/0x10 [i915]
-<6> [299.374369]  ? __pfx___intel_gt_live_teardown+0x10/0x10 [i915]
-<6> [299.374456]  intel_engine_live_selftests+0x1c/0x30 [i915]
-<6> [299.374547]  __run_selftests+0xbb/0x190 [i915]
-<6> [299.374635]  i915_live_selftests+0x4b/0x90 [i915]
-<6> [299.374717]  i915_pci_probe+0x10d/0x210 [i915]
-
-At the end of the interrupt worker, if there are no more engines awake,
-disarm the breadcrumb and go to sleep.
-
-Fixes: 9d5612ca165a ("drm/i915/gt: Defer enabling the breadcrumb interrupt to after submission")
-Closes: https://gitlab.freedesktop.org/drm/intel/issues/10026
-Signed-off-by: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: <stable@vger.kernel.org> # v5.12+
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Acked-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240423165505.465734-2-janusz.krzysztofik@linux.intel.com
-(cherry picked from commit fbad43eccae5cb14594195c20113369aabaa22b5)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 70cb9188ffc75e643debf292fcddff36c9dbd4ae)
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Fixes: f4a6de8 ("drm: rockchip: vop: add rk3066 vop definitions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Val Packett <val@packett.cool>
 ---
- drivers/gpu/drm/i915/gt/intel_breadcrumbs.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 4 ++++
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.h | 1 +
+ drivers/gpu/drm/rockchip/rockchip_vop_reg.c | 1 +
+ 3 files changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c b/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
-index 209cf265bf746..ad8c0a4f4a31f 100644
---- a/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
-+++ b/drivers/gpu/drm/i915/gt/intel_breadcrumbs.c
-@@ -257,8 +257,13 @@ static void signal_irq_work(struct irq_work *work)
- 		i915_request_put(rq);
- 	}
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index a13473b2d..e88fbd568 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -1583,6 +1583,10 @@ static void vop_crtc_atomic_flush(struct drm_crtc *crtc,
+ 	VOP_AFBC_SET(vop, enable, s->enable_afbc);
+ 	vop_cfg_done(vop);
  
-+	/* Lazy irq enabling after HW submission */
- 	if (!READ_ONCE(b->irq_armed) && !list_empty(&b->signalers))
- 		intel_breadcrumbs_arm_irq(b);
++	/* Ack the DMA transfer of the previous frame (RK3066). */
++	if (VOP_HAS_REG(vop, common, dma_stop))
++		VOP_REG_SET(vop, common, dma_stop, 0);
 +
-+	/* And confirm that we still want irqs enabled before we yield */
-+	if (READ_ONCE(b->irq_armed) && !atomic_read(&b->active))
-+		intel_breadcrumbs_disarm_irq(b);
- }
+ 	spin_unlock(&vop->reg_lock);
  
- struct intel_breadcrumbs *
-@@ -309,13 +314,7 @@ void __intel_breadcrumbs_park(struct intel_breadcrumbs *b)
- 		return;
+ 	/*
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
+index b33e5bdc2..0cf512cc1 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.h
+@@ -122,6 +122,7 @@ struct vop_common {
+ 	struct vop_reg lut_buffer_index;
+ 	struct vop_reg gate_en;
+ 	struct vop_reg mmu_en;
++	struct vop_reg dma_stop;
+ 	struct vop_reg out_mode;
+ 	struct vop_reg standby;
+ };
+diff --git a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+index b9ee02061..9bcb40a64 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
++++ b/drivers/gpu/drm/rockchip/rockchip_vop_reg.c
+@@ -466,6 +466,7 @@ static const struct vop_output rk3066_output = {
+ };
  
- 	/* Kick the work once more to drain the signalers, and disarm the irq */
--	irq_work_sync(&b->irq_work);
--	while (READ_ONCE(b->irq_armed) && !atomic_read(&b->active)) {
--		local_irq_disable();
--		signal_irq_work(&b->irq_work);
--		local_irq_enable();
--		cond_resched();
--	}
-+	irq_work_queue(&b->irq_work);
- }
- 
- void intel_breadcrumbs_free(struct kref *kref)
+ static const struct vop_common rk3066_common = {
++	.dma_stop = VOP_REG(RK3066_SYS_CTRL0, 0x1, 0),
+ 	.standby = VOP_REG(RK3066_SYS_CTRL0, 0x1, 1),
+ 	.out_mode = VOP_REG(RK3066_DSP_CTRL0, 0xf, 0),
+ 	.cfg_done = VOP_REG(RK3066_REG_CFG_DONE, 0x1, 0),
 -- 
 2.45.2
 
