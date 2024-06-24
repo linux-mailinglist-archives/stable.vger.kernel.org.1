@@ -1,160 +1,168 @@
-Return-Path: <stable+bounces-55090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94399154DE
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:57:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2035C9154F2
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 19:01:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA2911C2012B
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:57:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 918B8B24976
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 17:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2D319E7F7;
-	Mon, 24 Jun 2024 16:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB4019AD75;
+	Mon, 24 Jun 2024 17:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="RQCIfJbj"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="lP2g79cn";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="VEUQmQYj"
 X-Original-To: stable@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85AF2F24;
-	Mon, 24 Jun 2024 16:57:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBB619DF7E;
+	Mon, 24 Jun 2024 17:01:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719248257; cv=none; b=dPl0lh7MNpRdUlqKCa15WQWmBzcaZ2vOgY69KvSjT+u0uCCRO3Qk0SRR7YIiDpamvbbIN+MOe55MAQFDfzcq/iIArtvw5RQOdSV4SrliWuTvITTkquEjXmPLHDc4avYI0Mstjmxbk0ayMLl4cIc/R0y8iUaX84kESG814qFmoPU=
+	t=1719248492; cv=none; b=GB8+nyobx4KqF3KVjhcTapzHtRfq7iAkDM/yBG0Qg2+OUZALS3r9Ki+oGhzgiZF8tyz/g1NdkeAkxW1zdQadqhjJPtWmwEmmfI7h7nvV6sr5e1EuGJxDZs6Ndz8HNQOYh859ySlIQw4oUdnUmuUSKXFXYyy+0YptbMulAt1CZ+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719248257; c=relaxed/simple;
-	bh=i7FvkIi7YpEMb5yfJJghsk01zW9gXtkJZ52MSXXo7I4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ElNiD9F7p19KTLN7dYesP6mWs6XSZ2bGIORz5V8aFu5oL2WLOLgsYT9OCsmhMeDs3ThfoIR0UyZf3sHNrCSkeTjrU06QN5t8IXJgyku5NbeRz285lwZibps4viecXrHQYYXvaZ01YBiOR8iPkHGeQlyUPiPkczwmTBEBm3xMouA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=RQCIfJbj; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 45OGv8SV119219;
-	Mon, 24 Jun 2024 11:57:08 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1719248228;
-	bh=twcPzD28GFzdRCNUIgA67wCdCEnWmVKCRedJShWMmmU=;
-	h=From:To:CC:Subject:Date;
-	b=RQCIfJbjtgVNpNomStUW061F58GXL4gs4mY+Yf7ftQSRyNDJrNWKPZMuB3ukCxJQg
-	 TrDHbI9+OawMsfOQbxLd5433BF6Qh8gj+FEw+mFfmdO9CMo6n7rI2Ksy5pYfyCpRcM
-	 LKOsHaPE+yoiamJ2GUtOERstKNhi7i4UHXR5bUEE=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 45OGv8FG063614
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 24 Jun 2024 11:57:08 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 24
- Jun 2024 11:57:08 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Mon, 24 Jun 2024 11:57:08 -0500
-Received: from udit-HP-Z2-Tower-G9-Workstation-Desktop-PC.dhcp.ti.com (udit-hp-z2-tower-g9-workstation-desktop-pc.dhcp.ti.com [172.24.227.18])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 45OGv4Jc032912;
-	Mon, 24 Jun 2024 11:57:05 -0500
-From: Udit Kumar <u-kumar1@ti.com>
-To: <vigneshr@ti.com>, <nm@ti.com>, <tony@atomide.com>
-CC: <gregkh@linuxfoundation.org>, <jirislaby@kernel.org>,
-        <ronald.wahl@raritan.com>, <thomas.richard@bootlin.com>,
-        <tglx@linutronix.de>, <linux-kernel@vger.kernel.org>,
-        <linux-serial@vger.kernel.org>, <ilpo.jarvinen@linux.intel.com>,
-        Udit Kumar
-	<u-kumar1@ti.com>, <stable@vger.kernel.org>
-Subject: [PATCH v4] serial: 8250_omap: Implementation of Errata i2310
-Date: Mon, 24 Jun 2024 22:26:56 +0530
-Message-ID: <20240624165656.2634658-1-u-kumar1@ti.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1719248492; c=relaxed/simple;
+	bh=NnEmCtBdW+n3T6C5nAw/DaOTt9luQR3DrIQjP/ARNgE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=jFdJ1i8vgMazp1gLTG1ijShPqpjBZiT5lwgdnFgbVhgPgIeOBGzMh2jYgKs/wB7+YAs8GeBU+z+y5BhgKTdm8t3fTuWvmlyl/8tKClEqj+xuxs/jJv5/OdJOf3T+D5MUytfJouivdTvgclEvgoP89F4fMcgGtncg2XDb46Ptg2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=lP2g79cn; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=VEUQmQYj; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E3DC721A00;
+	Mon, 24 Jun 2024 17:01:27 +0000 (UTC)
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1719248487; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PrZlJZZkKLRVxS70o1t/6F+VcFEZ0wDlkxQIfDUTTFY=;
+	b=lP2g79cnmh25U+q6wt+8XA8o8jcP0jCC/JbCYllL7bUvnYRTVx0VPYJNrRM1Ic5XLdFA9U
+	E8Ebed0nX9OsMS0X80w83imS62tnlROcS/XXIRl0cGrpT/P6+qznSAloXYDHwutN+FRrJE
+	oLKVMhFgxa4n/1l+EXG3S/t0MRjrJfw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1719248487;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PrZlJZZkKLRVxS70o1t/6F+VcFEZ0wDlkxQIfDUTTFY=;
+	b=VEUQmQYjAPlgZs7jfT1Qs1fbMUU7jDeeU+eq0qI7WLC1m7UO9LtvkvrI80tWOHAGCjKMJc
+	W2vJ60LNv6lgPlCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D7A9613AA4;
+	Mon, 24 Jun 2024 17:01:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id lOadNGemeWbGOAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 24 Jun 2024 17:01:27 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 8081DA08C8; Mon, 24 Jun 2024 19:01:27 +0200 (CEST)
+From: Jan Kara <jack@suse.cz>
+To: Ted Tso <tytso@mit.edu>
+Cc: <linux-ext4@vger.kernel.org>,
+	Alexander Coffin <alex.coffin@maticrobots.com>,
+	Jan Kara <jack@suse.cz>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/4] jbd2: Make jbd2_journal_get_max_txn_bufs() internal
+Date: Mon, 24 Jun 2024 19:01:17 +0200
+Message-Id: <20240624170127.3253-1-jack@suse.cz>
+X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20240624165406.12784-1-jack@suse.cz>
+References: <20240624165406.12784-1-jack@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2188; i=jack@suse.cz; h=from:subject; bh=NnEmCtBdW+n3T6C5nAw/DaOTt9luQR3DrIQjP/ARNgE=; b=owGbwMvMwME4Z+4qdvsUh5uMp9WSGNIql8XKtx1aueW/n5W/j0rSXaG329RsD8kndFZdZ1H+3O/c 7f+2k9GYhYGRg0FWTJFldeRF7WvzjLq2hmrIwAxiZQKZwsDFKQATEbFg/194oiv1uMSx+QaXrJnq6m c9f2bQMnPZH4+mX10eG5hum8kx7F+6L3mZ+9fizJztCW7s32wsj6WxLZoSfPnYr+8xIqE6QlGrotsu uJXc39m4KOt4630/Np34Rw3SrL3zqqdvS/nfPt8t+UFCaU+Ee7/Udo6mjfsUGSXdV6/icbzxrmr3wQ 28UVOtYvrWhLDKazfsvJ559/K5vvi+KrPDM9tEsrS9xN/lO39hjv4XbqDlJMEvksO5h99E5e3HU/fX NReuMT3D0pzqxqZ8Kc+8X2Hdu1CtVN41P/su/aosN9vRFFAWyPLi18UDUTmNlyZULS5nnTf5+6JP/Z GieXdZ/KI+LfzF1/q8nLv6Sm4KAA==
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
+X-Rspamd-Queue-Id: E3DC721A00
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -4.00
+X-Spam-Level: 
 
-As per Errata i2310[0], Erroneous timeout can be triggered,
-if this Erroneous interrupt is not cleared then it may leads
-to storm of interrupts, therefore apply Errata i2310 solution.
+There's no reason to have jbd2_journal_get_max_txn_bufs() public
+function. Currently all users are internal and can use
+journal->j_max_transaction_buffers instead. This saves some unnecessary
+recomputations of the limit as a bonus which becomes important as this
+function gets more complex in the following patch.
 
-[0] https://www.ti.com/lit/pdf/sprz536 page 23
-
-Fixes: b67e830d38fa ("serial: 8250: 8250_omap: Fix possible interrupt storm on K3 SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Udit Kumar <u-kumar1@ti.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
 ---
-Test logs:
-https://gist.github.com/uditkumarti/48e239540db4e761861fbd1d7d31cfed
+ fs/jbd2/commit.c     | 2 +-
+ fs/jbd2/journal.c    | 5 +++++
+ include/linux/jbd2.h | 5 -----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-Change logs
-Changes in v4:
-- Reverted fifo empty check before applying errata
-Link to v3:
-https://lore.kernel.org/all/20240619105903.165434-1-u-kumar1@ti.com/
-
-Changes in v3:
-- CC stable in commit message
-Link to v2:
-https://lore.kernel.org/all/20240617052253.2188140-1-u-kumar1@ti.com/
-
-Changes in v2:
-- Added Fixes Tag and typo correction in commit message
-- Corrected bit position to UART_OMAP_EFR2_TIMEOUT_BEHAVE
-Link to v1
-https://lore.kernel.org/all/20240614061314.290840-1-u-kumar1@ti.com/
-
- drivers/tty/serial/8250/8250_omap.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 170639d12b2a..1af9aed99c65 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -115,6 +115,10 @@
- /* RX FIFO occupancy indicator */
- #define UART_OMAP_RX_LVL		0x19
+diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
+index 75ea4e9a5cab..e7fc912693bd 100644
+--- a/fs/jbd2/commit.c
++++ b/fs/jbd2/commit.c
+@@ -766,7 +766,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
+ 		if (first_block < journal->j_tail)
+ 			freed += journal->j_last - journal->j_first;
+ 		/* Update tail only if we free significant amount of space */
+-		if (freed < jbd2_journal_get_max_txn_bufs(journal))
++		if (freed < journal->j_max_transaction_buffers)
+ 			update_tail = 0;
+ 	}
+ 	J_ASSERT(commit_transaction->t_state == T_COMMIT);
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 03c4b9214f56..1bb73750d307 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1698,6 +1698,11 @@ journal_t *jbd2_journal_init_inode(struct inode *inode)
+ 	return journal;
+ }
  
-+/* Timeout low and High */
-+#define UART_OMAP_TO_L                 0x26
-+#define UART_OMAP_TO_H                 0x27
++static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
++{
++	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
++}
 +
  /*
-  * Copy of the genpd flags for the console.
-  * Only used if console suspend is disabled
-@@ -663,13 +667,25 @@ static irqreturn_t omap8250_irq(int irq, void *dev_id)
+  * Given a journal_t structure, initialise the various fields for
+  * startup of a new journaling session.  We use this both when creating
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index ab04c1c27fae..f91b930abe20 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1660,11 +1660,6 @@ int jbd2_wait_inode_data(journal_t *journal, struct jbd2_inode *jinode);
+ int jbd2_fc_wait_bufs(journal_t *journal, int num_blks);
+ int jbd2_fc_release_bufs(journal_t *journal);
  
- 	/*
- 	 * On K3 SoCs, it is observed that RX TIMEOUT is signalled after
--	 * FIFO has been drained, in which case a dummy read of RX FIFO
--	 * is required to clear RX TIMEOUT condition.
-+	 * FIFO has been drained or erroneously.
-+	 * So apply solution of Errata i2310 as mentioned in
-+	 * https://www.ti.com/lit/pdf/sprz536
- 	 */
- 	if (priv->habit & UART_RX_TIMEOUT_QUIRK &&
- 	    (iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT &&
- 	    serial_port_in(port, UART_OMAP_RX_LVL) == 0) {
--		serial_port_in(port, UART_RX);
-+		unsigned char efr2, timeout_h, timeout_l;
-+
-+		efr2 = serial_in(up, UART_OMAP_EFR2);
-+		timeout_h = serial_in(up, UART_OMAP_TO_H);
-+		timeout_l = serial_in(up, UART_OMAP_TO_L);
-+		serial_out(up, UART_OMAP_TO_H, 0xFF);
-+		serial_out(up, UART_OMAP_TO_L, 0xFF);
-+		serial_out(up, UART_OMAP_EFR2, UART_OMAP_EFR2_TIMEOUT_BEHAVE);
-+		serial_in(up, UART_IIR);
-+		serial_out(up, UART_OMAP_EFR2, efr2);
-+		serial_out(up, UART_OMAP_TO_H, timeout_h);
-+		serial_out(up, UART_OMAP_TO_L, timeout_l);
- 	}
- 
- 	/* Stop processing interrupts on input overrun */
+-static inline int jbd2_journal_get_max_txn_bufs(journal_t *journal)
+-{
+-	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
+-}
+-
+ /*
+  * is_journal_abort
+  *
 -- 
-2.34.1
+2.35.3
 
 
