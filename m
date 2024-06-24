@@ -1,117 +1,172 @@
-Return-Path: <stable+bounces-54969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 628869140FD
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 06:15:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C0191410F
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 06:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3DDC1F2239D
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 04:15:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 760B8B20EEA
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 04:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC5D8C0B;
-	Mon, 24 Jun 2024 04:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="rx5Bb+vk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB098827;
+	Mon, 24 Jun 2024 04:29:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from submarine.notk.org (62-210-214-84.rev.poneytelecom.eu [62.210.214.84])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270AD10E3;
-	Mon, 24 Jun 2024 04:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDFAC8FF;
+	Mon, 24 Jun 2024 04:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719202509; cv=none; b=KzDx/vZsa1h+ibaMskJ1i4fcIomFiNaPg31tkNV8CUYqeFjpWKa1kLoFS4pX4WK+TjYg1Tye1XX7oX3gxMkxzMEORfym3McAL0FJPtD8FY/GOxIWWrnyO5EU13NQr3yaJSaVAd/ZK6bY1fga8bvHIVIr+R/H6tHrD20zTHcQBOU=
+	t=1719203375; cv=none; b=tjzp73mEJeml6VNH9/IyR6XDvTojl8BoiWkbN/L4QRVXpmMrCwWS/S9t/DkTVndPmnP5Cz2E0wYFEFcrTsbcxiF9LSB6TLBmHm/SWhdz3qOjca8thJDy7vJzf8FPr3TsaFtTbmwCIPvjfFD2HVEHve3ZqeMJJAlost4IZ5Q6sv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719202509; c=relaxed/simple;
-	bh=OO3eVPJfqR8uQ/tF25yIJliDMLzEPmC2ri7ao1o4Qrg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dSypV+XBk5gFhhJ3keM3izzo1PCHel1LQmnqRzyxGWJ7/B56QqNbpuCZAHPx3WFHN6KcplH0CWetkMiE+HHGhXY+9A14r9Y2cf+2aj1FL3Q4bvPvVPKP5+kkEWd4seQmVSm2LzSt5rPjKKjLVFEkmWq8k2vZMqu+cl9DF9DjzyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=rx5Bb+vk; arc=none smtp.client-ip=62.210.214.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id D2AF414C1E3;
-	Mon, 24 Jun 2024 06:14:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1719202500;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R9iHpqE/JMKLqnOR6i69QRli3F9llvJfQqqDJaK7brw=;
-	b=rx5Bb+vk96T9QyUEX9+AQznze5tTLoRMTm8wMUDn+D6TpHQBtUwU+nhVsM6tUefO9oLPEZ
-	o6FLRNtEe+mqdnCssju6rc/JqKoG6GLO2uMdHZy7lftXrGIeNcmAU/a3QsxQgeBu6EGM5I
-	132lQjLzNuAlmMxdkmO4N64PUy07zuviqidutpvw0a5gUQwWzO1wbsii+3ZtyCRu7LvWoc
-	fJoXz0dtZ/nkBq6awWKFZuSFAA94iOWeCtuOUWTxshTZzmF7uqGvUNh2Zox06i5Krfjw0Q
-	iEnaM5WT2Jll9jrJkaNA1HW53aSLgVnlGWKZhNqfRFJeMPaKxa1F/Hpnl82Tcw==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 35e5ef12;
-	Mon, 24 Jun 2024 04:14:52 +0000 (UTC)
-Date: Mon, 24 Jun 2024 13:14:37 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>, Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>, Jeff Layton <jlayton@kernel.org>,
-	linux-nfs@vger.kernel.org
-Subject: Re: [PATCH 5.10 762/770] nfsd: separate nfsd_last_thread() from
- nfsd_put()
-Message-ID: <ZnjyrccU0LXAFrZe@codewreck.org>
-References: <20240618123407.280171066@linuxfoundation.org>
- <20240618123436.685336265@linuxfoundation.org>
+	s=arc-20240116; t=1719203375; c=relaxed/simple;
+	bh=TxfqNasjA0T1bjyTc3f87NCLf1eN+E6zofRo71B+ijA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YaVACULdDq+LVerRBLYLLzo8ROArMYPLHchrEjKdKjdIFZ0Ozy6gg30sPCp9NSXsZyQzdnIkjdNjxq3wl0vAj2fEN5rkCP64wLNEdcEY2KfyKd/3yf9I0dKNOvfyhqzFAb+GnKJj8fDgt+5gLt42EwIde7C8UChgTZ3ZQcw3s9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4W6w355wk0z4f3jMC;
+	Mon, 24 Jun 2024 12:29:21 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id D06651A0568;
+	Mon, 24 Jun 2024 12:29:28 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.175.104.67])
+	by APP2 (Coremail) with SMTP id Syh0CgAn3oMi9nhm19q2AA--.39098S4;
+	Mon, 24 Jun 2024 12:29:28 +0800 (CST)
+From: Yang Erkun <yangerkun@huawei.com>
+To: sfrench@samba.org,
+	pc@manguebit.com,
+	ronniesahlberg@gmail.com,
+	sprasad@microsoft.com,
+	tom@talpey.com,
+	bharathsm@microsoft.com,
+	dhowells@redhat.com,
+	linux-cifs@vger.kernel.org,
+	stable@vger.kernel.org,
+	stable-commits@vger.kernel.org
+Cc: yangerkun@huawei.com,
+	yangerkun@huaweicloud.com
+Subject: [PATCH 6.6~6.9] cifs: fix pagecache leak when do writepages
+Date: Mon, 24 Jun 2024 12:28:15 +0800
+Message-Id: <20240624042815.2242201-1-yangerkun@huawei.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240618123436.685336265@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Syh0CgAn3oMi9nhm19q2AA--.39098S4
+X-Coremail-Antispam: 1UD129KBjvJXoWxCFyxZF4rCFy7JrW5try3twb_yoW5GFWkpr
+	Wakrn8Ar4jyr9ruFnxZayqv3WUt3y8XrW3XFy3Gw17Z3Z8Z3WagFW8K34UKFWfGr9xXFWx
+	KFs0yFWku3WqqaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0aVACjI8F5VA0II8E6IAqYI8I648v4I1l
+	FIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij64vIr41l42xK82IY64kExVAvwVAq07
+	x20xyl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAnYwUUUUU=
+Sender: yangerkun@huaweicloud.com
+X-CM-SenderInfo: 51dqwvhunx0q5kxd4v5lfo033gof0z/
 
-Hi Greg,
+After commit f3dc1bdb6b0b("cifs: Fix writeback data corruption"), the
+writepages for cifs will find all folio needed writepage with two phase.
+The first folio will be found in cifs_writepages_begin, and the latter
+various folios will be found in cifs_extend_writeback.
 
-(+Jeff & linux-nfs in Ccs)
+All those will first get folio, and for normal case, once we set page
+writeback and after do really write, we should put the reference, folio
+found in cifs_extend_writeback do this with folio_batch_release. But the
+folio found in cifs_writepages_begin never get the chance do it. And
+every writepages call, we will leak a folio(found this problem while do
+xfstests over cifs).
 
-Greg Kroah-Hartman wrote on Tue, Jun 18, 2024 at 02:40:15PM +0200:
-> [ Upstream commit 9f28a971ee9fdf1bf8ce8c88b103f483be610277 ]
+Besides, the exist path seem never handle this folio correctly, fix it too
+with this patch.
 
-Playing with dyad in the 'vulns' repo, I noticed this commit got
-reverted in the 6.1 tree by pure chance as I just happened to test it on
-a related commit and wondered why the 6.1 kernel was listed twice:
-b2c545c39877 ("Revert "nfsd: separate nfsd_last_thread() from nfsd_put()"")
-db5f2f4db8b7 ("Revert "nfsd: call nfsd_last_thread() before final nfsd_put()"")
+The problem does not exist in mainline since writepages path for cifs
+has changed to netfs. It's had to backport all related change, so try fix
+this problem with this single patch.
 
-See this thread for the discussion that caused that revert:
-https://lore.kernel.org/all/e341cb408b5663d8c91b8fa57b41bb984be43448.camel@kernel.org/
+Fixes: f3dc1bdb6b0b ("cifs: Fix writeback data corruption")
+Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+---
+ fs/smb/client/file.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-
-What made me look is that they got in 5.10/15 (without revert):
-
-5.10 tree (since v5.10.220)
-838a602db75d ("nfsd: call nfsd_last_thread() before final nfsd_put()")
-d31cd25f5501 ("nfsd: separate nfsd_last_thread() from nfsd_put()")
-
-5.15 tree (since v5.15.154)
-c52fee7a1f98 ("nfsd: call nfsd_last_thread() before final nfsd_put()")
-56e5eeff6cfa ("nfsd: separate nfsd_last_thread() from nfsd_put()")
-
-
-I considered trying to revert them as well, but it looks like they've
-been fixed by this commit (upstream id):
-64e6304169f1 ("nfsd: drop the nfsd_put helper")
-which wasn't in 6.1, so perhaps that's all there is to it and I'm
-worried too much?
-
-Jeff, you're the one who suggested reverting the two back then, sorry to
-dump it on you but do you remember the kind of problems you ran into?
-Is there any chance it would have gone unoticed in the 5.15 tree for
-2.5 months? (5.15.154 was April 2024)
-
-(Bonus question: if that is really all there is, would that make sense
-/ should we take the commits back in 6.1 with that extra fix?)
-
-
-Thanks,
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 9be37d0fe724..0a48d80b3871 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -2860,17 +2860,21 @@ static ssize_t cifs_write_back_from_locked_folio(struct address_space *mapping,
+ 	rc = cifs_get_writable_file(CIFS_I(inode), FIND_WR_ANY, &cfile);
+ 	if (rc) {
+ 		cifs_dbg(VFS, "No writable handle in writepages rc=%d\n", rc);
++		folio_unlock(folio);
+ 		goto err_xid;
+ 	}
+ 
+ 	rc = server->ops->wait_mtu_credits(server, cifs_sb->ctx->wsize,
+ 					   &wsize, credits);
+-	if (rc != 0)
++	if (rc != 0) {
++		folio_unlock(folio);
+ 		goto err_close;
++	}
+ 
+ 	wdata = cifs_writedata_alloc(cifs_writev_complete);
+ 	if (!wdata) {
+ 		rc = -ENOMEM;
++		folio_unlock(folio);
+ 		goto err_uncredit;
+ 	}
+ 
+@@ -3017,17 +3021,22 @@ static ssize_t cifs_writepages_begin(struct address_space *mapping,
+ lock_again:
+ 	if (wbc->sync_mode != WB_SYNC_NONE) {
+ 		ret = folio_lock_killable(folio);
+-		if (ret < 0)
++		if (ret < 0) {
++			folio_put(folio);
+ 			return ret;
++		}
+ 	} else {
+-		if (!folio_trylock(folio))
++		if (!folio_trylock(folio)) {
++			folio_put(folio);
+ 			goto search_again;
++		}
+ 	}
+ 
+ 	if (folio->mapping != mapping ||
+ 	    !folio_test_dirty(folio)) {
+ 		start += folio_size(folio);
+ 		folio_unlock(folio);
++		folio_put(folio);
+ 		goto search_again;
+ 	}
+ 
+@@ -3057,6 +3066,7 @@ static ssize_t cifs_writepages_begin(struct address_space *mapping,
+ out:
+ 	if (ret > 0)
+ 		*_start = start + ret;
++	folio_put(folio);
+ 	return ret;
+ }
+ 
 -- 
-Dominique Martinet | Asmadeus
+2.39.2
+
 
