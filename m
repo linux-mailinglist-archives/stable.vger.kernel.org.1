@@ -1,38 +1,38 @@
-Return-Path: <stable+bounces-54985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C639145AC
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:02:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C2F9145AE
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:04:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 890401C22076
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 09:02:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1711C285E02
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 09:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29ADD4962B;
-	Mon, 24 Jun 2024 09:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A6640870;
+	Mon, 24 Jun 2024 09:03:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BF61805E
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 09:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294B47FD
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 09:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719219775; cv=none; b=t3owbRwneAtkyAI+cxkzoJMkQy6/YtymdT4mbTxxg+pxzMt1vwLZyMAnlPCF4R1Jh0jRP1lEGPyOr8ElYhmcNMH3gTP0NeK80PCTvG9X7PZ+6B7uWI8lgVy5Uapxkfs8Vb7kxoHdcMUN1BXpR8QJXQ3Xgb7zEM8rn/lNBp/S54w=
+	t=1719219839; cv=none; b=c2vAtHYyKr2swM6MVgREMVEPlYgo4r6FttOwoDb2MAp47H7nSOCUUEmDe3x722lMGzVD8U5DTJbvVSwEJYma5b/AuAK+ZIHrlSBBaFedEtGe7Mu3PHiVp16W0GFAgTWEtPU5CD1W9OozG2TZOJ+Ri02yKGG5dDwe7mfemjuCQGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719219775; c=relaxed/simple;
-	bh=x2zGMyXgKFnzPjURotjwGkhrZImF+REr4u2EndIry9I=;
+	s=arc-20240116; t=1719219839; c=relaxed/simple;
+	bh=nyG4xPoey73vKHXobbSJFbRdFlJIGjTibh3SJVJdmK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQLCRIMbUb2916I456KhBY+sq5e6aTIkwJhnGhphCdf3xCNLEnlkvoaAo+ffcm+8hMaO48UdvQ5J8ZbAM//BpfYcBZWVj/tC+oLE1Y8EgGh2pOvFXhkWVyZjg2cDkRSg2opsePa9ppgQq9dbMx0ZQIPHb565DUkbTegMx5zoLk4=
+	 MIME-Version; b=PITCwIDvuhAlvKwHpEm0ZLTllbgRtJsVwAdRtlrCoWEYA3QDuq3JG4uhXITpst7g9l5uJw6xryq/CD1WYl0/OHUCuIfQa2pqiz6PF7c0zdPOxrKqu/Hq+GAzg8YzVMyLdv0+VoaGuuSzGVFCr7x6O2vmrdj4xWoJmGeeMBlfu10=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3E7E8DA7;
-	Mon, 24 Jun 2024 02:03:16 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2375FDA7;
+	Mon, 24 Jun 2024 02:04:21 -0700 (PDT)
 Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EAD2F3F6A8;
-	Mon, 24 Jun 2024 02:02:47 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 80F743F6A8;
+	Mon, 24 Jun 2024 02:03:53 -0700 (PDT)
 From: Ryan Roberts <ryan.roberts@arm.com>
 To: stable@vger.kernel.org
 Cc: Ryan Roberts <ryan.roberts@arm.com>,
@@ -58,12 +58,12 @@ Cc: Ryan Roberts <ryan.roberts@arm.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Will Deacon <will@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10.y] mm: fix race between __split_huge_pmd_locked() and GUP-fast
-Date: Mon, 24 Jun 2024 10:02:36 +0100
-Message-ID: <20240624090236.476077-1-ryan.roberts@arm.com>
+Subject: [PATCH 5.15.y] mm: fix race between __split_huge_pmd_locked() and GUP-fast
+Date: Mon, 24 Jun 2024 10:03:46 +0100
+Message-ID: <20240624090346.477617-1-ryan.roberts@arm.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024061317-promoter-record-bc91@gregkh>
-References: <2024061317-promoter-record-bc91@gregkh>
+In-Reply-To: <2024061316-brook-imaging-a202@gregkh>
+References: <2024061316-brook-imaging-a202@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -160,10 +160,10 @@ index 552567d863b8..b8ae5d040b99 100644
  | pud_set_huge              | Creates a PUD huge mapping                       |
  +---------------------------+--------------------------------------------------+
 diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index a86d932a7c30..5e93931da415 100644
+index da15f28c7b13..3a22e7d970f3 100644
 --- a/arch/powerpc/mm/book3s64/pgtable.c
 +++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -108,6 +108,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+@@ -115,6 +115,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
  {
  	unsigned long old_pmd;
  
@@ -172,10 +172,10 @@ index a86d932a7c30..5e93931da415 100644
  	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
  	return __pmd(old_pmd);
 diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index 2338345912a3..3b43a292ffbb 100644
+index b61426c9ef17..b65ce0c90dd0 100644
 --- a/arch/s390/include/asm/pgtable.h
 +++ b/arch/s390/include/asm/pgtable.h
-@@ -1631,8 +1631,10 @@ static inline pmd_t pmdp_huge_clear_flush(struct vm_area_struct *vma,
+@@ -1625,8 +1625,10 @@ static inline pmd_t pmdp_huge_clear_flush(struct vm_area_struct *vma,
  static inline pmd_t pmdp_invalidate(struct vm_area_struct *vma,
  				   unsigned long addr, pmd_t *pmdp)
  {
@@ -188,10 +188,10 @@ index 2338345912a3..3b43a292ffbb 100644
  }
  
 diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
-index 20ee14739333..136a3c3cd695 100644
+index 9a725547578e..946f33c1b032 100644
 --- a/arch/sparc/mm/tlb.c
 +++ b/arch/sparc/mm/tlb.c
-@@ -244,6 +244,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+@@ -245,6 +245,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
  {
  	pmd_t old, entry;
  
@@ -200,10 +200,10 @@ index 20ee14739333..136a3c3cd695 100644
  	old = pmdp_establish(vma, address, pmdp, entry);
  	flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
 diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index e4c690c21fc9..16c7e8f4b5e9 100644
+index 98ff57c8eda6..4e9dbaded0a4 100644
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -2085,32 +2085,11 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+@@ -2017,32 +2017,11 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
  		return __split_huge_zero_page_pmd(vma, haddr, pmd);
  	}
  
@@ -236,9 +236,9 @@ index e4c690c21fc9..16c7e8f4b5e9 100644
  
 +		old_pmd = *pmd;
  		entry = pmd_to_swp_entry(old_pmd);
- 		page = migration_entry_to_page(entry);
- 		write = is_write_migration_entry(entry);
-@@ -2118,6 +2097,30 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 		page = pfn_swap_entry_to_page(entry);
+ 		write = is_writable_migration_entry(entry);
+@@ -2050,6 +2029,30 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
  		soft_dirty = pmd_swp_soft_dirty(old_pmd);
  		uffd_wp = pmd_swp_uffd_wp(old_pmd);
  	} else {
