@@ -1,172 +1,124 @@
-Return-Path: <stable+bounces-54970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9C0191410F
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 06:29:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BA8914133
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 06:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 760B8B20EEA
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 04:29:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C37232839F9
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 04:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB098827;
-	Mon, 24 Jun 2024 04:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081F9DDD2;
+	Mon, 24 Jun 2024 04:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mItXLxHL"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDFAC8FF;
-	Mon, 24 Jun 2024 04:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61FBCA64;
+	Mon, 24 Jun 2024 04:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719203375; cv=none; b=tjzp73mEJeml6VNH9/IyR6XDvTojl8BoiWkbN/L4QRVXpmMrCwWS/S9t/DkTVndPmnP5Cz2E0wYFEFcrTsbcxiF9LSB6TLBmHm/SWhdz3qOjca8thJDy7vJzf8FPr3TsaFtTbmwCIPvjfFD2HVEHve3ZqeMJJAlost4IZ5Q6sv4=
+	t=1719204019; cv=none; b=K8xtUca2PlgeyqdL6iSBdOh0QT2jAZvi2dEcrIcGZ3g32rdrBvr3K6c9yHKq3qy+JSm+XQkHiyvwUC/d7sQwS7DcGUIHi5hSif026hfvXHMqnZj7zUEm00O9MFshQtUPwpJzh77f2zWt3xD89SIRJi3Co5aVCRqVCZCin78zits=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719203375; c=relaxed/simple;
-	bh=TxfqNasjA0T1bjyTc3f87NCLf1eN+E6zofRo71B+ijA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YaVACULdDq+LVerRBLYLLzo8ROArMYPLHchrEjKdKjdIFZ0Ozy6gg30sPCp9NSXsZyQzdnIkjdNjxq3wl0vAj2fEN5rkCP64wLNEdcEY2KfyKd/3yf9I0dKNOvfyhqzFAb+GnKJj8fDgt+5gLt42EwIde7C8UChgTZ3ZQcw3s9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4W6w355wk0z4f3jMC;
-	Mon, 24 Jun 2024 12:29:21 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id D06651A0568;
-	Mon, 24 Jun 2024 12:29:28 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP2 (Coremail) with SMTP id Syh0CgAn3oMi9nhm19q2AA--.39098S4;
-	Mon, 24 Jun 2024 12:29:28 +0800 (CST)
-From: Yang Erkun <yangerkun@huawei.com>
-To: sfrench@samba.org,
-	pc@manguebit.com,
-	ronniesahlberg@gmail.com,
-	sprasad@microsoft.com,
-	tom@talpey.com,
-	bharathsm@microsoft.com,
-	dhowells@redhat.com,
-	linux-cifs@vger.kernel.org,
-	stable@vger.kernel.org,
-	stable-commits@vger.kernel.org
-Cc: yangerkun@huawei.com,
-	yangerkun@huaweicloud.com
-Subject: [PATCH 6.6~6.9] cifs: fix pagecache leak when do writepages
-Date: Mon, 24 Jun 2024 12:28:15 +0800
-Message-Id: <20240624042815.2242201-1-yangerkun@huawei.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1719204019; c=relaxed/simple;
+	bh=RENMatYIOIThS86qc+aiIQklu9vpGy+F1mjAhxEgZps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L4o47rh47/5rHTDO+Ve+PrYkhEYdgzewbo1t8TfoOfoHEL4c+MulKw1eNh5w/vdGwBwyV/waFcnUiDW8FrdfTD8XIZ2VuitaRtW+pskF+SKs1mtF/4k7csy5E1raByzyo9VMRoDIdH7P3O9gTA4sSTG201jKApAqKK5Z+9eZUKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mItXLxHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1675EC2BBFC;
+	Mon, 24 Jun 2024 04:40:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719204019;
+	bh=RENMatYIOIThS86qc+aiIQklu9vpGy+F1mjAhxEgZps=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mItXLxHLdJH9QhCDD+I+EcNaaq1PpYRrBM9CEStHj+tvyNNdQZnzLuC8ja4x5kcAP
+	 l0FexydNeftx0/TxPiiauhXS3NJlUV7ZazHW/oBr3V1hhZSmVmwDn6Qkpj3fYIElsZ
+	 W60w7E8MAFAykSZ457xZUlSL4Mi2tnLnag/e7nZIKamQdTecl9tA/nqsGlxkDVqrIG
+	 ZhDPJfebrxceD/0b7LtUVAmfvZyROvp+BwZ2n9A8F8qOpFdqFePUv/bXAgRIiyN4dP
+	 q/D1SfWXptvO1YrnEfqKcxDr/BztcVRRe+Ib46Cf1X0A+Z5eMVNl89M6ol4n5u/E8B
+	 spKF1hs68SYXQ==
+Message-ID: <50f3befe-44e4-45bb-9f85-b15fc2209ee2@kernel.org>
+Date: Mon, 24 Jun 2024 06:40:13 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgAn3oMi9nhm19q2AA--.39098S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxCFyxZF4rCFy7JrW5try3twb_yoW5GFWkpr
-	Wakrn8Ar4jyr9ruFnxZayqv3WUt3y8XrW3XFy3Gw17Z3Z8Z3WagFW8K34UKFWfGr9xXFWx
-	KFs0yFWku3WqqaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0aVACjI8F5VA0II8E6IAqYI8I648v4I1l
-	FIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij64vIr41l42xK82IY64kExVAvwVAq07
-	x20xyl4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
-	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAnYwUUUUU=
-Sender: yangerkun@huaweicloud.com
-X-CM-SenderInfo: 51dqwvhunx0q5kxd4v5lfo033gof0z/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] dt-bindings: phy: qcom,qmp-usb: fix spelling error
+To: YijieYang <quic_yijiyang@quicinc.com>, vkoul@kernel.org,
+ kishon@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: quic_tengfan@quicinc.com, quic_aiquny@quicinc.com,
+ quic_jiegan@quicinc.com, kernel@quicinc.com, stable@vger.kernel.org
+References: <20240624021916.2033062-1-quic_yijiyang@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240624021916.2033062-1-quic_yijiyang@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-After commit f3dc1bdb6b0b("cifs: Fix writeback data corruption"), the
-writepages for cifs will find all folio needed writepage with two phase.
-The first folio will be found in cifs_writepages_begin, and the latter
-various folios will be found in cifs_extend_writeback.
+On 24/06/2024 04:19, YijieYang wrote:
+> From: Yijie Yang <quic_yijiyang@quicinc.com>
+> 
+> Correct the spelling error, changing 'com' to 'qcom'.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: f75a4b3a6efc ("dt-bindings: phy: qcom,qmp-usb: Add QDU1000 USB3 PHY")
+> Signed-off-by: Yijie Yang <quic_yijiyang@quicinc.com>
 
-All those will first get folio, and for normal case, once we set page
-writeback and after do really write, we should put the reference, folio
-found in cifs_extend_writeback do this with folio_batch_release. But the
-folio found in cifs_writepages_begin never get the chance do it. And
-every writepages call, we will leak a folio(found this problem while do
-xfstests over cifs).
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Besides, the exist path seem never handle this folio correctly, fix it too
-with this patch.
-
-The problem does not exist in mainline since writepages path for cifs
-has changed to netfs. It's had to backport all related change, so try fix
-this problem with this single patch.
-
-Fixes: f3dc1bdb6b0b ("cifs: Fix writeback data corruption")
-Signed-off-by: Yang Erkun <yangerkun@huawei.com>
----
- fs/smb/client/file.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
-
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 9be37d0fe724..0a48d80b3871 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -2860,17 +2860,21 @@ static ssize_t cifs_write_back_from_locked_folio(struct address_space *mapping,
- 	rc = cifs_get_writable_file(CIFS_I(inode), FIND_WR_ANY, &cfile);
- 	if (rc) {
- 		cifs_dbg(VFS, "No writable handle in writepages rc=%d\n", rc);
-+		folio_unlock(folio);
- 		goto err_xid;
- 	}
- 
- 	rc = server->ops->wait_mtu_credits(server, cifs_sb->ctx->wsize,
- 					   &wsize, credits);
--	if (rc != 0)
-+	if (rc != 0) {
-+		folio_unlock(folio);
- 		goto err_close;
-+	}
- 
- 	wdata = cifs_writedata_alloc(cifs_writev_complete);
- 	if (!wdata) {
- 		rc = -ENOMEM;
-+		folio_unlock(folio);
- 		goto err_uncredit;
- 	}
- 
-@@ -3017,17 +3021,22 @@ static ssize_t cifs_writepages_begin(struct address_space *mapping,
- lock_again:
- 	if (wbc->sync_mode != WB_SYNC_NONE) {
- 		ret = folio_lock_killable(folio);
--		if (ret < 0)
-+		if (ret < 0) {
-+			folio_put(folio);
- 			return ret;
-+		}
- 	} else {
--		if (!folio_trylock(folio))
-+		if (!folio_trylock(folio)) {
-+			folio_put(folio);
- 			goto search_again;
-+		}
- 	}
- 
- 	if (folio->mapping != mapping ||
- 	    !folio_test_dirty(folio)) {
- 		start += folio_size(folio);
- 		folio_unlock(folio);
-+		folio_put(folio);
- 		goto search_again;
- 	}
- 
-@@ -3057,6 +3066,7 @@ static ssize_t cifs_writepages_begin(struct address_space *mapping,
- out:
- 	if (ret > 0)
- 		*_start = start + ret;
-+	folio_put(folio);
- 	return ret;
- }
- 
--- 
-2.39.2
+Best regards,
+Krzysztof
 
 
