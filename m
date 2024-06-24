@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-55054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B669153E0
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:32:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 158BB9153E4
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17E6D1C2048C
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:32:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 942711F24629
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B6B19D8AE;
-	Mon, 24 Jun 2024 16:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3299F19DFAF;
+	Mon, 24 Jun 2024 16:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pfZLBt+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="catd0Sdr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31A71B964
-	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 16:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E610819DFA8
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 16:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719246763; cv=none; b=WvSpLTHHyAU9F3u8/IQStATG3FjIa5a1bIk/KnIsMdhzgwVbfXo7eA1H4xNRWSUjkoszjLt7aVevJhRzO9pO863bWDrCJsaC77Zlf3arsA9OEn7sTgBCZonObEuhHhowl4eVuQzek7Cy+6i4QdfctL+LGxj8eEmuwAjlgUU2NcM=
+	t=1719246782; cv=none; b=mkRH9IqUi3b7gJjSZcuUMuOeM2Ukev4GOaONJPcME6TKQ3n3p9JS6ASJirMKRfEN5ie7f8XYaZq4N07x/Jqm8J4qqWZGszQcdv4eX+S3NCtwr7A5wszviopnYwZtKL72Ej4u7JjRf97TuVqcMjjb5JYltZGrzX2XvATXzNn4UEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719246763; c=relaxed/simple;
-	bh=oPSNh+4bg/8tv1c9DI3XbhvDYmJMKzRpmQf4j+HOxy0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RDhOKiQDOC2rW8/x1b2WhoPcKtn12Fg4gVuIBUVBD8fP48v8NY9wSqGFXKE1H2jHz21ylKt/QCp7omrFUZULnUnXKAgB9kBZ7ZfTdwBw+SxZjMyxab/dBidFJxKUwdho+KwKA97m3LzGkgtV/86eP1OgDM2jQHwMv1pGj8nxSrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pfZLBt+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D44FC2BBFC;
-	Mon, 24 Jun 2024 16:32:41 +0000 (UTC)
+	s=arc-20240116; t=1719246782; c=relaxed/simple;
+	bh=4exri3XlDU79bhwuPIPO3sGrcbmd47cFY2ChO9/Fg9U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OUx1ii9aF+p+StX2mUqQkxZnNzvSIt9MIOL0iubFlNPGYSX7+tZF5QA7uU7nHTo7NATzr0H3rXSGaQ+pwarfI1RhTOs+E076tfLPZnruydmTty+dfIx+Ejq5LM6MlXOfE71rZmTky9SeVI3oBqtXc9VlFefetK4OiW/CeVp+IlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=catd0Sdr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C501C2BBFC;
+	Mon, 24 Jun 2024 16:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719246762;
-	bh=oPSNh+4bg/8tv1c9DI3XbhvDYmJMKzRpmQf4j+HOxy0=;
+	s=korg; t=1719246781;
+	bh=4exri3XlDU79bhwuPIPO3sGrcbmd47cFY2ChO9/Fg9U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0pfZLBt+O+JTgpu7O8vZW2rcDWT4qUCv6zjenINRORTKLKONUFGdnt9bZaUTNkTzO
-	 A9Zj3VsymWfHoR9rIUzzyQa0/2lUP5W3vvT11h/1NhPmx2ndMXayIc3niM4Bbt64WU
-	 2IvA8LOXbai0GGTz96C60tJOF08NikZl4KWezKyo=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: revert "take runtime pm reference when we attach" failed to apply to 6.6-stable tree
-To: christian.koenig@amd.com,alexander.deucher@amd.com
+	b=catd0SdrtuBWVz9Mab3a84uGJE/2epKEucvsceZYg1DpTdZZOlkVfM51aAzlju2SW
+	 BPEbYjVbuVZP680jam2ja7FLTgJ0hul9mGdwTaE7FTDs4CBTG6Czt8NK0zEpfQeI90
+	 TbmXqfPYgqEKUEEBQpp1Xxk2jmch+jlo3t4VAfrs=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Attempt to avoid empty TUs when endpoint is" failed to apply to 6.6-stable tree
+To: michael.strauss@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,wenjing.liu@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 24 Jun 2024 18:32:39 +0200
-Message-ID: <2024062437-coveted-renounce-4f9a@gregkh>
+Date: Mon, 24 Jun 2024 18:32:58 +0200
+Message-ID: <2024062458-impotency-swifter-6e17@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8bd82363e2ee2eb3a9a8ea1fa94ebe1900d05a71
+git cherry-pick -x c03d770c0b014a3007a5874bf6b3c3e64d32aaac
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062437-coveted-renounce-4f9a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062458-impotency-swifter-6e17@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,150 +77,135 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8bd82363e2ee2eb3a9a8ea1fa94ebe1900d05a71 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Date: Wed, 5 Jun 2024 13:27:20 +0200
-Subject: [PATCH] drm/amdgpu: revert "take runtime pm reference when we attach
- a buffer" v2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From c03d770c0b014a3007a5874bf6b3c3e64d32aaac Mon Sep 17 00:00:00 2001
+From: Michael Strauss <michael.strauss@amd.com>
+Date: Tue, 7 May 2024 12:03:15 -0400
+Subject: [PATCH] drm/amd/display: Attempt to avoid empty TUs when endpoint is
+ DPIA
 
-This reverts commit b8c415e3bf98 ("drm/amdgpu: take runtime pm reference
-when we attach a buffer") and commit 425285d39afd ("drm/amdgpu: add amdgpu
-runpm usage trace for separate funcs").
+[WHY]
+Empty SST TUs are illegal to transmit over a USB4 DP tunnel.
+Current policy is to configure stream encoder to pack 2 pixels per pclk
+even when ODM combine is not in use, allowing seamless dynamic ODM
+reconfiguration. However, in extreme edge cases where average pixel
+count per TU is less than 2, this can lead to unexpected empty TU
+generation during compliance testing. For example, VIC 1 with a 1xHBR3
+link configuration will average 1.98 pix/TU.
 
-Taking a runtime pm reference for DMA-buf is actually completely
-unnecessary and even dangerous.
+[HOW]
+Calculate average pixel count per TU, and block 2 pixels per clock if
+endpoint is a DPIA tunnel and pixel clock is low enough that we will
+never require 2:1 ODM combine.
 
-The problem is that calling pm_runtime_get_sync() from the DMA-buf
-callbacks is illegal because we have the reservation locked here
-which is also taken during resume. So this would deadlock.
-
-When the buffer is in GTT it is still accessible even when the GPU
-is powered down and when it is in VRAM the buffer gets migrated to
-GTT before powering down.
-
-The only use case which would make it mandatory to keep the runtime
-pm reference would be if we pin the buffer into VRAM, and that's not
-something we currently do.
-
-v2: improve the commit message
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.6+
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Michael Strauss <michael.strauss@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-CC: stable@vger.kernel.org
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-index 055ba2ea4c12..662d0f28f358 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-@@ -41,8 +41,6 @@
- #include <linux/dma-buf.h>
- #include <linux/dma-fence-array.h>
- #include <linux/pci-p2pdma.h>
--#include <linux/pm_runtime.h>
--#include "amdgpu_trace.h"
- 
- /**
-  * amdgpu_dma_buf_attach - &dma_buf_ops.attach implementation
-@@ -58,42 +56,11 @@ static int amdgpu_dma_buf_attach(struct dma_buf *dmabuf,
- 	struct drm_gem_object *obj = dmabuf->priv;
- 	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
--	int r;
- 
- 	if (pci_p2pdma_distance(adev->pdev, attach->dev, false) < 0)
- 		attach->peer2peer = false;
- 
--	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
--	trace_amdgpu_runpm_reference_dumps(1, __func__);
--	if (r < 0)
--		goto out;
--
- 	return 0;
--
--out:
--	pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
--	trace_amdgpu_runpm_reference_dumps(0, __func__);
--	return r;
--}
--
--/**
-- * amdgpu_dma_buf_detach - &dma_buf_ops.detach implementation
-- *
-- * @dmabuf: DMA-buf where we remove the attachment from
-- * @attach: the attachment to remove
-- *
-- * Called when an attachment is removed from the DMA-buf.
-- */
--static void amdgpu_dma_buf_detach(struct dma_buf *dmabuf,
--				  struct dma_buf_attachment *attach)
--{
--	struct drm_gem_object *obj = dmabuf->priv;
--	struct amdgpu_bo *bo = gem_to_amdgpu_bo(obj);
--	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
--
--	pm_runtime_mark_last_busy(adev_to_drm(adev)->dev);
--	pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
--	trace_amdgpu_runpm_reference_dumps(0, __func__);
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+index 5295f52e4fc8..dcced89c07b3 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+@@ -1439,3 +1439,75 @@ void dcn35_set_long_vblank(struct pipe_ctx **pipe_ctx,
+ 		}
+ 	}
  }
++
++static bool should_avoid_empty_tu(struct pipe_ctx *pipe_ctx)
++{
++	/* Calculate average pixel count per TU, return false if under ~2.00 to
++	 * avoid empty TUs. This is only required for DPIA tunneling as empty TUs
++	 * are legal to generate for native DP links. Assume TU size 64 as there
++	 * is currently no scenario where it's reprogrammed from HW default.
++	 * MTPs have no such limitation, so this does not affect MST use cases.
++	 */
++	unsigned int pix_clk_mhz;
++	unsigned int symclk_mhz;
++	unsigned int avg_pix_per_tu_x1000;
++	unsigned int tu_size_bytes = 64;
++	struct dc_crtc_timing *timing = &pipe_ctx->stream->timing;
++	struct dc_link_settings *link_settings = &pipe_ctx->link_config.dp_link_settings;
++	const struct dc *dc = pipe_ctx->stream->link->dc;
++
++	if (pipe_ctx->stream->link->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
++		return false;
++
++	// Not necessary for MST configurations
++	if (pipe_ctx->stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST)
++		return false;
++
++	pix_clk_mhz = timing->pix_clk_100hz / 10000;
++
++	// If this is true, can't block due to dynamic ODM
++	if (pix_clk_mhz > dc->clk_mgr->bw_params->clk_table.entries[0].dispclk_mhz)
++		return false;
++
++	switch (link_settings->link_rate) {
++	case LINK_RATE_LOW:
++		symclk_mhz = 162;
++		break;
++	case LINK_RATE_HIGH:
++		symclk_mhz = 270;
++		break;
++	case LINK_RATE_HIGH2:
++		symclk_mhz = 540;
++		break;
++	case LINK_RATE_HIGH3:
++		symclk_mhz = 810;
++		break;
++	default:
++		// We shouldn't be tunneling any other rates, something is wrong
++		ASSERT(0);
++		return false;
++	}
++
++	avg_pix_per_tu_x1000 = (1000 * pix_clk_mhz * tu_size_bytes)
++		/ (symclk_mhz * link_settings->lane_count);
++
++	// Add small empirically-decided margin to account for potential jitter
++	return (avg_pix_per_tu_x1000 < 2020);
++}
++
++bool dcn35_is_dp_dig_pixel_rate_div_policy(struct pipe_ctx *pipe_ctx)
++{
++	struct dc *dc = pipe_ctx->stream->ctx->dc;
++
++	if (!is_h_timing_divisible_by_2(pipe_ctx->stream))
++		return false;
++
++	if (should_avoid_empty_tu(pipe_ctx))
++		return false;
++
++	if (dc_is_dp_signal(pipe_ctx->stream->signal) && !dc->link_srv->dp_is_128b_132b_signal(pipe_ctx) &&
++		dc->debug.enable_dp_dig_pixel_rate_div_policy)
++		return true;
++
++	return false;
++}
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h
+index a731c8880d60..f0ea7d1511ae 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.h
+@@ -95,4 +95,6 @@ void dcn35_set_static_screen_control(struct pipe_ctx **pipe_ctx,
+ void dcn35_set_long_vblank(struct pipe_ctx **pipe_ctx,
+ 		int num_pipes, uint32_t v_total_min, uint32_t v_total_max);
  
- /**
-@@ -267,7 +234,6 @@ static int amdgpu_dma_buf_begin_cpu_access(struct dma_buf *dma_buf,
- 
- const struct dma_buf_ops amdgpu_dmabuf_ops = {
- 	.attach = amdgpu_dma_buf_attach,
--	.detach = amdgpu_dma_buf_detach,
- 	.pin = amdgpu_dma_buf_pin,
- 	.unpin = amdgpu_dma_buf_unpin,
- 	.map_dma_buf = amdgpu_dma_buf_map,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-index 10832b470448..bc3ac73b6b8d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_fence.c
-@@ -181,7 +181,6 @@ int amdgpu_fence_emit(struct amdgpu_ring *ring, struct dma_fence **f, struct amd
- 	amdgpu_ring_emit_fence(ring, ring->fence_drv.gpu_addr,
- 			       seq, flags | AMDGPU_FENCE_FLAG_INT);
- 	pm_runtime_get_noresume(adev_to_drm(adev)->dev);
--	trace_amdgpu_runpm_reference_dumps(1, __func__);
- 	ptr = &ring->fence_drv.fences[seq & ring->fence_drv.num_fences_mask];
- 	if (unlikely(rcu_dereference_protected(*ptr, 1))) {
- 		struct dma_fence *old;
-@@ -309,7 +308,6 @@ bool amdgpu_fence_process(struct amdgpu_ring *ring)
- 		dma_fence_put(fence);
- 		pm_runtime_mark_last_busy(adev_to_drm(adev)->dev);
- 		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
--		trace_amdgpu_runpm_reference_dumps(0, __func__);
- 	} while (last_seq != seq);
- 
- 	return true;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h
-index 7aafeb763e5d..383fce40d4dd 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_trace.h
-@@ -554,21 +554,6 @@ TRACE_EVENT(amdgpu_reset_reg_dumps,
- 		      __entry->value)
- );
- 
--TRACE_EVENT(amdgpu_runpm_reference_dumps,
--	    TP_PROTO(uint32_t index, const char *func),
--	    TP_ARGS(index, func),
--	    TP_STRUCT__entry(
--			     __field(uint32_t, index)
--			     __string(func, func)
--			     ),
--	    TP_fast_assign(
--			   __entry->index = index;
--			   __assign_str(func);
--			   ),
--	    TP_printk("amdgpu runpm reference dump 0x%x: 0x%s\n",
--		      __entry->index,
--		      __get_str(func))
--);
- #undef AMDGPU_JOB_GET_TIMELINE_NAME
- #endif
- 
++bool dcn35_is_dp_dig_pixel_rate_div_policy(struct pipe_ctx *pipe_ctx);
++
+ #endif /* __DC_HWSS_DCN35_H__ */
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
+index df3bf77f3fb4..199781233fd5 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_init.c
+@@ -158,7 +158,7 @@ static const struct hwseq_private_funcs dcn35_private_funcs = {
+ 	.setup_hpo_hw_control = dcn35_setup_hpo_hw_control,
+ 	.calculate_dccg_k1_k2_values = dcn32_calculate_dccg_k1_k2_values,
+ 	.set_pixels_per_cycle = dcn32_set_pixels_per_cycle,
+-	.is_dp_dig_pixel_rate_div_policy = dcn32_is_dp_dig_pixel_rate_div_policy,
++	.is_dp_dig_pixel_rate_div_policy = dcn35_is_dp_dig_pixel_rate_div_policy,
+ 	.dsc_pg_control = dcn35_dsc_pg_control,
+ 	.dsc_pg_status = dcn32_dsc_pg_status,
+ 	.enable_plane = dcn35_enable_plane,
 
 
