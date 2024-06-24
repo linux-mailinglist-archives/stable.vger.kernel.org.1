@@ -1,269 +1,180 @@
-Return-Path: <stable+bounces-54974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAB2914291
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 08:15:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27EE19142F3
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 08:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A0D9B20EE1
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 06:14:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2F19282BD2
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 06:44:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CA922315;
-	Mon, 24 Jun 2024 06:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8AB39AC3;
+	Mon, 24 Jun 2024 06:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="dQ9BR6as"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z9KiPXnv"
 X-Original-To: stable@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1164225D9;
-	Mon, 24 Jun 2024 06:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3F4383B1;
+	Mon, 24 Jun 2024 06:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719209688; cv=none; b=BCDSkad1t9VpPpO8fEHnAEQfZj6jru9UokItF4ZPJxVyxMV/d6N6IDAVXlKlPj1GQdpAcGQfnbl3u3TqB77A2/NnV8Igf+SUjeikV10oEy4i6CLyANce57Ok0YwQu6g+T6v3p5r5Or4pt/yOjkoAik3PPAMlfcYZcK6gmCFCfI8=
+	t=1719211465; cv=none; b=WgcktlYm4BLO+p5lF4M7Y31WGWM+qKRresHTj+0sOU8CXjJRgavpVOLPEV1cBUsENxcRJNiezNt8pYpBKimeeavclcuhx+RNMTkh6fWSCrLvhlyVZZ+Q65xqE+RGM4elC3l5ILW7aia31I7VA1oUygcgj11ScewAgb9dyNVFvng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719209688; c=relaxed/simple;
-	bh=pRGt+YpMPsKjwZfW86V837WN4JGPkKGnorvBXTL/O2g=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TJsUk8aKDtPzhpBKSkCP/knB9+oPmUw0UxXznm8RQjDRHObd+n9AwdJTEAIA3DEfE2GdBMcAextzEVpMKL2aRAk7eDd7tNxo4B0GAkS3VtnH4HVRh0DBV1zDpPZbrBV/gNlher+gpFdt21luf3gVKT8hgGH/SrSsMc04eArXobA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=dQ9BR6as; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ew1xoLiUEpaRO/Rd2+BU3bX5mn9fF1xUB9iaO1b3Vho=; t=1719209684; x=1719814484; 
-	b=dQ9BR6asAKMN2pqrPhzQT4pEo2OWxYr6vtX66xZ8kyycsc/u1IVh2RwUhv6K9mQu2KybYllWwPR
-	PCpBe6uSEwnvDJqPCmaOBYlF/Ztg+NcI09GK2cXDHqG8CNAwK5I67wKXaXP/TrUEg5/LUkGitqz4M
-	FjueDU0/MeYJV45J1ji5bCX8MAinSm/9TYjOFQ0PBLiQkOh+PDyJ8bs5CQNTG5C4I4J6TSLweF2Hg
-	BpfnO/2K3VGc0NJHulI0qn5eGL55Com37tDttEiS+kaSFzLhuxmSkwwwlGJ5WZqthjQbNzk82CNhY
-	nmUkL9vGte34g0uS6eVfqRFHRk58pTg/tcDA==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.97)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1sLcyL-00000003SnY-21KD; Mon, 24 Jun 2024 08:14:37 +0200
-Received: from dynamic-077-191-015-086.77.191.pool.telefonica.de ([77.191.15.86] helo=[192.168.178.20])
-          by inpost2.zedat.fu-berlin.de (Exim 4.97)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1sLcyL-00000002KF0-2nE0; Mon, 24 Jun 2024 08:14:37 +0200
-Message-ID: <e0e373fa13636a403322fd0ba96915fd25dbbefa.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH 09/15] sh: rework sync_file_range ABI
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>,
- Linux-Arch <linux-arch@vger.kernel.org>, linux-kernel@vger.kernel.org
-Cc: Rich Felker <dalias@libc.org>, Andreas Larsson <andreas@gaisler.com>, 
- guoren <guoren@kernel.org>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- "H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
- linux-s390@vger.kernel.org, Helge Deller <deller@gmx.de>,
- linux-sh@vger.kernel.org, "linux-csky@vger.kernel.org"
- <linux-csky@vger.kernel.org>, "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-  Heiko Carstens <hca@linux.ibm.com>, "musl@lists.openwall.com"
- <musl@lists.openwall.com>, Nicholas Piggin <npiggin@gmail.com>, Alexander
- Viro <viro@zeniv.linux.org.uk>, LTP List <ltp@lists.linux.it>, Brian Cain
- <bcain@quicinc.com>, Christian Brauner <brauner@kernel.org>, Thomas
- Bogendoerfer <tsbogend@alpha.franken.de>, Xi Ruoyao
- <libc-alpha@sourceware.org>, linux-parisc@vger.kernel.org,
- linux-mips@vger.kernel.org,  stable@vger.kernel.org,
- linux-hexagon@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, "David S . Miller" <davem@davemloft.net>
-Date: Mon, 24 Jun 2024 08:14:36 +0200
-In-Reply-To: <9d4ba5e5-bb7f-432e-9354-47cc84eaa9e1@app.fastmail.com>
-References: <20240620162316.3674955-1-arnd@kernel.org>
-	 <20240620162316.3674955-10-arnd@kernel.org>
-	 <366548c1a0d9749e42c0d0c993414a353c9b0b02.camel@physik.fu-berlin.de>
-	 <9d4ba5e5-bb7f-432e-9354-47cc84eaa9e1@app.fastmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 
+	s=arc-20240116; t=1719211465; c=relaxed/simple;
+	bh=dt/WYvtEBcI/9XUJ+2dYNtW7n1MtjR28hx4ZzaIMLKU=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=In4rLVLwetAj3Z8x91niKlIof/mM4EJHAKVl3FukcWdXDZjYn5Wnpm8oagD29Dp9HbSN0cxkvvhNHo9QTYxldL2dmt+KOaul4ghkrDTLErJJgRuLIV6znSrp9Yo/oOxFGbfpWldLYSysbHk91FLM66rHSwqjmzR7h8If8CioyQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z9KiPXnv; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1f9bf484d9fso25616785ad.1;
+        Sun, 23 Jun 2024 23:44:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719211463; x=1719816263; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=btx4yivix146TVd/SKshMhrh5VFqOrFOPHMbbJetuZk=;
+        b=Z9KiPXnvsBVCNBbXUhspl6a/Uyje5Nc1OefTJpmoeRD6BzxM6gCt3R62rBkrzrfBJY
+         CPE3PniI+SrtQYcLb5AzuFogIntzWRrS0g4NY4NJnenEcwTFBEl79tWhwxIN0TWBsafq
+         KhVbBWO2hFuJru35jT3mBYZlOBRjaz2LLVVNjGvPrB1rr7K4Iujz0L2uvSHhXlDBIsli
+         oKGPM3qRi+5pahDJgZiT/Ub/RVviHfLVaewHCj6jMvLtwCBneIU+KPAT6cHsvewk+ceh
+         iIvcFF/BJPI6VdNWYH1C0/e6XOkJcqZFh5WtbU/3L666woFEmmTCVXUIpE5hoQDZiyga
+         mr+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719211463; x=1719816263;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=btx4yivix146TVd/SKshMhrh5VFqOrFOPHMbbJetuZk=;
+        b=ZDVnSyvKT8VVnALXoGeF5ukBzuAhHuRjNFg0wjaVx0sKfnlR4INczIDyt7EilJg+uH
+         82hVMWBcQYEIcnYp/tNtKcVhu375bKJ48XcX7XPoIYPrggJtLwzQK6aaoPsnANW2C1jJ
+         JtCN2/hZ4BlwcFo4gdITJEm/TcRiTZhk9Hm3kQHG84Hw0w3iFetE5c62jj5Izyh4VFdF
+         qCxYPOqJsWiVFdRgnqgxoVXbQHs6/tRs5e8Yc1sOTEEtG5n+ZrYywCxJRFPIE4qTAy8u
+         fNJ9nq1G6R+QK2WFamsoaIbAUOj3DYx5TfLSJGW/5/KjA+ZS3aF+NNnURRs4LTFKExS9
+         zEeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVV1oWkkMefxI1JzqYyv7Yukoi6dSLlwsbQhO+d5ElqWCtoAniKunnD0GdrqJMdoEoRRs3N48PPTbGXDmmwNwVgFBeALyGZtop9fkS43B7R6QAjSwKqafoGWSw7huLZ9P5PE6N1oYKqVGBR31krCxPlt9bHTtvX+euT2xDELBkFAzg=
+X-Gm-Message-State: AOJu0Yyt1y3e0diUyHFDDXnKFZZ8DHzPmN/462aYLATZXswPou/VOLzM
+	z05dq7F88xt0grZ1yBK2+kJikjbnYQ4OGSChORb3MIQwZJPoDCqx
+X-Google-Smtp-Source: AGHT+IHS9/B19q2pLD4pSSABz5S8EDRjLcprJXdYfM+LVRBeHh4i4SsH5PGLN7pDHFQzSP9Kk1OenQ==
+X-Received: by 2002:a17:902:d509:b0:1f7:22b4:8240 with SMTP id d9443c01a7336-1fa1048d25bmr56563675ad.29.1719211462983;
+        Sun, 23 Jun 2024 23:44:22 -0700 (PDT)
+Received: from linux-l9pv.suse ([124.11.22.254])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9eb3c6ba7sm55371045ad.168.2024.06.23.23.44.21
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Jun 2024 23:44:22 -0700 (PDT)
+From: Chun-Yi Lee <joeyli.kernel@gmail.com>
+X-Google-Original-From: Chun-Yi Lee <jlee@suse.com>
+To: Justin Sanders <justin@coraid.com>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	Pavel Emelianov <xemul@openvz.org>,
+	Kirill Korotaev <dev@openvz.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Nicolai Stange <nstange@suse.com>,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Chun-Yi Lee <jlee@suse.com>
+Subject: [PATCH v2] aoe: fix the potential use-after-free problem in more places
+Date: Mon, 24 Jun 2024 14:44:18 +0800
+Message-Id: <20240624064418.27043-1-jlee@suse.com>
+X-Mailer: git-send-email 2.12.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
 
-Hi Arnd,
+For fixing CVE-2023-6270, f98364e92662 ("aoe: fix the potential
+use-after-free problem in aoecmd_cfg_pkts") makes tx() calling dev_put()
+instead of doing in aoecmd_cfg_pkts(). It avoids that the tx() runs
+into use-after-free.
 
-On Fri, 2024-06-21 at 11:41 +0200, Arnd Bergmann wrote:
-> On Fri, Jun 21, 2024, at 10:44, John Paul Adrian Glaubitz wrote:
-> > On Thu, 2024-06-20 at 18:23 +0200, Arnd Bergmann wrote:
-> > > From: Arnd Bergmann <arnd@arndb.de>
-> > >=20
-> > > The unusual function calling conventions on superh ended up causing
-> >                                               ^^^^^^
-> >                                        It's spelled SuperH
->=20
-> Fixed now.
->=20
-> > > diff --git a/arch/sh/kernel/sys_sh32.c b/arch/sh/kernel/sys_sh32.c
-> > > index 9dca568509a5..d5a4f7c697d8 100644
-> > > --- a/arch/sh/kernel/sys_sh32.c
-> > > +++ b/arch/sh/kernel/sys_sh32.c
-> > > @@ -59,3 +59,14 @@ asmlinkage int sys_fadvise64_64_wrapper(int fd, u3=
-2 offset0, u32 offset1,
-> > >  				 (u64)len0 << 32 | len1, advice);
-> > >  #endif
-> > >  }
-> > > +
-> > > +/*
-> > > + * swap the arguments the way that libc wants it instead of
-> >=20
-> > I think "swap the arguments to the order that libc wants them" would
-> > be easier to understand here.
->=20
-> Done
+Then Nicolai Stange found more places in aoe have potential use-after-free
+problem with tx(). e.g. revalidate(), aoecmd_ata_rw(), resend(), probe()
+and aoecmd_cfg_rsp(). Those functions also use aoenet_xmit() to push
+packet to tx queue. So they should also use dev_hold() to increase the
+refcnt of skb->dev.
 
-Thanks for the two improvements!
+Link: https://nvd.nist.gov/vuln/detail/CVE-2023-6270
+Fixes: f98364e92662 ("aoe: fix the potential use-after-free problem in aoecmd_cfg_pkts")
+Reported-by: Nicolai Stange <nstange@suse.com>
+Signed-off-by: Chun-Yi Lee <jlee@suse.com>
+---
 
-> > > diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/sys=
-calls/syscall.tbl
-> > > index bbf83a2db986..c55fd7696d40 100644
-> > > --- a/arch/sh/kernel/syscalls/syscall.tbl
-> > > +++ b/arch/sh/kernel/syscalls/syscall.tbl
-> > > @@ -321,7 +321,7 @@
-> > >  311	common	set_robust_list			sys_set_robust_list
-> > >  312	common	get_robust_list			sys_get_robust_list
-> > >  313	common	splice				sys_splice
-> > > -314	common	sync_file_range			sys_sync_file_range
-> > > +314	common	sync_file_range			sys_sh_sync_file_range6
-> >                                                                  ^^^^^^=
-=20
-> > Why the suffix 6 here?
->=20
-> In a later part of my cleanup, I'm consolidating all the
-> copies of this function (arm64, mips, parisc, powerpc,
-> s390, sh, sparc, x86) and picked the name
-> sys_sync_file_range6() for common implementation.
->=20
-> I end up with four entry points here, so the naming is a bit
-> confusing:
->=20
-> - sys_sync_file_range() is only used on 64-bit architectures,
->   on x32 and on mips-n32. This uses four arguments, including
->   two 64-bit wide ones.
->=20
-> - sys_sync_file_range2() continues to be used on arm, powerpc,
->   xtensa and now on sh, hexagon and csky. I change the
->   implementation to take six 32-bit arguments, but the ABI
->   remains the same as before, with the flags before offset.
->=20
-> - sys_sync_file_range6() is used for most other 32-bit ABIs:
->   arc, m68k, microblaze, nios2, openrisc, parisc, s390, sh, sparc
->   and x86. This also has six 32-bit arguments but in the
->   default order (fd, offset, nbytes, flags).
->=20
-> - sys_sync_file_range7() is exclusive to mips-o32, this one
->   has an unused argument and is otherwise the same as
->   sys_sync_file_range6().
->=20
-> My plan is to then have some infrastructure to ensure
-> userspace tools (libc, strace, qemu, rust, ...) use the
-> same calling conventions as the kernel. I'm doing the
-> same thing for all other syscalls that have architecture
-> specific calling conventions, so far I'm using
->=20
-> fadvise64_64_7
-> fanotify_mark6
-> truncate3
-> truncate4
-> ftruncate3
-> ftruncate4
-> fallocate6
-> pread5
-> pread6
-> pwrite5
-> pwrite6
-> preadv5
-> preadv6
-> pwritev5
-> pwritev6
-> sync_file_range6
-> fadvise64_64_2
-> fadvise64_64_6
-> fadvise64_5
-> fadvise64_6
-> readahead4
-> readahead5
->=20
-> The last number here is usually the number of 32-bit
-> arguments, except for fadvise64_64_2 that uses the
-> same argument reordering trick as sync_file_range2.
->=20
-> I'm not too happy with the naming but couldn't come up with
-> anything clearer either, so let me know if you have any
-> ideas there.
+v2:
+- Improve patch description
+    - Improved wording
+    - Add oneline summary of the commit f98364e92662
+- Used curly brackets in the if-else blocks.
 
-OK, gotcha. I thought the 6 suffix was for SH only. I'm fine
-with the naming scheme.
+ drivers/block/aoe/aoecmd.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-> > >  315	common	tee				sys_tee
-> > >  316	common	vmsplice			sys_vmsplice
-> > >  317	common	move_pages			sys_move_pages
-> > > @@ -395,6 +395,7 @@
-> > >  385	common	pkey_alloc			sys_pkey_alloc
-> > >  386	common	pkey_free			sys_pkey_free
-> > >  387	common	rseq				sys_rseq
-> > > +388	common	sync_file_range2		sys_sync_file_range2
-> > >  # room for arch specific syscalls
-> > >  393	common	semget				sys_semget
-> > >  394	common	semctl				sys_semctl
-> >=20
-> > I wonder how you discovered this bug. Did you look up the calling=20
-> > convention on SuperH
-> > and compare the argument order for the sys_sync_file_range system call=
-=20
-> > documented there
-> > with the order in the kernel?
->=20
-> I had to categorize all architectures based on their calling
-> conventions to see if 64-bit arguments need aligned pairs or
-> not, so I wrote a set of simple C files that I compiled for
-> all architectures to see in which cases they insert unused
-> arguments or swap the order of the upper and lower halves.
->=20
-> SuperH, parisc and s390 are each slightly different from all the
-> others here, so I ended up reading the ELF psABI docs and/or
-> the compiler sources to be sure.
-> I also a lot of git history.
+diff --git a/drivers/block/aoe/aoecmd.c b/drivers/block/aoe/aoecmd.c
+index cc9077b588d7..d1f4ddc57645 100644
+--- a/drivers/block/aoe/aoecmd.c
++++ b/drivers/block/aoe/aoecmd.c
+@@ -361,6 +361,7 @@ ata_rw_frameinit(struct frame *f)
+ 	}
+ 
+ 	ah->cmdstat = ATA_CMD_PIO_READ | writebit | extbit;
++	dev_hold(t->ifp->nd);
+ 	skb->dev = t->ifp->nd;
+ }
+ 
+@@ -401,6 +402,8 @@ aoecmd_ata_rw(struct aoedev *d)
+ 		__skb_queue_head_init(&queue);
+ 		__skb_queue_tail(&queue, skb);
+ 		aoenet_xmit(&queue);
++	} else {
++		dev_put(f->t->ifp->nd);
+ 	}
+ 	return 1;
+ }
+@@ -483,10 +486,13 @@ resend(struct aoedev *d, struct frame *f)
+ 	memcpy(h->dst, t->addr, sizeof h->dst);
+ 	memcpy(h->src, t->ifp->nd->dev_addr, sizeof h->src);
+ 
++	dev_hold(t->ifp->nd);
+ 	skb->dev = t->ifp->nd;
+ 	skb = skb_clone(skb, GFP_ATOMIC);
+-	if (skb == NULL)
++	if (skb == NULL) {
++		dev_put(t->ifp->nd);
+ 		return;
++	}
+ 	f->sent = ktime_get();
+ 	__skb_queue_head_init(&queue);
+ 	__skb_queue_tail(&queue, skb);
+@@ -617,6 +623,8 @@ probe(struct aoetgt *t)
+ 		__skb_queue_head_init(&queue);
+ 		__skb_queue_tail(&queue, skb);
+ 		aoenet_xmit(&queue);
++	} else {
++		dev_put(f->t->ifp->nd);
+ 	}
+ }
+ 
+@@ -1395,6 +1403,7 @@ aoecmd_ata_id(struct aoedev *d)
+ 	ah->cmdstat = ATA_CMD_ID_ATA;
+ 	ah->lba3 = 0xa0;
+ 
++	dev_hold(t->ifp->nd);
+ 	skb->dev = t->ifp->nd;
+ 
+ 	d->rttavg = RTTAVG_INIT;
+@@ -1404,6 +1413,8 @@ aoecmd_ata_id(struct aoedev *d)
+ 	skb = skb_clone(skb, GFP_ATOMIC);
+ 	if (skb)
+ 		f->sent = ktime_get();
++	else
++		dev_put(t->ifp->nd);
+ 
+ 	return skb;
+ }
+-- 
+2.35.3
 
-Great job, thanks for doing the extra work to verify the ABI.
-
-> > Did you also check what order libc uses? I would expect libc on SuperH=
-=20
-> > misordering the
-> > arguments as well unless I am missing something. Or do we know that the=
-=20
-> > code is actually
-> > currently broken?
->=20
-> Yes, I checked glibc, musl and uclibc-ng for all the cases in
-> which the ABI made no sense, as well as to check that my analysis
-> of the kernel sources matches the expectations of the libc.
-
-OK, awesome.
-
-Will you send a v2 so I can ack the updated version of the patch?
-
-I'm also fine with the patch going through your tree, as I would
-like to start with the changes for v6.11 this week.
-
-Thanks,
-Adrian
-
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
