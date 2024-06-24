@@ -1,162 +1,145 @@
-Return-Path: <stable+bounces-55106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C191915870
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 23:06:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 238F5915872
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 23:10:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1494B1F25AD2
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 21:06:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA0A91F2575E
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 21:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BD61A08C8;
-	Mon, 24 Jun 2024 21:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9651A070C;
+	Mon, 24 Jun 2024 21:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="o/3NUwoD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C5mMH+P+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63F61A01D5;
-	Mon, 24 Jun 2024 21:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09259FBEF;
+	Mon, 24 Jun 2024 21:10:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719263210; cv=none; b=sfrIpelZvW5PszP2a0WEYWpaRfkDuiOx9os2WIFO8WlFGEwArFtAoENmwaGwRAK+4WXEw48oB8OUqdfWE1rcd8QvrCiIz4Z5klALCv6twkYrWXz6j1NaJXYDOS0ioeCB7vBm3im0AZb0QACNErK0ZX76xMhO9vUAzMbAnGDag+Y=
+	t=1719263421; cv=none; b=FsGCrIWE25zr3wwePdZ/MVf41D6/4wJ/jU/qVbPuVNucIx99XezVlALN6Xq8JnY+S4LLzM6PyjhTmAcSrnpJufFTBaSwTXRgq3ysR+pbql3RgBjNbnE+Zd3BjcR4mJRUpyPTkg99z+sYyE0oi44B/gxdUdxLlCT7A9b8pYlcx/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719263210; c=relaxed/simple;
-	bh=qFCl1m+Ukig7YDSG9NpL30WnhP/UQ1NV50UgaCsieM0=;
-	h=Date:To:From:Subject:Message-Id; b=FtmlHYoqpACXfYSzNE+v1abIMORkh7HR8Igspi+tK723QhWtdK0z5jY+rVbeMe+n4rDDDOo0Fs0NdU+KPzJ3/v1+hnGl2EWTILqmy7oKnKG9WVEnEBSm81iDnfkrEZDjcAVGnhrdZgZMpz3x1WhlbannmIKbXBZBdHc3tT0+Q/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=o/3NUwoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53960C2BBFC;
-	Mon, 24 Jun 2024 21:06:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1719263210;
-	bh=qFCl1m+Ukig7YDSG9NpL30WnhP/UQ1NV50UgaCsieM0=;
-	h=Date:To:From:Subject:From;
-	b=o/3NUwoDFCFl5RG9/3e9iS1LcBRhUkwTdDZU/x0T6Yq6a5ydKKvc8fr1L2h4SuJSo
-	 2gvdJcEaDzzkRS5oM5k6XijI1gCl6wOJbzMB48lLg95xU44vJUNPfpJ1YBLxvjF7rc
-	 TiZhDMZ/G7p1yXfQBowbPxqSiceSd2GiahBkvaWw=
-Date: Mon, 24 Jun 2024 14:06:49 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-core-merge-regions-aggressively-when-max_nr_regions-is-unmet.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240624210650.53960C2BBFC@smtp.kernel.org>
+	s=arc-20240116; t=1719263421; c=relaxed/simple;
+	bh=zIXCk75aYHpcTxk2IWR/+FVXsSNkawGDCSBB195Y8Q0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YXN5qvOK4Aaw9Y7B9CvlNrKZjDLM4RJy80iFSvlKDbWUIG5m0z5lmtjxbkBXVp3yeBEyBPjzBVQwrijKURpMeOSq7k9K9JhWAwim5e8jzZ0eoNdRTNTL8z2P/rxDwZHZX6gmoUJRM4Gd9ii1wwHhSAlfNbtdourkcLurXJJHwEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C5mMH+P+; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4217990f8baso42606925e9.2;
+        Mon, 24 Jun 2024 14:10:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719263418; x=1719868218; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7h4Mx2Vzzy1/ph7K1w6trMWSYerI+1F9zFKh72PTopU=;
+        b=C5mMH+P+nDgR3umbV0Lm2065/kvjkfhC5vmpWMNmqgFDFrRSKJQehtViAXc+MBMHXW
+         +CxdcNBTxrDuGng/nmbuVssT6h07EfCdteL3Afx92Dm1ExzxeIiafp+vJ4BdOrFRQTjb
+         dGVeJpcOmm68L5bRipKS0SKSISHJLMCPy3Q4/lWL4UCstFQFjGM0jL3ekzkGAVT3Wjnv
+         oeuoLoSnunVHhwUZikPglZeEWrCX0YwEVm6CluRo/OSUMewduzVYVmhGJuVKscRV4ETM
+         HuZ6Pwr2uFFZTkW7QSphoVWm01M6NX9aGXLae578GRHEaZZVO42LReJPzZ9LwX1Q63eV
+         OxhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719263418; x=1719868218;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7h4Mx2Vzzy1/ph7K1w6trMWSYerI+1F9zFKh72PTopU=;
+        b=ncqtz7UdN+zfboCK+OcxD5LiCDVKKk4NVruxq2ukUKrMpMSSPb5ZPaN1CiNsIu1CYX
+         ojMRjF8D7ndBSCO8dFSVY47UShhYHBZF0EaZ/JlFVfVcik8sILajtC1yJX0EeE5UTJya
+         qVA6qNFDYVc7MVrWDl+tyG1DnXU+QdPrZUyHdaWXf7wBEFDInfD7GS2zKnXGANdZzR1g
+         fgzCD7XNsLeuPB2zfd7z/j10b11Y0T0xW4EAkm1govc3rx6lF9T7ZkgToiPvktnOtXKP
+         GHjMYVyPb1+V9uIKZM/ERcjWDjv1Rn+pKCFLJgyddUsC/zYCmzGjIuVPqvzLaJmvvVWv
+         1LZA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0aYSMIODetbd1ViZj8CxVTywui36qgTLp6/NZUtXmJjvq+2PBB36hFBi0tDpI0qt02w4tI4rbGtwK/av1kd1OLSoHbW2HIPJIyQtdmdd1T8TVoO7yiBSOQYOOmaWoM9cxkzhI
+X-Gm-Message-State: AOJu0Yy5lYgcGMzmW+axRagfLpRMaWeo0b25imcQVtavv04Xh9AbsZ+U
+	atty+5mLWCs55Ad6HEZbX6jVlsVuVNCd6tKyZdqKty5aG7CBGlRMXwFMSVcX
+X-Google-Smtp-Source: AGHT+IFL2g9nbddRwxvFCZcjQygcMRWl9lESJW9Y7LWtGqJ2anOaUschGrkdt6Ny6ai/6teIVtnsCw==
+X-Received: by 2002:adf:fd87:0:b0:360:81d2:b06b with SMTP id ffacd0b85a97d-366e79fdfbcmr3360529f8f.18.1719263418139;
+        Mon, 24 Jun 2024 14:10:18 -0700 (PDT)
+Received: from [127.0.1.1] (84-115-213-103.cable.dynamic.surfer.at. [84.115.213.103])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36638f86566sm11110573f8f.64.2024.06.24.14.10.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jun 2024 14:10:17 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Date: Mon, 24 Jun 2024 23:10:06 +0200
+Subject: [PATCH] usb: core: add missing of_node_put() in
+ usb_of_has_devices_or_graph
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240624-usb_core_of_memleak-v1-1-af6821c1a584@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAK3geWYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDMyMT3dLipPjk/KLU+Py0+NzU3JzUxGxdc0tDM0MzI+MkM6NUJaDOgqL
+ UtMwKsKnRsbW1AJ+KZjllAAAA
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Stephen Boyd <swboyd@chromium.org>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1719263416; l=1531;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=zIXCk75aYHpcTxk2IWR/+FVXsSNkawGDCSBB195Y8Q0=;
+ b=+ByHjcUALzgzweObJ0Ak9OHgaplq8/LAdvC9xDCh1inm6nL1TSPfW/zbMcSEfGTcAuQwNZ/oI
+ PGEVDaWv2upBwgyNRcBV6e447rk2NwklbZh7a14JEzGBzRbv9rWhR0b
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
+The for_each_child_of_node() macro requires an explicit call to
+of_node_put() on early exits to decrement the child refcount and avoid a
+memory leak.
+The child node is not required outsie the loop, and the resource must be
+released before the function returns.
 
-The patch titled
-     Subject: mm/damon/core: merge regions aggressively when max_nr_regions is unmet
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-core-merge-regions-aggressively-when-max_nr_regions-is-unmet.patch
+Add the missing of_node_put().
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-merge-regions-aggressively-when-max_nr_regions-is-unmet.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/core: merge regions aggressively when max_nr_regions is unmet
-Date: Mon, 24 Jun 2024 10:58:14 -0700
-
-DAMON keeps the number of regions under max_nr_regions by skipping regions
-split operations when doing so can make the number higher than the limit. 
-It works well for preventing violation of the limit.  But, if somehow the
-violation happens, it cannot recovery well depending on the situation.  In
-detail, if the real number of regions having different access pattern is
-higher than the limit, the mechanism cannot reduce the number below the
-limit.  In such a case, the system could suffer from high monitoring
-overhead of DAMON.
-
-The violation can actually happen.  For an example, the user could reduce
-max_nr_regions while DAMON is running, to be lower than the current number
-of regions.  Fix the problem by repeating the merge operations with
-increasing aggressiveness in kdamond_merge_regions() for the case, until
-the limit is met.
-
-Link: https://lkml.kernel.org/r/20240624175814.89611-1-sj@kernel.org
-Fixes: b9a6ac4e4ede ("mm/damon: adaptively adjust regions")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 82e82130a78b ("usb: core: Set connect_type of ports based on DT node")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
+This bug was found while doing some code analysis, and I could not test
+it with real hardware. Although the issue and it solution are
+straightforward, any validation beyond compilation and static analysis
+is always welcome.
+---
+ drivers/usb/core/of.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
- mm/damon/core.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
-
---- a/mm/damon/core.c~mm-damon-core-merge-regions-aggressively-when-max_nr_regions-is-unmet
-+++ a/mm/damon/core.c
-@@ -1358,14 +1358,30 @@ static void damon_merge_regions_of(struc
-  * access frequencies are similar.  This is for minimizing the monitoring
-  * overhead under the dynamically changeable access pattern.  If a merge was
-  * unnecessarily made, later 'kdamond_split_regions()' will revert it.
-+ *
-+ * The total number of regions could be temporarily higher than the
-+ * user-defined limit, max_nr_regions for some cases.  For an example, the user
-+ * updates max_nr_regions to a number that lower than the current number of
-+ * regions while DAMON is running.  Depending on the access pattern, it could
-+ * take indefinitve time to reduce the number below the limit.  For such a
-+ * case, repeat merging until the limit is met while increasing @threshold and
-+ * @sz_limit.
-  */
- static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
- 				  unsigned long sz_limit)
- {
- 	struct damon_target *t;
-+	unsigned int nr_regions;
+diff --git a/drivers/usb/core/of.c b/drivers/usb/core/of.c
+index f1a499ee482c..763e4122ed5b 100644
+--- a/drivers/usb/core/of.c
++++ b/drivers/usb/core/of.c
+@@ -84,9 +84,12 @@ static bool usb_of_has_devices_or_graph(const struct usb_device *hub)
+ 	if (of_graph_is_present(np))
+ 		return true;
  
--	damon_for_each_target(t, c)
--		damon_merge_regions_of(t, threshold, sz_limit);
-+	do {
-+		nr_regions = 0;
-+		damon_for_each_target(t, c) {
-+			damon_merge_regions_of(t, threshold, sz_limit);
-+			nr_regions += damon_nr_regions(t);
+-	for_each_child_of_node(np, child)
+-		if (of_property_present(child, "reg"))
++	for_each_child_of_node(np, child) {
++		if (of_property_present(child, "reg")) {
++			of_node_put(child);
+ 			return true;
 +		}
-+		threshold = max(1, threshold * 2);
-+		sz_limit = max(1, sz_limit * 2);
-+	} while (nr_regions > c->attrs.max_nr_regions);
- }
++	}
  
- /*
-_
+ 	return false;
+ }
 
-Patches currently in -mm which might be from sj@kernel.org are
+---
+base-commit: 62c97045b8f720c2eac807a5f38e26c9ed512371
+change-id: 20240624-usb_core_of_memleak-79161623b62e
 
-mm-damon-core-merge-regions-aggressively-when-max_nr_regions-is-unmet.patch
-mm-damon-sysfs-schemes-add-target_nid-on-sysfs-schemes-fix.patch
-docs-damon-document-damos_migrate_hotcold-fix.patch
-mm-damon-core-implement-damos-quota-goals-online-commit-function.patch
-mm-damon-core-implement-damon-context-commit-function.patch
-mm-damon-sysfs-use-damon_commit_ctx.patch
-mm-damon-sysfs-schemes-use-damos_commit_quota_goals.patch
-mm-damon-sysfs-remove-unnecessary-online-tuning-handling-code.patch
-mm-damon-sysfs-rename-damon_sysfs_set_targets-to-add_targets.patch
-mm-damon-sysfs-schemes-remove-unnecessary-online-tuning-handling-code.patch
-mm-damon-sysfs-schemes-rename-_set_schemesscheme_filtersquota_scoreschemes.patch
-mm-damon-reclaim-use-damon_commit_ctx.patch
-mm-damon-reclaim-remove-unnecessary-code-for-online-tuning.patch
-mm-damon-lru_sort-use-damon_commit_ctx.patch
-mm-damon-lru_sort-remove-unnecessary-online-tuning-handling-code.patch
-docs-mm-damon-maintainer-profile-introduce-hackermail.patch
-docs-mm-damon-maintainer-profile-document-damon-community-meetups.patch
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 
