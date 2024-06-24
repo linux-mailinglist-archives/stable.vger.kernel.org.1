@@ -1,50 +1,69 @@
-Return-Path: <stable+bounces-54987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AAFD91462E
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:21:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C7F914637
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 11:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A0B7B209D9
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 09:21:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3434B228C2
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 09:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA59132804;
-	Mon, 24 Jun 2024 09:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bzZT7GL6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208D05C603;
+	Mon, 24 Jun 2024 09:22:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF9F2C95;
-	Mon, 24 Jun 2024 09:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1B213049E
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 09:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719220829; cv=none; b=sMzGtakIUhS2AYSK7RegwzIQSMnKF6pcMhVynNpJDaPV+8FjFRSSUbbz4hrAIYSlhTnmYDT7o7r+OiFuiW64xgXeCpp4ToS/Rn5inYqA32eLm/UfvCTRg2kLUPwWy1TzshlD8SY4KdIvq7U9WArpnzj/6JmERGI+vEQMSIwaWZI=
+	t=1719220920; cv=none; b=lxbXytyHERz3f8aVoKimjC1Airy+/Xh86pbyVT9nqWj3r+zO4M+bso62Tig+WirxoQoBf1MDAoTh/spImlMbZgWO6nc3ZH2Djun9aCTf8bft9xGgA3Vu4q5tTBs0GMiY3rPMdrrv3NimUFS5HI2C4vPlC68bzlkiVhoaR2k25co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719220829; c=relaxed/simple;
-	bh=n9iWWQjvhofdB03JXdfwNE494Vwlu5aXJD+pBXY4f4I=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ak6j7Fw0liNaT5QJ6Veolkkr4x++2riPCK5Yg+HWlSs/gjaT2XFGhqSts3Wx5F1nHGLjmc87/cnoCmMW8YwR54ekV86mjYsFP3/9IQ4l0nRE+F8ZRObMfIpwGFtz57+7n1AFlVlIAIMUqXCRM3okka+6g6gudfbnqfjTyniZMyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bzZT7GL6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2EAD4C32782;
-	Mon, 24 Jun 2024 09:20:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719220829;
-	bh=n9iWWQjvhofdB03JXdfwNE494Vwlu5aXJD+pBXY4f4I=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=bzZT7GL6OkRUcUGMmBtnzkYY9CCHtECVxjI25gbFuCoh2fjUPMSNjYw1Dt8zpY+gk
-	 mP8BEsb2ilmttAORBT1U8wHGsSWsQbY4WNB+FZQO33jYi+dBQ1NnTUJvq7Aw35Ljie
-	 eG8zNUEqK/I1BB6JsTZDlGxoRWwcOFGBJ24fKWmcv7od2trIPH8SAINm0uDxrh0Vog
-	 Cmb7/muXddP8nLJP+9rpIvHJYq7101t0HImzthzOHJsaZVpinhwkhMdMzlLPMQBGn7
-	 g83e1miDJLVw/rsbEJXNab8R7yZwr88YyvBS9zC/kPQV+KGA7JOpnflq/eUU9awZdT
-	 4Mug4cr+N87Fw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 21608C43612;
-	Mon, 24 Jun 2024 09:20:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1719220920; c=relaxed/simple;
+	bh=2xRF+ZDnQWHp49AacHxANJnvWRLWOql/KXjySZdX5M8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PrJ+p4bHVn66vLLlIgwI2E9+QV5HY7GDTdMVYpyWdBQ0+eW/3rAnF+v/GkNGQK3nS8KJKn38KoIdVGIbZRgzwqo0cGaiUTNoKyElvXaNch0QvNdqREk1h5JTQuvSvOgdkTmWFpcFLEocyFcino/rLHop+a7eCuQX1SJ6MFmfjHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 69EFEDA7;
+	Mon, 24 Jun 2024 02:22:21 -0700 (PDT)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 210BC3F6A8;
+	Mon, 24 Jun 2024 02:21:53 -0700 (PDT)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: stable@vger.kernel.org
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4.y] mm: fix race between __split_huge_pmd_locked() and GUP-fast
+Date: Mon, 24 Jun 2024 10:21:38 +0100
+Message-ID: <20240624092138.534503-1-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024061319-skater-sculptor-905f@gregkh>
+References: <2024061319-skater-sculptor-905f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,43 +71,195 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] net: usb: ax88179_178a: improve link status logs
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <171922082912.4994.8326638213926609982.git-patchwork-notify@kernel.org>
-Date: Mon, 24 Jun 2024 09:20:29 +0000
-References: <20240620133439.102296-1-jtornosm@redhat.com>
-In-Reply-To: <20240620133439.102296-1-jtornosm@redhat.com>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-Hello:
+__split_huge_pmd_locked() can be called for a present THP, devmap or
+(non-present) migration entry.  It calls pmdp_invalidate() unconditionally
+on the pmdp and only determines if it is present or not based on the
+returned old pmd.  This is a problem for the migration entry case because
+pmd_mkinvalid(), called by pmdp_invalidate() must only be called for a
+present pmd.
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+On arm64 at least, pmd_mkinvalid() will mark the pmd such that any future
+call to pmd_present() will return true.  And therefore any lockless
+pgtable walker could see the migration entry pmd in this state and start
+interpretting the fields as if it were present, leading to BadThings (TM).
+GUP-fast appears to be one such lockless pgtable walker.
 
-On Thu, 20 Jun 2024 15:34:31 +0200 you wrote:
-> Avoid spurious link status logs that may ultimately be wrong; for example,
-> if the link is set to down with the cable plugged, then the cable is
-> unplugged and after this the link is set to up, the last new log that is
-> appearing is incorrectly telling that the link is up.
-> 
-> In order to avoid errors, show link status logs after link_reset
-> processing, and in order to avoid spurious as much as possible, only show
-> the link loss when some link status change is detected.
-> 
-> [...]
+x86 does not suffer the above problem, but instead pmd_mkinvalid() will
+corrupt the offset field of the swap entry within the swap pte.  See link
+below for discussion of that problem.
 
-Here is the summary with links:
-  - [net,v3] net: usb: ax88179_178a: improve link status logs
-    https://git.kernel.org/netdev/net/c/058722ee350c
+Fix all of this by only calling pmdp_invalidate() for a present pmd.  And
+for good measure let's add a warning to all implementations of
+pmdp_invalidate[_ad]().  I've manually reviewed all other
+pmdp_invalidate[_ad]() call sites and believe all others to be conformant.
 
-You are awesome, thank you!
+This is a theoretical bug found during code review.  I don't have any test
+case to trigger it in practice.
+
+Link: https://lkml.kernel.org/r/20240501143310.1381675-1-ryan.roberts@arm.com
+Link: https://lore.kernel.org/all/0dd7827a-6334-439a-8fd0-43c98e6af22b@arm.com/
+Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Will Deacon <will@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 3a5a8d343e1cf96eb9971b17cbd4b832ab19b8e7)
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+---
+ arch/powerpc/mm/book3s64/pgtable.c |  1 +
+ arch/s390/include/asm/pgtable.h    |  4 ++-
+ arch/sparc/mm/tlb.c                |  1 +
+ mm/huge_memory.c                   | 49 ++++++++++++++++--------------
+ mm/pgtable-generic.c               |  5 ++-
+ 5 files changed, 35 insertions(+), 25 deletions(-)
+
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index c4890f4b0b6c..7effd6767602 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -107,6 +107,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ {
+ 	unsigned long old_pmd;
+ 
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+ 	old_pmd = pmd_hugepage_update(vma->vm_mm, address, pmdp, _PAGE_PRESENT, _PAGE_INVALID);
+ 	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+ 	/*
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index 5ce586948d92..166906a81c9b 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -1609,8 +1609,10 @@ static inline pmd_t pmdp_huge_clear_flush(struct vm_area_struct *vma,
+ static inline pmd_t pmdp_invalidate(struct vm_area_struct *vma,
+ 				   unsigned long addr, pmd_t *pmdp)
+ {
+-	pmd_t pmd = __pmd(pmd_val(*pmdp) | _SEGMENT_ENTRY_INVALID);
++	pmd_t pmd;
+ 
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
++	pmd = __pmd(pmd_val(*pmdp) | _SEGMENT_ENTRY_INVALID);
+ 	return pmdp_xchg_direct(vma->vm_mm, addr, pmdp, pmd);
+ }
+ 
+diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+index 3d72d2deb13b..57351409957a 100644
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -246,6 +246,7 @@ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ {
+ 	pmd_t old, entry;
+ 
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
+ 	entry = __pmd(pmd_val(*pmdp) & ~_PAGE_VALID);
+ 	old = pmdp_establish(vma, address, pmdp, entry);
+ 	flush_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 03b57323c53b..05d3188dccd0 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2198,38 +2198,41 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ 		return __split_huge_zero_page_pmd(vma, haddr, pmd);
+ 	}
+ 
+-	/*
+-	 * Up to this point the pmd is present and huge and userland has the
+-	 * whole access to the hugepage during the split (which happens in
+-	 * place). If we overwrite the pmd with the not-huge version pointing
+-	 * to the pte here (which of course we could if all CPUs were bug
+-	 * free), userland could trigger a small page size TLB miss on the
+-	 * small sized TLB while the hugepage TLB entry is still established in
+-	 * the huge TLB. Some CPU doesn't like that.
+-	 * See http://support.amd.com/us/Processor_TechDocs/41322.pdf, Erratum
+-	 * 383 on page 93. Intel should be safe but is also warns that it's
+-	 * only safe if the permission and cache attributes of the two entries
+-	 * loaded in the two TLB is identical (which should be the case here).
+-	 * But it is generally safer to never allow small and huge TLB entries
+-	 * for the same virtual address to be loaded simultaneously. So instead
+-	 * of doing "pmd_populate(); flush_pmd_tlb_range();" we first mark the
+-	 * current pmd notpresent (atomically because here the pmd_trans_huge
+-	 * must remain set at all times on the pmd until the split is complete
+-	 * for this pmd), then we flush the SMP TLB and finally we write the
+-	 * non-huge version of the pmd entry with pmd_populate.
+-	 */
+-	old_pmd = pmdp_invalidate(vma, haddr, pmd);
+-
+-	pmd_migration = is_pmd_migration_entry(old_pmd);
++	pmd_migration = is_pmd_migration_entry(*pmd);
+ 	if (unlikely(pmd_migration)) {
+ 		swp_entry_t entry;
+ 
++		old_pmd = *pmd;
+ 		entry = pmd_to_swp_entry(old_pmd);
+ 		page = pfn_to_page(swp_offset(entry));
+ 		write = is_write_migration_entry(entry);
+ 		young = false;
+ 		soft_dirty = pmd_swp_soft_dirty(old_pmd);
+ 	} else {
++		/*
++		 * Up to this point the pmd is present and huge and userland has
++		 * the whole access to the hugepage during the split (which
++		 * happens in place). If we overwrite the pmd with the not-huge
++		 * version pointing to the pte here (which of course we could if
++		 * all CPUs were bug free), userland could trigger a small page
++		 * size TLB miss on the small sized TLB while the hugepage TLB
++		 * entry is still established in the huge TLB. Some CPU doesn't
++		 * like that. See
++		 * http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf, Erratum
++		 * 383 on page 105. Intel should be safe but is also warns that
++		 * it's only safe if the permission and cache attributes of the
++		 * two entries loaded in the two TLB is identical (which should
++		 * be the case here). But it is generally safer to never allow
++		 * small and huge TLB entries for the same virtual address to be
++		 * loaded simultaneously. So instead of doing "pmd_populate();
++		 * flush_pmd_tlb_range();" we first mark the current pmd
++		 * notpresent (atomically because here the pmd_trans_huge must
++		 * remain set at all times on the pmd until the split is
++		 * complete for this pmd), then we flush the SMP TLB and finally
++		 * we write the non-huge version of the pmd entry with
++		 * pmd_populate.
++		 */
++		old_pmd = pmdp_invalidate(vma, haddr, pmd);
+ 		page = pmd_page(old_pmd);
+ 		if (pmd_dirty(old_pmd))
+ 			SetPageDirty(page);
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index 49e8a4fbc205..2c5f8faeb996 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -185,7 +185,10 @@ pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
+ pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+ 		     pmd_t *pmdp)
+ {
+-	pmd_t old = pmdp_establish(vma, address, pmdp, pmd_mknotpresent(*pmdp));
++	pmd_t old;
++
++	VM_WARN_ON_ONCE(!pmd_present(*pmdp));
++	old = pmdp_establish(vma, address, pmdp, pmd_mknotpresent(*pmdp));
+ 	flush_pmd_tlb_range(vma, address, address + HPAGE_PMD_SIZE);
+ 	return old;
+ }
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
 
