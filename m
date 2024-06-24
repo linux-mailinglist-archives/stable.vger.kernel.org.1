@@ -1,198 +1,116 @@
-Return-Path: <stable+bounces-55110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1655915925
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 23:38:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6652A91593E
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 23:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E57E1F245A1
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 21:38:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 237D028489D
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 21:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7656A1A0AEC;
-	Mon, 24 Jun 2024 21:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5897B1A257F;
+	Mon, 24 Jun 2024 21:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="qCPQwdxo";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1S8uA9rS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cnehprYu"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A56F8F6B;
-	Mon, 24 Jun 2024 21:38:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1509A1A0B1B;
+	Mon, 24 Jun 2024 21:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719265107; cv=none; b=hGFFM4ai8+1mGF0MYfiQzXU29WCQguR6AOViWfN9PNNE1jcMSUxr82dlpNLsO9umIb3TpaXOK1YZYGPNiczNmdfwIFn/6qqttWuaijJXuBc730HP6yxaQTrSbza2FaPC99gXWgp7NeU/fb5ulmKF6GzSoCz2nFIqC/j+ZLnpWXg=
+	t=1719265655; cv=none; b=vGKg5kBuMN0p1rarfwL1IAciM+NSKd9qqT9DA5CN7oH1AENd0z7nt+lcxDLhp38lwJrQqRHYMA2oPkJq6Bdqdublh5VCUGHcSvVETGpK8ts5xmKrsOIw8mAmXI8QdnLWiOaxgwC2e4ep6pbqbpx1X00WvJ011D6JEnlQmjxf/nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719265107; c=relaxed/simple;
-	bh=kSPAP0ltARe2VIKg4M2LmwCAz4zBRuD++Xx7/4bmzUA=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ukQKsm1A5ojTeNVY4TqDOFHCtQCqtUKbSpbmynry2KnKSkHJzgbTFJMyqxv3ZhjGeBzlHXFGJk3cS6/g2o7lqEWHpoWS49sCu9wrvZoh8eVbYN1rFESROhbGlVNNkiuaHBs1Jgtsw6LWgHzJk4tI7NzXtqNUP69QOAuyaZnC6Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=qCPQwdxo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1S8uA9rS; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 24 Jun 2024 21:38:23 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1719265103;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=795W2AEFSNy6I3D9oUUKI9VVdZefYPasni8MsUvS+5o=;
-	b=qCPQwdxogdFvtV1a+tlW7msctfIU5rhX2+bf7RS2TN5hywy7ma+fMqLqO6KvE9NEyHSwZv
-	L7eIOC5f5FM1LoXVD2iVcstoRrSRKwxByVEf0KdvSyVGNJGamhuvqdnJHbd9BSOOs4EJxA
-	nImNvDv2WBsL+END59TuupEuOPWayODZanCPz7+SZmDXdMdWoDYZKcFFhWbKi2Uhm2PF0W
-	K2XaGInCgprAnqq+XjyPv9ZGC6jekN53cxP1L4bnkCf99C3auNXgkiJjaylcnczCODFPfw
-	5Fdwf3unGhWsNNEIg2g7DxbWIgM3pYmHfC1Nu+lwdwT8FRbHVWWyxjZd6ahwBw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1719265103;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=795W2AEFSNy6I3D9oUUKI9VVdZefYPasni8MsUvS+5o=;
-	b=1S8uA9rSYRrVPselldWaWKbCmnFfXeP5Wh0nv4UiI4Y3+uSPCanR2w76mV4x6C6OWjrNKA
-	ipV3rPl6wn5uxtCA==
-From: "tip-bot2 for Mostafa Saleh" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] PCI/MSI: Fix UAF in msi_capability_init
-Cc: Thomas Gleixner <tglx@linutronix.de>, Mostafa Saleh <smostafa@google.com>,
- Bjorn Heelgas <bhelgaas@google.com>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, maz@kernel.org
-In-Reply-To: <20240624203729.1094506-1-smostafa@google.com>
-References: <20240624203729.1094506-1-smostafa@google.com>
+	s=arc-20240116; t=1719265655; c=relaxed/simple;
+	bh=72bDHby4Hq6icji7BLqTJP6R3mRRo9GTA2z64XlDV8s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CD1q9zPsXfVufFL0tFhChTRX8Y+L/ZAL58cGKm9N75ct3HgYXAdVP9Y6C4h/kWrfn78Qzlcpk4D4O5xR2SMcjjQ4amL3vBLMCSUen4/4+SNenLHRLvev+dFs+y8bCOT2Pi95caX9tVJsOE4R/w1xXpgxUX/WoQU2ZsOQbJDad4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cnehprYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDCB8C2BBFC;
+	Mon, 24 Jun 2024 21:47:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719265654;
+	bh=72bDHby4Hq6icji7BLqTJP6R3mRRo9GTA2z64XlDV8s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cnehprYuwdGqAo2Y2nT8nNKqruU2QxwxxNd9UFr3wQ+4blGBvQR8kTsRdM/vcMGgZ
+	 ntkAkMPJ2La9uS4UdrcgJMVUscaUXEzLtHL8Zm+0icQTRSnc9ED5G1QTEnnMXeZDZw
+	 1R4erDBSqPWkvj4Nz3i3cM2t5zIsVs674mjTHEFStBwcC8sYOKC6nJMpAhdm2QEiB4
+	 h2pfEG8zRCYmx1/5hfGV5M/AU+7QJEBJG2N0acxwP2u0B02FMDANJPIVXf0myEedKN
+	 0KjEIQBsdsl2VAjJiKZfRw2p0fEDUbH27l/6L1Aa53a5fZ0UUWAMOgHKO6e59WpSnc
+	 lZ391zr69c8ww==
+Message-ID: <82e310a4-5668-4edf-b3a8-2c7898a7c4cb@kernel.org>
+Date: Tue, 25 Jun 2024 06:47:32 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171926510327.10875.9576124957334657501.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ata: libata-core: Add ATA_HORKAGE_NOLPM for all Crucial
+ BX SSD1 models
+To: Niklas Cassel <cassel@kernel.org>
+Cc: linux-ide@vger.kernel.org, lp610mh@gmail.com, stable@vger.kernel.org,
+ Tkd-Alex <alex.tkd.alex@gmail.com>
+References: <20240624132729.3001688-2-cassel@kernel.org>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20240624132729.3001688-2-cassel@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the irq/urgent branch of tip:
+On 2024/06/24 22:27, Niklas Cassel wrote:
+> We got another report that CT1000BX500SSD1 does not work with LPM.
+> 
+> If you look in libata-core.c, we have six different Crucial devices that
+> are marked with ATA_HORKAGE_NOLPM. This model would have been the seventh.
+> (This quirk is used on Crucial models starting with both CT* and
+> Crucial_CT*)
+> 
+> It is obvious that this vendor does not have a great history of supporting
+> LPM properly, therefore, add the ATA_HORKAGE_NOLPM quirk for all Crucial
+> BX SSD1 models.
+> 
+> Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
+> Cc: stable@vger.kernel.org
+> Reported-by: Tkd-Alex <alex.tkd.alex@gmail.com>
 
-Commit-ID:     9eee5330656bf92f51cb1f09b2dc9f8cf975b3d1
-Gitweb:        https://git.kernel.org/tip/9eee5330656bf92f51cb1f09b2dc9f8cf975b3d1
-Author:        Mostafa Saleh <smostafa@google.com>
-AuthorDate:    Mon, 24 Jun 2024 20:37:28 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 24 Jun 2024 23:33:38 +02:00
+We need a real full name here, not a user name... So if Alex is not willing to
+send his full name, please remove this.
 
-PCI/MSI: Fix UAF in msi_capability_init
+Other than that, looks good. That was strike 3 for this series of SSDs, so I
+agree that taking the big hammer and disabling LPM for all of them is the right
+thing to do. If the device vendor wants to help with this, we can refine this later.
 
-KFENCE reports the following UAF:
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
- BUG: KFENCE: use-after-free read in __pci_enable_msi_range+0x2c0/0x488
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218832
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+> ---
+>  drivers/ata/libata-core.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+> index e1bf8a19b3c8..efb5195da60c 100644
+> --- a/drivers/ata/libata-core.c
+> +++ b/drivers/ata/libata-core.c
+> @@ -4137,8 +4137,7 @@ static const struct ata_blacklist_entry ata_device_blacklist [] = {
+>  	{ "PIONEER BD-RW   BDR-205",	NULL,	ATA_HORKAGE_NOLPM },
+>  
+>  	/* Crucial devices with broken LPM support */
+> -	{ "CT500BX100SSD1",		NULL,	ATA_HORKAGE_NOLPM },
+> -	{ "CT240BX500SSD1",		NULL,	ATA_HORKAGE_NOLPM },
+> +	{ "CT*0BX*00SSD1",		NULL,	ATA_HORKAGE_NOLPM },
+>  
+>  	/* 512GB MX100 with MU01 firmware has both queued TRIM and LPM issues */
+>  	{ "Crucial_CT512MX100*",	"MU01",	ATA_HORKAGE_NO_NCQ_TRIM |
 
- Use-after-free read at 0x0000000024629571 (in kfence-#12):
-  __pci_enable_msi_range+0x2c0/0x488
-  pci_alloc_irq_vectors_affinity+0xec/0x14c
-  pci_alloc_irq_vectors+0x18/0x28
+-- 
+Damien Le Moal
+Western Digital Research
 
- kfence-#12: 0x0000000008614900-0x00000000e06c228d, size=104, cache=kmalloc-128
-
- allocated by task 81 on cpu 7 at 10.808142s:
-  __kmem_cache_alloc_node+0x1f0/0x2bc
-  kmalloc_trace+0x44/0x138
-  msi_alloc_desc+0x3c/0x9c
-  msi_domain_insert_msi_desc+0x30/0x78
-  msi_setup_msi_desc+0x13c/0x184
-  __pci_enable_msi_range+0x258/0x488
-  pci_alloc_irq_vectors_affinity+0xec/0x14c
-  pci_alloc_irq_vectors+0x18/0x28
-
- freed by task 81 on cpu 7 at 10.811436s:
-  msi_domain_free_descs+0xd4/0x10c
-  msi_domain_free_locked.part.0+0xc0/0x1d8
-  msi_domain_alloc_irqs_all_locked+0xb4/0xbc
-  pci_msi_setup_msi_irqs+0x30/0x4c
-  __pci_enable_msi_range+0x2a8/0x488
-  pci_alloc_irq_vectors_affinity+0xec/0x14c
-  pci_alloc_irq_vectors+0x18/0x28
-
-Descriptor allocation done in:
-__pci_enable_msi_range
-    msi_capability_init
-        msi_setup_msi_desc
-            msi_insert_msi_desc
-                msi_domain_insert_msi_desc
-                    msi_alloc_desc
-                        ...
-
-Freed in case of failure in __msi_domain_alloc_locked()
-__pci_enable_msi_range
-    msi_capability_init
-        pci_msi_setup_msi_irqs
-            msi_domain_alloc_irqs_all_locked
-                msi_domain_alloc_locked
-                    __msi_domain_alloc_locked => fails
-                    msi_domain_free_locked
-                        ...
-
-That failure propagates back to pci_msi_setup_msi_irqs() in
-msi_capability_init() which accesses the descriptor for unmasking in the
-error exit path.
-
-Cure it by copying the descriptor and using the copy for the error exit path
-unmask operation.
-
-[ tglx: Massaged change log ]
-
-Fixes: bf6e054e0e3f ("genirq/msi: Provide msi_device_populate/destroy_sysfs()")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Bjorn Heelgas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240624203729.1094506-1-smostafa@google.com
----
- drivers/pci/msi/msi.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
-index c5625dd..3a45879 100644
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -352,7 +352,7 @@ static int msi_capability_init(struct pci_dev *dev, int nvec,
- 			       struct irq_affinity *affd)
- {
- 	struct irq_affinity_desc *masks = NULL;
--	struct msi_desc *entry;
-+	struct msi_desc *entry, desc;
- 	int ret;
- 
- 	/* Reject multi-MSI early on irq domain enabled architectures */
-@@ -377,6 +377,12 @@ static int msi_capability_init(struct pci_dev *dev, int nvec,
- 	/* All MSIs are unmasked by default; mask them all */
- 	entry = msi_first_desc(&dev->dev, MSI_DESC_ALL);
- 	pci_msi_mask(entry, msi_multi_mask(entry));
-+	/*
-+	 * Copy the MSI descriptor for the error path because
-+	 * pci_msi_setup_msi_irqs() will free it for the hierarchical
-+	 * interrupt domain case.
-+	 */
-+	memcpy(&desc, entry, sizeof(desc));
- 
- 	/* Configure MSI capability structure */
- 	ret = pci_msi_setup_msi_irqs(dev, nvec, PCI_CAP_ID_MSI);
-@@ -396,7 +402,7 @@ static int msi_capability_init(struct pci_dev *dev, int nvec,
- 	goto unlock;
- 
- err:
--	pci_msi_unmask(entry, msi_multi_mask(entry));
-+	pci_msi_unmask(&desc, msi_multi_mask(&desc));
- 	pci_free_msi_irqs(dev);
- fail:
- 	dev->msi_enabled = 0;
 
