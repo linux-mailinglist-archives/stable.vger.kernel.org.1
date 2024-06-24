@@ -1,57 +1,76 @@
-Return-Path: <stable+bounces-54976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B453914327
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 09:06:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED8F91432D
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 09:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA1561F23DC2
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 07:06:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F08311C2103B
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 07:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7073A27E;
-	Mon, 24 Jun 2024 07:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7sqw2QW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8897F3A27E;
+	Mon, 24 Jun 2024 07:07:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E44376;
-	Mon, 24 Jun 2024 07:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2EF376;
+	Mon, 24 Jun 2024 07:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719212756; cv=none; b=H77ib/vVDJeUB//NdLMqMeaW65u3rJNlyjWIFQwkuj1J4Aaq0Z21Jx8XFSl1sWJmRHqqVa5rwTpTIfu+4dHglGv6b83r8Lp4IM1h+kjyuT89Fxwe13eITsaMygEzA5UohRy2tLnIfw8jVlod8dk9fUn7wqrzl7DlIgvOlBrd95U=
+	t=1719212820; cv=none; b=Wpg2a0+yFJMikz+t5EJblQ/0OtEvwresobI1mpy50HIS9BgGhynJzYMCh4t0jleaTnq/OSZIMa7RFJPZ8KARlYp2BHSy9dMBQBv7rfBjCiac2hwOaHu5yqvl1rWHZO64hd4PdRGHVHpW9fF3HdRYaR8q+/fKi4iuWvmdzu+S9q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719212756; c=relaxed/simple;
-	bh=afYDRNFVM8pcvIJP4tvmzkmT6QeFWMGtIsLSC0oDa1k=;
+	s=arc-20240116; t=1719212820; c=relaxed/simple;
+	bh=zm04avjiqQZBn5KYoGNw+kGHuCoJrS4M9EjVbFU044Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dAAkQAon0olbwddR+Fc37pZY7noTogVKfoZBYWGPi8y69QidXDgUd0BlvqR7o2dmPsgrjST9PxRycVjL7nV13Rvrv+KlUoLB9cq4EpFwsTrxVr42QvWr9joXoj0SlRkqUrUx5fzdGjYIG7HQKuDERiRGseB5NdIE+n8jzOHA3T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7sqw2QW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B821DC2BBFC;
-	Mon, 24 Jun 2024 07:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719212756;
-	bh=afYDRNFVM8pcvIJP4tvmzkmT6QeFWMGtIsLSC0oDa1k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h7sqw2QWEulxyaQ4IqxxFfF/rlrwaq6zfYShXcbuY5Av9xgQpjih/48A8cJFg80Bb
-	 jXvg+iHotIalCcB5/yxMEwcz9I8uFVjUF1lGxHe9ITsnTazF3BBU+herdvfRs6GFF5
-	 SbcFQ11FqvOSl4zHwtJUNCKkChyZI0oHrNeFptZs=
-Date: Mon, 24 Jun 2024 09:05:59 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Chun-Yi Lee <joeyli.kernel@gmail.com>
-Cc: Justin Sanders <justin@coraid.com>, Jens Axboe <axboe@kernel.dk>,
-	Pavel Emelianov <xemul@openvz.org>,
-	Kirill Korotaev <dev@openvz.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Nicolai Stange <nstange@suse.com>, linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Chun-Yi Lee <jlee@suse.com>
-Subject: Re: [PATCH v2] aoe: fix the potential use-after-free problem in more
- places
-Message-ID: <2024062448-crushable-custody-dc7e@gregkh>
-References: <20240624064418.27043-1-jlee@suse.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ScsW9Tm8SYAuMgpP8Pvo4+fU/G+722oG2RKL3Wxo+LIhTSYbcYKowCvECcv558JXelcSjZBp4Q/MyIQ1Gn/bBc2p+v7bhpE1WLD1JHUjvB36rQVWZQxoxJOg6NFEhP6zhggNDxcdzt36TMSBYYH/IhLaCd6l8Hs27PA7o2Aua6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6f9b4d69f53so2229152a34.0;
+        Mon, 24 Jun 2024 00:06:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719212818; x=1719817618;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gr4VGylpKfe5jMi8mL9RhC6vYgLNd3Lq3GNPGy76NUA=;
+        b=VskuYmLRIFp24qvPSbBE9jMM2ThFZSDA40rMutUFuBXdLhyblS72tFSmgNJV7VR5Qz
+         vgMLQhojtp5/3mRcNDCv8Wwn6ixsq0i/GV8LDXpqES/0PMld86nLEn9UTFU15oVMvUMr
+         /ZIqcz0Uj6k9w1fgEbhhPsHKXdfAFdP8QDVn1t5iuvF3gNHFFKWvoJKR33x/+awOzi41
+         y39M5wg1w0LLVpPxKsQtrrkSVkY0Ebj+l00MOGjzcQJ5IUNZ4B//1Xwjnd+lVEYejzmC
+         dIZ9ZbEEktew7V/PexX2+o3vRoKK9dpFFGE2eG334hzjVVgL1d6/mE04qdUj0s8A8rlV
+         dZpg==
+X-Forwarded-Encrypted: i=1; AJvYcCX7Em0s2pqNmroWpJsJM97M3tDfR4yoRM04uQyvqYA987qDSK+E/umPpnSzK19VQuZR1c6Cu9kmb/JRaBqj2bjwIsEEWsGhXnIWPkev38JF7zr1NxYx4XjeANKw5/MhWszBP3x2rAAzgFDpbK3pQCe3FeDT0Xj7vCfknYEAscMX/zUP
+X-Gm-Message-State: AOJu0Yxqte62CYApTmcrYw+50bn1/PYq96lOJl2OYpTwUfd5vMT6SasU
+	rJwHzxnhgNJ3iX3POnduAHeFwsbMamSMGnQAqZSOYPAs9TfqSXsq
+X-Google-Smtp-Source: AGHT+IFVgbLtqk9su7HvLOSkwZwXr3Asb6+QVGzFFmt6I+NRQOYit5CDFSpqlwRE6ZczWCj8iWBtig==
+X-Received: by 2002:a05:6359:5a8d:b0:19f:1e0c:e1a5 with SMTP id e5c5f4694b2df-1a23c1b1f97mr554831255d.20.1719212817982;
+        Mon, 24 Jun 2024 00:06:57 -0700 (PDT)
+Received: from liuwe-devbox-debian-v2 ([20.69.120.36])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-716ba5b5f7asm4774472a12.64.2024.06.24.00.06.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Jun 2024 00:06:57 -0700 (PDT)
+Date: Mon, 24 Jun 2024 07:06:50 +0000
+From: Wei Liu <wei.liu@kernel.org>
+To: Dexuan Cui <decui@microsoft.com>
+Cc: mhklinux@outlook.com, "K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"open list:Hyper-V/Azure CORE AND DRIVERS" <linux-hyperv@vger.kernel.org>,
+	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>,
+	stable@vger.kernel.org, Roman Kisel <romank@linux.microsoft.com>
+Subject: Re: [PATCH v2] clocksource: hyper-v: Use lapic timer in a TDX VM
+ without paravisor
+Message-ID: <ZnkbCoLqm7wbZGch@liuwe-devbox-debian-v2>
+References: <20240621061614.8339-1-decui@microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,32 +79,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240624064418.27043-1-jlee@suse.com>
+In-Reply-To: <20240621061614.8339-1-decui@microsoft.com>
 
-On Mon, Jun 24, 2024 at 02:44:18PM +0800, Chun-Yi Lee wrote:
-> For fixing CVE-2023-6270, f98364e92662 ("aoe: fix the potential
-> use-after-free problem in aoecmd_cfg_pkts") makes tx() calling dev_put()
-> instead of doing in aoecmd_cfg_pkts(). It avoids that the tx() runs
-> into use-after-free.
+On Thu, Jun 20, 2024 at 11:16:14PM -0700, Dexuan Cui wrote:
+> In a TDX VM without paravisor, currently the default timer is the Hyper-V
+> timer, which depends on the slow VM Reference Counter MSR: the Hyper-V TSC
+> page is not enabled in such a VM because the VM uses Invariant TSC as a
+> better clocksource and it's challenging to mark the Hyper-V TSC page shared
+> in very early boot.
 > 
-> Then Nicolai Stange found more places in aoe have potential use-after-free
-> problem with tx(). e.g. revalidate(), aoecmd_ata_rw(), resend(), probe()
-> and aoecmd_cfg_rsp(). Those functions also use aoenet_xmit() to push
-> packet to tx queue. So they should also use dev_hold() to increase the
-> refcnt of skb->dev.
+> Lower the rating of the Hyper-V timer so the local APIC timer becomes the
+> the default timer in such a VM, and print a warning in case Invariant TSC
+> is unavailable in such a VM. This change should cause no perceivable
+> performance difference.
 > 
-> Link: https://nvd.nist.gov/vuln/detail/CVE-2023-6270
-> Fixes: f98364e92662 ("aoe: fix the potential use-after-free problem in aoecmd_cfg_pkts")
-> Reported-by: Nicolai Stange <nstange@suse.com>
-> Signed-off-by: Chun-Yi Lee <jlee@suse.com>
-> ---
+> Cc: stable@vger.kernel.org # 6.6+
+> Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+> Signed-off-by: Dexuan Cui <decui@microsoft.com>
 
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
+Applied to hyperv-fixes. Thanks.
 
