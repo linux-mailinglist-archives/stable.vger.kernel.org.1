@@ -1,133 +1,312 @@
-Return-Path: <stable+bounces-55066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4971915494
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:44:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13FF91549D
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 18:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EDF41F24AEA
-	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:44:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81DEE1F24C41
+	for <lists+stable@lfdr.de>; Mon, 24 Jun 2024 16:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD7419E7F7;
-	Mon, 24 Jun 2024 16:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B32C142905;
+	Mon, 24 Jun 2024 16:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LrPJ3p5X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6vWLNfa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FBD19E813;
-	Mon, 24 Jun 2024 16:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3AB3EA72
+	for <stable@vger.kernel.org>; Mon, 24 Jun 2024 16:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719247449; cv=none; b=TZ553iU3l6er8Xau2r+T5F6ZtCwXD0iDkitDf3ebHL5nKbxRfX3OJ2mDICuVWaPfwv3dUbnUNzvWzevom6SzGYRDJLhqxAHWu4wxQSUg9dG07pWqsYUr8ixJ9aOhgpjJj3a7i0H7QiPeVCM2wttsu+QTTE/Nl1IA7esY+ZL7dKY=
+	t=1719247519; cv=none; b=Z5v89E1xuVcB3ks0+Hd4CnuFP5JNfWFMWrQice5IBwGS4Q+ML1D35mrke2rUGUzBjcrnvFqlQae+wncgY49gxJ5rsKDneWeESvvAj4gk2140ueAhH7XM8EJO7aI6jM7uVKIBpGuoE2KkcmevR1qyyxmbRTtcsM8GuOzPuPhAt2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719247449; c=relaxed/simple;
-	bh=Y2BB2weXpa+LoCNHgaMdua1IE8aKDXJvx8s/YfYa6MI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=dV4o33kPq/DFLIqQ7Wk77a+g/X5bh+l0y9j1V3yhQpwvc4FdsSiiv2GNqbSmJLMbWuwzjY6btfIZye2ATDx/1yiG9VqBAsNJ1zYJqf0YJJtf+oF6XthfNsIIRCKODx7l6CT1v7waWdAjdZjc3o3iM7YXnUnlE5SnpKZw2WFS2PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LrPJ3p5X; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4248ea53493so11085795e9.3;
-        Mon, 24 Jun 2024 09:44:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719247446; x=1719852246; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uw74zf66DQORFJn85kqFB7s36On7KUi5ywYxV+PBn+Q=;
-        b=LrPJ3p5Xgck3I8V55ZhMo9joe/r6VXI1n5qREcE9CKfW11fwACTNVwpWo8qTiFL9t+
-         l+kysnxc4EMuSeeDAI5L5OvRDI9CV+NgAyUoMK2LF/JQpPVSkjSnGjJMzIwtji5m16VW
-         b6p+RtkqmLomHg4S7A8WusAFrVNalE0qs86mQeS6lkcnJc/7NKxTXvZVyh88+c2RXQXH
-         qrPmLZG6JOLfSokGafovBfCdvx9LSCPKRfEj0T1tGJrO3E8Hkwu/pUjiP2kcVStocoox
-         rHusZvl6PvwPqHVrAsW++Az3WZUZ3oC7lg5yoIwzbwwav1S9oqSXAA/5PY8/Y4Annk55
-         BjPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719247446; x=1719852246;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uw74zf66DQORFJn85kqFB7s36On7KUi5ywYxV+PBn+Q=;
-        b=W310B0drnN8gyo9hQ36+Wo1s4zhhYHHJ+PxmFxe/tt8ZNkv72CjZpR/U4FjSdHyb+7
-         zpXdgJWqeOGryQ8J376mvffOn222v4HQA0n5AXnpH6NxnpYfvN7eyxpW6ktpqov/YRDZ
-         3DI1np3pfr+IsMXXWDImbXka04Vf7hC4r/xRFWjvmMNQWs+nloks4d+f5pY8H0mUFdQn
-         9uFcXIgy6DbTILzNfgYa8LFP7qx897hgU9BQK9rZnde1ZSUwlLsmOOWryz86Ei3l8mxb
-         DIlR+6f3YgZsEVGUVakC+0ncgHj0LjaWKOdKYBVQUA4eEiQUearHO/2wKy1c1iWBabA3
-         KEdA==
-X-Forwarded-Encrypted: i=1; AJvYcCUMVVLLPVOlyb60BxW5E2uZzZ8B1uu8c7nNVq8DUVo166UY/CMHVsiNfUZlj7DVigH+jbX+KNEEg3dxbcPfwRZJP0miAM7zbI9NP5LtmGLc/m11MFVnL1P+Rt4fEJQHLjgBKXeO
-X-Gm-Message-State: AOJu0YzJNGjAyXkrS8ls2f456kAeErnz3LH56a3/vkoQ0yr+DbnQwv05
-	zV5Gp37aJvtXkwhZWBfceKcmb8iHyYktoRYsnmrKplLbO3zD4g6O
-X-Google-Smtp-Source: AGHT+IFJgazm2qcBXOO1WWxGq23AutwedIYScGjsNMAPrLSl9grCFKoRB3d22V6hGWsVj6fq6F18nQ==
-X-Received: by 2002:a05:600c:6ca:b0:424:8dc4:ee43 with SMTP id 5b1f17b1804b1-4248dc4ef8cmr40224005e9.6.1719247446267;
-        Mon, 24 Jun 2024 09:44:06 -0700 (PDT)
-Received: from [127.0.1.1] (84-115-213-103.cable.dynamic.surfer.at. [84.115.213.103])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42484fc0aecsm126090365e9.12.2024.06.24.09.44.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jun 2024 09:44:05 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Mon, 24 Jun 2024 18:43:47 +0200
-Subject: [PATCH 2/3] drm/mediatek: ovl_adaptor: add missing of_node_put()
+	s=arc-20240116; t=1719247519; c=relaxed/simple;
+	bh=f9XrUmmbZGHdJL+HCyxxlu1oBp8LuDNq5pOw7UxbdkE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VKQb9XO5CevxTMf5z7WXpIMS6p06/YV8w6lsiI2lQvcGZya+0F/JPYTzID1r0ySs99yR5hMWkPAy6bnaJJQ0+s8SRjgF5Fw1X8JAQZhSkSBjqZ66PqDZrPBY2VSEeAFQEYXSvJdaoutRW68n6KiNYRw0Uemyiivl4ORkAeBUXr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6vWLNfa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE5BC2BBFC;
+	Mon, 24 Jun 2024 16:45:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1719247519;
+	bh=f9XrUmmbZGHdJL+HCyxxlu1oBp8LuDNq5pOw7UxbdkE=;
+	h=Subject:To:Cc:From:Date:From;
+	b=k6vWLNfaOFxDXnuewsb/AiiYU9b4QnWOoqFYbaOCr6pPsXPnOhH/e6qxMHa9rmhEZ
+	 v1hAWH9RL4bwkj4Wh5Msjtf6qM/TSoVgeZThC3uulhYkYIhYZgKkLignzc72epbO6A
+	 Inhg5aaPusZCHUCO9NxIaVR+pqDxQC9hk5G0iznU=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: userspace_pm: fixed subtest names" failed to apply to 6.6-stable tree
+To: matttbe@kernel.org,horms@kernel.org,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 24 Jun 2024 18:45:06 +0200
+Message-ID: <2024062405-railway-unpack-e903@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240624-mtk_disp_ovl_adaptor_scoped-v1-2-9fa1e074d881@gmail.com>
-References: <20240624-mtk_disp_ovl_adaptor_scoped-v1-0-9fa1e074d881@gmail.com>
-In-Reply-To: <20240624-mtk_disp_ovl_adaptor_scoped-v1-0-9fa1e074d881@gmail.com>
-To: Chun-Kuang Hu <chunkuang.hu@kernel.org>, 
- Philipp Zabel <p.zabel@pengutronix.de>, David Airlie <airlied@gmail.com>, 
- Daniel Vetter <daniel@ffwll.ch>, Matthias Brugger <matthias.bgg@gmail.com>, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
- "Nancy.Lin" <nancy.lin@mediatek.com>
-Cc: dri-devel@lists.freedesktop.org, linux-mediatek@lists.infradead.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1719247441; l=1042;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=Y2BB2weXpa+LoCNHgaMdua1IE8aKDXJvx8s/YfYa6MI=;
- b=RAqXlU9Qx0xyXFz5ElRIdZf5wbyhqD1m5J/GrWFrXfBbUzgeeyRE+ciEsRkz6rmFpz1gue41A
- vrubTA59EmVC63CZJ8zl+7GhwXzFo2s4l6d2Ty9wnfS3yvCWNVBinoH
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-Error paths that exit for_each_child_of_node() need to call
-of_node_put() to decerement the child refcount and avoid memory leaks.
 
-Add the missing of_node_put().
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x e874557fce1b6023efafd523aee0c347bf7f1694
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024062405-railway-unpack-e903@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+e874557fce1b ("selftests: mptcp: userspace_pm: fixed subtest names")
+8ebb44196585 ("selftests: mptcp: print_test out of verify_listener_events")
+2ef0d804c090 ("selftests: mptcp: userspace_pm: unique subtest names")
+06848c0f341e ("selftests: mptcp: add evts_get_info helper")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From e874557fce1b6023efafd523aee0c347bf7f1694 Mon Sep 17 00:00:00 2001
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Fri, 14 Jun 2024 19:15:29 +0200
+Subject: [PATCH] selftests: mptcp: userspace_pm: fixed subtest names
+
+It is important to have fixed (sub)test names in TAP, because these
+names are used to identify them. If they are not fixed, tracking cannot
+be done.
+
+Some subtests from the userspace_pm selftest were using random numbers
+in their names: the client and server address IDs from $RANDOM, and the
+client port number randomly picked by the kernel when creating the
+connection. These values have been replaced by 'client' and 'server'
+words: that's even more helpful than showing random numbers. Note that
+the addresses IDs are incremented and decremented in the test: +1 or -1
+are then displayed in these cases.
+
+Not to loose info that can be useful for debugging in case of issues,
+these random numbers are now displayed at the beginning of the test.
+
+Fixes: f589234e1af0 ("selftests: mptcp: userspace_pm: format subtests results in TAP")
 Cc: stable@vger.kernel.org
-Fixes: 453c3364632a ("drm/mediatek: Add ovl_adaptor support for MT8195")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240614-upstream-net-20240614-selftests-mptcp-uspace-pm-fixed-test-names-v1-1-460ad3edb429@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-index 1418992311c4..3faf26a55e77 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-@@ -522,8 +522,10 @@ static int ovl_adaptor_comp_init(struct device *dev, struct component_match **ma
- 		}
+diff --git a/tools/testing/selftests/net/mptcp/userspace_pm.sh b/tools/testing/selftests/net/mptcp/userspace_pm.sh
+index 9e2981f2d7f5..9cb05978269d 100755
+--- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
++++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
+@@ -160,10 +160,12 @@ make_connection()
+ 	local is_v6=$1
+ 	local app_port=$app4_port
+ 	local connect_addr="10.0.1.1"
++	local client_addr="10.0.1.2"
+ 	local listen_addr="0.0.0.0"
+ 	if [ "$is_v6" = "v6" ]
+ 	then
+ 		connect_addr="dead:beef:1::1"
++		client_addr="dead:beef:1::2"
+ 		listen_addr="::"
+ 		app_port=$app6_port
+ 	else
+@@ -206,6 +208,7 @@ make_connection()
+ 		   [ "$server_serverside" = 1 ]
+ 	then
+ 		test_pass
++		print_title "Connection info: ${client_addr}:${client_port} -> ${connect_addr}:${app_port}"
+ 	else
+ 		test_fail "Expected tokens (c:${client_token} - s:${server_token}) and server (c:${client_serverside} - s:${server_serverside})"
+ 		mptcp_lib_result_print_all_tap
+@@ -297,7 +300,7 @@ test_announce()
+ 	ip netns exec "$ns2"\
+ 	   ./pm_nl_ctl ann 10.0.2.2 token "$client4_token" id $client_addr_id dev\
+ 	   ns2eth1
+-	print_test "ADD_ADDR id:${client_addr_id} 10.0.2.2 (ns2) => ns1, reuse port"
++	print_test "ADD_ADDR id:client 10.0.2.2 (ns2) => ns1, reuse port"
+ 	sleep 0.5
+ 	verify_announce_event $server_evts $ANNOUNCED $server4_token "10.0.2.2" $client_addr_id \
+ 			      "$client4_port"
+@@ -306,7 +309,7 @@ test_announce()
+ 	:>"$server_evts"
+ 	ip netns exec "$ns2" ./pm_nl_ctl ann\
+ 	   dead:beef:2::2 token "$client6_token" id $client_addr_id dev ns2eth1
+-	print_test "ADD_ADDR6 id:${client_addr_id} dead:beef:2::2 (ns2) => ns1, reuse port"
++	print_test "ADD_ADDR6 id:client dead:beef:2::2 (ns2) => ns1, reuse port"
+ 	sleep 0.5
+ 	verify_announce_event "$server_evts" "$ANNOUNCED" "$server6_token" "dead:beef:2::2"\
+ 			      "$client_addr_id" "$client6_port" "v6"
+@@ -316,7 +319,7 @@ test_announce()
+ 	client_addr_id=$((client_addr_id+1))
+ 	ip netns exec "$ns2" ./pm_nl_ctl ann 10.0.2.2 token "$client4_token" id\
+ 	   $client_addr_id dev ns2eth1 port $new4_port
+-	print_test "ADD_ADDR id:${client_addr_id} 10.0.2.2 (ns2) => ns1, new port"
++	print_test "ADD_ADDR id:client+1 10.0.2.2 (ns2) => ns1, new port"
+ 	sleep 0.5
+ 	verify_announce_event "$server_evts" "$ANNOUNCED" "$server4_token" "10.0.2.2"\
+ 			      "$client_addr_id" "$new4_port"
+@@ -327,7 +330,7 @@ test_announce()
+ 	# ADD_ADDR from the server to client machine reusing the subflow port
+ 	ip netns exec "$ns1" ./pm_nl_ctl ann 10.0.2.1 token "$server4_token" id\
+ 	   $server_addr_id dev ns1eth2
+-	print_test "ADD_ADDR id:${server_addr_id} 10.0.2.1 (ns1) => ns2, reuse port"
++	print_test "ADD_ADDR id:server 10.0.2.1 (ns1) => ns2, reuse port"
+ 	sleep 0.5
+ 	verify_announce_event "$client_evts" "$ANNOUNCED" "$client4_token" "10.0.2.1"\
+ 			      "$server_addr_id" "$app4_port"
+@@ -336,7 +339,7 @@ test_announce()
+ 	:>"$client_evts"
+ 	ip netns exec "$ns1" ./pm_nl_ctl ann dead:beef:2::1 token "$server6_token" id\
+ 	   $server_addr_id dev ns1eth2
+-	print_test "ADD_ADDR6 id:${server_addr_id} dead:beef:2::1 (ns1) => ns2, reuse port"
++	print_test "ADD_ADDR6 id:server dead:beef:2::1 (ns1) => ns2, reuse port"
+ 	sleep 0.5
+ 	verify_announce_event "$client_evts" "$ANNOUNCED" "$client6_token" "dead:beef:2::1"\
+ 			      "$server_addr_id" "$app6_port" "v6"
+@@ -346,7 +349,7 @@ test_announce()
+ 	server_addr_id=$((server_addr_id+1))
+ 	ip netns exec "$ns1" ./pm_nl_ctl ann 10.0.2.1 token "$server4_token" id\
+ 	   $server_addr_id dev ns1eth2 port $new4_port
+-	print_test "ADD_ADDR id:${server_addr_id} 10.0.2.1 (ns1) => ns2, new port"
++	print_test "ADD_ADDR id:server+1 10.0.2.1 (ns1) => ns2, new port"
+ 	sleep 0.5
+ 	verify_announce_event "$client_evts" "$ANNOUNCED" "$client4_token" "10.0.2.1"\
+ 			      "$server_addr_id" "$new4_port"
+@@ -380,7 +383,7 @@ test_remove()
+ 	local invalid_token=$(( client4_token - 1 ))
+ 	ip netns exec "$ns2" ./pm_nl_ctl rem token $invalid_token id\
+ 	   $client_addr_id > /dev/null 2>&1
+-	print_test "RM_ADDR id:${client_addr_id} ns2 => ns1, invalid token"
++	print_test "RM_ADDR id:client ns2 => ns1, invalid token"
+ 	local type
+ 	type=$(mptcp_lib_evts_get_info type "$server_evts")
+ 	if [ "$type" = "" ]
+@@ -394,7 +397,7 @@ test_remove()
+ 	local invalid_id=$(( client_addr_id + 1 ))
+ 	ip netns exec "$ns2" ./pm_nl_ctl rem token "$client4_token" id\
+ 	   $invalid_id > /dev/null 2>&1
+-	print_test "RM_ADDR id:${invalid_id} ns2 => ns1, invalid id"
++	print_test "RM_ADDR id:client+1 ns2 => ns1, invalid id"
+ 	type=$(mptcp_lib_evts_get_info type "$server_evts")
+ 	if [ "$type" = "" ]
+ 	then
+@@ -407,7 +410,7 @@ test_remove()
+ 	:>"$server_evts"
+ 	ip netns exec "$ns2" ./pm_nl_ctl rem token "$client4_token" id\
+ 	   $client_addr_id
+-	print_test "RM_ADDR id:${client_addr_id} ns2 => ns1"
++	print_test "RM_ADDR id:client ns2 => ns1"
+ 	sleep 0.5
+ 	verify_remove_event "$server_evts" "$REMOVED" "$server4_token" "$client_addr_id"
  
- 		comp_pdev = of_find_device_by_node(node);
--		if (!comp_pdev)
-+		if (!comp_pdev) {
-+			of_node_put(node);
- 			return -EPROBE_DEFER;
-+		}
+@@ -416,7 +419,7 @@ test_remove()
+ 	client_addr_id=$(( client_addr_id - 1 ))
+ 	ip netns exec "$ns2" ./pm_nl_ctl rem token "$client4_token" id\
+ 	   $client_addr_id
+-	print_test "RM_ADDR id:${client_addr_id} ns2 => ns1"
++	print_test "RM_ADDR id:client-1 ns2 => ns1"
+ 	sleep 0.5
+ 	verify_remove_event "$server_evts" "$REMOVED" "$server4_token" "$client_addr_id"
  
- 		priv->ovl_adaptor_comp[id] = &comp_pdev->dev;
+@@ -424,7 +427,7 @@ test_remove()
+ 	:>"$server_evts"
+ 	ip netns exec "$ns2" ./pm_nl_ctl rem token "$client6_token" id\
+ 	   $client_addr_id
+-	print_test "RM_ADDR6 id:${client_addr_id} ns2 => ns1"
++	print_test "RM_ADDR6 id:client-1 ns2 => ns1"
+ 	sleep 0.5
+ 	verify_remove_event "$server_evts" "$REMOVED" "$server6_token" "$client_addr_id"
  
-
--- 
-2.40.1
+@@ -434,7 +437,7 @@ test_remove()
+ 	# RM_ADDR from the server to client machine
+ 	ip netns exec "$ns1" ./pm_nl_ctl rem token "$server4_token" id\
+ 	   $server_addr_id
+-	print_test "RM_ADDR id:${server_addr_id} ns1 => ns2"
++	print_test "RM_ADDR id:server ns1 => ns2"
+ 	sleep 0.5
+ 	verify_remove_event "$client_evts" "$REMOVED" "$client4_token" "$server_addr_id"
+ 
+@@ -443,7 +446,7 @@ test_remove()
+ 	server_addr_id=$(( server_addr_id - 1 ))
+ 	ip netns exec "$ns1" ./pm_nl_ctl rem token "$server4_token" id\
+ 	   $server_addr_id
+-	print_test "RM_ADDR id:${server_addr_id} ns1 => ns2"
++	print_test "RM_ADDR id:server-1 ns1 => ns2"
+ 	sleep 0.5
+ 	verify_remove_event "$client_evts" "$REMOVED" "$client4_token" "$server_addr_id"
+ 
+@@ -451,7 +454,7 @@ test_remove()
+ 	:>"$client_evts"
+ 	ip netns exec "$ns1" ./pm_nl_ctl rem token "$server6_token" id\
+ 	   $server_addr_id
+-	print_test "RM_ADDR6 id:${server_addr_id} ns1 => ns2"
++	print_test "RM_ADDR6 id:server-1 ns1 => ns2"
+ 	sleep 0.5
+ 	verify_remove_event "$client_evts" "$REMOVED" "$client6_token" "$server_addr_id"
+ }
+@@ -479,8 +482,14 @@ verify_subflow_events()
+ 	local locid
+ 	local remid
+ 	local info
++	local e_dport_txt
+ 
+-	info="${e_saddr} (${e_from}) => ${e_daddr}:${e_dport} (${e_to})"
++	# only display the fixed ports
++	if [ "${e_dport}" -ge "${app4_port}" ] && [ "${e_dport}" -le "${app6_port}" ]; then
++		e_dport_txt=":${e_dport}"
++	fi
++
++	info="${e_saddr} (${e_from}) => ${e_daddr}${e_dport_txt} (${e_to})"
+ 
+ 	if [ "$e_type" = "$SUB_ESTABLISHED" ]
+ 	then
+@@ -766,7 +775,7 @@ test_subflows_v4_v6_mix()
+ 	:>"$client_evts"
+ 	ip netns exec "$ns1" ./pm_nl_ctl ann 10.0.2.1 token "$server6_token" id\
+ 	   $server_addr_id dev ns1eth2
+-	print_test "ADD_ADDR4 id:${server_addr_id} 10.0.2.1 (ns1) => ns2, reuse port"
++	print_test "ADD_ADDR4 id:server 10.0.2.1 (ns1) => ns2, reuse port"
+ 	sleep 0.5
+ 	verify_announce_event "$client_evts" "$ANNOUNCED" "$client6_token" "10.0.2.1"\
+ 			      "$server_addr_id" "$app6_port"
+@@ -861,7 +870,7 @@ test_listener()
+ 	local listener_pid=$!
+ 
+ 	sleep 0.5
+-	print_test "CREATE_LISTENER 10.0.2.2:$client4_port"
++	print_test "CREATE_LISTENER 10.0.2.2 (client port)"
+ 	verify_listener_events $client_evts $LISTENER_CREATED $AF_INET 10.0.2.2 $client4_port
+ 
+ 	# ADD_ADDR from client to server machine reusing the subflow port
+@@ -878,13 +887,14 @@ test_listener()
+ 	mptcp_lib_kill_wait $listener_pid
+ 
+ 	sleep 0.5
+-	print_test "CLOSE_LISTENER 10.0.2.2:$client4_port"
++	print_test "CLOSE_LISTENER 10.0.2.2 (client port)"
+ 	verify_listener_events $client_evts $LISTENER_CLOSED $AF_INET 10.0.2.2 $client4_port
+ }
+ 
+ print_title "Make connections"
+ make_connection
+ make_connection "v6"
++print_title "Will be using address IDs ${client_addr_id} (client) and ${server_addr_id} (server)"
+ 
+ test_announce
+ test_remove
 
 
