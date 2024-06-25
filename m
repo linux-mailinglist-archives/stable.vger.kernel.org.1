@@ -1,76 +1,63 @@
-Return-Path: <stable+bounces-55788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38792916E25
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 18:29:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B637916E48
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 18:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E064C282105
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 16:29:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8B981F2289A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 16:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BE9172BA4;
-	Tue, 25 Jun 2024 16:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC6A175544;
+	Tue, 25 Jun 2024 16:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C0Zfg6QM"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="LIYF5uJd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01E5172BB5;
-	Tue, 25 Jun 2024 16:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A36174EC6;
+	Tue, 25 Jun 2024 16:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719332969; cv=none; b=sIaX5gl37ublCDqcqsk9I8Qq487Ja+pv8jWI0u8JJlCnEQ7tEqs2fJSctUFUdnnPTEGmmg+Zi3go88z9PMir0/mMjnrTWVphJflsZYLdthVHEtqm9JFLq3OtkQcx256F7OW77k4kMSXUTlXlVlyzH/Um+Uh2hSrat9tkoURBJJg=
+	t=1719333774; cv=none; b=MT+ZqqAYhAGGxqU1n1t4BFoc3Ct6cxPKbbc0X6iOGgLTQ5zSczwL75umf5Wr2C7ui8Lewl6qmfGMTWittc0/v1MGfk8OetGjvE8s6101PHnwzWKraQGCUCAz5UNLBCoer6AhnDQuwfJp5znGhQD2hZSyRGa1xba5d6+aEuberqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719332969; c=relaxed/simple;
-	bh=JyClAYv+1Nz8tEASNP9SLaPkFXRzT3IWaGoyL7VMJ2E=;
+	s=arc-20240116; t=1719333774; c=relaxed/simple;
+	bh=AiVRnM36SZePV7DiOFeYsrWEs3Bvv9LCMdrNJReGEkg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o7e8y43Z6U47o5tvxDzSZnZY4IVdTxxzPSmDjye7vZWi86TF16XUMSgYwhvd3MeVqrsG1ZoL0VKuAzn8v0zgaj0dOZjnzkgDhyYltJxfMIHUUD4COOJJO2P84jCH3RHGSDY/nfZMBY7HlGHnSCYIynlS7dVZ14rj2mMsT6DKiAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C0Zfg6QM; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7066c9741fbso3176445b3a.2;
-        Tue, 25 Jun 2024 09:29:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719332967; x=1719937767; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=pMJOuE2BPwJWsvMQnxI8pzQYLzC2K1TGd0U2QAkDfTY=;
-        b=C0Zfg6QMXIMloAu7wZ2oAez+QcrDqMAxiyFkbvf7Qs+KhbX4S/b713mZj/Isys12Jq
-         T1DlJL8ukwmnNvJ95O3pnZ2ey7dSBOsdbZk+aVGHG3g9tQ3R8WwqLF1VY0I82/W08eRn
-         R2cf8GCyvnR2FhfczZmZX+oYNNqR6UKcwN5t9LCrZk9nF6nDzFZxEv3Q9SiMOQ6Gde5g
-         iv4p7wruEYBSwjg650r/1C8rP5FW3qSCvDfWOKWPvsHYO3K4pTwqkVmmrpZghc5EkAE2
-         oO6sElfhFsmsurueeC8TrM9O5dP2Odzww2PM1h3u9mxjqAEJ0NZykfT0QDZrUaVRpzR9
-         0DCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719332967; x=1719937767;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pMJOuE2BPwJWsvMQnxI8pzQYLzC2K1TGd0U2QAkDfTY=;
-        b=iIHyRIweuxALkujsoiNuRXPkjxr3TMfXFq0AE0M9UZQW03GJa9oltPoXzYGdDL8XN+
-         M0AdvSnnhSpafvctAzifrIaoV/6gHiYeytCvHQaGDyc+SwTvc3eJ4iEDxPi7ZjiYvXDG
-         xStmZ7VuYXkz9eF5efJyMVcLzfgDh6v0g7oFI8dv9SQsjkcqrO+nH8ISPkEy6kC7msjF
-         PFLi/MzG+T/GrYre055UD0U1Zs28f78Kmt9xtstVMYctiaTnirO+fZs9Adxl6Ya3Zuvb
-         uLvtpwcTDoI78VTPO4aVWov4/Kw1yBk6iJPBxfYMgURTbK8V7wq9u+WZ1LfJW27JGBv5
-         u2iQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW7MllHAMRw2l594Nl2eo0thL40jG7jAf0cmi00mlz45CnUngy+3ERk6H0hqTDuEyF5r82Kdw4LNqqdy5qTcIgp9b1BbaZYyab/huMh
-X-Gm-Message-State: AOJu0Yw6qcDu9Zto95g98fwWLv3sgshasjPPbHZt5CroaxBLhvvGaPVg
-	tqs1WA7+4TCurcQO+4Nqfz234uS5GQMVjKcXUQYbGCWNxuNJO3pJ
-X-Google-Smtp-Source: AGHT+IG9QgkXar9qQFSqPgBT3U9cJfiOLJf6MIG2uY3uo0XABIIwqQMTz4zhq4wWR8Df/tbdSBTM3g==
-X-Received: by 2002:a05:6a20:8c11:b0:1b7:f59d:fd12 with SMTP id adf61e73a8af0-1bcf7fe9ecbmr8587099637.55.1719332966976;
-        Tue, 25 Jun 2024 09:29:26 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-71a5a2349eesm5435891a12.42.2024.06.25.09.29.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jun 2024 09:29:26 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <cf232ba1-a3f3-4931-8775-254d42e261e5@roeck-us.net>
-Date: Tue, 25 Jun 2024 09:29:24 -0700
+	 In-Reply-To:Content-Type; b=PTFqW+KHMCOqvp24yWJW4650/9YDz72ajJXQvkqBcIrTOthmSfhiQ38YkeL/ioXkZs5SxE52ZdGYyAksYbQA37pOueD167pyiYuffTAcFLHKTZ33rc7jHa0vYr5llL4R9wN9SOVsHHHplo4rs9U/DjcbMElYJQaZMLQE9jbRM3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=LIYF5uJd; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4W7rH022Xrz6Cnk9F;
+	Tue, 25 Jun 2024 16:42:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1719333757; x=1721925758; bh=sAjpvwr1/jgh6UyW1p1dhJNm
+	AbUi5v13hU7EV0lbSHI=; b=LIYF5uJdWitfHtvZuWidNmtesPBlfGPnKrcAMTKH
+	cvb90tnfF1Lu3kL0zfyXYckr8hNXHP1QTCNaMf9QezjQlOdTI7E0QRaYvsnjAIcC
+	PIVfKY6V13l5DgtJ4KJJHZ3ELLy2nv1xJwyWPfKqHt3EA/CEf3RhJoquvPdlnIre
+	SBHdLwxjEbUdpvZxinxYjvGU+rRjx2Ui2+oors3hwKMVQsFY8QEKBkqt5A8XLS1q
+	JkbkkC0gxMFKZ/jDh+S2J3f5WV6GJp6Ig32ymcJvlI6NWSl7iV7asIWi/wyzwvbB
+	FmILgtNFpDBbru4wBrF6lHX0QR0mtP6s6vL+pHE5muRc+w==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id nKsHhbovsQ9L; Tue, 25 Jun 2024 16:42:37 +0000 (UTC)
+Received: from [192.168.50.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4W7rGd6x2cz6Cnk97;
+	Tue, 25 Jun 2024 16:42:33 +0000 (UTC)
+Message-ID: <795a89bb-12eb-4ac8-93df-6ec5173fb679@acm.org>
+Date: Tue, 25 Jun 2024 09:42:33 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,126 +65,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/770] 5.10.220-rc1 review
-To: Chuck Lever III <chuck.lever@oracle.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-stable <stable@vger.kernel.org>,
- "patches@lists.linux.dev" <patches@lists.linux.dev>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- "shuah@kernel.org" <shuah@kernel.org>,
- "patches@kernelci.org" <patches@kernelci.org>,
- "lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>,
- "pavel@denx.de" <pavel@denx.de>, "jonathanh@nvidia.com"
- <jonathanh@nvidia.com>, "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
- "sudipm.mukherjee@gmail.com" <sudipm.mukherjee@gmail.com>,
- "srw@sladewatkins.net" <srw@sladewatkins.net>,
- "rwarsow@gmx.de" <rwarsow@gmx.de>, "conor@kernel.org" <conor@kernel.org>,
- "allen.lkml@gmail.com" <allen.lkml@gmail.com>,
- "broonie@kernel.org" <broonie@kernel.org>
-References: <20240618123407.280171066@linuxfoundation.org>
- <e8c38e1c-1f9a-47e2-bdf5-55a5c6a4d4ec@roeck-us.net>
- <2024062543-magnifier-licking-ab9e@gregkh>
- <EEE94730-C043-47D8-A50A-47332201B3BF@oracle.com>
+Subject: Re: [PATCH v2] ufs: core: fix ufshcd_abort_all racing issue
+To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "avri.altman@wdc.com" <avri.altman@wdc.com>,
+ "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
+ "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
+ "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+ "jejb@linux.ibm.com" <jejb@linux.ibm.com>
+Cc: "linux-mediatek@lists.infradead.org"
+ <linux-mediatek@lists.infradead.org>,
+ =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
+ =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
+ =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
+ =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
+ wsd_upstream <wsd_upstream@mediatek.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
+ =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
+ =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
+ "chu.stanley@gmail.com" <chu.stanley@gmail.com>,
+ =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
+ <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
+ <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
+ <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
+ <Qilin.Tan@mediatek.com>
+References: <20240624121158.21354-1-peter.wang@mediatek.com>
+ <eec48c95-aa1c-4f07-a1f3-fdc3e124f30e@acm.org>
+ <4c4d10aae216e0b6925445b0317e55a3dd0ce629.camel@mediatek.com>
 Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <EEE94730-C043-47D8-A50A-47332201B3BF@oracle.com>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <4c4d10aae216e0b6925445b0317e55a3dd0ce629.camel@mediatek.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-On 6/25/24 08:13, Chuck Lever III wrote:
-> Hi -
-> 
->> On Jun 25, 2024, at 11:04 AM, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On 6/25/24 1:29 AM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
+> On Mon, 2024-06-24 at 11:01 -0700, Bart Van Assche wrote:
+>>   On 6/24/24 5:11 AM, peter.wang@mediatek.com wrote:
+>>> diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-
+>> mcq.c
+>>> index 8944548c30fa..3b2e5bcb08a7 100644
+>>> --- a/drivers/ufs/core/ufs-mcq.c
+>>> +++ b/drivers/ufs/core/ufs-mcq.c
+>>> @@ -512,8 +512,9 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba *hba,
+>> int task_tag)
+>>>    return -ETIMEDOUT;
+>>>   =20
+>>>    if (task_tag !=3D hba->nutrs - UFSHCD_NUM_RESERVED) {
+>>> -if (!cmd)
+>>> -return -EINVAL;
+>>> +/* Should return 0 if cmd is already complete by irq */
+>>> +if (!cmd || !ufshcd_cmd_inflight(cmd))
+>>> +return 0;
+>>>    hwq =3D ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(cmd));
+>>>    } else {
+>>>    hwq =3D hba->dev_cmd_queue;
 >>
->> On Tue, Jun 25, 2024 at 07:48:00AM -0700, Guenter Roeck wrote:
->>> On 6/18/24 05:27, Greg Kroah-Hartman wrote:
->>>> This is the start of the stable review cycle for the 5.10.220 release.
->>>> There are 770 patches in this series, all will be posted as a response
->>>> to this one.  If anyone has any issues with these being applied, please
->>>> let me know.
->>>>
->>>> Responses should be made by Thu, 20 Jun 2024 12:32:00 +0000.
->>>> Anything received after that time might be too late.
->>>>
->>>
->>> [ ... ]
->>>> Chuck Lever <chuck.lever@oracle.com>
->>>>      SUNRPC: Prepare for xdr_stream-style decoding on the server-side
->>>>
->>> The ChromeOS patches robot reports a number of fixes for the patches
->>> applied in 5.5.220. This is one example, later fixed with commit
->>> 90bfc37b5ab9 ("SUNRPC: Fix svcxdr_init_decode's end-of-buffer
->>> calculation"), but there are more. Are those fixes going to be
->>> applied in a subsequent release of v5.10.y, was there a reason to
->>> not include them, or did they get lost ?
->>
->> I saw this as well, but when I tried to apply a few, they didn't, so I
->> was guessing that Chuck had merged them together into the series.
->>
->> I'll defer to Chuck on this, this release was all his :)
-> 
-> I did this port months ago, I've been waiting for the dust to
-> settle on the 6.1 and 5.15 NFSD backports, so I've all but
-> forgotten the status of individual patches.
-> 
-> If you (Greg or Guenter) send me a list of what you believe is
-> missing, I can have a look at the individual cases and then
-> run the finished result through our NFSD CI gauntlet.
-> 
+>> Does the call trace show that blk_mq_unique_tag() tries to
+>> dereference
+>> address 0x194? If so, how is this possible? There are
+>> only two lrbp->cmd assignments in the UFS driver. These assignments
+>> either assign a valid SCSI command pointer or NULL. Even after a SCSI
+>> command has been completed, the SCSI command pointer remains valid.
+>> So
+>> how can an invalid pointer be passed to blk_mq_unique_tag()? Please
+>> root-cause this issue instead of posting a code change that reduces a
+>> race window without closing the race window completely.
+>=20
+> blk_mq_unique_tag() tries to dereference address 0x194, and it is null.
+> Beacuse ISR end this IO by scsi_done, free request will be called and
+> set mq_hctx null.
+> The call path is
+> scsi_done -> scsi_done_internal -> blk_mq_complete_request ->
+> scsi_complete ->
+> scsi_finish_command -> scsi_io_completion -> scsi_end_request ->
+> __blk_mq_end_request ->
+> blk_mq_free_request -> __blk_mq_free_request
+>=20
+> And blk_mq_unique_tag will access mq_hctx then get null pointer error.
+> Please reference
+> https://elixir.bootlin.com/linux/latest/source/block/blk-mq.c#L713
+> https://elixir.bootlin.com/linux/latest/source/block/blk-mq-tag.c#L680
+>=20
+> So, the root-casue is very simple, free request then get hwq.
+> This patch only check if reqesut not free(inflight) then get hwq.
+> Thought it still have racing winodw, but it is better then do nothing,
+> right?
+> Or, maybe we get all cq_lock before get hwq to close the racing window.
+> But the code may ugly, how do you think?
 
-This is what the robot reported so far:
+Please include a full root cause analysis when reposting fixes for the
+reported crashes. It is not clear to me how it is possible that an
+invalid pointer is passed to blk_mq_unique_tag() (0x194). As I mentioned
+in my previous email, freeing a request does not modify the request
+pointer and does not modify the SCSI command pointer either. As one can
+derive from the blk_mq_alloc_rqs() call stack, memory for struct request
+and struct scsi_cmnd is allocated at request queue allocation time and
+is not freed until the request queue is freed. Hence, for a given tag,
+neither the request pointer nor the SCSI command pointer changes as long
+as a request queue exists. Hence my request for an explanation how it is
+possible that an invalid pointer was passed to blk_mq_unique_tag().
 
-1242a87da0d8 SUNRPC: Fix svcxdr_init_encode's buflen calculation
-   Fixes: bddfdbcddbe2 ("NFSD: Extract the svcxdr_init_encode() helper")
-90bfc37b5ab9 SUNRPC: Fix svcxdr_init_decode's end-of-buffer calculation
-   Fixes: 5191955d6fc6 ("SUNRPC: Prepare for xdr_stream-style decoding on the server-side")
-10396f4df8b7 nfsd: hold a lighter-weight client reference over CB_RECALL_ANY
-   Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
+Thanks,
 
-Guenter
+Bart.
+
 
