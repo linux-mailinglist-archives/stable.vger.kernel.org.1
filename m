@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-55664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F4079164A3
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B386916426
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B82051F20EDE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC7CFB28512
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F25149DE9;
-	Tue, 25 Jun 2024 09:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909E014A096;
+	Tue, 25 Jun 2024 09:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zQv/VEO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0R5E9sGi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C5F1465A8;
-	Tue, 25 Jun 2024 09:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E470149C4F;
+	Tue, 25 Jun 2024 09:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309574; cv=none; b=JAgjtZBCgkAKxE6AI2vDYrt8s4dYqGHZIqseW/JJt5vRdIjznfjNCIAhAd2jqsBSkjxPrLwAgskB8mZjVirUtd1SGQ9U7KorQNitj+jDoswZTz3gdCJ3OXNzK1C3d73WStmAIOz90rySMje43Mb2U7jiPKs773JmvETw+mvyKwM=
+	t=1719309248; cv=none; b=kq32zs3wEIECtkcThKu2+YCif4i/vly7qeDxxsifW38ThJWOaK7/zDAMYX3PNl64jyXYAr3PLSxLBFfmfBrmdErZf41gvlqR0dIc6mOgW6CJ62GaxBJE9GSCF0041gpe+M47qwK3AHM6ajHHiwOqCL8V5SsZxuixMsDOQIXzUNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309574; c=relaxed/simple;
-	bh=0QchoOqOncvpmgU6booLntdAHaCb/3dNYBDP1HZMaiU=;
+	s=arc-20240116; t=1719309248; c=relaxed/simple;
+	bh=a+STfXBiYxr4A2OZoON39K4P+CrqNJ02Ft7YLMkCqoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iR9NYtiq5C+1dFQYCoG/8QYhwqLUHKQfi9ZhoZqJ92sfFEH9zqMW7MFN+VfFWPZnJ37h4n1I7/Q6kE/xM3+9Q+T1A/EDDkVgc+CpVDsRIbcgIm5pD9SIIfHUHit3jlryRKIguk/5FmP4FRcJHCwqvyBrP3FSPUKRQPLcenpER0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zQv/VEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF46C32781;
-	Tue, 25 Jun 2024 09:59:33 +0000 (UTC)
+	 MIME-Version; b=rUyLFahvHIJl6X2rlOMW1sQw37zQ3glRZaFPFYXpGQimmD2tC9npPKDvzAJX4P128ouCC4I/nnlH8aGB8kQoqjgQgr0sgOkABXxch4r2gOsNTPmPpSF4SDr1JLUQo8xgYu+7HOUs2SC/ENoOOgMaJtRAElINYDHVZJBUan9iawc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0R5E9sGi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972DDC32781;
+	Tue, 25 Jun 2024 09:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309573;
-	bh=0QchoOqOncvpmgU6booLntdAHaCb/3dNYBDP1HZMaiU=;
+	s=korg; t=1719309248;
+	bh=a+STfXBiYxr4A2OZoON39K4P+CrqNJ02Ft7YLMkCqoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1zQv/VEODb8YIh+A/OVizILQrI+NFUwTzAXFlBwVcA8sMbZ92rv1VEujwCL7woplH
-	 o1MEVH8ZPbUU3rwDdeyTAS5fltfjEclfvOfO6Ynq/wFeY8hHHcK9AiVnW/u8vwd3dS
-	 5AbFUkOS26OY4ANeZfrks/le7MVzBMXga3NnNwsY=
+	b=0R5E9sGi5VIH6xOW684COmt1mhbnzlK0ZIbwolk7RcvbPfOnGEE62mlMYstYrRJ32
+	 Bn19yIiDjaPw2Rqo+/ZIJs46ZN6h+vc4nd0W+OOIE3O4x+dwa3xKGCBL0vEd9YM9Hv
+	 GExKWKdogrJwIIvk0TnFA/SNisddvQvtNU/IYRqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Raju Lakkaraju <Raju.Lakkaraju@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/131] net: lan743x: disable WOL upon resume to restore full data path operation
+	Adamos Ttofari <attofari@amazon.de>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 144/192] KVM: x86: Always sync PIR to IRR prior to scanning I/O APIC routes
 Date: Tue, 25 Jun 2024 11:33:36 +0200
-Message-ID: <20240625085528.266478457@linuxfoundation.org>
+Message-ID: <20240625085542.685896071@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,150 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 7725363936a88351b71495774c1e0e852ae4cdca ]
+commit f3ced000a2df53f4b12849e121769045a81a3b22 upstream.
 
-When Wake-on-LAN (WoL) is active and the system is in suspend mode, triggering
-a system event can wake the system from sleep, which may block the data path.
-To restore normal data path functionality after waking, disable all wake-up
-events. Furthermore, clear all Write 1 to Clear (W1C) status bits by writing
-1's to them.
+Sync pending posted interrupts to the IRR prior to re-scanning I/O APIC
+routes, irrespective of whether the I/O APIC is emulated by userspace or
+by KVM.  If a level-triggered interrupt routed through the I/O APIC is
+pending or in-service for a vCPU, KVM needs to intercept EOIs on said
+vCPU even if the vCPU isn't the destination for the new routing, e.g. if
+servicing an interrupt using the old routing races with I/O APIC
+reconfiguration.
 
-Fixes: 4d94282afd95 ("lan743x: Add power management support")
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit fceb3a36c29a ("KVM: x86: ioapic: Fix level-triggered EOI and
+userspace I/OAPIC reconfigure race") fixed the common cases, but
+kvm_apic_pending_eoi() only checks if an interrupt is in the local
+APIC's IRR or ISR, i.e. misses the uncommon case where an interrupt is
+pending in the PIR.
+
+Failure to intercept EOI can manifest as guest hangs with Windows 11 if
+the guest uses the RTC as its timekeeping source, e.g. if the VMM doesn't
+expose a more modern form of time to the guest.
+
+Cc: stable@vger.kernel.org
+Cc: Adamos Ttofari <attofari@amazon.de>
+Cc: Raghavendra Rao Ananta <rananta@google.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20240611014845.82795-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 30 ++++++++++++++++---
- drivers/net/ethernet/microchip/lan743x_main.h | 24 +++++++++++++++
- 2 files changed, 50 insertions(+), 4 deletions(-)
+ arch/x86/kvm/x86.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index d5123e8c4a9f4..39df1beb27cff 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -3513,7 +3513,7 @@ static void lan743x_pm_set_wol(struct lan743x_adapter *adapter)
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10456,13 +10456,12 @@ static void vcpu_scan_ioapic(struct kvm_
  
- 	/* clear wake settings */
- 	pmtctl = lan743x_csr_read(adapter, PMT_CTL);
--	pmtctl |= PMT_CTL_WUPS_MASK_;
-+	pmtctl |= PMT_CTL_WUPS_MASK_ | PMT_CTL_RES_CLR_WKP_MASK_;
- 	pmtctl &= ~(PMT_CTL_GPIO_WAKEUP_EN_ | PMT_CTL_EEE_WAKEUP_EN_ |
- 		PMT_CTL_WOL_EN_ | PMT_CTL_MAC_D3_RX_CLK_OVR_ |
- 		PMT_CTL_RX_FCT_RFE_D3_CLK_OVR_ | PMT_CTL_ETH_PHY_WAKE_EN_);
-@@ -3648,6 +3648,7 @@ static int lan743x_pm_resume(struct device *dev)
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 	struct net_device *netdev = pci_get_drvdata(pdev);
- 	struct lan743x_adapter *adapter = netdev_priv(netdev);
-+	u32 data;
- 	int ret;
+ 	bitmap_zero(vcpu->arch.ioapic_handled_vectors, 256);
  
- 	pci_set_power_state(pdev, PCI_D0);
-@@ -3666,6 +3667,30 @@ static int lan743x_pm_resume(struct device *dev)
- 		return ret;
- 	}
- 
-+	ret = lan743x_csr_read(adapter, MAC_WK_SRC);
-+	netif_dbg(adapter, drv, adapter->netdev,
-+		  "Wakeup source : 0x%08X\n", ret);
++	static_call_cond(kvm_x86_sync_pir_to_irr)(vcpu);
 +
-+	/* Clear the wol configuration and status bits. Note that
-+	 * the status bits are "Write One to Clear (W1C)"
-+	 */
-+	data = MAC_WUCSR_EEE_TX_WAKE_ | MAC_WUCSR_EEE_RX_WAKE_ |
-+	       MAC_WUCSR_RFE_WAKE_FR_ | MAC_WUCSR_PFDA_FR_ | MAC_WUCSR_WUFR_ |
-+	       MAC_WUCSR_MPR_ | MAC_WUCSR_BCAST_FR_;
-+	lan743x_csr_write(adapter, MAC_WUCSR, data);
-+
-+	data = MAC_WUCSR2_NS_RCD_ | MAC_WUCSR2_ARP_RCD_ |
-+	       MAC_WUCSR2_IPV6_TCPSYN_RCD_ | MAC_WUCSR2_IPV4_TCPSYN_RCD_;
-+	lan743x_csr_write(adapter, MAC_WUCSR2, data);
-+
-+	data = MAC_WK_SRC_ETH_PHY_WK_ | MAC_WK_SRC_IPV6_TCPSYN_RCD_WK_ |
-+	       MAC_WK_SRC_IPV4_TCPSYN_RCD_WK_ | MAC_WK_SRC_EEE_TX_WK_ |
-+	       MAC_WK_SRC_EEE_RX_WK_ | MAC_WK_SRC_RFE_FR_WK_ |
-+	       MAC_WK_SRC_PFDA_FR_WK_ | MAC_WK_SRC_MP_FR_WK_ |
-+	       MAC_WK_SRC_BCAST_FR_WK_ | MAC_WK_SRC_WU_FR_WK_ |
-+	       MAC_WK_SRC_WK_FR_SAVED_;
-+	lan743x_csr_write(adapter, MAC_WK_SRC, data);
-+
- 	/* open netdev when netdev is at running state while resume.
- 	 * For instance, it is true when system wakesup after pm-suspend
- 	 * However, it is false when system wakes up after suspend GUI menu
-@@ -3674,9 +3699,6 @@ static int lan743x_pm_resume(struct device *dev)
- 		lan743x_netdev_open(netdev);
+ 	if (irqchip_split(vcpu->kvm))
+ 		kvm_scan_ioapic_routes(vcpu, vcpu->arch.ioapic_handled_vectors);
+-	else {
+-		static_call_cond(kvm_x86_sync_pir_to_irr)(vcpu);
+-		if (ioapic_in_kernel(vcpu->kvm))
+-			kvm_ioapic_scan_entry(vcpu, vcpu->arch.ioapic_handled_vectors);
+-	}
++	else if (ioapic_in_kernel(vcpu->kvm))
++		kvm_ioapic_scan_entry(vcpu, vcpu->arch.ioapic_handled_vectors);
  
- 	netif_device_attach(netdev);
--	ret = lan743x_csr_read(adapter, MAC_WK_SRC);
--	netif_info(adapter, drv, adapter->netdev,
--		   "Wakeup source : 0x%08X\n", ret);
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
-index d304be17b9d82..e7df74a3c79ec 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.h
-+++ b/drivers/net/ethernet/microchip/lan743x_main.h
-@@ -61,6 +61,7 @@
- #define PMT_CTL_RX_FCT_RFE_D3_CLK_OVR_		BIT(18)
- #define PMT_CTL_GPIO_WAKEUP_EN_			BIT(15)
- #define PMT_CTL_EEE_WAKEUP_EN_			BIT(13)
-+#define PMT_CTL_RES_CLR_WKP_MASK_		GENMASK(9, 8)
- #define PMT_CTL_READY_				BIT(7)
- #define PMT_CTL_ETH_PHY_RST_			BIT(4)
- #define PMT_CTL_WOL_EN_				BIT(3)
-@@ -227,12 +228,31 @@
- #define MAC_WUCSR				(0x140)
- #define MAC_MP_SO_EN_				BIT(21)
- #define MAC_WUCSR_RFE_WAKE_EN_			BIT(14)
-+#define MAC_WUCSR_EEE_TX_WAKE_			BIT(13)
-+#define MAC_WUCSR_EEE_RX_WAKE_			BIT(11)
-+#define MAC_WUCSR_RFE_WAKE_FR_			BIT(9)
-+#define MAC_WUCSR_PFDA_FR_			BIT(7)
-+#define MAC_WUCSR_WUFR_				BIT(6)
-+#define MAC_WUCSR_MPR_				BIT(5)
-+#define MAC_WUCSR_BCAST_FR_			BIT(4)
- #define MAC_WUCSR_PFDA_EN_			BIT(3)
- #define MAC_WUCSR_WAKE_EN_			BIT(2)
- #define MAC_WUCSR_MPEN_				BIT(1)
- #define MAC_WUCSR_BCST_EN_			BIT(0)
- 
- #define MAC_WK_SRC				(0x144)
-+#define MAC_WK_SRC_ETH_PHY_WK_			BIT(17)
-+#define MAC_WK_SRC_IPV6_TCPSYN_RCD_WK_		BIT(16)
-+#define MAC_WK_SRC_IPV4_TCPSYN_RCD_WK_		BIT(15)
-+#define MAC_WK_SRC_EEE_TX_WK_			BIT(14)
-+#define MAC_WK_SRC_EEE_RX_WK_			BIT(13)
-+#define MAC_WK_SRC_RFE_FR_WK_			BIT(12)
-+#define MAC_WK_SRC_PFDA_FR_WK_			BIT(11)
-+#define MAC_WK_SRC_MP_FR_WK_			BIT(10)
-+#define MAC_WK_SRC_BCAST_FR_WK_			BIT(9)
-+#define MAC_WK_SRC_WU_FR_WK_			BIT(8)
-+#define MAC_WK_SRC_WK_FR_SAVED_			BIT(7)
-+
- #define MAC_MP_SO_HI				(0x148)
- #define MAC_MP_SO_LO				(0x14C)
- 
-@@ -295,6 +315,10 @@
- #define RFE_INDX(index)			(0x580 + (index << 2))
- 
- #define MAC_WUCSR2			(0x600)
-+#define MAC_WUCSR2_NS_RCD_		BIT(7)
-+#define MAC_WUCSR2_ARP_RCD_		BIT(6)
-+#define MAC_WUCSR2_IPV6_TCPSYN_RCD_	BIT(5)
-+#define MAC_WUCSR2_IPV4_TCPSYN_RCD_	BIT(4)
- 
- #define SGMII_ACC			(0x720)
- #define SGMII_ACC_SGMII_BZY_		BIT(31)
--- 
-2.43.0
-
+ 	if (is_guest_mode(vcpu))
+ 		vcpu->arch.load_eoi_exitmap_pending = true;
 
 
 
