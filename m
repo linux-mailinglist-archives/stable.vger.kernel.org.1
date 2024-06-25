@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-55701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2569164CD
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5E61916459
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECA961C20B76
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 236551C22085
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8C614A089;
-	Tue, 25 Jun 2024 10:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5CB14A4DB;
+	Tue, 25 Jun 2024 09:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4GAzzKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPY4h8Y4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE8113C90B;
-	Tue, 25 Jun 2024 10:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C757149C41;
+	Tue, 25 Jun 2024 09:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309683; cv=none; b=tnS42b9QmlJ3D0TOl4lNnOIdejh6n0pzCyPGGI+lqODYkhDWyNBXsnYyWCpEds5yY777kuWo4suyqDQehREsOcXyHULgFJvyvAgUz0dsrfUiS6FVuHw+ta9PB9s5sXxvGA4hT6DEqtC6p5lgDX3LHv4SHilE6mnWo5qAfuVjLE0=
+	t=1719309377; cv=none; b=qoV5NI6xl4d6e0gAmzywTHpUdhMBwZGp9EQjO5+KipAGi59ktj9+uhAgLA7P9W0WpD+CzPx28xTJUvQfBV3yu/at44JRyOK20fpx3uUnYgA2cReZ9tsnXMgQR8qjk//E22x3z5L3HKCyiyXMU3IWumji47zDJkIgYS81WFLXmHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309683; c=relaxed/simple;
-	bh=qTinxIcmuF5vg6OtHHBjX5SpofwTv52FSFZdxOjxEu8=;
+	s=arc-20240116; t=1719309377; c=relaxed/simple;
+	bh=UK55V7P3YeDjoaguhtqajLD4eewMSDHc7RmSJc1DP38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxLq2VYo5UeuHJMLSY7Vz6+D5DMr2q/vEaNa7ZcRtdf546dv0JrM4XzktYsv3WVzvcksPlZ7DiD2mpfUQ759OlQuA10K3VF9cukzcK2q4Dos6VkA48yMs1BgTQybrilI7Zwbi491aCjvjIQC5zMP3OB4YeFs9EkVGJkqFrRsRVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4GAzzKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FF2C32781;
-	Tue, 25 Jun 2024 10:01:22 +0000 (UTC)
+	 MIME-Version; b=brkl7VENlgShaNJhBy9pzF/08UwTkP8Qmc+dh/S0hoTaiP71SHzWr8aiXeT1hYLSJlGQkKVGIDoK5JP+YmJw19u+PzJrgNfV/QkYOfukP6pXK7EuANHCZdT7mOHrgiLxTD8BbBTxQ26tDfZ/iCsM6L3VnBtghGjrCdi2+ewSY6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPY4h8Y4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41C9C32781;
+	Tue, 25 Jun 2024 09:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309683;
-	bh=qTinxIcmuF5vg6OtHHBjX5SpofwTv52FSFZdxOjxEu8=;
+	s=korg; t=1719309377;
+	bh=UK55V7P3YeDjoaguhtqajLD4eewMSDHc7RmSJc1DP38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4GAzzKq2Wy2sfYtSHRsTTx+J5mtIW4YI3ABDW+GM7+h691WW+dhQC9DO7B/0anuM
-	 HX2fRp4fvob1kZ41F3jPenSrU6/LVvoJfwA84OouMdSmsIcfR1UJfDnA2adhN0BmET
-	 gZbbMK3aNmticqr825RVRwAzTVa+eiOFHhKROdl0=
+	b=CPY4h8Y454xKhdAKRNbuPygtRk3ZpCD6cczxQ7Ith5322p9OSVH7PyfQMVngNuNy+
+	 Em35cj5/dbTJ+hdEQT8wCVAVIa11WWhWM7pacNgGpp4vA2iVnpE3O1iS0mHkDzVBcg
+	 LOhqZ0bOYpui5xPymH9FwEh+OnXpAl7O+DypDDCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 097/131] btrfs: retry block group reclaim without infinite loop
-Date: Tue, 25 Jun 2024 11:34:12 +0200
-Message-ID: <20240625085529.624668738@linuxfoundation.org>
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 181/192] riscv: Dont use PGD entries for the linear mapping
+Date: Tue, 25 Jun 2024 11:34:13 +0200
+Message-ID: <20240625085544.108654741@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-commit 4eb4e85c4f818491efc67e9373aa16b123c3f522 upstream.
+[ Upstream commit 629db01c64ff6cea08fc61b52426362689ef8618 ]
 
-If inc_block_group_ro systematically fails (e.g. due to ETXTBUSY from
-swap) or btrfs_relocate_chunk systematically fails (from lack of
-space), then this worker becomes an infinite loop.
+Propagating changes at this level is cumbersome as we need to go through
+all the page tables when that happens (either when changing the
+permissions or when splitting the mapping).
 
-At the very least, this strands the cleaner thread, but can also result
-in hung tasks/RCU stalls on PREEMPT_NONE kernels and if the
-reclaim_bgs_lock mutex is not contended.
+Note that this prevents the use of 4MB mapping for sv32 and 1GB mapping for
+sv39 in the linear mapping.
 
-I believe the best long term fix is to manage reclaim via work queue,
-where we queue up a relocation on the triggering condition and re-queue
-on failure. In the meantime, this is an easy fix to apply to avoid the
-immediate pain.
-
-Fixes: 7e2718099438 ("btrfs: reinsert BGs failed to reclaim")
-CC: stable@vger.kernel.org # 6.6+
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20231108075930.7157-2-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Stable-dep-of: c67ddf59ac44 ("riscv: force PAGE_SIZE linear mapping if debug_pagealloc is enabled")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/block-group.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/riscv/mm/init.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1615,6 +1615,7 @@ void btrfs_reclaim_bgs_work(struct work_
- 		container_of(work, struct btrfs_fs_info, reclaim_bgs_work);
- 	struct btrfs_block_group *bg;
- 	struct btrfs_space_info *space_info;
-+	LIST_HEAD(retry_list);
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 83ac1eb8e7e68..4d62f54698b99 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -668,16 +668,16 @@ void __init create_pgd_mapping(pgd_t *pgdp,
+ static uintptr_t __init best_map_size(phys_addr_t pa, uintptr_t va,
+ 				      phys_addr_t size)
+ {
+-	if (!(pa & (PGDIR_SIZE - 1)) && !(va & (PGDIR_SIZE - 1)) && size >= PGDIR_SIZE)
+-		return PGDIR_SIZE;
+-
+-	if (!(pa & (P4D_SIZE - 1)) && !(va & (P4D_SIZE - 1)) && size >= P4D_SIZE)
++	if (pgtable_l5_enabled &&
++	    !(pa & (P4D_SIZE - 1)) && !(va & (P4D_SIZE - 1)) && size >= P4D_SIZE)
+ 		return P4D_SIZE;
  
- 	if (!test_bit(BTRFS_FS_OPEN, &fs_info->flags))
- 		return;
-@@ -1717,8 +1718,11 @@ void btrfs_reclaim_bgs_work(struct work_
- 		}
+-	if (!(pa & (PUD_SIZE - 1)) && !(va & (PUD_SIZE - 1)) && size >= PUD_SIZE)
++	if (pgtable_l4_enabled &&
++	    !(pa & (PUD_SIZE - 1)) && !(va & (PUD_SIZE - 1)) && size >= PUD_SIZE)
+ 		return PUD_SIZE;
  
- next:
--		if (ret)
--			btrfs_mark_bg_to_reclaim(bg);
-+		if (ret) {
-+			/* Refcount held by the reclaim_bgs list after splice. */
-+			btrfs_get_block_group(bg);
-+			list_add_tail(&bg->bg_list, &retry_list);
-+		}
- 		btrfs_put_block_group(bg);
+-	if (!(pa & (PMD_SIZE - 1)) && !(va & (PMD_SIZE - 1)) && size >= PMD_SIZE)
++	if (IS_ENABLED(CONFIG_64BIT) &&
++	    !(pa & (PMD_SIZE - 1)) && !(va & (PMD_SIZE - 1)) && size >= PMD_SIZE)
+ 		return PMD_SIZE;
  
- 		mutex_unlock(&fs_info->reclaim_bgs_lock);
-@@ -1738,6 +1742,9 @@ next:
- 	spin_unlock(&fs_info->unused_bgs_lock);
- 	mutex_unlock(&fs_info->reclaim_bgs_lock);
- end:
-+	spin_lock(&fs_info->unused_bgs_lock);
-+	list_splice_tail(&retry_list, &fs_info->reclaim_bgs);
-+	spin_unlock(&fs_info->unused_bgs_lock);
- 	btrfs_exclop_finish(fs_info);
- 	sb_end_write(fs_info->sb);
- }
+ 	return PAGE_SIZE;
+-- 
+2.43.0
+
 
 
 
