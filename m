@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05BB991648B
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:58:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC7A9163E2
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5340286E15
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:58:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8B2A1F2181E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A97814A0B8;
-	Tue, 25 Jun 2024 09:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8366149DE9;
+	Tue, 25 Jun 2024 09:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnnI2Pxd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLwlZmTv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B1314A0A8;
-	Tue, 25 Jun 2024 09:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861141487E9;
+	Tue, 25 Jun 2024 09:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309509; cv=none; b=ER5hBm/RUnUCN6LX/Ol6wfSwwOo8uT+GWuwkVSCF1IrUEN4Rne44yvR1Gpz8Rb74afp9g471TrxjUh/+HIkeebczDDOR5+Jw/5S0aBOIp1n2U4f1Fegl8yIIf5sqzRSHVc6pvmh+gzcboankJicSv7XYdDQ65ZbYnUi0Wh0+Cnc=
+	t=1719309089; cv=none; b=gtF6PQAL4ijbZDbaxrkhwYHSEtpLPh8JpH5Qk/3NlvzvoOmQ2R9sxOByiV3/qqfjOqioLL8B4kAPYaDH3yI3aUJ0BqYQmr7Cky9P8/zdlraJGnsBEy66tE9nWZtbrXZNyWYmrDDFUrKIlKauxMP8WPzOOc0Zkavd2AGN+ptrric=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309509; c=relaxed/simple;
-	bh=vdoRClPUaNSzkd5LNWHGDTU9YBWqOat7NAzVp//1+FY=;
+	s=arc-20240116; t=1719309089; c=relaxed/simple;
+	bh=NxE1BDarfzUbvXoOrStFE9GZKVGwpj7rJDY2kiMkr08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XygiAMM4hUa1tOflAPHl0JATi7jWItCOjCSodTsnq1sWLRtK/hPaMP+NXsx+CMAglVnfMdxUU/vFsB+5lHg9hNaV/dzKqW/LCCtV2cenivxXWjHxq/p5YsXeHF/T79k3juDkrdq7x903EA3H1t2frUVVpifFTB3THyvsZrM/X18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnnI2Pxd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE6BC32781;
-	Tue, 25 Jun 2024 09:58:28 +0000 (UTC)
+	 MIME-Version; b=a4nqk9wHWnbq+pU4mc2j+tM4jfIZBM7MYbEU14Kz2zuasJ1dQTyBprGmhrR1HzOyfZpiaUGHtchlfKcV6YqnLUHqrUDFu2GpHwxzYzbY2fRAqPT7tz5qvKPGhKbv9W3UCToFYvEd1a1EB6JWfNpuQo4oZZo7ms8jguYcgd7Pwv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLwlZmTv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5D4C32781;
+	Tue, 25 Jun 2024 09:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309509;
-	bh=vdoRClPUaNSzkd5LNWHGDTU9YBWqOat7NAzVp//1+FY=;
+	s=korg; t=1719309089;
+	bh=NxE1BDarfzUbvXoOrStFE9GZKVGwpj7rJDY2kiMkr08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnnI2PxdWzPllK33B1k/s0D8lx+xeVHMgvpic/+yKBJz5s81p3Ur+R0n6nmK9DpPb
-	 k2613YXY4JU2SgH7gtsi1+VOR+/hkYmdJqP9jNaljFzsBvhHPR8NaxhvaqftOwIxCH
-	 d3L5lmdStOpPxT8BhE9xFwdvoBqDCLiD9OWQuVqo=
+	b=YLwlZmTvEY8SliHuE5mLpvqrqqPCvNxggA2f+42qN3tYS1R+IEiKW/h4to69a9+ap
+	 RtznWB/3cX8MU6NFTYre7/DSAeihzs2JzYU7e2BWL207XIV5D3I3gxJZtQrCZ0rNJC
+	 PKp7DCvXW7Cg8G4Q7zWxju5wHP3OcmbUeGmLboik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Simon Horman <horms@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/131] selftests/bpf: Fix flaky test btf_map_in_map/lookup_update
+Subject: [PATCH 6.6 092/192] selftests: openvswitch: Use bash as interpreter
 Date: Tue, 25 Jun 2024 11:32:44 +0200
-Message-ID: <20240625085526.295401291@linuxfoundation.org>
+Message-ID: <20240625085540.708770680@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 14bb1e8c8d4ad5d9d2febb7d19c70a3cf536e1e5 ]
+[ Upstream commit e2b447c9a1bba718f9c07513a1e8958209e862a1 ]
 
-Recently, I frequently hit the following test failure:
+openvswitch.sh makes use of substitutions of the form ${ns:0:1}, to
+obtain the first character of $ns. Empirically, this is works with bash
+but not dash. When run with dash these evaluate to an empty string and
+printing an error to stdout.
 
-  [root@arch-fb-vm1 bpf]# ./test_progs -n 33/1
-  test_lookup_update:PASS:skel_open 0 nsec
-  [...]
-  test_lookup_update:PASS:sync_rcu 0 nsec
-  test_lookup_update:FAIL:map1_leak inner_map1 leaked!
-  #33/1    btf_map_in_map/lookup_update:FAIL
-  #33      btf_map_in_map:FAIL
+ # dash -c 'ns=client; echo "${ns:0:1}"' 2>error
+ # cat error
+ dash: 1: Bad substitution
+ # bash -c 'ns=client; echo "${ns:0:1}"' 2>error
+ c
+ # cat error
 
-In the test, after map is closed and then after two rcu grace periods,
-it is assumed that map_id is not available to user space.
+This leads to tests that neither pass nor fail.
+F.e.
 
-But the above assumption cannot be guaranteed. After zero or one
-or two rcu grace periods in different siturations, the actual
-freeing-map-work is put into a workqueue. Later on, when the work
-is dequeued, the map will be actually freed.
-See bpf_map_put() in kernel/bpf/syscall.c.
+ TEST: arp_ping                                                      [START]
+ adding sandbox 'test_arp_ping'
+ Adding DP/Bridge IF: sbx:test_arp_ping dp:arpping {, , }
+ create namespaces
+ ./openvswitch.sh: 282: eval: Bad substitution
+ TEST: ct_connect_v4                                                 [START]
+ adding sandbox 'test_ct_connect_v4'
+ Adding DP/Bridge IF: sbx:test_ct_connect_v4 dp:ct4 {, , }
+ ./openvswitch.sh: 322: eval: Bad substitution
+ create namespaces
 
-By using workqueue, there is no ganrantee that map will be actually
-freed after a couple of rcu grace periods. This patch removed
-such map leak detection and then the test can pass consistently.
+Resolve this by making openvswitch.sh a bash script.
 
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240322061353.632136-1-yonghong.song@linux.dev
+Fixes: 918423fda910 ("selftests: openvswitch: add an initial flow programming case")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://lore.kernel.org/r/20240617-ovs-selftest-bash-v1-1-7ae6ccd3617b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/btf_map_in_map.c | 26 +------------------
- 1 file changed, 1 insertion(+), 25 deletions(-)
+ tools/testing/selftests/net/openvswitch/openvswitch.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-index eb90a6b8850d2..f4d753185001a 100644
---- a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-@@ -25,7 +25,7 @@ static void test_lookup_update(void)
- 	int map1_fd, map2_fd, map3_fd, map4_fd, map5_fd, map1_id, map2_id;
- 	int outer_arr_fd, outer_hash_fd, outer_arr_dyn_fd;
- 	struct test_btf_map_in_map *skel;
--	int err, key = 0, val, i, fd;
-+	int err, key = 0, val, i;
- 
- 	skel = test_btf_map_in_map__open_and_load();
- 	if (CHECK(!skel, "skel_open", "failed to open&load skeleton\n"))
-@@ -102,30 +102,6 @@ static void test_lookup_update(void)
- 	CHECK(map1_id == 0, "map1_id", "failed to get ID 1\n");
- 	CHECK(map2_id == 0, "map2_id", "failed to get ID 2\n");
- 
--	test_btf_map_in_map__destroy(skel);
--	skel = NULL;
--
--	/* we need to either wait for or force synchronize_rcu(), before
--	 * checking for "still exists" condition, otherwise map could still be
--	 * resolvable by ID, causing false positives.
--	 *
--	 * Older kernels (5.8 and earlier) freed map only after two
--	 * synchronize_rcu()s, so trigger two, to be entirely sure.
--	 */
--	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
--	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
--
--	fd = bpf_map_get_fd_by_id(map1_id);
--	if (CHECK(fd >= 0, "map1_leak", "inner_map1 leaked!\n")) {
--		close(fd);
--		goto cleanup;
--	}
--	fd = bpf_map_get_fd_by_id(map2_id);
--	if (CHECK(fd >= 0, "map2_leak", "inner_map2 leaked!\n")) {
--		close(fd);
--		goto cleanup;
--	}
--
- cleanup:
- 	test_btf_map_in_map__destroy(skel);
- }
+diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+index 36e40256ab92a..bab7436c68348 100755
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
+ #
+ # OVS kernel module self tests
 -- 
 2.43.0
 
