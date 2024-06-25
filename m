@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-55486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25F49163D0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:50:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C349163D6
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADC7428C32A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:50:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A43491C21C08
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A147A149DF4;
-	Tue, 25 Jun 2024 09:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFC1149E03;
+	Tue, 25 Jun 2024 09:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWOn0b7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taJmBpro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF7A149DE9;
-	Tue, 25 Jun 2024 09:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69502149C4C;
+	Tue, 25 Jun 2024 09:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309045; cv=none; b=XBcHUM2oEBlES6aHAlHqI//qJ9y/y3cr6TXB9rR/hJRXDTM4AJJ0UxLq+cHFBxHqbi704k+uYz1QkdllCTpNMTTjPYZKTkfSTWjBb/7VRH7IAwwGGp77MOoOfMXGbAJikNPlwcuZ7yetBaoBePzbrFKcJqT5QDc9g675Q4EHh10=
+	t=1719309060; cv=none; b=nUmPnfXs+3T9cBh756Sl1CpTFI5HyWbI24KHDcmOR2ouvvFur+ZVtS816va0srZmUe2f8bKG5aVsvlcKfDAv8WKxaJk5DCLTZFY3tuJKW0v369bGY6EZVYM2DSr03yMiJhPexgMwRkKQu23dUVKnpz8YSXKU9mxbXEPvkhP2TeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309045; c=relaxed/simple;
-	bh=RSBtGZPfiKtPTdGrlbWvz9mBL7F1ah09w5XeHvBaFz8=;
+	s=arc-20240116; t=1719309060; c=relaxed/simple;
+	bh=4W0rQ5t5pPyEyVcQWT8T+HpWa2L5n4K3A1v7uaIqPmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmhsnWeW3hX2joBUyWZaK96mJWby5Chalvojb1bf8dF/M2oMG/HUTo6xYsgRKkuESiGJytlxWN30tJRSVZbDvw1pHZPOvLId6TzyTsIeqZ9ezNggvpwtS1Agt90/nNRtO7aZOibHV15huBFHI76isqojtWwD/ytZKJnCV/efx24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWOn0b7n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1741C32781;
-	Tue, 25 Jun 2024 09:50:44 +0000 (UTC)
+	 MIME-Version; b=WQGXcAujkWDlqqoxTK2kBX0NifSRojfxBEk8RFo+byklCxMyCCbeWXAYz9tWp5ZEeyXFcIXhVUDbUNgUdDRemZtnrnOY7ArVRGd/w3OC0EUpTT2hRKrYUNy4RJivtwkauBocjgNg3xgdR9UhvQjX36EcyzMDMotNmEn2L9DNxqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taJmBpro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC0BC32781;
+	Tue, 25 Jun 2024 09:50:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309045;
-	bh=RSBtGZPfiKtPTdGrlbWvz9mBL7F1ah09w5XeHvBaFz8=;
+	s=korg; t=1719309060;
+	bh=4W0rQ5t5pPyEyVcQWT8T+HpWa2L5n4K3A1v7uaIqPmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HWOn0b7nA2DxAqrC5fDBarwjd1SVQswIk8pVBCZac0QJKBGDW1I9y6K1pCyFfgRqm
-	 gnoSbzzDnHCG2lqypveZCOSyKHicUcjGepQ5bmQR3xhpOmpIoQirecsTQHGtlluWwH
-	 NmRCNbq1bsLztpfP1SEsZC8I83TSF6P+2D819e2E=
+	b=taJmBprogitd9CDvtxccdCeIKECpK1E9kwnX6mazH2F0NJNQopRyW2hBVvYhOeg+m
+	 QQfA3fxSMMRoc7b/zzCmcNSpqYRIUE+qNCMeGvOLF37fMPbzmNFU+DU4MMGcl334qU
+	 01CHwcnhA31UoIW7LjFm14/9NoCqxLJs6bobZcEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/192] usb: dwc3: pci: Dont set "linux,phy_charger_detect" property on Lenovo Yoga Tab2 1380
-Date: Tue, 25 Jun 2024 11:32:01 +0200
-Message-ID: <20240625085539.052042006@linuxfoundation.org>
+Subject: [PATCH 6.6 050/192] usb: typec: ucsi_glink: drop special handling for CCI_BUSY
+Date: Tue, 25 Jun 2024 11:32:02 +0200
+Message-ID: <20240625085539.090274607@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
 References: <20240625085537.150087723@linuxfoundation.org>
@@ -66,65 +66,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 0fb782b5d5c462b2518b3b4fe7d652114c28d613 ]
+[ Upstream commit 1a395af9d53c6240bf7799abc43b4dc292ca9dd0 ]
 
-The Lenovo Yoga Tablet 2 Pro 1380 model is the exception to the rule that
-devices which use the Crystal Cove PMIC without using ACPI for battery and
-AC power_supply class support use the USB-phy for charger detection.
+Newer Qualcomm platforms (sm8450+) successfully handle busy state and
+send the Command Completion after sending the Busy state. Older devices
+have firmware bug and can not continue after sending the CCI_BUSY state,
+but the command that leads to CCI_BUSY is already forbidden by the
+NO_PARTNER_PDOS quirk.
 
-Unlike the Lenovo Yoga Tablet 2 830 / 1050 models this model has an extra
-LC824206XA Micro USB switch which does the charger detection.
+Follow other UCSI glue drivers and drop special handling for CCI_BUSY
+event. Let the UCSI core properly handle this state.
 
-Add a DMI quirk to not set the "linux,phy_charger_detect" property on
-the 1380 model. This quirk matches on the BIOS version to differentiate
-the 1380 model from the 830 and 1050 models which otherwise have
-the same DMI strings.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240406140127.17885-1-hdegoede@redhat.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240408-qcom-ucsi-fixes-bis-v1-3-716c145ca4b1@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi_glink.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-pci.c b/drivers/usb/dwc3/dwc3-pci.c
-index 497deed38c0c1..9ef821ca2fc71 100644
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -8,6 +8,7 @@
-  *	    Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-  */
+diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
+index 894622b6556a6..ee239a6b8f61a 100644
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -175,7 +175,8 @@ static int pmic_glink_ucsi_sync_write(struct ucsi *__ucsi, unsigned int offset,
+ 	left = wait_for_completion_timeout(&ucsi->sync_ack, 5 * HZ);
+ 	if (!left) {
+ 		dev_err(ucsi->dev, "timeout waiting for UCSI sync write response\n");
+-		ret = -ETIMEDOUT;
++		/* return 0 here and let core UCSI code handle the CCI_BUSY */
++		ret = 0;
+ 	} else if (ucsi->sync_val) {
+ 		dev_err(ucsi->dev, "sync write returned: %d\n", ucsi->sync_val);
+ 	}
+@@ -242,10 +243,7 @@ static void pmic_glink_ucsi_notify(struct work_struct *work)
+ 		ucsi_connector_change(ucsi->ucsi, con_num);
+ 	}
  
-+#include <linux/dmi.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/slab.h>
-@@ -220,6 +221,7 @@ static int dwc3_pci_quirks(struct dwc3_pci *dwc,
- 
- 		if (pdev->device == PCI_DEVICE_ID_INTEL_BYT) {
- 			struct gpio_desc *gpio;
-+			const char *bios_ver;
- 			int ret;
- 
- 			/* On BYT the FW does not always enable the refclock */
-@@ -277,8 +279,12 @@ static int dwc3_pci_quirks(struct dwc3_pci *dwc,
- 			 * detection. These can be identified by them _not_
- 			 * using the standard ACPI battery and ac drivers.
- 			 */
-+			bios_ver = dmi_get_system_info(DMI_BIOS_VERSION);
- 			if (acpi_dev_present("INT33FD", "1", 2) &&
--			    acpi_quirk_skip_acpi_ac_and_battery()) {
-+			    acpi_quirk_skip_acpi_ac_and_battery() &&
-+			    /* Lenovo Yoga Tablet 2 Pro 1380 uses LC824206XA instead */
-+			    !(bios_ver &&
-+			      strstarts(bios_ver, "BLADE_21.X64.0005.R00.1504101516"))) {
- 				dev_info(&pdev->dev, "Using TUSB1211 phy for charger detection\n");
- 				swnode = &dwc3_pci_intel_phy_charger_detect_swnode;
- 			}
+-	if (ucsi->sync_pending && cci & UCSI_CCI_BUSY) {
+-		ucsi->sync_val = -EBUSY;
+-		complete(&ucsi->sync_ack);
+-	} else if (ucsi->sync_pending &&
++	if (ucsi->sync_pending &&
+ 		   (cci & (UCSI_CCI_ACK_COMPLETE | UCSI_CCI_COMMAND_COMPLETE))) {
+ 		complete(&ucsi->sync_ack);
+ 	}
 -- 
 2.43.0
 
