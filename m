@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-55696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A2BF9164C7
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0712C91644C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B2EC1C2030F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A86C228358F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76415149C4F;
-	Tue, 25 Jun 2024 10:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB22C149DF4;
+	Tue, 25 Jun 2024 09:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvOtfQis"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRxY5pyP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AD31465B7;
-	Tue, 25 Jun 2024 10:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10B914A090;
+	Tue, 25 Jun 2024 09:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309668; cv=none; b=YMslmBpNzyCb1nZ1dLvvF39TmkkXP7zT9JJdzecBiUTrvbzqKWZRnPAIDcfwmaXW0uFAMaXTrJLnDpyUbtgzs0M8AWuu2WTJfRXwN7JmHvbQ2S8gI7dNzsEwsrsbxvkFu7Tih8ifbdc2ExJhmUwWaFEuCs5FFU30Ib89v/lOhqU=
+	t=1719309341; cv=none; b=UGzI6TkRzdMFUpYbw+t37k3cT43StAJBUITy+aAEYCN7gDneXenJH93eJvbjNY7HbKSnvFppjJzIl9AJx6i6YJcinndeUzxSPD+1ONVDaOK0MvptuTbxU+jd15On3J6cSaVvUSCs1EehnLIjpcXCyxbi8ai/EFL954y0KxscIXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309668; c=relaxed/simple;
-	bh=/n6L01Gzv74lRE9qRtQl4/C8U9gl/L1Ao+Ap0j9hUuE=;
+	s=arc-20240116; t=1719309341; c=relaxed/simple;
+	bh=sMxV0u7XHxF/Yfks5X8PbalLxKI8oZs+6Jkohv+ROWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hhqOYAmmtJWGAvQF2VOCV7RmuE0KixhszFfWjIaLni2PSVumLUmOQ0iD7rdjHkw0a3j3/jeZnoq7/5RNmGmoNV1sZxyii+HroDM0ptTvMSHcztCdyPeOP6tp5zOrtl68ntiaWov5I9tikV0fy/Osh+dfJYsN2BZNbV9MkZu2u0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvOtfQis; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07D5C32781;
-	Tue, 25 Jun 2024 10:01:07 +0000 (UTC)
+	 MIME-Version; b=B2jayAQq/qsGnFRc40I7pJQApnAN5cMIpQ/WQCFBKPrBRAOlvU+wIOQLu+Apj6eXmV+vjbQuAp1tEGGzfJyMgHa+2kEv5nFP4C+I0e3VqAOwm/uK8aEIL/HsI820UFKm2n2BaPlff96XxEbNJfVWx5p3BkLZ3dzOHGTDPCqRQeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRxY5pyP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2396AC32781;
+	Tue, 25 Jun 2024 09:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309668;
-	bh=/n6L01Gzv74lRE9qRtQl4/C8U9gl/L1Ao+Ap0j9hUuE=;
+	s=korg; t=1719309341;
+	bh=sMxV0u7XHxF/Yfks5X8PbalLxKI8oZs+6Jkohv+ROWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LvOtfQisxr8Z8Yp12CwIZTaXOPrBG/Tb5PWMGQEdqsUxXuTifbgYcd9B8RMy+w7wW
-	 cfq5ybZHLlNCsEXrvN+M1K55p6vV54tYRtV3UiGdtd1WLh2yg2UEzjjux33XROs4ht
-	 qL9P06ECUP7SWk67RcsX60x/VmmDrcnpYWQ6GQt4=
+	b=hRxY5pyPA5OcRirpDEo8CNJpij2fC2IwwXLeLnzCpJmIZJkw2ofvHnssLqnmKJ3YD
+	 ah7p5Oib+fMTISpuKymxSOSkmmsqR5foBX1Nlc90a7A74rsZKRekr9x2mVcBNkPVZG
+	 NeD0yTlb2t3NHw37dtpVjn7klfU7FSCj+Iz1GSi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 093/131] MIPS: dts: bcm63268: Add missing properties to the TWD node
+	Christoph Hellwig <hch@lst.de>,
+	Josef Bacik <jbacik@fb.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Markus Pargmann <mpa@pengutronix.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 176/192] nbd: Improve the documentation of the locking assumptions
 Date: Tue, 25 Jun 2024 11:34:08 +0200
-Message-ID: <20240625085529.472950894@linuxfoundation.org>
+Message-ID: <20240625085543.915962245@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +64,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 24b333a866a10d4be47b9968b9c05a3e9f326ff5 upstream.
+[ Upstream commit 2a6751e052ab4789630bc889c814037068723bc1 ]
 
-We currently have a DTC warning with the current DTS due to the lack of
-a suitable #address-cells and #size-cells property:
+Document locking assumptions with lockdep_assert_held() instead of source
+code comments. The advantage of lockdep_assert_held() is that it is
+verified at runtime if lockdep is enabled in the kernel config.
 
-  DTC     arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb
-arch/mips/boot/dts/brcm/bcm63268.dtsi:115.5-22: Warning (reg_format): /ubus/timer-mfd@10000080/timer@0:reg: property has invalid length (8 bytes) (#address-cells == 2, #size-cells == 1)
-arch/mips/boot/dts/brcm/bcm63268.dtsi:120.5-22: Warning (reg_format): /ubus/timer-mfd@10000080/watchdog@1c:reg: property has invalid length (8 bytes) (#address-cells == 2, #size-cells == 1)
-arch/mips/boot/dts/brcm/bcm63268.dtsi:111.4-35: Warning (ranges_format): /ubus/timer-mfd@10000080:ranges: "ranges" property has invalid length (12 bytes) (parent #address-cells == 1, child #address-cells == 2, #size-cells == 1)
-
-Fixes: d3db4b96ab7f ("mips: dts: bcm63268: add TWD block timer")
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Josef Bacik <jbacik@fb.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Cc: Markus Pargmann <mpa@pengutronix.de>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240510202313.25209-4-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: e56d4b633fff ("nbd: Fix signal handling")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/brcm/bcm63268.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/nbd.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/mips/boot/dts/brcm/bcm63268.dtsi
-+++ b/arch/mips/boot/dts/brcm/bcm63268.dtsi
-@@ -109,6 +109,8 @@
- 			compatible = "brcm,bcm7038-twd", "simple-mfd", "syscon";
- 			reg = <0x10000080 0x30>;
- 			ranges = <0x0 0x10000080 0x30>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index df738eab02433..a906674f71147 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -569,7 +569,6 @@ static inline int was_interrupted(int result)
+ 	return result == -ERESTARTSYS || result == -EINTR;
+ }
  
- 			wdt: watchdog@1c {
- 				compatible = "brcm,bcm7038-wdt";
+-/* always call with the tx_lock held */
+ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+ {
+ 	struct request *req = blk_mq_rq_from_pdu(cmd);
+@@ -586,6 +585,9 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+ 	u32 nbd_cmd_flags = 0;
+ 	int sent = nsock->sent, skip = 0;
+ 
++	lockdep_assert_held(&cmd->lock);
++	lockdep_assert_held(&nsock->tx_lock);
++
+ 	iov_iter_kvec(&from, ITER_SOURCE, &iov, 1, sizeof(request));
+ 
+ 	type = req_to_nbd_cmd_type(req);
+@@ -996,6 +998,8 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ 	struct nbd_sock *nsock;
+ 	int ret;
+ 
++	lockdep_assert_held(&cmd->lock);
++
+ 	config = nbd_get_config_unlocked(nbd);
+ 	if (!config) {
+ 		dev_err_ratelimited(disk_to_dev(nbd->disk),
+-- 
+2.43.0
+
 
 
 
