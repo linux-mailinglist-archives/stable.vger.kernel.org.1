@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-55554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7B0916424
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:54:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76CC99164A2
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFDD01C20971
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:54:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2A8EB21F16
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A5214A092;
-	Tue, 25 Jun 2024 09:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D22D149C4F;
+	Tue, 25 Jun 2024 09:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="teXr4DaA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qojWyft7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819CD149DEF;
-	Tue, 25 Jun 2024 09:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BEB31465A8;
+	Tue, 25 Jun 2024 09:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309245; cv=none; b=kQrTptKdR3XbaprVOSEbKg5oqeWl+0XcFTjXM14SoI7jaB53GmMGGfggU0cF9NO40XQ7R3/alaA7OUBIX8bdbkuHny8dYdFcdDKQydjetD4rMTCPqnkU853JhumAjqCOlIWpoAvxNcRj+jp+sveX+46kXKPAsnZ0Ujk527eh04g=
+	t=1719309571; cv=none; b=bH326WONytt7FL9PI84HFY//ka8g47BX79/Ot17xmnDixx1SIKldGYUXbo6wAq9O1nIY/yxk5MmDNwJ20vyw/zDb2zy2lVCA71B0fCHvsIjwHi0V76gPKIBBi02BZj6By6CvjCdvTK0B6Bh71rBto9ISCc1XHMvFjjE+kZo/R4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309245; c=relaxed/simple;
-	bh=z2S5YdNjfCP9nwNFNU6L5+0JmyosQ094GtfePxkJxEU=;
+	s=arc-20240116; t=1719309571; c=relaxed/simple;
+	bh=H9DZYQQhImSBbZQYbVlMHIC23z5vDOnCDz+/2k/k5io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dao77zPGI5x/Covtn0PSAkaVEsYWXY9dh6p1K+IXR4QapcRrIGVuskBKWoXmvq4+f4gGwJqvmNnLNu1mCk8ptUozsTQqTPjJWy6u44ObrpWYPFeBAhRmZSjnnQfQR2hjCDCrvuDNS/ss/3LOQpentDKuIQ61vfUETajj2ISyrgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=teXr4DaA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A011CC32781;
-	Tue, 25 Jun 2024 09:54:04 +0000 (UTC)
+	 MIME-Version; b=GNn8uTgkchObiZ5E/VTYiu0JoA3ctOq5rE2120lFSOv5WYMZlYHyqIpRdzGES0QoZ7nY5HTs43YbEO3XyNTwJVOIK5cpgYu8+IgiRbp/SOjlNx4fgPM+dSLgZn6Ii44C/wMzhg8QzzpW7hOzXn0H63L8suGeXtd4Jo1GLiini0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qojWyft7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8147CC32781;
+	Tue, 25 Jun 2024 09:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309245;
-	bh=z2S5YdNjfCP9nwNFNU6L5+0JmyosQ094GtfePxkJxEU=;
+	s=korg; t=1719309570;
+	bh=H9DZYQQhImSBbZQYbVlMHIC23z5vDOnCDz+/2k/k5io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=teXr4DaAyz2UOlz4pDN+fhFNahMbYf/ojOQswz2bs1l8yq3NeFzWbNasLA0m0ln2S
-	 49Gg8AD8LSbKo0bICl46suPcSo1gmg5r0OtdyWDdHug4JQZPt0o1rP3FcpzsNLx5/Q
-	 gm4mS9YrwaxT8r2YwyGupzThhXdczfUbSl9WQbIM=
+	b=qojWyft7AZSaeva2Hi5LPoU9/6k0ZC6Vw52fTq57TujU5bkV9gW6wyUguBrjjsEfL
+	 okJagKpO6sJbo8zzeCVEoNOkKgwszu//USWBZTC6jMQT50DrdR3Lw1Tj1Pgwhhcqj3
+	 JocyFrvTg8Unby6UFdLQ9AH5cpM2pA5Eum2SXx/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.6 143/192] KVM: arm64: Disassociate vcpus from redistributor region on teardown
+	Stefan Wahren <wahrenst@gmx.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 060/131] qca_spi: Make interrupt remembering atomic
 Date: Tue, 25 Jun 2024 11:33:35 +0200
-Message-ID: <20240625085542.647900536@linuxfoundation.org>
+Message-ID: <20240625085528.229230738@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit 0d92e4a7ffd5c42b9fa864692f82476c0bf8bcc8 upstream.
+[ Upstream commit 2d7198278ece01818cd95a3beffbdf8b2a353fa0 ]
 
-When tearing down a redistributor region, make sure we don't have
-any dangling pointer to that region stored in a vcpu.
+The whole mechanism to remember occurred SPI interrupts is not atomic,
+which could lead to unexpected behavior. So fix this by using atomic bit
+operations instead.
 
-Fixes: e5a35635464b ("kvm: arm64: vgic-v3: Introduce vgic_v3_free_redist_region()")
-Reported-by: Alexander Potapenko <glider@google.com>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240605175637.1635653-1-maz@kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 291ab06ecf67 ("net: qualcomm: new Ethernet over SPI driver for QCA7000")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20240614145030.7781-1-wahrenst@gmx.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-init.c    |    2 +-
- arch/arm64/kvm/vgic/vgic-mmio-v3.c |   15 +++++++++++++--
- arch/arm64/kvm/vgic/vgic.h         |    2 +-
- 3 files changed, 15 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/qualcomm/qca_debug.c |  6 ++----
+ drivers/net/ethernet/qualcomm/qca_spi.c   | 16 ++++++++--------
+ drivers/net/ethernet/qualcomm/qca_spi.h   |  3 +--
+ 3 files changed, 11 insertions(+), 14 deletions(-)
 
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -355,7 +355,7 @@ static void kvm_vgic_dist_destroy(struct
+diff --git a/drivers/net/ethernet/qualcomm/qca_debug.c b/drivers/net/ethernet/qualcomm/qca_debug.c
+index a739c06ede4e7..972d8f52c5a21 100644
+--- a/drivers/net/ethernet/qualcomm/qca_debug.c
++++ b/drivers/net/ethernet/qualcomm/qca_debug.c
+@@ -111,10 +111,8 @@ qcaspi_info_show(struct seq_file *s, void *what)
  
- 	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
- 		list_for_each_entry_safe(rdreg, next, &dist->rd_regions, list)
--			vgic_v3_free_redist_region(rdreg);
-+			vgic_v3_free_redist_region(kvm, rdreg);
- 		INIT_LIST_HEAD(&dist->rd_regions);
- 	} else {
- 		dist->vgic_cpu_base = VGIC_ADDR_UNDEF;
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -942,8 +942,19 @@ free:
- 	return ret;
- }
+ 	seq_printf(s, "IRQ              : %d\n",
+ 		   qca->spi_dev->irq);
+-	seq_printf(s, "INTR REQ         : %u\n",
+-		   qca->intr_req);
+-	seq_printf(s, "INTR SVC         : %u\n",
+-		   qca->intr_svc);
++	seq_printf(s, "INTR             : %lx\n",
++		   qca->intr);
  
--void vgic_v3_free_redist_region(struct vgic_redist_region *rdreg)
-+void vgic_v3_free_redist_region(struct kvm *kvm, struct vgic_redist_region *rdreg)
+ 	seq_printf(s, "SPI max speed    : %lu\n",
+ 		   (unsigned long)qca->spi_dev->max_speed_hz);
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.c b/drivers/net/ethernet/qualcomm/qca_spi.c
+index 82f5173a2cfd5..926a087ae1c62 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.c
++++ b/drivers/net/ethernet/qualcomm/qca_spi.c
+@@ -49,6 +49,8 @@
+ 
+ #define MAX_DMA_BURST_LEN 5000
+ 
++#define SPI_INTR 0
++
+ /*   Modules parameters     */
+ #define QCASPI_CLK_SPEED_MIN 1000000
+ #define QCASPI_CLK_SPEED_MAX 16000000
+@@ -593,14 +595,14 @@ qcaspi_spi_thread(void *data)
+ 			continue;
+ 		}
+ 
+-		if ((qca->intr_req == qca->intr_svc) &&
++		if (!test_bit(SPI_INTR, &qca->intr) &&
+ 		    !qca->txr.skb[qca->txr.head])
+ 			schedule();
+ 
+ 		set_current_state(TASK_RUNNING);
+ 
+-		netdev_dbg(qca->net_dev, "have work to do. int: %d, tx_skb: %p\n",
+-			   qca->intr_req - qca->intr_svc,
++		netdev_dbg(qca->net_dev, "have work to do. int: %lu, tx_skb: %p\n",
++			   qca->intr,
+ 			   qca->txr.skb[qca->txr.head]);
+ 
+ 		qcaspi_qca7k_sync(qca, QCASPI_EVENT_UPDATE);
+@@ -614,8 +616,7 @@ qcaspi_spi_thread(void *data)
+ 			msleep(QCASPI_QCA7K_REBOOT_TIME_MS);
+ 		}
+ 
+-		if (qca->intr_svc != qca->intr_req) {
+-			qca->intr_svc = qca->intr_req;
++		if (test_and_clear_bit(SPI_INTR, &qca->intr)) {
+ 			start_spi_intr_handling(qca, &intr_cause);
+ 
+ 			if (intr_cause & SPI_INT_CPU_ON) {
+@@ -677,7 +678,7 @@ qcaspi_intr_handler(int irq, void *data)
  {
-+	struct kvm_vcpu *vcpu;
-+	unsigned long c;
-+
-+	lockdep_assert_held(&kvm->arch.config_lock);
-+
-+	/* Garbage collect the region */
-+	kvm_for_each_vcpu(c, vcpu, kvm) {
-+		if (vcpu->arch.vgic_cpu.rdreg == rdreg)
-+			vcpu->arch.vgic_cpu.rdreg = NULL;
-+	}
-+
- 	list_del(&rdreg->list);
- 	kfree(rdreg);
- }
-@@ -968,7 +979,7 @@ int vgic_v3_set_redist_base(struct kvm *
+ 	struct qcaspi *qca = data;
  
- 		mutex_lock(&kvm->arch.config_lock);
- 		rdreg = vgic_v3_rdist_region_from_index(kvm, index);
--		vgic_v3_free_redist_region(rdreg);
-+		vgic_v3_free_redist_region(kvm, rdreg);
- 		mutex_unlock(&kvm->arch.config_lock);
- 		return ret;
- 	}
---- a/arch/arm64/kvm/vgic/vgic.h
-+++ b/arch/arm64/kvm/vgic/vgic.h
-@@ -310,7 +310,7 @@ vgic_v3_rd_region_size(struct kvm *kvm,
+-	qca->intr_req++;
++	set_bit(SPI_INTR, &qca->intr);
+ 	if (qca->spi_thread)
+ 		wake_up_process(qca->spi_thread);
  
- struct vgic_redist_region *vgic_v3_rdist_region_from_index(struct kvm *kvm,
- 							   u32 index);
--void vgic_v3_free_redist_region(struct vgic_redist_region *rdreg);
-+void vgic_v3_free_redist_region(struct kvm *kvm, struct vgic_redist_region *rdreg);
+@@ -693,8 +694,7 @@ qcaspi_netdev_open(struct net_device *dev)
+ 	if (!qca)
+ 		return -EINVAL;
  
- bool vgic_v3_rdist_overlap(struct kvm *kvm, gpa_t base, size_t size);
+-	qca->intr_req = 1;
+-	qca->intr_svc = 0;
++	set_bit(SPI_INTR, &qca->intr);
+ 	qca->sync = QCASPI_SYNC_UNKNOWN;
+ 	qcafrm_fsm_init_spi(&qca->frm_handle);
  
+diff --git a/drivers/net/ethernet/qualcomm/qca_spi.h b/drivers/net/ethernet/qualcomm/qca_spi.h
+index 3067356106f0b..58ad910068d4b 100644
+--- a/drivers/net/ethernet/qualcomm/qca_spi.h
++++ b/drivers/net/ethernet/qualcomm/qca_spi.h
+@@ -93,8 +93,7 @@ struct qcaspi {
+ 	struct qcafrm_handle frm_handle;
+ 	struct sk_buff *rx_skb;
+ 
+-	unsigned int intr_req;
+-	unsigned int intr_svc;
++	unsigned long intr;
+ 	u16 reset_count;
+ 
+ #ifdef CONFIG_DEBUG_FS
+-- 
+2.43.0
+
 
 
 
