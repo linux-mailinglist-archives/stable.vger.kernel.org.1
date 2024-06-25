@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-55667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 835329164A6
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5F0916429
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B576F1C20FED
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4127B285D4
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:54:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F8B149DE9;
-	Tue, 25 Jun 2024 09:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488DD14A616;
+	Tue, 25 Jun 2024 09:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivhFZQzh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mq0Ycc+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51841465A8;
-	Tue, 25 Jun 2024 09:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0758A14A60F;
+	Tue, 25 Jun 2024 09:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309582; cv=none; b=an/gaLouD+BVr94xUNTnm5gbYezy80yM/TXbIseR3o3FY336s1j2p0j1Nxj/nD9UIz65ZKpSmB9pS4vgCJRs0P2ImQc35py81T9bqAmO+5rIwQgWi4de2cnF6csYAIJRKG6f8tsyhVk6CiTZqg9nd4yHAoZuqtr1USNiVTXsTQ4=
+	t=1719309254; cv=none; b=C9mKdbSUchvGVobQRS2UZtjCc0iPKQYeADrD+1OaZ5VCBAo7PBgu5Zu3CgFmUMLr/4h5VEHp1AOgDXLHuChQroC4eMLAMeh0T68IgQBMZtIM9hheL5HmLxiQCVfu6Ixyuo9x2UFyBcNIHAPvHvPoXOddqKsBp+cbZmD6Mh62rNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309582; c=relaxed/simple;
-	bh=0Mj3qBRiYkA9q4CZqbJSyQJg3XVnIgIWuHgOEVm5krM=;
+	s=arc-20240116; t=1719309254; c=relaxed/simple;
+	bh=ra0ynV4hgCAATnK7poUTcc5YNWqKyT6lLd+/shDLiso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CbaffbLkZp7iqBPAvyxZBfv8A9bFJPsqRHmgOR9hhHjT9XxpYO9qoANs8nslOEFzEfmlFfowOV1IesaE6bsE7+rx5cWngl4/2xlN2ouzMdnoAqUXasoPhkUIMLqRbIrH7V+hKAgi6WqZmBj5wjCghwMvCTuxqyO6zfMMITCJp4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivhFZQzh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40672C32781;
-	Tue, 25 Jun 2024 09:59:42 +0000 (UTC)
+	 MIME-Version; b=lYWZidXK3rN0lU93kDfIv3/PB3O+8T/FLeGKWlqIgJrqzds1LKr/5n91TJzXFVEaxhr5uTZvl6GRO5VTh2UP+WgznmNwHhmIoGJrM/S2ECK9iEX7CTtnnWvWSKC2JIB20IvswEwn6uLU0D6RmrnA/cEpyOdHGNvQibv2EICMlps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mq0Ycc+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB0AC32786;
+	Tue, 25 Jun 2024 09:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309582;
-	bh=0Mj3qBRiYkA9q4CZqbJSyQJg3XVnIgIWuHgOEVm5krM=;
+	s=korg; t=1719309253;
+	bh=ra0ynV4hgCAATnK7poUTcc5YNWqKyT6lLd+/shDLiso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ivhFZQzhvb9f4fwx3qW/uo60FVPlW3FWJDZMqBiuJXnZ8Uz9oSDxGa1kAat9Y5khs
-	 8YAOgVSQJeckG5c8m7NHRkLUDgxbKM8nm34KhzOP3mUprYCc81GmodwXSE2006Xu3j
-	 oOYpm7J0Q8gJmFIt9F2Ndk9zlkn6m7O881guFdJk=
+	b=mq0Ycc+u8O/gfKU0pkN1e6AeqLL90zQ/DOgxtprnvwpZi/3vnHdGrBOeW70FRDNa0
+	 qqkzjlzZBpSu8nd5OZY29ds2IB0VokJspUm3HrneHRN8TFZh4SnEJZBA+JNFiQiOLD
+	 I9eZ392LKWRft9Vu7Ht0EIhNwTmMeb9fONF7Rijc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Liang <lxu@maxlinear.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/131] net: phy: mxl-gpy: enhance delay time required by loopback disable function
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.6 146/192] RDMA/mlx5: Remove extra unlock on error path
 Date: Tue, 25 Jun 2024 11:33:38 +0200
-Message-ID: <20240625085528.341380441@linuxfoundation.org>
+Message-ID: <20240625085542.762802971@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Liang <lxu@maxlinear.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 0ba13995be9b416ea1d3daaf3ba871a67f45899b ]
+commit c1eb2512596fb3542357bb6c34c286f5e0374538 upstream.
 
-GPY2xx devices need 3 seconds to fully switch out of loopback mode
-before it can safely re-enter loopback mode. Implement timeout mechanism
-to guarantee 3 seconds waited before re-enter loopback mode.
+The below commit lifted the locking out of this function but left this
+error path unlock behind resulting in unbalanced locking. Remove the
+missed unlock too.
 
-Signed-off-by: Xu Liang <lxu@maxlinear.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: c44d3ffd85db ("net: phy: mxl-gpy: Remove interrupt mask clearing from config_init")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 627122280c87 ("RDMA/mlx5: Add work to remove temporary entries from the cache")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://lore.kernel.org/r/78090c210c750f47219b95248f9f782f34548bb1.1716900410.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mxl-gpy.c | 35 +++++++++++++++++++++++++++++------
- 1 file changed, 29 insertions(+), 6 deletions(-)
+ drivers/infiniband/hw/mlx5/mr.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
-index cae24091fb6f7..1c4ad1ded2cb6 100644
---- a/drivers/net/phy/mxl-gpy.c
-+++ b/drivers/net/phy/mxl-gpy.c
-@@ -95,6 +95,13 @@ struct gpy_priv {
- 
- 	u8 fw_major;
- 	u8 fw_minor;
-+
-+	/* It takes 3 seconds to fully switch out of loopback mode before
-+	 * it can safely re-enter loopback mode. Record the time when
-+	 * loopback is disabled. Check and wait if necessary before loopback
-+	 * is enabled.
-+	 */
-+	u64 lb_dis_to;
- };
- 
- static const struct {
-@@ -682,18 +689,34 @@ static void gpy_get_wol(struct phy_device *phydev,
- 
- static int gpy_loopback(struct phy_device *phydev, bool enable)
- {
-+	struct gpy_priv *priv = phydev->priv;
-+	u16 set = 0;
- 	int ret;
- 
--	ret = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
--			 enable ? BMCR_LOOPBACK : 0);
--	if (!ret) {
--		/* It takes some time for PHY device to switch
--		 * into/out-of loopback mode.
-+	if (enable) {
-+		u64 now = get_jiffies_64();
-+
-+		/* wait until 3 seconds from last disable */
-+		if (time_before64(now, priv->lb_dis_to))
-+			msleep(jiffies64_to_msecs(priv->lb_dis_to - now));
-+
-+		set = BMCR_LOOPBACK;
-+	}
-+
-+	ret = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK, set);
-+	if (ret <= 0)
-+		return ret;
-+
-+	if (enable) {
-+		/* It takes some time for PHY device to switch into
-+		 * loopback mode.
- 		 */
- 		msleep(100);
-+	} else {
-+		priv->lb_dis_to = get_jiffies_64() + HZ * 3;
+--- a/drivers/infiniband/hw/mlx5/mr.c
++++ b/drivers/infiniband/hw/mlx5/mr.c
+@@ -697,10 +697,8 @@ static int mlx5_cache_ent_insert(struct
+ 			new = &((*new)->rb_left);
+ 		if (cmp < 0)
+ 			new = &((*new)->rb_right);
+-		if (cmp == 0) {
+-			mutex_unlock(&cache->rb_lock);
++		if (cmp == 0)
+ 			return -EEXIST;
+-		}
  	}
  
--	return ret;
-+	return 0;
- }
- 
- static int gpy115_loopback(struct phy_device *phydev, bool enable)
--- 
-2.43.0
-
+ 	/* Add new node and rebalance tree. */
 
 
 
