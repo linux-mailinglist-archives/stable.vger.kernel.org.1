@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-55587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3D0916450
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9C49164C0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EEC6B23136
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65C2C1F20F20
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E093214D2A0;
-	Tue, 25 Jun 2024 09:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274EC14A09F;
+	Tue, 25 Jun 2024 10:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIjNOkYG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ocmRFBx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D39D14D294;
-	Tue, 25 Jun 2024 09:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D961C149C4F;
+	Tue, 25 Jun 2024 10:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309344; cv=none; b=OSF5SvRvFHacV6RX4xnB/dQIoMz1mShIxxeJk4uRzpPsimzmBpf/2aPpZ0gIviCA3bArxUk4ZP8SghY+yIzMmoEBkSWrgwOsILBJKj5fc5ydxhMzpNP70tuHUvGtQmk2zsUebNv5h73djZu2G93bFYG/3p7mQ+Yc/0jmPP66pTI=
+	t=1719309644; cv=none; b=M77FaO7Kstb9cvq93v031L36myQaeUqs5L30SFVPWSI9U6hSuTyfOGFrKTNdriekN6jhw4fhelb6UE9zwNA/RADtk/nKzNIlA30lfmxPz4RkpSU87SZGspJRpEqCCnFRa4jRCihUE9QXvN3IhD9OcLaKfcoAU9qxbo4DrZ+lpUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309344; c=relaxed/simple;
-	bh=FEv67CNfgvamQv3usp42ck/XEBi4Lm8jQAT1C8CKA08=;
+	s=arc-20240116; t=1719309644; c=relaxed/simple;
+	bh=F+9a4HiwBgmBWcWNLacD+GbYAbNAbkUpRebGT4nsqsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E2TQvsj3tKr0jr/KRwMJqVxlUeYVfi5VoFKsEQ3NC+UY9AclsJ91IxulQIt0u+aZhfdsqHyU4C1ZPJDBLymi0LGqVralHUZyWNYr2O3eStp6XdFMIGW8UkBxc5bOkzqTybp2ESZhRE35QF+77RCC1CPCHFK19e2y/UCQP9bfzWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIjNOkYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6C8C4AF0D;
-	Tue, 25 Jun 2024 09:55:43 +0000 (UTC)
+	 MIME-Version; b=eQ9dXGh0n2iNoxTkABXPxdot3a0HfepU1JqxL/9F1kzJcSJDUuD1CZgADOV57uRqupaZ+ZYUefu/FHjztPHD1HOGQfLqaT1gB9gMYYasSCfX8IYI/CLcrFdXf5YR+kfYqKB/HFhXqJYQoXFCi/FDouhaxcY7e2pYt+PDgQU4ib8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ocmRFBx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A87DC32781;
+	Tue, 25 Jun 2024 10:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309344;
-	bh=FEv67CNfgvamQv3usp42ck/XEBi4Lm8jQAT1C8CKA08=;
+	s=korg; t=1719309644;
+	bh=F+9a4HiwBgmBWcWNLacD+GbYAbNAbkUpRebGT4nsqsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JIjNOkYGvmltu6MoTc3AEWZkNvL26VuFsGqiNFJhMRDidAti/6eW5/TESl56G7aCs
-	 XDBHhgUEFqm8XWIS6zIlsmme6wlPvEZ0XwJy1YxZi3knyEDSHyvuRYdclyh8iG4SIs
-	 26Qu4j53K55yy3b6jW6zIjHHupwa3IKKjvzUSo6Q=
+	b=0ocmRFBxisZkWl4u8NKrocZNw/vyuBNwhYnpq6yuwIzpobbRPXRAnhkYq+KqDr6bJ
+	 FYypwGqOK4dr3VhunMSPaUUlZnBUTImT/Oh9Hr8g+W9XI2DOSa5WwTe4WPuWBEsliC
+	 6ghKxbAejI62QjIV6SBCNTQfPlN1fJ8izOwFeZAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 150/192] ALSA: hda/realtek: Limit mic boost on N14AP7
-Date: Tue, 25 Jun 2024 11:33:42 +0200
-Message-ID: <20240625085542.917528788@linuxfoundation.org>
+	Shuang Li <shuali@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 068/131] sched: act_ct: add netns into the key of tcf_ct_flow_table
+Date: Tue, 25 Jun 2024 11:33:43 +0200
+Message-ID: <20240625085528.528783401@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +64,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit 86a433862912f52597263aa224a9ed82bcd533bf upstream.
+[ Upstream commit 88c67aeb14070bab61d3dd8be96c8b42ebcaf53a ]
 
-The internal mic boost on the N14AP7 is too high. Fix this by applying the
-ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine to limit the gain.
+zones_ht is a global hashtable for flow_table with zone as key. However,
+it does not consider netns when getting a flow_table from zones_ht in
+tcf_ct_init(), and it means an act_ct action in netns A may get a
+flow_table that belongs to netns B if it has the same zone value.
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240605153923.2837-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In Shuang's test with the TOPO:
+
+  tcf2_c <---> tcf2_sw1 <---> tcf2_sw2 <---> tcf2_s
+
+tcf2_sw1 and tcf2_sw2 saw the same flow and used the same flow table,
+which caused their ct entries entering unexpected states and the
+TCP connection not able to end normally.
+
+This patch fixes the issue simply by adding netns into the key of
+tcf_ct_flow_table so that an act_ct action gets a flow_table that
+belongs to its own netns in tcf_ct_init().
+
+Note that for easy coding we don't use tcf_ct_flow_table.nf_ft.net,
+as the ct_ft is initialized after inserting it to the hashtable in
+tcf_ct_flow_table_get() and also it requires to implement several
+functions in rhashtable_params including hashfn, obj_hashfn and
+obj_cmpfn.
+
+Fixes: 64ff70b80fd4 ("net/sched: act_ct: Offload established connections to flow table")
+Reported-by: Shuang Li <shuali@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/1db5b6cc6902c5fc6f8c6cbd85494a2008087be5.1718488050.git.lucien.xin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/sched/act_ct.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10316,6 +10316,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1b7d, 0xa831, "Ordissimo EVE2 ", ALC269VB_FIXUP_ORDISSIMO_EVE2), /* Also known as Malata PC-B1303 */
- 	SND_PCI_QUIRK(0x1c06, 0x2013, "Lemote A1802", ALC269_FIXUP_LEMOTE_A1802),
- 	SND_PCI_QUIRK(0x1c06, 0x2015, "Lemote A190X", ALC269_FIXUP_LEMOTE_A190X),
-+	SND_PCI_QUIRK(0x1c6c, 0x122a, "Positivo N14AP7", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x1c6c, 0x1251, "Positivo N14KP6-TG", ALC288_FIXUP_DELL1_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1d05, 0x1132, "TongFang PHxTxX1", ALC256_FIXUP_SET_COEF_DEFAULTS),
- 	SND_PCI_QUIRK(0x1d05, 0x1096, "TongFang GMxMRxx", ALC269_FIXUP_NO_SHUTUP),
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 84e15116f18c2..cd95a315fde82 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -39,21 +39,26 @@ static struct workqueue_struct *act_ct_wq;
+ static struct rhashtable zones_ht;
+ static DEFINE_MUTEX(zones_mutex);
+ 
++struct zones_ht_key {
++	struct net *net;
++	u16 zone;
++};
++
+ struct tcf_ct_flow_table {
+ 	struct rhash_head node; /* In zones tables */
+ 
+ 	struct rcu_work rwork;
+ 	struct nf_flowtable nf_ft;
+ 	refcount_t ref;
+-	u16 zone;
++	struct zones_ht_key key;
+ 
+ 	bool dying;
+ };
+ 
+ static const struct rhashtable_params zones_params = {
+ 	.head_offset = offsetof(struct tcf_ct_flow_table, node),
+-	.key_offset = offsetof(struct tcf_ct_flow_table, zone),
+-	.key_len = sizeof_field(struct tcf_ct_flow_table, zone),
++	.key_offset = offsetof(struct tcf_ct_flow_table, key),
++	.key_len = sizeof_field(struct tcf_ct_flow_table, key),
+ 	.automatic_shrinking = true,
+ };
+ 
+@@ -312,11 +317,12 @@ static struct nf_flowtable_type flowtable_ct = {
+ 
+ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
+ {
++	struct zones_ht_key key = { .net = net, .zone = params->zone };
+ 	struct tcf_ct_flow_table *ct_ft;
+ 	int err = -ENOMEM;
+ 
+ 	mutex_lock(&zones_mutex);
+-	ct_ft = rhashtable_lookup_fast(&zones_ht, &params->zone, zones_params);
++	ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params);
+ 	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref))
+ 		goto out_unlock;
+ 
+@@ -325,7 +331,7 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
+ 		goto err_alloc;
+ 	refcount_set(&ct_ft->ref, 1);
+ 
+-	ct_ft->zone = params->zone;
++	ct_ft->key = key;
+ 	err = rhashtable_insert_fast(&zones_ht, &ct_ft->node, zones_params);
+ 	if (err)
+ 		goto err_insert;
+-- 
+2.43.0
+
 
 
 
