@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-55491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C349163D6
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4703091632B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A43491C21C08
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F29BE1F2162C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFC1149E03;
-	Tue, 25 Jun 2024 09:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC50149C74;
+	Tue, 25 Jun 2024 09:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="taJmBpro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAuXBkB1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69502149C4C;
-	Tue, 25 Jun 2024 09:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA7A12EBEA;
+	Tue, 25 Jun 2024 09:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309060; cv=none; b=nUmPnfXs+3T9cBh756Sl1CpTFI5HyWbI24KHDcmOR2ouvvFur+ZVtS816va0srZmUe2f8bKG5aVsvlcKfDAv8WKxaJk5DCLTZFY3tuJKW0v369bGY6EZVYM2DSr03yMiJhPexgMwRkKQu23dUVKnpz8YSXKU9mxbXEPvkhP2TeA=
+	t=1719308615; cv=none; b=OQsNDVR5uDUQ9D83i8hauFH8GaatSsk/6tTg/X95LDLlPu4kc7JhUeiMPNGm0m7s1It//xmZDyb3d9Hbye07vGj4sGwn8by7dFVNXy9dTgHseDyQKxbYgQyqk+m4caY6w6bPOgToXWH2LeK03Y2ILu4Ea4gzZj6hZsreEa6zsfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309060; c=relaxed/simple;
-	bh=4W0rQ5t5pPyEyVcQWT8T+HpWa2L5n4K3A1v7uaIqPmA=;
+	s=arc-20240116; t=1719308615; c=relaxed/simple;
+	bh=f41zaNddtyN4sPaDIl9QSfStgYK4YIAHW7riVHaNZRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQGXcAujkWDlqqoxTK2kBX0NifSRojfxBEk8RFo+byklCxMyCCbeWXAYz9tWp5ZEeyXFcIXhVUDbUNgUdDRemZtnrnOY7ArVRGd/w3OC0EUpTT2hRKrYUNy4RJivtwkauBocjgNg3xgdR9UhvQjX36EcyzMDMotNmEn2L9DNxqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=taJmBpro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC0BC32781;
-	Tue, 25 Jun 2024 09:50:59 +0000 (UTC)
+	 MIME-Version; b=CfNpnPsLU+onX3iG3jcmRMXmhUIvJAp5wZ2tPNm3Zv+32wZYbs0NW/jrJ0p/yL3goE5kQBUGtU72kHI5qZMmsMLMtHKSJ/BO1a48uqyM1XSCj7QIaaiGMsWvlsT1i14nRjcahK/mxUCget0mHny7i9Et6gMocDiFtQerxmfdBoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAuXBkB1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7587C32781;
+	Tue, 25 Jun 2024 09:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309060;
-	bh=4W0rQ5t5pPyEyVcQWT8T+HpWa2L5n4K3A1v7uaIqPmA=;
+	s=korg; t=1719308615;
+	bh=f41zaNddtyN4sPaDIl9QSfStgYK4YIAHW7riVHaNZRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=taJmBprogitd9CDvtxccdCeIKECpK1E9kwnX6mazH2F0NJNQopRyW2hBVvYhOeg+m
-	 QQfA3fxSMMRoc7b/zzCmcNSpqYRIUE+qNCMeGvOLF37fMPbzmNFU+DU4MMGcl334qU
-	 01CHwcnhA31UoIW7LjFm14/9NoCqxLJs6bobZcEc=
+	b=gAuXBkB1u6Kik+euo4VGTXffUuII84uKgQ9BeGhrTfjyR4AiAsPxI4DzVFjKSk9D/
+	 KJNUMU4ZvCxVlktsYDrJ6Mw4pj0afrbPNdBK9txNOkrz8XWZ3yxLCYZ8s78H96m8Xg
+	 nb4qR+gfK4TYEfYVsnS5yU7kEs6IOUbzoDp3o5cQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Max Krummenacher <max.krummenacher@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/192] usb: typec: ucsi_glink: drop special handling for CCI_BUSY
+Subject: [PATCH 6.9 164/250] arm64: dts: freescale: imx8mm-verdin: enable hysteresis on slow input pin
 Date: Tue, 25 Jun 2024 11:32:02 +0200
-Message-ID: <20240625085539.090274607@linuxfoundation.org>
+Message-ID: <20240625085554.352994077@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Max Krummenacher <max.krummenacher@toradex.com>
 
-[ Upstream commit 1a395af9d53c6240bf7799abc43b4dc292ca9dd0 ]
+[ Upstream commit 67cc6125fb39902169707cb6277f010e56d4a40a ]
 
-Newer Qualcomm platforms (sm8450+) successfully handle busy state and
-send the Command Completion after sending the Busy state. Older devices
-have firmware bug and can not continue after sending the CCI_BUSY state,
-but the command that leads to CCI_BUSY is already forbidden by the
-NO_PARTNER_PDOS quirk.
+SODIMM 17 can be used as an edge triggered interrupt supplied from an
+off board source.
 
-Follow other UCSI glue drivers and drop special handling for CCI_BUSY
-event. Let the UCSI core properly handle this state.
+Enable hysteresis on the pinmuxing to increase immunity against noise
+on the signal.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240408-qcom-ucsi-fixes-bis-v1-3-716c145ca4b1@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 60f01b5b5c7d ("arm64: dts: imx8mm-verdin: update iomux configuration")
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_glink.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
-index 894622b6556a6..ee239a6b8f61a 100644
---- a/drivers/usb/typec/ucsi/ucsi_glink.c
-+++ b/drivers/usb/typec/ucsi/ucsi_glink.c
-@@ -175,7 +175,8 @@ static int pmic_glink_ucsi_sync_write(struct ucsi *__ucsi, unsigned int offset,
- 	left = wait_for_completion_timeout(&ucsi->sync_ack, 5 * HZ);
- 	if (!left) {
- 		dev_err(ucsi->dev, "timeout waiting for UCSI sync write response\n");
--		ret = -ETIMEDOUT;
-+		/* return 0 here and let core UCSI code handle the CCI_BUSY */
-+		ret = 0;
- 	} else if (ucsi->sync_val) {
- 		dev_err(ucsi->dev, "sync write returned: %d\n", ucsi->sync_val);
- 	}
-@@ -242,10 +243,7 @@ static void pmic_glink_ucsi_notify(struct work_struct *work)
- 		ucsi_connector_change(ucsi->ucsi, con_num);
- 	}
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+index 64e2f83f26498..1b1880c607cfe 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+@@ -930,7 +930,7 @@
+ 	/* Verdin GPIO_9_DSI (pulled-up as active-low) */
+ 	pinctrl_gpio_9_dsi: gpio9dsigrp {
+ 		fsl,pins =
+-			<MX8MM_IOMUXC_NAND_RE_B_GPIO3_IO15		0x146>;	/* SODIMM 17 */
++			<MX8MM_IOMUXC_NAND_RE_B_GPIO3_IO15		0x1c6>;	/* SODIMM 17 */
+ 	};
  
--	if (ucsi->sync_pending && cci & UCSI_CCI_BUSY) {
--		ucsi->sync_val = -EBUSY;
--		complete(&ucsi->sync_ack);
--	} else if (ucsi->sync_pending &&
-+	if (ucsi->sync_pending &&
- 		   (cci & (UCSI_CCI_ACK_COMPLETE | UCSI_CCI_COMMAND_COMPLETE))) {
- 		complete(&ucsi->sync_ack);
- 	}
+ 	/* Verdin GPIO_10_DSI (pulled-up as active-low) */
 -- 
 2.43.0
 
