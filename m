@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-55273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BE09162DF
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:40:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 224FA91637C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E32F289CC0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:40:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCAA61F22C31
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76B3148FF9;
-	Tue, 25 Jun 2024 09:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2971494AF;
+	Tue, 25 Jun 2024 09:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OvFin+AY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcI3w89e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8438413C90B;
-	Tue, 25 Jun 2024 09:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9FC1465A8;
+	Tue, 25 Jun 2024 09:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308421; cv=none; b=GfslPiyC5QySH+Xae290zZ5lFgJXDy9H+u8ZNCvuV6dkg9ucC23ykFeB+kei0T0Nje31eHAjnzMXBBqWGJEX3N5gPYgW5QSRnRWCO5VR2xohPMcAcfPv1ctkc4ADq1S/r0uNfVElH5NAxkXgnsDT2TamVkcZqkHllSeCj1KrViI=
+	t=1719308845; cv=none; b=WMD5cNUf8a+aV+DPUijUQX/M87/81zA0rdlp8WSesljJyW+WJ84euG8OPdthD4AKFHK1WS8YD+asfVB88n+dx5KPjQCktI+nMu9fWj8Xz8kc7xO9kGtHU7ciZUI1MQquUlnvxV74wXcRYUrw62E15VvHU9z6rHstLCFD7Vxb3/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308421; c=relaxed/simple;
-	bh=TupzBAfHt+HvBBWlLFfpQxtB746O7ilyUGqTM0LLiK0=;
+	s=arc-20240116; t=1719308845; c=relaxed/simple;
+	bh=DYwf7b/gwjG9yw8SyYCqk9W3YALtN0wNct2qgeePs4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7kMiVzA/sQCejr5FdgoXbQpfe3jsh6HsWLkP6E4CwCICxm1xjFOptilzYJ7qNHdsSGUmVtZi58NrTCRcQOUGKvvW+WMaQPOs1HydlxOBDWm/K55+j02vyDD9EK4o4BtPbhi53WGkSowDcigkkbPNVAtC1av5t1tNn42KaAGc9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OvFin+AY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00897C32781;
-	Tue, 25 Jun 2024 09:40:20 +0000 (UTC)
+	 MIME-Version; b=NTa7R/KgfnmOpQzTQjt53ch/jE1hDInaU0lFyHZ8/1wOfLOjXQGSyGTqxSmGBqJN7Ny1lQxiWEk8JiFga9obRS2X1uMCloUgVJA//U8/EokSbcWUudu2HdN+Q6MGxisQgy9TLkiOakTZ850bFIr4i9AlotV/6pUfoDqYwhQf1is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcI3w89e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9420FC32781;
+	Tue, 25 Jun 2024 09:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308421;
-	bh=TupzBAfHt+HvBBWlLFfpQxtB746O7ilyUGqTM0LLiK0=;
+	s=korg; t=1719308845;
+	bh=DYwf7b/gwjG9yw8SyYCqk9W3YALtN0wNct2qgeePs4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OvFin+AY/ErwrHoHz20VYX7vc/UUITVR/ejzSrUMcZo/ZcUQ0M8X5hvPT/JfBA5/q
-	 b6Gi2HHYAaRgJw2z42MOtgUA6iUpijzBySVs3FuL6oWbSBuAfKxHXd0XRyDxjpovkT
-	 AjUigHp7laNjTJd1N/v+8bXmAv7hZySeMvas0exM=
+	b=HcI3w89e5J3n52g4Zln+WSlc+an4Wn8PG3PtizzJX2FYbtl8/tR0A6GCDS/mAifDA
+	 JPU4ZERtKxhm24+69HoOpMJM1jXr3NrjP/hC2oPdY3F+OMJ68ZvRNEIuvnnOW97qDg
+	 8wLpvNtDf5TzJce/0cUzbARI5y6stz3pV7MpAUm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amritha Nambiar <amritha.nambiar@intel.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 115/250] netdev-genl: fix error codes when outputting XDP features
+Subject: [PATCH 6.6 001/192] fs/writeback: bail out if there is no more inodes for IO and queued once
 Date: Tue, 25 Jun 2024 11:31:13 +0200
-Message-ID: <20240625085552.485144791@linuxfoundation.org>
+Message-ID: <20240625085537.209869939@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit 7ed352d34f1a09a7659c53de07785115587499fe ]
+[ Upstream commit d92109891f21cf367caa2cc6dff11a4411d917f4 ]
 
--EINVAL will interrupt the dump. The correct error to return
-if we have more data to dump is -EMSGSIZE.
+For case there is no more inodes for IO in io list from last wb_writeback,
+We may bail out early even there is inode in dirty list should be written
+back. Only bail out when we queued once to avoid missing dirtied inode.
 
-Discovered by doing:
+This is from code reading...
 
-  for i in `seq 80`; do ip link add type veth; done
-  ./cli.py --dbg-small-recv 5300 --spec netdev.yaml --dump dev-get >> /dev/null
-  [...]
-     nl_len = 64 (48) nl_flags = 0x0 nl_type = 19
-     nl_len = 20 (4) nl_flags = 0x2 nl_type = 3
-  	error: -22
-
-Fixes: d3d854fd6a1d ("netdev-genl: create a simple family for netdev stuff")
-Reviewed-by: Amritha Nambiar <amritha.nambiar@intel.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240613213044.3675745-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Link: https://lore.kernel.org/r/20240228091958.288260-3-shikemeng@huaweicloud.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+[brauner@kernel.org: fold in memory corruption fix from Jan in [1]]
+Link: https://lore.kernel.org/r/20240405132346.bid7gibby3lxxhez@quack3 [1]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netdev-genl.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/fs-writeback.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/netdev-genl.c b/net/core/netdev-genl.c
-index 7004b3399c2b0..8c2d5a0bc208e 100644
---- a/net/core/netdev-genl.c
-+++ b/net/core/netdev-genl.c
-@@ -59,22 +59,22 @@ XDP_METADATA_KFUNC_xxx
- 	    nla_put_u64_64bit(rsp, NETDEV_A_DEV_XDP_RX_METADATA_FEATURES,
- 			      xdp_rx_meta, NETDEV_A_DEV_PAD) ||
- 	    nla_put_u64_64bit(rsp, NETDEV_A_DEV_XSK_FEATURES,
--			      xsk_features, NETDEV_A_DEV_PAD)) {
--		genlmsg_cancel(rsp, hdr);
--		return -EINVAL;
--	}
-+			      xsk_features, NETDEV_A_DEV_PAD))
-+		goto err_cancel_msg;
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 1767493dffda7..0a498bc60f557 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -2044,6 +2044,7 @@ static long wb_writeback(struct bdi_writeback *wb,
+ 	struct inode *inode;
+ 	long progress;
+ 	struct blk_plug plug;
++	bool queued = false;
  
- 	if (netdev->xdp_features & NETDEV_XDP_ACT_XSK_ZEROCOPY) {
- 		if (nla_put_u32(rsp, NETDEV_A_DEV_XDP_ZC_MAX_SEGS,
--				netdev->xdp_zc_max_segs)) {
--			genlmsg_cancel(rsp, hdr);
--			return -EINVAL;
--		}
-+				netdev->xdp_zc_max_segs))
-+			goto err_cancel_msg;
- 	}
+ 	blk_start_plug(&plug);
+ 	for (;;) {
+@@ -2086,8 +2087,10 @@ static long wb_writeback(struct bdi_writeback *wb,
+ 			dirtied_before = jiffies;
  
- 	genlmsg_end(rsp, hdr);
- 
- 	return 0;
-+
-+err_cancel_msg:
-+	genlmsg_cancel(rsp, hdr);
-+	return -EMSGSIZE;
- }
- 
- static void
+ 		trace_writeback_start(wb, work);
+-		if (list_empty(&wb->b_io))
++		if (list_empty(&wb->b_io)) {
+ 			queue_io(wb, work, dirtied_before);
++			queued = true;
++		}
+ 		if (work->sb)
+ 			progress = writeback_sb_inodes(work->sb, wb, work);
+ 		else
+@@ -2102,7 +2105,7 @@ static long wb_writeback(struct bdi_writeback *wb,
+ 		 * mean the overall work is done. So we keep looping as long
+ 		 * as made some progress on cleaning pages or inodes.
+ 		 */
+-		if (progress) {
++		if (progress || !queued) {
+ 			spin_unlock(&wb->list_lock);
+ 			continue;
+ 		}
 -- 
 2.43.0
 
