@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-55414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB18D916378
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD3E9164AB
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E20DB2246C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D2A1F22EA3
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04A9148315;
-	Tue, 25 Jun 2024 09:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3FA149E0A;
+	Tue, 25 Jun 2024 09:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHIFDOUg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEBBCGfA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C8901465A8;
-	Tue, 25 Jun 2024 09:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ECD1465A8;
+	Tue, 25 Jun 2024 09:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308833; cv=none; b=ogHqE1v8Ui1zVWQKf6N7fCV85FYD1dotHHE6v8G1mps/BsQIAv11sKQug3XrlFHfMxXMibWB7C4R9d+Q34aHgqhmBixhVii9MBNM3WvtyoFrDz+ihI5GQMv5QOhPROEha0TGN6cs8WAJ92wx3f+/hOde3pK8aCVbOFw3syhSjrU=
+	t=1719309597; cv=none; b=Usu0eDrMYS1bGDSlFTnZIkY/jE1+Wvd/Rsv+F1GvNQnIg0ofziTgnkZMh42otz/nWf65Zti8jnV4MxumOga8mrpQBx34pRCtZ7rzJLdgfUfUMmHQG6iapJ08ZkVgvmg0eNtKQEv5WhnejTLnlrAFW3n+hpXMUYm+wY0g98ZOCs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308833; c=relaxed/simple;
-	bh=1paC+FbiDd/UV6er4lkDCrLJgJ09P7nnT0QZKILwxrY=;
+	s=arc-20240116; t=1719309597; c=relaxed/simple;
+	bh=GO4C+GFBs0kGhqdiVYCTpHZw/Ah/dGNT0iyVjFelbaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHv+5ezYCg/hAabm37NsX92sjz8BAb+8/LS0z/4NiN3fVwu5fpyt1ms58GyNN93vqfAEcMMdikuld7n9eWiNmkPVHQfZNqFz7n9PekwKdxnW48WNDrEYxmCuA2c7IJw1P6T1aaY8fetzh2LpOY1pce3TpqlHr4k6I0ViuQ3kfDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHIFDOUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C47C32781;
-	Tue, 25 Jun 2024 09:47:12 +0000 (UTC)
+	 MIME-Version; b=jOvWw0jGixUFA7EHp4otET8l5CMWrMOmA4QqndO0IAMxjZjtwkI3GYZsZS8WWeKgYLM25HX+XITZ16F2laPrW4SikoXKtKfWxOrcR0W25pRSKOxOLXt+K5i3T+2oQO07Sg1PidDWHCqQ9antxumh3vFpizBazStuKRhUfaoj23o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEBBCGfA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60F4C32781;
+	Tue, 25 Jun 2024 09:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308833;
-	bh=1paC+FbiDd/UV6er4lkDCrLJgJ09P7nnT0QZKILwxrY=;
+	s=korg; t=1719309597;
+	bh=GO4C+GFBs0kGhqdiVYCTpHZw/Ah/dGNT0iyVjFelbaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IHIFDOUgJEJI1oJWvf6PqAPPH/WJIPdwn/EYy0rustbi0uMp9dsLdaCA7jhu5hCdR
-	 fu7nrHzQoF/f3WpYH9GYS6KY4RjKpssEYldT0lS6ksFKQ0zF4TPcIUw3DnZLER5q/G
-	 nj3pRtviyXVjgZ03+PGuNTz1i0l6itGdl1hXrj+o=
+	b=GEBBCGfAyGEdDjZEcZ7+PEZv0CA2Hrk0aTS/6XD/ZuTSaVXS/jMLZaOAZLHSf6Dby
+	 ONyoDH70hYEaP8ku73Jv8IpgAQUQlrse7b6E+OiWCJ07064fWDVeJ3i2+pJEaDVRQz
+	 2+zSCx0KoeVbLMXb45FLXXAh2TMCp5v5OUh+ZjqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	fhortner@yahoo.de,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.9 236/250] thermal: core: Change PM notifier priority to the minimum
+	Eric Heintzmann <heintzmann.eric@free.fr>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 039/131] PCI/PM: Avoid D3cold for HP Pavilion 17 PC/1972 PCIe Ports
 Date: Tue, 25 Jun 2024 11:33:14 +0200
-Message-ID: <20240625085557.113050590@linuxfoundation.org>
+Message-ID: <20240625085527.437953534@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 494c7d055081da066424706b28faa9a4c719d852 upstream.
+[ Upstream commit 256df20c590bf0e4d63ac69330cf23faddac3e08 ]
 
-It is reported that commit 5a5efdaffda5 ("thermal: core: Resume thermal
-zones asynchronously") causes battery data in sysfs on Thinkpad P1 Gen2
-to become invalid after a resume from S3 (and it is necessary to reboot
-the machine to restore correct battery data).  Some investigation into
-the problem indicated that it happened because, after the commit in
-question, the ACPI battery PM notifier ran in parallel with
-thermal_zone_device_resume() for one of the thermal zones which
-apparently confused the platform firmware on the affected system.
+Hewlett-Packard HP Pavilion 17 Notebook PC/1972 is an Intel Ivy Bridge
+system with a muxless AMD Radeon dGPU.  Attempting to use the dGPU fails
+with the following sequence:
 
-While the exact reason for the firmware confusion remains unclear, it
-is arguably not particularly relevant, and the expected behavior of the
-affected system can be restored by making the thermal PM notifier run
-at the lowest priority which avoids interference between work items
-spawned by it and the other PM notifiers (that will run before those
-work items now).
+  ACPI Error: Aborting method \AMD3._ON due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
+  radeon 0000:01:00.0: not ready 1023ms after resume; waiting
+  radeon 0000:01:00.0: not ready 2047ms after resume; waiting
+  radeon 0000:01:00.0: not ready 4095ms after resume; waiting
+  radeon 0000:01:00.0: not ready 8191ms after resume; waiting
+  radeon 0000:01:00.0: not ready 16383ms after resume; waiting
+  radeon 0000:01:00.0: not ready 32767ms after resume; waiting
+  radeon 0000:01:00.0: not ready 65535ms after resume; giving up
+  radeon 0000:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
 
-Fixes: 5a5efdaffda5 ("thermal: core: Resume thermal zones asynchronously")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218881
-Reported-by: fhortner@yahoo.de
-Tested-by: fhortner@yahoo.de
-Cc: 6.8+ <stable@vger.kernel.org> # 6.8+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The issue is that the Root Port the dGPU is connected to can't handle the
+transition from D3cold to D0 so the dGPU can't properly exit runtime PM.
+
+The existing logic in pci_bridge_d3_possible() checks for systems that are
+newer than 2015 to decide that D3 is safe.  This would nominally work for
+an Ivy Bridge system (which was discontinued in 2015), but this system
+appears to have continued to receive BIOS updates until 2017 and so this
+existing logic doesn't appropriately capture it.
+
+Add the system to bridge_d3_blacklist to prevent D3cold from being used.
+
+Link: https://lore.kernel.org/r/20240307163709.323-1-mario.limonciello@amd.com
+Reported-by: Eric Heintzmann <heintzmann.eric@free.fr>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3229
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Eric Heintzmann <heintzmann.eric@free.fr>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_core.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pci/pci.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -1633,6 +1633,12 @@ static int thermal_pm_notify(struct noti
- 
- static struct notifier_block thermal_pm_nb = {
- 	.notifier_call = thermal_pm_notify,
-+	/*
-+	 * Run at the lowest priority to avoid interference between the thermal
-+	 * zone resume work items spawned by thermal_pm_notify() and the other
-+	 * PM notifiers.
-+	 */
-+	.priority = INT_MIN,
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 67956bfebf879..0399204941dbe 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -2991,6 +2991,18 @@ static const struct dmi_system_id bridge_d3_blacklist[] = {
+ 			DMI_MATCH(DMI_BOARD_VERSION, "Continental Z2"),
+ 		},
+ 	},
++	{
++		/*
++		 * Changing power state of root port dGPU is connected fails
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3229
++		 */
++		.ident = "Hewlett-Packard HP Pavilion 17 Notebook PC/1972",
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Hewlett-Packard"),
++			DMI_MATCH(DMI_BOARD_NAME, "1972"),
++			DMI_MATCH(DMI_BOARD_VERSION, "95.33"),
++		},
++	},
+ #endif
+ 	{ }
  };
- 
- static int __init thermal_init(void)
+-- 
+2.43.0
+
 
 
 
