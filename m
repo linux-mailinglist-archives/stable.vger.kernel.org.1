@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-55434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D6D4916392
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3DE9162FF
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6FA31F2421F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAD2B1F21473
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FCB3149E16;
-	Tue, 25 Jun 2024 09:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9577214A090;
+	Tue, 25 Jun 2024 09:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1F7wLu8u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eY54CJ9F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D194149DEF;
-	Tue, 25 Jun 2024 09:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528E314A084;
+	Tue, 25 Jun 2024 09:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308892; cv=none; b=K0kT0QxeqkXKKYapVnt2Rmgm70GGXwwJnQh5iKKxt5C/10OkGXZsBtdtBloDaQ+rHcXkLeuE8YYnxVYPMtbQL+b7ED75b+jfrGqWRGwFxKjUnB2950YhH7WqAZQYR/h0zYmkcNRPi+yYI7C1PGAQU5d5/jLT7urq95Ua81Sz1Jw=
+	t=1719308489; cv=none; b=CXOzlSrviHDzfbNLJIXwu7PihNRd5PYxk3H2PRHEOaUVIWgw71Zvy+Qm8LJr8dJ59TKJbhFkPmwfzizbdvrCMNhmgk2IkuVpBOeYYF5Vv8V5/0uUBjsCMbWz6J144afustv1KSYvmwKnDxzqZo1oItSWV2yKroPWZQS+T95B3Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308892; c=relaxed/simple;
-	bh=6q6iNyTH6EwoTJ8hQFFQQjnwNKAc/7UvlPJj59WZMjQ=;
+	s=arc-20240116; t=1719308489; c=relaxed/simple;
+	bh=OaK9mMsKLEJNg6WshsBpjqj0sgN44rHoMSu5ht09D1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7Vr0/1FYlgbyrZC7tFDqyc9x1gnd23Zb5vyvVQ5CCMG1V0d3mpmAEyjRTIFtXhtTrP9OYxE9QnyNjVtySJiW3c+XFZDOcdTFJbjek99IeiaAewRu0+zY7SYTOa4mTVeDxPQbvMJTQd/FCyH5J5qgRjznj4AFdMBL7qvvy1utc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1F7wLu8u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF634C32781;
-	Tue, 25 Jun 2024 09:48:11 +0000 (UTC)
+	 MIME-Version; b=jzwJlH1oeonuPZNUxnDAatwnfMAE+n4tOKumTHDJ9KBXoHf7OaQnG0cBW4YG1OcEIgd6zM4NH2RLo5jC2Cyj0/UaYYZKacgCOzps/QzSMCYK+LQ+URsqZRNCsU2cmSaNYo7AoQZn43RlmtV/jFDZ0WSzllojwT4qi3+MNemTX5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eY54CJ9F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDAACC32781;
+	Tue, 25 Jun 2024 09:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308892;
-	bh=6q6iNyTH6EwoTJ8hQFFQQjnwNKAc/7UvlPJj59WZMjQ=;
+	s=korg; t=1719308489;
+	bh=OaK9mMsKLEJNg6WshsBpjqj0sgN44rHoMSu5ht09D1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1F7wLu8u1E/TWsncTt93OwQcwZT+0QEC1kf5zlOtdJZM73/iGCNrB3cErR393DhUu
-	 Wa9r493+EJYX3TRz1buZhVGLk13LUhGJZOxeeRdY7IqdLN8I/uPe/OT4abNAVWWpL1
-	 jXGX2XlYvvSnWqOEmqMHY8sNgNEyLniPYqPS92Lc=
+	b=eY54CJ9FQBTKE8F9NzJk6HVXYHi9nrsahKCa1GYXuxCBaJ0fm5cMvkcAbNZMZEbxB
+	 nxNhvEhAxBFie7XnNcY8ry4AbvIB/4VRHQB0EwMVfaThUhj8y7PneVxlnDbC0N2uAo
+	 xgwBWHXvKMw0KIQaNgurJC6e/grGzpSzmryKUDxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean OBrien <seobrien@chromium.org>,
-	Jiri Kosina <jkosina@suse.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/192] HID: Add quirk for Logitech Casa touchpad
+Subject: [PATCH 6.9 139/250] ice: Fix VSI list rule with ICE_SW_LKUP_LAST type
 Date: Tue, 25 Jun 2024 11:31:37 +0200
-Message-ID: <20240625085538.123314571@linuxfoundation.org>
+Message-ID: <20240625085553.395060446@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +68,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean O'Brien <seobrien@chromium.org>
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-[ Upstream commit dd2c345a94cfa3873cc20db87387ee509c345c1b ]
+[ Upstream commit 74382aebc9035470ec4c789bdb0d09d8c14f261e ]
 
-This device sometimes doesn't send touch release signals when moving
-from >=4 fingers to <4 fingers. Using MT_QUIRK_NOT_SEEN_MEANS_UP instead
-of MT_QUIRK_ALWAYS_VALID makes sure that no touches become stuck.
+Adding/updating VSI list rule, as well as allocating/freeing VSI list
+resource are called several times with type ICE_SW_LKUP_LAST, which fails
+because ice_update_vsi_list_rule() and ice_aq_alloc_free_vsi_list()
+consider it invalid. Allow calling these functions with ICE_SW_LKUP_LAST.
 
-MT_QUIRK_FORCE_MULTI_INPUT is not necessary for this device, but does no
-harm.
+This fixes at least one issue in switchdev mode, where the same rule with
+different action cannot be added, e.g.:
 
-Signed-off-by: Sean O'Brien <seobrien@chromium.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+  tc filter add dev $PF1 ingress protocol arp prio 0 flower skip_sw \
+    dst_mac ff:ff:ff:ff:ff:ff action mirred egress redirect dev $VF1_PR
+  tc filter add dev $PF1 ingress protocol arp prio 0 flower skip_sw \
+    dst_mac ff:ff:ff:ff:ff:ff action mirred egress redirect dev $VF2_PR
+
+Fixes: 0f94570d0cae ("ice: allow adding advanced rules")
+Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240618210206.981885-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h        | 1 +
- drivers/hid/hid-multitouch.c | 6 ++++++
- 2 files changed, 7 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_switch.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 0a4daff4846ff..89aef5874202c 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -820,6 +820,7 @@
- #define USB_DEVICE_ID_LOGITECH_AUDIOHUB 0x0a0e
- #define USB_DEVICE_ID_LOGITECH_T651	0xb00c
- #define USB_DEVICE_ID_LOGITECH_DINOVO_EDGE_KBD	0xb309
-+#define USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD	0xbb00
- #define USB_DEVICE_ID_LOGITECH_C007	0xc007
- #define USB_DEVICE_ID_LOGITECH_C077	0xc077
- #define USB_DEVICE_ID_LOGITECH_RECEIVER	0xc101
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 3816fd06bc953..17efe6e2a1a44 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2084,6 +2084,12 @@ static const struct hid_device_id mt_devices[] = {
- 			   USB_VENDOR_ID_LENOVO,
- 			   USB_DEVICE_ID_LENOVO_X12_TAB) },
- 
-+	/* Logitech devices */
-+	{ .driver_data = MT_CLS_NSMU,
-+		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
-+			USB_VENDOR_ID_LOGITECH,
-+			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
-+
- 	/* MosArt panels */
- 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
- 		MT_USB_DEVICE(USB_VENDOR_ID_ASUS,
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index b4ea935e83005..1472385eb68eb 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -1825,7 +1825,8 @@ ice_aq_alloc_free_vsi_list(struct ice_hw *hw, u16 *vsi_list_id,
+ 	    lkup_type == ICE_SW_LKUP_ETHERTYPE_MAC ||
+ 	    lkup_type == ICE_SW_LKUP_PROMISC ||
+ 	    lkup_type == ICE_SW_LKUP_PROMISC_VLAN ||
+-	    lkup_type == ICE_SW_LKUP_DFLT) {
++	    lkup_type == ICE_SW_LKUP_DFLT ||
++	    lkup_type == ICE_SW_LKUP_LAST) {
+ 		sw_buf->res_type = cpu_to_le16(ICE_AQC_RES_TYPE_VSI_LIST_REP);
+ 	} else if (lkup_type == ICE_SW_LKUP_VLAN) {
+ 		if (opc == ice_aqc_opc_alloc_res)
+@@ -2759,7 +2760,8 @@ ice_update_vsi_list_rule(struct ice_hw *hw, u16 *vsi_handle_arr, u16 num_vsi,
+ 	    lkup_type == ICE_SW_LKUP_ETHERTYPE_MAC ||
+ 	    lkup_type == ICE_SW_LKUP_PROMISC ||
+ 	    lkup_type == ICE_SW_LKUP_PROMISC_VLAN ||
+-	    lkup_type == ICE_SW_LKUP_DFLT)
++	    lkup_type == ICE_SW_LKUP_DFLT ||
++	    lkup_type == ICE_SW_LKUP_LAST)
+ 		rule_type = remove ? ICE_AQC_SW_RULES_T_VSI_LIST_CLEAR :
+ 			ICE_AQC_SW_RULES_T_VSI_LIST_SET;
+ 	else if (lkup_type == ICE_SW_LKUP_VLAN)
 -- 
 2.43.0
 
