@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BFD491639F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8FC91630A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 395D028C1EB
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7D5A1F21178
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA771487E9;
-	Tue, 25 Jun 2024 09:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6711494AF;
+	Tue, 25 Jun 2024 09:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0br/qLiT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="csOU7IVI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AA91465A8;
-	Tue, 25 Jun 2024 09:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A5012EBEA;
+	Tue, 25 Jun 2024 09:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308924; cv=none; b=M4EbAjoTu04b/3pl6IzFlruVCyUCm9+JdavfeHqoj94U3+rPtdjN4qlLAk1eg+3y6+5FnXhoGoWSzJVB6rItFnF6BOdNZhwXxsydM3DRSGivDUIQ7eHM9rb1bsb+weck3r2n4hxQJt0EXz/QGLEMDYCrWTRsB1Pa44l3eg+qFJQ=
+	t=1719308521; cv=none; b=td7tE2ND5A1Qzw8BvjMUzugsR9Dshyv9AaWLuc67dbh7ON/kA0iZhJlW9eY6HXP/tlMdzyoDZDVSsi/5lQX2Y/GMMfoa606zGkFsmjqmRGS/quvT41phdMIVt7z214R6dkm/WHXGlRy1BxtxOBQhkmBA8HJumpmupdnT6WZ0dQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308924; c=relaxed/simple;
-	bh=+PIkr1+XJlYh03lAvaN91MFmL6x1Rh4OFHWX+cE2GQM=;
+	s=arc-20240116; t=1719308521; c=relaxed/simple;
+	bh=AGW7K9NKEDzHl364AyiOnrZPWvg1ihNrW2f/JKm6LzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfu5w2ZUGGswC5uGBRyGFn2gmgnyOc2ZT271c0NIQ7DvCmU31zjwyVs7MY91HZGbT+C2vaJyGuOIx2RZ0m+3hZspKNYTDrni2Dh9mGW8BnnzA4dNR9K030yjpkWpnmPHwH9iUJF6uM5hT7g7RcCETfSBjM8FDIldox4Ktc2AAeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0br/qLiT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFCFC32781;
-	Tue, 25 Jun 2024 09:48:43 +0000 (UTC)
+	 MIME-Version; b=R0vpWR9JspJd/xyrThvfCNg9kyb4R4unvzlr3D3jLBczKqcB+DUr9nVn5w8KeE9uUJf/hzVih1Nn1quogqx/Et4C8N1iQg7amgDiAihmSBVr2p7koeW8/F+Swg1Vn85D9Qh+TD0BhKeW+63spRdXGnMQVptEITliaRsH4Nd77ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=csOU7IVI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244BAC32781;
+	Tue, 25 Jun 2024 09:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308924;
-	bh=+PIkr1+XJlYh03lAvaN91MFmL6x1Rh4OFHWX+cE2GQM=;
+	s=korg; t=1719308521;
+	bh=AGW7K9NKEDzHl364AyiOnrZPWvg1ihNrW2f/JKm6LzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0br/qLiTLwPu/IsveHq049IbH/c7gwB4OOBMinoI5NTMkHcnBzp/FOzRIvoXKC8lq
-	 CL4hM+hkHzUfvHLEPODJcybLiTeyjTC6QsSeQ2m/d5TMQcgyC7Muad2oK9mIV2HEiY
-	 61G1ZJkIweSzD8JuzzhGrUD3b8eSwyT74Wa5y2Xw=
+	b=csOU7IVITBTC2YGOzjBsrLKll7265NZehXLp2s22nryeBFPx1ZXqsAPYSUqi/v5xs
+	 hSuHvQjWI0tRgiCu+tSVu+/6eRnatFGCjHSi459wvlCEVuRNHranq+ac0wLZ9OW8kM
+	 Y1enbJQCGf7SDG8NuVqeSZtCSynRT7aYfUtvbm04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Honggang LI <honggangli@163.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/192] ALSA: hda/realtek: Add quirks for Lenovo 13X
+Subject: [PATCH 6.9 149/250] RDMA/rxe: Fix responder length checking for UD request packets
 Date: Tue, 25 Jun 2024 11:31:47 +0200
-Message-ID: <20240625085538.509798329@linuxfoundation.org>
+Message-ID: <20240625085553.777446570@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Honggang LI <honggangli@163.com>
 
-[ Upstream commit 25f46354dca912c84f1f79468fd636a94b8d287a ]
+[ Upstream commit f67ac0061c7614c1548963d3ef1ee1606efd8636 ]
 
-Add laptop using CS35L41 HDA.
-This laptop does not have _DSD, so require entries in property
-configuration table for cs35l41_hda driver.
+According to the IBA specification:
+If a UD request packet is detected with an invalid length, the request
+shall be an invalid request and it shall be silently dropped by
+the responder. The responder then waits for a new request packet.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Message-ID: <20240423162303.638211-3-sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+commit 689c5421bfe0 ("RDMA/rxe: Fix incorrect responder length checking")
+defers responder length check for UD QPs in function `copy_data`.
+But it introduces a regression issue for UD QPs.
+
+When the packet size is too large to fit in the receive buffer.
+`copy_data` will return error code -EINVAL. Then `send_data_in`
+will return RESPST_ERR_MALFORMED_WQE. UD QP will transfer into
+ERROR state.
+
+Fixes: 689c5421bfe0 ("RDMA/rxe: Fix incorrect responder length checking")
+Signed-off-by: Honggang LI <honggangli@163.com>
+Link: https://lore.kernel.org/r/20240523094617.141148-1-honggangli@163.com
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/sw/rxe/rxe_resp.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 2151fb1bd0de7..44478e0af1e41 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10257,6 +10257,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x3852, "Lenovo Yoga 7 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3855, "Legion 7 16ITHG6", ALC287_FIXUP_LEGION_16ITHG6),
-+	SND_PCI_QUIRK(0x17aa, 0x3865, "Lenovo 13X", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x17aa, 0x3866, "Lenovo 13X", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x387d, "Yoga S780-16 pro Quad AAC", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x387e, "Yoga S780-16 pro Quad YC", ALC287_FIXUP_TAS2781_I2C),
+diff --git a/drivers/infiniband/sw/rxe/rxe_resp.c b/drivers/infiniband/sw/rxe/rxe_resp.c
+index 963382f625d71..fa2b87c749292 100644
+--- a/drivers/infiniband/sw/rxe/rxe_resp.c
++++ b/drivers/infiniband/sw/rxe/rxe_resp.c
+@@ -354,6 +354,19 @@ static enum resp_states rxe_resp_check_length(struct rxe_qp *qp,
+ 	 * receive buffer later. For rmda operations additional
+ 	 * length checks are performed in check_rkey.
+ 	 */
++	if ((qp_type(qp) == IB_QPT_GSI) || (qp_type(qp) == IB_QPT_UD)) {
++		unsigned int payload = payload_size(pkt);
++		unsigned int recv_buffer_len = 0;
++		int i;
++
++		for (i = 0; i < qp->resp.wqe->dma.num_sge; i++)
++			recv_buffer_len += qp->resp.wqe->dma.sge[i].length;
++		if (payload + 40 > recv_buffer_len) {
++			rxe_dbg_qp(qp, "The receive buffer is too small for this UD packet.\n");
++			return RESPST_ERR_LENGTH;
++		}
++	}
++
+ 	if (pkt->mask & RXE_PAYLOAD_MASK && ((qp_type(qp) == IB_QPT_RC) ||
+ 					     (qp_type(qp) == IB_QPT_UC))) {
+ 		unsigned int mtu = qp->mtu;
 -- 
 2.43.0
 
