@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-55624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E80916479
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F704916352
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA005B2930B
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B20031C20E00
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A22714A092;
-	Tue, 25 Jun 2024 09:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB30C149DF8;
+	Tue, 25 Jun 2024 09:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGd9E4Cj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDf70H/Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB398146A67;
-	Tue, 25 Jun 2024 09:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A822E1465A8;
+	Tue, 25 Jun 2024 09:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309455; cv=none; b=UJ8Ut7NVO2DwDAXsmNyx33G3r0dGZNmSjjdPTKAwAlzKSl2w45BDLjzerQAKCYLqixj4eWX1mhErhdHR+S77j15heoska1duIGt+8iB8U7t2f/z/Q/i8LD0/egDEt/v66yLKEDVuRycD46MGaCKWgoGnMyM40Pg6obeaPXVgnNA=
+	t=1719308724; cv=none; b=J8vuMMzwcAybBtV5yYFCNfVrbeACXs8iqVsb6BVFXFiyPt/pROUGB+IbzJzyz3FbYl+w6cix5PHj36p1kK+5q12/7ob5tZyq4J+E+Q2tJdvqw9IhnGuTVbpQv2qOwjhxEVMHZRnr2hw8HviPKyaiCHMPIN1d48jiC1bb+NkpymM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309455; c=relaxed/simple;
-	bh=9+Ypk/SAGb//tNWv1db0tHIrxC/JU/h2XC1BpIAqDGM=;
+	s=arc-20240116; t=1719308724; c=relaxed/simple;
+	bh=hfl1LaoZByv/T3Lflb+wzHiNsMzzxYgOWc7Ji74OVh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iz/UUPZ6rmRes79QGKqVMeh4SnokmxfjIFMxz7ZPkLhG3JNShNSPBu0ZNYWS10ROfsY975sAdZt4uw7tc6pQR+ZyUQWlxJllVxut41K041i+am2ZBlxTBSrkBmuPMd8xl4BoCttToWomR5OWMI6uF75OnzSCEVWTKQK1ijQ9AhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGd9E4Cj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6244CC32781;
-	Tue, 25 Jun 2024 09:57:35 +0000 (UTC)
+	 MIME-Version; b=nOw5iWJwkl2kX3ffHTZHJJEguDNPv6ivtmWDbzxuyFPn08JlaVzelk+UPbAkBEw89oxlBfF9oS+gK/pZs4g78hkUVUSA2INT91gTKGKXP8xzq0UeuPwXZsbgAmqvljLAqmZQO8Ui3rpiSxF02/1RcORAeegS/D/45uXLGBOGzDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDf70H/Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23321C32781;
+	Tue, 25 Jun 2024 09:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309455;
-	bh=9+Ypk/SAGb//tNWv1db0tHIrxC/JU/h2XC1BpIAqDGM=;
+	s=korg; t=1719308724;
+	bh=hfl1LaoZByv/T3Lflb+wzHiNsMzzxYgOWc7Ji74OVh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sGd9E4CjC/IZiOXJjCK7z7f/NsiWSrG0NAwvTsIJHfv4tV2KX1DA/Qii5RejxL7z6
-	 HW4iFinUyJz982zTJjS7dpwD62TrXLu5vkVlHGsgNY41wRnQ91zadbsFfpzL+JUmAy
-	 TbmlCElgtBEI/NKM1h1Fh0eIImALIMXD3Qw+m0d4=
+	b=wDf70H/QHjsUnOYhESQTsGEazLlqr3szReeB63X3gQpOlqBMI3bQrmWVtZsRRBx+Z
+	 uV9MbuW4vqN1jZFgYnRpwS3SYwQ3St4Tggk9CC6BSkjFbFV/jBq9Cq6vQLZ224UBrT
+	 //kyou3NykrGCFyZtLC3nsSthEj9eVvTfdb/2XZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/131] HID: asus: fix more n-key report descriptors if n-key quirked
+	Aleksandr Nogikh <nogikh@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 218/250] kcov: dont lose track of remote references during softirqs
 Date: Tue, 25 Jun 2024 11:32:56 +0200
-Message-ID: <20240625085526.752517954@linuxfoundation.org>
+Message-ID: <20240625085556.420506672@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +66,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Aleksandr Nogikh <nogikh@google.com>
 
-[ Upstream commit 59d2f5b7392e988a391e6924e177c1a68d50223d ]
+commit 01c8f9806bde438ca1c8cbbc439f0a14a6694f6c upstream.
 
-Adjusts the report descriptor for N-Key devices to
-make the output count 0x01 which completely avoids
-the need for a block of filtering.
+In kcov_remote_start()/kcov_remote_stop(), we swap the previous KCOV
+metadata of the current task into a per-CPU variable.  However, the
+kcov_mode_enabled(mode) check is not sufficient in the case of remote KCOV
+coverage: current->kcov_mode always remains KCOV_MODE_DISABLED for remote
+KCOV objects.
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the original task that has invoked the KCOV_REMOTE_ENABLE ioctl happens
+to get interrupted and kcov_remote_start() is called, it ultimately leads
+to kcov_remote_stop() NOT restoring the original KCOV reference.  So when
+the task exits, all registered remote KCOV handles remain active forever.
+
+The most uncomfortable effect (at least for syzkaller) is that the bug
+prevents the reuse of the same /sys/kernel/debug/kcov descriptor.  If
+we obtain it in the parent process and then e.g.  drop some
+capabilities and continuously fork to execute individual programs, at
+some point current->kcov of the forked process is lost,
+kcov_task_exit() takes no action, and all KCOV_REMOTE_ENABLE ioctls
+calls from subsequent forks fail.
+
+And, yes, the efficiency is also affected if we keep on losing remote
+kcov objects.
+a) kcov_remote_map keeps on growing forever.
+b) (If I'm not mistaken), we're also not freeing the memory referenced
+by kcov->area.
+
+Fix it by introducing a special kcov_mode that is assigned to the task
+that owns a KCOV remote object.  It makes kcov_mode_enabled() return true
+and yet does not trigger coverage collection in __sanitizer_cov_trace_pc()
+and write_comp_data().
+
+[nogikh@google.com: replace WRITE_ONCE() with an ordinary assignment]
+  Link: https://lkml.kernel.org/r/20240614171221.2837584-1-nogikh@google.com
+Link: https://lkml.kernel.org/r/20240611133229.527822-1-nogikh@google.com
+Fixes: 5ff3b30ab57d ("kcov: collect coverage from interrupts")
+Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Tested-by: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Marco Elver <elver@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-asus.c | 49 ++++++++++++++++++++----------------------
- 1 file changed, 23 insertions(+), 26 deletions(-)
+ include/linux/kcov.h |    2 ++
+ kernel/kcov.c        |    1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index 220d6b2af4d3f..70f3495a22fc5 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -334,36 +334,20 @@ static int asus_raw_event(struct hid_device *hdev,
- 	if (drvdata->quirks & QUIRK_MEDION_E1239T)
- 		return asus_e1239t_event(drvdata, data, size);
+--- a/include/linux/kcov.h
++++ b/include/linux/kcov.h
+@@ -21,6 +21,8 @@ enum kcov_mode {
+ 	KCOV_MODE_TRACE_PC = 2,
+ 	/* Collecting comparison operands mode. */
+ 	KCOV_MODE_TRACE_CMP = 3,
++	/* The process owns a KCOV remote reference. */
++	KCOV_MODE_REMOTE = 4,
+ };
  
--	if (drvdata->quirks & QUIRK_USE_KBD_BACKLIGHT) {
-+	/*
-+	 * Skip these report ID, the device emits a continuous stream associated
-+	 * with the AURA mode it is in which looks like an 'echo'.
-+	 */
-+	if (report->id == FEATURE_KBD_LED_REPORT_ID1 || report->id == FEATURE_KBD_LED_REPORT_ID2)
-+		return -1;
-+	if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
- 		/*
--		 * Skip these report ID, the device emits a continuous stream associated
--		 * with the AURA mode it is in which looks like an 'echo'.
-+		 * G713 and G733 send these codes on some keypresses, depending on
-+		 * the key pressed it can trigger a shutdown event if not caught.
- 		*/
--		if (report->id == FEATURE_KBD_LED_REPORT_ID1 ||
--				report->id == FEATURE_KBD_LED_REPORT_ID2) {
-+		if (data[0] == 0x02 && data[1] == 0x30) {
- 			return -1;
--		/* Additional report filtering */
--		} else if (report->id == FEATURE_KBD_REPORT_ID) {
--			/*
--			 * G14 and G15 send these codes on some keypresses with no
--			 * discernable reason for doing so. We'll filter them out to avoid
--			 * unmapped warning messages later.
--			*/
--			if (data[1] == 0xea || data[1] == 0xec || data[1] == 0x02 ||
--					data[1] == 0x8a || data[1] == 0x9e) {
--				return -1;
--			}
- 		}
--		if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
--			/*
--			 * G713 and G733 send these codes on some keypresses, depending on
--			 * the key pressed it can trigger a shutdown event if not caught.
--			*/
--			if(data[0] == 0x02 && data[1] == 0x30) {
--				return -1;
--			}
--		}
--
- 	}
- 
- 	if (drvdata->quirks & QUIRK_ROG_CLAYMORE_II_KEYBOARD) {
-@@ -1262,6 +1246,19 @@ static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		rdesc[205] = 0x01;
- 	}
- 
-+	/* match many more n-key devices */
-+	if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
-+		for (int i = 0; i < *rsize + 1; i++) {
-+			/* offset to the count from 0x5a report part always 14 */
-+			if (rdesc[i] == 0x85 && rdesc[i + 1] == 0x5a &&
-+			    rdesc[i + 14] == 0x95 && rdesc[i + 15] == 0x05) {
-+				hid_info(hdev, "Fixing up Asus N-Key report descriptor\n");
-+				rdesc[i + 15] = 0x01;
-+				break;
-+			}
-+		}
-+	}
-+
- 	return rdesc;
- }
- 
--- 
-2.43.0
-
+ #define KCOV_IN_CTXSW	(1 << 30)
+--- a/kernel/kcov.c
++++ b/kernel/kcov.c
+@@ -631,6 +631,7 @@ static int kcov_ioctl_locked(struct kcov
+ 			return -EINVAL;
+ 		kcov->mode = mode;
+ 		t->kcov = kcov;
++	        t->kcov_mode = KCOV_MODE_REMOTE;
+ 		kcov->t = t;
+ 		kcov->remote = true;
+ 		kcov->remote_size = remote_arg->area_size;
 
 
 
