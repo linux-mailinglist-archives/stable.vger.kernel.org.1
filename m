@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 054BD9163F2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB5D3916477
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F7B2B273A7
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E038B23128
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A521494AF;
-	Tue, 25 Jun 2024 09:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4399914A097;
+	Tue, 25 Jun 2024 09:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jJGreIE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BroCx+zV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA4624B34;
-	Tue, 25 Jun 2024 09:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39CC14A092;
+	Tue, 25 Jun 2024 09:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309124; cv=none; b=o/WqL63P/5EHD7XUzKW0gXvKP22N1JzsqZIDP9e53zOstqGZJmibswWPRfy0TsEjUPv6MoG6PwpbiirMKpCn1UP6WK4krupkpG5sh4dmAtMnPLkQELiTGlXCUZTm+LoForLLBWRVRqc3/aryh5vOwo27g+xbqTpxbwgA+/hseeo=
+	t=1719309453; cv=none; b=BfcJVR4r0p9xRTXhuJXw+hJ0xyYmCPIyjMxnADdjpHDHzZqnV7mpt3phUc2wvpWRkTSFokVSLPErqx8u9lQ3DRB0pt1C42R9MPk+CTrp/RcIvJqYndsohSoD0YudXsNiXSNj3QaP+uiahZO1kCOT+enWNsoP63ft8cdP4COuzyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309124; c=relaxed/simple;
-	bh=JvBXihk22MuBiBkt7GbOFuOwgthZ/xBM3ijCaYzFJrE=;
+	s=arc-20240116; t=1719309453; c=relaxed/simple;
+	bh=Jcb93Vkw0hthwXq0pe9BUfqDDaGa8EswqA2RAVjl32Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iu4b4YUSlfUbvbvI3Aa82Gtvghlh9XtDUVg/cGiJKMLWEGke3znzqTVh9vTiBOpAftAhxNcPRbk74m9YwxpT/uyFkov1DrznT1KcQuPicAvtWMuy2k5fWzzJ9N56uMKZCZucnYBCinLD2E+BmOhG+80bcccUr5pBiFtc2e/+SkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jJGreIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2512AC32786;
-	Tue, 25 Jun 2024 09:52:03 +0000 (UTC)
+	 MIME-Version; b=HrUXuLk7Rem0QIfLbuKo8X7tcSZsPKEqDBNYKjoojOVsQqMkJ0sMBO2KlYZQmcTMYuBEeFbOboL/uI9FyEd7dvIhenFT+vonX5kNVSalZIhnGIAlR/RsUv/1GDQ9Cp+7PIhyxp/HHMbcfxYuDKQCdurvZcqzmBPB+RJdQD1Bnuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BroCx+zV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798AAC32781;
+	Tue, 25 Jun 2024 09:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309124;
-	bh=JvBXihk22MuBiBkt7GbOFuOwgthZ/xBM3ijCaYzFJrE=;
+	s=korg; t=1719309452;
+	bh=Jcb93Vkw0hthwXq0pe9BUfqDDaGa8EswqA2RAVjl32Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2jJGreIEp0TM2Ea2GzyQKdjm/PYNFsxXzYthqt0txfNO5H93dm7TtpH3yzpP44Q2P
-	 HK+BXTDor92e+wsfrOmOfvSc3MQVR2INZtFAR8wmX0tzdJuX3Gj99TXi8aL6G2tzRN
-	 3xGT17PBQnbZFqFpeMnDQ4UBBw5SQ6ZMc5Mo5kjI=
+	b=BroCx+zVh/Olo7fcjKdXqgfx5zkGqyejjMC3dUKD73sk7tcbxZNKOHSoYqpHTFtg3
+	 HNyaHMNYhG1FaOnoEnXrQj4F3aUi58XkwleMFfLIIltOWKuoCgbKIaQNuV/dC/aHEP
+	 Cr/Rpxuhp8GFR4O5Kj/iu2EPFcv6UNX4RFWh/O9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sean OBrien <seobrien@chromium.org>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/192] net: usb: rtl8150 fix unintiatilzed variables in rtl8150_get_link_ksettings
+Subject: [PATCH 6.1 020/131] HID: Add quirk for Logitech Casa touchpad
 Date: Tue, 25 Jun 2024 11:32:55 +0200
-Message-ID: <20240625085541.130872769@linuxfoundation.org>
+Message-ID: <20240625085526.714722023@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Sean O'Brien <seobrien@chromium.org>
 
-[ Upstream commit fba383985354e83474f95f36d7c65feb75dba19d ]
+[ Upstream commit dd2c345a94cfa3873cc20db87387ee509c345c1b ]
 
-This functions retrieves values by passing a pointer. As the function
-that retrieves them can fail before touching the pointers, the variables
-must be initialized.
+This device sometimes doesn't send touch release signals when moving
+from >=4 fingers to <4 fingers. Using MT_QUIRK_NOT_SEEN_MEANS_UP instead
+of MT_QUIRK_ALWAYS_VALID makes sure that no touches become stuck.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20240619132816.11526-1-oneukum@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+MT_QUIRK_FORCE_MULTI_INPUT is not necessary for this device, but does no
+harm.
+
+Signed-off-by: Sean O'Brien <seobrien@chromium.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/rtl8150.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 97afd7335d868..01a3b2417a540 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -778,7 +778,8 @@ static int rtl8150_get_link_ksettings(struct net_device *netdev,
- 				      struct ethtool_link_ksettings *ecmd)
- {
- 	rtl8150_t *dev = netdev_priv(netdev);
--	short lpa, bmcr;
-+	short lpa = 0;
-+	short bmcr = 0;
- 	u32 supported;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 405d88b08908d..97745a1f9c6f1 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -802,6 +802,7 @@
+ #define USB_DEVICE_ID_LOGITECH_AUDIOHUB 0x0a0e
+ #define USB_DEVICE_ID_LOGITECH_T651	0xb00c
+ #define USB_DEVICE_ID_LOGITECH_DINOVO_EDGE_KBD	0xb309
++#define USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD	0xbb00
+ #define USB_DEVICE_ID_LOGITECH_C007	0xc007
+ #define USB_DEVICE_ID_LOGITECH_C077	0xc077
+ #define USB_DEVICE_ID_LOGITECH_RECEIVER	0xc101
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 3816fd06bc953..17efe6e2a1a44 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2084,6 +2084,12 @@ static const struct hid_device_id mt_devices[] = {
+ 			   USB_VENDOR_ID_LENOVO,
+ 			   USB_DEVICE_ID_LENOVO_X12_TAB) },
  
- 	supported = (SUPPORTED_10baseT_Half |
++	/* Logitech devices */
++	{ .driver_data = MT_CLS_NSMU,
++		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
++			USB_VENDOR_ID_LOGITECH,
++			USB_DEVICE_ID_LOGITECH_CASA_TOUCHPAD) },
++
+ 	/* MosArt panels */
+ 	{ .driver_data = MT_CLS_CONFIDENCE_MINUS_ONE,
+ 		MT_USB_DEVICE(USB_VENDOR_ID_ASUS,
 -- 
 2.43.0
 
