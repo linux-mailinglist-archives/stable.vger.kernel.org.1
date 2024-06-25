@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-55546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A8A91641D
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:54:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D68E916372
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3684AB283F6
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:54:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FA391C20BD0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D6314A4D2;
-	Tue, 25 Jun 2024 09:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CCD1487E9;
+	Tue, 25 Jun 2024 09:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVf7osTY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ue3mN+3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86538149DF4;
-	Tue, 25 Jun 2024 09:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3001465A8;
+	Tue, 25 Jun 2024 09:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309221; cv=none; b=cSzmSOGHb4wAKs15MQpec7gR/On+nSjWKjs1RJl6+7jgxy7Twblw4hv6fdDzxScv9PTTAC1tAy6nYPp//HQLT8mfkKHamhBGSlIqWFlGQlLhtP1avvtc93xwXfALSiYpr7HLWqLe1vYE/UwbvgaNgy4xNRKzU3AsSEhCzzEudv0=
+	t=1719308818; cv=none; b=qnt6PI451nHvaAx8y0iocc8arITri8u+KaUklPUOwKOIPWKXfDcVJCWWFqxO0L773l9rImQEcyxpaKbLwyfe5f5HryIG0IIvRtoN6oo+L7ipJy23hPWSJY1XbOo5XAtvHGIEmktTW+ACF4lBDrhBWg1tvubGJBsNHJ6tTOr0/CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309221; c=relaxed/simple;
-	bh=QqHIiCpGIVkPSUZGKuQkyIOqd3SjY2GF8WVreUcUlp4=;
+	s=arc-20240116; t=1719308818; c=relaxed/simple;
+	bh=Q5mQcRtKcpnlV1TCnStJ6Zp7lnB8AbUIAkF+6ZQnwtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k9HgnezdOnX/H+lXlr+YcIR5tR4YhK11QbDe8luhWUcJHtQH1kTGUIPC25AdlgUnYzye3n1xB3hi9ey1B4hULkvr2xN5TvP5ZSnMSfILPII8g0zrFLazSGKmJQGiQ6qVTxRqTow9NduFsIQcdMFySY9jEpICgafmzn2jUlXP0W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVf7osTY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10054C32781;
-	Tue, 25 Jun 2024 09:53:40 +0000 (UTC)
+	 MIME-Version; b=Ij/Wi9YzyZukES5m9AD/hZUt/oqk2qD0oBkOrKGxcTyykVGnEMr3QGd6F2WXYXRG1Z30QToAqjiNUjdbuw8/I5jucis9N0x1C8iPGLrKhIHFezBVOHztuzpJVTM0VoJfM6DRIZ7RBeXBXF9L4hMDQg2coveeJ+MDaPDiwe/NWjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ue3mN+3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434E7C32781;
+	Tue, 25 Jun 2024 09:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309221;
-	bh=QqHIiCpGIVkPSUZGKuQkyIOqd3SjY2GF8WVreUcUlp4=;
+	s=korg; t=1719308818;
+	bh=Q5mQcRtKcpnlV1TCnStJ6Zp7lnB8AbUIAkF+6ZQnwtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AVf7osTY0EaLzW5BLzhKs+uW36Kb4xXej/3ClJnV6NO3WAJHeKh5nsrQeuDOSpZbY
-	 BmQ8WOThV3bJFp0ITfT0fTUoQZrP8VbTaTU3H47/AwaXGRsGWDQRygF64+xexhd+j6
-	 TpwU4HtB+UH9Q1p9kWMjhvFrAnHjgfGuReVej7UU=
+	b=Ue3mN+3NxIPF+N5czKnohBD/HjvfXA8Xnmv2mDNr9DyV3rksSo9qCIuKxeRUYcPXA
+	 ucUoEZtuoYLtEYhdW2v7ti0+lA4wvW04PYeY7mlBHSmCmDxj4yBFUdo86Itv0akUNb
+	 uswiuqaN38eeLIjGbbhuBo9Dj2FWqUzcFDVTshlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 136/192] btrfs: retry block group reclaim without infinite loop
+	Rafael Aquini <aquini@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.9 250/250] Revert "mm: mmap: allow for the maximum number of bits for randomizing mmap_base by default"
 Date: Tue, 25 Jun 2024 11:33:28 +0200
-Message-ID: <20240625085542.380239639@linuxfoundation.org>
+Message-ID: <20240625085557.645256639@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +65,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 4eb4e85c4f818491efc67e9373aa16b123c3f522 upstream.
+commit 14d7c92f8df9c0964ae6f8b813c1b3ac38120825 upstream.
 
-If inc_block_group_ro systematically fails (e.g. due to ETXTBUSY from
-swap) or btrfs_relocate_chunk systematically fails (from lack of
-space), then this worker becomes an infinite loop.
+This reverts commit 3afb76a66b5559a7b595155803ce23801558a7a9.
 
-At the very least, this strands the cleaner thread, but can also result
-in hung tasks/RCU stalls on PREEMPT_NONE kernels and if the
-reclaim_bgs_lock mutex is not contended.
+This was a wrongheaded workaround for an issue that had already been
+fixed much better by commit 4ef9ad19e176 ("mm: huge_memory: don't force
+huge page alignment on 32 bit").
 
-I believe the best long term fix is to manage reclaim via work queue,
-where we queue up a relocation on the triggering condition and re-queue
-on failure. In the meantime, this is an easy fix to apply to avoid the
-immediate pain.
+Asking users questions at kernel compile time that they can't make sense
+of is not a viable strategy.  And the fact that even the kernel VM
+maintainers apparently didn't catch that this "fix" is not a fix any
+more pretty much proves the point that people can't be expected to
+understand the implications of the question.
 
-Fixes: 7e2718099438 ("btrfs: reinsert BGs failed to reclaim")
-CC: stable@vger.kernel.org # 6.6+
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+It may well be the case that we could improve things further, and that
+__thp_get_unmapped_area() should take the mapping randomization into
+account even for 64-bit kernels.  Maybe we should not be so eager to use
+THP mappings.
+
+But in no case should this be a kernel config option.
+
+Cc: Rafael Aquini <aquini@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-group.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/Kconfig |   12 ------------
+ 1 file changed, 12 deletions(-)
 
---- a/fs/btrfs/block-group.c
-+++ b/fs/btrfs/block-group.c
-@@ -1788,6 +1788,7 @@ void btrfs_reclaim_bgs_work(struct work_
- 		container_of(work, struct btrfs_fs_info, reclaim_bgs_work);
- 	struct btrfs_block_group *bg;
- 	struct btrfs_space_info *space_info;
-+	LIST_HEAD(retry_list);
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -1029,21 +1029,10 @@ config ARCH_MMAP_RND_BITS_MAX
+ config ARCH_MMAP_RND_BITS_DEFAULT
+ 	int
  
- 	if (!test_bit(BTRFS_FS_OPEN, &fs_info->flags))
- 		return;
-@@ -1924,8 +1925,11 @@ void btrfs_reclaim_bgs_work(struct work_
- 		}
- 
- next:
--		if (ret)
--			btrfs_mark_bg_to_reclaim(bg);
-+		if (ret) {
-+			/* Refcount held by the reclaim_bgs list after splice. */
-+			btrfs_get_block_group(bg);
-+			list_add_tail(&bg->bg_list, &retry_list);
-+		}
- 		btrfs_put_block_group(bg);
- 
- 		mutex_unlock(&fs_info->reclaim_bgs_lock);
-@@ -1945,6 +1949,9 @@ next:
- 	spin_unlock(&fs_info->unused_bgs_lock);
- 	mutex_unlock(&fs_info->reclaim_bgs_lock);
- end:
-+	spin_lock(&fs_info->unused_bgs_lock);
-+	list_splice_tail(&retry_list, &fs_info->reclaim_bgs);
-+	spin_unlock(&fs_info->unused_bgs_lock);
- 	btrfs_exclop_finish(fs_info);
- 	sb_end_write(fs_info->sb);
- }
+-config FORCE_MAX_MMAP_RND_BITS
+-	bool "Force maximum number of bits to use for ASLR of mmap base address"
+-	default y if !64BIT
+-	help
+-	  ARCH_MMAP_RND_BITS and ARCH_MMAP_RND_COMPAT_BITS represent the number
+-	  of bits to use for ASLR and if no custom value is assigned (EXPERT)
+-	  then the architecture's lower bound (minimum) value is assumed.
+-	  This toggle changes that default assumption to assume the arch upper
+-	  bound (maximum) value instead.
+-
+ config ARCH_MMAP_RND_BITS
+ 	int "Number of bits to use for ASLR of mmap base address" if EXPERT
+ 	range ARCH_MMAP_RND_BITS_MIN ARCH_MMAP_RND_BITS_MAX
+ 	default ARCH_MMAP_RND_BITS_DEFAULT if ARCH_MMAP_RND_BITS_DEFAULT
+-	default ARCH_MMAP_RND_BITS_MAX if FORCE_MAX_MMAP_RND_BITS
+ 	default ARCH_MMAP_RND_BITS_MIN
+ 	depends on HAVE_ARCH_MMAP_RND_BITS
+ 	help
+@@ -1078,7 +1067,6 @@ config ARCH_MMAP_RND_COMPAT_BITS
+ 	int "Number of bits to use for ASLR of mmap base address for compatible applications" if EXPERT
+ 	range ARCH_MMAP_RND_COMPAT_BITS_MIN ARCH_MMAP_RND_COMPAT_BITS_MAX
+ 	default ARCH_MMAP_RND_COMPAT_BITS_DEFAULT if ARCH_MMAP_RND_COMPAT_BITS_DEFAULT
+-	default ARCH_MMAP_RND_COMPAT_BITS_MAX if FORCE_MAX_MMAP_RND_BITS
+ 	default ARCH_MMAP_RND_COMPAT_BITS_MIN
+ 	depends on HAVE_ARCH_MMAP_RND_COMPAT_BITS
+ 	help
 
 
 
