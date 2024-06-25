@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-55315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C798916312
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:42:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 155F89163A8
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F66F1C20315
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:42:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 971A11F2139D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B722C149E03;
-	Tue, 25 Jun 2024 09:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0B814A09F;
+	Tue, 25 Jun 2024 09:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYWDlq1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ougcvmnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749C812EBEA;
-	Tue, 25 Jun 2024 09:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9811465A8;
+	Tue, 25 Jun 2024 09:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308545; cv=none; b=BYX/1OSlqBN/6lFIUj+JLU5ZwGP1EZL0tn7clVSljDX3me7neqadugyU90n00AUTW3rEOG+sPee+TBPUzbwSuXhkKzZ6TxAUZ6J8AncGHWYHs5pRy8cvjtXCKJbLy9Nekfzuh9gmsPYKUBVoPoZO8aLurwHGOjYRcgU9FFIz7sI=
+	t=1719308951; cv=none; b=DEfaysxkINn4KaBlYX5GDLcE0a2ftF5DPmnYwPsTrq3rt0ldMYBGIhZMgooGbJndWARSmtYWrgMrvmCpOUM4m9s17iraFWKLhEFBv+r7fd5hI1p2g5sLGZ6U9zJghkkTr8WdION0Z0lo0qfeR+d3TAE3G4vUniYILPHDY4VcMh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308545; c=relaxed/simple;
-	bh=9FU8hqiqV3XsnU3TwGOaCrygrOhW4Rztyx8PbuI7LlA=;
+	s=arc-20240116; t=1719308951; c=relaxed/simple;
+	bh=UcTolom70+AjMi5uHO2FlCNeL6ecObY6GXkis8E5cwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WO9SZ2SL80jo1YLCppYgvE5jU+IxJS/fjDENx0IQO0EVLh2BvFROLmMUlXHU2Uev2npb40VldrhHYHWOA/xE2ZqrCHs0iZEL+t0b1wQlBmeTeJccaRv1VSXKS3UregpGfs+SMBx0/8v2FeltrgTlCo4zZaUSLNTP8kUrZg/SxC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYWDlq1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EEFBC4AF09;
-	Tue, 25 Jun 2024 09:42:24 +0000 (UTC)
+	 MIME-Version; b=AeFeNyP5HFfplPEkB2ECeuHI7RrbuE3pP4a+fDRtYHpcLTTVu4wm9Lm/S+JD7MWd2Jb7zeyzymzTCcIKyzfQsJrge/VexIuj6sCIdFAmUsZJUCDI8w5nFsIY3hqnfYD/0NjGS42FH12sK7qt+2gDAKAzLT8f3a3FyJQbsNziIGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ougcvmnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62059C4AF0B;
+	Tue, 25 Jun 2024 09:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308544;
-	bh=9FU8hqiqV3XsnU3TwGOaCrygrOhW4Rztyx8PbuI7LlA=;
+	s=korg; t=1719308950;
+	bh=UcTolom70+AjMi5uHO2FlCNeL6ecObY6GXkis8E5cwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RYWDlq1YrQT346cwIQxYWOIiL4aqShShohFAGltgBW0iOTMBZvsIeu1Y+jkmYvXFs
-	 W6oDmlWh8NnUOzZIRHsi/Y8E0O3bH49ZGQqGJH3WvF3mHro1hg7iC7OHELIPHBIwyD
-	 QByKpLT+cVDtkyEmdKzly1txL4Z6SYIrl8mGX71g=
+	b=ougcvmnlbvX3XY/8qZKCCHo1xI/c9fuv1VJTaZaXqenREyoA9/saLOpoXK7MyxVTL
+	 y47JjDYWgKBOuJPEZQWG6vQPOsOxY8/gmS9ZLj3Cm9tiNVLGa5SJgjpPVRomuaLDfR
+	 SWHRUA5GnrgHiClzdIRx+nhvnFe+jSMeanVhhd2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 157/250] dmaengine: ioatdma: Fix missing kmem_cache_destroy()
+Subject: [PATCH 6.6 043/192] ext4: fix uninitialized ratelimit_state->lock access in __ext4_fill_super()
 Date: Tue, 25 Jun 2024 11:31:55 +0200
-Message-ID: <20240625085554.088293144@linuxfoundation.org>
+Message-ID: <20240625085538.819665726@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 5422145d0b749ad554ada772133b9b20f9fb0ec8 ]
+[ Upstream commit b4b4fda34e535756f9e774fb2d09c4537b7dfd1c ]
 
-Fix missing kmem_cache_destroy() for ioat_sed_cache in
-ioat_exit_module().
+In the following concurrency we will access the uninitialized rs->lock:
 
-Noticed via:
+ext4_fill_super
+  ext4_register_sysfs
+   // sysfs registered msg_ratelimit_interval_ms
+                             // Other processes modify rs->interval to
+                             // non-zero via msg_ratelimit_interval_ms
+  ext4_orphan_cleanup
+    ext4_msg(sb, KERN_INFO, "Errors on filesystem, "
+      __ext4_msg
+        ___ratelimit(&(EXT4_SB(sb)->s_msg_ratelimit_state)
+          if (!rs->interval)  // do nothing if interval is 0
+            return 1;
+          raw_spin_trylock_irqsave(&rs->lock, flags)
+            raw_spin_trylock(lock)
+              _raw_spin_trylock
+                __raw_spin_trylock
+                  spin_acquire(&lock->dep_map, 0, 1, _RET_IP_)
+                    lock_acquire
+                      __lock_acquire
+                        register_lock_class
+                          assign_lock_key
+                            dump_stack();
+  ratelimit_state_init(&sbi->s_msg_ratelimit_state, 5 * HZ, 10);
+    raw_spin_lock_init(&rs->lock);
+    // init rs->lock here
 
-```
-modprobe ioatdma
-rmmod ioatdma
-modprobe ioatdma
-debugfs: Directory 'ioat_sed_ent' with parent 'slab' already present!
-```
+and get the following dump_stack:
 
-Fixes: c0f28ce66ecf ("dmaengine: ioatdma: move all the init routines")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Acked-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240514-ioatdma_fixes-v1-1-2776a0913254@yadro.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+=========================================================
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
+CPU: 12 PID: 753 Comm: mount Tainted: G E 6.7.0-rc6-next-20231222 #504
+[...]
+Call Trace:
+ dump_stack_lvl+0xc5/0x170
+ dump_stack+0x18/0x30
+ register_lock_class+0x740/0x7c0
+ __lock_acquire+0x69/0x13a0
+ lock_acquire+0x120/0x450
+ _raw_spin_trylock+0x98/0xd0
+ ___ratelimit+0xf6/0x220
+ __ext4_msg+0x7f/0x160 [ext4]
+ ext4_orphan_cleanup+0x665/0x740 [ext4]
+ __ext4_fill_super+0x21ea/0x2b10 [ext4]
+ ext4_fill_super+0x14d/0x360 [ext4]
+[...]
+=========================================================
+
+Normally interval is 0 until s_msg_ratelimit_state is initialized, so
+___ratelimit() does nothing. But registering sysfs precedes initializing
+rs->lock, so it is possible to change rs->interval to a non-zero value
+via the msg_ratelimit_interval_ms interface of sysfs while rs->lock is
+uninitialized, and then a call to ext4_msg triggers the problem by
+accessing an uninitialized rs->lock. Therefore register sysfs after all
+initializations are complete to avoid such problems.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240102133730.1098120-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ioat/init.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/super.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index cf688b0c8444c..e8f45a7fded43 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1449,6 +1449,7 @@ module_init(ioat_init_module);
- static void __exit ioat_exit_module(void)
- {
- 	pci_unregister_driver(&ioat_pci_driver);
-+	kmem_cache_destroy(ioat_sed_cache);
- 	kmem_cache_destroy(ioat_cache);
- }
- module_exit(ioat_exit_module);
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 83fc3f092a0c7..5baacb3058abd 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -5556,19 +5556,15 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 	if (err)
+ 		goto failed_mount6;
+ 
+-	err = ext4_register_sysfs(sb);
+-	if (err)
+-		goto failed_mount7;
+-
+ 	err = ext4_init_orphan_info(sb);
+ 	if (err)
+-		goto failed_mount8;
++		goto failed_mount7;
+ #ifdef CONFIG_QUOTA
+ 	/* Enable quota usage during mount. */
+ 	if (ext4_has_feature_quota(sb) && !sb_rdonly(sb)) {
+ 		err = ext4_enable_quotas(sb);
+ 		if (err)
+-			goto failed_mount9;
++			goto failed_mount8;
+ 	}
+ #endif  /* CONFIG_QUOTA */
+ 
+@@ -5594,7 +5590,7 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 		ext4_msg(sb, KERN_INFO, "recovery complete");
+ 		err = ext4_mark_recovery_complete(sb, es);
+ 		if (err)
+-			goto failed_mount10;
++			goto failed_mount9;
+ 	}
+ 
+ 	if (test_opt(sb, DISCARD) && !bdev_max_discard_sectors(sb->s_bdev))
+@@ -5611,15 +5607,17 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 	atomic_set(&sbi->s_warning_count, 0);
+ 	atomic_set(&sbi->s_msg_count, 0);
+ 
++	/* Register sysfs after all initializations are complete. */
++	err = ext4_register_sysfs(sb);
++	if (err)
++		goto failed_mount9;
++
+ 	return 0;
+ 
+-failed_mount10:
++failed_mount9:
+ 	ext4_quotas_off(sb, EXT4_MAXQUOTAS);
+-failed_mount9: __maybe_unused
++failed_mount8: __maybe_unused
+ 	ext4_release_orphan_info(sb);
+-failed_mount8:
+-	ext4_unregister_sysfs(sb);
+-	kobject_put(&sbi->s_kobj);
+ failed_mount7:
+ 	ext4_unregister_li_request(sb);
+ failed_mount6:
 -- 
 2.43.0
 
