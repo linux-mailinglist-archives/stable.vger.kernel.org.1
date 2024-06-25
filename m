@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-55394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4180916364
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6BA916487
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:58:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6A931C20DA5
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A4B81C23253
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:58:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C7D148315;
-	Tue, 25 Jun 2024 09:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F05149DF4;
+	Tue, 25 Jun 2024 09:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BRPuSli"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZWMrabw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0811465A8;
-	Tue, 25 Jun 2024 09:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DB51465A8;
+	Tue, 25 Jun 2024 09:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308774; cv=none; b=YwE5Wydj485y5OYsJ/xo2bWmSAOeDY8HDAvA/74/O11cD78FEKL9rDhMxzfNCFXz5Ddnp615n4zgahOnOjDYfhpZXmYyDSXXdIqrKuD+XaS//cYaBIni1s91H3gvGzmbQktcBJV6RLK/hSp+uMNGQ1uMBOBlmft68bBuN9nsCb4=
+	t=1719309503; cv=none; b=LnOBEXEtqAdL7bCCNkx3qBWtld6O2a5GyM427rC9MwhfJstUyC8n2SgyjS2k/lytpyQI2cZ36PmSpJRdnOJvBcjg8kd3vA9pzv6SKSqmLGaiFmYDUeQ+W0lhiFGfH3LIxZolSiYjGoI97xDKXHwzQP7qd2VMnRO1SkMzgfal7IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308774; c=relaxed/simple;
-	bh=23EoCVj6K+7nup2r27lSVYHIxfeiB4bmYGAJossaEjo=;
+	s=arc-20240116; t=1719309503; c=relaxed/simple;
+	bh=3BWHGxnsuBtqiD2k6UxhkLBBlWDn/XXiUHoqk/U0blc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IbELVmBRCAGX+EEau90Ch9uz1z58aqZokwnN7uiPrQkmqnK9x1v+7SPy7mfm7FCZmXT2Cc6vo0AK/xpSFR2gdUmH+XFlbqHkrq11ovcN3uPIO5lqT4ipVcvJ/WCQMyHvPwAK+nPJAZdFSxwV8QjNbHTaCoQm7e3vmXvl5ywSSrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BRPuSli; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618B4C32781;
-	Tue, 25 Jun 2024 09:46:14 +0000 (UTC)
+	 MIME-Version; b=T9LAwqyQtn4CcElRI3dV3V2r/Wg/C/Pi0cWLcsancuHRbfPo6RpT4Gg2gbs5zt8qhfgiNnZYrAud2jO4Hq9w1o8eXusCRHumsYnqgggzA+EaiCf9oIxAovMeUhI8y6T89sE4LmabxPte9TZ76CLcAyDBhf5uSrHDGqrRIv4wP84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZWMrabw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A041AC32781;
+	Tue, 25 Jun 2024 09:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308774;
-	bh=23EoCVj6K+7nup2r27lSVYHIxfeiB4bmYGAJossaEjo=;
+	s=korg; t=1719309503;
+	bh=3BWHGxnsuBtqiD2k6UxhkLBBlWDn/XXiUHoqk/U0blc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2BRPuSliBxGuOu3xScGqiHqbpolmURl3y2jRhRE9Te8c3KWlL2PDKlXx3oUDxccsa
-	 VIGEcb5H1zvWv/31gwWV2O9tyO/LaDaXD3kwyF0i+2rdVjWHHI8njQVUn+1FgVdQxs
-	 fRcE35tRmWzGha2hZ2Mkk9RE5zqhnwr6UTAKVpr8=
+	b=yZWMrabwhL2kK1lSzQw31QJnWz5xLULbVk2T15h9Rr6ErWOB5pAdI5a3sqLffZnen
+	 hOX64zkZE56qmdYSDJpxlUndwqZNn4fMzq9HD03I9yUEUi8Ych+rq7XounqHYMCAdh
+	 eeNWtT4AlyBkcPVQQ76qghlODiwIR57apYOf1B1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.9 204/250] drm/radeon: fix UBSAN warning in kv_dpm.c
+	Justin Stitt <justinstitt@google.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 007/131] block/ioctl: prefer different overflow check
 Date: Tue, 25 Jun 2024 11:32:42 +0200
-Message-ID: <20240625085555.884477036@linuxfoundation.org>
+Message-ID: <20240625085526.218860139@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Justin Stitt <justinstitt@google.com>
 
-commit a498df5421fd737d11bfd152428ba6b1c8538321 upstream.
+[ Upstream commit ccb326b5f9e623eb7f130fbbf2505ec0e2dcaff9 ]
 
-Adds bounds check for sumo_vid_mapping_entry.
+Running syzkaller with the newly reintroduced signed integer overflow
+sanitizer shows this report:
 
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[   62.982337] ------------[ cut here ]------------
+[   62.985692] cgroup: Invalid name
+[   62.986211] UBSAN: signed-integer-overflow in ../block/ioctl.c:36:46
+[   62.989370] 9pnet_fd: p9_fd_create_tcp (7343): problem connecting socket to 127.0.0.1
+[   62.992992] 9223372036854775807 + 4095 cannot be represented in type 'long long'
+[   62.997827] 9pnet_fd: p9_fd_create_tcp (7345): problem connecting socket to 127.0.0.1
+[   62.999369] random: crng reseeded on system resumption
+[   63.000634] GUP no longer grows the stack in syz-executor.2 (7353): 20002000-20003000 (20001000)
+[   63.000668] CPU: 0 PID: 7353 Comm: syz-executor.2 Not tainted 6.8.0-rc2-00035-gb3ef86b5a957 #1
+[   63.000677] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   63.000682] Call Trace:
+[   63.000686]  <TASK>
+[   63.000731]  dump_stack_lvl+0x93/0xd0
+[   63.000919]  __get_user_pages+0x903/0xd30
+[   63.001030]  __gup_longterm_locked+0x153e/0x1ba0
+[   63.001041]  ? _raw_read_unlock_irqrestore+0x17/0x50
+[   63.001072]  ? try_get_folio+0x29c/0x2d0
+[   63.001083]  internal_get_user_pages_fast+0x1119/0x1530
+[   63.001109]  iov_iter_extract_pages+0x23b/0x580
+[   63.001206]  bio_iov_iter_get_pages+0x4de/0x1220
+[   63.001235]  iomap_dio_bio_iter+0x9b6/0x1410
+[   63.001297]  __iomap_dio_rw+0xab4/0x1810
+[   63.001316]  iomap_dio_rw+0x45/0xa0
+[   63.001328]  ext4_file_write_iter+0xdde/0x1390
+[   63.001372]  vfs_write+0x599/0xbd0
+[   63.001394]  ksys_write+0xc8/0x190
+[   63.001403]  do_syscall_64+0xd4/0x1b0
+[   63.001421]  ? arch_exit_to_user_mode_prepare+0x3a/0x60
+[   63.001479]  entry_SYSCALL_64_after_hwframe+0x6f/0x77
+[   63.001535] RIP: 0033:0x7f7fd3ebf539
+[   63.001551] Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 14 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+[   63.001562] RSP: 002b:00007f7fd32570c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+[   63.001584] RAX: ffffffffffffffda RBX: 00007f7fd3ff3f80 RCX: 00007f7fd3ebf539
+[   63.001590] RDX: 4db6d1e4f7e43360 RSI: 0000000020000000 RDI: 0000000000000004
+[   63.001595] RBP: 00007f7fd3f1e496 R08: 0000000000000000 R09: 0000000000000000
+[   63.001599] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+[   63.001604] R13: 0000000000000006 R14: 00007f7fd3ff3f80 R15: 00007ffd415ad2b8
+...
+[   63.018142] ---[ end trace ]---
+
+Historically, the signed integer overflow sanitizer did not work in the
+kernel due to its interaction with `-fwrapv` but this has since been
+changed [1] in the newest version of Clang; It was re-enabled in the
+kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
+sanitizer").
+
+Let's rework this overflow checking logic to not actually perform an
+overflow during the check itself, thus avoiding the UBSAN splat.
+
+[1]: https://github.com/llvm/llvm-project/pull/82432
+
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240507-b4-sio-block-ioctl-v3-1-ba0c2b32275e@google.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/sumo_dpm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ block/ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/radeon/sumo_dpm.c
-+++ b/drivers/gpu/drm/radeon/sumo_dpm.c
-@@ -1619,6 +1619,8 @@ void sumo_construct_vid_mapping_table(st
+diff --git a/block/ioctl.c b/block/ioctl.c
+index 99b8e2e448729..c7390d8c9fc73 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -33,7 +33,7 @@ static int blkpg_do_ioctl(struct block_device *bdev,
+ 	if (op == BLKPG_DEL_PARTITION)
+ 		return bdev_del_partition(disk, p.pno);
  
- 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
- 		if (table[i].ulSupportedSCLK != 0) {
-+			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
-+				continue;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
- 				table[i].usVoltageID;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
+-	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
++	if (p.start < 0 || p.length <= 0 || LLONG_MAX - p.length < p.start)
+ 		return -EINVAL;
+ 	/* Check that the partition is aligned to the block size */
+ 	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
+-- 
+2.43.0
+
 
 
 
