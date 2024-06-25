@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-55591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1FF916454
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D839164CB
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEDD51C236BF
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 243A31C20E2F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F4414A0A8;
-	Tue, 25 Jun 2024 09:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729DE148319;
+	Tue, 25 Jun 2024 10:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nG6pRlGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EokfbXmc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9495B149C4F;
-	Tue, 25 Jun 2024 09:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CD513C90B;
+	Tue, 25 Jun 2024 10:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309356; cv=none; b=ZnLlyHIZr0EH3XJU8CqziAzAV02Meuea+GzXsSf6mLHbuxYNk1wsshBHP2vQn/k8tJwRJQhIx159U36bXFqeDEZag3NX5F0xilAehtCVTiGtqtjkMqpS+MBSkVprBAMEIEMrmBbWSWKlhmfqm7oHsudCfOKPdYnbjqruFI4uk80=
+	t=1719309677; cv=none; b=VHCV5HByErLhZbGJmu1fztaY0zdZspIEzvcnaW9S1vUp76d4SFM5DhFpaT/NaG+iyqL76VlwzVDYsJF4fEVSeqnUtk8MWnILGlynQq4LMXsPFxQKCp+c8doPOZfjECgJ4aAS4TIGanO+rTAC4f5C3Buoc2NBp5y9lQVIk/SjC0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309356; c=relaxed/simple;
-	bh=wP4R0GDtFd0Xaouzn38AhQMpcuA+7Roobh7eW9ynfi4=;
+	s=arc-20240116; t=1719309677; c=relaxed/simple;
+	bh=4Po4KdIdjkO6KZa6nE2OU5atAax/Tw69w0JukLqjC0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=se46IiUvb+xi1MJIAsPP3DRyEeDPlh7a7dnlXC4t0yE2aXth/9gT4P+Xln5o5Lj3G0/1ktGRE9215jYkSVmZp0bTdVXb5RKBMhBOWiRU5+8IfQQ7Gx/F6U/QKo3Mo3Wst8ROEaCQ8Tlhv4pLNMSAOnqcsL6skrdvhLDxB1vtIKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nG6pRlGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB31C32781;
-	Tue, 25 Jun 2024 09:55:55 +0000 (UTC)
+	 MIME-Version; b=sYHid7jgSfDGVMDF/Se7Lpe/qrU25GBrlSEKH25jY3iSfnaaYYC4i6CG62uSSdA49aDl4E2YyOws/Xt+3p+kzxu+DRGOe6pIz8MKUpifH3JjQ5dlghyvdQGtylyp63d7iZ+7nlHAbXKPvG6BiIrx812zRDYwSoGvxbjIwsAiP1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EokfbXmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACE2C32781;
+	Tue, 25 Jun 2024 10:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309356;
-	bh=wP4R0GDtFd0Xaouzn38AhQMpcuA+7Roobh7eW9ynfi4=;
+	s=korg; t=1719309677;
+	bh=4Po4KdIdjkO6KZa6nE2OU5atAax/Tw69w0JukLqjC0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nG6pRlGd2i8Ih8JEqT49maFV/bLBGA3mjV5MpXto+kF/0em/KnQa7X4beN7SGzMm5
-	 3f1r2+3T2srfuHP766IOKSaTNJIv2Yu2/mOPb9IBpq32eeFs5wBTb8fkprYX3GKGDq
-	 KjJAxwi/bJGlvoSAzamyB1uzGeiYR5fNm09mwprw=
+	b=EokfbXmcBfq4dI2MslTyP0czGbmn2nNh4tjhFlmK35ZsfwLKaWh8lLlUfSI2hwdYu
+	 nbuC9zGORR72kMVVuxCWaDWsboVEWUNozdXr4HbV/VjRtIf51RdCPUQ6gRO5gtkMOS
+	 XdohNNGIvjRbsVKZNrBHWc9iuWZ3N0vfhxtSCwGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pablo=20Ca=C3=B1o?= <pablocpascual@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 151/192] ALSA: hda/realtek: Add quirk for Lenovo Yoga Pro 7 14AHP9
-Date: Tue, 25 Jun 2024 11:33:43 +0200
-Message-ID: <20240625085542.955562473@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 069/131] ptp: fix integer overflow in max_vclocks_store
+Date: Tue, 25 Jun 2024 11:33:44 +0200
+Message-ID: <20240625085528.565324220@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +63,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Caño <pablocpascual@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit ad22051afdad962b6012f3823d0ed1a735935386 upstream.
+[ Upstream commit 81d23d2a24012e448f651e007fac2cfd20a45ce0 ]
 
-Lenovo Yoga Pro 7 14AHP9 (PCI SSID 17aa:3891) seems requiring a similar workaround like Yoga 9 model and Yoga 7 Pro 14APH8 for the bass speaker.
+On 32bit systems, the "4 * max" multiply can overflow.  Use kcalloc()
+to do the allocation to prevent this.
 
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/all/20231207182035.30248-1-tiwai@suse.de/
-Signed-off-by: Pablo Caño <pablocpascual@gmail.com>
-Link: https://patch.msgid.link/20240620152533.76712-1-pablocpascual@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 44c494c8e30e ("ptp: track available ptp vclocks information")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Link: https://lore.kernel.org/r/ee8110ed-6619-4bd7-9024-28c1f2ac24f4@moroto.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/ptp/ptp_sysfs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10270,6 +10270,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x3882, "Lenovo Yoga Pro 7 14APH8", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x3884, "Y780 YG DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3886, "Y780 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
-+	SND_PCI_QUIRK(0x17aa, 0x3891, "Lenovo Yoga Pro 7 14AHP9", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x38a7, "Y780P AMD YG dual", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38a8, "Y780P AMD VECO dual", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38ba, "Yoga S780-14.5 Air AMD quad YC", ALC287_FIXUP_TAS2781_I2C),
+diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
+index 74b9c794d6363..1263612ef2759 100644
+--- a/drivers/ptp/ptp_sysfs.c
++++ b/drivers/ptp/ptp_sysfs.c
+@@ -283,8 +283,7 @@ static ssize_t max_vclocks_store(struct device *dev,
+ 	if (max < ptp->n_vclocks)
+ 		goto out;
+ 
+-	size = sizeof(int) * max;
+-	vclock_index = kzalloc(size, GFP_KERNEL);
++	vclock_index = kcalloc(max, sizeof(int), GFP_KERNEL);
+ 	if (!vclock_index) {
+ 		err = -ENOMEM;
+ 		goto out;
+-- 
+2.43.0
+
 
 
 
