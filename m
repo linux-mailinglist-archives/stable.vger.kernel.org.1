@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-55311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE34091630E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:42:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB08A9163A2
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8842628A959
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:42:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5392EB266B6
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB0F149C5E;
-	Tue, 25 Jun 2024 09:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C5B1494AF;
+	Tue, 25 Jun 2024 09:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZkPw/FO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c4wE995p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BACA12EBEA;
-	Tue, 25 Jun 2024 09:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811B91465A8;
+	Tue, 25 Jun 2024 09:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308533; cv=none; b=BRMMGQuqwhcoOQhABZiajpfBrVjzrTzf3lfdf3ydd7ywDrtvmR/dd78+t0J5Uq7j75I4/Y8KSih5kOUUZP/xNExM+c2tX86xI5cjM72SRz4Zy0wwSRg97InLBJgcvLHpT8uXBOg1Zq9saZfriMSaCsYlCbKnS0+7UfmVTfZh2Zw=
+	t=1719308939; cv=none; b=Vbrp5QBhdWnzrYQ+rEXHrGVGM7m9+YZarvC+ZO1iCvNE5fZZ9hM7x/DFTwsHpwSchcTB/YVsZCNtNGTI9VjGq2tAW8Oyyp2zlD1msmQ6onDLl8ttoVdQbAhCEEDFHO/eKJwHA0Q/Bn6gYiPigFBKfEbPIvM9kh+txGktPjwC4Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308533; c=relaxed/simple;
-	bh=vNGA+6uFx8oOz7fkdt9szo+ZPkYyA4f2JH+2OLkrmuE=;
+	s=arc-20240116; t=1719308939; c=relaxed/simple;
+	bh=1Bs4fp4fUSFSxvPNYFXGD3nXYWpUoXVya7xg+Z6vpzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7VYlgBDF4xqdSz1DnAF2NdbFxh2mEDdRTUXmI07U1SGO3PzyTvCB6VTxdjnfJ1AMvE7NLqPSNV1Uygnobf408ArUXA70q16MlAZiP5hj3a+66FIlxGlOnhmuyB7VcKa5nTByXyB8V8RPdKwhjpxirQ6xvb5RjF57Gqdwt1zMvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZkPw/FO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4414C32781;
-	Tue, 25 Jun 2024 09:42:12 +0000 (UTC)
+	 MIME-Version; b=rUJYhr4lgDBpbOtg2F5HbFM0HsGLYUupsHHrps/hixiQWZ4ZJWP91m2T9Eq0tAklWx/zpWh5fonj/d+UZTynL6Ufz6CHMqwY23XC7UyfniipNVvvINZ30CdGx2QAlscIgIZ3qOhD3V5/VDhN58ZR+QMi68HBjmEfJ6aGJ6otpMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c4wE995p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4902C32781;
+	Tue, 25 Jun 2024 09:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308533;
-	bh=vNGA+6uFx8oOz7fkdt9szo+ZPkYyA4f2JH+2OLkrmuE=;
+	s=korg; t=1719308939;
+	bh=1Bs4fp4fUSFSxvPNYFXGD3nXYWpUoXVya7xg+Z6vpzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ZkPw/FOcO7wrVZsI1ZN/5SbgBPCROKY48njTrIldBTNOFel80dsZlvtwCnMGLoyq
-	 cFMWvIy+kZdu7esCa8ETIOeEbPvgEz9uUucLAV4K2teuIwczl1qxT2CQxld0eGtIwF
-	 67WkdrWqDoScuX5i5WHiAn3LRKv+zQxtV09XzLXQ=
+	b=c4wE995pr5+VPkfgwuD4XaVhvOQZt/z+q6Wx5ieo1TjxGId0FLqUuFZqUHVCHtyA7
+	 jbLgCHCvAs3Bgr1kMjGnSlhtHDMrkuLEDGc7ndG0hBWDTPs9kOwnq3F0JLTn76lDPD
+	 mC+haeR3Y9j4fy0adCia1+bJSh0buKrwhnJuh9oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Ben Fradella <bfradell@netapp.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Klara Modin <klarasmodin@gmail.com>,
+	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 153/250] dmaengine: ioatdma: Fix leaking on version mismatch
-Date: Tue, 25 Jun 2024 11:31:51 +0200
-Message-ID: <20240625085553.934052522@linuxfoundation.org>
+Subject: [PATCH 6.6 040/192] platform/x86: p2sb: Dont init until unassigned resources have been assigned
+Date: Tue, 25 Jun 2024 11:31:52 +0200
+Message-ID: <20240625085538.703731170@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Ben Fradella <bfradell@netapp.com>
 
-[ Upstream commit 1b11b4ef6bd68591dcaf8423c7d05e794e6aec6f ]
+[ Upstream commit 2c6370e6607663fc5fa0fd9ed58e2e01014898c7 ]
 
-Fix leaking ioatdma_device if I/OAT version is less than IOAT_VER_3_0.
+The P2SB could get an invalid BAR from the BIOS, and that won't be fixed
+up until pcibios_assign_resources(), which is an fs_initcall().
 
-Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-1-a9f2fbe26ab1@yadro.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+- Move p2sb_fs_init() to an fs_initcall_sync(). This is still early
+  enough to avoid a race with any dependent drivers.
+
+- Add a check for IORESOURCE_UNSET in p2sb_valid_resource() to catch
+  unset BARs going forward.
+
+- Return error values from p2sb_fs_init() so that the 'initcall_debug'
+  cmdline arg provides useful data.
+
+Signed-off-by: Ben Fradella <bfradell@netapp.com>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Tested-by: Klara Modin <klarasmodin@gmail.com>
+Reviewed-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+Link: https://lore.kernel.org/r/20240509164905.41016-1-bcfradella@proton.me
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ioat/init.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/platform/x86/p2sb.c | 29 +++++++++++++++--------------
+ 1 file changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 9c364e92cb828..e76e507ae898c 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1350,6 +1350,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	void __iomem * const *iomap;
- 	struct device *dev = &pdev->dev;
- 	struct ioatdma_device *device;
-+	u8 version;
- 	int err;
+diff --git a/drivers/platform/x86/p2sb.c b/drivers/platform/x86/p2sb.c
+index a64f56ddd4a44..053be5c5e0cad 100644
+--- a/drivers/platform/x86/p2sb.c
++++ b/drivers/platform/x86/p2sb.c
+@@ -56,12 +56,9 @@ static int p2sb_get_devfn(unsigned int *devfn)
+ 	return 0;
+ }
  
- 	err = pcim_enable_device(pdev);
-@@ -1363,6 +1364,10 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (!iomap)
- 		return -ENOMEM;
+-static bool p2sb_valid_resource(struct resource *res)
++static bool p2sb_valid_resource(const struct resource *res)
+ {
+-	if (res->flags)
+-		return true;
+-
+-	return false;
++	return res->flags & ~IORESOURCE_UNSET;
+ }
  
-+	version = readb(iomap[IOAT_MMIO_BAR] + IOAT_VER_OFFSET);
-+	if (version < IOAT_VER_3_0)
-+		return -ENODEV;
-+
- 	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
- 	if (err)
- 		return err;
-@@ -1373,16 +1378,14 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	pci_set_master(pdev);
- 	pci_set_drvdata(pdev, device);
+ /* Copy resource from the first BAR of the device in question */
+@@ -220,16 +217,20 @@ EXPORT_SYMBOL_GPL(p2sb_bar);
  
--	device->version = readb(device->reg_base + IOAT_VER_OFFSET);
-+	device->version = version;
- 	if (device->version >= IOAT_VER_3_4)
- 		ioat_dca_enabled = 0;
--	if (device->version >= IOAT_VER_3_0) {
--		if (is_skx_ioat(pdev))
--			device->version = IOAT_VER_3_2;
--		err = ioat3_dma_probe(device, ioat_dca_enabled);
--	} else
--		return -ENODEV;
+ static int __init p2sb_fs_init(void)
+ {
+-	p2sb_cache_resources();
+-	return 0;
++	return p2sb_cache_resources();
+ }
  
-+	if (is_skx_ioat(pdev))
-+		device->version = IOAT_VER_3_2;
-+
-+	err = ioat3_dma_probe(device, ioat_dca_enabled);
- 	if (err) {
- 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
- 		return -ENODEV;
+ /*
+- * pci_rescan_remove_lock to avoid access to unhidden P2SB devices can
+- * not be locked in sysfs pci bus rescan path because of deadlock. To
+- * avoid the deadlock, access to P2SB devices with the lock at an early
+- * step in kernel initialization and cache required resources. This
+- * should happen after subsys_initcall which initializes PCI subsystem
+- * and before device_initcall which requires P2SB resources.
++ * pci_rescan_remove_lock() can not be locked in sysfs PCI bus rescan path
++ * because of deadlock. To avoid the deadlock, access P2SB devices with the lock
++ * at an early step in kernel initialization and cache required resources.
++ *
++ * We want to run as early as possible. If the P2SB was assigned a bad BAR,
++ * we'll need to wait on pcibios_assign_resources() to fix it. So, our list of
++ * initcall dependencies looks something like this:
++ *
++ * ...
++ * subsys_initcall (pci_subsys_init)
++ * fs_initcall     (pcibios_assign_resources)
+  */
+-fs_initcall(p2sb_fs_init);
++fs_initcall_sync(p2sb_fs_init);
 -- 
 2.43.0
 
