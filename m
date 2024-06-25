@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-55672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD3E9164AB
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 243B291642D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D2A1F22EA3
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3E2E281631
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB3FA149E0A;
-	Tue, 25 Jun 2024 09:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3202814B06B;
+	Tue, 25 Jun 2024 09:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEBBCGfA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMGy4AGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ECD1465A8;
-	Tue, 25 Jun 2024 09:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E112B14A0B8;
+	Tue, 25 Jun 2024 09:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309597; cv=none; b=Usu0eDrMYS1bGDSlFTnZIkY/jE1+Wvd/Rsv+F1GvNQnIg0ofziTgnkZMh42otz/nWf65Zti8jnV4MxumOga8mrpQBx34pRCtZ7rzJLdgfUfUMmHQG6iapJ08ZkVgvmg0eNtKQEv5WhnejTLnlrAFW3n+hpXMUYm+wY0g98ZOCs8=
+	t=1719309272; cv=none; b=MOK7tVU+A0EV2u8q6tMb1dDRIwYnCmM5P/Qvt4nKM8iH2qWFLkb9MW6s6qISvZL6fSYfapNdtBKlNi79YAju/bso0GSXH5HqgT990RjzDqlmEUCfabOezpFWPti+0T2p0+yuejt0vS+AH916tJeAXKChrgkMfNsOaYbIXvj/ejQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309597; c=relaxed/simple;
-	bh=GO4C+GFBs0kGhqdiVYCTpHZw/Ah/dGNT0iyVjFelbaQ=;
+	s=arc-20240116; t=1719309272; c=relaxed/simple;
+	bh=LHjs8xrOZ9/qrNpBmtmkgU6Ua+Ec5I2P+yYjOO28oYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jOvWw0jGixUFA7EHp4otET8l5CMWrMOmA4QqndO0IAMxjZjtwkI3GYZsZS8WWeKgYLM25HX+XITZ16F2laPrW4SikoXKtKfWxOrcR0W25pRSKOxOLXt+K5i3T+2oQO07Sg1PidDWHCqQ9antxumh3vFpizBazStuKRhUfaoj23o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEBBCGfA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60F4C32781;
-	Tue, 25 Jun 2024 09:59:56 +0000 (UTC)
+	 MIME-Version; b=i66jFyP3cvqJxFmsz9iZd7HJwFgXUw6tApxbkXbnSehu3wZU/3DdFGG71IUdtfQZjav3i1UwhKil//3/hHM5Sb7gsyL+Nw8aQfUTJBXhBEOENRALooNDpK5ZFevvmeYaulFgj0wUTI0Z0YINKpkwWUZ2Ql7wqKqOw9oJ5dV4RyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMGy4AGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CF3C32786;
+	Tue, 25 Jun 2024 09:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309597;
-	bh=GO4C+GFBs0kGhqdiVYCTpHZw/Ah/dGNT0iyVjFelbaQ=;
+	s=korg; t=1719309271;
+	bh=LHjs8xrOZ9/qrNpBmtmkgU6Ua+Ec5I2P+yYjOO28oYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GEBBCGfAyGEdDjZEcZ7+PEZv0CA2Hrk0aTS/6XD/ZuTSaVXS/jMLZaOAZLHSf6Dby
-	 ONyoDH70hYEaP8ku73Jv8IpgAQUQlrse7b6E+OiWCJ07064fWDVeJ3i2+pJEaDVRQz
-	 2+zSCx0KoeVbLMXb45FLXXAh2TMCp5v5OUh+ZjqU=
+	b=fMGy4AGxJ4BeyjwYTvh9vWM39/+K/rXr1oDRs05ZGrc7w+ertLbBMbsg3qc7BQE0/
+	 JfegCzAoIGr2kWuVpRKAFBbRVzviIiet1RgKWv8N3rq7Am/lUX16NdxXK9/bUTraXf
+	 iC9t9d0gAA6rSdVfdm2glumGmrGwUQyA0W8q7omY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Heintzmann <heintzmann.eric@free.fr>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Stefan Moring <stefan.moring@technolution.nl>,
+	Stefan Bigler <linux@bigler.io>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Sebastian Reichel <sre@kernel.org>,
+	Thorsten Scherer <T.Scherer@eckelmann.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Thorsten Scherer <t.scherer@eckelmann.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/131] PCI/PM: Avoid D3cold for HP Pavilion 17 PC/1972 PCIe Ports
+Subject: [PATCH 6.6 122/192] spi: spi-imx: imx51: revert burst length calculation back to bits_per_word
 Date: Tue, 25 Jun 2024 11:33:14 +0200
-Message-ID: <20240625085527.437953534@linuxfoundation.org>
+Message-ID: <20240625085541.851872813@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +69,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 256df20c590bf0e4d63ac69330cf23faddac3e08 ]
+[ Upstream commit df75470b317b46affbe1f5f8f006b34175be9789 ]
 
-Hewlett-Packard HP Pavilion 17 Notebook PC/1972 is an Intel Ivy Bridge
-system with a muxless AMD Radeon dGPU.  Attempting to use the dGPU fails
-with the following sequence:
+The patch 15a6af94a277 ("spi: Increase imx51 ecspi burst length based
+on transfer length") increased the burst length calculation in
+mx51_ecspi_prepare_transfer() to be based on the transfer length.
 
-  ACPI Error: Aborting method \AMD3._ON due to previous error (AE_AML_LOOP_TIMEOUT) (20230628/psparse-529)
-  radeon 0000:01:00.0: not ready 1023ms after resume; waiting
-  radeon 0000:01:00.0: not ready 2047ms after resume; waiting
-  radeon 0000:01:00.0: not ready 4095ms after resume; waiting
-  radeon 0000:01:00.0: not ready 8191ms after resume; waiting
-  radeon 0000:01:00.0: not ready 16383ms after resume; waiting
-  radeon 0000:01:00.0: not ready 32767ms after resume; waiting
-  radeon 0000:01:00.0: not ready 65535ms after resume; giving up
-  radeon 0000:01:00.0: Unable to change power state from D3cold to D0, device inaccessible
+This breaks HW CS + SPI_CS_WORD support which was added in
+6e95b23a5b2d ("spi: imx: Implement support for CS_WORD") and transfers
+with bits-per-word != 8, 16, 32.
 
-The issue is that the Root Port the dGPU is connected to can't handle the
-transition from D3cold to D0 so the dGPU can't properly exit runtime PM.
+SPI_CS_WORD means the CS should be toggled after each word. The
+implementation in the imx-spi driver relies on the fact that the HW CS
+is toggled automatically by the controller after each burst length
+number of bits. Setting the burst length to the number of bits of the
+_whole_ message breaks this use case.
 
-The existing logic in pci_bridge_d3_possible() checks for systems that are
-newer than 2015 to decide that D3 is safe.  This would nominally work for
-an Ivy Bridge system (which was discontinued in 2015), but this system
-appears to have continued to receive BIOS updates until 2017 and so this
-existing logic doesn't appropriately capture it.
+Further the patch 15a6af94a277 ("spi: Increase imx51 ecspi burst
+length based on transfer length") claims to optimize the transfers.
+But even without this patch, on modern spi-imx controllers with
+"dynamic_burst = true" (imx51, imx6 and newer), the transfers are
+already optimized, i.e. the burst length is dynamically adjusted in
+spi_imx_push() to avoid the pause between the SPI bursts. This has
+been confirmed by a scope measurement on an imx6d.
 
-Add the system to bridge_d3_blacklist to prevent D3cold from being used.
+Subsequent Patches tried to fix these and other problems:
 
-Link: https://lore.kernel.org/r/20240307163709.323-1-mario.limonciello@amd.com
-Reported-by: Eric Heintzmann <heintzmann.eric@free.fr>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3229
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Eric Heintzmann <heintzmann.eric@free.fr>
+- 5f66db08cbd3 ("spi: imx: Take in account bits per word instead of assuming 8-bits")
+- e9b220aeacf1 ("spi: spi-imx: correctly configure burst length when using dma")
+- c712c05e46c8 ("spi: imx: fix the burst length at DMA mode and CPU mode")
+- cf6d79a0f576 ("spi: spi-imx: fix off-by-one in mx51 CPU mode burst length")
+
+but the HW CS + SPI_CS_WORD use case is still broken.
+
+To fix the problems revert the burst size calculation in
+mx51_ecspi_prepare_transfer() back to the original form, before
+15a6af94a277 ("spi: Increase imx51 ecspi burst length based on
+transfer length") was applied.
+
+Cc: Stefan Moring <stefan.moring@technolution.nl>
+Cc: Stefan Bigler <linux@bigler.io>
+Cc: Clark Wang <xiaoning.wang@nxp.com>
+Cc: Carlos Song <carlos.song@nxp.com>
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: Thorsten Scherer <T.Scherer@eckelmann.de>
+Fixes: 15a6af94a277 ("spi: Increase imx51 ecspi burst length based on transfer length")
+Fixes: 5f66db08cbd3 ("spi: imx: Take in account bits per word instead of assuming 8-bits")
+Fixes: e9b220aeacf1 ("spi: spi-imx: correctly configure burst length when using dma")
+Fixes: c712c05e46c8 ("spi: imx: fix the burst length at DMA mode and CPU mode")
+Fixes: cf6d79a0f576 ("spi: spi-imx: fix off-by-one in mx51 CPU mode burst length")
+Link: https://lore.kernel.org/all/20240618-oxpecker-of-ideal-mastery-db59f8-mkl@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Tested-by: Thorsten Scherer <t.scherer@eckelmann.de>
+Link: https://msgid.link/r/20240618-spi-imx-fix-bustlength-v1-1-2053dd5fdf87@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/spi/spi-imx.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 67956bfebf879..0399204941dbe 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -2991,6 +2991,18 @@ static const struct dmi_system_id bridge_d3_blacklist[] = {
- 			DMI_MATCH(DMI_BOARD_VERSION, "Continental Z2"),
- 		},
- 	},
-+	{
-+		/*
-+		 * Changing power state of root port dGPU is connected fails
-+		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3229
-+		 */
-+		.ident = "Hewlett-Packard HP Pavilion 17 Notebook PC/1972",
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Hewlett-Packard"),
-+			DMI_MATCH(DMI_BOARD_NAME, "1972"),
-+			DMI_MATCH(DMI_BOARD_VERSION, "95.33"),
-+		},
-+	},
- #endif
- 	{ }
- };
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 0e479c5406217..d323b37723929 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -660,18 +660,8 @@ static int mx51_ecspi_prepare_transfer(struct spi_imx_data *spi_imx,
+ 		ctrl |= (spi_imx->target_burst * 8 - 1)
+ 			<< MX51_ECSPI_CTRL_BL_OFFSET;
+ 	else {
+-		if (spi_imx->usedma) {
+-			ctrl |= (spi_imx->bits_per_word - 1)
+-				<< MX51_ECSPI_CTRL_BL_OFFSET;
+-		} else {
+-			if (spi_imx->count >= MX51_ECSPI_CTRL_MAX_BURST)
+-				ctrl |= (MX51_ECSPI_CTRL_MAX_BURST * BITS_PER_BYTE - 1)
+-						<< MX51_ECSPI_CTRL_BL_OFFSET;
+-			else
+-				ctrl |= (spi_imx->count / DIV_ROUND_UP(spi_imx->bits_per_word,
+-						BITS_PER_BYTE) * spi_imx->bits_per_word - 1)
+-						<< MX51_ECSPI_CTRL_BL_OFFSET;
+-		}
++		ctrl |= (spi_imx->bits_per_word - 1)
++			<< MX51_ECSPI_CTRL_BL_OFFSET;
+ 	}
+ 
+ 	/* set clock speed */
 -- 
 2.43.0
 
