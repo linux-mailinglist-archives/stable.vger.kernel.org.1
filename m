@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-55646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C397E916491
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 543FA916408
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:53:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00D2F1C23238
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FD15284F0C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197E114A60F;
-	Tue, 25 Jun 2024 09:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D10A149C54;
+	Tue, 25 Jun 2024 09:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBjtPorU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odcBHYfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7EC14A0BD;
-	Tue, 25 Jun 2024 09:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E250147C7F;
+	Tue, 25 Jun 2024 09:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309520; cv=none; b=llm2bBwsdPaVP80iLS3TF3s9wXBP74DedkQA5GCLPy8xKesBZxqh0PvfbWWXKRirXBDMuJDj83IRHLtvIJ8tF2muodUsVtWA49LrH4L7IVJGIer/SM2pWGnKWLiFof6G4uZ6kNTGgrleYVN4HnhpurwkQZhgVm9UsdWwNRtLReQ=
+	t=1719309192; cv=none; b=cN+n5EeguA0PXQ5tAxV+HVv+E4PcmFm47LU5AtRKx/Is99CWS6Erae3JZTk5Ye91wxIuZ91TZMCQRh5Aj12luJtsD0gLgLBOfO9ypPPA0T28B1fzRMtT/p3UWvH9xphFrBJo5IWC7dSxXOlimyLhAk1b6Xc5l2SZ4kJV4xmDjJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309520; c=relaxed/simple;
-	bh=DCTuxaxZEheeDZSBaLginPzWEUrhEMN6s2+QMTKSrqU=;
+	s=arc-20240116; t=1719309192; c=relaxed/simple;
+	bh=NHyl5GF0nLj9y4ttuxC+lblakW9H3lvdl41ALdTiMl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=np/zbwg0YssztwbedhzR6um//LWdPR5FycDuc0An+HxQxxiOjNqixP1CJV3/ou+54xY6LRO2nLGGXy+pA0/k4CiIFa7RoKpEkJmHI7xqTJcjpjcBSWl1G2M4k8eqWb84oPcW166gQZLV6qmyNjD73ZNFaGaf1eDNFnFy3tcM23o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBjtPorU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5593DC32781;
-	Tue, 25 Jun 2024 09:58:40 +0000 (UTC)
+	 MIME-Version; b=io9th88YwiZktkEDBNNmjMVYr3uNqWiIs5haD7yhNs6HMXzkPPh+V/R6tyRcYWedz2p73T78pC4/30aqRnWZPzYpzloNkwdsEgrJPcmwtIPLMroIDao7VD8Hmc0ff141DXBbzGtUS2lqw72QZECZGwZOR4FsPD0s4pNJEIDFxDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odcBHYfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A0FC32781;
+	Tue, 25 Jun 2024 09:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309520;
-	bh=DCTuxaxZEheeDZSBaLginPzWEUrhEMN6s2+QMTKSrqU=;
+	s=korg; t=1719309192;
+	bh=NHyl5GF0nLj9y4ttuxC+lblakW9H3lvdl41ALdTiMl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rBjtPorUANNJKc2r4LzdVsWl2la445hF9uKvUnN1xlybDf5mvvT2jtoWkcmTO/fPa
-	 Ray9Am5wf2gS8tB9YeFAsqr2c+LZAbZVbgL5e2Z2H3j2ShsfRqLNyf8TB7R1ZDI3zS
-	 YzoU54NP5fD4nMlFHlePm0k8ArpmNKcucxV/yutg=
+	b=odcBHYfGJYaWEih8iAvIYq9ivZSuAscnwCRlQvk7mbI/L5WSEvMszKabplsTt0cOS
+	 m11x3j28QTvnJgoRwak2rVUyEJQN/KAaXG+Yh23tCdmFeySkRWpy8WWg1pvHdiVaCt
+	 3zAXFUgp2+TP5QVlCO+REZi1MG8MNmoEOYVFvz9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Daniel Starke <daniel.starke@siemens.com>,
-	syzbot <syzbot+dbac96d8e73b61aa559c@syzkaller.appspotmail.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/131] tty: add the option to have a tty reject a new ldisc
+Subject: [PATCH 6.6 127/192] RDMA/mana_ib: Ignore optional access flags for MRs
 Date: Tue, 25 Jun 2024 11:33:19 +0200
-Message-ID: <20240625085527.625846117@linuxfoundation.org>
+Message-ID: <20240625085542.039342379@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,113 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Konstantin Taranov <kotaranov@microsoft.com>
 
-[ Upstream commit 6bd23e0c2bb6c65d4f5754d1456bc9a4427fc59b ]
+[ Upstream commit 82a5cc783d49b86afd2f60e297ecd85223c39f88 ]
 
-... and use it to limit the virtual terminals to just N_TTY.  They are
-kind of special, and in particular, the "con_write()" routine violates
-the "writes cannot sleep" rule that some ldiscs rely on.
+Ignore optional ib_access_flags when an MR is created.
 
-This avoids the
-
-   BUG: sleeping function called from invalid context at kernel/printk/printk.c:2659
-
-when N_GSM has been attached to a virtual console, and gsmld_write()
-calls con_write() while holding a spinlock, and con_write() then tries
-to get the console lock.
-
-Tested-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Daniel Starke <daniel.starke@siemens.com>
-Reported-by: syzbot <syzbot+dbac96d8e73b61aa559c@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=dbac96d8e73b61aa559c
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240423163339.59780-1-torvalds@linux-foundation.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
+Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+Link: https://lore.kernel.org/r/1717575368-14879-1-git-send-email-kotaranov@linux.microsoft.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_ldisc.c    |  6 ++++++
- drivers/tty/vt/vt.c        | 10 ++++++++++
- include/linux/tty_driver.h |  8 ++++++++
- 3 files changed, 24 insertions(+)
+ drivers/infiniband/hw/mana/mr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/tty_ldisc.c b/drivers/tty/tty_ldisc.c
-index 776d8a62f77cc..7ca7731fa78ae 100644
---- a/drivers/tty/tty_ldisc.c
-+++ b/drivers/tty/tty_ldisc.c
-@@ -546,6 +546,12 @@ int tty_set_ldisc(struct tty_struct *tty, int disc)
- 		goto out;
- 	}
+diff --git a/drivers/infiniband/hw/mana/mr.c b/drivers/infiniband/hw/mana/mr.c
+index 351207c60eb65..af79b6e3a5818 100644
+--- a/drivers/infiniband/hw/mana/mr.c
++++ b/drivers/infiniband/hw/mana/mr.c
+@@ -118,6 +118,7 @@ struct ib_mr *mana_ib_reg_user_mr(struct ib_pd *ibpd, u64 start, u64 length,
+ 		  "start 0x%llx, iova 0x%llx length 0x%llx access_flags 0x%x",
+ 		  start, iova, length, access_flags);
  
-+	if (tty->ops->ldisc_ok) {
-+		retval = tty->ops->ldisc_ok(tty, disc);
-+		if (retval)
-+			goto out;
-+	}
-+
- 	old_ldisc = tty->ldisc;
++	access_flags &= ~IB_ACCESS_OPTIONAL;
+ 	if (access_flags & ~VALID_MR_FLAGS)
+ 		return ERR_PTR(-EINVAL);
  
- 	/* Shutdown the old discipline. */
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index 48a9ed7c93c97..e2f9348725ff1 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -3440,6 +3440,15 @@ static void con_cleanup(struct tty_struct *tty)
- 	tty_port_put(&vc->port);
- }
- 
-+/*
-+ * We can't deal with anything but the N_TTY ldisc,
-+ * because we can sleep in our write() routine.
-+ */
-+static int con_ldisc_ok(struct tty_struct *tty, int ldisc)
-+{
-+	return ldisc == N_TTY ? 0 : -EINVAL;
-+}
-+
- static int default_color           = 7; /* white */
- static int default_italic_color    = 2; // green (ASCII)
- static int default_underline_color = 3; // cyan (ASCII)
-@@ -3566,6 +3575,7 @@ static const struct tty_operations con_ops = {
- 	.resize = vt_resize,
- 	.shutdown = con_shutdown,
- 	.cleanup = con_cleanup,
-+	.ldisc_ok = con_ldisc_ok,
- };
- 
- static struct cdev vc0_cdev;
-diff --git a/include/linux/tty_driver.h b/include/linux/tty_driver.h
-index e00034118c7bc..1df868130adce 100644
---- a/include/linux/tty_driver.h
-+++ b/include/linux/tty_driver.h
-@@ -155,6 +155,13 @@ struct serial_struct;
-  *
-  *	Optional. Called under the @tty->termios_rwsem. May sleep.
-  *
-+ * @ldisc_ok: ``int ()(struct tty_struct *tty, int ldisc)``
-+ *
-+ *	This routine allows the @tty driver to decide if it can deal
-+ *	with a particular @ldisc.
-+ *
-+ *	Optional. Called under the @tty->ldisc_sem and @tty->termios_rwsem.
-+ *
-  * @set_ldisc: ``void ()(struct tty_struct *tty)``
-  *
-  *	This routine allows the @tty driver to be notified when the device's
-@@ -374,6 +381,7 @@ struct tty_operations {
- 	void (*hangup)(struct tty_struct *tty);
- 	int (*break_ctl)(struct tty_struct *tty, int state);
- 	void (*flush_buffer)(struct tty_struct *tty);
-+	int (*ldisc_ok)(struct tty_struct *tty, int ldisc);
- 	void (*set_ldisc)(struct tty_struct *tty);
- 	void (*wait_until_sent)(struct tty_struct *tty, int timeout);
- 	void (*send_xchar)(struct tty_struct *tty, char ch);
 -- 
 2.43.0
 
