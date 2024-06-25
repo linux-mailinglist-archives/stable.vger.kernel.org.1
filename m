@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-55128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659C5915D7A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 05:52:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9D43915D7B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 05:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E71EAB21711
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 03:52:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6583E28382E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 03:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A65313A3EC;
-	Tue, 25 Jun 2024 03:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB3D13AA3F;
+	Tue, 25 Jun 2024 03:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Jh4J4EcY"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Kjj0T8as"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA51673448;
-	Tue, 25 Jun 2024 03:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DAF38F9A;
+	Tue, 25 Jun 2024 03:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719287562; cv=none; b=uFQOkc0An7qct9r9ePCxM9++IFYQaxEguSpqleUp5jc6w7vIdxoSRoLQAFz/N17EBXiIPiIqRcUF/DrQ2mpoFWLFqeGIoNPh+5WpJGooR/9mkquRSMIhIMQ4JT0ldCe/yIqQOaWrHguM+U1okWOxyn/4ZKsqV6Y9J96hjAZYyLA=
+	t=1719287566; cv=none; b=jkk8VfQbM4oFkry1v//QExS1IXHNOk0k7Ggmc7SZW8j/dBfMci4HE+X6OJlKZLmqmVCVmaz4qP7acx3QAC+1SGt2s3SAbOqFsk410LbRjkKekSDBzqWnkbhq8iHmm+OD5jhQd9Lsv/n7lw2sXf8cYRUx5d+gqNunUFb2mnCeTus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719287562; c=relaxed/simple;
-	bh=NlaITtq1XinK2e0d3kZur4xidyZ5OIfxoIw0P7aj/+A=;
-	h=Date:To:From:Subject:Message-Id; b=mUo5Pp6FfeU7oTwZttTYf6eVajC4pIBPcyg9ypNnjTTpF08Niki2e3xqaMzo/laBRvDpKPYDw2wLk8KDuhG9nlIuxb0fYs4zVX3us4nJOoSz/BjgV7G1pZbermjb3m8QMoW8OyGF2MIIisO8Nqu9Q8F9rtwqkJqjP/6naH+RvSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Jh4J4EcY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5800EC32782;
-	Tue, 25 Jun 2024 03:52:42 +0000 (UTC)
+	s=arc-20240116; t=1719287566; c=relaxed/simple;
+	bh=f1pgL+nvPTckfDLxoVtqa8XqiMXEJr0PpZusd6wiUmU=;
+	h=Date:To:From:Subject:Message-Id; b=p7A6TBlJrq+wayAKND1Aevl5GP7gPx8NCAXPmzUnhs1Ir8//8npYUGFJfZnWauxS93Rqhyh9WeCaGCwP9EpNmw43E3nj+yE6st79MX8wqCPfqoL6loLolU2CuIIfFESlwlv0Da7+mhMyylgcu4sY+xz9ZAzrb+ujI5taZf5e1pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Kjj0T8as; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338EAC4AF07;
+	Tue, 25 Jun 2024 03:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1719287562;
-	bh=NlaITtq1XinK2e0d3kZur4xidyZ5OIfxoIw0P7aj/+A=;
+	s=korg; t=1719287566;
+	bh=f1pgL+nvPTckfDLxoVtqa8XqiMXEJr0PpZusd6wiUmU=;
 	h=Date:To:From:Subject:From;
-	b=Jh4J4EcYllLwCdlFfdai2ERqYdH3Xc4cShBqiXTR+4PkzphyD/iJ+g/lXe5diR+/S
-	 OfQAoRu03pvWHM+scHLFF2irMyzSdzEJ3WTDyWqRKkyPJnNU1TmDIsG5gK/rZ01I98
-	 5aYxapZVl50S7RW/xjJXK0zEG3BBrnAwap7gwbkw=
-Date: Mon, 24 Jun 2024 20:52:41 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,david@redhat.com,shechenglong001@gmail.com,akpm@linux-foundation.org
+	b=Kjj0T8asUS6pkPBkKY/sSgvyWnrTpptnEzRUl/FQiIGwMfN+Ya+JWMFllwu2yUVOH
+	 1D9x3ybHV6qwpTU+bkICf+Iat86ADDt58jAT/eVneWDwYkoWIDaNhKrdm5FKcSMecn
+	 kV7B+yX/UYCFol+w7Hfe+O/kuXrQ/vMh8m6WklsA=
+Date: Mon, 24 Jun 2024 20:52:45 -0700
+To: mm-commits@vger.kernel.org,ying.huang@intel.com,willy@infradead.org,v-songbaohua@oppo.com,trondmy@kernel.org,stable@vger.kernel.org,sfrench@samba.org,ryan.roberts@arm.com,neilb@suse.de,martin.l.wege@gmail.com,jlayton@kernel.org,hanchuanhua@oppo.com,chrisl@kernel.org,anna@kernel.org,hch@lst.de,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] selftests-mm-fix-test_prctl_fork_exec-return-failure.patch removed from -mm tree
-Message-Id: <20240625035242.5800EC32782@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] nfs-drop-the-incorrect-assertion-in-nfs_swap_rw.patch removed from -mm tree
+Message-Id: <20240625035246.338EAC4AF07@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,101 +50,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: selftests/mm:fix test_prctl_fork_exec return failure
+     Subject: nfs: drop the incorrect assertion in nfs_swap_rw()
 has been removed from the -mm tree.  Its filename was
-     selftests-mm-fix-test_prctl_fork_exec-return-failure.patch
+     nfs-drop-the-incorrect-assertion-in-nfs_swap_rw.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: aigourensheng <shechenglong001@gmail.com>
-Subject: selftests/mm:fix test_prctl_fork_exec return failure
-Date: Mon, 17 Jun 2024 01:29:34 -0400
+From: Christoph Hellwig <hch@lst.de>
+Subject: nfs: drop the incorrect assertion in nfs_swap_rw()
+Date: Tue, 18 Jun 2024 18:56:47 +1200
 
-After calling fork() in test_prctl_fork_exec(), the global variable
-ksm_full_scans_fd is initialized to 0 in the child process upon entering
-the main function of ./ksm_functional_tests.
+Since commit 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS
+swap-space"), we can plug multiple pages then unplug them all together. 
+That means iov_iter_count(iter) could be way bigger than PAGE_SIZE, it
+actually equals the size of iov_iter_npages(iter, INT_MAX).
 
-In the function call chain test_child_ksm() -> __mmap_and_merge_range ->
-ksm_merge-> ksm_get_full_scans, start_scans = ksm_get_full_scans() will
-return an error.  Therefore, the value of ksm_full_scans_fd needs to be
-initialized before calling test_child_ksm in the child process.
+Note this issue has nothing to do with large folios as we don't support
+THP_SWPOUT to non-block devices.
 
-Link: https://lkml.kernel.org/r/20240617052934.5834-1-shechenglong001@gmail.com
-Signed-off-by: aigourensheng <shechenglong001@gmail.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
+[v-songbaohua@oppo.com: figure out the cause and correct the commit message]
+Link: https://lkml.kernel.org/r/20240618065647.21791-1-21cnbao@gmail.com
+Fixes: 2282679fb20b ("mm: submit multipage write for SWP_FS_OPS swap-space")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Closes: https://lore.kernel.org/linux-mm/20240617053201.GA16852@lst.de/
+Reviewed-by: Martin Wege <martin.l.wege@gmail.com>
+Cc: NeilBrown <neilb@suse.de>
+Cc: Anna Schumaker <anna@kernel.org>
+Cc: Steve French <sfrench@samba.org>
+Cc: Trond Myklebust <trondmy@kernel.org>
+Cc: Chuanhua Han <hanchuanhua@oppo.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Jeff Layton <jlayton@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/selftests/mm/ksm_functional_tests.c |   38 ++++++------
- 1 file changed, 22 insertions(+), 16 deletions(-)
+ fs/nfs/direct.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/tools/testing/selftests/mm/ksm_functional_tests.c~selftests-mm-fix-test_prctl_fork_exec-return-failure
-+++ a/tools/testing/selftests/mm/ksm_functional_tests.c
-@@ -656,12 +656,33 @@ unmap:
- 	munmap(map, size);
- }
- 
-+static void init_global_file_handles(void)
-+{
-+	mem_fd = open("/proc/self/mem", O_RDWR);
-+	if (mem_fd < 0)
-+		ksft_exit_fail_msg("opening /proc/self/mem failed\n");
-+	ksm_fd = open("/sys/kernel/mm/ksm/run", O_RDWR);
-+	if (ksm_fd < 0)
-+		ksft_exit_skip("open(\"/sys/kernel/mm/ksm/run\") failed\n");
-+	ksm_full_scans_fd = open("/sys/kernel/mm/ksm/full_scans", O_RDONLY);
-+	if (ksm_full_scans_fd < 0)
-+		ksft_exit_skip("open(\"/sys/kernel/mm/ksm/full_scans\") failed\n");
-+	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
-+	if (pagemap_fd < 0)
-+		ksft_exit_skip("open(\"/proc/self/pagemap\") failed\n");
-+	proc_self_ksm_stat_fd = open("/proc/self/ksm_stat", O_RDONLY);
-+	proc_self_ksm_merging_pages_fd = open("/proc/self/ksm_merging_pages",
-+						O_RDONLY);
-+	ksm_use_zero_pages_fd = open("/sys/kernel/mm/ksm/use_zero_pages", O_RDWR);
-+}
-+
- int main(int argc, char **argv)
+--- a/fs/nfs/direct.c~nfs-drop-the-incorrect-assertion-in-nfs_swap_rw
++++ a/fs/nfs/direct.c
+@@ -141,8 +141,6 @@ int nfs_swap_rw(struct kiocb *iocb, stru
  {
- 	unsigned int tests = 8;
- 	int err;
+ 	ssize_t ret;
  
- 	if (argc > 1 && !strcmp(argv[1], FORK_EXEC_CHILD_PRG_NAME)) {
-+		init_global_file_handles();
- 		exit(test_child_ksm());
- 	}
- 
-@@ -674,22 +695,7 @@ int main(int argc, char **argv)
- 
- 	pagesize = getpagesize();
- 
--	mem_fd = open("/proc/self/mem", O_RDWR);
--	if (mem_fd < 0)
--		ksft_exit_fail_msg("opening /proc/self/mem failed\n");
--	ksm_fd = open("/sys/kernel/mm/ksm/run", O_RDWR);
--	if (ksm_fd < 0)
--		ksft_exit_skip("open(\"/sys/kernel/mm/ksm/run\") failed\n");
--	ksm_full_scans_fd = open("/sys/kernel/mm/ksm/full_scans", O_RDONLY);
--	if (ksm_full_scans_fd < 0)
--		ksft_exit_skip("open(\"/sys/kernel/mm/ksm/full_scans\") failed\n");
--	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
--	if (pagemap_fd < 0)
--		ksft_exit_skip("open(\"/proc/self/pagemap\") failed\n");
--	proc_self_ksm_stat_fd = open("/proc/self/ksm_stat", O_RDONLY);
--	proc_self_ksm_merging_pages_fd = open("/proc/self/ksm_merging_pages",
--					      O_RDONLY);
--	ksm_use_zero_pages_fd = open("/sys/kernel/mm/ksm/use_zero_pages", O_RDWR);
-+	init_global_file_handles();
- 
- 	test_unmerge();
- 	test_unmerge_zero_pages();
+-	VM_BUG_ON(iov_iter_count(iter) != PAGE_SIZE);
+-
+ 	if (iov_iter_rw(iter) == READ)
+ 		ret = nfs_file_direct_read(iocb, iter, true);
+ 	else
 _
 
-Patches currently in -mm which might be from shechenglong001@gmail.com are
+Patches currently in -mm which might be from hch@lst.de are
 
 
 
