@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-55668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 023C69164A7
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAFA6916431
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABFD31F20F8F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74CEB1F215B2
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D399149C41;
-	Tue, 25 Jun 2024 09:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C27D14A4D1;
+	Tue, 25 Jun 2024 09:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lhcHqdZq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKvRjssQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C1B1465A8;
-	Tue, 25 Jun 2024 09:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC89314A4D0;
+	Tue, 25 Jun 2024 09:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309587; cv=none; b=SnPnQtLA3+diOfc7uBa5ia/sIQZOiWf1POS9kJXBFThQ+/LxkW4LzHBgtC1KXu50iQUzQWbv0dmLsUEdcD/npaULNEoZUOYwDua8LC6p7IeApjucG1+cJA0SFxYzPYC9XGz6NZ+4nGIo5FCePQUcYpFgzJBq3Fa2OKtKGIjWoU8=
+	t=1719309277; cv=none; b=aSlyxsu0yFBjM2TiGK56fdInpU/8UH9n7NdtoErqDNBSjXWdrqTbReqKTLFPaPRqzpGy51tXW9BFdGVhgBI3U3TGir6vcN9/0BEqKRbJlKTFx5NfoN2emGuL4XYiyrecldOLldiExmmcwhU5u81gL0PFUP4AbYGQYvrU0M1sqBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309587; c=relaxed/simple;
-	bh=XcchsQifl6fCPoytzDD51t4cFpF/qDZ1//Kwl74zEoQ=;
+	s=arc-20240116; t=1719309277; c=relaxed/simple;
+	bh=GRhW53EAh9gzndTV6sb34M6h1tzdzyPLc9ErhJlYpDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3nquF1WieMNLfiGEqC+vhBX9EPDAVEGrdoq3MrHSPLnVS75rsvG6UgJSltDw0agse9poqPF/7zVdVRUhILz9BzO9Nvo5xdEzESyzWDEBTA0+EES24kZuvP1AjLjWFONP/Et2P9Bb8kyOjvxpCyc36kGO9WgAMkRENb+PqFB2xU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lhcHqdZq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38257C32781;
-	Tue, 25 Jun 2024 09:59:45 +0000 (UTC)
+	 MIME-Version; b=bsy+8ZughZD0EsI2hPELMW+6qn8apejGxSH0lGvfKjI98ZM4SaB8Qlexm6Zj+xxjkrPUusKKQ/17I5Bnsd1TbH1ZbWWdT3inE5FvlmXpkC6SeTXeRMAoIPJtWL2L2sMGzxnsl1IRvRuwxfqAIsnZuC2jYuLftqc3irKiVdlhJSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKvRjssQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40733C32781;
+	Tue, 25 Jun 2024 09:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309585;
-	bh=XcchsQifl6fCPoytzDD51t4cFpF/qDZ1//Kwl74zEoQ=;
+	s=korg; t=1719309277;
+	bh=GRhW53EAh9gzndTV6sb34M6h1tzdzyPLc9ErhJlYpDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lhcHqdZqDO4xkp+4Julle/zla3Dza3Uf0jfyPNDgtCa+BgrrO0z4K6ZyBDLHyeElC
-	 UQH4FU4/r7Tr3nue20p6tgdeAA+BY8+XaGQQrRiioDOmkhcAbGKObniUnmDXw8UhTy
-	 nlCsQqwu22Rggm5lCXOgaiiaWxdNhLPw8VYMqbC0=
+	b=VKvRjssQrGoxwRvfASFWEc6yxA62TtnPHLrGsUFNwor9JRNZ5tiVVQgT+zKEC8jqb
+	 IKBtIgrgC+Aex5JHWCLr22f49vjMn4HVwhMTfWRuObfj1dQVEk9186qjDoACbShck5
+	 0NBAxgU+XGR+mlAjCjYALExni2jLKqoaFoaFDVnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Raju Lakkaraju <Raju.Lakkaraju@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/131] net: phy: mxl-gpy: Remove interrupt mask clearing from config_init
-Date: Tue, 25 Jun 2024 11:33:39 +0200
-Message-ID: <20240625085528.378835527@linuxfoundation.org>
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Youzhong Yang <youzhong@gmail.com>
+Subject: [PATCH 6.6 148/192] ovl: fix encoding fid for lower only root
+Date: Tue, 25 Jun 2024 11:33:40 +0200
+Message-ID: <20240625085542.839404923@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,166 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit c44d3ffd85db03ebcc3090e55589e10d5af9f3a9 ]
+commit 004b8d1491b4bcbb7da1a3206d1e7e66822d47c6 upstream.
 
-When the system resumes from sleep, the phy_init_hw() function invokes
-config_init(), which clears all interrupt masks and causes wake events to be
-lost in subsequent wake sequences. Remove interrupt mask clearing from
-config_init() and preserve relevant masks in config_intr().
+ovl_check_encode_origin() should return a positive number if the lower
+dentry is to be encoded, zero otherwise.  If there's no upper layer at all
+(read-only overlay), then it obviously needs to return positive.
 
-Fixes: 7d901a1e878a ("net: phy: add Maxlinear GPY115/21x/24x driver")
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was broken by commit 16aac5ad1fa9 ("ovl: support encoding
+non-decodable file handles"), which didn't take the lower-only
+configuration into account.
+
+Fix by checking the no-upper-layer case up-front.
+
+Reported-and-tested-by: Youzhong Yang <youzhong@gmail.com>
+Closes: https://lore.kernel.org/all/CADpNCvaBimi+zCYfRJHvCOhMih8OU0rmZkwLuh24MKKroRuT8Q@mail.gmail.com/
+Fixes: 16aac5ad1fa9 ("ovl: support encoding non-decodable file handles")
+Cc: <stable@vger.kernel.org> # v6.6
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/mxl-gpy.c | 58 +++++++++++++++++++++++++--------------
- 1 file changed, 38 insertions(+), 20 deletions(-)
+ fs/overlayfs/export.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
-index 1c4ad1ded2cb6..f07760e0455d5 100644
---- a/drivers/net/phy/mxl-gpy.c
-+++ b/drivers/net/phy/mxl-gpy.c
-@@ -95,6 +95,7 @@ struct gpy_priv {
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -186,6 +186,10 @@ static int ovl_check_encode_origin(struc
+ 	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
+ 	bool decodable = ofs->config.nfs_export;
  
- 	u8 fw_major;
- 	u8 fw_minor;
-+	u32 wolopts;
- 
- 	/* It takes 3 seconds to fully switch out of loopback mode before
- 	 * it can safely re-enter loopback mode. Record the time when
-@@ -209,6 +210,15 @@ static int gpy_hwmon_register(struct phy_device *phydev)
- }
- #endif
- 
-+static int gpy_ack_interrupt(struct phy_device *phydev)
-+{
-+	int ret;
++	/* No upper layer? */
++	if (!ovl_upper_mnt(ofs))
++		return 1;
 +
-+	/* Clear all pending interrupts */
-+	ret = phy_read(phydev, PHY_ISTAT);
-+	return ret < 0 ? ret : 0;
-+}
-+
- static int gpy_mbox_read(struct phy_device *phydev, u32 addr)
- {
- 	struct gpy_priv *priv = phydev->priv;
-@@ -250,16 +260,8 @@ static int gpy_mbox_read(struct phy_device *phydev, u32 addr)
+ 	/* Lower file handle for non-upper non-decodable */
+ 	if (!ovl_dentry_upper(dentry) && !decodable)
+ 		return 1;
+@@ -214,7 +218,7 @@ static int ovl_check_encode_origin(struc
+ 	 * ovl_connect_layer() will try to make origin's layer "connected" by
+ 	 * copying up a "connectable" ancestor.
+ 	 */
+-	if (d_is_dir(dentry) && ovl_upper_mnt(ofs) && decodable)
++	if (d_is_dir(dentry) && decodable)
+ 		return ovl_connect_layer(dentry);
  
- static int gpy_config_init(struct phy_device *phydev)
- {
--	int ret;
--
--	/* Mask all interrupts */
--	ret = phy_write(phydev, PHY_IMASK, 0);
--	if (ret)
--		return ret;
--
--	/* Clear all pending interrupts */
--	ret = phy_read(phydev, PHY_ISTAT);
--	return ret < 0 ? ret : 0;
-+	/* Nothing to configure. Configuration Requirement Placeholder */
-+	return 0;
- }
- 
- static bool gpy_has_broken_mdint(struct phy_device *phydev)
-@@ -540,11 +542,23 @@ static int gpy_read_status(struct phy_device *phydev)
- 
- static int gpy_config_intr(struct phy_device *phydev)
- {
-+	struct gpy_priv *priv = phydev->priv;
- 	u16 mask = 0;
-+	int ret;
-+
-+	ret = gpy_ack_interrupt(phydev);
-+	if (ret)
-+		return ret;
- 
- 	if (phydev->interrupts == PHY_INTERRUPT_ENABLED)
- 		mask = PHY_IMASK_MASK;
- 
-+	if (priv->wolopts & WAKE_MAGIC)
-+		mask |= PHY_IMASK_WOL;
-+
-+	if (priv->wolopts & WAKE_PHY)
-+		mask |= PHY_IMASK_LSTC;
-+
- 	return phy_write(phydev, PHY_IMASK, mask);
- }
- 
-@@ -593,6 +607,7 @@ static int gpy_set_wol(struct phy_device *phydev,
- 		       struct ethtool_wolinfo *wol)
- {
- 	struct net_device *attach_dev = phydev->attached_dev;
-+	struct gpy_priv *priv = phydev->priv;
- 	int ret;
- 
- 	if (wol->wolopts & WAKE_MAGIC) {
-@@ -640,6 +655,8 @@ static int gpy_set_wol(struct phy_device *phydev,
- 		ret = phy_read(phydev, PHY_ISTAT);
- 		if (ret < 0)
- 			return ret;
-+
-+		priv->wolopts |= WAKE_MAGIC;
- 	} else {
- 		/* Disable magic packet matching */
- 		ret = phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2,
-@@ -647,6 +664,13 @@ static int gpy_set_wol(struct phy_device *phydev,
- 					 WOL_EN);
- 		if (ret < 0)
- 			return ret;
-+
-+		/* Disable the WOL interrupt */
-+		ret = phy_clear_bits(phydev, PHY_IMASK, PHY_IMASK_WOL);
-+		if (ret < 0)
-+			return ret;
-+
-+		priv->wolopts &= ~WAKE_MAGIC;
- 	}
- 
- 	if (wol->wolopts & WAKE_PHY) {
-@@ -663,9 +687,11 @@ static int gpy_set_wol(struct phy_device *phydev,
- 		if (ret & (PHY_IMASK_MASK & ~PHY_IMASK_LSTC))
- 			phy_trigger_machine(phydev);
- 
-+		priv->wolopts |= WAKE_PHY;
- 		return 0;
- 	}
- 
-+	priv->wolopts &= ~WAKE_PHY;
- 	/* Disable the link state change interrupt */
- 	return phy_clear_bits(phydev, PHY_IMASK, PHY_IMASK_LSTC);
- }
-@@ -673,18 +699,10 @@ static int gpy_set_wol(struct phy_device *phydev,
- static void gpy_get_wol(struct phy_device *phydev,
- 			struct ethtool_wolinfo *wol)
- {
--	int ret;
-+	struct gpy_priv *priv = phydev->priv;
- 
- 	wol->supported = WAKE_MAGIC | WAKE_PHY;
--	wol->wolopts = 0;
--
--	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, VPSPEC2_WOL_CTL);
--	if (ret & WOL_EN)
--		wol->wolopts |= WAKE_MAGIC;
--
--	ret = phy_read(phydev, PHY_IMASK);
--	if (ret & PHY_IMASK_LSTC)
--		wol->wolopts |= WAKE_PHY;
-+	wol->wolopts = priv->wolopts;
- }
- 
- static int gpy_loopback(struct phy_device *phydev, bool enable)
--- 
-2.43.0
-
+ 	/* Lower file handle for indexed and non-upper dir/non-dir */
 
 
 
