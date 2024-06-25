@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-55225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1CD9162A1
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:38:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09079916281
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:36:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D108D287FBC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:38:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B96E9285F43
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58037149C51;
-	Tue, 25 Jun 2024 09:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03FA7149C6C;
+	Tue, 25 Jun 2024 09:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQ/9dpyE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bM/mVYtR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1660A148315;
-	Tue, 25 Jun 2024 09:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52321494DC;
+	Tue, 25 Jun 2024 09:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308280; cv=none; b=hTKOoQ/NE0u/5F4mJLfW0sKE2VA60V3UZg0yQ9yKqt6tNdNy3oIEelYmDcbymNHIDe16Q8130C7dNzitRTSWsEC1+rATlGrY3Rv4DE/eSci6YXJfvV2n3jhKaeZxMBFshQPEud9dhUR2hsJ6DF2yfpAupTLMiE4MwCOoshDjAzw=
+	t=1719308188; cv=none; b=ge5M2+Kk1PrMqqzHAkAaIh/upZXIagcE2GnJUlk3QFCwflsjmzwlK0ypyU1UNEliCQQ5Pfiy5IlMOTlKEk3J61I+qgLfEGIVXO1znOuvdPD4UPLAjgUzzEpAK2YfuOk8WiSZEUK7eg+PplYhiRv7aHArxM0mTQiG90t6flPO4Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308280; c=relaxed/simple;
-	bh=mvuwVo6UG2rudSks50/koAGS+olELBdegIngQkRg9jU=;
+	s=arc-20240116; t=1719308188; c=relaxed/simple;
+	bh=xGwdL6GWbOOJ37qGD+YtNK5YoG2QpNcNVPIRTow4nFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3SVl3RuyosxAS9WNpwZI4I1u3qFqypLByDQ9mNOe7Q/6pBznjwELu5Vn8+8plqjJjEBV/pYUg5hhkCXHSooPGhiq5lEXNr4uGR8aE46hhGusjO+IQ+HxyTnY4/KrFIq/2sRIXln56nQCui0s8TOcObDwKnrfJ856QmURyqlDYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQ/9dpyE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2DAC32781;
-	Tue, 25 Jun 2024 09:37:59 +0000 (UTC)
+	 MIME-Version; b=Vl4TkPdKzHmIoXrb7EU0yGikt3LJUWOfrzpeAeORwJQcbZCnClTLSqrM+dt6v/jmFvdX49oaOGTLGjv30b4mn2Fa4Ihew0i9wPeOocgm2r+Lks/rBu9+V7WNu5foiZnReTlttNpo8nwwDdMvnpCTl7+F6jhASi1MWITU68WVklU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bM/mVYtR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30139C32781;
+	Tue, 25 Jun 2024 09:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308280;
-	bh=mvuwVo6UG2rudSks50/koAGS+olELBdegIngQkRg9jU=;
+	s=korg; t=1719308188;
+	bh=xGwdL6GWbOOJ37qGD+YtNK5YoG2QpNcNVPIRTow4nFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lQ/9dpyEYrrmpLh8cPeVKvdtl9fPvF94kgMshw9RUZ9M4SqjAutB2V4Q39WtY1Ngh
-	 x9gU3lGPh8RO46y3m4PswYybL/DNypQjDTIFW8E7odxPxpsHVUZAovKAF6g430xAre
-	 ilyz/O0zd3UqBxU0DIwxXiPu89kOxCSBhdz0+e2A=
+	b=bM/mVYtRpu/jmJ6Eaw1j06TmDp0ZHJMHd0LykRDc8q+7aVXSMSPci6sVHAnu3sWJz
+	 wfsdY65wtnmg2NZIU0qAkzrGae1eXaLvT38LAHkGQatRlsSi087H8m7/Zhu5CFeZWF
+	 nbNcGLKsBJ+LFWytALDuApM2pFyeLYkTrBDiSduo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gianni <gianni.casagrande.mail@gmail.com>,
-	Tamim Khan <tamim@fusetak.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 036/250] ACPI: resource: Skip IRQ override on Asus Vivobook Pro N6506MV
-Date: Tue, 25 Jun 2024 11:29:54 +0200
-Message-ID: <20240625085549.444147840@linuxfoundation.org>
+Subject: [PATCH 6.9 037/250] netpoll: Fix race condition in netpoll_owner_active
+Date: Tue, 25 Jun 2024 11:29:55 +0200
+Message-ID: <20240625085549.482591143@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -67,43 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tamim Khan <tamim@fusetak.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 7c52c7071bd403acee8cb0064627d46c6c2a1ea3 ]
+[ Upstream commit c2e6a872bde9912f1a7579639c5ca3adf1003916 ]
 
-Like various other Asus Vivobook and Expertbook laptops, the Asus
-Vivobook Pro N6506MV has a DSDT table that describes IRQ 1 as ActiveLow
-while the kernel is overriding it to Edge_High. This prevents the internal
-keyboard from working. This patch prevents this issue by adding this laptop
-to the override table that prevents the kernel from overriding this IRQ
+KCSAN detected a race condition in netpoll:
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218745
-Tested-by: Gianni <gianni.casagrande.mail@gmail.com>
-Signed-off-by: Tamim Khan <tamim@fusetak.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+	BUG: KCSAN: data-race in net_rx_action / netpoll_send_skb
+	write (marked) to 0xffff8881164168b0 of 4 bytes by interrupt on cpu 10:
+	net_rx_action (./include/linux/netpoll.h:90 net/core/dev.c:6712 net/core/dev.c:6822)
+<snip>
+	read to 0xffff8881164168b0 of 4 bytes by task 1 on cpu 2:
+	netpoll_send_skb (net/core/netpoll.c:319 net/core/netpoll.c:345 net/core/netpoll.c:393)
+	netpoll_send_udp (net/core/netpoll.c:?)
+<snip>
+	value changed: 0x0000000a -> 0xffffffff
+
+This happens because netpoll_owner_active() needs to check if the
+current CPU is the owner of the lock, touching napi->poll_owner
+non atomically. The ->poll_owner field contains the current CPU holding
+the lock.
+
+Use an atomic read to check if the poll owner is the current CPU.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://lore.kernel.org/r/20240429100437.3487432-1-leitao@debian.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/core/netpoll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 65fa94729d9de..b5bf8b81a050a 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -517,6 +517,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "E1504GAB"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook Pro N6506MV */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "N6506MV"),
-+		},
-+	},
- 	{
- 		/* LG Electronics 17U70P */
- 		.matches = {
+diff --git a/net/core/netpoll.c b/net/core/netpoll.c
+index 543007f159f99..55bcacf67df3b 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -316,7 +316,7 @@ static int netpoll_owner_active(struct net_device *dev)
+ 	struct napi_struct *napi;
+ 
+ 	list_for_each_entry_rcu(napi, &dev->napi_list, dev_list) {
+-		if (napi->poll_owner == smp_processor_id())
++		if (READ_ONCE(napi->poll_owner) == smp_processor_id())
+ 			return 1;
+ 	}
+ 	return 0;
 -- 
 2.43.0
 
