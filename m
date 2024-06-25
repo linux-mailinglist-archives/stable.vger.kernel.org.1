@@ -1,189 +1,123 @@
-Return-Path: <stable+bounces-55122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49886915B29
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 02:51:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 126D6915C55
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 04:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C3891C21647
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 00:51:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1EBF284740
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 02:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6D8DDC3;
-	Tue, 25 Jun 2024 00:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="cBV4AMXQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B853041A8F;
+	Tue, 25 Jun 2024 02:39:53 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9613C1BDCF
-	for <stable@vger.kernel.org>; Tue, 25 Jun 2024 00:51:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A4345010;
+	Tue, 25 Jun 2024 02:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719276665; cv=none; b=i/HWHsPl1QWhoQQPg8kNCrhnpTCB8Z3Mj+RIkivWCMpiygATs3nkzDHfZp/3paDmLccRdHbIFuaVJbm4OLmMZ9pzSrCrLR/Ghd0rnqRuTSecE9aE0O1nDv3KReiZZigKp9KoPRgCpxurGKREAnFBktcIt4jtNgsLlk5xCr7GSK8=
+	t=1719283193; cv=none; b=jg5awcM102PGYmry4yq/o099HdkBMyEftxNGokwGAz/sXxjbgtsLMRLZpkQFECx5ZFVlm/Ys6inEN2//9KO3R9cXj2B3O4E5hx1NC0g+W4q6uoCyLC8FGxEcjhtEvUdicz5gAlvjFfsGENBi6faSYZFprEUTOBT2oBIkycea0Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719276665; c=relaxed/simple;
-	bh=1ymjgr7C6ukV7q6a3KI7rEkdG0pKL1Yf/T1h2mYGIwU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7NA5LVj6TOPNSIeh6mLtP00Sc6pYYiMeqWCzXsytJuvpkfLlg3DTGYSzZsP7fLw+odJL3os0i47V0Qc3B44fg1UfaFhaKwsb3BfXLcDIb5J/elhJoiZQWabUR61LSAwWOpW7RC44qMMIAowN/1JT5fnaI2fL7k/fznqFBdYHP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=cBV4AMXQ; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1f4a5344ec7so33430285ad.1
-        for <stable@vger.kernel.org>; Mon, 24 Jun 2024 17:51:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1719276664; x=1719881464; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S8PvHLug8r0Usox0R6aX+Qr/KVZBRToAr5dZQC5ZPHA=;
-        b=cBV4AMXQIgWXBfLtIz6hhJjHcbtq9pTxkTnN/df07/sEvMrnElTqn7iStYoS73qXPh
-         vcLX4R6rzihavnoogTbmFOnOOlYKvO02FR0Sft/xJyzDjkS4sQHQFIyVuC6LUYDbyO+d
-         SCUWp6LcEY4mGtuELjPa/TTm6EqY49LAjI3PxHYq4SPwjKNOiyHXXzpTGWCXjx9Tu2/L
-         2eDjdOzsOfj/6dM3UixLoN4eO3WQaMLeCjmD7nz09i/Yle4vPWBzBCPBFJe7KhL/JLK5
-         7ttnsOmFIrxMo0SZkahuc9NplpfcFqe16nIdLWqdo9c990PRup4Je/gq0O8teZGhp3oM
-         MCSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719276664; x=1719881464;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S8PvHLug8r0Usox0R6aX+Qr/KVZBRToAr5dZQC5ZPHA=;
-        b=idl0PkcMeHQp+WMxPp1UJSuxyz5Dc9X3/YfeiF7nUtrx+JnwYc5sciPITqs6jqjxQ2
-         9dB4ZJc1AzWYsEYRipDhTJNwqmC99+++343xBrE2BgMDIt3SyQZkMi8T7/EorE2D1/IG
-         VITQIgvO+7kGs2/ES3VhdrwvMQ/beEpXjq7uw+rpbk1lS91Sk7ryF4HVCnU79+GK/hU3
-         qcBHhh+Godp7WCSDoUXo1cI1npdmbm0YREdnMQXWRok5S1t+90wYe/m3WapbQeowGpli
-         n301wxONDCYlTzc/yYWx96EkoGAGo2L01p5scBcCZ0NFrJ9VofrllvsU57N6omrsLLVP
-         f1LA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjacyiAYo3m621Y7gyp6g2dWGgNJhn8nSlc25O00fk2k6MmGyvSCvmq1b8pX88mZNHDxQEIgAf7xDnSPMhdCO3VW132R7k
-X-Gm-Message-State: AOJu0Ywdljxh1a2XAxABsS8JVl60aTqcCd+DFKRGtu8rmlnvFZDu2rcG
-	yatsoWd63IdWrPf32mNAvda8GTdXXF+MzNtIbEgaoWYFR4tqe8Oo8+bi24YpbCM=
-X-Google-Smtp-Source: AGHT+IEAP5AqPSLGnRbl2LW9e1HkZo4YnWE4Xye4a5nUkIMhcY2MADnRmTPJFFoHvz1mEZkNhxwJ0g==
-X-Received: by 2002:a17:903:c1:b0:1f7:1b42:42f3 with SMTP id d9443c01a7336-1fa0f8cdcd6mr55557855ad.18.1719276663833;
-        Mon, 24 Jun 2024 17:51:03 -0700 (PDT)
-Received: from jesse-desktop.. (pool-108-26-179-17.bstnma.fios.verizon.net. [108.26.179.17])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9ebbb2a7csm68150235ad.256.2024.06.24.17.50.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jun 2024 17:51:03 -0700 (PDT)
-From: Jesse Taube <jesse@rivosinc.com>
-To: linux-riscv@lists.infradead.org
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Conor Dooley <conor@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Evan Green <evan@rivosinc.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Jesse Taube <jesse@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Xiao Wang <xiao.w.wang@intel.com>,
-	Andy Chiu <andy.chiu@sifive.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Greentime Hu <greentime.hu@sifive.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Costa Shulyupin <costa.shul@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Zong Li <zong.li@sifive.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Erick Archer <erick.archer@gmx.com>,
-	Joel Granados <j.granados@samsung.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3 3/8] RISC-V: Check scalar unaligned access on all CPUs
-Date: Mon, 24 Jun 2024 20:49:56 -0400
-Message-ID: <20240625005001.37901-4-jesse@rivosinc.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625005001.37901-1-jesse@rivosinc.com>
-References: <20240625005001.37901-1-jesse@rivosinc.com>
+	s=arc-20240116; t=1719283193; c=relaxed/simple;
+	bh=zxUylimfg9YquQ0fVp0lv45GHnDmOpG4Uq0Inj3iK2o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AEsR898W2knMZLbVtEnu+0qT3fstO8VfU8GBZuEf7yXmjw9/zqbHdIJikEv/mCMX0LlTvKNUwnde6VvSWCFJFRiPJScKA/yDsxFUKf02UrI9lF6UL7VwR2N51ovPiJji8yjh3fy21eLAKdZSQFm/sK14qkLTUIYxMyORGpQUDx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4W7TYs2p1Yz4f3lfp;
+	Tue, 25 Jun 2024 10:39:29 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 765931A0181;
+	Tue, 25 Jun 2024 10:39:41 +0800 (CST)
+Received: from [10.174.177.210] (unknown [10.174.177.210])
+	by APP2 (Coremail) with SMTP id Syh0CgBn0YbjLXpm5bsQAQ--.59262S3;
+	Tue, 25 Jun 2024 10:39:39 +0800 (CST)
+Message-ID: <e4c0a9d5-95f1-2abe-a0b7-00ab3224f2d6@huaweicloud.com>
+Date: Tue, 25 Jun 2024 10:39:31 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [PATCH 6.6~6.9] cifs: fix pagecache leak when do writepages
+To: Greg KH <gregkh@linuxfoundation.org>, Yang Erkun <yangerkun@huawei.com>
+Cc: sfrench@samba.org, pc@manguebit.com, ronniesahlberg@gmail.com,
+ sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com,
+ dhowells@redhat.com, linux-cifs@vger.kernel.org, stable@vger.kernel.org,
+ stable-commits@vger.kernel.org
+References: <20240624042815.2242201-1-yangerkun@huawei.com>
+ <2024062422-imaging-evaluate-3f85@gregkh>
+From: yangerkun <yangerkun@huaweicloud.com>
+In-Reply-To: <2024062422-imaging-evaluate-3f85@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Syh0CgBn0YbjLXpm5bsQAQ--.59262S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7urWxAFyfAw17Cr17Zr47Arb_yoW8WrWUpF
+	WUC3Z8Ar4jyryakFnIyayqvFy5t3y8Jry5WFy3J3W293WFqryagry0g3yq9FZrG3s3Wr4I
+	qF4jyF9Yg3W8XaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7Mxk0xIA0c2IE
+	e2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
+	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q
+	6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
+	kF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE
+	14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf
+	9x07UX4SrUUUUU=
+X-CM-SenderInfo: 51dqwvhunx0q5kxd4v5lfo033gof0z/
 
-Originally, the check_unaligned_access_emulated_all_cpus function
-only checked the boot hart. This fixes the function to check all
-harts.
 
-Fixes: 71c54b3d169d ("riscv: report misaligned accesses emulation to hwprobe")
-Signed-off-by: Jesse Taube <jesse@rivosinc.com>
-Cc: stable@vger.kernel.org
----
-V1 -> V2:
- - New patch
-V2 -> V3:
- - Split patch
----
- arch/riscv/kernel/traps_misaligned.c | 23 ++++++-----------------
- 1 file changed, 6 insertions(+), 17 deletions(-)
 
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index b62d5a2f4541..8fadbe00dd62 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -526,31 +526,17 @@ int handle_misaligned_store(struct pt_regs *regs)
- 	return 0;
- }
- 
--static bool check_unaligned_access_emulated(int cpu)
-+static void check_unaligned_access_emulated(struct work_struct *unused)
- {
-+	int cpu = smp_processor_id();
- 	long *mas_ptr = per_cpu_ptr(&misaligned_access_speed, cpu);
- 	unsigned long tmp_var, tmp_val;
--	bool misaligned_emu_detected;
- 
- 	*mas_ptr = RISCV_HWPROBE_MISALIGNED_UNKNOWN;
- 
- 	__asm__ __volatile__ (
- 		"       "REG_L" %[tmp], 1(%[ptr])\n"
- 		: [tmp] "=r" (tmp_val) : [ptr] "r" (&tmp_var) : "memory");
--
--	misaligned_emu_detected = (*mas_ptr == RISCV_HWPROBE_MISALIGNED_EMULATED);
--	/*
--	 * If unaligned_ctl is already set, this means that we detected that all
--	 * CPUS uses emulated misaligned access at boot time. If that changed
--	 * when hotplugging the new cpu, this is something we don't handle.
--	 */
--	if (unlikely(unaligned_ctl && !misaligned_emu_detected)) {
--		pr_crit("CPU misaligned accesses non homogeneous (expected all emulated)\n");
--		while (true)
--			cpu_relax();
--	}
--
--	return misaligned_emu_detected;
- }
- 
- bool check_unaligned_access_emulated_all_cpus(void)
-@@ -562,8 +548,11 @@ bool check_unaligned_access_emulated_all_cpus(void)
- 	 * accesses emulated since tasks requesting such control can run on any
- 	 * CPU.
- 	 */
-+	schedule_on_each_cpu(check_unaligned_access_emulated);
-+
- 	for_each_online_cpu(cpu)
--		if (!check_unaligned_access_emulated(cpu))
-+		if (per_cpu(misaligned_access_speed, cpu)
-+		    != RISCV_HWPROBE_MISALIGNED_EMULATED)
- 			return false;
- 
- 	unaligned_ctl = true;
--- 
-2.45.2
+在 2024/6/24 22:57, Greg KH 写道:
+> On Mon, Jun 24, 2024 at 12:28:15PM +0800, Yang Erkun wrote:
+>> After commit f3dc1bdb6b0b("cifs: Fix writeback data corruption"), the
+>> writepages for cifs will find all folio needed writepage with two phase.
+>> The first folio will be found in cifs_writepages_begin, and the latter
+>> various folios will be found in cifs_extend_writeback.
+>>
+>> All those will first get folio, and for normal case, once we set page
+>> writeback and after do really write, we should put the reference, folio
+>> found in cifs_extend_writeback do this with folio_batch_release. But the
+>> folio found in cifs_writepages_begin never get the chance do it. And
+>> every writepages call, we will leak a folio(found this problem while do
+>> xfstests over cifs).
+>>
+>> Besides, the exist path seem never handle this folio correctly, fix it too
+>> with this patch.
+>>
+>> The problem does not exist in mainline since writepages path for cifs
+>> has changed to netfs. It's had to backport all related change, so try fix
+>> this problem with this single patch.
+>>
+>> Fixes: f3dc1bdb6b0b ("cifs: Fix writeback data corruption")
+>> Signed-off-by: Yang Erkun <yangerkun@huawei.com>
+>> ---
+>>   fs/smb/client/file.c | 16 +++++++++++++---
+>>   1 file changed, 13 insertions(+), 3 deletions(-)
+>>
+> 
+> <formletter>
+> 
+> This is not the correct way to submit patches for inclusion in the
+> stable kernel tree.  Please read:
+>      https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> for how to do this properly.
+> 
+> </formletter>
+
+Thanks for your reminder, will do it in v2!
 
 
