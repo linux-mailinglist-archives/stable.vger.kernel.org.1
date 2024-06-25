@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-55593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07A76916456
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2BDF9164D1
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38E6A1C23260
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0058A1C208B4
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCDF146A67;
-	Tue, 25 Jun 2024 09:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D1C1494A8;
+	Tue, 25 Jun 2024 10:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdhOt4up"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0SpSNduX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A1D14A087;
-	Tue, 25 Jun 2024 09:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2674813C90B;
+	Tue, 25 Jun 2024 10:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309362; cv=none; b=uoAayTo8ojIZJzQTPNrwnWq4/bwBYXQLu2Gg+HxDPkZaBcrrQaw7cMPI7rYjcxIRe9qzq1Wu5SfRFFM9MiIf1RHEVXNq6+xOGX/R/yAwLIkVehDXKQTRZ/oPwX3Kwomohru/6Tw91dTHcI0d/q0iCfVkOznQpSCHIFRYbCQ1K20=
+	t=1719309695; cv=none; b=oj0EyOSkB4ZfT6YGiVlIFZARAtpmMCa1XW+G2vB9lecwCjddgINL9ZOnP9ULcq1mNcucg1JUJoQJq+cXeV3ieCqSOnqxJxNgFu5fzTVfLjfu2hOuH/UXwdBhhe/ysLRV1VehPLunooh6o/P6MDvnd1RXdBJS+96XmPucGSVL4oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309362; c=relaxed/simple;
-	bh=d3ymsZd/WnPbo0aXl5aQxJCbi5DQdVeR2nTaCJVFFd8=;
+	s=arc-20240116; t=1719309695; c=relaxed/simple;
+	bh=cfqRFxd9g1FbPN/wVJYI1Kt91LDsxwp3sOQDPwD7akk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fC6DKo0Dd+an8/0gBmwOcECK3BStieIsqeCr4X+qGByonOF7ejUJiYeBKrmicAVu5G1RW3oasQRZsok4Nd/V/thLxoJK+jbJD7ydwJy2VAWUTXBe5NtzB2AZQTNeQsaaQIJfsuWb5jzxfj+Rz7lm9B/DSWz7y9AnCPhXrepbMNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdhOt4up; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2990CC32781;
-	Tue, 25 Jun 2024 09:56:01 +0000 (UTC)
+	 MIME-Version; b=NVHvQQ9CbilkD1bA5d6Yyur+uh/W8BCzHYxBagOANP4X996z0UEoLiyiBc6weIST8c556AJ91XRf/4YXLPnohiVD+zGkNmXyQ9UYgtqDY+IJWYUb/aGtl/E/+/vK66nxn1buqLBS0euWTJvXyV0XPnTEC/cVSZs6Zvjkm/bj6QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0SpSNduX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737EDC32781;
+	Tue, 25 Jun 2024 10:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309362;
-	bh=d3ymsZd/WnPbo0aXl5aQxJCbi5DQdVeR2nTaCJVFFd8=;
+	s=korg; t=1719309695;
+	bh=cfqRFxd9g1FbPN/wVJYI1Kt91LDsxwp3sOQDPwD7akk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdhOt4up1vkFk15F2QlPHiF47V7OH1Jk/2OU2oElvFEehUx9xM8ui48JBiAqUyCiE
-	 4WB96aWsb8DjAem6zCtyOVsdfe2nYwy7lwDa1pgFy5rg9QcWjRQHjMcZDdnxvWcM6E
-	 P+p4uh2v//LoDK9pFsQdOUM29IHz9JnR1gAcVgHg=
+	b=0SpSNduXYMv0/U9eR0NHvqcl5+Pb2RcrwSuWRWgZg35VqfRS8J8kYRhgUwcFBiFSi
+	 ERzMjR4QPGIcq8l/ScSBt01pzrA0Cz/vCGLggGQ72SJHcRNG+UslqyALdHbyUZQPTw
+	 5TVCD/KiyM+CtEBLCE+L6Hn1wAxpVonSk+wfdqNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 153/192] drm/radeon: fix UBSAN warning in kv_dpm.c
-Date: Tue, 25 Jun 2024 11:33:45 +0200
-Message-ID: <20240625085543.032887477@linuxfoundation.org>
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 071/131] virtio_net: checksum offloading handling fix
+Date: Tue, 25 Jun 2024 11:33:46 +0200
+Message-ID: <20240625085528.641611936@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Heng Qi <hengqi@linux.alibaba.com>
 
-commit a498df5421fd737d11bfd152428ba6b1c8538321 upstream.
+[ Upstream commit 604141c036e1b636e2a71cf6e1aa09d1e45f40c2 ]
 
-Adds bounds check for sumo_vid_mapping_entry.
+In virtio spec 0.95, VIRTIO_NET_F_GUEST_CSUM was designed to handle
+partially checksummed packets, and the validation of fully checksummed
+packets by the device is independent of VIRTIO_NET_F_GUEST_CSUM
+negotiation. However, the specification erroneously stated:
 
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  "If VIRTIO_NET_F_GUEST_CSUM is not negotiated, the device MUST set flags
+   to zero and SHOULD supply a fully checksummed packet to the driver."
+
+This statement is inaccurate because even without VIRTIO_NET_F_GUEST_CSUM
+negotiation, the device can still set the VIRTIO_NET_HDR_F_DATA_VALID flag.
+Essentially, the device can facilitate the validation of these packets'
+checksums - a process known as RX checksum offloading - removing the need
+for the driver to do so.
+
+This scenario is currently not implemented in the driver and requires
+correction. The necessary specification correction[1] has been made and
+approved in the virtio TC vote.
+[1] https://lists.oasis-open.org/archives/virtio-comment/202401/msg00011.html
+
+Fixes: 4f49129be6fa ("virtio-net: Set RXCSUM feature if GUEST_CSUM is available")
+Signed-off-by: Heng Qi <hengqi@linux.alibaba.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/sumo_dpm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/virtio_net.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/radeon/sumo_dpm.c
-+++ b/drivers/gpu/drm/radeon/sumo_dpm.c
-@@ -1621,6 +1621,8 @@ void sumo_construct_vid_mapping_table(st
- 
- 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
- 		if (table[i].ulSupportedSCLK != 0) {
-+			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
-+				continue;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
- 				table[i].usVoltageID;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 32cddb633793d..61cc0ed1ddc13 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3818,8 +3818,16 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 			dev->features |= dev->hw_features & NETIF_F_ALL_TSO;
+ 		/* (!csum && gso) case will be fixed by register_netdev() */
+ 	}
+-	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_CSUM))
+-		dev->features |= NETIF_F_RXCSUM;
++
++	/* 1. With VIRTIO_NET_F_GUEST_CSUM negotiation, the driver doesn't
++	 * need to calculate checksums for partially checksummed packets,
++	 * as they're considered valid by the upper layer.
++	 * 2. Without VIRTIO_NET_F_GUEST_CSUM negotiation, the driver only
++	 * receives fully checksummed packets. The device may assist in
++	 * validating these packets' checksums, so the driver won't have to.
++	 */
++	dev->features |= NETIF_F_RXCSUM;
++
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO4) ||
+ 	    virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO6))
+ 		dev->features |= NETIF_F_GRO_HW;
+-- 
+2.43.0
+
 
 
 
