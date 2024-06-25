@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-55592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C198C916455
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 047FD9164D0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 002B51C236C4
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 364E81C2120F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDD814A0A4;
-	Tue, 25 Jun 2024 09:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A039A1494A8;
+	Tue, 25 Jun 2024 10:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTFdPdUl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Um0x/7mQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5B4146A67;
-	Tue, 25 Jun 2024 09:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C40413C90B;
+	Tue, 25 Jun 2024 10:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309359; cv=none; b=CXBTEYDNGoiC+r7uS05c6PWQLcn+lmQy+Ll+VbXSdmtHKKxoMNv/cDIWZR2CRjmwhl6sNXGjXpOWoN3vLSoCU4ISse4C7EfM9hvVuK6zMSTnSTT4uM3+iSH7lry9wUijkTIy2gkMsZbEG+l7Q4MPuXzI4rUzOeP0Mve3RH1/ArA=
+	t=1719309692; cv=none; b=Lrn0JEd+qZgDJpS4IH6lw03kCZWWRcnP5cJk7O+GfQaZSZD9krrxnowBmAFJ4Q0dCT14MPnc+VfIKc30Xg7xEwz4lshR99Anm86ja3pKgFJDMBvrYUxH8Q0b1Zrrn9s7xI/zakAn7wZm3KIGFQDUk9JCCOyjjiIcPrEi90WlvH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309359; c=relaxed/simple;
-	bh=4E2N0TRHW0VH9cyQEr5aH8HEmxmEhke+aemfIKuQp8c=;
+	s=arc-20240116; t=1719309692; c=relaxed/simple;
+	bh=yuFl7TZnb/i6ZTw9mPpi2fJcHFV1j2XZgAcpc5WI7gQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eq2ydoKh0BbM+3H8J4pzYUlbplGgZTC+2duaK/wMPb1OmN+7fSK75Ou8g/WgwE34tULknmo9NuQVIFTHI2qwRbeb8J3no3ZpM7q78ccPV/wWospZm0iegdq9iXWwy95m/xwJ2fSlA8KDuVzTKHT+Y6+wzCH/2wa1Q0xrn+sNNhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTFdPdUl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4BEC32781;
-	Tue, 25 Jun 2024 09:55:59 +0000 (UTC)
+	 MIME-Version; b=ftBLzwbu5DDjy4RTYHLivSd8CzE61qalImkXf4pnM72I0wedhLRI7tuedmjR180HfOf9LT8Lrt1VbgaFM+2CfULKtISDN6MxEwuhVMVXw1xUOWg6mJbwM/eKgFgoqXRDh10preKBpp+OUvnsdsdHrqKo4ZUsm6vhLX27OrnP0t8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Um0x/7mQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85433C32781;
+	Tue, 25 Jun 2024 10:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309359;
-	bh=4E2N0TRHW0VH9cyQEr5aH8HEmxmEhke+aemfIKuQp8c=;
+	s=korg; t=1719309691;
+	bh=yuFl7TZnb/i6ZTw9mPpi2fJcHFV1j2XZgAcpc5WI7gQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTFdPdUl2QNZXuJj3EYaQkeqt/z4IOdXvOhOkk/79HLorywhDjtYmOp4woEOJSYQg
-	 fHcDVOR8ImJqaBcdUjsoCqFGEzzSiJWfEdYTCsxnXZU8cGqOLozfqQo7gvQpV0BGFQ
-	 BtmJpqCJzL2l8a+bo8pTWBM20hMsGGj2WztIORbE=
+	b=Um0x/7mQQUkU3VcPQQIPZ38H6kVzU3KcthKO/hx3TxrXio7oiwLX+tYqbz2MAMoBb
+	 JpaTKBHFDGR7MOplPB/Am/HnYLhS1f1cFVDDhH5coVuaZ8Njj1brg38YFenh+UAX3J
+	 BPRXAexKt8ybLluiVBvk3LKaROUIun7aAf/6pY+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ville Syrjala <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.6 152/192] drm/i915/mso: using joiner is not possible with eDP MSO
-Date: Tue, 25 Jun 2024 11:33:44 +0200
-Message-ID: <20240625085542.993584408@linuxfoundation.org>
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 070/131] net: stmmac: No need to calculate speed divider when offload is disabled
+Date: Tue, 25 Jun 2024 11:33:45 +0200
+Message-ID: <20240625085528.603226310@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +61,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-commit 49cc17967be95d64606d5684416ee51eec35e84a upstream.
+[ Upstream commit b8c43360f6e424131fa81d3ba8792ad8ff25a09e ]
 
-It's not possible to use the joiner at the same time with eDP MSO. When
-a panel needs MSO, it's not optional, so MSO trumps joiner.
+commit be27b8965297 ("net: stmmac: replace priv->speed with
+the portTransmitRate from the tc-cbs parameters") introduced
+a problem. When deleting, it prompts "Invalid portTransmitRate
+0 (idleSlope - sendSlope)" and exits. Add judgment on cbs.enable.
+Only when offload is enabled, speed divider needs to be calculated.
 
-v3: Only change intel_dp_has_joiner(), leave debugfs alone (Ville)
-
-Fixes: bc71194e8897 ("drm/i915/edp: enable eDP MSO during link training")
-Cc: <stable@vger.kernel.org> # v5.13+
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1668
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240614142311.589089-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 8b5a92ca24eb96bb71e2a55e352687487d87687f)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: be27b8965297 ("net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240617013922.1035854-1-xiaolei.wang@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 40 ++++++++++---------
+ 1 file changed, 22 insertions(+), 18 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -393,6 +393,10 @@ bool intel_dp_can_bigjoiner(struct intel
- 	struct intel_encoder *encoder = &intel_dig_port->base;
- 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index 074ff289eaf25..5eb8c6713e456 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -358,24 +358,28 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
  
-+	/* eDP MSO is not compatible with joiner */
-+	if (intel_dp->mso_link_count)
-+		return false;
-+
- 	return DISPLAY_VER(dev_priv) >= 12 ||
- 		(DISPLAY_VER(dev_priv) == 11 &&
- 		 encoder->port != PORT_A);
+ 	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
+ 
+-	/* Port Transmit Rate and Speed Divider */
+-	switch (div_s64(port_transmit_rate_kbps, 1000)) {
+-	case SPEED_10000:
+-	case SPEED_5000:
+-		ptr = 32;
+-		break;
+-	case SPEED_2500:
+-	case SPEED_1000:
+-		ptr = 8;
+-		break;
+-	case SPEED_100:
+-		ptr = 4;
+-		break;
+-	default:
+-		netdev_err(priv->dev,
+-			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
+-			   port_transmit_rate_kbps);
+-		return -EINVAL;
++	if (qopt->enable) {
++		/* Port Transmit Rate and Speed Divider */
++		switch (div_s64(port_transmit_rate_kbps, 1000)) {
++		case SPEED_10000:
++		case SPEED_5000:
++			ptr = 32;
++			break;
++		case SPEED_2500:
++		case SPEED_1000:
++			ptr = 8;
++			break;
++		case SPEED_100:
++			ptr = 4;
++			break;
++		default:
++			netdev_err(priv->dev,
++				   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
++				   port_transmit_rate_kbps);
++			return -EINVAL;
++		}
++	} else {
++		ptr = 0;
+ 	}
+ 
+ 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
+-- 
+2.43.0
+
 
 
 
