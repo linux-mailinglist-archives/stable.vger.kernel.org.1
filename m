@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8EFA9164D2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70E1916457
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B20CB20B18
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6185A1F23DCA
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AECF148319;
-	Tue, 25 Jun 2024 10:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B5114A0B9;
+	Tue, 25 Jun 2024 09:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ul0fPaNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqMY0ZTw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187D213C90B;
-	Tue, 25 Jun 2024 10:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8288D14A087;
+	Tue, 25 Jun 2024 09:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309698; cv=none; b=izrGxPmbdLvDZSN8sJ+sHg9Zs0I6oIlDoScdq9KL1qFXqN+RVBWpuW5oIgXy+0nrb9V099rxH2y0+7XprO2y5BrQGrUTBMxlgsjE5H6p+s/HtAW2qS+OxGxnuZWwqazNfF/AdsvOLRRkJANvkKaNHrOUdtpLA63Nj6Fe8u3ib2U=
+	t=1719309368; cv=none; b=A5RqGQ0+fPuttcroaXQk09L63pnaV/T9FUyUOR23dzFsKCanXpx6rEZn28XuRyQRo0TpjLEPmud6SnhQxuM6X2bwtL5bjtyO+xjwI7ayHhLKAgp6erhdKcSN1G+5tPVkZBe4th1UESGG+WaBes1vudyFzaIZvGeKJEZVFCzyVkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309698; c=relaxed/simple;
-	bh=11LpTUJXAkmywBP74/Ih+lN5c53vZE077yv8uIxAG2c=;
+	s=arc-20240116; t=1719309368; c=relaxed/simple;
+	bh=ZMY508F1whexEW0iFjCkjSs+IlGczEIhMf6EDp7JcBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DSuvwnFDN+YaptTnY2XNs3WHthY31pT21BfS6Kt2mG9lrx66gv6xUz0IVTtJXPK4hy2JL/KpOypImjHLCIiz34R8Nuqx6PMRMnD8jECGdZWflln0B3F9INXSnq0ua4mlkLoy/Vg5hOncxGfrBUVll+zlG7wFEWmOcvCGhwE/0EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ul0fPaNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BE1C32781;
-	Tue, 25 Jun 2024 10:01:37 +0000 (UTC)
+	 MIME-Version; b=PK1uEI90eJLXhNMdPZr1aSDitjRH+DrNp42LpNv6TnhSCm5MwSpQBKTyj0BpW1bvZD7Q8S1dCOl4z9ogF8k6OVyRmcpPPZ0MIlkUSqnpOZ+sxAeEWFseKw96yg12YqzxzruREYwpxI26BjSwxijSZdOGwg5j5aMCvAXrozrfhkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqMY0ZTw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090FDC32781;
+	Tue, 25 Jun 2024 09:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309698;
-	bh=11LpTUJXAkmywBP74/Ih+lN5c53vZE077yv8uIxAG2c=;
+	s=korg; t=1719309368;
+	bh=ZMY508F1whexEW0iFjCkjSs+IlGczEIhMf6EDp7JcBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ul0fPaNXZ7+9kM9SaFKoNIoRmtlYbgkoC1ggbz2mBK5Ipc/MJnuo9inUmtJF1gevg
-	 ON1aKhEcdtX87Lmrvcxx56tlxQbRsWzHuPvLk/Br58x/pMQc9D2HcbbA5qD5hoivHr
-	 qbsyaE5EpYRUcY1WghvJ7dynT/ARM8Lk+NiSTwj4=
+	b=QqMY0ZTw05+kqcq6jBFLwf4/fxnghGUn7zVnJY4a2fMIBvOjTBtf+CRrfxJcA1x3b
+	 1YhOdyGO2tj7ddMD+2ZYruBZ5l2KQR8otBpQxyNxafi1bxuQ0RIf7nWl7vLFU4cwj0
+	 xw4Qr8vMfOgv3SrbpTOkgx+57tZ8VtyM4/aU1eBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/131] octeontx2-pf: Add error handling to VLAN unoffload handling
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 155/192] dt-bindings: dma: fsl-edma: fix dma-channels constraints
 Date: Tue, 25 Jun 2024 11:33:47 +0200
-Message-ID: <20240625085528.679056092@linuxfoundation.org>
+Message-ID: <20240625085543.109401632@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit b95a4afe2defd6f46891985f9436a568cd35a31c ]
+commit 1345a13f18370ad9e5bc98995959a27f9bd71464 upstream.
 
-otx2_sq_append_skb makes used of __vlan_hwaccel_push_inside()
-to unoffload VLANs - push them from skb meta data into skb data.
-However, it omitts a check for __vlan_hwaccel_push_inside()
-returning NULL.
+dma-channels is a number, not a list.  Apply proper constraints on the
+actual number.
 
-Found by inspection based on [1] and [2].
-Compile tested only.
-
-[1] Re: [PATCH net-next v1] net: stmmac: Enable TSO on VLANs
-    https://lore.kernel.org/all/ZmrN2W8Fye450TKs@shell.armlinux.org.uk/
-[2] Re: [PATCH net-next v2] net: stmmac: Enable TSO on VLANs
-    https://lore.kernel.org/all/CANn89i+11L5=tKsa7V7Aeyxaj6nYGRwy35PAbCRYJ73G+b25sg@mail.gmail.com/
-
-Fixes: fd9d7859db6c ("octeontx2-pf: Implement ingress/egress VLAN offload")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6eb439dff645 ("dt-bindings: fsl-dma: fsl-edma: add edma3 compatible string")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://lore.kernel.org/r/20240521083002.23262-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/dma/fsl,edma.yaml |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-index aee392a15b23c..e579183e52392 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-@@ -1152,8 +1152,11 @@ bool otx2_sq_append_skb(struct net_device *netdev, struct otx2_snd_queue *sq,
+--- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
++++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+@@ -47,8 +47,8 @@ properties:
+       - 3
  
- 	if (skb_shinfo(skb)->gso_size && !is_hw_tso_supported(pfvf, skb)) {
- 		/* Insert vlan tag before giving pkt to tso */
--		if (skb_vlan_tag_present(skb))
-+		if (skb_vlan_tag_present(skb)) {
- 			skb = __vlan_hwaccel_push_inside(skb);
-+			if (!skb)
-+				return true;
-+		}
- 		otx2_sq_append_tso(pfvf, sq, skb, qidx);
- 		return true;
- 	}
--- 
-2.43.0
-
+   dma-channels:
+-    minItems: 1
+-    maxItems: 64
++    minimum: 1
++    maximum: 64
+ 
+   clocks:
+     minItems: 1
 
 
 
