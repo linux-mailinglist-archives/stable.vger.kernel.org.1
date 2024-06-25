@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-55595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70E1916457
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB7F9164D3
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6185A1F23DCA
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98C7F28867D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B5114A0B9;
-	Tue, 25 Jun 2024 09:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D41514A08B;
+	Tue, 25 Jun 2024 10:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqMY0ZTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYbX+zsR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8288D14A087;
-	Tue, 25 Jun 2024 09:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4F513C90B;
+	Tue, 25 Jun 2024 10:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309368; cv=none; b=A5RqGQ0+fPuttcroaXQk09L63pnaV/T9FUyUOR23dzFsKCanXpx6rEZn28XuRyQRo0TpjLEPmud6SnhQxuM6X2bwtL5bjtyO+xjwI7ayHhLKAgp6erhdKcSN1G+5tPVkZBe4th1UESGG+WaBes1vudyFzaIZvGeKJEZVFCzyVkw=
+	t=1719309701; cv=none; b=ST5P+eFda968KtQDkEYK88vTdfY2lf8uvrI60sRnGjHakJ8ACny6VAD94UOBbe2HMyKgqv16EuwlUpOXzjET0r96ytjPbUnoEYUNFglT2BCIIXR1KSnrPJeS1P/XGDZOP4yVth/H/KNrTWjc51a6vPLmCQ9Ntfu0rTVKGv7PN08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309368; c=relaxed/simple;
-	bh=ZMY508F1whexEW0iFjCkjSs+IlGczEIhMf6EDp7JcBI=;
+	s=arc-20240116; t=1719309701; c=relaxed/simple;
+	bh=ikR+9dfAGUIaLTP3dthYabaS1E1hjedC9l49rED3isU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PK1uEI90eJLXhNMdPZr1aSDitjRH+DrNp42LpNv6TnhSCm5MwSpQBKTyj0BpW1bvZD7Q8S1dCOl4z9ogF8k6OVyRmcpPPZ0MIlkUSqnpOZ+sxAeEWFseKw96yg12YqzxzruREYwpxI26BjSwxijSZdOGwg5j5aMCvAXrozrfhkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqMY0ZTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090FDC32781;
-	Tue, 25 Jun 2024 09:56:07 +0000 (UTC)
+	 MIME-Version; b=AYqkKapth1FSF3VGfqR6XkvV89mngPPbUveb+oLdYnPdU9Muv0jIxFf6uvlFzhFhbXmnQDg/N4SS+CdTLk4t6Mlnb4YxjnjcBNcVWTUAvbTb3OdECjPTesgeWomb0vtWAczes3eGA5i0ntqVeN6THSj6AW3p0WS6p1kTMw0l6Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYbX+zsR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87473C32781;
+	Tue, 25 Jun 2024 10:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309368;
-	bh=ZMY508F1whexEW0iFjCkjSs+IlGczEIhMf6EDp7JcBI=;
+	s=korg; t=1719309700;
+	bh=ikR+9dfAGUIaLTP3dthYabaS1E1hjedC9l49rED3isU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqMY0ZTw05+kqcq6jBFLwf4/fxnghGUn7zVnJY4a2fMIBvOjTBtf+CRrfxJcA1x3b
-	 1YhOdyGO2tj7ddMD+2ZYruBZ5l2KQR8otBpQxyNxafi1bxuQ0RIf7nWl7vLFU4cwj0
-	 xw4Qr8vMfOgv3SrbpTOkgx+57tZ8VtyM4/aU1eBM=
+	b=jYbX+zsRDX+1kRIWzc3oI/IUlnFyIibCa4+UUXI4RfS4wiawqK20jrl/+XUDDjuZW
+	 2n4+/9JL21W5X0CcrNcq/y7lRHhtZLgVeeOLxHfItEGmMnDPMsLCmmmiivvqw72S2v
+	 6eTpjU9TQu9N70Imh0mqsejVHeL7WfGdaiceWKV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 155/192] dt-bindings: dma: fsl-edma: fix dma-channels constraints
-Date: Tue, 25 Jun 2024 11:33:47 +0200
-Message-ID: <20240625085543.109401632@linuxfoundation.org>
+	syzbot+b62c37cdd58103293a5a@syzkaller.appspotmail.com,
+	syzbot+cfbe1da5fdfc39efc293@syzkaller.appspotmail.com,
+	kernel test robot <oliver.sang@intel.com>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 073/131] netfilter: ipset: Fix suspicious rcu_dereference_protected()
+Date: Tue, 25 Jun 2024 11:33:48 +0200
+Message-ID: <20240625085528.718154828@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
 
-commit 1345a13f18370ad9e5bc98995959a27f9bd71464 upstream.
+[ Upstream commit 8ecd06277a7664f4ef018abae3abd3451d64e7a6 ]
 
-dma-channels is a number, not a list.  Apply proper constraints on the
-actual number.
+When destroying all sets, we are either in pernet exit phase or
+are executing a "destroy all sets command" from userspace. The latter
+was taken into account in ip_set_dereference() (nfnetlink mutex is held),
+but the former was not. The patch adds the required check to
+rcu_dereference_protected() in ip_set_dereference().
 
-Fixes: 6eb439dff645 ("dt-bindings: fsl-dma: fsl-edma: add edma3 compatible string")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://lore.kernel.org/r/20240521083002.23262-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4e7aaa6b82d6 ("netfilter: ipset: Fix race between namespace cleanup and gc in the list:set type")
+Reported-by: syzbot+b62c37cdd58103293a5a@syzkaller.appspotmail.com
+Reported-by: syzbot+cfbe1da5fdfc39efc293@syzkaller.appspotmail.com
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202406141556.e0b6f17e-lkp@intel.com
+Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/dma/fsl,edma.yaml |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/ipset/ip_set_core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-+++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
-@@ -47,8 +47,8 @@ properties:
-       - 3
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index 649b8a5901e33..0b24b638bfd2e 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -53,12 +53,13 @@ MODULE_DESCRIPTION("core IP set support");
+ MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_IPSET);
  
-   dma-channels:
--    minItems: 1
--    maxItems: 64
-+    minimum: 1
-+    maximum: 64
- 
-   clocks:
-     minItems: 1
+ /* When the nfnl mutex or ip_set_ref_lock is held: */
+-#define ip_set_dereference(p)		\
+-	rcu_dereference_protected(p,	\
++#define ip_set_dereference(inst)	\
++	rcu_dereference_protected((inst)->ip_set_list,	\
+ 		lockdep_nfnl_is_held(NFNL_SUBSYS_IPSET) || \
+-		lockdep_is_held(&ip_set_ref_lock))
++		lockdep_is_held(&ip_set_ref_lock) || \
++		(inst)->is_deleted)
+ #define ip_set(inst, id)		\
+-	ip_set_dereference((inst)->ip_set_list)[id]
++	ip_set_dereference(inst)[id]
+ #define ip_set_ref_netlink(inst,id)	\
+ 	rcu_dereference_raw((inst)->ip_set_list)[id]
+ #define ip_set_dereference_nfnl(p)	\
+@@ -1135,7 +1136,7 @@ static int ip_set_create(struct sk_buff *skb, const struct nfnl_info *info,
+ 		if (!list)
+ 			goto cleanup;
+ 		/* nfnl mutex is held, both lists are valid */
+-		tmp = ip_set_dereference(inst->ip_set_list);
++		tmp = ip_set_dereference(inst);
+ 		memcpy(list, tmp, sizeof(struct ip_set *) * inst->ip_set_max);
+ 		rcu_assign_pointer(inst->ip_set_list, list);
+ 		/* Make sure all current packets have passed through */
+-- 
+2.43.0
+
 
 
 
