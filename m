@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1154A9164BF
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8606291643D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78746B2938D
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 413CC281587
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2CA14A4FF;
-	Tue, 25 Jun 2024 10:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E7A14A09F;
+	Tue, 25 Jun 2024 09:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rW5uJekm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0d4CZSb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA1F149C41;
-	Tue, 25 Jun 2024 10:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651AB1494CF;
+	Tue, 25 Jun 2024 09:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309635; cv=none; b=LcJhXVQXAFLXhct0K/E5g+I2PFpt+k63eDGvCp8YGC/AQnGrN64DhY/j8loHxlqFEw3dgZ1fOFuKjeg5z9uay3HCXOOgKZWCMbESGg2JjnR9oXuWHTjHgbGbs08+Up+wGR9IpAtz9IoZ0ctd08mkIL9UYkCPF1wMQRZd1ex4TG8=
+	t=1719309308; cv=none; b=YTw1zUE0V4FrHr9Sbj/t3BCCGHhmGCNzW7izTnGI9bWYN/4qHNHPS/LDEEaL8ob1bjG6r1FTG5Ras7SQbIg9Bwok1VFnX0sNOUySpONADxvjQ4XKaNpYMTgYfXunhZfIS+ia/llv+Tc7ZwyRj0AJKNb4hWPLWyh6ZcdSUSQth4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309635; c=relaxed/simple;
-	bh=TpP+1yuBhcJd6IDja6l+SQf7Vsduu2PJVTLGGeKuF7U=;
+	s=arc-20240116; t=1719309308; c=relaxed/simple;
+	bh=2WEUoatAIpDPRQIdMi5p7TnTFDHU9EpNRHjlU1O4OZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIUx2zQ+GToEH4v7b7EF8TNTiOfCQ5wxLn8AKksDICrZWqU/F935B7W8Ybqv0t/bAwIbGenoSE18XoFxznyHzU0d9zL7UGxfw+dyiFzkdW/GQPPbaSl2Wg7V1lxAu0k0KG18cbqEiP4YrEBJRXLRE3477jfxvue7rMpcXOV1l8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rW5uJekm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 366ADC32786;
-	Tue, 25 Jun 2024 10:00:35 +0000 (UTC)
+	 MIME-Version; b=QXRL9fLspBPdI9XmGeyfSWrXFC0eJSJJ6AgIJRzxJwqCzk3FYKsSSIUVpT3o54yV+oj4egSmrjAAVCRUInYN1gcOysbqplskEi/5GtkadqzSZ7mP8/5HbFCe3tJc/cD/livd9vpa4KwfoCANVDZMZ/fLI06R2H/yJpHJMcVlID4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0d4CZSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2032C32781;
+	Tue, 25 Jun 2024 09:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309635;
-	bh=TpP+1yuBhcJd6IDja6l+SQf7Vsduu2PJVTLGGeKuF7U=;
+	s=korg; t=1719309308;
+	bh=2WEUoatAIpDPRQIdMi5p7TnTFDHU9EpNRHjlU1O4OZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rW5uJekmchSvGHfShevuRI3yiXW9aMRvP6XNZXvYjp7Pm3J+eIa9ujP94AuX28A+x
-	 2ufTT8ciDpQ3y71zSGp/U8QTMWz+88LxHfN9fskBJ3hAUObs/XU1qZeGHB8Z3vSPZx
-	 eAIm2kL1v8ftuJ1E+4Uzrjs4WVFsAZJZhDUvXqAE=
+	b=B0d4CZSbHpIim2fbG7+LFh/80uRjGtAAjadIo4efeAPqV/ubznGchBY+CDUslkBmr
+	 nnxdHKQBNaTvFeLO0Hb9vMa0nWyn9WumSqkrkKpklNU53BM6EbcR62aHLECvMInduI
+	 Y+Ru0BqCIDlD09R7jmNehyVPmcaPdOODWmml6bm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/131] dmaengine: ioatdma: Fix error path in ioat3_dma_probe()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 166/192] dt-bindings: i2c: atmel,at91sam: correct path to i2c-controller schema
 Date: Tue, 25 Jun 2024 11:33:58 +0200
-Message-ID: <20240625085529.096982642@linuxfoundation.org>
+Message-ID: <20240625085543.533223073@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit f0dc9fda2e0ee9e01496c2f5aca3a831131fad79 ]
+commit d4e001ffeccfc128c715057e866f301ac9b95728 upstream.
 
-Make sure we are disabling interrupts and destroying DMA pool if
-pcie_capability_read/write_word() call failed.
+The referenced i2c-controller.yaml schema is provided by dtschema
+package (outside of Linux kernel), so use full path to reference it.
 
-Fixes: 511deae0261c ("dmaengine: ioatdma: disable relaxed ordering for ioatdma")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-2-a9f2fbe26ab1@yadro.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7ea75dd386be ("dt-bindings: i2c: convert i2c-at91 to json-schema")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ioat/init.c | 33 +++++++++++++++------------------
- 1 file changed, 15 insertions(+), 18 deletions(-)
+ Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index fc9580761825f..3a4299f695758 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -534,18 +534,6 @@ static int ioat_probe(struct ioatdma_device *ioat_dma)
- 	return err;
- }
+--- a/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
++++ b/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
+@@ -75,7 +75,7 @@ required:
+   - clocks
  
--static int ioat_register(struct ioatdma_device *ioat_dma)
--{
--	int err = dma_async_device_register(&ioat_dma->dma_dev);
--
--	if (err) {
--		ioat_disable_interrupts(ioat_dma);
--		dma_pool_destroy(ioat_dma->completion_pool);
--	}
--
--	return err;
--}
--
- static void ioat_dma_remove(struct ioatdma_device *ioat_dma)
- {
- 	struct dma_device *dma = &ioat_dma->dma_dev;
-@@ -1180,9 +1168,9 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
- 		       ioat_chan->reg_base + IOAT_DCACTRL_OFFSET);
- 	}
- 
--	err = ioat_register(ioat_dma);
-+	err = dma_async_device_register(&ioat_dma->dma_dev);
- 	if (err)
--		return err;
-+		goto err_disable_interrupts;
- 
- 	ioat_kobject_add(ioat_dma, &ioat_ktype);
- 
-@@ -1191,20 +1179,29 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
- 
- 	/* disable relaxed ordering */
- 	err = pcie_capability_read_word(pdev, PCI_EXP_DEVCTL, &val16);
--	if (err)
--		return pcibios_err_to_errno(err);
-+	if (err) {
-+		err = pcibios_err_to_errno(err);
-+		goto err_disable_interrupts;
-+	}
- 
- 	/* clear relaxed ordering enable */
- 	val16 &= ~PCI_EXP_DEVCTL_RELAX_EN;
- 	err = pcie_capability_write_word(pdev, PCI_EXP_DEVCTL, val16);
--	if (err)
--		return pcibios_err_to_errno(err);
-+	if (err) {
-+		err = pcibios_err_to_errno(err);
-+		goto err_disable_interrupts;
-+	}
- 
- 	if (ioat_dma->cap & IOAT_CAP_DPS)
- 		writeb(ioat_pending_level + 1,
- 		       ioat_dma->reg_base + IOAT_PREFETCH_LIMIT_OFFSET);
- 
- 	return 0;
-+
-+err_disable_interrupts:
-+	ioat_disable_interrupts(ioat_dma);
-+	dma_pool_destroy(ioat_dma->completion_pool);
-+	return err;
- }
- 
- static void ioat_shutdown(struct pci_dev *pdev)
--- 
-2.43.0
-
+ allOf:
+-  - $ref: i2c-controller.yaml
++  - $ref: /schemas/i2c/i2c-controller.yaml#
+   - if:
+       properties:
+         compatible:
 
 
 
