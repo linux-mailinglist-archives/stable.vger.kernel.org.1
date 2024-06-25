@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-55529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A608A916401
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B41916486
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61BF9283653
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FD621C23330
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6802149C4C;
-	Tue, 25 Jun 2024 09:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737E5149C58;
+	Tue, 25 Jun 2024 09:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfv7U2gZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gn62N/4c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50B324B34;
-	Tue, 25 Jun 2024 09:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B541465A8;
+	Tue, 25 Jun 2024 09:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309171; cv=none; b=ORTbbmq66gNHIQ9OTU0UBd91AeIZWK+HhPWPw5l2R5KmeT/vxW6BYx3211BLI3iVZXvidLM9yHg4LqbAqiIh2AUIADmO7DJMBqKruXtOwWetsW2v4LDKMBgVot9xjaKPp8RCeHrz2+Mzf82TAoeayg3dXkR1shg69e5EN4xJRcI=
+	t=1719309500; cv=none; b=c81k/dTx8tb6C7sS1MEAb3gJSV5A6jFz1dP5xaBRMrLFd2IBsdJjwnlppem7kte2NzglCYTS9H+zCl0gGM3pJcwgzWYoyQwlSNicVmK7xP8mREuEECzCOyMAzuuIst/AEBdFIdA8cdHVZtrZhHHBI1ti9RMrM0Cc90GUipptCbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309171; c=relaxed/simple;
-	bh=On9+3wCT3cr1Q3iv3WxJlPQBJTSRP/HJB6yHAejqO7Y=;
+	s=arc-20240116; t=1719309500; c=relaxed/simple;
+	bh=9EDEI+pcwoKuSpKZTk0b9O1ZTGW1bMuaVmHApHS6zhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q4/DsHl5vFWbG6Ho5Zg1Sxo+fGh0u4MX7HNsJyrVUNZWvyzw6w9/MwQ20YteaybfmfmN4dj3jfMFWvycscSCHufWKHMM+LiGn0/8ggdqOkKzi11KsW0/zlJ5OyOvjk8kKyeLrfVKLPithUk7l6udQtKCPA3/pT0z+Tp6rQrBAYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfv7U2gZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD53C32781;
-	Tue, 25 Jun 2024 09:52:50 +0000 (UTC)
+	 MIME-Version; b=VWq1CKNGafY+ubIH2sbDT/noDHd4EDYk4NhT48jPI2hOp2at426rXZZ+OcCl7IMOxXQXCGZ4jS61sOpRHxeLxhTr09EqGYZaGlnH9XdEW5v7whmKLXycqlXKrdTM50mes2TAkyNSV4RJdoR7OygTNivf59W3VkxIHlVavONIHMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gn62N/4c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE053C32781;
+	Tue, 25 Jun 2024 09:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309171;
-	bh=On9+3wCT3cr1Q3iv3WxJlPQBJTSRP/HJB6yHAejqO7Y=;
+	s=korg; t=1719309500;
+	bh=9EDEI+pcwoKuSpKZTk0b9O1ZTGW1bMuaVmHApHS6zhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kfv7U2gZ0/u6u7+lcdAgj6KxA4FCd0lF6yOG5m+dtpFDjJ3HuURl/3fyyyuITDcno
-	 n+zN7cORLkzU8gNQ3Ca0ib9+SciGfRso9/WOZqm0tR/FOCoM3Fq/p5eSE0Pyqj4gBq
-	 blKoVspQR8Arc0Fn+EpHTydEWekuhxGn0xdCKq/0=
+	b=gn62N/4cZyXu9gNtfb8ha4O0W8bncV7qdiiZjIB7qy5YKQsfIfLlda/YLCztYOBBT
+	 rM26B+hsL4xs5Ha3gi4mOl6ildXVtvR9+HPyMS8WVQpZQXfptYhGhBV/b4SNtOAryr
+	 IUg959+o9uW9EcW/6YFIHPb1R97Wup4AQ5nHSy3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuang Li <shuali@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/192] tipc: force a dst refcount before doing decryption
+Subject: [PATCH 6.1 006/131] rcutorture: Fix invalid context warning when enable srcu barrier testing
 Date: Tue, 25 Jun 2024 11:32:41 +0200
-Message-ID: <20240625085540.591981090@linuxfoundation.org>
+Message-ID: <20240625085526.180793580@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit 2ebe8f840c7450ecbfca9d18ac92e9ce9155e269 ]
+[ Upstream commit 668c0406d887467d53f8fe79261dda1d22d5b671 ]
 
-As it says in commit 3bc07321ccc2 ("xfrm: Force a dst refcount before
-entering the xfrm type handlers"):
+When the torture_type is set srcu or srcud and cb_barrier is
+non-zero, running the rcutorture test will trigger the
+following warning:
 
-"Crypto requests might return asynchronous. In this case we leave the
- rcu protected region, so force a refcount on the skb's destination
- entry before we enter the xfrm type input/output handlers."
+[  163.910989][    C1] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+[  163.910994][    C1] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+[  163.910999][    C1] preempt_count: 10001, expected: 0
+[  163.911002][    C1] RCU nest depth: 0, expected: 0
+[  163.911005][    C1] INFO: lockdep is turned off.
+[  163.911007][    C1] irq event stamp: 30964
+[  163.911010][    C1] hardirqs last  enabled at (30963): [<ffffffffabc7df52>] do_idle+0x362/0x500
+[  163.911018][    C1] hardirqs last disabled at (30964): [<ffffffffae616eff>] sysvec_call_function_single+0xf/0xd0
+[  163.911025][    C1] softirqs last  enabled at (0): [<ffffffffabb6475f>] copy_process+0x16ff/0x6580
+[  163.911033][    C1] softirqs last disabled at (0): [<0000000000000000>] 0x0
+[  163.911038][    C1] Preemption disabled at:
+[  163.911039][    C1] [<ffffffffacf1964b>] stack_depot_save_flags+0x24b/0x6c0
+[  163.911063][    C1] CPU: 1 PID: 0 Comm: swapper/1 Tainted: G        W          6.8.0-rc4-rt4-yocto-preempt-rt+ #3 1e39aa9a737dd024a3275c4f835a872f673a7d3a
+[  163.911071][    C1] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+[  163.911075][    C1] Call Trace:
+[  163.911078][    C1]  <IRQ>
+[  163.911080][    C1]  dump_stack_lvl+0x88/0xd0
+[  163.911089][    C1]  dump_stack+0x10/0x20
+[  163.911095][    C1]  __might_resched+0x36f/0x530
+[  163.911105][    C1]  rt_spin_lock+0x82/0x1c0
+[  163.911112][    C1]  spin_lock_irqsave_ssp_contention+0xb8/0x100
+[  163.911121][    C1]  srcu_gp_start_if_needed+0x782/0xf00
+[  163.911128][    C1]  ? _raw_spin_unlock_irqrestore+0x46/0x70
+[  163.911136][    C1]  ? debug_object_active_state+0x336/0x470
+[  163.911148][    C1]  ? __pfx_srcu_gp_start_if_needed+0x10/0x10
+[  163.911156][    C1]  ? __pfx_lock_release+0x10/0x10
+[  163.911165][    C1]  ? __pfx_rcu_torture_barrier_cbf+0x10/0x10
+[  163.911188][    C1]  __call_srcu+0x9f/0xe0
+[  163.911196][    C1]  call_srcu+0x13/0x20
+[  163.911201][    C1]  srcu_torture_call+0x1b/0x30
+[  163.911224][    C1]  rcu_torture_barrier1cb+0x4a/0x60
+[  163.911247][    C1]  __flush_smp_call_function_queue+0x267/0xca0
+[  163.911256][    C1]  ? __pfx_rcu_torture_barrier1cb+0x10/0x10
+[  163.911281][    C1]  generic_smp_call_function_single_interrupt+0x13/0x20
+[  163.911288][    C1]  __sysvec_call_function_single+0x7d/0x280
+[  163.911295][    C1]  sysvec_call_function_single+0x93/0xd0
+[  163.911302][    C1]  </IRQ>
+[  163.911304][    C1]  <TASK>
+[  163.911308][    C1]  asm_sysvec_call_function_single+0x1b/0x20
+[  163.911313][    C1] RIP: 0010:default_idle+0x17/0x20
+[  163.911326][    C1] RSP: 0018:ffff888001997dc8 EFLAGS: 00000246
+[  163.911333][    C1] RAX: 0000000000000000 RBX: dffffc0000000000 RCX: ffffffffae618b51
+[  163.911337][    C1] RDX: 0000000000000000 RSI: ffffffffaea80920 RDI: ffffffffaec2de80
+[  163.911342][    C1] RBP: ffff888001997dc8 R08: 0000000000000001 R09: ffffed100d740cad
+[  163.911346][    C1] R10: ffffed100d740cac R11: ffff88806ba06563 R12: 0000000000000001
+[  163.911350][    C1] R13: ffffffffafe460c0 R14: ffffffffafe460c0 R15: 0000000000000000
+[  163.911358][    C1]  ? ct_kernel_exit.constprop.3+0x121/0x160
+[  163.911369][    C1]  ? lockdep_hardirqs_on+0xc4/0x150
+[  163.911376][    C1]  arch_cpu_idle+0x9/0x10
+[  163.911383][    C1]  default_idle_call+0x7a/0xb0
+[  163.911390][    C1]  do_idle+0x362/0x500
+[  163.911398][    C1]  ? __pfx_do_idle+0x10/0x10
+[  163.911404][    C1]  ? complete_with_flags+0x8b/0xb0
+[  163.911416][    C1]  cpu_startup_entry+0x58/0x70
+[  163.911423][    C1]  start_secondary+0x221/0x280
+[  163.911430][    C1]  ? __pfx_start_secondary+0x10/0x10
+[  163.911440][    C1]  secondary_startup_64_no_verify+0x17f/0x18b
+[  163.911455][    C1]  </TASK>
 
-On TIPC decryption path it has the same problem, and skb_dst_force()
-should be called before doing decryption to avoid a possible crash.
+This commit therefore use smp_call_on_cpu() instead of
+smp_call_function_single(), make rcu_torture_barrier1cb() invoked
+happens on task-context.
 
-Shuang reported this issue when this warning is triggered:
-
-  [] WARNING: include/net/dst.h:337 tipc_sk_rcv+0x1055/0x1ea0 [tipc]
-  [] Kdump: loaded Tainted: G W --------- - - 4.18.0-496.el8.x86_64+debug
-  [] Workqueue: crypto cryptd_queue_worker
-  [] RIP: 0010:tipc_sk_rcv+0x1055/0x1ea0 [tipc]
-  [] Call Trace:
-  [] tipc_sk_mcast_rcv+0x548/0xea0 [tipc]
-  [] tipc_rcv+0xcf5/0x1060 [tipc]
-  [] tipc_aead_decrypt_done+0x215/0x2e0 [tipc]
-  [] cryptd_aead_crypt+0xdb/0x190
-  [] cryptd_queue_worker+0xed/0x190
-  [] process_one_work+0x93d/0x17e0
-
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://lore.kernel.org/r/fbe3195fad6997a4eec62d9bf076b2ad03ac336b.1718476040.git.lucien.xin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/node.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/rcu/rcutorture.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index 3105abe97bb9c..69053c0398252 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -2107,6 +2107,7 @@ void tipc_rcv(struct net *net, struct sk_buff *skb, struct tipc_bearer *b)
- 	} else {
- 		n = tipc_node_find_by_id(net, ehdr->id);
- 	}
-+	skb_dst_force(skb);
- 	tipc_crypto_rcv(net, (n) ? n->crypto_rx : NULL, &skb, b);
- 	if (!skb)
- 		return;
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index a42141033577e..8c45df910763a 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -2968,11 +2968,12 @@ static void rcu_torture_barrier_cbf(struct rcu_head *rcu)
+ }
+ 
+ /* IPI handler to get callback posted on desired CPU, if online. */
+-static void rcu_torture_barrier1cb(void *rcu_void)
++static int rcu_torture_barrier1cb(void *rcu_void)
+ {
+ 	struct rcu_head *rhp = rcu_void;
+ 
+ 	cur_ops->call(rhp, rcu_torture_barrier_cbf);
++	return 0;
+ }
+ 
+ /* kthread function to register callbacks used to test RCU barriers. */
+@@ -2998,11 +2999,9 @@ static int rcu_torture_barrier_cbs(void *arg)
+ 		 * The above smp_load_acquire() ensures barrier_phase load
+ 		 * is ordered before the following ->call().
+ 		 */
+-		if (smp_call_function_single(myid, rcu_torture_barrier1cb,
+-					     &rcu, 1)) {
+-			// IPI failed, so use direct call from current CPU.
++		if (smp_call_on_cpu(myid, rcu_torture_barrier1cb, &rcu, 1))
+ 			cur_ops->call(&rcu, rcu_torture_barrier_cbf);
+-		}
++
+ 		if (atomic_dec_and_test(&barrier_cbs_count))
+ 			wake_up(&barrier_wq);
+ 	} while (!torture_must_stop());
 -- 
 2.43.0
 
