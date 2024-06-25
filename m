@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-55556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F64A916425
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:54:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 835329164A6
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF9BB2829FD
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:54:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B576F1C20FED
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7E014A091;
-	Tue, 25 Jun 2024 09:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F8B149DE9;
+	Tue, 25 Jun 2024 09:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bf/f4mQM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivhFZQzh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AACB1465A8;
-	Tue, 25 Jun 2024 09:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51841465A8;
+	Tue, 25 Jun 2024 09:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309251; cv=none; b=gEj0eNjLvm41FO4nbrqvaK0kd+ATXwiHZ/+F4ib3mgzA+V6+1I11dTHguTwdIW8LdzW/M/T3miFdAM51vGOOVw6KZwC2xLwTK7ROl0/cKyAp8DK6YgMN6Vu36TP/0zz7RiwiMVzIIdewvHyhS5gIYKalPp9y2LBBiNH438fh83E=
+	t=1719309582; cv=none; b=an/gaLouD+BVr94xUNTnm5gbYezy80yM/TXbIseR3o3FY336s1j2p0j1Nxj/nD9UIz65ZKpSmB9pS4vgCJRs0P2ImQc35py81T9bqAmO+5rIwQgWi4de2cnF6csYAIJRKG6f8tsyhVk6CiTZqg9nd4yHAoZuqtr1USNiVTXsTQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309251; c=relaxed/simple;
-	bh=i7zF0XPVb5aRNw4ZMC6pQ3Ew8kGWidYTOvHKRcPShXg=;
+	s=arc-20240116; t=1719309582; c=relaxed/simple;
+	bh=0Mj3qBRiYkA9q4CZqbJSyQJg3XVnIgIWuHgOEVm5krM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOHo6TK2Dqb2iE7sZVGWPnQ8slyWExpXkZ0rPyz5WMZ2LcbivzevamZGowDmcoeIQUZFCxrBBTm9cEYg/ZAFDpt1Dx3LSMpmfRouR5KIqwrJE0fEmSo+psletKVp5zTcIXr5RiyshlIONIMgVJpConnGDRIR5g1xFZ71GeQVz0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bf/f4mQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C14C32781;
-	Tue, 25 Jun 2024 09:54:10 +0000 (UTC)
+	 MIME-Version; b=CbaffbLkZp7iqBPAvyxZBfv8A9bFJPsqRHmgOR9hhHjT9XxpYO9qoANs8nslOEFzEfmlFfowOV1IesaE6bsE7+rx5cWngl4/2xlN2ouzMdnoAqUXasoPhkUIMLqRbIrH7V+hKAgi6WqZmBj5wjCghwMvCTuxqyO6zfMMITCJp4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivhFZQzh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40672C32781;
+	Tue, 25 Jun 2024 09:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309250;
-	bh=i7zF0XPVb5aRNw4ZMC6pQ3Ew8kGWidYTOvHKRcPShXg=;
+	s=korg; t=1719309582;
+	bh=0Mj3qBRiYkA9q4CZqbJSyQJg3XVnIgIWuHgOEVm5krM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bf/f4mQMTHR2vPkT8QR3nJQoIIwu8YQttBhhZmsFgXCWL3Ev0CSK9x4eyNRSQOgU7
-	 oYa9APFbntbLQq2XpnfO3MQ8xObfySxjN+Pc3ECyrBE4hEnC6dB+d8xbeCTNgNR7Fh
-	 BWxFNAw20/L3ZPWUGajqm5TK2Pl9vZ4BjQo+soK8=
+	b=ivhFZQzhvb9f4fwx3qW/uo60FVPlW3FWJDZMqBiuJXnZ8Uz9oSDxGa1kAat9Y5khs
+	 8YAOgVSQJeckG5c8m7NHRkLUDgxbKM8nm34KhzOP3mUprYCc81GmodwXSE2006Xu3j
+	 oOYpm7J0Q8gJmFIt9F2Ndk9zlkn6m7O881guFdJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Honggang LI <honggangli@163.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.6 145/192] RDMA/rxe: Fix data copy for IB_SEND_INLINE
-Date: Tue, 25 Jun 2024 11:33:37 +0200
-Message-ID: <20240625085542.724005835@linuxfoundation.org>
+	Xu Liang <lxu@maxlinear.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 063/131] net: phy: mxl-gpy: enhance delay time required by loopback disable function
+Date: Tue, 25 Jun 2024 11:33:38 +0200
+Message-ID: <20240625085528.341380441@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Honggang LI <honggangli@163.com>
+From: Xu Liang <lxu@maxlinear.com>
 
-commit 03fa18a992d5626fd7bf3557a52e826bf8b326b3 upstream.
+[ Upstream commit 0ba13995be9b416ea1d3daaf3ba871a67f45899b ]
 
-For RDMA Send and Write with IB_SEND_INLINE, the memory buffers
-specified in sge list will be placed inline in the Send Request.
+GPY2xx devices need 3 seconds to fully switch out of loopback mode
+before it can safely re-enter loopback mode. Implement timeout mechanism
+to guarantee 3 seconds waited before re-enter loopback mode.
 
-The data should be copied by CPU from the virtual addresses of
-corresponding sge list DMA addresses.
-
-Cc: stable@kernel.org
-Fixes: 8d7c7c0eeb74 ("RDMA: Add ib_virt_dma_to_page()")
-Signed-off-by: Honggang LI <honggangli@163.com>
-Link: https://lore.kernel.org/r/20240516095052.542767-1-honggangli@163.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Xu Liang <lxu@maxlinear.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: c44d3ffd85db ("net: phy: mxl-gpy: Remove interrupt mask clearing from config_init")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/mxl-gpy.c | 35 +++++++++++++++++++++++++++++------
+ 1 file changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_verbs.c b/drivers/infiniband/sw/rxe/rxe_verbs.c
-index c7d4d8ab5a09..de6238ee4379 100644
---- a/drivers/infiniband/sw/rxe/rxe_verbs.c
-+++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
-@@ -812,7 +812,7 @@ static void copy_inline_data_to_wqe(struct rxe_send_wqe *wqe,
- 	int i;
+diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
+index cae24091fb6f7..1c4ad1ded2cb6 100644
+--- a/drivers/net/phy/mxl-gpy.c
++++ b/drivers/net/phy/mxl-gpy.c
+@@ -95,6 +95,13 @@ struct gpy_priv {
  
- 	for (i = 0; i < ibwr->num_sge; i++, sge++) {
--		memcpy(p, ib_virt_dma_to_page(sge->addr), sge->length);
-+		memcpy(p, ib_virt_dma_to_ptr(sge->addr), sge->length);
- 		p += sge->length;
+ 	u8 fw_major;
+ 	u8 fw_minor;
++
++	/* It takes 3 seconds to fully switch out of loopback mode before
++	 * it can safely re-enter loopback mode. Record the time when
++	 * loopback is disabled. Check and wait if necessary before loopback
++	 * is enabled.
++	 */
++	u64 lb_dis_to;
+ };
+ 
+ static const struct {
+@@ -682,18 +689,34 @@ static void gpy_get_wol(struct phy_device *phydev,
+ 
+ static int gpy_loopback(struct phy_device *phydev, bool enable)
+ {
++	struct gpy_priv *priv = phydev->priv;
++	u16 set = 0;
+ 	int ret;
+ 
+-	ret = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK,
+-			 enable ? BMCR_LOOPBACK : 0);
+-	if (!ret) {
+-		/* It takes some time for PHY device to switch
+-		 * into/out-of loopback mode.
++	if (enable) {
++		u64 now = get_jiffies_64();
++
++		/* wait until 3 seconds from last disable */
++		if (time_before64(now, priv->lb_dis_to))
++			msleep(jiffies64_to_msecs(priv->lb_dis_to - now));
++
++		set = BMCR_LOOPBACK;
++	}
++
++	ret = phy_modify(phydev, MII_BMCR, BMCR_LOOPBACK, set);
++	if (ret <= 0)
++		return ret;
++
++	if (enable) {
++		/* It takes some time for PHY device to switch into
++		 * loopback mode.
+ 		 */
+ 		msleep(100);
++	} else {
++		priv->lb_dis_to = get_jiffies_64() + HZ * 3;
  	}
+ 
+-	return ret;
++	return 0;
  }
+ 
+ static int gpy115_loopback(struct phy_device *phydev, bool enable)
 -- 
-2.45.2
+2.43.0
 
 
 
