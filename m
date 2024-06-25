@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-55589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A29916452
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EFF89164CA
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 777FA1C22646
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFA251F2178F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011A114A0AA;
-	Tue, 25 Jun 2024 09:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B16D149C4F;
+	Tue, 25 Jun 2024 10:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXFbIRvb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvJyAmMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF173149C58;
-	Tue, 25 Jun 2024 09:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38952146592;
+	Tue, 25 Jun 2024 10:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309350; cv=none; b=EgtayX1fQqBWkTbwCW3co+ZsZ6B017w1xeBCHOuEFQb6COAntuBRgouH0IYElw40xjc/QS4Haf01R6uzbclX7+t9N+PJk30n6k/4R3cuPJL0A9NkHE/cf+sWcFnyDIJRlfIRjuzENe5W1pgn9ouU6KKZNj95z8fFX7Sc22oX8OM=
+	t=1719309674; cv=none; b=RMCgdKNBA3eXqYf+qs7EtF8IpY8YlZ34FECzkLWfVMpc3IVpClAGE5D/Ikw6Zv5gy9lxaokAdO9Jlg0eWknvXxmne701BqFj27xJ+8DQGu1hL2BRFVW2Gr9fIPQHe2ndYfH5v+rtYZ+kY2O3wOLAafKuC4mWq3/3Iy0sF4BMZDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309350; c=relaxed/simple;
-	bh=65DMX47FDamLc8fzjZWe04JVigDpLD+F0n6DPzJSBLs=;
+	s=arc-20240116; t=1719309674; c=relaxed/simple;
+	bh=f1gT3U4423F01fP/UuE4mLvDuX+8CuA2f9ACHI1hO10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TtVkjy0Hgubx0uA7S4GnPownbh5Jnhc5auvpm/QtmQ49LmVHCvKn+T2lFznrFpH++zeLTQMicCxt/BQwgWCXGqydBf1Gr/RkPZ2V9506bEY/4UrZQIkHa6Q/Eb9Jnj9YNErw6q66ynUId3R6/gAGPgWtt8dnUjozw2Hgz/Nfu5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXFbIRvb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C44C32781;
-	Tue, 25 Jun 2024 09:55:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e5R7WIwiIxRK26hNaWsrbPtcvzgRSTCho3fQFClTtY8JWToCeo8y3gC16trlrw0UGOWpNQZEfTMx8czYO98iSKEbBAosGbo/gIzIXJ2UX0uLAUDZh1izcOBVDqHBxTFmtiYncNhIJAw40IQsSWR0jTFkb0syt+3WfW8a/74qLGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvJyAmMh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FB7C32781;
+	Tue, 25 Jun 2024 10:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309350;
-	bh=65DMX47FDamLc8fzjZWe04JVigDpLD+F0n6DPzJSBLs=;
+	s=korg; t=1719309674;
+	bh=f1gT3U4423F01fP/UuE4mLvDuX+8CuA2f9ACHI1hO10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXFbIRvb/tlRy/KX35rRLsg2tdcc96FJVcrpImgPnG5Bwv/IkOSK2B8mJTvgrHXyT
-	 Ukrcfq8GB5eWqR877eoe8+ZOZi57yDqd7VRHvpJQBAHEY5IMFP4Ro0qNZaBZ7OnEf6
-	 KR+G1Y6AFCOnldX+GSsbsX56jcVO9eN2DE4Q3JKw=
+	b=mvJyAmMhdKX0zWnLnYPdbc0WsjKZcnYP72rvpMWF3izAsI41nvXH3mpDgwvmeMCaZ
+	 hAzLrdoPVOTwYUcCYrMG8bPbC3pixsUAtjaNhc+/xsFlVQRyzILjV7rfQeXmaH5FEB
+	 FnbtYyXDGVjxqKglXZbM0/WDWDf91NwhJYisIZx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/192] tracing: Add MODULE_DESCRIPTION() to preemptirq_delay_test
+	Yongqin Liu <yongqin.liu@linaro.org>,
+	=?UTF-8?q?Antje=20Miederh=C3=B6fer?= <a.miederhoefer@gmx.de>,
+	Arne Fitzenreiter <arne_f@ipfire.org>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 095/131] net: usb: ax88179_178a: improve reset check
 Date: Tue, 25 Jun 2024 11:34:10 +0200
-Message-ID: <20240625085543.992867525@linuxfoundation.org>
+Message-ID: <20240625085529.548694238@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-[ Upstream commit 23748e3e0fbfe471eff5ce439921629f6a427828 ]
+commit 7be4cb7189f747b4e5b6977d0e4387bde3204e62 upstream.
 
-Fix the 'make W=1' warning:
+After ecf848eb934b ("net: usb: ax88179_178a: fix link status when link is
+set to down/up") to not reset from usbnet_open after the reset from
+usbnet_probe at initialization stage to speed up this, some issues have
+been reported.
 
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/trace/preemptirq_delay_test.o
+It seems to happen that if the initialization is slower, and some time
+passes between the probe operation and the open operation, the second reset
+from open is necessary too to have the device working. The reason is that
+if there is no activity with the phy, this is "disconnected".
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240518-md-preemptirq_delay_test-v1-1-387d11b30d85@quicinc.com
+In order to improve this, the solution is to detect when the phy is
+"disconnected", and we can use the phy status register for this. So we will
+only reset the device from reset operation in this situation, that is, only
+if necessary.
 
-Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: f96e8577da10 ("lib: Add module for testing preemptoff/irqsoff latency tracers")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The same bahavior is happening when the device is stopped (link set to
+down) and later is restarted (link set to up), so if the phy keeps working
+we only need to enable the mac again, but if enough time passes between the
+device stop and restart, reset is necessary, and we can detect the
+situation checking the phy status register too.
+
+cc: stable@vger.kernel.org # 6.6+
+Fixes: ecf848eb934b ("net: usb: ax88179_178a: fix link status when link is set to down/up")
+Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
+Reported-by: Antje Miederhöfer <a.miederhoefer@gmx.de>
+Reported-by: Arne Fitzenreiter <arne_f@ipfire.org>
+Tested-by: Yongqin Liu <yongqin.liu@linaro.org>
+Tested-by: Antje Miederhöfer <a.miederhoefer@gmx.de>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/preemptirq_delay_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/ax88179_178a.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/trace/preemptirq_delay_test.c b/kernel/trace/preemptirq_delay_test.c
-index 8c4ffd0761624..cb0871fbdb07f 100644
---- a/kernel/trace/preemptirq_delay_test.c
-+++ b/kernel/trace/preemptirq_delay_test.c
-@@ -215,4 +215,5 @@ static void __exit preemptirq_delay_exit(void)
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -174,7 +174,6 @@ struct ax88179_data {
+ 	u32 wol_supported;
+ 	u32 wolopts;
+ 	u8 disconnecting;
+-	u8 initialized;
+ };
  
- module_init(preemptirq_delay_init)
- module_exit(preemptirq_delay_exit)
-+MODULE_DESCRIPTION("Preempt / IRQ disable delay thread to test latency tracers");
- MODULE_LICENSE("GPL v2");
--- 
-2.43.0
-
+ struct ax88179_int_data {
+@@ -1676,12 +1675,21 @@ static int ax88179_reset(struct usbnet *
+ 
+ static int ax88179_net_reset(struct usbnet *dev)
+ {
+-	struct ax88179_data *ax179_data = dev->driver_priv;
++	u16 tmp16;
+ 
+-	if (ax179_data->initialized)
++	ax88179_read_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID, GMII_PHY_PHYSR,
++			 2, &tmp16);
++	if (tmp16) {
++		ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
++				 2, 2, &tmp16);
++		if (!(tmp16 & AX_MEDIUM_RECEIVE_EN)) {
++			tmp16 |= AX_MEDIUM_RECEIVE_EN;
++			ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
++					  2, 2, &tmp16);
++		}
++	} else {
+ 		ax88179_reset(dev);
+-	else
+-		ax179_data->initialized = 1;
++	}
+ 
+ 	return 0;
+ }
 
 
 
