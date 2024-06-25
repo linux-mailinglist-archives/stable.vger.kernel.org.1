@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-55335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9582916327
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1209163BD
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B5D61F242AA
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E90B1C220AE
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF05114A092;
-	Tue, 25 Jun 2024 09:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EF114A0A4;
+	Tue, 25 Jun 2024 09:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuphQzDK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5i6YoSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCA4149C50;
-	Tue, 25 Jun 2024 09:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482F91487E9;
+	Tue, 25 Jun 2024 09:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308600; cv=none; b=rqAptaGhXhNN6Ky6X+1An8DI1AGGO1wu5KrY67qTmNgQaUUR0q8H8ei33ElkbKgBwCmzATCtrx6FDZJIwhM45vzlHe8Pkqd8gd/WphEy3K6nf1sSfiK0mNh8rJOVHbH52vOLDhYd5rG/lfpVCCuJoR8vCjgiY8U7NbDmMi5tDSQ=
+	t=1719309004; cv=none; b=ZjecwVGhBrArW6MzwTc9UJnCioMNCb525nMyyTYT9pfsfgYCkyK636+A1Xc36BrWX/ByfRiBzPWJjO+ceLZBtcz6TZq7+K23yLoQjBc1LHD2VJjRgL7wj1xyi8O3oMZANZpeCuKe2fViqYvqrJBpCAaYlZmOWGjtD8fXBHxMqBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308600; c=relaxed/simple;
-	bh=g/dPDTKJUmxPpmqWTFBgjy7BPsp3QgCLZob3Bu/oNVo=;
+	s=arc-20240116; t=1719309004; c=relaxed/simple;
+	bh=VMx1OQdwSjI34wLqjdODLSu9Ny1OOmU1H7MXmQNao8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8re2NwGROGPbowFfQKiZNOXBvkuwBJ5KdJJRjvkaieTjzYIVCs4vdZ9ApD780W193X7468edcBdbFflmKrVCP0og6U6tevX1qGHYrg6MfFmzd+dkQcJqXGqFwDZwhiEeC2foHDKrfYasJNKLzWw74Gz48Tw3W/6+qvraeJJw88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuphQzDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3481DC32781;
-	Tue, 25 Jun 2024 09:43:20 +0000 (UTC)
+	 MIME-Version; b=OPwkb1LHRugO168LKPp7I8lUwM4onrfMlu7WKkz//KQNoHk6Hh7m2CPo1sdw5k6SBA+rRWEI4Gj2r3RnwUCqL0yGsX+EdoYVyKBTkCgei1c2FduNUx8dNe31KJhSksC7PrVsAGcItFSmhxjPYHsNuXHrXVnz0kS6cEFXRtEBQRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5i6YoSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2679C32781;
+	Tue, 25 Jun 2024 09:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308600;
-	bh=g/dPDTKJUmxPpmqWTFBgjy7BPsp3QgCLZob3Bu/oNVo=;
+	s=korg; t=1719309004;
+	bh=VMx1OQdwSjI34wLqjdODLSu9Ny1OOmU1H7MXmQNao8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HuphQzDKI6Q4urMJ8XNfg4GrGjFseuEcNqh9zDfGQGdQA3uqNOHHr7Rq17pG4ti7e
-	 Z/1xJdVsIa5CCPNkQXhEe7CJrNtes+KBgWit52P0ndABGnTLPb6GnbhFIneUsXYCJr
-	 IIYB+aWH37BzxNfqoQZUy8HT7ec7s5XjWFZW+Itk=
+	b=A5i6YoSzAFOdlCJt7Ugnxyk48ewj7octrGYWIpChrwHgrBqXu3pWkF7pQ53F8+2wq
+	 ROhsLgIQnvGT7Dmisd/FxjKLEifxWK4YmIirX/lHOjiAGkQjqVVD1gpYqrdrctSl7A
+	 kTLlpSyg9VzCHdGaDRHnFrZS3bqpCryfMG0f4B9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	VitaliiT <vitaly.torshyn@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.9 177/250] ACPI: EC: Evaluate orphan _REG under EC device
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 063/192] ALSA: hda: cs35l41: Possible null pointer dereference in cs35l41_hda_unbind()
 Date: Tue, 25 Jun 2024 11:32:15 +0200
-Message-ID: <20240625085554.845362124@linuxfoundation.org>
+Message-ID: <20240625085539.592170043@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,157 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-commit 0e6b6dedf16800df0ff73ffe2bb5066514db29c2 upstream.
+[ Upstream commit 6386682cdc8b41319c92fbbe421953e33a28840c ]
 
-After starting to install the EC address space handler at the ACPI
-namespace root, if there is an "orphan" _REG method in the EC device's
-scope, it will not be evaluated any more.  This breaks EC operation
-regions on some systems, like Asus gu605.
+The cs35l41_hda_unbind() function clears the hda_component entry
+matching it's index and then dereferences the codec pointer held in the
+first element of the hda_component array, this is an issue when the
+device index was 0.
 
-To address this, use a wrapper around an existing ACPICA function to
-look for an "orphan" _REG method in the EC device scope and evaluate
-it if present.
+Instead use the codec pointer stashed in the cs35l41_hda structure as it
+will still be valid.
 
-Fixes: 60fa6ae6e6d0 ("ACPI: EC: Install address space handler at the namespace root")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218945
-Reported-by: VitaliiT <vitaly.torshyn@gmail.com>
-Tested-by: VitaliiT <vitaly.torshyn@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7cf5ce66dfda ("ALSA: hda: cs35l41: Add device_link between HDA and cs35l41_hda")
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20240531120820.35367-1-simont@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/acevents.h |    4 +++
- drivers/acpi/acpica/evregion.c |    6 ----
- drivers/acpi/acpica/evxfregn.c |   54 +++++++++++++++++++++++++++++++++++++++++
- drivers/acpi/ec.c              |    3 ++
- include/acpi/acpixf.h          |    4 +++
- 5 files changed, 66 insertions(+), 5 deletions(-)
+ sound/pci/hda/cs35l41_hda.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/acpica/acevents.h
-+++ b/drivers/acpi/acpica/acevents.h
-@@ -191,6 +191,10 @@ void
- acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
- 			    acpi_adr_space_type space_id, u32 function);
- 
-+void
-+acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *node,
-+				  acpi_adr_space_type space_id);
-+
- acpi_status
- acpi_ev_execute_reg_method(union acpi_operand_object *region_obj, u32 function);
- 
---- a/drivers/acpi/acpica/evregion.c
-+++ b/drivers/acpi/acpica/evregion.c
-@@ -20,10 +20,6 @@ extern u8 acpi_gbl_default_address_space
- 
- /* Local prototypes */
- 
--static void
--acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
--				  acpi_adr_space_type space_id);
--
- static acpi_status
- acpi_ev_reg_run(acpi_handle obj_handle,
- 		u32 level, void *context, void **return_value);
-@@ -818,7 +814,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
-  *
-  ******************************************************************************/
- 
--static void
-+void
- acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
- 				  acpi_adr_space_type space_id)
- {
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -306,3 +306,57 @@ acpi_execute_reg_methods(acpi_handle dev
- }
- 
- ACPI_EXPORT_SYMBOL(acpi_execute_reg_methods)
-+
-+/*******************************************************************************
-+ *
-+ * FUNCTION:    acpi_execute_orphan_reg_method
-+ *
-+ * PARAMETERS:  device          - Handle for the device
-+ *              space_id        - The address space ID
-+ *
-+ * RETURN:      Status
-+ *
-+ * DESCRIPTION: Execute an "orphan" _REG method that appears under an ACPI
-+ *              device. This is a _REG method that has no corresponding region
-+ *              within the device's scope.
-+ *
-+ ******************************************************************************/
-+acpi_status
-+acpi_execute_orphan_reg_method(acpi_handle device, acpi_adr_space_type space_id)
-+{
-+	struct acpi_namespace_node *node;
-+	acpi_status status;
-+
-+	ACPI_FUNCTION_TRACE(acpi_execute_orphan_reg_method);
-+
-+	/* Parameter validation */
-+
-+	if (!device) {
-+		return_ACPI_STATUS(AE_BAD_PARAMETER);
-+	}
-+
-+	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
-+	if (ACPI_FAILURE(status)) {
-+		return_ACPI_STATUS(status);
-+	}
-+
-+	/* Convert and validate the device handle */
-+
-+	node = acpi_ns_validate_handle(device);
-+	if (node) {
-+
-+		/*
-+		 * If an "orphan" _REG method is present in the device's scope
-+		 * for the given address space ID, run it.
-+		 */
-+
-+		acpi_ev_execute_orphan_reg_method(node, space_id);
-+	} else {
-+		status = AE_BAD_PARAMETER;
-+	}
-+
-+	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
-+	return_ACPI_STATUS(status);
-+}
-+
-+ACPI_EXPORT_SYMBOL(acpi_execute_orphan_reg_method)
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1502,6 +1502,9 @@ static int ec_install_handlers(struct ac
- 
- 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
- 		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
-+		if (scope_handle != ec->handle)
-+			acpi_execute_orphan_reg_method(ec->handle, ACPI_ADR_SPACE_EC);
-+
- 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
+diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
+index 3c157b006a5a2..b437beae9b516 100644
+--- a/sound/pci/hda/cs35l41_hda.c
++++ b/sound/pci/hda/cs35l41_hda.c
+@@ -1187,7 +1187,7 @@ static void cs35l41_hda_unbind(struct device *dev, struct device *master, void *
+ 	if (comps[cs35l41->index].dev == dev) {
+ 		memset(&comps[cs35l41->index], 0, sizeof(*comps));
+ 		sleep_flags = lock_system_sleep();
+-		device_link_remove(&comps->codec->core.dev, cs35l41->dev);
++		device_link_remove(&cs35l41->codec->core.dev, cs35l41->dev);
+ 		unlock_system_sleep(sleep_flags);
  	}
- 
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -663,6 +663,10 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 						     acpi_adr_space_type
- 						     space_id))
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
-+			    acpi_execute_orphan_reg_method(acpi_handle device,
-+							   acpi_adr_space_type
-+							   space_id))
-+ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_remove_address_space_handler(acpi_handle
- 							      device,
- 							      acpi_adr_space_type
+ }
+-- 
+2.43.0
+
 
 
 
