@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-55620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E69E916472
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 217B09163ED
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBCF628300B
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5492E1C21B1C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F1A14A089;
-	Tue, 25 Jun 2024 09:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09171149E0A;
+	Tue, 25 Jun 2024 09:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oG0bTmSK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ahg1XqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8DB146A67;
-	Tue, 25 Jun 2024 09:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACAA147C7F;
+	Tue, 25 Jun 2024 09:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309444; cv=none; b=QObVtCuVtw7uXs4WunB7QNwTCNabdX8RGkanlZbOk286JLoYQeD5gTHwwbSXgMgxHmzAmwDqV9fPdkKvkKpuu1hyRNa1O94oqNQ8Zfi3xYyvtlVqEuue9yWmsZq+cn4JZUWoGRPz7W3fBamC6tAoSxf+wLulxjRWHaXsg+QDYsI=
+	t=1719309118; cv=none; b=T2KQViA3GF2JLKC3oyuxAjYuFCkRGEftnZRGrQYuufK4Buv1O7cGq9Pqsd3eG7G83wviOU2/3pxxp73FIc9HSuNoLHegwl5vyGoDfIUvMGQAwX/78aTrd43K5m/xrzIqA3SbfHGeOlmAZQfwFhREjrlmKJ5VL28s80NZqS4fLvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309444; c=relaxed/simple;
-	bh=w9/M/+147DJpjZisiQ/d12FZGLQ2smiHYaoJTkzq0+A=;
+	s=arc-20240116; t=1719309118; c=relaxed/simple;
+	bh=bEAFdZ1UwEVcE6v7UW6nJQXWMRz6EkLc2Zvvs0CZ/PM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BvliisquLnuhnjW7+tFo8yuehc0wRSxl1nhXFdGZJKdtb//l4JiAnv3Q1yQQ0GgbeMMRMOeETpqnFB5vK/MZLKoNehg3PJjNL3CURcDz1HYjBn+UFuo27AUNLedanzKxo1xdnt1GSjyWPIu5NlnwTFUlMKea5lYYqzOYm3XOyUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oG0bTmSK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B868C32781;
-	Tue, 25 Jun 2024 09:57:23 +0000 (UTC)
+	 MIME-Version; b=BBz84mH85ly8g5tpAYyaWwhZazQxbFI37oeCzjJBneFCoXtNrd/pKWLtLTwcoHUbLG58C91Mpl0pFyENy1zwGPOvrqBCeRmoW/0ASlTzN3MbSKLpieAbPTAMh7/NF7uEn8KMyLgS+jYaxig16yfffIQ/qeflp/2n5T0bK0DFSBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ahg1XqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADF0C32781;
+	Tue, 25 Jun 2024 09:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309444;
-	bh=w9/M/+147DJpjZisiQ/d12FZGLQ2smiHYaoJTkzq0+A=;
+	s=korg; t=1719309118;
+	bh=bEAFdZ1UwEVcE6v7UW6nJQXWMRz6EkLc2Zvvs0CZ/PM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oG0bTmSKcFvhhvwD6Ra9FwS6goeWsid/RAbiLqOqDyYcreAqYHl8/mi16KVZ/nxII
-	 euZgHMkP+HtCzGKtVEAp2mgRBLnlEKwcblPQAiJ/tuMJm8B8bBBbsyU8BImfuAbpN+
-	 oj0pZU27NlJYUYCE69CFqFe3s/L8QT3fYUL7RX7s=
+	b=1ahg1XqW3GveF4TC7mnDEgorIEYAdYYILwx8uctudBvBDpC4pfGYw/DK99IGLLrD1
+	 wePYO4c/c30Sn1mazcQXpvWM3Y8scjt2DrDZrAdKRBqjrWIpqR5sD2twVQ+4hbEZpU
+	 zqAuzZM5wfPT2tJm+d/9upUvnvcT0GFYKiDzHChM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marcin Szycik <marcin.szycik@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/131] netpoll: Fix race condition in netpoll_owner_active
+Subject: [PATCH 6.6 101/192] ice: Fix VSI list rule with ICE_SW_LKUP_LAST type
 Date: Tue, 25 Jun 2024 11:32:53 +0200
-Message-ID: <20240625085526.639477536@linuxfoundation.org>
+Message-ID: <20240625085541.054097009@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +68,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Marcin Szycik <marcin.szycik@linux.intel.com>
 
-[ Upstream commit c2e6a872bde9912f1a7579639c5ca3adf1003916 ]
+[ Upstream commit 74382aebc9035470ec4c789bdb0d09d8c14f261e ]
 
-KCSAN detected a race condition in netpoll:
+Adding/updating VSI list rule, as well as allocating/freeing VSI list
+resource are called several times with type ICE_SW_LKUP_LAST, which fails
+because ice_update_vsi_list_rule() and ice_aq_alloc_free_vsi_list()
+consider it invalid. Allow calling these functions with ICE_SW_LKUP_LAST.
 
-	BUG: KCSAN: data-race in net_rx_action / netpoll_send_skb
-	write (marked) to 0xffff8881164168b0 of 4 bytes by interrupt on cpu 10:
-	net_rx_action (./include/linux/netpoll.h:90 net/core/dev.c:6712 net/core/dev.c:6822)
-<snip>
-	read to 0xffff8881164168b0 of 4 bytes by task 1 on cpu 2:
-	netpoll_send_skb (net/core/netpoll.c:319 net/core/netpoll.c:345 net/core/netpoll.c:393)
-	netpoll_send_udp (net/core/netpoll.c:?)
-<snip>
-	value changed: 0x0000000a -> 0xffffffff
+This fixes at least one issue in switchdev mode, where the same rule with
+different action cannot be added, e.g.:
 
-This happens because netpoll_owner_active() needs to check if the
-current CPU is the owner of the lock, touching napi->poll_owner
-non atomically. The ->poll_owner field contains the current CPU holding
-the lock.
+  tc filter add dev $PF1 ingress protocol arp prio 0 flower skip_sw \
+    dst_mac ff:ff:ff:ff:ff:ff action mirred egress redirect dev $VF1_PR
+  tc filter add dev $PF1 ingress protocol arp prio 0 flower skip_sw \
+    dst_mac ff:ff:ff:ff:ff:ff action mirred egress redirect dev $VF2_PR
 
-Use an atomic read to check if the poll owner is the current CPU.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240429100437.3487432-1-leitao@debian.org
+Fixes: 0f94570d0cae ("ice: allow adding advanced rules")
+Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240618210206.981885-1-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_switch.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 4ac8d0ad9f6fc..fd2195cfcb4aa 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -316,7 +316,7 @@ static int netpoll_owner_active(struct net_device *dev)
- 	struct napi_struct *napi;
- 
- 	list_for_each_entry_rcu(napi, &dev->napi_list, dev_list) {
--		if (napi->poll_owner == smp_processor_id())
-+		if (READ_ONCE(napi->poll_owner) == smp_processor_id())
- 			return 1;
- 	}
- 	return 0;
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index 4c6d58bb2690d..d2a2388d4fa0a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -1829,7 +1829,8 @@ ice_aq_alloc_free_vsi_list(struct ice_hw *hw, u16 *vsi_list_id,
+ 	    lkup_type == ICE_SW_LKUP_ETHERTYPE_MAC ||
+ 	    lkup_type == ICE_SW_LKUP_PROMISC ||
+ 	    lkup_type == ICE_SW_LKUP_PROMISC_VLAN ||
+-	    lkup_type == ICE_SW_LKUP_DFLT) {
++	    lkup_type == ICE_SW_LKUP_DFLT ||
++	    lkup_type == ICE_SW_LKUP_LAST) {
+ 		sw_buf->res_type = cpu_to_le16(ICE_AQC_RES_TYPE_VSI_LIST_REP);
+ 	} else if (lkup_type == ICE_SW_LKUP_VLAN) {
+ 		if (opc == ice_aqc_opc_alloc_res)
+@@ -2775,7 +2776,8 @@ ice_update_vsi_list_rule(struct ice_hw *hw, u16 *vsi_handle_arr, u16 num_vsi,
+ 	    lkup_type == ICE_SW_LKUP_ETHERTYPE_MAC ||
+ 	    lkup_type == ICE_SW_LKUP_PROMISC ||
+ 	    lkup_type == ICE_SW_LKUP_PROMISC_VLAN ||
+-	    lkup_type == ICE_SW_LKUP_DFLT)
++	    lkup_type == ICE_SW_LKUP_DFLT ||
++	    lkup_type == ICE_SW_LKUP_LAST)
+ 		rule_type = remove ? ICE_AQC_SW_RULES_T_VSI_LIST_CLEAR :
+ 			ICE_AQC_SW_RULES_T_VSI_LIST_SET;
+ 	else if (lkup_type == ICE_SW_LKUP_VLAN)
 -- 
 2.43.0
 
