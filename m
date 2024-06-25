@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-55637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D044916484
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:58:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2DB7916400
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0459B1F20CAA
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:58:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25AAEB25451
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966BA149C4F;
-	Tue, 25 Jun 2024 09:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F335B1494AF;
+	Tue, 25 Jun 2024 09:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sg9miytY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbZhT2Rr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D34146A67;
-	Tue, 25 Jun 2024 09:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EF924B34;
+	Tue, 25 Jun 2024 09:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309494; cv=none; b=NbchoAfWz4YZOrHTPraPLRdBDPIiqZauZ17Pxwn0ithlYO03kW9hFwod+hXMnTk9tBHLAXV9jFSWnLNhrMwkFnebmoLRvy5wm7z31Q9RCh1/LHUrfUs2oP/8dWzyDYd6xvHjGI1KA/ON9HxrsE02cX7YUap1ncnQa3JwoDZPqGM=
+	t=1719309168; cv=none; b=lqeIiuqGFrKnGUa+mBHTbbEOHoXQkhLPo/EJXxSUWk+MtuRt/5U02XyD5q073hp/dftZrqCXa7dSWSsQbLAPvSZvzGTvki+1pG8L5hVUFWBFJ3aY6FGBN0zLCRnbnUOjzSCXI56YZ9b915+c1/Hu6RoDCNr+S6dhTRP/dU3uc1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309494; c=relaxed/simple;
-	bh=CYGTJEbAu67Dw8JC7TKtNNFv3/9UUQ2Gm1hJBCPu7eE=;
+	s=arc-20240116; t=1719309168; c=relaxed/simple;
+	bh=r4jQIFBvBmT1XKLtp5kJ7w4Eh8cc6ber0jf/+OBKmWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E0B84B092qqVjzJg9VoVZo3G3U8+Pp1AEnMsSscuBfsiRYKjy2oR5frO9oG9MK8VAWTmeoWys+vwU8qG1cgwxHiwdH6TFiHZMxtAu53jah32kiHb6zEPWbI5OZgu9NXkzZy+c1yOMjB8zFILNC7VOQecXMy21N9/2xBU1V/Fk2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sg9miytY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A84C32786;
-	Tue, 25 Jun 2024 09:58:13 +0000 (UTC)
+	 MIME-Version; b=CFgcHZ0xSA8q5KFmUFAVmFDSpXr/MksVABtQ34RGyOBV/pFSW1ZjOvTnQ2AXiZ/rPrzAVoJAYcIqM83c8xCf05m9JQ28t1l1DcOWogFuBxhHwR1J2795kzApQ+etCsHQl/JuMmZQHC21b3cV0c+O08WFugZ3kk3P8hrNFPmt7wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbZhT2Rr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39068C32781;
+	Tue, 25 Jun 2024 09:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309494;
-	bh=CYGTJEbAu67Dw8JC7TKtNNFv3/9UUQ2Gm1hJBCPu7eE=;
+	s=korg; t=1719309168;
+	bh=r4jQIFBvBmT1XKLtp5kJ7w4Eh8cc6ber0jf/+OBKmWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sg9miytYNnRYBKeIUSq+rvmGvKT+DHuzTZwiXECOp5NySUDC82wnJr89D5pHGyRxS
-	 lRHR70SVSFBaijUvpzYihHWEL8aATKk+pMt5gda8ud7X7tkrV9fqz+ZvvAXnASD27S
-	 X7TboYezHViSkOs3oBKkB+i0UQzm0YjjrGeRSlzU=
+	b=GbZhT2RrZhICvSJ4tWdysxetPI1/Oc0JuzvWIoAlK3Jdr06oRtQZ9+6WC8IW+dxBc
+	 D4WwOey2Wn1iJQLnGzC1hloPTVlp1ojEXte+Eizfwx3hUzGgHpkaIFweir71qRUPD7
+	 jppc0BRkIULB2z83/YgD0h5BkQxeXdFq+N6nydoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com,
+	David Ruth <druth@chromium.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/131] rcutorture: Fix rcu_torture_one_read() pipe_count overflow comment
-Date: Tue, 25 Jun 2024 11:32:39 +0200
-Message-ID: <20240625085526.104025472@linuxfoundation.org>
+Subject: [PATCH 6.6 088/192] net/sched: act_api: fix possible infinite loop in tcf_idr_check_alloc()
+Date: Tue, 25 Jun 2024 11:32:40 +0200
+Message-ID: <20240625085540.553960717@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: David Ruth <druth@chromium.org>
 
-[ Upstream commit 8b9b443fa860276822b25057cb3ff3b28734dec0 ]
+[ Upstream commit d864319871b05fadd153e0aede4811ca7008f5d6 ]
 
-The "pipe_count > RCU_TORTURE_PIPE_LEN" check has a comment saying "Should
-not happen, but...".  This is only true when testing an RCU whose grace
-periods are always long enough.  This commit therefore fixes this comment.
+syzbot found hanging tasks waiting on rtnl_lock [1]
 
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Closes: https://lore.kernel.org/lkml/CAHk-=wi7rJ-eGq+xaxVfzFEgbL9tdf6Kc8Z89rCpfcQOKm74Tw@mail.gmail.com/
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+A reproducer is available in the syzbot bug.
+
+When a request to add multiple actions with the same index is sent, the
+second request will block forever on the first request. This holds
+rtnl_lock, and causes tasks to hang.
+
+Return -EAGAIN to prevent infinite looping, while keeping documented
+behavior.
+
+[1]
+
+INFO: task kworker/1:0:5088 blocked for more than 143 seconds.
+Not tainted 6.9.0-rc4-syzkaller-00173-g3cdb45594619 #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/1:0 state:D stack:23744 pid:5088 tgid:5088 ppid:2 flags:0x00004000
+Workqueue: events_power_efficient reg_check_chans_work
+Call Trace:
+<TASK>
+context_switch kernel/sched/core.c:5409 [inline]
+__schedule+0xf15/0x5d00 kernel/sched/core.c:6746
+__schedule_loop kernel/sched/core.c:6823 [inline]
+schedule+0xe7/0x350 kernel/sched/core.c:6838
+schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:6895
+__mutex_lock_common kernel/locking/mutex.c:684 [inline]
+__mutex_lock+0x5b8/0x9c0 kernel/locking/mutex.c:752
+wiphy_lock include/net/cfg80211.h:5953 [inline]
+reg_leave_invalid_chans net/wireless/reg.c:2466 [inline]
+reg_check_chans_work+0x10a/0x10e0 net/wireless/reg.c:2481
+
+Fixes: 0190c1d452a9 ("net: sched: atomically check-allocate action")
+Reported-by: syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b87c222546179f4513a7
+Signed-off-by: David Ruth <druth@chromium.org>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://lore.kernel.org/r/20240614190326.1349786-1-druth@chromium.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/act_api.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 503c2aa845a4a..2f6c52a863f2e 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1946,7 +1946,8 @@ static bool rcu_torture_one_read(struct torture_random_state *trsp, long myid)
- 	preempt_disable();
- 	pipe_count = READ_ONCE(p->rtort_pipe_count);
- 	if (pipe_count > RCU_TORTURE_PIPE_LEN) {
--		/* Should not happen, but... */
-+		// Should not happen in a correct RCU implementation,
-+		// happens quite often for torture_type=busted.
- 		pipe_count = RCU_TORTURE_PIPE_LEN;
- 	}
- 	completed = cur_ops->get_gp_seq();
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index 5d34852ca5003..2d6d58e1b278a 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -830,7 +830,6 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
+ 	u32 max;
+ 
+ 	if (*index) {
+-again:
+ 		rcu_read_lock();
+ 		p = idr_find(&idrinfo->action_idr, *index);
+ 
+@@ -839,7 +838,7 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
+ 			 * index but did not assign the pointer yet.
+ 			 */
+ 			rcu_read_unlock();
+-			goto again;
++			return -EAGAIN;
+ 		}
+ 
+ 		if (!p) {
 -- 
 2.43.0
 
