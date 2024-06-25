@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB77F91630D
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:42:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266F09163A0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 967DA28A842
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:42:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59A321C226B1
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294F01494CB;
-	Tue, 25 Jun 2024 09:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2081494D5;
+	Tue, 25 Jun 2024 09:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1DAXrV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Melz3/Wv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB13312EBEA;
-	Tue, 25 Jun 2024 09:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498B0146A9D;
+	Tue, 25 Jun 2024 09:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308531; cv=none; b=hHE4RfNFb+PCmmQ81Nozy2+/K7nwgwd4Edl/0rNlP2/T+NjzdUIlhC3TzZhPb50AYfHHk/K+dgS6KrIYrskzaDekMXXqa+LRiUb0dIY7xLk59cUrE+L5xI8XnrhKIyyyfZjmj1MKX6y6JqQmuwbFnxtmmnqk/fB6n5+EztQkNG0=
+	t=1719308933; cv=none; b=VOzh0YqAcJm2rqiJiZYpbpxXLu4IcSkagtzmrroSsARi6pCRuhHIT8SgkAxQb4i0N4SY57oMUdn1mdsGCKQZlSotSZZmQGcwh0qxHT8+m/ddozrNKfn8UGIao9DVFbpL1CAQHtm9er67TScPc3754kMPAGmRSloHPIFK4HOccqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308531; c=relaxed/simple;
-	bh=qGqZyWF3BcWEzSJHjfeyPaCKdCsSMtESFhiG2NWRP5g=;
+	s=arc-20240116; t=1719308933; c=relaxed/simple;
+	bh=isENPCBTtR8Ii98RKbt8kmadv45+e9fnlywF2eQoBug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWXyl0XOPprNsqAkDf6cWMqQK4aSnlCt1zoZM46dLvnu3EfQ8qZMGGM8WvXUMfDHWD3gXkp4Jf1Ulwd4Vv84GXmTbsncRV/dWyDP65J31md+iaaocgH6y3JFfR0e7AMbz8CQ99kf3Gz0E8fOi2S0dX13Qi2rn2bWcIS3fYTVxEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1DAXrV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07113C32781;
-	Tue, 25 Jun 2024 09:42:09 +0000 (UTC)
+	 MIME-Version; b=YAnDXKWUXIW+dsRj2GV4MV6ojSOCuNRZ+5HAOf76L8VdX2t6C3Hodz1tqdl3VIV5Uh0VjrhoxEqWKgGiH3PujJmXV2b0C7FV8OMUCV9NLGS4YQT+c1nggjULz+9slYVVPCTU6iW+IPBZ4sHD2ZJKWj6GJkH4xllh9eZmU3RA7Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Melz3/Wv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EA1C32781;
+	Tue, 25 Jun 2024 09:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308530;
-	bh=qGqZyWF3BcWEzSJHjfeyPaCKdCsSMtESFhiG2NWRP5g=;
+	s=korg; t=1719308933;
+	bh=isENPCBTtR8Ii98RKbt8kmadv45+e9fnlywF2eQoBug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1DAXrV0yhQN1SrrRCRhzzjIaXtlw9BxMAAS3voNfVJwlrIfDg4oLHxVd7qJDGawk
-	 7Yh3hzwRZEyOK3QpI16DyHg5FVI2Gz5t0uo5xxxTZsv1/Oj+ooMQTEfzq/ZkpWLrEX
-	 OLTRXvm45rzhjVCSWIUtJnQxAJReKG4xxaNP3U9w=
+	b=Melz3/Wv11/KWctDfBWIiCqy0BBS/I7KtJOrYBpNzHy2ML2xxl5v8KUGUw4u266Y6
+	 +AH8OsKw1vq/2f1kz9iJv8OSj5DxjXQTGlJQqvpo0Ru9e6qjoYfAe0uHi4zuGsTQd+
+	 WYszTXPgzkR1SvCB22V4wVFO9fnb4j2zfXtOCLA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Fullway Wang <fullwaywang@outlook.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 152/250] dmaengine: ti: k3-udma-glue: Fix of_k3_udma_glue_parse_chn_by_id()
+Subject: [PATCH 6.6 038/192] media: mtk-vcodec: potential null pointer deference in SCP
 Date: Tue, 25 Jun 2024 11:31:50 +0200
-Message-ID: <20240625085553.894330024@linuxfoundation.org>
+Message-ID: <20240625085538.626852533@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Fullway Wang <fullwaywang@outlook.com>
 
-[ Upstream commit ba27e9d2207784da748b19170a2e56bd7770bd81 ]
+[ Upstream commit 53dbe08504442dc7ba4865c09b3bbf5fe849681b ]
 
-The of_k3_udma_glue_parse_chn_by_id() helper function erroneously
-invokes "of_node_put()" on the "udmax_np" device-node passed to it,
-without having incremented its reference count at any point. Fix it.
+The return value of devm_kzalloc() needs to be checked to avoid
+NULL pointer deference. This is similar to CVE-2022-3113.
 
-Fixes: 81a1f90f20af ("dmaengine: ti: k3-udma-glue: Add function to parse channel by ID")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Acked-by: Peter Ujfalusi@gmail.com
-Link: https://lore.kernel.org/r/20240602013319.2975894-1-s-vadapalli@ti.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/linux-media/PH7PR20MB5925094DAE3FD750C7E39E01BF712@PH7PR20MB5925.namprd20.prod.outlook.com
+Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/k3-udma-glue.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ .../media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c   | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/dma/ti/k3-udma-glue.c b/drivers/dma/ti/k3-udma-glue.c
-index c9b93055dc9d3..f0a399cf45b2a 100644
---- a/drivers/dma/ti/k3-udma-glue.c
-+++ b/drivers/dma/ti/k3-udma-glue.c
-@@ -200,12 +200,9 @@ of_k3_udma_glue_parse_chn_by_id(struct device_node *udmax_np, struct k3_udma_glu
+diff --git a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c
+index 9e744d07a1e8e..774487fb72a31 100644
+--- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c
++++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c
+@@ -79,6 +79,8 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_scp_init(void *priv, enum mtk_vcodec_fw_use
+ 	}
  
- 	ret = of_k3_udma_glue_parse(udmax_np, common);
- 	if (ret)
--		goto out_put_spec;
-+		return ret;
- 
- 	ret = of_k3_udma_glue_parse_chn_common(common, thread_id, tx_chn);
--
--out_put_spec:
--	of_node_put(udmax_np);
- 	return ret;
- }
- 
+ 	fw = devm_kzalloc(&plat_dev->dev, sizeof(*fw), GFP_KERNEL);
++	if (!fw)
++		return ERR_PTR(-ENOMEM);
+ 	fw->type = SCP;
+ 	fw->ops = &mtk_vcodec_rproc_msg;
+ 	fw->scp = scp;
 -- 
 2.43.0
 
