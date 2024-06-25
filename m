@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-55461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F6E9163AF
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7936B91631D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1433E28C206
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34180281755
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8FD149C4C;
-	Tue, 25 Jun 2024 09:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71D4149C6C;
+	Tue, 25 Jun 2024 09:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dw+AeDY/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARreRYHz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78567148315;
-	Tue, 25 Jun 2024 09:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646B5148FE5;
+	Tue, 25 Jun 2024 09:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308971; cv=none; b=l9JnQf32VY7DXfGtmnDtE/lsTeqGWPfQwuqH2LIeJvY22jCqOBOZB9iCyvXdCD5YmeZInCLIulawsJS8kDup7uqU5YKTFc6Vgp7pzB7B5uAGS9XjTzvm/53G2BV5c2MmLyRADo5Q5XVhYmi9JsKo8F4xyMXJEJzsruIxm5L3+E0=
+	t=1719308571; cv=none; b=prdRA3aDPOCWYuYqYf638TFyDnc/jzz2ZnVny5oWejykFevF7/DNvRIMPj1inMyT21qPhiWohocWikPeaVa4P2Eguoq14ty+rm222aGuzLky4ff9uSAc39M3rX4xAQdrGN1dJW7jql51rk4F09S+q9sRJL99/gjqMwwNHG3cN5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308971; c=relaxed/simple;
-	bh=Jioyh/u0FWJI7+W7r0oOmRXtaOLjZanqFbNzZVeje0Y=;
+	s=arc-20240116; t=1719308571; c=relaxed/simple;
+	bh=xWplLOVqC8+ZqJus+9afpxB+Bx51jTPbadH1HnjlEgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k2JJU8DyZ9v7eXKs70ZZObRbmAeNbzv2BrcnetjEpspEofRL0dffGuqD4hllAbJqCujQcIX51l67hBd3AN4Ka8ibf8Am2MPgxKPBSehC0V2yQGi15SzQ1Vy4tbhCUq/wVMU5sF8Re61YSHhsWIBrHPzCNDB5u1sKtOhvKmbEO78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dw+AeDY/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BCCC32781;
-	Tue, 25 Jun 2024 09:49:30 +0000 (UTC)
+	 MIME-Version; b=UrMeowb+UhxByEeq54jXATTXDvgQeNG61GZ3/ipNNUiiH45tO/PXkEXF0hqUKJElbqJ2qZlbd1klIwt3HvUr7IZUF7GTHZeHZfNZI7VxaQYGvsPMuc1LFBJ07v7LOzB1Tbap/if8+4PtM8T4ZoknDLRGA3tl11YoBbVbSkYfpIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARreRYHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE333C32781;
+	Tue, 25 Jun 2024 09:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308971;
-	bh=Jioyh/u0FWJI7+W7r0oOmRXtaOLjZanqFbNzZVeje0Y=;
+	s=korg; t=1719308571;
+	bh=xWplLOVqC8+ZqJus+9afpxB+Bx51jTPbadH1HnjlEgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dw+AeDY/l+F62F/Y38UcTZeaj9kJpYzf6wGMSlSbpR5wxhgIeiY3mHaEGM32Q18EJ
-	 iEbZMYxwpx5+AtJQ48tUtcLFxYxW3nNBX8beFyhhGUhJRkGSUdcrJ9L4cvsra4A38x
-	 NMqzxSpJBOoIwbHy0881lIjywirBIpUSRSDVjw8M=
+	b=ARreRYHzMKWmq3l1FK/3ucKP4PEQBUUJ6EH/TYe1GMeUsEG9XtldHEYM05ea4pozR
+	 XSLKdHS3gp/RsbGN50vmyn1KG5DyZq4P52tYv6SXtefipAY1n6YxZZOi8H+KymlAHw
+	 u3/gqoh/oUd5LsFrRimMkEQFEPhvGVkENCNIxd2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxim Mikityanskiy <maxim@isovalent.com>,
-	Xiumei Mu <xmu@redhat.com>,
-	Christoph Paasch <cpaasch@apple.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/192] net/sched: fix false lockdep warning on qdisc root lock
-Date: Tue, 25 Jun 2024 11:31:32 +0200
-Message-ID: <20240625085537.933700120@linuxfoundation.org>
+Subject: [PATCH 6.9 135/250] octeontx2-pf: Fix linking objects into multiple modules
+Date: Tue, 25 Jun 2024 11:31:33 +0200
+Message-ID: <20240625085553.243822520@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,194 +63,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-[ Upstream commit af0cb3fa3f9ed258d14abab0152e28a0f9593084 ]
+[ Upstream commit 1062d03827b78614259b3b4b992deb27ee6aa84d ]
 
-Xiumei and Christoph reported the following lockdep splat, complaining of
-the qdisc root lock being taken twice:
+This patch fixes the below build warning messages that are
+caused due to linking same files to multiple modules by
+exporting the required symbols.
 
- ============================================
- WARNING: possible recursive locking detected
- 6.7.0-rc3+ #598 Not tainted
- --------------------------------------------
- swapper/2/0 is trying to acquire lock:
- ffff888177190110 (&sch->q.lock){+.-.}-{2:2}, at: __dev_queue_xmit+0x1560/0x2e70
+"scripts/Makefile.build:244: drivers/net/ethernet/marvell/octeontx2/nic/Makefile:
+otx2_devlink.o is added to multiple modules: rvu_nicpf rvu_nicvf
 
- but task is already holding lock:
- ffff88811995a110 (&sch->q.lock){+.-.}-{2:2}, at: __dev_queue_xmit+0x1560/0x2e70
+scripts/Makefile.build:244: drivers/net/ethernet/marvell/octeontx2/nic/Makefile:
+otx2_dcbnl.o is added to multiple modules: rvu_nicpf rvu_nicvf"
 
- other info that might help us debug this:
-  Possible unsafe locking scenario:
-
-        CPU0
-        ----
-   lock(&sch->q.lock);
-   lock(&sch->q.lock);
-
-  *** DEADLOCK ***
-
-  May be due to missing lock nesting notation
-
- 5 locks held by swapper/2/0:
-  #0: ffff888135a09d98 ((&in_dev->mr_ifc_timer)){+.-.}-{0:0}, at: call_timer_fn+0x11a/0x510
-  #1: ffffffffaaee5260 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x2c0/0x1ed0
-  #2: ffffffffaaee5200 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x209/0x2e70
-  #3: ffff88811995a110 (&sch->q.lock){+.-.}-{2:2}, at: __dev_queue_xmit+0x1560/0x2e70
-  #4: ffffffffaaee5200 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0x209/0x2e70
-
- stack backtrace:
- CPU: 2 PID: 0 Comm: swapper/2 Not tainted 6.7.0-rc3+ #598
- Hardware name: Red Hat KVM, BIOS 1.13.0-2.module+el8.3.0+7353+9de0a3cc 04/01/2014
- Call Trace:
-  <IRQ>
-  dump_stack_lvl+0x4a/0x80
-  __lock_acquire+0xfdd/0x3150
-  lock_acquire+0x1ca/0x540
-  _raw_spin_lock+0x34/0x80
-  __dev_queue_xmit+0x1560/0x2e70
-  tcf_mirred_act+0x82e/0x1260 [act_mirred]
-  tcf_action_exec+0x161/0x480
-  tcf_classify+0x689/0x1170
-  prio_enqueue+0x316/0x660 [sch_prio]
-  dev_qdisc_enqueue+0x46/0x220
-  __dev_queue_xmit+0x1615/0x2e70
-  ip_finish_output2+0x1218/0x1ed0
-  __ip_finish_output+0x8b3/0x1350
-  ip_output+0x163/0x4e0
-  igmp_ifc_timer_expire+0x44b/0x930
-  call_timer_fn+0x1a2/0x510
-  run_timer_softirq+0x54d/0x11a0
-  __do_softirq+0x1b3/0x88f
-  irq_exit_rcu+0x18f/0x1e0
-  sysvec_apic_timer_interrupt+0x6f/0x90
-  </IRQ>
-
-This happens when TC does a mirred egress redirect from the root qdisc of
-device A to the root qdisc of device B. As long as these two locks aren't
-protecting the same qdisc, they can be acquired in chain: add a per-qdisc
-lockdep key to silence false warnings.
-This dynamic key should safely replace the static key we have in sch_htb:
-it was added to allow enqueueing to the device "direct qdisc" while still
-holding the qdisc root lock.
-
-v2: don't use static keys anymore in HTB direct qdiscs (thanks Eric Dumazet)
-
-CC: Maxim Mikityanskiy <maxim@isovalent.com>
-CC: Xiumei Mu <xmu@redhat.com>
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/451
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://lore.kernel.org/r/7dc06d6158f72053cf877a82e2a7a5bd23692faa.1713448007.git.dcaratti@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8e67558177f8 ("octeontx2-pf: PFC config support with DCBx").
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sch_generic.h |  1 +
- net/sched/sch_generic.c   |  3 +++
- net/sched/sch_htb.c       | 22 +++-------------------
- 3 files changed, 7 insertions(+), 19 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/Makefile       | 3 +--
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c   | 7 +++++++
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c | 2 ++
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index e940debac4003..2799d44e5b979 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -126,6 +126,7 @@ struct Qdisc {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/Makefile b/drivers/net/ethernet/marvell/octeontx2/nic/Makefile
+index 5664f768cb0cd..64a97a0a10ed6 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/Makefile
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/Makefile
+@@ -9,10 +9,9 @@ obj-$(CONFIG_OCTEONTX2_VF) += rvu_nicvf.o otx2_ptp.o
+ rvu_nicpf-y := otx2_pf.o otx2_common.o otx2_txrx.o otx2_ethtool.o \
+                otx2_flows.o otx2_tc.o cn10k.o otx2_dmac_flt.o \
+                otx2_devlink.o qos_sq.o qos.o
+-rvu_nicvf-y := otx2_vf.o otx2_devlink.o
++rvu_nicvf-y := otx2_vf.o
  
- 	struct rcu_head		rcu;
- 	netdevice_tracker	dev_tracker;
-+	struct lock_class_key	root_lock_key;
- 	/* private data */
- 	long privdata[] ____cacheline_aligned;
- };
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 5d7e23f4cc0ee..bda9e473694b6 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -942,7 +942,9 @@ struct Qdisc *qdisc_alloc(struct netdev_queue *dev_queue,
- 	__skb_queue_head_init(&sch->gso_skb);
- 	__skb_queue_head_init(&sch->skb_bad_txq);
- 	gnet_stats_basic_sync_init(&sch->bstats);
-+	lockdep_register_key(&sch->root_lock_key);
- 	spin_lock_init(&sch->q.lock);
-+	lockdep_set_class(&sch->q.lock, &sch->root_lock_key);
+ rvu_nicpf-$(CONFIG_DCB) += otx2_dcbnl.o
+-rvu_nicvf-$(CONFIG_DCB) += otx2_dcbnl.o
+ rvu_nicpf-$(CONFIG_MACSEC) += cn10k_macsec.o
  
- 	if (ops->static_flags & TCQ_F_CPUSTATS) {
- 		sch->cpu_bstats =
-@@ -1062,6 +1064,7 @@ static void __qdisc_destroy(struct Qdisc *qdisc)
- 	if (ops->destroy)
- 		ops->destroy(qdisc);
+ ccflags-y += -I$(srctree)/drivers/net/ethernet/marvell/octeontx2/af
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
+index 28fb643d2917f..aa01110f04a33 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
+@@ -54,6 +54,7 @@ int otx2_pfc_txschq_config(struct otx2_nic *pfvf)
  
-+	lockdep_unregister_key(&qdisc->root_lock_key);
- 	module_put(ops->owner);
- 	netdev_put(qdisc_dev(qdisc), &qdisc->dev_tracker);
- 
-diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-index 0d947414e6161..19035ef8387fe 100644
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -1039,13 +1039,6 @@ static void htb_work_func(struct work_struct *work)
- 	rcu_read_unlock();
+ 	return 0;
  }
++EXPORT_SYMBOL(otx2_pfc_txschq_config);
  
--static void htb_set_lockdep_class_child(struct Qdisc *q)
--{
--	static struct lock_class_key child_key;
--
--	lockdep_set_class(qdisc_lock(q), &child_key);
--}
--
- static int htb_offload(struct net_device *dev, struct tc_htb_qopt_offload *opt)
+ static int otx2_pfc_txschq_alloc_one(struct otx2_nic *pfvf, u8 prio)
  {
- 	return dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_QDISC_HTB, opt);
-@@ -1132,7 +1125,6 @@ static int htb_init(struct Qdisc *sch, struct nlattr *opt,
- 			return -ENOMEM;
- 		}
+@@ -122,6 +123,7 @@ int otx2_pfc_txschq_alloc(struct otx2_nic *pfvf)
  
--		htb_set_lockdep_class_child(qdisc);
- 		q->direct_qdiscs[ntx] = qdisc;
- 		qdisc->flags |= TCQ_F_ONETXQUEUE | TCQ_F_NOPARENT;
- 	}
-@@ -1468,7 +1460,6 @@ static int htb_graft(struct Qdisc *sch, unsigned long arg, struct Qdisc *new,
- 	}
+ 	return 0;
+ }
++EXPORT_SYMBOL(otx2_pfc_txschq_alloc);
  
- 	if (q->offload) {
--		htb_set_lockdep_class_child(new);
- 		/* One ref for cl->leaf.q, the other for dev_queue->qdisc. */
- 		qdisc_refcount_inc(new);
- 		old_q = htb_graft_helper(dev_queue, new);
-@@ -1733,11 +1724,8 @@ static int htb_delete(struct Qdisc *sch, unsigned long arg,
- 		new_q = qdisc_create_dflt(dev_queue, &pfifo_qdisc_ops,
- 					  cl->parent->common.classid,
- 					  NULL);
--		if (q->offload) {
--			if (new_q)
--				htb_set_lockdep_class_child(new_q);
-+		if (q->offload)
- 			htb_parent_to_leaf_offload(sch, dev_queue, new_q);
--		}
- 	}
+ static int otx2_pfc_txschq_stop_one(struct otx2_nic *pfvf, u8 prio)
+ {
+@@ -260,6 +262,7 @@ int otx2_pfc_txschq_update(struct otx2_nic *pfvf)
  
- 	sch_tree_lock(sch);
-@@ -1947,13 +1935,9 @@ static int htb_change_class(struct Qdisc *sch, u32 classid,
- 		new_q = qdisc_create_dflt(dev_queue, &pfifo_qdisc_ops,
- 					  classid, NULL);
- 		if (q->offload) {
--			if (new_q) {
--				htb_set_lockdep_class_child(new_q);
--				/* One ref for cl->leaf.q, the other for
--				 * dev_queue->qdisc.
--				 */
-+			/* One ref for cl->leaf.q, the other for dev_queue->qdisc. */
-+			if (new_q)
- 				qdisc_refcount_inc(new_q);
--			}
- 			old_q = htb_graft_helper(dev_queue, new_q);
- 			/* No qdisc_put needed. */
- 			WARN_ON(!(old_q->flags & TCQ_F_BUILTIN));
+ 	return 0;
+ }
++EXPORT_SYMBOL(otx2_pfc_txschq_update);
+ 
+ int otx2_pfc_txschq_stop(struct otx2_nic *pfvf)
+ {
+@@ -282,6 +285,7 @@ int otx2_pfc_txschq_stop(struct otx2_nic *pfvf)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL(otx2_pfc_txschq_stop);
+ 
+ int otx2_config_priority_flow_ctrl(struct otx2_nic *pfvf)
+ {
+@@ -321,6 +325,7 @@ int otx2_config_priority_flow_ctrl(struct otx2_nic *pfvf)
+ 	mutex_unlock(&pfvf->mbox.lock);
+ 	return err;
+ }
++EXPORT_SYMBOL(otx2_config_priority_flow_ctrl);
+ 
+ void otx2_update_bpid_in_rqctx(struct otx2_nic *pfvf, int vlan_prio, int qidx,
+ 			       bool pfc_enable)
+@@ -385,6 +390,7 @@ void otx2_update_bpid_in_rqctx(struct otx2_nic *pfvf, int vlan_prio, int qidx,
+ 			 "Updating BPIDs in CQ and Aura contexts of RQ%d failed with err %d\n",
+ 			 qidx, err);
+ }
++EXPORT_SYMBOL(otx2_update_bpid_in_rqctx);
+ 
+ static int otx2_dcbnl_ieee_getpfc(struct net_device *dev, struct ieee_pfc *pfc)
+ {
+@@ -472,3 +478,4 @@ int otx2_dcbnl_set_ops(struct net_device *dev)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL(otx2_dcbnl_set_ops);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
+index 4e1130496573e..05956bf03c05d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_devlink.c
+@@ -112,6 +112,7 @@ int otx2_register_dl(struct otx2_nic *pfvf)
+ 	devlink_free(dl);
+ 	return err;
+ }
++EXPORT_SYMBOL(otx2_register_dl);
+ 
+ void otx2_unregister_dl(struct otx2_nic *pfvf)
+ {
+@@ -123,3 +124,4 @@ void otx2_unregister_dl(struct otx2_nic *pfvf)
+ 				  ARRAY_SIZE(otx2_dl_params));
+ 	devlink_free(dl);
+ }
++EXPORT_SYMBOL(otx2_unregister_dl);
 -- 
 2.43.0
 
