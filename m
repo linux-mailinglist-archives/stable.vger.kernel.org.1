@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-55476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFD9E9163C0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:50:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E287891632A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1FB41C226AC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:50:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77EAAB23252
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B459149C4C;
-	Tue, 25 Jun 2024 09:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC1B149C4F;
+	Tue, 25 Jun 2024 09:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B55JiLlm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKHdM0mh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA951494AF;
-	Tue, 25 Jun 2024 09:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D7212EBEA;
+	Tue, 25 Jun 2024 09:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309016; cv=none; b=Dvk1eIYxA3kL/tK1RazTj4E3sdBW6oTDLjLSL9gHQiqeGgLTYLoxyruOS4Qv3b9gKJ74/6fTyP5nlmKJ4vO64Lcv+yKMPNbfJOMzJVke+hsLnoVwj0+9yxv0hE7h3wdJUOl5+0S0cdzI7icnA+GhvMz7W7ZQfLuF5kz2Xu9ZjTc=
+	t=1719308609; cv=none; b=ADMAa7ymR+nBruXgjxLUQwisiwj7FL2a7QKN87lu68JMa+OWGegvv7avfc833MSII8cJfqKhFkpmYUSYSi8uVn2J964xHsKrdRwoHni5h2ndwL8yf7h55Eg/mDXqm6Ek72zFk6nPQ/I2xx41yF3G/UVUhFud0R+EQelMcOEfltA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309016; c=relaxed/simple;
-	bh=T0on4BsQqh3viIZWeZ4u5BxALn3eMxtdsxh5/Zki9C4=;
+	s=arc-20240116; t=1719308609; c=relaxed/simple;
+	bh=ltXZTsNS+7jIefy/0ulW8yvZULRen9s8E0fFb6dgSjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j5Tn4M9H2uPKhDkHMa9nIuAr+W6UmJTkLOVyzvj8hl/B1Q1kV/mdcHEYteFHO8reFiXIfyoRJ+KXhtyRF7IOQwlkPs4H/8JShaWhIZ1ty0y9u5xkhb0+X5g1QIwXkwr06ZDRfw62QO8plXn+RDiD7QRk4CDXE8dqAQ/lTHl8fY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B55JiLlm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B362C32781;
-	Tue, 25 Jun 2024 09:50:15 +0000 (UTC)
+	 MIME-Version; b=PTyLw9otgCHOVgbXI3Aq22B9o82I69pWf5hWXTDiDNK6zxdrNCdl4yJvQZTcUM+v1vCssMlAqM2kgt1K56dFY3qQlq3wgNqbsv9wnG3dsC1OKJxu83Qjz6x7TOgRK+L+oP3ybwoglAjtqOEWfDBLFvPRDq4yna+rrYhlhc/sboU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKHdM0mh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106A5C32781;
+	Tue, 25 Jun 2024 09:43:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309015;
-	bh=T0on4BsQqh3viIZWeZ4u5BxALn3eMxtdsxh5/Zki9C4=;
+	s=korg; t=1719308609;
+	bh=ltXZTsNS+7jIefy/0ulW8yvZULRen9s8E0fFb6dgSjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B55JiLlmXprcdrX2iW4SEdNmi+W3PMBCI6DL4EJvzto0fgY9vBZZXVjp45ob5c4uQ
-	 3KdfLBQ5QjChOexdefPlpheO22Zf85rjpgm9a9PDk5b4lolLiu/c5xZiIi09vKkwXO
-	 TcVxmITd9X/lemGp+d/3fm8ySbCJ+I82Gdqvm3as=
+	b=PKHdM0mhHCYKdNeimi416DyxNR6asGBK9Q6f5/CImtp2cYOnvH+RhPq/B9k2PVbCh
+	 5cD/qcK0XQrpoNZvEZ3gBrP6ZFMdLBp9GN4ZxtEAcm/xgmfz3os7t+DEMiBGZUJtG/
+	 gCCEVdaI0t3+G+ZRAzcP60dhy1ynTZxh+a1lVr34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/192] mips: bmips: BCM6358: make sure CBR is correctly set
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.9 180/250] net: phy: dp83tg720: wake up PHYs in managed mode
 Date: Tue, 25 Jun 2024 11:32:18 +0200
-Message-ID: <20240625085539.706517771@linuxfoundation.org>
+Message-ID: <20240625085554.960136943@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit ce5cdd3b05216b704a704f466fb4c2dff3778caf ]
+commit cd6f12e173df44a20c2ac2ac110007dc14968088 upstream.
 
-It was discovered that some device have CBR address set to 0 causing
-kernel panic when arch_sync_dma_for_cpu_all is called.
+In case this PHY is bootstrapped for managed mode, we need to manually
+wake it. Otherwise no link will be detected.
 
-This was notice in situation where the system is booted from TP1 and
-BMIPS_GET_CBR() returns 0 instead of a valid address and
-!!(read_c0_brcm_cmt_local() & (1 << 31)); not failing.
-
-The current check whether RAC flush should be disabled or not are not
-enough hence lets check if CBR is a valid address or not.
-
-Fixes: ab327f8acdf8 ("mips: bmips: BCM6358: disable RAC flush for TP1")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: cb80ee2f9bee1 ("net: phy: Add support for the DP83TG720S Ethernet PHY")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20240614094516.1481231-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/bmips/setup.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/phy/dp83tg720.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
-index ec180ab92eaa8..66a8ba19c2872 100644
---- a/arch/mips/bmips/setup.c
-+++ b/arch/mips/bmips/setup.c
-@@ -110,7 +110,8 @@ static void bcm6358_quirks(void)
- 	 * RAC flush causes kernel panics on BCM6358 when booting from TP1
- 	 * because the bootloader is not initializing it properly.
+diff --git a/drivers/net/phy/dp83tg720.c b/drivers/net/phy/dp83tg720.c
+index 326c9770a6dc..1186dfc70fb3 100644
+--- a/drivers/net/phy/dp83tg720.c
++++ b/drivers/net/phy/dp83tg720.c
+@@ -17,6 +17,11 @@
+ #define DP83TG720S_PHY_RESET			0x1f
+ #define DP83TG720S_HW_RESET			BIT(15)
+ 
++#define DP83TG720S_LPS_CFG3			0x18c
++/* Power modes are documented as bit fields but used as values */
++/* Power Mode 0 is Normal mode */
++#define DP83TG720S_LPS_CFG3_PWR_MODE_0		BIT(0)
++
+ #define DP83TG720S_RGMII_DELAY_CTRL		0x602
+ /* In RGMII mode, Enable or disable the internal delay for RXD */
+ #define DP83TG720S_RGMII_RX_CLK_SEL		BIT(1)
+@@ -154,10 +159,17 @@ static int dp83tg720_config_init(struct phy_device *phydev)
  	 */
--	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31));
-+	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31)) ||
-+				  !!BMIPS_GET_CBR();
+ 	usleep_range(1000, 2000);
+ 
+-	if (phy_interface_is_rgmii(phydev))
+-		return dp83tg720_config_rgmii_delay(phydev);
++	if (phy_interface_is_rgmii(phydev)) {
++		ret = dp83tg720_config_rgmii_delay(phydev);
++		if (ret)
++			return ret;
++	}
+ 
+-	return 0;
++	/* In case the PHY is bootstrapped in managed mode, we need to
++	 * wake it.
++	 */
++	return phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TG720S_LPS_CFG3,
++			     DP83TG720S_LPS_CFG3_PWR_MODE_0);
  }
  
- static void bcm6368_quirks(void)
+ static struct phy_driver dp83tg720_driver[] = {
 -- 
-2.43.0
+2.45.2
 
 
 
