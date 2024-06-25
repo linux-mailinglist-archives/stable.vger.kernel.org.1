@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-55523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D9B9163FB
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C246691635D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 320FB1F216BD
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BD84B25E98
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A0F149C54;
-	Tue, 25 Jun 2024 09:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15DF147C96;
+	Tue, 25 Jun 2024 09:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/8mD4Gx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CO9KCQ8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DA124B34;
-	Tue, 25 Jun 2024 09:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FE71465A8;
+	Tue, 25 Jun 2024 09:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309154; cv=none; b=tP5BxA7Fdt2XUvJMOM+2wWXDD9BoOIPx7XY5apSeWpEZCNOt5Qx/8tWHMVug5oPlGD78u7ukTrfeEhk/NY+jvVL1i//aiqRr8bMgNXa86srTHbfiIPeGsOuN7dqdj9jymJlWj4LgvNU8zIzvzNPr6JehkvO6ufNoC/ZFNAJ/BAM=
+	t=1719308754; cv=none; b=mDDeRE138sSJiIf7WvdkBo7P2a+42CMPaS53OC19edOLsakIIqqjN1bK4Srb3XQmCi1CzkFR/KNYx99QZhu1DCCc+WLN6K9tgrxaU/CGk5xIeuYo/Urz5XCNMRZ+5V48ePM/te6XEmInzkd1AKo47i38T6oUc64KvZ8pmBLFVyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309154; c=relaxed/simple;
-	bh=jMAWnpMbik+hYKwmKwbJIG4VspeBM967bSnHJZPq9b0=;
+	s=arc-20240116; t=1719308754; c=relaxed/simple;
+	bh=NHc5rXdZdjA5KVThV3FRqnsqNqGpSrufy0WS9EK01/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tcEx7sHVM+tuzgOriE4tiBrGsTgTh77+Ol6YSCJ9MaVEKjN4stVL1ij7MI50YUxXwIvQ4KNaEnUN6B7y4hYc4SLHiL+hOAhbDGdeqPnJybSS9IQlNEBqW3wiG46q7xMU5qf+cApL57/CQRlLgyadXKrAWhwPgwpW7yUhj/CTEds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/8mD4Gx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4B4C32789;
-	Tue, 25 Jun 2024 09:52:33 +0000 (UTC)
+	 MIME-Version; b=b6w5Nz4yhTtI+dsFtIDtrSicfsc7rBdrwrqaIHIhii+vwaK0NbpeQmJKQYgmHi2AsEg3raPyhYu8NydnFhYNx7eu0AlZ375NtT5GhdxwVyAbUBqkYmE1EMECsjXNkiBfni38AVoZvRcEbK8X0sK+2ow4KlqT9R0J8TwHw2eIf7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CO9KCQ8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AFFC32781;
+	Tue, 25 Jun 2024 09:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309154;
-	bh=jMAWnpMbik+hYKwmKwbJIG4VspeBM967bSnHJZPq9b0=;
+	s=korg; t=1719308754;
+	bh=NHc5rXdZdjA5KVThV3FRqnsqNqGpSrufy0WS9EK01/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/8mD4Gx0B20hboS6fhDKdHQhhcpoAG2PwvOUxBus2vBAOX3igQY++2jr9KLRAnYk
-	 /QQhI12untH2Hbbm42qJ0tcwrmEUd3r8aVgG+rsOOr86TY7gKrlo/e4D942RI2QGU+
-	 pfDX+w6F0j7ylH6aU5Kg9+XnXnS8bbgr56QdIleo=
+	b=CO9KCQ8NpVieVCR/y9U5UcWCQzyUtyWr4LBOhnI0eoQ9V7MqzgZJwKqprHJFAL2Zv
+	 HLBx+aSQWeKrUpDaU0JyCM3brX+uypmqfoa3R2KLJrB8+NlnQYg+RAeArVW/u2So+u
+	 cjVFLPTyWXuj1bw26D9Y72rvgLNVse/BqBz6Lv64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Peng Fan <peng.fan@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/192] dmaengine: fsl-edma: avoid linking both modules
-Date: Tue, 25 Jun 2024 11:33:04 +0200
-Message-ID: <20240625085541.470480632@linuxfoundation.org>
+	Peter Xu <peterx@redhat.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 227/250] mm/page_table_check: fix crash on ZONE_DEVICE
+Date: Tue, 25 Jun 2024 11:33:05 +0200
+Message-ID: <20240625085556.764183767@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Peter Xu <peterx@redhat.com>
 
-[ Upstream commit fa555b5026d0bf1ba7c9e645ff75e2725a982631 ]
+commit 8bb592c2eca8fd2bc06db7d80b38da18da4a2f43 upstream.
 
-Kbuild does not support having a source file compiled multiple times
-and linked into distinct modules, or built-in and modular at the
-same time. For fs-edma, there are two common components that are
-linked into the fsl-edma.ko for Arm and PowerPC, plus the mcf-edma.ko
-module on Coldfire. This violates the rule for compile-testing:
+Not all pages may apply to pgtable check.  One example is ZONE_DEVICE
+pages: they map PFNs directly, and they don't allocate page_ext at all
+even if there's struct page around.  One may reference
+devm_memremap_pages().
 
-scripts/Makefile.build:236: drivers/dma/Makefile: fsl-edma-common.o is added to multiple modules: fsl-edma mcf-edma
-scripts/Makefile.build:236: drivers/dma/Makefile: fsl-edma-trace.o is added to multiple modules: fsl-edma mcf-edma
+When both ZONE_DEVICE and page-table-check enabled, then try to map some
+dax memories, one can trigger kernel bug constantly now when the kernel
+was trying to inject some pfn maps on the dax device:
 
-I tried splitting out the common parts into a separate modules, but
-that adds back the complexity that a cleanup patch removed, and it
-gets harder with the addition of the tracepoints.
+ kernel BUG at mm/page_table_check.c:55!
 
-As a minimal workaround, address it at the Kconfig level, by disallowing
-the broken configurations.
+While it's pretty legal to use set_pxx_at() for ZONE_DEVICE pages for page
+fault resolutions, skip all the checks if page_ext doesn't even exist in
+pgtable checker, which applies to ZONE_DEVICE but maybe more.
 
-Link: https://lore.kernel.org/lkml/20240110232255.1099757-1-arnd@kernel.org/
-Fixes: 66aac8ea0a6c ("dmaengine: fsl-edma: clean up EXPORT_SYMBOL_GPL in fsl-edma-common.c")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20240528115440.2965975-1-arnd@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240605212146.994486-1-peterx@redhat.com
+Fixes: df4e817b7108 ("mm: page table check")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/page_table_check.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
-index 7a618f629e86b..e36506471a4f6 100644
---- a/drivers/dma/Kconfig
-+++ b/drivers/dma/Kconfig
-@@ -380,7 +380,7 @@ config LPC18XX_DMAMUX
+--- a/mm/page_table_check.c
++++ b/mm/page_table_check.c
+@@ -71,6 +71,9 @@ static void page_table_check_clear(unsig
+ 	page = pfn_to_page(pfn);
+ 	page_ext = page_ext_get(page);
  
- config MCF_EDMA
- 	tristate "Freescale eDMA engine support, ColdFire mcf5441x SoCs"
--	depends on M5441x || COMPILE_TEST
-+	depends on M5441x || (COMPILE_TEST && FSL_EDMA=n)
- 	select DMA_ENGINE
- 	select DMA_VIRTUAL_CHANNELS
- 	help
--- 
-2.43.0
-
++	if (!page_ext)
++		return;
++
+ 	BUG_ON(PageSlab(page));
+ 	anon = PageAnon(page);
+ 
+@@ -108,6 +111,9 @@ static void page_table_check_set(unsigne
+ 	page = pfn_to_page(pfn);
+ 	page_ext = page_ext_get(page);
+ 
++	if (!page_ext)
++		return;
++
+ 	BUG_ON(PageSlab(page));
+ 	anon = PageAnon(page);
+ 
+@@ -138,7 +144,10 @@ void __page_table_check_zero(struct page
+ 	BUG_ON(PageSlab(page));
+ 
+ 	page_ext = page_ext_get(page);
+-	BUG_ON(!page_ext);
++
++	if (!page_ext)
++		return;
++
+ 	for (i = 0; i < (1ul << order); i++) {
+ 		struct page_table_check *ptc = get_page_table_check(page_ext);
+ 
 
 
 
