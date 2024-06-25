@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 162409163AB
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B39916314
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:42:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 485DB1C23081
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D275282CE0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0834C149DF8;
-	Tue, 25 Jun 2024 09:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0E014A08B;
+	Tue, 25 Jun 2024 09:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uj868ys2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4GJsyOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9931146A9D;
-	Tue, 25 Jun 2024 09:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3FE14A084;
+	Tue, 25 Jun 2024 09:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308959; cv=none; b=fNGLJL9Nqw3wOOpQ7OlMQeUkJPFzjALOkBAPxhCmWSPNeu7L7+141OjqFf2vVVY8v8xD/94QIZLB5uiUPxAybJrhWukVHdl7F2vIJHwCiyJD6faPWNWCL+TkHrA/V51cShC0RriAAprSOYCB9yh0o9vGN4UK1jFjxHiVWxPwmLE=
+	t=1719308548; cv=none; b=R/BJ2Mk5euxzaZw+HOKtkbJ8XGT59XfB59fObIDAX34Yzg94ljx+v4vpAuYo8DS59dbqRAsOiqL9LSoJ4EYDgQK52awzlfyE1XmBsUj60DxobPRpZVI/3F1TMPsKGkYgSRTnuKSx9FGL6SWaz6hO5vOxfaURbdAkk9RLWTTAIgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308959; c=relaxed/simple;
-	bh=wecDaOtBoainBcv8e++OPPRlZnbHGkAKhxT9D8lE/bA=;
+	s=arc-20240116; t=1719308548; c=relaxed/simple;
+	bh=v8Eh582u3DlO/M/dysEYmUr/cEHGtMM0189qWaeK5Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTONqWjMXW6tYD8cttM+oaQvFGbQ69BhLFH0cPgIZ3+DqFAD3wJ2Rn/S8ThjfDTVCqzvSCPQti/1o0+NmZdM7uXdAPD1K3axaRKb/bud+jkHcF0Bo5yxsJtpxDCQentT67Q1SvMWeNY7X5aBs9t3S7vSglx08qE+D5bWgzPO9PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uj868ys2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D524C32789;
-	Tue, 25 Jun 2024 09:49:18 +0000 (UTC)
+	 MIME-Version; b=W4Qf+GeDCvjwz6YVLKuJACUDxVVjq3k5L+qr3y0bi3OsnJU+WQ0sgkd66xiNzNW+s2vKKZScALNHHv//LNQuZQgL5+d7gze8sOr8GCuEj0c4A1+ltM6v8cGScal/9hUkckid2fiKxOY+JUkWzDEHUybj7m8zQd0VGlCUmJtEzB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4GJsyOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6560DC32781;
+	Tue, 25 Jun 2024 09:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308959;
-	bh=wecDaOtBoainBcv8e++OPPRlZnbHGkAKhxT9D8lE/bA=;
+	s=korg; t=1719308547;
+	bh=v8Eh582u3DlO/M/dysEYmUr/cEHGtMM0189qWaeK5Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uj868ys21MzKtrGfmzeDZkj3Mli/b1GnBvaUrRyQEcJbwoO+wfl0toN3xOuhK1dFK
-	 +vrf3NMhZUI0E6+vs8Y/NsUGQipgYD7fKdJFxh0rrh5cPJCDZAYN5lwsjxxkVP8Eid
-	 hqdBzhs5z1+ONKnHuBNMysKNVLbR/oltgDfuqdu0=
+	b=J4GJsyOIXgWTCrD1ZOnN/maMyjTx625Bp+A24lG0H/cBvHuu8yo4TdRScOA1Y7dAV
+	 3+ikyZvl05cTE5N3dINe6RE+ruSDxAh0HutbC67Slvd+aquow11/CNbqjHesIIXIC3
+	 X8qWJ+paign9bXy/Awilqk5k4hslZbLImZkVou+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 016/192] ACPI: x86: Add PNP_UART1_SKIP quirk for Lenovo Blade2 tablets
-Date: Tue, 25 Jun 2024 11:31:28 +0200
-Message-ID: <20240625085537.780791857@linuxfoundation.org>
+Subject: [PATCH 6.9 131/250] net: stmmac: No need to calculate speed divider when offload is disabled
+Date: Tue, 25 Jun 2024 11:31:29 +0200
+Message-ID: <20240625085553.092672572@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit d8f20383a2fc3a3844b08a4999cf0e81164a0e56 ]
+[ Upstream commit b8c43360f6e424131fa81d3ba8792ad8ff25a09e ]
 
-The x86 Android tablets on which quirks to skip looking for a matching
-UartSerialBus resource and instead unconditionally create a serial bus
-device (serdev) are necessary there are 2 sorts of serialports:
+commit be27b8965297 ("net: stmmac: replace priv->speed with
+the portTransmitRate from the tc-cbs parameters") introduced
+a problem. When deleting, it prompts "Invalid portTransmitRate
+0 (idleSlope - sendSlope)" and exits. Add judgment on cbs.enable.
+Only when offload is enabled, speed divider needs to be calculated.
 
-ACPI enumerated highspeed designware UARTs, these are the ones which
-typcially need to be skipped since they need a serdev for the attached
-BT HCI.
-
-A PNP enumerated UART which is part of the PCU. So far the existing
-quirks have ignored this. But on the Lenovo Yoga Tablet 2 Pro 1380
-models this is used for a custom fastcharging protocol. There is
-a Micro USB switch which can switch the USB data lines to this uart
-and then a 600 baud protocol is used to configure the charger for
-a voltage higher then 5V.
-
-Add a new ACPI_QUIRK_PNP_UART1_SKIP quirk type and set this for
-the existing entry for the Lenovo Yoga Tablet 2 830 / 1050 models.
-Note this will lead to unnecessarily also creating a serdev for
-the PCU UART on the 830 / 1050 which don't need this, but the UART
-is not used otherwise there so that is not a problem.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: be27b8965297 ("net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240617013922.1035854-1-xiaolei.wang@windriver.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/x86/utils.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 40 ++++++++++---------
+ 1 file changed, 22 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
-index ac05e2557435e..e035cec614dc8 100644
---- a/drivers/acpi/x86/utils.c
-+++ b/drivers/acpi/x86/utils.c
-@@ -257,9 +257,10 @@ bool force_storage_d3(void)
- #define ACPI_QUIRK_SKIP_I2C_CLIENTS				BIT(0)
- #define ACPI_QUIRK_UART1_SKIP					BIT(1)
- #define ACPI_QUIRK_UART1_TTY_UART2_SKIP				BIT(2)
--#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY			BIT(3)
--#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY			BIT(4)
--#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS			BIT(5)
-+#define ACPI_QUIRK_PNP_UART1_SKIP				BIT(3)
-+#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY			BIT(4)
-+#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY			BIT(5)
-+#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS			BIT(6)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+index b1896379dbab5..7d240a2b54a85 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+@@ -358,24 +358,28 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
  
- static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 	/*
-@@ -339,6 +340,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
- 			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21"),
- 		},
- 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
-+					ACPI_QUIRK_PNP_UART1_SKIP |
- 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
- 	},
- 	{
-@@ -437,14 +439,18 @@ static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bo
- 	if (ret)
- 		return 0;
+ 	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
  
--	/* to not match on PNP enumerated debug UARTs */
--	if (!dev_is_platform(controller_parent))
--		return 0;
--
- 	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
- 	if (dmi_id)
- 		quirks = (unsigned long)dmi_id->driver_data;
+-	/* Port Transmit Rate and Speed Divider */
+-	switch (div_s64(port_transmit_rate_kbps, 1000)) {
+-	case SPEED_10000:
+-	case SPEED_5000:
+-		ptr = 32;
+-		break;
+-	case SPEED_2500:
+-	case SPEED_1000:
+-		ptr = 8;
+-		break;
+-	case SPEED_100:
+-		ptr = 4;
+-		break;
+-	default:
+-		netdev_err(priv->dev,
+-			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
+-			   port_transmit_rate_kbps);
+-		return -EINVAL;
++	if (qopt->enable) {
++		/* Port Transmit Rate and Speed Divider */
++		switch (div_s64(port_transmit_rate_kbps, 1000)) {
++		case SPEED_10000:
++		case SPEED_5000:
++			ptr = 32;
++			break;
++		case SPEED_2500:
++		case SPEED_1000:
++			ptr = 8;
++			break;
++		case SPEED_100:
++			ptr = 4;
++			break;
++		default:
++			netdev_err(priv->dev,
++				   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
++				   port_transmit_rate_kbps);
++			return -EINVAL;
++		}
++	} else {
++		ptr = 0;
+ 	}
  
-+	if (!dev_is_platform(controller_parent)) {
-+		/* PNP enumerated UARTs */
-+		if ((quirks & ACPI_QUIRK_PNP_UART1_SKIP) && uid == 1)
-+			*skip = true;
-+
-+		return 0;
-+	}
-+
- 	if ((quirks & ACPI_QUIRK_UART1_SKIP) && uid == 1)
- 		*skip = true;
- 
+ 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
 -- 
 2.43.0
 
