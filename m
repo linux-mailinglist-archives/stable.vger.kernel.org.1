@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-55585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339D691644E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A2BF9164C7
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B44AFB28F42
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B2EC1C2030F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E976614B954;
-	Tue, 25 Jun 2024 09:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76415149C4F;
+	Tue, 25 Jun 2024 10:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcbGWxtu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvOtfQis"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AC614A4FF;
-	Tue, 25 Jun 2024 09:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AD31465B7;
+	Tue, 25 Jun 2024 10:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309338; cv=none; b=LLNEDdM6OPdll84hge8eSrt7uqM7b6a3s2NVboAncycOtxhejjGxQTmNsrHBpDrcDZJmiYTPbsiB4tBQP1yKw1jxsGEkARQ8aJNzXDwdwGqW8E20Gbv3mVcfCTkZXmAsIbSTQvsmcJz4Of/GBZYwKzK8+e8eu85I/se2OtrFVYk=
+	t=1719309668; cv=none; b=YMslmBpNzyCb1nZ1dLvvF39TmkkXP7zT9JJdzecBiUTrvbzqKWZRnPAIDcfwmaXW0uFAMaXTrJLnDpyUbtgzs0M8AWuu2WTJfRXwN7JmHvbQ2S8gI7dNzsEwsrsbxvkFu7Tih8ifbdc2ExJhmUwWaFEuCs5FFU30Ib89v/lOhqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309338; c=relaxed/simple;
-	bh=N4lJrWBeaUNroXedKqKHrh5fbZfY8kopTzpSCgLKOqU=;
+	s=arc-20240116; t=1719309668; c=relaxed/simple;
+	bh=/n6L01Gzv74lRE9qRtQl4/C8U9gl/L1Ao+Ap0j9hUuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZWwoWJJ6duP9mUOQl0nnj8pvsHXrAKZLkSpVfzPJA4H0DCAYN1EWn6JLA5gTusrFbnopah+pf9dRwhTYsgrFAgZoQuYzxrGE/T3leDmNiwSA8/6ZHcVU7oNva5bjvOKa0rUGcCxFh1/EQ3QMFuJoucUFROr1T6Q8fWQeF9AWhbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JcbGWxtu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A329C32781;
-	Tue, 25 Jun 2024 09:55:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hhqOYAmmtJWGAvQF2VOCV7RmuE0KixhszFfWjIaLni2PSVumLUmOQ0iD7rdjHkw0a3j3/jeZnoq7/5RNmGmoNV1sZxyii+HroDM0ptTvMSHcztCdyPeOP6tp5zOrtl68ntiaWov5I9tikV0fy/Osh+dfJYsN2BZNbV9MkZu2u0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvOtfQis; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07D5C32781;
+	Tue, 25 Jun 2024 10:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309338;
-	bh=N4lJrWBeaUNroXedKqKHrh5fbZfY8kopTzpSCgLKOqU=;
+	s=korg; t=1719309668;
+	bh=/n6L01Gzv74lRE9qRtQl4/C8U9gl/L1Ao+Ap0j9hUuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcbGWxtulX7D8X6gVtxOXGv605ZHtnJ6MSx4m4VHnvQYcOW0Xay5aOJVD8ReZSddd
-	 W933MvXKWt45VHZXCN/vBZ8dDlw8inXZiALybokkUnqtDEl3Sgsq+D41bpYzQKJ/Kk
-	 2K4VXWhHJ2LyNS8QjOYtideQkg7r8zTFIERxGG4E=
+	b=LvOtfQisxr8Z8Yp12CwIZTaXOPrBG/Tb5PWMGQEdqsUxXuTifbgYcd9B8RMy+w7wW
+	 cfq5ybZHLlNCsEXrvN+M1K55p6vV54tYRtV3UiGdtd1WLh2yg2UEzjjux33XROs4ht
+	 qL9P06ECUP7SWk67RcsX60x/VmmDrcnpYWQ6GQt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Yue <glass.su@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Jun Piao <piaojun@huawei.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/192] ocfs2: update inode fsync transaction id in ocfs2_unlink and ocfs2_link
-Date: Tue, 25 Jun 2024 11:34:07 +0200
-Message-ID: <20240625085543.877052380@linuxfoundation.org>
+	Florian Fainelli <f.fainelli@gmail.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 093/131] MIPS: dts: bcm63268: Add missing properties to the TWD node
+Date: Tue, 25 Jun 2024 11:34:08 +0200
+Message-ID: <20240625085529.472950894@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,69 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Yue <glass.su@suse.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
 
-[ Upstream commit 8c40984eeb8804cffcd28640f427f4fe829243fc ]
+commit 24b333a866a10d4be47b9968b9c05a3e9f326ff5 upstream.
 
-transaction id should be updated in ocfs2_unlink and ocfs2_link.
-Otherwise, inode link will be wrong after journal replay even fsync was
-called before power failure:
-=======================================================================
-$ touch testdir/bar
-$ ln testdir/bar testdir/bar_link
-$ fsync testdir/bar
-$ stat -c %h $SCRATCH_MNT/testdir/bar
-1
-$ stat -c %h $SCRATCH_MNT/testdir/bar
-1
-=======================================================================
+We currently have a DTC warning with the current DTS due to the lack of
+a suitable #address-cells and #size-cells property:
 
-Link: https://lkml.kernel.org/r/20240408082041.20925-4-glass.su@suse.com
-Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
-Signed-off-by: Su Yue <glass.su@suse.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  DTC     arch/mips/boot/dts/brcm/bcm63268-comtrend-vr-3032u.dtb
+arch/mips/boot/dts/brcm/bcm63268.dtsi:115.5-22: Warning (reg_format): /ubus/timer-mfd@10000080/timer@0:reg: property has invalid length (8 bytes) (#address-cells == 2, #size-cells == 1)
+arch/mips/boot/dts/brcm/bcm63268.dtsi:120.5-22: Warning (reg_format): /ubus/timer-mfd@10000080/watchdog@1c:reg: property has invalid length (8 bytes) (#address-cells == 2, #size-cells == 1)
+arch/mips/boot/dts/brcm/bcm63268.dtsi:111.4-35: Warning (ranges_format): /ubus/timer-mfd@10000080:ranges: "ranges" property has invalid length (12 bytes) (parent #address-cells == 1, child #address-cells == 2, #size-cells == 1)
+
+Fixes: d3db4b96ab7f ("mips: dts: bcm63268: add TWD block timer")
+Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/namei.c | 2 ++
+ arch/mips/boot/dts/brcm/bcm63268.dtsi |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
-index 791fc5050e46b..21b3d5b9be603 100644
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -797,6 +797,7 @@ static int ocfs2_link(struct dentry *old_dentry,
- 	ocfs2_set_links_count(fe, inode->i_nlink);
- 	fe->i_ctime = cpu_to_le64(inode_get_ctime_sec(inode));
- 	fe->i_ctime_nsec = cpu_to_le32(inode_get_ctime_nsec(inode));
-+	ocfs2_update_inode_fsync_trans(handle, inode, 0);
- 	ocfs2_journal_dirty(handle, fe_bh);
+--- a/arch/mips/boot/dts/brcm/bcm63268.dtsi
++++ b/arch/mips/boot/dts/brcm/bcm63268.dtsi
+@@ -109,6 +109,8 @@
+ 			compatible = "brcm,bcm7038-twd", "simple-mfd", "syscon";
+ 			reg = <0x10000080 0x30>;
+ 			ranges = <0x0 0x10000080 0x30>;
++			#address-cells = <1>;
++			#size-cells = <1>;
  
- 	err = ocfs2_add_entry(handle, dentry, inode,
-@@ -993,6 +994,7 @@ static int ocfs2_unlink(struct inode *dir,
- 		drop_nlink(inode);
- 	drop_nlink(inode);
- 	ocfs2_set_links_count(fe, inode->i_nlink);
-+	ocfs2_update_inode_fsync_trans(handle, inode, 0);
- 	ocfs2_journal_dirty(handle, fe_bh);
- 
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
--- 
-2.43.0
-
+ 			wdt: watchdog@1c {
+ 				compatible = "brcm,bcm7038-wdt";
 
 
 
