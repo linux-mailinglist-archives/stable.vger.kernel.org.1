@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A93916303
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C62C2916396
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D9DEB245C5
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21B66B26501
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFB41494D1;
-	Tue, 25 Jun 2024 09:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764201494D5;
+	Tue, 25 Jun 2024 09:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izLVQ2qI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZuOgIfI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C45712EBEA;
-	Tue, 25 Jun 2024 09:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349A5146A9D;
+	Tue, 25 Jun 2024 09:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308495; cv=none; b=Aca6/z3wGewx0nL0fA/Tg/Uj63eEvUnIQDUs6iP5wyZg2p6z0Wj1keNj+LjqTF77gldpPwHTAEtfj7AAJyMVDNHDjJx7JMFpbcew+zgcJxxiEja/i0w8Rva6P8Lyg8ykgNnsosfH7BjmTmQZw0/iMA6me+vfiWvqrdaQ96rN0A4=
+	t=1719308898; cv=none; b=gZqbh10svANtiIvbSHDhZgK5Q2VICrzeyxBObIaHkn5GXoWfK5uU/qlyoF/5mj5raz+oM9c0ZyFAG28cIr/rDoAoVsBjHAPV/4FQWXgknYDRX6o+V4gwhWmYPjxENjfsx/vRrNdKpCDsSY/a5UAejpq94VfA0MsasY256dufWPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308495; c=relaxed/simple;
-	bh=AE9sIJkD0nPdaGEsd5Odr4cjgNJdDvEzJJCxY8YjDyQ=;
+	s=arc-20240116; t=1719308898; c=relaxed/simple;
+	bh=iztwYX6sSg2RNTzttLIx52h49zLfuETlRzEBW4DmldA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cheK5T1E5isquIk4cueXF3aHF+6WUBhhH3byzy27qOsPmix7QnF485+GiHKcQcGGt235YhMCHet+KomoRP9BrobmqHToMtEMSxu7Tn8h1XNNRC4VRuXJ+Z6q9184wKUNzxAOsfEjXzgaVJOAyRozNM6Wh2qieyFMsaAh+eWXXx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izLVQ2qI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0466C32781;
-	Tue, 25 Jun 2024 09:41:34 +0000 (UTC)
+	 MIME-Version; b=Zp7vKH02HFfDECmv7uWOjjaBbWGJeV6WmSINiZhR/1vPYYr+Jetz9yzOi8mgjMx8FIyrtAIqG11Uj2g4tgRKChd9VXxnDr2CIsTvZ0g8m1NEb68AkrNtUzfKNYw0lFmw9/i9rryUnb8eevPi64h1JIIZH+DzVcJz0D1Rqu7gq/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZuOgIfI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8FEC32781;
+	Tue, 25 Jun 2024 09:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308495;
-	bh=AE9sIJkD0nPdaGEsd5Odr4cjgNJdDvEzJJCxY8YjDyQ=;
+	s=korg; t=1719308898;
+	bh=iztwYX6sSg2RNTzttLIx52h49zLfuETlRzEBW4DmldA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izLVQ2qI89rWJ+oWxUpXNKLmBMhlXh9Dx0ZcZB5Q5ruANl/PVvJxER6Ens/hXPqDK
-	 SHMiOEVZviaMnMWnCdo9Sav9dDLphM9FNAg9sz3cngdGKCrPt1ki8y1rd4SxkMDClr
-	 jYKmUD9RpZ3IFZRjFNIMqrDVvkl9HVYJt76L6Vlg=
+	b=nZuOgIfISTul8XEIeK3B10EcXQfEXpTDhepWXqOK9ft2uyDZsQP/VPitjJzU5jKLp
+	 kLddY00475QJw8HK2nyFJeOUXUcW0sCz7Wqv2RVl+XkEgeJvQFnvgoRFrH6tLVhvSB
+	 wBjBaV5D+hDyh4qxaLGwp1v7HfeKRN+81tTBAYXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com,
-	Oliver Neukum <oneukum@suse.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 141/250] net: usb: rtl8150 fix unintiatilzed variables in rtl8150_get_link_ksettings
+Subject: [PATCH 6.6 027/192] ACPI: video: Add backlight=native quirk for Lenovo Slim 7 16ARH7
 Date: Tue, 25 Jun 2024 11:31:39 +0200
-Message-ID: <20240625085553.471111945@linuxfoundation.org>
+Message-ID: <20240625085538.204067091@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit fba383985354e83474f95f36d7c65feb75dba19d ]
+[ Upstream commit c901f63dc142c48326931f164f787dfff69273d9 ]
 
-This functions retrieves values by passing a pointer. As the function
-that retrieves them can fail before touching the pointers, the variables
-must be initialized.
+Lenovo Slim 7 16ARH7 is a machine with switchable graphics between AMD
+and Nvidia, and the backlight can't be adjusted properly unless
+acpi_backlight=native is passed.  Although nvidia-wmi-backlight is
+present and loaded, this doesn't work as expected at all.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20240619132816.11526-1-oneukum@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+For making it working as default, add the corresponding quirk entry
+with a DMI matching "LENOVO" "82UX".
+
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1217750
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/rtl8150.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 97afd7335d868..01a3b2417a540 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -778,7 +778,8 @@ static int rtl8150_get_link_ksettings(struct net_device *netdev,
- 				      struct ethtool_link_ksettings *ecmd)
- {
- 	rtl8150_t *dev = netdev_priv(netdev);
--	short lpa, bmcr;
-+	short lpa = 0;
-+	short bmcr = 0;
- 	u32 supported;
- 
- 	supported = (SUPPORTED_10baseT_Half |
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 31205fee59d4a..16ab2d9ef67f3 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -505,6 +505,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Lenovo Slim 7 16ARH7 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "82UX"),
++		},
++	},
+ 	{
+ 	 .callback = video_detect_force_native,
+ 	 /* Lenovo ThinkPad X131e (3371 AMD version) */
 -- 
 2.43.0
 
