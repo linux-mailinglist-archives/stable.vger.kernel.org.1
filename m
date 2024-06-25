@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-55252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4147C9162C5
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:39:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F1399162F9
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED8131F21225
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:39:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 240931F22BC1
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BD3149C79;
-	Tue, 25 Jun 2024 09:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97048149C74;
+	Tue, 25 Jun 2024 09:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vAUehlWG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6s7Xu+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83E012EBEA;
-	Tue, 25 Jun 2024 09:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541E11465A8;
+	Tue, 25 Jun 2024 09:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308359; cv=none; b=fyN1ncQKKhRcT2SfnPNEOdZw0br1KAzNHzKtGHPDtcB4IA/RfUYAP688z2+9BC8SW10BijIKlsGe1hu/G/IHB+bLR7RKG+iJ4trc1TaiDy75X5A/hOYyq8i+lL573PUN40/cwmQ3gjB4stU41evK3gmd/euiADyLb2xhOJQi85Q=
+	t=1719308480; cv=none; b=RSNG7gY5ZLGkUwKHhM1YMQ/Hfc8bTeLQeDmKyiIQbeZmSEwsV61I8ZZtYxpid5QKqEHMVQhzFM/B6XkFIv0xeR0v3CUUAXC8/pmNDllZXauagHYelHupQfL6+DnknhpCohFmkfeAQYHsc9bH08bXOWyewPcLPOL7H4lmta0HKxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308359; c=relaxed/simple;
-	bh=ldufC4TjlKM6wRNR6qisZe5iy/xm48Xprjk88sUlDu4=;
+	s=arc-20240116; t=1719308480; c=relaxed/simple;
+	bh=qNoNntjW3B1jxlh9UX8qLwg9z9SyeX+OHrEjx/Qlg40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ldmaMAo8FxhKc7lp5mjDf8OLT5pGY58KMa83nU4vs1D2BW+dJl5tZKDEFymB3iTyGuuKA8zdiWaU5aSbP9KfkNfNTIvsOqcYGwJCVlLkkO1rZGWliQ88Gn70og0GPF3z79TlODJhtRqpYXfMPs7YHP3Ai7QQlRYugrHQxuXvrr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vAUehlWG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E270C32781;
-	Tue, 25 Jun 2024 09:39:18 +0000 (UTC)
+	 MIME-Version; b=ryqGzWpM7fPWdR+uRIIo43+vt6LWKQNq32Dgc3uXmc/W/45eYUww4g6JC2EM/ZG7qmuXsW0xSzq7xFuGYm3gcQ7z4vjSzAXLTFGg9tj9hp9DTFNZcgr6lxiFKoJ4q8CvJJKalLihkdC/1KFIczE5y8aQQATSlPZQQD5Ks9DODd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6s7Xu+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2B6C32781;
+	Tue, 25 Jun 2024 09:41:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308359;
-	bh=ldufC4TjlKM6wRNR6qisZe5iy/xm48Xprjk88sUlDu4=;
+	s=korg; t=1719308480;
+	bh=qNoNntjW3B1jxlh9UX8qLwg9z9SyeX+OHrEjx/Qlg40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vAUehlWG4qmUGmgbahiepW4mM22p/QQUGOnGWrraum/OIJkczTzxrLAAXklK/lc4d
-	 4aRqf3qNG1iQQ/iW/OF4i2kJ/HKwDPQVDd9xIYAPMJYW3dEPpJINTAeuOpTJZqcW0d
-	 VmOqEo1hgYFE2EnkcoK9U3QCVTWAt8t+gZwXfWB8=
+	b=j6s7Xu+OeVn+PPEHBKV5nrRWTBgz8oF/anBrs5+EikCPjjmjQWVzhVhP1N0ucXABC
+	 XvTjiMC+EIqyztxvKgWxKrimMUHCbMx1jt8F6z6ntIJLwlg425wEopSrd0jrFpKE00
+	 5cHcoSEZLHGk5oNbRlZCotRXfcdgbDhD/9lrx9VU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Thorsten Leemhuis <regressions@leemhuis.info>,
+	Vladimir Lypak <vladimir.lypak@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 093/250] PCI: Do not wait for disconnected devices when resuming
-Date: Tue, 25 Jun 2024 11:30:51 +0200
-Message-ID: <20240625085551.640629350@linuxfoundation.org>
+Subject: [PATCH 6.9 094/250] OPP: Fix required_opp_tables for multiple genpds using same table
+Date: Tue, 25 Jun 2024 11:30:52 +0200
+Message-ID: <20240625085551.678400131@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -61,95 +62,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 6613443ffc49d03e27f0404978f685c4eac43fba ]
+[ Upstream commit 2a56c462fe5a2ee61d38e2d7b772bee56115a00c ]
 
-On runtime resume, pci_dev_wait() is called:
+The required_opp_tables parsing is not perfect, as the OPP core does the
+parsing solely based on the DT node pointers.
 
-  pci_pm_runtime_resume()
-    pci_pm_bridge_power_up_actions()
-      pci_bridge_wait_for_secondary_bus()
-        pci_dev_wait()
+The core sets the required_opp_tables entry to the first OPP table in
+the "opp_tables" list, that matches with the node pointer.
 
-While a device is runtime suspended along with its PCI hierarchy, the
-device could get disconnected. In such case, the link will not come up no
-matter how long pci_dev_wait() waits for it.
+If the target DT OPP table is used by multiple devices and they all
+create separate instances of 'struct opp_table' from it, then it is
+possible that the required_opp_tables entry may be set to the incorrect
+sibling device.
 
-Besides the above mentioned case, there could be other ways to get the
-device disconnected while pci_dev_wait() is waiting for the link to come
-up.
+Unfortunately, there is no clear way to initialize the right values
+during the initial parsing and we need to do this at a later point of
+time.
 
-Make pci_dev_wait() exit if the device is already disconnected to avoid
-unnecessary delay.
+Cross check the OPP table again while the genpds are attached and fix
+them if required.
 
-The use cases of pci_dev_wait() boil down to two:
+Also add a new API for the genpd core to fetch the device pointer for
+the genpd.
 
-  1. Waiting for the device after reset
-  2. pci_bridge_wait_for_secondary_bus()
-
-The callers in both cases seem to benefit from propagating the
-disconnection as error even if device disconnection would be more
-analoguous to the case where there is no device in the first place which
-return 0 from pci_dev_wait(). In the case 2, it results in unnecessary
-marking of the devices disconnected again but that is just harmless extra
-work.
-
-Also make sure compiler does not become too clever with dev->error_state
-and use READ_ONCE() to force a fetch for the up-to-date value.
-
-Link: https://lore.kernel.org/r/20240208132322.4811-1-ilpo.jarvinen@linux.intel.com
-Reported-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Tested-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+Reported-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218682
+Co-developed-by: Vladimir Lypak <vladimir.lypak@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c   | 5 +++++
- include/linux/pci.h | 7 ++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/opp/core.c        | 31 ++++++++++++++++++++++++++++++-
+ drivers/pmdomain/core.c   | 10 ++++++++++
+ include/linux/pm_domain.h |  6 ++++++
+ 3 files changed, 46 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index e4bb5f92a5f6e..cbbf197df80f1 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1277,6 +1277,11 @@ static int pci_dev_wait(struct pci_dev *dev, char *reset_type, int timeout)
- 	for (;;) {
- 		u32 id;
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index e233734b72205..cb4611fe1b5b2 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -2394,7 +2394,8 @@ static void _opp_detach_genpd(struct opp_table *opp_table)
+ static int _opp_attach_genpd(struct opp_table *opp_table, struct device *dev,
+ 			const char * const *names, struct device ***virt_devs)
+ {
+-	struct device *virt_dev;
++	struct device *virt_dev, *gdev;
++	struct opp_table *genpd_table;
+ 	int index = 0, ret = -EINVAL;
+ 	const char * const *name = names;
  
-+		if (pci_dev_is_disconnected(dev)) {
-+			pci_dbg(dev, "disconnected; not waiting\n");
-+			return -ENOTTY;
+@@ -2427,6 +2428,34 @@ static int _opp_attach_genpd(struct opp_table *opp_table, struct device *dev,
+ 			goto err;
+ 		}
+ 
++		/*
++		 * The required_opp_tables parsing is not perfect, as the OPP
++		 * core does the parsing solely based on the DT node pointers.
++		 * The core sets the required_opp_tables entry to the first OPP
++		 * table in the "opp_tables" list, that matches with the node
++		 * pointer.
++		 *
++		 * If the target DT OPP table is used by multiple devices and
++		 * they all create separate instances of 'struct opp_table' from
++		 * it, then it is possible that the required_opp_tables entry
++		 * may be set to the incorrect sibling device.
++		 *
++		 * Cross check it again and fix if required.
++		 */
++		gdev = dev_to_genpd_dev(virt_dev);
++		if (IS_ERR(gdev))
++			return PTR_ERR(gdev);
++
++		genpd_table = _find_opp_table(gdev);
++		if (!IS_ERR(genpd_table)) {
++			if (genpd_table != opp_table->required_opp_tables[index]) {
++				dev_pm_opp_put_opp_table(opp_table->required_opp_tables[index]);
++				opp_table->required_opp_tables[index] = genpd_table;
++			} else {
++				dev_pm_opp_put_opp_table(genpd_table);
++			}
 +		}
 +
- 		pci_read_config_dword(dev, PCI_COMMAND, &id);
- 		if (!PCI_POSSIBLE_ERROR(id))
- 			break;
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 16493426a04ff..6f9c5ed5eb3ba 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -2519,7 +2519,12 @@ static inline struct pci_dev *pcie_find_root_port(struct pci_dev *dev)
- 
- static inline bool pci_dev_is_disconnected(const struct pci_dev *dev)
- {
--	return dev->error_state == pci_channel_io_perm_failure;
-+	/*
-+	 * error_state is set in pci_dev_set_io_state() using xchg/cmpxchg()
-+	 * and read w/o common lock. READ_ONCE() ensures compiler cannot cache
-+	 * the value (e.g. inside the loop in pci_dev_wait()).
-+	 */
-+	return READ_ONCE(dev->error_state) == pci_channel_io_perm_failure;
+ 		/*
+ 		 * Add the virtual genpd device as a user of the OPP table, so
+ 		 * we can call dev_pm_opp_set_opp() on it directly.
+diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
+index 4215ffd9b11c5..c40eda92a85a7 100644
+--- a/drivers/pmdomain/core.c
++++ b/drivers/pmdomain/core.c
+@@ -184,6 +184,16 @@ static struct generic_pm_domain *dev_to_genpd(struct device *dev)
+ 	return pd_to_genpd(dev->pm_domain);
  }
  
- void pci_request_acs(void);
++struct device *dev_to_genpd_dev(struct device *dev)
++{
++	struct generic_pm_domain *genpd = dev_to_genpd(dev);
++
++	if (IS_ERR(genpd))
++		return ERR_CAST(genpd);
++
++	return &genpd->dev;
++}
++
+ static int genpd_stop_dev(const struct generic_pm_domain *genpd,
+ 			  struct device *dev)
+ {
+diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
+index 772d3280d35fa..f24546a3d3db3 100644
+--- a/include/linux/pm_domain.h
++++ b/include/linux/pm_domain.h
+@@ -260,6 +260,7 @@ int pm_genpd_remove_subdomain(struct generic_pm_domain *genpd,
+ int pm_genpd_init(struct generic_pm_domain *genpd,
+ 		  struct dev_power_governor *gov, bool is_off);
+ int pm_genpd_remove(struct generic_pm_domain *genpd);
++struct device *dev_to_genpd_dev(struct device *dev);
+ int dev_pm_genpd_set_performance_state(struct device *dev, unsigned int state);
+ int dev_pm_genpd_add_notifier(struct device *dev, struct notifier_block *nb);
+ int dev_pm_genpd_remove_notifier(struct device *dev);
+@@ -307,6 +308,11 @@ static inline int pm_genpd_remove(struct generic_pm_domain *genpd)
+ 	return -EOPNOTSUPP;
+ }
+ 
++static inline struct device *dev_to_genpd_dev(struct device *dev)
++{
++	return ERR_PTR(-EOPNOTSUPP);
++}
++
+ static inline int dev_pm_genpd_set_performance_state(struct device *dev,
+ 						     unsigned int state)
+ {
 -- 
 2.43.0
 
