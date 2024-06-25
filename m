@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-55699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D839164CB
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C198C916455
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 243A31C20E2F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 002B51C236C4
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729DE148319;
-	Tue, 25 Jun 2024 10:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDD814A0A4;
+	Tue, 25 Jun 2024 09:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EokfbXmc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTFdPdUl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CD513C90B;
-	Tue, 25 Jun 2024 10:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5B4146A67;
+	Tue, 25 Jun 2024 09:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309677; cv=none; b=VHCV5HByErLhZbGJmu1fztaY0zdZspIEzvcnaW9S1vUp76d4SFM5DhFpaT/NaG+iyqL76VlwzVDYsJF4fEVSeqnUtk8MWnILGlynQq4LMXsPFxQKCp+c8doPOZfjECgJ4aAS4TIGanO+rTAC4f5C3Buoc2NBp5y9lQVIk/SjC0M=
+	t=1719309359; cv=none; b=CXBTEYDNGoiC+r7uS05c6PWQLcn+lmQy+Ll+VbXSdmtHKKxoMNv/cDIWZR2CRjmwhl6sNXGjXpOWoN3vLSoCU4ISse4C7EfM9hvVuK6zMSTnSTT4uM3+iSH7lry9wUijkTIy2gkMsZbEG+l7Q4MPuXzI4rUzOeP0Mve3RH1/ArA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309677; c=relaxed/simple;
-	bh=4Po4KdIdjkO6KZa6nE2OU5atAax/Tw69w0JukLqjC0I=;
+	s=arc-20240116; t=1719309359; c=relaxed/simple;
+	bh=4E2N0TRHW0VH9cyQEr5aH8HEmxmEhke+aemfIKuQp8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYHid7jgSfDGVMDF/Se7Lpe/qrU25GBrlSEKH25jY3iSfnaaYYC4i6CG62uSSdA49aDl4E2YyOws/Xt+3p+kzxu+DRGOe6pIz8MKUpifH3JjQ5dlghyvdQGtylyp63d7iZ+7nlHAbXKPvG6BiIrx812zRDYwSoGvxbjIwsAiP1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EokfbXmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACE2C32781;
-	Tue, 25 Jun 2024 10:01:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eq2ydoKh0BbM+3H8J4pzYUlbplGgZTC+2duaK/wMPb1OmN+7fSK75Ou8g/WgwE34tULknmo9NuQVIFTHI2qwRbeb8J3no3ZpM7q78ccPV/wWospZm0iegdq9iXWwy95m/xwJ2fSlA8KDuVzTKHT+Y6+wzCH/2wa1Q0xrn+sNNhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTFdPdUl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4BEC32781;
+	Tue, 25 Jun 2024 09:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309677;
-	bh=4Po4KdIdjkO6KZa6nE2OU5atAax/Tw69w0JukLqjC0I=;
+	s=korg; t=1719309359;
+	bh=4E2N0TRHW0VH9cyQEr5aH8HEmxmEhke+aemfIKuQp8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EokfbXmcBfq4dI2MslTyP0czGbmn2nNh4tjhFlmK35ZsfwLKaWh8lLlUfSI2hwdYu
-	 nbuC9zGORR72kMVVuxCWaDWsboVEWUNozdXr4HbV/VjRtIf51RdCPUQ6gRO5gtkMOS
-	 XdohNNGIvjRbsVKZNrBHWc9iuWZ3N0vfhxtSCwGM=
+	b=QTFdPdUl2QNZXuJj3EYaQkeqt/z4IOdXvOhOkk/79HLorywhDjtYmOp4woEOJSYQg
+	 fHcDVOR8ImJqaBcdUjsoCqFGEzzSiJWfEdYTCsxnXZU8cGqOLozfqQo7gvQpV0BGFQ
+	 BtmJpqCJzL2l8a+bo8pTWBM20hMsGGj2WztIORbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/131] ptp: fix integer overflow in max_vclocks_store
+	Ville Syrjala <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 152/192] drm/i915/mso: using joiner is not possible with eDP MSO
 Date: Tue, 25 Jun 2024 11:33:44 +0200
-Message-ID: <20240625085528.565324220@linuxfoundation.org>
+Message-ID: <20240625085542.993584408@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 81d23d2a24012e448f651e007fac2cfd20a45ce0 ]
+commit 49cc17967be95d64606d5684416ee51eec35e84a upstream.
 
-On 32bit systems, the "4 * max" multiply can overflow.  Use kcalloc()
-to do the allocation to prevent this.
+It's not possible to use the joiner at the same time with eDP MSO. When
+a panel needs MSO, it's not optional, so MSO trumps joiner.
 
-Fixes: 44c494c8e30e ("ptp: track available ptp vclocks information")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-Link: https://lore.kernel.org/r/ee8110ed-6619-4bd7-9024-28c1f2ac24f4@moroto.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v3: Only change intel_dp_has_joiner(), leave debugfs alone (Ville)
+
+Fixes: bc71194e8897 ("drm/i915/edp: enable eDP MSO during link training")
+Cc: <stable@vger.kernel.org> # v5.13+
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1668
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240614142311.589089-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 8b5a92ca24eb96bb71e2a55e352687487d87687f)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_sysfs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
-index 74b9c794d6363..1263612ef2759 100644
---- a/drivers/ptp/ptp_sysfs.c
-+++ b/drivers/ptp/ptp_sysfs.c
-@@ -283,8 +283,7 @@ static ssize_t max_vclocks_store(struct device *dev,
- 	if (max < ptp->n_vclocks)
- 		goto out;
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -393,6 +393,10 @@ bool intel_dp_can_bigjoiner(struct intel
+ 	struct intel_encoder *encoder = &intel_dig_port->base;
+ 	struct drm_i915_private *dev_priv = to_i915(encoder->base.dev);
  
--	size = sizeof(int) * max;
--	vclock_index = kzalloc(size, GFP_KERNEL);
-+	vclock_index = kcalloc(max, sizeof(int), GFP_KERNEL);
- 	if (!vclock_index) {
- 		err = -ENOMEM;
- 		goto out;
--- 
-2.43.0
-
++	/* eDP MSO is not compatible with joiner */
++	if (intel_dp->mso_link_count)
++		return false;
++
+ 	return DISPLAY_VER(dev_priv) >= 12 ||
+ 		(DISPLAY_VER(dev_priv) == 11 &&
+ 		 encoder->port != PORT_A);
 
 
 
