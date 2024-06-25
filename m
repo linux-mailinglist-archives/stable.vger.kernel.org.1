@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B8FC91630A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:42:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C7191639D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7D5A1F21178
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:42:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B7021F212E6
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6711494AF;
-	Tue, 25 Jun 2024 09:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1031E1494DC;
+	Tue, 25 Jun 2024 09:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="csOU7IVI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwNKh0Cs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A5012EBEA;
-	Tue, 25 Jun 2024 09:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C366A147C96;
+	Tue, 25 Jun 2024 09:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308521; cv=none; b=td7tE2ND5A1Qzw8BvjMUzugsR9Dshyv9AaWLuc67dbh7ON/kA0iZhJlW9eY6HXP/tlMdzyoDZDVSsi/5lQX2Y/GMMfoa606zGkFsmjqmRGS/quvT41phdMIVt7z214R6dkm/WHXGlRy1BxtxOBQhkmBA8HJumpmupdnT6WZ0dQU=
+	t=1719308927; cv=none; b=RF/1zQJPvdFe5FMVcOu/1ooVPcFwb7boCBYsDvSL7MqgyKOmnmI9i5V3O2AD5AFrVyt4PfTlKanGawJ88adPT36Ij2tJVYBovVlH95wQGS2geriYvyfdOEK6uYztKJt96QoeGScHKVc4Wfuer1DAfYmzfewcQyNySkbkXr8ja/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308521; c=relaxed/simple;
-	bh=AGW7K9NKEDzHl364AyiOnrZPWvg1ihNrW2f/JKm6LzA=;
+	s=arc-20240116; t=1719308927; c=relaxed/simple;
+	bh=nqseI3AkVV/wMbAy/61UhAMDRn0BPb1Z+SpB+jVz7qE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0vpWR9JspJd/xyrThvfCNg9kyb4R4unvzlr3D3jLBczKqcB+DUr9nVn5w8KeE9uUJf/hzVih1Nn1quogqx/Et4C8N1iQg7amgDiAihmSBVr2p7koeW8/F+Swg1Vn85D9Qh+TD0BhKeW+63spRdXGnMQVptEITliaRsH4Nd77ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=csOU7IVI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244BAC32781;
-	Tue, 25 Jun 2024 09:42:00 +0000 (UTC)
+	 MIME-Version; b=ItmNvpRxHQCqb27eKx8d7I1/8GtHFJfSUu1Uqcklsl1uMB/51IVTczRjuBGWcy3YvXCkPl0kPunxbJyFgGM5TYYvU5XTkCAaCJv+BUXM0BH2KAIp0M4rrCWBDeQaiV8/Z8la6Gd1fAWl8k7xg7rPXvtBUPSyKWauRZFC1+CFEq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwNKh0Cs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FB9C32781;
+	Tue, 25 Jun 2024 09:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308521;
-	bh=AGW7K9NKEDzHl364AyiOnrZPWvg1ihNrW2f/JKm6LzA=;
+	s=korg; t=1719308927;
+	bh=nqseI3AkVV/wMbAy/61UhAMDRn0BPb1Z+SpB+jVz7qE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=csOU7IVITBTC2YGOzjBsrLKll7265NZehXLp2s22nryeBFPx1ZXqsAPYSUqi/v5xs
-	 hSuHvQjWI0tRgiCu+tSVu+/6eRnatFGCjHSi459wvlCEVuRNHranq+ac0wLZ9OW8kM
-	 Y1enbJQCGf7SDG8NuVqeSZtCSynRT7aYfUtvbm04=
+	b=NwNKh0CsbQ9wU8pI7PN51Cc7leMQXSFyVJkvEH+fWP16whZlIsjRoo4hPSJ9xAGs+
+	 V+MxTSfbD8u7rh3qrBeWRFnn4yknbnpDTC/FfEc4mpJgvB8Gsj1ZLrLWRczhZgrbtQ
+	 qZHeiwaO5og0/iOqqHlQ5WxyTWOYDLYFH/UfV+ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honggang LI <honggangli@163.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 149/250] RDMA/rxe: Fix responder length checking for UD request packets
-Date: Tue, 25 Jun 2024 11:31:47 +0200
-Message-ID: <20240625085553.777446570@linuxfoundation.org>
+Subject: [PATCH 6.6 036/192] powerpc/pseries: Enforce hcall result buffer validity and size
+Date: Tue, 25 Jun 2024 11:31:48 +0200
+Message-ID: <20240625085538.548592823@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Honggang LI <honggangli@163.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit f67ac0061c7614c1548963d3ef1ee1606efd8636 ]
+[ Upstream commit ff2e185cf73df480ec69675936c4ee75a445c3e4 ]
 
-According to the IBA specification:
-If a UD request packet is detected with an invalid length, the request
-shall be an invalid request and it shall be silently dropped by
-the responder. The responder then waits for a new request packet.
+plpar_hcall(), plpar_hcall9(), and related functions expect callers to
+provide valid result buffers of certain minimum size. Currently this
+is communicated only through comments in the code and the compiler has
+no idea.
 
-commit 689c5421bfe0 ("RDMA/rxe: Fix incorrect responder length checking")
-defers responder length check for UD QPs in function `copy_data`.
-But it introduces a regression issue for UD QPs.
+For example, if I write a bug like this:
 
-When the packet size is too large to fit in the receive buffer.
-`copy_data` will return error code -EINVAL. Then `send_data_in`
-will return RESPST_ERR_MALFORMED_WQE. UD QP will transfer into
-ERROR state.
+  long retbuf[PLPAR_HCALL_BUFSIZE]; // should be PLPAR_HCALL9_BUFSIZE
+  plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf, ...);
 
-Fixes: 689c5421bfe0 ("RDMA/rxe: Fix incorrect responder length checking")
-Signed-off-by: Honggang LI <honggangli@163.com>
-Link: https://lore.kernel.org/r/20240523094617.141148-1-honggangli@163.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+This compiles with no diagnostics emitted, but likely results in stack
+corruption at runtime when plpar_hcall9() stores results past the end
+of the array. (To be clear this is a contrived example and I have not
+found a real instance yet.)
+
+To make this class of error less likely, we can use explicitly-sized
+array parameters instead of pointers in the declarations for the hcall
+APIs. When compiled with -Warray-bounds[1], the code above now
+provokes a diagnostic like this:
+
+error: array argument is too small;
+is of size 32, callee requires at least 72 [-Werror,-Warray-bounds]
+   60 |                 plpar_hcall9(H_ALLOCATE_VAS_WINDOW, retbuf,
+      |                 ^                                   ~~~~~~
+
+[1] Enabled for LLVM builds but not GCC for now. See commit
+    0da6e5fd6c37 ("gcc: disable '-Warray-bounds' for gcc-13 too") and
+    related changes.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240408-pseries-hvcall-retbuf-v1-1-ebc73d7253cf@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_resp.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/powerpc/include/asm/hvcall.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_resp.c b/drivers/infiniband/sw/rxe/rxe_resp.c
-index 963382f625d71..fa2b87c749292 100644
---- a/drivers/infiniband/sw/rxe/rxe_resp.c
-+++ b/drivers/infiniband/sw/rxe/rxe_resp.c
-@@ -354,6 +354,19 @@ static enum resp_states rxe_resp_check_length(struct rxe_qp *qp,
- 	 * receive buffer later. For rmda operations additional
- 	 * length checks are performed in check_rkey.
- 	 */
-+	if ((qp_type(qp) == IB_QPT_GSI) || (qp_type(qp) == IB_QPT_UD)) {
-+		unsigned int payload = payload_size(pkt);
-+		unsigned int recv_buffer_len = 0;
-+		int i;
-+
-+		for (i = 0; i < qp->resp.wqe->dma.num_sge; i++)
-+			recv_buffer_len += qp->resp.wqe->dma.sge[i].length;
-+		if (payload + 40 > recv_buffer_len) {
-+			rxe_dbg_qp(qp, "The receive buffer is too small for this UD packet.\n");
-+			return RESPST_ERR_LENGTH;
-+		}
-+	}
-+
- 	if (pkt->mask & RXE_PAYLOAD_MASK && ((qp_type(qp) == IB_QPT_RC) ||
- 					     (qp_type(qp) == IB_QPT_UC))) {
- 		unsigned int mtu = qp->mtu;
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index 92ea0fa17ff41..218488407ac00 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -494,7 +494,7 @@ long plpar_hcall_norets_notrace(unsigned long opcode, ...);
+  * Used for all but the craziest of phyp interfaces (see plpar_hcall9)
+  */
+ #define PLPAR_HCALL_BUFSIZE 4
+-long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
++long plpar_hcall(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
+ 
+ /**
+  * plpar_hcall_raw: - Make a hypervisor call without calculating hcall stats
+@@ -508,7 +508,7 @@ long plpar_hcall(unsigned long opcode, unsigned long *retbuf, ...);
+  * plpar_hcall, but plpar_hcall_raw works in real mode and does not
+  * calculate hypervisor call statistics.
+  */
+-long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
++long plpar_hcall_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL_BUFSIZE], ...);
+ 
+ /**
+  * plpar_hcall9: - Make a pseries hypervisor call with up to 9 return arguments
+@@ -519,8 +519,8 @@ long plpar_hcall_raw(unsigned long opcode, unsigned long *retbuf, ...);
+  * PLPAR_HCALL9_BUFSIZE to size the return argument buffer.
+  */
+ #define PLPAR_HCALL9_BUFSIZE 9
+-long plpar_hcall9(unsigned long opcode, unsigned long *retbuf, ...);
+-long plpar_hcall9_raw(unsigned long opcode, unsigned long *retbuf, ...);
++long plpar_hcall9(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
++long plpar_hcall9_raw(unsigned long opcode, unsigned long retbuf[static PLPAR_HCALL9_BUFSIZE], ...);
+ 
+ /* pseries hcall tracing */
+ extern struct static_key hcall_tracepoint_key;
 -- 
 2.43.0
 
