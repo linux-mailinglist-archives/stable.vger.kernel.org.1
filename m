@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-55633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79A4916480
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:58:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F4D916360
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A844B23B4A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:58:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00A6328AD5A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE860149C4F;
-	Tue, 25 Jun 2024 09:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616E91494AF;
+	Tue, 25 Jun 2024 09:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eILNQ2ir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHkv+mKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDEC1465A8;
-	Tue, 25 Jun 2024 09:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206C71465A8;
+	Tue, 25 Jun 2024 09:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309482; cv=none; b=iWNbFfb29a7brfmrjC9X/DxKmUdfBAaJI/4f0YVuf1buCuIBTl1cQP0DhuPhbIqUsXAIr270GDXVoB9GmRzccoaBkT7zYEp6lIhk/1eHAJ0uh/gfuAQmHgPrpa7p4joOW2w1k4yU2T0FppWJgWPHHaJT65dFVKLgpA5HxWLpaR4=
+	t=1719308763; cv=none; b=kjOUK06etYaAcSeMBYNZJrKzsp2qsIUV5aEAzM5Qm+igyb29eIQPtPTx2TkcDAZec5XodFMsnc66iiacZqyZ82+O++jUq7oXi6CnVaBOk7CxWjDOidu+G9slcVKPo+uoCxKem7dL8hMYlVN5kUHq7IL15lL8M9AP5DTgzt43T+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309482; c=relaxed/simple;
-	bh=KTttK6OmGZlmnM8oyIdLubgpw04RnoTmcdgXaflH0fo=;
+	s=arc-20240116; t=1719308763; c=relaxed/simple;
+	bh=ia11g0289+RO+HQ6cUSrLGEQphzf0Imr/T1/i9LhVS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rr5APlvsT1jE+65ofj8xdb96DDG9KhALrdiq80AMUNXU0g3tns/+uOBhSmzmh/8afvpFslORKLVBaz0IM+e+EivR/Ag1HUJS+pHd1z0H4JGRQa2fhdnabNtPUb4MSDt99J5EMkcRpLXhGbPmmnTI5GIX2tHUV48k/SZaP2r8czM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eILNQ2ir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A9CC32781;
-	Tue, 25 Jun 2024 09:58:01 +0000 (UTC)
+	 MIME-Version; b=UicrdsQr2YHrAIqMaOoJPk70W5qVayRweiXr20aNUphEDvLmJ1k91kVlMa8v+aTdgiheLeY5Sr38Cn7qgRggPA3eWClg0ujkugjwtRa8DiBab7fNZ3HVe6AhrUB0MosvA+RQAHTDgfDFSFyXIDWYbUL0ziOfmaLFWbJ2mBmePLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHkv+mKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B47C32781;
+	Tue, 25 Jun 2024 09:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309482;
-	bh=KTttK6OmGZlmnM8oyIdLubgpw04RnoTmcdgXaflH0fo=;
+	s=korg; t=1719308763;
+	bh=ia11g0289+RO+HQ6cUSrLGEQphzf0Imr/T1/i9LhVS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eILNQ2irOt1e15hhzeYoQS5bBD4oHV96rYGknsu+hV7GrpTEVyn/RaNJKMnth94uM
-	 nucWXZoNOYRF7aEnqIPjWDe2WytmM1BoarDQjmY93ywI7QoxEd5wKJY2xP0svhBaOu
-	 n6UBnR82GcdC10TvNsmTjoSNWOx0TNrI1Stf8+do=
+	b=FHkv+mKS3AHCdD1e+WZ6ZpFK0+a6/heGhRf05VdxuM9+uxaxpxjbDJVhymUAYMKUj
+	 tKkbOHLUdwoS3f9ZovMMlP44vCM7g54qVnDNwNyT47HjWU5qsDqcZvcZDSKR0nRaB+
+	 0sBLXb26IdT+aDdMmLEOvx+CeIG7UnDqTtg2/PW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/131] io_uring/sqpoll: work around a potential audit memory leak
+	Andy Chi <andy.chi@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.9 200/250] ALSA: hda/realtek: fix mute/micmute LEDs dont work for ProBook 445/465 G11.
 Date: Tue, 25 Jun 2024 11:32:38 +0200
-Message-ID: <20240625085526.065319441@linuxfoundation.org>
+Message-ID: <20240625085555.730861856@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Andy Chi <andy.chi@canonical.com>
 
-[ Upstream commit c4ce0ab27646f4206a9eb502d6fe45cb080e1cae ]
+commit ea5f8c4cffcd8a6b62b3a3bd5008275218c9d02a upstream.
 
-kmemleak complains that there's a memory leak related to connect
-handling:
+HP ProBook 445/465 G11 needs ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to
+make mic-mute/audio-mute working.
 
-unreferenced object 0xffff0001093bdf00 (size 128):
-comm "iou-sqp-455", pid 457, jiffies 4294894164
-hex dump (first 32 bytes):
-02 00 fa ea 7f 00 00 01 00 00 00 00 00 00 00 00  ................
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-backtrace (crc 2e481b1a):
-[<00000000c0a26af4>] kmemleak_alloc+0x30/0x38
-[<000000009c30bb45>] kmalloc_trace+0x228/0x358
-[<000000009da9d39f>] __audit_sockaddr+0xd0/0x138
-[<0000000089a93e34>] move_addr_to_kernel+0x1a0/0x1f8
-[<000000000b4e80e6>] io_connect_prep+0x1ec/0x2d4
-[<00000000abfbcd99>] io_submit_sqes+0x588/0x1e48
-[<00000000e7c25e07>] io_sq_thread+0x8a4/0x10e4
-[<00000000d999b491>] ret_from_fork+0x10/0x20
-
-which can can happen if:
-
-1) The command type does something on the prep side that triggers an
-   audit call.
-2) The thread hasn't done any operations before this that triggered
-   an audit call inside ->issue(), where we have audit_uring_entry()
-   and audit_uring_exit().
-
-Work around this by issuing a blanket NOP operation before the SQPOLL
-does anything.
-
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andy Chi <andy.chi@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240605092243.41963-1-andy.chi@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/sqpoll.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/pci/hda/patch_realtek.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
-index 7b6facf529b8d..11610a70573ab 100644
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -235,6 +235,14 @@ static int io_sq_thread(void *data)
- 		set_cpus_allowed_ptr(current, cpu_online_mask);
- 	current->flags |= PF_NO_SETAFFINITY;
- 
-+	/*
-+	 * Force audit context to get setup, in case we do prep side async
-+	 * operations that would trigger an audit call before any issue side
-+	 * audit has been done.
-+	 */
-+	audit_uring_entry(IORING_OP_NOP);
-+	audit_uring_exit(true, 0);
-+
- 	mutex_lock(&sqd->lock);
- 	while (1) {
- 		bool cap_entries, sqt_spin = false;
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10183,6 +10183,10 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c7b, "HP ProBook 445 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c7c, "HP ProBook 445 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c7d, "HP ProBook 465 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c7e, "HP ProBook 465 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8c89, "HP ProBook 460 G11", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c8a, "HP EliteBook 630", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c8c, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
