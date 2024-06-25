@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-55176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2767A91626E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:35:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA9B916270
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54810B26061
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:35:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11850282056
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39361494AF;
-	Tue, 25 Jun 2024 09:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A4F1494DC;
+	Tue, 25 Jun 2024 09:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWdJznBX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKcfnzB8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D60FFBEF;
-	Tue, 25 Jun 2024 09:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5238FFBEF;
+	Tue, 25 Jun 2024 09:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308135; cv=none; b=Hse3PIO2t/ck5dzrr4vR97Jj3hu/xgGKuzYuC1dqDEwyWciQkTqy1N9IIIyJxjhJRhnRvcwIKg4J6kpGm2aWz85Mn2KlWpGItlb1CKU+NpKSsAa1vNHR6tDmuje+jVlReVkf4PwJAq0pfcQrJgkNcz1bsqG3WQt6Ptn5WV0Qrn8=
+	t=1719308141; cv=none; b=oVUoeyW655nfZrSavyvwY+C6tfL8ZG2EN5r6eJiOZUA4+QSIucbleQHKHUhivY+3mDJdoS25tiUxBxv6lLsIvHXiNSztmaGvuyv+vP1Np0PsnVF13Cae361tASm0vQDc/FypcNY+hlUDJXHHzgIYALUaJsMAXyuuQSC74+zgqPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308135; c=relaxed/simple;
-	bh=WCkW7ZHjP6EExnaQPEUaBynDDyK2hbMKgjUyi9NELS0=;
+	s=arc-20240116; t=1719308141; c=relaxed/simple;
+	bh=Z+XG3xtmLKsughA8uqtg5SMGzNVvdn6R7jcfXstsbO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPEl8EBFZV3zHs1tuO/Zy08Y3M3C0+DTrHVVuYezkrm+/3THiYdSuFPXrYlEvBz/KKwOZHfju/q1T9tTucxO0D/liwehTRbekXSv3MMspJRlV2OPTZXHFXnyrqZwvwfnkQnZ/3HQJUCiRJE5fVGSGShxf6ci6j0dQkRFfbXedMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWdJznBX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CB1C32781;
-	Tue, 25 Jun 2024 09:35:34 +0000 (UTC)
+	 MIME-Version; b=AWkpPChHz7RJgNXsr9I40x/bUjOTyG1JhIBxhr8Ikbv7ruFuaxp9m6x8gDGxWEeN9nUXpxc/QTVMZGGcwbWR4G8lLawgY2rmUkLOdBPDcHlCiVWV6HrulY9vUSCPmJROq0n1T6wyPraGL2WJtg80fo8CW3uubTSytdHgeIoRsuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKcfnzB8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD14EC32781;
+	Tue, 25 Jun 2024 09:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308135;
-	bh=WCkW7ZHjP6EExnaQPEUaBynDDyK2hbMKgjUyi9NELS0=;
+	s=korg; t=1719308141;
+	bh=Z+XG3xtmLKsughA8uqtg5SMGzNVvdn6R7jcfXstsbO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zWdJznBXpu7dHFyWS8SpiI9RfhcFm9gfWKMI8wp3Fj4WfomEfQPzLdwoYrLT1yvGu
-	 W5NCX5PPAIvwmalXiph2p3KAzClylQZ6bcxe8wVePzPAYPorDdwZxcOT5k5MrqfbXw
-	 oRUi3hBFM28J49LDgZX7R57E0pt4OVvDRpa/VdrQ=
+	b=tKcfnzB8f4QZvyXdVJYlZsOAeQqJ9RexaWxhD0XhIfH/DRNUJmQi1f797qn4OoNof
+	 Bx72JU7H68/6/jqwL7VCVMBeUfj6bwh3GyY/M9WRiBBPONdb8BwDP7bx6shBwsNLqS
+	 qrxv/Q9kF3BVRs/KkkbQAAbbN7AtFL1sOcWqiTDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 019/250] batman-adv: bypass empty buckets in batadv_purge_orig_ref()
-Date: Tue, 25 Jun 2024 11:29:37 +0200
-Message-ID: <20240625085548.791441440@linuxfoundation.org>
+Subject: [PATCH 6.9 020/250] wifi: rtw89: 8852c: add quirk to set PCI BER for certain platforms
+Date: Tue, 25 Jun 2024 11:29:38 +0200
+Message-ID: <20240625085548.829787573@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -67,108 +65,255 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 40dc8ab605894acae1473e434944924a22cfaaa0 ]
+[ Upstream commit 5b919d726b613c78d4dc463dd9f90c55843fd1b3 ]
 
-Many syzbot reports are pointing to soft lockups in
-batadv_purge_orig_ref() [1]
+Increase PCI BER (bit error rate) count depth setting which could increase
+PHY circuit fault tolerance and improve compatibility.
 
-Root cause is unknown, but we can avoid spending too much
-time there and perhaps get more interesting reports.
-
-[1]
-
-watchdog: BUG: soft lockup - CPU#0 stuck for 27s! [kworker/u4:6:621]
-Modules linked in:
-irq event stamp: 6182794
- hardirqs last  enabled at (6182793): [<ffff8000801dae10>] __local_bh_enable_ip+0x224/0x44c kernel/softirq.c:386
- hardirqs last disabled at (6182794): [<ffff80008ad66a78>] __el1_irq arch/arm64/kernel/entry-common.c:533 [inline]
- hardirqs last disabled at (6182794): [<ffff80008ad66a78>] el1_interrupt+0x24/0x68 arch/arm64/kernel/entry-common.c:551
- softirqs last  enabled at (6182792): [<ffff80008aab71c4>] spin_unlock_bh include/linux/spinlock.h:396 [inline]
- softirqs last  enabled at (6182792): [<ffff80008aab71c4>] batadv_purge_orig_ref+0x114c/0x1228 net/batman-adv/originator.c:1287
- softirqs last disabled at (6182790): [<ffff80008aab61dc>] spin_lock_bh include/linux/spinlock.h:356 [inline]
- softirqs last disabled at (6182790): [<ffff80008aab61dc>] batadv_purge_orig_ref+0x164/0x1228 net/batman-adv/originator.c:1271
-CPU: 0 PID: 621 Comm: kworker/u4:6 Not tainted 6.8.0-rc7-syzkaller-g707081b61156 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
-Workqueue: bat_events batadv_purge_orig
-pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : should_resched arch/arm64/include/asm/preempt.h:79 [inline]
- pc : __local_bh_enable_ip+0x228/0x44c kernel/softirq.c:388
- lr : __local_bh_enable_ip+0x224/0x44c kernel/softirq.c:386
-sp : ffff800099007970
-x29: ffff800099007980 x28: 1fffe00018fce1bd x27: dfff800000000000
-x26: ffff0000d2620008 x25: ffff0000c7e70de8 x24: 0000000000000001
-x23: 1fffe00018e57781 x22: dfff800000000000 x21: ffff80008aab71c4
-x20: ffff0001b40136c0 x19: ffff0000c72bbc08 x18: 1fffe0001a817bb0
-x17: ffff800125414000 x16: ffff80008032116c x15: 0000000000000001
-x14: 1fffe0001ee9d610 x13: 0000000000000000 x12: 0000000000000003
-x11: 0000000000000000 x10: 0000000000ff0100 x9 : 0000000000000000
-x8 : 00000000005e5789 x7 : ffff80008aab61dc x6 : 0000000000000000
-x5 : 0000000000000000 x4 : 0000000000000001 x3 : 0000000000000000
-x2 : 0000000000000006 x1 : 0000000000000080 x0 : ffff800125414000
-Call trace:
-  __daif_local_irq_enable arch/arm64/include/asm/irqflags.h:27 [inline]
-  arch_local_irq_enable arch/arm64/include/asm/irqflags.h:49 [inline]
-  __local_bh_enable_ip+0x228/0x44c kernel/softirq.c:386
-  __raw_spin_unlock_bh include/linux/spinlock_api_smp.h:167 [inline]
-  _raw_spin_unlock_bh+0x3c/0x4c kernel/locking/spinlock.c:210
-  spin_unlock_bh include/linux/spinlock.h:396 [inline]
-  batadv_purge_orig_ref+0x114c/0x1228 net/batman-adv/originator.c:1287
-  batadv_purge_orig+0x20/0x70 net/batman-adv/originator.c:1300
-  process_one_work+0x694/0x1204 kernel/workqueue.c:2633
-  process_scheduled_works kernel/workqueue.c:2706 [inline]
-  worker_thread+0x938/0xef4 kernel/workqueue.c:2787
-  kthread+0x288/0x310 kernel/kthread.c:388
-  ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.8.0-rc7-syzkaller-g707081b61156 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/29/2024
-pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : arch_local_irq_enable+0x8/0xc arch/arm64/include/asm/irqflags.h:51
- lr : default_idle_call+0xf8/0x128 kernel/sched/idle.c:103
-sp : ffff800093a17d30
-x29: ffff800093a17d30 x28: dfff800000000000 x27: 1ffff00012742fb4
-x26: ffff80008ec9d000 x25: 0000000000000000 x24: 0000000000000002
-x23: 1ffff00011d93a74 x22: ffff80008ec9d3a0 x21: 0000000000000000
-x20: ffff0000c19dbc00 x19: ffff8000802d0fd8 x18: 1fffe00036804396
-x17: ffff80008ec9d000 x16: ffff8000802d089c x15: 0000000000000001
-x14: 1fffe00036805f10 x13: 0000000000000000 x12: 0000000000000003
-x11: 0000000000000001 x10: 0000000000000003 x9 : 0000000000000000
-x8 : 00000000000ce8d1 x7 : ffff8000804609e4 x6 : 0000000000000000
-x5 : 0000000000000001 x4 : 0000000000000001 x3 : ffff80008ad6aac0
-x2 : 0000000000000000 x1 : ffff80008aedea60 x0 : ffff800125436000
-Call trace:
-  __daif_local_irq_enable arch/arm64/include/asm/irqflags.h:27 [inline]
-  arch_local_irq_enable+0x8/0xc arch/arm64/include/asm/irqflags.h:49
-  cpuidle_idle_call kernel/sched/idle.c:170 [inline]
-  do_idle+0x1f0/0x4e8 kernel/sched/idle.c:312
-  cpu_startup_entry+0x5c/0x74 kernel/sched/idle.c:410
-  secondary_start_kernel+0x198/0x1c0 arch/arm64/kernel/smp.c:272
-  __secondary_switched+0xb8/0xbc arch/arm64/kernel/head.S:404
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://msgid.link/20240329015251.22762-4-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/originator.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.c     | 18 +++++++++++++++
+ drivers/net/wireless/realtek/rtw89/core.h     | 10 ++++++++
+ drivers/net/wireless/realtek/rtw89/pci.c      | 19 +++++++++++++++
+ drivers/net/wireless/realtek/rtw89/pci.h      |  5 ++++
+ .../net/wireless/realtek/rtw89/rtw8851be.c    |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852ae.c    |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852be.c    |  1 +
+ .../net/wireless/realtek/rtw89/rtw8852ce.c    | 23 +++++++++++++++++++
+ .../net/wireless/realtek/rtw89/rtw8922ae.c    |  1 +
+ 9 files changed, 79 insertions(+)
 
-diff --git a/net/batman-adv/originator.c b/net/batman-adv/originator.c
-index 71c143d4b6d05..ac74f6ead62d5 100644
---- a/net/batman-adv/originator.c
-+++ b/net/batman-adv/originator.c
-@@ -1266,6 +1266,8 @@ void batadv_purge_orig_ref(struct batadv_priv *bat_priv)
- 	/* for all origins... */
- 	for (i = 0; i < hash->size; i++) {
- 		head = &hash->table[i];
-+		if (hlist_empty(head))
-+			continue;
- 		list_lock = &hash->list_locks[i];
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index d474b8d5df3dd..b8d419a5b9db0 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -4069,6 +4069,24 @@ void rtw89_core_ntfy_btc_event(struct rtw89_dev *rtwdev, enum rtw89_btc_hmsg eve
+ 	}
+ }
  
- 		spin_lock_bh(list_lock);
++void rtw89_check_quirks(struct rtw89_dev *rtwdev, const struct dmi_system_id *quirks)
++{
++	const struct dmi_system_id *match;
++	enum rtw89_quirks quirk;
++
++	if (!quirks)
++		return;
++
++	for (match = dmi_first_match(quirks); match; match = dmi_first_match(match + 1)) {
++		quirk = (uintptr_t)match->driver_data;
++		if (quirk >= NUM_OF_RTW89_QUIRKS)
++			continue;
++
++		set_bit(quirk, rtwdev->quirks);
++	}
++}
++EXPORT_SYMBOL(rtw89_check_quirks);
++
+ int rtw89_core_start(struct rtw89_dev *rtwdev)
+ {
+ 	int ret;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 2e854c9af7099..509d84a493348 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/average.h>
+ #include <linux/bitfield.h>
++#include <linux/dmi.h>
+ #include <linux/firmware.h>
+ #include <linux/iopoll.h>
+ #include <linux/workqueue.h>
+@@ -3977,6 +3978,7 @@ union rtw89_bus_info {
+ 
+ struct rtw89_driver_info {
+ 	const struct rtw89_chip_info *chip;
++	const struct dmi_system_id *quirks;
+ 	union rtw89_bus_info bus;
+ };
+ 
+@@ -4324,6 +4326,12 @@ enum rtw89_flags {
+ 	NUM_OF_RTW89_FLAGS,
+ };
+ 
++enum rtw89_quirks {
++	RTW89_QUIRK_PCI_BER,
++
++	NUM_OF_RTW89_QUIRKS,
++};
++
+ enum rtw89_pkt_drop_sel {
+ 	RTW89_PKT_DROP_SEL_MACID_BE_ONCE,
+ 	RTW89_PKT_DROP_SEL_MACID_BK_ONCE,
+@@ -5084,6 +5092,7 @@ struct rtw89_dev {
+ 	DECLARE_BITMAP(mac_id_map, RTW89_MAX_MAC_ID_NUM);
+ 	DECLARE_BITMAP(flags, NUM_OF_RTW89_FLAGS);
+ 	DECLARE_BITMAP(pkt_offload, RTW89_MAX_PKT_OFLD_NUM);
++	DECLARE_BITMAP(quirks, NUM_OF_RTW89_QUIRKS);
+ 
+ 	struct rtw89_phy_stat phystat;
+ 	struct rtw89_rfk_wait_info rfk_wait;
+@@ -6129,6 +6138,7 @@ int rtw89_core_sta_remove(struct rtw89_dev *rtwdev,
+ void rtw89_core_set_tid_config(struct rtw89_dev *rtwdev,
+ 			       struct ieee80211_sta *sta,
+ 			       struct cfg80211_tid_config *tid_config);
++void rtw89_check_quirks(struct rtw89_dev *rtwdev, const struct dmi_system_id *quirks);
+ int rtw89_core_init(struct rtw89_dev *rtwdev);
+ void rtw89_core_deinit(struct rtw89_dev *rtwdev);
+ int rtw89_core_register(struct rtw89_dev *rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
+index 0afe22e568f43..3b0d97da048dc 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.c
++++ b/drivers/net/wireless/realtek/rtw89/pci.c
+@@ -2299,6 +2299,22 @@ static int rtw89_pci_deglitch_setting(struct rtw89_dev *rtwdev)
+ 	return 0;
+ }
+ 
++static void rtw89_pci_ber(struct rtw89_dev *rtwdev)
++{
++	u32 phy_offset;
++
++	if (!test_bit(RTW89_QUIRK_PCI_BER, rtwdev->quirks))
++		return;
++
++	phy_offset = R_RAC_DIRECT_OFFSET_G1;
++	rtw89_write16(rtwdev, phy_offset + RAC_ANA1E * RAC_MULT, RAC_ANA1E_G1_VAL);
++	rtw89_write16(rtwdev, phy_offset + RAC_ANA2E * RAC_MULT, RAC_ANA2E_VAL);
++
++	phy_offset = R_RAC_DIRECT_OFFSET_G2;
++	rtw89_write16(rtwdev, phy_offset + RAC_ANA1E * RAC_MULT, RAC_ANA1E_G2_VAL);
++	rtw89_write16(rtwdev, phy_offset + RAC_ANA2E * RAC_MULT, RAC_ANA2E_VAL);
++}
++
+ static void rtw89_pci_rxdma_prefth(struct rtw89_dev *rtwdev)
+ {
+ 	if (rtwdev->chip->chip_id != RTL8852A)
+@@ -2696,6 +2712,7 @@ static int rtw89_pci_ops_mac_pre_init_ax(struct rtw89_dev *rtwdev)
+ 	const struct rtw89_pci_info *info = rtwdev->pci_info;
+ 	int ret;
+ 
++	rtw89_pci_ber(rtwdev);
+ 	rtw89_pci_rxdma_prefth(rtwdev);
+ 	rtw89_pci_l1off_pwroff(rtwdev);
+ 	rtw89_pci_deglitch_setting(rtwdev);
+@@ -4172,6 +4189,8 @@ int rtw89_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	rtwdev->hci.rpwm_addr = pci_info->rpwm_addr;
+ 	rtwdev->hci.cpwm_addr = pci_info->cpwm_addr;
+ 
++	rtw89_check_quirks(rtwdev, info->quirks);
++
+ 	SET_IEEE80211_DEV(rtwdev->hw, &pdev->dev);
+ 
+ 	ret = rtw89_core_init(rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw89/pci.h b/drivers/net/wireless/realtek/rtw89/pci.h
+index a63b6b7c9bfaf..87e7081664c1f 100644
+--- a/drivers/net/wireless/realtek/rtw89/pci.h
++++ b/drivers/net/wireless/realtek/rtw89/pci.h
+@@ -26,11 +26,16 @@
+ #define RAC_REG_FLD_0			0x1D
+ #define BAC_AUTOK_N_MASK		GENMASK(3, 2)
+ #define PCIE_AUTOK_4			0x3
++#define RAC_ANA1E			0x1E
++#define RAC_ANA1E_G1_VAL		0x66EA
++#define RAC_ANA1E_G2_VAL		0x6EEA
+ #define RAC_ANA1F			0x1F
+ #define RAC_ANA24			0x24
+ #define B_AX_DEGLITCH			GENMASK(11, 8)
+ #define RAC_ANA26			0x26
+ #define B_AX_RXEN			GENMASK(15, 14)
++#define RAC_ANA2E			0x2E
++#define RAC_ANA2E_VAL			0xFFFE
+ #define RAC_CTRL_PPR_V1			0x30
+ #define B_AX_CLK_CALIB_EN		BIT(12)
+ #define B_AX_CALIB_EN			BIT(13)
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851be.c b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
+index ca1374a717272..ec3629d95fda1 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8851be.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
+@@ -63,6 +63,7 @@ static const struct rtw89_pci_info rtw8851b_pci_info = {
+ 
+ static const struct rtw89_driver_info rtw89_8851be_info = {
+ 	.chip = &rtw8851b_chip_info,
++	.quirks = NULL,
+ 	.bus = {
+ 		.pci = &rtw8851b_pci_info,
+ 	},
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
+index 7c6ffedb77e27..fdee5dd4ba148 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
+@@ -61,6 +61,7 @@ static const struct rtw89_pci_info rtw8852a_pci_info = {
+ 
+ static const struct rtw89_driver_info rtw89_8852ae_info = {
+ 	.chip = &rtw8852a_chip_info,
++	.quirks = NULL,
+ 	.bus = {
+ 		.pci = &rtw8852a_pci_info,
+ 	},
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852be.c b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
+index ed71364e6437b..5f941122655c4 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852be.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
+@@ -63,6 +63,7 @@ static const struct rtw89_pci_info rtw8852b_pci_info = {
+ 
+ static const struct rtw89_driver_info rtw89_8852be_info = {
+ 	.chip = &rtw8852b_chip_info,
++	.quirks = NULL,
+ 	.bus = {
+ 		.pci = &rtw8852b_pci_info,
+ 	},
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
+index 583ea673a4f54..e07c7f3ade41e 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
+@@ -68,8 +68,31 @@ static const struct rtw89_pci_info rtw8852c_pci_info = {
+ 	.recognize_intrs	= rtw89_pci_recognize_intrs_v1,
+ };
+ 
++static const struct dmi_system_id rtw8852c_pci_quirks[] = {
++	{
++		.ident = "Dell Inc. Vostro 16 5640",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 16 5640"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "0CA0"),
++		},
++		.driver_data = (void *)RTW89_QUIRK_PCI_BER,
++	},
++	{
++		.ident = "Dell Inc. Inspiron 16 5640",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 16 5640"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "0C9F"),
++		},
++		.driver_data = (void *)RTW89_QUIRK_PCI_BER,
++	},
++	{},
++};
++
+ static const struct rtw89_driver_info rtw89_8852ce_info = {
+ 	.chip = &rtw8852c_chip_info,
++	.quirks = rtw8852c_pci_quirks,
+ 	.bus = {
+ 		.pci = &rtw8852c_pci_info,
+ 	},
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922ae.c b/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
+index 4981b657bd7b0..ce8aaa9501e16 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
+@@ -61,6 +61,7 @@ static const struct rtw89_pci_info rtw8922a_pci_info = {
+ 
+ static const struct rtw89_driver_info rtw89_8922ae_info = {
+ 	.chip = &rtw8922a_chip_info,
++	.quirks = NULL,
+ 	.bus = {
+ 		.pci = &rtw8922a_pci_info,
+ 	},
 -- 
 2.43.0
 
