@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-55293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F1399162F9
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D7879162D2
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 240931F22BC1
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF2F32899D3
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:40:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97048149C74;
-	Tue, 25 Jun 2024 09:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A9F14A091;
+	Tue, 25 Jun 2024 09:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6s7Xu+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE/oF8SR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541E11465A8;
-	Tue, 25 Jun 2024 09:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7A114A087;
+	Tue, 25 Jun 2024 09:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308480; cv=none; b=RSNG7gY5ZLGkUwKHhM1YMQ/Hfc8bTeLQeDmKyiIQbeZmSEwsV61I8ZZtYxpid5QKqEHMVQhzFM/B6XkFIv0xeR0v3CUUAXC8/pmNDllZXauagHYelHupQfL6+DnknhpCohFmkfeAQYHsc9bH08bXOWyewPcLPOL7H4lmta0HKxQ=
+	t=1719308383; cv=none; b=jlrA3gdzaWRrm0Ry0OzfsDsf+5muLAaIS86DQFoMV+1RkhIfAJll0e+hwRP/OaASevc8/WkmpISV7RmgeNodp3nmatm0hlqskQoIvT/fbEZsCReoespiJyp59tv7m1yi64Mly1rP0kdhkBbAZXlhQDalypxyif4bMT0Ybb3vnjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308480; c=relaxed/simple;
-	bh=qNoNntjW3B1jxlh9UX8qLwg9z9SyeX+OHrEjx/Qlg40=;
+	s=arc-20240116; t=1719308383; c=relaxed/simple;
+	bh=s+G1ErTp/sgw7RTANG9URSOtWSZ9p+wSjvqAEiSmT84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ryqGzWpM7fPWdR+uRIIo43+vt6LWKQNq32Dgc3uXmc/W/45eYUww4g6JC2EM/ZG7qmuXsW0xSzq7xFuGYm3gcQ7z4vjSzAXLTFGg9tj9hp9DTFNZcgr6lxiFKoJ4q8CvJJKalLihkdC/1KFIczE5y8aQQATSlPZQQD5Ks9DODd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6s7Xu+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2B6C32781;
-	Tue, 25 Jun 2024 09:41:19 +0000 (UTC)
+	 MIME-Version; b=J2m1LlUWrFWgCUNsI4EjAhD12L9vZzsasrAWeBRUDgR3wu+6JV/WpAZ58X/yH7rBrKxlGrq7VutVvXqPeuiF8oTw2Ve1j8QHZiwo548iLVB93YlQfdFWqJfQtnEsh2OTjitXdi4ika9Y5irRXaQLma6Y+FqdrWOyJ3pba0+hvBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE/oF8SR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73ECCC4AF09;
+	Tue, 25 Jun 2024 09:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308480;
-	bh=qNoNntjW3B1jxlh9UX8qLwg9z9SyeX+OHrEjx/Qlg40=;
+	s=korg; t=1719308382;
+	bh=s+G1ErTp/sgw7RTANG9URSOtWSZ9p+wSjvqAEiSmT84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6s7Xu+OeVn+PPEHBKV5nrRWTBgz8oF/anBrs5+EikCPjjmjQWVzhVhP1N0ucXABC
-	 XvTjiMC+EIqyztxvKgWxKrimMUHCbMx1jt8F6z6ntIJLwlg425wEopSrd0jrFpKE00
-	 5cHcoSEZLHGk5oNbRlZCotRXfcdgbDhD/9lrx9VU=
+	b=tE/oF8SRAP1LhFA8gUcIXA9dPjJ3dmfezMZcMvT7DT8b+ExVxtaxlcGQmb2CzLruJ
+	 cHLdfyuXOEBg4Ttz/cBoAMA9VwyftO12MTCg68ZrwrTDH7gZphyJ+Jf6ni7gddeNin
+	 hTmZxeWe+6EtOtm56C2D2uiE2qlbHHVjresJOvFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Vladimir Lypak <vladimir.lypak@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 094/250] OPP: Fix required_opp_tables for multiple genpds using same table
-Date: Tue, 25 Jun 2024 11:30:52 +0200
-Message-ID: <20240625085551.678400131@linuxfoundation.org>
+Subject: [PATCH 6.9 095/250] ALSA: hda: cs35l41: Possible null pointer dereference in cs35l41_hda_unbind()
+Date: Tue, 25 Jun 2024 11:30:53 +0200
+Message-ID: <20240625085551.716356431@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -68,138 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit 2a56c462fe5a2ee61d38e2d7b772bee56115a00c ]
+[ Upstream commit 6386682cdc8b41319c92fbbe421953e33a28840c ]
 
-The required_opp_tables parsing is not perfect, as the OPP core does the
-parsing solely based on the DT node pointers.
+The cs35l41_hda_unbind() function clears the hda_component entry
+matching it's index and then dereferences the codec pointer held in the
+first element of the hda_component array, this is an issue when the
+device index was 0.
 
-The core sets the required_opp_tables entry to the first OPP table in
-the "opp_tables" list, that matches with the node pointer.
+Instead use the codec pointer stashed in the cs35l41_hda structure as it
+will still be valid.
 
-If the target DT OPP table is used by multiple devices and they all
-create separate instances of 'struct opp_table' from it, then it is
-possible that the required_opp_tables entry may be set to the incorrect
-sibling device.
-
-Unfortunately, there is no clear way to initialize the right values
-during the initial parsing and we need to do this at a later point of
-time.
-
-Cross check the OPP table again while the genpds are attached and fix
-them if required.
-
-Also add a new API for the genpd core to fetch the device pointer for
-the genpd.
-
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-Reported-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218682
-Co-developed-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 7cf5ce66dfda ("ALSA: hda: cs35l41: Add device_link between HDA and cs35l41_hda")
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20240531120820.35367-1-simont@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/opp/core.c        | 31 ++++++++++++++++++++++++++++++-
- drivers/pmdomain/core.c   | 10 ++++++++++
- include/linux/pm_domain.h |  6 ++++++
- 3 files changed, 46 insertions(+), 1 deletion(-)
+ sound/pci/hda/cs35l41_hda.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index e233734b72205..cb4611fe1b5b2 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -2394,7 +2394,8 @@ static void _opp_detach_genpd(struct opp_table *opp_table)
- static int _opp_attach_genpd(struct opp_table *opp_table, struct device *dev,
- 			const char * const *names, struct device ***virt_devs)
- {
--	struct device *virt_dev;
-+	struct device *virt_dev, *gdev;
-+	struct opp_table *genpd_table;
- 	int index = 0, ret = -EINVAL;
- 	const char * const *name = names;
- 
-@@ -2427,6 +2428,34 @@ static int _opp_attach_genpd(struct opp_table *opp_table, struct device *dev,
- 			goto err;
- 		}
- 
-+		/*
-+		 * The required_opp_tables parsing is not perfect, as the OPP
-+		 * core does the parsing solely based on the DT node pointers.
-+		 * The core sets the required_opp_tables entry to the first OPP
-+		 * table in the "opp_tables" list, that matches with the node
-+		 * pointer.
-+		 *
-+		 * If the target DT OPP table is used by multiple devices and
-+		 * they all create separate instances of 'struct opp_table' from
-+		 * it, then it is possible that the required_opp_tables entry
-+		 * may be set to the incorrect sibling device.
-+		 *
-+		 * Cross check it again and fix if required.
-+		 */
-+		gdev = dev_to_genpd_dev(virt_dev);
-+		if (IS_ERR(gdev))
-+			return PTR_ERR(gdev);
-+
-+		genpd_table = _find_opp_table(gdev);
-+		if (!IS_ERR(genpd_table)) {
-+			if (genpd_table != opp_table->required_opp_tables[index]) {
-+				dev_pm_opp_put_opp_table(opp_table->required_opp_tables[index]);
-+				opp_table->required_opp_tables[index] = genpd_table;
-+			} else {
-+				dev_pm_opp_put_opp_table(genpd_table);
-+			}
-+		}
-+
- 		/*
- 		 * Add the virtual genpd device as a user of the OPP table, so
- 		 * we can call dev_pm_opp_set_opp() on it directly.
-diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
-index 4215ffd9b11c5..c40eda92a85a7 100644
---- a/drivers/pmdomain/core.c
-+++ b/drivers/pmdomain/core.c
-@@ -184,6 +184,16 @@ static struct generic_pm_domain *dev_to_genpd(struct device *dev)
- 	return pd_to_genpd(dev->pm_domain);
+diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
+index d3fa6e136744d..25cf072a2a10b 100644
+--- a/sound/pci/hda/cs35l41_hda.c
++++ b/sound/pci/hda/cs35l41_hda.c
+@@ -1362,7 +1362,7 @@ static void cs35l41_hda_unbind(struct device *dev, struct device *master, void *
+ 	if (comps[cs35l41->index].dev == dev) {
+ 		memset(&comps[cs35l41->index], 0, sizeof(*comps));
+ 		sleep_flags = lock_system_sleep();
+-		device_link_remove(&comps->codec->core.dev, cs35l41->dev);
++		device_link_remove(&cs35l41->codec->core.dev, cs35l41->dev);
+ 		unlock_system_sleep(sleep_flags);
+ 	}
  }
- 
-+struct device *dev_to_genpd_dev(struct device *dev)
-+{
-+	struct generic_pm_domain *genpd = dev_to_genpd(dev);
-+
-+	if (IS_ERR(genpd))
-+		return ERR_CAST(genpd);
-+
-+	return &genpd->dev;
-+}
-+
- static int genpd_stop_dev(const struct generic_pm_domain *genpd,
- 			  struct device *dev)
- {
-diff --git a/include/linux/pm_domain.h b/include/linux/pm_domain.h
-index 772d3280d35fa..f24546a3d3db3 100644
---- a/include/linux/pm_domain.h
-+++ b/include/linux/pm_domain.h
-@@ -260,6 +260,7 @@ int pm_genpd_remove_subdomain(struct generic_pm_domain *genpd,
- int pm_genpd_init(struct generic_pm_domain *genpd,
- 		  struct dev_power_governor *gov, bool is_off);
- int pm_genpd_remove(struct generic_pm_domain *genpd);
-+struct device *dev_to_genpd_dev(struct device *dev);
- int dev_pm_genpd_set_performance_state(struct device *dev, unsigned int state);
- int dev_pm_genpd_add_notifier(struct device *dev, struct notifier_block *nb);
- int dev_pm_genpd_remove_notifier(struct device *dev);
-@@ -307,6 +308,11 @@ static inline int pm_genpd_remove(struct generic_pm_domain *genpd)
- 	return -EOPNOTSUPP;
- }
- 
-+static inline struct device *dev_to_genpd_dev(struct device *dev)
-+{
-+	return ERR_PTR(-EOPNOTSUPP);
-+}
-+
- static inline int dev_pm_genpd_set_performance_state(struct device *dev,
- 						     unsigned int state)
- {
 -- 
 2.43.0
 
