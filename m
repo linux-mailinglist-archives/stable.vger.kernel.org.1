@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6B5916307
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162409163AB
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39E841F20FF5
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 485DB1C23081
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E331494D1;
-	Tue, 25 Jun 2024 09:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0834C149DF8;
+	Tue, 25 Jun 2024 09:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bs/DJl43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uj868ys2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95A51465A8;
-	Tue, 25 Jun 2024 09:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9931146A9D;
+	Tue, 25 Jun 2024 09:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308515; cv=none; b=AhURJIAD4SGKNUAs6W+9e8Qglx4c74Z+wQx7CfaP0xpCC2XpLkEstI0o4xgbC2pqZl5aweOv6X9KjMjtCiqhIo/VIYWjK4qWoCT9+RVXAAuxDVxyqj16NkDgpuqv3+8HiJ1HDVnrBpWVwwu5riO/mJ7hBFrVTT3Vns1jsfboYeA=
+	t=1719308959; cv=none; b=fNGLJL9Nqw3wOOpQ7OlMQeUkJPFzjALOkBAPxhCmWSPNeu7L7+141OjqFf2vVVY8v8xD/94QIZLB5uiUPxAybJrhWukVHdl7F2vIJHwCiyJD6faPWNWCL+TkHrA/V51cShC0RriAAprSOYCB9yh0o9vGN4UK1jFjxHiVWxPwmLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308515; c=relaxed/simple;
-	bh=yTXsoMFUZgyTWtzmpaAc9et7xK3y0dGnx44wndMkZeY=;
+	s=arc-20240116; t=1719308959; c=relaxed/simple;
+	bh=wecDaOtBoainBcv8e++OPPRlZnbHGkAKhxT9D8lE/bA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NiPa1UodFg5Z3pxuUCUYGth5ncHzfezA2OUnRUHKBfHFLL9zgZNuX3UQbnLB4oMbNYJlnxdhjG1Q9oxOm+e7OtOEZlf48lAni6pYlKMTXBDlB76MCh4B947IUeeuZO7sNKLdUxuZ0i1Q1f0MvLrjiyAg2gvmzSR0SOGHB1OptIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bs/DJl43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA08C32781;
-	Tue, 25 Jun 2024 09:41:55 +0000 (UTC)
+	 MIME-Version; b=oTONqWjMXW6tYD8cttM+oaQvFGbQ69BhLFH0cPgIZ3+DqFAD3wJ2Rn/S8ThjfDTVCqzvSCPQti/1o0+NmZdM7uXdAPD1K3axaRKb/bud+jkHcF0Bo5yxsJtpxDCQentT67Q1SvMWeNY7X5aBs9t3S7vSglx08qE+D5bWgzPO9PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uj868ys2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D524C32789;
+	Tue, 25 Jun 2024 09:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308515;
-	bh=yTXsoMFUZgyTWtzmpaAc9et7xK3y0dGnx44wndMkZeY=;
+	s=korg; t=1719308959;
+	bh=wecDaOtBoainBcv8e++OPPRlZnbHGkAKhxT9D8lE/bA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bs/DJl43PccxadHeQipMPa9FW2gaXKD6hheLlOS7fs8Do9V9rV5F0HW9m7C0kTmBu
-	 u8pJSX46lw4AwGuPc2iSAWUpF6rpeC31Vyp+nxa1R+sGWzr9EjWKAxLh1vI9k3Xynh
-	 a8x0wgXzk6C8K02od4O3vn/G+qHN5WqAmGKGyck0=
+	b=Uj868ys21MzKtrGfmzeDZkj3Mli/b1GnBvaUrRyQEcJbwoO+wfl0toN3xOuhK1dFK
+	 +vrf3NMhZUI0E6+vs8Y/NsUGQipgYD7fKdJFxh0rrh5cPJCDZAYN5lwsjxxkVP8Eid
+	 hqdBzhs5z1+ONKnHuBNMysKNVLbR/oltgDfuqdu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 130/250] selftests: openvswitch: Use bash as interpreter
+Subject: [PATCH 6.6 016/192] ACPI: x86: Add PNP_UART1_SKIP quirk for Lenovo Blade2 tablets
 Date: Tue, 25 Jun 2024 11:31:28 +0200
-Message-ID: <20240625085553.055216366@linuxfoundation.org>
+Message-ID: <20240625085537.780791857@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e2b447c9a1bba718f9c07513a1e8958209e862a1 ]
+[ Upstream commit d8f20383a2fc3a3844b08a4999cf0e81164a0e56 ]
 
-openvswitch.sh makes use of substitutions of the form ${ns:0:1}, to
-obtain the first character of $ns. Empirically, this is works with bash
-but not dash. When run with dash these evaluate to an empty string and
-printing an error to stdout.
+The x86 Android tablets on which quirks to skip looking for a matching
+UartSerialBus resource and instead unconditionally create a serial bus
+device (serdev) are necessary there are 2 sorts of serialports:
 
- # dash -c 'ns=client; echo "${ns:0:1}"' 2>error
- # cat error
- dash: 1: Bad substitution
- # bash -c 'ns=client; echo "${ns:0:1}"' 2>error
- c
- # cat error
+ACPI enumerated highspeed designware UARTs, these are the ones which
+typcially need to be skipped since they need a serdev for the attached
+BT HCI.
 
-This leads to tests that neither pass nor fail.
-F.e.
+A PNP enumerated UART which is part of the PCU. So far the existing
+quirks have ignored this. But on the Lenovo Yoga Tablet 2 Pro 1380
+models this is used for a custom fastcharging protocol. There is
+a Micro USB switch which can switch the USB data lines to this uart
+and then a 600 baud protocol is used to configure the charger for
+a voltage higher then 5V.
 
- TEST: arp_ping                                                      [START]
- adding sandbox 'test_arp_ping'
- Adding DP/Bridge IF: sbx:test_arp_ping dp:arpping {, , }
- create namespaces
- ./openvswitch.sh: 282: eval: Bad substitution
- TEST: ct_connect_v4                                                 [START]
- adding sandbox 'test_ct_connect_v4'
- Adding DP/Bridge IF: sbx:test_ct_connect_v4 dp:ct4 {, , }
- ./openvswitch.sh: 322: eval: Bad substitution
- create namespaces
+Add a new ACPI_QUIRK_PNP_UART1_SKIP quirk type and set this for
+the existing entry for the Lenovo Yoga Tablet 2 830 / 1050 models.
+Note this will lead to unnecessarily also creating a serdev for
+the PCU UART on the 830 / 1050 which don't need this, but the UART
+is not used otherwise there so that is not a problem.
 
-Resolve this by making openvswitch.sh a bash script.
-
-Fixes: 918423fda910 ("selftests: openvswitch: add an initial flow programming case")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://lore.kernel.org/r/20240617-ovs-selftest-bash-v1-1-7ae6ccd3617b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/openvswitch/openvswitch.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/x86/utils.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-index 5cae535438491..15bca07087179 100755
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
- #
- # OVS kernel module self tests
+diff --git a/drivers/acpi/x86/utils.c b/drivers/acpi/x86/utils.c
+index ac05e2557435e..e035cec614dc8 100644
+--- a/drivers/acpi/x86/utils.c
++++ b/drivers/acpi/x86/utils.c
+@@ -257,9 +257,10 @@ bool force_storage_d3(void)
+ #define ACPI_QUIRK_SKIP_I2C_CLIENTS				BIT(0)
+ #define ACPI_QUIRK_UART1_SKIP					BIT(1)
+ #define ACPI_QUIRK_UART1_TTY_UART2_SKIP				BIT(2)
+-#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY			BIT(3)
+-#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY			BIT(4)
+-#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS			BIT(5)
++#define ACPI_QUIRK_PNP_UART1_SKIP				BIT(3)
++#define ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY			BIT(4)
++#define ACPI_QUIRK_USE_ACPI_AC_AND_BATTERY			BIT(5)
++#define ACPI_QUIRK_SKIP_GPIO_EVENT_HANDLERS			BIT(6)
+ 
+ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 	/*
+@@ -339,6 +340,7 @@ static const struct dmi_system_id acpi_quirk_skip_dmi_ids[] = {
+ 			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21"),
+ 		},
+ 		.driver_data = (void *)(ACPI_QUIRK_SKIP_I2C_CLIENTS |
++					ACPI_QUIRK_PNP_UART1_SKIP |
+ 					ACPI_QUIRK_SKIP_ACPI_AC_AND_BATTERY),
+ 	},
+ 	{
+@@ -437,14 +439,18 @@ static int acpi_dmi_skip_serdev_enumeration(struct device *controller_parent, bo
+ 	if (ret)
+ 		return 0;
+ 
+-	/* to not match on PNP enumerated debug UARTs */
+-	if (!dev_is_platform(controller_parent))
+-		return 0;
+-
+ 	dmi_id = dmi_first_match(acpi_quirk_skip_dmi_ids);
+ 	if (dmi_id)
+ 		quirks = (unsigned long)dmi_id->driver_data;
+ 
++	if (!dev_is_platform(controller_parent)) {
++		/* PNP enumerated UARTs */
++		if ((quirks & ACPI_QUIRK_PNP_UART1_SKIP) && uid == 1)
++			*skip = true;
++
++		return 0;
++	}
++
+ 	if ((quirks & ACPI_QUIRK_UART1_SKIP) && uid == 1)
+ 		*skip = true;
+ 
 -- 
 2.43.0
 
