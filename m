@@ -1,155 +1,120 @@
-Return-Path: <stable+bounces-55772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B5A916A78
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 16:33:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C13D916A84
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 16:34:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 481A9B25F4E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 14:33:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A528D1C20E95
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 14:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30743176247;
-	Tue, 25 Jun 2024 14:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505E62E403;
+	Tue, 25 Jun 2024 14:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="h/2JJ2XX";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="p16LuvBY"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="u7Fr9UsU"
 X-Original-To: stable@vger.kernel.org
-Received: from flow3-smtp.messagingengine.com (flow3-smtp.messagingengine.com [103.168.172.138])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB73F16C684;
-	Tue, 25 Jun 2024 14:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFF81758C;
+	Tue, 25 Jun 2024 14:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719325848; cv=none; b=KOwiaBetMmzoe3ljN7ys84BcEoLKjDFrfjs9elg6FUj7lTGzmrswTfwpm1ABl0sYN5sRjGTnu6/BSr9DqyxEU2zdQHRVTZkgRNGzj9DIAmfHkeTvvVAEyJi56kIV3u4ecOhPfmTWY3BwZeVFj5ys00oIejgOxwj1BXmSjzQ8HR8=
+	t=1719326081; cv=none; b=H9uEObDl2kPP0LBOWrtuEkIsjkeUoyWkiBAt42HEvQwr6reIV+vcCMxYUG752tlRb9cX1cgVOxAs0q08CQOWNyaYWDLUPRkmJG7UKINUBs8z1V3PNgsEuNuJYMCoNR46XQN733GUVgEtK/yBlnp1kXpUYO4kyM94eWJnxUqII0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719325848; c=relaxed/simple;
-	bh=rm3CLFCzMhJqfskxnyAupX5rytUWBY3x7q/xs8yTacY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S69mo2VBMf1tDi0k7JfX6pU6dNduG3G956Wd4pcxfgNWnU3M+S+m21yhfpcYw9tHaXayg6ZCuVJwY0fUKvlfC+kxKwEQU/0iUWwts19kfeSAZJEIykko5db3ZHHtXmGAfjoy1nwxg5VbKIqdXHI9mOF/4HJsmpBTi1XjW1PT+Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=h/2JJ2XX; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=p16LuvBY; arc=none smtp.client-ip=103.168.172.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailflow.nyi.internal (Postfix) with ESMTP id BDBD820045E;
-	Tue, 25 Jun 2024 10:30:45 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Tue, 25 Jun 2024 10:30:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1719325845;
-	 x=1719333045; bh=n40rkhfGjzu8AxDo0A/VhYrpxULagui6L3eRoobEu9s=; b=
-	h/2JJ2XXSHYRlUkmpcnT1ZYxUEoM6+aze6cr1UQaAOuDFuFFq7+vZwHHjJ5+gA9e
-	taFX8BCOJfr9P/3hlGF0KCr4czzK+1CRyL6PEPuzqAQj/hsvPAUG7r9p/mtX1Xie
-	4wnUj30g3HssVJe0R/Gt6pQUbHv8pCX+J39cJZFFf0mW0yhotgEeTvLdXVQWGSry
-	XvdNPh1t1gUkRzLlMOTOyX/crmFlxhq3xu1n5r5qFkUQx8ao8+NiTyIgmC9nt1kQ
-	Yvf8cvzLGee5cjDVEGJVnShhckvCSRwIdSTym+vzBsBnf1J9wZg0PacopLPx2yQG
-	FT8o4XUAGI8/0+btZP4cWA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1719325845; x=
-	1719333045; bh=n40rkhfGjzu8AxDo0A/VhYrpxULagui6L3eRoobEu9s=; b=p
-	16LuvBYPifBPtp1l8HXW0WgcAp5qGByADd/cqp/p258PeINNUDIwl64Ivtnd/6jP
-	KP2qFgL9nsOXI5jERVMjQCmcgaGb7OqEvy5gyng4MqOZbyFCuzeItKZ52RhTQ04x
-	HT+CFMINatNqgVpUGWMR/8TkA10jpY0tKJ5ekhIM5jDwJXKEtlBkV1CX5PYWto/s
-	hUq2OkPosmu+IUge0TffWt207BPm7za49vZA/ZjjKWEsaBx2CGn/8yMhBXRbxVlX
-	foasR8S9k88K50s/VK6pPcKnfQrGs2gJnk2ItaeLbf4tG4VMVLWpdRS/CwedMIy3
-	a1+bRPM/Or4YCy9tUGF1w==
-X-ME-Sender: <xms:ldR6ZgBpRWP8mS3VA2Qms6OZM9ckhp2ODlyswd4iLVJMxG4GyYBVhQ>
-    <xme:ldR6ZijR2bT4v8GuzSqLgvs_JN-mtU4fg_zEFVmVFTxaVi-xKN2ByhcgWPALxupLf
-    W0rIPje73BbIA>
-X-ME-Received: <xmr:ldR6ZjlW6CpJaTkmgHMK6qtDoy9t12v8oJoegXoTg_k_o2dozihWVxvTZa79t6Ria-rl3mmM8DVB6iPuo0DPe2x5la9fWRzcJmCfRA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrtddtgdeggecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgfekff
-    eifeeiveekleetjedvtedvtdeludfgvdfhteejjeeiudeltdefffefvdeinecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:ldR6ZmxY0zFwG6pWHsU-y6YkcmngJmKUn9oPpTIHsv4G346eRrdlnA>
-    <xmx:ldR6ZlRyQYCTt1DG04kEg57pOpQ8KoojDGl47d9FpoQ1qWgp1cZiBg>
-    <xmx:ldR6ZhbC6ybWV8DlIc4L8v9H8l8ZOOnF0r6vJpa9NY3LU5Do76bTkg>
-    <xmx:ldR6ZuT4ptUDAasIrsTeXyADiCA_LMQqFynBKgYq7xqX3qlCrbtVCA>
-    <xmx:ldR6ZnmM9XBOBtZyCNgYz6zqBuHcXPrEJjuGSn2Hkv78Acq8H7ggnLJC>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 25 Jun 2024 10:30:44 -0400 (EDT)
-Date: Tue, 25 Jun 2024 16:30:41 +0200
-From: Greg KH <greg@kroah.com>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: Ma Ke <make24@iscas.ac.cn>, nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
-	Danilo Krummrich <dakr@redhat.com>,
-	David Airlie <airlied@gmail.com>, Karol Herbst <kherbst@redhat.com>,
-	Lyude Paul <lyude@redhat.com>, stable@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] drm/nouveau/dispnv04: fix null pointer dereference in
- nv17_tv_get_ld_modes
-Message-ID: <2024062533-quiver-cacti-b068@gregkh>
-References: <20240625081828.2620794-1-make24@iscas.ac.cn>
- <8517da06-3010-4356-b5df-d9a14454feec@web.de>
+	s=arc-20240116; t=1719326081; c=relaxed/simple;
+	bh=Kujgj0anIo/IcUOKduxF8pOvJsiKk1vmUd/L0ICVeTE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=Ttw91w0QWT5HlxmS7QPR0Jy0cofK1aVDzBCXUA5Gf9/Vodhsmg3rZ9akZzX8WoNgps2jBR6s6bJ/3lTeNMHdDbG1Ec/Cw74YUWRlqagwpX+YY/NkKABzLgKcoLVeA1CU97fxFpZaeWc8XDumAgLiauRbLFJe/G1Zs1leORwFIg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=u7Fr9UsU; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1719326060; x=1719930860; i=markus.elfring@web.de;
+	bh=4hqmfo5ctGH968xUb+z+rr8LiHMCJOdB3zcu6j3LRIo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=u7Fr9UsU3M+6VBd5zDYTpRGJhqFvgvzY4YrzX23C5I6Lgp0KbH8vx9cc2MKyZNCp
+	 dkzT37MWVnNmUEpcdL076Ok7w7LDZVochztC4Ty3iBgmpD70AP8+ZXC9RpH6uPqu+
+	 D+6Yk7PbqPZQPeUtuCCRyq7FJDub299czeluVijqPMelRaeXRE+zYx0obeXQiPA9B
+	 G6Pz5Xb1GnoHDYG71clPNaeyEb/HfpC8u8yaGsv20FSeyqlEVKg+E49m7YzwEuSBJ
+	 N3N4vo+0W6jFwDHR07KswcvJrxnwHdRHEkOiRn2s8TWg6NC3gw8SYEIjmcviicgh1
+	 1JHYofBhbeDOo8I7bQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mkmzl-1sl2f63wn1-00fa6K; Tue, 25
+ Jun 2024 16:34:20 +0200
+Message-ID: <c7969a4e-61aa-479f-89c8-0373e84c43be@web.de>
+Date: Tue, 25 Jun 2024 16:34:17 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8517da06-3010-4356-b5df-d9a14454feec@web.de>
+User-Agent: Mozilla Thunderbird
+To: Ma Ke <make24@iscas.ac.cn>, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+ Danilo Krummrich <dakr@redhat.com>, David Airlie <airlied@gmail.com>,
+ Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+References: <20240625081029.2619437-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH] drm/nouveau/dispnv04: fix null pointer dereference in
+ nv17_tv_get_hd_modes
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240625081029.2619437-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:w+lKWxONvobVkG1JBjQ5wfxpvmogK7zfC3one7JxNJttL0yxtRT
+ 2X3FNzQnbkxaLdb0QHQefzMbPsBUfPIZBpc17M3CtJkoxYSpCVRop7sRcgsds0cCrzG16JL
+ 45sBtaD4ZQLCbci57s7tU6j4/EnczQZ9ldF89yqCNo7uLR/WEgR67k03y/u/VqbI+aIUgaR
+ XzVzJnh9Z66x/b49M7tAg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:trJvbE4vUhE=;eCQIKaNK/fS/KPnXOL1hOZwQ4wD
+ 515WonsX5Vk7h9q7pmgwOtGWyFaCet7T6v+AZVm5PSUfqS7y6d3fAHfcUS7T4r0spc4lKcpPk
+ wP2fRFk2qJIOfx3XYpHaUj1Un55DWZNBHbFcly+meblXwapr4wX2U2JdVDWOmlLIXIg7Wuwcu
+ OWcjYmRKmZMrwUadiNtgncjLPE7cGJxQYexPcACsLCFeHoOnwcji81IVi6rKJ5DrMXlWMrKJU
+ /tby3YQp5CgALY1vqtPIALu/vMtiLKVLsAJAVFHTpvBby15EaKO8hMCjtrMdnu9v8dBVIIizZ
+ iVLSmdGiqTL6p36JQCxIw8O837C5lxTeIBeE09mAt/dZEuQvBC67JVyvS4z2IBozGt4Az9wIT
+ 96RnxFazx5gaUlwa18DAS5UzJHqyrJxO7b867L3j5ysvCwFR9e10MIZemuHeYXwqUKoEj4K/f
+ qP2DZhspPlq+Fs2CM+SG18tOdJdJ2vFnbXgDKguPRZUfVCT0C1wHmQi+iBO6k0uEUWOuPo7/v
+ OLezWGdUCdUoebLnlGPp3DIORuJvVtYwnDzZe/lQGxOepiZvVSwTRsf2DC7Cm0QtlMcp7l+4X
+ 8ofuF+uAqVlGK6h+HP3vXCxbBk1QB6lPnnRNeJbxSRXvQUCvfv3BJLmLzvHkVIiqZEowcJL29
+ b8ER3rE931Lxr9INbkCj/QBJnDKCzqjiNS283Sq3pQRYCkTY1kWUbNYH1EDY4gGOGK7d6mmd5
+ eSJ5B++ussY1vK6rfYjT4/El97/sTzSyq0aoJozgYil1SzQyTSgSj77jBEaWoRrHf9pl+nNuO
+ CiRyhbn/PlOyELAV9EH2hhAa999Bw4yCLh6PEAK5a/8no=
 
-On Tue, Jun 25, 2024 at 03:43:37PM +0200, Markus Elfring wrote:
-> > In nv17_tv_get_ld_modes(), the return value of drm_mode_duplicate() is
-> > assigned to mode, which will lead to a possible NULL pointer dereference
-> > on failure of drm_mode_duplicate(). Add a check to avoid npd.
-> 
-> Can a wording approach (like the following) be a better change description?
-> 
->   A null pointer is stored in the local variable “mode” after a call
->   of the function “drm_mode_duplicate” failed. This pointer was used
->   in a subsequent statement where an undesirable dereference will
->   be performed then.
->   Thus add a corresponding return value check.
-> 
-> 
-> > Cc: stable@vger.kernel.org
-> 
-> Would you like to add the tag “Fixes” accordingly?
-> 
-> 
-> How do you think about to use a summary phrase like
-> “Prevent null pointer dereference in nv17_tv_get_ld_modes()”?
-> 
-> 
-> Regards,
-> Markus
-> 
-Hi,
+> In nv17_tv_get_hd_modes(), the return value of drm_mode_duplicate() is
+> assigned to mode, which will lead to a possible NULL pointer dereference
+> on failure of drm_mode_duplicate(). The same applies to drm_cvt_mode().
+> Add a check to avoid null pointer dereference.
 
-This is the semi-friendly patch-bot of Greg Kroah-Hartman.
+Can a wording approach (like the following) be a better change description=
+?
 
-Markus, you seem to have sent a nonsensical or otherwise pointless
-review comment to a patch submission on a Linux kernel developer mailing
-list.  I strongly suggest that you not do this anymore.  Please do not
-bother developers who are actively working to produce patches and
-features with comments that, in the end, are a waste of time.
+  A null pointer is stored in the local variable =E2=80=9Cmode=E2=80=9D af=
+ter a call
+  of the function =E2=80=9Cdrm_cvt_mode=E2=80=9D or =E2=80=9Cdrm_mode_dupl=
+icate=E2=80=9D failed.
+  This pointer was used in subsequent statements where an undesirable
+  dereference will be performed then.
+  Thus add corresponding return value checks.
 
-Patch submitter, please ignore Markus's suggestion; you do not need to
-follow it at all.  The person/bot/AI that sent it is being ignored by
-almost all Linux kernel maintainers for having a persistent pattern of
-behavior of producing distracting and pointless commentary, and
-inability to adapt to feedback.  Please feel free to also ignore emails
-from them.
 
-thanks,
+> Cc: stable@vger.kernel.org
 
-greg k-h's patch email bot
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D accordingly?
+
+
+How do you think about to use a summary phrase like
+=E2=80=9CPrevent null pointer dereferences in nv17_tv_get_hd_modes()=E2=80=
+=9D?
+
+Regards,
+Markus
 
