@@ -1,50 +1,81 @@
-Return-Path: <stable+bounces-55158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788B39160F2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:19:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2719291612B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A93BD1C2277C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 08:19:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5F351F22AEC
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 08:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC674146D78;
-	Tue, 25 Jun 2024 08:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9836114831D;
+	Tue, 25 Jun 2024 08:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a63ZOu+G"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D2EA22313;
-	Tue, 25 Jun 2024 08:19:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61D11474AE;
+	Tue, 25 Jun 2024 08:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719303545; cv=none; b=U9dOfNyEdEgTxnAYD/heABd81iXnMBttkQddeF0B7ORysd86Im5TctjvXJXCJEUJ7utMIvPxZ+k3eml46qATih/i1mhW6VVCx+WQo/cW5l+oQ5++qF2tIIbUEM43WIs2t6UuHtumeMn1AyVaxu9Gg4glxbWod/UmfsrozOsP4Lc=
+	t=1719304153; cv=none; b=aIvApRTV/wabj2R0cxMjcECYUTuIxJyeNoZHrT+adAg8j8QQW6LSyUmrzdtrSy45KbwE6xt+v/M6p5vAeLhx0MAGaTuurdmr8j0s9UzKPvo3l2cKZXWysgyVx9p12kY9org45r7/Z1jcWxBTqgJxKBVRXOuO/MVKfo565wwM7dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719303545; c=relaxed/simple;
-	bh=Yq1WRv08jggnqbMUyRoA/zm+6wOIWqrYPnZxhCbRipc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dQvK/iAGyOHoVhFOLBAwbUTBeESKsqammi/gnb4gddmDmp0dIQIwJhHy0A+Z/zUryFAc2U7GIW/W6la4WMXDrkxgGN/UWNKwqXwMefLmBq0H4zcjggISCf5ylUhttUb8bpo3JNaqaNyBg67A1upHaLgI2D08/jffl3AqBdPblys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowAA3PRFlfXpm3tmhDA--.2895S2;
-	Tue, 25 Jun 2024 16:18:53 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: kherbst@redhat.com,
-	lyude@redhat.com,
-	dakr@redhat.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	make24@iscas.ac.cn
-Cc: dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
+	s=arc-20240116; t=1719304153; c=relaxed/simple;
+	bh=wXaPYhIxd9lGgS507DARPEtzy5YeJ1pxnrulWrIPLyI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pnpXPaGJnV4/3QcUVpguLj9w5yx89y4mPB1/5Wf6q6x6oxl7zlLiFEEO2ZQFKqFywAibso2dS7TVw4z7FMsYx34Tp170RIrd0r4P+L/t06r6WXjcEGzRf1KckTP5hGT7csygwWMD/GfvDOSI8HQiB/GF/9pagpFvBUGqwhTPoTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a63ZOu+G; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719304152; x=1750840152;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wXaPYhIxd9lGgS507DARPEtzy5YeJ1pxnrulWrIPLyI=;
+  b=a63ZOu+GkBLydxIcjWMTaXuYWQILWJNPArE9uGgMuf/5i5kjBRrRJ/Qd
+   FJ9bznCoY0vdpsB4H+1DivhmFZ72za+Rh/0QAbKtGRqE8wtPJNQhH2vcm
+   m7Zv+Ss0ZOp0/Ox6R6bv6n+7aTxyC+mwBAZruOt2rfk78O+Xatd3QZCvn
+   LnT/Q+OagO+54AUViHqKFjC1C3we2H/Y3jvpnayQjPjfHqpzxxQkHeE7w
+   t3x5hVrsZRK8+Kw8sd/1b6g9D1HTfrADfswRZ7nyk+0VkEBN3QxJiOdQC
+   EMgYu7gftLSi28ZojuXTKPpmU96/taubBEflp4rRj189TVUz+VktrEMNh
+   g==;
+X-CSE-ConnectionGUID: RVRhEI9LReiJCJf68LqMEA==
+X-CSE-MsgGUID: BIGmw9z/Snei87hY4K2KEw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="20185439"
+X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; 
+   d="scan'208";a="20185439"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 01:29:11 -0700
+X-CSE-ConnectionGUID: q0t9HT/HTlih3tIIeLeHlg==
+X-CSE-MsgGUID: wkDqR0oAS0ucwoQnSdWLJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; 
+   d="scan'208";a="74336770"
+Received: from linux.intel.com ([10.54.29.200])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 01:29:11 -0700
+Received: from mohdfai2-iLBPG12-1.png.intel.com (mohdfai2-iLBPG12-1.png.intel.com [10.88.227.73])
+	by linux.intel.com (Postfix) with ESMTP id 07B1020B5705;
+	Tue, 25 Jun 2024 01:29:07 -0700 (PDT)
+From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+To: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/nouveau/dispnv04: fix null pointer dereference in nv17_tv_get_ld_modes
-Date: Tue, 25 Jun 2024 16:18:28 +0800
-Message-Id: <20240625081828.2620794-1-make24@iscas.ac.cn>
+	stable@vger.kernel.org,
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Subject: [PATCH net 1/1] igc: Fix double reset adapter triggered from a single taprio cmd
+Date: Tue, 25 Jun 2024 04:26:56 -0400
+Message-Id: <20240625082656.2702440-1-faizal.abdul.rahim@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -53,49 +84,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAA3PRFlfXpm3tmhDA--.2895S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Jw1xZFWUur1xuF4UKw1Dtrb_yoWfurgEkr
-	18Zr97Gr1Uuw4vyr4DAw1fZr9Ikw4Uua1IyFn29FyrtasrJrn0qry7tryrX3WUAFy8WFyD
-	JanrZwn8KrsrGjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb3kFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6r1F6r1fM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUAkucUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-In nv17_tv_get_ld_modes(), the return value of drm_mode_duplicate() is
-assigned to mode, which will lead to a possible NULL pointer dereference
-on failure of drm_mode_duplicate(). Add a check to avoid npd.
+Following the implementation of "igc: Add TransmissionOverrun counter"
+patch, when a taprio command is triggered by user, igc processes two
+commands: TAPRIO_CMD_REPLACE followed by TAPRIO_CMD_STATS. However, both
+commands unconditionally pass through igc_tsn_offload_apply() which
+evaluates and triggers reset adapter. The double reset causes issues in
+the calculation of adapter->qbv_count in igc.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+TAPRIO_CMD_REPLACE command is expected to reset the adapter since it
+activates qbv. It's unexpected for TAPRIO_CMD_STATS to do the same
+because it doesn't configure any driver-specific TSN settings. So, the
+evaluation in igc_tsn_offload_apply() isn't needed for TAPRIO_CMD_STATS.
+
+To address this, commands parsing are relocated to
+igc_tsn_enable_qbv_scheduling(). Commands that don't require an adapter
+reset will exit after processing, thus avoiding igc_tsn_offload_apply().
+
+Fixes: d3750076d464 ("igc: Add TransmissionOverrun counter")
+Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 ---
- drivers/gpu/drm/nouveau/dispnv04/tvnv17.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_main.c | 33 ++++++++++++-----------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-index 670c9739e5e1..4a08e61f3336 100644
---- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-+++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
-@@ -209,6 +209,8 @@ static int nv17_tv_get_ld_modes(struct drm_encoder *encoder,
- 		struct drm_display_mode *mode;
- 
- 		mode = drm_mode_duplicate(encoder->dev, tv_mode);
-+		if (!mode)
-+			continue;
- 
- 		mode->clock = tv_norm->tv_enc_mode.vrefresh *
- 			mode->htotal / 1000 *
--- 
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 87b655b839c1..33069880c86c 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6310,21 +6310,6 @@ static int igc_save_qbv_schedule(struct igc_adapter *adapter,
+ 	size_t n;
+ 	int i;
+
+-	switch (qopt->cmd) {
+-	case TAPRIO_CMD_REPLACE:
+-		break;
+-	case TAPRIO_CMD_DESTROY:
+-		return igc_tsn_clear_schedule(adapter);
+-	case TAPRIO_CMD_STATS:
+-		igc_taprio_stats(adapter->netdev, &qopt->stats);
+-		return 0;
+-	case TAPRIO_CMD_QUEUE_STATS:
+-		igc_taprio_queue_stats(adapter->netdev, &qopt->queue_stats);
+-		return 0;
+-	default:
+-		return -EOPNOTSUPP;
+-	}
+-
+ 	if (qopt->base_time < 0)
+ 		return -ERANGE;
+
+@@ -6433,7 +6418,23 @@ static int igc_tsn_enable_qbv_scheduling(struct igc_adapter *adapter,
+ 	if (hw->mac.type != igc_i225)
+ 		return -EOPNOTSUPP;
+
+-	err = igc_save_qbv_schedule(adapter, qopt);
++	switch (qopt->cmd) {
++	case TAPRIO_CMD_REPLACE:
++		err = igc_save_qbv_schedule(adapter, qopt);
++		break;
++	case TAPRIO_CMD_DESTROY:
++		err = igc_tsn_clear_schedule(adapter);
++		break;
++	case TAPRIO_CMD_STATS:
++		igc_taprio_stats(adapter->netdev, &qopt->stats);
++		return 0;
++	case TAPRIO_CMD_QUEUE_STATS:
++		igc_taprio_queue_stats(adapter->netdev, &qopt->queue_stats);
++		return 0;
++	default:
++		return -EOPNOTSUPP;
++	}
++
+ 	if (err)
+ 		return err;
+
+--
 2.25.1
 
 
