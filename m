@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-55627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE2391647A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37888916356
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 818AC1C220AE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9BE128AB50
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128F2149E17;
-	Tue, 25 Jun 2024 09:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C374A1494AF;
+	Tue, 25 Jun 2024 09:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOSGpjOj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/R+fN2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16B4149DEF;
-	Tue, 25 Jun 2024 09:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803A8148315;
+	Tue, 25 Jun 2024 09:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309464; cv=none; b=j96juFIqOu8ue32nUMjEHQtOn/sv8Q+DsPe0f+TNHmOc49f6zNLDmq7DaX/SJ/XP1ST/hJ/DVp0q6p3Qs7x0q4RCUOBbXZUlV1Wcih3klPTiRSN3PwnAWQjN6sI2zOegF/7mcWu0FA64DmNJBOKAGxGcRvz1xuSwfAc8aCw01v8=
+	t=1719308733; cv=none; b=fu0LKPSdexO+NqU/rjPMdx5migx76t9IRaOuGgRf4R13mhbIWekmM2lK4Vqv5Ubs1k24x5M2uKRpgzdHqfzs7dVa068ldg56mp/CUPTPs+GZhC33j0MqZDg/4+JyrwIuu8Um6vQ/RhJIkG5M9Kel2yHsVb+ai629j4l4y78j5jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309464; c=relaxed/simple;
-	bh=rCFJ08d9jaOruQZfFABYHiqdDl+w7JTR/BOmtD8xkss=;
+	s=arc-20240116; t=1719308733; c=relaxed/simple;
+	bh=jlizqqgTMmgRAVNQ8RZv4jIwXPwVeGiD3od1KXl0evs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lncfwm35WPWwWIEt8V04s7nPRupwDBSb0pLTl3pTU+7kZCsokij0qA10PLareuCX8Z2k8p3oydBj6DzZmVVaMjrbmqsr1lX+DhW3g4BmO4KrJo106HJlrpzN5HJ5UNvBiVwnpllPDRNH4EdJRJPdXXteHQWT8Ni/1HgbwEu283o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOSGpjOj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D027C32781;
-	Tue, 25 Jun 2024 09:57:44 +0000 (UTC)
+	 MIME-Version; b=k8bvKepVdkSEbXAwy+M9G9mK8qiZR6P8vYiYfHPbUn8y03Ah/cthOnAL5s20BqBzc4+bMaFhbOjF54jsLcs3SnRbheLqfu5TvSzt8I1C40QW5hof+JXQ+pV2xKAgg9W0r3cYoi1/K3sfGiXUsZGa3UTvq9a7Gxzyc99jR0N5F84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/R+fN2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F28C32781;
+	Tue, 25 Jun 2024 09:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309464;
-	bh=rCFJ08d9jaOruQZfFABYHiqdDl+w7JTR/BOmtD8xkss=;
+	s=korg; t=1719308733;
+	bh=jlizqqgTMmgRAVNQ8RZv4jIwXPwVeGiD3od1KXl0evs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aOSGpjOjA8bnkAv/oazQ8ca+1djMtN1dHoK2OVErMTMbycIy7yQ56awQDQN9ICXtr
-	 4Gqmc4C7OzQ2m5AJJI6Ck7HAUxqT0unj0Y4lIfu0neQ5VpBYQUGxBGRUtAtHyt+rVJ
-	 0t1Rs6sEy+DaR+Qcj4Q4pfRh/O0ZLztz3dB6kRhI=
+	b=t/R+fN2tOgye5FueGfQAGOt/lnF/rU/jz9FVY4l4fNzHbnWjhPEL6dqY5RG30kPzr
+	 hlvkHFxw859xlqqtpR57nqYgmyZT8chq6ah5c3AlY6UQ5U21rOOyNHtoxRodudS4fJ
+	 kewLzgcmiPs1GdtcoqVbBchHGeP2SqfROuQYrwJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arvid Norlander <lkml@vorpal.se>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/131] platform/x86: toshiba_acpi: Add quirk for buttons on Z830
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.9 221/250] MIPS: mipsmtregs: Fix target register for MFTC0
 Date: Tue, 25 Jun 2024 11:32:59 +0200
-Message-ID: <20240625085526.867947574@linuxfoundation.org>
+Message-ID: <20240625085556.534692522@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,145 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arvid Norlander <lkml@vorpal.se>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit 23f1d8b47d125dcd8c1ec62a91164e6bc5d691d0 ]
+commit 4a3e37b3caea817199757a0b13aa53dd7c9376c8 upstream.
 
-The Z830 has some buttons that will only work properly as "quickstart"
-buttons. To enable them in that mode, a value between 1 and 7 must be
-used for HCI_HOTKEY_EVENT. Windows uses 0x5 on this laptop so use that for
-maximum predictability and compatibility.
+Target register of mftc0 should be __res instead of $1, this is
+a leftover from old .insn code.
 
-As there is not yet a known way of auto detection, this patch uses a DMI
-quirk table. A module parameter is exposed to allow setting this on other
-models for testing.
-
-Signed-off-by: Arvid Norlander <lkml@vorpal.se>
-Tested-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240131111641.4418-3-W_Armin@gmx.de
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dd6d29a61489 ("MIPS: Implement microMIPS MT ASE helpers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/toshiba_acpi.c | 36 ++++++++++++++++++++++++++---
- 1 file changed, 33 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/mipsmtregs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/toshiba_acpi.c b/drivers/platform/x86/toshiba_acpi.c
-index 160abd3b3af8b..f10994b94a33a 100644
---- a/drivers/platform/x86/toshiba_acpi.c
-+++ b/drivers/platform/x86/toshiba_acpi.c
-@@ -57,6 +57,11 @@ module_param(turn_on_panel_on_resume, int, 0644);
- MODULE_PARM_DESC(turn_on_panel_on_resume,
- 	"Call HCI_PANEL_POWER_ON on resume (-1 = auto, 0 = no, 1 = yes");
- 
-+static int hci_hotkey_quickstart = -1;
-+module_param(hci_hotkey_quickstart, int, 0644);
-+MODULE_PARM_DESC(hci_hotkey_quickstart,
-+		 "Call HCI_HOTKEY_EVENT with value 0x5 for quickstart button support (-1 = auto, 0 = no, 1 = yes");
-+
- #define TOSHIBA_WMI_EVENT_GUID "59142400-C6A3-40FA-BADB-8A2652834100"
- 
- /* Scan code for Fn key on TOS1900 models */
-@@ -136,6 +141,7 @@ MODULE_PARM_DESC(turn_on_panel_on_resume,
- #define HCI_ACCEL_MASK			0x7fff
- #define HCI_ACCEL_DIRECTION_MASK	0x8000
- #define HCI_HOTKEY_DISABLE		0x0b
-+#define HCI_HOTKEY_ENABLE_QUICKSTART	0x05
- #define HCI_HOTKEY_ENABLE		0x09
- #define HCI_HOTKEY_SPECIAL_FUNCTIONS	0x10
- #define HCI_LCD_BRIGHTNESS_BITS		3
-@@ -2730,10 +2736,15 @@ static int toshiba_acpi_enable_hotkeys(struct toshiba_acpi_dev *dev)
- 		return -ENODEV;
- 
- 	/*
-+	 * Enable quickstart buttons if supported.
-+	 *
- 	 * Enable the "Special Functions" mode only if they are
- 	 * supported and if they are activated.
- 	 */
--	if (dev->kbd_function_keys_supported && dev->special_functions)
-+	if (hci_hotkey_quickstart)
-+		result = hci_write(dev, HCI_HOTKEY_EVENT,
-+				   HCI_HOTKEY_ENABLE_QUICKSTART);
-+	else if (dev->kbd_function_keys_supported && dev->special_functions)
- 		result = hci_write(dev, HCI_HOTKEY_EVENT,
- 				   HCI_HOTKEY_SPECIAL_FUNCTIONS);
- 	else
-@@ -3259,7 +3270,14 @@ static const char *find_hci_method(acpi_handle handle)
-  * works. toshiba_acpi_resume() uses HCI_PANEL_POWER_ON to avoid changing
-  * the configured brightness level.
-  */
--static const struct dmi_system_id turn_on_panel_on_resume_dmi_ids[] = {
-+#define QUIRK_TURN_ON_PANEL_ON_RESUME		BIT(0)
-+/*
-+ * Some Toshibas use "quickstart" keys. On these, HCI_HOTKEY_EVENT must use
-+ * the value HCI_HOTKEY_ENABLE_QUICKSTART.
-+ */
-+#define QUIRK_HCI_HOTKEY_QUICKSTART		BIT(1)
-+
-+static const struct dmi_system_id toshiba_dmi_quirks[] = {
- 	{
- 	 /* Toshiba Portégé R700 */
- 	 /* https://bugzilla.kernel.org/show_bug.cgi?id=21012 */
-@@ -3267,6 +3285,7 @@ static const struct dmi_system_id turn_on_panel_on_resume_dmi_ids[] = {
- 		DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "PORTEGE R700"),
- 		},
-+	 .driver_data = (void *)QUIRK_TURN_ON_PANEL_ON_RESUME,
- 	},
- 	{
- 	 /* Toshiba Satellite/Portégé R830 */
-@@ -3276,6 +3295,7 @@ static const struct dmi_system_id turn_on_panel_on_resume_dmi_ids[] = {
- 		DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "R830"),
- 		},
-+	 .driver_data = (void *)QUIRK_TURN_ON_PANEL_ON_RESUME,
- 	},
- 	{
- 	 /* Toshiba Satellite/Portégé Z830 */
-@@ -3283,6 +3303,7 @@ static const struct dmi_system_id turn_on_panel_on_resume_dmi_ids[] = {
- 		DMI_MATCH(DMI_SYS_VENDOR, "TOSHIBA"),
- 		DMI_MATCH(DMI_PRODUCT_NAME, "Z830"),
- 		},
-+	 .driver_data = (void *)(QUIRK_TURN_ON_PANEL_ON_RESUME | QUIRK_HCI_HOTKEY_QUICKSTART),
- 	},
- };
- 
-@@ -3291,6 +3312,8 @@ static int toshiba_acpi_add(struct acpi_device *acpi_dev)
- 	struct toshiba_acpi_dev *dev;
- 	const char *hci_method;
- 	u32 dummy;
-+	const struct dmi_system_id *dmi_id;
-+	long quirks = 0;
- 	int ret = 0;
- 
- 	if (toshiba_acpi)
-@@ -3443,8 +3466,15 @@ static int toshiba_acpi_add(struct acpi_device *acpi_dev)
- 	}
- #endif
- 
-+	dmi_id = dmi_first_match(toshiba_dmi_quirks);
-+	if (dmi_id)
-+		quirks = (long)dmi_id->driver_data;
-+
- 	if (turn_on_panel_on_resume == -1)
--		turn_on_panel_on_resume = dmi_check_system(turn_on_panel_on_resume_dmi_ids);
-+		turn_on_panel_on_resume = !!(quirks & QUIRK_TURN_ON_PANEL_ON_RESUME);
-+
-+	if (hci_hotkey_quickstart == -1)
-+		hci_hotkey_quickstart = !!(quirks & QUIRK_HCI_HOTKEY_QUICKSTART);
- 
- 	toshiba_wwan_available(dev);
- 	if (dev->wwan_supported)
+diff --git a/arch/mips/include/asm/mipsmtregs.h b/arch/mips/include/asm/mipsmtregs.h
+index 30e86861c206..b1ee3c48e84b 100644
+--- a/arch/mips/include/asm/mipsmtregs.h
++++ b/arch/mips/include/asm/mipsmtregs.h
+@@ -322,7 +322,7 @@ static inline void ehb(void)
+ 	"	.set	push				\n"	\
+ 	"	.set	"MIPS_ISA_LEVEL"		\n"	\
+ 	_ASM_SET_MFTC0							\
+-	"	mftc0	$1, " #rt ", " #sel "		\n"	\
++	"	mftc0	%0, " #rt ", " #sel "		\n"	\
+ 	_ASM_UNSET_MFTC0						\
+ 	"	.set	pop				\n"	\
+ 	: "=r" (__res));						\
 -- 
-2.43.0
+2.45.2
 
 
 
