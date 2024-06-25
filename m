@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-55463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C620C9163B1
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F2DD9162F0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41EDAB276DC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADA6D1C2290E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2AD11487E9;
-	Tue, 25 Jun 2024 09:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A43149DFB;
+	Tue, 25 Jun 2024 09:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fquq9fhX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qSP38a3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF8B1465A8;
-	Tue, 25 Jun 2024 09:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF820149C51;
+	Tue, 25 Jun 2024 09:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308977; cv=none; b=ualSsUrY604FyRM7LDX7GZRtWOwGP7u4Jn/LcAFfQ1KHJNGoyohoJilQq4KdEDxJjwtfL58TpKDxFtcl8E+68nScZ3o76YQQyV2GdkoRUa76qFZNHfGZYzZcf6eoiUQrub0nyt8NaSA+m54t0vIWyEiyRPbyjUHWNDJhpnJEQh0=
+	t=1719308456; cv=none; b=l6ENbZKYg6YZDrEsxexkxtYGm4H7YhTXk/cDX3HUJH54XLMVp24RUdDQtZBJHY0soxlu4C0ZQMkPCzdHG0bQBNaqqJjyuVfPmUuhoM//YBBRE4x3XQ0u/BJ+rSxmfB1NeBMRAhIi51mFby5nFtk5YVOXhC8ynSj6AgdFIrtCb8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308977; c=relaxed/simple;
-	bh=RobkFU7g4zhMnyMuW1Afed25ikexBK/RHyO6X/Ogqt0=;
+	s=arc-20240116; t=1719308456; c=relaxed/simple;
+	bh=ReThsYj9pWpXhZV3hX63SjeKvfWcVtWRIECAlPhJiH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=efAhyk176vo8ngHXz35CkUMd4MohAHar2L97gMuOB0Q78/hhe/xn4ktRVdti36tNSGIEuR9aL9QBHRl5qwo5KHWanJyow+DPbae+j7ZEfsa0dFr/vU+x+b0ER0LdVaCyGxJrRAi53cZf9wSh0a96ruR55fq0BbzYKVMG8ZAAghk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fquq9fhX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7718C32781;
-	Tue, 25 Jun 2024 09:49:36 +0000 (UTC)
+	 MIME-Version; b=PYFLYIIjHEVKEVPHa0PPXw6PqIo0YcQqUlXhF13n7TWi7wabhwrYr1kYS0vRld15ew0evYCNH9g0VyXmrOa6qlnJieJNVfRwqEXIQ2H9TFxEzZdsHUDiCOc4pbEtwi6Gg3NqGZmETYbTWLN0tkTGKdZKnequl9ugBNXR196LwjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qSP38a3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363B6C32781;
+	Tue, 25 Jun 2024 09:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308977;
-	bh=RobkFU7g4zhMnyMuW1Afed25ikexBK/RHyO6X/Ogqt0=;
+	s=korg; t=1719308456;
+	bh=ReThsYj9pWpXhZV3hX63SjeKvfWcVtWRIECAlPhJiH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fquq9fhXf2NHCMKqYCoDFy807ZyoxxV2AFLEo6ZGNN/EYc3wNGMlPlPNQuc+Vxurc
-	 BuoKqDCnDxd1X2Xd00+pf3+w+EDeMNHG9iQGCAstTTGwU0AzWTKGlz+rqubLnWMyQC
-	 4lyFBKtKJpkvIliJ9dA4CbbvxeLtWAOyd+khQfPI=
+	b=qSP38a3WIyeWphvSlFHFN8/QZysdrsLF7DzibJAFjTKeLc79Nw0PytfCCtBehDXjf
+	 HD9mmflNtPWXZineLAQ9BUPYfnbtyYWrWHtRkEp5+Sm+Y57Atnwfg2npfEEuyVDMUJ
+	 e0gmjPJJMJXmrcR9QX+YYqrBYnoG/EgMsiTqpKYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com,
+	David Ruth <druth@chromium.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/192] selftests/bpf: Fix flaky test btf_map_in_map/lookup_update
+Subject: [PATCH 6.9 126/250] net/sched: act_api: fix possible infinite loop in tcf_idr_check_alloc()
 Date: Tue, 25 Jun 2024 11:31:24 +0200
-Message-ID: <20240625085537.629035321@linuxfoundation.org>
+Message-ID: <20240625085552.902939033@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: David Ruth <druth@chromium.org>
 
-[ Upstream commit 14bb1e8c8d4ad5d9d2febb7d19c70a3cf536e1e5 ]
+[ Upstream commit d864319871b05fadd153e0aede4811ca7008f5d6 ]
 
-Recently, I frequently hit the following test failure:
+syzbot found hanging tasks waiting on rtnl_lock [1]
 
-  [root@arch-fb-vm1 bpf]# ./test_progs -n 33/1
-  test_lookup_update:PASS:skel_open 0 nsec
-  [...]
-  test_lookup_update:PASS:sync_rcu 0 nsec
-  test_lookup_update:FAIL:map1_leak inner_map1 leaked!
-  #33/1    btf_map_in_map/lookup_update:FAIL
-  #33      btf_map_in_map:FAIL
+A reproducer is available in the syzbot bug.
 
-In the test, after map is closed and then after two rcu grace periods,
-it is assumed that map_id is not available to user space.
+When a request to add multiple actions with the same index is sent, the
+second request will block forever on the first request. This holds
+rtnl_lock, and causes tasks to hang.
 
-But the above assumption cannot be guaranteed. After zero or one
-or two rcu grace periods in different siturations, the actual
-freeing-map-work is put into a workqueue. Later on, when the work
-is dequeued, the map will be actually freed.
-See bpf_map_put() in kernel/bpf/syscall.c.
+Return -EAGAIN to prevent infinite looping, while keeping documented
+behavior.
 
-By using workqueue, there is no ganrantee that map will be actually
-freed after a couple of rcu grace periods. This patch removed
-such map leak detection and then the test can pass consistently.
+[1]
 
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240322061353.632136-1-yonghong.song@linux.dev
+INFO: task kworker/1:0:5088 blocked for more than 143 seconds.
+Not tainted 6.9.0-rc4-syzkaller-00173-g3cdb45594619 #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/1:0 state:D stack:23744 pid:5088 tgid:5088 ppid:2 flags:0x00004000
+Workqueue: events_power_efficient reg_check_chans_work
+Call Trace:
+<TASK>
+context_switch kernel/sched/core.c:5409 [inline]
+__schedule+0xf15/0x5d00 kernel/sched/core.c:6746
+__schedule_loop kernel/sched/core.c:6823 [inline]
+schedule+0xe7/0x350 kernel/sched/core.c:6838
+schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:6895
+__mutex_lock_common kernel/locking/mutex.c:684 [inline]
+__mutex_lock+0x5b8/0x9c0 kernel/locking/mutex.c:752
+wiphy_lock include/net/cfg80211.h:5953 [inline]
+reg_leave_invalid_chans net/wireless/reg.c:2466 [inline]
+reg_check_chans_work+0x10a/0x10e0 net/wireless/reg.c:2481
+
+Fixes: 0190c1d452a9 ("net: sched: atomically check-allocate action")
+Reported-by: syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b87c222546179f4513a7
+Signed-off-by: David Ruth <druth@chromium.org>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://lore.kernel.org/r/20240614190326.1349786-1-druth@chromium.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/btf_map_in_map.c | 26 +------------------
- 1 file changed, 1 insertion(+), 25 deletions(-)
+ net/sched/act_api.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-index a8b53b8736f01..f66ceccd7029c 100644
---- a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
-@@ -25,7 +25,7 @@ static void test_lookup_update(void)
- 	int map1_fd, map2_fd, map3_fd, map4_fd, map5_fd, map1_id, map2_id;
- 	int outer_arr_fd, outer_hash_fd, outer_arr_dyn_fd;
- 	struct test_btf_map_in_map *skel;
--	int err, key = 0, val, i, fd;
-+	int err, key = 0, val, i;
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index 9ee622fb1160f..2520708b06a12 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -830,7 +830,6 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
+ 	u32 max;
  
- 	skel = test_btf_map_in_map__open_and_load();
- 	if (CHECK(!skel, "skel_open", "failed to open&load skeleton\n"))
-@@ -102,30 +102,6 @@ static void test_lookup_update(void)
- 	CHECK(map1_id == 0, "map1_id", "failed to get ID 1\n");
- 	CHECK(map2_id == 0, "map2_id", "failed to get ID 2\n");
+ 	if (*index) {
+-again:
+ 		rcu_read_lock();
+ 		p = idr_find(&idrinfo->action_idr, *index);
  
--	test_btf_map_in_map__destroy(skel);
--	skel = NULL;
--
--	/* we need to either wait for or force synchronize_rcu(), before
--	 * checking for "still exists" condition, otherwise map could still be
--	 * resolvable by ID, causing false positives.
--	 *
--	 * Older kernels (5.8 and earlier) freed map only after two
--	 * synchronize_rcu()s, so trigger two, to be entirely sure.
--	 */
--	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
--	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
--
--	fd = bpf_map_get_fd_by_id(map1_id);
--	if (CHECK(fd >= 0, "map1_leak", "inner_map1 leaked!\n")) {
--		close(fd);
--		goto cleanup;
--	}
--	fd = bpf_map_get_fd_by_id(map2_id);
--	if (CHECK(fd >= 0, "map2_leak", "inner_map2 leaked!\n")) {
--		close(fd);
--		goto cleanup;
--	}
--
- cleanup:
- 	test_btf_map_in_map__destroy(skel);
- }
+@@ -839,7 +838,7 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
+ 			 * index but did not assign the pointer yet.
+ 			 */
+ 			rcu_read_unlock();
+-			goto again;
++			return -EAGAIN;
+ 		}
+ 
+ 		if (!p) {
 -- 
 2.43.0
 
