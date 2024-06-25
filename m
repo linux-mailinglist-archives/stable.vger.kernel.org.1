@@ -1,173 +1,113 @@
-Return-Path: <stable+bounces-55812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDAD2917421
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 00:12:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FEF9174A0
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 01:19:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E08661C20ED1
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 22:12:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F405A285542
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 23:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CDA17E8F0;
-	Tue, 25 Jun 2024 22:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362A017F4F5;
+	Tue, 25 Jun 2024 23:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="pBmpNcdr";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="XwxQdioi"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="WkCxcBsq"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBCB617E8E8;
-	Tue, 25 Jun 2024 22:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF2D146A64
+	for <stable@vger.kernel.org>; Tue, 25 Jun 2024 23:19:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719353544; cv=none; b=ohQH6JFEBEKwEvJJxYLxlqM4rSFzysYicwkypXHY2TOD8K9D1hfL1u+pd4jirZiRwKAvsIXPqG/nDoWBoprQv4He5tIh104Kzq4f4tW4rRQiIoOCvFmaDloL2Lzk2H7mS0b0vim5Nqtrrfh8kNFT3VDm5n3s/IBcog+zn/zLhLQ=
+	t=1719357554; cv=none; b=PFDSWeQ51gsN/C0YdveieYlPbRsIcyX3boI4g/VYwSVnguzEb/tE0JpvNORaO8Hqll36zjEQ5VPARGcaMIQJMe683dU58sN3N1k7MSnzVcUjoq28ovwztavL4k30aIMo1hZgFU0Gxv1f9rYN3ah+n/JRsJIt3kvU06vakW4K1S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719353544; c=relaxed/simple;
-	bh=Ftu3WsTt5XKxN+pi5Lmx1LZaz7n0qjVViDvMcD4JHgc=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=AW6Tgq9FjwbE8wtzUXNnKdCMdlGzichnXzv07Wk4xUCvq6TbTF4wm9094+S5iAHlkxu4JUT4Xw3amY0aeKl0aqDCb9bgO9lTzfh56YOOlhl0dyk691BZnOeNl8gFxdF9GSlCHaro7EL0TPpntY6aYDKi9yyIFUY+T6jEsWjhMEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=pBmpNcdr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=XwxQdioi; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 25 Jun 2024 22:12:19 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1719353540;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=XHw6rhwX8j0QHpBV2/9r5LmlHycquzQ7fMaPHli9yUo=;
-	b=pBmpNcdr3OQ+AWo7nf3nVz/jQa7Oy3unpwd5dGmjvSsVp0SnNZgpT8XG4d2Ap7NPBOYgiy
-	aK6uSpUq0kRxAbP59Yqm3mz11HxEa1aUuudoZ2SQtdVJWJcSqIW0d4k91i7fCSMIH3DbdH
-	LlT/5OkuzrayTAjw36ghAvMt01cqYd6siH9s0OVxKGtVEd8Qx0RxgRWeqFInTldWvN8b73
-	qB+Fl7GzRqc55AwPEC3m+jwgsNefATlqGZs2C4hLWC7lPwp9QxgakQ/QbX58JWgFzJT4M9
-	mvbOdw2vjL5klvR7ze+HGLWaYx9dX85BnUG6JmU5AkE/Gv6ltB4ZphLz9yTdow==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1719353540;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=XHw6rhwX8j0QHpBV2/9r5LmlHycquzQ7fMaPHli9yUo=;
-	b=XwxQdioiVdOUJM7oUcsedffzBnbjBlpcT9NFo/xuFBs8q/TU9UFw1RMBH/6SIcbj5HnxwP
-	gk8TW5Aa0aCoPcAw==
-From: "tip-bot2 for Dexuan Cui" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: x86/urgent] x86/tdx: Support vmalloc() for tdx_enc_status_changed()
-Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dexuan Cui <decui@microsoft.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Michael Kelley <mikelley@microsoft.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, Kai Huang <kai.huang@intel.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1719357554; c=relaxed/simple;
+	bh=3cLkEoQgP1YdwO0BfLrc2Nt9hXh8gTQtQS3drljKsUE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I0lnsJB0pMTJ70TeL4WzxL2InfMoQ0sDjgTlvvtwJRP7WSN2J8el41zenMDC7EnxJ68d43EEEJzviVn5uxxfPMi29OjX7T8qXL9Mf6RIsV0HqeMh6xmj5FLE2/o9THYx6K2z6coafFKxlttVO/rj8KnxaA+bNwsbBvCnn1/MNf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=WkCxcBsq; arc=none smtp.client-ip=209.85.166.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-7eb7a2f062cso243653339f.0
+        for <stable@vger.kernel.org>; Tue, 25 Jun 2024 16:19:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1719357551; x=1719962351; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W1GHJHK8fYZOK8MQRqagipkH8Y/cWBs/Aado6nOWSJY=;
+        b=WkCxcBsqNgiIe+3TCH7eiNHC40xBNI0jZupXolTlcmkVkVUQaD9QmVnW9NheN5GPfh
+         j4D+5OpyAEn9IXAH3o0ny6lIXwEwGTpSA2qwfKkrwU80HRRQP5KZgYuDhq8b1U5Yfgnp
+         7X1IdXkgJH+qbsFeo27pytyp/mhj5+Wh/vUIs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719357551; x=1719962351;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W1GHJHK8fYZOK8MQRqagipkH8Y/cWBs/Aado6nOWSJY=;
+        b=CeoA/xY/xpyf1eh0TNBuresl4NCXp4KziviaQVqeeVTS7If9JY6lZd583zvkBAya/n
+         XlmifcjayWTqfAf5xIxJzdcpZxFpY5S9gW/XnHdJgB1e333MOfAkpxx3r56F/0aMJZs9
+         V/sbudsf1EhxtJv9qwN3/HUY/wXOInzeDAjq8zhfUcqLrPAf0cd/aWkYaYIslF/y0WOS
+         7oAvi0MWdvTeXRXbFYra7SgQJ0x/rz4znC3/sHPQd9j8IzyIZ5lnwdNoZfZ8CEmx+bW4
+         E2jxiMmswkoCXpRRylEvvJjik7fUlGltvm8PTr6wsNTPTPpZYxuHQzc+yAWEit5m4YmG
+         DHLQ==
+X-Gm-Message-State: AOJu0Yw8RTqO16VpyOWDRYnYE5sd4QxpbxB+mdooElNuAX+IpwCmJPle
+	4xqRfDPZtMF2SDczGTLSeL5cjXFMn1Ser8bs2ngIy1xSsL+8K3HWh9lM1p30kQ==
+X-Google-Smtp-Source: AGHT+IF9PvWW+uGfCOxuE7/74/1AIT0M4Il4mBFOfwU/j90/kgt3HudyWaRkt4x9JkWeKxP9KFOJEg==
+X-Received: by 2002:a05:6602:3fcc:b0:7de:a982:c4a5 with SMTP id ca18e2360f4ac-7f3a7532b56mr1053100839f.6.1719357551339;
+        Tue, 25 Jun 2024 16:19:11 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([72.42.103.171])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b9d127b6f0sm2837019173.178.2024.06.25.16.19.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Jun 2024 16:19:11 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Tue, 25 Jun 2024 17:19:09 -0600
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.9 000/250] 6.9.7-rc1 review
+Message-ID: <ZntQbVyebJZZCbh_@fedora64.linuxtx.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <171935353976.2215.5616750471664330747.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Tue, Jun 25, 2024 at 11:29:18AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.9.7 release.
+> There are 250 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 27 Jun 2024 08:54:55 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.7-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Commit-ID:     e1b8ac3aae589bb57a2c2e49fa76235c687c4d23
-Gitweb:        https://git.kernel.org/tip/e1b8ac3aae589bb57a2c2e49fa76235c687c4d23
-Author:        Dexuan Cui <decui@microsoft.com>
-AuthorDate:    Mon, 20 May 2024 19:12:38 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 25 Jun 2024 14:45:22 -07:00
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-x86/tdx: Support vmalloc() for tdx_enc_status_changed()
-
-When a TDX guest runs on Hyper-V, the hv_netvsc driver's netvsc_init_buf()
-allocates buffers using vzalloc(), and needs to share the buffers with the
-host OS by calling set_memory_decrypted(), which is not working for
-vmalloc() yet. Add the support by handling the pages one by one.
-
-Co-developed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240521021238.1803-1-decui%40microsoft.com
----
- arch/x86/coco/tdx/tdx.c | 35 ++++++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 7 deletions(-)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index c1cb903..abf3cd5 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -7,6 +7,7 @@
- #include <linux/cpufeature.h>
- #include <linux/export.h>
- #include <linux/io.h>
-+#include <linux/mm.h>
- #include <asm/coco.h>
- #include <asm/tdx.h>
- #include <asm/vmx.h>
-@@ -778,6 +779,19 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
- 	return false;
- }
- 
-+static bool tdx_enc_status_changed_phys(phys_addr_t start, phys_addr_t end,
-+					bool enc)
-+{
-+	if (!tdx_map_gpa(start, end, enc))
-+		return false;
-+
-+	/* shared->private conversion requires memory to be accepted before use */
-+	if (enc)
-+		return tdx_accept_memory(start, end);
-+
-+	return true;
-+}
-+
- /*
-  * Inform the VMM of the guest's intent for this physical page: shared with
-  * the VMM or private to the guest.  The VMM is expected to change its mapping
-@@ -785,15 +799,22 @@ static bool tdx_map_gpa(phys_addr_t start, phys_addr_t end, bool enc)
-  */
- static bool tdx_enc_status_changed(unsigned long vaddr, int numpages, bool enc)
- {
--	phys_addr_t start = __pa(vaddr);
--	phys_addr_t end   = __pa(vaddr + numpages * PAGE_SIZE);
-+	unsigned long start = vaddr;
-+	unsigned long end = start + numpages * PAGE_SIZE;
-+	unsigned long step = end - start;
-+	unsigned long addr;
- 
--	if (!tdx_map_gpa(start, end, enc))
--		return false;
-+	/* Step through page-by-page for vmalloc() mappings */
-+	if (is_vmalloc_addr((void *)vaddr))
-+		step = PAGE_SIZE;
- 
--	/* shared->private conversion requires memory to be accepted before use */
--	if (enc)
--		return tdx_accept_memory(start, end);
-+	for (addr = start; addr < end; addr += step) {
-+		phys_addr_t start_pa = slow_virt_to_phys((void *)addr);
-+		phys_addr_t end_pa   = start_pa + step;
-+
-+		if (!tdx_enc_status_changed_phys(start_pa, end_pa, enc))
-+			return false;
-+	}
- 
- 	return true;
- }
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
