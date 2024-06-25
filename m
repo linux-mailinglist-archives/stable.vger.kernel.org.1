@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-55363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763E5916343
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F36829163E1
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30C7628615C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66434B27CA6
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C916B1494CB;
-	Tue, 25 Jun 2024 09:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB93C149C4C;
+	Tue, 25 Jun 2024 09:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2TNySwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2eI9EGz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E6E12EBEA;
-	Tue, 25 Jun 2024 09:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989C824B34;
+	Tue, 25 Jun 2024 09:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308683; cv=none; b=gjpfNlyBAjOIktxl1hHS6+WFHpakopVuhmKva0ISFTSWD33l/MGR/i3tPsEZYNnQf/NhBvDWdSaOTWWvOYVYwLY/+JzVbwuQbXDioPwxyLotpo4u1tWX4rZ4E/OaYhPdJXJ5Pc+1eRdhIHPYStTCIybwuXmjI/8HJDbaJOUR0Aw=
+	t=1719309086; cv=none; b=IsK9VWL/7CeDjs1FZj2yduzTLRq0qb/L8V1CmlhXiEhoOUeqh1VH8v3rttyNqUS29lvigiWz2fJ0Vf0hSTftNSBFxEvTB2HcipmgZI98EKmDFjLbQ/N/BkdKdMi7BauZYrfg7oqOVbHUO38JmvRCn5C0wXSC4RJzgSm74XFG53M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308683; c=relaxed/simple;
-	bh=GRoDgkIauAnXkdEQk13Tegb6UGx7zM0jASV6Kj0BCkM=;
+	s=arc-20240116; t=1719309086; c=relaxed/simple;
+	bh=Sfno34em+iXa6GB7tCbjVbONl9w9rnsH213fWjxpklM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=peL0s1BLaVGAA9hlgAk0jrG2zdKadLYX7JTwQeK0fuSENPO+RqAUbOCyM7s47d7BF0S/0ABvaD9+nmsmhbxd0h0gqisCG6CZw2d9jKTVp3htT91hI5C2ix5s9KVSF+qwe7uon/dHNamqnl19tj6psNHB2MqnSVLH4qw448DyP5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2TNySwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C52C32781;
-	Tue, 25 Jun 2024 09:44:42 +0000 (UTC)
+	 MIME-Version; b=MA32+jyU4uMzBFqV9KEX8scAxk1Ze/dBAkuQQtuijijSAd3wkCdp/OEX/dPdlrJphWKDYoybVGVKYb1H9BxErZ+E7XfgDHkFx9na+9XhHLZ8TeqGvxcEkFtkS4a4vBoMOT49O+kAgpkMbahkZr893I9XX1FmK8YPJAmqalriE+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2eI9EGz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E337C32781;
+	Tue, 25 Jun 2024 09:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308683;
-	bh=GRoDgkIauAnXkdEQk13Tegb6UGx7zM0jASV6Kj0BCkM=;
+	s=korg; t=1719309086;
+	bh=Sfno34em+iXa6GB7tCbjVbONl9w9rnsH213fWjxpklM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2TNySwcmQcJf1HgwS+MheLAuFuQGw5xTcvHq/V6q6c9EgbyqIl4pi1Pe1f4ql0ae
-	 VFa2tSxG5fCMQzEi3Iztjy8m2lEzREYlgmrezpzS2IwwZt8Vi1y4eJ1ZIvsbV0ABWd
-	 Xvb3AyyjZ/qAoGCwz2/VDqOBCsTLFbsJS9szaEyA=
+	b=T2eI9EGzA7c2qEXg1AY0jguHXRqO8JMy9CYlFRdqbaOEvTTqAwA8XXZVrxt23R0Nz
+	 4Bg7Je0FDqTgflsiHTZLwpgjfWV7qMNEBO0Cmuv+zED/KBPrAU5DtfyYMtx8nuRuPE
+	 iH6m8YotL9T5WLYl7WfZ1+uLUUVH6sfgVCFdVWRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.9 205/250] drm/amdgpu: fix UBSAN warning in kv_dpm.c
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 091/192] ptp: fix integer overflow in max_vclocks_store
 Date: Tue, 25 Jun 2024 11:32:43 +0200
-Message-ID: <20240625085555.923090169@linuxfoundation.org>
+Message-ID: <20240625085540.669728688@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit f0d576f840153392d04b2d52cf3adab8f62e8cb6 upstream.
+[ Upstream commit 81d23d2a24012e448f651e007fac2cfd20a45ce0 ]
 
-Adds bounds check for sumo_vid_mapping_entry.
+On 32bit systems, the "4 * max" multiply can overflow.  Use kcalloc()
+to do the allocation to prevent this.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3392
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 44c494c8e30e ("ptp: track available ptp vclocks information")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
+Link: https://lore.kernel.org/r/ee8110ed-6619-4bd7-9024-28c1f2ac24f4@moroto.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ptp/ptp_sysfs.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-@@ -164,6 +164,8 @@ static void sumo_construct_vid_mapping_t
+diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
+index 34ea5c16123a1..aefc06ae5d099 100644
+--- a/drivers/ptp/ptp_sysfs.c
++++ b/drivers/ptp/ptp_sysfs.c
+@@ -294,8 +294,7 @@ static ssize_t max_vclocks_store(struct device *dev,
+ 	if (max < ptp->n_vclocks)
+ 		goto out;
  
- 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
- 		if (table[i].ulSupportedSCLK != 0) {
-+			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
-+				continue;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
- 				table[i].usVoltageID;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
+-	size = sizeof(int) * max;
+-	vclock_index = kzalloc(size, GFP_KERNEL);
++	vclock_index = kcalloc(max, sizeof(int), GFP_KERNEL);
+ 	if (!vclock_index) {
+ 		err = -ENOMEM;
+ 		goto out;
+-- 
+2.43.0
+
 
 
 
