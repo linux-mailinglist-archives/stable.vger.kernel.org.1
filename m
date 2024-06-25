@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-55286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 576509162F3
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7846791639A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF0FAB27174
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E274B26536
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0769149DF7;
-	Tue, 25 Jun 2024 09:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B4014A093;
+	Tue, 25 Jun 2024 09:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePmwwYhD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGxphBj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD16C12EBEA;
-	Tue, 25 Jun 2024 09:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7E9146A9D;
+	Tue, 25 Jun 2024 09:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308459; cv=none; b=PUQNOkqdvA/6IJhv2Kl2LoR/L3Gr08b75cEHpEZgkCAnQ1d5S7zrexXzqFaPWcBfN9u2RsAGFDVShmMSS2O9RZHJ+JvFqcg2vDpypgP1w83KFLs9YXd+dH0GEDedCICdfsIwuEFQhFDOGsXIaClBFLsNqe3wLes/5M4wHwpjyQU=
+	t=1719308912; cv=none; b=bIAZjAhpXSPkHJmSvVMtoQVqybKTgWXaHAdzNEypQAdVFKN8R0FS2/6QkGhekv0rRLHMnu7nokq764bWZYKoTf0QJ1g/gp0OMyxX72nF2ZBVoCvOw6JgbczPYulzjcZccjZUR/FQSJnJdW45vJGWOh4Kfnq6LGarSGzaHG24bsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308459; c=relaxed/simple;
-	bh=o/in4nCmG6Dq11VBsmc4CSZ09YsETf2goB3VoeDv0go=;
+	s=arc-20240116; t=1719308912; c=relaxed/simple;
+	bh=fLUK1hICG8f4jGKP18nl2jakzCJ+pyvlxVuMT6/3eUw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fINhncc5f29tF+hsES7f4TsmR8jWsX0F+LR1BMUaIxWs6a/2duxMRvD1zxjUeYPiuJU0putU/nnl9iXIPhfaj8xppqRR0ZPRwYkQK75BiFfHDjEBqIbJvApr+EwmHyhrgxepWG3yPIwauMonrXGfwGQsN7h7mwU25PpGpO+4YCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePmwwYhD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291F4C32781;
-	Tue, 25 Jun 2024 09:40:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tjtoAQomg+rVg1vDbMedOfywuF+CgRW61SE2CQhRjLbU4TVgGKCfPPdfwpf5L2VcXI8fY8JD2yNk5KKT7FP9pNiRekbIz2tp1Tsv3PafTBqoymNFwXsqR0yVEHrTzBts5g0hCiqrS5sdHeSaoeRbyEfUywBn72qFO/Ujuklbzjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gGxphBj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDC7C32781;
+	Tue, 25 Jun 2024 09:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308459;
-	bh=o/in4nCmG6Dq11VBsmc4CSZ09YsETf2goB3VoeDv0go=;
+	s=korg; t=1719308912;
+	bh=fLUK1hICG8f4jGKP18nl2jakzCJ+pyvlxVuMT6/3eUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePmwwYhDp1rn2bXCYsBwIhf/4CLhRH4vD8M53CPAe8D1ws6r0kziyBJAsGTBWNTvD
-	 5pk54vf+kBaRWsB/jrVChFyPRw7K/iqsGVyb5BCstRo5ltlbMBMXdkhTVAh/vhA6Ki
-	 n7guu2j9BpfxQ75yT4YpCX0TjeBV0fIRW3T1Bgc8=
+	b=gGxphBj69Kjq1RteYddSHrFKMFqgiMnchFvFe8WiSlema1ZUP322XQ4QxD7Z9qb5Z
+	 GcQrcmwEu/s5jPujdMeqPwxFuhDIfrhaiRM57KjbcVkglABZ2h5pDPTNL8ce8ovIVW
+	 Oa2MXYsl9hdwQixktfE8XZ7Pod0/buHL0uRk3YwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuang Li <shuali@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kees Cook <keescook@chromium.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 127/250] tipc: force a dst refcount before doing decryption
-Date: Tue, 25 Jun 2024 11:31:25 +0200
-Message-ID: <20240625085552.941131149@linuxfoundation.org>
+Subject: [PATCH 6.6 014/192] wifi: ath9k: work around memset overflow warning
+Date: Tue, 25 Jun 2024 11:31:26 +0200
+Message-ID: <20240625085537.705278565@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 2ebe8f840c7450ecbfca9d18ac92e9ce9155e269 ]
+[ Upstream commit 61752ac69b69ed2e04444d090f6917c77ab36d42 ]
 
-As it says in commit 3bc07321ccc2 ("xfrm: Force a dst refcount before
-entering the xfrm type handlers"):
+gcc-9 and some other older versions produce a false-positive warning
+for zeroing two fields
 
-"Crypto requests might return asynchronous. In this case we leave the
- rcu protected region, so force a refcount on the skb's destination
- entry before we enter the xfrm type input/output handlers."
+In file included from include/linux/string.h:369,
+                 from drivers/net/wireless/ath/ath9k/main.c:18:
+In function 'fortify_memset_chk',
+    inlined from 'ath9k_ps_wakeup' at drivers/net/wireless/ath/ath9k/main.c:140:3:
+include/linux/fortify-string.h:462:25: error: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror=attribute-warning]
+  462 |                         __write_overflow_field(p_size_field, size);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-On TIPC decryption path it has the same problem, and skb_dst_force()
-should be called before doing decryption to avoid a possible crash.
+Using a struct_group seems to reliably avoid the warning and
+not make the code much uglier. The combined memset() should even
+save a couple of cpu cycles.
 
-Shuang reported this issue when this warning is triggered:
-
-  [] WARNING: include/net/dst.h:337 tipc_sk_rcv+0x1055/0x1ea0 [tipc]
-  [] Kdump: loaded Tainted: G W --------- - - 4.18.0-496.el8.x86_64+debug
-  [] Workqueue: crypto cryptd_queue_worker
-  [] RIP: 0010:tipc_sk_rcv+0x1055/0x1ea0 [tipc]
-  [] Call Trace:
-  [] tipc_sk_mcast_rcv+0x548/0xea0 [tipc]
-  [] tipc_rcv+0xcf5/0x1060 [tipc]
-  [] tipc_aead_decrypt_done+0x215/0x2e0 [tipc]
-  [] cryptd_aead_crypt+0xdb/0x190
-  [] cryptd_queue_worker+0xed/0x190
-  [] process_one_work+0x93d/0x17e0
-
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://lore.kernel.org/r/fbe3195fad6997a4eec62d9bf076b2ad03ac336b.1718476040.git.lucien.xin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240328135509.3755090-3-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/node.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath.h        | 6 ++++--
+ drivers/net/wireless/ath/ath9k/main.c | 3 +--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index c1e890a824347..500320e5ca479 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -2105,6 +2105,7 @@ void tipc_rcv(struct net *net, struct sk_buff *skb, struct tipc_bearer *b)
- 	} else {
- 		n = tipc_node_find_by_id(net, ehdr->id);
+diff --git a/drivers/net/wireless/ath/ath.h b/drivers/net/wireless/ath/ath.h
+index f02a308a9ffc5..34654f710d8a1 100644
+--- a/drivers/net/wireless/ath/ath.h
++++ b/drivers/net/wireless/ath/ath.h
+@@ -171,8 +171,10 @@ struct ath_common {
+ 	unsigned int clockrate;
+ 
+ 	spinlock_t cc_lock;
+-	struct ath_cycle_counters cc_ani;
+-	struct ath_cycle_counters cc_survey;
++	struct_group(cc,
++		struct ath_cycle_counters cc_ani;
++		struct ath_cycle_counters cc_survey;
++	);
+ 
+ 	struct ath_regulatory regulatory;
+ 	struct ath_regulatory reg_world_copy;
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index 1494feedb27db..aa271b82875e0 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -135,8 +135,7 @@ void ath9k_ps_wakeup(struct ath_softc *sc)
+ 	if (power_mode != ATH9K_PM_AWAKE) {
+ 		spin_lock(&common->cc_lock);
+ 		ath_hw_cycle_counters_update(common);
+-		memset(&common->cc_survey, 0, sizeof(common->cc_survey));
+-		memset(&common->cc_ani, 0, sizeof(common->cc_ani));
++		memset(&common->cc, 0, sizeof(common->cc));
+ 		spin_unlock(&common->cc_lock);
  	}
-+	skb_dst_force(skb);
- 	tipc_crypto_rcv(net, (n) ? n->crypto_rx : NULL, &skb, b);
- 	if (!skb)
- 		return;
+ 
 -- 
 2.43.0
 
