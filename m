@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-55464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CE29163B2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE00591631A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6471CB2768C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E127B27460
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74D8148315;
-	Tue, 25 Jun 2024 09:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F304D14A4DA;
+	Tue, 25 Jun 2024 09:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQgbtJqq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGmlG/mm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9513F1465A8;
-	Tue, 25 Jun 2024 09:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13B014A4D2;
+	Tue, 25 Jun 2024 09:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308980; cv=none; b=X7l7hcGw+NokBJu2NboxhzUm5d3mph10nVPN9q1TwfivKzl4QhQVOGTiyxEVsMd4Fyq8Fm1Gnp5ZIF/sprq7mOHWfjantO+RnT3DfHtxhICxZNZgwz/i1i5ANt4RtG1Pa2c/Ozfo4hNRXMCRpJoWrqJR/fBGzjddMYGcAXlLg00=
+	t=1719308559; cv=none; b=iXYPojeEL/UJvZtoGxdzMv0S8mXYgXjXB0k2QfGFRePQ+p2voLESo4v/3Y/ZJgpHkdyFlQ5bK78QG7on85ugauXu9wIdDurNJoWLrJv06PFuUzUnPAiv4BI4xrnQfQLU0uneEQxRis0lmuhKXzWuX7asoSTm82Oz68Mj49wsR5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308980; c=relaxed/simple;
-	bh=gQG+dN9PyRfQHobnwu5hyI5uvYxgrjogC2X353rdOdk=;
+	s=arc-20240116; t=1719308559; c=relaxed/simple;
+	bh=xc3lbaWnUUdCA0btTAm1DXOC1/00mPmR/J3pxNxDFmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2l0rSYHi6mmbkAMHP7lGHyukh2Zooyzsrx9Cv+QJvCnWe9sDaIwm5aV0qFR2qfL6WF1wubMXQOQArXGRNDCokH2NyuUugehJfNvfCEpFK1L/2nWi4gC3lC0hSKUqWlx1YwedKH2XDeIZ4ti/NCOC7boq6/b2xdEjtEyTFasPDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQgbtJqq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE315C32781;
-	Tue, 25 Jun 2024 09:49:39 +0000 (UTC)
+	 MIME-Version; b=Wbeu4K9Wrc66i+2RtT+A11d6Ykp0axRJ2iRXi1jpsa1hQ6LpfsW2fHFCTgRpMWDmhkGuvTUEmTo3DFbZ16rgY/It3DEqFRayRZmCU4UY2zzdSF+JhqwE8t81CtJwZ5Yb2NoWVjwFU0L3xdHkOwqJZpmycjPFve6v8UeuaoOF7dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGmlG/mm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D12C32781;
+	Tue, 25 Jun 2024 09:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308980;
-	bh=gQG+dN9PyRfQHobnwu5hyI5uvYxgrjogC2X353rdOdk=;
+	s=korg; t=1719308559;
+	bh=xc3lbaWnUUdCA0btTAm1DXOC1/00mPmR/J3pxNxDFmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQgbtJqqNiPhFs8U+BcemfKlTAOqGkaADHzF/gnVD6SxBefKMwk4tm+DhQ7yfczku
-	 y4oqPCWkdZa2tbV6ic4hk+BmUCqKKTJO+vVUchdd+qSg9+zuAlINNbhOPqI2R2Baas
-	 PekOG9CO5IMrv01RTdinByDbSULdnrWx6oBAzeNA=
+	b=CGmlG/mmYLoyq/snnCdjx5K95HvRLVxuTvdCJpbn/YV6sasdRncReZELn16g/Ka8D
+	 UABMu5oCwM7kWmVwczPFZTFtOxjZ1pdh2w3Rt/vrjD2HiNjmjchQGPIhvJAUS9RatH
+	 yyiy47/YLaVRO/gIzEGVpWhWJ+HATfUztFEFp4qE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
+	Liu Ying <victor.liu@nxp.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/192] usb: misc: uss720: check for incompatible versions of the Belkin F5U002
+Subject: [PATCH 6.9 161/250] arm: dts: imx53-qsb-hdmi: Disable panel instead of deleting node
 Date: Tue, 25 Jun 2024 11:31:59 +0200
-Message-ID: <20240625085538.974783053@linuxfoundation.org>
+Message-ID: <20240625085554.240360222@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Liu Ying <victor.liu@nxp.com>
 
-[ Upstream commit 3295f1b866bfbcabd625511968e8a5c541f9ab32 ]
+[ Upstream commit bcdea3e81ea51c9e89e3b11aac2612e1b4330bee ]
 
-The incompatible device in my possession has a sticker that says
-"F5U002 Rev 2" and "P80453-B", and lsusb identifies it as
-"050d:0002 Belkin Components IEEE-1284 Controller". There is a bug
-report from 2007 from Michael Trausch who was seeing the exact same
-errors that I saw in 2024 trying to use this cable.
+We cannot use /delete-node/ directive to delete a node in a DT
+overlay.  The node won't be deleted effectively.  Instead, set
+the node's status property to "disabled" to achieve something
+similar.
 
-Link: https://lore.kernel.org/all/46DE5830.9060401@trausch.us/
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Link: https://lore.kernel.org/r/20240326150723.99939-5-alexhenrie24@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eeb403df953f ("ARM: dts: imx53-qsb: add support for the HDMI expander")
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/uss720.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx53-qsb-hdmi.dtso   | 6 ++++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/misc/uss720.c b/drivers/usb/misc/uss720.c
-index b00d92db5dfd1..eb5a8e0d9e2d6 100644
---- a/drivers/usb/misc/uss720.c
-+++ b/drivers/usb/misc/uss720.c
-@@ -677,7 +677,7 @@ static int uss720_probe(struct usb_interface *intf,
- 	struct parport_uss720_private *priv;
- 	struct parport *pp;
- 	unsigned char reg;
--	int i;
-+	int ret;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi b/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
+index d804404464737..05d7a462ea25a 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx53-qsb-common.dtsi
+@@ -85,7 +85,7 @@
+ 		};
+ 	};
  
- 	dev_dbg(&intf->dev, "probe: vendor id 0x%x, device id 0x%x\n",
- 		le16_to_cpu(usbdev->descriptor.idVendor),
-@@ -688,8 +688,8 @@ static int uss720_probe(struct usb_interface *intf,
- 		usb_put_dev(usbdev);
- 		return -ENODEV;
- 	}
--	i = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
--	dev_dbg(&intf->dev, "set interface result %d\n", i);
-+	ret = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
-+	dev_dbg(&intf->dev, "set interface result %d\n", ret);
+-	panel {
++	panel_dpi: panel {
+ 		compatible = "sii,43wvf1g";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_display_power>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx53-qsb-hdmi.dtso b/arch/arm/boot/dts/nxp/imx/imx53-qsb-hdmi.dtso
+index c84e9b0525276..151e9cee3c87e 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx53-qsb-hdmi.dtso
++++ b/arch/arm/boot/dts/nxp/imx/imx53-qsb-hdmi.dtso
+@@ -10,8 +10,6 @@
+ /plugin/;
  
- 	interface = intf->cur_altsetting;
+ &{/} {
+-	/delete-node/ panel;
+-
+ 	hdmi: connector-hdmi {
+ 		compatible = "hdmi-connector";
+ 		label = "hdmi";
+@@ -82,6 +80,10 @@
+ 	};
+ };
  
-@@ -725,12 +725,18 @@ static int uss720_probe(struct usb_interface *intf,
- 	set_1284_register(pp, 7, 0x00, GFP_KERNEL);
- 	set_1284_register(pp, 6, 0x30, GFP_KERNEL);  /* PS/2 mode */
- 	set_1284_register(pp, 2, 0x0c, GFP_KERNEL);
--	/* debugging */
--	get_1284_register(pp, 0, &reg, GFP_KERNEL);
++&panel_dpi {
++	status = "disabled";
++};
 +
-+	/* The Belkin F5U002 Rev 2 P80453-B USB parallel port adapter shares the
-+	 * device ID 050d:0002 with some other device that works with this
-+	 * driver, but it itself does not. Detect and handle the bad cable
-+	 * here. */
-+	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
- 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
-+	if (ret < 0)
-+		return ret;
- 
--	i = usb_find_last_int_in_endpoint(interface, &epd);
--	if (!i) {
-+	ret = usb_find_last_int_in_endpoint(interface, &epd);
-+	if (!ret) {
- 		dev_dbg(&intf->dev, "epaddr %d interval %d\n",
- 				epd->bEndpointAddress, epd->bInterval);
- 	}
+ &tve {
+ 	status = "disabled";
+ };
 -- 
 2.43.0
 
