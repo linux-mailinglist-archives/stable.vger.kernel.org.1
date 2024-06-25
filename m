@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-55571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18521916439
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041889164B6
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D0FE1F212AE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B38642881B5
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82662149E0A;
-	Tue, 25 Jun 2024 09:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D45314A089;
+	Tue, 25 Jun 2024 10:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJC50kUq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0NgxEIj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406AC149C4F;
-	Tue, 25 Jun 2024 09:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A86D1487E9;
+	Tue, 25 Jun 2024 10:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309296; cv=none; b=WlKlXl4Fue9N9w6SCknN4a2y4j6Ul/cW95DGtRVc2m59V1WqyqJEnd9keboZ/X4i+wZksJhGZcDRZhv2f8EeF67uc6U46XrcFcVQGFv4J6xSmCR6aH2pVc+Ork+Xa8FkgLWRZZ4l9RdozCEqJtDj24Riymb82XflXNifG6C9D8o=
+	t=1719309624; cv=none; b=FMnSKEt3Q1L7Goe29vX5+WTwx2kzsE26sPkcc1OY1KXKqzcEimUYEkVrTw8XWqfF5k/eyx8C5aERddlWgPAVHNhH2gR5st8PBW9q5HQCf0UqV9BQ2gpjnVzuIF2JObdM2g92QHcpSFH2Q3sI5vWTIgK3AoyrXyXCWVnX0G35Du8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309296; c=relaxed/simple;
-	bh=mTTegi7nXEgcyjDjFdD2+4jew8Y1MXqHP8RsmYd8Omg=;
+	s=arc-20240116; t=1719309624; c=relaxed/simple;
+	bh=Ye8FhaUbjwgeQEItj39QQAvOMWpQtd8/CqOZ20bYjSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQ1RaibmV0cLYgGF+MuC8eOAwbc9jRztg0KlUt33C9BPzhvJYLRsqLhKahwZ1/1RwhD5H9NqB2P0qtafKwjpjSgr0q0srVvigFrncazf0xx1VPqQKrkXZ/fNFLntFS1h8cQf4TnZuI4JIB3SA3cCLUnR14Og7e8IvPxywxLbD+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJC50kUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB101C32781;
-	Tue, 25 Jun 2024 09:54:55 +0000 (UTC)
+	 MIME-Version; b=ARS/qCCNvYMSc+0UvwGC+zuYc0TGmsEQyZX6eR8JnqDywnF+Oohj5ptT1ssfFtIF9xC9Kae1bKWlD+CloocyFxvSSZMXwP3y3wWZYx+HNGUlomH3iRrPQ6RLQgaxSiMZ+BnH+WJwAS+8qO4b5wGkqyAnPJzEPEo29ehMZLZjp4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0NgxEIj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E37FC32781;
+	Tue, 25 Jun 2024 10:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309296;
-	bh=mTTegi7nXEgcyjDjFdD2+4jew8Y1MXqHP8RsmYd8Omg=;
+	s=korg; t=1719309623;
+	bh=Ye8FhaUbjwgeQEItj39QQAvOMWpQtd8/CqOZ20bYjSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PJC50kUqwmvYJIklSUr3BGtvi6CYWPdALiRmTyqABZik0akuSE1m3YWwoJIskKQh5
-	 WNn8HvEH82oMtktaUr/OZetj90XCgS8vehpQB9IPUC9E3rQj7Mnc/2uWbzcevTbPev
-	 18kjXGxuGdVvQTmZNDsbCZXp/drOzLIDtDaaAvtg=
+	b=Y0NgxEIjKC+pp0zTEMdBKMKJej6ktntBG6byQ+0MvqTPI3F5dnJGnxAx/wGzyNQF6
+	 wrQgFEqJD6rvWgWbnwkDPu6ziGbPDjQMM8VPp7SlBj7yaGBOsufW05IEzKNRQCT0wz
+	 Lw74GKZ3UFGYG8ImiTlgQFNSBFzaf+N5NNE9YXpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Aquini <aquini@redhat.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 162/192] mm: mmap: allow for the maximum number of bits for randomizing mmap_base by default
+	Li RongQing <lirongqing@baidu.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 079/131] dmaengine: idxd: Fix possible Use-After-Free in irq_process_work_list
 Date: Tue, 25 Jun 2024 11:33:54 +0200
-Message-ID: <20240625085543.380559048@linuxfoundation.org>
+Message-ID: <20240625085528.944454768@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,75 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael Aquini <aquini@redhat.com>
+From: Li RongQing <lirongqing@baidu.com>
 
-commit 3afb76a66b5559a7b595155803ce23801558a7a9 upstream.
+[ Upstream commit e3215deca4520773cd2b155bed164c12365149a7 ]
 
-An ASLR regression was noticed [1] and tracked down to file-mapped areas
-being backed by THP in recent kernels.  The 21-bit alignment constraint
-for such mappings reduces the entropy for randomizing the placement of
-64-bit library mappings and breaks ASLR completely for 32-bit libraries.
+Use list_for_each_entry_safe() to allow iterating through the list and
+deleting the entry in the iteration process. The descriptor is freed via
+idxd_desc_complete() and there's a slight chance may cause issue for
+the list iterator when the descriptor is reused by another thread
+without it being deleted from the list.
 
-The reported issue is easily addressed by increasing vm.mmap_rnd_bits and
-vm.mmap_rnd_compat_bits.  This patch just provides a simple way to set
-ARCH_MMAP_RND_BITS and ARCH_MMAP_RND_COMPAT_BITS to their maximum values
-allowed by the architecture at build time.
-
-[1] https://zolutal.github.io/aslrnt/
-
-[akpm@linux-foundation.org: default to `y' if 32-bit, per Rafael]
-Link: https://lkml.kernel.org/r/20240606180622.102099-1-aquini@redhat.com
-Fixes: 1854bc6e2420 ("mm/readahead: Align file mappings for non-DAX")
-Signed-off-by: Rafael Aquini <aquini@redhat.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Samuel Holland <samuel.holland@sifive.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 16e19e11228b ("dmaengine: idxd: Fix list corruption in description completion")
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
+Link: https://lore.kernel.org/r/20240603012444.11902-1-lirongqing@baidu.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/Kconfig |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/dma/idxd/irq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1037,10 +1037,21 @@ config ARCH_MMAP_RND_BITS_MAX
- config ARCH_MMAP_RND_BITS_DEFAULT
- 	int
+diff --git a/drivers/dma/idxd/irq.c b/drivers/dma/idxd/irq.c
+index aa314ebec5878..4a3eb96b8199a 100644
+--- a/drivers/dma/idxd/irq.c
++++ b/drivers/dma/idxd/irq.c
+@@ -454,11 +454,13 @@ static void irq_process_work_list(struct idxd_irq_entry *irq_entry)
  
-+config FORCE_MAX_MMAP_RND_BITS
-+	bool "Force maximum number of bits to use for ASLR of mmap base address"
-+	default y if !64BIT
-+	help
-+	  ARCH_MMAP_RND_BITS and ARCH_MMAP_RND_COMPAT_BITS represent the number
-+	  of bits to use for ASLR and if no custom value is assigned (EXPERT)
-+	  then the architecture's lower bound (minimum) value is assumed.
-+	  This toggle changes that default assumption to assume the arch upper
-+	  bound (maximum) value instead.
+ 	spin_unlock(&irq_entry->list_lock);
+ 
+-	list_for_each_entry(desc, &flist, list) {
++	list_for_each_entry_safe(desc, n, &flist, list) {
+ 		/*
+ 		 * Check against the original status as ABORT is software defined
+ 		 * and 0xff, which DSA_COMP_STATUS_MASK can mask out.
+ 		 */
++		list_del(&desc->list);
 +
- config ARCH_MMAP_RND_BITS
- 	int "Number of bits to use for ASLR of mmap base address" if EXPERT
- 	range ARCH_MMAP_RND_BITS_MIN ARCH_MMAP_RND_BITS_MAX
- 	default ARCH_MMAP_RND_BITS_DEFAULT if ARCH_MMAP_RND_BITS_DEFAULT
-+	default ARCH_MMAP_RND_BITS_MAX if FORCE_MAX_MMAP_RND_BITS
- 	default ARCH_MMAP_RND_BITS_MIN
- 	depends on HAVE_ARCH_MMAP_RND_BITS
- 	help
-@@ -1075,6 +1086,7 @@ config ARCH_MMAP_RND_COMPAT_BITS
- 	int "Number of bits to use for ASLR of mmap base address for compatible applications" if EXPERT
- 	range ARCH_MMAP_RND_COMPAT_BITS_MIN ARCH_MMAP_RND_COMPAT_BITS_MAX
- 	default ARCH_MMAP_RND_COMPAT_BITS_DEFAULT if ARCH_MMAP_RND_COMPAT_BITS_DEFAULT
-+	default ARCH_MMAP_RND_COMPAT_BITS_MAX if FORCE_MAX_MMAP_RND_BITS
- 	default ARCH_MMAP_RND_COMPAT_BITS_MIN
- 	depends on HAVE_ARCH_MMAP_RND_COMPAT_BITS
- 	help
+ 		if (unlikely(desc->completion->status == IDXD_COMP_DESC_ABORT)) {
+ 			idxd_dma_complete_txd(desc, IDXD_COMPLETE_ABORT, true);
+ 			continue;
+-- 
+2.43.0
+
 
 
 
