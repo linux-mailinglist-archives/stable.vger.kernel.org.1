@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-55622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04EA0916475
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2E691635F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63056B291E9
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD50728AD2F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DDD149DEF;
-	Tue, 25 Jun 2024 09:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9A11487E9;
+	Tue, 25 Jun 2024 09:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4tMG1b0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+TDFqCE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C2B1465A8;
-	Tue, 25 Jun 2024 09:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7641465A8;
+	Tue, 25 Jun 2024 09:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309450; cv=none; b=oW3UsGeRwiBxlyQRL/vi6hnXFDmOLZjA6mjik/tnJFduAw2zQlimcspCpa/V1Z8o0XDplKd/eA68Nap6rBfuafAZ5BM9ig7tAZDkMFC1ns8sQ+LXXo/5e/lGriAtSdOppPrQ7KhnKhXz/X4ThwNOjirDULFe1OfYNKxETb2sX0c=
+	t=1719308760; cv=none; b=G4suxW8QwfREs+94fJIY/wmTrqUTVNoTz1wcYNjkPHPRWvfiusdIYyuqFB6Q5rkuy/tSHOzSuKPct1qzeECkukbvsGRemQFqgSkmoEt0/g2ENNgp7PiPUORWOrHMVzPUwZ00DS7Atsn+hLYm9Wim+dAFBJpFJjN5VAIq7rBmwz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309450; c=relaxed/simple;
-	bh=k0K1vyI8dCW/DFRB1atGzRdQS7BUZW7rEc2pCEL7fD0=;
+	s=arc-20240116; t=1719308760; c=relaxed/simple;
+	bh=zsBdnFXGqz8DnIMB3hTSaOBunWrkqi5iBV3YEKgcP54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rgo7roG/vTYGxGBBIsKQGP4fagzZOZDHjp9JejlJkDZwR+ssDSuV3/cS/AljN5oFtTdV8Z9KCsrXRgeV7zyWHMHl+6FQz3x8VcEt5XPteguKgF5QuWDauQvNUO/iI+Q9WZ71wlvRoccc4McD8Kpt+help1PeumNaIbbQysdWiIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4tMG1b0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80493C32781;
-	Tue, 25 Jun 2024 09:57:29 +0000 (UTC)
+	 MIME-Version; b=U4xCH5Cr/8E/6Q+1E5JzUQJjIbFzpwVzv+EORqtGLkMS3nKuaaIRTX2DxZ6GI1Dyd8LMd06R+RLNz/73HijLoOKd+DMBhBS/MVmKkVV+wRRMgDW3kNcaD6/w7Cr/K+1sUnwJmL9Ma+Za3Pl8JNr9KWyECXkE0moCNSMPlXkHurg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+TDFqCE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EB0C32781;
+	Tue, 25 Jun 2024 09:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309449;
-	bh=k0K1vyI8dCW/DFRB1atGzRdQS7BUZW7rEc2pCEL7fD0=;
+	s=korg; t=1719308760;
+	bh=zsBdnFXGqz8DnIMB3hTSaOBunWrkqi5iBV3YEKgcP54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4tMG1b0Nw2Z3XRLOtPXGH2DSDKhqPsvtS0dInn204MVjFANYYVvSPIE2C+d4MA2H
-	 VY/n+HufStccUP3kX+9yfnGcEMczE3T/1dXhi41UF1fhKXHPEv4xEMIC/Zy+XCQFbe
-	 +qoYbZsOEsR3QS4FUGlDjH/lDhlEGPzO06wv2V8I=
+	b=o+TDFqCEXfDvliaQaFQPv0rm97AVykpcWEUPqfNxzLf+9BdSSb/ilPfB42dD8rN49
+	 d/ZYBJKNU8S9G4bl+xFOKKVMdHtKrlrxvaBRFfgBwGStWwAjax7itiLRTTDwFJm7W9
+	 y2RE9bspfsok/Du1YF9hq2ByqqHORAzFg1GB1RD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenghai Huang <huangchenghai2@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/131] crypto: hisilicon/sec - Fix memory leak for sec resource release
+	Johannes Berg <johannes.berg@intel.com>,
+	Savyasaachi Vanga <savyasaachiv@gmail.com>
+Subject: [PATCH 6.9 199/250] wifi: mac80211: fix monitor channel with chanctx emulation
 Date: Tue, 25 Jun 2024 11:32:37 +0200
-Message-ID: <20240625085526.027328922@linuxfoundation.org>
+Message-ID: <20240625085555.692174084@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghai Huang <huangchenghai2@huawei.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit bba4250757b4ae1680fea435a358d8093f254094 ]
+commit 0d9c2beed116e623ac30810d382bd67163650f98 upstream.
 
-The AIV is one of the SEC resources. When releasing resources,
-it need to release the AIV resources at the same time.
-Otherwise, memory leakage occurs.
+After the channel context emulation, there were reports that
+changing the monitor channel no longer works. This is because
+those drivers don't have WANT_MONITOR_VIF, so the setting the
+channel always exits out quickly.
 
-The aiv resource release is added to the sec resource release
-function.
+Fix this by always allocating the virtual monitor sdata, and
+simply not telling the driver about it unless it wanted to.
+This way, we have an interface/sdata to bind the chanctx to,
+and the emulation can work correctly.
 
-Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx drivers")
+Reported-and-tested-by: Savyasaachi Vanga <savyasaachiv@gmail.com>
+Closes: https://lore.kernel.org/r/chwoymvpzwtbmzryrlitpwmta5j6mtndocxsyqvdyikqu63lon@gfds653hkknl
+Link: https://msgid.link/20240612122351.b12d4a109dde.I1831a44417faaab92bea1071209abbe4efbe3fba@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/hisilicon/sec2/sec_crypto.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mac80211/driver-ops.c |   17 +++++++++++++++++
+ net/mac80211/iface.c      |   21 +++++++++------------
+ net/mac80211/util.c       |    2 +-
+ 3 files changed, 27 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-index cae7c414bdaf4..09a20307d01e3 100644
---- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
-+++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
-@@ -479,8 +479,10 @@ static void sec_alg_resource_free(struct sec_ctx *ctx,
+--- a/net/mac80211/driver-ops.c
++++ b/net/mac80211/driver-ops.c
+@@ -311,6 +311,18 @@ int drv_assign_vif_chanctx(struct ieee80
+ 	might_sleep();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
  
- 	if (ctx->pbuf_supported)
- 		sec_free_pbuf_resource(dev, qp_ctx->res);
--	if (ctx->alg_type == SEC_AEAD)
-+	if (ctx->alg_type == SEC_AEAD) {
- 		sec_free_mac_resource(dev, qp_ctx->res);
-+		sec_free_aiv_resource(dev, qp_ctx->res);
-+	}
++	/*
++	 * We should perhaps push emulate chanctx down and only
++	 * make it call ->config() when the chanctx is actually
++	 * assigned here (and unassigned below), but that's yet
++	 * another change to all drivers to add assign/unassign
++	 * emulation callbacks. Maybe later.
++	 */
++	if (sdata->vif.type == NL80211_IFTYPE_MONITOR &&
++	    local->emulate_chanctx &&
++	    !ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
++		return 0;
++
+ 	if (!check_sdata_in_driver(sdata))
+ 		return -EIO;
+ 
+@@ -338,6 +350,11 @@ void drv_unassign_vif_chanctx(struct iee
+ 	might_sleep();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+ 
++	if (sdata->vif.type == NL80211_IFTYPE_MONITOR &&
++	    local->emulate_chanctx &&
++	    !ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
++		return;
++
+ 	if (!check_sdata_in_driver(sdata))
+ 		return;
+ 
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1122,9 +1122,6 @@ int ieee80211_add_virtual_monitor(struct
+ 	struct ieee80211_sub_if_data *sdata;
+ 	int ret;
+ 
+-	if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
+-		return 0;
+-
+ 	ASSERT_RTNL();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+ 
+@@ -1146,11 +1143,13 @@ int ieee80211_add_virtual_monitor(struct
+ 
+ 	ieee80211_set_default_queues(sdata);
+ 
+-	ret = drv_add_interface(local, sdata);
+-	if (WARN_ON(ret)) {
+-		/* ok .. stupid driver, it asked for this! */
+-		kfree(sdata);
+-		return ret;
++	if (ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF)) {
++		ret = drv_add_interface(local, sdata);
++		if (WARN_ON(ret)) {
++			/* ok .. stupid driver, it asked for this! */
++			kfree(sdata);
++			return ret;
++		}
+ 	}
+ 
+ 	set_bit(SDATA_STATE_RUNNING, &sdata->state);
+@@ -1188,9 +1187,6 @@ void ieee80211_del_virtual_monitor(struc
+ {
+ 	struct ieee80211_sub_if_data *sdata;
+ 
+-	if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
+-		return;
+-
+ 	ASSERT_RTNL();
+ 	lockdep_assert_wiphy(local->hw.wiphy);
+ 
+@@ -1210,7 +1206,8 @@ void ieee80211_del_virtual_monitor(struc
+ 
+ 	ieee80211_link_release_channel(&sdata->deflink);
+ 
+-	drv_remove_interface(local, sdata);
++	if (ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
++		drv_remove_interface(local, sdata);
+ 
+ 	kfree(sdata);
  }
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -1841,7 +1841,7 @@ int ieee80211_reconfig(struct ieee80211_
  
- static int sec_alloc_qp_ctx_resource(struct hisi_qm *qm, struct sec_ctx *ctx,
--- 
-2.43.0
-
+ 	/* add interfaces */
+ 	sdata = wiphy_dereference(local->hw.wiphy, local->monitor_sdata);
+-	if (sdata) {
++	if (sdata && ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF)) {
+ 		/* in HW restart it exists already */
+ 		WARN_ON(local->resuming);
+ 		res = drv_add_interface(local, sdata);
 
 
 
