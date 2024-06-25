@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-55636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3DD916483
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:58:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A84916366
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A4511C2334E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:58:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 679B428AEEF
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC582149C58;
-	Tue, 25 Jun 2024 09:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09F631494D5;
+	Tue, 25 Jun 2024 09:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fpzo121B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UGRN6Rn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB74146A67;
-	Tue, 25 Jun 2024 09:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBEC11465A8;
+	Tue, 25 Jun 2024 09:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309491; cv=none; b=DYZg7tBuBjhnZeCTqvN1xvtN1HbYP2n24G867QeLjhDPWVyeyDm4L33ymYjSncDp0o40LQ45pfxGfsJa00sCIqnO7onpDMXr4LSjsgPnZu06Kx7g9n6jEuaMoGobNoxGNHUkRfyHpgggiBHSbSWnCfGIUyR31cVSFBwvdq/7CSI=
+	t=1719308780; cv=none; b=d01QLOZJOqmy3k9Q0HkkEnRzBHDoRzRx6+ExfaxBDfKfnnRdvyFfUpzKwN3cGbKg/+1vUH9Kdc6C16mttZeLnCoELGL9dG9X5b1/Eg3YACpgugLgUwRn7PA7nwnH+RnUmxSdfZahqxU5CCUrIcGm/FQJ1VGpYZIiTMs67lglSjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309491; c=relaxed/simple;
-	bh=lZnTzGYtmobE24SjhqZOmc9XllkDSHaB6EzqepzxAOM=;
+	s=arc-20240116; t=1719308780; c=relaxed/simple;
+	bh=/zfoDmTwd/6+yAXrzEc1n7OZucOprTqDN2D5Gho/97s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N1u64k9mFdzei1Yug/TyAONzcuLQoI/QnKHRMlfnApD2Zpoocnxyb91KBcP6Lz2aW621JxP60nQiAR9Pe+JOwkiCmdtiy4fH49CDvwIWSUu4lVD/FHn+VBsetS8KfGvcfJHY+7fN7PBxRyxaZ2FWZy3FavSPnPuILt2DWzhueyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fpzo121B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B53C32781;
-	Tue, 25 Jun 2024 09:58:10 +0000 (UTC)
+	 MIME-Version; b=IpbaiBpqBtTYZf+V9Murl6Qrfg/vi/GdcynDRIUpGR0GltnSNyyfZ0qorbgTHO9LZHiK61pD7xcrwymhJc7USRnZynGMq+KEzn6rabi33qlQ7aiOEgrbVOhEk5Gq5ihz2gs/1a27nNrpwAUhSLTcn97J6np/NTuPutioVLaK6vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UGRN6Rn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B89C32781;
+	Tue, 25 Jun 2024 09:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309491;
-	bh=lZnTzGYtmobE24SjhqZOmc9XllkDSHaB6EzqepzxAOM=;
+	s=korg; t=1719308780;
+	bh=/zfoDmTwd/6+yAXrzEc1n7OZucOprTqDN2D5Gho/97s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fpzo121BxMGF4WRhx4iHcQhI5ZKJK2zwExLtsvSe8BReEvApKbmApL7r5YVvc4D2F
-	 rZ/VpEc0iGX1wDD75A4auDL2YzDgz/1eaHHkd/UTPRfwbORDZx9WJmmcoj+DpLXgcH
-	 DZcBcLSFRc2XAZNnvZCK4aQjPVsYfo4Yd3Aydn3c=
+	b=0UGRN6Rnwke8DWV2uz++I88iJf5E8WRdZkH30ivrA22k7x1k6jxRPLTNNT1vGncUa
+	 cmJN3l5DU53aqkPI8Xq01Q2KQj5ptIZoJuYVGJAvPN6i9CalhxXxCK7YtSNyK3t+bn
+	 i3DVKu8dt1OOJ8Ky7L3tmVScBxgHFHayucuTjM90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benson Leung <bleung@chromium.org>,
-	Prashant Malani <pmalani@chromium.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/131] power: supply: cros_usbpd: provide ID table for avoiding fallback match
-Date: Tue, 25 Jun 2024 11:33:07 +0200
-Message-ID: <20240625085527.170982320@linuxfoundation.org>
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.9 230/250] dt-bindings: i2c: atmel,at91sam: correct path to i2c-controller schema
+Date: Tue, 25 Jun 2024 11:33:08 +0200
+Message-ID: <20240625085556.882734793@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 0f8678c34cbfdc63569a9b0ede1fe235ec6ec693 ]
+commit d4e001ffeccfc128c715057e866f301ac9b95728 upstream.
 
-Instead of using fallback driver name match, provide ID table[1] for the
-primary match.
+The referenced i2c-controller.yaml schema is provided by dtschema
+package (outside of Linux kernel), so use full path to reference it.
 
-[1]: https://elixir.bootlin.com/linux/v6.8/source/drivers/base/platform.c#L1353
-
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Prashant Malani <pmalani@chromium.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Link: https://lore.kernel.org/r/20240401030052.2887845-4-tzungbi@kernel.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 7ea75dd386be ("dt-bindings: i2c: convert i2c-at91 to json-schema")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/cros_usbpd-charger.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/cros_usbpd-charger.c b/drivers/power/supply/cros_usbpd-charger.c
-index b6c96376776a9..8008e31c0c098 100644
---- a/drivers/power/supply/cros_usbpd-charger.c
-+++ b/drivers/power/supply/cros_usbpd-charger.c
-@@ -5,6 +5,7 @@
-  * Copyright (c) 2014 - 2018 Google, Inc
-  */
+--- a/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
++++ b/Documentation/devicetree/bindings/i2c/atmel,at91sam-i2c.yaml
+@@ -77,7 +77,7 @@ required:
+   - clocks
  
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/platform_data/cros_ec_commands.h>
- #include <linux/platform_data/cros_ec_proto.h>
-@@ -711,16 +712,22 @@ static int cros_usbpd_charger_resume(struct device *dev)
- static SIMPLE_DEV_PM_OPS(cros_usbpd_charger_pm_ops, NULL,
- 			 cros_usbpd_charger_resume);
- 
-+static const struct platform_device_id cros_usbpd_charger_id[] = {
-+	{ DRV_NAME, 0 },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(platform, cros_usbpd_charger_id);
-+
- static struct platform_driver cros_usbpd_charger_driver = {
- 	.driver = {
- 		.name = DRV_NAME,
- 		.pm = &cros_usbpd_charger_pm_ops,
- 	},
--	.probe = cros_usbpd_charger_probe
-+	.probe = cros_usbpd_charger_probe,
-+	.id_table = cros_usbpd_charger_id,
- };
- 
- module_platform_driver(cros_usbpd_charger_driver);
- 
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("ChromeOS EC USBPD charger");
--MODULE_ALIAS("platform:" DRV_NAME);
--- 
-2.43.0
-
+ allOf:
+-  - $ref: i2c-controller.yaml
++  - $ref: /schemas/i2c/i2c-controller.yaml#
+   - if:
+       properties:
+         compatible:
 
 
 
