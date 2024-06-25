@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-55698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFF89164CA
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02239916453
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFA251F2178F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83D63284942
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B16D149C4F;
-	Tue, 25 Jun 2024 10:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A81714A0BF;
+	Tue, 25 Jun 2024 09:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvJyAmMh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1m5y2asd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38952146592;
-	Tue, 25 Jun 2024 10:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD79E149C4F;
+	Tue, 25 Jun 2024 09:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309674; cv=none; b=RMCgdKNBA3eXqYf+qs7EtF8IpY8YlZ34FECzkLWfVMpc3IVpClAGE5D/Ikw6Zv5gy9lxaokAdO9Jlg0eWknvXxmne701BqFj27xJ+8DQGu1hL2BRFVW2Gr9fIPQHe2ndYfH5v+rtYZ+kY2O3wOLAafKuC4mWq3/3Iy0sF4BMZDs=
+	t=1719309354; cv=none; b=ESa39LSCX0mFtyyhAqVZe6fdP+dQ0oCLvbGCjjajmHgtAFEfLMVujk6CEC0OtozvecNUx5yG8ZZTCMEwZnhTQgg5Ua4KcEsni4DtlCULhp3nVwHR/nVrfo3UX5K87u2mWABakNXEHmFHTdbtufkHBSFDaPs+0K8+JULkAxGuZI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309674; c=relaxed/simple;
-	bh=f1gT3U4423F01fP/UuE4mLvDuX+8CuA2f9ACHI1hO10=;
+	s=arc-20240116; t=1719309354; c=relaxed/simple;
+	bh=bzpXgAgwxAFb2lKY2rVVNK8r7d04bN0UO96V0cX0jRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e5R7WIwiIxRK26hNaWsrbPtcvzgRSTCho3fQFClTtY8JWToCeo8y3gC16trlrw0UGOWpNQZEfTMx8czYO98iSKEbBAosGbo/gIzIXJ2UX0uLAUDZh1izcOBVDqHBxTFmtiYncNhIJAw40IQsSWR0jTFkb0syt+3WfW8a/74qLGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvJyAmMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FB7C32781;
-	Tue, 25 Jun 2024 10:01:13 +0000 (UTC)
+	 MIME-Version; b=sxPMpGRnBn5sGnopebJhJ5/fRhfzr7zOsA0vsgdKJOnB7xnLeCvyX8jVVWTdul06YMNMO/zVoX+3nF9vcE50du4JzwtpvpDVcoSoeMlmdZAQxLtg1FSMw9cWhOxdqENRqNwpj8ZL7sQKehVVuPnWVaR9rOdhfeWUHxqIk54sHXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1m5y2asd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B01C32781;
+	Tue, 25 Jun 2024 09:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309674;
-	bh=f1gT3U4423F01fP/UuE4mLvDuX+8CuA2f9ACHI1hO10=;
+	s=korg; t=1719309353;
+	bh=bzpXgAgwxAFb2lKY2rVVNK8r7d04bN0UO96V0cX0jRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mvJyAmMhdKX0zWnLnYPdbc0WsjKZcnYP72rvpMWF3izAsI41nvXH3mpDgwvmeMCaZ
-	 hAzLrdoPVOTwYUcCYrMG8bPbC3pixsUAtjaNhc+/xsFlVQRyzILjV7rfQeXmaH5FEB
-	 FnbtYyXDGVjxqKglXZbM0/WDWDf91NwhJYisIZx0=
+	b=1m5y2asd/aw538kEv7NrBQYT0v8obCFER0333QiWiNaP0LC6fxyCjR29BnoBdlp90
+	 Rgzu+RzjGWy3Fu8cOd9UB3OwiFAgpbDCYwtKDzUAM6+27MjB9UW82cN20ICjwmxypz
+	 b+fx2xrFOEzX5/PMX/9XJytnAaEzpzptH13hDZis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongqin Liu <yongqin.liu@linaro.org>,
-	=?UTF-8?q?Antje=20Miederh=C3=B6fer?= <a.miederhoefer@gmx.de>,
-	Arne Fitzenreiter <arne_f@ipfire.org>,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 095/131] net: usb: ax88179_178a: improve reset check
-Date: Tue, 25 Jun 2024 11:34:10 +0200
-Message-ID: <20240625085529.548694238@linuxfoundation.org>
+	Tony Luck <tony.luck@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 179/192] x86/cpu/vfm: Add new macros to work with (vendor/family/model) values
+Date: Tue, 25 Jun 2024 11:34:11 +0200
+Message-ID: <20240625085544.030919621@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +61,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Tony Luck <tony.luck@intel.com>
 
-commit 7be4cb7189f747b4e5b6977d0e4387bde3204e62 upstream.
+[ Upstream commit e6dfdc2e89a0adedf455814c91b977d6a584cc88 ]
 
-After ecf848eb934b ("net: usb: ax88179_178a: fix link status when link is
-set to down/up") to not reset from usbnet_open after the reset from
-usbnet_probe at initialization stage to speed up this, some issues have
-been reported.
+To avoid adding a slew of new macros for each new Intel CPU family
+switch over from providing CPU model number #defines to a new
+scheme that encodes vendor, family, and model in a single number.
 
-It seems to happen that if the initialization is slower, and some time
-passes between the probe operation and the open operation, the second reset
-from open is necessary too to have the device working. The reason is that
-if there is no activity with the phy, this is "disconnected".
+  [ bp: s/casted/cast/g ]
 
-In order to improve this, the solution is to detect when the phy is
-"disconnected", and we can use the phy status register for this. So we will
-only reset the device from reset operation in this situation, that is, only
-if necessary.
-
-The same bahavior is happening when the device is stopped (link set to
-down) and later is restarted (link set to up), so if the phy keeps working
-we only need to enable the mac again, but if enough time passes between the
-device stop and restart, reset is necessary, and we can detect the
-situation checking the phy status register too.
-
-cc: stable@vger.kernel.org # 6.6+
-Fixes: ecf848eb934b ("net: usb: ax88179_178a: fix link status when link is set to down/up")
-Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
-Reported-by: Antje Miederhöfer <a.miederhoefer@gmx.de>
-Reported-by: Arne Fitzenreiter <arne_f@ipfire.org>
-Tested-by: Yongqin Liu <yongqin.liu@linaro.org>
-Tested-by: Antje Miederhöfer <a.miederhoefer@gmx.de>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240416211941.9369-3-tony.luck@intel.com
+Stable-dep-of: 93022482b294 ("x86/cpu: Fix x86_match_cpu() to match just X86_VENDOR_INTEL")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/cpu_device_id.h | 93 ++++++++++++++++++++++++++++
+ 1 file changed, 93 insertions(+)
 
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -174,7 +174,6 @@ struct ax88179_data {
- 	u32 wol_supported;
- 	u32 wolopts;
- 	u8 disconnecting;
--	u8 initialized;
- };
+diff --git a/arch/x86/include/asm/cpu_device_id.h b/arch/x86/include/asm/cpu_device_id.h
+index eb8fcede9e3bf..dd7b9463696f5 100644
+--- a/arch/x86/include/asm/cpu_device_id.h
++++ b/arch/x86/include/asm/cpu_device_id.h
+@@ -2,6 +2,39 @@
+ #ifndef _ASM_X86_CPU_DEVICE_ID
+ #define _ASM_X86_CPU_DEVICE_ID
  
- struct ax88179_int_data {
-@@ -1676,12 +1675,21 @@ static int ax88179_reset(struct usbnet *
- 
- static int ax88179_net_reset(struct usbnet *dev)
- {
--	struct ax88179_data *ax179_data = dev->driver_priv;
-+	u16 tmp16;
- 
--	if (ax179_data->initialized)
-+	ax88179_read_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID, GMII_PHY_PHYSR,
-+			 2, &tmp16);
-+	if (tmp16) {
-+		ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
-+				 2, 2, &tmp16);
-+		if (!(tmp16 & AX_MEDIUM_RECEIVE_EN)) {
-+			tmp16 |= AX_MEDIUM_RECEIVE_EN;
-+			ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
-+					  2, 2, &tmp16);
-+		}
-+	} else {
- 		ax88179_reset(dev);
--	else
--		ax179_data->initialized = 1;
-+	}
- 
- 	return 0;
++/*
++ * Can't use <linux/bitfield.h> because it generates expressions that
++ * cannot be used in structure initializers. Bitfield construction
++ * here must match the union in struct cpuinfo_86:
++ *	union {
++ *		struct {
++ *			__u8	x86_model;
++ *			__u8	x86;
++ *			__u8	x86_vendor;
++ *			__u8	x86_reserved;
++ *		};
++ *		__u32		x86_vfm;
++ *	};
++ */
++#define VFM_MODEL_BIT	0
++#define VFM_FAMILY_BIT	8
++#define VFM_VENDOR_BIT	16
++#define VFM_RSVD_BIT	24
++
++#define	VFM_MODEL_MASK	GENMASK(VFM_FAMILY_BIT - 1, VFM_MODEL_BIT)
++#define	VFM_FAMILY_MASK	GENMASK(VFM_VENDOR_BIT - 1, VFM_FAMILY_BIT)
++#define	VFM_VENDOR_MASK	GENMASK(VFM_RSVD_BIT - 1, VFM_VENDOR_BIT)
++
++#define VFM_MODEL(vfm)	(((vfm) & VFM_MODEL_MASK) >> VFM_MODEL_BIT)
++#define VFM_FAMILY(vfm)	(((vfm) & VFM_FAMILY_MASK) >> VFM_FAMILY_BIT)
++#define VFM_VENDOR(vfm)	(((vfm) & VFM_VENDOR_MASK) >> VFM_VENDOR_BIT)
++
++#define	VFM_MAKE(_vendor, _family, _model) (	\
++	((_model) << VFM_MODEL_BIT) |		\
++	((_family) << VFM_FAMILY_BIT) |		\
++	((_vendor) << VFM_VENDOR_BIT)		\
++)
++
+ /*
+  * Declare drivers belonging to specific x86 CPUs
+  * Similar in spirit to pci_device_id and related PCI functions
+@@ -49,6 +82,16 @@
+ 	.driver_data	= (unsigned long) _data				\
  }
+ 
++#define X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(_vendor, _family, _model, \
++						    _steppings, _feature, _data) { \
++	.vendor		= _vendor,					\
++	.family		= _family,					\
++	.model		= _model,					\
++	.steppings	= _steppings,					\
++	.feature	= _feature,					\
++	.driver_data	= (unsigned long) _data				\
++}
++
+ /**
+  * X86_MATCH_VENDOR_FAM_MODEL_FEATURE - Macro for CPU matching
+  * @_vendor:	The vendor name, e.g. INTEL, AMD, HYGON, ..., ANY
+@@ -164,6 +207,56 @@
+ 	X86_MATCH_VENDOR_FAM_MODEL_STEPPINGS_FEATURE(INTEL, 6, INTEL_FAM6_##model, \
+ 						     steppings, X86_FEATURE_ANY, data)
+ 
++/**
++ * X86_MATCH_VFM - Match encoded vendor/family/model
++ * @vfm:	Encoded 8-bits each for vendor, family, model
++ * @data:	Driver specific data or NULL. The internal storage
++ *		format is unsigned long. The supplied value, pointer
++ *		etc. is cast to unsigned long internally.
++ *
++ * Stepping and feature are set to wildcards
++ */
++#define X86_MATCH_VFM(vfm, data)			\
++	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
++		VFM_VENDOR(vfm),			\
++		VFM_FAMILY(vfm),			\
++		VFM_MODEL(vfm),				\
++		X86_STEPPING_ANY, X86_FEATURE_ANY, data)
++
++/**
++ * X86_MATCH_VFM_STEPPINGS - Match encoded vendor/family/model/stepping
++ * @vfm:	Encoded 8-bits each for vendor, family, model
++ * @steppings:	Bitmask of steppings to match
++ * @data:	Driver specific data or NULL. The internal storage
++ *		format is unsigned long. The supplied value, pointer
++ *		etc. is cast to unsigned long internally.
++ *
++ * feature is set to wildcard
++ */
++#define X86_MATCH_VFM_STEPPINGS(vfm, steppings, data)	\
++	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
++		VFM_VENDOR(vfm),			\
++		VFM_FAMILY(vfm),			\
++		VFM_MODEL(vfm),				\
++		steppings, X86_FEATURE_ANY, data)
++
++/**
++ * X86_MATCH_VFM_FEATURE - Match encoded vendor/family/model/feature
++ * @vfm:	Encoded 8-bits each for vendor, family, model
++ * @feature:	A X86_FEATURE bit
++ * @data:	Driver specific data or NULL. The internal storage
++ *		format is unsigned long. The supplied value, pointer
++ *		etc. is cast to unsigned long internally.
++ *
++ * Steppings is set to wildcard
++ */
++#define X86_MATCH_VFM_FEATURE(vfm, feature, data)	\
++	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
++		VFM_VENDOR(vfm),			\
++		VFM_FAMILY(vfm),			\
++		VFM_MODEL(vfm),				\
++		X86_STEPPING_ANY, feature, data)
++
+ /*
+  * Match specific microcode revisions.
+  *
+-- 
+2.43.0
+
 
 
 
