@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-55709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D7E99164D5
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2CC916434
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACDB11F214A3
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF0ADB2878B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EE2149C4F;
-	Tue, 25 Jun 2024 10:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD8914A4D2;
+	Tue, 25 Jun 2024 09:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKomIxZE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ui3UfjVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87FF13C90B;
-	Tue, 25 Jun 2024 10:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A42414A0B6;
+	Tue, 25 Jun 2024 09:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309707; cv=none; b=IGcvsdlAd/HgyXvsj8W7+qODroaHJUiyQjRhZIbum/NU46TZTWZ4dr8ozJG5mI+M4jGz2f0vzxRoIvDA6qiRtZfXl6dGp7NaWECJWl3FG3KtpuPW3QW1zQ/NA1kZB8TQ6murl544q3SElg9391jWPNv3z2C8dl/Q/jJ3it8eFSE=
+	t=1719309284; cv=none; b=HRFApRdYI9TlKikwOGG3Jagu0QAu/h717iXdr5H8Pzf6R8xkDpQdL2iynI7MSnsqkUZgd6sqFkl3aAV0ehqaiV6FaQvxcPcWHhp2/ybN8emZkXniFJfiIBnUGxPJSrBx7paqV7LJ3Z8ZHViA+jVUN4dXD3de6bk6hNUAglZRzDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309707; c=relaxed/simple;
-	bh=uNtTeTcHz5nrUAPkSvo+zmmlyrTZP1RqL+KDYKTjUfQ=;
+	s=arc-20240116; t=1719309284; c=relaxed/simple;
+	bh=qTzdCZRfTprW6PMC6XMdQuObNwLZa42mXPyQPNeDJJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQtrbJznHLH4Dn+zdY9laEQxNH6RFMys4bGbKO+EIxsxeklZ86agsilPEF1IQ0a61eQUfe0TGEIpRijsacUJduZksl9YMniEBq9qVUoQMIC58JaVbqSY5OabHMunwW5p1YdazSFPxucN6WxWD+El2PHZtT3rmGvgE4FlbK35++0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKomIxZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA67C32786;
-	Tue, 25 Jun 2024 10:01:46 +0000 (UTC)
+	 MIME-Version; b=m1zJHkkzcR67gMn/MV/TKpkcPVbDft8ugvS9YRh53XezCmOWvkKC+eAjbXMnDGGgcrBoZR1mHTP8DWElTOWb70pES2XKuBlzNvy633wOi1koXug03WXM3PLm90Xn22XCZCaylEiSznVZyQnhre24VLXBxHHhEcR+ezc37TMDVtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ui3UfjVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD837C32789;
+	Tue, 25 Jun 2024 09:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309706;
-	bh=uNtTeTcHz5nrUAPkSvo+zmmlyrTZP1RqL+KDYKTjUfQ=;
+	s=korg; t=1719309284;
+	bh=qTzdCZRfTprW6PMC6XMdQuObNwLZa42mXPyQPNeDJJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKomIxZECKhmekMTGHAZfiJhvS/PmEoB1ayHkUT3ys/qAuvyt02OLRT6iA1SVehJh
-	 HVKGBnvKD7XNEI/L66qfmcsRYz2aF5zmao+CMSRYnPkAqlLpYQ0RgbSPaqn3T5YinW
-	 1v2WQDNEkU/7ORHWrTycQ3SgzYkhXEE4wZst0c0w=
+	b=ui3UfjVjevqvESrf8N9dQOyerQA2BvsPxKJiMmXg7LVkNa4pPudn8kHQJObPtE6zt
+	 vRGwQ98c0v1Vv6SPLMJ6VEZCqpKsGbsodo9CWVC4fIoJ1mAaeVKZKFoLJQyNo6I/xZ
+	 5DhUQi7aezbvN+ij4Gqm2cGRBoOVQaCZlgz83AXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/131] ice: Fix VSI list rule with ICE_SW_LKUP_LAST type
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Allison Henderson <allison.henderson@oracle.com>,
+	Chuck Lever III <chuck.lever@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 158/192] gcov: add support for GCC 14
 Date: Tue, 25 Jun 2024 11:33:50 +0200
-Message-ID: <20240625085528.793216959@linuxfoundation.org>
+Message-ID: <20240625085543.227583738@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,70 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 74382aebc9035470ec4c789bdb0d09d8c14f261e ]
+commit c1558bc57b8e5b4da5d821537cd30e2e660861d8 upstream.
 
-Adding/updating VSI list rule, as well as allocating/freeing VSI list
-resource are called several times with type ICE_SW_LKUP_LAST, which fails
-because ice_update_vsi_list_rule() and ice_aq_alloc_free_vsi_list()
-consider it invalid. Allow calling these functions with ICE_SW_LKUP_LAST.
+Using gcov on kernels compiled with GCC 14 results in truncated 16-byte
+long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
+to match the value defined by GCC 14.
 
-This fixes at least one issue in switchdev mode, where the same rule with
-different action cannot be added, e.g.:
+Tested with GCC versions 14.1.0 and 13.2.0.
 
-  tc filter add dev $PF1 ingress protocol arp prio 0 flower skip_sw \
-    dst_mac ff:ff:ff:ff:ff:ff action mirred egress redirect dev $VF1_PR
-  tc filter add dev $PF1 ingress protocol arp prio 0 flower skip_sw \
-    dst_mac ff:ff:ff:ff:ff:ff action mirred egress redirect dev $VF2_PR
-
-Fixes: 0f94570d0cae ("ice: allow adding advanced rules")
-Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240618210206.981885-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240610092743.1609845-1-oberpar@linux.ibm.com
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reported-by: Allison Henderson <allison.henderson@oracle.com>
+Reported-by: Chuck Lever III <chuck.lever@oracle.com>
+Tested-by: Chuck Lever <chuck.lever@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/gcov/gcc_4_7.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 5ea6365872571..735f995a3a687 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -1838,7 +1838,8 @@ ice_aq_alloc_free_vsi_list(struct ice_hw *hw, u16 *vsi_list_id,
- 	    lkup_type == ICE_SW_LKUP_ETHERTYPE_MAC ||
- 	    lkup_type == ICE_SW_LKUP_PROMISC ||
- 	    lkup_type == ICE_SW_LKUP_PROMISC_VLAN ||
--	    lkup_type == ICE_SW_LKUP_DFLT) {
-+	    lkup_type == ICE_SW_LKUP_DFLT ||
-+	    lkup_type == ICE_SW_LKUP_LAST) {
- 		sw_buf->res_type = cpu_to_le16(ICE_AQC_RES_TYPE_VSI_LIST_REP);
- 	} else if (lkup_type == ICE_SW_LKUP_VLAN) {
- 		sw_buf->res_type =
-@@ -2764,7 +2765,8 @@ ice_update_vsi_list_rule(struct ice_hw *hw, u16 *vsi_handle_arr, u16 num_vsi,
- 	    lkup_type == ICE_SW_LKUP_ETHERTYPE_MAC ||
- 	    lkup_type == ICE_SW_LKUP_PROMISC ||
- 	    lkup_type == ICE_SW_LKUP_PROMISC_VLAN ||
--	    lkup_type == ICE_SW_LKUP_DFLT)
-+	    lkup_type == ICE_SW_LKUP_DFLT ||
-+	    lkup_type == ICE_SW_LKUP_LAST)
- 		rule_type = remove ? ICE_AQC_SW_RULES_T_VSI_LIST_CLEAR :
- 			ICE_AQC_SW_RULES_T_VSI_LIST_SET;
- 	else if (lkup_type == ICE_SW_LKUP_VLAN)
--- 
-2.43.0
-
+--- a/kernel/gcov/gcc_4_7.c
++++ b/kernel/gcov/gcc_4_7.c
+@@ -18,7 +18,9 @@
+ #include <linux/mm.h>
+ #include "gcov.h"
+ 
+-#if (__GNUC__ >= 10)
++#if (__GNUC__ >= 14)
++#define GCOV_COUNTERS			9
++#elif (__GNUC__ >= 10)
+ #define GCOV_COUNTERS			8
+ #elif (__GNUC__ >= 7)
+ #define GCOV_COUNTERS			9
 
 
 
