@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-55606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362F0916464
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D2AD9164EF
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:03:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8884AB290AA
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4892E1F21B2F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B5F14A08B;
-	Tue, 25 Jun 2024 09:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6877146A67;
+	Tue, 25 Jun 2024 10:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlKvQMcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nX89lPP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E684149E0A;
-	Tue, 25 Jun 2024 09:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CFE13C90B;
+	Tue, 25 Jun 2024 10:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309401; cv=none; b=avvxym1SB9NM5wu0uIZAKcV0fTeNPUii3PXO6U82p2Drj6rpOeGZ1dQrckLnCargXTHZnbaEBGlhL88mk2mv0qt9jCcETLowyc7L8jlB148UINia0Q+8M5Gv4/CqB0YwVNEYLSHpTqgOBk4eMmCY6lP6JkGrzwFKRoJTx3xm/gc=
+	t=1719309777; cv=none; b=mTra2W0YJSVVL6XJPAkx81dohA9KbtE/p3F6/VyQAQ0ec9+olAlKlMUHVQzAjx0OlSwZbUouPkD7SXr2ttEr3xSlnz7XNLHm4BWwKf8gXW/H1Ed6dKjaSnCiS13YWuWSZRKQjsdGpi77pDR8Ofosfzq0X3JSSEIkrYSlP2Tztm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309401; c=relaxed/simple;
-	bh=RPe3OCFF9Avf2chir2KkVylTTQIhVwA3VBl6dx6aeMw=;
+	s=arc-20240116; t=1719309777; c=relaxed/simple;
+	bh=VIyxSNumIzEuoPhkwnkf2eQMu1n801iRbcw46CcU1Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1gYpBoK7K85cnB94M2wgi+74tlnaaJhbU/DS5OWnyEWHw/yyxp2wWbfHasRr3g8ASx+Gyp4oQy/niQhRFOTUODlDMLzjOxaACYGdRIL0DwR3cMg7BZtK/uqPEMhgHTrUV0d5vavaXIkO0tfmvhkjzl2PokzBDEW1bDlhesO50c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlKvQMcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0B9C32781;
-	Tue, 25 Jun 2024 09:56:40 +0000 (UTC)
+	 MIME-Version; b=dRAqQ02AeWqx49g5D8V+piE+YXN5xHDbWLO9Gzbz3iLRkh4MBXVZIFujWHNW/uNtI6J7jGB56RCRT9TC87Pk9ZAXNZs+52BeUzv89vdl9KEsxqfTiKSyGuB5l0nlUlF4tyUyjSfEuCQ+gRi/YnNZ75PbJ+2pmL+O9s6OkTTdwxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nX89lPP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B6DC32781;
+	Tue, 25 Jun 2024 10:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309400;
-	bh=RPe3OCFF9Avf2chir2KkVylTTQIhVwA3VBl6dx6aeMw=;
+	s=korg; t=1719309777;
+	bh=VIyxSNumIzEuoPhkwnkf2eQMu1n801iRbcw46CcU1Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JlKvQMcf8mxKaWapccUNJh1T4+ca3UciLMJuoGtD+hoyu/Q7P6Q9pEh/Mjmq8PdM3
-	 QPmu/kex3ui/wiJ7FGQMPrxuQufwi3yvw94a85x95SZG+ZjtU3IekWoUlvf51xi3Re
-	 9+NDHN5WHi0JyKGWkvAhjk6Qu+Xw3fbsNuYJXq0U=
+	b=0nX89lPPMkbouGhgBkJTSqGxd5j9O2t3zTv8t3xMSntjHT+amSU2LUjLnuziDd/JS
+	 V17kt+RR96Cerz13G67Wy7dSjUA1/TSx6pDhQhfXf1nWrU4eM3aQAT+fMLOeitZ4Hg
+	 h7s0X1yIvLpkIrY1rWudgxBzkPg20x5kuxmpZIUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 186/192] LoongArch: Fix entry point in kernel image header
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 103/131] ALSA: hda/realtek: Limit mic boost on N14AP7
 Date: Tue, 25 Jun 2024 11:34:18 +0200
-Message-ID: <20240625085544.299912946@linuxfoundation.org>
+Message-ID: <20240625085529.851767221@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit beb2800074c15362cf9f6c7301120910046d6556 ]
+commit 86a433862912f52597263aa224a9ed82bcd533bf upstream.
 
-Currently kernel entry in head.S is in DMW address range, firmware is
-instructed to jump to this address after loading the kernel image.
+The internal mic boost on the N14AP7 is too high. Fix this by applying the
+ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine to limit the gain.
 
-However kernel should not make any assumption on firmware's DMW
-setting, thus the entry point should be a physical address falls into
-direct translation region.
-
-Fix by converting entry address to physical and amend entry calculation
-logic in libstub accordingly.
-
-BTW, use ABSOLUTE() to calculate variables to make Clang/LLVM happy.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240605153923.2837-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/head.S             |  2 +-
- arch/loongarch/kernel/vmlinux.lds.S      | 10 ++++++----
- drivers/firmware/efi/libstub/loongarch.c |  2 +-
- 3 files changed, 8 insertions(+), 6 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/loongarch/kernel/head.S b/arch/loongarch/kernel/head.S
-index 0ecab42163928..e336fbc4eb967 100644
---- a/arch/loongarch/kernel/head.S
-+++ b/arch/loongarch/kernel/head.S
-@@ -22,7 +22,7 @@
- _head:
- 	.word	MZ_MAGIC		/* "MZ", MS-DOS header */
- 	.org	0x8
--	.dword	kernel_entry		/* Kernel entry point */
-+	.dword	_kernel_entry		/* Kernel entry point (physical address) */
- 	.dword	_kernel_asize		/* Kernel image effective size */
- 	.quad	PHYS_LINK_KADDR		/* Kernel image load offset from start of RAM */
- 	.org	0x38			/* 0x20 ~ 0x37 reserved */
-diff --git a/arch/loongarch/kernel/vmlinux.lds.S b/arch/loongarch/kernel/vmlinux.lds.S
-index a5d0cd2035da0..d5afd0c80a499 100644
---- a/arch/loongarch/kernel/vmlinux.lds.S
-+++ b/arch/loongarch/kernel/vmlinux.lds.S
-@@ -5,6 +5,7 @@
- 
- #define PAGE_SIZE _PAGE_SIZE
- #define RO_EXCEPTION_TABLE_ALIGN	4
-+#define PHYSADDR_MASK			0xffffffffffff /* 48-bit */
- 
- /*
-  * Put .bss..swapper_pg_dir as the first thing in .bss. This will
-@@ -139,10 +140,11 @@ SECTIONS
- 
- #ifdef CONFIG_EFI_STUB
- 	/* header symbols */
--	_kernel_asize = _end - _text;
--	_kernel_fsize = _edata - _text;
--	_kernel_vsize = _end - __initdata_begin;
--	_kernel_rsize = _edata - __initdata_begin;
-+	_kernel_entry = ABSOLUTE(kernel_entry & PHYSADDR_MASK);
-+	_kernel_asize = ABSOLUTE(_end - _text);
-+	_kernel_fsize = ABSOLUTE(_edata - _text);
-+	_kernel_vsize = ABSOLUTE(_end - __initdata_begin);
-+	_kernel_rsize = ABSOLUTE(_edata - __initdata_begin);
- #endif
- 
- 	.gptab.sdata : {
-diff --git a/drivers/firmware/efi/libstub/loongarch.c b/drivers/firmware/efi/libstub/loongarch.c
-index 684c9354637c6..d0ef93551c44f 100644
---- a/drivers/firmware/efi/libstub/loongarch.c
-+++ b/drivers/firmware/efi/libstub/loongarch.c
-@@ -41,7 +41,7 @@ static efi_status_t exit_boot_func(struct efi_boot_memmap *map, void *priv)
- unsigned long __weak kernel_entry_address(unsigned long kernel_addr,
- 		efi_loaded_image_t *image)
- {
--	return *(unsigned long *)(kernel_addr + 8) - VMLINUX_LOAD_ADDRESS + kernel_addr;
-+	return *(unsigned long *)(kernel_addr + 8) - PHYSADDR(VMLINUX_LOAD_ADDRESS) + kernel_addr;
- }
- 
- efi_status_t efi_boot_kernel(void *handle, efi_loaded_image_t *image,
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10132,6 +10132,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1b7d, 0xa831, "Ordissimo EVE2 ", ALC269VB_FIXUP_ORDISSIMO_EVE2), /* Also known as Malata PC-B1303 */
+ 	SND_PCI_QUIRK(0x1c06, 0x2013, "Lemote A1802", ALC269_FIXUP_LEMOTE_A1802),
+ 	SND_PCI_QUIRK(0x1c06, 0x2015, "Lemote A190X", ALC269_FIXUP_LEMOTE_A190X),
++	SND_PCI_QUIRK(0x1c6c, 0x122a, "Positivo N14AP7", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x1c6c, 0x1251, "Positivo N14KP6-TG", ALC288_FIXUP_DELL1_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1d05, 0x1132, "TongFang PHxTxX1", ALC256_FIXUP_SET_COEF_DEFAULTS),
+ 	SND_PCI_QUIRK(0x1d05, 0x1096, "TongFang GMxMRxx", ALC269_FIXUP_NO_SHUTUP),
 
 
 
