@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-55594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B9D916458
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8EFA9164D2
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4592DB26E48
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B20CB20B18
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77EC14A60F;
-	Tue, 25 Jun 2024 09:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AECF148319;
+	Tue, 25 Jun 2024 10:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5AJwsvx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ul0fPaNX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945DC14A0B9;
-	Tue, 25 Jun 2024 09:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187D213C90B;
+	Tue, 25 Jun 2024 10:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309365; cv=none; b=lO2MEfkuPAWS07Jz8nF1funFT8KXi9r7QEeQzq07OuqJJy40lvsp99C0eHX/ZJZqu04i2Lk+BjS1kkD3/1T9Ff0bLQ+Cq2dgaTih8K1CPDfsgH1oSqCTVVHqT9zo9273H/MFk9oeArUmvr88lENzsOVms8yxeUbvHGdtEm4xpeA=
+	t=1719309698; cv=none; b=izrGxPmbdLvDZSN8sJ+sHg9Zs0I6oIlDoScdq9KL1qFXqN+RVBWpuW5oIgXy+0nrb9V099rxH2y0+7XprO2y5BrQGrUTBMxlgsjE5H6p+s/HtAW2qS+OxGxnuZWwqazNfF/AdsvOLRRkJANvkKaNHrOUdtpLA63Nj6Fe8u3ib2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309365; c=relaxed/simple;
-	bh=5bp2P5dAoYZPsBhXLZKIiOTSKNjP6IsCSBWiHZO6HUE=;
+	s=arc-20240116; t=1719309698; c=relaxed/simple;
+	bh=11LpTUJXAkmywBP74/Ih+lN5c53vZE077yv8uIxAG2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KVEAn53x1gggWePjBjebUnAHkMssGTBlxCTS80TrQYip2H1AvLLEV600YDt7Vg/s9/uslLd+sHt70YWjo4hC6SFuvMU1FY74kmVzFlOA5WqQTpRIrjaRqTGMO3QV9bYAU07EPAUfPmNjsv3MRVFNfxcHE35hn2zRulivd3JdPZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5AJwsvx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ADFDC32781;
-	Tue, 25 Jun 2024 09:56:04 +0000 (UTC)
+	 MIME-Version; b=DSuvwnFDN+YaptTnY2XNs3WHthY31pT21BfS6Kt2mG9lrx66gv6xUz0IVTtJXPK4hy2JL/KpOypImjHLCIiz34R8Nuqx6PMRMnD8jECGdZWflln0B3F9INXSnq0ua4mlkLoy/Vg5hOncxGfrBUVll+zlG7wFEWmOcvCGhwE/0EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ul0fPaNX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BE1C32781;
+	Tue, 25 Jun 2024 10:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309365;
-	bh=5bp2P5dAoYZPsBhXLZKIiOTSKNjP6IsCSBWiHZO6HUE=;
+	s=korg; t=1719309698;
+	bh=11LpTUJXAkmywBP74/Ih+lN5c53vZE077yv8uIxAG2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5AJwsvx5mok3+IPJlK56ExOitdTzLz145QwnjrVfRF5odIa4KxAc6waXmLn8YvLk
-	 Vq0pskJiLNh6ImkKBZVj5Mr+LmMxxPD75jdx2cGFqQ2vintvoFJWrjQ8FncJUl6VAL
-	 rr+k4ouiql/1a9Wj6NViqJqxSPYanKLcFwq+eXpg=
+	b=Ul0fPaNXZ7+9kM9SaFKoNIoRmtlYbgkoC1ggbz2mBK5Ipc/MJnuo9inUmtJF1gevg
+	 ON1aKhEcdtX87Lmrvcxx56tlxQbRsWzHuPvLk/Br58x/pMQc9D2HcbbA5qD5hoivHr
+	 qbsyaE5EpYRUcY1WghvJ7dynT/ARM8Lk+NiSTwj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 154/192] drm/amdgpu: fix UBSAN warning in kv_dpm.c
-Date: Tue, 25 Jun 2024 11:33:46 +0200
-Message-ID: <20240625085543.071286738@linuxfoundation.org>
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 072/131] octeontx2-pf: Add error handling to VLAN unoffload handling
+Date: Tue, 25 Jun 2024 11:33:47 +0200
+Message-ID: <20240625085528.679056092@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Simon Horman <horms@kernel.org>
 
-commit f0d576f840153392d04b2d52cf3adab8f62e8cb6 upstream.
+[ Upstream commit b95a4afe2defd6f46891985f9436a568cd35a31c ]
 
-Adds bounds check for sumo_vid_mapping_entry.
+otx2_sq_append_skb makes used of __vlan_hwaccel_push_inside()
+to unoffload VLANs - push them from skb meta data into skb data.
+However, it omitts a check for __vlan_hwaccel_push_inside()
+returning NULL.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3392
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by inspection based on [1] and [2].
+Compile tested only.
+
+[1] Re: [PATCH net-next v1] net: stmmac: Enable TSO on VLANs
+    https://lore.kernel.org/all/ZmrN2W8Fye450TKs@shell.armlinux.org.uk/
+[2] Re: [PATCH net-next v2] net: stmmac: Enable TSO on VLANs
+    https://lore.kernel.org/all/CANn89i+11L5=tKsa7V7Aeyxaj6nYGRwy35PAbCRYJ73G+b25sg@mail.gmail.com/
+
+Fixes: fd9d7859db6c ("octeontx2-pf: Implement ingress/egress VLAN offload")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-@@ -164,6 +164,8 @@ static void sumo_construct_vid_mapping_t
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+index aee392a15b23c..e579183e52392 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+@@ -1152,8 +1152,11 @@ bool otx2_sq_append_skb(struct net_device *netdev, struct otx2_snd_queue *sq,
  
- 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
- 		if (table[i].ulSupportedSCLK != 0) {
-+			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
-+				continue;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
- 				table[i].usVoltageID;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
+ 	if (skb_shinfo(skb)->gso_size && !is_hw_tso_supported(pfvf, skb)) {
+ 		/* Insert vlan tag before giving pkt to tso */
+-		if (skb_vlan_tag_present(skb))
++		if (skb_vlan_tag_present(skb)) {
+ 			skb = __vlan_hwaccel_push_inside(skb);
++			if (!skb)
++				return true;
++		}
+ 		otx2_sq_append_tso(pfvf, sq, skb, qidx);
+ 		return true;
+ 	}
+-- 
+2.43.0
+
 
 
 
