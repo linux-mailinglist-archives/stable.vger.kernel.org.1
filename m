@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-55313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74831916310
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:42:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB049163A3
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A859B1C22696
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:42:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ED001C222F7
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B63149C7F;
-	Tue, 25 Jun 2024 09:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD991487E9;
+	Tue, 25 Jun 2024 09:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TmpG9Cn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJ3A0p5a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356DC12EBEA;
-	Tue, 25 Jun 2024 09:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2411465A8;
+	Tue, 25 Jun 2024 09:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308539; cv=none; b=Kc7bP/Jwim1EzAcZz6FgDySujU6yp5Kl6hwpVXzr11URFdt3wYTbQt+tSwhcoFnGKiOr6MAS9pBpZM7d558n6IAm0GDismCb72LlPvlsg5twzZmdya9Cg1FQN9/72Whs3iTV3rHvYD+pPRvXkjjoNQUlnyT781gVQCz1yoAqVN4=
+	t=1719308942; cv=none; b=Q78kmE8OhDpTwUqufEntfHImnfEvIwfEwbIjWTEDhWB+IWidFjbgtRS/VtIR1rAC1zSybf7qZmfypIY0R/3fdKO83eiR+X02yKkkbAFU3RB236yh4V+26rjZstiqFnlwpVYmlQHl/81LEVXUvPH2O3SAbZGuS6MsLHiXwHIIdcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308539; c=relaxed/simple;
-	bh=57oky4nXdTuJ8eDnsmFAozyMN14avNosbcwAedDHRfE=;
+	s=arc-20240116; t=1719308942; c=relaxed/simple;
+	bh=fclVUKOCNwZfjnIqObbBVBZLmYNUTVCTdO+ydkbuEg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8Me9WDlx1JYy1Spw0rmAvz9vAS2zwEMlP6KsM61Pie2tLYFHhqOU2d4qnJNQVcw0P8ISqKLvF1Zl7DNV2xAr5p1WrziX/2NUKxD5WR6gT02j6i6mKDsMIsEaw7RsY+dii1k0BKFs21NYXUU0z4HV3uF2zO1qGKvEQfByweMGBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TmpG9Cn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD43AC32781;
-	Tue, 25 Jun 2024 09:42:18 +0000 (UTC)
+	 MIME-Version; b=HUCk5ndc7xwoXemPtCfuj/VunI0qXm5H6nJgk44knkdtwQm1ApTodOJORr+FUp+82UceGwESqejMoik5BuS9Cx/ODS66ujlGUd0IUZQCKLBh9zQyaopTFB0Tyl9wqGao5cWRfs/akL6qnU+cROW1WqJNwmp/C1XKnOjomjpvygA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJ3A0p5a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FCC9C32781;
+	Tue, 25 Jun 2024 09:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308539;
-	bh=57oky4nXdTuJ8eDnsmFAozyMN14avNosbcwAedDHRfE=;
+	s=korg; t=1719308942;
+	bh=fclVUKOCNwZfjnIqObbBVBZLmYNUTVCTdO+ydkbuEg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TmpG9Cn4PCEwxI13uHF0SQ8hqAZCGDeAd5vRL1TMDTkBu/BxxK5+ngEqVKBkYUeOw
-	 rEcU1cFufsksliKOLId0AYbT68XTN46MmKcNJVr7/QqHkoTvcYeJjmXKX3qP8noDLM
-	 ZJVTNTzEK3T17f3c6RjMa5d2qb5F8oQuYdUP2Xg4=
+	b=lJ3A0p5aJBwAzcMPHO2WqGucmy9ikBijncueUNGRrketRtZGJB1D1/vxqgd/ZZ+/d
+	 mEIX+IVPRdWfv0qLptDppsqIu3+krBxyx4dsvo3Sk16oa6aORg6/FWBue4+bU9syR1
+	 Hkv8fJoSlaARQSgTwRMYVznqM6uQNq6PU8XkIQAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Benson Leung <bleung@chromium.org>,
+	Prashant Malani <pmalani@chromium.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 155/250] dmaengine: ioatdma: Fix kmemleak in ioat_pci_probe()
+Subject: [PATCH 6.6 041/192] power: supply: cros_usbpd: provide ID table for avoiding fallback match
 Date: Tue, 25 Jun 2024 11:31:53 +0200
-Message-ID: <20240625085554.012042337@linuxfoundation.org>
+Message-ID: <20240625085538.741320969@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit 29b7cd255f3628e0d65be33a939d8b5bba10aa62 ]
+[ Upstream commit 0f8678c34cbfdc63569a9b0ede1fe235ec6ec693 ]
 
-If probing fails we end up with leaking ioatdma_device and each
-allocated channel.
+Instead of using fallback driver name match, provide ID table[1] for the
+primary match.
 
-Following kmemleak easy to reproduce by injecting an error in
-ioat_alloc_chan_resources() when doing ioat_dma_self_test().
+[1]: https://elixir.bootlin.com/linux/v6.8/source/drivers/base/platform.c#L1353
 
-unreferenced object 0xffff888014ad5800 (size 1024): [..]
-    [<ffffffff827692ca>] kmemleak_alloc+0x4a/0x80
-    [<ffffffff81430600>] kmalloc_trace+0x270/0x2f0
-    [<ffffffffa000b7d1>] ioat_pci_probe+0xc1/0x1c0 [ioatdma]
-[..]
-
-repeated for each ioatdma channel:
-
-unreferenced object 0xffff8880148e5c00 (size 512): [..]
-    [<ffffffff827692ca>] kmemleak_alloc+0x4a/0x80
-    [<ffffffff81430600>] kmalloc_trace+0x270/0x2f0
-    [<ffffffffa0009641>] ioat_enumerate_channels+0x101/0x2d0 [ioatdma]
-    [<ffffffffa000b266>] ioat3_dma_probe+0x4d6/0x970 [ioatdma]
-    [<ffffffffa000b891>] ioat_pci_probe+0x181/0x1c0 [ioatdma]
-[..]
-
-Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-3-a9f2fbe26ab1@yadro.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Prashant Malani <pmalani@chromium.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://lore.kernel.org/r/20240401030052.2887845-4-tzungbi@kernel.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ioat/init.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/power/supply/cros_usbpd-charger.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 26964b7c8cf14..cf688b0c8444c 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1347,6 +1347,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	void __iomem * const *iomap;
- 	struct device *dev = &pdev->dev;
- 	struct ioatdma_device *device;
-+	unsigned int i;
- 	u8 version;
- 	int err;
+diff --git a/drivers/power/supply/cros_usbpd-charger.c b/drivers/power/supply/cros_usbpd-charger.c
+index b6c96376776a9..8008e31c0c098 100644
+--- a/drivers/power/supply/cros_usbpd-charger.c
++++ b/drivers/power/supply/cros_usbpd-charger.c
+@@ -5,6 +5,7 @@
+  * Copyright (c) 2014 - 2018 Google, Inc
+  */
  
-@@ -1384,6 +1385,9 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/platform_data/cros_ec_commands.h>
+ #include <linux/platform_data/cros_ec_proto.h>
+@@ -711,16 +712,22 @@ static int cros_usbpd_charger_resume(struct device *dev)
+ static SIMPLE_DEV_PM_OPS(cros_usbpd_charger_pm_ops, NULL,
+ 			 cros_usbpd_charger_resume);
  
- 	err = ioat3_dma_probe(device, ioat_dca_enabled);
- 	if (err) {
-+		for (i = 0; i < IOAT_MAX_CHANS; i++)
-+			kfree(device->idx[i]);
-+		kfree(device);
- 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
- 		return -ENODEV;
- 	}
++static const struct platform_device_id cros_usbpd_charger_id[] = {
++	{ DRV_NAME, 0 },
++	{}
++};
++MODULE_DEVICE_TABLE(platform, cros_usbpd_charger_id);
++
+ static struct platform_driver cros_usbpd_charger_driver = {
+ 	.driver = {
+ 		.name = DRV_NAME,
+ 		.pm = &cros_usbpd_charger_pm_ops,
+ 	},
+-	.probe = cros_usbpd_charger_probe
++	.probe = cros_usbpd_charger_probe,
++	.id_table = cros_usbpd_charger_id,
+ };
+ 
+ module_platform_driver(cros_usbpd_charger_driver);
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("ChromeOS EC USBPD charger");
+-MODULE_ALIAS("platform:" DRV_NAME);
 -- 
 2.43.0
 
