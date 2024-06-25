@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-55402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2192291636C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FF9916494
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 548D41C21225
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 221A62876D0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860F0148315;
-	Tue, 25 Jun 2024 09:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37EE149E0A;
+	Tue, 25 Jun 2024 09:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5qsIMiZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wo+E486i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EE41465A8;
-	Tue, 25 Jun 2024 09:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CA7146A67;
+	Tue, 25 Jun 2024 09:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308798; cv=none; b=AisDYrxf0WJYZrJCgVZeevfJdbJOqKlpP0RRZaeRXESGIlLrkG3YPEpXVMj5PPQ4PGG+0XOj7IRllzEzFYtp1i0piOmXTxvpnEWUfmD9dnWyz0x+nXjRwwgkxBs3m+BOpSXcTHW35tqoBYZ7A94qMyUBduOECXmWAG6W3LC15wY=
+	t=1719309529; cv=none; b=ZNQUlBhi39spzSc5eGg3BPG1YIUPmYIfBvrihSTI3VsYI61bu1PemY0gjx8+PbFVKLx6QB9YVKUYSTZxN4aO1WPmMl3JDe7kJbzvzp9oN7TRCHDxAxHwRy47lOAKMP4VmcTaykOyr8tlVqw5WiTgM0Ar5J+G7TmUeaJr3S4AkVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308798; c=relaxed/simple;
-	bh=RZGKUZe/6Gc4y2P2W4SnwIWQRrjtcEURmjEsJl5Wlr0=;
+	s=arc-20240116; t=1719309529; c=relaxed/simple;
+	bh=uVsCzAv31ilSlar5GOgN8FUo0YIXyL0d3YM/KxFF/lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPdLcWQuG6LQcSXWBjbpksTn0sF7o6p2J3yYT1+qIJr319+hso8s7ZX8fvTSIdYIWpt7nD+qmQYEfl0dD8fAhzxrn8e/77NQb1teh6MoO/X/5m3t/oigohfeALls7CzEuFAB6bsPJYRA1PgmSjeWDztxXPELOF42+/v9egZA0ZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5qsIMiZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEDBC32781;
-	Tue, 25 Jun 2024 09:46:37 +0000 (UTC)
+	 MIME-Version; b=rOnhYiXVJ2HiBSkl9uuJBiFTzQZuID80jTl6XgYEhHxYO4LPTBghK0T4JBCR0pZ8laYLpToHorTEc1XandPac05C66mCpD7TgNw1sW/2XT5C+F6u77panY5DrjS6ns90ba3Pq2e7ZwpwTV/mrsrF41473RAnBE7x3Fi3cKCeq3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wo+E486i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D04C32781;
+	Tue, 25 Jun 2024 09:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308798;
-	bh=RZGKUZe/6Gc4y2P2W4SnwIWQRrjtcEURmjEsJl5Wlr0=;
+	s=korg; t=1719309529;
+	bh=uVsCzAv31ilSlar5GOgN8FUo0YIXyL0d3YM/KxFF/lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5qsIMiZ8/p3KzInE6qdUPQYQJRFD4605Z3UGKsK1gqRdIFNtC5eO9GJMelJrJ43/
-	 LHu/pUWFw9uhRSiNwdSe+dTvxMfQ2DeFswHIXZ3oFc704yiKCJw2jN9WDB3KgMUmIq
-	 oKIFpHSxQpOFSFAVuaPliNkSB0f4yqtrtFFMyLG4=
+	b=wo+E486i1P9kOlE6F0u9vki+cVkxIS9AvqS7fcXZXcVLWJxXbHq9uCxt8MtRvF6Ga
+	 RSyqWSIMbFruQgZCvi99hs+6YkGy2GQ7Jeu2UCEAdMzGJKb5z3ySLOu3KxXw//j3+d
+	 BeggIpZrfn6+xZrX+cv1O9MYzuDiny865lALxhrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Martin Leung <martin.leung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.9 244/250] drm/amd/display: revert Exit idle optimizations before HDCP execution
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 047/131] tracing: Build event generation tests only as modules
 Date: Tue, 25 Jun 2024 11:33:22 +0200
-Message-ID: <20240625085557.417922516@linuxfoundation.org>
+Message-ID: <20240625085527.739641768@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Leung <martin.leung@amd.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit f2703a3596a279b0be6eeed4c500bdbaa8dc3ce4 upstream.
+[ Upstream commit 3572bd5689b0812b161b40279e39ca5b66d73e88 ]
 
-why and how:
-causes black screen on PNP on DCN 3.5
+The kprobes and synth event generation test modules add events and lock
+(get a reference) those event file reference in module init function,
+and unlock and delete it in module exit function. This is because those
+are designed for playing as modules.
 
-This reverts commit f30a3bea92bd ("drm/amd/display: Exit idle
-optimizations before HDCP execution")
+If we make those modules as built-in, those events are left locked in the
+kernel, and never be removed. This causes kprobe event self-test failure
+as below.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Martin Leung <martin.leung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[   97.349708] ------------[ cut here ]------------
+[   97.353453] WARNING: CPU: 3 PID: 1 at kernel/trace/trace_kprobe.c:2133 kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.357106] Modules linked in:
+[   97.358488] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.9.0-g699646734ab5-dirty #14
+[   97.361556] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+[   97.363880] RIP: 0010:kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.365538] Code: a8 24 08 82 e9 ae fd ff ff 90 0f 0b 90 48 c7 c7 e5 aa 0b 82 e9 ee fc ff ff 90 0f 0b 90 48 c7 c7 2d 61 06 82 e9 8e fd ff ff 90 <0f> 0b 90 48 c7 c7 33 0b 0c 82 89 c6 e8 6e 03 1f ff 41 ff c7 e9 90
+[   97.370429] RSP: 0000:ffffc90000013b50 EFLAGS: 00010286
+[   97.371852] RAX: 00000000fffffff0 RBX: ffff888005919c00 RCX: 0000000000000000
+[   97.373829] RDX: ffff888003f40000 RSI: ffffffff8236a598 RDI: ffff888003f40a68
+[   97.375715] RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+[   97.377675] R10: ffffffff811c9ae5 R11: ffffffff8120c4e0 R12: 0000000000000000
+[   97.379591] R13: 0000000000000001 R14: 0000000000000015 R15: 0000000000000000
+[   97.381536] FS:  0000000000000000(0000) GS:ffff88807dcc0000(0000) knlGS:0000000000000000
+[   97.383813] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   97.385449] CR2: 0000000000000000 CR3: 0000000002244000 CR4: 00000000000006b0
+[   97.387347] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[   97.389277] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[   97.391196] Call Trace:
+[   97.391967]  <TASK>
+[   97.392647]  ? __warn+0xcc/0x180
+[   97.393640]  ? kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.395181]  ? report_bug+0xbd/0x150
+[   97.396234]  ? handle_bug+0x3e/0x60
+[   97.397311]  ? exc_invalid_op+0x1a/0x50
+[   97.398434]  ? asm_exc_invalid_op+0x1a/0x20
+[   97.399652]  ? trace_kprobe_is_busy+0x20/0x20
+[   97.400904]  ? tracing_reset_all_online_cpus+0x15/0x90
+[   97.402304]  ? kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.403773]  ? init_kprobe_trace+0x50/0x50
+[   97.404972]  do_one_initcall+0x112/0x240
+[   97.406113]  do_initcall_level+0x95/0xb0
+[   97.407286]  ? kernel_init+0x1a/0x1a0
+[   97.408401]  do_initcalls+0x3f/0x70
+[   97.409452]  kernel_init_freeable+0x16f/0x1e0
+[   97.410662]  ? rest_init+0x1f0/0x1f0
+[   97.411738]  kernel_init+0x1a/0x1a0
+[   97.412788]  ret_from_fork+0x39/0x50
+[   97.413817]  ? rest_init+0x1f0/0x1f0
+[   97.414844]  ret_from_fork_asm+0x11/0x20
+[   97.416285]  </TASK>
+[   97.417134] irq event stamp: 13437323
+[   97.418376] hardirqs last  enabled at (13437337): [<ffffffff8110bc0c>] console_unlock+0x11c/0x150
+[   97.421285] hardirqs last disabled at (13437370): [<ffffffff8110bbf1>] console_unlock+0x101/0x150
+[   97.423838] softirqs last  enabled at (13437366): [<ffffffff8108e17f>] handle_softirqs+0x23f/0x2a0
+[   97.426450] softirqs last disabled at (13437393): [<ffffffff8108e346>] __irq_exit_rcu+0x66/0xd0
+[   97.428850] ---[ end trace 0000000000000000 ]---
+
+And also, since we can not cleanup dynamic_event file, ftracetest are
+failed too.
+
+To avoid these issues, build these tests only as modules.
+
+Link: https://lore.kernel.org/all/171811263754.85078.5877446624311852525.stgit@devnote2/
+
+Fixes: 9fe41efaca08 ("tracing: Add synth event generation test module")
+Fixes: 64836248dda2 ("tracing: Add kprobe event command generation test module")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c    |   10 ----------
- drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h |    8 --------
- 2 files changed, 18 deletions(-)
+ kernel/trace/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-@@ -88,14 +88,6 @@ static uint8_t is_cp_desired_hdcp2(struc
- 			!hdcp->connection.is_hdcp2_revoked;
- }
+diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
+index 93d7249962833..e3a549239cb4e 100644
+--- a/kernel/trace/Kconfig
++++ b/kernel/trace/Kconfig
+@@ -1068,7 +1068,7 @@ config PREEMPTIRQ_DELAY_TEST
  
--static void exit_idle_optimizations(struct mod_hdcp *hdcp)
--{
--	struct mod_hdcp_dm *dm = &hdcp->config.dm;
--
--	if (dm->funcs.exit_idle_optimizations)
--		dm->funcs.exit_idle_optimizations(dm->handle);
--}
--
- static enum mod_hdcp_status execution(struct mod_hdcp *hdcp,
- 		struct mod_hdcp_event_context *event_ctx,
- 		union mod_hdcp_transition_input *input)
-@@ -551,8 +543,6 @@ enum mod_hdcp_status mod_hdcp_process_ev
- 	memset(&event_ctx, 0, sizeof(struct mod_hdcp_event_context));
- 	event_ctx.event = event;
+ config SYNTH_EVENT_GEN_TEST
+ 	tristate "Test module for in-kernel synthetic event generation"
+-	depends on SYNTH_EVENTS
++	depends on SYNTH_EVENTS && m
+ 	help
+           This option creates a test module to check the base
+           functionality of in-kernel synthetic event definition and
+@@ -1081,7 +1081,7 @@ config SYNTH_EVENT_GEN_TEST
  
--	exit_idle_optimizations(hdcp);
--
- 	/* execute and transition */
- 	exec_status = execution(hdcp, &event_ctx, &hdcp->auth.trans_input);
- 	trans_status = transition(
---- a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-+++ b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-@@ -156,13 +156,6 @@ struct mod_hdcp_ddc {
- 	} funcs;
- };
- 
--struct mod_hdcp_dm {
--	void *handle;
--	struct {
--		void (*exit_idle_optimizations)(void *handle);
--	} funcs;
--};
--
- struct mod_hdcp_psp {
- 	void *handle;
- 	void *funcs;
-@@ -279,7 +272,6 @@ struct mod_hdcp_display_query {
- struct mod_hdcp_config {
- 	struct mod_hdcp_psp psp;
- 	struct mod_hdcp_ddc ddc;
--	struct mod_hdcp_dm dm;
- 	uint8_t index;
- };
- 
+ config KPROBE_EVENT_GEN_TEST
+ 	tristate "Test module for in-kernel kprobe event generation"
+-	depends on KPROBE_EVENTS
++	depends on KPROBE_EVENTS && m
+ 	help
+           This option creates a test module to check the base
+           functionality of in-kernel kprobe event definition.
+-- 
+2.43.0
+
 
 
 
