@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-55586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0712C91644C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AEB99164C9
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A86C228358F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA0E02887CA
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB22C149DF4;
-	Tue, 25 Jun 2024 09:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690BC148319;
+	Tue, 25 Jun 2024 10:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRxY5pyP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMbFzx8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10B914A090;
-	Tue, 25 Jun 2024 09:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B2613C90B;
+	Tue, 25 Jun 2024 10:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309341; cv=none; b=UGzI6TkRzdMFUpYbw+t37k3cT43StAJBUITy+aAEYCN7gDneXenJH93eJvbjNY7HbKSnvFppjJzIl9AJx6i6YJcinndeUzxSPD+1ONVDaOK0MvptuTbxU+jd15On3J6cSaVvUSCs1EehnLIjpcXCyxbi8ai/EFL954y0KxscIXQ=
+	t=1719309671; cv=none; b=DHjMBpyH4p+PtL+Lz9THDHeZpVA/Tcg6xLa+47Ll+9gMPBMA5Q3GD2EXZi/KEJwa8MiZa3hksJfPNOdar/HyqEfqPzs0o6gAZGeeeq+dOwdA/jJTPWaBkuP793ERUHm3NLcj+cIdSjFFvcwnFMbT3VduvTvCEEPHqCyl22C+5fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309341; c=relaxed/simple;
-	bh=sMxV0u7XHxF/Yfks5X8PbalLxKI8oZs+6Jkohv+ROWg=;
+	s=arc-20240116; t=1719309671; c=relaxed/simple;
+	bh=tXzCvU8DASeJIakOoJ6+11KIrfzse6EFDjMdN6MCh28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B2jayAQq/qsGnFRc40I7pJQApnAN5cMIpQ/WQCFBKPrBRAOlvU+wIOQLu+Apj6eXmV+vjbQuAp1tEGGzfJyMgHa+2kEv5nFP4C+I0e3VqAOwm/uK8aEIL/HsI820UFKm2n2BaPlff96XxEbNJfVWx5p3BkLZ3dzOHGTDPCqRQeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRxY5pyP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2396AC32781;
-	Tue, 25 Jun 2024 09:55:40 +0000 (UTC)
+	 MIME-Version; b=EpFJKecltUMYGj1Tj6C6VfFYOCk3lFhGMiUJUCe7Dy7JJVWj38iygppjFI0Me2ReJbmhyhYLDDeIXRcdMXASyDKK1MERzWkmJC0BZ7mPIrDFucarQ2miuo9yiYrtZC3ruW4wId2eoCIh+uW/upsJ+G2T9Cniw44F6k7VQ3iX7WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMbFzx8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC1FC32781;
+	Tue, 25 Jun 2024 10:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309341;
-	bh=sMxV0u7XHxF/Yfks5X8PbalLxKI8oZs+6Jkohv+ROWg=;
+	s=korg; t=1719309671;
+	bh=tXzCvU8DASeJIakOoJ6+11KIrfzse6EFDjMdN6MCh28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRxY5pyPA5OcRirpDEo8CNJpij2fC2IwwXLeLnzCpJmIZJkw2ofvHnssLqnmKJ3YD
-	 ah7p5Oib+fMTISpuKymxSOSkmmsqR5foBX1Nlc90a7A74rsZKRekr9x2mVcBNkPVZG
-	 NeD0yTlb2t3NHw37dtpVjn7klfU7FSCj+Iz1GSi0=
+	b=UMbFzx8PO0IjtwBdWqiHb9KVDRzz1DtCXSRCXGDWXh75y4vY+ZDVqqzVB6KmIozP/
+	 JKFf5/U8e2A0NjMRhOmPwPluVmYiZTOCHL3t58lObM3fUVzt5SrPjjm9MHCFGJ0Y5e
+	 ZtfsdLozl9PKceus5N1U2NE/3t2EnB16HB8JZpsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Josef Bacik <jbacik@fb.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Markus Pargmann <mpa@pengutronix.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/192] nbd: Improve the documentation of the locking assumptions
-Date: Tue, 25 Jun 2024 11:34:08 +0200
-Message-ID: <20240625085543.915962245@linuxfoundation.org>
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 094/131] net: stmmac: Assign configured channel value to EXTTS event
+Date: Tue, 25 Jun 2024 11:34:09 +0200
+Message-ID: <20240625085529.511693005@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,65 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 2a6751e052ab4789630bc889c814037068723bc1 ]
+commit 8851346912a1fa33e7a5966fe51f07313b274627 upstream.
 
-Document locking assumptions with lockdep_assert_held() instead of source
-code comments. The advantage of lockdep_assert_held() is that it is
-verified at runtime if lockdep is enabled in the kernel config.
+Assign the configured channel value to the EXTTS event in the timestamp
+interrupt handler. Without assigning the correct channel, applications
+like ts2phc will refuse to accept the event, resulting in errors such
+as:
+...
+ts2phc[656.834]: config item end1.ts2phc.pin_index is 0
+ts2phc[656.834]: config item end1.ts2phc.channel is 3
+ts2phc[656.834]: config item end1.ts2phc.extts_polarity is 2
+ts2phc[656.834]: config item end1.ts2phc.extts_correction is 0
+...
+ts2phc[656.862]: extts on unexpected channel
+ts2phc[658.141]: extts on unexpected channel
+ts2phc[659.140]: extts on unexpected channel
 
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Josef Bacik <jbacik@fb.com>
-Cc: Yu Kuai <yukuai3@huawei.com>
-Cc: Markus Pargmann <mpa@pengutronix.de>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240510202313.25209-4-bvanassche@acm.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: e56d4b633fff ("nbd: Fix signal handling")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f4da56529da60 ("net: stmmac: Add support for external trigger timestamping")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://lore.kernel.org/r/20240618073821.619751-1-o.rempel@pengutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/nbd.c | 6 +++++-
+ drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c |    6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index df738eab02433..a906674f71147 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -569,7 +569,6 @@ static inline int was_interrupted(int result)
- 	return result == -ERESTARTSYS || result == -EINTR;
- }
- 
--/* always call with the tx_lock held */
- static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
+@@ -176,6 +176,7 @@ static void timestamp_interrupt(struct s
  {
- 	struct request *req = blk_mq_rq_from_pdu(cmd);
-@@ -586,6 +585,9 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
- 	u32 nbd_cmd_flags = 0;
- 	int sent = nsock->sent, skip = 0;
+ 	u32 num_snapshot, ts_status, tsync_int;
+ 	struct ptp_clock_event event;
++	u32 acr_value, channel;
+ 	unsigned long flags;
+ 	u64 ptp_time;
+ 	int i;
+@@ -201,12 +202,15 @@ static void timestamp_interrupt(struct s
+ 	num_snapshot = (ts_status & GMAC_TIMESTAMP_ATSNS_MASK) >>
+ 		       GMAC_TIMESTAMP_ATSNS_SHIFT;
  
-+	lockdep_assert_held(&cmd->lock);
-+	lockdep_assert_held(&nsock->tx_lock);
++	acr_value = readl(priv->ptpaddr + PTP_ACR);
++	channel = ilog2(FIELD_GET(PTP_ACR_MASK, acr_value));
 +
- 	iov_iter_kvec(&from, ITER_SOURCE, &iov, 1, sizeof(request));
- 
- 	type = req_to_nbd_cmd_type(req);
-@@ -996,6 +998,8 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
- 	struct nbd_sock *nsock;
- 	int ret;
- 
-+	lockdep_assert_held(&cmd->lock);
-+
- 	config = nbd_get_config_unlocked(nbd);
- 	if (!config) {
- 		dev_err_ratelimited(disk_to_dev(nbd->disk),
--- 
-2.43.0
-
+ 	for (i = 0; i < num_snapshot; i++) {
+ 		read_lock_irqsave(&priv->ptp_lock, flags);
+ 		get_ptptime(priv->ptpaddr, &ptp_time);
+ 		read_unlock_irqrestore(&priv->ptp_lock, flags);
+ 		event.type = PTP_CLOCK_EXTTS;
+-		event.index = 0;
++		event.index = channel;
+ 		event.timestamp = ptp_time;
+ 		ptp_clock_event(priv->ptp_clock, &event);
+ 	}
 
 
 
