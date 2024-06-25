@@ -1,164 +1,81 @@
-Return-Path: <stable+bounces-55807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8199172CF
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 22:56:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA009172E3
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 23:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBA161F21E3E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 20:56:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 191222825B9
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 21:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6640B17E457;
-	Tue, 25 Jun 2024 20:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0AD4AEF6;
+	Tue, 25 Jun 2024 21:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b="AfYpqkeN"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OLnCUxlF"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2113.outbound.protection.outlook.com [40.107.236.113])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF7D132127;
-	Tue, 25 Jun 2024 20:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.113
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719348853; cv=fail; b=ajJVSjfJxoXYoyZuy1S7dWo+N0JV0Hrmg9+pVB1emR9w1nndgtRZNNDk2wSkAPR/JFEPlTkQmhTcfzJlWeis5+hE+gf7A7Ws7ZK83eyyEuYGx1dtlv4UY8DNEoL7AGrESBprxt/7GhUGzvEEy03hix8F2BPM1NkHPlr20JJL/eM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719348853; c=relaxed/simple;
-	bh=zS2hKcpMfIH0BdVrteEYlNMrmRic2MWEO27WQsd56a8=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=LMCRJ9ba0unYVltY3RQgMcSWJk2qCbTdN0Exr5q4pihuJwQOeMSo9N/JXsNhgUN8Pd2O6dcL+bVkvU24SnfNV1IiK106pCYJS95Mi6qQ4VOxaWf3xksA3r8hrDJGN8JcaDRhTedlpXuV8wOAmbfuySD9HWHra/ofNzbjva4XWeA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=pass (1024-bit key) header.d=os.amperecomputing.com header.i=@os.amperecomputing.com header.b=AfYpqkeN; arc=fail smtp.client-ip=40.107.236.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=os.amperecomputing.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Wi6uhXRCqduuq6usYJkiUNfjgI6YLmwkf/9fL90GHrtSclRJEdWLXNtrumyiIstzQ6WftaoTnPj39EjJVosS3e8G/G1o51k9TM4il4yb+Za8mCGABhN46hQUpNQMcOi6X/lsr0Mhkvd7TaQ0fVPBNkpKI9Bg64fMAdq2xHo/ruOvcPabYNxzeSARj7AcdK4UnMqPmopMmLKc3SKH1no0T2R1NGR93SZnGgCfByC1dJZbH6FG0enrE+K3T91MLbUpqeMlT56iCCxpcUJ4gFZ1HUAypzYRfJTUmfgQ0rsrX4aT/olBI2VGdXd50qZSon3Yc/fPLZ7xv15NK+vhtK4CAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WMp2pgrapufMbBwpWlJn5dflYLAktTIDq4+ebpw7dYk=;
- b=T0uhd4c40L5qwEyCOfiHP1uJvyu7kJ8bQhvydMGRfBzdttRCZdGuk7Sm9Rx6VTYPXM5dc92Z+taAn2z5Z4Ecxk/4BUudxFTJr00aLXdCKeMWWRgDhbtvx8id2AET10yVpQa+YzqEXAb+A6q+HLFrLtJ244oXDSan13L26MW8/DaRuxgJXjV0lDqhJKLvNPHhOUgGTa04YHBivi/6SPWEeWwPoXS9Eu+HV7H3afEGfmJWo40a6x8jwQsuk/YzwJbXMX/zJh4VY1RCmWzpCshjd7QUSkRUzTdg7VXOyyCo7fAt95xDFYH5Vk85dGrZO9jirZ9mXYHooFdUS3mjIqOlPA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WMp2pgrapufMbBwpWlJn5dflYLAktTIDq4+ebpw7dYk=;
- b=AfYpqkeNhj/Qot1aoBVhuRuP4ZiJpZiwKADBZ7xTCb6c1bovtzYQEujPybUZbtFp90B69JBd65z3bgC1h7LbsdwegiMbyfK57l80t8NwHJb5cMr8Dc7H6JCqVHOUT6bTo8j9mgM4M4dmGFuMF2ZmhFhLfnixa+9T5d96C6TvNuU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
-Received: from BYAPR01MB5463.prod.exchangelabs.com (2603:10b6:a03:11b::20) by
- LV3PR01MB8675.prod.exchangelabs.com (2603:10b6:408:1b0::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7698.29; Tue, 25 Jun 2024 20:54:07 +0000
-Received: from BYAPR01MB5463.prod.exchangelabs.com
- ([fe80::4984:7039:100:6955]) by BYAPR01MB5463.prod.exchangelabs.com
- ([fe80::4984:7039:100:6955%6]) with mapi id 15.20.7698.025; Tue, 25 Jun 2024
- 20:54:07 +0000
-From: Yang Shi <yang@os.amperecomputing.com>
-To: peterx@redhat.com,
-	oliver.sang@intel.com,
-	paulmck@kernel.org,
-	david@redhat.com,
-	willy@infradead.org,
-	riel@surriel.com,
-	vivek.kasireddy@intel.com,
-	cl@linux.com,
-	akpm@linux-foundation.org
-Cc: yang@os.amperecomputing.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [RESEND PATCH] mm: page_ref: remove folio_try_get_rcu()
-Date: Tue, 25 Jun 2024 13:53:50 -0700
-Message-ID: <20240625205350.1777481-1-yang@os.amperecomputing.com>
-X-Mailer: git-send-email 2.41.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: CH2PR19CA0023.namprd19.prod.outlook.com
- (2603:10b6:610:4d::33) To BYAPR01MB5463.prod.exchangelabs.com
- (2603:10b6:a03:11b::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9A91487C6;
+	Tue, 25 Jun 2024 21:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719349223; cv=none; b=HNYxAfRMt2iKAGk1aH1XOPli7zHEgtPhrubGYRMj/cFWQgnK+RSjQqNtdEvvSTDANvtkUb7cG2UQ6Ubc6TOu7dd7jxtlvhWoff86/erHnobGW8AzPqehO8KCK/xhu0OsZ/RMINes7cziAWvmVm9lRqdi+Yq5+QzvVOY0udXSfFg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719349223; c=relaxed/simple;
+	bh=dtq0SB9BSpb7tviogr3IslDd4Ta1kwKTB14pwRtq6bs=;
+	h=Date:To:From:Subject:Message-Id; b=QZNN+OhgIAlT28vyE9wwWkzqM/fah3Y0ixKz2lFIzuXObwuYuuku9N5lfJdlNkh21vsqGt93qe2JxuRImDpVz7XlgbwZ2HwKd1nRm/V94sOJNuQC9vUYyHsOTx5r+VU1/dmEa+4XY7bik31GPgHIL0OFu9jLGb6ELkRe+dWEmrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OLnCUxlF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688ABC32781;
+	Tue, 25 Jun 2024 21:00:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1719349222;
+	bh=dtq0SB9BSpb7tviogr3IslDd4Ta1kwKTB14pwRtq6bs=;
+	h=Date:To:From:Subject:From;
+	b=OLnCUxlFG+ZvOA1l5Mlnjvtwgg4cZq3mZf/dfWxB84pdLJAKjOpYcpXbO3ReyBXI6
+	 DUufI3AxDiNJOJLvAojVdPg3LG73UQpMKJkNiS0i2F0utXU0GZq3wDObzcB64upZDD
+	 zafnHI3FNgzCFhbR4wK3izE6xoO8frZ4dB5cDxLE=
+Date: Tue, 25 Jun 2024 14:00:21 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,vivek.kasireddy@intel.com,stable@vger.kernel.org,riel@surriel.com,peterx@redhat.com,paulmck@kernel.org,oliver.sang@intel.com,david@redhat.com,cl@linux.com,yang@os.amperecomputing.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-page_ref-remove-folio_try_get_rcu.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240625210022.688ABC32781@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR01MB5463:EE_|LV3PR01MB8675:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8f6b396a-aa3c-41fd-96ee-08dc9558f454
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230038|366014|52116012|376012|7416012|1800799022|38350700012;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hy2a1ynPmKfSY1B1Vd24Zvnj+DFoxUruy1dGRjSQl7hFnq4K8MxLmJASMyYW?=
- =?us-ascii?Q?0JnboEV0+tEDXSY7NhnA2EYS6yoPVchrColyueGX1sO9mXCZ5mFXsccT7Hpn?=
- =?us-ascii?Q?+80gtyo50bJgrqgsR/NcmSU51kgK5vQJpTKwsVNT9Feo+AprOlrKqt3SiddQ?=
- =?us-ascii?Q?HOeYo4VIEY+YDyXWHRBCWfY0tqz9I5ctdrhFF6Yj3HEIEpDSTAVZBikgQfwL?=
- =?us-ascii?Q?NlHz4cf1Vd50JWljWS9vISBjFiJi4u0xz/q2hyDrTfVo3YZajC/eJcuyrdiM?=
- =?us-ascii?Q?fG2/ffQytpg5ySRBQQbtGVUYmD8ECjV8h+/TfD+r/yX7bXsZSqsgYieL0geQ?=
- =?us-ascii?Q?zEQ19S/4TiBLuyv9Cqj2Cy2bGh7FoicK4gf7miH9oIUoxo1DE5UGqt+i5W8w?=
- =?us-ascii?Q?3oW4ZJMmV3+FVhOag3m6MxHr+Y5i4VfNFLp+32LFBBXPYYtL1RFKDTQjFu4z?=
- =?us-ascii?Q?5Vh9O+cC3WN0cJC9N0zC9etzcgPYOjdjwtoBQvtLIxeH2u4hTh2thW4rxNkW?=
- =?us-ascii?Q?n09vLyhzCPCeiuF0ZuhSMhPJc6OjGlwxePQvdEZulbrqAxk75Erl2EgFbau2?=
- =?us-ascii?Q?FxdMgiwUkEmTD0ZDWIJJHTNI50+JS0kWAdHjdGVMg9DRdvbPXYxO/SqqqKHL?=
- =?us-ascii?Q?MHJOOF0bBctWiXhc2bXv2QucnoIzwchFs3ieKk76YUdPo5jv3yLT6euMnQlE?=
- =?us-ascii?Q?tJ5vFP0w4Cw0cIj/G7NSHCQMiSIzGDo0Va5CDA8/4sjlFeiGv3JM/jTzD1LR?=
- =?us-ascii?Q?hbZFq3DI/hgKjbC+XYAo46xeTafMbPfAjZhxA9l9cteNckrbttCc/YUmm9fm?=
- =?us-ascii?Q?GCufcgTIKDL7Gj5hwRTJUJRGcwLvg1KOLRA8cGT1WwY1EfZ1nLOa9S5AX61l?=
- =?us-ascii?Q?HtmvvptDzHl4DtBZAizDCCag4iExM/HPZcJfUkPB9CSyKtd2OS/9UnJMpGkO?=
- =?us-ascii?Q?9CL9qOcG255pS7lssq4SED0Z40xHPmSxPLOu7TRjqG2MI8HdYpWZH4RWJ3Pi?=
- =?us-ascii?Q?0wwCA5FeXJm81swurLJZ59hWsmryVOraAYSRHmhMh9E1AynH3wtngSnwVUDo?=
- =?us-ascii?Q?UXKDwXQM7n1j4iI+HeUOQMj8oArqmAdBnQHhQAD33NdfcJ1ob2/vQY6sh1Uc?=
- =?us-ascii?Q?lUkEaOAvugRFQfD3IGfrLSMZ/1UXEGXLg+v6KnIVjLbnF5vief81ezJMGKL8?=
- =?us-ascii?Q?+hWrxrpcepIkZIKWnAbyye/oGzrAfpv+OxHF29dShPiXn6LsT3FnUmNUIOJ5?=
- =?us-ascii?Q?lbL9PPNRzbH8nZwF9XFLCFGHTmglK2iUEGhc+yO++NcPJc9WOO7fpnD1xc7k?=
- =?us-ascii?Q?HV3D5T0Fz4L2EtNRFWTQuWHP?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR01MB5463.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230038)(366014)(52116012)(376012)(7416012)(1800799022)(38350700012);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?ffv4aat2ya7cIiAzqWIv3XmBg+nLRosf7Hm3LnJOVivI3o2OwjjVD4hmFJeM?=
- =?us-ascii?Q?iXdKGvUB7M0mkZBN4D+GmpxpWF8KWHObhKAtVVHK2OO6s91rIlSmSevn4qsp?=
- =?us-ascii?Q?9PcmMQ68cMz+d7HiBLVnksWQ0NOudc9Q6G6N+U0YO/UiaG3orco+TWhkulOQ?=
- =?us-ascii?Q?eGR0Of5SKIFPdigCjdi5hYiKeiS8tR/lYndqf9Ju71akvPPLcbcGtVagsn6S?=
- =?us-ascii?Q?O+9L0xAHFURQgQQHHHZX4mAxPYHe0wbjrEgtsiSQ4GLaIdycHl0AhzXpY7E5?=
- =?us-ascii?Q?MwJfhklR7PKBm+i2V7rylksK4KBMDJa+l23CbkGGp8YtfGAIGrtcwxDQQ+6Y?=
- =?us-ascii?Q?8BnAEl7fD5Cmlp3gwo0DSKtYNsIm/qw7/Truj00TV+9NdcaG0WdqpeSCkXg7?=
- =?us-ascii?Q?a0n6IxOE4j3jQucv3b9Djv2ynuLqBMq1w8PR5W5uqDvUDImObv0WEQNih5mk?=
- =?us-ascii?Q?Z+t9SwYCOvJT46pzEO7O4pjcToWogf/6MrhsHLbX8P6tElAemRrmYnp47HLb?=
- =?us-ascii?Q?f5aRIm3866F7a5kn+SVmoXHm0CRSfPKsFmk5fKRUloXleTGZL2Fim9OFrgy4?=
- =?us-ascii?Q?Gu6S27yelaCQoiBmvVPZpUTniDQBlegAVN/Szsq9G/n1tTzIBbyK5mWzvP3g?=
- =?us-ascii?Q?lb0Js8y2TBWAC2QKc09D/Q40viHCFmeHtQdZtc0ZG0OadvsPt3AfoDu9uT96?=
- =?us-ascii?Q?27+q6Htnr6o1BvihA3jl8nPbCsMP144ivSTxiFNFGeXklX/TSo0ZH3ivCpB8?=
- =?us-ascii?Q?XcVTviWfI1wWCu3LCgpV6sTIaHv3jJqwUIXbrghGU9TQlOOZFcfZeRblYHgE?=
- =?us-ascii?Q?9IBGUvXm6psYS0Rs7tff//kKksobo3V9+p9XTuqg7Lu7fHO7+oCX2zsS4LJu?=
- =?us-ascii?Q?N7pmZawGHDofqsUQct2pAU/BeCrOgK2fHcF2vHDWQOQux4u8W5MiX0R3P7PQ?=
- =?us-ascii?Q?bvBHMsCy/E/dbkM0WHYGP+12UsJ1PMYz20d8BEK8ign3QIrFbPIj+fQVj806?=
- =?us-ascii?Q?ijw3pLGTWJrPavyEyO2O9dhfoeVx1jpVv8iAs+KtSH2DKOguk2aeB90QQnff?=
- =?us-ascii?Q?mwCuB6lkaIJNXJHUR4D76M7niqmjSkhkyyM71FWU5+u56qAa81noJrfsKSkG?=
- =?us-ascii?Q?TotWh30al5ZbU8QlN052bx7c6T3LajCPOzSnRBwx971h+afKfuqgyI5ZSHY5?=
- =?us-ascii?Q?DW45sZW3KPbuangNzp+HpqSFKnlw89gNwBfnfGaDDRBfsaS+czkdVbZN591y?=
- =?us-ascii?Q?QcdALJ6IcH/p0EVHmBHEU+xyeLWHS4oB9Rvk3yYiTe7f3KaAChw8VR3kkk7J?=
- =?us-ascii?Q?VLno9s5/hfDYEhI1+4F1Vy5AytHIYI3Iq63BL2dZIKEK26eWPcFHvUtMyFtJ?=
- =?us-ascii?Q?b+4iIcfDBe/JnbovHCvyTdIDmMkpDCSjVTizQdhVtQPVPcGq3Xi6TIvGz9Ov?=
- =?us-ascii?Q?/BtjH+UxlPhsHT6ZH5GHDftEp585EZIJK6tLSMU2n/crELLuUiaLDBV8/52N?=
- =?us-ascii?Q?HBazppZQmxBUXkXe11g1EFHwoHNllqZFtDWKNsn4KP2IisTVj+nRwfm451LA?=
- =?us-ascii?Q?Xl02rZOHbFjPpi1AfQ+tFAwrDmMSwVPVSXNVrhrO39N2BlTsrwxBITfBjSbB?=
- =?us-ascii?Q?dKVfFaRMkyN1uyGSw9IsYpo=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8f6b396a-aa3c-41fd-96ee-08dc9558f454
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR01MB5463.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2024 20:54:07.1375
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2hZEBfHLyTmU/LpfJ6d4DUJVIs1EmMsnmCAvdGZCPR+ZDMfxKf88P9N7grytCynj5NlQw/ioYws9k62gwwTezBkYB7vUWGjojMqBg5QyPlM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR01MB8675
+
+
+The patch titled
+     Subject: mm: page_ref: remove folio_try_get_rcu()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-page_ref-remove-folio_try_get_rcu.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_ref-remove-folio_try_get_rcu.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Yang Shi <yang@os.amperecomputing.com>
+Subject: mm: page_ref: remove folio_try_get_rcu()
+Date: Tue, 25 Jun 2024 13:53:50 -0700
 
 The below bug was reported on a non-SMP kernel:
 
@@ -249,31 +166,37 @@ However calling try_grab_folio() in GUP slow path actually is
 unnecessary, so the following patch will clean this up.
 
 [1] https://lore.kernel.org/linux-mm/821cf1d6-92b9-4ac4-bacc-d8f2364ac14f@paulmck-laptop/
+
+Link: https://lkml.kernel.org/r/20240625205350.1777481-1-yang@os.amperecomputing.com
 Fixes: 57edfcfd3419 ("mm/gup: accelerate thp gup even for "pages != NULL"")
+Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
 Reported-by: kernel test robot <oliver.sang@intel.com>
 Tested-by: Oliver Sang <oliver.sang@intel.com>
 Acked-by: Peter Xu <peterx@redhat.com>
 Acked-by: David Hildenbrand <david@redhat.com>
-Cc: linux-stable <stable@vger.kernel.org> v6.6+
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- include/linux/page_ref.h | 49 ++--------------------------------------
- mm/filemap.c             | 10 ++++----
- mm/gup.c                 |  2 +-
+
+ include/linux/page_ref.h |   49 +------------------------------------
+ mm/filemap.c             |   10 +++----
+ mm/gup.c                 |    2 -
  3 files changed, 8 insertions(+), 53 deletions(-)
 
-* Added Tested-by tag and collected Acked-by tags
-
-diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-index 1acf5bac7f50..490d0ad6e56d 100644
---- a/include/linux/page_ref.h
-+++ b/include/linux/page_ref.h
-@@ -258,54 +258,9 @@ static inline bool folio_try_get(struct folio *folio)
+--- a/include/linux/page_ref.h~mm-page_ref-remove-folio_try_get_rcu
++++ a/include/linux/page_ref.h
+@@ -258,54 +258,9 @@ static inline bool folio_try_get(struct
  	return folio_ref_add_unless(folio, 1, 0);
  }
  
 -static inline bool folio_ref_try_add_rcu(struct folio *folio, int count)
--{
++static inline bool folio_ref_try_add(struct folio *folio, int count)
+ {
 -#ifdef CONFIG_TINY_RCU
 -	/*
 -	 * The caller guarantees the folio will not be freed from interrupt
@@ -318,18 +241,15 @@ index 1acf5bac7f50..490d0ad6e56d 100644
 - * Return: True if the reference count was successfully incremented.
 - */
 -static inline bool folio_try_get_rcu(struct folio *folio)
-+static inline bool folio_ref_try_add(struct folio *folio, int count)
- {
+-{
 -	return folio_ref_try_add_rcu(folio, 1);
 +	return folio_ref_add_unless(folio, count, 0);
  }
  
  static inline int page_ref_freeze(struct page *page, int count)
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 78c8767c0a5a..37e2b2bb4a63 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1847,7 +1847,7 @@ void *filemap_get_entry(struct address_space *mapping, pgoff_t index)
+--- a/mm/filemap.c~mm-page_ref-remove-folio_try_get_rcu
++++ a/mm/filemap.c
+@@ -1847,7 +1847,7 @@ repeat:
  	if (!folio || xa_is_value(folio))
  		goto out;
  
@@ -338,7 +258,7 @@ index 78c8767c0a5a..37e2b2bb4a63 100644
  		goto repeat;
  
  	if (unlikely(folio != xas_reload(&xas))) {
-@@ -2001,7 +2001,7 @@ static inline struct folio *find_get_entry(struct xa_state *xas, pgoff_t max,
+@@ -2001,7 +2001,7 @@ retry:
  	if (!folio || xa_is_value(folio))
  		return folio;
  
@@ -347,7 +267,7 @@ index 78c8767c0a5a..37e2b2bb4a63 100644
  		goto reset;
  
  	if (unlikely(folio != xas_reload(xas))) {
-@@ -2181,7 +2181,7 @@ unsigned filemap_get_folios_contig(struct address_space *mapping,
+@@ -2181,7 +2181,7 @@ unsigned filemap_get_folios_contig(struc
  		if (xa_is_value(folio))
  			goto update_start;
  
@@ -356,7 +276,7 @@ index 78c8767c0a5a..37e2b2bb4a63 100644
  			goto retry;
  
  		if (unlikely(folio != xas_reload(&xas)))
-@@ -2313,7 +2313,7 @@ static void filemap_get_read_batch(struct address_space *mapping,
+@@ -2313,7 +2313,7 @@ static void filemap_get_read_batch(struc
  			break;
  		if (xa_is_sibling(folio))
  			break;
@@ -365,7 +285,7 @@ index 78c8767c0a5a..37e2b2bb4a63 100644
  			goto retry;
  
  		if (unlikely(folio != xas_reload(&xas)))
-@@ -3473,7 +3473,7 @@ static struct folio *next_uptodate_folio(struct xa_state *xas,
+@@ -3472,7 +3472,7 @@ static struct folio *next_uptodate_folio
  			continue;
  		if (folio_test_locked(folio))
  			continue;
@@ -374,11 +294,9 @@ index 78c8767c0a5a..37e2b2bb4a63 100644
  			continue;
  		/* Has the page moved or been split? */
  		if (unlikely(folio != xas_reload(xas)))
-diff --git a/mm/gup.c b/mm/gup.c
-index 6ff9f95a99a7..d1d85c41371c 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -76,7 +76,7 @@ static inline struct folio *try_get_folio(struct page *page, int refs)
+--- a/mm/gup.c~mm-page_ref-remove-folio_try_get_rcu
++++ a/mm/gup.c
+@@ -76,7 +76,7 @@ retry:
  	folio = page_folio(page);
  	if (WARN_ON_ONCE(folio_ref_count(folio) < 0))
  		return NULL;
@@ -387,7 +305,10 @@ index 6ff9f95a99a7..d1d85c41371c 100644
  		return NULL;
  
  	/*
--- 
-2.41.0
+_
+
+Patches currently in -mm which might be from yang@os.amperecomputing.com are
+
+mm-page_ref-remove-folio_try_get_rcu.patch
 
 
