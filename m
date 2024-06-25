@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A4A91647D
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B5B9163F9
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F5631F2251B
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31C56B2528C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE931487E9;
-	Tue, 25 Jun 2024 09:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC6D149C4C;
+	Tue, 25 Jun 2024 09:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rkjjy2ox"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFoNS4EX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD68D1465A8;
-	Tue, 25 Jun 2024 09:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A84324B34;
+	Tue, 25 Jun 2024 09:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309474; cv=none; b=dVTH5guLNIDywWPwdcUn7rt1OONn3zfmCtr5g1gsY7l98fw+L+oJ97hNwgha8XhJxfGE8Hs/Gim8YQTqpRSl0Mbe09B9q/Jk5Zqj/o4JNPDd/aEnc76xfQX5fV2cxZk62kq6NMnxTw+/eTu0Sl3Zt1BEmdfGfurpJ16pJAtvJNs=
+	t=1719309148; cv=none; b=TJ6W5xeRtU0O/BYxmeKTD8OgwVzvk5+zWIp+0Zo5BOehiqhpkvPr//1Wxrio9AlZpQpFopmJHUV6ub25kFLk3ED8o2zMMkM1FYQkp8IzWAFj1shLHT9kN1BLJ2ygODOAceiAKixcakN6LoZvO07+VR2NpemJqNI6SZIkdjGdi8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309474; c=relaxed/simple;
-	bh=5qOzfkmPAJsDpjNFnVp48yEJ7El4rTsp1vvdwMlqxjI=;
+	s=arc-20240116; t=1719309148; c=relaxed/simple;
+	bh=Xzy+hLzVwyLUgG+l+DPD5UQp3+sxq19SBzKINJ399cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L93X4xR+SPQi27/gjYll+e1otLnEqYJbycRg5Qti/VN2JY/WHeaLurlc/4O3EmTwCOaGOmeIdl4CxUVfjNtldSwJgMIuxbsbi3Qdwu4B1qq8GvEL4qQ2RlWAmgzm5G/WsTro2ePhxiDrdkdrhwPwu/UXvXRg6NTMSVpjDLL3fXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rkjjy2ox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF35C32781;
-	Tue, 25 Jun 2024 09:57:52 +0000 (UTC)
+	 MIME-Version; b=t0o1oPg07UvN+81vtqjlXXna5w9AHR3DuyVx7On/6NVwP0+Z/0Yqnfh6TRoqeI1ZJSFy2gn5qNicqpIjRvShpJjBJPPY3/JgN7O7Cu4E8oSBqU11WwVxq3PxG8+YhpXgEaKaG687BZplOzM8OSDpzTWAvfomy2WPQwhO8BspJaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFoNS4EX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A530BC32781;
+	Tue, 25 Jun 2024 09:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309473;
-	bh=5qOzfkmPAJsDpjNFnVp48yEJ7El4rTsp1vvdwMlqxjI=;
+	s=korg; t=1719309148;
+	bh=Xzy+hLzVwyLUgG+l+DPD5UQp3+sxq19SBzKINJ399cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rkjjy2oxaeb6qtWlZaqi5YVJFRhViyaBsFW+7m4chb+TmuLp/bC2TwSFAzoA0pbv2
-	 CCe4DZ4AFR8YbcUJyfAQN40L/Cki7pZ9HlAMirSqiTYywyyoDGIAkKrp7BVsg02jmj
-	 USsBbbS+Qk0meYUEmVi6A84yS4mtU4WCmdclWhls=
+	b=WFoNS4EXJPap1lQc8Bd3rv6mwVrs/1fc0gC+fSjmKpIMLHQwySj+2k3G/p71Qvi1q
+	 cNbX0JE58t4sgcguWShKLzJuQNwpYY0kKZ1ZfI+0ztwdhMqGeLKotXkvod4KQ+SqYB
+	 r1dGvwjmTWg5h/XQgpq1bigHbisYOswko1m5f5Ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erico Nunes <nunes.erico@gmail.com>,
-	Qiang Yu <yuq825@gmail.com>,
+	Nikita Shubin <n.shubin@yadro.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/131] drm/lima: mask irqs in timeout path before hard reset
+Subject: [PATCH 6.6 110/192] dmaengine: ioatdma: Fix error path in ioat3_dma_probe()
 Date: Tue, 25 Jun 2024 11:33:02 +0200
-Message-ID: <20240625085526.982125889@linuxfoundation.org>
+Message-ID: <20240625085541.395060515@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erico Nunes <nunes.erico@gmail.com>
+From: Nikita Shubin <n.shubin@yadro.com>
 
-[ Upstream commit a421cc7a6a001b70415aa4f66024fa6178885a14 ]
+[ Upstream commit f0dc9fda2e0ee9e01496c2f5aca3a831131fad79 ]
 
-There is a race condition in which a rendering job might take just long
-enough to trigger the drm sched job timeout handler but also still
-complete before the hard reset is done by the timeout handler.
-This runs into race conditions not expected by the timeout handler.
-In some very specific cases it currently may result in a refcount
-imbalance on lima_pm_idle, with a stack dump such as:
+Make sure we are disabling interrupts and destroying DMA pool if
+pcie_capability_read/write_word() call failed.
 
-[10136.669170] WARNING: CPU: 0 PID: 0 at drivers/gpu/drm/lima/lima_devfreq.c:205 lima_devfreq_record_idle+0xa0/0xb0
-...
-[10136.669459] pc : lima_devfreq_record_idle+0xa0/0xb0
-...
-[10136.669628] Call trace:
-[10136.669634]  lima_devfreq_record_idle+0xa0/0xb0
-[10136.669646]  lima_sched_pipe_task_done+0x5c/0xb0
-[10136.669656]  lima_gp_irq_handler+0xa8/0x120
-[10136.669666]  __handle_irq_event_percpu+0x48/0x160
-[10136.669679]  handle_irq_event+0x4c/0xc0
-
-We can prevent that race condition entirely by masking the irqs at the
-beginning of the timeout handler, at which point we give up on waiting
-for that job entirely.
-The irqs will be enabled again at the next hard reset which is already
-done as a recovery by the timeout handler.
-
-Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
-Reviewed-by: Qiang Yu <yuq825@gmail.com>
-Signed-off-by: Qiang Yu <yuq825@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240405152951.1531555-4-nunes.erico@gmail.com
+Fixes: 511deae0261c ("dmaengine: ioatdma: disable relaxed ordering for ioatdma")
+Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-2-a9f2fbe26ab1@yadro.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/lima/lima_sched.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/dma/ioat/init.c | 33 +++++++++++++++------------------
+ 1 file changed, 15 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/gpu/drm/lima/lima_sched.c b/drivers/gpu/drm/lima/lima_sched.c
-index e82931712d8a2..9e836fad4a654 100644
---- a/drivers/gpu/drm/lima/lima_sched.c
-+++ b/drivers/gpu/drm/lima/lima_sched.c
-@@ -402,6 +402,13 @@ static enum drm_gpu_sched_stat lima_sched_timedout_job(struct drm_sched_job *job
- 	struct lima_sched_task *task = to_lima_task(job);
- 	struct lima_device *ldev = pipe->ldev;
+diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
+index e76e507ae898c..26964b7c8cf14 100644
+--- a/drivers/dma/ioat/init.c
++++ b/drivers/dma/ioat/init.c
+@@ -534,18 +534,6 @@ static int ioat_probe(struct ioatdma_device *ioat_dma)
+ 	return err;
+ }
  
-+	/*
-+	 * The task might still finish while this timeout handler runs.
-+	 * To prevent a race condition on its completion, mask all irqs
-+	 * on the running core until the next hard reset completes.
-+	 */
-+	pipe->task_mask_irq(pipe);
+-static int ioat_register(struct ioatdma_device *ioat_dma)
+-{
+-	int err = dma_async_device_register(&ioat_dma->dma_dev);
+-
+-	if (err) {
+-		ioat_disable_interrupts(ioat_dma);
+-		dma_pool_destroy(ioat_dma->completion_pool);
+-	}
+-
+-	return err;
+-}
+-
+ static void ioat_dma_remove(struct ioatdma_device *ioat_dma)
+ {
+ 	struct dma_device *dma = &ioat_dma->dma_dev;
+@@ -1181,9 +1169,9 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
+ 		       ioat_chan->reg_base + IOAT_DCACTRL_OFFSET);
+ 	}
+ 
+-	err = ioat_register(ioat_dma);
++	err = dma_async_device_register(&ioat_dma->dma_dev);
+ 	if (err)
+-		return err;
++		goto err_disable_interrupts;
+ 
+ 	ioat_kobject_add(ioat_dma, &ioat_ktype);
+ 
+@@ -1192,20 +1180,29 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
+ 
+ 	/* disable relaxed ordering */
+ 	err = pcie_capability_read_word(pdev, PCI_EXP_DEVCTL, &val16);
+-	if (err)
+-		return pcibios_err_to_errno(err);
++	if (err) {
++		err = pcibios_err_to_errno(err);
++		goto err_disable_interrupts;
++	}
+ 
+ 	/* clear relaxed ordering enable */
+ 	val16 &= ~PCI_EXP_DEVCTL_RELAX_EN;
+ 	err = pcie_capability_write_word(pdev, PCI_EXP_DEVCTL, val16);
+-	if (err)
+-		return pcibios_err_to_errno(err);
++	if (err) {
++		err = pcibios_err_to_errno(err);
++		goto err_disable_interrupts;
++	}
+ 
+ 	if (ioat_dma->cap & IOAT_CAP_DPS)
+ 		writeb(ioat_pending_level + 1,
+ 		       ioat_dma->reg_base + IOAT_PREFETCH_LIMIT_OFFSET);
+ 
+ 	return 0;
 +
- 	if (!pipe->error)
- 		DRM_ERROR("lima job timeout\n");
++err_disable_interrupts:
++	ioat_disable_interrupts(ioat_dma);
++	dma_pool_destroy(ioat_dma->completion_pool);
++	return err;
+ }
  
+ static void ioat_shutdown(struct pci_dev *pdev)
 -- 
 2.43.0
 
