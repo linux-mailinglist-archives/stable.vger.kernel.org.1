@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-55704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 047FD9164D0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A76916456
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 364E81C2120F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38E6A1C23260
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A039A1494A8;
-	Tue, 25 Jun 2024 10:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCDF146A67;
+	Tue, 25 Jun 2024 09:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Um0x/7mQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdhOt4up"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C40413C90B;
-	Tue, 25 Jun 2024 10:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A1D14A087;
+	Tue, 25 Jun 2024 09:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309692; cv=none; b=Lrn0JEd+qZgDJpS4IH6lw03kCZWWRcnP5cJk7O+GfQaZSZD9krrxnowBmAFJ4Q0dCT14MPnc+VfIKc30Xg7xEwz4lshR99Anm86ja3pKgFJDMBvrYUxH8Q0b1Zrrn9s7xI/zakAn7wZm3KIGFQDUk9JCCOyjjiIcPrEi90WlvH0=
+	t=1719309362; cv=none; b=uoAayTo8ojIZJzQTPNrwnWq4/bwBYXQLu2Gg+HxDPkZaBcrrQaw7cMPI7rYjcxIRe9qzq1Wu5SfRFFM9MiIf1RHEVXNq6+xOGX/R/yAwLIkVehDXKQTRZ/oPwX3Kwomohru/6Tw91dTHcI0d/q0iCfVkOznQpSCHIFRYbCQ1K20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309692; c=relaxed/simple;
-	bh=yuFl7TZnb/i6ZTw9mPpi2fJcHFV1j2XZgAcpc5WI7gQ=;
+	s=arc-20240116; t=1719309362; c=relaxed/simple;
+	bh=d3ymsZd/WnPbo0aXl5aQxJCbi5DQdVeR2nTaCJVFFd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftBLzwbu5DDjy4RTYHLivSd8CzE61qalImkXf4pnM72I0wedhLRI7tuedmjR180HfOf9LT8Lrt1VbgaFM+2CfULKtISDN6MxEwuhVMVXw1xUOWg6mJbwM/eKgFgoqXRDh10preKBpp+OUvnsdsdHrqKo4ZUsm6vhLX27OrnP0t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Um0x/7mQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85433C32781;
-	Tue, 25 Jun 2024 10:01:31 +0000 (UTC)
+	 MIME-Version; b=fC6DKo0Dd+an8/0gBmwOcECK3BStieIsqeCr4X+qGByonOF7ejUJiYeBKrmicAVu5G1RW3oasQRZsok4Nd/V/thLxoJK+jbJD7ydwJy2VAWUTXBe5NtzB2AZQTNeQsaaQIJfsuWb5jzxfj+Rz7lm9B/DSWz7y9AnCPhXrepbMNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdhOt4up; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2990CC32781;
+	Tue, 25 Jun 2024 09:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309691;
-	bh=yuFl7TZnb/i6ZTw9mPpi2fJcHFV1j2XZgAcpc5WI7gQ=;
+	s=korg; t=1719309362;
+	bh=d3ymsZd/WnPbo0aXl5aQxJCbi5DQdVeR2nTaCJVFFd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Um0x/7mQQUkU3VcPQQIPZ38H6kVzU3KcthKO/hx3TxrXio7oiwLX+tYqbz2MAMoBb
-	 JpaTKBHFDGR7MOplPB/Am/HnYLhS1f1cFVDDhH5coVuaZ8Njj1brg38YFenh+UAX3J
-	 BPRXAexKt8ybLluiVBvk3LKaROUIun7aAf/6pY+s=
+	b=TdhOt4up1vkFk15F2QlPHiF47V7OH1Jk/2OU2oElvFEehUx9xM8ui48JBiAqUyCiE
+	 4WB96aWsb8DjAem6zCtyOVsdfe2nYwy7lwDa1pgFy5rg9QcWjRQHjMcZDdnxvWcM6E
+	 P+p4uh2v//LoDK9pFsQdOUM29IHz9JnR1gAcVgHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/131] net: stmmac: No need to calculate speed divider when offload is disabled
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 153/192] drm/radeon: fix UBSAN warning in kv_dpm.c
 Date: Tue, 25 Jun 2024 11:33:45 +0200
-Message-ID: <20240625085528.603226310@linuxfoundation.org>
+Message-ID: <20240625085543.032887477@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +61,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit b8c43360f6e424131fa81d3ba8792ad8ff25a09e ]
+commit a498df5421fd737d11bfd152428ba6b1c8538321 upstream.
 
-commit be27b8965297 ("net: stmmac: replace priv->speed with
-the portTransmitRate from the tc-cbs parameters") introduced
-a problem. When deleting, it prompts "Invalid portTransmitRate
-0 (idleSlope - sendSlope)" and exits. Add judgment on cbs.enable.
-Only when offload is enabled, speed divider needs to be calculated.
+Adds bounds check for sumo_vid_mapping_entry.
 
-Fixes: be27b8965297 ("net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240617013922.1035854-1-xiaolei.wang@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 40 ++++++++++---------
- 1 file changed, 22 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/radeon/sumo_dpm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 074ff289eaf25..5eb8c6713e456 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -358,24 +358,28 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+--- a/drivers/gpu/drm/radeon/sumo_dpm.c
++++ b/drivers/gpu/drm/radeon/sumo_dpm.c
+@@ -1621,6 +1621,8 @@ void sumo_construct_vid_mapping_table(st
  
- 	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
- 
--	/* Port Transmit Rate and Speed Divider */
--	switch (div_s64(port_transmit_rate_kbps, 1000)) {
--	case SPEED_10000:
--	case SPEED_5000:
--		ptr = 32;
--		break;
--	case SPEED_2500:
--	case SPEED_1000:
--		ptr = 8;
--		break;
--	case SPEED_100:
--		ptr = 4;
--		break;
--	default:
--		netdev_err(priv->dev,
--			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
--			   port_transmit_rate_kbps);
--		return -EINVAL;
-+	if (qopt->enable) {
-+		/* Port Transmit Rate and Speed Divider */
-+		switch (div_s64(port_transmit_rate_kbps, 1000)) {
-+		case SPEED_10000:
-+		case SPEED_5000:
-+			ptr = 32;
-+			break;
-+		case SPEED_2500:
-+		case SPEED_1000:
-+			ptr = 8;
-+			break;
-+		case SPEED_100:
-+			ptr = 4;
-+			break;
-+		default:
-+			netdev_err(priv->dev,
-+				   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
-+				   port_transmit_rate_kbps);
-+			return -EINVAL;
-+		}
-+	} else {
-+		ptr = 0;
- 	}
- 
- 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
--- 
-2.43.0
-
+ 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
+ 		if (table[i].ulSupportedSCLK != 0) {
++			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
++				continue;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
+ 				table[i].usVoltageID;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
 
 
 
