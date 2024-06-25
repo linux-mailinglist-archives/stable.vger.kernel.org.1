@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-55675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC9E09164AF
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5177916367
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73E4F1F21DC7
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6226028AF1C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F318514A08B;
-	Tue, 25 Jun 2024 10:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5271487E9;
+	Tue, 25 Jun 2024 09:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I6oTCoLH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6I86Gkl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E17149E0A;
-	Tue, 25 Jun 2024 10:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA1F1465A8;
+	Tue, 25 Jun 2024 09:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309606; cv=none; b=S452maHh0RsizNJQQzV8jRrCF5dJ3BPeZ9Tn0D0L7yWQgzjd3ZDk6sEA6GziDFVjomDEjKeDgKEH8AkAOeIqLfZqyJI+Z3JQim+CBkSEIWWlIxig42kFey0f6axl3vWbpWb6IRw+LBg6b57M9Dwiv2m3OkRwfAoB1K4t0NHXcFE=
+	t=1719308783; cv=none; b=cYgeFpqLVG6vRtx/Cc3x4At2t60mgSjPlKGcWLkmktmRY1o8NIfVQUSbO2kxNTxPU2YsxJhOZZLcs2rFCtuyHjHNsR63rDo/G/AFzK1CAdRt1qWTZxhEjC9/MKW+q+4QK2aw5J4yo+h3rW3M30fJ7NK1vmvwaHxXe6boIiEJLis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309606; c=relaxed/simple;
-	bh=dzDuaXecxMkXMhPGMuxLf8ruX0GFuP9vNf9dwUu9V+8=;
+	s=arc-20240116; t=1719308783; c=relaxed/simple;
+	bh=lUgAOcVDqcLj1DWqkiLTB9p3OYEclv8ReB6Pmab2+V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sABfVyqVX3/nZBPvtYzk4cl/24NRpSYLFr4GWpSTOgWlNINFfXgCbtb8Do6moOMqXXZJ394gp+jA1/0hTo2rdkQJf6qmAkuRUcZT2bRLJlKVYWrDJF2I+vRn5EwmcegRB3xUvrgAHBx5XsZjXUieiAJzuktgHrK8LnV0GL8pvrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I6oTCoLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3968C32781;
-	Tue, 25 Jun 2024 10:00:05 +0000 (UTC)
+	 MIME-Version; b=V5EgO2j2fUvsrEzSmk6xoaZx5AOuzbTD71Iz2w/sE64m89+H39PucdfIWYCCPMTguMBHrcjtI+/HVAYAWaNvnLNE1M6PiEpxnUlpjZRUnEpUPhek7DWtkMQ3oAeR427jO/+NMNWzatmP7yCP5rJIupT3PHbAaAKWVx5kPCA5LqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6I86Gkl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33468C32781;
+	Tue, 25 Jun 2024 09:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309606;
-	bh=dzDuaXecxMkXMhPGMuxLf8ruX0GFuP9vNf9dwUu9V+8=;
+	s=korg; t=1719308783;
+	bh=lUgAOcVDqcLj1DWqkiLTB9p3OYEclv8ReB6Pmab2+V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I6oTCoLHdRfWuhQnhyjMbjedS1np04kewPfIIx5qML5X6YiQ4/OElKT+903wxC3uD
-	 cYMBjTtj3il22lH+X+q93BZMQittmFb1X5Mfi2ynWl2oewr0z1Y1IOkGTMhTvbC6JM
-	 P8sB6/w8V36ueEtY1dtZ/c3vUYWWsdhQXKI4/JH0=
+	b=X6I86Gklh2byW1a0En8KLhokvjnJ3k5YgRgmd8gwGWt61X4R2XYvg2bNHmg5w8SSg
+	 zru3B9qHYCvVsbImV3flzP4I8YfReScFAQuuzbJs7h3FdT5fBdKpWHo2h6QMoK6LUD
+	 bfCbaroV9wydX6O8/YPnxGjqyDZcsBq9w9b/kd7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parker Newman <pnewman@connecttech.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Josef Bacik <jbacik@fb.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Markus Pargmann <mpa@pengutronix.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/131] serial: exar: adding missing CTI and Exar PCI ids
+Subject: [PATCH 6.9 239/250] nbd: Improve the documentation of the locking assumptions
 Date: Tue, 25 Jun 2024 11:33:17 +0200
-Message-ID: <20240625085527.551378600@linuxfoundation.org>
+Message-ID: <20240625085557.228143048@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Parker Newman <pnewman@connecttech.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit b86ae40ffcf5a16b9569b1016da4a08c4f352ca2 ]
+[ Upstream commit 2a6751e052ab4789630bc889c814037068723bc1 ]
 
-- Added Connect Tech and Exar IDs not already in pci_ids.h
+Document locking assumptions with lockdep_assert_held() instead of source
+code comments. The advantage of lockdep_assert_held() is that it is
+verified at runtime if lockdep is enabled in the kernel config.
 
-Signed-off-by: Parker Newman <pnewman@connecttech.com>
-Link: https://lore.kernel.org/r/7c3d8e795a864dd9b0a00353b722060dc27c4e09.1713270624.git.pnewman@connecttech.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Josef Bacik <jbacik@fb.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Cc: Markus Pargmann <mpa@pengutronix.de>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240510202313.25209-4-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: e56d4b633fff ("nbd: Fix signal handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_exar.c | 42 +++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ drivers/block/nbd.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_exar.c b/drivers/tty/serial/8250/8250_exar.c
-index 55451ff846520..b5ae6ec61c9fb 100644
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -41,8 +41,50 @@
- #define PCI_DEVICE_ID_COMMTECH_4228PCIE		0x0021
- #define PCI_DEVICE_ID_COMMTECH_4222PCIE		0x0022
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 9d4ec9273bf95..281df7bafc83c 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -588,7 +588,6 @@ static inline int was_interrupted(int result)
+ 	return result == -ERESTARTSYS || result == -EINTR;
+ }
  
-+#define PCI_VENDOR_ID_CONNECT_TECH				0x12c4
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_SP_OPTO        0x0340
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_A      0x0341
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_SP_OPTO_B      0x0342
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS           0x0350
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_A         0x0351
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_B         0x0352
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS           0x0353
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_A        0x0354
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_16_XPRS_B        0x0355
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XPRS_OPTO      0x0360
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_A    0x0361
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XPRS_OPTO_B    0x0362
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP             0x0370
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232         0x0371
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_485         0x0372
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_SP           0x0373
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_6_2_SP           0x0374
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_6_SP           0x0375
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_SP_232_NS      0x0376
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_LEFT   0x0380
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_2_XP_OPTO_RIGHT  0x0381
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_XP_OPTO        0x0382
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_4_4_XPRS_OPTO    0x0392
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP        0x03A0
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232    0x03A1
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_485    0x03A2
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCI_UART_8_XPRS_LP_232_NS 0x03A3
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XEG001               0x0602
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_BASE           0x1000
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_2              0x1002
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_4              0x1004
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_8              0x1008
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_12             0x100C
-+#define PCI_SUBDEVICE_ID_CONNECT_TECH_PCIE_XR35X_16             0x1010
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG00X          0x110c
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_12_XIG01X          0x110d
-+#define PCI_DEVICE_ID_CONNECT_TECH_PCI_XR79X_16                 0x1110
+-/* always call with the tx_lock held */
+ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+ {
+ 	struct request *req = blk_mq_rq_from_pdu(cmd);
+@@ -605,6 +604,9 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+ 	u32 nbd_cmd_flags = 0;
+ 	int sent = nsock->sent, skip = 0;
+ 
++	lockdep_assert_held(&cmd->lock);
++	lockdep_assert_held(&nsock->tx_lock);
 +
- #define PCI_DEVICE_ID_EXAR_XR17V4358		0x4358
- #define PCI_DEVICE_ID_EXAR_XR17V8358		0x8358
-+#define PCI_DEVICE_ID_EXAR_XR17V252		0x0252
-+#define PCI_DEVICE_ID_EXAR_XR17V254		0x0254
-+#define PCI_DEVICE_ID_EXAR_XR17V258		0x0258
+ 	iov_iter_kvec(&from, ITER_SOURCE, &iov, 1, sizeof(request));
  
- #define PCI_SUBDEVICE_ID_USR_2980		0x0128
- #define PCI_SUBDEVICE_ID_USR_2981		0x0129
+ 	type = req_to_nbd_cmd_type(req);
+@@ -1015,6 +1017,8 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ 	struct nbd_sock *nsock;
+ 	int ret;
+ 
++	lockdep_assert_held(&cmd->lock);
++
+ 	config = nbd_get_config_unlocked(nbd);
+ 	if (!config) {
+ 		dev_err_ratelimited(disk_to_dev(nbd->disk),
 -- 
 2.43.0
 
