@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-55500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36829163E1
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C94A916488
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66434B27CA6
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E33EE1F21737
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB93C149C4C;
-	Tue, 25 Jun 2024 09:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63ADA149C58;
+	Tue, 25 Jun 2024 09:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2eI9EGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRbiBxMj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989C824B34;
-	Tue, 25 Jun 2024 09:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236A11474C9;
+	Tue, 25 Jun 2024 09:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309086; cv=none; b=IsK9VWL/7CeDjs1FZj2yduzTLRq0qb/L8V1CmlhXiEhoOUeqh1VH8v3rttyNqUS29lvigiWz2fJ0Vf0hSTftNSBFxEvTB2HcipmgZI98EKmDFjLbQ/N/BkdKdMi7BauZYrfg7oqOVbHUO38JmvRCn5C0wXSC4RJzgSm74XFG53M=
+	t=1719309506; cv=none; b=TQd5bmZCjI3uJEdQv3851L692Ojd9hH9WV3Hcu6oIHc7UhZ3OPsSBfplIy4iPaAVMz0c6okSD5jIRyW7vl0G3NbXFvjn5jx0UITVwx7N4fikZfUbQ8yIbUzx5UtH88kaecZpW6XObbhYXsyUmGPkz2P/x8Lx7AiYugi2xAlLoGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309086; c=relaxed/simple;
-	bh=Sfno34em+iXa6GB7tCbjVbONl9w9rnsH213fWjxpklM=;
+	s=arc-20240116; t=1719309506; c=relaxed/simple;
+	bh=F7oGGMFdWrwAW9zRcnkw9fjPerWsB9mQqCquWOaylS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MA32+jyU4uMzBFqV9KEX8scAxk1Ze/dBAkuQQtuijijSAd3wkCdp/OEX/dPdlrJphWKDYoybVGVKYb1H9BxErZ+E7XfgDHkFx9na+9XhHLZ8TeqGvxcEkFtkS4a4vBoMOT49O+kAgpkMbahkZr893I9XX1FmK8YPJAmqalriE+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2eI9EGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E337C32781;
-	Tue, 25 Jun 2024 09:51:25 +0000 (UTC)
+	 MIME-Version; b=fE9KnP6RQ9RPswtUBwhIKyGGjuvrrq7DN8RQsX8NYqR537gJfvrM88HgR6ktoSNrKx4rtowP8HTF1iEA7SNEgpIYF1eD90CA1oVt0iFtW/StDV43pNcwIRlo9gFYVsduMDg/0mobu0O1iquJEPxRUaIHYOqvnSLvcFMbBbK/PPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sRbiBxMj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965F0C32781;
+	Tue, 25 Jun 2024 09:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309086;
-	bh=Sfno34em+iXa6GB7tCbjVbONl9w9rnsH213fWjxpklM=;
+	s=korg; t=1719309506;
+	bh=F7oGGMFdWrwAW9zRcnkw9fjPerWsB9mQqCquWOaylS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2eI9EGzA7c2qEXg1AY0jguHXRqO8JMy9CYlFRdqbaOEvTTqAwA8XXZVrxt23R0Nz
-	 4Bg7Je0FDqTgflsiHTZLwpgjfWV7qMNEBO0Cmuv+zED/KBPrAU5DtfyYMtx8nuRuPE
-	 iH6m8YotL9T5WLYl7WfZ1+uLUUVH6sfgVCFdVWRM=
+	b=sRbiBxMjyybH3Z2ghlyPPzkAj+9YRrKvPudrQESQ2vmgWQkuTAYKNFdSvWrlulqR7
+	 vPW6dU+dE4aLH9ulsp+2Vv3PlSDmIYkMvFbn7ivV2lmtC61OVNOfERiHkKQTxJ4Zz4
+	 ++CkQStmNZ5/DWi0bdfDG0GhZieraVF1uf/EQJno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Heng Qi <hengqi@linux.alibaba.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Alessandro Carminati (Red Hat)" <alessandro.carminati@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/192] ptp: fix integer overflow in max_vclocks_store
+Subject: [PATCH 6.1 008/131] selftests/bpf: Prevent client connect before server bind in test_tc_tunnel.sh
 Date: Tue, 25 Jun 2024 11:32:43 +0200
-Message-ID: <20240625085540.669728688@linuxfoundation.org>
+Message-ID: <20240625085526.256474703@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
 
-[ Upstream commit 81d23d2a24012e448f651e007fac2cfd20a45ce0 ]
+[ Upstream commit f803bcf9208a2540acb4c32bdc3616673169f490 ]
 
-On 32bit systems, the "4 * max" multiply can overflow.  Use kcalloc()
-to do the allocation to prevent this.
+In some systems, the netcat server can incur in delay to start listening.
+When this happens, the test can randomly fail in various points.
+This is an example error message:
 
-Fixes: 44c494c8e30e ("ptp: track available ptp vclocks information")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Heng Qi <hengqi@linux.alibaba.com>
-Link: https://lore.kernel.org/r/ee8110ed-6619-4bd7-9024-28c1f2ac24f4@moroto.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+   # ip gre none gso
+   # encap 192.168.1.1 to 192.168.1.2, type gre, mac none len 2000
+   # test basic connectivity
+   # Ncat: Connection refused.
+
+The issue stems from a race condition between the netcat client and server.
+The test author had addressed this problem by implementing a sleep, which
+I have removed in this patch.
+This patch introduces a function capable of sleeping for up to two seconds.
+However, it can terminate the waiting period early if the port is reported
+to be listening.
+
+Signed-off-by: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240314105911.213411-1-alessandro.carminati@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_sysfs.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/bpf/test_tc_tunnel.sh | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
-index 34ea5c16123a1..aefc06ae5d099 100644
---- a/drivers/ptp/ptp_sysfs.c
-+++ b/drivers/ptp/ptp_sysfs.c
-@@ -294,8 +294,7 @@ static ssize_t max_vclocks_store(struct device *dev,
- 	if (max < ptp->n_vclocks)
- 		goto out;
+diff --git a/tools/testing/selftests/bpf/test_tc_tunnel.sh b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+index 334bdfeab9403..365a2c7a89bad 100755
+--- a/tools/testing/selftests/bpf/test_tc_tunnel.sh
++++ b/tools/testing/selftests/bpf/test_tc_tunnel.sh
+@@ -72,7 +72,6 @@ cleanup() {
+ server_listen() {
+ 	ip netns exec "${ns2}" nc "${netcat_opt}" -l "${port}" > "${outfile}" &
+ 	server_pid=$!
+-	sleep 0.2
+ }
  
--	size = sizeof(int) * max;
--	vclock_index = kzalloc(size, GFP_KERNEL);
-+	vclock_index = kcalloc(max, sizeof(int), GFP_KERNEL);
- 	if (!vclock_index) {
- 		err = -ENOMEM;
- 		goto out;
+ client_connect() {
+@@ -93,6 +92,16 @@ verify_data() {
+ 	fi
+ }
+ 
++wait_for_port() {
++	for i in $(seq 20); do
++		if ip netns exec "${ns2}" ss ${2:--4}OHntl | grep -q "$1"; then
++			return 0
++		fi
++		sleep 0.1
++	done
++	return 1
++}
++
+ set -e
+ 
+ # no arguments: automated test, run all
+@@ -190,6 +199,7 @@ setup
+ # basic communication works
+ echo "test basic connectivity"
+ server_listen
++wait_for_port ${port} ${netcat_opt}
+ client_connect
+ verify_data
+ 
+@@ -201,6 +211,7 @@ ip netns exec "${ns1}" tc filter add dev veth1 egress \
+ 	section "encap_${tuntype}_${mac}"
+ echo "test bpf encap without decap (expect failure)"
+ server_listen
++wait_for_port ${port} ${netcat_opt}
+ ! client_connect
+ 
+ if [[ "$tuntype" =~ "udp" ]]; then
 -- 
 2.43.0
 
