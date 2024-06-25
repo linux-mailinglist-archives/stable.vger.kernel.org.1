@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-55452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 222E29163A4
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F6B5916307
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C41AE1F21064
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39E841F20FF5
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BC5146A9D;
-	Tue, 25 Jun 2024 09:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E331494D1;
+	Tue, 25 Jun 2024 09:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPeuq4eB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bs/DJl43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1427E1465A8;
-	Tue, 25 Jun 2024 09:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95A51465A8;
+	Tue, 25 Jun 2024 09:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308945; cv=none; b=lUXaCSQiLpNxbfHaSG8c7JHEY30rTiymrm4/iXggG8Jxf4dNugQg45MqTk8A3mhp5WrBuk+yD3GRYNREkNrZuBUQlT4cY2Sj7LAP2WRgLBh+5Oc9MDMr9fD2A8kFj7Zk4feWASZnmiX4fBPLQs0JGPzx6/etoS4Yb1ZxEM2Sjxg=
+	t=1719308515; cv=none; b=AhURJIAD4SGKNUAs6W+9e8Qglx4c74Z+wQx7CfaP0xpCC2XpLkEstI0o4xgbC2pqZl5aweOv6X9KjMjtCiqhIo/VIYWjK4qWoCT9+RVXAAuxDVxyqj16NkDgpuqv3+8HiJ1HDVnrBpWVwwu5riO/mJ7hBFrVTT3Vns1jsfboYeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308945; c=relaxed/simple;
-	bh=EXymjJcvKQXkAaLLPMo3aR48cs2IjmQf5rKJpEpJSSA=;
+	s=arc-20240116; t=1719308515; c=relaxed/simple;
+	bh=yTXsoMFUZgyTWtzmpaAc9et7xK3y0dGnx44wndMkZeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QdsIEdBknw8riGt88xVXxEQK0QpF5gA/PoOI+l/Khfsu15RmgeRN8uDHOSDPyCfhFhxrPWl6XJPu0a+RrDo+7RUVPL3W3NQMBwDKvc50lZtA2Opcbw/S4BMVR2YqBD3l4RXEk+vvbIiWiWhbtMYY3OB8Qifmzcry2ZtMcjwJU6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPeuq4eB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F321C32781;
-	Tue, 25 Jun 2024 09:49:04 +0000 (UTC)
+	 MIME-Version; b=NiPa1UodFg5Z3pxuUCUYGth5ncHzfezA2OUnRUHKBfHFLL9zgZNuX3UQbnLB4oMbNYJlnxdhjG1Q9oxOm+e7OtOEZlf48lAni6pYlKMTXBDlB76MCh4B947IUeeuZO7sNKLdUxuZ0i1Q1f0MvLrjiyAg2gvmzSR0SOGHB1OptIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bs/DJl43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA08C32781;
+	Tue, 25 Jun 2024 09:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308945;
-	bh=EXymjJcvKQXkAaLLPMo3aR48cs2IjmQf5rKJpEpJSSA=;
+	s=korg; t=1719308515;
+	bh=yTXsoMFUZgyTWtzmpaAc9et7xK3y0dGnx44wndMkZeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPeuq4eBRD1CQ/WBcGPQt9hyxrMFEGM941SWx+kIDrizNrezqjob0VFNTx57EL5sk
-	 5LYrV8snGzl8hzxECvbveyad5hEmDuHQdENsLXgxFgBFeCY58beouQLqxdq9OI1aAW
-	 wTYtPGtPk/suTjcyrrRACU13lhR88uvV0bUhCzuM=
+	b=bs/DJl43PccxadHeQipMPa9FW2gaXKD6hheLlOS7fs8Do9V9rV5F0HW9m7C0kTmBu
+	 u8pJSX46lw4AwGuPc2iSAWUpF6rpeC31Vyp+nxa1R+sGWzr9EjWKAxLh1vI9k3Xynh
+	 a8x0wgXzk6C8K02od4O3vn/G+qHN5WqAmGKGyck0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/192] af_packet: avoid a false positive warning in packet_setsockopt()
-Date: Tue, 25 Jun 2024 11:31:27 +0200
-Message-ID: <20240625085537.742907093@linuxfoundation.org>
+Subject: [PATCH 6.9 130/250] selftests: openvswitch: Use bash as interpreter
+Date: Tue, 25 Jun 2024 11:31:28 +0200
+Message-ID: <20240625085553.055216366@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 86d43e2bf93ccac88ef71cee36a23282ebd9e427 ]
+[ Upstream commit e2b447c9a1bba718f9c07513a1e8958209e862a1 ]
 
-Although the code is correct, the following line
+openvswitch.sh makes use of substitutions of the form ${ns:0:1}, to
+obtain the first character of $ns. Empirically, this is works with bash
+but not dash. When run with dash these evaluate to an empty string and
+printing an error to stdout.
 
-	copy_from_sockptr(&req_u.req, optval, len));
+ # dash -c 'ns=client; echo "${ns:0:1}"' 2>error
+ # cat error
+ dash: 1: Bad substitution
+ # bash -c 'ns=client; echo "${ns:0:1}"' 2>error
+ c
+ # cat error
 
-triggers this warning :
+This leads to tests that neither pass nor fail.
+F.e.
 
-memcpy: detected field-spanning write (size 28) of single field "dst" at include/linux/sockptr.h:49 (size 16)
+ TEST: arp_ping                                                      [START]
+ adding sandbox 'test_arp_ping'
+ Adding DP/Bridge IF: sbx:test_arp_ping dp:arpping {, , }
+ create namespaces
+ ./openvswitch.sh: 282: eval: Bad substitution
+ TEST: ct_connect_v4                                                 [START]
+ adding sandbox 'test_ct_connect_v4'
+ Adding DP/Bridge IF: sbx:test_ct_connect_v4 dp:ct4 {, , }
+ ./openvswitch.sh: 322: eval: Bad substitution
+ create namespaces
 
-Refactor the code to be more explicit.
+Resolve this by making openvswitch.sh a bash script.
 
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 918423fda910 ("selftests: openvswitch: add an initial flow programming case")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://lore.kernel.org/r/20240617-ovs-selftest-bash-v1-1-7ae6ccd3617b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ tools/testing/selftests/net/openvswitch/openvswitch.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index ff1ddf544e179..10a6ec43efb9f 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3805,28 +3805,30 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
- 	case PACKET_TX_RING:
- 	{
- 		union tpacket_req_u req_u;
--		int len;
- 
-+		ret = -EINVAL;
- 		lock_sock(sk);
- 		switch (po->tp_version) {
- 		case TPACKET_V1:
- 		case TPACKET_V2:
--			len = sizeof(req_u.req);
-+			if (optlen < sizeof(req_u.req))
-+				break;
-+			ret = copy_from_sockptr(&req_u.req, optval,
-+						sizeof(req_u.req)) ?
-+						-EINVAL : 0;
- 			break;
- 		case TPACKET_V3:
- 		default:
--			len = sizeof(req_u.req3);
-+			if (optlen < sizeof(req_u.req3))
-+				break;
-+			ret = copy_from_sockptr(&req_u.req3, optval,
-+						sizeof(req_u.req3)) ?
-+						-EINVAL : 0;
- 			break;
- 		}
--		if (optlen < len) {
--			ret = -EINVAL;
--		} else {
--			if (copy_from_sockptr(&req_u.req, optval, len))
--				ret = -EFAULT;
--			else
--				ret = packet_set_ring(sk, &req_u, 0,
--						    optname == PACKET_TX_RING);
--		}
-+		if (!ret)
-+			ret = packet_set_ring(sk, &req_u, 0,
-+					      optname == PACKET_TX_RING);
- 		release_sock(sk);
- 		return ret;
- 	}
+diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+index 5cae535438491..15bca07087179 100755
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
+ #
+ # OVS kernel module self tests
 -- 
 2.43.0
 
