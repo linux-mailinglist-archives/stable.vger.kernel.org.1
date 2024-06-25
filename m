@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-55657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0D991649C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 048B091641F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:54:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DD691C239DB
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83F98B283EE
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9775114A087;
-	Tue, 25 Jun 2024 09:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F1214A4E7;
+	Tue, 25 Jun 2024 09:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pG8t10Ka"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdIBaA5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB20149C4F;
-	Tue, 25 Jun 2024 09:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D6414A4D9;
+	Tue, 25 Jun 2024 09:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309553; cv=none; b=g0y8h+aF56ajiGZU1MTSzlCnvOw+vLxV29SrV+fNRiKiZe/304kJGUdZDEeYUW6+FWR/olJKv8X5K/XTgrjEBHjULYKV3ZDuJtCjHnuf04axG3JzXFSsbIoVazXw+znmTZu+BxQK2nOGpIPxg8/sYiuEaOWsc6Bt9/OAwoqaAhU=
+	t=1719309227; cv=none; b=ECTNQC+LQcERVulJ1A0Trt9xn3/s9saowvM1ZU+S1M6932SgsYSO9n1V0KoGvAilj01fU3Jo36UqobAVp/+zO70P3MY+vUvL+Ia7/XfKhSMdGGjzwetMApZlpW0W9PZMosBYJR+60kbZnu7VyLGJeBBcKwqQCQPc6XZyNE+tz5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309553; c=relaxed/simple;
-	bh=4HSeqQ+gCjkRSuikNKasn7LZxM4mc8mw+Fg0qLBoZx4=;
+	s=arc-20240116; t=1719309227; c=relaxed/simple;
+	bh=jzxvZ9nvxrnBCVgWa2VpcOKSG0zXNdNbJud50Ane6gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6h0a65Jt9/yBuQB24A7bKUfYTPwlY1738/ckBnbLwdwJUZajFM4PUI1ow7A4MzautnILcgULzSjWr4r2yjwL97NIXnXAm7saHHhf8y5E1XkyoqHz/PvozuR2+ve4TO11a2piaLai4LWKHN6P1AN1BDuELU2cckLC6K7aYZ6UHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pG8t10Ka; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3DE0C32781;
-	Tue, 25 Jun 2024 09:59:12 +0000 (UTC)
+	 MIME-Version; b=WPKWuWaqNWc+4nfKbiRVLAizhvvZ0Z42Jl05w+HxJj8BMmRSOAENtf03sIlFjAeoMJZ0pwowa4BlxF3MZdtIfMCelgOMeCRLpc/KN7gJfFS3nS1mYAXUaXmEncW8J2A8p2kgLlDy0tWMKlIhQoTYbkhLXbLBIJx3JNg1OagegFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdIBaA5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9B6C32781;
+	Tue, 25 Jun 2024 09:53:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309553;
-	bh=4HSeqQ+gCjkRSuikNKasn7LZxM4mc8mw+Fg0qLBoZx4=;
+	s=korg; t=1719309227;
+	bh=jzxvZ9nvxrnBCVgWa2VpcOKSG0zXNdNbJud50Ane6gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pG8t10KaPJdFmxM1lYKZxsDcU0tZMZzP1H2BMBK63+qr49tkJ2g/jp9UNNAHZWqqS
-	 KtgBGbWz1c6qH6AHxUPmQPzfv6XoS6i1klJsnr1Fx9vjPAmtdimxt9o4OV/Mqjlyvm
-	 93s3NLJ/MO5WjqGfBk05Zdn4UURssNe0/mlhADF8=
+	b=VdIBaA5yY66P3Zwalemep2zcBvCzakV3Pdin50P9qvCcIzHARN8aJGFpTLUW4KqcL
+	 w2U0yUwoiTN7X4JtaBhsrHZ8u/UZCtjmAYPhlqD/DqmH5bBv9i6M8uNFHBEsUxqr7g
+	 TlIK2lvp8AA7MhriBijh4WA+j7sILly1Ny+zHM7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ajrat Makhmutov <rauty@altlinux.org>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/131] ALSA: hda/realtek: Enable headset mic on IdeaPad 330-17IKB 81DM
-Date: Tue, 25 Jun 2024 11:33:29 +0200
-Message-ID: <20240625085528.004114693@linuxfoundation.org>
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 138/192] cifs: fix typo in module parameter enable_gcm_256
+Date: Tue, 25 Jun 2024 11:33:30 +0200
+Message-ID: <20240625085542.457247677@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ajrat Makhmutov <rautyrauty@gmail.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit b1fd0d1285b1eae8b99af36fb26ed2512b809af6 ]
+commit 8bf0287528da1992c5e49d757b99ad6bbc34b522 upstream.
 
-Headset microphone do not work out of the box with this laptop. This
-quirk fixes it. Zihao Wang specified the wrong subsystem id in his patch.
+enable_gcm_256 (which allows the server to require the strongest
+encryption) is enabled by default, but the modinfo description
+incorrectly showed it disabled by default. Fix the typo.
 
-Link: https://lore.kernel.org/all/20220424084120.74125-1-wzhd@ustc.edu/
-Fixes: 3b79954fd00d ("ALSA: hda/realtek: Add quirk for Yoga Duet 7 13ITL6 speakers")
-Signed-off-by: Ajrat Makhmutov <rauty@altlinux.org>
-Link: https://lore.kernel.org/r/20240615125457.167844-1-rauty@altlinux.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: fee742b50289 ("smb3.1.1: enable negotiating stronger encryption by default")
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 +-
+ fs/smb/client/cifsfs.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index e602776eb7ec8..94e3c17e606d3 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10079,7 +10079,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3818, "Lenovo C940 / Yoga Duet 7", ALC298_FIXUP_LENOVO_C940_DUET7),
- 	SND_PCI_QUIRK(0x17aa, 0x3819, "Lenovo 13s Gen2 ITL", ALC287_FIXUP_13S_GEN2_SPEAKERS),
--	SND_PCI_QUIRK(0x17aa, 0x3820, "Yoga Duet 7 13ITL6", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
-+	SND_PCI_QUIRK(0x17aa, 0x3820, "IdeaPad 330-17IKB 81DM", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x17aa, 0x3824, "Legion Y9000X 2020", ALC285_FIXUP_LEGION_Y9000X_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3827, "Ideapad S740", ALC285_FIXUP_IDEAPAD_S740_COEF),
- 	SND_PCI_QUIRK(0x17aa, 0x3834, "Lenovo IdeaPad Slim 9i 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
--- 
-2.43.0
-
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -133,7 +133,7 @@ module_param(enable_oplocks, bool, 0644)
+ MODULE_PARM_DESC(enable_oplocks, "Enable or disable oplocks. Default: y/Y/1");
+ 
+ module_param(enable_gcm_256, bool, 0644);
+-MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: n/N/0");
++MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: y/Y/0");
+ 
+ module_param(require_gcm_256, bool, 0644);
+ MODULE_PARM_DESC(require_gcm_256, "Require strongest (256 bit) GCM encryption. Default: n/N/0");
 
 
 
