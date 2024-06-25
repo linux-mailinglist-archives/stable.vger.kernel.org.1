@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-55326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8981391631E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66F291638F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBF161C22188
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61EC128BC3B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D96B149C7F;
-	Tue, 25 Jun 2024 09:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B865E14A0BF;
+	Tue, 25 Jun 2024 09:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vfz9yo1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySI9V393"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9B5148FE5;
-	Tue, 25 Jun 2024 09:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7582A1494AF;
+	Tue, 25 Jun 2024 09:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308574; cv=none; b=AuQoeKkWMXCLQMtsgsrc5lyVlLfz5QCAGw6OuvhOOU4g6vGxRqW3/XjHTUqKWt+bRulOIGMlY1PWwFVFtmzDLcslFBLm11fJXr8+4P+8gevJqFrOX4jRW4fupch/s2NbL8OFiJBohgEUQ+NJ9bLczNvfEmrs9VSbF/g6pTOY66c=
+	t=1719308883; cv=none; b=NOTAkpLL4HG/xTiraQFNYYdxfmEvCLuRmMUeFg15DKYrkRmVHBJX3sLsElysBdbB7J6yXGA88xh13+HCDhFrFUPE6G7y/WBE1tcv+f9XBUmI2q05y5ZEM0MmuCtQBIqGATB4GRzP20OWu9O4bdH6ATekNht3cOYEkZowX/GMsbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308574; c=relaxed/simple;
-	bh=1Di0MlaHuDhYmr6A+sPNOJWzcCytDN0xkuh/zNoP6mQ=;
+	s=arc-20240116; t=1719308883; c=relaxed/simple;
+	bh=TnQCvQbu2gsj6TDaGLq9qhnpVRPUOt3WiZqzOSmIszQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OXQTezFxgsSvGqBWX/Ricp7dn6MzVGsaZourwLLKENj8zmNXvIm9Fu3tq7b0cv/wT/NhKLxix2F9nCKDz76x82f/5CvhNJh7MJ4GFMMAhxmPZ0RAY7e0j4G2o9GFY++b3BM0RiPsiMQ2jXocn0Vqfl+IiTXKb3HmGa0b0dNZ6B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vfz9yo1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDBE0C32781;
-	Tue, 25 Jun 2024 09:42:53 +0000 (UTC)
+	 MIME-Version; b=DIuubQMtmUAIVgeaaRwiE1GFjNmY9b/MGTYocEp+Z08d4N2smc2nOFn57pq28CLKPVohNXUysbkZ9+XCtvg1+ebbi0haF6/JcQZwSMDfX7SOJ9f8Pwy0TV9MNM2qI6c1ijbwHppM1O/FuZ8vJUpReido84YLtSu6QJNFG6G5xck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySI9V393; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96D2C32786;
+	Tue, 25 Jun 2024 09:48:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308574;
-	bh=1Di0MlaHuDhYmr6A+sPNOJWzcCytDN0xkuh/zNoP6mQ=;
+	s=korg; t=1719308883;
+	bh=TnQCvQbu2gsj6TDaGLq9qhnpVRPUOt3WiZqzOSmIszQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vfz9yo1mLAw3UeYR+xaGCk3D7X+ascJ7QnNUSOkDg8vqc+hftO0pylw6+m5GCUXX/
-	 amM+9R3VmbKu/VeuwA1eKKc4UvCWUzzJnQHuOpSt6dPyuf0EvGSz7tc3lwjnouMDgI
-	 qN+jlBnYpCJm0tWUKFcWzFF3be9pSUZJwYJ08jzA=
+	b=ySI9V3932zOAneVcPsmofHXViKtadWcSR37UdJWbxI6HoQv/k/qNWRDUbrcxohtid
+	 VWO8S6JPMIFJlrd2BTyuUcuy3Y9CwTVJW3bIBbPX3Cl/0fMi22yq3jz2bgOOoDpmf6
+	 nEdtzlpiidScflUj+1/lL3g5Bxr0+YlVkwmRxiMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b62c37cdd58103293a5a@syzkaller.appspotmail.com,
-	syzbot+cfbe1da5fdfc39efc293@syzkaller.appspotmail.com,
-	kernel test robot <oliver.sang@intel.com>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 136/250] netfilter: ipset: Fix suspicious rcu_dereference_protected()
+Subject: [PATCH 6.6 022/192] net: dsa: realtek: keep default LED state in rtl8366rb
 Date: Tue, 25 Jun 2024 11:31:34 +0200
-Message-ID: <20240625085553.281874328@linuxfoundation.org>
+Message-ID: <20240625085538.009561707@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,63 +63,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
 
-[ Upstream commit 8ecd06277a7664f4ef018abae3abd3451d64e7a6 ]
+[ Upstream commit 5edc6585aafefa3d44fb8a84adf241d90227f7a3 ]
 
-When destroying all sets, we are either in pernet exit phase or
-are executing a "destroy all sets command" from userspace. The latter
-was taken into account in ip_set_dereference() (nfnetlink mutex is held),
-but the former was not. The patch adds the required check to
-rcu_dereference_protected() in ip_set_dereference().
+This switch family supports four LEDs for each of its six ports. Each
+LED group is composed of one of these four LEDs from all six ports. LED
+groups can be configured to display hardware information, such as link
+activity, or manually controlled through a bitmap in registers
+RTL8366RB_LED_0_1_CTRL_REG and RTL8366RB_LED_2_3_CTRL_REG.
 
-Fixes: 4e7aaa6b82d6 ("netfilter: ipset: Fix race between namespace cleanup and gc in the list:set type")
-Reported-by: syzbot+b62c37cdd58103293a5a@syzkaller.appspotmail.com
-Reported-by: syzbot+cfbe1da5fdfc39efc293@syzkaller.appspotmail.com
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202406141556.e0b6f17e-lkp@intel.com
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+After a reset, the default LED group configuration for groups 0 to 3
+indicates, respectively, link activity, link at 1000M, 100M, and 10M, or
+RTL8366RB_LED_CTRL_REG as 0x5432. These configurations are commonly used
+for LED indications. However, the driver was replacing that
+configuration to use manually controlled LEDs (RTL8366RB_LED_FORCE)
+without providing a way for the OS to control them. The default
+configuration is deemed more useful than fixed, uncontrollable turned-on
+LEDs.
+
+The driver was enabling/disabling LEDs during port_enable/disable.
+However, these events occur when the port is administratively controlled
+(up or down) and are not related to link presence. Additionally, when a
+port N was disabled, the driver was turning off all LEDs for group N,
+not only the corresponding LED for port N in any of those 4 groups. In
+such cases, if port 0 was brought down, the LEDs for all ports in LED
+group 0 would be turned off. As another side effect, the driver was
+wrongly warning that port 5 didn't have an LED ("no LED for port 5").
+Since showing the administrative state of ports is not an orthodox way
+to use LEDs, it was not worth it to fix it and all this code was
+dropped.
+
+The code to disable LEDs was simplified only changing each LED group to
+the RTL8366RB_LED_OFF state. Registers RTL8366RB_LED_0_1_CTRL_REG and
+RTL8366RB_LED_2_3_CTRL_REG are only used when the corresponding LED
+group is configured with RTL8366RB_LED_FORCE and they don't need to be
+cleaned. The code still references an LED controlled by
+RTL8366RB_INTERRUPT_CONTROL_REG, but as of now, no test device has
+actually used it. Also, some magic numbers were replaced by macros.
+
+Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/dsa/realtek/rtl8366rb.c | 87 +++++++----------------------
+ 1 file changed, 20 insertions(+), 67 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index c7ae4d9bf3d24..61431690cbd5f 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -53,12 +53,13 @@ MODULE_DESCRIPTION("core IP set support");
- MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_IPSET);
+diff --git a/drivers/net/dsa/realtek/rtl8366rb.c b/drivers/net/dsa/realtek/rtl8366rb.c
+index 7868ef237f6c0..4accfec7c73e6 100644
+--- a/drivers/net/dsa/realtek/rtl8366rb.c
++++ b/drivers/net/dsa/realtek/rtl8366rb.c
+@@ -186,7 +186,12 @@
+ #define RTL8366RB_LED_BLINKRATE_222MS		0x0004
+ #define RTL8366RB_LED_BLINKRATE_446MS		0x0005
  
- /* When the nfnl mutex or ip_set_ref_lock is held: */
--#define ip_set_dereference(p)		\
--	rcu_dereference_protected(p,	\
-+#define ip_set_dereference(inst)	\
-+	rcu_dereference_protected((inst)->ip_set_list,	\
- 		lockdep_nfnl_is_held(NFNL_SUBSYS_IPSET) || \
--		lockdep_is_held(&ip_set_ref_lock))
-+		lockdep_is_held(&ip_set_ref_lock) || \
-+		(inst)->is_deleted)
- #define ip_set(inst, id)		\
--	ip_set_dereference((inst)->ip_set_list)[id]
-+	ip_set_dereference(inst)[id]
- #define ip_set_ref_netlink(inst,id)	\
- 	rcu_dereference_raw((inst)->ip_set_list)[id]
- #define ip_set_dereference_nfnl(p)	\
-@@ -1133,7 +1134,7 @@ static int ip_set_create(struct sk_buff *skb, const struct nfnl_info *info,
- 		if (!list)
- 			goto cleanup;
- 		/* nfnl mutex is held, both lists are valid */
--		tmp = ip_set_dereference(inst->ip_set_list);
-+		tmp = ip_set_dereference(inst);
- 		memcpy(list, tmp, sizeof(struct ip_set *) * inst->ip_set_max);
- 		rcu_assign_pointer(inst->ip_set_list, list);
- 		/* Make sure all current packets have passed through */
++/* LED trigger event for each group */
+ #define RTL8366RB_LED_CTRL_REG			0x0431
++#define RTL8366RB_LED_CTRL_OFFSET(led_group)	\
++	(4 * (led_group))
++#define RTL8366RB_LED_CTRL_MASK(led_group)	\
++	(0xf << RTL8366RB_LED_CTRL_OFFSET(led_group))
+ #define RTL8366RB_LED_OFF			0x0
+ #define RTL8366RB_LED_DUP_COL			0x1
+ #define RTL8366RB_LED_LINK_ACT			0x2
+@@ -203,6 +208,11 @@
+ #define RTL8366RB_LED_LINK_TX			0xd
+ #define RTL8366RB_LED_MASTER			0xe
+ #define RTL8366RB_LED_FORCE			0xf
++
++/* The RTL8366RB_LED_X_X registers are used to manually set the LED state only
++ * when the corresponding LED group in RTL8366RB_LED_CTRL_REG is
++ * RTL8366RB_LED_FORCE. Otherwise, it is ignored.
++ */
+ #define RTL8366RB_LED_0_1_CTRL_REG		0x0432
+ #define RTL8366RB_LED_1_OFFSET			6
+ #define RTL8366RB_LED_2_3_CTRL_REG		0x0433
+@@ -998,28 +1008,20 @@ static int rtl8366rb_setup(struct dsa_switch *ds)
+ 	 */
+ 	if (priv->leds_disabled) {
+ 		/* Turn everything off */
+-		regmap_update_bits(priv->map,
+-				   RTL8366RB_LED_0_1_CTRL_REG,
+-				   0x0FFF, 0);
+-		regmap_update_bits(priv->map,
+-				   RTL8366RB_LED_2_3_CTRL_REG,
+-				   0x0FFF, 0);
+ 		regmap_update_bits(priv->map,
+ 				   RTL8366RB_INTERRUPT_CONTROL_REG,
+ 				   RTL8366RB_P4_RGMII_LED,
+ 				   0);
+-		val = RTL8366RB_LED_OFF;
+-	} else {
+-		/* TODO: make this configurable per LED */
+-		val = RTL8366RB_LED_FORCE;
+-	}
+-	for (i = 0; i < 4; i++) {
+-		ret = regmap_update_bits(priv->map,
+-					 RTL8366RB_LED_CTRL_REG,
+-					 0xf << (i * 4),
+-					 val << (i * 4));
+-		if (ret)
+-			return ret;
++
++		for (i = 0; i < RTL8366RB_NUM_LEDGROUPS; i++) {
++			val = RTL8366RB_LED_OFF << RTL8366RB_LED_CTRL_OFFSET(i);
++			ret = regmap_update_bits(priv->map,
++						 RTL8366RB_LED_CTRL_REG,
++						 RTL8366RB_LED_CTRL_MASK(i),
++						 val);
++			if (ret)
++				return ret;
++		}
+ 	}
+ 
+ 	ret = rtl8366_reset_vlan(priv);
+@@ -1134,52 +1136,6 @@ rtl8366rb_mac_link_down(struct dsa_switch *ds, int port, unsigned int mode,
+ 	}
+ }
+ 
+-static void rb8366rb_set_port_led(struct realtek_priv *priv,
+-				  int port, bool enable)
+-{
+-	u16 val = enable ? 0x3f : 0;
+-	int ret;
+-
+-	if (priv->leds_disabled)
+-		return;
+-
+-	switch (port) {
+-	case 0:
+-		ret = regmap_update_bits(priv->map,
+-					 RTL8366RB_LED_0_1_CTRL_REG,
+-					 0x3F, val);
+-		break;
+-	case 1:
+-		ret = regmap_update_bits(priv->map,
+-					 RTL8366RB_LED_0_1_CTRL_REG,
+-					 0x3F << RTL8366RB_LED_1_OFFSET,
+-					 val << RTL8366RB_LED_1_OFFSET);
+-		break;
+-	case 2:
+-		ret = regmap_update_bits(priv->map,
+-					 RTL8366RB_LED_2_3_CTRL_REG,
+-					 0x3F, val);
+-		break;
+-	case 3:
+-		ret = regmap_update_bits(priv->map,
+-					 RTL8366RB_LED_2_3_CTRL_REG,
+-					 0x3F << RTL8366RB_LED_3_OFFSET,
+-					 val << RTL8366RB_LED_3_OFFSET);
+-		break;
+-	case 4:
+-		ret = regmap_update_bits(priv->map,
+-					 RTL8366RB_INTERRUPT_CONTROL_REG,
+-					 RTL8366RB_P4_RGMII_LED,
+-					 enable ? RTL8366RB_P4_RGMII_LED : 0);
+-		break;
+-	default:
+-		dev_err(priv->dev, "no LED for port %d\n", port);
+-		return;
+-	}
+-	if (ret)
+-		dev_err(priv->dev, "error updating LED on port %d\n", port);
+-}
+-
+ static int
+ rtl8366rb_port_enable(struct dsa_switch *ds, int port,
+ 		      struct phy_device *phy)
+@@ -1193,7 +1149,6 @@ rtl8366rb_port_enable(struct dsa_switch *ds, int port,
+ 	if (ret)
+ 		return ret;
+ 
+-	rb8366rb_set_port_led(priv, port, true);
+ 	return 0;
+ }
+ 
+@@ -1208,8 +1163,6 @@ rtl8366rb_port_disable(struct dsa_switch *ds, int port)
+ 				 BIT(port));
+ 	if (ret)
+ 		return;
+-
+-	rb8366rb_set_port_led(priv, port, false);
+ }
+ 
+ static int
 -- 
 2.43.0
 
