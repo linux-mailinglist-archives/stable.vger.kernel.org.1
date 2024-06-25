@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-55739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7E49164F5
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:03:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFD791645D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABFE71F23B9A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:03:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29B78B277D3
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497F014A089;
-	Tue, 25 Jun 2024 10:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCD914A4D2;
+	Tue, 25 Jun 2024 09:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idfHJ9CB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8jOPQfu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035AE146A67;
-	Tue, 25 Jun 2024 10:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C992149C41;
+	Tue, 25 Jun 2024 09:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309795; cv=none; b=Xms8kwjjIFe69RctOA7lQsPhBvhT+S7i2cqjd6TQquGPmSGUGwYh0O9zWA5eAWkzKG9vMFBLcoJQP25ZMm3HI9zlofDDckdOSxNqPobMTRBAlVKaj+SgV9CTp95HhA05WyTbRsV6A0RTD9CkMGwj+HPwhave+9yVtmkKNq8K5DA=
+	t=1719309380; cv=none; b=BFwEBtGKfKJeOjmF7/5gKoEyzfqr0vcnibnkuVOki3X1zo/6g4uO+Z5C+mPgMgoxD8jaTuFbJ9TQjUKw+yRo9EhkS/P9a4U/PVxCv9lsGDS+hZ5QaBwhZ73paGPLMfzSHWn3Qvj8SF2H24kSGfMoUodwejJWXnuwYlk4J4Fj2bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309795; c=relaxed/simple;
-	bh=z6z5TJo1pBitPYDJ1Vo5Sdr1bIZL4FAfuJTzpqlNuCA=;
+	s=arc-20240116; t=1719309380; c=relaxed/simple;
+	bh=Ld+8wXi/rWpzCva/x+c56nA0RBenXUSJeBvGOslGGOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0NLJcA/6Q+DQu98pkYt4XJb1n4TS+tOce8B8Y+xdhGM4fqAhoV4W7rAM+u6kYSLganHjR2nTJwnn848gGhg3p+aUZuLswDo2COks6JmWWDuR1LKT1/ZANf59AKdM3ZqM/mAbKnXkOLvLe1362XfEdsxc+HTYJiXyDZQKRIblo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idfHJ9CB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D474C4AF10;
-	Tue, 25 Jun 2024 10:03:14 +0000 (UTC)
+	 MIME-Version; b=GebhKlmuiVH1KI/kskHj0Nevx+kIaAs3cfFLWfutRhP4udHuLMRM9z+si/yj1Xjn5lyrUimEOnBUDpiHAKxl9EGqscE4mHJ4qm48zLMya33WPvuCAw8bEFQbu1SkeB6F9Jy8Fk3QmbNBw16wvC6oSoLrJ6Uocy1J0ztrPlhczLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8jOPQfu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6763C32781;
+	Tue, 25 Jun 2024 09:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309794;
-	bh=z6z5TJo1pBitPYDJ1Vo5Sdr1bIZL4FAfuJTzpqlNuCA=;
+	s=korg; t=1719309380;
+	bh=Ld+8wXi/rWpzCva/x+c56nA0RBenXUSJeBvGOslGGOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idfHJ9CBYdDoLDkDg9dfXBG1Tmg5RGzN/eTvjwC/lOMiJa0xn6WSwp13xr4Sbcthl
-	 7Jc25dGE/i7kNcH0vMg8Vak0bw2A4hkWgQrngQQHcQyT4GPfBEVEzJdG7M8muQ0R63
-	 90UWn9yBx3CWrIB12kTDmNYFfqMh/pSsIR1NASCE=
+	b=y8jOPQfuhB0Yg01yFAIWr53/4BgVcFFdHNqBgtKGLZ+fX3yZgD+RS9NKlrXpCykyK
+	 DIOl8zIoXUboV7DU+h06bwWeXa/u/MlclmIRkC0qzjyrZPaX90KP2eMSR+ZDWEuxT/
+	 7rGlSZxdInW5MWzmprzZaMLdGc7YpY4TJJHjx4mY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	Chuck Lever III <chuck.lever@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 107/131] gcov: add support for GCC 14
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Guo Ren <guoren@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 190/192] kprobe/ftrace: fix build error due to bad function definition
 Date: Tue, 25 Jun 2024 11:34:22 +0200
-Message-ID: <20240625085530.004019578@linuxfoundation.org>
+Message-ID: <20240625085544.452731960@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit c1558bc57b8e5b4da5d821537cd30e2e660861d8 upstream.
+commit 4b377b4868ef17b040065bd468668c707d2477a5 upstream.
 
-Using gcov on kernels compiled with GCC 14 results in truncated 16-byte
-long .gcda files with no usable data.  To fix this, update GCOV_COUNTERS
-to match the value defined by GCC 14.
+Commit 1a7d0890dd4a ("kprobe/ftrace: bail out if ftrace was killed")
+introduced a bad K&R function definition, which we haven't accepted in a
+long long time.
 
-Tested with GCC versions 14.1.0 and 13.2.0.
+Gcc seems to let it slide, but clang notices with the appropriate error:
 
-Link: https://lkml.kernel.org/r/20240610092743.1609845-1-oberpar@linux.ibm.com
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Reported-by: Allison Henderson <allison.henderson@oracle.com>
-Reported-by: Chuck Lever III <chuck.lever@oracle.com>
-Tested-by: Chuck Lever <chuck.lever@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+  kernel/kprobes.c:1140:24: error: a function declaration without a prototype is deprecated in all >
+   1140 | void kprobe_ftrace_kill()
+        |                        ^
+        |                         void
+
+but this commit was apparently never in linux-next before it was sent
+upstream, so it didn't get the appropriate build test coverage.
+
+Fixes: 1a7d0890dd4a kprobe/ftrace: bail out if ftrace was killed
+Cc: Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Guo Ren <guoren@kernel.org>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/gcov/gcc_4_7.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/kprobes.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/gcov/gcc_4_7.c
-+++ b/kernel/gcov/gcc_4_7.c
-@@ -18,7 +18,9 @@
- #include <linux/mm.h>
- #include "gcov.h"
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1138,7 +1138,7 @@ static int disarm_kprobe_ftrace(struct k
+ 		ipmodify ? &kprobe_ipmodify_enabled : &kprobe_ftrace_enabled);
+ }
  
--#if (__GNUC__ >= 10)
-+#if (__GNUC__ >= 14)
-+#define GCOV_COUNTERS			9
-+#elif (__GNUC__ >= 10)
- #define GCOV_COUNTERS			8
- #elif (__GNUC__ >= 7)
- #define GCOV_COUNTERS			9
+-void kprobe_ftrace_kill()
++void kprobe_ftrace_kill(void)
+ {
+ 	kprobe_ftrace_disabled = true;
+ }
 
 
 
