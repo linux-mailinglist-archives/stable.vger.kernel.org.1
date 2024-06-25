@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB15916404
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E639164AD
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FB2E1C226AC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:53:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3158B1C21191
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFF851494CF;
-	Tue, 25 Jun 2024 09:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E4B149C4F;
+	Tue, 25 Jun 2024 10:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIkzpyXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5m688ON"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E46524B34;
-	Tue, 25 Jun 2024 09:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568631465A8;
+	Tue, 25 Jun 2024 10:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309180; cv=none; b=jiRWnEkCXs0RRSrkr8m3dIcOMY+e0bJeMDuNQRC80cox/M2Hvz6lI7Y/z5/mD0Q8X44hgFOhNR8bt6tOo0APhSrKbeFI8qrIDGb01eMG9LyrJXkiQilvkl+SbaYp8AbUAcz3GNGEo2uLB4IX9qnbIytED9BokQZ0Gqzu6G2NW9U=
+	t=1719309600; cv=none; b=Yc821UvHA6TKu2Z/ew5jzPkBNYNbcerwI+FGneagIdRcBBqYKMzXlhOfhos5kfLfx3K+K8NaVc62l9h84MX39ATpgwjATq/4nvGsTSqMbgk9S1f4vN2dhvnEHVBk97HvShQGc6+OjW3JNOMLRD8hlyJjocRr+oVDrdgTANQ/jM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309180; c=relaxed/simple;
-	bh=rBZFI3wVLLx7OFldr/rq9EsCnEMo9yTlPemXgUtq974=;
+	s=arc-20240116; t=1719309600; c=relaxed/simple;
+	bh=hj5enNyEXW4yITV+EAJJ6VhtuluvEEGcQI5IihlG8hQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fDoyq2lbDwdAYW9UYL1pZ2fTMYAdouE5OHpvMWbOju/gpmlFCE4AVc76GN/f5Mv4KC+KikJb5WiD0HO8twdbGURBC8Es7nbY4JdbkgbKCRY3WV1dXOtExY1VDjxE6UUosRy/OrKOXpf3/+Fsqps+U4JJviUgDPYa5tHzozyNjPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIkzpyXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045F8C32781;
-	Tue, 25 Jun 2024 09:52:59 +0000 (UTC)
+	 MIME-Version; b=ceC0LRExIChESVuWjWrH2lRBsHQShDhsQFijcROO+Ec6ntgxgKoaSePUKnTuDLdBlAllJxR6MzMMaVatuimCFxpLJoQl8tsZGW26wcWDkgmiIHrRkj4SnYIPsXUGUDHxRkaSBTm82LFysjOhKwke6ODhfbXcawoIJAiEXoXzewM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5m688ON; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5462C32781;
+	Tue, 25 Jun 2024 09:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309180;
-	bh=rBZFI3wVLLx7OFldr/rq9EsCnEMo9yTlPemXgUtq974=;
+	s=korg; t=1719309600;
+	bh=hj5enNyEXW4yITV+EAJJ6VhtuluvEEGcQI5IihlG8hQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qIkzpyXh0l9LzKSbsdXnDQGxWlJoPaXTOEBmXUADjYT4ti6c3d2OtVKUz+OdcFIsa
-	 pGvjG/S9kh5XnXZzcLAp4Rcz+2NrDgOJHBM1Ac49fKWW5KdE95F1/QlO0LwvHmzGlB
-	 C+uHpv/iFgdoSBbk2rMCBLPEXfjIGT8tr6lgFd+4=
+	b=D5m688ON8vQpYn1mnA9t64vcxe6ul2t12wsZZ2Wx/SEcFEzmrHejPmrtvQjYn6D7y
+	 NzNxKr1oz47i/7c+0+rDr+ke4XMiix/LRNGAuBSErRnGvRVGBHJBmYrGoxarj3HDgz
+	 WZ0NgN9q+5j+l2pr/RzMnfDvMGAOqVkBcY5umoQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenliang Li <cliang01.li@samsung.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Songyang Li <leesongyang@outlook.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/192] io_uring/rsrc: fix incorrect assignment of iter->nr_segs in io_import_fixed
+Subject: [PATCH 6.1 040/131] MIPS: Octeon: Add PCIe link status check
 Date: Tue, 25 Jun 2024 11:33:15 +0200
-Message-ID: <20240625085541.889829809@linuxfoundation.org>
+Message-ID: <20240625085527.476777334@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenliang Li <cliang01.li@samsung.com>
+From: Songyang Li <leesongyang@outlook.com>
 
-[ Upstream commit a23800f08a60787dfbf2b87b2e6ed411cb629859 ]
+[ Upstream commit 29b83a64df3b42c88c0338696feb6fdcd7f1f3b7 ]
 
-In io_import_fixed when advancing the iter within the first bvec, the
-iter->nr_segs is set to bvec->bv_len. nr_segs should be the number of
-bvecs, plus we don't need to adjust it here, so just remove it.
+The standard PCIe configuration read-write interface is used to
+access the configuration space of the peripheral PCIe devices
+of the mips processor after the PCIe link surprise down, it can
+generate kernel panic caused by "Data bus error". So it is
+necessary to add PCIe link status check for system protection.
+When the PCIe link is down or in training, assigning a value
+of 0 to the configuration address can prevent read-write behavior
+to the configuration space of peripheral PCIe devices, thereby
+preventing kernel panic.
 
-Fixes: b000ae0ec2d7 ("io_uring/rsrc: optimise single entry advance")
-Signed-off-by: Chenliang Li <cliang01.li@samsung.com>
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/20240619063819.2445-1-cliang01.li@samsung.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Songyang Li <leesongyang@outlook.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rsrc.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/mips/pci/pcie-octeon.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ mode change 100644 => 100755 arch/mips/pci/pcie-octeon.c
 
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index 2e88b6658e4e0..0f9dcde72ebff 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -1108,7 +1108,6 @@ int io_import_fixed(int ddir, struct iov_iter *iter,
- 			 * branch doesn't expect non PAGE_SIZE'd chunks.
- 			 */
- 			iter->bvec = bvec;
--			iter->nr_segs = bvec->bv_len;
- 			iter->count -= offset;
- 			iter->iov_offset = offset;
- 		} else {
+diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
+old mode 100644
+new mode 100755
+index c9edd3fb380df..9eaacd3d33880
+--- a/arch/mips/pci/pcie-octeon.c
++++ b/arch/mips/pci/pcie-octeon.c
+@@ -230,12 +230,18 @@ static inline uint64_t __cvmx_pcie_build_config_addr(int pcie_port, int bus,
+ {
+ 	union cvmx_pcie_address pcie_addr;
+ 	union cvmx_pciercx_cfg006 pciercx_cfg006;
++	union cvmx_pciercx_cfg032 pciercx_cfg032;
+ 
+ 	pciercx_cfg006.u32 =
+ 	    cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG006(pcie_port));
+ 	if ((bus <= pciercx_cfg006.s.pbnum) && (dev != 0))
+ 		return 0;
+ 
++	pciercx_cfg032.u32 =
++		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG032(pcie_port));
++	if ((pciercx_cfg032.s.dlla == 0) || (pciercx_cfg032.s.lt == 1))
++		return 0;
++
+ 	pcie_addr.u64 = 0;
+ 	pcie_addr.config.upper = 2;
+ 	pcie_addr.config.io = 1;
 -- 
 2.43.0
 
