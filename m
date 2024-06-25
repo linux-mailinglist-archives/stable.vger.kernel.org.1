@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F14B916384
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 091229162E6
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47E1A28B5E2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B94FD289EA0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D328D1494DE;
-	Tue, 25 Jun 2024 09:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9F61494AF;
+	Tue, 25 Jun 2024 09:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znLkRqc8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HH7KHKJU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9070C147C96;
-	Tue, 25 Jun 2024 09:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D56213D62A;
+	Tue, 25 Jun 2024 09:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308868; cv=none; b=UtsFHfa15AJ9NqlIozLaTb9BQNHuoU/QNchh//b/1ylwB0KUt/KyvntGd9blqo0F+8+kuEZOkj96oa2d68AnhYbjz/O4PCwVq5VahzPymWtwPU5lcbZYzhEwK3+pd/kvGuxHPcOx1kemEorH41uqjVFoLWrEO+SK5muuMdsJNZg=
+	t=1719308439; cv=none; b=CEaFWE5rI7WgjepzEtoWufb3/VQcK2Yqxh6I3lX6snhG2qLA+LpfFbP/2F9oxd+xS/j4h03HqXDzlE8a2Dea4nnzXRjKLaHJ3OthUHO35GpJ+SiCFMfB/zvbS+n/iGzceFPeYmMdgX5XnV9kGT0HlU/jzH4/UY3CbNwo2hs4A78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308868; c=relaxed/simple;
-	bh=Ad30qBr6XBsx8nl2rzO3crijffW76o1LfIbe2qCtWQM=;
+	s=arc-20240116; t=1719308439; c=relaxed/simple;
+	bh=skH/d2BvS3PfqgdaKARucvwugX5GiclunfvsWbwcDhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDiNu4dhc4UXyIrKHAdy+fumzfA+/R/5aDTsQQZbACUpITHwmqtuzalYZ/HrafEwLpQCzJuIipsRLQ3P/6M5OF5a19xiIMGsV2MVHYcrIBxtGQiO1fwZ1kU7mAc0Qx7ZsNZxAgidNWBGVhedG2DS+pPmEcdwaB2nHz940IfiIus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znLkRqc8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19953C32786;
-	Tue, 25 Jun 2024 09:47:47 +0000 (UTC)
+	 MIME-Version; b=XZQyb7xGH5YAsvN/sBWHgayjAoY7+AfcqYdYZACtLJ0zuzhw5bCftCsGgM+8qkFSlm1s9VkjInS1uZmAqUJg5AnYs0QcQAjIncFGFCsxlqTRfwPCuA9iXDgpnI2YhMFqm8Q5M1IiG3YuWDglFzFmjAjnNRF/cIPe7e1jabPpCxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HH7KHKJU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E7EC32781;
+	Tue, 25 Jun 2024 09:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308868;
-	bh=Ad30qBr6XBsx8nl2rzO3crijffW76o1LfIbe2qCtWQM=;
+	s=korg; t=1719308439;
+	bh=skH/d2BvS3PfqgdaKARucvwugX5GiclunfvsWbwcDhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=znLkRqc8axCuobaiTQTc4V+QsyR+re9uTOae3ahqmOMbJDGcfcbzwGkfZjK0Wn2ZE
-	 qggRqZGhXOrTC7evEnILwWUTB6LWN6TiLE+dURKkRyNQzxZxQy88fcfY1Hn0iJOudC
-	 S/IwYBqysmuvzPUWwaEDRBtaasccUeuDQLxBM7Fg=
+	b=HH7KHKJU0z+TDaMMKaKychBQex9gSGCjrdsAPnqWUV/fAZvv1IiyiBrdlB4MfS2w0
+	 2GQHpA8g7ATJN6Zxtbp4O7jASlWC9kzfgnMXKhrD+DtAiBfq8YEm9YGNT2dI8Iw56M
+	 rFkHzsh+qEEO+uO8yJGYkIVty+c5I7RgA95nm76w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 007/192] rcutorture: Make stall-tasks directly exit when rcutorture tests end
+Subject: [PATCH 6.9 121/250] netns: Make get_net_ns() handle zero refcount net
 Date: Tue, 25 Jun 2024 11:31:19 +0200
-Message-ID: <20240625085537.437914408@linuxfoundation.org>
+Message-ID: <20240625085552.712809499@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit 431315a563015f259b28e34c5842f6166439e969 ]
+[ Upstream commit ff960f9d3edbe08a736b5a224d91a305ccc946b0 ]
 
-When the rcutorture tests start to exit, the rcu_torture_cleanup() is
-invoked to stop kthreads and release resources, if the stall-task
-kthreads exist, cpu-stall has started and the rcutorture.stall_cpu
-is set to a larger value, the rcu_torture_cleanup() will be blocked
-for a long time and the hung-task may occur, this commit therefore
-add kthread_should_stop() to the loop of cpu-stall operation, when
-rcutorture tests ends, no need to wait for cpu-stall to end, exit
-directly.
+Syzkaller hit a warning:
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 3 PID: 7890 at lib/refcount.c:25 refcount_warn_saturate+0xdf/0x1d0
+Modules linked in:
+CPU: 3 PID: 7890 Comm: tun Not tainted 6.10.0-rc3-00100-gcaa4f9578aba-dirty #310
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:refcount_warn_saturate+0xdf/0x1d0
+Code: 41 49 04 31 ff 89 de e8 9f 1e cd fe 84 db 75 9c e8 76 26 cd fe c6 05 b6 41 49 04 01 90 48 c7 c7 b8 8e 25 86 e8 d2 05 b5 fe 90 <0f> 0b 90 90 e9 79 ff ff ff e8 53 26 cd fe 0f b6 1
+RSP: 0018:ffff8881067b7da0 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff811c72ac
+RDX: ffff8881026a2140 RSI: ffffffff811c72b5 RDI: 0000000000000001
+RBP: ffff8881067b7db0 R08: 0000000000000000 R09: 205b5d3730353139
+R10: 0000000000000000 R11: 205d303938375420 R12: ffff8881086500c4
+R13: ffff8881086500c4 R14: ffff8881086500b0 R15: ffff888108650040
+FS:  00007f5b2961a4c0(0000) GS:ffff88823bd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055d7ed36fd18 CR3: 00000001482f6000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? show_regs+0xa3/0xc0
+ ? __warn+0xa5/0x1c0
+ ? refcount_warn_saturate+0xdf/0x1d0
+ ? report_bug+0x1fc/0x2d0
+ ? refcount_warn_saturate+0xdf/0x1d0
+ ? handle_bug+0xa1/0x110
+ ? exc_invalid_op+0x3c/0xb0
+ ? asm_exc_invalid_op+0x1f/0x30
+ ? __warn_printk+0xcc/0x140
+ ? __warn_printk+0xd5/0x140
+ ? refcount_warn_saturate+0xdf/0x1d0
+ get_net_ns+0xa4/0xc0
+ ? __pfx_get_net_ns+0x10/0x10
+ open_related_ns+0x5a/0x130
+ __tun_chr_ioctl+0x1616/0x2370
+ ? __sanitizer_cov_trace_switch+0x58/0xa0
+ ? __sanitizer_cov_trace_const_cmp2+0x1c/0x30
+ ? __pfx_tun_chr_ioctl+0x10/0x10
+ tun_chr_ioctl+0x2f/0x40
+ __x64_sys_ioctl+0x11b/0x160
+ x64_sys_call+0x1211/0x20d0
+ do_syscall_64+0x9e/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f5b28f165d7
+Code: b3 66 90 48 8b 05 b1 48 2d 00 64 c7 00 26 00 00 00 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 81 48 2d 00 8
+RSP: 002b:00007ffc2b59c5e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f5b28f165d7
+RDX: 0000000000000000 RSI: 00000000000054e3 RDI: 0000000000000003
+RBP: 00007ffc2b59c650 R08: 00007f5b291ed8c0 R09: 00007f5b2961a4c0
+R10: 0000000029690010 R11: 0000000000000246 R12: 0000000000400730
+R13: 00007ffc2b59cf40 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+Kernel panic - not syncing: kernel: panic_on_warn set ...
 
-Use the following command to test:
+This is trigger as below:
+          ns0                                    ns1
+tun_set_iff() //dev is tun0
+   tun->dev = dev
+//ip link set tun0 netns ns1
+                                       put_net() //ref is 0
+__tun_chr_ioctl() //TUNGETDEVNETNS
+   net = dev_net(tun->dev);
+   open_related_ns(&net->ns, get_net_ns); //ns1
+     get_net_ns()
+        get_net() //addition on 0
 
-insmod rcutorture.ko torture_type=srcu fwd_progress=0 stat_interval=4
-stall_cpu_block=1 stall_cpu=200 stall_cpu_holdoff=10 read_exit_burst=0
-object_debug=1
-rmmod rcutorture
+Use maybe_get_net() in get_net_ns in case net's ref is zero to fix this
 
-[15361.918610] INFO: task rmmod:878 blocked for more than 122 seconds.
-[15361.918613]       Tainted: G        W
-6.8.0-rc2-yoctodev-standard+ #25
-[15361.918615] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-[15361.918616] task:rmmod           state:D stack:0     pid:878
-tgid:878   ppid:773    flags:0x00004002
-[15361.918621] Call Trace:
-[15361.918623]  <TASK>
-[15361.918626]  __schedule+0xc0d/0x28f0
-[15361.918631]  ? __pfx___schedule+0x10/0x10
-[15361.918635]  ? rcu_is_watching+0x19/0xb0
-[15361.918638]  ? schedule+0x1f6/0x290
-[15361.918642]  ? __pfx_lock_release+0x10/0x10
-[15361.918645]  ? schedule+0xc9/0x290
-[15361.918648]  ? schedule+0xc9/0x290
-[15361.918653]  ? trace_preempt_off+0x54/0x100
-[15361.918657]  ? schedule+0xc9/0x290
-[15361.918661]  schedule+0xd0/0x290
-[15361.918665]  schedule_timeout+0x56d/0x7d0
-[15361.918669]  ? debug_smp_processor_id+0x1b/0x30
-[15361.918672]  ? rcu_is_watching+0x19/0xb0
-[15361.918676]  ? __pfx_schedule_timeout+0x10/0x10
-[15361.918679]  ? debug_smp_processor_id+0x1b/0x30
-[15361.918683]  ? rcu_is_watching+0x19/0xb0
-[15361.918686]  ? wait_for_completion+0x179/0x4c0
-[15361.918690]  ? __pfx_lock_release+0x10/0x10
-[15361.918693]  ? __kasan_check_write+0x18/0x20
-[15361.918696]  ? wait_for_completion+0x9d/0x4c0
-[15361.918700]  ? _raw_spin_unlock_irq+0x36/0x50
-[15361.918703]  ? wait_for_completion+0x179/0x4c0
-[15361.918707]  ? _raw_spin_unlock_irq+0x36/0x50
-[15361.918710]  ? wait_for_completion+0x179/0x4c0
-[15361.918714]  ? trace_preempt_on+0x54/0x100
-[15361.918718]  ? wait_for_completion+0x179/0x4c0
-[15361.918723]  wait_for_completion+0x181/0x4c0
-[15361.918728]  ? __pfx_wait_for_completion+0x10/0x10
-[15361.918738]  kthread_stop+0x152/0x470
-[15361.918742]  _torture_stop_kthread+0x44/0xc0 [torture
-7af7f9cbba28271a10503b653f9e05d518fbc8c3]
-[15361.918752]  rcu_torture_cleanup+0x2ac/0xe90 [rcutorture
-f2cb1f556ee7956270927183c4c2c7749a336529]
-[15361.918766]  ? __pfx_rcu_torture_cleanup+0x10/0x10 [rcutorture
-f2cb1f556ee7956270927183c4c2c7749a336529]
-[15361.918777]  ? __kasan_check_write+0x18/0x20
-[15361.918781]  ? __mutex_unlock_slowpath+0x17c/0x670
-[15361.918789]  ? __might_fault+0xcd/0x180
-[15361.918793]  ? find_module_all+0x104/0x1d0
-[15361.918799]  __x64_sys_delete_module+0x2a4/0x3f0
-[15361.918803]  ? __pfx___x64_sys_delete_module+0x10/0x10
-[15361.918807]  ? syscall_exit_to_user_mode+0x149/0x280
-
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Fixes: 0c3e0e3bb623 ("tun: Add ioctl() TUNGETDEVNETNS cmd to allow obtaining real net ns of tun device")
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Link: https://lore.kernel.org/r/20240614131302.2698509-1-yuehaibing@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/net_namespace.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index eb40c1f63a8b1..263457305d36a 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -2464,8 +2464,8 @@ static int rcu_torture_stall(void *args)
- 			preempt_disable();
- 		pr_alert("%s start on CPU %d.\n",
- 			  __func__, raw_smp_processor_id());
--		while (ULONG_CMP_LT((unsigned long)ktime_get_seconds(),
--				    stop_at))
-+		while (ULONG_CMP_LT((unsigned long)ktime_get_seconds(), stop_at) &&
-+		       !kthread_should_stop())
- 			if (stall_cpu_block) {
- #ifdef CONFIG_PREEMPTION
- 				preempt_schedule();
+diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
+index 9d690d32da33a..b1dc84c4fda11 100644
+--- a/net/core/net_namespace.c
++++ b/net/core/net_namespace.c
+@@ -693,11 +693,16 @@ EXPORT_SYMBOL_GPL(__put_net);
+  * get_net_ns - increment the refcount of the network namespace
+  * @ns: common namespace (net)
+  *
+- * Returns the net's common namespace.
++ * Returns the net's common namespace or ERR_PTR() if ref is zero.
+  */
+ struct ns_common *get_net_ns(struct ns_common *ns)
+ {
+-	return &get_net(container_of(ns, struct net, ns))->ns;
++	struct net *net;
++
++	net = maybe_get_net(container_of(ns, struct net, ns));
++	if (net)
++		return &net->ns;
++	return ERR_PTR(-EINVAL);
+ }
+ EXPORT_SYMBOL_GPL(get_net_ns);
+ 
 -- 
 2.43.0
 
