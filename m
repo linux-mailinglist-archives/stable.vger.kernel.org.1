@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-55332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390C0916324
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83B719163B7
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D82DA1F21337
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 379D71F21178
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF60149E17;
-	Tue, 25 Jun 2024 09:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B8B1487E9;
+	Tue, 25 Jun 2024 09:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMo7X+Aa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqe5mifL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1B612EBEA;
-	Tue, 25 Jun 2024 09:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF7A1465A8;
+	Tue, 25 Jun 2024 09:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308591; cv=none; b=ZnP/SNT559681q35l73Upckbrqb6NMiX1s4v3WK5OdrOqhQSJNNcXqjVzwnPr8+TEjC8Pq1rPgw2FhDKjfh5m0L7rr04v49FQyu+LE6vdRw68pYfTkpF2hTlQwOYV1Nt80A95ulDl/1S5C8ZrJzfAGozAi0ov6/hXkeEDZYQbZA=
+	t=1719308995; cv=none; b=n1xpSIIYOm8SF8eJSjIfdkH9qmAQG/nrscLkp4IUJqho6lYvdw3yWSUNEjFaY7ZEHxSZmX7992wRCaR225KztgxIQE/MgAXUV78wCJvh2lR/eWT/O1ZR/eb/RB215iQ/X40oV6birK/CLBJ+GpuhdxcbOXYew26vGyNrlXoaSX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308591; c=relaxed/simple;
-	bh=dl43RsRTsfsF0pPYbazWh3lNrTUedq6LYjsRqS5lCD8=;
+	s=arc-20240116; t=1719308995; c=relaxed/simple;
+	bh=fF4LC0Pd18lvHKytsU9iBYSH1PcZcEG4V8ol6gXWUv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYt7o7TvykWhfIiedafNY7t9PBCzD4uFpCTVZIqui+X0WEpgz9F3X0l4UI/HuK60Rmt1AlgRhRkeMQxTvRkgu0yzaOK+DMaYHSlnthrAMEnwet7NIBOpUM959PoYBEJbrhLNHv8uEP7iQM4I/wK6UOdCCjXFaSnsc/hDwcgLTnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMo7X+Aa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5793EC32781;
-	Tue, 25 Jun 2024 09:43:11 +0000 (UTC)
+	 MIME-Version; b=Q+3QluJlDrNMTctMDHa4wy6W2sJi1A1RSLRgqFC5oN/sSwq9Fh0jK+T+lmJ1N7x555DDDdsGQQBlFyBfSKwIKWt0z9Sw17caJoHzYhPjqkCf+IZCVuI2eWRQEaFVDhhtsDPOd8vxWF59h3CWno/Y9qDSz22ABAwfFv+BMGh3oeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqe5mifL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77E5C32781;
+	Tue, 25 Jun 2024 09:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308591;
-	bh=dl43RsRTsfsF0pPYbazWh3lNrTUedq6LYjsRqS5lCD8=;
+	s=korg; t=1719308995;
+	bh=fF4LC0Pd18lvHKytsU9iBYSH1PcZcEG4V8ol6gXWUv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMo7X+AaS3mGiwqyEtvDbc4doXu9Tvh23gbP9pXViioOGJGbHDhnzuSHSLitYZEC7
-	 eQmJFes+wwHRH9y6V42w7+SYQjyuuWm870SkCVKevK3xvTZ8wzXzTtPagiG9iSwGLs
-	 ToCrXAO4M8L8FqpxGb8kC+yyeHHYR9+n4oGMJd5E=
+	b=eqe5mifLfSD9j6XUaSStFxt//4u/OrtgciUik9MTny+Hv3PNX97sS6O9NE1idZrc3
+	 r/lyc4y0kMCxG6vn+zyrudWjqLbTi6HO5PamRD7BsDMD4GFdihsEMmW6+djdsHih0i
+	 dGKFUZza20n6NHX9pyk0HQ/RKXh8ONzL5AWMKFmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Peng Ma <andypma@tencent.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Perry Yuan <Perry.Yuan@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 174/250] RDMA/mlx5: Fix unwind flow as part of mlx5_ib_stage_init_init
+Subject: [PATCH 6.6 060/192] cpufreq: amd-pstate: fix memory leak on CPU EPP exit
 Date: Tue, 25 Jun 2024 11:32:12 +0200
-Message-ID: <20240625085554.730538705@linuxfoundation.org>
+Message-ID: <20240625085539.476120456@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Peng Ma <andypma@tencent.com>
 
-[ Upstream commit 81497c148b7a2e4a4fbda93aee585439f7323e2e ]
+[ Upstream commit cea04f3d9aeebda9d9c063c0dfa71e739c322c81 ]
 
-Fix unwind flow as part of mlx5_ib_stage_init_init to use the correct
-goto upon an error.
+The cpudata memory from kzalloc() in amd_pstate_epp_cpu_init() is
+not freed in the analogous exit function, so fix that.
 
-Fixes: 758ce14aee82 ("RDMA/mlx5: Implement MACsec gid addition and deletion")
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
-Link: https://lore.kernel.org/r/aa40615116eda14ec9eca21d52017d632ea89188.1716900410.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Peng Ma <andypma@tencent.com>
+Acked-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Perry Yuan <Perry.Yuan@amd.com>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cpufreq/amd-pstate.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index c2b557e642906..9fb8a544236d7 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -3760,10 +3760,10 @@ static int mlx5_ib_stage_init_init(struct mlx5_ib_dev *dev)
- 	spin_lock_init(&dev->dm.lock);
- 	dev->dm.dev = mdev;
- 	return 0;
--err:
--	mlx5r_macsec_dealloc_gids(dev);
- err_mp:
- 	mlx5_ib_cleanup_multiport_master(dev);
-+err:
-+	mlx5r_macsec_dealloc_gids(dev);
- 	return err;
- }
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index b8fdfd2c4f6fc..a5f4c255edadf 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1216,6 +1216,13 @@ static int amd_pstate_epp_cpu_init(struct cpufreq_policy *policy)
  
+ static int amd_pstate_epp_cpu_exit(struct cpufreq_policy *policy)
+ {
++	struct amd_cpudata *cpudata = policy->driver_data;
++
++	if (cpudata) {
++		kfree(cpudata);
++		policy->driver_data = NULL;
++	}
++
+ 	pr_debug("CPU %d exiting\n", policy->cpu);
+ 	return 0;
+ }
 -- 
 2.43.0
 
