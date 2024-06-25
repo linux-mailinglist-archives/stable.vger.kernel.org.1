@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF7291647E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D1091635C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787611F23DD4
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D9461F22049
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC55149C58;
-	Tue, 25 Jun 2024 09:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBF51494D5;
+	Tue, 25 Jun 2024 09:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnvvvsKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UV64Hy5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C28E1465A8;
-	Tue, 25 Jun 2024 09:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0E11465A8;
+	Tue, 25 Jun 2024 09:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309476; cv=none; b=pgEx9lI2+5boqQaztvvqLKf+6TG+uQKYln+lTiTdq/PR3Z9PxjMsts/yWUB+9yC2YRRQ52lLDRD40/vzMzI5uthn7VV+XrGws83Wvr1NiicziDEQQEDdAElTmlZ8VeZUwbt6aylcERnJ1hluwyisgnmKdigjn8aR5CG0vwg+Y2w=
+	t=1719308751; cv=none; b=X0fvxhZEaOzJ0jM4UnhJy7J1oQeFiofJLY+aoGQFWYAohazADU1ryZcJuvMrkZKMbDp2KpAqzCj3ebRuFRp4756YWuMyryVgzHa2UzFE1UaqK2dajzv3+ioU8Q/YCNr/mfgHTo07AxE2TQwgv9fMf8XbC8tPDbb7r5fhEndRG/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309476; c=relaxed/simple;
-	bh=VzkdA+tyk6FTtX2M846mHsxabSChP+PlJzUxbEeH5Ts=;
+	s=arc-20240116; t=1719308751; c=relaxed/simple;
+	bh=Hbzf5OVsyENcQtD2P3CIX9kojdCjwNRMdSJa+4aHI+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGO5suqyGvSDuC8HNske+iVAlKU3Ni55SiXGYKT8lX4sGdn1lVUzhRbs6h5vqTLNjvtx2FGYH2O1cBTRr0/u0dOXL0WQpfUg0UesI64WyF9abU3/9IVJtmWXgvbdK7DL6ZeoPtuPMP/9YCZeqUg6zacNXSiPT/TiBSc9gVY/8WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnvvvsKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1806EC32789;
-	Tue, 25 Jun 2024 09:57:55 +0000 (UTC)
+	 MIME-Version; b=MIiTpUmAXXf6vOxR6qUDFUV63gh9EuH3cDVFweDHm6ytdxzBdna0mQItzIM18/NKSCWcDd/jk92Kj0xXo3Nx5FX6dkNifFSQW7mkhq8rPrZcDOXwUu3S5a1kICUxQMXs0NJf4RDsCXdwlRYG2nXLYVfySZA5bql5G0zVv3jy7GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UV64Hy5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57FEC32781;
+	Tue, 25 Jun 2024 09:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309476;
-	bh=VzkdA+tyk6FTtX2M846mHsxabSChP+PlJzUxbEeH5Ts=;
+	s=korg; t=1719308751;
+	bh=Hbzf5OVsyENcQtD2P3CIX9kojdCjwNRMdSJa+4aHI+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DnvvvsKcnQwp5QP5yZ0wJRrnELrzgegcLOWXjewr9BtQUm7FRt+2dBVQBVWFrpoUS
-	 /yEaMIjqPwd47o+tTo1GE5MxP2ksn/HzzeIuxySzGO94Kx2aIs61sbYGyciCesh4lS
-	 R2tDIPVP7XnuCiM8C7SarNHJFxaJfWG+SfHtpBjQ=
+	b=UV64Hy5qbBCN5Za+xulsSfnzy/L/x+ikLtq/15zM5ftTclNbXafCTV5fe3x9ygmuy
+	 uluoo3zpwOboMDWJ6CnGbaVEPqxeP1/cYCH0D/RbSmij8eyjXSfC0HLwnMZZsplU9i
+	 SXqPl+aT/1CUsWQLAIg87wO2FnCYodV4RkQlMi/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/131] ALSA: hda/realtek: Add quirks for Lenovo 13X
-Date: Tue, 25 Jun 2024 11:33:03 +0200
-Message-ID: <20240625085527.020070139@linuxfoundation.org>
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.9 226/250] tcp: clear tp->retrans_stamp in tcp_rcv_fastopen_synack()
+Date: Tue, 25 Jun 2024 11:33:04 +0200
+Message-ID: <20240625085556.726001109@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 25f46354dca912c84f1f79468fd636a94b8d287a ]
+commit 9e046bb111f13461d3f9331e24e974324245140e upstream.
 
-Add laptop using CS35L41 HDA.
-This laptop does not have _DSD, so require entries in property
-configuration table for cs35l41_hda driver.
+Some applications were reporting ETIMEDOUT errors on apparently
+good looking flows, according to packet dumps.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Message-ID: <20240423162303.638211-3-sbinding@opensource.cirrus.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We were able to root cause the issue to an accidental setting
+of tp->retrans_stamp in the following scenario:
+
+- client sends TFO SYN with data.
+- server has TFO disabled, ACKs only SYN but not payload.
+- client receives SYNACK covering only SYN.
+- tcp_ack() eats SYN and sets tp->retrans_stamp to 0.
+- tcp_rcv_fastopen_synack() calls tcp_xmit_retransmit_queue()
+  to retransmit TFO payload w/o SYN, sets tp->retrans_stamp to "now",
+  but we are not in any loss recovery state.
+- TFO payload is ACKed.
+- we are not in any loss recovery state, and don't see any dupacks,
+  so we don't get to any code path that clears tp->retrans_stamp.
+- tp->retrans_stamp stays non-zero for the lifetime of the connection.
+- after first RTO, tcp_clamp_rto_to_user_timeout() clamps second RTO
+  to 1 jiffy due to bogus tp->retrans_stamp.
+- on clamped RTO with non-zero icsk_retransmits, retransmits_timed_out()
+  sets start_ts from tp->retrans_stamp from TFO payload retransmit
+  hours/days ago, and computes bogus long elapsed time for loss recovery,
+  and suffers ETIMEDOUT early.
+
+Fixes: a7abf3cd76e1 ("tcp: consider using standard rtx logic in tcp_rcv_fastopen_synack()")
+CC: stable@vger.kernel.org
+Co-developed-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Co-developed-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240614130615.396837-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv4/tcp_input.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 3a7104f72cabd..35dabe6ce0d7a 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10090,6 +10090,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x3852, "Lenovo Yoga 7 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3855, "Legion 7 16ITHG6", ALC287_FIXUP_LEGION_16ITHG6),
-+	SND_PCI_QUIRK(0x17aa, 0x3865, "Lenovo 13X", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x17aa, 0x3866, "Lenovo 13X", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
- 	SND_PCI_QUIRK(0x17aa, 0x3977, "IdeaPad S210", ALC283_FIXUP_INT_MIC),
--- 
-2.43.0
-
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6289,6 +6289,7 @@ static bool tcp_rcv_fastopen_synack(stru
+ 		skb_rbtree_walk_from(data)
+ 			 tcp_mark_skb_lost(sk, data);
+ 		tcp_xmit_retransmit_queue(sk);
++		tp->retrans_stamp = 0;
+ 		NET_INC_STATS(sock_net(sk),
+ 				LINUX_MIB_TCPFASTOPENACTIVEFAIL);
+ 		return true;
 
 
 
