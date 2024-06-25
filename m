@@ -1,213 +1,73 @@
-Return-Path: <stable+bounces-55321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB2F916319
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86B7916512
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57ABC285A3A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47F46283F92
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07AA14A0B8;
-	Tue, 25 Jun 2024 09:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD74A14A4EB;
+	Tue, 25 Jun 2024 10:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ljones.dev header.i=@ljones.dev header.b="R7vXUPu2";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JANvCCyM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rloaT4Wv"
 X-Original-To: stable@vger.kernel.org
-Received: from wfhigh5-smtp.messagingengine.com (wfhigh5-smtp.messagingengine.com [64.147.123.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8712114A4CC
-	for <stable@vger.kernel.org>; Tue, 25 Jun 2024 09:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A2514A4DC;
+	Tue, 25 Jun 2024 10:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308562; cv=none; b=ngovERajJCjih1AVA6eu9sszhh1kQyKPWEuthANy+fOi5zfRIpPWNkK0Edar7y/XdLFYUGbb1pWcIRSk6Uj9S+bq8tczHIO3HYS6XEInvP+Hu3QdHdTWpc6ps0+6Fw4TVrwDCv/VaK/CCTagIwm77OTNwzMs4tjDuSdxQhVoi+g=
+	t=1719310655; cv=none; b=PuBmWgsMKiGlXQIe/nhjwgWEmssBr3mh7HCxXH1uCobbAW6NgdkDr9gpeIjE2h98amWEeTh4qE3Z5jtWY3Zo/L6mA8cNFQBhvq6oiFqlo6E87H0HIWqv8zbZZq5XcYIP3ehLO/WyohZ7H+txKrrZSWbvScrmLlq06MgfTUJ8FHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308562; c=relaxed/simple;
-	bh=pwz6bNvIdy2Q1ktYFHkD+WheTN1ZlYsJM3EZvIIL+WI=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=C4Gw8NwKCN537hPDGSbWxGsnpVNF1TUYSMNuTj4adqnx52IjpulLtI83B3G8W7Ee3ZLY/un0wUvFCckQorQT6DeA9oFGInZbp/dUpWViQWeDYfxMeW3OG1at3miUDDxAbYpO2DvJYyH92uW9mjiFL5H0Zqk3oWOuchoCx56qjb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ljones.dev; spf=none smtp.mailfrom=ljones.dev; dkim=pass (2048-bit key) header.d=ljones.dev header.i=@ljones.dev header.b=R7vXUPu2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JANvCCyM; arc=none smtp.client-ip=64.147.123.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ljones.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ljones.dev
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfhigh.west.internal (Postfix) with ESMTP id 690E9180007C;
-	Tue, 25 Jun 2024 05:42:38 -0400 (EDT)
-Received: from imap41 ([10.202.2.91])
-  by compute2.internal (MEProxy); Tue, 25 Jun 2024 05:42:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ljones.dev; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1719308558; x=1719394958; bh=N0hYYSV7fp
-	YfGaMMAWqfey+TALMR8D2xS8PuNzsXDeM=; b=R7vXUPu2rWK53VcwNxq+TF/bt4
-	E0l6EOqDtp5U1k06oDZIfyDdLZMiqmGfn7WmFphJKzrqxzvqsx1OEhZHVFf9SXv1
-	AK1d5FTbEZKA+4d2x5DFv7Bs4RbEyADlP17Pz5KA63pBF2uaWQ/YFGLeATFLx+Ar
-	eILXXm5Bqny1f5fU7pvKo7ba9iNfa1dlTKfKCJ3hnYa5YZ3m1HzNL6iCPlPNUDGE
-	V94Xu3C8wTh4ursLgkfDoPrTs4QzwHIiMxUUnoZtD2MCzvoRrphNYD7ejUH91rxV
-	qRPBKI/V2VYYmwkNTfxiAgVUmvJ8LKFwohqm4oxPjU1Mkkr1HpH3yKGqaebw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1719308558; x=1719394958; bh=N0hYYSV7fpYfGaMMAWqfey+TALMR
-	8D2xS8PuNzsXDeM=; b=JANvCCyMBeTG35rQCImefFGDpuW7iug1wtypYCqY5iBD
-	s3J+bUhzeW3JtzyHtBRzmkvfoy+AJRFxTDwfvgyXlNm9sTZQYVm4LqUN7jju7taC
-	GjMQ/OyDGNeO4+HtzsMxKdke+t1D7AvcJPcUJF6+3ac61jdWqPjpEeAJX3ke2mAk
-	s6LoLIDzJVyG4qNXJUCiQHrZkDESJEcatT4OQZ/VDDIRzrw6ad9nPxyusZGfFYu0
-	LthskwvthcgL5GS6B/prV/HZ8hkLKk5LGf5cftd5854eRCJEwLRqfgqXB3Jhtw+x
-	3alPjEypkX4wsJN56+NjWtPGOx5K9c8tQZ6kr+yQDA==
-X-ME-Sender: <xms:DZF6Zv6i7G4xSe-4ioXBsOeCRxPVD-_2si0BVOJuhKbKqbBCcANLiw>
-    <xme:DZF6Zk62T6MEGlFC9T7Pr7JYPa8W98AUy6pAA4ddkmQFwB2YAjxTt6oq_s7R9VJ_V
-    TOOQBpa8nx5l3U4HB8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeegfedgudelucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedfnfhu
-    khgvucflohhnvghsfdcuoehluhhkvgeslhhjohhnvghsrdguvghvqeenucggtffrrghtth
-    gvrhhnpeelffevveffhfeuteetteevteelteduudfgjedvleejteetlefhieeiudfgveel
-    feenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomheplhhukhgvsehljhhonhgvshdruggvvh
-X-ME-Proxy: <xmx:DZF6ZmcLA9IOGtJVU7g6hIjnnPwSmSD2CVldlULoVEAfF8RoabD54A>
-    <xmx:DZF6ZgLRYUEldKqKaoHhC1ToeFjZvizLqbaw5y547J2cqNGE740OzA>
-    <xmx:DZF6ZjKOiV7Z8jWtt0Pk4c0f8oa-mS_osWLberOjTU5Q65Sg92ItpA>
-    <xmx:DZF6ZpwTUcmKalNKwqDBrThxuEj7KmoABpcxyHNgXlydp3bU181E9A>
-    <xmx:DpF6Zr3Q1e10DFSeKCvTYuFYJQSb58UGDbnZD3Aa6OoIVWec1aCQUrM6>
-Feedback-ID: i5ec1447f:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id AEA762340080; Tue, 25 Jun 2024 05:42:37 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-538-g1508afaa2-fm-20240616.001-g1508afaa
+	s=arc-20240116; t=1719310655; c=relaxed/simple;
+	bh=JOWPRxQ5QtbgfQpd2h30bAEZa9RhvRMRbQaALkdf2Ec=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=byFy0+wJy6EkXWiDsDrMswknLe5Qc6v5g/87ZxMtPhay4t5yrEIm0S6swOKkB+f2U9QqDAq7d8uUDA23EuJA4gGxIWnsj+11GJvb3sRw/ab7oCmoOV+CfAo1q8ZE4dES/P68IMvMrwNiZd0NeG9WlxpLjYnLvCSWHsroFjryLnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rloaT4Wv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE43C32789;
+	Tue, 25 Jun 2024 10:17:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1719310655;
+	bh=JOWPRxQ5QtbgfQpd2h30bAEZa9RhvRMRbQaALkdf2Ec=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rloaT4WvyqYM27ZsW44tEaxV3ovvJGtyhQ8YwTbLlqo+YxtuZt0Zge18wDESXX7R9
+	 qcGTbyG8/izoB9yHv0P7RZUP5I4SXzoCF+2MPDufxXqDKhuA0W4sbUb6wGIcfNRbVX
+	 kIGg1q/kV4oX522ziknef6cAD16Qa7oUt9F2aZ9c=
+Date: Tue, 25 Jun 2024 11:49:59 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Luke Jones <luke@ljones.dev>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Jiri Kosina <jkosina@suse.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.9 041/250] HID: asus: fix more n-key report descriptors
+ if n-key quirked
+Message-ID: <2024062552-exclude-womanless-d816@gregkh>
+References: <20240625085548.033507125@linuxfoundation.org>
+ <20240625085549.637011725@linuxfoundation.org>
+ <532a1188-0429-4126-94cd-d77eccebd85d@app.fastmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <532a1188-0429-4126-94cd-d77eccebd85d@app.fastmail.com>
-In-Reply-To: <20240625085549.637011725@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
- <20240625085549.637011725@linuxfoundation.org>
-Date: Tue, 25 Jun 2024 21:42:16 +1200
-From: "Luke Jones" <luke@ljones.dev>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, "Jiri Kosina" <jkosina@suse.com>,
- "Sasha Levin" <sashal@kernel.org>
-Subject: Re: [PATCH 6.9 041/250] HID: asus: fix more n-key report descriptors if n-key
- quirked
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <532a1188-0429-4126-94cd-d77eccebd85d@app.fastmail.com>
 
-On Tue, 25 Jun 2024, at 9:29 PM, Greg Kroah-Hartman wrote:
-> 6.9-stable review patch.  If anyone has any objections, please let me know.
+On Tue, Jun 25, 2024 at 09:42:16PM +1200, Luke Jones wrote:
+> On Tue, 25 Jun 2024, at 9:29 PM, Greg Kroah-Hartman wrote:
+> > 6.9-stable review patch.  If anyone has any objections, please let me know.
+> 
+> Hi,
+> 
+> No objections here but I believe this patch must also be included if not already - https://lore.kernel.org/linux-input/20240528050555.1150628-1-andrewjballance@gmail.com/
 
-Hi,
+Thanks, already included!
 
-No objections here but I believe this patch must also be included if not already - https://lore.kernel.org/linux-input/20240528050555.1150628-1-andrewjballance@gmail.com/
-
-Regards,
-Luke.
-
-> ------------------
-> 
-> From: Luke D. Jones <luke@ljones.dev>
-> 
-> [ Upstream commit 59d2f5b7392e988a391e6924e177c1a68d50223d ]
-> 
-> Adjusts the report descriptor for N-Key devices to
-> make the output count 0x01 which completely avoids
-> the need for a block of filtering.
-> 
-> Signed-off-by: Luke D. Jones <luke@ljones.dev>
-> Signed-off-by: Jiri Kosina <jkosina@suse.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> drivers/hid/hid-asus.c | 51 ++++++++++++++++++++----------------------
-> 1 file changed, 24 insertions(+), 27 deletions(-)
-> 
-> diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-> index 78cdfb8b9a7ae..d6d8a028623a7 100644
-> --- a/drivers/hid/hid-asus.c
-> +++ b/drivers/hid/hid-asus.c
-> @@ -335,36 +335,20 @@ static int asus_raw_event(struct hid_device *hdev,
-> if (drvdata->quirks & QUIRK_MEDION_E1239T)
-> return asus_e1239t_event(drvdata, data, size);
->  
-> - if (drvdata->quirks & QUIRK_USE_KBD_BACKLIGHT) {
-> + /*
-> + * Skip these report ID, the device emits a continuous stream associated
-> + * with the AURA mode it is in which looks like an 'echo'.
-> + */
-> + if (report->id == FEATURE_KBD_LED_REPORT_ID1 || report->id == FEATURE_KBD_LED_REPORT_ID2)
-> + return -1;
-> + if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
-> /*
-> - * Skip these report ID, the device emits a continuous stream associated
-> - * with the AURA mode it is in which looks like an 'echo'.
-> + * G713 and G733 send these codes on some keypresses, depending on
-> + * the key pressed it can trigger a shutdown event if not caught.
-> */
-> - if (report->id == FEATURE_KBD_LED_REPORT_ID1 ||
-> - report->id == FEATURE_KBD_LED_REPORT_ID2) {
-> + if (data[0] == 0x02 && data[1] == 0x30) {
-> return -1;
-> - /* Additional report filtering */
-> - } else if (report->id == FEATURE_KBD_REPORT_ID) {
-> - /*
-> - * G14 and G15 send these codes on some keypresses with no
-> - * discernable reason for doing so. We'll filter them out to avoid
-> - * unmapped warning messages later.
-> - */
-> - if (data[1] == 0xea || data[1] == 0xec || data[1] == 0x02 ||
-> - data[1] == 0x8a || data[1] == 0x9e) {
-> - return -1;
-> - }
-> }
-> - if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
-> - /*
-> - * G713 and G733 send these codes on some keypresses, depending on
-> - * the key pressed it can trigger a shutdown event if not caught.
-> - */
-> - if(data[0] == 0x02 && data[1] == 0x30) {
-> - return -1;
-> - }
-> - }
-> -
-> }
->  
-> if (drvdata->quirks & QUIRK_ROG_CLAYMORE_II_KEYBOARD) {
-> @@ -1250,6 +1234,19 @@ static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
-> rdesc[205] = 0x01;
-> }
->  
-> + /* match many more n-key devices */
-> + if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
-> + for (int i = 0; i < *rsize + 1; i++) {
-> + /* offset to the count from 0x5a report part always 14 */
-> + if (rdesc[i] == 0x85 && rdesc[i + 1] == 0x5a &&
-> +     rdesc[i + 14] == 0x95 && rdesc[i + 15] == 0x05) {
-> + hid_info(hdev, "Fixing up Asus N-Key report descriptor\n");
-> + rdesc[i + 15] = 0x01;
-> + break;
-> + }
-> + }
-> + }
-> +
-> return rdesc;
-> }
->  
-> @@ -1319,4 +1316,4 @@ static struct hid_driver asus_driver = {
-> };
-> module_hid_driver(asus_driver);
->  
-> -MODULE_LICENSE("GPL");
-> \ No newline at end of file
-> +MODULE_LICENSE("GPL");
-> -- 
-> 2.43.0
-> 
-> 
-> 
-> 
+greg k-h
 
