@@ -1,123 +1,175 @@
-Return-Path: <stable+bounces-55123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126D6915C55
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 04:39:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED08915D6F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 05:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1EBF284740
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 02:39:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFFFC1C20D3E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 03:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B853041A8F;
-	Tue, 25 Jun 2024 02:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849AC2628C;
+	Tue, 25 Jun 2024 03:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J2zgq7/9"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21A4345010;
-	Tue, 25 Jun 2024 02:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D272F56;
+	Tue, 25 Jun 2024 03:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719283193; cv=none; b=jg5awcM102PGYmry4yq/o099HdkBMyEftxNGokwGAz/sXxjbgtsLMRLZpkQFECx5ZFVlm/Ys6inEN2//9KO3R9cXj2B3O4E5hx1NC0g+W4q6uoCyLC8FGxEcjhtEvUdicz5gAlvjFfsGENBi6faSYZFprEUTOBT2oBIkycea0Og=
+	t=1719287134; cv=none; b=U0TLlLA01tEAqwYVs+nXRQ5KBbYe2S18uO9Sqwgpv5hkxRfqPmo/YQfWZfh5a5IAP9tEWNDnQJJuA7ks53v7pl+mrpfpAOYeFvuv79KSVcQYyaltvUqy48QuXZqM6m4kNQeL8gbJqN8cz6vZmmjQKtgbAhK9Y2stj50YTUq/4N8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719283193; c=relaxed/simple;
-	bh=zxUylimfg9YquQ0fVp0lv45GHnDmOpG4Uq0Inj3iK2o=;
+	s=arc-20240116; t=1719287134; c=relaxed/simple;
+	bh=akYYhE64gutriQphsCYtrgVyTh52zZni47qVxMnregk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AEsR898W2knMZLbVtEnu+0qT3fstO8VfU8GBZuEf7yXmjw9/zqbHdIJikEv/mCMX0LlTvKNUwnde6VvSWCFJFRiPJScKA/yDsxFUKf02UrI9lF6UL7VwR2N51ovPiJji8yjh3fy21eLAKdZSQFm/sK14qkLTUIYxMyORGpQUDx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4W7TYs2p1Yz4f3lfp;
-	Tue, 25 Jun 2024 10:39:29 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 765931A0181;
-	Tue, 25 Jun 2024 10:39:41 +0800 (CST)
-Received: from [10.174.177.210] (unknown [10.174.177.210])
-	by APP2 (Coremail) with SMTP id Syh0CgBn0YbjLXpm5bsQAQ--.59262S3;
-	Tue, 25 Jun 2024 10:39:39 +0800 (CST)
-Message-ID: <e4c0a9d5-95f1-2abe-a0b7-00ab3224f2d6@huaweicloud.com>
-Date: Tue, 25 Jun 2024 10:39:31 +0800
+	 In-Reply-To:Content-Type; b=BZGqWVOWE963zIn+m2xbJrWgUHyCa+qcCaq3M+PXPo1tvbI9dU7CW10wWm7LQSk9Zo9vVWcQgEx8HW5EfF71UECSze85RO/431QD0s6KSFRJ6Yd7mv36p+xnE0L3AAhD83Kf4AJKMv7GeevrW7bkJADfYACaYSCPBBbabejLZJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J2zgq7/9; arc=none smtp.client-ip=209.85.161.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5b97a071c92so2427577eaf.1;
+        Mon, 24 Jun 2024 20:45:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719287131; x=1719891931; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=nAGv1C3HZZdBM5385FH4CpehIrO1aLyESVw6wair3LM=;
+        b=J2zgq7/9MdKLzYoCpX+qXzPRUHUAl2Awhaw4UtIBzs5Trx+uO/879y1qsXg1zIVe8I
+         vunZVkEaKQTzXznZV481ZnbVQ5XV6OA831rrnZnWBcR7X/Z+cCkgbxMgsl6qAl0/xPyv
+         u5/yheEI2L5I+RseFBUo/+Kfas9ei8lNkX1pKp6GpEDEiEtd3wDCZg3k9aY2C3T2ah9Z
+         HVXWDvHXy+Xgzu0Rhzym173M5nL3PxmHN5MFt1jHwd28T25rkPCh1AU/HzIIQlhVTZX1
+         hTlx213zFlIDSstsPAOwNRL3GJ9DMHNgYcR+oJ1H4oBxAgSZVuw7yVJzU5mffde9s8Y4
+         XMJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719287131; x=1719891931;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nAGv1C3HZZdBM5385FH4CpehIrO1aLyESVw6wair3LM=;
+        b=gH6wHAbpyz0RJlRF9nwLNMhGxNaxLCRepzHaqd7JYVqmxMxMixuETiJYY7Qpx6YjY0
+         E519YmG8yWXiz+DCM5B6/d3E+4NB9Bpi7Do3rPCmzj2lPx4ibYHiYj9DRn97YFarmo/R
+         46C0z+0KtLy/lKP97ugsvqUws/F3suL5IGxxin4YvPgWRsmQh9wQ7dteu+eidk4c8Zys
+         jjdYahl9g5F9V60p1HN2dlzU8TqjHk1xbO4iEsAtUqK8o59dmtIp4Jz7P1uwDVKggLVl
+         45qSHKrDTLI0w12wJZDwAlT6NARLtp/fmAjl19BirQMHCD2Cuc1reC6W99inc1P+3qiI
+         VFgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXNQpEu+cx4wj0MhG3DvzAVwBi7qCYCNgkq2PU8R8H0rYnOxvF9RrTBxQ/EBZbuFGmaxyh+N3lS+dIbSTy8k7BX0LJQeXCxov01s42hfdgC6OCryi41cGnqr0+JQXZW+oSpzy4WzHJFbEn/9ikypiZUMIsiqQ3BeUZe0mmjcVXLjnm6gcs=
+X-Gm-Message-State: AOJu0YyAFfj0XtWHjmKGFevFuJ0P1m4MSMj4isKNOHLxx7RIqqLCNXSJ
+	KupjxXlEhkmDci6/qVCG6bGC7lUWUb4KnJzUvKPkvTuhghJ1ilSs
+X-Google-Smtp-Source: AGHT+IFuMpIiyI/ambneXj2V/8PhRkYWS8YSC9Jtn9HUyffHKT4WhBv98Y8lT8RDDOn1kRo/O911/g==
+X-Received: by 2002:a05:6358:2823:b0:1a1:c5c6:9da6 with SMTP id e5c5f4694b2df-1a2389a5d8dmr871908455d.3.1719287131313;
+        Mon, 24 Jun 2024 20:45:31 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-716ba5b5f7asm6051573a12.64.2024.06.24.20.45.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jun 2024 20:45:30 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <5a4e1cd6-5770-423b-9a25-a0fbfd93014a@roeck-us.net>
+Date: Mon, 24 Jun 2024 20:45:27 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.1
-Subject: Re: [PATCH 6.6~6.9] cifs: fix pagecache leak when do writepages
-To: Greg KH <gregkh@linuxfoundation.org>, Yang Erkun <yangerkun@huawei.com>
-Cc: sfrench@samba.org, pc@manguebit.com, ronniesahlberg@gmail.com,
- sprasad@microsoft.com, tom@talpey.com, bharathsm@microsoft.com,
- dhowells@redhat.com, linux-cifs@vger.kernel.org, stable@vger.kernel.org,
- stable-commits@vger.kernel.org
-References: <20240624042815.2242201-1-yangerkun@huawei.com>
- <2024062422-imaging-evaluate-3f85@gregkh>
-From: yangerkun <yangerkun@huaweicloud.com>
-In-Reply-To: <2024062422-imaging-evaluate-3f85@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Regression caused by "eeprom: at24: Probe for DDR3 thermal sensor
+ in the SPD case" - "sysfs: cannot create duplicate filename"
+To: Heiner Kallweit <hkallweit1@gmail.com>, =?UTF-8?Q?Krzysztof_Ol=C4=99dzki?=
+ <ole@ans.pl>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>,
+ Geert Uytterhoeven <geert+renesas@glider.be>,
+ Wolfram Sang <wsa@the-dreams.de>
+Cc: stable@vger.kernel.org, linux-i2c@vger.kernel.org,
+ linux-hwmon@vger.kernel.org,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <a57e9a39-13ce-4e4d-a7a1-c591f6b4ac65@ans.pl>
+ <0dfa2919-98eb-4433-acb4-aa1830787c9b@roeck-us.net>
+ <77c1b740-9e6d-40f7-83f0-9a949366f1c9@ans.pl>
+ <97c497ae-44f7-4cec-b7d9-f639e4597571@roeck-us.net>
+ <797c8371-dff3-4112-9733-4d3119670dbf@gmail.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <797c8371-dff3-4112-9733-4d3119670dbf@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBn0YbjLXpm5bsQAQ--.59262S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7urWxAFyfAw17Cr17Zr47Arb_yoW8WrWUpF
-	WUC3Z8Ar4jyryakFnIyayqvFy5t3y8Jry5WFy3J3W293WFqryagry0g3yq9FZrG3s3Wr4I
-	qF4jyF9Yg3W8XaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvIb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7Mxk0xIA0c2IE
-	e2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxV
-	Aqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q
-	6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6x
-	kF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE
-	14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf
-	9x07UX4SrUUUUU=
-X-CM-SenderInfo: 51dqwvhunx0q5kxd4v5lfo033gof0z/
+Content-Transfer-Encoding: 7bit
 
-
-
-在 2024/6/24 22:57, Greg KH 写道:
-> On Mon, Jun 24, 2024 at 12:28:15PM +0800, Yang Erkun wrote:
->> After commit f3dc1bdb6b0b("cifs: Fix writeback data corruption"), the
->> writepages for cifs will find all folio needed writepage with two phase.
->> The first folio will be found in cifs_writepages_begin, and the latter
->> various folios will be found in cifs_extend_writeback.
->>
->> All those will first get folio, and for normal case, once we set page
->> writeback and after do really write, we should put the reference, folio
->> found in cifs_extend_writeback do this with folio_batch_release. But the
->> folio found in cifs_writepages_begin never get the chance do it. And
->> every writepages call, we will leak a folio(found this problem while do
->> xfstests over cifs).
->>
->> Besides, the exist path seem never handle this folio correctly, fix it too
->> with this patch.
->>
->> The problem does not exist in mainline since writepages path for cifs
->> has changed to netfs. It's had to backport all related change, so try fix
->> this problem with this single patch.
->>
->> Fixes: f3dc1bdb6b0b ("cifs: Fix writeback data corruption")
->> Signed-off-by: Yang Erkun <yangerkun@huawei.com>
->> ---
->>   fs/smb/client/file.c | 16 +++++++++++++---
->>   1 file changed, 13 insertions(+), 3 deletions(-)
->>
+On 6/24/24 13:58, Heiner Kallweit wrote:
+[ ... ]
 > 
-> <formletter>
+> Too me the issue also looks like a race. According to the OP's logs:
+> - jc42 at 0x18 is instantiated successfully
+> - jc42 at 0x19 returns -EBUSY. This is what is expected if the device
+>    has been instantiated otherwise already.
+> - jc42 at 0x1a returns -EEXIST. Here two instantiations of the the same
+>    device seem to collide.
+> - jc42 at 0x1b returns -EBUSY, like at 0x19.
 > 
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read:
->      https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> for how to do this properly.
-> 
-> </formletter>
+> So it looks like referenced change isn't wrong, but reveals an
+> underlying issue with device instantiation races.
 
-Thanks for your reminder, will do it in v2!
+It isn't just a race, though. Try to unload the at24 (or ee1004 driver
+for DDR4) and load it again, and you'll see the -EBUSY errors. Problem
+is that instantiating those drivers _always_ triggers the call to
+i2c_new_client_device() even if the jc42 device is already instantiated.
+Unloading the spd/eeprom driver doesn't unload the jc42 driver,
+so -EBUSY will be seen if the spd/eeprom driver is loaded again.
+
+I have not been able to reproduce the backtrace with my systems, but those
+are all with AMD CPUs using the piix4 driver, so timing is likely different.
+Another difference is that my systems (with DDR4) use the ee1004 driver.
+That driver instantiates the jc42 devices under a driver lock, so it is
+guaranteed that a single instantiation doesn't interfere with other
+instantiations running in parallel.
+
+Guenter
 
 
