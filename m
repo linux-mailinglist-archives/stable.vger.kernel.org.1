@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-55697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AEB99164C9
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8AEA916451
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA0E02887CA
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B8561F23C2F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690BC148319;
-	Tue, 25 Jun 2024 10:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3EE14A4C1;
+	Tue, 25 Jun 2024 09:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMbFzx8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CL3K196E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B2613C90B;
-	Tue, 25 Jun 2024 10:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940B014A09F;
+	Tue, 25 Jun 2024 09:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309671; cv=none; b=DHjMBpyH4p+PtL+Lz9THDHeZpVA/Tcg6xLa+47Ll+9gMPBMA5Q3GD2EXZi/KEJwa8MiZa3hksJfPNOdar/HyqEfqPzs0o6gAZGeeeq+dOwdA/jJTPWaBkuP793ERUHm3NLcj+cIdSjFFvcwnFMbT3VduvTvCEEPHqCyl22C+5fE=
+	t=1719309347; cv=none; b=oZq4XTIJHMKndfN+Iq7M6GUXb1XShVu5BMknQl5IYfEkZ19hJQq0kEeE4Q7gNxRaIm7En53AEEUH+C0/P2PDLTbfAxIxI8jyQe832OvdKb19fe2zPV/LOoC88IHWCXd8ROC0oY5pgkCOS1FWa8YaSPu1GtufLpBRYir4tJabNgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309671; c=relaxed/simple;
-	bh=tXzCvU8DASeJIakOoJ6+11KIrfzse6EFDjMdN6MCh28=;
+	s=arc-20240116; t=1719309347; c=relaxed/simple;
+	bh=jnuNJsM8XzzwgEdwUS9hQLovXZ7HqbPk615ShCt0j5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EpFJKecltUMYGj1Tj6C6VfFYOCk3lFhGMiUJUCe7Dy7JJVWj38iygppjFI0Me2ReJbmhyhYLDDeIXRcdMXASyDKK1MERzWkmJC0BZ7mPIrDFucarQ2miuo9yiYrtZC3ruW4wId2eoCIh+uW/upsJ+G2T9Cniw44F6k7VQ3iX7WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMbFzx8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC1FC32781;
-	Tue, 25 Jun 2024 10:01:10 +0000 (UTC)
+	 MIME-Version; b=pCzVXaPV4RiIUmWSOBBg2Di6vyais/TKI3+rveMUdhVpqoFFHvNnxErgvhdS6Z9Fz+jX9liXw5vomH9pAn25obLi2M/j9bqrZDkfbE9TwyTGNJBulmOXWjlxR/7oVwYleg4ewKsV2NdXZBZ94Te4CrNyeZmyxtswWZpbIFZTLeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CL3K196E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16EE0C32781;
+	Tue, 25 Jun 2024 09:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309671;
-	bh=tXzCvU8DASeJIakOoJ6+11KIrfzse6EFDjMdN6MCh28=;
+	s=korg; t=1719309347;
+	bh=jnuNJsM8XzzwgEdwUS9hQLovXZ7HqbPk615ShCt0j5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMbFzx8PO0IjtwBdWqiHb9KVDRzz1DtCXSRCXGDWXh75y4vY+ZDVqqzVB6KmIozP/
-	 JKFf5/U8e2A0NjMRhOmPwPluVmYiZTOCHL3t58lObM3fUVzt5SrPjjm9MHCFGJ0Y5e
-	 ZtfsdLozl9PKceus5N1U2NE/3t2EnB16HB8JZpsE=
+	b=CL3K196E88s0Yz86wZAzw4B35NazkRx7y2TxNCFcJhDURH9rBt+NHzB+GZenUnANM
+	 ARHLPJvMabD0981CUXoi4WrI7uDCfR+x+C7tfbr4S6Tl4pt8Gk1X8t/cdV5Lyvxi0g
+	 N3e4pbyu2yh/3kLVK43oqmCQVTDhY8KKABT71s9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 094/131] net: stmmac: Assign configured channel value to EXTTS event
+	Christoph Hellwig <hch@lst.de>,
+	Josef Bacik <jbacik@fb.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Markus Pargmann <mpa@pengutronix.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 177/192] nbd: Fix signal handling
 Date: Tue, 25 Jun 2024 11:34:09 +0200
-Message-ID: <20240625085529.511693005@linuxfoundation.org>
+Message-ID: <20240625085543.954193978@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +66,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 8851346912a1fa33e7a5966fe51f07313b274627 upstream.
+[ Upstream commit e56d4b633fffea9510db468085bed0799cba4ecd ]
 
-Assign the configured channel value to the EXTTS event in the timestamp
-interrupt handler. Without assigning the correct channel, applications
-like ts2phc will refuse to accept the event, resulting in errors such
-as:
-...
-ts2phc[656.834]: config item end1.ts2phc.pin_index is 0
-ts2phc[656.834]: config item end1.ts2phc.channel is 3
-ts2phc[656.834]: config item end1.ts2phc.extts_polarity is 2
-ts2phc[656.834]: config item end1.ts2phc.extts_correction is 0
-...
-ts2phc[656.862]: extts on unexpected channel
-ts2phc[658.141]: extts on unexpected channel
-ts2phc[659.140]: extts on unexpected channel
+Both nbd_send_cmd() and nbd_handle_cmd() return either a negative error
+number or a positive blk_status_t value. nbd_queue_rq() converts these
+return values into a blk_status_t value. There is a bug in the conversion
+code: if nbd_send_cmd() returns BLK_STS_RESOURCE, nbd_queue_rq() should
+return BLK_STS_RESOURCE instead of BLK_STS_OK. Fix this, move the
+conversion code into nbd_handle_cmd() and fix the remaining sparse warnings.
 
-Fixes: f4da56529da60 ("net: stmmac: Add support for external trigger timestamping")
+This patch fixes the following sparse warnings:
+
+drivers/block/nbd.c:673:32: warning: incorrect type in return expression (different base types)
+drivers/block/nbd.c:673:32:    expected int
+drivers/block/nbd.c:673:32:    got restricted blk_status_t [usertype]
+drivers/block/nbd.c:714:48: warning: incorrect type in return expression (different base types)
+drivers/block/nbd.c:714:48:    expected int
+drivers/block/nbd.c:714:48:    got restricted blk_status_t [usertype]
+drivers/block/nbd.c:1120:21: warning: incorrect type in assignment (different base types)
+drivers/block/nbd.c:1120:21:    expected int [assigned] ret
+drivers/block/nbd.c:1120:21:    got restricted blk_status_t [usertype]
+drivers/block/nbd.c:1125:16: warning: incorrect type in return expression (different base types)
+drivers/block/nbd.c:1125:16:    expected restricted blk_status_t
+drivers/block/nbd.c:1125:16:    got int [assigned] ret
+
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Josef Bacik <jbacik@fb.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Cc: Markus Pargmann <mpa@pengutronix.de>
+Fixes: fc17b6534eb8 ("blk-mq: switch ->queue_rq return value to blk_status_t")
 Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://lore.kernel.org/r/20240618073821.619751-1-o.rempel@pengutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240510202313.25209-6-bvanassche@acm.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/block/nbd.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-@@ -176,6 +176,7 @@ static void timestamp_interrupt(struct s
- {
- 	u32 num_snapshot, ts_status, tsync_int;
- 	struct ptp_clock_event event;
-+	u32 acr_value, channel;
- 	unsigned long flags;
- 	u64 ptp_time;
- 	int i;
-@@ -201,12 +202,15 @@ static void timestamp_interrupt(struct s
- 	num_snapshot = (ts_status & GMAC_TIMESTAMP_ATSNS_MASK) >>
- 		       GMAC_TIMESTAMP_ATSNS_SHIFT;
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index a906674f71147..1089dc646b808 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -569,6 +569,10 @@ static inline int was_interrupted(int result)
+ 	return result == -ERESTARTSYS || result == -EINTR;
+ }
  
-+	acr_value = readl(priv->ptpaddr + PTP_ACR);
-+	channel = ilog2(FIELD_GET(PTP_ACR_MASK, acr_value));
-+
- 	for (i = 0; i < num_snapshot; i++) {
- 		read_lock_irqsave(&priv->ptp_lock, flags);
- 		get_ptptime(priv->ptpaddr, &ptp_time);
- 		read_unlock_irqrestore(&priv->ptp_lock, flags);
- 		event.type = PTP_CLOCK_EXTTS;
--		event.index = 0;
-+		event.index = channel;
- 		event.timestamp = ptp_time;
- 		ptp_clock_event(priv->ptp_clock, &event);
++/*
++ * Returns BLK_STS_RESOURCE if the caller should retry after a delay. Returns
++ * -EAGAIN if the caller should requeue @cmd. Returns -EIO if sending failed.
++ */
+ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+ {
+ 	struct request *req = blk_mq_rq_from_pdu(cmd);
+@@ -652,7 +656,7 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+ 				nsock->sent = sent;
+ 			}
+ 			set_bit(NBD_CMD_REQUEUED, &cmd->flags);
+-			return BLK_STS_RESOURCE;
++			return (__force int)BLK_STS_RESOURCE;
+ 		}
+ 		dev_err_ratelimited(disk_to_dev(nbd->disk),
+ 			"Send control failed (result %d)\n", result);
+@@ -693,7 +697,7 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+ 					nsock->pending = req;
+ 					nsock->sent = sent;
+ 					set_bit(NBD_CMD_REQUEUED, &cmd->flags);
+-					return BLK_STS_RESOURCE;
++					return (__force int)BLK_STS_RESOURCE;
+ 				}
+ 				dev_err(disk_to_dev(nbd->disk),
+ 					"Send data failed (result %d)\n",
+@@ -990,7 +994,7 @@ static int wait_for_reconnect(struct nbd_device *nbd)
+ 	return !test_bit(NBD_RT_DISCONNECTED, &config->runtime_flags);
+ }
+ 
+-static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
++static blk_status_t nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ {
+ 	struct request *req = blk_mq_rq_from_pdu(cmd);
+ 	struct nbd_device *nbd = cmd->nbd;
+@@ -1004,14 +1008,14 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ 	if (!config) {
+ 		dev_err_ratelimited(disk_to_dev(nbd->disk),
+ 				    "Socks array is empty\n");
+-		return -EINVAL;
++		return BLK_STS_IOERR;
  	}
+ 
+ 	if (index >= config->num_connections) {
+ 		dev_err_ratelimited(disk_to_dev(nbd->disk),
+ 				    "Attempted send on invalid socket\n");
+ 		nbd_config_put(nbd);
+-		return -EINVAL;
++		return BLK_STS_IOERR;
+ 	}
+ 	cmd->status = BLK_STS_OK;
+ again:
+@@ -1034,7 +1038,7 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ 			 */
+ 			sock_shutdown(nbd);
+ 			nbd_config_put(nbd);
+-			return -EIO;
++			return BLK_STS_IOERR;
+ 		}
+ 		goto again;
+ 	}
+@@ -1047,7 +1051,7 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ 	blk_mq_start_request(req);
+ 	if (unlikely(nsock->pending && nsock->pending != req)) {
+ 		nbd_requeue_cmd(cmd);
+-		ret = 0;
++		ret = BLK_STS_OK;
+ 		goto out;
+ 	}
+ 	/*
+@@ -1066,19 +1070,19 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
+ 				    "Request send failed, requeueing\n");
+ 		nbd_mark_nsock_dead(nbd, nsock, 1);
+ 		nbd_requeue_cmd(cmd);
+-		ret = 0;
++		ret = BLK_STS_OK;
+ 	}
+ out:
+ 	mutex_unlock(&nsock->tx_lock);
+ 	nbd_config_put(nbd);
+-	return ret;
++	return ret < 0 ? BLK_STS_IOERR : (__force blk_status_t)ret;
+ }
+ 
+ static blk_status_t nbd_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 			const struct blk_mq_queue_data *bd)
+ {
+ 	struct nbd_cmd *cmd = blk_mq_rq_to_pdu(bd->rq);
+-	int ret;
++	blk_status_t ret;
+ 
+ 	/*
+ 	 * Since we look at the bio's to send the request over the network we
+@@ -1098,10 +1102,6 @@ static blk_status_t nbd_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 	 * appropriate.
+ 	 */
+ 	ret = nbd_handle_cmd(cmd, hctx->queue_num);
+-	if (ret < 0)
+-		ret = BLK_STS_IOERR;
+-	else if (!ret)
+-		ret = BLK_STS_OK;
+ 	mutex_unlock(&cmd->lock);
+ 
+ 	return ret;
+-- 
+2.43.0
+
 
 
 
