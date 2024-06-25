@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-55456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408AF9163AA
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01741916316
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F163728C363
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 342851C2221A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DEE41494D5;
-	Tue, 25 Jun 2024 09:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B9E14A4C7;
+	Tue, 25 Jun 2024 09:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZU1asyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0+61uka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6501465A8;
-	Tue, 25 Jun 2024 09:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E3114A0B8;
+	Tue, 25 Jun 2024 09:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308956; cv=none; b=rLHkGTEgZBJ0WnV7bppJCoU9x/UhQIWuAxOi7lbye1u8R1lEglE5vI4fmpTG0OtndCYMRqMjdPkSeD0kPUtj6T3dPMn06z5YgwfNDJjrEYQvVbkHqlR2PlxMV3ZDnkb7nTwFhlGnEJ4oSeXd136QwwIxtHEzlsFaWWDRDGhITU0=
+	t=1719308553; cv=none; b=Ip8tpnqt1P2I7GsSrSoG4qog3Z5q8B5gRuJMgkrcnHkHiANKF913StthTA5Tptxo6uwLikUx1AjSA8WGg9obOojYKWOYNgaTuDKOEZ43EqncxJbcCM3hyfq9IXLdpfq41TJfPJJv4Y6Xmzx4PwbbIzizslTCIfyMtg98r1BHow8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308956; c=relaxed/simple;
-	bh=7P/OO/Bk/HYIlIQG7dHVP3jHvzeAfevMlvIgFg70uMA=;
+	s=arc-20240116; t=1719308553; c=relaxed/simple;
+	bh=vEnKquRZaY9zrQ98NeVD/vphGmmYoFa+3N+XF8A3sOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nXmaRvIpKF0TPYP2l/jhDJl0e2CYxYEYKmgXptlVhlBKk9QjiGDcTVfP/VsGZ7dJEJABw3PrMAijyrHKwNwZTAaJb5FNwR8DMyQo2joDeFmRomGujN0/seDdUgn97gmwyog1+o0QmnfQklMaCKd3d96miOfFVpnf9jGc/Ev6jVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZU1asyw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4556DC32781;
-	Tue, 25 Jun 2024 09:49:16 +0000 (UTC)
+	 MIME-Version; b=kX+fN08ExCuIFJEX6cuEcO2z8ZZwbEIIRANCUJk/vwOEcy/zEgetQlgD28sxBV+a/h/B2yVjLK8dBnjxWNNBtNjmxVoZLpPmvehxRNGCIbSTpUKAIImfRJ0vn5/Gs1+WNC2HsMKHrdrScwyn/VG8XnT90mrFPrStAAU8ys0IYWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V0+61uka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E61AC32781;
+	Tue, 25 Jun 2024 09:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308956;
-	bh=7P/OO/Bk/HYIlIQG7dHVP3jHvzeAfevMlvIgFg70uMA=;
+	s=korg; t=1719308553;
+	bh=vEnKquRZaY9zrQ98NeVD/vphGmmYoFa+3N+XF8A3sOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZU1asywCZWZwGZiUfDuiCiYVfMlnbWWj6IzCFvQt+iY5qzPdtAZX1CNTl5WS34eP
-	 VS0Y8sMSfAYL0PYdmXk4WiM9FJcuQwy7u6rboOo3w/VBOZnpVetWKcFRZTYiSGYkx6
-	 9Uui8LisBtY9aTkH7MXq/pzpXXb4+c3Im59z5Ayc=
+	b=V0+61uka6ilrj8ahpo/ocqcB/iSridUPYMVSUFBh9QHaPWKtRRrU3Msfy50olxd9/
+	 hVTx6nPk8Gf9ZAKKt3WLUUYPUlrzCagLULWpfguJ7Y4VbSlRhQxrQXDuUfb4/oS5o8
+	 7fXZtSHOEGox6b0Asv80G6MUSe0a3hUcqAAXmHr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Julien Panis <jpanis@baylibre.com>,
+	Nicolas Pitre <npitre@baylibre.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/192] usb: gadget: uvc: configfs: ensure guid to be valid before set
+Subject: [PATCH 6.9 159/250] thermal/drivers/mediatek/lvts_thermal: Return error in case of invalid efuse data
 Date: Tue, 25 Jun 2024 11:31:57 +0200
-Message-ID: <20240625085538.898779846@linuxfoundation.org>
+Message-ID: <20240625085554.163961437@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Julien Panis <jpanis@baylibre.com>
 
-[ Upstream commit f7a7f80ccc8df017507e2b1e1dd652361374d25b ]
+[ Upstream commit 72cacd06e47d86d89b0e7179fbc9eb3a0f39cd93 ]
 
-When setting the guid via configfs it is possible to test if
-its value is one of the kernel supported ones by calling
-uvc_format_by_guid on it. If the result is NULL, we know the
-guid is unsupported and can be ignored.
+This patch prevents from registering thermal entries and letting the
+driver misbehave if efuse data is invalid. A device is not properly
+calibrated if the golden temperature is zero.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Link: https://lore.kernel.org/r/20240221-uvc-gadget-configfs-guid-v1-1-f0678ca62ebb@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
+Signed-off-by: Julien Panis <jpanis@baylibre.com>
+Reviewed-by: Nicolas Pitre <npitre@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20240604-mtk-thermal-calib-check-v2-1-8f258254051d@baylibre.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/uvc_configfs.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/thermal/mediatek/lvts_thermal.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/uvc_configfs.c b/drivers/usb/gadget/function/uvc_configfs.c
-index d16c04d2961b6..4acf336e946d6 100644
---- a/drivers/usb/gadget/function/uvc_configfs.c
-+++ b/drivers/usb/gadget/function/uvc_configfs.c
-@@ -13,6 +13,7 @@
- #include "uvc_configfs.h"
+diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+index 4e5c213a89225..6b9422bd8795d 100644
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -740,7 +740,11 @@ static int lvts_golden_temp_init(struct device *dev, u32 *value, int temp_offset
  
- #include <linux/sort.h>
-+#include <linux/usb/uvc.h>
- #include <linux/usb/video.h>
+ 	gt = (*value) >> 24;
  
- /* -----------------------------------------------------------------------------
-@@ -2260,6 +2261,8 @@ static ssize_t uvcg_uncompressed_guid_format_store(struct config_item *item,
- 	struct f_uvc_opts *opts;
- 	struct config_item *opts_item;
- 	struct mutex *su_mutex = &ch->fmt.group.cg_subsys->su_mutex;
-+	const struct uvc_format_desc *format;
-+	u8 tmpguidFormat[sizeof(ch->desc.guidFormat)];
- 	int ret;
- 
- 	mutex_lock(su_mutex); /* for navigating configfs hierarchy */
-@@ -2273,7 +2276,16 @@ static ssize_t uvcg_uncompressed_guid_format_store(struct config_item *item,
- 		goto end;
- 	}
- 
--	memcpy(ch->desc.guidFormat, page,
-+	memcpy(tmpguidFormat, page,
-+	       min(sizeof(tmpguidFormat), len));
+-	if (gt && gt < LVTS_GOLDEN_TEMP_MAX)
++	/* A zero value for gt means that device has invalid efuse data */
++	if (!gt)
++		return -ENODATA;
 +
-+	format = uvc_format_by_guid(tmpguidFormat);
-+	if (!format) {
-+		ret = -EINVAL;
-+		goto end;
-+	}
-+
-+	memcpy(ch->desc.guidFormat, tmpguidFormat,
- 	       min(sizeof(ch->desc.guidFormat), len));
- 	ret = sizeof(ch->desc.guidFormat);
++	if (gt < LVTS_GOLDEN_TEMP_MAX)
+ 		golden_temp = gt;
  
+ 	golden_temp_offset = golden_temp * 500 + temp_offset;
 -- 
 2.43.0
 
