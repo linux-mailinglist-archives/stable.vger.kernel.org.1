@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-55166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 498F6916264
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 228FD91626F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:35:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C24F1C212A0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:35:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5515E1C21F1A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56571494AF;
-	Tue, 25 Jun 2024 09:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5BF41494AF;
+	Tue, 25 Jun 2024 09:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9bxUCJ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6nKwh1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4F0FBEF;
-	Tue, 25 Jun 2024 09:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E1DFBEF;
+	Tue, 25 Jun 2024 09:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308105; cv=none; b=qLe/zgvcLB8ub2EUWQLQdBEuhrEOvKF6QFF7xLWMXuwNBVlUTwcnAn93SNlct1T94Dio2D+Ab96Qe0eyPHyfyKb0CAu8NE98UZzPO8JJHSsXQ8RO9xgC8JUPtgml3NLhzhyq6sEjlJMM32M/Q38RJ7mN8zKGAQh/E9rUdkk1SuA=
+	t=1719308138; cv=none; b=ZLAhPJVqYmxzBLwA19I+hotvbM1Ud1z8BR7uIUy/vZu62yHjcCYcqlKiZhxj6+Qse+vLGJZtHlKCBmlK5tcbkG8x/vDyZ8smwWGWhSUIOpqoxMx2+MOzU6jINsjMUbc42kZS6HXZo3GXaveVBD8moBvErtqMTiiTyuZRS4cNxIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308105; c=relaxed/simple;
-	bh=aCatiaAqY1HabtQU+B7oOl+i5BGbNr1iD+gbIm93PcM=;
+	s=arc-20240116; t=1719308138; c=relaxed/simple;
+	bh=Sk3l7ZaWMnmk2m4y0XQpHakpQtOEh67XIJw49w2nrmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYJjdSKp56WAY4aTOoXEwb25tPVhj0Y8GFEs4dbaeMJqkWU5pu92oGXfUaSKlSDqlyDTj6XLF2MoJeb0LYBK3qWZeDE38gSem3vKaAkXYjsAyb8eOBHkdHp3RJUW1KBaqRSBywDi1nVuUj5fOhODFGnK+lkRJLSemBm5umsDfec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n9bxUCJ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D430C32781;
-	Tue, 25 Jun 2024 09:35:04 +0000 (UTC)
+	 MIME-Version; b=bwk3XuJNM4oi32qMcdlXc++pBLAkrso8ssQzsyHg5ifB+EHtAZo4iPz1mFk/4DPRRdBVFCP3dZmAQ2GOUOoHRYtR4oEurjsPQnFsSboq8U1ngjda8EYfg2qXPX6dDaIbzxRkyDqE69iIjIMSOZKdqho00Ga/H1gNpZ2jZDFVhEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6nKwh1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCC2C32781;
+	Tue, 25 Jun 2024 09:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308104;
-	bh=aCatiaAqY1HabtQU+B7oOl+i5BGbNr1iD+gbIm93PcM=;
+	s=korg; t=1719308138;
+	bh=Sk3l7ZaWMnmk2m4y0XQpHakpQtOEh67XIJw49w2nrmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n9bxUCJ4Pp7m53sqJaGSyT9q+JvH8/aSm728LuUA8pzTu9eKdRDBBzXogsCkEndl4
-	 K3MDr1y7aT9QMGrste1vU/EdnO3sC1gVDVr7pJ2gPkTEovr6bCgmmDmS4sqzo6VCP/
-	 khhF11PvvxO3G42xmN2N6SgK4Lvw6pBNVIejG/l4=
+	b=U6nKwh1pl4yegU20eOXJ1QTNVsOFDlMaQ+b/SekJ0Xagtxyh/IXZOyMfHvEeHnxPT
+	 Zw12NRfKz2Ms3SEXiWLIf6CaI7cT0CnH2nmWQqhQiP1xSSzR6hC80dI+xEPKXWhTZm
+	 3oueBFtFr0Y6D5pSjBXRfuvJbuqJ5/1gfpOnOOcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 001/250] fs/writeback: bail out if there is no more inodes for IO and queued once
-Date: Tue, 25 Jun 2024 11:29:19 +0200
-Message-ID: <20240625085548.092907113@linuxfoundation.org>
+Subject: [PATCH 6.9 002/250] padata: Disable BH when taking works lock on MT path
+Date: Tue, 25 Jun 2024 11:29:20 +0200
+Message-ID: <20240625085548.131723110@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -67,60 +67,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit d92109891f21cf367caa2cc6dff11a4411d917f4 ]
+[ Upstream commit 58329c4312031603bb1786b44265c26d5065fe72 ]
 
-For case there is no more inodes for IO in io list from last wb_writeback,
-We may bail out early even there is inode in dirty list should be written
-back. Only bail out when we queued once to avoid missing dirtied inode.
+As the old padata code can execute in softirq context, disable
+softirqs for the new padata_do_mutithreaded code too as otherwise
+lockdep will get antsy.
 
-This is from code reading...
-
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Link: https://lore.kernel.org/r/20240228091958.288260-3-shikemeng@huaweicloud.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-[brauner@kernel.org: fold in memory corruption fix from Jan in [1]]
-Link: https://lore.kernel.org/r/20240405132346.bid7gibby3lxxhez@quack3 [1]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fs-writeback.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/padata.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index e4f17c53ddfcf..d31853032a931 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2069,6 +2069,7 @@ static long wb_writeback(struct bdi_writeback *wb,
- 	struct inode *inode;
- 	long progress;
- 	struct blk_plug plug;
-+	bool queued = false;
+diff --git a/kernel/padata.c b/kernel/padata.c
+index e3f639ff16707..53f4bc9127127 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -106,7 +106,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
+ {
+ 	int i;
  
- 	blk_start_plug(&plug);
- 	for (;;) {
-@@ -2111,8 +2112,10 @@ static long wb_writeback(struct bdi_writeback *wb,
- 			dirtied_before = jiffies;
+-	spin_lock(&padata_works_lock);
++	spin_lock_bh(&padata_works_lock);
+ 	/* Start at 1 because the current task participates in the job. */
+ 	for (i = 1; i < nworks; ++i) {
+ 		struct padata_work *pw = padata_work_alloc();
+@@ -116,7 +116,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
+ 		padata_work_init(pw, padata_mt_helper, data, 0);
+ 		list_add(&pw->pw_list, head);
+ 	}
+-	spin_unlock(&padata_works_lock);
++	spin_unlock_bh(&padata_works_lock);
  
- 		trace_writeback_start(wb, work);
--		if (list_empty(&wb->b_io))
-+		if (list_empty(&wb->b_io)) {
- 			queue_io(wb, work, dirtied_before);
-+			queued = true;
-+		}
- 		if (work->sb)
- 			progress = writeback_sb_inodes(work->sb, wb, work);
- 		else
-@@ -2127,7 +2130,7 @@ static long wb_writeback(struct bdi_writeback *wb,
- 		 * mean the overall work is done. So we keep looping as long
- 		 * as made some progress on cleaning pages or inodes.
- 		 */
--		if (progress) {
-+		if (progress || !queued) {
- 			spin_unlock(&wb->list_lock);
- 			continue;
- 		}
+ 	return i;
+ }
+@@ -134,12 +134,12 @@ static void __init padata_works_free(struct list_head *works)
+ 	if (list_empty(works))
+ 		return;
+ 
+-	spin_lock(&padata_works_lock);
++	spin_lock_bh(&padata_works_lock);
+ 	list_for_each_entry_safe(cur, next, works, pw_list) {
+ 		list_del(&cur->pw_list);
+ 		padata_work_free(cur);
+ 	}
+-	spin_unlock(&padata_works_lock);
++	spin_unlock_bh(&padata_works_lock);
+ }
+ 
+ static void padata_parallel_worker(struct work_struct *parallel_work)
 -- 
 2.43.0
 
