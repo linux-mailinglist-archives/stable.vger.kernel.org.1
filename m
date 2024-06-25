@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-55382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F895916358
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526E591647C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AB231F22C5F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 841DE1C20D4E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C019B147C96;
-	Tue, 25 Jun 2024 09:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E758F149DE9;
+	Tue, 25 Jun 2024 09:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiWKuurH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1yoPExq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F5F1465A8;
-	Tue, 25 Jun 2024 09:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B17146A67;
+	Tue, 25 Jun 2024 09:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308739; cv=none; b=aKlCIBKx4b2y6OwElKiqYHbhAWpVN0yl0hj646ovgWcFhPT9DPbQVn0YPCcTrxq4BWp+XynxpbROysqm8qfMejh9VaNoZuHWF9zQZMtK7n54MLE+D+G4Ne4sXgsqaFjMfFanc9Au0qjsnLtK/p4Dwlc4+TEohtW9bqUUegUFd7g=
+	t=1719309470; cv=none; b=SPFjd9oLd7Fdldiz9DQVShjEaO+E6QG/UdkBC4RARGaILesGgKvDtZ2oHtfzgWcRCur1TMwLoTXr+y2aF9yIEpgtheitgAJzXBm9czhox2ZsXT8heuTQkp02q44fIaZHRTqpcEPadVs7UfvAFs3LyOmpX0ymppllJdEOzhm2MAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308739; c=relaxed/simple;
-	bh=KFcSb8A9AHHdLO1S5owDiLm6lPJZzD3rIuTi15E2f5o=;
+	s=arc-20240116; t=1719309470; c=relaxed/simple;
+	bh=s+QQx6KJ5X/XbXPy5v+jb8IEM6nkqPoKVa1eYkMC0Vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwwriqHDF73IGJWYRJKCkj7WboH49dCRB3sfYs/DDmx+daQwoT5ikevnkw+sZEzQC9D6qKb1ZkEzrcForUaieW3osgv+FQJyGr3soMAbCLZ7pO07T3n+g4GiNBt1RnS5h1Qy05t+W0M7Psk0P9j5ZhaqGFEdfOFGxhiQe8f8gto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiWKuurH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F083AC32781;
-	Tue, 25 Jun 2024 09:45:38 +0000 (UTC)
+	 MIME-Version; b=MeMSF4e7dafhrHA1cJDq7fk6Jct4JRDlFJKnYAkCOzpQBBRkmEWuJrMHI7WH5lbpTdTQnyuxoQw7CJzwlaREf7rjfYQGA9028KgEGmri1MA432ZONJ5/scfDmFdpKKnp6/rdWU2V9al3GrAkNomac4PvlnO8woESNVLaVk49104=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1yoPExq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BC0C32789;
+	Tue, 25 Jun 2024 09:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308739;
-	bh=KFcSb8A9AHHdLO1S5owDiLm6lPJZzD3rIuTi15E2f5o=;
+	s=korg; t=1719309470;
+	bh=s+QQx6KJ5X/XbXPy5v+jb8IEM6nkqPoKVa1eYkMC0Vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UiWKuurHWznYD5x6RJNfv83KeAgIufVwolq6qInFVs2c6f5BAwfgu0VKoBoia6SPe
-	 tjNb2eHbVQhUi5aClC3l0L9I2fwCrdUY74brQaEv67AyaQbHv16KtLLqiynf/HXFRR
-	 49wB2fcCiXBNcqWfDyW2+ooIQMLlIN63QnXhh1cI=
+	b=T1yoPExqdT0SK0Vs+bsNSZRx3WcM5vRRYxStSf1MPGmbBxfpzLQumUToswjiW/UFa
+	 mI8rDKKRBHsrrL+wlVVHv68yIbjG1Ai+cEyPK5PQPaGhHYxoy/pwrl3lEghqpWs7Hp
+	 K/HtKzhPyREEnehbvCBZc5rtMUWfZQo0CnszYjnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Barry Song <baohua@kernel.org>,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
-	Michal Hocko <mhocko@kernel.org>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Yang Yang <yang.yang29@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 223/250] mm: huge_memory: fix misused mapping_large_folio_support() for anon folios
+	Erico Nunes <nunes.erico@gmail.com>,
+	Qiang Yu <yuq825@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 026/131] drm/lima: add mask irq callback to gp and pp
 Date: Tue, 25 Jun 2024 11:33:01 +0200
-Message-ID: <20240625085556.612897317@linuxfoundation.org>
+Message-ID: <20240625085526.943338450@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +62,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+From: Erico Nunes <nunes.erico@gmail.com>
 
-commit 6a50c9b512f7734bc356f4bd47885a6f7c98491a upstream.
+[ Upstream commit 49c13b4d2dd4a831225746e758893673f6ae961c ]
 
-When I did a large folios split test, a WARNING "[ 5059.122759][ T166]
-Cannot split file folio to non-0 order" was triggered.  But the test cases
-are only for anonmous folios.  while mapping_large_folio_support() is only
-reasonable for page cache folios.
+This is needed because we want to reset those devices in device-agnostic
+code such as lima_sched.
+In particular, masking irqs will be useful before a hard reset to
+prevent race conditions.
 
-In split_huge_page_to_list_to_order(), the folio passed to
-mapping_large_folio_support() maybe anonmous folio.  The folio_test_anon()
-check is missing.  So the split of the anonmous THP is failed.  This is
-also the same for shmem_mapping().  We'd better add a check for both.  But
-the shmem_mapping() in __split_huge_page() is not involved, as for
-anonmous folios, the end parameter is set to -1, so (head[i].index >= end)
-is always false.  shmem_mapping() is not called.
-
-Also add a VM_WARN_ON_ONCE() in mapping_large_folio_support() for anon
-mapping, So we can detect the wrong use more easily.
-
-THP folios maybe exist in the pagecache even the file system doesn't
-support large folio, it is because when CONFIG_TRANSPARENT_HUGEPAGE is
-enabled, khugepaged will try to collapse read-only file-backed pages to
-THP.  But the mapping does not actually support multi order large folios
-properly.
-
-Using /sys/kernel/debug/split_huge_pages to verify this, with this patch,
-large anon THP is successfully split and the warning is ceased.
-
-Link: https://lkml.kernel.org/r/202406071740485174hcFl7jRxncsHDtI-Pz-o@zte.com.cn
-Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240405152951.1531555-2-nunes.erico@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pagemap.h |    4 ++++
- mm/huge_memory.c        |   28 +++++++++++++++++-----------
- 2 files changed, 21 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/lima/lima_bcast.c | 12 ++++++++++++
+ drivers/gpu/drm/lima/lima_bcast.h |  3 +++
+ drivers/gpu/drm/lima/lima_gp.c    |  8 ++++++++
+ drivers/gpu/drm/lima/lima_pp.c    | 18 ++++++++++++++++++
+ drivers/gpu/drm/lima/lima_sched.h |  1 +
+ 5 files changed, 42 insertions(+)
 
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -379,6 +379,10 @@ static inline void mapping_set_large_fol
-  */
- static inline bool mapping_large_folio_support(struct address_space *mapping)
- {
-+	/* AS_LARGE_FOLIO_SUPPORT is only reasonable for pagecache folios */
-+	VM_WARN_ONCE((unsigned long)mapping & PAGE_MAPPING_ANON,
-+			"Anonymous mapping always supports large folio");
-+
- 	return IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
- 		test_bit(AS_LARGE_FOLIO_SUPPORT, &mapping->flags);
+diff --git a/drivers/gpu/drm/lima/lima_bcast.c b/drivers/gpu/drm/lima/lima_bcast.c
+index fbc43f243c54d..6d000504e1a4e 100644
+--- a/drivers/gpu/drm/lima/lima_bcast.c
++++ b/drivers/gpu/drm/lima/lima_bcast.c
+@@ -43,6 +43,18 @@ void lima_bcast_suspend(struct lima_ip *ip)
+ 
  }
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3058,30 +3058,36 @@ int split_huge_page_to_list_to_order(str
- 	if (new_order >= folio_order(folio))
- 		return -EINVAL;
  
--	/* Cannot split anonymous THP to order-1 */
--	if (new_order == 1 && folio_test_anon(folio)) {
--		VM_WARN_ONCE(1, "Cannot split to order-1 folio");
--		return -EINVAL;
--	}
--
--	if (new_order) {
--		/* Only swapping a whole PMD-mapped folio is supported */
--		if (folio_test_swapcache(folio))
-+	if (folio_test_anon(folio)) {
-+		/* order-1 is not supported for anonymous THP. */
-+		if (new_order == 1) {
-+			VM_WARN_ONCE(1, "Cannot split to order-1 folio");
- 			return -EINVAL;
-+		}
-+	} else if (new_order) {
- 		/* Split shmem folio to non-zero order not supported */
- 		if (shmem_mapping(folio->mapping)) {
- 			VM_WARN_ONCE(1,
- 				"Cannot split shmem folio to non-0 order");
- 			return -EINVAL;
- 		}
--		/* No split if the file system does not support large folio */
--		if (!mapping_large_folio_support(folio->mapping)) {
-+		/*
-+		 * No split if the file system does not support large folio.
-+		 * Note that we might still have THPs in such mappings due to
-+		 * CONFIG_READ_ONLY_THP_FOR_FS. But in that case, the mapping
-+		 * does not actually support large folios properly.
-+		 */
-+		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
-+		    !mapping_large_folio_support(folio->mapping)) {
- 			VM_WARN_ONCE(1,
- 				"Cannot split file folio to non-0 order");
- 			return -EINVAL;
- 		}
++int lima_bcast_mask_irq(struct lima_ip *ip)
++{
++	bcast_write(LIMA_BCAST_BROADCAST_MASK, 0);
++	bcast_write(LIMA_BCAST_INTERRUPT_MASK, 0);
++	return 0;
++}
++
++int lima_bcast_reset(struct lima_ip *ip)
++{
++	return lima_bcast_hw_init(ip);
++}
++
+ int lima_bcast_init(struct lima_ip *ip)
+ {
+ 	int i;
+diff --git a/drivers/gpu/drm/lima/lima_bcast.h b/drivers/gpu/drm/lima/lima_bcast.h
+index 465ee587bceb2..cd08841e47879 100644
+--- a/drivers/gpu/drm/lima/lima_bcast.h
++++ b/drivers/gpu/drm/lima/lima_bcast.h
+@@ -13,4 +13,7 @@ void lima_bcast_fini(struct lima_ip *ip);
+ 
+ void lima_bcast_enable(struct lima_device *dev, int num_pp);
+ 
++int lima_bcast_mask_irq(struct lima_ip *ip);
++int lima_bcast_reset(struct lima_ip *ip);
++
+ #endif
+diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
+index 8dd501b7a3d0d..6cf46b653e810 100644
+--- a/drivers/gpu/drm/lima/lima_gp.c
++++ b/drivers/gpu/drm/lima/lima_gp.c
+@@ -212,6 +212,13 @@ static void lima_gp_task_mmu_error(struct lima_sched_pipe *pipe)
+ 	lima_sched_pipe_task_done(pipe);
+ }
+ 
++static void lima_gp_task_mask_irq(struct lima_sched_pipe *pipe)
++{
++	struct lima_ip *ip = pipe->processor[0];
++
++	gp_write(LIMA_GP_INT_MASK, 0);
++}
++
+ static int lima_gp_task_recover(struct lima_sched_pipe *pipe)
+ {
+ 	struct lima_ip *ip = pipe->processor[0];
+@@ -344,6 +351,7 @@ int lima_gp_pipe_init(struct lima_device *dev)
+ 	pipe->task_error = lima_gp_task_error;
+ 	pipe->task_mmu_error = lima_gp_task_mmu_error;
+ 	pipe->task_recover = lima_gp_task_recover;
++	pipe->task_mask_irq = lima_gp_task_mask_irq;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/lima/lima_pp.c b/drivers/gpu/drm/lima/lima_pp.c
+index a5c95bed08c09..54b208a4a768e 100644
+--- a/drivers/gpu/drm/lima/lima_pp.c
++++ b/drivers/gpu/drm/lima/lima_pp.c
+@@ -408,6 +408,9 @@ static void lima_pp_task_error(struct lima_sched_pipe *pipe)
+ 
+ 		lima_pp_hard_reset(ip);
  	}
++
++	if (pipe->bcast_processor)
++		lima_bcast_reset(pipe->bcast_processor);
+ }
  
-+	/* Only swapping a whole PMD-mapped folio is supported */
-+	if (folio_test_swapcache(folio) && new_order)
-+		return -EINVAL;
+ static void lima_pp_task_mmu_error(struct lima_sched_pipe *pipe)
+@@ -416,6 +419,20 @@ static void lima_pp_task_mmu_error(struct lima_sched_pipe *pipe)
+ 		lima_sched_pipe_task_done(pipe);
+ }
  
- 	is_hzp = is_huge_zero_page(&folio->page);
- 	if (is_hzp) {
++static void lima_pp_task_mask_irq(struct lima_sched_pipe *pipe)
++{
++	int i;
++
++	for (i = 0; i < pipe->num_processor; i++) {
++		struct lima_ip *ip = pipe->processor[i];
++
++		pp_write(LIMA_PP_INT_MASK, 0);
++	}
++
++	if (pipe->bcast_processor)
++		lima_bcast_mask_irq(pipe->bcast_processor);
++}
++
+ static struct kmem_cache *lima_pp_task_slab;
+ static int lima_pp_task_slab_refcnt;
+ 
+@@ -447,6 +464,7 @@ int lima_pp_pipe_init(struct lima_device *dev)
+ 	pipe->task_fini = lima_pp_task_fini;
+ 	pipe->task_error = lima_pp_task_error;
+ 	pipe->task_mmu_error = lima_pp_task_mmu_error;
++	pipe->task_mask_irq = lima_pp_task_mask_irq;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/gpu/drm/lima/lima_sched.h b/drivers/gpu/drm/lima/lima_sched.h
+index 6a11764d87b38..edf205be43699 100644
+--- a/drivers/gpu/drm/lima/lima_sched.h
++++ b/drivers/gpu/drm/lima/lima_sched.h
+@@ -80,6 +80,7 @@ struct lima_sched_pipe {
+ 	void (*task_error)(struct lima_sched_pipe *pipe);
+ 	void (*task_mmu_error)(struct lima_sched_pipe *pipe);
+ 	int (*task_recover)(struct lima_sched_pipe *pipe);
++	void (*task_mask_irq)(struct lima_sched_pipe *pipe);
+ 
+ 	struct work_struct recover_work;
+ };
+-- 
+2.43.0
+
 
 
 
