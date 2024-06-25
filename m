@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86E791648E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:58:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F04B91642A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA23F1C237B0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:58:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70F181C22687
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484DA14A4D9;
-	Tue, 25 Jun 2024 09:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222E014AD29;
+	Tue, 25 Jun 2024 09:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxxNN3kV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMFZahB9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0805D14A4D1;
-	Tue, 25 Jun 2024 09:58:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39A414A0A8;
+	Tue, 25 Jun 2024 09:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309515; cv=none; b=nO4BB0lU7pE4opzmUaENCimZPlMJP2JIT4144jp9NdMYxaRhroKYb6jAiudxf48zpD53ApexMzsi9VRwg87Avyi3pQkZmlrPo1I5bnS2QXtNEknUX9imRDaXFpTU+xnns098KfltMtHH/vMVHiyytAUfoMK874VhgwmvQWdsrkM=
+	t=1719309259; cv=none; b=iihP/6rKbaE9ggajVu/BRXfEcmolbpmLp3+H/0uTGEie/6Rpf8qG691GOpnUG0eioK7kADkNcP9Ajwk/yd3o1NJ+8T/dRJfgHx9zPSfmWjy7aqpGg/UlbAQkiYieK82xX8VYBm4/WEcfGaPImOrNWxiEgvvOXYWR9iT+XgTIVuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309515; c=relaxed/simple;
-	bh=VkQ5vmY5TxJ6hAqRr2SMvSpaQJWz0EzoMlppJ0i1THA=;
+	s=arc-20240116; t=1719309259; c=relaxed/simple;
+	bh=8hCp9aPceg4vCR62aB8eZx8THw+W1nx5ZFnrpYJvDhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpyoNQPoOATUvODsic6mSN+nZ+zZs9U/7BJnp4AbVb9WZE8DKmomfQ9ILo2Xc80wEf2JxIVkoR5EGke4LI55d029O+GaLZiVm8hyLnpvSb1uLGb6lfDVf/mcPAEzMLr9mqyRI/jMVudJo8MvI97cFtNPOAsw7he7iUIieFe8HhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxxNN3kV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7589BC32789;
-	Tue, 25 Jun 2024 09:58:34 +0000 (UTC)
+	 MIME-Version; b=f7TncXVO+/MqWgtwp6dasqtZqCpLWPQdEgG9fUTWQA6NlUav/pbDPkgXV2ZN0izCzqYQ0yAP+V2QDeTHyBaE9C0euxoISa2lRtwhaO0BoxgSq9jTJ4Dv7hUQ6b35/W17xTChmpc1PAT5uJkcjJhbn+TYMyHrEFcbhmyclvz1E+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMFZahB9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B16DC32781;
+	Tue, 25 Jun 2024 09:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309514;
-	bh=VkQ5vmY5TxJ6hAqRr2SMvSpaQJWz0EzoMlppJ0i1THA=;
+	s=korg; t=1719309259;
+	bh=8hCp9aPceg4vCR62aB8eZx8THw+W1nx5ZFnrpYJvDhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AxxNN3kV1R6xdNf9rNKbkfwuJGr1FqMoTg+ff/MXBYrjHiv4OguuZDgCMaT5F/4NR
-	 uojcaK0+Wgl6qLztAK8RgWmB+S1p8FEIzZRsNwofWoa0BA025+u88owP1TAcXmPLGG
-	 YlZwQ4Qf6E3hjO+sbKN3ulq+IukQxMV/UUZMG+zA=
+	b=DMFZahB9r1ftXuxZiJflnsMshTL++4euybGO1GHryJ06gUlHg88rWga9GEmRotaaT
+	 eEtAynHYk8f/fjGzWB+RyDV3accQ6HYn8MB2YJkkj3yFqpjhWlJKOm6U5w3bCEey7F
+	 9IHOorfNOi71x4Y9r0eSDjlzhCicNe1pLfDkXdrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunlei He <heyunlei@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Tim Harvey <tharvey@gateworks.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/131] f2fs: remove clear SB_INLINECRYPT flag in default_options
-Date: Tue, 25 Jun 2024 11:33:09 +0200
-Message-ID: <20240625085527.248120075@linuxfoundation.org>
+Subject: [PATCH 6.6 118/192] arm64: dts: freescale: imx8mp-venice-gw73xx-2x: fix BT shutdown GPIO
+Date: Tue, 25 Jun 2024 11:33:10 +0200
+Message-ID: <20240625085541.701579833@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunlei He <heyunlei@oppo.com>
+From: Tim Harvey <tharvey@gateworks.com>
 
-[ Upstream commit ac5eecf481c29942eb9a862e758c0c8b68090c33 ]
+[ Upstream commit e1b4622efbe7ad09c9a902365a993f68c270c453 ]
 
-In f2fs_remount, SB_INLINECRYPT flag will be clear and re-set.
-If create new file or open file during this gap, these files
-will not use inlinecrypt. Worse case, it may lead to data
-corruption if wrappedkey_v0 is enable.
+Fix the invalid BT shutdown GPIO (gpio1_io3 not gpio4_io16)
 
-Thread A:                               Thread B:
-
--f2fs_remount				-f2fs_file_open or f2fs_new_inode
-  -default_options
-	<- clear SB_INLINECRYPT flag
-
-                                          -fscrypt_select_encryption_impl
-
-  -parse_options
-	<- set SB_INLINECRYPT again
-
-Signed-off-by: Yunlei He <heyunlei@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 716ced308234 ("arm64: dts: freescale: Add imx8mp-venice-gw73xx-2x")
+Signed-off-by: Tim Harvey <tharvey@gateworks.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index c529ce5d986cc..f496622921843 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2092,8 +2092,6 @@ static void default_options(struct f2fs_sb_info *sbi)
- 	F2FS_OPTION(sbi).bggc_mode = BGGC_MODE_ON;
- 	F2FS_OPTION(sbi).memory_mode = MEMORY_MODE_NORMAL;
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
+index 68c62def4c06e..d27bfba1b4b8c 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-venice-gw73xx.dtsi
+@@ -161,7 +161,7 @@
  
--	sbi->sb->s_flags &= ~SB_INLINECRYPT;
--
- 	set_opt(sbi, INLINE_XATTR);
- 	set_opt(sbi, INLINE_DATA);
- 	set_opt(sbi, INLINE_DENTRY);
+ 	bluetooth {
+ 		compatible = "brcm,bcm4330-bt";
+-		shutdown-gpios = <&gpio4 16 GPIO_ACTIVE_HIGH>;
++		shutdown-gpios = <&gpio1 3 GPIO_ACTIVE_HIGH>;
+ 	};
+ };
+ 
 -- 
 2.43.0
 
