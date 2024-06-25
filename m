@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091229162E6
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:40:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E01916389
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B94FD289EA0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:40:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B132B23362
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9F61494AF;
-	Tue, 25 Jun 2024 09:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F7F149E0B;
+	Tue, 25 Jun 2024 09:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HH7KHKJU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCJManLe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D56213D62A;
-	Tue, 25 Jun 2024 09:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80EC01465B7;
+	Tue, 25 Jun 2024 09:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308439; cv=none; b=CEaFWE5rI7WgjepzEtoWufb3/VQcK2Yqxh6I3lX6snhG2qLA+LpfFbP/2F9oxd+xS/j4h03HqXDzlE8a2Dea4nnzXRjKLaHJ3OthUHO35GpJ+SiCFMfB/zvbS+n/iGzceFPeYmMdgX5XnV9kGT0HlU/jzH4/UY3CbNwo2hs4A78=
+	t=1719308871; cv=none; b=sp9o26sB1562lXQe8GPrCeJcjqN0MfMNxt+0B6SrCM7Gsn1EzEBXjVHFzv7QynkOitSLNHm7gWWkr2kLzKOyvK6rSc1msUhIwk+9cwBzpFYmBBaz/9dpqH8+4ReTYKPJbC0VXTbx2aHiK9uWhrpyZ2devGHUwf9vjcO+CuG/gBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308439; c=relaxed/simple;
-	bh=skH/d2BvS3PfqgdaKARucvwugX5GiclunfvsWbwcDhg=;
+	s=arc-20240116; t=1719308871; c=relaxed/simple;
+	bh=sWfsXbumU5esEK2FrrH0mJKYdHGVSc+wk5xe+/EL+B4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZQyb7xGH5YAsvN/sBWHgayjAoY7+AfcqYdYZACtLJ0zuzhw5bCftCsGgM+8qkFSlm1s9VkjInS1uZmAqUJg5AnYs0QcQAjIncFGFCsxlqTRfwPCuA9iXDgpnI2YhMFqm8Q5M1IiG3YuWDglFzFmjAjnNRF/cIPe7e1jabPpCxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HH7KHKJU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E7EC32781;
-	Tue, 25 Jun 2024 09:40:38 +0000 (UTC)
+	 MIME-Version; b=X2KZzgLYSREstKsTGzhYx+ferz3XEnHmxf/wTwbArl+yQSyjR+wbezPAlEhO7DDrqATICsrh27lqigXIpxFeKpHWO5bETGFCu1jIHJ5VHHdt9NpNBgWNz33hHzoSlfPif3jfivY99/8AyTe/obSDljPGv9eiZZrwGxNX1F3Fi6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCJManLe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F48C32786;
+	Tue, 25 Jun 2024 09:47:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308439;
-	bh=skH/d2BvS3PfqgdaKARucvwugX5GiclunfvsWbwcDhg=;
+	s=korg; t=1719308871;
+	bh=sWfsXbumU5esEK2FrrH0mJKYdHGVSc+wk5xe+/EL+B4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HH7KHKJU0z+TDaMMKaKychBQex9gSGCjrdsAPnqWUV/fAZvv1IiyiBrdlB4MfS2w0
-	 2GQHpA8g7ATJN6Zxtbp4O7jASlWC9kzfgnMXKhrD+DtAiBfq8YEm9YGNT2dI8Iw56M
-	 rFkHzsh+qEEO+uO8yJGYkIVty+c5I7RgA95nm76w=
+	b=PCJManLetmq00HO7Lxc1FX3/3mzCCo7gRZahBmkUVkbeK0ywYiq0+3f5/LPlkDkvx
+	 N6THCdGmJWGE38/gy3NmgPZTJsr930qzISDFYZq0LN8MZPxlbs+tnvzUIzXM1Dpk27
+	 /UdcHAzgIs22dOjL8gdbRudhDR+ldhySIGF0DJno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 121/250] netns: Make get_net_ns() handle zero refcount net
-Date: Tue, 25 Jun 2024 11:31:19 +0200
-Message-ID: <20240625085552.712809499@linuxfoundation.org>
+Subject: [PATCH 6.6 008/192] rcutorture: Fix invalid context warning when enable srcu barrier testing
+Date: Tue, 25 Jun 2024 11:31:20 +0200
+Message-ID: <20240625085537.475621305@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit ff960f9d3edbe08a736b5a224d91a305ccc946b0 ]
+[ Upstream commit 668c0406d887467d53f8fe79261dda1d22d5b671 ]
 
-Syzkaller hit a warning:
-refcount_t: addition on 0; use-after-free.
-WARNING: CPU: 3 PID: 7890 at lib/refcount.c:25 refcount_warn_saturate+0xdf/0x1d0
-Modules linked in:
-CPU: 3 PID: 7890 Comm: tun Not tainted 6.10.0-rc3-00100-gcaa4f9578aba-dirty #310
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:refcount_warn_saturate+0xdf/0x1d0
-Code: 41 49 04 31 ff 89 de e8 9f 1e cd fe 84 db 75 9c e8 76 26 cd fe c6 05 b6 41 49 04 01 90 48 c7 c7 b8 8e 25 86 e8 d2 05 b5 fe 90 <0f> 0b 90 90 e9 79 ff ff ff e8 53 26 cd fe 0f b6 1
-RSP: 0018:ffff8881067b7da0 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff811c72ac
-RDX: ffff8881026a2140 RSI: ffffffff811c72b5 RDI: 0000000000000001
-RBP: ffff8881067b7db0 R08: 0000000000000000 R09: 205b5d3730353139
-R10: 0000000000000000 R11: 205d303938375420 R12: ffff8881086500c4
-R13: ffff8881086500c4 R14: ffff8881086500b0 R15: ffff888108650040
-FS:  00007f5b2961a4c0(0000) GS:ffff88823bd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055d7ed36fd18 CR3: 00000001482f6000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ? show_regs+0xa3/0xc0
- ? __warn+0xa5/0x1c0
- ? refcount_warn_saturate+0xdf/0x1d0
- ? report_bug+0x1fc/0x2d0
- ? refcount_warn_saturate+0xdf/0x1d0
- ? handle_bug+0xa1/0x110
- ? exc_invalid_op+0x3c/0xb0
- ? asm_exc_invalid_op+0x1f/0x30
- ? __warn_printk+0xcc/0x140
- ? __warn_printk+0xd5/0x140
- ? refcount_warn_saturate+0xdf/0x1d0
- get_net_ns+0xa4/0xc0
- ? __pfx_get_net_ns+0x10/0x10
- open_related_ns+0x5a/0x130
- __tun_chr_ioctl+0x1616/0x2370
- ? __sanitizer_cov_trace_switch+0x58/0xa0
- ? __sanitizer_cov_trace_const_cmp2+0x1c/0x30
- ? __pfx_tun_chr_ioctl+0x10/0x10
- tun_chr_ioctl+0x2f/0x40
- __x64_sys_ioctl+0x11b/0x160
- x64_sys_call+0x1211/0x20d0
- do_syscall_64+0x9e/0x1d0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f5b28f165d7
-Code: b3 66 90 48 8b 05 b1 48 2d 00 64 c7 00 26 00 00 00 48 c7 c0 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 81 48 2d 00 8
-RSP: 002b:00007ffc2b59c5e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f5b28f165d7
-RDX: 0000000000000000 RSI: 00000000000054e3 RDI: 0000000000000003
-RBP: 00007ffc2b59c650 R08: 00007f5b291ed8c0 R09: 00007f5b2961a4c0
-R10: 0000000029690010 R11: 0000000000000246 R12: 0000000000400730
-R13: 00007ffc2b59cf40 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-Kernel panic - not syncing: kernel: panic_on_warn set ...
+When the torture_type is set srcu or srcud and cb_barrier is
+non-zero, running the rcutorture test will trigger the
+following warning:
 
-This is trigger as below:
-          ns0                                    ns1
-tun_set_iff() //dev is tun0
-   tun->dev = dev
-//ip link set tun0 netns ns1
-                                       put_net() //ref is 0
-__tun_chr_ioctl() //TUNGETDEVNETNS
-   net = dev_net(tun->dev);
-   open_related_ns(&net->ns, get_net_ns); //ns1
-     get_net_ns()
-        get_net() //addition on 0
+[  163.910989][    C1] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+[  163.910994][    C1] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+[  163.910999][    C1] preempt_count: 10001, expected: 0
+[  163.911002][    C1] RCU nest depth: 0, expected: 0
+[  163.911005][    C1] INFO: lockdep is turned off.
+[  163.911007][    C1] irq event stamp: 30964
+[  163.911010][    C1] hardirqs last  enabled at (30963): [<ffffffffabc7df52>] do_idle+0x362/0x500
+[  163.911018][    C1] hardirqs last disabled at (30964): [<ffffffffae616eff>] sysvec_call_function_single+0xf/0xd0
+[  163.911025][    C1] softirqs last  enabled at (0): [<ffffffffabb6475f>] copy_process+0x16ff/0x6580
+[  163.911033][    C1] softirqs last disabled at (0): [<0000000000000000>] 0x0
+[  163.911038][    C1] Preemption disabled at:
+[  163.911039][    C1] [<ffffffffacf1964b>] stack_depot_save_flags+0x24b/0x6c0
+[  163.911063][    C1] CPU: 1 PID: 0 Comm: swapper/1 Tainted: G        W          6.8.0-rc4-rt4-yocto-preempt-rt+ #3 1e39aa9a737dd024a3275c4f835a872f673a7d3a
+[  163.911071][    C1] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+[  163.911075][    C1] Call Trace:
+[  163.911078][    C1]  <IRQ>
+[  163.911080][    C1]  dump_stack_lvl+0x88/0xd0
+[  163.911089][    C1]  dump_stack+0x10/0x20
+[  163.911095][    C1]  __might_resched+0x36f/0x530
+[  163.911105][    C1]  rt_spin_lock+0x82/0x1c0
+[  163.911112][    C1]  spin_lock_irqsave_ssp_contention+0xb8/0x100
+[  163.911121][    C1]  srcu_gp_start_if_needed+0x782/0xf00
+[  163.911128][    C1]  ? _raw_spin_unlock_irqrestore+0x46/0x70
+[  163.911136][    C1]  ? debug_object_active_state+0x336/0x470
+[  163.911148][    C1]  ? __pfx_srcu_gp_start_if_needed+0x10/0x10
+[  163.911156][    C1]  ? __pfx_lock_release+0x10/0x10
+[  163.911165][    C1]  ? __pfx_rcu_torture_barrier_cbf+0x10/0x10
+[  163.911188][    C1]  __call_srcu+0x9f/0xe0
+[  163.911196][    C1]  call_srcu+0x13/0x20
+[  163.911201][    C1]  srcu_torture_call+0x1b/0x30
+[  163.911224][    C1]  rcu_torture_barrier1cb+0x4a/0x60
+[  163.911247][    C1]  __flush_smp_call_function_queue+0x267/0xca0
+[  163.911256][    C1]  ? __pfx_rcu_torture_barrier1cb+0x10/0x10
+[  163.911281][    C1]  generic_smp_call_function_single_interrupt+0x13/0x20
+[  163.911288][    C1]  __sysvec_call_function_single+0x7d/0x280
+[  163.911295][    C1]  sysvec_call_function_single+0x93/0xd0
+[  163.911302][    C1]  </IRQ>
+[  163.911304][    C1]  <TASK>
+[  163.911308][    C1]  asm_sysvec_call_function_single+0x1b/0x20
+[  163.911313][    C1] RIP: 0010:default_idle+0x17/0x20
+[  163.911326][    C1] RSP: 0018:ffff888001997dc8 EFLAGS: 00000246
+[  163.911333][    C1] RAX: 0000000000000000 RBX: dffffc0000000000 RCX: ffffffffae618b51
+[  163.911337][    C1] RDX: 0000000000000000 RSI: ffffffffaea80920 RDI: ffffffffaec2de80
+[  163.911342][    C1] RBP: ffff888001997dc8 R08: 0000000000000001 R09: ffffed100d740cad
+[  163.911346][    C1] R10: ffffed100d740cac R11: ffff88806ba06563 R12: 0000000000000001
+[  163.911350][    C1] R13: ffffffffafe460c0 R14: ffffffffafe460c0 R15: 0000000000000000
+[  163.911358][    C1]  ? ct_kernel_exit.constprop.3+0x121/0x160
+[  163.911369][    C1]  ? lockdep_hardirqs_on+0xc4/0x150
+[  163.911376][    C1]  arch_cpu_idle+0x9/0x10
+[  163.911383][    C1]  default_idle_call+0x7a/0xb0
+[  163.911390][    C1]  do_idle+0x362/0x500
+[  163.911398][    C1]  ? __pfx_do_idle+0x10/0x10
+[  163.911404][    C1]  ? complete_with_flags+0x8b/0xb0
+[  163.911416][    C1]  cpu_startup_entry+0x58/0x70
+[  163.911423][    C1]  start_secondary+0x221/0x280
+[  163.911430][    C1]  ? __pfx_start_secondary+0x10/0x10
+[  163.911440][    C1]  secondary_startup_64_no_verify+0x17f/0x18b
+[  163.911455][    C1]  </TASK>
 
-Use maybe_get_net() in get_net_ns in case net's ref is zero to fix this
+This commit therefore use smp_call_on_cpu() instead of
+smp_call_function_single(), make rcu_torture_barrier1cb() invoked
+happens on task-context.
 
-Fixes: 0c3e0e3bb623 ("tun: Add ioctl() TUNGETDEVNETNS cmd to allow obtaining real net ns of tun device")
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Link: https://lore.kernel.org/r/20240614131302.2698509-1-yuehaibing@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/net_namespace.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ kernel/rcu/rcutorture.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 9d690d32da33a..b1dc84c4fda11 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -693,11 +693,16 @@ EXPORT_SYMBOL_GPL(__put_net);
-  * get_net_ns - increment the refcount of the network namespace
-  * @ns: common namespace (net)
-  *
-- * Returns the net's common namespace.
-+ * Returns the net's common namespace or ERR_PTR() if ref is zero.
-  */
- struct ns_common *get_net_ns(struct ns_common *ns)
- {
--	return &get_net(container_of(ns, struct net, ns))->ns;
-+	struct net *net;
-+
-+	net = maybe_get_net(container_of(ns, struct net, ns));
-+	if (net)
-+		return &net->ns;
-+	return ERR_PTR(-EINVAL);
+diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
+index 263457305d36a..781146600aa49 100644
+--- a/kernel/rcu/rcutorture.c
++++ b/kernel/rcu/rcutorture.c
+@@ -3013,11 +3013,12 @@ static void rcu_torture_barrier_cbf(struct rcu_head *rcu)
  }
- EXPORT_SYMBOL_GPL(get_net_ns);
  
+ /* IPI handler to get callback posted on desired CPU, if online. */
+-static void rcu_torture_barrier1cb(void *rcu_void)
++static int rcu_torture_barrier1cb(void *rcu_void)
+ {
+ 	struct rcu_head *rhp = rcu_void;
+ 
+ 	cur_ops->call(rhp, rcu_torture_barrier_cbf);
++	return 0;
+ }
+ 
+ /* kthread function to register callbacks used to test RCU barriers. */
+@@ -3043,11 +3044,9 @@ static int rcu_torture_barrier_cbs(void *arg)
+ 		 * The above smp_load_acquire() ensures barrier_phase load
+ 		 * is ordered before the following ->call().
+ 		 */
+-		if (smp_call_function_single(myid, rcu_torture_barrier1cb,
+-					     &rcu, 1)) {
+-			// IPI failed, so use direct call from current CPU.
++		if (smp_call_on_cpu(myid, rcu_torture_barrier1cb, &rcu, 1))
+ 			cur_ops->call(&rcu, rcu_torture_barrier_cbf);
+-		}
++
+ 		if (atomic_dec_and_test(&barrier_cbs_count))
+ 			wake_up(&barrier_wq);
+ 	} while (!torture_must_stop());
 -- 
 2.43.0
 
