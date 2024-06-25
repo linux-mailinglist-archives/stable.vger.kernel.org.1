@@ -1,279 +1,181 @@
-Return-Path: <stable+bounces-55746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8189D916594
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:54:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79EC791657C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8B55B22BB1
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:54:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 068E91F21B8C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:47:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF6914A4D9;
-	Tue, 25 Jun 2024 10:54:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2271474D0;
+	Tue, 25 Jun 2024 10:47:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from chinatelecom.cn (smtpnm6-10.21cn.com [182.42.147.92])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC2A14A4D4
-	for <stable@vger.kernel.org>; Tue, 25 Jun 2024 10:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=182.42.147.92
+Received: from albert.telenet-ops.be (albert.telenet-ops.be [195.130.137.90])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDA453370
+	for <stable@vger.kernel.org>; Tue, 25 Jun 2024 10:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.130.137.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719312855; cv=none; b=b505oy5Jlr7tbLoeSHj7TcF3FBHXtEniT8oCCzYRWEb30tCy5NhdoIdo2pHcR5lhjyLWpWarKldC6AILWNjFtW0JWL5GExEKNiWhF9okx0tM20nQtQyd1U6HJ4H8S8zSZz7IBo/YVinZCQrVT5FegHyUw3s6+ecnwkUiEBeepiY=
+	t=1719312422; cv=none; b=a42b+aWQANrUsvnQIenYP1SU3Ihs7Ki/rL1kKY4Hczkgzbi+tRF5+8RsHbL6XHpDVSz8iGk0tXRPEzNjqJphazxoBT1nKncZaHAH2yYFVdWlwe3yVN96947Fm198EArrBMsgmgIgxkG4u/uanl8Ey+IctQ9UGLpuVSL/HY2GRQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719312855; c=relaxed/simple;
-	bh=0W0oaac1lehuqW0BSrTGA9+rqskyCsLVZ4Rp+TjGceM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=r18cJ38c/xikMOC6Q6PPUOEhut5tedpbxsmOqZ9CtpjmS3GjeK06E83O6Bj4wM08hn/NFOnJso+4zvm+mhG2VMS/PjdrVUuJbnKnm3Bg0v5OJFsz5d1WimD6ZnUT9QVoblxH2cO0KzaHsjGq9TJY8xAkSQ82zVDf84deePpR3aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn; spf=pass smtp.mailfrom=chinatelecom.cn; arc=none smtp.client-ip=182.42.147.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=chinatelecom.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chinatelecom.cn
-HMM_SOURCE_IP:192.168.139.44:0.209578302
-HMM_ATTACHE_NUM:0000
-HMM_SOURCE_TYPE:SMTP
-Received: from clientip-27.148.194.72 (unknown [192.168.139.44])
-	by chinatelecom.cn (HERMES) with SMTP id 99E8FB01197B;
-	Tue, 25 Jun 2024 18:46:15 +0800 (CST)
-X-189-SAVE-TO-SEND: wujianguo@chinatelecom.cn
-Received: from  ([27.148.194.72])
-	by gateway-ssl-dep-67bdc54df-cz88j with ESMTP id 996471b79f0c4df6922bece6dea9543d for gregkh@linuxfoundation.org;
-	Tue, 25 Jun 2024 18:46:22 CST
-X-Transaction-ID: 996471b79f0c4df6922bece6dea9543d
-X-Real-From: wujianguo@chinatelecom.cn
-X-Receive-IP: 27.148.194.72
-X-MEDUSA-Status: 0
-Sender: wujianguo@chinatelecom.cn
-Message-ID: <740d9249-534a-477c-9740-1e4c3a099d51@chinatelecom.cn>
-Date: Tue, 25 Jun 2024 18:46:14 +0800
+	s=arc-20240116; t=1719312422; c=relaxed/simple;
+	bh=Gws9Yyiaiqmrq1E8aExJybewGObcu5HH/sCBZ3vRlmA=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=AjtpxQDcMRupQv5JahPmR341l4+nPHc+Z7RCjMzv2EweAIuv8Cec8BP3wsv3t22zMzNhGcg9xIvBK7cYo4CdfD6b7MZKSDjylNZRCaI9GOO+WlVpbPPBu1dWCFL/ALoyJN1qmJ6hj91+d7hCUrMDR88P7UNAXMRBmPPss9i2SYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; arc=none smtp.client-ip=195.130.137.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed80:4e71:737f:f905:c457])
+	by albert.telenet-ops.be with bizsmtp
+	id fmmo2C00F5EKelT06mmo3C; Tue, 25 Jun 2024 12:46:58 +0200
+Received: from geert (helo=localhost)
+	by ramsan.of.borg with local-esmtp (Exim 4.95)
+	(envelope-from <geert@linux-m68k.org>)
+	id 1sM3hI-000Kn6-Js;
+	Tue, 25 Jun 2024 12:46:48 +0200
+Date: Tue, 25 Jun 2024 12:46:48 +0200 (CEST)
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+To: Tony Ambardar <tony.ambardar@gmail.com>
+cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+    Daniel Borkmann <daniel@iogearbox.net>, 
+    Andrii Nakryiko <andrii@kernel.org>, 
+    Martin KaFai Lau <martin.lau@linux.dev>, 
+    Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+    Yonghong Song <yonghong.song@linux.dev>, 
+    John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
+    Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, 
+    Jiri Olsa <jolsa@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+    kernel test robot <lkp@intel.com>, stable@vger.kernel.org, 
+    Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf v2 2/2] bpf: Harden __bpf_kfunc tag against linker
+ kfunc removal
+In-Reply-To: <e9c64e9b5c073dabd457ff45128aabcab7630098.1717477560.git.Tony.Ambardar@gmail.com>
+Message-ID: <51bc27e-f073-f6f7-df63-f9bbf96e2024@linux-m68k.org>
+References: <cover.1717413886.git.Tony.Ambardar@gmail.com> <cover.1717477560.git.Tony.Ambardar@gmail.com> <e9c64e9b5c073dabd457ff45128aabcab7630098.1717477560.git.Tony.Ambardar@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Ctyun AOneMail
-Subject: Re: [PATCH 6.6 100/192] netfilter: move the sysctl nf_hooks_lwtunnel
- into the netfilter core
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
- Sasha Levin <sashal@kernel.org>
-References: <20240625085537.150087723@linuxfoundation.org>
- <2935400.2255.1719311647175.JavaMail.root@jt-retransmission-dep-5ccd6997dd-985ss>
-From: wujianguo <wujianguo@chinatelecom.cn>
-In-Reply-To: <2935400.2255.1719311647175.JavaMail.root@jt-retransmission-dep-5ccd6997dd-985ss>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323329-1492989470-1719312408=:79904"
 
-Hi Greg,
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--8323329-1492989470-1719312408=:79904
+Content-Type: text/plain; charset=ISO-8859-7; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-This commit causes a compilation error when CONFIG_SYSFS is not enabled 
-in config
+ 	Hi Tony,
 
-I have sent a fix patch: https://lkml.org/lkml/2024/6/21/123
+On Mon, 3 Jun 2024, Tony Ambardar wrote:
+> BPF kfuncs are often not directly referenced and may be inadvertently
+> removed by optimization steps during kernel builds, thus the __bpf_kfunc
+> tag mitigates against this removal by including the __used macro. However,
+> this macro alone does not prevent removal during linking, and may still
+> yield build warnings (e.g. on mips64el):
+>
+>    LD      vmlinux
+>    BTFIDS  vmlinux
+>  WARN: resolve_btfids: unresolved symbol bpf_verify_pkcs7_signature
+>  WARN: resolve_btfids: unresolved symbol bpf_lookup_user_key
+>  WARN: resolve_btfids: unresolved symbol bpf_lookup_system_key
+>  WARN: resolve_btfids: unresolved symbol bpf_key_put
+>  WARN: resolve_btfids: unresolved symbol bpf_iter_task_next
+>  WARN: resolve_btfids: unresolved symbol bpf_iter_css_task_new
+>  WARN: resolve_btfids: unresolved symbol bpf_get_file_xattr
+>  WARN: resolve_btfids: unresolved symbol bpf_ct_insert_entry
+>  WARN: resolve_btfids: unresolved symbol bpf_cgroup_release
+>  WARN: resolve_btfids: unresolved symbol bpf_cgroup_from_id
+>  WARN: resolve_btfids: unresolved symbol bpf_cgroup_acquire
+>  WARN: resolve_btfids: unresolved symbol bpf_arena_free_pages
+>    NM      System.map
+>    SORTTAB vmlinux
+>    OBJCOPY vmlinux.32
+>
+> Update the __bpf_kfunc tag to better guard against linker optimization by
+> including the new __retain compiler macro, which fixes the warnings above.
+>
+> Verify the __retain macro with readelf by checking object flags for 'R':
+>
+>  $ readelf -Wa kernel/trace/bpf_trace.o
+>  Section Headers:
+>    [Nr]  Name              Type     Address  Off  Size ES Flg Lk Inf Al
+>  ...
+>    [178] .text.bpf_key_put PROGBITS 00000000 6420 0050 00 AXR  0   0  8
+>  ...
+>  Key to Flags:
+>  ...
+>    R (retain), D (mbind), p (processor specific)
+>
+> Link: https://lore.kernel.org/bpf/ZlmGoT9KiYLZd91S@krava/T/
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/r/202401211357.OCX9yllM-lkp@intel.com/
+> Fixes: 57e7c169cd6a ("bpf: Add __bpf_kfunc tag for marking kernel functions as kfuncs")
+> Cc: stable@vger.kernel.org # v6.6+
+> Signed-off-by: Tony Ambardar <Tony.Ambardar@gmail.com>
 
+Thanks for your patch, which is now commit 7bdcedd5c8fb88e7
+("bpf: Harden __bpf_kfunc tag against linker kfunc removal") in
+v6.10-rc5.
 
+This is causing build failures on ARM with
+CONFIG_LD_DEAD_CODE_DATA_ELIMINATION=y:
 
-åœ¨ 2024/6/25 17:32, Greg Kroah-Hartman å†™é“:
-> 6.6-stable review patch.  If anyone has any objections, please let me know.
+     net/core/filter.c:11859:1: error: ¡retain¢ attribute ignored [-Werror=attributes]
+     11859 | {
+           | ^
+     net/core/filter.c:11872:1: error: ¡retain¢ attribute ignored [-Werror=attributes]
+     11872 | {
+           | ^
+     net/core/filter.c:11885:1: error: ¡retain¢ attribute ignored [-Werror=attributes]
+     11885 | {
+           | ^
+     net/core/filter.c:11906:1: error: ¡retain¢ attribute ignored [-Werror=attributes]
+     11906 | {
+           | ^
+     net/core/filter.c:12092:1: error: ¡retain¢ attribute ignored [-Werror=attributes]
+     12092 | {
+           | ^
+     net/core/xdp.c:713:1: error: ¡retain¢ attribute ignored [-Werror=attributes]
+       713 | {
+           | ^
+     net/core/xdp.c:736:1: error: ¡retain¢ attribute ignored [-Werror=attributes]
+       736 | {
+           | ^
+     net/core/xdp.c:769:1: error: ¡retain¢ attribute ignored [-Werror=attributes]
+       769 | {
+           | ^
+     [...]
+
+My compiler is arm-linux-gnueabihf-gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04).
+
+> --- a/include/linux/btf.h
+> +++ b/include/linux/btf.h
+> @@ -82,7 +82,7 @@
+>  * as to avoid issues such as the compiler inlining or eliding either a static
+>  * kfunc, or a global kfunc in an LTO build.
+>  */
+> -#define __bpf_kfunc __used noinline
+> +#define __bpf_kfunc __used __retain noinline
 >
-> ------------------
->
-> From: Jianguo Wu <wujianguo@chinatelecom.cn>
->
-> [ Upstream commit a2225e0250c5fa397dcebf6ce65a9f05a114e0cf ]
->
-> Currently, the sysctl net.netfilter.nf_hooks_lwtunnel depends on the
-> nf_conntrack module, but the nf_conntrack module is not always loaded.
-> Therefore, accessing net.netfilter.nf_hooks_lwtunnel may have an error.
->
-> Move sysctl nf_hooks_lwtunnel into the netfilter core.
->
-> Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane")
-> Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> Signed-off-by: Jianguo Wu <wujianguo@chinatelecom.cn>
-> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->   include/net/netns/netfilter.h           |    3 +
->   net/netfilter/core.c                    |   13 +++++-
->   net/netfilter/nf_conntrack_standalone.c |   15 -------
->   net/netfilter/nf_hooks_lwtunnel.c       |   67 ++++++++++++++++++++++++++++++++
->   net/netfilter/nf_internals.h            |    6 ++
->   5 files changed, 87 insertions(+), 17 deletions(-)
->
-> --- a/include/net/netns/netfilter.h
-> +++ b/include/net/netns/netfilter.h
-> @@ -15,6 +15,9 @@ struct netns_nf {
->   	const struct nf_logger __rcu *nf_loggers[NFPROTO_NUMPROTO];
->   #ifdef CONFIG_SYSCTL
->   	struct ctl_table_header *nf_log_dir_header;
-> +#ifdef CONFIG_LWTUNNEL
-> +	struct ctl_table_header *nf_lwtnl_dir_header;
-> +#endif
->   #endif
->   	struct nf_hook_entries __rcu *hooks_ipv4[NF_INET_NUMHOOKS];
->   	struct nf_hook_entries __rcu *hooks_ipv6[NF_INET_NUMHOOKS];
-> --- a/net/netfilter/core.c
-> +++ b/net/netfilter/core.c
-> @@ -815,12 +815,21 @@ int __init netfilter_init(void)
->   	if (ret < 0)
->   		goto err;
->   
-> +#ifdef CONFIG_LWTUNNEL
-> +	ret = netfilter_lwtunnel_init();
-> +	if (ret < 0)
-> +		goto err_lwtunnel_pernet;
-> +#endif
->   	ret = netfilter_log_init();
->   	if (ret < 0)
-> -		goto err_pernet;
-> +		goto err_log_pernet;
->   
->   	return 0;
-> -err_pernet:
-> +err_log_pernet:
-> +#ifdef CONFIG_LWTUNNEL
-> +	netfilter_lwtunnel_fini();
-> +err_lwtunnel_pernet:
-> +#endif
->   	unregister_pernet_subsys(&netfilter_net_ops);
->   err:
->   	return ret;
-> --- a/net/netfilter/nf_conntrack_standalone.c
-> +++ b/net/netfilter/nf_conntrack_standalone.c
-> @@ -22,9 +22,6 @@
->   #include <net/netfilter/nf_conntrack_acct.h>
->   #include <net/netfilter/nf_conntrack_zones.h>
->   #include <net/netfilter/nf_conntrack_timestamp.h>
-> -#ifdef CONFIG_LWTUNNEL
-> -#include <net/netfilter/nf_hooks_lwtunnel.h>
-> -#endif
->   #include <linux/rculist_nulls.h>
->   
->   static bool enable_hooks __read_mostly;
-> @@ -612,9 +609,6 @@ enum nf_ct_sysctl_index {
->   	NF_SYSCTL_CT_PROTO_TIMEOUT_GRE,
->   	NF_SYSCTL_CT_PROTO_TIMEOUT_GRE_STREAM,
->   #endif
-> -#ifdef CONFIG_LWTUNNEL
-> -	NF_SYSCTL_CT_LWTUNNEL,
-> -#endif
->   
->   	__NF_SYSCTL_CT_LAST_SYSCTL,
->   };
-> @@ -948,15 +942,6 @@ static struct ctl_table nf_ct_sysctl_tab
->   		.proc_handler   = proc_dointvec_jiffies,
->   	},
->   #endif
-> -#ifdef CONFIG_LWTUNNEL
-> -	[NF_SYSCTL_CT_LWTUNNEL] = {
-> -		.procname	= "nf_hooks_lwtunnel",
-> -		.data		= NULL,
-> -		.maxlen		= sizeof(int),
-> -		.mode		= 0644,
-> -		.proc_handler	= nf_hooks_lwtunnel_sysctl_handler,
-> -	},
-> -#endif
->   	{}
->   };
->   
-> --- a/net/netfilter/nf_hooks_lwtunnel.c
-> +++ b/net/netfilter/nf_hooks_lwtunnel.c
-> @@ -3,6 +3,9 @@
->   #include <linux/sysctl.h>
->   #include <net/lwtunnel.h>
->   #include <net/netfilter/nf_hooks_lwtunnel.h>
-> +#include <linux/netfilter.h>
-> +
-> +#include "nf_internals.h"
->   
->   static inline int nf_hooks_lwtunnel_get(void)
->   {
-> @@ -50,4 +53,68 @@ int nf_hooks_lwtunnel_sysctl_handler(str
->   	return ret;
->   }
->   EXPORT_SYMBOL_GPL(nf_hooks_lwtunnel_sysctl_handler);
-> +
-> +static struct ctl_table nf_lwtunnel_sysctl_table[] = {
-> +	{
-> +		.procname	= "nf_hooks_lwtunnel",
-> +		.data		= NULL,
-> +		.maxlen		= sizeof(int),
-> +		.mode		= 0644,
-> +		.proc_handler	= nf_hooks_lwtunnel_sysctl_handler,
-> +	},
-> +};
-> +
-> +static int __net_init nf_lwtunnel_net_init(struct net *net)
-> +{
-> +	struct ctl_table_header *hdr;
-> +	struct ctl_table *table;
-> +
-> +	table = nf_lwtunnel_sysctl_table;
-> +	if (!net_eq(net, &init_net)) {
-> +		table = kmemdup(nf_lwtunnel_sysctl_table,
-> +				sizeof(nf_lwtunnel_sysctl_table),
-> +				GFP_KERNEL);
-> +		if (!table)
-> +			goto err_alloc;
-> +	}
-> +
-> +	hdr = register_net_sysctl_sz(net, "net/netfilter", table,
-> +				     ARRAY_SIZE(nf_lwtunnel_sysctl_table));
-> +	if (!hdr)
-> +		goto err_reg;
-> +
-> +	net->nf.nf_lwtnl_dir_header = hdr;
-> +
-> +	return 0;
-> +err_reg:
-> +	if (!net_eq(net, &init_net))
-> +		kfree(table);
-> +err_alloc:
-> +	return -ENOMEM;
-> +}
-> +
-> +static void __net_exit nf_lwtunnel_net_exit(struct net *net)
-> +{
-> +	const struct ctl_table *table;
-> +
-> +	table = net->nf.nf_lwtnl_dir_header->ctl_table_arg;
-> +	unregister_net_sysctl_table(net->nf.nf_lwtnl_dir_header);
-> +	if (!net_eq(net, &init_net))
-> +		kfree(table);
-> +}
-> +
-> +static struct pernet_operations nf_lwtunnel_net_ops = {
-> +	.init = nf_lwtunnel_net_init,
-> +	.exit = nf_lwtunnel_net_exit,
-> +};
-> +
-> +int __init netfilter_lwtunnel_init(void)
-> +{
-> +	return register_pernet_subsys(&nf_lwtunnel_net_ops);
-> +}
-> +
-> +void netfilter_lwtunnel_fini(void)
-> +{
-> +	unregister_pernet_subsys(&nf_lwtunnel_net_ops);
-> +}
->   #endif /* CONFIG_SYSCTL */
-> --- a/net/netfilter/nf_internals.h
-> +++ b/net/netfilter/nf_internals.h
-> @@ -29,6 +29,12 @@ void nf_queue_nf_hook_drop(struct net *n
->   /* nf_log.c */
->   int __init netfilter_log_init(void);
->   
-> +#ifdef CONFIG_LWTUNNEL
-> +/* nf_hooks_lwtunnel.c */
-> +int __init netfilter_lwtunnel_init(void);
-> +void netfilter_lwtunnel_fini(void);
-> +#endif
-> +
->   /* core.c */
->   void nf_hook_entries_delete_raw(struct nf_hook_entries __rcu **pp,
->   				const struct nf_hook_ops *reg);
->
->
->
+> #define __bpf_kfunc_start_defs()					       \
+> 	__diag_push();							       \
+
+Gr{oetje,eeting}s,
+
+ 						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+ 							    -- Linus Torvalds
+--8323329-1492989470-1719312408=:79904--
 
