@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-55354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93B791633A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0FF5916402
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D8E1F228ED
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C4D02839D9
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF12148FE5;
-	Tue, 25 Jun 2024 09:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36DD1494AF;
+	Tue, 25 Jun 2024 09:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cqe/78Qt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+4ZOEcm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91BA12EBEA;
-	Tue, 25 Jun 2024 09:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E7524B34;
+	Tue, 25 Jun 2024 09:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308656; cv=none; b=Zi8Q091KwkTEjzYcudNKO0nSKJIm+pfWdybCJpvYAafCDxOkAjErhVwJix8nF3n1Pz5bwwTqxBl8Mbv4XBfp5E3QUKHjAeM9SEybWxQYYOdAuAqUAHyMfmNY/bOuDqaD/GD6TYscUF8PQMBF5IrNE23xw6mE6oiwCW/dIg0unLo=
+	t=1719309174; cv=none; b=VfC2JQWY4KqPZ6Pa7Qy3M9ixkaR7C8f4jio8/Qmq/Ox5HJUag6BpNxHmyps1b1Hw6osc0+bZlg7gEkTFkZXMwL3aoVXVAAHYXQLE7H7z03u9sSzrH7MJ9vvbBldxBxy/tWBCoFVt35gwqk+toucguiBWI7GrZLos0EgBtj1Q/aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308656; c=relaxed/simple;
-	bh=yTDcSwPt57i3EWBIFK7lLXD+0yRLePm7L0nTwiUdUTU=;
+	s=arc-20240116; t=1719309174; c=relaxed/simple;
+	bh=SeVKh9Xx9qI/86dH5+G7gBCQrYwqFCoV3Xy0Z5uymVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qnUPqkprb0dV9tamKM+P8y3yrIwVHCWU5ETmP4fDuB5D7AyYZiVt5rrzz4qtkG8a8B96OCoc3jVVD5nGmNiFVncmEI/apeEyLjN8v5nY4nyHZcgnLFlIbE85r0I/2EbhfP3ufiLNRhnWYY9hw6GEE7w7aqwwcVPbBNiUUGsP24w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cqe/78Qt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27908C32781;
-	Tue, 25 Jun 2024 09:44:15 +0000 (UTC)
+	 MIME-Version; b=ZJgpif2PERT1q3GzQ54IZHKaIDut2jYrh3P9oJHf8T458AGsFJB5v7NzcbKzLaN3zCDfGrdxMir6QpJj7D+Cs2MhnOb3f7sNdEPHN/OtD20N7gCj/RaM6bu1znUDl/bsdH+UUuAlEC/R0pd0gixh/tmwRwzDSN+sYVQxLp1YJQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+4ZOEcm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A14C32781;
+	Tue, 25 Jun 2024 09:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308656;
-	bh=yTDcSwPt57i3EWBIFK7lLXD+0yRLePm7L0nTwiUdUTU=;
+	s=korg; t=1719309174;
+	bh=SeVKh9Xx9qI/86dH5+G7gBCQrYwqFCoV3Xy0Z5uymVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cqe/78QtyWJwTka1bSznLLigA6NEB4JTvNNUvDCyW1n0S7JjzoE4UWq9v689e+7eK
-	 titfmIvpCJ1vcjCrrTJ6eThwJCj94WD68jryCGNp62g0xbkrs3VnvE16AW1aBPej/5
-	 hhOMLSYy86pApIC+T+AgTVCh5WlpBu+9EAxJxYPs=
+	b=q+4ZOEcm9AQFXFuK5wXV0cQBfyOVWhI/hkETwE1Wt+UapGTZFq3Pb5By7V6Uxbq3c
+	 zNUz+Q586gRqTpofWHU10U7U1uu4VDPvmuzqCDDT8s40fWkyWhom7e2/dwPafa2jPy
+	 jSDD03jJ7iXEZ6hYW8qNfphX+fyQOtRySsellKqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Honggang LI <honggangli@163.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Li Zhijian <lizhijian@fujitsu.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.9 194/250] RDMA/rxe: Fix data copy for IB_SEND_INLINE
+	Eric Dumazet <edumazet@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 080/192] ipv6: prevent possible NULL dereference in rt6_probe()
 Date: Tue, 25 Jun 2024 11:32:32 +0200
-Message-ID: <20240625085555.496862687@linuxfoundation.org>
+Message-ID: <20240625085540.246457034@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,44 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Honggang LI <honggangli@163.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 03fa18a992d5626fd7bf3557a52e826bf8b326b3 upstream.
+[ Upstream commit b86762dbe19a62e785c189f313cda5b989931f37 ]
 
-For RDMA Send and Write with IB_SEND_INLINE, the memory buffers
-specified in sge list will be placed inline in the Send Request.
+syzbot caught a NULL dereference in rt6_probe() [1]
 
-The data should be copied by CPU from the virtual addresses of
-corresponding sge list DMA addresses.
+Bail out if  __in6_dev_get() returns NULL.
 
-Cc: stable@kernel.org
-Fixes: 8d7c7c0eeb74 ("RDMA: Add ib_virt_dma_to_page()")
-Signed-off-by: Honggang LI <honggangli@163.com>
-Link: https://lore.kernel.org/r/20240516095052.542767-1-honggangli@163.com
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1]
+Oops: general protection fault, probably for non-canonical address 0xdffffc00000000cb: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000658-0x000000000000065f]
+CPU: 1 PID: 22444 Comm: syz-executor.0 Not tainted 6.10.0-rc2-syzkaller-00383-gb8481381d4e2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+ RIP: 0010:rt6_probe net/ipv6/route.c:656 [inline]
+ RIP: 0010:find_match+0x8c4/0xf50 net/ipv6/route.c:758
+Code: 14 fd f7 48 8b 85 38 ff ff ff 48 c7 45 b0 00 00 00 00 48 8d b8 5c 06 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 19
+RSP: 0018:ffffc900034af070 EFLAGS: 00010203
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffc90004521000
+RDX: 00000000000000cb RSI: ffffffff8990d0cd RDI: 000000000000065c
+RBP: ffffc900034af150 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000002 R12: 000000000000000a
+R13: 1ffff92000695e18 R14: ffff8880244a1d20 R15: 0000000000000000
+FS:  00007f4844a5a6c0(0000) GS:ffff8880b9300000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b31b27000 CR3: 000000002d42c000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  rt6_nh_find_match+0xfa/0x1a0 net/ipv6/route.c:784
+  nexthop_for_each_fib6_nh+0x26d/0x4a0 net/ipv4/nexthop.c:1496
+  __find_rr_leaf+0x6e7/0xe00 net/ipv6/route.c:825
+  find_rr_leaf net/ipv6/route.c:853 [inline]
+  rt6_select net/ipv6/route.c:897 [inline]
+  fib6_table_lookup+0x57e/0xa30 net/ipv6/route.c:2195
+  ip6_pol_route+0x1cd/0x1150 net/ipv6/route.c:2231
+  pol_lookup_func include/net/ip6_fib.h:616 [inline]
+  fib6_rule_lookup+0x386/0x720 net/ipv6/fib6_rules.c:121
+  ip6_route_output_flags_noref net/ipv6/route.c:2639 [inline]
+  ip6_route_output_flags+0x1d0/0x640 net/ipv6/route.c:2651
+  ip6_dst_lookup_tail.constprop.0+0x961/0x1760 net/ipv6/ip6_output.c:1147
+  ip6_dst_lookup_flow+0x99/0x1d0 net/ipv6/ip6_output.c:1250
+  rawv6_sendmsg+0xdab/0x4340 net/ipv6/raw.c:898
+  inet_sendmsg+0x119/0x140 net/ipv4/af_inet.c:853
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg net/socket.c:745 [inline]
+  sock_write_iter+0x4b8/0x5c0 net/socket.c:1160
+  new_sync_write fs/read_write.c:497 [inline]
+  vfs_write+0x6b6/0x1140 fs/read_write.c:590
+  ksys_write+0x1f8/0x260 fs/read_write.c:643
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 52e1635631b3 ("[IPV6]: ROUTE: Add router_probe_interval sysctl.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240615151454.166404-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_verbs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/route.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/infiniband/sw/rxe/rxe_verbs.c
-+++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
-@@ -812,7 +812,7 @@ static void copy_inline_data_to_wqe(stru
- 	int i;
- 
- 	for (i = 0; i < ibwr->num_sge; i++, sge++) {
--		memcpy(p, ib_virt_dma_to_page(sge->addr), sge->length);
-+		memcpy(p, ib_virt_dma_to_ptr(sge->addr), sge->length);
- 		p += sge->length;
- 	}
- }
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index e40d05caf9550..eb3afaee62e8f 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -638,6 +638,8 @@ static void rt6_probe(struct fib6_nh *fib6_nh)
+ 	rcu_read_lock();
+ 	last_probe = READ_ONCE(fib6_nh->last_probe);
+ 	idev = __in6_dev_get(dev);
++	if (!idev)
++		goto out;
+ 	neigh = __ipv6_neigh_lookup_noref(dev, nh_gw);
+ 	if (neigh) {
+ 		if (READ_ONCE(neigh->nud_state) & NUD_VALID)
+-- 
+2.43.0
+
 
 
 
