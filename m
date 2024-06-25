@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6D2916443
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B11BD9164C1
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08EE41C22200
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B0B8288759
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07CD14A0B8;
-	Tue, 25 Jun 2024 09:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B0C1494A8;
+	Tue, 25 Jun 2024 10:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cr9Fp4AL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqnu9HDV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804BB14AD19;
-	Tue, 25 Jun 2024 09:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F92613C90B;
+	Tue, 25 Jun 2024 10:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309320; cv=none; b=gX5va7ZdKUdDDCXhGd/aKTQtgOcV89qyDhD8H+3impmP1iYnXGxHhIxH8ufUwcBb/QlGJFzKxMjFe/yAKmXdme0xZL3JEAD8GDcOZSeBF50wkJisA5Pmh+2mLYPwVNN/k9lOsSS37ys1JTfIyhkVmbF9uNyQcTB4fh+WtA4wkto=
+	t=1719309647; cv=none; b=j3lzrC9o7ynEB2Kz+X3g1g475FR2UJjuLru3psFPWHA0YHLEry7dK7ewiEQaAfU69TmXVuiRIbo/4KEcVQWr2NFoPEYXJdhoyb+uT6HkAjVTIE+BLY7Q8sMlk+jszIAeqpBUvrBD8BlrYH2n+M7pWTnAKjn7ICw9O74onxn/zDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309320; c=relaxed/simple;
-	bh=8t97LCSXwaFCtac8YxeD/K9/NvJJTPnywXZ5ak/IVr0=;
+	s=arc-20240116; t=1719309647; c=relaxed/simple;
+	bh=vsativoUauqQ+CXFMFfeLJSK1VKiKefrmN3tPBQQgg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pL5BhIOLcqUDQumDT+b00Mi+Vas4tAQ/tv+Y/xo0h9TChjZ9ZNIw9RWvCvHvzqac6CzhI3yU+OOQUo/AhPQRVG9z/MfVLTs0ptjF2hco2lgzNxIbFa3T1o8ATmrt/ICY4Kb7atnrQjEg1Lc/RLUN8kPaDAP6izF5KsqeJLv+uHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cr9Fp4AL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A7BC32789;
-	Tue, 25 Jun 2024 09:55:19 +0000 (UTC)
+	 MIME-Version; b=sEFZrS3uK2XPeU57Q7Nztf1UY8sNC2SWvBz+4yDmWZcps3lg/qSdOLA1CHu02Otxam7sq5tapxC2ly1ILWqzby5mmp/wr6zO7bftYDCgTyRJyqcoQlJAIEtlMkk8krStz/c417vrlIoBmNFkfdD5PrpCX8xSmuVensoaRQKPib0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqnu9HDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07146C32781;
+	Tue, 25 Jun 2024 10:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309320;
-	bh=8t97LCSXwaFCtac8YxeD/K9/NvJJTPnywXZ5ak/IVr0=;
+	s=korg; t=1719309647;
+	bh=vsativoUauqQ+CXFMFfeLJSK1VKiKefrmN3tPBQQgg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cr9Fp4ALH71xUUk7TOQNasFi9tHQ51l5JQp2/omat1XdGewL0QnxOAAMn3FZnfTy7
-	 Rc++S4mNiuk7wicnVasI+VeijhaQLZgrWK4lvt89zYbAVrRjCO885Jgu0b4SLDSNSz
-	 +KWN84OGIxs3k0Z3Jq7L9mg5QsClCAgutvUOCMMQ=
+	b=kqnu9HDVYe7g0czU0C3Q4gdhyjwaIDgn5zPdLmURYXAzBd8Jl0BUVmRJI5usfoY+B
+	 hl5R2hd8g7ZOVzc+A4QL0/J2BUmbchlzUgSIIasM7cDKg1stWowHtiG0axUC/hp4aY
+	 Kgj/q/F0ax3u6CBw7Qr9s1H3FXZTYS+vkXzkhxCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.6 169/192] arm64: dts: imx8qm-mek: fix gpio number for reg_usdhc2_vmmc
+	Kalle Niemi <kaleposti@gmail.com>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 086/131] regulator: bd71815: fix ramp values
 Date: Tue, 25 Jun 2024 11:34:01 +0200
-Message-ID: <20240625085543.647702434@linuxfoundation.org>
+Message-ID: <20240625085529.208264846@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Kalle Niemi <kaleposti@gmail.com>
 
-commit dfd239a039b3581ca25f932e66b6e2c2bf77c798 upstream.
+[ Upstream commit 4cac29b846f38d5f0654cdfff5c5bfc37305081c ]
 
-The gpio in "reg_usdhc2_vmmc" should be 7 instead of 19.
+Ramp values are inverted. This caused wrong values written to register
+when ramp values were defined in device tree.
 
-Cc: stable@vger.kernel.org
-Fixes: 307fd14d4b14 ("arm64: dts: imx: add imx8qm mek support")
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Invert values in table to fix this.
+
+Signed-off-by: Kalle Niemi <kaleposti@gmail.com>
+Fixes: 1aad39001e85 ("regulator: Support ROHM BD71815 regulators")
+Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://lore.kernel.org/r/ZmmJXtuVJU6RgQAH@latitude5580
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8qm-mek.dts |    2 +-
+ drivers/regulator/bd71815-regulator.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-@@ -36,7 +36,7 @@
- 		regulator-name = "SD1_SPWR";
- 		regulator-min-microvolt = <3000000>;
- 		regulator-max-microvolt = <3000000>;
--		gpio = <&lsio_gpio4 19 GPIO_ACTIVE_HIGH>;
-+		gpio = <&lsio_gpio4 7 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
- 	};
- };
+diff --git a/drivers/regulator/bd71815-regulator.c b/drivers/regulator/bd71815-regulator.c
+index c2b8b8be78242..4696255fca5d7 100644
+--- a/drivers/regulator/bd71815-regulator.c
++++ b/drivers/regulator/bd71815-regulator.c
+@@ -257,7 +257,7 @@ static int buck12_set_hw_dvs_levels(struct device_node *np,
+  * 10: 2.50mV/usec	10mV 4uS
+  * 11: 1.25mV/usec	10mV 8uS
+  */
+-static const unsigned int bd7181x_ramp_table[] = { 1250, 2500, 5000, 10000 };
++static const unsigned int bd7181x_ramp_table[] = { 10000, 5000, 2500, 1250 };
+ 
+ static int bd7181x_led_set_current_limit(struct regulator_dev *rdev,
+ 					int min_uA, int max_uA)
+-- 
+2.43.0
+
 
 
 
