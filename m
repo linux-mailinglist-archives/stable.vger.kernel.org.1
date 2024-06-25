@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-55673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01E639164AD
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B01916379
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3158B1C21191
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 456921C20D9F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E4B149C4F;
-	Tue, 25 Jun 2024 10:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DEA1487E9;
+	Tue, 25 Jun 2024 09:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D5m688ON"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nq0QR98Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568631465A8;
-	Tue, 25 Jun 2024 10:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629771465A8;
+	Tue, 25 Jun 2024 09:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309600; cv=none; b=Yc821UvHA6TKu2Z/ew5jzPkBNYNbcerwI+FGneagIdRcBBqYKMzXlhOfhos5kfLfx3K+K8NaVc62l9h84MX39ATpgwjATq/4nvGsTSqMbgk9S1f4vN2dhvnEHVBk97HvShQGc6+OjW3JNOMLRD8hlyJjocRr+oVDrdgTANQ/jM4=
+	t=1719308836; cv=none; b=aaShlK7Uqx9iOWGMgJFRogCy/u8Z287QLENHWQ4x7tQDDIYDc8kiPIht8KyD8LDTSz4GucnfHxNtp+Sl6Bf49ElNF3T2CzXGgXrNK9QS46kWg6UvPifKG9TdpvGW+KN6opO3PV45LDLaYOOUD67aMic1gSCv6goqhciOd9p2NyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309600; c=relaxed/simple;
-	bh=hj5enNyEXW4yITV+EAJJ6VhtuluvEEGcQI5IihlG8hQ=;
+	s=arc-20240116; t=1719308836; c=relaxed/simple;
+	bh=kBohpD91IW0VPhIigxSuoVDTsBOGQeOOwto+WpoNKoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ceC0LRExIChESVuWjWrH2lRBsHQShDhsQFijcROO+Ec6ntgxgKoaSePUKnTuDLdBlAllJxR6MzMMaVatuimCFxpLJoQl8tsZGW26wcWDkgmiIHrRkj4SnYIPsXUGUDHxRkaSBTm82LFysjOhKwke6ODhfbXcawoIJAiEXoXzewM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D5m688ON; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5462C32781;
-	Tue, 25 Jun 2024 09:59:59 +0000 (UTC)
+	 MIME-Version; b=dKBcujy1zWT5bca6XopDfR4TOr0Zf3kvHDC35rpoDcNSUP+kVO6o8p21SoY5r5dg0yhrqOZQ0zd1hXwmyLeUZWDb9YLSBAGnxgyV43QRzAxLKr2TXitiMCIumPfB7CrHWwgcZjWVL7zmIU1Avl4+sjrTNiirVUKLVfuXbqicW3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nq0QR98Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B6BC32789;
+	Tue, 25 Jun 2024 09:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309600;
-	bh=hj5enNyEXW4yITV+EAJJ6VhtuluvEEGcQI5IihlG8hQ=;
+	s=korg; t=1719308836;
+	bh=kBohpD91IW0VPhIigxSuoVDTsBOGQeOOwto+WpoNKoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D5m688ON8vQpYn1mnA9t64vcxe6ul2t12wsZZ2Wx/SEcFEzmrHejPmrtvQjYn6D7y
-	 NzNxKr1oz47i/7c+0+rDr+ke4XMiix/LRNGAuBSErRnGvRVGBHJBmYrGoxarj3HDgz
-	 WZ0NgN9q+5j+l2pr/RzMnfDvMGAOqVkBcY5umoQQ=
+	b=Nq0QR98QdsN9q07qD4XZTQtWku1NW5OhOxHXFNX+LvANbQJtxB7kTB6wzzgD3k5LM
+	 DG4vkdHAofSSj9zILN2Ys91MpuRb9aK8iE+Ud/jxERq0CJdNGywDC4fcxtx2n5qUbx
+	 gP7Ov40t7H1YpWXKubx014vEMMJxfjNvT/MmQ5d0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Songyang Li <leesongyang@outlook.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/131] MIPS: Octeon: Add PCIe link status check
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.9 237/250] spi: stm32: qspi: Clamp stm32_qspi_get_mode() output to CCR_BUSWIDTH_4
 Date: Tue, 25 Jun 2024 11:33:15 +0200
-Message-ID: <20240625085527.476777334@linuxfoundation.org>
+Message-ID: <20240625085557.152689990@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Songyang Li <leesongyang@outlook.com>
+From: Patrice Chotard <patrice.chotard@foss.st.com>
 
-[ Upstream commit 29b83a64df3b42c88c0338696feb6fdcd7f1f3b7 ]
+commit 63deee52811b2f84ed2da55ad47252f0e8145d62 upstream.
 
-The standard PCIe configuration read-write interface is used to
-access the configuration space of the peripheral PCIe devices
-of the mips processor after the PCIe link surprise down, it can
-generate kernel panic caused by "Data bus error". So it is
-necessary to add PCIe link status check for system protection.
-When the PCIe link is down or in training, assigning a value
-of 0 to the configuration address can prevent read-write behavior
-to the configuration space of peripheral PCIe devices, thereby
-preventing kernel panic.
+In case usage of OCTAL mode, buswidth parameter can take the value 8.
+As return value of stm32_qspi_get_mode() is used to configure fields
+of CCR registers that are 2 bits only (fields IMODE, ADMODE, ADSIZE,
+ DMODE), clamp return value of stm32_qspi_get_mode() to 4.
 
-Signed-off-by: Songyang Li <leesongyang@outlook.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a557fca630cc ("spi: stm32_qspi: Add transfer_one_message() spi callback")
+Cc: stable@vger.kernel.org
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Link: https://msgid.link/r/20240618132951.2743935-3-patrice.chotard@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/pci/pcie-octeon.c | 6 ++++++
- 1 file changed, 6 insertions(+)
- mode change 100644 => 100755 arch/mips/pci/pcie-octeon.c
+ drivers/spi/spi-stm32-qspi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
-old mode 100644
-new mode 100755
-index c9edd3fb380df..9eaacd3d33880
---- a/arch/mips/pci/pcie-octeon.c
-+++ b/arch/mips/pci/pcie-octeon.c
-@@ -230,12 +230,18 @@ static inline uint64_t __cvmx_pcie_build_config_addr(int pcie_port, int bus,
+--- a/drivers/spi/spi-stm32-qspi.c
++++ b/drivers/spi/spi-stm32-qspi.c
+@@ -349,7 +349,7 @@ static int stm32_qspi_wait_poll_status(s
+ 
+ static int stm32_qspi_get_mode(u8 buswidth)
  {
- 	union cvmx_pcie_address pcie_addr;
- 	union cvmx_pciercx_cfg006 pciercx_cfg006;
-+	union cvmx_pciercx_cfg032 pciercx_cfg032;
+-	if (buswidth == 4)
++	if (buswidth >= 4)
+ 		return CCR_BUSWIDTH_4;
  
- 	pciercx_cfg006.u32 =
- 	    cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG006(pcie_port));
- 	if ((bus <= pciercx_cfg006.s.pbnum) && (dev != 0))
- 		return 0;
- 
-+	pciercx_cfg032.u32 =
-+		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG032(pcie_port));
-+	if ((pciercx_cfg032.s.dlla == 0) || (pciercx_cfg032.s.lt == 1))
-+		return 0;
-+
- 	pcie_addr.u64 = 0;
- 	pcie_addr.config.upper = 2;
- 	pcie_addr.config.io = 1;
--- 
-2.43.0
-
+ 	return buswidth;
 
 
 
