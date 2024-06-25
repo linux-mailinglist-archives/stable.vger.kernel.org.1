@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-55436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C62C2916396
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41EE8916301
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21B66B26501
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 749D11C226DD
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764201494D5;
-	Tue, 25 Jun 2024 09:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7102D13C90B;
+	Tue, 25 Jun 2024 09:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZuOgIfI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7X4u6iq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349A5146A9D;
-	Tue, 25 Jun 2024 09:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBC712EBEA;
+	Tue, 25 Jun 2024 09:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308898; cv=none; b=gZqbh10svANtiIvbSHDhZgK5Q2VICrzeyxBObIaHkn5GXoWfK5uU/qlyoF/5mj5raz+oM9c0ZyFAG28cIr/rDoAoVsBjHAPV/4FQWXgknYDRX6o+V4gwhWmYPjxENjfsx/vRrNdKpCDsSY/a5UAejpq94VfA0MsasY256dufWPM=
+	t=1719308498; cv=none; b=J0DUjlpTjqvi66SiSz/sfMInazlezCk3PNf51xvTh4pB6UXy/UHCIFIw/UCPjUm6WRkxw+5Xg3f2LdidJxiTn+AY1TZyutS1frahA+XkoXgzMTJhMRIQ/8fE9eL+aHE1TGysBERgiRZkF6hx/w9LMAhjB5wX2kIVLL/CwCOJN18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308898; c=relaxed/simple;
-	bh=iztwYX6sSg2RNTzttLIx52h49zLfuETlRzEBW4DmldA=;
+	s=arc-20240116; t=1719308498; c=relaxed/simple;
+	bh=nDbBk0aCWFSgaDGzlI7nrYYHg7o4cD2HVDWl0sVZY9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zp7vKH02HFfDECmv7uWOjjaBbWGJeV6WmSINiZhR/1vPYYr+Jetz9yzOi8mgjMx8FIyrtAIqG11Uj2g4tgRKChd9VXxnDr2CIsTvZ0g8m1NEb68AkrNtUzfKNYw0lFmw9/i9rryUnb8eevPi64h1JIIZH+DzVcJz0D1Rqu7gq/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZuOgIfI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8FEC32781;
-	Tue, 25 Jun 2024 09:48:17 +0000 (UTC)
+	 MIME-Version; b=jmoaedIGey+csrJ5O9Id3b6BXeIOCdbK3HaNsXnSKCqV6nBpOOjbbjjv55qesH32SuLp/6KCuDMi3mEvukNA+ACEDiMiDKn8P1Kl31Q8L7NE8leKpq11lPthfUHZJtN7fWOkviIu6MkJnMJVbLp49TDB3Q5ciiOJqrbLvOUp+fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7X4u6iq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A810DC32781;
+	Tue, 25 Jun 2024 09:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308898;
-	bh=iztwYX6sSg2RNTzttLIx52h49zLfuETlRzEBW4DmldA=;
+	s=korg; t=1719308498;
+	bh=nDbBk0aCWFSgaDGzlI7nrYYHg7o4cD2HVDWl0sVZY9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZuOgIfISTul8XEIeK3B10EcXQfEXpTDhepWXqOK9ft2uyDZsQP/VPitjJzU5jKLp
-	 kLddY00475QJw8HK2nyFJeOUXUcW0sCz7Wqv2RVl+XkEgeJvQFnvgoRFrH6tLVhvSB
-	 wBjBaV5D+hDyh4qxaLGwp1v7HfeKRN+81tTBAYXI=
+	b=x7X4u6iqC2CRCUM/W0N6wm8SNM0AYUi3GzOyLrWyr2MAdOixWMzmqHlr25WbBL/UJ
+	 U81GotwRSwUoD0xGWBW2rKZSbTXHyNTbYRzb4DrFLf6qn6nc/kpngrwAuZqf/iDpnN
+	 PEF/W4unOQodiaXq8pA8L/FGnLsGY4ztOXLtwdGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/192] ACPI: video: Add backlight=native quirk for Lenovo Slim 7 16ARH7
-Date: Tue, 25 Jun 2024 11:31:39 +0200
-Message-ID: <20240625085538.204067091@linuxfoundation.org>
+Subject: [PATCH 6.9 142/250] RDMA/bnxt_re: Fix the max msix vectors macro
+Date: Tue, 25 Jun 2024 11:31:40 +0200
+Message-ID: <20240625085553.509199172@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-[ Upstream commit c901f63dc142c48326931f164f787dfff69273d9 ]
+[ Upstream commit 056620da899527c14cf36e5019a0decaf4cf0f79 ]
 
-Lenovo Slim 7 16ARH7 is a machine with switchable graphics between AMD
-and Nvidia, and the backlight can't be adjusted properly unless
-acpi_backlight=native is passed.  Although nvidia-wmi-backlight is
-present and loaded, this doesn't work as expected at all.
+bnxt_re no longer decide the number of MSI-x vectors used by itself.
+Its decided by bnxt_en now. So when bnxt_en changes this value, system
+crash is seen.
 
-For making it working as default, add the corresponding quirk entry
-with a DMI matching "LENOVO" "82UX".
+Depend on the max value reported by bnxt_en instead of using the its own macros.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1217750
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 303432211324 ("bnxt_en: Remove runtime interrupt vector allocation")
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1716195418-11767-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/infiniband/hw/bnxt_re/bnxt_re.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index 31205fee59d4a..16ab2d9ef67f3 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -505,6 +505,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Lenovo Slim 7 16ARH7 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "82UX"),
-+		},
-+	},
- 	{
- 	 .callback = video_detect_force_native,
- 	 /* Lenovo ThinkPad X131e (3371 AMD version) */
+diff --git a/drivers/infiniband/hw/bnxt_re/bnxt_re.h b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
+index 9dca451ed5221..6974922e5609a 100644
+--- a/drivers/infiniband/hw/bnxt_re/bnxt_re.h
++++ b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
+@@ -107,8 +107,6 @@ struct bnxt_re_gsi_context {
+ 	struct	bnxt_re_sqp_entries *sqp_tbl;
+ };
+ 
+-#define BNXT_RE_MIN_MSIX		2
+-#define BNXT_RE_MAX_MSIX		9
+ #define BNXT_RE_AEQ_IDX			0
+ #define BNXT_RE_NQ_IDX			1
+ #define BNXT_RE_GEN_P5_MAX_VF		64
+@@ -168,7 +166,7 @@ struct bnxt_re_dev {
+ 	struct bnxt_qplib_rcfw		rcfw;
+ 
+ 	/* NQ */
+-	struct bnxt_qplib_nq		nq[BNXT_RE_MAX_MSIX];
++	struct bnxt_qplib_nq		nq[BNXT_MAX_ROCE_MSIX];
+ 
+ 	/* Device Resources */
+ 	struct bnxt_qplib_dev_attr	dev_attr;
 -- 
 2.43.0
 
