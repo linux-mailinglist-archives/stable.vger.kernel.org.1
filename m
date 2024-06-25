@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-55638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2307E916485
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:58:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A608A916401
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D84C0280D97
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:58:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61BF9283653
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD1C149C41;
-	Tue, 25 Jun 2024 09:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6802149C4C;
+	Tue, 25 Jun 2024 09:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPbjlDiM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfv7U2gZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7521465A8;
-	Tue, 25 Jun 2024 09:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50B324B34;
+	Tue, 25 Jun 2024 09:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309497; cv=none; b=VdOGS44gI7/ewDyQXDkuW5aeqn7xaq425LF9sRk0JLn5MYBmDRXB7CpSLCkQwCeAg+sNF6XOfj2vMRKbrEjjWDESxYivVVBZEtIb/WO7udEme6tyWZ+5JUqKVxmnM3tUj/Ur4ouHixJQgl1ATlhinh7CgwYWexmPsCIOXKtXhXI=
+	t=1719309171; cv=none; b=ORTbbmq66gNHIQ9OTU0UBd91AeIZWK+HhPWPw5l2R5KmeT/vxW6BYx3211BLI3iVZXvidLM9yHg4LqbAqiIh2AUIADmO7DJMBqKruXtOwWetsW2v4LDKMBgVot9xjaKPp8RCeHrz2+Mzf82TAoeayg3dXkR1shg69e5EN4xJRcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309497; c=relaxed/simple;
-	bh=BFqAVimcL8xxXmtyKnKJLXNFLdllHz3WvB6Xi7FKM/4=;
+	s=arc-20240116; t=1719309171; c=relaxed/simple;
+	bh=On9+3wCT3cr1Q3iv3WxJlPQBJTSRP/HJB6yHAejqO7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PAPHGPAkBu6y/XSm84VJYIAkI6mddRgQoCG7RCxc6vNKgK9wB7NwHgY7hoDLkmOuJ9sZOjpcd2HIaN27R3KZFjCKCU+7K6XIypUfxMHktBQaUw9j10FOPFJea+9LA7kVNd8FlPCZyRmz9tFCgKVjEnQ2fqlVLJPKABNYr518Xxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPbjlDiM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A70C32781;
-	Tue, 25 Jun 2024 09:58:16 +0000 (UTC)
+	 MIME-Version; b=q4/DsHl5vFWbG6Ho5Zg1Sxo+fGh0u4MX7HNsJyrVUNZWvyzw6w9/MwQ20YteaybfmfmN4dj3jfMFWvycscSCHufWKHMM+LiGn0/8ggdqOkKzi11KsW0/zlJ5OyOvjk8kKyeLrfVKLPithUk7l6udQtKCPA3/pT0z+Tp6rQrBAYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfv7U2gZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD53C32781;
+	Tue, 25 Jun 2024 09:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309497;
-	bh=BFqAVimcL8xxXmtyKnKJLXNFLdllHz3WvB6Xi7FKM/4=;
+	s=korg; t=1719309171;
+	bh=On9+3wCT3cr1Q3iv3WxJlPQBJTSRP/HJB6yHAejqO7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xPbjlDiMMFQarwYS7D2Y0CIAAqujoX9O3QOq3rUPbrG2ypbgJRb5ynYqVjPLoJWS/
-	 zWHWbgBC4emFICFFj8SxFwKni1jRDvm9e+qQDEef7kiTdy897ZmyCOPTRZjKuQ/0rS
-	 WyDYJXqu36hrjL95IkFjbb6yKx5zHctiqsBxYEu8=
+	b=kfv7U2gZ0/u6u7+lcdAgj6KxA4FCd0lF6yOG5m+dtpFDjJ3HuURl/3fyyyuITDcno
+	 n+zN7cORLkzU8gNQ3Ca0ib9+SciGfRso9/WOZqm0tR/FOCoM3Fq/p5eSE0Pyqj4gBq
+	 blKoVspQR8Arc0Fn+EpHTydEWekuhxGn0xdCKq/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Shuang Li <shuali@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/131] rcutorture: Make stall-tasks directly exit when rcutorture tests end
-Date: Tue, 25 Jun 2024 11:32:40 +0200
-Message-ID: <20240625085526.142098950@linuxfoundation.org>
+Subject: [PATCH 6.6 089/192] tipc: force a dst refcount before doing decryption
+Date: Tue, 25 Jun 2024 11:32:41 +0200
+Message-ID: <20240625085540.591981090@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 431315a563015f259b28e34c5842f6166439e969 ]
+[ Upstream commit 2ebe8f840c7450ecbfca9d18ac92e9ce9155e269 ]
 
-When the rcutorture tests start to exit, the rcu_torture_cleanup() is
-invoked to stop kthreads and release resources, if the stall-task
-kthreads exist, cpu-stall has started and the rcutorture.stall_cpu
-is set to a larger value, the rcu_torture_cleanup() will be blocked
-for a long time and the hung-task may occur, this commit therefore
-add kthread_should_stop() to the loop of cpu-stall operation, when
-rcutorture tests ends, no need to wait for cpu-stall to end, exit
-directly.
+As it says in commit 3bc07321ccc2 ("xfrm: Force a dst refcount before
+entering the xfrm type handlers"):
 
-Use the following command to test:
+"Crypto requests might return asynchronous. In this case we leave the
+ rcu protected region, so force a refcount on the skb's destination
+ entry before we enter the xfrm type input/output handlers."
 
-insmod rcutorture.ko torture_type=srcu fwd_progress=0 stat_interval=4
-stall_cpu_block=1 stall_cpu=200 stall_cpu_holdoff=10 read_exit_burst=0
-object_debug=1
-rmmod rcutorture
+On TIPC decryption path it has the same problem, and skb_dst_force()
+should be called before doing decryption to avoid a possible crash.
 
-[15361.918610] INFO: task rmmod:878 blocked for more than 122 seconds.
-[15361.918613]       Tainted: G        W
-6.8.0-rc2-yoctodev-standard+ #25
-[15361.918615] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-disables this message.
-[15361.918616] task:rmmod           state:D stack:0     pid:878
-tgid:878   ppid:773    flags:0x00004002
-[15361.918621] Call Trace:
-[15361.918623]  <TASK>
-[15361.918626]  __schedule+0xc0d/0x28f0
-[15361.918631]  ? __pfx___schedule+0x10/0x10
-[15361.918635]  ? rcu_is_watching+0x19/0xb0
-[15361.918638]  ? schedule+0x1f6/0x290
-[15361.918642]  ? __pfx_lock_release+0x10/0x10
-[15361.918645]  ? schedule+0xc9/0x290
-[15361.918648]  ? schedule+0xc9/0x290
-[15361.918653]  ? trace_preempt_off+0x54/0x100
-[15361.918657]  ? schedule+0xc9/0x290
-[15361.918661]  schedule+0xd0/0x290
-[15361.918665]  schedule_timeout+0x56d/0x7d0
-[15361.918669]  ? debug_smp_processor_id+0x1b/0x30
-[15361.918672]  ? rcu_is_watching+0x19/0xb0
-[15361.918676]  ? __pfx_schedule_timeout+0x10/0x10
-[15361.918679]  ? debug_smp_processor_id+0x1b/0x30
-[15361.918683]  ? rcu_is_watching+0x19/0xb0
-[15361.918686]  ? wait_for_completion+0x179/0x4c0
-[15361.918690]  ? __pfx_lock_release+0x10/0x10
-[15361.918693]  ? __kasan_check_write+0x18/0x20
-[15361.918696]  ? wait_for_completion+0x9d/0x4c0
-[15361.918700]  ? _raw_spin_unlock_irq+0x36/0x50
-[15361.918703]  ? wait_for_completion+0x179/0x4c0
-[15361.918707]  ? _raw_spin_unlock_irq+0x36/0x50
-[15361.918710]  ? wait_for_completion+0x179/0x4c0
-[15361.918714]  ? trace_preempt_on+0x54/0x100
-[15361.918718]  ? wait_for_completion+0x179/0x4c0
-[15361.918723]  wait_for_completion+0x181/0x4c0
-[15361.918728]  ? __pfx_wait_for_completion+0x10/0x10
-[15361.918738]  kthread_stop+0x152/0x470
-[15361.918742]  _torture_stop_kthread+0x44/0xc0 [torture
-7af7f9cbba28271a10503b653f9e05d518fbc8c3]
-[15361.918752]  rcu_torture_cleanup+0x2ac/0xe90 [rcutorture
-f2cb1f556ee7956270927183c4c2c7749a336529]
-[15361.918766]  ? __pfx_rcu_torture_cleanup+0x10/0x10 [rcutorture
-f2cb1f556ee7956270927183c4c2c7749a336529]
-[15361.918777]  ? __kasan_check_write+0x18/0x20
-[15361.918781]  ? __mutex_unlock_slowpath+0x17c/0x670
-[15361.918789]  ? __might_fault+0xcd/0x180
-[15361.918793]  ? find_module_all+0x104/0x1d0
-[15361.918799]  __x64_sys_delete_module+0x2a4/0x3f0
-[15361.918803]  ? __pfx___x64_sys_delete_module+0x10/0x10
-[15361.918807]  ? syscall_exit_to_user_mode+0x149/0x280
+Shuang reported this issue when this warning is triggered:
 
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+  [] WARNING: include/net/dst.h:337 tipc_sk_rcv+0x1055/0x1ea0 [tipc]
+  [] Kdump: loaded Tainted: G W --------- - - 4.18.0-496.el8.x86_64+debug
+  [] Workqueue: crypto cryptd_queue_worker
+  [] RIP: 0010:tipc_sk_rcv+0x1055/0x1ea0 [tipc]
+  [] Call Trace:
+  [] tipc_sk_mcast_rcv+0x548/0xea0 [tipc]
+  [] tipc_rcv+0xcf5/0x1060 [tipc]
+  [] tipc_aead_decrypt_done+0x215/0x2e0 [tipc]
+  [] cryptd_aead_crypt+0xdb/0x190
+  [] cryptd_queue_worker+0xed/0x190
+  [] process_one_work+0x93d/0x17e0
+
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Reported-by: Shuang Li <shuali@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Link: https://lore.kernel.org/r/fbe3195fad6997a4eec62d9bf076b2ad03ac336b.1718476040.git.lucien.xin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcutorture.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/tipc/node.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 2f6c52a863f2e..a42141033577e 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -2419,8 +2419,8 @@ static int rcu_torture_stall(void *args)
- 			preempt_disable();
- 		pr_alert("%s start on CPU %d.\n",
- 			  __func__, raw_smp_processor_id());
--		while (ULONG_CMP_LT((unsigned long)ktime_get_seconds(),
--				    stop_at))
-+		while (ULONG_CMP_LT((unsigned long)ktime_get_seconds(), stop_at) &&
-+		       !kthread_should_stop())
- 			if (stall_cpu_block) {
- #ifdef CONFIG_PREEMPTION
- 				preempt_schedule();
+diff --git a/net/tipc/node.c b/net/tipc/node.c
+index 3105abe97bb9c..69053c0398252 100644
+--- a/net/tipc/node.c
++++ b/net/tipc/node.c
+@@ -2107,6 +2107,7 @@ void tipc_rcv(struct net *net, struct sk_buff *skb, struct tipc_bearer *b)
+ 	} else {
+ 		n = tipc_node_find_by_id(net, ehdr->id);
+ 	}
++	skb_dst_force(skb);
+ 	tipc_crypto_rcv(net, (n) ? n->crypto_rx : NULL, &skb, b);
+ 	if (!skb)
+ 		return;
 -- 
 2.43.0
 
