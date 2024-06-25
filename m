@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-55490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC97B9163D5
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89142916339
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69E3A28C3BC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBC901C21331
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6994F14A097;
-	Tue, 25 Jun 2024 09:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDD71494D1;
+	Tue, 25 Jun 2024 09:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8h8Z4jK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGd3Jdia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B3314A087;
-	Tue, 25 Jun 2024 09:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA86112EBEA;
+	Tue, 25 Jun 2024 09:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309057; cv=none; b=Yf1xttg/uhvm4eGZpgpGbhSBEjfqikXXsVRoRIU28MvfwzvUkf3iU9SY1YKRQbxYHb1LWiEa28C/keZNWS1WENWyfwTRxpLeMDXS7hl9YoTsE+aTX+Prr05vjQZws7fqG0ezr8k21g7u9sF5xguXd17vbhpBlB/zhOHuBTQUohc=
+	t=1719308653; cv=none; b=rl9njfeSf869OL+lBZkOoltrnEFo6BFKnqhArk33qjUPFmcjRM0g5Gb5cPtuNe4zc++xHtwRGyfscUAlGCOhzmYIbHW7YxCWhboJbHsRQK/bSvd/XNw+7RvZAOpz6cqPKTtNlv3anFOLicQTZ06Q/34wxIw+APgfcOljWkKP0bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309057; c=relaxed/simple;
-	bh=tl0ypkU+ATS/hxzfpU/HkSPsjm2ooZP3OBCY6VMcGTk=;
+	s=arc-20240116; t=1719308653; c=relaxed/simple;
+	bh=goAM+7IBuvr4p8KQ4I7T2Tbi0GdOMLSgMA5QkLb4t8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l37h4GvMVoPDPbOCB26KGlkXXGHykNqgH7gZloDCZxH2p/NSDHzwTbBeRbu3uMwSQLsZiXPRzDrjJtXmC55tCtod5OMYPZvxVfO5J9LSf7y5SMldVullOxkiGoh1CT9tS0EcHVEB0KJ7de7G4ErWXb5Uxbsvxuq535LHqbOakC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8h8Z4jK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33C2C32781;
-	Tue, 25 Jun 2024 09:50:56 +0000 (UTC)
+	 MIME-Version; b=j1bIuQ0kB/0ofuExSwEfS7AeFSeWuViNZau4QhAJ0W+EXiqOGAR8D+NYYT2GgUbyKyebrDyi0jZF1OG5k6LsEpiUzjzDfH2Yw6fqpPD5cqzb4peDL9Zel1fmCAdM/93CflxRAcJK6TGSZxuIttBz/Y/Uwzd5BxepB56PEH4lAn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGd3Jdia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D39C32781;
+	Tue, 25 Jun 2024 09:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309057;
-	bh=tl0ypkU+ATS/hxzfpU/HkSPsjm2ooZP3OBCY6VMcGTk=;
+	s=korg; t=1719308653;
+	bh=goAM+7IBuvr4p8KQ4I7T2Tbi0GdOMLSgMA5QkLb4t8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n8h8Z4jKFIrEkmNteRGkgX6M8If9PsV0Ta1KjImr7/LKhIHNPPf7OS8kStHQ9epXD
-	 4kOMXbTGWofv+082mSJuvNrlFalBBJHxl0nr1OLeLfyk8+6sDQDIXBoss6k1bARA0F
-	 whxcV7mfR6sUdhz+MJj+e2KcNnCLS72MhILAo4Ks=
+	b=BGd3JdialRQszMLg60gCvF9ZfCjtdQyQFmYIYjuD1Lfb9+DKfODu0QycLDKwE8Oxk
+	 mvdGo+A/ndgurR+UFamX4Wlevot9yNd++ZyUEckxVOx+Y2URFT2vxCnTd7fe4FpUzD
+	 cWt+fTMmAJc8KCPZ48F4D5lFfQG/9PLcOQOeYN7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/192] ipv6: prevent possible NULL deref in fib6_nh_init()
+	Adamos Ttofari <attofari@amazon.de>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.9 193/250] KVM: x86: Always sync PIR to IRR prior to scanning I/O APIC routes
 Date: Tue, 25 Jun 2024 11:32:31 +0200
-Message-ID: <20240625085540.208108143@linuxfoundation.org>
+Message-ID: <20240625085555.459148134@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 2eab4543a2204092c3a7af81d7d6c506e59a03a6 ]
+commit f3ced000a2df53f4b12849e121769045a81a3b22 upstream.
 
-syzbot reminds us that in6_dev_get() can return NULL.
+Sync pending posted interrupts to the IRR prior to re-scanning I/O APIC
+routes, irrespective of whether the I/O APIC is emulated by userspace or
+by KVM.  If a level-triggered interrupt routed through the I/O APIC is
+pending or in-service for a vCPU, KVM needs to intercept EOIs on said
+vCPU even if the vCPU isn't the destination for the new routing, e.g. if
+servicing an interrupt using the old routing races with I/O APIC
+reconfiguration.
 
-fib6_nh_init()
-    ip6_validate_gw(  &idev  )
-        ip6_route_check_nh(  idev  )
-            *idev = in6_dev_get(dev); // can be NULL
+Commit fceb3a36c29a ("KVM: x86: ioapic: Fix level-triggered EOI and
+userspace I/OAPIC reconfigure race") fixed the common cases, but
+kvm_apic_pending_eoi() only checks if an interrupt is in the local
+APIC's IRR or ISR, i.e. misses the uncommon case where an interrupt is
+pending in the PIR.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc00000000bc: 0000 [#1] PREEMPT SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x00000000000005e0-0x00000000000005e7]
-CPU: 0 PID: 11237 Comm: syz-executor.3 Not tainted 6.10.0-rc2-syzkaller-00249-gbe27b8965297 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
- RIP: 0010:fib6_nh_init+0x640/0x2160 net/ipv6/route.c:3606
-Code: 00 00 fc ff df 4c 8b 64 24 58 48 8b 44 24 28 4c 8b 74 24 30 48 89 c1 48 89 44 24 28 48 8d 98 e0 05 00 00 48 89 d8 48 c1 e8 03 <42> 0f b6 04 38 84 c0 0f 85 b3 17 00 00 8b 1b 31 ff 89 de e8 b8 8b
-RSP: 0018:ffffc900032775a0 EFLAGS: 00010202
-RAX: 00000000000000bc RBX: 00000000000005e0 RCX: 0000000000000000
-RDX: 0000000000000010 RSI: ffffc90003277a54 RDI: ffff88802b3a08d8
-RBP: ffffc900032778b0 R08: 00000000000002fc R09: 0000000000000000
-R10: 00000000000002fc R11: 0000000000000000 R12: ffff88802b3a08b8
-R13: 1ffff9200064eec8 R14: ffffc90003277a00 R15: dffffc0000000000
-FS:  00007f940feb06c0(0000) GS:ffff8880b9400000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 00000000245e8000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
-  ip6_route_info_create+0x99e/0x12b0 net/ipv6/route.c:3809
-  ip6_route_add+0x28/0x160 net/ipv6/route.c:3853
-  ipv6_route_ioctl+0x588/0x870 net/ipv6/route.c:4483
-  inet6_ioctl+0x21a/0x280 net/ipv6/af_inet6.c:579
-  sock_do_ioctl+0x158/0x460 net/socket.c:1222
-  sock_ioctl+0x629/0x8e0 net/socket.c:1341
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:907 [inline]
-  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f940f07cea9
+Failure to intercept EOI can manifest as guest hangs with Windows 11 if
+the guest uses the RTC as its timekeeping source, e.g. if the VMM doesn't
+expose a more modern form of time to the guest.
 
-Fixes: 428604fb118f ("ipv6: do not set routes if disable_ipv6 has been enabled")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20240614082002.26407-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Adamos Ttofari <attofari@amazon.de>
+Cc: Raghavendra Rao Ananta <rananta@google.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20240611014845.82795-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/x86.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 29fa2ca07b46a..e40d05caf9550 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3593,7 +3593,7 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
- 	if (!dev)
- 		goto out;
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -10677,13 +10677,12 @@ static void vcpu_scan_ioapic(struct kvm_
  
--	if (idev->cnf.disable_ipv6) {
-+	if (!idev || idev->cnf.disable_ipv6) {
- 		NL_SET_ERR_MSG(extack, "IPv6 is disabled on nexthop device");
- 		err = -EACCES;
- 		goto out;
--- 
-2.43.0
-
+ 	bitmap_zero(vcpu->arch.ioapic_handled_vectors, 256);
+ 
++	static_call_cond(kvm_x86_sync_pir_to_irr)(vcpu);
++
+ 	if (irqchip_split(vcpu->kvm))
+ 		kvm_scan_ioapic_routes(vcpu, vcpu->arch.ioapic_handled_vectors);
+-	else {
+-		static_call_cond(kvm_x86_sync_pir_to_irr)(vcpu);
+-		if (ioapic_in_kernel(vcpu->kvm))
+-			kvm_ioapic_scan_entry(vcpu, vcpu->arch.ioapic_handled_vectors);
+-	}
++	else if (ioapic_in_kernel(vcpu->kvm))
++		kvm_ioapic_scan_entry(vcpu, vcpu->arch.ioapic_handled_vectors);
+ 
+ 	if (is_guest_mode(vcpu))
+ 		vcpu->arch.load_eoi_exitmap_pending = true;
 
 
 
