@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-55437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3504D916394
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 595FD916302
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A73B1C22DBC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C4871C226DD
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1DF14A087;
-	Tue, 25 Jun 2024 09:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF36149DFB;
+	Tue, 25 Jun 2024 09:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZmL3s0x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08tUPMHh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166CD1465B7;
-	Tue, 25 Jun 2024 09:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1696E149C74;
+	Tue, 25 Jun 2024 09:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308901; cv=none; b=QU9fBcMxTPf5/hCIgDpwo7yaaVDEsYI4ThVBz2/aiwzCUjq7f4u5jhQZguWuNrox7cC7VhLutfq1dhmdELq16lhidMJKlJfUojAwhZvS06DhIH/ysAg5JAL6NeuOftk0vxouG0CUyi9JJisqHT9hPw1VZuuLVJzAgLS3PVwqkd0=
+	t=1719308501; cv=none; b=FuaOgfYOX+zWZps1rNo2EZn9oQeh3n7tVa4dxAUhj+g/MguAi9XhZgxVtUPLI6llRR2xJ1RZtyXd/LcIsYfP4mOnoKwY6br+g92rgHK0UlyxtBAAqiYDzYxONgS8M6cVJs/UdttJ3rWuUyMoVATysI9Lf0dfDZrYdLZ6MgawMjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308901; c=relaxed/simple;
-	bh=ZLRXJQr4qz73TKNLqlTgmiEv73++J9GxZgI8goTWCf0=;
+	s=arc-20240116; t=1719308501; c=relaxed/simple;
+	bh=HlFGP8XLPtpsYUtg7XoYZkteefc1TUlOBolN+gMS68A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uzWg7nnjnDHbpjAu1wTe9w1y3YleVSdLjCRMjlwIAKoA4NpfXFf8VxXxRiQJa63rHT7Ao7jCKcgKF5oQfN2GDtjO92tz0KddXtFqaEJRXZfPGXnN5TZbV1BjDVBEuf5eD8kAhW1SICT4v/a76dno17t37ufVG1zuldGWMBBexPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZmL3s0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA0BC32781;
-	Tue, 25 Jun 2024 09:48:20 +0000 (UTC)
+	 MIME-Version; b=NfPToVPQ4UpcLR8Fl2JawKzNkU62g6eSYKjgc+a/By/yItts1oxHcJ+Jh4XLet9yGXw5UpAnlLF2i6/ksrqQBF0uvTFtwATVCd6+H9mKsPxOF9sksE+OFai2h9HFu5f1EJE/CTJ7kd49IB/qLrTiLMu2BfiPaRBUJFNXhnPG3PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08tUPMHh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F694C32781;
+	Tue, 25 Jun 2024 09:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308901;
-	bh=ZLRXJQr4qz73TKNLqlTgmiEv73++J9GxZgI8goTWCf0=;
+	s=korg; t=1719308501;
+	bh=HlFGP8XLPtpsYUtg7XoYZkteefc1TUlOBolN+gMS68A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZmL3s0xKNVttcdZ35N2aFyWNUeahNJF/emvDzhb4hIRbpRezts5UIp+G81NglHeg
-	 dhJh7PBCvVEdZcEhYs/dd/iSzzET3q3BYnqQx4uQJEODGzQFDHB04uzw8LhlrKwzZf
-	 om23EsIE5A/pS19N9C6zAcC54zX8nobM87tmrUFo=
+	b=08tUPMHhCGv+6P6LN+WOB24gI7TJXvUTgVsBxd5lrHq7DBZCqdFce+bKqn+dnsHZb
+	 RcmylmbXWuZHhcfWLyiPaCjFOp6fdAGyQy6Jrd9ywO/dGVeMXRNQNEdcBrg4/W6d7+
+	 dfSlj7pDht7sWTRQ9Q5i+jpI0jN1OkMultRz6rfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uri Arev <me@wantyapps.xyz>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Joao Paulo Goncalves <joao.goncalves@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/192] Bluetooth: ath3k: Fix multiple issues reported by checkpatch.pl
-Date: Tue, 25 Jun 2024 11:31:40 +0200
-Message-ID: <20240625085538.241762719@linuxfoundation.org>
+Subject: [PATCH 6.9 143/250] arm64: dts: freescale: imx8mm-verdin: Fix GPU speed
+Date: Tue, 25 Jun 2024 11:31:41 +0200
+Message-ID: <20240625085553.547220262@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,192 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uri Arev <me@wantyapps.xyz>
+From: Joao Paulo Goncalves <joao.goncalves@toradex.com>
 
-[ Upstream commit 68aa21054ec3a1a313af90a5f95ade16c3326d20 ]
+[ Upstream commit 08f0fa5d6aa9488f752eb5410e32636f143b3d8e ]
 
-This fixes some CHECKs reported by the checkpatch script.
+The GPU clock was reduced on iMX8MM SOC device tree to prevent boards
+that don't support GPU overdrive from being out of specification. However,
+this caused a regression in GPU speed for the Verdin iMX8MM, which does
+support GPU overdrive. This patch fixes this by enabling overdrive mode
+in the SOM dtsi.
 
-Issues reported in ath3k.c:
--------
-ath3k.c
--------
-CHECK: Please don't use multiple blank lines
-+
-+
-
-CHECK: Blank lines aren't necessary after an open brace '{'
-+static const struct usb_device_id ath3k_blist_tbl[] = {
-+
-
-CHECK: Alignment should match open parenthesis
-+static int ath3k_load_firmware(struct usb_device *udev,
-+                               const struct firmware *firmware)
-
-CHECK: Alignment should match open parenthesis
-+               err = usb_bulk_msg(udev, pipe, send_buf, size,
-+                                       &len, 3000);
-
-CHECK: Unnecessary parentheses around 'len != size'
-+               if (err || (len != size)) {
-
-CHECK: Alignment should match open parenthesis
-+static int ath3k_get_version(struct usb_device *udev,
-+                       struct ath3k_version *version)
-
-CHECK: Alignment should match open parenthesis
-+static int ath3k_load_fwfile(struct usb_device *udev,
-+               const struct firmware *firmware)
-
-CHECK: Alignment should match open parenthesis
-+               err = usb_bulk_msg(udev, pipe, send_buf, size,
-+                                       &len, 3000);
-
-CHECK: Unnecessary parentheses around 'len != size'
-+               if (err || (len != size)) {
-
-CHECK: Blank lines aren't necessary after an open brace '{'
-+       switch (fw_version.ref_clock) {
-+
-
-CHECK: Alignment should match open parenthesis
-+       snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
-+               le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
-
-CHECK: Alignment should match open parenthesis
-+static int ath3k_probe(struct usb_interface *intf,
-+                       const struct usb_device_id *id)
-
-CHECK: Alignment should match open parenthesis
-+                       BT_ERR("Firmware file \"%s\" not found",
-+                                                       ATH3K_FIRMWARE);
-
-CHECK: Alignment should match open parenthesis
-+               BT_ERR("Firmware file \"%s\" request failed (err=%d)",
-+                                               ATH3K_FIRMWARE, ret);
-
-total: 0 errors, 0 warnings, 14 checks, 540 lines checked
-
-Signed-off-by: Uri Arev <me@wantyapps.xyz>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 1f794d3eed53 ("arm64: dts: imx8mm: Reduce GPU to nominal speed")
+Signed-off-by: Joao Paulo Goncalves <joao.goncalves@toradex.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/ath3k.c | 25 +++++++++++--------------
- 1 file changed, 11 insertions(+), 14 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/ath3k.c b/drivers/bluetooth/ath3k.c
-index 88262d3a93923..ce97b336fbfb8 100644
---- a/drivers/bluetooth/ath3k.c
-+++ b/drivers/bluetooth/ath3k.c
-@@ -3,7 +3,6 @@
-  * Copyright (c) 2008-2009 Atheros Communications Inc.
-  */
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+index 6f0811587142d..64e2f83f26498 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+@@ -6,6 +6,7 @@
+ #include <dt-bindings/phy/phy-imx8-pcie.h>
+ #include <dt-bindings/pwm/pwm.h>
+ #include "imx8mm.dtsi"
++#include "imx8mm-overdrive.dtsi"
  
--
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/init.h>
-@@ -128,7 +127,6 @@ MODULE_DEVICE_TABLE(usb, ath3k_table);
-  * for AR3012
-  */
- static const struct usb_device_id ath3k_blist_tbl[] = {
--
- 	/* Atheros AR3012 with sflash firmware*/
- 	{ USB_DEVICE(0x0489, 0xe04e), .driver_info = BTUSB_ATH3012 },
- 	{ USB_DEVICE(0x0489, 0xe04d), .driver_info = BTUSB_ATH3012 },
-@@ -202,7 +200,7 @@ static inline void ath3k_log_failed_loading(int err, int len, int size,
- #define TIMEGAP_USEC_MAX	100
- 
- static int ath3k_load_firmware(struct usb_device *udev,
--				const struct firmware *firmware)
-+			       const struct firmware *firmware)
- {
- 	u8 *send_buf;
- 	int len = 0;
-@@ -237,9 +235,9 @@ static int ath3k_load_firmware(struct usb_device *udev,
- 		memcpy(send_buf, firmware->data + sent, size);
- 
- 		err = usb_bulk_msg(udev, pipe, send_buf, size,
--					&len, 3000);
-+				   &len, 3000);
- 
--		if (err || (len != size)) {
-+		if (err || len != size) {
- 			ath3k_log_failed_loading(err, len, size, count);
- 			goto error;
- 		}
-@@ -262,7 +260,7 @@ static int ath3k_get_state(struct usb_device *udev, unsigned char *state)
- }
- 
- static int ath3k_get_version(struct usb_device *udev,
--			struct ath3k_version *version)
-+			     struct ath3k_version *version)
- {
- 	return usb_control_msg_recv(udev, 0, ATH3K_GETVERSION,
- 				    USB_TYPE_VENDOR | USB_DIR_IN, 0, 0,
-@@ -271,7 +269,7 @@ static int ath3k_get_version(struct usb_device *udev,
- }
- 
- static int ath3k_load_fwfile(struct usb_device *udev,
--		const struct firmware *firmware)
-+			     const struct firmware *firmware)
- {
- 	u8 *send_buf;
- 	int len = 0;
-@@ -310,8 +308,8 @@ static int ath3k_load_fwfile(struct usb_device *udev,
- 		memcpy(send_buf, firmware->data + sent, size);
- 
- 		err = usb_bulk_msg(udev, pipe, send_buf, size,
--					&len, 3000);
--		if (err || (len != size)) {
-+				   &len, 3000);
-+		if (err || len != size) {
- 			ath3k_log_failed_loading(err, len, size, count);
- 			kfree(send_buf);
- 			return err;
-@@ -425,7 +423,6 @@ static int ath3k_load_syscfg(struct usb_device *udev)
- 	}
- 
- 	switch (fw_version.ref_clock) {
--
- 	case ATH3K_XTAL_FREQ_26M:
- 		clk_value = 26;
- 		break;
-@@ -441,7 +438,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
- 	}
- 
- 	snprintf(filename, ATH3K_NAME_LEN, "ar3k/ramps_0x%08x_%d%s",
--		le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
-+		 le32_to_cpu(fw_version.rom_version), clk_value, ".dfu");
- 
- 	ret = request_firmware(&firmware, filename, &udev->dev);
- 	if (ret < 0) {
-@@ -456,7 +453,7 @@ static int ath3k_load_syscfg(struct usb_device *udev)
- }
- 
- static int ath3k_probe(struct usb_interface *intf,
--			const struct usb_device_id *id)
-+		       const struct usb_device_id *id)
- {
- 	const struct firmware *firmware;
- 	struct usb_device *udev = interface_to_usbdev(intf);
-@@ -505,10 +502,10 @@ static int ath3k_probe(struct usb_interface *intf,
- 	if (ret < 0) {
- 		if (ret == -ENOENT)
- 			BT_ERR("Firmware file \"%s\" not found",
--							ATH3K_FIRMWARE);
-+			       ATH3K_FIRMWARE);
- 		else
- 			BT_ERR("Firmware file \"%s\" request failed (err=%d)",
--							ATH3K_FIRMWARE, ret);
-+			       ATH3K_FIRMWARE, ret);
- 		return ret;
- 	}
- 
+ / {
+ 	chosen {
 -- 
 2.43.0
 
