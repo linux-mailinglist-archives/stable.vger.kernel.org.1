@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8679164BC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23C3991643C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94BD1B29350
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 552401C2264D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18EE314A0BF;
-	Tue, 25 Jun 2024 10:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C8214A0BC;
+	Tue, 25 Jun 2024 09:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQdnDNap"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFpMVVWv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DE714A09F;
-	Tue, 25 Jun 2024 10:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CD7149C4F;
+	Tue, 25 Jun 2024 09:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309632; cv=none; b=AYNVh++lIOw8i+CiIIfS5taUWSgD7hzvohgmkpXc6nIZlG9YJQ54J+lieD8X/mihRaIgm8+6kxgDPGVAqVsygAdDe+bObOUeDaeGkQHLg7q9ApnNPBz/qvakeSpm8htsdqMgNUczhK/IZoiqFk4MD2P7xaioyFeCFyZknzEOLDk=
+	t=1719309305; cv=none; b=GtZBcUy1e7UzT8CWAabsTfOXLfPznqhkh+QNnIluiiC/Xm5ycsNQNqJu5N66/wVbo8b5/5PqvWhj1aLnnuG7EwUI0BH8/qoS0VgAn0Vb7bP+l6rXhLUjotaJO+XVlYHFF9+X17e0QcSdDGPHS04wb0w93I9KZliMOCBMpawyzLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309632; c=relaxed/simple;
-	bh=Js4CFy1RJrhG5qw2JCR+m/6gT3lm7F0KEGR7Nlc0nq0=;
+	s=arc-20240116; t=1719309305; c=relaxed/simple;
+	bh=iLMLaRTZBOW5ryxR9VqXrXJm/liE7ZCsE+tWioj5LzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GckZ4ZXG5Ht7yU+6Cyb+iaPB9+ZOvzg6VZCNsXv4EyRnxToDsVmhsW0YBMbc5lMXV9IcKQMsX8wMU9pFSYVNA8gTA7VFtOlSxRIsuQHpHrTTcI5yLRc41HdkzaGfsDgbOJPxjPMq7ILYbAAgt7nyEXJp+Aj47uEL1oTopccpHuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQdnDNap; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47713C4AF0E;
-	Tue, 25 Jun 2024 10:00:32 +0000 (UTC)
+	 MIME-Version; b=mp4JRX0bJpqwtFVbmWhK9HpB6FeC10I/JSOQkS/+73jbE88mp5E2HaVFQy8e/Dmu2Fk1ztPEH2LYj+DFIEBgJwfQ1vJsrrF1mQwB0bMkugm7hTyHHuPE7n2UcZ7NxQ6UaHxrrV8VoWSacAQAoVStekqUyY18xjXOxUgZgj+Tego=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFpMVVWv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF65DC32781;
+	Tue, 25 Jun 2024 09:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309632;
-	bh=Js4CFy1RJrhG5qw2JCR+m/6gT3lm7F0KEGR7Nlc0nq0=;
+	s=korg; t=1719309305;
+	bh=iLMLaRTZBOW5ryxR9VqXrXJm/liE7ZCsE+tWioj5LzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQdnDNapXXjfY6Q5wAm79lu/aH9+mxzovnaOGrwbvFKw0HraKQhPe5XNngkE8et4+
-	 g6U6RiYU2dVcL6NTQX9EdW4XfOUIhP4vcRfASWufqPM9EhEAJclBC2RffZQUPiAw6c
-	 2CXPdF2pKs10WUbirNqnthoNlGYif/CwnRYhdTog=
+	b=TFpMVVWvuSqRVeMPdJzR5Se+4Yp7nMSWFW8/UjQMwUjZ0LcU6Nr/oPEWrIt9UV0ru
+	 OKdT77m3yFc5N2pmJu666qCbueYqTQs9bG6VdQFIrUoETKAjr/Q2oChx305VLPW9Ew
+	 ewJR15zoF4yrMpGj4CN04ImV5/tj+mjmyyPqVULo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/131] dmaengine: ioat: use PCI core macros for PCIe Capability
+	Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 165/192] i2c: ocores: set IACK bit after core is enabled
 Date: Tue, 25 Jun 2024 11:33:57 +0200
-Message-ID: <20240625085529.059067601@linuxfoundation.org>
+Message-ID: <20240625085543.494955970@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Grygorii Tertychnyi <grembeter@gmail.com>
 
-[ Upstream commit 8f6707d0773be31972768abd6e0bf7b8515b5b1a ]
+commit 5a72477273066b5b357801ab2d315ef14949d402 upstream.
 
-The PCIe Capability is defined by the PCIe spec, so use the PCI_EXP_DEVCTL
-macros defined by the PCI core instead of defining copies in IOAT.  This
-makes it easier to find all uses of the PCIe Device Control register.  No
-functional change intended.
+Setting IACK bit when core is disabled does not clear the "Interrupt Flag"
+bit in the status register, and the interrupt remains pending.
 
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20230307214615.887354-1-helgaas@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: f0dc9fda2e0e ("dmaengine: ioatdma: Fix error path in ioat3_dma_probe()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Sometimes it causes failure for the very first message transfer, that is
+usually a device probe.
+
+Hence, set IACK bit after core is enabled to clear pending interrupt.
+
+Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C controller")
+Signed-off-by: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ioat/init.c      | 6 +++---
- drivers/dma/ioat/registers.h | 7 -------
- 2 files changed, 3 insertions(+), 10 deletions(-)
+ drivers/i2c/busses/i2c-ocores.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 79dcd2061b023..fc9580761825f 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1190,13 +1190,13 @@ static int ioat3_dma_probe(struct ioatdma_device *ioat_dma, int dca)
- 		ioat_dma->dca = ioat_dca_init(pdev, ioat_dma->reg_base);
+--- a/drivers/i2c/busses/i2c-ocores.c
++++ b/drivers/i2c/busses/i2c-ocores.c
+@@ -442,8 +442,8 @@ static int ocores_init(struct device *de
+ 	oc_setreg(i2c, OCI2C_PREHIGH, prescale >> 8);
  
- 	/* disable relaxed ordering */
--	err = pcie_capability_read_word(pdev, IOAT_DEVCTRL_OFFSET, &val16);
-+	err = pcie_capability_read_word(pdev, PCI_EXP_DEVCTL, &val16);
- 	if (err)
- 		return pcibios_err_to_errno(err);
+ 	/* Init the device */
+-	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
+ 	oc_setreg(i2c, OCI2C_CONTROL, ctrl | OCI2C_CTRL_EN);
++	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
  
- 	/* clear relaxed ordering enable */
--	val16 &= ~IOAT_DEVCTRL_ROE;
--	err = pcie_capability_write_word(pdev, IOAT_DEVCTRL_OFFSET, val16);
-+	val16 &= ~PCI_EXP_DEVCTL_RELAX_EN;
-+	err = pcie_capability_write_word(pdev, PCI_EXP_DEVCTL, val16);
- 	if (err)
- 		return pcibios_err_to_errno(err);
- 
-diff --git a/drivers/dma/ioat/registers.h b/drivers/dma/ioat/registers.h
-index f55a5f92f1857..54cf0ad39887b 100644
---- a/drivers/dma/ioat/registers.h
-+++ b/drivers/dma/ioat/registers.h
-@@ -14,13 +14,6 @@
- #define IOAT_PCI_CHANERR_INT_OFFSET		0x180
- #define IOAT_PCI_CHANERRMASK_INT_OFFSET		0x184
- 
--/* PCIe config registers */
--
--/* EXPCAPID + N */
--#define IOAT_DEVCTRL_OFFSET			0x8
--/* relaxed ordering enable */
--#define IOAT_DEVCTRL_ROE			0x10
--
- /* MMIO Device Registers */
- #define IOAT_CHANCNT_OFFSET			0x00	/*  8-bit */
- 
--- 
-2.43.0
-
+ 	return 0;
+ }
 
 
 
