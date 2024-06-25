@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-55738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 639489164F4
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:03:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D4C916465
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5674B2218E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:03:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23D381C2335D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537741465B7;
-	Tue, 25 Jun 2024 10:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFFC14A097;
+	Tue, 25 Jun 2024 09:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfqCopaw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2xWhqpF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CC813C90B;
-	Tue, 25 Jun 2024 10:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79985149DEF;
+	Tue, 25 Jun 2024 09:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309792; cv=none; b=gC/+WwM2LwJDP11654/cvBX2EEw52EssCQo+rw0By/Nen/HL6YbX7Aqb8XK6VC3IinMCPtjU/miUJQJV4dZfI1Eg7f/X6P2qSdDEUHAXoNJEyarLWOo6J9HAV5gON0NhXDGO5X3ytGj0k5YNiYLQsbpFJBy3UYAMYywk6pV/HwI=
+	t=1719309411; cv=none; b=NiUILHql0dLgXpPPYyruY8r8bYkOSYPp+sJhLN+sOaubhu519GtNRAFm9kCVQopqW8vMS2xDy8i91MmkBAM5YWR69f7qWNVC39u6JuNbLUA78ZWDD88EzhR70X4D0oJiM0AOW1O6ZBn+yFMl1+X6O8F2SJFjdcVIChiSo2d/euo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309792; c=relaxed/simple;
-	bh=3/pcGD9hr9Al3s5l1eCcOlARfF5AqrlSZT7Xemfjtwc=;
+	s=arc-20240116; t=1719309411; c=relaxed/simple;
+	bh=3ca+VeseG2ELI8J4ptSoEgKlOO5FWZcybtYcdncnYIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFqxxJsEB5Jc2ltn31RYSAXn2N1cg7WM4QH/dQSBot/7LooxJVlvbOfSnvXyTkpVGQndhj1anNsVOd+ENffY3W5rW9ZQfZSx7ZFJt8qu1X7d3fvejykT856fH4V5qj16V9gDuFfVUS3iobOXO9jwNFszxNSfF1+MWPONWMb5QBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfqCopaw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B0DC32781;
-	Tue, 25 Jun 2024 10:03:11 +0000 (UTC)
+	 MIME-Version; b=EcbB2c7XZVdqZycjlecTIw4IqUX4W2iFKkAD4N2Kw5EDdoghoenqJKjp1QNJ/xjZ3pdETZMeuxOUxaGlKrRjbPoYEQOAdO8yUPcUp/m+rM5yKwODr7bD4BzhEXXDqlhKp27zxAiPteMo10tmGLXNqF1KTG2mFrgQ4+wSvhmWWYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2xWhqpF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C592BC32781;
+	Tue, 25 Jun 2024 09:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309791;
-	bh=3/pcGD9hr9Al3s5l1eCcOlARfF5AqrlSZT7Xemfjtwc=;
+	s=korg; t=1719309411;
+	bh=3ca+VeseG2ELI8J4ptSoEgKlOO5FWZcybtYcdncnYIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mfqCopawBcsRyDd546mHVcMg65TJriX3FCjZIYErdCdBIiAFZjlYlDsMf5ZvqPMT3
-	 6FNju4K0B7pEcg9fZEj20virnk28THmNBQpBIv1j3f9xUVP+A/uh3bhc7MCLdCP7sG
-	 BrODPP4y7A6z21XELfCknd5C3SI9XzBTmXZTq9xc=
+	b=e2xWhqpFzo2q2fztdolpI8U4xS4R8bX75fMUe82vEdVtF6pKeJo8d693ltllkaczj
+	 HWXIzp19/GAAakEEkFCbZJ5GSrIdPy/NExf0qkPp/TiXF32uVS83ex6P7lwhs15PVi
+	 Ki2WhFA7zHZIjWpuQiG+BpJ+WIBaRczCqTFxYACI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 106/131] drm/amdgpu: fix UBSAN warning in kv_dpm.c
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 189/192] net/sched: unregister lockdep keys in qdisc_create/qdisc_alloc error path
 Date: Tue, 25 Jun 2024 11:34:21 +0200
-Message-ID: <20240625085529.966209665@linuxfoundation.org>
+Message-ID: <20240625085544.414563226@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +65,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Davide Caratti <dcaratti@redhat.com>
 
-commit f0d576f840153392d04b2d52cf3adab8f62e8cb6 upstream.
+commit 86735b57c905e775f05de995df35379366b72168 upstream.
 
-Adds bounds check for sumo_vid_mapping_entry.
+Naresh and Eric report several errors (corrupted elements in the dynamic
+key hash list), when running tdc.py or syzbot. The error path of
+qdisc_alloc() and qdisc_create() frees the qdisc memory, but it forgets
+to unregister the lockdep key, thus causing use-after-free like the
+following one:
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3392
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+ ==================================================================
+ BUG: KASAN: slab-use-after-free in lockdep_register_key+0x5f2/0x700
+ Read of size 8 at addr ffff88811236f2a8 by task ip/7925
+
+ CPU: 26 PID: 7925 Comm: ip Kdump: loaded Not tainted 6.9.0-rc2+ #648
+ Hardware name: Supermicro SYS-6027R-72RF/X9DRH-7TF/7F/iTF/iF, BIOS 3.0  07/26/2013
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x7c/0xc0
+  print_report+0xc9/0x610
+  kasan_report+0x89/0xc0
+  lockdep_register_key+0x5f2/0x700
+  qdisc_alloc+0x21d/0xb60
+  qdisc_create_dflt+0x63/0x3c0
+  attach_one_default_qdisc.constprop.37+0x8e/0x170
+  dev_activate+0x4bd/0xc30
+  __dev_open+0x275/0x380
+  __dev_change_flags+0x3f1/0x570
+  dev_change_flags+0x7c/0x160
+  do_setlink+0x1ea1/0x34b0
+  __rtnl_newlink+0x8c9/0x1510
+  rtnl_newlink+0x61/0x90
+  rtnetlink_rcv_msg+0x2f0/0xbc0
+  netlink_rcv_skb+0x120/0x380
+  netlink_unicast+0x420/0x630
+  netlink_sendmsg+0x732/0xbc0
+  __sock_sendmsg+0x1ea/0x280
+  ____sys_sendmsg+0x5a9/0x990
+  ___sys_sendmsg+0xf1/0x180
+  __sys_sendmsg+0xd3/0x180
+  do_syscall_64+0x96/0x180
+  entry_SYSCALL_64_after_hwframe+0x71/0x79
+ RIP: 0033:0x7f9503f4fa07
+ Code: 0a 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b9 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 89 54 24 1c 48 89 74 24 10
+ RSP: 002b:00007fff6c729068 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+ RAX: ffffffffffffffda RBX: 000000006630c681 RCX: 00007f9503f4fa07
+ RDX: 0000000000000000 RSI: 00007fff6c7290d0 RDI: 0000000000000003
+ RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000078
+ R10: 000000000000009b R11: 0000000000000246 R12: 0000000000000001
+ R13: 00007fff6c729180 R14: 0000000000000000 R15: 000055bf67dd9040
+  </TASK>
+
+ Allocated by task 7745:
+  kasan_save_stack+0x1c/0x40
+  kasan_save_track+0x10/0x30
+  __kasan_kmalloc+0x7b/0x90
+  __kmalloc_node+0x1ff/0x460
+  qdisc_alloc+0xae/0xb60
+  qdisc_create+0xdd/0xfb0
+  tc_modify_qdisc+0x37e/0x1960
+  rtnetlink_rcv_msg+0x2f0/0xbc0
+  netlink_rcv_skb+0x120/0x380
+  netlink_unicast+0x420/0x630
+  netlink_sendmsg+0x732/0xbc0
+  __sock_sendmsg+0x1ea/0x280
+  ____sys_sendmsg+0x5a9/0x990
+  ___sys_sendmsg+0xf1/0x180
+  __sys_sendmsg+0xd3/0x180
+  do_syscall_64+0x96/0x180
+  entry_SYSCALL_64_after_hwframe+0x71/0x79
+
+ Freed by task 7745:
+  kasan_save_stack+0x1c/0x40
+  kasan_save_track+0x10/0x30
+  kasan_save_free_info+0x36/0x60
+  __kasan_slab_free+0xfe/0x180
+  kfree+0x113/0x380
+  qdisc_create+0xafb/0xfb0
+  tc_modify_qdisc+0x37e/0x1960
+  rtnetlink_rcv_msg+0x2f0/0xbc0
+  netlink_rcv_skb+0x120/0x380
+  netlink_unicast+0x420/0x630
+  netlink_sendmsg+0x732/0xbc0
+  __sock_sendmsg+0x1ea/0x280
+  ____sys_sendmsg+0x5a9/0x990
+  ___sys_sendmsg+0xf1/0x180
+  __sys_sendmsg+0xd3/0x180
+  do_syscall_64+0x96/0x180
+  entry_SYSCALL_64_after_hwframe+0x71/0x79
+
+Fix this ensuring that lockdep_unregister_key() is called before the
+qdisc struct is freed, also in the error path of qdisc_create() and
+qdisc_alloc().
+
+Fixes: af0cb3fa3f9e ("net/sched: fix false lockdep warning on qdisc root lock")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/netdev/20240429221706.1492418-1-naresh.kamboju@linaro.org/
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://lore.kernel.org/r/2aa1ca0c0a3aa0acc15925c666c777a4b5de553c.1714496886.git.dcaratti@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/sch_api.c     |    1 +
+ net/sched/sch_generic.c |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-@@ -164,6 +164,8 @@ static void sumo_construct_vid_mapping_t
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1360,6 +1360,7 @@ err_out4:
+ 		ops->destroy(sch);
+ 	qdisc_put_stab(rtnl_dereference(sch->stab));
+ err_out3:
++	lockdep_unregister_key(&sch->root_lock_key);
+ 	netdev_put(dev, &sch->dev_tracker);
+ 	qdisc_free(sch);
+ err_out2:
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -978,6 +978,7 @@ struct Qdisc *qdisc_alloc(struct netdev_
  
- 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
- 		if (table[i].ulSupportedSCLK != 0) {
-+			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
-+				continue;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
- 				table[i].usVoltageID;
- 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
+ 	return sch;
+ errout1:
++	lockdep_unregister_key(&sch->root_lock_key);
+ 	kfree(sch);
+ errout:
+ 	return ERR_PTR(err);
 
 
 
