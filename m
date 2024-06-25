@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-55499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAFEE9163E0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 763E5916343
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 615131F21744
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30C7628615C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6701494CF;
-	Tue, 25 Jun 2024 09:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C916B1494CB;
+	Tue, 25 Jun 2024 09:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LfaELVAD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2TNySwc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6BC21482EA;
-	Tue, 25 Jun 2024 09:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E6E12EBEA;
+	Tue, 25 Jun 2024 09:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309083; cv=none; b=eaPVuMKpc7y1GMVGEnJsAVkCazZmju+L6/Bga1kFu8ZsSijo7dtptkiuXo8xdaSUYncTxTxyQHScG1LligIFLa8gVFjAl3EOPQcGD3s2DOho/7Kkp4jqtqbgqkrZ/1GMD4br4ts+/bx+lbkMxbbs9sYsqLjbSF3F1obIuHK6g4U=
+	t=1719308683; cv=none; b=gjpfNlyBAjOIktxl1hHS6+WFHpakopVuhmKva0ISFTSWD33l/MGR/i3tPsEZYNnQf/NhBvDWdSaOTWWvOYVYwLY/+JzVbwuQbXDioPwxyLotpo4u1tWX4rZ4E/OaYhPdJXJ5Pc+1eRdhIHPYStTCIybwuXmjI/8HJDbaJOUR0Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309083; c=relaxed/simple;
-	bh=nPxNhsUTwrng1+iYwYhoEdo0K6QlOyBYvA2m5pWAZ90=;
+	s=arc-20240116; t=1719308683; c=relaxed/simple;
+	bh=GRoDgkIauAnXkdEQk13Tegb6UGx7zM0jASV6Kj0BCkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BPgSP3AocCRoNnaJphFki03XX7Xp972f7VF7LP1xEkhbPruGA3W3nn3cE7RXWl9I7zzYCHlfM579v70F6QI8pAsFZVqpyu//jAEgOVpqNENTkUCV9P0ersZS99qe0BVJRjVEd67D6aHWB/MREk+doCajsyIuNn8elF4vVFUOomc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LfaELVAD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A37AC32781;
-	Tue, 25 Jun 2024 09:51:22 +0000 (UTC)
+	 MIME-Version; b=peL0s1BLaVGAA9hlgAk0jrG2zdKadLYX7JTwQeK0fuSENPO+RqAUbOCyM7s47d7BF0S/0ABvaD9+nmsmhbxd0h0gqisCG6CZw2d9jKTVp3htT91hI5C2ix5s9KVSF+qwe7uon/dHNamqnl19tj6psNHB2MqnSVLH4qw448DyP5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2TNySwc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C52C32781;
+	Tue, 25 Jun 2024 09:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309083;
-	bh=nPxNhsUTwrng1+iYwYhoEdo0K6QlOyBYvA2m5pWAZ90=;
+	s=korg; t=1719308683;
+	bh=GRoDgkIauAnXkdEQk13Tegb6UGx7zM0jASV6Kj0BCkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LfaELVADX1wzGBsQXC3tIll3xe857H+2P8OTe46TY/ZUSEejalnyRP4jekEX6fpiL
-	 axUTCLCHSN+MWa1IupE4YnfmoIraLbVYWl2Hm1p+RhFmyDLrk0rVTZrkieUy2WTXs5
-	 5TRY2ObbyV/ZAAgFe8Ozkqm8TFjCpIkXwMsFPkWk=
+	b=I2TNySwcmQcJf1HgwS+MheLAuFuQGw5xTcvHq/V6q6c9EgbyqIl4pi1Pe1f4ql0ae
+	 VFa2tSxG5fCMQzEi3Iztjy8m2lEzREYlgmrezpzS2IwwZt8Vi1y4eJ1ZIvsbV0ABWd
+	 Xvb3AyyjZ/qAoGCwz2/VDqOBCsTLFbsJS9szaEyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuang Li <shuali@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/192] sched: act_ct: add netns into the key of tcf_ct_flow_table
-Date: Tue, 25 Jun 2024 11:32:42 +0200
-Message-ID: <20240625085540.631079541@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.9 205/250] drm/amdgpu: fix UBSAN warning in kv_dpm.c
+Date: Tue, 25 Jun 2024 11:32:43 +0200
+Message-ID: <20240625085555.923090169@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 88c67aeb14070bab61d3dd8be96c8b42ebcaf53a ]
+commit f0d576f840153392d04b2d52cf3adab8f62e8cb6 upstream.
 
-zones_ht is a global hashtable for flow_table with zone as key. However,
-it does not consider netns when getting a flow_table from zones_ht in
-tcf_ct_init(), and it means an act_ct action in netns A may get a
-flow_table that belongs to netns B if it has the same zone value.
+Adds bounds check for sumo_vid_mapping_entry.
 
-In Shuang's test with the TOPO:
-
-  tcf2_c <---> tcf2_sw1 <---> tcf2_sw2 <---> tcf2_s
-
-tcf2_sw1 and tcf2_sw2 saw the same flow and used the same flow table,
-which caused their ct entries entering unexpected states and the
-TCP connection not able to end normally.
-
-This patch fixes the issue simply by adding netns into the key of
-tcf_ct_flow_table so that an act_ct action gets a flow_table that
-belongs to its own netns in tcf_ct_init().
-
-Note that for easy coding we don't use tcf_ct_flow_table.nf_ft.net,
-as the ct_ft is initialized after inserting it to the hashtable in
-tcf_ct_flow_table_get() and also it requires to implement several
-functions in rhashtable_params including hashfn, obj_hashfn and
-obj_cmpfn.
-
-Fixes: 64ff70b80fd4 ("net/sched: act_ct: Offload established connections to flow table")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/1db5b6cc6902c5fc6f8c6cbd85494a2008087be5.1718488050.git.lucien.xin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3392
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_ct.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index a7b3f60dd0a8d..1bd86868726bf 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -41,21 +41,26 @@ static struct workqueue_struct *act_ct_wq;
- static struct rhashtable zones_ht;
- static DEFINE_MUTEX(zones_mutex);
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+@@ -164,6 +164,8 @@ static void sumo_construct_vid_mapping_t
  
-+struct zones_ht_key {
-+	struct net *net;
-+	u16 zone;
-+};
-+
- struct tcf_ct_flow_table {
- 	struct rhash_head node; /* In zones tables */
- 
- 	struct rcu_work rwork;
- 	struct nf_flowtable nf_ft;
- 	refcount_t ref;
--	u16 zone;
-+	struct zones_ht_key key;
- 
- 	bool dying;
- };
- 
- static const struct rhashtable_params zones_params = {
- 	.head_offset = offsetof(struct tcf_ct_flow_table, node),
--	.key_offset = offsetof(struct tcf_ct_flow_table, zone),
--	.key_len = sizeof_field(struct tcf_ct_flow_table, zone),
-+	.key_offset = offsetof(struct tcf_ct_flow_table, key),
-+	.key_len = sizeof_field(struct tcf_ct_flow_table, key),
- 	.automatic_shrinking = true,
- };
- 
-@@ -316,11 +321,12 @@ static struct nf_flowtable_type flowtable_ct = {
- 
- static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
- {
-+	struct zones_ht_key key = { .net = net, .zone = params->zone };
- 	struct tcf_ct_flow_table *ct_ft;
- 	int err = -ENOMEM;
- 
- 	mutex_lock(&zones_mutex);
--	ct_ft = rhashtable_lookup_fast(&zones_ht, &params->zone, zones_params);
-+	ct_ft = rhashtable_lookup_fast(&zones_ht, &key, zones_params);
- 	if (ct_ft && refcount_inc_not_zero(&ct_ft->ref))
- 		goto out_unlock;
- 
-@@ -329,7 +335,7 @@ static int tcf_ct_flow_table_get(struct net *net, struct tcf_ct_params *params)
- 		goto err_alloc;
- 	refcount_set(&ct_ft->ref, 1);
- 
--	ct_ft->zone = params->zone;
-+	ct_ft->key = key;
- 	err = rhashtable_insert_fast(&zones_ht, &ct_ft->node, zones_params);
- 	if (err)
- 		goto err_insert;
--- 
-2.43.0
-
+ 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
+ 		if (table[i].ulSupportedSCLK != 0) {
++			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
++				continue;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
+ 				table[i].usVoltageID;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
 
 
 
