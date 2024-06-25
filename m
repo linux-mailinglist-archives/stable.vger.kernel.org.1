@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-55346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E24916332
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11C29163CE
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2F2D1F2447C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B6AC1F2181E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D192149C69;
-	Tue, 25 Jun 2024 09:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D4C14A0BD;
+	Tue, 25 Jun 2024 09:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbLdOIbq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pizvfaEI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A6C12EBEA;
-	Tue, 25 Jun 2024 09:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F66F149DE9;
+	Tue, 25 Jun 2024 09:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308633; cv=none; b=GdR6IroTO6Fwq+pOkP2LnEE+jjswS6x0P72I89tswj8FkLcIt/T8FaLBF2cdf8YI0xy9gphID1scnmU571ZmT6qlWYZs4fUNykBlCnFaGpW1Sb4/U6WLowFWqS0J/qG6T+3oIPL2vfKvMgHcF5tYx3pPv74PHFbhLvXteaWUqUU=
+	t=1719309039; cv=none; b=A7yZkKDTDo01w+WMGmtk5f9ajg+1+DaQM8BARVjxlLJTgyEygiv7nUTSXmJIi7GHbuGaWDa5EPrdVdaf8XSB4bZAe256KEqvdjdPKByWmtRnR4GDX54qe4F8wg46DiZNBsKAtcn2mQI3zJJU7uK+rcGVtT6GP7qZPjs08YcjsDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308633; c=relaxed/simple;
-	bh=Vi+TK2oxcS3MrPrssIZ7NoDaX3osVWNkDMCVpfKTlvc=;
+	s=arc-20240116; t=1719309039; c=relaxed/simple;
+	bh=RenFB+JCfEO/wvO/Oopg6I/C9AG3JNYgRzF68ncY3FE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l01AFBIFRtDv4e4RGmXQ9i4R3TbnkWZczARU6gcC4JgJSlT0HOEYVggc0F3DxI9DFmCHK13NcvWV2jN7f0PwK0mJYW/HRFWYqr+LCQ0sSCdd63Tubhsc/MMyX4PQESJf4I/JElq4cyBMxGjaMmVLHo0PvwXwfC+rDkiwHETp4yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbLdOIbq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BADDC32781;
-	Tue, 25 Jun 2024 09:43:52 +0000 (UTC)
+	 MIME-Version; b=QOUFk5SYT2/jgORgO8I2mYCSqlFyFM8zX5hmvyiy0OigfbXByvl2uvAcMjLc+GOMUgdciKSKi7s/nzvaS4Nn/tjUw+m1NsYnDdOviQNWNt3gfbwRAv2CPr8lsbn6lQs874ZWGEAVy3q+0Cdn8sMwu7xP8CIckgj80xX/NeuVqo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pizvfaEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB92DC32781;
+	Tue, 25 Jun 2024 09:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308633;
-	bh=Vi+TK2oxcS3MrPrssIZ7NoDaX3osVWNkDMCVpfKTlvc=;
+	s=korg; t=1719309039;
+	bh=RenFB+JCfEO/wvO/Oopg6I/C9AG3JNYgRzF68ncY3FE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hbLdOIbqJSUVBMzQ5pGYUAhs6L+hklmPBGZiYx1I1jUtf1y+GXnndwPSE1knKn3m1
-	 wXtd0Z5JLB4oP+4zfwb3JOKSqUlbufCaKdaSplfBxOPa5HqBWqeJ+plo4eLM4LjbO5
-	 7eS/LfcNYJVwyyXkc3rSkgFk22UJGPQ2sHOjB6vo=
+	b=pizvfaEIGHnvjXkim9/jv0q2hztku6mvTA2z4eA65lNBmnFoXeyCAl0FrXdtx/CrP
+	 QkXr3Izm2U792rc/f53ripAhhT1UyYUM9d9YSWUKQADZb5R4SzbIA7Pn7SrXm5P4gO
+	 5PsCRmNP5YiUnijUEHqLzLnV/+zevpmCF0yU8qQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.9 187/250] cifs: fix typo in module parameter enable_gcm_256
-Date: Tue, 25 Jun 2024 11:32:25 +0200
-Message-ID: <20240625085555.230743188@linuxfoundation.org>
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 074/192] ALSA: hda: cs35l56: Component should be unbound before deconstruction
+Date: Tue, 25 Jun 2024 11:32:26 +0200
+Message-ID: <20240625085540.017127413@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-commit 8bf0287528da1992c5e49d757b99ad6bbc34b522 upstream.
+[ Upstream commit 721f2e6653f5ab0cc52b3a459c4a2158b92fcf80 ]
 
-enable_gcm_256 (which allows the server to require the strongest
-encryption) is enabled by default, but the modinfo description
-incorrectly showed it disabled by default. Fix the typo.
+The interface associated with the hda_component should be deactivated
+before the driver is deconstructed during removal.
 
-Cc: stable@vger.kernel.org
-Fixes: fee742b50289 ("smb3.1.1: enable negotiating stronger encryption by default")
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 73cfbfa9caea ("ALSA: hda/cs35l56: Add driver for Cirrus Logic CS35L56 amplifier")
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240613133713.75550-2-simont@opensource.cirrus.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/cs35l56_hda.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -134,7 +134,7 @@ module_param(enable_oplocks, bool, 0644)
- MODULE_PARM_DESC(enable_oplocks, "Enable or disable oplocks. Default: y/Y/1");
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index 15e20d9261393..78e2eeba49345 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -1021,12 +1021,12 @@ void cs35l56_hda_remove(struct device *dev)
+ {
+ 	struct cs35l56_hda *cs35l56 = dev_get_drvdata(dev);
  
- module_param(enable_gcm_256, bool, 0644);
--MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: n/N/0");
-+MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: y/Y/0");
++	component_del(cs35l56->base.dev, &cs35l56_hda_comp_ops);
++
+ 	pm_runtime_dont_use_autosuspend(cs35l56->base.dev);
+ 	pm_runtime_get_sync(cs35l56->base.dev);
+ 	pm_runtime_disable(cs35l56->base.dev);
  
- module_param(require_gcm_256, bool, 0644);
- MODULE_PARM_DESC(require_gcm_256, "Require strongest (256 bit) GCM encryption. Default: n/N/0");
+-	component_del(cs35l56->base.dev, &cs35l56_hda_comp_ops);
+-
+ 	cs_dsp_remove(&cs35l56->cs_dsp);
+ 
+ 	kfree(cs35l56->system_name);
+-- 
+2.43.0
+
 
 
 
