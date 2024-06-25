@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-55410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43761916375
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB5291649A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFF7DB2113F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAED3287725
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE5D148315;
-	Tue, 25 Jun 2024 09:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A256214A0A4;
+	Tue, 25 Jun 2024 09:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pS5H8swj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5WVDZmD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB60B1465A8;
-	Tue, 25 Jun 2024 09:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6285E149C4F;
+	Tue, 25 Jun 2024 09:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308821; cv=none; b=En4Ri5XQc4hbisYob1NAqoH0RL9JPH7c6NV07h7MjDZdWjMDIazghMDTwIEjvfMWKMUxaX5JMEey1Gxk1teaNxmiWupFIhYloK27QbNxtp+4g/h9dA930NCIxmEMro6vdmy+nnkdSNrP5bHSowXzsDBIWRxcNnPlRYs7BdueVMQ=
+	t=1719309547; cv=none; b=UWtlm64n8bLniMitVuWXz/7oNabXUzhKjXGr2xQjebvsz2Mzj3E7MFlCHzZ2yde0XFN99NFFzpsf2AxBNQClHOdUaS57pap0Ot6LVpo87vJ9QcZEagQf39dLdoZPnp926ADzEfp3vbLIyAY5+7qfy2OXpqsk5X9XiB3lh5OCmgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308821; c=relaxed/simple;
-	bh=C/crJdTz/xcyOxjiVwNiXiP+N46LfL+Zz7728SPvscA=;
+	s=arc-20240116; t=1719309547; c=relaxed/simple;
+	bh=a5LiCamK/t8jn0h1e+AVW8XdW6qElB3eZrhvUUlelPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LdOvqEgnbFgvXDTt2hXRLV1MJx8XhzEZDh6pTQOuQM/UDr0PEZRI0XvWRU5pd3lCBAMl7opXL8KfR1JjY8w4xJw7Xsqh2rzTUKQsD3/XIvfsIzGgUW+81Cxwf0iuDNzP2lcGEtVcQ8a08022OfOlRluB1zuni64M3+yYobKni2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pS5H8swj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31756C32781;
-	Tue, 25 Jun 2024 09:47:01 +0000 (UTC)
+	 MIME-Version; b=F+xSpqP8CQJe6+4adjSj8IG3DyiaqznadcVTS/HHzIRuoIYWevrn6RUmDy3sxM1qC/1J2reXLvTHZT+ilofPg0p88hJx+IJ4RhzHEL78XFkEMU26nor072h8hcqfIOa1+RlO+ZLjIwAUXGytqUUE2mzzPokU39Omp8rZlZp/Dws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5WVDZmD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8E2C32781;
+	Tue, 25 Jun 2024 09:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308821;
-	bh=C/crJdTz/xcyOxjiVwNiXiP+N46LfL+Zz7728SPvscA=;
+	s=korg; t=1719309547;
+	bh=a5LiCamK/t8jn0h1e+AVW8XdW6qElB3eZrhvUUlelPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pS5H8swj5RQoz9Yo9aEmlsgfvCCDK0b1p1p4znIjPa9dLktfD9b3FG2RdRjaLAmvE
-	 LgrmPR1yRB+/OmlRofg1T9rihg6ZMao8vDyMLe0NhwiEtPMMAp9by2PuXiPOoYgkm0
-	 WIXpsAyvUoaxxcHAHzmOiRvTR4sYMFi3v0A+8QZs=
+	b=T5WVDZmDU+Wo1Ikd/yneRExJJjTXjp9Gt/0CGeUVBFMCIb9kG885Ls369aOCTJ+kp
+	 pS3vTsAwqo2k1tCS2m3VL7P34FKMU9STiWQOSFoF7DGfngWvdylAdhsXNBY4Bp2VTS
+	 et/W9btTQYtNSXv2QPXFffmkuoNvR6GE0iAdpfSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.9 232/250] dt-bindings: i2c: google,cros-ec-i2c-tunnel: correct path to i2c-controller schema
+	Alex Henrie <alexhenrie24@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 035/131] usb: misc: uss720: check for incompatible versions of the Belkin F5U002
 Date: Tue, 25 Jun 2024 11:33:10 +0200
-Message-ID: <20240625085556.958990281@linuxfoundation.org>
+Message-ID: <20240625085527.287071223@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-commit 5c8cfd592bb7632200b4edac8f2c7ec892ed9d81 upstream.
+[ Upstream commit 3295f1b866bfbcabd625511968e8a5c541f9ab32 ]
 
-The referenced i2c-controller.yaml schema is provided by dtschema
-package (outside of Linux kernel), so use full path to reference it.
+The incompatible device in my possession has a sticker that says
+"F5U002 Rev 2" and "P80453-B", and lsusb identifies it as
+"050d:0002 Belkin Components IEEE-1284 Controller". There is a bug
+report from 2007 from Michael Trausch who was seeing the exact same
+errors that I saw in 2024 trying to use this cable.
 
-Cc: stable@vger.kernel.org
-Fixes: 1acd4577a66f ("dt-bindings: i2c: convert i2c-cros-ec-tunnel to json-schema")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/all/46DE5830.9060401@trausch.us/
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Link: https://lore.kernel.org/r/20240326150723.99939-5-alexhenrie24@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/misc/uss720.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml
-+++ b/Documentation/devicetree/bindings/i2c/google,cros-ec-i2c-tunnel.yaml
-@@ -21,7 +21,7 @@ description: |
-   google,cros-ec-spi or google,cros-ec-i2c.
+diff --git a/drivers/usb/misc/uss720.c b/drivers/usb/misc/uss720.c
+index b00d92db5dfd1..eb5a8e0d9e2d6 100644
+--- a/drivers/usb/misc/uss720.c
++++ b/drivers/usb/misc/uss720.c
+@@ -677,7 +677,7 @@ static int uss720_probe(struct usb_interface *intf,
+ 	struct parport_uss720_private *priv;
+ 	struct parport *pp;
+ 	unsigned char reg;
+-	int i;
++	int ret;
  
- allOf:
--  - $ref: i2c-controller.yaml#
-+  - $ref: /schemas/i2c/i2c-controller.yaml#
+ 	dev_dbg(&intf->dev, "probe: vendor id 0x%x, device id 0x%x\n",
+ 		le16_to_cpu(usbdev->descriptor.idVendor),
+@@ -688,8 +688,8 @@ static int uss720_probe(struct usb_interface *intf,
+ 		usb_put_dev(usbdev);
+ 		return -ENODEV;
+ 	}
+-	i = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
+-	dev_dbg(&intf->dev, "set interface result %d\n", i);
++	ret = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
++	dev_dbg(&intf->dev, "set interface result %d\n", ret);
  
- properties:
-   compatible:
+ 	interface = intf->cur_altsetting;
+ 
+@@ -725,12 +725,18 @@ static int uss720_probe(struct usb_interface *intf,
+ 	set_1284_register(pp, 7, 0x00, GFP_KERNEL);
+ 	set_1284_register(pp, 6, 0x30, GFP_KERNEL);  /* PS/2 mode */
+ 	set_1284_register(pp, 2, 0x0c, GFP_KERNEL);
+-	/* debugging */
+-	get_1284_register(pp, 0, &reg, GFP_KERNEL);
++
++	/* The Belkin F5U002 Rev 2 P80453-B USB parallel port adapter shares the
++	 * device ID 050d:0002 with some other device that works with this
++	 * driver, but it itself does not. Detect and handle the bad cable
++	 * here. */
++	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
+ 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
++	if (ret < 0)
++		return ret;
+ 
+-	i = usb_find_last_int_in_endpoint(interface, &epd);
+-	if (!i) {
++	ret = usb_find_last_int_in_endpoint(interface, &epd);
++	if (!ret) {
+ 		dev_dbg(&intf->dev, "epaddr %d interval %d\n",
+ 				epd->bEndpointAddress, epd->bInterval);
+ 	}
+-- 
+2.43.0
+
 
 
 
