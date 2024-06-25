@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09B39163FA
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF7291647E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E79B1C2175B
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787611F23DD4
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB531494AF;
-	Tue, 25 Jun 2024 09:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC55149C58;
+	Tue, 25 Jun 2024 09:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Evwpdgkz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DnvvvsKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E36724B34;
-	Tue, 25 Jun 2024 09:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C28E1465A8;
+	Tue, 25 Jun 2024 09:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309151; cv=none; b=latNmL2JFOl2cy5qZfVfWg9mLyRxTNupqXmpDG15VFwdHVjpitzKrDssdFeJdIy17Dw5goE8HN+wBl+3R9LGeqanlJ+FAPnn+GWtfROQPO37FLKWMKKwG6Inam6oFF4AFW0zDFWY152YjU/tz5gC/mxcbycaYm/Gd4nVbCIAbrY=
+	t=1719309476; cv=none; b=pgEx9lI2+5boqQaztvvqLKf+6TG+uQKYln+lTiTdq/PR3Z9PxjMsts/yWUB+9yC2YRRQ52lLDRD40/vzMzI5uthn7VV+XrGws83Wvr1NiicziDEQQEDdAElTmlZ8VeZUwbt6aylcERnJ1hluwyisgnmKdigjn8aR5CG0vwg+Y2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309151; c=relaxed/simple;
-	bh=hK4aErf32Xdypy/tpmSxVmCAI0gugfzWu9nZu8dqdsc=;
+	s=arc-20240116; t=1719309476; c=relaxed/simple;
+	bh=VzkdA+tyk6FTtX2M846mHsxabSChP+PlJzUxbEeH5Ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WgF7GApU9ZkZTZ3L7OY90eUHTNeAbx60VQ5vIjMMr5HSh+LlPFCHow4rYvf6eeuRo2CxSbYNmbYqjaLgXxqs58Y7e5ZTexxRALUqBBs8eBSszPl7VYwni6EHDA9iB/3GRpuLQm8Hl2HZIhRyw6XV7DdOV1+N6LOAcCp/eZiW0Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Evwpdgkz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D3AC32781;
-	Tue, 25 Jun 2024 09:52:30 +0000 (UTC)
+	 MIME-Version; b=hGO5suqyGvSDuC8HNske+iVAlKU3Ni55SiXGYKT8lX4sGdn1lVUzhRbs6h5vqTLNjvtx2FGYH2O1cBTRr0/u0dOXL0WQpfUg0UesI64WyF9abU3/9IVJtmWXgvbdK7DL6ZeoPtuPMP/9YCZeqUg6zacNXSiPT/TiBSc9gVY/8WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DnvvvsKc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1806EC32789;
+	Tue, 25 Jun 2024 09:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309151;
-	bh=hK4aErf32Xdypy/tpmSxVmCAI0gugfzWu9nZu8dqdsc=;
+	s=korg; t=1719309476;
+	bh=VzkdA+tyk6FTtX2M846mHsxabSChP+PlJzUxbEeH5Ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EvwpdgkzzVMG9DE0ZeqWS450vCeXgYaJmruonUyiovFRUdjFIBpt73coUgdl0KL9E
-	 tBoeGukgHCGXNzs0o3eBCt+/bbi8+BeQ6d3TFdgJi436VjhTKoQ7BprUhW5cFM+Fd7
-	 OQynJvAzeXmSvwwsKqDzr9iV2edeh0ooE8IZ8neY=
+	b=DnvvvsKcnQwp5QP5yZ0wJRrnELrzgegcLOWXjewr9BtQUm7FRt+2dBVQBVWFrpoUS
+	 /yEaMIjqPwd47o+tTo1GE5MxP2ksn/HzzeIuxySzGO94Kx2aIs61sbYGyciCesh4lS
+	 R2tDIPVP7XnuCiM8C7SarNHJFxaJfWG+SfHtpBjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/192] dmaengine: ioatdma: Fix kmemleak in ioat_pci_probe()
+Subject: [PATCH 6.1 028/131] ALSA: hda/realtek: Add quirks for Lenovo 13X
 Date: Tue, 25 Jun 2024 11:33:03 +0200
-Message-ID: <20240625085541.432687045@linuxfoundation.org>
+Message-ID: <20240625085527.020070139@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-[ Upstream commit 29b7cd255f3628e0d65be33a939d8b5bba10aa62 ]
+[ Upstream commit 25f46354dca912c84f1f79468fd636a94b8d287a ]
 
-If probing fails we end up with leaking ioatdma_device and each
-allocated channel.
+Add laptop using CS35L41 HDA.
+This laptop does not have _DSD, so require entries in property
+configuration table for cs35l41_hda driver.
 
-Following kmemleak easy to reproduce by injecting an error in
-ioat_alloc_chan_resources() when doing ioat_dma_self_test().
-
-unreferenced object 0xffff888014ad5800 (size 1024): [..]
-    [<ffffffff827692ca>] kmemleak_alloc+0x4a/0x80
-    [<ffffffff81430600>] kmalloc_trace+0x270/0x2f0
-    [<ffffffffa000b7d1>] ioat_pci_probe+0xc1/0x1c0 [ioatdma]
-[..]
-
-repeated for each ioatdma channel:
-
-unreferenced object 0xffff8880148e5c00 (size 512): [..]
-    [<ffffffff827692ca>] kmemleak_alloc+0x4a/0x80
-    [<ffffffff81430600>] kmalloc_trace+0x270/0x2f0
-    [<ffffffffa0009641>] ioat_enumerate_channels+0x101/0x2d0 [ioatdma]
-    [<ffffffffa000b266>] ioat3_dma_probe+0x4d6/0x970 [ioatdma]
-    [<ffffffffa000b891>] ioat_pci_probe+0x181/0x1c0 [ioatdma]
-[..]
-
-Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-3-a9f2fbe26ab1@yadro.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Message-ID: <20240423162303.638211-3-sbinding@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ioat/init.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/pci/hda/patch_realtek.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 26964b7c8cf14..cf688b0c8444c 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1347,6 +1347,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	void __iomem * const *iomap;
- 	struct device *dev = &pdev->dev;
- 	struct ioatdma_device *device;
-+	unsigned int i;
- 	u8 version;
- 	int err;
- 
-@@ -1384,6 +1385,9 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 
- 	err = ioat3_dma_probe(device, ioat_dca_enabled);
- 	if (err) {
-+		for (i = 0; i < IOAT_MAX_CHANS; i++)
-+			kfree(device->idx[i]);
-+		kfree(device);
- 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
- 		return -ENODEV;
- 	}
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 3a7104f72cabd..35dabe6ce0d7a 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10090,6 +10090,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x3852, "Lenovo Yoga 7 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3853, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3855, "Legion 7 16ITHG6", ALC287_FIXUP_LEGION_16ITHG6),
++	SND_PCI_QUIRK(0x17aa, 0x3865, "Lenovo 13X", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x17aa, 0x3866, "Lenovo 13X", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x3869, "Lenovo Yoga7 14IAL7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+ 	SND_PCI_QUIRK(0x17aa, 0x3977, "IdeaPad S210", ALC283_FIXUP_INT_MIC),
 -- 
 2.43.0
 
