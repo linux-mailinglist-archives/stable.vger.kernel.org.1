@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-55378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1689E916354
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20952916478
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B89411F22049
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 525AC1C220AE
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D596C1494DE;
-	Tue, 25 Jun 2024 09:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0755D149C4F;
+	Tue, 25 Jun 2024 09:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vq317C7J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPKppZnF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B6D148315;
-	Tue, 25 Jun 2024 09:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D40146A67;
+	Tue, 25 Jun 2024 09:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308727; cv=none; b=bUEVt4Zu5TG0HN3B1YblhAJ/p5e+eGGzJEsg9KRtFTUPKl0nVT72FGZE8TsdHfa13NPVkzbZqaR0ynbUSEsfZiaQnxWqDHC67qddk/YBt8jVuwMg4mQ+w8Zhn9Nsf9w0nL7Xb9zHAKsGUkw+RML99FKk3zABuLjma5mneiXRp3M=
+	t=1719309461; cv=none; b=s/qS++byRYhxnSTLQVo8itbE513IqTL02kwaqCbGadq3O2rkoFKUu3upEXCKvmI9QBFAFkZBu4SGhUyiRW8nNHQ876fROnVJy/G8wuaXAMS0vxFC71gKntHTsYTtJGDvYqVjoLUi8oapMw3lOXgs3gj2yr+ddawaQd4qwMtmi9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308727; c=relaxed/simple;
-	bh=6VopJ9iYNrBC4nxTuBJCaMgf+x2yKmCR1iNkz26CsOs=;
+	s=arc-20240116; t=1719309461; c=relaxed/simple;
+	bh=U1wen8J/vOvcA/bbjaDkptUjVBbzK6LupYE3oK2/GpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ye4m7KL+6cH9qEENJtFOgFMJUgo+hnxgHRENhAYtZwE17vlzZ6Obsd0dJ2tp3Cqqp++9noeB3o6JQxnaS8CwNCeYshwqrVhDB7FBCF7Th63HK424pqh/4Sagb0UnLxvon9ED712gtCivkRCYTZmLibHMAYss//Qu21lYHtGp0TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vq317C7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11DE6C32781;
-	Tue, 25 Jun 2024 09:45:26 +0000 (UTC)
+	 MIME-Version; b=dHwoDnE5Wpt6JRj7t81xhQTd2Gc8lWBgZnGPn8KFMHzW4gHSoTqydF1tgjFqE/wRKhy0uDEH7zWDjfH710phA8L1KNFQ2I3w+EKgjCzFPNhdLwAGV5lZKOenvZ3BD/OE1vbJljt4jjrzaF7Mo2e08D4ZvEkHb+tCePAmHO1/s/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPKppZnF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405F1C32781;
+	Tue, 25 Jun 2024 09:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308727;
-	bh=6VopJ9iYNrBC4nxTuBJCaMgf+x2yKmCR1iNkz26CsOs=;
+	s=korg; t=1719309461;
+	bh=U1wen8J/vOvcA/bbjaDkptUjVBbzK6LupYE3oK2/GpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vq317C7JnqyPcelRVKOe0ozuqZycGapbOsoWg+GYiGSPrzSWyZa5v/g4PiuH/OPQW
-	 vyPS4UEmyKtecbq331ua+46epZlVPqKLgxzCuADhP6gdJR/igOR6+gGMwrNYcxihfa
-	 zEsAxwHO9ENSF79HQDyX97Cdp53PBmCCATEoYToE=
+	b=KPKppZnFGpiROTxJ5IZfRu+lF5XiOP11vtWh+H005X+qF2eVU+9m+0q6PFGIV8lQZ
+	 BjrnWr8Oj6X9EkGOWTyBH4O0M1+TUIK84e1zn43RGpRz+J2fzPzBThilGAXTjj1S3w
+	 Cz3TLGxsa9Jd0uVqZBmembC3CvUjB4/UO6q5nAgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashish Kalra <Ashish.Kalra@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.9 219/250] efi/x86: Free EFI memory map only when installing a new one.
-Date: Tue, 25 Jun 2024 11:32:57 +0200
-Message-ID: <20240625085556.458619382@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 023/131] drm/amd/display: Exit idle optimizations before HDCP execution
+Date: Tue, 25 Jun 2024 11:32:58 +0200
+Message-ID: <20240625085526.829882486@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +66,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-commit 75dde792d6f6c2d0af50278bd374bf0c512fe196 upstream.
+[ Upstream commit f30a3bea92bdab398531129d187629fb1d28f598 ]
 
-The logic in __efi_memmap_init() is shared between two different
-execution flows:
-- mapping the EFI memory map early or late into the kernel VA space, so
-  that its entries can be accessed;
-- the x86 specific cloning of the EFI memory map in order to insert new
-  entries that are created as a result of making a memory reservation
-  via a call to efi_mem_reserve().
+[WHY]
+PSP can access DCN registers during command submission and we need
+to ensure that DCN is not in PG before doing so.
 
-In the former case, the underlying memory containing the kernel's view
-of the EFI memory map (which may be heavily modified by the kernel
-itself on x86) is not modified at all, and the only thing that changes
-is the virtual mapping of this memory, which is different between early
-and late boot.
+[HOW]
+Add a callback to DM to lock and notify DC for idle optimization exit.
+It can't be DC directly because of a potential race condition with the
+link protection thread and the rest of DM operation.
 
-In the latter case, an entirely new allocation is created that carries a
-new, updated version of the kernel's view of the EFI memory map. When
-installing this new version, the old version will no longer be
-referenced, and if the memory was allocated by the kernel, it will leak
-unless it gets freed.
-
-The logic that implements this freeing currently lives on the code path
-that is shared between these two use cases, but it should only apply to
-the latter. So move it to the correct spot.
-
-While at it, drop the dummy definition for non-x86 architectures, as
-that is no longer needed.
-
-Cc: <stable@vger.kernel.org>
-Fixes: f0ef6523475f ("efi: Fix efi_memmap_alloc() leaks")
-Tested-by: Ashish Kalra <Ashish.Kalra@amd.com>
-Link: https://lore.kernel.org/all/36ad5079-4326-45ed-85f6-928ff76483d3@amd.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/efi.h     |    1 -
- arch/x86/platform/efi/memmap.c |   12 +++++++++++-
- drivers/firmware/efi/memmap.c  |    9 ---------
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c    | 10 ++++++++++
+ drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h |  8 ++++++++
+ 2 files changed, 18 insertions(+)
 
---- a/arch/x86/include/asm/efi.h
-+++ b/arch/x86/include/asm/efi.h
-@@ -401,7 +401,6 @@ extern int __init efi_memmap_alloc(unsig
- 				   struct efi_memory_map_data *data);
- extern void __efi_memmap_free(u64 phys, unsigned long size,
- 			      unsigned long flags);
--#define __efi_memmap_free __efi_memmap_free
- 
- extern int __init efi_memmap_install(struct efi_memory_map_data *data);
- extern int __init efi_memmap_split_count(efi_memory_desc_t *md,
---- a/arch/x86/platform/efi/memmap.c
-+++ b/arch/x86/platform/efi/memmap.c
-@@ -92,12 +92,22 @@ int __init efi_memmap_alloc(unsigned int
-  */
- int __init efi_memmap_install(struct efi_memory_map_data *data)
- {
-+	unsigned long size = efi.memmap.desc_size * efi.memmap.nr_map;
-+	unsigned long flags = efi.memmap.flags;
-+	u64 phys = efi.memmap.phys_map;
-+	int ret;
-+
- 	efi_memmap_unmap();
- 
- 	if (efi_enabled(EFI_PARAVIRT))
- 		return 0;
- 
--	return __efi_memmap_init(data);
-+	ret = __efi_memmap_init(data);
-+	if (ret)
-+		return ret;
-+
-+	__efi_memmap_free(phys, size, flags);
-+	return 0;
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
+index 5e01c6e24cbc8..9a5a1726acaf8 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
+@@ -88,6 +88,14 @@ static uint8_t is_cp_desired_hdcp2(struct mod_hdcp *hdcp)
+ 			!hdcp->connection.is_hdcp2_revoked;
  }
  
- /**
---- a/drivers/firmware/efi/memmap.c
-+++ b/drivers/firmware/efi/memmap.c
-@@ -15,10 +15,6 @@
- #include <asm/early_ioremap.h>
- #include <asm/efi.h>
++static void exit_idle_optimizations(struct mod_hdcp *hdcp)
++{
++	struct mod_hdcp_dm *dm = &hdcp->config.dm;
++
++	if (dm->funcs.exit_idle_optimizations)
++		dm->funcs.exit_idle_optimizations(dm->handle);
++}
++
+ static enum mod_hdcp_status execution(struct mod_hdcp *hdcp,
+ 		struct mod_hdcp_event_context *event_ctx,
+ 		union mod_hdcp_transition_input *input)
+@@ -543,6 +551,8 @@ enum mod_hdcp_status mod_hdcp_process_event(struct mod_hdcp *hdcp,
+ 	memset(&event_ctx, 0, sizeof(struct mod_hdcp_event_context));
+ 	event_ctx.event = event;
  
--#ifndef __efi_memmap_free
--#define __efi_memmap_free(phys, size, flags) do { } while (0)
--#endif
--
- /**
-  * __efi_memmap_init - Common code for mapping the EFI memory map
-  * @data: EFI memory map data
-@@ -51,11 +47,6 @@ int __init __efi_memmap_init(struct efi_
- 		return -ENOMEM;
- 	}
++	exit_idle_optimizations(hdcp);
++
+ 	/* execute and transition */
+ 	exec_status = execution(hdcp, &event_ctx, &hdcp->auth.trans_input);
+ 	trans_status = transition(
+diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
+index 3348bb97ef81a..dfa8168e51890 100644
+--- a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
++++ b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
+@@ -155,6 +155,13 @@ struct mod_hdcp_ddc {
+ 	} funcs;
+ };
  
--	if (efi.memmap.flags & (EFI_MEMMAP_MEMBLOCK | EFI_MEMMAP_SLAB))
--		__efi_memmap_free(efi.memmap.phys_map,
--				  efi.memmap.desc_size * efi.memmap.nr_map,
--				  efi.memmap.flags);
--
- 	map.phys_map = data->phys_map;
- 	map.nr_map = data->size / data->desc_size;
- 	map.map_end = map.map + data->size;
++struct mod_hdcp_dm {
++	void *handle;
++	struct {
++		void (*exit_idle_optimizations)(void *handle);
++	} funcs;
++};
++
+ struct mod_hdcp_psp {
+ 	void *handle;
+ 	void *funcs;
+@@ -271,6 +278,7 @@ struct mod_hdcp_display_query {
+ struct mod_hdcp_config {
+ 	struct mod_hdcp_psp psp;
+ 	struct mod_hdcp_ddc ddc;
++	struct mod_hdcp_dm dm;
+ 	uint8_t index;
+ };
+ 
+-- 
+2.43.0
+
 
 
 
