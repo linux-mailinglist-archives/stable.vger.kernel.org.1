@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-55214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCC3916294
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:37:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D18C916296
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750A3287BEC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:37:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B17821C21283
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87FE149C4F;
-	Tue, 25 Jun 2024 09:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1371494D1;
+	Tue, 25 Jun 2024 09:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAi+pjSO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dD6dhC0V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76112148315;
-	Tue, 25 Jun 2024 09:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1B4148315;
+	Tue, 25 Jun 2024 09:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308247; cv=none; b=seN9WAlhS2OhMRbq3JS+1dEJzqdAPpSfjuK0hLrZB+U3HE8jHkxXa1RPP3+UjUdmFPEqil7VZxrAJxW+BCZG2ry6KMFUnn/U/YHKv8E/L4/Z/0u4eadDMW3/zunOjZb0zJ3AnTKM1jr3BhjnjG/27mTxTG7tVmNPA/8gParbJz8=
+	t=1719308253; cv=none; b=N45t87CHHwMx4v12zaEHUuC4LqWDAvJ5jGjKEYe37hV+4O9zIzCzNH48RQ+dk/p6vU7aNVluw8LkU/hvkKgf0FgBCWS3U3ew6dLb9YiDZ+OHEOOK07fsz+JpLjiq7leVwWaoTdRX0t02xbnV2Bq65UU8kZQAMrSkPDYHn0ec6VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308247; c=relaxed/simple;
-	bh=g6mdoN4pv64Oc5vIkLFqJVqFiLPVBFvju/SGVvcUuDU=;
+	s=arc-20240116; t=1719308253; c=relaxed/simple;
+	bh=SttkuAssi03/cGLaIiKSby/oflRExlnd+NQ1u1xFgew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UeRkI7QbH/oi0nIMUtxQAU8UHRSvMEHYHSQBrBIzvSrKS7w1zVsaNaXYdyh6yOLj4RVpOZN6y1rFAGJOiJqxcQjhdE+KLpwXKKjQlRHR+qMZEV+694e4/pAlTZEW7Vdm5bnjL19GFNDK/oxYQVu962y3823vRwxTlV+eLdILTnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAi+pjSO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6334C32781;
-	Tue, 25 Jun 2024 09:37:26 +0000 (UTC)
+	 MIME-Version; b=XM8R44Bj93duCpl5IYDGD9skOxBROKFcOKN+pG9Rme4A9E+pi3MvIHdwZ0YJat94tS0jEK6urPpmL5/SDlTIhf4s4hwyLeBc9XuX71bUzpXeXxHEG5za55aIAeMT6TaoaXhw4g75gEBkwKSe2uXhqEDno2M0HRN+mCs3SnTvF0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dD6dhC0V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2163C32781;
+	Tue, 25 Jun 2024 09:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308247;
-	bh=g6mdoN4pv64Oc5vIkLFqJVqFiLPVBFvju/SGVvcUuDU=;
+	s=korg; t=1719308253;
+	bh=SttkuAssi03/cGLaIiKSby/oflRExlnd+NQ1u1xFgew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAi+pjSO0gbWiP0YBYx+1t2NPKHZf4gk+zjku5B1hJDMbwlSLKJrO1xGLzICxwLZh
-	 EnkVLPM7/6IauhmfktpYTt4jrdLxiOLQS6hgPR802mz1TTs16QyLla3R78Z0+U9oXb
-	 VQL5wIZ9VCefPVC0qeM2NcckfMG5VlToHDSUmoB0=
+	b=dD6dhC0VeczfmlzfW8N9R8sW2ypHBiAASxLNR3MyW7F63Pn4g2AyRBmlqKQN1Os7g
+	 Swi43qLd6j3tG+7uKNCEzA2ixcHag6ZBp3F9hMWF8MLAJkp34/25oZJ+mkvI/k9dUM
+	 6DTZlGtRc4Zf+N8Zk5f6qtiIAcxPkV98rLFeIfOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 056/250] platform/x86: x86-android-tablets: Unregister devices in reverse order
-Date: Tue, 25 Jun 2024 11:30:14 +0200
-Message-ID: <20240625085550.212858924@linuxfoundation.org>
+Subject: [PATCH 6.9 057/250] platform/x86: x86-android-tablets: Add Lenovo Yoga Tablet 2 Pro 1380F/L data
+Date: Tue, 25 Jun 2024 11:30:15 +0200
+Message-ID: <20240625085550.251074670@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -67,94 +67,301 @@ Content-Transfer-Encoding: 8bit
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 3de0f2627ef849735f155c1818247f58404dddfe ]
+[ Upstream commit 3eee73ad42c3899d97e073bf2c41e7670a3c575c ]
 
-Not all subsystems support a device getting removed while there are
-still consumers of the device with a reference to the device.
+The Lenovo Yoga Tablet 2 Pro 1380F/L is a x86 ACPI tablet which ships with
+Android x86 as factory OS. Its DSDT contains a bunch of I2C devices which
+are not actually there, causing various resource conflicts. Enumeration of
+these is skipped through the acpi_quirk_skip_i2c_client_enumeration().
 
-One example of this is the regulator subsystem. If a regulator gets
-unregistered while there are still drivers holding a reference
-a WARN() at drivers/regulator/core.c:5829 triggers, e.g.:
-
- WARNING: CPU: 1 PID: 1587 at drivers/regulator/core.c:5829 regulator_unregister
- Hardware name: Intel Corp. VALLEYVIEW C0 PLATFORM/BYT-T FFD8, BIOS BLADE_21.X64.0005.R00.1504101516 FFD8_X64_R_2015_04_10_1516 04/10/2015
- RIP: 0010:regulator_unregister
- Call Trace:
-  <TASK>
-  regulator_unregister
-  devres_release_group
-  i2c_device_remove
-  device_release_driver_internal
-  bus_remove_device
-  device_del
-  device_unregister
-  x86_android_tablet_remove
-
-On the Lenovo Yoga Tablet 2 series the bq24190 charger chip also provides
-a 5V boost converter output for powering USB devices connected to the micro
-USB port, the bq24190-charger driver exports this as a Vbus regulator.
-
-On the 830 (8") and 1050 ("10") models this regulator is controlled by
-a platform_device and x86_android_tablet_remove() removes platform_device-s
-before i2c_clients so the consumer gets removed first.
-
-But on the 1380 (13") model there is a lc824206xa micro-USB switch
-connected over I2C and the extcon driver for that controls the regulator.
-The bq24190 i2c-client *must* be registered first, because that creates
-the regulator with the lc824206xa listed as its consumer. If the regulator
-has not been registered yet the lc824206xa driver will end up getting
-a dummy regulator.
-
-Since in this case both the regulator provider and consumer are I2C
-devices, the only way to ensure that the consumer is unregistered first
-is to unregister the I2C devices in reverse order of in which they were
-created.
-
-For consistency and to avoid similar problems in the future change
-x86_android_tablet_remove() to unregister all device types in reverse
-order.
+Add support for manually instantiating the I2C + other devices which are
+actually present on this tablet by adding the necessary device info to
+the x86-android-tablets module.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240406125058.13624-1-hdegoede@redhat.com
+Link: https://lore.kernel.org/r/20240406125058.13624-2-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/x86-android-tablets/core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../platform/x86/x86-android-tablets/dmi.c    |  18 ++
+ .../platform/x86/x86-android-tablets/lenovo.c | 216 ++++++++++++++++++
+ .../x86-android-tablets/x86-android-tablets.h |   1 +
+ 3 files changed, 235 insertions(+)
 
-diff --git a/drivers/platform/x86/x86-android-tablets/core.c b/drivers/platform/x86/x86-android-tablets/core.c
-index a3415f1c0b5f8..6559bb4ea7305 100644
---- a/drivers/platform/x86/x86-android-tablets/core.c
-+++ b/drivers/platform/x86/x86-android-tablets/core.c
-@@ -278,25 +278,25 @@ static void x86_android_tablet_remove(struct platform_device *pdev)
- {
- 	int i;
- 
--	for (i = 0; i < serdev_count; i++) {
-+	for (i = serdev_count - 1; i >= 0; i--) {
- 		if (serdevs[i])
- 			serdev_device_remove(serdevs[i]);
+diff --git a/drivers/platform/x86/x86-android-tablets/dmi.c b/drivers/platform/x86/x86-android-tablets/dmi.c
+index 5d6c12494f082..141a2d25e83be 100644
+--- a/drivers/platform/x86/x86-android-tablets/dmi.c
++++ b/drivers/platform/x86/x86-android-tablets/dmi.c
+@@ -104,6 +104,24 @@ const struct dmi_system_id x86_android_tablet_ids[] __initconst = {
+ 		},
+ 		.driver_data = (void *)&lenovo_yogabook_x91_info,
+ 	},
++	{
++		/*
++		 * Lenovo Yoga Tablet 2 Pro 1380F/L (13") This has more or less
++		 * the same BIOS as the 830F/L or 1050F/L (8" and 10") below,
++		 * but unlike the 8" / 10" models which share the same mainboard
++		 * this model has a different mainboard.
++		 * This match for the 13" model MUST come before the 8" + 10"
++		 * match since that one will also match the 13" model!
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corp."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "VALLEYVIEW C0 PLATFORM"),
++			DMI_MATCH(DMI_BOARD_NAME, "BYT-T FFD8"),
++			/* Full match so as to NOT match the 830/1050 BIOS */
++			DMI_MATCH(DMI_BIOS_VERSION, "BLADE_21.X64.0005.R00.1504101516"),
++		},
++		.driver_data = (void *)&lenovo_yoga_tab2_1380_info,
++	},
+ 	{
+ 		/*
+ 		 * Lenovo Yoga Tablet 2 830F/L or 1050F/L (The 8" and 10"
+diff --git a/drivers/platform/x86/x86-android-tablets/lenovo.c b/drivers/platform/x86/x86-android-tablets/lenovo.c
+index c297391955adb..16fa04d604a09 100644
+--- a/drivers/platform/x86/x86-android-tablets/lenovo.c
++++ b/drivers/platform/x86/x86-android-tablets/lenovo.c
+@@ -19,6 +19,7 @@
+ #include <linux/pinctrl/machine.h>
+ #include <linux/platform_data/lp855x.h>
+ #include <linux/platform_device.h>
++#include <linux/power/bq24190_charger.h>
+ #include <linux/reboot.h>
+ #include <linux/rmi.h>
+ #include <linux/spi/spi.h>
+@@ -565,6 +566,221 @@ static void lenovo_yoga_tab2_830_1050_exit(void)
  	}
+ }
  
- 	kfree(serdevs);
++/*
++ * Lenovo Yoga Tablet 2 Pro 1380F/L
++ *
++ * The Lenovo Yoga Tablet 2 Pro 1380F/L mostly has the same design as the 830F/L
++ * and the 1050F/L so this re-uses some of the handling for that from above.
++ */
++static const char * const lc824206xa_chg_det_psy[] = { "lc824206xa-charger-detect" };
++
++static const struct property_entry lenovo_yoga_tab2_1380_bq24190_props[] = {
++	PROPERTY_ENTRY_STRING_ARRAY("supplied-from", lc824206xa_chg_det_psy),
++	PROPERTY_ENTRY_REF("monitored-battery", &generic_lipo_hv_4v35_battery_node),
++	PROPERTY_ENTRY_BOOL("omit-battery-class"),
++	PROPERTY_ENTRY_BOOL("disable-reset"),
++	{ }
++};
++
++static const struct software_node lenovo_yoga_tab2_1380_bq24190_node = {
++	.properties = lenovo_yoga_tab2_1380_bq24190_props,
++};
++
++/* For enabling the bq24190 5V boost based on id-pin */
++static struct regulator_consumer_supply lc824206xa_consumer = {
++	.supply = "vbus",
++	.dev_name = "i2c-lc824206xa",
++};
++
++static const struct regulator_init_data lenovo_yoga_tab2_1380_bq24190_vbus_init_data = {
++	.constraints = {
++		.name = "bq24190_vbus",
++		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
++	},
++	.consumer_supplies = &lc824206xa_consumer,
++	.num_consumer_supplies = 1,
++};
++
++struct bq24190_platform_data lenovo_yoga_tab2_1380_bq24190_pdata = {
++	.regulator_init_data = &lenovo_yoga_tab2_1380_bq24190_vbus_init_data,
++};
++
++static const struct property_entry lenovo_yoga_tab2_1380_lc824206xa_props[] = {
++	PROPERTY_ENTRY_BOOL("onnn,enable-miclr-for-dcp"),
++	{ }
++};
++
++static const struct software_node lenovo_yoga_tab2_1380_lc824206xa_node = {
++	.properties = lenovo_yoga_tab2_1380_lc824206xa_props,
++};
++
++static const char * const lenovo_yoga_tab2_1380_lms303d_mount_matrix[] = {
++	"0", "-1", "0",
++	"-1", "0", "0",
++	"0", "0", "1"
++};
++
++static const struct property_entry lenovo_yoga_tab2_1380_lms303d_props[] = {
++	PROPERTY_ENTRY_STRING_ARRAY("mount-matrix", lenovo_yoga_tab2_1380_lms303d_mount_matrix),
++	{ }
++};
++
++static const struct software_node lenovo_yoga_tab2_1380_lms303d_node = {
++	.properties = lenovo_yoga_tab2_1380_lms303d_props,
++};
++
++static const struct x86_i2c_client_info lenovo_yoga_tab2_1380_i2c_clients[] __initconst = {
++	{
++		/* BQ27541 fuel-gauge */
++		.board_info = {
++			.type = "bq27541",
++			.addr = 0x55,
++			.dev_name = "bq27541",
++			.swnode = &fg_bq24190_supply_node,
++		},
++		.adapter_path = "\\_SB_.I2C1",
++	}, {
++		/* bq24292i battery charger */
++		.board_info = {
++			.type = "bq24190",
++			.addr = 0x6b,
++			.dev_name = "bq24292i",
++			.swnode = &lenovo_yoga_tab2_1380_bq24190_node,
++			.platform_data = &lenovo_yoga_tab2_1380_bq24190_pdata,
++		},
++		.adapter_path = "\\_SB_.I2C1",
++		.irq_data = {
++			.type = X86_ACPI_IRQ_TYPE_GPIOINT,
++			.chip = "INT33FC:02",
++			.index = 2,
++			.trigger = ACPI_EDGE_SENSITIVE,
++			.polarity = ACPI_ACTIVE_HIGH,
++			.con_id = "bq24292i_irq",
++		},
++	}, {
++		/* LP8557 Backlight controller */
++		.board_info = {
++			.type = "lp8557",
++			.addr = 0x2c,
++			.dev_name = "lp8557",
++			.platform_data = &lenovo_lp8557_pwm_and_reg_pdata,
++		},
++		.adapter_path = "\\_SB_.I2C3",
++	}, {
++		/* LC824206XA Micro USB Switch */
++		.board_info = {
++			.type = "lc824206xa",
++			.addr = 0x48,
++			.dev_name = "lc824206xa",
++			.swnode = &lenovo_yoga_tab2_1380_lc824206xa_node,
++		},
++		.adapter_path = "\\_SB_.I2C3",
++		.irq_data = {
++			.type = X86_ACPI_IRQ_TYPE_GPIOINT,
++			.chip = "INT33FC:02",
++			.index = 1,
++			.trigger = ACPI_LEVEL_SENSITIVE,
++			.polarity = ACPI_ACTIVE_LOW,
++			.con_id = "lc824206xa_irq",
++		},
++	}, {
++		/* AL3320A ambient light sensor */
++		.board_info = {
++			.type = "al3320a",
++			.addr = 0x1c,
++			.dev_name = "al3320a",
++		},
++		.adapter_path = "\\_SB_.I2C5",
++	}, {
++		/* LSM303DA accelerometer + magnetometer */
++		.board_info = {
++			.type = "lsm303d",
++			.addr = 0x1d,
++			.dev_name = "lsm303d",
++			.swnode = &lenovo_yoga_tab2_1380_lms303d_node,
++		},
++		.adapter_path = "\\_SB_.I2C5",
++	}, {
++		/* Synaptics RMI touchscreen */
++		.board_info = {
++			.type = "rmi4_i2c",
++			.addr = 0x38,
++			.dev_name = "rmi4_i2c",
++			.platform_data = &lenovo_yoga_tab2_830_1050_rmi_pdata,
++		},
++		.adapter_path = "\\_SB_.I2C6",
++		.irq_data = {
++			.type = X86_ACPI_IRQ_TYPE_APIC,
++			.index = 0x45,
++			.trigger = ACPI_EDGE_SENSITIVE,
++			.polarity = ACPI_ACTIVE_HIGH,
++		},
++	}
++};
++
++static const struct platform_device_info lenovo_yoga_tab2_1380_pdevs[] __initconst = {
++	{
++		/* For the Tablet 2 Pro 1380's custom fast charging driver */
++		.name = "lenovo-yoga-tab2-pro-1380-fastcharger",
++		.id = PLATFORM_DEVID_NONE,
++	},
++};
++
++const char * const lenovo_yoga_tab2_1380_modules[] __initconst = {
++	"bq24190_charger",            /* For the Vbus regulator for lc824206xa */
++	NULL
++};
++
++static int __init lenovo_yoga_tab2_1380_init(void)
++{
++	int ret;
++
++	/* To verify that the DMI matching works vs the 830 / 1050 models */
++	pr_info("detected Lenovo Yoga Tablet 2 Pro 1380F/L\n");
++
++	ret = lenovo_yoga_tab2_830_1050_init_codec();
++	if (ret)
++		return ret;
++
++	/* SYS_OFF_PRIO_FIRMWARE + 1 so that it runs before acpi_power_off */
++	lenovo_yoga_tab2_830_1050_sys_off_handler =
++		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_FIRMWARE + 1,
++					 lenovo_yoga_tab2_830_1050_power_off, NULL);
++	if (IS_ERR(lenovo_yoga_tab2_830_1050_sys_off_handler))
++		return PTR_ERR(lenovo_yoga_tab2_830_1050_sys_off_handler);
++
++	return 0;
++}
++
++static struct gpiod_lookup_table lenovo_yoga_tab2_1380_fc_gpios = {
++	.dev_id = "serial0-0",
++	.table = {
++		GPIO_LOOKUP("INT33FC:00", 57, "uart3_txd", GPIO_ACTIVE_HIGH),
++		GPIO_LOOKUP("INT33FC:00", 61, "uart3_rxd", GPIO_ACTIVE_HIGH),
++		{ }
++	},
++};
++
++static struct gpiod_lookup_table * const lenovo_yoga_tab2_1380_gpios[] = {
++	&lenovo_yoga_tab2_830_1050_codec_gpios,
++	&lenovo_yoga_tab2_1380_fc_gpios,
++	NULL
++};
++
++const struct x86_dev_info lenovo_yoga_tab2_1380_info __initconst = {
++	.i2c_client_info = lenovo_yoga_tab2_1380_i2c_clients,
++	.i2c_client_count = ARRAY_SIZE(lenovo_yoga_tab2_1380_i2c_clients),
++	.pdev_info = lenovo_yoga_tab2_1380_pdevs,
++	.pdev_count = ARRAY_SIZE(lenovo_yoga_tab2_1380_pdevs),
++	.gpio_button = &lenovo_yoga_tab2_830_1050_lid,
++	.gpio_button_count = 1,
++	.gpiod_lookup_tables = lenovo_yoga_tab2_1380_gpios,
++	.bat_swnode = &generic_lipo_hv_4v35_battery_node,
++	.modules = lenovo_yoga_tab2_1380_modules,
++	.init = lenovo_yoga_tab2_1380_init,
++	.exit = lenovo_yoga_tab2_830_1050_exit,
++};
++
+ /* Lenovo Yoga Tab 3 Pro YT3-X90F */
  
--	for (i = 0; i < pdev_count; i++)
-+	for (i = pdev_count - 1; i >= 0; i--)
- 		platform_device_unregister(pdevs[i]);
- 
- 	kfree(pdevs);
- 	kfree(buttons);
- 
--	for (i = 0; i < spi_dev_count; i++)
-+	for (i = spi_dev_count - 1; i >= 0; i--)
- 		spi_unregister_device(spi_devs[i]);
- 
- 	kfree(spi_devs);
- 
--	for (i = 0; i < i2c_client_count; i++)
-+	for (i = i2c_client_count - 1; i >= 0; i--)
- 		i2c_unregister_device(i2c_clients[i]);
- 
- 	kfree(i2c_clients);
+ /*
+diff --git a/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h b/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h
+index 468993edfeee2..821dc094b0254 100644
+--- a/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h
++++ b/drivers/platform/x86/x86-android-tablets/x86-android-tablets.h
+@@ -112,6 +112,7 @@ extern const struct x86_dev_info czc_p10t;
+ extern const struct x86_dev_info lenovo_yogabook_x90_info;
+ extern const struct x86_dev_info lenovo_yogabook_x91_info;
+ extern const struct x86_dev_info lenovo_yoga_tab2_830_1050_info;
++extern const struct x86_dev_info lenovo_yoga_tab2_1380_info;
+ extern const struct x86_dev_info lenovo_yt3_info;
+ extern const struct x86_dev_info medion_lifetab_s10346_info;
+ extern const struct x86_dev_info nextbook_ares8_info;
 -- 
 2.43.0
 
