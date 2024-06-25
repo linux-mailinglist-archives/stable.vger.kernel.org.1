@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60BB291640F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:53:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15FD7916493
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 948701C21990
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:53:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 487EB1C23848
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5443314A4CC;
-	Tue, 25 Jun 2024 09:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA4B149C4F;
+	Tue, 25 Jun 2024 09:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DkdOoHMg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UYxcOO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1208A14A0BF;
-	Tue, 25 Jun 2024 09:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDE8149E0A;
+	Tue, 25 Jun 2024 09:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309198; cv=none; b=aRbKJXNvPuYqlpHwvQ1eXKvva5cIW5u/cpoT3E+dD4CGufvZ+1oHjT7raGkf4hOdwiHVQVWOoB1ghNkouRyEGI82u8vJm9dzlo969A6+AzRoNqrd3JsuxLvfKD/iC+4qU4rvo/U75oIJ33w5rvBlY1bL7+0msuedLqk3/f9jmpI=
+	t=1719309526; cv=none; b=NkUaDB/iYNmEmGN+0kkwPIxoCue4QYm6KD6BIW56fsS5DTnbnK4s3i/FvQJv4UC8S0oK1R3hVgkCWH1MR2yRh+AVLhnCxU3h61VOvOTvRr94n2C5hQihOQ6g1wJvLeTozUVKrwnfRUk7QDB4QmscCku5EEIzu+PkL6crBTH7VMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309198; c=relaxed/simple;
-	bh=KaFLL1AC2VPgk9rLEsxlVVGEOvv+BU45fRdDT+bvLLw=;
+	s=arc-20240116; t=1719309526; c=relaxed/simple;
+	bh=LYLBv37Qw3VS/g3CaiRCPkN2UpjcJp8eDZBC7YSpDrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lw+/WS//TytWyCXVcGBX7ooXuEKGjdb/FiCPjAzNPaWkkThM1pYbGfnBnxJ2m1l2pT8cp3pGjbaaf+HxUgW/1VTlHTjfyHPagLW5ZkSi6GHbiP7oDgknS8mlfiha/fH8Dm9cgWTYdxfj1GZt1meOBtxPVrn593L61nnL3LOBBYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DkdOoHMg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891F3C32786;
-	Tue, 25 Jun 2024 09:53:17 +0000 (UTC)
+	 MIME-Version; b=QCSu9CaBkpXDpTk/bVZXMBYO2jBbKoMX0vw4I6EArX5mStfK/unjb+M5pgm7Lw7u6oOjaKKwgSC75DaBKuvlu+ZHIV1Exp0nmCGZ0At/S1jtmq7iHT82g/UfX3+hJJTxt2QniNS+q/aeQkwYwoAYGjTIdNuXRJkRUaCvQ1r9Pj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UYxcOO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32387C32781;
+	Tue, 25 Jun 2024 09:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309197;
-	bh=KaFLL1AC2VPgk9rLEsxlVVGEOvv+BU45fRdDT+bvLLw=;
+	s=korg; t=1719309526;
+	bh=LYLBv37Qw3VS/g3CaiRCPkN2UpjcJp8eDZBC7YSpDrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DkdOoHMgAn7rc57oPxtys0Kigx49ZjP0g2udlg+Sg7AdNzfeLauSsSuKSumMlHkZN
-	 mE/1wAu4MGVZnNy14i3eHz1Q8MyNH5Kfv2SKRKKP9xpq7nkhUM2wtTYNkgTBxM0UsI
-	 Oraex2oyDFFWEmYnMOPe/nKUD2S9mox7da51916c=
+	b=2UYxcOO8d6MrcEtr59++xqHNhpuJMazwyH/M8Q/4VzdYuK3LDx4EaetRPiOtAq97G
+	 Z82Ei1IWggbRxMDW8cv3RSUKfaoOQl3s8/UOavlMxrbcb32wu/qRAffIIjsm3VR3yg
+	 51Tz+L/b40AbIQI4AH5D5R9g3Di0zkZfE5gRA37o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kaiser <martin@kaiser.cx>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH 6.6 129/192] arm64: defconfig: enable the vf610 gpio driver
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 046/131] mips: bmips: BCM6358: make sure CBR is correctly set
 Date: Tue, 25 Jun 2024 11:33:21 +0200
-Message-ID: <20240625085542.113667869@linuxfoundation.org>
+Message-ID: <20240625085527.701850146@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kaiser <martin@kaiser.cx>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-commit a73bda63a102a5f1feb730d4d809de098a3d1886 upstream.
+[ Upstream commit ce5cdd3b05216b704a704f466fb4c2dff3778caf ]
 
-The vf610 gpio driver is used in i.MX8QM, DXL, ULP and i.MX93 chips.
-Enable it in arm64 defconfig.
+It was discovered that some device have CBR address set to 0 causing
+kernel panic when arch_sync_dma_for_cpu_all is called.
 
-(vf610 gpio used to be enabled by default for all i.MX chips. This was
-changed recently as most i.MX chips don't need this driver.)
+This was notice in situation where the system is booted from TP1 and
+BMIPS_GET_CBR() returns 0 instead of a valid address and
+!!(read_c0_brcm_cmt_local() & (1 << 31)); not failing.
 
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The current check whether RAC flush should be disabled or not are not
+enough hence lets check if CBR is a valid address or not.
+
+Fixes: ab327f8acdf8 ("mips: bmips: BCM6358: disable RAC flush for TP1")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/configs/defconfig |    1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/bmips/setup.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -623,6 +623,7 @@ CONFIG_GPIO_RCAR=y
- CONFIG_GPIO_UNIPHIER=y
- CONFIG_GPIO_VISCONTI=y
- CONFIG_GPIO_WCD934X=m
-+CONFIG_GPIO_VF610=y
- CONFIG_GPIO_XGENE=y
- CONFIG_GPIO_XGENE_SB=y
- CONFIG_GPIO_MAX732X=y
+diff --git a/arch/mips/bmips/setup.c b/arch/mips/bmips/setup.c
+index 549a6392a3d2d..7615f0e30e9de 100644
+--- a/arch/mips/bmips/setup.c
++++ b/arch/mips/bmips/setup.c
+@@ -111,7 +111,8 @@ static void bcm6358_quirks(void)
+ 	 * RAC flush causes kernel panics on BCM6358 when booting from TP1
+ 	 * because the bootloader is not initializing it properly.
+ 	 */
+-	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31));
++	bmips_rac_flush_disable = !!(read_c0_brcm_cmt_local() & (1 << 31)) ||
++				  !!BMIPS_GET_CBR();
+ }
+ 
+ static void bcm6368_quirks(void)
+-- 
+2.43.0
+
 
 
 
