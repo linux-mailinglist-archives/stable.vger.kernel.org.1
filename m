@@ -1,175 +1,179 @@
-Return-Path: <stable+bounces-55139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74764915EB6
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 08:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBFC915ECB
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 08:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D93E1F227EF
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 06:12:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 034F91F230CB
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 06:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE4A145FE6;
-	Tue, 25 Jun 2024 06:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE7C145FE4;
+	Tue, 25 Jun 2024 06:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b="kMKIkUXC"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="akwTeQPT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="prVLv3hW";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="akwTeQPT";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="prVLv3hW"
 X-Original-To: stable@vger.kernel.org
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAEE1B806;
-	Tue, 25 Jun 2024 06:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.133.4.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CF713A416;
+	Tue, 25 Jun 2024 06:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719295934; cv=none; b=oony8bf1leb2i0a+rNk6DQBSKtXGz5DNI6IYKC2ur6Z0/jWqci1KKN5JPWas++U85XX9rmVPepcek2j2AmnaHe8cN4yYTlriplgQJwJ8yat6h5Uul+K2Rb+kyl2n954h0/hzHOkvXqCxJGAfqD5TUzISTEMLygF8IyIFn00caSk=
+	t=1719296380; cv=none; b=HEIxub3bdK1PQw9i+n7Vz/JHkvbPfjLg1px7x4jmR3ZOK+r0yWPy4KqNKJaWWWXpBcrVmCr3uwESgadzpSnAgVWyLblrjxrxq881xrfl8jZg7aFE2JcLggfZb5oZCLfaIbsBneApz2np4FCn3fbAY55I9OJD/kKSZ9+dlVlAlrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719295934; c=relaxed/simple;
-	bh=A9l5QJ5wVUxN0j1TWgVqhhHFCdASWZMj33PGqLt6VA0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=b4nabD8O1g8vM98AvMhvOhz9h+88q3ljAqTLSNGcMKUVfZvwrT25sAMFwvZwokWMEEwu5NHB8R3oMFQUWmMg+4WqsLCLCEn3ELvLin/syKK1hX3DLGjwCByhaavGQqf0BCBl/tyofMvFe5XU4qFkW5Z2uOzpZxy5SDfGe8tRDLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de; spf=pass smtp.mailfrom=zedat.fu-berlin.de; dkim=pass (2048-bit key) header.d=fu-berlin.de header.i=@fu-berlin.de header.b=kMKIkUXC; arc=none smtp.client-ip=130.133.4.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=physik.fu-berlin.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zedat.fu-berlin.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=fu-berlin.de; s=fub01; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=QR3y2Y/czPDzz8uhrOTX+qZKGKnv9qtlOLRYnVuIPwY=; t=1719295930; x=1719900730; 
-	b=kMKIkUXCpW4k/lh4bfIHLQJ7yXaQaua42W5My0YpiNHiilmaG69pdb5IiE9StEvH36UYTlg2wfF
-	Tdb/CPgfLOpILqYOWYZS7k0EvxHiB4Yz6K+AIaa5OtXhE9YR5RjGJ4STuCmmYTd8HRVm+pACcRawL
-	EVS4LdZZkx88lnlVGO7hwGqOdh0gF+Kg22Ipn2MdidppsNRFw/yqNvlnXtamDkZEYlONN/1b8Vl0s
-	oPBAMYWW7go097qgb9r16qmHKOvCsm2PLjS56KL1M/z+bU8T/eKUNkYZNAKl9ItLFseIrud1TmZ9t
-	Ci3ZLg7RBgLYlLuJny8/YueTY14197NeyvAA==;
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.97)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1sLzPJ-00000002pcY-2WGY; Tue, 25 Jun 2024 08:11:58 +0200
-Received: from p5b13a475.dip0.t-ipconnect.de ([91.19.164.117] helo=[192.168.178.20])
-          by inpost2.zedat.fu-berlin.de (Exim 4.97)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1sLzPJ-00000001jTk-3HF5; Tue, 25 Jun 2024 08:11:57 +0200
-Message-ID: <b7e20a2dbf5bad8cae0227644b2f78531dd6ef5a.camel@physik.fu-berlin.de>
-Subject: Re: [PATCH v2 08/13] sh: rework sync_file_range ABI
-From: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To: Arnd Bergmann <arnd@kernel.org>, linux-arch@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>, linux-mips@vger.kernel.org, Helge Deller
- <deller@gmx.de>, linux-parisc@vger.kernel.org, "David S. Miller"
- <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
- sparclinux@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
- Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- "Naveen N . Rao" <naveen.n.rao@linux.ibm.com>,
- linuxppc-dev@lists.ozlabs.org, Brian Cain <bcain@quicinc.com>,
- linux-hexagon@vger.kernel.org, Guo Ren <guoren@kernel.org>, 
- linux-csky@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>, 
- linux-s390@vger.kernel.org, Rich Felker <dalias@libc.org>, 
- linux-sh@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
- linux-fsdevel@vger.kernel.org, libc-alpha@sourceware.org, 
- musl@lists.openwall.com, stable@vger.kernel.org
-Date: Tue, 25 Jun 2024 08:11:56 +0200
-In-Reply-To: <20240624163707.299494-9-arnd@kernel.org>
-References: <20240624163707.299494-1-arnd@kernel.org>
-	 <20240624163707.299494-9-arnd@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 
+	s=arc-20240116; t=1719296380; c=relaxed/simple;
+	bh=msRoBibW4fqIvLPDck5BFgKWyJm9F3UElLNz3bzP4i8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fiak84dvh2p2Dp5ZXLHGDQou6N5SgVtpXI3dNtNyPNfN2fPLJGWD09BlZbiZHBIOpGOG7pBWCVwQma3P0KdKegzJaAK4+LBJZ3o88jg2xh3ADrIdKw2FfaXU5UxmdUEj4l8dRGUAUNAD8yXuA2ISvnDtrWLtaovBLolg5ZYl5ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=akwTeQPT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=prVLv3hW; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=akwTeQPT; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=prVLv3hW; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C1FF01F84F;
+	Tue, 25 Jun 2024 06:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1719296372; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5e0/4cJzzROCJLbTOZ3ywMCSw35ZD3sbRO990xPbywI=;
+	b=akwTeQPTuw7/0gPxtBUnfRppm1J/2br1+zBSU9XcCeb9OrJ9eFHnT81AxAoOflaEB+VV3U
+	oqtF3rrFjDGP3ncezN1aLUT8FbsMGsDBesPA2mctF30RHqAj2rKMXTvBBWJCEA6C+pZvlK
+	hD/C/6pxubcgKGoYa3JP5E5AbPBhA3w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1719296372;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5e0/4cJzzROCJLbTOZ3ywMCSw35ZD3sbRO990xPbywI=;
+	b=prVLv3hWuzXZCunXhgLV59FCUUfmRBWDBvtKSuxLm3Vqi+ru3gmfFYfSJyq2Uy3MxVtEN1
+	jMfTPe45/UWyPrCQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=akwTeQPT;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=prVLv3hW
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1719296372; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5e0/4cJzzROCJLbTOZ3ywMCSw35ZD3sbRO990xPbywI=;
+	b=akwTeQPTuw7/0gPxtBUnfRppm1J/2br1+zBSU9XcCeb9OrJ9eFHnT81AxAoOflaEB+VV3U
+	oqtF3rrFjDGP3ncezN1aLUT8FbsMGsDBesPA2mctF30RHqAj2rKMXTvBBWJCEA6C+pZvlK
+	hD/C/6pxubcgKGoYa3JP5E5AbPBhA3w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1719296372;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5e0/4cJzzROCJLbTOZ3ywMCSw35ZD3sbRO990xPbywI=;
+	b=prVLv3hWuzXZCunXhgLV59FCUUfmRBWDBvtKSuxLm3Vqi+ru3gmfFYfSJyq2Uy3MxVtEN1
+	jMfTPe45/UWyPrCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4F7B713A9A;
+	Tue, 25 Jun 2024 06:19:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id v7iTD3Rhema2CgAAD6G6ig
+	(envelope-from <hare@suse.de>); Tue, 25 Jun 2024 06:19:32 +0000
+Message-ID: <d51930d9-c0c8-4d0b-8131-bce278c24db8@suse.de>
+Date: Tue, 25 Jun 2024 08:19:31 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-ZEDAT-Hint: PO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] ata: libata-scsi: Do not overwrite valid sense
+ data when CK_COND=1
+Content-Language: en-US
+To: Igor Pylypiv <ipylypiv@google.com>, Damien Le Moal <dlemoal@kernel.org>,
+ Niklas Cassel <cassel@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, Jason Yan <yanaijie@huawei.com>,
+ linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240624221211.2593736-1-ipylypiv@google.com>
+ <20240624221211.2593736-2-ipylypiv@google.com>
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <20240624221211.2593736-2-ipylypiv@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-4.50 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	XM_UA_NO_VERSION(0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:dkim]
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: C1FF01F84F
+X-Spam-Flag: NO
+X-Spam-Score: -4.50
+X-Spam-Level: 
 
-On Mon, 2024-06-24 at 18:37 +0200, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->=20
-> The unusual function calling conventions on SuperH ended up causing
-> sync_file_range to have the wrong argument order, with the 'flags'
-> argument getting sorted before 'nbytes' by the compiler.
->=20
-> In userspace, I found that musl, glibc, uclibc and strace all expect the
-> normal calling conventions with 'nbytes' last, so changing the kernel
-> to match them should make all of those work.
->=20
-> In order to be able to also fix libc implementations to work with existin=
-g
-> kernels, they need to be able to tell which ABI is used. An easy way
-> to do this is to add yet another system call using the sync_file_range2
-> ABI that works the same on all architectures.
->=20
-> Old user binaries can now work on new kernels, and new binaries can
-> try the new sync_file_range2() to work with new kernels or fall back
-> to the old sync_file_range() version if that doesn't exist.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: 75c92acdd5b1 ("sh: Wire up new syscalls.")
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+On 6/25/24 00:12, Igor Pylypiv wrote:
+> Current ata_gen_passthru_sense() code performs two actions:
+> 1. Generates sense data based on the ATA 'status' and ATA 'error' fields.
+> 2. Populates "ATA Status Return sense data descriptor" / "Fixed format
+>     sense data" with ATA taskfile fields.
+> 
+> The problem is that #1 generates sense data even when a valid sense data
+> is already present (ATA_QCFLAG_SENSE_VALID is set). Factoring out #2 into
+> a separate function allows us to generate sense data only when there is
+> no valid sense data (ATA_QCFLAG_SENSE_VALID is not set).
+> 
+> As a bonus, we can now delete a FIXME comment in atapi_qc_complete()
+> which states that we don't want to translate taskfile registers into
+> sense descriptors for ATAPI.
+> 
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
 > ---
->  arch/sh/kernel/sys_sh32.c           | 11 +++++++++++
->  arch/sh/kernel/syscalls/syscall.tbl |  3 ++-
->  2 files changed, 13 insertions(+), 1 deletion(-)
->=20
-> diff --git a/arch/sh/kernel/sys_sh32.c b/arch/sh/kernel/sys_sh32.c
-> index 9dca568509a5..d6f4afcb0e87 100644
-> --- a/arch/sh/kernel/sys_sh32.c
-> +++ b/arch/sh/kernel/sys_sh32.c
-> @@ -59,3 +59,14 @@ asmlinkage int sys_fadvise64_64_wrapper(int fd, u32 of=
-fset0, u32 offset1,
->  				 (u64)len0 << 32 | len1, advice);
->  #endif
->  }
-> +
-> +/*
-> + * swap the arguments the way that libc wants them instead of
-> + * moving flags ahead of the 64-bit nbytes argument
-> + */
-> +SYSCALL_DEFINE6(sh_sync_file_range6, int, fd, SC_ARG64(offset),
-> +                SC_ARG64(nbytes), unsigned int, flags)
-> +{
-> +        return ksys_sync_file_range(fd, SC_VAL64(loff_t, offset),
-> +                                    SC_VAL64(loff_t, nbytes), flags);
-> +}
-> diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscall=
-s/syscall.tbl
-> index bbf83a2db986..c55fd7696d40 100644
-> --- a/arch/sh/kernel/syscalls/syscall.tbl
-> +++ b/arch/sh/kernel/syscalls/syscall.tbl
-> @@ -321,7 +321,7 @@
->  311	common	set_robust_list			sys_set_robust_list
->  312	common	get_robust_list			sys_get_robust_list
->  313	common	splice				sys_splice
-> -314	common	sync_file_range			sys_sync_file_range
-> +314	common	sync_file_range			sys_sh_sync_file_range6
->  315	common	tee				sys_tee
->  316	common	vmsplice			sys_vmsplice
->  317	common	move_pages			sys_move_pages
-> @@ -395,6 +395,7 @@
->  385	common	pkey_alloc			sys_pkey_alloc
->  386	common	pkey_free			sys_pkey_free
->  387	common	rseq				sys_rseq
-> +388	common	sync_file_range2		sys_sync_file_range2
->  # room for arch specific syscalls
->  393	common	semget				sys_semget
->  394	common	semctl				sys_semctl
+>   drivers/ata/libata-scsi.c | 158 +++++++++++++++++++++-----------------
+>   1 file changed, 86 insertions(+), 72 deletions(-)
+> 
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-Acked-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cheers,
 
-Adrian
+Hannes
+-- 
+Dr. Hannes Reinecke                  Kernel Storage Architect
+hare@suse.de                                +49 911 74053 688
+SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
+HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
 
---=20
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
