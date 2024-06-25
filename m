@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-55371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024C091634D
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA119163EA
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB6DA2876CD
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97EAF28C372
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EC914A08B;
-	Tue, 25 Jun 2024 09:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 477E9149C54;
+	Tue, 25 Jun 2024 09:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTkkGM/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05v3Q+wy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7875F149E16;
-	Tue, 25 Jun 2024 09:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A31149C41;
+	Tue, 25 Jun 2024 09:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308707; cv=none; b=JhMLlo4Me20Qhnqk2UdNLa6hqgYqg491ufwBizM/EkYHxJLYGXpUIp7sGhMI9N7iu/5P9wnYDuRVpQ+9OKcIRW22lcfutuFjLC/rPpvEcH6dwHmzyUXRTlFtVTvP3if8Cfgdk/etm5jDD9kgPN5+QV1dsJiItpgV0sxW73WH8rM=
+	t=1719309110; cv=none; b=hsavwMfoh0tsw/jPkpHR4ic5vfXH5sBla070IAo5SN7oht+Yu8SL19b7+sTUVMKackcaIzqyxs6MtV8rQCDswefeOU2Zq6Bz0GTESN0D95NGFj3HZ0NwB1G3dMv8A2vM4DiOpW3WB1CbC4jZkmfS8s1/XTmDH83AolVoUDK9dWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308707; c=relaxed/simple;
-	bh=J+Vm8a0wNISBTPr+yxkgJji+V8n2HxEtLMdrEU2Gk/E=;
+	s=arc-20240116; t=1719309110; c=relaxed/simple;
+	bh=sJJSSw6S/we7vMzn3sMvjRKVvgYZOvUQhmj7ypKDSBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DSYbTuBNgcQTa+BlR8Ua9tb8n9JkotwlCctdNjPUhpjJry2DYkFraYRRD1uMC/RDiZuNynroXbtrMW3nBX8WVjHP8nHjtF//3A2u6qbgRtCWxEduFy2PxUJHmmpjtpTqeadV1YDZeBx0YwIXlCAv0luBSifCSfkEM2YmE56Q1L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTkkGM/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3495C32781;
-	Tue, 25 Jun 2024 09:45:06 +0000 (UTC)
+	 MIME-Version; b=Rbhg6m2K5C52G2L2u5/Rtpth+CkSG3yWZbGm4kJGu31iLem6eQ3CVaQVbUoyvD3KfDkJIlSKWDYyYXsXc19VEjD0CJWS7pQhdO+Sonl+d+fOmR/D+1L7c88Ni6AZ0CGGnvEYRc//Oc7xq4S3MVzjW+rbYi63YStOxNp+RYU2vZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05v3Q+wy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF5EC32781;
+	Tue, 25 Jun 2024 09:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308707;
-	bh=J+Vm8a0wNISBTPr+yxkgJji+V8n2HxEtLMdrEU2Gk/E=;
+	s=korg; t=1719309109;
+	bh=sJJSSw6S/we7vMzn3sMvjRKVvgYZOvUQhmj7ypKDSBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eTkkGM/NA2HDuMQ+MaBKgZiWICCBLm5PmR6uaM3t+yGKtDdTcug5HlF8DfSpAyHEv
-	 Iday/FSXI0CY5emRpp8ENnGxU19XlKPA4VnSfOtWS41wc/yEI8yg3EUfPCJ47XAWPr
-	 U0AlhKCP91BCPugJ4necJLXaPOHL4/mrR5gDVHSs=
+	b=05v3Q+wyhwfhmsRR3TG1mnRO7pYzC91NQThGfQpPghyALOXIU8Fcyxc3B02pDSyga
+	 +5kDWz14e81y86nEMtuSYHKw9UorNWE9gtfa2TJKxIZMyv32DVxhrluwjuBPUkhM5x
+	 qrZ5K9ejgw/B7lS5lm37xN2YGCClDkfKnFuLIak8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Joao Machado <jocrismachado@gmail.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Christian Heusel <christian@heusel.eu>
-Subject: [PATCH 6.9 213/250] scsi: usb: uas: Do not query the IO Advice Hints Grouping mode page for USB/UAS devices
+	Jianguo Wu <wujianguo@chinatelecom.cn>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 099/192] seg6: fix parameter passing when calling NF_HOOK() in End.DX4 and End.DX6 behaviors
 Date: Tue, 25 Jun 2024 11:32:51 +0200
-Message-ID: <20240625085556.230908515@linuxfoundation.org>
+Message-ID: <20240625085540.977519037@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Jianguo Wu <wujianguo@chinatelecom.cn>
 
-commit 57619f3cdeb5ae9f4252833b0ed600e9f81da722 upstream.
+[ Upstream commit 9a3bc8d16e0aacd65c31aaf23a2bced3288a7779 ]
 
-Recently it was reported that the following USB storage devices are
-unusable with Linux kernel 6.9:
+input_action_end_dx4() and input_action_end_dx6() are called NF_HOOK() for
+PREROUTING hook, in PREROUTING hook, we should passing a valid indev,
+and a NULL outdev to NF_HOOK(), otherwise may trigger a NULL pointer
+dereference, as below:
 
- * Kingston DataTraveler G2
- * Garmin FR35
+    [74830.647293] BUG: kernel NULL pointer dereference, address: 0000000000000090
+    [74830.655633] #PF: supervisor read access in kernel mode
+    [74830.657888] #PF: error_code(0x0000) - not-present page
+    [74830.659500] PGD 0 P4D 0
+    [74830.660450] Oops: 0000 [#1] PREEMPT SMP PTI
+    ...
+    [74830.664953] Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
+    [74830.666569] RIP: 0010:rpfilter_mt+0x44/0x15e [ipt_rpfilter]
+    ...
+    [74830.689725] Call Trace:
+    [74830.690402]  <IRQ>
+    [74830.690953]  ? show_trace_log_lvl+0x1c4/0x2df
+    [74830.692020]  ? show_trace_log_lvl+0x1c4/0x2df
+    [74830.693095]  ? ipt_do_table+0x286/0x710 [ip_tables]
+    [74830.694275]  ? __die_body.cold+0x8/0xd
+    [74830.695205]  ? page_fault_oops+0xac/0x140
+    [74830.696244]  ? exc_page_fault+0x62/0x150
+    [74830.697225]  ? asm_exc_page_fault+0x22/0x30
+    [74830.698344]  ? rpfilter_mt+0x44/0x15e [ipt_rpfilter]
+    [74830.699540]  ipt_do_table+0x286/0x710 [ip_tables]
+    [74830.700758]  ? ip6_route_input+0x19d/0x240
+    [74830.701752]  nf_hook_slow+0x3f/0xb0
+    [74830.702678]  input_action_end_dx4+0x19b/0x1e0
+    [74830.703735]  ? input_action_end_t+0xe0/0xe0
+    [74830.704734]  seg6_local_input_core+0x2d/0x60
+    [74830.705782]  lwtunnel_input+0x5b/0xb0
+    [74830.706690]  __netif_receive_skb_one_core+0x63/0xa0
+    [74830.707825]  process_backlog+0x99/0x140
+    [74830.709538]  __napi_poll+0x2c/0x160
+    [74830.710673]  net_rx_action+0x296/0x350
+    [74830.711860]  __do_softirq+0xcb/0x2ac
+    [74830.713049]  do_softirq+0x63/0x90
 
-This is because attempting to read the IO Advice Hints Grouping mode page
-causes these devices to reset. Hence do not read the IO Advice Hints
-Grouping mode page from USB/UAS storage devices.
+input_action_end_dx4() passing a NULL indev to NF_HOOK(), and finally
+trigger a NULL dereference in rpfilter_mt()->rpfilter_is_loopback():
 
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Cc: stable@vger.kernel.org
-Fixes: 4f53138fffc2 ("scsi: sd: Translate data lifetime information")
-Reported-by: Joao Machado <jocrismachado@gmail.com>
-Closes: https://lore.kernel.org/linux-scsi/20240130214911.1863909-1-bvanassche@acm.org/T/#mf4e3410d8f210454d7e4c3d1fb5c0f41e651b85f
-Tested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Bisected-by: Christian Heusel <christian@heusel.eu>
-Reported-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Closes: https://lore.kernel.org/linux-scsi/CACLx9VdpUanftfPo2jVAqXdcWe8Y43MsDeZmMPooTzVaVJAh2w@mail.gmail.com/
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240613211828.2077477-3-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    static bool
+    rpfilter_is_loopback(const struct sk_buff *skb,
+          	       const struct net_device *in)
+    {
+            // in is NULL
+            return skb->pkt_type == PACKET_LOOPBACK ||
+          	 in->flags & IFF_LOOPBACK;
+    }
+
+Fixes: 7a3f5b0de364 ("netfilter: add netfilter hooks to SRv6 data plane")
+Signed-off-by: Jianguo Wu <wujianguo@chinatelecom.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/scsiglue.c |    6 ++++++
- drivers/usb/storage/uas.c      |    7 +++++++
- 2 files changed, 13 insertions(+)
+ net/ipv6/seg6_local.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/storage/scsiglue.c
-+++ b/drivers/usb/storage/scsiglue.c
-@@ -86,6 +86,12 @@ static int slave_alloc (struct scsi_devi
- 	if (us->protocol == USB_PR_BULK && us->max_lun > 0)
- 		sdev->sdev_bflags |= BLIST_FORCELUN;
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index 24e2b4b494cb0..c434940131b1d 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -941,8 +941,8 @@ static int input_action_end_dx6(struct sk_buff *skb,
  
-+	/*
-+	 * Some USB storage devices reset if the IO advice hints grouping mode
-+	 * page is queried. Hence skip that mode page.
-+	 */
-+	sdev->sdev_bflags |= BLIST_SKIP_IO_HINTS;
-+
- 	return 0;
- }
+ 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
+ 		return NF_HOOK(NFPROTO_IPV6, NF_INET_PRE_ROUTING,
+-			       dev_net(skb->dev), NULL, skb, NULL,
+-			       skb_dst(skb)->dev, input_action_end_dx6_finish);
++			       dev_net(skb->dev), NULL, skb, skb->dev,
++			       NULL, input_action_end_dx6_finish);
  
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -21,6 +21,7 @@
- #include <scsi/scsi.h>
- #include <scsi/scsi_eh.h>
- #include <scsi/scsi_dbg.h>
-+#include <scsi/scsi_devinfo.h>
- #include <scsi/scsi_cmnd.h>
- #include <scsi/scsi_device.h>
- #include <scsi/scsi_host.h>
-@@ -820,6 +821,12 @@ static int uas_slave_alloc(struct scsi_d
- 	struct uas_dev_info *devinfo =
- 		(struct uas_dev_info *)sdev->host->hostdata;
+ 	return input_action_end_dx6_finish(dev_net(skb->dev), NULL, skb);
+ drop:
+@@ -991,8 +991,8 @@ static int input_action_end_dx4(struct sk_buff *skb,
  
-+	/*
-+	 * Some USB storage devices reset if the IO advice hints grouping mode
-+	 * page is queried. Hence skip that mode page.
-+	 */
-+	sdev->sdev_bflags |= BLIST_SKIP_IO_HINTS;
-+
- 	sdev->hostdata = devinfo;
+ 	if (static_branch_unlikely(&nf_hooks_lwtunnel_enabled))
+ 		return NF_HOOK(NFPROTO_IPV4, NF_INET_PRE_ROUTING,
+-			       dev_net(skb->dev), NULL, skb, NULL,
+-			       skb_dst(skb)->dev, input_action_end_dx4_finish);
++			       dev_net(skb->dev), NULL, skb, skb->dev,
++			       NULL, input_action_end_dx4_finish);
  
- 	/*
+ 	return input_action_end_dx4_finish(dev_net(skb->dev), NULL, skb);
+ drop:
+-- 
+2.43.0
+
 
 
 
