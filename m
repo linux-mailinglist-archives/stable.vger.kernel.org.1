@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-55618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312A5916473
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 024C091634D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1800B277AF
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB6DA2876CD
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A37714A0AA;
-	Tue, 25 Jun 2024 09:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EC914A08B;
+	Tue, 25 Jun 2024 09:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2UmGUwW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTkkGM/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A827146A67;
-	Tue, 25 Jun 2024 09:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7875F149E16;
+	Tue, 25 Jun 2024 09:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309438; cv=none; b=HcZv0U8eAuFeHnujKbD/nuTuiTu3VPNRgrV9YSq2TXk5p7CxVksfqfkgxeUbqvbpFTgR5VXvLDKtt9pyrZhNLyPJbG0wKy/rwj/g7CrG3BqUuonFyO2nNOQK7VJbf07cXQ6K8Z2oSvb5AFw3lZHeTRdPpzTg/0Lsc1xl6K36vQs=
+	t=1719308707; cv=none; b=JhMLlo4Me20Qhnqk2UdNLa6hqgYqg491ufwBizM/EkYHxJLYGXpUIp7sGhMI9N7iu/5P9wnYDuRVpQ+9OKcIRW22lcfutuFjLC/rPpvEcH6dwHmzyUXRTlFtVTvP3if8Cfgdk/etm5jDD9kgPN5+QV1dsJiItpgV0sxW73WH8rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309438; c=relaxed/simple;
-	bh=GbJwjHytCpu0iC4gjzdJ8OiC1ar/HMrYB5+Q8tJ8Hkw=;
+	s=arc-20240116; t=1719308707; c=relaxed/simple;
+	bh=J+Vm8a0wNISBTPr+yxkgJji+V8n2HxEtLMdrEU2Gk/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hpf3O5WdaGTK2Dte0/gmDwdZyD8B/k1cmcKaFMujBM19uKFbmnqmzay084cJhBIsadKi5NeUfT+A9zgoGVaYsC6RnFDLDNSpTY/9fGxzy9xt/HeIW2UtD8UW1YxrhD+9T4Bzp6s4fImzHMIa+BFLhjU+oe1GhuIwJaZtzyhHdJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2UmGUwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B474FC32781;
-	Tue, 25 Jun 2024 09:57:17 +0000 (UTC)
+	 MIME-Version; b=DSYbTuBNgcQTa+BlR8Ua9tb8n9JkotwlCctdNjPUhpjJry2DYkFraYRRD1uMC/RDiZuNynroXbtrMW3nBX8WVjHP8nHjtF//3A2u6qbgRtCWxEduFy2PxUJHmmpjtpTqeadV1YDZeBx0YwIXlCAv0luBSifCSfkEM2YmE56Q1L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eTkkGM/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3495C32781;
+	Tue, 25 Jun 2024 09:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309438;
-	bh=GbJwjHytCpu0iC4gjzdJ8OiC1ar/HMrYB5+Q8tJ8Hkw=;
+	s=korg; t=1719308707;
+	bh=J+Vm8a0wNISBTPr+yxkgJji+V8n2HxEtLMdrEU2Gk/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2UmGUwWXG8opClYiBdgAU/qya8TFqY/ClIVpaMeJYkVx2zdSo1FjofdCrFe2tpyG
-	 qdZHI6M54mITUZpkxnjR4LNndCAxfYUtYop/nLNcwN37lcDKJuF8Q+9fmi6WNZYhKQ
-	 ud6PeW2mxF43bDStQ1HbwjhRzKYGiBmrdRhmeMMY=
+	b=eTkkGM/NA2HDuMQ+MaBKgZiWICCBLm5PmR6uaM3t+yGKtDdTcug5HlF8DfSpAyHEv
+	 Iday/FSXI0CY5emRpp8ENnGxU19XlKPA4VnSfOtWS41wc/yEI8yg3EUfPCJ47XAWPr
+	 U0AlhKCP91BCPugJ4necJLXaPOHL4/mrR5gDVHSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/131] kselftest: arm64: Add a null pointer check
+	Alan Stern <stern@rowland.harvard.edu>,
+	Joao Machado <jocrismachado@gmail.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Christian Heusel <christian@heusel.eu>
+Subject: [PATCH 6.9 213/250] scsi: usb: uas: Do not query the IO Advice Hints Grouping mode page for USB/UAS devices
 Date: Tue, 25 Jun 2024 11:32:51 +0200
-Message-ID: <20240625085526.561879368@linuxfoundation.org>
+Message-ID: <20240625085556.230908515@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 80164282b3620a3cb73de6ffda5592743e448d0e ]
+commit 57619f3cdeb5ae9f4252833b0ed600e9f81da722 upstream.
 
-There is a 'malloc' call, which can be unsuccessful.
-This patch will add the malloc failure checking
-to avoid possible null dereference and give more information
-about test fail reasons.
+Recently it was reported that the following USB storage devices are
+unusable with Linux kernel 6.9:
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20240423082102.2018886-1-chentao@kylinos.cn
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ * Kingston DataTraveler G2
+ * Garmin FR35
+
+This is because attempting to read the IO Advice Hints Grouping mode page
+causes these devices to reset. Hence do not read the IO Advice Hints
+Grouping mode page from USB/UAS storage devices.
+
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: stable@vger.kernel.org
+Fixes: 4f53138fffc2 ("scsi: sd: Translate data lifetime information")
+Reported-by: Joao Machado <jocrismachado@gmail.com>
+Closes: https://lore.kernel.org/linux-scsi/20240130214911.1863909-1-bvanassche@acm.org/T/#mf4e3410d8f210454d7e4c3d1fb5c0f41e651b85f
+Tested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Bisected-by: Christian Heusel <christian@heusel.eu>
+Reported-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Closes: https://lore.kernel.org/linux-scsi/CACLx9VdpUanftfPo2jVAqXdcWe8Y43MsDeZmMPooTzVaVJAh2w@mail.gmail.com/
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240613211828.2077477-3-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/arm64/tags/tags_test.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/storage/scsiglue.c |    6 ++++++
+ drivers/usb/storage/uas.c      |    7 +++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/tools/testing/selftests/arm64/tags/tags_test.c b/tools/testing/selftests/arm64/tags/tags_test.c
-index 5701163460ef7..955f87c1170d7 100644
---- a/tools/testing/selftests/arm64/tags/tags_test.c
-+++ b/tools/testing/selftests/arm64/tags/tags_test.c
-@@ -6,6 +6,7 @@
- #include <stdint.h>
- #include <sys/prctl.h>
- #include <sys/utsname.h>
-+#include "../../kselftest.h"
+--- a/drivers/usb/storage/scsiglue.c
++++ b/drivers/usb/storage/scsiglue.c
+@@ -86,6 +86,12 @@ static int slave_alloc (struct scsi_devi
+ 	if (us->protocol == USB_PR_BULK && us->max_lun > 0)
+ 		sdev->sdev_bflags |= BLIST_FORCELUN;
  
- #define SHIFT_TAG(tag)		((uint64_t)(tag) << 56)
- #define SET_TAG(ptr, tag)	(((uint64_t)(ptr) & ~SHIFT_TAG(0xff)) | \
-@@ -21,6 +22,9 @@ int main(void)
- 	if (prctl(PR_SET_TAGGED_ADDR_CTRL, PR_TAGGED_ADDR_ENABLE, 0, 0, 0) == 0)
- 		tbi_enabled = 1;
- 	ptr = (struct utsname *)malloc(sizeof(*ptr));
-+	if (!ptr)
-+		ksft_exit_fail_msg("Failed to allocate utsname buffer\n");
++	/*
++	 * Some USB storage devices reset if the IO advice hints grouping mode
++	 * page is queried. Hence skip that mode page.
++	 */
++	sdev->sdev_bflags |= BLIST_SKIP_IO_HINTS;
 +
- 	if (tbi_enabled)
- 		tag = 0x42;
- 	ptr = (struct utsname *)SET_TAG(ptr, tag);
--- 
-2.43.0
-
+ 	return 0;
+ }
+ 
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -21,6 +21,7 @@
+ #include <scsi/scsi.h>
+ #include <scsi/scsi_eh.h>
+ #include <scsi/scsi_dbg.h>
++#include <scsi/scsi_devinfo.h>
+ #include <scsi/scsi_cmnd.h>
+ #include <scsi/scsi_device.h>
+ #include <scsi/scsi_host.h>
+@@ -820,6 +821,12 @@ static int uas_slave_alloc(struct scsi_d
+ 	struct uas_dev_info *devinfo =
+ 		(struct uas_dev_info *)sdev->host->hostdata;
+ 
++	/*
++	 * Some USB storage devices reset if the IO advice hints grouping mode
++	 * page is queried. Hence skip that mode page.
++	 */
++	sdev->sdev_bflags |= BLIST_SKIP_IO_HINTS;
++
+ 	sdev->hostdata = devinfo;
+ 
+ 	/*
 
 
 
