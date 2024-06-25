@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-55409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D68E916372
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5107D91641C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FA391C20BD0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D0E22809E5
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CCD1487E9;
-	Tue, 25 Jun 2024 09:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015D614A4DE;
+	Tue, 25 Jun 2024 09:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ue3mN+3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfDbioMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3001465A8;
-	Tue, 25 Jun 2024 09:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B083F149DF4;
+	Tue, 25 Jun 2024 09:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308818; cv=none; b=qnt6PI451nHvaAx8y0iocc8arITri8u+KaUklPUOwKOIPWKXfDcVJCWWFqxO0L773l9rImQEcyxpaKbLwyfe5f5HryIG0IIvRtoN6oo+L7ipJy23hPWSJY1XbOo5XAtvHGIEmktTW+ACF4lBDrhBWg1tvubGJBsNHJ6tTOr0/CY=
+	t=1719309224; cv=none; b=Z0bMhZvJjIV5LKG7sKYZg8QlYaERC1UHUroHGD7MCojNCu/G6n3CdruGPMFr9JTLvU5h58QOIW8ebkcvMCnLnBoPGE+4a3R2vlxVxnZTjlPyb6vlRfuLMuTx/ybxAotEexs4RUa8yHGNRdQxRpKwbs3kzo9T7A0g3Mp8AtqInT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308818; c=relaxed/simple;
-	bh=Q5mQcRtKcpnlV1TCnStJ6Zp7lnB8AbUIAkF+6ZQnwtY=;
+	s=arc-20240116; t=1719309224; c=relaxed/simple;
+	bh=rE2xYBwdC+vb3wmR9HsMwpoCkLeOzAmUArkUFsFWS7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ij/Wi9YzyZukES5m9AD/hZUt/oqk2qD0oBkOrKGxcTyykVGnEMr3QGd6F2WXYXRG1Z30QToAqjiNUjdbuw8/I5jucis9N0x1C8iPGLrKhIHFezBVOHztuzpJVTM0VoJfM6DRIZ7RBeXBXF9L4hMDQg2coveeJ+MDaPDiwe/NWjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ue3mN+3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434E7C32781;
-	Tue, 25 Jun 2024 09:46:58 +0000 (UTC)
+	 MIME-Version; b=stYdE9O/mBAl8vh0YygW5eRc3ueSDSmmpNVo3dXH0Ppq6y2XB5n79ECCLfGa6lAzE/QC7AleRYjw9prJnaeSYOr4swgVUKpo4znnZIKDPNADPKFmuyobrD9CLSrNvchXLxhN+VKs1J6ztZS0aJbVSj6MgSRLaphmfVVdNBz2Z34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfDbioMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED549C32781;
+	Tue, 25 Jun 2024 09:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308818;
-	bh=Q5mQcRtKcpnlV1TCnStJ6Zp7lnB8AbUIAkF+6ZQnwtY=;
+	s=korg; t=1719309224;
+	bh=rE2xYBwdC+vb3wmR9HsMwpoCkLeOzAmUArkUFsFWS7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ue3mN+3NxIPF+N5czKnohBD/HjvfXA8Xnmv2mDNr9DyV3rksSo9qCIuKxeRUYcPXA
-	 ucUoEZtuoYLtEYhdW2v7ti0+lA4wvW04PYeY7mlBHSmCmDxj4yBFUdo86Itv0akUNb
-	 uswiuqaN38eeLIjGbbhuBo9Dj2FWqUzcFDVTshlU=
+	b=MfDbioMsjtRSFFKTdGhhp8GjW71Fulw2fHgqdFHHXbgT25np7eRXAFR3M58RaYRuc
+	 vYnBMuY01mTASYJDAwPJsfQ60Hn8J6sgVvnKTDSEd05mZGgMhFqEEb9j7W/1pMR2jq
+	 Dug/0QnHGz1YM0+igE0u6WOyU/7ziwgFVBkuvXIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rafael Aquini <aquini@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.9 250/250] Revert "mm: mmap: allow for the maximum number of bits for randomizing mmap_base by default"
-Date: Tue, 25 Jun 2024 11:33:28 +0200
-Message-ID: <20240625085557.645256639@linuxfoundation.org>
+	Andrew Halaney <ahalaney@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Joel Slebodnick <jslebodn@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 137/192] scsi: ufs: core: Free memory allocated for model before reinit
+Date: Tue, 25 Jun 2024 11:33:29 +0200
+Message-ID: <20240625085542.419728697@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Joel Slebodnick <jslebodn@redhat.com>
 
-commit 14d7c92f8df9c0964ae6f8b813c1b3ac38120825 upstream.
+commit 135c6eb27a85c8b261a2cc1f5093abcda6ee9010 upstream.
 
-This reverts commit 3afb76a66b5559a7b595155803ce23801558a7a9.
+Under the conditions that a device is to be reinitialized within
+ufshcd_probe_hba(), the device must first be fully reset.
 
-This was a wrongheaded workaround for an issue that had already been
-fixed much better by commit 4ef9ad19e176 ("mm: huge_memory: don't force
-huge page alignment on 32 bit").
+Resetting the device should include freeing U8 model (member of dev_info)
+but does not, and this causes a memory leak.  ufs_put_device_desc() is
+responsible for freeing model.
 
-Asking users questions at kernel compile time that they can't make sense
-of is not a viable strategy.  And the fact that even the kernel VM
-maintainers apparently didn't catch that this "fix" is not a fix any
-more pretty much proves the point that people can't be expected to
-understand the implications of the question.
+unreferenced object 0xffff3f63008bee60 (size 32):
+  comm "kworker/u33:1", pid 60, jiffies 4294892642
+  hex dump (first 32 bytes):
+    54 48 47 4a 46 47 54 30 54 32 35 42 41 5a 5a 41  THGJFGT0T25BAZZA
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc ed7ff1a9):
+    [<ffffb86705f1243c>] kmemleak_alloc+0x34/0x40
+    [<ffffb8670511cee4>] __kmalloc_noprof+0x1e4/0x2fc
+    [<ffffb86705c247fc>] ufshcd_read_string_desc+0x94/0x190
+    [<ffffb86705c26854>] ufshcd_device_init+0x480/0xdf8
+    [<ffffb86705c27b68>] ufshcd_probe_hba+0x3c/0x404
+    [<ffffb86705c29264>] ufshcd_async_scan+0x40/0x370
+    [<ffffb86704f43e9c>] async_run_entry_fn+0x34/0xe0
+    [<ffffb86704f34638>] process_one_work+0x154/0x298
+    [<ffffb86704f34a74>] worker_thread+0x2f8/0x408
+    [<ffffb86704f3cfa4>] kthread+0x114/0x118
+    [<ffffb86704e955a0>] ret_from_fork+0x10/0x20
 
-It may well be the case that we could improve things further, and that
-__thp_get_unmapped_area() should take the mapping randomization into
-account even for 64-bit kernels.  Maybe we should not be so eager to use
-THP mappings.
-
-But in no case should this be a kernel config option.
-
-Cc: Rafael Aquini <aquini@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 96a7141da332 ("scsi: ufs: core: Add support for reinitializing the UFS device")
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Joel Slebodnick <jslebodn@redhat.com>
+Link: https://lore.kernel.org/r/20240613200202.2524194-1-jslebodn@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/Kconfig |   12 ------------
- 1 file changed, 12 deletions(-)
+ drivers/ufs/core/ufshcd.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -1029,21 +1029,10 @@ config ARCH_MMAP_RND_BITS_MAX
- config ARCH_MMAP_RND_BITS_DEFAULT
- 	int
- 
--config FORCE_MAX_MMAP_RND_BITS
--	bool "Force maximum number of bits to use for ASLR of mmap base address"
--	default y if !64BIT
--	help
--	  ARCH_MMAP_RND_BITS and ARCH_MMAP_RND_COMPAT_BITS represent the number
--	  of bits to use for ASLR and if no custom value is assigned (EXPERT)
--	  then the architecture's lower bound (minimum) value is assumed.
--	  This toggle changes that default assumption to assume the arch upper
--	  bound (maximum) value instead.
--
- config ARCH_MMAP_RND_BITS
- 	int "Number of bits to use for ASLR of mmap base address" if EXPERT
- 	range ARCH_MMAP_RND_BITS_MIN ARCH_MMAP_RND_BITS_MAX
- 	default ARCH_MMAP_RND_BITS_DEFAULT if ARCH_MMAP_RND_BITS_DEFAULT
--	default ARCH_MMAP_RND_BITS_MAX if FORCE_MAX_MMAP_RND_BITS
- 	default ARCH_MMAP_RND_BITS_MIN
- 	depends on HAVE_ARCH_MMAP_RND_BITS
- 	help
-@@ -1078,7 +1067,6 @@ config ARCH_MMAP_RND_COMPAT_BITS
- 	int "Number of bits to use for ASLR of mmap base address for compatible applications" if EXPERT
- 	range ARCH_MMAP_RND_COMPAT_BITS_MIN ARCH_MMAP_RND_COMPAT_BITS_MAX
- 	default ARCH_MMAP_RND_COMPAT_BITS_DEFAULT if ARCH_MMAP_RND_COMPAT_BITS_DEFAULT
--	default ARCH_MMAP_RND_COMPAT_BITS_MAX if FORCE_MAX_MMAP_RND_BITS
- 	default ARCH_MMAP_RND_COMPAT_BITS_MIN
- 	depends on HAVE_ARCH_MMAP_RND_COMPAT_BITS
- 	help
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -8743,6 +8743,7 @@ static int ufshcd_probe_hba(struct ufs_h
+ 	    (hba->quirks & UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH)) {
+ 		/* Reset the device and controller before doing reinit */
+ 		ufshcd_device_reset(hba);
++		ufs_put_device_desc(hba);
+ 		ufshcd_hba_stop(hba);
+ 		ufshcd_vops_reinit_notify(hba);
+ 		ret = ufshcd_hba_enable(hba);
 
 
 
