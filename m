@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-55572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CE791643A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFCC9164B8
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA3CD281140
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 551B2B272C7
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716AE14A091;
-	Tue, 25 Jun 2024 09:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CE1148319;
+	Tue, 25 Jun 2024 10:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFE71xmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+9Uyi0U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A99149C4F;
-	Tue, 25 Jun 2024 09:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380AC6CDBA;
+	Tue, 25 Jun 2024 10:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309299; cv=none; b=gho5hXvBDIhYH7uSmiPpGqCVBb3ITXeX3nAw6Cv+lQtUX4QjZd+KcmraQRORyLeGEAu76VhGBNinDFEIMIxlrM8DTc4RFwoasvAdwO28yOe9PspRLO6pZjz2P/K7d/ZUwEbW+X69qHtsePTYHNRlmM6GFyRPgh3WARIeSo8bw0M=
+	t=1719309630; cv=none; b=orMWsnOvB3m+FNrV7bvE5vxUe/p2t3lWYYHoQFk7u2UNgFfHl+bhOj/8L5SzkwDOBzUbZBZgI/dYq3d3MJbxQrrHKleOnG7W9PpWhjobbzlPeVSMmyFGF7vnYlGO8Ij+IgE7oJqkFQkL4knP+COo1ECrNcV0zqHYpCfcp2h2MDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309299; c=relaxed/simple;
-	bh=CK4+JH4OCD5kQiGn3M+8QSNM/dUuaTSRO1phapABJd8=;
+	s=arc-20240116; t=1719309630; c=relaxed/simple;
+	bh=bm/fk8No7e2ioyS/w6OfcEkmaFyV8PlxInjzNsTFngc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Snv7EYfrqNZArLRmlVRJ2tSpV4kBi4SFl7+o71yw74T5YhYfIxmJoM6zGU2Oza71f3jfcbdwQcLMcXPE2ewgSx2xTGkEy1GP0mGrD1LMt0MVvdItag9BC+tMgn5O2Fgc8QQeOsjMXcYTjjhi+51oHy71Yg9DyWxCPjLaSszLf3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFE71xmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACACFC32781;
-	Tue, 25 Jun 2024 09:54:58 +0000 (UTC)
+	 MIME-Version; b=r/9WAfOidz8QpvzC9u114/xEyzrIfhT+iKlMLY+jAE6asbXPg+Pyko7UYuzcCO1SKMGu8ffxjoCE0o9EZsea3OBpsnFBsk849gEpSef/s1bS5oChlKGpMDvWSQxhEG6u0pDvGKwKjLftTtnV7DJqeViraWXepiRPDaKioIDo7WI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+9Uyi0U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A86EC32781;
+	Tue, 25 Jun 2024 10:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309299;
-	bh=CK4+JH4OCD5kQiGn3M+8QSNM/dUuaTSRO1phapABJd8=;
+	s=korg; t=1719309629;
+	bh=bm/fk8No7e2ioyS/w6OfcEkmaFyV8PlxInjzNsTFngc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kFE71xmEAvRWfnKMxWh1dIXGNHOOFdmilDZ9GkTCL/E3YHfhsH09GkYbFxYxr7UPs
-	 0QXRQl4D+gaBp2FqlsrIZQsR4dASKAfx2WdxpEpwWyXjPFikqTd9TEF5MnlypmSiie
-	 fXmI4MsaYgGjpy2wokI14FnHjVBiVaLSTN7Srxdc=
+	b=q+9Uyi0UZmfeGwG2Pmpa/hUEH6HLkbr45NJi1k8lMCW62V6ELNJZ9kChdVXlnk+Ha
+	 q6a2sbOqN8pjrZhNQ0AvNgQNeb3V8X5S93kuqvVK+t2EvO5x54fVGj1ua7o9aMJ5H9
+	 8sCVi9j/VwzSlNQ75AZvMdej3Q7r2jRSRYhQEj2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 163/192] tcp: clear tp->retrans_stamp in tcp_rcv_fastopen_synack()
-Date: Tue, 25 Jun 2024 11:33:55 +0200
-Message-ID: <20240625085543.419059678@linuxfoundation.org>
+	Nikita Shubin <n.shubin@yadro.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 081/131] dmaengine: ioatdma: Fix leaking on version mismatch
+Date: Tue, 25 Jun 2024 11:33:56 +0200
+Message-ID: <20240625085529.021834161@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Nikita Shubin <n.shubin@yadro.com>
 
-commit 9e046bb111f13461d3f9331e24e974324245140e upstream.
+[ Upstream commit 1b11b4ef6bd68591dcaf8423c7d05e794e6aec6f ]
 
-Some applications were reporting ETIMEDOUT errors on apparently
-good looking flows, according to packet dumps.
+Fix leaking ioatdma_device if I/OAT version is less than IOAT_VER_3_0.
 
-We were able to root cause the issue to an accidental setting
-of tp->retrans_stamp in the following scenario:
-
-- client sends TFO SYN with data.
-- server has TFO disabled, ACKs only SYN but not payload.
-- client receives SYNACK covering only SYN.
-- tcp_ack() eats SYN and sets tp->retrans_stamp to 0.
-- tcp_rcv_fastopen_synack() calls tcp_xmit_retransmit_queue()
-  to retransmit TFO payload w/o SYN, sets tp->retrans_stamp to "now",
-  but we are not in any loss recovery state.
-- TFO payload is ACKed.
-- we are not in any loss recovery state, and don't see any dupacks,
-  so we don't get to any code path that clears tp->retrans_stamp.
-- tp->retrans_stamp stays non-zero for the lifetime of the connection.
-- after first RTO, tcp_clamp_rto_to_user_timeout() clamps second RTO
-  to 1 jiffy due to bogus tp->retrans_stamp.
-- on clamped RTO with non-zero icsk_retransmits, retransmits_timed_out()
-  sets start_ts from tp->retrans_stamp from TFO payload retransmit
-  hours/days ago, and computes bogus long elapsed time for loss recovery,
-  and suffers ETIMEDOUT early.
-
-Fixes: a7abf3cd76e1 ("tcp: consider using standard rtx logic in tcp_rcv_fastopen_synack()")
-CC: stable@vger.kernel.org
-Co-developed-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Co-developed-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240614130615.396837-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
+Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-1-a9f2fbe26ab1@yadro.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/ioat/init.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6176,6 +6176,7 @@ static bool tcp_rcv_fastopen_synack(stru
- 		skb_rbtree_walk_from(data)
- 			 tcp_mark_skb_lost(sk, data);
- 		tcp_xmit_retransmit_queue(sk);
-+		tp->retrans_stamp = 0;
- 		NET_INC_STATS(sock_net(sk),
- 				LINUX_MIB_TCPFASTOPENACTIVEFAIL);
- 		return true;
+diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
+index 6ca62edf47bd7..79dcd2061b023 100644
+--- a/drivers/dma/ioat/init.c
++++ b/drivers/dma/ioat/init.c
+@@ -1349,6 +1349,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	void __iomem * const *iomap;
+ 	struct device *dev = &pdev->dev;
+ 	struct ioatdma_device *device;
++	u8 version;
+ 	int err;
+ 
+ 	err = pcim_enable_device(pdev);
+@@ -1362,6 +1363,10 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (!iomap)
+ 		return -ENOMEM;
+ 
++	version = readb(iomap[IOAT_MMIO_BAR] + IOAT_VER_OFFSET);
++	if (version < IOAT_VER_3_0)
++		return -ENODEV;
++
+ 	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
+ 	if (err)
+ 		return err;
+@@ -1372,16 +1377,14 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	pci_set_master(pdev);
+ 	pci_set_drvdata(pdev, device);
+ 
+-	device->version = readb(device->reg_base + IOAT_VER_OFFSET);
++	device->version = version;
+ 	if (device->version >= IOAT_VER_3_4)
+ 		ioat_dca_enabled = 0;
+-	if (device->version >= IOAT_VER_3_0) {
+-		if (is_skx_ioat(pdev))
+-			device->version = IOAT_VER_3_2;
+-		err = ioat3_dma_probe(device, ioat_dca_enabled);
+-	} else
+-		return -ENODEV;
+ 
++	if (is_skx_ioat(pdev))
++		device->version = IOAT_VER_3_2;
++
++	err = ioat3_dma_probe(device, ioat_dca_enabled);
+ 	if (err) {
+ 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
+ 		return -ENODEV;
+-- 
+2.43.0
+
 
 
 
