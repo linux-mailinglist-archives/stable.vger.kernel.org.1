@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-55487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAFF89163D1
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:50:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC85916335
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19CC91C2273E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:50:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6ECD28201A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6E0149E17;
-	Tue, 25 Jun 2024 09:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FC5148FE5;
+	Tue, 25 Jun 2024 09:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ND5eP8O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o63A2EvX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475C4149DEF;
-	Tue, 25 Jun 2024 09:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74B012EBEA;
+	Tue, 25 Jun 2024 09:44:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309048; cv=none; b=o76xmk1gGTjpaSNzUyTlVkkijn5l2p1duSIh140vNPBAesXMJtPnAXRK1y4Mci6Pt6b+ta6F18Hpr9uOM0cSHyMqA6GbI1Goqb/4RE+iA2BKWcZApDEwId9eHG/PohNdVYsaCzthcYOjOKZjsJBRV9WQ6ZS/sdi31xTvKcsVO24=
+	t=1719308642; cv=none; b=E6z04+DJJ97zDgmPTQgux1T4Kl5kO3DR+dgYek1td2HqVfskkJoMQU2EpHuSASUz9oepiWy+EKVEg8jXYJ12bujGQjS5OPKFEfs5kDi/ZRcp6/KkEBVmXySKM5CI3vPB8SHnoT71tBo7xBHIbpc2g/BssGo6GtKGCWdxRGmRl7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309048; c=relaxed/simple;
-	bh=1fLBO42jZXvhkFg27F7JbyJDeWlXNWDM5HHHxGqPLTw=;
+	s=arc-20240116; t=1719308642; c=relaxed/simple;
+	bh=m3/s2avDvp0q3XzSTb0qnodbWAhSTfuBp34xePG1omA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUPDs9gnUZS2W9N6GnIyooYGD0yHfmUukhOX9BhLGfreibJhlVzWEOiyPpr/b3qSUYmkBJp5JKGHCv+XVOpPVizf0ZN4ipFu/7Ci3HPUrKb9VKOXVLVdzcdNQeclPwbI0lDF/WD/byPBI0qzHGwK7/cQcBH07SwCwkF1+KbI9jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ND5eP8O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E75C32781;
-	Tue, 25 Jun 2024 09:50:47 +0000 (UTC)
+	 MIME-Version; b=lUFWLpOIyic7EX70YPxuRaAVniIkyIyLfEX5C4NzjLbkoePAwCh8IaSqb1IxVYYziv1DVESNpUVv+VCLIZYQwyh1YRV0yWcezR/faSHn5r3GHqEHzsj58U/uDCnd839PSkGZ6QEvcBNW3WYlzkJy8YNRz1KuZFbNXxPOuCeAzCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o63A2EvX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F845C32781;
+	Tue, 25 Jun 2024 09:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309048;
-	bh=1fLBO42jZXvhkFg27F7JbyJDeWlXNWDM5HHHxGqPLTw=;
+	s=korg; t=1719308641;
+	bh=m3/s2avDvp0q3XzSTb0qnodbWAhSTfuBp34xePG1omA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ND5eP8OYJWSbSDuktVdPE9zAnX1lPQryqMltDbzNtzNDSlonB72JcO2txxKM6553
-	 pqa5b3y8fWD/3FxDdGxu1/O3MqGfyVnvb35VqpLDihTbAFSjBu00fuhWOSBsFqCBch
-	 Wr9RxFTRoYC/uY/Reem3Xh5NC5aPKhhUMFLhVqYA=
+	b=o63A2EvXfzSVnzCT7HpWFvH98UvKbv5V6NjHGs49KvuJ7WUNbIFxJaCjKBqtPVAcN
+	 bHxyh3IsfRC62OkcJ3UE8A+odwOkTwGISL/cVqRvtZCxBAPYNVKCiSVjJGY6BDExWp
+	 PPQHQtU5MgGyakEN/UJIaPb/xcCRJMlxtj9pPWyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0c4150bff9fff3bf023c@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Westphal <fw@strlen.de>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/192] bpf: Avoid splat in pskb_pull_reason
+	Hui Li <lihui@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.9 190/250] LoongArch: Fix multiple hardware watchpoint issues
 Date: Tue, 25 Jun 2024 11:32:28 +0200
-Message-ID: <20240625085540.093550076@linuxfoundation.org>
+Message-ID: <20240625085555.345862235@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +61,202 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Hui Li <lihui@loongson.cn>
 
-[ Upstream commit 2bbe3e5a2f4ef69d13be54f1cf895b4658287080 ]
+commit 3eb2a8b23598e90fda43abb0f23cb267bd5018ba upstream.
 
-syzkaller builds (CONFIG_DEBUG_NET=y) frequently trigger a debug
-hint in pskb_may_pull.
+In the current code, if multiple hardware breakpoints/watchpoints in
+a user-space thread, some of them will not be triggered.
 
-We'd like to retain this debug check because it might hint at integer
-overflows and other issues (kernel code should pull headers, not huge
-value).
+When debugging the following code using gdb.
 
-In bpf case, this splat isn't interesting at all: such (nonsensical)
-bpf programs are typically generated by a fuzzer anyway.
+lihui@bogon:~$ cat test.c
+  #include <stdio.h>
+  int a = 0;
+  int main()
+  {
+    printf("start test\n");
+    a = 1;
+    printf("a = %d\n", a);
+    printf("end test\n");
+    return 0;
+  }
+lihui@bogon:~$ gcc -g test.c -o test
+lihui@bogon:~$ gdb test
+...
+(gdb) start
+...
+Temporary breakpoint 1, main () at test.c:5
+5        printf("start test\n");
+(gdb) watch a
+Hardware watchpoint 2: a
+(gdb) hbreak 8
+Hardware assisted breakpoint 3 at 0x1200006ec: file test.c, line 8.
+(gdb) c
+Continuing.
+start test
+a = 1
 
-Do what Eric suggested and suppress such warning.
+Breakpoint 3, main () at test.c:8
+8        printf("end test\n");
+...
 
-For CONFIG_DEBUG_NET=n we don't need the extra check because
-pskb_may_pull will do the right thing: return an error without the
-WARN() backtrace.
+The first hardware watchpoint is not triggered, the root causes are:
 
-Fixes: 219eee9c0d16 ("net: skbuff: add overflow debug check to pull/push helpers")
-Reported-by: syzbot+0c4150bff9fff3bf023c@syzkaller.appspotmail.com
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Closes: https://syzkaller.appspot.com/bug?extid=0c4150bff9fff3bf023c
-Link: https://lore.kernel.org/netdev/9f254c96-54f2-4457-b7ab-1d9f6187939c@gmail.com/
-Link: https://lore.kernel.org/bpf/20240614101801.9496-1-fw@strlen.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1. In hw_breakpoint_control(), The FWPnCFG1.2.4/MWPnCFG1.2.4 register
+   settings are not distinguished. They should be set based on hardware
+   watchpoint functions (fetch or load/store operations).
+
+2. In breakpoint_handler() and watchpoint_handler(), it doesn't identify
+   which watchpoint is triggered. So, all watchpoint-related perf_event
+   callbacks are called and siginfo is sent to the user space. This will
+   cause user-space unable to determine which watchpoint is triggered.
+   The kernel need to identity which watchpoint is triggered via MWPS/
+   FWPS registers, and then call the corresponding perf event callbacks
+   to report siginfo to the user-space.
+
+Modify the relevant code to solve above issues.
+
+All changes according to the LoongArch Reference Manual:
+https://loongson.github.io/LoongArch-Documentation/LoongArch-Vol1-EN.html#control-and-status-registers-related-to-watchpoints
+
+With this patch:
+
+lihui@bogon:~$ gdb test
+...
+(gdb) start
+...
+Temporary breakpoint 1, main () at test.c:5
+5        printf("start test\n");
+(gdb) watch a
+Hardware watchpoint 2: a
+(gdb) hbreak 8
+Hardware assisted breakpoint 3 at 0x1200006ec: file test.c, line 8.
+(gdb) c
+Continuing.
+start test
+
+Hardware watchpoint 2: a
+
+Old value = 0
+New value = 1
+main () at test.c:7
+7        printf("a = %d\n", a);
+(gdb) c
+Continuing.
+a = 1
+
+Breakpoint 3, main () at test.c:8
+8        printf("end test\n");
+(gdb) c
+Continuing.
+end test
+[Inferior 1 (process 778) exited normally]
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Hui Li <lihui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/loongarch/kernel/hw_breakpoint.c |   57 +++++++++++++++++++---------------
+ 1 file changed, 33 insertions(+), 24 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index df4578219e82c..afe38b8dee024 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -1657,6 +1657,11 @@ static DEFINE_PER_CPU(struct bpf_scratchpad, bpf_sp);
- static inline int __bpf_try_make_writable(struct sk_buff *skb,
- 					  unsigned int write_len)
- {
-+#ifdef CONFIG_DEBUG_NET
-+	/* Avoid a splat in pskb_may_pull_reason() */
-+	if (write_len > INT_MAX)
-+		return -EINVAL;
-+#endif
- 	return skb_ensure_writable(skb, write_len);
- }
+--- a/arch/loongarch/kernel/hw_breakpoint.c
++++ b/arch/loongarch/kernel/hw_breakpoint.c
+@@ -207,15 +207,15 @@ static int hw_breakpoint_control(struct
+ 	switch (ops) {
+ 	case HW_BREAKPOINT_INSTALL:
+ 		/* Set the FWPnCFG/MWPnCFG 1~4 register. */
+-		write_wb_reg(CSR_CFG_ADDR, i, 0, info->address);
+-		write_wb_reg(CSR_CFG_ADDR, i, 1, info->address);
+-		write_wb_reg(CSR_CFG_MASK, i, 0, info->mask);
+-		write_wb_reg(CSR_CFG_MASK, i, 1, info->mask);
+-		write_wb_reg(CSR_CFG_ASID, i, 0, 0);
+-		write_wb_reg(CSR_CFG_ASID, i, 1, 0);
+ 		if (info->ctrl.type == LOONGARCH_BREAKPOINT_EXECUTE) {
++			write_wb_reg(CSR_CFG_ADDR, i, 0, info->address);
++			write_wb_reg(CSR_CFG_MASK, i, 0, info->mask);
++			write_wb_reg(CSR_CFG_ASID, i, 0, 0);
+ 			write_wb_reg(CSR_CFG_CTRL, i, 0, privilege);
+ 		} else {
++			write_wb_reg(CSR_CFG_ADDR, i, 1, info->address);
++			write_wb_reg(CSR_CFG_MASK, i, 1, info->mask);
++			write_wb_reg(CSR_CFG_ASID, i, 1, 0);
+ 			ctrl = encode_ctrl_reg(info->ctrl);
+ 			write_wb_reg(CSR_CFG_CTRL, i, 1, ctrl | privilege);
+ 		}
+@@ -226,14 +226,17 @@ static int hw_breakpoint_control(struct
+ 		break;
+ 	case HW_BREAKPOINT_UNINSTALL:
+ 		/* Reset the FWPnCFG/MWPnCFG 1~4 register. */
+-		write_wb_reg(CSR_CFG_ADDR, i, 0, 0);
+-		write_wb_reg(CSR_CFG_ADDR, i, 1, 0);
+-		write_wb_reg(CSR_CFG_MASK, i, 0, 0);
+-		write_wb_reg(CSR_CFG_MASK, i, 1, 0);
+-		write_wb_reg(CSR_CFG_CTRL, i, 0, 0);
+-		write_wb_reg(CSR_CFG_CTRL, i, 1, 0);
+-		write_wb_reg(CSR_CFG_ASID, i, 0, 0);
+-		write_wb_reg(CSR_CFG_ASID, i, 1, 0);
++		if (info->ctrl.type == LOONGARCH_BREAKPOINT_EXECUTE) {
++			write_wb_reg(CSR_CFG_ADDR, i, 0, 0);
++			write_wb_reg(CSR_CFG_MASK, i, 0, 0);
++			write_wb_reg(CSR_CFG_CTRL, i, 0, 0);
++			write_wb_reg(CSR_CFG_ASID, i, 0, 0);
++		} else {
++			write_wb_reg(CSR_CFG_ADDR, i, 1, 0);
++			write_wb_reg(CSR_CFG_MASK, i, 1, 0);
++			write_wb_reg(CSR_CFG_CTRL, i, 1, 0);
++			write_wb_reg(CSR_CFG_ASID, i, 1, 0);
++		}
+ 		if (bp->hw.target)
+ 			regs->csr_prmd &= ~CSR_PRMD_PWE;
+ 		break;
+@@ -476,12 +479,15 @@ void breakpoint_handler(struct pt_regs *
+ 	slots = this_cpu_ptr(bp_on_reg);
  
--- 
-2.43.0
-
+ 	for (i = 0; i < boot_cpu_data.watch_ireg_count; ++i) {
+-		bp = slots[i];
+-		if (bp == NULL)
+-			continue;
+-		perf_bp_event(bp, regs);
++		if ((csr_read32(LOONGARCH_CSR_FWPS) & (0x1 << i))) {
++			bp = slots[i];
++			if (bp == NULL)
++				continue;
++			perf_bp_event(bp, regs);
++			csr_write32(0x1 << i, LOONGARCH_CSR_FWPS);
++			update_bp_registers(regs, 0, 0);
++		}
+ 	}
+-	update_bp_registers(regs, 0, 0);
+ }
+ NOKPROBE_SYMBOL(breakpoint_handler);
+ 
+@@ -493,12 +499,15 @@ void watchpoint_handler(struct pt_regs *
+ 	slots = this_cpu_ptr(wp_on_reg);
+ 
+ 	for (i = 0; i < boot_cpu_data.watch_dreg_count; ++i) {
+-		wp = slots[i];
+-		if (wp == NULL)
+-			continue;
+-		perf_bp_event(wp, regs);
++		if ((csr_read32(LOONGARCH_CSR_MWPS) & (0x1 << i))) {
++			wp = slots[i];
++			if (wp == NULL)
++				continue;
++			perf_bp_event(wp, regs);
++			csr_write32(0x1 << i, LOONGARCH_CSR_MWPS);
++			update_bp_registers(regs, 0, 1);
++		}
+ 	}
+-	update_bp_registers(regs, 0, 1);
+ }
+ NOKPROBE_SYMBOL(watchpoint_handler);
+ 
 
 
 
