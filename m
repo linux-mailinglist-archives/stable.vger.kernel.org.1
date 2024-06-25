@@ -1,190 +1,288 @@
-Return-Path: <stable+bounces-55748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05EE09165DE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 13:08:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E77916615
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 13:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29C151C231E6
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:08:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBAD4281602
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C365814B078;
-	Tue, 25 Jun 2024 11:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F0B149C68;
+	Tue, 25 Jun 2024 11:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Tyyi45Ml";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Ioloclc7";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Tyyi45Ml";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Ioloclc7"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="sh+gnQk6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6899214B971;
-	Tue, 25 Jun 2024 11:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1A0148FF5;
+	Tue, 25 Jun 2024 11:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719313650; cv=none; b=UDIYlftJeB2JnKlFcZeo8CmrmWtBgqp0GtSHFv2hg2IAv8gB4PZrVvho/CgrCBJZpTw2iqlwcDeySRMLXc0iup2lXQUbL/JOSqe7veDvqI+5IP8wUQSsmlylUgM1VfJt71EqAlF9bVI6MNpBJ8QwqjTDRBmOr18tISHNxZAZRyA=
+	t=1719314499; cv=none; b=CXfESifI6waLJJn4rZ0KyZDB90+Ug60CC6/P9R21Q12PCP2IwfF/7+TArkDiL7SlmwdNeq9QpIM3TKPg/1m3LaYpEsfNv47YnPuPkzd7WRmrFm8O8FrQ/QXNH6nnhYexwtMwPE0ivytysdSGy1jCexHgVDDOzBCv+XnOPx0ERVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719313650; c=relaxed/simple;
-	bh=PY7L13pxdLSE+2/a1H4QXK0nQoetndLGO4nqNavMs9k=;
+	s=arc-20240116; t=1719314499; c=relaxed/simple;
+	bh=oSbhm/dT5MKMXBhgwWCjBGIAGVS63RQDUCW+HqsxQOE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pQpKMkA2G+hkc/yqM+FJC2uBoByqhhubCzBoLM5YTqTF3LKG0jnmb5k05ABgN79mjk6ikPwBLvViO5zGUP0Jupgh9V0ocCdUSV8p8MqgiqmvTecEJJlcCflWcOHhdlbV4P8tlYH2Vbl/1vsDh1lyiZJlyCNuRZf2UQkH9DfYglU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Tyyi45Ml; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Ioloclc7; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Tyyi45Ml; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Ioloclc7; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 98A3D1F84F;
-	Tue, 25 Jun 2024 11:07:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1719313646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q5APHAkGV4Ml9LxniEYJ12b6ysCsT+JexPNHYPsrQCY=;
-	b=Tyyi45MlktCjpgfigQoSmGJZeb5hYPUBIoNpOBm+3Thzc2Y4GRzMLOMI7/yN9I74wUgK6n
-	SwuE6vCoXxd5o86yenB8OM1sQo/QPycKhry5aM9DMHUqW5XOvJOWwZEUfSBnItdfSi52sX
-	Ri3JmFxQPlmKCIi+XnItd43rT2OOAUc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1719313646;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q5APHAkGV4Ml9LxniEYJ12b6ysCsT+JexPNHYPsrQCY=;
-	b=Ioloclc7TIEKnUADSMc/fGe0Z38tW7gnM/wztfgGJw4SbGDucpIXIaPtVntsRwDTQyXKQR
-	6gxu2U3yto5Ig/CQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1719313646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q5APHAkGV4Ml9LxniEYJ12b6ysCsT+JexPNHYPsrQCY=;
-	b=Tyyi45MlktCjpgfigQoSmGJZeb5hYPUBIoNpOBm+3Thzc2Y4GRzMLOMI7/yN9I74wUgK6n
-	SwuE6vCoXxd5o86yenB8OM1sQo/QPycKhry5aM9DMHUqW5XOvJOWwZEUfSBnItdfSi52sX
-	Ri3JmFxQPlmKCIi+XnItd43rT2OOAUc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1719313646;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q5APHAkGV4Ml9LxniEYJ12b6ysCsT+JexPNHYPsrQCY=;
-	b=Ioloclc7TIEKnUADSMc/fGe0Z38tW7gnM/wztfgGJw4SbGDucpIXIaPtVntsRwDTQyXKQR
-	6gxu2U3yto5Ig/CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8B95E1384C;
-	Tue, 25 Jun 2024 11:07:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Oh3KIe6kemY8aQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 25 Jun 2024 11:07:26 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 40D3BA083E; Tue, 25 Jun 2024 13:07:26 +0200 (CEST)
-Date: Tue, 25 Jun 2024 13:07:26 +0200
-From: Jan Kara <jack@suse.cz>
-To: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Jan Kara <jack@suse.cz>, Ted Tso <tytso@mit.edu>,
-	linux-ext4@vger.kernel.org,
-	Alexander Coffin <alex.coffin@maticrobots.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] jbd2: Precompute number of transaction descriptor
- blocks
-Message-ID: <20240625110726.wny5vmig7v2ugdbh@quack3>
-References: <20240624165406.12784-1-jack@suse.cz>
- <20240624170127.3253-2-jack@suse.cz>
- <483983e0-8827-9801-5268-abfd97865d94@huaweicloud.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cb7lklIsGHFWCyq956Q16/ULetXMnd1n1UeIx+24EccpGvXyKhrSPDxEPJjPoAyRpg27oyOvNGTsIVXmualUTlK46jP1vvu84GsymZdjUvnfxhYNVXzvtNdXpoLZzvzQP/Mp+toeMvG2oyvBFZVnm1Kdr93THHehghdoHU+Gz2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=sh+gnQk6; arc=none smtp.client-ip=212.227.126.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1719314488; x=1719919288; i=christian@heusel.eu;
+	bh=uMMLgPkSCGHiELtwqegdPywPsAzyqY9AmA8zacbiW8I=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=sh+gnQk6ej4PfuiU+hTwTyMitd6USWq7qBxa7dT8tZU5Rb4x/iPST5KVyNMxIVNm
+	 i3OVPsNJeeHjvbJRI3dI75cYAxYFIGCCx6IzF609CSwErPSis3HI0mJBiph6Nw7yh
+	 hCcgahUUeOw8Lforuu4EP9dmD5+/6SRPE360duse7HFqMa+aO5YvzmDJJJ1TA8D0R
+	 kPy3HukxSMKrN+ktXm35pwZqaMc40sQKBNcOcP6+rONVsXJxBUcIpiqy6+uQMSfJr
+	 DCYOyRgtapZjfupgMMnV4DhrQRaVE+Wkn0aDbN1KQdOtg/yKeU/NcRzBlesLc6Nty
+	 41WPU/5x80cFDcc6WA==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([78.42.228.106]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MNKyQ-1rxPdl2yMc-00WPVN; Tue, 25 Jun 2024 13:07:51 +0200
+Date: Tue, 25 Jun 2024 13:07:49 +0200
+From: Christian Heusel <christian@heusel.eu>
+To: Andrew Paniakin <apanyaki@amazon.com>
+Cc: pc@cjr.nz, stfrench@microsoft.com, sashal@kernel.org, pc@manguebit.com, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	abuehaze@amazon.com, simbarb@amazon.com, benh@amazon.com
+Subject: Re: [REGRESSION][BISECTED][STABLE] Commit 60e3318e3e900 in
+ stable/linux-6.1.y breaks cifs client failover to another server in DFS
+ namespace
+Message-ID: <210b1da5-6b22-4dd9-a25f-8b24ba4723d4@heusel.eu>
+References: <ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com>
+ <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="jmsggbhoayj3vp5r"
 Content-Disposition: inline
-In-Reply-To: <483983e0-8827-9801-5268-abfd97865d94@huaweicloud.com>
-X-Spam-Score: -3.80
-X-Spam-Level: 
+In-Reply-To: <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
+X-Provags-ID: V03:K1:K2gnCX6y5v0pEX0/67AmSIgOOCUSrjSVvkqkMNLNIcj01PSH4Oj
+ T8aefGcsyDnq5Cg1O+6axHk9E/pe3KkKePQCeBRB/co0elYikkASNMndef5YYfRBT/HkNTM
+ lF1j6+l+Z5WkD7iUx/IZRyuvPvRosANuuUJlKhrIclk8mMuLHEHGcR2+SoKYsMVYU+ouoCk
+ +XMw6vJjld7kNuDGwiWXQ==
 X-Spam-Flag: NO
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
+UI-OutboundReport: notjunk:1;M01:P0:FpkI5MEtraI=;dN19VhZMalOaYI7c4WLnfolaHVM
+ f4au55iSExDBqAI00wcBkZqZVtFELDzhgHtWTCBnDXMHaS2sB6orsl611Ny57CRAOu8GjSS2M
+ oSxb6IKPBLjGPfo38XHmNqeBtwRC1h+hzpovxrl4LEQF6hAyLdULoHgnGLmIJST88ucDDxNNd
+ Ybl1+ZPxdG7UPGT2oBlf6I2pDsWuwmDtBDZJMLeqVBoUJ8ZVhKOt8c0FTr5M8qS4asqNFqo8D
+ XkkQ5R2gO9eXZvK/52fZboJJqU99Gvdti4YuC2ZfnFIpnDsj73Lf0NDioiYjSxCE9l1vXqaRx
+ czJQMdSlacVN0lUJTLnxqZ5g5p55V67FhY3Fb7bFjw4XqvUVIjNcRMxrmZYxJa0mder6v7uGM
+ vOJIRX6qV3+RACX3WikRhu77sBx9UpIAy376ZhB+ReOF6Ca1BCmOnjET8N/XNzIjOdwO/2eQq
+ aBbNP9XEX+mns4aysRwvEHCY2BG97VkxPxl8XiIkt7Jp1yuafGYZ4Q+JqMgXew/BGhZyexg65
+ IUZMUgrMN8EGk57Hj1981QN6Do6Cyl4gH6ry950CZy1LqUUZ2RwaNV/jwdX2ACOPmOscNBjBV
+ hDgz3aPrLYUapcWkpayfVFwqp1rl3k9DSL5UHPe7NvH8QG39lBXTPWVUZQF5yc4vSuvAULt3q
+ HaoqS/Rrjg1IxS9Qpg2uhdnt4llsKjzIHlc6R+ss2BO+fs8aWnQ+65YQOjL4FTYQY9n6ASEhx
+ Xm1ZlOteUxDv/nE2jR1aXnAPCUetzksz3vZAnwRMSU6R6kW+erLmMg=
 
-On Tue 25-06-24 17:31:15, Kemeng Shi wrote:
-> on 6/25/2024 1:01 AM, Jan Kara wrote:
-> > Instead of computing the number of descriptor blocks a transaction can
-> > have each time we need it (which is currently when starting each
-> > transaction but will become more frequent later) precompute the number
-> > once during journal initialization together with maximum transaction
-> > size. We perform the precomputation whenever journal feature set is
-> > updated similarly as for computation of
-> > journal->j_revoke_records_per_block.
-> > 
-> > CC: stable@vger.kernel.org
-> > Signed-off-by: Jan Kara <jack@suse.cz>
+
+--jmsggbhoayj3vp5r
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 24/06/24 10:59AM, Andrew Paniakin wrote:
+> On 19/06/2024, Andrew Paniakin wrote:
+> > Commit 60e3318e3e900 ("cifs: use fs_context for automounts") was
+> > released in v6.1.54 and broke the failover when one of the servers
+> > inside DFS becomes unavailable. We reproduced the problem on the EC2
+> > instances of different types. Reverting aforementioned commint on top of
+> > the latest stable verison v6.1.94 helps to resolve the problem.
+> >=20
+> > Earliest working version is v6.2-rc1. There were two big merges of CIFS=
+ fixes:
+> > [1] and [2]. We would like to ask for the help to investigate this prob=
+lem and
+> > if some of those patches need to be backported. Also, is it safe to jus=
+t revert
+> > problematic commit until proper fixes/backports will be available?
+> >=20
+> > We will help to do testing and confirm if fix works, but let me also li=
+st the
+> > steps we used to reproduce the problem if it will help to identify the =
+problem:
+> > 1. Create Active Directory domain eg. 'corp.fsxtest.local' in AWS Direc=
+tory
+> > Service with:
+> > - three AWS FSX file systems filesystem1..filesystem3
+> > - three Windows servers; They have DFS installed as per
+> >   https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespac=
+es/dfs-overview:
+> >     - dfs-srv1: EC2AMAZ-2EGTM59
+> >     - dfs-srv2: EC2AMAZ-1N36PRD
+> >     - dfs-srv3: EC2AMAZ-0PAUH2U=20
+> >=20
+> >  2. Create DFS namespace eg. 'dfs-namespace' in Windows server 2008 mode
+> >  and three folders targets in it:
+> > - referral-a mapped to filesystem1.corp.local
+> > - referral-b mapped to filesystem2.corp.local
+> > - referral-c mapped to filesystem3.corp.local
+> > - local folders dfs-srv1..dfs-srv3 in C:\DFSRoots\dfs-namespace of every
+> >   Windows server. This helps to quickly define underlying server when
+> >   DFS is mounted.
+> >=20
+> > 3. Enabled cifs debug logs:
+> > ```
+> > echo 'module cifs +p' > /sys/kernel/debug/dynamic_debug/control
+> > echo 'file fs/cifs/* +p' > /sys/kernel/debug/dynamic_debug/control
+> > echo 7 > /proc/fs/cifs/cifsFYI
+> > ```
+> >=20
+> > 4. Mount DFS namespace on Amazon Linux 2023 instance running any vanilla
+> > kernel v6.1.54+:
+> > ```
+> > dmesg -c &>/dev/null
+> > cd /mnt
+> > mount -t cifs -o cred=3D/mnt/creds,echo_interval=3D5 \
+> >     //corp.fsxtest.local/dfs-namespace \
+> >     ./dfs-namespace
+> > ```
+> >=20
+> > 5. List DFS root, it's also required to avoid recursive mounts that hap=
+pen
+> > during regular 'ls' run:
+> > ```
+> > sh -c 'ls dfs-namespace'
+> > dfs-srv2  referral-a  referral-b
+> > ```
+> >=20
+> > The DFS server is EC2AMAZ-1N36PRD, it's also listed in mount:
+> > ```
+> > [root@ip-172-31-2-82 mnt]# mount | grep dfs
+> > //corp.fsxtest.local/dfs-namespace on /mnt/dfs-namespace type cifs (rw,=
+relatime,vers=3D3.1.1,cache=3Dstrict,username=3DAdmin,domain=3Dcorp.fsxtest=
+=2Elocal,uid=3D0,noforceuid,gid=3D0,noforcegid,addr=3D172.31.11.26,file_mod=
+e=3D0755,dir_mode=3D0755,soft,nounix,mapposix,rsize=3D4194304,wsize=3D41943=
+04,bsize=3D1048576,echo_interval=3D5,actimeo=3D1,closetimeo=3D1)
+> > //EC2AMAZ-1N36PRD.corp.fsxtest.local/dfs-namespace/referral-a on /mnt/d=
+fs-namespace/referral-a type cifs (rw,relatime,vers=3D3.1.1,cache=3Dstrict,=
+username=3DAdmin,domain=3Dcorp.fsxtest.local,uid=3D0,noforceuid,gid=3D0,nof=
+orcegid,addr=3D172.31.12.80,file_mode=3D0755,dir_mode=3D0755,soft,nounix,ma=
+pposix,rsize=3D4194304,wsize=3D4194304,bsize=3D1048576,echo_interval=3D5,ac=
+timeo=3D1,closetimeo=3D1)
+> > ```
+> >=20
+> > List files in first folder:
+> > ```
+> > sh -c 'ls dfs-namespace/referral-a'
+> > filea.txt.txt
+> > ```
+> >=20
+> > 6. Shutdown DFS server-2.
+> > List DFS root again, server changed from dfs-srv2 to dfs-srv1 EC2AMAZ-2=
+EGTM59:
+> > ```
+> > sh -c 'ls dfs-namespace'
+> > dfs-srv1  referral-a  referral-b
+> > ```
+> >=20
+> > 7. Try to list files in another folder, this causes ls to fail with err=
+or:
+> > ```
+> > sh -c 'ls dfs-namespace/referral-b'
+> > ls: cannot access 'dfs-namespace/referral-b': No route to host```
+> >=20
+> > Sometimes it's also 'Operation now in progress' error.
+> >=20
+> > mount shows the same output:
+> > ```
+> > //corp.fsxtest.local/dfs-namespace on /mnt/dfs-namespace type cifs (rw,=
+relatime,vers=3D3.1.1,cache=3Dstrict,username=3DAdmin,domain=3Dcorp.fsxtest=
+=2Elocal,uid=3D0,noforceuid,gid=3D0,noforcegid,addr=3D172.31.11.26,file_mod=
+e=3D0755,dir_mode=3D0755,soft,nounix,mapposix,rsize=3D4194304,wsize=3D41943=
+04,bsize=3D1048576,echo_interval=3D5,actimeo=3D1,closetimeo=3D1)
+> > //EC2AMAZ-1N36PRD.corp.fsxtest.local/dfs-namespace/referral-a on /mnt/d=
+fs-namespace/referral-a type cifs (rw,relatime,vers=3D3.1.1,cache=3Dstrict,=
+username=3DAdmin,domain=3Dcorp.fsxtest.local,uid=3D0,noforceuid,gid=3D0,nof=
+orcegid,addr=3D172.31.12.80,file_mode=3D0755,dir_mode=3D0755,soft,nounix,ma=
+pposix,rsize=3D4194304,wsize=3D4194304,bsize=3D1048576,echo_interval=3D5,ac=
+timeo=3D1,closetimeo=3D1)
+> > ```
+> >=20
+> > I also attached kernel debug logs from this test.
+> >=20
+> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
+commit/?id=3D851f657a86421
+> > [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
+commit/?id=3D0a924817d2ed9
+> >=20
+> > Reported-by: Andrei Paniakin <apanyaki@amazon.com>
+> > Bisected-by: Simba Bonga <simbarb@amazon.com>
 > > ---
-> >  fs/jbd2/journal.c     | 61 ++++++++++++++++++++++++++++++++-----------
-> >  fs/jbd2/transaction.c | 24 +----------------
-> >  include/linux/jbd2.h  |  7 +++++
-> >  3 files changed, 54 insertions(+), 38 deletions(-)
-> > 
-> > +static int jbd2_descriptor_blocks_per_trans(journal_t *journal)
-> > +{
-> > +	int tag_space = journal->j_blocksize - sizeof(journal_header_t);
-> > +	int tags_per_block;
-> > +
-> > +	/* Subtract UUID */
-> > +	tag_space -= 16;
-> > +	if (jbd2_journal_has_csum_v2or3(journal))
-> > +		tag_space -= sizeof(struct jbd2_journal_block_tail);
-> > +	/* Commit code leaves a slack space of 16 bytes at the end of block */
-> > +	tags_per_block = (tag_space - 16) / journal_tag_bytes(journal);
-> > +	/*
-> > +	 * Revoke descriptors are accounted separately so we need to reserve
-> > +	 * space for commit block and normal transaction descriptor blocks.
-> > +	 */
-> > +	return 1 + DIV_ROUND_UP(jbd2_journal_get_max_txn_bufs(journal),
-> > +				tags_per_block);
-> > +}
-> The change looks good to me. I wonder if the original calculation of
-> number of JBD2_DESCRIPTOR_BLOCK blocks is correct.
-> In my opinion, it should be:
-> DIV_ROUND_UP(jbd2_journal_get_max_txn_bufs(journal), tags_per_block *+ 1*)
-> Assume max_txn_bufs is 6, tags_per_block is 1, then we have one tag block
-> after each JBD2_DESCRIPTOR_BLOCK block. Then we could get 3
-> JBD2_DESCRIPTOR_BLOCK block at most rather than 6.
-> Please let me konw if I miss something, this confused me for sometime...
+> >=20
+> > #regzbot introduced: v6.1.54..v6.2-rc1
+>=20
+>=20
+> Friendly reminder, did anyone had a chance to look into this report?
+>=20
 
-So you are correct that the expression is overestimating the number of
-descriptor blocks required, essentially because we don't need descriptor
-blocks for descriptor blocks. But given tags_per_block is at least over 60,
-in common configurations over 250, this imprecision is not really
-substantial and I prefer a simple to argue about upper estimate...
+It seems like so far nobody had a chance to look into this report =F0=9F=A4=
+=94
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+If I understand the report correctly the regression is specific for the
+current 6.1.y stable series, so also not much the CIFS devs themselves
+can do. Maybe the stable team missed the report with the plethora of
+mail that they get.. I'll change the subject to make this more prominent
+for them.
+
+I think a good next step would be to bisect to the commit that fixed the
+relevant issue somewhere between v6.1.54..v6.2-rc1 so the stable team
+knows what needs backporting .. You can do that somewhat like so[0]:
+
+  $ git bisect start --term-new=3Dfixed --term-old=3Dunfixed
+  $ git bisect fixed v6.2-rc1
+  $ git bisect unfixed v6.1
+
+Then you just need to carry around the commit that broke the behaviour
+for you (which could be quite some work). Maybe others also have better
+ideas on how to approach that.
+
+A revert may be a bit more complicated as the breaking commit in seems
+to be a dependency for a commit that fixes something:
+
+    efc0b0bcffcba ("smb: propagate error code of extract_sharename()")
+    Fixes: 70431bfd825d ("cifs: Support fscache indexing rewrite")
+
+Cheers,
+chris
+
+[0]: https://stackoverflow.com/a/17153598
+
+#regzbot introduced: 062eacf57ad91b5c272f89dc964fd6dd9715ea7d
+#regzbot summary: cifs: broken failover for server inside DFS
+
+--jmsggbhoayj3vp5r
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmZ6pQUACgkQwEfU8yi1
+JYWSwA/+OPb/TZJmsjikMtPq9++IQcrHwdzJx3MYVtjHfKnPdVSUc7LROrXMdngS
+OEv8Du6IpiYtP91JSu/Dd28tLiwRgqfmUJuv+9bNJRHE9A2yyEyHg0CtgzoX8kQP
+eLthIxpPuqJqClWDy2UPSoCfcrUgUdPCPbSTG3RTe3CIeQhRZ4KwZ+bpb2AS0mOD
+BadNW1ew+qYILEIF/YRdU2BxWdNF+eNCrumMwBPdDgqgAXvRQ7a8V7RZPQFLlUJ8
+oXSnhrH4Y2ESXAXrmVitbX1w0jV+bznHTnA9t6hJnM2SB41CY5j24uM3b10VCDXn
+TGudRwccs29xZaKzlRED6DZ3c9YMz43zOkQ2AmQOtaAHXTn2CVqc0WWtHoUfqWGg
+HdncnOKwHroDxvh0FvWB9bzIYBHmm79pMpLhdCdtm2kcmDPEkyb/QW5QbTDzrmQo
+vb3MRP6s5ko0yFfHouZIG0rwwqAHl9NEw/i8SCzE7JJkRbR4jecV+env1nEAsDw+
+QSR4xD6YUwYbG3/1j5B8GS0etU/UAoGHLw6NBY+zAl6/RRORGxPzGhM8QS68Qaxp
+C0+F53YmCriHjR9fwil6HBD21MSLMhUBHy1W1JOTkvvLJGZLzM9F/75zhENm8ECu
+7qfmbwByPZhPoYgXAdzkic3WUEx9iQbtkwULlMLIqu4VXGXVB1Y=
+=HFX0
+-----END PGP SIGNATURE-----
+
+--jmsggbhoayj3vp5r--
 
