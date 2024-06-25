@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-55580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEBB2916446
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90B89164C3
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5360EB28DFA
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA9761C23758
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B21C414A4D2;
-	Tue, 25 Jun 2024 09:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A136014A0B7;
+	Tue, 25 Jun 2024 10:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehODACJr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRuw4dYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BF11487E9;
-	Tue, 25 Jun 2024 09:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5657113C90B;
+	Tue, 25 Jun 2024 10:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309323; cv=none; b=U2FIHOv2jSfcrqM5FdwBhuOq/NYX+oFWv6fI52ea0SrSuKF/AfHlDU37IqhVRUmbBu5OI+ffwP6S1Z0rXe36pJrUg5mA4DR/gJ4fYDxR+KyCbOirYYl37zTVXmyV3CkHrb8jAVPS9+uuLaTJYPednCTx4YcJyYXEJxkrMDCSfyw=
+	t=1719309653; cv=none; b=UtJpqrps69INwhHGZOKZCXdpZcjlS1avdG4ZM6XWIhjpuIRIpqZe6wRvpWXVzn2XYtnrzs5oO3gK0YfU0gW5P9N3sOGHhejYDMbXMcm5cmqyXjaOkLAjP4AM/86bB9QPiS+r3Z6Ez6dDsRvsSRx7qQaIV5zMQkDJ2mJKaGx89HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309323; c=relaxed/simple;
-	bh=6FsZDOFXTfBlvLR6Dp4OD0UrkiVAlPR+yvklo73rRDg=;
+	s=arc-20240116; t=1719309653; c=relaxed/simple;
+	bh=2yoJE0NVGLMS8meaFQNW0OW+eN7I1az5nng8VtO5uQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T6ODVfgGagF3Jby+cDLtQ7p2TeLND+b9mbJeWDQ6uFwCNFtgkQemlL/47HA2Aw5zeobMoGXhbmFHFO4vSMkpx+a+33toRsL8l1YLuBqLvrHxj0udPObpL3K4gszmVe7GrDDjAnuDz4fogp21VPw9huR/yMQx4QeLAFQmhQA/0C8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehODACJr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5FAC32781;
-	Tue, 25 Jun 2024 09:55:22 +0000 (UTC)
+	 MIME-Version; b=IuLFeSzJ/1o+p7xsmYMSMgyRBIypDwbIUGTF++b+5zxdqwAvTuiWQwi139eAyP1eIyodS2lLWKujCMMfahvRAeluHT38JVpR28zKMH5lNBqC9DDg9fA4o4cAXV/lCIpW52AbBNQx7t1ocRSACuG4tmNEDoNZYvmPc/T3951J/n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRuw4dYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2737C32781;
+	Tue, 25 Jun 2024 10:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309323;
-	bh=6FsZDOFXTfBlvLR6Dp4OD0UrkiVAlPR+yvklo73rRDg=;
+	s=korg; t=1719309653;
+	bh=2yoJE0NVGLMS8meaFQNW0OW+eN7I1az5nng8VtO5uQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ehODACJrI6RZtlPoWF+WU3mJDjUT9wiHOaKMf/esd+pMeXnsJFJD6HJUd+HtEgwxz
-	 qkznfveafXJfprD4XhQzsq0xiKFNzYnQ6H9U56Nv6Ord9/Pt6YMIAuPL8g3AjJY+Ny
-	 kAySNH56ToOClGAThAodvGfW4HNdEdz9w0vUBwgw=
+	b=tRuw4dYkl24fUnCtZe0dpeTBRc+cB+sHf9FteiXqu+6nArppDoJPFOIMXDqG0lnfY
+	 6JuELOBe7ju4fBK3JNpnDcRAxxZoV2s4Zq2i+S5SrLMg7QO6gugoTJTnuXnMQyx+Ow
+	 Kiiyg6mveCpK369GYgGmaZlZQ3vSuZRr0CkD3gBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 170/192] spi: stm32: qspi: Clamp stm32_qspi_get_mode() output to CCR_BUSWIDTH_4
-Date: Tue, 25 Jun 2024 11:34:02 +0200
-Message-ID: <20240625085543.686007315@linuxfoundation.org>
+	Max Krummenacher <max.krummenacher@toradex.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 088/131] arm64: dts: freescale: imx8mm-verdin: enable hysteresis on slow input pin
+Date: Tue, 25 Jun 2024 11:34:03 +0200
+Message-ID: <20240625085529.282279041@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrice Chotard <patrice.chotard@foss.st.com>
+From: Max Krummenacher <max.krummenacher@toradex.com>
 
-commit 63deee52811b2f84ed2da55ad47252f0e8145d62 upstream.
+[ Upstream commit 67cc6125fb39902169707cb6277f010e56d4a40a ]
 
-In case usage of OCTAL mode, buswidth parameter can take the value 8.
-As return value of stm32_qspi_get_mode() is used to configure fields
-of CCR registers that are 2 bits only (fields IMODE, ADMODE, ADSIZE,
- DMODE), clamp return value of stm32_qspi_get_mode() to 4.
+SODIMM 17 can be used as an edge triggered interrupt supplied from an
+off board source.
 
-Fixes: a557fca630cc ("spi: stm32_qspi: Add transfer_one_message() spi callback")
-Cc: stable@vger.kernel.org
-Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Link: https://msgid.link/r/20240618132951.2743935-3-patrice.chotard@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Enable hysteresis on the pinmuxing to increase immunity against noise
+on the signal.
+
+Fixes: 60f01b5b5c7d ("arm64: dts: imx8mm-verdin: update iomux configuration")
+Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-stm32-qspi.c |    2 +-
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/spi/spi-stm32-qspi.c
-+++ b/drivers/spi/spi-stm32-qspi.c
-@@ -349,7 +349,7 @@ static int stm32_qspi_wait_poll_status(s
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+index b4aef79650c69..0dd2f79c4f20f 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+@@ -930,7 +930,7 @@
+ 	/* Verdin GPIO_9_DSI (pulled-up as active-low) */
+ 	pinctrl_gpio_9_dsi: gpio9dsigrp {
+ 		fsl,pins =
+-			<MX8MM_IOMUXC_NAND_RE_B_GPIO3_IO15		0x146>;	/* SODIMM 17 */
++			<MX8MM_IOMUXC_NAND_RE_B_GPIO3_IO15		0x1c6>;	/* SODIMM 17 */
+ 	};
  
- static int stm32_qspi_get_mode(u8 buswidth)
- {
--	if (buswidth == 4)
-+	if (buswidth >= 4)
- 		return CCR_BUSWIDTH_4;
- 
- 	return buswidth;
+ 	/* Verdin GPIO_10_DSI (pulled-up as active-low) */
+-- 
+2.43.0
+
 
 
 
