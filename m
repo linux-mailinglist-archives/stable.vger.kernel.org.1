@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-55710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C14B9164D7
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1479A916440
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF968B20FFF
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93128B28BBC
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27825148319;
-	Tue, 25 Jun 2024 10:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4FF14A619;
+	Tue, 25 Jun 2024 09:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7UXdRzb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enpbCVqj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D954B13C90B;
-	Tue, 25 Jun 2024 10:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588F01465A8;
+	Tue, 25 Jun 2024 09:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309709; cv=none; b=qIicrFS/LWw6InQdVQljnUp+crFV9LMNYL2H7aDwChm17F4nm3Cl6SZ3tRmURyy/KPLtteCFJouzwPvCbeJUAyebCHO+dLvKJoTWBR/3qKtCUwZXGTqD9ufs7j18p2MBdTh8zHZgWNpwgZj8vRvrIqUtbv8AWvyRTrCwrBzbc4k=
+	t=1719309311; cv=none; b=icy/Edf0bFZmwv2DATSb3u1Tnd2w2bzCnqL1wxmEPTkuyw+jHK1qqHXLhxu7dpWSfD1TJxfsZcG+1C9ny6slynktXs4TAHRhzJsXvhT5e+4CGVeZAhWj4ZR+4aOnQiI3EiIwB9bjx6M5htN56KeZp8WpoFbZVID5rwmrVPLPeTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309709; c=relaxed/simple;
-	bh=IKukQdcYThoBjGTemwGtEU/HmEUi62gvC3dscKD5I30=;
+	s=arc-20240116; t=1719309311; c=relaxed/simple;
+	bh=dg8tPLlAOpmp3cXTvClp0byHkNHKmO9BcBsKPmPQ1yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cdYa3/CtYcVFA9+z/fLa+YXWC1RgJp8Ue3qAH8efpRCaApIZMzoB2XdL9oq2OQqyHNONyacvEI+0NyBSh9ijJeiGi34aHkXIREqKWyON2r8sEF393irCyFnBuD/riek5uO+ch4hnXv5r3h3f9owXtRjuEfIfBXqGrsCjxUpxRIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7UXdRzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6063CC32781;
-	Tue, 25 Jun 2024 10:01:49 +0000 (UTC)
+	 MIME-Version; b=ca29oSVslWcL7/mfMvJSdOAVAH0/Nawk31ReAbTHLWYYqHtnPgZtwI4TQutefQLtl1fHNv0l00VjSSbEc/UiGjI8yBVv4viCZqkmoz+qjbGd6LUlVB3wURc/X2hXBNUu77adbkFYyjxIo/8YuOHz9uH9WGZlhfx/+T7C3lAclc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enpbCVqj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4588C32781;
+	Tue, 25 Jun 2024 09:55:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309709;
-	bh=IKukQdcYThoBjGTemwGtEU/HmEUi62gvC3dscKD5I30=;
+	s=korg; t=1719309311;
+	bh=dg8tPLlAOpmp3cXTvClp0byHkNHKmO9BcBsKPmPQ1yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7UXdRzblbegTiPbmKqZEkZ5hPr/rYpw2UYw1/WBwCEb/NXP5FMkKBG60HeWVqw/4
-	 DHVqd074w5mRp5tBFlKJ4UmRHvSDo9Iz70ht3ZazuuLv4d+ow/GBUnbrTA5C5r0TFs
-	 3UTFQL2Gio5u2u3Wi0FyTxYax3V2QjUfDMbuEfgM=
+	b=enpbCVqjnyk+Ac/Hqqwq9Ro8ZRgbdA8/Qq0MXGh7KNCEVasp0g7+JNuYTBr3ylT0f
+	 9tkczOGozUdA8C96YiSu7g4cWXYxi31EFzMfvcMKnBgavDbtfbTb9ZjEWxpMvbeRec
+	 cL3GPhQgSI93pXOAqIodsYS7taQLEmGvs/JPqWd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com,
-	David Ruth <druth@chromium.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/131] net/sched: act_api: fix possible infinite loop in tcf_idr_check_alloc()
+	Andy Chi <andy.chi@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 149/192] ALSA: hda/realtek: fix mute/micmute LEDs dont work for ProBook 445/465 G11.
 Date: Tue, 25 Jun 2024 11:33:41 +0200
-Message-ID: <20240625085528.454005547@linuxfoundation.org>
+Message-ID: <20240625085542.878958110@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Ruth <druth@chromium.org>
+From: Andy Chi <andy.chi@canonical.com>
 
-[ Upstream commit d864319871b05fadd153e0aede4811ca7008f5d6 ]
+commit ea5f8c4cffcd8a6b62b3a3bd5008275218c9d02a upstream.
 
-syzbot found hanging tasks waiting on rtnl_lock [1]
+HP ProBook 445/465 G11 needs ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to
+make mic-mute/audio-mute working.
 
-A reproducer is available in the syzbot bug.
-
-When a request to add multiple actions with the same index is sent, the
-second request will block forever on the first request. This holds
-rtnl_lock, and causes tasks to hang.
-
-Return -EAGAIN to prevent infinite looping, while keeping documented
-behavior.
-
-[1]
-
-INFO: task kworker/1:0:5088 blocked for more than 143 seconds.
-Not tainted 6.9.0-rc4-syzkaller-00173-g3cdb45594619 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:kworker/1:0 state:D stack:23744 pid:5088 tgid:5088 ppid:2 flags:0x00004000
-Workqueue: events_power_efficient reg_check_chans_work
-Call Trace:
-<TASK>
-context_switch kernel/sched/core.c:5409 [inline]
-__schedule+0xf15/0x5d00 kernel/sched/core.c:6746
-__schedule_loop kernel/sched/core.c:6823 [inline]
-schedule+0xe7/0x350 kernel/sched/core.c:6838
-schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:6895
-__mutex_lock_common kernel/locking/mutex.c:684 [inline]
-__mutex_lock+0x5b8/0x9c0 kernel/locking/mutex.c:752
-wiphy_lock include/net/cfg80211.h:5953 [inline]
-reg_leave_invalid_chans net/wireless/reg.c:2466 [inline]
-reg_check_chans_work+0x10a/0x10e0 net/wireless/reg.c:2481
-
-Fixes: 0190c1d452a9 ("net: sched: atomically check-allocate action")
-Reported-by: syzbot+b87c222546179f4513a7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b87c222546179f4513a7
-Signed-off-by: David Ruth <druth@chromium.org>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20240614190326.1349786-1-druth@chromium.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Andy Chi <andy.chi@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240605092243.41963-1-andy.chi@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_api.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index ecede5158a295..5a361deb804a3 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -834,7 +834,6 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
- 	u32 max;
- 
- 	if (*index) {
--again:
- 		rcu_read_lock();
- 		p = idr_find(&idrinfo->action_idr, *index);
- 
-@@ -843,7 +842,7 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
- 			 * index but did not assign the pointer yet.
- 			 */
- 			rcu_read_unlock();
--			goto again;
-+			return -EAGAIN;
- 		}
- 
- 		if (!p) {
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9959,6 +9959,10 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8c7b, "HP ProBook 445 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c7c, "HP ProBook 445 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c7d, "HP ProBook 465 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c7e, "HP ProBook 465 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8c89, "HP ProBook 460 G11", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c8a, "HP EliteBook 630", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c8c, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
 
 
 
