@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-55702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFCF9164CE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E768916461
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71B62B29503
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99CFFB29021
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1632148319;
-	Tue, 25 Jun 2024 10:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B60F14A616;
+	Tue, 25 Jun 2024 09:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6u9LQX3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3rmyi4l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDBE13C90B;
-	Tue, 25 Jun 2024 10:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266E314A4F9;
+	Tue, 25 Jun 2024 09:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309686; cv=none; b=VnHJ8IYSRgHyZpAgEabn3IuAkSmK+sNSwb9qekzHyraK5SeBHjQmpmzhzUeqUhtNC/ATMN1897j0vUzrNFNGQdo2/t3K0W9UzQkTBrY8q4DZVI3df8xtrZoB+bTBpEGhCT5KfDKC7IvkPS9Auybez1asMuqDEdB7YY2qlfUag9g=
+	t=1719309389; cv=none; b=HyofwJuZ9p5DW5aNIwnSGfmJ80hxV64cRAOoe8/PmOFXbbBQinh9P3N1tHVSbqWgRfW2Hd6a+n572XrgoRanX7WArevE4Opx939QlG4aPNjfobpuwv9Q+gY9mpzB/2Ot/tKGBYfVTpOnOfP4U+Z1nTdTY8k9C02oRbdWtKCh99w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309686; c=relaxed/simple;
-	bh=7Ts+uAwNDASkgW4//TfUfafCzlgQSH4tdTtR2T1S1m4=;
+	s=arc-20240116; t=1719309389; c=relaxed/simple;
+	bh=e8YUhccHa6Pj5IH6HZkW3U8oo7BG+y9DOOhHlBHv3lQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ozdA+2DQFmMTL/NLsErV9qCYpz1jllVEUgDfUM4dH5P5t+bb7LQ7Rs2r0160WIkymUP2OX9NG84N+zwdNenmoq0gQ980s5hrX20CgdH9PTdUBeMNvHt3WKk612iuRv5Bs4Q/1Vz7ThD701NheOCbmnWh25oVCjZEcUebM9RXLzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6u9LQX3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94CFEC32781;
-	Tue, 25 Jun 2024 10:01:25 +0000 (UTC)
+	 MIME-Version; b=dflyr78PZIPYuu3R7/FV3QwZjJ6RYKT4nF4ZczKhqYKrNxMIim07SORet8AFYhX5dE5h9HWGF8cDq5ZPlP0/JsmMhMvHnKGfbmcYE+JcSDfZgAr6s6Lgzv1mTLsXFIaDsHyLAah6wHoZlBxeBFfIGpNkrw4I0R7Z/vSEquOEfXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3rmyi4l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0322C32781;
+	Tue, 25 Jun 2024 09:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309686;
-	bh=7Ts+uAwNDASkgW4//TfUfafCzlgQSH4tdTtR2T1S1m4=;
+	s=korg; t=1719309389;
+	bh=e8YUhccHa6Pj5IH6HZkW3U8oo7BG+y9DOOhHlBHv3lQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U6u9LQX3EJokNZjSxeTXNXzFqDcurmeUtjpTk6ELiH8p8OxQ+mmjHMtZdDFzXcdgR
-	 JxgogFuyXoN+jOTNPOLk8wbknJfSJtN67PZjCQQthDZghdPYz4dEaxV9h9kKS72dLA
-	 j/kv4PSvtuhw+qZ/o7x7WidBopQWC9F9VjWIMQiI=
+	b=u3rmyi4lfYgkBqAnLXbNP9aVZ+R+rxOBinkZ0THAwbQis0kDNr5Wprza78Stn0dNk
+	 PTiNcwVECVKIQNl+qAmaascrrOi0mcFxrdSRgtLzaT84pAteFA/xMvSuwOjzU5ioF8
+	 vlZW9/c5wHvRetktIFX+h77bHXPULyEtfiEL9q00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 098/131] cifs: fix typo in module parameter enable_gcm_256
-Date: Tue, 25 Jun 2024 11:34:13 +0200
-Message-ID: <20240625085529.663959272@linuxfoundation.org>
+	Nam Cao <namcao@linutronix.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 182/192] riscv: force PAGE_SIZE linear mapping if debug_pagealloc is enabled
+Date: Tue, 25 Jun 2024 11:34:14 +0200
+Message-ID: <20240625085544.147179390@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 8bf0287528da1992c5e49d757b99ad6bbc34b522 upstream.
+[ Upstream commit c67ddf59ac44adc60649730bf8347e37c516b001 ]
 
-enable_gcm_256 (which allows the server to require the strongest
-encryption) is enabled by default, but the modinfo description
-incorrectly showed it disabled by default. Fix the typo.
+debug_pagealloc is a debug feature which clears the valid bit in page table
+entry for freed pages to detect illegal accesses to freed memory.
 
+For this feature to work, virtual mapping must have PAGE_SIZE resolution.
+(No, we cannot map with huge pages and split them only when needed; because
+pages can be allocated/freed in atomic context and page splitting cannot be
+done in atomic context)
+
+Force linear mapping to use small pages if debug_pagealloc is enabled.
+
+Note that it is not necessary to force the entire linear mapping, but only
+those that are given to memory allocator. Some parts of memory can keep
+using huge page mapping (for example, kernel's executable code). But these
+parts are minority, so keep it simple. This is just a debug feature, some
+extra overhead should be acceptable.
+
+Fixes: 5fde3db5eb02 ("riscv: add ARCH_SUPPORTS_DEBUG_PAGEALLOC support")
+Signed-off-by: Nam Cao <namcao@linutronix.de>
 Cc: stable@vger.kernel.org
-Fixes: fee742b50289 ("smb3.1.1: enable negotiating stronger encryption by default")
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/2e391fa6c6f9b3fcf1b41cefbace02ee4ab4bf59.1715750938.git.namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/mm/init.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -128,7 +128,7 @@ module_param(enable_oplocks, bool, 0644)
- MODULE_PARM_DESC(enable_oplocks, "Enable or disable oplocks. Default: y/Y/1");
- 
- module_param(enable_gcm_256, bool, 0644);
--MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: n/N/0");
-+MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: y/Y/0");
- 
- module_param(require_gcm_256, bool, 0644);
- MODULE_PARM_DESC(require_gcm_256, "Require strongest (256 bit) GCM encryption. Default: n/N/0");
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 4d62f54698b99..8adcb9419ad50 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -668,6 +668,9 @@ void __init create_pgd_mapping(pgd_t *pgdp,
+ static uintptr_t __init best_map_size(phys_addr_t pa, uintptr_t va,
+ 				      phys_addr_t size)
+ {
++	if (debug_pagealloc_enabled())
++		return PAGE_SIZE;
++
+ 	if (pgtable_l5_enabled &&
+ 	    !(pa & (P4D_SIZE - 1)) && !(va & (P4D_SIZE - 1)) && size >= P4D_SIZE)
+ 		return P4D_SIZE;
+-- 
+2.43.0
+
 
 
 
