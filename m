@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-55677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9139164B2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3D0916450
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 456571F23F39
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EEC6B23136
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B66C14A0B7;
-	Tue, 25 Jun 2024 10:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E093214D2A0;
+	Tue, 25 Jun 2024 09:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbTHE2nM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIjNOkYG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2BC14A0A4;
-	Tue, 25 Jun 2024 10:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D39D14D294;
+	Tue, 25 Jun 2024 09:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309612; cv=none; b=LeiX03YD+FRttoHH1RDxkFU8srb0SKrhOJhPK2icaDt8Y9tKgewc5RvLu/tPfu/ncSL+FvrKNAveLkFz0Nw1SZDryW7BEquC+kYe8nL7s71CY0d6xiAGTb+SHlfxN46zgYOuCnTAwfA+r85jrAbIZq+z1eBd7fnqj2YzXV41yg0=
+	t=1719309344; cv=none; b=OSF5SvRvFHacV6RX4xnB/dQIoMz1mShIxxeJk4uRzpPsimzmBpf/2aPpZ0gIviCA3bArxUk4ZP8SghY+yIzMmoEBkSWrgwOsILBJKj5fc5ydxhMzpNP70tuHUvGtQmk2zsUebNv5h73djZu2G93bFYG/3p7mQ+Yc/0jmPP66pTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309612; c=relaxed/simple;
-	bh=LWC9vrH6EmAUGvjPRHM/RVgVdOl5hUiEk2/WOqJsa5M=;
+	s=arc-20240116; t=1719309344; c=relaxed/simple;
+	bh=FEv67CNfgvamQv3usp42ck/XEBi4Lm8jQAT1C8CKA08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=juTXDeESsQ0Vrhqyi+GAPKa6Wzyti1GwwyMi6l+7pQvIqHS4zz4ZtLtyzeYagTfRW5XEjVH+GvX+3Bfie5EiTkfshbM6f4uScilhBREkt6e895KrwfP2KE+1HrDRiTCkT/J+pqjB8sSgTBikqb7aTmcwdnO9cqQa4QfrL6p6R1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbTHE2nM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C254BC32789;
-	Tue, 25 Jun 2024 10:00:11 +0000 (UTC)
+	 MIME-Version; b=E2TQvsj3tKr0jr/KRwMJqVxlUeYVfi5VoFKsEQ3NC+UY9AclsJ91IxulQIt0u+aZhfdsqHyU4C1ZPJDBLymi0LGqVralHUZyWNYr2O3eStp6XdFMIGW8UkBxc5bOkzqTybp2ESZhRE35QF+77RCC1CPCHFK19e2y/UCQP9bfzWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIjNOkYG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6C8C4AF0D;
+	Tue, 25 Jun 2024 09:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309612;
-	bh=LWC9vrH6EmAUGvjPRHM/RVgVdOl5hUiEk2/WOqJsa5M=;
+	s=korg; t=1719309344;
+	bh=FEv67CNfgvamQv3usp42ck/XEBi4Lm8jQAT1C8CKA08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbTHE2nMKWbpulxum6n0HBnVpvH3hHpoeMsjwBlo8EKQBXSQOh2PzhJUz0nTYnZZz
-	 HfkcWyAeBAiSnWsCQaDuEmjLF2O+r7EAjL5mSZQA7lvUXuDCJdJU0ndHeFiZaC3sMu
-	 IgUpgviOmanbraWXun8T3oE/WChVFSrG/drVBrg0=
+	b=JIjNOkYGvmltu6MoTc3AEWZkNvL26VuFsGqiNFJhMRDidAti/6eW5/TESl56G7aCs
+	 XDBHhgUEFqm8XWIS6zIlsmme6wlPvEZ0XwJy1YxZi3knyEDSHyvuRYdclyh8iG4SIs
+	 26Qu4j53K55yy3b6jW6zIjHHupwa3IKKjvzUSo6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuang Li <shuali@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/131] tipc: force a dst refcount before doing decryption
+	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 150/192] ALSA: hda/realtek: Limit mic boost on N14AP7
 Date: Tue, 25 Jun 2024 11:33:42 +0200
-Message-ID: <20240625085528.491372374@linuxfoundation.org>
+Message-ID: <20240625085542.917528788@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
 
-[ Upstream commit 2ebe8f840c7450ecbfca9d18ac92e9ce9155e269 ]
+commit 86a433862912f52597263aa224a9ed82bcd533bf upstream.
 
-As it says in commit 3bc07321ccc2 ("xfrm: Force a dst refcount before
-entering the xfrm type handlers"):
+The internal mic boost on the N14AP7 is too high. Fix this by applying the
+ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine to limit the gain.
 
-"Crypto requests might return asynchronous. In this case we leave the
- rcu protected region, so force a refcount on the skb's destination
- entry before we enter the xfrm type input/output handlers."
-
-On TIPC decryption path it has the same problem, and skb_dst_force()
-should be called before doing decryption to avoid a possible crash.
-
-Shuang reported this issue when this warning is triggered:
-
-  [] WARNING: include/net/dst.h:337 tipc_sk_rcv+0x1055/0x1ea0 [tipc]
-  [] Kdump: loaded Tainted: G W --------- - - 4.18.0-496.el8.x86_64+debug
-  [] Workqueue: crypto cryptd_queue_worker
-  [] RIP: 0010:tipc_sk_rcv+0x1055/0x1ea0 [tipc]
-  [] Call Trace:
-  [] tipc_sk_mcast_rcv+0x548/0xea0 [tipc]
-  [] tipc_rcv+0xcf5/0x1060 [tipc]
-  [] tipc_aead_decrypt_done+0x215/0x2e0 [tipc]
-  [] cryptd_aead_crypt+0xdb/0x190
-  [] cryptd_queue_worker+0xed/0x190
-  [] process_one_work+0x93d/0x17e0
-
-Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Link: https://lore.kernel.org/r/fbe3195fad6997a4eec62d9bf076b2ad03ac336b.1718476040.git.lucien.xin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240605153923.2837-1-edson.drosdeck@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/node.c | 1 +
+ sound/pci/hda/patch_realtek.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/net/tipc/node.c b/net/tipc/node.c
-index a9c5b6594889b..cf9d9f9b97844 100644
---- a/net/tipc/node.c
-+++ b/net/tipc/node.c
-@@ -2107,6 +2107,7 @@ void tipc_rcv(struct net *net, struct sk_buff *skb, struct tipc_bearer *b)
- 	} else {
- 		n = tipc_node_find_by_id(net, ehdr->id);
- 	}
-+	skb_dst_force(skb);
- 	tipc_crypto_rcv(net, (n) ? n->crypto_rx : NULL, &skb, b);
- 	if (!skb)
- 		return;
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10316,6 +10316,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1b7d, 0xa831, "Ordissimo EVE2 ", ALC269VB_FIXUP_ORDISSIMO_EVE2), /* Also known as Malata PC-B1303 */
+ 	SND_PCI_QUIRK(0x1c06, 0x2013, "Lemote A1802", ALC269_FIXUP_LEMOTE_A1802),
+ 	SND_PCI_QUIRK(0x1c06, 0x2015, "Lemote A190X", ALC269_FIXUP_LEMOTE_A190X),
++	SND_PCI_QUIRK(0x1c6c, 0x122a, "Positivo N14AP7", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x1c6c, 0x1251, "Positivo N14KP6-TG", ALC288_FIXUP_DELL1_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1d05, 0x1132, "TongFang PHxTxX1", ALC256_FIXUP_SET_COEF_DEFAULTS),
+ 	SND_PCI_QUIRK(0x1d05, 0x1096, "TongFang GMxMRxx", ALC269_FIXUP_NO_SHUTUP),
 
 
 
