@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0733B91636D
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29514916410
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39FB41C20B99
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D31D1C22415
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701291494AF;
-	Tue, 25 Jun 2024 09:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 403B824B34;
+	Tue, 25 Jun 2024 09:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rNawRiD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNDgtzNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2E41465A8;
-	Tue, 25 Jun 2024 09:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39D3149E0A;
+	Tue, 25 Jun 2024 09:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308801; cv=none; b=uJCVOwpECWEBq+zLud9QJON7zAXX2C7lByarYo72ROQpowXjpNdPZTqmXmQg5WnSStsd59t4MWDN+iYGQolIAhbWWPsoJvjOCbSlWfdzihFqPbBepxwg3BJ4oruM/2bfojxh2ue3Q8y9N7D5uwMxjEpVDx/rwsBYjWPs6koF8bQ=
+	t=1719309204; cv=none; b=MkdGcphUfLIrVS+jyjDvi1Ys4AdhBI2W1WSh8oCiQJjsP928o4K36JBJy67JOmlJCPU8ElREhcZ1j0YuJRq/inNjNwG5dGuaOHI8UMGOOu+XhWX8sFOxNSFGyjnbdjs02jUZa0kbk30FKWAt93ac8KyyN7fIu+krtlp11Sh3O3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308801; c=relaxed/simple;
-	bh=p29PLAnKFUCMxrYSrvvPiYfjythCtG5CuhoSYr1z+6I=;
+	s=arc-20240116; t=1719309204; c=relaxed/simple;
+	bh=pn28iGsCjxZC/Dt/+IWK5u8XuOfgJbf3NerOBDxpqas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cOB6D9xaTnvPzw98MlT3IiNeZiUY3oXFA/egX0YjXYQEEl3bfcFLk+Gv8DM83Uuhj5YygRnZl+ZMhc/VOGCC/ZW356Mrw2+5CDYYj86VAB+gwarRdWlPIDf0X6zW44f7A3lQQNPxrOtnBJDB5eghedYUrOJth0xsmjAktVrmVUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rNawRiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC67AC32781;
-	Tue, 25 Jun 2024 09:46:40 +0000 (UTC)
+	 MIME-Version; b=PtQUu8gYiegiFnIfWty+3vQAPy1zU1ekp3MEQmVadrYMCZxPt1th9fVQPrTQ5axhI2foqTOBtbVISr3HQjGmWGLU0AP0RmDAfnpgmVQZ1HnCyKEYa4AWg4sc4o+99ThY2Dg2fB+bLxkVMvfUYG/Z1QjgP1ehclQnBR/iqDGpTcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNDgtzNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733BAC32781;
+	Tue, 25 Jun 2024 09:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308801;
-	bh=p29PLAnKFUCMxrYSrvvPiYfjythCtG5CuhoSYr1z+6I=;
+	s=korg; t=1719309203;
+	bh=pn28iGsCjxZC/Dt/+IWK5u8XuOfgJbf3NerOBDxpqas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rNawRiDbqiJnYagY3fWhEb9Pkl1ZDy+F1BjxNbhrDkzkOqiL+RqutZR38YY8L1G1
-	 SHQm/OTTtJhsv5z2FMcGB3DMmflBI7MDSpUBDehfz9Jp89elULXyy44ngudJlukwAP
-	 qHgvT3iPeMaUJKdbvJ3qILOGDa5b30P5QMKTNIis=
+	b=UNDgtzNdJjHS0ZyHgeGeis5MU7R6j1BL4rGhjCbEcjNlprekrJS0glWE2GOLzeuGi
+	 FmveIht9HvNOOWCJ5AdHVPod8fCNn98RM5osodw/EBdWq71gE+VXiaeqoXoyGwenq2
+	 SmjIX2JibPJ2nONFMLQJJvqpaUyCVNf+l1R3og+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 6.9 245/250] wifi: ath12k: check M3 buffer size as well whey trying to reuse it
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 131/192] ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
 Date: Tue, 25 Jun 2024 11:33:23 +0200
-Message-ID: <20240625085557.455792857@linuxfoundation.org>
+Message-ID: <20240625085542.189183696@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 05090ae82f44570fefddb4e1be1d7e5770d6de40 upstream.
+commit 13df4d44a3aaabe61cd01d277b6ee23ead2a5206 upstream.
 
-Currently in recovery/resume cases, we do not free M3 buffer but
-instead will reuse it. This is done by checking m3_mem->vaddr: if it
-is not NULL we believe M3 buffer is ready and go ahead to reuse it.
+We can trigger a slab-out-of-bounds with the following commands:
 
-Note that m3_mem->size is not checked. This is safe for now because
-currently M3 reuse logic only gets executed in recovery/resume cases
-and the size keeps unchanged in either of them.
+    mkfs.ext4 -F /dev/$disk 10G
+    mount /dev/$disk /tmp/test
+    echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
+    echo test > /tmp/test/file && sync
 
-However ideally the size should be checked as well, to make the code
-safer. So add the check there. Now if that check fails, free old M3
-buffer and reallocate a new one.
+==================================================================
+BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
+Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
+CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
+Call Trace:
+ dump_stack_lvl+0x2c/0x50
+ kasan_report+0xb6/0xf0
+ ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
+ ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
+ ext4_mb_new_blocks+0x88a/0x1370 [ext4]
+ ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
+ ext4_map_blocks+0x569/0xea0 [ext4]
+ ext4_do_writepages+0x10f6/0x1bc0 [ext4]
+[...]
+==================================================================
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+The flow of issue triggering is as follows:
 
-Fixes: 303c017821d8 ("wifi: ath12k: fix kernel crash during resume")
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://msgid.link/20240425021740.29221-1-quic_bqiang@quicinc.com
+// Set s_mb_group_prealloc to 2147483647 via sysfs
+ext4_mb_new_blocks
+  ext4_mb_normalize_request
+    ext4_mb_normalize_group_request
+      ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
+  ext4_mb_regular_allocator
+    ext4_mb_choose_next_group
+      ext4_mb_choose_next_group_best_avail
+        mb_avg_fragment_size_order
+          order = fls(len) - 2 = 29
+        ext4_mb_find_good_group_avg_frag_lists
+          frag_list = &sbi->s_mb_avg_fragment_size[order]
+          if (list_empty(frag_list)) // Trigger SOOB!
+
+At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
+but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
+to be triggered by an attempt to access an element at index 29.
+
+Add a new attr_id attr_clusters_in_group with values in the range
+[0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
+that type to fix the issue. In addition avoid returning an order
+from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
+and reduce some useless loops.
+
+Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240319113325.3110393-5-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/qmi.c |   36 +++++++++++++++++++---------------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ fs/ext4/mballoc.c |    4 ++++
+ fs/ext4/sysfs.c   |   13 ++++++++++++-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -2685,6 +2685,19 @@ out:
- 	return ret;
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(st
+ 		return 0;
+ 	if (order == MB_NUM_ORDERS(sb))
+ 		order--;
++	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
++		order = MB_NUM_ORDERS(sb) - 1;
+ 	return order;
  }
  
-+static void ath12k_qmi_m3_free(struct ath12k_base *ab)
-+{
-+	struct m3_mem_region *m3_mem = &ab->qmi.m3_mem;
-+
-+	if (!m3_mem->vaddr)
-+		return;
-+
-+	dma_free_coherent(ab->dev, m3_mem->size,
-+			  m3_mem->vaddr, m3_mem->paddr);
-+	m3_mem->vaddr = NULL;
-+	m3_mem->size = 0;
-+}
-+
- static int ath12k_qmi_m3_load(struct ath12k_base *ab)
- {
- 	struct m3_mem_region *m3_mem = &ab->qmi.m3_mem;
-@@ -2715,8 +2728,14 @@ static int ath12k_qmi_m3_load(struct ath
- 		m3_len = fw->size;
- 	}
+@@ -1008,6 +1010,8 @@ static void ext4_mb_choose_next_group_be
+ 	 * goal length.
+ 	 */
+ 	order = fls(ac->ac_g_ex.fe_len) - 1;
++	if (WARN_ON_ONCE(order - 1 > MB_NUM_ORDERS(ac->ac_sb)))
++		order = MB_NUM_ORDERS(ac->ac_sb);
+ 	min_order = order - sbi->s_mb_best_avail_max_trim_order;
+ 	if (min_order < 0)
+ 		min_order = 0;
+--- a/fs/ext4/sysfs.c
++++ b/fs/ext4/sysfs.c
+@@ -29,6 +29,7 @@ typedef enum {
+ 	attr_trigger_test_error,
+ 	attr_first_error_time,
+ 	attr_last_error_time,
++	attr_clusters_in_group,
+ 	attr_feature,
+ 	attr_pointer_ui,
+ 	attr_pointer_ul,
+@@ -207,13 +208,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit,
  
--	if (m3_mem->vaddr)
--		goto skip_m3_alloc;
-+	/* In recovery/resume cases, M3 buffer is not freed, try to reuse that */
-+	if (m3_mem->vaddr) {
-+		if (m3_mem->size >= m3_len)
-+			goto skip_m3_alloc;
-+
-+		/* Old buffer is too small, free and reallocate */
-+		ath12k_qmi_m3_free(ab);
-+	}
- 
- 	m3_mem->vaddr = dma_alloc_coherent(ab->dev,
- 					   m3_len, &m3_mem->paddr,
-@@ -2740,19 +2759,6 @@ out:
- 	return ret;
- }
- 
--static void ath12k_qmi_m3_free(struct ath12k_base *ab)
--{
--	struct m3_mem_region *m3_mem = &ab->qmi.m3_mem;
--
--	if (!m3_mem->vaddr)
--		return;
--
--	dma_free_coherent(ab->dev, m3_mem->size,
--			  m3_mem->vaddr, m3_mem->paddr);
--	m3_mem->vaddr = NULL;
--	m3_mem->size = 0;
--}
--
- static int ath12k_qmi_wlanfw_m3_info_send(struct ath12k_base *ab)
- {
- 	struct m3_mem_region *m3_mem = &ab->qmi.m3_mem;
+ EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
+ 		 ext4_sb_info, s_inode_readahead_blks);
++EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, clusters_in_group,
++		 ext4_sb_info, s_mb_group_prealloc);
+ EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
+ EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
+ EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
+ EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
+ EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
+ EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
+-EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
+ EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
+ EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
+ EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
+@@ -392,6 +394,7 @@ static ssize_t ext4_attr_show(struct kob
+ 				(unsigned long long)
+ 			percpu_counter_sum(&sbi->s_sra_exceeded_retry_limit));
+ 	case attr_inode_readahead:
++	case attr_clusters_in_group:
+ 	case attr_pointer_ui:
+ 		if (!ptr)
+ 			return 0;
+@@ -469,6 +472,14 @@ static ssize_t ext4_attr_store(struct ko
+ 		else
+ 			*((unsigned int *) ptr) = t;
+ 		return len;
++	case attr_clusters_in_group:
++		ret = kstrtouint(skip_spaces(buf), 0, &t);
++		if (ret)
++			return ret;
++		if (t > sbi->s_clusters_per_group)
++			return -EINVAL;
++		*((unsigned int *) ptr) = t;
++		return len;
+ 	case attr_pointer_ul:
+ 		if (!ptr)
+ 			return 0;
 
 
 
