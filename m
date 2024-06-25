@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-55330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2127916322
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 984C89163B5
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 784AD1F22C00
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54CE928C23A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CE3149C79;
-	Tue, 25 Jun 2024 09:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24941494AF;
+	Tue, 25 Jun 2024 09:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikbZjn+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQvyDwu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E964C149E06;
-	Tue, 25 Jun 2024 09:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806F41465A8;
+	Tue, 25 Jun 2024 09:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308586; cv=none; b=SiueQy6OxbqKJSNnkZBIqJ5rH96sGEfgwY9JMW9zZzdQMis5ykXNd/3smqqVybTjXDGqm9A7VecBu3bkZswYhL5nd6sgwb7fSzT/5MLknipvgsx7l+zwmAfIcGsqPzOfICIRQ7yuIfOhoya2d3ohaD/85sfouwOGWrYDPWvNBao=
+	t=1719308989; cv=none; b=mAj5hzLCWLkCpuGFQKlKUKauj8w6NphW0KRuySInyA2Gz4ckwr0QPpoOdaiI/Ic/ltul7Y78B9sDkswFWDnFQQbKDbv4R6+3furUPORjj5pVih8C4xuQkjUik169nzp9tWBjQAsaKW1YlUqfVCtvohXDENvTqbeR4/uaObby1AA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308586; c=relaxed/simple;
-	bh=NKMvFAAxNw6jm/cDiqaeADEDXRucdM4pzBf2Xy70b7s=;
+	s=arc-20240116; t=1719308989; c=relaxed/simple;
+	bh=gHgjg6bnDsqAk8AXZBg169iUukQ9mTePUyocuf8pqd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6rDPvdmYm/hRburX95MJ1nUk7wxRkHepN/Cg+SjLzPEcX4e3FKs4VQcrqtknK9vBCus5fEdvjymE2L9ECi1QsSZiGY1Ojp5Tvn4dcqeyGIx/HPrWNOK5Ui8tQcct+Qz0zLVTM7CrgDMvHuzr3KERdiCTlKRyGZt2AojC5bCSiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikbZjn+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC23C32781;
-	Tue, 25 Jun 2024 09:43:05 +0000 (UTC)
+	 MIME-Version; b=czNFmfGPNmQbYSqxIX79eXpg457fnJwS92B1y0eXn42nhM6Hk8HuP3J3JVpC0KKbJWXRfFk/MeZkg9wHOAxhdcwcvMxzYqa4svmPc6Po6Q71nGUJG+JBm0tw0kEYnFVoWVB/l2FAvOm6ensp14Dzun9sYJ0lLpaBiR1X0fzwyTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQvyDwu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 074BBC32781;
+	Tue, 25 Jun 2024 09:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308585;
-	bh=NKMvFAAxNw6jm/cDiqaeADEDXRucdM4pzBf2Xy70b7s=;
+	s=korg; t=1719308989;
+	bh=gHgjg6bnDsqAk8AXZBg169iUukQ9mTePUyocuf8pqd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikbZjn+QAhkuVFkLY6OGNrFURgXa+H/8M0ZSJedjWFqJDgz6jhD4V+wja/WBuwMwk
-	 e9T8yypNvoV3Mq9+oGWS7DywrJ7tM8fiKt/YbP8jlg9cbjMYw5yXNysH+EgnqROceD
-	 pt0fzDQFIGCP5NO0s/HNvBKXRWS9lzxcJGmlxxeI=
+	b=BQvyDwu46X8tLmaI1TEv7tXLO02/E9tsKZP1Ilc8OxaVVautHM1quvsiRS7Ncvb4p
+	 GZad1NrrTIJp8OLc3ZtLvWg+Rn7GVTAJYUu9RrJGqSkeoRCpE1+VwBVK3/IVUstGLy
+	 PLFtLz3HR1r2STTfbzPwYr/leOr0C91M+9nXxS1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Daniel Starke <daniel.starke@siemens.com>,
+	syzbot <syzbot+dbac96d8e73b61aa559c@syzkaller.appspotmail.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 172/250] firmware: psci: Fix return value from psci_system_suspend()
+Subject: [PATCH 6.6 058/192] tty: add the option to have a tty reject a new ldisc
 Date: Tue, 25 Jun 2024 11:32:10 +0200
-Message-ID: <20240625085554.654586704@linuxfoundation.org>
+Message-ID: <20240625085539.398852153@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +66,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit e7c3696d4692e8046d25f6e63f983e934e12f2c5 ]
+[ Upstream commit 6bd23e0c2bb6c65d4f5754d1456bc9a4427fc59b ]
 
-Currently we return the value from invoke_psci_fn() directly as return
-value from psci_system_suspend(). It is wrong to send the PSCI interface
-return value directly. psci_to_linux_errno() provide the mapping from
-PSCI return value to the one that can be returned to the callers within
-the kernel.
+... and use it to limit the virtual terminals to just N_TTY.  They are
+kind of special, and in particular, the "con_write()" routine violates
+the "writes cannot sleep" rule that some ldiscs rely on.
 
-Use psci_to_linux_errno() to convert and return the correct value from
-psci_system_suspend().
+This avoids the
 
-Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Link: https://lore.kernel.org/r/20240515095528.1949992-1-sudeep.holla@arm.com
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+   BUG: sleeping function called from invalid context at kernel/printk/printk.c:2659
+
+when N_GSM has been attached to a virtual console, and gsmld_write()
+calls con_write() while holding a spinlock, and con_write() then tries
+to get the console lock.
+
+Tested-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Daniel Starke <daniel.starke@siemens.com>
+Reported-by: syzbot <syzbot+dbac96d8e73b61aa559c@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=dbac96d8e73b61aa559c
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/20240423163339.59780-1-torvalds@linux-foundation.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/psci/psci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/tty/tty_ldisc.c    |  6 ++++++
+ drivers/tty/vt/vt.c        | 10 ++++++++++
+ include/linux/tty_driver.h |  8 ++++++++
+ 3 files changed, 24 insertions(+)
 
-diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
-index d9629ff878619..2328ca58bba61 100644
---- a/drivers/firmware/psci/psci.c
-+++ b/drivers/firmware/psci/psci.c
-@@ -497,10 +497,12 @@ int psci_cpu_suspend_enter(u32 state)
+diff --git a/drivers/tty/tty_ldisc.c b/drivers/tty/tty_ldisc.c
+index 3f68e213df1f7..d80e9d4c974b4 100644
+--- a/drivers/tty/tty_ldisc.c
++++ b/drivers/tty/tty_ldisc.c
+@@ -545,6 +545,12 @@ int tty_set_ldisc(struct tty_struct *tty, int disc)
+ 		goto out;
+ 	}
  
- static int psci_system_suspend(unsigned long unused)
- {
-+	int err;
- 	phys_addr_t pa_cpu_resume = __pa_symbol(cpu_resume);
++	if (tty->ops->ldisc_ok) {
++		retval = tty->ops->ldisc_ok(tty, disc);
++		if (retval)
++			goto out;
++	}
++
+ 	old_ldisc = tty->ldisc;
  
--	return invoke_psci_fn(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND),
-+	err = invoke_psci_fn(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND),
- 			      pa_cpu_resume, 0, 0);
-+	return psci_to_linux_errno(err);
+ 	/* Shutdown the old discipline. */
+diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
+index e66ff9c11dade..a22da757ca6d1 100644
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -3390,6 +3390,15 @@ static void con_cleanup(struct tty_struct *tty)
+ 	tty_port_put(&vc->port);
  }
  
- static int psci_system_suspend_enter(suspend_state_t state)
++/*
++ * We can't deal with anything but the N_TTY ldisc,
++ * because we can sleep in our write() routine.
++ */
++static int con_ldisc_ok(struct tty_struct *tty, int ldisc)
++{
++	return ldisc == N_TTY ? 0 : -EINVAL;
++}
++
+ static int default_color           = 7; /* white */
+ static int default_italic_color    = 2; // green (ASCII)
+ static int default_underline_color = 3; // cyan (ASCII)
+@@ -3509,6 +3518,7 @@ static const struct tty_operations con_ops = {
+ 	.resize = vt_resize,
+ 	.shutdown = con_shutdown,
+ 	.cleanup = con_cleanup,
++	.ldisc_ok = con_ldisc_ok,
+ };
+ 
+ static struct cdev vc0_cdev;
+diff --git a/include/linux/tty_driver.h b/include/linux/tty_driver.h
+index 18beff0cec1ab..b4f99f6a5385a 100644
+--- a/include/linux/tty_driver.h
++++ b/include/linux/tty_driver.h
+@@ -155,6 +155,13 @@ struct serial_struct;
+  *
+  *	Optional. Called under the @tty->termios_rwsem. May sleep.
+  *
++ * @ldisc_ok: ``int ()(struct tty_struct *tty, int ldisc)``
++ *
++ *	This routine allows the @tty driver to decide if it can deal
++ *	with a particular @ldisc.
++ *
++ *	Optional. Called under the @tty->ldisc_sem and @tty->termios_rwsem.
++ *
+  * @set_ldisc: ``void ()(struct tty_struct *tty)``
+  *
+  *	This routine allows the @tty driver to be notified when the device's
+@@ -373,6 +380,7 @@ struct tty_operations {
+ 	void (*hangup)(struct tty_struct *tty);
+ 	int (*break_ctl)(struct tty_struct *tty, int state);
+ 	void (*flush_buffer)(struct tty_struct *tty);
++	int (*ldisc_ok)(struct tty_struct *tty, int ldisc);
+ 	void (*set_ldisc)(struct tty_struct *tty);
+ 	void (*wait_until_sent)(struct tty_struct *tty, int timeout);
+ 	void (*send_xchar)(struct tty_struct *tty, char ch);
 -- 
 2.43.0
 
