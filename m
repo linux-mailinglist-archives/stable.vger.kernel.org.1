@@ -1,100 +1,120 @@
-Return-Path: <stable+bounces-55767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E12E916914
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 15:37:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E6591693A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 15:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 901431C25736
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 13:37:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E80F91C2187F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 13:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4CDB1607B0;
-	Tue, 25 Jun 2024 13:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA74A15FA85;
+	Tue, 25 Jun 2024 13:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KquyFErL"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="JZtLw47+"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C461607A7
-	for <stable@vger.kernel.org>; Tue, 25 Jun 2024 13:35:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAE815FA67;
+	Tue, 25 Jun 2024 13:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719322543; cv=none; b=O1iPyJPiQkXnJNIzhdOWSmlS1xXoVs7syKrky0M2ADEuY8DO7vr6YYxE9g6LIe4M7BytGRpLjaT2NE3fiauO4bALuDsQ7Cw8CPJw+pf1dESSw461L0qXDDl0tbmPGm243nYGAml+7MPeBXeRnrROoMIfvuL/rDmNGlehLgrsS3k=
+	t=1719323048; cv=none; b=GZCFU5hvt8R1Um0QoVTp9MKa+Z2zQnXK08QLiZTZQ6Ou2XKWPcnzgkza+ILGLn7w1NfgTIKScddyguOZ6X1uFzOCQnjsmkhaA8Zl0W1brSjbX5XQX+24VdGzAiOodjpdnNEwyI8opXmdEU6+1C3uub6rmSUREoaTpX+NxHVpvxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719322543; c=relaxed/simple;
-	bh=oTfBBNjrMxF3+8EUNWyVBjiZ5mWolPrdKFpf/4v3430=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=h1CL1yI36HzJzqpRmBi4GHoCETI+OmGlO2DwY+m727ARYT1xLgf4tDsEpSQS2nmSaGL3QMjje81WQYfl70m+RiQLiro1VOk7J5OEQejV1DgOnJ3Dp63VN902/LSi1phDSH3k68E2D0rDmoGs5BJZTaR5SM5eO0roqgpyhcW+puc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KquyFErL; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719322541; x=1750858541;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=oTfBBNjrMxF3+8EUNWyVBjiZ5mWolPrdKFpf/4v3430=;
-  b=KquyFErLihq87ucSzMRneCvmtKWB/GkR/e5d3csFOR3SBo9JPcD7goYr
-   FBxX9Gia0n2J7siiGu9RshGO3jQmd4bWVj897Wvp3CgqMP25/LCYT/xpE
-   mOKugRYVD8lkFzzg64a7G4wAYGM/jGtpw3o7W/wKG9evhn9iN8zNzRzmX
-   428Hg3hFIvKFH7XReXrHK4C7Jkn7kta2ubYC5OPB54GjXJ0nmT5rKNfy4
-   hqGaIGq7SY1XgCw8m02eCEnUjG9kIYT3MXhnuUYVXaPtKIQUPRDc0NPTQ
-   9uVGjGQtLtbFZmKU7AA0Btqw4Mt7ueBNyXjRW/vpdz35L+PEW7bFTU/Fh
-   w==;
-X-CSE-ConnectionGUID: s9bHd258RSS3oAbTheFKrA==
-X-CSE-MsgGUID: 0HXcr7T0RX+/0/75mmLETg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="38852487"
-X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; 
-   d="scan'208";a="38852487"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 06:35:41 -0700
-X-CSE-ConnectionGUID: gIsbdLTnSSSmWPogy2ViJQ==
-X-CSE-MsgGUID: 4VqUwGXQTWOrfGw33zUOAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; 
-   d="scan'208";a="48089741"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 25 Jun 2024 06:35:39 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sM6Ke-000EPy-0p;
-	Tue, 25 Jun 2024 13:35:36 +0000
-Date: Tue, 25 Jun 2024 21:35:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net 1/1] igc: Fix double reset adapter triggered from a
- single taprio cmd
-Message-ID: <ZnrHp7CgfLecibDl@6715f18d4702>
+	s=arc-20240116; t=1719323048; c=relaxed/simple;
+	bh=nQof8rcMNrS5cmjQ+nkn595vum50vVtm/h/QsH2E8fM=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=J+QAjPd+WErNpJrnlnM6RT+BaK+nunJSm3Q0Pha9xF6YuQ7k/ohCsD8N1gOvVGLGkzDCyG/YmosVcKC5IZRlloAON0PWhd5/G2+rowPTia8Dhd9ZH158goEDEU1Yqq7ZvoPAPJl7okl9N8eO7Rl/9UeikdJqEFFNKjvE/qVYYls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=JZtLw47+; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1719323019; x=1719927819; i=markus.elfring@web.de;
+	bh=DW1LoQxnS5f5LRrDsRgHA085uas+2Iji0oND03zB5nw=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=JZtLw47+8ZyxUQil47G0W9CULuQE+/JfNdpxAWvPwO4MAdZGujO9q9ZLMc8pZUsq
+	 8dT5qM08y4b+8tg0bJfgPWZhQU3HC1Z0eIarKnMEtuphSCvFEvHILuhd/hR3y8QDq
+	 aZl1Vto3FAg+Tt7+rHw0pL6WXGKCV7allTAHdPIKI20Od5oWPiucLMLedhBNKpRGl
+	 Cnw86c5noH+bom6O86Rq/oseOUbYM7mnXhj4aO2qyJ0pD4jBCD2K26+E9D8IAXasX
+	 77N1Tlyt0tZNGrCcqoeVGIl3TB1MBA8Q3Iud0KOQophl0EJAQTX+MMnJkdzYK6NWo
+	 ahwsti5odAruw0244w==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.85.95]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Ml4B4-1slIGt03yO-00aZqS; Tue, 25
+ Jun 2024 15:43:39 +0200
+Message-ID: <8517da06-3010-4356-b5df-d9a14454feec@web.de>
+Date: Tue, 25 Jun 2024 15:43:37 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240625082656.2702440-1-faizal.abdul.rahim@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+To: Ma Ke <make24@iscas.ac.cn>, nouveau@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+ Danilo Krummrich <dakr@redhat.com>, David Airlie <airlied@gmail.com>,
+ Karol Herbst <kherbst@redhat.com>, Lyude Paul <lyude@redhat.com>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+References: <20240625081828.2620794-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH] drm/nouveau/dispnv04: fix null pointer dereference in
+ nv17_tv_get_ld_modes
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240625081828.2620794-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:8F+pc+WjJBMs7OzY5IXr8xjes+NHPd6uUM/JgMMrj0JM3JjYtro
+ 7+xVBXbK1BB3qzpe8Vj63qlrfX6Iz4XB4uAaeID6Oi6sX/8dwbygMeWaU8XJd5zmjv7wvhz
+ HbdjafVWM8k8//vuS5mQ8TqHrsP5E3LxNsv8fZJtil7uYGTVby9/NkoOGZ68Rdt1J80WzRg
+ rI+Ddk6GAKKeXXlYhzf2Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:UFhOZZ2eABg=;aZuRWvDiFzEGW8Ba2s44hN220sC
+ Gh24rZ7uhloY3U1kRDLb1bj3kxglyTcH2SzKcb63zeF9DrpELlVQs74PzIi0DTQMKqETyC1x/
+ A/ZR6Z1s1X80DPDTbWZNHuu1stccBrSg16ByR5cnNzbubMOd10Wj6xrkPatWpcyesm85DFdci
+ hWqcnPAU26WwTvUGcFeNre4DWx7u+/Kzlne6/mmFz88v9k5H/eIFW/byTObUixhWEweafb5Dr
+ iGMs+NUHYv5bRwRFsmOXrx5VinQD1sFyes9brzw9VhHSK6S8ayNQt9HQdYAmruGurxBNiySo3
+ GoaUMbD880Pa8rOMxyEnnlZUjx9y61q9sVT0ByFTm9GPRIZKi1O5Z6a4021dBassSlp5DGDYa
+ 0Qcl1YAQPG+TspeMG2yniEQgXWzQ7kBo2yas0Vnm8NaryHdPri0HmiSpUKWJ0c5j0PPzkZgN1
+ rM0Jr1MbiENq2E/MDbYZlz26A0NrR4ConxomQz72+nTwhUCaNcDxFMY0fdHxcTe8LkWpuZ6BG
+ yMjlxYPIzUiS18kSrHV7iVPn/xBVsQMDoPWAF2qLpSiN16QXKr2NBk/S2eeOkuudaPc+xxF4V
+ IcMlrb57nadyFv+smgIwXDbxp6bA+Eh2oergs38lwk3ovBAW5dPpMtYzm3pjOF0IBA/Kt/IWH
+ LTlntl3lrQZxtj6wgiGL+oeK80uxjXVA1TiDEJcO1Om6sudghNwirfZ280uKovxElkjlOZi9n
+ 1UB993xA+H//Zig609Ut/fAnVz3N+ffZTLt3Cyh2TuP6LsNx3jWeuey3OSi9Uwf4Ab/3ljbdn
+ MzjLGUYSMU3TfsrQ4QhQ7ToqOjZOA7jwwdofEuIbRTRV0=
 
-Hi,
+> In nv17_tv_get_ld_modes(), the return value of drm_mode_duplicate() is
+> assigned to mode, which will lead to a possible NULL pointer dereference
+> on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Thanks for your patch.
+Can a wording approach (like the following) be a better change description=
+?
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH net 1/1] igc: Fix double reset adapter triggered from a single taprio cmd
-Link: https://lore.kernel.org/stable/20240625082656.2702440-1-faizal.abdul.rahim%40linux.intel.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+  A null pointer is stored in the local variable =E2=80=9Cmode=E2=80=9D af=
+ter a call
+  of the function =E2=80=9Cdrm_mode_duplicate=E2=80=9D failed. This pointe=
+r was used
+  in a subsequent statement where an undesirable dereference will
+  be performed then.
+  Thus add a corresponding return value check.
 
 
+> Cc: stable@vger.kernel.org
+
+Would you like to add the tag =E2=80=9CFixes=E2=80=9D accordingly?
+
+
+How do you think about to use a summary phrase like
+=E2=80=9CPrevent null pointer dereference in nv17_tv_get_ld_modes()=E2=80=
+=9D?
+
+
+Regards,
+Markus
 
