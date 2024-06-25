@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-55621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14D5F916474
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2669163EF
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46AD71C2376E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABB9328C38A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA65149E0A;
-	Tue, 25 Jun 2024 09:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8F3146A67;
+	Tue, 25 Jun 2024 09:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwYOYXP0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+jfMyqs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3CF146A67;
-	Tue, 25 Jun 2024 09:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAA024B34;
+	Tue, 25 Jun 2024 09:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309447; cv=none; b=VR5aq2romaRwF0kW6UdMA4DadThWQMvcxmap4g/Nu5z+bY1huclJrmxUhbhu8cMxAU2JkHqMgjjMyyWcpXnMc9O/xqND69QkyHkpuxddy/C2AQuBYwWQrjEydXMjEldzKjgGysTjfSUi1nAxhw9P4KLzufYSGl2wjSEnmCeojDY=
+	t=1719309122; cv=none; b=nkx81iAVv33mZ74c18oCWAZLiCsarJXxYUPUg0j0+pge5ih+qC8lrrCFTy2ZxXiPOAqjiMKD3lQ3Y8eCS1hGwAUkQLvxPFTwPsM/OWERmKJkowxUYg6QncxQNGSanEDYgtPVZYJrIax0SV8uDVYXYg60wQfeO3/J3/PM8fwXlNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309447; c=relaxed/simple;
-	bh=vZ0gyFxDwMxxUszcqCWk68kg69quaU8XNTCGrKqE4Qw=;
+	s=arc-20240116; t=1719309122; c=relaxed/simple;
+	bh=10xL8XP9GbggTN0xGRM4NOyIYZb96YO3hhXc9kN0a7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dWzSouwyoq8gmrc59Zk73kQr+jBcYmwXJIa+H3S8SJVktgUXrDhwmyc85z9pD1VrMAYqGBTDu4YTiwOh6o5ZcfNB7fdDyMLhlmrHsq2F21p+nT5ZBWGQH1hOB8MRR7ueaoaYfTACTJD51xY9Tbm3zl/b4jcLcY1WMuIJrVG2KkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwYOYXP0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2B2C32786;
-	Tue, 25 Jun 2024 09:57:26 +0000 (UTC)
+	 MIME-Version; b=kffXnl17fUzYgwYRj2Bn166VJ3emcDwFzXH9HkKp5J4sMXC8BE+PS/5MENHxSZNB3D04JbYyoTqsi63B5QKqjmB/AfTXiNW3DIfVE7lJhfIshOU9PoLWDsrduFT36zQb99tWlXdenUvlQs5aRM2YXNmn1oi19bNFsv1A0x9di/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+jfMyqs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2801AC4AF09;
+	Tue, 25 Jun 2024 09:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309446;
-	bh=vZ0gyFxDwMxxUszcqCWk68kg69quaU8XNTCGrKqE4Qw=;
+	s=korg; t=1719309121;
+	bh=10xL8XP9GbggTN0xGRM4NOyIYZb96YO3hhXc9kN0a7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GwYOYXP0BT8RwcwMSMvxb3+p3yarkAf3vMW0x039oASp5u+T4mflQvaunlwfVrpjb
-	 BY5cnpmojfo+NmYTZJmCm5Zaa2E9DmwDzkazWM+Jd2PBaf6XUHxLRB8B2WjvmgHz/6
-	 eWQDxOwpEna3E4SFWTWo8+N67DdWeuXoWPePOcGY=
+	b=x+jfMyqsIEp78OfPCFGA38Yiu8D9c/ZTS/F6E6GoPHsqjNAHjqGlmEE3I21Ec8m48
+	 0m0vpZRf7aTi5jyuESQQ7G5gB6BPPlhojWa+k6Mwkv0yqLWj/RAt0rZe4tyAQyJeOe
+	 TgP0fl0gGUMjUtyJeNRAqDqwr1FI4V7ZFylk0u68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Yen <leon.yen@mediatek.com>,
-	Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/131] wifi: mt76: mt7921s: fix potential hung tasks during chip recovery
+Subject: [PATCH 6.6 102/192] bnxt_en: Restore PTP tx_avail count in case of skb_pad() error
 Date: Tue, 25 Jun 2024 11:32:54 +0200
-Message-ID: <20240625085526.677782611@linuxfoundation.org>
+Message-ID: <20240625085541.092365500@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Yen <leon.yen@mediatek.com>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-[ Upstream commit ecf0b2b8a37c8464186620bef37812a117ff6366 ]
+[ Upstream commit 1e7962114c10957fe4d10a15eb714578a394e90b ]
 
-During chip recovery (e.g. chip reset), there is a possible situation that
-kernel worker reset_work is holding the lock and waiting for kernel thread
-stat_worker to be parked, while stat_worker is waiting for the release of
-the same lock.
-It causes a deadlock resulting in the dumping of hung tasks messages and
-possible rebooting of the device.
+The current code only restores PTP tx_avail count when we get DMA
+mapping errors.  Fix it so that the PTP tx_avail count will be
+restored for both DMA mapping errors and skb_pad() errors.
+Otherwise PTP TX timestamp will not be available after a PTP
+packet hits the skb_pad() error.
 
-This patch prevents the execution of stat_worker during the chip recovery.
-
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 83bb623c968e ("bnxt_en: Transmit and retrieve packet timestamps")
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240618215313.29631-4-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 2 ++
- drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c  | 2 --
- drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c | 2 --
- drivers/net/wireless/mediatek/mt76/sdio.c            | 3 ++-
- 4 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-index 49ddca84f7862..cae7c21ca1f8b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
-@@ -883,6 +883,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
- 	int i, ret;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 724624737d095..58a7bb75506a3 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -656,9 +656,6 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	return NETDEV_TX_OK;
  
- 	dev_dbg(dev->mt76.dev, "chip reset\n");
-+	set_bit(MT76_RESET, &dev->mphy.state);
- 	dev->hw_full_reset = true;
- 	ieee80211_stop_queues(hw);
+ tx_dma_error:
+-	if (BNXT_TX_PTP_IS_SET(lflags))
+-		atomic_inc(&bp->ptp_cfg->tx_avail);
+-
+ 	last_frag = i;
  
-@@ -911,6 +912,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
- 	}
- 
- 	dev->hw_full_reset = false;
-+	clear_bit(MT76_RESET, &dev->mphy.state);
- 	pm->suspended = false;
- 	ieee80211_wake_queues(hw);
- 	ieee80211_iterate_active_interfaces(hw,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-index 8dd60408b117e..cb20ddcad137c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-@@ -78,7 +78,6 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
- 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
- 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
- 
--	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
- 	skb_queue_purge(&dev->mt76.mcu.res_q);
-@@ -129,7 +128,6 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
- 
- 	err = __mt7921_start(&dev->phy);
- out:
--	clear_bit(MT76_RESET, &dev->mphy.state);
- 
- 	local_bh_disable();
- 	napi_enable(&dev->mt76.tx_napi);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-index fd07b66233920..46af03803de73 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
-@@ -98,7 +98,6 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
- 	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
- 	mt76_txq_schedule_all(&dev->mphy);
- 	mt76_worker_disable(&dev->mt76.tx_worker);
--	set_bit(MT76_RESET, &dev->mphy.state);
- 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
- 	wake_up(&dev->mt76.mcu.wait);
- 	skb_queue_purge(&dev->mt76.mcu.res_q);
-@@ -135,7 +134,6 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
- 
- 	err = __mt7921_start(&dev->phy);
- out:
--	clear_bit(MT76_RESET, &dev->mphy.state);
- 
- 	mt76_worker_enable(&dev->mt76.tx_worker);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
-index fc4fb94635645..2a81c2f663449 100644
---- a/drivers/net/wireless/mediatek/mt76/sdio.c
-+++ b/drivers/net/wireless/mediatek/mt76/sdio.c
-@@ -499,7 +499,8 @@ static void mt76s_tx_status_data(struct mt76_worker *worker)
- 	dev = container_of(sdio, struct mt76_dev, sdio);
- 
- 	while (true) {
--		if (test_bit(MT76_REMOVED, &dev->phy.state))
-+		if (test_bit(MT76_RESET, &dev->phy.state) ||
-+		    test_bit(MT76_REMOVED, &dev->phy.state))
- 			break;
- 
- 		if (!dev->drv->tx_status_data(dev, &update))
+ 	/* start back at beginning and unmap skb */
+@@ -680,6 +677,8 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ tx_free:
+ 	dev_kfree_skb_any(skb);
+ tx_kick_pending:
++	if (BNXT_TX_PTP_IS_SET(lflags))
++		atomic_inc(&bp->ptp_cfg->tx_avail);
+ 	if (txr->kick_pending)
+ 		bnxt_txr_db_kick(bp, txr, txr->tx_prod);
+ 	txr->tx_buf_ring[txr->tx_prod].skb = NULL;
 -- 
 2.43.0
 
