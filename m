@@ -1,79 +1,116 @@
-Return-Path: <stable+bounces-55133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F84915DBD
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 06:41:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946D1915E0A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 07:14:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3FAB1C21756
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 04:41:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F5A21F22D4B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 05:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5A313C90B;
-	Tue, 25 Jun 2024 04:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C47143C77;
+	Tue, 25 Jun 2024 05:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kwJkbyO2"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="m2FTDB2f"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B9613C9A2;
-	Tue, 25 Jun 2024 04:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CAB143C5A;
+	Tue, 25 Jun 2024 05:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719290462; cv=none; b=gCEz+o2BnZwQS5ErYxqYTvx4FXpSzdkdD3wpRH9gafxX0IsS1B/TQQomRxcOWj2dV/iEtbZXZZQ3Ms47MXBxwl6rqDDboB9BfEJxuFyYUCZ9D7n2SlDqlS3Oo1jsXkZRX/5MTdPZMKdN6gAr/+RxxPS+u4vFcM69VuEw+niXH9c=
+	t=1719292449; cv=none; b=o3CQvikM5NHX31TgTmg8sj3T4R/L4evk4Eyn1nCj3dcyajBIvrZNobbtIVJtTZ1nAJ12ZwcENDKHMSqw1SFJXn+3rA1CFu6SbiZ0Bv4DT5mPdX73u1CcK26biDyHjyWmlLVOxhRzQt9XG5Hi1QAO2X5VKps9FcDtzMUJFtKtObo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719290462; c=relaxed/simple;
-	bh=D7IIeOXloXwbPh6kcp6AarwDbWuitjPwrJSr2qfNFLw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LRYjlXIRSx9PL6fISTMDNzVA9+Dyhiz7MqBbp2ZiyAbS9GjjUT+qCoMr1bL2lSFIfBG/gFzrM1/qdFKZggEzyIPkhwRcQDHZC3xWIsrRNfv7zE7DkM2uim0OFaPPUeZfD+oQMkEl6hAEiYz7Bbs107xb+DIkQ3u3P02ZUrEs++Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kwJkbyO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811F4C32782;
-	Tue, 25 Jun 2024 04:41:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719290462;
-	bh=D7IIeOXloXwbPh6kcp6AarwDbWuitjPwrJSr2qfNFLw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kwJkbyO2t5aAPDDtUFSL5ygieGeKli086ona1nncN0naWo6Rx5Dw4bCZHxLRvGZ0m
-	 15NjjrXadD2AeKVUGe3qk8t2YXwDwIw5r4ozwYbZGC48z4jrSEAs4s+q45BfMzTIAh
-	 uggp5EbN0VOHY4mUQ3zLqWIiSNO/PpOJcfeE6vko=
-Date: Tue, 25 Jun 2024 06:40:58 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Udit Kumar <u-kumar1@ti.com>
-Cc: vigneshr@ti.com, nm@ti.com, tony@atomide.com, jirislaby@kernel.org,
-	ronald.wahl@raritan.com, thomas.richard@bootlin.com,
-	tglx@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, ilpo.jarvinen@linux.intel.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4] serial: 8250_omap: Implementation of Errata i2310
-Message-ID: <2024062525-venue-twine-aa79@gregkh>
-References: <20240624165656.2634658-1-u-kumar1@ti.com>
+	s=arc-20240116; t=1719292449; c=relaxed/simple;
+	bh=BBjidLX4wCJ4bJu2ERUDqOPmnH03v0e8Y5wWJjYUxYE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gkbAOBD3/UGD+mjcLyEw0ZHIcP+g0hN18mdfpP9r/9AMva5R6+LJk9kUuRmRaBfr9nbIyEVUaOBiJ1/EY7m2JFewfCZRua4eQw9wG8vrCPqjJp+yxCmNrZxc4oHS9/4h4S7OLJvXRc145vDE9T0NByILyG/OYB8DvsT0XjDFOaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=m2FTDB2f; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 45P5Dmct022509;
+	Tue, 25 Jun 2024 00:13:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1719292428;
+	bh=fBU2x+vbwdBiGXkNVPBk+/aEoIBCo6MAZ+TjymLS+k4=;
+	h=From:To:CC:Subject:Date;
+	b=m2FTDB2fZKp8ZSJ02RWTjAa72p/vf4hefYht21EQCVgQbCyjGc8H12bx3w1oYhtLZ
+	 8BoXhoHi1+mjXsDARClnfZtSyus8+Kk32QHoIZiqu7xPaIuvecQ65/YSmTiN5Q6RPj
+	 dC3vPlmnExxRKtBWwjDnVDYOqh3JEYZ+VKpDDBI4=
+Received: from DFLE111.ent.ti.com (dfle111.ent.ti.com [10.64.6.32])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 45P5DmT0092945
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 25 Jun 2024 00:13:48 -0500
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 25
+ Jun 2024 00:13:48 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 25 Jun 2024 00:13:48 -0500
+Received: from udit-HP-Z2-Tower-G9-Workstation-Desktop-PC.dhcp.ti.com (udit-hp-z2-tower-g9-workstation-desktop-pc.dhcp.ti.com [172.24.227.18])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 45P5Dig5042615;
+	Tue, 25 Jun 2024 00:13:44 -0500
+From: Udit Kumar <u-kumar1@ti.com>
+To: <vigneshr@ti.com>, <nm@ti.com>, <tony@atomide.com>
+CC: <gregkh@linuxfoundation.org>, <jirislaby@kernel.org>,
+        <ronald.wahl@raritan.com>, <thomas.richard@bootlin.com>,
+        <tglx@linutronix.de>, <linux-kernel@vger.kernel.org>,
+        <linux-serial@vger.kernel.org>, <ilpo.jarvinen@linux.intel.com>,
+        Udit Kumar
+	<u-kumar1@ti.com>, <stable@vger.kernel.org>
+Subject: [PATCH] serial: 8250_omap: Implementation of Errata i2310 adding fifo level check
+Date: Tue, 25 Jun 2024 10:43:38 +0530
+Message-ID: <20240625051338.2761599-1-u-kumar1@ti.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240624165656.2634658-1-u-kumar1@ti.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On Mon, Jun 24, 2024 at 10:26:56PM +0530, Udit Kumar wrote:
-> As per Errata i2310[0], Erroneous timeout can be triggered,
-> if this Erroneous interrupt is not cleared then it may leads
-> to storm of interrupts, therefore apply Errata i2310 solution.
-> 
-> [0] https://www.ti.com/lit/pdf/sprz536 page 23
-> 
-> Fixes: b67e830d38fa ("serial: 8250: 8250_omap: Fix possible interrupt storm on K3 SoCs")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Udit Kumar <u-kumar1@ti.com>
+As per Errata i2310[0], Erroneous timeout can be triggered,
+if this Erroneous interrupt is not cleared then it may leads
+to storm of interrupts.
 
-As I have already taken the v3 patch to my tree, please send a "fix"
-patch on top of it, as I can not rebase a public tree.
+This patch adding fifo empty check before applying errata.
 
-thanks,
+[0] https://www.ti.com/lit/pdf/sprz536 page 23
 
-greg k-h
+Fixes: b67e830d38fa ("serial: 8250: 8250_omap: Fix possible interrupt storm on K3 SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Udit Kumar <u-kumar1@ti.com>
+---
+This is check is added on top of errata implementation v3 patch 
+https://lore.kernel.org/all/20240619105903.165434-1-u-kumar1@ti.com/
+
+
+ drivers/tty/serial/8250/8250_omap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index ddac0a13cf84..1af9aed99c65 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -672,7 +672,8 @@ static irqreturn_t omap8250_irq(int irq, void *dev_id)
+ 	 * https://www.ti.com/lit/pdf/sprz536
+ 	 */
+ 	if (priv->habit & UART_RX_TIMEOUT_QUIRK &&
+-		(iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT) {
++	    (iir & UART_IIR_RX_TIMEOUT) == UART_IIR_RX_TIMEOUT &&
++	    serial_port_in(port, UART_OMAP_RX_LVL) == 0) {
+ 		unsigned char efr2, timeout_h, timeout_l;
+ 
+ 		efr2 = serial_in(up, UART_OMAP_EFR2);
+-- 
+2.34.1
+
 
