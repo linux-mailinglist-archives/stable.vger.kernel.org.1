@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-55301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E64E916306
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE65F916398
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A188FB24952
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA6CB28C05E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE591494D5;
-	Tue, 25 Jun 2024 09:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3370B14A091;
+	Tue, 25 Jun 2024 09:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYa4mkXz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPPb2b5z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F5F12EBEA;
-	Tue, 25 Jun 2024 09:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E468A146A9D;
+	Tue, 25 Jun 2024 09:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308504; cv=none; b=pLQIbqNdKkSW6pSf96Ls139AtSyyexg/KnB+Ai8bYceKyo2nPOA7k9UJWKqZxp1W4+49qb4h18LG2qbiJ+Ve7SmPbwTg2MjsG7yHPumkQ+TuO+LAeEd6HSgASPyWk6n3S44aw4EgMxlBHpO6aYUHtc0ZWAkXARKy64O+FDbYlwM=
+	t=1719308910; cv=none; b=kmeT3uF7QsksEGdeIDlXtmFcJELM/l8qmUupZ2fi0x6vR9auOGeHGuX2jtwV8LEkrzunO+ZvKoVzYjywadhbRK3rBB1l6mKk49adZsfzL4r3r59I90XYDUft62YzMriD7TRBE3QDCRYOHatkpZ4HLLyx8SsIDfg/lbAeLtnaQiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308504; c=relaxed/simple;
-	bh=IZBnk+8FxYoGotCeyFYvQ1O8ApcHVQyfWcKrzvZLEzU=;
+	s=arc-20240116; t=1719308910; c=relaxed/simple;
+	bh=LrISNkV/RknwHDxfXr4QT1IjJ7AuMc2g/Hn7WxIY/eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvYxbrLx95xbpnkwroELxJu0FM4Kg/EW4h9OY31EjXlcG8bUivr5/64NB/Hhu02L08YgpV3mfN1AXu8o4JBdpfXJFthCCwjOEbXfq4RC9mTSvuL5FPPKv1vrMUYCMHBaja5iL0Vv15+Qv+cKeb6i51e56KEBoXr22fTGWh44OCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYa4mkXz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BA0C32786;
-	Tue, 25 Jun 2024 09:41:43 +0000 (UTC)
+	 MIME-Version; b=MZsg4ZBumRAfq4XfUt95YWCjZZ/Ym2DElrut1prTdNezD92AGGreiHstszXnY/n04Xj+7CMgra+mtGvtcV4AQuWm/s32eKFeqBYIVwTfsYt+zi1lppuo3PVWca32J6UIX960kkrWfzZAkcG14d6wjVkiznNo+bPOGWJhYtqTaI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPPb2b5z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D59C32781;
+	Tue, 25 Jun 2024 09:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308503;
-	bh=IZBnk+8FxYoGotCeyFYvQ1O8ApcHVQyfWcKrzvZLEzU=;
+	s=korg; t=1719308909;
+	bh=LrISNkV/RknwHDxfXr4QT1IjJ7AuMc2g/Hn7WxIY/eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CYa4mkXzUwxQ1tG71WzbJ83pN7Tr0tTYO5/E/pemUBeYTtQvxFY8dX6itVkxHb0Sj
-	 MrgGFYAY9oKQg+55p+8qSOhsxCgRCeGIi7gUAR4Kan9nyUNQdtnVChf+UjTi7Baj8Q
-	 Jbr/+jek9ZMhnXmZyQKcLk4ZnuoMXPqDaEa/2us0=
+	b=sPPb2b5zEuvCPh1R+AR78SihZc6j5bDYofsfNiEZ/0fY0lbYDGBQPiPi8Dq0R8xAx
+	 5ojBWK1+OKotedWy2A79X+WH60Toz++v+iPNoxdbNGIs3Qe+81EePOqDM2x5KofMhj
+	 QXy9E/QauNUhzfrWSZyFLv+kIQn+qj1l5QKazxy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 144/250] phy: qcom-qmp: qserdes-txrx: Add missing registers offsets
-Date: Tue, 25 Jun 2024 11:31:42 +0200
-Message-ID: <20240625085553.585544997@linuxfoundation.org>
+Subject: [PATCH 6.6 031/192] ASoC: Intel: sof_sdw: add JD2 quirk for HP Omen 14
+Date: Tue, 25 Jun 2024 11:31:43 +0200
+Message-ID: <20240625085538.356509771@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 5314e84c33e7ad61df5203df540626ac59f9dcd9 ]
+[ Upstream commit 4fee07fbf47d2a5f1065d985459e5ce7bf7969f0 ]
 
-Currently, the x1e80100 uses pure V6 register offsets for DP part of the
-combo PHY. This hasn't been an issue because external DP is not yet
-enabled on any of the boards yet. But in order to enabled it, all these
-new V6 N4 register offsets are needed. So add them.
+The default JD1 does not seem to work, use JD2 instead.
 
-Fixes: 762c3565f3c8 ("phy: qcom-qmp: qserdes-txrx: Add V6 N4 register offsets")
-Co-developed-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240527-x1e80100-phy-qualcomm-combo-fix-dp-v1-1-be8a0b882117@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240411220347.131267-4-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../phy/qualcomm/phy-qcom-qmp-qserdes-txrx-v6_n4.h  | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-qserdes-txrx-v6_n4.h b/drivers/phy/qualcomm/phy-qcom-qmp-qserdes-txrx-v6_n4.h
-index a814ad11af071..d37cc0d4fd365 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-qserdes-txrx-v6_n4.h
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-qserdes-txrx-v6_n4.h
-@@ -6,11 +6,24 @@
- #ifndef QCOM_PHY_QMP_QSERDES_TXRX_V6_N4_H_
- #define QCOM_PHY_QMP_QSERDES_TXRX_V6_N4_H_
- 
-+#define QSERDES_V6_N4_TX_CLKBUF_ENABLE			0x08
-+#define QSERDES_V6_N4_TX_TX_EMP_POST1_LVL		0x0c
-+#define QSERDES_V6_N4_TX_TX_DRV_LVL			0x14
-+#define QSERDES_V6_N4_TX_RESET_TSYNC_EN			0x1c
-+#define QSERDES_V6_N4_TX_PRE_STALL_LDO_BOOST_EN		0x20
- #define QSERDES_V6_N4_TX_RES_CODE_LANE_OFFSET_TX	0x30
- #define QSERDES_V6_N4_TX_RES_CODE_LANE_OFFSET_RX	0x34
-+#define QSERDES_V6_N4_TX_TRANSCEIVER_BIAS_EN		0x48
-+#define QSERDES_V6_N4_TX_HIGHZ_DRVR_EN			0x4c
-+#define QSERDES_V6_N4_TX_TX_POL_INV			0x50
-+#define QSERDES_V6_N4_TX_PARRATE_REC_DETECT_IDLE_EN	0x54
- #define QSERDES_V6_N4_TX_LANE_MODE_1			0x78
- #define QSERDES_V6_N4_TX_LANE_MODE_2			0x7c
- #define QSERDES_V6_N4_TX_LANE_MODE_3			0x80
-+#define QSERDES_V6_N4_TX_TRAN_DRVR_EMP_EN		0xac
-+#define QSERDES_V6_N4_TX_TX_BAND			0xd8
-+#define QSERDES_V6_N4_TX_INTERFACE_SELECT		0xe4
-+#define QSERDES_V6_N4_TX_VMODE_CTRL1			0xb0
- 
- #define QSERDES_V6_N4_RX_UCDR_FO_GAIN_RATE2		0x8
- #define QSERDES_V6_N4_RX_UCDR_SO_GAIN_RATE2		0x18
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 0ea7812125fee..59621a9c389c7 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -502,6 +502,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 					SOF_BT_OFFLOAD_SSP(1) |
+ 					SOF_SSP_BT_OFFLOAD_PRESENT),
+ 	},
++	{
++		.callback = sof_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN Transcend Gaming Laptop"),
++		},
++		.driver_data = (void *)(RT711_JD2),
++	},
++
+ 	/* LunarLake devices */
+ 	{
+ 		.callback = sof_sdw_quirk_cb,
 -- 
 2.43.0
 
