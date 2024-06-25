@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-55373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D046891634E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6DE791635A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F9DC1C20A25
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E0D91F22244
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F98E1494AF;
-	Tue, 25 Jun 2024 09:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B166C147C96;
+	Tue, 25 Jun 2024 09:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3+tMQiE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ao6D1cfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FC61465A8;
-	Tue, 25 Jun 2024 09:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECA51465A8;
+	Tue, 25 Jun 2024 09:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308713; cv=none; b=p0LN8jFAXsACOMxzWyjQ/gQKcr5Y2bNhBlgL2dLG4bvMzhdugke3VhGiPnvZtFfRVWnHNVXd63IXxRLm6FkxVJ2BSaN8bGHBDayivEtHDQ8wpyhdh4PDxUpcdNSuncqdIZW9cImKXr9DqT5n2FGria/4WvvWxQHv1jkAOFPy7I4=
+	t=1719308745; cv=none; b=dGcFln5mx7Xwu4c1DO9UkJK+u8RVmEKsjIPF37vEYcaguo5NzRbg7X9UgKPm6WggU+5Kb+k9ndUXIYEPkv5eySP0sH9xOvLN2PuYJ3wXTlFgJxt1bhgAA9GxggUpSvda4SMiKCW0c/ncQgaGJidqt+WIVyhNbcMpSld7OEIkU+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308713; c=relaxed/simple;
-	bh=A/3mvs1Eh9u9z+E7vxEuvxkLFr8rizyje2DDHOQLHY8=;
+	s=arc-20240116; t=1719308745; c=relaxed/simple;
+	bh=DWE2Cn8GHZFBU+L9tXLLc8g4XRoVW9Ytv8U1H71tl8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jrcuBQFkiWC3COylaQhgy6ct5wm+H9+//QJ4UtxEBsyKHXQXqAdo8KJDU5Sp6CFlWmhfSM5ZCiMWUyoIAViSF2c9PrMJ0aboHXYQdPA45JF84Db3qRhczKfsBKIj8F8gtcbKtbbhCkuMTZv8xjK//bu/ehWRe89VusA5ZR2PfcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3+tMQiE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E284C32781;
-	Tue, 25 Jun 2024 09:45:12 +0000 (UTC)
+	 MIME-Version; b=DS9GwtcPjDvXGK/3b+Ook5ATTPWy188gfAbidE0CwdxlflUdOTMhQbsh9VBmYDmFAA8+5QbFTNfL5lAAAuPj7DNNLcLo3N/dkVR5P6/K3nl6Ia7xWTeXw+paLE5YR5oSyj6jyCS7JT/pF5Us3i6RmxA3lznvxMJPhA8ue+1UV/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ao6D1cfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB250C32781;
+	Tue, 25 Jun 2024 09:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308712;
-	bh=A/3mvs1Eh9u9z+E7vxEuvxkLFr8rizyje2DDHOQLHY8=;
+	s=korg; t=1719308745;
+	bh=DWE2Cn8GHZFBU+L9tXLLc8g4XRoVW9Ytv8U1H71tl8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3+tMQiEvzYaBQVdzdtHKgZGHT2z+QsUV8E1PIXsZJSaxnEPV+01ccYH57y/YAZdl
-	 5UI/lKlhoh2L3101lzKq2HM56u+TupayA6ZHAxWTGL1RVYdiXXUiX4DTGhUJ8oqKJh
-	 kb3MkSFJ3kUfKDnK/awyIE6FNBatAy8FWnSX0crw=
+	b=ao6D1cfGw5rSOUphQDiMWXSnBW4ROkCK0koR9vvrKUUU0DpyV0XJmkD+pi7NKqYE4
+	 hS7EyLNWzgqUnk9J3JFwCwc6KVR2IhtoJHZtVyzybbsuh2byHXFHcxBdnCf0wLbLez
+	 DAItl5juBB04cYYaQFwofvIj0kYZ3UVO4GeMSkZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.9 197/250] RDMA/mlx5: Ensure created mkeys always have a populated rb_key
-Date: Tue, 25 Jun 2024 11:32:35 +0200
-Message-ID: <20240625085555.612734075@linuxfoundation.org>
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Youzhong Yang <youzhong@gmail.com>
+Subject: [PATCH 6.9 198/250] ovl: fix encoding fid for lower only root
+Date: Tue, 25 Jun 2024 11:32:36 +0200
+Message-ID: <20240625085555.652654892@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -65,50 +65,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit 2e4c02fdecf2f6f55cefe48cb82d93fa4f8e2204 upstream.
+commit 004b8d1491b4bcbb7da1a3206d1e7e66822d47c6 upstream.
 
-cachable and mmkey.rb_key together are used by mlx5_revoke_mr() to put the
-MR/mkey back into the cache. In all cases they should be set correctly.
+ovl_check_encode_origin() should return a positive number if the lower
+dentry is to be encoded, zero otherwise.  If there's no upper layer at all
+(read-only overlay), then it obviously needs to return positive.
 
-alloc_cacheable_mr() was setting cachable but not filling rb_key,
-resulting in cache_ent_find_and_store() bucketing them all into a 0 length
-entry.
+This was broken by commit 16aac5ad1fa9 ("ovl: support encoding
+non-decodable file handles"), which didn't take the lower-only
+configuration into account.
 
-implicit_get_child_mr()/mlx5_ib_alloc_implicit_mr() failed to set cachable
-or rb_key at all, so the cache was not working at all for implicit ODP.
+Fix by checking the no-upper-layer case up-front.
 
-Cc: stable@vger.kernel.org
-Fixes: 8c1185fef68c ("RDMA/mlx5: Change check for cacheable mkeys")
-Fixes: dd1b913fb0d0 ("RDMA/mlx5: Cache all user cacheable mkeys on dereg MR flow")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/7778c02dfa0999a30d6746c79a23dd7140a9c729.1716900410.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reported-and-tested-by: Youzhong Yang <youzhong@gmail.com>
+Closes: https://lore.kernel.org/all/CADpNCvaBimi+zCYfRJHvCOhMih8OU0rmZkwLuh24MKKroRuT8Q@mail.gmail.com/
+Fixes: 16aac5ad1fa9 ("ovl: support encoding non-decodable file handles")
+Cc: <stable@vger.kernel.org> # v6.6
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/mr.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/overlayfs/export.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -718,6 +718,8 @@ static struct mlx5_ib_mr *_mlx5_mr_cache
- 	}
- 	mr->mmkey.cache_ent = ent;
- 	mr->mmkey.type = MLX5_MKEY_MR;
-+	mr->mmkey.rb_key = ent->rb_key;
-+	mr->mmkey.cacheable = true;
- 	init_waitqueue_head(&mr->mmkey.wait);
- 	return mr;
- }
-@@ -1168,7 +1170,6 @@ static struct mlx5_ib_mr *alloc_cacheabl
- 	mr->ibmr.pd = pd;
- 	mr->umem = umem;
- 	mr->page_shift = order_base_2(page_size);
--	mr->mmkey.cacheable = true;
- 	set_mr_fields(dev, mr, umem->length, access_flags, iova);
+--- a/fs/overlayfs/export.c
++++ b/fs/overlayfs/export.c
+@@ -181,6 +181,10 @@ static int ovl_check_encode_origin(struc
+ 	struct ovl_fs *ofs = OVL_FS(dentry->d_sb);
+ 	bool decodable = ofs->config.nfs_export;
  
- 	return mr;
++	/* No upper layer? */
++	if (!ovl_upper_mnt(ofs))
++		return 1;
++
+ 	/* Lower file handle for non-upper non-decodable */
+ 	if (!ovl_dentry_upper(dentry) && !decodable)
+ 		return 1;
+@@ -209,7 +213,7 @@ static int ovl_check_encode_origin(struc
+ 	 * ovl_connect_layer() will try to make origin's layer "connected" by
+ 	 * copying up a "connectable" ancestor.
+ 	 */
+-	if (d_is_dir(dentry) && ovl_upper_mnt(ofs) && decodable)
++	if (d_is_dir(dentry) && decodable)
+ 		return ovl_connect_layer(dentry);
+ 
+ 	/* Lower file handle for indexed and non-upper dir/non-dir */
 
 
 
