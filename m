@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-55356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 963DF91633C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 033359163DB
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43EA81F21DE0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 361CD1C224A0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C638D1494AF;
-	Tue, 25 Jun 2024 09:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4854D1482EA;
+	Tue, 25 Jun 2024 09:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUMkaGFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkWI6+iY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BA912EBEA;
-	Tue, 25 Jun 2024 09:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066731487C6;
+	Tue, 25 Jun 2024 09:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308662; cv=none; b=Xf+CrhSYpHlqFVz+tMGnVx7NKmWUlIuJDDkyxQQOx138mW1FDJXf2dACKGyh5eEf0+JLa7oBrnln0wILlqif71QNKqjvRx+Mwj6Y/onIek0AEthV2dYJpocsR0muAoTdToSW/ip0wBO+NxlE69tOuTMFw/ogaiez5eswBIHFKYU=
+	t=1719309069; cv=none; b=OOLYylvMO4tYfI4dddCLwKgXZVktPf05vQGcne6uPYrAA0Cwc+rgBVTDF2T86QUfRScCrTMiPMqBT0c4HcxWSv4O/I+Cw6QpeCTMHCrnnnQDe0Qk3dW5KZi6ZDU2qRqjMtnC354DIPI7E6ytW8B8K5mB/PjGCX331+F5DZUgrYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308662; c=relaxed/simple;
-	bh=6iT3MBQI8tcwxa4frv2xP7jNK4We6C3tHLiVrs919Ew=;
+	s=arc-20240116; t=1719309069; c=relaxed/simple;
+	bh=wg3RIaXy88+Du8Zbv4f/eDzPbykz/ChyAYkhlhXidwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OeI5gBdGJKzpgsVrNFbI0FhpRw0DpPRuGmlHoD8gSF8byBPG4LTkapcgTr92+HGmMAVQ9cKgl37d2TIevejbww23i8WneG6WPY8Kzlb8bdvnmAkRT2ehjnFKJ+TZHV8PGITYa7mWRmPcsug+9P7VCpeuKznvPp94z+UhgUab2dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUMkaGFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD45C32781;
-	Tue, 25 Jun 2024 09:44:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=juzyh/DY3smIDqfdfNH/Mzqv8pID9yKg3HewrOk8yKddNxWmb6ADC26o/vp9lUWtSzM/7QiMeozXmZ9HPG7YsQ6c2RUezb7ra1chd3iCsqVcnGtamRN7jsK+zaMLi8j/TBrlpk7YIzRhqyGkusWudh1cgwoCkUHw/K7vNBh1hwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkWI6+iY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817A5C32781;
+	Tue, 25 Jun 2024 09:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308662;
-	bh=6iT3MBQI8tcwxa4frv2xP7jNK4We6C3tHLiVrs919Ew=;
+	s=korg; t=1719309068;
+	bh=wg3RIaXy88+Du8Zbv4f/eDzPbykz/ChyAYkhlhXidwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TUMkaGFmGaBFAzoDEjB0MSv42CzvJMjPmqG67IhwsVZUdDo5HIHEtghrS0mhMksSH
-	 yzcpMuNkyn9mq3zUobnDhBR9Maa+HpmjHlJQhPrmOMuotNtYy8F8cTScabWdEqYbYo
-	 9u8Hal37LlvtM5eNUnfFywBsGDa3rjnokEVsJbLY=
+	b=EkWI6+iYklnaESgVUmu/Q1ij4cvnQD+UFo03wX1+GmjWISgTfhWz/uSPrVikhsm0L
+	 zkKOk133aGbIxyBlg71TUZQaPs04HG3lZM/sCGfV1B97OLMLzECoXqw6DD+LPIDOLC
+	 PpzaOERRQocLb5Hz7NeEZd5v4PNDxaQdRENLjAKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Light=20Hsieh=20 ?= <Light.Hsieh@mediatek.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 167/250] spi: Fix SPI slave probe failure
+Subject: [PATCH 6.6 053/192] f2fs: dont set RO when shutting down f2fs
 Date: Tue, 25 Jun 2024 11:32:05 +0200
-Message-ID: <20240625085554.466309424@linuxfoundation.org>
+Message-ID: <20240625085539.206090107@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 2c1b7bbe253986619fa5623a13055316e730e746 ]
+[ Upstream commit 3bdb7f161697e2d5123b89fe1778ef17a44858e7 ]
 
-While adding a SPI device, the SPI core ensures that multiple logical CS
-doesn't map to the same physical CS. For example, spi->chip_select[0] !=
-spi->chip_select[1] and so forth. However, unlike the SPI master, the SPI
-slave doesn't have the list of chip selects, this leads to probe failure
-when the SPI controller is configured as slave. Update the
-__spi_add_device() function to perform this check only if the SPI
-controller is configured as master.
+Shutdown does not check the error of thaw_super due to readonly, which
+causes a deadlock like below.
 
-Fixes: 4d8ff6b0991d ("spi: Add multi-cs memories support in SPI core")
-Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Link: https://msgid.link/r/20240617153052.26636-1-amit.kumar-mahapatra@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+f2fs_ioc_shutdown(F2FS_GOING_DOWN_FULLSYNC)        issue_discard_thread
+ - bdev_freeze
+  - freeze_super
+ - f2fs_stop_checkpoint()
+  - f2fs_handle_critical_error                     - sb_start_write
+    - set RO                                         - waiting
+ - bdev_thaw
+  - thaw_super_locked
+    - return -EINVAL, if sb_rdonly()
+ - f2fs_stop_discard_thread
+  -> wait for kthread_stop(discard_thread);
+
+Reported-by: "Light Hsieh (謝明燈)" <Light.Hsieh@mediatek.com>
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/f2fs/super.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 2cea7aeb10f95..c349d6012625a 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -685,10 +685,12 @@ static int __spi_add_device(struct spi_device *spi)
- 	 * Make sure that multiple logical CS doesn't map to the same physical CS.
- 	 * For example, spi->chip_select[0] != spi->chip_select[1] and so on.
- 	 */
--	for (idx = 0; idx < SPI_CS_CNT_MAX; idx++) {
--		status = spi_dev_check_cs(dev, spi, idx, spi, idx + 1);
--		if (status)
--			return status;
-+	if (!spi_controller_is_target(ctlr)) {
-+		for (idx = 0; idx < SPI_CS_CNT_MAX; idx++) {
-+			status = spi_dev_check_cs(dev, spi, idx, spi, idx + 1);
-+			if (status)
-+				return status;
-+		}
- 	}
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 43424ca4f26c5..ce50d2253dd80 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4107,9 +4107,15 @@ void f2fs_handle_critical_error(struct f2fs_sb_info *sbi, unsigned char reason,
+ 	if (shutdown)
+ 		set_sbi_flag(sbi, SBI_IS_SHUTDOWN);
  
- 	/* Set the bus ID string */
+-	/* continue filesystem operators if errors=continue */
+-	if (continue_fs || f2fs_readonly(sb))
++	/*
++	 * Continue filesystem operators if errors=continue. Should not set
++	 * RO by shutdown, since RO bypasses thaw_super which can hang the
++	 * system.
++	 */
++	if (continue_fs || f2fs_readonly(sb) || shutdown) {
++		f2fs_warn(sbi, "Stopped filesystem due to reason: %d", reason);
+ 		return;
++	}
+ 
+ 	f2fs_warn(sbi, "Remounting filesystem read-only");
+ 	/*
 -- 
 2.43.0
 
