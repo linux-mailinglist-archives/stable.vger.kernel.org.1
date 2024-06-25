@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842D9916447
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C7C89164C5
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B65E91C22661
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 011ACB2948C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EDA14A4E1;
-	Tue, 25 Jun 2024 09:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E8E148319;
+	Tue, 25 Jun 2024 10:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkeIr0KQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iysNxlx2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1E4149E17;
-	Tue, 25 Jun 2024 09:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500BB146592;
+	Tue, 25 Jun 2024 10:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309332; cv=none; b=KLXQApnsf0VhYEgf0UCQLHVHssb52YY8UXzDUkMcJhCVtFRWycFaWIdEkYIjdOrz7MuIK2s/BrPaAZqs45BQOHfZkKK9fw89iSAm1+cTlysznAbLlWCTDrVxRyQBRpRSDkUAJrx0HoKwFE9EqhbKFzWuZ/iZ8aMY//xvx+F1Mbg=
+	t=1719309659; cv=none; b=LXdXKIeMnNLgAPwTyq6Jgaau2PKmgLAg370X2j9vFhXC0t8j0W518tVSQazc9REwqlBLobatwyU2WYaSg6H9dYGbgpdE5Bo/p9/kl68tsUUM+hfgoGBfOzOS6VnT+Ru0+tn/rytYmICYePJEL+du/+AjIqvIE+tlYzHrWhEqAPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309332; c=relaxed/simple;
-	bh=G0MRyG2uxceceOLFyEJbAzCYeeqrnScP0k8ThtL/w7g=;
+	s=arc-20240116; t=1719309659; c=relaxed/simple;
+	bh=uaMRtqSqJkIfWcQ9URM55wRy+DCZaPrlELE1qP40cvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlnOPRE5tvI5ZvUllTyakZuTuYsxqSp/riEEnfLbJmTbCykLzHvWTTKIo7VQ3lRBgoOHbY9Ndfg1Th51fh8kBnWl0KltPvf1Nmsk/aNceass/JSK8XZK2Yc+rkW1dcP/ZCDvJDJ1frweDMB1mx/BP1KUQ0wKvMqSmNKH3EkabfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TkeIr0KQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26824C32789;
-	Tue, 25 Jun 2024 09:55:31 +0000 (UTC)
+	 MIME-Version; b=N1hZUGrhhYw2vV+kFUeaG0W1gaO6DAuB6DI0LypMtloEQhDwEUt+qb2qRjVD+rXw8nq2YuE5+5CnnigdasdFaLNNDmLPhbyzqTEt6xTtsWUEGCB/kj/tuHeY1liUFPiEqXhQdPMYCL+HC5ETRAxF+LMubujZUFP8ir74lxy6EAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iysNxlx2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C947FC32781;
+	Tue, 25 Jun 2024 10:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309332;
-	bh=G0MRyG2uxceceOLFyEJbAzCYeeqrnScP0k8ThtL/w7g=;
+	s=korg; t=1719309659;
+	bh=uaMRtqSqJkIfWcQ9URM55wRy+DCZaPrlELE1qP40cvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TkeIr0KQ+Ya68oz323dr4rxUpO9H/M/07xWRNZBovOPnefpxUITw7jLkIy0nUI00Z
-	 Erd9bB6h+6VJ0zpbPip9xF1h5iLiKcL9gdpLfZkA6yj7rDvfgbXkuUDz5HNPmPHvjJ
-	 AIeeBJJp8w6Ca38xxJYclqYDV0s8Na2zHTKKi6jU=
+	b=iysNxlx2iv5z1Lj3pJm8meI7AnWF+A7p1qK2MVLJ5kpvIV3n4wPY4Mu9XZ+GaeFGD
+	 6KjIh649qegoUZPuzup5kYD0KAiZ4AIpvjVYwJ1jZo3jRz2SV1CVdEXAzyRCuPNmxT
+	 kBXVK7JWb8skEdKNzs8wVlOYqiTRsIy9NLLmTA1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/192] wifi: rtl8xxxu: enable MFP support with security flag of RX descriptor
+Subject: [PATCH 6.1 090/131] firmware: psci: Fix return value from psci_system_suspend()
 Date: Tue, 25 Jun 2024 11:34:05 +0200
-Message-ID: <20240625085543.800413967@linuxfoundation.org>
+Message-ID: <20240625085529.358822055@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kaistra <martin.kaistra@linutronix.de>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit cbfbb4ddbc8503478e0a138f9a31f61686cc5f11 ]
+[ Upstream commit e7c3696d4692e8046d25f6e63f983e934e12f2c5 ]
 
-In order to connect to networks which require 802.11w, add the
-MFP_CAPABLE flag and let mac80211 do the actual crypto in software.
+Currently we return the value from invoke_psci_fn() directly as return
+value from psci_system_suspend(). It is wrong to send the PSCI interface
+return value directly. psci_to_linux_errno() provide the mapping from
+PSCI return value to the one that can be returned to the callers within
+the kernel.
 
-When a robust management frame is received, rx_dec->swdec is not set,
-even though the HW did not decrypt it. Extend the check and don't set
-RX_FLAG_DECRYPTED for these frames in order to use SW decryption.
+Use psci_to_linux_errno() to convert and return the correct value from
+psci_system_suspend().
 
-Use the security flag in the RX descriptor for this purpose, like it is
-done in the rtw88 driver.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://msgid.link/20240418071813.1883174-3-martin.kaistra@linutronix.de
+Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/20240515095528.1949992-1-sudeep.holla@arm.com
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h      | 9 +++++++++
- drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c | 7 +++++--
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ drivers/firmware/psci/psci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-index 4695fb4e2d2db..af541e52e683b 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu.h
-@@ -121,6 +121,15 @@ enum rtl8xxxu_rx_type {
- 	RX_TYPE_ERROR = -1
- };
+diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
+index f78249fe2512a..a44ba09e49d9c 100644
+--- a/drivers/firmware/psci/psci.c
++++ b/drivers/firmware/psci/psci.c
+@@ -485,10 +485,12 @@ int psci_cpu_suspend_enter(u32 state)
  
-+enum rtl8xxxu_rx_desc_enc {
-+	RX_DESC_ENC_NONE	= 0,
-+	RX_DESC_ENC_WEP40	= 1,
-+	RX_DESC_ENC_TKIP_WO_MIC	= 2,
-+	RX_DESC_ENC_TKIP_MIC	= 3,
-+	RX_DESC_ENC_AES		= 4,
-+	RX_DESC_ENC_WEP104	= 5,
-+};
-+
- struct rtl8xxxu_rxdesc16 {
- #ifdef __LITTLE_ENDIAN
- 	u32 pktlen:14;
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-index 5422f8da29e61..6e47dde938909 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
-@@ -6319,7 +6319,8 @@ int rtl8xxxu_parse_rxdesc16(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
+ static int psci_system_suspend(unsigned long unused)
+ {
++	int err;
+ 	phys_addr_t pa_cpu_resume = __pa_symbol(cpu_resume);
  
--			if (!rx_desc->swdec)
-+			if (!rx_desc->swdec &&
-+			    rx_desc->security != RX_DESC_ENC_NONE)
- 				rx_status->flag |= RX_FLAG_DECRYPTED;
- 			if (rx_desc->crc32)
- 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-@@ -6419,7 +6420,8 @@ int rtl8xxxu_parse_rxdesc24(struct rtl8xxxu_priv *priv, struct sk_buff *skb)
- 			rx_status->mactime = rx_desc->tsfl;
- 			rx_status->flag |= RX_FLAG_MACTIME_START;
+-	return invoke_psci_fn(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND),
++	err = invoke_psci_fn(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND),
+ 			      pa_cpu_resume, 0, 0);
++	return psci_to_linux_errno(err);
+ }
  
--			if (!rx_desc->swdec)
-+			if (!rx_desc->swdec &&
-+			    rx_desc->security != RX_DESC_ENC_NONE)
- 				rx_status->flag |= RX_FLAG_DECRYPTED;
- 			if (rx_desc->crc32)
- 				rx_status->flag |= RX_FLAG_FAILED_FCS_CRC;
-@@ -7654,6 +7656,7 @@ static int rtl8xxxu_probe(struct usb_interface *interface,
- 	ieee80211_hw_set(hw, HAS_RATE_CONTROL);
- 	ieee80211_hw_set(hw, SUPPORT_FAST_XMIT);
- 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
-+	ieee80211_hw_set(hw, MFP_CAPABLE);
- 
- 	wiphy_ext_feature_set(hw->wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
- 
+ static int psci_system_suspend_enter(suspend_state_t state)
 -- 
 2.43.0
 
