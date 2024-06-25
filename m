@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-55665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9B49164A4
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F64A916425
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F88228795C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF9BB2829FD
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DF9149E0A;
-	Tue, 25 Jun 2024 09:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7E014A091;
+	Tue, 25 Jun 2024 09:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1LuE8rA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bf/f4mQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6CC1465A8;
-	Tue, 25 Jun 2024 09:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AACB1465A8;
+	Tue, 25 Jun 2024 09:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309577; cv=none; b=Z3hwChBTSJ9JxuFBtxkpMZNE43JodWB3Umedp+J9HshUP5+dhniHvudTPAbokbX2b7QLFl8X9LcJSmjBkv+PWfprZG4sB43kUG+BhTkuuPNsOqSPt+6WUPqMLlpJbjOQtptKuOjQfWYHJTlSHmoFT498yUbiN7BT9ok+flF6rXE=
+	t=1719309251; cv=none; b=gEj0eNjLvm41FO4nbrqvaK0kd+ATXwiHZ/+F4ib3mgzA+V6+1I11dTHguTwdIW8LdzW/M/T3miFdAM51vGOOVw6KZwC2xLwTK7ROl0/cKyAp8DK6YgMN6Vu36TP/0zz7RiwiMVzIIdewvHyhS5gIYKalPp9y2LBBiNH438fh83E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309577; c=relaxed/simple;
-	bh=PuI8Ukbey6/2GfnXKb+siKSp9omW2WvwZsQsnJ1AqhI=;
+	s=arc-20240116; t=1719309251; c=relaxed/simple;
+	bh=i7zF0XPVb5aRNw4ZMC6pQ3Ew8kGWidYTOvHKRcPShXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uRcQfcyJNYEtVINuL2xwBONFsxwB8+blJkWLGOv+44oIzAqt4/z0ekofQ3sDPqL5ZfM7MEN/SOPnvQEIwkJQZUpy2NVWhqtKbfxY8N0YmYjlZfAbaeKbua5N71o0fBmT96+wh0g0ZUtDp5QGGbR7+lRHx2mYCJKo81GSWywin7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1LuE8rA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602D8C32789;
-	Tue, 25 Jun 2024 09:59:36 +0000 (UTC)
+	 MIME-Version; b=AOHo6TK2Dqb2iE7sZVGWPnQ8slyWExpXkZ0rPyz5WMZ2LcbivzevamZGowDmcoeIQUZFCxrBBTm9cEYg/ZAFDpt1Dx3LSMpmfRouR5KIqwrJE0fEmSo+psletKVp5zTcIXr5RiyshlIONIMgVJpConnGDRIR5g1xFZ71GeQVz0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bf/f4mQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C14C32781;
+	Tue, 25 Jun 2024 09:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309576;
-	bh=PuI8Ukbey6/2GfnXKb+siKSp9omW2WvwZsQsnJ1AqhI=;
+	s=korg; t=1719309250;
+	bh=i7zF0XPVb5aRNw4ZMC6pQ3Ew8kGWidYTOvHKRcPShXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y1LuE8rA7O5gRfWqYswBGrpawtvDW3wl3zPTvf1RhSoETLw3DDQfKP7jtILXzISgF
-	 gNyV5euM7n1OBjdwp3tqv7tsJ2Wae4PXTA3ibkCW6m4SZpcwNl2INYNHrEIKww6HCy
-	 a/0iHKCXp0UgZ7kRq1fP7Yugyig+S5DMD9CA5EtI=
+	b=Bf/f4mQMTHR2vPkT8QR3nJQoIIwu8YQttBhhZmsFgXCWL3Ev0CSK9x4eyNRSQOgU7
+	 oYa9APFbntbLQq2XpnfO3MQ8xObfySxjN+Pc3ECyrBE4hEnC6dB+d8xbeCTNgNR7Fh
+	 BWxFNAw20/L3ZPWUGajqm5TK2Pl9vZ4BjQo+soK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Raju Lakkaraju <Raju.Lakkaraju@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/131] net: lan743x: Support WOL at both the PHY and MAC appropriately
+	stable@kernel.org,
+	Honggang LI <honggangli@163.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Li Zhijian <lizhijian@fujitsu.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.6 145/192] RDMA/rxe: Fix data copy for IB_SEND_INLINE
 Date: Tue, 25 Jun 2024 11:33:37 +0200
-Message-ID: <20240625085528.304017772@linuxfoundation.org>
+Message-ID: <20240625085542.724005835@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,169 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
+From: Honggang LI <honggangli@163.com>
 
-[ Upstream commit 8c248cd836014339498486f14f435c0e344183a7 ]
+commit 03fa18a992d5626fd7bf3557a52e826bf8b326b3 upstream.
 
-Prevent options not supported by the PHY from being requested to it by the MAC
-Whenever a WOL option is supported by both, the PHY is given priority
-since that usually leads to better power savings.
+For RDMA Send and Write with IB_SEND_INLINE, the memory buffers
+specified in sge list will be placed inline in the Send Request.
 
-Fixes: e9e13b6adc33 ("lan743x: fix for potential NULL pointer dereference with bare card")
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The data should be copied by CPU from the virtual addresses of
+corresponding sge list DMA addresses.
+
+Cc: stable@kernel.org
+Fixes: 8d7c7c0eeb74 ("RDMA: Add ib_virt_dma_to_page()")
+Signed-off-by: Honggang LI <honggangli@163.com>
+Link: https://lore.kernel.org/r/20240516095052.542767-1-honggangli@163.com
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/microchip/lan743x_ethtool.c  | 44 +++++++++++++++++--
- drivers/net/ethernet/microchip/lan743x_main.c | 18 ++++++--
- drivers/net/ethernet/microchip/lan743x_main.h |  4 ++
- 3 files changed, 58 insertions(+), 8 deletions(-)
+ drivers/infiniband/sw/rxe/rxe_verbs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_ethtool.c b/drivers/net/ethernet/microchip/lan743x_ethtool.c
-index c739d60ee17d5..e47a579410fbb 100644
---- a/drivers/net/ethernet/microchip/lan743x_ethtool.c
-+++ b/drivers/net/ethernet/microchip/lan743x_ethtool.c
-@@ -1146,8 +1146,12 @@ static void lan743x_ethtool_get_wol(struct net_device *netdev,
- 	if (netdev->phydev)
- 		phy_ethtool_get_wol(netdev->phydev, wol);
+diff --git a/drivers/infiniband/sw/rxe/rxe_verbs.c b/drivers/infiniband/sw/rxe/rxe_verbs.c
+index c7d4d8ab5a09..de6238ee4379 100644
+--- a/drivers/infiniband/sw/rxe/rxe_verbs.c
++++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
+@@ -812,7 +812,7 @@ static void copy_inline_data_to_wqe(struct rxe_send_wqe *wqe,
+ 	int i;
  
--	wol->supported |= WAKE_BCAST | WAKE_UCAST | WAKE_MCAST |
--		WAKE_MAGIC | WAKE_PHY | WAKE_ARP;
-+	if (wol->supported != adapter->phy_wol_supported)
-+		netif_warn(adapter, drv, adapter->netdev,
-+			   "PHY changed its supported WOL! old=%x, new=%x\n",
-+			   adapter->phy_wol_supported, wol->supported);
-+
-+	wol->supported |= MAC_SUPPORTED_WAKES;
- 
- 	if (adapter->is_pci11x1x)
- 		wol->supported |= WAKE_MAGICSECURE;
-@@ -1162,7 +1166,39 @@ static int lan743x_ethtool_set_wol(struct net_device *netdev,
- {
- 	struct lan743x_adapter *adapter = netdev_priv(netdev);
- 
-+	/* WAKE_MAGICSEGURE is a modifier of and only valid together with
-+	 * WAKE_MAGIC
-+	 */
-+	if ((wol->wolopts & WAKE_MAGICSECURE) && !(wol->wolopts & WAKE_MAGIC))
-+		return -EINVAL;
-+
-+	if (netdev->phydev) {
-+		struct ethtool_wolinfo phy_wol;
-+		int ret;
-+
-+		phy_wol.wolopts = wol->wolopts & adapter->phy_wol_supported;
-+
-+		/* If WAKE_MAGICSECURE was requested, filter out WAKE_MAGIC
-+		 * for PHYs that do not support WAKE_MAGICSECURE
-+		 */
-+		if (wol->wolopts & WAKE_MAGICSECURE &&
-+		    !(adapter->phy_wol_supported & WAKE_MAGICSECURE))
-+			phy_wol.wolopts &= ~WAKE_MAGIC;
-+
-+		ret = phy_ethtool_set_wol(netdev->phydev, &phy_wol);
-+		if (ret && (ret != -EOPNOTSUPP))
-+			return ret;
-+
-+		if (ret == -EOPNOTSUPP)
-+			adapter->phy_wolopts = 0;
-+		else
-+			adapter->phy_wolopts = phy_wol.wolopts;
-+	} else {
-+		adapter->phy_wolopts = 0;
-+	}
-+
- 	adapter->wolopts = 0;
-+	wol->wolopts &= ~adapter->phy_wolopts;
- 	if (wol->wolopts & WAKE_UCAST)
- 		adapter->wolopts |= WAKE_UCAST;
- 	if (wol->wolopts & WAKE_MCAST)
-@@ -1183,10 +1219,10 @@ static int lan743x_ethtool_set_wol(struct net_device *netdev,
- 		memset(adapter->sopass, 0, sizeof(u8) * SOPASS_MAX);
+ 	for (i = 0; i < ibwr->num_sge; i++, sge++) {
+-		memcpy(p, ib_virt_dma_to_page(sge->addr), sge->length);
++		memcpy(p, ib_virt_dma_to_ptr(sge->addr), sge->length);
+ 		p += sge->length;
  	}
- 
-+	wol->wolopts = adapter->wolopts | adapter->phy_wolopts;
- 	device_set_wakeup_enable(&adapter->pdev->dev, (bool)wol->wolopts);
- 
--	return netdev->phydev ? phy_ethtool_set_wol(netdev->phydev, wol)
--			: -ENETDOWN;
-+	return 0;
  }
- #endif /* CONFIG_PM */
- 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index 39df1beb27cff..0b2eaed110720 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -3056,6 +3056,17 @@ static int lan743x_netdev_open(struct net_device *netdev)
- 		if (ret)
- 			goto close_tx;
- 	}
-+
-+#ifdef CONFIG_PM
-+	if (adapter->netdev->phydev) {
-+		struct ethtool_wolinfo wol = { .cmd = ETHTOOL_GWOL };
-+
-+		phy_ethtool_get_wol(netdev->phydev, &wol);
-+		adapter->phy_wol_supported = wol.supported;
-+		adapter->phy_wolopts = wol.wolopts;
-+	}
-+#endif
-+
- 	return 0;
- 
- close_tx:
-@@ -3525,10 +3536,9 @@ static void lan743x_pm_set_wol(struct lan743x_adapter *adapter)
- 
- 	pmtctl |= PMT_CTL_ETH_PHY_D3_COLD_OVR_ | PMT_CTL_ETH_PHY_D3_OVR_;
- 
--	if (adapter->wolopts & WAKE_PHY) {
--		pmtctl |= PMT_CTL_ETH_PHY_EDPD_PLL_CTL_;
-+	if (adapter->phy_wolopts)
- 		pmtctl |= PMT_CTL_ETH_PHY_WAKE_EN_;
--	}
-+
- 	if (adapter->wolopts & WAKE_MAGIC) {
- 		wucsr |= MAC_WUCSR_MPEN_;
- 		macrx |= MAC_RX_RXEN_;
-@@ -3624,7 +3634,7 @@ static int lan743x_pm_suspend(struct device *dev)
- 	lan743x_csr_write(adapter, MAC_WUCSR2, 0);
- 	lan743x_csr_write(adapter, MAC_WK_SRC, 0xFFFFFFFF);
- 
--	if (adapter->wolopts)
-+	if (adapter->wolopts || adapter->phy_wolopts)
- 		lan743x_pm_set_wol(adapter);
- 
- 	if (adapter->is_pci11x1x) {
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
-index e7df74a3c79ec..92a5660b88202 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.h
-+++ b/drivers/net/ethernet/microchip/lan743x_main.h
-@@ -1034,6 +1034,8 @@ enum lan743x_sgmii_lsd {
- 	LINK_2500_SLAVE
- };
- 
-+#define MAC_SUPPORTED_WAKES  (WAKE_BCAST | WAKE_UCAST | WAKE_MCAST | \
-+			      WAKE_MAGIC | WAKE_ARP)
- struct lan743x_adapter {
- 	struct net_device       *netdev;
- 	struct mii_bus		*mdiobus;
-@@ -1041,6 +1043,8 @@ struct lan743x_adapter {
- #ifdef CONFIG_PM
- 	u32			wolopts;
- 	u8			sopass[SOPASS_MAX];
-+	u32			phy_wolopts;
-+	u32			phy_wol_supported;
- #endif
- 	struct pci_dev		*pdev;
- 	struct lan743x_csr      csr;
 -- 
-2.43.0
+2.45.2
 
 
 
