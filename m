@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-55387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C246691635D
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FDEE91642F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BD84B25E98
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CBF7282786
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15DF147C96;
-	Tue, 25 Jun 2024 09:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E136514A0B9;
+	Tue, 25 Jun 2024 09:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CO9KCQ8N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHG/nLkt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FE71465A8;
-	Tue, 25 Jun 2024 09:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAB014A0B6;
+	Tue, 25 Jun 2024 09:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308754; cv=none; b=mDDeRE138sSJiIf7WvdkBo7P2a+42CMPaS53OC19edOLsakIIqqjN1bK4Srb3XQmCi1CzkFR/KNYx99QZhu1DCCc+WLN6K9tgrxaU/CGk5xIeuYo/Urz5XCNMRZ+5V48ePM/te6XEmInzkd1AKo47i38T6oUc64KvZ8pmBLFVyA=
+	t=1719309274; cv=none; b=bWqzqSVn0XaqNTwBY2a+mrhwAsUM4TH9zlLnoLKbPkf1nc995VpiUm+MRN17qnMHMP7r8CQ4eBgjcmuCg58g9UI9fK+xTwzf1Y/FRW5VsJet3UdztkmgHo19eMmCnLZXH7tLqZelyBlt6ODaucuxalTThOi06H+qUxkh9R9kT88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308754; c=relaxed/simple;
-	bh=NHc5rXdZdjA5KVThV3FRqnsqNqGpSrufy0WS9EK01/0=;
+	s=arc-20240116; t=1719309274; c=relaxed/simple;
+	bh=LjHlNsNYqWx6MNrHhYG+zD6ihYo4w2ONlUbnTFSbw7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b6w5Nz4yhTtI+dsFtIDtrSicfsc7rBdrwrqaIHIhii+vwaK0NbpeQmJKQYgmHi2AsEg3raPyhYu8NydnFhYNx7eu0AlZ375NtT5GhdxwVyAbUBqkYmE1EMECsjXNkiBfni38AVoZvRcEbK8X0sK+2ow4KlqT9R0J8TwHw2eIf7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CO9KCQ8N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AFFC32781;
-	Tue, 25 Jun 2024 09:45:53 +0000 (UTC)
+	 MIME-Version; b=MgGctH+2uWmP6YZaIz6XtHqiMPWPTJaFW7zjFfg6utTsXRtN/TJDKhycwbpntiLiDn6cjyZPQfVCRBQZs8xoZOtqb+mNtlRNTQa3tfOKs/P3iAeYFFNbl8QyDa2RYKCdApPtpwHNiDY29/sKMU6fj90iRvm0V3JbVmSKFbrFTD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHG/nLkt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24245C32781;
+	Tue, 25 Jun 2024 09:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308754;
-	bh=NHc5rXdZdjA5KVThV3FRqnsqNqGpSrufy0WS9EK01/0=;
+	s=korg; t=1719309274;
+	bh=LjHlNsNYqWx6MNrHhYG+zD6ihYo4w2ONlUbnTFSbw7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CO9KCQ8NpVieVCR/y9U5UcWCQzyUtyWr4LBOhnI0eoQ9V7MqzgZJwKqprHJFAL2Zv
-	 HLBx+aSQWeKrUpDaU0JyCM3brX+uypmqfoa3R2KLJrB8+NlnQYg+RAeArVW/u2So+u
-	 cjVFLPTyWXuj1bw26D9Y72rvgLNVse/BqBz6Lv64=
+	b=MHG/nLktj8ERRPDHLE5eqQWxqkgG0dUbJdSj9syq6HIS2qZyNzfMgvvuRnCI5tIvB
+	 FebeqMtp2ZiRZPByl6hoqH8Ug0EdLeJ9jUkOEf0s12Box91zD3xqenvSoEarUduJRk
+	 W2vkCrUAZUprpenpVY4qh/U2W/kXCIFriQImCPEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 227/250] mm/page_table_check: fix crash on ZONE_DEVICE
+	Nikita Shubin <n.shubin@yadro.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 113/192] dmaengine: ioatdma: Fix missing kmem_cache_destroy()
 Date: Tue, 25 Jun 2024 11:33:05 +0200
-Message-ID: <20240625085556.764183767@linuxfoundation.org>
+Message-ID: <20240625085541.511513300@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Xu <peterx@redhat.com>
+From: Nikita Shubin <n.shubin@yadro.com>
 
-commit 8bb592c2eca8fd2bc06db7d80b38da18da4a2f43 upstream.
+[ Upstream commit 5422145d0b749ad554ada772133b9b20f9fb0ec8 ]
 
-Not all pages may apply to pgtable check.  One example is ZONE_DEVICE
-pages: they map PFNs directly, and they don't allocate page_ext at all
-even if there's struct page around.  One may reference
-devm_memremap_pages().
+Fix missing kmem_cache_destroy() for ioat_sed_cache in
+ioat_exit_module().
 
-When both ZONE_DEVICE and page-table-check enabled, then try to map some
-dax memories, one can trigger kernel bug constantly now when the kernel
-was trying to inject some pfn maps on the dax device:
+Noticed via:
 
- kernel BUG at mm/page_table_check.c:55!
+```
+modprobe ioatdma
+rmmod ioatdma
+modprobe ioatdma
+debugfs: Directory 'ioat_sed_ent' with parent 'slab' already present!
+```
 
-While it's pretty legal to use set_pxx_at() for ZONE_DEVICE pages for page
-fault resolutions, skip all the checks if page_ext doesn't even exist in
-pgtable checker, which applies to ZONE_DEVICE but maybe more.
-
-Link: https://lkml.kernel.org/r/20240605212146.994486-1-peterx@redhat.com
-Fixes: df4e817b7108 ("mm: page table check")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c0f28ce66ecf ("dmaengine: ioatdma: move all the init routines")
+Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20240514-ioatdma_fixes-v1-1-2776a0913254@yadro.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_table_check.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/dma/ioat/init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/page_table_check.c
-+++ b/mm/page_table_check.c
-@@ -71,6 +71,9 @@ static void page_table_check_clear(unsig
- 	page = pfn_to_page(pfn);
- 	page_ext = page_ext_get(page);
- 
-+	if (!page_ext)
-+		return;
-+
- 	BUG_ON(PageSlab(page));
- 	anon = PageAnon(page);
- 
-@@ -108,6 +111,9 @@ static void page_table_check_set(unsigne
- 	page = pfn_to_page(pfn);
- 	page_ext = page_ext_get(page);
- 
-+	if (!page_ext)
-+		return;
-+
- 	BUG_ON(PageSlab(page));
- 	anon = PageAnon(page);
- 
-@@ -138,7 +144,10 @@ void __page_table_check_zero(struct page
- 	BUG_ON(PageSlab(page));
- 
- 	page_ext = page_ext_get(page);
--	BUG_ON(!page_ext);
-+
-+	if (!page_ext)
-+		return;
-+
- 	for (i = 0; i < (1ul << order); i++) {
- 		struct page_table_check *ptc = get_page_table_check(page_ext);
- 
+diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
+index cf688b0c8444c..e8f45a7fded43 100644
+--- a/drivers/dma/ioat/init.c
++++ b/drivers/dma/ioat/init.c
+@@ -1449,6 +1449,7 @@ module_init(ioat_init_module);
+ static void __exit ioat_exit_module(void)
+ {
+ 	pci_unregister_driver(&ioat_pci_driver);
++	kmem_cache_destroy(ioat_sed_cache);
+ 	kmem_cache_destroy(ioat_cache);
+ }
+ module_exit(ioat_exit_module);
+-- 
+2.43.0
+
 
 
 
