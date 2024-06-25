@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-55125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B53915D77
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 05:52:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A3A915D78
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 05:52:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FFA31F223F2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 03:52:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E2551C20F37
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 03:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24F160263;
-	Tue, 25 Jun 2024 03:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2811369B8;
+	Tue, 25 Jun 2024 03:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TVzcXQ4m"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="dgK5dFCz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC9A38F9A;
-	Tue, 25 Jun 2024 03:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CB538F9A;
+	Tue, 25 Jun 2024 03:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719287554; cv=none; b=XNYp+bEZ11B/2EgFUmuhPXmfA+ARFa+E4A7H9bx4WQqMINvN2RELzhTuvS1dQhJC30NcmD0mbHWBaupkxDfjwSeGo6+2AtgBiEDwMQeUfsakKo7AFqVTWlUQkF24LNRGP2nLT0zNYbYxpiW952AdmlQUxJBhqriM63Gs6Z3U0FM=
+	t=1719287559; cv=none; b=tBZEpUDqj1g5ee4EVkN4YpGWlGDfQE+1xs2dA7AdonAFr1ZNjQEv2L1hWEKdR7ROVRTbz9zCL3eqlNFTL2bPe65iKvLc9PPiruew4GUQkCpUYeGFGCDGH1RP2rAZ+CbAm2E0/Jo3ehT1mBgNND4EfGJNQGOQ1oCQEP31WjY72MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719287554; c=relaxed/simple;
-	bh=gmJhCOaLtdMoS7UEKktYKxUbfT1vu8xacMjYPDRPukk=;
-	h=Date:To:From:Subject:Message-Id; b=u8dQX6XKZ7h2d1tLPYNGk3WRHMeK3++FGiDZTckaDXMVBh1lgjIHg9//SiLxILSUoL7jU1SwIv6nOrUP4GHellGpTZO9A7U9RkjZ2wDH9/RRTHD+nedPJIe8cqw0SKl0gFeQxwW5bAWGgIwS2dEqFiKIxwXq2LzckcG9qdT8rf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TVzcXQ4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7511C32782;
-	Tue, 25 Jun 2024 03:52:33 +0000 (UTC)
+	s=arc-20240116; t=1719287559; c=relaxed/simple;
+	bh=FUbMS3OyacUdeYu3I/o4by/lbi0VRe4UA+QVM4sWilE=;
+	h=Date:To:From:Subject:Message-Id; b=ljWclOBIbb78r2qJolcMnKVkBR1tJ/lC2YwIscL4CMFJoo/8a+AljcwnMbqpAD5J8EdXc7XSSjCpJxX9XaI5mHz1CxEyAAkHmns9fkAgbfrBWaXK/WvAC3k4GqTJIlBeC70sItnKFFJeCQa2vMe8oxRFWrrQJk5Rg/5zDv2Cymc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=dgK5dFCz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD68C32782;
+	Tue, 25 Jun 2024 03:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1719287553;
-	bh=gmJhCOaLtdMoS7UEKktYKxUbfT1vu8xacMjYPDRPukk=;
+	s=korg; t=1719287558;
+	bh=FUbMS3OyacUdeYu3I/o4by/lbi0VRe4UA+QVM4sWilE=;
 	h=Date:To:From:Subject:From;
-	b=TVzcXQ4mZBzc3yBtD6Hb/MBvfx48CXu/AAWboRkQGJBvqGqzIgz3HUsR2nyTerDXa
-	 hBsuqN1E41YA+LaFWUEorb3SVpQJVDW/lSR7yyUscDv52x/+PBbBD0PBzvQ5IxwOPs
-	 eqWVw8rWZvudugJneZmvdnV20GeksgZdmSSTiEgc=
-Date: Mon, 24 Jun 2024 20:52:33 -0700
-To: mm-commits@vger.kernel.org,urezki@gmail.com,tglx@linutronix.de,stable@vger.kernel.org,lstoakes@gmail.com,hch@infradead.org,hailong.liu@oppo.com,bhe@redhat.com,zhaoyang.huang@unisoc.com,akpm@linux-foundation.org
+	b=dgK5dFCzRMRIYy0LOJ8n0lBvT7Sryh9bmIXo63IcMIF+E4Q0mXtyDkWMN2iM62TEL
+	 qQvRXiY9H8cLiU9bXbV6DH31UxMH/BsKOVKRXWA1tNCEGne08V1br15Y87XnlBa98B
+	 xucFPZA/7HN7bqrUtd18aPl0u0BkpDK7mG/cTO1Y=
+Date: Mon, 24 Jun 2024 20:52:38 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,spender@grsecurity.net,elver@google.com,andreyknvl@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-fix-incorrect-vbq-reference-in-purge_fragmented_block.patch removed from -mm tree
-Message-Id: <20240625035233.D7511C32782@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] kasan-fix-bad-call-to-unpoison_slab_object.patch removed from -mm tree
+Message-Id: <20240625035238.BCD68C32782@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,215 +50,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: fix incorrect vbq reference in purge_fragmented_block
+     Subject: kasan: fix bad call to unpoison_slab_object
 has been removed from the -mm tree.  Its filename was
-     mm-fix-incorrect-vbq-reference-in-purge_fragmented_block.patch
+     kasan-fix-bad-call-to-unpoison_slab_object.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-Subject: mm: fix incorrect vbq reference in purge_fragmented_block
-Date: Fri, 7 Jun 2024 10:31:16 +0800
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Subject: kasan: fix bad call to unpoison_slab_object
+Date: Fri, 14 Jun 2024 16:32:38 +0200
 
-xa_for_each() in _vm_unmap_aliases() loops through all vbs.  However,
-since commit 062eacf57ad9 ("mm: vmalloc: remove a global vmap_blocks
-xarray") the vb from xarray may not be on the corresponding CPU
-vmap_block_queue.  Consequently, purge_fragmented_block() might use the
-wrong vbq->lock to protect the free list, leading to vbq->free breakage.
+Commit 29d7355a9d05 ("kasan: save alloc stack traces for mempool") messed
+up one of the calls to unpoison_slab_object: the last two arguments are
+supposed to be GFP flags and whether to init the object memory.
 
-Incorrect lock protection can exhaust all vmalloc space as follows:
-CPU0                                            CPU1
-+--------------------------------------------+
-|    +--------------------+     +-----+      |
-+--> |                    |---->|     |------+
-     | CPU1:vbq free_list |     | vb1 |
-+--- |                    |<----|     |<-----+
-|    +--------------------+     +-----+      |
-+--------------------------------------------+
+Fix the call.
 
-_vm_unmap_aliases()                             vb_alloc()
-                                                new_vmap_block()
-xa_for_each(&vbq->vmap_blocks, idx, vb)
---> vb in CPU1:vbq->freelist
+Without this fix, __kasan_mempool_unpoison_object provides the object's
+size as GFP flags to unpoison_slab_object, which can cause LOCKDEP reports
+(and probably other issues).
 
-purge_fragmented_block(vb)
-spin_lock(&vbq->lock)                           spin_lock(&vbq->lock)
---> use CPU0:vbq->lock                          --> use CPU1:vbq->lock
-
-list_del_rcu(&vb->free_list)                    list_add_tail_rcu(&vb->free_list, &vbq->free)
-    __list_del(vb->prev, vb->next)
-        next->prev = prev
-    +--------------------+
-    |                    |
-    | CPU1:vbq free_list |
-+---|                    |<--+
-|   +--------------------+   |
-+----------------------------+
-                                                __list_add(new, head->prev, head)
-+--------------------------------------------+
-|    +--------------------+     +-----+      |
-+--> |                    |---->|     |------+
-     | CPU1:vbq free_list |     | vb2 |
-+--- |                    |<----|     |<-----+
-|    +--------------------+     +-----+      |
-+--------------------------------------------+
-
-        prev->next = next
-+--------------------------------------------+
-|----------------------------+               |
-|    +--------------------+  |  +-----+      |
-+--> |                    |--+  |     |------+
-     | CPU1:vbq free_list |     | vb2 |
-+--- |                    |<----|     |<-----+
-|    +--------------------+     +-----+      |
-+--------------------------------------------+
-Here’s a list breakdown. All vbs, which were to be added to
-‘prev’, cannot be used by list_for_each_entry_rcu(vb, &vbq->free,
-free_list) in vb_alloc(). Thus, vmalloc space is exhausted.
-
-This issue affects both erofs and f2fs, the stacktrace is as follows:
-erofs:
-[<ffffffd4ffb93ad4>] __switch_to+0x174
-[<ffffffd4ffb942f0>] __schedule+0x624
-[<ffffffd4ffb946f4>] schedule+0x7c
-[<ffffffd4ffb947cc>] schedule_preempt_disabled+0x24
-[<ffffffd4ffb962ec>] __mutex_lock+0x374
-[<ffffffd4ffb95998>] __mutex_lock_slowpath+0x14
-[<ffffffd4ffb95954>] mutex_lock+0x24
-[<ffffffd4fef2900c>] reclaim_and_purge_vmap_areas+0x44
-[<ffffffd4fef25908>] alloc_vmap_area+0x2e0
-[<ffffffd4fef24ea0>] vm_map_ram+0x1b0
-[<ffffffd4ff1b46f4>] z_erofs_lz4_decompress+0x278
-[<ffffffd4ff1b8ac4>] z_erofs_decompress_queue+0x650
-[<ffffffd4ff1b8328>] z_erofs_runqueue+0x7f4
-[<ffffffd4ff1b66a8>] z_erofs_read_folio+0x104
-[<ffffffd4feeb6fec>] filemap_read_folio+0x6c
-[<ffffffd4feeb68c4>] filemap_fault+0x300
-[<ffffffd4fef0ecac>] __do_fault+0xc8
-[<ffffffd4fef0c908>] handle_mm_fault+0xb38
-[<ffffffd4ffb9f008>] do_page_fault+0x288
-[<ffffffd4ffb9ed64>] do_translation_fault[jt]+0x40
-[<ffffffd4fec39c78>] do_mem_abort+0x58
-[<ffffffd4ffb8c3e4>] el0_ia+0x70
-[<ffffffd4ffb8c260>] el0t_64_sync_handler[jt]+0xb0
-[<ffffffd4fec11588>] ret_to_user[jt]+0x0
-
-f2fs:
-[<ffffffd4ffb93ad4>] __switch_to+0x174
-[<ffffffd4ffb942f0>] __schedule+0x624
-[<ffffffd4ffb946f4>] schedule+0x7c
-[<ffffffd4ffb947cc>] schedule_preempt_disabled+0x24
-[<ffffffd4ffb962ec>] __mutex_lock+0x374
-[<ffffffd4ffb95998>] __mutex_lock_slowpath+0x14
-[<ffffffd4ffb95954>] mutex_lock+0x24
-[<ffffffd4fef2900c>] reclaim_and_purge_vmap_areas+0x44
-[<ffffffd4fef25908>] alloc_vmap_area+0x2e0
-[<ffffffd4fef24ea0>] vm_map_ram+0x1b0
-[<ffffffd4ff1a3b60>] f2fs_prepare_decomp_mem+0x144
-[<ffffffd4ff1a6c24>] f2fs_alloc_dic+0x264
-[<ffffffd4ff175468>] f2fs_read_multi_pages+0x428
-[<ffffffd4ff17b46c>] f2fs_mpage_readpages+0x314
-[<ffffffd4ff1785c4>] f2fs_readahead+0x50
-[<ffffffd4feec3384>] read_pages+0x80
-[<ffffffd4feec32c0>] page_cache_ra_unbounded+0x1a0
-[<ffffffd4feec39e8>] page_cache_ra_order+0x274
-[<ffffffd4feeb6cec>] do_sync_mmap_readahead+0x11c
-[<ffffffd4feeb6764>] filemap_fault+0x1a0
-[<ffffffd4ff1423bc>] f2fs_filemap_fault+0x28
-[<ffffffd4fef0ecac>] __do_fault+0xc8
-[<ffffffd4fef0c908>] handle_mm_fault+0xb38
-[<ffffffd4ffb9f008>] do_page_fault+0x288
-[<ffffffd4ffb9ed64>] do_translation_fault[jt]+0x40
-[<ffffffd4fec39c78>] do_mem_abort+0x58
-[<ffffffd4ffb8c3e4>] el0_ia+0x70
-[<ffffffd4ffb8c260>] el0t_64_sync_handler[jt]+0xb0
-[<ffffffd4fec11588>] ret_to_user[jt]+0x0
-
-To fix this, introducee cpu within vmap_block to record which this vb
-belongs to.
-
-Link: https://lkml.kernel.org/r/20240614021352.1822225-1-zhaoyang.huang@unisoc.com
-Link: https://lkml.kernel.org/r/20240607023116.1720640-1-zhaoyang.huang@unisoc.com
-Fixes: fc1e0d980037 ("mm/vmalloc: prevent stale TLBs in fully utilized blocks")
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-Suggested-by: Hailong.Liu <hailong.liu@oppo.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lkml.kernel.org/r/20240614143238.60323-1-andrey.konovalov@linux.dev
+Fixes: 29d7355a9d05 ("kasan: save alloc stack traces for mempool")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Reported-by: Brad Spengler <spender@grsecurity.net>
+Acked-by: Marco Elver <elver@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/vmalloc.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ mm/kasan/common.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/vmalloc.c~mm-fix-incorrect-vbq-reference-in-purge_fragmented_block
-+++ a/mm/vmalloc.c
-@@ -2498,6 +2498,7 @@ struct vmap_block {
- 	struct list_head free_list;
- 	struct rcu_head rcu_head;
- 	struct list_head purge;
-+	unsigned int cpu;
- };
+--- a/mm/kasan/common.c~kasan-fix-bad-call-to-unpoison_slab_object
++++ a/mm/kasan/common.c
+@@ -532,7 +532,7 @@ void __kasan_mempool_unpoison_object(voi
+ 		return;
  
- /* Queue of free and dirty vmap blocks, for allocation and flushing purposes */
-@@ -2625,8 +2626,15 @@ static void *new_vmap_block(unsigned int
- 		free_vmap_area(va);
- 		return ERR_PTR(err);
- 	}
--
--	vbq = raw_cpu_ptr(&vmap_block_queue);
-+	/*
-+	 * list_add_tail_rcu could happened in another core
-+	 * rather than vb->cpu due to task migration, which
-+	 * is safe as list_add_tail_rcu will ensure the list's
-+	 * integrity together with list_for_each_rcu from read
-+	 * side.
-+	 */
-+	vb->cpu = raw_smp_processor_id();
-+	vbq = per_cpu_ptr(&vmap_block_queue, vb->cpu);
- 	spin_lock(&vbq->lock);
- 	list_add_tail_rcu(&vb->free_list, &vbq->free);
- 	spin_unlock(&vbq->lock);
-@@ -2654,9 +2662,10 @@ static void free_vmap_block(struct vmap_
- }
+ 	/* Unpoison the object and save alloc info for non-kmalloc() allocations. */
+-	unpoison_slab_object(slab->slab_cache, ptr, size, flags);
++	unpoison_slab_object(slab->slab_cache, ptr, flags, false);
  
- static bool purge_fragmented_block(struct vmap_block *vb,
--		struct vmap_block_queue *vbq, struct list_head *purge_list,
--		bool force_purge)
-+		struct list_head *purge_list, bool force_purge)
- {
-+	struct vmap_block_queue *vbq = &per_cpu(vmap_block_queue, vb->cpu);
-+
- 	if (vb->free + vb->dirty != VMAP_BBMAP_BITS ||
- 	    vb->dirty == VMAP_BBMAP_BITS)
- 		return false;
-@@ -2704,7 +2713,7 @@ static void purge_fragmented_blocks(int
- 			continue;
- 
- 		spin_lock(&vb->lock);
--		purge_fragmented_block(vb, vbq, &purge, true);
-+		purge_fragmented_block(vb, &purge, true);
- 		spin_unlock(&vb->lock);
- 	}
- 	rcu_read_unlock();
-@@ -2841,7 +2850,7 @@ static void _vm_unmap_aliases(unsigned l
- 			 * not purgeable, check whether there is dirty
- 			 * space to be flushed.
- 			 */
--			if (!purge_fragmented_block(vb, vbq, &purge_list, false) &&
-+			if (!purge_fragmented_block(vb, &purge_list, false) &&
- 			    vb->dirty_max && vb->dirty != VMAP_BBMAP_BITS) {
- 				unsigned long va_start = vb->va->va_start;
- 				unsigned long s, e;
+ 	/* Poison the redzone and save alloc info for kmalloc() allocations. */
+ 	if (is_kmalloc_cache(slab->slab_cache))
 _
 
-Patches currently in -mm which might be from zhaoyang.huang@unisoc.com are
+Patches currently in -mm which might be from andreyknvl@gmail.com are
 
-mm-optimization-on-page-allocation-when-cma-enabled.patch
 
 
