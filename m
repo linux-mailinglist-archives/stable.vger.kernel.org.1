@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAC79164AE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 552DA916406
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:53:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95B19B27057
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1BFBB254B3
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1528C14A090;
-	Tue, 25 Jun 2024 10:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE998149C58;
+	Tue, 25 Jun 2024 09:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMepwnP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fW1hsLNE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78BF148319;
-	Tue, 25 Jun 2024 10:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E32A24B34;
+	Tue, 25 Jun 2024 09:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309603; cv=none; b=AUIAW+/lDpIdy9c0FOFWnZVbNs4jdGtlnPElD3B/TPVTFA3j6sIOwbwUjrvsnbyf7TzwUPNtjRZdAdgbeN22qFO9TBHkRcv5lNC54BMbztCxIWXvS90AdPr37VI4+m9xpDkV9NZL0nZ6WO6NzpmWIbdGm8Azed8bCBuOJus58uY=
+	t=1719309183; cv=none; b=PfZ0pyCFg+A47aNRabJn9xwSHAn4Sr95y6K+lU8q+ZRZ+ZFvrTryPxvklRFwJDCAfGQzJMgckeilaknBrbvkJdW6sAae8tgb0JZj5XOCHYIJ5ke2kzLcctG6A5Qu4eMyA1wag0JGxIyJsJ0r/c2bDGuwGn+SVCAwhdT797RkK6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309603; c=relaxed/simple;
-	bh=JQcnbqAMC4ZHSNO4ZaUpOJdycZVzOBHoYrGT6L/Fx8k=;
+	s=arc-20240116; t=1719309183; c=relaxed/simple;
+	bh=5Sax9t4hcK+KLob21gcw0I4OISzKzg6Uk2DRaCWtMgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6PunLL4bWsisZ7iaVlp2vgrzYrgZ59wrBvnZWiRuzkeNen+Q6wIZXnzthbT7kDpqdjEo/htjBmT+ZawS9I9o2yxdxRxs/zAszAJueBaazih5MlUTXtHguDmhImNkiEYKgs9xHKyaubSQu0J388zz+3r90vQnCtHvQcCBSoWwIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMepwnP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8534C32781;
-	Tue, 25 Jun 2024 10:00:02 +0000 (UTC)
+	 MIME-Version; b=n3bscXLDLGt17cR9GI7EUndu/bCDWcGJH2nODR0ELi2V2VGZTb6Z5W/HxpkJonG6fL2PFhQ2DbVUc0PTKd6UZyERA3FWbZGpB8BZOeC5/MoyCzT6B6dlsEOvmlt8zGbLc4aa4gOY091aLaBa2qSSRAwBRgKao4yb7NCWDY3PQSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fW1hsLNE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AB2C32781;
+	Tue, 25 Jun 2024 09:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309603;
-	bh=JQcnbqAMC4ZHSNO4ZaUpOJdycZVzOBHoYrGT6L/Fx8k=;
+	s=korg; t=1719309183;
+	bh=5Sax9t4hcK+KLob21gcw0I4OISzKzg6Uk2DRaCWtMgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMepwnP9sbObQd+u1w/3eO6StTzlBAGYJ9TLurISiqJZ80o2mIkQi9KhH8Ml7h0MT
-	 LUADR6ofvK0kCkX2hC0Q+yQ4i8V/CnvX6keu3lXRZU/GRPHQkbvFNWEVi9+qI0Hgil
-	 QK9BWF7Ua2VsFwfyDodYpegh4rI53vGfRtneSF6s=
+	b=fW1hsLNEVrVVWEqVhqZencrcjEzcbIqm8VXvpnHneMjbmyFpJh/U1RErqJJOd74hS
+	 rQRo5YElzpwQpcrBYQMmrcYwFjrOKjt41GPnGR2L5BcoczcKw/Mj+LIFHQVQ1WSM5o
+	 ag7wPWawWvLkCLG+0wJVRujviYj3G3f83mZ8gC4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Esben Haabendal <esben@geanix.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/131] serial: imx: Introduce timeout when waiting on transmitter empty
+Subject: [PATCH 6.6 124/192] firmware: psci: Fix return value from psci_system_suspend()
 Date: Tue, 25 Jun 2024 11:33:16 +0200
-Message-ID: <20240625085527.513868844@linuxfoundation.org>
+Message-ID: <20240625085541.927510467@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esben Haabendal <esben@geanix.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit e533e4c62e9993e62e947ae9bbec34e4c7ae81c2 ]
+[ Upstream commit e7c3696d4692e8046d25f6e63f983e934e12f2c5 ]
 
-By waiting at most 1 second for USR2_TXDC to be set, we avoid a potential
-deadlock.
+Currently we return the value from invoke_psci_fn() directly as return
+value from psci_system_suspend(). It is wrong to send the PSCI interface
+return value directly. psci_to_linux_errno() provide the mapping from
+PSCI return value to the one that can be returned to the callers within
+the kernel.
 
-In case of the timeout, there is not much we can do, so we simply ignore
-the transmitter state and optimistically try to continue.
+Use psci_to_linux_errno() to convert and return the correct value from
+psci_system_suspend().
 
-Signed-off-by: Esben Haabendal <esben@geanix.com>
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://lore.kernel.org/r/919647898c337a46604edcabaf13d42d80c0915d.1712837613.git.esben@geanix.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/20240515095528.1949992-1-sudeep.holla@arm.com
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/firmware/psci/psci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 573bf7e9b7978..b20abaa9ef150 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -27,6 +27,7 @@
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/dma-mapping.h>
+diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
+index d9629ff878619..2328ca58bba61 100644
+--- a/drivers/firmware/psci/psci.c
++++ b/drivers/firmware/psci/psci.c
+@@ -497,10 +497,12 @@ int psci_cpu_suspend_enter(u32 state)
  
- #include <asm/irq.h>
-@@ -2028,7 +2029,7 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- 	struct imx_port *sport = imx_uart_ports[co->index];
- 	struct imx_port_ucrs old_ucr;
- 	unsigned long flags;
--	unsigned int ucr1;
-+	unsigned int ucr1, usr2;
- 	int locked = 1;
+ static int psci_system_suspend(unsigned long unused)
+ {
++	int err;
+ 	phys_addr_t pa_cpu_resume = __pa_symbol(cpu_resume);
  
- 	if (sport->port.sysrq)
-@@ -2059,8 +2060,8 @@ imx_uart_console_write(struct console *co, const char *s, unsigned int count)
- 	 *	Finally, wait for transmitter to become empty
- 	 *	and restore UCR1/2/3
- 	 */
--	while (!(imx_uart_readl(sport, USR2) & USR2_TXDC));
--
-+	read_poll_timeout_atomic(imx_uart_readl, usr2, usr2 & USR2_TXDC,
-+				 0, USEC_PER_SEC, false, sport, USR2);
- 	imx_uart_ucrs_restore(sport, &old_ucr);
+-	return invoke_psci_fn(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND),
++	err = invoke_psci_fn(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND),
+ 			      pa_cpu_resume, 0, 0);
++	return psci_to_linux_errno(err);
+ }
  
- 	if (locked)
+ static int psci_system_suspend_enter(suspend_state_t state)
 -- 
 2.43.0
 
