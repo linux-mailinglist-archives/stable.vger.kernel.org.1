@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-55458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722499163AC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D5A916318
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29C1A28C358
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B87B12859BF
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2C01494DC;
-	Tue, 25 Jun 2024 09:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA0714A4E1;
+	Tue, 25 Jun 2024 09:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A28k2m3O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KvfqJo9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99C41465A8;
-	Tue, 25 Jun 2024 09:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B9EE14A4D9;
+	Tue, 25 Jun 2024 09:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308962; cv=none; b=V/lfq3rBxsRB33q9/my6WYU0wgTcleGMAdngZbLgsYLI271QtMcTOWeGQxFFkmNGDe9Af/HeErCyprYxwmGIjGsnRye9OoLq0Glz1U2kWMqWDmYWkPRtQi4G3H/DVL+askt9ej5XJ8dbePkzaVtNtgGe9cfEaguYKIpa2DapUI4=
+	t=1719308562; cv=none; b=SNNwwsc27qrRE4WBmJD27LImlInLjjYOFp7evxIyo7KLQI0HgewgNvihu5UfrkSnBP+rKCl/HY4StIHd5CnTFeDaEQH6RU9yMWHUvAN0rFqRJe069N7Olp/nlP/Yw1ueKY0hydzm7wsd1Di3N2lPV3GpjqWPLlg4NOCeY92mBQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308962; c=relaxed/simple;
-	bh=W6bHwlKOcMIAkLDAqUyQ0M7hSf4M317WLu0+JOgiwbs=;
+	s=arc-20240116; t=1719308562; c=relaxed/simple;
+	bh=A1aT4J7pmKfgaU27VVIwq/Fx1bcl0MII2bWJP4nXQfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HDikPUtjq5LhMBGo/YinTtzqxlmAmg6uoGUrNtYM86PLBscqADQKlc9GvUnH6HXP8gO1BliTrtzJVRNpl35pN1hZJ0Q37xI8CYVxPixPQGNmtSzJLiNdIDBDuPsTZN3yR3CknglDEMS9LRcsc5n/7Uuj4vg2dwOc2MBTu5Ng4e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A28k2m3O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29ADBC32781;
-	Tue, 25 Jun 2024 09:49:21 +0000 (UTC)
+	 MIME-Version; b=MKCtM+wMUsM685h2uqTA7NP+B1IXhJXQw2bItxe91YXAvHxvhNes9MLXmgeOgXSOGE1FSAYSHAotW5XZIH1PKe3vthCHXUgCowYr74COLfMwGTh0HgSbGd9LW7hHckRJSXheYw+lBR6skWgeTRdyGsPagr4IgtSB4D5S5R1bPBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KvfqJo9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2453BC32781;
+	Tue, 25 Jun 2024 09:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308962;
-	bh=W6bHwlKOcMIAkLDAqUyQ0M7hSf4M317WLu0+JOgiwbs=;
+	s=korg; t=1719308562;
+	bh=A1aT4J7pmKfgaU27VVIwq/Fx1bcl0MII2bWJP4nXQfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A28k2m3OBzn3IckQSOm2fOQKwXvfHAkyGjEh5S51teYpBQjSXiio+KOnv9N/e63if
-	 pmbWh/6PGWGWHvF2VArVBGCW7HxWk2/2ZdLDImW3NTR9KMLHSYPZO4CSNUonEY3fg8
-	 Qm/iNC5Y4IEBdpvtuvvqT5fqydZLgz3IxQX4oVAM=
+	b=2KvfqJo9wMrAr7LuN8Zeqlp/cdDk/7fD+upnArjw/ldYov0O/FovkeOqX2fOSP4aH
+	 UXQ8IhaGC0rB+XslJIi5KqnlCtNcJCaW2R3RJMi3ymPtGI3zVamPcZoJa7dGBTSI/m
+	 LYZ+PcMbDw7DapuDuuctWD4p9A6MWeQscLbY4nv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	Hu Chunyu <chuhu@redhat.com>,
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jason Wang <jasowang@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/192] drop_monitor: replace spin_lock by raw_spin_lock
-Date: Tue, 25 Jun 2024 11:31:29 +0200
-Message-ID: <20240625085537.819487672@linuxfoundation.org>
+Subject: [PATCH 6.9 132/250] virtio_net: checksum offloading handling fix
+Date: Tue, 25 Jun 2024 11:31:30 +0200
+Message-ID: <20240625085553.130430404@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,157 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Heng Qi <hengqi@linux.alibaba.com>
 
-[ Upstream commit f1e197a665c2148ebc25fe09c53689e60afea195 ]
+[ Upstream commit 604141c036e1b636e2a71cf6e1aa09d1e45f40c2 ]
 
-trace_drop_common() is called with preemption disabled, and it acquires
-a spin_lock. This is problematic for RT kernels because spin_locks are
-sleeping locks in this configuration, which causes the following splat:
+In virtio spec 0.95, VIRTIO_NET_F_GUEST_CSUM was designed to handle
+partially checksummed packets, and the validation of fully checksummed
+packets by the device is independent of VIRTIO_NET_F_GUEST_CSUM
+negotiation. However, the specification erroneously stated:
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 449, name: rcuc/47
-preempt_count: 1, expected: 0
-RCU nest depth: 2, expected: 2
-5 locks held by rcuc/47/449:
- #0: ff1100086ec30a60 ((softirq_ctrl.lock)){+.+.}-{2:2}, at: __local_bh_disable_ip+0x105/0x210
- #1: ffffffffb394a280 (rcu_read_lock){....}-{1:2}, at: rt_spin_lock+0xbf/0x130
- #2: ffffffffb394a280 (rcu_read_lock){....}-{1:2}, at: __local_bh_disable_ip+0x11c/0x210
- #3: ffffffffb394a160 (rcu_callback){....}-{0:0}, at: rcu_do_batch+0x360/0xc70
- #4: ff1100086ee07520 (&data->lock){+.+.}-{2:2}, at: trace_drop_common.constprop.0+0xb5/0x290
-irq event stamp: 139909
-hardirqs last  enabled at (139908): [<ffffffffb1df2b33>] _raw_spin_unlock_irqrestore+0x63/0x80
-hardirqs last disabled at (139909): [<ffffffffb19bd03d>] trace_drop_common.constprop.0+0x26d/0x290
-softirqs last  enabled at (139892): [<ffffffffb07a1083>] __local_bh_enable_ip+0x103/0x170
-softirqs last disabled at (139898): [<ffffffffb0909b33>] rcu_cpu_kthread+0x93/0x1f0
-Preemption disabled at:
-[<ffffffffb1de786b>] rt_mutex_slowunlock+0xab/0x2e0
-CPU: 47 PID: 449 Comm: rcuc/47 Not tainted 6.9.0-rc2-rt1+ #7
-Hardware name: Dell Inc. PowerEdge R650/0Y2G81, BIOS 1.6.5 04/15/2022
-Call Trace:
- <TASK>
- dump_stack_lvl+0x8c/0xd0
- dump_stack+0x14/0x20
- __might_resched+0x21e/0x2f0
- rt_spin_lock+0x5e/0x130
- ? trace_drop_common.constprop.0+0xb5/0x290
- ? skb_queue_purge_reason.part.0+0x1bf/0x230
- trace_drop_common.constprop.0+0xb5/0x290
- ? preempt_count_sub+0x1c/0xd0
- ? _raw_spin_unlock_irqrestore+0x4a/0x80
- ? __pfx_trace_drop_common.constprop.0+0x10/0x10
- ? rt_mutex_slowunlock+0x26a/0x2e0
- ? skb_queue_purge_reason.part.0+0x1bf/0x230
- ? __pfx_rt_mutex_slowunlock+0x10/0x10
- ? skb_queue_purge_reason.part.0+0x1bf/0x230
- trace_kfree_skb_hit+0x15/0x20
- trace_kfree_skb+0xe9/0x150
- kfree_skb_reason+0x7b/0x110
- skb_queue_purge_reason.part.0+0x1bf/0x230
- ? __pfx_skb_queue_purge_reason.part.0+0x10/0x10
- ? mark_lock.part.0+0x8a/0x520
-...
+  "If VIRTIO_NET_F_GUEST_CSUM is not negotiated, the device MUST set flags
+   to zero and SHOULD supply a fully checksummed packet to the driver."
 
-trace_drop_common() also disables interrupts, but this is a minor issue
-because we could easily replace it with a local_lock.
+This statement is inaccurate because even without VIRTIO_NET_F_GUEST_CSUM
+negotiation, the device can still set the VIRTIO_NET_HDR_F_DATA_VALID flag.
+Essentially, the device can facilitate the validation of these packets'
+checksums - a process known as RX checksum offloading - removing the need
+for the driver to do so.
 
-Replace the spin_lock with raw_spin_lock to avoid sleeping in atomic
-context.
+This scenario is currently not implemented in the driver and requires
+correction. The necessary specification correction[1] has been made and
+approved in the virtio TC vote.
+[1] https://lists.oasis-open.org/archives/virtio-comment/202401/msg00011.html
 
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Reported-by: Hu Chunyu <chuhu@redhat.com>
+Fixes: 4f49129be6fa ("virtio-net: Set RXCSUM feature if GUEST_CSUM is available")
+Signed-off-by: Heng Qi <hengqi@linux.alibaba.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/drop_monitor.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/virtio_net.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
-index b240d9aae4a64..58843a52bad0e 100644
---- a/net/core/drop_monitor.c
-+++ b/net/core/drop_monitor.c
-@@ -74,7 +74,7 @@ struct net_dm_hw_entries {
- };
- 
- struct per_cpu_dm_data {
--	spinlock_t		lock;	/* Protects 'skb', 'hw_entries' and
-+	raw_spinlock_t		lock;	/* Protects 'skb', 'hw_entries' and
- 					 * 'send_timer'
- 					 */
- 	union {
-@@ -168,9 +168,9 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
- err:
- 	mod_timer(&data->send_timer, jiffies + HZ / 10);
- out:
--	spin_lock_irqsave(&data->lock, flags);
-+	raw_spin_lock_irqsave(&data->lock, flags);
- 	swap(data->skb, skb);
--	spin_unlock_irqrestore(&data->lock, flags);
-+	raw_spin_unlock_irqrestore(&data->lock, flags);
- 
- 	if (skb) {
- 		struct nlmsghdr *nlh = (struct nlmsghdr *)skb->data;
-@@ -225,7 +225,7 @@ static void trace_drop_common(struct sk_buff *skb, void *location)
- 
- 	local_irq_save(flags);
- 	data = this_cpu_ptr(&dm_cpu_data);
--	spin_lock(&data->lock);
-+	raw_spin_lock(&data->lock);
- 	dskb = data->skb;
- 
- 	if (!dskb)
-@@ -259,7 +259,7 @@ static void trace_drop_common(struct sk_buff *skb, void *location)
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 574b052a517d7..633de371762b6 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -4698,8 +4698,16 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 			dev->features |= dev->hw_features & NETIF_F_ALL_TSO;
+ 		/* (!csum && gso) case will be fixed by register_netdev() */
  	}
- 
- out:
--	spin_unlock_irqrestore(&data->lock, flags);
-+	raw_spin_unlock_irqrestore(&data->lock, flags);
- }
- 
- static void trace_kfree_skb_hit(void *ignore, struct sk_buff *skb,
-@@ -314,9 +314,9 @@ net_dm_hw_reset_per_cpu_data(struct per_cpu_dm_data *hw_data)
- 		mod_timer(&hw_data->send_timer, jiffies + HZ / 10);
- 	}
- 
--	spin_lock_irqsave(&hw_data->lock, flags);
-+	raw_spin_lock_irqsave(&hw_data->lock, flags);
- 	swap(hw_data->hw_entries, hw_entries);
--	spin_unlock_irqrestore(&hw_data->lock, flags);
-+	raw_spin_unlock_irqrestore(&hw_data->lock, flags);
- 
- 	return hw_entries;
- }
-@@ -448,7 +448,7 @@ net_dm_hw_trap_summary_probe(void *ignore, const struct devlink *devlink,
- 		return;
- 
- 	hw_data = this_cpu_ptr(&dm_hw_cpu_data);
--	spin_lock_irqsave(&hw_data->lock, flags);
-+	raw_spin_lock_irqsave(&hw_data->lock, flags);
- 	hw_entries = hw_data->hw_entries;
- 
- 	if (!hw_entries)
-@@ -477,7 +477,7 @@ net_dm_hw_trap_summary_probe(void *ignore, const struct devlink *devlink,
- 	}
- 
- out:
--	spin_unlock_irqrestore(&hw_data->lock, flags);
-+	raw_spin_unlock_irqrestore(&hw_data->lock, flags);
- }
- 
- static const struct net_dm_alert_ops net_dm_alert_summary_ops = {
-@@ -1673,7 +1673,7 @@ static struct notifier_block dropmon_net_notifier = {
- 
- static void __net_dm_cpu_data_init(struct per_cpu_dm_data *data)
- {
--	spin_lock_init(&data->lock);
-+	raw_spin_lock_init(&data->lock);
- 	skb_queue_head_init(&data->drop_queue);
- 	u64_stats_init(&data->stats.syncp);
- }
+-	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_CSUM))
+-		dev->features |= NETIF_F_RXCSUM;
++
++	/* 1. With VIRTIO_NET_F_GUEST_CSUM negotiation, the driver doesn't
++	 * need to calculate checksums for partially checksummed packets,
++	 * as they're considered valid by the upper layer.
++	 * 2. Without VIRTIO_NET_F_GUEST_CSUM negotiation, the driver only
++	 * receives fully checksummed packets. The device may assist in
++	 * validating these packets' checksums, so the driver won't have to.
++	 */
++	dev->features |= NETIF_F_RXCSUM;
++
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO4) ||
+ 	    virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO6))
+ 		dev->features |= NETIF_F_GRO_HW;
 -- 
 2.43.0
 
