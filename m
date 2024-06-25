@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-55260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D7879162D2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 187229162DD
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:40:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF2F32899D3
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:40:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9F6F289D69
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A9F14A091;
-	Tue, 25 Jun 2024 09:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E0B149DFF;
+	Tue, 25 Jun 2024 09:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE/oF8SR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c8kfFxs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7A114A087;
-	Tue, 25 Jun 2024 09:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999C8149C50;
+	Tue, 25 Jun 2024 09:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308383; cv=none; b=jlrA3gdzaWRrm0Ry0OzfsDsf+5muLAaIS86DQFoMV+1RkhIfAJll0e+hwRP/OaASevc8/WkmpISV7RmgeNodp3nmatm0hlqskQoIvT/fbEZsCReoespiJyp59tv7m1yi64Mly1rP0kdhkBbAZXlhQDalypxyif4bMT0Ybb3vnjU=
+	t=1719308415; cv=none; b=RlTYXsILDaVUJLv4/K5wTMKZIe8aL+OA5iUMReeLw9xKaS9wusXsH9yUbAd0u8Lj3ssTHnvtlSu3yglSLTT+wy9UdCbdCv7G5pfyE0dmFqstRMC3puaFE6YSP/S+RGFm2u5qPoH2C45JP/547r/5e7DSlqSprxcOUAMgGmxwIxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308383; c=relaxed/simple;
-	bh=s+G1ErTp/sgw7RTANG9URSOtWSZ9p+wSjvqAEiSmT84=;
+	s=arc-20240116; t=1719308415; c=relaxed/simple;
+	bh=4uQwZBN5d/kqVlq7JHnJBO86nWwC4iHyrECYE9H/Qt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2m1LlUWrFWgCUNsI4EjAhD12L9vZzsasrAWeBRUDgR3wu+6JV/WpAZ58X/yH7rBrKxlGrq7VutVvXqPeuiF8oTw2Ve1j8QHZiwo548iLVB93YlQfdFWqJfQtnEsh2OTjitXdi4ika9Y5irRXaQLma6Y+FqdrWOyJ3pba0+hvBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE/oF8SR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73ECCC4AF09;
-	Tue, 25 Jun 2024 09:39:42 +0000 (UTC)
+	 MIME-Version; b=a/mf/KUfAX1ICq0lkeE6ehskDHg7R20lc8BlWq9HriRs/YT4vrrDhlFfd8e87Aqmn80NxjIGpC2GYXSK6vMYfQDQ/WsKrVqAfAqBMCG0sOH86s4A+Vu4W9JYGuGVqJK/qdEesmE0RQROea5wbsMmv9iDYevbtA/NGBTytqhUplc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c8kfFxs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221ACC32781;
+	Tue, 25 Jun 2024 09:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308382;
-	bh=s+G1ErTp/sgw7RTANG9URSOtWSZ9p+wSjvqAEiSmT84=;
+	s=korg; t=1719308415;
+	bh=4uQwZBN5d/kqVlq7JHnJBO86nWwC4iHyrECYE9H/Qt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tE/oF8SRAP1LhFA8gUcIXA9dPjJ3dmfezMZcMvT7DT8b+ExVxtaxlcGQmb2CzLruJ
-	 cHLdfyuXOEBg4Ttz/cBoAMA9VwyftO12MTCg68ZrwrTDH7gZphyJ+Jf6ni7gddeNin
-	 hTmZxeWe+6EtOtm56C2D2uiE2qlbHHVjresJOvFU=
+	b=2c8kfFxskiZlhh+iXEocE6QX5qKmZzOz+2qkgaV9o8/2vB181aMaszYvYSVHD9ezJ
+	 SCEbDxWYE+AwYmg9RGvScqLllqjUH2sYaf1DoD9qtFpjjM8Jb9+/b1Ytg1/s2Kw6tw
+	 Iiip3HWz/EnJm0UUQXVlLywd/mayRYgeORUd9ShU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 095/250] ALSA: hda: cs35l41: Possible null pointer dereference in cs35l41_hda_unbind()
-Date: Tue, 25 Jun 2024 11:30:53 +0200
-Message-ID: <20240625085551.716356431@linuxfoundation.org>
+Subject: [PATCH 6.9 096/250] ALSA: seq: ump: Fix missing System Reset message handling
+Date: Tue, 25 Jun 2024 11:30:54 +0200
+Message-ID: <20240625085551.754789954@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -66,40 +65,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 6386682cdc8b41319c92fbbe421953e33a28840c ]
+[ Upstream commit 55fac50ea46f46a22a92e2139b92afaa3822ad19 ]
 
-The cs35l41_hda_unbind() function clears the hda_component entry
-matching it's index and then dereferences the codec pointer held in the
-first element of the hda_component array, this is an issue when the
-device index was 0.
+The conversion from System Reset event to UMP was missing.
+Add the entry for a conversion to a proper UMP System message.
 
-Instead use the codec pointer stashed in the cs35l41_hda structure as it
-will still be valid.
-
-Fixes: 7cf5ce66dfda ("ALSA: hda: cs35l41: Add device_link between HDA and cs35l41_hda")
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20240531120820.35367-1-simont@opensource.cirrus.com
+Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
+Link: https://lore.kernel.org/r/20240531123718.13420-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/cs35l41_hda.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/seq/seq_ump_convert.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
-index d3fa6e136744d..25cf072a2a10b 100644
---- a/sound/pci/hda/cs35l41_hda.c
-+++ b/sound/pci/hda/cs35l41_hda.c
-@@ -1362,7 +1362,7 @@ static void cs35l41_hda_unbind(struct device *dev, struct device *master, void *
- 	if (comps[cs35l41->index].dev == dev) {
- 		memset(&comps[cs35l41->index], 0, sizeof(*comps));
- 		sleep_flags = lock_system_sleep();
--		device_link_remove(&comps->codec->core.dev, cs35l41->dev);
-+		device_link_remove(&cs35l41->codec->core.dev, cs35l41->dev);
- 		unlock_system_sleep(sleep_flags);
- 	}
- }
+diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
+index 171fb75267afa..d81f776a4c3dd 100644
+--- a/sound/core/seq/seq_ump_convert.c
++++ b/sound/core/seq/seq_ump_convert.c
+@@ -1075,6 +1075,8 @@ static const struct seq_ev_to_ump seq_ev_ump_encoders[] = {
+ 	  system_ev_to_ump_midi1, system_ev_to_ump_midi2 },
+ 	{ SNDRV_SEQ_EVENT_SENSING, UMP_SYSTEM_STATUS_ACTIVE_SENSING,
+ 	  system_ev_to_ump_midi1, system_ev_to_ump_midi2 },
++	{ SNDRV_SEQ_EVENT_RESET, UMP_SYSTEM_STATUS_RESET,
++	  system_ev_to_ump_midi1, system_ev_to_ump_midi2 },
+ };
+ 
+ static const struct seq_ev_to_ump *find_ump_encoder(int type)
 -- 
 2.43.0
 
