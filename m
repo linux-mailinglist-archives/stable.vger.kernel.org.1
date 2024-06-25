@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-55341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E880091632E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BC39163C2
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45321B234C7
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 759251C2228C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAA6149DEF;
-	Tue, 25 Jun 2024 09:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6EE14A091;
+	Tue, 25 Jun 2024 09:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzOG9VMv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSad8bWk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD3512EBEA;
-	Tue, 25 Jun 2024 09:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDA31487E9;
+	Tue, 25 Jun 2024 09:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308618; cv=none; b=ItBCKMd5L5OnZliyJ0aOfxSnwZ+OGz8GdZyX8ZWJ6PoQkNQw27PrbyNaiqNaVtLoc9KF9OhcnqLM94SjqeOrUBWjYWxOTM7W/OapCrU5HjRjMQioUyAPgpUslDh8qR0xe9wXQeuNHdo3HRMi2OstDrnCH92NysuFwID41Wc8fow=
+	t=1719309022; cv=none; b=Py/Zd1639uhwPRBmGkAiq9NE7VsvP3yP48m49dECgnjw+hulU5odjrqyGJNXeOk3NWVe/ZJ6s2ATTSY7WXxfTQ8022H9ZWk/CNRx1c6nxy/LXxQ457eMk22IrXREKuUyxkIowYiC6730JjdeQ/pLNaDPUNhwthdMb6LC4GibQao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308618; c=relaxed/simple;
-	bh=NDB8jtIqUnZQ1eMVRinRwgqUhyb5Xt/4kfdU2bDDgyA=;
+	s=arc-20240116; t=1719309022; c=relaxed/simple;
+	bh=KYaaRK2il49T9+MNDtLgeyycE1cIjINW5qLPziyCX/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U4bozj769//lP56MPoX+kQmBPrnb+LdwWvT/7EAdMYu9Q4vpRi+qYeyjhoPzP7UyR4c/yUIh5x/2ndZd+v2MnpWkza3LW9/9bt5qUv8kRtPID86XP+aZ+zGmuFK47KA2HQWzt3vEbDb+LPTc7NQT7BG5+qtjmAYBqBAvNUk0A9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzOG9VMv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E877EC32781;
-	Tue, 25 Jun 2024 09:43:37 +0000 (UTC)
+	 MIME-Version; b=OBjlTHA3gT7NtHoFW6QFwBJgBNGpVMIgeA7FDBBJ8bsf0+6qsJEMAW9oLE9zj1fWalw3EghxlwKhdSffyeXsoxz0ZoeiIPCSgIJQii5TVHF2RJrYg4JpNJLUNX9muqrYskglH457UQ5cdE18Vt5HtyEKoIDoDAVaCWqqB8+D4bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSad8bWk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CC7C32781;
+	Tue, 25 Jun 2024 09:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308618;
-	bh=NDB8jtIqUnZQ1eMVRinRwgqUhyb5Xt/4kfdU2bDDgyA=;
+	s=korg; t=1719309021;
+	bh=KYaaRK2il49T9+MNDtLgeyycE1cIjINW5qLPziyCX/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jzOG9VMvYg71mGSjE8hJnr14nSzq6cdDW8kHK6xO2q77tYqD1dLpdaLJiErXyTL0p
-	 JSWB8bxlt+YVonqWN+OCAex+amjbtnoI/1wDnD+be8pWzckKeQlIe7pgXbSjpcStAV
-	 PZzbNq7SQVs2aiqs4mzAoYr0dnYVT+jZI/ZhsBDw=
+	b=QSad8bWkSCuBMq781UdeJdgdD1BCrmaGn5TtGLG41jendyoWi//PREYmJv8qJHmvg
+	 eZdzygeWWO+jemi+tLtoytsUqXEBQwhEv+xPtsXhrfTnLyXwbN+WuJPnnmltvHLfws
+	 /TXkMIqNaQhpmnFRCt5+q+AqbfUlX/Ds827z3WDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongqin Liu <yongqin.liu@linaro.org>,
-	=?UTF-8?q?Antje=20Miederh=C3=B6fer?= <a.miederhoefer@gmx.de>,
-	Arne Fitzenreiter <arne_f@ipfire.org>,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.9 182/250] net: usb: ax88179_178a: improve reset check
+	"Dustin L. Howett" <dustin@howett.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 068/192] ALSA: hda/realtek: Remove Framework Laptop 16 from quirks
 Date: Tue, 25 Jun 2024 11:32:20 +0200
-Message-ID: <20240625085555.036831395@linuxfoundation.org>
+Message-ID: <20240625085539.782504319@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Dustin L. Howett <dustin@howett.net>
 
-commit 7be4cb7189f747b4e5b6977d0e4387bde3204e62 upstream.
+[ Upstream commit e799bdf51d54bebaf939fdb655aad424e624c1b1 ]
 
-After ecf848eb934b ("net: usb: ax88179_178a: fix link status when link is
-set to down/up") to not reset from usbnet_open after the reset from
-usbnet_probe at initialization stage to speed up this, some issues have
-been reported.
+The Framework Laptop 16 does not have a combination headphone/headset
+3.5mm jack; however, applying the pincfg from the Laptop 13 (nid=0x19)
+erroneously informs hda that the node is present.
 
-It seems to happen that if the initialization is slower, and some time
-passes between the probe operation and the open operation, the second reset
-from open is necessary too to have the device working. The reason is that
-if there is no activity with the phy, this is "disconnected".
-
-In order to improve this, the solution is to detect when the phy is
-"disconnected", and we can use the phy status register for this. So we will
-only reset the device from reset operation in this situation, that is, only
-if necessary.
-
-The same bahavior is happening when the device is stopped (link set to
-down) and later is restarted (link set to up), so if the phy keeps working
-we only need to enable the mac again, but if enough time passes between the
-device stop and restart, reset is necessary, and we can detect the
-situation checking the phy status register too.
-
-cc: stable@vger.kernel.org # 6.6+
-Fixes: ecf848eb934b ("net: usb: ax88179_178a: fix link status when link is set to down/up")
-Reported-by: Yongqin Liu <yongqin.liu@linaro.org>
-Reported-by: Antje Miederhöfer <a.miederhoefer@gmx.de>
-Reported-by: Arne Fitzenreiter <arne_f@ipfire.org>
-Tested-by: Yongqin Liu <yongqin.liu@linaro.org>
-Tested-by: Antje Miederhöfer <a.miederhoefer@gmx.de>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8804fa04a492 ("ALSA: hda/realtek: Add Framework laptop 16 to quirks")
+Signed-off-by: Dustin L. Howett <dustin@howett.net>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20240605-alsa-hda-realtek-remove-framework-laptop-16-from-quirks-v1-1-11d47fe8ec4d@howett.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -174,7 +174,6 @@ struct ax88179_data {
- 	u32 wol_supported;
- 	u32 wolopts;
- 	u8 disconnecting;
--	u8 initialized;
- };
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 44478e0af1e41..8e6574c07c975 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10336,7 +10336,6 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
+ 	SND_PCI_QUIRK(0x8086, 0x3038, "Intel NUC 13", ALC295_FIXUP_CHROME_BOOK),
+ 	SND_PCI_QUIRK(0xf111, 0x0001, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
+-	SND_PCI_QUIRK(0xf111, 0x0005, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0xf111, 0x0006, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
  
- struct ax88179_int_data {
-@@ -1676,12 +1675,21 @@ static int ax88179_reset(struct usbnet *
- 
- static int ax88179_net_reset(struct usbnet *dev)
- {
--	struct ax88179_data *ax179_data = dev->driver_priv;
-+	u16 tmp16;
- 
--	if (ax179_data->initialized)
-+	ax88179_read_cmd(dev, AX_ACCESS_PHY, AX88179_PHY_ID, GMII_PHY_PHYSR,
-+			 2, &tmp16);
-+	if (tmp16) {
-+		ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
-+				 2, 2, &tmp16);
-+		if (!(tmp16 & AX_MEDIUM_RECEIVE_EN)) {
-+			tmp16 |= AX_MEDIUM_RECEIVE_EN;
-+			ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
-+					  2, 2, &tmp16);
-+		}
-+	} else {
- 		ax88179_reset(dev);
--	else
--		ax179_data->initialized = 1;
-+	}
- 
- 	return 0;
- }
+ #if 0
+-- 
+2.43.0
+
 
 
 
