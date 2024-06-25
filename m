@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-55237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B5BD9162B2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:39:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE0BB9162B4
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:39:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27A0B288A23
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:38:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B074288AD0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E14149C5E;
-	Tue, 25 Jun 2024 09:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F232C149DFF;
+	Tue, 25 Jun 2024 09:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTt+P+++"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDjnGBP+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1455149C50;
-	Tue, 25 Jun 2024 09:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4AB149DF7;
+	Tue, 25 Jun 2024 09:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308315; cv=none; b=DL5HyezaWIJR8nTHVC4jimvVav5HOSOZn8dUyDvpmxxwe6a0vIZnqX4v+TG+CGcqRaHs49/VpvuPT7D9sGOZlEj7ONe9zlRrJkXqNRUzVa1rUMUbbh/wCCUk/VNsXLEhz4FefJmuQN36kifl9ZR4yQ/2QyvvydgvNbK81WmsCa4=
+	t=1719308321; cv=none; b=LPN4DN3qwaal9pyQjacnbXr9N+gSfmuL4+K7ikdDCGIFWy19RBmRuT1QxJZ0lGJ+XXzZfo3NSfd80Iu0/ncMS2Qrpnt1HFajQUyEaZl4Jl/0NKNtKK9cGAUySObs63WD44t1rSIPz7AWESsF3SD+Lgt2dGX14Jd8mqV8GzeD4Bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308315; c=relaxed/simple;
-	bh=maja82EiY/W+cw8Z8rS2DlzgYvNnWDfvaDiNiYfdKms=;
+	s=arc-20240116; t=1719308321; c=relaxed/simple;
+	bh=w9Q9/priFXxtKhvAd111+ciNEjUyMD+ImPjOFxPTNU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UjGPowYrkOuPzl2w0S4zNcDVbtxlqnRrQaMC9YiPh/ateASWJ4PdZQCjou9mSiA4MdAQ/jKJIwTGXISfxosS3sbyS0LB74oRgWA7a5uQhNSO5VlOHt7ShxoIY/rYAKG3de8PJnoVbwXAc62D+SAYfNUB+LuQebCxkqxz+4nbvwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTt+P+++; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F7DC32781;
-	Tue, 25 Jun 2024 09:38:34 +0000 (UTC)
+	 MIME-Version; b=CghhiJBO9IgXUTdgwclcqCnpWawgNs5iHaJHTKfS/mZQL2s3i/1nMueFf0U8A5YoBtw2ygErCt+jMwDEfwn1yx1kD/j710a6k2c0X0SJF/FPOkjd3pgyU/v58Aui7ZC0lGjH+I5pETTLx3XxRthULhWyx3k4kAflS18DR6idL4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDjnGBP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5544C32781;
+	Tue, 25 Jun 2024 09:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308315;
-	bh=maja82EiY/W+cw8Z8rS2DlzgYvNnWDfvaDiNiYfdKms=;
+	s=korg; t=1719308321;
+	bh=w9Q9/priFXxtKhvAd111+ciNEjUyMD+ImPjOFxPTNU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OTt+P++++EE84kIFt3MaKphbpiFmPlaA44f3Sdf4hOJvxGyskODDyQley0AYqnko8
-	 8NLcI3ZKWFrNBNj1VEWGFR9VTlv2Vj5MAiT8SeZH15QSlZNP5nEvYCXHBA7jFS5O+G
-	 vu+PXmYmWMUwxyPdRbbig7reFXtWeHBsrtjXPlno=
+	b=iDjnGBP+bvk5JoXf/s5Wd1sbZzo9/jEf0N56DcDtYoypG0Oe1qoGE+GDXh3plVns+
+	 uIw/Sv6acvFo+iMFxTsO6aDFsFT1L6hidti6sB174ABqJJeRwuX8LyoS2uf/wi4Tix
+	 ELTD04ueGq3EnZYQaAzTEQ8TZqyhJ6ggSw/7hToI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Light=20Hsieh=20 ?= <Light.Hsieh@mediatek.com>,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Songyang Li <leesongyang@outlook.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 080/250] f2fs: dont set RO when shutting down f2fs
-Date: Tue, 25 Jun 2024 11:30:38 +0200
-Message-ID: <20240625085551.136000488@linuxfoundation.org>
+Subject: [PATCH 6.9 081/250] MIPS: Octeon: Add PCIe link status check
+Date: Tue, 25 Jun 2024 11:30:39 +0200
+Message-ID: <20240625085551.174162004@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -62,63 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Songyang Li <leesongyang@outlook.com>
 
-[ Upstream commit 3bdb7f161697e2d5123b89fe1778ef17a44858e7 ]
+[ Upstream commit 29b83a64df3b42c88c0338696feb6fdcd7f1f3b7 ]
 
-Shutdown does not check the error of thaw_super due to readonly, which
-causes a deadlock like below.
+The standard PCIe configuration read-write interface is used to
+access the configuration space of the peripheral PCIe devices
+of the mips processor after the PCIe link surprise down, it can
+generate kernel panic caused by "Data bus error". So it is
+necessary to add PCIe link status check for system protection.
+When the PCIe link is down or in training, assigning a value
+of 0 to the configuration address can prevent read-write behavior
+to the configuration space of peripheral PCIe devices, thereby
+preventing kernel panic.
 
-f2fs_ioc_shutdown(F2FS_GOING_DOWN_FULLSYNC)        issue_discard_thread
- - bdev_freeze
-  - freeze_super
- - f2fs_stop_checkpoint()
-  - f2fs_handle_critical_error                     - sb_start_write
-    - set RO                                         - waiting
- - bdev_thaw
-  - thaw_super_locked
-    - return -EINVAL, if sb_rdonly()
- - f2fs_stop_discard_thread
-  -> wait for kthread_stop(discard_thread);
-
-Reported-by: "Light Hsieh (謝明燈)" <Light.Hsieh@mediatek.com>
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Songyang Li <leesongyang@outlook.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ arch/mips/pci/pcie-octeon.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+ mode change 100644 => 100755 arch/mips/pci/pcie-octeon.c
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index e4c795a711f0f..2f75a7dfc311d 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4129,9 +4129,15 @@ void f2fs_handle_critical_error(struct f2fs_sb_info *sbi, unsigned char reason,
- 	if (shutdown)
- 		set_sbi_flag(sbi, SBI_IS_SHUTDOWN);
+diff --git a/arch/mips/pci/pcie-octeon.c b/arch/mips/pci/pcie-octeon.c
+old mode 100644
+new mode 100755
+index 2583e318e8c6b..b080c7c6cc463
+--- a/arch/mips/pci/pcie-octeon.c
++++ b/arch/mips/pci/pcie-octeon.c
+@@ -230,12 +230,18 @@ static inline uint64_t __cvmx_pcie_build_config_addr(int pcie_port, int bus,
+ {
+ 	union cvmx_pcie_address pcie_addr;
+ 	union cvmx_pciercx_cfg006 pciercx_cfg006;
++	union cvmx_pciercx_cfg032 pciercx_cfg032;
  
--	/* continue filesystem operators if errors=continue */
--	if (continue_fs || f2fs_readonly(sb))
-+	/*
-+	 * Continue filesystem operators if errors=continue. Should not set
-+	 * RO by shutdown, since RO bypasses thaw_super which can hang the
-+	 * system.
-+	 */
-+	if (continue_fs || f2fs_readonly(sb) || shutdown) {
-+		f2fs_warn(sbi, "Stopped filesystem due to reason: %d", reason);
- 		return;
-+	}
+ 	pciercx_cfg006.u32 =
+ 	    cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG006(pcie_port));
+ 	if ((bus <= pciercx_cfg006.s.pbnum) && (dev != 0))
+ 		return 0;
  
- 	f2fs_warn(sbi, "Remounting filesystem read-only");
- 	/*
++	pciercx_cfg032.u32 =
++		cvmx_pcie_cfgx_read(pcie_port, CVMX_PCIERCX_CFG032(pcie_port));
++	if ((pciercx_cfg032.s.dlla == 0) || (pciercx_cfg032.s.lt == 1))
++		return 0;
++
+ 	pcie_addr.u64 = 0;
+ 	pcie_addr.config.upper = 2;
+ 	pcie_addr.config.io = 1;
 -- 
 2.43.0
 
