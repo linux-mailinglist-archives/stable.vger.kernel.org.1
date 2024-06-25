@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-55475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5EE9163C1
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:50:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7638A916321
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD701B27853
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:50:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CD641F2244D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9512149E06;
-	Tue, 25 Jun 2024 09:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90697149DFB;
+	Tue, 25 Jun 2024 09:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZFddfhK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxIq9rrl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8682E1465A8;
-	Tue, 25 Jun 2024 09:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F07212EBEA;
+	Tue, 25 Jun 2024 09:43:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309013; cv=none; b=MH3I+8Ter3hrUEVR6tIC9WvFDWEhAgUi/HYyhzq1wXRG1LhHCNBpLgTBqklcjZ13+528iypKDvYnNvE/mJq1BSeZLflrHOI5b9CW8tqjEmwjHzgizFyV8cJeXst2Pt4LqV4/lilbc/rOISp6CHgduyOPmgJXlyEbF2wh1E94W9Y=
+	t=1719308583; cv=none; b=YRcF38CMKji6Me8jI0zouFIOh2gl3DaMOwMYh6EgrjcLp9zpsJcaQ2at3u4c8AsvXJz41NW9mtS8VRhKkfyBAwEWM+fdx5P4ko12n1NQ6Yvf+jx9pTfnatOhbBZGoUd3LnOufzhf/0rxc4Dfh506zo49xTAlfArI7Izpd1o+2Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309013; c=relaxed/simple;
-	bh=7BO7G1nYK9Bpa18lPTx66xSHqf5OFDvE5WjdK8xlLOQ=;
+	s=arc-20240116; t=1719308583; c=relaxed/simple;
+	bh=79Kk8rma4sugEBPZkYT7xy+ZmQ4I4tD3ODF+U16sQBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJI8T9/flEKIxArMlunXa3M3e3HAqg4P3pGMrSQC0bo50+BB3yNVlUECsmw2F763Do7QKJSJspLwo9/Wqxf9vx2Iijy9sCx3ryslbDc2lCUDfm+Ho58iu2PuNWruf1TW2AbG+xmkKLisc7VTZGUzvm5fqcKw1+yMPvi7F8V8cEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZFddfhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C42DC32781;
-	Tue, 25 Jun 2024 09:50:12 +0000 (UTC)
+	 MIME-Version; b=fJ0tmZsnmwe1Qzcw3YiDuSIQ9eP6YBvK9q5zc8QIvm4HNVZtszqzzBoZY/8W5KvAll9hzxMge9olurgxNuGcRRIjRUQRwn+qtpdsTKatTAHNquZ9XaapXWF5sWyjlyf8YxOK9+QzAJ1fO8Z7DYQUCYoCaGKOoBTRdFwW2MmrRCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxIq9rrl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8965DC32781;
+	Tue, 25 Jun 2024 09:43:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309013;
-	bh=7BO7G1nYK9Bpa18lPTx66xSHqf5OFDvE5WjdK8xlLOQ=;
+	s=korg; t=1719308582;
+	bh=79Kk8rma4sugEBPZkYT7xy+ZmQ4I4tD3ODF+U16sQBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZFddfhKP+BDQGCHaCYzsf+x294/+VlRWUWEk7mS5QgZlcV3eCNDebWqy+Bg1Fq15
-	 SGUR63ThSBqN8E0iD1sYwxOjj6R9OvfPJ2R2b8X5YGD8BA/wWuqJBALaerWLBasf3B
-	 6dcAckXTfCpTX0R5XI4Pc0nHp5LNxvokRDClwNzc=
+	b=CxIq9rrlWRu7LQJWAqMe1hJrN/kVSsfs3WtwZU6SJzEKxc5FkN5cLp1FR/+Xi036v
+	 rO/in6qyvd5T2uok6ECHUV0GDQsHc5KB7dWrlDkYkdNmHRJPGzJ7Hj9WQgdB41FY9A
+	 eGCEzwzcQKGmGyVMGRnofyM6jB0Cfl1Noxt29BiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joao Pinto <jpinto@synopsys.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/192] Avoid hw_desc array overrun in dw-axi-dmac
-Date: Tue, 25 Jun 2024 11:32:00 +0200
-Message-ID: <20240625085539.013849654@linuxfoundation.org>
+Subject: [PATCH 6.9 163/250] arm64: dts: imx93-11x11-evk: Remove the no-sdio property
+Date: Tue, 25 Jun 2024 11:32:01 +0200
+Message-ID: <20240625085554.315503471@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joao Pinto <Joao.Pinto@synopsys.com>
+From: Fabio Estevam <festevam@gmail.com>
 
-[ Upstream commit 333e11bf47fa8d477db90e2900b1ed3c9ae9b697 ]
+[ Upstream commit a5d400b6439ac734a5c0dbb641e26a38736abc17 ]
 
-I have a use case where nr_buffers = 3 and in which each descriptor is composed by 3
-segments, resulting in the DMA channel descs_allocated to be 9. Since axi_desc_put()
-handles the hw_desc considering the descs_allocated, this scenario would result in a
-kernel panic (hw_desc array will be overrun).
+The usdhc2 port is connected to the microSD slot. The presence of the
+'no-sdio' property prevents Wifi SDIO cards, such as CMP9010-X-EVB [1]
+to be detected.
 
-To fix this, the proposal is to add a new member to the axi_dma_desc structure,
-where we keep the number of allocated hw_descs (axi_desc_alloc()) and use it in
-axi_desc_put() to handle the hw_desc array correctly.
+Remove the 'no-sdio' property so that SDIO cards could also work.
 
-Additionally I propose to remove the axi_chan_start_first_queued() call after completing
-the transfer, since it was identified that unbalance can occur (started descriptors can
-be interrupted and transfer ignored due to DMA channel not being enabled).
+[1] https://www.nxp.com/products/wireless-connectivity/wi-fi-plus-bluetooth-plus-802-15-4/cmp9010-x-evb-iw416-usd-interface-evaluation-board:CMP9010-X-EVB
 
-Signed-off-by: Joao Pinto <jpinto@synopsys.com>
-Link: https://lore.kernel.org/r/1711536564-12919-1-git-send-email-jpinto@synopsys.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: e37907bd8294 ("arm64: dts: freescale: add i.MX93 11x11 EVK basic support")
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c | 6 ++----
- drivers/dma/dw-axi-dmac/dw-axi-dmac.h          | 1 +
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-index dd02f84e404d0..72fb40de58b3f 100644
---- a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-+++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
-@@ -256,6 +256,7 @@ static struct axi_dma_desc *axi_desc_alloc(u32 num)
- 		kfree(desc);
- 		return NULL;
- 	}
-+	desc->nr_hw_descs = num;
- 
- 	return desc;
- }
-@@ -282,7 +283,7 @@ static struct axi_dma_lli *axi_desc_get(struct axi_dma_chan *chan,
- static void axi_desc_put(struct axi_dma_desc *desc)
- {
- 	struct axi_dma_chan *chan = desc->chan;
--	int count = atomic_read(&chan->descs_allocated);
-+	int count = desc->nr_hw_descs;
- 	struct axi_dma_hw_desc *hw_desc;
- 	int descs_put;
- 
-@@ -1093,9 +1094,6 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
- 		/* Remove the completed descriptor from issued list before completing */
- 		list_del(&vd->node);
- 		vchan_cookie_complete(vd);
--
--		/* Submit queued descriptors after processing the completed ones */
--		axi_chan_start_first_queued(chan);
- 	}
- 
- out:
-diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac.h b/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-index eb267cb24f670..8521530a34ec4 100644
---- a/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-+++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
-@@ -104,6 +104,7 @@ struct axi_dma_desc {
- 	u32				completed_blocks;
- 	u32				length;
- 	u32				period_len;
-+	u32				nr_hw_descs;
+diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+index 9921ea13ab489..a7cb571d74023 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
+@@ -175,7 +175,6 @@
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
+ 	bus-width = <4>;
+ 	status = "okay";
+-	no-sdio;
+ 	no-mmc;
  };
  
- struct axi_dma_chan_config {
 -- 
 2.43.0
 
