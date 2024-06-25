@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-55428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D5691638B
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0279791637D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBD8D1C22C6B
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 349311C21B02
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA86314A096;
-	Tue, 25 Jun 2024 09:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B846147C96;
+	Tue, 25 Jun 2024 09:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUW1xodB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjILp54G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7920914A091;
-	Tue, 25 Jun 2024 09:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595271465A8;
+	Tue, 25 Jun 2024 09:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308874; cv=none; b=gFV+f2rV400FKlpK3cdS5xyrq8TIsIFSNddbnUVpnBkFgONG6FXrCvAAZyoxtAk6KRxrZgdLu47+TmvcKQnUIFiwDbFvcot5WEwMF3PBK4QQgDc+A8reYVDar2oFVkMQ4zmKHJdiI103R5CxnAW+zoknZQHl9/rYKOZiDn0wHl0=
+	t=1719308848; cv=none; b=ThXwkiHAobbSL4LqH1TU/lP9AQrQqXBQ+sgb3/oIc90b+c+g4KfgueczVs+gCxX4isId8+WQhEPe1YrYAEOTEjmOjRCrFvhuAdMXpzzs7xmFO7W6nolLNNac0NGKebilubkcLihl+oB1mcSL5BeoaSHK7mIWkxtJa5qVhgyDRdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308874; c=relaxed/simple;
-	bh=14Vp6c0WdaAzhfGwrQrpLnQ6SayzufNBu7O0Bs9EL0w=;
+	s=arc-20240116; t=1719308848; c=relaxed/simple;
+	bh=ZftK36LYvJ/n6PyeADegLXJMPcHce24GRgHdwpr5x/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEVBOF4wD5+DvE8XecHUNdKHzO1JsvaPYYDQ6Pb6Qx9HK2OGNUl2gsWGCH11QWpqb3I1jFb225u2u1mKtqxCa+H8eaAGvHozU2e3jx2CEtn4NXMi4mKWelKfrDx+2SCCUceMtst35HmVck3paSkYZYaeAU9NPWV5KFamCllMLJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUW1xodB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BA5C32781;
-	Tue, 25 Jun 2024 09:47:53 +0000 (UTC)
+	 MIME-Version; b=gJMqv2/xEbt2ioNN/e55YVQz65vtU/f9e+ZQ9Sgh7jyZfHTOjkn9grIul1PJzawHzUC2lgi38OeiQU7ui2isMlyLZPXsnGX1zqmdZQaAvicf0Q4LFoj4foNyC+UINfW6nnBPsu3Ug+lGEqDLT8xMbKtXIvVTagZPe00q1Xvy7o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjILp54G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75C6EC32781;
+	Tue, 25 Jun 2024 09:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308874;
-	bh=14Vp6c0WdaAzhfGwrQrpLnQ6SayzufNBu7O0Bs9EL0w=;
+	s=korg; t=1719308847;
+	bh=ZftK36LYvJ/n6PyeADegLXJMPcHce24GRgHdwpr5x/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUW1xodB2Ug+MnQbj+r7Pny40lH1+bcyDE2hhkKLCQ8jYfkCrdGfvA5kvBMrmeEGU
-	 zHpKnDPwShwt7lN4LJFtpM8aJyxmTHUeM4bCyMLLv2X3hBAy9FNBuFdX7FJxuY68Uu
-	 HJ2UFS28N+rBAywNgUqWq2/55FTK5UX/kEQ4mIt8=
+	b=mjILp54GX7l/cBQyU676g/yjWFiEvkJiWwurLGeq9t8XZd1O8J0dRpWfez7q1Lstr
+	 369nRC3Oax0b6EjvnmBJnfAllGhZ5RaDunEGhODp7+LABQauDzWSgfPMvAttUAxBBB
+	 DtvTONq7zvBW/22dTEU5JxWruj/hUTVF8QH209zY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Rand Deeb <rand.sec96@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/192] block/ioctl: prefer different overflow check
-Date: Tue, 25 Jun 2024 11:31:21 +0200
-Message-ID: <20240625085537.513513470@linuxfoundation.org>
+Subject: [PATCH 6.6 010/192] ssb: Fix potential NULL pointer dereference in ssb_device_uevent()
+Date: Tue, 25 Jun 2024 11:31:22 +0200
+Message-ID: <20240625085537.551816719@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
 References: <20240625085537.150087723@linuxfoundation.org>
@@ -67,86 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-[ Upstream commit ccb326b5f9e623eb7f130fbbf2505ec0e2dcaff9 ]
+[ Upstream commit 789c17185fb0f39560496c2beab9b57ce1d0cbe7 ]
 
-Running syzkaller with the newly reintroduced signed integer overflow
-sanitizer shows this report:
+The ssb_device_uevent() function first attempts to convert the 'dev' pointer
+to 'struct ssb_device *'. However, it mistakenly dereferences 'dev' before
+performing the NULL check, potentially leading to a NULL pointer
+dereference if 'dev' is NULL.
 
-[   62.982337] ------------[ cut here ]------------
-[   62.985692] cgroup: Invalid name
-[   62.986211] UBSAN: signed-integer-overflow in ../block/ioctl.c:36:46
-[   62.989370] 9pnet_fd: p9_fd_create_tcp (7343): problem connecting socket to 127.0.0.1
-[   62.992992] 9223372036854775807 + 4095 cannot be represented in type 'long long'
-[   62.997827] 9pnet_fd: p9_fd_create_tcp (7345): problem connecting socket to 127.0.0.1
-[   62.999369] random: crng reseeded on system resumption
-[   63.000634] GUP no longer grows the stack in syz-executor.2 (7353): 20002000-20003000 (20001000)
-[   63.000668] CPU: 0 PID: 7353 Comm: syz-executor.2 Not tainted 6.8.0-rc2-00035-gb3ef86b5a957 #1
-[   63.000677] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   63.000682] Call Trace:
-[   63.000686]  <TASK>
-[   63.000731]  dump_stack_lvl+0x93/0xd0
-[   63.000919]  __get_user_pages+0x903/0xd30
-[   63.001030]  __gup_longterm_locked+0x153e/0x1ba0
-[   63.001041]  ? _raw_read_unlock_irqrestore+0x17/0x50
-[   63.001072]  ? try_get_folio+0x29c/0x2d0
-[   63.001083]  internal_get_user_pages_fast+0x1119/0x1530
-[   63.001109]  iov_iter_extract_pages+0x23b/0x580
-[   63.001206]  bio_iov_iter_get_pages+0x4de/0x1220
-[   63.001235]  iomap_dio_bio_iter+0x9b6/0x1410
-[   63.001297]  __iomap_dio_rw+0xab4/0x1810
-[   63.001316]  iomap_dio_rw+0x45/0xa0
-[   63.001328]  ext4_file_write_iter+0xdde/0x1390
-[   63.001372]  vfs_write+0x599/0xbd0
-[   63.001394]  ksys_write+0xc8/0x190
-[   63.001403]  do_syscall_64+0xd4/0x1b0
-[   63.001421]  ? arch_exit_to_user_mode_prepare+0x3a/0x60
-[   63.001479]  entry_SYSCALL_64_after_hwframe+0x6f/0x77
-[   63.001535] RIP: 0033:0x7f7fd3ebf539
-[   63.001551] Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 14 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-[   63.001562] RSP: 002b:00007f7fd32570c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[   63.001584] RAX: ffffffffffffffda RBX: 00007f7fd3ff3f80 RCX: 00007f7fd3ebf539
-[   63.001590] RDX: 4db6d1e4f7e43360 RSI: 0000000020000000 RDI: 0000000000000004
-[   63.001595] RBP: 00007f7fd3f1e496 R08: 0000000000000000 R09: 0000000000000000
-[   63.001599] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-[   63.001604] R13: 0000000000000006 R14: 00007f7fd3ff3f80 R15: 00007ffd415ad2b8
-...
-[   63.018142] ---[ end trace ]---
+To fix this issue, move the NULL check before dereferencing the 'dev' pointer,
+ensuring that the pointer is valid before attempting to use it.
 
-Historically, the signed integer overflow sanitizer did not work in the
-kernel due to its interaction with `-fwrapv` but this has since been
-changed [1] in the newest version of Clang; It was re-enabled in the
-kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
-sanitizer").
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Let's rework this overflow checking logic to not actually perform an
-overflow during the check itself, thus avoiding the UBSAN splat.
-
-[1]: https://github.com/llvm/llvm-project/pull/82432
-
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240507-b4-sio-block-ioctl-v3-1-ba0c2b32275e@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240306123028.164155-1-rand.sec96@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ssb/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/block/ioctl.c b/block/ioctl.c
-index 68265f914c27b..3786033342848 100644
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -33,7 +33,7 @@ static int blkpg_do_ioctl(struct block_device *bdev,
- 	if (op == BLKPG_DEL_PARTITION)
- 		return bdev_del_partition(disk, p.pno);
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index ab080cf26c9ff..0c736d51566dc 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -341,11 +341,13 @@ static int ssb_bus_match(struct device *dev, struct device_driver *drv)
  
--	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
-+	if (p.start < 0 || p.length <= 0 || LLONG_MAX - p.length < p.start)
- 		return -EINVAL;
- 	/* Check that the partition is aligned to the block size */
- 	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
+ static int ssb_device_uevent(const struct device *dev, struct kobj_uevent_env *env)
+ {
+-	const struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
++	const struct ssb_device *ssb_dev;
+ 
+ 	if (!dev)
+ 		return -ENODEV;
+ 
++	ssb_dev = dev_to_ssb_dev(dev);
++
+ 	return add_uevent_var(env,
+ 			     "MODALIAS=ssb:v%04Xid%04Xrev%02X",
+ 			     ssb_dev->id.vendor, ssb_dev->id.coreid,
 -- 
 2.43.0
 
