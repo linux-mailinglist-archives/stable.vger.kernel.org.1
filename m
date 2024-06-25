@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-55316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B39916314
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 722499163AC
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D275282CE0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:42:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29C1A28C358
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0E014A08B;
-	Tue, 25 Jun 2024 09:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2C01494DC;
+	Tue, 25 Jun 2024 09:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4GJsyOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A28k2m3O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3FE14A084;
-	Tue, 25 Jun 2024 09:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99C41465A8;
+	Tue, 25 Jun 2024 09:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308548; cv=none; b=R/BJ2Mk5euxzaZw+HOKtkbJ8XGT59XfB59fObIDAX34Yzg94ljx+v4vpAuYo8DS59dbqRAsOiqL9LSoJ4EYDgQK52awzlfyE1XmBsUj60DxobPRpZVI/3F1TMPsKGkYgSRTnuKSx9FGL6SWaz6hO5vOxfaURbdAkk9RLWTTAIgU=
+	t=1719308962; cv=none; b=V/lfq3rBxsRB33q9/my6WYU0wgTcleGMAdngZbLgsYLI271QtMcTOWeGQxFFkmNGDe9Af/HeErCyprYxwmGIjGsnRye9OoLq0Glz1U2kWMqWDmYWkPRtQi4G3H/DVL+askt9ej5XJ8dbePkzaVtNtgGe9cfEaguYKIpa2DapUI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308548; c=relaxed/simple;
-	bh=v8Eh582u3DlO/M/dysEYmUr/cEHGtMM0189qWaeK5Fk=;
+	s=arc-20240116; t=1719308962; c=relaxed/simple;
+	bh=W6bHwlKOcMIAkLDAqUyQ0M7hSf4M317WLu0+JOgiwbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W4Qf+GeDCvjwz6YVLKuJACUDxVVjq3k5L+qr3y0bi3OsnJU+WQ0sgkd66xiNzNW+s2vKKZScALNHHv//LNQuZQgL5+d7gze8sOr8GCuEj0c4A1+ltM6v8cGScal/9hUkckid2fiKxOY+JUkWzDEHUybj7m8zQd0VGlCUmJtEzB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4GJsyOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6560DC32781;
-	Tue, 25 Jun 2024 09:42:27 +0000 (UTC)
+	 MIME-Version; b=HDikPUtjq5LhMBGo/YinTtzqxlmAmg6uoGUrNtYM86PLBscqADQKlc9GvUnH6HXP8gO1BliTrtzJVRNpl35pN1hZJ0Q37xI8CYVxPixPQGNmtSzJLiNdIDBDuPsTZN3yR3CknglDEMS9LRcsc5n/7Uuj4vg2dwOc2MBTu5Ng4e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A28k2m3O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29ADBC32781;
+	Tue, 25 Jun 2024 09:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308547;
-	bh=v8Eh582u3DlO/M/dysEYmUr/cEHGtMM0189qWaeK5Fk=;
+	s=korg; t=1719308962;
+	bh=W6bHwlKOcMIAkLDAqUyQ0M7hSf4M317WLu0+JOgiwbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4GJsyOIXgWTCrD1ZOnN/maMyjTx625Bp+A24lG0H/cBvHuu8yo4TdRScOA1Y7dAV
-	 3+ikyZvl05cTE5N3dINe6RE+ruSDxAh0HutbC67Slvd+aquow11/CNbqjHesIIXIC3
-	 X8qWJ+paign9bXy/Awilqk5k4hslZbLImZkVou+4=
+	b=A28k2m3OBzn3IckQSOm2fOQKwXvfHAkyGjEh5S51teYpBQjSXiio+KOnv9N/e63if
+	 pmbWh/6PGWGWHvF2VArVBGCW7HxWk2/2ZdLDImW3NTR9KMLHSYPZO4CSNUonEY3fg8
+	 Qm/iNC5Y4IEBdpvtuvvqT5fqydZLgz3IxQX4oVAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Wander Lairson Costa <wander@redhat.com>,
+	Hu Chunyu <chuhu@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 131/250] net: stmmac: No need to calculate speed divider when offload is disabled
+Subject: [PATCH 6.6 017/192] drop_monitor: replace spin_lock by raw_spin_lock
 Date: Tue, 25 Jun 2024 11:31:29 +0200
-Message-ID: <20240625085553.092672572@linuxfoundation.org>
+Message-ID: <20240625085537.819487672@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-[ Upstream commit b8c43360f6e424131fa81d3ba8792ad8ff25a09e ]
+[ Upstream commit f1e197a665c2148ebc25fe09c53689e60afea195 ]
 
-commit be27b8965297 ("net: stmmac: replace priv->speed with
-the portTransmitRate from the tc-cbs parameters") introduced
-a problem. When deleting, it prompts "Invalid portTransmitRate
-0 (idleSlope - sendSlope)" and exits. Add judgment on cbs.enable.
-Only when offload is enabled, speed divider needs to be calculated.
+trace_drop_common() is called with preemption disabled, and it acquires
+a spin_lock. This is problematic for RT kernels because spin_locks are
+sleeping locks in this configuration, which causes the following splat:
 
-Fixes: be27b8965297 ("net: stmmac: replace priv->speed with the portTransmitRate from the tc-cbs parameters")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240617013922.1035854-1-xiaolei.wang@windriver.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 449, name: rcuc/47
+preempt_count: 1, expected: 0
+RCU nest depth: 2, expected: 2
+5 locks held by rcuc/47/449:
+ #0: ff1100086ec30a60 ((softirq_ctrl.lock)){+.+.}-{2:2}, at: __local_bh_disable_ip+0x105/0x210
+ #1: ffffffffb394a280 (rcu_read_lock){....}-{1:2}, at: rt_spin_lock+0xbf/0x130
+ #2: ffffffffb394a280 (rcu_read_lock){....}-{1:2}, at: __local_bh_disable_ip+0x11c/0x210
+ #3: ffffffffb394a160 (rcu_callback){....}-{0:0}, at: rcu_do_batch+0x360/0xc70
+ #4: ff1100086ee07520 (&data->lock){+.+.}-{2:2}, at: trace_drop_common.constprop.0+0xb5/0x290
+irq event stamp: 139909
+hardirqs last  enabled at (139908): [<ffffffffb1df2b33>] _raw_spin_unlock_irqrestore+0x63/0x80
+hardirqs last disabled at (139909): [<ffffffffb19bd03d>] trace_drop_common.constprop.0+0x26d/0x290
+softirqs last  enabled at (139892): [<ffffffffb07a1083>] __local_bh_enable_ip+0x103/0x170
+softirqs last disabled at (139898): [<ffffffffb0909b33>] rcu_cpu_kthread+0x93/0x1f0
+Preemption disabled at:
+[<ffffffffb1de786b>] rt_mutex_slowunlock+0xab/0x2e0
+CPU: 47 PID: 449 Comm: rcuc/47 Not tainted 6.9.0-rc2-rt1+ #7
+Hardware name: Dell Inc. PowerEdge R650/0Y2G81, BIOS 1.6.5 04/15/2022
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x8c/0xd0
+ dump_stack+0x14/0x20
+ __might_resched+0x21e/0x2f0
+ rt_spin_lock+0x5e/0x130
+ ? trace_drop_common.constprop.0+0xb5/0x290
+ ? skb_queue_purge_reason.part.0+0x1bf/0x230
+ trace_drop_common.constprop.0+0xb5/0x290
+ ? preempt_count_sub+0x1c/0xd0
+ ? _raw_spin_unlock_irqrestore+0x4a/0x80
+ ? __pfx_trace_drop_common.constprop.0+0x10/0x10
+ ? rt_mutex_slowunlock+0x26a/0x2e0
+ ? skb_queue_purge_reason.part.0+0x1bf/0x230
+ ? __pfx_rt_mutex_slowunlock+0x10/0x10
+ ? skb_queue_purge_reason.part.0+0x1bf/0x230
+ trace_kfree_skb_hit+0x15/0x20
+ trace_kfree_skb+0xe9/0x150
+ kfree_skb_reason+0x7b/0x110
+ skb_queue_purge_reason.part.0+0x1bf/0x230
+ ? __pfx_skb_queue_purge_reason.part.0+0x10/0x10
+ ? mark_lock.part.0+0x8a/0x520
+...
+
+trace_drop_common() also disables interrupts, but this is a minor issue
+because we could easily replace it with a local_lock.
+
+Replace the spin_lock with raw_spin_lock to avoid sleeping in atomic
+context.
+
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Reported-by: Hu Chunyu <chuhu@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_tc.c   | 40 ++++++++++---------
- 1 file changed, 22 insertions(+), 18 deletions(-)
+ net/core/drop_monitor.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index b1896379dbab5..7d240a2b54a85 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -358,24 +358,28 @@ static int tc_setup_cbs(struct stmmac_priv *priv,
+diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
+index b240d9aae4a64..58843a52bad0e 100644
+--- a/net/core/drop_monitor.c
++++ b/net/core/drop_monitor.c
+@@ -74,7 +74,7 @@ struct net_dm_hw_entries {
+ };
  
- 	port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
+ struct per_cpu_dm_data {
+-	spinlock_t		lock;	/* Protects 'skb', 'hw_entries' and
++	raw_spinlock_t		lock;	/* Protects 'skb', 'hw_entries' and
+ 					 * 'send_timer'
+ 					 */
+ 	union {
+@@ -168,9 +168,9 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
+ err:
+ 	mod_timer(&data->send_timer, jiffies + HZ / 10);
+ out:
+-	spin_lock_irqsave(&data->lock, flags);
++	raw_spin_lock_irqsave(&data->lock, flags);
+ 	swap(data->skb, skb);
+-	spin_unlock_irqrestore(&data->lock, flags);
++	raw_spin_unlock_irqrestore(&data->lock, flags);
  
--	/* Port Transmit Rate and Speed Divider */
--	switch (div_s64(port_transmit_rate_kbps, 1000)) {
--	case SPEED_10000:
--	case SPEED_5000:
--		ptr = 32;
--		break;
--	case SPEED_2500:
--	case SPEED_1000:
--		ptr = 8;
--		break;
--	case SPEED_100:
--		ptr = 4;
--		break;
--	default:
--		netdev_err(priv->dev,
--			   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
--			   port_transmit_rate_kbps);
--		return -EINVAL;
-+	if (qopt->enable) {
-+		/* Port Transmit Rate and Speed Divider */
-+		switch (div_s64(port_transmit_rate_kbps, 1000)) {
-+		case SPEED_10000:
-+		case SPEED_5000:
-+			ptr = 32;
-+			break;
-+		case SPEED_2500:
-+		case SPEED_1000:
-+			ptr = 8;
-+			break;
-+		case SPEED_100:
-+			ptr = 4;
-+			break;
-+		default:
-+			netdev_err(priv->dev,
-+				   "Invalid portTransmitRate %lld (idleSlope - sendSlope)\n",
-+				   port_transmit_rate_kbps);
-+			return -EINVAL;
-+		}
-+	} else {
-+		ptr = 0;
+ 	if (skb) {
+ 		struct nlmsghdr *nlh = (struct nlmsghdr *)skb->data;
+@@ -225,7 +225,7 @@ static void trace_drop_common(struct sk_buff *skb, void *location)
+ 
+ 	local_irq_save(flags);
+ 	data = this_cpu_ptr(&dm_cpu_data);
+-	spin_lock(&data->lock);
++	raw_spin_lock(&data->lock);
+ 	dskb = data->skb;
+ 
+ 	if (!dskb)
+@@ -259,7 +259,7 @@ static void trace_drop_common(struct sk_buff *skb, void *location)
  	}
  
- 	mode_to_use = priv->plat->tx_queues_cfg[queue].mode_to_use;
+ out:
+-	spin_unlock_irqrestore(&data->lock, flags);
++	raw_spin_unlock_irqrestore(&data->lock, flags);
+ }
+ 
+ static void trace_kfree_skb_hit(void *ignore, struct sk_buff *skb,
+@@ -314,9 +314,9 @@ net_dm_hw_reset_per_cpu_data(struct per_cpu_dm_data *hw_data)
+ 		mod_timer(&hw_data->send_timer, jiffies + HZ / 10);
+ 	}
+ 
+-	spin_lock_irqsave(&hw_data->lock, flags);
++	raw_spin_lock_irqsave(&hw_data->lock, flags);
+ 	swap(hw_data->hw_entries, hw_entries);
+-	spin_unlock_irqrestore(&hw_data->lock, flags);
++	raw_spin_unlock_irqrestore(&hw_data->lock, flags);
+ 
+ 	return hw_entries;
+ }
+@@ -448,7 +448,7 @@ net_dm_hw_trap_summary_probe(void *ignore, const struct devlink *devlink,
+ 		return;
+ 
+ 	hw_data = this_cpu_ptr(&dm_hw_cpu_data);
+-	spin_lock_irqsave(&hw_data->lock, flags);
++	raw_spin_lock_irqsave(&hw_data->lock, flags);
+ 	hw_entries = hw_data->hw_entries;
+ 
+ 	if (!hw_entries)
+@@ -477,7 +477,7 @@ net_dm_hw_trap_summary_probe(void *ignore, const struct devlink *devlink,
+ 	}
+ 
+ out:
+-	spin_unlock_irqrestore(&hw_data->lock, flags);
++	raw_spin_unlock_irqrestore(&hw_data->lock, flags);
+ }
+ 
+ static const struct net_dm_alert_ops net_dm_alert_summary_ops = {
+@@ -1673,7 +1673,7 @@ static struct notifier_block dropmon_net_notifier = {
+ 
+ static void __net_dm_cpu_data_init(struct per_cpu_dm_data *data)
+ {
+-	spin_lock_init(&data->lock);
++	raw_spin_lock_init(&data->lock);
+ 	skb_queue_head_init(&data->drop_queue);
+ 	u64_stats_init(&data->stats.syncp);
+ }
 -- 
 2.43.0
 
