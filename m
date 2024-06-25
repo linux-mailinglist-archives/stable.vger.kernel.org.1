@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-55478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BC39163C2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:50:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA84F91632D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 759251C2228C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:50:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77505285074
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6EE14A091;
-	Tue, 25 Jun 2024 09:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C17C149DF8;
+	Tue, 25 Jun 2024 09:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSad8bWk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqBSpvrb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDA31487E9;
-	Tue, 25 Jun 2024 09:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A7212EBEA;
+	Tue, 25 Jun 2024 09:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309022; cv=none; b=Py/Zd1639uhwPRBmGkAiq9NE7VsvP3yP48m49dECgnjw+hulU5odjrqyGJNXeOk3NWVe/ZJ6s2ATTSY7WXxfTQ8022H9ZWk/CNRx1c6nxy/LXxQ457eMk22IrXREKuUyxkIowYiC6730JjdeQ/pLNaDPUNhwthdMb6LC4GibQao=
+	t=1719308621; cv=none; b=HmWg7KEJTqtmWSc93CYcaqAAMClbKDXsA7IOsD8O9cREBaKyXwUxl6dHWMSMqfKtYp+jbaV8+tyIB8xXrObP8AHLrQayhumpSQxIIFSGBr/ZQ/92I6e2dQFeT5RTb0CxDqFYJzFI4IE9y66X+DiEfsXzfy7JvDVeR3UovAz/Pps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309022; c=relaxed/simple;
-	bh=KYaaRK2il49T9+MNDtLgeyycE1cIjINW5qLPziyCX/w=;
+	s=arc-20240116; t=1719308621; c=relaxed/simple;
+	bh=hpcN+LxtHndGzybQfaJmxtnT+WC0AHTD3X3bqXcXMds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OBjlTHA3gT7NtHoFW6QFwBJgBNGpVMIgeA7FDBBJ8bsf0+6qsJEMAW9oLE9zj1fWalw3EghxlwKhdSffyeXsoxz0ZoeiIPCSgIJQii5TVHF2RJrYg4JpNJLUNX9muqrYskglH457UQ5cdE18Vt5HtyEKoIDoDAVaCWqqB8+D4bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSad8bWk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CC7C32781;
-	Tue, 25 Jun 2024 09:50:21 +0000 (UTC)
+	 MIME-Version; b=YVpkOIFYdKfaA0hE9YpXvvesTECF6ENiE7/Vk+83lfxNLOSsaykwQ9U5TkaFHs/LOyxB6e1mMr17Ecm9oruzixvUg+EFPC+a2Gx5xcR/ghtSuupjswflPncTCkhmEMVGCZUTAtaj+YBiTvpjd5j1IGKGfTN70K+x0ARKnyYFoUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqBSpvrb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5071C32781;
+	Tue, 25 Jun 2024 09:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309021;
-	bh=KYaaRK2il49T9+MNDtLgeyycE1cIjINW5qLPziyCX/w=;
+	s=korg; t=1719308621;
+	bh=hpcN+LxtHndGzybQfaJmxtnT+WC0AHTD3X3bqXcXMds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSad8bWkSCuBMq781UdeJdgdD1BCrmaGn5TtGLG41jendyoWi//PREYmJv8qJHmvg
-	 eZdzygeWWO+jemi+tLtoytsUqXEBQwhEv+xPtsXhrfTnLyXwbN+WuJPnnmltvHLfws
-	 /TXkMIqNaQhpmnFRCt5+q+AqbfUlX/Ds827z3WDA=
+	b=bqBSpvrb+fXbBRTbe6yHpC5B3P5E/bgcBg5tYL4fO0DsfDw929h32QmLzChB1rkAt
+	 KYGLzrgnuEDCXFVkMrPurATdt+E06KkK7BpBghagP8XuRtY+TeotopEWyQbcrdc6QV
+	 R6VaWTcbMaVqrsd2ozXnqG3HRWVaBk5xruhlKmpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dustin L. Howett" <dustin@howett.net>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/192] ALSA: hda/realtek: Remove Framework Laptop 16 from quirks
-Date: Tue, 25 Jun 2024 11:32:20 +0200
-Message-ID: <20240625085539.782504319@linuxfoundation.org>
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.9 183/250] net: phy: dp83tg720: get master/slave configuration in link down state
+Date: Tue, 25 Jun 2024 11:32:21 +0200
+Message-ID: <20240625085555.076107810@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dustin L. Howett <dustin@howett.net>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit e799bdf51d54bebaf939fdb655aad424e624c1b1 ]
+commit 40a64cc9679540ff7c46ecc51178b07d42abbb1c upstream.
 
-The Framework Laptop 16 does not have a combination headphone/headset
-3.5mm jack; however, applying the pincfg from the Laptop 13 (nid=0x19)
-erroneously informs hda that the node is present.
+Get master/slave configuration for initial system start with the link in
+down state. This ensures ethtool shows current configuration.  Also
+fixes link reconfiguration with ethtool while in down state, preventing
+ethtool from displaying outdated configuration.
 
-Fixes: 8804fa04a492 ("ALSA: hda/realtek: Add Framework laptop 16 to quirks")
-Signed-off-by: Dustin L. Howett <dustin@howett.net>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20240605-alsa-hda-realtek-remove-framework-laptop-16-from-quirks-v1-1-11d47fe8ec4d@howett.net
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Even though dp83tg720_config_init() is executed periodically as long as
+the link is in admin up state but no carrier is detected, this is not
+sufficient for the link in admin down state where
+dp83tg720_read_status() is not periodically executed. To cover this
+case, we need an extra read role configuration in
+dp83tg720_config_aneg().
+
+Fixes: cb80ee2f9bee1 ("net: phy: Add support for the DP83TG720S Ethernet PHY")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20240614094516.1481231-2-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/phy/dp83tg720.c | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 44478e0af1e41..8e6574c07c975 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10336,7 +10336,6 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
- 	SND_PCI_QUIRK(0x8086, 0x3038, "Intel NUC 13", ALC295_FIXUP_CHROME_BOOK),
- 	SND_PCI_QUIRK(0xf111, 0x0001, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
--	SND_PCI_QUIRK(0xf111, 0x0005, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0xf111, 0x0006, "Framework Laptop", ALC295_FIXUP_FRAMEWORK_LAPTOP_MIC_NO_PRESENCE),
+diff --git a/drivers/net/phy/dp83tg720.c b/drivers/net/phy/dp83tg720.c
+index 1186dfc70fb3..c706429b225a 100644
+--- a/drivers/net/phy/dp83tg720.c
++++ b/drivers/net/phy/dp83tg720.c
+@@ -36,11 +36,20 @@
  
- #if 0
+ static int dp83tg720_config_aneg(struct phy_device *phydev)
+ {
++	int ret;
++
+ 	/* Autoneg is not supported and this PHY supports only one speed.
+ 	 * We need to care only about master/slave configuration if it was
+ 	 * changed by user.
+ 	 */
+-	return genphy_c45_pma_baset1_setup_master_slave(phydev);
++	ret = genphy_c45_pma_baset1_setup_master_slave(phydev);
++	if (ret)
++		return ret;
++
++	/* Re-read role configuration to make changes visible even if
++	 * the link is in administrative down state.
++	 */
++	return genphy_c45_pma_baset1_read_master_slave(phydev);
+ }
+ 
+ static int dp83tg720_read_status(struct phy_device *phydev)
+@@ -69,6 +78,8 @@ static int dp83tg720_read_status(struct phy_device *phydev)
+ 			return ret;
+ 
+ 		/* After HW reset we need to restore master/slave configuration.
++		 * genphy_c45_pma_baset1_read_master_slave() call will be done
++		 * by the dp83tg720_config_aneg() function.
+ 		 */
+ 		ret = dp83tg720_config_aneg(phydev);
+ 		if (ret)
+@@ -168,8 +179,15 @@ static int dp83tg720_config_init(struct phy_device *phydev)
+ 	/* In case the PHY is bootstrapped in managed mode, we need to
+ 	 * wake it.
+ 	 */
+-	return phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TG720S_LPS_CFG3,
+-			     DP83TG720S_LPS_CFG3_PWR_MODE_0);
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TG720S_LPS_CFG3,
++			    DP83TG720S_LPS_CFG3_PWR_MODE_0);
++	if (ret)
++		return ret;
++
++	/* Make role configuration visible for ethtool on init and after
++	 * rest.
++	 */
++	return genphy_c45_pma_baset1_read_master_slave(phydev);
+ }
+ 
+ static struct phy_driver dp83tg720_driver[] = {
 -- 
-2.43.0
+2.45.2
 
 
 
