@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DD89163D4
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F159B916338
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40FA328C374
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD45B2812CE
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B37714A0A8;
-	Tue, 25 Jun 2024 09:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14501494AF;
+	Tue, 25 Jun 2024 09:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nA+MkP1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h13by+Du"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E9A14A097;
-	Tue, 25 Jun 2024 09:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A2912EBEA;
+	Tue, 25 Jun 2024 09:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309054; cv=none; b=R7nUn7Obh8VbmtsueSRdPaJOewrHsYdfPQ3pEfXN2rZGyGXd5l5AxYNYDoviyhsCORA3iTDvKtHRcbOfz8ynSOrqzZ+LxJe0cGhmV3v/aapnrQV3mVoCfXBTccumHEVAHN0HeVv4EQfbPfZgDPqSQwIAdNEBZp5zIm8KgyQbP2A=
+	t=1719308650; cv=none; b=XIt37zoswhIz5G5twNd2IDdw7QBqcAzfLaG5gHwM7y5EwD1Q1HjHp/LX521PmnBZuAs5foynQVM4r1WwkcEGwbvrjIg8BBK3xaHssznihmXekx7h6QDWSjQSzeH0PhhkV1pTF/3pYVLhxvpx3TFctTRb32U5J4VY6n7NqwwpN0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309054; c=relaxed/simple;
-	bh=fCQaCKdaSZJEChpdbf++hBwcvJjv4dsGj7zyw3KNg88=;
+	s=arc-20240116; t=1719308650; c=relaxed/simple;
+	bh=Ia38vSLdukPEr7X0Nz+xKZocu3HCawJ2U1d2Nxrcnqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jg6aRmYioxRnC0WX5gRKs99Qo4a4mVcDjEXyiCYlO2SNEjooag9F+2iYOZgeu9nkuiopG+dpsOliD+6TQYBw6BUtxqR543Z/FI/rMnoSRDwgJKyTgsxarRqdlrF6IHj3ii1lJKfI3MzTkHmr0KYQVINOV1UWG3OQ1hamMXHl8kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nA+MkP1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2BDC32781;
-	Tue, 25 Jun 2024 09:50:53 +0000 (UTC)
+	 MIME-Version; b=jhm07gD+IpIw9zgp5brCusehPy2dMnvXBEwgIRLAAfQdzt5gClsxuMgAwFeFYGiX2Zm1/rAFB5aKd+LLFG7hDOSmdslpAEz6V14Me+kxGNN6OHrTIP7GayeaniMFq5hX23fHT+gmIw5E4fvEbAAYNDPsNCJqMbuahjccbuqzS3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h13by+Du; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38023C32781;
+	Tue, 25 Jun 2024 09:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309054;
-	bh=fCQaCKdaSZJEChpdbf++hBwcvJjv4dsGj7zyw3KNg88=;
+	s=korg; t=1719308650;
+	bh=Ia38vSLdukPEr7X0Nz+xKZocu3HCawJ2U1d2Nxrcnqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nA+MkP1FJSkqFBqC5W0bho3J5nTyBkZw878BpY5gej+R9BuC0ipSyVLGICImFuSEa
-	 9V9i9RikvSKMypn+ZU7ChGSEcuuNj81uoQ3F2XDERzZL9kE3NDdjtEye7qfOdRep4b
-	 5yGc4pVhGGarBa2jeLbjdt/TFF0lCOyh1/V+xDIs=
+	b=h13by+Duq+wb1W4F380MQZN3xogMwzVffIPWnCYlIxQOz6mUmfYnSAo7hJGivyBqa
+	 fLDQb5OXOCe0A+aV0kVksmmhdIZwbzBUjVNDFuzSVPn59nTXwgRATkEsB6B0ktZhWT
+	 S/7Tjkfh+QTBiW47S59r2WdsH3aOPt8IWK7Wsrf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com,
-	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/192] netrom: Fix a memory leak in nr_heartbeat_expiry()
+	Alexander Potapenko <glider@google.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.9 192/250] KVM: arm64: Disassociate vcpus from redistributor region on teardown
 Date: Tue, 25 Jun 2024 11:32:30 +0200
-Message-ID: <20240625085540.170803980@linuxfoundation.org>
+Message-ID: <20240625085555.421228123@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 0b9130247f3b6a1122478471ff0e014ea96bb735 ]
+commit 0d92e4a7ffd5c42b9fa864692f82476c0bf8bcc8 upstream.
 
-syzbot reported a memory leak in nr_create() [0].
+When tearing down a redistributor region, make sure we don't have
+any dangling pointer to that region stored in a vcpu.
 
-Commit 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
-added sock_hold() to the nr_heartbeat_expiry() function, where
-a) a socket has a SOCK_DESTROY flag or
-b) a listening socket has a SOCK_DEAD flag.
-
-But in the case "a," when the SOCK_DESTROY flag is set, the file descriptor
-has already been closed and the nr_release() function has been called.
-So it makes no sense to hold the reference count because no one will
-call another nr_destroy_socket() and put it as in the case "b."
-
-nr_connect
-  nr_establish_data_link
-    nr_start_heartbeat
-
-nr_release
-  switch (nr->state)
-  case NR_STATE_3
-    nr->state = NR_STATE_2
-    sock_set_flag(sk, SOCK_DESTROY);
-
-                        nr_rx_frame
-                          nr_process_rx_frame
-                            switch (nr->state)
-                            case NR_STATE_2
-                              nr_state2_machine()
-                                nr_disconnect()
-                                  nr_sk(sk)->state = NR_STATE_0
-                                  sock_set_flag(sk, SOCK_DEAD)
-
-                        nr_heartbeat_expiry
-                          switch (nr->state)
-                          case NR_STATE_0
-                            if (sock_flag(sk, SOCK_DESTROY) ||
-                               (sk->sk_state == TCP_LISTEN
-                                 && sock_flag(sk, SOCK_DEAD)))
-                               sock_hold()  // ( !!! )
-                               nr_destroy_socket()
-
-To fix the memory leak, let's call sock_hold() only for a listening socket.
-
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with Syzkaller.
-
-[0]: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
-
-Reported-by: syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
-Fixes: 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
-Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e5a35635464b ("kvm: arm64: vgic-v3: Introduce vgic_v3_free_redist_region()")
+Reported-by: Alexander Potapenko <glider@google.com>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240605175637.1635653-1-maz@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netrom/nr_timer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/vgic/vgic-init.c    |    2 +-
+ arch/arm64/kvm/vgic/vgic-mmio-v3.c |   15 +++++++++++++--
+ arch/arm64/kvm/vgic/vgic.h         |    2 +-
+ 3 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/net/netrom/nr_timer.c b/net/netrom/nr_timer.c
-index 4e7c968cde2dc..5e3ca068f04e0 100644
---- a/net/netrom/nr_timer.c
-+++ b/net/netrom/nr_timer.c
-@@ -121,7 +121,8 @@ static void nr_heartbeat_expiry(struct timer_list *t)
- 		   is accepted() it isn't 'dead' so doesn't get removed. */
- 		if (sock_flag(sk, SOCK_DESTROY) ||
- 		    (sk->sk_state == TCP_LISTEN && sock_flag(sk, SOCK_DEAD))) {
--			sock_hold(sk);
-+			if (sk->sk_state == TCP_LISTEN)
-+				sock_hold(sk);
- 			bh_unlock_sock(sk);
- 			nr_destroy_socket(sk);
- 			goto out;
--- 
-2.43.0
-
+--- a/arch/arm64/kvm/vgic/vgic-init.c
++++ b/arch/arm64/kvm/vgic/vgic-init.c
+@@ -355,7 +355,7 @@ static void kvm_vgic_dist_destroy(struct
+ 
+ 	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
+ 		list_for_each_entry_safe(rdreg, next, &dist->rd_regions, list)
+-			vgic_v3_free_redist_region(rdreg);
++			vgic_v3_free_redist_region(kvm, rdreg);
+ 		INIT_LIST_HEAD(&dist->rd_regions);
+ 	} else {
+ 		dist->vgic_cpu_base = VGIC_ADDR_UNDEF;
+--- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
++++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
+@@ -919,8 +919,19 @@ free:
+ 	return ret;
+ }
+ 
+-void vgic_v3_free_redist_region(struct vgic_redist_region *rdreg)
++void vgic_v3_free_redist_region(struct kvm *kvm, struct vgic_redist_region *rdreg)
+ {
++	struct kvm_vcpu *vcpu;
++	unsigned long c;
++
++	lockdep_assert_held(&kvm->arch.config_lock);
++
++	/* Garbage collect the region */
++	kvm_for_each_vcpu(c, vcpu, kvm) {
++		if (vcpu->arch.vgic_cpu.rdreg == rdreg)
++			vcpu->arch.vgic_cpu.rdreg = NULL;
++	}
++
+ 	list_del(&rdreg->list);
+ 	kfree(rdreg);
+ }
+@@ -945,7 +956,7 @@ int vgic_v3_set_redist_base(struct kvm *
+ 
+ 		mutex_lock(&kvm->arch.config_lock);
+ 		rdreg = vgic_v3_rdist_region_from_index(kvm, index);
+-		vgic_v3_free_redist_region(rdreg);
++		vgic_v3_free_redist_region(kvm, rdreg);
+ 		mutex_unlock(&kvm->arch.config_lock);
+ 		return ret;
+ 	}
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -317,7 +317,7 @@ vgic_v3_rd_region_size(struct kvm *kvm,
+ 
+ struct vgic_redist_region *vgic_v3_rdist_region_from_index(struct kvm *kvm,
+ 							   u32 index);
+-void vgic_v3_free_redist_region(struct vgic_redist_region *rdreg);
++void vgic_v3_free_redist_region(struct kvm *kvm, struct vgic_redist_region *rdreg);
+ 
+ bool vgic_v3_rdist_overlap(struct kvm *kvm, gpa_t base, size_t size);
+ 
 
 
 
