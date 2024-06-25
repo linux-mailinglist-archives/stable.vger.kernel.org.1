@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-55418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224FA91637C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 489109162E0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCAA61F22C31
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B4821C21C08
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2971494AF;
-	Tue, 25 Jun 2024 09:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD4E1494CB;
+	Tue, 25 Jun 2024 09:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcI3w89e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULuBGDEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9FC1465A8;
-	Tue, 25 Jun 2024 09:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7400A12EBEA;
+	Tue, 25 Jun 2024 09:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308845; cv=none; b=WMD5cNUf8a+aV+DPUijUQX/M87/81zA0rdlp8WSesljJyW+WJ84euG8OPdthD4AKFHK1WS8YD+asfVB88n+dx5KPjQCktI+nMu9fWj8Xz8kc7xO9kGtHU7ciZUI1MQquUlnvxV74wXcRYUrw62E15VvHU9z6rHstLCFD7Vxb3/I=
+	t=1719308424; cv=none; b=gPucyHWjygzbtVuX5yNby6VvlVHE+L05HvU7K1ZOGPStX6LLLHnkiQFEJ13uIkww9MKnwngtFgNHM9AjKeyuBPkvqmB2QZeLNfHFGOxown14R4NNv7WlBCCFbXkuX9Q+22iUUSqGkHaglRvKEWfRIO70aBI6fCYLr7ITShR6Wy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308845; c=relaxed/simple;
-	bh=DYwf7b/gwjG9yw8SyYCqk9W3YALtN0wNct2qgeePs4M=;
+	s=arc-20240116; t=1719308424; c=relaxed/simple;
+	bh=1Iv27whbmAWL/fluuGWHW0CNYs85dX7VTVwjQEbunac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTa7R/KgfnmOpQzTQjt53ch/jE1hDInaU0lFyHZ8/1wOfLOjXQGSyGTqxSmGBqJN7Ny1lQxiWEk8JiFga9obRS2X1uMCloUgVJA//U8/EokSbcWUudu2HdN+Q6MGxisQgy9TLkiOakTZ850bFIr4i9AlotV/6pUfoDqYwhQf1is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcI3w89e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9420FC32781;
-	Tue, 25 Jun 2024 09:47:24 +0000 (UTC)
+	 MIME-Version; b=DA807pkhEFUciE1mTbjSf9IQYekjM/MK76oNk3b7zCSiwDpLzHqtdshB/g3onJ10WZJenBKafCtC9kSNQp6dTgo03QsT3zPIJdsKWqwHxQ6CMmjKhcHxtORct5Pg5RbDqJfb76o0jQs290s6Qd0++/i6HZjl8gFFGXtABiOQS/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULuBGDEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E608CC32781;
+	Tue, 25 Jun 2024 09:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308845;
-	bh=DYwf7b/gwjG9yw8SyYCqk9W3YALtN0wNct2qgeePs4M=;
+	s=korg; t=1719308424;
+	bh=1Iv27whbmAWL/fluuGWHW0CNYs85dX7VTVwjQEbunac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HcI3w89e5J3n52g4Zln+WSlc+an4Wn8PG3PtizzJX2FYbtl8/tR0A6GCDS/mAifDA
-	 JPU4ZERtKxhm24+69HoOpMJM1jXr3NrjP/hC2oPdY3F+OMJ68ZvRNEIuvnnOW97qDg
-	 8wLpvNtDf5TzJce/0cUzbARI5y6stz3pV7MpAUm4=
+	b=ULuBGDEEm19rW3wCrb8JnNZmjhVCWugwra01M3DOpURSy7cl2ADWzELR+jG3GuF3h
+	 oiBTpnC5T0+TVL/oQDaXHHfH58IRV/kGgLbBU0s5A/3g1pCyXfsczWtQL9Cnb0nl2y
+	 V2FuMEnxsFjCsG++o2B4RHjr7lP8IjIApA7lFX5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Ajrat Makhmutov <rauty@altlinux.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/192] fs/writeback: bail out if there is no more inodes for IO and queued once
-Date: Tue, 25 Jun 2024 11:31:13 +0200
-Message-ID: <20240625085537.209869939@linuxfoundation.org>
+Subject: [PATCH 6.9 116/250] ALSA: hda/realtek: Enable headset mic on IdeaPad 330-17IKB 81DM
+Date: Tue, 25 Jun 2024 11:31:14 +0200
+Message-ID: <20240625085552.523060621@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Ajrat Makhmutov <rautyrauty@gmail.com>
 
-[ Upstream commit d92109891f21cf367caa2cc6dff11a4411d917f4 ]
+[ Upstream commit b1fd0d1285b1eae8b99af36fb26ed2512b809af6 ]
 
-For case there is no more inodes for IO in io list from last wb_writeback,
-We may bail out early even there is inode in dirty list should be written
-back. Only bail out when we queued once to avoid missing dirtied inode.
+Headset microphone do not work out of the box with this laptop. This
+quirk fixes it. Zihao Wang specified the wrong subsystem id in his patch.
 
-This is from code reading...
-
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Link: https://lore.kernel.org/r/20240228091958.288260-3-shikemeng@huaweicloud.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-[brauner@kernel.org: fold in memory corruption fix from Jan in [1]]
-Link: https://lore.kernel.org/r/20240405132346.bid7gibby3lxxhez@quack3 [1]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/all/20220424084120.74125-1-wzhd@ustc.edu/
+Fixes: 3b79954fd00d ("ALSA: hda/realtek: Add quirk for Yoga Duet 7 13ITL6 speakers")
+Signed-off-by: Ajrat Makhmutov <rauty@altlinux.org>
+Link: https://lore.kernel.org/r/20240615125457.167844-1-rauty@altlinux.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fs-writeback.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-index 1767493dffda7..0a498bc60f557 100644
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -2044,6 +2044,7 @@ static long wb_writeback(struct bdi_writeback *wb,
- 	struct inode *inode;
- 	long progress;
- 	struct blk_plug plug;
-+	bool queued = false;
- 
- 	blk_start_plug(&plug);
- 	for (;;) {
-@@ -2086,8 +2087,10 @@ static long wb_writeback(struct bdi_writeback *wb,
- 			dirtied_before = jiffies;
- 
- 		trace_writeback_start(wb, work);
--		if (list_empty(&wb->b_io))
-+		if (list_empty(&wb->b_io)) {
- 			queue_io(wb, work, dirtied_before);
-+			queued = true;
-+		}
- 		if (work->sb)
- 			progress = writeback_sb_inodes(work->sb, wb, work);
- 		else
-@@ -2102,7 +2105,7 @@ static long wb_writeback(struct bdi_writeback *wb,
- 		 * mean the overall work is done. So we keep looping as long
- 		 * as made some progress on cleaning pages or inodes.
- 		 */
--		if (progress) {
-+		if (progress || !queued) {
- 			spin_unlock(&wb->list_lock);
- 			continue;
- 		}
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 61cb908717f27..e1f757e541410 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10490,7 +10490,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3818, "Lenovo C940 / Yoga Duet 7", ALC298_FIXUP_LENOVO_C940_DUET7),
+ 	SND_PCI_QUIRK(0x17aa, 0x3819, "Lenovo 13s Gen2 ITL", ALC287_FIXUP_13S_GEN2_SPEAKERS),
+-	SND_PCI_QUIRK(0x17aa, 0x3820, "Yoga Duet 7 13ITL6", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
++	SND_PCI_QUIRK(0x17aa, 0x3820, "IdeaPad 330-17IKB 81DM", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3824, "Legion Y9000X 2020", ALC285_FIXUP_LEGION_Y9000X_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3827, "Ideapad S740", ALC285_FIXUP_IDEAPAD_S740_COEF),
+ 	SND_PCI_QUIRK(0x17aa, 0x3834, "Lenovo IdeaPad Slim 9i 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
 -- 
 2.43.0
 
