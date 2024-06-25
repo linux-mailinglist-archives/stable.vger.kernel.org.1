@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-55615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 197F691646E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E35916348
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5565CB2903D
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 270981C21796
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA5014A087;
-	Tue, 25 Jun 2024 09:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F0351494AF;
+	Tue, 25 Jun 2024 09:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBMQvd4d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nExXjSPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3B2146A67;
-	Tue, 25 Jun 2024 09:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E59912EBEA;
+	Tue, 25 Jun 2024 09:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309429; cv=none; b=uccNHizz43inTf6erLpapWrmGRzMV7GLidtqd+wmbpHWk2rKSLmIymag2AwsC8DkA6Jm4yts5swU1WCN39UrY9jGNNO+7QxuTftmIplnKq/N8y2JnLZqI7EOePOVdXY9KJIG8jAECUdWYIBZtvjrhN5TnPLdkVduw2ICF2v1u7s=
+	t=1719308698; cv=none; b=qHTq0fNPsDhWUGay6dueU4zQt7Sk6kEnKvmS35zXh2PXPHSO/KxsnqEk2S3R6XUPOKQt4wpZWzxkEUnR/TlFuabQvxbRXVeMQJyKylLI4RXibbce64+9O1ISUW7k9hRr0BnE+gmUA03Bydx/4YolIyJnx3fY839qOkrn2VsQnZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309429; c=relaxed/simple;
-	bh=HgU7BsDs+aWOm7gVmGqsGMm7IwiFhA1XubJ6GqxlHFQ=;
+	s=arc-20240116; t=1719308698; c=relaxed/simple;
+	bh=x9j2G5JZwsSTLFzek1Ohlone4i6l60lOOHdRKwi8bP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ScLhc4/rJ5Bi7eO1dXve9lefn3VkJIKy3Vb8knRccy8o7O3RGNTf7uz4MIiTDZZ2w3nxmLPQVftSQYVMXUzc/bIyOcKwTHEYMeOCkEqz6tTcmqAgbODPNVQlQEEjeKlllUlZcwxkQZtr/e9W1+fxh3pxYn8GaSclNdI68oVT9E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBMQvd4d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DC7C32781;
-	Tue, 25 Jun 2024 09:57:08 +0000 (UTC)
+	 MIME-Version; b=IksIWxnoeti26QFrq/Fowc4Tq7Q53LyTMoAU35ZyOaHssmXS+eQ3bvUj+LLSClrHB8DVI8Wc1EjN03a4VEJODFAeJ1gR7XlZrwUZ6eoHXiCzQXkw+z60hm3U0SsWydTFx0p+vRCQ7CJgVKUgtATsQRxkqYbnzHFk+qtGbZwrv9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nExXjSPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE81C32781;
+	Tue, 25 Jun 2024 09:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309429;
-	bh=HgU7BsDs+aWOm7gVmGqsGMm7IwiFhA1XubJ6GqxlHFQ=;
+	s=korg; t=1719308698;
+	bh=x9j2G5JZwsSTLFzek1Ohlone4i6l60lOOHdRKwi8bP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sBMQvd4do0ePyp1wRF7EKem8p04q8N+aHqUCab+gKO1ZsgrUwinsTclV6VBTTpFhb
-	 dubZJZ+DtWCxTKuxLeHFmxzwD+lHqNI5lW6CggoKwl+9Gn1Kuj/YtNedtY7AOAjbce
-	 2l+qnuUlByMrbQQUcyKocSnw7UNjlCAgFLZebh7I=
+	b=nExXjSPjFbzU7xlzDYqBLVveAtUxsX6xm76kCyIf60W5EDuuRvFyJHIasgXhyoDo5
+	 tNCYFCOZNHZ6NJtybduUjfizsU6ZS68Wx1pNywZ4nSeLGAx5ZyPcHLKzJwzo4WwCOE
+	 sBs6V6kij6mOPxvWoMaCgtewbLTZp5JK4Ib4OqZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wander Lairson Costa <wander@redhat.com>,
-	Hu Chunyu <chuhu@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 013/131] drop_monitor: replace spin_lock by raw_spin_lock
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 210/250] ocfs2: fix NULL pointer dereference in ocfs2_journal_dirty()
 Date: Tue, 25 Jun 2024 11:32:48 +0200
-Message-ID: <20240625085526.448045618@linuxfoundation.org>
+Message-ID: <20240625085556.114386844@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,160 +68,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-[ Upstream commit f1e197a665c2148ebc25fe09c53689e60afea195 ]
+commit 58f7e1e2c9e72c7974054c64c3abeac81c11f822 upstream.
 
-trace_drop_common() is called with preemption disabled, and it acquires
-a spin_lock. This is problematic for RT kernels because spin_locks are
-sleeping locks in this configuration, which causes the following splat:
+bdev->bd_super has been removed and commit 8887b94d9322 change the usage
+from bdev->bd_super to b_assoc_map->host->i_sb.  This introduces the
+following NULL pointer dereference in ocfs2_journal_dirty() since
+b_assoc_map is still not initialized.  This can be easily reproduced by
+running xfstests generic/186, which simulate no more credits.
 
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 449, name: rcuc/47
-preempt_count: 1, expected: 0
-RCU nest depth: 2, expected: 2
-5 locks held by rcuc/47/449:
- #0: ff1100086ec30a60 ((softirq_ctrl.lock)){+.+.}-{2:2}, at: __local_bh_disable_ip+0x105/0x210
- #1: ffffffffb394a280 (rcu_read_lock){....}-{1:2}, at: rt_spin_lock+0xbf/0x130
- #2: ffffffffb394a280 (rcu_read_lock){....}-{1:2}, at: __local_bh_disable_ip+0x11c/0x210
- #3: ffffffffb394a160 (rcu_callback){....}-{0:0}, at: rcu_do_batch+0x360/0xc70
- #4: ff1100086ee07520 (&data->lock){+.+.}-{2:2}, at: trace_drop_common.constprop.0+0xb5/0x290
-irq event stamp: 139909
-hardirqs last  enabled at (139908): [<ffffffffb1df2b33>] _raw_spin_unlock_irqrestore+0x63/0x80
-hardirqs last disabled at (139909): [<ffffffffb19bd03d>] trace_drop_common.constprop.0+0x26d/0x290
-softirqs last  enabled at (139892): [<ffffffffb07a1083>] __local_bh_enable_ip+0x103/0x170
-softirqs last disabled at (139898): [<ffffffffb0909b33>] rcu_cpu_kthread+0x93/0x1f0
-Preemption disabled at:
-[<ffffffffb1de786b>] rt_mutex_slowunlock+0xab/0x2e0
-CPU: 47 PID: 449 Comm: rcuc/47 Not tainted 6.9.0-rc2-rt1+ #7
-Hardware name: Dell Inc. PowerEdge R650/0Y2G81, BIOS 1.6.5 04/15/2022
-Call Trace:
- <TASK>
- dump_stack_lvl+0x8c/0xd0
- dump_stack+0x14/0x20
- __might_resched+0x21e/0x2f0
- rt_spin_lock+0x5e/0x130
- ? trace_drop_common.constprop.0+0xb5/0x290
- ? skb_queue_purge_reason.part.0+0x1bf/0x230
- trace_drop_common.constprop.0+0xb5/0x290
- ? preempt_count_sub+0x1c/0xd0
- ? _raw_spin_unlock_irqrestore+0x4a/0x80
- ? __pfx_trace_drop_common.constprop.0+0x10/0x10
- ? rt_mutex_slowunlock+0x26a/0x2e0
- ? skb_queue_purge_reason.part.0+0x1bf/0x230
- ? __pfx_rt_mutex_slowunlock+0x10/0x10
- ? skb_queue_purge_reason.part.0+0x1bf/0x230
- trace_kfree_skb_hit+0x15/0x20
- trace_kfree_skb+0xe9/0x150
- kfree_skb_reason+0x7b/0x110
- skb_queue_purge_reason.part.0+0x1bf/0x230
- ? __pfx_skb_queue_purge_reason.part.0+0x10/0x10
- ? mark_lock.part.0+0x8a/0x520
+[  134.351592] BUG: kernel NULL pointer dereference, address: 0000000000000000
 ...
+[  134.355341] RIP: 0010:ocfs2_journal_dirty+0x14f/0x160 [ocfs2]
+...
+[  134.365071] Call Trace:
+[  134.365312]  <TASK>
+[  134.365524]  ? __die_body+0x1e/0x60
+[  134.365868]  ? page_fault_oops+0x13d/0x4f0
+[  134.366265]  ? __pfx_bit_wait_io+0x10/0x10
+[  134.366659]  ? schedule+0x27/0xb0
+[  134.366981]  ? exc_page_fault+0x6a/0x140
+[  134.367356]  ? asm_exc_page_fault+0x26/0x30
+[  134.367762]  ? ocfs2_journal_dirty+0x14f/0x160 [ocfs2]
+[  134.368305]  ? ocfs2_journal_dirty+0x13d/0x160 [ocfs2]
+[  134.368837]  ocfs2_create_new_meta_bhs.isra.51+0x139/0x2e0 [ocfs2]
+[  134.369454]  ocfs2_grow_tree+0x688/0x8a0 [ocfs2]
+[  134.369927]  ocfs2_split_and_insert.isra.67+0x35c/0x4a0 [ocfs2]
+[  134.370521]  ocfs2_split_extent+0x314/0x4d0 [ocfs2]
+[  134.371019]  ocfs2_change_extent_flag+0x174/0x410 [ocfs2]
+[  134.371566]  ocfs2_add_refcount_flag+0x3fa/0x630 [ocfs2]
+[  134.372117]  ocfs2_reflink_remap_extent+0x21b/0x4c0 [ocfs2]
+[  134.372994]  ? inode_update_timestamps+0x4a/0x120
+[  134.373692]  ? __pfx_ocfs2_journal_access_di+0x10/0x10 [ocfs2]
+[  134.374545]  ? __pfx_ocfs2_journal_access_di+0x10/0x10 [ocfs2]
+[  134.375393]  ocfs2_reflink_remap_blocks+0xe4/0x4e0 [ocfs2]
+[  134.376197]  ocfs2_remap_file_range+0x1de/0x390 [ocfs2]
+[  134.376971]  ? security_file_permission+0x29/0x50
+[  134.377644]  vfs_clone_file_range+0xfe/0x320
+[  134.378268]  ioctl_file_clone+0x45/0xa0
+[  134.378853]  do_vfs_ioctl+0x457/0x990
+[  134.379422]  __x64_sys_ioctl+0x6e/0xd0
+[  134.379987]  do_syscall_64+0x5d/0x170
+[  134.380550]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  134.381231] RIP: 0033:0x7fa4926397cb
+[  134.381786] Code: 73 01 c3 48 8b 0d bd 56 38 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 8d 56 38 00 f7 d8 64 89 01 48
+[  134.383930] RSP: 002b:00007ffc2b39f7b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+[  134.384854] RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007fa4926397cb
+[  134.385734] RDX: 00007ffc2b39f7f0 RSI: 000000004020940d RDI: 0000000000000003
+[  134.386606] RBP: 0000000000000000 R08: 00111a82a4f015bb R09: 00007fa494221000
+[  134.387476] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+[  134.388342] R13: 0000000000f10000 R14: 0000558e844e2ac8 R15: 0000000000f10000
+[  134.389207]  </TASK>
 
-trace_drop_common() also disables interrupts, but this is a minor issue
-because we could easily replace it with a local_lock.
+Fix it by only aborting transaction and journal in ocfs2_journal_dirty()
+now, and leave ocfs2_abort() later when detecting an aborted handle,
+e.g. start next transaction. Also log the handle details in this case.
 
-Replace the spin_lock with raw_spin_lock to avoid sleeping in atomic
-context.
-
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Reported-by: Hu Chunyu <chuhu@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240530110630.3933832-1-joseph.qi@linux.alibaba.com
+Fixes: 8887b94d9322 ("ocfs2: stop using bdev->bd_super for journal error logging")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/drop_monitor.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ fs/ocfs2/journal.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
-index 8e0a90b45df22..522657b597d9f 100644
---- a/net/core/drop_monitor.c
-+++ b/net/core/drop_monitor.c
-@@ -72,7 +72,7 @@ struct net_dm_hw_entries {
- };
+--- a/fs/ocfs2/journal.c
++++ b/fs/ocfs2/journal.c
+@@ -778,13 +778,15 @@ void ocfs2_journal_dirty(handle_t *handl
+ 		if (!is_handle_aborted(handle)) {
+ 			journal_t *journal = handle->h_transaction->t_journal;
  
- struct per_cpu_dm_data {
--	spinlock_t		lock;	/* Protects 'skb', 'hw_entries' and
-+	raw_spinlock_t		lock;	/* Protects 'skb', 'hw_entries' and
- 					 * 'send_timer'
- 					 */
- 	union {
-@@ -166,9 +166,9 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
- err:
- 	mod_timer(&data->send_timer, jiffies + HZ / 10);
- out:
--	spin_lock_irqsave(&data->lock, flags);
-+	raw_spin_lock_irqsave(&data->lock, flags);
- 	swap(data->skb, skb);
--	spin_unlock_irqrestore(&data->lock, flags);
-+	raw_spin_unlock_irqrestore(&data->lock, flags);
- 
- 	if (skb) {
- 		struct nlmsghdr *nlh = (struct nlmsghdr *)skb->data;
-@@ -223,7 +223,7 @@ static void trace_drop_common(struct sk_buff *skb, void *location)
- 
- 	local_irq_save(flags);
- 	data = this_cpu_ptr(&dm_cpu_data);
--	spin_lock(&data->lock);
-+	raw_spin_lock(&data->lock);
- 	dskb = data->skb;
- 
- 	if (!dskb)
-@@ -257,7 +257,7 @@ static void trace_drop_common(struct sk_buff *skb, void *location)
+-			mlog(ML_ERROR, "jbd2_journal_dirty_metadata failed. "
+-					"Aborting transaction and journal.\n");
++			mlog(ML_ERROR, "jbd2_journal_dirty_metadata failed: "
++			     "handle type %u started at line %u, credits %u/%u "
++			     "errcode %d. Aborting transaction and journal.\n",
++			     handle->h_type, handle->h_line_no,
++			     handle->h_requested_credits,
++			     jbd2_handle_buffer_credits(handle), status);
+ 			handle->h_err = status;
+ 			jbd2_journal_abort_handle(handle);
+ 			jbd2_journal_abort(journal, status);
+-			ocfs2_abort(bh->b_assoc_map->host->i_sb,
+-				    "Journal already aborted.\n");
+ 		}
  	}
- 
- out:
--	spin_unlock_irqrestore(&data->lock, flags);
-+	raw_spin_unlock_irqrestore(&data->lock, flags);
  }
- 
- static void trace_kfree_skb_hit(void *ignore, struct sk_buff *skb,
-@@ -312,9 +312,9 @@ net_dm_hw_reset_per_cpu_data(struct per_cpu_dm_data *hw_data)
- 		mod_timer(&hw_data->send_timer, jiffies + HZ / 10);
- 	}
- 
--	spin_lock_irqsave(&hw_data->lock, flags);
-+	raw_spin_lock_irqsave(&hw_data->lock, flags);
- 	swap(hw_data->hw_entries, hw_entries);
--	spin_unlock_irqrestore(&hw_data->lock, flags);
-+	raw_spin_unlock_irqrestore(&hw_data->lock, flags);
- 
- 	return hw_entries;
- }
-@@ -446,7 +446,7 @@ net_dm_hw_trap_summary_probe(void *ignore, const struct devlink *devlink,
- 		return;
- 
- 	hw_data = this_cpu_ptr(&dm_hw_cpu_data);
--	spin_lock_irqsave(&hw_data->lock, flags);
-+	raw_spin_lock_irqsave(&hw_data->lock, flags);
- 	hw_entries = hw_data->hw_entries;
- 
- 	if (!hw_entries)
-@@ -475,7 +475,7 @@ net_dm_hw_trap_summary_probe(void *ignore, const struct devlink *devlink,
- 	}
- 
- out:
--	spin_unlock_irqrestore(&hw_data->lock, flags);
-+	raw_spin_unlock_irqrestore(&hw_data->lock, flags);
- }
- 
- static const struct net_dm_alert_ops net_dm_alert_summary_ops = {
-@@ -1658,7 +1658,7 @@ static struct notifier_block dropmon_net_notifier = {
- 
- static void __net_dm_cpu_data_init(struct per_cpu_dm_data *data)
- {
--	spin_lock_init(&data->lock);
-+	raw_spin_lock_init(&data->lock);
- 	skb_queue_head_init(&data->drop_queue);
- 	u64_stats_init(&data->stats.syncp);
- }
--- 
-2.43.0
-
 
 
 
