@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60CD39163A6
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26343916311
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CE2E28C36C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C58071F20F91
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC35149E0A;
-	Tue, 25 Jun 2024 09:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F622149DF7;
+	Tue, 25 Jun 2024 09:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRdeQkDN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ok1gkGwL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F18DE149C69;
-	Tue, 25 Jun 2024 09:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0D012EBEA;
+	Tue, 25 Jun 2024 09:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308948; cv=none; b=CUt5LxSufsMcZoHsKdCGiFVBO/jrE31xfIS0PjqxzPbzncOH8LxyCaoJzpSP1M3AO5hpPE70wejgBUuvDrw8TXF1yuhbRB6nZ7Ved4RZMjsSQTHNIIYiDsKdk6FyuzUwCBsBxURiE4F6kGTLzqxjoyAOuM5X7W8/ArRicKBorPY=
+	t=1719308542; cv=none; b=AL/TbRBrbkIxhA7RsAoyehJm7fKptMtL6n8RJcHbuFOFZ1j6dWCLzl6j+QAO3AI/HMvEKKQcdMF//JQudD3fzJwweGdFFg5MPo5jINqAZXgdtvY5Px9AHBZ7/GL9Jpa0yQm/rnk9wLgtLLA7IUw+J+4JcCpbeiBgl8M1HBwyQtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308948; c=relaxed/simple;
-	bh=A350TWNHpG7XvLZ3qhsVeEyZk3JPCiHSaQdgpmrVAq8=;
+	s=arc-20240116; t=1719308542; c=relaxed/simple;
+	bh=5UhygooAb0VgqCdRdqAnDrQJqHRU2SrF4LP33d7jhps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3eMbrH4WVAaNQD9Vpd/tJfH9+j7wM9mkWHdODGy5IkuVfccQ+w9cCGhSzOA3I97PGakAY5x+Xmlh3Fsj7sIV0v20GWDY0YrQRooypAqj2AHWV8Qcue9b7fLZruDZKpmJRQx5oUodGt/pjCU3JIv/R25CwkmbNvFL8Flmkqc/6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRdeQkDN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA8EC32786;
-	Tue, 25 Jun 2024 09:49:07 +0000 (UTC)
+	 MIME-Version; b=pEIXnBphxZfM67MHRaiyz7o1gUJX1QePE/dkm2SvoyIvuJNL5lmmVKHraITAlzIr5QjmgdQD5N/fG+ROb7FrOkLZYJJCvRvG+BZCuplFfZuN027aKDEKL00Phuqt31R1cqhwe3OOsK753vVBlEpfKONXYzbPceHeClWrDGhXm30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ok1gkGwL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970C0C32781;
+	Tue, 25 Jun 2024 09:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308947;
-	bh=A350TWNHpG7XvLZ3qhsVeEyZk3JPCiHSaQdgpmrVAq8=;
+	s=korg; t=1719308542;
+	bh=5UhygooAb0VgqCdRdqAnDrQJqHRU2SrF4LP33d7jhps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRdeQkDNGx1+g7o40VFWyr40WamAs6pDHnqj2qU0NHzqv1ZYzFFvTgy4NuJXXgCcS
-	 xR2a0IAZ0bYGYETSizvSjACRr0syOeiJEHPpHyeRBbYQNf9sV0AjOc/GoDNoPVVX+f
-	 srfaArIEhjBBCIaQNlIJd9wspUEN2N3O7jotgsxw=
+	b=Ok1gkGwLQYfPGfnyJFuL5YlgiQ7F4NZhHbSiBZmZVzbP29lZtzW9pWsPctNTH8ie1
+	 LVMwdkFSp2l/ayoXfPOoCqw2jz08oiwl+WSGCVJbDWURquYZ26bHaOb3Dop/mIbYya
+	 MHQmgO7BurSnswtvk9qOSkNeNN+vgEXK+KrubCBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Aprelkov <aaprelkov@usergate.com>,
-	Will Deacon <will@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/192] iommu/arm-smmu-v3: Free MSIs in case of ENOMEM
+Subject: [PATCH 6.9 156/250] dmaengine: fsl-edma: avoid linking both modules
 Date: Tue, 25 Jun 2024 11:31:54 +0200
-Message-ID: <20240625085538.781239648@linuxfoundation.org>
+Message-ID: <20240625085554.050280324@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Aprelkov <aaprelkov@usergate.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 80fea979dd9d48d67c5b48d2f690c5da3e543ebd ]
+[ Upstream commit fa555b5026d0bf1ba7c9e645ff75e2725a982631 ]
 
-If devm_add_action() returns -ENOMEM, then MSIs are allocated but not
-not freed on teardown. Use devm_add_action_or_reset() instead to keep
-the static analyser happy.
+Kbuild does not support having a source file compiled multiple times
+and linked into distinct modules, or built-in and modular at the
+same time. For fs-edma, there are two common components that are
+linked into the fsl-edma.ko for Arm and PowerPC, plus the mcf-edma.ko
+module on Coldfire. This violates the rule for compile-testing:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+scripts/Makefile.build:236: drivers/dma/Makefile: fsl-edma-common.o is added to multiple modules: fsl-edma mcf-edma
+scripts/Makefile.build:236: drivers/dma/Makefile: fsl-edma-trace.o is added to multiple modules: fsl-edma mcf-edma
 
-Signed-off-by: Aleksandr Aprelkov <aaprelkov@usergate.com>
-Link: https://lore.kernel.org/r/20240403053759.643164-1-aaprelkov@usergate.com
-[will: Tweak commit message, remove warning message]
-Signed-off-by: Will Deacon <will@kernel.org>
+I tried splitting out the common parts into a separate modules, but
+that adds back the complexity that a cleanup patch removed, and it
+gets harder with the addition of the tracepoints.
+
+As a minimal workaround, address it at the Kconfig level, by disallowing
+the broken configurations.
+
+Link: https://lore.kernel.org/lkml/20240110232255.1099757-1-arnd@kernel.org/
+Fixes: 66aac8ea0a6c ("dmaengine: fsl-edma: clean up EXPORT_SYMBOL_GPL in fsl-edma-common.c")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20240528115440.2965975-1-arnd@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 2 +-
+ drivers/dma/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index bd0a596f9863a..68b81f9c2f4b1 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -3193,7 +3193,7 @@ static void arm_smmu_setup_msis(struct arm_smmu_device *smmu)
- 	smmu->priq.q.irq = msi_get_virq(dev, PRIQ_MSI_INDEX);
+diff --git a/drivers/dma/Kconfig b/drivers/dma/Kconfig
+index 002a5ec806207..9fc99cfbef08c 100644
+--- a/drivers/dma/Kconfig
++++ b/drivers/dma/Kconfig
+@@ -394,7 +394,7 @@ config LS2X_APB_DMA
  
- 	/* Add callback to free MSIs on teardown */
--	devm_add_action(dev, arm_smmu_free_msis, dev);
-+	devm_add_action_or_reset(dev, arm_smmu_free_msis, dev);
- }
- 
- static void arm_smmu_setup_unique_irqs(struct arm_smmu_device *smmu)
+ config MCF_EDMA
+ 	tristate "Freescale eDMA engine support, ColdFire mcf5441x SoCs"
+-	depends on M5441x || COMPILE_TEST
++	depends on M5441x || (COMPILE_TEST && FSL_EDMA=n)
+ 	select DMA_ENGINE
+ 	select DMA_VIRTUAL_CHANNELS
+ 	help
 -- 
 2.43.0
 
