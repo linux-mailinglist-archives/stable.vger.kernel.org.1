@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-55420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91F7E91637E
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C620C9163B1
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C551D1C2226C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41EDAB276DC
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C0D1494AF;
-	Tue, 25 Jun 2024 09:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2AD11487E9;
+	Tue, 25 Jun 2024 09:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaMFY0Yr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fquq9fhX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44FB1465A8;
-	Tue, 25 Jun 2024 09:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF8B1465A8;
+	Tue, 25 Jun 2024 09:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308850; cv=none; b=POaOncm/XhvnesckyT/YdjHvnQ+jNDqe4jB+V7JMN+1mP0eg8A5vlP62424cwczF0uyWqQqUAWXz2WzrkyppV4/9CW5xw7Q/uHnOGTTy/A/ogzpIYT5n/mYp8WHHpVpoaOEGM3KIbesA3Yjf2/lVqOG1Gq8x0X6eMDA2PEcNy6w=
+	t=1719308977; cv=none; b=ualSsUrY604FyRM7LDX7GZRtWOwGP7u4Jn/LcAFfQ1KHJNGoyohoJilQq4KdEDxJjwtfL58TpKDxFtcl8E+68nScZ3o76YQQyV2GdkoRUa76qFZNHfGZYzZcf6eoiUQrub0nyt8NaSA+m54t0vIWyEiyRPbyjUHWNDJhpnJEQh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308850; c=relaxed/simple;
-	bh=Lo0ck8H0X0NMBteVJjB4WgVhLgGGuLwBcAJOoxGj39Y=;
+	s=arc-20240116; t=1719308977; c=relaxed/simple;
+	bh=RobkFU7g4zhMnyMuW1Afed25ikexBK/RHyO6X/Ogqt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oc6NHVnw5jTrtF0WGUd1BHK71SlXg6cQSM6na3EM16LxDfVn+w20vLLkzmECIy5s0aihQtOz/U381OkEfNMA8JtbWdzZ6iK8ziyA4Pgi39I0i7mf+8zKyvEMo3jmJE0O7x4UbSa4iz7y2gQB0MrDbdhDOBzVLAAgk5p7dc0B5Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaMFY0Yr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6A2C32781;
-	Tue, 25 Jun 2024 09:47:30 +0000 (UTC)
+	 MIME-Version; b=efAhyk176vo8ngHXz35CkUMd4MohAHar2L97gMuOB0Q78/hhe/xn4ktRVdti36tNSGIEuR9aL9QBHRl5qwo5KHWanJyow+DPbae+j7ZEfsa0dFr/vU+x+b0ER0LdVaCyGxJrRAi53cZf9wSh0a96ruR55fq0BbzYKVMG8ZAAghk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fquq9fhX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7718C32781;
+	Tue, 25 Jun 2024 09:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308850;
-	bh=Lo0ck8H0X0NMBteVJjB4WgVhLgGGuLwBcAJOoxGj39Y=;
+	s=korg; t=1719308977;
+	bh=RobkFU7g4zhMnyMuW1Afed25ikexBK/RHyO6X/Ogqt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZaMFY0YrUBT8Bh0wNmi1MiFcH/bsyvVfp8O06Ybm9OSev8l+FvAXIXNrSbZCUceOa
-	 jl31Nx47oNOJ6V+aQeJxo9PVjssQLIrHqr450LI2byOO6Yq7eRbOVnhjhS4dKxQmK/
-	 xl9GXHwg9w6mwR3h73VJeeMR2sm019C2eVlYCeB4=
+	b=Fquq9fhXf2NHCMKqYCoDFy807ZyoxxV2AFLEo6ZGNN/EYc3wNGMlPlPNQuc+Vxurc
+	 BuoKqDCnDxd1X2Xd00+pf3+w+EDeMNHG9iQGCAstTTGwU0AzWTKGlz+rqubLnWMyQC
+	 4lyFBKtKJpkvIliJ9dA4CbbvxeLtWAOyd+khQfPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Alessandro Carminati (Red Hat)" <alessandro.carminati@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/192] selftests/bpf: Prevent client connect before server bind in test_tc_tunnel.sh
-Date: Tue, 25 Jun 2024 11:31:23 +0200
-Message-ID: <20240625085537.590386965@linuxfoundation.org>
+Subject: [PATCH 6.6 012/192] selftests/bpf: Fix flaky test btf_map_in_map/lookup_update
+Date: Tue, 25 Jun 2024 11:31:24 +0200
+Message-ID: <20240625085537.629035321@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
 References: <20240625085537.150087723@linuxfoundation.org>
@@ -66,79 +66,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-[ Upstream commit f803bcf9208a2540acb4c32bdc3616673169f490 ]
+[ Upstream commit 14bb1e8c8d4ad5d9d2febb7d19c70a3cf536e1e5 ]
 
-In some systems, the netcat server can incur in delay to start listening.
-When this happens, the test can randomly fail in various points.
-This is an example error message:
+Recently, I frequently hit the following test failure:
 
-   # ip gre none gso
-   # encap 192.168.1.1 to 192.168.1.2, type gre, mac none len 2000
-   # test basic connectivity
-   # Ncat: Connection refused.
+  [root@arch-fb-vm1 bpf]# ./test_progs -n 33/1
+  test_lookup_update:PASS:skel_open 0 nsec
+  [...]
+  test_lookup_update:PASS:sync_rcu 0 nsec
+  test_lookup_update:FAIL:map1_leak inner_map1 leaked!
+  #33/1    btf_map_in_map/lookup_update:FAIL
+  #33      btf_map_in_map:FAIL
 
-The issue stems from a race condition between the netcat client and server.
-The test author had addressed this problem by implementing a sleep, which
-I have removed in this patch.
-This patch introduces a function capable of sleeping for up to two seconds.
-However, it can terminate the waiting period early if the port is reported
-to be listening.
+In the test, after map is closed and then after two rcu grace periods,
+it is assumed that map_id is not available to user space.
 
-Signed-off-by: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240314105911.213411-1-alessandro.carminati@gmail.com
+But the above assumption cannot be guaranteed. After zero or one
+or two rcu grace periods in different siturations, the actual
+freeing-map-work is put into a workqueue. Later on, when the work
+is dequeued, the map will be actually freed.
+See bpf_map_put() in kernel/bpf/syscall.c.
+
+By using workqueue, there is no ganrantee that map will be actually
+freed after a couple of rcu grace periods. This patch removed
+such map leak detection and then the test can pass consistently.
+
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240322061353.632136-1-yonghong.song@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_tc_tunnel.sh | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ .../selftests/bpf/prog_tests/btf_map_in_map.c | 26 +------------------
+ 1 file changed, 1 insertion(+), 25 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_tc_tunnel.sh b/tools/testing/selftests/bpf/test_tc_tunnel.sh
-index 910044f08908a..7989ec6084545 100755
---- a/tools/testing/selftests/bpf/test_tc_tunnel.sh
-+++ b/tools/testing/selftests/bpf/test_tc_tunnel.sh
-@@ -72,7 +72,6 @@ cleanup() {
- server_listen() {
- 	ip netns exec "${ns2}" nc "${netcat_opt}" -l "${port}" > "${outfile}" &
- 	server_pid=$!
--	sleep 0.2
+diff --git a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
+index a8b53b8736f01..f66ceccd7029c 100644
+--- a/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
++++ b/tools/testing/selftests/bpf/prog_tests/btf_map_in_map.c
+@@ -25,7 +25,7 @@ static void test_lookup_update(void)
+ 	int map1_fd, map2_fd, map3_fd, map4_fd, map5_fd, map1_id, map2_id;
+ 	int outer_arr_fd, outer_hash_fd, outer_arr_dyn_fd;
+ 	struct test_btf_map_in_map *skel;
+-	int err, key = 0, val, i, fd;
++	int err, key = 0, val, i;
+ 
+ 	skel = test_btf_map_in_map__open_and_load();
+ 	if (CHECK(!skel, "skel_open", "failed to open&load skeleton\n"))
+@@ -102,30 +102,6 @@ static void test_lookup_update(void)
+ 	CHECK(map1_id == 0, "map1_id", "failed to get ID 1\n");
+ 	CHECK(map2_id == 0, "map2_id", "failed to get ID 2\n");
+ 
+-	test_btf_map_in_map__destroy(skel);
+-	skel = NULL;
+-
+-	/* we need to either wait for or force synchronize_rcu(), before
+-	 * checking for "still exists" condition, otherwise map could still be
+-	 * resolvable by ID, causing false positives.
+-	 *
+-	 * Older kernels (5.8 and earlier) freed map only after two
+-	 * synchronize_rcu()s, so trigger two, to be entirely sure.
+-	 */
+-	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
+-	CHECK(kern_sync_rcu(), "sync_rcu", "failed\n");
+-
+-	fd = bpf_map_get_fd_by_id(map1_id);
+-	if (CHECK(fd >= 0, "map1_leak", "inner_map1 leaked!\n")) {
+-		close(fd);
+-		goto cleanup;
+-	}
+-	fd = bpf_map_get_fd_by_id(map2_id);
+-	if (CHECK(fd >= 0, "map2_leak", "inner_map2 leaked!\n")) {
+-		close(fd);
+-		goto cleanup;
+-	}
+-
+ cleanup:
+ 	test_btf_map_in_map__destroy(skel);
  }
- 
- client_connect() {
-@@ -93,6 +92,16 @@ verify_data() {
- 	fi
- }
- 
-+wait_for_port() {
-+	for i in $(seq 20); do
-+		if ip netns exec "${ns2}" ss ${2:--4}OHntl | grep -q "$1"; then
-+			return 0
-+		fi
-+		sleep 0.1
-+	done
-+	return 1
-+}
-+
- set -e
- 
- # no arguments: automated test, run all
-@@ -193,6 +202,7 @@ setup
- # basic communication works
- echo "test basic connectivity"
- server_listen
-+wait_for_port ${port} ${netcat_opt}
- client_connect
- verify_data
- 
-@@ -204,6 +214,7 @@ ip netns exec "${ns1}" tc filter add dev veth1 egress \
- 	section "encap_${tuntype}_${mac}"
- echo "test bpf encap without decap (expect failure)"
- server_listen
-+wait_for_port ${port} ${netcat_opt}
- ! client_connect
- 
- if [[ "$tuntype" =~ "udp" ]]; then
 -- 
 2.43.0
 
