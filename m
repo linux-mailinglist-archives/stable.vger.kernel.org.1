@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-55608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69FC6916467
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 639489164F4
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:03:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0A72B29103
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5674B2218E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA5914A619;
-	Tue, 25 Jun 2024 09:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537741465B7;
+	Tue, 25 Jun 2024 10:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mB7Z5wec"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfqCopaw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99812149DE9;
-	Tue, 25 Jun 2024 09:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CC813C90B;
+	Tue, 25 Jun 2024 10:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309407; cv=none; b=iZLOk8xjLnva1Rq56K/o+DB1FmvRs95p/JEDkzAUEHRyrOBp4Ccu4pWss8DWXlwgEXI5UlZDNURsHVtti98ZAUh8PQTxLnZNSkLNIMZUSKtgg4FgxuNhKu8Ivv0vZSKhUStdeLDxSlKHB4g6JkphQIy1HpL7nk5WvNct5kN4cL8=
+	t=1719309792; cv=none; b=gC/+WwM2LwJDP11654/cvBX2EEw52EssCQo+rw0By/Nen/HL6YbX7Aqb8XK6VC3IinMCPtjU/miUJQJV4dZfI1Eg7f/X6P2qSdDEUHAXoNJEyarLWOo6J9HAV5gON0NhXDGO5X3ytGj0k5YNiYLQsbpFJBy3UYAMYywk6pV/HwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309407; c=relaxed/simple;
-	bh=3/7Cw3VKhEZkPqYSyxX3C2MUXS/dkjRZ6HyeaTR7Q5A=;
+	s=arc-20240116; t=1719309792; c=relaxed/simple;
+	bh=3/pcGD9hr9Al3s5l1eCcOlARfF5AqrlSZT7Xemfjtwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0ACHJmZb3JAmlTkvchz168KOqqXPw3Y8DUrc8228yXV+4RPxg/11Em+/h/L2o/pMd16hjDM7ctSzbbAZzmeyIGfgXHuRF8OLnn3Aclw17LBWAUlQv3cTIQ1P0+QLprtzF4Xgq9KKHJOWkWn6A4QF2H31GZUKqRL+a76Lvk1YkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mB7Z5wec; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBBD3C32781;
-	Tue, 25 Jun 2024 09:56:46 +0000 (UTC)
+	 MIME-Version; b=KFqxxJsEB5Jc2ltn31RYSAXn2N1cg7WM4QH/dQSBot/7LooxJVlvbOfSnvXyTkpVGQndhj1anNsVOd+ENffY3W5rW9ZQfZSx7ZFJt8qu1X7d3fvejykT856fH4V5qj16V9gDuFfVUS3iobOXO9jwNFszxNSfF1+MWPONWMb5QBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfqCopaw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B0DC32781;
+	Tue, 25 Jun 2024 10:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309407;
-	bh=3/7Cw3VKhEZkPqYSyxX3C2MUXS/dkjRZ6HyeaTR7Q5A=;
+	s=korg; t=1719309791;
+	bh=3/pcGD9hr9Al3s5l1eCcOlARfF5AqrlSZT7Xemfjtwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mB7Z5wecAxbCM3o6BDUXulCvRhpGsbb46X7EKmFpMfov9FXMRtapR9O1hJ2JRV41L
-	 zXDd6TNmIW86nzn++UxAp0IN2MsOXZHzSbUgjki6+U35AhCwaBp8MKQ7o5I4Cv2R6I
-	 aZkVM+Gm0aU1EPFJP3iWfE7QTilNNeVg62FtJWpc=
+	b=mfqCopawBcsRyDd546mHVcMg65TJriX3FCjZIYErdCdBIiAFZjlYlDsMf5ZvqPMT3
+	 6FNju4K0B7pEcg9fZEj20virnk28THmNBQpBIv1j3f9xUVP+A/uh3bhc7MCLdCP7sG
+	 BrODPP4y7A6z21XELfCknd5C3SI9XzBTmXZTq9xc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 188/192] ASoC: Intel: sof-sdw: really remove FOUR_SPEAKER quirk
-Date: Tue, 25 Jun 2024 11:34:20 +0200
-Message-ID: <20240625085544.376215624@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 106/131] drm/amdgpu: fix UBSAN warning in kv_dpm.c
+Date: Tue, 25 Jun 2024 11:34:21 +0200
+Message-ID: <20240625085529.966209665@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 0bab4cfd7c1560095e29919e2ebe01783b9096dc upstream.
+commit f0d576f840153392d04b2d52cf3adab8f62e8cb6 upstream.
 
-Two independent GitHub PRs let to the addition of one quirk after it
-was removed..
+Adds bounds check for sumo_vid_mapping_entry.
 
-Fixes: b10cb955c6c0 ("ASoC: Intel: sof_sdw: add quirk for Dell SKU 0C0F")
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240426152123.36284-10-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3392
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/sof_sdw.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -443,8 +443,7 @@ static const struct dmi_system_id sof_sd
- 			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "0C0F")
- 		},
- 		.driver_data = (void *)(SOF_SDW_TGL_HDMI |
--					RT711_JD2 |
--					SOF_SDW_FOUR_SPK),
-+					RT711_JD2),
- 	},
- 	{
- 		.callback = sof_sdw_quirk_cb,
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
+@@ -164,6 +164,8 @@ static void sumo_construct_vid_mapping_t
+ 
+ 	for (i = 0; i < SUMO_MAX_HARDWARE_POWERLEVELS; i++) {
+ 		if (table[i].ulSupportedSCLK != 0) {
++			if (table[i].usVoltageIndex >= SUMO_MAX_NUMBER_VOLTAGES)
++				continue;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_7bit =
+ 				table[i].usVoltageID;
+ 			vid_mapping_table->entries[table[i].usVoltageIndex].vid_2bit =
 
 
 
