@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-55399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849D9916369
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40814916492
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 315931F218B2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0A57287677
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A4F1494AF;
-	Tue, 25 Jun 2024 09:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D2414A0BD;
+	Tue, 25 Jun 2024 09:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9+x2r7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0/D3snq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA971465A8;
-	Tue, 25 Jun 2024 09:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65111465A8;
+	Tue, 25 Jun 2024 09:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308789; cv=none; b=m45irvTPe9sM3qCf/kgE1O52lrIq4OC0INk+gFO+P7RgucoahOu3mLqoNd/S+g/g3cgxxEe/B1SZaMFV88aXynR/GBGqaIlSlIRfDdDK7c0aRN+kSxivdCGnxlehJDnObCko1PcdAIHEyGyF1yviifVqxZUcAQgmIcjoU+oJEls=
+	t=1719309523; cv=none; b=RMWZfrx6IqDvQjpfQheRyl9/kEMT3DtAxH51nqcPvxHh2HEXlWewc+hpWw4+7oBLIMGO6zrHHaHeBsW+FPTdDCqANb561KeRgyqOozx+e4oDltuP/dNk32b/y8e4VUrnlEy6tnZaJduDfj7XNDvHxlXCGLi+gyht2IFy8YmnCu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308789; c=relaxed/simple;
-	bh=nVULTblWCQ8rAmCE6S73aITzMUoz2IH6Eg1yYbBK9oI=;
+	s=arc-20240116; t=1719309523; c=relaxed/simple;
+	bh=cNkkz1YDigUxIvfkxZDfOVdsd/a+Rheabcqwzf9wH3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgsRmDqigG4djrr9MKnN73hJVmwjBAMQmqAP3U2fz/mMpanfQbYrbfvsfPlxzWQJ72naTf1Mskz41ootkWKAPaW/48Xcm0swZZrhkBYxCHzXkQzw+cWMNZUFi8w0Z2+FPSHLxx1rjZ08MqtGVaNeOV/KNoLbfT70zxo5iCoYQPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9+x2r7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03956C32781;
-	Tue, 25 Jun 2024 09:46:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u3hTxkjpqffTogMf4Nr4u3q3mBZiAYrRyMR38KPuWV99d6tRiYXEJqe1aPUxlIEPjagiSECCOzSwN4dq8yk/GQ9jd1r4llqVmxhvUXGjAqI50c83ghzd11HgqYIgbB6CXqRIzT3lTg8a4S4f+UG1CvXUuGd3seDRZbV6i04H6Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0/D3snq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C45C32781;
+	Tue, 25 Jun 2024 09:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308789;
-	bh=nVULTblWCQ8rAmCE6S73aITzMUoz2IH6Eg1yYbBK9oI=;
+	s=korg; t=1719309523;
+	bh=cNkkz1YDigUxIvfkxZDfOVdsd/a+Rheabcqwzf9wH3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9+x2r7xo7r6GAHCL5D6M4jaGTX0F+c5ukoaL8NZt/LZTz5UnLsAWUR2cDR6aRss5
-	 uDyWS20dVEmKjNg+yyEaUmzKWyBSKgvyH+fb0x2+Y9rmKqhFYTG6LjzBJbe+n9ARdJ
-	 XbRddunN8/wYdR3loC5Gp94QAcXuzegEBLedtCn0=
+	b=c0/D3snq9zRT24AdTKwN1ZoYTKI5h00j8Oe6pCjS2RTv0Xj0lHanqNIwEpRTp2ccj
+	 Qm4kRnEYFtQhpKX/3DspWxUtQZnAxPYwf8RtsOFXSw/JWJMqSanxencdEJs8XYy6mF
+	 Q/6h9b4dGwAKEtDPoBS5fyE+Ew0xBk9Dr7mWVksg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 241/250] tracing: Add MODULE_DESCRIPTION() to preemptirq_delay_test
-Date: Tue, 25 Jun 2024 11:33:19 +0200
-Message-ID: <20240625085557.303804724@linuxfoundation.org>
+Subject: [PATCH 6.1 045/131] MIPS: Routerboard 532: Fix vendor retry check code
+Date: Tue, 25 Jun 2024 11:33:20 +0200
+Message-ID: <20240625085527.664026264@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 23748e3e0fbfe471eff5ce439921629f6a427828 ]
+[ Upstream commit ae9daffd9028f2500c9ac1517e46d4f2b57efb80 ]
 
-Fix the 'make W=1' warning:
+read_config_dword() contains strange condition checking ret for a
+number of values. The ret variable, however, is always zero because
+config_access() never returns anything else. Thus, the retry is always
+taken until number of tries is exceeded.
 
-WARNING: modpost: missing MODULE_DESCRIPTION() in kernel/trace/preemptirq_delay_test.o
+The code looks like it wants to check *val instead of ret to see if the
+read gave an error response.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240518-md-preemptirq_delay_test-v1-1-387d11b30d85@quicinc.com
-
-Cc: stable@vger.kernel.org
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Fixes: f96e8577da10 ("lib: Add module for testing preemptoff/irqsoff latency tracers")
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 73b4390fb234 ("[MIPS] Routerboard 532: Support for base system")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/preemptirq_delay_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/pci/ops-rc32434.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/preemptirq_delay_test.c b/kernel/trace/preemptirq_delay_test.c
-index 8c4ffd0761624..cb0871fbdb07f 100644
---- a/kernel/trace/preemptirq_delay_test.c
-+++ b/kernel/trace/preemptirq_delay_test.c
-@@ -215,4 +215,5 @@ static void __exit preemptirq_delay_exit(void)
- 
- module_init(preemptirq_delay_init)
- module_exit(preemptirq_delay_exit)
-+MODULE_DESCRIPTION("Preempt / IRQ disable delay thread to test latency tracers");
- MODULE_LICENSE("GPL v2");
+diff --git a/arch/mips/pci/ops-rc32434.c b/arch/mips/pci/ops-rc32434.c
+index 874ed6df97683..34b9323bdabb0 100644
+--- a/arch/mips/pci/ops-rc32434.c
++++ b/arch/mips/pci/ops-rc32434.c
+@@ -112,8 +112,8 @@ static int read_config_dword(struct pci_bus *bus, unsigned int devfn,
+ 	 * gives them time to settle
+ 	 */
+ 	if (where == PCI_VENDOR_ID) {
+-		if (ret == 0xffffffff || ret == 0x00000000 ||
+-		    ret == 0x0000ffff || ret == 0xffff0000) {
++		if (*val == 0xffffffff || *val == 0x00000000 ||
++		    *val == 0x0000ffff || *val == 0xffff0000) {
+ 			if (delay > 4)
+ 				return 0;
+ 			delay *= 2;
 -- 
 2.43.0
 
