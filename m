@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-55626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20952916478
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D82B1916355
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 525AC1C220AE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 174CE1C21201
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0755D149C4F;
-	Tue, 25 Jun 2024 09:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A5A147C96;
+	Tue, 25 Jun 2024 09:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KPKppZnF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFN9XT66"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D40146A67;
-	Tue, 25 Jun 2024 09:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82500148315;
+	Tue, 25 Jun 2024 09:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309461; cv=none; b=s/qS++byRYhxnSTLQVo8itbE513IqTL02kwaqCbGadq3O2rkoFKUu3upEXCKvmI9QBFAFkZBu4SGhUyiRW8nNHQ876fROnVJy/G8wuaXAMS0vxFC71gKntHTsYTtJGDvYqVjoLUi8oapMw3lOXgs3gj2yr+ddawaQd4qwMtmi9U=
+	t=1719308730; cv=none; b=miaRGPrifkg3zs9qvo2ZrYa5HOekk64fJ1IbqtBnpzMVnGZ/XkIMWR3rjqSuLAocOUZGIEj7zNZf8if+Mx6rc3Q5kzO50/pDQg99oZxl9N6VFKxkmFxy/mb1lvPcQAfi3Cyodr7o4hg9/vfmbNNNMtsQ8bAjDO9PKOu+g/yOg78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309461; c=relaxed/simple;
-	bh=U1wen8J/vOvcA/bbjaDkptUjVBbzK6LupYE3oK2/GpQ=;
+	s=arc-20240116; t=1719308730; c=relaxed/simple;
+	bh=qLONA/CrCJRmHY2ca10H3gTpYbOSWHdid9opLv7ic3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHwoDnE5Wpt6JRj7t81xhQTd2Gc8lWBgZnGPn8KFMHzW4gHSoTqydF1tgjFqE/wRKhy0uDEH7zWDjfH710phA8L1KNFQ2I3w+EKgjCzFPNhdLwAGV5lZKOenvZ3BD/OE1vbJljt4jjrzaF7Mo2e08D4ZvEkHb+tCePAmHO1/s/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KPKppZnF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405F1C32781;
-	Tue, 25 Jun 2024 09:57:41 +0000 (UTC)
+	 MIME-Version; b=qbvdSkATbucEJ5705wWcv+FOZ7cvpO6bwfYAeZcDk/IUVozWw7VwVrlC2NGutSneUswPDq2pdGAz4TzoHilYw1byGRO02jurFxUBgEubBe1cCSqpBjwVgjyw78o8YLb/NKeeNTUX9AdYEqPmAff83P6RFL7oJXiuFoLjGM+AIkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFN9XT66; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09169C32781;
+	Tue, 25 Jun 2024 09:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309461;
-	bh=U1wen8J/vOvcA/bbjaDkptUjVBbzK6LupYE3oK2/GpQ=;
+	s=korg; t=1719308730;
+	bh=qLONA/CrCJRmHY2ca10H3gTpYbOSWHdid9opLv7ic3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KPKppZnFGpiROTxJ5IZfRu+lF5XiOP11vtWh+H005X+qF2eVU+9m+0q6PFGIV8lQZ
-	 BjrnWr8Oj6X9EkGOWTyBH4O0M1+TUIK84e1zn43RGpRz+J2fzPzBThilGAXTjj1S3w
-	 Cz3TLGxsa9Jd0uVqZBmembC3CvUjB4/UO6q5nAgw=
+	b=xFN9XT660XT2KnVm46iKplyn0sqTT018eG6aNQxxaHgMMu+ho8XT7vTsdpMcgU+OD
+	 HHLE52EjZhgKyXltDvc2aWznX8aXVeuUf86RO6Z7zLQAGLs73FCUNieNdO15EOthql
+	 Tj1tIqNBjcaPEW8Y++ZuQU/eT+0RdnAoOFXuACdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/131] drm/amd/display: Exit idle optimizations before HDCP execution
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.9 220/250] serial: 8250_dw: Revert "Move definitions to the shared header"
 Date: Tue, 25 Jun 2024 11:32:58 +0200
-Message-ID: <20240625085526.829882486@linuxfoundation.org>
+Message-ID: <20240625085556.496426615@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,93 +60,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit f30a3bea92bdab398531129d187629fb1d28f598 ]
+commit 2c94512055f362dd789e0f87b8566feeddec83c9 upstream.
 
-[WHY]
-PSP can access DCN registers during command submission and we need
-to ensure that DCN is not in PG before doing so.
+This reverts commit d9666dfb314e1ffd6eb9c3c4243fe3e094c047a7.
 
-[HOW]
-Add a callback to DM to lock and notify DC for idle optimization exit.
-It can't be DC directly because of a potential race condition with the
-link protection thread and the rest of DM operation.
+The container of the struct dw8250_port_data is private to the actual
+driver. In particular, 8250_lpss and 8250_dw use different data types
+that are assigned to the UART port private_data. Hence, it must not
+be used outside the specific driver.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the mistake made in the past by moving the respective definitions
+to the specific driver.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240514190730.2787071-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c    | 10 ++++++++++
- drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h |  8 ++++++++
- 2 files changed, 18 insertions(+)
+ drivers/tty/serial/8250/8250_dw.c    |   27 +++++++++++++++++++++++++++
+ drivers/tty/serial/8250/8250_dwlib.h |   32 --------------------------------
+ 2 files changed, 27 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-index 5e01c6e24cbc8..9a5a1726acaf8 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.c
-@@ -88,6 +88,14 @@ static uint8_t is_cp_desired_hdcp2(struct mod_hdcp *hdcp)
- 			!hdcp->connection.is_hdcp2_revoked;
- }
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -57,6 +57,33 @@
+ #define DW_UART_QUIRK_APMC0D08		BIT(4)
+ #define DW_UART_QUIRK_CPR_VALUE		BIT(5)
  
-+static void exit_idle_optimizations(struct mod_hdcp *hdcp)
-+{
-+	struct mod_hdcp_dm *dm = &hdcp->config.dm;
-+
-+	if (dm->funcs.exit_idle_optimizations)
-+		dm->funcs.exit_idle_optimizations(dm->handle);
-+}
-+
- static enum mod_hdcp_status execution(struct mod_hdcp *hdcp,
- 		struct mod_hdcp_event_context *event_ctx,
- 		union mod_hdcp_transition_input *input)
-@@ -543,6 +551,8 @@ enum mod_hdcp_status mod_hdcp_process_event(struct mod_hdcp *hdcp,
- 	memset(&event_ctx, 0, sizeof(struct mod_hdcp_event_context));
- 	event_ctx.event = event;
- 
-+	exit_idle_optimizations(hdcp);
-+
- 	/* execute and transition */
- 	exec_status = execution(hdcp, &event_ctx, &hdcp->auth.trans_input);
- 	trans_status = transition(
-diff --git a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-index 3348bb97ef81a..dfa8168e51890 100644
---- a/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-+++ b/drivers/gpu/drm/amd/display/modules/inc/mod_hdcp.h
-@@ -155,6 +155,13 @@ struct mod_hdcp_ddc {
- 	} funcs;
- };
- 
-+struct mod_hdcp_dm {
-+	void *handle;
-+	struct {
-+		void (*exit_idle_optimizations)(void *handle);
-+	} funcs;
++struct dw8250_platform_data {
++	u8 usr_reg;
++	u32 cpr_value;
++	unsigned int quirks;
 +};
 +
- struct mod_hdcp_psp {
- 	void *handle;
- 	void *funcs;
-@@ -271,6 +278,7 @@ struct mod_hdcp_display_query {
- struct mod_hdcp_config {
- 	struct mod_hdcp_psp psp;
- 	struct mod_hdcp_ddc ddc;
-+	struct mod_hdcp_dm dm;
- 	uint8_t index;
++struct dw8250_data {
++	struct dw8250_port_data	data;
++	const struct dw8250_platform_data *pdata;
++
++	int			msr_mask_on;
++	int			msr_mask_off;
++	struct clk		*clk;
++	struct clk		*pclk;
++	struct notifier_block	clk_notifier;
++	struct work_struct	clk_work;
++	struct reset_control	*rst;
++
++	unsigned int		skip_autocfg:1;
++	unsigned int		uart_16550_compatible:1;
++};
++
++static inline struct dw8250_data *to_dw8250_data(struct dw8250_port_data *data)
++{
++	return container_of(data, struct dw8250_data, data);
++}
++
+ static inline struct dw8250_data *clk_to_dw8250_data(struct notifier_block *nb)
+ {
+ 	return container_of(nb, struct dw8250_data, clk_notifier);
+--- a/drivers/tty/serial/8250/8250_dwlib.h
++++ b/drivers/tty/serial/8250/8250_dwlib.h
+@@ -2,15 +2,10 @@
+ /* Synopsys DesignWare 8250 library header file. */
+ 
+ #include <linux/io.h>
+-#include <linux/notifier.h>
+ #include <linux/types.h>
+-#include <linux/workqueue.h>
+ 
+ #include "8250.h"
+ 
+-struct clk;
+-struct reset_control;
+-
+ struct dw8250_port_data {
+ 	/* Port properties */
+ 	int			line;
+@@ -26,36 +21,9 @@ struct dw8250_port_data {
+ 	bool			hw_rs485_support;
  };
  
--- 
-2.43.0
-
+-struct dw8250_platform_data {
+-	u8 usr_reg;
+-	u32 cpr_value;
+-	unsigned int quirks;
+-};
+-
+-struct dw8250_data {
+-	struct dw8250_port_data	data;
+-	const struct dw8250_platform_data *pdata;
+-
+-	int			msr_mask_on;
+-	int			msr_mask_off;
+-	struct clk		*clk;
+-	struct clk		*pclk;
+-	struct notifier_block	clk_notifier;
+-	struct work_struct	clk_work;
+-	struct reset_control	*rst;
+-
+-	unsigned int		skip_autocfg:1;
+-	unsigned int		uart_16550_compatible:1;
+-};
+-
+ void dw8250_do_set_termios(struct uart_port *p, struct ktermios *termios, const struct ktermios *old);
+ void dw8250_setup_port(struct uart_port *p);
+ 
+-static inline struct dw8250_data *to_dw8250_data(struct dw8250_port_data *data)
+-{
+-	return container_of(data, struct dw8250_data, data);
+-}
+-
+ static inline u32 dw8250_readl_ext(struct uart_port *p, int offset)
+ {
+ 	if (p->iotype == UPIO_MEM32BE)
 
 
 
