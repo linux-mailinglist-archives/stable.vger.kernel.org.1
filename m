@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-55204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8466C91628C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:37:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B27FB916295
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2A0DB213EA
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:37:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E9641F2191E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D8A149C4F;
-	Tue, 25 Jun 2024 09:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4381494D1;
+	Tue, 25 Jun 2024 09:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k310aJGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hyneXCSm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24AAD148315;
-	Tue, 25 Jun 2024 09:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB59148315;
+	Tue, 25 Jun 2024 09:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308218; cv=none; b=fWNv0anc4Wb/cO/H03CalfHiEh8g5trusiInk0iMwgKM4kjtMUmSe7Rq/aoZubpPNgUhwPbXnuNfDwxngYIhF2jG5C0VZx0Y7PsF1kz+Y555GprVYnj7RkbfAeUegu+OYzEmm6olp6fVJe3MaTY7mCuejGL1o/WMYKhJoHirkqM=
+	t=1719308250; cv=none; b=pMP8IhBBpXa1Nw/VPk/crvBtqdk+vkqo6spJ/bp4pIxGHHimjLj5ZJ8ZrrK2GjoXHgWRChl3oIg7lHkdInLUTXCVRELopcxKCtPkF9hl6xA96WyHKESXs8jS5unBpJa/gow7IQEM6EEx5nRoqAV4x9Ap6GhdREI31FW9W4fh1jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308218; c=relaxed/simple;
-	bh=WYwE9X3haBp3U7712ujhV9TGeenT1a1yX0zfs/OAFl0=;
+	s=arc-20240116; t=1719308250; c=relaxed/simple;
+	bh=BEfidN3F/P0gx8VHBmfszHa4UiiJ4LvvrIx8pphio1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JyeoxhgfwlhUrdwcwcTWaF1zcpTgWU16QI86+CUqTo6XQrnvCYulail7Jv2U48azzXkibqaKsVfwlFSeXq7+8ctZRJ5bc9gIymkztVS4oeC7Xmu+Hegj5HgYZrpQdhzWwXgzSZvpniJGnIVvCM3/V9eEF8Q6Kuaxq+Bq8H/ELyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k310aJGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D27DC32781;
-	Tue, 25 Jun 2024 09:36:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ck93ntvhibksBwqtBiV7E4BEasjw20xWB+pllX3y/bb23zzu6OOAumjIxdGqxm5gYpgGWiL5BXPWCwLuLA/9kPDLowq3SDbSdgs2oAxBZMWwLFWALLJNRe3gdm8Ht8BKtqaYKBKCK+kBMYHGTa4coDsbfJQC2/E1YONJm6xtYws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hyneXCSm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84F6C32781;
+	Tue, 25 Jun 2024 09:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308218;
-	bh=WYwE9X3haBp3U7712ujhV9TGeenT1a1yX0zfs/OAFl0=;
+	s=korg; t=1719308250;
+	bh=BEfidN3F/P0gx8VHBmfszHa4UiiJ4LvvrIx8pphio1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k310aJGAGsOprLoLTRo0S9MAtqsbEKgpxaSbOCAzSIAxPrCsdYl1C1Xk7R0lAx07k
-	 Z1vo/XGxEXt2oJMxjoj0k4ZQc1v13caKu/cI2n5BktMH05ej8QbJw3n7N/09LwIAIC
-	 vAAD7KjVwVMSKASB77Yvm/75Uw6IZzvrvbl5XJ8E=
+	b=hyneXCSmoLXzkszBnyEGAiR7WsLnOiTsjSFKIae9HLXHcRNOsr1w3vAKLTpZqzNC7
+	 JnG8JlK8ZzbAeOFty1KzJaLTw9g2X2coE14DklsV9QusLUKGcOyD6DKoDMm5wzyqtS
+	 fc+LX6v4jH9VeEmw/GFlKr2N/c12OqqZLph2TrxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Daniel Golle <daniel@makrotopia.org>,
 	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Jiri Pirko <jiri@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 029/250] net: sfp: enhance quirk for Fibrestore 2.5G copper SFP module
-Date: Tue, 25 Jun 2024 11:29:47 +0200
-Message-ID: <20240625085549.174362251@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Josef Schlehofer <pepe.schlehofer@gmail.com>
+Subject: [PATCH 6.9 030/250] net: sfp: add quirk for ATS SFP-GE-T 1000Base-TX module
+Date: Tue, 25 Jun 2024 11:29:48 +0200
+Message-ID: <20240625085549.212806154@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -68,82 +69,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit cd4a32e60061789676f7f018a94fcc9ec56732a0 ]
+[ Upstream commit 0805d67bc0ef95411228e802f31975cfb7555056 ]
 
-Enhance the quirk for Fibrestore 2.5G copper SFP module. The original
-commit e27aca3760c0 ("net: sfp: add quirk for FS's 2.5G copper SFP")
-introducing the quirk says that the PHY is inaccessible, but that is
-not true.
+Add quirk for ATS SFP-GE-T 1000Base-TX module.
 
-The module uses Rollball protocol to talk to the PHY, and needs a 4
-second wait before probing it, same as FS 10G module.
+This copper module comes with broken TX_FAULT indicator which must be
+ignored for it to work.
 
-The PHY inside the module is Realtek RTL8221B-VB-CG PHY. The realtek
-driver recently gained support to set it up via clause 45 accesses.
-
+Co-authored-by: Josef Schlehofer <pepe.schlehofer@gmail.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+[ rebased on top of net-next ]
 Signed-off-by: Marek Behún <kabel@kernel.org>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20240423085039.26957-2-kabel@kernel.org
+Link: https://lore.kernel.org/r/20240423090025.29231-1-kabel@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/net/phy/sfp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index d999d9baadb26..6e42d4034b520 100644
+index 6e42d4034b520..52b71c7e78351 100644
 --- a/drivers/net/phy/sfp.c
 +++ b/drivers/net/phy/sfp.c
-@@ -385,18 +385,23 @@ static void sfp_fixup_rollball(struct sfp *sfp)
- 	sfp->phy_t_retry = msecs_to_jiffies(1000);
- }
+@@ -508,6 +508,9 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK_F("Walsun", "HXSX-ATRC-1", sfp_fixup_fs_10gt),
+ 	SFP_QUIRK_F("Walsun", "HXSX-ATRI-1", sfp_fixup_fs_10gt),
  
--static void sfp_fixup_fs_10gt(struct sfp *sfp)
-+static void sfp_fixup_fs_2_5gt(struct sfp *sfp)
- {
--	sfp_fixup_10gbaset_30m(sfp);
- 	sfp_fixup_rollball(sfp);
- 
--	/* The RollBall fixup is not enough for FS modules, the AQR chip inside
-+	/* The RollBall fixup is not enough for FS modules, the PHY chip inside
- 	 * them does not return 0xffff for PHY ID registers in all MMDs for the
- 	 * while initializing. They need a 4 second wait before accessing PHY.
- 	 */
- 	sfp->module_t_wait = msecs_to_jiffies(4000);
- }
- 
-+static void sfp_fixup_fs_10gt(struct sfp *sfp)
-+{
-+	sfp_fixup_10gbaset_30m(sfp);
-+	sfp_fixup_fs_2_5gt(sfp);
-+}
++	// OEM SFP-GE-T is a 1000Base-T module with broken TX_FAULT indicator
++	SFP_QUIRK_F("OEM", "SFP-GE-T", sfp_fixup_ignore_tx_fault),
 +
- static void sfp_fixup_halny_gsfp(struct sfp *sfp)
- {
- 	/* Ignore the TX_FAULT and LOS signals on this module.
-@@ -472,6 +477,10 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	// Rollball protocol to talk to the PHY.
- 	SFP_QUIRK_F("FS", "SFP-10G-T", sfp_fixup_fs_10gt),
- 
-+	// Fiberstore SFP-2.5G-T uses Rollball protocol to talk to the PHY and
-+	// needs 4 sec wait before probing the PHY.
-+	SFP_QUIRK_F("FS", "SFP-2.5G-T", sfp_fixup_fs_2_5gt),
-+
- 	// Fiberstore GPON-ONU-34-20BI can operate at 2500base-X, but report 1.2GBd
- 	// NRZ in their EEPROM
- 	SFP_QUIRK("FS", "GPON-ONU-34-20BI", sfp_quirk_2500basex,
-@@ -488,9 +497,6 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK("HUAWEI", "MA5671A", sfp_quirk_2500basex,
- 		  sfp_fixup_ignore_tx_fault),
- 
--	// FS 2.5G Base-T
--	SFP_QUIRK_M("FS", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
--
- 	// Lantech 8330-262D-E can operate at 2500base-X, but incorrectly report
- 	// 2500MBd NRZ in their EEPROM
- 	SFP_QUIRK_M("Lantech", "8330-262D-E", sfp_quirk_2500basex),
+ 	SFP_QUIRK_F("OEM", "SFP-10G-T", sfp_fixup_rollball_cc),
+ 	SFP_QUIRK_M("OEM", "SFP-2.5G-T", sfp_quirk_oem_2_5g),
+ 	SFP_QUIRK_F("OEM", "RTSFP-10", sfp_fixup_rollball_cc),
 -- 
 2.43.0
 
