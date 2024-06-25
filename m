@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-55497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737569163DE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CE29163B2
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5E4F1C225EC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6471CB2768C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666B5149DE9;
-	Tue, 25 Jun 2024 09:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74D8148315;
+	Tue, 25 Jun 2024 09:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxnuujMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQgbtJqq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B9D146592;
-	Tue, 25 Jun 2024 09:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9513F1465A8;
+	Tue, 25 Jun 2024 09:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309078; cv=none; b=o5scbKX0qOVlID8nu2j6claEARZo3sHLhH007nQXADx2YC8T7TXMEdMC8e6nENV8JSVLoOPqMXVIHc7uGDJF1Qft00tpPbQTuoIIe346i4wnreROSOjbhKblYIkwJsq2UQHlaSUrW9s6idej73zEXgwEa+lPf2nLo2VI2Dw+t2g=
+	t=1719308980; cv=none; b=X7l7hcGw+NokBJu2NboxhzUm5d3mph10nVPN9q1TwfivKzl4QhQVOGTiyxEVsMd4Fyq8Fm1Gnp5ZIF/sprq7mOHWfjantO+RnT3DfHtxhICxZNZgwz/i1i5ANt4RtG1Pa2c/Ozfo4hNRXMCRpJoWrqJR/fBGzjddMYGcAXlLg00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309078; c=relaxed/simple;
-	bh=FfV2GWWmPj4tPiyqb9P5hTuMUGBEOMSZwycstp9i1jk=;
+	s=arc-20240116; t=1719308980; c=relaxed/simple;
+	bh=gQG+dN9PyRfQHobnwu5hyI5uvYxgrjogC2X353rdOdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7ALi/Oz4TD0oM6C44S22biAB/QX2Lsg4XoygdMURfoX05THuTZ2Iwa/mPOH4RgXUH1gojJKiCsHTvGfTPh0L1Sf8E7IH7ElSmiEt17mY15NKs/C7UPcBbcAzt71c0HimN5sFCPsKFoevPF1Q9CCwzAlLAJ6QJYDOlz8mpyZrAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxnuujMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E076C32781;
-	Tue, 25 Jun 2024 09:51:17 +0000 (UTC)
+	 MIME-Version; b=D2l0rSYHi6mmbkAMHP7lGHyukh2Zooyzsrx9Cv+QJvCnWe9sDaIwm5aV0qFR2qfL6WF1wubMXQOQArXGRNDCokH2NyuUugehJfNvfCEpFK1L/2nWi4gC3lC0hSKUqWlx1YwedKH2XDeIZ4ti/NCOC7boq6/b2xdEjtEyTFasPDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQgbtJqq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE315C32781;
+	Tue, 25 Jun 2024 09:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309077;
-	bh=FfV2GWWmPj4tPiyqb9P5hTuMUGBEOMSZwycstp9i1jk=;
+	s=korg; t=1719308980;
+	bh=gQG+dN9PyRfQHobnwu5hyI5uvYxgrjogC2X353rdOdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxnuujMooQkE5pbU6bycZhVALiIdOjbanRvdIGP0azZy5TwQr/XUAcZ3Gm9HUBYFp
-	 +ngM+7hZTg9crN78gaOf1uEN7O9DwS3Pd0qaRO653RN3zkY0ediOyErT0y88r8BZaF
-	 XA/1k7T7oE8ggB9AYmw4wiy3NwUEjiulKvJxZ9Mw=
+	b=hQgbtJqqNiPhFs8U+BcemfKlTAOqGkaADHzF/gnVD6SxBefKMwk4tm+DhQ7yfczku
+	 y4oqPCWkdZa2tbV6ic4hk+BmUCqKKTJO+vVUchdd+qSg9+zuAlINNbhOPqI2R2Baas
+	 PekOG9CO5IMrv01RTdinByDbSULdnrWx6oBAzeNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunlei He <heyunlei@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Alex Henrie <alexhenrie24@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/192] f2fs: remove clear SB_INLINECRYPT flag in default_options
-Date: Tue, 25 Jun 2024 11:31:58 +0200
-Message-ID: <20240625085538.937262054@linuxfoundation.org>
+Subject: [PATCH 6.6 047/192] usb: misc: uss720: check for incompatible versions of the Belkin F5U002
+Date: Tue, 25 Jun 2024 11:31:59 +0200
+Message-ID: <20240625085538.974783053@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
 References: <20240625085537.150087723@linuxfoundation.org>
@@ -67,47 +65,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yunlei He <heyunlei@oppo.com>
+From: Alex Henrie <alexhenrie24@gmail.com>
 
-[ Upstream commit ac5eecf481c29942eb9a862e758c0c8b68090c33 ]
+[ Upstream commit 3295f1b866bfbcabd625511968e8a5c541f9ab32 ]
 
-In f2fs_remount, SB_INLINECRYPT flag will be clear and re-set.
-If create new file or open file during this gap, these files
-will not use inlinecrypt. Worse case, it may lead to data
-corruption if wrappedkey_v0 is enable.
+The incompatible device in my possession has a sticker that says
+"F5U002 Rev 2" and "P80453-B", and lsusb identifies it as
+"050d:0002 Belkin Components IEEE-1284 Controller". There is a bug
+report from 2007 from Michael Trausch who was seeing the exact same
+errors that I saw in 2024 trying to use this cable.
 
-Thread A:                               Thread B:
-
--f2fs_remount				-f2fs_file_open or f2fs_new_inode
-  -default_options
-	<- clear SB_INLINECRYPT flag
-
-                                          -fscrypt_select_encryption_impl
-
-  -parse_options
-	<- set SB_INLINECRYPT again
-
-Signed-off-by: Yunlei He <heyunlei@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Link: https://lore.kernel.org/all/46DE5830.9060401@trausch.us/
+Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
+Link: https://lore.kernel.org/r/20240326150723.99939-5-alexhenrie24@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/usb/misc/uss720.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index ce2293e13fadd..43424ca4f26c5 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2123,8 +2123,6 @@ static void default_options(struct f2fs_sb_info *sbi, bool remount)
- 	F2FS_OPTION(sbi).memory_mode = MEMORY_MODE_NORMAL;
- 	F2FS_OPTION(sbi).errors = MOUNT_ERRORS_CONTINUE;
+diff --git a/drivers/usb/misc/uss720.c b/drivers/usb/misc/uss720.c
+index b00d92db5dfd1..eb5a8e0d9e2d6 100644
+--- a/drivers/usb/misc/uss720.c
++++ b/drivers/usb/misc/uss720.c
+@@ -677,7 +677,7 @@ static int uss720_probe(struct usb_interface *intf,
+ 	struct parport_uss720_private *priv;
+ 	struct parport *pp;
+ 	unsigned char reg;
+-	int i;
++	int ret;
  
--	sbi->sb->s_flags &= ~SB_INLINECRYPT;
--
- 	set_opt(sbi, INLINE_XATTR);
- 	set_opt(sbi, INLINE_DATA);
- 	set_opt(sbi, INLINE_DENTRY);
+ 	dev_dbg(&intf->dev, "probe: vendor id 0x%x, device id 0x%x\n",
+ 		le16_to_cpu(usbdev->descriptor.idVendor),
+@@ -688,8 +688,8 @@ static int uss720_probe(struct usb_interface *intf,
+ 		usb_put_dev(usbdev);
+ 		return -ENODEV;
+ 	}
+-	i = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
+-	dev_dbg(&intf->dev, "set interface result %d\n", i);
++	ret = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
++	dev_dbg(&intf->dev, "set interface result %d\n", ret);
+ 
+ 	interface = intf->cur_altsetting;
+ 
+@@ -725,12 +725,18 @@ static int uss720_probe(struct usb_interface *intf,
+ 	set_1284_register(pp, 7, 0x00, GFP_KERNEL);
+ 	set_1284_register(pp, 6, 0x30, GFP_KERNEL);  /* PS/2 mode */
+ 	set_1284_register(pp, 2, 0x0c, GFP_KERNEL);
+-	/* debugging */
+-	get_1284_register(pp, 0, &reg, GFP_KERNEL);
++
++	/* The Belkin F5U002 Rev 2 P80453-B USB parallel port adapter shares the
++	 * device ID 050d:0002 with some other device that works with this
++	 * driver, but it itself does not. Detect and handle the bad cable
++	 * here. */
++	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
+ 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
++	if (ret < 0)
++		return ret;
+ 
+-	i = usb_find_last_int_in_endpoint(interface, &epd);
+-	if (!i) {
++	ret = usb_find_last_int_in_endpoint(interface, &epd);
++	if (!ret) {
+ 		dev_dbg(&intf->dev, "epaddr %d interval %d\n",
+ 				epd->bEndpointAddress, epd->bInterval);
+ 	}
 -- 
 2.43.0
 
