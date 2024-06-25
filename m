@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-55411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE2B916374
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A129164A5
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84D0B1F21B25
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6D4B1C20C67
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52831487E9;
-	Tue, 25 Jun 2024 09:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211CA149C4F;
+	Tue, 25 Jun 2024 09:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v05DDFjD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEEroHhS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41E11465A8;
-	Tue, 25 Jun 2024 09:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25471465A8;
+	Tue, 25 Jun 2024 09:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308824; cv=none; b=dtqrjR4Q0GUMAm6BSHYh9bfgTKPTYOh3xprBG/qZNeNTD/PQtUIkjFhWj2BkifNEhdFWcgpF6+uUg8pFIRb/IrpRjq61OBz86wSh3RdcOBjSPS1Y/T65WN7xrNtzHV6Yz2QHCx2XnH7CC3ohms9rI+MDoHtlxyFGIbq+1ehWjSA=
+	t=1719309579; cv=none; b=SE7UGKjED+JzY6u4zGl9usg8xwSsZX0DHyJVve/hrSf1htRleQ2Ju4XXEvHDnNw5xIYRmjyXJcTwF5Rb3sm69CRu/DpNeDge4u7zyBbNeWg6nYcFGksPl0BKwm3KEQ0bGP5iyL35y1UjLHuKLY1Fuux48IhH7qXDAiwYG6qm9Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308824; c=relaxed/simple;
-	bh=m25ANpDiZoECPY3B8Ea0AzWrea8TiZbWKM1gqin4tR0=;
+	s=arc-20240116; t=1719309579; c=relaxed/simple;
+	bh=Mj60ni1m6sooxEsMDmIAGAQHQb5HnZlycIAFXG5YmIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHxUj5ZG7ZhV2r+VU0Vfh8lqA7MpY/iJQh0eIxV5gJQqm+6T0d1BZsWBqNAwNgOFhtCV+4xwd7arMBSbY89wLCYNsEsgQUlbTITo5MTz7B0pe0FNrc2MM4fquUQG8KLtIbFEQEmH+LCQ0Zy00GzsK3rlnn0l4bg0ueCwedbaRWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v05DDFjD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D24C32781;
-	Tue, 25 Jun 2024 09:47:03 +0000 (UTC)
+	 MIME-Version; b=lMUE5vu5ilHGHqOEVtN3N1GphMytf03CXXL/+qkdVrryoHZgCfN6cKMSJPG4yFK9ZeH8Ki7s/KZB1G1VmEHj6gcjaKFsvlPy0HRJUYYKd1p+WvfVwMqMPv0Em8UDyHuzy6k2uoVLeevOJj/udS9YDOk2byy6N/5gkj2Qg2es6Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEEroHhS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50CDBC32781;
+	Tue, 25 Jun 2024 09:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308824;
-	bh=m25ANpDiZoECPY3B8Ea0AzWrea8TiZbWKM1gqin4tR0=;
+	s=korg; t=1719309579;
+	bh=Mj60ni1m6sooxEsMDmIAGAQHQb5HnZlycIAFXG5YmIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v05DDFjDXrhytOGwJGzY2ijgOmgoSdrAVV/XUB7qbLF2z5P0qwUSR+FyHZDEySp+t
-	 ODNZgRheOauWNz8XOeSvWkUUoxEGreO83nSfDHeI5VoygMfo6cm4xjAZxXdNgmZf42
-	 mJkFpzkjwNxSWEO/JjL0msp0n7JHL+AMumw5ale0=
+	b=lEEroHhSQms+/JhJdztl/+1ml+43o+NyclZf1Qncmmn0c+Rw6kGp7WKetnU04mQdw
+	 vF6o7SqEQp3faJ3LDIiME8NMDjAt6RX0KAsU3r8/a44To3bYdOpZ8nZQGeJwSHFHWY
+	 UHcdut7SF3qoerufj6s/YADaIkw5MsFyFtFkada8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.9 233/250] thermal: int340x: processor_thermal: Support shared interrupts
+	Joao Pinto <jpinto@synopsys.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/131] Avoid hw_desc array overrun in dw-axi-dmac
 Date: Tue, 25 Jun 2024 11:33:11 +0200
-Message-ID: <20240625085556.996458138@linuxfoundation.org>
+Message-ID: <20240625085527.325367198@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Joao Pinto <Joao.Pinto@synopsys.com>
 
-commit 096597cfe4ea08b1830e775436d76d7c9d6d3037 upstream.
+[ Upstream commit 333e11bf47fa8d477db90e2900b1ed3c9ae9b697 ]
 
-On some systems the processor thermal device interrupt is shared with
-other PCI devices. In this case return IRQ_NONE from the interrupt
-handler when the interrupt is not for the processor thermal device.
+I have a use case where nr_buffers = 3 and in which each descriptor is composed by 3
+segments, resulting in the DMA channel descs_allocated to be 9. Since axi_desc_put()
+handles the hw_desc considering the descs_allocated, this scenario would result in a
+kernel panic (hw_desc array will be overrun).
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Fixes: f0658708e863 ("thermal: int340x: processor_thermal: Use non MSI interrupts by default")
-Cc: 6.7+ <stable@vger.kernel.org> # 6.7+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To fix this, the proposal is to add a new member to the axi_dma_desc structure,
+where we keep the number of allocated hw_descs (axi_desc_alloc()) and use it in
+axi_desc_put() to handle the hw_desc array correctly.
+
+Additionally I propose to remove the axi_chan_start_first_queued() call after completing
+the transfer, since it was identified that unbalance can occur (started descriptors can
+be interrupted and transfer ignored due to DMA channel not being enabled).
+
+Signed-off-by: Joao Pinto <jpinto@synopsys.com>
+Link: https://lore.kernel.org/r/1711536564-12919-1-git-send-email-jpinto@synopsys.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/int340x_thermal/processor_thermal_device_pci.c       | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c | 6 ++----
+ drivers/dma/dw-axi-dmac/dw-axi-dmac.h          | 1 +
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
-index 14e34eabc419..4a1bfebb1b8e 100644
---- a/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
-+++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
-@@ -150,7 +150,7 @@ static irqreturn_t proc_thermal_irq_handler(int irq, void *devid)
- {
- 	struct proc_thermal_pci *pci_info = devid;
- 	struct proc_thermal_device *proc_priv;
--	int ret = IRQ_HANDLED;
-+	int ret = IRQ_NONE;
- 	u32 status;
+diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
+index 152c5d98524d7..7596864bf8bb2 100644
+--- a/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
++++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac-platform.c
+@@ -250,6 +250,7 @@ static struct axi_dma_desc *axi_desc_alloc(u32 num)
+ 		kfree(desc);
+ 		return NULL;
+ 	}
++	desc->nr_hw_descs = num;
  
- 	proc_priv = pci_info->proc_priv;
-@@ -175,6 +175,7 @@ static irqreturn_t proc_thermal_irq_handler(int irq, void *devid)
- 		/* Disable enable interrupt flag */
- 		proc_thermal_mmio_write(pci_info, PROC_THERMAL_MMIO_INT_ENABLE_0, 0);
- 		pkg_thermal_schedule_work(&pci_info->work);
-+		ret = IRQ_HANDLED;
+ 	return desc;
+ }
+@@ -276,7 +277,7 @@ static struct axi_dma_lli *axi_desc_get(struct axi_dma_chan *chan,
+ static void axi_desc_put(struct axi_dma_desc *desc)
+ {
+ 	struct axi_dma_chan *chan = desc->chan;
+-	int count = atomic_read(&chan->descs_allocated);
++	int count = desc->nr_hw_descs;
+ 	struct axi_dma_hw_desc *hw_desc;
+ 	int descs_put;
+ 
+@@ -1087,9 +1088,6 @@ static void axi_chan_block_xfer_complete(struct axi_dma_chan *chan)
+ 		/* Remove the completed descriptor from issued list before completing */
+ 		list_del(&vd->node);
+ 		vchan_cookie_complete(vd);
+-
+-		/* Submit queued descriptors after processing the completed ones */
+-		axi_chan_start_first_queued(chan);
  	}
  
- 	pci_write_config_byte(pci_info->pdev, 0xdc, 0x01);
+ out:
+diff --git a/drivers/dma/dw-axi-dmac/dw-axi-dmac.h b/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
+index e9d5eb0fd5948..764427a66f5e8 100644
+--- a/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
++++ b/drivers/dma/dw-axi-dmac/dw-axi-dmac.h
+@@ -103,6 +103,7 @@ struct axi_dma_desc {
+ 	u32				completed_blocks;
+ 	u32				length;
+ 	u32				period_len;
++	u32				nr_hw_descs;
+ };
+ 
+ struct axi_dma_chan_config {
 -- 
-2.45.2
+2.43.0
 
 
 
