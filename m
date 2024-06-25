@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-55576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1479A916440
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9139164B2
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93128B28BBC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 456571F23F39
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4FF14A619;
-	Tue, 25 Jun 2024 09:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B66C14A0B7;
+	Tue, 25 Jun 2024 10:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enpbCVqj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbTHE2nM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588F01465A8;
-	Tue, 25 Jun 2024 09:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2BC14A0A4;
+	Tue, 25 Jun 2024 10:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309311; cv=none; b=icy/Edf0bFZmwv2DATSb3u1Tnd2w2bzCnqL1wxmEPTkuyw+jHK1qqHXLhxu7dpWSfD1TJxfsZcG+1C9ny6slynktXs4TAHRhzJsXvhT5e+4CGVeZAhWj4ZR+4aOnQiI3EiIwB9bjx6M5htN56KeZp8WpoFbZVID5rwmrVPLPeTg=
+	t=1719309612; cv=none; b=LeiX03YD+FRttoHH1RDxkFU8srb0SKrhOJhPK2icaDt8Y9tKgewc5RvLu/tPfu/ncSL+FvrKNAveLkFz0Nw1SZDryW7BEquC+kYe8nL7s71CY0d6xiAGTb+SHlfxN46zgYOuCnTAwfA+r85jrAbIZq+z1eBd7fnqj2YzXV41yg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309311; c=relaxed/simple;
-	bh=dg8tPLlAOpmp3cXTvClp0byHkNHKmO9BcBsKPmPQ1yQ=;
+	s=arc-20240116; t=1719309612; c=relaxed/simple;
+	bh=LWC9vrH6EmAUGvjPRHM/RVgVdOl5hUiEk2/WOqJsa5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ca29oSVslWcL7/mfMvJSdOAVAH0/Nawk31ReAbTHLWYYqHtnPgZtwI4TQutefQLtl1fHNv0l00VjSSbEc/UiGjI8yBVv4viCZqkmoz+qjbGd6LUlVB3wURc/X2hXBNUu77adbkFYyjxIo/8YuOHz9uH9WGZlhfx/+T7C3lAclc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enpbCVqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4588C32781;
-	Tue, 25 Jun 2024 09:55:10 +0000 (UTC)
+	 MIME-Version; b=juTXDeESsQ0Vrhqyi+GAPKa6Wzyti1GwwyMi6l+7pQvIqHS4zz4ZtLtyzeYagTfRW5XEjVH+GvX+3Bfie5EiTkfshbM6f4uScilhBREkt6e895KrwfP2KE+1HrDRiTCkT/J+pqjB8sSgTBikqb7aTmcwdnO9cqQa4QfrL6p6R1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbTHE2nM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C254BC32789;
+	Tue, 25 Jun 2024 10:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309311;
-	bh=dg8tPLlAOpmp3cXTvClp0byHkNHKmO9BcBsKPmPQ1yQ=;
+	s=korg; t=1719309612;
+	bh=LWC9vrH6EmAUGvjPRHM/RVgVdOl5hUiEk2/WOqJsa5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enpbCVqjnyk+Ac/Hqqwq9Ro8ZRgbdA8/Qq0MXGh7KNCEVasp0g7+JNuYTBr3ylT0f
-	 9tkczOGozUdA8C96YiSu7g4cWXYxi31EFzMfvcMKnBgavDbtfbTb9ZjEWxpMvbeRec
-	 cL3GPhQgSI93pXOAqIodsYS7taQLEmGvs/JPqWd4=
+	b=fbTHE2nMKWbpulxum6n0HBnVpvH3hHpoeMsjwBlo8EKQBXSQOh2PzhJUz0nTYnZZz
+	 HfkcWyAeBAiSnWsCQaDuEmjLF2O+r7EAjL5mSZQA7lvUXuDCJdJU0ndHeFiZaC3sMu
+	 IgUpgviOmanbraWXun8T3oE/WChVFSrG/drVBrg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Chi <andy.chi@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 149/192] ALSA: hda/realtek: fix mute/micmute LEDs dont work for ProBook 445/465 G11.
-Date: Tue, 25 Jun 2024 11:33:41 +0200
-Message-ID: <20240625085542.878958110@linuxfoundation.org>
+	Shuang Li <shuali@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 067/131] tipc: force a dst refcount before doing decryption
+Date: Tue, 25 Jun 2024 11:33:42 +0200
+Message-ID: <20240625085528.491372374@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Chi <andy.chi@canonical.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit ea5f8c4cffcd8a6b62b3a3bd5008275218c9d02a upstream.
+[ Upstream commit 2ebe8f840c7450ecbfca9d18ac92e9ce9155e269 ]
 
-HP ProBook 445/465 G11 needs ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to
-make mic-mute/audio-mute working.
+As it says in commit 3bc07321ccc2 ("xfrm: Force a dst refcount before
+entering the xfrm type handlers"):
 
-Signed-off-by: Andy Chi <andy.chi@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240605092243.41963-1-andy.chi@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+"Crypto requests might return asynchronous. In this case we leave the
+ rcu protected region, so force a refcount on the skb's destination
+ entry before we enter the xfrm type input/output handlers."
+
+On TIPC decryption path it has the same problem, and skb_dst_force()
+should be called before doing decryption to avoid a possible crash.
+
+Shuang reported this issue when this warning is triggered:
+
+  [] WARNING: include/net/dst.h:337 tipc_sk_rcv+0x1055/0x1ea0 [tipc]
+  [] Kdump: loaded Tainted: G W --------- - - 4.18.0-496.el8.x86_64+debug
+  [] Workqueue: crypto cryptd_queue_worker
+  [] RIP: 0010:tipc_sk_rcv+0x1055/0x1ea0 [tipc]
+  [] Call Trace:
+  [] tipc_sk_mcast_rcv+0x548/0xea0 [tipc]
+  [] tipc_rcv+0xcf5/0x1060 [tipc]
+  [] tipc_aead_decrypt_done+0x215/0x2e0 [tipc]
+  [] cryptd_aead_crypt+0xdb/0x190
+  [] cryptd_queue_worker+0xed/0x190
+  [] process_one_work+0x93d/0x17e0
+
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
+Reported-by: Shuang Li <shuali@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Link: https://lore.kernel.org/r/fbe3195fad6997a4eec62d9bf076b2ad03ac336b.1718476040.git.lucien.xin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/tipc/node.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9959,6 +9959,10 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8c7b, "HP ProBook 445 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8c7c, "HP ProBook 445 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8c7d, "HP ProBook 465 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8c7e, "HP ProBook 465 G11", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8c89, "HP ProBook 460 G11", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c8a, "HP EliteBook 630", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c8c, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/net/tipc/node.c b/net/tipc/node.c
+index a9c5b6594889b..cf9d9f9b97844 100644
+--- a/net/tipc/node.c
++++ b/net/tipc/node.c
+@@ -2107,6 +2107,7 @@ void tipc_rcv(struct net *net, struct sk_buff *skb, struct tipc_bearer *b)
+ 	} else {
+ 		n = tipc_node_find_by_id(net, ehdr->id);
+ 	}
++	skb_dst_force(skb);
+ 	tipc_crypto_rcv(net, (n) ? n->crypto_rx : NULL, &skb, b);
+ 	if (!skb)
+ 		return;
+-- 
+2.43.0
+
 
 
 
