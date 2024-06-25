@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-55614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7723291646C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFB5916347
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D289B290D5
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 412101C20E00
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD742149DF4;
-	Tue, 25 Jun 2024 09:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599FA1494CB;
+	Tue, 25 Jun 2024 09:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxdwJyL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COmeo7zX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2FE146A67;
-	Tue, 25 Jun 2024 09:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1702D12EBEA;
+	Tue, 25 Jun 2024 09:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309426; cv=none; b=vGoRCwAEMt85fY15KbRRez7av1emPxLiXmcZhugy9Kwk/kgQA/5OCxeesgwScsmXmMV8AgOEEfso0BCZj4qkODQuE6yeWAqQfRHuM+gWFnIor3LEAzcp96rdu1hFTjVXPdkuZiEEFHubqACHBRg/XQe4tKamtSxOX8PArkai+XE=
+	t=1719308695; cv=none; b=dhS3DsZbY99hltS2m20Hx8XKYY77KE4+ZK4u7TjrETYtXrgh64dYOdSnOPWbaIuK2W1GlAYpEr3l6D1ZUSW0UPxtqlO/VjclLziNRkFYWnghsqN0F5F/3y13smCW0t4OD8b58FEuai5zMmzkiGjzehaEY1hsLwWGBpmKoG2vTIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309426; c=relaxed/simple;
-	bh=jO90zSJvPvBivdqab+YnKeRMmf4RIeLIJzzmPbIQ+ms=;
+	s=arc-20240116; t=1719308695; c=relaxed/simple;
+	bh=sHRQmKxh8wP8kAOdvpLMj1K76TCNmAntaOjxCdAbFkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBx5GBtbayo3/JMh/TrNRd4Maz4efo6x/yhabP8cfJmP+GXKhBeJ0hIvrEwxCLL0rmUgAPIEUL/9bZL/2+PxXW9Zg3E13KiytxDop2eSRCLmhu/qaArDhLuok4ffJ10u/0/LwlM2w/65sQWD7hu1tlUfs3BwfyqGGVrDkxt611Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxdwJyL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037D2C32781;
-	Tue, 25 Jun 2024 09:57:05 +0000 (UTC)
+	 MIME-Version; b=sII+ZXBY46Edty+aZ94g4nyDcLQhW0kzhPoPur8gPzX+W0vdcfhCEKLtLi91MP/Dz0FXW/mzcjUpTJXRdiUvdIhCHGAdzkEZt6n2uBlGoObA8qTIRJg5TakhBPE5Kc/uuIbFexmp/P0iZozBkgYWDhPUP+E9ljYPcPfSvONNF5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COmeo7zX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893B0C32781;
+	Tue, 25 Jun 2024 09:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309426;
-	bh=jO90zSJvPvBivdqab+YnKeRMmf4RIeLIJzzmPbIQ+ms=;
+	s=korg; t=1719308694;
+	bh=sHRQmKxh8wP8kAOdvpLMj1K76TCNmAntaOjxCdAbFkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KxdwJyL1ry/YMC4e8+oirneuDsC3bLbOEshu9l2alwQ9w+N4kjVg5d1zrV2fjyLVn
-	 1XNgub14CAhFDkHC2TLNGXt7xH4RYWzHMRwvKLNVImaQxF6Rq0NbcB89MPQXgSATXe
-	 qLlj8QCWUORh0fy3w7UE/QgL+icHmQjanwIuY58U=
+	b=COmeo7zXtG7aOkD79iELbPEEaE+qLJboj0Rebe6ceD7+hlkrODWgekJXka+mYrIS9
+	 CQEpWAc2naQGB2AB2xk9T7ZzPLr2bCWR43Onvd02du9YAZLBeRkdeoNx8Nwx/e9hDF
+	 EEugd1XAQ4TaOlGo59NNEEj2NG88nw7qREcL9fP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/131] af_packet: avoid a false positive warning in packet_setsockopt()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.9 209/250] dt-bindings: dma: fsl-edma: fix dma-channels constraints
 Date: Tue, 25 Jun 2024 11:32:47 +0200
-Message-ID: <20240625085526.409562235@linuxfoundation.org>
+Message-ID: <20240625085556.076828469@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,86 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 86d43e2bf93ccac88ef71cee36a23282ebd9e427 ]
+commit 1345a13f18370ad9e5bc98995959a27f9bd71464 upstream.
 
-Although the code is correct, the following line
+dma-channels is a number, not a list.  Apply proper constraints on the
+actual number.
 
-	copy_from_sockptr(&req_u.req, optval, len));
-
-triggers this warning :
-
-memcpy: detected field-spanning write (size 28) of single field "dst" at include/linux/sockptr.h:49 (size 16)
-
-Refactor the code to be more explicit.
-
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6eb439dff645 ("dt-bindings: fsl-dma: fsl-edma: add edma3 compatible string")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://lore.kernel.org/r/20240521083002.23262-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ Documentation/devicetree/bindings/dma/fsl,edma.yaml |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 8888c09931ce3..c48cb7664c552 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3791,28 +3791,30 @@ packet_setsockopt(struct socket *sock, int level, int optname, sockptr_t optval,
- 	case PACKET_TX_RING:
- 	{
- 		union tpacket_req_u req_u;
--		int len;
+--- a/Documentation/devicetree/bindings/dma/fsl,edma.yaml
++++ b/Documentation/devicetree/bindings/dma/fsl,edma.yaml
+@@ -48,8 +48,8 @@ properties:
+       - 3
  
-+		ret = -EINVAL;
- 		lock_sock(sk);
- 		switch (po->tp_version) {
- 		case TPACKET_V1:
- 		case TPACKET_V2:
--			len = sizeof(req_u.req);
-+			if (optlen < sizeof(req_u.req))
-+				break;
-+			ret = copy_from_sockptr(&req_u.req, optval,
-+						sizeof(req_u.req)) ?
-+						-EINVAL : 0;
- 			break;
- 		case TPACKET_V3:
- 		default:
--			len = sizeof(req_u.req3);
-+			if (optlen < sizeof(req_u.req3))
-+				break;
-+			ret = copy_from_sockptr(&req_u.req3, optval,
-+						sizeof(req_u.req3)) ?
-+						-EINVAL : 0;
- 			break;
- 		}
--		if (optlen < len) {
--			ret = -EINVAL;
--		} else {
--			if (copy_from_sockptr(&req_u.req, optval, len))
--				ret = -EFAULT;
--			else
--				ret = packet_set_ring(sk, &req_u, 0,
--						    optname == PACKET_TX_RING);
--		}
-+		if (!ret)
-+			ret = packet_set_ring(sk, &req_u, 0,
-+					      optname == PACKET_TX_RING);
- 		release_sock(sk);
- 		return ret;
- 	}
--- 
-2.43.0
-
+   dma-channels:
+-    minItems: 1
+-    maxItems: 64
++    minimum: 1
++    maximum: 64
+ 
+   clocks:
+     minItems: 1
 
 
 
