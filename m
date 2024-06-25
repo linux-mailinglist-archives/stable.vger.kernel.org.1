@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDCD8916371
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A86E791648E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BCA928B1DE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA23F1C237B0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342561494D5;
-	Tue, 25 Jun 2024 09:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484DA14A4D9;
+	Tue, 25 Jun 2024 09:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2Zq0l3M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxxNN3kV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CED1465A8;
-	Tue, 25 Jun 2024 09:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0805D14A4D1;
+	Tue, 25 Jun 2024 09:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308813; cv=none; b=Q6rd5MlNA6fJW8UiKI80Mq8JZpNHQjpSDF9xRLWJhd3Zsczg1Wx9g2+ee42COKej6XcrjVwI9JNNqmWS6GXyKXixThidPW4m9mLH7bAV4x4Wpj3OhHH/ZeFmodqOhjhE0YTvkxUWxUjKoIUkft7oeet8xw2Eht6Fxzjk5Qv0Q9k=
+	t=1719309515; cv=none; b=nO4BB0lU7pE4opzmUaENCimZPlMJP2JIT4144jp9NdMYxaRhroKYb6jAiudxf48zpD53ApexMzsi9VRwg87Avyi3pQkZmlrPo1I5bnS2QXtNEknUX9imRDaXFpTU+xnns098KfltMtHH/vMVHiyytAUfoMK874VhgwmvQWdsrkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308813; c=relaxed/simple;
-	bh=SkbuotTJ1GFoollVBR1PcqDm2Vhtg3lNtmDrKUteoDU=;
+	s=arc-20240116; t=1719309515; c=relaxed/simple;
+	bh=VkQ5vmY5TxJ6hAqRr2SMvSpaQJWz0EzoMlppJ0i1THA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uPTD0AY40XqdaYrlHckbc0na6eaadj0EoNaBPDFG77I6qz2xTYzGIZzKZm+JdvP5A/oBbzmaRO7jeXoZUqUfYArqxYC34tDdlzSesIglnJ850abOwfD5ibMjLbfSaJKJ9osTBkN9TKcgZfgV0y0EFYGJWD4eKz85O2ZHS8V032o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2Zq0l3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0CEC32781;
-	Tue, 25 Jun 2024 09:46:52 +0000 (UTC)
+	 MIME-Version; b=SpyoNQPoOATUvODsic6mSN+nZ+zZs9U/7BJnp4AbVb9WZE8DKmomfQ9ILo2Xc80wEf2JxIVkoR5EGke4LI55d029O+GaLZiVm8hyLnpvSb1uLGb6lfDVf/mcPAEzMLr9mqyRI/jMVudJo8MvI97cFtNPOAsw7he7iUIieFe8HhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxxNN3kV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7589BC32789;
+	Tue, 25 Jun 2024 09:58:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308812;
-	bh=SkbuotTJ1GFoollVBR1PcqDm2Vhtg3lNtmDrKUteoDU=;
+	s=korg; t=1719309514;
+	bh=VkQ5vmY5TxJ6hAqRr2SMvSpaQJWz0EzoMlppJ0i1THA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W2Zq0l3MDNi9tabSEwVCEQBrU2jUYSKUuB1by3BbsQi8DPNtJFjQgrp6O8iWlkA+l
-	 5ZlnHbN3L5ulATk7b24YUxjaiwEs1WPIV/busARqgoZqwy3TB/xhQkNCoM5jQPNX4T
-	 VSEgWKdi6kp9NUgw1rgOB6T/G8+Q3/AB56kwCMPM=
+	b=AxxNN3kV1R6xdNf9rNKbkfwuJGr1FqMoTg+ff/MXBYrjHiv4OguuZDgCMaT5F/4NR
+	 uojcaK0+Wgl6qLztAK8RgWmB+S1p8FEIzZRsNwofWoa0BA025+u88owP1TAcXmPLGG
+	 YlZwQ4Qf6E3hjO+sbKN3ulq+IukQxMV/UUZMG+zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liam Merwick <liam.merwick@oracle.com>,
-	Isaku Yamahata <isaku.yamahata@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.9 231/250] virt: guest_memfd: fix reference leak on hwpoisoned page
+	Yunlei He <heyunlei@oppo.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 034/131] f2fs: remove clear SB_INLINECRYPT flag in default_options
 Date: Tue, 25 Jun 2024 11:33:09 +0200
-Message-ID: <20240625085556.921220488@linuxfoundation.org>
+Message-ID: <20240625085527.248120075@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Yunlei He <heyunlei@oppo.com>
 
-commit c31745d2c508796a0996c88bf2e55f552d513f65 upstream.
+[ Upstream commit ac5eecf481c29942eb9a862e758c0c8b68090c33 ]
 
-If kvm_gmem_get_pfn() detects an hwpoisoned page, it returns -EHWPOISON
-but it does not put back the reference that kvm_gmem_get_folio() had
-grabbed.  Add the forgotten folio_put().
+In f2fs_remount, SB_INLINECRYPT flag will be clear and re-set.
+If create new file or open file during this gap, these files
+will not use inlinecrypt. Worse case, it may lead to data
+corruption if wrappedkey_v0 is enable.
 
-Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
-Cc: stable@vger.kernel.org
-Reviewed-by: Liam Merwick <liam.merwick@oracle.com>
-Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thread A:                               Thread B:
+
+-f2fs_remount				-f2fs_file_open or f2fs_new_inode
+  -default_options
+	<- clear SB_INLINECRYPT flag
+
+                                          -fscrypt_select_encryption_impl
+
+  -parse_options
+	<- set SB_INLINECRYPT again
+
+Signed-off-by: Yunlei He <heyunlei@oppo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/guest_memfd.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/f2fs/super.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 0f4e0cf4f158..747fe251e445 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -510,8 +510,10 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	}
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index c529ce5d986cc..f496622921843 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -2092,8 +2092,6 @@ static void default_options(struct f2fs_sb_info *sbi)
+ 	F2FS_OPTION(sbi).bggc_mode = BGGC_MODE_ON;
+ 	F2FS_OPTION(sbi).memory_mode = MEMORY_MODE_NORMAL;
  
- 	if (folio_test_hwpoison(folio)) {
-+		folio_unlock(folio);
-+		folio_put(folio);
- 		r = -EHWPOISON;
--		goto out_unlock;
-+		goto out_fput;
- 	}
- 
- 	page = folio_file_page(folio, index);
-@@ -522,7 +524,6 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- 
- 	r = 0;
- 
--out_unlock:
- 	folio_unlock(folio);
- out_fput:
- 	fput(file);
+-	sbi->sb->s_flags &= ~SB_INLINECRYPT;
+-
+ 	set_opt(sbi, INLINE_XATTR);
+ 	set_opt(sbi, INLINE_DATA);
+ 	set_opt(sbi, INLINE_DENTRY);
 -- 
-2.45.2
+2.43.0
 
 
 
