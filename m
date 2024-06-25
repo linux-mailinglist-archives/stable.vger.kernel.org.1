@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-55472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1209163BD
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:50:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE10C916328
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E90B1C220AE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:50:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB2DE284F85
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EF114A0A4;
-	Tue, 25 Jun 2024 09:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52D5149E03;
+	Tue, 25 Jun 2024 09:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5i6YoSz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/zF5KlI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482F91487E9;
-	Tue, 25 Jun 2024 09:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A529E12EBEA;
+	Tue, 25 Jun 2024 09:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309004; cv=none; b=ZjecwVGhBrArW6MzwTc9UJnCioMNCb525nMyyTYT9pfsfgYCkyK636+A1Xc36BrWX/ByfRiBzPWJjO+ceLZBtcz6TZq7+K23yLoQjBc1LHD2VJjRgL7wj1xyi8O3oMZANZpeCuKe2fViqYvqrJBpCAaYlZmOWGjtD8fXBHxMqBI=
+	t=1719308603; cv=none; b=NXqAWXQrLkMYx+9GF0eknKQ8SSfTX7QbZk+XjU+60JmKQm1iIZFfO5C+4us0RRi2Ezkf9qfoU9116d7ZAU8f83sUu70myb0E2f+0+SYkTh8OpU1rvhdia0J628j+UGaaWlajkGKYtE+HvLuUmrHkJbi/q+lHHIHPlFQw6AOFuZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309004; c=relaxed/simple;
-	bh=VMx1OQdwSjI34wLqjdODLSu9Ny1OOmU1H7MXmQNao8I=;
+	s=arc-20240116; t=1719308603; c=relaxed/simple;
+	bh=8OPShZwYdOBlpqA7xkDCNjihYb7o3EIjMOERPlS5+0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPwkb1LHRugO168LKPp7I8lUwM4onrfMlu7WKkz//KQNoHk6Hh7m2CPo1sdw5k6SBA+rRWEI4Gj2r3RnwUCqL0yGsX+EdoYVyKBTkCgei1c2FduNUx8dNe31KJhSksC7PrVsAGcItFSmhxjPYHsNuXHrXVnz0kS6cEFXRtEBQRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5i6YoSz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2679C32781;
-	Tue, 25 Jun 2024 09:50:03 +0000 (UTC)
+	 MIME-Version; b=ZIyj3TDzin5dQx9uKVi866NRGapFYS33nnVKBoC34Vw5nfh2bhHsGtRjaiLxCAgnqJiRBouM/hs1bwRNC9B61nF5GWEqzm1xNvJ7czIkQMNTUKZfLcNzSCoPZo6+wSoIKZUyBc1dF2BVe2TEO4QDVtZi6mN6Q3zft0kxXOI5mZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/zF5KlI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277D5C32789;
+	Tue, 25 Jun 2024 09:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309004;
-	bh=VMx1OQdwSjI34wLqjdODLSu9Ny1OOmU1H7MXmQNao8I=;
+	s=korg; t=1719308603;
+	bh=8OPShZwYdOBlpqA7xkDCNjihYb7o3EIjMOERPlS5+0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5i6YoSzAFOdlCJt7Ugnxyk48ewj7octrGYWIpChrwHgrBqXu3pWkF7pQ53F8+2wq
-	 ROhsLgIQnvGT7Dmisd/FxjKLEifxWK4YmIirX/lHOjiAGkQjqVVD1gpYqrdrctSl7A
-	 kTLlpSyg9VzCHdGaDRHnFrZS3bqpCryfMG0f4B9Y=
+	b=e/zF5KlI5JH4c26PwtfiGAALJDQCGHDCHlS8Ojqjfkc+elxN9DYPoFeOPky2TAhXk
+	 XDMOBK91GnuteZLZMg57A792B6p37mMYcFpRSjHeSkYlQgNAQQIi8F3t25E+0R9qkI
+	 fCRfloUdOCyW3aw6wiBErEEz+ktHRgR8ExrZp1oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/192] ALSA: hda: cs35l41: Possible null pointer dereference in cs35l41_hda_unbind()
-Date: Tue, 25 Jun 2024 11:32:15 +0200
-Message-ID: <20240625085539.592170043@linuxfoundation.org>
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.9 178/250] ext4: avoid overflow when setting values via sysfs
+Date: Tue, 25 Jun 2024 11:32:16 +0200
+Message-ID: <20240625085554.884834236@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 6386682cdc8b41319c92fbbe421953e33a28840c ]
+commit 9e8e819f8f272c4e5dcd0bd6c7450e36481ed139 upstream.
 
-The cs35l41_hda_unbind() function clears the hda_component entry
-matching it's index and then dereferences the codec pointer held in the
-first element of the hda_component array, this is an issue when the
-device index was 0.
+When setting values of type unsigned int through sysfs, we use kstrtoul()
+to parse it and then truncate part of it as the final set value, when the
+set value is greater than UINT_MAX, the set value will not match what we
+see because of the truncation. As follows:
 
-Instead use the codec pointer stashed in the cs35l41_hda structure as it
-will still be valid.
+  $ echo 4294967296 > /sys/fs/ext4/sda/mb_max_linear_groups
+  $ cat /sys/fs/ext4/sda/mb_max_linear_groups
+    0
 
-Fixes: 7cf5ce66dfda ("ALSA: hda: cs35l41: Add device_link between HDA and cs35l41_hda")
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20240531120820.35367-1-simont@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So we use kstrtouint() to parse the attr_pointer_ui type to avoid the
+inconsistency described above. In addition, a judgment is added to avoid
+setting s_resv_clusters less than 0.
+
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240319113325.3110393-2-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/cs35l41_hda.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/sysfs.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
-index 3c157b006a5a2..b437beae9b516 100644
---- a/sound/pci/hda/cs35l41_hda.c
-+++ b/sound/pci/hda/cs35l41_hda.c
-@@ -1187,7 +1187,7 @@ static void cs35l41_hda_unbind(struct device *dev, struct device *master, void *
- 	if (comps[cs35l41->index].dev == dev) {
- 		memset(&comps[cs35l41->index], 0, sizeof(*comps));
- 		sleep_flags = lock_system_sleep();
--		device_link_remove(&comps->codec->core.dev, cs35l41->dev);
-+		device_link_remove(&cs35l41->codec->core.dev, cs35l41->dev);
- 		unlock_system_sleep(sleep_flags);
- 	}
- }
--- 
-2.43.0
-
+--- a/fs/ext4/sysfs.c
++++ b/fs/ext4/sysfs.c
+@@ -104,7 +104,7 @@ static ssize_t reserved_clusters_store(s
+ 	int ret;
+ 
+ 	ret = kstrtoull(skip_spaces(buf), 0, &val);
+-	if (ret || val >= clusters)
++	if (ret || val >= clusters || (s64)val < 0)
+ 		return -EINVAL;
+ 
+ 	atomic64_set(&sbi->s_resv_clusters, val);
+@@ -451,7 +451,8 @@ static ssize_t ext4_attr_store(struct ko
+ 						s_kobj);
+ 	struct ext4_attr *a = container_of(attr, struct ext4_attr, attr);
+ 	void *ptr = calc_ptr(a, sbi);
+-	unsigned long t;
++	unsigned int t;
++	unsigned long lt;
+ 	int ret;
+ 
+ 	switch (a->attr_id) {
+@@ -460,7 +461,7 @@ static ssize_t ext4_attr_store(struct ko
+ 	case attr_pointer_ui:
+ 		if (!ptr)
+ 			return 0;
+-		ret = kstrtoul(skip_spaces(buf), 0, &t);
++		ret = kstrtouint(skip_spaces(buf), 0, &t);
+ 		if (ret)
+ 			return ret;
+ 		if (a->attr_ptr == ptr_ext4_super_block_offset)
+@@ -471,10 +472,10 @@ static ssize_t ext4_attr_store(struct ko
+ 	case attr_pointer_ul:
+ 		if (!ptr)
+ 			return 0;
+-		ret = kstrtoul(skip_spaces(buf), 0, &t);
++		ret = kstrtoul(skip_spaces(buf), 0, &lt);
+ 		if (ret)
+ 			return ret;
+-		*((unsigned long *) ptr) = t;
++		*((unsigned long *) ptr) = lt;
+ 		return len;
+ 	case attr_inode_readahead:
+ 		return inode_readahead_blks_store(sbi, buf, len);
 
 
 
