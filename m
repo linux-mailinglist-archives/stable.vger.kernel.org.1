@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-55707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB7F9164D3
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D32191645A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98C7F28867D
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC044B23EA3
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D41514A08B;
-	Tue, 25 Jun 2024 10:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D4714A4DA;
+	Tue, 25 Jun 2024 09:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYbX+zsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heP3/iWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4F513C90B;
-	Tue, 25 Jun 2024 10:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8CC14A4CC;
+	Tue, 25 Jun 2024 09:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309701; cv=none; b=ST5P+eFda968KtQDkEYK88vTdfY2lf8uvrI60sRnGjHakJ8ACny6VAD94UOBbe2HMyKgqv16EuwlUpOXzjET0r96ytjPbUnoEYUNFglT2BCIIXR1KSnrPJeS1P/XGDZOP4yVth/H/KNrTWjc51a6vPLmCQ9Ntfu0rTVKGv7PN08=
+	t=1719309371; cv=none; b=RrDK1xCuGLA8sGVrM+YWrklvVlM9ENpUNzf7l0KwZa0+Ayeg0+TbQNbflPFfQwQvMmTdxQBEYmVKc0X84q7ZrDGl7YKB8jfpSYLnr0xAct9WrODlZSErD3va6Ier5TTsfMGCMWWGcBBO1uDQjFFfY/sveOowEcwWA7/U7Zy8MLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309701; c=relaxed/simple;
-	bh=ikR+9dfAGUIaLTP3dthYabaS1E1hjedC9l49rED3isU=;
+	s=arc-20240116; t=1719309371; c=relaxed/simple;
+	bh=v4cZhiXFR4/A+2vtwszltcr8b4ap4YT9Pl8AwwD4B30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYqkKapth1FSF3VGfqR6XkvV89mngPPbUveb+oLdYnPdU9Muv0jIxFf6uvlFzhFhbXmnQDg/N4SS+CdTLk4t6Mlnb4YxjnjcBNcVWTUAvbTb3OdECjPTesgeWomb0vtWAczes3eGA5i0ntqVeN6THSj6AW3p0WS6p1kTMw0l6Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYbX+zsR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87473C32781;
-	Tue, 25 Jun 2024 10:01:40 +0000 (UTC)
+	 MIME-Version; b=XBghB2swq0AZmml5OJoGoV4HvZ+S1wDDUuhVNyEU50p008iP51Nlytye6IAXTwu/YsSoP4SutVmsf/GzCCeMjE4fQBw53IcPnG6oW8G3g0hsCbrt82xDb2Pf2p8Y73Lt/JHfHGDgvNRr1JDdLVlabUIlGRV/hPECocpwPp9zLRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heP3/iWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F46C32781;
+	Tue, 25 Jun 2024 09:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309700;
-	bh=ikR+9dfAGUIaLTP3dthYabaS1E1hjedC9l49rED3isU=;
+	s=korg; t=1719309371;
+	bh=v4cZhiXFR4/A+2vtwszltcr8b4ap4YT9Pl8AwwD4B30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jYbX+zsRDX+1kRIWzc3oI/IUlnFyIibCa4+UUXI4RfS4wiawqK20jrl/+XUDDjuZW
-	 2n4+/9JL21W5X0CcrNcq/y7lRHhtZLgVeeOLxHfItEGmMnDPMsLCmmmiivvqw72S2v
-	 6eTpjU9TQu9N70Imh0mqsejVHeL7WfGdaiceWKV4=
+	b=heP3/iWFz07gKx38439FdMm8tQghzf2ax82b7E5FcAWjlpsiFyjkn5aiLkWqiZvSY
+	 efyecu7At389NOeLv0cZPPBCOQ51R7PKAX0zsdBwya9g+0TfVS9URb2nDay6TTiYJx
+	 YYArJ+BSmatZICovAgg4Vp4wUCmJFAeQLIbYIg4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b62c37cdd58103293a5a@syzkaller.appspotmail.com,
-	syzbot+cfbe1da5fdfc39efc293@syzkaller.appspotmail.com,
-	kernel test robot <oliver.sang@intel.com>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/131] netfilter: ipset: Fix suspicious rcu_dereference_protected()
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 156/192] ocfs2: fix NULL pointer dereference in ocfs2_journal_dirty()
 Date: Tue, 25 Jun 2024 11:33:48 +0200
-Message-ID: <20240625085528.718154828@linuxfoundation.org>
+Message-ID: <20240625085543.147672284@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +68,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-[ Upstream commit 8ecd06277a7664f4ef018abae3abd3451d64e7a6 ]
+commit 58f7e1e2c9e72c7974054c64c3abeac81c11f822 upstream.
 
-When destroying all sets, we are either in pernet exit phase or
-are executing a "destroy all sets command" from userspace. The latter
-was taken into account in ip_set_dereference() (nfnetlink mutex is held),
-but the former was not. The patch adds the required check to
-rcu_dereference_protected() in ip_set_dereference().
+bdev->bd_super has been removed and commit 8887b94d9322 change the usage
+from bdev->bd_super to b_assoc_map->host->i_sb.  This introduces the
+following NULL pointer dereference in ocfs2_journal_dirty() since
+b_assoc_map is still not initialized.  This can be easily reproduced by
+running xfstests generic/186, which simulate no more credits.
 
-Fixes: 4e7aaa6b82d6 ("netfilter: ipset: Fix race between namespace cleanup and gc in the list:set type")
-Reported-by: syzbot+b62c37cdd58103293a5a@syzkaller.appspotmail.com
-Reported-by: syzbot+cfbe1da5fdfc39efc293@syzkaller.appspotmail.com
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202406141556.e0b6f17e-lkp@intel.com
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[  134.351592] BUG: kernel NULL pointer dereference, address: 0000000000000000
+...
+[  134.355341] RIP: 0010:ocfs2_journal_dirty+0x14f/0x160 [ocfs2]
+...
+[  134.365071] Call Trace:
+[  134.365312]  <TASK>
+[  134.365524]  ? __die_body+0x1e/0x60
+[  134.365868]  ? page_fault_oops+0x13d/0x4f0
+[  134.366265]  ? __pfx_bit_wait_io+0x10/0x10
+[  134.366659]  ? schedule+0x27/0xb0
+[  134.366981]  ? exc_page_fault+0x6a/0x140
+[  134.367356]  ? asm_exc_page_fault+0x26/0x30
+[  134.367762]  ? ocfs2_journal_dirty+0x14f/0x160 [ocfs2]
+[  134.368305]  ? ocfs2_journal_dirty+0x13d/0x160 [ocfs2]
+[  134.368837]  ocfs2_create_new_meta_bhs.isra.51+0x139/0x2e0 [ocfs2]
+[  134.369454]  ocfs2_grow_tree+0x688/0x8a0 [ocfs2]
+[  134.369927]  ocfs2_split_and_insert.isra.67+0x35c/0x4a0 [ocfs2]
+[  134.370521]  ocfs2_split_extent+0x314/0x4d0 [ocfs2]
+[  134.371019]  ocfs2_change_extent_flag+0x174/0x410 [ocfs2]
+[  134.371566]  ocfs2_add_refcount_flag+0x3fa/0x630 [ocfs2]
+[  134.372117]  ocfs2_reflink_remap_extent+0x21b/0x4c0 [ocfs2]
+[  134.372994]  ? inode_update_timestamps+0x4a/0x120
+[  134.373692]  ? __pfx_ocfs2_journal_access_di+0x10/0x10 [ocfs2]
+[  134.374545]  ? __pfx_ocfs2_journal_access_di+0x10/0x10 [ocfs2]
+[  134.375393]  ocfs2_reflink_remap_blocks+0xe4/0x4e0 [ocfs2]
+[  134.376197]  ocfs2_remap_file_range+0x1de/0x390 [ocfs2]
+[  134.376971]  ? security_file_permission+0x29/0x50
+[  134.377644]  vfs_clone_file_range+0xfe/0x320
+[  134.378268]  ioctl_file_clone+0x45/0xa0
+[  134.378853]  do_vfs_ioctl+0x457/0x990
+[  134.379422]  __x64_sys_ioctl+0x6e/0xd0
+[  134.379987]  do_syscall_64+0x5d/0x170
+[  134.380550]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  134.381231] RIP: 0033:0x7fa4926397cb
+[  134.381786] Code: 73 01 c3 48 8b 0d bd 56 38 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 8d 56 38 00 f7 d8 64 89 01 48
+[  134.383930] RSP: 002b:00007ffc2b39f7b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+[  134.384854] RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007fa4926397cb
+[  134.385734] RDX: 00007ffc2b39f7f0 RSI: 000000004020940d RDI: 0000000000000003
+[  134.386606] RBP: 0000000000000000 R08: 00111a82a4f015bb R09: 00007fa494221000
+[  134.387476] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+[  134.388342] R13: 0000000000f10000 R14: 0000558e844e2ac8 R15: 0000000000f10000
+[  134.389207]  </TASK>
+
+Fix it by only aborting transaction and journal in ocfs2_journal_dirty()
+now, and leave ocfs2_abort() later when detecting an aborted handle,
+e.g. start next transaction. Also log the handle details in this case.
+
+Link: https://lkml.kernel.org/r/20240530110630.3933832-1-joseph.qi@linux.alibaba.com
+Fixes: 8887b94d9322 ("ocfs2: stop using bdev->bd_super for journal error logging")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/ocfs2/journal.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index 649b8a5901e33..0b24b638bfd2e 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -53,12 +53,13 @@ MODULE_DESCRIPTION("core IP set support");
- MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_IPSET);
+diff --git a/fs/ocfs2/journal.c b/fs/ocfs2/journal.c
+index 604fea3a26ff..27c7683c7d3f 100644
+--- a/fs/ocfs2/journal.c
++++ b/fs/ocfs2/journal.c
+@@ -778,13 +778,15 @@ void ocfs2_journal_dirty(handle_t *handle, struct buffer_head *bh)
+ 		if (!is_handle_aborted(handle)) {
+ 			journal_t *journal = handle->h_transaction->t_journal;
  
- /* When the nfnl mutex or ip_set_ref_lock is held: */
--#define ip_set_dereference(p)		\
--	rcu_dereference_protected(p,	\
-+#define ip_set_dereference(inst)	\
-+	rcu_dereference_protected((inst)->ip_set_list,	\
- 		lockdep_nfnl_is_held(NFNL_SUBSYS_IPSET) || \
--		lockdep_is_held(&ip_set_ref_lock))
-+		lockdep_is_held(&ip_set_ref_lock) || \
-+		(inst)->is_deleted)
- #define ip_set(inst, id)		\
--	ip_set_dereference((inst)->ip_set_list)[id]
-+	ip_set_dereference(inst)[id]
- #define ip_set_ref_netlink(inst,id)	\
- 	rcu_dereference_raw((inst)->ip_set_list)[id]
- #define ip_set_dereference_nfnl(p)	\
-@@ -1135,7 +1136,7 @@ static int ip_set_create(struct sk_buff *skb, const struct nfnl_info *info,
- 		if (!list)
- 			goto cleanup;
- 		/* nfnl mutex is held, both lists are valid */
--		tmp = ip_set_dereference(inst->ip_set_list);
-+		tmp = ip_set_dereference(inst);
- 		memcpy(list, tmp, sizeof(struct ip_set *) * inst->ip_set_max);
- 		rcu_assign_pointer(inst->ip_set_list, list);
- 		/* Make sure all current packets have passed through */
+-			mlog(ML_ERROR, "jbd2_journal_dirty_metadata failed. "
+-					"Aborting transaction and journal.\n");
++			mlog(ML_ERROR, "jbd2_journal_dirty_metadata failed: "
++			     "handle type %u started at line %u, credits %u/%u "
++			     "errcode %d. Aborting transaction and journal.\n",
++			     handle->h_type, handle->h_line_no,
++			     handle->h_requested_credits,
++			     jbd2_handle_buffer_credits(handle), status);
+ 			handle->h_err = status;
+ 			jbd2_journal_abort_handle(handle);
+ 			jbd2_journal_abort(journal, status);
+-			ocfs2_abort(bh->b_assoc_map->host->i_sb,
+-				    "Journal already aborted.\n");
+ 		}
+ 	}
+ }
 -- 
-2.43.0
+2.45.2
 
 
 
