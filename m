@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-55281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228D89162EC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D5691638B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4826D1C2273C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBD8D1C22C6B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5457A14A0AA;
-	Tue, 25 Jun 2024 09:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA86314A096;
+	Tue, 25 Jun 2024 09:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G57xQdM+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUW1xodB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AEA14A096;
-	Tue, 25 Jun 2024 09:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7920914A091;
+	Tue, 25 Jun 2024 09:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308445; cv=none; b=HaJsoK72+SbMBzHbSq+81zF2K8+iGqtC0eDnhwrypUuZ8TB3bW+X8kZ466GqhtLLrtevn1IniufLQzssGYMrvcooG/+K4ID+pmHby44g2r+iI840zgEMKkBTXWBhfadbFS/WiKCKtxFl4b6qovxtxTzhirQ4EUxvmV3BFGsCzVI=
+	t=1719308874; cv=none; b=gFV+f2rV400FKlpK3cdS5xyrq8TIsIFSNddbnUVpnBkFgONG6FXrCvAAZyoxtAk6KRxrZgdLu47+TmvcKQnUIFiwDbFvcot5WEwMF3PBK4QQgDc+A8reYVDar2oFVkMQ4zmKHJdiI103R5CxnAW+zoknZQHl9/rYKOZiDn0wHl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308445; c=relaxed/simple;
-	bh=mxg1ThTRuMxZTsFmAOjvm9lzY9s2BeD/M0uA89X/3qw=;
+	s=arc-20240116; t=1719308874; c=relaxed/simple;
+	bh=14Vp6c0WdaAzhfGwrQrpLnQ6SayzufNBu7O0Bs9EL0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mGY3ameTx//MgWbqUEAp1EAjwKpm/fygZoBFYFUNoqAH9oP4w8aUTb2qr6qd1QJhhhXKuZ6MnNXWKnMnJtiX7ocMi507OVvX4Gt6G3auiQeN5CTFZ/yu8vZlx6KJtUjIHn4JCnzUs5EFU6FSwDR+gFjr+MKuQYihIapQ6QaUGH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G57xQdM+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D38C32786;
-	Tue, 25 Jun 2024 09:40:44 +0000 (UTC)
+	 MIME-Version; b=YEVBOF4wD5+DvE8XecHUNdKHzO1JsvaPYYDQ6Pb6Qx9HK2OGNUl2gsWGCH11QWpqb3I1jFb225u2u1mKtqxCa+H8eaAGvHozU2e3jx2CEtn4NXMi4mKWelKfrDx+2SCCUceMtst35HmVck3paSkYZYaeAU9NPWV5KFamCllMLJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUW1xodB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BA5C32781;
+	Tue, 25 Jun 2024 09:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308444;
-	bh=mxg1ThTRuMxZTsFmAOjvm9lzY9s2BeD/M0uA89X/3qw=;
+	s=korg; t=1719308874;
+	bh=14Vp6c0WdaAzhfGwrQrpLnQ6SayzufNBu7O0Bs9EL0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G57xQdM+2AhqFVBXzdbdkCwKPIK/CX9l1RqeMWg9Wh0op9lndgQnAS/CRYJhFzcLx
-	 3KhoV1j07mwIIQXXlG+YGRZmf2ZlC2R7fkex3tUzKBN3iWA4cpG99lf9iRPc0HgaxC
-	 McRKn9tmY2Wt1WCNL4Y96JDkABsDlA2pMJc9w/Ao=
+	b=HUW1xodB2Ug+MnQbj+r7Pny40lH1+bcyDE2hhkKLCQ8jYfkCrdGfvA5kvBMrmeEGU
+	 zHpKnDPwShwt7lN4LJFtpM8aJyxmTHUeM4bCyMLLv2X3hBAy9FNBuFdX7FJxuY68Uu
+	 HJ2UFS28N+rBAywNgUqWq2/55FTK5UX/kEQ4mIt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Raju Lakkaraju <Raju.Lakkaraju@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 123/250] net: lan743x: disable WOL upon resume to restore full data path operation
+Subject: [PATCH 6.6 009/192] block/ioctl: prefer different overflow check
 Date: Tue, 25 Jun 2024 11:31:21 +0200
-Message-ID: <20240625085552.789213273@linuxfoundation.org>
+Message-ID: <20240625085537.513513470@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,147 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
+From: Justin Stitt <justinstitt@google.com>
 
-[ Upstream commit 7725363936a88351b71495774c1e0e852ae4cdca ]
+[ Upstream commit ccb326b5f9e623eb7f130fbbf2505ec0e2dcaff9 ]
 
-When Wake-on-LAN (WoL) is active and the system is in suspend mode, triggering
-a system event can wake the system from sleep, which may block the data path.
-To restore normal data path functionality after waking, disable all wake-up
-events. Furthermore, clear all Write 1 to Clear (W1C) status bits by writing
-1's to them.
+Running syzkaller with the newly reintroduced signed integer overflow
+sanitizer shows this report:
 
-Fixes: 4d94282afd95 ("lan743x: Add power management support")
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[   62.982337] ------------[ cut here ]------------
+[   62.985692] cgroup: Invalid name
+[   62.986211] UBSAN: signed-integer-overflow in ../block/ioctl.c:36:46
+[   62.989370] 9pnet_fd: p9_fd_create_tcp (7343): problem connecting socket to 127.0.0.1
+[   62.992992] 9223372036854775807 + 4095 cannot be represented in type 'long long'
+[   62.997827] 9pnet_fd: p9_fd_create_tcp (7345): problem connecting socket to 127.0.0.1
+[   62.999369] random: crng reseeded on system resumption
+[   63.000634] GUP no longer grows the stack in syz-executor.2 (7353): 20002000-20003000 (20001000)
+[   63.000668] CPU: 0 PID: 7353 Comm: syz-executor.2 Not tainted 6.8.0-rc2-00035-gb3ef86b5a957 #1
+[   63.000677] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   63.000682] Call Trace:
+[   63.000686]  <TASK>
+[   63.000731]  dump_stack_lvl+0x93/0xd0
+[   63.000919]  __get_user_pages+0x903/0xd30
+[   63.001030]  __gup_longterm_locked+0x153e/0x1ba0
+[   63.001041]  ? _raw_read_unlock_irqrestore+0x17/0x50
+[   63.001072]  ? try_get_folio+0x29c/0x2d0
+[   63.001083]  internal_get_user_pages_fast+0x1119/0x1530
+[   63.001109]  iov_iter_extract_pages+0x23b/0x580
+[   63.001206]  bio_iov_iter_get_pages+0x4de/0x1220
+[   63.001235]  iomap_dio_bio_iter+0x9b6/0x1410
+[   63.001297]  __iomap_dio_rw+0xab4/0x1810
+[   63.001316]  iomap_dio_rw+0x45/0xa0
+[   63.001328]  ext4_file_write_iter+0xdde/0x1390
+[   63.001372]  vfs_write+0x599/0xbd0
+[   63.001394]  ksys_write+0xc8/0x190
+[   63.001403]  do_syscall_64+0xd4/0x1b0
+[   63.001421]  ? arch_exit_to_user_mode_prepare+0x3a/0x60
+[   63.001479]  entry_SYSCALL_64_after_hwframe+0x6f/0x77
+[   63.001535] RIP: 0033:0x7f7fd3ebf539
+[   63.001551] Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 14 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+[   63.001562] RSP: 002b:00007f7fd32570c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+[   63.001584] RAX: ffffffffffffffda RBX: 00007f7fd3ff3f80 RCX: 00007f7fd3ebf539
+[   63.001590] RDX: 4db6d1e4f7e43360 RSI: 0000000020000000 RDI: 0000000000000004
+[   63.001595] RBP: 00007f7fd3f1e496 R08: 0000000000000000 R09: 0000000000000000
+[   63.001599] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+[   63.001604] R13: 0000000000000006 R14: 00007f7fd3ff3f80 R15: 00007ffd415ad2b8
+...
+[   63.018142] ---[ end trace ]---
+
+Historically, the signed integer overflow sanitizer did not work in the
+kernel due to its interaction with `-fwrapv` but this has since been
+changed [1] in the newest version of Clang; It was re-enabled in the
+kernel with Commit 557f8c582a9ba8ab ("ubsan: Reintroduce signed overflow
+sanitizer").
+
+Let's rework this overflow checking logic to not actually perform an
+overflow during the check itself, thus avoiding the UBSAN splat.
+
+[1]: https://github.com/llvm/llvm-project/pull/82432
+
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240507-b4-sio-block-ioctl-v3-1-ba0c2b32275e@google.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 30 ++++++++++++++++---
- drivers/net/ethernet/microchip/lan743x_main.h | 24 +++++++++++++++
- 2 files changed, 50 insertions(+), 4 deletions(-)
+ block/ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index 75a988c0bd794..b88d99239a183 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -3568,7 +3568,7 @@ static void lan743x_pm_set_wol(struct lan743x_adapter *adapter)
+diff --git a/block/ioctl.c b/block/ioctl.c
+index 68265f914c27b..3786033342848 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -33,7 +33,7 @@ static int blkpg_do_ioctl(struct block_device *bdev,
+ 	if (op == BLKPG_DEL_PARTITION)
+ 		return bdev_del_partition(disk, p.pno);
  
- 	/* clear wake settings */
- 	pmtctl = lan743x_csr_read(adapter, PMT_CTL);
--	pmtctl |= PMT_CTL_WUPS_MASK_;
-+	pmtctl |= PMT_CTL_WUPS_MASK_ | PMT_CTL_RES_CLR_WKP_MASK_;
- 	pmtctl &= ~(PMT_CTL_GPIO_WAKEUP_EN_ | PMT_CTL_EEE_WAKEUP_EN_ |
- 		PMT_CTL_WOL_EN_ | PMT_CTL_MAC_D3_RX_CLK_OVR_ |
- 		PMT_CTL_RX_FCT_RFE_D3_CLK_OVR_ | PMT_CTL_ETH_PHY_WAKE_EN_);
-@@ -3703,6 +3703,7 @@ static int lan743x_pm_resume(struct device *dev)
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 	struct net_device *netdev = pci_get_drvdata(pdev);
- 	struct lan743x_adapter *adapter = netdev_priv(netdev);
-+	u32 data;
- 	int ret;
- 
- 	pci_set_power_state(pdev, PCI_D0);
-@@ -3721,6 +3722,30 @@ static int lan743x_pm_resume(struct device *dev)
- 		return ret;
- 	}
- 
-+	ret = lan743x_csr_read(adapter, MAC_WK_SRC);
-+	netif_dbg(adapter, drv, adapter->netdev,
-+		  "Wakeup source : 0x%08X\n", ret);
-+
-+	/* Clear the wol configuration and status bits. Note that
-+	 * the status bits are "Write One to Clear (W1C)"
-+	 */
-+	data = MAC_WUCSR_EEE_TX_WAKE_ | MAC_WUCSR_EEE_RX_WAKE_ |
-+	       MAC_WUCSR_RFE_WAKE_FR_ | MAC_WUCSR_PFDA_FR_ | MAC_WUCSR_WUFR_ |
-+	       MAC_WUCSR_MPR_ | MAC_WUCSR_BCAST_FR_;
-+	lan743x_csr_write(adapter, MAC_WUCSR, data);
-+
-+	data = MAC_WUCSR2_NS_RCD_ | MAC_WUCSR2_ARP_RCD_ |
-+	       MAC_WUCSR2_IPV6_TCPSYN_RCD_ | MAC_WUCSR2_IPV4_TCPSYN_RCD_;
-+	lan743x_csr_write(adapter, MAC_WUCSR2, data);
-+
-+	data = MAC_WK_SRC_ETH_PHY_WK_ | MAC_WK_SRC_IPV6_TCPSYN_RCD_WK_ |
-+	       MAC_WK_SRC_IPV4_TCPSYN_RCD_WK_ | MAC_WK_SRC_EEE_TX_WK_ |
-+	       MAC_WK_SRC_EEE_RX_WK_ | MAC_WK_SRC_RFE_FR_WK_ |
-+	       MAC_WK_SRC_PFDA_FR_WK_ | MAC_WK_SRC_MP_FR_WK_ |
-+	       MAC_WK_SRC_BCAST_FR_WK_ | MAC_WK_SRC_WU_FR_WK_ |
-+	       MAC_WK_SRC_WK_FR_SAVED_;
-+	lan743x_csr_write(adapter, MAC_WK_SRC, data);
-+
- 	/* open netdev when netdev is at running state while resume.
- 	 * For instance, it is true when system wakesup after pm-suspend
- 	 * However, it is false when system wakes up after suspend GUI menu
-@@ -3729,9 +3754,6 @@ static int lan743x_pm_resume(struct device *dev)
- 		lan743x_netdev_open(netdev);
- 
- 	netif_device_attach(netdev);
--	ret = lan743x_csr_read(adapter, MAC_WK_SRC);
--	netif_info(adapter, drv, adapter->netdev,
--		   "Wakeup source : 0x%08X\n", ret);
- 
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
-index 645bc048e52ef..fac0f33d10b2e 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.h
-+++ b/drivers/net/ethernet/microchip/lan743x_main.h
-@@ -61,6 +61,7 @@
- #define PMT_CTL_RX_FCT_RFE_D3_CLK_OVR_		BIT(18)
- #define PMT_CTL_GPIO_WAKEUP_EN_			BIT(15)
- #define PMT_CTL_EEE_WAKEUP_EN_			BIT(13)
-+#define PMT_CTL_RES_CLR_WKP_MASK_		GENMASK(9, 8)
- #define PMT_CTL_READY_				BIT(7)
- #define PMT_CTL_ETH_PHY_RST_			BIT(4)
- #define PMT_CTL_WOL_EN_				BIT(3)
-@@ -227,12 +228,31 @@
- #define MAC_WUCSR				(0x140)
- #define MAC_MP_SO_EN_				BIT(21)
- #define MAC_WUCSR_RFE_WAKE_EN_			BIT(14)
-+#define MAC_WUCSR_EEE_TX_WAKE_			BIT(13)
-+#define MAC_WUCSR_EEE_RX_WAKE_			BIT(11)
-+#define MAC_WUCSR_RFE_WAKE_FR_			BIT(9)
-+#define MAC_WUCSR_PFDA_FR_			BIT(7)
-+#define MAC_WUCSR_WUFR_				BIT(6)
-+#define MAC_WUCSR_MPR_				BIT(5)
-+#define MAC_WUCSR_BCAST_FR_			BIT(4)
- #define MAC_WUCSR_PFDA_EN_			BIT(3)
- #define MAC_WUCSR_WAKE_EN_			BIT(2)
- #define MAC_WUCSR_MPEN_				BIT(1)
- #define MAC_WUCSR_BCST_EN_			BIT(0)
- 
- #define MAC_WK_SRC				(0x144)
-+#define MAC_WK_SRC_ETH_PHY_WK_			BIT(17)
-+#define MAC_WK_SRC_IPV6_TCPSYN_RCD_WK_		BIT(16)
-+#define MAC_WK_SRC_IPV4_TCPSYN_RCD_WK_		BIT(15)
-+#define MAC_WK_SRC_EEE_TX_WK_			BIT(14)
-+#define MAC_WK_SRC_EEE_RX_WK_			BIT(13)
-+#define MAC_WK_SRC_RFE_FR_WK_			BIT(12)
-+#define MAC_WK_SRC_PFDA_FR_WK_			BIT(11)
-+#define MAC_WK_SRC_MP_FR_WK_			BIT(10)
-+#define MAC_WK_SRC_BCAST_FR_WK_			BIT(9)
-+#define MAC_WK_SRC_WU_FR_WK_			BIT(8)
-+#define MAC_WK_SRC_WK_FR_SAVED_			BIT(7)
-+
- #define MAC_MP_SO_HI				(0x148)
- #define MAC_MP_SO_LO				(0x14C)
- 
-@@ -295,6 +315,10 @@
- #define RFE_INDX(index)			(0x580 + (index << 2))
- 
- #define MAC_WUCSR2			(0x600)
-+#define MAC_WUCSR2_NS_RCD_		BIT(7)
-+#define MAC_WUCSR2_ARP_RCD_		BIT(6)
-+#define MAC_WUCSR2_IPV6_TCPSYN_RCD_	BIT(5)
-+#define MAC_WUCSR2_IPV4_TCPSYN_RCD_	BIT(4)
- 
- #define SGMII_ACC			(0x720)
- #define SGMII_ACC_SGMII_BZY_		BIT(31)
+-	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
++	if (p.start < 0 || p.length <= 0 || LLONG_MAX - p.length < p.start)
+ 		return -EINVAL;
+ 	/* Check that the partition is aligned to the block size */
+ 	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
 -- 
 2.43.0
 
