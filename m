@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-55377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F704916352
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F729163F0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B20031C20E00
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC1601C2273B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB30C149DF8;
-	Tue, 25 Jun 2024 09:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D527D149C4C;
+	Tue, 25 Jun 2024 09:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDf70H/Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RxrMYtw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A822E1465A8;
-	Tue, 25 Jun 2024 09:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C491487E9;
+	Tue, 25 Jun 2024 09:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308724; cv=none; b=J8vuMMzwcAybBtV5yYFCNfVrbeACXs8iqVsb6BVFXFiyPt/pROUGB+IbzJzyz3FbYl+w6cix5PHj36p1kK+5q12/7ob5tZyq4J+E+Q2tJdvqw9IhnGuTVbpQv2qOwjhxEVMHZRnr2hw8HviPKyaiCHMPIN1d48jiC1bb+NkpymM=
+	t=1719309127; cv=none; b=qlKKK0N8tO2h3e7VcxnPYi/TYV8CkIZvHb8Ngy5no4hpt89ZiYhaRMBzLJiHZwcpAKkGOO3lgMxiAybzHKs9PQfL5np4f3MK6c9iG3i9cRzseQtkexKNIg3iaZ4tiTzSFGrY7zVJOlOqua15bGbYomjGf9eTKyw/SF59ilcEI2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308724; c=relaxed/simple;
-	bh=hfl1LaoZByv/T3Lflb+wzHiNsMzzxYgOWc7Ji74OVh4=;
+	s=arc-20240116; t=1719309127; c=relaxed/simple;
+	bh=BE9rosMWpePzNrXbkb4ez2gT9dF33yBxIrxdw48nvRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOw5iWJwkl2kX3ffHTZHJJEguDNPv6ivtmWDbzxuyFPn08JlaVzelk+UPbAkBEw89oxlBfF9oS+gK/pZs4g78hkUVUSA2INT91gTKGKXP8xzq0UeuPwXZsbgAmqvljLAqmZQO8Ui3rpiSxF02/1RcORAeegS/D/45uXLGBOGzDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDf70H/Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23321C32781;
-	Tue, 25 Jun 2024 09:45:23 +0000 (UTC)
+	 MIME-Version; b=UrD8yGbzsb+Gxf8vXdeVmo6rPqsRB282jP2Nxw44O4tIgHiuQy44H4wNXfJhnuKVBJXVkDZRjBzfXufAPfTSDoz9ayd1BKMZ++Iug6ECouWgmmPXmKI0FTgDno1csXsV8JlkgIiLGLMqLF+S7CYOCGUfmnE1VErjixZsCIhuyG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RxrMYtw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19797C32781;
+	Tue, 25 Jun 2024 09:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308724;
-	bh=hfl1LaoZByv/T3Lflb+wzHiNsMzzxYgOWc7Ji74OVh4=;
+	s=korg; t=1719309127;
+	bh=BE9rosMWpePzNrXbkb4ez2gT9dF33yBxIrxdw48nvRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDf70H/QHjsUnOYhESQTsGEazLlqr3szReeB63X3gQpOlqBMI3bQrmWVtZsRRBx+Z
-	 uV9MbuW4vqN1jZFgYnRpwS3SYwQ3St4Tggk9CC6BSkjFbFV/jBq9Cq6vQLZ224UBrT
-	 //kyou3NykrGCFyZtLC3nsSthEj9eVvTfdb/2XZA=
+	b=1RxrMYtwjXLwdxOBNCy1d7sOKDaxiCoFgfEq0ImQlgyd6pAVhqPM6BBsFO/jCjRb6
+	 rsZ27+sppfLd1IZzJcTF+IfpqSXqheT5VzEfAdpsFHA1dQiTRgCtGrDnzf7TsrqR+i
+	 Dj0gWcd/kuJ+8+w4tMg+0vqbpaXaB+dDAyXUjEKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Nogikh <nogikh@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.9 218/250] kcov: dont lose track of remote references during softirqs
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 104/192] RDMA/bnxt_re: Fix the max msix vectors macro
 Date: Tue, 25 Jun 2024 11:32:56 +0200
-Message-ID: <20240625085556.420506672@linuxfoundation.org>
+Message-ID: <20240625085541.168320001@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Nogikh <nogikh@google.com>
+From: Selvin Xavier <selvin.xavier@broadcom.com>
 
-commit 01c8f9806bde438ca1c8cbbc439f0a14a6694f6c upstream.
+[ Upstream commit 056620da899527c14cf36e5019a0decaf4cf0f79 ]
 
-In kcov_remote_start()/kcov_remote_stop(), we swap the previous KCOV
-metadata of the current task into a per-CPU variable.  However, the
-kcov_mode_enabled(mode) check is not sufficient in the case of remote KCOV
-coverage: current->kcov_mode always remains KCOV_MODE_DISABLED for remote
-KCOV objects.
+bnxt_re no longer decide the number of MSI-x vectors used by itself.
+Its decided by bnxt_en now. So when bnxt_en changes this value, system
+crash is seen.
 
-If the original task that has invoked the KCOV_REMOTE_ENABLE ioctl happens
-to get interrupted and kcov_remote_start() is called, it ultimately leads
-to kcov_remote_stop() NOT restoring the original KCOV reference.  So when
-the task exits, all registered remote KCOV handles remain active forever.
+Depend on the max value reported by bnxt_en instead of using the its own macros.
 
-The most uncomfortable effect (at least for syzkaller) is that the bug
-prevents the reuse of the same /sys/kernel/debug/kcov descriptor.  If
-we obtain it in the parent process and then e.g.  drop some
-capabilities and continuously fork to execute individual programs, at
-some point current->kcov of the forked process is lost,
-kcov_task_exit() takes no action, and all KCOV_REMOTE_ENABLE ioctls
-calls from subsequent forks fail.
-
-And, yes, the efficiency is also affected if we keep on losing remote
-kcov objects.
-a) kcov_remote_map keeps on growing forever.
-b) (If I'm not mistaken), we're also not freeing the memory referenced
-by kcov->area.
-
-Fix it by introducing a special kcov_mode that is assigned to the task
-that owns a KCOV remote object.  It makes kcov_mode_enabled() return true
-and yet does not trigger coverage collection in __sanitizer_cov_trace_pc()
-and write_comp_data().
-
-[nogikh@google.com: replace WRITE_ONCE() with an ordinary assignment]
-  Link: https://lkml.kernel.org/r/20240614171221.2837584-1-nogikh@google.com
-Link: https://lkml.kernel.org/r/20240611133229.527822-1-nogikh@google.com
-Fixes: 5ff3b30ab57d ("kcov: collect coverage from interrupts")
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
-Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Tested-by: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Marco Elver <elver@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 303432211324 ("bnxt_en: Remove runtime interrupt vector allocation")
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1716195418-11767-1-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/kcov.h |    2 ++
- kernel/kcov.c        |    1 +
- 2 files changed, 3 insertions(+)
+ drivers/infiniband/hw/bnxt_re/bnxt_re.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/include/linux/kcov.h
-+++ b/include/linux/kcov.h
-@@ -21,6 +21,8 @@ enum kcov_mode {
- 	KCOV_MODE_TRACE_PC = 2,
- 	/* Collecting comparison operands mode. */
- 	KCOV_MODE_TRACE_CMP = 3,
-+	/* The process owns a KCOV remote reference. */
-+	KCOV_MODE_REMOTE = 4,
+diff --git a/drivers/infiniband/hw/bnxt_re/bnxt_re.h b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
+index 9fd9849ebdd14..5b481d8539eee 100644
+--- a/drivers/infiniband/hw/bnxt_re/bnxt_re.h
++++ b/drivers/infiniband/hw/bnxt_re/bnxt_re.h
+@@ -106,8 +106,6 @@ struct bnxt_re_gsi_context {
+ 	struct	bnxt_re_sqp_entries *sqp_tbl;
  };
  
- #define KCOV_IN_CTXSW	(1 << 30)
---- a/kernel/kcov.c
-+++ b/kernel/kcov.c
-@@ -631,6 +631,7 @@ static int kcov_ioctl_locked(struct kcov
- 			return -EINVAL;
- 		kcov->mode = mode;
- 		t->kcov = kcov;
-+	        t->kcov_mode = KCOV_MODE_REMOTE;
- 		kcov->t = t;
- 		kcov->remote = true;
- 		kcov->remote_size = remote_arg->area_size;
+-#define BNXT_RE_MIN_MSIX		2
+-#define BNXT_RE_MAX_MSIX		9
+ #define BNXT_RE_AEQ_IDX			0
+ #define BNXT_RE_NQ_IDX			1
+ #define BNXT_RE_GEN_P5_MAX_VF		64
+@@ -166,7 +164,7 @@ struct bnxt_re_dev {
+ 	struct bnxt_qplib_rcfw		rcfw;
+ 
+ 	/* NQ */
+-	struct bnxt_qplib_nq		nq[BNXT_RE_MAX_MSIX];
++	struct bnxt_qplib_nq		nq[BNXT_MAX_ROCE_MSIX];
+ 
+ 	/* Device Resources */
+ 	struct bnxt_qplib_dev_attr	dev_attr;
+-- 
+2.43.0
+
 
 
 
