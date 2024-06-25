@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-55653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB22916498
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1BF916370
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD8D61F235EE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC019B224B9
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F6A1487E9;
-	Tue, 25 Jun 2024 09:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384851487E9;
+	Tue, 25 Jun 2024 09:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5V5wFQj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nG/Q0CH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711F614A0AA;
-	Tue, 25 Jun 2024 09:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FBE1465A8;
+	Tue, 25 Jun 2024 09:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309541; cv=none; b=c/6ihaGmT55CwjbBt0bZ0fHwLjheRBkVRBtvhGekpJopeGqeG3HsjcrgzduvrgnzwU5R/e1iNVKw1919h2yXROdNqO5vCWjJXugc3tFgR9mlk5wx1rP28M5Vi9HCJdipHP1+ChkJ1jJ1todyyyrgo57zz7334ZxfiTCwITN5pvw=
+	t=1719308810; cv=none; b=ri422IdrgNZlWN6y7fzNm1WVJnftnzgf2M8AbLGexaGhQtg1KeokeOEcGlEsLKGtxUJO6nYaTiqpowJnIwGYgg/oUYz72dorH8ckbduqysxWYlDWI2xnnZzId6WihylVYxUg1gU1Z42xQ3AakcL8KR/eYEMLL6gN5s4djsdeHvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309541; c=relaxed/simple;
-	bh=b8Qu9zUn3pSD293n2bbX7dAHfPr0NTR4D5J2tpN2zxk=;
+	s=arc-20240116; t=1719308810; c=relaxed/simple;
+	bh=EBmS3TE58GE2EZSJOVSvE8xPkwLm2xUSSlKK3rAW6kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REWE23wa+MXXH4JyNjhex7L/r7v9+zYelV/ICBiknrD8PBOLJWc3YGB/RQwwOAhPEy4g1twz/WYimOovyrTZ6pu/j3ZCLHaccCrwyYJ5dKyEJPn1prZZhOOF9jUomJXHPtKqVBFKwyX/DcPdgDChZPTbuAhu8QMUXeBg7HQTS2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5V5wFQj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C12C32781;
-	Tue, 25 Jun 2024 09:59:00 +0000 (UTC)
+	 MIME-Version; b=kaNrD0XXHCES2UwRSRgAZS3TC876LUxU7zRih3ZhCH8iohjBiLsnArB6YR18Be/S0t/Kc6HUtVySl+kgCU/cZstxJhYiLJ2JaPPf7f4DGqLkIvC/DH2BUXrli7QNbk4CMqwmP8oBPQVJnMaMCB0Kim+MXHZ9FH6gcPHFlOhNYi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nG/Q0CH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722D5C32786;
+	Tue, 25 Jun 2024 09:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309541;
-	bh=b8Qu9zUn3pSD293n2bbX7dAHfPr0NTR4D5J2tpN2zxk=;
+	s=korg; t=1719308809;
+	bh=EBmS3TE58GE2EZSJOVSvE8xPkwLm2xUSSlKK3rAW6kI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5V5wFQj6cakDeEg8/5tlDWJK7RcOL+CLILaNGrk14Iu/YsdBV1ewciUJvmHWP/Zp
-	 0U3Vwam8FeFqx0oirT7TVokgaFrSdTV9Fx1NMbeFAS7kyHiCCGYD4ihzc9ym4aL8yn
-	 LB5yY2f+r7NtC/4Y6qoCrAMYokaE8a4Fonky6i9A=
+	b=nG/Q0CH3J+nngslJKQuyWvHJMOGTMh8qsYfuUlPt2Jz2DJHC6qm4b+AOxVnDlFJg7
+	 1NTCtq0hBe3BraSIpaQxSehY4haeFHfXM7B086futdJO7/UWrgDVgtNHrvABDawATM
+	 yflD3Nat/txrkoADGlKZp0s2nYfiM46DzqEk7Mog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyrus Lien <cyrus.lien@canonical.com>,
-	En-Wei Wu <en-wei.wu@canonical.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.1 051/131] ice: avoid IRQ collision to fix init failure on ACPI S3 resume
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Guo Ren <guoren@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.9 248/250] kprobe/ftrace: fix build error due to bad function definition
 Date: Tue, 25 Jun 2024 11:33:26 +0200
-Message-ID: <20240625085527.890345942@linuxfoundation.org>
+Message-ID: <20240625085557.569728691@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: En-Wei Wu <en-wei.wu@canonical.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit bc69ad74867dba1377abe14356c94a946d9837a3 ]
+commit 4b377b4868ef17b040065bd468668c707d2477a5 upstream.
 
-A bug in https://bugzilla.kernel.org/show_bug.cgi?id=218906 describes
-that irdma would break and report hardware initialization failed after
-suspend/resume with Intel E810 NIC (tested on 6.9.0-rc5).
+Commit 1a7d0890dd4a ("kprobe/ftrace: bail out if ftrace was killed")
+introduced a bad K&R function definition, which we haven't accepted in a
+long long time.
 
-The problem is caused due to the collision between the irq numbers
-requested in irdma and the irq numbers requested in other drivers
-after suspend/resume.
+Gcc seems to let it slide, but clang notices with the appropriate error:
 
-The irq numbers used by irdma are derived from ice's ice_pf->msix_entries
-which stores mappings between MSI-X index and Linux interrupt number.
-It's supposed to be cleaned up when suspend and rebuilt in resume but
-it's not, causing irdma using the old irq numbers stored in the old
-ice_pf->msix_entries to request_irq() when resume. And eventually
-collide with other drivers.
+  kernel/kprobes.c:1140:24: error: a function declaration without a prototype is deprecated in all >
+   1140 | void kprobe_ftrace_kill()
+        |                        ^
+        |                         void
 
-This patch fixes this problem. On suspend, we call ice_deinit_rdma() to
-clean up the ice_pf->msix_entries (and free the MSI-X vectors used by
-irdma if we've dynamically allocated them). On resume, we call
-ice_init_rdma() to rebuild the ice_pf->msix_entries (and allocate the
-MSI-X vectors if we would like to dynamically allocate them).
+but this commit was apparently never in linux-next before it was sent
+upstream, so it didn't get the appropriate build test coverage.
 
-Fixes: f9f5301e7e2d ("ice: Register auxiliary device to provide RDMA")
-Tested-by: Cyrus Lien <cyrus.lien@canonical.com>
-Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1a7d0890dd4a kprobe/ftrace: bail out if ftrace was killed
+Cc: Stephen Brennan <stephen.s.brennan@oracle.com>
+Cc: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Guo Ren <guoren@kernel.org>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/kprobes.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 9f71cbf62b141..6e55861dd86fe 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -5251,7 +5251,7 @@ static int __maybe_unused ice_suspend(struct device *dev)
- 	 */
- 	disabled = ice_service_task_stop(pf);
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1138,7 +1138,7 @@ static int disarm_kprobe_ftrace(struct k
+ 		ipmodify ? &kprobe_ipmodify_enabled : &kprobe_ftrace_enabled);
+ }
  
--	ice_unplug_aux_dev(pf);
-+	ice_deinit_rdma(pf);
- 
- 	/* Already suspended?, then there is nothing to do */
- 	if (test_and_set_bit(ICE_SUSPENDED, pf->state)) {
-@@ -5331,6 +5331,11 @@ static int __maybe_unused ice_resume(struct device *dev)
- 	if (ret)
- 		dev_err(dev, "Cannot restore interrupt scheme: %d\n", ret);
- 
-+	ret = ice_init_rdma(pf);
-+	if (ret)
-+		dev_err(dev, "Reinitialize RDMA during resume failed: %d\n",
-+			ret);
-+
- 	clear_bit(ICE_DOWN, pf->state);
- 	/* Now perform PF reset and rebuild */
- 	reset_type = ICE_RESET_PFR;
--- 
-2.43.0
-
+-void kprobe_ftrace_kill()
++void kprobe_ftrace_kill(void)
+ {
+ 	kprobe_ftrace_disabled = true;
+ }
 
 
 
