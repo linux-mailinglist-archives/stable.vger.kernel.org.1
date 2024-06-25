@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40814916492
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D22291636A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0A57287677
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60F861C21154
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D2414A0BD;
-	Tue, 25 Jun 2024 09:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AC2148315;
+	Tue, 25 Jun 2024 09:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0/D3snq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QR7ZG5LW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65111465A8;
-	Tue, 25 Jun 2024 09:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9211465A8;
+	Tue, 25 Jun 2024 09:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309523; cv=none; b=RMWZfrx6IqDvQjpfQheRyl9/kEMT3DtAxH51nqcPvxHh2HEXlWewc+hpWw4+7oBLIMGO6zrHHaHeBsW+FPTdDCqANb561KeRgyqOozx+e4oDltuP/dNk32b/y8e4VUrnlEy6tnZaJduDfj7XNDvHxlXCGLi+gyht2IFy8YmnCu8=
+	t=1719308792; cv=none; b=kry/O1GhIWbtYpAppmzFlnBxyk4GNDdzi4Dydt1OSXow9DKnmSKPRYlNFyWeERIfyFQ9W9jS64cCddrfoMzQRd7LyKzFMfhENNo3wEGqWI9Xjt0F1/z/4DXlHI/nooSNcFRB6TsqAcADj0rymSkDn5UhydQYeCPWEZVs3fuNNHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309523; c=relaxed/simple;
-	bh=cNkkz1YDigUxIvfkxZDfOVdsd/a+Rheabcqwzf9wH3c=;
+	s=arc-20240116; t=1719308792; c=relaxed/simple;
+	bh=G9sE51MbP2hIrC6KBA6NbsXg5vAR23e6YSfELUDLkqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u3hTxkjpqffTogMf4Nr4u3q3mBZiAYrRyMR38KPuWV99d6tRiYXEJqe1aPUxlIEPjagiSECCOzSwN4dq8yk/GQ9jd1r4llqVmxhvUXGjAqI50c83ghzd11HgqYIgbB6CXqRIzT3lTg8a4S4f+UG1CvXUuGd3seDRZbV6i04H6Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0/D3snq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C45C32781;
-	Tue, 25 Jun 2024 09:58:43 +0000 (UTC)
+	 MIME-Version; b=PSHzSAFH1iRDZIRKw7maU9rI729BBtm1kZ20Ke60AUxBM35ru2GIqd6AIGIWajGmoKsffmXbJ/95ue0+GQKavy1npdV9H5+Si9cFb7fAGkqVG5hNskRb3gLLywnsHSZ0LCdcAbhtWHtkHMKrNzcmzrj/FKKfZ1g1LfE+U7g9g+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QR7ZG5LW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9C08C32781;
+	Tue, 25 Jun 2024 09:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309523;
-	bh=cNkkz1YDigUxIvfkxZDfOVdsd/a+Rheabcqwzf9wH3c=;
+	s=korg; t=1719308792;
+	bh=G9sE51MbP2hIrC6KBA6NbsXg5vAR23e6YSfELUDLkqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0/D3snq9zRT24AdTKwN1ZoYTKI5h00j8Oe6pCjS2RTv0Xj0lHanqNIwEpRTp2ccj
-	 Qm4kRnEYFtQhpKX/3DspWxUtQZnAxPYwf8RtsOFXSw/JWJMqSanxencdEJs8XYy6mF
-	 Q/6h9b4dGwAKEtDPoBS5fyE+Ew0xBk9Dr7mWVksg=
+	b=QR7ZG5LWjlKFaA+2TQd7aGjbwr8BjovDUfGk4CglMM+lah6BUslJulsptkKMGdi6w
+	 TZ9DLFkAI5SwCVmEJ+VCxflgqISLbR4IYxy26m1iCR7QoeZh2A+ytPTAzgDcPnb9Id
+	 98KQJ45hFCtwRKXgUByLWvZDqer8tkN29qvohnKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Tony Luck <tony.luck@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/131] MIPS: Routerboard 532: Fix vendor retry check code
+Subject: [PATCH 6.9 242/250] x86/cpu/vfm: Add new macros to work with (vendor/family/model) values
 Date: Tue, 25 Jun 2024 11:33:20 +0200
-Message-ID: <20240625085527.664026264@linuxfoundation.org>
+Message-ID: <20240625085557.341561948@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,150 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Tony Luck <tony.luck@intel.com>
 
-[ Upstream commit ae9daffd9028f2500c9ac1517e46d4f2b57efb80 ]
+[ Upstream commit e6dfdc2e89a0adedf455814c91b977d6a584cc88 ]
 
-read_config_dword() contains strange condition checking ret for a
-number of values. The ret variable, however, is always zero because
-config_access() never returns anything else. Thus, the retry is always
-taken until number of tries is exceeded.
+To avoid adding a slew of new macros for each new Intel CPU family
+switch over from providing CPU model number #defines to a new
+scheme that encodes vendor, family, and model in a single number.
 
-The code looks like it wants to check *val instead of ret to see if the
-read gave an error response.
+  [ bp: s/casted/cast/g ]
 
-Fixes: 73b4390fb234 ("[MIPS] Routerboard 532: Support for base system")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240416211941.9369-3-tony.luck@intel.com
+Stable-dep-of: 93022482b294 ("x86/cpu: Fix x86_match_cpu() to match just X86_VENDOR_INTEL")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/pci/ops-rc32434.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/cpu_device_id.h | 93 ++++++++++++++++++++++++++++
+ 1 file changed, 93 insertions(+)
 
-diff --git a/arch/mips/pci/ops-rc32434.c b/arch/mips/pci/ops-rc32434.c
-index 874ed6df97683..34b9323bdabb0 100644
---- a/arch/mips/pci/ops-rc32434.c
-+++ b/arch/mips/pci/ops-rc32434.c
-@@ -112,8 +112,8 @@ static int read_config_dword(struct pci_bus *bus, unsigned int devfn,
- 	 * gives them time to settle
- 	 */
- 	if (where == PCI_VENDOR_ID) {
--		if (ret == 0xffffffff || ret == 0x00000000 ||
--		    ret == 0x0000ffff || ret == 0xffff0000) {
-+		if (*val == 0xffffffff || *val == 0x00000000 ||
-+		    *val == 0x0000ffff || *val == 0xffff0000) {
- 			if (delay > 4)
- 				return 0;
- 			delay *= 2;
+diff --git a/arch/x86/include/asm/cpu_device_id.h b/arch/x86/include/asm/cpu_device_id.h
+index eb8fcede9e3bf..dd7b9463696f5 100644
+--- a/arch/x86/include/asm/cpu_device_id.h
++++ b/arch/x86/include/asm/cpu_device_id.h
+@@ -2,6 +2,39 @@
+ #ifndef _ASM_X86_CPU_DEVICE_ID
+ #define _ASM_X86_CPU_DEVICE_ID
+ 
++/*
++ * Can't use <linux/bitfield.h> because it generates expressions that
++ * cannot be used in structure initializers. Bitfield construction
++ * here must match the union in struct cpuinfo_86:
++ *	union {
++ *		struct {
++ *			__u8	x86_model;
++ *			__u8	x86;
++ *			__u8	x86_vendor;
++ *			__u8	x86_reserved;
++ *		};
++ *		__u32		x86_vfm;
++ *	};
++ */
++#define VFM_MODEL_BIT	0
++#define VFM_FAMILY_BIT	8
++#define VFM_VENDOR_BIT	16
++#define VFM_RSVD_BIT	24
++
++#define	VFM_MODEL_MASK	GENMASK(VFM_FAMILY_BIT - 1, VFM_MODEL_BIT)
++#define	VFM_FAMILY_MASK	GENMASK(VFM_VENDOR_BIT - 1, VFM_FAMILY_BIT)
++#define	VFM_VENDOR_MASK	GENMASK(VFM_RSVD_BIT - 1, VFM_VENDOR_BIT)
++
++#define VFM_MODEL(vfm)	(((vfm) & VFM_MODEL_MASK) >> VFM_MODEL_BIT)
++#define VFM_FAMILY(vfm)	(((vfm) & VFM_FAMILY_MASK) >> VFM_FAMILY_BIT)
++#define VFM_VENDOR(vfm)	(((vfm) & VFM_VENDOR_MASK) >> VFM_VENDOR_BIT)
++
++#define	VFM_MAKE(_vendor, _family, _model) (	\
++	((_model) << VFM_MODEL_BIT) |		\
++	((_family) << VFM_FAMILY_BIT) |		\
++	((_vendor) << VFM_VENDOR_BIT)		\
++)
++
+ /*
+  * Declare drivers belonging to specific x86 CPUs
+  * Similar in spirit to pci_device_id and related PCI functions
+@@ -49,6 +82,16 @@
+ 	.driver_data	= (unsigned long) _data				\
+ }
+ 
++#define X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(_vendor, _family, _model, \
++						    _steppings, _feature, _data) { \
++	.vendor		= _vendor,					\
++	.family		= _family,					\
++	.model		= _model,					\
++	.steppings	= _steppings,					\
++	.feature	= _feature,					\
++	.driver_data	= (unsigned long) _data				\
++}
++
+ /**
+  * X86_MATCH_VENDOR_FAM_MODEL_FEATURE - Macro for CPU matching
+  * @_vendor:	The vendor name, e.g. INTEL, AMD, HYGON, ..., ANY
+@@ -164,6 +207,56 @@
+ 	X86_MATCH_VENDOR_FAM_MODEL_STEPPINGS_FEATURE(INTEL, 6, INTEL_FAM6_##model, \
+ 						     steppings, X86_FEATURE_ANY, data)
+ 
++/**
++ * X86_MATCH_VFM - Match encoded vendor/family/model
++ * @vfm:	Encoded 8-bits each for vendor, family, model
++ * @data:	Driver specific data or NULL. The internal storage
++ *		format is unsigned long. The supplied value, pointer
++ *		etc. is cast to unsigned long internally.
++ *
++ * Stepping and feature are set to wildcards
++ */
++#define X86_MATCH_VFM(vfm, data)			\
++	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
++		VFM_VENDOR(vfm),			\
++		VFM_FAMILY(vfm),			\
++		VFM_MODEL(vfm),				\
++		X86_STEPPING_ANY, X86_FEATURE_ANY, data)
++
++/**
++ * X86_MATCH_VFM_STEPPINGS - Match encoded vendor/family/model/stepping
++ * @vfm:	Encoded 8-bits each for vendor, family, model
++ * @steppings:	Bitmask of steppings to match
++ * @data:	Driver specific data or NULL. The internal storage
++ *		format is unsigned long. The supplied value, pointer
++ *		etc. is cast to unsigned long internally.
++ *
++ * feature is set to wildcard
++ */
++#define X86_MATCH_VFM_STEPPINGS(vfm, steppings, data)	\
++	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
++		VFM_VENDOR(vfm),			\
++		VFM_FAMILY(vfm),			\
++		VFM_MODEL(vfm),				\
++		steppings, X86_FEATURE_ANY, data)
++
++/**
++ * X86_MATCH_VFM_FEATURE - Match encoded vendor/family/model/feature
++ * @vfm:	Encoded 8-bits each for vendor, family, model
++ * @feature:	A X86_FEATURE bit
++ * @data:	Driver specific data or NULL. The internal storage
++ *		format is unsigned long. The supplied value, pointer
++ *		etc. is cast to unsigned long internally.
++ *
++ * Steppings is set to wildcard
++ */
++#define X86_MATCH_VFM_FEATURE(vfm, feature, data)	\
++	X86_MATCH_VENDORID_FAM_MODEL_STEPPINGS_FEATURE(	\
++		VFM_VENDOR(vfm),			\
++		VFM_FAMILY(vfm),			\
++		VFM_MODEL(vfm),				\
++		X86_STEPPING_ANY, feature, data)
++
+ /*
+  * Match specific microcode revisions.
+  *
 -- 
 2.43.0
 
