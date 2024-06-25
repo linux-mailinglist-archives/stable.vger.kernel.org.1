@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-55548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048B091641F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:54:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E9391649D
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83F98B283EE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:54:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22E611C233B2
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F1214A4E7;
-	Tue, 25 Jun 2024 09:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DB6149C41;
+	Tue, 25 Jun 2024 09:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdIBaA5y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9nxsnm1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D6414A4D9;
-	Tue, 25 Jun 2024 09:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457A31465A8;
+	Tue, 25 Jun 2024 09:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309227; cv=none; b=ECTNQC+LQcERVulJ1A0Trt9xn3/s9saowvM1ZU+S1M6932SgsYSO9n1V0KoGvAilj01fU3Jo36UqobAVp/+zO70P3MY+vUvL+Ia7/XfKhSMdGGjzwetMApZlpW0W9PZMosBYJR+60kbZnu7VyLGJeBBcKwqQCQPc6XZyNE+tz5c=
+	t=1719309556; cv=none; b=qsQbw/z5erlN+agBvcUBp0P2cYn/P8IU/gLtPEJBTg6lH9PXmQ71hBEr9WQWOXTctF/ePvApTysTxCYk7NVHUK0lC9z38ZPBA/9dlbMh/uKhCxIbqTAE3M2B3HRwFFhyXJX29W/yIXcKv684lMEm0I6XiNe0PI9oXt8ZlkQOW6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309227; c=relaxed/simple;
-	bh=jzxvZ9nvxrnBCVgWa2VpcOKSG0zXNdNbJud50Ane6gw=;
+	s=arc-20240116; t=1719309556; c=relaxed/simple;
+	bh=H/0XcJBCU7sYClfZX/eQC24RoZZEFWROIEEkbBjJB1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WPKWuWaqNWc+4nfKbiRVLAizhvvZ0Z42Jl05w+HxJj8BMmRSOAENtf03sIlFjAeoMJZ0pwowa4BlxF3MZdtIfMCelgOMeCRLpc/KN7gJfFS3nS1mYAXUaXmEncW8J2A8p2kgLlDy0tWMKlIhQoTYbkhLXbLBIJx3JNg1OagegFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdIBaA5y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9B6C32781;
-	Tue, 25 Jun 2024 09:53:46 +0000 (UTC)
+	 MIME-Version; b=VMC1pwRD28g5MFyutgupa+oeMsI4aKslqqnwXLn2BZziIiCca8HEzaKB0PzbyG4SwivD/5w+76guUwOAAQYwCtEKhzi2opF4auV2RgDPC0e8lD8zRmfaa6FyCo6EhGVmDZlLK0CIlBGQ6oPdJiAxmKfX8GDLf6v5Uz8OQJHVaBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9nxsnm1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBE6C32781;
+	Tue, 25 Jun 2024 09:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309227;
-	bh=jzxvZ9nvxrnBCVgWa2VpcOKSG0zXNdNbJud50Ane6gw=;
+	s=korg; t=1719309556;
+	bh=H/0XcJBCU7sYClfZX/eQC24RoZZEFWROIEEkbBjJB1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VdIBaA5yY66P3Zwalemep2zcBvCzakV3Pdin50P9qvCcIzHARN8aJGFpTLUW4KqcL
-	 w2U0yUwoiTN7X4JtaBhsrHZ8u/UZCtjmAYPhlqD/DqmH5bBv9i6M8uNFHBEsUxqr7g
-	 TlIK2lvp8AA7MhriBijh4WA+j7sILly1Ny+zHM7Y=
+	b=k9nxsnm1np53+TNFXuEmNeX9Pkr4zWZw7kHFCn3gis1T/1RB1yf5kIH4MlWyqVXeH
+	 SDXFwUTKAIned6Bqa8VS4yFvSTdbQj8e6TIFQRk3OGaf1YFJi2Pd2KCoFgte7gDnsH
+	 ndnTGu7I5Cnyc7T1orlhWw7Ak2YYVhhFmo5r8efM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 138/192] cifs: fix typo in module parameter enable_gcm_256
+	syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com,
+	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 055/131] netrom: Fix a memory leak in nr_heartbeat_expiry()
 Date: Tue, 25 Jun 2024 11:33:30 +0200
-Message-ID: <20240625085542.457247677@linuxfoundation.org>
+Message-ID: <20240625085528.041828957@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-commit 8bf0287528da1992c5e49d757b99ad6bbc34b522 upstream.
+[ Upstream commit 0b9130247f3b6a1122478471ff0e014ea96bb735 ]
 
-enable_gcm_256 (which allows the server to require the strongest
-encryption) is enabled by default, but the modinfo description
-incorrectly showed it disabled by default. Fix the typo.
+syzbot reported a memory leak in nr_create() [0].
 
-Cc: stable@vger.kernel.org
-Fixes: fee742b50289 ("smb3.1.1: enable negotiating stronger encryption by default")
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Commit 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
+added sock_hold() to the nr_heartbeat_expiry() function, where
+a) a socket has a SOCK_DESTROY flag or
+b) a listening socket has a SOCK_DEAD flag.
+
+But in the case "a," when the SOCK_DESTROY flag is set, the file descriptor
+has already been closed and the nr_release() function has been called.
+So it makes no sense to hold the reference count because no one will
+call another nr_destroy_socket() and put it as in the case "b."
+
+nr_connect
+  nr_establish_data_link
+    nr_start_heartbeat
+
+nr_release
+  switch (nr->state)
+  case NR_STATE_3
+    nr->state = NR_STATE_2
+    sock_set_flag(sk, SOCK_DESTROY);
+
+                        nr_rx_frame
+                          nr_process_rx_frame
+                            switch (nr->state)
+                            case NR_STATE_2
+                              nr_state2_machine()
+                                nr_disconnect()
+                                  nr_sk(sk)->state = NR_STATE_0
+                                  sock_set_flag(sk, SOCK_DEAD)
+
+                        nr_heartbeat_expiry
+                          switch (nr->state)
+                          case NR_STATE_0
+                            if (sock_flag(sk, SOCK_DESTROY) ||
+                               (sk->sk_state == TCP_LISTEN
+                                 && sock_flag(sk, SOCK_DEAD)))
+                               sock_hold()  // ( !!! )
+                               nr_destroy_socket()
+
+To fix the memory leak, let's call sock_hold() only for a listening socket.
+
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with Syzkaller.
+
+[0]: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
+
+Reported-by: syzbot+d327a1f3b12e1e206c16@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d327a1f3b12e1e206c16
+Fixes: 409db27e3a2e ("netrom: Fix use-after-free of a listening socket.")
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netrom/nr_timer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -133,7 +133,7 @@ module_param(enable_oplocks, bool, 0644)
- MODULE_PARM_DESC(enable_oplocks, "Enable or disable oplocks. Default: y/Y/1");
- 
- module_param(enable_gcm_256, bool, 0644);
--MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: n/N/0");
-+MODULE_PARM_DESC(enable_gcm_256, "Enable requesting strongest (256 bit) GCM encryption. Default: y/Y/0");
- 
- module_param(require_gcm_256, bool, 0644);
- MODULE_PARM_DESC(require_gcm_256, "Require strongest (256 bit) GCM encryption. Default: n/N/0");
+diff --git a/net/netrom/nr_timer.c b/net/netrom/nr_timer.c
+index 4e7c968cde2dc..5e3ca068f04e0 100644
+--- a/net/netrom/nr_timer.c
++++ b/net/netrom/nr_timer.c
+@@ -121,7 +121,8 @@ static void nr_heartbeat_expiry(struct timer_list *t)
+ 		   is accepted() it isn't 'dead' so doesn't get removed. */
+ 		if (sock_flag(sk, SOCK_DESTROY) ||
+ 		    (sk->sk_state == TCP_LISTEN && sock_flag(sk, SOCK_DEAD))) {
+-			sock_hold(sk);
++			if (sk->sk_state == TCP_LISTEN)
++				sock_hold(sk);
+ 			bh_unlock_sock(sk);
+ 			nr_destroy_socket(sk);
+ 			goto out;
+-- 
+2.43.0
+
 
 
 
