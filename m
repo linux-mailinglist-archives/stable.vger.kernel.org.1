@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-55526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FEAF9163FE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C79A4916480
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAF94B252DC
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A844B23B4A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C89149C41;
-	Tue, 25 Jun 2024 09:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE860149C4F;
+	Tue, 25 Jun 2024 09:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ue4LC1E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eILNQ2ir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C82BC24B34;
-	Tue, 25 Jun 2024 09:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DDEC1465A8;
+	Tue, 25 Jun 2024 09:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309162; cv=none; b=uaTmKJe8ptg5zW0wg35c6UNnl6jCemjIchMs6LcR+ofHssJIMKAvtsROxQngMY94KNbaVtwGxO0Y3IvJH3T6vs8yRklC8+8wXAQoE30lZmu7uDmw3W3PJSLVQ9hLKn0P5CecTFpqTAGWUuB1CSerZ7bW8gw2j0cDfrQEkgIBduU=
+	t=1719309482; cv=none; b=iWNbFfb29a7brfmrjC9X/DxKmUdfBAaJI/4f0YVuf1buCuIBTl1cQP0DhuPhbIqUsXAIr270GDXVoB9GmRzccoaBkT7zYEp6lIhk/1eHAJ0uh/gfuAQmHgPrpa7p4joOW2w1k4yU2T0FppWJgWPHHaJT65dFVKLgpA5HxWLpaR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309162; c=relaxed/simple;
-	bh=+GfsHCgnNttEGJQLBoseByYEl9wUEw9jWzyb1choyFw=;
+	s=arc-20240116; t=1719309482; c=relaxed/simple;
+	bh=KTttK6OmGZlmnM8oyIdLubgpw04RnoTmcdgXaflH0fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oR89aEnGk+UJ5x0Ue+2joZduzHjdJqchPWDpN5/mYyDIEfp5DWlhnSMn5Vimpw7TUYRpKU/CFk1mCRj2P96QuGKV0aEitIMSn9AmqAKHPb/6h/Wq/QhtPK+GZP8d9qne6CvWkv3u1drXEz1kwr9V5vUrQkBV47hnayXXTduQuLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ue4LC1E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D545C32781;
-	Tue, 25 Jun 2024 09:52:42 +0000 (UTC)
+	 MIME-Version; b=Rr5APlvsT1jE+65ofj8xdb96DDG9KhALrdiq80AMUNXU0g3tns/+uOBhSmzmh/8afvpFslORKLVBaz0IM+e+EivR/Ag1HUJS+pHd1z0H4JGRQa2fhdnabNtPUb4MSDt99J5EMkcRpLXhGbPmmnTI5GIX2tHUV48k/SZaP2r8czM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eILNQ2ir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A9CC32781;
+	Tue, 25 Jun 2024 09:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309162;
-	bh=+GfsHCgnNttEGJQLBoseByYEl9wUEw9jWzyb1choyFw=;
+	s=korg; t=1719309482;
+	bh=KTttK6OmGZlmnM8oyIdLubgpw04RnoTmcdgXaflH0fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ue4LC1E3gaA+EY8WrASlEkOnYc+MyuBmLSoWPtKqDocQT4PDMSm5hIEyuGlXg1n5
-	 5rwAx067VAJZRve1awiCBYYY8D5mggFj8wBvc00knEI5pASdpwmypmu0QXBAz6/lHQ
-	 hIqmwCWg16wN7TtZGA6i6B33We8LWLboX/NPnBxo=
+	b=eILNQ2irOt1e15hhzeYoQS5bBD4oHV96rYGknsu+hV7GrpTEVyn/RaNJKMnth94uM
+	 nucWXZoNOYRF7aEnqIPjWDe2WytmM1BoarDQjmY93ywI7QoxEd5wKJY2xP0svhBaOu
+	 n6UBnR82GcdC10TvNsmTjoSNWOx0TNrI1Stf8+do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Raju Lakkaraju <Raju.Lakkaraju@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/192] net: phy: mxl-gpy: Remove interrupt mask clearing from config_init
+Subject: [PATCH 6.1 003/131] io_uring/sqpoll: work around a potential audit memory leak
 Date: Tue, 25 Jun 2024 11:32:38 +0200
-Message-ID: <20240625085540.477178576@linuxfoundation.org>
+Message-ID: <20240625085526.065319441@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,163 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit c44d3ffd85db03ebcc3090e55589e10d5af9f3a9 ]
+[ Upstream commit c4ce0ab27646f4206a9eb502d6fe45cb080e1cae ]
 
-When the system resumes from sleep, the phy_init_hw() function invokes
-config_init(), which clears all interrupt masks and causes wake events to be
-lost in subsequent wake sequences. Remove interrupt mask clearing from
-config_init() and preserve relevant masks in config_intr().
+kmemleak complains that there's a memory leak related to connect
+handling:
 
-Fixes: 7d901a1e878a ("net: phy: add Maxlinear GPY115/21x/24x driver")
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+unreferenced object 0xffff0001093bdf00 (size 128):
+comm "iou-sqp-455", pid 457, jiffies 4294894164
+hex dump (first 32 bytes):
+02 00 fa ea 7f 00 00 01 00 00 00 00 00 00 00 00  ................
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+backtrace (crc 2e481b1a):
+[<00000000c0a26af4>] kmemleak_alloc+0x30/0x38
+[<000000009c30bb45>] kmalloc_trace+0x228/0x358
+[<000000009da9d39f>] __audit_sockaddr+0xd0/0x138
+[<0000000089a93e34>] move_addr_to_kernel+0x1a0/0x1f8
+[<000000000b4e80e6>] io_connect_prep+0x1ec/0x2d4
+[<00000000abfbcd99>] io_submit_sqes+0x588/0x1e48
+[<00000000e7c25e07>] io_sq_thread+0x8a4/0x10e4
+[<00000000d999b491>] ret_from_fork+0x10/0x20
+
+which can can happen if:
+
+1) The command type does something on the prep side that triggers an
+   audit call.
+2) The thread hasn't done any operations before this that triggered
+   an audit call inside ->issue(), where we have audit_uring_entry()
+   and audit_uring_exit().
+
+Work around this by issuing a blanket NOP operation before the SQPOLL
+does anything.
+
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mxl-gpy.c | 58 +++++++++++++++++++++++++--------------
- 1 file changed, 38 insertions(+), 20 deletions(-)
+ io_uring/sqpoll.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/phy/mxl-gpy.c b/drivers/net/phy/mxl-gpy.c
-index ea1073adc5a16..034f5c4d03377 100644
---- a/drivers/net/phy/mxl-gpy.c
-+++ b/drivers/net/phy/mxl-gpy.c
-@@ -107,6 +107,7 @@ struct gpy_priv {
+diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+index 7b6facf529b8d..11610a70573ab 100644
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -235,6 +235,14 @@ static int io_sq_thread(void *data)
+ 		set_cpus_allowed_ptr(current, cpu_online_mask);
+ 	current->flags |= PF_NO_SETAFFINITY;
  
- 	u8 fw_major;
- 	u8 fw_minor;
-+	u32 wolopts;
- 
- 	/* It takes 3 seconds to fully switch out of loopback mode before
- 	 * it can safely re-enter loopback mode. Record the time when
-@@ -221,6 +222,15 @@ static int gpy_hwmon_register(struct phy_device *phydev)
- }
- #endif
- 
-+static int gpy_ack_interrupt(struct phy_device *phydev)
-+{
-+	int ret;
++	/*
++	 * Force audit context to get setup, in case we do prep side async
++	 * operations that would trigger an audit call before any issue side
++	 * audit has been done.
++	 */
++	audit_uring_entry(IORING_OP_NOP);
++	audit_uring_exit(true, 0);
 +
-+	/* Clear all pending interrupts */
-+	ret = phy_read(phydev, PHY_ISTAT);
-+	return ret < 0 ? ret : 0;
-+}
-+
- static int gpy_mbox_read(struct phy_device *phydev, u32 addr)
- {
- 	struct gpy_priv *priv = phydev->priv;
-@@ -262,16 +272,8 @@ static int gpy_mbox_read(struct phy_device *phydev, u32 addr)
- 
- static int gpy_config_init(struct phy_device *phydev)
- {
--	int ret;
--
--	/* Mask all interrupts */
--	ret = phy_write(phydev, PHY_IMASK, 0);
--	if (ret)
--		return ret;
--
--	/* Clear all pending interrupts */
--	ret = phy_read(phydev, PHY_ISTAT);
--	return ret < 0 ? ret : 0;
-+	/* Nothing to configure. Configuration Requirement Placeholder */
-+	return 0;
- }
- 
- static int gpy_probe(struct phy_device *phydev)
-@@ -619,11 +621,23 @@ static int gpy_read_status(struct phy_device *phydev)
- 
- static int gpy_config_intr(struct phy_device *phydev)
- {
-+	struct gpy_priv *priv = phydev->priv;
- 	u16 mask = 0;
-+	int ret;
-+
-+	ret = gpy_ack_interrupt(phydev);
-+	if (ret)
-+		return ret;
- 
- 	if (phydev->interrupts == PHY_INTERRUPT_ENABLED)
- 		mask = PHY_IMASK_MASK;
- 
-+	if (priv->wolopts & WAKE_MAGIC)
-+		mask |= PHY_IMASK_WOL;
-+
-+	if (priv->wolopts & WAKE_PHY)
-+		mask |= PHY_IMASK_LSTC;
-+
- 	return phy_write(phydev, PHY_IMASK, mask);
- }
- 
-@@ -670,6 +684,7 @@ static int gpy_set_wol(struct phy_device *phydev,
- 		       struct ethtool_wolinfo *wol)
- {
- 	struct net_device *attach_dev = phydev->attached_dev;
-+	struct gpy_priv *priv = phydev->priv;
- 	int ret;
- 
- 	if (wol->wolopts & WAKE_MAGIC) {
-@@ -717,6 +732,8 @@ static int gpy_set_wol(struct phy_device *phydev,
- 		ret = phy_read(phydev, PHY_ISTAT);
- 		if (ret < 0)
- 			return ret;
-+
-+		priv->wolopts |= WAKE_MAGIC;
- 	} else {
- 		/* Disable magic packet matching */
- 		ret = phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2,
-@@ -724,6 +741,13 @@ static int gpy_set_wol(struct phy_device *phydev,
- 					 WOL_EN);
- 		if (ret < 0)
- 			return ret;
-+
-+		/* Disable the WOL interrupt */
-+		ret = phy_clear_bits(phydev, PHY_IMASK, PHY_IMASK_WOL);
-+		if (ret < 0)
-+			return ret;
-+
-+		priv->wolopts &= ~WAKE_MAGIC;
- 	}
- 
- 	if (wol->wolopts & WAKE_PHY) {
-@@ -740,9 +764,11 @@ static int gpy_set_wol(struct phy_device *phydev,
- 		if (ret & (PHY_IMASK_MASK & ~PHY_IMASK_LSTC))
- 			phy_trigger_machine(phydev);
- 
-+		priv->wolopts |= WAKE_PHY;
- 		return 0;
- 	}
- 
-+	priv->wolopts &= ~WAKE_PHY;
- 	/* Disable the link state change interrupt */
- 	return phy_clear_bits(phydev, PHY_IMASK, PHY_IMASK_LSTC);
- }
-@@ -750,18 +776,10 @@ static int gpy_set_wol(struct phy_device *phydev,
- static void gpy_get_wol(struct phy_device *phydev,
- 			struct ethtool_wolinfo *wol)
- {
--	int ret;
-+	struct gpy_priv *priv = phydev->priv;
- 
- 	wol->supported = WAKE_MAGIC | WAKE_PHY;
--	wol->wolopts = 0;
--
--	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, VPSPEC2_WOL_CTL);
--	if (ret & WOL_EN)
--		wol->wolopts |= WAKE_MAGIC;
--
--	ret = phy_read(phydev, PHY_IMASK);
--	if (ret & PHY_IMASK_LSTC)
--		wol->wolopts |= WAKE_PHY;
-+	wol->wolopts = priv->wolopts;
- }
- 
- static int gpy_loopback(struct phy_device *phydev, bool enable)
+ 	mutex_lock(&sqd->lock);
+ 	while (1) {
+ 		bool cap_entries, sqt_spin = false;
 -- 
 2.43.0
 
