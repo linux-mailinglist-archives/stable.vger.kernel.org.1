@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-55511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217B09163ED
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D5F916474
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5492E1C21B1C
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46AD71C2376E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09171149E0A;
-	Tue, 25 Jun 2024 09:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA65149E0A;
+	Tue, 25 Jun 2024 09:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ahg1XqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwYOYXP0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACAA147C7F;
-	Tue, 25 Jun 2024 09:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3CF146A67;
+	Tue, 25 Jun 2024 09:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309118; cv=none; b=T2KQViA3GF2JLKC3oyuxAjYuFCkRGEftnZRGrQYuufK4Buv1O7cGq9Pqsd3eG7G83wviOU2/3pxxp73FIc9HSuNoLHegwl5vyGoDfIUvMGQAwX/78aTrd43K5m/xrzIqA3SbfHGeOlmAZQfwFhREjrlmKJ5VL28s80NZqS4fLvo=
+	t=1719309447; cv=none; b=VR5aq2romaRwF0kW6UdMA4DadThWQMvcxmap4g/Nu5z+bY1huclJrmxUhbhu8cMxAU2JkHqMgjjMyyWcpXnMc9O/xqND69QkyHkpuxddy/C2AQuBYwWQrjEydXMjEldzKjgGysTjfSUi1nAxhw9P4KLzufYSGl2wjSEnmCeojDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309118; c=relaxed/simple;
-	bh=bEAFdZ1UwEVcE6v7UW6nJQXWMRz6EkLc2Zvvs0CZ/PM=;
+	s=arc-20240116; t=1719309447; c=relaxed/simple;
+	bh=vZ0gyFxDwMxxUszcqCWk68kg69quaU8XNTCGrKqE4Qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBz84mH85ly8g5tpAYyaWwhZazQxbFI37oeCzjJBneFCoXtNrd/pKWLtLTwcoHUbLG58C91Mpl0pFyENy1zwGPOvrqBCeRmoW/0ASlTzN3MbSKLpieAbPTAMh7/NF7uEn8KMyLgS+jYaxig16yfffIQ/qeflp/2n5T0bK0DFSBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ahg1XqW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADF0C32781;
-	Tue, 25 Jun 2024 09:51:58 +0000 (UTC)
+	 MIME-Version; b=dWzSouwyoq8gmrc59Zk73kQr+jBcYmwXJIa+H3S8SJVktgUXrDhwmyc85z9pD1VrMAYqGBTDu4YTiwOh6o5ZcfNB7fdDyMLhlmrHsq2F21p+nT5ZBWGQH1hOB8MRR7ueaoaYfTACTJD51xY9Tbm3zl/b4jcLcY1WMuIJrVG2KkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwYOYXP0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2B2C32786;
+	Tue, 25 Jun 2024 09:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309118;
-	bh=bEAFdZ1UwEVcE6v7UW6nJQXWMRz6EkLc2Zvvs0CZ/PM=;
+	s=korg; t=1719309446;
+	bh=vZ0gyFxDwMxxUszcqCWk68kg69quaU8XNTCGrKqE4Qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ahg1XqW3GveF4TC7mnDEgorIEYAdYYILwx8uctudBvBDpC4pfGYw/DK99IGLLrD1
-	 wePYO4c/c30Sn1mazcQXpvWM3Y8scjt2DrDZrAdKRBqjrWIpqR5sD2twVQ+4hbEZpU
-	 zqAuzZM5wfPT2tJm+d/9upUvnvcT0GFYKiDzHChM=
+	b=GwYOYXP0BT8RwcwMSMvxb3+p3yarkAf3vMW0x039oASp5u+T4mflQvaunlwfVrpjb
+	 BY5cnpmojfo+NmYTZJmCm5Zaa2E9DmwDzkazWM+Jd2PBaf6XUHxLRB8B2WjvmgHz/6
+	 eWQDxOwpEna3E4SFWTWo8+N67DdWeuXoWPePOcGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Leon Yen <leon.yen@mediatek.com>,
+	Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/192] ice: Fix VSI list rule with ICE_SW_LKUP_LAST type
-Date: Tue, 25 Jun 2024 11:32:53 +0200
-Message-ID: <20240625085541.054097009@linuxfoundation.org>
+Subject: [PATCH 6.1 019/131] wifi: mt76: mt7921s: fix potential hung tasks during chip recovery
+Date: Tue, 25 Jun 2024 11:32:54 +0200
+Message-ID: <20240625085526.677782611@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,67 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcin Szycik <marcin.szycik@linux.intel.com>
+From: Leon Yen <leon.yen@mediatek.com>
 
-[ Upstream commit 74382aebc9035470ec4c789bdb0d09d8c14f261e ]
+[ Upstream commit ecf0b2b8a37c8464186620bef37812a117ff6366 ]
 
-Adding/updating VSI list rule, as well as allocating/freeing VSI list
-resource are called several times with type ICE_SW_LKUP_LAST, which fails
-because ice_update_vsi_list_rule() and ice_aq_alloc_free_vsi_list()
-consider it invalid. Allow calling these functions with ICE_SW_LKUP_LAST.
+During chip recovery (e.g. chip reset), there is a possible situation that
+kernel worker reset_work is holding the lock and waiting for kernel thread
+stat_worker to be parked, while stat_worker is waiting for the release of
+the same lock.
+It causes a deadlock resulting in the dumping of hung tasks messages and
+possible rebooting of the device.
 
-This fixes at least one issue in switchdev mode, where the same rule with
-different action cannot be added, e.g.:
+This patch prevents the execution of stat_worker during the chip recovery.
 
-  tc filter add dev $PF1 ingress protocol arp prio 0 flower skip_sw \
-    dst_mac ff:ff:ff:ff:ff:ff action mirred egress redirect dev $VF1_PR
-  tc filter add dev $PF1 ingress protocol arp prio 0 flower skip_sw \
-    dst_mac ff:ff:ff:ff:ff:ff action mirred egress redirect dev $VF2_PR
-
-Fixes: 0f94570d0cae ("ice: allow adding advanced rules")
-Suggested-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240618210206.981885-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/mac.c      | 2 ++
+ drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c  | 2 --
+ drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c | 2 --
+ drivers/net/wireless/mediatek/mt76/sdio.c            | 3 ++-
+ 4 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 4c6d58bb2690d..d2a2388d4fa0a 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -1829,7 +1829,8 @@ ice_aq_alloc_free_vsi_list(struct ice_hw *hw, u16 *vsi_list_id,
- 	    lkup_type == ICE_SW_LKUP_ETHERTYPE_MAC ||
- 	    lkup_type == ICE_SW_LKUP_PROMISC ||
- 	    lkup_type == ICE_SW_LKUP_PROMISC_VLAN ||
--	    lkup_type == ICE_SW_LKUP_DFLT) {
-+	    lkup_type == ICE_SW_LKUP_DFLT ||
-+	    lkup_type == ICE_SW_LKUP_LAST) {
- 		sw_buf->res_type = cpu_to_le16(ICE_AQC_RES_TYPE_VSI_LIST_REP);
- 	} else if (lkup_type == ICE_SW_LKUP_VLAN) {
- 		if (opc == ice_aqc_opc_alloc_res)
-@@ -2775,7 +2776,8 @@ ice_update_vsi_list_rule(struct ice_hw *hw, u16 *vsi_handle_arr, u16 num_vsi,
- 	    lkup_type == ICE_SW_LKUP_ETHERTYPE_MAC ||
- 	    lkup_type == ICE_SW_LKUP_PROMISC ||
- 	    lkup_type == ICE_SW_LKUP_PROMISC_VLAN ||
--	    lkup_type == ICE_SW_LKUP_DFLT)
-+	    lkup_type == ICE_SW_LKUP_DFLT ||
-+	    lkup_type == ICE_SW_LKUP_LAST)
- 		rule_type = remove ? ICE_AQC_SW_RULES_T_VSI_LIST_CLEAR :
- 			ICE_AQC_SW_RULES_T_VSI_LIST_SET;
- 	else if (lkup_type == ICE_SW_LKUP_VLAN)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+index 49ddca84f7862..cae7c21ca1f8b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mac.c
+@@ -883,6 +883,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
+ 	int i, ret;
+ 
+ 	dev_dbg(dev->mt76.dev, "chip reset\n");
++	set_bit(MT76_RESET, &dev->mphy.state);
+ 	dev->hw_full_reset = true;
+ 	ieee80211_stop_queues(hw);
+ 
+@@ -911,6 +912,7 @@ void mt7921_mac_reset_work(struct work_struct *work)
+ 	}
+ 
+ 	dev->hw_full_reset = false;
++	clear_bit(MT76_RESET, &dev->mphy.state);
+ 	pm->suspended = false;
+ 	ieee80211_wake_queues(hw);
+ 	ieee80211_iterate_active_interfaces(hw,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+index 8dd60408b117e..cb20ddcad137c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
+@@ -78,7 +78,6 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
+ 	mt76_wr(dev, MT_WFDMA0_HOST_INT_ENA, 0);
+ 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
+ 
+-	set_bit(MT76_RESET, &dev->mphy.state);
+ 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 	wake_up(&dev->mt76.mcu.wait);
+ 	skb_queue_purge(&dev->mt76.mcu.res_q);
+@@ -129,7 +128,6 @@ int mt7921e_mac_reset(struct mt7921_dev *dev)
+ 
+ 	err = __mt7921_start(&dev->phy);
+ out:
+-	clear_bit(MT76_RESET, &dev->mphy.state);
+ 
+ 	local_bh_disable();
+ 	napi_enable(&dev->mt76.tx_napi);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+index fd07b66233920..46af03803de73 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+@@ -98,7 +98,6 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
+ 	mt76_connac_free_pending_tx_skbs(&dev->pm, NULL);
+ 	mt76_txq_schedule_all(&dev->mphy);
+ 	mt76_worker_disable(&dev->mt76.tx_worker);
+-	set_bit(MT76_RESET, &dev->mphy.state);
+ 	set_bit(MT76_MCU_RESET, &dev->mphy.state);
+ 	wake_up(&dev->mt76.mcu.wait);
+ 	skb_queue_purge(&dev->mt76.mcu.res_q);
+@@ -135,7 +134,6 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
+ 
+ 	err = __mt7921_start(&dev->phy);
+ out:
+-	clear_bit(MT76_RESET, &dev->mphy.state);
+ 
+ 	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
+index fc4fb94635645..2a81c2f663449 100644
+--- a/drivers/net/wireless/mediatek/mt76/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/sdio.c
+@@ -499,7 +499,8 @@ static void mt76s_tx_status_data(struct mt76_worker *worker)
+ 	dev = container_of(sdio, struct mt76_dev, sdio);
+ 
+ 	while (true) {
+-		if (test_bit(MT76_REMOVED, &dev->phy.state))
++		if (test_bit(MT76_RESET, &dev->phy.state) ||
++		    test_bit(MT76_REMOVED, &dev->phy.state))
+ 			break;
+ 
+ 		if (!dev->drv->tx_status_data(dev, &update))
 -- 
 2.43.0
 
