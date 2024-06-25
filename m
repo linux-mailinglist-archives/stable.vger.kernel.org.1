@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-55391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F083A916361
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:46:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F419163FF
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC74828AD99
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:46:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D14ACB253E1
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1091487E9;
-	Tue, 25 Jun 2024 09:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E01F149C4C;
+	Tue, 25 Jun 2024 09:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DAOpD9TP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6pbPaoq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1A51465A8;
-	Tue, 25 Jun 2024 09:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF62D24B34;
+	Tue, 25 Jun 2024 09:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308766; cv=none; b=rTBQj4DqY86BxZuDlsqEmrio6R7PzLsLdQfFKfOb9fFk66ENcn2ElJReXvJnJ+jiC1M7GTJOU0yzdzNguX6Lt/yUxbk9NU9DbbKK2ZCF1JHi/yF/h+Ee1edyyIEmRXCLeFes1bB6vsR85U+ehyZruOS4tUzgoNcwSLYqrnbPQ6g=
+	t=1719309165; cv=none; b=WJqwu2rJ0MqhrsYUFHqSbNeffoC8rGZ+JXPYr2crUCuX7PJUhrA6glb7cepnRQbVEIo6S24JEvRmXRiego56d98jqbgef8BdkZF3v8815epoPwaLVU7j0Mbssidt2ia3U9bPdMHdftRMHkqJHJx4whbGIiDY8P5qam/m/J3TKwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308766; c=relaxed/simple;
-	bh=8JllP211jmNe0o2d70a7O7fXbfGEYhkbnMnZ9kYc/B0=;
+	s=arc-20240116; t=1719309165; c=relaxed/simple;
+	bh=MxO7U/tzN0JB5OS8pJ6Zs6Odj4rF3VmPAWhC2DWJyIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdG71LwLwlIVP8/BCn3vmV1ps1hXgAdY9knqMqVe/FhI48WIihRzH+9Y5R5LDlOdp0KTQPXWbSR8RwEDNbCqQzcmBD3oNzm1XeyZj4A7wbbR7sxALzvEK4Ju9JxsH7wCwM6GildncJUYvKjtv7NRmUU9Y4NKubBuh024SlnYXV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DAOpD9TP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859AEC32786;
-	Tue, 25 Jun 2024 09:46:05 +0000 (UTC)
+	 MIME-Version; b=SpUwcxIMZKoBt8NaUl1VkWUVBW6phVT7gOAl7M6sBFFO2eyifYimULPR8j3Nmgco5F0teMz+gNh8cv4/Q46Ip8JISh4b4ulw+++8uHP2h+xDHp7bn6L3ow/pdif1AT6TQ47ncAdsLkSwgLfsJ1AWWwswhfd79gcTOUzc+u5O8VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6pbPaoq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464C1C32781;
+	Tue, 25 Jun 2024 09:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308765;
-	bh=8JllP211jmNe0o2d70a7O7fXbfGEYhkbnMnZ9kYc/B0=;
+	s=korg; t=1719309165;
+	bh=MxO7U/tzN0JB5OS8pJ6Zs6Odj4rF3VmPAWhC2DWJyIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DAOpD9TPJ2Amwk9aqZFcFr9wvwDUFcE2Mq9OPJrerywul7wBbcBVsKz/phksnpEkv
-	 xRJWcMq5fnJpQ2B6dj4qUqSJO1GDJoFxnDsc/wUtTmrMgdCEIORoi0fgrJZsUiNJ1i
-	 tcliHOM20e37p8mfNc5PTtIxXElcj0YXDQKiKXjA=
+	b=G6pbPaoqi5YRh5T0CZZip/m6Hw0Ces28hwR8b0Y/wzB8i2S4WAb4Y/eoxaVlc2Ljp
+	 3Al7kGMGRpRZWH4voG5KQo0z9PhnlNHgtRTKp2L0bsDQYCSGGg6EYXhNTh/sYcmFXu
+	 Hk6baRuVD85UEZghkFsFoVBwWRWpjADdOW+m1crQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edson Juliano Drosdeck <edson.drosdeck@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.9 201/250] ALSA: hda/realtek: Limit mic boost on N14AP7
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Vlad Buslov <vladbu@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 087/192] net/sched: act_api: rely on rcu in tcf_idr_check_alloc
 Date: Tue, 25 Jun 2024 11:32:39 +0200
-Message-ID: <20240625085555.769020554@linuxfoundation.org>
+Message-ID: <20240625085540.515506977@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +64,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-commit 86a433862912f52597263aa224a9ed82bcd533bf upstream.
+[ Upstream commit 4b55e86736d5b492cf689125da2600f59c7d2c39 ]
 
-The internal mic boost on the N14AP7 is too high. Fix this by applying the
-ALC269_FIXUP_LIMIT_INT_MIC_BOOST fixup to the machine to limit the gain.
+Instead of relying only on the idrinfo->lock mutex for
+bind/alloc logic, rely on a combination of rcu + mutex + atomics
+to better scale the case where multiple rtnl-less filters are
+binding to the same action object.
 
-Signed-off-by: Edson Juliano Drosdeck <edson.drosdeck@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240605153923.2837-1-edson.drosdeck@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Action binding happens when an action index is specified explicitly and
+an action exists which such index exists. Example:
+  tc actions add action drop index 1
+  tc filter add ... matchall action drop index 1
+  tc filter add ... matchall action drop index 1
+  tc filter add ... matchall action drop index 1
+  tc filter ls ...
+     filter protocol all pref 49150 matchall chain 0 filter protocol all pref 49150 matchall chain 0 handle 0x1
+     not_in_hw
+           action order 1: gact action drop
+            random type none pass val 0
+            index 1 ref 4 bind 3
+
+   filter protocol all pref 49151 matchall chain 0 filter protocol all pref 49151 matchall chain 0 handle 0x1
+     not_in_hw
+           action order 1: gact action drop
+            random type none pass val 0
+            index 1 ref 4 bind 3
+
+   filter protocol all pref 49152 matchall chain 0 filter protocol all pref 49152 matchall chain 0 handle 0x1
+     not_in_hw
+           action order 1: gact action drop
+            random type none pass val 0
+            index 1 ref 4 bind 3
+
+When no index is specified, as before, grab the mutex and allocate
+in the idr the next available id. In this version, as opposed to before,
+it's simplified to store the -EBUSY pointer instead of the previous
+alloc + replace combination.
+
+When an index is specified, rely on rcu to find if there's an object in
+such index. If there's none, fallback to the above, serializing on the
+mutex and reserving the specified id. If there's one, it can be an -EBUSY
+pointer, in which case we just try again until it's an action, or an action.
+Given the rcu guarantees, the action found could be dead and therefore
+we need to bump the refcount if it's not 0, handling the case it's
+in fact 0.
+
+As bind and the action refcount are already atomics, these increments can
+happen without the mutex protection while many tcf_idr_check_alloc race
+to bind to the same action instance.
+
+In case binding encounters a parallel delete or add, it will return
+-EAGAIN in order to try again. Both filter and action apis already
+have the retry machinery in-place. In case it's an unlocked filter it
+retries under the rtnl lock.
+
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Link: https://lore.kernel.org/r/20231211181807.96028-2-pctammela@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: d864319871b0 ("net/sched: act_api: fix possible infinite loop in tcf_idr_check_alloc()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/sched/act_api.c | 65 ++++++++++++++++++++++++++++++---------------
+ 1 file changed, 43 insertions(+), 22 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10572,6 +10572,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1b7d, 0xa831, "Ordissimo EVE2 ", ALC269VB_FIXUP_ORDISSIMO_EVE2), /* Also known as Malata PC-B1303 */
- 	SND_PCI_QUIRK(0x1c06, 0x2013, "Lemote A1802", ALC269_FIXUP_LEMOTE_A1802),
- 	SND_PCI_QUIRK(0x1c06, 0x2015, "Lemote A190X", ALC269_FIXUP_LEMOTE_A190X),
-+	SND_PCI_QUIRK(0x1c6c, 0x122a, "Positivo N14AP7", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x1c6c, 0x1251, "Positivo N14KP6-TG", ALC288_FIXUP_DELL1_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1d05, 0x1132, "TongFang PHxTxX1", ALC256_FIXUP_SET_COEF_DEFAULTS),
- 	SND_PCI_QUIRK(0x1d05, 0x1096, "TongFang GMxMRxx", ALC269_FIXUP_NO_SHUTUP),
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index 9d3f26bf0440d..5d34852ca5003 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -816,6 +816,9 @@ EXPORT_SYMBOL(tcf_idr_cleanup);
+  * its reference and bind counters, and return 1. Otherwise insert temporary
+  * error pointer (to prevent concurrent users from inserting actions with same
+  * index) and return 0.
++ *
++ * May return -EAGAIN for binding actions in case of a parallel add/delete on
++ * the requested index.
+  */
+ 
+ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
+@@ -824,43 +827,61 @@ int tcf_idr_check_alloc(struct tc_action_net *tn, u32 *index,
+ 	struct tcf_idrinfo *idrinfo = tn->idrinfo;
+ 	struct tc_action *p;
+ 	int ret;
++	u32 max;
+ 
+-again:
+-	mutex_lock(&idrinfo->lock);
+ 	if (*index) {
++again:
++		rcu_read_lock();
+ 		p = idr_find(&idrinfo->action_idr, *index);
++
+ 		if (IS_ERR(p)) {
+ 			/* This means that another process allocated
+ 			 * index but did not assign the pointer yet.
+ 			 */
+-			mutex_unlock(&idrinfo->lock);
++			rcu_read_unlock();
+ 			goto again;
+ 		}
+ 
+-		if (p) {
+-			refcount_inc(&p->tcfa_refcnt);
+-			if (bind)
+-				atomic_inc(&p->tcfa_bindcnt);
+-			*a = p;
+-			ret = 1;
+-		} else {
+-			*a = NULL;
+-			ret = idr_alloc_u32(&idrinfo->action_idr, NULL, index,
+-					    *index, GFP_KERNEL);
+-			if (!ret)
+-				idr_replace(&idrinfo->action_idr,
+-					    ERR_PTR(-EBUSY), *index);
++		if (!p) {
++			/* Empty slot, try to allocate it */
++			max = *index;
++			rcu_read_unlock();
++			goto new;
++		}
++
++		if (!refcount_inc_not_zero(&p->tcfa_refcnt)) {
++			/* Action was deleted in parallel */
++			rcu_read_unlock();
++			return -EAGAIN;
+ 		}
++
++		if (bind)
++			atomic_inc(&p->tcfa_bindcnt);
++		*a = p;
++
++		rcu_read_unlock();
++
++		return 1;
+ 	} else {
++		/* Find a slot */
+ 		*index = 1;
+-		*a = NULL;
+-		ret = idr_alloc_u32(&idrinfo->action_idr, NULL, index,
+-				    UINT_MAX, GFP_KERNEL);
+-		if (!ret)
+-			idr_replace(&idrinfo->action_idr, ERR_PTR(-EBUSY),
+-				    *index);
++		max = UINT_MAX;
+ 	}
++
++new:
++	*a = NULL;
++
++	mutex_lock(&idrinfo->lock);
++	ret = idr_alloc_u32(&idrinfo->action_idr, ERR_PTR(-EBUSY), index, max,
++			    GFP_KERNEL);
+ 	mutex_unlock(&idrinfo->lock);
++
++	/* N binds raced for action allocation,
++	 * retry for all the ones that failed.
++	 */
++	if (ret == -ENOSPC && *index == max)
++		ret = -EAGAIN;
++
+ 	return ret;
+ }
+ EXPORT_SYMBOL(tcf_idr_check_alloc);
+-- 
+2.43.0
+
 
 
 
