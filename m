@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-55649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73FF9916494
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7267F916411
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:53:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 221A62876D0
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D64D2B27EA8
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37EE149E0A;
-	Tue, 25 Jun 2024 09:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4712614A4C1;
+	Tue, 25 Jun 2024 09:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wo+E486i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xo22SQxN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2CA7146A67;
-	Tue, 25 Jun 2024 09:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C6724B34;
+	Tue, 25 Jun 2024 09:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309529; cv=none; b=ZNQUlBhi39spzSc5eGg3BPG1YIUPmYIfBvrihSTI3VsYI61bu1PemY0gjx8+PbFVKLx6QB9YVKUYSTZxN4aO1WPmMl3JDe7kJbzvzp9oN7TRCHDxAxHwRy47lOAKMP4VmcTaykOyr8tlVqw5WiTgM0Ar5J+G7TmUeaJr3S4AkVw=
+	t=1719309201; cv=none; b=A3htV9Az9aju07JU5B4Xjq+wGYFcSqoktjGjUOUtmQkhC3IiXhXcL6VYSpG+4NIJvpR4x9NlsXvSWw41lR8tEbLdyqj/TpX/tYXS3pI9g9g09a7loz5Jc0nhxFsKs6maFbCgLE8EmKTpnMCOPgJcYG4HjY9smzAJPzKtufnjCag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309529; c=relaxed/simple;
-	bh=uVsCzAv31ilSlar5GOgN8FUo0YIXyL0d3YM/KxFF/lU=;
+	s=arc-20240116; t=1719309201; c=relaxed/simple;
+	bh=DPxxxi/dmkQ1YlbLkIZHVFmtEwPQPEOOXjcysaB1eq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOnhYiXVJ2HiBSkl9uuJBiFTzQZuID80jTl6XgYEhHxYO4LPTBghK0T4JBCR0pZ8laYLpToHorTEc1XandPac05C66mCpD7TgNw1sW/2XT5C+F6u77panY5DrjS6ns90ba3Pq2e7ZwpwTV/mrsrF41473RAnBE7x3Fi3cKCeq3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wo+E486i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D04C32781;
-	Tue, 25 Jun 2024 09:58:48 +0000 (UTC)
+	 MIME-Version; b=ZX8kEqunls3c0og7ZvSgBj9PDkeOfhXNP5+e6VFmyfNYtpMWzWnJcE7nhf9RGZsdY43/LRnD4KbPnGND0M2LZzhlvLyuE/pLJ+gWnQiXV30LJnYz6C5PZSQbspysnfVoF0gViBEJS5B/s36JH/jDXuhsFjxYtNWdpCVtQnNh3OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xo22SQxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF03C32789;
+	Tue, 25 Jun 2024 09:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309529;
-	bh=uVsCzAv31ilSlar5GOgN8FUo0YIXyL0d3YM/KxFF/lU=;
+	s=korg; t=1719309200;
+	bh=DPxxxi/dmkQ1YlbLkIZHVFmtEwPQPEOOXjcysaB1eq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wo+E486i1P9kOlE6F0u9vki+cVkxIS9AvqS7fcXZXcVLWJxXbHq9uCxt8MtRvF6Ga
-	 RSyqWSIMbFruQgZCvi99hs+6YkGy2GQ7Jeu2UCEAdMzGJKb5z3ySLOu3KxXw//j3+d
-	 BeggIpZrfn6+xZrX+cv1O9MYzuDiny865lALxhrU=
+	b=Xo22SQxNL2/rh5Pc6GgCSl3bb6HUQPIlheXPbJidTsAdkC58ooghRKXm+Bd0ZqVth
+	 MWDELm74vQh+YR/dQBqSX4pxjLwz/7BnZaKjsclVXV3TvXsqQS2lH2ZRkpraVEyklE
+	 kGzWoUSIWAz5PfHG/W0AqrBWWbItJsjY+8HTdQh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/131] tracing: Build event generation tests only as modules
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 130/192] ext4: avoid overflow when setting values via sysfs
 Date: Tue, 25 Jun 2024 11:33:22 +0200
-Message-ID: <20240625085527.739641768@linuxfoundation.org>
+Message-ID: <20240625085542.151013173@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 3572bd5689b0812b161b40279e39ca5b66d73e88 ]
+commit 9e8e819f8f272c4e5dcd0bd6c7450e36481ed139 upstream.
 
-The kprobes and synth event generation test modules add events and lock
-(get a reference) those event file reference in module init function,
-and unlock and delete it in module exit function. This is because those
-are designed for playing as modules.
+When setting values of type unsigned int through sysfs, we use kstrtoul()
+to parse it and then truncate part of it as the final set value, when the
+set value is greater than UINT_MAX, the set value will not match what we
+see because of the truncation. As follows:
 
-If we make those modules as built-in, those events are left locked in the
-kernel, and never be removed. This causes kprobe event self-test failure
-as below.
+  $ echo 4294967296 > /sys/fs/ext4/sda/mb_max_linear_groups
+  $ cat /sys/fs/ext4/sda/mb_max_linear_groups
+    0
 
-[   97.349708] ------------[ cut here ]------------
-[   97.353453] WARNING: CPU: 3 PID: 1 at kernel/trace/trace_kprobe.c:2133 kprobe_trace_self_tests_init+0x3f1/0x480
-[   97.357106] Modules linked in:
-[   97.358488] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.9.0-g699646734ab5-dirty #14
-[   97.361556] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-[   97.363880] RIP: 0010:kprobe_trace_self_tests_init+0x3f1/0x480
-[   97.365538] Code: a8 24 08 82 e9 ae fd ff ff 90 0f 0b 90 48 c7 c7 e5 aa 0b 82 e9 ee fc ff ff 90 0f 0b 90 48 c7 c7 2d 61 06 82 e9 8e fd ff ff 90 <0f> 0b 90 48 c7 c7 33 0b 0c 82 89 c6 e8 6e 03 1f ff 41 ff c7 e9 90
-[   97.370429] RSP: 0000:ffffc90000013b50 EFLAGS: 00010286
-[   97.371852] RAX: 00000000fffffff0 RBX: ffff888005919c00 RCX: 0000000000000000
-[   97.373829] RDX: ffff888003f40000 RSI: ffffffff8236a598 RDI: ffff888003f40a68
-[   97.375715] RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-[   97.377675] R10: ffffffff811c9ae5 R11: ffffffff8120c4e0 R12: 0000000000000000
-[   97.379591] R13: 0000000000000001 R14: 0000000000000015 R15: 0000000000000000
-[   97.381536] FS:  0000000000000000(0000) GS:ffff88807dcc0000(0000) knlGS:0000000000000000
-[   97.383813] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   97.385449] CR2: 0000000000000000 CR3: 0000000002244000 CR4: 00000000000006b0
-[   97.387347] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[   97.389277] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[   97.391196] Call Trace:
-[   97.391967]  <TASK>
-[   97.392647]  ? __warn+0xcc/0x180
-[   97.393640]  ? kprobe_trace_self_tests_init+0x3f1/0x480
-[   97.395181]  ? report_bug+0xbd/0x150
-[   97.396234]  ? handle_bug+0x3e/0x60
-[   97.397311]  ? exc_invalid_op+0x1a/0x50
-[   97.398434]  ? asm_exc_invalid_op+0x1a/0x20
-[   97.399652]  ? trace_kprobe_is_busy+0x20/0x20
-[   97.400904]  ? tracing_reset_all_online_cpus+0x15/0x90
-[   97.402304]  ? kprobe_trace_self_tests_init+0x3f1/0x480
-[   97.403773]  ? init_kprobe_trace+0x50/0x50
-[   97.404972]  do_one_initcall+0x112/0x240
-[   97.406113]  do_initcall_level+0x95/0xb0
-[   97.407286]  ? kernel_init+0x1a/0x1a0
-[   97.408401]  do_initcalls+0x3f/0x70
-[   97.409452]  kernel_init_freeable+0x16f/0x1e0
-[   97.410662]  ? rest_init+0x1f0/0x1f0
-[   97.411738]  kernel_init+0x1a/0x1a0
-[   97.412788]  ret_from_fork+0x39/0x50
-[   97.413817]  ? rest_init+0x1f0/0x1f0
-[   97.414844]  ret_from_fork_asm+0x11/0x20
-[   97.416285]  </TASK>
-[   97.417134] irq event stamp: 13437323
-[   97.418376] hardirqs last  enabled at (13437337): [<ffffffff8110bc0c>] console_unlock+0x11c/0x150
-[   97.421285] hardirqs last disabled at (13437370): [<ffffffff8110bbf1>] console_unlock+0x101/0x150
-[   97.423838] softirqs last  enabled at (13437366): [<ffffffff8108e17f>] handle_softirqs+0x23f/0x2a0
-[   97.426450] softirqs last disabled at (13437393): [<ffffffff8108e346>] __irq_exit_rcu+0x66/0xd0
-[   97.428850] ---[ end trace 0000000000000000 ]---
+So we use kstrtouint() to parse the attr_pointer_ui type to avoid the
+inconsistency described above. In addition, a judgment is added to avoid
+setting s_resv_clusters less than 0.
 
-And also, since we can not cleanup dynamic_event file, ftracetest are
-failed too.
-
-To avoid these issues, build these tests only as modules.
-
-Link: https://lore.kernel.org/all/171811263754.85078.5877446624311852525.stgit@devnote2/
-
-Fixes: 9fe41efaca08 ("tracing: Add synth event generation test module")
-Fixes: 64836248dda2 ("tracing: Add kprobe event command generation test module")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240319113325.3110393-2-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/sysfs.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
-index 93d7249962833..e3a549239cb4e 100644
---- a/kernel/trace/Kconfig
-+++ b/kernel/trace/Kconfig
-@@ -1068,7 +1068,7 @@ config PREEMPTIRQ_DELAY_TEST
+--- a/fs/ext4/sysfs.c
++++ b/fs/ext4/sysfs.c
+@@ -104,7 +104,7 @@ static ssize_t reserved_clusters_store(s
+ 	int ret;
  
- config SYNTH_EVENT_GEN_TEST
- 	tristate "Test module for in-kernel synthetic event generation"
--	depends on SYNTH_EVENTS
-+	depends on SYNTH_EVENTS && m
- 	help
-           This option creates a test module to check the base
-           functionality of in-kernel synthetic event definition and
-@@ -1081,7 +1081,7 @@ config SYNTH_EVENT_GEN_TEST
+ 	ret = kstrtoull(skip_spaces(buf), 0, &val);
+-	if (ret || val >= clusters)
++	if (ret || val >= clusters || (s64)val < 0)
+ 		return -EINVAL;
  
- config KPROBE_EVENT_GEN_TEST
- 	tristate "Test module for in-kernel kprobe event generation"
--	depends on KPROBE_EVENTS
-+	depends on KPROBE_EVENTS && m
- 	help
-           This option creates a test module to check the base
-           functionality of in-kernel kprobe event definition.
--- 
-2.43.0
-
+ 	atomic64_set(&sbi->s_resv_clusters, val);
+@@ -451,7 +451,8 @@ static ssize_t ext4_attr_store(struct ko
+ 						s_kobj);
+ 	struct ext4_attr *a = container_of(attr, struct ext4_attr, attr);
+ 	void *ptr = calc_ptr(a, sbi);
+-	unsigned long t;
++	unsigned int t;
++	unsigned long lt;
+ 	int ret;
+ 
+ 	switch (a->attr_id) {
+@@ -460,7 +461,7 @@ static ssize_t ext4_attr_store(struct ko
+ 	case attr_pointer_ui:
+ 		if (!ptr)
+ 			return 0;
+-		ret = kstrtoul(skip_spaces(buf), 0, &t);
++		ret = kstrtouint(skip_spaces(buf), 0, &t);
+ 		if (ret)
+ 			return ret;
+ 		if (a->attr_ptr == ptr_ext4_super_block_offset)
+@@ -471,10 +472,10 @@ static ssize_t ext4_attr_store(struct ko
+ 	case attr_pointer_ul:
+ 		if (!ptr)
+ 			return 0;
+-		ret = kstrtoul(skip_spaces(buf), 0, &t);
++		ret = kstrtoul(skip_spaces(buf), 0, &lt);
+ 		if (ret)
+ 			return ret;
+-		*((unsigned long *) ptr) = t;
++		*((unsigned long *) ptr) = lt;
+ 		return len;
+ 	case attr_inode_readahead:
+ 		return inode_readahead_blks_store(sbi, buf, len);
 
 
 
