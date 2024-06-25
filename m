@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-55519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA6A9163F6
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F895916358
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29C591C21C08
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AB231F22C5F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828271494AF;
-	Tue, 25 Jun 2024 09:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C019B147C96;
+	Tue, 25 Jun 2024 09:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Acs5oEcj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiWKuurH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40807146A67;
-	Tue, 25 Jun 2024 09:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F5F1465A8;
+	Tue, 25 Jun 2024 09:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309142; cv=none; b=NHKxBNQ/0YwlFt6Y6NhgCODokYmsO/ahZLUYcX4udbtdw/jc+SX1/hhQMnT4NNhMNmplQ4T/wrW9KGIli2nsUCFUBO6AiXnvNBzPqylKQCjItgvhp0323alQti8F5IXvZZu2dRLaARu+h6sgatrYn9VCMQ6qGwCxnoKetIiM/6o=
+	t=1719308739; cv=none; b=aKlCIBKx4b2y6OwElKiqYHbhAWpVN0yl0hj646ovgWcFhPT9DPbQVn0YPCcTrxq4BWp+XynxpbROysqm8qfMejh9VaNoZuHWF9zQZMtK7n54MLE+D+G4Ne4sXgsqaFjMfFanc9Au0qjsnLtK/p4Dwlc4+TEohtW9bqUUegUFd7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309142; c=relaxed/simple;
-	bh=NYyZLY4lncB5zO9x3h7EKkbrxoCIOVwK02ApbwkoOB8=;
+	s=arc-20240116; t=1719308739; c=relaxed/simple;
+	bh=KFcSb8A9AHHdLO1S5owDiLm6lPJZzD3rIuTi15E2f5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oIvPqabofyefSGedY2d1KDbZ8MdDGTudcrGPI8SOqyUQP/GraouW63UwsPlg8h17A68jtMVIyk/Cjag56sNX8y2OMZ0NxOgDkKzdhj2+TwcXdpVTGHMJstWjlt6Q6pTpVxzibyoDZ3xWjj6GAID/AP7atUNJQjYjZ1xAVHoU7pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Acs5oEcj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA861C32781;
-	Tue, 25 Jun 2024 09:52:21 +0000 (UTC)
+	 MIME-Version; b=jwwriqHDF73IGJWYRJKCkj7WboH49dCRB3sfYs/DDmx+daQwoT5ikevnkw+sZEzQC9D6qKb1ZkEzrcForUaieW3osgv+FQJyGr3soMAbCLZ7pO07T3n+g4GiNBt1RnS5h1Qy05t+W0M7Psk0P9j5ZhaqGFEdfOFGxhiQe8f8gto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiWKuurH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F083AC32781;
+	Tue, 25 Jun 2024 09:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309142;
-	bh=NYyZLY4lncB5zO9x3h7EKkbrxoCIOVwK02ApbwkoOB8=;
+	s=korg; t=1719308739;
+	bh=KFcSb8A9AHHdLO1S5owDiLm6lPJZzD3rIuTi15E2f5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Acs5oEcjR0vQyuEKioXdFb5H0D5k0U8ZMMrOvE13Ot8UAfMcs8oXVWlWEZbV52Z4T
-	 8oy/p1Ku8N4aWYSCxfDercZ0ODCNSR92CUCJKGHVl3SM3e76cCllc+uswBWB0qpW24
-	 i2UtujffXVbxbQNlszMNZvCtpHtZs+lHdUyXPdfk=
+	b=UiWKuurHWznYD5x6RJNfv83KeAgIufVwolq6qInFVs2c6f5BAwfgu0VKoBoia6SPe
+	 tjNb2eHbVQhUi5aClC3l0L9I2fwCrdUY74brQaEv67AyaQbHv16KtLLqiynf/HXFRR
+	 49wB2fcCiXBNcqWfDyW2+ooIQMLlIN63QnXhh1cI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 109/192] dmaengine: ioatdma: Fix leaking on version mismatch
+	Barry Song <baohua@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
+	Michal Hocko <mhocko@kernel.org>,
+	xu xin <xu.xin16@zte.com.cn>,
+	Yang Yang <yang.yang29@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.9 223/250] mm: huge_memory: fix misused mapping_large_folio_support() for anon folios
 Date: Tue, 25 Jun 2024 11:33:01 +0200
-Message-ID: <20240625085541.357849311@linuxfoundation.org>
+Message-ID: <20240625085556.612897317@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +67,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-[ Upstream commit 1b11b4ef6bd68591dcaf8423c7d05e794e6aec6f ]
+commit 6a50c9b512f7734bc356f4bd47885a6f7c98491a upstream.
 
-Fix leaking ioatdma_device if I/OAT version is less than IOAT_VER_3_0.
+When I did a large folios split test, a WARNING "[ 5059.122759][ T166]
+Cannot split file folio to non-0 order" was triggered.  But the test cases
+are only for anonmous folios.  while mapping_large_folio_support() is only
+reasonable for page cache folios.
 
-Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-1-a9f2fbe26ab1@yadro.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In split_huge_page_to_list_to_order(), the folio passed to
+mapping_large_folio_support() maybe anonmous folio.  The folio_test_anon()
+check is missing.  So the split of the anonmous THP is failed.  This is
+also the same for shmem_mapping().  We'd better add a check for both.  But
+the shmem_mapping() in __split_huge_page() is not involved, as for
+anonmous folios, the end parameter is set to -1, so (head[i].index >= end)
+is always false.  shmem_mapping() is not called.
+
+Also add a VM_WARN_ON_ONCE() in mapping_large_folio_support() for anon
+mapping, So we can detect the wrong use more easily.
+
+THP folios maybe exist in the pagecache even the file system doesn't
+support large folio, it is because when CONFIG_TRANSPARENT_HUGEPAGE is
+enabled, khugepaged will try to collapse read-only file-backed pages to
+THP.  But the mapping does not actually support multi order large folios
+properly.
+
+Using /sys/kernel/debug/split_huge_pages to verify this, with this patch,
+large anon THP is successfully split and the warning is ceased.
+
+Link: https://lkml.kernel.org/r/202406071740485174hcFl7jRxncsHDtI-Pz-o@zte.com.cn
+Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: xu xin <xu.xin16@zte.com.cn>
+Cc: Yang Yang <yang.yang29@zte.com.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ioat/init.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ include/linux/pagemap.h |    4 ++++
+ mm/huge_memory.c        |   28 +++++++++++++++++-----------
+ 2 files changed, 21 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 9c364e92cb828..e76e507ae898c 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1350,6 +1350,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	void __iomem * const *iomap;
- 	struct device *dev = &pdev->dev;
- 	struct ioatdma_device *device;
-+	u8 version;
- 	int err;
- 
- 	err = pcim_enable_device(pdev);
-@@ -1363,6 +1364,10 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (!iomap)
- 		return -ENOMEM;
- 
-+	version = readb(iomap[IOAT_MMIO_BAR] + IOAT_VER_OFFSET);
-+	if (version < IOAT_VER_3_0)
-+		return -ENODEV;
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -379,6 +379,10 @@ static inline void mapping_set_large_fol
+  */
+ static inline bool mapping_large_folio_support(struct address_space *mapping)
+ {
++	/* AS_LARGE_FOLIO_SUPPORT is only reasonable for pagecache folios */
++	VM_WARN_ONCE((unsigned long)mapping & PAGE_MAPPING_ANON,
++			"Anonymous mapping always supports large folio");
 +
- 	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
- 	if (err)
- 		return err;
-@@ -1373,16 +1378,14 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	pci_set_master(pdev);
- 	pci_set_drvdata(pdev, device);
+ 	return IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+ 		test_bit(AS_LARGE_FOLIO_SUPPORT, &mapping->flags);
+ }
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3058,30 +3058,36 @@ int split_huge_page_to_list_to_order(str
+ 	if (new_order >= folio_order(folio))
+ 		return -EINVAL;
  
--	device->version = readb(device->reg_base + IOAT_VER_OFFSET);
-+	device->version = version;
- 	if (device->version >= IOAT_VER_3_4)
- 		ioat_dca_enabled = 0;
--	if (device->version >= IOAT_VER_3_0) {
--		if (is_skx_ioat(pdev))
--			device->version = IOAT_VER_3_2;
--		err = ioat3_dma_probe(device, ioat_dca_enabled);
--	} else
--		return -ENODEV;
+-	/* Cannot split anonymous THP to order-1 */
+-	if (new_order == 1 && folio_test_anon(folio)) {
+-		VM_WARN_ONCE(1, "Cannot split to order-1 folio");
+-		return -EINVAL;
+-	}
+-
+-	if (new_order) {
+-		/* Only swapping a whole PMD-mapped folio is supported */
+-		if (folio_test_swapcache(folio))
++	if (folio_test_anon(folio)) {
++		/* order-1 is not supported for anonymous THP. */
++		if (new_order == 1) {
++			VM_WARN_ONCE(1, "Cannot split to order-1 folio");
+ 			return -EINVAL;
++		}
++	} else if (new_order) {
+ 		/* Split shmem folio to non-zero order not supported */
+ 		if (shmem_mapping(folio->mapping)) {
+ 			VM_WARN_ONCE(1,
+ 				"Cannot split shmem folio to non-0 order");
+ 			return -EINVAL;
+ 		}
+-		/* No split if the file system does not support large folio */
+-		if (!mapping_large_folio_support(folio->mapping)) {
++		/*
++		 * No split if the file system does not support large folio.
++		 * Note that we might still have THPs in such mappings due to
++		 * CONFIG_READ_ONLY_THP_FOR_FS. But in that case, the mapping
++		 * does not actually support large folios properly.
++		 */
++		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
++		    !mapping_large_folio_support(folio->mapping)) {
+ 			VM_WARN_ONCE(1,
+ 				"Cannot split file folio to non-0 order");
+ 			return -EINVAL;
+ 		}
+ 	}
  
-+	if (is_skx_ioat(pdev))
-+		device->version = IOAT_VER_3_2;
-+
-+	err = ioat3_dma_probe(device, ioat_dca_enabled);
- 	if (err) {
- 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
- 		return -ENODEV;
--- 
-2.43.0
-
++	/* Only swapping a whole PMD-mapped folio is supported */
++	if (folio_test_swapcache(folio) && new_order)
++		return -EINVAL;
+ 
+ 	is_hzp = is_huge_zero_page(&folio->page);
+ 	if (is_hzp) {
 
 
 
