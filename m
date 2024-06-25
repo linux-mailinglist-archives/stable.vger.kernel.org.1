@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-55683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFCC9164B8
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2457B91643B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 551B2B272C7
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3560281135
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CE1148319;
-	Tue, 25 Jun 2024 10:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6C914A096;
+	Tue, 25 Jun 2024 09:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+9Uyi0U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJucmBV1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380AC6CDBA;
-	Tue, 25 Jun 2024 10:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7891149C4F;
+	Tue, 25 Jun 2024 09:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309630; cv=none; b=orMWsnOvB3m+FNrV7bvE5vxUe/p2t3lWYYHoQFk7u2UNgFfHl+bhOj/8L5SzkwDOBzUbZBZgI/dYq3d3MJbxQrrHKleOnG7W9PpWhjobbzlPeVSMmyFGF7vnYlGO8Ij+IgE7oJqkFQkL4knP+COo1ECrNcV0zqHYpCfcp2h2MDI=
+	t=1719309302; cv=none; b=Y3yA9ps/StCI2IRvqVO5q4hmEF7BlDaFMCfDbBrF5Xye9UARrEdct8WKqdQ088nAJyiZxWyDBc7kMXvLPmQqmdvxA3OUbLsyNWRG09O3TtUunAU9lTgmg+0sjuhtP5Dh6oxXGxVoKJcqwEyrhIw22GNIJ5ATSHURxjSJxJgSjZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309630; c=relaxed/simple;
-	bh=bm/fk8No7e2ioyS/w6OfcEkmaFyV8PlxInjzNsTFngc=;
+	s=arc-20240116; t=1719309302; c=relaxed/simple;
+	bh=E7fCWrLVoQyvvTcNJXWCXXwFXBOy4iZX405u48nx7lQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/9WAfOidz8QpvzC9u114/xEyzrIfhT+iKlMLY+jAE6asbXPg+Pyko7UYuzcCO1SKMGu8ffxjoCE0o9EZsea3OBpsnFBsk849gEpSef/s1bS5oChlKGpMDvWSQxhEG6u0pDvGKwKjLftTtnV7DJqeViraWXepiRPDaKioIDo7WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+9Uyi0U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A86EC32781;
-	Tue, 25 Jun 2024 10:00:29 +0000 (UTC)
+	 MIME-Version; b=mdMWCPelL4QBIBlEsxt7ooCyFwyOQQAhlJkxPFFNgHqssr7CFVohDcILcdNG0w1wnellbXlpz5bX/uPe2GfP8rwSRCnYDoj0zAMHK/yHuA8qxK2+Mpy6eVh/vBTIBa86oEQ0FN4VearoZVwrXic8S1CDOhbU7iMyx3WfQaKVzPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJucmBV1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1E1C32781;
+	Tue, 25 Jun 2024 09:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309629;
-	bh=bm/fk8No7e2ioyS/w6OfcEkmaFyV8PlxInjzNsTFngc=;
+	s=korg; t=1719309302;
+	bh=E7fCWrLVoQyvvTcNJXWCXXwFXBOy4iZX405u48nx7lQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+9Uyi0UZmfeGwG2Pmpa/hUEH6HLkbr45NJi1k8lMCW62V6ELNJZ9kChdVXlnk+Ha
-	 q6a2sbOqN8pjrZhNQ0AvNgQNeb3V8X5S93kuqvVK+t2EvO5x54fVGj1ua7o9aMJ5H9
-	 8sCVi9j/VwzSlNQ75AZvMdej3Q7r2jRSRYhQEj2g=
+	b=lJucmBV1KbOLUhPhs5/G0i5HeNBFDNj3dspGm4rBlDDhTk1F3AQWdpDlK70nUeQGV
+	 sCU8Zn1ohh/6b78zaWeK4Xbzd+CwgvUM+Awun902HFvSzz8CGzT5BaFcG0rA80T/Ye
+	 mm2+DECdIc/gb/SSOblIcguDnt4YiCkyAMHgV9Fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Shubin <n.shubin@yadro.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/131] dmaengine: ioatdma: Fix leaking on version mismatch
+	Peter Xu <peterx@redhat.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 164/192] mm/page_table_check: fix crash on ZONE_DEVICE
 Date: Tue, 25 Jun 2024 11:33:56 +0200
-Message-ID: <20240625085529.021834161@linuxfoundation.org>
+Message-ID: <20240625085543.456911845@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <n.shubin@yadro.com>
+From: Peter Xu <peterx@redhat.com>
 
-[ Upstream commit 1b11b4ef6bd68591dcaf8423c7d05e794e6aec6f ]
+commit 8bb592c2eca8fd2bc06db7d80b38da18da4a2f43 upstream.
 
-Fix leaking ioatdma_device if I/OAT version is less than IOAT_VER_3_0.
+Not all pages may apply to pgtable check.  One example is ZONE_DEVICE
+pages: they map PFNs directly, and they don't allocate page_ext at all
+even if there's struct page around.  One may reference
+devm_memremap_pages().
 
-Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
-Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-1-a9f2fbe26ab1@yadro.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When both ZONE_DEVICE and page-table-check enabled, then try to map some
+dax memories, one can trigger kernel bug constantly now when the kernel
+was trying to inject some pfn maps on the dax device:
+
+ kernel BUG at mm/page_table_check.c:55!
+
+While it's pretty legal to use set_pxx_at() for ZONE_DEVICE pages for page
+fault resolutions, skip all the checks if page_ext doesn't even exist in
+pgtable checker, which applies to ZONE_DEVICE but maybe more.
+
+Link: https://lkml.kernel.org/r/20240605212146.994486-1-peterx@redhat.com
+Fixes: df4e817b7108 ("mm: page table check")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ioat/init.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ mm/page_table_check.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
-index 6ca62edf47bd7..79dcd2061b023 100644
---- a/drivers/dma/ioat/init.c
-+++ b/drivers/dma/ioat/init.c
-@@ -1349,6 +1349,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	void __iomem * const *iomap;
- 	struct device *dev = &pdev->dev;
- 	struct ioatdma_device *device;
-+	u8 version;
- 	int err;
+--- a/mm/page_table_check.c
++++ b/mm/page_table_check.c
+@@ -71,6 +71,9 @@ static void page_table_check_clear(unsig
+ 	page = pfn_to_page(pfn);
+ 	page_ext = page_ext_get(page);
  
- 	err = pcim_enable_device(pdev);
-@@ -1362,6 +1363,10 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (!iomap)
- 		return -ENOMEM;
- 
-+	version = readb(iomap[IOAT_MMIO_BAR] + IOAT_VER_OFFSET);
-+	if (version < IOAT_VER_3_0)
-+		return -ENODEV;
++	if (!page_ext)
++		return;
 +
- 	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
- 	if (err)
- 		return err;
-@@ -1372,16 +1377,14 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	pci_set_master(pdev);
- 	pci_set_drvdata(pdev, device);
+ 	BUG_ON(PageSlab(page));
+ 	anon = PageAnon(page);
  
--	device->version = readb(device->reg_base + IOAT_VER_OFFSET);
-+	device->version = version;
- 	if (device->version >= IOAT_VER_3_4)
- 		ioat_dca_enabled = 0;
--	if (device->version >= IOAT_VER_3_0) {
--		if (is_skx_ioat(pdev))
--			device->version = IOAT_VER_3_2;
--		err = ioat3_dma_probe(device, ioat_dca_enabled);
--	} else
--		return -ENODEV;
+@@ -108,6 +111,9 @@ static void page_table_check_set(unsigne
+ 	page = pfn_to_page(pfn);
+ 	page_ext = page_ext_get(page);
  
-+	if (is_skx_ioat(pdev))
-+		device->version = IOAT_VER_3_2;
++	if (!page_ext)
++		return;
 +
-+	err = ioat3_dma_probe(device, ioat_dca_enabled);
- 	if (err) {
- 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
- 		return -ENODEV;
--- 
-2.43.0
-
+ 	BUG_ON(PageSlab(page));
+ 	anon = PageAnon(page);
+ 
+@@ -138,7 +144,10 @@ void __page_table_check_zero(struct page
+ 	BUG_ON(PageSlab(page));
+ 
+ 	page_ext = page_ext_get(page);
+-	BUG_ON(!page_ext);
++
++	if (!page_ext)
++		return;
++
+ 	for (i = 0; i < (1ul << order); i++) {
+ 		struct page_table_check *ptc = get_page_table_check(page_ext);
+ 
 
 
 
