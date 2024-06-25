@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-55329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7638A916321
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F25F49163D0
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CD641F2244D
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADC7428C32A
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90697149DFB;
-	Tue, 25 Jun 2024 09:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A147A149DF4;
+	Tue, 25 Jun 2024 09:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxIq9rrl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWOn0b7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F07212EBEA;
-	Tue, 25 Jun 2024 09:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF7A149DE9;
+	Tue, 25 Jun 2024 09:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308583; cv=none; b=YRcF38CMKji6Me8jI0zouFIOh2gl3DaMOwMYh6EgrjcLp9zpsJcaQ2at3u4c8AsvXJz41NW9mtS8VRhKkfyBAwEWM+fdx5P4ko12n1NQ6Yvf+jx9pTfnatOhbBZGoUd3LnOufzhf/0rxc4Dfh506zo49xTAlfArI7Izpd1o+2Vg=
+	t=1719309045; cv=none; b=XBcHUM2oEBlES6aHAlHqI//qJ9y/y3cr6TXB9rR/hJRXDTM4AJJ0UxLq+cHFBxHqbi704k+uYz1QkdllCTpNMTTjPYZKTkfSTWjBb/7VRH7IAwwGGp77MOoOfMXGbAJikNPlwcuZ7yetBaoBePzbrFKcJqT5QDc9g675Q4EHh10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308583; c=relaxed/simple;
-	bh=79Kk8rma4sugEBPZkYT7xy+ZmQ4I4tD3ODF+U16sQBs=;
+	s=arc-20240116; t=1719309045; c=relaxed/simple;
+	bh=RSBtGZPfiKtPTdGrlbWvz9mBL7F1ah09w5XeHvBaFz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJ0tmZsnmwe1Qzcw3YiDuSIQ9eP6YBvK9q5zc8QIvm4HNVZtszqzzBoZY/8W5KvAll9hzxMge9olurgxNuGcRRIjRUQRwn+qtpdsTKatTAHNquZ9XaapXWF5sWyjlyf8YxOK9+QzAJ1fO8Z7DYQUCYoCaGKOoBTRdFwW2MmrRCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxIq9rrl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8965DC32781;
-	Tue, 25 Jun 2024 09:43:02 +0000 (UTC)
+	 MIME-Version; b=qmhsnWeW3hX2joBUyWZaK96mJWby5Chalvojb1bf8dF/M2oMG/HUTo6xYsgRKkuESiGJytlxWN30tJRSVZbDvw1pHZPOvLId6TzyTsIeqZ9ezNggvpwtS1Agt90/nNRtO7aZOibHV15huBFHI76isqojtWwD/ytZKJnCV/efx24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWOn0b7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1741C32781;
+	Tue, 25 Jun 2024 09:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308582;
-	bh=79Kk8rma4sugEBPZkYT7xy+ZmQ4I4tD3ODF+U16sQBs=;
+	s=korg; t=1719309045;
+	bh=RSBtGZPfiKtPTdGrlbWvz9mBL7F1ah09w5XeHvBaFz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CxIq9rrlWRu7LQJWAqMe1hJrN/kVSsfs3WtwZU6SJzEKxc5FkN5cLp1FR/+Xi036v
-	 rO/in6qyvd5T2uok6ECHUV0GDQsHc5KB7dWrlDkYkdNmHRJPGzJ7Hj9WQgdB41FY9A
-	 eGCEzwzcQKGmGyVMGRnofyM6jB0Cfl1Noxt29BiM=
+	b=HWOn0b7nA2DxAqrC5fDBarwjd1SVQswIk8pVBCZac0QJKBGDW1I9y6K1pCyFfgRqm
+	 gnoSbzzDnHCG2lqypveZCOSyKHicUcjGepQ5bmQR3xhpOmpIoQirecsTQHGtlluWwH
+	 NmRCNbq1bsLztpfP1SEsZC8I83TSF6P+2D819e2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 163/250] arm64: dts: imx93-11x11-evk: Remove the no-sdio property
+Subject: [PATCH 6.6 049/192] usb: dwc3: pci: Dont set "linux,phy_charger_detect" property on Lenovo Yoga Tab2 1380
 Date: Tue, 25 Jun 2024 11:32:01 +0200
-Message-ID: <20240625085554.315503471@linuxfoundation.org>
+Message-ID: <20240625085539.052042006@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit a5d400b6439ac734a5c0dbb641e26a38736abc17 ]
+[ Upstream commit 0fb782b5d5c462b2518b3b4fe7d652114c28d613 ]
 
-The usdhc2 port is connected to the microSD slot. The presence of the
-'no-sdio' property prevents Wifi SDIO cards, such as CMP9010-X-EVB [1]
-to be detected.
+The Lenovo Yoga Tablet 2 Pro 1380 model is the exception to the rule that
+devices which use the Crystal Cove PMIC without using ACPI for battery and
+AC power_supply class support use the USB-phy for charger detection.
 
-Remove the 'no-sdio' property so that SDIO cards could also work.
+Unlike the Lenovo Yoga Tablet 2 830 / 1050 models this model has an extra
+LC824206XA Micro USB switch which does the charger detection.
 
-[1] https://www.nxp.com/products/wireless-connectivity/wi-fi-plus-bluetooth-plus-802-15-4/cmp9010-x-evb-iw416-usd-interface-evaluation-board:CMP9010-X-EVB
+Add a DMI quirk to not set the "linux,phy_charger_detect" property on
+the 1380 model. This quirk matches on the BIOS version to differentiate
+the 1380 model from the 830 and 1050 models which otherwise have
+the same DMI strings.
 
-Fixes: e37907bd8294 ("arm64: dts: freescale: add i.MX93 11x11 EVK basic support")
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240406140127.17885-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/dwc3/dwc3-pci.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-index 9921ea13ab489..a7cb571d74023 100644
---- a/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-+++ b/arch/arm64/boot/dts/freescale/imx93-11x11-evk.dts
-@@ -175,7 +175,6 @@
- 	vmmc-supply = <&reg_usdhc2_vmmc>;
- 	bus-width = <4>;
- 	status = "okay";
--	no-sdio;
- 	no-mmc;
- };
+diff --git a/drivers/usb/dwc3/dwc3-pci.c b/drivers/usb/dwc3/dwc3-pci.c
+index 497deed38c0c1..9ef821ca2fc71 100644
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -8,6 +8,7 @@
+  *	    Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+  */
  
++#include <linux/dmi.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+@@ -220,6 +221,7 @@ static int dwc3_pci_quirks(struct dwc3_pci *dwc,
+ 
+ 		if (pdev->device == PCI_DEVICE_ID_INTEL_BYT) {
+ 			struct gpio_desc *gpio;
++			const char *bios_ver;
+ 			int ret;
+ 
+ 			/* On BYT the FW does not always enable the refclock */
+@@ -277,8 +279,12 @@ static int dwc3_pci_quirks(struct dwc3_pci *dwc,
+ 			 * detection. These can be identified by them _not_
+ 			 * using the standard ACPI battery and ac drivers.
+ 			 */
++			bios_ver = dmi_get_system_info(DMI_BIOS_VERSION);
+ 			if (acpi_dev_present("INT33FD", "1", 2) &&
+-			    acpi_quirk_skip_acpi_ac_and_battery()) {
++			    acpi_quirk_skip_acpi_ac_and_battery() &&
++			    /* Lenovo Yoga Tablet 2 Pro 1380 uses LC824206XA instead */
++			    !(bios_ver &&
++			      strstarts(bios_ver, "BLADE_21.X64.0005.R00.1504101516"))) {
+ 				dev_info(&pdev->dev, "Using TUSB1211 phy for charger detection\n");
+ 				swnode = &dwc3_pci_intel_phy_charger_detect_swnode;
+ 			}
 -- 
 2.43.0
 
