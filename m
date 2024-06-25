@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB7F916351
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:45:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 054BD9163F2
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C39828AA46
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:45:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F7B2B273A7
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E23149C79;
-	Tue, 25 Jun 2024 09:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A521494AF;
+	Tue, 25 Jun 2024 09:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6pMFSmX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jJGreIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FAD1465A8;
-	Tue, 25 Jun 2024 09:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA4624B34;
+	Tue, 25 Jun 2024 09:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308718; cv=none; b=rM+LMx0gwKZn5X2WIFL6+ZHrZqCxv+ScnhpE+X0dQhdfEb/p0hTKlgbyy2eGoC6Thu9wndD0VjEJkFj5Wrc93eSrPTvEP//XJRoehj8eiPxY9yPXrHYI5aVwOgtpSvdgJvDK7DskUOhy0/5+51o+jFKa9h/rRM6gsCBjduBTOfU=
+	t=1719309124; cv=none; b=o/WqL63P/5EHD7XUzKW0gXvKP22N1JzsqZIDP9e53zOstqGZJmibswWPRfy0TsEjUPv6MoG6PwpbiirMKpCn1UP6WK4krupkpG5sh4dmAtMnPLkQELiTGlXCUZTm+LoForLLBWRVRqc3/aryh5vOwo27g+xbqTpxbwgA+/hseeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308718; c=relaxed/simple;
-	bh=kM2snx0QuGWc7q5HseWJ/jns7Yvc1lremqp0zrsFXLY=;
+	s=arc-20240116; t=1719309124; c=relaxed/simple;
+	bh=JvBXihk22MuBiBkt7GbOFuOwgthZ/xBM3ijCaYzFJrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3fTks+lehyouawtYENGqzfPIZu6OoBEJc1oPPwoNmer0qRbB2RRswOUEoETfuMjfUe97vUjVHqSDyIa+vKvRIrM/aRXCzCKm8kD7aSdKBgXfrPhSrrJ3XE62j5tSSEAmT4OKm6BQ+4lcTLnhFcpK8zXsk82AQidQN5oPMFC3p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6pMFSmX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8EEC32781;
-	Tue, 25 Jun 2024 09:45:18 +0000 (UTC)
+	 MIME-Version; b=Iu4b4YUSlfUbvbvI3Aa82Gtvghlh9XtDUVg/cGiJKMLWEGke3znzqTVh9vTiBOpAftAhxNcPRbk74m9YwxpT/uyFkov1DrznT1KcQuPicAvtWMuy2k5fWzzJ9N56uMKZCZucnYBCinLD2E+BmOhG+80bcccUr5pBiFtc2e/+SkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jJGreIE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2512AC32786;
+	Tue, 25 Jun 2024 09:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308718;
-	bh=kM2snx0QuGWc7q5HseWJ/jns7Yvc1lremqp0zrsFXLY=;
+	s=korg; t=1719309124;
+	bh=JvBXihk22MuBiBkt7GbOFuOwgthZ/xBM3ijCaYzFJrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6pMFSmXrpsrFw+uaIevhprdiPkDqtHLR0im3+ZccmG+Hj5vn0ihndhCqsAWXDkCv
-	 BaPj3I61Dd0bofVSw9lBgIxVQgGAIemn9iCDas0iLMjGhy7IJzUWvn0oTqCgffjILu
-	 SMweGT6GBv7z6JqjjQawUOwTWh8O/v5nIuroFXJ4=
+	b=2jJGreIEp0TM2Ea2GzyQKdjm/PYNFsxXzYthqt0txfNO5H93dm7TtpH3yzpP44Q2P
+	 HK+BXTDor92e+wsfrOmOfvSc3MQVR2INZtFAR8wmX0tzdJuX3Gj99TXi8aL6G2tzRN
+	 3xGT17PBQnbZFqFpeMnDQ4UBBw5SQ6ZMc5Mo5kjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com,
+	Oliver Neukum <oneukum@suse.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	Eric Dumazet <edumazet@google.com>
-Subject: [PATCH 6.9 216/250] net/tcp_ao: Dont leak ao_info on error-path
-Date: Tue, 25 Jun 2024 11:32:54 +0200
-Message-ID: <20240625085556.344414413@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 103/192] net: usb: rtl8150 fix unintiatilzed variables in rtl8150_get_link_ksettings
+Date: Tue, 25 Jun 2024 11:32:55 +0200
+Message-ID: <20240625085541.130872769@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Safonov <0x7f454c46@gmail.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit f9ae848904289ddb16c7c9e4553ed4c64300de49 upstream.
+[ Upstream commit fba383985354e83474f95f36d7c65feb75dba19d ]
 
-It seems I introduced it together with TCP_AO_CMDF_AO_REQUIRED, on
-version 5 [1] of TCP-AO patches. Quite frustrative that having all these
-selftests that I've written, running kmemtest & kcov was always in todo.
+This functions retrieves values by passing a pointer. As the function
+that retrieves them can fail before touching the pointers, the variables
+must be initialized.
 
-[1]: https://lore.kernel.org/netdev/20230215183335.800122-5-dima@arista.com/
-
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Closes: https://lore.kernel.org/netdev/20240617072451.1403e1d2@kernel.org/
-Fixes: 0aadc73995d0 ("net/tcp: Prevent TCP-MD5 with TCP-AO being set")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Safonov <0x7f454c46@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240619-tcp-ao-required-leak-v1-1-6408f3c94247@gmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20240619132816.11526-1-oneukum@suse.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ao.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/usb/rtl8150.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
-index 37c42b63ff99..09c0fa6756b7 100644
---- a/net/ipv4/tcp_ao.c
-+++ b/net/ipv4/tcp_ao.c
-@@ -1968,8 +1968,10 @@ static int tcp_ao_info_cmd(struct sock *sk, unsigned short int family,
- 		first = true;
- 	}
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index 97afd7335d868..01a3b2417a540 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -778,7 +778,8 @@ static int rtl8150_get_link_ksettings(struct net_device *netdev,
+ 				      struct ethtool_link_ksettings *ecmd)
+ {
+ 	rtl8150_t *dev = netdev_priv(netdev);
+-	short lpa, bmcr;
++	short lpa = 0;
++	short bmcr = 0;
+ 	u32 supported;
  
--	if (cmd.ao_required && tcp_ao_required_verify(sk))
--		return -EKEYREJECTED;
-+	if (cmd.ao_required && tcp_ao_required_verify(sk)) {
-+		err = -EKEYREJECTED;
-+		goto out;
-+	}
- 
- 	/* For sockets in TCP_CLOSED it's possible set keys that aren't
- 	 * matching the future peer (address/port/VRF/etc),
+ 	supported = (SUPPORTED_10baseT_Half |
 -- 
-2.45.2
+2.43.0
 
 
 
