@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-55161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B391916183
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:45:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB8D5916187
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6342861E2
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 08:45:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09B241C2350E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 08:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED1B1474B8;
-	Tue, 25 Jun 2024 08:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B834C148FFA;
+	Tue, 25 Jun 2024 08:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tc/NBH7M"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B/9T1h6/"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8B345038;
-	Tue, 25 Jun 2024 08:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160F91494A8;
+	Tue, 25 Jun 2024 08:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719305123; cv=none; b=Itasc2rfBa4o59Kb/Wk+QekN4yMlqo94Ls3vXa0Ds6Hnosg0Qwu5i3p1ifJYCdfsPmDKy6dAeIoV4zaqsileOW3vTzeaIE8McbhHUzknYGMYCH7c/you0PyoS6+jXp4pO2WGhfTpxvQ7jP7WJXHHDS84z6bN8XHILy7rrMkaIBw=
+	t=1719305131; cv=none; b=QnfWuN/0seBKfXfAhc6UDVF9oK9QvORjjai2mL7P9rufzEObynBsRmOZWzU7zD0uvTojOSfEjvNFsDnE8n9FbWYWXKnw+WHlbg7gdEkRmb9SpxEmH3zL6RrqclCfOGC4ZV8EuJWhogAcGMq3Yg7slrFditPt132bj09ptFPL9AI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719305123; c=relaxed/simple;
-	bh=mj1NnDHMlm+CMxrJ5SMFcXe/X9knYSfeszcPN6HgYhY=;
+	s=arc-20240116; t=1719305131; c=relaxed/simple;
+	bh=PJ7qoNLMxD6KqwQ/QfoSzJR6/VgUz2vUymrfl28BKA4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QWPVHdoO/fEP0KJOX78Pb/zv0RkJwHf9pN6eJ7P6LPL1eFcpOZ74Fs1kOuly3Fxa4BdMsWJEUAxEKiLI9g1Z/cL+e1sWb9Etp8nakYQA3BfqjRBEb830hDrVHxW/bM2mJj2xk+4Kc4xV5Hr9Q3JZ1CVLC7aYo/E4UKm7QKEIm/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tc/NBH7M; arc=none smtp.client-ip=198.175.65.10
+	 Content-Type:Content-Disposition:In-Reply-To; b=AXO4jdVamwG98sm1ujRx/k7urv2KKCDIth+WPhsty295k+op+tLHWNksocL+22bZfgNH2vZSlW7KtDgPHXIM+LozB/CdySKrqrrYNJh6la0De6RfZhW+PQqCCrQ4RevRA+fx0Xx38jgkXdZjvrlNT3N2CjD3Da/ivPHg81ZeKdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B/9T1h6/; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719305122; x=1750841122;
+  t=1719305130; x=1750841130;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=mj1NnDHMlm+CMxrJ5SMFcXe/X9knYSfeszcPN6HgYhY=;
-  b=Tc/NBH7MZfEZLK8i+6+wdGr2/4u1NWw8c7IjhZB3CniFgsuWbzX3spQd
-   Z4nJ2cT/mYt17vIhGMclf4C9/2zHlMAMzu3Y1UcKrFzd+u+k3Mp9tuhbi
-   Rnw7GC3xCT886WnFB3YAn/qJm7NTVRWnHX/eC360BqAnldF1l0h0YkGNZ
-   iO9bR13FNRKIDW2CrQFuLYTWGo9GawczzdNRuyphVpfbGXDWF4uVCjChe
-   vf3mqOmTQV/AsfpeLqWQyXxZwfcU9+FbAFIZ9voRGL8Df+vxXURYl6XAQ
-   0RqzqyDC8taQ4w8ZGKJFBH3/XmQ8Ka6lnU9eQSCHr1qVCDFjvEaPzQ+Tv
-   g==;
-X-CSE-ConnectionGUID: KefOEmrWT02qV2dY3l+SHQ==
-X-CSE-MsgGUID: OBEj+FEFQiO9E/5qKt+ERw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="33764658"
+  bh=PJ7qoNLMxD6KqwQ/QfoSzJR6/VgUz2vUymrfl28BKA4=;
+  b=B/9T1h6/elhG3s7akUi+DsYIaib/Wt4WnBD5chOTockWR/E/A+mDR56i
+   KJ6sh9YQCAU1ePhE6fKSyRGFMHTNkBhcPObViZut5EJiqTBXzJEsQQrk5
+   oyi51O24jhMye0ZR8lxlv5M7mVL7kUK70YbzJlpkusliK3TPtM7Y4x8gr
+   D5Cp6w9NTPjfjfipZVOIuE3iYJz64UJFs3va4DDK/rNLgCsV6GKVfTJsr
+   VgNrb2dTCxzkR934zuz5l6RqR4nS8YFXKrEgv3hJ0j9WYSD5E+jUiS1gd
+   E0CAsQbkhyclcD/MKFRKsPYrOTDxp/uHafaozR/6v4uaPvJD4fQME37du
+   A==;
+X-CSE-ConnectionGUID: PCL7iFyjQvGbGHADRajcaw==
+X-CSE-MsgGUID: Qj3ECzJiSbqCtT1SOk+/Ug==
+X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="33764667"
 X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; 
-   d="scan'208";a="33764658"
+   d="scan'208";a="33764667"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 01:45:21 -0700
-X-CSE-ConnectionGUID: Q9+y8qckTQeEaohFZcpPng==
-X-CSE-MsgGUID: PIFM/bOSTtW4gaN6GRZ+DQ==
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 01:45:29 -0700
+X-CSE-ConnectionGUID: 39XEKaElSqq2h04uUxmuyQ==
+X-CSE-MsgGUID: UBWWRTAXRY2ps2byQW9eZg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; 
-   d="scan'208";a="43561242"
+   d="scan'208";a="43561256"
 Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 01:45:19 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 01:45:27 -0700
 Received: from kekkonen.localdomain (localhost [127.0.0.1])
-	by kekkonen.fi.intel.com (Postfix) with SMTP id EC8AF11FA94;
-	Tue, 25 Jun 2024 11:45:16 +0300 (EEST)
-Date: Tue, 25 Jun 2024 08:45:16 +0000
+	by kekkonen.fi.intel.com (Postfix) with SMTP id B04D911FA94;
+	Tue, 25 Jun 2024 11:45:25 +0300 (EEST)
+Date: Tue, 25 Jun 2024 08:45:25 +0000
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
 To: Wentong Wu <wentong.wu@intel.com>
 Cc: tomas.winkler@intel.com, gregkh@linuxfoundation.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
 	Jason Chen <jason.z.chen@intel.com>
-Subject: Re: [PATCH v4 1/5] mei: vsc: Enhance IVSC chipset stability during
- warm reboot
-Message-ID: <ZnqDnDisvzc9FTyH@kekkonen.localdomain>
+Subject: Re: [PATCH v4 2/5] mei: vsc: Prevent timeout error with added delay
+ post-firmware download
+Message-ID: <ZnqDpRA_LzkAxdCS@kekkonen.localdomain>
 References: <20240625081047.4178494-1-wentong.wu@intel.com>
- <20240625081047.4178494-2-wentong.wu@intel.com>
+ <20240625081047.4178494-3-wentong.wu@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,12 +80,13 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240625081047.4178494-2-wentong.wu@intel.com>
+In-Reply-To: <20240625081047.4178494-3-wentong.wu@intel.com>
 
-On Tue, Jun 25, 2024 at 04:10:43PM +0800, Wentong Wu wrote:
-> During system shutdown, incorporate reset logic to ensure the IVSC
-> chipset remains in a valid state. This adjustment guarantees that
-> the IVSC chipset operates in a known state following a warm reboot.
+On Tue, Jun 25, 2024 at 04:10:44PM +0800, Wentong Wu wrote:
+> After completing the firmware download, the firmware requires some
+> time to become functional. This change introduces additional sleep
+> time before the first read operation to prevent a confusing timeout
+> error in vsc_tp_xfer().
 > 
 > Fixes: 566f5ca97680 ("mei: Add transport driver for IVSC device")
 > Cc: stable@vger.kernel.org # for 6.8+
