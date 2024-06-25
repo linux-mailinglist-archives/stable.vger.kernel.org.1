@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-55258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20FD49162CE
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:39:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B58D9162A4
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAD911F21958
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:39:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAAAA1F22056
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68020149C5E;
-	Tue, 25 Jun 2024 09:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39930149C51;
+	Tue, 25 Jun 2024 09:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LBeZeZzA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Alz/cusP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2583913D62A;
-	Tue, 25 Jun 2024 09:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA74412EBEA;
+	Tue, 25 Jun 2024 09:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308377; cv=none; b=Now8SLCQmc/bv0QpKeUxXMaduOHbxfXbvwfr45TQbbIHmHyyecaiFd3XW6VFPuB+IX4JsJgFh9/Rsgzq5k8pzLjHJKtfl/lklR01c1LatiL4FGis0p+tfBVyzscwhUi1ehfXzWr2qui2eDEUFM7G3jlFq+Rl4X51rqQusZZrdZQ=
+	t=1719308289; cv=none; b=e2pPr8Wob0qP+LwCaTzc9UjKc52pcnT9eL2AKXXIxGLAOOWET9+25CLRN5OdtOTWeUFUo6G3c25Wb2MJhNXPU1pRh6VgXwZ6spuy4ucY3npg0H8h16rzIjaFMt004+gIhgFWEDJ4+xQNgk3BAUagkql7obJYnw1nUSbWk4ip6e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308377; c=relaxed/simple;
-	bh=nb692jtPkD2cDLBlh1eCUeu8bM0Esd1WO/tmEHl1Ncc=;
+	s=arc-20240116; t=1719308289; c=relaxed/simple;
+	bh=V8E9lEeT1QIUOP4utvg/8wmRtZAmuJD/02NE2wlH9LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ih0uVq65b01QwILSTCNP/u3DEcc0SAy+xt7A23ypNP2XZgTdo6ess+ahzBphkv/a3/n+lTgO+Sd1VmQnZ5k/JapuZzHBdFLIu/gs95fpXXVz9p/sVpAWQUl9PQTkOjCBo/c7vs4kvkpMWZHv6mmW8V+Duj1mac3u5RSFe7vZb1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LBeZeZzA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4EFC32781;
-	Tue, 25 Jun 2024 09:39:36 +0000 (UTC)
+	 MIME-Version; b=DT/IdbccRgAOCBQCIpKXahXHl+cIr71WoBEurW+0ZxnH9qkSMxJ7ka4l46UamUs9XXxl71ox+lDciPJIhR9Fi93e11bs3lBix/mVBvICiZQr7g/xTxPBJM+7vKjbkk4bwZfSfdLi+SFBemBC/F7SljCZO3TSUiLn2BIUTLqRqZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Alz/cusP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C05C32781;
+	Tue, 25 Jun 2024 09:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308377;
-	bh=nb692jtPkD2cDLBlh1eCUeu8bM0Esd1WO/tmEHl1Ncc=;
+	s=korg; t=1719308288;
+	bh=V8E9lEeT1QIUOP4utvg/8wmRtZAmuJD/02NE2wlH9LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LBeZeZzAhu0CUHbQD34xxOwjcocQ7tZ5TL/9IfGrCB4VORflZr/qTA7f3dv/2KwZs
-	 5iATbR3F0kCWaWRrEHr/9+4ZMDCwNdlf1i2ZQ2AOPHmHQD0lZDluOb4fQfbktWPaeb
-	 YvNBOBXsmzu0QZsLdul8HIcYBxWnVlDnDIOF1AlI=
+	b=Alz/cusPvWSSQyZka5S50u5VehMB0n7V0ywnCcxeGzBaISJy5s5HqhEvIKWsBWFUE
+	 8aGBbqPhqv+4kir7wIcS4XnCSyhY1R1Q6U88x09r/cIOIVIsfHkhmJteDBOS7GfUrB
+	 hGxgLk+5gUaWdO2/YF02jf0PRtGgDtDslH4/8HqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 070/250] usb: gadget: uvc: configfs: ensure guid to be valid before set
-Date: Tue, 25 Jun 2024 11:30:28 +0200
-Message-ID: <20240625085550.752660335@linuxfoundation.org>
+Subject: [PATCH 6.9 071/250] f2fs: fix to detect inconsistent nat entry during truncation
+Date: Tue, 25 Jun 2024 11:30:29 +0200
+Message-ID: <20240625085550.791382804@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -65,62 +67,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit f7a7f80ccc8df017507e2b1e1dd652361374d25b ]
+[ Upstream commit 92c556ed6318e13c16746495a8d4513129eb9b0f ]
 
-When setting the guid via configfs it is possible to test if
-its value is one of the kernel supported ones by calling
-uvc_format_by_guid on it. If the result is NULL, we know the
-guid is unsupported and can be ignored.
+As Roman Smirnov reported as below:
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Link: https://lore.kernel.org/r/20240221-uvc-gadget-configfs-guid-v1-1-f0678ca62ebb@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+"
+There is a possible bug in f2fs_truncate_inode_blocks():
+
+    if (err < 0 && err != -ENOENT)
+    			goto fail;
+        ...
+        offset[1] = 0;
+        offset[0]++;
+        nofs += err;
+
+If err = -ENOENT then nofs will sum with an error code,
+which is strange behaviour. Also if nofs < ENOENT this will
+cause an overflow. err will be equal to -ENOENT with the
+following call stack:
+
+truncate_nodes()
+  f2fs_get_node_page()
+     __get_node_page()
+        read_node_page()
+"
+
+If nat is corrupted, truncate_nodes() may return -ENOENT, and
+f2fs_truncate_inode_blocks() doesn't handle such error correctly,
+fix it.
+
+Reported-by: Roman Smirnov <r.smirnov@omp.ru>
+Closes: https://lore.kernel.org/linux-f2fs-devel/085b27fd2b364a3c8c3a9ca77363e246@omp.ru
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/uvc_configfs.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ fs/f2fs/node.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/uvc_configfs.c b/drivers/usb/gadget/function/uvc_configfs.c
-index a4377df612f51..6fac696ea8463 100644
---- a/drivers/usb/gadget/function/uvc_configfs.c
-+++ b/drivers/usb/gadget/function/uvc_configfs.c
-@@ -13,6 +13,7 @@
- #include "uvc_configfs.h"
- 
- #include <linux/sort.h>
-+#include <linux/usb/uvc.h>
- #include <linux/usb/video.h>
- 
- /* -----------------------------------------------------------------------------
-@@ -2260,6 +2261,8 @@ static ssize_t uvcg_uncompressed_guid_format_store(struct config_item *item,
- 	struct f_uvc_opts *opts;
- 	struct config_item *opts_item;
- 	struct mutex *su_mutex = &ch->fmt.group.cg_subsys->su_mutex;
-+	const struct uvc_format_desc *format;
-+	u8 tmpguidFormat[sizeof(ch->desc.guidFormat)];
- 	int ret;
- 
- 	mutex_lock(su_mutex); /* for navigating configfs hierarchy */
-@@ -2273,7 +2276,16 @@ static ssize_t uvcg_uncompressed_guid_format_store(struct config_item *item,
- 		goto end;
- 	}
- 
--	memcpy(ch->desc.guidFormat, page,
-+	memcpy(tmpguidFormat, page,
-+	       min(sizeof(tmpguidFormat), len));
-+
-+	format = uvc_format_by_guid(tmpguidFormat);
-+	if (!format) {
-+		ret = -EINVAL;
-+		goto end;
-+	}
-+
-+	memcpy(ch->desc.guidFormat, tmpguidFormat,
- 	       min(sizeof(ch->desc.guidFormat), len));
- 	ret = sizeof(ch->desc.guidFormat);
- 
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 7df5ad84cb5ea..15c9a9f5750bc 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1187,7 +1187,17 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from)
+ 		default:
+ 			BUG();
+ 		}
+-		if (err < 0 && err != -ENOENT)
++		if (err == -ENOENT) {
++			set_sbi_flag(F2FS_P_SB(page), SBI_NEED_FSCK);
++			f2fs_handle_error(sbi, ERROR_INVALID_BLKADDR);
++			f2fs_err_ratelimited(sbi,
++				"truncate node fail, ino:%lu, nid:%u, "
++				"offset[0]:%d, offset[1]:%d, nofs:%d",
++				inode->i_ino, dn.nid, offset[0],
++				offset[1], nofs);
++			err = 0;
++		}
++		if (err < 0)
+ 			goto fail;
+ 		if (offset[1] == 0 &&
+ 				ri->i_nid[offset[0] - NODE_DIR1_BLOCK]) {
 -- 
 2.43.0
 
