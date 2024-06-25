@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-55271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 187229162DD
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:40:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9903F9162EE
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9F6F289D69
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:40:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 565E928A7A6
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E0B149DFF;
-	Tue, 25 Jun 2024 09:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291D014A4D9;
+	Tue, 25 Jun 2024 09:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c8kfFxs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhgBl1b3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999C8149C50;
-	Tue, 25 Jun 2024 09:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2B414A4D2;
+	Tue, 25 Jun 2024 09:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308415; cv=none; b=RlTYXsILDaVUJLv4/K5wTMKZIe8aL+OA5iUMReeLw9xKaS9wusXsH9yUbAd0u8Lj3ssTHnvtlSu3yglSLTT+wy9UdCbdCv7G5pfyE0dmFqstRMC3puaFE6YSP/S+RGFm2u5qPoH2C45JP/547r/5e7DSlqSprxcOUAMgGmxwIxs=
+	t=1719308447; cv=none; b=u1DaG+Zxmgk0Rg0vluBTQuKIvcSZWD5sPQw6HlX/TXlbu7/tf6dr13eWL7xKhyojgHe5/M+kslJHf/b7/bm9Zz2PnbU+fyfZ/+fidC0bQvxFiAyEJdjJlWBn7dBR9HxBNNFtEgwHUckejR++jrH42Gl3JQsY6C8WNcHIC5QEe/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308415; c=relaxed/simple;
-	bh=4uQwZBN5d/kqVlq7JHnJBO86nWwC4iHyrECYE9H/Qt0=;
+	s=arc-20240116; t=1719308447; c=relaxed/simple;
+	bh=XFFUa2MCYhatFRSBwdcKo+D7a5suA3tPwCScnQl7c78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/mf/KUfAX1ICq0lkeE6ehskDHg7R20lc8BlWq9HriRs/YT4vrrDhlFfd8e87Aqmn80NxjIGpC2GYXSK6vMYfQDQ/WsKrVqAfAqBMCG0sOH86s4A+Vu4W9JYGuGVqJK/qdEesmE0RQROea5wbsMmv9iDYevbtA/NGBTytqhUplc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c8kfFxs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221ACC32781;
-	Tue, 25 Jun 2024 09:40:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dmwAzFadqqOqu3SfJN3k4qh419lhTvnVJgB0QNwTlE+79p1rXsnwn4dpMfRnnAsFEDxcvIcgdnpQl3ToQy8wdNYVHZ5H3oakfIMrXYnAm2KfMxiZqtxJdSulEwYUKw1+hh4HtgyYwdK3QMM1uFGLiYb4k0VjAbaWpzEmtvNQaGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhgBl1b3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6405BC32786;
+	Tue, 25 Jun 2024 09:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308415;
-	bh=4uQwZBN5d/kqVlq7JHnJBO86nWwC4iHyrECYE9H/Qt0=;
+	s=korg; t=1719308447;
+	bh=XFFUa2MCYhatFRSBwdcKo+D7a5suA3tPwCScnQl7c78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2c8kfFxskiZlhh+iXEocE6QX5qKmZzOz+2qkgaV9o8/2vB181aMaszYvYSVHD9ezJ
-	 SCEbDxWYE+AwYmg9RGvScqLllqjUH2sYaf1DoD9qtFpjjM8Jb9+/b1Ytg1/s2Kw6tw
-	 Iiip3HWz/EnJm0UUQXVlLywd/mayRYgeORUd9ShU=
+	b=yhgBl1b36HtU3RI+2J7xSxfStRaSm7HyJJMuuRP2VsZ/H8EqmCmnMSTsxtXV98n7m
+	 Keuw6x9sIJbGpoRgJ6evDJYdsxffGIuJLq1Qk8yIMaEctpckkCcb+qJAN5RaJP8T5+
+	 DxeY9LpRci6IPpaqTMMUItgeut6nRvIeEeMXeReE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 096/250] ALSA: seq: ump: Fix missing System Reset message handling
-Date: Tue, 25 Jun 2024 11:30:54 +0200
-Message-ID: <20240625085551.754789954@linuxfoundation.org>
+Subject: [PATCH 6.9 097/250] MIPS: Routerboard 532: Fix vendor retry check code
+Date: Tue, 25 Jun 2024 11:30:55 +0200
+Message-ID: <20240625085551.794861248@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -59,40 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 55fac50ea46f46a22a92e2139b92afaa3822ad19 ]
+[ Upstream commit ae9daffd9028f2500c9ac1517e46d4f2b57efb80 ]
 
-The conversion from System Reset event to UMP was missing.
-Add the entry for a conversion to a proper UMP System message.
+read_config_dword() contains strange condition checking ret for a
+number of values. The ret variable, however, is always zero because
+config_access() never returns anything else. Thus, the retry is always
+taken until number of tries is exceeded.
 
-Fixes: e9e02819a98a ("ALSA: seq: Automatic conversion of UMP events")
-Link: https://lore.kernel.org/r/20240531123718.13420-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The code looks like it wants to check *val instead of ret to see if the
+read gave an error response.
+
+Fixes: 73b4390fb234 ("[MIPS] Routerboard 532: Support for base system")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/seq/seq_ump_convert.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/pci/ops-rc32434.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/core/seq/seq_ump_convert.c b/sound/core/seq/seq_ump_convert.c
-index 171fb75267afa..d81f776a4c3dd 100644
---- a/sound/core/seq/seq_ump_convert.c
-+++ b/sound/core/seq/seq_ump_convert.c
-@@ -1075,6 +1075,8 @@ static const struct seq_ev_to_ump seq_ev_ump_encoders[] = {
- 	  system_ev_to_ump_midi1, system_ev_to_ump_midi2 },
- 	{ SNDRV_SEQ_EVENT_SENSING, UMP_SYSTEM_STATUS_ACTIVE_SENSING,
- 	  system_ev_to_ump_midi1, system_ev_to_ump_midi2 },
-+	{ SNDRV_SEQ_EVENT_RESET, UMP_SYSTEM_STATUS_RESET,
-+	  system_ev_to_ump_midi1, system_ev_to_ump_midi2 },
- };
- 
- static const struct seq_ev_to_ump *find_ump_encoder(int type)
+diff --git a/arch/mips/pci/ops-rc32434.c b/arch/mips/pci/ops-rc32434.c
+index 874ed6df97683..34b9323bdabb0 100644
+--- a/arch/mips/pci/ops-rc32434.c
++++ b/arch/mips/pci/ops-rc32434.c
+@@ -112,8 +112,8 @@ static int read_config_dword(struct pci_bus *bus, unsigned int devfn,
+ 	 * gives them time to settle
+ 	 */
+ 	if (where == PCI_VENDOR_ID) {
+-		if (ret == 0xffffffff || ret == 0x00000000 ||
+-		    ret == 0x0000ffff || ret == 0xffff0000) {
++		if (*val == 0xffffffff || *val == 0x00000000 ||
++		    *val == 0x0000ffff || *val == 0xffff0000) {
+ 			if (delay > 4)
+ 				return 0;
+ 			delay *= 2;
 -- 
 2.43.0
 
