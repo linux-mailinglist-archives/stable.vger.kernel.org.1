@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-55582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACE0916445
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:56:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE0909164C4
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:01:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DA731C22043
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:56:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CA671C2384C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC76114A4DA;
-	Tue, 25 Jun 2024 09:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D9414A091;
+	Tue, 25 Jun 2024 10:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="agi6jRex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQ0huBUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1D11487E9;
-	Tue, 25 Jun 2024 09:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54246146592;
+	Tue, 25 Jun 2024 10:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309329; cv=none; b=jGXu2dzhUdcXka+065sy3WpRfWP0wRATntd0Qkci8C9AX+kPTCyUlPPv7Fz22EE4TPjugIEAqtHR2eI+6Riee/5DPfQwoEQtJavzbtDUAj1P1ZRy0WZUGneO/0M4m4xfmaOkqpOI2rrgGYGYHFGbCwCOzs2fGsv2IWKZxc9eL1c=
+	t=1719309656; cv=none; b=FppgY/HJ2M3A6MxvGtjIH8P5zJt70zJHr93V6jfPjpx1IDIxX9Cz6jrXESLN4G4JVKvOfrpaWeycqTppZQLGK0+RUeYL7t5MJIJsewiNZIsfV06yCtJHpWMKJEcMaUCXhxElkJ7iiSvT85hrbgueNjlY7qoV5TnBSe3iT+yUaLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309329; c=relaxed/simple;
-	bh=KJpGNxJRFauiTRP7+cutPe8L7BQQn1MmgsNBatskqgA=;
+	s=arc-20240116; t=1719309656; c=relaxed/simple;
+	bh=NFIxD9MapGxsqozOMhXlaQPkedtEZMk1vO7fc0N5k/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fk0uyFHlfTMMCzhMRWftm9Lc6y9LXsX+Qj6N5A+oXSHqvGeb9IYxOw7F8demcXlkiC3nCVFzrDQ6OunNygGvBvQpFLm2FB03pYRMtTdV6c0KMyTIbf+/mRT5OlbSqri+4vV3OBh+k0mVl7Fa2ILArWdQ47qWLfpFMwhUT/OsoMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=agi6jRex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D085DC32781;
-	Tue, 25 Jun 2024 09:55:28 +0000 (UTC)
+	 MIME-Version; b=OmQVC7/CLjfYUQatghtCO7wOKO0sfndL/I2AbK5o1gCeXuvy/taDMFvS9jr2rMGAcdWlRE12ARIhMdvMw32EwgvtXsIH456WPfAUEmRCqCrE6W3fFobs3dUucaDSxJUEs+zs4WyN85Nx4xWXJGY9fsisrh5hvHyqGkzwOhjvCTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQ0huBUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC68C32781;
+	Tue, 25 Jun 2024 10:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309329;
-	bh=KJpGNxJRFauiTRP7+cutPe8L7BQQn1MmgsNBatskqgA=;
+	s=korg; t=1719309656;
+	bh=NFIxD9MapGxsqozOMhXlaQPkedtEZMk1vO7fc0N5k/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=agi6jRex9eV0fdXwemG8lswXgF/iSKc3VoxGfkTIM4DXURxJ4k4h3azwppRRnzAhT
-	 cI9B++I/G9SYChKkYWBoWsWO+elEYRuqYvgOtQAY5lJIFHy3mJmO7meUoNKsEp6w1T
-	 60brxQAi6vETMUqTfKnhaYcLaqzhO7jsmGxQF/xI=
+	b=IQ0huBUonKTc3lr8wmu/F5/tutHz9UgtasibSyEv8INkpv4WcZIM0t5i0xkRWyk+m
+	 MXVRSM7O2UmDps5TsVStPn8ajbcMf1e09dXUvYY2+pRh+Buzcrs94LYZzhlhwPIzyZ
+	 NHNv+5GZeRhjuDCDQkMc1wslH+Al4H+IwLkWOD4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Kleen <ak@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sanath S <Sanath.S@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/192] perf script: Show also errors for --insn-trace option
+Subject: [PATCH 6.1 089/131] ACPICA: Revert "ACPICA: avoid Info: mapping multiple BARs. Your kernel is fine."
 Date: Tue, 25 Jun 2024 11:34:04 +0200
-Message-ID: <20240625085543.761879988@linuxfoundation.org>
+Message-ID: <20240625085529.320929344@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,48 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit d4a98b45fbe6d06f4b79ed90d0bb05ced8674c23 ]
+[ Upstream commit a83e1385b780d41307433ddbc86e3c528db031f0 ]
 
-The trace could be misleading if trace errors are not taken into
-account, so display them also by adding the itrace "e" option.
+Undo the modifications made in commit d410ee5109a1 ("ACPICA: avoid
+"Info: mapping multiple BARs. Your kernel is fine.""). The initial
+purpose of this commit was to stop memory mappings for operation
+regions from overlapping page boundaries, as it can trigger warnings
+if different page attributes are present.
 
-Note --call-trace and --call-ret-trace already add the itrace "e"
-option.
+However, it was found that when this situation arises, mapping
+continues until the boundary's end, but there is still an attempt to
+read/write the entire length of the map, leading to a NULL pointer
+deference. For example, if a four-byte mapping request is made but
+only one byte is mapped because it hits the current page boundary's
+end, a four-byte read/write attempt is still made, resulting in a NULL
+pointer deference.
 
-Fixes: b585ebdb5912cf14 ("perf script: Add --insn-trace for instruction decoding")
-Reviewed-by: Andi Kleen <ak@linux.intel.com>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240315071334.3478-1-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Instead, map the entire length, as the ACPI specification does not
+mandate that it must be within the same page boundary. It is
+permissible for it to be mapped across different regions.
+
+Link: https://github.com/acpica/acpica/pull/954
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218849
+Fixes: d410ee5109a1 ("ACPICA: avoid "Info: mapping multiple BARs. Your kernel is fine."")
+Co-developed-by: Sanath S <Sanath.S@amd.com>
+Signed-off-by: Sanath S <Sanath.S@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-script.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/exregion.c | 23 ++---------------------
+ 1 file changed, 2 insertions(+), 21 deletions(-)
 
-diff --git a/tools/perf/builtin-script.c b/tools/perf/builtin-script.c
-index c38e988c2a6d8..f4f3ef90a4629 100644
---- a/tools/perf/builtin-script.c
-+++ b/tools/perf/builtin-script.c
-@@ -3783,7 +3783,7 @@ static int parse_insn_trace(const struct option *opt __maybe_unused,
- 	if (ret < 0)
- 		return ret;
+diff --git a/drivers/acpi/acpica/exregion.c b/drivers/acpi/acpica/exregion.c
+index 4ff35852c0b38..8906aa4464054 100644
+--- a/drivers/acpi/acpica/exregion.c
++++ b/drivers/acpi/acpica/exregion.c
+@@ -44,7 +44,6 @@ acpi_ex_system_memory_space_handler(u32 function,
+ 	struct acpi_mem_mapping *mm = mem_info->cur_mm;
+ 	u32 length;
+ 	acpi_size map_length;
+-	acpi_size page_boundary_map_length;
+ #ifdef ACPI_MISALIGNMENT_NOT_SUPPORTED
+ 	u32 remainder;
+ #endif
+@@ -138,26 +137,8 @@ acpi_ex_system_memory_space_handler(u32 function,
+ 		map_length = (acpi_size)
+ 		    ((mem_info->address + mem_info->length) - address);
  
--	itrace_parse_synth_opts(opt, "i0ns", 0);
-+	itrace_parse_synth_opts(opt, "i0nse", 0);
- 	symbol_conf.nanosecs = true;
- 	return 0;
- }
+-		/*
+-		 * If mapping the entire remaining portion of the region will cross
+-		 * a page boundary, just map up to the page boundary, do not cross.
+-		 * On some systems, crossing a page boundary while mapping regions
+-		 * can cause warnings if the pages have different attributes
+-		 * due to resource management.
+-		 *
+-		 * This has the added benefit of constraining a single mapping to
+-		 * one page, which is similar to the original code that used a 4k
+-		 * maximum window.
+-		 */
+-		page_boundary_map_length = (acpi_size)
+-		    (ACPI_ROUND_UP(address, ACPI_DEFAULT_PAGE_SIZE) - address);
+-		if (page_boundary_map_length == 0) {
+-			page_boundary_map_length = ACPI_DEFAULT_PAGE_SIZE;
+-		}
+-
+-		if (map_length > page_boundary_map_length) {
+-			map_length = page_boundary_map_length;
+-		}
++		if (map_length > ACPI_DEFAULT_PAGE_SIZE)
++			map_length = ACPI_DEFAULT_PAGE_SIZE;
+ 
+ 		/* Create a new mapping starting at the address given */
+ 
 -- 
 2.43.0
 
