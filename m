@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-55611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1462D91646A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04EA0916475
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D25CB290F6
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63056B291E9
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33167149DEF;
-	Tue, 25 Jun 2024 09:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DDD149DEF;
+	Tue, 25 Jun 2024 09:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NETBclKG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4tMG1b0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5927149C4F;
-	Tue, 25 Jun 2024 09:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C2B1465A8;
+	Tue, 25 Jun 2024 09:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309418; cv=none; b=aulw4J3cPHGWOg99BDdS/WHtxJ+lJi9ncbM3r/Net1yBBLfK7Jxa7CHq+w7dQb5YHv047nsLmgX+4L19jbw78yNKlY/ZYQHmp73NzBB2Aelva/h8K5e+YyEoNzUyKbq72RVKEZaa8WJigr0pkYj7IuOVOog3OsrpxedK02oEQqA=
+	t=1719309450; cv=none; b=oW3UsGeRwiBxlyQRL/vi6hnXFDmOLZjA6mjik/tnJFduAw2zQlimcspCpa/V1Z8o0XDplKd/eA68Nap6rBfuafAZ5BM9ig7tAZDkMFC1ns8sQ+LXXo/5e/lGriAtSdOppPrQ7KhnKhXz/X4ThwNOjirDULFe1OfYNKxETb2sX0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309418; c=relaxed/simple;
-	bh=rzJ6dUiH/B1GkM+Ec9zHWnlzBe+jJYrb/GC1yT5Hn1Q=;
+	s=arc-20240116; t=1719309450; c=relaxed/simple;
+	bh=k0K1vyI8dCW/DFRB1atGzRdQS7BUZW7rEc2pCEL7fD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cteQyQJXzNvNTKB0nyBmpl2jmp7/KvfseL4FHVXz0+hE24Cbe+XVuW5/MZj3jlUoa9qdIZayNylcQD/lgZNkmyDi5m02lCgbVZC4QdbOPkQqk29XK33f7azDCpQ+yTVgIzxXUy76cjPprM7jhXCsU7ZLcM0l5goL6vBwLyaGzjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NETBclKG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21124C32781;
-	Tue, 25 Jun 2024 09:56:56 +0000 (UTC)
+	 MIME-Version; b=Rgo7roG/vTYGxGBBIsKQGP4fagzZOZDHjp9JejlJkDZwR+ssDSuV3/cS/AljN5oFtTdV8Z9KCsrXRgeV7zyWHMHl+6FQz3x8VcEt5XPteguKgF5QuWDauQvNUO/iI+Q9WZ71wlvRoccc4McD8Kpt+help1PeumNaIbbQysdWiIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4tMG1b0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80493C32781;
+	Tue, 25 Jun 2024 09:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309417;
-	bh=rzJ6dUiH/B1GkM+Ec9zHWnlzBe+jJYrb/GC1yT5Hn1Q=;
+	s=korg; t=1719309449;
+	bh=k0K1vyI8dCW/DFRB1atGzRdQS7BUZW7rEc2pCEL7fD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NETBclKG8dU/Obq2scJejraAVHAikEVPLJvsFvihTgAYWYTPhrino93VJ/i0ecSPh
-	 XGHv+QFl2IeLPM6F5q6K29eoy0J5Fro3PBx+kOkz5FS0rbYBLMKPvRjt65aVtmUrnK
-	 z4UfqHTe24ImIWfIAQgtV9bn6gxbOLF83W5EkVwQ=
+	b=L4tMG1b0Nw2Z3XRLOtPXGH2DSDKhqPsvtS0dInn204MVjFANYYVvSPIE2C+d4MA2H
+	 VY/n+HufStccUP3kX+9yfnGcEMczE3T/1dXhi41UF1fhKXHPEv4xEMIC/Zy+XCQFbe
+	 +qoYbZsOEsR3QS4FUGlDjH/lDhlEGPzO06wv2V8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com,
+	Chenghai Huang <huangchenghai2@huawei.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
-	Daniel Jordan <daniel.m.jordan@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/131] padata: Disable BH when taking works lock on MT path
-Date: Tue, 25 Jun 2024 11:32:36 +0200
-Message-ID: <20240625085525.990952244@linuxfoundation.org>
+Subject: [PATCH 6.1 002/131] crypto: hisilicon/sec - Fix memory leak for sec resource release
+Date: Tue, 25 Jun 2024 11:32:37 +0200
+Message-ID: <20240625085526.027328922@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
 References: <20240625085525.931079317@linuxfoundation.org>
@@ -67,60 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit 58329c4312031603bb1786b44265c26d5065fe72 ]
+[ Upstream commit bba4250757b4ae1680fea435a358d8093f254094 ]
 
-As the old padata code can execute in softirq context, disable
-softirqs for the new padata_do_mutithreaded code too as otherwise
-lockdep will get antsy.
+The AIV is one of the SEC resources. When releasing resources,
+it need to release the AIV resources at the same time.
+Otherwise, memory leakage occurs.
 
-Reported-by: syzbot+0cb5bb0f4bf9e79db3b3@syzkaller.appspotmail.com
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+The aiv resource release is added to the sec resource release
+function.
+
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index 7bef7dae3db54..0261bced7eb6e 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -98,7 +98,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
- {
- 	int i;
+diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+index cae7c414bdaf4..09a20307d01e3 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
++++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+@@ -479,8 +479,10 @@ static void sec_alg_resource_free(struct sec_ctx *ctx,
  
--	spin_lock(&padata_works_lock);
-+	spin_lock_bh(&padata_works_lock);
- 	/* Start at 1 because the current task participates in the job. */
- 	for (i = 1; i < nworks; ++i) {
- 		struct padata_work *pw = padata_work_alloc();
-@@ -108,7 +108,7 @@ static int __init padata_work_alloc_mt(int nworks, void *data,
- 		padata_work_init(pw, padata_mt_helper, data, 0);
- 		list_add(&pw->pw_list, head);
- 	}
--	spin_unlock(&padata_works_lock);
-+	spin_unlock_bh(&padata_works_lock);
- 
- 	return i;
- }
-@@ -126,12 +126,12 @@ static void __init padata_works_free(struct list_head *works)
- 	if (list_empty(works))
- 		return;
- 
--	spin_lock(&padata_works_lock);
-+	spin_lock_bh(&padata_works_lock);
- 	list_for_each_entry_safe(cur, next, works, pw_list) {
- 		list_del(&cur->pw_list);
- 		padata_work_free(cur);
- 	}
--	spin_unlock(&padata_works_lock);
-+	spin_unlock_bh(&padata_works_lock);
+ 	if (ctx->pbuf_supported)
+ 		sec_free_pbuf_resource(dev, qp_ctx->res);
+-	if (ctx->alg_type == SEC_AEAD)
++	if (ctx->alg_type == SEC_AEAD) {
+ 		sec_free_mac_resource(dev, qp_ctx->res);
++		sec_free_aiv_resource(dev, qp_ctx->res);
++	}
  }
  
- static void padata_parallel_worker(struct work_struct *parallel_work)
+ static int sec_alloc_qp_ctx_resource(struct hisi_qm *qm, struct sec_ctx *ctx,
 -- 
 2.43.0
 
