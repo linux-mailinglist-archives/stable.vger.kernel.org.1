@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-55338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E287891632A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D21089163C4
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:50:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77EAAB23252
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3311FB24E7F
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC1B149C4F;
-	Tue, 25 Jun 2024 09:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50454149E16;
+	Tue, 25 Jun 2024 09:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKHdM0mh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2CNxfzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D7212EBEA;
-	Tue, 25 Jun 2024 09:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA15148315;
+	Tue, 25 Jun 2024 09:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308609; cv=none; b=ADMAa7ymR+nBruXgjxLUQwisiwj7FL2a7QKN87lu68JMa+OWGegvv7avfc833MSII8cJfqKhFkpmYUSYSi8uVn2J964xHsKrdRwoHni5h2ndwL8yf7h55Eg/mDXqm6Ek72zFk6nPQ/I2xx41yF3G/UVUhFud0R+EQelMcOEfltA=
+	t=1719309019; cv=none; b=oGrd2/xRx6JQyhWxcDIcRdXV0j84L8PJuuerqLZAJiRN5gYvUJFhCvXcENKkDI1t9sDWA+9HVBoxWsERhYnqzh1zZpuB0nxINVvCQqYoCUAvJEs4aaM051mGiRY/dTEzVkRa5d8uWBMHINs+XptpDhu/SqUaLND1uMoeJO8KvXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308609; c=relaxed/simple;
-	bh=ltXZTsNS+7jIefy/0ulW8yvZULRen9s8E0fFb6dgSjk=;
+	s=arc-20240116; t=1719309019; c=relaxed/simple;
+	bh=6tntQuhkHfFN8j6+Y0xQEl7ugcjOUtQT18FpPSrbf/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PTyLw9otgCHOVgbXI3Aq22B9o82I69pWf5hWXTDiDNK6zxdrNCdl4yJvQZTcUM+v1vCssMlAqM2kgt1K56dFY3qQlq3wgNqbsv9wnG3dsC1OKJxu83Qjz6x7TOgRK+L+oP3ybwoglAjtqOEWfDBLFvPRDq4yna+rrYhlhc/sboU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKHdM0mh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106A5C32781;
-	Tue, 25 Jun 2024 09:43:28 +0000 (UTC)
+	 MIME-Version; b=r2qqtAa6ZQ15HFZOHSJjs4hvvd2p6kb8D4GR2shwco+PIz/NOetmGhgct4qfRZ4h/mrcW/EboT2uYcC++S8XwtiQUpDZd/KHR/HgvtqPIDlqParTeB6tTF25k9OG7HNq62kDZeCjiGEUkMXKOZLXe4mRqP1n8GMJ+MeV4MxmQVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2CNxfzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C81CC32781;
+	Tue, 25 Jun 2024 09:50:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308609;
-	bh=ltXZTsNS+7jIefy/0ulW8yvZULRen9s8E0fFb6dgSjk=;
+	s=korg; t=1719309018;
+	bh=6tntQuhkHfFN8j6+Y0xQEl7ugcjOUtQT18FpPSrbf/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKHdM0mhHCYKdNeimi416DyxNR6asGBK9Q6f5/CImtp2cYOnvH+RhPq/B9k2PVbCh
-	 5cD/qcK0XQrpoNZvEZ3gBrP6ZFMdLBp9GN4ZxtEAcm/xgmfz3os7t+DEMiBGZUJtG/
-	 gCCEVdaI0t3+G+ZRAzcP60dhy1ynTZxh+a1lVr34=
+	b=J2CNxfzZ3FEo063sCpSuGfYnDAj7UlN1tIPgMfEJEz8VtdonlRVL+mET2eAR/bXli
+	 F5dWf2Zem2mR3pJ8PmA3o+cB9ssMa4CROR4nKp5i5IwlJErjoyX1VB+z4RQRMAxtto
+	 OuCzvlaDL9m90nkcpMtw6diK5uKV7XLV9VojWQBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.9 180/250] net: phy: dp83tg720: wake up PHYs in managed mode
-Date: Tue, 25 Jun 2024 11:32:18 +0200
-Message-ID: <20240625085554.960136943@linuxfoundation.org>
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 067/192] tracing: Build event generation tests only as modules
+Date: Tue, 25 Jun 2024 11:32:19 +0200
+Message-ID: <20240625085539.744837551@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit cd6f12e173df44a20c2ac2ac110007dc14968088 upstream.
+[ Upstream commit 3572bd5689b0812b161b40279e39ca5b66d73e88 ]
 
-In case this PHY is bootstrapped for managed mode, we need to manually
-wake it. Otherwise no link will be detected.
+The kprobes and synth event generation test modules add events and lock
+(get a reference) those event file reference in module init function,
+and unlock and delete it in module exit function. This is because those
+are designed for playing as modules.
 
-Cc: stable@vger.kernel.org
-Fixes: cb80ee2f9bee1 ("net: phy: Add support for the DP83TG720S Ethernet PHY")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20240614094516.1481231-1-o.rempel@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If we make those modules as built-in, those events are left locked in the
+kernel, and never be removed. This causes kprobe event self-test failure
+as below.
+
+[   97.349708] ------------[ cut here ]------------
+[   97.353453] WARNING: CPU: 3 PID: 1 at kernel/trace/trace_kprobe.c:2133 kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.357106] Modules linked in:
+[   97.358488] CPU: 3 PID: 1 Comm: swapper/0 Not tainted 6.9.0-g699646734ab5-dirty #14
+[   97.361556] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+[   97.363880] RIP: 0010:kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.365538] Code: a8 24 08 82 e9 ae fd ff ff 90 0f 0b 90 48 c7 c7 e5 aa 0b 82 e9 ee fc ff ff 90 0f 0b 90 48 c7 c7 2d 61 06 82 e9 8e fd ff ff 90 <0f> 0b 90 48 c7 c7 33 0b 0c 82 89 c6 e8 6e 03 1f ff 41 ff c7 e9 90
+[   97.370429] RSP: 0000:ffffc90000013b50 EFLAGS: 00010286
+[   97.371852] RAX: 00000000fffffff0 RBX: ffff888005919c00 RCX: 0000000000000000
+[   97.373829] RDX: ffff888003f40000 RSI: ffffffff8236a598 RDI: ffff888003f40a68
+[   97.375715] RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+[   97.377675] R10: ffffffff811c9ae5 R11: ffffffff8120c4e0 R12: 0000000000000000
+[   97.379591] R13: 0000000000000001 R14: 0000000000000015 R15: 0000000000000000
+[   97.381536] FS:  0000000000000000(0000) GS:ffff88807dcc0000(0000) knlGS:0000000000000000
+[   97.383813] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   97.385449] CR2: 0000000000000000 CR3: 0000000002244000 CR4: 00000000000006b0
+[   97.387347] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[   97.389277] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[   97.391196] Call Trace:
+[   97.391967]  <TASK>
+[   97.392647]  ? __warn+0xcc/0x180
+[   97.393640]  ? kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.395181]  ? report_bug+0xbd/0x150
+[   97.396234]  ? handle_bug+0x3e/0x60
+[   97.397311]  ? exc_invalid_op+0x1a/0x50
+[   97.398434]  ? asm_exc_invalid_op+0x1a/0x20
+[   97.399652]  ? trace_kprobe_is_busy+0x20/0x20
+[   97.400904]  ? tracing_reset_all_online_cpus+0x15/0x90
+[   97.402304]  ? kprobe_trace_self_tests_init+0x3f1/0x480
+[   97.403773]  ? init_kprobe_trace+0x50/0x50
+[   97.404972]  do_one_initcall+0x112/0x240
+[   97.406113]  do_initcall_level+0x95/0xb0
+[   97.407286]  ? kernel_init+0x1a/0x1a0
+[   97.408401]  do_initcalls+0x3f/0x70
+[   97.409452]  kernel_init_freeable+0x16f/0x1e0
+[   97.410662]  ? rest_init+0x1f0/0x1f0
+[   97.411738]  kernel_init+0x1a/0x1a0
+[   97.412788]  ret_from_fork+0x39/0x50
+[   97.413817]  ? rest_init+0x1f0/0x1f0
+[   97.414844]  ret_from_fork_asm+0x11/0x20
+[   97.416285]  </TASK>
+[   97.417134] irq event stamp: 13437323
+[   97.418376] hardirqs last  enabled at (13437337): [<ffffffff8110bc0c>] console_unlock+0x11c/0x150
+[   97.421285] hardirqs last disabled at (13437370): [<ffffffff8110bbf1>] console_unlock+0x101/0x150
+[   97.423838] softirqs last  enabled at (13437366): [<ffffffff8108e17f>] handle_softirqs+0x23f/0x2a0
+[   97.426450] softirqs last disabled at (13437393): [<ffffffff8108e346>] __irq_exit_rcu+0x66/0xd0
+[   97.428850] ---[ end trace 0000000000000000 ]---
+
+And also, since we can not cleanup dynamic_event file, ftracetest are
+failed too.
+
+To avoid these issues, build these tests only as modules.
+
+Link: https://lore.kernel.org/all/171811263754.85078.5877446624311852525.stgit@devnote2/
+
+Fixes: 9fe41efaca08 ("tracing: Add synth event generation test module")
+Fixes: 64836248dda2 ("tracing: Add kprobe event command generation test module")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/dp83tg720.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ kernel/trace/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/dp83tg720.c b/drivers/net/phy/dp83tg720.c
-index 326c9770a6dc..1186dfc70fb3 100644
---- a/drivers/net/phy/dp83tg720.c
-+++ b/drivers/net/phy/dp83tg720.c
-@@ -17,6 +17,11 @@
- #define DP83TG720S_PHY_RESET			0x1f
- #define DP83TG720S_HW_RESET			BIT(15)
+diff --git a/kernel/trace/Kconfig b/kernel/trace/Kconfig
+index 61c541c36596d..bcc97f1bd3833 100644
+--- a/kernel/trace/Kconfig
++++ b/kernel/trace/Kconfig
+@@ -1123,7 +1123,7 @@ config PREEMPTIRQ_DELAY_TEST
  
-+#define DP83TG720S_LPS_CFG3			0x18c
-+/* Power modes are documented as bit fields but used as values */
-+/* Power Mode 0 is Normal mode */
-+#define DP83TG720S_LPS_CFG3_PWR_MODE_0		BIT(0)
-+
- #define DP83TG720S_RGMII_DELAY_CTRL		0x602
- /* In RGMII mode, Enable or disable the internal delay for RXD */
- #define DP83TG720S_RGMII_RX_CLK_SEL		BIT(1)
-@@ -154,10 +159,17 @@ static int dp83tg720_config_init(struct phy_device *phydev)
- 	 */
- 	usleep_range(1000, 2000);
+ config SYNTH_EVENT_GEN_TEST
+ 	tristate "Test module for in-kernel synthetic event generation"
+-	depends on SYNTH_EVENTS
++	depends on SYNTH_EVENTS && m
+ 	help
+           This option creates a test module to check the base
+           functionality of in-kernel synthetic event definition and
+@@ -1136,7 +1136,7 @@ config SYNTH_EVENT_GEN_TEST
  
--	if (phy_interface_is_rgmii(phydev))
--		return dp83tg720_config_rgmii_delay(phydev);
-+	if (phy_interface_is_rgmii(phydev)) {
-+		ret = dp83tg720_config_rgmii_delay(phydev);
-+		if (ret)
-+			return ret;
-+	}
- 
--	return 0;
-+	/* In case the PHY is bootstrapped in managed mode, we need to
-+	 * wake it.
-+	 */
-+	return phy_write_mmd(phydev, MDIO_MMD_VEND2, DP83TG720S_LPS_CFG3,
-+			     DP83TG720S_LPS_CFG3_PWR_MODE_0);
- }
- 
- static struct phy_driver dp83tg720_driver[] = {
+ config KPROBE_EVENT_GEN_TEST
+ 	tristate "Test module for in-kernel kprobe event generation"
+-	depends on KPROBE_EVENTS
++	depends on KPROBE_EVENTS && m
+ 	help
+           This option creates a test module to check the base
+           functionality of in-kernel kprobe event definition.
 -- 
-2.45.2
+2.43.0
 
 
 
