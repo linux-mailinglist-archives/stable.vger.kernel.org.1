@@ -1,158 +1,239 @@
-Return-Path: <stable+bounces-55149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B21A916005
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:28:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3975291600B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AEF91C20A28
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 07:28:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE8DC1F21DEE
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 07:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5439145A09;
-	Tue, 25 Jun 2024 07:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC2F1474A7;
+	Tue, 25 Jun 2024 07:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ad+N1xrR"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="pCDQOEMn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-42a8.mail.infomaniak.ch (smtp-42a8.mail.infomaniak.ch [84.16.66.168])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CDC1CABB
-	for <stable@vger.kernel.org>; Tue, 25 Jun 2024 07:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59DBA38DE9
+	for <stable@vger.kernel.org>; Tue, 25 Jun 2024 07:30:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719300525; cv=none; b=m/kBE0GBGbfTp5K0bTnRRORcCt93rlJ8DPf5X07tFdPcQTu20cDM+p8z5JOzx8SsSFO+HSiuajBtkebMzc/ykIMrWd2INShF7MkV+5eDKZLivqWgze0yM3FJV+DnJ8zAJ8Q4rh4natjfq+ax/0UJkCzTdlXcbMoFVskVIJYuhj4=
+	t=1719300625; cv=none; b=KFfF/YllxhkL2SIF2MtNyX7Jl1FZB9qcM41s/OS3ADHZMewCXdMoX8cnsZCET5svK7Z1+XlTqVW23rB5+xiYu9gTfO5YT93H1EapY6YsvoVuFbus5Yc19sitTi5Ke5NWL/GG+qw5IjyLl6xQEop+wBsQfUWX05iRsqL5CY6ZIDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719300525; c=relaxed/simple;
-	bh=WccSwBf4SyPiSOyhAyMo9y3z0T3ER1Z/c774+Y7SLS4=;
+	s=arc-20240116; t=1719300625; c=relaxed/simple;
+	bh=sUBaU/FvbLdbIG/IXrLS4YLaVtkIz31GlebSsDtA8MQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DzOYtgjLGxD0SnEFv8oy8MTtCH5/goXgjqY55V+8ukIXe9R4I+Z+a6sbcrcfmGXL0LAdq+obJLuU8daEh/xG5mkVtCNfTmUXSeKbYFM5eT+I524povxdpEaPfAMzl/Pao+tYYsHhRxRx80WIzlNjdNwfD5iN3O9Cqkb9TNR0tus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ad+N1xrR; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2ec50a5e230so36037421fa.0
-        for <stable@vger.kernel.org>; Tue, 25 Jun 2024 00:28:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1719300521; x=1719905321; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ci1y3k9MXr5pudqw18c9Q+UzuG7pSLgljqc8hyk4TZM=;
-        b=ad+N1xrRL4ouwEePWUiGXoXv8jQ9aoDJOErdV58pwIqpOndLmpn3iftXyPpERyrTe8
-         0H73HoI6OceCOSX3wqFmF0wUpCTv87FGtzgrWVUpDvw8KqqU5mNzzXcjpG/hD5ofV+6H
-         L8k5ycUCxdhw8PkYqYy0WxBK8gfLn4poI9w3mBZY5x30AVOf2Ge5ic957TAMssgEQVCu
-         onVKBA8k5MyN90y1H+uchHeVxK4zlPTQ7Ag0j0T5blBCMczxW0Z9TtHyS7eBNe5yfhG6
-         biwwh53tuXSGorjUXrG3PFdEqwGBG4TVbJCx9VKy5N2il7tTSjMapGkmns1+jHVhQ2cW
-         S+eQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719300521; x=1719905321;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ci1y3k9MXr5pudqw18c9Q+UzuG7pSLgljqc8hyk4TZM=;
-        b=OJD8NeKNnFA2ncaJVPDBcUtYM4+3XE0qOo0U7R6o6/SzkZ3UrG/oXEFYhxOxfRpW1w
-         fLZCE7jwfUm749Ev76aYiZQjbHYpplKolmRDxKiWFR5vClHajvqwpBFERDkFhefip15x
-         umZkRr+oJPvWEKjilKSWt71jtk83MT0QNFPaxa7hjmfZ8+3MNFiK/vWX0LTL1qJizRqC
-         6cda4JIAgBdP5JCaW7+N5CYg/Otyi5Qfo6vNo10LUjzE4+HsM2usty/tEnuPsY+yMqqS
-         AGUmhyYpRZ5pWCHS0UdciEY70VWcE4rWp/fQeJMbPdG4kQhwjmr+c7I3ChcbYUIqGrOf
-         PZdA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFKVpl2aAgJkaNutdLVfmNwS+d/PjUeu0T/BWmeinrXLD0Xai5/lFZEP+0FgL5zupMAmeFPc/EJwrV0HKOBSah/Qe/PsJg
-X-Gm-Message-State: AOJu0YwT6nyn38o6mnsrfPBRhwNscX2Mnh8d00G+tEuKPnJO2p0+O+Zj
-	k72PuuqTG2pYdUKICs9PPSVWL6ZjUS/1jZDq8L1i1kSvWLcjo0oQp5FU+Y8eByY=
-X-Google-Smtp-Source: AGHT+IHgRyrArRtWYZEVUjlBl/I3XuhwxseoLK+2NIr1pH6eV1FYrFwEzgcTH181B5vqFmgW366W9Q==
-X-Received: by 2002:a2e:8817:0:b0:2ec:5abf:f3a8 with SMTP id 38308e7fff4ca-2ec5b269a0amr43538961fa.8.1719300521299;
-        Tue, 25 Jun 2024 00:28:41 -0700 (PDT)
-Received: from u94a (39-9-37-44.adsl.fetnet.net. [39.9.37.44])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fa1d3773d1sm47662215ad.270.2024.06.25.00.28.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jun 2024 00:28:40 -0700 (PDT)
-Date: Tue, 25 Jun 2024 15:28:31 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	 Content-Type:Content-Disposition:In-Reply-To; b=fb0H8Oo8JTZHsOT+x2gWrjzTuHBLIoIOxUQs0fQEbToohUfLKe4jE2WjIiiU/lX3BtANq2Fxjl9xDJvoOnjHMfeN6VsuIFH5HtQqYZG03gQVLjhJq8QDxjx2QRjnMb9ODYXPpR8FYbbw90YaqUWPkkJH/sOgQXIOWXw+9q2Ab4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=pCDQOEMn; arc=none smtp.client-ip=84.16.66.168
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4W7c1H1VjLzxZj;
+	Tue, 25 Jun 2024 09:30:11 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1719300611;
+	bh=N9/Li0oihzuU0OqmOKmBJLlI/krZIDIC0SG3onOkcIY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pCDQOEMnBxpAcxYBd7aIXCEZ31Q487781Icg164BpPQ70YNxcuUHOYMTPTfSrkD9g
+	 5Ojtd2qf6DaM9o2KkNflfsluTpuEtiozflVQLEznO28t9YT0LejregE2Mlya5TvDCl
+	 YfbVPrKeYpeIWsLaaWm99JRqPMbXPCfg+FYuZFac=
+Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4W7c1F1XVHzVtp;
+	Tue, 25 Jun 2024 09:30:09 +0200 (CEST)
+Date: Tue, 25 Jun 2024 09:30:07 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Mark Brown <broonie@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Kees Cook <keescook@chromium.org>, Shuah Khan <shuah@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: Christian Brauner <brauner@kernel.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Sean Christopherson <seanjc@google.com>, 
+	Bagas Sanjaya <bagasdotme@gmail.com>, Shengyu Li <shengyu.li.evgeny@gmail.com>, 
+	Brendan Higgins <brendanhiggins@google.com>, David Gow <davidgow@google.com>, 
+	"David S . Miller" <davem@davemloft.net>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, Jon Hunter <jonathanh@nvidia.com>, Ron Economos <re@w6rz.net>, 
+	Ronald Warsow <rwarsow@gmx.de>, Stephen Rothwell <sfr@canb.auug.org.au>, 
+	Will Drewry <wad@chromium.org>, kernel test robot <oliver.sang@intel.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
 	stable@vger.kernel.org
-Cc: Eduard Zingerman <eddyz87@gmail.com>, ast@kernel.org, 
-	andrii@kernel.org, daniel@iogearbox.net, martin.lau@linux.dev, yhs@fb.com, 
-	mykolal@fb.com, luizcap@amazon.com, Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: Re: [PATCH 6.1.y v2 1/6] bpf: allow precision tracking for programs
- with subprogs
-Message-ID: <tof56dmde2ykrnqy33pz7evpzlwskpxnmxf3wa4lkeinhjung6@zthg6lsnmnwf>
-References: <20230724124223.1176479-1-eddyz87@gmail.com>
- <20230724124223.1176479-2-eddyz87@gmail.com>
+Subject: Re: [PATCH v1] selftests/harness: Fix tests timeout and race
+ condition
+Message-ID: <20240625.Ohyook0Geeno@digikod.net>
+References: <20240621180605.834676-1-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230724124223.1176479-2-eddyz87@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240621180605.834676-1-mic@digikod.net>
+X-Infomaniak-Routing: alpha
 
-Hi Greg,
+I pushed it to my next branch.
 
-On Mon, Jul 24, 2023 at 03:42:18PM GMT, Eduard Zingerman wrote:
-> [ Upstream commit be2ef8161572ec1973124ebc50f56dafc2925e07 ]
+Mark, Shuah, and others, please let me know if kselftest and KernelCI
+are better with that.
+
+On Fri, Jun 21, 2024 at 08:06:05PM +0200, Mickaël Salaün wrote:
+> We cannot use CLONE_VFORK because we also need to wait for the timeout
+> signal.
 > 
-...
-> --- a/kernel/bpf/verifier.c
-> +++ b/kernel/bpf/verifier.c
-...
-> @@ -2670,6 +2679,11 @@ static int backtrack_insn(struct bpf_verifier_env *env, int idx,
->  			 */
->  			if (insn->src_reg == BPF_PSEUDO_KFUNC_CALL && insn->imm == 0)
->  				return -ENOTSUPP;
-> +			/* BPF helpers that invoke callback subprogs are
-> +			 * equivalent to BPF_PSEUDO_CALL above
-> +			 */
-> +			if (insn->src_reg == 0 && is_callback_calling_function(insn->imm))
-> +				return -ENOTSUPP;
->  			/* regular helper call sets R0 */
->  			*reg_mask &= ~1;
->  			if (*reg_mask & 0x3f) {
-
-Looks like the above hunk is slightly misplaced.
-
-In master the lines are added _before_ the BPF_PSEUDO_KFUNC_CALL check,
-resulting in deviation from upstream as well as interfering with
-backporting of commit be2ef8161572 ("bpf: allow precision tracking for
-programs with subprogs") to stable v6.1.
-
-What would be the suggested action here?
-1. Send a updated version of the whole be2ef8161572 patch to stable
-2. Send a minimal refresh patch like the one found in this email to
-   stable
-3. Adapt to this deviation in my backport of commit be2ef8161572 for
-   stable
-
-Shung-Hsi
-
-...
-
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 5d4510fb2be7..227dc10f6baa 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2673,17 +2673,17 @@ static int backtrack_insn(struct bpf_verifier_env *env, int idx,
- 		if (opcode == BPF_CALL) {
- 			if (insn->src_reg == BPF_PSEUDO_CALL)
- 				return -ENOTSUPP;
-+			/* BPF helpers that invoke callback subprogs are
-+			 * equivalent to BPF_PSEUDO_CALL above
-+			 */
-+			if (insn->src_reg == 0 && is_callback_calling_function(insn->imm))
-+				return -ENOTSUPP;
- 			/* kfunc with imm==0 is invalid and fixup_kfunc_call will
- 			 * catch this error later. Make backtracking conservative
- 			 * with ENOTSUPP.
- 			 */
- 			if (insn->src_reg == BPF_PSEUDO_KFUNC_CALL && insn->imm == 0)
- 				return -ENOTSUPP;
--			/* BPF helpers that invoke callback subprogs are
--			 * equivalent to BPF_PSEUDO_CALL above
--			 */
--			if (insn->src_reg == 0 && is_callback_calling_function(insn->imm))
--				return -ENOTSUPP;
- 			/* regular helper call sets R0 */
- 			*reg_mask &= ~1;
- 			if (*reg_mask & 0x3f) {
+> Restore tests timeout by using the original fork() call in __run_test()
+> but also in __TEST_F_IMPL().  Also fix a race condition when waiting for
+> the test child process.
+> 
+> Because test metadata are shared between test processes, only the
+> parent process must set the test PID (child).  Otherwise, t->pid may be
+> set to zero, leading to inconsistent error cases:
+> 
+>   #  RUN           layout1.rule_on_mountpoint ...
+>   # rule_on_mountpoint: Test ended in some other way [127]
+>   #            OK  layout1.rule_on_mountpoint
+>   ok 20 layout1.rule_on_mountpoint
+> 
+> As safeguards, initialize the "status" variable with a valid exit code,
+> and handle unknown test exits as errors.
+> 
+> The use of fork() introduces a new race condition in landlock/fs_test.c
+> which seems to be specific to hostfs bind mounts, but I haven't found
+> the root cause and it's difficult to trigger.  I'll try to fix it with
+> another patch.
+> 
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: Günther Noack <gnoack@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Shuah Khan <shuah@kernel.org>
+> Cc: Will Drewry <wad@chromium.org>
+> Cc: stable@vger.kernel.org
+> Closes: https://lore.kernel.org/r/9341d4db-5e21-418c-bf9e-9ae2da7877e1@sirena.org.uk
+> Fixes: a86f18903db9 ("selftests/harness: Fix interleaved scheduling leading to race conditions")
+> Fixes: 24cf65a62266 ("selftests/harness: Share _metadata between forked processes")
+> Signed-off-by: Mickaël Salaün <mic@digikod.net>
+> Link: https://lore.kernel.org/r/20240621180605.834676-1-mic@digikod.net
+> ---
+>  tools/testing/selftests/kselftest_harness.h | 43 ++++++++++++---------
+>  1 file changed, 24 insertions(+), 19 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
+> index b634969cbb6f..40723a6a083f 100644
+> --- a/tools/testing/selftests/kselftest_harness.h
+> +++ b/tools/testing/selftests/kselftest_harness.h
+> @@ -66,8 +66,6 @@
+>  #include <sys/wait.h>
+>  #include <unistd.h>
+>  #include <setjmp.h>
+> -#include <syscall.h>
+> -#include <linux/sched.h>
+>  
+>  #include "kselftest.h"
+>  
+> @@ -82,17 +80,6 @@
+>  #  define TH_LOG_ENABLED 1
+>  #endif
+>  
+> -/* Wait for the child process to end but without sharing memory mapping. */
+> -static inline pid_t clone3_vfork(void)
+> -{
+> -	struct clone_args args = {
+> -		.flags = CLONE_VFORK,
+> -		.exit_signal = SIGCHLD,
+> -	};
+> -
+> -	return syscall(__NR_clone3, &args, sizeof(args));
+> -}
+> -
+>  /**
+>   * TH_LOG()
+>   *
+> @@ -437,7 +424,7 @@ static inline pid_t clone3_vfork(void)
+>  		} \
+>  		if (setjmp(_metadata->env) == 0) { \
+>  			/* _metadata and potentially self are shared with all forks. */ \
+> -			child = clone3_vfork(); \
+> +			child = fork(); \
+>  			if (child == 0) { \
+>  				fixture_name##_setup(_metadata, self, variant->data); \
+>  				/* Let setup failure terminate early. */ \
+> @@ -1016,7 +1003,14 @@ void __wait_for_test(struct __test_metadata *t)
+>  		.sa_flags = SA_SIGINFO,
+>  	};
+>  	struct sigaction saved_action;
+> -	int status;
+> +	/*
+> +	 * Sets status so that WIFEXITED(status) returns true and
+> +	 * WEXITSTATUS(status) returns KSFT_FAIL.  This safe default value
+> +	 * should never be evaluated because of the waitpid(2) check and
+> +	 * SIGALRM handling.
+> +	 */
+> +	int status = KSFT_FAIL << 8;
+> +	int child;
+>  
+>  	if (sigaction(SIGALRM, &action, &saved_action)) {
+>  		t->exit_code = KSFT_FAIL;
+> @@ -1028,7 +1022,15 @@ void __wait_for_test(struct __test_metadata *t)
+>  	__active_test = t;
+>  	t->timed_out = false;
+>  	alarm(t->timeout);
+> -	waitpid(t->pid, &status, 0);
+> +	child = waitpid(t->pid, &status, 0);
+> +	if (child == -1 && errno != EINTR) {
+> +		t->exit_code = KSFT_FAIL;
+> +		fprintf(TH_LOG_STREAM,
+> +			"# %s: Failed to wait for PID %d (errno: %d)\n",
+> +			t->name, t->pid, errno);
+> +		return;
+> +	}
+> +
+>  	alarm(0);
+>  	if (sigaction(SIGALRM, &saved_action, NULL)) {
+>  		t->exit_code = KSFT_FAIL;
+> @@ -1083,6 +1085,7 @@ void __wait_for_test(struct __test_metadata *t)
+>  				WTERMSIG(status));
+>  		}
+>  	} else {
+> +		t->exit_code = KSFT_FAIL;
+>  		fprintf(TH_LOG_STREAM,
+>  			"# %s: Test ended in some other way [%u]\n",
+>  			t->name,
+> @@ -1218,6 +1221,7 @@ void __run_test(struct __fixture_metadata *f,
+>  	struct __test_xfail *xfail;
+>  	char test_name[1024];
+>  	const char *diagnostic;
+> +	int child;
+>  
+>  	/* reset test struct */
+>  	t->exit_code = KSFT_PASS;
+> @@ -1236,15 +1240,16 @@ void __run_test(struct __fixture_metadata *f,
+>  	fflush(stdout);
+>  	fflush(stderr);
+>  
+> -	t->pid = clone3_vfork();
+> -	if (t->pid < 0) {
+> +	child = fork();
+> +	if (child < 0) {
+>  		ksft_print_msg("ERROR SPAWNING TEST CHILD\n");
+>  		t->exit_code = KSFT_FAIL;
+> -	} else if (t->pid == 0) {
+> +	} else if (child == 0) {
+>  		setpgrp();
+>  		t->fn(t, variant);
+>  		_exit(t->exit_code);
+>  	} else {
+> +		t->pid = child;
+>  		__wait_for_test(t);
+>  	}
+>  	ksft_print_msg("         %4s  %s\n",
+> 
+> base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
+> -- 
+> 2.45.2
+> 
+> 
 
