@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0AA1916393
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:48:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A93916303
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F380E1C22161
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:48:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D9DEB245C5
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8372D14A084;
-	Tue, 25 Jun 2024 09:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFB41494D1;
+	Tue, 25 Jun 2024 09:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1uo6zIU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izLVQ2qI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FAD71465A8;
-	Tue, 25 Jun 2024 09:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C45712EBEA;
+	Tue, 25 Jun 2024 09:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308895; cv=none; b=jL2g24xF8dX/6/7Uh9vAjVJwQZqED9NMfeKuRTexjjXTc5dleAUSWk2DxcXRiB+YSqV26UAUKiHD/YANhTEeDwL5JJK2Vd6e8IUQ0NWEmv5Nws6uU+iQc9lWJoDFCJ3FrvvdtMIgFIUGFbBoq0WUc4jepCHRnAHSLh/DGa4aum4=
+	t=1719308495; cv=none; b=Aca6/z3wGewx0nL0fA/Tg/Uj63eEvUnIQDUs6iP5wyZg2p6z0Wj1keNj+LjqTF77gldpPwHTAEtfj7AAJyMVDNHDjJx7JMFpbcew+zgcJxxiEja/i0w8Rva6P8Lyg8ykgNnsosfH7BjmTmQZw0/iMA6me+vfiWvqrdaQ96rN0A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308895; c=relaxed/simple;
-	bh=k3Dz8oRlrXrgY7xTNKfanCKmA5B5rUwLAa4s0xtXYik=;
+	s=arc-20240116; t=1719308495; c=relaxed/simple;
+	bh=AE9sIJkD0nPdaGEsd5Odr4cjgNJdDvEzJJCxY8YjDyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dp8c+l4LrWbkJj59zf9nRzSqjt8U+cPlN+k5Xr9l1cCy4IzfiM4YQ5C7ZbIdAwhquuVItO+yUEDv+Y0GciwS1QEc1BAsx4NAAg4q+E2R6KRcLoZhDbaxT3ffUcBAD4WwqGAvewcLoLVq4Ahr4q3vN3mVPFkIKOOfWFbTVgadj7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1uo6zIU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CEFC32781;
-	Tue, 25 Jun 2024 09:48:14 +0000 (UTC)
+	 MIME-Version; b=cheK5T1E5isquIk4cueXF3aHF+6WUBhhH3byzy27qOsPmix7QnF485+GiHKcQcGGt235YhMCHet+KomoRP9BrobmqHToMtEMSxu7Tn8h1XNNRC4VRuXJ+Z6q9184wKUNzxAOsfEjXzgaVJOAyRozNM6Wh2qieyFMsaAh+eWXXx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izLVQ2qI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0466C32781;
+	Tue, 25 Jun 2024 09:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308895;
-	bh=k3Dz8oRlrXrgY7xTNKfanCKmA5B5rUwLAa4s0xtXYik=;
+	s=korg; t=1719308495;
+	bh=AE9sIJkD0nPdaGEsd5Odr4cjgNJdDvEzJJCxY8YjDyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v1uo6zIUXCStzw06sEwFA7OjuqKX/VDgbzA2uYF+37q52z0O81Vn7EMfx+KdfkXp9
-	 f4m1uvaL1Uh34cztYbGH62y6idkMWvhF2gDq8Cn4EaZRuM8GJhhOBynjDCmPDU+An4
-	 xR7dbbMg3eUVcAcsURfKTO1sYsBIOfLe829WQoqw=
+	b=izLVQ2qI89rWJ+oWxUpXNKLmBMhlXh9Dx0ZcZB5Q5ruANl/PVvJxER6Ens/hXPqDK
+	 SHMiOEVZviaMnMWnCdo9Sav9dDLphM9FNAg9sz3cngdGKCrPt1ki8y1rd4SxkMDClr
+	 jYKmUD9RpZ3IFZRjFNIMqrDVvkl9HVYJt76L6Vlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Jiri Kosina <jkosina@suse.com>,
+	syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com,
+	Oliver Neukum <oneukum@suse.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/192] HID: asus: fix more n-key report descriptors if n-key quirked
-Date: Tue, 25 Jun 2024 11:31:38 +0200
-Message-ID: <20240625085538.164440137@linuxfoundation.org>
+Subject: [PATCH 6.9 141/250] net: usb: rtl8150 fix unintiatilzed variables in rtl8150_get_link_ksettings
+Date: Tue, 25 Jun 2024 11:31:39 +0200
+Message-ID: <20240625085553.471111945@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 59d2f5b7392e988a391e6924e177c1a68d50223d ]
+[ Upstream commit fba383985354e83474f95f36d7c65feb75dba19d ]
 
-Adjusts the report descriptor for N-Key devices to
-make the output count 0x01 which completely avoids
-the need for a block of filtering.
+This functions retrieves values by passing a pointer. As the function
+that retrieves them can fail before touching the pointers, the variables
+must be initialized.
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+5186630949e3c55f0799@syzkaller.appspotmail.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20240619132816.11526-1-oneukum@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-asus.c | 51 ++++++++++++++++++++----------------------
- 1 file changed, 24 insertions(+), 27 deletions(-)
+ drivers/net/usb/rtl8150.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index 78cdfb8b9a7ae..d6d8a028623a7 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -335,36 +335,20 @@ static int asus_raw_event(struct hid_device *hdev,
- 	if (drvdata->quirks & QUIRK_MEDION_E1239T)
- 		return asus_e1239t_event(drvdata, data, size);
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index 97afd7335d868..01a3b2417a540 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -778,7 +778,8 @@ static int rtl8150_get_link_ksettings(struct net_device *netdev,
+ 				      struct ethtool_link_ksettings *ecmd)
+ {
+ 	rtl8150_t *dev = netdev_priv(netdev);
+-	short lpa, bmcr;
++	short lpa = 0;
++	short bmcr = 0;
+ 	u32 supported;
  
--	if (drvdata->quirks & QUIRK_USE_KBD_BACKLIGHT) {
-+	/*
-+	 * Skip these report ID, the device emits a continuous stream associated
-+	 * with the AURA mode it is in which looks like an 'echo'.
-+	 */
-+	if (report->id == FEATURE_KBD_LED_REPORT_ID1 || report->id == FEATURE_KBD_LED_REPORT_ID2)
-+		return -1;
-+	if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
- 		/*
--		 * Skip these report ID, the device emits a continuous stream associated
--		 * with the AURA mode it is in which looks like an 'echo'.
-+		 * G713 and G733 send these codes on some keypresses, depending on
-+		 * the key pressed it can trigger a shutdown event if not caught.
- 		*/
--		if (report->id == FEATURE_KBD_LED_REPORT_ID1 ||
--				report->id == FEATURE_KBD_LED_REPORT_ID2) {
-+		if (data[0] == 0x02 && data[1] == 0x30) {
- 			return -1;
--		/* Additional report filtering */
--		} else if (report->id == FEATURE_KBD_REPORT_ID) {
--			/*
--			 * G14 and G15 send these codes on some keypresses with no
--			 * discernable reason for doing so. We'll filter them out to avoid
--			 * unmapped warning messages later.
--			*/
--			if (data[1] == 0xea || data[1] == 0xec || data[1] == 0x02 ||
--					data[1] == 0x8a || data[1] == 0x9e) {
--				return -1;
--			}
- 		}
--		if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
--			/*
--			 * G713 and G733 send these codes on some keypresses, depending on
--			 * the key pressed it can trigger a shutdown event if not caught.
--			*/
--			if(data[0] == 0x02 && data[1] == 0x30) {
--				return -1;
--			}
--		}
--
- 	}
- 
- 	if (drvdata->quirks & QUIRK_ROG_CLAYMORE_II_KEYBOARD) {
-@@ -1250,6 +1234,19 @@ static __u8 *asus_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		rdesc[205] = 0x01;
- 	}
- 
-+	/* match many more n-key devices */
-+	if (drvdata->quirks & QUIRK_ROG_NKEY_KEYBOARD) {
-+		for (int i = 0; i < *rsize + 1; i++) {
-+			/* offset to the count from 0x5a report part always 14 */
-+			if (rdesc[i] == 0x85 && rdesc[i + 1] == 0x5a &&
-+			    rdesc[i + 14] == 0x95 && rdesc[i + 15] == 0x05) {
-+				hid_info(hdev, "Fixing up Asus N-Key report descriptor\n");
-+				rdesc[i + 15] = 0x01;
-+				break;
-+			}
-+		}
-+	}
-+
- 	return rdesc;
- }
- 
-@@ -1319,4 +1316,4 @@ static struct hid_driver asus_driver = {
- };
- module_hid_driver(asus_driver);
- 
--MODULE_LICENSE("GPL");
-\ No newline at end of file
-+MODULE_LICENSE("GPL");
+ 	supported = (SUPPORTED_10baseT_Half |
 -- 
 2.43.0
 
