@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-55555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B386916426
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:54:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9B49164A4
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC7CFB28512
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:54:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F88228795C
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909E014A096;
-	Tue, 25 Jun 2024 09:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29DF9149E0A;
+	Tue, 25 Jun 2024 09:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0R5E9sGi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y1LuE8rA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E470149C4F;
-	Tue, 25 Jun 2024 09:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6CC1465A8;
+	Tue, 25 Jun 2024 09:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309248; cv=none; b=kq32zs3wEIECtkcThKu2+YCif4i/vly7qeDxxsifW38ThJWOaK7/zDAMYX3PNl64jyXYAr3PLSxLBFfmfBrmdErZf41gvlqR0dIc6mOgW6CJ62GaxBJE9GSCF0041gpe+M47qwK3AHM6ajHHiwOqCL8V5SsZxuixMsDOQIXzUNQ=
+	t=1719309577; cv=none; b=Z3hwChBTSJ9JxuFBtxkpMZNE43JodWB3Umedp+J9HshUP5+dhniHvudTPAbokbX2b7QLFl8X9LcJSmjBkv+PWfprZG4sB43kUG+BhTkuuPNsOqSPt+6WUPqMLlpJbjOQtptKuOjQfWYHJTlSHmoFT498yUbiN7BT9ok+flF6rXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309248; c=relaxed/simple;
-	bh=a+STfXBiYxr4A2OZoON39K4P+CrqNJ02Ft7YLMkCqoc=;
+	s=arc-20240116; t=1719309577; c=relaxed/simple;
+	bh=PuI8Ukbey6/2GfnXKb+siKSp9omW2WvwZsQsnJ1AqhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rUyLFahvHIJl6X2rlOMW1sQw37zQ3glRZaFPFYXpGQimmD2tC9npPKDvzAJX4P128ouCC4I/nnlH8aGB8kQoqjgQgr0sgOkABXxch4r2gOsNTPmPpSF4SDr1JLUQo8xgYu+7HOUs2SC/ENoOOgMaJtRAElINYDHVZJBUan9iawc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0R5E9sGi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972DDC32781;
-	Tue, 25 Jun 2024 09:54:07 +0000 (UTC)
+	 MIME-Version; b=uRcQfcyJNYEtVINuL2xwBONFsxwB8+blJkWLGOv+44oIzAqt4/z0ekofQ3sDPqL5ZfM7MEN/SOPnvQEIwkJQZUpy2NVWhqtKbfxY8N0YmYjlZfAbaeKbua5N71o0fBmT96+wh0g0ZUtDp5QGGbR7+lRHx2mYCJKo81GSWywin7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y1LuE8rA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 602D8C32789;
+	Tue, 25 Jun 2024 09:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309248;
-	bh=a+STfXBiYxr4A2OZoON39K4P+CrqNJ02Ft7YLMkCqoc=;
+	s=korg; t=1719309576;
+	bh=PuI8Ukbey6/2GfnXKb+siKSp9omW2WvwZsQsnJ1AqhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0R5E9sGi5VIH6xOW684COmt1mhbnzlK0ZIbwolk7RcvbPfOnGEE62mlMYstYrRJ32
-	 Bn19yIiDjaPw2Rqo+/ZIJs46ZN6h+vc4nd0W+OOIE3O4x+dwa3xKGCBL0vEd9YM9Hv
-	 GExKWKdogrJwIIvk0TnFA/SNisddvQvtNU/IYRqI=
+	b=y1LuE8rA7O5gRfWqYswBGrpawtvDW3wl3zPTvf1RhSoETLw3DDQfKP7jtILXzISgF
+	 gNyV5euM7n1OBjdwp3tqv7tsJ2Wae4PXTA3ibkCW6m4SZpcwNl2INYNHrEIKww6HCy
+	 a/0iHKCXp0UgZ7kRq1fP7Yugyig+S5DMD9CA5EtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adamos Ttofari <attofari@amazon.de>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 144/192] KVM: x86: Always sync PIR to IRR prior to scanning I/O APIC routes
-Date: Tue, 25 Jun 2024 11:33:36 +0200
-Message-ID: <20240625085542.685896071@linuxfoundation.org>
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Raju Lakkaraju <Raju.Lakkaraju@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 062/131] net: lan743x: Support WOL at both the PHY and MAC appropriately
+Date: Tue, 25 Jun 2024 11:33:37 +0200
+Message-ID: <20240625085528.304017772@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+References: <20240625085525.931079317@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
 
-commit f3ced000a2df53f4b12849e121769045a81a3b22 upstream.
+[ Upstream commit 8c248cd836014339498486f14f435c0e344183a7 ]
 
-Sync pending posted interrupts to the IRR prior to re-scanning I/O APIC
-routes, irrespective of whether the I/O APIC is emulated by userspace or
-by KVM.  If a level-triggered interrupt routed through the I/O APIC is
-pending or in-service for a vCPU, KVM needs to intercept EOIs on said
-vCPU even if the vCPU isn't the destination for the new routing, e.g. if
-servicing an interrupt using the old routing races with I/O APIC
-reconfiguration.
+Prevent options not supported by the PHY from being requested to it by the MAC
+Whenever a WOL option is supported by both, the PHY is given priority
+since that usually leads to better power savings.
 
-Commit fceb3a36c29a ("KVM: x86: ioapic: Fix level-triggered EOI and
-userspace I/OAPIC reconfigure race") fixed the common cases, but
-kvm_apic_pending_eoi() only checks if an interrupt is in the local
-APIC's IRR or ISR, i.e. misses the uncommon case where an interrupt is
-pending in the PIR.
-
-Failure to intercept EOI can manifest as guest hangs with Windows 11 if
-the guest uses the RTC as its timekeeping source, e.g. if the VMM doesn't
-expose a more modern form of time to the guest.
-
-Cc: stable@vger.kernel.org
-Cc: Adamos Ttofari <attofari@amazon.de>
-Cc: Raghavendra Rao Ananta <rananta@google.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20240611014845.82795-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e9e13b6adc33 ("lan743x: fix for potential NULL pointer dereference with bare card")
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Raju Lakkaraju <Raju.Lakkaraju@microchip.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ .../net/ethernet/microchip/lan743x_ethtool.c  | 44 +++++++++++++++++--
+ drivers/net/ethernet/microchip/lan743x_main.c | 18 ++++++--
+ drivers/net/ethernet/microchip/lan743x_main.h |  4 ++
+ 3 files changed, 58 insertions(+), 8 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -10456,13 +10456,12 @@ static void vcpu_scan_ioapic(struct kvm_
+diff --git a/drivers/net/ethernet/microchip/lan743x_ethtool.c b/drivers/net/ethernet/microchip/lan743x_ethtool.c
+index c739d60ee17d5..e47a579410fbb 100644
+--- a/drivers/net/ethernet/microchip/lan743x_ethtool.c
++++ b/drivers/net/ethernet/microchip/lan743x_ethtool.c
+@@ -1146,8 +1146,12 @@ static void lan743x_ethtool_get_wol(struct net_device *netdev,
+ 	if (netdev->phydev)
+ 		phy_ethtool_get_wol(netdev->phydev, wol);
  
- 	bitmap_zero(vcpu->arch.ioapic_handled_vectors, 256);
- 
-+	static_call_cond(kvm_x86_sync_pir_to_irr)(vcpu);
+-	wol->supported |= WAKE_BCAST | WAKE_UCAST | WAKE_MCAST |
+-		WAKE_MAGIC | WAKE_PHY | WAKE_ARP;
++	if (wol->supported != adapter->phy_wol_supported)
++		netif_warn(adapter, drv, adapter->netdev,
++			   "PHY changed its supported WOL! old=%x, new=%x\n",
++			   adapter->phy_wol_supported, wol->supported);
 +
- 	if (irqchip_split(vcpu->kvm))
- 		kvm_scan_ioapic_routes(vcpu, vcpu->arch.ioapic_handled_vectors);
--	else {
--		static_call_cond(kvm_x86_sync_pir_to_irr)(vcpu);
--		if (ioapic_in_kernel(vcpu->kvm))
--			kvm_ioapic_scan_entry(vcpu, vcpu->arch.ioapic_handled_vectors);
--	}
-+	else if (ioapic_in_kernel(vcpu->kvm))
-+		kvm_ioapic_scan_entry(vcpu, vcpu->arch.ioapic_handled_vectors);
++	wol->supported |= MAC_SUPPORTED_WAKES;
  
- 	if (is_guest_mode(vcpu))
- 		vcpu->arch.load_eoi_exitmap_pending = true;
+ 	if (adapter->is_pci11x1x)
+ 		wol->supported |= WAKE_MAGICSECURE;
+@@ -1162,7 +1166,39 @@ static int lan743x_ethtool_set_wol(struct net_device *netdev,
+ {
+ 	struct lan743x_adapter *adapter = netdev_priv(netdev);
+ 
++	/* WAKE_MAGICSEGURE is a modifier of and only valid together with
++	 * WAKE_MAGIC
++	 */
++	if ((wol->wolopts & WAKE_MAGICSECURE) && !(wol->wolopts & WAKE_MAGIC))
++		return -EINVAL;
++
++	if (netdev->phydev) {
++		struct ethtool_wolinfo phy_wol;
++		int ret;
++
++		phy_wol.wolopts = wol->wolopts & adapter->phy_wol_supported;
++
++		/* If WAKE_MAGICSECURE was requested, filter out WAKE_MAGIC
++		 * for PHYs that do not support WAKE_MAGICSECURE
++		 */
++		if (wol->wolopts & WAKE_MAGICSECURE &&
++		    !(adapter->phy_wol_supported & WAKE_MAGICSECURE))
++			phy_wol.wolopts &= ~WAKE_MAGIC;
++
++		ret = phy_ethtool_set_wol(netdev->phydev, &phy_wol);
++		if (ret && (ret != -EOPNOTSUPP))
++			return ret;
++
++		if (ret == -EOPNOTSUPP)
++			adapter->phy_wolopts = 0;
++		else
++			adapter->phy_wolopts = phy_wol.wolopts;
++	} else {
++		adapter->phy_wolopts = 0;
++	}
++
+ 	adapter->wolopts = 0;
++	wol->wolopts &= ~adapter->phy_wolopts;
+ 	if (wol->wolopts & WAKE_UCAST)
+ 		adapter->wolopts |= WAKE_UCAST;
+ 	if (wol->wolopts & WAKE_MCAST)
+@@ -1183,10 +1219,10 @@ static int lan743x_ethtool_set_wol(struct net_device *netdev,
+ 		memset(adapter->sopass, 0, sizeof(u8) * SOPASS_MAX);
+ 	}
+ 
++	wol->wolopts = adapter->wolopts | adapter->phy_wolopts;
+ 	device_set_wakeup_enable(&adapter->pdev->dev, (bool)wol->wolopts);
+ 
+-	return netdev->phydev ? phy_ethtool_set_wol(netdev->phydev, wol)
+-			: -ENETDOWN;
++	return 0;
+ }
+ #endif /* CONFIG_PM */
+ 
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 39df1beb27cff..0b2eaed110720 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -3056,6 +3056,17 @@ static int lan743x_netdev_open(struct net_device *netdev)
+ 		if (ret)
+ 			goto close_tx;
+ 	}
++
++#ifdef CONFIG_PM
++	if (adapter->netdev->phydev) {
++		struct ethtool_wolinfo wol = { .cmd = ETHTOOL_GWOL };
++
++		phy_ethtool_get_wol(netdev->phydev, &wol);
++		adapter->phy_wol_supported = wol.supported;
++		adapter->phy_wolopts = wol.wolopts;
++	}
++#endif
++
+ 	return 0;
+ 
+ close_tx:
+@@ -3525,10 +3536,9 @@ static void lan743x_pm_set_wol(struct lan743x_adapter *adapter)
+ 
+ 	pmtctl |= PMT_CTL_ETH_PHY_D3_COLD_OVR_ | PMT_CTL_ETH_PHY_D3_OVR_;
+ 
+-	if (adapter->wolopts & WAKE_PHY) {
+-		pmtctl |= PMT_CTL_ETH_PHY_EDPD_PLL_CTL_;
++	if (adapter->phy_wolopts)
+ 		pmtctl |= PMT_CTL_ETH_PHY_WAKE_EN_;
+-	}
++
+ 	if (adapter->wolopts & WAKE_MAGIC) {
+ 		wucsr |= MAC_WUCSR_MPEN_;
+ 		macrx |= MAC_RX_RXEN_;
+@@ -3624,7 +3634,7 @@ static int lan743x_pm_suspend(struct device *dev)
+ 	lan743x_csr_write(adapter, MAC_WUCSR2, 0);
+ 	lan743x_csr_write(adapter, MAC_WK_SRC, 0xFFFFFFFF);
+ 
+-	if (adapter->wolopts)
++	if (adapter->wolopts || adapter->phy_wolopts)
+ 		lan743x_pm_set_wol(adapter);
+ 
+ 	if (adapter->is_pci11x1x) {
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
+index e7df74a3c79ec..92a5660b88202 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.h
++++ b/drivers/net/ethernet/microchip/lan743x_main.h
+@@ -1034,6 +1034,8 @@ enum lan743x_sgmii_lsd {
+ 	LINK_2500_SLAVE
+ };
+ 
++#define MAC_SUPPORTED_WAKES  (WAKE_BCAST | WAKE_UCAST | WAKE_MCAST | \
++			      WAKE_MAGIC | WAKE_ARP)
+ struct lan743x_adapter {
+ 	struct net_device       *netdev;
+ 	struct mii_bus		*mdiobus;
+@@ -1041,6 +1043,8 @@ struct lan743x_adapter {
+ #ifdef CONFIG_PM
+ 	u32			wolopts;
+ 	u8			sopass[SOPASS_MAX];
++	u32			phy_wolopts;
++	u32			phy_wol_supported;
+ #endif
+ 	struct pci_dev		*pdev;
+ 	struct lan743x_csr      csr;
+-- 
+2.43.0
+
 
 
 
