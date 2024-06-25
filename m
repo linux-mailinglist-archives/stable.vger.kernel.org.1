@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-55466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADBB69163B4
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:49:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E62F916340
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 576591F2112B
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:49:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF1A1285BEA
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6F5147C96;
-	Tue, 25 Jun 2024 09:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D091494D1;
+	Tue, 25 Jun 2024 09:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCIPa8+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/F+URKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992341465A8;
-	Tue, 25 Jun 2024 09:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F1112EBEA;
+	Tue, 25 Jun 2024 09:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308986; cv=none; b=gepancKAnHAdMDeBIgylPKewi7SFti7/vD11vQTkzZGV5TucQDJbsJfCiiS4H7l/LPuzpLPocef1E0kEIpVt3lj35dN85EUkUGwQf2uhXaWL7M80i1f2jkcsATAS1IqXQVvDwOa2D3XLyh4kL4zauC1lL2eBYcG6PM84FWm9LpA=
+	t=1719308674; cv=none; b=jgDl6A7KKbfQuM3X8OKHzbyDZiXY6rkCp1GnwhwDWCAUGIgj6iiVzQF6Zz2EbHZKf7VkWg630i9Xgxbpn1Tb8chx2uJvNuQFFWw9jLSu4RDB5FFGPcECm2hHEah3D7zTSWbqyyX10cQ+11xB5bJKW6bYOwJ9f99g3OiVCDVjETI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308986; c=relaxed/simple;
-	bh=f8sUv/QOuXW4cvWWQNOf/ptVVVJZQGMUb72sd10tP+I=;
+	s=arc-20240116; t=1719308674; c=relaxed/simple;
+	bh=vZhC+AshlBeMeSglfdm9W0ERb7B7Upra0hHkejzdZqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0eaXyC4A/HCdXtx5Btox+b+5pzs5ygxu/OxK3ATobxofoPyQDtIQA4zlRIoYR+d/6s8GggAdZ/xxuzqKXQ679MC9TiTrDuwaAVqRgNhcmRcpiQpQzMCsw6iklQ3W791oxxq3lkk07f6F+NvWbIu+kc3P1U3dgn0qOWXseWg85k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCIPa8+j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21462C32786;
-	Tue, 25 Jun 2024 09:49:45 +0000 (UTC)
+	 MIME-Version; b=t35WWEgLacrER4Jt/nYd9w2vCklRYyI8n8RldiJuuLLL4vHqhCoIik2JA+9ZhCGA3VvSTEW75ageX+fwxnPJ3GKKz9ESt5qPOOAK3+BJusBqJ8/IUqXo9JnY1bvb6PtQTqCj6RGgELURQRQ6O6iNnDTULX1LqVifM9P85TCeCOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/F+URKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16E9C32781;
+	Tue, 25 Jun 2024 09:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308986;
-	bh=f8sUv/QOuXW4cvWWQNOf/ptVVVJZQGMUb72sd10tP+I=;
+	s=korg; t=1719308674;
+	bh=vZhC+AshlBeMeSglfdm9W0ERb7B7Upra0hHkejzdZqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCIPa8+jPXsM99ShUqZ9FO/TFskK3BUJaSqsNr6L5yXqI0uACrVgKoqUezDtZYDds
-	 7xc2lxDLrmSTu2ebGmGzBv7VryaJJPiBDmBl64NmZzY5Srq1RgDZv0eoHnUOGb8xAj
-	 VdnvJoAPUfJzCqHjn9NHVV5GyxRuDrI1iPxXRi84=
+	b=k/F+URKUIDkCm7oCdIZGSL9wDFJ1pfuJeq6LzMI8HCe3GGDNi8fFRDGWVkAmmGI8h
+	 93JWPMhTdxHbGnfWBsK8UGab4s+c8jLZnbS/qGvUqzMvwvkhNpjRrmtcRAf3mOS2BY
+	 GmD469mKoVEySvwsHp137QqUcblCow4LSh7t/FwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Chenliang Li <cliang01.li@samsung.com>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/192] usb: gadget: function: Remove usage of the deprecated ida_simple_xx() API
+Subject: [PATCH 6.9 171/250] io_uring/rsrc: fix incorrect assignment of iter->nr_segs in io_import_fixed
 Date: Tue, 25 Jun 2024 11:32:09 +0200
-Message-ID: <20240625085539.360276087@linuxfoundation.org>
+Message-ID: <20240625085554.616669633@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Chenliang Li <cliang01.li@samsung.com>
 
-[ Upstream commit 920e7522e3bab5ebc2fb0cc1a034f4470c87fa97 ]
+[ Upstream commit a23800f08a60787dfbf2b87b2e6ed411cb629859 ]
 
-ida_alloc() and ida_free() should be preferred to the deprecated
-ida_simple_get() and ida_simple_remove().
+In io_import_fixed when advancing the iter within the first bvec, the
+iter->nr_segs is set to bvec->bv_len. nr_segs should be the number of
+bvecs, plus we don't need to adjust it here, so just remove it.
 
-Note that the upper limit of ida_simple_get() is exclusive, but the one of
-ida_alloc_max() is inclusive. So a -1 has been added when needed.
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/7cd361e2b377a5373968fa7deee4169229992a1e.1713107386.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b000ae0ec2d7 ("io_uring/rsrc: optimise single entry advance")
+Signed-off-by: Chenliang Li <cliang01.li@samsung.com>
+Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/20240619063819.2445-1-cliang01.li@samsung.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_hid.c     | 6 +++---
- drivers/usb/gadget/function/f_printer.c | 6 +++---
- drivers/usb/gadget/function/rndis.c     | 4 ++--
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ io_uring/rsrc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/f_hid.c b/drivers/usb/gadget/function/f_hid.c
-index 3c8a9dd585c09..2db01e03bfbf0 100644
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -1029,9 +1029,9 @@ static inline int hidg_get_minor(void)
- {
- 	int ret;
- 
--	ret = ida_simple_get(&hidg_ida, 0, 0, GFP_KERNEL);
-+	ret = ida_alloc(&hidg_ida, GFP_KERNEL);
- 	if (ret >= HIDG_MINORS) {
--		ida_simple_remove(&hidg_ida, ret);
-+		ida_free(&hidg_ida, ret);
- 		ret = -ENODEV;
- 	}
- 
-@@ -1176,7 +1176,7 @@ static const struct config_item_type hid_func_type = {
- 
- static inline void hidg_put_minor(int minor)
- {
--	ida_simple_remove(&hidg_ida, minor);
-+	ida_free(&hidg_ida, minor);
- }
- 
- static void hidg_free_inst(struct usb_function_instance *f)
-diff --git a/drivers/usb/gadget/function/f_printer.c b/drivers/usb/gadget/function/f_printer.c
-index 076dd4c1be96c..ba7d180cc9e6d 100644
---- a/drivers/usb/gadget/function/f_printer.c
-+++ b/drivers/usb/gadget/function/f_printer.c
-@@ -1312,9 +1312,9 @@ static inline int gprinter_get_minor(void)
- {
- 	int ret;
- 
--	ret = ida_simple_get(&printer_ida, 0, 0, GFP_KERNEL);
-+	ret = ida_alloc(&printer_ida, GFP_KERNEL);
- 	if (ret >= PRINTER_MINORS) {
--		ida_simple_remove(&printer_ida, ret);
-+		ida_free(&printer_ida, ret);
- 		ret = -ENODEV;
- 	}
- 
-@@ -1323,7 +1323,7 @@ static inline int gprinter_get_minor(void)
- 
- static inline void gprinter_put_minor(int minor)
- {
--	ida_simple_remove(&printer_ida, minor);
-+	ida_free(&printer_ida, minor);
- }
- 
- static int gprinter_setup(int);
-diff --git a/drivers/usb/gadget/function/rndis.c b/drivers/usb/gadget/function/rndis.c
-index 29bf8664bf582..12c5d9cf450c1 100644
---- a/drivers/usb/gadget/function/rndis.c
-+++ b/drivers/usb/gadget/function/rndis.c
-@@ -869,12 +869,12 @@ EXPORT_SYMBOL_GPL(rndis_msg_parser);
- 
- static inline int rndis_get_nr(void)
- {
--	return ida_simple_get(&rndis_ida, 0, 1000, GFP_KERNEL);
-+	return ida_alloc_max(&rndis_ida, 999, GFP_KERNEL);
- }
- 
- static inline void rndis_put_nr(int nr)
- {
--	ida_simple_remove(&rndis_ida, nr);
-+	ida_free(&rndis_ida, nr);
- }
- 
- struct rndis_params *rndis_register(void (*resp_avail)(void *v), void *v)
+diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
+index 87f9aa7cf9255..956e2c715eb48 100644
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -1105,7 +1105,6 @@ int io_import_fixed(int ddir, struct iov_iter *iter,
+ 			 * branch doesn't expect non PAGE_SIZE'd chunks.
+ 			 */
+ 			iter->bvec = bvec;
+-			iter->nr_segs = bvec->bv_len;
+ 			iter->count -= offset;
+ 			iter->iov_offset = offset;
+ 		} else {
 -- 
 2.43.0
 
