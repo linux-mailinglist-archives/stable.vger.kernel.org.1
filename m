@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-55680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAD5D9164B5
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 12:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ABC2916438
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91E02288223
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 10:00:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40F4128123E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652BB6CDBA;
-	Tue, 25 Jun 2024 10:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFAA14A090;
+	Tue, 25 Jun 2024 09:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0CekT7P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iyQU7MYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23050148319;
-	Tue, 25 Jun 2024 10:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C92B149DF4;
+	Tue, 25 Jun 2024 09:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309621; cv=none; b=rV/rdv1wY6WyvnOUoTfD3CT/nUiLID/7p+nXPta1puPZsLjaPZcpZhZoWSoEmtygj/OzSLhjsGW31eypKFWxdCmDY87vzbVK+jBtnnF5zG98CqVQzDsEXQKtwkPrzwSFij+1G1AoZP6Ft1br0zP8tuhYaQTH3YTYI8ElR5kM3ow=
+	t=1719309293; cv=none; b=dWfeTdliGGdrfMIn0YTMlzcCTiqnjPmrEVzZLHZuBARFzi9cFSMXHmx5odsa6oylsr/jAb78ujghCekiYAB/eTnvEBAx8N+1g3kwVPNsSWaoF6nHvXHsTLTxRDI3DBnXgb8uZoF3G7DIJUsombTFTg28FCYUv/DKY6y2Nag8SQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309621; c=relaxed/simple;
-	bh=qe+W64PwunpHkOjJQCiaRn3JlwXQc6enj1bPrHOROso=;
+	s=arc-20240116; t=1719309293; c=relaxed/simple;
+	bh=dCF1yXeMES2yFJhXqHlpmhAsUFyCC9hS8ypBaEtWH4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5k9Hda3ff8U0k0Er7I9j+4suMdI3EzLxRCVAvqVjYQ20JbjG5gKk1ebB3o3bcT+62I4zkUjipKyGjtktAYDe1FSSCHbOmvqIOu/SapeNQ3AEEM2wd/WA9a0KxcENwPSSimO4rvPsoFSbpJrF7xkTP1HpdDsCSA8lcVXtRgAt4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0CekT7P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAA9C32781;
-	Tue, 25 Jun 2024 10:00:20 +0000 (UTC)
+	 MIME-Version; b=oEMIYNSRwvlkVWdYIMx2uHpCmGBinX8dc0c45I/CDK5BEIuvz55DpKHJNHFAef4B5aOqAWQym2B9TRS+L2oeM67ifg1SKw6ZdsVCwH+h+Dr8fJSoD+PlPT2W3eT9l9a0QR2agPEU4vk26Z/fj2NC/R2lcblp8eyIKUVt/OfRtqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iyQU7MYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F18C32781;
+	Tue, 25 Jun 2024 09:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309621;
-	bh=qe+W64PwunpHkOjJQCiaRn3JlwXQc6enj1bPrHOROso=;
+	s=korg; t=1719309293;
+	bh=dCF1yXeMES2yFJhXqHlpmhAsUFyCC9hS8ypBaEtWH4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0CekT7PE/4IR+oS6lNK47H1I8imqmsCM2xSgQmVDJraoSuyA1MpGDNHKIydjx6HB
-	 7RGmevAvHaJzu6HBVQ+8J64QGxlX1uGFA50xa6GMDsbb7HUY01OSjo+YX7zo6uRh+K
-	 V5ilKTvhbuswiNI+4jl9lSpSvAp8m5PVbszS8JGQ=
+	b=iyQU7MYO3fhc9JxyI2mzyDUdmJZsC4oMkvc058T6dDDgi3fq0DZkMYGmGJGtKJJC3
+	 51tr0XW8YBALC5KVZEtwU+g1/C/DZFsYYmP5GKsUrYr4szZE5wKIcPNY4KzmlvTXib
+	 giH6Pq0pyl4YpkJSjLUNeDIBmTbqPwZ7fuOCRP6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/131] regulator: core: Fix modpost error "regulator_get_regmap" undefined
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH 6.6 161/192] serial: 8250_dw: Revert "Move definitions to the shared header"
 Date: Tue, 25 Jun 2024 11:33:53 +0200
-Message-ID: <20240625085528.905831566@linuxfoundation.org>
+Message-ID: <20240625085543.342260306@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +60,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 3f60497c658d2072714d097a177612d34b34aa3d ]
+commit 2c94512055f362dd789e0f87b8566feeddec83c9 upstream.
 
-Fix the modpost error "regulator_get_regmap" undefined by adding export
-symbol.
+This reverts commit d9666dfb314e1ffd6eb9c3c4243fe3e094c047a7.
 
-Fixes: 04eca28cde52 ("regulator: Add helpers for low-level register access")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202406110117.mk5UR3VZ-lkp@intel.com
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20240610195532.175942-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The container of the struct dw8250_port_data is private to the actual
+driver. In particular, 8250_lpss and 8250_dw use different data types
+that are assigned to the UART port private_data. Hence, it must not
+be used outside the specific driver.
+
+Fix the mistake made in the past by moving the respective definitions
+to the specific driver.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240514190730.2787071-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/8250/8250_dw.c    |   27 +++++++++++++++++++++++++++
+ drivers/tty/serial/8250/8250_dwlib.h |   32 --------------------------------
+ 2 files changed, 27 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index ff11f37e28c71..518b64b2d69bc 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -3341,6 +3341,7 @@ struct regmap *regulator_get_regmap(struct regulator *regulator)
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -57,6 +57,33 @@
+ #define DW_UART_QUIRK_APMC0D08		BIT(4)
+ #define DW_UART_QUIRK_CPR_VALUE		BIT(5)
  
- 	return map ? map : ERR_PTR(-EOPNOTSUPP);
- }
-+EXPORT_SYMBOL_GPL(regulator_get_regmap);
++struct dw8250_platform_data {
++	u8 usr_reg;
++	u32 cpr_value;
++	unsigned int quirks;
++};
++
++struct dw8250_data {
++	struct dw8250_port_data	data;
++	const struct dw8250_platform_data *pdata;
++
++	int			msr_mask_on;
++	int			msr_mask_off;
++	struct clk		*clk;
++	struct clk		*pclk;
++	struct notifier_block	clk_notifier;
++	struct work_struct	clk_work;
++	struct reset_control	*rst;
++
++	unsigned int		skip_autocfg:1;
++	unsigned int		uart_16550_compatible:1;
++};
++
++static inline struct dw8250_data *to_dw8250_data(struct dw8250_port_data *data)
++{
++	return container_of(data, struct dw8250_data, data);
++}
++
+ static inline struct dw8250_data *clk_to_dw8250_data(struct notifier_block *nb)
+ {
+ 	return container_of(nb, struct dw8250_data, clk_notifier);
+--- a/drivers/tty/serial/8250/8250_dwlib.h
++++ b/drivers/tty/serial/8250/8250_dwlib.h
+@@ -2,15 +2,10 @@
+ /* Synopsys DesignWare 8250 library header file. */
  
- /**
-  * regulator_get_hardware_vsel_register - get the HW voltage selector register
--- 
-2.43.0
-
+ #include <linux/io.h>
+-#include <linux/notifier.h>
+ #include <linux/types.h>
+-#include <linux/workqueue.h>
+ 
+ #include "8250.h"
+ 
+-struct clk;
+-struct reset_control;
+-
+ struct dw8250_port_data {
+ 	/* Port properties */
+ 	int			line;
+@@ -26,36 +21,9 @@ struct dw8250_port_data {
+ 	bool			hw_rs485_support;
+ };
+ 
+-struct dw8250_platform_data {
+-	u8 usr_reg;
+-	u32 cpr_value;
+-	unsigned int quirks;
+-};
+-
+-struct dw8250_data {
+-	struct dw8250_port_data	data;
+-	const struct dw8250_platform_data *pdata;
+-
+-	int			msr_mask_on;
+-	int			msr_mask_off;
+-	struct clk		*clk;
+-	struct clk		*pclk;
+-	struct notifier_block	clk_notifier;
+-	struct work_struct	clk_work;
+-	struct reset_control	*rst;
+-
+-	unsigned int		skip_autocfg:1;
+-	unsigned int		uart_16550_compatible:1;
+-};
+-
+ void dw8250_do_set_termios(struct uart_port *p, struct ktermios *termios, const struct ktermios *old);
+ void dw8250_setup_port(struct uart_port *p);
+ 
+-static inline struct dw8250_data *to_dw8250_data(struct dw8250_port_data *data)
+-{
+-	return container_of(data, struct dw8250_data, data);
+-}
+-
+ static inline u32 dw8250_readl_ext(struct uart_port *p, int offset)
+ {
+ 	if (p->iotype == UPIO_MEM32BE)
 
 
 
