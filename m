@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-55365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E34C916345
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43DB29163E5
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1947D1F2244F
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75DE61C2223E
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C621494CB;
-	Tue, 25 Jun 2024 09:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B97149C58;
+	Tue, 25 Jun 2024 09:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9fWIr2m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuHwqu0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2149D12EBEA;
-	Tue, 25 Jun 2024 09:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E23148851;
+	Tue, 25 Jun 2024 09:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308689; cv=none; b=DeSojkWexfcw96eRWBMWIkWOmtuFgZBTpzsUv/7HPsADnyzJo0g7y9AOOdvCZsGrtx3vsQs4kuf7S8jfhCOFK/5jqPiWMUuZFytL2G6nAFWyGHQ6IsyuThW9VkxDvmsDYLztwEyYUFJPQTtaFQWqSLYWCiHuhLKTJVvZjQI0Yas=
+	t=1719309095; cv=none; b=fKaPVEWN2oCQXEk020gQhZG0dVq4xruLYXyPNYCcgu4IFpVIvTjWiFX4LQ/sdNqPdPdgTLnULMJvH0gB2Bjdyl6PqY0HhODntqG66UCYxxx5+6ibKaykJJLgtmhXzYnDH4C1Ua9d1R7OE7fQFxEfTikMqIDNXU4fpySZ7Yitchk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308689; c=relaxed/simple;
-	bh=vHv7+MytU02UuPNyH3qHauPsl8biHkzMqpR0/3H76aM=;
+	s=arc-20240116; t=1719309095; c=relaxed/simple;
+	bh=/+Y11Jse9FIu90tUZIYFCqXmU8cNklfEDDhdRj2UvVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYY+IUyR0Xnnj7a38mLKl/dpB+/RZiDhHGXOQKHj/zVzsduGDckc9piHD/cyzPBGl8p6X07mjVhwScV0nQdZcPAoj4pHxLt7Ug2xO4HgzPrQGoGMXYMh0at7fPEZi6Q+Jx5KngROKF31hUlWpT/19y/eOLZuqsNjHWgerK9DLHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9fWIr2m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE7FC32786;
-	Tue, 25 Jun 2024 09:44:48 +0000 (UTC)
+	 MIME-Version; b=Tl/cFbiw5Y0FQFxfA4TiFp/pP5L1yL5rl3Lx/l75Oof2xYDyM3R9Ye9gwMGwdI5bPqPR79zMP28sHTj3fleeTARsBmAqB9+jOJDLc80l+RzNQfPnru/3BXjnXLlXB9fpVeGUTXieJGRDwHGNq0s8XuWSZFZ6FVhgQ4R/IZyxt5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuHwqu0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD67AC32781;
+	Tue, 25 Jun 2024 09:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308689;
-	bh=vHv7+MytU02UuPNyH3qHauPsl8biHkzMqpR0/3H76aM=;
+	s=korg; t=1719309095;
+	bh=/+Y11Jse9FIu90tUZIYFCqXmU8cNklfEDDhdRj2UvVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f9fWIr2m0O4bkZkw37CxQB1NKDwDp8wCcME8rvM+tHwZGnCRpVzQFFLO9+7HzzpZG
-	 ZaTAoGFj5YixGSRxw2jYWeRxK235PGODBdjNkkyFd9CChmOuGYwRULEcyYpjz1Idb5
-	 4Iceg0SvGmDYAeQrE+wYrZXP0wnwLCFok7MoInC0=
+	b=QuHwqu0Kz1Rd44T/QG+hhbCOmstjHAAPWJdd9Pith5Ku3aghWr1W9hYnqI9qBKP5y
+	 UU/+rYdHxuKLxu/X9bRIK3cumOF4pBERw7qLVOy3iWEVwKPN4L0E1QUCTyqPpLJCfp
+	 7UutwJVi08WC73rmaSHy/hvRsAsrtlhwC/liipLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.9 207/250] drm/amd/display: Remove redundant idle optimization check
-Date: Tue, 25 Jun 2024 11:32:45 +0200
-Message-ID: <20240625085555.999564634@linuxfoundation.org>
+	Heng Qi <hengqi@linux.alibaba.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 094/192] virtio_net: checksum offloading handling fix
+Date: Tue, 25 Jun 2024 11:32:46 +0200
+Message-ID: <20240625085540.786257330@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <roman.li@amd.com>
+From: Heng Qi <hengqi@linux.alibaba.com>
 
-commit e2654a4453ba3dac9baacf9980d841d84e15b869 upstream.
+[ Upstream commit 604141c036e1b636e2a71cf6e1aa09d1e45f40c2 ]
 
-[Why]
-Disable idle optimization for each atomic commit is unnecessary,
-and can lead to a potential race condition.
+In virtio spec 0.95, VIRTIO_NET_F_GUEST_CSUM was designed to handle
+partially checksummed packets, and the validation of fully checksummed
+packets by the device is independent of VIRTIO_NET_F_GUEST_CSUM
+negotiation. However, the specification erroneously stated:
 
-[How]
-Remove idle optimization check from amdgpu_dm_atomic_commit_tail()
+  "If VIRTIO_NET_F_GUEST_CSUM is not negotiated, the device MUST set flags
+   to zero and SHOULD supply a fully checksummed packet to the driver."
 
-Fixes: 196107eb1e15 ("drm/amd/display: Add IPS checks before dcn register access")
-Cc: stable@vger.kernel.org
-Reviewed-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Acked-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This statement is inaccurate because even without VIRTIO_NET_F_GUEST_CSUM
+negotiation, the device can still set the VIRTIO_NET_HDR_F_DATA_VALID flag.
+Essentially, the device can facilitate the validation of these packets'
+checksums - a process known as RX checksum offloading - removing the need
+for the driver to do so.
+
+This scenario is currently not implemented in the driver and requires
+correction. The necessary specification correction[1] has been made and
+approved in the virtio TC vote.
+[1] https://lists.oasis-open.org/archives/virtio-comment/202401/msg00011.html
+
+Fixes: 4f49129be6fa ("virtio-net: Set RXCSUM feature if GUEST_CSUM is available")
+Signed-off-by: Heng Qi <hengqi@linux.alibaba.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/virtio_net.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -9149,9 +9149,6 @@ static void amdgpu_dm_atomic_commit_tail
- 
- 	trace_amdgpu_dm_atomic_commit_tail_begin(state);
- 
--	if (dm->dc->caps.ips_support && dm->dc->idle_optimizations_allowed)
--		dc_allow_idle_optimizations(dm->dc, false);
--
- 	drm_atomic_helper_update_legacy_modeset_state(dev, state);
- 	drm_dp_mst_atomic_wait_for_dependencies(state);
- 
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 56cbe00126bb1..32867e7637ad4 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -4453,8 +4453,16 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 			dev->features |= dev->hw_features & NETIF_F_ALL_TSO;
+ 		/* (!csum && gso) case will be fixed by register_netdev() */
+ 	}
+-	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_CSUM))
+-		dev->features |= NETIF_F_RXCSUM;
++
++	/* 1. With VIRTIO_NET_F_GUEST_CSUM negotiation, the driver doesn't
++	 * need to calculate checksums for partially checksummed packets,
++	 * as they're considered valid by the upper layer.
++	 * 2. Without VIRTIO_NET_F_GUEST_CSUM negotiation, the driver only
++	 * receives fully checksummed packets. The device may assist in
++	 * validating these packets' checksums, so the driver won't have to.
++	 */
++	dev->features |= NETIF_F_RXCSUM;
++
+ 	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO4) ||
+ 	    virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_TSO6))
+ 		dev->features |= NETIF_F_GRO_HW;
+-- 
+2.43.0
+
 
 
 
