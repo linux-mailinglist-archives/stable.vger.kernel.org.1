@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-55542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2827916416
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:54:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE2E291637B
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D49FB21719
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:54:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D5F91C21C62
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B83914AD38;
-	Tue, 25 Jun 2024 09:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776CC148315;
+	Tue, 25 Jun 2024 09:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3sX9yTP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0tsWXSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAF414AD19;
-	Tue, 25 Jun 2024 09:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D791465A8;
+	Tue, 25 Jun 2024 09:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309209; cv=none; b=ayjG/JX1+ckZWjXay9ScjdGQe+IoRCtU1l/8mg+lwtmtJ8oWOhU2d3yNsjRrsxO+lQ1Q4uJbEA3Gl1arpDp5fk5NXfP6IStKstWdLnc1Q6TnC31v2YiribyzbFzWSlzC9EVTtepj/f11H7VQzxBMgJ7Jun6cExk+jKt6XS2RA0Q=
+	t=1719308842; cv=none; b=Gni0AvT0Lm2lphPc2Shix+87E0gCnSRjv0T1kzv+fPk4HlwmAnbpuRUEX0WxFqkrAjxBi38Ra07I0Z53jG+HdtbB7GkYy9XM8HUBBc9fF5Z66hw/PmCFZnMQL1hOtiI/zCS+RrGLwqL/14AFw2xFEHq7Rvzji8cX/naDYVb7ees=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309209; c=relaxed/simple;
-	bh=PEDcvKFkDC8eCilyQ7KZjApV4ZyRxJo1Z7GsvunmHKc=;
+	s=arc-20240116; t=1719308842; c=relaxed/simple;
+	bh=+GKT+vakkKofrflvUtVbugUqlU0sF+4KS7xEN30b92E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lkKXLLOJ9JZqm/eScpZHBuWniJ1LmNNvLXUKOpQ9zOHo3xtIuifoKS9qdPKKUXJNFmn4lufp2qUFTSgPYyFfNYo/OqsKS1QNoAG61lMlhDI8633Tm4w9J0xtX4nmYqMY6lCh5JXXunYtgLaFzfD9T0EW1FamlIvA3OeA441epZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3sX9yTP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5059EC32789;
-	Tue, 25 Jun 2024 09:53:29 +0000 (UTC)
+	 MIME-Version; b=cFWFTSwU2MGZOE0R6grqhNqW3kn6S3htc6w+ZHgKuYJEI2NAhKEeBEEfWwxg4oj8VQF8NAdeeymbwgaSb/WlXQlM/w4AtNMCNjVaXe1wUua0F4mN0cOtA4U4o9gspM+FWYx9I4YjtV2FfTrFZIDUf4aZxvGLhuZMuwShcI0sgi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M0tsWXSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DD3C32786;
+	Tue, 25 Jun 2024 09:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309209;
-	bh=PEDcvKFkDC8eCilyQ7KZjApV4ZyRxJo1Z7GsvunmHKc=;
+	s=korg; t=1719308842;
+	bh=+GKT+vakkKofrflvUtVbugUqlU0sF+4KS7xEN30b92E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3sX9yTPrXWZCw9+U33maBU8M2v++R4OT/kaXMF3mHBg7AW2FfQaFKvpfpJeRwTJK
-	 fBsMqPPQFes5ZZP9LE2uK2VtzUxBb7nFNUclLjzKUyvKs/udPHmvWjD+lnJNPbGjdS
-	 NmEnSqr2j4iTsVSMsb5S1Wbew/8r/iDLeWC5i1k4=
+	b=M0tsWXSqVDhDQXvvutAxaYqYX0+TAFA+2ZxtPsdUPg+myQ5MBAavOnlfLUwPAvn0W
+	 aisF3oca2Norzg0yYQGU0uFrBrzQfF1G23PPa30p7QVMbkOSobI/CYGo/ojrAnTsnD
+	 7YAHgIi62RSn96bnVHNVd+EH5WtNO5t43ruE3hrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Panis <jpanis@baylibre.com>,
-	Nicolas Pitre <npitre@baylibre.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/192] thermal/drivers/mediatek/lvts_thermal: Return error in case of invalid efuse data
+	Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.9 229/250] i2c: ocores: set IACK bit after core is enabled
 Date: Tue, 25 Jun 2024 11:33:07 +0200
-Message-ID: <20240625085541.587775376@linuxfoundation.org>
+Message-ID: <20240625085556.844452416@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julien Panis <jpanis@baylibre.com>
+From: Grygorii Tertychnyi <grembeter@gmail.com>
 
-[ Upstream commit 72cacd06e47d86d89b0e7179fbc9eb3a0f39cd93 ]
+commit 5a72477273066b5b357801ab2d315ef14949d402 upstream.
 
-This patch prevents from registering thermal entries and letting the
-driver misbehave if efuse data is invalid. A device is not properly
-calibrated if the golden temperature is zero.
+Setting IACK bit when core is disabled does not clear the "Interrupt Flag"
+bit in the status register, and the interrupt remains pending.
 
-Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
-Signed-off-by: Julien Panis <jpanis@baylibre.com>
-Reviewed-by: Nicolas Pitre <npitre@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20240604-mtk-thermal-calib-check-v2-1-8f258254051d@baylibre.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Sometimes it causes failure for the very first message transfer, that is
+usually a device probe.
+
+Hence, set IACK bit after core is enabled to clear pending interrupt.
+
+Fixes: 18f98b1e3147 ("[PATCH] i2c: New bus driver for the OpenCores I2C controller")
+Signed-off-by: Grygorii Tertychnyi <grygorii.tertychnyi@leica-geosystems.com>
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-ocores.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
-index a4e56017dda3f..666f440b66631 100644
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -700,7 +700,11 @@ static int lvts_golden_temp_init(struct device *dev, u32 *value)
+--- a/drivers/i2c/busses/i2c-ocores.c
++++ b/drivers/i2c/busses/i2c-ocores.c
+@@ -442,8 +442,8 @@ static int ocores_init(struct device *de
+ 	oc_setreg(i2c, OCI2C_PREHIGH, prescale >> 8);
  
- 	gt = (*value) >> 24;
+ 	/* Init the device */
+-	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
+ 	oc_setreg(i2c, OCI2C_CONTROL, ctrl | OCI2C_CTRL_EN);
++	oc_setreg(i2c, OCI2C_CMD, OCI2C_CMD_IACK);
  
--	if (gt && gt < LVTS_GOLDEN_TEMP_MAX)
-+	/* A zero value for gt means that device has invalid efuse data */
-+	if (!gt)
-+		return -ENODATA;
-+
-+	if (gt < LVTS_GOLDEN_TEMP_MAX)
- 		golden_temp = gt;
- 
- 	coeff_b = golden_temp * 500 + LVTS_COEFF_B;
--- 
-2.43.0
-
+ 	return 0;
+ }
 
 
 
