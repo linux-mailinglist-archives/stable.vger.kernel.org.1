@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-55628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9398491647B
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:57:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA6A9163F6
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E578284FC4
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:57:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29C591C21C08
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0AE3149C58;
-	Tue, 25 Jun 2024 09:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828271494AF;
+	Tue, 25 Jun 2024 09:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2s/LimZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Acs5oEcj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF57B146A67;
-	Tue, 25 Jun 2024 09:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40807146A67;
+	Tue, 25 Jun 2024 09:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309467; cv=none; b=sd08jxNlmageea/BLNSUK7bss0Fq5L0K9mypJX0FCL454oKo89O6IKlhLCpFS8AMrr8do3FhWeLZwr+mrLdZTspQmImzNMFNy7CAbZa4ZUoRUG+bt3Ks8No9bOiP+LNKKbmhuyoXPloGDC7jEAt9dM5jjZLrU3v9lqeWJkyKZVA=
+	t=1719309142; cv=none; b=NHKxBNQ/0YwlFt6Y6NhgCODokYmsO/ahZLUYcX4udbtdw/jc+SX1/hhQMnT4NNhMNmplQ4T/wrW9KGIli2nsUCFUBO6AiXnvNBzPqylKQCjItgvhp0323alQti8F5IXvZZu2dRLaARu+h6sgatrYn9VCMQ6qGwCxnoKetIiM/6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309467; c=relaxed/simple;
-	bh=M9w1yk4FNa5oR9BoS/NaIyPKRmkRIRTZaxrQzCeoUNI=;
+	s=arc-20240116; t=1719309142; c=relaxed/simple;
+	bh=NYyZLY4lncB5zO9x3h7EKkbrxoCIOVwK02ApbwkoOB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F7X9A9BWyhZAHR29Kf2TUs8L48GcqvjJH9zQ1Fv09AhtHbAlOa+hG2nqj67vJC+bzjgc1ZuJ60Pfb/yslwFNuxKyilk4XOnxjgCan/79t6R8lhzL/8qt3I8VnJq+F292Xi9krIvV7pzH0UE5v2zFO2wWUGoPrCOdjOZkiRAI0mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2s/LimZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3400DC32781;
-	Tue, 25 Jun 2024 09:57:47 +0000 (UTC)
+	 MIME-Version; b=oIvPqabofyefSGedY2d1KDbZ8MdDGTudcrGPI8SOqyUQP/GraouW63UwsPlg8h17A68jtMVIyk/Cjag56sNX8y2OMZ0NxOgDkKzdhj2+TwcXdpVTGHMJstWjlt6Q6pTpVxzibyoDZ3xWjj6GAID/AP7atUNJQjYjZ1xAVHoU7pM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Acs5oEcj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA861C32781;
+	Tue, 25 Jun 2024 09:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309467;
-	bh=M9w1yk4FNa5oR9BoS/NaIyPKRmkRIRTZaxrQzCeoUNI=;
+	s=korg; t=1719309142;
+	bh=NYyZLY4lncB5zO9x3h7EKkbrxoCIOVwK02ApbwkoOB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2s/LimZzDDoaXOHtZdthXmxaZj5EkdWHriP0EaAmYzJOnbZlVHXdU3l+nEMwGwIa
-	 iRKzjxriyMdbZVY2QlrAMaXJAnnmUtR5NPC2nPI4GY/XZdTtR3Ay+0InapqvGlsYoE
-	 TMNTTVtFTwDj7P0/pTvb9pVbBvogHkUp8YKrBc84=
+	b=Acs5oEcjR0vQyuEKioXdFb5H0D5k0U8ZMMrOvE13Ot8UAfMcs8oXVWlWEZbV52Z4T
+	 8oy/p1Ku8N4aWYSCxfDercZ0ODCNSR92CUCJKGHVl3SM3e76cCllc+uswBWB0qpW24
+	 i2UtujffXVbxbQNlszMNZvCtpHtZs+lHdUyXPdfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Nikita Shubin <n.shubin@yadro.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/131] ASoC: Intel: sof_sdw: add JD2 quirk for HP Omen 14
-Date: Tue, 25 Jun 2024 11:33:00 +0200
-Message-ID: <20240625085526.905707776@linuxfoundation.org>
+Subject: [PATCH 6.6 109/192] dmaengine: ioatdma: Fix leaking on version mismatch
+Date: Tue, 25 Jun 2024 11:33:01 +0200
+Message-ID: <20240625085541.357849311@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+References: <20240625085537.150087723@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Nikita Shubin <n.shubin@yadro.com>
 
-[ Upstream commit 4fee07fbf47d2a5f1065d985459e5ce7bf7969f0 ]
+[ Upstream commit 1b11b4ef6bd68591dcaf8423c7d05e794e6aec6f ]
 
-The default JD1 does not seem to work, use JD2 instead.
+Fix leaking ioatdma_device if I/OAT version is less than IOAT_VER_3_0.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240411220347.131267-4-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: bf453a0a18b2 ("dmaengine: ioat: Support in-use unbind")
+Signed-off-by: Nikita Shubin <n.shubin@yadro.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20240528-ioatdma-fixes-v2-1-a9f2fbe26ab1@yadro.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/dma/ioat/init.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index d1e6e4208c376..d03de37e3578c 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -413,6 +413,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
- 					SOF_BT_OFFLOAD_SSP(1) |
- 					SOF_SSP_BT_OFFLOAD_PRESENT),
- 	},
-+	{
-+		.callback = sof_sdw_quirk_cb,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN Transcend Gaming Laptop"),
-+		},
-+		.driver_data = (void *)(RT711_JD2),
-+	},
+diff --git a/drivers/dma/ioat/init.c b/drivers/dma/ioat/init.c
+index 9c364e92cb828..e76e507ae898c 100644
+--- a/drivers/dma/ioat/init.c
++++ b/drivers/dma/ioat/init.c
+@@ -1350,6 +1350,7 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	void __iomem * const *iomap;
+ 	struct device *dev = &pdev->dev;
+ 	struct ioatdma_device *device;
++	u8 version;
+ 	int err;
+ 
+ 	err = pcim_enable_device(pdev);
+@@ -1363,6 +1364,10 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (!iomap)
+ 		return -ENOMEM;
+ 
++	version = readb(iomap[IOAT_MMIO_BAR] + IOAT_VER_OFFSET);
++	if (version < IOAT_VER_3_0)
++		return -ENODEV;
 +
- 	/* LunarLake devices */
- 	{
- 		.callback = sof_sdw_quirk_cb,
+ 	err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
+ 	if (err)
+ 		return err;
+@@ -1373,16 +1378,14 @@ static int ioat_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	pci_set_master(pdev);
+ 	pci_set_drvdata(pdev, device);
+ 
+-	device->version = readb(device->reg_base + IOAT_VER_OFFSET);
++	device->version = version;
+ 	if (device->version >= IOAT_VER_3_4)
+ 		ioat_dca_enabled = 0;
+-	if (device->version >= IOAT_VER_3_0) {
+-		if (is_skx_ioat(pdev))
+-			device->version = IOAT_VER_3_2;
+-		err = ioat3_dma_probe(device, ioat_dca_enabled);
+-	} else
+-		return -ENODEV;
+ 
++	if (is_skx_ioat(pdev))
++		device->version = IOAT_VER_3_2;
++
++	err = ioat3_dma_probe(device, ioat_dca_enabled);
+ 	if (err) {
+ 		dev_err(dev, "Intel(R) I/OAT DMA Engine init failed\n");
+ 		return -ENODEV;
 -- 
 2.43.0
 
