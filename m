@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-55424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E39916383
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 389DD9162E3
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:40:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C741B20B85
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5BF0289E53
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C921148315;
-	Tue, 25 Jun 2024 09:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9494A1465A8;
+	Tue, 25 Jun 2024 09:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikWGV0he"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+lMZANE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED961465A8;
-	Tue, 25 Jun 2024 09:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E32512EBEA;
+	Tue, 25 Jun 2024 09:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308862; cv=none; b=A6YI0f53bgZqJt9lj0ySxOkyfQ6coQeuCia9TWw/XS0fkClOvTsYpmRjrcWIA5qHVk5DOhYfwavdxtgJviRohf7d/LLR1bN4AYMmhAl+DSRUqpZJGWhWyxvgyHvpIl0/Z+21RcRKnBxJ07sFAPxN+ErLnJ/RWAS8bFeyuJVj6LI=
+	t=1719308433; cv=none; b=pAT+XZ/as8UGwEHbkzo4VVANjsyWHBxsC5gD/KAopXu4tOI7xFaa7smAbrhNnd23nCG2OLfDzBE/Bb6yx7rmxTV1m+3bK4KDMgwhBIYfcpT2VU6BBKi+pPMMWN4BjAyonzAb2gxE/wUOf6KFW6Wz4guLzi3KPvpRJa52z6D4c0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308862; c=relaxed/simple;
-	bh=Kq1EBP7zADR3iig2oLyfzQLnrWu3Xa1na3h2amkauFA=;
+	s=arc-20240116; t=1719308433; c=relaxed/simple;
+	bh=OGZ4pusna2qpari0pCQHeNRX8S6CwkuemNtIIDIrIAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJ8zeGlEQvwtfZf1/8dyRxeKW6kgcGQyhsu4cYzlYuSsgICG4J4x7yYhaKKBRZRI7UJdkabsS1anSJ6tFz9EAMBMql1XkPrDLCJC0iJ+f76BRDC/Ly6wy4l+bCBS+8TsWrjRG6x8dfvB1GeDfMDCUAwb/We7WvJSpYuDzSqRZJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikWGV0he; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2A9C32781;
-	Tue, 25 Jun 2024 09:47:42 +0000 (UTC)
+	 MIME-Version; b=YjLu8xLvyFNrwbefWthm6ykXVy4PEAi434SZ+gMBQsUZB1OJgUYTQuOHHZC3YXqSuza9OkhdwYkmUsgeLUnEYoGEyYEsSMlBhsNm7Scr997GJBDIgGoYna1lm4e+efHHGW9LJligixpLezyrLaUOhrl/FI5t4w30i5RHucki6Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+lMZANE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8289C32786;
+	Tue, 25 Jun 2024 09:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308862;
-	bh=Kq1EBP7zADR3iig2oLyfzQLnrWu3Xa1na3h2amkauFA=;
+	s=korg; t=1719308433;
+	bh=OGZ4pusna2qpari0pCQHeNRX8S6CwkuemNtIIDIrIAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikWGV0heWD/PVmXSDYVeONBbCkNe6LYAVcsJMxE6VcxgJTojxiUrn4zeN3MMMl9Z6
-	 v5f6v5d2cmB4YHBsuxsszzNutWJXB6rhih9gN1Er14qROPgtunvvw6wnDiVI2lR/ja
-	 Q6iEnLBTFExQlhGg+EEf5qTxwm289f2oNAvTtmvw=
+	b=l+lMZANE68kKrzj6vTNJOD9PXoftclxufFFpgIJS7w86BsyNy3/AxMDqLrglUIUKt
+	 lz6Cj6TlmcCaV1eND7nwh8/ADkoytS3dqww1LC0tOVsXYoX118NfAkkGvohP3+CUbT
+	 BXPtKWA1QiOAnUDewSNmCoBqUwd1goSISTq6lSZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
+	Eric Dumazet <edumazet@google.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/192] io_uring/sqpoll: work around a potential audit memory leak
+Subject: [PATCH 6.9 119/250] ipv6: prevent possible NULL dereference in rt6_probe()
 Date: Tue, 25 Jun 2024 11:31:17 +0200
-Message-ID: <20240625085537.361865732@linuxfoundation.org>
+Message-ID: <20240625085552.637117488@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c4ce0ab27646f4206a9eb502d6fe45cb080e1cae ]
+[ Upstream commit b86762dbe19a62e785c189f313cda5b989931f37 ]
 
-kmemleak complains that there's a memory leak related to connect
-handling:
+syzbot caught a NULL dereference in rt6_probe() [1]
 
-unreferenced object 0xffff0001093bdf00 (size 128):
-comm "iou-sqp-455", pid 457, jiffies 4294894164
-hex dump (first 32 bytes):
-02 00 fa ea 7f 00 00 01 00 00 00 00 00 00 00 00  ................
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-backtrace (crc 2e481b1a):
-[<00000000c0a26af4>] kmemleak_alloc+0x30/0x38
-[<000000009c30bb45>] kmalloc_trace+0x228/0x358
-[<000000009da9d39f>] __audit_sockaddr+0xd0/0x138
-[<0000000089a93e34>] move_addr_to_kernel+0x1a0/0x1f8
-[<000000000b4e80e6>] io_connect_prep+0x1ec/0x2d4
-[<00000000abfbcd99>] io_submit_sqes+0x588/0x1e48
-[<00000000e7c25e07>] io_sq_thread+0x8a4/0x10e4
-[<00000000d999b491>] ret_from_fork+0x10/0x20
+Bail out if  __in6_dev_get() returns NULL.
 
-which can can happen if:
+[1]
+Oops: general protection fault, probably for non-canonical address 0xdffffc00000000cb: 0000 [#1] PREEMPT SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000658-0x000000000000065f]
+CPU: 1 PID: 22444 Comm: syz-executor.0 Not tainted 6.10.0-rc2-syzkaller-00383-gb8481381d4e2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/02/2024
+ RIP: 0010:rt6_probe net/ipv6/route.c:656 [inline]
+ RIP: 0010:find_match+0x8c4/0xf50 net/ipv6/route.c:758
+Code: 14 fd f7 48 8b 85 38 ff ff ff 48 c7 45 b0 00 00 00 00 48 8d b8 5c 06 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 08 84 d2 0f 85 19
+RSP: 0018:ffffc900034af070 EFLAGS: 00010203
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffffc90004521000
+RDX: 00000000000000cb RSI: ffffffff8990d0cd RDI: 000000000000065c
+RBP: ffffc900034af150 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000002 R12: 000000000000000a
+R13: 1ffff92000695e18 R14: ffff8880244a1d20 R15: 0000000000000000
+FS:  00007f4844a5a6c0(0000) GS:ffff8880b9300000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b31b27000 CR3: 000000002d42c000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+  rt6_nh_find_match+0xfa/0x1a0 net/ipv6/route.c:784
+  nexthop_for_each_fib6_nh+0x26d/0x4a0 net/ipv4/nexthop.c:1496
+  __find_rr_leaf+0x6e7/0xe00 net/ipv6/route.c:825
+  find_rr_leaf net/ipv6/route.c:853 [inline]
+  rt6_select net/ipv6/route.c:897 [inline]
+  fib6_table_lookup+0x57e/0xa30 net/ipv6/route.c:2195
+  ip6_pol_route+0x1cd/0x1150 net/ipv6/route.c:2231
+  pol_lookup_func include/net/ip6_fib.h:616 [inline]
+  fib6_rule_lookup+0x386/0x720 net/ipv6/fib6_rules.c:121
+  ip6_route_output_flags_noref net/ipv6/route.c:2639 [inline]
+  ip6_route_output_flags+0x1d0/0x640 net/ipv6/route.c:2651
+  ip6_dst_lookup_tail.constprop.0+0x961/0x1760 net/ipv6/ip6_output.c:1147
+  ip6_dst_lookup_flow+0x99/0x1d0 net/ipv6/ip6_output.c:1250
+  rawv6_sendmsg+0xdab/0x4340 net/ipv6/raw.c:898
+  inet_sendmsg+0x119/0x140 net/ipv4/af_inet.c:853
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg net/socket.c:745 [inline]
+  sock_write_iter+0x4b8/0x5c0 net/socket.c:1160
+  new_sync_write fs/read_write.c:497 [inline]
+  vfs_write+0x6b6/0x1140 fs/read_write.c:590
+  ksys_write+0x1f8/0x260 fs/read_write.c:643
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-1) The command type does something on the prep side that triggers an
-   audit call.
-2) The thread hasn't done any operations before this that triggered
-   an audit call inside ->issue(), where we have audit_uring_entry()
-   and audit_uring_exit().
-
-Work around this by issuing a blanket NOP operation before the SQPOLL
-does anything.
-
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 52e1635631b3 ("[IPV6]: ROUTE: Add router_probe_interval sysctl.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20240615151454.166404-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/sqpoll.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/ipv6/route.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
-index 65b5dbe3c850e..350436e55aafe 100644
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -240,6 +240,14 @@ static int io_sq_thread(void *data)
- 		sqd->sq_cpu = raw_smp_processor_id();
- 	}
- 
-+	/*
-+	 * Force audit context to get setup, in case we do prep side async
-+	 * operations that would trigger an audit call before any issue side
-+	 * audit has been done.
-+	 */
-+	audit_uring_entry(IORING_OP_NOP);
-+	audit_uring_exit(true, 0);
-+
- 	mutex_lock(&sqd->lock);
- 	while (1) {
- 		bool cap_entries, sqt_spin = false;
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index ac867b99aa997..d7a5ca012a8fc 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -638,6 +638,8 @@ static void rt6_probe(struct fib6_nh *fib6_nh)
+ 	rcu_read_lock();
+ 	last_probe = READ_ONCE(fib6_nh->last_probe);
+ 	idev = __in6_dev_get(dev);
++	if (!idev)
++		goto out;
+ 	neigh = __ipv6_neigh_lookup_noref(dev, nh_gw);
+ 	if (neigh) {
+ 		if (READ_ONCE(neigh->nud_state) & NUD_VALID)
 -- 
 2.43.0
 
