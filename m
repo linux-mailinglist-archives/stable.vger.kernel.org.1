@@ -1,288 +1,138 @@
-Return-Path: <stable+bounces-55750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11E77916615
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 13:21:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 846F09165E3
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 13:09:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBAD4281602
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:21:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB713B25614
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F0B149C68;
-	Tue, 25 Jun 2024 11:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2551474C5;
+	Tue, 25 Jun 2024 11:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="sh+gnQk6"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ktLqtgEq"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1A0148FF5;
-	Tue, 25 Jun 2024 11:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776FA14A62E
+	for <stable@vger.kernel.org>; Tue, 25 Jun 2024 11:09:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719314499; cv=none; b=CXfESifI6waLJJn4rZ0KyZDB90+Ug60CC6/P9R21Q12PCP2IwfF/7+TArkDiL7SlmwdNeq9QpIM3TKPg/1m3LaYpEsfNv47YnPuPkzd7WRmrFm8O8FrQ/QXNH6nnhYexwtMwPE0ivytysdSGy1jCexHgVDDOzBCv+XnOPx0ERVo=
+	t=1719313792; cv=none; b=PO7LqaCpfE3S2cKeLok5jxcnC7/hZ5uSNcuVY6YT9hhS1Da3WQIyyfI+WHApKcJh8QEdRuyPrq6zsVyTK05x5tbvClYmdKLjgGHkBsWmOJBhNfoJqqa1/QYTtYr8dJ3oECOO18WQP9AarXLP+VeceZLckIHgovxPMC6q2INLdHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719314499; c=relaxed/simple;
-	bh=oSbhm/dT5MKMXBhgwWCjBGIAGVS63RQDUCW+HqsxQOE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cb7lklIsGHFWCyq956Q16/ULetXMnd1n1UeIx+24EccpGvXyKhrSPDxEPJjPoAyRpg27oyOvNGTsIVXmualUTlK46jP1vvu84GsymZdjUvnfxhYNVXzvtNdXpoLZzvzQP/Mp+toeMvG2oyvBFZVnm1Kdr93THHehghdoHU+Gz2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=sh+gnQk6; arc=none smtp.client-ip=212.227.126.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1719314488; x=1719919288; i=christian@heusel.eu;
-	bh=uMMLgPkSCGHiELtwqegdPywPsAzyqY9AmA8zacbiW8I=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=sh+gnQk6ej4PfuiU+hTwTyMitd6USWq7qBxa7dT8tZU5Rb4x/iPST5KVyNMxIVNm
-	 i3OVPsNJeeHjvbJRI3dI75cYAxYFIGCCx6IzF609CSwErPSis3HI0mJBiph6Nw7yh
-	 hCcgahUUeOw8Lforuu4EP9dmD5+/6SRPE360duse7HFqMa+aO5YvzmDJJJ1TA8D0R
-	 kPy3HukxSMKrN+ktXm35pwZqaMc40sQKBNcOcP6+rONVsXJxBUcIpiqy6+uQMSfJr
-	 DCYOyRgtapZjfupgMMnV4DhrQRaVE+Wkn0aDbN1KQdOtg/yKeU/NcRzBlesLc6Nty
-	 41WPU/5x80cFDcc6WA==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([78.42.228.106]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MNKyQ-1rxPdl2yMc-00WPVN; Tue, 25 Jun 2024 13:07:51 +0200
-Date: Tue, 25 Jun 2024 13:07:49 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Andrew Paniakin <apanyaki@amazon.com>
-Cc: pc@cjr.nz, stfrench@microsoft.com, sashal@kernel.org, pc@manguebit.com, 
-	regressions@lists.linux.dev, stable@vger.kernel.org, linux-cifs@vger.kernel.org, 
-	abuehaze@amazon.com, simbarb@amazon.com, benh@amazon.com
-Subject: Re: [REGRESSION][BISECTED][STABLE] Commit 60e3318e3e900 in
- stable/linux-6.1.y breaks cifs client failover to another server in DFS
- namespace
-Message-ID: <210b1da5-6b22-4dd9-a25f-8b24ba4723d4@heusel.eu>
-References: <ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com>
- <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
+	s=arc-20240116; t=1719313792; c=relaxed/simple;
+	bh=Jqx5709BtugoJVZY8NxxbQN9lreP98TY5Wx/Ks/oQYE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ut+bZooiz0/OD4F+vyQ3R7+PFKa1Cpe4WQfHylofOj/RFK4OuIQlcrU4MsRFGUdRCDT+BSVk0dSI7rvN2mWFKmuE2zHX2VAn07QtqAslJP7i2c7b/tA3m6TbOssv1Rn027+hZ2/hr0DV7H+B2dLQQk8F2nr6B27x7WbN5rnGvMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ktLqtgEq; arc=none smtp.client-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-4ef2006dcdbso1976478e0c.3
+        for <stable@vger.kernel.org>; Tue, 25 Jun 2024 04:09:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719313789; x=1719918589; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=7R5wxQYwGfaVqYk9QukhujZ0AZZW5oBR/ydEPdcFLQY=;
+        b=ktLqtgEqTsgsLOw6wbl1i5nZj+ns2kLIfV3gYTu7GBQWXOD5DeiEzObL9uozmI1UzC
+         g4EqnO2nbCVuFO4nBgNOoXj62gqfZGWRw68GgWi3jSihs2t/C/nzOf59v4r+D1uOfV4j
+         +AILEFikozgn6ndX7m/r2y4F6r8llmadDA9cN7Qhiy+jfkyyvcpjfbt04cpsyMtuHAix
+         srJwbSsY/5cMCZvejBWDP2635a7l6hG54xvEryAxk5d/Ckx/GkTi8mMNimYKZFoK9fQ+
+         JsK+jgt1znZlAJJmLic7wbcuIdTGW2/bu9RwQjXDpzV3yLD21PIdua52nhfmBSq05DT6
+         1Ppg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719313789; x=1719918589;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7R5wxQYwGfaVqYk9QukhujZ0AZZW5oBR/ydEPdcFLQY=;
+        b=UIDm8ZYG+QCBD75cSM+CQczN2y3glWK6qDzYsmtee3AsGiBEkRTWcVj9Ykz6Dwtsa3
+         +5tkweHTOePVVZeb9OZt2Veg4te7ENK28ibXZ1eXIsOx2UZOVEj/7FNjUPtofwITK6T+
+         eMLy9kRwymI9aMd78oMpQ589eZW+0KCOBfvOxy2q7gviDX0aXi7LFmKP9FJAG480TnQ+
+         USQkddeQozBdvaZ2SoHCWNerGnB74y/bqugjAHjcmN8X2gkAojTby0mqTYneFr8gb9wP
+         aAo9iJ87uVwgazleE2188pjhxtvAqfO2FJNUCHjvIXNdYMAmFaxVhS7Z/ILlrXbENOqW
+         wYvQ==
+X-Gm-Message-State: AOJu0Yz/nm1LtPgJL66GLfY6Vytl3MyP/JXsjEALM4xfoDSm9HYQuWGJ
+	/+lQbtfxXShGOuSkcM/Z2Vq8CoBwPHHwvBo/FiT00kFx8TiYIiNyueXzFlRdOsp4/BYsrfGC7s8
+	IPhjUm/SCO1rIc4AlS66L99d0VZhBzlyHrIxCfg==
+X-Google-Smtp-Source: AGHT+IGFPvgQg1o9LeRDhdQ+qJIJ+JQi9wNh81iGlEdpy/Tfa/2hvfiRTSb4TnSM/hw5l+hirYUDOyyZZbUacxz0ZYk=
+X-Received: by 2002:a05:6122:411d:b0:4ec:fc23:7928 with SMTP id
+ 71dfb90a1353d-4ef6d892a1dmr5555079e0c.12.1719313789305; Tue, 25 Jun 2024
+ 04:09:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="jmsggbhoayj3vp5r"
-Content-Disposition: inline
-In-Reply-To: <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
-X-Provags-ID: V03:K1:K2gnCX6y5v0pEX0/67AmSIgOOCUSrjSVvkqkMNLNIcj01PSH4Oj
- T8aefGcsyDnq5Cg1O+6axHk9E/pe3KkKePQCeBRB/co0elYikkASNMndef5YYfRBT/HkNTM
- lF1j6+l+Z5WkD7iUx/IZRyuvPvRosANuuUJlKhrIclk8mMuLHEHGcR2+SoKYsMVYU+ouoCk
- +XMw6vJjld7kNuDGwiWXQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:FpkI5MEtraI=;dN19VhZMalOaYI7c4WLnfolaHVM
- f4au55iSExDBqAI00wcBkZqZVtFELDzhgHtWTCBnDXMHaS2sB6orsl611Ny57CRAOu8GjSS2M
- oSxb6IKPBLjGPfo38XHmNqeBtwRC1h+hzpovxrl4LEQF6hAyLdULoHgnGLmIJST88ucDDxNNd
- Ybl1+ZPxdG7UPGT2oBlf6I2pDsWuwmDtBDZJMLeqVBoUJ8ZVhKOt8c0FTr5M8qS4asqNFqo8D
- XkkQ5R2gO9eXZvK/52fZboJJqU99Gvdti4YuC2ZfnFIpnDsj73Lf0NDioiYjSxCE9l1vXqaRx
- czJQMdSlacVN0lUJTLnxqZ5g5p55V67FhY3Fb7bFjw4XqvUVIjNcRMxrmZYxJa0mder6v7uGM
- vOJIRX6qV3+RACX3WikRhu77sBx9UpIAy376ZhB+ReOF6Ca1BCmOnjET8N/XNzIjOdwO/2eQq
- aBbNP9XEX+mns4aysRwvEHCY2BG97VkxPxl8XiIkt7Jp1yuafGYZ4Q+JqMgXew/BGhZyexg65
- IUZMUgrMN8EGk57Hj1981QN6Do6Cyl4gH6ry950CZy1LqUUZ2RwaNV/jwdX2ACOPmOscNBjBV
- hDgz3aPrLYUapcWkpayfVFwqp1rl3k9DSL5UHPe7NvH8QG39lBXTPWVUZQF5yc4vSuvAULt3q
- HaoqS/Rrjg1IxS9Qpg2uhdnt4llsKjzIHlc6R+ss2BO+fs8aWnQ+65YQOjL4FTYQY9n6ASEhx
- Xm1ZlOteUxDv/nE2jR1aXnAPCUetzksz3vZAnwRMSU6R6kW+erLmMg=
+References: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 25 Jun 2024 16:39:37 +0530
+Message-ID: <CA+G9fYuWjzLJmBy+ty8uOCkJSdGEziXs-UYuEQSC-XFb5n938g@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/192] 6.6.36-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
+On Tue, 25 Jun 2024 at 15:18, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.36 release.
+> There are 192 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 27 Jun 2024 08:54:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.36-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
---jmsggbhoayj3vp5r
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The arm builds are failing on stable-rc 6.6 branch due to following errors.
 
-On 24/06/24 10:59AM, Andrew Paniakin wrote:
-> On 19/06/2024, Andrew Paniakin wrote:
-> > Commit 60e3318e3e900 ("cifs: use fs_context for automounts") was
-> > released in v6.1.54 and broke the failover when one of the servers
-> > inside DFS becomes unavailable. We reproduced the problem on the EC2
-> > instances of different types. Reverting aforementioned commint on top of
-> > the latest stable verison v6.1.94 helps to resolve the problem.
-> >=20
-> > Earliest working version is v6.2-rc1. There were two big merges of CIFS=
- fixes:
-> > [1] and [2]. We would like to ask for the help to investigate this prob=
-lem and
-> > if some of those patches need to be backported. Also, is it safe to jus=
-t revert
-> > problematic commit until proper fixes/backports will be available?
-> >=20
-> > We will help to do testing and confirm if fix works, but let me also li=
-st the
-> > steps we used to reproduce the problem if it will help to identify the =
-problem:
-> > 1. Create Active Directory domain eg. 'corp.fsxtest.local' in AWS Direc=
-tory
-> > Service with:
-> > - three AWS FSX file systems filesystem1..filesystem3
-> > - three Windows servers; They have DFS installed as per
-> >   https://learn.microsoft.com/en-us/windows-server/storage/dfs-namespac=
-es/dfs-overview:
-> >     - dfs-srv1: EC2AMAZ-2EGTM59
-> >     - dfs-srv2: EC2AMAZ-1N36PRD
-> >     - dfs-srv3: EC2AMAZ-0PAUH2U=20
-> >=20
-> >  2. Create DFS namespace eg. 'dfs-namespace' in Windows server 2008 mode
-> >  and three folders targets in it:
-> > - referral-a mapped to filesystem1.corp.local
-> > - referral-b mapped to filesystem2.corp.local
-> > - referral-c mapped to filesystem3.corp.local
-> > - local folders dfs-srv1..dfs-srv3 in C:\DFSRoots\dfs-namespace of every
-> >   Windows server. This helps to quickly define underlying server when
-> >   DFS is mounted.
-> >=20
-> > 3. Enabled cifs debug logs:
-> > ```
-> > echo 'module cifs +p' > /sys/kernel/debug/dynamic_debug/control
-> > echo 'file fs/cifs/* +p' > /sys/kernel/debug/dynamic_debug/control
-> > echo 7 > /proc/fs/cifs/cifsFYI
-> > ```
-> >=20
-> > 4. Mount DFS namespace on Amazon Linux 2023 instance running any vanilla
-> > kernel v6.1.54+:
-> > ```
-> > dmesg -c &>/dev/null
-> > cd /mnt
-> > mount -t cifs -o cred=3D/mnt/creds,echo_interval=3D5 \
-> >     //corp.fsxtest.local/dfs-namespace \
-> >     ./dfs-namespace
-> > ```
-> >=20
-> > 5. List DFS root, it's also required to avoid recursive mounts that hap=
-pen
-> > during regular 'ls' run:
-> > ```
-> > sh -c 'ls dfs-namespace'
-> > dfs-srv2  referral-a  referral-b
-> > ```
-> >=20
-> > The DFS server is EC2AMAZ-1N36PRD, it's also listed in mount:
-> > ```
-> > [root@ip-172-31-2-82 mnt]# mount | grep dfs
-> > //corp.fsxtest.local/dfs-namespace on /mnt/dfs-namespace type cifs (rw,=
-relatime,vers=3D3.1.1,cache=3Dstrict,username=3DAdmin,domain=3Dcorp.fsxtest=
-=2Elocal,uid=3D0,noforceuid,gid=3D0,noforcegid,addr=3D172.31.11.26,file_mod=
-e=3D0755,dir_mode=3D0755,soft,nounix,mapposix,rsize=3D4194304,wsize=3D41943=
-04,bsize=3D1048576,echo_interval=3D5,actimeo=3D1,closetimeo=3D1)
-> > //EC2AMAZ-1N36PRD.corp.fsxtest.local/dfs-namespace/referral-a on /mnt/d=
-fs-namespace/referral-a type cifs (rw,relatime,vers=3D3.1.1,cache=3Dstrict,=
-username=3DAdmin,domain=3Dcorp.fsxtest.local,uid=3D0,noforceuid,gid=3D0,nof=
-orcegid,addr=3D172.31.12.80,file_mode=3D0755,dir_mode=3D0755,soft,nounix,ma=
-pposix,rsize=3D4194304,wsize=3D4194304,bsize=3D1048576,echo_interval=3D5,ac=
-timeo=3D1,closetimeo=3D1)
-> > ```
-> >=20
-> > List files in first folder:
-> > ```
-> > sh -c 'ls dfs-namespace/referral-a'
-> > filea.txt.txt
-> > ```
-> >=20
-> > 6. Shutdown DFS server-2.
-> > List DFS root again, server changed from dfs-srv2 to dfs-srv1 EC2AMAZ-2=
-EGTM59:
-> > ```
-> > sh -c 'ls dfs-namespace'
-> > dfs-srv1  referral-a  referral-b
-> > ```
-> >=20
-> > 7. Try to list files in another folder, this causes ls to fail with err=
-or:
-> > ```
-> > sh -c 'ls dfs-namespace/referral-b'
-> > ls: cannot access 'dfs-namespace/referral-b': No route to host```
-> >=20
-> > Sometimes it's also 'Operation now in progress' error.
-> >=20
-> > mount shows the same output:
-> > ```
-> > //corp.fsxtest.local/dfs-namespace on /mnt/dfs-namespace type cifs (rw,=
-relatime,vers=3D3.1.1,cache=3Dstrict,username=3DAdmin,domain=3Dcorp.fsxtest=
-=2Elocal,uid=3D0,noforceuid,gid=3D0,noforcegid,addr=3D172.31.11.26,file_mod=
-e=3D0755,dir_mode=3D0755,soft,nounix,mapposix,rsize=3D4194304,wsize=3D41943=
-04,bsize=3D1048576,echo_interval=3D5,actimeo=3D1,closetimeo=3D1)
-> > //EC2AMAZ-1N36PRD.corp.fsxtest.local/dfs-namespace/referral-a on /mnt/d=
-fs-namespace/referral-a type cifs (rw,relatime,vers=3D3.1.1,cache=3Dstrict,=
-username=3DAdmin,domain=3Dcorp.fsxtest.local,uid=3D0,noforceuid,gid=3D0,nof=
-orcegid,addr=3D172.31.12.80,file_mode=3D0755,dir_mode=3D0755,soft,nounix,ma=
-pposix,rsize=3D4194304,wsize=3D4194304,bsize=3D1048576,echo_interval=3D5,ac=
-timeo=3D1,closetimeo=3D1)
-> > ```
-> >=20
-> > I also attached kernel debug logs from this test.
-> >=20
-> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
-commit/?id=3D851f657a86421
-> > [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
-commit/?id=3D0a924817d2ed9
-> >=20
-> > Reported-by: Andrei Paniakin <apanyaki@amazon.com>
-> > Bisected-by: Simba Bonga <simbarb@amazon.com>
-> > ---
-> >=20
-> > #regzbot introduced: v6.1.54..v6.2-rc1
->=20
->=20
-> Friendly reminder, did anyone had a chance to look into this report?
->=20
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-It seems like so far nobody had a chance to look into this report =F0=9F=A4=
-=94
+Build log:
+--------
+arm-linux-gnueabihf-ld: drivers/firmware/efi/efi-init.o: in function
+`.LANCHOR1':
+efi-init.c:(.data+0x0): multiple definition of `screen_info';
+arch/arm/kernel/setup.o:setup.c:(.data+0x12c): first defined here
+make[3]: *** [scripts/Makefile.vmlinux_o:62: vmlinux.o] Error 1
 
-If I understand the report correctly the regression is specific for the
-current 6.1.y stable series, so also not much the CIFS devs themselves
-can do. Maybe the stable team missed the report with the plethora of
-mail that they get.. I'll change the subject to make this more prominent
-for them.
+metadata:
+git_repo:
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+git_sha:
+580e509ea1348fc97897cf4052be03c248be6ab6
+git_short_log:
+580e509ea134 ("Linux 6.6.36-rc1")
 
-I think a good next step would be to bisect to the commit that fixed the
-relevant issue somewhere between v6.1.54..v6.2-rc1 so the stable team
-knows what needs backporting .. You can do that somewhat like so[0]:
+Links:
+  - https://storage.tuxsuite.com/public/linaro/lkft/builds/2iMq0CHppQGxkVSsEPFtnw08bc6/
+  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.35-193-g580e509ea134/testrun/24441308/suite/build/test/gcc-13-lkftconfig-debug/log
+  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.35-193-g580e509ea134/testrun/24441308/suite/build/test/gcc-13-lkftconfig-debug/details/
 
-  $ git bisect start --term-new=3Dfixed --term-old=3Dunfixed
-  $ git bisect fixed v6.2-rc1
-  $ git bisect unfixed v6.1
-
-Then you just need to carry around the commit that broke the behaviour
-for you (which could be quite some work). Maybe others also have better
-ideas on how to approach that.
-
-A revert may be a bit more complicated as the breaking commit in seems
-to be a dependency for a commit that fixes something:
-
-    efc0b0bcffcba ("smb: propagate error code of extract_sharename()")
-    Fixes: 70431bfd825d ("cifs: Support fscache indexing rewrite")
-
-Cheers,
-chris
-
-[0]: https://stackoverflow.com/a/17153598
-
-#regzbot introduced: 062eacf57ad91b5c272f89dc964fd6dd9715ea7d
-#regzbot summary: cifs: broken failover for server inside DFS
-
---jmsggbhoayj3vp5r
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmZ6pQUACgkQwEfU8yi1
-JYWSwA/+OPb/TZJmsjikMtPq9++IQcrHwdzJx3MYVtjHfKnPdVSUc7LROrXMdngS
-OEv8Du6IpiYtP91JSu/Dd28tLiwRgqfmUJuv+9bNJRHE9A2yyEyHg0CtgzoX8kQP
-eLthIxpPuqJqClWDy2UPSoCfcrUgUdPCPbSTG3RTe3CIeQhRZ4KwZ+bpb2AS0mOD
-BadNW1ew+qYILEIF/YRdU2BxWdNF+eNCrumMwBPdDgqgAXvRQ7a8V7RZPQFLlUJ8
-oXSnhrH4Y2ESXAXrmVitbX1w0jV+bznHTnA9t6hJnM2SB41CY5j24uM3b10VCDXn
-TGudRwccs29xZaKzlRED6DZ3c9YMz43zOkQ2AmQOtaAHXTn2CVqc0WWtHoUfqWGg
-HdncnOKwHroDxvh0FvWB9bzIYBHmm79pMpLhdCdtm2kcmDPEkyb/QW5QbTDzrmQo
-vb3MRP6s5ko0yFfHouZIG0rwwqAHl9NEw/i8SCzE7JJkRbR4jecV+env1nEAsDw+
-QSR4xD6YUwYbG3/1j5B8GS0etU/UAoGHLw6NBY+zAl6/RRORGxPzGhM8QS68Qaxp
-C0+F53YmCriHjR9fwil6HBD21MSLMhUBHy1W1JOTkvvLJGZLzM9F/75zhENm8ECu
-7qfmbwByPZhPoYgXAdzkic3WUEx9iQbtkwULlMLIqu4VXGXVB1Y=
-=HFX0
------END PGP SIGNATURE-----
-
---jmsggbhoayj3vp5r--
+--
+Linaro LKFT
+https://lkft.linaro.org
 
