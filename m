@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-55655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB5291649A
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:59:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE2B916374
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:47:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAED3287725
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:59:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84D0B1F21B25
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A256214A0A4;
-	Tue, 25 Jun 2024 09:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52831487E9;
+	Tue, 25 Jun 2024 09:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5WVDZmD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v05DDFjD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6285E149C4F;
-	Tue, 25 Jun 2024 09:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41E11465A8;
+	Tue, 25 Jun 2024 09:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309547; cv=none; b=UWtlm64n8bLniMitVuWXz/7oNabXUzhKjXGr2xQjebvsz2Mzj3E7MFlCHzZ2yde0XFN99NFFzpsf2AxBNQClHOdUaS57pap0Ot6LVpo87vJ9QcZEagQf39dLdoZPnp926ADzEfp3vbLIyAY5+7qfy2OXpqsk5X9XiB3lh5OCmgo=
+	t=1719308824; cv=none; b=dtqrjR4Q0GUMAm6BSHYh9bfgTKPTYOh3xprBG/qZNeNTD/PQtUIkjFhWj2BkifNEhdFWcgpF6+uUg8pFIRb/IrpRjq61OBz86wSh3RdcOBjSPS1Y/T65WN7xrNtzHV6Yz2QHCx2XnH7CC3ohms9rI+MDoHtlxyFGIbq+1ehWjSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309547; c=relaxed/simple;
-	bh=a5LiCamK/t8jn0h1e+AVW8XdW6qElB3eZrhvUUlelPw=;
+	s=arc-20240116; t=1719308824; c=relaxed/simple;
+	bh=m25ANpDiZoECPY3B8Ea0AzWrea8TiZbWKM1gqin4tR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+xSpqP8CQJe6+4adjSj8IG3DyiaqznadcVTS/HHzIRuoIYWevrn6RUmDy3sxM1qC/1J2reXLvTHZT+ilofPg0p88hJx+IJ4RhzHEL78XFkEMU26nor072h8hcqfIOa1+RlO+ZLjIwAUXGytqUUE2mzzPokU39Omp8rZlZp/Dws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5WVDZmD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8E2C32781;
-	Tue, 25 Jun 2024 09:59:06 +0000 (UTC)
+	 MIME-Version; b=ZHxUj5ZG7ZhV2r+VU0Vfh8lqA7MpY/iJQh0eIxV5gJQqm+6T0d1BZsWBqNAwNgOFhtCV+4xwd7arMBSbY89wLCYNsEsgQUlbTITo5MTz7B0pe0FNrc2MM4fquUQG8KLtIbFEQEmH+LCQ0Zy00GzsK3rlnn0l4bg0ueCwedbaRWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v05DDFjD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D24C32781;
+	Tue, 25 Jun 2024 09:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719309547;
-	bh=a5LiCamK/t8jn0h1e+AVW8XdW6qElB3eZrhvUUlelPw=;
+	s=korg; t=1719308824;
+	bh=m25ANpDiZoECPY3B8Ea0AzWrea8TiZbWKM1gqin4tR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T5WVDZmDU+Wo1Ikd/yneRExJJjTXjp9Gt/0CGeUVBFMCIb9kG885Ls369aOCTJ+kp
-	 pS3vTsAwqo2k1tCS2m3VL7P34FKMU9STiWQOSFoF7DGfngWvdylAdhsXNBY4Bp2VTS
-	 et/W9btTQYtNSXv2QPXFffmkuoNvR6GE0iAdpfSU=
+	b=v05DDFjDXrhytOGwJGzY2ijgOmgoSdrAVV/XUB7qbLF2z5P0qwUSR+FyHZDEySp+t
+	 ODNZgRheOauWNz8XOeSvWkUUoxEGreO83nSfDHeI5VoygMfo6cm4xjAZxXdNgmZf42
+	 mJkFpzkjwNxSWEO/JjL0msp0n7JHL+AMumw5ale0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/131] usb: misc: uss720: check for incompatible versions of the Belkin F5U002
-Date: Tue, 25 Jun 2024 11:33:10 +0200
-Message-ID: <20240625085527.287071223@linuxfoundation.org>
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.9 233/250] thermal: int340x: processor_thermal: Support shared interrupts
+Date: Tue, 25 Jun 2024 11:33:11 +0200
+Message-ID: <20240625085556.996458138@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-References: <20240625085525.931079317@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.9-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 3295f1b866bfbcabd625511968e8a5c541f9ab32 ]
+commit 096597cfe4ea08b1830e775436d76d7c9d6d3037 upstream.
 
-The incompatible device in my possession has a sticker that says
-"F5U002 Rev 2" and "P80453-B", and lsusb identifies it as
-"050d:0002 Belkin Components IEEE-1284 Controller". There is a bug
-report from 2007 from Michael Trausch who was seeing the exact same
-errors that I saw in 2024 trying to use this cable.
+On some systems the processor thermal device interrupt is shared with
+other PCI devices. In this case return IRQ_NONE from the interrupt
+handler when the interrupt is not for the processor thermal device.
 
-Link: https://lore.kernel.org/all/46DE5830.9060401@trausch.us/
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Link: https://lore.kernel.org/r/20240326150723.99939-5-alexhenrie24@gmail.com
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Fixes: f0658708e863 ("thermal: int340x: processor_thermal: Use non MSI interrupts by default")
+Cc: 6.7+ <stable@vger.kernel.org> # 6.7+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/uss720.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ .../intel/int340x_thermal/processor_thermal_device_pci.c       | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/misc/uss720.c b/drivers/usb/misc/uss720.c
-index b00d92db5dfd1..eb5a8e0d9e2d6 100644
---- a/drivers/usb/misc/uss720.c
-+++ b/drivers/usb/misc/uss720.c
-@@ -677,7 +677,7 @@ static int uss720_probe(struct usb_interface *intf,
- 	struct parport_uss720_private *priv;
- 	struct parport *pp;
- 	unsigned char reg;
--	int i;
-+	int ret;
+diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
+index 14e34eabc419..4a1bfebb1b8e 100644
+--- a/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
++++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_device_pci.c
+@@ -150,7 +150,7 @@ static irqreturn_t proc_thermal_irq_handler(int irq, void *devid)
+ {
+ 	struct proc_thermal_pci *pci_info = devid;
+ 	struct proc_thermal_device *proc_priv;
+-	int ret = IRQ_HANDLED;
++	int ret = IRQ_NONE;
+ 	u32 status;
  
- 	dev_dbg(&intf->dev, "probe: vendor id 0x%x, device id 0x%x\n",
- 		le16_to_cpu(usbdev->descriptor.idVendor),
-@@ -688,8 +688,8 @@ static int uss720_probe(struct usb_interface *intf,
- 		usb_put_dev(usbdev);
- 		return -ENODEV;
+ 	proc_priv = pci_info->proc_priv;
+@@ -175,6 +175,7 @@ static irqreturn_t proc_thermal_irq_handler(int irq, void *devid)
+ 		/* Disable enable interrupt flag */
+ 		proc_thermal_mmio_write(pci_info, PROC_THERMAL_MMIO_INT_ENABLE_0, 0);
+ 		pkg_thermal_schedule_work(&pci_info->work);
++		ret = IRQ_HANDLED;
  	}
--	i = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
--	dev_dbg(&intf->dev, "set interface result %d\n", i);
-+	ret = usb_set_interface(usbdev, intf->altsetting->desc.bInterfaceNumber, 2);
-+	dev_dbg(&intf->dev, "set interface result %d\n", ret);
  
- 	interface = intf->cur_altsetting;
- 
-@@ -725,12 +725,18 @@ static int uss720_probe(struct usb_interface *intf,
- 	set_1284_register(pp, 7, 0x00, GFP_KERNEL);
- 	set_1284_register(pp, 6, 0x30, GFP_KERNEL);  /* PS/2 mode */
- 	set_1284_register(pp, 2, 0x0c, GFP_KERNEL);
--	/* debugging */
--	get_1284_register(pp, 0, &reg, GFP_KERNEL);
-+
-+	/* The Belkin F5U002 Rev 2 P80453-B USB parallel port adapter shares the
-+	 * device ID 050d:0002 with some other device that works with this
-+	 * driver, but it itself does not. Detect and handle the bad cable
-+	 * here. */
-+	ret = get_1284_register(pp, 0, &reg, GFP_KERNEL);
- 	dev_dbg(&intf->dev, "reg: %7ph\n", priv->reg);
-+	if (ret < 0)
-+		return ret;
- 
--	i = usb_find_last_int_in_endpoint(interface, &epd);
--	if (!i) {
-+	ret = usb_find_last_int_in_endpoint(interface, &epd);
-+	if (!ret) {
- 		dev_dbg(&intf->dev, "epaddr %d interval %d\n",
- 				epd->bEndpointAddress, epd->bInterval);
- 	}
+ 	pci_write_config_byte(pci_info->pdev, 0xdc, 0x01);
 -- 
-2.43.0
+2.45.2
 
 
 
