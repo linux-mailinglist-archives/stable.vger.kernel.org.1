@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-55360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E62F916340
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:44:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2127916322
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 11:43:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF1A1285BEA
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:44:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 784AD1F22C00
+	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 09:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D091494D1;
-	Tue, 25 Jun 2024 09:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CE3149C79;
+	Tue, 25 Jun 2024 09:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/F+URKU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikbZjn+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F1112EBEA;
-	Tue, 25 Jun 2024 09:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E964C149E06;
+	Tue, 25 Jun 2024 09:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308674; cv=none; b=jgDl6A7KKbfQuM3X8OKHzbyDZiXY6rkCp1GnwhwDWCAUGIgj6iiVzQF6Zz2EbHZKf7VkWg630i9Xgxbpn1Tb8chx2uJvNuQFFWw9jLSu4RDB5FFGPcECm2hHEah3D7zTSWbqyyX10cQ+11xB5bJKW6bYOwJ9f99g3OiVCDVjETI=
+	t=1719308586; cv=none; b=SiueQy6OxbqKJSNnkZBIqJ5rH96sGEfgwY9JMW9zZzdQMis5ykXNd/3smqqVybTjXDGqm9A7VecBu3bkZswYhL5nd6sgwb7fSzT/5MLknipvgsx7l+zwmAfIcGsqPzOfICIRQ7yuIfOhoya2d3ohaD/85sfouwOGWrYDPWvNBao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308674; c=relaxed/simple;
-	bh=vZhC+AshlBeMeSglfdm9W0ERb7B7Upra0hHkejzdZqQ=;
+	s=arc-20240116; t=1719308586; c=relaxed/simple;
+	bh=NKMvFAAxNw6jm/cDiqaeADEDXRucdM4pzBf2Xy70b7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t35WWEgLacrER4Jt/nYd9w2vCklRYyI8n8RldiJuuLLL4vHqhCoIik2JA+9ZhCGA3VvSTEW75ageX+fwxnPJ3GKKz9ESt5qPOOAK3+BJusBqJ8/IUqXo9JnY1bvb6PtQTqCj6RGgELURQRQ6O6iNnDTULX1LqVifM9P85TCeCOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/F+URKU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E16E9C32781;
-	Tue, 25 Jun 2024 09:44:33 +0000 (UTC)
+	 MIME-Version; b=u6rDPvdmYm/hRburX95MJ1nUk7wxRkHepN/Cg+SjLzPEcX4e3FKs4VQcrqtknK9vBCus5fEdvjymE2L9ECi1QsSZiGY1Ojp5Tvn4dcqeyGIx/HPrWNOK5Ui8tQcct+Qz0zLVTM7CrgDMvHuzr3KERdiCTlKRyGZt2AojC5bCSiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ikbZjn+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC23C32781;
+	Tue, 25 Jun 2024 09:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1719308674;
-	bh=vZhC+AshlBeMeSglfdm9W0ERb7B7Upra0hHkejzdZqQ=;
+	s=korg; t=1719308585;
+	bh=NKMvFAAxNw6jm/cDiqaeADEDXRucdM4pzBf2Xy70b7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/F+URKUIDkCm7oCdIZGSL9wDFJ1pfuJeq6LzMI8HCe3GGDNi8fFRDGWVkAmmGI8h
-	 93JWPMhTdxHbGnfWBsK8UGab4s+c8jLZnbS/qGvUqzMvwvkhNpjRrmtcRAf3mOS2BY
-	 GmD469mKoVEySvwsHp137QqUcblCow4LSh7t/FwA=
+	b=ikbZjn+QAhkuVFkLY6OGNrFURgXa+H/8M0ZSJedjWFqJDgz6jhD4V+wja/WBuwMwk
+	 e9T8yypNvoV3Mq9+oGWS7DywrJ7tM8fiKt/YbP8jlg9cbjMYw5yXNysH+EgnqROceD
+	 pt0fzDQFIGCP5NO0s/HNvBKXRWS9lzxcJGmlxxeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenliang Li <cliang01.li@samsung.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.9 171/250] io_uring/rsrc: fix incorrect assignment of iter->nr_segs in io_import_fixed
-Date: Tue, 25 Jun 2024 11:32:09 +0200
-Message-ID: <20240625085554.616669633@linuxfoundation.org>
+Subject: [PATCH 6.9 172/250] firmware: psci: Fix return value from psci_system_suspend()
+Date: Tue, 25 Jun 2024 11:32:10 +0200
+Message-ID: <20240625085554.654586704@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 References: <20240625085548.033507125@linuxfoundation.org>
@@ -67,36 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chenliang Li <cliang01.li@samsung.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit a23800f08a60787dfbf2b87b2e6ed411cb629859 ]
+[ Upstream commit e7c3696d4692e8046d25f6e63f983e934e12f2c5 ]
 
-In io_import_fixed when advancing the iter within the first bvec, the
-iter->nr_segs is set to bvec->bv_len. nr_segs should be the number of
-bvecs, plus we don't need to adjust it here, so just remove it.
+Currently we return the value from invoke_psci_fn() directly as return
+value from psci_system_suspend(). It is wrong to send the PSCI interface
+return value directly. psci_to_linux_errno() provide the mapping from
+PSCI return value to the one that can be returned to the callers within
+the kernel.
 
-Fixes: b000ae0ec2d7 ("io_uring/rsrc: optimise single entry advance")
-Signed-off-by: Chenliang Li <cliang01.li@samsung.com>
-Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/20240619063819.2445-1-cliang01.li@samsung.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Use psci_to_linux_errno() to convert and return the correct value from
+psci_system_suspend().
+
+Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Link: https://lore.kernel.org/r/20240515095528.1949992-1-sudeep.holla@arm.com
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rsrc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/firmware/psci/psci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index 87f9aa7cf9255..956e2c715eb48 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -1105,7 +1105,6 @@ int io_import_fixed(int ddir, struct iov_iter *iter,
- 			 * branch doesn't expect non PAGE_SIZE'd chunks.
- 			 */
- 			iter->bvec = bvec;
--			iter->nr_segs = bvec->bv_len;
- 			iter->count -= offset;
- 			iter->iov_offset = offset;
- 		} else {
+diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
+index d9629ff878619..2328ca58bba61 100644
+--- a/drivers/firmware/psci/psci.c
++++ b/drivers/firmware/psci/psci.c
+@@ -497,10 +497,12 @@ int psci_cpu_suspend_enter(u32 state)
+ 
+ static int psci_system_suspend(unsigned long unused)
+ {
++	int err;
+ 	phys_addr_t pa_cpu_resume = __pa_symbol(cpu_resume);
+ 
+-	return invoke_psci_fn(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND),
++	err = invoke_psci_fn(PSCI_FN_NATIVE(1_0, SYSTEM_SUSPEND),
+ 			      pa_cpu_resume, 0, 0);
++	return psci_to_linux_errno(err);
+ }
+ 
+ static int psci_system_suspend_enter(suspend_state_t state)
 -- 
 2.43.0
 
