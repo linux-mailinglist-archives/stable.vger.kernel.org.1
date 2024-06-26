@@ -1,113 +1,188 @@
-Return-Path: <stable+bounces-55813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FEF9174A0
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 01:19:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9573C917574
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 03:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F405A285542
-	for <lists+stable@lfdr.de>; Tue, 25 Jun 2024 23:19:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E0372832B5
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 01:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362A017F4F5;
-	Tue, 25 Jun 2024 23:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E06BE4D;
+	Wed, 26 Jun 2024 01:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="WkCxcBsq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IqhgsVMv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF2D146A64
-	for <stable@vger.kernel.org>; Tue, 25 Jun 2024 23:19:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B831A6125;
+	Wed, 26 Jun 2024 01:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719357554; cv=none; b=PFDSWeQ51gsN/C0YdveieYlPbRsIcyX3boI4g/VYwSVnguzEb/tE0JpvNORaO8Hqll36zjEQ5VPARGcaMIQJMe683dU58sN3N1k7MSnzVcUjoq28ovwztavL4k30aIMo1hZgFU0Gxv1f9rYN3ah+n/JRsJIt3kvU06vakW4K1S8=
+	t=1719364283; cv=none; b=ek5MZt4FSVx0OYTKmu5SjnlCGEgcRT3VwWI44zjfT+mTpUhUaYvkXe8tTZeCWrlwWRc4Mb5M+59d8FYkfM6pFFeM2WaOdU9/S0BUxUiD3IH7Eg6fk6rrOmq8N+QrsNwT8BMV9jM8Lf8rVtBfKpCCtaXsEqLUZXnvejoxrFKWWXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719357554; c=relaxed/simple;
-	bh=3cLkEoQgP1YdwO0BfLrc2Nt9hXh8gTQtQS3drljKsUE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I0lnsJB0pMTJ70TeL4WzxL2InfMoQ0sDjgTlvvtwJRP7WSN2J8el41zenMDC7EnxJ68d43EEEJzviVn5uxxfPMi29OjX7T8qXL9Mf6RIsV0HqeMh6xmj5FLE2/o9THYx6K2z6coafFKxlttVO/rj8KnxaA+bNwsbBvCnn1/MNf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=WkCxcBsq; arc=none smtp.client-ip=209.85.166.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-7eb7a2f062cso243653339f.0
-        for <stable@vger.kernel.org>; Tue, 25 Jun 2024 16:19:11 -0700 (PDT)
+	s=arc-20240116; t=1719364283; c=relaxed/simple;
+	bh=wCmBRhXWGxj9VULNLaj8yk8dzpHGdMEeXmASJF0aKQU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FLWGcdXyyiUJYNzKNr58ZSSHvuIYr3aHHNWtzPQZCvkzyj+pg7Tx3SBoYvSS7sz10B8WeUtVAMPgl3gWMjTuGi+AU4WOD1di5GJGJvIbS1Yik3Y7R2PccqcpwMqkknfQRVr5qaPbepYMmKs1MU2QWGaCLltIl1WE2cB036cPZlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IqhgsVMv; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-57d331cc9feso4287171a12.2;
+        Tue, 25 Jun 2024 18:11:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1719357551; x=1719962351; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W1GHJHK8fYZOK8MQRqagipkH8Y/cWBs/Aado6nOWSJY=;
-        b=WkCxcBsqNgiIe+3TCH7eiNHC40xBNI0jZupXolTlcmkVkVUQaD9QmVnW9NheN5GPfh
-         j4D+5OpyAEn9IXAH3o0ny6lIXwEwGTpSA2qwfKkrwU80HRRQP5KZgYuDhq8b1U5Yfgnp
-         7X1IdXkgJH+qbsFeo27pytyp/mhj5+Wh/vUIs=
+        d=gmail.com; s=20230601; t=1719364280; x=1719969080; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=asyx3WntG4OThCRcShDwfSCXWLgRQ+/Uaa7W33Vqtyk=;
+        b=IqhgsVMvdPKxJNF9nMs80uqnigyILgdSvCzz03A/3iDC2RUyGWJt50pX0tiyT6vfYX
+         0Y9rxgKrASAprsNQMpwDo9Y2QEDLPbnWSOWjxC6IcpkNRg90d2s0o4W/9vpdoTvQ0gvf
+         60Uma5X734pcb3zZdLym3h2o1dZ7DXmgtiRgs81jYwFICC2dphEUkEiRNygm0e+E7yPm
+         FUNNtEvi8pg8lyN8JqUKGwrFsj0mTu18gfp1V6HCBkUMVIUN6IH6NVrENvPTUIJvN8lf
+         NmH44Jn4bnAkFI0QjhCQNYWp+WB127FHhwIn8UtcT99gq4m2yVHqOZ9uNX40rJ4LtUng
+         mjjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719357551; x=1719962351;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1719364280; x=1719969080;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=W1GHJHK8fYZOK8MQRqagipkH8Y/cWBs/Aado6nOWSJY=;
-        b=CeoA/xY/xpyf1eh0TNBuresl4NCXp4KziviaQVqeeVTS7If9JY6lZd583zvkBAya/n
-         XlmifcjayWTqfAf5xIxJzdcpZxFpY5S9gW/XnHdJgB1e333MOfAkpxx3r56F/0aMJZs9
-         V/sbudsf1EhxtJv9qwN3/HUY/wXOInzeDAjq8zhfUcqLrPAf0cd/aWkYaYIslF/y0WOS
-         7oAvi0MWdvTeXRXbFYra7SgQJ0x/rz4znC3/sHPQd9j8IzyIZ5lnwdNoZfZ8CEmx+bW4
-         E2jxiMmswkoCXpRRylEvvJjik7fUlGltvm8PTr6wsNTPTPpZYxuHQzc+yAWEit5m4YmG
-         DHLQ==
-X-Gm-Message-State: AOJu0Yw8RTqO16VpyOWDRYnYE5sd4QxpbxB+mdooElNuAX+IpwCmJPle
-	4xqRfDPZtMF2SDczGTLSeL5cjXFMn1Ser8bs2ngIy1xSsL+8K3HWh9lM1p30kQ==
-X-Google-Smtp-Source: AGHT+IF9PvWW+uGfCOxuE7/74/1AIT0M4Il4mBFOfwU/j90/kgt3HudyWaRkt4x9JkWeKxP9KFOJEg==
-X-Received: by 2002:a05:6602:3fcc:b0:7de:a982:c4a5 with SMTP id ca18e2360f4ac-7f3a7532b56mr1053100839f.6.1719357551339;
-        Tue, 25 Jun 2024 16:19:11 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([72.42.103.171])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b9d127b6f0sm2837019173.178.2024.06.25.16.19.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jun 2024 16:19:11 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Tue, 25 Jun 2024 17:19:09 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.9 000/250] 6.9.7-rc1 review
-Message-ID: <ZntQbVyebJZZCbh_@fedora64.linuxtx.org>
-References: <20240625085548.033507125@linuxfoundation.org>
+        bh=asyx3WntG4OThCRcShDwfSCXWLgRQ+/Uaa7W33Vqtyk=;
+        b=T/NdzOu/mX4CS1ONLB1bcYjv4skIdOQrI+wpO+T/0+HVZG8wtiN87PwKVI8F13khbh
+         bCXHsBcoEkFlxWrGghVp+F8R1lWnXmezzXGs2mK7PsfUhnxADau4BaWxsF6eFb+T95YW
+         o/Uty1AFtia66LLKJV6jQ62oqrRm+oeeWyY+GafHcuLGsB2f0wCJ+5ZcoxiBLczBwSqr
+         kvU/cyBr1xK1iHg4ziR0FakmZh/BcW21Gb76yQgf1Cw+c6FWYtJLV4fm5fB6xukknyCU
+         NFizdk7y2l8hfwMEUcRwyHWrI4bMJBPlAjZsysg2DGSkzn1GwClswg8Xg5tx0162/k8F
+         C7EQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVwswUNljKrwiXMtP++OdA0YWaJon4JkQ8HDOHiZ9TdlHgskKHLwQncsh/099aIh0V280w1nJ+YssluKQsa46Ri42z44bW0NgBMM3ldPBaerfTgw9Sh4LUGp8J+XJ4D2KkyrOku
+X-Gm-Message-State: AOJu0Yw413yrvkzfkep34JS/oeIpx0eBJZvQXrqPXoNXadcqwykD7RzX
+	akMCyY7nbly+xhTlMSc64ISuNw18M8So36/oZ7zy3lbGadDApROrk2qKlFL4+in+kZ5Y0iAnmDO
+	POAL6COK0dHEBnjHT6SKjU5Gs+/c=
+X-Google-Smtp-Source: AGHT+IFGmha0T9jNof/KuwAohpk4SnLJgwELl6O3jUe3eisCuLf5J9RjYsaDsvAcLzroKTOUT2WgmJb2X6FeYvkzxHQ=
+X-Received: by 2002:a50:cd93:0:b0:57a:2fe7:6699 with SMTP id
+ 4fb4d7f45d1cf-57d4a281750mr7434714a12.14.1719364279832; Tue, 25 Jun 2024
+ 18:11:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+References: <fdaf2e41bb6a0c5118ff9cc21f4f62583208d885.1718655070.git.dsimic@manjaro.org>
+ <CAKGbVbs8VmCXVOHbhkCYEHNJiKWwy10p0SV9J09h2h7xjs7hUg@mail.gmail.com>
+ <CAKGbVbsM4rCprWdp+aGXE-pvCkb6N7weUyG2z4nXqFpv+y=LrA@mail.gmail.com>
+ <20240618-great-hissing-skink-b7950e@houat> <4813a6885648e5368028cd822e8b2381@manjaro.org>
+ <457ae7654dba38fcd8b50e38a1275461@manjaro.org> <2c072cc4bc800a0c52518fa2476ef9dd@manjaro.org>
+In-Reply-To: <2c072cc4bc800a0c52518fa2476ef9dd@manjaro.org>
+From: Qiang Yu <yuq825@gmail.com>
+Date: Wed, 26 Jun 2024 09:11:07 +0800
+Message-ID: <CAKGbVbsGm7emEPzGuf0Xn5k22Pbjfg9J9ykJHtvDF3SacfDg6A@mail.gmail.com>
+Subject: Re: [PATCH] drm/lima: Mark simple_ondemand governor as softdep
+To: Dragan Simic <dsimic@manjaro.org>
+Cc: Maxime Ripard <mripard@kernel.org>, dri-devel@lists.freedesktop.org, 
+	lima@lists.freedesktop.org, maarten.lankhorst@linux.intel.com, 
+	tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, 
+	linux-kernel@vger.kernel.org, Philip Muller <philm@manjaro.org>, 
+	Oliver Smith <ollieparanoid@postmarketos.org>, Daniel Smith <danct12@disroot.org>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 25, 2024 at 11:29:18AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.7 release.
-> There are 250 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 27 Jun 2024 08:54:55 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.9.7-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.9.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Wed, Jun 26, 2024 at 2:15=E2=80=AFAM Dragan Simic <dsimic@manjaro.org> w=
+rote:
+>
+> Hello everyone,
+>
+> Just checking, any further thoughts about this patch?
+>
+I'm OK with this as a temp workaround because it's simple and do no harm
+even it's not perfect. If no other better suggestion for short term, I'll s=
+ubmit
+this at weekend.
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
-
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+> On 2024-06-18 21:22, Dragan Simic wrote:
+> > On 2024-06-18 12:33, Dragan Simic wrote:
+> >> On 2024-06-18 10:13, Maxime Ripard wrote:
+> >>> On Tue, Jun 18, 2024 at 04:01:26PM GMT, Qiang Yu wrote:
+> >>>> On Tue, Jun 18, 2024 at 12:33=E2=80=AFPM Qiang Yu <yuq825@gmail.com>=
+ wrote:
+> >>>> >
+> >>>> > I see the problem that initramfs need to build a module dependency=
+ chain,
+> >>>> > but lima does not call any symbol from simpleondemand governor mod=
+ule.
+> >>>> > softdep module seems to be optional while our dependency is hard o=
+ne,
+> >>>> > can we just add MODULE_INFO(depends, _depends), or create a new
+> >>>> > macro called MODULE_DEPENDS()?
+> >>
+> >> I had the same thoughts, because softdeps are for optional module
+> >> dependencies, while in this case it's a hard dependency.  Though,
+> >> I went with adding a softdep, simply because I saw no better option
+> >> available.
+> >>
+> >>>> This doesn't work on my side because depmod generates modules.dep
+> >>>> by symbol lookup instead of modinfo section. So softdep may be our
+> >>>> only
+> >>>> choice to add module dependency manually. I can accept the softdep
+> >>>> first, then make PM optional later.
+> >>
+> >> I also thought about making devfreq optional in the Lima driver,
+> >> which would make this additional softdep much more appropriate.
+> >> Though, I'm not really sure that's a good approach, because not
+> >> having working devfreq for Lima might actually cause issues on
+> >> some devices, such as increased power consumption.
+> >>
+> >> In other words, it might be better to have Lima probing fail if
+> >> devfreq can't be initialized, rather than having probing succeed
+> >> with no working devfreq.  Basically, failed probing is obvious,
+> >> while a warning in the kernel log about no devfreq might easily
+> >> be overlooked, causing regressions on some devices.
+> >>
+> >>> It's still super fragile, and depends on the user not changing the
+> >>> policy. It should be solved in some other, more robust way.
+> >>
+> >> I see, but I'm not really sure how to make it more robust?  In
+> >> the end, some user can blacklist the simple_ondemand governor
+> >> module, and we can't do much about it.
+> >>
+> >> Introducing harddeps alongside softdeps would make sense from
+> >> the design standpoint, but the amount of required changes wouldn't
+> >> be trivial at all, on various levels.
+> >
+> > After further investigation, it seems that the softdeps have
+> > already seen a fair amount of abuse for what they actually aren't
+> > intended, i.e. resolving hard dependencies.  For example, have
+> > a look at the commit d5178578bcd4 (btrfs: directly call into
+> > crypto framework for checksumming) [1] and the lines containing
+> > MODULE_SOFTDEP() at the very end of fs/btrfs/super.c. [2]
+> >
+> > If a filesystem driver can rely on the abuse of softdeps, which
+> > admittedly are a bit fragile, I think we can follow the same
+> > approach, at least for now.
+> >
+> > With all that in mind, I think that accepting this patch, as well
+> > as the related Panfrost patch, [3] should be warranted.  I'd keep
+> > investigating the possibility of introducing harddeps in form
+> > of MODULE_HARDDEP() and the related support in kmod project,
+> > similar to the already existing softdep support, [4] but that
+> > will inevitably take a lot of time, both for implementing it
+> > and for reaching various Linux distributions, which is another
+> > reason why accepting these patches seems reasonable.
+> >
+> > [1]
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3Dd5178578bcd4
+> > [2]
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/fs/btrfs/super.c#n2593
+> > [3]
+> > https://lore.kernel.org/dri-devel/4e1e00422a14db4e2a80870afb704405da16f=
+d1b.1718655077.git.dsimic@manjaro.org/
+> > [4]
+> > https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=3D=
+49d8e0b59052999de577ab732b719cfbeb89504d
 
