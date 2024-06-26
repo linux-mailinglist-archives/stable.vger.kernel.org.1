@@ -1,74 +1,85 @@
-Return-Path: <stable+bounces-55838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6093C917FEC
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 13:41:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03DFD91827D
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 15:33:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C3EF286657
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 11:41:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A85F41F25CEF
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 13:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAF517F4F2;
-	Wed, 26 Jun 2024 11:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C0016190C;
+	Wed, 26 Jun 2024 13:32:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AAD79CE;
-	Wed, 26 Jun 2024 11:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A3017C7CD
+	for <stable@vger.kernel.org>; Wed, 26 Jun 2024 13:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719402090; cv=none; b=jbXnwtvhbSMV16+Joe0RdY7oWnBgckVkHbiQyY5L4f5tqcDAFQ6aSrZvMFFM8x6cl6jQ9B35lAak0MtadzeqnbK3gMOyXyNReZ+YiLhwkML/PrlZ9MI7W6paTEqGtyYVXwdIEOqpqqla2Bmw6Hd3dEHzicXWCmdQGbDdcXS6DVA=
+	t=1719408771; cv=none; b=DiQ6vjuG88bnZ5pDlK6WdjdEpswLY1tXtYpaGRLuZjTC/PGLevJt7KGcWEsagXA2fVy1boY12lGZUhz6pwXImaG3BgCXh1dCEn1+jeDc2DnKbqs7XqUB8bYt/6ZMrR0sFdrECirROfjRado08NCO65iLn/ZdqyPmOEeG9IBMjUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719402090; c=relaxed/simple;
-	bh=0KlVBMdfshBi0ZXObaucGAnJ917Dsu1uCjDMmmjZmHg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FjUh/YcdIhFq1labJYiG3FuN9WDMZqjbosVl3smdRQJS/Pdr3fbAb+kxy7R1d1vRGQzjUeH71VJF+dus8VMF++kqt/mu4WJs+HJPup6CjF3XLwwnjwFwdQkbz/I/OxaJRRVJVWRHHhh7uH67F/3NJ7CLaVQpHDtCGIbaVoPvZkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
-Received: from [78.30.37.63] (port=48270 helo=gnumonks.org)
-	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <pablo@gnumonks.org>)
-	id 1sMR1f-007swq-BN; Wed, 26 Jun 2024 13:41:25 +0200
-Date: Wed, 26 Jun 2024 13:41:22 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc: Florian Westphal <fw@strlen.de>, netdev@vger.kernel.org,
-	netfilter-devel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH nf] netfilter: restore default behavior for
- nf_conntrack_events
-Message-ID: <Znv-YuDbgwk_1gOX@calendula>
-References: <20240604135438.2613064-1-nicolas.dichtel@6wind.com>
+	s=arc-20240116; t=1719408771; c=relaxed/simple;
+	bh=KPXTLFeHBIPS/fvadPTIOJXtoGjmqv+hc0kyhwehAbI=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=AZ4ZN6QzF1crrWEklgNdKBDdLa3+F2oQBipFpYfZX8uj+ztk6CPs9UTTi4jHJJKTP7q04F1Oxu8jSIupUTYyzbs6U6n70HgPoNcysNp/mn5avwCtyasv6B3RKGKIUnyNwJ4u9MZeUDz2xCUmWIltvizmnVAR3j5rjlcq20DXbMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from hverkuil by linuxtv.org with local (Exim 4.96)
+	(envelope-from <hverkuil@linuxtv.org>)
+	id 1sMSlV-0008C5-1k;
+	Wed, 26 Jun 2024 13:32:49 +0000
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Date: Wed, 26 Jun 2024 06:14:02 +0000
+Subject: [git:media_stage/master] media: imx-pxp: Fix ERR_PTR dereference in pxp_probe()
+To: linuxtv-commits@linuxtv.org
+Cc: stable@vger.kernel.org, Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1sMSlV-0008C5-1k@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240604135438.2613064-1-nicolas.dichtel@6wind.com>
-X-Spam-Score: -1.9 (-)
 
-Hi Nicolas,
+This is an automatic generated email to let you know that the following patch were queued:
 
-On Tue, Jun 04, 2024 at 03:54:38PM +0200, Nicolas Dichtel wrote:
-> Since the below commit, there are regressions for legacy setups:
-> 1/ conntracks are created while there are no listener
-> 2/ a listener starts and dumps all conntracks to get the current state
-> 3/ conntracks deleted before the listener has started are not advertised
-> 
-> This is problematic in containers, where conntracks could be created early.
-> This sysctl is part of unsafe sysctl and could not be changed easily in
-> some environments.
-> 
-> Let's switch back to the legacy behavior.
+Subject: media: imx-pxp: Fix ERR_PTR dereference in pxp_probe()
+Author:  Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Date:    Tue May 14 02:50:38 2024 -0700
 
-Maybe it is possible to annotate destroy events in a percpu area if
-the conntrack extension is not available. This code used to follow
-such approach time ago.
+devm_regmap_init_mmio() can fail, add a check and bail out in case of
+error.
+
+Fixes: 4e5bd3fdbeb3 ("media: imx-pxp: convert to regmap")
+Cc: stable@vger.kernel.org
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240514095038.3464191-1-harshit.m.mogalapalli@oracle.com
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+ drivers/media/platform/nxp/imx-pxp.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+---
+
+diff --git a/drivers/media/platform/nxp/imx-pxp.c b/drivers/media/platform/nxp/imx-pxp.c
+index e62dc5c1a4ae..e4427e6487fb 100644
+--- a/drivers/media/platform/nxp/imx-pxp.c
++++ b/drivers/media/platform/nxp/imx-pxp.c
+@@ -1805,6 +1805,9 @@ static int pxp_probe(struct platform_device *pdev)
+ 		return PTR_ERR(mmio);
+ 	dev->regmap = devm_regmap_init_mmio(&pdev->dev, mmio,
+ 					    &pxp_regmap_config);
++	if (IS_ERR(dev->regmap))
++		return dev_err_probe(&pdev->dev, PTR_ERR(dev->regmap),
++				     "Failed to init regmap\n");
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0)
 
