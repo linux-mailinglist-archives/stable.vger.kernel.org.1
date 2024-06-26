@@ -1,128 +1,127 @@
-Return-Path: <stable+bounces-55817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58F0917630
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 04:35:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 202E9917644
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 04:43:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05EBE1C22375
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 02:35:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFADA283F6F
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 02:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B7221A0B;
-	Wed, 26 Jun 2024 02:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3BB2B2DA;
+	Wed, 26 Jun 2024 02:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aWYVgdPW"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IHQFfkgx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05E21BC44;
-	Wed, 26 Jun 2024 02:35:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEACD1BDEF;
+	Wed, 26 Jun 2024 02:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719369302; cv=none; b=pUlttXYaOn+cDyA8DLYelh1P6d253+XjAf2v5YdbHTGkqf/jkMpLDUqrIOdXSJVDnUyhhx2R1CXVZxW2NtpxzffSF4itu0THou8a9T/rLkIOjol5diyBgz8VRss6QY164ONpQ4nvLYKs7r1mKOZHh5L1I4PSl3jHZhuSWdBWDKI=
+	t=1719369809; cv=none; b=iGD/lWkKT62+nlkolnRLAL2vKZw1pbzJ9+F4pajMo7loHqWaU143BDjs/RcGUqa8NqGhyC5yjWV/QXp5uTEw0CCfFQE1auyvheqRApWzs1aqDgruuBxt74jLaNZ34WEk4ywn4jFlOndNvGM58UGs4hU71ft9+txswZhxiGotVLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719369302; c=relaxed/simple;
-	bh=4Vjb2tHyAUUYGbzlCwqawkkir3yBKn8Rbhng8N62OCY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lqFpqwXxvR3EQZA4yeaHI4/7SwH/MPzz7Zy0kSyNzhdGTq55ZpISck+rUsDGsh1DJFHwUuRtd5t0FyI6kJw3Owo0c12NNumCm4h88xFMvYeTUm44/CSDEUnuj+fXevrr2t9S74dehcZJ1lOPcTFzHqWs3r6ZFFQhygSxW/lNMyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aWYVgdPW; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-6c53a315c6eso4314585a12.3;
-        Tue, 25 Jun 2024 19:35:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719369300; x=1719974100; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7ZWF9nN2QXFvBke0Huzd6wFb2kCuu+RIdg7vyQmFklI=;
-        b=aWYVgdPW/as4BRWhdolwNOBXIigWv8ShsnDHWVNJrfWovVwTEcNWuD8UmGDL2q4uhZ
-         NYePUrRSn1Ff3dnN8LmJL02sbNQ2kjt6GF8WqFh4eOTyOShZw5IpV13YapZ8WdJqeqDv
-         QxKQWUUMhjcaSq2+QeEsgVLu+f1JZB2GClRSWnWmrW4dGn4GnZFX3evP2IJJpIV7FmuM
-         BN/Z8qfPUgEccoh7gq2ro9YTvWRigkwv69Esn5mXdQH1xJwG4A4dgvMdEnjBjOtWYwVw
-         tLPsjM6Sl2mD+umOoFBwX0/tf9YdNVMg8HDUF9zIBtxTuok3Q6ix6DfBOnNnw5YpdUfq
-         4CYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719369300; x=1719974100;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7ZWF9nN2QXFvBke0Huzd6wFb2kCuu+RIdg7vyQmFklI=;
-        b=reTq+3kmmRzBV+kQOg/f5iC+XvbV/+g5X4OkoTaIxxoLCohdiD3JxEZdr0S+aUXIk5
-         SvXzTqRjk/PWvQ5Pg4gaT33mLY47CXDtVAi3waE6HcdO/TMO6aveyGypU5y75+AONkMp
-         xxQXQl4OcujqDfIdxfbl2aSFOcll6uBdZPg+ueWzQiPi3cGM/+UgCTH/2R7T2c/ypoXu
-         O+rysDeKvzLh1BoI/lYUbgRqiSoJQ/7Z33FGv0/3U6m5T5t/aRIyvCVO/OTMvVDJrPDt
-         vlZUzJoWyvpJ1ih4YpKiZ8F4EB/9t/c+eqsdzBn3DSbsdyrZTw5d8IUaKf6rTRYvRTJy
-         /oHw==
-X-Forwarded-Encrypted: i=1; AJvYcCWA9uuEpoe/zdh26YhdVlHCEPabWPY5ZOWX8347CN6wiIQUqXLP7OfBms9lp0ULtj/K0cpPgSxYeJ2yXymlPxnZahBUvYfiuMivP9lFLHhwb6Szsw12WqFzkLivE8TJN5w/PRBx
-X-Gm-Message-State: AOJu0Yz3YLD2r2xVvlOCEyxOWNJPnj5YXnFatwlMrH/CBayJumD7WmvQ
-	1l1FwwpZB8D28yTUsWQW5Ty7OLsq4mTVp6rRVQ8+mVErQPH9qSt9
-X-Google-Smtp-Source: AGHT+IE5bYlswtKZymD8Gik2xErljLWxchhQv4CRUjhtZluoHqQo6z6WaSKQDizibqrINp0ODzbR8w==
-X-Received: by 2002:a17:90b:3ec3:b0:2c2:d163:d761 with SMTP id 98e67ed59e1d1-2c85067faa2mr7154675a91.47.1719369300032;
-        Tue, 25 Jun 2024 19:35:00 -0700 (PDT)
-Received: from archie.me ([103.124.138.155])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c8d8068faasm363151a91.32.2024.06.25.19.34.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jun 2024 19:34:59 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id 9ED091834CA78; Wed, 26 Jun 2024 09:34:56 +0700 (WIB)
-Date: Wed, 26 Jun 2024 09:34:55 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.9 000/250] 6.9.7-rc1 review
-Message-ID: <Znt-T05Wn-7ZsxE9@archie.me>
-References: <20240625085548.033507125@linuxfoundation.org>
+	s=arc-20240116; t=1719369809; c=relaxed/simple;
+	bh=tENRBAG6a/mGJwoN6dM8cGDn5bpECFamtPDl9D/bn7o=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Nvkh4AtD0pL3X1grBsji6SzGcljrcX/L6E74NVVcCWi5eGuDbfciJ53q8I1qDjQzekQpelueKIqa76OyDjCJ7+ZY/qpBvSTQSVcYzKP9GAsuZPIPxTMHLIOG3tZlgqR2o5tUMP1iiFFRKkzukYOt+XSdF7OxS1CrE8rx2XFg0VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IHQFfkgx; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45PGkooH020273;
+	Wed, 26 Jun 2024 02:43:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=JZaL+Uz4Gft+NTwOiNV1nm
+	xyKgDdx04JKJFeZgGRb2s=; b=IHQFfkgxTe9vm4fRLWyfE65oH8ep6f8G3sRaMp
+	rOT8sW8CjNE2f+Qi4a0M8VuLP1VgpVe5T2lSYjGsNl0EBSr5+u/Vlhz7Vm164+qs
+	pLxsOnM4T/PefiZS32c3ElhPkRNpKnuObrfBfpb5jnQBt2dsaGybsVUCZYDC+zhw
+	rvtJOrzPRKE8+L83dZYBemXitd0TY1ghV0SyYmazdZdqvrJGNlZvAo3EjX6uLYtW
+	VR5IKDrvbT43mNID6ZmJgMcqTi67zcrvBLUY9tnY62dCx3DxoUD0/ezbHKnCWTQz
+	mjrhjLB0Ri7pu+Z3kmhRbBkh8TIw3vnKUlTU9BOBkupJ9ceg==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywp6yr5jg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Jun 2024 02:43:21 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45Q2hKlv025955
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Jun 2024 02:43:20 GMT
+Received: from hu-ramess-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 25 Jun 2024 19:43:18 -0700
+From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Rameshkumar Sundaram
+	<quic_ramess@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH] wifi: ath12k: Allow driver initialization for WoW unsupported devices
+Date: Wed, 26 Jun 2024 08:12:57 +0530
+Message-ID: <20240626024257.709460-1-quic_ramess@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="tFBuSGGi66cKpezs"
-Content-Disposition: inline
-In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 6TvUo3_tAQEJWjqD_o3y_ja8Jvee9WZi
+X-Proofpoint-ORIG-GUID: 6TvUo3_tAQEJWjqD_o3y_ja8Jvee9WZi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-26_01,2024-06-25_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=826 bulkscore=0
+ phishscore=0 adultscore=0 mlxscore=0 suspectscore=0 malwarescore=0
+ clxscore=1011 lowpriorityscore=0 spamscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406260020
 
+Currently during driver initialization, mac registration is allowed
+only for devices that advertise WMI_TLV_SERVICE_WOW, but QCN9274
+doesn't support WoW and hence mac registration is aborted and driver
+is de-initialized.
 
---tFBuSGGi66cKpezs
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Allow mac registration to proceed without WoW Support for devices
+that don't advertise WMI_TLV_SERVICE_WOW.
 
-On Tue, Jun 25, 2024 at 11:29:18AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.9.7 release.
-> There are 250 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
-Successfully compiled and installed the kernel on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+Cc: stable@vger.kernel.org
+Fixes: 4a3c212eee0e ("wifi: ath12k: add basic WoW functionalities")
+Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/wow.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+diff --git a/drivers/net/wireless/ath/ath12k/wow.c b/drivers/net/wireless/ath/ath12k/wow.c
+index 685e8e98d845..c5cba825a84a 100644
+--- a/drivers/net/wireless/ath/ath12k/wow.c
++++ b/drivers/net/wireless/ath/ath12k/wow.c
+@@ -1001,8 +1001,8 @@ int ath12k_wow_op_resume(struct ieee80211_hw *hw)
+ 
+ int ath12k_wow_init(struct ath12k *ar)
+ {
+-	if (WARN_ON(!test_bit(WMI_TLV_SERVICE_WOW, ar->wmi->wmi_ab->svc_map)))
+-		return -EINVAL;
++	if (!test_bit(WMI_TLV_SERVICE_WOW, ar->wmi->wmi_ab->svc_map))
++		return 0;
+ 
+ 	ar->wow.wowlan_support = ath12k_wowlan_support;
+ 
 
---=20
-An old man doll... just what I always wanted! - Clara
+base-commit: dadc1101eabb54ace51aa6fc58c902bf43ac0ed7
+-- 
+2.25.1
 
---tFBuSGGi66cKpezs
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZnt+SQAKCRD2uYlJVVFO
-o6j+AP4s7/0Yttqfl2YJTsh8VuBKgw3rHiyfVY2mLQDyhmFVfgEArOmPKDFEscuS
-LbWXxNC55x+tpspXHdo51bwcnUrekgE=
-=noIh
------END PGP SIGNATURE-----
-
---tFBuSGGi66cKpezs--
 
