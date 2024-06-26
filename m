@@ -1,328 +1,185 @@
-Return-Path: <stable+bounces-55852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34799186D2
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 18:08:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF42918730
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 18:20:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7A281C22BF3
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 16:08:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A94E281468
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 16:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A2918FDBB;
-	Wed, 26 Jun 2024 16:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B15418C32B;
+	Wed, 26 Jun 2024 16:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=buckeyemail.osu.edu header.i=@buckeyemail.osu.edu header.b="NUovKUxW";
-	dkim=pass (1024-bit key) header.d=buckeyemail.osu.edu header.i=@buckeyemail.osu.edu header.b="TOhNlpre"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ik3fNd2u"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-002cfd01.pphosted.com (mx0a-002cfd01.pphosted.com [148.163.151.149])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D1518EFCF;
-	Wed, 26 Jun 2024 16:03:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.151.149
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719417821; cv=fail; b=fjpQ9PMhnTaxqRK67LC/9coTPsX9ZFgcqJ0k+qOb3tbQy4tU20ApMXXdbT62K7oTdieX4r18UWgH5vl09Si+f8qjlKnx+wh8yVolggBJxkSlgdqIxdjVnLaqbJPz1Pf+HzzJzbXI7/eAMYwWwxoXPO7XPeK7sCOjNuOakTHg3zA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719417821; c=relaxed/simple;
-	bh=yglm3tNvaw1uc440ms6bKLnRvZ+8WtclWCRQ4LJkP7I=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=bKh69D6sTwAW/yGAQV47AMkEegz3zPlCYX/UFSy3Dk7P5qa6Hx3JfsbwoZRrxOTzCw749Kug2cOnXhcgfIUKgm2QQ02TZty8oz4w0Z5+EuhBhsVYpuVUYqYrJ2A3daFyvt9qDeyChBE4tH95F59UOJy/9rCPB/iNozPSIAcov1c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=buckeyemail.osu.edu; spf=pass smtp.mailfrom=buckeyemail.osu.edu; dkim=pass (2048-bit key) header.d=buckeyemail.osu.edu header.i=@buckeyemail.osu.edu header.b=NUovKUxW; dkim=pass (1024-bit key) header.d=buckeyemail.osu.edu header.i=@buckeyemail.osu.edu header.b=TOhNlpre; arc=fail smtp.client-ip=148.163.151.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=buckeyemail.osu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=buckeyemail.osu.edu
-Received: from pps.filterd (m0300657.ppops.net [127.0.0.1])
-	by mx0a-002cfd01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45Q912bd002684;
-	Wed, 26 Jun 2024 12:02:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	buckeyemail.osu.edu; h=from:to:cc:subject:date:message-id
-	:references:in-reply-to:content-type:content-transfer-encoding
-	:mime-version; s=pps1; bh=yglm3tNvaw1uc440ms6bKLnRvZ+8WtclWCRQ4L
-	JkP7I=; b=NUovKUxWZ86u9blp7lZezxrHfvfmV3Upd0ShoQ9MQmFH4v0pwiFxP9
-	OTOiKe40rIjN3WYFgwPqvhk0qxIYukKuqzKgPDxzHOF0PftMVFWYTL9Y5FHlZA8n
-	0cVHnggG3/Kg7D1YDs8/mwGQAOH4qGaOivc7lEK6KTJj1Tkl68X/iht/ev+FTFEw
-	KKHEhlpYMzjqAdn7qycJsHTokAmibQ5u0204XxJvQK3vGzdJeXUJTO+q6cMORttZ
-	hBnlyUUX0uw/bY5y0gD9xBsjIecTItNneGhhbfR3Q2ihtc1oY1Y9XzWuHju0uajR
-	ODhavYbGbJXykqHHO5HA35Sgo7K70aHQ==
-Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2170.outbound.protection.outlook.com [104.47.58.170])
-	by mx0a-002cfd01.pphosted.com (PPS) with ESMTPS id 4004ckdfhx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Jun 2024 12:02:32 -0400 (EDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Hg+g8j8gJ9qQvFUl1TQ7XfNGPx5Ph9yF9iyS8sB52/oiHEIYyRNh3cMSa1cGHqFmF29vS3R+ivMjHhn+gH0tZ0bfQdepyRdXdze0+D+d2XBHy8L6TyCmbZoTz7hxDL2R4bxI5/Kp6ZUoas+iHxEdfCcNPqcXev15+6yNvRHkf4lDYrXpHDxK5vCrzNpcRnkwaQRg82VUzDqoazVjPxNC8Xcrei00NvezAmBQvWmSTxOGl0RAhaD+AejVqwPsUULd/DGbSWIuamQ9MS5oJuTLoWfAeTNOlne+02xOncvxJz2grsSe0lue8YKubX4lo4tvbiN5kuRUxoOWJSTn6Kr0bw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yglm3tNvaw1uc440ms6bKLnRvZ+8WtclWCRQ4LJkP7I=;
- b=XTbsMdpdj4z9bxPt2nm3pCcpPOp3H8/yursfKIFFRDc7GTYnV0ImbkBNTXhr42X/r/GUsZYP7H31i30Bvse/B/BElcsrOfz63CRx5BWqTxC+2T1xSr4pWVUJpJxzEcQ4y58887j1jC0miA9hD2yz39owoZ/fnbu9gHRdEvCIM2Tmr7dKq4MWhnzdL6qdDltYMQymDYuf7HpgdwPTEV17HwyeW9xZUS4lnTg7gj3yOCo4m9ixmFr99t5qyywikBQosFo6Ho+zdY1NO8mNpJBkTcrd5zLAHJ0IHoKBLj0frbaLUcKcCRoKyGuH+6Z6eqT3MUviyVqGIRYX0KV5jtt4dA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=buckeyemail.osu.edu; dmarc=pass action=none
- header.from=buckeyemail.osu.edu; dkim=pass header.d=buckeyemail.osu.edu;
- arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=buckeyemail.osu.edu;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yglm3tNvaw1uc440ms6bKLnRvZ+8WtclWCRQ4LJkP7I=;
- b=TOhNlpreQ0tjv4lk1pZVqAXwiBaB6b2z+PLH8bVdg8B3Kl0imAvdCXgIaG7uOWtqRcdXAS0rp0QQmM/ifBOjW7t4KKYzglZvBtCSYO6Qlp1BgK9kUvAe8XDmjfjZFlSdS5DiXJ/daRMvN1s39QWK3wc2R1QrKSKsX7vDCkSo3pM=
-Received: from DM6PR01MB5804.prod.exchangelabs.com (2603:10b6:5:1da::13) by
- BY3PR01MB6626.prod.exchangelabs.com (2603:10b6:a03:360::20) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7698.32; Wed, 26 Jun 2024 16:02:30 +0000
-Received: from DM6PR01MB5804.prod.exchangelabs.com
- ([fe80::acf3:583e:e776:4462]) by DM6PR01MB5804.prod.exchangelabs.com
- ([fe80::acf3:583e:e776:4462%7]) with mapi id 15.20.7698.025; Wed, 26 Jun 2024
- 16:02:29 +0000
-From: "Pafford, Robert J." <pafford.9@buckeyemail.osu.edu>
-To: Frank Oltmanns <frank@oltmanns.dev>
-CC: Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
-	<sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec
-	<jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        =?iso-8859-1?Q?Guido_G=FCnther?= <agx@sigxcpu.org>,
-        Purism Kernel Team
-	<kernel@puri.sm>, Ondrej Jirman <megi@xff.cz>,
-        Neil Armstrong
-	<neil.armstrong@linaro.org>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
-        Sam
- Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst
-	<maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        "linux-clk@vger.kernel.org"
-	<linux-clk@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-        "linux-sunxi@lists.linux.dev"
-	<linux-sunxi@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>,
-        "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH v4 1/5] clk: sunxi-ng: common: Support minimum and maximum
- rate
-Thread-Topic: [PATCH v4 1/5] clk: sunxi-ng: common: Support minimum and
- maximum rate
-Thread-Index: AQHavqzpBgj5D7bkhkG8vcHmuBIAebHH7mBAgAjhLiCACXU+bQ==
-Date: Wed, 26 Jun 2024 16:02:29 +0000
-Message-ID: 
- <DM6PR01MB58043A518B836D1CC3509554F7D62@DM6PR01MB5804.prod.exchangelabs.com>
-References: <20240310-pinephone-pll-fixes-v4-1-46fc80c83637@oltmanns.dev>
-	<DM6PR01MB58047C810DDD5D0AE397CADFF7C22@DM6PR01MB5804.prod.exchangelabs.com>
- <87wmmjfxcj.fsf@oltmanns.dev>
-In-Reply-To: <87wmmjfxcj.fsf@oltmanns.dev>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM6PR01MB5804:EE_|BY3PR01MB6626:EE_
-x-ms-office365-filtering-correlation-id: fdeb25fe-4d0a-4fbd-bac8-08dc95f9617f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: 
- BCL:0;ARA:13230038|366014|1800799022|7416012|376012|38070700016;
-x-microsoft-antispam-message-info: 
- =?iso-8859-1?Q?1gUzkqdPOrrqR0MEb2xoND+iwIiYA9rATEqAlZ2GU2eIc3+SqiDFsej25d?=
- =?iso-8859-1?Q?4hNTbrsA4PB08FsY+BAt4TrQ7ke/p9rxKW87BDzz3esluv0QGsqBVME9BJ?=
- =?iso-8859-1?Q?YPSnvMoGJpdBud+2UX9tnpqjonvZDPta1faXU9HuviuaGtCJOwxy4Bj44h?=
- =?iso-8859-1?Q?ILHMnC2j7ihc/Q1gKRxl6MgwHnwtucGbkQL0OFKQwwTpb2/LnoshowJ7C3?=
- =?iso-8859-1?Q?RwTjvACCnH7beeDmea5qmn7tfxiIyiTSATPucasibLzD+2kPlr6wgLK7FU?=
- =?iso-8859-1?Q?CdKNkRBYWYcEWQwpFAeeFMiR0ocwcY62EOBfX8geO6zUOtw04f+MmsbTCm?=
- =?iso-8859-1?Q?D/YdUY6SgAXnWXzeTjNlLWV0MbSfZiPqzDJknV0qyfxHKVmE5BhBdP4LaS?=
- =?iso-8859-1?Q?EfuDYzPQJyLYNR3+yep4sJq4NNWR9A6hD9OH3vrLN7nuY2JFf75T6jgSIS?=
- =?iso-8859-1?Q?eW4kfk3pE9GbU7jFNoK6jO/QszG10Avma9/PrcUH0hCaCfW7AzP4P5RfT/?=
- =?iso-8859-1?Q?WWD67CXqUaXp6auW8mS4K6QwzzBvVH9ggVlFuZoUE8k+yvZQ43ETyhsfSH?=
- =?iso-8859-1?Q?6Y1MqawsmNGUMnEnIWMkAhWpVVmBSxKEjwFewZUGY+jYKINGYissM9eaaS?=
- =?iso-8859-1?Q?lc8mEVFiSKM4mVVxg4MVeOdm5L/gwd9wSF0iBvBar0LHGnpB4or3IpCWoq?=
- =?iso-8859-1?Q?snpbE1UXeYBO5TSM5EOpa7cz5nG2RA1oB0otrvK9dQ9ZUeUQdOYhKH0QKc?=
- =?iso-8859-1?Q?TmM4guHoGRpQTS9EMn8hCBjcMk+VBBHlXe6HK1n/orYQcfXV2V2RjRahzT?=
- =?iso-8859-1?Q?oKvGRnJzk13BQc+mGQCp/FV9i8rovvkfIZIDPYqDqmpkvlAH6wTb39MyZh?=
- =?iso-8859-1?Q?8tnQa1WOd0aut3c2qT+xWZDEdVVw/JeaJ9vECMIAtossbnaZ3HdLY6bmHj?=
- =?iso-8859-1?Q?XQPpPJkM7a2iFhXrBmwPjxwktY5SFEe9I4/03V1X8YQxE0iQrNtl0MJAPU?=
- =?iso-8859-1?Q?BrLNt+sSY3V3rP0X7/Cvz7a3CKgAoSczfRokWxt5/vUIlDjoQLhkagITJI?=
- =?iso-8859-1?Q?lnbB7QGBW+THsYhoxgWhBGRmZ5dF3+4l1ONHVnT8CQgK95JACWcgy9fiQx?=
- =?iso-8859-1?Q?9KPy0b8M0aBA8JqBv/f72RqUcj/jiwJNCzjFzcgf2PQHzhGCpi/5vFLPu7?=
- =?iso-8859-1?Q?+vleP6nfAPQ/nf5HkZ3cO/zPQR3p9ZeBmwxEwi2/p/H/1hf9nzcEbi8uYW?=
- =?iso-8859-1?Q?wvsPSeFwRDEQ7u/+91AP/4O33YFSe5SglJTlEEI1AtrpHBnpzN14F7GzZd?=
- =?iso-8859-1?Q?uuk5iAVPN6F5Q8tUvFg6t1Z8ZDx/b30i60Y4bSf+sVkktD2WzlFOkOkBjq?=
- =?iso-8859-1?Q?u9X7YgBTl8Y3dUX4fbVgL16S4Fn3OUfSb81jNm6QBiNEwYZ1Mky3w=3D?=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR01MB5804.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230038)(366014)(1800799022)(7416012)(376012)(38070700016);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?iso-8859-1?Q?LQUHpqb5+M67pirOLzEw5ZtTttaZqdXOcQjuTEgDBsoK+VINve14fgSHMl?=
- =?iso-8859-1?Q?/Sa/P7hDphuoZEUkL+ifY48QcNCCp/6PmNXmPRW79kzml6uSfjZ5o6l6ot?=
- =?iso-8859-1?Q?2R9Z8iTaHtEDbfBCsvnEROmcrXGiQ2xxiVzVY4gTkOwYZGTG6C5ggXmL/Y?=
- =?iso-8859-1?Q?UKZ6z9YCrvbMHRYNXSa9CoJBUWbZi95pcXo0EpRLEieKLOw0sI7nqtH6Lk?=
- =?iso-8859-1?Q?dYKSvn5T4D3pWhtvxwgNbU40b0iJAyxF1umJb59UCB0IdIPDJzhVusacw4?=
- =?iso-8859-1?Q?v/d5oXbMmalIKNWYD58fyBra76iDYZnuWCATCmfoESQ0Cc8QKC8Svjdlmm?=
- =?iso-8859-1?Q?/LhotAe7zQE+t6G6GpRXPR0b4Fletwv3lrqoMz1ouRqE+qpPCZ28OJD5rC?=
- =?iso-8859-1?Q?yq4LmIFHrOIWcrlmW3Wrq1n5ul4NjERzXbq5M3dU14lkqQQbdVuvNSEW0j?=
- =?iso-8859-1?Q?KFw/+0UpTxPHCvHLV+j0IoC9s785Yv5VfK+fSNp/39nOKG6P+IweITr6Fi?=
- =?iso-8859-1?Q?8fROOJf7RF0Wynj8OiXKuw5UoY4g444HSROgk7NAH6CtogRCcAsrIOYX6L?=
- =?iso-8859-1?Q?kgbNJ/xk1mki825Whs+aKAXPp1jQDdGhCWOwLtfDivmfWuyns1Q5cdP+QQ?=
- =?iso-8859-1?Q?RVFvx5SYtconuM716PN4hDME+gpYOswAY1HaGLe83Wbs1GQwyVc6r0aFhA?=
- =?iso-8859-1?Q?OResQs54pP8lMecWet1I5RXRYoGBPYUZK3oLOA6gX+oGRpGm3TqYMTND9B?=
- =?iso-8859-1?Q?NtNJfMNSqlaIa5JRiWKXcc8ry+xfNI7LwTZ94FIdWavbaO1qbQvfmCPfdg?=
- =?iso-8859-1?Q?qxIzgeXX1lSu84aSX8Vn+nRTOzRvbtVblyYFf6KB6oPF75Wb0vlAL9l+rg?=
- =?iso-8859-1?Q?gWQLutbOnB1Qdpx29y/F55S2vsL30GhFPn0qdNG/oqjKoI6JzB8rDgkxei?=
- =?iso-8859-1?Q?rKDB/aGjCBgdmI/XJEfFl9826otSzh+6ZlmWObBm7Vz0rXtJ2tB3NijIp5?=
- =?iso-8859-1?Q?Dj1t769uejn0TisSyJEelSluX+r6h+coDRtaF1FromC4bfPsVg6tkiIwtc?=
- =?iso-8859-1?Q?RR5LJ4//idQKpnegtG39mPmN6Ah1b6m//6d5S6sWBf/9eh6TbNIdExzY0s?=
- =?iso-8859-1?Q?7cGrRyyw1/RsgPSYrAgSfTC6uAeTuE19BFtUNim8TRaSsd7oRGmcrPXhzc?=
- =?iso-8859-1?Q?BGOaCxcqm4sZRgUA6IpF6vJYeIHlCMxHL/65RzphpUF/pXqsGaE2BCvQad?=
- =?iso-8859-1?Q?Eh+sFKTEPXUCbK2znvjSCOPsaCIR2TWOOH6zBShglOB7YWZC6DWJeIvryy?=
- =?iso-8859-1?Q?NRxrsF7XuncLXjy/8GwxHg7BGaO4XxeWtES+tX6IgcjLH0I1TfUBxjtPYN?=
- =?iso-8859-1?Q?rfCt12dJS23ydBXvgjEc2bLJGJZTypdBP8WbJ0v5KC1E3X1gBIhOxQNv0W?=
- =?iso-8859-1?Q?+YH+3SwhV/tZFQGwu2Cykx2kLWkqQVTE9uf2NP8hqXZoCJrTErdbR9kxcC?=
- =?iso-8859-1?Q?a8Aj8cKns52LWMiR8zl45tsvAh5CR0/Zi14jd470tdJ1Tr9kAOigppLVuQ?=
- =?iso-8859-1?Q?tUtfXoELEh7y/2PFlwiVmCY1rWFF+V01bprOikJLiu05iyzPYXJNEc1DqB?=
- =?iso-8859-1?Q?vU4jHMBCLi7Gg6c10GlwDwin1XVsIG5l23OcNQay0nYa+aeYa1z6BWTJbH?=
- =?iso-8859-1?Q?orLjY/074TGTvlj3uDh6kGFM0XYXl65pdCL5rfiA?=
-Content-Type: text/plain; charset="iso-8859-1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 697361849EF
+	for <stable@vger.kernel.org>; Wed, 26 Jun 2024 16:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719418837; cv=none; b=uA/IuFQHMMdtEz1iuIgqx2AtbCF1G0q97wUQUgIdmq4EYVlX3w7EB2myhhgxe8DlJcRi0yEQY6gDu7K0Z2T4vBBCZkBzbLkvDr7ksZC1ATLxFeVI2WyDwqTARJoS3YYr9hCDW78e/FVTJ0vv8/yjNT+qOEMPUFvyhLCETnx4dEA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719418837; c=relaxed/simple;
+	bh=OCteto+W9gTIgGPpw3NgSna/xuWa5iOdB3S4LUpqDnM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rtAN4aK3kKadtrKUmHckTr5Sr2Gki4J2t7VcIuzxfHBSmKT7WKD31TAAgPLNvtrcyNfG5dSHN/E0TOZBi6pSqwabNxLW1LW9AQk1MQO7kFeR56Ap+5W5hIP51rfAp/dXsXFOL+YqVumrs+MEI7KKr+xvEyLZDauB2ZplgoPpKyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ik3fNd2u; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1719418834;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CyeK3GRLaHegaYbR5xPpklmA5OzN7TqqvirmtcOmEwo=;
+	b=ik3fNd2uOEgzFI2F5AX2pOc4I1BloFTlklTGPDs2KDdEIGA8shscXw52TtYYXnbm0IKDfo
+	fkYvwFIEVmCmqOVCPqNL773Fvpon9DXbBsvkZurePP83KNgG6pushxWgdtRaB2HT90bKwv
+	k+YjRThptGZbwki+xo22cdL9z696j14=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-nE-VmQmbMjiXV3LWBLfaJg-1; Wed, 26 Jun 2024 12:20:33 -0400
+X-MC-Unique: nE-VmQmbMjiXV3LWBLfaJg-1
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-43fb02db6d2so109535271cf.0
+        for <stable@vger.kernel.org>; Wed, 26 Jun 2024 09:20:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719418832; x=1720023632;
+        h=mime-version:user-agent:content-transfer-encoding:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CyeK3GRLaHegaYbR5xPpklmA5OzN7TqqvirmtcOmEwo=;
+        b=JDwLI7HJimE+HrihNhJehUPZTA7qCahxlCYsNXWLrBeXKSVfmpXvia1sbI5siGCdr1
+         7FmXfDieQc50CTmZpIPeY+DWToOu7oX0Vf0W8zGMMJe1UTTMjpvXNgyK5297TNtZfl4w
+         SLbtb5FfbwOWrmfRVXCVtl9qRG1pBIrF+HRM3gNZQjkfFwZ/Z4TTHdtl7taV0j2VnY1C
+         lj7IlOV2x50uDY09h13pQ3KpIyDkZruFTSfkwzHGgDFCY7mb/qDuMYt6oiyWDC3FpO7y
+         FBrfCJtjyS2VMNpAZ5eNkrni93gjjoMUH7Hv2j3rJJV7QNrc8eVQjEJ4NGEFj4VF9lN+
+         +2Rg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmTtatzywlTyUUwiraY8WhRD6mgkc68YjxNzN3niQQUDPUkUuSuN6Jl4UvMajJ2Mx0nijbqLWj2ihHaysQD6aQgPNd7ODH
+X-Gm-Message-State: AOJu0YwUxzrId/FqoLE2A+r7w1pwo1LHO2zVf/ylAVHuZe5isXZCiJRy
+	y4k2SMI4tbbGjjMsPhvBK4EsHxeKhEuUDnH60NpyiFUiM68MX8oZGAqpZhsPFk39e/vbO6pFtv4
+	DPdsrJrJ3k31I3a5GAX4cHfTVcroWvf636Kaf1qbhwBjn2pe6ZBOmxQ==
+X-Received: by 2002:a05:622a:1650:b0:43a:f8d3:f4c4 with SMTP id d75a77b69052e-444d91a95ebmr127274611cf.21.1719418832508;
+        Wed, 26 Jun 2024 09:20:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHl/6pjwXh3eYxhUg1LhHOVVuXrCojU6GizTbxNkS/2KKtWyqteg6noR/crxypzcYyciERgnQ==
+X-Received: by 2002:a05:622a:1650:b0:43a:f8d3:f4c4 with SMTP id d75a77b69052e-444d91a95ebmr127274311cf.21.1719418832193;
+        Wed, 26 Jun 2024 09:20:32 -0700 (PDT)
+Received: from chopper.lyude.net ([2600:4040:5c4c:a000::789])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44504b1b0f7sm11151541cf.19.2024.06.26.09.20.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Jun 2024 09:20:31 -0700 (PDT)
+Message-ID: <7da3ccf156a858c1a7d2691fbedfa7aa2ceccdf7.camel@redhat.com>
+Subject: Re: [PATCH 2/3] drm/dp_mst: Skip CSN if topology probing is not
+ done yet
+From: Lyude Paul <lyude@redhat.com>
+To: Wayne Lin <Wayne.Lin@amd.com>, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org
+Cc: jani.nikula@intel.com, imre.deak@intel.com, daniel@ffwll.ch, 
+ Harry.Wentland@amd.com, jerry.zuo@amd.com, Harry Wentland
+ <hwentlan@amd.com>,  stable@vger.kernel.org
+Date: Wed, 26 Jun 2024 12:20:30 -0400
+In-Reply-To: <20240626084825.878565-3-Wayne.Lin@amd.com>
+References: <20240626084825.878565-1-Wayne.Lin@amd.com>
+	 <20240626084825.878565-3-Wayne.Lin@amd.com>
+Organization: Red Hat Inc.
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: buckeyemail.osu.edu
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR01MB5804.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fdeb25fe-4d0a-4fbd-bac8-08dc95f9617f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Jun 2024 16:02:29.4449
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eb095636-1052-4895-952b-1ff9df1d1121
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: O/pRC1thL90hndhoWthROvJY7nC7ua+cz2zFfOSbMWL9BnqpFSbGpD5c3vrhPo8WDEx5XyJSWFjN0c6EwQpqf62qH21rp+sm10vKqov2F0Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR01MB6626
-X-Proofpoint-GUID: H_GwHnlH67Z8Z5f7GAzFMG1QGXZbjCGl
-X-Proofpoint-ORIG-GUID: H_GwHnlH67Z8Z5f7GAzFMG1QGXZbjCGl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-26_07,2024-06-25_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- adultscore=0 phishscore=0 priorityscore=1501 impostorscore=0
- mlxlogscore=999 malwarescore=0 suspectscore=0 spamscore=0 bulkscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406260117
 
-Hi Frank,=0A=
-=0A=
-Moving to a new for loop makes sense. Let me know when you have a patch=0A=
-and I'll be glad to test it on my board. I do also wonder if this may=0A=
-have contributed to some of the HDMI issues seen in the other thread.=0A=
-=0A=
-Best,=0A=
-Robert=0A=
-=0A=
-> Hi Robert,=0A=
->=0A=
-> I'm truly sorry for the trouble the patch has caused you and for my late=
-=0A=
-> reply!=0A=
->=0A=
-> On 2024-06-14 at 23:52:08 +0000, "Pafford, Robert J." <pafford.9@buckeyem=
-ail.osu.edu> wrote:=0A=
->>> The Allwinner SoC's typically have an upper and lower limit for their=
-=0A=
->>> clocks' rates. Up until now, support for that has been implemented=0A=
->>> separately for each clock type.=0A=
->>>=0A=
->>> Implement that functionality in the sunxi-ng's common part making use o=
-f=0A=
->>> the CCF rate liming capabilities, so that it is available for all clock=
-=0A=
->>> types.=0A=
->>>=0A=
->>> Suggested-by: Maxime Ripard <mripard@kernel.org>=0A=
->>> Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>=0A=
->>> Cc: stable@vger.kernel.org=0A=
->>> ---=0A=
->>>=A0 drivers/clk/sunxi-ng/ccu_common.c | 19 +++++++++++++++++++=0A=
->>>=A0 drivers/clk/sunxi-ng/ccu_common.h |=A0 3 +++=0A=
->>>=A0 2 files changed, 22 insertions(+)=0A=
->>=0A=
->> This patch appears to cause a buffer under-read bug due to the call to '=
-hw_to_ccu_common', which assumes all entries=0A=
->> in the desc->hw_clocks->hws array are contained in ccu_common structs.=
-=0A=
->>=0A=
->> However, not all clocks in the array are contained in ccu_common structs=
-. For example, as part=0A=
->> of the "sun20i-d1-ccu" driver, the "pll-video0" clock holds the 'clk_hw'=
- struct inside of a 'clk_fixed_factor' struct,=0A=
->> as it is a fixed factor clock based on the "pll-video0-4x" clock, create=
-d with the CLK_FIXED_FACTOR_HWS macro.=0A=
->> This results in undefined behavior as the hw_to_ccu_common returns an in=
-valid pointer referencing memory before the=0A=
->> 'clk_fixed_factor' struct.=0A=
->>=0A=
->=0A=
-> Great catch! At first glance, it seems to me that calling=0A=
-> clk_hw_set_rate_range() in sunxi_ccu_probe() should not have happenend=0A=
-> in the loop that iterates over the hw_clks.=0A=
-> =0A=
-> Instead we should add one more loop that iterates over the ccu_clks.=0A=
-> Note, that there is already one such loop but, unfortunately, we can't=0A=
-> use that as it happens before the hw_clks loop and we can only call=0A=
-> clk_hw_set_rate_range() after the hw_clk has been registered.=0A=
-> =0A=
-> Hence, I propose to move the offending code to a new loop:=0A=
-> =A0=A0=A0=A0=A0=A0=A0 for (i =3D 0; i < desc->num_ccu_clks; i++) {=0A=
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 struct ccu_common *cclk =3D=
- desc->ccu_clks[i];=0A=
-> =0A=
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (!cclk)=0A=
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 con=
-tinue;=0A=
-> =0A=
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (cclk->max_rate)=0A=
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 clk=
-_hw_set_rate_range(&cclk->hw, common->min_rate,=0A=
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 common->max=
-_rate);=0A=
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 else=0A=
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 WAR=
-N(cclk->min_rate,=0A=
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 "No max_rate, ignoring min_rate of clock %d - %s\n",=0A=
-> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0 i, cclk->hw.init->name);=0A=
-> =A0=A0=A0=A0=A0=A0=A0 }=0A=
-> =0A=
-> I haven't tested (or even compiled) the above, but I'll test and send a=
-=0A=
-> patch within the next few days for you to test.=0A=
-> =0A=
-> Thanks again,=0A=
-> =A0 Frank=0A=
-> =0A=
->>=0A=
->> I have attached kernel warnings from a system based on the "sun8i-t113s.=
-dtsi" device tree, where the memory contains=0A=
->> a non-zero value for the min-rate but a zero value for the max-rate, tri=
-ggering the "No max_rate, ignoring min_rate"=0A=
->> warning in the 'sunxi_ccu_probe' function.=0A=
->>=0A=
->> [...]=
+Some comments down below:
+
+On Wed, 2024-06-26 at 16:48 +0800, Wayne Lin wrote:
+> [Why]
+> During resume, observe that we receive CSN event before we start
+> topology
+> probing. Handling CSN at this moment based on uncertain topology is
+> unnecessary.
+>=20
+> [How]
+> Add checking condition in drm_dp_mst_handle_up_req() to skip handling
+> CSN
+> if the topology is yet to be probed.
+>=20
+> Cc: Lyude Paul <lyude@redhat.com>
+> Cc: Harry Wentland <hwentlan@amd.com>
+> Cc: Jani Nikula <jani.nikula@intel.com>
+> Cc: Imre Deak <imre.deak@intel.com>
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+> ---
+> =C2=A0drivers/gpu/drm/display/drm_dp_mst_topology.c | 11 +++++++++++
+> =C2=A01 file changed, 11 insertions(+)
+>=20
+> diff --git a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> index 68831f4e502a..fc2ceae61db2 100644
+> --- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> +++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+> @@ -4069,6 +4069,7 @@ static int drm_dp_mst_handle_up_req(struct
+> drm_dp_mst_topology_mgr *mgr)
+> =C2=A0	if (up_req->msg.req_type =3D=3D DP_CONNECTION_STATUS_NOTIFY) {
+> =C2=A0		const struct drm_dp_connection_status_notify
+> *conn_stat =3D
+> =C2=A0			&up_req->msg.u.conn_stat;
+> +		bool handle_csn;
+> =C2=A0
+> =C2=A0		drm_dbg_kms(mgr->dev, "Got CSN: pn: %d ldps:%d ddps:
+> %d mcs: %d ip: %d pdt: %d\n",
+> =C2=A0			=C2=A0=C2=A0=C2=A0 conn_stat->port_number,
+> @@ -4077,6 +4078,16 @@ static int drm_dp_mst_handle_up_req(struct
+> drm_dp_mst_topology_mgr *mgr)
+> =C2=A0			=C2=A0=C2=A0=C2=A0 conn_stat->message_capability_status,
+> =C2=A0			=C2=A0=C2=A0=C2=A0 conn_stat->input_port,
+> =C2=A0			=C2=A0=C2=A0=C2=A0 conn_stat->peer_device_type);
+> +
+> +		mutex_lock(&mgr->probe_lock);
+> +		handle_csn =3D mgr->mst_primary->link_address_sent;
+> +		mutex_unlock(&mgr->probe_lock);
+> +
+> +		if (!handle_csn) {
+> +			drm_dbg_kms(mgr->dev, "Got CSN before finish
+> topology probing. Skip it.");
+> +			kfree(up_req);
+> +			goto out;
+> +		}
+
+Hm. I think you're definitely on the right track here with not handling
+CSNs immediately after resume. My one question though is whether
+dropping the event entirely here is a good idea? In theory, we could
+receive a CSN at any time during the probe - including receiving a CSN
+for a connector that we've already probed in the initial post-resume
+process, which could result in us missing CSNs coming out of resume and
+still having an outdated topology layout.
+
+I'm not totally sure about the solution I'm going to suggest but it
+seems like it would certainly be worth trying: what if we added a flag
+to drm_dp_mst_topology_mgr called something like "csn_during_resume"
+and simply set it to true in response to getting a CSN before we've
+finished reprobing? Then we at the end of the reprobe, we can simply
+restart the reprobing process if csn_during_resume gets set - which
+should still ensure we're up to date with reality.
+
+> =C2=A0	} else if (up_req->msg.req_type =3D=3D
+> DP_RESOURCE_STATUS_NOTIFY) {
+> =C2=A0		const struct drm_dp_resource_status_notify *res_stat
+> =3D
+> =C2=A0			&up_req->msg.u.resource_stat;
+
+--=20
+Cheers,
+ Lyude Paul (she/her)
+ Software Engineer at Red Hat
+
 
