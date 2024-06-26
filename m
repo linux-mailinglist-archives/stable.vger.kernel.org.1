@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-55825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D18917A38
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 09:54:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 364F1917A58
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 10:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87468B24EC2
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 07:54:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67D9B1C2381E
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 08:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA3815F3FB;
-	Wed, 26 Jun 2024 07:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D19A15ECF3;
+	Wed, 26 Jun 2024 08:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NgTcvQuf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NlH/ljII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C360F1FBB;
-	Wed, 26 Jun 2024 07:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360601B950;
+	Wed, 26 Jun 2024 08:01:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719388471; cv=none; b=ooUvd7hqyiBzyz5iq9vUz25Dddvih2rZ7MayAmYFYdbLc5KXRQHmxNYX12cZnXgyZl7YyGL3RQ4M5cLWLwcu/Ps/ix2ICQ+DhojXyfVVBO91eGIsnLUrSSjNxPw8h78YbJCrV0HwaEK3JCVOyq1kgtwqjm/3+eryVZ9mmJV7ZqI=
+	t=1719388890; cv=none; b=bfam/VMVM2P1oPlyDWxOQNUeOyGoIFsUppvgd30QSgU2+C4vxpNzrlkf7sslMMeHm9aJ26Vt62E2Hadp3EfHCtRCJOYk17wVMNL8BOwmDBES+Cbrf0pZwRZc1uz6fMHtdAXipmRB8NICRSfIPSb8dKoSJq0GsJo019e6uU3qQA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719388471; c=relaxed/simple;
-	bh=SbtxvcursYPrSDJUEzv8uDtSs383JJZUnvYrA/hF/4k=;
+	s=arc-20240116; t=1719388890; c=relaxed/simple;
+	bh=84tHsalPE7uo8CDXkU9RGW93//JKeXATdqivE96frA0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZFbMd9Mo+TnhMIaQ/MOCsZrKE51a9tg2fOMDtxF/13H6UPTeQl9wGEU/rlNOiN2h38djAGBrqSDoNjkiNZR9FlMQmEHETDGoFf261GoeXf/a2QYolA++IvHWDE08AuIgnqXLokko0DYdU2MJkQ5+fCpAr/b44TVPrMbcSThm08s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NgTcvQuf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC22FC4AF0B;
-	Wed, 26 Jun 2024 07:54:30 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=X0aEbyQuku6GB3jomho6ig4xgg6YEGgnMjINfQfKWdHmtcL64Qp6KaDWp26D6+4Cmg6XxYIfEAvdL7zoANjoNIHbYTETS/Hc/COYp29f4u54BeeJ/lCNLXVCUuXVgvG4KX7hjwnSWc2Ch9vesrEPn/iq5rNnuqvGCFMAUivedog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NlH/ljII; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96BBC2BD10;
+	Wed, 26 Jun 2024 08:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719388470;
-	bh=SbtxvcursYPrSDJUEzv8uDtSs383JJZUnvYrA/hF/4k=;
+	s=k20201202; t=1719388889;
+	bh=84tHsalPE7uo8CDXkU9RGW93//JKeXATdqivE96frA0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NgTcvQufTogBwZufUbCJXr2yc/1vPoRkdHFeGnYJY8ySQj3TD7HgjAALfFMVVoxqq
-	 DusZlvg+ACiJuMUuqPhWYFVSTFJfLT6iImeTXdK/cGyPk4c8enuKMY06YeO10IwX0B
-	 A3e+BWH0VqwyM1s4f1yfv1baYlUbGl+zOTMByjdfcvxGfC8fdtcuwmrnWtQ4PCCQZ9
-	 0O4oX09quJh7KtFuLRz7oYNQUAJHIGQnbDqy+2UOb7fFcUckcmZHeOdddOxu2r/E9j
-	 Hcor/tKZZ8lZV2YcS61nRuUTOXSQseEGXnMENVDnAnbdQz3uPOXXh2lkoQZl0g1gnR
-	 g+HjSVatDOmlA==
+	b=NlH/ljIIqXWbEWx+lXMMMDBK5Wdwez+EW5y3OPvvqhqM5Th88u3X7QZ7OxSU5M4fN
+	 VGHfbwNUc+XjfFMSoUiJR2bCLX35rU+mKdKQXeSM53Zn+Ou7nwi/DUgLaTMVw22gEA
+	 WoqLIjmuRWCEQQJPy9VT08Z+j8S8G9ES4tF52UNw5r7zppoy7BB0cFfT/31Cy4qUFD
+	 bOTsOsSGC8/4GiRV16vr8mo73DEc0yF/5vwvraU6MmEPOiKhyJchDY2HjlxHpW5ZQ5
+	 +srUb8rpyS9Qmmz2N3xKLKvLRvGnASH+9kbXV2NVtmJhEVvrClpjKTmf9hL56mqBEC
+	 XtIb9aRjbeumg==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan@kernel.org>)
-	id 1sMNUG-000000007vt-0yGY;
-	Wed, 26 Jun 2024 09:54:40 +0200
-Date: Wed, 26 Jun 2024 09:54:40 +0200
+	id 1sMNb1-0000000082r-45tM;
+	Wed, 26 Jun 2024 10:01:40 +0200
+Date: Wed, 26 Jun 2024 10:01:39 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Doug Anderson <dianders@chromium.org>
 Cc: Johan Hovold <johan+linaro@kernel.org>,
@@ -55,13 +55,12 @@ Cc: Johan Hovold <johan+linaro@kernel.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	linux-arm-msm@vger.kernel.org, linux-serial@vger.kernel.org,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] serial: qcom-geni: fix soft lockup on sw flow
- control and suspend
-Message-ID: <ZnvJQDX6NkyRCA8y@hovoldconsulting.com>
+Subject: Re: [PATCH 3/3] serial: qcom-geni: fix garbage output after buffer
+ flush
+Message-ID: <ZnvK420P0M7K9TiA@hovoldconsulting.com>
 References: <20240624133135.7445-1-johan+linaro@kernel.org>
- <20240624133135.7445-3-johan+linaro@kernel.org>
- <CAD=FV=UauWffRM45FsU2SHoKtkVaOEf=Adno+jV+Ashf7NFHuA@mail.gmail.com>
- <CAD=FV=XPKqjMcWhqk4OKxSOPgDKh-VM4J4oMEdQtgpFBw8WSXA@mail.gmail.com>
+ <20240624133135.7445-4-johan+linaro@kernel.org>
+ <CAD=FV=UL2NCbxmQALjKbW4BSpf4WkM30ZHLf1eZiMqRP+s-NDg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,87 +70,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=XPKqjMcWhqk4OKxSOPgDKh-VM4J4oMEdQtgpFBw8WSXA@mail.gmail.com>
+In-Reply-To: <CAD=FV=UL2NCbxmQALjKbW4BSpf4WkM30ZHLf1eZiMqRP+s-NDg@mail.gmail.com>
 
-On Mon, Jun 24, 2024 at 02:58:39PM -0700, Doug Anderson wrote:
-> On Mon, Jun 24, 2024 at 2:23 PM Doug Anderson <dianders@chromium.org> wrote:
-> > On Mon, Jun 24, 2024 at 6:31 AM Johan Hovold <johan+linaro@kernel.org> wrote:
-
-> > > +static void qcom_geni_serial_clear_tx_fifo(struct uart_port *uport)
-> > > +{
-> > > +       struct qcom_geni_serial_port *port = to_dev_port(uport);
-> > > +
-> > >         if (!qcom_geni_serial_main_active(uport))
-> > >                 return;
-> > >
-> > > +       /*
-> > > +        * Increase watermark level so that TX can be restarted and wait for
-> > > +        * sequencer to start to prevent lockups.
-> > > +        */
-> > > +       writel(port->tx_fifo_depth, uport->membase + SE_GENI_TX_WATERMARK_REG);
-> > > +       qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
-> > > +                                       M_TX_FIFO_WATERMARK_EN, true);
+On Mon, Jun 24, 2024 at 03:19:33PM -0700, Doug Anderson wrote:
+> On Mon, Jun 24, 2024 at 6:31 AM Johan Hovold <johan+linaro@kernel.org> wrote:
 > >
-> > Oh, maybe this "wait for sequencer to start to prevent lockups." is
-> > the part that I was missing? Can you explain more about what's going
-> > on here? Why does waiting for the watermark interrupt to fire prevent
-> > lockups? I would have imagined that the watermark interrupt would be
-> > part of the geni hardware and have nothing to do with the firmware
-> > running on the other end, so I'm not sure why it firing somehow would
-> > prevent a lockup. Was this just by trial and error?
+> > The Qualcomm GENI serial driver does not handle buffer flushing and
+> > outputs garbage (or NUL) characters for the remainder of any active TX
+> > command after the write buffer has been cleared.
+> >
+> > Implement the flush_buffer() callback and use it to cancel any active TX
+> > command when the write buffer has been emptied.
 > 
-> Actually, the more I look at it the more confused I am about your
-> qcom_geni_serial_clear_tx_fifo(). Can you explain and maybe add some
-> inline comments in the function since it's not obvious? Specifically,
-> things I'm confused about with your patch:
+> I could be reading it wrong, but in the kernel-doc of `struct
+> tty_ldisc_ops` it seems to indicate that flush_buffer() is for the
+> other direction. Specifically, it says:
 > 
-> 1. The function is named qcom_geni_serial_clear_tx_fifo() which
-> implies that when it finishes that the hardware FIFO will have nothing
-> in it. ...but how does your code ensure this?
+> This function instructs the line discipline to clear its buffers of
+> any input characters it may have queued to be delivered to the user
+> mode process.
 
-Yeah, I realised after I sent out the series that this may not be the
-case. I was under the impression that cancelling a command would discard
-the data in the FIFO (e.g. when starting the next command) but that was
-probably an error in my mental model.
+Yes, but this a uart op (i.e. not tty_ldisc_ops), for which the doc
+states:
 
-Do you see any way to discard the FIFO in the docs you have access to?
- 
-> 2. If the function is really clearing the FIFOs then why do we need to
-> adjust the watermark level? The fact that you need to adjust the
-> watermark levels implies (to me) that there are things stuck in the
-> FIFO still. ...but then what happens to those characters? When are
-> they sent?
+	Flush any write buffers, reset any DMA state and stop any
+	ongoing DMA transfers.
 
-Exactly, there is data there according to the FIFO status, but I
-erroneously interpreted it as a it would be discarded (e.g. when
-starting the next command).
+> I guess the underlying worry I have is that there's no guarantee that
+> the flush function will be called when the kfifo loses bytes. If it
+> ever happens we'll fall back to writing NUL bytes out and that doesn't
+> seem amazing to me. To me it feels like
+> qcom_geni_serial_send_chunk_fifo() should detect this situation and
+> then it should be responsible for canceling, though better (in my
+> mind) is if we never initiate any big transfers if we can get away
+> with that and still be performant.
 
-> 3. On my hardware you're setting the FIFO level to 16 here. The docs I
-> have say that if the FIFO level is "less than" the value you set here
-> then the interrupt will go off and further clarifies that if you set
-> the register to 1 here then you'll get interrupted when the FIFO is
-> empty. So what happens with your solution if the FIFO is completely
-> full? In that case you'd have to set this to 17, right? ...but then I
-> could believe that might confuse the interrupt handler which would get
-> told to start transmitting when there is no room for anything.
-
-Indeed. I may implicitly be relying on the absence of hardware flow
-control as well so that waiting for one character to be sent is what
-makes this work.
-
-> Maybe something is missing in my mental model here and testing your
-> patch and hitting Ctrl-C seems to work, but I don't really understand
-> why so hopefully you can clarify! :-)
-
-I spent too much time trying to reverse engineer this hw over the
-weekend and wanted to get this out as a counter proposal as it indicated
-that we may be able to find a smaller fix. The series addresses the
-serial getty issues, but as I mentioned yesterday there is some
-interaction with the console left to be resolved before this can be an
-alternative.
-
-If it wasn't for the hard lockup I would have sent the whole thing as
-an RFC.
+The flush buffer callback is called from the uart_flush_buffer() tty
+operation (again, not tty_ldisc_ops) when the FIFO is reset.
 
 Johan
 
