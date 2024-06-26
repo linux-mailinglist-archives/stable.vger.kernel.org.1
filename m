@@ -1,190 +1,198 @@
-Return-Path: <stable+bounces-55879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F0D919838
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 21:20:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A51919847
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 21:33:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C60D9B23043
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 19:20:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3B4BB21335
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 19:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7021922D9;
-	Wed, 26 Jun 2024 19:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="Ba4CHt5Z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC8A191477;
+	Wed, 26 Jun 2024 19:33:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.158])
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C1F19149B
-	for <stable@vger.kernel.org>; Wed, 26 Jun 2024 19:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5D412E40;
+	Wed, 26 Jun 2024 19:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719429605; cv=none; b=kqAGZNiYGO9tWS/nT8MyIlV7b7kX4YShLvFjWWd/RNqFsPuIO21038W0jFtExx2HeULC4W3cjW0W1QdQVWRq2qx5LvcwTxqoRkKae13XGfiAGKzAOYfQA5eAVAuImz6Dk6wwZ+GSajPTvdneu+Em/xjUVEqQGJakS5bR2vvxp7M=
+	t=1719430415; cv=none; b=OzUjSpiWAGM+Wp1V70afgJ3dOM9/gbJUv7QrzF75uw+hyG3iSpbeQTa1FplAe0a/aViSDidSBzle7ef6TmLclOPFgZp2ZUdRftyufaIiWGCCoilc49/29wYGzW9PYc1En8ewgPuvpyZtccGpBh/42by8p4iUvI46wwZwJUF8cY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719429605; c=relaxed/simple;
-	bh=EaM1Dz9Wa5nQavU2xkJGT0mePNQMVEaSABMv7owQFqI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qTfDSpu49++b1KAeuBp/+nItjsi/gejHJrUY4mejWE+/jshUi0hsNO/OZ4GsKmtMKEF0vboCC3xmlnsjui55HjNQ/VlmU514puNUaie8TH9cQKRuGpZ3T32OTGyWX+9fkwyAEVmsXQZ5/Yvxicu54+yta+oN99azqJN50BLeKqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=Ba4CHt5Z; arc=none smtp.client-ip=193.222.135.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
-Received: (wp-smtpd smtp.tlen.pl 23978 invoked from network); 26 Jun 2024 21:13:20 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
-          t=1719429200; bh=VBlrCgswGgdojCmX7rLsHFjXXUfvRoXuCvlbvbwzY98=;
-          h=Subject:To:Cc:From;
-          b=Ba4CHt5Z+uNeLEuVlCMV1s9KXuWciRoavqKRRv8l6nPL+d0sqMQVDg3pGmxDb5nxj
-           rjdMcl/tJ6jCcpnI6Z7BOB9rx7Vb9aI1sP3Z8ESC7iC3TMo3NVonFp66+nfkkR9Mnl
-           ENq9GEx8i6l5eMkodRGKkr5L5qk0zdMNKII5kuoM=
-Received: from aaer237.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.121.237])
-          (envelope-sender <mat.jonczyk@o2.pl>)
-          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <gregkh@linuxfoundation.org>; 26 Jun 2024 21:13:20 +0200
-Message-ID: <ba2d19ca-a39c-4ed7-979e-7b33f4ffdb5a@o2.pl>
-Date: Wed, 26 Jun 2024 21:13:18 +0200
+	s=arc-20240116; t=1719430415; c=relaxed/simple;
+	bh=iSTONfzO+oL6kkCeyDDU96ArOeGc54bYqqyEv8IJEwI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=czfJlhUGc7AIaYiqJF8hM2LstqVycB+336ug/83fyoswcNvzirkKuyr+fgsfcsMz5Z8bTJt21/wxIAUlQkV1d2AXsDl7fBMCKdSW6twgQpYvd7jHhsBg4Fjjs+VzzQbj38ymK+RD+7VzbmGbxL6+bWE8Y87yGDtj62yeZvY1dkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4ABC98179E;
+	Wed, 26 Jun 2024 19:25:40 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf03.hostedemail.com (Postfix) with ESMTPA id D00476000E;
+	Wed, 26 Jun 2024 19:25:36 +0000 (UTC)
+Message-ID: <58432885e0b4b5c781be6a83787edd4779a41aad.camel@perches.com>
+Subject: Re: Patch "scsi: mpt3sas: Add ioc_<level> logging macros" has been
+ added to the 4.19-stable tree
+From: Joe Perches <joe@perches.com>
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org
+Cc: Sathya Prakash <sathya.prakash@broadcom.com>, Sreekanth Reddy
+	 <sreekanth.reddy@broadcom.com>, Suganath Prabu Subramani
+	 <suganath-prabu.subramani@broadcom.com>, "James E.J. Bottomley"
+	 <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+	 <martin.petersen@oracle.com>
+Date: Wed, 26 Jun 2024 12:25:35 -0700
+In-Reply-To: <20240626190750.2060180-1-sashal@kernel.org>
+References: <20240626190750.2060180-1-sashal@kernel.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/131] 6.1.96-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240625085525.931079317@linuxfoundation.org>
-Content-Language: en-GB
-From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
-Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
- 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
- TANkZ3QqXNX2
-In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-WP-MailID: 3371b8397a28434c5dbed359df685d1a
-X-WP-AV: skaner antywirusowy Poczty o2
-X-WP-SPAM: NO 0000000 [MXOk]                               
+X-Rspamd-Queue-Id: D00476000E
+X-Rspamd-Server: rspamout01
+X-Stat-Signature: ugmqdn3qiqhtwumobbhys3yh1j4sx3cc
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1/O61V5AHK/KTQwldSEacqmAPS0hpJgcSg=
+X-HE-Tag: 1719429936-589367
+X-HE-Meta: U2FsdGVkX18iAD1nNgRJq/l7fs3v/2PrefBvzput6BZK/rsSYvU9k0baSvVG2wuJhmeCVjkSJE85/7LAffTis9hAW/Jb2dANLfQgKUldIF2MEXiIkNTvbbYjVqYPfYWtrBH0uzYoR7vpKtFThKAZ8dfEX5zLhPjUaQU6EbzOX+TVBqiFebDbfvC//q2lEStGF8C9OsALapskHNVGb+56J4Bq/Dh5SzhW2hJkthEp7RUQOEktxgQZ3U3wTWgHbwUPSq71r361qVxCcN+TlsOa/5DM7edZfHWxkGkb4HVFaghTRrcYuJ86LIQwNrqtRZ8IplIdce65bX3UJ+/NKX7LycGlwkDZ0/qpxRuCbiVEPZV2s6Uh5tZ8vE1YMzGHNuqssUZoJA+G+zrRTIXjYxJpQMzeRXKZjnXfFR6O0JiagGpXzZnxb1aBQ6wYKirpGPiDsovAnTGDa0jekRLjNgdivMc4NS42p4LAxiGrXE9dNMM=
 
-W dniu 25.06.2024 o 11:32, Greg Kroah-Hartman pisze:
-> This is the start of the stable review cycle for the 6.1.96 release.
-> There are 131 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 27 Jun 2024 08:54:55 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.96-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
-Hello,
+On Wed, 2024-06-26 at 15:07 -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+>=20
+>     scsi: mpt3sas: Add ioc_<level> logging macros
+>=20
+> to the 4.19-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
+>=20
+> The filename of the patch is:
+>      scsi-mpt3sas-add-ioc_-level-logging-macros.patch
+> and it can be found in the queue-4.19 subdirectory.
+>=20
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+[]
+>    Stable-dep-of: 4254dfeda82f ("scsi: mpt3sas: Avoid test/set_bit() oper=
+ating in non-allocated memory")
 
-Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Huh?  This doesn't make sense as far as I can tell.
 
-Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU and Ubuntu 20.04.
+> diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.h b/drivers/scsi/mpt3sas/m=
+pt3sas_base.h
+[]
+> @@ -160,6 +160,15 @@ struct mpt3sas_nvme_cmd {
+>   */
+>  #define MPT3SAS_FMT			"%s: "
+> =20
+> +#define ioc_err(ioc, fmt, ...)						\
+> +	pr_err("%s: " fmt, (ioc)->name, ##__VA_ARGS__)
+> +#define ioc_notice(ioc, fmt, ...)					\
+> +	pr_notice("%s: " fmt, (ioc)->name, ##__VA_ARGS__)
+> +#define ioc_warn(ioc, fmt, ...)						\
+> +	pr_warn("%s: " fmt, (ioc)->name, ##__VA_ARGS__)
+> +#define ioc_info(ioc, fmt, ...)						\
+> +	pr_info("%s: " fmt, (ioc)->name, ##__VA_ARGS__)
+> +
 
-Issues found:
-- NVMe drive failed shortly after resume from suspend:
-    pcieport 0000:00:1d.0: AER: Corrected error message received from 0000:00:1d.0
-    pcieport 0000:00:1d.0: PCIe Bus Error: severity=Corrected, type=Physical Layer, (Receiver ID)
-    pcieport 0000:00:1d.0:   device [8086:9d18] error status/mask=00000001/00002000
-    pcieport 0000:00:1d.0:    [ 0] RxErr                
+This only adds ioc_<level> macros and the
+nominal stable dep patch below doesn't use them.
 
-    [... repeats around 20 times ]
+$ git log --stat -p -1 4254dfeda82f
+commit 4254dfeda82f20844299dca6c38cbffcfd499f41
+Author: Breno Leitao <leitao@debian.org>
+Date:   Wed Jun 5 01:55:29 2024 -0700
 
-    nvme nvme0: controller is down; will reset: CSTS=0xffffffff, PCI_STATUS=0x10
-    nvme nvme0: Does your device have a faulty power saving mode enabled?
-    nvme nvme0: Try "nvme_core.default_ps_max_latency_us=0 pcie_aspm=off" and report a bug
-    nvme 0000:03:00.0: enabling device (0000 -> 0002)
-    nvme nvme0: Removing after probe failure status: -19
-    nvme0n1: detected capacity change from 1000215216 to 0
-    [...]
-    md/raid1:md1: Disk failure on nvme0n1p3, disabling device.
-    md/raid1:md1: Operation continuing on 1 devices.
+    scsi: mpt3sas: Avoid test/set_bit() operating in non-allocated memory
+   =20
+    There is a potential out-of-bounds access when using test_bit() on a si=
+ngle
+    word. The test_bit() and set_bit() functions operate on long values, an=
+d
+    when testing or setting a single word, they can exceed the word
+    boundary. KASAN detects this issue and produces a dump:
+   =20
+             BUG: KASAN: slab-out-of-bounds in _scsih_add_device.constprop.=
+0 (./arch/x86/include/asm/bitops.h:60 ./include/asm-generic/bitops/instrume=
+nted-atomic.h:29 drivers/scsi/mpt3sas/mpt3sas_scsih.c:7331) mpt3sas
+   =20
+             Write of size 8 at addr ffff8881d26e3c60 by task kworker/u1536=
+:2/2965
+   =20
+    For full log, please look at [1].
+   =20
+    Make the allocation at least the size of sizeof(unsigned long) so that
+    set_bit() and test_bit() have sufficient room for read/write operations
+    without overwriting unallocated memory.
+   =20
+    [1] Link: https://lore.kernel.org/all/ZkNcALr3W3KGYYJG@gmail.com/
+   =20
+    Fixes: c696f7b83ede ("scsi: mpt3sas: Implement device_remove_in_progres=
+s check in IOCTL path")
+    Cc: stable@vger.kernel.org
+    Suggested-by: Keith Busch <kbusch@kernel.org>
+    Signed-off-by: Breno Leitao <leitao@debian.org>
+    Link: https://lore.kernel.org/r/20240605085530.499432-1-leitao@debian.o=
+rg
+    Reviewed-by: Keith Busch <kbusch@kernel.org>
+    Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+---
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-  After a cold reboot, the drive is visible again and functioning apparently
-  normally. SMART data claims it is healthy. Previously this happened 3 weeks
-  ago, on Linux 5.15.0-107-generic from Ubuntu, also shortly after a resume
-  from suspend. As no recent patches in Linux stable appear to touch NVMe / PCIe,
-  I'm giving a Tested-by: nonetheless.
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt=
+3sas_base.c
+index 258647fc6bddb..1092497563b22 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -8512,6 +8512,12 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPTER *ioc)
+ 	ioc->pd_handles_sz =3D (ioc->facts.MaxDevHandle / 8);
+ 	if (ioc->facts.MaxDevHandle % 8)
+ 		ioc->pd_handles_sz++;
++	/*
++	 * pd_handles_sz should have, at least, the minimal room for
++	 * set_bit()/test_bit(), otherwise out-of-memory touch may occur.
++	 */
++	ioc->pd_handles_sz =3D ALIGN(ioc->pd_handles_sz, sizeof(unsigned long));
++
+ 	ioc->pd_handles =3D kzalloc(ioc->pd_handles_sz,
+ 	    GFP_KERNEL);
+ 	if (!ioc->pd_handles) {
+@@ -8529,6 +8535,13 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPTER *ioc)
+ 	ioc->pend_os_device_add_sz =3D (ioc->facts.MaxDevHandle / 8);
+ 	if (ioc->facts.MaxDevHandle % 8)
+ 		ioc->pend_os_device_add_sz++;
++
++	/*
++	 * pend_os_device_add_sz should have, at least, the minimal room for
++	 * set_bit()/test_bit(), otherwise out-of-memory may occur.
++	 */
++	ioc->pend_os_device_add_sz =3D ALIGN(ioc->pend_os_device_add_sz,
++					   sizeof(unsigned long));
+ 	ioc->pend_os_device_add =3D kzalloc(ioc->pend_os_device_add_sz,
+ 	    GFP_KERNEL);
+ 	if (!ioc->pend_os_device_add) {
+@@ -8820,6 +8833,12 @@ _base_check_ioc_facts_changes(struct MPT3SAS_ADAPTER=
+ *ioc)
+ 		if (ioc->facts.MaxDevHandle % 8)
+ 			pd_handles_sz++;
+=20
++		/*
++		 * pd_handles should have, at least, the minimal room for
++		 * set_bit()/test_bit(), otherwise out-of-memory touch may
++		 * occur.
++		 */
++		pd_handles_sz =3D ALIGN(pd_handles_sz, sizeof(unsigned long));
+ 		pd_handles =3D krealloc(ioc->pd_handles, pd_handles_sz,
+ 		    GFP_KERNEL);
+ 		if (!pd_handles) {
 
-Stack:
-- amd64,
-- ext4 on top of LVM on top of LUKS on top of mdraid on top of
-  NVMe and SATA drives (the SATA drive in a write-mostly mode).
-
-Tested (lightly):
-- suspend to RAM,
-- suspend to disk,
-- virtual machines in QEMU (both i386 and amd64 guests),
-
-- Bluetooth (Realtek RTL8822BE),
-- GPU (Intel HD Graphics 620, tested with two Unigine benchmarks)
-- WiFi (Realtek RTL8822BE),
-- webcam.
-
-
-Filesystems tested with fsstress:
-    - ext4,
-    - NFS client,
-    - exFAT,
-    - NTFS via FUSE (ntfs3g).
-
-Greetings,
-
-Mateusz
 
 
