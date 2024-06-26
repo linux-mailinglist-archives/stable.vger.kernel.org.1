@@ -1,120 +1,190 @@
-Return-Path: <stable+bounces-55878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B1C918EC8
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 20:46:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F0D919838
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 21:20:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA8A32824A4
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 18:46:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C60D9B23043
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 19:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C832144D2D;
-	Wed, 26 Jun 2024 18:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7021922D9;
+	Wed, 26 Jun 2024 19:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="I9wUTdKI"
+	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="Ba4CHt5Z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46D633C5
-	for <stable@vger.kernel.org>; Wed, 26 Jun 2024 18:46:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C1F19149B
+	for <stable@vger.kernel.org>; Wed, 26 Jun 2024 19:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719427611; cv=none; b=pr4D6Alc2jl7f/5LA03ZHHgFgQFcLuGJaoZctUmK5OHvujkcqsX0ILkbUaWf75fZa000TWDs7taVRO4HbxXOjtbRXYLSMM6iz2XKUaTASrdImjqpYJtJbhWeWLSD5DTYjqw8AYssR2W8EZZslkGbRSseOom0YyTOpt8eHdlIMGM=
+	t=1719429605; cv=none; b=kqAGZNiYGO9tWS/nT8MyIlV7b7kX4YShLvFjWWd/RNqFsPuIO21038W0jFtExx2HeULC4W3cjW0W1QdQVWRq2qx5LvcwTxqoRkKae13XGfiAGKzAOYfQA5eAVAuImz6Dk6wwZ+GSajPTvdneu+Em/xjUVEqQGJakS5bR2vvxp7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719427611; c=relaxed/simple;
-	bh=FBginwRWS8RyrsK2NCr1DXwbyqt2+vTA4HvtY6Td3R8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gSmw7VauStsaBYxyyEyPJeyu/QChurlq3K/uqaE/A3e4gsX0aaphahnvzcMIm8N0GWvAuzv5uf+gCg4qFbwmCO/sBqOJVMT4iV/SsIXwpq/GTkb+vsWuKzujl1xEp7DeDQMNzwLX3V3CU4+wSDPkQc7HnrX/UqIdcEqUUvgzSW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=I9wUTdKI; arc=none smtp.client-ip=207.171.188.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1719427609; x=1750963609;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=c7zyM3fbjY427lHY+lIGKnOq+I3+MTNsbDciAEwKpio=;
-  b=I9wUTdKIBg4246DjuIvNSeK4V/9fM6dbUopfqUa4qwX/sF4Wcf3bftt4
-   PM2GlJjr0QAERrJpFhpq8IXXy0pvAln2eCdoIAsJ2Mzz733F+v6CtbM3W
-   8dcLrY9Zt7kb2CW/fUPx6UGm38v56ztMHJYPV1C2bEDR2Rm70vpp9/d3g
-   8=;
-X-IronPort-AV: E=Sophos;i="6.08,267,1712620800"; 
-   d="scan'208";a="735738706"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jun 2024 18:46:43 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [10.0.38.20:59143]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.49.83:2525] with esmtp (Farcaster)
- id 3e1c0c34-6042-4251-8f32-cd465003938c; Wed, 26 Jun 2024 18:46:43 +0000 (UTC)
-X-Farcaster-Flow-ID: 3e1c0c34-6042-4251-8f32-cd465003938c
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Wed, 26 Jun 2024 18:46:41 +0000
-Received: from 88665a182662.ant.amazon.com (10.187.170.11) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Wed, 26 Jun 2024 18:46:39 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sasha Levin
-	<sashal@kernel.org>
-CC: Kuniyuki Iwashima <kuniyu@amazon.com>, <stable@vger.kernel.org>, "Matthew
- Wilcox (Oracle)" <willy@infradead.org>
-Subject: [PATCH 5.4/5.10/5.15] nfs: Leave pages in the pagecache if readpage failed
-Date: Wed, 26 Jun 2024 11:46:14 -0700
-Message-ID: <20240626184614.80363-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.30.2
+	s=arc-20240116; t=1719429605; c=relaxed/simple;
+	bh=EaM1Dz9Wa5nQavU2xkJGT0mePNQMVEaSABMv7owQFqI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qTfDSpu49++b1KAeuBp/+nItjsi/gejHJrUY4mejWE+/jshUi0hsNO/OZ4GsKmtMKEF0vboCC3xmlnsjui55HjNQ/VlmU514puNUaie8TH9cQKRuGpZ3T32OTGyWX+9fkwyAEVmsXQZ5/Yvxicu54+yta+oN99azqJN50BLeKqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=Ba4CHt5Z; arc=none smtp.client-ip=193.222.135.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 23978 invoked from network); 26 Jun 2024 21:13:20 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1719429200; bh=VBlrCgswGgdojCmX7rLsHFjXXUfvRoXuCvlbvbwzY98=;
+          h=Subject:To:Cc:From;
+          b=Ba4CHt5Z+uNeLEuVlCMV1s9KXuWciRoavqKRRv8l6nPL+d0sqMQVDg3pGmxDb5nxj
+           rjdMcl/tJ6jCcpnI6Z7BOB9rx7Vb9aI1sP3Z8ESC7iC3TMo3NVonFp66+nfkkR9Mnl
+           ENq9GEx8i6l5eMkodRGKkr5L5qk0zdMNKII5kuoM=
+Received: from aaer237.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.121.237])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <gregkh@linuxfoundation.org>; 26 Jun 2024 21:13:20 +0200
+Message-ID: <ba2d19ca-a39c-4ed7-979e-7b33f4ffdb5a@o2.pl>
+Date: Wed, 26 Jun 2024 21:13:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/131] 6.1.96-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240625085525.931079317@linuxfoundation.org>
+Content-Language: en-GB
+From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
+ 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
+ TANkZ3QqXNX2
+In-Reply-To: <20240625085525.931079317@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D044UWB002.ant.amazon.com (10.13.139.188) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+X-WP-MailID: 3371b8397a28434c5dbed359df685d1a
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [MXOk]                               
 
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+W dniu 25.06.2024 o 11:32, Greg Kroah-Hartman pisze:
+> This is the start of the stable review cycle for the 6.1.96 release.
+> There are 131 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 27 Jun 2024 08:54:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.96-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+Hello,
 
-commit 0b768a9610c6de9811c6d33900bebfb665192ee1 upstream
+Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
 
-The pagecache handles readpage failing by itself; it doesn't want
-filesystems to remove pages from under it.
+Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU and Ubuntu 20.04.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
-When NFS server returns NFS4ERR_SERVERFAULT, the client returned
-Remote I/O error immediately on 4.14 and 6.1, but on 5.4/5.10/5.15,
-the client retries forever and get stuck until userspace aborts it.
+Issues found:
+- NVMe drive failed shortly after resume from suspend:
+    pcieport 0000:00:1d.0: AER: Corrected error message received from 0000:00:1d.0
+    pcieport 0000:00:1d.0: PCIe Bus Error: severity=Corrected, type=Physical Layer, (Receiver ID)
+    pcieport 0000:00:1d.0:   device [8086:9d18] error status/mask=00000001/00002000
+    pcieport 0000:00:1d.0:    [ 0] RxErr                
 
-The patch fixed the issue but did not have Fixes: tag.
+    [... repeats around 20 times ]
 
-Please backport this to 5.4/5.10/5.15.
----
- fs/nfs/read.c | 4 ----
- 1 file changed, 4 deletions(-)
+    nvme nvme0: controller is down; will reset: CSTS=0xffffffff, PCI_STATUS=0x10
+    nvme nvme0: Does your device have a faulty power saving mode enabled?
+    nvme nvme0: Try "nvme_core.default_ps_max_latency_us=0 pcie_aspm=off" and report a bug
+    nvme 0000:03:00.0: enabling device (0000 -> 0002)
+    nvme nvme0: Removing after probe failure status: -19
+    nvme0n1: detected capacity change from 1000215216 to 0
+    [...]
+    md/raid1:md1: Disk failure on nvme0n1p3, disabling device.
+    md/raid1:md1: Operation continuing on 1 devices.
 
-diff --git a/fs/nfs/read.c b/fs/nfs/read.c
-index 08d6cc57cbc3..b02372ec07a5 100644
---- a/fs/nfs/read.c
-+++ b/fs/nfs/read.c
-@@ -120,12 +120,8 @@ static void nfs_readpage_release(struct nfs_page *req, int error)
- 	if (nfs_error_is_fatal_on_server(error) && error != -ETIMEDOUT)
- 		SetPageError(page);
- 	if (nfs_page_group_sync_on_bit(req, PG_UNLOCKPAGE)) {
--		struct address_space *mapping = page_file_mapping(page);
--
- 		if (PageUptodate(page))
- 			nfs_readpage_to_fscache(inode, page, 0);
--		else if (!PageError(page) && !PagePrivate(page))
--			generic_error_remove_page(mapping, page);
- 		unlock_page(page);
- 	}
- 	nfs_release_request(req);
--- 
-2.30.2
+  After a cold reboot, the drive is visible again and functioning apparently
+  normally. SMART data claims it is healthy. Previously this happened 3 weeks
+  ago, on Linux 5.15.0-107-generic from Ubuntu, also shortly after a resume
+  from suspend. As no recent patches in Linux stable appear to touch NVMe / PCIe,
+  I'm giving a Tested-by: nonetheless.
+
+Stack:
+- amd64,
+- ext4 on top of LVM on top of LUKS on top of mdraid on top of
+  NVMe and SATA drives (the SATA drive in a write-mostly mode).
+
+Tested (lightly):
+- suspend to RAM,
+- suspend to disk,
+- virtual machines in QEMU (both i386 and amd64 guests),
+
+- Bluetooth (Realtek RTL8822BE),
+- GPU (Intel HD Graphics 620, tested with two Unigine benchmarks)
+- WiFi (Realtek RTL8822BE),
+- webcam.
+
+
+Filesystems tested with fsstress:
+    - ext4,
+    - NFS client,
+    - exFAT,
+    - NTFS via FUSE (ntfs3g).
+
+Greetings,
+
+Mateusz
 
 
