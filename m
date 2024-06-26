@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-55860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F2B9188CB
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 19:11:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79CCD9189E7
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 19:14:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22EFCB22BEB
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 17:10:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FD2C1F22523
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 17:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B9617F370;
-	Wed, 26 Jun 2024 17:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41F118FDAF;
+	Wed, 26 Jun 2024 17:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="HvQdtMPN"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="QS26SJeD"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872A113AA4C
-	for <stable@vger.kernel.org>; Wed, 26 Jun 2024 17:10:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0636A13AA4C;
+	Wed, 26 Jun 2024 17:14:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719421852; cv=none; b=HRI8igX8haY2qo3p67hFH2RXrNCQm0QrRXVEl+ACPmAhtyzqH234v3hGrZ30+izeLw3kamPCxaXNUvCk16rvV7aM+1/PH/hBY063MDhLg+tjeLxHYj41SPopsuq1yd8jP2T1m8Pm62OrjCv/1kM+dBTtBdy5VMgx3RM3izPzITg=
+	t=1719422052; cv=none; b=qWCMuQtM0bTktXXWjXrSQZWY1UV74RxOVuC3dy7aoulRf+3VgD1dc4P7E98rWkGtk3Tgvb1bFYqCvVQtvfevOslBRs7RrLyhU2AMJax+Nxco+272QKV7MnokW2CokB1RB56jXfUPFZAwlF9gR1t1soTsg1DJQ6NzO36riRIT8Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719421852; c=relaxed/simple;
-	bh=5CfaMuch0gJLQt+2rQFoSea2d2JxTTTEEsrnFi6/9rQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=rl/vEAdA/1VCeCrubJlCDsKlpte+9n22GBlsHYw3RgpOMYPclwXcgXJucTohjdL+w8GWV/6hYGJO+LlNdjXJWhoC324OxCUc0sf3BV312bSPh8MCSp2v+4syVCvRX4sm65JujYhWOh5k8p9XUz5tCeHyYoQFZiM2/bmKlqk21x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=HvQdtMPN; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45QAfVQ1029258
-	for <stable@vger.kernel.org>; Wed, 26 Jun 2024 17:10:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	VO2khDDJ1foTIuQ8V7du5tIc8EuBOC0TmFRiug6HRSI=; b=HvQdtMPNtVTzP20B
-	QCgQgK6K7X+cGWE/U+MxqY9tWznrmzn7jCex5dn6qpV44oeWILI/gYXHVsGbkXJi
-	9Lo4ySrq+O/S7hIPBP2eH28i7u8+grZDQ1WwD2LEMnddUBHVL7ITH3hq61ca6q7M
-	ww0FNWr5XdHjJ0qydjeoxBuQMxyEmdUFK6Kj+OI1sCP8eXvxm4pRtzMluR3qZSgX
-	XvBfkq8gSA+jNa+wHKzew0iK81fNdZYBySFvnR8Zi28pxC4viw/HTJv8/HcBBzO+
-	nryH4jyPs4Z4vuhIQIUyki7Ln5FX14zJClC1J7Yn/ATG6kA0wODLh8NtMxfzQ0hX
-	qkFvzQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywnm6sw2q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 26 Jun 2024 17:10:50 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45QHAnex006730
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 26 Jun 2024 17:10:49 GMT
-Received: from [10.216.61.178] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 26 Jun
- 2024 10:10:48 -0700
-Message-ID: <d5dcbfca-8cc0-439b-8127-483b8374e84e@quicinc.com>
-Date: Wed, 26 Jun 2024 22:40:43 +0530
+	s=arc-20240116; t=1719422052; c=relaxed/simple;
+	bh=tL1K/UoyLVBA4OzU5+cqN5lsPky0y+4GX2iATzBgnJQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HXVErtstyJ6A/krMFORo8Z/sKqVTsC/Zc1cTHjoErbOpzsoRzW2EZdwNF/p8F2F60ziVo6pov8C+jP1tgz2Xl9ogneRxpPpNd2Ddg2a3lDpM/RBJET0HD/gn1Q+gMY/EZXEQLhu5jNfVt7Sbs9fw8AQyb0KC0bTAoBzoPptoc/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=QS26SJeD; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4W8Swf1SzJz6CmR09;
+	Wed, 26 Jun 2024 17:14:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1719422042; x=1722014043; bh=LH5wofgpP06SaS1NINtpQAjR
+	ntdG7K+g6Cs88ljhldA=; b=QS26SJeDo06eLUcncDLpb99KAC7PyVmsbslxSJWb
+	9OzGV4zJgr9iH8h8i8Inm6DA38KmqmKrcf1ycjBsWYaCZuLlRTkMHnByFF3ishkI
+	bVfE6skugC7CB8Joqxsl2S7nW4WmTCHNnV52uU8og1BGJgAlGJBimKdyhyEI7CtE
+	MJzYiiW4ZFLrJdMer3ehR9F5pRkeULaXo3tEh2/I5GzX2+uWdzg7ulkBqCpzoXn9
+	JINdrAdtSjbR8yqDaptGmozUgjjtvesLDWZ99SKkGH4ElAI+PUh4q4DGSxtFgc9D
+	XJGFI6TRJByrDbWzna92MjXKAzn9HzHk8rwLN6cO2EG3qw==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id O6DclUcoxkQf; Wed, 26 Jun 2024 17:14:02 +0000 (UTC)
+Received: from [100.96.154.26] (unknown [104.132.0.90])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4W8SwS5jmbz6CmR5y;
+	Wed, 26 Jun 2024 17:14:00 +0000 (UTC)
+Message-ID: <b5ee63bb-4db9-47fc-9b09-1fde0447f6f8@acm.org>
+Date: Wed, 26 Jun 2024 10:13:55 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,37 +65,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] arm64: dts: qcom: ipq6018: Disable SS instance in
- Parkmode for USB
-To: <stable@vger.kernel.org>
-References: <20240626170808.1267243-1-quic_kriskura@quicinc.com>
- <20240626170808.1267243-2-quic_kriskura@quicinc.com>
+Subject: Re: [PATCH v2] ufs: core: fix ufshcd_abort_all racing issue
+To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "avri.altman@wdc.com" <avri.altman@wdc.com>,
+ "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
+ "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
+ "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+ "jejb@linux.ibm.com" <jejb@linux.ibm.com>
+Cc: "linux-mediatek@lists.infradead.org"
+ <linux-mediatek@lists.infradead.org>,
+ =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
+ =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
+ =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
+ =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
+ wsd_upstream <wsd_upstream@mediatek.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
+ =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
+ =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
+ "chu.stanley@gmail.com" <chu.stanley@gmail.com>,
+ =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
+ <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
+ <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
+ <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
+ <Qilin.Tan@mediatek.com>
+References: <20240624121158.21354-1-peter.wang@mediatek.com>
+ <eec48c95-aa1c-4f07-a1f3-fdc3e124f30e@acm.org>
+ <4c4d10aae216e0b6925445b0317e55a3dd0ce629.camel@mediatek.com>
+ <795a89bb-12eb-4ac8-93df-6ec5173fb679@acm.org>
+ <0e1e0c0a4303f53a50a95aa0672311015ddeaee2.camel@mediatek.com>
 Content-Language: en-US
-From: Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>
-In-Reply-To: <20240626170808.1267243-2-quic_kriskura@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: cqFA2tJtylpxfLNUYyBiyvXXuvIoG5wW
-X-Proofpoint-ORIG-GUID: cqFA2tJtylpxfLNUYyBiyvXXuvIoG5wW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-26_08,2024-06-25_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1015 spamscore=0
- mlxscore=0 malwarescore=0 mlxlogscore=395 lowpriorityscore=0
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2406140001 definitions=main-2406260126
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <0e1e0c0a4303f53a50a95aa0672311015ddeaee2.camel@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-Please ignore this series. Sorry for the inconvenience.
-Was supposed to send this internally, but ended up on the list since the 
-stable kernel mail ID was CC'd.
+On 6/25/24 8:56 PM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
+> Sorry I have not explain root-cause clearly.
+> I will add more clear root-cause analyze next version.
+>=20
+> And it is not an invalid pointer is passed to blk_mq_unique_tag(),
+> I means blk_mq_unique_tag function try access null pointer.
+> It is differnt and cause misunderstanding.
+>=20
+> The null pinter blk_mq_unique_tag try access is:
+> rq->mq_hctx(NULL)->queue_num.
+>=20
+> The racing flow is:
+>=20
+> Thread A
+> ufshcd_err_handler					step 1
+> 	ufshcd_cmd_inflight(true)			step 3
+> 	ufshcd_mcq_req_to_hwq
+> 		blk_mq_unique_tag
+> 			rq->mq_hctx->queue_num		step 5
+>=20
+> Thread B			=09
+> ufs_mtk_mcq_intr(cq complete ISR)			step 2
+> 	scsi_done					=09
+> 		...
+> 		__blk_mq_free_request
+> 			rq->mq_hctx =3D NULL;		step 4
 
-Sorry again for the inconvenience.
+How about surrounding the blk_mq_unique_tag() call with
+atomic_inc_not_zero(&req->ref) / atomic_dec(&req->ref)?
 
-Regards,
-Krishna.
+Thanks,
+
+Bart.
 
