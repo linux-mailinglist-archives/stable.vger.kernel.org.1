@@ -1,241 +1,113 @@
-Return-Path: <stable+bounces-55885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D53919980
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 22:56:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC96C9199B5
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 23:20:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36B081C21827
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 20:56:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB0FF1C220B1
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 21:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B138419048C;
-	Wed, 26 Jun 2024 20:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A05194094;
+	Wed, 26 Jun 2024 21:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gx8dpGog"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="W7Dm6rYw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward205a.mail.yandex.net (forward205a.mail.yandex.net [178.154.239.88])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A5E190698
-	for <stable@vger.kernel.org>; Wed, 26 Jun 2024 20:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E44016A928;
+	Wed, 26 Jun 2024 21:20:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719435380; cv=none; b=sTIquWNd5xaFAmwcusrySoEbzXiX0K7cZ7qu9NaKXchirs1/3z2nfoGspqzDxjUw+7bTG7vsb+OWWcryIsQ+M09qRufjndXobx5bW2F6ydyJcrwPs3m17FVspX0jvtOckjryv/gps5FrflIim3iikKWbuJTp2J3Y1ICo9ROBVvI=
+	t=1719436823; cv=none; b=muBHW+roUSNXi6/0T98KqdRzE7mkQq2vMKa/eqYw/bh8kaPQIPXcGSPnw3spyjCOPt9VPMhqOu2q/gW8yqjBjyTeRnNEWVXsxz5gUSKdk6ddd8I/D6PBzs6J938zGk7kaMCM+ej2lV7qjZdhv0sa9g2ztHKBNZg6fe8mjzN7X7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719435380; c=relaxed/simple;
-	bh=LeNd1Sl00me4t5CXJexFKouTM8Rr4gR9mY11ueyyc58=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ohdqNfgrd3DavN+lzQa+ZVekYWrDg3QlFVW4RKFbGtzGlokmL67v7O8gXYVg26TcxDnxQUsMOpuD+nLYPLHFIYJJlPxHQtXvLQFIDOOqOA46KSc4kuFdWG6n3XoxX+0At5ZayrG/tvHZ+CliTcWz3PwzDQo96Fi9Hzs9FuFZSg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gx8dpGog; arc=none smtp.client-ip=209.85.222.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-80f879181fcso1070581241.0
-        for <stable@vger.kernel.org>; Wed, 26 Jun 2024 13:56:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719435378; x=1720040178; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ra6xNmZUFmFCQqOuBMuD5M9kR7LWp8krWQ+ZimOxr1M=;
-        b=gx8dpGogl0R3SupSS4bydKYy73CeP7XvlEV+1IPk1yi0Us7lc6TuxeR5f58qdztbpC
-         dxwa09JsAa5pY3VHw4u5gr0kTPqw11gbKC67uDhvxEGJBf2dAFJTyy++VUQlWv2GN6QC
-         ilB2Men9jW+T467sFG+TDfW0meN+m5Esb+neuhPPcRzVhb0B/Hd8wzkwvqmiDSImz7cB
-         2c1chItWqzlsjYcIEydWRUED8zddfljYrrYKYidcmWJt0tI3+SfyDfjDQynWOpq+2DEc
-         /tiYq7GgD6uhAdS8/27UPGwcMhWEiSoph3YiV3k2RQC0iDUKU/jizt0Ag1wc+9kVsRYG
-         gXag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719435378; x=1720040178;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ra6xNmZUFmFCQqOuBMuD5M9kR7LWp8krWQ+ZimOxr1M=;
-        b=LOHLmXIJ9+UYl4cc30UAmWdUnwK8WJ0GKZ+gXUSHo3kQet6sbBHMReqFUUp8mNN+QT
-         nvpUz1l73S0gUEJroiKchWNHszkeoxtd1jajqRXPugu7pg7XPCav63wVG6i8JdZB7aBm
-         iQsI7djKCzPm/+/xsLDeZJFcHecHfA+5ugSn9Fty+aFgXudqdi7bbqQgCxNoebUP8UjV
-         0iX90QTqUBi1bsz+Wqazed+zaQqyhbx4h0FFzco+wcm+wyzSVhwRz+ntYFmZagWIN03E
-         d7+tQrEY0Nau0VijBjY0O+ra4ke8fmJL6NUVLTPeiUUWN7CrQ8p+lqJEoAOdPtzi4hW9
-         pRaQ==
-X-Gm-Message-State: AOJu0YwfWC5192iredO6Tak7wArigZpnGQxpd8k4kVGgKz2u1QWSW8eP
-	9f67oYBQYKSskq7qzTia/TlQ6+j1TSLgDMagqEuCL5oH9Klgpgse+R4LVvs9AdsNX6SUGWQaLF6
-	hdVFWLlxCN9LjuofZgYhxzXagwKi5IF/qD6+wUw==
-X-Google-Smtp-Source: AGHT+IGd+fezczxsF8sdBmQyvjpmWSbG+CgYCWeg/ifXeMZVxI6nVEg79pqM2aK66grjjTiS0WLYLkxQuZGABcjv/vo=
-X-Received: by 2002:a67:f807:0:b0:48f:46db:7a11 with SMTP id
- ada2fe7eead31-48f52947b56mr8666192137.6.1719435377713; Wed, 26 Jun 2024
- 13:56:17 -0700 (PDT)
+	s=arc-20240116; t=1719436823; c=relaxed/simple;
+	bh=SIDe4m7k4he3g8/b/GoPMpMXk5vUpHz1qP3f4e8/Kds=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aqbQfhli13FLd4g7uhjEbZ3BbtVRwuZJeGG+/pTu8wKW5Ig1zh9t56QvnYSiMZ7aY37vaH3k9KoqXWyJZkwD9TMXyXNhQwQW698btveeUGYGwhR+b3nm7A9cvu9tfJ2XywVEKYcv0EgqqdgZuHDV6rJy6v0yVv40Wi86B5nJoTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=W7Dm6rYw; arc=none smtp.client-ip=178.154.239.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d100])
+	by forward205a.mail.yandex.net (Yandex) with ESMTPS id 835336986D;
+	Thu, 27 Jun 2024 00:14:18 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net [IPv6:2a02:6b8:c00:27aa:0:640:9471:0])
+	by forward100a.mail.yandex.net (Yandex) with ESMTPS id 8CF6F46C7A;
+	Thu, 27 Jun 2024 00:14:09 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id wDYBEa1MdOs0-gY2WGPwU;
+	Thu, 27 Jun 2024 00:14:09 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1719436449; bh=7/sJn937goh/sUopg6CvXF8yyAafNE/SwUIKRZRjxnA=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=W7Dm6rYw5pQTacv0r/jaH/SCoU/Sv4UpxWkUbdSIWcq6KB6a4BlgM4On3eMDX9ApR
+	 oj2hfXQMG7e1tjcb1xMlE2znXYuU4v0mVMvhcwz9egI9uxGAVIhDH3hBTX3Qxi8PBM
+	 gT0fOTZhF1fb1QWRw7yW1MJKUmqayh7FlFCmbwzs=
+Authentication-Results: mail-nwsmtp-smtp-production-main-78.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jens Axboe <axboe@kernel.dk>
+Cc: Mikhail Ukhin <mish.uxin2012@yandex.ru>,
+	stable@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Pavel Koshutin <koshutin.pavel@yandex.ru>,
+	lvc-project@linuxtesting.org
+Subject: [PATCH v4 5.10/5.15] ata: libata-scsi: check cdb length for VARIABLE_LENGTH_CMD commands
+Date: Thu, 27 Jun 2024 00:13:58 +0300
+Message-Id: <20240626211358.148625-1-mish.uxin2012@yandex.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240625085537.150087723@linuxfoundation.org>
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 27 Jun 2024 02:26:05 +0530
-Message-ID: <CA+G9fYscT-jC378sz7FVw_GSjQYq64=tKgJfvzB+3Gak=9wdvg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/192] 6.6.36-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, 25 Jun 2024 at 15:18, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.36 release.
-> There are 192 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 27 Jun 2024 08:54:55 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.36-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Fuzzing of 5.10 stable branch reports a slab-out-of-bounds error in
+ata_scsi_pass_thru.
 
+The error is fixed in 5.18 by commit ce70fd9a551a ("scsi: core: Remove the
+cmd field from struct scsi_request") upstream.
+Backporting this commit would require significant changes to the code so
+it is bettter to use a simple fix for that particular error.
 
-Results from Linaro=E2=80=99s test farm.
-The arm build regressions reported as described in the previous emails.
+The problem is that the length of the received SCSI command is not
+validated if scsi_op == VARIABLE_LENGTH_CMD. It can lead to out-of-bounds
+reading if the user sends a request with SCSI command of length less than
+32.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-## Build
-* kernel: 6.6.36-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 580e509ea1348fc97897cf4052be03c248be6ab6
-* git describe: v6.6.35-193-g580e509ea134
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.3=
-5-193-g580e509ea134
+Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+Signed-off-by: Mikhail Ivanov <iwanov-23@bk.ru>
+Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+---
+ v2: The new addresses were added and the text was updated.
+ v3: Checking has been moved to the function ata_scsi_var_len_cdb_xlat at
+ the request of Damien Le Moal.
+ v4: Extra opcode check removed.
+ drivers/ata/libata-scsi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-## Test Regressions (compared to v6.6.34-268-g0db1e58b51e3)
-* arm, build
-  - clang-18-defconfig
-  - clang-18-lkftconfig
-  - gcc-13-defconfig
-  - gcc-13-lkftconfig
-  - gcc-8-defconfig
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index dfa090ccd21c..38488bd813d1 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -3948,7 +3948,11 @@ static unsigned int ata_scsi_var_len_cdb_xlat(struct ata_queued_cmd *qc)
+ 	struct scsi_cmnd *scmd = qc->scsicmd;
+ 	const u8 *cdb = scmd->cmnd;
+ 	const u16 sa = get_unaligned_be16(&cdb[8]);
 
-## Metric Regressions (compared to v6.6.34-268-g0db1e58b51e3)
-
-## Test Fixes (compared to v6.6.34-268-g0db1e58b51e3)
-
-## Metric Fixes (compared to v6.6.34-268-g0db1e58b51e3)
-
-## Test result summary
-total: 234233, pass: 204427, fail: 3373, skip: 26007, xfail: 426
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 127 total, 109 passed, 18 failed
-* arm64: 37 total, 37 passed, 0 failed
-* i386: 27 total, 27 passed, 0 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 34 total, 34 passed, 0 failed
-* riscv: 17 total, 17 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 31 total, 31 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-ma[
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-smoketest
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
++	if (scmd->cmd_len < 32)
++		return 1;
++
+ 	/*
+ 	 * if service action represents a ata pass-thru(32) command,
+ 	 * then pass it to ata_scsi_pass_thru handler.
 --
-Linaro LKFT
-https://lkft.linaro.org
+2.25.1
 
