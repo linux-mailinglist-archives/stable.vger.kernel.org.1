@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-55824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB709179F9
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 09:42:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D18917A38
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 09:54:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7894AB21047
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 07:42:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87468B24EC2
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 07:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5BC15B97E;
-	Wed, 26 Jun 2024 07:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA3815F3FB;
+	Wed, 26 Jun 2024 07:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DJikzk+x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NgTcvQuf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619AF158DA2;
-	Wed, 26 Jun 2024 07:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C360F1FBB;
+	Wed, 26 Jun 2024 07:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719387733; cv=none; b=bMlZUOFz1sjIAurMwydmsMkF0aWP4b9jw0BHwAc4y3SeFsynPCZBqJDEPd+yR2+bf/WtjLzv0jTZxVKew7rUP7Ew9GecwZHSaURO+YUI8lgne1inbLDsChBJaTZgLunLeFXATQGM4D2v72wgId3yBQsxtIQ8ntlQbim5L2sbJHA=
+	t=1719388471; cv=none; b=ooUvd7hqyiBzyz5iq9vUz25Dddvih2rZ7MayAmYFYdbLc5KXRQHmxNYX12cZnXgyZl7YyGL3RQ4M5cLWLwcu/Ps/ix2ICQ+DhojXyfVVBO91eGIsnLUrSSjNxPw8h78YbJCrV0HwaEK3JCVOyq1kgtwqjm/3+eryVZ9mmJV7ZqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719387733; c=relaxed/simple;
-	bh=dB83+lS8DT+Bwbmqz303OM73yCGI1mgZtovsGSCsPHQ=;
+	s=arc-20240116; t=1719388471; c=relaxed/simple;
+	bh=SbtxvcursYPrSDJUEzv8uDtSs383JJZUnvYrA/hF/4k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Eb+eeC9o2niWMENuUJa+wcMJml/47yyvwlPmqlxy1YLQk1x5RehEIynzhEaqqIigSYlrN93zh8nGfND0BrdiRn9HG/UJE1PFAuH/bQd4jjf3RPZTgzKs0iarFNqN9bw1hhRxpW+9UMQMeQIjBxI0WqHU+nmek/baUlr1j6mZ/UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DJikzk+x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D5CC2BD10;
-	Wed, 26 Jun 2024 07:42:12 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZFbMd9Mo+TnhMIaQ/MOCsZrKE51a9tg2fOMDtxF/13H6UPTeQl9wGEU/rlNOiN2h38djAGBrqSDoNjkiNZR9FlMQmEHETDGoFf261GoeXf/a2QYolA++IvHWDE08AuIgnqXLokko0DYdU2MJkQ5+fCpAr/b44TVPrMbcSThm08s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NgTcvQuf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC22FC4AF0B;
+	Wed, 26 Jun 2024 07:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719387732;
-	bh=dB83+lS8DT+Bwbmqz303OM73yCGI1mgZtovsGSCsPHQ=;
+	s=k20201202; t=1719388470;
+	bh=SbtxvcursYPrSDJUEzv8uDtSs383JJZUnvYrA/hF/4k=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DJikzk+xmMFkDtkMUhV2R95zS7ukxoX9o8YFfztlj75TPHUKRvUkXFiZczDgh095K
-	 ZozrmmebDCZg9vqXti140BhJjTskn7g6CINQrAbGqR5Rm9pIVtsBoJH9H4GJ1yitP/
-	 6m4lhiZtl5rXNlUhUw3SyctCyVenI/ALunH3Qg1BMvPfm0w0lcmYo9tA1s47VI7Ghc
-	 988dWdDn7hmTAqfmO6B0X7PoPjOjXR2Icpk1bWk8ClZAfWtuixh++MLVvGKzQcBJyh
-	 ZbG6/qh8pcWcuftc1Hol3JDeZWomcIvTbN7bZolrqz0GTlQcragronQkhLfc0GIr56
-	 nfSthlSFdFyng==
+	b=NgTcvQufTogBwZufUbCJXr2yc/1vPoRkdHFeGnYJY8ySQj3TD7HgjAALfFMVVoxqq
+	 DusZlvg+ACiJuMUuqPhWYFVSTFJfLT6iImeTXdK/cGyPk4c8enuKMY06YeO10IwX0B
+	 A3e+BWH0VqwyM1s4f1yfv1baYlUbGl+zOTMByjdfcvxGfC8fdtcuwmrnWtQ4PCCQZ9
+	 0O4oX09quJh7KtFuLRz7oYNQUAJHIGQnbDqy+2UOb7fFcUckcmZHeOdddOxu2r/E9j
+	 Hcor/tKZZ8lZV2YcS61nRuUTOXSQseEGXnMENVDnAnbdQz3uPOXXh2lkoQZl0g1gnR
+	 g+HjSVatDOmlA==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan@kernel.org>)
-	id 1sMNIM-000000007lD-0vjH;
-	Wed, 26 Jun 2024 09:42:22 +0200
-Date: Wed, 26 Jun 2024 09:42:22 +0200
+	id 1sMNUG-000000007vt-0yGY;
+	Wed, 26 Jun 2024 09:54:40 +0200
+Date: Wed, 26 Jun 2024 09:54:40 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Doug Anderson <dianders@chromium.org>
 Cc: Johan Hovold <johan+linaro@kernel.org>,
@@ -57,10 +57,11 @@ Cc: Johan Hovold <johan+linaro@kernel.org>,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH 2/3] serial: qcom-geni: fix soft lockup on sw flow
  control and suspend
-Message-ID: <ZnvGXiWdwNKl7MHA@hovoldconsulting.com>
+Message-ID: <ZnvJQDX6NkyRCA8y@hovoldconsulting.com>
 References: <20240624133135.7445-1-johan+linaro@kernel.org>
  <20240624133135.7445-3-johan+linaro@kernel.org>
  <CAD=FV=UauWffRM45FsU2SHoKtkVaOEf=Adno+jV+Ashf7NFHuA@mail.gmail.com>
+ <CAD=FV=XPKqjMcWhqk4OKxSOPgDKh-VM4J4oMEdQtgpFBw8WSXA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,101 +71,87 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=UauWffRM45FsU2SHoKtkVaOEf=Adno+jV+Ashf7NFHuA@mail.gmail.com>
+In-Reply-To: <CAD=FV=XPKqjMcWhqk4OKxSOPgDKh-VM4J4oMEdQtgpFBw8WSXA@mail.gmail.com>
 
-On Mon, Jun 24, 2024 at 02:23:52PM -0700, Doug Anderson wrote:
-> On Mon, Jun 24, 2024 at 6:31 AM Johan Hovold <johan+linaro@kernel.org> wrote:
+On Mon, Jun 24, 2024 at 02:58:39PM -0700, Doug Anderson wrote:
+> On Mon, Jun 24, 2024 at 2:23 PM Doug Anderson <dianders@chromium.org> wrote:
+> > On Mon, Jun 24, 2024 at 6:31 AM Johan Hovold <johan+linaro@kernel.org> wrote:
 
-> > @@ -665,16 +660,28 @@ static void qcom_geni_serial_start_tx_fifo(struct uart_port *uport)
-> >  static void qcom_geni_serial_stop_tx_fifo(struct uart_port *uport)
-> >  {
-> >         u32 irq_en;
-> > -       struct qcom_geni_serial_port *port = to_dev_port(uport);
+> > > +static void qcom_geni_serial_clear_tx_fifo(struct uart_port *uport)
+> > > +{
+> > > +       struct qcom_geni_serial_port *port = to_dev_port(uport);
+> > > +
+> > >         if (!qcom_geni_serial_main_active(uport))
+> > >                 return;
+> > >
+> > > +       /*
+> > > +        * Increase watermark level so that TX can be restarted and wait for
+> > > +        * sequencer to start to prevent lockups.
+> > > +        */
+> > > +       writel(port->tx_fifo_depth, uport->membase + SE_GENI_TX_WATERMARK_REG);
+> > > +       qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
+> > > +                                       M_TX_FIFO_WATERMARK_EN, true);
 > >
-> >         irq_en = readl(uport->membase + SE_GENI_M_IRQ_EN);
-> >         irq_en &= ~(M_CMD_DONE_EN | M_TX_FIFO_WATERMARK_EN);
-> >         writel(0, uport->membase + SE_GENI_TX_WATERMARK_REG);
-> >         writel(irq_en, uport->membase + SE_GENI_M_IRQ_EN);
-> > -       /* Possible stop tx is called multiple times. */
+> > Oh, maybe this "wait for sequencer to start to prevent lockups." is
+> > the part that I was missing? Can you explain more about what's going
+> > on here? Why does waiting for the watermark interrupt to fire prevent
+> > lockups? I would have imagined that the watermark interrupt would be
+> > part of the geni hardware and have nothing to do with the firmware
+> > running on the other end, so I'm not sure why it firing somehow would
+> > prevent a lockup. Was this just by trial and error?
 > 
-> If qcom_geni_serial_stop_tx_fifo() is supposed to be used for UART
-> flow control and you have a way to stop the transfer immediately
-> without losing data (by using geni_se_cancel_m_cmd), maybe we should
-> do that? If the other side wants us to stop transferring data and we
-> can stop it right away that would be ideal...
-
-Right, but since cancelling commands seems fragile at best (e.g.
-potentially lost data, lockups) it seems best to just let the fifo
-drain. But sure, if we can get cancel and restart to work reliably
-eventually then even better.
-
-> > +}
-> > +
-> > +static void qcom_geni_serial_clear_tx_fifo(struct uart_port *uport)
-> > +{
-> > +       struct qcom_geni_serial_port *port = to_dev_port(uport);
-> > +
-> >         if (!qcom_geni_serial_main_active(uport))
-> >                 return;
-> >
-> > +       /*
-> > +        * Increase watermark level so that TX can be restarted and wait for
-> > +        * sequencer to start to prevent lockups.
-> > +        */
-> > +       writel(port->tx_fifo_depth, uport->membase + SE_GENI_TX_WATERMARK_REG);
-> > +       qcom_geni_serial_poll_bit(uport, SE_GENI_M_IRQ_STATUS,
-> > +                                       M_TX_FIFO_WATERMARK_EN, true);
+> Actually, the more I look at it the more confused I am about your
+> qcom_geni_serial_clear_tx_fifo(). Can you explain and maybe add some
+> inline comments in the function since it's not obvious? Specifically,
+> things I'm confused about with your patch:
 > 
-> Oh, maybe this "wait for sequencer to start to prevent lockups." is
-> the part that I was missing? Can you explain more about what's going
-> on here? Why does waiting for the watermark interrupt to fire prevent
-> lockups? I would have imagined that the watermark interrupt would be
-> part of the geni hardware and have nothing to do with the firmware
-> running on the other end, so I'm not sure why it firing somehow would
-> prevent a lockup. Was this just by trial and error?
+> 1. The function is named qcom_geni_serial_clear_tx_fifo() which
+> implies that when it finishes that the hardware FIFO will have nothing
+> in it. ...but how does your code ensure this?
 
-Yes, I saw two kinds of lockups in my experiments. The first was due to
-data being left in the fifo so that the watermark interrupt never fired
-on start_tx(), but there was one more case where it seemed like the hw
-would get stuck if a cancel command was issues immediately after a new
-command had been started.
+Yeah, I realised after I sent out the series that this may not be the
+case. I was under the impression that cancelling a command would discard
+the data in the FIFO (e.g. when starting the next command) but that was
+probably an error in my mental model.
 
-Waiting for one character to be sent to avoid that race and seems to
-address the latter hang.
+Do you see any way to discard the FIFO in the docs you have access to?
+ 
+> 2. If the function is really clearing the FIFOs then why do we need to
+> adjust the watermark level? The fact that you need to adjust the
+> watermark levels implies (to me) that there are things stuck in the
+> FIFO still. ...but then what happens to those characters? When are
+> they sent?
 
-Note that I hit this also when never filling the FIFO completely (e.g.
-so that a watermark of 16 should have fired as there were never more
-than 15 words in the fifo).
+Exactly, there is data there according to the FIFO status, but I
+erroneously interpreted it as a it would be discarded (e.g. when
+starting the next command).
 
-> > @@ -684,6 +691,8 @@ static void qcom_geni_serial_stop_tx_fifo(struct uart_port *uport)
-> >                 writel(M_CMD_ABORT_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
-> >         }
-> >         writel(M_CMD_CANCEL_EN, uport->membase + SE_GENI_M_IRQ_CLEAR);
-> > +
-> > +       port->tx_remaining = 0;
-> >  }
-> >
-> >  static void qcom_geni_serial_handle_rx_fifo(struct uart_port *uport, bool drop)
-> > @@ -1069,11 +1078,10 @@ static void qcom_geni_serial_shutdown(struct uart_port *uport)
-> >  {
-> >         disable_irq(uport->irq);
-> >
-> > -       if (uart_console(uport))
-> > -               return;
-> 
-> Can you explain this part of the patch? I'm not saying it's wrong to
-> remove this special case since this driver seems to have lots of
-> needless special cases that are already handled by the core or by
-> other parts of the driver, but this change seems unrelated to the rest
-> of the patch. Could it be a separate patch?
+> 3. On my hardware you're setting the FIFO level to 16 here. The docs I
+> have say that if the FIFO level is "less than" the value you set here
+> then the interrupt will go off and further clarifies that if you set
+> the register to 1 here then you'll get interrupted when the FIFO is
+> empty. So what happens with your solution if the FIFO is completely
+> full? In that case you'd have to set this to 17, right? ...but then I
+> could believe that might confuse the interrupt handler which would get
+> told to start transmitting when there is no room for anything.
 
-We need to stop tx and clear the FIFO also when the port is used as a
-console.
+Indeed. I may implicitly be relying on the absence of hardware flow
+control as well so that waiting for one character to be sent is what
+makes this work.
 
-I added back the above check in commit 9aff74cc4e9e ("serial: qcom-geni:
-fix console shutdown hang") as a quick way to work around a previous
-regression where we would hit this soft lockup. With the issue fixed,
-the workaround is no longer needed.
+> Maybe something is missing in my mental model here and testing your
+> patch and hitting Ctrl-C seems to work, but I don't really understand
+> why so hopefully you can clarify! :-)
+
+I spent too much time trying to reverse engineer this hw over the
+weekend and wanted to get this out as a counter proposal as it indicated
+that we may be able to find a smaller fix. The series addresses the
+serial getty issues, but as I mentioned yesterday there is some
+interaction with the console left to be resolved before this can be an
+alternative.
+
+If it wasn't for the hard lockup I would have sent the whole thing as
+an RFC.
 
 Johan
 
