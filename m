@@ -1,142 +1,234 @@
-Return-Path: <stable+bounces-55883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 827D6919888
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 21:51:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096729198EE
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 22:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DDD3281CB2
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 19:51:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 915E51F2294A
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 20:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18037192B75;
-	Wed, 26 Jun 2024 19:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A27E192B69;
+	Wed, 26 Jun 2024 20:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eZkrWSZC"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="G/HxmmfF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E4F192B6E;
-	Wed, 26 Jun 2024 19:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B363819007E
+	for <stable@vger.kernel.org>; Wed, 26 Jun 2024 20:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719431488; cv=none; b=WnceGI9+Ko2UXxap+BoQN2JvnhkcBWfuLS/+9E8bj9lAaXnSZPLVzcCDQ8VCso4i397qGfd21BdUboUwvRJyKnIqAW58rZXgr4+xt4c2YibBEG6t8BH+jcEKXOqprBuM1z/1AngzksZqojl1baHSA7gfgOCY3OtTOp2FovmObNs=
+	t=1719433429; cv=none; b=JG378FAS7mmFwgBnytf276Wza2Rq2tAa6qSV19TFGabJZpo9GPYHvji9D2HW/s2K/g/2qe6j2BuQmxPvA4TAxhH8q5Sd4fjogEZyDSU2SY6EkHJEZKWJM4ILNKg6hjK/hJGqCCZ6nn/uj3YU7ea+QJq5NtIpQ93btzkbx0bNnF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719431488; c=relaxed/simple;
-	bh=Fspbr2jayhH7PmZCH3vmEFmczEtLE+h+S/9l5cOmVl8=;
-	h=Date:To:From:Subject:Message-Id; b=QixDCFipUOAzH4QL3UojC7aMgwrwWebjRtOnFTLxzB+6xmh+9ZBslReAxuVlNLHa4+CBUPYrsA3KkQzdNy/625njbGCGgTvIYMhou7Xx8k2mc6vOXobGSrH+6DeUa8L3ykKQeRFBURZqPwlzuRZYfnV1xzLvecAH7waRFkKVrXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=eZkrWSZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D55FC4AF0C;
-	Wed, 26 Jun 2024 19:51:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1719431488;
-	bh=Fspbr2jayhH7PmZCH3vmEFmczEtLE+h+S/9l5cOmVl8=;
-	h=Date:To:From:Subject:From;
-	b=eZkrWSZCrXtpYQ/I7a0EKaqullJLIZuFJ0QEIGbeMeei3iWRf1rY19jJMewWU2/JM
-	 5MP3XiwB0ST4RMfFJtmsWpAuuKcTRgboeVTlxT3YbT4ZIIuTt7nMLBg3m9lXmyMw09
-	 zKcC5xd8INrFjh6n9I38RaooixSmHyNPe2ukTXOA=
-Date: Wed, 26 Jun 2024 12:51:27 -0700
-To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,shuah@kernel.org,shli@fb.com,rppt@linux.vnet.ibm.com,raquini@redhat.com,peterx@redhat.com,jack@suse.cz,brauner@kernel.org,aarcange@redhat.com,audra@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fix-userfaultfd_api-to-return-einval-as-expected.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240626195128.2D55FC4AF0C@smtp.kernel.org>
+	s=arc-20240116; t=1719433429; c=relaxed/simple;
+	bh=IkcQER4VxVxCmW22fJvINOTjSwgeV2FWwd0BWSEoZkM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M6+rABxcdtRWjeghzzc9vrtvKkr0mgT09powzUqnsmwSMTfW3yqxY7hgvd2Vk/Yzxcd8Aq90m9T3q6pVnjLiXRgpLatDhfaFmbJ2CpJgiIC9xqYmGtf9jJcRrWR3j2rcIw/XiLSnufTni9PL6muai6IqdsBY0uQ61dyPHAdMRe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=G/HxmmfF; arc=none smtp.client-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-4ef58578a1eso513738e0c.1
+        for <stable@vger.kernel.org>; Wed, 26 Jun 2024 13:23:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719433426; x=1720038226; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NP2LZRgH8ULdbDjWm/y50Lk6JFsIoUem76H40vTjvs4=;
+        b=G/HxmmfFlqdK+fz3gVmyBOmgirf05dk8hbKxl8E38k/n2VK3QHoWX6ngLOMrywvODb
+         MLe/wxxC9+1dPDqFDUxBNE2bbCYrq//9DHxME8cRzTGVrKpPYZPYzs/svVugmVVM9yDi
+         TbhP6tEPpEpGAUGjMhcCpcHBKXUqfdeSjANUPOthXgaDgjZJ9I255RoVXGioMZTAcpKh
+         lzHY4O/NWfQljbrAR3d/2wNmSi1QwkbtoPB5jUJAYy3iyfUCdq9PxBMzf8bLtigACDQa
+         9x46M1tOe5CJ4PMFyTPAuYMthJmIVSnoF+IkzhgD9u6//51bnfbxva/pxrMp+GdkQzwF
+         drmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719433426; x=1720038226;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NP2LZRgH8ULdbDjWm/y50Lk6JFsIoUem76H40vTjvs4=;
+        b=JLKTSCSTHTpLo/gKtBLzq2B722aR3xEB4lzdHXRVIpAglVOI56uf8Lz3c1FzAV8RjM
+         0f0/ht6Isdks6gMKZltXfuClipHvvYOVUdM6BoJU4VGugBHbprlizGJGdgmSvFwFg0O+
+         wG1ZQf7SxH4wkzy3ZzRiTRpofqC/zTlz9Mrs0fDAyzbG5TQqAxYIKaQCuG5NK7zQ+33G
+         bxs+GV19M0UoN4h7RxLbSTGcNPiQnz8LFoeb9amztWlmQowyTnzO4clIUvZpleSedCL/
+         8c1lWEShmLPNkQgZLpiAmS0Jm007qYfOqftEHnqAMZhKX3y37Bzf0jSqRuqeEt9Wo5/y
+         4iEA==
+X-Gm-Message-State: AOJu0YzOBb9cL6F7i9NQfpfbbPHFhcTqc5KCiaOxZwdl1ppLLRU8Zs9P
+	H1s6iQ8NKxdVC9j7qpPsIQG3YHrRqbWIR+al8n4tiRwCElLVjDyArC/q04A3dVRRWm5Ng94ytdK
+	UmoOt1XDqZ2l8S5ykcM8v7qeltgg/cIyvBy4BiQ==
+X-Google-Smtp-Source: AGHT+IFUtCuTvk8mKeKkFT7KylDoeBTpbNSt8GgXuaNobgkE9MIDVP7hqUGu08pkbPShigRCDnFr0dMP8MHLHvtbZr8=
+X-Received: by 2002:a05:6122:3127:b0:4ef:9c2c:b2b7 with SMTP id
+ 71dfb90a1353d-4ef9c2cb76amr1709005e0c.12.1719433426552; Wed, 26 Jun 2024
+ 13:23:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240625085548.033507125@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Thu, 27 Jun 2024 01:53:34 +0530
+Message-ID: <CA+G9fYt6VVh3tErWkXyZmRhZqmaJFdG56BL4p_Zametiudy=Sw@mail.gmail.com>
+Subject: Re: [PATCH 6.9 000/250] 6.9.7-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, 25 Jun 2024 at 15:06, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.9.7 release.
+> There are 250 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 27 Jun 2024 08:54:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.9.7-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.9.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The patch titled
-     Subject: Fix userfaultfd_api to return EINVAL as expected
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     fix-userfaultfd_api-to-return-einval-as-expected.patch
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fix-userfaultfd_api-to-return-einval-as-expected.patch
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+## Build
+* kernel: 6.9.7-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
+rc.git
+* git commit: 681fedcb9fc66c0647e2ddc9824e0c0179a8b1b8
+* git describe: v6.9.6-251-g681fedcb9fc6
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.9.y/build/v6.9.6=
+-251-g681fedcb9fc6
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+## Test Regressions (compared to v6.9.5-282-g93f303762da5)
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+## Metric Regressions (compared to v6.9.5-282-g93f303762da5)
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+## Test Fixes (compared to v6.9.5-282-g93f303762da5)
 
-------------------------------------------------------
-From: Audra Mitchell <audra@redhat.com>
-Subject: Fix userfaultfd_api to return EINVAL as expected
-Date: Wed, 26 Jun 2024 09:05:11 -0400
+## Metric Fixes (compared to v6.9.5-282-g93f303762da5)
 
-Currently if we request a feature that is not set in the Kernel config we
-fail silently and return all the available features.  However, the man
-page indicates we should return an EINVAL.
+## Test result summary
+total: 238338, pass: 205834, fail: 4198, skip: 28306, xfail: 0
 
-We need to fix this issue since we can end up with a Kernel warning should
-a program request the feature UFFD_FEATURE_WP_UNPOPULATED on a kernel with
-the config not set with this feature.
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 127 total, 127 passed, 0 failed
+* arm64: 37 total, 37 passed, 0 failed
+* i386: 27 total, 27 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 3 passed, 0 failed
+* powerpc: 34 total, 34 passed, 0 failed
+* riscv: 17 total, 17 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 31 total, 31 passed, 0 failed
 
- [  200.812896] WARNING: CPU: 91 PID: 13634 at mm/memory.c:1660 zap_pte_range+0x43d/0x660
- [  200.820738] Modules linked in:
- [  200.869387] CPU: 91 PID: 13634 Comm: userfaultfd Kdump: loaded Not tainted 6.9.0-rc5+ #8
- [  200.877477] Hardware name: Dell Inc. PowerEdge R6525/0N7YGH, BIOS 2.7.3 03/30/2022
- [  200.885052] RIP: 0010:zap_pte_range+0x43d/0x660
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-kvm
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timers
+* kselftest-timesync-off
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-watchdog
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-hugetlb
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-smoke
+* ltp-smoketest
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
 
-Link: https://lkml.kernel.org/r/20240626130513.120193-1-audra@redhat.com
-Fixes: e06f1e1dd499 ("userfaultfd: wp: enabled write protection in userfaultfd API")
-Signed-off-by: Audra Mitchell <audra@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Rafael Aquini <raquini@redhat.com>
-Cc: Shaohua Li <shli@fb.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/userfaultfd.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
---- a/fs/userfaultfd.c~fix-userfaultfd_api-to-return-einval-as-expected
-+++ a/fs/userfaultfd.c
-@@ -2057,7 +2057,7 @@ static int userfaultfd_api(struct userfa
- 		goto out;
- 	features = uffdio_api.features;
- 	ret = -EINVAL;
--	if (uffdio_api.api != UFFD_API || (features & ~UFFD_API_FEATURES))
-+	if (uffdio_api.api != UFFD_API)
- 		goto err_out;
- 	ret = -EPERM;
- 	if ((features & UFFD_FEATURE_EVENT_FORK) && !capable(CAP_SYS_PTRACE))
-@@ -2081,6 +2081,11 @@ static int userfaultfd_api(struct userfa
- 	uffdio_api.features &= ~UFFD_FEATURE_WP_UNPOPULATED;
- 	uffdio_api.features &= ~UFFD_FEATURE_WP_ASYNC;
- #endif
-+
-+	ret = -EINVAL;
-+	if (features & ~uffdio_api.features)
-+		goto err_out;
-+
- 	uffdio_api.ioctls = UFFD_API_IOCTLS;
- 	ret = -EFAULT;
- 	if (copy_to_user(buf, &uffdio_api, sizeof(uffdio_api)))
-_
-
-Patches currently in -mm which might be from audra@redhat.com are
-
-fix-userfaultfd_api-to-return-einval-as-expected.patch
-
+--
+Linaro LKFT
+https://lkft.linaro.org
 
