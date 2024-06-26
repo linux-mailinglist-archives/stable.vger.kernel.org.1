@@ -1,176 +1,188 @@
-Return-Path: <stable+bounces-55822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEA591792A
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 08:49:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5D59179DF
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 09:39:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B36151C229AA
-	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 06:49:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D342EB243AC
+	for <lists+stable@lfdr.de>; Wed, 26 Jun 2024 07:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AEE14F9E0;
-	Wed, 26 Jun 2024 06:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="flalXVv5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7327B15B155;
+	Wed, 26 Jun 2024 07:38:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933EC1FBB;
-	Wed, 26 Jun 2024 06:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310AE15B986;
+	Wed, 26 Jun 2024 07:38:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719384562; cv=none; b=WWHv+mfYVw4xEasIBnVKyTGQGlIcixJ05Y5+HuR9CzVQeFogQRKHgSB4CUr4OQSRkCsefoHPIKFWl8ji3rvTT4RHjuxAET2cZsl7LcErD0K/Jyvtd957gy0RdDtjdtvUbJUg8OLiEezLc6BXPGb86+620c8YBcu9fqZtmMVBG1E=
+	t=1719387535; cv=none; b=dfAE02cxdy07bvylP90gYdEf2AAWoAnOxTk3rOWkTe5uq1UQM42knAzfL2/yCYMXvsogPvREhsm2NLprEApEcLGnWWC8om0rgTM9xHpIR6ulb2X6DV1lSAYZShxww6QZUWOCIqvrAwX6JAuQGt5ICWd+dmK7/VilEWwMIrJAKR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719384562; c=relaxed/simple;
-	bh=biDrjTVnXctPMnU20CaOYokxJV4SVN9aMiUtJ9IAZgM=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Xq8Fx8YH8W0JycP76SpH1RXj3aXWIWyHe+NAB4azp9vT/9T42K49dfgiZBi2YQEzbDyw3Yh6FT5pYM156caKCpUUy29XDHoRZUMFlwtOfYxq4c3ITTo/DLOQm6VF7uBZqf7a7LZdHUOTL50PKHGhjbuc5Tr1OszlSNF2yva0OU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=flalXVv5; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+	s=arc-20240116; t=1719387535; c=relaxed/simple;
+	bh=2YOp45yK0RjlCooNPDqr/f7qe2TM9WhOQKD6Ji3roro=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=lXv3gURJFoS/9PHITvOWzqSTZV5dm9W+fUVCVTY5IfBP8Z9AiDOkjFxAOsJP6KvoE4zidWGK2DZVUBQg3l0QQX1bKIRjRxTF9UU1ezVdDO6sZ6V6qj9nuYbXEYRKkJSWNeHrzRhnFiDyXx2p8b8wc2eJb2OJdJTNtw5EmfpZ0Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4W8D3h1R0RzxThL;
+	Wed, 26 Jun 2024 15:34:24 +0800 (CST)
+Received: from kwepemf100017.china.huawei.com (unknown [7.202.181.16])
+	by mail.maildlp.com (Postfix) with ESMTPS id D50B718006E;
+	Wed, 26 Jun 2024 15:38:43 +0800 (CST)
+Received: from [10.174.179.80] (10.174.179.80) by
+ kwepemf100017.china.huawei.com (7.202.181.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 26 Jun 2024 15:38:43 +0800
+Subject: Re: [PATCH v2 3/4] jbd2: Avoid infinite transaction commit loop
+To: Jan Kara <jack@suse.cz>
+CC: <linux-ext4@vger.kernel.org>, Alexander Coffin
+	<alex.coffin@maticrobots.com>, <stable@vger.kernel.org>, Ted Tso
+	<tytso@mit.edu>, <chengzhihao1@huawei.com>
+References: <20240624165406.12784-1-jack@suse.cz>
+ <20240624170127.3253-3-jack@suse.cz>
+From: Zhang Yi <yi.zhang@huawei.com>
+Message-ID: <2d49e3de-d7e7-2fd1-0b7a-9a3f9e04cd4d@huawei.com>
+Date: Wed, 26 Jun 2024 15:38:42 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.12.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1719384551;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3EUy8ZqVg1I+dfYk8clcNPqBEg+z81Pl82YdSn3QsHY=;
-	b=flalXVv5TjKTXtzblY1sXqL600OglvFnNH6rPY7PA8Y4xq3XyESFI2EqKeIaBSjlV0/RwC
-	l2HbYfUjwWtnBlpp4MX7Ca+4KrD3i2oK5Crm0VkoiPXb36uBkL32FheSm9tss2hP3+Kx1b
-	kH9N5PByLsIm9YwCZW65l93mwSf4koSoRTaXKiTgEgovZ5GRdOT3UUeByAzDMobPMIw99I
-	BNKnofU2wzizYJLyQ7Wsltar/uxrjg23ML/cEVg28ZQjjbkECgqsw1YSnlkb7Wkn2/FYLw
-	VMVJNRzMJl9MWz3+pPEMqTiWU3PsHzLrj3NVTOmK1WBeEVQahl+OsO7/9lh9dg==
-Date: Wed, 26 Jun 2024 08:49:09 +0200
-From: Dragan Simic <dsimic@manjaro.org>
-To: Qiang Yu <yuq825@gmail.com>
-Cc: Maxime Ripard <mripard@kernel.org>, dri-devel@lists.freedesktop.org,
- lima@lists.freedesktop.org, maarten.lankhorst@linux.intel.com,
- tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
- linux-kernel@vger.kernel.org, Philip Muller <philm@manjaro.org>, Oliver
- Smith <ollieparanoid@postmarketos.org>, Daniel Smith <danct12@disroot.org>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] drm/lima: Mark simple_ondemand governor as softdep
-In-Reply-To: <CAKGbVbsGm7emEPzGuf0Xn5k22Pbjfg9J9ykJHtvDF3SacfDg6A@mail.gmail.com>
-References: <fdaf2e41bb6a0c5118ff9cc21f4f62583208d885.1718655070.git.dsimic@manjaro.org>
- <CAKGbVbs8VmCXVOHbhkCYEHNJiKWwy10p0SV9J09h2h7xjs7hUg@mail.gmail.com>
- <CAKGbVbsM4rCprWdp+aGXE-pvCkb6N7weUyG2z4nXqFpv+y=LrA@mail.gmail.com>
- <20240618-great-hissing-skink-b7950e@houat>
- <4813a6885648e5368028cd822e8b2381@manjaro.org>
- <457ae7654dba38fcd8b50e38a1275461@manjaro.org>
- <2c072cc4bc800a0c52518fa2476ef9dd@manjaro.org>
- <CAKGbVbsGm7emEPzGuf0Xn5k22Pbjfg9J9ykJHtvDF3SacfDg6A@mail.gmail.com>
-Message-ID: <74c69c3bb4498099a195ec890e1a7896@manjaro.org>
-X-Sender: dsimic@manjaro.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=dsimic@manjaro.org smtp.mailfrom=dsimic@manjaro.org
+In-Reply-To: <20240624170127.3253-3-jack@suse.cz>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemf100017.china.huawei.com (7.202.181.16)
 
-Hello Qiang,
+On 2024/6/25 1:01, Jan Kara wrote:
+> Commit 9f356e5a4f12 ("jbd2: Account descriptor blocks into
+> t_outstanding_credits") started to account descriptor blocks into
+> transactions outstanding credits. However it didn't appropriately
+> decrease the maximum amount of credits available to userspace. Thus if
+> the filesystem requests a transaction smaller than
+> j_max_transaction_buffers but large enough that when descriptor blocks
+> are added the size exceeds j_max_transaction_buffers, we confuse
+> add_transaction_credits() into thinking previous handles have grown the
+> transaction too much and enter infinite journal commit loop in
+> start_this_handle() -> add_transaction_credits() trying to create
+> transaction with enough credits available.
+> 
+Hello Jan!
 
-On 2024-06-26 03:11, Qiang Yu wrote:
-> On Wed, Jun 26, 2024 at 2:15 AM Dragan Simic <dsimic@manjaro.org> 
-> wrote:
->> 
->> Hello everyone,
->> 
->> Just checking, any further thoughts about this patch?
->> 
-> I'm OK with this as a temp workaround because it's simple and do no 
-> harm
-> even it's not perfect. If no other better suggestion for short term, 
-> I'll submit
-> this at weekend.
+I understand that the incorrect max transaction limit in
+start_this_handle() could lead to infinite loop in
+start_this_handle()-> add_transaction_credits() with large enough
+userspace credits (from j_max_transaction_buffers - overheads to
+j_max_transaction_buffers), but I don't get how could it lead to ran
+out of space in the journal commit traction? IIUC, below codes in
+add_transaction_credits() could make sure that we have enough space
+when committing traction:
 
-Thanks.  Just as you described it, it's far from perfect, but it's still
-fine until there's a better solution, such as harddeps.  I'll continue 
-my
-research about the possibility for adding harddeps, which would 
-hopefully
-replace quite a few instances of the softdep (ab)use.
+static int add_transaction_credits()
+{
+...
+	if (jbd2_log_space_left(journal) < journal->j_max_transaction_buffers) {
+		...
+		return 1;
+		...
+	}
+...
+}
 
->> On 2024-06-18 21:22, Dragan Simic wrote:
->> > On 2024-06-18 12:33, Dragan Simic wrote:
->> >> On 2024-06-18 10:13, Maxime Ripard wrote:
->> >>> On Tue, Jun 18, 2024 at 04:01:26PM GMT, Qiang Yu wrote:
->> >>>> On Tue, Jun 18, 2024 at 12:33 PM Qiang Yu <yuq825@gmail.com> wrote:
->> >>>> >
->> >>>> > I see the problem that initramfs need to build a module dependency chain,
->> >>>> > but lima does not call any symbol from simpleondemand governor module.
->> >>>> > softdep module seems to be optional while our dependency is hard one,
->> >>>> > can we just add MODULE_INFO(depends, _depends), or create a new
->> >>>> > macro called MODULE_DEPENDS()?
->> >>
->> >> I had the same thoughts, because softdeps are for optional module
->> >> dependencies, while in this case it's a hard dependency.  Though,
->> >> I went with adding a softdep, simply because I saw no better option
->> >> available.
->> >>
->> >>>> This doesn't work on my side because depmod generates modules.dep
->> >>>> by symbol lookup instead of modinfo section. So softdep may be our
->> >>>> only
->> >>>> choice to add module dependency manually. I can accept the softdep
->> >>>> first, then make PM optional later.
->> >>
->> >> I also thought about making devfreq optional in the Lima driver,
->> >> which would make this additional softdep much more appropriate.
->> >> Though, I'm not really sure that's a good approach, because not
->> >> having working devfreq for Lima might actually cause issues on
->> >> some devices, such as increased power consumption.
->> >>
->> >> In other words, it might be better to have Lima probing fail if
->> >> devfreq can't be initialized, rather than having probing succeed
->> >> with no working devfreq.  Basically, failed probing is obvious,
->> >> while a warning in the kernel log about no devfreq might easily
->> >> be overlooked, causing regressions on some devices.
->> >>
->> >>> It's still super fragile, and depends on the user not changing the
->> >>> policy. It should be solved in some other, more robust way.
->> >>
->> >> I see, but I'm not really sure how to make it more robust?  In
->> >> the end, some user can blacklist the simple_ondemand governor
->> >> module, and we can't do much about it.
->> >>
->> >> Introducing harddeps alongside softdeps would make sense from
->> >> the design standpoint, but the amount of required changes wouldn't
->> >> be trivial at all, on various levels.
->> >
->> > After further investigation, it seems that the softdeps have
->> > already seen a fair amount of abuse for what they actually aren't
->> > intended, i.e. resolving hard dependencies.  For example, have
->> > a look at the commit d5178578bcd4 (btrfs: directly call into
->> > crypto framework for checksumming) [1] and the lines containing
->> > MODULE_SOFTDEP() at the very end of fs/btrfs/super.c. [2]
->> >
->> > If a filesystem driver can rely on the abuse of softdeps, which
->> > admittedly are a bit fragile, I think we can follow the same
->> > approach, at least for now.
->> >
->> > With all that in mind, I think that accepting this patch, as well
->> > as the related Panfrost patch, [3] should be warranted.  I'd keep
->> > investigating the possibility of introducing harddeps in form
->> > of MODULE_HARDDEP() and the related support in kmod project,
->> > similar to the already existing softdep support, [4] but that
->> > will inevitably take a lot of time, both for implementing it
->> > and for reaching various Linux distributions, which is another
->> > reason why accepting these patches seems reasonable.
->> >
->> > [1]
->> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d5178578bcd4
->> > [2]
->> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/super.c#n2593
->> > [3]
->> > https://lore.kernel.org/dri-devel/4e1e00422a14db4e2a80870afb704405da16fd1b.1718655077.git.dsimic@manjaro.org/
->> > [4]
->> > https://git.kernel.org/pub/scm/utils/kernel/kmod/kmod.git/commit/?id=49d8e0b59052999de577ab732b719cfbeb89504d
+I can't open and download the image Alexander gave, so I can't get to
+the bottom of this issue, please let me know what happened with
+jbd2_journal_next_log_block().
+
+Thanks,
+Yi.
+
+> Fix the problem by properly accounting for transaction space reserved
+> for descriptor blocks when verifying requested transaction handle size.
+> 
+> CC: stable@vger.kernel.org
+> Fixes: 9f356e5a4f12 ("jbd2: Account descriptor blocks into t_outstanding_credits")
+> Reported-by: Alexander Coffin <alex.coffin@maticrobots.com>
+> Link: https://lore.kernel.org/all/CA+hUFcuGs04JHZ_WzA1zGN57+ehL2qmHOt5a7RMpo+rv6Vyxtw@mail.gmail.com
+> Signed-off-by: Jan Kara <jack@suse.cz>
+> ---
+>  fs/jbd2/transaction.c | 21 ++++++++++++++-------
+>  1 file changed, 14 insertions(+), 7 deletions(-)
+> 
+> diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+> index a095f1a3114b..66513c18ca29 100644
+> --- a/fs/jbd2/transaction.c
+> +++ b/fs/jbd2/transaction.c
+> @@ -191,6 +191,13 @@ static void sub_reserved_credits(journal_t *journal, int blocks)
+>  	wake_up(&journal->j_wait_reserved);
+>  }
+>  
+> +/* Maximum number of blocks for user transaction payload */
+> +static int jbd2_max_user_trans_buffers(journal_t *journal)
+> +{
+> +	return journal->j_max_transaction_buffers -
+> +				journal->j_transaction_overhead_buffers;
+> +}
+> +
+>  /*
+>   * Wait until we can add credits for handle to the running transaction.  Called
+>   * with j_state_lock held for reading. Returns 0 if handle joined the running
+> @@ -240,12 +247,12 @@ __must_hold(&journal->j_state_lock)
+>  		 * big to fit this handle? Wait until reserved credits are freed.
+>  		 */
+>  		if (atomic_read(&journal->j_reserved_credits) + total >
+> -		    journal->j_max_transaction_buffers) {
+> +		    jbd2_max_user_trans_buffers(journal)) {
+>  			read_unlock(&journal->j_state_lock);
+>  			jbd2_might_wait_for_commit(journal);
+>  			wait_event(journal->j_wait_reserved,
+>  				   atomic_read(&journal->j_reserved_credits) + total <=
+> -				   journal->j_max_transaction_buffers);
+> +				   jbd2_max_user_trans_buffers(journal));
+>  			__acquire(&journal->j_state_lock); /* fake out sparse */
+>  			return 1;
+>  		}
+> @@ -285,14 +292,14 @@ __must_hold(&journal->j_state_lock)
+>  
+>  	needed = atomic_add_return(rsv_blocks, &journal->j_reserved_credits);
+>  	/* We allow at most half of a transaction to be reserved */
+> -	if (needed > journal->j_max_transaction_buffers / 2) {
+> +	if (needed > jbd2_max_user_trans_buffers(journal) / 2) {
+>  		sub_reserved_credits(journal, rsv_blocks);
+>  		atomic_sub(total, &t->t_outstanding_credits);
+>  		read_unlock(&journal->j_state_lock);
+>  		jbd2_might_wait_for_commit(journal);
+>  		wait_event(journal->j_wait_reserved,
+>  			 atomic_read(&journal->j_reserved_credits) + rsv_blocks
+> -			 <= journal->j_max_transaction_buffers / 2);
+> +			 <= jbd2_max_user_trans_buffers(journal) / 2);
+>  		__acquire(&journal->j_state_lock); /* fake out sparse */
+>  		return 1;
+>  	}
+> @@ -322,12 +329,12 @@ static int start_this_handle(journal_t *journal, handle_t *handle,
+>  	 * size and limit the number of total credits to not exceed maximum
+>  	 * transaction size per operation.
+>  	 */
+> -	if ((rsv_blocks > journal->j_max_transaction_buffers / 2) ||
+> -	    (rsv_blocks + blocks > journal->j_max_transaction_buffers)) {
+> +	if (rsv_blocks > jbd2_max_user_trans_buffers(journal) / 2 ||
+> +	    rsv_blocks + blocks > jbd2_max_user_trans_buffers(journal)) {
+>  		printk(KERN_ERR "JBD2: %s wants too many credits "
+>  		       "credits:%d rsv_credits:%d max:%d\n",
+>  		       current->comm, blocks, rsv_blocks,
+> -		       journal->j_max_transaction_buffers);
+> +		       jbd2_max_user_trans_buffers(journal));
+>  		WARN_ON(1);
+>  		return -ENOSPC;
+>  	}
+> 
 
