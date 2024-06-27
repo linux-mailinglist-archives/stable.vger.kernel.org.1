@@ -1,100 +1,68 @@
-Return-Path: <stable+bounces-55986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C1591AF7B
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 21:12:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBFA91AFDA
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 21:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7641B1C21D6B
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 19:11:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36DC71F23361
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 19:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9974019ADBC;
-	Thu, 27 Jun 2024 19:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="og2Tmu+r"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA79919AA56;
+	Thu, 27 Jun 2024 19:51:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C011E4A4;
-	Thu, 27 Jun 2024 19:11:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2AF2D047;
+	Thu, 27 Jun 2024 19:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719515515; cv=none; b=AStrcmumcUiH7YfsL1T50qPFq9RMtTAW7db8mNqjPzTLknyHECNj76MxLvqAAMhi+MS3I3ofHtW8N5zshMvyl4Hvz2YQ5N5botAGM97cat2MhsbjHPtNSU2UWRl4SRMYWDUqZCCTt3BmQFhghjryS53Vg22MbeSQhJ33conS7DU=
+	t=1719517893; cv=none; b=LGeGA/ye/2P6rKOnOySF4SP4yqIIDFjRkpxOMX7AK/J4+hHLXUY5QGBWmHsHf7cheBa5OAbXkRDvH2VO8uOEjpJQW1R0ugviVDwWhbv/SND3geVm7/XcK+GjR+v6Hn+UsJmgqnymvTLgTZO/wbvmCTe7ykCLSg3pUY8Gp8/xguo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719515515; c=relaxed/simple;
-	bh=RxfMVXVfttfnJX6U/j+G9gHbH5kPU34aMzIpkJ65OJI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s2KExbE+RsebmLMtLteYFPCSKnzromzwCPupYtRbcLMcnN50MaUaZ9AyVIx/v4wjNSN38tW4MI2pOjfT4+DPIwCKWeJ91gjfHUw6RTp6RKW/dBRdzXxN75/Z9Mo2JQfORlowqkG2i7Lxj7s0uPdsEfxouUSNodFpd41IwXw8utE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=og2Tmu+r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED18C2BBFC;
-	Thu, 27 Jun 2024 19:11:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719515515;
-	bh=RxfMVXVfttfnJX6U/j+G9gHbH5kPU34aMzIpkJ65OJI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=og2Tmu+rtWRXytnScfhXfY2wR5UUEjEJxmZPOT6OwcnucRU9ZEUUz9HNzUQIMqGhS
-	 IrNvTGWN8uu4KUUIHhUkJ0mECiA3Gqo+FP3c2qR+ooU3ABgJMtvohT0OdK/qwFt+4Y
-	 hIqo6wKRGy2qdo9m4RFM38TNjLv6moiEvUeCVYDtuv13vg3LVcMn/SYswpzK3VvXxa
-	 Q69ENDhcMS+hUqzvNSvHleW0LWCCU8yFp+5gadoSYU1CR3o1wigJy+XNlMGfUGgL+9
-	 McJjRpShLNbkAWxkZ/8MzNdDkz5qGoG8MvoBi4TewLd77e/Z37UOgHUpu9xCuV0LOO
-	 QaehqzIdn9n4w==
-Date: Thu, 27 Jun 2024 15:11:53 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Joe Perches <joe@perches.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	Sathya Prakash <sathya.prakash@broadcom.com>,
-	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-	Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: Re: Patch "scsi: mpt3sas: Add ioc_<level> logging macros" has been
- added to the 4.19-stable tree
-Message-ID: <Zn25eTIrGAKneEm_@sashalap>
-References: <20240626190750.2060180-1-sashal@kernel.org>
- <58432885e0b4b5c781be6a83787edd4779a41aad.camel@perches.com>
+	s=arc-20240116; t=1719517893; c=relaxed/simple;
+	bh=70LhU90qdQV39rroTRoNGijMZG/8DrhJZReHncgOsp0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=JhbvJ9GsNj8VNEHtbPLrnlCVsi+skvXmOpQ4IqhvWHQCPJOq7fR/4J9CQgWsJKrVKdFRUtGRwh4FyBW6XWCf45vaReoC6JIHqQmAAMau6vBLBsEbd+PiJSYzhSM1hxliIpTuF033TNrHOS2ZqWHRTvFKDn7eXD9TS5S7I141QoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id C47C292009C; Thu, 27 Jun 2024 21:51:22 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id BE4A592009B;
+	Thu, 27 Jun 2024 20:51:22 +0100 (BST)
+Date: Thu, 27 Jun 2024 20:51:22 +0100 (BST)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Jiaxun Yang <jiaxun.yang@flygoat.com>
+cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+    "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, 
+    linux-kernel@vger.kernel.org, 
+    "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH fixes 3/4] MIPS: cps-vec: Replace MT instructions with
+ macros
+In-Reply-To: <394042b6-37ef-4011-b799-454036d8bc34@app.fastmail.com>
+Message-ID: <alpine.DEB.2.21.2406272046020.43454@angie.orcam.me.uk>
+References: <20240616-mips-mt-fixes-v1-0-83913e0e60fc@flygoat.com> <20240616-mips-mt-fixes-v1-3-83913e0e60fc@flygoat.com> <Zn0qG5tsMBYcSWW+@alpha.franken.de> <394042b6-37ef-4011-b799-454036d8bc34@app.fastmail.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <58432885e0b4b5c781be6a83787edd4779a41aad.camel@perches.com>
+Content-Type: text/plain; charset=US-ASCII
 
-On Wed, Jun 26, 2024 at 12:25:35PM -0700, Joe Perches wrote:
->On Wed, 2024-06-26 at 15:07 -0400, Sasha Levin wrote:
->> This is a note to let you know that I've just added the patch titled
->>
->>     scsi: mpt3sas: Add ioc_<level> logging macros
->>
->> to the 4.19-stable tree which can be found at:
->>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>
->> The filename of the patch is:
->>      scsi-mpt3sas-add-ioc_-level-logging-macros.patch
->> and it can be found in the queue-4.19 subdirectory.
->>
->> If you, or anyone else, feels it should not be added to the stable tree,
->> please let <stable@vger.kernel.org> know about it.
->[]
->>    Stable-dep-of: 4254dfeda82f ("scsi: mpt3sas: Avoid test/set_bit() operating in non-allocated memory")
->
->Huh?  This doesn't make sense as far as I can tell.
+On Thu, 27 Jun 2024, Jiaxun Yang wrote:
 
-Heh, the dependency chain looks like this:
+> > how about simply enforcing the need for a correct toolchain instead
+> > of making the code ugly ?
+> 
+> Unfortunately, MT for microMIPS which I'm trying to bring up is only in
+> binutils master, it's not in any binutils release yet.
 
-4254dfeda82f ("scsi: mpt3sas: Avoid test/set_bit() operating in non-allocated memory")
-ffedeae1fa54 ("scsi: mpt3sas: Gracefully handle online firmware update")
-645a20c6821c ("scsi: mpt3sas: Add ioc_<level> logging macros")
+ It's not yet in binutils master either.  Has there been any actual chip 
+taped out with this instruction subset supported?
 
-I got rid of the patch in middle, not realizing I could get rid of
-this one too.
-
--- 
-Thanks,
-Sasha
+  Maciej
 
