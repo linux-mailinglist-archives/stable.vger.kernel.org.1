@@ -1,156 +1,153 @@
-Return-Path: <stable+bounces-55954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A3791A599
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 13:45:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB7B91A594
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 13:44:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 736CB288C13
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 11:45:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E1B71C216C4
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 11:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBC214B083;
-	Thu, 27 Jun 2024 11:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EEB314AD0E;
+	Thu, 27 Jun 2024 11:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="c0zN5d+z";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="oaWRz6rB"
 X-Original-To: stable@vger.kernel.org
-Received: from unicorn.mansr.com (unicorn.mansr.com [81.2.72.234])
+Received: from flow7-smtp.messagingengine.com (flow7-smtp.messagingengine.com [103.168.172.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C300C13AA4C;
-	Thu, 27 Jun 2024 11:45:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.2.72.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA7A13F441;
+	Thu, 27 Jun 2024 11:44:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719488718; cv=none; b=LWlMjP5rwOnzEUkAe9qPZefcX0cNR7kfStL93sNMLaF5eup10WDMMvbeJgztRRQdb9PTvZAFYqEDkHCK8Krj/TnwmryHHhpBs9gx6q2Ce0Na0vCk1wL4EC2TCdUGENHMobYjt8TM36jNWcmzDs12edUOh6zHmZG9KaOv8moOiTU=
+	t=1719488686; cv=none; b=uZdwBCjl+dZfhZtD47QJACoPWQ1eakJ7bVP4YR9BOKIAdY/b1fQRuiELzWs49hGjGUlC6DVxHWftpmysylYUFeqXeGdFUdtfe9nO8WgzJxmEVCrkyNoOv/5zGv2TWClDEpwXK+XBLQZYvrTyBduiGFZlzS8N5fUgD6vtAom0jYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719488718; c=relaxed/simple;
-	bh=evSv+YzWBzT/rL+Ef3bDS+9leq4NZMD9hE/fznsNY7M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=WvlFmcuH7rXMxZUg1fgWOjox0nqSdImpfUyCcFTq+S+b47pRESJxNJP7SrQta1MQe7K6m1ge0avzEEjJGnd/n4U3lIUjx8xHew5I/owMBEyKpyGDWP3pftQsE6EgMSNqqoSuns+6rzPiNEh9bn0RxAFQVIgfSUAIxwRIGSmKBbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mansr.com; spf=pass smtp.mailfrom=mansr.com; arc=none smtp.client-ip=81.2.72.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mansr.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mansr.com
-Received: from raven.mansr.com (raven.mansr.com [IPv6:2001:8b0:ca0d:1::3])
-	by unicorn.mansr.com (Postfix) with ESMTPS id F14E015360;
-	Thu, 27 Jun 2024 12:39:26 +0100 (BST)
-Received: by raven.mansr.com (Postfix, from userid 51770)
-	id DE143210C01; Thu, 27 Jun 2024 12:39:26 +0100 (BST)
-From: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
-To: Frank Oltmanns <frank@oltmanns.dev>
-Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec
- <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, Maxime
- Ripard <mripard@kernel.org>, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- linux-kernel@vger.kernel.org, "Robert J. Pafford"
- <pafford.9@buckeyemail.osu.edu>, stable@vger.kernel.org
-Subject: Re: [PATCH] clk: sunxi-ng: common: Don't call hw_to_ccu_common on
- hw without common
-In-Reply-To: <20240623-sunxi-ng_fix_common_probe-v1-1-7c97e32824a1@oltmanns.dev>
-	(Frank Oltmanns's message of "Sun, 23 Jun 2024 10:45:58 +0200")
-References: <20240623-sunxi-ng_fix_common_probe-v1-1-7c97e32824a1@oltmanns.dev>
-Date: Thu, 27 Jun 2024 12:39:26 +0100
-Message-ID: <yw1x4j9e62dt.fsf@mansr.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/29.3 (gnu/linux)
+	s=arc-20240116; t=1719488686; c=relaxed/simple;
+	bh=TLewCmcpPHqhY5A39cMHTKFtfml4dT4GwihqEz2HF4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HalNEutzBbCjtWV4oJ+TY3JBDbeUXXcZwLG18OMICl/8FtStoGiuzvGaAmEvVg73lXhHkpfa29kP/DM5J1vSHZLVvH7ZdBG8YMTCdK5WC5X9/H4gzHpc1RIq8KHxM1pQCQQ4XtDOKi0hZfkOkAX14cEF5ogv/bsBbiuHff5eD+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=c0zN5d+z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=oaWRz6rB; arc=none smtp.client-ip=103.168.172.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailflow.nyi.internal (Postfix) with ESMTP id 595F72001CD;
+	Thu, 27 Jun 2024 07:44:43 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Thu, 27 Jun 2024 07:44:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1719488683;
+	 x=1719495883; bh=9gyG7wlh1QIEKIg/21vyG7suAQH24Dus6aNn+hOYVKQ=; b=
+	c0zN5d+z41HjhLHCz3GMS1+j0P3dLOpI4X0+ceFBjKPmHQ+13zaSe3A8q/Nk31+V
+	kXJY4Tuh5SsqZdflY1R9uf7LvRwWDShRG0WuA2vmZKx01m7ZjPYPKg9LT3BdJzlf
+	GpJLQa8jz50AHhL47EewIftyhztxwZFpt01J2MYsY+yocKj5R7qwrPy67VKEAXTE
+	nf1lR204RyvLcOKcqT3+Lom5BppR8euQMR7LT6VH6U9Odfy0CfEfwoePVplfnYtt
+	0EgeggADlwG9NTPgK32WEV16BiciO+oECRs1+bhAtt1avUAZAfZ2HHKhZwyBu/sU
+	o7e5mqIXwst/Q1Huq21Mgw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1719488683; x=
+	1719495883; bh=9gyG7wlh1QIEKIg/21vyG7suAQH24Dus6aNn+hOYVKQ=; b=o
+	aWRz6rBl7EGWhipAHW+lA9o3LGvqgCVuFhfhXgn79PPqBak/JNZRqicZHPHvv4N/
+	DtvY99yRSkE1PRtL3PHz0/WyekR+COZ9vBlOX/mbdhSi3/utq4EWZybxhzCAuWCZ
+	N0AjiZqhJ/3e+cbALsA6X1nf+MMLMaTDxByR2pm0s55baSQwMTE6EBoEHtSdGibc
+	fLbzFrJ3eetyVLpMUSuf1hS9eS7JUQmjlRwSNb+RQjEC/7inuRJvA6O6Pszq3HS0
+	dPQ/YJy/vv5TgHMDktbqlN1Hr5X2eBKNGiFx8tqRGi4LqsJ0Ll2aJD8SHB2Zn2RQ
+	OiGxBpK4Ncek5zuEOzEfQ==
+X-ME-Sender: <xms:qlB9ZgBdCSKDTxjvmcDSlRzwl_9Yu9mlqeq7VnmKz-thf3JuDpWeTQ>
+    <xme:qlB9Zii1gOs3JWgPenYHxj7hDI9usHN5aurjMTTdGVMhoqWdRLd5WSeSG4xxmYhnJ
+    jpK89VQ66sw5A>
+X-ME-Received: <xmr:qlB9Zjlqz5Ac79XXWqSq7DO6O_fX-F8o4fM6aXRy9XFdNoPCYlGrat55twI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrtdeggdeggecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgfekff
+    eifeeiveekleetjedvtedvtdeludfgvdfhteejjeeiudeltdefffefvdeinecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:qlB9ZmzcLqEahwr1ZbRC5tq9LdUPgPwk0xFdD7O7XG3NXIW_pXn5Ew>
+    <xmx:qlB9ZlSm0NIXE5e_BYzyfwzLpUQI4A2eHiw55yEJd7ZC5k3rQzRC8g>
+    <xmx:qlB9ZhbmnOZV6XAQSvNswxxCu2HTNJwvKGWQ_skDyUjTazx8ID_msQ>
+    <xmx:qlB9ZuRMa8rSuMX35sUcagpVRIFHxdKIfUUuZkjltL9eoAu_sMjZ_A>
+    <xmx:q1B9ZhIxZbaPOdGXA0xz68p0gLtDcgQn20N-yvK-JUSMZoHjA8mxmhAK>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 27 Jun 2024 07:44:41 -0400 (EDT)
+Date: Thu, 27 Jun 2024 13:44:39 +0200
+From: Greg KH <greg@kroah.com>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: Ma Ke <make24@iscas.ac.cn>, dri-devel@lists.freedesktop.org,
+	Daniel Vetter <daniel@ffwll.ch>, Dave Airlie <airlied@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	David Airlie <airlied@gmail.com>
+Subject: Re: [PATCH v2] drm/gma500: fix null pointer dereference in
+ cdv_intel_lvds_get_modes
+Message-ID: <2024062731-left-cackle-4fc4@gregkh>
+References: <20240627063220.3013568-1-make24@iscas.ac.cn>
+ <eb14ae3b-7a4f-4802-b9a7-9ffec3b951f9@web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <eb14ae3b-7a4f-4802-b9a7-9ffec3b951f9@web.de>
 
-Frank Oltmanns <frank@oltmanns.dev> writes:
+On Thu, Jun 27, 2024 at 01:33:40PM +0200, Markus Elfring wrote:
+> > In cdv_intel_lvds_get_modes(), the return value of drm_mode_duplicate()
+> > is assigned to mode, which will lead to a NULL pointer dereference on
+> > failure of drm_mode_duplicate(). Add a check to avoid npd.
+> 
+> A) Can a wording approach (like the following) be a better change description?
+> 
+>    A null pointer is stored in the local variable “mode” after a call
+>    of the function “drm_mode_duplicate” failed. This pointer was passed to
+>    a subsequent call of the function “drm_mode_probed_add” where an undesirable
+>    dereference will be performed then.
+>    Thus add a corresponding return value check.
+> 
+> 
+> B) Would you like to append parentheses to the function name
+>    in the summary phrase?
+> 
+> 
+> C) How do you think about to put similar results from static source code
+>    analyses into corresponding patch series?
+> 
 
-> In order to set the rate range of a hw sunxi_ccu_probe calls
-> hw_to_ccu_common() assuming all entries in desc->ccu_clks are contained
-> in a ccu_common struct. This assumption is incorrect and, in
-> consequence, causes invalid pointer de-references.
->
-> Remove the faulty call. Instead, add one more loop that iterates over
-> the ccu_clks and sets the rate range, if required.
->
-> Fixes: b914ec33b391 ("clk: sunxi-ng: common: Support minimum and maximum =
-rate")
-> Reported-by: Robert J. Pafford <pafford.9@buckeyemail.osu.edu>
-> Closes: https://lore.kernel.org/lkml/DM6PR01MB58047C810DDD5D0AE397CADFF7C=
-22@DM6PR01MB5804.prod.exchangelabs.com/
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
-> ---
-> Robert, could you please test if this fixes the issue you reported.
->
-> I'm CC'ing M=E5ns here, because he observed some strange behavior [1] with
-> the original patch. Is it possible for you to look into if this patch
-> fixes your issue without the need for the following (seemingly
-> unrelated) patches:
->       cedb7dd193f6 "drm/sun4i: hdmi: Convert encoder to atomic"
->       9ca6bc246035 "drm/sun4i: hdmi: Move mode_set into enable"
+Hi,
 
-This does indeed fix it.  6.9 is still broken, though, but that's
-probably for other reasons.
+This is the semi-friendly patch-bot of Greg Kroah-Hartman.
 
-> Thanks,
->   Frank
->
-> [1]: https://lore.kernel.org/lkml/yw1xo78z8ez0.fsf@mansr.com/
-> ---
->  drivers/clk/sunxi-ng/ccu_common.c | 18 ++++++++++++------
->  1 file changed, 12 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/clk/sunxi-ng/ccu_common.c b/drivers/clk/sunxi-ng/ccu=
-_common.c
-> index ac0091b4ce24..be375ce0149c 100644
-> --- a/drivers/clk/sunxi-ng/ccu_common.c
-> +++ b/drivers/clk/sunxi-ng/ccu_common.c
-> @@ -132,7 +132,6 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu, str=
-uct device *dev,
->
->  	for (i =3D 0; i < desc->hw_clks->num ; i++) {
->  		struct clk_hw *hw =3D desc->hw_clks->hws[i];
-> -		struct ccu_common *common =3D hw_to_ccu_common(hw);
->  		const char *name;
->
->  		if (!hw)
-> @@ -147,14 +146,21 @@ static int sunxi_ccu_probe(struct sunxi_ccu *ccu, s=
-truct device *dev,
->  			pr_err("Couldn't register clock %d - %s\n", i, name);
->  			goto err_clk_unreg;
->  		}
-> +	}
-> +
-> +	for (i =3D 0; i < desc->num_ccu_clks; i++) {
-> +		struct ccu_common *cclk =3D desc->ccu_clks[i];
-> +
-> +		if (!cclk)
-> +			continue;
->
-> -		if (common->max_rate)
-> -			clk_hw_set_rate_range(hw, common->min_rate,
-> -					      common->max_rate);
-> +		if (cclk->max_rate)
-> +			clk_hw_set_rate_range(&cclk->hw, cclk->min_rate,
-> +					      cclk->max_rate);
->  		else
-> -			WARN(common->min_rate,
-> +			WARN(cclk->min_rate,
->  			     "No max_rate, ignoring min_rate of clock %d - %s\n",
-> -			     i, name);
-> +			     i, clk_hw_get_name(&cclk->hw));
->  	}
->
->  	ret =3D of_clk_add_hw_provider(node, of_clk_hw_onecell_get,
->
-> ---
-> base-commit: 2607133196c35f31892ee199ce7ffa717bea4ad1
-> change-id: 20240622-sunxi-ng_fix_common_probe-5677c3e487fc
->
-> Best regards,
-> --=20
->
-> Frank Oltmanns <frank@oltmanns.dev>
->
+Markus, you seem to have sent a nonsensical or otherwise pointless
+review comment to a patch submission on a Linux kernel developer mailing
+list.  I strongly suggest that you not do this anymore.  Please do not
+bother developers who are actively working to produce patches and
+features with comments that, in the end, are a waste of time.
 
---=20
-M=E5ns Rullg=E5rd
+Patch submitter, please ignore Markus's suggestion; you do not need to
+follow it at all.  The person/bot/AI that sent it is being ignored by
+almost all Linux kernel maintainers for having a persistent pattern of
+behavior of producing distracting and pointless commentary, and
+inability to adapt to feedback.  Please feel free to also ignore emails
+from them.
+
+thanks,
+
+greg k-h's patch email bot
 
