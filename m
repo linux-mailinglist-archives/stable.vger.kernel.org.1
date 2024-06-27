@@ -1,117 +1,103 @@
-Return-Path: <stable+bounces-55975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ADF491AB44
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 17:30:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D1591ABCE
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 17:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FA80B2A058
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 15:28:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 746971C21AEA
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 15:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7B2199391;
-	Thu, 27 Jun 2024 15:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6173146D74;
+	Thu, 27 Jun 2024 15:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eH3LbD4L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BI5FgBqB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BEE198E71;
-	Thu, 27 Jun 2024 15:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B751922CD;
+	Thu, 27 Jun 2024 15:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719501937; cv=none; b=Xf/dzQEePKzeMsY43Kp0a88sOgjIp0Pg8XmYL9cISUC1YCZ/dVABKdJOiQ+89LVLkGSjtW2c9G/IsFueRbstDqS7NFfMnD0nX2ZSc/Y+lVKMEL9hxhUiMWQ7c7vHs83f1cqejzLL7W2+2Zp4ejB4xD8F+8r0yNdQEGWXHA/7z6k=
+	t=1719503350; cv=none; b=d58KIVza4GXzDqMEtkZZSv8VYT0kkDVPRUmA+GznVH/w5Q1eHmjWp0BIyIPfa5jMoJ85sQlNHQeesIwt4C/JM1ZIXvDCKr7nzCBbdaeAjCNhCBMgqWTscsfzEn+DDPnBZMANMJAl7YlZDTu7dHe3uqUAIYm8wLahvyAeTHNtj48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719501937; c=relaxed/simple;
-	bh=DcIqrfoXRxHNxqbWkcMoWg8BFR191VB6t9DH5BOodQE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=as3YDaEWzrQsMxQT8ymkRM0a77aWGFSy2kuWzl1wa2lianV8G1Racgxv5OKoN883GyVFm5Er7RLyLIJDrDnZBbwmwufCuo0p1/3FoTOJ6OmKwL0sJDfMcz9q7ftwMnPYnKfbnaaLVmkU7Es75qgMrRYAGmLbjB3STsi6Mf4pWoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eH3LbD4L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEF9C2BBFC;
-	Thu, 27 Jun 2024 15:25:36 +0000 (UTC)
+	s=arc-20240116; t=1719503350; c=relaxed/simple;
+	bh=nqL74ax75pWruU5MiHx4Tv8OQ6oYMWOlYMX7W+QBVFE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rt9ByiONmeb4U0kKvE9A2haM4t1oIwpFsdDvuxseXxCNpfBQMfsE/VAaqKdrJsh4bSK/LN1WvEjdQitnHR3BGAOZo9eAks2/fhZGTLp4Kg5MIUAlQrCNzC57ar/pVuVERTTOka6WSJvCBYoYpSgpzSuDkxLtxPgZg2IU3/+0KKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BI5FgBqB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20102C4AF09;
+	Thu, 27 Jun 2024 15:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719501937;
-	bh=DcIqrfoXRxHNxqbWkcMoWg8BFR191VB6t9DH5BOodQE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eH3LbD4LMJBU52nravUhcazsfvfmVmy1p/PKyBtPNa2I3v0IEv/MbXFRfhgbgo+vy
-	 g8O5SLA7juKfFyeRtiaP2rwgDRT2G+XTFFitFYiYUi/cgnRYySoeWVxTtlf+ht0AlT
-	 QuGlRFDxKQV21chZqgny9mdYpNKqS1eFX6nuRDW1/jYGGnNZ5uEQjl5mmPcXY51ad9
-	 qKoppAJqBLynl8o7uilVtC86RdoYIP2ZvocuixFxup4WZnMZ9WWFatdLCqGHIMNWjI
-	 xbnW9CNIcPCLZMELio4RyhfeCCmL8/2cOIU00Y26YYRSuHzjb17AcX9Xc6SBQWYpP8
-	 iVcCEwmTqRodA==
-Date: Thu, 27 Jun 2024 17:25:33 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Tommy Huang <tommy_huang@aspeedtech.com>
-Cc: brendan.higgins@linux.dev, benh@kernel.crashing.org, joel@jms.id.au, 
-	andrew@codeconstruct.com.au, wsa@kernel.org, linux-i2c@vger.kernel.org, 
-	openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
-	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	BMC-SW@aspeedtech.com
-Subject: Re: [PATCH v2] i2c: aspeed: Update the stop sw state when the bus
- recovery occurs
-Message-ID: <pbsrfzbd237k5inof3wy6qabdmolmweozkn5kq7jlvstj2nkvo@nzp2sbrxpn44>
-References: <20240608043653.4086647-1-tommy_huang@aspeedtech.com>
+	s=k20201202; t=1719503349;
+	bh=nqL74ax75pWruU5MiHx4Tv8OQ6oYMWOlYMX7W+QBVFE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BI5FgBqBMP5FKrncNAqqVJtPra5024pG9hl1ijpvcDJsIekV5rUj0JzgScOCtjGC0
+	 5laD6fVdBlHLEWeUuyxwrn5ksk2coCoascyolx4NC/vAs2HdZYYUX2Tv3zXt5dOaAQ
+	 g/vYRl+eXkTjNFPKvtDcIYixM1jrPHLfIUMPyB2m1Ode7rOdm3OD58I/UQIe0IaEAx
+	 ymg23fV285rs5Hl6J7aozM0aLhJacvWpFe12agHVX2mUOGrszB/FCd9Ho9S+dm3Six
+	 oeDjIwOnBBsruFY6DBWptVbcNlbLNQLkM0mQ0YVcnu/0VArqVybhhlCIMursp1Uq8L
+	 qa9g4uHyogXtQ==
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-57d06101d76so2026007a12.3;
+        Thu, 27 Jun 2024 08:49:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUAaRjnA2rRDtvYFjyWg+3CBDee8eAXg7PBKEwiYWtkGiFm0SVzz+0JOA0Eh5TitELpJsNAVeBaJdKGRWsfNTkrmxBjjApGQHOL+AQ1oh+UeZKIMskO3z7RwjsdwuHFx0FyAkw3
+X-Gm-Message-State: AOJu0YxanCn9JBI7G+FMMOo9syctf8LJWSwmcW6h48Mb4lrCs37/TZaE
+	XJzhlyp6l+4iY8RueoD2ySVPkAg8SdlizxNgKqE8HQoKFt/3Yzlw1w0Z0ZDojse8JjXu4l0T6eG
+	Fr0meekAftio9bQZnxI0Q8jfW5GE=
+X-Google-Smtp-Source: AGHT+IGMJMc5MnM5ZGkcUNODngcS4Rbq5bn55PsQgrJaAUmsDOl1dWXQyEwf2gvEQISuwOi9m+9gihIbKE4DI1b6frU=
+X-Received: by 2002:a17:906:d509:b0:a6f:5192:6f4d with SMTP id
+ a640c23a62f3a-a7242c4dfd3mr701399466b.8.1719503347692; Thu, 27 Jun 2024
+ 08:49:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240608043653.4086647-1-tommy_huang@aspeedtech.com>
+References: <20240627103205.27914-2-CoelacanthusHex@gmail.com>
+ <87o77mpjgd.fsf@all.your.base.are.belong.to.us> <6b8e1e79-5a2e-416c-8fee-878b3f5568a0@gmail.com>
+In-Reply-To: <6b8e1e79-5a2e-416c-8fee-878b3f5568a0@gmail.com>
+From: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Date: Thu, 27 Jun 2024 17:48:55 +0200
+X-Gmail-Original-Message-ID: <CAJ+HfNhV2d53G-ZPDXUkSTP-AzhqXs54XZuCiYjR=06A1+oq_A@mail.gmail.com>
+Message-ID: <CAJ+HfNhV2d53G-ZPDXUkSTP-AzhqXs54XZuCiYjR=06A1+oq_A@mail.gmail.com>
+Subject: Re: [PATCH] riscv: entry: always initialize regs->a0 to -ENOSYS
+To: Celeste Liu <coelacanthushex@gmail.com>
+Cc: linux-riscv@lists.infradead.org, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
+	"Dmitry V . Levin" <ldv@strace.io>, linux-kernel@vger.kernel.org, Guo Ren <guoren@kernel.org>, 
+	Palmer Dabbelt <palmer@rivosinc.com>, 
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>, Felix Yan <felixonmars@archlinux.org>, 
+	Ruizhe Pan <c141028@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Tommy,
+On Thu, 27 Jun 2024 at 16:29, Celeste Liu <coelacanthushex@gmail.com> wrote=
+:
+>
+> On 2024-06-27 22:08, Bj=C3=B6rn T=C3=B6pel wrote:
+>
+> > Celeste Liu <coelacanthushex@gmail.com> writes:
+> >
+> >> Otherwise when the tracer changes syscall number to -1, the kernel fai=
+ls
+> >> to initialize a0 with -ENOSYS and subsequently fails to return the err=
+or
+> >> code of the failed syscall to userspace. For example, it will break
+> >> strace syscall tampering.
+> >>
+> >> Fixes: 52449c17bdd1 ("riscv: entry: set a0 =3D -ENOSYS only when sysca=
+ll !=3D -1")
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
+> >
+> > Reported-by: "Dmitry V. Levin" <ldv@strace.io>
+> > Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
+>
+> Patch v2 has been sent.
 
-any update on this patch?
-
-Andi
-
-On Sat, Jun 08, 2024 at 12:36:53PM GMT, Tommy Huang wrote:
-> When the i2c bus recovery occurs, driver will send i2c stop command
-> in the scl low condition. In this case the sw state will still keep
-> original situation. Under multi-master usage, i2c bus recovery will
-> be called when i2c transfer timeout occurs. Update the stop command
-> calling with aspeed_i2c_do_stop function to update master_state.
-> 
-> Fixes: f327c686d3ba ("i2c: aspeed: added driver for Aspeed I2C")
-> 
-> Cc: <stable@vger.kernel.org> # v4.13+
-> Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
-> ---
->  drivers/i2c/busses/i2c-aspeed.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-aspeed.c b/drivers/i2c/busses/i2c-aspeed.c
-> index ce8c4846b7fa..be64e419adf0 100644
-> --- a/drivers/i2c/busses/i2c-aspeed.c
-> +++ b/drivers/i2c/busses/i2c-aspeed.c
-> @@ -25,6 +25,8 @@
->  #include <linux/reset.h>
->  #include <linux/slab.h>
->  
-> +static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus);
-> +
->  /* I2C Register */
->  #define ASPEED_I2C_FUN_CTRL_REG				0x00
->  #define ASPEED_I2C_AC_TIMING_REG1			0x04
-> @@ -187,7 +189,7 @@ static int aspeed_i2c_recover_bus(struct aspeed_i2c_bus *bus)
->  			command);
->  
->  		reinit_completion(&bus->cmd_complete);
-> -		writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
-> +		aspeed_i2c_do_stop(bus);
->  		spin_unlock_irqrestore(&bus->lock, flags);
->  
->  		time_left = wait_for_completion_timeout(
-> -- 
-> 2.25.1
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+For future patches; You don't need to respin a patch to add tags. The
+tooling will pick up the tags automatically.
 
