@@ -1,280 +1,209 @@
-Return-Path: <stable+bounces-55920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DEB919FFF
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 09:07:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3961F91A030
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 09:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 668781C214EE
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 07:07:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BCB31C20EF9
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 07:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4518547A5D;
-	Thu, 27 Jun 2024 07:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364E648CDD;
+	Thu, 27 Jun 2024 07:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d+EBZ6Wp"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDEA4CE05;
-	Thu, 27 Jun 2024 07:07:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8AA5482D3;
+	Thu, 27 Jun 2024 07:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719472024; cv=none; b=AcC+K8Qdpn5PI91Il28iamy/TJ3dOcuGQehsLgQaeLFEob/Wigmn6MXRfJ5ziR6Epiiy/nv3bOp3cpEjNUb4wj4lFxQW/bImsMqMskWPKBK9z6+hZYUixWPnXVWwOP1zblndf+6ej9XD5JYLKyoxbu+SRz0EveiGTa2GT2FRYSc=
+	t=1719472531; cv=none; b=SsoHlqLqkXP155/7rt9eEBPEaFJ0HC5kY07J0D0Z/jDc7NMpEOawYNTXdPz5KrK3USLIiC36SAZG6s+a0Kv7dnGwfZ1j4QYOYu7maBE47McAc5Is81ve7V6WTvbYzrGiDwyNDnZoLt5f2e/BO3XGJGxyFT67MSQbQUaFJaIzg44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719472024; c=relaxed/simple;
-	bh=GHSvMALue0NCQy32KokzZg385UVQn0uoTu3jkqhiIIM=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=L+MuopvYI776E8QqNACRSHNxRgPtroObBz5eT2PeB5tgJXKtaOAXSBb1MbnvMVGyCo4IhZ6VZ5697lBvBP8Z0XSAW2Xy2jnFE9rBHnymB3D8RS8Br+yB3xRo+o2zgLACzcIqueotFfZDeTRjMfuSfRnpXHcrSLKPCdBn/S+c140=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4W8qPJ2k8Yz4f3ktx;
-	Thu, 27 Jun 2024 15:06:44 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 8EABE1A0572;
-	Thu, 27 Jun 2024 15:06:56 +0800 (CST)
-Received: from [10.174.179.80] (unknown [10.174.179.80])
-	by APP2 (Coremail) with SMTP id Syh0CgB34YaOD31m1djiAQ--.15220S3;
-	Thu, 27 Jun 2024 15:06:56 +0800 (CST)
-Subject: Re: [PATCH v2 2/4] jbd2: Precompute number of transaction descriptor
- blocks
-To: Jan Kara <jack@suse.cz>
-Cc: linux-ext4@vger.kernel.org, Alexander Coffin
- <alex.coffin@maticrobots.com>, stable@vger.kernel.org,
- Ted Tso <tytso@mit.edu>
-References: <20240624165406.12784-1-jack@suse.cz>
- <20240624170127.3253-2-jack@suse.cz>
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-Message-ID: <7c42a1a8-edde-d89c-e5f2-0857e4005016@huaweicloud.com>
-Date: Thu, 27 Jun 2024 15:06:54 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+	s=arc-20240116; t=1719472531; c=relaxed/simple;
+	bh=XwbJSYUkScewFom8KPyfpdyPLqr69H4fdItz//XBLlw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oZwj99JsXek10aR04+uG3T+vae8r+zLN8Y1UduZvSHLOlRrqyLwJIE12eb4yDi7ZEBn/Vty4kGscB5Bjt6Gfhmcgf7TEozqS3GwV4H0hx+O7RktS+6CeQ1tJ7+tyBxK3LUJQNHCg6CTSf5kvTA6NZSuoXiZc8ehHjPdsRGCFu84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d+EBZ6Wp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8D8C2BBFC;
+	Thu, 27 Jun 2024 07:15:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719472530;
+	bh=XwbJSYUkScewFom8KPyfpdyPLqr69H4fdItz//XBLlw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d+EBZ6WpJtlliiUw6N1d1pSEJUX/I/jOSxM9i5pnaeUeyQLzXrtDcFtNIxqB+lBoD
+	 XZ7JJROf3c+nsRa0VfC7DEsH9DPwVPTAKvbn0BIuup7eyKECJklAlhai6l64iiH3/1
+	 qbd4czshDH8OHpaZC6WwjHeR6ulND+w1D6xkJKKw2N8ts0UTa9bHj/gUykJnSAl4cq
+	 w27o+fs8Cvzzb2i1/ICw8o+znF3OxQIxGWrTXI4bg2Y4r358qdjLrTyl+3xinyfvuU
+	 KV3DWo7GZBXG94FXaHr6XGELyo4m8uq+KoqvnyGX8a1Kp7/IYilMXLJq29VlS1p5qv
+	 kgy1uGyIO5gOQ==
+Date: Thu, 27 Jun 2024 10:13:00 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: Patch "mm: memblock: replace dereferences of memblock_region.nid
+ with API calls" has been added to the 5.4-stable tree
+Message-ID: <Zn0Q_DKvcVF8P5f-@kernel.org>
+References: <20240626190708.2059584-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240624170127.3253-2-jack@suse.cz>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:Syh0CgB34YaOD31m1djiAQ--.15220S3
-X-Coremail-Antispam: 1UD129KBjvJXoW3Jw48CrW7KF48Xw13Zw17GFg_yoW3WF4fp3
-	yUC343CrWjvrWUZwn7Xr48JrWFqFy0yFyUWr1q93Z3Ka15Kwn2v34ktr17KFyqyryagw18
-	XF1UC34DGw4jk37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij
-	64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
-	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE
-	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42
-	xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
-	6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUzsqWUUUUU
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240626190708.2059584-1-sashal@kernel.org>
 
-On 2024/6/25 1:01, Jan Kara wrote:
-> Instead of computing the number of descriptor blocks a transaction can
-> have each time we need it (which is currently when starting each
-> transaction but will become more frequent later) precompute the number
-> once during journal initialization together with maximum transaction
-> size. We perform the precomputation whenever journal feature set is
-> updated similarly as for computation of
-> journal->j_revoke_records_per_block.
+Hi Sasha,
+
+On Wed, Jun 26, 2024 at 03:07:08PM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
 > 
-> CC: stable@vger.kernel.org
-> Signed-off-by: Jan Kara <jack@suse.cz>
-
-Looks good to me.
-
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-
-> ---
->  fs/jbd2/journal.c     | 61 ++++++++++++++++++++++++++++++++-----------
->  fs/jbd2/transaction.c | 24 +----------------
->  include/linux/jbd2.h  |  7 +++++
->  3 files changed, 54 insertions(+), 38 deletions(-)
+>     mm: memblock: replace dereferences of memblock_region.nid with API calls
 > 
-> diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-> index 1bb73750d307..ae5b544ed0cc 100644
-> --- a/fs/jbd2/journal.c
-> +++ b/fs/jbd2/journal.c
-> @@ -1451,6 +1451,48 @@ static int journal_revoke_records_per_block(journal_t *journal)
->  	return space / record_size;
->  }
+> to the 5.4-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      mm-memblock-replace-dereferences-of-memblock_region..patch
+> and it can be found in the queue-5.4 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
+> 
+> 
+> commit dd8d9169375a725cadd5e3635342a6e2d483cf4c
+> Author: Mike Rapoport <rppt@kernel.org>
+> Date:   Wed Jun 3 15:56:53 2020 -0700
+> 
+>     mm: memblock: replace dereferences of memblock_region.nid with API calls
+>     
+>     Stable-dep-of: 3ac36aa73073 ("x86/mm/numa: Use NUMA_NO_NODE when calling memblock_set_node()")
+
+The commit 3ac36aa73073 shouldn't be backported to 5.4 or anything before
+6.8 for that matter, I don't see a need to bring this in as well.
+
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/arch/arm64/mm/numa.c b/arch/arm64/mm/numa.c
+> index 53ebb4babf3a7..58c83c2b8748f 100644
+> --- a/arch/arm64/mm/numa.c
+> +++ b/arch/arm64/mm/numa.c
+> @@ -354,13 +354,16 @@ static int __init numa_register_nodes(void)
+>  	struct memblock_region *mblk;
 >  
-> +static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
-> +{
-> +	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
-> +}
+>  	/* Check that valid nid is set to memblks */
+> -	for_each_memblock(memory, mblk)
+> -		if (mblk->nid == NUMA_NO_NODE || mblk->nid >= MAX_NUMNODES) {
+> +	for_each_memblock(memory, mblk) {
+> +		int mblk_nid = memblock_get_region_node(mblk);
 > +
-> +/*
-> + * Base amount of descriptor blocks we reserve for each transaction.
-> + */
-> +static int jbd2_descriptor_blocks_per_trans(journal_t *journal)
-> +{
-> +	int tag_space = journal->j_blocksize - sizeof(journal_header_t);
-> +	int tags_per_block;
-> +
-> +	/* Subtract UUID */
-> +	tag_space -= 16;
-> +	if (jbd2_journal_has_csum_v2or3(journal))
-> +		tag_space -= sizeof(struct jbd2_journal_block_tail);
-> +	/* Commit code leaves a slack space of 16 bytes at the end of block */
-> +	tags_per_block = (tag_space - 16) / journal_tag_bytes(journal);
-> +	/*
-> +	 * Revoke descriptors are accounted separately so we need to reserve
-> +	 * space for commit block and normal transaction descriptor blocks.
-> +	 */
-> +	return 1 + DIV_ROUND_UP(jbd2_journal_get_max_txn_bufs(journal),
-> +				tags_per_block);
-> +}
-> +
-> +/*
-> + * Initialize number of blocks each transaction reserves for its bookkeeping
-> + * and maximum number of blocks a transaction can use. This needs to be called
-> + * after the journal size and the fastcommit area size are initialized.
-> + */
-> +static void jbd2_journal_init_transaction_limits(journal_t *journal)
-> +{
-> +	journal->j_revoke_records_per_block =
-> +				journal_revoke_records_per_block(journal);
-> +	journal->j_transaction_overhead_buffers =
-> +				jbd2_descriptor_blocks_per_trans(journal);
-> +	journal->j_max_transaction_buffers =
-> +				jbd2_journal_get_max_txn_bufs(journal);
-> +}
-> +
->  /*
->   * Load the on-disk journal superblock and read the key fields into the
->   * journal_t.
-> @@ -1492,8 +1534,8 @@ static int journal_load_superblock(journal_t *journal)
->  	if (jbd2_journal_has_csum_v2or3(journal))
->  		journal->j_csum_seed = jbd2_chksum(journal, ~0, sb->s_uuid,
->  						   sizeof(sb->s_uuid));
-> -	journal->j_revoke_records_per_block =
-> -				journal_revoke_records_per_block(journal);
-> +	/* After journal features are set, we can compute transaction limits */
-> +	jbd2_journal_init_transaction_limits(journal);
+> +		if (mblk_nid == NUMA_NO_NODE || mblk_nid >= MAX_NUMNODES) {
+>  			pr_warn("Warning: invalid memblk node %d [mem %#010Lx-%#010Lx]\n",
+> -				mblk->nid, mblk->base,
+> +				mblk_nid, mblk->base,
+>  				mblk->base + mblk->size - 1);
+>  			return -EINVAL;
+>  		}
+> +	}
 >  
->  	if (jbd2_has_feature_fast_commit(journal)) {
->  		journal->j_fc_last = be32_to_cpu(sb->s_maxlen);
-> @@ -1698,11 +1740,6 @@ journal_t *jbd2_journal_init_inode(struct inode *inode)
->  	return journal;
->  }
->  
-> -static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
-> -{
-> -	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
-> -}
-> -
->  /*
->   * Given a journal_t structure, initialise the various fields for
->   * startup of a new journaling session.  We use this both when creating
-> @@ -1748,8 +1785,6 @@ static int journal_reset(journal_t *journal)
->  	journal->j_commit_sequence = journal->j_transaction_sequence - 1;
->  	journal->j_commit_request = journal->j_commit_sequence;
->  
-> -	journal->j_max_transaction_buffers = jbd2_journal_get_max_txn_bufs(journal);
-> -
->  	/*
->  	 * Now that journal recovery is done, turn fast commits off here. This
->  	 * way, if fast commit was enabled before the crash but if now FS has
-> @@ -2290,8 +2325,6 @@ jbd2_journal_initialize_fast_commit(journal_t *journal)
->  	journal->j_fc_first = journal->j_last + 1;
->  	journal->j_fc_off = 0;
->  	journal->j_free = journal->j_last - journal->j_first;
-> -	journal->j_max_transaction_buffers =
-> -		jbd2_journal_get_max_txn_bufs(journal);
->  
->  	return 0;
->  }
-> @@ -2379,8 +2412,7 @@ int jbd2_journal_set_features(journal_t *journal, unsigned long compat,
->  	sb->s_feature_ro_compat |= cpu_to_be32(ro);
->  	sb->s_feature_incompat  |= cpu_to_be32(incompat);
->  	unlock_buffer(journal->j_sb_buffer);
-> -	journal->j_revoke_records_per_block =
-> -				journal_revoke_records_per_block(journal);
-> +	jbd2_journal_init_transaction_limits(journal);
->  
->  	return 1;
->  #undef COMPAT_FEATURE_ON
-> @@ -2411,8 +2443,7 @@ void jbd2_journal_clear_features(journal_t *journal, unsigned long compat,
->  	sb->s_feature_compat    &= ~cpu_to_be32(compat);
->  	sb->s_feature_ro_compat &= ~cpu_to_be32(ro);
->  	sb->s_feature_incompat  &= ~cpu_to_be32(incompat);
-> -	journal->j_revoke_records_per_block =
-> -				journal_revoke_records_per_block(journal);
-> +	jbd2_journal_init_transaction_limits(journal);
->  }
->  EXPORT_SYMBOL(jbd2_journal_clear_features);
->  
-> diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
-> index cb0b8d6fc0c6..a095f1a3114b 100644
-> --- a/fs/jbd2/transaction.c
-> +++ b/fs/jbd2/transaction.c
-> @@ -62,28 +62,6 @@ void jbd2_journal_free_transaction(transaction_t *transaction)
->  	kmem_cache_free(transaction_cache, transaction);
->  }
->  
-> -/*
-> - * Base amount of descriptor blocks we reserve for each transaction.
-> - */
-> -static int jbd2_descriptor_blocks_per_trans(journal_t *journal)
-> -{
-> -	int tag_space = journal->j_blocksize - sizeof(journal_header_t);
-> -	int tags_per_block;
-> -
-> -	/* Subtract UUID */
-> -	tag_space -= 16;
-> -	if (jbd2_journal_has_csum_v2or3(journal))
-> -		tag_space -= sizeof(struct jbd2_journal_block_tail);
-> -	/* Commit code leaves a slack space of 16 bytes at the end of block */
-> -	tags_per_block = (tag_space - 16) / journal_tag_bytes(journal);
-> -	/*
-> -	 * Revoke descriptors are accounted separately so we need to reserve
-> -	 * space for commit block and normal transaction descriptor blocks.
-> -	 */
-> -	return 1 + DIV_ROUND_UP(journal->j_max_transaction_buffers,
-> -				tags_per_block);
-> -}
-> -
->  /*
->   * jbd2_get_transaction: obtain a new transaction_t object.
->   *
-> @@ -109,7 +87,7 @@ static void jbd2_get_transaction(journal_t *journal,
->  	transaction->t_expires = jiffies + journal->j_commit_interval;
->  	atomic_set(&transaction->t_updates, 0);
->  	atomic_set(&transaction->t_outstanding_credits,
-> -		   jbd2_descriptor_blocks_per_trans(journal) +
-> +		   journal->j_transaction_overhead_buffers +
->  		   atomic_read(&journal->j_reserved_credits));
->  	atomic_set(&transaction->t_outstanding_revokes, 0);
->  	atomic_set(&transaction->t_handle_count, 0);
-> diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-> index f91b930abe20..b900c642210c 100644
-> --- a/include/linux/jbd2.h
-> +++ b/include/linux/jbd2.h
-> @@ -1085,6 +1085,13 @@ struct journal_s
+>  	/* Finally register nodes. */
+>  	for_each_node_mask(nid, numa_nodes_parsed) {
+> diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+> index 7316dca7e846a..bd52ce954d59a 100644
+> --- a/arch/x86/mm/numa.c
+> +++ b/arch/x86/mm/numa.c
+> @@ -502,8 +502,10 @@ static void __init numa_clear_kernel_node_hotplug(void)
+>  	 *   reserve specific pages for Sandy Bridge graphics. ]
 >  	 */
->  	int			j_revoke_records_per_block;
->  
-> +	/**
-> +	 * @j_transaction_overhead:
-> +	 *
-> +	 * Number of blocks each transaction needs for its own bookkeeping
-> +	 */
-> +	int			j_transaction_overhead_buffers;
+>  	for_each_memblock(reserved, mb_region) {
+> -		if (mb_region->nid != MAX_NUMNODES)
+> -			node_set(mb_region->nid, reserved_nodemask);
+> +		int nid = memblock_get_region_node(mb_region);
 > +
->  	/**
->  	 * @j_commit_interval:
->  	 *
-> 
+> +		if (nid != MAX_NUMNODES)
+> +			node_set(nid, reserved_nodemask);
+>  	}
+>  
+>  	/*
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index a75cc65f03307..d2d85d4d16b74 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -1170,13 +1170,15 @@ void __init_memblock __next_mem_pfn_range(int *idx, int nid,
+>  {
+>  	struct memblock_type *type = &memblock.memory;
+>  	struct memblock_region *r;
+> +	int r_nid;
+>  
+>  	while (++*idx < type->cnt) {
+>  		r = &type->regions[*idx];
+> +		r_nid = memblock_get_region_node(r);
+>  
+>  		if (PFN_UP(r->base) >= PFN_DOWN(r->base + r->size))
+>  			continue;
+> -		if (nid == MAX_NUMNODES || nid == r->nid)
+> +		if (nid == MAX_NUMNODES || nid == r_nid)
+>  			break;
+>  	}
+>  	if (*idx >= type->cnt) {
+> @@ -1189,7 +1191,7 @@ void __init_memblock __next_mem_pfn_range(int *idx, int nid,
+>  	if (out_end_pfn)
+>  		*out_end_pfn = PFN_DOWN(r->base + r->size);
+>  	if (out_nid)
+> -		*out_nid = r->nid;
+> +		*out_nid = r_nid;
+>  }
+>  
+>  /**
+> @@ -1730,7 +1732,7 @@ int __init_memblock memblock_search_pfn_nid(unsigned long pfn,
+>  	*start_pfn = PFN_DOWN(type->regions[mid].base);
+>  	*end_pfn = PFN_DOWN(type->regions[mid].base + type->regions[mid].size);
+>  
+> -	return type->regions[mid].nid;
+> +	return memblock_get_region_node(&type->regions[mid]);
+>  }
+>  #endif
+>  
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 0ad582945f54d..4a649111178cc 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7214,7 +7214,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
+>  			if (!memblock_is_hotpluggable(r))
+>  				continue;
+>  
+> -			nid = r->nid;
+> +			nid = memblock_get_region_node(r);
+>  
+>  			usable_startpfn = PFN_DOWN(r->base);
+>  			zone_movable_pfn[nid] = zone_movable_pfn[nid] ?
+> @@ -7235,7 +7235,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
+>  			if (memblock_is_mirror(r))
+>  				continue;
+>  
+> -			nid = r->nid;
+> +			nid = memblock_get_region_node(r);
+>  
+>  			usable_startpfn = memblock_region_memory_base_pfn(r);
+>  
 
+-- 
+Sincerely yours,
+Mike.
 
