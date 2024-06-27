@@ -1,95 +1,164 @@
-Return-Path: <stable+bounces-55896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7934919BD9
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 02:41:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3961919C82
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 03:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 016BD1C21A10
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 00:41:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F78C283941
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 01:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2531A17F3;
-	Thu, 27 Jun 2024 00:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD6623D0;
+	Thu, 27 Jun 2024 01:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XquNmEqR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.188.207])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74116AC0;
-	Thu, 27 Jun 2024 00:41:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.188.207
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A9D28F7;
+	Thu, 27 Jun 2024 01:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719448888; cv=none; b=Kz6ZFf5x6qaaulrWXaATxsCYD7yjKv9u/ck1IdMJeNedSV5YeBq9HsUYD6l0o4un+CtzFGxBfWeKB+G5WsGbFwssspjT1w6C3I/NvLJ+klYSl0Dz/eAxqc+PZhsCqPZHL0XDpnf6zH4oaTL3ioncCq5HWSt+cA3sunNBibX5poY=
+	t=1719450023; cv=none; b=aIXwuzrM3J9Hhm8AmERns2Gd1370cs1kEJcMk/hF92C/yt3dd/QyrlMLQVwMtFm4PVDRYu904awr/Z5ARlnndgqy8Ckl93daYv7TuXKpZdTzSW4PCT0/57vOHEeyo/bSEHEnNcbnrLB3yRuTtzvkmJvdM8L0lQMJOSaSCDSTi4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719448888; c=relaxed/simple;
-	bh=JzsYOL0ybgf+0CY3HWHMKuGZ7mWJ/knzollqOs3aFMw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TI/MiRgk9joe6Q8/3xrw6uZtWoQn/O/xiO6ToNwW/Or1nZtK2fGl87e3Irmg/AyctHkrWbk+jfi++THhTtM1h6pe3kzRvtzRwRPlaa1HE3WNGvPW/pUtccIBBWDQCwIq6KShZQp2KR75usMUAvylRL5a5QNTR/9Swzffv3x0UQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; arc=none smtp.client-ip=217.70.188.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	torvalds@linuxfoundation.org
-Subject: [PATCH -stable,5.10.x] netfilter: nf_tables: validate family when identifying table via handle
-Date: Thu, 27 Jun 2024 02:41:13 +0200
-Message-Id: <20240627004113.150349-3-pablo@netfilter.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20240627004113.150349-1-pablo@netfilter.org>
-References: <20240627004113.150349-1-pablo@netfilter.org>
+	s=arc-20240116; t=1719450023; c=relaxed/simple;
+	bh=ibtuksqqHRbw6xYn2I+QgP7GZTfnwLjkGVNyxPhsDBE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E5WdX/nq12P8DoYlSY7hHDaAhv4Ye2ETE+RqnjmZalJ9Y/yvbn7Lr41biQ5i2KioqEL6u6ga99Rig2wXshSBVpiGbKyNvblQ86A+G7oYvmOMZ+L95oZiNjCBVj4wf5Czs7ahGQvOqCynFP3GdXEADmeccxFg4KHtpbGg1ckN780=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XquNmEqR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584C0C116B1;
+	Thu, 27 Jun 2024 01:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719450022;
+	bh=ibtuksqqHRbw6xYn2I+QgP7GZTfnwLjkGVNyxPhsDBE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XquNmEqRetw+AivJGWZ0WN6xjRna28dOyjIIa+8OCOwxiyMQ7Ul3IAnsU9wE5Vu60
+	 hA/8fkTmZi3sSf7QOJ6hPEcl6ZT0SfEjqlb2sOr1M77LRJGaUEWb8re3pBoju+crd0
+	 YCcnP4MIOgWVK8Yam/r6yLwXzLU4AkzWxjPTb7T5Zm6vH9iGnF0IFpFcGfjPeJj1ul
+	 2JJnWPIc4tAFrHwkHEcPBxsa3eB3ZMkWEyxpNN1k3+EtBFDpShHMn0gAYx5ws2Loa5
+	 UXWcMLHCs6xRGcxqau16AHNWE6zBTGVSddlvev/XKQTaqJgPaTchwD5wTK3bHjWAli
+	 QODR63Rlolw+Q==
+Message-ID: <650615d5-031e-4a60-a452-3e541dc5f771@kernel.org>
+Date: Thu, 27 Jun 2024 10:00:20 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/13] ata: libata-core: Fix null pointer dereference
+ on error
+To: Niklas Cassel <cassel@kernel.org>, Tejun Heo <htejun@gmail.com>,
+ Jeff Garzik <jeff@garzik.org>
+Cc: linux-scsi@vger.kernel.org, John Garry <john.g.garry@oracle.com>,
+ Jason Yan <yanaijie@huawei.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ stable@vger.kernel.org, linux-ide@vger.kernel.org
+References: <20240626180031.4050226-15-cassel@kernel.org>
+ <20240626180031.4050226-16-cassel@kernel.org>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20240626180031.4050226-16-cassel@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-[ Upstream commit f6e1532a2697b81da00bfb184e99d15e01e9d98c ]
+On 6/27/24 03:00, Niklas Cassel wrote:
+> If the ata_port_alloc() call in ata_host_alloc() fails,
+> ata_host_release() will get called.
+> 
+> However, the code in ata_host_release() tries to free ata_port struct
+> members unconditionally, which can lead to the following:
+> 
+> BUG: unable to handle page fault for address: 0000000000003990
+> PGD 0 P4D 0
+> Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+> CPU: 10 PID: 594 Comm: (udev-worker) Not tainted 6.10.0-rc5 #44
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
+> RIP: 0010:ata_host_release.cold+0x2f/0x6e [libata]
+> Code: e4 4d 63 f4 44 89 e2 48 c7 c6 90 ad 32 c0 48 c7 c7 d0 70 33 c0 49 83 c6 0e 41
+> RSP: 0018:ffffc90000ebb968 EFLAGS: 00010246
+> RAX: 0000000000000041 RBX: ffff88810fb52e78 RCX: 0000000000000000
+> RDX: 0000000000000000 RSI: ffff88813b3218c0 RDI: ffff88813b3218c0
+> RBP: ffff88810fb52e40 R08: 0000000000000000 R09: 6c65725f74736f68
+> R10: ffffc90000ebb738 R11: 73692033203a746e R12: 0000000000000004
+> R13: 0000000000000000 R14: 0000000000000011 R15: 0000000000000006
+> FS:  00007f6cc55b9980(0000) GS:ffff88813b300000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 0000000000003990 CR3: 00000001122a2000 CR4: 0000000000750ef0
+> PKRU: 55555554
+> Call Trace:
+>  <TASK>
+>  ? __die_body.cold+0x19/0x27
+>  ? page_fault_oops+0x15a/0x2f0
+>  ? exc_page_fault+0x7e/0x180
+>  ? asm_exc_page_fault+0x26/0x30
+>  ? ata_host_release.cold+0x2f/0x6e [libata]
+>  ? ata_host_release.cold+0x2f/0x6e [libata]
+>  release_nodes+0x35/0xb0
+>  devres_release_group+0x113/0x140
+>  ata_host_alloc+0xed/0x120 [libata]
+>  ata_host_alloc_pinfo+0x14/0xa0 [libata]
+>  ahci_init_one+0x6c9/0xd20 [ahci]
+> 
+> Do not access ata_port struct members unconditionally.
+> 
+> Fixes: 633273a3ed1c ("libata-pmp: hook PMP support and enable it")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
 
-Validate table family when looking up for it via NFTA_TABLE_HANDLE.
+Looks good, with a nit below. This should be queued as soon as possible as a
+6.10 fix patch.
 
-Fixes: 3ecbfd65f50e ("netfilter: nf_tables: allocate handle and delete objects via handle")
-Reported-by: Xingyuan Mo <hdthky0@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/netfilter/nf_tables_api.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index f3cb5c920276..754278b85706 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -713,7 +713,7 @@ static struct nft_table *nft_table_lookup(const struct net *net,
- 
- static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
- 						   const struct nlattr *nla,
--						   u8 genmask)
-+						   int family, u8 genmask)
- {
- 	struct nftables_pernet *nft_net;
- 	struct nft_table *table;
-@@ -721,6 +721,7 @@ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
- 	nft_net = net_generic(net, nf_tables_net_id);
- 	list_for_each_entry(table, &nft_net->tables, list) {
- 		if (be64_to_cpu(nla_get_be64(nla)) == table->handle &&
-+		    table->family == family &&
- 		    nft_active_genmask(table, genmask))
- 			return table;
- 	}
-@@ -1440,7 +1441,7 @@ static int nf_tables_deltable(struct net *net, struct sock *nlsk,
- 
- 	if (nla[NFTA_TABLE_HANDLE]) {
- 		attr = nla[NFTA_TABLE_HANDLE];
--		table = nft_table_lookup_byhandle(net, attr, genmask);
-+		table = nft_table_lookup_byhandle(net, attr, family, genmask);
- 	} else {
- 		attr = nla[NFTA_TABLE_NAME];
- 		table = nft_table_lookup(net, attr, family, genmask);
+> ---
+>  drivers/ata/libata-core.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+> index e1bf8a19b3c8..88e32f638f33 100644
+> --- a/drivers/ata/libata-core.c
+> +++ b/drivers/ata/libata-core.c
+> @@ -5518,10 +5518,12 @@ static void ata_host_release(struct kref *kref)
+>  	for (i = 0; i < host->n_ports; i++) {
+>  		struct ata_port *ap = host->ports[i];
+>  
+> -		kfree(ap->pmp_link);
+> -		kfree(ap->slave_link);
+> -		kfree(ap->ncq_sense_buf);
+> -		kfree(ap);
+> +		if (ap) {
+> +			kfree(ap->pmp_link);
+> +			kfree(ap->slave_link);
+> +			kfree(ap->ncq_sense_buf);
+> +			kfree(ap);
+> +		}
+>  		host->ports[i] = NULL;
+
+Nit: this line can go inside the if as well. Or even better: reverse the if
+condition and continue to ignore NULL ports.
+
+	for (i = 0; i < host->n_ports; i++) {
+  		struct ata_port *ap = host->ports[i];
+
+		if (!ap)
+			continue;
+
+		kfree(ap->pmp_link);
+		kfree(ap->slave_link);
+		kfree(ap->ncq_sense_buf);
+		kfree(ap);
+		host->ports[i] = NULL;
+	}
+
 -- 
-2.30.2
+Damien Le Moal
+Western Digital Research
 
 
