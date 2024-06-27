@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-55988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776D791AFE2
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 21:55:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C9791B012
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 22:04:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03F3EB21161
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 19:55:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F80B1C22BFD
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 20:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A86D19B590;
-	Thu, 27 Jun 2024 19:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B1D19CCFA;
+	Thu, 27 Jun 2024 20:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oAf8fG48"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c5AEe5E8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CCF19AD7B;
-	Thu, 27 Jun 2024 19:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF6F45BE4;
+	Thu, 27 Jun 2024 20:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719518107; cv=none; b=BQFF7y2Mml19SxtFw/+rZ2YdZPsZqBoNw2rGIGtld/E7ozPDxftPNKHrDg79Iuxrhu0aa6Xk8bu7YUQyXeHYcn6cl5A6XgjNlelM/5q55QHbUN4GnB3semKibL9iJqQ9qWi/7buXfsjxm5xiS7OPtEy6ynfKxvErhfIc/N9u3zY=
+	t=1719518668; cv=none; b=U37XuoQAbbAyb1VoFoB0IsGin7t/mzJmqItfYfY7jpRxCJkC6ZzvH2vic5g+dRfhWNa5agIOh1grTfWDhNtP4lNjRrv5fultIuUVJOx/0KVMMsB01npiZdUiUtruiVaVLxZuqpSbLWmh79+Z2fLNz/qDKkvUiQE2UqZ+XVdhyj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719518107; c=relaxed/simple;
-	bh=hrwvdZWx7IhA0lYFaP6GXEUdbYOx3ORsC1ADYxitptk=;
+	s=arc-20240116; t=1719518668; c=relaxed/simple;
+	bh=CTOleaIq2SpthvaUvX+TbarpxX5f4lmcv5LDZDhUtxc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fwLKq3Mskfe8StUYM6jCH7mYqDQ7huDZIcmN/4DDboEGMIqePDCBub5yPe4mey/PRKnSnNd74Ttc/vvSHWfzBYn0L5KLRXn9zG7iWotB2FZnnPRTi0FkFxKNr6xP0/tKYYxC+weAa8qtgQePsMqGKqlI+8pkaoK4DO69QyDNz+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oAf8fG48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254EFC2BBFC;
-	Thu, 27 Jun 2024 19:55:06 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=C/eWr+RUAtGF6u/u9sVADS0FCk+GlVEMJ6qwUJaK5v0doHFZHuuSfoajWBMUNgchWqIX6rDNok4zZJJhVA0Q0nPqilkmZxKcWaPXKFIgy/8v4MBlX8T1OyAfulrEszg3xYIGq8kQLmnvz1g7UQdK3aLnnrKHpLO31X4HNFX9IcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c5AEe5E8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB7FC2BBFC;
+	Thu, 27 Jun 2024 20:04:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719518106;
-	bh=hrwvdZWx7IhA0lYFaP6GXEUdbYOx3ORsC1ADYxitptk=;
+	s=k20201202; t=1719518667;
+	bh=CTOleaIq2SpthvaUvX+TbarpxX5f4lmcv5LDZDhUtxc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oAf8fG4881G0CMiCpfCf0ZzzHM0S5m62lU1dsUVHM8HSkhUGqa/yITbyztb2/iiqI
-	 pRJf9v6Tw+rEgWLOjj49zXX6hcCg4FbZByfJDO2NLGmsv0bACSktUhQMod2/ap+ttc
-	 zYy+WJmgmF9SzAF8nVjTV2ho+muSDv640t4vGhRvjm534hpB0e7uSkQ0IvdqfUqbVF
-	 BdP1S2SlgwHUE+Hp5gQsEm+q2fL3oMEkEflRrZMb68SEigO/JMKtZig0YTDsitgyCt
-	 vF8mimpxyq4MUTpidgyxco61Tvtlc4b+ie9Yr7yuCTGTL2xj2y9KwkzxuERz7xNH+1
-	 qWvAClKVXh9Hg==
-Date: Thu, 27 Jun 2024 15:55:04 -0400
+	b=c5AEe5E8AT/AZPXXMWCSNp3xZp1ZyjOngzXrlCToFw3PAs0l2vAa957o6lyo0sZ6x
+	 AQpboLnwGIqkeGsGFxPNmXjlxSznIgR9Nn5axx47bsbf09kEAzZSZMVJU9JLtywnKV
+	 S84cYorKnNO1Ek//VxHv5CExehftf8RTYpY3p4tdYkKJU3ieh57IC72c5R3PmiIYEF
+	 vu0u1S93dDN+L2Bl3LzNZp/SpA3AeJ6U8mPvxdZqQegblhrVvc6JcaJZgqJSR1b0ny
+	 yZ/8yFDizH71cazV89rMEerEUUGQRnk81XH5yVm1/HHFTZujC+7RsuODi2DUiYUhkz
+	 xklkXtelZTwXw==
+Date: Thu, 27 Jun 2024 16:04:25 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: Patch "mm: memblock: replace dereferences of memblock_region.nid
- with API calls" has been added to the 5.4-stable tree
-Message-ID: <Zn3DmKp9SE5p4zG4@sashalap>
-References: <20240626190708.2059584-1-sashal@kernel.org>
- <Zn0Q_DKvcVF8P5f-@kernel.org>
- <Zn1zXiis-yqRB2VO@sashalap>
- <Zn15zDM2kjbPOepD@kernel.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, kuntal.nayak@broadcom.com,
+	stable@vger.kernel.org, gregkh@linuxfoundation.org
+Subject: Re: [PATCH -stable,6.1.x] netfilter: nf_tables: use timestamp to
+ check for set element timeout
+Message-ID: <Zn3FyYTUl267N1t_@sashalap>
+References: <20240626235314.281432-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,49 +58,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <Zn15zDM2kjbPOepD@kernel.org>
+In-Reply-To: <20240626235314.281432-1-pablo@netfilter.org>
 
-On Thu, Jun 27, 2024 at 05:40:12PM +0300, Mike Rapoport wrote:
->On Thu, Jun 27, 2024 at 10:12:46AM -0400, Sasha Levin wrote:
->> On Thu, Jun 27, 2024 at 10:13:00AM +0300, Mike Rapoport wrote:
->> > Hi Sasha,
->> >
->> > On Wed, Jun 26, 2024 at 03:07:08PM -0400, Sasha Levin wrote:
->> > > This is a note to let you know that I've just added the patch titled
->> > >
->> > >     mm: memblock: replace dereferences of memblock_region.nid with API calls
->> > >
->> > > to the 5.4-stable tree which can be found at:
->> > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->> > >
->> > > The filename of the patch is:
->> > >      mm-memblock-replace-dereferences-of-memblock_region..patch
->> > > and it can be found in the queue-5.4 subdirectory.
->> > >
->> > > If you, or anyone else, feels it should not be added to the stable tree,
->> > > please let <stable@vger.kernel.org> know about it.
->> > >
->> > >
->> > >
->> > > commit dd8d9169375a725cadd5e3635342a6e2d483cf4c
->> > > Author: Mike Rapoport <rppt@kernel.org>
->> > > Date:   Wed Jun 3 15:56:53 2020 -0700
->> > >
->> > >     mm: memblock: replace dereferences of memblock_region.nid with API calls
->> > >
->> > >     Stable-dep-of: 3ac36aa73073 ("x86/mm/numa: Use NUMA_NO_NODE when calling memblock_set_node()")
->> >
->> > The commit 3ac36aa73073 shouldn't be backported to 5.4 or anything before
->> > 6.8 for that matter, I don't see a need to bring this in as well.
->>
->> Sadly there was no fixes tag :(
->>
->> Should this be reverted from 5.4 and older, or is it ok for it to be
->> there?
+On Thu, Jun 27, 2024 at 01:53:13AM +0200, Pablo Neira Ayuso wrote:
+>commit 7395dfacfff65e9938ac0889dafa1ab01e987d15 upstream
 >
->It should be reverted from 5.4 and earlier please
+>Add a timestamp field at the beginning of the transaction, store it
+>in the nftables per-netns area.
+>
+>Update set backend .insert, .deactivate and sync gc path to use the
+>timestamp, this avoids that an element expires while control plane
+>transaction is still unfinished.
+>
+>.lookup and .update, which are used from packet path, still use the
+>current time to check if the element has expired. And .get path and dump
+>also since this runs lockless under rcu read size lock. Then, there is
+>async gc which also needs to check the current time since it runs
+>asynchronously from a workqueue.
+>
+>Fixes: c3e1b005ed1c ("netfilter: nf_tables: add set element timeout support")
+>Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+>---
+>This is a backport for 6.1.x, please apply.
 
-Ack
+Queued up, thanks!
 
 -- 
 Thanks,
