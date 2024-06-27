@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-55907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B702919DDF
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 05:35:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757AB919DE1
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 05:36:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CA4E1C2167E
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 03:35:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7CF1F24CF4
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 03:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A6B15E89;
-	Thu, 27 Jun 2024 03:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67D41757E;
+	Thu, 27 Jun 2024 03:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="cQQhB7tC"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ITbST3C4"
 X-Original-To: stable@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CE32139DB;
-	Thu, 27 Jun 2024 03:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9C8134A9;
+	Thu, 27 Jun 2024 03:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719459350; cv=none; b=KhnlIphH4bfthmYtvhpVnfinBr+r9u5ZiO8VJt0LVCPEoqqA59apV50kmtLpgX2C6kHqhtcgDOwWi2KsTrUtVQZdw9ouP5ZFhuswzSXD3FtomVi8/D5+nLUcPNRMUO9yQ7D2V1ajEJOea0n4YcXtCQ86Hltjmpl99mg+MVsvj4o=
+	t=1719459399; cv=none; b=IADoTgw+6GN29b/7ZSBIZEDxwThaQ8wu1Bv3qVl4oRdkL+BcK8D+h3txQ7wt0QMkIuDDTY86B8SJUKyc08l2OP6DAzWilP0EiiFiT3kiuUv+6gbxg9q2UpOwd/a14z6ODe3Ksx3EFR3MJFwfLfP31L8241/lAYJ2dARFTQ0j7PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719459350; c=relaxed/simple;
-	bh=MRIn2jfw28f9bV+2ZEyuhfAkUgY2Jbior1J1xcqIcKQ=;
+	s=arc-20240116; t=1719459399; c=relaxed/simple;
+	bh=CGVBnUvrgUbNw9JtayPmHywmKor2DIok4PGslhat+V8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W/T5O3fVDUnQKnVp9eF+06AeLBKFEUALQRJ+dky3DoQ06Qj1wa5Ct0lxtBKoqDhmeradCdDvyTZgm7+aICI6giicnaw6XYNo2OjHjsPMK1nDfwWdE8fmuYSmtGYbM0ukoTqWf9aiQfFTV8XylGHi526+3am19/ZAZTiQS0Dt+mI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=cQQhB7tC; arc=none smtp.client-ip=13.77.154.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=iyoIUJoDLlPFLnGbQEUOlU3b/0fDqhwowFwzqo+DkIUCOA0NFtK3/y7XQ7uLMMOgYPwrnLhBEu+N/I60uDyvjbiUJ4bt7sFGRWr+JSHT/uA2q/2oo2NXo95bARndTqqScGkTikW1tzUeV64w+5rzeK5yYwpoivlwNgsGOsftn9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ITbST3C4; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Received: by linux.microsoft.com (Postfix, from userid 1131)
-	id 5C23320B7009; Wed, 26 Jun 2024 20:35:48 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5C23320B7009
+	id 178F820B7009; Wed, 26 Jun 2024 20:36:38 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 178F820B7009
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1719459348;
-	bh=+AqxwhDmM0tctRAf3xh1bP1yYfeASz2/N9+7o989uCo=;
+	s=default; t=1719459398;
+	bh=nAoci/BESLc6dj37WSE8/9lFjhKstX0dCbb9LThBThI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cQQhB7tCXICaQRcjPLWM57AH/xAKR7aMgSeqOvE2nD5PQXtHGdNBGdwWX7dGjNzdV
-	 ionZ/QdYRSEyc9h4U8W9JecT8lbvby7k1muibPhHMUKTlcx8l1esaRw+g6xMQBnG0D
-	 DgNb2ZQpfM4HPJHcEtjWlqyXVCt6nJHTgATSR9UE=
-Date: Wed, 26 Jun 2024 20:35:48 -0700
+	b=ITbST3C4UYcuVklLjZEoOUCKTxR4wj/XMEWbfHX2xFllZEl7yNT8FhV6tWlwAAcRy
+	 DZF2goRYdi1w07u+tRIRXz6EX9pYKpcnEAfMFeGRePnT029kpQ8qWLp9Dhmk+/zYrw
+	 qq/H431JV4TgMiQR7twJXT/VmrHKbW/v0PCBWHNc=
+Date: Wed, 26 Jun 2024 20:36:38 -0700
 From: Kelsey Steele <kelseysteele@linux.microsoft.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -49,9 +49,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.6 000/192] 6.6.36-rc1 review
-Message-ID: <20240627033548.GB6902@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20240625085537.150087723@linuxfoundation.org>
+Subject: Re: [PATCH 6.9 000/250] 6.9.7-rc1 review
+Message-ID: <20240627033638.GC6902@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20240625085548.033507125@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,17 +60,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240625085537.150087723@linuxfoundation.org>
+In-Reply-To: <20240625085548.033507125@linuxfoundation.org>
 User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On Tue, Jun 25, 2024 at 11:31:12AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.36 release.
-> There are 192 patches in this series, all will be posted as a response
+On Tue, Jun 25, 2024 at 11:29:18AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.9.7 release.
+> There are 250 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
 > Responses should be made by Thu, 27 Jun 2024 08:54:55 +0000.
 > Anything received after that time might be too late.
+> 
 
 No regressions found on WSL (x86 and arm64).
 
@@ -78,5 +79,5 @@ Built, booted, and reviewed dmesg.
 
 Thank you. :)
 
-Tested-by: Kelsey Steele <kelseysteele@linux.microsoft.com> 
+Tested-by: Kelsey Steele <kelseysteele@linux.microsoft.com>
 
