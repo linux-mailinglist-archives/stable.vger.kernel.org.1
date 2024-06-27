@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-55919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45312919F86
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 08:47:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43DEB919FFF
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 09:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC036B22356
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 06:47:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 668781C214EE
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 07:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015FF2E40D;
-	Thu, 27 Jun 2024 06:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4518547A5D;
+	Thu, 27 Jun 2024 07:07:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177161CA96;
-	Thu, 27 Jun 2024 06:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDEA4CE05;
+	Thu, 27 Jun 2024 07:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719470848; cv=none; b=EqmPMBZ8y0SIo0UL+0Xc8e5tX7KAQR3q3FGoGWPFpX5nY5Utr83+5DE0QieZGoW7U53hwIqOHadTnxHpIzgJfcezENIpEp9FiB8TlSvrGwdZr2+X1tIaAC1rJjTDDaMALH8NC+21VDRDjqXaumFnp0TNQ2tpAxD6z72Idjze/8A=
+	t=1719472024; cv=none; b=AcC+K8Qdpn5PI91Il28iamy/TJ3dOcuGQehsLgQaeLFEob/Wigmn6MXRfJ5ziR6Epiiy/nv3bOp3cpEjNUb4wj4lFxQW/bImsMqMskWPKBK9z6+hZYUixWPnXVWwOP1zblndf+6ej9XD5JYLKyoxbu+SRz0EveiGTa2GT2FRYSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719470848; c=relaxed/simple;
-	bh=QnfsP5dbMie3UMBSy+3N5TRGD4S5gcLtThKSPjv5MRY=;
+	s=arc-20240116; t=1719472024; c=relaxed/simple;
+	bh=GHSvMALue0NCQy32KokzZg385UVQn0uoTu3jkqhiIIM=;
 	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=jX3U6iuDAZQWiD8CX1RcHRgbzwj03lAtIqKGOznZtF+EzNe8XxkwlrHABcCHybR0iU/oe5ez9v4h0I+zCW6ctRlMf5TQnCF3fr2C4mU6gkUUddHfL3dN0mOG1A3sPRSP08hwCDVs/KAXflbzN5qWX+GCo79LrGPGxsYMIuIhTsU=
+	 In-Reply-To:Content-Type; b=L+MuopvYI776E8QqNACRSHNxRgPtroObBz5eT2PeB5tgJXKtaOAXSBb1MbnvMVGyCo4IhZ6VZ5697lBvBP8Z0XSAW2Xy2jnFE9rBHnymB3D8RS8Br+yB3xRo+o2zgLACzcIqueotFfZDeTRjMfuSfRnpXHcrSLKPCdBn/S+c140=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
 Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4W8pyk1ygyz4f3l1Z;
-	Thu, 27 Jun 2024 14:47:10 +0800 (CST)
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4W8qPJ2k8Yz4f3ktx;
+	Thu, 27 Jun 2024 15:06:44 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 756D91A0568;
-	Thu, 27 Jun 2024 14:47:22 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 8EABE1A0572;
+	Thu, 27 Jun 2024 15:06:56 +0800 (CST)
 Received: from [10.174.179.80] (unknown [10.174.179.80])
-	by APP2 (Coremail) with SMTP id Syh0CgB34Yb5Cn1mgJHhAQ--.14721S3;
-	Thu, 27 Jun 2024 14:47:22 +0800 (CST)
-Subject: Re: [PATCH v2 1/4] jbd2: Make jbd2_journal_get_max_txn_bufs()
- internal
+	by APP2 (Coremail) with SMTP id Syh0CgB34YaOD31m1djiAQ--.15220S3;
+	Thu, 27 Jun 2024 15:06:56 +0800 (CST)
+Subject: Re: [PATCH v2 2/4] jbd2: Precompute number of transaction descriptor
+ blocks
 To: Jan Kara <jack@suse.cz>
 Cc: linux-ext4@vger.kernel.org, Alexander Coffin
  <alex.coffin@maticrobots.com>, stable@vger.kernel.org,
  Ted Tso <tytso@mit.edu>
 References: <20240624165406.12784-1-jack@suse.cz>
- <20240624170127.3253-1-jack@suse.cz>
+ <20240624170127.3253-2-jack@suse.cz>
 From: Zhang Yi <yi.zhang@huaweicloud.com>
-Message-ID: <0d8ad437-78fb-d5c1-d7d5-0e4be45c2061@huaweicloud.com>
-Date: Thu, 27 Jun 2024 14:47:21 +0800
+Message-ID: <7c42a1a8-edde-d89c-e5f2-0857e4005016@huaweicloud.com>
+Date: Thu, 27 Jun 2024 15:06:54 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.12.0
 Precedence: bulk
@@ -57,67 +57,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240624170127.3253-1-jack@suse.cz>
+In-Reply-To: <20240624170127.3253-2-jack@suse.cz>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:Syh0CgB34Yb5Cn1mgJHhAQ--.14721S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ar1xGw45uF4rGFy8Gw4UArb_yoW8KFWrpF
-	y8Ga48CFyFvFWUAFn7Wr4UXrW0q3y0kryUKr4Duw1ktw45trn7tw17Krn3tF90yrW09w18
-	Zr1DCw4DGw4j9rDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUyEb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
+X-CM-TRANSID:Syh0CgB34YaOD31m1djiAQ--.15220S3
+X-Coremail-Antispam: 1UD129KBjvJXoW3Jw48CrW7KF48Xw13Zw17GFg_yoW3WF4fp3
+	yUC343CrWjvrWUZwn7Xr48JrWFqFy0yFyUWr1q93Z3Ka15Kwn2v34ktr17KFyqyryagw18
+	XF1UC34DGw4jk37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k2
 	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
 	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
 	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
 	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
 	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij
 	64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
 	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE
-	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
-	xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY
-	1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1wL05UUUUU==
+	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42
+	xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
+	6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUzsqWUUUUU
 X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
 
 On 2024/6/25 1:01, Jan Kara wrote:
-> There's no reason to have jbd2_journal_get_max_txn_bufs() public
-> function. Currently all users are internal and can use
-> journal->j_max_transaction_buffers instead. This saves some unnecessary
-> recomputations of the limit as a bonus which becomes important as this
-> function gets more complex in the following patch.
+> Instead of computing the number of descriptor blocks a transaction can
+> have each time we need it (which is currently when starting each
+> transaction but will become more frequent later) precompute the number
+> once during journal initialization together with maximum transaction
+> size. We perform the precomputation whenever journal feature set is
+> updated similarly as for computation of
+> journal->j_revoke_records_per_block.
 > 
 > CC: stable@vger.kernel.org
 > Signed-off-by: Jan Kara <jack@suse.cz>
 
-A good cleanup.
+Looks good to me.
 
 Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
 
 > ---
->  fs/jbd2/commit.c     | 2 +-
->  fs/jbd2/journal.c    | 5 +++++
->  include/linux/jbd2.h | 5 -----
->  3 files changed, 6 insertions(+), 6 deletions(-)
+>  fs/jbd2/journal.c     | 61 ++++++++++++++++++++++++++++++++-----------
+>  fs/jbd2/transaction.c | 24 +----------------
+>  include/linux/jbd2.h  |  7 +++++
+>  3 files changed, 54 insertions(+), 38 deletions(-)
 > 
-> diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
-> index 75ea4e9a5cab..e7fc912693bd 100644
-> --- a/fs/jbd2/commit.c
-> +++ b/fs/jbd2/commit.c
-> @@ -766,7 +766,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
->  		if (first_block < journal->j_tail)
->  			freed += journal->j_last - journal->j_first;
->  		/* Update tail only if we free significant amount of space */
-> -		if (freed < jbd2_journal_get_max_txn_bufs(journal))
-> +		if (freed < journal->j_max_transaction_buffers)
->  			update_tail = 0;
->  	}
->  	J_ASSERT(commit_transaction->t_state == T_COMMIT);
 > diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-> index 03c4b9214f56..1bb73750d307 100644
+> index 1bb73750d307..ae5b544ed0cc 100644
 > --- a/fs/jbd2/journal.c
 > +++ b/fs/jbd2/journal.c
-> @@ -1698,6 +1698,11 @@ journal_t *jbd2_journal_init_inode(struct inode *inode)
->  	return journal;
+> @@ -1451,6 +1451,48 @@ static int journal_revoke_records_per_block(journal_t *journal)
+>  	return space / record_size;
 >  }
 >  
 > +static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
@@ -125,25 +114,167 @@ Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
 > +	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
 > +}
 > +
+> +/*
+> + * Base amount of descriptor blocks we reserve for each transaction.
+> + */
+> +static int jbd2_descriptor_blocks_per_trans(journal_t *journal)
+> +{
+> +	int tag_space = journal->j_blocksize - sizeof(journal_header_t);
+> +	int tags_per_block;
+> +
+> +	/* Subtract UUID */
+> +	tag_space -= 16;
+> +	if (jbd2_journal_has_csum_v2or3(journal))
+> +		tag_space -= sizeof(struct jbd2_journal_block_tail);
+> +	/* Commit code leaves a slack space of 16 bytes at the end of block */
+> +	tags_per_block = (tag_space - 16) / journal_tag_bytes(journal);
+> +	/*
+> +	 * Revoke descriptors are accounted separately so we need to reserve
+> +	 * space for commit block and normal transaction descriptor blocks.
+> +	 */
+> +	return 1 + DIV_ROUND_UP(jbd2_journal_get_max_txn_bufs(journal),
+> +				tags_per_block);
+> +}
+> +
+> +/*
+> + * Initialize number of blocks each transaction reserves for its bookkeeping
+> + * and maximum number of blocks a transaction can use. This needs to be called
+> + * after the journal size and the fastcommit area size are initialized.
+> + */
+> +static void jbd2_journal_init_transaction_limits(journal_t *journal)
+> +{
+> +	journal->j_revoke_records_per_block =
+> +				journal_revoke_records_per_block(journal);
+> +	journal->j_transaction_overhead_buffers =
+> +				jbd2_descriptor_blocks_per_trans(journal);
+> +	journal->j_max_transaction_buffers =
+> +				jbd2_journal_get_max_txn_bufs(journal);
+> +}
+> +
 >  /*
->   * Given a journal_t structure, initialise the various fields for
->   * startup of a new journaling session.  We use this both when creating
-> diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-> index ab04c1c27fae..f91b930abe20 100644
-> --- a/include/linux/jbd2.h
-> +++ b/include/linux/jbd2.h
-> @@ -1660,11 +1660,6 @@ int jbd2_wait_inode_data(journal_t *journal, struct jbd2_inode *jinode);
->  int jbd2_fc_wait_bufs(journal_t *journal, int num_blks);
->  int jbd2_fc_release_bufs(journal_t *journal);
+>   * Load the on-disk journal superblock and read the key fields into the
+>   * journal_t.
+> @@ -1492,8 +1534,8 @@ static int journal_load_superblock(journal_t *journal)
+>  	if (jbd2_journal_has_csum_v2or3(journal))
+>  		journal->j_csum_seed = jbd2_chksum(journal, ~0, sb->s_uuid,
+>  						   sizeof(sb->s_uuid));
+> -	journal->j_revoke_records_per_block =
+> -				journal_revoke_records_per_block(journal);
+> +	/* After journal features are set, we can compute transaction limits */
+> +	jbd2_journal_init_transaction_limits(journal);
 >  
-> -static inline int jbd2_journal_get_max_txn_bufs(journal_t *journal)
+>  	if (jbd2_has_feature_fast_commit(journal)) {
+>  		journal->j_fc_last = be32_to_cpu(sb->s_maxlen);
+> @@ -1698,11 +1740,6 @@ journal_t *jbd2_journal_init_inode(struct inode *inode)
+>  	return journal;
+>  }
+>  
+> -static int jbd2_journal_get_max_txn_bufs(journal_t *journal)
 > -{
 > -	return (journal->j_total_len - journal->j_fc_wbufsize) / 4;
 > -}
 > -
 >  /*
->   * is_journal_abort
+>   * Given a journal_t structure, initialise the various fields for
+>   * startup of a new journaling session.  We use this both when creating
+> @@ -1748,8 +1785,6 @@ static int journal_reset(journal_t *journal)
+>  	journal->j_commit_sequence = journal->j_transaction_sequence - 1;
+>  	journal->j_commit_request = journal->j_commit_sequence;
+>  
+> -	journal->j_max_transaction_buffers = jbd2_journal_get_max_txn_bufs(journal);
+> -
+>  	/*
+>  	 * Now that journal recovery is done, turn fast commits off here. This
+>  	 * way, if fast commit was enabled before the crash but if now FS has
+> @@ -2290,8 +2325,6 @@ jbd2_journal_initialize_fast_commit(journal_t *journal)
+>  	journal->j_fc_first = journal->j_last + 1;
+>  	journal->j_fc_off = 0;
+>  	journal->j_free = journal->j_last - journal->j_first;
+> -	journal->j_max_transaction_buffers =
+> -		jbd2_journal_get_max_txn_bufs(journal);
+>  
+>  	return 0;
+>  }
+> @@ -2379,8 +2412,7 @@ int jbd2_journal_set_features(journal_t *journal, unsigned long compat,
+>  	sb->s_feature_ro_compat |= cpu_to_be32(ro);
+>  	sb->s_feature_incompat  |= cpu_to_be32(incompat);
+>  	unlock_buffer(journal->j_sb_buffer);
+> -	journal->j_revoke_records_per_block =
+> -				journal_revoke_records_per_block(journal);
+> +	jbd2_journal_init_transaction_limits(journal);
+>  
+>  	return 1;
+>  #undef COMPAT_FEATURE_ON
+> @@ -2411,8 +2443,7 @@ void jbd2_journal_clear_features(journal_t *journal, unsigned long compat,
+>  	sb->s_feature_compat    &= ~cpu_to_be32(compat);
+>  	sb->s_feature_ro_compat &= ~cpu_to_be32(ro);
+>  	sb->s_feature_incompat  &= ~cpu_to_be32(incompat);
+> -	journal->j_revoke_records_per_block =
+> -				journal_revoke_records_per_block(journal);
+> +	jbd2_journal_init_transaction_limits(journal);
+>  }
+>  EXPORT_SYMBOL(jbd2_journal_clear_features);
+>  
+> diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+> index cb0b8d6fc0c6..a095f1a3114b 100644
+> --- a/fs/jbd2/transaction.c
+> +++ b/fs/jbd2/transaction.c
+> @@ -62,28 +62,6 @@ void jbd2_journal_free_transaction(transaction_t *transaction)
+>  	kmem_cache_free(transaction_cache, transaction);
+>  }
+>  
+> -/*
+> - * Base amount of descriptor blocks we reserve for each transaction.
+> - */
+> -static int jbd2_descriptor_blocks_per_trans(journal_t *journal)
+> -{
+> -	int tag_space = journal->j_blocksize - sizeof(journal_header_t);
+> -	int tags_per_block;
+> -
+> -	/* Subtract UUID */
+> -	tag_space -= 16;
+> -	if (jbd2_journal_has_csum_v2or3(journal))
+> -		tag_space -= sizeof(struct jbd2_journal_block_tail);
+> -	/* Commit code leaves a slack space of 16 bytes at the end of block */
+> -	tags_per_block = (tag_space - 16) / journal_tag_bytes(journal);
+> -	/*
+> -	 * Revoke descriptors are accounted separately so we need to reserve
+> -	 * space for commit block and normal transaction descriptor blocks.
+> -	 */
+> -	return 1 + DIV_ROUND_UP(journal->j_max_transaction_buffers,
+> -				tags_per_block);
+> -}
+> -
+>  /*
+>   * jbd2_get_transaction: obtain a new transaction_t object.
 >   *
+> @@ -109,7 +87,7 @@ static void jbd2_get_transaction(journal_t *journal,
+>  	transaction->t_expires = jiffies + journal->j_commit_interval;
+>  	atomic_set(&transaction->t_updates, 0);
+>  	atomic_set(&transaction->t_outstanding_credits,
+> -		   jbd2_descriptor_blocks_per_trans(journal) +
+> +		   journal->j_transaction_overhead_buffers +
+>  		   atomic_read(&journal->j_reserved_credits));
+>  	atomic_set(&transaction->t_outstanding_revokes, 0);
+>  	atomic_set(&transaction->t_handle_count, 0);
+> diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+> index f91b930abe20..b900c642210c 100644
+> --- a/include/linux/jbd2.h
+> +++ b/include/linux/jbd2.h
+> @@ -1085,6 +1085,13 @@ struct journal_s
+>  	 */
+>  	int			j_revoke_records_per_block;
+>  
+> +	/**
+> +	 * @j_transaction_overhead:
+> +	 *
+> +	 * Number of blocks each transaction needs for its own bookkeeping
+> +	 */
+> +	int			j_transaction_overhead_buffers;
+> +
+>  	/**
+>  	 * @j_commit_interval:
+>  	 *
 > 
 
 
