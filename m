@@ -1,50 +1,55 @@
-Return-Path: <stable+bounces-55951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4545C91A545
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 13:30:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 985FB91A566
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 13:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F00961F248C1
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 11:30:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53C41287533
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 11:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D941514DD;
-	Thu, 27 Jun 2024 11:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2C1149009;
+	Thu, 27 Jun 2024 11:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ans.pl header.i=@ans.pl header.b="X1knxlpK"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="bWfhjKvQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.emenem.pl (cmyk.emenem.pl [217.79.154.63])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B5B14A09E;
-	Thu, 27 Jun 2024 11:29:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.79.154.63
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC541411EE;
+	Thu, 27 Jun 2024 11:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719487787; cv=none; b=TT23p0FV4fSOUF3gvxg3UfxGO34SOhh9HkDJ7188U1Hia9Z90/5Lj9Kn6YrkRFcSX4AQIVCM9R225IIKmlOWEthCW7aMS2t46plgOlsBpUy8WNOtylD8hZ2He0/r2yIkWV427jSWi5nAukuk+RkXqfX5olrDXIciWDzbIdfJBSA=
+	t=1719488047; cv=none; b=U6zLd0+px8T5+x7kASM3GucnoSrMO5eXmr+G96kmxm+E+4MgEA1EkVHWXuOGUAOiORMVFTx7IGtokkXtskOEkRD6BvprfgRdwfGDVA8Q61k5SrDozM+n3lJjoN7m5O37jvxwlasd9hlBBo5QgNq1bue/If4lWMbdAXoKDeXz3oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719487787; c=relaxed/simple;
-	bh=tiOzdOJNp6ZKRMHsXI8GpXUZGI0r7SB4Baz6mN7VoIg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oeqICeZr0h8KQVYGMOLRpNNF1qTqEZU12ocqRdxSFIdm+1H9+37+iQ3KTK6QwwbU/xXuVQ+RzrRAMdW9N5+WEEIja67IsxnoblPzm6vhLnpYz3Ddpkr0usdKt3zj5AnM2tLJpLMof4v0sSi82UJJACl909Z4l1wmFC09iZIYO6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ans.pl; spf=none smtp.mailfrom=ans.pl; dkim=pass (1024-bit key) header.d=ans.pl header.i=@ans.pl header.b=X1knxlpK; arc=none smtp.client-ip=217.79.154.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ans.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ans.pl
-X-Virus-Scanned: amavisd-new at emenem.pl
-Received: from [192.168.1.10] (c-98-45-176-131.hsd1.ca.comcast.net [98.45.176.131])
-	(authenticated bits=0)
-	by cmyk.emenem.pl (8.17.1.9/8.17.1.9) with ESMTPSA id 45RBTH4j006413
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 27 Jun 2024 13:29:18 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ans.pl; s=20190507;
-	t=1719487761; bh=OAR1dkJB/scQxeekWuNbHAxMyX4sPBdqtNAKZRpb41A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=X1knxlpKKSV0bU+QboHBTRRoor8IPwrMgCKT6D3ii9KNL5fWCKfEfkxllte/9TA64
-	 rU+iATDr08dckCJjASNozc60h0C2AIIXFYkFmRoHl4JvOGn8x+ySQAPPk9sPPVjP/r
-	 9cGwjFXMXxV4IU8kimSqla84JrLSdBhGzmHgY4zA=
-Message-ID: <9541ab9f-0f13-4856-85f0-14615b77142f@ans.pl>
-Date: Thu, 27 Jun 2024 04:29:16 -0700
+	s=arc-20240116; t=1719488047; c=relaxed/simple;
+	bh=uhXbGazcXeqkxXjBouKM0MQuQ3CTfNGpf2RScCZD55M=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=apuzxgPN68Fef9V9vx1JtOSm4jWrj2KE8VfS6cJ4F82GJz7Z9Ug/xebsEcOdBgPvUcGkL9DwVbw/Rhb3FSGWxR6LU+k0mWkq7oRl/pnGUz/hXt2DUGbDejaZLNY7q5zhJ8orCPHCT6l0/WJqLJB+Y/19PVQg+KIPcZCCILxSlkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=bWfhjKvQ; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1719488022; x=1720092822; i=markus.elfring@web.de;
+	bh=A7rM3y/OMnB34PKR/RnqFiGJ+fS+Qyq19jgyL7mRwdI=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=bWfhjKvQNMn2j1KF83zywHnz+eoZxC6KaKuZxFmkweB+9RqypJ1Ah6Ia+fGBWyUc
+	 wv2ZVxfjRKCUldkP+B4V7a8eytwO9I49N5dDLv8Z0DbspzNOW7v6nR13IJMbB1RnS
+	 kiZm9647+hc4Nd4WkG7ak+v1XNEyo8FrHIudpjqbgZBPkt6q4UbrcJ3c4tJzTjGu2
+	 q9URQkqRnqAMqhx8OIKYUJult7ZEjOz0jyTMFdRttKZEmzyXs7Pde6/UtgIHcktLp
+	 PdtQyzTL0WNthjIl6kPn+Jphf5Kgo71LXqm65TO2Rf6XKf3X+NcpFME7YyUPYxACi
+	 FTgaA0+vys9tcV/XGg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MnG2Q-1smGJO2SPs-00cmj0; Thu, 27
+ Jun 2024 13:33:42 +0200
+Message-ID: <eb14ae3b-7a4f-4802-b9a7-9ffec3b951f9@web.de>
+Date: Thu, 27 Jun 2024 13:33:40 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,78 +57,66 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Regression caused by "eeprom: at24: Probe for DDR3 thermal sensor
- in the SPD case" - "sysfs: cannot create duplicate filename"
-To: Guenter Roeck <linux@roeck-us.net>,
-        Heiner Kallweit
- <hkallweit1@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Wolfram Sang <wsa@the-dreams.de>
-Cc: stable@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-hwmon@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <a57e9a39-13ce-4e4d-a7a1-c591f6b4ac65@ans.pl>
- <0dfa2919-98eb-4433-acb4-aa1830787c9b@roeck-us.net>
- <77c1b740-9e6d-40f7-83f0-9a949366f1c9@ans.pl>
- <97c497ae-44f7-4cec-b7d9-f639e4597571@roeck-us.net>
- <797c8371-dff3-4112-9733-4d3119670dbf@gmail.com>
- <5a4e1cd6-5770-423b-9a25-a0fbfd93014a@roeck-us.net>
-From: =?UTF-8?Q?Krzysztof_Ol=C4=99dzki?= <ole@ans.pl>
-Content-Language: en-US
-In-Reply-To: <5a4e1cd6-5770-423b-9a25-a0fbfd93014a@roeck-us.net>
+To: Ma Ke <make24@iscas.ac.cn>, dri-devel@lists.freedesktop.org,
+ Daniel Vetter <daniel@ffwll.ch>, Dave Airlie <airlied@redhat.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+ Thomas Zimmermann <tzimmermann@suse.de>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ David Airlie <airlied@gmail.com>
+References: <20240627063220.3013568-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH v2] drm/gma500: fix null pointer dereference in
+ cdv_intel_lvds_get_modes
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240627063220.3013568-1-make24@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:AOehDKKFPtxRHQPkx+LUzANkyLhTBUvzpw4KeRmCd3rgH5fsgxR
+ 4hB57cBBQdjqt/ClaW4nBIog+T3Iadd5g5BlQPDYfJxlRtY3+TphaqUqIwXuOaBgcZa14VW
+ vwMQmNT62qmSdaQH/4h5xTD/ZEE1kdLUYZy0U4cXKdxNpOEvVoz29cuP12WOzg9ha7023tX
+ fSddlKToMHvRrbkMH+QbQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:JG+JqApF6Yc=;luGoJh8GDXk11DTuBXjZEvPBHkd
+ ixtgHsNKOZX0DvF+p189t6tpAq8fTCFLkM8GQaKiPdUFZWMFof0C3W1dx4dARME4ukLKR1pe2
+ wbmQuRGMbppG3tKXuLIdgjWsi+hrNY2jWcCaIPOZgP++KRFWMc9Eub/Mku0q6s615bAEr2110
+ 1UwtrJ8Gjf+Qc3Lqn6iLIb3XHp4JFPJgbsgXKiqsPtJQqsjTfJ1+aEimYnmfOdZeZLOHp3qtK
+ FQr0o7xtcGnw3aVWWqi6GCbsdiCkVs0anW3WwRMkPuTWhWel0AkyAqvmyp9kq4i9of74nQNxM
+ sDaHBQ4DwM4kgYJmVFh7RRiG2pnLL4c8ZPtbJkPzb+o8jCJkrEgz04YqGduIeUcbYobBwzL9v
+ OjTm6hJ9QfnFQPi/De7zjiAaoAVnCwIMErYQOhdC4Kd8wt0wKl8bPybf5XDasS+r1l71oY2a/
+ Q07IBWEnaFWVp21tTOSVTbNMPdtNLkr/muzQ6dX20xAaRikGiz9zyheNOCyJBvLpx0icKW25m
+ pGJLMGX9FzAVTlwVSVs8wwuCxHnQz+jsCOn32KEayKGbl5nHDDx5vxmX1KofAR6ECRrRIZNl9
+ IcOWdBnZsXkmCbpUPrQ2ICXhKFaMmx+IG+I+iZRyP8HFmlfxp4igmSX+fgVxXO4sjV1rgYl1H
+ 2uj1VWk88o6zIzmXXo/cDNzmGNRWAKBVHv4Typ+M2Q87VMLqEmg07gQGDOpRd/sSXGDndx2/Z
+ YLNCn2mvqiYNNvxZoiokcMSsOiltY5kEA/RnrJ7BwIEtRUj5b2KDPLP7WjWe1BL2U2SLLk+tr
+ kI9ozjveIVyvrDXhppRPlI22vu5gyFjXudWSg+0FCqvjk=
 
-On 24.06.2024 at 20:45, Guenter Roeck wrote:
-> On 6/24/24 13:58, Heiner Kallweit wrote:
-> [ ... ]
->>
->> Too me the issue also looks like a race. According to the OP's logs:
->> - jc42 at 0x18 is instantiated successfully
->> - jc42 at 0x19 returns -EBUSY. This is what is expected if the device
->>    has been instantiated otherwise already.
->> - jc42 at 0x1a returns -EEXIST. Here two instantiations of the the same
->>    device seem to collide.
->> - jc42 at 0x1b returns -EBUSY, like at 0x19.
->>
->> So it looks like referenced change isn't wrong, but reveals an
->> underlying issue with device instantiation races.
-> 
-> It isn't just a race, though. Try to unload the at24 (or ee1004 driver
-> for DDR4) and load it again, and you'll see the -EBUSY errors. Problem
-> is that instantiating those drivers _always_ triggers the call to
-> i2c_new_client_device() even if the jc42 device is already instantiated.
-> Unloading the spd/eeprom driver doesn't unload the jc42 driver,
-> so -EBUSY will be seen if the spd/eeprom driver is loaded again.
-> 
-> I have not been able to reproduce the backtrace with my systems, but those
-> are all with AMD CPUs using the piix4 driver, so timing is likely different.
-> Another difference is that my systems (with DDR4) use the ee1004 driver.
-> That driver instantiates the jc42 devices under a driver lock, so it is
-> guaranteed that a single instantiation doesn't interfere with other
-> instantiations running in parallel.
+> In cdv_intel_lvds_get_modes(), the return value of drm_mode_duplicate()
+> is assigned to mode, which will lead to a NULL pointer dereference on
+> failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Right, sorry for not mentioning this in the original report:
+A) Can a wording approach (like the following) be a better change descript=
+ion?
 
-[    0.269013] pci 0000:00:1f.3: [8086:1c22] type 00 class 0x0c0500
-[    0.269098] pci 0000:00:1f.3: reg 0x10: [mem 0xc3a02000-0xc3a020ff 64bit]
-[    0.269186] pci 0000:00:1f.3: reg 0x20: [io  0x3000-0x301f]
-[    0.334962] pci 0000:00:1f.3: Adding to iommu group 7
-[    7.874736] i801_smbus 0000:00:1f.3: SMBus using PCI interrupt
+   A null pointer is stored in the local variable =E2=80=9Cmode=E2=80=9D a=
+fter a call
+   of the function =E2=80=9Cdrm_mode_duplicate=E2=80=9D failed. This point=
+er was passed to
+   a subsequent call of the function =E2=80=9Cdrm_mode_probed_add=E2=80=9D=
+ where an undesirable
+   dereference will be performed then.
+   Thus add a corresponding return value check.
 
-$ lspci -s 0000:00:1f.3 -vvnn
-00:1f.3 SMBus [0c05]: Intel Corporation 6 Series/C200 Series Chipset Family SMBus Controller [8086:1c22] (rev 04)
-        Subsystem: Dell Device [1028:04de]
-        Control: I/O+ Mem+ BusMaster- SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
-        Status: Cap- 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
-        Interrupt: pin C routed to IRQ 19
-        IOMMU group: 7
-        Region 0: Memory at c3a02000 (64-bit, non-prefetchable) [size=256]
-        Region 4: I/O ports at 3000 [size=32]
-        Kernel driver in use: i801_smbus
 
-Krzysztof
+B) Would you like to append parentheses to the function name
+   in the summary phrase?
 
+
+C) How do you think about to put similar results from static source code
+   analyses into corresponding patch series?
+
+
+Regards,
+Markus
 
