@@ -1,84 +1,105 @@
-Return-Path: <stable+bounces-55923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4BF91A039
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 09:17:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD49491A035
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 09:17:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FA521F2352A
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 07:17:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87808283F9B
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 07:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622114E1C8;
-	Thu, 27 Jun 2024 07:17:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b="nO3n3JOu"
-X-Original-To: stable@vger.kernel.org
-Received: from mail-m16.yeah.net (mail-m16.yeah.net [220.197.32.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2398481DB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C14374D4;
 	Thu, 27 Jun 2024 07:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.17
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mGLI+EBl"
+X-Original-To: stable@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0399C2F41;
+	Thu, 27 Jun 2024 07:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719472640; cv=none; b=OOX4kQWeYlMtVlGpOmzqQE7CIzGuXRSrU6nOugT9Q80CtqG6+D0vVs26XgV62KjGyHxavh0cSd1HcTTjEri+esP6iym8VjPQ014F/aPJXzJ5DRXJQH7sMoRUW3B4TW19Atghq7VeotJ5VpPquoYz19NYmNVqYbeOMvF9nAfBiLY=
+	t=1719472637; cv=none; b=ZFcgP12bJJbQsgOHfndZV5d1P98l7T0/J/34TeXtfr6jAzD6V47MwXjVgeuPsqSbYVe6pNHgH2h0tw7PoCEmjEwLoRAJuA33NOY70/he3LKQy6V2eZbsdG/WSVmkQOqPd0kO4T1+83eh4uKTLWHhZs1GRRogqpdWf9tn79owJhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719472640; c=relaxed/simple;
-	bh=VZd1DTMsV4Y6GkhYKBwj5DfAYkl/FIXvXfestO3BbMA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IWZpFrZnUqzBkgIPwsIx98nZttQqGgyfSCxRrbjpMJcTpTCMh+/Ku8RxpZBSIfgXE5pdKhc91n2L4a+51ayeD7g76aYQYTjdZG3loyOMyBh957TAig3vj+qqB+K4prr+pIJ6ysxG0YsNw8WB8PFCvKpeP/zZU6bSKAK16oeBsL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net; spf=pass smtp.mailfrom=yeah.net; dkim=pass (1024-bit key) header.d=yeah.net header.i=@yeah.net header.b=nO3n3JOu; arc=none smtp.client-ip=220.197.32.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yeah.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yeah.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yeah.net;
-	s=s110527; h=Date:From:Subject:Message-ID:MIME-Version:
-	Content-Type; bh=YfzRT/YahaCVfCZjCVbpbtKPLzjuLKP7xH/d0hodVsY=;
-	b=nO3n3JOurca8Hv+kmfFWjTkQxKgHDcm4gOLb/cTbLiq0TocaEQp01vxKfkAOxc
-	1CF7UcpBTGGgphtGYNDAuhY1YYmMiGAIXg0MVnazDQqqhGblHP9c7FTPOBQS5bse
-	dR3/bDRW+A7ULMVSjCIk/vZSW3gtJ+BPmXm6lAZwaywp0=
-Received: from dragon (unknown [114.218.218.47])
-	by gzsmtp1 (Coremail) with SMTP id Mc8vCgD3H47bEX1mGbYZAA--.52899S3;
-	Thu, 27 Jun 2024 15:16:45 +0800 (CST)
-Date: Thu, 27 Jun 2024 15:16:43 +0800
-From: Shawn Guo <shawnguo2@yeah.net>
-To: Frank Li <Frank.Li@nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dong Aisheng <aisheng.dong@nxp.com>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Peng Fan <peng.fan@nxp.com>,
+	s=arc-20240116; t=1719472637; c=relaxed/simple;
+	bh=1SaMfD2tmbpfNXEkMAGBWpGso//fdIqXP6/GKH5prbg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PB2zaGb7NUYRRRXZJFc+SQcVkKSPMwz/HhqId0ADC4UnsGksAT3yjtr4yLhFa05NhL7gHgDws4SzX4xpBDVvKzKVkYJ/YZOzW68zhvIuAPYzgJKiN8sh5xgHMxEFAYmFqF+aVCo/S1YFSoOgRp5MdH/FR/rwB70PDXPpLYOaagI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGLI+EBl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D3A4C2BBFC;
+	Thu, 27 Jun 2024 07:17:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719472636;
+	bh=1SaMfD2tmbpfNXEkMAGBWpGso//fdIqXP6/GKH5prbg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mGLI+EBlhln9XA+39mawyx16KBTyQ4k7eF6f/HqJXaqGmsvFObWROwbURkrjeqIdZ
+	 11MZwSFmAwgPBgvoZB1hCbIiwO9Gy449O98IoL3e6jb1PM+ACTKj1bEIvn9CKMGycz
+	 RYMaL+X0VoyI0VMW8dO8W1zIqwtMhjwwDKFhKa7fQhCggdL44xdGeP3cNoI5Jh+ojD
+	 OIfrz9CLlcM2bzvyh8QRLQfe1/I1Uf5lvec/Fp+b63AUqwrhkXdoerxwuDXMYbB3Vq
+	 lU0D0Rju9+6uhr8QeT1BjsEXJkYUr3ijVcjQVnRuevb+K4HhIRk4QXvy7yJcJsQXI+
+	 0/p+px7G0kr2Q==
+From: Chao Yu <chao@kernel.org>
+To: jaegeuk@kernel.org
+Cc: linux-f2fs-devel@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	Chao Yu <chao@kernel.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3 0/9] arm64: dts: imx8qm: add subsystem lvds and mipi
-Message-ID: <Zn0R2/lcgcSG03CM@dragon>
-References: <20240614-imx8qm-dts-usb-v3-0-8ecc30678e1c@nxp.com>
+Subject: [PATCH] f2fs: fix to wait dio completion
+Date: Thu, 27 Jun 2024 15:17:11 +0800
+Message-Id: <20240627071711.1563420-1-chao@kernel.org>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240614-imx8qm-dts-usb-v3-0-8ecc30678e1c@nxp.com>
-X-CM-TRANSID:Mc8vCgD3H47bEX1mGbYZAA--.52899S3
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxUxEdyUUUUU
-X-CM-SenderInfo: pvkd40hjxrjqh1hdxhhqhw/1tbiEh0LZWZv-cwvZQAAsT
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 14, 2024 at 11:06:24AM -0400, Frank Li wrote:
-> Frank Li (9):
->       arm64: dts: imx8: add basic lvds0 and lvds1 subsystem
->       arm64: dts: imx8qm: add lvds subsystem
->       arm64: dts: imx8: add basic mipi subsystem
->       arm64: dts: imx8qm: add mipi subsystem
->       arm64: dts: imx8qm-mek: add cm4 remote-proc and related memory region
->       arm64: dts: imx8qm-mek: add pwm and i2c in lvds subsystem
->       arm64: dts: imx8qm-mek: add i2c in mipi[0,1] subsystem
->       arm64: dts: imx8qm-mek: fix gpio number for reg_usdhc2_vmmc
->       arm64: dts: imx8qm-mek: add usb 3.0 and related type C nodes
+It should wait all existing dio write IOs before block removal,
+otherwise, previous direct write IO may overwrite data in the
+block which may be reused by other inode.
 
-Applied all, thanks!
+Cc: stable@vger.kernel.org
+Signed-off-by: Chao Yu <chao@kernel.org>
+---
+ fs/f2fs/file.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 76a6043caf27..f2d0e0de775f 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1056,6 +1056,13 @@ int f2fs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 				return err;
+ 		}
+ 
++		/*
++		 * wait for inflight dio, blocks should be removed after
++		 * IO completion.
++		 */
++		if (attr->ia_size < old_size)
++			inode_dio_wait(inode);
++
+ 		f2fs_down_write(&fi->i_gc_rwsem[WRITE]);
+ 		filemap_invalidate_lock(inode->i_mapping);
+ 
+@@ -1892,6 +1899,12 @@ static long f2fs_fallocate(struct file *file, int mode,
+ 	if (ret)
+ 		goto out;
+ 
++	/*
++	 * wait for inflight dio, blocks should be removed after IO
++	 * completion.
++	 */
++	inode_dio_wait(inode);
++
+ 	if (mode & FALLOC_FL_PUNCH_HOLE) {
+ 		if (offset >= inode->i_size)
+ 			goto out;
+-- 
+2.40.1
 
 
