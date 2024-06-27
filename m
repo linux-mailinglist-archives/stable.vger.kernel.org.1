@@ -1,119 +1,130 @@
-Return-Path: <stable+bounces-55971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF53C91A96D
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 16:43:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D3291A9AB
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 16:49:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0B181C2100E
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 14:43:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99035281564
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 14:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9744B196C9C;
-	Thu, 27 Jun 2024 14:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0444219AA78;
+	Thu, 27 Jun 2024 14:45:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/nNxa54"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fIuddPza"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544F8195FEF;
-	Thu, 27 Jun 2024 14:42:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F68619A2A7
+	for <stable@vger.kernel.org>; Thu, 27 Jun 2024 14:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719499365; cv=none; b=HEmnVwms/tPiaDPcrUThhBa46rMjry/+teh69a7DpDFq6rPR/XWmj1YEChFCgzyPsLbFgtxs4p4nGt38KUVFFchJeyq81hqWPtsb0Y2sLDTKXpqlKatQvYJk0OnTcQ//Zd+2X71JksLSw8pDvTW4hnzHAHWqgC/7HWMiNmd9eRY=
+	t=1719499501; cv=none; b=grNYOqmYPhNHnk00ieMEhy44sdqNwxxlgJ8hXsaHd9ppr6d2Tu1RAVe3xxjzD0UW3ZdR1ZY8eCz6BI5I26OtsFC5FeuNGedBOlmAB2ZW/VC2Zo7I4w5AoH7mjVcr5IKKd366RSZVBU908AW5LI3UW3IszqxLa4rzI7pjJ7S6AlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719499365; c=relaxed/simple;
-	bh=kxhoLkUXq44hWnlZZqxS5nqxVuFwyn9Q/6yADeybFNY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Btlnqil+26ssedGfu3rFlDDd5ZOJnKUwlLYIqx3C5IzqF9EGeHnIYMnUgagXZdZ2mInuFKtif5TTKIWBiYCpECoYuNfE+Ssp8O1OJq5s85RS3ETnDNm3P8HPgBAZJs/PzszZr6A5z5DQjiLZAmpfQEtgFVsqtVm4H+Ivqlk4KO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/nNxa54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217AAC2BBFC;
-	Thu, 27 Jun 2024 14:42:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719499364;
-	bh=kxhoLkUXq44hWnlZZqxS5nqxVuFwyn9Q/6yADeybFNY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b/nNxa54xbCYzFF5V9lUz2JOdOcueYxQWV7PAs8lxhCQbf6z3jMRnnp/NM8bMujdR
-	 11mJp6Vd7xLjiaLvtOrLzpl7GK+72J7aiXlEdIyv+6QCsy2pnzOQoictibN573nYIY
-	 nJz/qkWft7Tx7mudtp10fCJUuEOAE0T9og4lZoy4RhUVVefecMQGp8R22LtSbFArpc
-	 UB8EjyxgdrhgTZshA4vsjllLrt2Fp62zeXQ+6dFAKn1FqzhfZmqKJEPw5jieHWxRO9
-	 kc2y2Y9eI6AP8D1OL7xAUg2CFfNFLc5DMl3xUNsicoMEG8G8AuPH8Rn8Add2C29/Si
-	 GgCR65LTQNzow==
-Date: Thu, 27 Jun 2024 17:40:12 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: Patch "mm: memblock: replace dereferences of memblock_region.nid
- with API calls" has been added to the 5.4-stable tree
-Message-ID: <Zn15zDM2kjbPOepD@kernel.org>
-References: <20240626190708.2059584-1-sashal@kernel.org>
- <Zn0Q_DKvcVF8P5f-@kernel.org>
- <Zn1zXiis-yqRB2VO@sashalap>
+	s=arc-20240116; t=1719499501; c=relaxed/simple;
+	bh=1E8CXTaeS0vfb3JNuYWvmFd/1VjQ+/BGgq4+DuENiCo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=lyBjYrbPxzBiNlc+T5SwAYdD6XShg0kOEmI7GEqD+xmKm9lkSalqRq4FBalkLCuZvD6F3SlfYeE/EwHGM1aqyeZ+nbCELQRuhGT8+g2j75ATPlqVse64StGdfwrKCO4jqYpQx1bmSUkL8vqS5GVBNfqsalWFTNpCp84oBAQzdxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fIuddPza; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45RBI6j9018763;
+	Thu, 27 Jun 2024 14:44:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	WslwZJ62dfJVvCtGkzCHotG8/kqwFxTrKlBEYc9dgv0=; b=fIuddPzajNa5j2pP
+	bzrwLj0UINUD7NS8RhQi6jZmaF4SVH9RnZ9qBhHCX9ugjap2oHXdZTyNwNdTzc0K
+	08aw3yiQyuDZ6UOqb1PLX+Rsx1YXA9V/Eus4YMomKG+AXkHtGT/pVX8TUbRk+Vyh
+	TJwdceEiDh8f5giTfhQUJjUTD/qwvjRh4eCKVlN+mt99cfPB8I5omqbsISIo5Pch
+	e7ZIm0ygpGls2+cbllM9oQTpMO/iTr1b/mTiW2EjpHTQkiRaTdwqOn6pg1jBmLsx
+	WfI5HLrdn84d9wipC+zJC04t0IfvMDNBqbX22JOztCv15r12tSERPWqtIXjlj2Cv
+	daSriA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 400f90kwas-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Jun 2024 14:44:50 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 45REinTX029711
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Jun 2024 14:44:49 GMT
+Received: from [10.48.244.230] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 27 Jun
+ 2024 07:44:49 -0700
+Message-ID: <b77e4ae4-fea5-4032-9d76-fbefc1c5dc65@quicinc.com>
+Date: Thu, 27 Jun 2024 07:44:48 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zn1zXiis-yqRB2VO@sashalap>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Please backport 2ae5c9248e06 ("wifi: mac80211: Use flexible array
+ in struct ieee80211_tim_ie")
+Content-Language: en-US
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>, Johannes Berg <johannes@sipsolutions.net>,
+        Kees
+ Cook <keescook@chromium.org>, Kalle Valo <kvalo@kernel.org>,
+        Koen Vandeputte
+	<koen.vandeputte@citymesh.com>
+References: <fc31dd6f-ec32-4911-921f-1f34e9ad2449@quicinc.com>
+ <2024062745-erased-statue-0a01@gregkh>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <2024062745-erased-statue-0a01@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: EO1tTDdKbSnDDsxjnSioOchBEEDv7sXT
+X-Proofpoint-GUID: EO1tTDdKbSnDDsxjnSioOchBEEDv7sXT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-27_11,2024-06-27_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ spamscore=0 malwarescore=0 mlxlogscore=824 mlxscore=0 adultscore=0
+ impostorscore=0 lowpriorityscore=0 phishscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406270111
 
-On Thu, Jun 27, 2024 at 10:12:46AM -0400, Sasha Levin wrote:
-> On Thu, Jun 27, 2024 at 10:13:00AM +0300, Mike Rapoport wrote:
-> > Hi Sasha,
-> > 
-> > On Wed, Jun 26, 2024 at 03:07:08PM -0400, Sasha Levin wrote:
-> > > This is a note to let you know that I've just added the patch titled
-> > > 
-> > >     mm: memblock: replace dereferences of memblock_region.nid with API calls
-> > > 
-> > > to the 5.4-stable tree which can be found at:
-> > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> > > 
-> > > The filename of the patch is:
-> > >      mm-memblock-replace-dereferences-of-memblock_region..patch
-> > > and it can be found in the queue-5.4 subdirectory.
-> > > 
-> > > If you, or anyone else, feels it should not be added to the stable tree,
-> > > please let <stable@vger.kernel.org> know about it.
-> > > 
-> > > 
-> > > 
-> > > commit dd8d9169375a725cadd5e3635342a6e2d483cf4c
-> > > Author: Mike Rapoport <rppt@kernel.org>
-> > > Date:   Wed Jun 3 15:56:53 2020 -0700
-> > > 
-> > >     mm: memblock: replace dereferences of memblock_region.nid with API calls
-> > > 
-> > >     Stable-dep-of: 3ac36aa73073 ("x86/mm/numa: Use NUMA_NO_NODE when calling memblock_set_node()")
-> > 
-> > The commit 3ac36aa73073 shouldn't be backported to 5.4 or anything before
-> > 6.8 for that matter, I don't see a need to bring this in as well.
+On 6/27/2024 12:18 AM, Greg KH wrote:
+> On Wed, Jun 26, 2024 at 11:32:22AM -0700, Jeff Johnson wrote:
+>> Refer to:
+>> https://lore.kernel.org/all/CAPh3n83zb1PwFBFijJKChBqY95zzpYh=2iPf8tmh=YTS6e3xPw@mail.gmail.com/
 > 
-> Sadly there was no fixes tag :(
+> Please provide the information in the email, for those of us traveling
+> with store-and-forward email systems, links don't always work.
+
+Apologies. I was trying to be concise, but over did it.
+
+The issue reported is a splat in 6.6 due to FORTIFY_SOURCE complaining about
+access to an "old style" variable array declared with size 1:
+            u8 virtual_map[1];
+
+>> Looks like this should be backported to all LTS kernels where FORTIFY_SOURCE
+>> is expected to be enabled.
 > 
-> Should this be reverted from 5.4 and older, or is it ok for it to be
-> there?
+> And where would that exactly be?  Have you verified that it will apply
+> properly to those unnamed kernel trees?
 
-It should be reverted from 5.4 and earlier please
- 
-> -- 
-> Thanks,
-> Sasha
+I don't know which trees are actively enabling FORTIFY_SOURCE. Since the
+report is coming from 6.6, I would expect we should backport at least to there.
 
--- 
-Sincerely yours,
-Mike.
+I've cc'd Kees in case he has more definite information, as well as the
+wireless maintainers and the reporter in case they have anything else to add.
+
+The actual fix is trivial, containing just a change to a data structure along
+with a related documentation change. Any conflicts would more likely occur due
+to the documentation rather than the code, since that code definition had been
+unchanged since 2012 but the documentation has been refined over time.
+
+/jeff
 
