@@ -1,163 +1,126 @@
-Return-Path: <stable+bounces-55936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 101C991A280
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 11:20:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B880091A393
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 12:12:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C6631C212CB
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 09:20:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9A4FB22C14
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 10:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565E8132464;
-	Thu, 27 Jun 2024 09:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D07E13C906;
+	Thu, 27 Jun 2024 10:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="enwhNREi"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="f4pqRJxD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F704D5BD;
-	Thu, 27 Jun 2024 09:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E2C13C807
+	for <stable@vger.kernel.org>; Thu, 27 Jun 2024 10:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719480009; cv=none; b=DJv+ZFgExWEuG5DEKzoCfVlHFABRSSsqzMbkpeovtYmeShIPy3S7eNphf6uJNjbZHstL+EX/w8S6gu2S+YIUvkoaYb8RP0bb2hgjCo4Gv5FiJLQ7noN67Bo0Ig9H8FRSleRehhkh/gZUw8zsWsCPoybpJl10o4nkUsJTURXPUN4=
+	t=1719483127; cv=none; b=Cyd8u+QWQnhwguqzzi0KT2BcavilbasF/sxyrmibG+7bd9lMVWZ62vCnX/Z2ZK15Z96kJc9g6NPI5Y3ZLC8XlxMehVaGmSKx4Sbc73daG2h1ou4b78QoeGwe4UjZWOMlTeecAdj7r8WkZbXCsyle4lFtnqSwDW2zQ0/sLsFKuhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719480009; c=relaxed/simple;
-	bh=MQLSZlmH3qjJ6RpohjgJZOR7RPGiFHW+m36Q4B31n2E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jNl8Zg1rz4Vc1Asnn4Y27eOX94CZX2bVVRP/CAyjuweRk7B2U6gg7rsV7BI8Mc83Pj4/9LvEFjHV+jnufFBUaXfk4QjToc40BsqTtu193jKHc8iVKrsWMeKFU2/LOQ+S0PCuwxgnkx/fFulRBPl0gOXfSxFj1EmTqEWXRcyW1Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=enwhNREi; arc=none smtp.client-ip=209.85.167.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3d5d7fa3485so243029b6e.1;
-        Thu, 27 Jun 2024 02:20:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719480006; x=1720084806; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0ETjSuiBGz/j4BOauY9/duKhstSMiIxQ7/voA5iz9AU=;
-        b=enwhNREiaTiTDqeFHuSwzJjBX0FQQtT9yUcn7hGIuzkkZBJq/xUStK1V6xT6+Z25gf
-         iBb0QojsozeXzLhKQN4HS+3OUqQKZlS6HJVXwp0JJ2JhQ813850dyi3yickRk+wDr/t7
-         Cc+hhiPhYqPWoZhEiz5o4qVs6KD7MTuY+Cj74vgyQOhxQQbJYnt8G8jt+HTLJYjFi8sR
-         Gw9rM9Ds3GO+8cDrpoCQdb23wV+tw3zjtgncbtHU6q1329YMtBXhneWG3AfHpxbaRFMx
-         i0pi7T9KkEP5bs77sH2MxDFwi5JKgblraMYJofSuhxPn0kNS78WFb/3JD8UYEL18w4YO
-         3sgQ==
+	s=arc-20240116; t=1719483127; c=relaxed/simple;
+	bh=h9nUgCyLzDTYUT9m0gkppNDJckAo4CsmWLB7Km0y9vI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KTe6l0kraGaDIPpQ+pWEay0YxwgHjSu+/VBUDedT23xgYRS48RdbUpGNk8gBIv8iqtLxxfj/Uk0fkMil4JB17uivhMG94ECrRLgq4b66ldBkeoDisltsK3My5/SuKgT1gtENYIeHxJq/oqGreUChFfMB0XZoGVcUA4pqCDMFjVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=f4pqRJxD; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1719483124;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+jkUzQWCr91w/D1JMMa42/2bvxwW/Ne0IySbwHeSQXk=;
+	b=f4pqRJxDlY1ETiIhEYfqk12kTrjOQP0p4xQvHcI75ueN+Aw4bcvsdyrE891OD2NXhB5JT9
+	iANDwu9dwxfdQsoNOTHPo2CpHrhj3/k3yCjwjYyh2vslt11Bx44vAX5I0vybnJAfNBSSik
+	8grV8Qgf/z9Zvx/WkMw3v6FtKxwPCgo=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-271-5xtnjAOAOBCyf7YZp2xTsg-1; Thu, 27 Jun 2024 06:12:03 -0400
+X-MC-Unique: 5xtnjAOAOBCyf7YZp2xTsg-1
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2ec53241b78so3995821fa.0
+        for <stable@vger.kernel.org>; Thu, 27 Jun 2024 03:12:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719480006; x=1720084806;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1719483121; x=1720087921;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0ETjSuiBGz/j4BOauY9/duKhstSMiIxQ7/voA5iz9AU=;
-        b=NtIoU5Vu5X7rxk0o756+HaTMJTyi1o1RAfioFew1G4VHkio8C9nXQmBM6eBFZl4P2i
-         1bLevg5Ww9ao/UW29srz2A+Tn81+wbDZhKVGM7wNLf27JpZx0YHEEBEtnsho1UnDgZlA
-         sFRVJepCxRIDJ3QZ0mEcmsJpJqp8hJVOfz/Rwh0+fyk9+7TXlZgmRh9CjvdE+UqkcMoH
-         Et6fBMHbZMyjU/ovM+WHS5IIlOsl9DEgOcvpKUAbsKkegTjb6BLKvqJbCQ120XBQ+Ach
-         Ei7Cg+LwqW3uAP00jjyzGkqkAhuWi13VZRPRlwVt5FnBEqBZjxGo0kPdmqbqmJZVNdM+
-         o+Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCV4u+Q07RxPVQknGhucQpOyPEabDISM0476jMTfKz6PXSqNTmXwvWevEHqgu06u9CBsEgOiVNp3hY+nsGDx1ktvjpegtYj3Tditu7BVcqk/xCphuPj4Jmok6jsBm3dlwHQi3A==
-X-Gm-Message-State: AOJu0YzHL2vKsFj8h77E6FEQE8UsB889ExWQxy4t91owsd+588T63Yrl
-	Rev+FczipreFjit9ns3UcTFzU23MPBJx8bkmEbjPYmbjhX2bunMm
-X-Google-Smtp-Source: AGHT+IHjdpOyBFenniHMqFqVjKBOxZ6X632fUyQ+pzaAHZpGbnal/OLNuPUb9R3gz3dfs+8P38opOA==
-X-Received: by 2002:a05:6808:13c4:b0:3d5:5e88:d125 with SMTP id 5614622812f47-3d55e88d5edmr6027659b6e.21.1719480006568;
-        Thu, 27 Jun 2024 02:20:06 -0700 (PDT)
-Received: from [0.0.0.0] (97.64.23.41.16clouds.com. [97.64.23.41])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-72745d074adsm617213a12.36.2024.06.27.02.20.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Jun 2024 02:20:06 -0700 (PDT)
-Message-ID: <54f5df88-ca0a-40dd-92ef-3f64c170ba55@gmail.com>
-Date: Thu, 27 Jun 2024 17:19:57 +0800
+        bh=+jkUzQWCr91w/D1JMMa42/2bvxwW/Ne0IySbwHeSQXk=;
+        b=XlqccdbJ/CIoCYkqnbLtY8yD7kHxm8e76J03DJx6zO/vPUZyfreAyKSikMPThv+jOn
+         ijOcHxDQyodsYzFo+JOPBo3hyqxUQi3YKzGUBoTQ1AkQ2qrjRrq2cNVTv/aFn5/vhh0D
+         FRH99nOtEmGjPoDhG39eyOoWkbLR744gbPWfQ46WvjIa6NmAkcjsoTdc3cPgwBk/KGUy
+         xXXTcSp+So8JAZNbJEydNhK8iRZR59op+01tmPxaIutnIlXcLve1A0sxxS38S8e4WWnE
+         rXjcs5Y+2AWeLEDdZuXGUGUgfcvFd/GfZrAEBySQqPGyXVnvxkrn2QEHCiuMxVVCbwrN
+         fscg==
+X-Gm-Message-State: AOJu0Yw9cySp1nHH79pPoZgYH+24bmln0Pn2Suy2wNQ14j4hB932DW8q
+	uBIxKzsL/jRibdepi56wdUCQ8J7OSblhNd1bB02IDV4z02CD1qIgoagGf5oXj/RtDrfe3ghflS3
+	g01XSJE59H81j6HGBU+mO1Fh0XrO9vAd+5DwyYYbyRvXJUEKuR76qLg==
+X-Received: by 2002:a2e:a401:0:b0:2ec:44f9:56ab with SMTP id 38308e7fff4ca-2ec55fecb95mr85414871fa.0.1719483121521;
+        Thu, 27 Jun 2024 03:12:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEo5S3Jhjza/wrXHJ0Uatja128khuxI8XwWUTiv9omWH1H0vmmW0D4yREGdZHj4cTZR/1xMsA==
+X-Received: by 2002:a2e:a401:0:b0:2ec:44f9:56ab with SMTP id 38308e7fff4ca-2ec55fecb95mr85414631fa.0.1719483121117;
+        Thu, 27 Jun 2024 03:12:01 -0700 (PDT)
+Received: from gerbillo.redhat.com ([2a0d:3344:2716:2d10:663:1c83:b66f:72fc])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367435850e0sm1330800f8f.50.2024.06.27.03.11.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Jun 2024 03:12:00 -0700 (PDT)
+Message-ID: <d4c8577a996320bc161c045970d56eeaca5c7159.camel@redhat.com>
+Subject: Re: [PATCH v2] net: ethernet: mtk_ppe: Change PPE entries number to
+ 16K
+From: Paolo Abeni <pabeni@redhat.com>
+To: Shengyu Qu <wiagn233@outlook.com>, nbd@nbd.name, sean.wang@mediatek.com,
+  Mark-MC.Lee@mediatek.com, lorenzo@kernel.org, davem@davemloft.net, 
+ edumazet@google.com, kuba@kernel.org, matthias.bgg@gmail.com, 
+ angelogioacchino.delregno@collabora.com, pablo@netfilter.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+Cc: stable@vger.kernel.org, Elad Yifee <eladwf@gmail.com>
+Date: Thu, 27 Jun 2024 12:11:58 +0200
+In-Reply-To: <TY3P286MB2611AD036755E0BC411847FC98D52@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+References: 
+	<TY3P286MB2611AD036755E0BC411847FC98D52@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+Autocrypt: addr=pabeni@redhat.com; prefer-encrypt=mutual; keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ufs: core: fix ufshcd_abort_all racing issue
-Content-Language: en-US
-To: Bart Van Assche <bvanassche@acm.org>,
- =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "avri.altman@wdc.com" <avri.altman@wdc.com>,
- "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
- "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
- "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
- "jejb@linux.ibm.com" <jejb@linux.ibm.com>
-Cc: "linux-mediatek@lists.infradead.org"
- <linux-mediatek@lists.infradead.org>,
- =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
- =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
- =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
- =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
- wsd_upstream <wsd_upstream@mediatek.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
- =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
- =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
- "chu.stanley@gmail.com" <chu.stanley@gmail.com>,
- =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
- <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
- <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
- <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
- <Qilin.Tan@mediatek.com>
-References: <20240624121158.21354-1-peter.wang@mediatek.com>
- <eec48c95-aa1c-4f07-a1f3-fdc3e124f30e@acm.org>
- <4c4d10aae216e0b6925445b0317e55a3dd0ce629.camel@mediatek.com>
- <795a89bb-12eb-4ac8-93df-6ec5173fb679@acm.org>
- <0e1e0c0a4303f53a50a95aa0672311015ddeaee2.camel@mediatek.com>
- <b5ee63bb-4db9-47fc-9b09-1fde0447f6f8@acm.org>
-From: Wenchao Hao <haowenchao22@gmail.com>
-In-Reply-To: <b5ee63bb-4db9-47fc-9b09-1fde0447f6f8@acm.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 2024/6/27 1:13, Bart Van Assche wrote:
-> On 6/25/24 8:56 PM, Peter Wang (王信友) wrote:
->> Sorry I have not explain root-cause clearly.
->> I will add more clear root-cause analyze next version.
->>
->> And it is not an invalid pointer is passed to blk_mq_unique_tag(),
->> I means blk_mq_unique_tag function try access null pointer.
->> It is differnt and cause misunderstanding.
->>
->> The null pinter blk_mq_unique_tag try access is:
->> rq->mq_hctx(NULL)->queue_num.
->>
->> The racing flow is:
->>
->> Thread A
->> ufshcd_err_handler                    step 1
->>     ufshcd_cmd_inflight(true)            step 3
->>     ufshcd_mcq_req_to_hwq
->>         blk_mq_unique_tag
->>             rq->mq_hctx->queue_num        step 5
->>
->> Thread B               
->> ufs_mtk_mcq_intr(cq complete ISR)            step 2
->>     scsi_done                       
->>         ...
->>         __blk_mq_free_request
->>             rq->mq_hctx = NULL;        step 4
-> 
-> How about surrounding the blk_mq_unique_tag() call with
-> atomic_inc_not_zero(&req->ref) / atomic_dec(&req->ref)?
-> 
+On Tue, 2024-06-25 at 19:16 +0800, Shengyu Qu wrote:
+> MT7981,7986 and 7988 all supports 32768 PPE entries, and MT7621/MT7620
+> supports 16384 PPE entries, but only set to 8192 entries in driver. So
+> incrase max entries to 16384 instead.
+>=20
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Elad Yifee <eladwf@gmail.com>
+> Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
+> Fixes: ba37b7caf1ed ("net: ethernet: mtk_eth_soc: add support for initial=
+izing the PPE")
+> ---
+> Changes since V1:
+>  - Reduced max entries from 32768 to 16384 to keep compatible with MT7620=
+/21 devices.
+>  - Add fixes tag
 
-Hi Bart,
+@Sean, @Mark, @Lorenzo or @Felix, can any of you actually test this?
 
-A small wonder, then should we append __blk_mq_free_request() if
-req->ref decreased to 0 like following?
+Thanks!
 
-        if (req_ref_put_and_test(rq))
-                __blk_mq_free_request(rq);
- 
-
-> Thanks,
-> 
-> Bart.
-> 
+Paolo
 
 
