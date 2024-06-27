@@ -1,122 +1,141 @@
-Return-Path: <stable+bounces-55980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6239C91ADB8
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 19:14:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3838691AE0A
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 19:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 936BE1C26056
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 17:14:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1F02B24F97
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 17:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB86219AA43;
-	Thu, 27 Jun 2024 17:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6F919A292;
+	Thu, 27 Jun 2024 17:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RtAcu1FG"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jVmJucoB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6462619A2A8;
-	Thu, 27 Jun 2024 17:14:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B71199225
+	for <stable@vger.kernel.org>; Thu, 27 Jun 2024 17:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719508446; cv=none; b=UIIrXUe2OLQUoT2oT6dUsEltAUEFQTfjcE8O91HBc5eWmOEUHp5EcpzlPm+Sbdhtfd9gGXgvqPRfLnYBYYgzWHI9FNIvX28HGmU4L2mg76AKyRKSxgMj3Uqs1iO85wgzsQjFy/qw5D6GMB4sp/qngGH30Kw5k/PpqPQCSSll5NM=
+	t=1719509363; cv=none; b=opO13houHHXY/BkAWmkeylgkaZ7m184pzCc2XZyIqmj5EeOCbLsgPUrMW6MUfDyrZKC4S/Za7sJqwAxf+2938oFjg8EtihKno9HrahZc6RGqUjdXQPKe0p6qN3SZxEGevsxxzzUNN/pqlgAPFXGI77uRuzW3ROJXEjMwxExjAQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719508446; c=relaxed/simple;
-	bh=tNR6ArIGiHkLTpGQkaqhID9T8qBWrrtgctZsjePiA8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ec4NOu1vEK7HIOu30BjmyTMUJJmT+at+IyEv9FEE/5mcm3ajRNiZjCpXeeL8JD+Nnw4yIYoaC+Kb82MTwXJkWKEyPSvd+2+zmobukfLIkQjpo6qpg/HrGMDUCInYXkGFLyWQdbuO1lYCKizgf1C4dStWHhdzTiM13sQ8PuRyaac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RtAcu1FG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09DF5C2BD10;
-	Thu, 27 Jun 2024 17:14:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719508446;
-	bh=tNR6ArIGiHkLTpGQkaqhID9T8qBWrrtgctZsjePiA8k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RtAcu1FGJ6P2bbf/X4dsur5Hnf5L/FVULlmeohzDRYKuz6ePZ+uKKYm74H3EdgNmo
-	 XlWBAZeCr43+0xZjyJrKO78GGKQ785KXaJGxLHBbA+7vLgm8dj5LPhJLEdRfFSeXwr
-	 FzJSivkdhNDkiLgaKBQA001ga1cAY/Tp37wpV9noXkqcWyZ4fBhv6RIsjNPqYLiIbx
-	 R/u4GNIbrvU1JRSvc2fyK2KxRnnepks0MHIywrbegr/DKmu06qiHTZnd/A5lsnwNny
-	 j6JSGuPX7j0jJww7j2jrCZvvQKOucgU4nDRiE3PYJCL0T8PFOfIc4lDIGr76Iam4Dn
-	 AvxHsaRMYypIw==
-Date: Thu, 27 Jun 2024 10:14:05 -0700
-From: Kees Cook <kees@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-serial@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-hardening@vger.kernel.org, llvm@lists.linux.dev,
-	patches@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] tty: mxser: Remove __counted_by from mxser_board.ports[]
-Message-ID: <202406271009.4E90DF8@keescook>
-References: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
+	s=arc-20240116; t=1719509363; c=relaxed/simple;
+	bh=3RrqBmS5c8RUCizOpeYhIa4uKUZME6KtQG9XaURR8JI=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ImIk+5r0vdj+pavCPUffB2RqGGw/hL2Y5BL2ZADKcHugJYO8x+njELKmNELesWUHl66KbxqfgYRAI3/OpbAGgi8yqIhOEz8ux5qyLrgqATDfYvm+Q6vb6XRqanUHlz/+jhfgWkUNbVPcZ1WVVDjcvdBdv3fcwDd+0dNpOyPzI+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jVmJucoB; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45R9xVZL030226
+	for <stable@vger.kernel.org>; Thu, 27 Jun 2024 17:29:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=9ArLdRS9liG
+	wuuyVMdCWxF73MDGk5jRaUhbN7VrUxUw=; b=jVmJucoBEM2oETGGcT6XYvlqAAF
+	qEtCoLj3Y0bWvM2UYQtB2SnhgzaQgL/vcJ84ALhdaqXXOVxHN6ES0d4GXhtUVTXy
+	xVCSukQz4pM1pq1IHqcjPSDhza7GdSBBW5+Ht9Dmlh6AkNM+z6I83u7bVnwxc0fx
+	JKtHvA6GigF4Hi5JlDtX5/+N3WVyEitvgBEMxbOh9fjtDSCcLIjAegUFb03j/Pj/
+	uSLOgfPNxaeneFa7xI++yrhU0GRC9FmYAJAE8Xm3MFlMR/vjg/78bis6IpWzScmc
+	WEOy7gbdbsir8JICXzAv/6Dxlob0+bsMMgiU6iE3Ki/unOWCPOR0lsPqOWQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 400c46cvc7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 27 Jun 2024 17:29:19 +0000 (GMT)
+Received: from pps.filterd (NALASPPMTA04.qualcomm.com [127.0.0.1])
+	by NALASPPMTA04.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTP id 45RHNLXR002951
+	for <stable@vger.kernel.org>; Thu, 27 Jun 2024 17:29:18 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 4000p0mjn5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 27 Jun 2024 17:29:18 +0000
+Received: from NALASPPMTA04.qualcomm.com (NALASPPMTA04.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 45RHTIcY012093
+	for <stable@vger.kernel.org>; Thu, 27 Jun 2024 17:29:18 GMT
+Received: from hu-devc-lv-u22-c.qualcomm.com (hu-uchalich-lv.qualcomm.com [10.81.89.1])
+	by NALASPPMTA04.qualcomm.com (PPS) with ESMTPS id 45RHTHIv012089
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Jun 2024 17:29:17 +0000
+Received: by hu-devc-lv-u22-c.qualcomm.com (Postfix, from userid 4184210)
+	id 287C664D; Thu, 27 Jun 2024 10:29:17 -0700 (PDT)
+From: Unnathi Chalicheemala <quic_uchalich@quicinc.com>
+To: Trilok Soni <quic_tsoni@quicinc.com>,
+        Prasad Sodagudi <quic_psodagud@quicinc.com>,
+        Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>,
+        Elliot Berman <quic_eberman@quicinc.com>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>
+Cc: Murali Nalajala <quic_mnalajal@quicinc.com>, kernel@quicinc.com,
+        stable@vger.kernel.org,
+        Unnathi Chalicheemala <quic_uchalich@quicinc.com>
+Subject: [PATCH v7 3/3] firmware: qcom_scm: Mark get_wq_ctx() as atomic call
+Date: Thu, 27 Jun 2024 10:29:05 -0700
+Message-Id: <02cbdb290d6a66ddc6e82b0839b007b9bcb7a6d1.1719459967.git.quic_uchalich@quicinc.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1719459967.git.quic_uchalich@quicinc.com>
+References: <cover.1719459967.git.quic_uchalich@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240529-drop-counted-by-ports-mxser-board-v1-1-0ab217f4da6d@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: XhTRNLrHJu9LCTUXyqR7E56DlctJAs2h
+X-Proofpoint-GUID: XhTRNLrHJu9LCTUXyqR7E56DlctJAs2h
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-27_13,2024-06-27_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ mlxscore=0 lowpriorityscore=0 phishscore=0 mlxlogscore=999 adultscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1011 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2406140001
+ definitions=main-2406270132
 
-On Wed, May 29, 2024 at 02:29:42PM -0700, Nathan Chancellor wrote:
-> Work for __counted_by on generic pointers in structures (not just
-> flexible array members) has started landing in Clang 19 (current tip of
-> tree). During the development of this feature, a restriction was added
-> to __counted_by to prevent the flexible array member's element type from
-> including a flexible array member itself such as:
-> 
->   struct foo {
->     int count;
->     char buf[];
->   };
-> 
->   struct bar {
->     int count;
->     struct foo data[] __counted_by(count);
->   };
-> 
-> because the size of data cannot be calculated with the standard array
-> size formula:
-> 
->   sizeof(struct foo) * count
-> 
-> This restriction was downgraded to a warning but due to CONFIG_WERROR,
-> it can still break the build. The application of __counted_by on the
-> ports member of 'struct mxser_board' triggers this restriction,
-> resulting in:
-> 
->   drivers/tty/mxser.c:291:2: error: 'counted_by' should not be applied to an array with element of unknown size because 'struct mxser_port' is a struct type with a flexible array member. This will be an error in a future compiler version [-Werror,-Wbounds-safety-counted-by-elt-type-unknown-size]
->     291 |         struct mxser_port ports[] __counted_by(nports);
->         |         ^~~~~~~~~~~~~~~~~~~~~~~~~
->   1 error generated.
-> 
-> Remove this use of __counted_by to fix the warning/error. However,
-> rather than remove it altogether, leave it commented, as it may be
-> possible to support this in future compiler releases.
-> 
-> Cc: stable@vger.kernel.org
-> Closes: https://github.com/ClangBuiltLinux/linux/issues/2026
-> Fixes: f34907ecca71 ("mxser: Annotate struct mxser_board with __counted_by")
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+From: Murali Nalajala <quic_mnalajal@quicinc.com>
 
-Since this fixes a build issue under Clang, can we please land this so
-v6.7 and later will build again? Gustavo is still working on the more
-complete fix (which was already on his radar, so it won't be lost).
+Currently get_wq_ctx() is wrongly configured as a
+standard call. When two SMC calls are in sleep and one
+SMC wakes up, it calls get_wq_ctx() to resume the
+corresponding sleeping thread. But if get_wq_ctx() is
+interrupted, goes to sleep and another SMC call is
+waiting to be allocated a waitq context, it leads to a
+deadlock.
 
-If it's easier/helpful, I can land this via the hardening tree? I was
-the one who sent the bad patch originally. :)
+To avoid this get_wq_ctx() must be an atomic call and
+can't be a standard SMC call. Hence mark get_wq_ctx()
+as a fast call.
 
-Thanks!
+Fixes: 6bf325992236 ("firmware: qcom: scm: Add wait-queue handling logic")
+Cc: stable@vger.kernel.org
+Signed-off-by: Murali Nalajala <quic_mnalajal@quicinc.com>
+Signed-off-by: Unnathi Chalicheemala <quic_uchalich@quicinc.com>
+---
+ drivers/firmware/qcom/qcom_scm-smc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
--Kees
-
+diff --git a/drivers/firmware/qcom/qcom_scm-smc.c b/drivers/firmware/qcom/qcom_scm-smc.c
+index 16cf88acfa8e..0a2a2c794d0e 100644
+--- a/drivers/firmware/qcom/qcom_scm-smc.c
++++ b/drivers/firmware/qcom/qcom_scm-smc.c
+@@ -71,7 +71,7 @@ int scm_get_wq_ctx(u32 *wq_ctx, u32 *flags, u32 *more_pending)
+ 	struct arm_smccc_res get_wq_res;
+ 	struct arm_smccc_args get_wq_ctx = {0};
+ 
+-	get_wq_ctx.args[0] = ARM_SMCCC_CALL_VAL(ARM_SMCCC_STD_CALL,
++	get_wq_ctx.args[0] = ARM_SMCCC_CALL_VAL(ARM_SMCCC_FAST_CALL,
+ 				ARM_SMCCC_SMC_64, ARM_SMCCC_OWNER_SIP,
+ 				SCM_SMC_FNID(QCOM_SCM_SVC_WAITQ, QCOM_SCM_WAITQ_GET_WQ_CTX));
+ 
 -- 
-Kees Cook
+2.34.1
+
 
