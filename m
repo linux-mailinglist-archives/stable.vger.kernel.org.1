@@ -1,103 +1,92 @@
-Return-Path: <stable+bounces-55976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D1591ABCE
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 17:49:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CA691AC7D
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 18:22:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 746971C21AEA
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 15:49:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E4931F259FB
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 16:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6173146D74;
-	Thu, 27 Jun 2024 15:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A7519939D;
+	Thu, 27 Jun 2024 16:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BI5FgBqB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oEQyaSPP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B751922CD;
-	Thu, 27 Jun 2024 15:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEE5199392;
+	Thu, 27 Jun 2024 16:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719503350; cv=none; b=d58KIVza4GXzDqMEtkZZSv8VYT0kkDVPRUmA+GznVH/w5Q1eHmjWp0BIyIPfa5jMoJ85sQlNHQeesIwt4C/JM1ZIXvDCKr7nzCBbdaeAjCNhCBMgqWTscsfzEn+DDPnBZMANMJAl7YlZDTu7dHe3uqUAIYm8wLahvyAeTHNtj48=
+	t=1719505323; cv=none; b=lkLh3HNvweQnXOuqM413XxTkFGNFbToYct3gi1FV55XiKxanqxSkpsHXXZeS3tCm/mKKzUiEOSFhSDkt6pixvsk5ujj1DNhZ6spZ62+cqISoEgQVbirjT6sXNtmdHQ3HtIqimwRwYb1xsJY2vm0t6XtcfCnNtE4u0EwZax9Wobo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719503350; c=relaxed/simple;
-	bh=nqL74ax75pWruU5MiHx4Tv8OQ6oYMWOlYMX7W+QBVFE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Rt9ByiONmeb4U0kKvE9A2haM4t1oIwpFsdDvuxseXxCNpfBQMfsE/VAaqKdrJsh4bSK/LN1WvEjdQitnHR3BGAOZo9eAks2/fhZGTLp4Kg5MIUAlQrCNzC57ar/pVuVERTTOka6WSJvCBYoYpSgpzSuDkxLtxPgZg2IU3/+0KKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BI5FgBqB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20102C4AF09;
-	Thu, 27 Jun 2024 15:49:09 +0000 (UTC)
+	s=arc-20240116; t=1719505323; c=relaxed/simple;
+	bh=kVLYV7wBgQxmFh3aypgRbiiiHGjW8/Z2O0qs1JuDPUI=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=bRWPewkFjqsmkc5YY2l0CHUp/BF+IeTDLsW+7AALvp/lL3mk2Fb8pe9Wq8IDJmD3E3+T8UfDAs8kTTJERB4kfFGN6BPfEWGObaW5hYIXDnzyeYaStCtjxGaI04/49UdRy5oUhaxJ+JmJdZTSiA2XtdtKcPGPm5u7xaZbjU7trug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oEQyaSPP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13C4C2BBFC;
+	Thu, 27 Jun 2024 16:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719503349;
-	bh=nqL74ax75pWruU5MiHx4Tv8OQ6oYMWOlYMX7W+QBVFE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=BI5FgBqBMP5FKrncNAqqVJtPra5024pG9hl1ijpvcDJsIekV5rUj0JzgScOCtjGC0
-	 5laD6fVdBlHLEWeUuyxwrn5ksk2coCoascyolx4NC/vAs2HdZYYUX2Tv3zXt5dOaAQ
-	 g/vYRl+eXkTjNFPKvtDcIYixM1jrPHLfIUMPyB2m1Ode7rOdm3OD58I/UQIe0IaEAx
-	 ymg23fV285rs5Hl6J7aozM0aLhJacvWpFe12agHVX2mUOGrszB/FCd9Ho9S+dm3Six
-	 oeDjIwOnBBsruFY6DBWptVbcNlbLNQLkM0mQ0YVcnu/0VArqVybhhlCIMursp1Uq8L
-	 qa9g4uHyogXtQ==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-57d06101d76so2026007a12.3;
-        Thu, 27 Jun 2024 08:49:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUAaRjnA2rRDtvYFjyWg+3CBDee8eAXg7PBKEwiYWtkGiFm0SVzz+0JOA0Eh5TitELpJsNAVeBaJdKGRWsfNTkrmxBjjApGQHOL+AQ1oh+UeZKIMskO3z7RwjsdwuHFx0FyAkw3
-X-Gm-Message-State: AOJu0YxanCn9JBI7G+FMMOo9syctf8LJWSwmcW6h48Mb4lrCs37/TZaE
-	XJzhlyp6l+4iY8RueoD2ySVPkAg8SdlizxNgKqE8HQoKFt/3Yzlw1w0Z0ZDojse8JjXu4l0T6eG
-	Fr0meekAftio9bQZnxI0Q8jfW5GE=
-X-Google-Smtp-Source: AGHT+IGMJMc5MnM5ZGkcUNODngcS4Rbq5bn55PsQgrJaAUmsDOl1dWXQyEwf2gvEQISuwOi9m+9gihIbKE4DI1b6frU=
-X-Received: by 2002:a17:906:d509:b0:a6f:5192:6f4d with SMTP id
- a640c23a62f3a-a7242c4dfd3mr701399466b.8.1719503347692; Thu, 27 Jun 2024
- 08:49:07 -0700 (PDT)
+	s=k20201202; t=1719505322;
+	bh=kVLYV7wBgQxmFh3aypgRbiiiHGjW8/Z2O0qs1JuDPUI=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=oEQyaSPPC/uxDY8WI+6LGF11pXkgny5Urm0SRMnJYYhCQihD/dFusuB07/b0XCV+Y
+	 RHV1jE7DBuMJMuhWFehTn2kk+//p6ka/ndvF3zJGSFZMcTLYEd7uyBFi8SfWmgqzjL
+	 aCaoeR2jCJuTakPgMPFF16GLW6vSogFGLgIZgiDpsWP+2JryLVK10k+LETrt0EY26X
+	 crGCMrQpomQtgscKvC0xdqgWvHIc4VQD3HTXeB2CGLtVZG79fZDWDJF+GatFv/Vp47
+	 lar/8aJBpdisdN832DPHlos20tu0T9bJTwt493SIKwUpmbMWD4YegXg9+sFMz4eB5X
+	 337v150xiokmA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240627103205.27914-2-CoelacanthusHex@gmail.com>
- <87o77mpjgd.fsf@all.your.base.are.belong.to.us> <6b8e1e79-5a2e-416c-8fee-878b3f5568a0@gmail.com>
-In-Reply-To: <6b8e1e79-5a2e-416c-8fee-878b3f5568a0@gmail.com>
-From: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Date: Thu, 27 Jun 2024 17:48:55 +0200
-X-Gmail-Original-Message-ID: <CAJ+HfNhV2d53G-ZPDXUkSTP-AzhqXs54XZuCiYjR=06A1+oq_A@mail.gmail.com>
-Message-ID: <CAJ+HfNhV2d53G-ZPDXUkSTP-AzhqXs54XZuCiYjR=06A1+oq_A@mail.gmail.com>
-Subject: Re: [PATCH] riscv: entry: always initialize regs->a0 to -ENOSYS
-To: Celeste Liu <coelacanthushex@gmail.com>
-Cc: linux-riscv@lists.infradead.org, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
-	"Dmitry V . Levin" <ldv@strace.io>, linux-kernel@vger.kernel.org, Guo Ren <guoren@kernel.org>, 
-	Palmer Dabbelt <palmer@rivosinc.com>, 
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>, Felix Yan <felixonmars@archlinux.org>, 
-	Ruizhe Pan <c141028@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wifi: ath12k: Allow driver initialization for WoW
+ unsupported
+ devices
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240626024257.709460-1-quic_ramess@quicinc.com>
+References: <20240626024257.709460-1-quic_ramess@quicinc.com>
+To: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Cc: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ Rameshkumar Sundaram
+	<quic_ramess@quicinc.com>, <stable@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <171950531986.2164695.17835818417025337826.kvalo@kernel.org>
+Date: Thu, 27 Jun 2024 16:22:01 +0000 (UTC)
 
-On Thu, 27 Jun 2024 at 16:29, Celeste Liu <coelacanthushex@gmail.com> wrote=
-:
->
-> On 2024-06-27 22:08, Bj=C3=B6rn T=C3=B6pel wrote:
->
-> > Celeste Liu <coelacanthushex@gmail.com> writes:
-> >
-> >> Otherwise when the tracer changes syscall number to -1, the kernel fai=
-ls
-> >> to initialize a0 with -ENOSYS and subsequently fails to return the err=
-or
-> >> code of the failed syscall to userspace. For example, it will break
-> >> strace syscall tampering.
-> >>
-> >> Fixes: 52449c17bdd1 ("riscv: entry: set a0 =3D -ENOSYS only when sysca=
-ll !=3D -1")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
-> >
-> > Reported-by: "Dmitry V. Levin" <ldv@strace.io>
-> > Reviewed-by: Bj=C3=B6rn T=C3=B6pel <bjorn@rivosinc.com>
->
-> Patch v2 has been sent.
+Rameshkumar Sundaram <quic_ramess@quicinc.com> wrote:
 
-For future patches; You don't need to respin a patch to add tags. The
-tooling will pick up the tags automatically.
+> Commit 4a3c212eee0e ("wifi: ath12k: add basic WoW functionalities") broke
+> driver initialization, now mac registration is allowed only for devices that
+> advertise WMI_TLV_SERVICE_WOW, but QCN9274 doesn't support WoW and hence mac
+> registration is aborted and driver is de-initialized.
+> 
+> Allow mac registration to proceed without WoW Support for devices
+> that don't advertise WMI_TLV_SERVICE_WOW.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> 
+> Fixes: 4a3c212eee0e ("wifi: ath12k: add basic WoW functionalities")
+> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+
+Patch applied to ath-next branch of ath.git, thanks.
+
+9783e0407421 wifi: ath12k: fix driver initialization for WoW unsupported devices
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240626024257.709460-1-quic_ramess@quicinc.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
