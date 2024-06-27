@@ -1,135 +1,107 @@
-Return-Path: <stable+bounces-55968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E60C91A926
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 16:24:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1301791A92B
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 16:26:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB23C1F283CB
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 14:24:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 444E41C20A56
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 14:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA80195FC2;
-	Thu, 27 Jun 2024 14:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89902195FEC;
+	Thu, 27 Jun 2024 14:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kNxV92eZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xaqUc5y+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48599195F22;
-	Thu, 27 Jun 2024 14:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431EC195803;
+	Thu, 27 Jun 2024 14:26:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719498264; cv=none; b=aACOKAfBlFHMaQCVEyVgy0paAX9XlroOAV0cBXjM6QhBFKJ5oSQnotKj3WP1h1Bj91+VgYHgwkhCJlNYdfnJDyREzWE7WWSHqjUUjxbMxIQYO51XjTm556a50Xi7Sc9DTxU0kkmHn2WkbCbIuCx/Cw5q9G+U5uSlSEZ2n/mScXY=
+	t=1719498387; cv=none; b=hOYgNveTdfzypr63IHQ0XivzYFdbH54WaFImEbcLHaAo6WGFQ0M4KP6ZCVP1VIbk9+qDP3kI+M6JQcxCsvLhnOtZwEMIT/nKXXKflCmz6XpFNe+zkInAUUSOJYO+bMl9xKWhk1Du7xG3CoAMoLKyqCVjmkyKZkugGtnhL1i3TZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719498264; c=relaxed/simple;
-	bh=Q2jff5QT5dahZ0NplzuKdapGzNO6RH+dDW7S1GCf5v4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KJtxu4C/6721T3B5L33/qiuzaMoxSTsqdrrylFWNiOCNx9Mih9aC2fLgKeukM2yNPUXZksHWuFS9FQ5zQWH02rAdsGfYjqPX6ZR1wCnrqfbLvUSJunEe87KigMg4Fh2FjJLO2XiHjbTs7xH2fh3d9pbe//iUpIyWkZpZiVh6WN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kNxV92eZ; arc=none smtp.client-ip=209.85.210.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-70671ecd334so4096063b3a.0;
-        Thu, 27 Jun 2024 07:24:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719498262; x=1720103062; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=f/eLI45W/ooqVC/MA9zQHUWk1MIJ0qMRX6RqXTFEWV8=;
-        b=kNxV92eZzHtv8FnLNVXDxkpXstN1yuHC5iRPqRxvzkvHRWN2wW6uCUBhIjXtlevCoc
-         +cunYdZVanA2dy4OK5apl5iP0ONnqRXa8bqPFz8G9EmRuNI73UgFg6oS3pz1he6WyYVx
-         78bZBFzZW4EzvrkAnLhP+0vEgrqWSY6C8oQVpj7iUhdty/etdmlQxp2eqcT3WWs1LxIL
-         95bc1+VzGbMf73nUc0/6kLyqi22Qn2hZ3GWSD3cHCPdUjUPjHXJDdu9NuSlQsGWfB/hu
-         wjAk7jBwzKemibsoW5I9bKGjzeYOEnGv1J0FFPWRXzbxeSAj5b/0+1KSxwDqCQQey73Y
-         b8IQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719498262; x=1720103062;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=f/eLI45W/ooqVC/MA9zQHUWk1MIJ0qMRX6RqXTFEWV8=;
-        b=LgeBeSUDmcvC7EI47txRoj/lnMrh59N8e1lAdQcFQqeb5FojoeRA4/Hz5TtxpNBrpE
-         nkiDsZ0BMTatVZKjBPYkSmpPStlC0bS6TbZTy38cuWRQetICJhv31Qk25IPSPt5ReB2+
-         jsTT0D2EBiv3TcDjI9Dohp0iVzVvAVIoGMspEdmNQMItviMk+IdTijb4AcB+cn34IfzZ
-         9zrwC0df482oJqkP1dxFx5VeJVo7rWFJgr7oSI/tK+4oL2cYs8dtV+gP9+b7Y5HD/AKh
-         QmirmxSD3FqwpTQC9RWYAohF1L2ZLyUa4fnLAwrFjSbj2yrQ/Cjy8RafC883iA7rvNnO
-         NB3g==
-X-Forwarded-Encrypted: i=1; AJvYcCV+CIFUZGyGniMunruQCllFVlZonz6Hgzyya58zputAbz48inZ/GJ2udLVOGUYBX1HwhFPNO8TftPQ+5nXzFTr/ZcUdKPw6
-X-Gm-Message-State: AOJu0YyiigaDret79M3yxzzkXy2rwrykYVMo0GQLQT3XhlICuMrNcpdr
-	JaAAJgot2KIhT9p9oc9Cbrmm/n7QjAKBidKYrilwIy2/JuSp5cjC
-X-Google-Smtp-Source: AGHT+IFaXa2jgWVK9qwyyMjsUe+VJC/FCmmJqXZaBPd98yzohBR8g9ipU8NKxlQpPhyhZJZYUcyh6Q==
-X-Received: by 2002:a62:b609:0:b0:706:4889:960d with SMTP id d2e1a72fcca58-70670ee7812mr13853487b3a.16.1719498262365;
-        Thu, 27 Jun 2024 07:24:22 -0700 (PDT)
-Received: from localhost ([212.107.28.57])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-706b48d0cc0sm1403803b3a.28.2024.06.27.07.24.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jun 2024 07:24:21 -0700 (PDT)
-From: Celeste Liu <coelacanthushex@gmail.com>
-X-Google-Original-From: Celeste Liu <CoelacanthusHex@gmail.com>
-To: linux-riscv@lists.infradead.org,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>
-Cc: linux-kernel@vger.kernel.org,
-	"Dmitry V . Levin" <ldv@strace.io>,
-	Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Felix Yan <felixonmars@archlinux.org>,
-	Ruizhe Pan <c141028@gmail.com>,
-	Celeste Liu <CoelacanthusHex@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] riscv: entry: always initialize regs->a0 to -ENOSYS
-Date: Thu, 27 Jun 2024 22:23:39 +0800
-Message-ID: <20240627142338.5114-2-CoelacanthusHex@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1719498387; c=relaxed/simple;
+	bh=DhqFc95C//XVpJ9zlU8ndrs03k8vJqiZ9FcjaqlUuRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bpltPVjgVG6CLK0KjotaWgwiU0tPuvQCxFEM1SkEhXKHdKjDKUS/pqVCejGK0TaGtSPPvQDo2fOB4xNlliaIO0IlcoHoizBEy5HOWqxLbJx7/RbZVG649pzjOTeM8upBrRDCwrEgW0KOk+S5+G70CVMknGzcoGx7Zr23Kd1QDs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xaqUc5y+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75EB1C2BBFC;
+	Thu, 27 Jun 2024 14:26:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1719498387;
+	bh=DhqFc95C//XVpJ9zlU8ndrs03k8vJqiZ9FcjaqlUuRs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=xaqUc5y+aCGR1PMgVEr8BLTd6rXnI6krPHbQYvxa4dYyON76p3VrFr5sXwvlmRkdW
+	 lQsj4U9TIFTkrf1yGWCTaYrEa5qffyI/YcugtKfwRPHTb8K/ugtxmHnsSz6/Av5xdf
+	 0gSrx3pDKi96oYR/kfc/9SrkOVnmBBMON9rclg3s=
+Date: Thu, 27 Jun 2024 16:26:23 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: joswang <joswang1221@gmail.com>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Jos Wang <joswang@lenovo.com>
+Subject: Re: [PATCH v7] usb: dwc3: core: Workaround for CSR read timeout
+Message-ID: <2024062709-germproof-reveler-f2f0@gregkh>
+References: <2024062051-washtub-sufferer-d756@gregkh>
+ <CAMtoTm06MTJ_Gc4NvenycvWRxhLSaPptT1DLvBRs4RWVZO9Y_g@mail.gmail.com>
+ <2024062151-professor-squeak-a4a7@gregkh>
+ <20240621054239.mskjqbuhovydvmu4@synopsys.com>
+ <2024062150-justify-skillet-e80e@gregkh>
+ <20240621062036.2rhksldny7dzijv2@synopsys.com>
+ <2024062126-whacky-employee-74a4@gregkh>
+ <20240621230846.izl447eymxqxi5p2@synopsys.com>
+ <CAMtoTm2UE31gcM7dGxvz_CbFoKotOJ1p7PeQwgBuTDE9nq7CJw@mail.gmail.com>
+ <20240626013710.dxqa6r4mjuc6on4w@synopsys.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1313; i=CoelacanthusHex@gmail.com; h=from:subject; bh=Q2jff5QT5dahZ0NplzuKdapGzNO6RH+dDW7S1GCf5v4=; b=owJ4nJvAy8zAJfY4pvNJRPo6U8bTakkMabWlrwIU5LWUEn9rPF/0ydqKUdQyc8m/pJOixUUZJ 13/7OoyCesoZWEQ42KQFVNkEdv59PWy0kcflvGazICZw8oEMoSBi1MAJlLxmeGvREWem4374e3C c6fzxbfX3P67q/yrnX/Nzpn1sZNtBZb0MvzhrGy8bzLFos5JPNT+mve8nBXcHib3J30+45vrduH V0jYeAI3ZS6k=
-X-Developer-Key: i=CoelacanthusHex@gmail.com; a=openpgp; fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240626013710.dxqa6r4mjuc6on4w@synopsys.com>
 
-Otherwise when the tracer changes syscall number to -1, the kernel fails
-to initialize a0 with -ENOSYS and subsequently fails to return the error
-code of the failed syscall to userspace. For example, it will break
-strace syscall tampering.
+On Wed, Jun 26, 2024 at 01:37:14AM +0000, Thinh Nguyen wrote:
+> On Tue, Jun 25, 2024, joswang wrote:
+> > On Sat, Jun 22, 2024 at 7:09 AM Thinh Nguyen <Thinh.Nguyen@synopsys.com> wrote:
+> > >
+> > > Ok. I may have misunderstood what can go into rc2 and beyond then. If we
+> > > don't have to wait for the next rc1 for it to be picked up for stable,
+> > > then can we add it to "usb-linus" branch?
+> > >
+> > > There won't be a Fixes tag, but we can backport it up to 5.10.x:
+> > >
+> > > Cc: <stable@vger.kernel.org> # 5.10.x: 1e43c86d: usb: dwc3: core: Add DWC31 version 2.00a controller
+> > > Cc: <stable@vger.kernel.org> # 5.10.x
+> > >
+> > > This can go after the versioning scheme in dwc3 in the 5.10.x lts. I did
+> > > not check what other dependencies are needed in addition to the change
+> > > above.
+> > >
+> > > Thanks,
+> > > Thinh
+> > 
+> > Is there anything else I need to modify for this patch?
+> > 
+> 
+> Hi Greg,
+> 
+> Will a simple tag "Cc: <stable@vger.kernel.org>" sufficient? Or would
+> you prefer using the tags above?
+> 
+> For either case:
+> 
+> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-Fixes: 52449c17bdd1 ("riscv: entry: set a0 = -ENOSYS only when syscall != -1")
-Reported-by: "Dmitry V. Levin" <ldv@strace.io>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
----
- arch/riscv/kernel/traps.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I fixed this up by hand, thanks for the ack!
 
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index 05a16b1f0aee..51ebfd23e007 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -319,6 +319,7 @@ void do_trap_ecall_u(struct pt_regs *regs)
- 
- 		regs->epc += 4;
- 		regs->orig_a0 = regs->a0;
-+		regs->a0 = -ENOSYS;
- 
- 		riscv_v_vstate_discard(regs);
- 
-@@ -328,8 +329,7 @@ void do_trap_ecall_u(struct pt_regs *regs)
- 
- 		if (syscall >= 0 && syscall < NR_syscalls)
- 			syscall_handler(regs, syscall);
--		else if (syscall != -1)
--			regs->a0 = -ENOSYS;
-+
- 		/*
- 		 * Ultimately, this value will get limited by KSTACK_OFFSET_MAX(),
- 		 * so the maximum stack offset is 1k bytes (10 bits).
--- 
-2.45.2
-
+greg k-h
 
