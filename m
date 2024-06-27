@@ -1,112 +1,129 @@
-Return-Path: <stable+bounces-55996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED3991B0AB
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 22:44:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8FA91B0FF
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 22:53:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1ADCB218F3
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 20:44:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63BB81C24DA3
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 20:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C10119F49C;
-	Thu, 27 Jun 2024 20:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8450019E81D;
+	Thu, 27 Jun 2024 20:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="UVIIzkIV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C2t1HGT0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89B67406F
-	for <stable@vger.kernel.org>; Thu, 27 Jun 2024 20:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C094914D6EB;
+	Thu, 27 Jun 2024 20:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719520883; cv=none; b=LvPCzbScn4KjewIMqrEojB4VQhZJjdNe7wRkOQJ9c9qmjN+IA7esXimdWYbXUZjAw6Gse99ts7yTSlwIi75fuZIrjuiJJKiFrUe0lBxLon6LrmzHeWDLO25ezkLs3f2StC0YTFz++yYWllkxzzA1Wbakxpl9BDugUiUlfGuZnRY=
+	t=1719521594; cv=none; b=ufDhPVwTZUqZjOPzL9u/Gb82i9q4VfOSrVLKV5DiFMWvZjtU9vIvPvciQL0vDm4IWlONyD0FFNXJBI4SQGQueSpD2BHUP4AkjegND0Y4N4v8AbIeeufXEU+s2JDrLqT0GaI2Vd4wj4+ZO7kDxZd5Goa+kboW68qeAYfWs3PD574=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719520883; c=relaxed/simple;
-	bh=6c4jsOigt9Ruk43a9HCcueSY0YeUSMFClS0eq+S9m88=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cjrah9Stp+1z7iRLLVQdlIF8ewuFFAYsKxpbft44ENA+j2lcjYMgx3Ftpa7eVw3L32ybTQesgRnXQeis9eOsPCXaYxIcK+vcRDN1447hawD5xYGzq3s8U5LF0TXhu29GBuBY35jF5cDZ/nugwzPf/FsklMqL3AvbQ2DEls9dTso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=UVIIzkIV; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-44642df9af1so6052181cf.2
-        for <stable@vger.kernel.org>; Thu, 27 Jun 2024 13:41:19 -0700 (PDT)
+	s=arc-20240116; t=1719521594; c=relaxed/simple;
+	bh=lj3alnjoF6IS2vUlkaWQ49CLsjb6nBsT1IQIE4C6OPo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nSQy7OXycJyYjQ/j/ap4Kk2AwQgnw1L/l/rQw4cvEqSgpfgkpGVlwHEOxcoRR9Bl50rJ2lZva7nI7Ng1Kg64ZDV4FQt2CvgrXQDKU0ZnUEFQXbwojesu7aQnu7P4my+G+6ibvgSbpznnITG/S44rPwZWrRVUWwvEdvzB5cDcmlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C2t1HGT0; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4256aee6e4dso2308515e9.1;
+        Thu, 27 Jun 2024 13:53:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1719520878; x=1720125678; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yo7oSl8s5fW3RzTF5jL4BNIokFeXY+7HGhql3Vku1kY=;
-        b=UVIIzkIVmMkkgsoPEYsRsVrnq2LF3tRCwYZPDLOgbeT2EFVpOUyoKtbtxPNus4B/S+
-         ELhTQYL9QCOKg67OC3oBDlJu8LmIUj8uqc4ORem2/NW62bwulasAlUlkCtO/Z7S2+oIE
-         3YR3nOIEDgNDyhJWnWlHrDOOYn8Sn21nocnNW0M47DvtvYdF+ragBHNYgabnfXra8KyR
-         vhviPyOjub8zuLxUClEqS5MdvTgFM4mSNXo+dkg3Z3pYydCFWQoiavf7lEVJpP00lwG3
-         ZU3Kr2MGg2Vi5rEpN8L3YPfbIcIuqZf7zJqLDdWoro9N8Nfmo6vxN0UcUB0tsDw0koCg
-         pF+g==
+        d=gmail.com; s=20230601; t=1719521591; x=1720126391; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xfb8qh56GtYXoD9jZvOPRH85DxPa0JeSyiOdHUBDC38=;
+        b=C2t1HGT0FC+UYk6ybqxS57C69ZQEtiu9N30pgaen/OmI6lBs1k65py7qZerrbz4H44
+         HQJAxQT8p7A6yu9BKG+zxudWCPS3/LcxSlmLgkmNfABZUlVRvJdLub5FF/qWIJQ21ILl
+         IBilisaTL4fphFILi9RjzdcwbzPEBbaGafYFgx8CYZOs3FAshKBrQPWTco6xVRl75vA/
+         TbJkfCT3kbco7fTuZ9LWGmY5eaoXNJSIzR7WEab8Dvd3CLU9WAcJ7vd+/TkTrC7FDWop
+         6s8wiK9VJrqkFEKaCnlcTytDQxXFtR31YRzJATHxo2ejgTUQHD3JrfPsShQ2RHBzUlcf
+         LOpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719520878; x=1720125678;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yo7oSl8s5fW3RzTF5jL4BNIokFeXY+7HGhql3Vku1kY=;
-        b=sv+HZpt/UQ2zttDhA2QZ+dXN6JnQQNCW9JlLpVoDuLgIghTFbgY7eRUiovOXQc0/ih
-         UMWh/sOYRiBh/TbkLV2PNsHg2QJj49wCPWThODlQg5+ajgA4C2EZW65/l2QXqNm9JeuN
-         /2AkuB0adk8d3yJKUY1U58D1n03Vlxgw0oEUFtCixwVoL1JgssH1GsPoGW+L9wq6Mwjf
-         GHe4lGn0JYTbZf/tG3KbN33ampSOhsttRFMjFZ+2IcMV4n3uB598VP+qot9fWBElE8+l
-         1U1D5ZAgwLY6Wl/WASubJt9mK9eUtH20D5uG1P2L+ZjqxAMfoTeDjGfDKJvhxAne9Ooa
-         us2g==
-X-Forwarded-Encrypted: i=1; AJvYcCWcOORcvwgVhkH54sQ8EJXiStMY+v0xxQwhvLFDVBwDwSTM7osaLcCnPwilT/J8Q2KDK0MID2W+om+QKfDtjcx9a0L9rHql
-X-Gm-Message-State: AOJu0Yw5xRRKY2GgGWprRwoR+2c/Y32Ev4ehRynrOmtX5s/dwpx9yrS8
-	k1a/2+ngUL/yjX8ZFyT5B0G2Nh+3kpHQVcdplAfvwpQ9gC95Fqa5eiArx1Pl68k=
-X-Google-Smtp-Source: AGHT+IGFIa4hRaQA4Mu+AfyzyAeM600yB3mVaPeVNWkc2nyBTtruDGKIVTjDcc3JK0L5TEEZ2mr0/g==
-X-Received: by 2002:ac8:5a4b:0:b0:446:426b:70f9 with SMTP id d75a77b69052e-446426b7a4bmr31951631cf.24.1719520878558;
-        Thu, 27 Jun 2024 13:41:18 -0700 (PDT)
-Received: from localhost ([2603:7000:c01:2716:da5e:d3ff:fee7:26e7])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44651498827sm1607971cf.62.2024.06.27.13.41.17
+        d=1e100.net; s=20230601; t=1719521591; x=1720126391;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Xfb8qh56GtYXoD9jZvOPRH85DxPa0JeSyiOdHUBDC38=;
+        b=g3hMMxX5BFl/pFpmYuw/lzG6/DB2quBKqrzHEhLYVXp3oCOd7O4bfrIzeib+88VaQ7
+         HqCDBjcJkx+EhOl2aHWt+NNCLw4E3Dl6tlXQM8oBRRLIwL6PbJApDaCrVJPhHNulOCb8
+         9k7/7cTsljfxdzk2LD5uCv5tkua85geQXLFUWdnLLV7acn+eNHoPUZYBlMh3+XQngRFF
+         Kn96HO7vVEag6xb3d3zMCMsYNnQg9OuwvPAWrg9YP9WOBjBQIvarGs9XgXbnarnvtUkm
+         wDo/L373FCfq4KqZPMQqJjSb844lbt5U3h3FOB18PaNFVDrtVPo3LkfsvytugnK3s+V0
+         8iyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWV2prVxwNXlllOAWLBf9j8wmADbCE+2XfaaRqP5u/aJgtZ9hO74Rcwn+bgM/gGyoGTiHkpiL8PpM9UIVy4iaInxKPPEhwO1hbkt0OmQ613vszrCwMYfWOwH159F3baHygppwvc7ioBWcqZyKtbix/phogzpBQE8bcCboOAyYCQQAuVonw0ft7io4UYMqbkRDFxge3MGsVpWW6uDg==
+X-Gm-Message-State: AOJu0YxezMSvLxa7cXsHYOJsB1/5CWtoAZs+P8tJbISgCRI+ogZBZ5C5
+	Elokf4i0AqMCADNUI7/HnKo2ulMMoqECE5x+UfjYHAxlwRAnkdrM
+X-Google-Smtp-Source: AGHT+IEyFGnUG+ZaEsbZSSMkgKHiw+IpNLv9h1YAzb4VBZz9c2j4FW3QknMf/JcEiIHOYQfbwlYHow==
+X-Received: by 2002:a05:600c:6a98:b0:425:5f86:41bf with SMTP id 5b1f17b1804b1-42564571f40mr24797395e9.30.1719521590820;
+        Thu, 27 Jun 2024 13:53:10 -0700 (PDT)
+Received: from localhost.localdomain (93-34-90-105.ip49.fastwebnet.it. [93.34.90.105])
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4256b068e93sm7216935e9.24.2024.06.27.13.53.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jun 2024 13:41:18 -0700 (PDT)
-Date: Thu, 27 Jun 2024 16:41:16 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: akpm@linux-foundation.org, kernel-team@meta.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	willy@infradead.org, david@redhat.com, ryan.roberts@arm.com,
-	ying.huang@intel.com, viro@zeniv.linux.org.uk, kasong@tencent.com,
-	yosryahmed@google.com, shakeel.butt@linux.dev,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH] cachestat: do not flush stats in recency check
-Message-ID: <20240627204116.GD469122@cmpxchg.org>
-References: <000000000000f71227061bdf97e0@google.com>
- <20240627201737.3506959-1-nphamcs@gmail.com>
+        Thu, 27 Jun 2024 13:53:10 -0700 (PDT)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Cc: Christian Marangi <ansuelsmth@gmail.com>,
+	Frank Wunderlich <frank-w@public-files.de>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] arm64: dts: mediatek: mt7622: readd syscon to pciesys node
+Date: Thu, 27 Jun 2024 22:52:56 +0200
+Message-ID: <20240627205309.28742-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240627201737.3506959-1-nphamcs@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jun 27, 2024 at 01:17:37PM -0700, Nhat Pham wrote:
-> syzbot detects that cachestat() is flushing stats, which can sleep, in
-> its RCU read section (see [1]). This is done in the
-> workingset_test_recent() step (which checks if the folio's eviction is
-> recent).
-> 
-> Move the stat flushing step to before the RCU read section of cachestat,
-> and skip stat flushing during the recency check.
-> 
-> [1]: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
-> 
-> Reported-by: syzbot+b7f13b2d0cc156edf61a@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
-> Debugged-by: Johannes Weiner <hannes@cmpxchg.org>
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-> Fixes: b00684722262 ("mm: workingset: move the stats flush into workingset_test_recent()")
-> Cc: stable@vger.kernel.org # v6.8+
+Sata node reference the pciesys with the property mediatek,phy-node
+and that is used as a syscon to access the pciesys regs.
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Readd the syscon compatible to pciesys node to restore correct
+functionality of the SATA interface.
+
+Fixes: 3ba5a6159434 ("arm64: dts: mediatek: mt7622: fix clock controllers")
+Reported-by: Frank Wunderlich <frank-w@public-files.de>
+Co-developed-by: Frank Wunderlich <frank-w@public-files.de>
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Cc: stable@vger.kernel.org
+---
+ arch/arm64/boot/dts/mediatek/mt7622.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/mediatek/mt7622.dtsi b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+index 917fa39a74f8..bb0ec1edbe5b 100644
+--- a/arch/arm64/boot/dts/mediatek/mt7622.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt7622.dtsi
+@@ -790,7 +790,7 @@ u2port1: usb-phy@1a0c5000 {
+ 	};
+ 
+ 	pciesys: clock-controller@1a100800 {
+-		compatible = "mediatek,mt7622-pciesys";
++		compatible = "mediatek,mt7622-pciesys", "syscon";
+ 		reg = <0 0x1a100800 0 0x1000>;
+ 		#clock-cells = <1>;
+ 		#reset-cells = <1>;
+-- 
+2.45.1
+
 
