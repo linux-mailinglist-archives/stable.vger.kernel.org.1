@@ -1,156 +1,162 @@
-Return-Path: <stable+bounces-55992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A80191B030
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 22:13:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A38591B044
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 22:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8E451F22369
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 20:13:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C540B21D09
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 20:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B7219CD15;
-	Thu, 27 Jun 2024 20:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B2C19AD58;
+	Thu, 27 Jun 2024 20:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="KVcWNFoV"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="vutFzSs0"
 X-Original-To: stable@vger.kernel.org
-Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF9145BE4;
-	Thu, 27 Jun 2024 20:13:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608561BF58;
+	Thu, 27 Jun 2024 20:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719519220; cv=none; b=Lc8PpXLwEsEZ2hALBFV6h4Ckvd1DC+5VJ4ielDOc8EGdKshXNygvf4IDrvtc7Yy2U3fPtRs0qUD0M7/U8WudPXKtsBdHJqQq39vMYBrngVQ7lVtEO+EMoZkGq7RrpQ1vAoyjYzuTI4qlu6gYoW5H3aSsdPbLa1Ss1Jl0sy3B42w=
+	t=1719519728; cv=none; b=ARil3Hwdq1AD/RAPRyZhvG7psgPaXEmC2g2v6AY/gfw/NPXKVM16qNsAsqlwbFrgtwsMbunQPlVL2ZdyZyHVH17aShHC7kdDDCigqCr4veT8rxmSuEF2lbKnSlY7jXLmbbBkoDcLMBk9uJDv0whY8x37CXmIRSMlTP2A3sOxGc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719519220; c=relaxed/simple;
-	bh=Ng97Q+I0pBXI53ofakv3q76+W7USXRIAadE2uWbklVA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bsjELE8UdGSbKCg0QP6T6MEN5RFf+LCQ6ONSfFxSyEGy/fV9VqEv10tNiGJhLNJn4p29cVqsKjcDwawE5UNy6kGMFKZKLLUbP75p2xXyEFG4+QO0UAiU5+es6pFBieG0LwZJ+AEDPnokzv7UH2SwB8RzuQahJUfnhY0si2a/2QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=KVcWNFoV; arc=none smtp.client-ip=199.89.1.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 009.lax.mailroute.net (Postfix) with ESMTP id 4W98sG10gQzll9bp;
-	Thu, 27 Jun 2024 20:13:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1719519210; x=1722111211; bh=mqZoJqzWOVqvKJTvVoqplSMR
-	xZgZJeY21a7owxjLVCQ=; b=KVcWNFoVDLJpmL/62VRSuBGg380beoeeuBPkTGNH
-	MAXXNIjk/et8UWPS3rgK+XuvrslNyXfy6ZuW3ReuMo4ZGVJTPtEwS8xb+nTVYvca
-	bnIRmPTKcRiWVPtOKbqvV+eBsWsup6xZ72sEv2nBEUMORzNnPIokS4KWgG1MNsjL
-	J2Qhp6pRTgIvnHri5vTjkSKNtr7Y1uKmS7Gwj4lJdGNu8iXfA9ZVFzgIRimqA8ZB
-	QsTU0tTIPrX5uuhVuQd/7rMu2XjPZqehPKC67LLb5JJSGBf/+/fG38dUYc3a8u0/
-	DTmhDCEaH0XUW0xeQQ2HkiPZF2+m94R2LWgt5vcTkFAocQ==
-X-Virus-Scanned: by MailRoute
-Received: from 009.lax.mailroute.net ([127.0.0.1])
- by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id nPRA6YbUERSR; Thu, 27 Jun 2024 20:13:30 +0000 (UTC)
-Received: from [100.96.154.26] (unknown [104.132.0.90])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4W98s0515XzllBch;
-	Thu, 27 Jun 2024 20:13:24 +0000 (UTC)
-Message-ID: <a34bcb63-6cad-4b77-bd07-afcc2c75b2f2@acm.org>
-Date: Thu, 27 Jun 2024 13:13:22 -0700
+	s=arc-20240116; t=1719519728; c=relaxed/simple;
+	bh=p4B2mvCmXom56o80wmZXmDeDj3JxYTCL1AMb/2233RI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gH6Lgn7Jm5aboEMXuCJueMlG7/2owQWUqL6QmOF8pRC6XO9IzE91Xc6pT8YE7teVbSH9WtK9o3OwnNDbXKm12wthcboyX0/j2zIWhppicUVsnfeRF6rxNby7GY2Z3QprpEQk6iX7wW6rUhdVixaM/+MLVAQu0GlpvzauWCZiaD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=vutFzSs0; arc=none smtp.client-ip=212.227.126.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1719519718; x=1720124518; i=christian@heusel.eu;
+	bh=p4B2mvCmXom56o80wmZXmDeDj3JxYTCL1AMb/2233RI=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=vutFzSs0uuckA2ptTgHpD6pdKIG/nix+4EkgkLavOGPDrG9IcpLO0HWbJbZ+U/Pk
+	 6jvAq7LdrFPrKl6nkZE5/vmEzUTP4z8uLViUyOOqzdIFCITJwY1t6WsGfuSs5bupM
+	 gmhULxLmgN6/N3FIfP2Qo8KMt2JDsGJfbTT05KI8Jg5/E955JWMQwO5nMxHGYunnm
+	 kWWWZR5K/VLnIzZLlFpM62MFe/AfSzXPlfuuYQ/CCubi9MX8m/R7pV5QsVGaUawAx
+	 u7VICuxWmXZZ+ubLkzSTQJOrHVRLX88pKnnpgbGrSQZmBcYZF60P0jcJLVFtDlwV2
+	 Sn8GUxMNZlK9EpXOoQ==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([80.140.196.45]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MDN3O-1sDcPh1Ve2-002D5U; Thu, 27 Jun 2024 22:16:15 +0200
+Date: Thu, 27 Jun 2024 22:16:14 +0200
+From: Christian Heusel <christian@heusel.eu>
+To: Andrew Paniakin <apanyaki@amazon.com>
+Cc: pc@cjr.nz, stfrench@microsoft.com, sashal@kernel.org, pc@manguebit.com, 
+	regressions@lists.linux.dev, stable@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	abuehaze@amazon.com, simbarb@amazon.com, benh@amazon.com, gregkh@linuxfoundation.org
+Subject: Re: [REGRESSION][BISECTED][STABLE] Commit 60e3318e3e900 in
+ stable/linux-6.1.y breaks cifs client failover to another server in DFS
+ namespace
+Message-ID: <a58625e7-8245-4963-b589-ad69621cb48a@heusel.eu>
+References: <ZnMkNzmitQdP9OIC@3c06303d853a.ant.amazon.com>
+ <Znmz-Pzi4UrZxlR0@3c06303d853a.ant.amazon.com>
+ <210b1da5-6b22-4dd9-a25f-8b24ba4723d4@heusel.eu>
+ <ZnyRlEUqgZ_m_pu-@3c06303d853a>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ufs: core: fix ufshcd_abort_all racing issue
-To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
- "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
- "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
- "avri.altman@wdc.com" <avri.altman@wdc.com>,
- "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
- "haowenchao22@gmail.com" <haowenchao22@gmail.com>
-Cc: "linux-mediatek@lists.infradead.org"
- <linux-mediatek@lists.infradead.org>,
- =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
- =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
- =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
- =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
- wsd_upstream <wsd_upstream@mediatek.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
- =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
- =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
- "chu.stanley@gmail.com" <chu.stanley@gmail.com>,
- =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
- <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
- <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
- <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
- <Qilin.Tan@mediatek.com>
-References: <20240624121158.21354-1-peter.wang@mediatek.com>
- <eec48c95-aa1c-4f07-a1f3-fdc3e124f30e@acm.org>
- <4c4d10aae216e0b6925445b0317e55a3dd0ce629.camel@mediatek.com>
- <795a89bb-12eb-4ac8-93df-6ec5173fb679@acm.org>
- <0e1e0c0a4303f53a50a95aa0672311015ddeaee2.camel@mediatek.com>
- <b5ee63bb-4db9-47fc-9b09-1fde0447f6f8@acm.org>
- <54f5df88-ca0a-40dd-92ef-3f64c170ba55@gmail.com>
- <9284fe608d6a2c35e1db50b0f7dc69d8951be5fe.camel@mediatek.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <9284fe608d6a2c35e1db50b0f7dc69d8951be5fe.camel@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="de5zva3l6z7p62ol"
+Content-Disposition: inline
+In-Reply-To: <ZnyRlEUqgZ_m_pu-@3c06303d853a>
+X-Provags-ID: V03:K1:9r+PViboj2vPSE0B9c+ZMxqrx/3az471oruk93qBuqqK8h9dSbX
+ KaqIjeBXa6avgQ52aN5m4n/Vwe1Bhm/5XTydnNYFkbjHz/zzjUTUoFlM/t9vOpI2Y9Gp8jP
+ bFh1AZYnZwpIC94WthAKHbkt1knsJcAQT0uJFEc+PbL+Or8/CW58RPm81q+VbAK7hCkzFBG
+ ByLZcRAOj/CVcGPNLptJg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:pfvix2MrJ4k=;s9Pjk1JVm1YDNW19GA2JXW6LjaE
+ SkHG6QygYn7BE9frZjTSlK3k/iwmdYllXwrrdhgsAaPdsRBBo6qyfsf5QuIhXg3inaWZPVbN2
+ B1q9u/I/M0g5T5LXJhGLsL1H9vVbxODbNcsYnYiwLNXUM89zfgyW+46lUHjpVzRWoEDQ+ketN
+ txKsfVd3nSSw3owo3dtSEWT89TC/0aMrDjfwS0LEtDlsx1vq5EUKS68twFs6NqgqGbZn+aShV
+ jbX/keg5lhUCYf7hoiMTVSvi5SyQ570z/1dAJTTXTiZIBjAjcJqLKO/9ZvQxssDuwGQKCn5C/
+ ewNNuAF2tslZwpJWWefcFaxfNClzyB/8zP1JT5fnuHhl4zbxY+7yxzPEB5+ltwwIaNPWUkv1W
+ aXiNT4lTci1nVwrMUedEylDT4/mF3D31pFparA3S7fivGCk2pBs+cD5WDL6rOUont15paXwrT
+ YrjE7jfZwmJdFM6b/g77xHXld//IvODclhCfNc/ndcsIhgaFo+hY89KEtLjIn/LDE/NMQvNR7
+ wpol48HFZt7oS0rfixTqDtl4+vyaI5B5rpJ5XDCQ1+J11XMFWoKc46+arbYIhBnehakIjQrzl
+ vbilixss4sm5Izv4bDwNJS7vl7TPMK6QCPZxWPyMs21Ma/JSfOwAfF1YI85ZUYLpAoClGN9Po
+ 8XTChGtwgccNAUqPulzDa4YfA2w6sGE9joqWWFJ0SAUelj99YXH++7ZUJA2RTsnJkf3RcJsiR
+ 2R8VGwN3ymcSPuYhX6DOj2qFZEoJTY4rs1lp+pk23t4egOZ+ObCkeA=
+
+
+--de5zva3l6z7p62ol
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On 6/27/24 3:59 AM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
-> This is a chicken-and-egg problem. We need to acquire a lock to know=20
-> which hwq it is, but we need to know which hwq it is to acquire the
-> lock. Therefore, to resolve this dilemma, perhaps we should just take
-> all the hwq locks indiscriminately?
-How about the (untested) patch below?
+On 24/06/26 03:09PM, Andrew Paniakin wrote:
+> On 25/06/2024, Christian Heusel wrote:
+> > On 24/06/24 10:59AM, Andrew Paniakin wrote:
+> > > On 19/06/2024, Andrew Paniakin wrote:
+> > > > Commit 60e3318e3e900 ("cifs: use fs_context for automounts") was
+> > > > released in v6.1.54 and broke the failover when one of the servers
+> > > > inside DFS becomes unavailable.
+> > >
+> > > Friendly reminder, did anyone had a chance to look into this report?
+> > >=20
+> >=20
+> > If I understand the report correctly the regression is specific for the
+> > current 6.1.y stable series, so also not much the CIFS devs themselves
+> > can do. Maybe the stable team missed the report with the plethora of
+> > mail that they get.. I'll change the subject to make this more prominent
+> > for them.
+> >=20
+> > I think a good next step would be to bisect to the commit that fixed the
+> > relevant issue somewhere between v6.1.54..v6.2-rc1 so the stable team
+> > knows what needs backporting .. You can do that somewhat like so[0]:
+> >=20
+>=20
+> Bisection showed that 7ad54b98fc1f ("cifs: use origin fullpath for
+> automounts") is a first good commit. Applying it on top of 6.1.94 fixed
+> the reported problem. It also passed Amazon Linux kernel regression
+> tests when applied on top of our latest kernel 6.1. Since the code in
+> 6.1.92 is a bit different I updated the original patch:
+>=20
 
-Thanks,
+Hey Andrew,
 
-Bart.
+good job on the bisection!
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index aa119746ee92..c5d327ba253f 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -105,16 +105,15 @@ EXPORT_SYMBOL_GPL(ufshcd_mcq_config_mac);
-   * @hba: per adapter instance
-   * @req: pointer to the request to be issued
-   *
-- * Return: the hardware queue instance on which the request would
-- * be queued.
-+ * Return: the hardware queue instance on which the request will be or=20
-has been
-+ * queued. %NULL if the request has already been freed.
-   */
-  struct ufs_hw_queue *ufshcd_mcq_req_to_hwq(struct ufs_hba *hba,
-  					 struct request *req)
-  {
--	u32 utag =3D blk_mq_unique_tag(req);
--	u32 hwq =3D blk_mq_unique_tag_to_hwq(utag);
-+	struct blk_mq_hw_ctx *hctx =3D READ_ONCE(rq->mq_hctx);
+I think it might make sense to send the backported version of the patch
+for inclusion to the stable tree directly (see "Option 3" [here][0]).
 
--	return &hba->uhq[hwq];
-+	return hctx ? &hba->uhq[hctx->queue_num] : NULL;
-  }
+Cheers,
+Chris
 
-  /**
-@@ -547,6 +546,8 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba *hba, int=20
-task_tag)
-  		if (!cmd)
-  			return -EINVAL;
-  		hwq =3D ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(cmd));
-+		if (!hwq)
-+			return -EINVAL;
-  	} else {
-  		hwq =3D hba->dev_cmd_queue;
-  	}
+[0]: https://www.kernel.org/doc/html/next/process/stable-kernel-rules.html#=
+option-3
 
+--de5zva3l6z7p62ol
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmZ9yI4ACgkQwEfU8yi1
+JYVOqg//X8BaMDQBGCFjvGiTh5/ydTOB2mV8UpIHdv/2AeT0wfZN2Bde+z6xRePz
+1yMgaxPN9prXmdoES0aykiuRZqFInYPkgJI5NTkLx6q73m5Egf/S88MWv64LYFlP
+to6ByDMfiai/Fy5YeXpy4KufTyLDGGaFbBaGujNfuaeZwzRTcpFeIVWyo3rd7pgS
+pjLlopGblHL8hbwifdYsNv5g6iFlSZcsWC7lpzfILywcXZW5CYx8pm0oAus2lKAi
+aLMsRiUDXq+uPHvAgedjGBh78zU4bH6fmT0Z955nLlEpuICH9BbjQG57LaYSyH93
+jrJCkahO9OFfI3vVs0tOCioan7J1F21UTSoD8Ll3Cn4UZ3c5lUbDmBU6qm/rEwR2
+Dg3d1DkXEi0ywlQZ7he48+GqRsgBnWoyF6czhtxRkIgl6iQUwZWaQdBhches3vEr
+w3z/TVh2PIkXgl9U7+yprAwbaiBKz2Wz/6mi1YuvFd54QvfVKSKu1U3+kgK3ZyYI
+3v73y8iAV2uZrTPRTqB7ZVRj1fiSWslsEQ6MPO7cyv1K2XkX85SS4e2pzKWlDC1h
+zwnlJVE+HtMU/xPPopRLxsnGFvA7Ymawyn5cac6HytMZSE0XyQ/jw8SUhMKB4Fhs
+mjqlgWunP9pvhRKgOuKkeDD7rysWtCjbSkF5C+j2fmpysNd3pd8=
+=pFOg
+-----END PGP SIGNATURE-----
+
+--de5zva3l6z7p62ol--
 
