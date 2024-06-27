@@ -1,130 +1,118 @@
-Return-Path: <stable+bounces-55993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6EF991B037
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 22:17:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C3B91B056
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 22:25:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AB1D2821C3
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 20:17:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B66DF1C219F0
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 20:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A8B7406F;
-	Thu, 27 Jun 2024 20:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF0219DF4F;
+	Thu, 27 Jun 2024 20:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GAAtSPj6"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JABBni9e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5A933FD;
-	Thu, 27 Jun 2024 20:17:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25B919ADA3;
+	Thu, 27 Jun 2024 20:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719519461; cv=none; b=OHIBlrBchw5QAeQGISlZAN601eEqmBm9pKvIcx0RufkPfClAeAZrDP5pNmrJIo9M2BKkpniXIk+C0cB/6o7FND/P0L4Yy5kMxIMBDZFiF0vH+nHstwE5dVlsUhmrzKskt1Uyk1M3LFb3GjorSThJ4gedZOYXS4+vQ39upU3XsqI=
+	t=1719519933; cv=none; b=Ey5SgcyoKtpjPEEUc2fywZt69aq4DjAOpicjdLwi88HBPn06lOx2FP3B+0WOjxufACreJJatjAbcA9aKkU9oSvVeC4NiB0duyU4aGmd74raicakQ6s2WbVLm6jikYkDQ4rLuYWtVT3wIWVAg9FjZCTxypAckk4I/z22xnK0DI2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719519461; c=relaxed/simple;
-	bh=FChDSKktOd/AYanIA7EevJUZD2WcFV4/Er++/7flXhQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSXusQFJxudx3Dvl4oweWVfSwvFyKllv9Qlujj4gSMliDrOLv6eOFUX10agPOLlnPw1DktlNjTQ8iYHCLToUkkZ4y60Nm3H/iWqxvZxAancK4S4IQuAr2kBKV3WqIju2IJ1IiUpMkwzZYWUk+MgFYwnp0fonOycPTcvxecU3h6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GAAtSPj6; arc=none smtp.client-ip=209.85.222.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-80f6521eeddso1907639241.0;
-        Thu, 27 Jun 2024 13:17:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719519458; x=1720124258; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SfWTtRmgo1E8I0TtuekVypKcxx4UC0A4xdyehBHx0NE=;
-        b=GAAtSPj67kHLnW/X6kO0l7H1MJB9dBYL+2uIeub3S7tmQaZgEyqU+CHEnBoF4s6Dmr
-         H8qRmK++yXFtcBf4L/FWGoibASdlUqsA2F8HnZ0oXfq1M9sf703+uDqAXUmyA6P0HuhB
-         J0fZTsGLfS0QkgNiX4dbVAji7outloLXgnR5azLkFn644el+L9ziKXm3UKTTvys7qr6p
-         25n124vgCGXMQwZmDmpwb7otzvBcxmM9Bj4vvqfaPirBOIJVzGT50iunWvN9R46suU4j
-         HhN2Y76gQQOHm5+/E4lrS/57JUm46NWhFcE3OKb7zy48AqzLrWrnzPz1VQGd/5qRF0lp
-         udcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719519458; x=1720124258;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SfWTtRmgo1E8I0TtuekVypKcxx4UC0A4xdyehBHx0NE=;
-        b=ffZVDjHqICPAMqrzZKEXmtFBUonSwcavMlsLZUp1YzdPZ9wSWUJfBcKNXMy9ok/1jg
-         H0aj3Iukw3G676tCK+RgAL8uydy9wF2a2QTg9X3sy5zo6ysZ01vVz5OC7nZyEo2ur9Ax
-         NIQb+R7wxTEJnYgnG7HfgnNJtWKvsgcxYcBv/IHp3WvpV46CQY8AmgJ+E6iGAvG/0+Gv
-         97ZD6QXfqsPYtdSQtpxduTC20JZE49uV7LB17Vt5aYkRDUG8n994jupYdT8zuGLXVmOC
-         QXsel+EOW5gHqTCt+jIFyU9vJ/9dAx2JMWnAH+I/R+px7TYilsg+5PcfOKhFgkz8ESBp
-         9Tyg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/41FEZVUmmC9wxZFSzpwcY3j4FH2vdzF/PSADULu9/dc2MeB+Z150915sYebanWAgSfr0clvZ67pLmtpWwghMXIzMSu5WRT0ursrB6MyhSQbcuUrKfoRvYlZXX0ryNcjNnbjmKYUqwOam6SN23OZ+47NHRBzMjiNz6EIjvR26zGbOVQ==
-X-Gm-Message-State: AOJu0YyuDFFuyxAy5RjAUFbngYhz2vU+Mu0uFTzoxbKdAj0FPBFHz+hJ
-	3n+ngbajbB9Zf2jcJDZCWB1hjUqcVsfWsDA7lOQk+7WOw1jKP/f3oM1R4A==
-X-Google-Smtp-Source: AGHT+IHR0tAYDBylwArb4Spu8TCeyDyzv0vW6zgLAt6R2VTvPr0551huRj1vxUJvSv/B9E8w/0zdIw==
-X-Received: by 2002:a05:6122:4592:b0:4d4:21cc:5f4f with SMTP id 71dfb90a1353d-4ef6a73950emr12317938e0c.11.1719519457919;
-        Thu, 27 Jun 2024 13:17:37 -0700 (PDT)
-Received: from localhost (fwdproxy-nao-115.fbsv.net. [2a03:2880:23ff:73::face:b00c])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b59e609b9asm1691706d6.106.2024.06.27.13.17.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jun 2024 13:17:37 -0700 (PDT)
-From: Nhat Pham <nphamcs@gmail.com>
-To: akpm@linux-foundation.org
-Cc: hannes@cmpxchg.org,
-	kernel-team@meta.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	willy@infradead.org,
-	david@redhat.com,
-	ryan.roberts@arm.com,
-	ying.huang@intel.com,
-	viro@zeniv.linux.org.uk,
-	kasong@tencent.com,
-	yosryahmed@google.com,
-	shakeel.butt@linux.dev,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH] cachestat: do not flush stats in recency check
-Date: Thu, 27 Jun 2024 13:17:37 -0700
-Message-ID: <20240627201737.3506959-1-nphamcs@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <000000000000f71227061bdf97e0@google.com>
-References: <000000000000f71227061bdf97e0@google.com>
+	s=arc-20240116; t=1719519933; c=relaxed/simple;
+	bh=gXTB4+xVmNhk3p6/F6jIOp9Sl1Qoujv0om6XulpHhto=;
+	h=Date:To:From:Subject:Message-Id; b=V8MpjdUaY9iegZcMgmFLAwTJJjdpZDJe8V1XwF1d993JFhHYEZNj++Q6o6eDk2SvCxkKFU/kw5jLd4ozwmGofFZF3nMlSPye1pCkj/HjH42bJIQmmh8coEGF0V43ZuE2S8GbHVDYKAeCN98HcvS7G9kwlNCO6tyTxK3I9NGN44o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JABBni9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6F2C2BD10;
+	Thu, 27 Jun 2024 20:25:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1719519933;
+	bh=gXTB4+xVmNhk3p6/F6jIOp9Sl1Qoujv0om6XulpHhto=;
+	h=Date:To:From:Subject:From;
+	b=JABBni9eQBVERIPbkHZFBemgZgU3yHM63Nu/1qizsh1AeBRUqBp+bb6il05P9EALr
+	 R7tO52BtgMA1TgUtBFl7NhRVloIsXdPotiiHwwAucZ1FVQ96sOrwRH7K10t9Ty0jBN
+	 Ros8/8nx63fknqpQf4tYksfTv61IDE+3WCziYMIM=
+Date: Thu, 27 Jun 2024 13:25:32 -0700
+To: mm-commits@vger.kernel.org,yosryahmed@google.com,ying.huang@intel.com,willy@infradead.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,shakeel.butt@linux.dev,ryan.roberts@arm.com,kasong@tencent.com,hannes@cmpxchg.org,david@redhat.com,nphamcs@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + cachestat-do-not-flush-stats-in-recency-check.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240627202533.1D6F2C2BD10@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-syzbot detects that cachestat() is flushing stats, which can sleep, in
-its RCU read section (see [1]). This is done in the
-workingset_test_recent() step (which checks if the folio's eviction is
-recent).
+
+The patch titled
+     Subject: cachestat: do not flush stats in recency check
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     cachestat-do-not-flush-stats-in-recency-check.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/cachestat-do-not-flush-stats-in-recency-check.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Nhat Pham <nphamcs@gmail.com>
+Subject: cachestat: do not flush stats in recency check
+Date: Thu, 27 Jun 2024 13:17:37 -0700
+
+syzbot detects that cachestat() is flushing stats, which can sleep, in its
+RCU read section (see [1]).  This is done in the workingset_test_recent()
+step (which checks if the folio's eviction is recent).
 
 Move the stat flushing step to before the RCU read section of cachestat,
 and skip stat flushing during the recency check.
 
 [1]: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
 
+Link: https://lkml.kernel.org/r/20240627201737.3506959-1-nphamcs@gmail.com
+Fixes: b00684722262 ("mm: workingset: move the stats flush into workingset_test_recent()")
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 Reported-by: syzbot+b7f13b2d0cc156edf61a@syzkaller.appspotmail.com
 Closes: https://lore.kernel.org/cgroups/000000000000f71227061bdf97e0@google.com/
 Debugged-by: Johannes Weiner <hannes@cmpxchg.org>
 Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-Fixes: b00684722262 ("mm: workingset: move the stats flush into workingset_test_recent()")
-Cc: stable@vger.kernel.org # v6.8+
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: <stable@vger.kernel.org>	[6.8+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- include/linux/swap.h |  3 ++-
- mm/filemap.c         |  5 ++++-
- mm/workingset.c      | 14 +++++++++++---
+
+ include/linux/swap.h |    3 ++-
+ mm/filemap.c         |    5 ++++-
+ mm/workingset.c      |   14 +++++++++++---
  3 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index bd450023b9a4..e685e93ba354 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -354,7 +354,8 @@ static inline swp_entry_t page_swap_entry(struct page *page)
+--- a/include/linux/swap.h~cachestat-do-not-flush-stats-in-recency-check
++++ a/include/linux/swap.h
+@@ -354,7 +354,8 @@ static inline swp_entry_t page_swap_entr
  }
  
  /* linux/mm/workingset.c */
@@ -134,11 +122,9 @@ index bd450023b9a4..e685e93ba354 100644
  void workingset_age_nonresident(struct lruvec *lruvec, unsigned long nr_pages);
  void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg);
  void workingset_refault(struct folio *folio, void *shadow);
-diff --git a/mm/filemap.c b/mm/filemap.c
-index fedefb10d947..298485d4b992 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -4248,6 +4248,9 @@ static void filemap_cachestat(struct address_space *mapping,
+--- a/mm/filemap.c~cachestat-do-not-flush-stats-in-recency-check
++++ a/mm/filemap.c
+@@ -4248,6 +4248,9 @@ static void filemap_cachestat(struct add
  	XA_STATE(xas, &mapping->i_pages, first_index);
  	struct folio *folio;
  
@@ -148,7 +134,7 @@ index fedefb10d947..298485d4b992 100644
  	rcu_read_lock();
  	xas_for_each(&xas, folio, last_index) {
  		int order;
-@@ -4311,7 +4314,7 @@ static void filemap_cachestat(struct address_space *mapping,
+@@ -4311,7 +4314,7 @@ static void filemap_cachestat(struct add
  					goto resched;
  			}
  #endif
@@ -157,11 +143,9 @@ index fedefb10d947..298485d4b992 100644
  				cs->nr_recently_evicted += nr_pages;
  
  			goto resched;
-diff --git a/mm/workingset.c b/mm/workingset.c
-index c22adb93622a..a2b28e356e68 100644
---- a/mm/workingset.c
-+++ b/mm/workingset.c
-@@ -412,10 +412,12 @@ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg)
+--- a/mm/workingset.c~cachestat-do-not-flush-stats-in-recency-check
++++ a/mm/workingset.c
+@@ -412,10 +412,12 @@ void *workingset_eviction(struct folio *
   * @file: whether the corresponding folio is from the file lru.
   * @workingset: where the workingset value unpacked from shadow should
   * be stored.
@@ -175,7 +159,7 @@ index c22adb93622a..a2b28e356e68 100644
  {
  	struct mem_cgroup *eviction_memcg;
  	struct lruvec *eviction_lruvec;
-@@ -467,10 +469,16 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset)
+@@ -467,10 +469,16 @@ bool workingset_test_recent(void *shadow
  
  	/*
  	 * Flush stats (and potentially sleep) outside the RCU read section.
@@ -193,7 +177,7 @@ index c22adb93622a..a2b28e356e68 100644
  
  	eviction_lruvec = mem_cgroup_lruvec(eviction_memcg, pgdat);
  	refault = atomic_long_read(&eviction_lruvec->nonresident_age);
-@@ -558,7 +566,7 @@ void workingset_refault(struct folio *folio, void *shadow)
+@@ -558,7 +566,7 @@ void workingset_refault(struct folio *fo
  
  	mod_lruvec_state(lruvec, WORKINGSET_REFAULT_BASE + file, nr);
  
@@ -202,9 +186,10 @@ index c22adb93622a..a2b28e356e68 100644
  		return;
  
  	folio_set_active(folio);
+_
 
-base-commit: a5c6fededf806aba1ff9b0f01278f7d089da5725
--- 
-2.43.0
+Patches currently in -mm which might be from nphamcs@gmail.com are
+
+cachestat-do-not-flush-stats-in-recency-check.patch
 
 
