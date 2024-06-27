@@ -1,108 +1,250 @@
-Return-Path: <stable+bounces-55929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA6291A14D
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 10:21:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B34591A2C4
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 11:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F04FF283783
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 08:21:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30ADB2846C9
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 09:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2C1770F9;
-	Thu, 27 Jun 2024 08:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1012C13AA4C;
+	Thu, 27 Jun 2024 09:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YBxOamM9"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="TReDolmK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230D51CAB3;
-	Thu, 27 Jun 2024 08:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.9])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF4F13A41D;
+	Thu, 27 Jun 2024 09:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719476464; cv=none; b=SE9NG+VMbCjGHLPGP9SBDjWR+UJxg5mt1t1+VZLoS0aHJlfCFEdH6UiVE7zkBUe0xonMGsfO6nTRbp5aq0UuDoe1rTw4epNOXqBT9fdFVC8fAbgOwqYIJzl9Fv1KXU2WbcYXQR/Hu5HE2sBETXvn7z0WRvQN3wmqMlvoNf/swz0=
+	t=1719481204; cv=none; b=FwXIYOLlBkOSO6pQ5m3kTikqGk6bYqkOrQvFrxa0zKQFYsdtL8YOvurHjdriHVph8ygP0V9Es6h8RNMoQtxLG7t/bjpfjzh4X/lshZCHKgGijK5LZLru7E+t6wm6izSQx/nhFrCq7QmdMD1hDamGjsqLVJXKSRTU1+5h7jJ/Xv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719476464; c=relaxed/simple;
-	bh=3i/mb3lQF+zYNgRDubFvUfTK5wvAo3uSQa+lQxUp8og=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tfPTA2oVuOOBCMdyXR5JPAQ+e4A375VbsCynNrR6Rc74v+UV7qzYtsCIHg9C0MTEcYLcAqhQ4BX6MFx4s3EcnZHUSP9Hy50cG4NX3bUhVTAShnT3Lnmmveqqt9BEL79jMy4+LzzoprKAcjwSvjCBCX859At77hnixs0E+CpULGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YBxOamM9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B060BC2BBFC;
-	Thu, 27 Jun 2024 08:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719476463;
-	bh=3i/mb3lQF+zYNgRDubFvUfTK5wvAo3uSQa+lQxUp8og=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YBxOamM9n7UkfjXL40jWnl3UfjmlblyIqa509kEWzSN2udW/xKeXM1P6vRPu2Jcu9
-	 hbP43hwYVGuDK2y+6VSShT6n0XOtP2ceK3bF5LoTU1N/9b+X/ruccTlefn8jhDYDYX
-	 XyzuMa7UncNOe7m/9omLlzyIILh0kHMZx/mN9HtsBlQ5dBP/XcIhQBzJQuos5Njezl
-	 dRqH2Aq/SXwyXH58WaZiVp6KZpPtfEo434igdbg6YhN6ksTqusy4f7IwArz9Vf1KNj
-	 +J5Ct3BwwMMJ8IoonrjzniTAvejtxoY8c37LR6Gmiq5M6v0X2QbcrWKhUa1IPFFBFN
-	 izXJ+woKqSOuw==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1sMkNY-0000000020a-3G6u;
-	Thu, 27 Jun 2024 10:21:16 +0200
-Date: Thu, 27 Jun 2024 10:21:16 +0200
-From: Johan Hovold <johan@kernel.org>
-To: =?utf-8?B?QmrDuHJu?= Mork <bjorn@mork.no>
-Cc: linux-usb@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] USB: serial: option: add Fibocom FM350-GL
-Message-ID: <Zn0g_I9VWFgcoUCU@hovoldconsulting.com>
-References: <20240626133223.2316555-1-bjorn@mork.no>
- <Zn0WSAHHQQr61-Og@hovoldconsulting.com>
- <87ed8i958k.fsf@miraculix.mork.no>
+	s=arc-20240116; t=1719481204; c=relaxed/simple;
+	bh=ojlYo42aYoswPCWmxbUpPQOhP56Wko77wa7TwJSuzpI=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=RRjnMqC+ADuqI86iy9tUzXu6hxDt0TMjPDhAhZ69a6ZP9GHzuAG/tthhDxtDUbl4Sy1ajWe1MQ9L12hlFt7ZtrB9+Fsa17FskREswambvGV95HSJR/T7IsBt/9sP1SkXeBIHJik5L89efE3ri1ZZ1yVHiLd4Q6NyZJzShdytqc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=TReDolmK; arc=none smtp.client-ip=220.197.31.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id; bh=6xGCK3vdlcLd1W/Bs/
+	Fp3r0CvMSGjItZew3IZE6at+k=; b=TReDolmKAyQPbR9HCYIBi4m+eFXTCT1XmE
+	thQEWPhM+ayAXUtvfUPQDO0x94AmLBJ9ZxXTgJAVXbe8ysCjh2W2zp/YyYguJ+0n
+	UC3XHK0Wz86ulmpYE2zJEFV5SHGZRTkOl/OTGzAZ/bvwwqLPTN9/tODdPvT3P0Fp
+	+DJOhh4gY=
+Received: from hg-OptiPlex-7040.hygon.cn (unknown [118.242.3.34])
+	by gzga-smtp-mta-g0-2 (Coremail) with SMTP id _____wDnD_l1KH1mY9GFAA--.8903S2;
+	Thu, 27 Jun 2024 16:53:11 +0800 (CST)
+From: yangge1116@126.com
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	21cnbao@gmail.com,
+	peterx@redhat.com,
+	baolin.wang@linux.alibaba.com,
+	liuzixing@hygon.cn,
+	yangge <yangge1116@126.com>
+Subject: [PATCH] mm/gup: Use try_grab_page() instead of try_grab_folio() in gup slow path
+Date: Thu, 27 Jun 2024 16:53:08 +0800
+Message-Id: <1719478388-31917-1-git-send-email-yangge1116@126.com>
+X-Mailer: git-send-email 2.7.4
+X-CM-TRANSID:_____wDnD_l1KH1mY9GFAA--.8903S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3WF45KrWkXF48uF17Zr47Arb_yoWxAr47pF
+	4xWwn8tw4DJr17Can7JF4DZr4Sy3s7Ka18CFWfCw4fZa13t34YkF1xJFyrJr98G3y8uFWr
+	AF42yF1Uua1DJwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jjLvNUUUUU=
+X-CM-SenderInfo: 51dqwwjhrrila6rslhhfrp/1tbiGBwLG2VLcCYqdAAAsy
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87ed8i958k.fsf@miraculix.mork.no>
 
-On Thu, Jun 27, 2024 at 10:09:31AM +0200, Bjørn Mork wrote:
-> Johan Hovold <johan@kernel.org> writes:
-> > On Wed, Jun 26, 2024 at 03:32:23PM +0200, Bjørn Mork wrote:
-> >> FM350-GL is 5G Sub-6 WWAN module which uses M.2 form factor interface.
-> >> It is based on Mediatek's MTK T700 CPU. The module supports PCIe Gen3
-> >> x1 and USB 2.0 and 3.0 interfaces.
-> >> 
-> >> The manufacturer states that USB is "for debug" but it has been
-> >> confirmed to be fully functional, except for modem-control requests on
-> >> some of the interfaces.
-> >> 
-> >> USB device composition is controlled by AT+GTUSBMODE=<mode> command.
-> >> Two values are currently supported for the <mode>:
-> >> 
-> >> 40: RNDIS+AT+AP(GNSS)+META+DEBUG+NPT+ADB
-> >> 41: RNDIS+AT+AP(GNSS)+META+DEBUG+NPT+ADB+AP(LOG)+AP(META)(default value)
-> >
-> > The order here does not seem to match the usb-devices output below (e.g.
-> > with ADB as interface 3 and 5, respectively). 
-> >
-> > Could you just update these two lines so we the interface mapping right?
-> 
-> Thanks, I didn't notice that.
-> 
-> This part was copied from the Fibocom AT+GTUSBMODE documentation and
-> seems to list supported functions independently of the resulting USB
-> interface order.
-> 
-> I'm afraid I can't verify the actual order since I don't have access to
-> this module myself, and there is no way to tell the AT, GNSS, META,
-> DEBUG, NPT and LOG functons from eacohother based on USB descriptors.
-> 
-> The best I can do is dropping these two lines. Is that better?
+From: yangge <yangge1116@126.com>
 
-No, I'll just amend the commit message to clarify that the order is
-unspecified. Thanks.
+If a large number of CMA memory are configured in system (for
+example, the CMA memory accounts for 50% of the system memory),
+starting a SEV virtual machine will fail. During starting the SEV
+virtual machine, it will call pin_user_pages_fast(..., FOLL_LONGTERM,
+...) to pin memory. Normally if a page is present and in CMA area,
+pin_user_pages_fast() will first call __get_user_pages_locked() to
+pin the page in CMA area, and then call
+check_and_migrate_movable_pages() to migrate the page from CMA area
+to non-CMA area. But the current code calling __get_user_pages_locked()
+will fail, because it call try_grab_folio() to pin page in gup slow
+path.
 
-Johan
+The commit 57edfcfd3419 ("mm/gup: accelerate thp gup even for "pages
+!= NULL"") uses try_grab_folio() in gup slow path, which seems to be
+problematic because try_grap_folio() will check if the page can be
+longterm pinned. This check may fail and cause __get_user_pages_lock()
+to fail. However, these checks are not required in gup slow path,
+seems we can use try_grab_page() instead of try_grab_folio(). In
+addition, in the current code, try_grab_page() can only add 1 to the
+page's refcount. We extend this function so that the page's refcount
+can be increased according to the parameters passed in.
+
+The following log reveals it:
+
+[  464.325306] WARNING: CPU: 13 PID: 6734 at mm/gup.c:1313 __get_user_pages+0x423/0x520
+[  464.325464] CPU: 13 PID: 6734 Comm: qemu-kvm Kdump: loaded Not tainted 6.6.33+ #6
+[  464.325477] RIP: 0010:__get_user_pages+0x423/0x520
+[  464.325515] Call Trace:
+[  464.325520]  <TASK>
+[  464.325523]  ? __get_user_pages+0x423/0x520
+[  464.325528]  ? __warn+0x81/0x130
+[  464.325536]  ? __get_user_pages+0x423/0x520
+[  464.325541]  ? report_bug+0x171/0x1a0
+[  464.325549]  ? handle_bug+0x3c/0x70
+[  464.325554]  ? exc_invalid_op+0x17/0x70
+[  464.325558]  ? asm_exc_invalid_op+0x1a/0x20
+[  464.325567]  ? __get_user_pages+0x423/0x520
+[  464.325575]  __gup_longterm_locked+0x212/0x7a0
+[  464.325583]  internal_get_user_pages_fast+0xfb/0x190
+[  464.325590]  pin_user_pages_fast+0x47/0x60
+[  464.325598]  sev_pin_memory+0xca/0x170 [kvm_amd]
+[  464.325616]  sev_mem_enc_register_region+0x81/0x130 [kvm_amd]
+
+Fixes: 57edfcfd3419 ("mm/gup: accelerate thp gup even for "pages != NULL"")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: yangge <yangge1116@126.com>
+---
+ mm/gup.c         | 26 ++++++++++++--------------
+ mm/huge_memory.c |  2 +-
+ mm/internal.h    |  2 +-
+ 3 files changed, 14 insertions(+), 16 deletions(-)
+
+diff --git a/mm/gup.c b/mm/gup.c
+index 6ff9f95..bb58909 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -222,7 +222,7 @@ static void gup_put_folio(struct folio *folio, int refs, unsigned int flags)
+  *   -ENOMEM		FOLL_GET or FOLL_PIN was set, but the page could not
+  *			be grabbed.
+  */
+-int __must_check try_grab_page(struct page *page, unsigned int flags)
++int __must_check try_grab_page(struct page *page, int refs, unsigned int flags)
+ {
+ 	struct folio *folio = page_folio(page);
+ 
+@@ -233,7 +233,7 @@ int __must_check try_grab_page(struct page *page, unsigned int flags)
+ 		return -EREMOTEIO;
+ 
+ 	if (flags & FOLL_GET)
+-		folio_ref_inc(folio);
++		folio_ref_add(folio, refs);
+ 	else if (flags & FOLL_PIN) {
+ 		/*
+ 		 * Don't take a pin on the zero page - it's not going anywhere
+@@ -248,13 +248,13 @@ int __must_check try_grab_page(struct page *page, unsigned int flags)
+ 		 * so that the page really is pinned.
+ 		 */
+ 		if (folio_test_large(folio)) {
+-			folio_ref_add(folio, 1);
+-			atomic_add(1, &folio->_pincount);
++			folio_ref_add(folio, refs);
++			atomic_add(refs, &folio->_pincount);
+ 		} else {
+-			folio_ref_add(folio, GUP_PIN_COUNTING_BIAS);
++			folio_ref_add(folio, refs * GUP_PIN_COUNTING_BIAS);
+ 		}
+ 
+-		node_stat_mod_folio(folio, NR_FOLL_PIN_ACQUIRED, 1);
++		node_stat_mod_folio(folio, NR_FOLL_PIN_ACQUIRED, refs);
+ 	}
+ 
+ 	return 0;
+@@ -729,7 +729,7 @@ static struct page *follow_huge_pud(struct vm_area_struct *vma,
+ 	    gup_must_unshare(vma, flags, page))
+ 		return ERR_PTR(-EMLINK);
+ 
+-	ret = try_grab_page(page, flags);
++	ret = try_grab_page(page, 1, flags);
+ 	if (ret)
+ 		page = ERR_PTR(ret);
+ 	else
+@@ -806,7 +806,7 @@ static struct page *follow_huge_pmd(struct vm_area_struct *vma,
+ 	VM_BUG_ON_PAGE((flags & FOLL_PIN) && PageAnon(page) &&
+ 			!PageAnonExclusive(page), page);
+ 
+-	ret = try_grab_page(page, flags);
++	ret = try_grab_page(page, 1, flags);
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+@@ -969,7 +969,7 @@ static struct page *follow_page_pte(struct vm_area_struct *vma,
+ 		       !PageAnonExclusive(page), page);
+ 
+ 	/* try_grab_page() does nothing unless FOLL_GET or FOLL_PIN is set. */
+-	ret = try_grab_page(page, flags);
++	ret = try_grab_page(page, 1, flags);
+ 	if (unlikely(ret)) {
+ 		page = ERR_PTR(ret);
+ 		goto out;
+@@ -1233,7 +1233,7 @@ static int get_gate_page(struct mm_struct *mm, unsigned long address,
+ 			goto unmap;
+ 		*page = pte_page(entry);
+ 	}
+-	ret = try_grab_page(*page, gup_flags);
++	ret = try_grab_page(*page, 1, gup_flags);
+ 	if (unlikely(ret))
+ 		goto unmap;
+ out:
+@@ -1636,22 +1636,20 @@ static long __get_user_pages(struct mm_struct *mm,
+ 			 * pages.
+ 			 */
+ 			if (page_increm > 1) {
+-				struct folio *folio;
+ 
+ 				/*
+ 				 * Since we already hold refcount on the
+ 				 * large folio, this should never fail.
+ 				 */
+-				folio = try_grab_folio(page, page_increm - 1,
++				ret = try_grab_page(page, page_increm - 1,
+ 						       foll_flags);
+-				if (WARN_ON_ONCE(!folio)) {
++				if (WARN_ON_ONCE(ret)) {
+ 					/*
+ 					 * Release the 1st page ref if the
+ 					 * folio is problematic, fail hard.
+ 					 */
+ 					gup_put_folio(page_folio(page), 1,
+ 						      foll_flags);
+-					ret = -EFAULT;
+ 					goto out;
+ 				}
+ 			}
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 425374a..18604e4 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1332,7 +1332,7 @@ struct page *follow_devmap_pmd(struct vm_area_struct *vma, unsigned long addr,
+ 	if (!*pgmap)
+ 		return ERR_PTR(-EFAULT);
+ 	page = pfn_to_page(pfn);
+-	ret = try_grab_page(page, flags);
++	ret = try_grab_page(page, 1, flags);
+ 	if (ret)
+ 		page = ERR_PTR(ret);
+ 
+diff --git a/mm/internal.h b/mm/internal.h
+index 2ea9a88..5305bbf 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1227,7 +1227,7 @@ int migrate_device_coherent_page(struct page *page);
+  * mm/gup.c
+  */
+ struct folio *try_grab_folio(struct page *page, int refs, unsigned int flags);
+-int __must_check try_grab_page(struct page *page, unsigned int flags);
++int __must_check try_grab_page(struct page *page, int refs, unsigned int flags);
+ 
+ /*
+  * mm/huge_memory.c
+-- 
+2.7.4
+
 
