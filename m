@@ -1,65 +1,83 @@
-Return-Path: <stable+bounces-55911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 494D9919EAF
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 07:34:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF687919EB3
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 07:35:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCDA1B24A4B
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 05:34:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B7661C21628
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 05:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D56D1C2AD;
-	Thu, 27 Jun 2024 05:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49291C6B7;
+	Thu, 27 Jun 2024 05:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="EHfBnyol"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6BB28DA5
-	for <stable@vger.kernel.org>; Thu, 27 Jun 2024 05:34:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E269C1A702
+	for <stable@vger.kernel.org>; Thu, 27 Jun 2024 05:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719466451; cv=none; b=SHbpksBH/2O3Bn6it69egw9398HRcfIw/dgMzLmnYhekaqU4OPDUATrx6MtJwG0N9KeNSA48Eta3qu6Y+KQ3C6ulvyYyHIrYL2hDCIe/ofw5rIAu/7Kl6V+P843k9XfqRBqXANph3nT/yDoN8IsG3BsYjGju8vavBvrHP6VmC2M=
+	t=1719466499; cv=none; b=g20e/mirHLLF4DDaZ4c1i0qsfgVB831jAI4Nw9dqjj+OUNvObPhRR1Qf9WLh1GHxDIYqTClhM3+uiNLHV2vTwgLgvVhNr8677NuFuvoBz0Vu631B2O8uhta/2w900cMwqBB8g0bbAOiVDQXQQk06X6yX/xJioNR5t6HiDoNOeFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719466451; c=relaxed/simple;
-	bh=LYJA4gHG3laUJKh3RirWz+ba19Ae9E87C/vzol79nZI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=O34aqZfnEBDX8T+HBs2YbtYEVQi/pRuRW/RWglu41GOc8KumQRt/fR/NXgFdaFjXkNTwN48YWkWBgQQirkpy8lPk8++ferQhz8LCcvy0EuCPUJ/gLwTRMBG5aPqslU3wy4qHxLJ7Adxh6O2GM3JRcM4Xxh0DpPFZJ5nm0XrSdL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sMhlc-0004LN-AL; Thu, 27 Jun 2024 07:33:56 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sMhla-005IHZ-CJ; Thu, 27 Jun 2024 07:33:54 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sMhla-005wRX-12;
-	Thu, 27 Jun 2024 07:33:54 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	stable@vger.kernel.org,
-	kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org,
-	Russell King <linux@armlinux.org.uk>,
-	netdev@vger.kernel.org,
-	Lukasz Majewski <lukma@denx.de>
-Subject: [PATCH net v1 1/1] net: phy: micrel: ksz8081: disable broadcast only if PHY address is not 0
-Date: Thu, 27 Jun 2024 07:33:53 +0200
-Message-Id: <20240627053353.1416261-1-o.rempel@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1719466499; c=relaxed/simple;
+	bh=nthP+biiEJlJXqpV1SvSr2v3iZwtre1CKIpMvPmPeBs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=VmnHKwkKQagYdp0Q7kcQoxu6Uhge3XxIgIbav3/YGsQzgeoP74v/28GjxUjjlliU3xmC8XLoY4Id1EqN1u/PIVLejc0j4GfC0+6nU7SV9O0pVHkCWpJf2DmzNQtfBFRVbs1BEZ+be3+86/rZ+kR+E/zf1CUI7MLx2/Vi2ES49co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=EHfBnyol; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-444fe697f61so17096391cf.3
+        for <stable@vger.kernel.org>; Wed, 26 Jun 2024 22:34:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1719466497; x=1720071297; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LK+XwEE01O9MKbEeRLGG6iMONNez/yjAzdrVbw7Inj4=;
+        b=EHfBnyolkmCz/bKVTfhX9tvSrK/EXXKgy47Y7gsIeDcqM8hp3xonHGar+9akq5OFFW
+         I8nTpnNUMcH/99Aokz587M5liqCXAfkepIm59WVIiGVzLL/DNIqlULC6AY4HMgQittJg
+         YUCSAxtAjdytgkx9vLXRa/xyHsODhkb2u8HxE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719466497; x=1720071297;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LK+XwEE01O9MKbEeRLGG6iMONNez/yjAzdrVbw7Inj4=;
+        b=eTSQfqHEBLjWSO2Ia2xrjxU1PD9IJCjP8w03Is36fR4nSF4fOv5YWd0GZ6IEU66nzw
+         nXgMlHoHzEqptgnaS0a15tQHY35pbZGXnXuJUN/tRc05cb5ZnFopwQH8lkCyJFGsBlYq
+         X/jUo+UMR/4v9m5TWtSJnBNJNOmurlLcdPByjeK88k2HrE2r4mDbatxGsIm6aCxLtsva
+         uRE01Cl/3WtU5U1DY88uQKuCtNhbGJVddTcGn32gvkrdr4s5Pv4GtZVODRmH0RjBjCJR
+         kIxfZiOQyE7TAvF0CSE3LaiM6VsxXeLKdj9eJ5vdK6CfyISfIzzv93b3SDaRZ+WF1Z2s
+         4GIg==
+X-Forwarded-Encrypted: i=1; AJvYcCXXX67szcNmJt3e6s0SFlqO+Kpa2UynK+8Lc2i/XdhKrjns++WDKBHnHN+i5h9X7NHqTaCWfQWAroviSod86Z4eCC++3Aek
+X-Gm-Message-State: AOJu0Yz7sFYwiQz5Xsd5qvZECaVVRCgDa7QD8uKbQpSWrndN77KlsJic
+	fWL8iZfVPA2uQGOzllKXviX1qbIJygqGgXZ55/MU1aKOyx/oZ4YsodJJZ3tGTg==
+X-Google-Smtp-Source: AGHT+IHp5/i0t5sk4CoNslu9Wp27s7TFeESY5oQsJH6qvvjuav3XPhaIgZjEunVznE4PpUJvExi+LA==
+X-Received: by 2002:a05:622a:3cc:b0:446:33d8:791a with SMTP id d75a77b69052e-4463d50cb74mr20782831cf.50.1719466495848;
+        Wed, 26 Jun 2024 22:34:55 -0700 (PDT)
+Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44641eebfa0sm2716971cf.48.2024.06.26.22.34.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Jun 2024 22:34:55 -0700 (PDT)
+From: Zack Rusin <zack.rusin@broadcom.com>
+To: dri-devel@lists.freedesktop.org
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	ian.forbes@broadcom.com,
+	martin.krastev@broadcom.com,
+	maaz.mombasawala@broadcom.com,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/4] drm/vmwgfx: Fix a deadlock in dma buf fence polling
+Date: Thu, 27 Jun 2024 01:34:49 -0400
+Message-Id: <20240627053452.2908605-2-zack.rusin@broadcom.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20240627053452.2908605-1-zack.rusin@broadcom.com>
+References: <20240627053452.2908605-1-zack.rusin@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,43 +85,130 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Do not disable broadcast if we are using address 0 (broadcast) to
-communicate with this device. Otherwise we will use proper driver but no
-communication will be possible and no link changes will be detected.
-There are two scenarios where we can run in to this situation:
-- PHY is bootstrapped for address 0
-- no PHY address is known and linux is scanning the MDIO bus, so first
-  respond and attached device will be on address 0.
+Introduce a version of the fence ops that on release doesn't remove
+the fence from the pending list, and thus doesn't require a lock to
+fix poll->fence wait->fence unref deadlocks.
 
-The fixes tag points to the latest refactoring, not to the initial point
-where kszphy_broadcast_disable() was introduced.
+vmwgfx overwrites the wait callback to iterate over the list of all
+fences and update their status, to do that it holds a lock to prevent
+the list modifcations from other threads. The fence destroy callback
+both deletes the fence and removes it from the list of pending
+fences, for which it holds a lock.
 
-Fixes: 79e498a9c7da0 ("net: phy: micrel: Restore led_mode and clk_sel on resume")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+dma buf polling cb unrefs a fence after it's been signaled: so the poll
+calls the wait, which signals the fences, which are being destroyed.
+The destruction tries to acquire the lock on the pending fences list
+which it can never get because it's held by the wait from which it
+was called.
+
+Old bug, but not a lot of userspace apps were using dma-buf polling
+interfaces. Fix those, in particular this fixes KDE stalls/deadlock.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 2298e804e96e ("drm/vmwgfx: rework to new fence interface, v2")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.2+
 ---
- drivers/net/phy/micrel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 81c20eb4b54b9..67c2e611150d2 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -590,7 +590,7 @@ static int kszphy_config_init(struct phy_device *phydev)
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+index 5efc6a766f64..76971ef7801a 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+@@ -32,7 +32,6 @@
+ #define VMW_FENCE_WRAP (1 << 31)
  
- 	type = priv->type;
+ struct vmw_fence_manager {
+-	int num_fence_objects;
+ 	struct vmw_private *dev_priv;
+ 	spinlock_t lock;
+ 	struct list_head fence_list;
+@@ -120,16 +119,23 @@ static void vmw_fence_goal_write(struct vmw_private *vmw, u32 value)
+  * objects with actions attached to them.
+  */
  
--	if (type && type->has_broadcast_disable)
-+	if (type && type->has_broadcast_disable && phydev->mdio.addr != 0)
- 		kszphy_broadcast_disable(phydev);
+-static void vmw_fence_obj_destroy(struct dma_fence *f)
++static void vmw_fence_obj_destroy_removed(struct dma_fence *f)
+ {
+ 	struct vmw_fence_obj *fence =
+ 		container_of(f, struct vmw_fence_obj, base);
  
- 	if (type && type->has_nand_tree_disable)
++	WARN_ON(!list_empty(&fence->head));
++	fence->destroy(fence);
++}
++
++static void vmw_fence_obj_destroy(struct dma_fence *f)
++{
++	struct vmw_fence_obj *fence =
++		container_of(f, struct vmw_fence_obj, base);
+ 	struct vmw_fence_manager *fman = fman_from_fence(fence);
+ 
+ 	spin_lock(&fman->lock);
+ 	list_del_init(&fence->head);
+-	--fman->num_fence_objects;
+ 	spin_unlock(&fman->lock);
+ 	fence->destroy(fence);
+ }
+@@ -257,6 +263,13 @@ static const struct dma_fence_ops vmw_fence_ops = {
+ 	.release = vmw_fence_obj_destroy,
+ };
+ 
++static const struct dma_fence_ops vmw_fence_ops_removed = {
++	.get_driver_name = vmw_fence_get_driver_name,
++	.get_timeline_name = vmw_fence_get_timeline_name,
++	.enable_signaling = vmw_fence_enable_signaling,
++	.wait = vmw_fence_wait,
++	.release = vmw_fence_obj_destroy_removed,
++};
+ 
+ /*
+  * Execute signal actions on fences recently signaled.
+@@ -355,7 +368,6 @@ static int vmw_fence_obj_init(struct vmw_fence_manager *fman,
+ 		goto out_unlock;
+ 	}
+ 	list_add_tail(&fence->head, &fman->fence_list);
+-	++fman->num_fence_objects;
+ 
+ out_unlock:
+ 	spin_unlock(&fman->lock);
+@@ -403,7 +415,7 @@ static bool vmw_fence_goal_new_locked(struct vmw_fence_manager *fman,
+ 				      u32 passed_seqno)
+ {
+ 	u32 goal_seqno;
+-	struct vmw_fence_obj *fence;
++	struct vmw_fence_obj *fence, *next_fence;
+ 
+ 	if (likely(!fman->seqno_valid))
+ 		return false;
+@@ -413,7 +425,7 @@ static bool vmw_fence_goal_new_locked(struct vmw_fence_manager *fman,
+ 		return false;
+ 
+ 	fman->seqno_valid = false;
+-	list_for_each_entry(fence, &fman->fence_list, head) {
++	list_for_each_entry_safe(fence, next_fence, &fman->fence_list, head) {
+ 		if (!list_empty(&fence->seq_passed_actions)) {
+ 			fman->seqno_valid = true;
+ 			vmw_fence_goal_write(fman->dev_priv,
+@@ -471,6 +483,7 @@ static void __vmw_fences_update(struct vmw_fence_manager *fman)
+ rerun:
+ 	list_for_each_entry_safe(fence, next_fence, &fman->fence_list, head) {
+ 		if (seqno - fence->base.seqno < VMW_FENCE_WRAP) {
++			fence->base.ops = &vmw_fence_ops_removed;
+ 			list_del_init(&fence->head);
+ 			dma_fence_signal_locked(&fence->base);
+ 			INIT_LIST_HEAD(&action_list);
+@@ -662,6 +675,7 @@ void vmw_fence_fifo_down(struct vmw_fence_manager *fman)
+ 					 VMW_FENCE_WAIT_TIMEOUT);
+ 
+ 		if (unlikely(ret != 0)) {
++			fence->base.ops = &vmw_fence_ops_removed;
+ 			list_del_init(&fence->head);
+ 			dma_fence_signal(&fence->base);
+ 			INIT_LIST_HEAD(&action_list);
 -- 
-2.39.2
+2.40.1
 
 
