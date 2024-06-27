@@ -1,133 +1,110 @@
-Return-Path: <stable+bounces-55904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67547919D1A
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 04:02:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA0F919D8D
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 04:51:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F31A28307F
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 02:02:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61D2D1F245ED
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 02:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F8E522A;
-	Thu, 27 Jun 2024 02:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VNUug9dI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A710101EC;
+	Thu, 27 Jun 2024 02:50:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE877AD23;
-	Thu, 27 Jun 2024 02:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66658468;
+	Thu, 27 Jun 2024 02:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719453746; cv=none; b=dqrQAETnfB61LyakTGjxmF+GFdl/K7MMzFRvDI0R4cH17Vn4nb1DT+T/c4GpFiGKzBJqm38wZRTM34h2KixD/RFyIurWhUianz/HPLWob276a5V20diLKrsJm4FL7E2oTBctbtiBFh5ivF6ZGFFFVH6tbRoQ+w7om/hgo4cAAR8=
+	t=1719456656; cv=none; b=cQpqG/IWlmFOTTCDCwPppqF8a21+2BXkvVfMMZGSu0q1Us29OLtgzwN4mLRStTu2ZOKLiZfegw5OHpvtBfgWFAA9bKTrwttOyjJeJnKlcUBk4FIM6GGH8xdy9+ffEibxVbkn5pi5KEgi40nycwwXgoksTtvn0+NlIoPurHmwf8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719453746; c=relaxed/simple;
-	bh=lr/FjHo2def6xaQB+pb3iG3zz7JJzbC56u/HeQFUeXA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=euMaT+rZbOqiJIH2H5WXO0xeq5bM4UCKHvSq1KfWyV/jn/kv+CDXi91Axb/8iPCorJ0I7XYCFblKQoMDXavj7gh9mh6d7Bs1flCIwcl9l7D3iV4BLoTpPpUdAVQmzvm/Vt7eTriTnTcbyJ4qX8VkN5hPI2Wuh9CMl97m7wws0IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VNUug9dI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F931C116B1;
-	Thu, 27 Jun 2024 02:02:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719453745;
-	bh=lr/FjHo2def6xaQB+pb3iG3zz7JJzbC56u/HeQFUeXA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VNUug9dIkIp/IUyfPz5EG+RlodTI6I4NyuqHc6dqy5eUiR/z4UEAmBSnz7Zw0VH0h
-	 I5i3cqUEowYzx3tiJeRCMJ3a3aQvtk2jEaFCChAJMTQMHZY+pIdgjcAE/R9rly1uks
-	 FKj53H2bHW7mCMIiCNFh0FOVWYG46w/uJSMRAugcUST7ou384Fd9I0UkmxievmL/KS
-	 xabbtNixziW++aMiaEGCs+yWF7AfKTo4BG5V3GaZlmXoH0hq3wpcO38vlQ0bnQ0vKo
-	 t5Ik+PflMp4JIBoKRoB46X+EgxO4o9eaRcrTPmnsCIqP0nRd5p61YGBrZafK8110Oj
-	 v9sq1QgNjRyEg==
-Message-ID: <ab75136a-cdf5-4eb1-a09a-bc59beb6b8df@kernel.org>
-Date: Thu, 27 Jun 2024 11:02:23 +0900
+	s=arc-20240116; t=1719456656; c=relaxed/simple;
+	bh=4cppBpggKQiTT9YosisQcXCeFU4EB35BHeE90Z+tBds=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aoORzRMbUyL0CCCxFKlcrmThK/VJ58fiplKy3brv3npHHm4Xld/IctJa8e46WQJ5XGCymvXniCVdEDtbGgqEwSD31lYiop7dkuTqQETj2WH/W04ENLXxWy6opnLGFY1MDpXL3WA6ztAsRVj3ktLc10X7fCI78PAv4/TVz5XIHRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowAD3ISJ503xmoa0hAA--.8514S2;
+	Thu, 27 Jun 2024 10:50:40 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: patrik.r.jakobsson@gmail.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	alan@linux.intel.com,
+	airlied@redhat.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] drm/gma500: fix null pointer dereference in psb_intel_lvds_get_modes
+Date: Thu, 27 Jun 2024 10:50:33 +0800
+Message-Id: <20240627025033.2981966-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 5.10/5.15] ata: libata-scsi: check cdb length for
- VARIABLE_LENGTH_CMD commands
-To: Mikhail Ukhin <mish.uxin2012@yandex.ru>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jens Axboe
- <axboe@kernel.dk>, Niklas Cassel <cassel@kernel.org>
-Cc: stable@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-kernel@vger.kernel.org, Pavel Koshutin <koshutin.pavel@yandex.ru>,
- lvc-project@linuxtesting.org
-References: <20240626211358.148625-1-mish.uxin2012@yandex.ru>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20240626211358.148625-1-mish.uxin2012@yandex.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAD3ISJ503xmoa0hAA--.8514S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Jw1xZFy7AFyxAr13uw18AFb_yoWkWFb_uF
+	10vr9rWFWDu3Z5Cr4xAw4fur1SkF10yF4kJr4rKaySy34DJr15XryaqFy5WF18uFy8GrWD
+	J3Wj9Fy8Zr4xGjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3AFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6r1F6r1fM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
+	nIWIevJa73UjIFyTuYvjfUOlksUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On 6/27/24 06:13, Mikhail Ukhin wrote:
-> Fuzzing of 5.10 stable branch reports a slab-out-of-bounds error in
-> ata_scsi_pass_thru.
-> 
-> The error is fixed in 5.18 by commit ce70fd9a551a ("scsi: core: Remove the
-> cmd field from struct scsi_request") upstream.
-> Backporting this commit would require significant changes to the code so
-> it is bettter to use a simple fix for that particular error.
+In psb_intel_lvds_get_modes(), the return value of drm_mode_duplicate() is
+assigned to mode, which will lead to a possible NULL pointer dereference
+on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-This sentence is not needed in the commit message. That is a discussion to have
-when applying (or not) the patch.
+Cc: stable@vger.kernel.org
+Fixes: 89c78134cc54 ("gma500: Add Poulsbo support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v2:
+- modified the patch according to suggestions;
+- added Fixes line;
+- added Cc stable.
+---
+ drivers/gpu/drm/gma500/psb_intel_lvds.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> 
-> The problem is that the length of the received SCSI command is not
-> validated if scsi_op == VARIABLE_LENGTH_CMD. It can lead to out-of-bounds
-> reading if the user sends a request with SCSI command of length less than
-> 32.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
-> Signed-off-by: Mikhail Ivanov <iwanov-23@bk.ru>
-> Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
-
-Please send patches for libata to the ata maintainers (Niklas and myself).
-Use scripts/get_maintainer.pl And you will get our addresses and see that there
-is no need to spam Jens with libata patches.
-
-> ---
->  v2: The new addresses were added and the text was updated.
->  v3: Checking has been moved to the function ata_scsi_var_len_cdb_xlat at
->  the request of Damien Le Moal.
->  v4: Extra opcode check removed.
->  drivers/ata/libata-scsi.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-> index dfa090ccd21c..38488bd813d1 100644
-> --- a/drivers/ata/libata-scsi.c
-> +++ b/drivers/ata/libata-scsi.c
-> @@ -3948,7 +3948,11 @@ static unsigned int ata_scsi_var_len_cdb_xlat(struct ata_queued_cmd *qc)
->  	struct scsi_cmnd *scmd = qc->scsicmd;
->  	const u8 *cdb = scmd->cmnd;
->  	const u16 sa = get_unaligned_be16(&cdb[8]);
-> 
-> +	if (scmd->cmd_len < 32)
-
-Given that the only service action supported is ATA_32, this check should be
-
-	if (scmd->cmd_len != 32
-
-> +		return 1;
-> +
->  	/*
->  	 * if service action represents a ata pass-thru(32) command,
->  	 * then pass it to ata_scsi_pass_thru handler.
-> --
-> 2.25.1
-> 
-
+diff --git a/drivers/gpu/drm/gma500/psb_intel_lvds.c b/drivers/gpu/drm/gma500/psb_intel_lvds.c
+index 8486de230ec9..8d1be94a443b 100644
+--- a/drivers/gpu/drm/gma500/psb_intel_lvds.c
++++ b/drivers/gpu/drm/gma500/psb_intel_lvds.c
+@@ -504,6 +504,9 @@ static int psb_intel_lvds_get_modes(struct drm_connector *connector)
+ 	if (mode_dev->panel_fixed_mode != NULL) {
+ 		struct drm_display_mode *mode =
+ 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
++		if (!mode)
++			return 0;
++
+ 		drm_mode_probed_add(connector, mode);
+ 		return 1;
+ 	}
 -- 
-Damien Le Moal
-Western Digital Research
+2.25.1
 
 
