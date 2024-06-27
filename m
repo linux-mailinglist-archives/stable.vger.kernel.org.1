@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-55974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CC491AAEA
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 17:16:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ADF491AB44
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 17:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E47FD1C21550
-	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 15:16:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FA80B2A058
+	for <lists+stable@lfdr.de>; Thu, 27 Jun 2024 15:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A75A1991A0;
-	Thu, 27 Jun 2024 15:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7B2199391;
+	Thu, 27 Jun 2024 15:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bg1sfPer"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eH3LbD4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FBD198A34;
-	Thu, 27 Jun 2024 15:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BEE198E71;
+	Thu, 27 Jun 2024 15:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719501336; cv=none; b=tjdwDbuJEVY6zx6r23iOIr6I/QxAjUxy7e5XFEI2xdSygykBXrmZjOUclbVGMxVruTOmFFUocjV0HFIpbNFkT3rcbygpBW45K2UdKxkBdT4Izzhuf8+tE5nhn++vXo7KQZ+WNFkuR2DRYtfWG/Hpgl8XGTeIz1DN4u9ADGE4gWo=
+	t=1719501937; cv=none; b=Xf/dzQEePKzeMsY43Kp0a88sOgjIp0Pg8XmYL9cISUC1YCZ/dVABKdJOiQ+89LVLkGSjtW2c9G/IsFueRbstDqS7NFfMnD0nX2ZSc/Y+lVKMEL9hxhUiMWQ7c7vHs83f1cqejzLL7W2+2Zp4ejB4xD8F+8r0yNdQEGWXHA/7z6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719501336; c=relaxed/simple;
-	bh=q0A8hCYy5uZVhZ/NmrOR19SojhuSXvXU+Cvj3LoyMI4=;
+	s=arc-20240116; t=1719501937; c=relaxed/simple;
+	bh=DcIqrfoXRxHNxqbWkcMoWg8BFR191VB6t9DH5BOodQE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PtrToyfrfzPcPWhmQDsT9UBBuIamC7tkWQe4d/uxIKYeyWpjehCeMc5nE1bt2502geOT1NVrS/iQK0k9aAzuTLVqZOqcuhD8yM4BX9gLDHmW9yKRX2HovzoKsiG8ZCW6nGpa9uMEP5fW2IP+cwtKjjiTSda3dyU3VYIVEde1Ewc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bg1sfPer; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D0DAC32786;
-	Thu, 27 Jun 2024 15:15:33 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=as3YDaEWzrQsMxQT8ymkRM0a77aWGFSy2kuWzl1wa2lianV8G1Racgxv5OKoN883GyVFm5Er7RLyLIJDrDnZBbwmwufCuo0p1/3FoTOJ6OmKwL0sJDfMcz9q7ftwMnPYnKfbnaaLVmkU7Es75qgMrRYAGmLbjB3STsi6Mf4pWoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eH3LbD4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEF9C2BBFC;
+	Thu, 27 Jun 2024 15:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719501335;
-	bh=q0A8hCYy5uZVhZ/NmrOR19SojhuSXvXU+Cvj3LoyMI4=;
+	s=k20201202; t=1719501937;
+	bh=DcIqrfoXRxHNxqbWkcMoWg8BFR191VB6t9DH5BOodQE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bg1sfPerj2O75O7uXP6rq1G5VguVbZ8WxMjSRnAftOVV+MeIkSZq+VBh20TnGQ0aK
-	 hWxDQkJjRjVrXSjbyVEXGcHTRWDd7Bzk7DktVL587k8IPuupbtofcid+AHy3oK08js
-	 EREJt1uEyCuxU7IBr7hnl3x+pIUttcHJTRS50y9ajs/k9sKNwysEibKGhQ9TN80/2u
-	 cZ9IsKP3S/QO/nDF1pb/vnLbKMrLGFG/vQXL3bMXGq1gVX+Lz9zd6X3iRb+i0TyX8j
-	 zh+GOUG1YF7jyODghtEvW4yfVk00WC/1k0/T8RvJ6WR70Y7LK3CI1JQRRWX6jeJX6b
-	 ZwPfQ13KLuYjQ==
-Date: Thu, 27 Jun 2024 17:15:31 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Igor Pylypiv <ipylypiv@google.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Hannes Reinecke <hare@suse.de>, linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/6] ata: libata-scsi: Do not overwrite valid sense
- data when CK_COND=1
-Message-ID: <Zn2CE-aFGj2x8qi2@ryzen.lan>
-References: <20240626230411.3471543-1-ipylypiv@google.com>
- <20240626230411.3471543-3-ipylypiv@google.com>
- <Zn1zsaTLE3hYbSsK@ryzen.lan>
+	b=eH3LbD4LMJBU52nravUhcazsfvfmVmy1p/PKyBtPNa2I3v0IEv/MbXFRfhgbgo+vy
+	 g8O5SLA7juKfFyeRtiaP2rwgDRT2G+XTFFitFYiYUi/cgnRYySoeWVxTtlf+ht0AlT
+	 QuGlRFDxKQV21chZqgny9mdYpNKqS1eFX6nuRDW1/jYGGnNZ5uEQjl5mmPcXY51ad9
+	 qKoppAJqBLynl8o7uilVtC86RdoYIP2ZvocuixFxup4WZnMZ9WWFatdLCqGHIMNWjI
+	 xbnW9CNIcPCLZMELio4RyhfeCCmL8/2cOIU00Y26YYRSuHzjb17AcX9Xc6SBQWYpP8
+	 iVcCEwmTqRodA==
+Date: Thu, 27 Jun 2024 17:25:33 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Tommy Huang <tommy_huang@aspeedtech.com>
+Cc: brendan.higgins@linux.dev, benh@kernel.crashing.org, joel@jms.id.au, 
+	andrew@codeconstruct.com.au, wsa@kernel.org, linux-i2c@vger.kernel.org, 
+	openbmc@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org, 
+	linux-aspeed@lists.ozlabs.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	BMC-SW@aspeedtech.com
+Subject: Re: [PATCH v2] i2c: aspeed: Update the stop sw state when the bus
+ recovery occurs
+Message-ID: <pbsrfzbd237k5inof3wy6qabdmolmweozkn5kq7jlvstj2nkvo@nzp2sbrxpn44>
+References: <20240608043653.4086647-1-tommy_huang@aspeedtech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,20 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zn1zsaTLE3hYbSsK@ryzen.lan>
+In-Reply-To: <20240608043653.4086647-1-tommy_huang@aspeedtech.com>
 
-On Thu, Jun 27, 2024 at 04:14:09PM +0200, Niklas Cassel wrote:
+Hi Tommy,
+
+any update on this patch?
+
+Andi
+
+On Sat, Jun 08, 2024 at 12:36:53PM GMT, Tommy Huang wrote:
+> When the i2c bus recovery occurs, driver will send i2c stop command
+> in the scl low condition. In this case the sw state will still keep
+> original situation. Under multi-master usage, i2c bus recovery will
+> be called when i2c transfer timeout occurs. Update the stop command
+> calling with aspeed_i2c_do_stop function to update master_state.
 > 
-> The only tricky case is if we should set CHECK_CONDITION in case c) or not.
-> All other cases seems quite clear by looking at the SAT spec.
-
-I think we should set CHECK_CONDITION in case c),
-even if SK+ASCQ+ASC is not "ATA PASS-THROUGH INFORMATION AVAILABLE".
-
-That way we at least align CK_COND with CHECK_CONDITION, which is
-most likely what the user (and spec writers) expect.
-
-
-Kind regards,
-Niklas
+> Fixes: f327c686d3ba ("i2c: aspeed: added driver for Aspeed I2C")
+> 
+> Cc: <stable@vger.kernel.org> # v4.13+
+> Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
+> ---
+>  drivers/i2c/busses/i2c-aspeed.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-aspeed.c b/drivers/i2c/busses/i2c-aspeed.c
+> index ce8c4846b7fa..be64e419adf0 100644
+> --- a/drivers/i2c/busses/i2c-aspeed.c
+> +++ b/drivers/i2c/busses/i2c-aspeed.c
+> @@ -25,6 +25,8 @@
+>  #include <linux/reset.h>
+>  #include <linux/slab.h>
+>  
+> +static void aspeed_i2c_do_stop(struct aspeed_i2c_bus *bus);
+> +
+>  /* I2C Register */
+>  #define ASPEED_I2C_FUN_CTRL_REG				0x00
+>  #define ASPEED_I2C_AC_TIMING_REG1			0x04
+> @@ -187,7 +189,7 @@ static int aspeed_i2c_recover_bus(struct aspeed_i2c_bus *bus)
+>  			command);
+>  
+>  		reinit_completion(&bus->cmd_complete);
+> -		writel(ASPEED_I2CD_M_STOP_CMD, bus->base + ASPEED_I2C_CMD_REG);
+> +		aspeed_i2c_do_stop(bus);
+>  		spin_unlock_irqrestore(&bus->lock, flags);
+>  
+>  		time_left = wait_for_completion_timeout(
+> -- 
+> 2.25.1
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
 
